@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphView.ts
-- Generated At: 2026-11-06T21:42:36.569Z
+- Generated At: 2026-11-07T07:49:38.864Z
 
 ## Authored
 ### Purpose
@@ -72,19 +72,21 @@ Since 2026-11-05 (experiment 2, [Turn 11 of the November 5 record](../../../../.
 
 Since the second round of 2026-11-06 a wrapped body's packing is built when the picture names it (`bodyOf`), since its radius is its node's size, a shell's `shellBody` and a group's room alike; only its hull waits for `buildBodies`. No skin is fitted down any more, a pop bears each bubble one level in as its directory's shell at its place, and whatever a pop or a wrap bears enters in the frame of the pop ([the evidence](../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-06/shell-leaves/README.md)).
 
+Since the third round of 2026-11-07 the packing is no longer all done in the frame that names the bodies, a stall of one to two seconds on the T3 sample's first picture: the render packs what fits in `PACKING_BUDGET` and, while any body it names is unpacked, returns before it changes anything and leaves the picture standing as it was, the busy flag raised, packing a few bubbles a frame (`packBodies`, `packOn`, the timeline's "live-docs:body-packing") and rendering again when the last is packed. Since a body's size is its node's in the field, waiting changes nothing of the picture or its motion, only when it begins. Hiding the view stops the packing and showing it resumes it; bodies are not let go while a picture waits for its own. A pop takes each released bubble's body from the popped body's packing (`releasedBodies`, through `innerShape`), so a pop waits for nothing. The picture's budget veils the smallest bodies' interiors while the files drawn within skins pass `DRAWN_FILES` (`pictureVeiled`), and a popped directory's name stands beside the skin it had (`poppedSkins`), about the centroid of what it released, so that names of directories popped one inside another stand apart ([the evidence](../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-07/shell-faults/README.md)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ForceGraphLink` {#symbol-forcegraphlink}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L89)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L97)
 
 ##### `ForceGraphLink` — Summary
 A link in the Force Graph between two nodes.
 
 #### `ForceGraphNode` {#symbol-forcegraphnode}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L100)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L108)
 - Returns: [`SpatialGraphNode`](./forceGraphData.ts.mdmd.md#symbol-spatialgraphnode)
 
 ##### `ForceGraphNode` — Summary
@@ -92,28 +94,28 @@ A node in the Force Graph, extending the payload with optional archetype.
 
 #### `ForceGraphData` {#symbol-forcegraphdata}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L109)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L117)
 
 ##### `ForceGraphData` — Summary
 Complete data structure for the Force Graph view.
 
 #### `ForceGraphViewOptions` {#symbol-forcegraphviewoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L120)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L128)
 
 ##### `ForceGraphViewOptions` — Summary
 Options passed to the Force Graph view factory.
 
 #### `ForceGraphViewApi` {#symbol-forcegraphviewapi}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L149)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L157)
 
 ##### `ForceGraphViewApi` — Summary
 Public API surface of the Force Graph view.
 
 #### `createForceGraphView` {#symbol-createforcegraphview}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L176)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L184)
 - Returns: [`ForceGraphViewApi`](#symbol-forcegraphviewapi)
 - Parameters: `options`: [`ForceGraphViewOptions`](#symbol-forcegraphviewoptions)
 
@@ -181,11 +183,15 @@ Creates the Force Graph (3D) view for the Live Docs Explorer.
 - [`forceGraphScope.spatialScope`](./forceGraphScope.ts.mdmd.md#symbol-spatialscope-function)
 - [`forceGraphScope.startHops`](./forceGraphScope.ts.mdmd.md#symbol-starthops)
 - [`forceGraphScope.startOf`](./forceGraphScope.ts.mdmd.md#symbol-startof)
+- [`forceGraphShells.BodyBuilding`](./forceGraphShells.ts.mdmd.md#symbol-bodybuilding)
 - [`forceGraphShells.DirectoryShell`](./forceGraphShells.ts.mdmd.md#symbol-directoryshell)
-- [`forceGraphShells.bodyShape`](./forceGraphShells.ts.mdmd.md#symbol-bodyshape)
+- [`forceGraphShells.bodySteps`](./forceGraphShells.ts.mdmd.md#symbol-bodysteps)
+- [`forceGraphShells.innerShape`](./forceGraphShells.ts.mdmd.md#symbol-innershape)
+- [`forceGraphShells.pictureVeils`](./forceGraphShells.ts.mdmd.md#symbol-pictureveils)
 - [`forceGraphShells.poppedAfter`](./forceGraphShells.ts.mdmd.md#symbol-poppedafter)
 - [`forceGraphShells.shellId`](./forceGraphShells.ts.mdmd.md#symbol-shellid)
 - [`forceGraphShells.shellPicture`](./forceGraphShells.ts.mdmd.md#symbol-shellpicture-function)
+- [`forceGraphShells.veiledUnits`](./forceGraphShells.ts.mdmd.md#symbol-veiledunits)
 - [`forceGraphSizing.spatialSizeScale`](./forceGraphSizing.ts.mdmd.md#symbol-spatialsizescale)
 - [`forceGraphWrappers.BURST`](./forceGraphWrappers.ts.mdmd.md#symbol-burst)
 - [`forceGraphWrappers.GroupShape`](./forceGraphWrappers.ts.mdmd.md#symbol-groupshape)

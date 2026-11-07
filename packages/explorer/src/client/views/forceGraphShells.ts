@@ -276,20 +276,34 @@ export function packBall(units: readonly Packable[], gap: number, centre?: strin
     // reaches least far from the middle of the first two, so that small spheres fill the waist beside large ones rather
     // than a shell around them.
     let mx = 0, my = 0, mz = 0;
+    // Only a placed sphere nearer sphere j than a place's distance from j and that sphere's clearance together can block
+    // the place (2026-11-07, third round), so that a place is tested against a handful of neighbours rather than every
+    // sphere; and a place is tested only when it would reach less far than the best yet. Neither changes what is chosen.
+    const neighbours = new Int32Array(n * n), nearFrom = new Int32Array(n + 1);
     for (let i = 1; i < n; i++) {
       if (fixed[i]) continue;
+      let count = 0;
+      for (let j = 0; j < i; j++) {
+        nearFrom[j] = count;
+        const reach = r[j] + r[i] + gap;
+        for (let m = 0; m < i; m++) {
+          const ex = x[j] - x[m], ey = y[j] - y[m], ez = z[j] - z[m], within = reach + r[m] + r[i] + gap + 1e-6 * (1 + reach);
+          if (ex * ex + ey * ey + ez * ez < within * within) neighbours[count++] = m;
+        }
+      }
+      nearFrom[i] = count;
       let best = -1, bx = 0, by = 0, bz = 0;
       for (let j = 0; j < i; j++) for (let k = 0; k < DIRECTIONS.length; k++) {
         const d = DIRECTIONS[k], reach = r[j] + r[i] + gap;
         const cx = x[j] + d.x * reach, cy = y[j] + d.y * reach, cz = z[j] + d.z * reach;
+        const score = Math.sqrt((cx - mx) ** 2 + (cy - my) ** 2 + (cz - mz) ** 2) + r[i];
+        if (!(best < 0 || score < best - 1e-9)) continue;
         let clear = true;
-        for (let m = 0; m < i && clear; m++) {
-          const ex = cx - x[m], ey = cy - y[m], ez = cz - z[m], least = r[m] + r[i] + gap - 1e-9;
+        for (let at = nearFrom[j], end = nearFrom[j + 1]; at < end && clear; at++) {
+          const m = neighbours[at], ex = cx - x[m], ey = cy - y[m], ez = cz - z[m], least = r[m] + r[i] + gap - 1e-9;
           if (ex * ex + ey * ey + ez * ez < least * least) clear = false;
         }
-        if (!clear) continue;
-        const score = Math.sqrt((cx - mx) ** 2 + (cy - my) ** 2 + (cz - mz) ** 2) + r[i];
-        if (best < 0 || score < best - 1e-9) { best = score; bx = cx; by = cy; bz = cz; }
+        if (clear) { best = score; bx = cx; by = cy; bz = cz; }
       }
       x[i] = bx; y[i] = by; z[i] = bz;
       if (i === 1 && !fixed[0]) {
@@ -437,15 +451,19 @@ function sharedNames(a: readonly string[], b: readonly string[]): number {
   return same;
 }
 
+/** A body's building, a step at a time: each step one bubble packed (2026-11-07, third round). */
+export type BodyBuilding = Generator<void, GroupShape, void>;
+
 /**
  * The bubble of these files, from the leaves (2026-11-06, second round): the deepest directory holding them all, so that
  * a chain of directories holding nothing but one subdirectory collapses into what it holds; its own files each a unit,
  * each subdirectory of one file that file, and each other subdirectory a bubble of its own, built the same way and
  * first; the units packed apart by the gap, and the bubble as large as holds them with the margin, so that the
  * polyhedra a hull stands in for their padded spheres with stay within it. Its radius is the same whether it is a body
- * of the picture or a bubble inside one.
+ * of the picture or a bubble inside one. It pauses after each bubble it packs, so that a large body's building can be
+ * spread over frames (2026-11-07, third round).
  */
-function bubbleOf(files: readonly TreeFile[], gaps: BodyGaps): BodyNode {
+function* bubbleOf(files: readonly TreeFile[], gaps: BodyGaps): Generator<void, BodyNode, void> {
   let depth = files[0].parts.length;
   for (const file of files) depth = Math.min(depth, sharedNames(files[0].parts, file.parts));
   const directory = files[0].parts.slice(0, depth).join("/");
@@ -455,9 +473,11 @@ function bubbleOf(files: readonly TreeFile[], gaps: BodyGaps): BodyNode {
     else (groups.get(file.parts[depth]) ?? groups.set(file.parts[depth], []).get(file.parts[depth])!).push(file);
   }
   for (const group of groups.values()) {
-    units.push(group.length === 1 ? { id: group[0].id, kind: "file", radius: group[0].radius, files: 1, archetype: group[0].archetype, children: [] } : bubbleOf(group, gaps));
+    units.push(group.length === 1 ? { id: group[0].id, kind: "file", radius: group[0].radius, files: 1, archetype: group[0].archetype, children: [] } : yield* bubbleOf(group, gaps));
   }
-  return enclose(directory, units, gaps);
+  const bubble = enclose(directory, units, gaps);
+  yield;
+  return bubble;
 }
 
 /** A bubble around these units, packed apart, its radius such that each unit's padded polyhedron stays within it. */
@@ -491,6 +511,20 @@ export const DRAWN_FILES = 1024;
  */
 export function bodyShape<N extends SpatialNode & { codeRelativePath?: string; archetype?: string }>(seed: string, files: readonly N[], tuning: ForceGraphTuning,
   centre?: string, directory?: string): GroupShape {
+  const steps = bodySteps(seed, files, tuning, centre, directory);
+  for (;;) {
+    const step = steps.next();
+    if (step.done) return step.value;
+  }
+}
+
+/**
+ * `bodyShape` a bubble at a time (2026-11-07, third round): the page builds a large picture's bodies over frames, a few
+ * bubbles a frame, rather than all in the frame that names them, a stall of one to two seconds on the T3 sample. The
+ * result is `bodyShape`'s, whatever the steps are spread over.
+ */
+export function* bodySteps<N extends SpatialNode & { codeRelativePath?: string; archetype?: string }>(seed: string, files: readonly N[], tuning: ForceGraphTuning,
+  centre?: string, directory?: string): BodyBuilding {
   const gaps = bodyGaps(tuning);
   const tree: TreeFile[] = files.map(file => {
     const own = parentDirectory(file.codeRelativePath ?? file.id);
@@ -498,7 +532,56 @@ export function bodyShape<N extends SpatialNode & { codeRelativePath?: string; a
   });
   const root = directory === undefined || tree.length < 2
     ? enclose(seed, tree.map(file => ({ id: file.id, kind: "file" as const, radius: file.radius, files: 1, archetype: file.archetype, children: [] })), gaps, centre)
-    : bubbleOf(tree, gaps);
+    : yield* bubbleOf(tree, gaps);
+  return assembled(seed, root, gaps, centre);
+}
+
+/** The bubbles each body was assembled from, so that a bubble inside it can be a body of its own without packing it again. */
+const assembledFrom = new WeakMap<GroupShape, { root: BodyNode; gaps: BodyGaps }>();
+
+/**
+ * The body a bubble inside this one would be as the shell of its directory (2026-11-07, third round): what a pop makes
+ * of each bubble it releases. Since a bubble's packing depends only on what it holds, this is the shape `bodyShape`
+ * would build for the bubble's files, taken from the packing already made instead of packing again; undefined when no
+ * bubble directly inside the body is that directory's.
+ */
+export function innerShape(shape: GroupShape, directory: string): GroupShape | undefined {
+  const from = assembledFrom.get(shape);
+  const bubble = from?.root.children.find(child => child.node.kind === "directory" && child.node.id === directory)?.node;
+  return bubble && from ? assembled(shellId(directory), bubble, from.gaps) : undefined;
+}
+
+/**
+ * What a body's skin shows when nothing is drawn within it: one veiled bubble filling it, never an empty skin; the
+ * label keeps the true count. A body whose own files pass `DRAWN_FILES` is drawn so, and since 2026-11-07 any body the
+ * picture's budget (`pictureVeils`) veils.
+ */
+export function veiledUnits(shape: Pick<GroupShape, "seed" | "radius" | "margin" | "files">): BodyUnit[] {
+  const radius = shape.radius ?? 0;
+  return [{ id: shape.seed, kind: "directory", x: 0, y: 0, z: 0, radius: Math.max(0, radius - (shape.margin ?? 0)), reach: radius, files: shape.files ?? 0, depth: -1, veiled: true }];
+}
+
+/**
+ * Which bodies of a picture draw nothing within their skins, so that the picture as a whole draws no more files within
+ * skins than `DRAWN_FILES`, as one body does (2026-11-07, third round): while the files drawn pass the limit, the
+ * smallest body still drawn, by the files it holds, is veiled. Each body is given by its id, the files it holds and the
+ * files its skin would draw; the ids veiled are returned. Labels keep the true counts.
+ */
+export function pictureVeils(bodies: ReadonlyArray<{ id: string; files: number; drawn: number }>, limit = DRAWN_FILES): Set<string> {
+  let drawn = 0;
+  for (const body of bodies) drawn += body.drawn;
+  const veiled = new Set<string>();
+  const order = bodies.filter(body => body.drawn > 0).sort((a, b) => a.files - b.files || a.drawn - b.drawn || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+  for (const body of order) {
+    if (drawn <= limit) break;
+    veiled.add(body.id);
+    drawn -= body.drawn;
+  }
+  return veiled;
+}
+
+/** A body's shape from its packed bubble: every file's place, the units its skin shows within `DRAWN_FILES`, its outline. */
+function assembled(seed: string, root: BodyNode, gaps: BodyGaps, centre?: string): GroupShape {
   const members: GroupMember[] = [], units: BodyUnit[] = [];
   /** Every file's place, depth first. */
   const place = (node: BodyNode, ox: number, oy: number, oz: number): void => {
@@ -531,10 +614,12 @@ export function bodyShape<N extends SpatialNode & { codeRelativePath?: string; a
       if (open) queue.push({ node: child.node, x, y, z, depth: depth + 1 });
     }
   }
-  // A body whose own files are too many to draw is one veiled bubble inside its skin, never an empty one.
-  if (veiled) units.push({ id: seed, kind: "directory", x: 0, y: 0, z: 0, radius: Math.max(0, root.radius - gaps.margin), reach: root.radius, files: root.files, depth: -1, veiled: true });
   const outline = root.children.map(child => ({ id: child.node.id, x: child.x, y: child.y, z: child.z, radius: child.node.radius }));
-  return { seed, members, outline, units, radius: root.radius, margin: gaps.margin, veiled, files: root.files };
+  const shape: GroupShape = { seed, members, outline, units, radius: root.radius, margin: gaps.margin, veiled, files: root.files };
+  // A body whose own files are too many to draw is one veiled bubble inside its skin, never an empty one.
+  if (veiled) units.push(...veiledUnits(shape));
+  assembledFrom.set(shape, { root, gaps });
+  return shape;
 }
 
 /** The pops of a picture after `directory` is popped open, or wrapped again with every pop beneath it. */

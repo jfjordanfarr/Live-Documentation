@@ -1,0 +1,234 @@
+{
+ "before": [
+  {
+   "level": 1,
+   "shell": "shell:packages/explorer/src",
+   "files": 83,
+   "skinRadius": 120.26804374839325,
+   "released": 2,
+   "bubblesReleased": 2,
+   "allInside": true,
+   "sizeKept": true,
+   "worstOffFromShown": 0,
+   "restAfterPop": {
+    "seconds": 67,
+    "frames": 281
+   },
+   "framing": {
+    "framed": true,
+    "attempts": 2
+   },
+   "poppedNames": {
+    "names": [
+     {
+      "directory": "packages/explorer/src",
+      "x": 902,
+      "y": 524,
+      "width": 31,
+      "height": 23
+     }
+    ],
+    "closest": null
+   }
+  },
+  {
+   "level": 2,
+   "shell": "shell:packages/explorer/src/client",
+   "files": 79,
+   "skinRadius": 96.75129274522203,
+   "released": 13,
+   "bubblesReleased": 5,
+   "allInside": true,
+   "sizeKept": true,
+   "worstOffFromShown": 0,
+   "restAfterPop": {
+    "seconds": 57.5,
+    "frames": 229
+   },
+   "framing": {
+    "framed": true,
+    "attempts": 0
+   },
+   "poppedNames": {
+    "names": [
+     {
+      "directory": "packages/explorer/src",
+      "x": 893,
+      "y": 483,
+      "width": 31,
+      "height": 23
+     },
+     {
+      "directory": "packages/explorer/src/client",
+      "x": 886,
+      "y": 527,
+      "width": 44,
+      "height": 23
+     }
+    ],
+    "closest": 21
+   }
+  },
+  {
+   "level": 3,
+   "shell": "shell:packages/explorer/src/client/views",
+   "files": 48,
+   "skinRadius": 67.99942077100617,
+   "released": 9,
+   "bubblesReleased": 2,
+   "allInside": true,
+   "sizeKept": true,
+   "worstOffFromShown": 0,
+   "restAfterPop": {
+    "seconds": 49.3,
+    "frames": 197
+   },
+   "framing": {
+    "framed": true,
+    "attempts": 2
+   },
+   "poppedNames": {
+    "names": [
+     {
+      "directory": "packages/explorer/src",
+      "x": 868,
+      "y": 576,
+      "width": 31,
+      "height": 23
+     },
+     {
+      "directory": "packages/explorer/src/client",
+      "x": 862,
+      "y": 620,
+      "width": 44,
+      "height": 23
+     },
+     {
+      "directory": "packages/explorer/src/client/views",
+      "x": 956,
+      "y": 565,
+      "width": 47,
+      "height": 23
+     }
+    ],
+    "closest": 21
+   }
+  }
+ ],
+ "after": [
+  {
+   "level": 1,
+   "shell": "shell:packages/explorer/src",
+   "files": 83,
+   "skinRadius": 120.26804374839325,
+   "released": 2,
+   "bubblesReleased": 2,
+   "allInside": true,
+   "sizeKept": true,
+   "worstOffFromShown": 0,
+   "restAfterPop": {
+    "seconds": 35.5,
+    "frames": 131
+   },
+   "framing": {
+    "framed": true,
+    "attempts": 2
+   },
+   "poppedNames": {
+    "names": [
+     {
+      "directory": "packages/explorer/src",
+      "x": 836,
+      "y": 494,
+      "width": 31,
+      "height": 23
+     }
+    ],
+    "closest": null
+   }
+  },
+  {
+   "level": 2,
+   "shell": "shell:packages/explorer/src/client",
+   "files": 79,
+   "skinRadius": 96.75129274522203,
+   "released": 13,
+   "bubblesReleased": 5,
+   "allInside": true,
+   "sizeKept": true,
+   "worstOffFromShown": 0,
+   "restAfterPop": {
+    "seconds": 57.6,
+    "frames": 227
+   },
+   "framing": {
+    "framed": true,
+    "attempts": 0
+   },
+   "poppedNames": {
+    "names": [
+     {
+      "directory": "packages/explorer/src",
+      "x": 761,
+      "y": 592,
+      "width": 31,
+      "height": 23
+     },
+     {
+      "directory": "packages/explorer/src/client",
+      "x": 747,
+      "y": 388,
+      "width": 44,
+      "height": 23
+     }
+    ],
+    "closest": 181
+   }
+  },
+  {
+   "level": 3,
+   "shell": "shell:packages/explorer/src/client/views",
+   "files": 48,
+   "skinRadius": 67.99942077100617,
+   "released": 9,
+   "bubblesReleased": 2,
+   "allInside": true,
+   "sizeKept": true,
+   "worstOffFromShown": 0,
+   "restAfterPop": {
+    "seconds": 36.5,
+    "frames": 154
+   },
+   "framing": {
+    "framed": true,
+    "attempts": 2
+   },
+   "poppedNames": {
+    "names": [
+     {
+      "directory": "packages/explorer/src",
+      "x": 812,
+      "y": 628,
+      "width": 31,
+      "height": 23
+     },
+     {
+      "directory": "packages/explorer/src/client",
+      "x": 803,
+      "y": 404,
+      "width": 44,
+      "height": 23
+     },
+     {
+      "directory": "packages/explorer/src/client/views",
+      "x": 938,
+      "y": 467,
+      "width": 47,
+      "height": 23
+     }
+    ],
+    "closest": 99
+   }
+  }
+ ]
+}

@@ -2,7 +2,7 @@ import { forceLink, forceSimulation } from "d3-force-3d";
 import { describe, expect, it } from "vitest";
 
 import { applyLayoutPreset } from "../layout-presets";
-import { COLLISION_STIFFNESS, easeSpatialLayout, linkPulls, motionForce, placeNewSpheres, QUIET_TICKS, seededDirection, SHELL_SOFTNESS, spatialFieldOf, spatialLinkDistance, spatialNodeRadius, spatialNodeValue, springStrength, symbolCountOf, type PlaceableNode, type SpatialLink, type SpatialNode } from "./forceGraphLayout";
+import { COLLISION_STIFFNESS, easeSpatialLayout, linkPulls, motionForce, placeNewSpheres, QUIET_TICKS, seededDirection, shellMass, SHELL_SOFTNESS, spatialFieldOf, spatialLinkDistance, spatialNodeRadius, spatialNodeValue, springStrength, symbolCountOf, type PlaceableNode, type SpatialLink, type SpatialNode } from "./forceGraphLayout";
 import { diagonalOf } from "./forceGraphPhysics";
 import { getDefaultTuning } from "../persistence/local-storage";
 import type { ForceGraphTuning } from "../types";
@@ -289,6 +289,13 @@ describe("a directory shell in the field (2026-11-06)", () => {
     expect(gentle.stiffness).toBeLessThan(hard.stiffness);
   });
 
+  it("weighs the cube root of the files it holds, a file one, and a picture without shells weighs nothing extra (third round)", () => {
+    expect(spatialFieldOf([node("a", 1), node("b", 1)], [], tuning, "connections").mass, "no shell, no weights").toBeUndefined();
+    const field = spatialFieldOf([shell("shell:s", 64), node("b", 1), shell("shell:t", 1)], [], tuning, "connections");
+    expect(Array.from(field.mass!)).toEqual([4, 1, 1]);
+    expect(shellMass(1000)).toBeCloseTo(10, 12);
+  });
+
   it("is born outside the placed mass, on the side of the files it is wired to, clear of the farthest sphere that way", () => {
     const mass: Array<SpatialNode & PlaceableNode> = [-60, -30, 0, 30, 60].map((x, i) => ({ ...node(`m${i}`, 0), x, y: 0, z: 0 }));
     const born = shell("shell:s", 30);
@@ -301,6 +308,27 @@ describe("a directory shell in the field (2026-11-06)", () => {
     const file = { ...node("f", 0) };
     const beside = placeNewSpheres([...mass, file], links.map(link => ({ ...link, target: "f" })), tuning, "connections").get("f")!;
     expect(distance(beside, { x: 45, y: 0, z: 0 })).toBeLessThan(80);
+  });
+
+  it("is born round the files with the shells of its piece, clear of each, not each beyond the last in a line (third round)", () => {
+    // A ball of files, and twelve shells wired to the same two files and each to the one before, as sibling packages are.
+    const files: Array<SpatialNode & PlaceableNode> = Array.from({ length: 30 }, (_, i) => {
+      const h = 1 - 2 * (i + 0.5) / 30, ring = Math.sqrt(1 - h * h), turn = i * 2.39996;
+      return { ...node(`f${i}`, 0), x: 60 * ring * Math.cos(turn), y: 60 * h, z: 60 * ring * Math.sin(turn) };
+    });
+    const shells = Array.from({ length: 12 }, (_, i) => shell(`shell:s${String(i).padStart(2, "0")}`, 10 + 15 * i));
+    const links: SpatialLink[] = shells.flatMap((born, i) => [{ source: "f0", target: born.id, count: 2 }, { source: "f7", target: born.id, count: 1 },
+      ...(i ? [{ source: shells[i - 1].id, target: born.id, count: 1 }] : [])]);
+    const starts = placeNewSpheres([...files, ...shells], links, tuning, "connections");
+    const at = shells.map(born => ({ ...starts.get(born.id)!, radius: spatialNodeRadius(born, tuning) }));
+    for (let i = 0; i < at.length; i++) {
+      for (const file of files) expect(distance(at[i], file), `${shells[i].id} outside ${file.id}`).toBeGreaterThanOrEqual(at[i].radius + spatialNodeRadius(file, tuning) + tuning.collisionGap - 1e-9);
+      for (let j = i + 1; j < at.length; j++) expect(distance(at[i], at[j]), `${shells[i].id} clear of ${shells[j].id}`).toBeGreaterThanOrEqual(at[i].radius + at[j].radius + tuning.collisionGap - 1e-9);
+    }
+    // Round the files rather than strung out: the shells reach less than a fifth as far as their diameters laid end to end
+    // (each born beyond the last, they reached past them all, 1,348 units against 1,225).
+    const reach = Math.max(...at.map(place => Math.hypot(place.x, place.y, place.z) + place.radius)), diameters = at.reduce((sum, place) => sum + 2 * place.radius, 0);
+    expect(reach).toBeLessThan(diameters / 5);
   });
 });
 

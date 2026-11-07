@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/forceGraphLayout.test.ts
-- Generated At: 2026-11-06T18:06:28.992Z
+- Generated At: 2026-11-07T07:46:34.294Z
 
 ## Authored
 ### Purpose
@@ -46,6 +46,7 @@ _No public symbols detected_
 - [`forceGraphLayout.motionForce`](./forceGraphLayout.ts.mdmd.md#symbol-motionforce-function)
 - [`forceGraphLayout.placeNewSpheres`](./forceGraphLayout.ts.mdmd.md#symbol-placenewspheres)
 - [`forceGraphLayout.seededDirection`](./forceGraphLayout.ts.mdmd.md#symbol-seededdirection)
+- [`forceGraphLayout.shellMass`](./forceGraphLayout.ts.mdmd.md#symbol-shellmass)
 - [`forceGraphLayout.spatialFieldOf`](./forceGraphLayout.ts.mdmd.md#symbol-spatialfieldof)
 - [`forceGraphLayout.spatialLinkDistance`](./forceGraphLayout.ts.mdmd.md#symbol-spatiallinkdistance)
 - [`forceGraphLayout.spatialNodeRadius`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnoderadius)

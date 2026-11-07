@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import type { FileConnection } from "./fileConnections";
 import { linkPulls, shellRadiusOf, spatialNodeRadius, type SpatialLink } from "./forceGraphLayout";
 import { connectedNeighbours, spatialScope, type StartableNode } from "./forceGraphScope";
-import { bodyGaps, bodyShape, directoryAt, DRAWN_FILES, packBall, partitionHidden, poppedAfter, shellDirectory, shellId, shellPicture, type ShellPartition } from "./forceGraphShells";
+import { bodyGaps, bodyShape, bodySteps, directoryAt, DRAWN_FILES, innerShape, packBall, partitionHidden, pictureVeils, poppedAfter, shellDirectory, shellId, shellPicture, type ShellPartition } from "./forceGraphShells";
 import { wrapperHull, type WrapperHull } from "./forceGraphWrappers";
 import { getDefaultTuning } from "../persistence/local-storage";
 
@@ -226,6 +226,18 @@ describe("a ball of spheres packed apart (2026-11-06, second round)", () => {
     expect(places.get(units[7].id)).toEqual({ x: 0, y: 0, z: 0 });
     expect(shortfall(units, places, 5)).toBeLessThanOrEqual(5 / 100);
   });
+
+  // The places of the second round's packing to the last digit, read from the bundle of the commit that built it
+  // (91e39276): the third round made the placing of up to 48 spheres faster and must not move one of them.
+  it.each([
+    { count: 40, big: 2, centre: undefined, extent: 69.66072742143449, u0005: { x: -35.17827648034135, y: 22.27322594823353, z: -7.4679226803478995 } },
+    { count: 48, big: 3, centre: undefined, extent: 84.7259685602468, u0005: { x: 43.197412938641186, y: 13.143343621580868, z: -36.939108066666044 } },
+    { count: 30, big: 0, centre: "u0007", extent: 44.64521176492018, u0005: { x: -1.8784805951251422, y: -19.703846248464377, z: -6.068110632687518 } }
+  ])("places $count spheres, $big large, exactly where the second round did", ({ count, big, centre, extent, u0005 }) => {
+    const packed = packBall(spheres(count, big), 5, centre);
+    expect(packed.extent).toBe(extent);
+    expect(packed.places.get("u0005")).toEqual(u0005);
+  });
 });
 
 describe("a body built from the leaves (2026-11-06, second round)", () => {
@@ -288,6 +300,25 @@ describe("a body built from the leaves (2026-11-06, second round)", () => {
     }
   });
 
+  it("takes a released bubble's body from the popped body's packing, exactly the body packing its files builds (third round)", () => {
+    const inner = files.filter(node => node.id.startsWith("p/nest/"));
+    expect(innerShape(shape, "p/nest")).toEqual(bodyShape("shell:p/nest", inner, tuning, undefined, "p/nest"));
+    const chain = files.filter(node => node.id.startsWith("p/chain/"));
+    expect(innerShape(shape, "p/chain/a/b")).toEqual(bodyShape("shell:p/chain/a/b", chain, tuning, undefined, "p/chain/a/b"));
+    // Only a bubble directly inside the body, and never a file.
+    expect(innerShape(shape, "p/nest/inner")).toBeUndefined();
+    expect(innerShape(shape, "p/own.ts")).toBeUndefined();
+  });
+
+  it("is built a bubble at a time, to the same body (third round)", () => {
+    const steps = bodySteps("shell:p", files, tuning, undefined, "p");
+    let paused = 0, step = steps.next();
+    for (; !step.done; step = steps.next()) paused++;
+    // One pause after each bubble packed: the five within and the body's own.
+    expect(paused).toBe(6);
+    expect(step.value).toEqual(shape);
+  });
+
   it(`veils a bubble whose files would pass ${DRAWN_FILES}, keeping its count, and a body whose own files would`, () => {
     const many = [...Array.from({ length: DRAWN_FILES - 2 }, (_, i) => file(`q/a/f${String(i).padStart(4, "0")}.ts`)), ...Array.from({ length: 5 }, (_, i) => file(`q/b/g${i}.ts`)), file("q/own.ts")];
     const body = bodyShape("shell:q", many, tuning, undefined, "q");
@@ -310,6 +341,28 @@ describe("a body built from the leaves (2026-11-06, second round)", () => {
     expect(island.units!.map(unit => unit.id).sort()).toEqual(group.slice(1).map(node => node.id).sort());
     expect(island.units!.every(unit => unit.kind === "file" && unit.depth === 0)).toBe(true);
     for (const unit of island.units!) expect(Math.hypot(unit.x, unit.y, unit.z) + unit.radius + gaps.margin).toBeLessThanOrEqual(island.radius! + 1e-6);
+  });
+});
+
+describe("the picture's budget of files drawn within skins (2026-11-07, third round)", () => {
+  const body = (id: string, files: number, drawn = files) => ({ id, files, drawn });
+
+  it("veils nothing while the picture draws within the limit", () => {
+    expect(pictureVeils([body("a", 600), body("b", 424)], 1024)).toEqual(new Set());
+  });
+
+  it("veils the smallest bodies first until the rest draw within the limit, whatever order they come in", () => {
+    const bodies = [body("large", 2000, 1000), body("middle", 300), body("small", 20), body("tiny", 3), body("tiny-too", 3)];
+    const veiled = pictureVeils(bodies, 1024);
+    // 1,326 drawn: the two of three files go first, then the twenty and the three hundred; the large one stands.
+    expect(veiled).toEqual(new Set(["tiny", "tiny-too", "small", "middle"]));
+    expect(pictureVeils([...bodies].reverse(), 1024)).toEqual(veiled);
+    expect(pictureVeils(bodies, 1300)).toEqual(new Set(["tiny", "tiny-too", "small"]));
+  });
+
+  it("passes over a body that draws nothing within its skin, and veils one that alone would pass the limit", () => {
+    expect(pictureVeils([body("veiled", 5000, 0), body("a", 10), body("b", 1020)], 1024)).toEqual(new Set(["a"]));
+    expect(pictureVeils([body("alone", 1500, 1500)], 1024)).toEqual(new Set(["alone"]));
   });
 });
 

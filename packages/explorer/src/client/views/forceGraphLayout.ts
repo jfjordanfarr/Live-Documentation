@@ -102,6 +102,12 @@ export function shellRadius(files: readonly SpatialNode[], tuning: ForceGraphTun
  */
 export const SHELL_SOFTNESS = 1 / 6;
 
+/** The directions a new shell is tried in besides toward what it is wired to: 64, evenly over the sphere (third round). */
+const SHELL_DIRECTIONS: ReadonlyArray<Placed> = Array.from({ length: 64 }, (_, i) => {
+  const h = 1 - 2 * (i + 0.5) / 64, ring = Math.sqrt(1 - h * h), turn = i * Math.PI * (3 - Math.sqrt(5));
+  return { x: ring * Math.cos(turn), y: h, z: ring * Math.sin(turn) };
+});
+
 /**
  * Actual sphere radius, shared by rendering, collision clearance and the command's report; a shell's is its body's, or,
  * told only how many files it holds, that of so many files with no symbols.
@@ -225,22 +231,46 @@ export function placeNewSpheres<N extends PlaceableNode>(nodes: readonly N[], li
     return { x: anchor.x + reach * direction.x, y: anchor.y + reach * direction.y, z: anchor.z + reach * direction.z };
   };
   /**
-   * Where a directory shell starts (2026-11-06): outside the placed mass on the side of the files it is wired to, its
-   * body just clear of the farthest placed sphere that way from the mass's centroid, toward the centroid of its placed
-   * neighbours. Born beside them as a file is, in a seeded direction, a shell as large as what it holds stood inside the
-   * mass and spent the settle shoving its way out: on the estate's picture pinned on its payment service, at a Shell
-   * Depth of one, 315 evaluations of the field to rest against 223 born outside (the headless twin).
+   * Where a directory shell starts: outside the files placed, clear of every shell placed, at the place nearest what it
+   * is wired to. Born beside its neighbours as a file is, in a seeded direction, a shell as large as what it holds
+   * stood inside the mass and spent the settle shoving its way out: on the estate's picture pinned on its payment
+   * service, at a Shell Depth of one, 315 evaluations of the field to rest against 223 born outside (the headless twin,
+   * 2026-11-06). Born then beyond the farthest sphere placed toward its neighbours, measured from all placed, the shells
+   * of one piece were each born beyond the last, since each drew the centre and its neighbours' centroid after it; the T3
+   * sample's 43 shells were born in a line some 8,000 units long, 98.7 % of their spread along it, and the wires to them
+   * lay along it as one white blade (2026-11-07, third round). So the files alone are the mass, and each direction is
+   * tried: along it the shell stands as near the files' centroid as clears the files' rim and every shell placed, and of
+   * those places it takes the one nearest the centroid of what it is wired to.
    */
   const outside = (node: N, anchor: Placed): Placed => {
     const placed = nodes.flatMap(other => { const at = other !== node ? positionOf(other) : undefined; return at ? [{ other, at }] : []; });
-    const centre = centroid(placed.map(({ at }) => at));
-    let dx = anchor.x - centre.x, dy = anchor.y - centre.y, dz = anchor.z - centre.z;
-    const length = Math.hypot(dx, dy, dz);
-    if (length > 1e-9) { dx /= length; dy /= length; dz /= length; } else ({ x: dx, y: dy, z: dz } = seededDirection(node.id));
-    let far = 0;
-    for (const { other, at } of placed) far = Math.max(far, (at.x - centre.x) * dx + (at.y - centre.y) * dy + (at.z - centre.z) * dz + spatialNodeRadius(other, tuning));
-    const reach = far + tuning.collisionGap + spatialNodeRadius(node, tuning);
-    return { x: centre.x + reach * dx, y: centre.y + reach * dy, z: centre.z + reach * dz };
+    const files = placed.filter(({ other }) => other.shellFiles === undefined), bodies = placed.filter(({ other }) => other.shellFiles !== undefined);
+    const centre = centroid((files.length ? files : placed).map(({ at }) => at));
+    const radius = spatialNodeRadius(node, tuning), gap = tuning.collisionGap;
+    const towards = { x: anchor.x - centre.x, y: anchor.y - centre.y, z: anchor.z - centre.z }, length = Math.hypot(towards.x, towards.y, towards.z);
+    const directions = [length > 1e-9 ? { x: towards.x / length, y: towards.y / length, z: towards.z / length } : seededDirection(node.id), ...SHELL_DIRECTIONS];
+    // How far each direction reaches through the files, every direction at once in one pass over them.
+    const rim = directions.map(() => 0);
+    for (const { other, at } of files) {
+      const ox = at.x - centre.x, oy = at.y - centre.y, oz = at.z - centre.z, own = spatialNodeRadius(other, tuning);
+      directions.forEach((d, i) => { rim[i] = Math.max(rim[i], ox * d.x + oy * d.y + oz * d.z + own); });
+    }
+    const shells = bodies.map(({ other, at }) => ({ at, clearance: radius + spatialNodeRadius(other, tuning) + gap }));
+    let best: Placed | null = null, nearest = Infinity;
+    directions.forEach((d, i) => {
+      // Along d the shell may not stand where it would overlap a shell placed: the stretches of the ray within each one's clearance.
+      let reach = rim[i] + gap + radius;
+      const blocked = shells.flatMap(({ at, clearance }) => {
+        const ox = at.x - centre.x, oy = at.y - centre.y, oz = at.z - centre.z, along = ox * d.x + oy * d.y + oz * d.z;
+        const room = along * along - (ox * ox + oy * oy + oz * oz - clearance * clearance);
+        return room > 0 ? [[along - Math.sqrt(room), along + Math.sqrt(room)] as const] : [];
+      }).sort((a, b) => a[0] - b[0]);
+      for (const [from, to] of blocked) if (reach > from && reach < to) reach = to;
+      const at = { x: centre.x + reach * d.x, y: centre.y + reach * d.y, z: centre.z + reach * d.z };
+      const distance = Math.hypot(at.x - anchor.x, at.y - anchor.y, at.z - anchor.z);
+      if (distance < nearest) { nearest = distance; best = at; }
+    });
+    return best!;
   };
   const waiting = nodes.filter(node => !isPlaced(node));
   const besidePlaced = (): void => {
@@ -343,7 +373,19 @@ export function spatialFieldOf<N extends SpatialNode>(nodes: readonly N[], links
   return new SpatialField(Float64Array.from(nodes.map(node => Math.max(spatialNodeRadius(node, tuning), clearance?.(node) ?? 0))), springs,
     { charge: tuning.charge, chargeRange: tuning.chargeRange, approximation: tuning.approximation, gravity: tuning.gravity, componentSeparation: tuning.componentSeparation, collisionGap: tuning.collisionGap, collisionStiffness: COLLISION_STIFFNESS, tether: tuning.tether },
     (low, high) => seededDirection(`${nodes[low].id}\0${nodes[high].id}`),
-    soft ? Float64Array.from(nodes.map(node => node.shellFiles !== undefined ? SHELL_SOFTNESS : 1)) : undefined);
+    soft ? Float64Array.from(nodes.map(node => node.shellFiles !== undefined ? SHELL_SOFTNESS : 1)) : undefined,
+    soft ? Float64Array.from(nodes.map(node => shellMass(node.shellFiles))) : undefined);
+}
+
+/**
+ * A sphere's mass in the field (2026-11-07, third round): a file's is one, a directory shell's the cube root of the files
+ * it holds, as a ball of them is wide. Weighed so, a large shell's many contacts and wires no longer shorten every tick's
+ * step: this repository's reference picture took 351 evaluations of the field to rest in the headless twin, against
+ * 570 without weight and 392 with the wrappers off. Weighed in proportion to the files it holds, the shell crept, held
+ * back by a drag that takes the same share of every sphere's speed: 650 evaluations, and 390 at the square root.
+ */
+export function shellMass(files: number | undefined): number {
+  return Math.max(1, Math.cbrt(files ?? 1));
 }
 
 /**

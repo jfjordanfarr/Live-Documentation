@@ -41,4 +41,18 @@ describe("spatial names", () => {
     const dy = Math.max(box.y, Math.min(subject.y, box.y + box.height)) - subject.y;
     expect(Math.hypot(dx, dy)).toBeGreaterThanOrEqual(subject.radius + 2);
   });
+
+  it("lays the names of directories popped one inside another apart, each beside the skin it had, and keeps nothing clear of them (third round)", () => {
+    // Three popped directories, one inside the next, the centroids of what they released nearly one point and their skins nested.
+    const popped = [{ id: "popped:src", radius: 120 }, { id: "popped:src/client", radius: 70 }, { id: "popped:src/client/views", radius: 30 }]
+      .map(({ id, radius }, i) => ({ id, priority: 4, x: 400 + i, y: 300 - i, radius, clear: 0, width: 60, height: 24 }));
+    const inner = { ...label("shell:src/client/views/localView", 5), x: 400, y: 220, radius: 4 };
+    const placed = placeSpatialLabels([...popped, inner], { width: 800, height: 700 }, [], new Map());
+    const tops = popped.map(item => placed.get(item.id)!.y);
+    // Each below its own skin: the outer one farthest from the point, none on another.
+    expect(tops).toEqual([300 + 120 + 7, 299 + 70 + 7, 298 + 30 + 7]);
+    // A released shell's own name, less important, may still stand within what they released, beside its sphere.
+    expect(placed.get(inner.id)?.side).toBe(0);
+    expect(placeSpatialLabels([...popped.map(item => ({ ...item, clear: undefined })), inner], { width: 800, height: 700 }, [], new Map()).get(inner.id)?.side).not.toBe(0);
+  });
 });

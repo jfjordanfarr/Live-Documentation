@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphPhysics.ts
-- Generated At: 2026-11-06T18:06:29.246Z
+- Generated At: 2026-11-07T07:46:34.754Z
 
 ## Authored
 ### Purpose
@@ -32,6 +32,8 @@ In the [November 2 exploration pass](../../../../../../../AI-Agent-Workspace/Cha
 The full gate during the [November 5 reading repair](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-9) exposed two slow existing physics tests. When both repulsion and collision stiffness are zero, exact evaluation now skips the inactive quadratic pair work while retaining each step's maximum spring stiffness and the normal completion checks. The bounded octree walk keeps its nearest-corner prune, but computes a cell's farthest corner only after the cell could pass the aggregate opening rule. Accepted cells, pair arithmetic and summation order are unchanged. Original/candidate force arrays and readings, including lazy energy, compare bit-for-bit across 48 bounded/unbounded, exact/approximated, coincident and partitioned-evaluation scenarios. The existing reference tests, coverage and deadlines remain intact; no force constant or approximation rule changed.
 
 Since 2026-11-06 a field may take a softness for each sphere, a share of the collision's stiffness: two spheres closer than their clearance push apart as hard as the softer allows, in the energy, the forces and the stiffness alike, summed exactly or through the tree. A directory shell is soft ([`forceGraphLayout.ts`](forceGraphLayout.ts.mdmd.md)), since one light contact on a large shell held every tick of its picture to two substeps; without softness the field is the one it was, to the last digit ([the evidence](../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-06/shell-mesh/README.md)).
+
+Since 2026-11-07 a field may also take a mass for each sphere, one at the least: the motion moves a sphere by its force over its mass, and the field's stiffness reading counts each sphere's stiffness per unit of its mass, since what bounds the step is how fast a sphere can swing; gravity and the tether are still counted whole, which per unit of a heavy sphere's mass is more than enough. The forces are unchanged, so the picture still rests where they balance; without masses, or with every mass one, the motion is the one it was, to the last digit. A directory shell weighs the cube root of the files it holds ([`forceGraphLayout.ts`](forceGraphLayout.ts.mdmd.md)), so that the many contacts and wires of a large shell no longer split every tick ([the evidence](../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-07/shell-faults/README.md)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -87,14 +89,14 @@ spheres.
 
 #### `MotionSettings` {#symbol-motionsettings}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L507)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L522)
 
 ##### `MotionSettings` — Summary
 The motion's constants: the step of time per tick and the drag per unit of time.
 
 #### `MotionTick` {#symbol-motiontick}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L514)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L529)
 - Extends: [`FieldReading`](#symbol-fieldreading)
 
 ##### `MotionTick` — Summary
@@ -102,7 +104,7 @@ How far one tick moved the spheres, beside the field's reading at the new positi
 
 #### `SpatialMotion` {#symbol-spatialmotion}
 - Type: class
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L546)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L561)
 
 ##### `SpatialMotion` — Summary
 Damped velocity Verlet through a field at a constant strength: half a kick, a drift, the forces at the new place, half a
@@ -122,7 +124,7 @@ are the same either way.
 
 #### `diagonalOf` {#symbol-diagonalof}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L709)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L725)
 
 ##### `diagonalOf` — Summary
 The diagonal of the box around the spheres, the measure of the picture's size that stillness is judged against.
@@ -137,4 +139,5 @@ The diagonal of the box around the spheres, the measure of the picture's size th
 ### Cited By
 - [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../../../layer-3/architectural-decisions.mdmd.md)
 - [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../../../../layer-3/change-over-time.mdmd.md)
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../../layer-3/live-documentation-explorer.mdmd.md)
 <!-- LIVE-DOC:END Cited By -->

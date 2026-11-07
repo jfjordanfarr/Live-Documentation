@@ -121,6 +121,28 @@ describe("the 3D picture's field", () => {
     expect(() => new SpatialField(radii, [], SETTINGS, UP, Float64Array.from([1, 1]))).toThrow("softness");
   });
 
+  it("counts a heavy sphere's stiffness per unit of its mass and leaves every force as it was, summed exactly or through the tree (third round)", () => {
+    const { x } = scene(), radii = Float64Array.from([4, 6, 5, 4, 8]), springs = scene().field.springs;
+    for (const approximation of [0, 0.3]) {
+      const settings = { ...SETTINGS, approximation, gravity: 0 };
+      const light = new SpatialField(radii, springs, settings, UP), ones = new SpatialField(radii, springs, settings, UP, undefined, new Float64Array(5).fill(1));
+      const a = new Float64Array(15), b = new Float64Array(15);
+      // Mass one everywhere is the field it was, to the last digit.
+      expect(ones.forces(x, a)).toEqual(light.forces(x, b));
+      expect(Array.from(a)).toEqual(Array.from(b));
+      // The stiffest sphere made heavy: the forces are the same, and the reading is the next stiffest's or its own per unit of mass.
+      const stiffnesses = radii.map((_, i) => new SpatialField(radii, springs, settings, UP, undefined, Float64Array.from(radii, (__, j) => j === i ? 1 : 1e6)).forces(x, new Float64Array(15)).stiffness);
+      const stiffest = stiffnesses.indexOf(Math.max(...stiffnesses)), mass = Float64Array.from(radii, (_, i) => i === stiffest ? 8 : 1);
+      const heavy = new SpatialField(radii, springs, settings, UP, undefined, mass), out = new Float64Array(15);
+      const reading = heavy.forces(x, out);
+      expect(Array.from(out)).toEqual(Array.from(b));
+      expect(reading.stiffness).toBeLessThan(light.forces(x, new Float64Array(15)).stiffness);
+      expect(reading.stiffness).toBeCloseTo(Math.max(stiffnesses[stiffest] / 8, ...stiffnesses.filter((_, i) => i !== stiffest)), 9);
+    }
+    expect(() => new SpatialField(radii, [], SETTINGS, UP, undefined, Float64Array.from([1, 1, 1, 0.5, 1]))).toThrow("mass");
+    expect(() => new SpatialField(radii, [], SETTINGS, UP, undefined, Float64Array.from([1, 1]))).toThrow("mass");
+  });
+
   it("refuses constants it cannot honour", () => {
     expect(() => new SpatialField(Float64Array.from([0]), [], SETTINGS, UP)).toThrow("positive radius");
     expect(() => new SpatialField(Float64Array.from([1]), [], { ...SETTINGS, gravity: -1 }, UP)).toThrow("nonnegative");
@@ -258,6 +280,25 @@ describe("the damped motion through it", () => {
     expect(last.moveMax).toBeLessThan(1e-6);
     const force = new Float64Array(x.length);
     field.forces(x, force);
+    expect(Math.max(...force.map(Math.abs))).toBeLessThan(1e-5);
+  });
+
+  it("moves a heavy sphere as much less as it is heavier, keeping the push between two equal, and still rests where the forces balance (third round)", () => {
+    // Two spheres overlapping, the second four times the first's mass: the first tick's moves are as one to a quarter.
+    const radii = Float64Array.from([10, 10]), settings = { ...SETTINGS, charge: 0, gravity: 0 };
+    const start = Float64Array.from([0, 0, 0, 15, 0, 0]);
+    const field = new SpatialField(radii, [], settings, UP, undefined, Float64Array.from([1, 4]));
+    const x = start.slice(), motion = new SpatialMotion(field, x, { step: 0.5, drag: 0.2 });
+    motion.tick(1);
+    const light = Math.abs(x[0] - start[0]), heavy = Math.abs(x[3] - start[3]);
+    expect(light).toBeGreaterThan(0);
+    expect(heavy * 4).toBeCloseTo(light, 12);
+    // The scene's chain with its stiffest sphere heavy comes to rest where its forces balance, as without the weight.
+    const { x: at } = scene(), weighed = new SpatialField(scene().field.radii, scene().field.springs, SETTINGS, UP, undefined, Float64Array.from([1, 6, 1, 1, 1]));
+    const still = new SpatialMotion(weighed, at, { step: 0.5, drag: 0.2 });
+    for (let tick = 0; tick < 12000; tick++) still.tick(1);
+    const force = new Float64Array(at.length);
+    weighed.forces(at, force);
     expect(Math.max(...force.map(Math.abs))).toBeLessThan(1e-5);
   });
 

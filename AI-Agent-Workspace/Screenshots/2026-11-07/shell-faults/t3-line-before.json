@@ -1,0 +1,497 @@
+{
+ "wires": {
+  "camera": [
+   2.6,
+   -999,
+   30098.5
+  ],
+  "near": 0.1,
+  "inside": [],
+  "widest": [
+   {
+    "source": "shell:scripts",
+    "target": "shell:scripts/lib",
+    "kind": "dependency",
+    "count": 41,
+    "depthStart": 27311.1,
+    "depthEnd": 27175.2,
+    "pixelsStart": 2.3,
+    "pixelsEnd": 2.4,
+    "length": 136.8
+   },
+   {
+    "source": ".repos/effect-smol/packages/effect/src/Array.ts",
+    "target": "shell:apps/mobile",
+    "kind": "type-reference",
+    "count": 145,
+    "depthStart": 30040.4,
+    "depthEnd": 28050.8,
+    "pixelsStart": 2.1,
+    "pixelsEnd": 2.3,
+    "length": 4738.9
+   },
+   {
+    "source": ".repos/effect-smol/packages/effect/src/Array.ts",
+    "target": "shell:apps/web",
+    "kind": "type-reference",
+    "count": 280,
+    "depthStart": 30045.2,
+    "depthEnd": 28111.7,
+    "pixelsStart": 2.1,
+    "pixelsEnd": 2.3,
+    "length": 5742
+   },
+   {
+    "source": ".repos/effect-smol/packages/effect/src/Array.ts",
+    "target": "shell:packages/client-runtime",
+    "kind": "type-reference",
+    "count": 89,
+    "depthStart": 30046.6,
+    "depthEnd": 27985,
+    "pixelsStart": 2.1,
+    "pixelsEnd": 2.3,
+    "length": 6568.2
+   },
+   {
+    "source": ".repos/effect-smol/packages/effect/src/Array.ts",
+    "target": "shell:packages/shared",
+    "kind": "type-reference",
+    "count": 58,
+    "depthStart": 30048.2,
+    "depthEnd": 27617.2,
+    "pixelsStart": 2.1,
+    "pixelsEnd": 2.3,
+    "length": 8514.5
+   },
+   {
+    "source": ".repos/effect-smol/packages/effect/src/Schema.ts",
+    "target": "shell:apps/web",
+    "kind": "type-reference",
+    "count": 52,
+    "depthStart": 29987.6,
+    "depthEnd": 28109.7,
+    "pixelsStart": 2.1,
+    "pixelsEnd": 2.3,
+    "length": 5707.9
+   },
+   {
+    "source": "apps/mobile/src/features/agent-awareness/remoteRegistration.ts",
+    "target": "shell:apps/mobile",
+    "kind": "dependency",
+    "count": 43,
+    "depthStart": 30108,
+    "depthEnd": 28053.4,
+    "pixelsStart": 2.1,
+    "pixelsEnd": 2.3,
+    "length": 4775.9
+   },
+   {
+    "source": "apps/mobile/src/lib/modelOptions.ts",
+    "target": "shell:apps/mobile",
+    "kind": "dependency",
+    "count": 34,
+    "depthStart": 30096.2,
+    "depthEnd": 28051.8,
+    "pixelsStart": 2.1,
+    "pixelsEnd": 2.3,
+    "length": 4822.1
+   }
+  ],
+  "wires": 1273,
+  "largestSkins": [
+   {
+    "seed": "shell:.repos/alchemy-effect",
+    "radius": 1782,
+    "distance": 29858.5
+   },
+   {
+    "seed": "shell:.repos/effect-smol",
+    "radius": 623.2,
+    "distance": 29418.3
+   },
+   {
+    "seed": "shell:apps/server",
+    "radius": 320.4,
+    "distance": 28917.8
+   },
+   {
+    "seed": "shell:apps/web",
+    "radius": 279.3,
+    "distance": 28428
+   },
+   {
+    "seed": "shell:apps/mobile",
+    "radius": 268.6,
+    "distance": 28182.9
+   }
+  ]
+ },
+ "line": {
+  "nearNodes": 427,
+  "nearShells": 11,
+  "wiresAlong": 874,
+  "kinds": {
+   "file-file": 541,
+   "file-shell": 309,
+   "shell-shell": 24
+  },
+  "ends": [
+   [
+    "shell:apps/web",
+    147
+   ],
+   [
+    "packages/contracts/src/baseSchemas.ts",
+    124
+   ],
+   [
+    "shell:apps/mobile",
+    84
+   ],
+   [
+    "shell:packages/client-runtime",
+    65
+   ],
+   [
+    "packages/contracts/src/index.ts",
+    59
+   ],
+   [
+    "packages/contracts/src/providerInstance.ts",
+    33
+   ],
+   [
+    "packages/contracts/src/rpc.ts",
+    31
+   ],
+   [
+    ".repos/effect-smol/packages/effect/src/Array.ts",
+    29
+   ],
+   [
+    "packages/contracts/src/environment.ts",
+    26
+   ],
+   [
+    "packages/contracts/src/modelSelection.ts",
+    23
+   ]
+  ],
+  "shells": 43,
+  "straightness": 0.977,
+  "axisAgainstView": 0.069,
+  "shellsMean": [
+   -1039,
+   -7501,
+   2190
+  ],
+  "filesMean": [
+   103,
+   -20,
+   -10
+  ],
+  "shellsByDistance": [
+   {
+    "id": "shell:apps/marketing",
+    "files": 2,
+    "body": 18,
+    "alongAxis": -2399,
+    "offAxis": 158
+   },
+   {
+    "id": "shell:",
+    "files": 3,
+    "body": 22,
+    "alongAxis": -2357,
+    "offAxis": 72
+   },
+   {
+    "id": "shell:scripts/mobile-e2e",
+    "files": 8,
+    "body": 27,
+    "alongAxis": -2303,
+    "offAxis": 99
+   },
+   {
+    "id": "shell:scripts/lib",
+    "files": 24,
+    "body": 33,
+    "alongAxis": -2244,
+    "offAxis": 105
+   },
+   {
+    "id": "shell:scripts",
+    "files": 26,
+    "body": 41,
+    "alongAxis": -2164,
+    "offAxis": 90
+   },
+   {
+    "id": "shell:packages/tailscale",
+    "files": 2,
+    "body": 17,
+    "alongAxis": -2094,
+    "offAxis": 346
+   },
+   {
+    "id": "shell:packages/ssh",
+    "files": 11,
+    "body": 40,
+    "alongAxis": -2036,
+    "offAxis": 281
+   },
+   {
+    "id": "shell:packages/source-control-testing",
+    "files": 3,
+    "body": 19,
+    "alongAxis": -1981,
+    "offAxis": 82
+   },
+   {
+    "id": "shell:packages/source-control-gitlab",
+    "files": 23,
+    "body": 65,
+    "alongAxis": -1891,
+    "offAxis": 94
+   },
+   {
+    "id": "shell:packages/source-control-github",
+    "files": 51,
+    "body": 103,
+    "alongAxis": -1724,
+    "offAxis": 125
+   },
+   {
+    "id": "shell:packages/source-control-gitcafe",
+    "files": 17,
+    "body": 64,
+    "alongAxis": -1551,
+    "offAxis": 49
+   },
+   {
+    "id": "shell:packages/source-control-forgejo",
+    "files": 17,
+    "body": 61,
+    "alongAxis": -1421,
+    "offAxis": 48
+   },
+   {
+    "id": "shell:packages/source-control-definitions",
+    "files": 2,
+    "body": 16,
+    "alongAxis": -1341,
+    "offAxis": 48
+   },
+   {
+    "id": "shell:packages/source-control-core",
+    "files": 16,
+    "body": 75,
+    "alongAxis": -1247,
+    "offAxis": 94
+   },
+   {
+    "id": "shell:packages/source-control-bitbucket",
+    "files": 17,
+    "body": 64,
+    "alongAxis": -1102,
+    "offAxis": 90
+   },
+   {
+    "id": "shell:packages/source-control-azure-devops",
+    "files": 19,
+    "body": 63,
+    "alongAxis": -968,
+    "offAxis": 146
+   },
+   {
+    "id": "shell:packages/shared",
+    "files": 142,
+    "body": 78,
+    "alongAxis": -829,
+    "offAxis": 89
+   },
+   {
+    "id": "shell:packages/provider-testing",
+    "files": 4,
+    "body": 31,
+    "alongAxis": -715,
+    "offAxis": 116
+   },
+   {
+    "id": "shell:packages/provider-pi",
+    "files": 23,
+    "body": 54,
+    "alongAxis": -625,
+    "offAxis": 251
+   },
+   {
+    "id": "shell:packages/provider-opencode",
+    "files": 38,
+    "body": 65,
+    "alongAxis": -501,
+    "offAxis": 238
+   },
+   {
+    "id": "shell:packages/provider-muse",
+    "files": 28,
+    "body": 58,
+    "alongAxis": -373,
+    "offAxis": 233
+   },
+   {
+    "id": "shell:packages/provider-grok",
+    "files": 21,
+    "body": 61,
+    "alongAxis": -249,
+    "offAxis": 223
+   },
+   {
+    "id": "shell:packages/provider-fx",
+    "files": 14,
+    "body": 47,
+    "alongAxis": -137,
+    "offAxis": 204
+   },
+   {
+    "id": "shell:packages/provider-cursor",
+    "files": 39,
+    "body": 61,
+    "alongAxis": -23,
+    "offAxis": 245
+   },
+   {
+    "id": "shell:packages/provider-core",
+    "files": 48,
+    "body": 71,
+    "alongAxis": 113,
+    "offAxis": 145
+   },
+   {
+    "id": "shell:packages/provider-acp-registry",
+    "files": 21,
+    "body": 57,
+    "alongAxis": 246,
+    "offAxis": 216
+   },
+   {
+    "id": "shell:packages/provider-acp",
+    "files": 17,
+    "body": 44,
+    "alongAxis": 350,
+    "offAxis": 27
+   },
+   {
+    "id": "shell:packages/effect-codex-app-server",
+    "files": 19,
+    "body": 119,
+    "alongAxis": 524,
+    "offAxis": 308
+   },
+   {
+    "id": "shell:packages/effect-acp",
+    "files": 22,
+    "body": 120,
+    "alongAxis": 728,
+    "offAxis": 329
+   },
+   {
+    "id": "shell:packages/contracts",
+    "files": 25,
+    "body": 39,
+    "alongAxis": 883,
+    "offAxis": 46
+   },
+   {
+    "id": "shell:packages/client-runtime",
+    "files": 318,
+    "body": 140,
+    "alongAxis": 1056,
+    "offAxis": 300
+   },
+   {
+    "id": "shell:oxlint-plugin-t3code",
+    "files": 2,
+    "body": 18,
+    "alongAxis": 1216,
+    "offAxis": 527
+   },
+   {
+    "id": "shell:infra/task-cache",
+    "files": 45,
+    "body": 70,
+    "alongAxis": 1265,
+    "offAxis": 158
+   },
+   {
+    "id": "shell:infra/relay",
+    "files": 92,
+    "body": 100,
+    "alongAxis": 1461,
+    "offAxis": 641
+   },
+   {
+    "id": "shell:evals/thread-titles",
+    "files": 2,
+    "body": 14,
+    "alongAxis": 1488,
+    "offAxis": 473
+   },
+   {
+    "id": "shell:evals/mcp-tool-use",
+    "files": 2,
+    "body": 19,
+    "alongAxis": 1516,
+    "offAxis": 314
+   },
+   {
+    "id": "shell:evals",
+    "files": 2,
+    "body": 17,
+    "alongAxis": 1571,
+    "offAxis": 486
+   },
+   {
+    "id": "shell:apps/web",
+    "files": 1547,
+    "body": 263,
+    "alongAxis": 1767,
+    "offAxis": 464
+   },
+   {
+    "id": "shell:apps/server",
+    "files": 1215,
+    "body": 302,
+    "alongAxis": 2304,
+    "offAxis": 277
+   },
+   {
+    "id": "shell:apps/mobile",
+    "files": 1142,
+    "body": 253,
+    "alongAxis": 2820,
+    "offAxis": 855
+   },
+   {
+    "id": "shell:apps/desktop",
+    "files": 262,
+    "body": 150,
+    "alongAxis": 3072,
+    "offAxis": 297
+   },
+   {
+    "id": "shell:.repos/effect-smol",
+    "files": 972,
+    "body": 584,
+    "alongAxis": 3808,
+    "offAxis": 249
+   },
+   {
+    "id": "shell:.repos/alchemy-effect",
+    "files": 13095,
+    "body": 1686,
+    "alongAxis": 6083,
+    "offAxis": 152
+   }
+  ]
+ }
+}

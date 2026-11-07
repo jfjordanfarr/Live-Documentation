@@ -147,11 +147,20 @@ export class SpatialField {
   /** The evaluation begun last: an earlier one shares its scratch, so it may not go on. */
   private current: Progress | null = null;
 
+  /**
+   * `softness` makes a sphere's contacts a share of the collision's stiffness; `mass` makes a sphere heavier than one
+   * (2026-11-07, third round): a directory shell weighs the files it holds, so that the many contacts a large shell rests
+   * against, counted per unit of its weight, do not shorten every tick's step. Mass changes how the spheres move, never
+   * the forces, so the picture still rests where the forces balance.
+   */
   constructor(readonly radii: Float64Array, readonly springs: readonly FieldSpring[], readonly settings: FieldSettings, private readonly direction: PairDirection,
-    readonly softness?: Float64Array) {
+    readonly softness?: Float64Array, readonly mass?: Float64Array) {
     if (!radii.every(radius => Number.isFinite(radius) && radius > 0)) throw new Error("Every sphere needs a finite positive radius.");
     if (softness && (softness.length !== radii.length || !softness.every(value => Number.isFinite(value) && value > 0 && value <= 1))) {
       throw new Error("A sphere's softness is a share of the collision's stiffness, above zero and at most one, one per sphere.");
+    }
+    if (mass && (mass.length !== radii.length || !mass.every(value => Number.isFinite(value) && value >= 1))) {
+      throw new Error("A sphere's mass is a finite number of files' weight, one at the least, one per sphere.");
     }
     for (const value of [settings.charge, settings.gravity, settings.collisionGap, settings.collisionStiffness, settings.tether, settings.approximation]) {
       if (!(Number.isFinite(value) && value >= 0)) throw new Error("The field's constants must be finite and nonnegative.");
@@ -267,9 +276,10 @@ export class SpatialField {
     const { charge, collisionGap, collisionStiffness } = this.settings;
     const range2 = range * range;
     let { energy, overlaps, worstOverlap, greatest: greatestStiffness } = progress;
+    const mass = this.mass;
     if (charge === 0 && collisionStiffness === 0) {
       // With neither pair interaction enabled, only the already summed springs contribute stiffness.
-      for (let i = from; i < to; i++) greatestStiffness = Math.max(greatestStiffness, pairStiffness[i]);
+      for (let i = from; i < to; i++) greatestStiffness = Math.max(greatestStiffness, mass ? pairStiffness[i] / mass[i] : pairStiffness[i]);
       progress.greatest = greatestStiffness;
       return;
     }
@@ -312,7 +322,8 @@ export class SpatialField {
         pairStiffness[j] += 2 * radialStiffness;
       }
       out[a] = fx; out[a + 1] = fy; out[a + 2] = fz;
-      greatestStiffness = Math.max(greatestStiffness, stiffness);
+      // A heavy sphere's stiffness counts per unit of its mass: what bounds the step is how fast it can swing.
+      greatestStiffness = Math.max(greatestStiffness, mass ? stiffness / mass[i] : stiffness);
     }
     progress.energy = energy; progress.overlaps = overlaps; progress.worstOverlap = worstOverlap; progress.greatest = greatestStiffness;
   }
@@ -433,7 +444,10 @@ export class SpatialField {
     if (scratch.tree) {
       if (charge > 0) for (let k = 0; k < out.length; k++) out[k] += scratch.push[k];
       energy += progress.pushEnergy;
-      for (let i = 0; i < this.count; i++) greatestStiffness = Math.max(greatestStiffness, scratch.stiffness[i] + (charge > 0 ? scratch.pushStiffness[i] : 0));
+      for (let i = 0; i < this.count; i++) {
+        const stiffness = scratch.stiffness[i] + (charge > 0 ? scratch.pushStiffness[i] : 0);
+        greatestStiffness = Math.max(greatestStiffness, this.mass ? stiffness / this.mass[i] : stiffness);
+      }
     }
     if (gravity > 0) {
       const separation = this.settings.componentSeparation ?? 0;
@@ -466,7 +480,8 @@ export class SpatialField {
         out[k] += tether * pull;
       }
     }
-    // Component gravity has eigenvalues g internally and g * (1 - separation) in translation: g still bounds both.
+    // Component gravity has eigenvalues g internally and g * (1 - separation) in translation: g still bounds both, and
+    // per unit of a heavy sphere's mass they are less.
     const stiffness = greatestStiffness + gravity + (anchor ? tether : 0);
     if (!out.every(Number.isFinite) || !Number.isFinite(stiffness)) throw new Error("The spatial field produced non-finite forces or stiffness.");
     if (measureEnergy) return { energy, stiffness, overlaps, worstOverlap };
@@ -666,9 +681,9 @@ export class SpatialMotion {
         const decay = Math.exp(-this.settings.drag * h / 2);
         for (let i = 0; i < n; i++) {
           const a = 3 * i;
-          const held = pending.fixed.has(i);
+          const held = pending.fixed.has(i), mass = this.field.mass?.[i] ?? 1;
           for (let k = a; k < a + 3; k++) {
-            this.nextVelocity[k] = held ? 0 : decay * v[k] + h * strength * this.force[k] / 2;
+            this.nextVelocity[k] = held ? 0 : decay * v[k] + h * strength * this.force[k] / 2 / mass;
             this.nextPositions[k] = held ? x[k] : x[k] + h * this.nextVelocity[k];
           }
           this.moves[i] = held ? 0 : h * Math.hypot(this.nextVelocity[a], this.nextVelocity[a + 1], this.nextVelocity[a + 2]);
@@ -685,7 +700,8 @@ export class SpatialMotion {
       pending.retry = null;
       for (let i = 0; i < n; i++) {
         const a = 3 * i;
-        if (!pending.fixed.has(i)) for (let k = a; k < a + 3; k++) this.nextVelocity[k] = decay * (this.nextVelocity[k] + h * strength * this.next[k] / 2);
+        const mass = this.field.mass?.[i] ?? 1;
+        if (!pending.fixed.has(i)) for (let k = a; k < a + 3; k++) this.nextVelocity[k] = decay * (this.nextVelocity[k] + h * strength * this.next[k] / 2 / mass);
         this.travelled[i] += this.moves[i];
         pending.moveMax = Math.max(pending.moveMax, this.travelled[i]);
       }

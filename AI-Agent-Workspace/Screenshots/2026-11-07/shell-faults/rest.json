@@ -1,0 +1,98 @@
+{
+ "islands-off-base": {
+  "url": "http://127.0.0.1:8912/?s=N4IgbiBcDMA0IEcomgExAXyA",
+  "frames": 50,
+  "seconds": 3.13,
+  "spheres": 94,
+  "skins": 0,
+  "filesDrawnWithin": 0
+ },
+ "islands-off-final": {
+  "url": "http://127.0.0.1:8912/?s=N4IgbiBcDMA0IEcomgExAXyA",
+  "frames": 50,
+  "seconds": 3.31,
+  "spheres": 94,
+  "skins": 0,
+  "filesDrawnWithin": 0
+ },
+ "islands-base": {
+  "url": "http://127.0.0.1:8912/?s=N4IgbiBcDMA0IEcomgExAXyA",
+  "frames": 61,
+  "seconds": 16.49,
+  "spheres": 94,
+  "skins": 42,
+  "filesDrawnWithin": 851
+ },
+ "islands-final": {
+  "url": "http://127.0.0.1:8912/?s=N4IgbiBcDMA0IEcomgExAXyA",
+  "frames": 61,
+  "seconds": 14.99,
+  "spheres": 94,
+  "skins": 42,
+  "filesDrawnWithin": 851
+ },
+ "estate-off-base": {
+  "url": "http://127.0.0.1:8912/samples/estate/?s=N4IgbiBcDMA0IEcomgEx",
+  "frames": 187,
+  "seconds": 5.08,
+  "spheres": 19,
+  "skins": 0,
+  "filesDrawnWithin": 0
+ },
+ "estate-off-final": {
+  "url": "http://127.0.0.1:8912/samples/estate/?s=N4IgbiBcDMA0IEcomgEx",
+  "frames": 187,
+  "seconds": 5.34,
+  "spheres": 19,
+  "skins": 0,
+  "filesDrawnWithin": 0
+ },
+ "estate-base": {
+  "url": "http://127.0.0.1:8912/samples/estate/?s=N4IgbiBcDMA0IEcomgEx",
+  "frames": 194,
+  "seconds": 6.09,
+  "spheres": 22,
+  "skins": 4,
+  "filesDrawnWithin": 10
+ },
+ "estate-final": {
+  "url": "http://127.0.0.1:8912/samples/estate/?s=N4IgbiBcDMA0IEcomgEx",
+  "frames": 194,
+  "seconds": 5.8,
+  "spheres": 22,
+  "skins": 4,
+  "filesDrawnWithin": 10
+ },
+ "repo-off-base": {
+  "url": "http://127.0.0.1:8912/?s=N4IgbiBcDMA0IEcomgExPAdsgDgQwGMBrPA",
+  "frames": 331,
+  "seconds": 29.07,
+  "spheres": 255,
+  "skins": 0,
+  "filesDrawnWithin": 0
+ },
+ "repo-off-final": {
+  "url": "http://127.0.0.1:8912/?s=N4IgbiBcDMA0IEcomgExPAdsgDgQwGMBrPA",
+  "frames": 331,
+  "seconds": 29.69,
+  "spheres": 255,
+  "skins": 0,
+  "filesDrawnWithin": 0
+ },
+ "repo-base": {
+  "url": "http://127.0.0.1:8912/?s=N4IgbiBcDMA0IEcomgExPAdsgDgQwGMBrPA",
+  "frames": 482,
+  "seconds": 121.28,
+  "spheres": 265,
+  "skins": 51,
+  "filesDrawnWithin": 690
+ },
+ "repo-final": {
+  "url": "http://127.0.0.1:8912/?s=N4IgbiBcDMA0IEcomgExPAdsgDgQwGMBrPA",
+  "frames": 354,
+  "seconds": 89.37,
+  "spheres": 265,
+  "skins": 51,
+  "filesDrawnWithin": 690
+ }
+}

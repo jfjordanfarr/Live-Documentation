@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/forceGraphShells.test.ts
-- Generated At: 2026-11-06T21:42:36.299Z
+- Generated At: 2026-11-07T07:49:38.252Z
 
 ## Authored
 ### Purpose
@@ -36,9 +36,12 @@ _No public symbols detected_
 - [`forceGraphShells.ShellPartition`](./forceGraphShells.ts.mdmd.md#symbol-shellpartition)
 - [`forceGraphShells.bodyGaps`](./forceGraphShells.ts.mdmd.md#symbol-bodygaps-function)
 - [`forceGraphShells.bodyShape`](./forceGraphShells.ts.mdmd.md#symbol-bodyshape)
+- [`forceGraphShells.bodySteps`](./forceGraphShells.ts.mdmd.md#symbol-bodysteps)
 - [`forceGraphShells.directoryAt`](./forceGraphShells.ts.mdmd.md#symbol-directoryat)
+- [`forceGraphShells.innerShape`](./forceGraphShells.ts.mdmd.md#symbol-innershape)
 - [`forceGraphShells.packBall`](./forceGraphShells.ts.mdmd.md#symbol-packball)
 - [`forceGraphShells.partitionHidden`](./forceGraphShells.ts.mdmd.md#symbol-partitionhidden)
+- [`forceGraphShells.pictureVeils`](./forceGraphShells.ts.mdmd.md#symbol-pictureveils)
 - [`forceGraphShells.poppedAfter`](./forceGraphShells.ts.mdmd.md#symbol-poppedafter)
 - [`forceGraphShells.shellDirectory`](./forceGraphShells.ts.mdmd.md#symbol-shelldirectory)
 - [`forceGraphShells.shellId`](./forceGraphShells.ts.mdmd.md#symbol-shellid)

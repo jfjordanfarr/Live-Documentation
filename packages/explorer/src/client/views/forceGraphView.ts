@@ -46,7 +46,7 @@ import { linkPulls, motionForce, placeNewSpheres, spatialNodeRadius, symbolCount
 import { SPATIAL_DRAG_SLOP, SpatialRenderer } from "./forceGraphRenderer";
 import { nextRevealCount, REVEAL, revealCorresponding, revealLayers } from "./forceGraphReveal";
 import { componentLandmarks, connectedNeighbours, directoryHubOf, directoryMembersWithinHops, spatialScope, startHops, startOf } from "./forceGraphScope";
-import { bodyShape, poppedAfter, shellId, shellPicture, type DirectoryShell } from "./forceGraphShells";
+import { bodySteps, innerShape, pictureVeils, poppedAfter, shellId, shellPicture, veiledUnits, type BodyBuilding, type DirectoryShell } from "./forceGraphShells";
 import { spatialSizeScale } from "./forceGraphSizing";
 import { BURST, burstProgress, wrappedSeeds, wrapperHull, type GroupShape, type WrapperHull } from "./forceGraphWrappers";
 import { layoutSettingsOf } from "../layout-presets";
@@ -80,6 +80,14 @@ const FRAME_BUDGET = 10;
  */
 const WRAPPER_BUDGET = 8;
 
+/**
+ * Target milliseconds the frame that names new bodies spends packing them, and each frame after it while the picture
+ * waits for the rest (2026-11-07, third round): a body's size is its node's in the field, so the picture that holds it
+ * waits until it is packed, the page drawing meanwhile, rather than stalling one frame for the T3 sample's 722 bodies,
+ * one to two seconds; a frame packs at least one bubble. Since the picture is built only once every body is packed,
+ * how the packing is spread over frames changes nothing of the picture or its motion, only when it begins.
+ */
+const PACKING_BUDGET = 24;
 
 // ─────────────────────────────────────────────────────────────────────────
 // Force Graph Types
@@ -272,6 +280,16 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
    */
   const bodies = new Map<string, { shape: GroupShape; hull?: WrapperHull }>();
   let bodyWork: string[] = [];
+  /**
+   * The bodies a picture waits for, each part packed, by key (2026-11-07, third round), with the frame that packs on; and
+   * the bodies of the bubbles a pop releases, taken from the popped body's packing, by the shell id each becomes.
+   */
+  let packing = new Map<string, BodyBuilding>();
+  let packingFrame = 0;
+  let releasedBodies = new Map<string, GroupShape>();
+  /** The bodies the picture's budget veils (2026-11-07, third round): their skins show one veiled bubble, not their files. */
+  let pictureVeiled = new Set<string>();
+  const veiledShown = new WeakMap<GroupShape, SpatialWrapperUnit[]>();
   let wrapped = new Map<string, string>();
   /** A burst's clock starts at the first frame after its pop, since the pop's own render can outlast the burst (found 2026-11-05). */
   const bursts = new Map<string, { started: number | null; key: string; fit: number; place?: Placed }>();
@@ -284,6 +302,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   /** What each shell's skin shows within it, with its files' colours, by its packing. */
   const shownUnits = new WeakMap<GroupShape, SpatialWrapperUnit[]>();
   const poppedChips = new Map<string, HTMLButtonElement>();
+  /** The radius each popped directory's skin had when it was popped, which its name stands beside (2026-11-07, third round). */
+  const poppedSkins = new Map<string, number>();
   let onScreenIds = new Set<string>();
   /** The room each wrapped group's seed keeps in the field, its wrapper's radius; a shell's body is its own radius. */
   let wrapperRoom = new Map<string, number>();
@@ -311,6 +331,11 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   const unitsOf = (id: string): readonly SpatialWrapperUnit[] | undefined => {
     const shape = wrapped.has(id) ? shapeOf(id) : undefined;
     if (!shape?.units) return undefined;
+    if (pictureVeiled.has(id)) {
+      let veiled = veiledShown.get(shape);
+      if (!veiled) veiledShown.set(shape, veiled = veiledUnits(shape));
+      return veiled;
+    }
     let units = shownUnits.get(shape);
     if (!units) shownUnits.set(shape, units = shape.units.map(unit => ({ ...unit, color: unit.kind === "file" ? spatialNodeStyle(unit.archetype).color : undefined })));
     return units;
@@ -484,9 +509,13 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     forceGraphInstance?.setActive(value);
     if (value) {
       if (!animation && forceGraphInstance) animation = requestAnimationFrame(animateFocus);
+      // A picture waiting for its bodies packs on while the view is shown.
+      if (!packingFrame && packing.size) packingFrame = requestAnimationFrame(packOn);
     } else {
       cancelAnimationFrame(animation);
       animation = 0;
+      cancelAnimationFrame(packingFrame);
+      packingFrame = 0;
     }
   }
 
@@ -499,7 +528,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       if (motion.revision !== motionRevision) { motionRevision = motion.revision; pictureChanged(); }
     }
     ready = true;
-    requireElement("graph-svg").setAttribute("aria-busy", String(simulationRunning));
+    requireElement("graph-svg").setAttribute("aria-busy", String(simulationRunning || packing.size > 0));
     frameDirectory();
     buildBodies();
     advanceBursts();
@@ -663,18 +692,26 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       measuring.push({ id: node.id, x, y, radius, priority, label, name });
       buttons.set(node.id, label);
     }
-    // A popped directory keeps its name, dimmed, at the centroid of what it released, a click on which wraps it again (2026-11-05).
+    // A popped directory keeps its name, dimmed, at the centroid of what it released, a click on which wraps it again
+    // (2026-11-05). Since the third round of 2026-11-07 the name stands beside the skin the directory had, as a file's
+    // beside its sphere, that skin's radius about that centroid, so that it no longer lands on the bubble it released,
+    // whose own name stood beside it at nearly one place, and the names of directories popped one inside another stand
+    // apart at their skins' sizes. What it released is the hidden files the pops show and the shells under it, never a
+    // file the picture showed anyway, which may stand anywhere in it.
     for (const [directory, chip] of poppedChips) if (!wrapping() || !popped.has(directory)) { chip.remove(); poppedChips.delete(directory); }
     if (wrapping()) for (const directory of [...popped].sort()) {
-      let sx = 0, sy = 0, sz = 0, count = 0;
-      for (const node of instance.graphData().nodes) {
-        if (!Number.isFinite(node.x) || !under(node.codeRelativePath, directory)) continue;
-        sx += node.x!; sy += node.y!; sz += node.z!; count++;
-      }
-      if (!count) continue;
-      projected.set(sx / count, sy / count, sz / count).applyMatrix4(projection);
+      const beneath = instance.graphData().nodes.filter(node => Number.isFinite(node.x) && under(node.codeRelativePath, directory));
+      const releasedHere = beneath.filter(node => released.has(node.id) || node.shellFiles !== undefined);
+      const inside = releasedHere.length ? releasedHere : beneath;
+      if (!inside.length) continue;
+      let sx = 0, sy = 0, sz = 0;
+      for (const node of inside) { sx += node.x!; sy += node.y!; sz += node.z!; }
+      point.set(sx / inside.length, sy / inside.length, sz / inside.length);
+      projected.copy(point).applyMatrix4(projection);
       const x = (projected.x + 1) * frame.width / 2, y = (1 - projected.y) * frame.height / 2;
       if (projected.z < -1 || projected.z > 1 || x < 0 || y < 0 || x > frame.width || y > frame.height) continue;
+      edge.copy(point).addScaledVector(right, poppedSkins.get(directory) ?? 0).applyMatrix4(projection);
+      const radius = Math.abs(edge.x - projected.x) * frame.width / 2;
       let chip = poppedChips.get(directory);
       if (!chip) {
         chip = document.createElement("button");
@@ -694,7 +731,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       if (chip.textContent !== name) { chip.textContent = name; labelSizes.delete(chip); }
       const size = labelSizes.get(chip);
       if (!size || size.text !== name || size.availableWidth !== frame.width) chip.hidden = false;
-      measuring.push({ id, x, y, radius: 0, priority: 4, label: chip, name });
+      measuring.push({ id, x, y, radius, clear: 0, priority: 4, label: chip, name });
       buttons.set(id, chip);
     }
     // Finish all DOM writes before measuring any new name. A large reveal otherwise forces a layout per new label.
@@ -1148,15 +1185,11 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     // alone and the root with its children (2026-11-02).
     const hopsShown = hasQuestion ? state.tuning.forceGraph.hops : startHops(state.spatialLayout, state.tuning.forceGraph.hops);
     const scope = spatialScope(data.nodes, data.links, new Set([...asked, ...members]), hopsShown, pulls);
-    scopeHops = scope.hops;
-    scopeBeyond = scope.beyond;
-    scopeGroups = scope.groups;
-    frontierHop = hopsShown;
     // The wrappers (2026-11-05): in the connections layout, by the tuning's choice, every group the picture shows only by
     // its seed, of two files or more, and, inside the groups it shows in part, the directory shells of the files it leaves
     // out, each one body of the picture with its members' references bundled into its wires; the files a pop releases
-    // join the picture one past the hops shown, as the unreached groups' seeds stand. Each body's packing and hull is built
-    // once for its files and sizes, a few a frame (`buildBodies`), while the body itself is in the picture at once; the
+    // join the picture one past the hops shown, as the unreached groups' seeds stand. Each body's packing is built once
+    // for its files and sizes before the picture that names it, and its hull a few a frame after (`buildBodies`); the
     // page's timeline measures this partition as "live-docs:shells" and each frame's hulls as "live-docs:wrapper-hulls".
     const building = performance.now();
     const nextWrapped = new Map<string, string>();
@@ -1166,22 +1199,41 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       const tuning = { ...state.tuning.forceGraph }, sizes = JSON.stringify([tuning.nodeSize, tuning.symbolScale]);
       const byId = new Map(data.nodes.map(node => [node.id, node]));
       const keyOf = (files: readonly string[]): string => `${sizes}\0${files.map(file => `${file}\u0001${byId.has(file) ? symbolCountOf(byId.get(file)!) : 0}`).join("\0")}`;
-      // A body's packing is built at once, from the leaves, since its radius is its node's size in the field; its hull
-      // waits for `buildBodies`, a few a frame.
-      const bodyOf = (id: string, key: string, files: readonly string[], place: { centre?: string; directory?: string }): GroupShape => {
-        nextWrapped.set(id, key);
-        let body = bodies.get(key);
-        if (!body) bodies.set(key, body = { shape: bodyShape(id, files.flatMap(file => byId.get(file) ?? []), tuning, place.centre, place.directory) });
-        if (!body.hull && !bodyWork.includes(key)) bodyWork.push(key);
-        return body.shape;
-      };
+      const named: Array<{ id: string; key: string; files: readonly string[]; centre?: string; directory?: string }> = [];
       for (const seed of wrappedSeeds(scope.groups)) {
         const files = scope.groupFiles.get(seed) ?? [];
-        bodyOf(seed, `group\0${seed}\0${keyOf(files)}`, files, { centre: seed });
+        named.push({ id: seed, key: `group\0${seed}\0${keyOf(files)}`, files, centre: seed });
       }
       const held = shellPicture({ nodes: byId, links: data.links, shown: new Set(scope.hops.keys()), hidden: scope.hidden,
         depth: tuning.shellDepth, popped, beside: scope.beside,
         bundles: link => pulls(link) && link.kind !== "related-doc" && link.kind !== "cited-by" });
+      for (const shell of held.shells) named.push({ id: shell.id, key: `shell\0${shell.directory}\0${keyOf(shell.files)}`, files: shell.files, directory: shell.directory });
+      // A body's packing is built from the leaves before the picture that names it, since its radius is its node's size in
+      // the field (2026-11-07, third round): what fits in the frame's budget at once, the rest a few bubbles a frame while
+      // the picture waits, as it stands, and this render returns. A bubble a pop releases is the shell of its directory
+      // packed as the popped body packed it, so a pop waits for nothing.
+      const next = new Map<string, BodyBuilding>();
+      for (const body of named) {
+        if (bodies.has(body.key) || next.has(body.key)) continue;
+        const kept = releasedBodies.get(body.id), files = kept && new Set(body.files);
+        if (kept && files && kept.members.length === files.size && kept.members.every(member => files.has(member.id))) {
+          bodies.set(body.key, { shape: kept });
+          continue;
+        }
+        next.set(body.key, packing.get(body.key) ?? bodySteps(body.id, body.files.flatMap(file => byId.get(file) ?? []), tuning, body.centre, body.directory));
+      }
+      packing = next;
+      releasedBodies = new Map();
+      if (!packBodies()) {
+        pendingEnergy = energy;
+        container.setAttribute("aria-busy", "true");
+        if (!packingFrame) packingFrame = requestAnimationFrame(packOn);
+        return;
+      }
+      for (const body of named) {
+        nextWrapped.set(body.id, body.key);
+        if (!bodies.get(body.key)!.hull && !bodyWork.includes(body.key)) bodyWork.push(body.key);
+      }
       shellWires = held.wires;
       released = new Set(held.released);
       scopeHops = new Map(scope.hops);
@@ -1189,13 +1241,24 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       scopeBeyond = held.beyond;
       shells = new Map(held.shells.map(shell => [shell.id, shell]));
       for (const shell of held.shells) {
-        const body = bodyOf(shell.id, `shell\0${shell.directory}\0${keyOf(shell.files)}`, shell.files, { directory: shell.directory });
+        const body = bodies.get(nextWrapped.get(shell.id)!)!.shape;
         scopeHops.set(shell.id, hopsShown + 1);
         shellNodes.push({ id: shell.id, name: shell.name, codePath: shell.directory, codeRelativePath: shell.directory,
           docPath: "", docRelativePath: "", archetype: "shell", shellFiles: shell.files.length, shellBody: body.radius, publicSymbols: [], dependencies: [], dependents: [], missingDependencies: [] });
       }
-    } else { shells = new Map(); released = new Set(); }
+    } else {
+      cancelPacking();
+      scopeHops = scope.hops;
+      scopeBeyond = scope.beyond;
+      shells = new Map(); released = new Set();
+    }
+    scopeGroups = scope.groups;
+    frontierHop = hopsShown;
     wrapped = nextWrapped;
+    pictureVeiled = pictureVeils([...wrapped].map(([id, key]) => {
+      const shape = bodies.get(key)!.shape;
+      return { id, files: shape.files ?? 0, drawn: shape.units?.filter(unit => unit.kind === "file").length ?? 0 };
+    }));
     const wanted = new Set(wrapped.values());
     bodyWork = bodyWork.filter(key => wanted.has(key)).sort((a, b) => (bodies.get(a)!.shape.files ?? 0) - (bodies.get(b)!.shape.files ?? 0) || (a < b ? -1 : a > b ? 1 : 0));
     if (wrapped.size) performance.measure("live-docs:shells", { start: building });
@@ -1867,6 +1930,36 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     return { nodes, links };
   }
 
+  /** Pack the bodies the picture waits for, a bubble at a time, within a part of the frame and at least one a frame; whether all are packed. */
+  function packBodies(budget = PACKING_BUDGET): boolean {
+    const started = performance.now();
+    for (const [key, steps] of packing) {
+      for (;;) {
+        const step = steps.next();
+        if (step.done) { bodies.set(key, { shape: step.value }); packing.delete(key); break; }
+        if (performance.now() - started >= budget) break;
+      }
+      if (performance.now() - started >= budget) break;
+    }
+    if (performance.now() > started) performance.measure("live-docs:body-packing", { start: started });
+    return packing.size === 0;
+  }
+
+  /** Pack on in the next frame while the picture waits, and build the picture once every body it names is packed. */
+  function packOn(): void {
+    packingFrame = 0;
+    if (!packing.size) return;
+    if (packBodies()) render();
+    else packingFrame = requestAnimationFrame(packOn);
+  }
+
+  /** Stop the packing a picture waits for, when wrapping no longer asks for it. */
+  function cancelPacking(): void {
+    packing = new Map();
+    cancelAnimationFrame(packingFrame);
+    packingFrame = 0;
+  }
+
   /** Build the hulls waiting to be drawn, the smallest first, within a part of the frame and at least one a frame. */
   function buildBodies(budget = WRAPPER_BUDGET): void {
     if (!bodyWork.length) return;
@@ -1876,8 +1969,9 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       if (body && !body.hull) body.hull = wrapperHull(body.shape, body.shape.margin ?? 0);
     } while (bodyWork.length && performance.now() - started < budget);
     performance.measure("live-docs:wrapper-hulls", { start: started });
-    // Bodies built for files or sizes no longer shown are let go once they outnumber those in use.
-    if (bodies.size > 64 + 4 * wrapped.size) {
+    // Bodies built for files or sizes no longer shown are let go once they outnumber those in use, but not while a picture
+    // waits for its own, which are not yet in use.
+    if (!packing.size && bodies.size > 64 + 4 * wrapped.size) {
       const used = new Set([...wrapped.values(), ...[...bursts.values()].map(burst => burst.key)]);
       for (const key of [...bodies.keys()]) if (!used.has(key)) bodies.delete(key);
     }
@@ -1896,8 +1990,13 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     for (const member of shape?.members ?? []) {
       bornAt.set(member.id, { x: place.x + member.x, y: place.y + member.y, z: place.z + member.z });
     }
-    // Each bubble the skin showed is born as the shell of its directory, at its place, its packing the bubble's own.
+    // Each bubble the skin showed is born as the shell of its directory, at its place, its packing the bubble's own, taken
+    // from the popped body's rather than packed again (2026-11-07, third round).
     for (const unit of shape?.units ?? []) if (unit.kind === "directory" && unit.depth === 0) bornAt.set(shellId(unit.id), { x: place.x + unit.x, y: place.y + unit.y, z: place.z + unit.z });
+    for (const part of shape?.outline ?? []) {
+      const inner = innerShape(shape!, part.id);
+      if (inner) releasedBodies.set(shellId(part.id), inner);
+    }
   }
 
   /** A wrapper bursts open, a tenth larger and fading over a quarter of a second, but not under reduced motion. */
@@ -1924,6 +2023,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
    */
   function popShell(directory: string): void {
     const id = shellId(directory), key = wrapped.get(id), node = nodeCache.get(id);
+    const skin = key === undefined ? undefined : bodies.get(key)?.shape.radius;
+    if (skin !== undefined) poppedSkins.set(directory, skin);
     if (key !== undefined && node && Number.isFinite(node.x)) {
       const place = { x: node.x!, y: node.y!, z: node.z! };
       releaseAt(key, place);

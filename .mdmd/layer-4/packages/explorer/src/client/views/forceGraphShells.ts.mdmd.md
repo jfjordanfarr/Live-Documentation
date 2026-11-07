@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphShells.ts
-- Generated At: 2026-11-06T21:42:36.354Z
+- Generated At: 2026-11-07T07:49:38.369Z
 
 ## Authored
 ### Purpose
@@ -18,6 +18,8 @@ Built on 2026-11-05 as experiment 2 of the shrink-wrap work, after the owner cor
 Until 2026-11-06 a shell's body was its files' volume without their padding, the rule that settled fastest of three measured, and the view drew the hull scaled down to it while a pop released the files at the packing's larger size; the owner saw "a vast difference between the skinned mesh and what emerges from it on click" ([Turn 3 of the November 6 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-06.1.record.md#turn-3)). Since then a shell's body is its true size (`shellRadius` in `forceGraphLayout.ts`, its files' padded spheres at the packing's density), `bodyShape` packs its units inside it, a subdirectory's ball its own shell's size, pulls the first `SHOWN_UNITS` apart (`relaxApart`) and keeps each so far inside that its hull's polyhedron stays within the body (`HULL_REACH`), and hands the view those units (`GroupShape.units`) for the skin to show within it, where a pop leaves them. `packingRadius` now sizes the wrapped islands' packings alone. The pictures and the numbers are in [the evidence of November 6](../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-06/shell-mesh/README.md).
 
 Since the second round of 2026-11-06, at the owner's wish to see "a bundle of nodes engulfed rather than just one which suddenly appears to multiply into many" ([Turn 4 of the November 6 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-06.1.record.md#turn-4)), `bodyShape` builds a body from the leaves: `bubbleOf` makes each directory a bubble of its own files and its subdirectories' bubbles, built first, a chain of single directories collapsed into what it holds and a lone subdirectory file that file; `packBall` packs a bubble's units apart by the collision's gap (`bodyGaps`), a greedy placement for a few units and a relaxation through a dense grid for many; and the body lists every file's place, the radius it keeps, and what its skin shows, every file and inner bubble, those past `DRAWN_FILES` veiled. A wrapped group is one bubble about its seed. `phantomShape`, `packingRadius`, `SHOWN_UNITS` and the relaxation inside a fixed size went with this; nesting makes large shells larger, which [the evidence](../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-06/shell-leaves/README.md) measures.
+
+The third round of 2026-11-07 fixed what the second left, without touching the nesting the owner still weighs. Packing every body a picture named in the frame that named it stalled the T3 sample's first picture one to two seconds, most of it in the 2,135 small bubbles of its largest shell: `packBall` now places up to 48 spheres testing each candidate place against the neighbours that can reach it and only when it would reach less far than the best yet, which chooses exactly the places it chose before (its tests pin three packings to the last digit), and `bodySteps` builds a body a bubble at a time, so that the view spreads a large picture's packing over frames (`bodyShape` runs the steps at once). `innerShape` takes the body a pop's bubble becomes from the popped body's packing instead of packing it again, since a bubble's packing depends only on what it holds. `pictureVeils` bounds the whole picture by `DRAWN_FILES` as one body is bounded, veiling the smallest bodies' interiors first (`veiledUnits`, the one veiled bubble such a skin shows); labels keep the true counts. The numbers are in [the evidence of November 7](../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-07/shell-faults/README.md).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -142,9 +144,17 @@ of it; one named `centre` stands at the origin throughout, as a wrapped group's 
 settles at about the density of spheres poured into a jar. The places depend only on the spheres given, not on their
 order. Returns each sphere's place and the radius from the origin that holds them all.
 
+#### `BodyBuilding` {#symbol-bodybuilding}
+- Type: type
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L455)
+- Returns: `Generator`
+
+##### `BodyBuilding` — Summary
+A body's building, a step at a time: each step one bubble packed (2026-11-07, third round).
+
 #### `DRAWN_FILES` {#symbol-drawn_files}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L481)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L501)
 
 ##### `DRAWN_FILES` — Summary
 The most files a body draws within its skins (2026-11-06, second round): over it, the bubbles whose files would pass it
@@ -153,7 +163,7 @@ pictures are taken in; the label keeps the true count.
 
 #### `bodyShape` {#symbol-bodyshape}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L492)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L512)
 - Returns: [`GroupShape`](./forceGraphWrappers.ts.mdmd.md#symbol-groupshape)
 - Parameters: `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning)
 - Constraints: [`SpatialNode`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnode)
@@ -167,9 +177,54 @@ radius, the margin the hull pads them by, and what its skin shows within it (`un
 file but a group's seed, opened breadth-first from the body itself while the files shown stay within `DRAWN_FILES`,
 a bubble that would pass it drawn veiled with nothing shown inside it. Nothing depends on the order the files are given in.
 
+#### `bodySteps` {#symbol-bodysteps}
+- Type: function
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L526)
+- Returns: [`BodyBuilding`](#symbol-bodybuilding)
+- Parameters: `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning)
+- Constraints: [`SpatialNode`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnode)
+
+##### `bodySteps` — Summary
+`bodyShape` a bubble at a time (2026-11-07, third round): the page builds a large picture's bodies over frames, a few
+bubbles a frame, rather than all in the frame that names them, a stall of one to two seconds on the T3 sample. The
+result is `bodyShape`'s, whatever the steps are spread over.
+
+#### `innerShape` {#symbol-innershape}
+- Type: function
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L548)
+- Returns: [`GroupShape`](./forceGraphWrappers.ts.mdmd.md#symbol-groupshape)
+- Parameters: `shape`: [`GroupShape`](./forceGraphWrappers.ts.mdmd.md#symbol-groupshape)
+
+##### `innerShape` — Summary
+The body a bubble inside this one would be as the shell of its directory (2026-11-07, third round): what a pop makes
+of each bubble it releases. Since a bubble's packing depends only on what it holds, this is the shape `bodyShape`
+would build for the bubble's files, taken from the packing already made instead of packing again; undefined when no
+bubble directly inside the body is that directory's.
+
+#### `veiledUnits` {#symbol-veiledunits}
+- Type: function
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L559)
+- Returns: [`BodyUnit`](./forceGraphWrappers.ts.mdmd.md#symbol-bodyunit)[]
+
+##### `veiledUnits` — Summary
+What a body's skin shows when nothing is drawn within it: one veiled bubble filling it, never an empty skin; the
+label keeps the true count. A body whose own files pass `DRAWN_FILES` is drawn so, and since 2026-11-07 any body the
+picture's budget (`pictureVeils`) veils.
+
+#### `pictureVeils` {#symbol-pictureveils}
+- Type: function
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L570)
+- Parameters: `bodies`: `ReadonlyArray`
+
+##### `pictureVeils` — Summary
+Which bodies of a picture draw nothing within their skins, so that the picture as a whole draws no more files within
+skins than `DRAWN_FILES`, as one body does (2026-11-07, third round): while the files drawn pass the limit, the
+smallest body still drawn, by the files it holds, is veiled. Each body is given by its id, the files it holds and the
+files its skin would draw; the ids veiled are returned. Labels keep the true counts.
+
 #### `poppedAfter` {#symbol-poppedafter}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L541)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L626)
 - Parameters: `popped`: `ReadonlySet`
 
 ##### `poppedAfter` — Summary

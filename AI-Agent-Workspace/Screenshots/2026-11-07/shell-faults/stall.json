@@ -1,0 +1,110 @@
+{
+ "stall-t3-base": {
+  "url": "http://127.0.0.1:8912/samples/t3-code/?s=N4IgbiBcDMA0IEcomgE",
+  "shells": {
+   "count": 1,
+   "longest": 1883.3,
+   "total": 1883.3
+  },
+  "packing": {
+   "count": 0,
+   "longest": null,
+   "total": 0
+  },
+  "hulls": {
+   "count": 28,
+   "longest": 14.9,
+   "total": 241
+  },
+  "longestTasks": [
+   3638,
+   3177,
+   3061,
+   2763,
+   2752
+  ],
+  "firstFrameAt": 5.87,
+  "frames": 28
+ },
+ "stall-t3-final": {
+  "url": "http://127.0.0.1:8912/samples/t3-code/?s=N4IgbiBcDMA0IEcomgE",
+  "shells": {
+   "count": 1,
+   "longest": 77.6,
+   "total": 77.6
+  },
+  "packing": {
+   "count": 60,
+   "longest": 93.7,
+   "total": 1860
+  },
+  "hulls": {
+   "count": 29,
+   "longest": 8.8,
+   "total": 233.5
+  },
+  "longestTasks": [
+   1931,
+   1879,
+   1859,
+   1806,
+   1799
+  ],
+  "firstFrameAt": 6.65,
+  "frames": 47
+ },
+ "stall-repo-base": {
+  "url": "http://127.0.0.1:8912/?s=N4IgbiBcDMA0IEcomgExPADlA2qAdspgIYD",
+  "shells": {
+   "count": 1,
+   "longest": 158.9,
+   "total": 158.9
+  },
+  "packing": {
+   "count": 0,
+   "longest": null,
+   "total": 0
+  },
+  "hulls": {
+   "count": 8,
+   "longest": 21.2,
+   "total": 76.4
+  },
+  "longestTasks": [
+   459,
+   422,
+   388,
+   385,
+   385
+  ],
+  "firstFrameAt": 1.14,
+  "frames": 127
+ },
+ "stall-repo-final": {
+  "url": "http://127.0.0.1:8912/?s=N4IgbiBcDMA0IEcomgExPADlA2qAdspgIYD",
+  "shells": {
+   "count": 1,
+   "longest": 2.9,
+   "total": 2.9
+  },
+  "packing": {
+   "count": 5,
+   "longest": 26.2,
+   "total": 104.4
+  },
+  "hulls": {
+   "count": 6,
+   "longest": 12.4,
+   "total": 49.2
+  },
+  "longestTasks": [
+   319,
+   315,
+   300,
+   298,
+   291
+  ],
+  "firstFrameAt": 0.94,
+  "frames": 144
+ }
+}

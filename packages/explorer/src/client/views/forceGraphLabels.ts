@@ -6,7 +6,13 @@ export interface SpatialLabel {
   id: string;
   x: number;
   y: number;
+  /** How far from its point the name stands: its sphere's radius, or the radius a popped directory's skin had. */
   radius: number;
+  /**
+   * How far from its point less important names keep clear, the radius unless said: a popped directory's name stands
+   * beside all it released, whose own names stand among it (2026-11-07, third round).
+   */
+  clear?: number;
   width: number;
   height: number;
   priority: number;
@@ -48,7 +54,7 @@ export function placeSpatialLabels(
         if (other.id === label.id || other.priority > label.priority) return false;
         const dx = Math.max(box.x, Math.min(other.x, box.x + width)) - other.x;
         const dy = Math.max(box.y, Math.min(other.y, box.y + height)) - other.y;
-        return dx * dx + dy * dy < (other.radius + 2) ** 2;
+        return dx * dx + dy * dy < ((other.clear ?? other.radius) + 2) ** 2;
       })) continue;
       placed.set(label.id, box);
       occupied.push(box);
