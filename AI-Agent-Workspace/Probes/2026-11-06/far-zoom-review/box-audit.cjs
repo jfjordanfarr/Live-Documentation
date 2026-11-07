@@ -19,7 +19,7 @@ const audit = id => {
   const shown = el => { const r = el.getBoundingClientRect(); if (r.width < 0.05 || r.height < 0.05) return null; const s = getComputedStyle(el); if (s.visibility === 'hidden' || s.display === 'none' || +s.opacity === 0) return null; return r; };
   const over = (r, box) => ({ left: box.left - r.left, right: r.right - box.right, top: box.top - r.top, bottom: r.bottom - box.bottom });
   const worst = o => Object.entries(o).sort((a, b) => b[1] - a[1])[0];
-  const parts = { title: '.local-file-name-text', nodeButtons: '.local-card-actions button', name: '.symbol-label-text', dot: '.symbol-anchor.dot', hub: '.symbol-anchor.hub', rowPin: '.local-symbol-pin', rowMore: '.local-symbol-more', badges: '.type-refs-indicator', internals: '.internals-row', tests: '.node-tests', path: '.node-path', directory: '.node-directory', counts: '.local-reading-counts', prose: '.local-reading-prose' };
+  const parts = { title: '.local-file-name-text', heldTitle: '.local-file-name-held', nodeButtons: '.local-card-actions button', name: '.symbol-label-text', dot: '.symbol-anchor.dot', hub: '.symbol-anchor.hub', rowPin: '.local-symbol-pin', rowMore: '.local-symbol-more', badges: '.type-refs-indicator', internals: '.internals-row', tests: '.node-tests', path: '.node-path', directory: '.node-directory', counts: '.local-reading-counts', prose: '.local-reading-prose' };
   const result = { scale: +scale.toFixed(4), lod: container.dataset.lod, step: Number(container.dataset.step), cards: 0, byPart: {}, rowOverflow: {}, inkOverNeighbours: [], labels: [] };
   const cards = [...document.querySelectorAll('.node-card')].map(el => ({ el, r: el.getBoundingClientRect(), id: el.dataset.id }));
   result.cards = cards.length;
@@ -42,12 +42,25 @@ const audit = id => {
       if (w > 1.5 && h > 1.5) result.inkOverNeighbours.push({ card: card.id.split('/').pop(), over: other.id.split('/').pop(), w: +w.toFixed(1), h: +h.toFixed(1) });
     }
   }
-  for (const m of document.querySelectorAll('.local-membrane')) {
-    const shape = m.querySelector('.local-membrane-shape'); const label = m.querySelector('.local-directory-label'); if (!shape || !label) continue;
-    const sr = shape.getBoundingClientRect(); const lr = shown(label); if (!lr) continue;
-    const nm = m.querySelector('.local-directory-name'); const nr = nm ? nm.getBoundingClientRect() : lr;
-    const [side, px] = worst(over(lr, sr));
-    result.labels.push({ dir: (nm ? nm.textContent : '').trim().slice(0, 40), shapeW: +sr.width.toFixed(1), shapeH: +sr.height.toFixed(1), labelW: +lr.width.toFixed(1), labelH: +lr.height.toFixed(1), nameH: +nr.height.toFixed(1), outsidePx: +px.toFixed(1), side });
+  // A directory's label stands in its band beside the band's membrane (the first version of this loop looked for the label
+  // inside the membrane's SVG and found none). What it draws is its caption, or from the middle band out since the far
+  // bands' round its generated content, measured against the membrane's outline and the cards' boxes.
+  const cardRects = cards.map(c => c.r);
+  for (const label of document.querySelectorAll('.local-directory-label')) {
+    const shape = label.parentElement && label.parentElement.querySelector(':scope > .local-membrane .local-membrane-shape'); if (!shape) continue;
+    const lr = shown(label); if (!lr) continue;
+    // The held caption: an aria-hidden child since the far bands' third review (2026-11-07), the label's own generated
+    // content on the bundles before.
+    const child = label.querySelector(':scope > .local-directory-held'), childBox = child && getComputedStyle(child).display !== 'none' ? child.getBoundingClientRect() : null;
+    const a = getComputedStyle(label, '::after'); let drawn;
+    if (childBox) drawn = { left: childBox.left, top: childBox.top, right: childBox.right, bottom: childBox.bottom };
+    else if (a.content && a.content !== 'none' && a.display !== 'none') { const s = new DOMMatrix(a.transform).a, l = lr.left + parseFloat(a.left) * scale, t = lr.top + parseFloat(a.top) * scale; drawn = { left: l, top: t, right: l + parseFloat(a.width) * s * scale, bottom: t + parseFloat(a.lineHeight) * s * scale }; }
+    else { const c = label.querySelector('.local-directory-caption').getBoundingClientRect(); drawn = { left: c.left, top: c.top, right: c.right, bottom: c.bottom }; }
+    const inverse = shape.getScreenCTM().inverse();
+    const corners = [[drawn.left + 0.5, drawn.top + 0.5], [drawn.right - 0.5, drawn.top + 0.5], [drawn.left + 0.5, drawn.bottom - 0.5], [drawn.right - 0.5, drawn.bottom - 0.5]];
+    const outsideMembrane = corners.some(([x, y]) => !shape.isPointInFill(new DOMPoint(x, y).matrixTransform(inverse)));
+    const overCard = cardRects.some(r => Math.min(drawn.right, r.right) - Math.max(drawn.left, r.left) > 0.5 && Math.min(drawn.bottom, r.bottom) - Math.max(drawn.top, r.top) > 0.5);
+    result.labels.push({ dir: label.dataset.directory, drawnW: +(drawn.right - drawn.left).toFixed(1), drawnH: +(drawn.bottom - drawn.top).toFixed(1), outsideMembrane, overCard, outsidePx: outsideMembrane || overCard ? 9 : 0 });
   }
   const subjectCard = cards.find(c => c.id === id);
   result.subject = subjectCard ? { x: subjectCard.r.left, y: subjectCard.r.top, w: subjectCard.r.width, h: subjectCard.r.height } : null;
@@ -64,6 +77,8 @@ const audit = id => {
   await page.goto(url); await page.locator(`.node-card[data-id="${subject}"]`).waitFor(); await localMapSettled(page); await localMapStill(page); await page.waitForTimeout(400);
   const steps = []; let last = null;
   for (let i = 0; i <= maxSteps; i++) {
+    // Since 2026-11-06 the button is disabled at the farthest zoom: the walk ends there.
+    if (i > 0 && await page.getByRole('button', { name: 'Zoom Out', exact: true }).isDisabled()) break;
     if (i > 0) { await page.getByRole('button', { name: 'Zoom Out', exact: true }).click(); await localMapSettled(page); await localMapStill(page); await page.waitForTimeout(150); }
     const a = await page.evaluate(audit, subject); a.press = i;
     const atEnd = last !== null && Math.abs(a.scale - last) < 1e-4; last = a.scale;

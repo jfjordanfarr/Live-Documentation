@@ -6,8 +6,10 @@ import { BAND_BORDER, hostOf, layoutScene, planBranches, type Scene, type SceneB
 import { beginSearch, endpointKey, judgeAlignment, judgeStart, nextTrialKind, pinFor, rowBounds, type CardRows, type ResolvedPin, type RowMeasure, type SearchState } from "./branch-search";
 import { edgeKey, exploreBranches, isClosedDirectory, orderExploration, type BranchGraph, type DirectoryDisclosure, type Exploration } from "./branches";
 import { countsOf, createClosedDirectory, createNodeCard } from "./card-factory";
+import { markFirstPin } from "./card-reading";
 import type { LocalViewController } from "./controller";
 import { ancestryButton } from "./directory-ancestry";
+import { layoutTopOf } from "./ladder-rooms";
 import { membranePath } from "./membrane-outline";
 import type { LocalEdge } from "./types";
 import { setSeamedText } from "../../dom";
@@ -200,7 +202,7 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
   for (const [id, symbol] of [[path?.nodeIds[0], path?.fromSymbol], [path?.nodeIds[path.nodeIds.length - 1], path?.toSymbol]]) {
     if (!id || !symbol) continue;
     stage.wrappers.get(id)?.querySelectorAll<HTMLElement>(".symbol-row").forEach(row => {
-      if (normalizeSymbolIdentifier(row.dataset.symbol) === normalizeSymbolIdentifier(symbol)) row.classList.add("symbol-pinned");
+      if (normalizeSymbolIdentifier(row.dataset.symbol) === normalizeSymbolIdentifier(symbol)) row.classList.add("symbol-pinned", "symbol-pinned-named");
     });
   }
 
@@ -339,13 +341,25 @@ function fillLabel(controller: LocalViewController, label: HTMLElement, director
   const caption = document.createElement("span");
   caption.className = "local-directory-caption";
   caption.append(name);
+  let held = directory;
   if (!open && disclosure && (disclosure.hiddenFiles || disclosure.hiddenDirectories)) {
     const hidden = document.createElement("span");
     hidden.className = "local-directory-more";
     hidden.textContent = `+${countsOf(disclosure.hiddenFiles, disclosure.hiddenDirectories)}`;
     hidden.title = "Not drawn; open the directory to see them";
     caption.append(" ", hidden);
+    held += ` ${hidden.textContent}`;
   }
+  // From the middle band out the card ladder draws the caption held at its reading size on one line, cut at its start
+  // so that the last segments and the count stay (the far-zoom review, 2026-11-06): the generated content of an
+  // aria-hidden child, from its attribute, drawn right to left so that the cut falls at the start, with a left-to-right
+  // mark at each end so that a leading dot or a trailing slash keeps its place. The caption in the layout keeps the
+  // label's height in every band.
+  const drawing = document.createElement("span");
+  drawing.className = "local-directory-held";
+  drawing.setAttribute("aria-hidden", "true");
+  drawing.dataset.held = `\u200e${held}\u200e`;
+  label.title = directory;
   const disclose = document.createElement("button");
   disclose.type = "button";
   if (open) {
@@ -376,9 +390,77 @@ function fillLabel(controller: LocalViewController, label: HTMLElement, director
   const controls = document.createElement("span");
   controls.className = "local-directory-controls";
   controls.append(disclose, more);
-  label.replaceChildren(ancestryButton(controller, directory), caption, controls);
+  label.replaceChildren(ancestryButton(controller, directory), caption, controls, drawing);
   // Labels survive renders. Replace their one body action instead of accumulating a listener on every refill.
   label.onclick = event => { event.stopPropagation(); void controller.inspectDirectory(directory); };
+}
+
+/**
+ * What the card ladder needs to know of a directory label's room, in the map's own units, read at render (2026-11-06):
+ * where its caption begins, the caption's width beside the label's buttons, which stand through the middle band, the
+ * label's width from there, which the caption takes once they leave, and the label's height below the caption's top,
+ * its line and the padding beneath it above the first card. The label's layout is the same in every band, so the
+ * readings are too.
+ */
+function roomsOfLabel(label: HTMLElement, scale: number): readonly (readonly [string, string])[] {
+  const caption = label.querySelector<HTMLElement>(".local-directory-caption");
+  if (!caption || !(scale > 0)) return [];
+  const box = label.getBoundingClientRect(), text = caption.getBoundingClientRect();
+  const x = (text.left - box.left) / scale, y = (text.top - box.top) / scale;
+  return [
+    ["--dir-x", x.toFixed(1)],
+    ["--dir-y", y.toFixed(1)],
+    ["--dir-room-mid", (text.width / scale).toFixed(1)],
+    ["--dir-room-far", Math.max(0, label.clientWidth - x).toFixed(1)],
+    ["--dir-room-h", Math.max(0, label.offsetHeight - y).toFixed(1)]
+  ];
+}
+
+/**
+ * Where an anchor's centre stands below its card's wrapper's top, in the map's own units, as the placement reads it for
+ * a pin, which it rounds: from its box as the layout put it, a held dot's shift and scale taken back, the same arithmetic
+ * as the layout search's rows (`laidOutBox`), so that a render at any zoom reads the pins a render at reading scale reads
+ * (the root's reviews of the far bands, 2026-11-06: a pin made one press out placed eight cards two or three pixels from
+ * where the same pin made at reading scale put them). A first repair read the layout's offsets up to the wrapper, which is
+ * not among an anchor's offset parents, so every pin had still been read from the dot as drawn: 112.5 at reading scale,
+ * 114.2 one press out. A hub keeps its own centring, a transform that no step changes.
+ */
+function anchorCentre(anchor: HTMLElement, wrapper: HTMLElement, scale: number): number {
+  const box = laidOutBox(anchor, scale);
+  return onLayoutGrid(((box.top + box.bottom) / 2 - wrapper.getBoundingClientRect().top) / scale);
+}
+
+/**
+ * Chromium's and WebKit's layout unit, 1/64 px. Gecko's is 1/60 px: there the snap moves a value by under 1/128 px and
+ * never across a pin's rounding, since no sixtieth lies within that of a half but the half itself, which both grids hold.
+ */
+const LAYOUT_UNIT = 64;
+
+/**
+ * A length in the map's own units read from the drawn page, put back on the layout's grid, where every box the layout
+ * gives stands. The page is always transformed, at reading scale too (the camera's own scale and translation), and a
+ * transformed page's boxes are computed in single precision, so a reading carries noise that grows with its distance
+ * down the picture: far down a tall one it reached a few thousandths of a pixel (an Internals dot laid out at 4292.5
+ * read back at 4292.4984 one press out, against 4292.5 at reading scale, the root's review of the far bands,
+ * 2026-11-06), enough to tip a half-pixel pin's rounding. The snap takes away noise under half a unit, and so is what
+ * makes readings at different scales agree.
+ */
+function onLayoutGrid(value: number): number {
+  return Math.round(value * LAYOUT_UNIT) / LAYOUT_UNIT;
+}
+
+/**
+ * Where an element stands as the layout placed it, in screen pixels, for the placement's pins and the layout search's
+ * rows, which keep the fractions: its drawn box, with the shift and the scale about its centre that the card ladder draws
+ * a held dot with taken back (2026-11-06), so that both read the same rows and pins in every band.
+ */
+function laidOutBox(element: Element, scale: number): { top: number; bottom: number } {
+  const rect = element.getBoundingClientRect();
+  if (!element.classList.contains("dot")) return { top: rect.top, bottom: rect.bottom };
+  // The card reading's arithmetic (`layoutTopOf`), in the map's own units, and back to the screen's.
+  const drawn = new DOMMatrix(getComputedStyle(element).transform), height = (element as HTMLElement).offsetHeight;
+  const top = layoutTopOf(rect.top / scale, height, drawn.f, drawn.d || 1) * scale;
+  return { top, bottom: top + height * scale };
 }
 
 /**
@@ -388,7 +470,7 @@ function fillLabel(controller: LocalViewController, label: HTMLElement, director
  * unit wide since 2026-10-30) was given a 304 px box and wrapped its own path at a seam (found 2026-10-31).
  */
 function naturalWidthOf(wrapper: HTMLElement, scale: number): number {
-  return Math.ceil(Math.round(wrapper.getBoundingClientRect().width / scale * 64) / 64);
+  return Math.ceil(onLayoutGrid(wrapper.getBoundingClientRect().width / scale));
 }
 
 /**
@@ -416,22 +498,26 @@ function pageMeasurer(controller: LocalViewController, stage: BranchStage, plan:
       const heights = new Map<string, number>();
       for (const [id, wrapper] of stage.wrappers) heights.set(id, wrapper.offsetHeight);
       const labelHeights = new Map<string, number>();
+      const labelRooms: (readonly [HTMLElement, readonly (readonly [string, string])[]])[] = [];
       for (const key of labelWidths.keys()) {
         const directory = boxes.get(key)!.directory;
-        const height = labelFor(controller, stage, directory).offsetHeight;
+        const label = labelFor(controller, stage, directory);
+        const height = label.offsetHeight;
         labelHeights.set(key, height);
         answers.labelHeights.set(directory, height);
+        labelRooms.push([label, roomsOfLabel(label, scale)]);
       }
+      for (const [label, rooms] of labelRooms) for (const [name, value] of rooms) label.style.setProperty(name, value);
       answers.heights = heights;
       const pin = (id: string, direction: "inbound" | "outbound", symbol: string | undefined): number | null => {
         const anchor = controller.getAnchor(id, "center", direction, symbol);
         const card = stage.wrappers.get(id);
         if (!anchor || !card) return null;
-        const rect = anchor.getBoundingClientRect(), cardRect = card.getBoundingClientRect();
+        const rect = anchor.getBoundingClientRect();
         if (!rect.width && !rect.height) return null;
         // A pin centred on a half pixel, as a dot in a row of odd height is, rounds up whatever the floating noise of
         // the page's transform, so the placement's input is the same wherever the card stood when it was measured.
-        return Math.round((rect.top - cardRect.top + rect.height / 2) / scale + 1e-3);
+        return Math.round(anchorCentre(anchor, card, scale) + 1e-3);
       };
       return { heights, pin, labelHeights };
     }
@@ -907,11 +993,13 @@ function rowsOf(controller: LocalViewController, stage: BranchStage, scale: numb
     let internals: string | null = null;
     let header = 0;
     for (const [row, key] of rowKeys(card)) {
+      // A row is read through its children as laid out, a held dot's shift and scale taken back, and a slot card's slot
+      // only hidden below reading scale, never taken out, so that the search reads the same rows in every band (2026-11-06).
       const bounds = rowBounds([...row.children].flatMap(child => {
         const rect = child.getBoundingClientRect();
         if (!rect.width && !rect.height) return [];
-        const style = getComputedStyle(child);
-        return [{ top: (rect.top - cardTop) / scale, bottom: (rect.bottom - cardTop) / scale,
+        const style = getComputedStyle(child), box = laidOutBox(child, scale);
+        return [{ top: onLayoutGrid((box.top - cardTop) / scale), bottom: onLayoutGrid((box.bottom - cardTop) / scale),
           marginTop: Number.parseFloat(style.marginTop) || 0, marginBottom: Number.parseFloat(style.marginBottom) || 0 }];
       }));
       if (!bounds) continue;
@@ -928,7 +1016,8 @@ function rowsOf(controller: LocalViewController, stage: BranchStage, scale: numb
       const row = anchor.closest<HTMLElement>(".symbol-row");
       const at = row ? rowPositions.get(row) : undefined;
       if (row && !at) throw new Error(`The visible endpoint ${JSON.stringify(symbol ?? "*")} of ${JSON.stringify(id)} has no measured row.`);
-      endpoints.set(key, { row: at?.key ?? null, offset: (rect.top + rect.height / 2 - cardTop) / scale - (at?.top ?? 0) });
+      const box = laidOutBox(anchor, scale);
+      endpoints.set(key, { row: at?.key ?? null, offset: onLayoutGrid(((box.top + box.bottom) / 2 - cardTop) / scale) - (at?.top ?? 0) });
     }
     measured.set(id, { header, gap, rows, internals, endpoints });
   }
@@ -986,12 +1075,13 @@ function rowMotions(stage: BranchStage, before: Map<string, Map<string, number>>
  * Each card's rows in the order a start chose; rows the order does not name
  * keep their place after them, Internals last. Two symbols may share a
  * normalized name (LinkTarget and linkTarget), so a name claims one row per
- * mention. Run once per start, since a start's pins stand where its rows do.
+ * mention. Run once per start, since a start's pins stand where its rows do; it tells the card ladder again how many
+ * rows stand above the first pinned one, which bounds the file's name at the overview band.
  */
 function orderRows(cards: readonly HTMLElement[], rows: ReadonlyMap<string, readonly string[]>): void {
   for (const card of cards) {
     const rowOrder = rows.get(card.dataset.id!);
-    if (!rowOrder) continue;
+    if (!rowOrder) { markFirstPin(card); continue; }
     const byName = new Map<string, HTMLElement[]>();
     card.querySelectorAll<HTMLElement>(".symbol-row").forEach(row => {
       const name = normalizeSymbolIdentifier(row.dataset.symbol) ?? "__internals__";
@@ -1004,6 +1094,7 @@ function orderRows(cards: readonly HTMLElement[], rows: ReadonlyMap<string, read
     for (const list of byName.values()) for (const row of list) row.parentElement?.append(row);
     const internals = card.querySelector<HTMLElement>(".symbol-row.internals-row");
     if (internals) internals.parentElement?.append(internals);
+    markFirstPin(card);
   }
 }
 

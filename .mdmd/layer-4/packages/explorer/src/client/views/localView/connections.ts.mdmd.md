@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/connections.ts
-- Generated At: 2026-11-02T02:09:51.947Z
+- Generated At: 2026-11-06T20:08:40.437Z
 
 ## Authored
 ### Purpose
@@ -23,12 +23,16 @@ SVG wire drawing for the Local Map: Bézier splines between the symbol pins of t
 - Since 2026-10-16 the overlay holds one SVG kept across drawings, with every wire's, lace's and bundle run's element by its key on the runtime's `WireLayer` and each wire's gradient with it: a drawing writes each element's geometry in place (a path's `d`, a polygon's `points`, the gradient's ends, the presence), makes an element only when its key is new, placed after the others or beneath them all for a bundle's run, and removes it with its gradient when its wire is gone. The fresh SVG and the reconciliation by key of 2026-10-07 went: a frame of a move spent 41 ms at 418 wires building and reconciling them against under 1.5 ms of the browser's own layout, and 11.5 after ([the probe](../../../../../../../../AI-Agent-Workspace/Probes/2026-10-16/explorer-performance/README.md), [the decision](../../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#the-local-maps-work-stays-with-the-view-and-the-wires-keep-their-elements-recorded-2026-10-16)). The constraints of the owner's [connector-motion review](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-7--owner-review-of-alignment-and-motion) hold by construction: an element's hover class survives because the element does, the layer's opacity is never toggled, and a new wire inherits the entering presence of its endpoint cards. `clearConnections` empties the overlay and forgets the layer.
 - A column's horizontal extent is read from the wrappers that say their column (`data-column`), a card's and a closed directory's box alike, rather than from the cards' pins (2026-10-08): a box has no pin, and a column of boxes alone is passed by lanes like any other.
 
+Since the far bands' second milestone (2026-11-06, [Turn 3](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-06.1.record.md#turn-3)) the overview band draws its own wires (`drawOverviewWires`): one gathered wire for each pair of files, each way, from the offering card's node-level hub to the using card's, threaded through the lanes one of its references was given, as wide as `wire-gathering.ts` says, carrying `data-references` and an accessible name; a pair that reads against the columns as the laces of a return at its hubs; and a pinned symbol's own wires after them, so above them, from its row's dots to the far files' hubs or to a dot where that symbol is pinned too. It gathers only the references the closer bands draw, whose ends are laid out. Every drawing marks the hubs a wire of the band shown ends on (`hub-ends-wire`), the only hubs the stylesheet draws. The threading of a wire through its lanes became one helper, used by both bands.
+
+In the root's fourth review of the round (2026-11-07) a second reader found that a hub was marked before the check that its wire's other end had a box, so a hub could be drawn with no wire; both bands now measure a wire's two ends through one helper (`WireEnds`), which marks a hub only once both ends are measured and the wire is drawn. The overview band also counts its backward wires again, which the 3D button's word about wires running backward in 2D reads: a gathered wire whose route reads backward counts the references it carries, a pinned symbol's own wire being among them.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ConnectionsContext` {#symbol-connectionscontext}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L13)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L15)
 
 ##### `ConnectionsContext` — Summary
 Ambient context required by {@link drawConnections} to measure DOM
@@ -36,7 +40,7 @@ anchors, read explorer state, and emit SVG paths.
 
 #### `drawConnections` {#symbol-drawconnections}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L71)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L73)
 - Parameters: `context`: [`ConnectionsContext`](#symbol-connectionscontext)
 
 ##### `drawConnections` — Summary
@@ -50,7 +54,7 @@ cost more than the measuring and the routing together).
 
 #### `clearConnections` {#symbol-clearconnections}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L103)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L105)
 - Parameters: `runtime`: [`LocalViewRuntime`](./runtime.ts.mdmd.md#symbol-localviewruntime)
 
 ##### `clearConnections` — Summary
@@ -74,11 +78,16 @@ Takes every wire off the overlay and forgets the layer; the next drawing makes a
 - [`branch-routing.threadedRoute`](./branch-routing.ts.mdmd.md#symbol-threadedroute)
 - [`branches.BranchGraph`](./branches.ts.mdmd.md#symbol-branchgraph)
 - [`branches.edgeKey`](./branches.ts.mdmd.md#symbol-edgekey)
+- [`card-factory.NODE_HUB`](./card-factory.ts.mdmd.md#symbol-node_hub)
 - [`runtime.LocalViewRuntime`](./runtime.ts.mdmd.md#symbol-localviewruntime) (type-only)
 - [`runtime.WireLayer`](./runtime.ts.mdmd.md#symbol-wirelayer) (type-only)
 - [`types.ColumnRole`](./types.ts.mdmd.md#symbol-columnrole) (type-only)
 - [`types.LayoutExtents`](./types.ts.mdmd.md#symbol-layoutextents) (type-only)
 - [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)
+- [`wire-gathering.gatherWires`](./wire-gathering.ts.mdmd.md#symbol-gatherwires)
+- [`wire-gathering.gatheredDescription`](./wire-gathering.ts.mdmd.md#symbol-gathereddescription)
+- [`wire-gathering.gatheredWidth`](./wire-gathering.ts.mdmd.md#symbol-gatheredwidth)
+- [`wire-gathering.ownWires`](./wire-gathering.ts.mdmd.md#symbol-ownwires)
 - [`symbolAnchors.normalizeSymbolIdentifier`](../symbolAnchors.ts.mdmd.md#symbol-normalizesymbolidentifier)
 <!-- LIVE-DOC:END Dependencies -->
 

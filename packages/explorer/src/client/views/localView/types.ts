@@ -39,6 +39,8 @@ export interface LocalViewOptions {
   onShowDirectoryActions: (directory: string, anchor: { x: number; y: number }) => void | Promise<void>;
   /** Ordinary visible connections that travel against the layout's left-to-right grammar; excludes self loops and feedback stubs. */
   onBackwardConnections?: (count: number) => void;
+  /** Whether the camera stands at its farthest or its closest zoom, said when either changes, for the Zoom buttons. */
+  onZoomLimits?: (limits: { farthest: boolean; closest: boolean }) => void;
   testCoverage: TestCoverageMap;
   /** The box of whatever covers part of the map's frame, the open reader, so that a fit keeps the picture out from under it; null when nothing does. */
   obstruction?: () => DOMRect | null;

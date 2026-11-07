@@ -4,6 +4,8 @@ import type { LocalViewRuntime, WireLayer } from "./runtime";
 import type { ColumnRole, LayoutExtents, LocalEdge } from "./types";
 import type { BezierTuning, ExplorerState, LocalMapTuning } from "../../types";
 import { computeSelfLoopStubs, DEFAULT_SELF_LOOP_PARAMS, type LaceEdges, type SelfLoopParams } from "../connection-geometry";
+import { NODE_HUB } from "./card-factory";
+import { gatheredDescription, gatheredWidth, gatherWires, ownWires } from "./wire-gathering";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
 
 /**
@@ -359,12 +361,48 @@ function drawBranchConnections(context: ConnectionsContext, layer: WireLayer, se
   let drawn = 0, backward = 0;
   const laceRanks = new Map<string, number>();
   const shape = laceShape(state.tuning.localMap);
+  // The node-level hubs a wire of the band shown ends on, the only hubs drawn (2026-11-06): a hub counts only once both
+  // of its wire's ends have a box, the wire then being drawn.
+  const hubsEnding = new Set<HTMLElement>();
+  const wireEnds: WireEnds = (providerId, providerSymbol, consumerId, consumerSymbol) => {
+    const providerAnchor = context.getAnchor(providerId, "center", "outbound", providerSymbol);
+    const consumerAnchor = context.getAnchor(consumerId, "center", "inbound", consumerSymbol);
+    const provider = measure(providerAnchor), consumer = measure(consumerAnchor);
+    if (!provider || !consumer) return null;
+    for (const anchor of [providerAnchor!, consumerAnchor!]) if (anchor.classList.contains("hub")) hubsEnding.add(anchor);
+    return { provider, consumer };
+  };
+  // A wire that skips columns threads the lanes the order reserved for one of its member references, by that
+  // reference's key; null when a passage is missing, and the wire is drawn as the native curve.
+  const threadFor = (key: string, a: number, b: number, from: Point, to: Point): { d: string; pieces: RoutePiece[]; slots: string[] } | null => {
+    if (b <= a + 1) return null;
+    const passages: Passage[] = [];
+    const slots: string[] = [];
+    for (let column = a + 1; column < b; column++) {
+      const passage = branches.order.passages.get(`${key}\0${column}`);
+      const lane = passage ? lanes.get(passage.lane) : undefined;
+      const slot = passage && lane ? lane.slots[passage.index] : undefined;
+      if (!passage || !lane || slot === undefined) return null;
+      passages.push({
+        left: columnBounds[column].left - bounds.left - LANE_MARGIN,
+        right: columnBounds[column].right - bounds.left + LANE_MARGIN,
+        y: lane.top - bounds.top + slot
+      });
+      slots.push(`${passage.lane}\0${passage.index}`);
+    }
+    return { ...threadedRoute(from, to, passages, state.tuning.bezier), slots };
+  };
+  if (runtime.container.dataset.lod === "overview") {
+    const overview = drawOverviewWires(context, layer, seen, measure, bounds, columnOf, wireEnds, threadFor, laceRanks, shape);
+    markHubs(runtime.container, hubsEnding);
+    return overview;
+  }
   // One shared run per lane slot: the curve into the lane and the run along it, from the first wire drawn through it.
   const runs = new Map<string, { curve: RoutePiece; lane: RoutePiece; gradient: string; members: number; presence: number }>();
   branches.subgraph.links.forEach(edge => {
-    const provider = measure(context.getAnchor(edge.targetId, "center", "outbound", edge.targetSymbol));
-    const consumer = measure(context.getAnchor(edge.sourceId, "center", "inbound", edge.sourceSymbol));
-    if (!provider || !consumer) return;
+    const measured = wireEnds(edge.targetId, edge.targetSymbol, edge.sourceId, edge.sourceSymbol);
+    if (!measured) return;
+    const { provider, consumer } = measured;
     const presence = Math.min(provider.presence, consumer.presence);
     drawn++;
     const p = offsetToEdge(provider, "outbound"), q = offsetToEdge(consumer, "inbound");
@@ -381,30 +419,9 @@ function drawBranchConnections(context: ConnectionsContext, layer: WireLayer, se
       return;
     }
     const a = columnOf.get(edge.targetId)!, b = columnOf.get(edge.sourceId)!;
-    let route: string | undefined;
-    const threadedSlots: string[] = [];
-    let threaded: { d: string; pieces: RoutePiece[] } | null = null;
-    if (b > a + 1) {
-      const passages: Passage[] = [];
-      const slots: string[] = [];
-      for (let column = a + 1; column < b; column++) {
-        const passage = branches.order.passages.get(`${key}\0${column}`);
-        const lane = passage ? lanes.get(passage.lane) : undefined;
-        const slot = passage && lane ? lane.slots[passage.index] : undefined;
-        if (!passage || !lane || slot === undefined) break;
-        passages.push({
-          left: columnBounds[column].left - bounds.left - LANE_MARGIN,
-          right: columnBounds[column].right - bounds.left + LANE_MARGIN,
-          y: lane.top - bounds.top + slot
-        });
-        slots.push(`${passage.lane}\0${passage.index}`);
-      }
-      if (passages.length === b - a - 1) {
-        threaded = threadedRoute(from, to, passages, state.tuning.bezier);
-        route = threaded.d;
-        threadedSlots.push(...slots);
-      }
-    }
+    const threaded = threadFor(key, a, b, from, to);
+    const route = threaded?.d;
+    const threadedSlots = threaded?.slots ?? [];
     if (presence >= 1 && routeBacktracks(threaded?.pieces ?? [{ kind: "curve", from, to }], state.tuning.bezier)) backward++;
     const gradientId = drawWire(layer, seen, from, to, "outbound", edge, context.svgNamespace, state.tuning.bezier, route, undefined, presence);
     // The first wire drawn through a slot lends its run and its gradient to the bundle's shared run there.
@@ -420,7 +437,113 @@ function drawBranchConnections(context: ConnectionsContext, layer: WireLayer, se
     if (run.members < 2) continue;
     drawBundleRun(layer, seen, run.curve, run.lane, run.gradient, run.members, context.svgNamespace, state.tuning.bezier, key, run.presence);
   }
+  markHubs(runtime.container, hubsEnding);
   return { drawn, backward };
+}
+
+/**
+ * The overview band's wires (2026-11-06, the far bands' second milestone): one gathered wire for each pair of files, each
+ * way, from the offering card's node-level hub at its right edge to the using card's at its left, as wide as its count
+ * says, carrying its two files and its count; and above them a pinned symbol's own wires, from its row's dots to the hubs
+ * of the files at their far ends, or to a dot there when that symbol is pinned too. A pair whose references read against
+ * the columns is drawn as the laces of a return at its hubs, its route shown on hover, as each of its references is at
+ * the closer bands. The bundles' shared runs are not drawn: a gathered wire already says how many it carries. A gathered
+ * wire whose route reads backward counts the references it carries, so that the 3D button's word about backward wires in
+ * 2D stays at this band; a pinned symbol's own wire is counted among its gathered wire's.
+ */
+function drawOverviewWires(
+  context: ConnectionsContext,
+  layer: WireLayer,
+  seen: Set<string>,
+  measure: (anchor: HTMLElement | null) => AnchorMeasurement | null,
+  bounds: { left: number; top: number },
+  columnOf: ReadonlyMap<string, number>,
+  wireEnds: WireEnds,
+  threadFor: (key: string, a: number, b: number, from: Point, to: Point) => { d: string; pieces: RoutePiece[] } | null,
+  laceRanks: Map<string, number>,
+  shape: SelfLoopParams
+): { drawn: number; backward: number } {
+  const { branches, state, svgNamespace } = context;
+  if (!branches) return { drawn: 0, backward: 0 };
+  // The references the closer bands draw, whose ends are laid out (a row the branch picture hides has none): a pair is
+  // joined here exactly when a wire of the closer bands joins it, and its count is theirs.
+  const links = branches.subgraph.links.filter(edge => measure(context.getAnchor(edge.targetId, "center", "outbound", edge.targetSymbol))
+    && measure(context.getAnchor(edge.sourceId, "center", "inbound", edge.sourceSymbol)));
+  const isBack = (edge: LocalEdge): boolean => branches.back.has(edgeKey(edge));
+  // A row stays drawn at the overview band only when its symbol is pinned by name (a whole-file pin is the file's):
+  // a wire's end is its dot only there.
+  const pinnedDot = (nodeId: string, direction: "inbound" | "outbound", symbol: string | undefined): boolean =>
+    !!context.getAnchor(nodeId, "center", direction, symbol)?.closest(".symbol-row.symbol-pinned-named");
+  const nameOf = (nodeId: string): string => branches.subgraph.nodes.find(node => node.id === nodeId)?.name ?? nodeId;
+  const ends = (from: AnchorMeasurement, to: AnchorMeasurement): { from: Point; to: Point } => {
+    const p = offsetToEdge(from, "outbound"), q = offsetToEdge(to, "inbound");
+    return { from: { x: p.x - bounds.left, y: p.y - bounds.top }, to: { x: q.x - bounds.left, y: q.y - bounds.top } };
+  };
+  let drawn = 0, backward = 0;
+  for (const wire of gatherWires(links, isBack)) {
+    const measured = wireEnds(wire.providerId, NODE_HUB, wire.consumerId, NODE_HUB);
+    if (!measured) continue;
+    const { provider, consumer } = measured;
+    drawn++;
+    const presence = Math.min(provider.presence, consumer.presence);
+    const { from, to } = ends(provider, consumer);
+    // The gathered wire's identity: its pair, with the hubs for symbols, so that no reference's key can be the same.
+    const gathered: LocalEdge = { sourceId: wire.consumerId, targetId: wire.providerId, sourceSymbol: NODE_HUB, targetSymbol: NODE_HUB, kind: wire.members[0].kind, direction: "outbound" };
+    let path: SVGPathElement | undefined;
+    if (wire.back) {
+      drawLaces(layer, seen, from, to, cardEdgesOf(provider, consumer, bounds), gathered, svgNamespace, shape, laceRanks, presence);
+      for (const role of ["provider", "consumer"]) layer.elements.get(JSON.stringify([edgeKey(gathered), role]))?.classList.add("gathered");
+      drawWire(layer, seen, from, to, "outbound", gathered, svgNamespace, state.tuning.bezier, undefined, "back-route", presence);
+      path = layer.elements.get(JSON.stringify([edgeKey(gathered), "back-route"])) as SVGPathElement | undefined;
+    } else {
+      const a = columnOf.get(wire.providerId)!, b = columnOf.get(wire.consumerId)!;
+      // Through the lanes one of its references was given, where all of that reference's passages stand.
+      const threaded = wire.members.map(member => threadFor(edgeKey(member), a, b, from, to)).find(Boolean) ?? null;
+      if (presence >= 1 && routeBacktracks(threaded?.pieces ?? [{ kind: "curve", from, to }], state.tuning.bezier)) backward += wire.members.length;
+      drawWire(layer, seen, from, to, "outbound", gathered, svgNamespace, state.tuning.bezier, threaded?.d, "gathered", presence);
+      path = layer.elements.get(JSON.stringify([edgeKey(gathered), "gathered"])) as SVGPathElement | undefined;
+    }
+    if (path) {
+      path.classList.add("gathered");
+      path.style.strokeWidth = `${gatheredWidth(wire.members.length).toFixed(2)}px`;
+      path.dataset.references = String(wire.members.length);
+      path.setAttribute("role", "img");
+      path.setAttribute("aria-label", gatheredDescription(wire, nameOf));
+    }
+  }
+  // A pinned symbol's own wires, drawn after the gathered ones and so above them.
+  for (const edge of ownWires(links, (nodeId, symbol, direction) => pinnedDot(nodeId, direction, symbol))) {
+    const offers = pinnedDot(edge.targetId, "outbound", edge.targetSymbol), uses = pinnedDot(edge.sourceId, "inbound", edge.sourceSymbol);
+    const measured = wireEnds(edge.targetId, offers ? edge.targetSymbol : NODE_HUB, edge.sourceId, uses ? edge.sourceSymbol : NODE_HUB);
+    if (!measured) continue;
+    const { provider, consumer } = measured;
+    drawn++;
+    const presence = Math.min(provider.presence, consumer.presence);
+    const { from, to } = ends(provider, consumer);
+    if (edge.sourceId === edge.targetId || isBack(edge)) {
+      drawLaces(layer, seen, from, to, cardEdgesOf(provider, consumer, bounds), edge, svgNamespace, shape, laceRanks, presence);
+      if (edge.sourceId !== edge.targetId) drawWire(layer, seen, from, to, "outbound", edge, svgNamespace, state.tuning.bezier, undefined, "back-route", presence);
+      continue;
+    }
+    const a = columnOf.get(edge.targetId)!, b = columnOf.get(edge.sourceId)!;
+    drawWire(layer, seen, from, to, "outbound", edge, svgNamespace, state.tuning.bezier, threadFor(edgeKey(edge), a, b, from, to)?.d, "own", presence);
+  }
+  return { drawn, backward };
+}
+
+/**
+ * A wire's two ends measured, the provider's outbound anchor and the consumer's inbound one, by node and symbol; null when
+ * either has no box, and the wire is not drawn. A hub among the ends is marked as ending a drawn wire.
+ */
+type WireEnds = (providerId: string, providerSymbol: string | undefined, consumerId: string, consumerSymbol: string | undefined)
+  => { provider: AnchorMeasurement; consumer: AnchorMeasurement } | null;
+
+/**
+ * Draws a node-level hub only where a wire of the band shown ends on it (2026-11-06): a hub with no wire said nothing,
+ * and at the overview band the hubs are where the gathered wires end. The class changes only when its state does.
+ */
+function markHubs(container: HTMLElement, ending: ReadonlySet<HTMLElement>): void {
+  for (const hub of container.querySelectorAll<HTMLElement>(".symbol-anchor.hub")) hub.classList.toggle("hub-ends-wire", ending.has(hub));
 }
 
 /**

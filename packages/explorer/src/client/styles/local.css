@@ -363,6 +363,51 @@ span.local-disclosure { cursor: default; }
 .local-directory-actions { display: inline-flex; vertical-align: middle; align-items: center; justify-content: center; margin-top: -2px; padding: 2px; color: var(--text-panel-muted); background: transparent; border: 1px solid transparent; border-radius: 4px; cursor: pointer; }
 .local-directory-actions:hover { color: var(--accent); border-color: var(--accent); }
 .local-directory-name:focus-visible, .local-directory-close:focus-visible, .local-directory-open:focus-visible, .local-directory-actions:focus-visible, .local-directory-closed__name:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+/* A card's node-level hub is drawn only where a wire of the band shown ends on it (2026-11-06): a file-level reference
+   at the closer bands, a gathered wire at the overview band; the wires' drawing marks them. */
+#map-container .symbol-anchor.hub:not(.hub-ends-wire) { visibility: hidden; }
+/* The legend's width row says what a gathered wire's width means, while the overview band draws them, and not otherwise. */
+#local-legend .legend-row--gathered { display: none; }
+body:has(#map-container[data-lod="overview"]) #local-legend .legend-row--gathered { display: flex; }
+#local-legend .legend-row--gathered .spatial-legend-sample { --legend-color: #38bdf8; }
+/* The card ladder's directory label (the far-zoom review, 2026-11-06): from the middle band out the caption holds its
+   reading size on screen, on one line, while the label's own box has the room, its line and the padding beneath it above
+   the first card and its width across the membrane; where the height runs out it follows the map, and where the width
+   does it is cut at its start, so that its last segments and the count of what is not drawn stay. The caption in the
+   layout keeps the label's height in every band and is not drawn, though its name still takes the keyboard; the drawing
+   is the generated content of an aria-hidden child, whose words are the caption's (the label's title carries the full
+   path on hover): generated content, so that the page's find meets the caption once, and in a hidden child rather than
+   on the label with an alternative text of "" (content: … / ""), which browsers before Firefox 128 and Safari 17.4
+   reject as a whole declaration, drawing nothing. The label's other controls leave from the far band out, as a card's
+   secondary buttons do, and the caption takes their room. The controller's held scale for names, --text-scale, is the
+   label's too. */
+.local-directory-label { --dir-line: 14; }
+:is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-directory-label {
+    --dir-room: var(--dir-room-mid, 0);
+    --dir-scale: max(1, min(var(--text-scale, 1), var(--dir-room-h, 0) / var(--dir-line)));
+}
+:is([data-lod="far"], [data-lod="overview"]) .local-directory-label { --dir-room: var(--dir-room-far, 0); }
+:is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-directory-caption,
+:is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-directory-caption * { color: transparent; }
+:is([data-lod="far"], [data-lod="overview"]) .local-directory-label > :is(.local-directory-ancestors, .local-directory-controls) { visibility: hidden; }
+.local-directory-held { display: none; }
+:is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-directory-held::after { content: attr(data-held); }
+:is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-directory-held {
+    display: block;
+    position: absolute;
+    left: calc(var(--dir-x, 0) * 1px);
+    top: calc(var(--dir-y, 0) * 1px);
+    width: calc(var(--dir-room) / var(--dir-scale) * 1px);
+    line-height: calc(var(--dir-line) * 1px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    direction: rtl;
+    text-align: left;
+    transform: scale(var(--dir-scale));
+    transform-origin: left top;
+    pointer-events: none;
+}
 /* A closed directory keeps its box and count while the separate Open control expands it. */
 .local-directory-closed { box-sizing: border-box; width: 100%; min-width: 160px; position: relative; padding: 10px 12px; border: 1px solid var(--border); border-radius: 12px; background: #ffffff05; color: var(--text-panel-muted); cursor: pointer; box-shadow: 4px 4px 0 -1px var(--bg-deep, #15191f), 4px 4px 0 0 var(--border); }
 .local-directory-closed:hover { border-color: var(--accent); color: var(--text); }

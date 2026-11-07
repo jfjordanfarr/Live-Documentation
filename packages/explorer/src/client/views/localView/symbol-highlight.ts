@@ -223,7 +223,10 @@ export function applySymbolHighlight(
   highlight.relatedEdges.forEach(edge => {
     const sourceSymbol = normalizeSymbolIdentifier(edge.sourceSymbol) ?? "";
     const targetSymbol = normalizeSymbolIdentifier(edge.targetSymbol) ?? "";
-    const selector = `.connection-path[data-source-id="${CSS.escape(edge.sourceId)}"][data-target-id="${CSS.escape(edge.targetId)}"][data-source-symbol="${CSS.escape(sourceSymbol)}"][data-target-symbol="${CSS.escape(targetSymbol)}"]`;
+    const pair = `[data-source-id="${CSS.escape(edge.sourceId)}"][data-target-id="${CSS.escape(edge.targetId)}"]`;
+    // The wire itself, and at the overview band the gathered wire that holds it (2026-11-06): a gathered wire is
+    // emphasized when any of its references would be.
+    const selector = `.connection-path${pair}[data-source-symbol="${CSS.escape(sourceSymbol)}"][data-target-symbol="${CSS.escape(targetSymbol)}"], .connection-path.gathered${pair}`;
     overlay.querySelectorAll<SVGPathElement>(selector).forEach(path => {
       path.classList.add("connection-highlighted");
     });

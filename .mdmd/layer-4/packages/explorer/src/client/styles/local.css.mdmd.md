@@ -33,6 +33,10 @@ Since [Turn 12](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026
 
 Since 2026-11-06 ([Turns 17 to 19](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-17--november-6)) `#map-viewport` is a compositor layer only while the camera moves (`.camera-moving`, set by the controller): kept always, as Turn 12 made it, the layer was rastered once and stretched by the GPU, the blur close up and the aliasing far out the owner showed.
 
+Since the far bands' round (2026-11-06, [Turn 3](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-06.1.record.md#turn-3)) a directory label holds its caption from the middle band out: the caption in the layout keeps the label's height and turns transparent, its name still taking the keyboard, and the generated content of an aria-hidden child, `local-directory-held`, draws the caption on one line at the controller's held scale (first the label's own generated content, with an alternative text of "", which browsers before Firefox 128 and Safari 17.4 reject as a whole declaration; moved to the child in the root's fourth review), bounded by the label's height below the caption and its width beside the label's buttons (across the whole label once they leave at the far band), right to left so that a cut falls at its start and keeps the last segments and the count of what is not drawn.
+
+Since the far bands' second milestone (2026-11-06) a node-level hub is drawn only where a wire of the band shown ends on it, which the wires' drawing marks (`hub-ends-wire`), and the legend's row "Width: references" is shown only while the map shows the overview band, by the map's `data-lod`.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

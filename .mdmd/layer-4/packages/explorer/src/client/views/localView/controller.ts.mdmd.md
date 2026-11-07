@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/controller.ts
-- Generated At: 2026-11-06T10:12:24.029Z
+- Generated At: 2026-11-06T20:08:40.679Z
 
 ## Authored
 ### Purpose
@@ -48,12 +48,14 @@ The card ladder as breakpoints (2026-11-06, the owner's [Turns 17 to 19](../../.
 
 Since the same pass `watchCamera` says `data-camera="moving"` on the container while a drag, a pinch, inertia or an animation moves the camera, and gives the viewport the class `camera-moving` meanwhile, which alone makes it a compositor layer: the always-promoted layer of Turn 12 was rastered once and stretched, the blur close up and the aliasing far out the owner showed in Turn 17. An instant jump, such as a Zoom button's, is no motion. When a step changes, the wires are drawn again once, the frame after, since the anchor dots they end at are drawn at a new size from their edge beside the name, and the wires' measurer reads the dots as drawn (an independent oracle in `local-map-motion.spec.ts` holds every drawn wire end to its dot as drawn; an earlier attempt in this pass that measured the dots' laid-out boxes instead broke it). `animateCamera` starts every eased move of the controller's own and says so at once, so that a test waiting on the camera (`localMapSettled`) cannot read the picture in the frame before the move's first step; while the camera moves it is looked at once a frame, since a release and inertia's last frame end the motion without another camera change.
 
+Since the far bands' rounds (2026-11-06) the controller draws the wires again on any change the ladder writes, a band's included, since a dot's place follows its name's held size and the overview band draws other wires; derives the farthest zoom (`zoom-limits.ts`) whenever it measures the picture, from the frame as last read and the calibrated reading scale, and brings a camera left beyond it to it at once, unless a gesture or a move holds the camera; and tells the application through `onZoomLimits` when the camera stands at its farthest or closest zoom, so that the Zoom buttons are disabled there.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LocalViewController` {#symbol-localviewcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L74)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L75)
 - Implements: [`LocalViewApi`](./types.ts.mdmd.md#symbol-localviewapi)
 
 ##### `LocalViewController` — Summary
@@ -125,6 +127,9 @@ Coordinates the native Local Map, independent exploration pins and explicit FROM
 - [`types.LocalViewOptions`](./types.ts.mdmd.md#symbol-localviewoptions) (type-only)
 - [`types.MapTransform`](./types.ts.mdmd.md#symbol-maptransform) (type-only)
 - [`types.ReadingControl`](./types.ts.mdmd.md#symbol-readingcontrol) (type-only)
+- [`zoom-limits.CLOSEST_SCALE`](./zoom-limits.ts.mdmd.md#symbol-closest_scale)
+- [`zoom-limits.atScale`](./zoom-limits.ts.mdmd.md#symbol-atscale)
+- [`zoom-limits.farthestScale`](./zoom-limits.ts.mdmd.md#symbol-farthestscale)
 - [`pin-state.EMPTY_PIN_SET`](../pin-state.ts.mdmd.md#symbol-empty_pin_set)
 - [`pin-state.PinSet`](../pin-state.ts.mdmd.md#symbol-pinset)
 - [`pin-state.isSymbolPinned`](../pin-state.ts.mdmd.md#symbol-issymbolpinned)

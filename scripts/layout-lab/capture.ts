@@ -453,6 +453,9 @@ function readCapture(page: Page): Promise<PageCapture> {
       const round = (value: number): number => Math.round(value + 1e-3);
       const wrapperRect = wrapper.getBoundingClientRect();
       for (const anchor of card.querySelectorAll<HTMLElement>(".symbol-anchor")) {
+        // The overview band's own hub, where its gathered wires arrive (2026-11-06), is no pin of the placement: the
+        // page registers it under a key of its own, never as the card's `inbound:*`, which stays Internals' dot.
+        if (anchor.classList.contains("overview-hub")) continue;
         const r = anchor.getBoundingClientRect();
         if (!r.width && !r.height) continue;
         const direction = anchor.classList.contains("inbound") ? "inbound" : "outbound";

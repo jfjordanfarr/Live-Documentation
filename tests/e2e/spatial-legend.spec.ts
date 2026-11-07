@@ -89,9 +89,12 @@ test("the Local Map shows the matching legend and lends neither key to another v
 
   await page.getByRole("button", { name: "2D", exact: true }).click();
   await expect(page.locator("#local-legend")).toBeVisible();
-  await expect(page.locator("#local-legend .legend-row")).toHaveText([
+  // The rows the 2D map's arrival shows; the gathered wires' key, "Width: references", is drawn only at the overview band
+  // (2026-11-06), whose wires it explains, and local-map-overview.spec.ts holds it there.
+  await expect(page.locator("#local-legend .legend-row:visible")).toHaveText([
     "Wire from what offers", "Wire to what uses", "Offers", "Uses", "Test-backed"
   ]);
+  await expect(page.locator("#local-legend .legend-row--gathered")).toBeHidden();
   await expect(page.locator("#spatial-legend")).toBeHidden();
   for (const view of ["sources", "world"]) {
     await page.locator(`.nav-item[data-view="${view}"]`).click();

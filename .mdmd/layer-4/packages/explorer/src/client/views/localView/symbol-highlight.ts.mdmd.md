@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/symbol-highlight.ts
-- Generated At: 2026-10-22T16:47:56.258Z
+- Generated At: 2026-11-06T20:08:42.140Z
 
 ## Authored
 ### Purpose
@@ -12,6 +12,8 @@ Pure functions for computing symbol hover/pin highlighting in the Local Map. Det
 
 ### Notes
 Extracted from controller.ts during Dev Day 50 (12/19). The `computeSymbolHighlight()` function is pure computation; `applySymbolHighlight()` handles DOM mutations. This separation enables comprehensive unit testing.
+
+Since the far bands' second milestone (2026-11-06) a reference's emphasis also falls on the overview band's gathered wire that holds it (`.connection-path.gathered` between the same two files), so that a gathered wire is emphasized when any of its references would be.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -47,7 +49,7 @@ This is the side-effectful part of symbol highlighting.
 
 #### `clearSymbolHighlightDOM` {#symbol-clearsymbolhighlightdom}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/symbol-highlight.ts#L236)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/symbol-highlight.ts#L239)
 
 ##### `clearSymbolHighlightDOM` — Summary
 Clears all symbol highlighting from the DOM.

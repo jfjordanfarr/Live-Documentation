@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/ladder-steps.ts
-- Generated At: 2026-11-06T10:54:10.628Z
+- Generated At: 2026-11-06T20:08:41.224Z
 
 ## Authored
 ### Purpose
@@ -14,6 +14,8 @@ The card ladder's breakpoints for the 2D Local Map: maps the camera's zoom again
 ### Notes
 
 Built in the breakpoint pass (2026-11-06) from the owner's [Turns 17 to 19](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-17--november-6): "we will likely get better performance and a more intuitive viewing experience if we actually just sit down and make these scaled-designs as breakpoint-driven logic", and "Clamps as in 'prevent runaway goofy rendering results that emerge from extreme inputs'". The root's refinement, agreed: the bands (what leaves) stay coarse, and the held sizes step every 20 % of zoom, four steps to a doubling, below what the eye reads as a change; coarse size steps were rejected because names would shrink to half before snapping back. A step is centred on a whole number of steps out from reading scale, covering half a step either side, because the Zoom buttons move by exactly the step ratio: with edges at whole steps every press landed on an edge, the step shown depended on rounding, and the hysteresis made a press move none or two steps (measured on the payment card and `still-picture.ts` the same day); centred, each press moves exactly one. A step is kept a quarter step past its edges, so a held size on screen lies between 1.2^-0.75 (0.87) and 1.2^0.75 (1.15) of its reading size, inside the agreed floor of about four fifths. The first step covers every zoom closer than reading scale, so that zooming in never shrinks anything; the last, at a sixth of reading scale, holds its scales however far the camera goes. The band edges (0.25, 0.45, 0.74, 1.3 with a 15 % margin, 2026-11-05, Turn 9) moved here from the controller unchanged. The leap between steps snaps; whether it should ease is the owner's open call, and an ease would be a short transition on the stylesheet's transforms when `data-step` changes.
+
+In the root's review of the far bands (2026-11-06) the band edges came to be derived from the presses rather than written as ratios: each stands between the last press of a band and the next press out, at that press's ratio over the square root of the band margin times the step ratio, the middle of the window in which a press out and the press back read the same band. With the literal edges one press out had been the reading band going out and the middle band coming back, and likewise at the far, overview and close edges, against the owner's rule that returning to a place keeps its picture. The overview band begins at the seventh press since the same review, where a file's header held one line and a row's name five letters beside its More. The restriction that kept this module out of the far bands' round was lifted for exactly these two changes.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -25,37 +27,44 @@ Built in the breakpoint pass (2026-11-06) from the owner's [Turns 17 to 19](../.
 ##### `LadderBand (type)` — Summary
 What a slot card shows, from the closest to the farthest.
 
+#### `BAND_MARGIN` {#symbol-band_margin}
+- Type: const
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L15)
+
+##### `BAND_MARGIN` — Summary
+A band is re-entered closer only 15 % past its edge, so that a camera resting on one does not chatter.
+
 #### `STEP_RATIO` {#symbol-step_ratio}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L20)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L18)
 
 ##### `STEP_RATIO` — Summary
 The zoom between two steps: 20 %, four steps to a doubling, below what the eye reads as a change of size.
 
 #### `STEP_HYSTERESIS` {#symbol-step_hysteresis}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L22)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L40)
 
 ##### `STEP_HYSTERESIS` — Summary
 A step is left only a quarter step past its edges, so that a camera resting on one does not chatter.
 
 #### `FIRST_STEP` {#symbol-first_step}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L24)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L42)
 
 ##### `FIRST_STEP` — Summary
 The first step holds reading size and covers every closer zoom: zooming in never shrinks anything.
 
 #### `LAST_STEP` {#symbol-last_step}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L26)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L44)
 
 ##### `LAST_STEP` — Summary
 The last step, about a sixth of reading scale; farther out the card's held sizes stay and the card shrinks with the map.
 
 #### `ladderBand (function)` {#symbol-ladderband-function}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L32)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L50)
 - Returns: [`LadderBand`](#symbol-ladderband-type)
 - Parameters: `previous`: [`LadderBand`](#symbol-ladderband-type)
 
@@ -65,7 +74,7 @@ A ratio that is not a positive number keeps the band.
 
 #### `ladderStep` {#symbol-ladderstep}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L48)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L66)
 
 ##### `ladderStep` — Summary
 The step of a zoom ratio, given the step shown (null before any): step n is centred on STEP_RATIO^-n, covering half a
@@ -77,21 +86,21 @@ not a positive number keeps the step.
 
 #### `LadderResistances` {#symbol-ladderresistances}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L63)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L81)
 
 ##### `LadderResistances` — Summary
 The resistances of Tuning → 2D Layout: 0 follows the map, 1 holds the screen size the step began with.
 
 #### `LadderScales (interface)` {#symbol-ladderscales-interface}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L69)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L87)
 
 ##### `LadderScales (interface)` — Summary
 A step's held scales, in the map's own units: what a name and a control are multiplied by while the step holds.
 
 #### `ladderScales (function)` {#symbol-ladderscales-function}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L82)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L100)
 - Returns: [`LadderScales`](#symbol-ladderscales-interface)
 - Parameters: `resistances`: [`LadderResistances`](#symbol-ladderresistances)
 

@@ -10,10 +10,14 @@
 
 import type { LocalViewRuntime } from "./runtime";
 import type { MapTransform } from "./types";
+import { CLOSEST_SCALE, UNMEASURED_FLOOR } from "./zoom-limits";
 
-/** Camera bounds shared by wheel, buttons and animated moves; zoom never changes perspective. */
-const MIN_SCALE = 0.05;
-const MAX_SCALE = 3;
+/**
+ * Camera bounds shared by wheel, pinch, buttons and animated moves; zoom never changes perspective. The farthest is the
+ * runtime's floor, which the controller derives from the map (2026-11-06; a fixed 0.05 before), the closest fixed.
+ */
+const floorOf = (runtime: LocalViewRuntime): number => runtime.zoomFloor ?? UNMEASURED_FLOOR;
+const MAX_SCALE = CLOSEST_SCALE;
 
 /**
  * Clamps a value to a range.
@@ -61,7 +65,7 @@ export function zoomAtPoint(
   onTransformChange: () => void
 ): void {
   const scaleFactor = Math.exp(delta);
-  const nextScale = clamp(runtime.mapTransform.k * scaleFactor, MIN_SCALE, MAX_SCALE);
+  const nextScale = clamp(runtime.mapTransform.k * scaleFactor, floorOf(runtime), MAX_SCALE);
   const localX = (offsetX - runtime.mapTransform.x) / runtime.mapTransform.k;
   const localY = (offsetY - runtime.mapTransform.y) / runtime.mapTransform.k;
   runtime.mapTransform = {
@@ -87,7 +91,7 @@ export function animateMapTransform(
   runtime.mapAnimationTarget = {
     x: target.x,
     y: target.y,
-    k: clamp(target.k, MIN_SCALE, MAX_SCALE)
+    k: clamp(target.k, floorOf(runtime), MAX_SCALE)
   };
   const from = { ...runtime.mapTransform };
   const duration = 350;
@@ -237,7 +241,7 @@ export function handleWheel(
     const rect = runtime.viewport.getBoundingClientRect();
     const from = runtime.mapAnimationTarget ?? runtime.mapTransform;
     const delta = event.deltaY * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? rect.height : 1);
-    const k = clamp(from.k * Math.exp(-delta * 0.0015), MIN_SCALE, MAX_SCALE);
+    const k = clamp(from.k * Math.exp(-delta * 0.0015), floorOf(runtime), MAX_SCALE);
     const x = event.clientX - rect.left, y = event.clientY - rect.top;
     const target = { x: x - (x - from.x) * k / from.k, y: y - (y - from.y) * k / from.k, k };
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {

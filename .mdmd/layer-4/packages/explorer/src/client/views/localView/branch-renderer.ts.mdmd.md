@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-renderer.ts
-- Generated At: 2026-11-05T15:19:44.090Z
+- Generated At: 2026-11-07T00:25:41.515Z
 
 ## Authored
 ### Purpose
@@ -47,12 +47,14 @@ Reading measurements keep containers in their existing parents when there is no 
 
 On [November 5](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-1) the temporary reading visit left this file with hover reading: the stage's return point, the move's held-element and camera-target overrides and the search's pause on reading attention are gone. `refreshReadingGeometry` keeps one job, remeasuring the same branches after a disclosure change and beginning a fresh competition from the new picture, with the acted-on element held by the ordinary rule. The end of a move also clears the controller's `readingHold`, so a hover that arrives after a tap's move may anchor again.
 
+Since the far bands' round (2026-11-06, [Turn 3](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-06.1.record.md#turn-3)): a directory label carries its caption in an aria-hidden child, `local-directory-held`, whose `data-held` holds it between left-to-right marks, and its path as its title, for the card ladder's held caption, which is cut at its start so that its last segments and count stay; `roomsOfLabel` measures the label's room at render beside the label heights; `orderRows` tells the card reading how many rows stand above the first pinned one, since the search reorders rows without measuring; and the placement's pins (`anchorCentre`) and the layout search's rows (`rowsOf`) read an anchor dot and a row's children from their boxes as the layout put them, the shift and scale the ladder draws a dot with taken back (`laidOutBox`) and the reading put back on the layout's 1/64 px grid (`onLayoutGrid`), so that a render at any zoom places the cards as a render at reading scale does; a slot card's description slot is hidden rather than taken out below reading scale, so that a row's children are the same in every band. The way there, through the root's reviews of the round: a pin made one press out placed eight cards two or three pixels from where the same pin made at reading scale put them; a repair that read the layout's offsets up to the card's wrapper never took effect, since the wrapper is not among an anchor's offset parents, and every pin was still read from the dot as drawn (112.5 at reading scale, 114.2 one press out); and with the shift taken back, an Internals dot 4292 px down the picture read 4292.4984 for 4292.5, the single-precision noise of a transformed page's boxes, which tipped its half-pixel rounding until the grid removed it. A hub's centring by its own transform is part of where it stands.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BranchStage` {#symbol-branchstage}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L28)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L30)
 
 ##### `BranchStage` — Summary
 The branch picture's elements, kept across renders by what each one is: a
@@ -65,7 +67,7 @@ also carries the continuing search that runs after each picture.
 
 #### `createStage` {#symbol-createstage}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L91)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L93)
 - Returns: [`BranchStage`](#symbol-branchstage)
 
 ##### `createStage` — Summary
@@ -73,7 +75,7 @@ A stage for a root that holds nothing yet.
 
 #### `dropStage` {#symbol-dropstage}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L96)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L98)
 - Parameters: `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `dropStage` — Summary
@@ -81,7 +83,7 @@ Ends whatever move the stage runs, where it stands, and its search; the stage's 
 
 #### `renderBranches` {#symbol-renderbranches}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L124)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L126)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `renderBranches` — Summary
@@ -109,7 +111,7 @@ The layout's dials come from the Local Map's tuning.
 
 #### `refreshReadingGeometry` {#symbol-refreshreadinggeometry}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L260)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L262)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `refreshReadingGeometry` — Summary
@@ -120,7 +122,7 @@ competition begins from the new picture.
 
 #### `BAND_BORDER` {#symbol-band_border}
 - Type: unknown
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L296)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L298)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -170,8 +172,10 @@ competition begins from the new picture.
 - [`card-factory.countsOf`](./card-factory.ts.mdmd.md#symbol-countsof)
 - [`card-factory.createClosedDirectory`](./card-factory.ts.mdmd.md#symbol-createcloseddirectory)
 - [`card-factory.createNodeCard`](./card-factory.ts.mdmd.md#symbol-createnodecard)
+- [`card-reading.markFirstPin`](./card-reading.ts.mdmd.md#symbol-markfirstpin)
 - [`controller.LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller) (type-only)
 - [`directory-ancestry.ancestryButton`](./directory-ancestry.ts.mdmd.md#symbol-ancestrybutton)
+- [`ladder-rooms.layoutTopOf`](./ladder-rooms.ts.mdmd.md#symbol-layouttopof)
 - [`membrane-outline.membranePath`](./membrane-outline.ts.mdmd.md#symbol-membranepath)
 - [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)
 - [`word-seams.countOf`](./word-seams.ts.mdmd.md#symbol-countof)

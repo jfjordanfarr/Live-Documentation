@@ -4,17 +4,6 @@ import type { BranchGraph } from "./branches";
 import type { CardContext } from "./card-factory";
 import { CardReading, type ReadingTarget } from "./card-reading";
 import { NO_OPEN_DIRECTORIES, type OpenDirectories } from "./directory-state";
-import type {
-  ExplorerNodePayload
-} from "../../../shared/types";
-import { requireElement } from "../../dom";
-import {
-  buildNormalizedAnchorKey,
-  tryBuildNormalizedKeyFromAnchorKey
-} from "../symbolAnchors";
-import { clearConnections, drawConnections } from "./connections";
-import { createEdgeSigns, type EdgeSigns, type FramePlace } from "./edge-signs";
-import { ladderBand, ladderScales, ladderStep, type LadderBand } from "./ladder-steps";
 import {
   computeLayoutExtents,
   computeFitTransform,
@@ -54,6 +43,17 @@ import {
   setHoveredSymbol,
   setActivePath as setActivePathAction
 } from "./state";
+import type {
+  ExplorerNodePayload
+} from "../../../shared/types";
+import { requireElement } from "../../dom";
+import {
+  buildNormalizedAnchorKey,
+  tryBuildNormalizedKeyFromAnchorKey
+} from "../symbolAnchors";
+import { clearConnections, drawConnections } from "./connections";
+import { createEdgeSigns, type EdgeSigns, type FramePlace } from "./edge-signs";
+import { ladderBand, ladderScales, ladderStep, type LadderBand } from "./ladder-steps";
 import {
   computeSymbolHighlight,
   applySymbolHighlight,
@@ -68,6 +68,7 @@ import type {
   MapTransform,
   ReadingControl
 } from "./types";
+import { atScale, CLOSEST_SCALE, farthestScale } from "./zoom-limits";
 import { readingFiles } from "../../reading-state";
 
 /** Coordinates the native Local Map, independent exploration pins and explicit FROM/TO paths. */
@@ -130,6 +131,10 @@ export class LocalViewController implements LocalViewApi {
   private ladderRedraw = 0;
   private readingVisible = true;
   private readingReferenceScale = 1;
+  /** The frame's size as last read, against which the farthest zoom is reckoned; null before the first reading. */
+  private zoomFrame: Frame | null = null;
+  /** Which of the Zoom limits the camera stood at when last said, so that they are said only when they change. */
+  private zoomLimitsSaid = "";
   private readingFrame = 0;
   private readingViewportSize: { width: number; windowHeight: number } | null = null;
   private readingCalibrationPending = false;
@@ -308,6 +313,7 @@ export class LocalViewController implements LocalViewApi {
           || symbol !== undefined && pins.some(pin => pin.symbol === symbol);
       },
       mode: () => options.state.tuning.localMap.cardText,
+      resistances: () => options.state.tuning.localMap,
       change: (nodeId, symbol, open, control) => options.onReadingChange?.(nodeId, symbol, open, control),
       inspect: (target, fragment) => options.onReadTarget?.(target, fragment),
       navigate: node => { void this.recenterNode(node); }
@@ -1141,11 +1147,44 @@ export class LocalViewController implements LocalViewApi {
     await this.options.onShowDirectoryActions(directory, anchor);
   }
 
-  /** Measures content and column bounding boxes used for fit-to-content and centering calculations. */
+  /**
+   * Measures content and column bounding boxes used for fit-to-content and centering calculations, and derives from them
+   * the camera's farthest zoom, which follows the picture whenever it is measured.
+   */
   measureLayoutExtents(): LayoutExtents | null {
     const extents = computeLayoutExtents(this.container, this.contentRoot);
     this.contentBounds = extents?.content ?? null;
+    this.updateZoomFloor();
     return extents;
+  }
+
+  /**
+   * The farthest zoom (2026-11-06, the far bands' second milestone): the card ladder's last step, or four fifths of the
+   * scale that shows the whole map where that is farther, from the picture as last measured, the frame as last read and
+   * the calibrated reading scale; unknown before the first layout, when nothing but a guard holds the camera. A camera
+   * left beyond it, a remembered view or a frame grown since, is brought to it about the frame's middle at once, unless a
+   * gesture or a move holds the camera.
+   */
+  private updateZoomFloor(): void {
+    const floor = farthestScale(this.contentBounds, this.zoomFrame, this.readingReferenceScale);
+    this.runtime.zoomFloor = floor;
+    const runtime = this.runtime, moving = runtime.isDragging || this.pinch !== null || runtime.mapInertiaFrame !== 0 || runtime.mapAnimationTarget !== null;
+    if (floor !== null && !moving && this.mapTransform.k < floor && !atScale(this.mapTransform.k, floor) && this.zoomFrame) {
+      const { x, y, k } = this.mapTransform, middle = { x: this.zoomFrame.width / 2, y: this.zoomFrame.height / 2 };
+      this.mapTransform = { x: middle.x - (middle.x - x) * floor / k, y: middle.y - (middle.y - y) * floor / k, k: floor };
+      this.updateMapTransform();
+    }
+    this.reportZoomLimits();
+  }
+
+  /** Tells the Zoom buttons whether the camera stands at its farthest or its closest zoom, when either changes. */
+  private reportZoomLimits(): void {
+    const k = this.mapTransform.k, floor = this.runtime.zoomFloor;
+    const limits = { farthest: floor !== null && (k <= floor || atScale(k, floor)), closest: k >= CLOSEST_SCALE || atScale(k, CLOSEST_SCALE) };
+    const said = `${limits.farthest} ${limits.closest}`;
+    if (said === this.zoomLimitsSaid) return;
+    this.zoomLimitsSaid = said;
+    this.options.onZoomLimits?.(limits);
   }
 
   /** Applies the current {@link mapTransform} to the viewport's CSS `transform`, keeping container and overlay in sync. */
@@ -1164,6 +1203,7 @@ export class LocalViewController implements LocalViewApi {
     // the viewport has actually reached its terminal zoom destination" (2026-11-06, Turn 12).
     const ratio = this.mapTransform.k / this.readingReferenceScale;
     this.applyLevelOfDetail(ratio);
+    this.reportZoomLimits();
     this.watchCamera();
     if (this.reading && this.stage?.search && !this.readingFrame && !this.readingCalibrationPending) {
       // Below reading scale the prose fades and above it returns, with the same two ratios so that the edge does not
@@ -1215,8 +1255,9 @@ export class LocalViewController implements LocalViewApi {
    * value a margin past their edges, so a camera resting on one does not chatter, and the stylesheet is written only
    * when the band, the step or a lever changes: a moving camera costs one style pass and one drawing of the wires a
    * step instead of a style pass a frame.
-   * Below reading scale a name also grows into the room its description leaves, up to Name Growth times its held size
-   * (Turn 11), the room measured at render by the card reading.
+   * Every held part is bounded by the room of the box it belongs to, measured at render by the card reading (the far-zoom
+   * review, 2026-11-06), and below reading scale a symbol's name may also grow into the room its description leaves, up
+   * to Name Growth times its held size (Turn 11).
    */
   private applyLevelOfDetail(ratio: number): void {
     if (!Number.isFinite(ratio) || ratio <= 0) return;
@@ -1232,10 +1273,10 @@ export class LocalViewController implements LocalViewApi {
     // past a ceiling) writes nothing, and the page has nothing to draw again.
     const written = `${this.lod} ${text} ${control} ${growth}`;
     if (written === this.ladderWritten) return;
-    // New held controls draw the anchor dots at a new size from their edge beside the name, so the wires that end at
+    // A new band or held size draws the anchor dots anew: at a new size from their edge beside the name, on their
+    // name's line as it is held, or following the map where the overview silences their rows; so the wires that end at
     // them are drawn again once, the frame after (a render draws them itself; the first writing is a render's).
-    const dotsChanged = this.container.style.getPropertyValue("--control-scale") !== control;
-    if (this.ladderWritten && dotsChanged && !this.ladderRedraw && this.stage) this.ladderRedraw = requestAnimationFrame(() => {
+    if (this.ladderWritten && !this.ladderRedraw && this.stage) this.ladderRedraw = requestAnimationFrame(() => {
       this.ladderRedraw = 0;
       if (this.stage && this.isShown()) this.drawConnections();
     });
@@ -1305,7 +1346,10 @@ export class LocalViewController implements LocalViewApi {
     const layer = this.container.parentElement ?? this.viewport;
     const rect = withTransformReset(this.container, () => layer.getBoundingClientRect());
     this.layerTop = rect.top;
-    return { left: rect.left, top: rect.top, width: rect.width - this.coveredWidth(rect), height: this.uncoveredHeight(rect) };
+    const frame = { left: rect.left, top: rect.top, width: rect.width - this.coveredWidth(rect), height: this.uncoveredHeight(rect) };
+    // The farthest zoom is reckoned against the frame as last read, so that the camera's limit never reads the page.
+    this.zoomFrame = { width: frame.width, height: frame.height };
+    return frame;
   }
 
   /**

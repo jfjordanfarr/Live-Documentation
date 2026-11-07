@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/capture.ts
-- Generated At: 2026-11-06T03:23:51.900Z
+- Generated At: 2026-11-07T00:25:44.000Z
 
 ## Authored
 ### Purpose
@@ -35,6 +35,8 @@ The same learning-journey pass captures relationship controls above Purpose, inc
 The [November 5 reading repair](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-9) exposed a capture-performance failure in the 93-card repository chain: repeated append/read/remove probes caused over a thousand stylesheet recalculations, and the test exceeded its deadline despite matching geometry. Independent constant probes are now appended together, read together and removed together for each card. The unused node-meta probe is removed. Complete before/after captures agree after excluding only their capture timestamp; this changes the measurement work, not the fixture, model, deadline or tolerances.
 
 Since [Turn 12](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-12--november-6) a card capture carries `slot` for the fixed-slot composition, now the Card Text default: every public row's explicit height, measured from the first such row or taken from Slot Lines, and the Purpose's slot height, so that the model needs no text to give a slot card's height.
+
+Since the far bands' round (2026-11-07, the root's fourth review) the pins it reads leave out the overview band's own hub (`overview-hub`), the node-level hub at a card's using side where that band's gathered wires arrive: the page registers it under `inbound:#hub`, never as the card's `inbound:*`, which stays Internals' dot. Read as a hub, it had stood in for that pin, and the lab and the headless command reported every card's `inbound:*` drifted, by the distance between Internals' dot and the card's middle, though the page's placement had not moved.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -110,7 +112,7 @@ page's Content-Security-Policy runs no script written into it.
 
 #### `writeCapture` {#symbol-writecapture}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L566)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L569)
 - Parameters: `capture`: [`Capture`](#symbol-capture)
 
 ##### `writeCapture` — Summary
@@ -118,7 +120,7 @@ Writes a capture as compact JSON.
 
 #### `readCaptureFile` {#symbol-readcapturefile}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L572)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L575)
 
 ##### `readCaptureFile` — Summary
 Reads a capture written by `writeCapture`.

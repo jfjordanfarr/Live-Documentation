@@ -333,6 +333,13 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
       backwardConnections = count;
       syncPerspectiveControls();
     },
+    // A Zoom button that can do no more says so: disabled, which a reader of the page is told (2026-11-06).
+    onZoomLimits: ({ farthest, closest }) => {
+      for (const [zoom, limited] of [["out", farthest], ["in", closest]] as const) {
+        const button = document.querySelector<HTMLButtonElement>(`#controls [data-zoom="${zoom}"]`);
+        if (button) button.disabled = limited;
+      }
+    },
     testCoverage,
     nodesById
   });

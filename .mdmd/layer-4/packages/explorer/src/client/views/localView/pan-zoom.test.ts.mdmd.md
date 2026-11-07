@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/localView/pan-zoom.test.ts
-- Generated At: 2026-09-27T23:21:28.297Z
+- Generated At: 2026-11-06T20:08:41.664Z
 
 ## Authored
 ### Purpose
@@ -26,5 +26,6 @@ _No public symbols detected_
 - [`pan-zoom.zoomAtPoint`](./pan-zoom.ts.mdmd.md#symbol-zoomatpoint)
 - [`runtime.LocalViewRuntime`](./runtime.ts.mdmd.md#symbol-localviewruntime) (type-only)
 - [`types.MapTransform`](./types.ts.mdmd.md#symbol-maptransform) (type-only)
+- [`zoom-limits.UNMEASURED_FLOOR`](./zoom-limits.ts.mdmd.md#symbol-unmeasured_floor)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

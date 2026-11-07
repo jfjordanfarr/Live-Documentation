@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { FIRST_STEP, LAST_STEP, ladderBand, ladderScales, ladderStep, STEP_HYSTERESIS, STEP_RATIO } from "./ladder-steps";
+import { BAND_MARGIN, FIRST_STEP, LAST_STEP, ladderBand, ladderScales, ladderStep, STEP_HYSTERESIS, STEP_RATIO } from "./ladder-steps";
 
 /** The ratio a given number of steps out from reading scale. */
 const stepsOut = (steps: number): number => STEP_RATIO ** -steps;
@@ -67,20 +67,49 @@ describe("ladderStep", () => {
 });
 
 describe("ladderBand", () => {
-  it("lets each band give way to the next one out at its edge", () => {
-    expect(ladderBand(1, "reading")).toBe("reading");
-    expect(ladderBand(0.73, "reading")).toBe("middle");
-    expect(ladderBand(0.44, "middle")).toBe("far");
-    expect(ladderBand(0.24, "far")).toBe("overview");
-    expect(ladderBand(0.1, "reading")).toBe("overview");
-    expect(ladderBand(1.31 * 1.15, "reading")).toBe("close");
+  /** The band of each press, walking from one press to the next in the given order, each ratio a hair off its step. */
+  const walk = (presses: readonly number[], start: Parameters<typeof ladderBand>[1], wobble = 0): Map<number, string> => {
+    const bands = new Map<number, string>();
+    let band = start;
+    for (const press of presses) {
+      band = ladderBand(stepsOut(press) * (1 + wobble), band);
+      bands.set(press, band);
+    }
+    return bands;
+  };
+  const out = Array.from({ length: 15 }, (_, index) => index - 4); // -4, two presses past the close band's edge, to 10
+
+  it("gives each press its band: close two presses in, reading to one out, middle to the fourth, far the fifth and sixth, overview from the seventh", () => {
+    const bands = walk(out, "reading");
+    expect([...bands].filter(([press]) => press >= -2).map(([press, band]) => `${press} ${band}`)).toEqual([
+      "-2 close", "-1 reading", "0 reading", "1 reading", "2 middle", "3 middle", "4 middle", "5 far", "6 far",
+      "7 overview", "8 overview", "9 overview", "10 overview"
+    ]);
   });
 
-  it("returns closer only 15 % past an edge", () => {
-    expect(ladderBand(0.8, "middle")).toBe("middle");
-    expect(ladderBand(0.86, "middle")).toBe("reading");
-    expect(ladderBand(0.5, "far")).toBe("far");
-    expect(ladderBand(0.52, "far")).toBe("middle");
+  it("reads the same band at every press walking out and walking back in, from two presses in to the last step", () => {
+    // Returning to a place keeps its picture (the root's review of 2026-11-06): with the edges at literal ratios one press
+    // out was the reading band going out and the middle band coming back, and so at the far, overview and close edges.
+    for (const wobble of [0, 1e-9, -1e-9]) {
+      const going = walk(out, "close", wobble);
+      const coming = walk([...out].reverse(), "overview", wobble);
+      for (let press = -2; press <= LAST_STEP; press += 1) expect(coming.get(press), `press ${press}`).toBe(going.get(press));
+    }
+  });
+
+  it("keeps a band a margin past its edge between presses, so that a camera resting on an edge does not chatter", () => {
+    // Out of the reading band between the first and the second press, back only 15 % past that edge.
+    const edge = stepsOut(1) / Math.sqrt(BAND_MARGIN * STEP_RATIO);
+    expect(ladderBand(edge * 1.001, "reading")).toBe("reading");
+    expect(ladderBand(edge * 0.999, "reading")).toBe("middle");
+    expect(ladderBand(edge * 1.1, "middle")).toBe("middle");
+    expect(ladderBand(edge * BAND_MARGIN * 1.001, "middle")).toBe("reading");
+    // A camera trembling across the edge keeps the band it had.
+    let band = ladderBand(edge * 0.99, "reading");
+    for (const wobble of [1.01, 0.99, 1.05, 0.98, 1.1]) band = ladderBand(edge * wobble, band);
+    expect(band).toBe("middle");
+    expect(ladderBand(0.1, "reading")).toBe("overview");
+    expect(ladderBand(stepsOut(-3), "reading")).toBe("close");
   });
 
   it("keeps the band for a ratio that is not a positive number", () => {

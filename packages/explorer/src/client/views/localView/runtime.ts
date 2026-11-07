@@ -69,6 +69,11 @@ export interface LocalViewRuntime {
   mapAnimationFrame: number;
   /** Where a running camera animation is heading, so that a shift applied while it runs is not lost; null when none runs. */
   mapAnimationTarget: MapTransform | null;
+  /**
+   * The farthest scale the camera may take, from the map's extents, the frame and the reading scale (`farthestScale` in
+   * zoom-limits.ts); null until the map is measured, when only a guard keeps the scale positive.
+   */
+  zoomFloor: number | null;
   mapHasInitialFit: boolean;
   mapUserAdjusted: boolean;
   lastCenteredNodeId: string | null;
@@ -100,6 +105,7 @@ export function createRuntime(
     mapInertiaFrame: 0,
     mapAnimationFrame: 0,
     mapAnimationTarget: null,
+    zoomFloor: null,
     mapHasInitialFit: false,
     mapUserAdjusted: false,
     lastCenteredNodeId: null,

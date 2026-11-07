@@ -2,7 +2,11 @@ import type { TypeRef } from "@live-documentation/engine/live-docs/document";
 import type { GraphFile } from "@live-documentation/engine/live-docs/graph";
 import { pathTo, walk } from "@live-documentation/engine/live-docs/pathfind";
 
+import { chooseHeldLines, HELD_BANDS, heldTitle, type HeldBand, type TitleRooms } from "./held-lines";
+import { dotRoom, layoutTopOf, nameFill, nameWraps, rowsBeforeFirstPin } from "./ladder-rooms";
+import { FIRST_STEP, LAST_STEP, ladderScales, type LadderResistances } from "./ladder-steps";
 import type { LocalEdge, ReadingControl } from "./types";
+import { seamsOf } from "./word-seams";
 import type { ExplorerNodePayload } from "../../../shared/types";
 import { escapeHtml } from "../../graph-helpers";
 import { renderMarkdown } from "../../markdown";
@@ -12,11 +16,11 @@ import { authoredSections } from "../../reader-sections";
 import { descriptionIsOpen, type ReadingChoice } from "../../reading-state";
 import type { InspectionTarget } from "../../types";
 
-/** The share of its room a name may fill when it grows, leaving a little air at the row's edges. */
-const ROOM_MARGIN = 0.9;
-
-/** A custom property the card ladder's stylesheet reads, measured for one element: written after every reading. */
-type RoomWrite = readonly [element: HTMLElement, name: string, value: string];
+/**
+ * What the card ladder's stylesheet reads, measured for one element and written after every reading: a custom property
+ * (an empty value removes it), a `data-` attribute, or a class switched on or off.
+ */
+type RoomWrite = readonly [element: HTMLElement, name: string, value: string | boolean];
 
 /** A file's Purpose or one exact symbol's description, named by the card it is read on. */
 export interface ReadingTarget { nodeId: string; symbol?: string; }
@@ -28,6 +32,8 @@ export interface CardReadingOptions {
   defaultOpen(nodeId: string, symbol?: string): boolean;
   /** The card composition the person chose in Tuning: descriptions that open and grow, or fixed slots. */
   mode(): "grow" | "slot";
+  /** Tuning's resistances, which set each step's held scales: the held name's lines are chosen for them at render. */
+  resistances(): LadderResistances;
   change(nodeId: string, symbol: string | undefined, open: boolean, control: ReadingControl): void;
   inspect(target: InspectionTarget, fragment?: string): void;
   navigate(node: ExplorerNodePayload): void;
@@ -280,8 +286,9 @@ export class CardReading {
     if (!this.slots) return;
     // The rooms of every slot card are read before any is written, so that the page lays out once for them all rather
     // than once a row (direction.md's November 6 cost finding).
-    const rooms = [...this.cards.values()].flatMap(({ card, purpose }) => measureRooms(card, purpose));
-    for (const [element, name, value] of rooms) element.style.setProperty(name, value);
+    const resistances = this.options.resistances();
+    const rooms = [...this.cards.values()].flatMap(({ card }) => measureRooms(card, resistances));
+    for (const write of rooms) applyRoomWrite(write);
   }
 
   /** Every kept-visible description shows; the books and the names say what each one would do next. */
@@ -374,71 +381,217 @@ export class CardReading {
 /**
  * What the card ladder's stylesheet needs to know of a slot card's rooms (2026-11-05, Turn 11: "the symbols didn't expand
  * to fill the spaces left by the disappearance of the text"; 2026-11-06, Turns 17 to 19: clamps, and a More held on every
- * row), measured once a render in layout pixels so that zoom changes nothing here; read only, the writes returned. Each
- * symbol row gets its own height, the room across its name's box, its name's text width, height and place below the top of
- * its wrapper, how many times the
- * name's height its row could hold, and the widths of its controls with the gap before them: Pin and More, which stand
- * through the middle band, and More alone, which stands at every band. The stylesheet bounds a name's growth by those
- * rooms less the controls at their held size, by Name Growth and by the row's height, and a dot's, a control's and the
- * highlight's by the row's height. The file's name gets the header down to the Purpose's slot, since everything between
- * leaves at the middle band, and the widths of the card's buttons, which intrude on it at their held size.
+ * row; the far-zoom review of the same day: a held thing is bounded by the room of the box it belongs to), measured once
+ * a render in the map's own units so that zoom changes nothing here; read only, the writes returned. Every box read here
+ * stands where the layout put it whatever the step draws, so the readings are the same in every band: a name's button,
+ * a wrapper and a row are never transformed, and a dot or a button that is is read at its fixed edge or undone.
+ *
+ * Each symbol row gets its height and the depth of its name below the row's top, from which the stylesheet scales the
+ * row's head (the name, the dots' centre line and the buttons) about the row's top edge so that it keeps its reading
+ * alignment and stays inside the row; the room across its name's box, the name's text width and whether it wraps at the
+ * reading width; the widths of its badges and of its controls with the gaps before them, Pin and More through the middle
+ * band and More alone beyond it; More's place and height, which bound the controls' held size by the row; and its dots'
+ * centre, height and room to the card's edges, which bound theirs. The file's name gets the room from its top to the
+ * header's right edge and down to the first row, to the card's bottom and the row pitch for the overview band, and the
+ * card's buttons' widths and overhang, which intrude on its first lines at their held size.
  */
-function measureRooms(card: HTMLElement, purpose: ReadingBlock | null): RoomWrite[] {
+function measureRooms(card: HTMLElement, resistances: LadderResistances): RoomWrite[] {
   const writes: RoomWrite[] = [];
   const k = card.offsetHeight ? card.getBoundingClientRect().height / card.offsetHeight : 0;
   if (!(k > 0)) return writes;
+  // Across the card, from its border box's left edge: the inner edges of its border, which no dot may cross.
+  const cardRect = card.getBoundingClientRect();
+  const innerLeft = card.clientLeft, innerRight = card.clientLeft + card.clientWidth;
   // A name's text is narrower than its stretched box, and the name may already be drawn scaled: the text's own width
   // in layout pixels is its range's width, less the map's scale and its own transform.
-  const textWidth = (element: HTMLElement): number => {
+  const textOf = (element: HTMLElement): { width: number; lines: number } => {
     const range = document.createRange();
     range.selectNodeContents(element);
-    const inner = element.querySelector<HTMLElement>(".symbol-label-text, .local-file-name-text") ?? element;
+    const inner = element.querySelector<HTMLElement>(".symbol-label-text") ?? element;
     const own = new DOMMatrix(getComputedStyle(inner).transform).a || 1;
-    return range.getBoundingClientRect().width / (k * own);
+    const lines = new Set([...range.getClientRects()].map(rect => Math.round(rect.top))).size;
+    return { width: range.getBoundingClientRect().width / (k * own), lines };
   };
+  // The first symbol row gives the rows' pitch.
+  let firstRow: { height: number } | null = null;
   for (const row of card.querySelectorAll<HTMLElement>(".symbol-row")) {
     const wrapper = row.querySelector<HTMLElement>(".symbol-label-wrapper"), label = row.querySelector<HTMLElement>(".symbol-label");
     if (!wrapper || !label || !label.offsetHeight) continue;
-    const width = textWidth(label);
-    if (!(width > 0)) continue;
-    const wrapperStyle = getComputedStyle(wrapper), rowStyle = getComputedStyle(row);
+    const text = textOf(label);
+    if (!(text.width > 0)) continue;
+    const wrapperStyle = getComputedStyle(wrapper);
     const roomWidth = wrapper.clientWidth - parseFloat(wrapperStyle.paddingLeft) - parseFloat(wrapperStyle.paddingRight);
-    const labelTop = label.getBoundingClientRect().top;
-    // A name grows downward from where it begins, and its row's highlight reaches 2 px below it: its room by height is
-    // from its top to its row's bottom, less those 2 px.
-    const roomHeight = row.clientHeight - parseFloat(rowStyle.paddingBottom) - (labelTop - row.getBoundingClientRect().top) / k - 2;
+    const rowRect = row.getBoundingClientRect(), wrapperRect = wrapper.getBoundingClientRect(), labelRect = label.getBoundingClientRect();
+    const rowHeight = row.clientHeight, nameTop = (labelRect.top - rowRect.top) / k, nameHeight = label.offsetHeight;
+    if (!firstRow && !row.classList.contains("internals-row")) firstRow = { height: rowHeight };
     const gap = parseFloat(wrapperStyle.columnGap) || 0;
     const pin = row.querySelector<HTMLElement>(".local-symbol-pin")?.offsetWidth ?? 0;
-    const more = row.querySelector<HTMLElement>(".local-symbol-more")?.offsetWidth ?? 0;
+    const moreButton = row.querySelector<HTMLElement>(".local-symbol-more");
+    const more = moreButton?.offsetWidth ?? 0;
+    const badges = row.querySelector<HTMLElement>(".type-refs-indicator")?.offsetWidth ?? 0;
+    // A held button grows from its own top, so its drawn top is its layout top.
+    const moreTop = moreButton ? (moreButton.getBoundingClientRect().top - rowRect.top) / k : 0;
+    // A dot is drawn shifted and scaled about its centre, and about its edge beside the name across: its layout box is
+    // that edge, its width, and its drawn top with the shift and scale undone.
+    let dotMiddle = nameTop + nameHeight / 2, dotHeight = 14, dotScale = Infinity;
+    for (const dot of row.querySelectorAll<HTMLElement>(".symbol-anchor.dot")) {
+      const rect = dot.getBoundingClientRect(), drawn = new DOMMatrix(getComputedStyle(dot).transform);
+      const direction = dot.classList.contains("inbound") ? "inbound" : "outbound";
+      const left = direction === "inbound" ? (rect.right - cardRect.left) / k - dot.offsetWidth : (rect.left - cardRect.left) / k;
+      dotScale = Math.min(dotScale, dotRoom({ left, right: left + dot.offsetWidth, direction }, innerLeft, innerRight));
+      dotHeight = dot.offsetHeight;
+      dotMiddle = layoutTopOf((rect.top - rowRect.top) / k, dotHeight, drawn.f, drawn.d || 1) + dotHeight / 2;
+    }
     writes.push(
-      [row, "--row-h", String(row.clientHeight)],
+      [row, "--row-h", String(rowHeight)],
       [row, "--row-room-w", roomWidth.toFixed(1)],
-      [row, "--row-name-w", width.toFixed(1)],
-      [row, "--row-name-h", String(label.offsetHeight)],
-      // The name stands centred beside the row's taller buttons: how far below the wrapper's top it begins.
-      [row, "--row-name-top", ((labelTop - wrapper.getBoundingClientRect().top) / k).toFixed(1)],
-      [row, "--row-fill-h", (ROOM_MARGIN * Math.max(0, roomHeight) / label.offsetHeight).toFixed(2)],
+      [row, "--row-name-w", text.width.toFixed(1)],
+      [row, "--row-name-h", String(nameHeight)],
+      [row, "--row-name-y", nameTop.toFixed(2)],
+      [row, "--row-wrapper-y", ((wrapperRect.top - rowRect.top) / k).toFixed(2)],
+      [row, "--row-fill-h", nameFill(rowHeight, nameTop, nameHeight).toFixed(3)],
+      [row, "--row-badges-w", String(badges ? gap + badges : 0)],
       [row, "--row-controls-w", String(pin || more ? gap + pin + (pin && more ? gap : 0) + more : 0)],
-      [row, "--row-more-w", String(more ? gap + more : 0)]
+      [row, "--row-more-w", String(more ? gap + more : 0)],
+      [row, "--row-more-y", moreTop.toFixed(2)],
+      [row, "--row-more-h", String(moreButton?.offsetHeight || 17)],
+      [row, "--row-dot-mid", dotMiddle.toFixed(2)],
+      [row, "--row-dot-h", String(dotHeight)],
+      [row, "--row-dot-room", (Number.isFinite(dotScale) ? dotScale : 1).toFixed(3)],
+      [row, "local-name-wraps", nameWraps(text.lines, text.width, label.clientWidth)]
     );
   }
+  writes.push([card, "--rows-before-pin", firstPinWrite(card)]);
   const title = card.querySelector<HTMLElement>(".local-file-name"), header = card.querySelector<HTMLElement>(".node-title");
-  if (!title || !header || !title.offsetHeight) return writes;
-  const titleWidth = textWidth(title);
-  if (!(titleWidth > 0)) return writes;
-  const headerStyle = getComputedStyle(header), headerRect = header.getBoundingClientRect();
-  const left = headerRect.left + parseFloat(headerStyle.paddingLeft) * k, top = headerRect.top + parseFloat(headerStyle.paddingTop) * k;
-  const bottom = purpose && !purpose.element.hidden ? purpose.element.getBoundingClientRect().bottom : headerRect.bottom - parseFloat(headerStyle.paddingBottom) * k;
-  const roomWidth = (headerRect.right - parseFloat(headerStyle.paddingRight) * k - left) / k, roomHeight = (bottom - top) / k;
+  const grid = card.querySelector<HTMLElement>(".symbol-grid"), actions = card.querySelector<HTMLElement>(".local-card-actions");
+  if (!title || !header || !grid || !actions || !title.offsetHeight) return writes;
+  const cardStyle = getComputedStyle(card), headerRect = header.getBoundingClientRect(), titleRect = title.getBoundingClientRect();
+  // The buttons hold their size about their container's top right corner, which therefore stands where it was laid out.
+  const actionsRect = actions.getBoundingClientRect();
+  const contentBottom = cardRect.bottom - (parseFloat(cardStyle.borderBottomWidth) + parseFloat(cardStyle.paddingBottom)) * k;
+  const rowGap = parseFloat(getComputedStyle(grid).rowGap) || 0;
+  const more = card.querySelector<HTMLElement>(".local-file-more");
+  // Each room as the stylesheet reads it, rounded as written, so that the lines chosen below are the lines it draws.
+  const fixed = (value: number): number => Number(value.toFixed(1));
+  const rooms: TitleRooms = {
+    roomW: fixed((headerRect.right - titleRect.left) / k),
+    headH: fixed((grid.getBoundingClientRect().top - titleRect.top) / k),
+    cardH: fixed((contentBottom - titleRect.top) / k),
+    pitch: Math.max(1, (firstRow?.height ?? 0) + rowGap),
+    rowGap,
+    // The buttons that stay at each band intrude on the name's first lines as they hold their size: all three at the
+    // middle band, More alone further out; they stand a little past the header's right edge and above the name's top.
+    actionsW: actions.offsetWidth,
+    moreW: more?.offsetWidth ?? 0,
+    moreH: more?.offsetHeight ?? 0,
+    overX: fixed((actionsRect.right - headerRect.right) / k),
+    overY: fixed((titleRect.top - actionsRect.top) / k),
+    controlCeiling: (32 + (parseFloat(cardStyle.getPropertyValue("--slot-lines")) || 2) * 17) / 20,
+    line: parseFloat(cardStyle.getPropertyValue("--title-line")) || 15
+  };
   writes.push(
-    [card, "--title-fill-h", Math.max(1, ROOM_MARGIN * roomHeight / title.offsetHeight).toFixed(2)],
-    [card, "--title-room-w", (ROOM_MARGIN * roomWidth).toFixed(1)],
-    [card, "--title-w", titleWidth.toFixed(1)],
-    // The buttons that stay at each band intrude on the header's room as they hold their size: all three at the middle band, More alone further out.
-    [card, "--actions-w", String(card.querySelector<HTMLElement>(".local-card-actions")?.offsetWidth ?? 0)],
-    [card, "--more-w", String(card.querySelector<HTMLElement>(".local-file-more")?.offsetWidth ?? 0)]
+    [card, "--title-room-w", String(rooms.roomW)],
+    [card, "--title-head-h", String(rooms.headH)],
+    [card, "--title-card-h", String(rooms.cardH)],
+    [card, "--title-pitch", String(rooms.pitch)],
+    [card, "--title-row-gap", String(rooms.rowGap)]
   );
+  const held = title.querySelector<HTMLElement>(".local-file-name-held");
+  if (held) {
+    const name: HeldName = { held, segments: seamsOf(held.dataset.name ?? ""), measure: textMeasure(getComputedStyle(held)), rooms, resistances };
+    heldNames.set(card, name);
+    writes.push(...heldLineWrites(name, HELD_BANDS, rowsBeforePin(card)));
+  }
   return writes;
+}
+
+/** What a card's held name needs to choose its lines again: kept from its card's last reading. */
+interface HeldName {
+  held: HTMLElement;
+  segments: string[];
+  measure: (text: string) => number;
+  rooms: TitleRooms;
+  resistances: LadderResistances;
+}
+const heldNames = new WeakMap<HTMLElement, HeldName>();
+
+/**
+ * The held name's lines at each band and step, chosen by the four rules ({@link chooseHeldLines}) in the room the
+ * stylesheet gives it there, and written as an attribute a band and step, `data-lines-<band>-<step>`, whose lines the
+ * stylesheet draws as they are: a step's held scales as the controller writes them, rounded alike.
+ */
+function heldLineWrites(name: HeldName, bands: readonly HeldBand[], before: number | null): RoomWrite[] {
+  const writes: RoomWrite[] = [];
+  for (let step = FIRST_STEP; step <= LAST_STEP; step += 1) {
+    const held = ladderScales(step, name.resistances);
+    const scales = { text: Number(held.text.toFixed(3)), control: Number(held.control.toFixed(3)) };
+    for (const band of bands) {
+      const { room } = heldTitle(name.rooms, band, scales, before);
+      writes.push([name.held, `data-lines-${band}-${step}`, chooseHeldLines(name.segments, room, name.measure).join("\n")]);
+    }
+  }
+  return writes;
+}
+
+/**
+ * A text's width in its element's font, without laying anything out: a canvas measures it in the font's own pixels,
+ * which are the name's own units. Widths are kept per font, since every card's name is measured again for each band
+ * and step, mostly in the same pieces.
+ */
+function textMeasure(style: CSSStyleDeclaration): (text: string) => number {
+  const font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+  const spacing = style.letterSpacing === "normal" ? "0px" : style.letterSpacing;
+  const key = `${font}|${spacing}`;
+  let widths = measured.get(key);
+  if (!widths) measured.set(key, widths = new Map<string, number>());
+  const known = widths;
+  return text => {
+    let width = known.get(text);
+    if (width === undefined) {
+      // A 2D canvas context is part of every browser the Explorer serves.
+      measuring ??= document.createElement("canvas").getContext("2d")!;
+      measuring.font = font;
+      measuring.letterSpacing = spacing;
+      known.set(text, width = measuring.measureText(text).width);
+    }
+    return width;
+  };
+}
+let measuring: CanvasRenderingContext2D | undefined;
+const measured = new Map<string, Map<string, number>>();
+
+/**
+ * The count of shown rows above the card's first row pinned by name, which bounds the file's name at the overview band
+ * as the first row drawn there, or nothing when no shown row is pinned by name. The branch renderer writes it again whenever it orders a card's rows.
+ */
+function firstPinWrite(card: HTMLElement): string {
+  const before = rowsBeforePin(card);
+  return before === null ? "" : String(before);
+}
+
+function rowsBeforePin(card: HTMLElement): number | null {
+  return rowsBeforeFirstPin([...card.querySelectorAll<HTMLElement>(".symbol-row")].map(row => ({
+    shown: !row.classList.contains("branch-symbol-hidden") && !row.classList.contains("symbol-collapsed"),
+    pinned: row.classList.contains("symbol-pinned-named")
+  })));
+}
+
+/**
+ * Write {@link firstPinWrite} for a card whose rows were just ordered, and its held name's lines at the overview band,
+ * whose room it bounds, from the card's last reading: no layout is read.
+ */
+export function markFirstPin(card: HTMLElement): void {
+  applyRoomWrite([card, "--rows-before-pin", firstPinWrite(card)]);
+  const name = heldNames.get(card);
+  if (name?.held.isConnected) for (const write of heldLineWrites(name, ["overview"], rowsBeforePin(card))) applyRoomWrite(write);
+}
+
+/** A write's name says what it sets: a `data-` attribute, a custom property, or else a class. */
+function applyRoomWrite([element, name, value]: RoomWrite): void {
+  if (typeof value === "boolean") element.classList.toggle(name, value);
+  else if (name.startsWith("data-")) element.setAttribute(name, value);
+  else if (value === "") element.style.removeProperty(name);
+  else element.style.setProperty(name, value);
 }
 
 /** Empty generated placeholders are not a file description. The complete authored text remains in the reader. */

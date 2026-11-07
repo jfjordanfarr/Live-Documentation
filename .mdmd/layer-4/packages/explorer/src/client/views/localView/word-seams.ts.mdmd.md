@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/word-seams.ts
-- Generated At: 2026-10-30T19:08:33.746Z
+- Generated At: 2026-11-06T21:14:21.453Z
 
 ## Authored
 ### Purpose
@@ -12,6 +12,8 @@ Where a name may break across lines, as a pure rule the Local Map's cards and di
 
 ### Notes
 Written 2026-10-30 for the Explorer checklist's item "Labels and controls have room to work", from the October 23 review's finding 14 ("LiveDocGeneratorResul" with its "t" on the next line, capture 14) and finding 16 ("+1 symbols"), under the plan the owner accepted at [Turn 3 of the October 30 record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md#turn-3). The layout's column widths are unaffected: `branch-scene.ts` measures each card at max-content, which soft breaks do not change; only a name inside a box narrower than itself wraps differently, at the seams `seamsOf` names, with the stylesheets' `overflow-wrap: break-word` as the last resort for a seamless word wider than its box. `seamBefore` is the browser check's judge of where a line may start. `setSeamedText` in `dom.ts` writes the segments with `<wbr>` between them.
+
+Since the far bands' round (2026-11-06), the card ladder's held file name is drawn from lines that `held-lines.ts` chooses from these segments, never breaking a segment that fits a full line; the browser's own wrapping had broken short names inside a word beside the node's buttons.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

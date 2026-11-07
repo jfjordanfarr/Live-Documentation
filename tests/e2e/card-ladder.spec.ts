@@ -29,19 +29,25 @@ const reading = (page: Page) => page.evaluate(id => {
   const size = (selector: string): number => card.querySelector(selector)!.getBoundingClientRect().height;
   const width = (selector: string): number => card.querySelector(selector)!.getBoundingClientRect().width;
   const number = (element: HTMLElement, name: string): number => parseFloat(getComputedStyle(element).getPropertyValue(name)) || 0;
+  const scale = new DOMMatrix(getComputedStyle(document.querySelector("#map-viewport")!).transform).a;
+  // The file's name as drawn: the text in the layout at reading scale, from the middle band out the held drawing, whose
+  // line is its line height at its own scale.
+  const held = card.querySelector<HTMLElement>(".local-file-name-held")!, heldStyle = getComputedStyle(held);
+  const title = heldStyle.display === "none" ? size(".local-file-name .local-file-name-text")
+    : parseFloat(heldStyle.lineHeight) * new DOMMatrix(heldStyle.transform).a * scale;
   return {
     band: container.dataset.lod,
     step: Number(container.dataset.step),
-    scale: new DOMMatrix(getComputedStyle(document.querySelector("#map-viewport")!).transform).a,
+    scale,
     name: size('.symbol-row[data-symbol="PaymentService"] .symbol-label .symbol-label-text'),
-    title: size(".local-file-name .local-file-name-text"),
+    title,
     more: width(".local-file-more"),
     rowMore: width('.symbol-row[data-symbol="PaymentService"] .local-symbol-more'),
     anchor: width('.symbol-row[data-symbol="PaymentService"] .symbol-anchor.inbound'),
     growth: number(container, "--name-growth"), textScale: number(container, "--text-scale"), controlScale: number(container, "--control-scale"),
     rowH: number(row, "--row-h"), rowRoomW: number(row, "--row-room-w"), rowNameW: number(row, "--row-name-w"), rowFillH: number(row, "--row-fill-h"),
-    rowControlsW: number(row, "--row-controls-w"), rowMoreW: number(row, "--row-more-w"), slotLines: number(container, "--slot-lines"),
-    titleFillH: number(card, "--title-fill-h"), titleRoomW: number(card, "--title-room-w"), titleW: number(card, "--title-w"), actionsW: number(card, "--actions-w"), moreW: number(card, "--more-w")
+    rowControlsW: number(row, "--row-controls-w"), rowMoreW: number(row, "--row-more-w"), rowDotRoom: number(row, "--row-dot-room"), slotLines: number(container, "--slot-lines"),
+    titleHeadH: number(card, "--title-head-h"), titleLine: number(card, "--title-line")
   };
 }, payment);
 type Reading = Awaited<ReturnType<typeof reading>>;
@@ -69,6 +75,12 @@ test.beforeEach(async ({ page }) => {
 });
 
 test("each band below reading scale lets one tier leave, names and controls hold their screen size, and no box changes", async ({ page }) => {
+  // Name Growth at 1.5, the lever's default until the far-zoom review of 2026-11-06 set it to 1, so that this walk still
+  // sees a symbol's name grow into the room its description leaves.
+  await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+    key: PERSISTED_UI_KEY,
+    value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, cardText: "slot", nameGrowth: 1.5 } } })
+  });
   await page.goto(url({ selectedNodeId: payment }));
   const subject = page.locator(`.node-card[data-id="${payment}"]`);
   await subject.waitFor();
@@ -100,30 +112,34 @@ test("each band below reading scale lets one tier leave, names and controls hold
   // A symbol's name holds its step's scale and grows past it into the room across its box less its row's controls
   // held, nine tenths of it, up to Name Growth, never past its row's height, never below 1: the stylesheet's rule.
   const expectedName = (band: Reading, controlsW: number): number => {
-    const rowControls = held(band.controlScale, band.rowH / 17);
+    const rowControls = held(band.controlScale, (band.rowH - 2) / 17);
     const byWidth = 0.9 * (band.rowRoomW - controlsW * rowControls) / band.rowNameW;
     return start.name * Math.max(1, Math.min(band.rowFillH, Math.max(band.textScale, Math.min(byWidth, band.textScale * band.growth)))) * ratioOf(band);
   };
   const nodeControls = (band: Reading): number => held(band.controlScale, (32 + band.slotLines * 17) / 20);
-  const expectedTitle = (band: Reading, intruding: number): number => start.title * Math.min(band.titleFillH,
-    (band.titleRoomW - intruding * (nodeControls(band) - 1)) / band.titleW, band.textScale * band.growth) * ratioOf(band);
+  // The file's name holds its step's scale whatever Name Growth says, wrapping rather than growing, as long as one of its
+  // lines fits the header's room (2026-11-06, the far-zoom review).
+  const expectedTitle = (band: Reading): number => start.title * Math.max(1, Math.min(band.textScale, band.titleHeadH / band.titleLine)) * ratioOf(band);
   // A held control is drawn at its step's scale: on screen within its step and the step's margins of its reading size,
-  // 1.2 to the power of three quarters either way (0.87 to 1.15).
+  // 1.2 to the power of three quarters either way (0.87 to 1.15). A dot holds only as far as its card's edge and its
+  // row allow, and follows the map past that (the far-zoom review).
   const heldLow = STEP_RATIO ** -(0.5 + STEP_HYSTERESIS), heldHigh = STEP_RATIO ** (0.5 + STEP_HYSTERESIS);
+  const dotCeiling = (band: Reading): number => Math.min(band.rowDotRoom, band.rowH / 14);
   const expectHeld = (band: Reading): void => {
     expect(Math.abs(band.more - start.more * nodeControls(band) * ratioOf(band))).toBeLessThan(1);
-    expect(Math.abs(band.rowMore - start.rowMore * held(band.controlScale, band.rowH / 17) * ratioOf(band))).toBeLessThan(1);
-    expect(Math.abs(band.anchor - start.anchor * held(band.controlScale, band.rowH / 14) * ratioOf(band))).toBeLessThan(1);
-    for (const part of ["more", "rowMore", "anchor"] as const) {
+    expect(Math.abs(band.rowMore - start.rowMore * held(band.controlScale, (band.rowH - 2) / 17) * ratioOf(band))).toBeLessThan(1);
+    expect(Math.abs(band.anchor - start.anchor * held(band.controlScale, dotCeiling(band)) * ratioOf(band))).toBeLessThan(1);
+    const parts = band.controlScale <= dotCeiling(band) ? ["more", "rowMore", "anchor"] as const : ["more", "rowMore"] as const;
+    for (const part of parts) {
       expect(band[part] / start[part]).toBeGreaterThan(heldLow - 0.01);
       expect(band[part] / start[part]).toBeLessThan(heldHigh + 0.01);
     }
   };
 
   // Middle: the descriptions, the badges, the path and the directory line leave; the row's Pin and More stay, held;
-  // the name holds its screen size (resistance 1) and grows into its row's room up to Name Growth (1.5), the file's
-  // name likewise within its header and short of the card's buttons; the node's controls and the anchor dots hold
-  // their size; every box is the same.
+  // the name holds its screen size (resistance 1) and grows into its row's room up to Name Growth (1.5 here), the file's
+  // name holds its size and wraps within its header, short of the card's buttons; the node's controls and the anchor
+  // dots hold their size; every box is the same.
   await zoomOutTo(page, "middle");
   const middle = await reading(page);
   await expect(row.locator(".local-reading-slot")).toBeHidden();
@@ -137,7 +153,8 @@ test("each band below reading scale lets one tier leave, names and controls hold
   expect(middle.growth).toBe(1.5);
   expect(Math.abs(middle.name - expectedName(middle, middle.rowControlsW))).toBeLessThan(1);
   expect(middle.name).toBeGreaterThan(start.name);
-  expect(Math.abs(middle.title - expectedTitle(middle, middle.actionsW))).toBeLessThan(1);
+  expect(Math.abs(middle.title - expectedTitle(middle))).toBeLessThan(1);
+  expect(Math.abs(middle.title - start.title)).toBeLessThan(1);
   expectHeld(middle);
   expect(await layoutBoxes(page)).toEqual(boxes);
 
@@ -153,7 +170,7 @@ test("each band below reading scale lets one tier leave, names and controls hold
   await expect(subject.locator(".local-file-more")).toBeVisible();
   await expect(row.locator(".symbol-label")).toBeVisible();
   expect(Math.abs(far.name - expectedName(far, far.rowMoreW))).toBeLessThan(1);
-  expect(Math.abs(far.title - expectedTitle(far, far.moreW))).toBeLessThan(1);
+  expect(Math.abs(far.title - expectedTitle(far))).toBeLessThan(1);
   expectHeld(far);
   expect(await layoutBoxes(page)).toEqual(boxes);
 
@@ -242,7 +259,7 @@ test("the map says when its camera moves, and is a compositor layer only meanwhi
 
 /**
  * Every row of a card at one moment: which rows break a rule of the pass (a dot over its name, a name across its row's
- * More or out of its row, a More not drawn, a name drawn outside its limits), the pinned row's highlight against its
+ * More or out of its row, a More not drawn, a name drawn outside its limits, a silent row at the overview band drawing its name), the pinned row's highlight against its
  * text and row, and the held scales in the map's own units, from their screen sizes.
  */
 const stepReading = (page: Page, id: string, pinned: string) => page.evaluate(({ id, pinned }) => {
@@ -256,6 +273,12 @@ const stepReading = (page: Page, id: string, pinned: string) => page.evaluate(({
   for (const row of card.querySelectorAll<HTMLElement>(".symbol-row")) {
     const span = row.querySelector<HTMLElement>(".symbol-label-text")!, text = span.getBoundingClientRect(), box = row.getBoundingClientRect();
     const symbol = row.dataset.symbol!;
+    // The overview band is the file's own: a row goes silent but for a symbol pinned by name, its name and its More no
+    // longer drawn (the far-zoom review, 2026-11-06).
+    if (map.dataset.lod === "overview" && !row.classList.contains("symbol-pinned-named")) {
+      if (getComputedStyle(span).visibility !== "hidden") broken.push(`${symbol}: a silent row draws its name`);
+      continue;
+    }
     const inbound = row.querySelector(".symbol-anchor.dot.inbound")?.getBoundingClientRect();
     const outbound = row.querySelector(".symbol-anchor.dot.outbound")?.getBoundingClientRect();
     if (inbound && inbound.right > text.left + 0.5) broken.push(`${symbol}: the use-dot covers the name`);
@@ -274,8 +297,9 @@ const stepReading = (page: Page, id: string, pinned: string) => page.evaluate(({
   }
   const row = card.querySelector<HTMLElement>(`.symbol-row[data-symbol="${CSS.escape(pinned)}"]`)!;
   const wrapper = row.querySelector<HTMLElement>(".symbol-label-wrapper")!, wrapperBox = wrapper.getBoundingClientRect();
-  const lightHeight = parseFloat(getComputedStyle(wrapper, "::before").height) * k;
-  const light = { top: wrapperBox.top, bottom: wrapperBox.top + lightHeight, left: wrapperBox.left, right: wrapperBox.right };
+  const layer = getComputedStyle(wrapper, "::before");
+  const lightTop = wrapperBox.top + parseFloat(layer.top) * k;
+  const light = { top: lightTop, bottom: lightTop + parseFloat(layer.height) * k, left: wrapperBox.left, right: wrapperBox.right };
   const text = row.querySelector(".symbol-label-text")!.getBoundingClientRect(), box = row.getBoundingClientRect();
   const above = row.previousElementSibling?.getBoundingClientRect();
   const mapUnits = (selector: string, size: number): number => card.querySelector(selector)!.getBoundingClientRect().height / (size * k);
@@ -288,7 +312,7 @@ const stepReading = (page: Page, id: string, pinned: string) => page.evaluate(({
   });
   return {
     band: map.dataset.lod!, step: Number(map.dataset.step), k, textScale, controlScale: number(map, "--control-scale"), broken, truncated, wireErrors,
-    rowH: number(row, "--row-h"),
+    rowH: number(row, "--row-h"), dotRoom: number(row, "--row-dot-room"),
     // The pinned row's text lies inside its highlight; the highlight reaches no further down than its row and no further
     // up than its wrapper's 2 px margin, never into the row above.
     textInLight: text.top >= light.top - 0.5 && text.bottom <= light.bottom + 0.5 && text.left >= light.left - 0.5 && text.right <= light.right + 0.5,
@@ -305,13 +329,15 @@ const stepReading = (page: Page, id: string, pinned: string) => page.evaluate(({
   };
 }, { id, pinned });
 
-test("at every step a dot never covers its name, More stands on every row and a name never crosses it, the pinned highlight holds its name, and past the last step either way nothing changes", async ({ page }) => {
+test("at every step a dot never covers its name, More stands on every drawn row and a name never crosses it, the overview silences unpinned rows, the pinned highlight holds its name, and past the last step either way nothing changes", async ({ page }) => {
   test.setTimeout(90_000);
-  const pinned = "readPicture";
   await page.goto(url({ selectedNodeId: stillPicture }));
   const subject = page.locator(`.node-card[data-id="${stillPicture}"]`);
   await subject.waitFor();
   await localMapStill(page);
+  // The subject's first symbol row, which the arrival frames at the card's title whatever the picture holds: a named
+  // symbol lower down (readPicture until 2026-11-06) leaves the frame when the Live Docs gain a card.
+  const pinned = (await subject.locator(".symbol-row:not(.internals-row)").first().getAttribute("data-symbol"))!;
   await subject.locator(`.symbol-row[data-symbol="${pinned}"] .local-symbol-pin`).click();
   await localMapStill(page);
   await expect(subject.locator(`.symbol-row[data-symbol="${pinned}"]`)).toHaveClass(/symbol-pinned/u);
@@ -319,14 +345,16 @@ test("at every step a dot never covers its name, More stands on every row and a 
   const readings: Awaited<ReturnType<typeof stepReading>>[] = [await stepReading(page, stillPicture, pinned)];
   expect(readings[0].step).toBe(0);
 
-  // Out, one Zoom Out at a time, until the camera can go no farther: every step on the way, and the last step held.
-  for (let click = 0; click < 30; click += 1) {
-    await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
+  // Out, one Zoom Out at a time, until the camera can go no farther, which the button says by being disabled (since
+  // 2026-11-06 at the last step, or where the whole map stands in the frame where that is farther): every step on the
+  // way, and the last step held.
+  const zoomOut = page.getByRole("button", { name: "Zoom Out", exact: true });
+  for (let click = 0; click < 30 && await zoomOut.isEnabled(); click += 1) {
+    await zoomOut.click();
     await localMapStill(page);
-    const now = await stepReading(page, stillPicture, pinned);
-    readings.push(now);
-    if (Math.abs(now.k - readings.at(-2)!.k) < 1e-6) break;
+    readings.push(await stepReading(page, stillPicture, pinned));
   }
+  await expect(zoomOut).toBeDisabled();
   // Zooming out, the step never goes back, from the first to the last.
   const steps = readings.map(each => each.step);
   expect(steps[0]).toBe(0);
@@ -346,14 +374,17 @@ test("at every step a dot never covers its name, More stands on every row and a 
   expect(Math.max(...readings.map(each => each.truncated))).toBeGreaterThan(0);
   expect(await layoutBoxes(page)).toEqual(boxes);
 
-  // Far past the last step: the step and its held scales are the last's, the dot and the buttons at their ceilings (the
-  // row's height over theirs), and two readings there in the map's own units are the same; only the map shrinks them.
+  // At and past the last step: the step and its held scales are the last's, the dot and the buttons at their ceilings
+  // (the row's height over theirs, and for the dot its card's edge too), and the readings there in the map's own units
+  // are the same; only the map shrinks them. Since the farthest zoom became the last step, or the whole map with its
+  // margin where that is farther (2026-11-06), a walk may reach the last step only at its end.
   const atLast = readings.filter(each => each.step === LAST_STEP);
-  expect(atLast.length).toBeGreaterThan(2);
+  expect(atLast.length).toBeGreaterThan(0);
   for (const each of atLast) {
     expect(each.textScale).toBeCloseTo(STEP_RATIO ** LAST_STEP, 2);
-    expect(each.dot).toBeCloseTo(each.rowH / 14, 1);
-    expect(each.rowMore).toBeCloseTo(each.rowH / 17, 1);
+    expect(each.dot).toBeCloseTo(Math.min(each.dotRoom, each.rowH / 14), 1);
+    // A row's buttons stop 2 px above its bottom, so that a pinned row's highlight holds them with air (2026-11-06).
+    expect(each.rowMore).toBeCloseTo((each.rowH - 2) / 17, 1);
     // The node's buttons stop at a slot row's allotment, which the pinned row is.
     expect(each.nodeMore).toBeCloseTo(each.rowH / 20, 1);
   }
@@ -365,8 +396,9 @@ test("at every step a dot never covers its name, More stands on every row and a 
   await page.getByRole("button", { name: "Reset Zoom", exact: true }).click();
   await localMapStill(page);
   let previous = await stepReading(page, stillPicture, pinned);
-  for (let click = 0; click < 12; click += 1) {
-    await page.getByRole("button", { name: "Zoom In", exact: true }).click();
+  const zoomIn = page.getByRole("button", { name: "Zoom In", exact: true });
+  for (let click = 0; click < 12 && await zoomIn.isEnabled(); click += 1) {
+    await zoomIn.click();
     await localMapStill(page);
     const now = await stepReading(page, stillPicture, pinned);
     expect(now.broken).toEqual([]);
@@ -379,15 +411,19 @@ test("at every step a dot never covers its name, More stands on every row and a 
     previous = now;
   }
   expect(previous.band).toBe("close");
+  // The closest zoom says so too.
+  await expect(zoomIn).toBeDisabled();
   expect(await layoutBoxes(page)).toEqual(boxes);
 });
 
 test("beyond the middle band a row's Pin folds into its More, which a keyboard reaches and which pins and unpins", async ({ page }) => {
-  const pinned = "readPicture";
   await page.goto(url({ selectedNodeId: stillPicture }));
   const subject = page.locator(`.node-card[data-id="${stillPicture}"]`);
   await subject.waitFor();
   await localMapStill(page);
+  // The subject's first symbol row, which the arrival frames at the card's title whatever the picture holds: a named
+  // symbol lower down (readPicture until 2026-11-06) leaves the frame when the Live Docs gain a card.
+  const pinned = (await subject.locator(".symbol-row:not(.internals-row)").first().getAttribute("data-symbol"))!;
   const row = subject.locator(`.symbol-row[data-symbol="${pinned}"]`);
   await row.locator(".local-symbol-pin").click();
   await localMapStill(page);

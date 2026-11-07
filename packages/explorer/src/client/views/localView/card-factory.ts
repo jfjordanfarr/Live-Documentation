@@ -53,6 +53,12 @@ export interface CardContext {
   attachReading?(card: HTMLElement, node: ExplorerNodePayload): void;
 }
 
+/**
+ * The registry's name for a card's node-level hubs, `inbound:#hub` and `outbound:#hub`, by which the overview band's
+ * gathered wires find them (2026-11-06); no symbol is named so.
+ */
+export const NODE_HUB = "#hub";
+
 const actionAnchor = (element: HTMLElement): { x: number; y: number } => {
   const rect = element.getBoundingClientRect();
   return { x: rect.left + rect.width / 2, y: rect.bottom };
@@ -85,6 +91,8 @@ export function createNodeCard(
   if (presentation.subject) {
     card.classList.add("selected", "local-focus");
   }
+  // A whole-file pin, which the card itself says at the overview band, where its rows are silent (2026-11-06).
+  card.classList.toggle("file-pinned", presentation.filePinned);
 
   const registerAnchor = (key: string, element: HTMLElement) => context.registerAnchor(node.id, columnRole, key, element);
 
@@ -98,11 +106,13 @@ export function createNodeCard(
     inboundHub.className = "symbol-anchor hub inbound";
     card.appendChild(inboundHub);
     registerAnchor("inbound:*", inboundHub);
+    registerAnchor(`inbound:${NODE_HUB}`, inboundHub);
 
     const outboundHub = document.createElement("div");
     outboundHub.className = "symbol-anchor hub outbound";
     card.appendChild(outboundHub);
     registerAnchor("outbound:*", outboundHub);
+    registerAnchor(`outbound:${NODE_HUB}`, outboundHub);
   }
 
   // For center and upstream columns: add outbound hub for file-level connections
@@ -114,6 +124,17 @@ export function createNodeCard(
     outboundHub.className = "symbol-anchor hub outbound" + (columnRole === "center" ? " center-hub" : "");
     card.appendChild(outboundHub);
     registerAnchor("outbound:*", outboundHub);
+    registerAnchor(`outbound:${NODE_HUB}`, outboundHub);
+  }
+  // The other side's node-level hub, where the overview band's gathered wires arrive (2026-11-06): the same part at the
+  // card's left edge, at the existing hub's height. A file-level wire at the closer bands still arrives at Internals'
+  // dot (`inbound:*`, below), so this hub has a key of its own, and a class that says so to a reader of the page, such
+  // as the layout lab's capture, which reads every other hub as its side's `*` pin.
+  if (!isAsset) {
+    const inboundHub = document.createElement("div");
+    inboundHub.className = "symbol-anchor hub inbound overview-hub";
+    card.appendChild(inboundHub);
+    registerAnchor(`inbound:${NODE_HUB}`, inboundHub);
   }
 
   const header = document.createElement("div");
@@ -126,7 +147,17 @@ export function createNodeCard(
   const nameText = document.createElement("span");
   nameText.className = "local-file-name-text";
   setSeamedText(nameText, node.name);
-  name.append(nameText);
+  // From the middle band out the card ladder draws the name held at its reading size and wrapped at its seams into the
+  // room the header's departed lines leave (the far-zoom review, 2026-11-06). That drawing is generated content, the
+  // lines the card reading chooses from this name for each band and step, so that the text in the layout, which keeps
+  // the header's height in every band, stays the name's one copy for the page's text and its readers; the button's
+  // label names the file for assistive technology. From the middle band out the page's find does not meet the name:
+  // the layout's copy is hidden there, and find does not search generated content.
+  const held = document.createElement("span");
+  held.className = "local-file-name-held";
+  held.setAttribute("aria-hidden", "true");
+  held.dataset.name = node.name;
+  name.append(nameText, held);
   name.setAttribute("aria-label", node.codeRelativePath);
   name.addEventListener("click", event => { event.stopPropagation(); void context.readNode(node); });
   header.append(name);
@@ -336,6 +367,9 @@ function createSymbolSection(
     symbolRow.dataset.nodeId = node.id;
     symbolRow.dataset.symbol = symbol;
     symbolRow.classList.toggle("symbol-pinned", presentation.isPinned(symbol));
+    // A symbol pinned by name, not through its file's whole pin: only such a row stays drawn at the overview band
+    // (2026-11-06; a whole-file pin is a pin of the file, which its card says there).
+    symbolRow.classList.toggle("symbol-pinned-named", presentation.isDirectlyPinned(symbol));
 
     // Add hover handlers for connection highlighting
     symbolRow.addEventListener("mouseenter", () => {
@@ -399,6 +433,7 @@ function createSymbolSection(
     internalsRow.dataset.nodeId = node.id;
     internalsRow.dataset.symbol = "__internals__";
     internalsRow.classList.toggle("symbol-pinned", presentation.isPinned("__internals__"));
+    internalsRow.classList.toggle("symbol-pinned-named", presentation.isDirectlyPinned("__internals__"));
 
     // Add hover handlers for connection highlighting
     internalsRow.addEventListener("mouseenter", () => {

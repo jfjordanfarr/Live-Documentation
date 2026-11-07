@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-reading.ts
-- Generated At: 2026-11-06T09:34:11.656Z
+- Generated At: 2026-11-06T21:30:42.355Z
 
 ## Authored
 ### Purpose
@@ -25,26 +25,30 @@ Later on [Turn 12](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/1
 
 Since the breakpoint pass (2026-11-06, [Turns 17 to 19](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-17--november-6)) `measureRooms` is a module function that only reads and returns its writes, and `measure` reads every slot card before writing any, so that the page lays out once for them all rather than once a row (direction.md's November 6 cost finding). It writes a row's raw facts, `--row-h`, `--row-room-w`, `--row-name-w`, `--row-name-h`, `--row-name-top`, `--row-fill-h`, `--row-controls-w` and `--row-more-w`, in place of the two precomputed fills: the room a name has beside its row's controls now depends on the step, at which the controls are held, so the stylesheet computes it. The room by height is measured from where the name begins to the row's bottom, less the 2 px the pinned highlight keeps under it, so that a name grown downward and its highlight stay inside the row.
 
+Since the far bands' round (2026-11-06, after the owner's report in [Turn 1](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-06.1.record.md#turn-1) and go-ahead in [Turn 3](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-06.1.record.md#turn-3) of anchor dots drawn past their cards and buttons above their rows) every held part is bounded by the room of the box it belongs to, and `measureRooms` reads only boxes the layout gave, so that a render in any band reads the same: a row's name's depth below the row's top (`--row-name-y`) and the wrapper's (`--row-wrapper-y`), from which the stylesheet holds the row's head about the row's top edge, `--row-fill-h` now the most the name may be scaled that way (the pure sums are in `ladder-rooms.ts`); its badges' width, More's place and height, which bound the row's buttons by the row; its dots' centre and height, read with the step's shift and scale undone, and their room to the card's border (`--row-dot-room`); and a `local-name-wraps` class for a name that wraps at the reading width, which the first step out does not hold. The file's name gets its room from its top to the header's right edge and down to the first row, the card's bottom and the row pitch for the overview band, and the card's buttons' overhang (`--actions-over-x`, `--actions-over-y`, `--more-h`); `--title-fill-h` and `--title-w` are gone, since the name now wraps rather than scales to fit. `markFirstPin`, also called by the branch renderer whenever it orders a card's rows, writes how many shown rows stand above the first pinned one, which bounds the file's name at the overview band. A write may now be a class as well as a property, and an empty property value removes it.
+
+After the root's third review of the round (2026-11-06; the owner's picture of `rosetta-manifest.json` pinned whole, where the browser's own wrapping broke file names inside a word beside the node's More, "main.r / s"), `measureRooms` also chooses the held file name's lines: for every band from the middle out and every step, with Tuning's resistances from the new `resistances()` option, it gives `heldTitle` and `chooseHeldLines` (`held-lines.ts`) the rooms it measured and a canvas measure of the name's font, and writes the lines as `data-lines-<band>-<step>` on the held element, which the stylesheet draws as they are. A write whose name begins with `data-` is an attribute. The card's rooms are kept per card so that `markFirstPin` chooses the overview band's lines again when the rows are reordered without a reading. The button overhang properties are no longer written, since only the line choice reads them.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ReadingTarget` {#symbol-readingtarget}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L22)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L26)
 
 ##### `ReadingTarget` — Summary
 A file's Purpose or one exact symbol's description, named by the card it is read on.
 
 #### `CardReadingOptions` {#symbol-cardreadingoptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L25)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L29)
 
 ##### `CardReadingOptions` — Summary
 Canonical text, application-owned choices and the actions a card's text can lead to.
 
 #### `CardReading` {#symbol-cardreading}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L67)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L73)
 
 ##### `CardReading` — Summary
 Builds on-card explanations from the same bundled docs as the full reader. A description opens and folds only
@@ -55,6 +59,14 @@ what a shared link shows. Geometry changes belong to the controller and the rend
 name still while the card grows or shrinks around it. Zoom never changes a card's box: below reading scale the
 prose fades (the owner, 2026-11-05: "I really would prefer that the cards don't themselves resize when we zoom
 out"). With fixed slots, the comparison composition, every symbol has the same allotment of text lines.
+
+#### `markFirstPin` {#symbol-markfirstpin}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L583)
+
+##### `markFirstPin` — Summary
+Write {@link firstPinWrite} for a card whose rows were just ordered, and its held name's lines at the overview band,
+whose room it bounds, from the card's last reading: no layout is read.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -72,7 +84,22 @@ out"). With fixed slots, the comparison composition, every symbol has the same a
 - [`reading-state.ReadingChoice`](../../reading-state.ts.mdmd.md#symbol-readingchoice)
 - [`reading-state.descriptionIsOpen`](../../reading-state.ts.mdmd.md#symbol-descriptionisopen)
 - [`types.InspectionTarget`](../../types.ts.mdmd.md#symbol-inspectiontarget) (type-only)
+- [`held-lines.HELD_BANDS`](./held-lines.ts.mdmd.md#symbol-held_bands)
+- [`held-lines.HeldBand`](./held-lines.ts.mdmd.md#symbol-heldband)
+- [`held-lines.TitleRooms`](./held-lines.ts.mdmd.md#symbol-titlerooms)
+- [`held-lines.chooseHeldLines`](./held-lines.ts.mdmd.md#symbol-chooseheldlines)
+- [`held-lines.heldTitle`](./held-lines.ts.mdmd.md#symbol-heldtitle)
+- [`ladder-rooms.dotRoom`](./ladder-rooms.ts.mdmd.md#symbol-dotroom)
+- [`ladder-rooms.layoutTopOf`](./ladder-rooms.ts.mdmd.md#symbol-layouttopof)
+- [`ladder-rooms.nameFill`](./ladder-rooms.ts.mdmd.md#symbol-namefill)
+- [`ladder-rooms.nameWraps`](./ladder-rooms.ts.mdmd.md#symbol-namewraps)
+- [`ladder-rooms.rowsBeforeFirstPin`](./ladder-rooms.ts.mdmd.md#symbol-rowsbeforefirstpin)
+- [`ladder-steps.FIRST_STEP`](./ladder-steps.ts.mdmd.md#symbol-first_step)
+- [`ladder-steps.LAST_STEP`](./ladder-steps.ts.mdmd.md#symbol-last_step)
+- [`ladder-steps.LadderResistances`](./ladder-steps.ts.mdmd.md#symbol-ladderresistances)
+- [`ladder-steps.ladderScales`](./ladder-steps.ts.mdmd.md#symbol-ladderscales-function)
 - [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)
 - [`types.ReadingControl`](./types.ts.mdmd.md#symbol-readingcontrol) (type-only)
+- [`word-seams.seamsOf`](./word-seams.ts.mdmd.md#symbol-seamsof)
 - [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

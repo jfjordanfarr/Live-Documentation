@@ -41,6 +41,8 @@ The [November 2 exploration pass](../../../../../../AI-Agent-Workspace/ChatHisto
 
 Since [November 5](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-1) `changeReading` carries the control the person used (the name or the book) into the view's capture, so that the render returns focus to it; names read their descriptions and the evidence reader opens from More.
 
+Since the far bands' second milestone (2026-11-06) the Local Map's `onZoomLimits` disables the Zoom Out button at the farthest zoom and Zoom In at the closest, which a reader of the page is told.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

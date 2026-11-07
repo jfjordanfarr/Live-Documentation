@@ -17,6 +17,8 @@ The colour comparison reads CSS pseudo-element paint and Three's native node mat
 
 Since 2026-10-31 (discovery, [Turn 4 of the October 31 record](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-4)) pins fade nothing, since the picture holds only what they reach, so the history sample's rows carry no Faded row; the estate's subject ends in a frontier, so its rows carry the Dimmed row.
 
+Since the far bands' round (2026-11-07, the root's fourth review) the 2D legend holds a sixth row, "Width: references", which it displays only at the overview band, whose gathered wires it explains; the case reads the rows shown at the 2D map's arrival, the five as before, and that the sixth is hidden there. `local-map-overview.spec.ts` holds the row at the overview band.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

@@ -68,7 +68,7 @@ export const getDefaultTuning = (): TuningConfig => ({
     slotLines: 2,
     textResistance: 1,
     controlResistance: 1,
-    nameGrowth: 1.5,
+    nameGrowth: 1,
     searchStarts: 32,
     searchPatience: 8,
     rankingPull: 0,

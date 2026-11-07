@@ -10,6 +10,7 @@ import { describe, expect, it } from "vitest";
 import { clamp, easeOutCubic, zoomAtPoint } from "./pan-zoom";
 import type { LocalViewRuntime } from "./runtime";
 import type { MapTransform } from "./types";
+import { UNMEASURED_FLOOR } from "./zoom-limits";
 
 describe("pan-zoom", () => {
   describe("clamp", () => {
@@ -137,15 +138,24 @@ describe("pan-zoom", () => {
       expect(newTransform.k).toBeLessThan(1);
     });
 
-    it("zooms out to 0.05 while preserving the point under the cursor", () => {
+    it("zooms out to the map's farthest zoom while preserving the point under the cursor", () => {
+      // The floor the controller derives from the map (zoom-limits.ts) replaced the fixed 0.05 on 2026-11-06.
       const { runtime, getTransform } = createMockRuntime({ x: 0, y: 0, k: 0.5 });
+      runtime.zoomFloor = 0.16;
 
       // Large negative delta should hit the floor
       zoomAtPoint(runtime, 100, 100, -10, () => {});
 
-      expect(getTransform().k).toBe(0.05);
+      expect(getTransform().k).toBe(0.16);
       expect((100 - getTransform().x) / getTransform().k).toBeCloseTo(200, 5);
       expect((100 - getTransform().y) / getTransform().k).toBeCloseTo(200, 5);
+    });
+
+    it("before the map is measured, keeps only a guard that the scale stays positive", () => {
+      const { runtime, getTransform } = createMockRuntime({ x: 0, y: 0, k: 0.5 });
+      runtime.zoomFloor = null;
+      zoomAtPoint(runtime, 100, 100, -10, () => {});
+      expect(getTransform().k).toBe(UNMEASURED_FLOOR);
     });
 
     it("clamps zoom level to maximum 3", () => {

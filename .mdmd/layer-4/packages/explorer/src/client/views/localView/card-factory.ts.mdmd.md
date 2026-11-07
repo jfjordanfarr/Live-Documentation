@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-factory.ts
-- Generated At: 2026-11-06T03:23:50.457Z
+- Generated At: 2026-11-07T00:25:41.965Z
 
 ## Authored
 ### Purpose
@@ -28,6 +28,10 @@ November 4 reading is attached through the card context after the native card is
 
 Since [Turn 12](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-12--november-6) a file's name and a symbol's name carry their text in a span of their own (`local-file-name-text`, `symbol-label-text`): the card ladder scales the text, never the button, whose box fills its row and, scaled, covered the row's Pin so that a zoomed pin transition could not click it.
 
+Since the far bands' round (2026-11-06, [Turn 3](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-06.1.record.md#turn-3)) the file's name button also holds an empty, `aria-hidden` element, `local-file-name-held`, carrying the name: from the middle band out the card ladder draws the name from it, held at its reading size, in the lines the card reading chooses for each band and step in the room the header's departed lines leave. The text in the layout stays, not drawn, so that it keeps the header's height in every band and remains the name's one copy for the page's text and the perspective transition's reading of `textContent`; the button's label names the file for assistive technology. From the middle band out the page's find does not meet the name: that copy is hidden there, and the drawing is generated content, which find does not search.
+
+Since the far bands' second milestone (2026-11-06) every card that is not an asset has a node-level hub on its using side too, at its left edge at the existing hub's height, where the overview band's gathered wires arrive; both node-level hubs are registered under `#hub` (`inbound:#hub`, `outbound:#hub`), so that the overview finds them while a file-level reference at the closer bands still arrives at Internals' dot (`inbound:*`). The using side's hub carries the class `overview-hub` since the root's fourth review (2026-11-07): the layout lab's capture had read it, as it reads every hub, as the card's `inbound:*` pin, and found 93 pins drifted on the repository's five files where the page's placement had not moved.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -45,9 +49,17 @@ The values a fresh card reads while it is built. The wrapper may survive a rende
 ##### `CardContext` — Summary
 Only the facts and actions a card needs; navigation targets are looked up when their event occurs.
 
+#### `NODE_HUB` {#symbol-node_hub}
+- Type: const
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L60)
+
+##### `NODE_HUB` — Summary
+The registry's name for a card's node-level hubs, `inbound:#hub` and `outbound:#hub`, by which the overview band's
+gathered wires find them (2026-11-06); no symbol is named so.
+
 #### `createNodeCard` {#symbol-createnodecard}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L69)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L75)
 - Parameters: `context`: [`CardContext`](#symbol-cardcontext); `node`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload); `columnRole`: [`ColumnRole`](./types.ts.mdmd.md#symbol-columnrole)
 
 ##### `createNodeCard` — Summary
@@ -63,7 +75,7 @@ The created card element
 
 #### `createClosedDirectory` {#symbol-createcloseddirectory}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L242)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L273)
 - Parameters: `context`: [`CardContext`](#symbol-cardcontext); `closed`: [`ClosedDirectory`](./branches.ts.mdmd.md#symbol-closeddirectory)
 
 ##### `createClosedDirectory` — Summary
@@ -74,7 +86,7 @@ under it is at least encasing, so no wire ever reaches a closed box.
 
 #### `countsOf` {#symbol-countsof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L277)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L308)
 
 ##### `countsOf` — Summary
 "3 files, 2 directories", either part left out at zero; "empty" when both are.

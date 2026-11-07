@@ -11,13 +11,31 @@
 export type LadderBand = "close" | "reading" | "middle" | "far" | "overview";
 
 const BANDS: readonly LadderBand[] = ["overview", "far", "middle", "reading", "close"];
-/** The ratios at which each band gives way to the next one out (2026-11-05, Turn 9). */
-const BAND_EDGES = [0.25, 0.45, 0.74, 1.3];
 /** A band is re-entered closer only 15 % past its edge, so that a camera resting on one does not chatter. */
-const BAND_MARGIN = 1.15;
+export const BAND_MARGIN = 1.15;
 
 /** The zoom between two steps: 20 %, four steps to a doubling, below what the eye reads as a change of size. */
 export const STEP_RATIO = 1.2;
+
+/**
+ * The last press of each band before the next one out, in Zoom button presses from reading scale (negative closer):
+ * the close band ends two presses in, the reading band one press out, the middle band at the fourth, the far band at the
+ * sixth (the overview band begins at the seventh since the far bands' review of 2026-11-06, where a file's header held
+ * one line and a row's name five letters beside its More while one press farther the file's name stood whole). The
+ * bands' places were first set by ratio (2026-11-05, Turn 9): close above 1.3, middle below 0.74, far below 0.45,
+ * overview below 0.25.
+ */
+const BAND_LAST_PRESSES = [6, 4, 1, -2];
+
+/**
+ * The ratios at which each band gives way to the next one out. A press out and a press back must show the same band,
+ * since returning to a place keeps its picture: with a band entered farther at its edge and re-entered closer only
+ * BAND_MARGIN past it, an edge between the press it follows (ratio r) and the next press out (r / STEP_RATIO) serves
+ * both directions anywhere between r / STEP_RATIO and r / BAND_MARGIN, and it stands in that window's middle, r over the
+ * square root of BAND_MARGIN times STEP_RATIO (about 1.175). The literal edges had stood where the press just closer fell
+ * inside the margin, so that one press out was the reading band going out and the middle band coming back.
+ */
+const BAND_EDGES = BAND_LAST_PRESSES.map(press => STEP_RATIO ** -press / Math.sqrt(BAND_MARGIN * STEP_RATIO));
 /** A step is left only a quarter step past its edges, so that a camera resting on one does not chatter. */
 export const STEP_HYSTERESIS = 0.25;
 /** The first step holds reading size and covers every closer zoom: zooming in never shrinks anything. */
