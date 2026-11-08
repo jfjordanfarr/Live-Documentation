@@ -1,0 +1,112 @@
+[
+  {
+    "direction": "out",
+    "progress": "0.6442857142857142",
+    "graphFiles": "16",
+    "labels": [
+      {
+        "id": "directory:Portal/App_Code",
+        "opacity": "0.79824",
+        "left": "308.659px",
+        "top": "281.109px"
+      },
+      {
+        "id": "directory:Portal/Pages",
+        "opacity": "0.79824",
+        "left": "298.672px",
+        "top": "361.36px"
+      },
+      {
+        "id": "Portal/Portal.csproj",
+        "opacity": "0.79824",
+        "left": "355.892px",
+        "top": "462.229px"
+      },
+      {
+        "id": "directory:Portal/Controllers",
+        "opacity": "0.79824",
+        "left": "564.817px",
+        "top": "275.92px"
+      },
+      {
+        "id": "directory:Portal/Scripts",
+        "opacity": "0.79824",
+        "left": "547.831px",
+        "top": "373.914px"
+      },
+      {
+        "id": "Portal/Web.config",
+        "opacity": "0.79824",
+        "left": "599.874px",
+        "top": "459.998px"
+      },
+      {
+        "id": "directory:Portal/Models",
+        "opacity": "0.79824",
+        "left": "797.028px",
+        "top": "286.454px"
+      },
+      {
+        "id": "directory:Portal/Services",
+        "opacity": "0.79824",
+        "left": "830.106px",
+        "top": "364.213px"
+      }
+    ]
+  },
+  {
+    "direction": "back",
+    "progress": "0.345",
+    "graphFiles": "16",
+    "labels": [
+      {
+        "id": "directory:Portal/App_Code",
+        "opacity": "0.771282",
+        "left": "339.846px",
+        "top": "282.661px"
+      },
+      {
+        "id": "directory:Portal/Pages",
+        "opacity": "0.771282",
+        "left": "334.031px",
+        "top": "343.887px"
+      },
+      {
+        "id": "Portal/Portal.csproj",
+        "opacity": "0.771282",
+        "left": "400.089px",
+        "top": "468.007px"
+      },
+      {
+        "id": "directory:Portal/Controllers",
+        "opacity": "0.771282",
+        "left": "588.35px",
+        "top": "265.96px"
+      },
+      {
+        "id": "directory:Portal/Scripts",
+        "opacity": "0.771282",
+        "left": "552.308px",
+        "top": "378.255px"
+      },
+      {
+        "id": "Portal/Web.config",
+        "opacity": "0.771282",
+        "left": "606.961px",
+        "top": "461.842px"
+      },
+      {
+        "id": "directory:Portal/Models",
+        "opacity": "0.771282",
+        "left": "780.922px",
+        "top": "288.016px"
+      },
+      {
+        "id": "directory:Portal/Services",
+        "opacity": "0.771282",
+        "left": "864.959px",
+        "top": "366.279px"
+      }
+    ]
+  }
+]

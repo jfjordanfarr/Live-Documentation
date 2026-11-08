@@ -1,0 +1,285 @@
+{
+  "viewport": [
+    1440,
+    960
+  ],
+  "readings": [
+    {
+      "tag": "entering",
+      "url": "http://localhost:8900/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwACOUBA0EkIHgeIW8LI6A4ZARIaAA",
+      "busy": [
+        {
+          "id": "graph-svg",
+          "busy": "true"
+        }
+      ],
+      "buttons": [
+        {
+          "name": "Local Map",
+          "title": "",
+          "pressed": null,
+          "data": [
+            [
+              "data-view",
+              "map"
+            ]
+          ]
+        },
+        {
+          "name": "packages · 368",
+          "title": "packages · 368 files · Open this directory",
+          "pressed": "false",
+          "data": [
+            [
+              "data-node-id",
+              "directory:packages"
+            ],
+            [
+              "data-kind",
+              "shell"
+            ],
+            [
+              "data-priority",
+              "5"
+            ],
+            [
+              "data-context",
+              "false"
+            ]
+          ]
+        },
+        {
+          "name": "Fit current scope",
+          "title": "Fit the current path or retained scope",
+          "pressed": null,
+          "data": []
+        },
+        {
+          "name": "Whole",
+          "title": "Show the whole picture: every file, the other groups and the lone files included",
+          "pressed": "false",
+          "data": []
+        },
+        {
+          "name": "2D",
+          "title": "Local Map in 2D",
+          "pressed": "false",
+          "data": []
+        },
+        {
+          "name": "3D",
+          "title": "Local Map in 3D",
+          "pressed": "true",
+          "data": []
+        },
+        {
+          "name": "Connections",
+          "title": "Connections: files placed by their analyzed references",
+          "pressed": "false",
+          "data": [
+            [
+              "data-spatial-layout",
+              "connections"
+            ]
+          ]
+        },
+        {
+          "name": "Structure",
+          "title": "Structure: files placed by their declared directories",
+          "pressed": "true",
+          "data": [
+            [
+              "data-spatial-layout",
+              "structure"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "start",
+      "url": "http://localhost:8900/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwACOUBA0EkIHgeIW8LI6A4ZARIaAA",
+      "busy": [
+        {
+          "id": "graph-svg",
+          "busy": "true"
+        }
+      ],
+      "buttons": [
+        {
+          "name": "Local Map",
+          "title": "",
+          "pressed": null,
+          "data": [
+            [
+              "data-view",
+              "map"
+            ]
+          ]
+        },
+        {
+          "name": "packages · 368",
+          "title": "packages · 368 files · Open this directory",
+          "pressed": "false",
+          "data": [
+            [
+              "data-node-id",
+              "directory:packages"
+            ],
+            [
+              "data-kind",
+              "shell"
+            ],
+            [
+              "data-priority",
+              "5"
+            ],
+            [
+              "data-context",
+              "false"
+            ]
+          ]
+        },
+        {
+          "name": "Fit current scope",
+          "title": "Fit the current path or retained scope",
+          "pressed": null,
+          "data": []
+        },
+        {
+          "name": "Whole",
+          "title": "Show the whole picture: every file, the other groups and the lone files included",
+          "pressed": "false",
+          "data": []
+        },
+        {
+          "name": "2D",
+          "title": "Local Map in 2D",
+          "pressed": "false",
+          "data": []
+        },
+        {
+          "name": "3D",
+          "title": "Local Map in 3D",
+          "pressed": "true",
+          "data": []
+        },
+        {
+          "name": "Connections",
+          "title": "Connections: files placed by their analyzed references",
+          "pressed": "false",
+          "data": [
+            [
+              "data-spatial-layout",
+              "connections"
+            ]
+          ]
+        },
+        {
+          "name": "Structure",
+          "title": "Structure: files placed by their declared directories",
+          "pressed": "true",
+          "data": [
+            [
+              "data-spatial-layout",
+              "structure"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "whole",
+      "url": "http://localhost:8900/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QJIZVx0BwMoFc7Bc7mALogSvwACOUBA0EkIHgeIW8LIRbICNbeYzIBrSSAA",
+      "busy": [
+        {
+          "id": "graph-svg",
+          "busy": "true"
+        }
+      ],
+      "buttons": [
+        {
+          "name": "Local Map",
+          "title": "",
+          "pressed": null,
+          "data": [
+            [
+              "data-view",
+              "map"
+            ]
+          ]
+        },
+        {
+          "name": "packages · 368",
+          "title": "packages · 368 files · Open this directory",
+          "pressed": "false",
+          "data": [
+            [
+              "data-node-id",
+              "directory:packages"
+            ],
+            [
+              "data-kind",
+              "shell"
+            ],
+            [
+              "data-priority",
+              "5"
+            ],
+            [
+              "data-context",
+              "false"
+            ]
+          ]
+        },
+        {
+          "name": "Fit current scope",
+          "title": "Fit the current path or retained scope",
+          "pressed": null,
+          "data": []
+        },
+        {
+          "name": "Whole",
+          "title": "Whole picture on: every file is shown; press to return to what you asked about",
+          "pressed": "true",
+          "data": []
+        },
+        {
+          "name": "2D",
+          "title": "Local Map in 2D",
+          "pressed": "false",
+          "data": []
+        },
+        {
+          "name": "3D",
+          "title": "Local Map in 3D",
+          "pressed": "true",
+          "data": []
+        },
+        {
+          "name": "Connections",
+          "title": "Connections: files placed by their analyzed references",
+          "pressed": "false",
+          "data": [
+            [
+              "data-spatial-layout",
+              "connections"
+            ]
+          ]
+        },
+        {
+          "name": "Structure",
+          "title": "Structure: files placed by their declared directories",
+          "pressed": "true",
+          "data": [
+            [
+              "data-spatial-layout",
+              "structure"
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

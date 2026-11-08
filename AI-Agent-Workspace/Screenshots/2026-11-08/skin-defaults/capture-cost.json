@@ -1,0 +1,206 @@
+[
+  {
+    "name": "estate",
+    "mode": "2D",
+    "startsAfter": 676,
+    "capture": [
+      {
+        "name": "live-docs:switch-capture",
+        "ms": 10.5
+      },
+      {
+        "name": "live-docs:switch-press",
+        "ms": 103.5
+      },
+      {
+        "name": "live-docs:capture-bodies",
+        "ms": 9.400000005960464
+      },
+      {
+        "name": "live-docs:switch-hold",
+        "ms": 0.5
+      },
+      {
+        "name": "live-docs:switch-render",
+        "ms": 84.59999999403954
+      },
+      {
+        "name": "live-docs:switch-capture-destination",
+        "ms": 61.70000001788139
+      },
+      {
+        "name": "live-docs:capture-cards",
+        "ms": 1
+      },
+      {
+        "name": "live-docs:capture-wires",
+        "ms": 0
+      },
+      {
+        "name": "live-docs:capture-directories",
+        "ms": 41.19999998807907
+      },
+      {
+        "name": "live-docs:capture-copies",
+        "ms": 262.19999998807907
+      },
+      {
+        "name": "live-docs:switch-animation-setup",
+        "ms": 10.699999988079071
+      }
+    ]
+  },
+  {
+    "name": "estate",
+    "mode": "3D",
+    "startsAfter": 384,
+    "capture": [
+      {
+        "name": "live-docs:switch-capture",
+        "ms": 41.70000001788139
+      },
+      {
+        "name": "live-docs:switch-press",
+        "ms": 54.5
+      },
+      {
+        "name": "live-docs:capture-cards",
+        "ms": 0.4000000059604645
+      },
+      {
+        "name": "live-docs:capture-wires",
+        "ms": 0
+      },
+      {
+        "name": "live-docs:capture-directories",
+        "ms": 25
+      },
+      {
+        "name": "live-docs:capture-copies",
+        "ms": 245.7000000178814
+      },
+      {
+        "name": "live-docs:switch-hold",
+        "ms": 0.29999998211860657
+      },
+      {
+        "name": "live-docs:switch-render",
+        "ms": 7.9000000059604645
+      },
+      {
+        "name": "live-docs:capture-bodies",
+        "ms": 13.199999988079071
+      },
+      {
+        "name": "live-docs:switch-capture-destination",
+        "ms": 0
+      },
+      {
+        "name": "live-docs:switch-animation-setup",
+        "ms": 5.799999982118607
+      }
+    ]
+  },
+  {
+    "name": "repository",
+    "mode": "2D",
+    "startsAfter": 1420,
+    "capture": [
+      {
+        "name": "live-docs:switch-capture",
+        "ms": 145.10000002384186
+      },
+      {
+        "name": "live-docs:switch-press",
+        "ms": 328
+      },
+      {
+        "name": "live-docs:capture-bodies",
+        "ms": 143.7999999821186
+      },
+      {
+        "name": "live-docs:switch-hold",
+        "ms": 0.5
+      },
+      {
+        "name": "live-docs:switch-render",
+        "ms": 175.19999998807907
+      },
+      {
+        "name": "live-docs:switch-capture-destination",
+        "ms": 24.19999998807907
+      },
+      {
+        "name": "live-docs:capture-cards",
+        "ms": 1
+      },
+      {
+        "name": "live-docs:capture-wires",
+        "ms": 0.09999999403953552
+      },
+      {
+        "name": "live-docs:capture-directories",
+        "ms": 3.2000000178813934
+      },
+      {
+        "name": "live-docs:capture-copies",
+        "ms": 733.9000000059605
+      },
+      {
+        "name": "live-docs:switch-animation-setup",
+        "ms": 27
+      }
+    ]
+  },
+  {
+    "name": "repository",
+    "mode": "3D",
+    "startsAfter": 1290,
+    "capture": [
+      {
+        "name": "live-docs:switch-capture",
+        "ms": 19.30000001192093
+      },
+      {
+        "name": "live-docs:switch-press",
+        "ms": 60.599999994039536
+      },
+      {
+        "name": "live-docs:capture-cards",
+        "ms": 0.5
+      },
+      {
+        "name": "live-docs:capture-wires",
+        "ms": 0
+      },
+      {
+        "name": "live-docs:capture-directories",
+        "ms": 2.100000023841858
+      },
+      {
+        "name": "live-docs:capture-copies",
+        "ms": 819.4000000059605
+      },
+      {
+        "name": "live-docs:switch-hold",
+        "ms": 0.29999998211860657
+      },
+      {
+        "name": "live-docs:switch-render",
+        "ms": 35.30000001192093
+      },
+      {
+        "name": "live-docs:capture-bodies",
+        "ms": 134.09999999403954
+      },
+      {
+        "name": "live-docs:switch-capture-destination",
+        "ms": 0
+      },
+      {
+        "name": "live-docs:switch-animation-setup",
+        "ms": 12.5
+      }
+    ]
+  }
+]

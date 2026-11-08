@@ -1,0 +1,61 @@
+{
+  "viewport": [
+    1440,
+    960
+  ],
+  "snapshots": [
+    {
+      "step": 0,
+      "file": "02-symbol-anchors-step-0.png",
+      "url": "http://localhost:8900/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4ZyCMKxLjYABiFhMpsaC2ULQAIrcuWaQDs%2BvhWbl8CTTSBUKlUiAkikQKTIKlsDouPAAFZQGMIOPwVBQADaIEzAB0QPhBvnYPm7ugipg6joAPRcYG%2BDIk6s6TLV9B%2BK7VvZcCI1xbLUja5VGsw6Q4cHTF-MAKnzAF0QHPRlAC5hy5XHLX62gEWZm6322xO93e82lisEEP0COxxOQPB%2BJnQM9IKv11Wtw3d-v0G2O1QOC7I9T37C8rxvcdnHgQNpzDOckiAA",
+      "state": [
+        {
+          "id": "map-container",
+          "lod": "reading",
+          "step": "0",
+          "busy": null
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "file": "03-symbol-anchors-step-4.png",
+      "url": "http://localhost:8900/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4ZyCMKxLjYABiFhMpsaC2ULQAIrcuWaQDs%2BvhWbl8CTTSBUKlUiAkikQKTIKlsDouPAAFZQGMIOPwVBQADaIEzAB0QPhBvnYPm7ugipg6joAPRcYG%2BDIk6s6TLV9B%2BK7VvZcCI1xbLUja5VGsw6Q4cHTF-MAKnzAF0QHPRlAC5hy5XHLX62gEWZm6322xO93e82lisEEP0COxxOQPB%2BJnQM9IKv11Wtw3d-v0G2O1QOC7I9T37C8rxvcdnHgQNpzDOckiAA",
+      "state": [
+        {
+          "id": "map-container",
+          "lod": "middle",
+          "step": "4",
+          "busy": null
+        }
+      ]
+    },
+    {
+      "step": 5,
+      "file": "04-symbol-anchors-step-5.png",
+      "url": "http://localhost:8900/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4ZyCMKxLjYABiFhMpsaC2ULQAIrcuWaQDs%2BvhWbl8CTTSBUKlUiAkikQKTIKlsDouPAAFZQGMIOPwVBQADaIEzAB0QPhBvnYPm7ugipg6joAPRcYG%2BDIk6s6TLV9B%2BK7VvZcCI1xbLUja5VGsw6Q4cHTF-MAKnzAF0QHPRlAC5hy5XHLX62gEWZm6322xO93e82lisEEP0COxxOQPB%2BJnQM9IKv11Wtw3d-v0G2O1QOC7I9T37C8rxvcdnHgQNpzDOckiAA",
+      "state": [
+        {
+          "id": "map-container",
+          "lod": "far",
+          "step": "5",
+          "busy": null
+        }
+      ]
+    },
+    {
+      "step": 7,
+      "file": "05-symbol-anchors-step-7.png",
+      "url": "http://localhost:8900/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4ZyCMKxLjYABiFhMpsaC2ULQAIrcuWaQDs%2BvhWbl8CTTSBUKlUiAkikQKTIKlsDouPAAFZQGMIOPwVBQADaIEzAB0QPhBvnYPm7ugipg6joAPRcYG%2BDIk6s6TLV9B%2BK7VvZcCI1xbLUja5VGsw6Q4cHTF-MAKnzAF0QHPRlAC5hy5XHLX62gEWZm6322xO93e82lisEEP0COxxOQPB%2BJnQM9IKv11Wtw3d-v0G2O1QOC7I9T37C8rxvcdnHgQNpzDOckiAA",
+      "state": [
+        {
+          "id": "map-container",
+          "lod": "overview",
+          "step": "7",
+          "busy": null
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

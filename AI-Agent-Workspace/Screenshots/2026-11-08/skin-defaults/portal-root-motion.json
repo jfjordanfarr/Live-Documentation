@@ -1,0 +1,402 @@
+{
+  "clock": "real; unmodified",
+  "viewport": "1440x960",
+  "url": "http://localhost:8911/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QJIZVx0BwMoFc7Bc3SMhxsLmALogWvwPELeFkItkBEgeCSDMgStmatIWtJIA",
+  "before": {
+    "selectedNodeId": null,
+    "pins": {
+      "entries": []
+    },
+    "directories": [
+      "Portal"
+    ]
+  },
+  "after": {
+    "selectedNodeId": null,
+    "pins": {
+      "entries": []
+    },
+    "directories": [
+      "Portal"
+    ]
+  },
+  "errors": [],
+  "readings": [
+    {
+      "direction": "out",
+      "name": "portal-root-out-1.png",
+      "beforeCapture": {
+        "progress": 0.2731428571385998,
+        "labels": [
+          {
+            "id": "directory:Portal/App_Code",
+            "opacity": "0.0830214",
+            "left": "229px",
+            "top": "273.687px"
+          },
+          {
+            "id": "directory:Portal/Pages",
+            "opacity": "0.0830214",
+            "left": "215.656px",
+            "top": "391.689px"
+          },
+          {
+            "id": "Portal/Portal.csproj",
+            "opacity": "0.0830214",
+            "left": "283.5px",
+            "top": "488.259px"
+          },
+          {
+            "id": "directory:Portal/Controllers",
+            "opacity": "0.0830214",
+            "left": "557.172px",
+            "top": "274.675px"
+          },
+          {
+            "id": "directory:Portal/Scripts",
+            "opacity": "0.0830214",
+            "left": "544.539px",
+            "top": "375.8px"
+          },
+          {
+            "id": "Portal/Web.config",
+            "opacity": "0.0830214",
+            "left": "609.5px",
+            "top": "489.498px"
+          },
+          {
+            "id": "directory:Portal/Models",
+            "opacity": "0.0830214",
+            "left": "870.898px",
+            "top": "285.332px"
+          },
+          {
+            "id": "directory:Portal/Services",
+            "opacity": "0.0830214",
+            "left": "875.25px",
+            "top": "378.968px"
+          }
+        ]
+      },
+      "elapsedWithCapture": 1505
+    },
+    {
+      "direction": "out",
+      "name": "portal-root-out-2.png",
+      "beforeCapture": {
+        "progress": 0.5707142857100284,
+        "labels": [
+          {
+            "id": "directory:Portal/App_Code",
+            "opacity": "0.945652",
+            "left": "245.228px",
+            "top": "276.301px"
+          },
+          {
+            "id": "directory:Portal/Pages",
+            "opacity": "0.945652",
+            "left": "232.525px",
+            "top": "387.142px"
+          },
+          {
+            "id": "Portal/Portal.csproj",
+            "opacity": "0.945652",
+            "left": "298.342px",
+            "top": "484.493px"
+          },
+          {
+            "id": "directory:Portal/Controllers",
+            "opacity": "0.945652",
+            "left": "559.665px",
+            "top": "276.111px"
+          },
+          {
+            "id": "directory:Portal/Scripts",
+            "opacity": "0.945652",
+            "left": "546.202px",
+            "top": "376.639px"
+          },
+          {
+            "id": "Portal/Web.config",
+            "opacity": "0.945652",
+            "left": "608.699px",
+            "top": "485.071px"
+          },
+          {
+            "id": "directory:Portal/Models",
+            "opacity": "0.945652",
+            "left": "857.845px",
+            "top": "286.817px"
+          },
+          {
+            "id": "directory:Portal/Services",
+            "opacity": "0.945652",
+            "left": "867.675px",
+            "top": "377.353px"
+          }
+        ]
+      },
+      "elapsedWithCapture": 1850
+    },
+    {
+      "direction": "out",
+      "name": "portal-root-out-3.png",
+      "beforeCapture": {
+        "progress": 0.8207142857100284,
+        "labels": [
+          {
+            "id": "directory:Portal/App_Code",
+            "opacity": "0.293515",
+            "left": "553.339px",
+            "top": "325.934px"
+          },
+          {
+            "id": "directory:Portal/Pages",
+            "opacity": "0.293515",
+            "left": "552.791px",
+            "top": "300.821px"
+          },
+          {
+            "id": "Portal/Portal.csproj",
+            "opacity": "0.293515",
+            "left": "580.138px",
+            "top": "412.991px"
+          },
+          {
+            "id": "directory:Portal/Controllers",
+            "opacity": "0.293515",
+            "left": "607.005px",
+            "top": "303.378px"
+          },
+          {
+            "id": "directory:Portal/Scripts",
+            "opacity": "0.293515",
+            "left": "577.778px",
+            "top": "392.569px"
+          },
+          {
+            "id": "Portal/Web.config",
+            "opacity": "0.293515",
+            "left": "593.501px",
+            "top": "401.005px"
+          },
+          {
+            "id": "directory:Portal/Models",
+            "opacity": "0.293515",
+            "left": "610.009px",
+            "top": "315.004px"
+          },
+          {
+            "id": "directory:Portal/Services",
+            "opacity": "0.293515",
+            "left": "723.861px",
+            "top": "346.68px"
+          }
+        ]
+      },
+      "elapsedWithCapture": 2203
+    },
+    {
+      "direction": "out",
+      "rest": true,
+      "elapsed": 9930,
+      "snapshot": {
+        "selectedNodeId": null,
+        "pins": {
+          "entries": []
+        },
+        "directories": [
+          "Portal"
+        ]
+      }
+    },
+    {
+      "direction": "back",
+      "name": "portal-root-back-1.png",
+      "beforeCapture": {
+        "progress": 0.3471428571385994,
+        "labels": [
+          {
+            "id": "directory:Portal/App_Code",
+            "opacity": "0.776761",
+            "left": "336.82px",
+            "top": "282.509px"
+          },
+          {
+            "id": "directory:Portal/Pages",
+            "opacity": "0.776761",
+            "left": "330.799px",
+            "top": "354.978px"
+          },
+          {
+            "id": "Portal/Portal.csproj",
+            "opacity": "0.776761",
+            "left": "396.906px",
+            "top": "468.635px"
+          },
+          {
+            "id": "directory:Portal/Controllers",
+            "opacity": "0.776761",
+            "left": "587.499px",
+            "top": "266.367px"
+          },
+          {
+            "id": "directory:Portal/Scripts",
+            "opacity": "0.776761",
+            "left": "552.096px",
+            "top": "378.244px"
+          },
+          {
+            "id": "Portal/Web.config",
+            "opacity": "0.776761",
+            "left": "607.03px",
+            "top": "462.723px"
+          },
+          {
+            "id": "directory:Portal/Models",
+            "opacity": "0.776761",
+            "left": "783.378px",
+            "top": "296.352px"
+          },
+          {
+            "id": "directory:Portal/Services",
+            "opacity": "0.776761",
+            "left": "865.24px",
+            "top": "366.759px"
+          }
+        ]
+      },
+      "elapsedWithCapture": 1386
+    },
+    {
+      "direction": "back",
+      "name": "portal-root-back-2.png",
+      "beforeCapture": {
+        "progress": 0.5852142857100288,
+        "labels": [
+          {
+            "id": "directory:Portal/App_Code",
+            "opacity": "0.717275",
+            "left": "229px",
+            "top": "277.105px"
+          },
+          {
+            "id": "directory:Portal/Pages",
+            "opacity": "0.717275",
+            "left": "215.656px",
+            "top": "413.083px"
+          },
+          {
+            "id": "Portal/Portal.csproj",
+            "opacity": "0.717275",
+            "left": "283.5px",
+            "top": "490.988px"
+          },
+          {
+            "id": "directory:Portal/Controllers",
+            "opacity": "0.717275",
+            "left": "557.172px",
+            "top": "280.862px"
+          },
+          {
+            "id": "directory:Portal/Scripts",
+            "opacity": "0.717275",
+            "left": "544.539px",
+            "top": "377.841px"
+          },
+          {
+            "id": "Portal/Web.config",
+            "opacity": "0.717275",
+            "left": "609.5px",
+            "top": "494.13px"
+          },
+          {
+            "id": "directory:Portal/Models",
+            "opacity": "0.717275",
+            "left": "870.898px",
+            "top": "304.483px"
+          },
+          {
+            "id": "directory:Portal/Services",
+            "opacity": "0.717275",
+            "left": "875.25px",
+            "top": "383.878px"
+          }
+        ]
+      },
+      "elapsedWithCapture": 1737
+    },
+    {
+      "direction": "back",
+      "name": "portal-root-back-3.png",
+      "beforeCapture": {
+        "progress": 0.8352142857100288,
+        "labels": [
+          {
+            "id": "directory:Portal/App_Code",
+            "opacity": "0",
+            "left": "229px",
+            "top": "277.105px"
+          },
+          {
+            "id": "directory:Portal/Pages",
+            "opacity": "0",
+            "left": "215.656px",
+            "top": "413.083px"
+          },
+          {
+            "id": "Portal/Portal.csproj",
+            "opacity": "0",
+            "left": "283.5px",
+            "top": "490.988px"
+          },
+          {
+            "id": "directory:Portal/Controllers",
+            "opacity": "0",
+            "left": "557.172px",
+            "top": "280.862px"
+          },
+          {
+            "id": "directory:Portal/Scripts",
+            "opacity": "0",
+            "left": "544.539px",
+            "top": "377.841px"
+          },
+          {
+            "id": "Portal/Web.config",
+            "opacity": "0",
+            "left": "609.5px",
+            "top": "494.13px"
+          },
+          {
+            "id": "directory:Portal/Models",
+            "opacity": "0",
+            "left": "870.898px",
+            "top": "304.483px"
+          },
+          {
+            "id": "directory:Portal/Services",
+            "opacity": "0",
+            "left": "875.25px",
+            "top": "383.878px"
+          }
+        ]
+      },
+      "elapsedWithCapture": 2025
+    },
+    {
+      "direction": "back",
+      "rest": true,
+      "elapsed": 2255,
+      "snapshot": {
+        "selectedNodeId": null,
+        "pins": {
+          "entries": []
+        },
+        "directories": [
+          "Portal"
+        ]
+      }
+    }
+  ]
+}
