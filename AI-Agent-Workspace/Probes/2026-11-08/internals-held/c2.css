@@ -1,0 +1,7 @@
+/* C2, over C1: the square at 18 px, grown about its own centre where the dot's box was, so that the row's height and the
+   square's centre on the name's line are unchanged: its margins take back the 4 px it grew. */
+.local-slot-card .symbol-row.internals-row .internals-anchor {
+    width: 18px;
+    height: 18px;
+    margin: 2px -2px -2px;
+}

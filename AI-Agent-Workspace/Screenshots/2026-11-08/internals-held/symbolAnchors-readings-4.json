@@ -1,0 +1,685 @@
+{
+ "subject": "packages/explorer/src/client/views/symbolAnchors.ts",
+ "pin": "search",
+ "url": "http://127.0.0.1:8900/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4ZyCMKxLjYABiFhMpsaC2ULQAIrcuWaQDs%2BvhWbl8CTTSBUKlUiAkikQKTIKlsDouPAAFZQGMIOPwVBQADaIEzAB0QPhBvnYPm7ugipg6joAPRcYG%2BDIk6s6TLV9B%2BK7VvZcCI1xbLUja5VGsw6Q4cHTF-MAKnzAF0QHPRlAC5hy5XHLX62gEWZm6322xO93e82lisEEP0COxxOQPB%2BJnQM9IKv11Wtw3d-v0G2O1QOC7I9T37C8rxvcdnHgQNpzDOckiAA",
+ "base": "http://127.0.0.1:8900/",
+ "viewport": {
+  "width": 1440,
+  "height": 960,
+  "deviceScaleFactor": 2
+ },
+ "forms": {
+  "as-built": {
+   "errors": [],
+   "readings": [
+    {
+     "k": 0.6993,
+     "lod": "middle",
+     "step": 4,
+     "cards": [
+      {
+       "id": "packages/explorer/src/client/views/symbolAnchors.ts",
+       "publicName": {
+        "text": "normalizeSymbolIdentifier",
+        "drawn": true,
+        "heightPx": 17.4,
+        "typePx": 16,
+        "nameScale": 2.074
+       },
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 9.2,
+         "typePx": 8.4,
+         "nameScale": 1.097
+        },
+        "rowHeightPx": 13.3,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 13.3,
+         "h": 13.3,
+         "aboveRow": 0,
+         "belowRow": 0
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 0,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 0,
+         "right": 0
+        },
+        "overCardBottom": 0
+       }
+      },
+      {
+       "id": "packages/explorer/src/client/views/localView/branches.ts",
+       "publicName": null,
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 9.2,
+         "typePx": 8.4,
+         "nameScale": 1.097
+        },
+        "rowHeightPx": 13.3,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 13.3,
+         "h": 13.3,
+         "aboveRow": 0,
+         "belowRow": 0
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 0,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 0,
+         "right": 0
+        },
+        "overCardBottom": 0
+       }
+      },
+      {
+       "id": "packages/explorer/src/client/views/localView/connections.ts",
+       "publicName": null,
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 9.2,
+         "typePx": 8.4,
+         "nameScale": 1.097
+        },
+        "rowHeightPx": 13.3,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 13.3,
+         "h": 13.3,
+         "aboveRow": 0,
+         "belowRow": 0
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 0,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 0,
+         "right": 0
+        },
+        "overCardBottom": 0
+       }
+      }
+     ],
+     "press": 4,
+     "panned": {
+      "k": 0.6993,
+      "lod": "middle",
+      "step": 4,
+      "cards": [
+       {
+        "id": "packages/explorer/src/client/views/symbolAnchors.ts",
+        "publicName": {
+         "text": "normalizeSymbolIdentifier",
+         "drawn": true,
+         "heightPx": 17.4,
+         "typePx": 16,
+         "nameScale": 2.074
+        },
+        "internals": {
+         "name": {
+          "text": "Internals",
+          "drawn": true,
+          "heightPx": 9.2,
+          "typePx": 8.4,
+          "nameScale": 1.097
+         },
+         "rowHeightPx": 13.3,
+         "rowHeightMap": 19,
+         "anchorPx": {
+          "w": 13.3,
+          "h": 13.3,
+          "aboveRow": 0,
+          "belowRow": 0
+         },
+         "overRow": {
+          "top": 0,
+          "bottom": 0,
+          "right": 0
+         },
+         "overOutline": {
+          "top": 0,
+          "bottom": 0,
+          "right": 0
+         },
+         "overCardBottom": 0
+        }
+       },
+       {
+        "id": "packages/explorer/src/client/views/localView/branches.ts",
+        "publicName": null,
+        "internals": {
+         "name": {
+          "text": "Internals",
+          "drawn": true,
+          "heightPx": 9.2,
+          "typePx": 8.4,
+          "nameScale": 1.097
+         },
+         "rowHeightPx": 13.3,
+         "rowHeightMap": 19,
+         "anchorPx": {
+          "w": 13.3,
+          "h": 13.3,
+          "aboveRow": 0,
+          "belowRow": 0
+         },
+         "overRow": {
+          "top": 0,
+          "bottom": 0,
+          "right": 0
+         },
+         "overOutline": {
+          "top": 0,
+          "bottom": 0,
+          "right": 0
+         },
+         "overCardBottom": 0
+        }
+       },
+       {
+        "id": "packages/explorer/src/client/views/localView/connections.ts",
+        "publicName": null,
+        "internals": {
+         "name": {
+          "text": "Internals",
+          "drawn": true,
+          "heightPx": 9.2,
+          "typePx": 8.4,
+          "nameScale": 1.097
+         },
+         "rowHeightPx": 13.3,
+         "rowHeightMap": 19,
+         "anchorPx": {
+          "w": 13.3,
+          "h": 13.3,
+          "aboveRow": 0,
+          "belowRow": 0
+         },
+         "overRow": {
+          "top": 0,
+          "bottom": 0,
+          "right": 0
+         },
+         "overOutline": {
+          "top": 0,
+          "bottom": 0,
+          "right": 0
+         },
+         "overCardBottom": 0
+        }
+       }
+      ]
+     }
+    }
+   ]
+  },
+  "H": {
+   "errors": [],
+   "readings": [
+    {
+     "k": 0.6993,
+     "lod": "middle",
+     "step": 4,
+     "cards": [
+      {
+       "id": "packages/explorer/src/client/views/symbolAnchors.ts",
+       "publicName": {
+        "text": "normalizeSymbolIdentifier",
+        "drawn": true,
+        "heightPx": 17.4,
+        "typePx": 16,
+        "nameScale": 2.074
+       },
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 17.4,
+         "typePx": 16,
+         "nameScale": 2.074
+        },
+        "rowHeightPx": 13.3,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 18.9,
+         "h": 18.9,
+         "aboveRow": 0,
+         "belowRow": 11.3
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 12.1,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 10.7,
+         "right": 0
+        },
+        "overCardBottom": 0
+       }
+      },
+      {
+       "id": "packages/explorer/src/client/views/localView/branches.ts",
+       "publicName": null,
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 17.4,
+         "typePx": 16,
+         "nameScale": 2.074
+        },
+        "rowHeightPx": 13.3,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 18.9,
+         "h": 18.9,
+         "aboveRow": 0,
+         "belowRow": 11.3
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 12.1,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 10.7,
+         "right": 0
+        },
+        "overCardBottom": 0
+       }
+      },
+      {
+       "id": "packages/explorer/src/client/views/localView/connections.ts",
+       "publicName": null,
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 17.4,
+         "typePx": 16,
+         "nameScale": 2.074
+        },
+        "rowHeightPx": 13.3,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 18.9,
+         "h": 18.9,
+         "aboveRow": 0,
+         "belowRow": 11.3
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 12.1,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 10.7,
+         "right": 0
+        },
+        "overCardBottom": 0
+       }
+      }
+     ],
+     "press": 4,
+     "panned": {
+      "k": 0.6993,
+      "lod": "middle",
+      "step": 4,
+      "cards": [
+       {
+        "id": "packages/explorer/src/client/views/symbolAnchors.ts",
+        "publicName": {
+         "text": "normalizeSymbolIdentifier",
+         "drawn": true,
+         "heightPx": 17.4,
+         "typePx": 16,
+         "nameScale": 2.074
+        },
+        "internals": {
+         "name": {
+          "text": "Internals",
+          "drawn": true,
+          "heightPx": 17.4,
+          "typePx": 16,
+          "nameScale": 2.074
+         },
+         "rowHeightPx": 13.3,
+         "rowHeightMap": 19,
+         "anchorPx": {
+          "w": 18.9,
+          "h": 18.9,
+          "aboveRow": 0,
+          "belowRow": 11.3
+         },
+         "overRow": {
+          "top": 0,
+          "bottom": 12.1,
+          "right": 0
+         },
+         "overOutline": {
+          "top": 0,
+          "bottom": 10.7,
+          "right": 0
+         },
+         "overCardBottom": 0
+        }
+       },
+       {
+        "id": "packages/explorer/src/client/views/localView/branches.ts",
+        "publicName": null,
+        "internals": {
+         "name": {
+          "text": "Internals",
+          "drawn": true,
+          "heightPx": 17.4,
+          "typePx": 16,
+          "nameScale": 2.074
+         },
+         "rowHeightPx": 13.3,
+         "rowHeightMap": 19,
+         "anchorPx": {
+          "w": 18.9,
+          "h": 18.9,
+          "aboveRow": 0,
+          "belowRow": 11.3
+         },
+         "overRow": {
+          "top": 0,
+          "bottom": 12.1,
+          "right": 0
+         },
+         "overOutline": {
+          "top": 0,
+          "bottom": 10.7,
+          "right": 0
+         },
+         "overCardBottom": 0
+        }
+       },
+       {
+        "id": "packages/explorer/src/client/views/localView/connections.ts",
+        "publicName": null,
+        "internals": {
+         "name": {
+          "text": "Internals",
+          "drawn": true,
+          "heightPx": 17.4,
+          "typePx": 16,
+          "nameScale": 2.074
+         },
+         "rowHeightPx": 13.3,
+         "rowHeightMap": 19,
+         "anchorPx": {
+          "w": 18.9,
+          "h": 18.9,
+          "aboveRow": 0,
+          "belowRow": 11.3
+         },
+         "overRow": {
+          "top": 0,
+          "bottom": 12.1,
+          "right": 0
+         },
+         "overOutline": {
+          "top": 0,
+          "bottom": 10.7,
+          "right": 0
+         },
+         "overCardBottom": 0
+        }
+       }
+      ]
+     }
+    }
+   ]
+  },
+  "C1": {
+   "errors": [],
+   "readings": [
+    {
+     "k": 0.6993,
+     "lod": "middle",
+     "step": 4,
+     "cards": [
+      {
+       "id": "packages/explorer/src/client/views/symbolAnchors.ts",
+       "publicName": {
+        "text": "normalizeSymbolIdentifier",
+        "drawn": true,
+        "heightPx": 17.4,
+        "typePx": 16,
+        "nameScale": 2.074
+       },
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 17.4,
+         "typePx": 16,
+         "nameScale": 2.074
+        },
+        "rowHeightPx": 13.3,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 18.9,
+         "h": 18.9,
+         "aboveRow": 0,
+         "belowRow": 11.3
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 12.1,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 10.7,
+         "right": 0
+        },
+        "overCardBottom": 0
+       }
+      },
+      {
+       "id": "packages/explorer/src/client/views/localView/branches.ts",
+       "publicName": null,
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 17.4,
+         "typePx": 16,
+         "nameScale": 2.074
+        },
+        "rowHeightPx": 13.3,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 18.9,
+         "h": 18.9,
+         "aboveRow": 0,
+         "belowRow": 11.3
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 12.1,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 10.7,
+         "right": 0
+        },
+        "overCardBottom": 0
+       }
+      },
+      {
+       "id": "packages/explorer/src/client/views/localView/connections.ts",
+       "publicName": null,
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 17.4,
+         "typePx": 16,
+         "nameScale": 2.074
+        },
+        "rowHeightPx": 13.3,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 18.9,
+         "h": 18.9,
+         "aboveRow": 0,
+         "belowRow": 11.3
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 12.1,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 10.7,
+         "right": 0
+        },
+        "overCardBottom": 0
+       }
+      }
+     ],
+     "press": 4,
+     "panned": {
+      "k": 0.6993,
+      "lod": "middle",
+      "step": 4,
+      "cards": [
+       {
+        "id": "packages/explorer/src/client/views/symbolAnchors.ts",
+        "publicName": {
+         "text": "normalizeSymbolIdentifier",
+         "drawn": true,
+         "heightPx": 17.4,
+         "typePx": 16,
+         "nameScale": 2.074
+        },
+        "internals": {
+         "name": {
+          "text": "Internals",
+          "drawn": true,
+          "heightPx": 17.4,
+          "typePx": 16,
+          "nameScale": 2.074
+         },
+         "rowHeightPx": 13.3,
+         "rowHeightMap": 19,
+         "anchorPx": {
+          "w": 18.9,
+          "h": 18.9,
+          "aboveRow": 0,
+          "belowRow": 11.3
+         },
+         "overRow": {
+          "top": 0,
+          "bottom": 12.1,
+          "right": 0
+         },
+         "overOutline": {
+          "top": 0,
+          "bottom": 10.7,
+          "right": 0
+         },
+         "overCardBottom": 0
+        }
+       },
+       {
+        "id": "packages/explorer/src/client/views/localView/branches.ts",
+        "publicName": null,
+        "internals": {
+         "name": {
+          "text": "Internals",
+          "drawn": true,
+          "heightPx": 17.4,
+          "typePx": 16,
+          "nameScale": 2.074
+         },
+         "rowHeightPx": 13.3,
+         "rowHeightMap": 19,
+         "anchorPx": {
+          "w": 18.9,
+          "h": 18.9,
+          "aboveRow": 0,
+          "belowRow": 11.3
+         },
+         "overRow": {
+          "top": 0,
+          "bottom": 12.1,
+          "right": 0
+         },
+         "overOutline": {
+          "top": 0,
+          "bottom": 10.7,
+          "right": 0
+         },
+         "overCardBottom": 0
+        }
+       },
+       {
+        "id": "packages/explorer/src/client/views/localView/connections.ts",
+        "publicName": null,
+        "internals": {
+         "name": {
+          "text": "Internals",
+          "drawn": true,
+          "heightPx": 17.4,
+          "typePx": 16,
+          "nameScale": 2.074
+         },
+         "rowHeightPx": 13.3,
+         "rowHeightMap": 19,
+         "anchorPx": {
+          "w": 18.9,
+          "h": 18.9,
+          "aboveRow": 0,
+          "belowRow": 11.3
+         },
+         "overRow": {
+          "top": 0,
+          "bottom": 12.1,
+          "right": 0
+         },
+         "overOutline": {
+          "top": 0,
+          "bottom": 10.7,
+          "right": 0
+         },
+         "overCardBottom": 0
+        }
+       }
+      ]
+     }
+    }
+   ]
+  }
+ }
+}

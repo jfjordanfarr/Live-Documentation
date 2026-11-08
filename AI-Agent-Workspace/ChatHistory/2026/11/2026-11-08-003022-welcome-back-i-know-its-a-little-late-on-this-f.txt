@@ -1,0 +1,557 @@
+
+❯ Welcome back! I know it's a little late on this fine 11/7/2026, but I sure
+  would love to keep the ball rollin'! Can you continue on based on my last
+  response in the last chat, which was already summarized? (Bootstrap with
+  plenty of summaries and still please read the full chat record from
+  yesterday)
+
+● I'll bootstrap per the workspace guide: the four Memory documents, the handoff
+  routine, the five most recent session summaries, and then the full chat
+  record from the November 6–7 session, before picking up where your last reply
+  left off.
+
+  Searched for 1 pattern, read 13 files, listed 1 directory (ctrl+o to expand)
+
+● Most of those are too large to show inline, so I'm measuring line lengths
+  first and then reading each file in full. · summary
+
+  Read 9 files, ran 1 shell command (ctrl+o to expand)
+
+● The Read tool shows long lines whole, so the rest is a matter of chunks.
+  Continuing the full reads of the four Memory files and yesterday's record from
+  where each was cut.
+
+  Read 5 files (ctrl+o to expand)
+
+● Direction.md lines 87–290 and owner.md lines 135–286 were too large to read
+  whole, so I'm reading them in smaller chunks while checking the repository
+  state and port 8900. · summary
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● Bootstrap reading is done, and the tree is clean at the close-out commit with
+  port 8900 still serving. Next I'll open today's record, check your four
+  screenshots, and read the code behind each open item. · summary
+
+  Searched for 2 patterns, read 4 files, listed 1 directory, ran 3 shell commands (ctrl+o to expand)
+
+● I've got the pictures and probes now; next I'll read the code for the
+  Structure scope, the shell partition, the shared open/close state, and the
+  design doc's shells and ladder paragraphs. · summary
+
+  Searched for 1 pattern, ran 5 shell commands (ctrl+o to expand)
+
+● I've settled the design from the code, and I'm writing the two builders'
+  briefs now to launch in separate worktrees, sharing one browser lock and
+  leaving port 8900 alone. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● 2 background agents launched (↓ to manage)
+   ├ 3D Structure bag-of-cells builder
+   └ 2D names and switch-cost builder
+
+  Read 1 file (ctrl+o to expand)
+
+● Written for: you.
+
+  The bootstrap is done and the ball is rolling. Two builders are at work in
+  their own worktrees, and three things need your word below.
+
+  Your Structure question: yes, and it falls out of the grammar you already
+  have. In Structure a directory is a hub with spokes, and a hub whose children
+  are not shown is the frontier. With skins on, that frontier hub becomes a
+  bubble built from the leaves of everything under it, exactly as the shells'
+  bodies are built now: its own files as spheres, each subdirectory a nested
+  bubble. A click on it is the existing Open: the hub appears with spokes to its
+  files and to its subdirectories, each now a bubble, standing where the skin
+  showed them. Close wraps it again. So with nothing pinned you would see the
+  root's files and one nested embryo per top-level directory, and you pop your
+  way down. The opened set is the one the 2D map shares, so it rides in links. A
+  builder is on it now. One thing it will measure rather than promise is
+  history playback in Structure, since every step changes what a bubble holds.
+
+  The two-line titles are being removed. I read your symbolAnchors.ts picture
+  against the rules. At that step the held More button is about one and a half
+  name lines tall and the header holds two lines, so the name has no line clear
+  of the button and wraps beside it. The second builder is making a file's name
+  one line at every zoom: beside the button when it fits, whole below the button
+  when a clear line exists, otherwise cut with an ellipsis. It will also bring
+  one picture of an alternative for your eye only, a More button no taller than
+  a name line at the far bands so that names stand beside it.
+
+  The switch freeze is that builder's second milestone. Pressing 2D or 3D on
+  this repository's picture blocks the page for about 10 and 15 seconds. The
+  transition clones every card through every computed style and samples every
+  wire, far beyond what the frame can show. The builder measures first, then
+  cuts the cost without changing the animation you accepted.
+
+  Your "horrendous" 2D performance with four files retained is a separate cost
+  from the switch. I have asked for a profile of a zoom, a pan and a pin on that
+  picture, report only, so the next round starts from numbers.
+
+  Three things for your word:
+
+  1. The Internals slot's form. Nothing is built until you choose. At reading
+     scale (AI-Agent-Workspace/Screenshots/2026-11-06/internals-slot/forms-readi
+     ng.png) and zoomed out (AI-Agent-Workspace/Screenshots/2026-11-06/internals
+     -slot/forms-zoomed-out.png): A is a sealed black box, B is open through the
+     card's wall, C is the old black square grown into the thing the wires run
+     into. I recommend A. "Internals is still always small" stays true until
+     this is chosen.
+  2. Skin on by default? You loved the embryos and called the bare spheres an
+     arcade game. I recommend making Skin the default. The cost is a first
+     picture that rests in about 1.07 times the frames, and mixed states that
+     are still noisy.
+  3. Hops Shown at 1 by default? You found one hop easier to get around than two
+     with skins. I would leave it at 2 until the Structure bubbles land, since
+     they change what a hop shows. Say so if you would rather have 1 now.
+
+  I am reading your last message as keeping full nesting, the bubble-in-a-bubble
+  you called tactile joy. Say so if not.
+
+  Port 8900 is unchanged and nothing is committed. Each round comes to you with
+  Explorer links after review and the full gate.
+
+● Written for: you.
+
+  The bootstrap is done and the ball is rolling. Two builders are at work in
+  their own worktrees, and three things need your word below.
+
+  Your Structure question: yes, and it falls out of the grammar you already
+  have. In Structure a directory is a hub with spokes, and a hub whose children
+  are not shown is the frontier. With skins on, that frontier hub becomes a
+  bubble built from the leaves of everything under it, exactly as the shells'
+  bodies are built now: its own files as spheres, each subdirectory a nested
+  bubble. A click on it is the existing Open: the hub appears with spokes to its
+  files and to its subdirectories, each now a bubble, standing where the skin
+  showed them. Close wraps it again. So with nothing pinned you would see the
+  root's files and one nested embryo per top-level directory, and you pop your
+  way down. The opened set is the one the 2D map shares, so it rides in links. A
+  builder is on it now. One thing it will measure rather than promise is
+  history playback in Structure, since every step changes what a bubble holds.
+
+  The two-line titles are being removed. I read your symbolAnchors.ts picture
+  against the rules. At that step the held More button is about one and a half
+  name lines tall and the header holds two lines, so the name has no line clear
+  of the button and wraps beside it. The second builder is making a file's name
+  one line at every zoom: beside the button when it fits, whole below the button
+  when a clear line exists, otherwise cut with an ellipsis. It will also bring
+  one picture of an alternative for your eye only, a More button no taller than
+  a name line at the far bands so that names stand beside it.
+
+  The switch freeze is that builder's second milestone. Pressing 2D or 3D on
+  this repository's picture blocks the page for about 10 and 15 seconds. The
+  transition clones every card through every computed style and samples every
+  wire, far beyond what the frame can show. The builder measures first, then
+  cuts the cost without changing the animation you accepted.
+
+  Your "horrendous" 2D performance with four files retained is a separate cost
+  from the switch. I have asked for a profile of a zoom, a pan and a pin on that
+  picture, report only, so the next round starts from numbers.
+
+  Three things for your word:
+
+  1. The Internals slot's form. Nothing is built until you choose. At reading
+     scale (AI-Agent-Workspace/Screenshots/2026-11-06/internals-slot/forms-readi
+     ng.png) and zoomed out (AI-Agent-Workspace/Screenshots/2026-11-06/internals
+     -slot/forms-zoomed-out.png): A is a sealed black box, B is open through the
+     card's wall, C is the old black square grown into the thing the wires run
+     into. I recommend A. "Internals is still always small" stays true until
+     this is chosen.
+  2. Skin on by default? You loved the embryos and called the bare spheres an
+     arcade game. I recommend making Skin the default. The cost is a first
+     picture that rests in about 1.07 times the frames, and mixed states that
+     are still noisy.
+  3. Hops Shown at 1 by default? You found one hop easier to get around than two
+     with skins. I would leave it at 2 until the Structure bubbles land, since
+     they change what a hop shows. Say so if you would rather have 1 now.
+
+  I am reading your last message as keeping full nesting, the bubble-in-a-bubble
+  you called tactile joy. Say so if not.
+
+  Port 8900 is unchanged and nothing is committed. Each round comes to you with
+  Explorer links after review and the full gate.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Referenced file
+     AI-Agent-Workspace/ChatHistory/2026/11/2026-11-06.1.record.md
+  ⎿  Referenced file AI-Agent-Workspace/Memory/narrative.md
+  ⎿  Referenced file AI-Agent-Workspace/Memory/direction.md
+  ⎿  Referenced file AI-Agent-Workspace/Memory/owner.md
+  ⎿  Referenced file AI-Agent-Workspace/ChatHistory/2026/11/README.md
+
+● Task "2D names and switch-cost builder" still running in background
+
+● Task "3D Structure bag-of-cells builder" still running in background
+
+❯ >The Internals slot's form.
+
+  "As Built" is by far the most aesthetically pleasing so far. C. Black Square
+  is probably the most likely to be improvable upon until it actually _passes_
+  "As built" aesthetically. Intuit from that what you will.
+
+  >Skin on by default? You loved the embryos and called the bare spheres an
+  arcade game. I recommend making Skin the default. The cost is a first picture
+  that rests in about 1.07 times the frames, and mixed states that are still
+  noisy.
+
+  Yes and skin quite deep Embryos in embryos in embryos actually is looking
+  really great. Make no embryos which appear to have only one cell.
+
+  >Hops Shown at 1 by default? You found one hop easier to get around than two
+  with skins. I would leave it at 2 until the Structure bubbles land, since
+  they change what a hop shows. Say so if you would rather have 1 now.
+
+  Yep. 1 turns out to be the better default in its current form.
+
+● Your three answers are in. Recording them first, then carrying the shell
+  decisions to the 3D builder while it still has its context, then the Memory.
+
+  Searched for 6 patterns, read 3 files, listed 1 directory, ran 7 shell commands (ctrl+o to expand)
+
+● Carrying your three answers into the record, the Memory, and a message to the
+  3D builder (which owns the shell files) while its context is warm.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+  ⎿  Message queued for delivery to aeff694d5c3a73e37 at its next tool
+     round. If it finishes first, it is resumed with the message and
+     notifies again, so wait for that notification before resending.
+● Written for: you.
+
+  All three answers are carried, and nothing needs your word now.
+
+  Internals. I read your answer this way: the built row's quiet look is the bar,
+  the black room A, B and C give it is what lost, and C's one idea worth
+  keeping is a square the wires run into. What is actually wrong with the built
+  row is only that it shrinks from the middle band out while every public row
+  holds its size. So the next step is pictures, not a build: the row exactly as
+  built but held at every zoom like a public row, and C brought down to the
+  built row's weight, its square at the dot's scale, no extra height, no black
+  box. Side by side with as built at the four scales, the same way the sketches
+  were made. The 2D builder gets that after its current handback, since it holds
+  the held-size rules. Nothing is built until a picture passes your eye.
+
+  Skin by default, nesting in full, no one-cell embryos. Skin and one hop become
+  the defaults as the last step of the 3D builder's round, after it has taken
+  its Off-against-Skin measurements under the old defaults so they compare what
+  I asked. The nesting fork is closed. Your one-cell rule went to that builder
+  as a rule for every bubble: in Structure, a directory whose whole subtree is
+  one file is drawn as that file on the directory's spoke, never as a bubble
+  around it. In the code as committed, a subdirectory of one file is already
+  drawn as the file and a one-subdirectory chain already collapses, so I could
+  not settle by reading where you saw one-cell embryos. The builder is hunting
+  them in pictures at one and two hops and depths 2 and 4. If you have one on
+  screen, a screenshot would shorten that hunt.
+
+  One hop. With it, the Structure start with nothing pinned is the root's files
+  and one embryo per top-level directory, which is the picture I described to
+  you. Hops 2 still works and shows the top-level directories as hubs with their
+  children as bubbles.
+
+  Both builders are still at work. Each round comes back to you after my review
+  and the full gate, with Explorer links. Port 8900 is unchanged.
+
+› Message from general-purpose
+  Milestone 1 handback (one-line file names in the 2D card ladder): built,
+  verified, staged in worktree agent-aae28db694d1d25af (branch
+  builder-one-line-names off 476ea2c8). Milestone 2 has started; its
+  instrumentation edits (index.ts, perspectiveTransition.ts) are deliberately
+  UNSTAGED, so `git diff --cached` is milestone 1 alone.
+
+  RULE BUILT (held-lines.ts `chooseHeldLines(name, room, measure)`): one line at
+  every band and step. Whole on the first line beside the buttons if it fits;
+  else whole on the first line below the buttons if the room has one and it
+  fits; else cut with "…" on the wider line (the line below if the room has one,
+  otherwise the line beside). Seams are no longer used; card-reading passes the
+  name, not seamsOf. The stylesheet attributes per band and step are unchanged;
+  each now holds the empty lines beside the buttons and then one line.
+
+  FILES CHANGED: packages/explorer/src/client/views/localView/held-lines.ts,
+  held-lines.test.ts (rewritten: 6 chooseHeldLines cases incl. the owner's
+  "branch-renderer.ts" beside a 2-line More in a 2-line room, which the old
+  rules drew "branch- / renderer.ts"; plus a grid over names, widths, beside
+  widths, button heights 0-2 and line counts checking position, the wider-line
+  choice and a maximal cut; heldTitle and stylesheet tests kept),
+  card-reading.ts (passes the name; doc), styles/reading.css (comment only),
+  tests/e2e/card-ladder-boxes.spec.ts (seams removed; checks: lines before the
+  name empty, exactly one line drawn, whole or a prefix plus "…", a name cut
+  below the buttons does not fit that full line, no line past its room or under
+  the buttons), .mdmd/layer-3/live-documentation-explorer.mdmd.md (the far-bands
+  paragraph's sentence on lines, citing Turn 8), the authored Purpose/Notes of
+  the held-lines.ts, held-lines.test.ts and card-ladder-boxes.spec.ts Live Docs,
+  regenerated Live Docs, AI-Agent-Workspace/Screenshots/README.md (one index
+  line).
+  CREATED: AI-Agent-Workspace/Screenshots/2026-11-07/one-line-names/ (README, 58
+  PNGs, JSON readings, 7.4 MB),
+  AI-Agent-Workspace/Probes/2026-11-07/one-line-names/ (README, held-names.cjs
+  walk-and-classify probe, more-one-line.css).
+
+  NUMBERS (1440x960, fresh profile, search off, Zoom Out presses; base 476ea2c8
+  served on 8914, mine on 8911; names whole beside or below are identical before
+  and after at every press, so every change is a former multi-line name that is
+  now cut):
+  - symbolAnchors.ts pinned alone (search address): far/5 2 cut (before: 2 on
+  two lines: "branch- / renderer.ts", "symbol- / highlight.ts"; now
+  "branch-rend…", "symbol-highl…" beside More); far/6 7 cut (before: 5 two-line,
+  2 cut); overview/7-10: 7, 8, 9, 12 cut (before: 7, 8, 9, 12 two-line or cut).
+  The owner's band is in frame only in the "-panned" pictures (map dragged 700
+  px), before and after.
+  - still-picture.ts (46 files): far/5 31 cut beside More (before: 31 on two
+  lines), far/6 37, overview/7 38, overview/10 44.
+  - rosetta pinned whole: 9 cut at far/5 to overview/8; 16 at overview/10.
+  Payment service, row pinned: 6-11 cut per press.
+  DESIGN CONSEQUENCE FOR YOUR EYE (not decided by me): at the far band the room
+  has no free line under the 1.5-line More, so names are cut beside it at the
+  narrowest width ("force-graph-disco…", "local-map-overvie…"). At the overview
+  band, cards are narrow against the 15 px held name, so cuts get very short:
+  "co…" for connections.ts, and "Paym…" for PaymentQuery.cs, PaymentResult.cs
+  and PaymentRequest.cs alike. Cutting at the end keeps the shared prefix and
+  loses what tells the names apart. Before, many of these were whole on two
+  lines.
+  ALTERNATIVE (injected style, not built): More at far/overview held at most one
+  name-line tall (`transform: scale(min(var(--node-control-scale),
+  calc(var(--title-line) * var(--title-scale) / 20)))`), with lines re-chosen
+  in-page by the same rule (RECHOOSE). Every room then had its lower lines free.
+  far/5: names cut below with more kept ("branch-renderer…"); far/6: 3 whole
+  below, 4 cut below (as built: 7 cut beside). The overview counts are
+  unchanged. Pictures: symbolAnchors-more-one-line-*.png, panned ones included.
+
+  SPECS (all under the flock):
+  - `LIVE_DOCS_E2E_PORT=8911 flock …/browser.lock npx playwright test --config
+  tests/e2e/playwright.config.ts card-ladder-boxes.spec.ts card-ladder.spec.ts
+  local-map-overview.spec.ts still-picture.spec.ts perspective-zoom.spec.ts` →
+  32 passed (11.0 min).
+  - The new box audit on the base bundle: `LIVE_DOCS_E2E_PORT=8914 …
+  card-ladder-boxes.spec.ts -g "still picture, every press"` → fails at press 3
+  (middle/3): local-map-simplicity.spec.ts drawn "local-map- / simplicity. /
+  spec.ts".
+  - `npm run safe:commit` (no --e2e) → passed: 163 unit files / 1,684 tests, 20
+  integration files / 115, SlopCop markdown, assets and symbols clean.
+  slopcop:markdown was rerun after the README fill: 0 broken links.
+  UNFINISHED / NOTES: the Internals row was not touched. A scratch copy of the
+  base bundle at the scratchpad's base-explorer is still served on 8914 for
+  milestone 2's before numbers; I will delete it at the end.
+
+● The 2D builder's first milestone is in. Reviewing its diff and pictures before
+  anything moves.
+
+  Read 10 files, listed 1 directory, ran 8 shell commands (ctrl+o to expand)
+
+● The 2D builder's one-line names are built cleanly, but its own counts and
+  pictures show a cost at the overview band that needs your eye. Recording the
+  review, then putting the choice to you.
+
+  Read 1 file (ctrl+o to expand)
+
+● Written for: you.
+
+  Your one-line titles are built and clean, but the pictures show a cost I will
+  not decide against you. The 2D builder made every file name one line at every
+  zoom, exactly as I briefed. Your band now reads "branch-rend…" beside the More
+  instead of "branch- / renderer.ts". The code, tests and audit are good. Then
+  I looked at the counts and the pictures.
+
+  What one line costs. At the overview band, five cards on the test-suite
+  picture now read "local-map-…" alike, two read "force-grap…", two
+  "card-ladde…". Before, they stood whole on two lines, "local-map- /
+  overview.spec.ts", and told each other apart. At the far band 31 of 46 names
+  on that picture are cut to their first words. At the very last press nothing
+  fits either way: before was "Paym / entQu…" broken inside a word, now "Paym…"
+  three times for three different files.
+
+  The pictures, until the merge, live in the builder's worktree:
+
+  - Your band at the far step: before
+    (.claude/worktrees/agent-aae28db694d1d25af/AI-Agent-Workspace/Screenshots/20
+    26-11-07/one-line-names/before-symbolAnchors-05-far-5-panned.png), one line
+    as built (.claude/worktrees/agent-aae28db694d1d25af/AI-Agent-Workspace/Scree
+    nshots/2026-11-07/one-line-names/symbolAnchors-05-far-5-panned.png), one
+    line with a smaller More
+    (.claude/worktrees/agent-aae28db694d1d25af/AI-Agent-Workspace/Screenshots/20
+    26-11-07/one-line-names/symbolAnchors-more-one-line-05-far-5-panned.png).
+  - The test suite at the overview band: before
+    (.claude/worktrees/agent-aae28db694d1d25af/AI-Agent-Workspace/Screenshots/20
+    26-11-07/one-line-names/before-still-picture-07-overview-7.png), one line as
+    built (.claude/worktrees/agent-aae28db694d1d25af/AI-Agent-Workspace/Screens
+    hots/2026-11-07/one-line-names/still-picture-07-overview-7.png).
+  - The whole set with counts: the README (.claude/worktrees/agent-aae28db694d1d
+    25af/AI-Agent-Workspace/Screenshots/2026-11-07/one-line-names/README.md).
+
+  Three ways to go. I recommend the second.
+
+  1. One line everywhere, as built. Tidiest headers. Names in one directory
+     become indistinguishable at the overview band.
+  2. Whole below the button, never beside it. A name stands beside the More when
+     it fits whole. Otherwise it goes under the More and takes the lines it
+     needs, breaking only at a hyphen or a dot, as it used to. It is cut only
+     when the room under the button runs out. With this, the More at the far and
+     overview bands is made no taller than a line of the name, so a line under
+     it always exists. Your clunky case, a name wrapped beside a tall button,
+     cannot happen. The overview keeps "local-map- / overview.spec.ts".
+  3. One line with the smaller More. Your band reads "branch-renderer…" under
+     the button. The overview band stays as in option 1.
+
+  The silly layouts you saw come from wrapping beside a button, not from a
+  second line as such. That is why I lean to 2. If you want one line as a matter
+  of taste, say 1 and it merges as is.
+
+  Nothing is merged until you choose. The builder is on the switch freeze
+  meanwhile, and the 3D builder is carrying your three answers from before.
+
+❯ Hmmm... I'll say that if you choose option 2, you'll need to make sure that
+  you maximize what you can do with that top-row real estate if you want to go
+  all buttons. I'm fine with that, but just make sure you don't allocate it all
+  to one upper-left corner button and leave a naked zone to its left, leaving
+  the card title underneath. If you choose option 2, much moves as well. So
+  long as you're okay with that, and you define incredibly useful, helpful
+  design principles to help ensure that option 2 is pursued holistically, I'm
+  cool with it. Otherwise, it's option 1.
+
+● Your conditions are clear. Recording them, then answering with the principles
+  and my choice.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Written for: you.
+
+  I take option 2, and I am fine with much moving. The fault you name has one
+  cause: a row handed to a control before the name has its place, which leaves
+  the row empty and demotes the title. Filling that row with more buttons would
+  hide the fault. Ordering the header removes it. These are the principles the
+  round is built under, for every band of the ladder, from reading scale to the
+  last press:
+
+  1. The name leads. The file's name starts on the header's first line at every
+     zoom. No row stands above it, so there is no row for a control to be alone
+     in.
+  2. Whole before cut, few lines before many. One line when the name fits.
+     Otherwise the fewest lines that hold it whole, each line filled before the
+     next starts, broken only at a hyphen, a dot or a capital, never inside a
+     word that fits a line. Cut with an ellipsis only when the header's lines
+     run out. At the overview band that keeps "local-map- / overview.spec.ts"
+     where one line gave "local-map-…".
+  3. Controls follow the name, at the right edge. Pin and More stand at the end
+     of the name's last line when it leaves them room, otherwise on the line
+     after it, against the right edge. They are never above the name, and a name
+     never wraps around them. On your band at the far step this gives
+     "branch-renderer" on the first line and ".ts" with the More on the second.
+     The lone extension is the price of a filled first line, and your eye may
+     reject it.
+  4. A control shares a line only where it fits the line. At the far and
+     overview bands the More is held no taller than a line of the name, so it
+     can share the last line. At the middle band the three controls are taller
+     than a line, so a long name stands on the first line and the three controls
+     take the line under it, at the right. A short name still shares its line
+     with them, as today.
+  5. No empty row, nothing shrinks. No line of the header is left empty. The
+     name is never drawn smaller than its held size. When the lines run out the
+     name is cut and the controls keep their place.
+  6. Changes at steps, and audited. The arrangement changes only at a zoom step,
+     so a press out and the press back show the same header. The box audit
+     holds every rule above at every press on the three audit subjects.
+
+  What moves. At the middle band, long names go above their buttons instead of
+  below them. At the far and overview bands the More shrinks to a line's height
+  and leaves the corner for the end of the name. Names take two lines where they
+  must, and tell each other apart again.
+
+  The plan. This is a round of its own, briefed to the 2D builder once its
+  switch-cost milestone lands, built on the simplification it already made. The
+  one-line build is not merged on its own. The Internals pictures follow after
+  it. Port 8900 is unchanged.
+
+❯ I'm loving the Root/Builder pattern. Your response indicates that your
+  context window is getting just what I'd hoped for with the pattern. Not so
+  complicated as some crazy orchestration framework, just a bit of guidance
+  that you should spin up agents to hold that heavy tool-call-rich-context of
+  the actual nuts and bolts code edits and iterations. You're clear to proceed
+  with that pass and any other pass that you see fit to (if it feels, to you,
+  rather obvious). You're doing great.
+
+● Clearance noted. Recording your message and carrying the clearance, then
+  launching the Internals pictures pass while the two builders finish.
+
+  Made 2 scratchpad edits +88, ran 4 shell commands (ctrl+o to expand)
+
+● Agent(Internals row pictures builder) Opus 5.5
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+  Read 1 file (ctrl+o to expand)
+
+● Thank you. Three builders are now running, and nothing needs your word.
+
+  - Internals pictures. A third builder is taking matched pictures on the
+    committed bundle, no code: the row as built, the row held at every zoom like
+    a public row, and three weights of the black square, on the November 6
+    subject at four scales and on your symbolAnchors.ts band. For your eye when
+    they land.
+  - Header round. The brief under the six principles is written and goes to the
+    2D builder the moment its switch-cost milestone lands, so it keeps the
+    ladder's rules in its context.
+  - 3D. The Structure embryos, the one-cell rule and the two defaults are with
+    the 3D builder.
+
+  Each handback gets my review before anything merges. The gate and your
+  Explorer links follow acceptance. Port 8900 is unchanged.
+
+❯ As I see our workspace's working pattern at play, it occurs to me that,
+  because models like Opus/Sol are smaller stabler forms of Fable/Astra, I
+  should permit these models to themselves spin up to a maximum of 1 subagent
+  at their discression. Models trained on subagent-handback-capable models are
+  themselves capable of spinning up subagents. That being said, subagents
+  should try to limit their usage of subagents to things which can reasonably
+  be done _without_ lots of context about this project/workspace itself. Things
+  like internet research, "playtesting" a build (standing in for a user with
+  basically no background on what Live Documentation even is), and code
+  review/rubber-ducking are valid usages of subagents-for-subagents. No further
+  hierarchy of subagents is permitted at this time. Opus and Sol should spin
+  up a model as smart as themselves if they choose to do so, and if you, the
+  Root Agent, deem that it has been valuable/useful to allow other usages of
+  subagents-for-subagents, you can permit those usages. I trust your judgment
+  on this. This prompt should show you what my overall intents are, and you've
+  been pretty good at filling in the gaps where I haven't fully or completely
+  or perfectly specified everything due to my lack of _envisioning_ everything.
+  My aim with this standard is to simply leverage the technology for what it
+  is good at to get the very best results. If a subagent needs to itself be
+  empowered with up to one subagent, I am okay with that. The Opus/Sol tier is
+  sufficiently stable as to be able to do that at a depth of 1 sufficiently
+  reliably as for me to be comfortable with it. All that said, if you,
+  Fable/Astra ("Root Agent") determine that such allowance was a mistake, you
+  have my permission to _revoke_ that right if it is proving to be more harm
+  than good ("right" as in "subagents for subagents"). Thank you again for your
+  continued efforts, and you're doing great.
+
+● Noted as a standing rule. Recording it, writing it into the shared guide and
+  the briefs, and telling the two code builders they have it.
+
+  Ran 1 shell command (ctrl+o to expand)
+  ⎿  Message queued for delivery to aae28db694d1d25af at its next tool
+     round. If it finishes first, it is resumed with the message and
+     notifies again, so wait for that notification before resending.
+  ⎿  Message queued for delivery to aeff694d5c3a73e37 at its next tool
+     round. If it finishes first, it is resumed with the message and
+     notifies again, so wait for that notification before resending.
+
+● Written for: you.
+
+  Understood and in force. A builder may spin up one subagent of its own tier,
+  at its discretion, for work that needs little of this workspace: research
+  outside the repository, a playtest of its build as a reader who has never
+  heard of Live Documentation, a review or rubber-ducking of its diff. No deeper
+  hierarchy. I may permit other uses I find valuable, and I may revoke the
+  allowance if it does more harm than good.
+
+  Where it lives. The rule is written into the "Roots and builders" paragraph of
+  AGENTS.md, which rides with the next commit, and your words are in owner.md
+  with the date. Two consequences I added so the allowance can be judged on
+  evidence: a subagent's browser runs go through the same lock and the builder's
+  own port, and a handback names any subagent used and what it returned.
+
+  Who has it. The 2D and 3D builders were told in one short message each. The
+  Internals pictures builder was not, since its task is too small to need one.
+  The waiting header brief carries the rule.
+
+  Three builders are at work and nothing needs your word. Port 8900 is
+  unchanged.

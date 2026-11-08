@@ -1,0 +1,11 @@
+/* C1, over H: the dot replaced by a black square the wires run into, in the dot's own box (12 px and its 1 px border,
+   14 px as laid out), held as the dot is; an edge in the green of uses at reduced alpha, a small radius, no glow. */
+.local-slot-card .symbol-row.internals-row .internals-anchor {
+    box-sizing: border-box;
+    width: 14px;
+    height: 14px;
+    border-radius: 2.5px !important;
+    background: #000 !important;
+    border: 2px solid rgba(0, 211, 170, .75) !important;
+    box-shadow: none !important;
+}

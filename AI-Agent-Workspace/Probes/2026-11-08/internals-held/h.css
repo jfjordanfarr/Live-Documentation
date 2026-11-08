@@ -1,0 +1,15 @@
+/* H, held: the Internals row exactly as built, its name, its buttons and its dot held as a public row's are, by the
+   scales the stylesheet gives public rows (reading.css), without the bound of the row's own height: the name by the
+   text scale (and Name Growth, 1 by default), the buttons and the dot by the control scale, the dot still bounded by its
+   card's edge and kept on the name's line. The row keeps its height; where the held head is taller, it stands out. */
+.local-slot-card .symbol-row.internals-row {
+    --row-control-scale: max(1, var(--control-scale, 1));
+    --dot-scale: clamp(1, var(--control-scale, 1), var(--row-dot-room, 1));
+    --dot-y: calc((max(var(--row-dot-h, 14) / 2 * var(--dot-scale), var(--row-dot-mid, 7) + (var(--row-name-y, 0) + var(--row-name-h, 0) / 2) * (var(--name-scale, 1) - 1)) - var(--row-dot-mid, 7)) * 1px);
+}
+[data-lod="reading"]:not([data-step="0"]) .local-slot-card .symbol-row.internals-row:not(.local-name-wraps) {
+    --name-scale: max(1, var(--text-scale, 1));
+}
+:is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card .symbol-row.internals-row {
+    --name-scale: max(1, max(var(--text-scale, 1), min(0.9 * var(--name-room) / var(--row-name-w, 1), var(--text-scale, 1) * var(--name-growth, 1))));
+}

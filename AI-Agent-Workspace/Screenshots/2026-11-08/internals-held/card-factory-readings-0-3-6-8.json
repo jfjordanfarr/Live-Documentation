@@ -1,0 +1,1518 @@
+{
+ "subject": "packages/explorer/src/client/views/localView/card-factory.ts",
+ "pin": "none",
+ "url": "http://127.0.0.1:8900/?s=N4IgbiBcDMA0IDsogA4EMDGBrNBzApgM4D0+AHigDYD2ATvrcYbRsRpQJb4IAuxYXAO4kaGNJQBqQtmloATALQAzTDzoBPAHQ9CIAL5A",
+ "base": "http://127.0.0.1:8900/",
+ "viewport": {
+  "width": 1440,
+  "height": 960,
+  "deviceScaleFactor": 2
+ },
+ "forms": {
+  "as-built": {
+   "errors": [],
+   "readings": [
+    {
+     "k": 1.3595,
+     "lod": "reading",
+     "step": 0,
+     "cards": [
+      {
+       "id": "packages/explorer/src/client/views/localView/card-factory.ts",
+       "publicName": {
+        "text": "NODE_HUB",
+        "drawn": true,
+        "heightPx": 16.3,
+        "typePx": 15,
+        "nameScale": 1
+       },
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 16.3,
+         "typePx": 15,
+         "nameScale": 1
+        },
+        "rowHeightPx": 25.8,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 19,
+         "h": 19,
+         "aboveRow": 0,
+         "belowRow": 0
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 0,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 0,
+         "right": 0
+        },
+        "overCardBottom": 0
+       }
+      },
+      {
+       "id": "packages/explorer/src/client/views/localView/branch-renderer.ts",
+       "publicName": null,
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 16.3,
+         "typePx": 15,
+         "nameScale": 1
+        },
+        "rowHeightPx": 25.8,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 19,
+         "h": 19,
+         "aboveRow": 0,
+         "belowRow": 0
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 0,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 0,
+         "right": 0
+        },
+        "overCardBottom": 0
+       }
+      }
+     ],
+     "press": 0
+    },
+    {
+     "k": 0.7867,
+     "lod": "middle",
+     "step": 3,
+     "cards": [
+      {
+       "id": "packages/explorer/src/client/views/localView/card-factory.ts",
+       "publicName": {
+        "text": "NODE_HUB",
+        "drawn": true,
+        "heightPx": 16.3,
+        "typePx": 15,
+        "nameScale": 1.728
+       },
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 10.4,
+         "typePx": 9.5,
+         "nameScale": 1.097
+        },
+        "rowHeightPx": 14.9,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 14.9,
+         "h": 14.9,
+         "aboveRow": 0,
+         "belowRow": 0
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 0,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 0,
+         "right": 0
+        },
+        "overCardBottom": 0
+       }
+      },
+      {
+       "id": "packages/explorer/src/client/views/localView/branch-renderer.ts",
+       "publicName": null,
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 10.4,
+         "typePx": 9.5,
+         "nameScale": 1.097
+        },
+        "rowHeightPx": 14.9,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 14.9,
+         "h": 14.9,
+         "aboveRow": 0,
+         "belowRow": 0
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 0,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 0,
+         "right": 0
+        },
+        "overCardBottom": 0
+       }
+      }
+     ],
+     "press": 3
+    },
+    {
+     "k": 0.4553,
+     "lod": "far",
+     "step": 6,
+     "cards": [
+      {
+       "id": "packages/explorer/src/client/views/localView/card-factory.ts",
+       "publicName": {
+        "text": "NODE_HUB",
+        "drawn": true,
+        "heightPx": 16.3,
+        "typePx": 15,
+        "nameScale": 2.986
+       },
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 6,
+         "typePx": 5.5,
+         "nameScale": 1.097
+        },
+        "rowHeightPx": 8.7,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 8.7,
+         "h": 8.7,
+         "aboveRow": 0,
+         "belowRow": 0
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 0,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 0,
+         "right": 0
+        },
+        "overCardBottom": 0
+       }
+      },
+      {
+       "id": "packages/explorer/src/client/views/localView/branch-renderer.ts",
+       "publicName": null,
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 6,
+         "typePx": 5.5,
+         "nameScale": 1.097
+        },
+        "rowHeightPx": 8.7,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 8.7,
+         "h": 8.7,
+         "aboveRow": 0,
+         "belowRow": 0
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 0,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 0,
+         "right": 0
+        },
+        "overCardBottom": 0
+       }
+      }
+     ],
+     "press": 6
+    },
+    {
+     "k": 0.3162,
+     "lod": "overview",
+     "step": 8,
+     "cards": [
+      {
+       "id": "packages/explorer/src/client/views/localView/card-factory.ts",
+       "publicName": {
+        "text": "NODE_HUB",
+        "drawn": false,
+        "heightPx": 16.3,
+        "typePx": 15,
+        "nameScale": 4.3
+       },
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": false,
+         "heightPx": 4.2,
+         "typePx": 3.8,
+         "nameScale": 1.097
+        },
+        "rowHeightPx": 6,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 6,
+         "h": 6,
+         "aboveRow": 0,
+         "belowRow": 0
+        },
+        "overRow": null,
+        "overOutline": null,
+        "overCardBottom": null
+       }
+      },
+      {
+       "id": "packages/explorer/src/client/views/localView/branch-renderer.ts",
+       "publicName": null,
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": false,
+         "heightPx": 4.2,
+         "typePx": 3.8,
+         "nameScale": 1.097
+        },
+        "rowHeightPx": 6,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 6,
+         "h": 6,
+         "aboveRow": 0,
+         "belowRow": 0
+        },
+        "overRow": null,
+        "overOutline": null,
+        "overCardBottom": null
+       }
+      }
+     ],
+     "press": 8
+    }
+   ]
+  },
+  "H": {
+   "errors": [],
+   "readings": [
+    {
+     "k": 1.3595,
+     "lod": "reading",
+     "step": 0,
+     "cards": [
+      {
+       "id": "packages/explorer/src/client/views/localView/card-factory.ts",
+       "publicName": {
+        "text": "NODE_HUB",
+        "drawn": true,
+        "heightPx": 16.3,
+        "typePx": 15,
+        "nameScale": 1
+       },
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 16.3,
+         "typePx": 15,
+         "nameScale": 1
+        },
+        "rowHeightPx": 25.8,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 19,
+         "h": 19,
+         "aboveRow": 0,
+         "belowRow": 0
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 0,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 0,
+         "right": 0
+        },
+        "overCardBottom": 0
+       }
+      },
+      {
+       "id": "packages/explorer/src/client/views/localView/branch-renderer.ts",
+       "publicName": null,
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 16.3,
+         "typePx": 15,
+         "nameScale": 1
+        },
+        "rowHeightPx": 25.8,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 19,
+         "h": 19,
+         "aboveRow": 0,
+         "belowRow": 0
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 0,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 0,
+         "right": 0
+        },
+        "overCardBottom": 0
+       }
+      }
+     ],
+     "press": 0
+    },
+    {
+     "k": 0.7867,
+     "lod": "middle",
+     "step": 3,
+     "cards": [
+      {
+       "id": "packages/explorer/src/client/views/localView/card-factory.ts",
+       "publicName": {
+        "text": "NODE_HUB",
+        "drawn": true,
+        "heightPx": 16.3,
+        "typePx": 15,
+        "nameScale": 1.728
+       },
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 16.3,
+         "typePx": 15,
+         "nameScale": 1.728
+        },
+        "rowHeightPx": 14.9,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 19,
+         "h": 19,
+         "aboveRow": 0,
+         "belowRow": 9.1
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 9.1,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 7.5,
+         "right": 0
+        },
+        "overCardBottom": 0
+       }
+      },
+      {
+       "id": "packages/explorer/src/client/views/localView/branch-renderer.ts",
+       "publicName": null,
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 16.3,
+         "typePx": 15,
+         "nameScale": 1.728
+        },
+        "rowHeightPx": 14.9,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 19,
+         "h": 19,
+         "aboveRow": 0,
+         "belowRow": 9.1
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 9.1,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 7.5,
+         "right": 0
+        },
+        "overCardBottom": 0
+       }
+      }
+     ],
+     "press": 3
+    },
+    {
+     "k": 0.4553,
+     "lod": "far",
+     "step": 6,
+     "cards": [
+      {
+       "id": "packages/explorer/src/client/views/localView/card-factory.ts",
+       "publicName": {
+        "text": "NODE_HUB",
+        "drawn": true,
+        "heightPx": 16.3,
+        "typePx": 15,
+        "nameScale": 2.986
+       },
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 16.3,
+         "typePx": 15,
+         "nameScale": 2.986
+        },
+        "rowHeightPx": 8.7,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 12.3,
+         "h": 12.3,
+         "aboveRow": 0,
+         "belowRow": 11.3
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 14.9,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 14,
+         "right": 0
+        },
+        "overCardBottom": 1.7
+       }
+      },
+      {
+       "id": "packages/explorer/src/client/views/localView/branch-renderer.ts",
+       "publicName": null,
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 16.3,
+         "typePx": 15,
+         "nameScale": 2.986
+        },
+        "rowHeightPx": 8.7,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 12.3,
+         "h": 12.3,
+         "aboveRow": 0,
+         "belowRow": 11.3
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 14.9,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 14,
+         "right": 0
+        },
+        "overCardBottom": 0
+       }
+      }
+     ],
+     "press": 6
+    },
+    {
+     "k": 0.3162,
+     "lod": "overview",
+     "step": 8,
+     "cards": [
+      {
+       "id": "packages/explorer/src/client/views/localView/card-factory.ts",
+       "publicName": {
+        "text": "NODE_HUB",
+        "drawn": false,
+        "heightPx": 16.3,
+        "typePx": 15,
+        "nameScale": 4.3
+       },
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": false,
+         "heightPx": 16.3,
+         "typePx": 15,
+         "nameScale": 4.3
+        },
+        "rowHeightPx": 6,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 8.5,
+         "h": 8.5,
+         "aboveRow": 0,
+         "belowRow": 11.8
+        },
+        "overRow": null,
+        "overOutline": null,
+        "overCardBottom": null
+       }
+      },
+      {
+       "id": "packages/explorer/src/client/views/localView/branch-renderer.ts",
+       "publicName": null,
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": false,
+         "heightPx": 16.3,
+         "typePx": 15,
+         "nameScale": 4.3
+        },
+        "rowHeightPx": 6,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 8.5,
+         "h": 8.5,
+         "aboveRow": 0,
+         "belowRow": 11.8
+        },
+        "overRow": null,
+        "overOutline": null,
+        "overCardBottom": null
+       }
+      }
+     ],
+     "press": 8
+    }
+   ]
+  },
+  "C1": {
+   "errors": [],
+   "readings": [
+    {
+     "k": 1.3595,
+     "lod": "reading",
+     "step": 0,
+     "cards": [
+      {
+       "id": "packages/explorer/src/client/views/localView/card-factory.ts",
+       "publicName": {
+        "text": "NODE_HUB",
+        "drawn": true,
+        "heightPx": 16.3,
+        "typePx": 15,
+        "nameScale": 1
+       },
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 16.3,
+         "typePx": 15,
+         "nameScale": 1
+        },
+        "rowHeightPx": 25.8,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 19,
+         "h": 19,
+         "aboveRow": 0,
+         "belowRow": 0
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 0,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 0,
+         "right": 0
+        },
+        "overCardBottom": 0
+       }
+      },
+      {
+       "id": "packages/explorer/src/client/views/localView/branch-renderer.ts",
+       "publicName": null,
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 16.3,
+         "typePx": 15,
+         "nameScale": 1
+        },
+        "rowHeightPx": 25.8,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 19,
+         "h": 19,
+         "aboveRow": 0,
+         "belowRow": 0
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 0,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 0,
+         "right": 0
+        },
+        "overCardBottom": 0
+       }
+      }
+     ],
+     "press": 0
+    },
+    {
+     "k": 0.7867,
+     "lod": "middle",
+     "step": 3,
+     "cards": [
+      {
+       "id": "packages/explorer/src/client/views/localView/card-factory.ts",
+       "publicName": {
+        "text": "NODE_HUB",
+        "drawn": true,
+        "heightPx": 16.3,
+        "typePx": 15,
+        "nameScale": 1.728
+       },
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 16.3,
+         "typePx": 15,
+         "nameScale": 1.728
+        },
+        "rowHeightPx": 14.9,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 19,
+         "h": 19,
+         "aboveRow": 0,
+         "belowRow": 9.1
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 9.1,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 7.5,
+         "right": 0
+        },
+        "overCardBottom": 0
+       }
+      },
+      {
+       "id": "packages/explorer/src/client/views/localView/branch-renderer.ts",
+       "publicName": null,
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 16.3,
+         "typePx": 15,
+         "nameScale": 1.728
+        },
+        "rowHeightPx": 14.9,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 19,
+         "h": 19,
+         "aboveRow": 0,
+         "belowRow": 9.1
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 9.1,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 7.5,
+         "right": 0
+        },
+        "overCardBottom": 0
+       }
+      }
+     ],
+     "press": 3
+    },
+    {
+     "k": 0.4553,
+     "lod": "far",
+     "step": 6,
+     "cards": [
+      {
+       "id": "packages/explorer/src/client/views/localView/card-factory.ts",
+       "publicName": {
+        "text": "NODE_HUB",
+        "drawn": true,
+        "heightPx": 16.3,
+        "typePx": 15,
+        "nameScale": 2.986
+       },
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 16.3,
+         "typePx": 15,
+         "nameScale": 2.986
+        },
+        "rowHeightPx": 8.7,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 12.3,
+         "h": 12.3,
+         "aboveRow": 0,
+         "belowRow": 11.3
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 14.9,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 14,
+         "right": 0
+        },
+        "overCardBottom": 1.7
+       }
+      },
+      {
+       "id": "packages/explorer/src/client/views/localView/branch-renderer.ts",
+       "publicName": null,
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 16.3,
+         "typePx": 15,
+         "nameScale": 2.986
+        },
+        "rowHeightPx": 8.7,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 12.3,
+         "h": 12.3,
+         "aboveRow": 0,
+         "belowRow": 11.3
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 14.9,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 14,
+         "right": 0
+        },
+        "overCardBottom": 0
+       }
+      }
+     ],
+     "press": 6
+    },
+    {
+     "k": 0.3162,
+     "lod": "overview",
+     "step": 8,
+     "cards": [
+      {
+       "id": "packages/explorer/src/client/views/localView/card-factory.ts",
+       "publicName": {
+        "text": "NODE_HUB",
+        "drawn": false,
+        "heightPx": 16.3,
+        "typePx": 15,
+        "nameScale": 4.3
+       },
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": false,
+         "heightPx": 16.3,
+         "typePx": 15,
+         "nameScale": 4.3
+        },
+        "rowHeightPx": 6,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 8.5,
+         "h": 8.5,
+         "aboveRow": 0,
+         "belowRow": 11.8
+        },
+        "overRow": null,
+        "overOutline": null,
+        "overCardBottom": null
+       }
+      },
+      {
+       "id": "packages/explorer/src/client/views/localView/branch-renderer.ts",
+       "publicName": null,
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": false,
+         "heightPx": 16.3,
+         "typePx": 15,
+         "nameScale": 4.3
+        },
+        "rowHeightPx": 6,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 8.5,
+         "h": 8.5,
+         "aboveRow": 0,
+         "belowRow": 11.8
+        },
+        "overRow": null,
+        "overOutline": null,
+        "overCardBottom": null
+       }
+      }
+     ],
+     "press": 8
+    }
+   ]
+  },
+  "C2": {
+   "errors": [],
+   "readings": [
+    {
+     "k": 1.3595,
+     "lod": "reading",
+     "step": 0,
+     "cards": [
+      {
+       "id": "packages/explorer/src/client/views/localView/card-factory.ts",
+       "publicName": {
+        "text": "NODE_HUB",
+        "drawn": true,
+        "heightPx": 16.3,
+        "typePx": 15,
+        "nameScale": 1
+       },
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 16.3,
+         "typePx": 15,
+         "nameScale": 1
+        },
+        "rowHeightPx": 25.8,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 24.5,
+         "h": 24.5,
+         "aboveRow": 0,
+         "belowRow": 2
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 2,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 0,
+         "right": 0
+        },
+        "overCardBottom": 0
+       }
+      },
+      {
+       "id": "packages/explorer/src/client/views/localView/branch-renderer.ts",
+       "publicName": null,
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 16.3,
+         "typePx": 15,
+         "nameScale": 1
+        },
+        "rowHeightPx": 25.8,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 24.5,
+         "h": 24.5,
+         "aboveRow": 0,
+         "belowRow": 2
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 2,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 0,
+         "right": 0
+        },
+        "overCardBottom": 0
+       }
+      }
+     ],
+     "press": 0
+    },
+    {
+     "k": 0.7867,
+     "lod": "middle",
+     "step": 3,
+     "cards": [
+      {
+       "id": "packages/explorer/src/client/views/localView/card-factory.ts",
+       "publicName": {
+        "text": "NODE_HUB",
+        "drawn": true,
+        "heightPx": 16.3,
+        "typePx": 15,
+        "nameScale": 1.728
+       },
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 16.3,
+         "typePx": 15,
+         "nameScale": 1.728
+        },
+        "rowHeightPx": 14.9,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 22.8,
+         "h": 22.8,
+         "aboveRow": 0,
+         "belowRow": 10.9
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 10.9,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 9.4,
+         "right": 0
+        },
+        "overCardBottom": 0
+       }
+      },
+      {
+       "id": "packages/explorer/src/client/views/localView/branch-renderer.ts",
+       "publicName": null,
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 16.3,
+         "typePx": 15,
+         "nameScale": 1.728
+        },
+        "rowHeightPx": 14.9,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 22.8,
+         "h": 22.8,
+         "aboveRow": 0,
+         "belowRow": 10.9
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 10.9,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 9.4,
+         "right": 0
+        },
+        "overCardBottom": 0
+       }
+      }
+     ],
+     "press": 3
+    },
+    {
+     "k": 0.4553,
+     "lod": "far",
+     "step": 6,
+     "cards": [
+      {
+       "id": "packages/explorer/src/client/views/localView/card-factory.ts",
+       "publicName": {
+        "text": "NODE_HUB",
+        "drawn": true,
+        "heightPx": 16.3,
+        "typePx": 15,
+        "nameScale": 2.986
+       },
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 16.3,
+         "typePx": 15,
+         "nameScale": 2.986
+        },
+        "rowHeightPx": 8.7,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 13.2,
+         "h": 13.2,
+         "aboveRow": 0,
+         "belowRow": 11.8
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 14.9,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 14,
+         "right": 0
+        },
+        "overCardBottom": 1.7
+       }
+      },
+      {
+       "id": "packages/explorer/src/client/views/localView/branch-renderer.ts",
+       "publicName": null,
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 16.3,
+         "typePx": 15,
+         "nameScale": 2.986
+        },
+        "rowHeightPx": 8.7,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 13.2,
+         "h": 13.2,
+         "aboveRow": 0,
+         "belowRow": 11.8
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 14.9,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 14,
+         "right": 0
+        },
+        "overCardBottom": 0
+       }
+      }
+     ],
+     "press": 6
+    },
+    {
+     "k": 0.3162,
+     "lod": "overview",
+     "step": 8,
+     "cards": [
+      {
+       "id": "packages/explorer/src/client/views/localView/card-factory.ts",
+       "publicName": {
+        "text": "NODE_HUB",
+        "drawn": false,
+        "heightPx": 16.3,
+        "typePx": 15,
+        "nameScale": 4.3
+       },
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": false,
+         "heightPx": 16.3,
+         "typePx": 15,
+         "nameScale": 4.3
+        },
+        "rowHeightPx": 6,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 9.2,
+         "h": 9.2,
+         "aboveRow": 0,
+         "belowRow": 12.1
+        },
+        "overRow": null,
+        "overOutline": null,
+        "overCardBottom": null
+       }
+      },
+      {
+       "id": "packages/explorer/src/client/views/localView/branch-renderer.ts",
+       "publicName": null,
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": false,
+         "heightPx": 16.3,
+         "typePx": 15,
+         "nameScale": 4.3
+        },
+        "rowHeightPx": 6,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 9.2,
+         "h": 9.2,
+         "aboveRow": 0,
+         "belowRow": 12.1
+        },
+        "overRow": null,
+        "overOutline": null,
+        "overCardBottom": null
+       }
+      }
+     ],
+     "press": 8
+    }
+   ]
+  },
+  "C3": {
+   "errors": [],
+   "readings": [
+    {
+     "k": 1.3595,
+     "lod": "reading",
+     "step": 0,
+     "cards": [
+      {
+       "id": "packages/explorer/src/client/views/localView/card-factory.ts",
+       "publicName": {
+        "text": "NODE_HUB",
+        "drawn": true,
+        "heightPx": 16.3,
+        "typePx": 15,
+        "nameScale": 1
+       },
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 16.3,
+         "typePx": 15,
+         "nameScale": 1
+        },
+        "rowHeightPx": 25.8,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 19,
+         "h": 19,
+         "aboveRow": 0,
+         "belowRow": 0
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 0,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 0,
+         "right": 0
+        },
+        "overCardBottom": 0
+       }
+      },
+      {
+       "id": "packages/explorer/src/client/views/localView/branch-renderer.ts",
+       "publicName": null,
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 16.3,
+         "typePx": 15,
+         "nameScale": 1
+        },
+        "rowHeightPx": 25.8,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 19,
+         "h": 19,
+         "aboveRow": 0,
+         "belowRow": 0
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 0,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 0,
+         "right": 0
+        },
+        "overCardBottom": 0
+       }
+      }
+     ],
+     "press": 0
+    },
+    {
+     "k": 0.7867,
+     "lod": "middle",
+     "step": 3,
+     "cards": [
+      {
+       "id": "packages/explorer/src/client/views/localView/card-factory.ts",
+       "publicName": {
+        "text": "NODE_HUB",
+        "drawn": true,
+        "heightPx": 16.3,
+        "typePx": 15,
+        "nameScale": 1.728
+       },
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 16.3,
+         "typePx": 15,
+         "nameScale": 1.728
+        },
+        "rowHeightPx": 14.9,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 19,
+         "h": 19,
+         "aboveRow": 0,
+         "belowRow": 9.1
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 9.1,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 7.5,
+         "right": 0
+        },
+        "overCardBottom": 0
+       }
+      },
+      {
+       "id": "packages/explorer/src/client/views/localView/branch-renderer.ts",
+       "publicName": null,
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 16.3,
+         "typePx": 15,
+         "nameScale": 1.728
+        },
+        "rowHeightPx": 14.9,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 19,
+         "h": 19,
+         "aboveRow": 0,
+         "belowRow": 9.1
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 9.1,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 7.5,
+         "right": 0
+        },
+        "overCardBottom": 0
+       }
+      }
+     ],
+     "press": 3
+    },
+    {
+     "k": 0.4553,
+     "lod": "far",
+     "step": 6,
+     "cards": [
+      {
+       "id": "packages/explorer/src/client/views/localView/card-factory.ts",
+       "publicName": {
+        "text": "NODE_HUB",
+        "drawn": true,
+        "heightPx": 16.3,
+        "typePx": 15,
+        "nameScale": 2.986
+       },
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 16.3,
+         "typePx": 15,
+         "nameScale": 2.986
+        },
+        "rowHeightPx": 8.7,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 12.3,
+         "h": 12.3,
+         "aboveRow": 0,
+         "belowRow": 11.3
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 14.9,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 14,
+         "right": 0
+        },
+        "overCardBottom": 1.7
+       }
+      },
+      {
+       "id": "packages/explorer/src/client/views/localView/branch-renderer.ts",
+       "publicName": null,
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": true,
+         "heightPx": 16.3,
+         "typePx": 15,
+         "nameScale": 2.986
+        },
+        "rowHeightPx": 8.7,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 12.3,
+         "h": 12.3,
+         "aboveRow": 0,
+         "belowRow": 11.3
+        },
+        "overRow": {
+         "top": 0,
+         "bottom": 14.9,
+         "right": 0
+        },
+        "overOutline": {
+         "top": 0,
+         "bottom": 14,
+         "right": 0
+        },
+        "overCardBottom": 0
+       }
+      }
+     ],
+     "press": 6
+    },
+    {
+     "k": 0.3162,
+     "lod": "overview",
+     "step": 8,
+     "cards": [
+      {
+       "id": "packages/explorer/src/client/views/localView/card-factory.ts",
+       "publicName": {
+        "text": "NODE_HUB",
+        "drawn": false,
+        "heightPx": 16.3,
+        "typePx": 15,
+        "nameScale": 4.3
+       },
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": false,
+         "heightPx": 16.3,
+         "typePx": 15,
+         "nameScale": 4.3
+        },
+        "rowHeightPx": 6,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 8.5,
+         "h": 8.5,
+         "aboveRow": 0,
+         "belowRow": 11.8
+        },
+        "overRow": null,
+        "overOutline": null,
+        "overCardBottom": null
+       }
+      },
+      {
+       "id": "packages/explorer/src/client/views/localView/branch-renderer.ts",
+       "publicName": null,
+       "internals": {
+        "name": {
+         "text": "Internals",
+         "drawn": false,
+         "heightPx": 16.3,
+         "typePx": 15,
+         "nameScale": 4.3
+        },
+        "rowHeightPx": 6,
+        "rowHeightMap": 19,
+        "anchorPx": {
+         "w": 8.5,
+         "h": 8.5,
+         "aboveRow": 0,
+         "belowRow": 11.8
+        },
+        "overRow": null,
+        "overOutline": null,
+        "overCardBottom": null
+       }
+      }
+     ],
+     "press": 8
+    }
+   ]
+  }
+ }
+}

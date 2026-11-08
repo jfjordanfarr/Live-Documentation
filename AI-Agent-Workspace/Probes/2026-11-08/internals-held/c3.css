@@ -1,0 +1,6 @@
+/* C3, over C1: the row's dashed outline and background dropped, so that the name stands on the card's own surface and
+   only the square marks the row; the border stays, transparent, so that nothing moves. */
+.local-slot-card .symbol-row.internals-row .internals-label {
+    background: none;
+    border-color: transparent;
+}
