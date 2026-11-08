@@ -2,6 +2,18 @@
 
 Source inventory, maintained by the root agent. The October 31 session that ended on November 1 keeps its start-date identity under [October](../10/README.md). A session spanning midnight keeps the date and sequence with which it began.
 
+## November 7–8, session 1 — Claude Code, Fable 5.1
+
+- [Maintained root record](2026-11-07.1.record.md): ten numbered owner turns and the Turn 6 clarification, with implementation checkpoints. Closed by the November 8 session after reading the entire record and supplied capture; missing replies under Turns 2 and 8 and four later replies, including the delivered final handover, are restored with source notes. Original message blocks and stable turn anchors remain intact.
+- [Linked summary](Summarized/2026-11-07.1.SUMMARIZED.md): complete for both available sources, distinguishing the three committed rounds from the rejected experiments, deferred defaults and unfinished verification. The final full gate was 333/336 browser cases, not a pass.
+- [Owner-supplied terminal capture](2026-11-08-003022-welcome-back-i-know-its-a-little-late-on-this-f.txt): received under this name and preserved without agent edits. The version in `87019917` is **31,707 bytes**, SHA-256 **`59d1341843bb42e3813fcb51fed5722cacf3f5fe44675b16ce688220d15b71a2`**, covering the opening through the Turn 5 reply. At the new chat's opening it had been externally extended to **138,769 bytes**, SHA-256 **`c4b01b99e57d903b552c8f8a0ae78351f35973090f12cfc6e553576814dcea93`**; every earlier byte remains its exact prefix. All 138,253 characters, including the final line without a newline, were read in bounded slices. The ending is Fable's delivered final handover, with no later owner turn.
+- The terminal duplicates the first final reply, shows an owner-triggered `/compact` between Turns 1 and 2, wraps links and prose, and marks some commentary as summaries. It includes collapsed tool activity and delegated handbacks, preserved as supplied source only; neither those handbacks nor private reasoning were copied into the root record. The [dated reconciliation](2026-11-07.1.record.md#source-reconciliation-and-final-handover--november-8-2026) states the recovery limits and inconsistent work-note clock labels.
+
+## November 8, session 1 — Codex, GPT-6 Astra
+
+- [Maintained root record](2026-11-08.1.record.md): opens with the owner's request to complete the November 7–8 summary and recover Fable's final reply, then personally inspect the Explorer before resuming Root/Builder work. This is a new development-day session; the preceding session retains its November 7 identity.
+- No native capture has been supplied for this session. The root records delivered messages and authored work notes as it proceeds; a prepared final reply is not evidence of delivery.
+
 ## November 1, session 1 — Codex/Astra, completed by 6.1 Sol, November 1–2
 
 - [Maintained root record](2026-11-01.1.record.md): ten owner turns, delivered replies, selected intervening commentary, authored reading/work checkpoints and verification outcomes. Begins with the requested full October-record bootstrap and closes with the owner's November 2 close-out request, visible capacity error and reported switch to 6.1 Sol. The implementation and preview work were complete before close-out. The reply delivering the summary is not a captured source until a later turn records it.
