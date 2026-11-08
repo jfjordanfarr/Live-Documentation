@@ -157,11 +157,17 @@ export function createNodeCard(
   held.className = "local-file-name-held";
   held.setAttribute("aria-hidden", "true");
   held.dataset.name = node.name;
-  name.append(nameText, held);
+  // The room the node's controls take on the header's last line, the button's last inline box: on the name's last line
+  // where it fits there, on a line of its own where it does not (the header round, 2026-11-08; local.css).
+  const controlsRoom = document.createElement("span");
+  controlsRoom.className = "local-file-name-room";
+  controlsRoom.setAttribute("aria-hidden", "true");
+  name.append(nameText, controlsRoom, held);
   name.setAttribute("aria-label", node.codeRelativePath);
   name.addEventListener("click", event => { event.stopPropagation(); void context.readNode(node); });
   header.append(name);
   card.appendChild(header);
+  // The node's controls follow the name in its header, and in its focus order.
   const actions = document.createElement("div");
   actions.className = "local-card-actions";
   const filePin = document.createElement("button");
@@ -208,7 +214,7 @@ export function createNodeCard(
     actions.append(recentre);
   }
   if (retained || subject || presentation.expanded) actions.append(close);
-  card.append(actions);
+  header.append(actions);
 
   const pathElement = document.createElement("div");
   pathElement.className = "node-path";

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-factory.ts
-- Generated At: 2026-11-07T00:25:41.965Z
+- Generated At: 2026-11-08T06:36:55.442Z
 
 ## Authored
 ### Purpose
@@ -31,6 +31,8 @@ Since [Turn 12](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2
 Since the far bands' round (2026-11-06, [Turn 3](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-06.1.record.md#turn-3)) the file's name button also holds an empty, `aria-hidden` element, `local-file-name-held`, carrying the name: from the middle band out the card ladder draws the name from it, held at its reading size, in the lines the card reading chooses for each band and step in the room the header's departed lines leave. The text in the layout stays, not drawn, so that it keeps the header's height in every band and remains the name's one copy for the page's text and the perspective transition's reading of `textContent`; the button's label names the file for assistive technology. From the middle band out the page's find does not meet the name: that copy is hidden there, and the drawing is generated content, which find does not search.
 
 Since the far bands' second milestone (2026-11-06) every card that is not an asset has a node-level hub on its using side too, at its left edge at the existing hub's height, where the overview band's gathered wires arrive; both node-level hubs are registered under `#hub` (`inbound:#hub`, `outbound:#hub`), so that the overview finds them while a file-level reference at the closer bands still arrives at Internals' dot (`inbound:*`). The using side's hub carries the class `overview-hub` since the root's fourth review (2026-11-07): the layout lab's capture had read it, as it reads every hub, as the card's `inbound:*` pin, and found 93 pins drifted on the repository's five files where the page's placement had not moved.
+
+Since 2026-11-08 (the header round, [November 7 record, Turn 3](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-07.1.record.md#turn-3) and [Turn 4](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-07.1.record.md#turn-4--november-8)) the node's controls stand in the card's header after the file's name, in its focus order, rather than in the card's top right corner beside a header padded to keep them clear: the name leads on the header's first line at its full width and the controls follow it at the right edge. The name's button ends with an empty, aria-hidden room as wide and as tall as the controls (`local-file-name-room`, sized in `local.css` by the header's own count of them), its last inline box, which shares the name's last line where it fits and wraps to a line of its own where it does not; the controls stand at the header's bottom right, which is that room's line. From the middle band out the card reading places them instead, for each band and step.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -75,7 +77,7 @@ The created card element
 
 #### `createClosedDirectory` {#symbol-createcloseddirectory}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L273)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L279)
 - Parameters: `context`: [`CardContext`](#symbol-cardcontext); `closed`: [`ClosedDirectory`](./branches.ts.mdmd.md#symbol-closeddirectory)
 
 ##### `createClosedDirectory` — Summary
@@ -86,7 +88,7 @@ under it is at least encasing, so no wire ever reaches a closed box.
 
 #### `countsOf` {#symbol-countsof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L308)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L314)
 
 ##### `countsOf` — Summary
 "3 files, 2 directories", either part left out at zero; "empty" when both are.

@@ -2,85 +2,119 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { chooseHeldLines, HELD_BANDS, heldTitle, type TitleRooms } from "./held-lines";
+import { chooseHeldHeader, HELD_BANDS, heldSegments, heldTitle, type HeldRoom, type TitleRooms } from "./held-lines";
 import { FIRST_STEP, LAST_STEP } from "./ladder-steps";
-import { seamsOf } from "./word-seams";
 
-/** One unit a character, as a monospaced font would measure. */
+/** One unit a character, as a monospaced font would measure; a line one unit tall. */
 const measure = (text: string): number => text.length;
-const lines = (name: string, width: number, besideWidth: number, besideLines: number, count: number): string[] =>
-  chooseHeldLines(seamsOf(name), { width, besideWidth, besideLines, lines: count }, measure);
+const room = (width: number, height: number, controlsWidth: number, controlsHeight = 1, gap = 1): HeldRoom =>
+  ({ width, height, line: 1, controlsWidth, controlsHeight, gap });
+const header = (name: string, held: HeldRoom) => chooseHeldHeader(heldSegments(name), held, measure);
 
-/** Whether a line ends inside a segment that would fit a full line: what the four rules forbid. */
-const brokenInside = (name: string, drawn: readonly string[], width: number): boolean => {
-  let at = 0;
-  const seams = new Set<number>([0, name.length]);
-  for (const segment of seamsOf(name)) { at += segment.length; seams.add(at); }
-  let offset = 0;
-  for (const line of drawn.slice(0, -1)) {
-    offset += line.replace("…", "").length;
-    if (seams.has(offset)) continue;
-    // The segment this line ended inside: allowed only when it is wider than a full line.
-    let start = 0;
-    for (const segment of seamsOf(name)) {
-      if (offset > start && offset < start + segment.length) return segment.length <= width;
-      start += segment.length;
-    }
-  }
-  return false;
-};
+describe("heldSegments", () => {
+  it("breaks at the name's seams and before a short extension's dot", () => {
+    expect(heldSegments("branch-renderer.ts")).toEqual(["branch-", "renderer", ".ts"]);
+    expect(heldSegments("local-map-overview.spec.ts")).toEqual(["local-", "map-", "overview.", "spec", ".ts"]);
+    expect(heldSegments("PaymentService.cs")).toEqual(["Payment", "Service", ".cs"]);
+    // A long extension is a segment of its own already; a name without one is its seams.
+    expect(heldSegments("rosetta-manifest.json")).toEqual(["rosetta-", "manifest.", "json"]);
+    expect(heldSegments("Makefile")).toEqual(["Makefile"]);
+    expect(heldSegments("")).toEqual([]);
+  });
+});
 
-describe("chooseHeldLines", () => {
-  it("draws a name that fits beside the buttons on one line", () => {
-    expect(lines("types.ts", 20, 10, 1, 3)).toEqual(["types.ts"]);
+describe("chooseHeldHeader", () => {
+  it("fills the first line and gives More the second, beside the extension (the owner's band at the far step)", () => {
+    // "branch-renderer.ts" in a room of two lines, sixteen wide, More one unit square: the name had broken "branch- /
+    // renderer.ts" beside a More taller than a line (2026-11-07), then stood cut on one line; now it fills its first line.
+    expect(header("branch-renderer.ts", room(16, 2, 1))).toEqual({ lines: ["branch-renderer", ".ts"], controls: { line: 1, shared: true, top: 1 } });
   });
 
-  it("moves a name that fits whole below the buttons there, rather than breaking it beside them (verif / y.ts)", () => {
-    // "verify.ts" is one segment, nine wide: beside the buttons there are six, below them twenty.
-    expect(lines("verify.ts", 20, 6, 1, 3)).toEqual(["", "verify.ts"]);
-    expect(lines("main.rs", 12, 5, 1, 2)).toEqual(["", "main.rs"]);
+  it("stands a name whole on two lines at the overview band, where one line had cut it like its neighbours", () => {
+    expect(header("local-map-overview.spec.ts", room(20, 5, 1)).lines).toEqual(["local-map-overview.", "spec.ts"]);
+    expect(header("local-map-overview.spec.ts", room(20, 5, 1)).controls).toEqual({ line: 1, shared: true, top: 1 });
   });
 
-  it("never breaks a segment that fits a full line, waiting for a line with room for it", () => {
-    // Seams: still- / picture.ts. Beside the buttons four, below ten.
-    const drawn = lines("still-picture.ts", 10, 4, 1, 4);
-    expect(drawn).toEqual(["", "still-", "picture.ts"]);
-    expect(brokenInside("still-picture.ts", drawn, 10)).toBe(false);
-    // Room below for the whole name: it starts there. Without it, beside the buttons, at a seam, and the last line kept
-    // ends with an ellipsis.
-    expect(lines("local-map-branches.spec.ts", 12, 8, 1, 4)).toEqual(["", "local-map-", "branches.", "spec.ts"]);
-    expect(lines("local-map-branches.spec.ts", 12, 8, 1, 3)).toEqual(["local-", "map-", "branches.sp…"]);
+  it("shares the first line with the controls when the name fits beside them", () => {
+    expect(header("types.ts", room(20, 2, 3))).toEqual({ lines: ["types.ts"], controls: { line: 0, shared: true, top: 0 } });
+    // Centred on a line taller than they are.
+    expect(header("types.ts", room(20, 2, 3, 0.5)).controls).toEqual({ line: 0, shared: true, top: 0.25 });
   });
 
-  it("breaks a segment inside only when it is wider than a full line", () => {
-    expect(lines("averyveryverylongname", 8, 8, 0, 4)).toEqual(["averyver", "yverylon", "gname"]);
-    // Ten characters, wider than a full line of eight: it may break inside.
-    expect(lines("still-picture.ts", 8, 8, 0, 3)).toEqual(["still-pi", "cture.ts"]);
+  it("gives the controls the line after the name when its last line leaves them no room, if the room has that line", () => {
+    expect(header("verify.ts", room(10, 2, 2))).toEqual({ lines: ["verify.ts"], controls: { line: 1, shared: false, top: 1 } });
   });
 
-  it("ends the last line the room holds with an ellipsis that fits it", () => {
-    const drawn = lines("local-map-simplicity.spec.ts", 10, 10, 0, 2);
-    expect(drawn).toHaveLength(2);
-    expect(drawn[1].endsWith("…")).toBe(true);
-    expect(measure(drawn[1])).toBeLessThanOrEqual(10);
-    // The last line holds as much of the rest of the name as fits it, beside the buttons too.
-    expect(lines("still-picture.ts", 8, 4, 1, 1)).toEqual(["sti…"]);
-    expect(lines("still-picture.ts", 8, 8, 0, 1)).toEqual(["still-p…"]);
-    expect(lines("still-picture.ts", 12, 12, 0, 1)).toEqual(["still-pictu…"]);
-    expect(lines("local-map-branches.spec.ts", 10, 4, 1, 2)).toEqual(["", "local-map…"]);
+  it("cuts the room's last line beside the controls when the name fills it and no line follows", () => {
+    expect(header("verify.ts", room(10, 1, 2))).toEqual({ lines: ["verify…"], controls: { line: 0, shared: true, top: 0 } });
+    // A name longer than the room's lines: the lines it holds, the last cut where the controls begin.
+    expect(header("local-map-overview.spec.ts", room(12, 2, 2))).toEqual({ lines: ["local-map-", "overview…"], controls: { line: 1, shared: true, top: 1 } });
   });
 
-  it("keeps the four rules over many rooms and names", () => {
-    const names = ["still-picture.ts", "local-map-branches.spec.ts", "verify.ts", "Main.cs", "compiler-edges.json", "PaymentService.cs", "a"];
-    for (const name of names) for (const width of [4, 6, 9, 14, 30]) for (const beside of [0, 2, width]) for (const count of [1, 2, 3, 6]) {
-      const drawn = lines(name, width, Math.min(beside, width), 1, count);
-      expect(drawn.length, `${name} ${width} ${beside} ${count}`).toBeLessThanOrEqual(Math.max(1, count));
-      drawn.forEach((line, index) => expect(measure(line), `${name} line ${index}`).toBeLessThanOrEqual(index < 1 ? Math.min(beside, width) : width));
-      // A drawing is whole unless it ends with an ellipsis, or on a line beside the buttons too narrow for one.
-      const besideLast = drawn.length - 1 < 1 ? Math.min(beside, width) : width;
-      if (!drawn.at(-1)!.endsWith("…") && measure("…") <= besideLast) {
-        expect(drawn.join(""), name).toBe(name);
-        expect(brokenInside(name, drawn, width), `${name} ${width}: ${drawn.join(" / ")}`).toBe(false);
+  it("makes the controls' line as tall as they are at the middle band, shared or their own", () => {
+    // Controls one and a half lines tall: a short name shares their line, at its top; a long one stands above them.
+    expect(header("types.ts", room(20, 2, 4, 1.5))).toEqual({ lines: ["types.ts"], controls: { line: 0, shared: true, top: 0 } });
+    expect(header("local-map-overview.spec.ts", room(26, 3, 4, 1.5))).toEqual({ lines: ["local-map-overview.spec.ts"], controls: { line: 1, shared: false, top: 1 } });
+    // Two and a half lines of room hold a name line and the controls' line shared with the second: whole. A little less
+    // holds one line, shared with the controls and cut beside them.
+    expect(header("local-map-overview.spec.ts", room(20, 2.5, 4, 1.5)).lines).toEqual(["local-map-overview.", "spec.ts"]);
+    expect(header("local-map-overview.spec.ts", room(20, 2.4, 4, 1.5)).lines).toEqual(["local-map-over…"]);
+  });
+
+  it("never erases the name: where the controls leave no room for the ellipsis beside them, they take the line after", () => {
+    // The review's example (2026-11-08): a room of one line nearly filled by the controls.
+    expect(header("main.rs", room(10, 1, 9.5))).toEqual({ lines: ["main.rs"], controls: { line: 1, shared: false, top: 1 } });
+    expect(header("verify-files.ts", room(10, 1, 9.5))).toEqual({ lines: ["verify-fi…"], controls: { line: 1, shared: false, top: 1 } });
+  });
+
+  it("breaks a segment inside only when it is wider than a line, and draws an empty name as nothing", () => {
+    expect(header("averyveryverylongname", room(8, 4, 1)).lines).toEqual(["averyver", "yverylon", "gname"]);
+    expect(header("", room(8, 2, 1))).toEqual({ lines: [""], controls: { line: 0, shared: true, top: 0 } });
+  });
+
+  it("holds the six principles over many rooms and names", () => {
+    const names = ["still-picture.ts", "local-map-branches.spec.ts", "verify.ts", "Main.cs", "compiler-edges.json", "PaymentService.cs", "a", "symbolAnchors.test.ts"];
+    for (const name of names) for (const width of [6, 9, 14, 20, 30]) for (const height of [1, 2, 3, 5]) for (const controlsWidth of [1, 3, 5]) for (const controlsHeight of [0.6, 1, 1.6]) {
+      const held = room(width, height, controlsWidth, controlsHeight);
+      const label = `${name} ${width}×${height} controls ${controlsWidth}×${controlsHeight}`;
+      const { lines, controls } = header(name, held);
+      const segments = heldSegments(name);
+      // The name leads: its first line holds its start.
+      expect(lines[0].length > 0 || measure("…") > width - 1 - controlsWidth, label).toBe(true);
+      expect(name.startsWith(lines[0].replace("…", "")), label).toBe(true);
+      // The controls stand on the name's last line, sharing it, or alone on the line after; their line fits beside the text.
+      expect(controls.line === lines.length - 1 && controls.shared || controls.line === lines.length && !controls.shared, label).toBe(true);
+      if (controls.shared) expect(measure(lines.at(-1)!) + 1 + controlsWidth, label).toBeLessThanOrEqual(width);
+      for (const line of lines) expect(measure(line), label).toBeLessThanOrEqual(width);
+      const whole = lines.join("") === name;
+      const used = controls.shared ? (lines.length - 1) + Math.max(1, controlsHeight) : lines.length + controlsHeight;
+      if (whole) {
+        // Whole: within the room, every line but the last filled, every break at a seam unless its segment is wider than a line.
+        // (Past the room only where the controls leave no room for the ellipsis beside them and take the line after.)
+        if (controls.shared || measure("…") <= width - 1 - controlsWidth) expect(used, label).toBeLessThanOrEqual(height + 1e-9);
+        let at = 0;
+        const seams = new Set([0, ...segments.map(segment => (at += segment.length))]);
+        let offset = 0;
+        lines.slice(0, -1).forEach((line, index) => {
+          offset += line.length;
+          const next = segments.find((_, i) => segments.slice(0, i).join("").length === offset);
+          if (seams.has(offset)) expect(measure(line + (next ?? "")), `${label}: line ${index} is filled`).toBeGreaterThan(width);
+          else {
+            let start = 0;
+            const inside = segments.find(segment => (start += segment.length) > offset);
+            expect(measure(inside!), `${label}: line ${index} breaks inside a segment that fits`).toBeGreaterThan(width);
+          }
+        });
+      } else {
+        // Cut: only the last line, the controls beside it where the line beside them holds the ellipsis at least, and
+        // only where the whole header would not fit the room; the name is never erased.
+        expect(lines.at(-1)!.endsWith("…") || lines.at(-1)!.length === 1, label).toBe(true);
+        expect(controls.shared || measure("…") > width - 1 - controlsWidth, label).toBe(true);
+        expect(lines.slice(0, -1).every(line => !line.includes("…")), label).toBe(true);
+        expect(name.startsWith(lines.join("").replace("…", "")), label).toBe(true);
+        const flowed = chooseHeldHeader(segments, { ...held, height: 1000 }, measure);
+        const wholeUsed = flowed.controls.shared ? (flowed.lines.length - 1) + Math.max(1, controlsHeight) : flowed.lines.length + controlsHeight;
+        expect(wholeUsed, label).toBeGreaterThan(height);
       }
     }
   });
@@ -89,7 +123,7 @@ describe("chooseHeldLines", () => {
 describe("heldTitle", () => {
   const rooms: TitleRooms = {
     roomW: 200, headH: 40, cardH: 300, pitch: 66, rowGap: 4,
-    actionsW: 60, moreW: 20, moreH: 20, overX: 4, overY: 6, controlCeiling: 3.3, line: 15
+    actionsW: 64, moreW: 20, moreH: 20, controlCeiling: 3.3, line: 15
   };
   const at = (step: number) => ({ text: 1.2 ** step, control: 1.2 ** step });
 
@@ -99,36 +133,44 @@ describe("heldTitle", () => {
     expect(heldTitle(rooms, "far", { text: 10, control: 1 }, null).scale).toBeCloseTo(40 / 15);
   });
 
-  it("keeps the lines beside the node's held buttons clear of them: all three at the middle band, More alone beyond", () => {
+  it("holds More no taller than a line of the name beyond the middle band, and all three controls at their size there", () => {
     const far = heldTitle(rooms, "far", at(5), null), middle = heldTitle(rooms, "middle", at(5), null);
-    const scale = far.scale;
-    // More, 20 wide at its held scale, standing 4 past the header's edge, with 4 of air: in the name's own units.
-    expect(far.room.besideWidth).toBeCloseTo((200 - 20 * scale) / scale);
-    expect(middle.room.besideWidth).toBeCloseTo((200 - 60 * scale) / scale);
-    // More's 20 at its held scale less the 6 it stands above the name, with 4 of air, in lines of the name's 15.
-    expect(far.room.besideLines).toBe(Math.ceil((20 * scale - 2) / scale / 15));
-    // The buttons stop at their ceiling, and so does what they take of the name's room.
-    expect(heldTitle(rooms, "far", { text: 1, control: 10 }, null).room.besideWidth).toBeCloseTo(200 - 20 * 3.3);
+    // The name's line at its held scale is 15 × 2.49; More is 20 × 2.49 at its step's scale, so it is held at 15/20 of it.
+    expect(far.control).toBeCloseTo(15 * far.scale / 20);
+    expect(far.room.controlsHeight * far.scale).toBeCloseTo(15 * far.scale);
+    expect(far.room.controlsWidth * far.scale).toBeCloseTo(20 * far.control);
+    expect(middle.control).toBeCloseTo(1.2 ** 5);
+    expect(middle.room.controlsWidth * middle.scale).toBeCloseTo(64 * 1.2 ** 5);
+    expect(middle.room.controlsHeight).toBeGreaterThan(middle.room.line);
+    // The controls stop at their ceiling.
+    expect(heldTitle(rooms, "middle", { text: 1, control: 10 }, null).control).toBeCloseTo(3.3);
+    // The room in the name's own units: the width to the header's edge, the height to the first row, 4 of air.
+    expect(far.room.width).toBeCloseTo(200 / far.scale);
+    expect(far.room.height).toBeCloseTo(40 / far.scale);
+    expect(far.room.gap).toBeCloseTo(4 / far.scale);
   });
 
   it("takes the card down to its first drawn row at the overview band, the header's room before it", () => {
     const far = heldTitle(rooms, "far", at(8), null);
-    expect(far.room.lines).toBe(1);
-    expect(heldTitle(rooms, "overview", at(8), null).room.lines).toBe(Math.floor(300 / (15 * 1.2 ** 8)));
-    expect(heldTitle(rooms, "overview", at(8), 0).room.lines).toBe(far.room.lines);
-    const twoRows = 40 + 2 * 66 - 4;
-    expect(heldTitle(rooms, "overview", at(8), 2).room.lines).toBe(Math.floor(twoRows / (15 * Math.min(1.2 ** 8, twoRows / 15))));
+    expect(far.room.height * far.scale).toBeCloseTo(40);
+    expect(heldTitle(rooms, "overview", at(8), null).room.height * heldTitle(rooms, "overview", at(8), null).scale).toBeCloseTo(300);
+    const pinned = heldTitle(rooms, "overview", at(8), 0);
+    expect(pinned.room.height * pinned.scale).toBeCloseTo(40);
+    const twoRows = heldTitle(rooms, "overview", at(8), 2);
+    expect(twoRows.room.height * twoRows.scale).toBeCloseTo(40 + 2 * 66 - 4);
   });
 });
 
-describe("the stylesheet's held lines", () => {
-  it("draws the lines of every band and step the card reading writes", () => {
+describe("the stylesheet's held header", () => {
+  it("draws the lines and stands the controls of every band and step the card reading writes", () => {
     const css = readFileSync(path.resolve(__dirname, "../../styles/reading.css"), "utf8");
     for (const band of HELD_BANDS) for (let step = FIRST_STEP; step <= LAST_STEP; step += 1) {
       // No alternative text (content: … / ""): the held name is aria-hidden already, and browsers before Firefox 128 and
       // Safari 17.4 reject such a declaration whole, drawing no name.
-      const rule = `[data-lod="${band}"][data-step="${step}"] .local-slot-card .local-file-name-held::after { content: attr(data-lines-${band}-${step}); }`;
-      expect(css.includes(rule), rule).toBe(true);
+      const lines = `[data-lod="${band}"][data-step="${step}"] .local-slot-card .local-file-name-held::after { content: attr(data-lines-${band}-${step}); }`;
+      expect(css.includes(lines), lines).toBe(true);
+      const controls = `[data-lod="${band}"][data-step="${step}"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-${band}-${step}, 0) * 1px); }`;
+      expect(css.includes(controls), controls).toBe(true);
     }
   });
 });

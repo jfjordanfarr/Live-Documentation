@@ -91,6 +91,129 @@ test("a focused URL centers its node, direct clicks pin it, and More opens its d
   await expectFocused(page, GRAPH);
 });
 
+/**
+ * The longest a press of 2D or 3D may hold the page's main thread on the focus case's picture for the switch's own work,
+ * in milliseconds: its capture, its hold and its handing over. Measured on 2026-11-07 at 10 s and 15 s with the 2D map's
+ * render included, and after the fix at 0.2 to 0.3 s each beside that render on a busy night (2026-11-08). A press of 2D
+ * also pays the 2D map's own render of the picture, which any arrival in 2D pays (0.9 to 1.2 s on this machine) and which
+ * the page measures as "live-docs:switch-render"; that render is the 2D map's cost, not the switch's, and is left out of
+ * the bound.
+ */
+const PRESS_BOUND = 500;
+
+/**
+ * The longest the page may leave a timer waiting from the press's return until the transition's layer goes, in
+ * milliseconds: the switch's later work (the cards' copies, made in slices of 16 ms, and the transition's frames) must
+ * leave the page answering. The fixed bundle's longest wait was 0.19 to 0.32 s on this machine (2026-11-08), where the 3D
+ * picture's software renderer draws a frame in a few hundred milliseconds; before the fix the copies alone held the page
+ * for seconds in one task.
+ */
+const WAIT_BOUND = 1000;
+
+/**
+ * How long after its start the transition's first frame may come, in milliseconds: the directory membranes peel in its
+ * first 0.3 s, and what comes before its first frame is never seen. Before the switch-cost fix the first frame came 4.6 s
+ * late on the way to 2D, the page laying out its copy of every element of the 2D map; after it, 83 to 179 ms on this
+ * machine (2026-11-08), where a frame of the 3D picture's software renderer takes a few hundred milliseconds.
+ */
+const FIRST_FRAME_BOUND = 400;
+
+/** Note when the transition's layer is appended, its start to well under a millisecond, before the page's code runs. */
+async function noteTransitionStart(page: Page): Promise<void> {
+  await page.addInitScript(() => {
+    const append = Element.prototype.append;
+    Element.prototype.append = function (this: Element, ...nodes: (Node | string)[]) {
+      append.apply(this, nodes);
+      if (this === document.body && nodes.some(node => node instanceof HTMLElement && node.classList.contains("perspective-transition") && node.dataset.graphFiles)) {
+        (window as unknown as { transitionStarted: number }).transitionStarted = performance.now();
+      }
+    };
+  });
+}
+
+/**
+ * One press of 2D or 3D, timed in the page from the click until the press's own work is done (its handler and the
+ * microtasks it queued, read at the next task), and the transition watched every frame until its layer goes: the
+ * travelling names shown, the directory membranes and the folding cards drawn.
+ */
+async function timedPress(page: Page, label: "2D" | "3D") {
+  return page.evaluate(label => new Promise<{ returned: number; render: number | null; longestWait: number; firstFrame: number | null; layer: boolean; names: string[]; membranes: number; cards: number; folding: boolean }>(resolve => {
+    const button = [...document.querySelectorAll<HTMLButtonElement>(".perspective-controls button")].find(each => each.textContent === label)!;
+    const names = new Set<string>();
+    let membranes = 0, cards = 0, folding = false, seen = false, returned = 0, render: number | null = null, longestWait = 0, done = false, firstFrame: number | null = null;
+    const finish = (): void => {
+      if (done) return;
+      done = true;
+      resolve({ returned, render, longestWait, firstFrame, layer: seen, names: [...names], membranes, cards, folding });
+    };
+    // A timer every 20 ms from the press's return: how late it runs is how long the page leaves input waiting.
+    const beat = (expected: number): void => {
+      if (done) return;
+      longestWait = Math.max(longestWait, performance.now() - expected);
+      const due = performance.now() + 20;
+      setTimeout(() => beat(due), 20);
+    };
+    const watch = (): void => {
+      const layer = document.querySelector<HTMLElement>(".perspective-transition[data-graph-files]");
+      if (!layer) {
+        if (seen) finish();
+        else requestAnimationFrame(watch);
+        return;
+      }
+      // The first frame after the layer's start, on the clock: how much of the transition went unseen.
+      if (!seen) firstFrame = performance.now() - ((window as unknown as { transitionStarted?: number }).transitionStarted ?? NaN);
+      seen = true;
+      for (const name of layer.querySelectorAll<HTMLElement>(".perspective-file-name")) if (Number(name.style.opacity) > 0) names.add(name.dataset.nodeId!);
+      membranes = Math.max(membranes, layer.querySelectorAll("[data-transition-directory]").length);
+      const drawn = [...layer.querySelectorAll<HTMLElement>(".perspective-card")];
+      cards = Math.max(cards, drawn.length);
+      folding ||= drawn.some(card => Number(card.style.opacity) > 0 && Number(card.style.opacity) < 1);
+      requestAnimationFrame(watch);
+    };
+    const channel = new MessageChannel(), started = performance.now();
+    channel.port1.onmessage = () => {
+      returned = performance.now() - started;
+      render = performance.getEntriesByName("live-docs:switch-render").filter(entry => entry.startTime >= started).at(-1)?.duration ?? null;
+      requestAnimationFrame(watch);
+      const due = performance.now() + 20;
+      setTimeout(() => beat(due), 20);
+      // A transition that never shows its layer is reported as such rather than by the test's timeout.
+      setTimeout(finish, 60_000);
+    };
+    button.click();
+    channel.port2.postMessage(null);
+  }), label);
+}
+
+test("the 2D and 3D presses return at once, and the transition still folds the cards, peels the membranes and carries the names", async ({ page }) => {
+  // The focus case's picture, where each press had blocked the page for ten and fifteen seconds (2026-11-07): the hold
+  // copied the whole source surface, every computed property of every element, and the capture copied every card of
+  // the 2D map, most of them outside the frame.
+  test.setTimeout(120_000);
+  await observeGraph(page);
+  await noteTransitionStart(page);
+  await page.goto(`/?view=local&mode=3d&node=${encodeURIComponent(GRAPH)}`);
+  await expectFocused(page, GRAPH);
+  const toMap = await timedPress(page, "2D");
+  await expect(page.locator(`.node-card.local-focus[data-id="${GRAPH}"]`)).toBeVisible();
+  const toGraph = await timedPress(page, "3D");
+  await expectFocused(page, GRAPH);
+  // The readings, for the switch-cost probe's record.
+  console.log(`SWITCH-PRESSES ${JSON.stringify({ toMap: { ...toMap, names: toMap.names.length }, toGraph: { ...toGraph, names: toGraph.names.length } })}`);
+  for (const [direction, press] of [["2D", toMap], ["3D", toGraph]] as const) {
+    // A bundle that does not measure the destination's render is held to the bound whole.
+    const own = press.returned - (direction === "2D" ? press.render ?? 0 : 0);
+    expect(own, `the ${direction} press returned in ${Math.round(press.returned)} ms, the 2D map's render ${Math.round(press.render ?? 0)} ms`).toBeLessThan(PRESS_BOUND);
+    expect(press.longestWait, `after the ${direction} press the page left input waiting ${Math.round(press.longestWait)} ms at most`).toBeLessThan(WAIT_BOUND);
+    expect(press.layer, `the ${direction} transition showed its layer`).toBe(true);
+    expect(press.firstFrame, `the ${direction} transition's first frame came ${Math.round(press.firstFrame ?? NaN)} ms after its start`).toBeLessThan(FIRST_FRAME_BOUND);
+    expect(press.names, `the ${direction} transition carries the focus's name`).toContain(GRAPH);
+    expect(press.membranes, `the ${direction} transition draws the directory membranes`).toBeGreaterThan(0);
+    expect(press.cards, `the ${direction} transition draws the cards`).toBeGreaterThan(0);
+    expect(press.folding, `the ${direction} transition folds the cards`).toBe(true);
+  }
+});
+
 test("search moves focus smoothly, survives filtering, and resizes with its container", async ({ page }) => {
   await page.setViewportSize({ width: 1600, height: 1000 });
   await page.goto(`/?view=local&mode=3d&node=${encodeURIComponent(GRAPH)}`);

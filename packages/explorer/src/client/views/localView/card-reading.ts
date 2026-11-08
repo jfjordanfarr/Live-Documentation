@@ -2,11 +2,10 @@ import type { TypeRef } from "@live-documentation/engine/live-docs/document";
 import type { GraphFile } from "@live-documentation/engine/live-docs/graph";
 import { pathTo, walk } from "@live-documentation/engine/live-docs/pathfind";
 
-import { chooseHeldLines, HELD_BANDS, heldTitle, type HeldBand, type TitleRooms } from "./held-lines";
+import { chooseHeldHeader, HELD_BANDS, heldSegments, heldTitle, type HeldBand, type TitleRooms } from "./held-lines";
 import { dotRoom, layoutTopOf, nameFill, nameWraps, rowsBeforeFirstPin } from "./ladder-rooms";
 import { FIRST_STEP, LAST_STEP, ladderScales, type LadderResistances } from "./ladder-steps";
 import type { LocalEdge, ReadingControl } from "./types";
-import { seamsOf } from "./word-seams";
 import type { ExplorerNodePayload } from "../../../shared/types";
 import { escapeHtml } from "../../graph-helpers";
 import { renderMarkdown } from "../../markdown";
@@ -466,8 +465,6 @@ function measureRooms(card: HTMLElement, resistances: LadderResistances): RoomWr
   const grid = card.querySelector<HTMLElement>(".symbol-grid"), actions = card.querySelector<HTMLElement>(".local-card-actions");
   if (!title || !header || !grid || !actions || !title.offsetHeight) return writes;
   const cardStyle = getComputedStyle(card), headerRect = header.getBoundingClientRect(), titleRect = title.getBoundingClientRect();
-  // The buttons hold their size about their container's top right corner, which therefore stands where it was laid out.
-  const actionsRect = actions.getBoundingClientRect();
   const contentBottom = cardRect.bottom - (parseFloat(cardStyle.borderBottomWidth) + parseFloat(cardStyle.paddingBottom)) * k;
   const rowGap = parseFloat(getComputedStyle(grid).rowGap) || 0;
   const more = card.querySelector<HTMLElement>(".local-file-more");
@@ -479,13 +476,11 @@ function measureRooms(card: HTMLElement, resistances: LadderResistances): RoomWr
     cardH: fixed((contentBottom - titleRect.top) / k),
     pitch: Math.max(1, (firstRow?.height ?? 0) + rowGap),
     rowGap,
-    // The buttons that stay at each band intrude on the name's first lines as they hold their size: all three at the
-    // middle band, More alone further out; they stand a little past the header's right edge and above the name's top.
-    actionsW: actions.offsetWidth,
+    // The controls that stay at each band follow the name at the header's right edge: all of them at the middle band,
+    // More alone further out. Their width is counted from their number, since the farther bands hide all but More.
+    actionsW: actions.children.length * (more?.offsetWidth ?? 0) + Math.max(0, actions.children.length - 1) * (parseFloat(getComputedStyle(actions).columnGap) || 0),
     moreW: more?.offsetWidth ?? 0,
     moreH: more?.offsetHeight ?? 0,
-    overX: fixed((actionsRect.right - headerRect.right) / k),
-    overY: fixed((titleRect.top - actionsRect.top) / k),
     controlCeiling: (32 + (parseFloat(cardStyle.getPropertyValue("--slot-lines")) || 2) * 17) / 20,
     line: parseFloat(cardStyle.getPropertyValue("--title-line")) || 15
   };
@@ -494,20 +489,25 @@ function measureRooms(card: HTMLElement, resistances: LadderResistances): RoomWr
     [card, "--title-head-h", String(rooms.headH)],
     [card, "--title-card-h", String(rooms.cardH)],
     [card, "--title-pitch", String(rooms.pitch)],
-    [card, "--title-row-gap", String(rooms.rowGap)]
+    [card, "--title-row-gap", String(rooms.rowGap)],
+    [card, "--title-more-h", String(rooms.moreH)]
   );
   const held = title.querySelector<HTMLElement>(".local-file-name-held");
   if (held) {
-    const name: HeldName = { held, segments: seamsOf(held.dataset.name ?? ""), measure: textMeasure(getComputedStyle(held)), rooms, resistances };
+    const name: HeldName = { held, actions, nameY: fixed((titleRect.top - headerRect.top) / k), segments: heldSegments(held.dataset.name ?? ""),
+      measure: textMeasure(getComputedStyle(held)), rooms, resistances };
     heldNames.set(card, name);
     writes.push(...heldLineWrites(name, HELD_BANDS, rowsBeforePin(card)));
   }
   return writes;
 }
 
-/** What a card's held name needs to choose its lines again: kept from its card's last reading. */
+/** What a card's held header needs to be chosen again: kept from its card's last reading. */
 interface HeldName {
   held: HTMLElement;
+  /** The node's controls, and the name's top below the header's, which their place is written from. */
+  actions: HTMLElement;
+  nameY: number;
   segments: string[];
   measure: (text: string) => number;
   rooms: TitleRooms;
@@ -516,9 +516,11 @@ interface HeldName {
 const heldNames = new WeakMap<HTMLElement, HeldName>();
 
 /**
- * The held name's lines at each band and step, chosen by the four rules ({@link chooseHeldLines}) in the room the
- * stylesheet gives it there, and written as an attribute a band and step, `data-lines-<band>-<step>`, whose lines the
- * stylesheet draws as they are: a step's held scales as the controller writes them, rounded alike.
+ * The held header at each band and step, chosen by the six principles ({@link chooseHeldHeader}) in the room the
+ * stylesheet gives it there: the name's lines written as an attribute a band and step, `data-lines-<band>-<step>`, which
+ * the stylesheet draws as they are, and the controls' top from the header's top in the map's own units, a custom
+ * property a band and step on the controls, `--controls-y-<band>-<step>`, where the stylesheet stands them; a step's
+ * held scales as the controller writes them, rounded alike.
  */
 function heldLineWrites(name: HeldName, bands: readonly HeldBand[], before: number | null): RoomWrite[] {
   const writes: RoomWrite[] = [];
@@ -526,8 +528,12 @@ function heldLineWrites(name: HeldName, bands: readonly HeldBand[], before: numb
     const held = ladderScales(step, name.resistances);
     const scales = { text: Number(held.text.toFixed(3)), control: Number(held.control.toFixed(3)) };
     for (const band of bands) {
-      const { room } = heldTitle(name.rooms, band, scales, before);
-      writes.push([name.held, `data-lines-${band}-${step}`, chooseHeldLines(name.segments, room, name.measure).join("\n")]);
+      const { scale, room } = heldTitle(name.rooms, band, scales, before);
+      const header = chooseHeldHeader(name.segments, room, name.measure);
+      writes.push(
+        [name.held, `data-lines-${band}-${step}`, header.lines.join("\n")],
+        [name.actions, `--controls-y-${band}-${step}`, (name.nameY + header.controls.top * scale).toFixed(2)]
+      );
     }
   }
   return writes;

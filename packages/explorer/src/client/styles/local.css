@@ -254,8 +254,15 @@
     box-shadow: 0 0 0 1px var(--accent), 0 0 8px var(--color-outbound-glow);
 }
 
-/* Four explicit card actions can occupy the title's corner; constant padding keeps title measurement stable. */
-.local-card-actions { position: absolute; right: 5px; top: 5px; display: flex; gap: 2px; }
+/* The node's controls follow the file's name in its header (the header round of 2026-11-08, the November 7 record's
+   Turns 3 and 4): the name leads on the header's first line at its full width, and the controls stand at the header's
+   right edge on the name's last line where its text leaves them room, otherwise on the line after it, never above the
+   name. The browser lays this out: the name's button ends with a room as wide and as tall as the controls (its last
+   inline box, which shares the name's last line when it fits there and wraps to a line of its own when it does not), and
+   the controls stand at the header's bottom right, which is that room's line. The room counts the controls by the
+   header's own children, so a card that gains its Read button makes room for it; it is as large as the controls held at
+   the reading band's last step (--actions-hold), so that a picture at any zoom is laid out as at reading scale. */
+.local-card-actions { position: absolute; right: 0; bottom: 0; display: flex; gap: 2px; }
 .local-card-actions button {
     width: 20px;
     height: 20px;
@@ -271,7 +278,12 @@
     cursor: pointer;
 }
 .local-card-actions button:hover { color: var(--accent); border-color: var(--accent); }
-.local-column .node-title { padding-right: 88px; }
+.local-column .node-title { position: relative; --action-size: 20px; --actions-count: 1; }
+.local-column .node-title:has(> .local-card-actions > :nth-child(2)) { --actions-count: 2; }
+.local-column .node-title:has(> .local-card-actions > :nth-child(3)) { --actions-count: 3; }
+.local-column .node-title:has(> .local-card-actions > :nth-child(4)) { --actions-count: 4; }
+.local-column .node-title:has(> .local-card-actions > :nth-child(5)) { --actions-count: 5; }
+.local-file-name-room { display: inline-block; vertical-align: bottom; width: calc((var(--actions-count) * (var(--action-size) + 2px) - 2px) * var(--actions-hold, 1) + 4px); height: calc(var(--action-size) * var(--actions-hold, 1)); }
 .local-file-name { display: block; width: 100%; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: inherit; overflow-wrap: inherit; cursor: pointer; }
 .local-file-name:hover { color: var(--accent); }
 .local-disclosure { display: block; margin-top: 8px; padding: 0; border: 0; background: none; color: var(--text-panel-subtle); cursor: pointer; text-align: left; font: inherit; font-size: 11px; }
@@ -454,6 +466,12 @@ body.zoom-controls-active #view-map { height: calc(100% - 70px - var(--history-r
 .map-edges[data-left="true"] .map-edge-left, .map-edges[data-right="true"] .map-edge-right { opacity: 1; }
 
 .perspective-transition { position: fixed; z-index: 104; overflow: hidden; pointer-events: auto; }
+/* The source of a change of perspective, held as it stands over the destination while that draws its first frame
+   (perspectiveTransition.ts, holdPerspective): shown at once and stacked where its copy's cover stood, the transition's
+   layer, appended to the page after it, above it. */
+.view-container.perspective-held { opacity: 1; transition: none; z-index: 104; }
+/* A transparent cover over the held source that takes the pointer while it is held. */
+.perspective-hold-cover { position: fixed; z-index: 104; pointer-events: auto; }
 .perspective-file-name { position: absolute; transform: translateX(-50%); color: var(--text); font-size: 13px; font-weight: 600; white-space: nowrap; padding: 4px 7px; border-radius: 4px; background: #15191fe8; }
 
 /* The map's viewport is a compositor layer only while the camera moves: a pan or a zoom in motion is one transform of a

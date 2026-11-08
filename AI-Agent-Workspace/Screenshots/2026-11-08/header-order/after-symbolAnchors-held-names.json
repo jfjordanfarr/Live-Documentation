@@ -1,0 +1,1542 @@
+{
+ "subject": "packages/explorer/src/client/views/symbolAnchors.ts",
+ "pin": "search",
+ "url": "http://127.0.0.1:8911/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4ZyCMKxLjYABiFhMpsaC2ULQAIrcuWaQDs%2BvhWbl8CTTSBUKlUiAkikQKTIKlsDouPAAFZQGMIOPwVBQADaIEzAB0QPhBvnYPm7ugipg6joAPRcYG%2BDIk6s6TLV9B%2BK7VvZcCI1xbLUja5VGsw6Q4cHTF-MAKnzAF0QHPRlAC5hy5XHLX62gEWZm6322xO93e82lisEEP0COxxOQPB%2BJnQM9IKv11Wtw3d-v0G2O1QOC7I9T37C8rxvcdnHgQNpzDOckiAA",
+ "viewport": {
+  "width": 1440,
+  "height": 960
+ },
+ "errors": [],
+ "presses": [
+  {
+   "k": 1.45,
+   "lod": "reading",
+   "step": 0,
+   "names": [],
+   "press": 0
+  },
+  {
+   "k": 1.2083,
+   "lod": "reading",
+   "step": 1,
+   "names": [],
+   "press": 1
+  },
+  {
+   "k": 1.0069,
+   "lod": "middle",
+   "step": 2,
+   "names": [
+    {
+     "file": "still-picture.ts",
+     "kind": "whole beside",
+     "lines": [
+      "still-picture.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "local-map-corset.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "local-map-corset.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "branches.ts",
+     "kind": "whole beside",
+     "lines": [
+      "branches.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "branch-renderer.ts",
+     "kind": "whole beside",
+     "lines": [
+      "branch-renderer.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "connections.ts",
+     "kind": "whole beside",
+     "lines": [
+      "connections.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "symbol-highlight.ts",
+     "kind": "whole beside",
+     "lines": [
+      "symbol-highlight.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "controller.ts",
+     "kind": "whole beside",
+     "lines": [
+      "controller.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "symbolAnchors.ts",
+     "kind": "whole beside",
+     "lines": [
+      "symbolAnchors.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "pin-state.ts",
+     "kind": "whole beside",
+     "lines": [
+      "pin-state.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "symbolAnchors.test.ts",
+     "kind": "whole beside",
+     "lines": [
+      "symbolAnchors.test.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "card-model.ts",
+     "kind": "whole beside",
+     "lines": [
+      "card-model.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "measurer.ts",
+     "kind": "whole beside",
+     "lines": [
+      "measurer.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    }
+   ],
+   "press": 2
+  },
+  {
+   "k": 0.8391,
+   "lod": "middle",
+   "step": 3,
+   "names": [
+    {
+     "file": "still-picture.ts",
+     "kind": "whole beside",
+     "lines": [
+      "still-picture.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "local-map-corset.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "local-map-corset.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "branches.ts",
+     "kind": "whole beside",
+     "lines": [
+      "branches.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "branch-renderer.ts",
+     "kind": "whole beside",
+     "lines": [
+      "branch-renderer.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "connections.ts",
+     "kind": "whole beside",
+     "lines": [
+      "connections.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "symbol-highlight.ts",
+     "kind": "whole beside",
+     "lines": [
+      "symbol-highlight.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "controller.ts",
+     "kind": "whole beside",
+     "lines": [
+      "controller.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "symbolAnchors.ts",
+     "kind": "whole beside",
+     "lines": [
+      "symbolAnchors.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "pin-state.ts",
+     "kind": "whole beside",
+     "lines": [
+      "pin-state.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "symbolAnchors.test.ts",
+     "kind": "whole beside",
+     "lines": [
+      "symbolAnchors.test.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "card-model.ts",
+     "kind": "whole beside",
+     "lines": [
+      "card-model.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "measurer.ts",
+     "kind": "whole beside",
+     "lines": [
+      "measurer.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    }
+   ],
+   "press": 3
+  },
+  {
+   "k": 0.6993,
+   "lod": "middle",
+   "step": 4,
+   "names": [
+    {
+     "file": "still-picture.ts",
+     "kind": "whole beside",
+     "lines": [
+      "still-picture.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "local-map-corset.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "local-map-corset.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "branches.ts",
+     "kind": "whole beside",
+     "lines": [
+      "branches.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "branch-renderer.ts",
+     "kind": "whole beside",
+     "lines": [
+      "branch-renderer.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "connections.ts",
+     "kind": "whole beside",
+     "lines": [
+      "connections.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "symbol-highlight.ts",
+     "kind": "whole beside",
+     "lines": [
+      "symbol-highlight.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "controller.ts",
+     "kind": "whole beside",
+     "lines": [
+      "controller.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "symbolAnchors.ts",
+     "kind": "whole beside",
+     "lines": [
+      "symbolAnchors.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "pin-state.ts",
+     "kind": "whole beside",
+     "lines": [
+      "pin-state.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "symbolAnchors.test.ts",
+     "kind": "whole beside",
+     "lines": [
+      "symbolAnchors.test.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "card-model.ts",
+     "kind": "whole beside",
+     "lines": [
+      "card-model.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "measurer.ts",
+     "kind": "whole beside",
+     "lines": [
+      "measurer.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    }
+   ],
+   "press": 4
+  },
+  {
+   "k": 0.5827,
+   "lod": "far",
+   "step": 5,
+   "names": [
+    {
+     "file": "still-picture.ts",
+     "kind": "whole beside",
+     "lines": [
+      "still-picture.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "local-map-corset.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "local-map-corset.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "branches.ts",
+     "kind": "whole beside",
+     "lines": [
+      "branches.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "branch-renderer.ts",
+     "kind": "two lines, whole",
+     "lines": [
+      "branch-renderer",
+      ".ts"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "connections.ts",
+     "kind": "whole beside",
+     "lines": [
+      "connections.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "symbol-highlight.ts",
+     "kind": "two lines, whole",
+     "lines": [
+      "symbol-highlight",
+      ".ts"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "controller.ts",
+     "kind": "whole beside",
+     "lines": [
+      "controller.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "symbolAnchors.ts",
+     "kind": "whole beside",
+     "lines": [
+      "symbolAnchors.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "pin-state.ts",
+     "kind": "whole beside",
+     "lines": [
+      "pin-state.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "symbolAnchors.test.ts",
+     "kind": "whole beside",
+     "lines": [
+      "symbolAnchors.test.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "card-model.ts",
+     "kind": "whole beside",
+     "lines": [
+      "card-model.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "measurer.ts",
+     "kind": "whole beside",
+     "lines": [
+      "measurer.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    }
+   ],
+   "press": 5
+  },
+  {
+   "k": 0.4856,
+   "lod": "far",
+   "step": 6,
+   "names": [
+    {
+     "file": "still-picture.ts",
+     "kind": "whole beside",
+     "lines": [
+      "still-picture.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "local-map-corset.spec.ts",
+     "kind": "two lines, whole",
+     "lines": [
+      "local-map-corset.spec",
+      ".ts"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "branches.ts",
+     "kind": "whole beside",
+     "lines": [
+      "branches.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "branch-renderer.ts",
+     "kind": "two lines, whole",
+     "lines": [
+      "branch-",
+      "renderer.ts"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "connections.ts",
+     "kind": "whole beside",
+     "lines": [
+      "connections.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "symbol-highlight.ts",
+     "kind": "two lines, whole",
+     "lines": [
+      "symbol-",
+      "highlight.ts"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "controller.ts",
+     "kind": "whole beside",
+     "lines": [
+      "controller.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "symbolAnchors.ts",
+     "kind": "whole beside",
+     "lines": [
+      "symbolAnchors.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "pin-state.ts",
+     "kind": "whole beside",
+     "lines": [
+      "pin-state.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "symbolAnchors.test.ts",
+     "kind": "two lines, whole",
+     "lines": [
+      "symbolAnchors.test",
+      ".ts"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "card-model.ts",
+     "kind": "whole beside",
+     "lines": [
+      "card-model.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "measurer.ts",
+     "kind": "whole beside",
+     "lines": [
+      "measurer.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    }
+   ],
+   "press": 6
+  },
+  {
+   "k": 0.4047,
+   "lod": "overview",
+   "step": 7,
+   "names": [
+    {
+     "file": "still-picture.ts",
+     "kind": "whole beside",
+     "lines": [
+      "still-picture.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "local-map-corset.spec.ts",
+     "kind": "two lines, whole",
+     "lines": [
+      "local-map-corset.",
+      "spec.ts"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "branches.ts",
+     "kind": "whole beside",
+     "lines": [
+      "branches.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "branch-renderer.ts",
+     "kind": "two lines, whole",
+     "lines": [
+      "branch-",
+      "renderer.ts"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "connections.ts",
+     "kind": "two lines, whole",
+     "lines": [
+      "connections",
+      ".ts"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "symbol-highlight.ts",
+     "kind": "two lines, whole",
+     "lines": [
+      "symbol-",
+      "highlight.ts"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "controller.ts",
+     "kind": "two lines, whole",
+     "lines": [
+      "controller",
+      ".ts"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "symbolAnchors.ts",
+     "kind": "two lines, whole",
+     "lines": [
+      "symbolAnchors",
+      ".ts"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "pin-state.ts",
+     "kind": "whole beside",
+     "lines": [
+      "pin-state.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "symbolAnchors.test.ts",
+     "kind": "two lines, whole",
+     "lines": [
+      "symbolAnchors.",
+      "test.ts"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "card-model.ts",
+     "kind": "whole beside",
+     "lines": [
+      "card-model.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "measurer.ts",
+     "kind": "whole beside",
+     "lines": [
+      "measurer.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    }
+   ],
+   "press": 7
+  },
+  {
+   "k": 0.3372,
+   "lod": "overview",
+   "step": 8,
+   "names": [
+    {
+     "file": "still-picture.ts",
+     "kind": "whole beside",
+     "lines": [
+      "still-picture.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "local-map-corset.spec.ts",
+     "kind": "two lines, cut",
+     "lines": [
+      "local-map-",
+      "corset.spec…"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "branches.ts",
+     "kind": "whole beside",
+     "lines": [
+      "branches.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "branch-renderer.ts",
+     "kind": "two lines, whole",
+     "lines": [
+      "branch-",
+      "renderer",
+      ".ts"
+     ],
+     "order": {
+      "lines": 3,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "connections.ts",
+     "kind": "two lines, whole",
+     "lines": [
+      "connectio",
+      "ns.ts"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "symbol-highlight.ts",
+     "kind": "two lines, whole",
+     "lines": [
+      "symbol-",
+      "highlight",
+      ".ts"
+     ],
+     "order": {
+      "lines": 3,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "controller.ts",
+     "kind": "two lines, whole",
+     "lines": [
+      "controlle",
+      "r.ts"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "symbolAnchors.ts",
+     "kind": "two lines, whole",
+     "lines": [
+      "symbol",
+      "Anchors.ts"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "pin-state.ts",
+     "kind": "whole beside",
+     "lines": [
+      "pin-state.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "symbolAnchors.test.ts",
+     "kind": "two lines, cut",
+     "lines": [
+      "symbol",
+      "Anchors.t…"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "card-model.ts",
+     "kind": "whole beside",
+     "lines": [
+      "card-model.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "measurer.ts",
+     "kind": "two lines, whole",
+     "lines": [
+      "measurer",
+      ".ts"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    }
+   ],
+   "press": 8
+  },
+  {
+   "k": 0.281,
+   "lod": "overview",
+   "step": 9,
+   "names": [
+    {
+     "file": "still-picture.ts",
+     "kind": "two lines, whole",
+     "lines": [
+      "still-picture",
+      ".ts"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "local-map-corset.spec.ts",
+     "kind": "two lines, cut",
+     "lines": [
+      "local-map-",
+      "corset.sp…"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "branches.ts",
+     "kind": "whole beside",
+     "lines": [
+      "branches.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "branch-renderer.ts",
+     "kind": "two lines, cut",
+     "lines": [
+      "branch-",
+      "rend…"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "connections.ts",
+     "kind": "two lines, whole",
+     "lines": [
+      "connecti",
+      "ons.ts"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "symbol-highlight.ts",
+     "kind": "two lines, cut",
+     "lines": [
+      "symbol-",
+      "high…"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "controller.ts",
+     "kind": "two lines, whole",
+     "lines": [
+      "controll",
+      "er.ts"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "symbolAnchors.ts",
+     "kind": "two lines, whole",
+     "lines": [
+      "symbol",
+      "Anchors.ts"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "pin-state.ts",
+     "kind": "whole beside",
+     "lines": [
+      "pin-state.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "symbolAnchors.test.ts",
+     "kind": "cut beside",
+     "lines": [
+      "symbol…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "card-model.ts",
+     "kind": "whole beside",
+     "lines": [
+      "card-model.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "measurer.ts",
+     "kind": "two lines, whole",
+     "lines": [
+      "measurer",
+      ".ts"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    }
+   ],
+   "press": 9
+  },
+  {
+   "k": 0.2342,
+   "lod": "overview",
+   "step": 10,
+   "names": [
+    {
+     "file": "still-picture.ts",
+     "kind": "cut beside",
+     "lines": [
+      "still-pi…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "local-map-corset.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-m…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "branches.ts",
+     "kind": "two lines, whole",
+     "lines": [
+      "branches",
+      ".ts"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "branch-renderer.ts",
+     "kind": "two lines, cut",
+     "lines": [
+      "branch",
+      "-re…"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "connections.ts",
+     "kind": "cut beside",
+     "lines": [
+      "co…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "symbol-highlight.ts",
+     "kind": "two lines, cut",
+     "lines": [
+      "symbol",
+      "-hi…"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "controller.ts",
+     "kind": "two lines, cut",
+     "lines": [
+      "contro",
+      "lle…"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "symbolAnchors.ts",
+     "kind": "two lines, whole",
+     "lines": [
+      "symbol",
+      "Anchors",
+      ".ts"
+     ],
+     "order": {
+      "lines": 3,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "pin-state.ts",
+     "kind": "two lines, whole",
+     "lines": [
+      "pin-state",
+      ".ts"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "symbolAnchors.test.ts",
+     "kind": "cut beside",
+     "lines": [
+      "symb…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "card-model.ts",
+     "kind": "two lines, whole",
+     "lines": [
+      "card-model",
+      ".ts"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "measurer.ts",
+     "kind": "two lines, whole",
+     "lines": [
+      "measur",
+      "er.ts"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    }
+   ],
+   "press": 10
+  }
+ ]
+}

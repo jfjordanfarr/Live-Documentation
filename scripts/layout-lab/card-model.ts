@@ -8,7 +8,7 @@
  *
  * @module layout-lab/card-model
  */
-import { layout } from "@chenglou/pretext";
+import { layout, walkLineRanges } from "@chenglou/pretext";
 
 import type { Capture, CardCapture, ChipCapture, PreparedText, RowCapture } from "./capture";
 import { readingHeight } from "./reading-model";
@@ -48,6 +48,52 @@ export const TEXT_TOLERANCE = 1 / 64;
 export function textHeight(capture: Capture, text: PreparedText, width: number): number {
   const font = capture.fonts[text.font];
   return layout(text.prepared, Math.max(0, width) + TEXT_TOLERANCE, font.lineHeight).height;
+}
+
+/**
+ * The room a card's header keeps for the node's controls after the file's name (the header round of 2026-11-08), as the
+ * page measures it at capture: how many controls the header holds, a control's size, and how large they are held at the
+ * reading band's last step. Absent in a capture of a page from before it.
+ */
+export interface TitleRoom {
+  count: number;
+  /** A control's side, in CSS pixels: the stylesheet's --action-size. */
+  size: number;
+  /** The stylesheet's --actions-hold: 1, or STEP_RATIO on a slot card. */
+  hold: number;
+}
+
+/**
+ * The room's box, by local.css's rule for `.local-file-name-room`: as wide as the controls side by side with their 2 px
+ * gaps, held, and 4 px of air; as tall as one control held. The stylesheet counts the controls by the header's own
+ * children, one to five.
+ */
+export function titleRoomBox(room: TitleRoom): { width: number; height: number } {
+  const count = Math.min(5, Math.max(1, room.count));
+  return { width: (count * (room.size + 2) - 2) * room.hold + 4, height: room.size * room.hold };
+}
+
+/**
+ * A title's height from its text's lines, by the header's layout: the room is the name's button's last inline box,
+ * bottom-aligned, so it shares the name's last line where the line leaves it its width, making that line as tall as the
+ * taller of the two, and otherwise wraps to a line of its own after the name. Without a room, the lines alone.
+ */
+export function titleHeight(lineWidths: readonly number[], lineHeight: number, width: number, room: TitleRoom | null | undefined): number {
+  const lines = Math.max(1, lineWidths.length);
+  if (!room) return lines * lineHeight;
+  const box = titleRoomBox(room);
+  const tallest = Math.max(lineHeight, box.height);
+  const shared = (lineWidths.at(-1) ?? 0) + box.width <= width;
+  return (shared ? lines - 1 : lines) * lineHeight + tallest;
+}
+
+/** A card's title's height at a width: its text laid out by Pretext, with the room for the controls after it. */
+export function titleTextHeight(capture: Capture, text: PreparedText, width: number, room: TitleRoom | null | undefined): number {
+  const font = capture.fonts[text.font];
+  const widths: number[] = [];
+  const max = Math.max(0, width) + TEXT_TOLERANCE;
+  walkLineRanges(text.prepared, max, line => { widths.push(line.width); });
+  return titleHeight(widths, font.lineHeight, max, room);
 }
 
 /** The height of a text the page never showed, set in a font from its glyphs' widths: as many lines as its words need. */
@@ -93,7 +139,7 @@ export function cardMetrics(capture: Capture, card: CardCapture, width: number, 
   const content = width - 2 * (card.borderWidth + (card.paddingInline ?? card.padding));
   const text = (t: PreparedText, w: number): number => textHeight(capture, t, w);
   let y = edge;
-  y += text(card.title, content - c.titlePaddingRight) + c.titleMarginBottom + (c.titlePaddingTop ?? 0);
+  y += titleTextHeight(capture, card.title, content - c.titlePaddingRight, card.titleRoom) + c.titleMarginBottom + (c.titlePaddingTop ?? 0);
   y += text(card.path, content);
   if (card.footer?.position === "after-path") y += card.footer.top + chipsHeight(card.footer.items, content, card.footer.gap) + (card.footer.bottom ?? 0);
   // A slot card's Purpose has a fixed allotment, whatever its text (2026-11-06).

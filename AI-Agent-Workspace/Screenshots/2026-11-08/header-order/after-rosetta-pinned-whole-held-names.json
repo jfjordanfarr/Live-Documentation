@@ -1,0 +1,2245 @@
+{
+ "subject": "tests/integration/programs/rosetta-manifest.json",
+ "pin": "whole",
+ "url": "http://127.0.0.1:8911/?s=N4IgbiBcDMA0IDsogC4FMDOKMHoCWC6A5gE4CGKeA9gjgA4lWlkC2ujGaKKZAtC2QR4AZphQA6AFYYaIeHSgBtUEkioxuAsXKUa9RszY4OXHv0EixUmUngZkAKhABfALrOgA",
+ "viewport": {
+  "width": 1440,
+  "height": 960
+ },
+ "errors": [],
+ "presses": [
+  {
+   "k": 1,
+   "lod": "reading",
+   "step": 0,
+   "names": [],
+   "press": 0
+  },
+  {
+   "k": 0.8333,
+   "lod": "reading",
+   "step": 1,
+   "names": [],
+   "press": 1
+  },
+  {
+   "k": 0.6944,
+   "lod": "middle",
+   "step": 2,
+   "names": [
+    {
+     "file": "main.cpp",
+     "kind": "whole beside",
+     "lines": [
+      "main.cpp"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "compiler-edges.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.rs",
+     "kind": "whole beside",
+     "lines": [
+      "main.rs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "compiler-edges.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "Main.cs",
+     "kind": "whole beside",
+     "lines": [
+      "Main.cs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "compiler-edges.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "compiler-edges.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "Main.java",
+     "kind": "whole beside",
+     "lines": [
+      "Main.java"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.ts",
+     "kind": "whole beside",
+     "lines": [
+      "main.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "compiler-edges.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.c",
+     "kind": "whole beside",
+     "lines": [
+      "main.c"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "compiler-edges.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.go",
+     "kind": "whole beside",
+     "lines": [
+      "main.go"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "compiler-edges.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.py",
+     "kind": "whole beside",
+     "lines": [
+      "main.py"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "compiler-edges.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.rb",
+     "kind": "whole beside",
+     "lines": [
+      "main.rb"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "rosetta-manifest.json",
+     "kind": "whole beside",
+     "lines": [
+      "rosetta-manifest.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    }
+   ],
+   "press": 2
+  },
+  {
+   "k": 0.5787,
+   "lod": "middle",
+   "step": 3,
+   "names": [
+    {
+     "file": "main.cpp",
+     "kind": "whole beside",
+     "lines": [
+      "main.cpp"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "compiler-edges.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "main.rs",
+     "kind": "whole beside",
+     "lines": [
+      "main.rs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "compiler-edges.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "Main.cs",
+     "kind": "whole beside",
+     "lines": [
+      "Main.cs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "compiler-edges.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "compiler-edges.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "Main.java",
+     "kind": "whole beside",
+     "lines": [
+      "Main.java"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.ts",
+     "kind": "whole beside",
+     "lines": [
+      "main.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "compiler-edges.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "main.c",
+     "kind": "whole beside",
+     "lines": [
+      "main.c"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "compiler-edges.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "main.go",
+     "kind": "whole beside",
+     "lines": [
+      "main.go"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "compiler-edges.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "main.py",
+     "kind": "whole beside",
+     "lines": [
+      "main.py"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "compiler-edges.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "main.rb",
+     "kind": "whole beside",
+     "lines": [
+      "main.rb"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "rosetta-manifest.json",
+     "kind": "whole beside",
+     "lines": [
+      "rosetta-manifest.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    }
+   ],
+   "press": 3
+  },
+  {
+   "k": 0.4823,
+   "lod": "middle",
+   "step": 4,
+   "names": [
+    {
+     "file": "main.cpp",
+     "kind": "whole beside",
+     "lines": [
+      "main.cpp"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "compiler-edges.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "main.rs",
+     "kind": "whole beside",
+     "lines": [
+      "main.rs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "compiler-edges.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "Main.cs",
+     "kind": "whole beside",
+     "lines": [
+      "Main.cs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "compiler-edges.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "compiler-edges.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "Main.java",
+     "kind": "whole beside",
+     "lines": [
+      "Main.java"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.ts",
+     "kind": "whole beside",
+     "lines": [
+      "main.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "compiler-edges.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "main.c",
+     "kind": "whole beside",
+     "lines": [
+      "main.c"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "compiler-edges.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "main.go",
+     "kind": "whole beside",
+     "lines": [
+      "main.go"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "compiler-edges.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "main.py",
+     "kind": "whole beside",
+     "lines": [
+      "main.py"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "compiler-edges.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "main.rb",
+     "kind": "whole beside",
+     "lines": [
+      "main.rb"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "rosetta-manifest.json",
+     "kind": "whole beside",
+     "lines": [
+      "rosetta-manifest.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    }
+   ],
+   "press": 4
+  },
+  {
+   "k": 0.4019,
+   "lod": "far",
+   "step": 5,
+   "names": [
+    {
+     "file": "main.cpp",
+     "kind": "whole beside",
+     "lines": [
+      "main.cpp"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "compiler-edges.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "main.rs",
+     "kind": "whole beside",
+     "lines": [
+      "main.rs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "compiler-edges.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "Main.cs",
+     "kind": "whole beside",
+     "lines": [
+      "Main.cs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "compiler-edges.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "compiler-edges.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "Main.java",
+     "kind": "whole beside",
+     "lines": [
+      "Main.java"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.ts",
+     "kind": "whole beside",
+     "lines": [
+      "main.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "compiler-edges.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "main.c",
+     "kind": "whole beside",
+     "lines": [
+      "main.c"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "compiler-edges.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "main.go",
+     "kind": "whole beside",
+     "lines": [
+      "main.go"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "compiler-edges.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "main.py",
+     "kind": "whole beside",
+     "lines": [
+      "main.py"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "compiler-edges.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "main.rb",
+     "kind": "whole beside",
+     "lines": [
+      "main.rb"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "rosetta-manifest.json",
+     "kind": "two lines, whole",
+     "lines": [
+      "rosetta-manifest.",
+      "json"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    }
+   ],
+   "press": 5
+  },
+  {
+   "k": 0.3349,
+   "lod": "far",
+   "step": 6,
+   "names": [
+    {
+     "file": "main.cpp",
+     "kind": "whole beside",
+     "lines": [
+      "main.cpp"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, whole",
+     "lines": [
+      "compiler-edges.",
+      "json"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.rs",
+     "kind": "whole beside",
+     "lines": [
+      "main.rs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, whole",
+     "lines": [
+      "compiler-edges.",
+      "json"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "Main.cs",
+     "kind": "whole beside",
+     "lines": [
+      "Main.cs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, whole",
+     "lines": [
+      "compiler-edges.",
+      "json"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, whole",
+     "lines": [
+      "compiler-edges.",
+      "json"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "Main.java",
+     "kind": "whole beside",
+     "lines": [
+      "Main.java"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.ts",
+     "kind": "whole beside",
+     "lines": [
+      "main.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, whole",
+     "lines": [
+      "compiler-edges.",
+      "json"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.c",
+     "kind": "whole beside",
+     "lines": [
+      "main.c"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, whole",
+     "lines": [
+      "compiler-edges.",
+      "json"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.go",
+     "kind": "whole beside",
+     "lines": [
+      "main.go"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, whole",
+     "lines": [
+      "compiler-edges.",
+      "json"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.py",
+     "kind": "whole beside",
+     "lines": [
+      "main.py"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, whole",
+     "lines": [
+      "compiler-edges.",
+      "json"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.rb",
+     "kind": "whole beside",
+     "lines": [
+      "main.rb"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "rosetta-manifest.json",
+     "kind": "two lines, whole",
+     "lines": [
+      "rosetta-",
+      "manifest.json"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    }
+   ],
+   "press": 6
+  },
+  {
+   "k": 0.2791,
+   "lod": "overview",
+   "step": 7,
+   "names": [
+    {
+     "file": "main.cpp",
+     "kind": "whole beside",
+     "lines": [
+      "main.cpp"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, whole",
+     "lines": [
+      "compiler-",
+      "edges.json"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.rs",
+     "kind": "whole beside",
+     "lines": [
+      "main.rs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, whole",
+     "lines": [
+      "compiler-",
+      "edges.json"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "Main.cs",
+     "kind": "whole beside",
+     "lines": [
+      "Main.cs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, whole",
+     "lines": [
+      "compiler-",
+      "edges.json"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, whole",
+     "lines": [
+      "compiler-",
+      "edges.json"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "Main.java",
+     "kind": "whole beside",
+     "lines": [
+      "Main.java"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.ts",
+     "kind": "whole beside",
+     "lines": [
+      "main.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, whole",
+     "lines": [
+      "compiler-",
+      "edges.json"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.c",
+     "kind": "whole beside",
+     "lines": [
+      "main.c"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, whole",
+     "lines": [
+      "compiler-",
+      "edges.json"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.go",
+     "kind": "whole beside",
+     "lines": [
+      "main.go"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, whole",
+     "lines": [
+      "compiler-",
+      "edges.json"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.py",
+     "kind": "whole beside",
+     "lines": [
+      "main.py"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, whole",
+     "lines": [
+      "compiler-",
+      "edges.json"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.rb",
+     "kind": "whole beside",
+     "lines": [
+      "main.rb"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "rosetta-manifest.json",
+     "kind": "two lines, whole",
+     "lines": [
+      "rosetta-",
+      "manifest.json"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    }
+   ],
+   "press": 7
+  },
+  {
+   "k": 0.2326,
+   "lod": "overview",
+   "step": 8,
+   "names": [
+    {
+     "file": "main.cpp",
+     "kind": "whole beside",
+     "lines": [
+      "main.cpp"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, cut",
+     "lines": [
+      "compiler-",
+      "edges.j…"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.rs",
+     "kind": "whole beside",
+     "lines": [
+      "main.rs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, cut",
+     "lines": [
+      "compiler-",
+      "edges.j…"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "Main.cs",
+     "kind": "whole beside",
+     "lines": [
+      "Main.cs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, cut",
+     "lines": [
+      "compiler-",
+      "edges.j…"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, cut",
+     "lines": [
+      "compiler-",
+      "edges.j…"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "Main.java",
+     "kind": "whole beside",
+     "lines": [
+      "Main.java"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "main.ts",
+     "kind": "whole beside",
+     "lines": [
+      "main.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, cut",
+     "lines": [
+      "compiler-",
+      "edges.j…"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.c",
+     "kind": "whole beside",
+     "lines": [
+      "main.c"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, cut",
+     "lines": [
+      "compiler-",
+      "edges.j…"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.go",
+     "kind": "whole beside",
+     "lines": [
+      "main.go"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, cut",
+     "lines": [
+      "compiler-",
+      "edges.j…"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.py",
+     "kind": "whole beside",
+     "lines": [
+      "main.py"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, cut",
+     "lines": [
+      "compiler-",
+      "edges.j…"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.rb",
+     "kind": "whole beside",
+     "lines": [
+      "main.rb"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "rosetta-manifest.json",
+     "kind": "two lines, whole",
+     "lines": [
+      "rosetta-",
+      "manifest.",
+      "json"
+     ],
+     "order": {
+      "lines": 3,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    }
+   ],
+   "press": 8
+  },
+  {
+   "k": 0.1938,
+   "lod": "overview",
+   "step": 9,
+   "names": [
+    {
+     "file": "main.cpp",
+     "kind": "whole beside",
+     "lines": [
+      "main.cpp"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, cut",
+     "lines": [
+      "compiler-",
+      "edges…"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.rs",
+     "kind": "whole beside",
+     "lines": [
+      "main.rs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, cut",
+     "lines": [
+      "compiler-",
+      "edges…"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "Main.cs",
+     "kind": "whole beside",
+     "lines": [
+      "Main.cs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, cut",
+     "lines": [
+      "compiler-",
+      "edges…"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, cut",
+     "lines": [
+      "compiler-",
+      "edges…"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "Main.java",
+     "kind": "whole beside",
+     "lines": [
+      "Main.java"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "main.ts",
+     "kind": "whole beside",
+     "lines": [
+      "main.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, cut",
+     "lines": [
+      "compiler-",
+      "edges…"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.c",
+     "kind": "whole beside",
+     "lines": [
+      "main.c"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, cut",
+     "lines": [
+      "compiler-",
+      "edges…"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.go",
+     "kind": "whole beside",
+     "lines": [
+      "main.go"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, cut",
+     "lines": [
+      "compiler-",
+      "edges…"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.py",
+     "kind": "whole beside",
+     "lines": [
+      "main.py"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, cut",
+     "lines": [
+      "compiler-",
+      "edges…"
+     ],
+     "order": {
+      "lines": 2,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.rb",
+     "kind": "whole beside",
+     "lines": [
+      "main.rb"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "rosetta-manifest.json",
+     "kind": "two lines, whole",
+     "lines": [
+      "rosetta-",
+      "manifest.",
+      "json"
+     ],
+     "order": {
+      "lines": 3,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    }
+   ],
+   "press": 9
+  },
+  {
+   "k": 0.1615,
+   "lod": "overview",
+   "step": 10,
+   "names": [
+    {
+     "file": "main.cpp",
+     "kind": "cut beside",
+     "lines": [
+      "mai…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "cut beside",
+     "lines": [
+      "com…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.rs",
+     "kind": "whole beside",
+     "lines": [
+      "main.rs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "cut beside",
+     "lines": [
+      "com…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "Main.cs",
+     "kind": "whole beside",
+     "lines": [
+      "Main.cs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "cut beside",
+     "lines": [
+      "com…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "cut beside",
+     "lines": [
+      "com…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "Main.java",
+     "kind": "cut beside",
+     "lines": [
+      "Mai…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.ts",
+     "kind": "whole beside",
+     "lines": [
+      "main.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "cut beside",
+     "lines": [
+      "com…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.c",
+     "kind": "whole beside",
+     "lines": [
+      "main.c"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "cut beside",
+     "lines": [
+      "com…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.go",
+     "kind": "whole beside",
+     "lines": [
+      "main.go"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "cut beside",
+     "lines": [
+      "com…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.py",
+     "kind": "whole beside",
+     "lines": [
+      "main.py"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "cut beside",
+     "lines": [
+      "com…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    },
+    {
+     "file": "main.rb",
+     "kind": "whole beside",
+     "lines": [
+      "main.rb"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "own line"
+     }
+    },
+    {
+     "file": "rosetta-manifest.json",
+     "kind": "two lines, whole",
+     "lines": [
+      "rosetta-",
+      "manifes",
+      "t.json"
+     ],
+     "order": {
+      "lines": 3,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "shared"
+     }
+    }
+   ],
+   "press": 10
+  }
+ ]
+}

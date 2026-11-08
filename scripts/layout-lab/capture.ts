@@ -15,7 +15,7 @@ import * as fs from "node:fs/promises";
 import path from "node:path";
 
 
-import { TEXT_TOLERANCE } from "./card-model";
+import { TEXT_TOLERANCE, titleHeight, type TitleRoom } from "./card-model";
 import type { ReadingFlow } from "./reading-model";
 import { admitCompiledFunctions, ORIGIN, serveBundle, type ScopeRun } from "./scopes";
 import { LAYOUT_PRESETS, type LayoutPreset } from "../../packages/explorer/src/client/layout-presets";
@@ -96,6 +96,8 @@ export interface CardCapture {
   footer?: { items: ChipCapture[]; gap: number; top: number; marginTop: number; bottom?: number; position?: "after-path" };
   hubY?: number;
   title: PreparedText;
+  /** The room the title keeps after the name for the node's controls; absent in a capture of a page from before it. */
+  titleRoom?: TitleRoom | null;
   path: PreparedText;
   directory: PreparedText;
   /** The "No public symbols" line, when the card has one. */
@@ -197,18 +199,28 @@ export async function captureFromPage(page: Page, run: ScopeRun): Promise<Captur
   await page.addScriptTag({ type: "module", url: `/__pretext/${PRETEXT_ENTRY}` });
   await page.waitForFunction("Boolean(window.__pretext)");
   await admitCompiledFunctions(page);
-  const read = await readCapture(page);
+  const { titleChecks, ...read } = await readCapture(page);
+  // A title holds the room for the node's controls after the name, which Pretext does not lay out: its height is held
+  // to the page by the card model's rule for the title, the one the model sizes cards with.
+  for (const check of titleChecks) {
+    const height = titleHeight(check.lineWidths, check.lineHeight, check.width + TEXT_TOLERANCE, check.room);
+    if (Math.abs(height - check.own) > 0.5) read.warnings.push(`${JSON.stringify(check.text)} at ${check.width.toFixed(2)} px: Pretext ${height.toFixed(2)}, page ${check.own.toFixed(2)} (${check.lineWidths.length} lines)`);
+  }
   return { bundle: run.bundle, base: run.base, scopeName: run.scopeName, subject: run.subject, files: [...run.scope], capturedAt: new Date().toISOString(), ...read };
 }
 
 type PageCapture = Pick<Capture, "userAgent" | "fonts" | "constants" | "cards" | "labels" | "truth" | "warnings" | "filters">;
 
+/** A card's title as the page laid it out, for the drift check in node by the card model's own rule (`titleHeight`). */
+interface TitleCheck { text: string; width: number; own: number; lineWidths: number[]; lineHeight: number; room: TitleRoom | null }
+
 /** Reads the capture inside the page. One evaluation, so the page is read in one state. */
-function readCapture(page: Page): Promise<PageCapture> {
+function readCapture(page: Page): Promise<PageCapture & { titleChecks: TitleCheck[] }> {
   return page.evaluate(({ tolerance }) => {
     type Pretext = {
       prepareWithSegments: (text: string, font: string, options?: { letterSpacing?: number; whiteSpace?: "pre-wrap" }) => PreparedTextWithSegments;
       layout: (prepared: PreparedTextWithSegments, maxWidth: number, lineHeight: number) => { height: number; lineCount: number };
+      walkLineRanges: (prepared: PreparedTextWithSegments, maxWidth: number, onLine: (line: { width: number }) => void) => number;
       prepareRichInline: (items: RichInlineItem[]) => PreparedRichInline;
     };
     const pretext = (window as unknown as { __pretext: Pretext }).__pretext;
@@ -257,7 +269,19 @@ function readCapture(page: Page): Promise<PageCapture> {
       }
       return key;
     };
-    const prepared = (element: Element, text = element.textContent ?? ""): PreparedText => {
+    const titleChecks: TitleCheck[] = [];
+    // The room a card's title keeps after the name for the node's controls, by what the page gives local.css's rule:
+    // the controls the header holds, a control's size and their hold. None on a page from before the header round.
+    // Read for every title at once, before the capture's probes change the page: a style read after them recomputes
+    // the whole map's style, a tenth of a second a card on the repository's pictures.
+    const rooms = new Map([...document.querySelectorAll<HTMLElement>("#map-container .node-card > .node-title")].map(title => {
+      const actions = title.querySelector(":scope > .local-card-actions");
+      if (!actions || !title.querySelector(".local-file-name-room")) return [title, null] as const;
+      const style = getComputedStyle(title);
+      return [title, { count: actions.children.length, size: px(style.getPropertyValue("--action-size")), hold: parseFloat(style.getPropertyValue("--actions-hold")) || 1 }] as const;
+    }));
+    const roomOf = (title: HTMLElement): TitleRoom | null => rooms.get(title) ?? null;
+    const prepared = (element: Element, text = element.textContent ?? "", room?: TitleRoom | null): PreparedText => {
       const font = fontOf(element);
       // Name seams are real break opportunities, carried by <wbr> rather than textContent.
       // Keep the name itself for consumers, but give Pretext the same break opportunities as the page.
@@ -271,7 +295,12 @@ function readCapture(page: Page): Promise<PageCapture> {
       const width = rect.width / scale - px(style.paddingLeft) - px(style.paddingRight);
       const laid = pretext.layout(value, width + tolerance, fonts[font].lineHeight);
       const own = rect.height / scale - px(style.paddingTop) - px(style.paddingBottom);
-      if (rect.width > 0 && Math.abs(laid.height - own) > 0.5) warnings.push(`${JSON.stringify(text)} at ${width.toFixed(2)} px: Pretext ${laid.height.toFixed(2)}, page ${own.toFixed(2)} (${laid.lineCount} lines)`);
+      if (room !== undefined) {
+        // A card's title: checked in node by the card model's rule, which knows the room after the name.
+        const lineWidths: number[] = [];
+        pretext.walkLineRanges(value, width + tolerance, line => { lineWidths.push(line.width); });
+        if (rect.width > 0) titleChecks.push({ text, width, own, lineWidths, lineHeight: fonts[font].lineHeight, room });
+      } else if (rect.width > 0 && Math.abs(laid.height - own) > 0.5) warnings.push(`${JSON.stringify(text)} at ${width.toFixed(2)} px: Pretext ${laid.height.toFixed(2)}, page ${own.toFixed(2)} (${laid.lineCount} lines)`);
       return { text, font, prepared: JSON.parse(JSON.stringify(value)) };
     };
 
@@ -514,7 +543,8 @@ function readCapture(page: Page): Promise<PageCapture> {
             position: pathElement.nextElementSibling === footer ? "after-path" : undefined
           };
         })(),
-        title: prepared(title),
+        title: prepared(title, undefined, roomOf(title)),
+        titleRoom: roomOf(title),
         path: prepared(pathElement),
         directory: prepared(directory),
         meta: meta ? prepared(meta) : null,
@@ -557,6 +587,7 @@ function readCapture(page: Page): Promise<PageCapture> {
       labelControls,
       truth: { placementCost: Number(root.dataset.placementCost), pictureWidth: px(root.style.width), pictureHeight: px(root.style.height), labelHeights },
       warnings,
+      titleChecks,
       filters: {
         showTests: document.querySelector<HTMLInputElement>("#filter-toggle-tests")!.checked,
         showAssets: document.querySelector<HTMLInputElement>("#filter-toggle-assets")!.checked

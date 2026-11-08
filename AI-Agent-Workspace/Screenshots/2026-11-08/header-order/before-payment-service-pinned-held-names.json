@@ -1,0 +1,1385 @@
+{
+ "subject": "tests/integration/programs/csharp/estate/PaymentService/PaymentService.cs",
+ "pin": "symbol:PaymentService",
+ "url": "http://127.0.0.1:8914/?s=N4IgbiBcDMA0IDsogC4FMDOKMHoCWC6A5gE4CGKeA9gjgA4lWlkC2uAxhgBZkl06YUFNDgAKZAJ4s0hAMpoSYPOxHipMlPMXK0AOk4gAvkA",
+ "viewport": {
+  "width": 1440,
+  "height": 960
+ },
+ "errors": [],
+ "presses": [
+  {
+   "k": 1.45,
+   "lod": "reading",
+   "step": 0,
+   "names": [],
+   "press": 0
+  },
+  {
+   "k": 1.2083,
+   "lod": "reading",
+   "step": 1,
+   "names": [],
+   "press": 1
+  },
+  {
+   "k": 1.0069,
+   "lod": "middle",
+   "step": 2,
+   "names": [
+    {
+     "file": "PaymentQuery.cs",
+     "kind": "whole beside",
+     "lines": [
+      "PaymentQuery.cs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PaymentResult.cs",
+     "kind": "whole beside",
+     "lines": [
+      "PaymentResult.cs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PaymentRequest.cs",
+     "kind": "whole beside",
+     "lines": [
+      "PaymentRequest.cs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "IPaymentService.cs",
+     "kind": "whole beside",
+     "lines": [
+      "IPaymentService.cs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "compiler-edges.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "hand-verified-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "hand-verified-edges.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "Payment.cs",
+     "kind": "whole beside",
+     "lines": [
+      "Payment.cs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PostPaymentRow.cs",
+     "kind": "whole beside",
+     "lines": [
+      "PostPaymentRow.cs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PaymentsContext.cs",
+     "kind": "whole beside",
+     "lines": [
+      "PaymentsContext.cs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "App.config",
+     "kind": "whole beside",
+     "lines": [
+      "App.config"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PaymentService.cs",
+     "kind": "whole beside",
+     "lines": [
+      "PaymentService.cs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    }
+   ],
+   "press": 2
+  },
+  {
+   "k": 0.8391,
+   "lod": "middle",
+   "step": 3,
+   "names": [
+    {
+     "file": "PaymentQuery.cs",
+     "kind": "whole beside",
+     "lines": [
+      "PaymentQuery.cs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PaymentResult.cs",
+     "kind": "whole beside",
+     "lines": [
+      "PaymentResult.cs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PaymentRequest.cs",
+     "kind": "whole below",
+     "lines": [
+      "PaymentRequest.cs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "IPaymentService.cs",
+     "kind": "whole below",
+     "lines": [
+      "IPaymentService.cs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "compiler-edges.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "hand-verified-edges.json",
+     "kind": "whole below",
+     "lines": [
+      "hand-verified-edges.json"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "Payment.cs",
+     "kind": "whole beside",
+     "lines": [
+      "Payment.cs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PostPaymentRow.cs",
+     "kind": "whole beside",
+     "lines": [
+      "PostPaymentRow.cs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PaymentsContext.cs",
+     "kind": "whole beside",
+     "lines": [
+      "PaymentsContext.cs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "App.config",
+     "kind": "whole beside",
+     "lines": [
+      "App.config"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PaymentService.cs",
+     "kind": "whole beside",
+     "lines": [
+      "PaymentService.cs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    }
+   ],
+   "press": 3
+  },
+  {
+   "k": 0.6993,
+   "lod": "middle",
+   "step": 4,
+   "names": [
+    {
+     "file": "PaymentQuery.cs",
+     "kind": "cut beside",
+     "lines": [
+      "PaymentQu…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PaymentResult.cs",
+     "kind": "cut beside",
+     "lines": [
+      "PaymentRe…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PaymentRequest.cs",
+     "kind": "cut beside",
+     "lines": [
+      "PaymentRe…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "IPaymentService.cs",
+     "kind": "cut beside",
+     "lines": [
+      "IPaymentSe…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "cut beside",
+     "lines": [
+      "compiler-edg…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "hand-verified-edges.json",
+     "kind": "cut beside",
+     "lines": [
+      "hand-verified-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "Payment.cs",
+     "kind": "whole beside",
+     "lines": [
+      "Payment.cs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PostPaymentRow.cs",
+     "kind": "cut beside",
+     "lines": [
+      "PostPaymentRo…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PaymentsContext.cs",
+     "kind": "cut beside",
+     "lines": [
+      "PaymentsConte…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "App.config",
+     "kind": "whole beside",
+     "lines": [
+      "App.config"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PaymentService.cs",
+     "kind": "cut beside",
+     "lines": [
+      "PaymentServi…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    }
+   ],
+   "press": 4
+  },
+  {
+   "k": 0.5827,
+   "lod": "far",
+   "step": 5,
+   "names": [
+    {
+     "file": "PaymentQuery.cs",
+     "kind": "cut beside",
+     "lines": [
+      "PaymentQuery.…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PaymentResult.cs",
+     "kind": "cut beside",
+     "lines": [
+      "PaymentResult…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PaymentRequest.cs",
+     "kind": "cut beside",
+     "lines": [
+      "PaymentReque…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "IPaymentService.cs",
+     "kind": "cut beside",
+     "lines": [
+      "IPaymentServi…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "cut beside",
+     "lines": [
+      "compiler-edges.…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "hand-verified-edges.json",
+     "kind": "cut beside",
+     "lines": [
+      "hand-verified-ed…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "Payment.cs",
+     "kind": "whole beside",
+     "lines": [
+      "Payment.cs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PostPaymentRow.cs",
+     "kind": "whole beside",
+     "lines": [
+      "PostPaymentRow.cs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PaymentsContext.cs",
+     "kind": "whole beside",
+     "lines": [
+      "PaymentsContext.cs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "App.config",
+     "kind": "whole beside",
+     "lines": [
+      "App.config"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PaymentService.cs",
+     "kind": "whole beside",
+     "lines": [
+      "PaymentService.cs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    }
+   ],
+   "press": 5
+  },
+  {
+   "k": 0.4856,
+   "lod": "far",
+   "step": 6,
+   "names": [
+    {
+     "file": "PaymentQuery.cs",
+     "kind": "cut beside",
+     "lines": [
+      "PaymentQu…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PaymentResult.cs",
+     "kind": "cut beside",
+     "lines": [
+      "PaymentRe…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PaymentRequest.cs",
+     "kind": "cut beside",
+     "lines": [
+      "PaymentRe…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "IPaymentService.cs",
+     "kind": "cut beside",
+     "lines": [
+      "IPaymentSe…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "cut beside",
+     "lines": [
+      "compiler-ed…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "hand-verified-edges.json",
+     "kind": "cut beside",
+     "lines": [
+      "hand-verifie…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "Payment.cs",
+     "kind": "whole beside",
+     "lines": [
+      "Payment.cs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PostPaymentRow.cs",
+     "kind": "cut beside",
+     "lines": [
+      "PostPaymentR…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PaymentsContext.cs",
+     "kind": "cut beside",
+     "lines": [
+      "PaymentsCont…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "App.config",
+     "kind": "whole beside",
+     "lines": [
+      "App.config"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PaymentService.cs",
+     "kind": "cut beside",
+     "lines": [
+      "PaymentServ…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    }
+   ],
+   "press": 6
+  },
+  {
+   "k": 0.4047,
+   "lod": "overview",
+   "step": 7,
+   "names": [
+    {
+     "file": "PaymentQuery.cs",
+     "kind": "cut below",
+     "lines": [
+      "PaymentQu…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PaymentResult.cs",
+     "kind": "cut below",
+     "lines": [
+      "PaymentRe…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PaymentRequest.cs",
+     "kind": "cut below",
+     "lines": [
+      "PaymentRe…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "IPaymentService.cs",
+     "kind": "cut below",
+     "lines": [
+      "IPaymentSe…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "cut below",
+     "lines": [
+      "compiler-ed…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "hand-verified-edges.json",
+     "kind": "cut below",
+     "lines": [
+      "hand-verifie…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "Payment.cs",
+     "kind": "whole beside",
+     "lines": [
+      "Payment.cs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PostPaymentRow.cs",
+     "kind": "cut below",
+     "lines": [
+      "PostPayment…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PaymentsContext.cs",
+     "kind": "cut below",
+     "lines": [
+      "PaymentsCont…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "App.config",
+     "kind": "whole beside",
+     "lines": [
+      "App.config"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PaymentService.cs",
+     "kind": "cut beside",
+     "lines": [
+      "PaymentS…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    }
+   ],
+   "press": 7
+  },
+  {
+   "k": 0.3372,
+   "lod": "overview",
+   "step": 8,
+   "names": [
+    {
+     "file": "PaymentQuery.cs",
+     "kind": "cut below",
+     "lines": [
+      "Payment…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PaymentResult.cs",
+     "kind": "cut below",
+     "lines": [
+      "Payment…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PaymentRequest.cs",
+     "kind": "cut below",
+     "lines": [
+      "Payment…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "IPaymentService.cs",
+     "kind": "cut below",
+     "lines": [
+      "IPayment…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "cut below",
+     "lines": [
+      "compiler-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "hand-verified-edges.json",
+     "kind": "cut below",
+     "lines": [
+      "hand-verif…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "Payment.cs",
+     "kind": "whole below",
+     "lines": [
+      "Payment.cs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PostPaymentRow.cs",
+     "kind": "cut below",
+     "lines": [
+      "PostPayme…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PaymentsContext.cs",
+     "kind": "cut below",
+     "lines": [
+      "PaymentsC…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "App.config",
+     "kind": "whole beside",
+     "lines": [
+      "App.config"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PaymentService.cs",
+     "kind": "cut beside",
+     "lines": [
+      "Paymen…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    }
+   ],
+   "press": 8
+  },
+  {
+   "k": 0.281,
+   "lod": "overview",
+   "step": 9,
+   "names": [
+    {
+     "file": "PaymentQuery.cs",
+     "kind": "cut below",
+     "lines": [
+      "Payme…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PaymentResult.cs",
+     "kind": "cut below",
+     "lines": [
+      "Payme…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PaymentRequest.cs",
+     "kind": "cut below",
+     "lines": [
+      "Payme…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "IPaymentService.cs",
+     "kind": "cut below",
+     "lines": [
+      "IPayme…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "cut below",
+     "lines": [
+      "compile…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "hand-verified-edges.json",
+     "kind": "cut below",
+     "lines": [
+      "hand-ve…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "Payment.cs",
+     "kind": "whole below",
+     "lines": [
+      "Payment.cs"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PostPaymentRow.cs",
+     "kind": "cut below",
+     "lines": [
+      "PostPay…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PaymentsContext.cs",
+     "kind": "cut below",
+     "lines": [
+      "Payment…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "App.config",
+     "kind": "whole below",
+     "lines": [
+      "App.config"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PaymentService.cs",
+     "kind": "cut beside",
+     "lines": [
+      "Paym…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    }
+   ],
+   "press": 9
+  },
+  {
+   "k": 0.2342,
+   "lod": "overview",
+   "step": 10,
+   "names": [
+    {
+     "file": "PaymentQuery.cs",
+     "kind": "cut below",
+     "lines": [
+      "Paym…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PaymentResult.cs",
+     "kind": "cut below",
+     "lines": [
+      "Paym…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PaymentRequest.cs",
+     "kind": "cut below",
+     "lines": [
+      "Paym…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "IPaymentService.cs",
+     "kind": "cut below",
+     "lines": [
+      "IPay…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "cut beside",
+     "lines": [
+      "com…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "hand-verified-edges.json",
+     "kind": "cut beside",
+     "lines": [
+      "han…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "Payment.cs",
+     "kind": "cut below",
+     "lines": [
+      "Payme…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PostPaymentRow.cs",
+     "kind": "cut below",
+     "lines": [
+      "PostPa…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PaymentsContext.cs",
+     "kind": "cut below",
+     "lines": [
+      "Payme…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "App.config",
+     "kind": "cut below",
+     "lines": [
+      "App.co…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "PaymentService.cs",
+     "kind": "cut beside",
+     "lines": [
+      "Pay…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    }
+   ],
+   "press": 10
+  }
+ ]
+}

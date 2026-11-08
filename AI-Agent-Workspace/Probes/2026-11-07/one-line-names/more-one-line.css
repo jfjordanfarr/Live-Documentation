@@ -1,0 +1,7 @@
+/* The alternative pictured for the owner on 2026-11-07, not the product: at the far and overview bands the node's held
+   More (a 20 px button) is held no taller than one line of the held file name, 15 px at the name's held scale, so that
+   it stands beside the name's first line and leaves the lines below it free. Run with RECHOOSE=1, so that the probe
+   chooses each name's line again by the product's one-line rule in the room this smaller More leaves. */
+:is([data-lod="far"], [data-lod="overview"]) .local-slot-card .local-card-actions {
+    transform: scale(min(var(--node-control-scale), calc(var(--title-line) * var(--title-scale) / 20)));
+}

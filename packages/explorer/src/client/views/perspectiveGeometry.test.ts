@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { directoryOpacity, gatherWire, perspectivePhases } from "./perspectiveGeometry";
+import { directoryOpacity, gatherWire, outlineLength, pathOutline, perspectivePhases, polygonOutline, sampleOutline } from "./perspectiveGeometry";
 
 describe("native perspective correspondence", () => {
   it("preserves the original curve and gathers distinct symbol routes onto the same file segment", () => {
@@ -30,5 +30,54 @@ describe("native perspective correspondence", () => {
     expect(perspectivePhases(.22).fold).toBe(0);
     expect(perspectivePhases(.4).move).toBe(0);
     expect(perspectivePhases(1)).toEqual({ fold: 1, move: 1, background: 1 });
+  });
+});
+
+describe("a native wire's outline, read from its data", () => {
+  /** A cubic's point at t, and its length by fine integration: the reference the flattened outline is held to. */
+  const cubic = (p: number[][], t: number) => {
+    const u = 1 - t;
+    return [0, 1].map(k => u * u * u * p[0][k] + 3 * u * u * t * p[1][k] + 3 * u * t * t * p[2][k] + t * t * t * p[3][k]);
+  };
+  const cubicLength = (p: number[][]) => {
+    let length = 0, last = cubic(p, 0);
+    for (let i = 1; i <= 100000; i++) { const next = cubic(p, i / 100000); length += Math.hypot(next[0] - last[0], next[1] - last[1]); last = next; }
+    return length;
+  };
+
+  it("reads the Local Map's forms, M, L, C and Q, and refuses any other", () => {
+    expect(pathOutline("M 0 0 L 30 40")).toEqual([{ x: 0, y: 0 }, { x: 30, y: 40 }]);
+    expect(outlineLength(pathOutline("M 0 0 L 30 40 L 30 0")!)).toBe(90);
+    // A wire as connections.ts writes a bundle's run: a curve and then a straight lane.
+    const run = pathOutline("M 10 20 C 60 20 60 120 110 120 L 400 120")!;
+    expect(run[0]).toEqual({ x: 10, y: 20 });
+    expect(run.at(-1)).toEqual({ x: 400, y: 120 });
+    expect(pathOutline("M 0 0 Q 0 50 100 50")!.at(-1)).toEqual({ x: 100, y: 50 });
+    for (const other of ["M 0 0 c 10 10 20 20 30 30", "M 0 0 A 5 5 0 0 1 10 10", "L 10 10", "M 0 0 L 10", ""]) expect(pathOutline(other), other).toBeNull();
+    expect(polygonOutline("0,0 10,0 10,10")).toEqual([{ x: 0, y: 0 }, { x: 10, y: 0 }, { x: 10, y: 10 }, { x: 0, y: 0 }]);
+    expect(polygonOutline("0,0 10")).toBeNull();
+  });
+
+  it("measures a curve's length to a small fraction of a pixel, as the browser's sampling does", () => {
+    for (const p of [[[0, 0], [120, 0], [80, 300], [200, 300]], [[500, 40], [380, 40], [420, -260], [300, -260]], [[0, 0], [5, 0], [5, 3], [10, 3]]]) {
+      const outline = pathOutline(`M ${p[0].join(" ")} C ${p.slice(1).flat().join(" ")}`)!;
+      expect(Math.abs(outlineLength(outline) - cubicLength(p)), JSON.stringify(p)).toBeLessThan(0.05);
+    }
+  });
+
+  it("samples at equal distances along the outline, both ends exact", () => {
+    const samples = sampleOutline(pathOutline("M 0 0 L 100 0 L 100 50")!, 6);
+    expect(samples).toHaveLength(7);
+    expect(samples[0]).toEqual({ x: 0, y: 0 });
+    expect(samples[6]).toEqual({ x: 100, y: 50 });
+    expect(samples[2]).toEqual({ x: 50, y: 0 });
+    expect(samples[4]).toEqual({ x: 100, y: 0 });
+    expect(samples[5]).toEqual({ x: 100, y: 25 });
+    // Along a curve, consecutive samples stand as far apart as the curve's length allows them, within a pixel's fraction.
+    const curve = sampleOutline(pathOutline("M 0 0 C 120 0 80 300 200 300")!, 40);
+    const gaps = curve.slice(1).map((point, i) => Math.hypot(point.x - curve[i].x, point.y - curve[i].y));
+    expect(Math.max(...gaps) - Math.min(...gaps)).toBeLessThan(0.2);
+    // A point alone is sampled as itself.
+    expect(sampleOutline([{ x: 3, y: 4 }], 2)).toEqual([{ x: 3, y: 4 }, { x: 3, y: 4 }, { x: 3, y: 4 }]);
   });
 });

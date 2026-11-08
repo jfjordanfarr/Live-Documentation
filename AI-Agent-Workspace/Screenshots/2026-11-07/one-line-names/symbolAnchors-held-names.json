@@ -1,0 +1,854 @@
+{
+ "subject": "packages/explorer/src/client/views/symbolAnchors.ts",
+ "pin": "search",
+ "url": "http://127.0.0.1:8911/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4ZyCMKxLjYABiFhMpsaC2ULQAIrcuWaQDs%2BvhWbl8CTTSBUKlUiAkikQKTIKlsDouPAAFZQGMIOPwVBQADaIEzAB0QPhBvnYPm7ugipg6joAPRcYG%2BDIk6s6TLV9B%2BK7VvZcCI1xbLUja5VGsw6Q4cHTF-MAKnzAF0QHPRlAC5hy5XHLX62gEWZm6322xO93e82lisEEP0COxxOQPB%2BJnQM9IKv11Wtw3d-v0G2O1QOC7I9T37C8rxvcdnHgQNpzDOckiAA",
+ "viewport": {
+  "width": 1440,
+  "height": 960
+ },
+ "errors": [],
+ "presses": [
+  {
+   "k": 1.45,
+   "lod": "reading",
+   "step": 0,
+   "names": [],
+   "press": 0
+  },
+  {
+   "k": 1.2083,
+   "lod": "reading",
+   "step": 1,
+   "names": [],
+   "press": 1
+  },
+  {
+   "k": 1.0069,
+   "lod": "middle",
+   "step": 2,
+   "names": [
+    {
+     "file": "still-picture.ts",
+     "kind": "whole beside",
+     "lines": [
+      "still-picture.ts"
+     ]
+    },
+    {
+     "file": "local-map-corset.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "local-map-corset.spec.ts"
+     ]
+    },
+    {
+     "file": "branches.ts",
+     "kind": "whole beside",
+     "lines": [
+      "branches.ts"
+     ]
+    },
+    {
+     "file": "branch-renderer.ts",
+     "kind": "whole beside",
+     "lines": [
+      "branch-renderer.ts"
+     ]
+    },
+    {
+     "file": "connections.ts",
+     "kind": "whole beside",
+     "lines": [
+      "connections.ts"
+     ]
+    },
+    {
+     "file": "symbol-highlight.ts",
+     "kind": "whole beside",
+     "lines": [
+      "symbol-highlight.ts"
+     ]
+    },
+    {
+     "file": "controller.ts",
+     "kind": "whole beside",
+     "lines": [
+      "controller.ts"
+     ]
+    },
+    {
+     "file": "symbolAnchors.ts",
+     "kind": "whole beside",
+     "lines": [
+      "symbolAnchors.ts"
+     ]
+    },
+    {
+     "file": "pin-state.ts",
+     "kind": "whole beside",
+     "lines": [
+      "pin-state.ts"
+     ]
+    },
+    {
+     "file": "symbolAnchors.test.ts",
+     "kind": "whole beside",
+     "lines": [
+      "symbolAnchors.test.ts"
+     ]
+    },
+    {
+     "file": "card-model.ts",
+     "kind": "whole beside",
+     "lines": [
+      "card-model.ts"
+     ]
+    },
+    {
+     "file": "measurer.ts",
+     "kind": "whole beside",
+     "lines": [
+      "measurer.ts"
+     ]
+    }
+   ],
+   "press": 2
+  },
+  {
+   "k": 0.8391,
+   "lod": "middle",
+   "step": 3,
+   "names": [
+    {
+     "file": "still-picture.ts",
+     "kind": "whole beside",
+     "lines": [
+      "still-picture.ts"
+     ]
+    },
+    {
+     "file": "local-map-corset.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "local-map-corset.spec.ts"
+     ]
+    },
+    {
+     "file": "branches.ts",
+     "kind": "whole beside",
+     "lines": [
+      "branches.ts"
+     ]
+    },
+    {
+     "file": "branch-renderer.ts",
+     "kind": "whole below",
+     "lines": [
+      "branch-renderer.ts"
+     ]
+    },
+    {
+     "file": "connections.ts",
+     "kind": "whole beside",
+     "lines": [
+      "connections.ts"
+     ]
+    },
+    {
+     "file": "symbol-highlight.ts",
+     "kind": "whole below",
+     "lines": [
+      "symbol-highlight.ts"
+     ]
+    },
+    {
+     "file": "controller.ts",
+     "kind": "whole beside",
+     "lines": [
+      "controller.ts"
+     ]
+    },
+    {
+     "file": "symbolAnchors.ts",
+     "kind": "whole beside",
+     "lines": [
+      "symbolAnchors.ts"
+     ]
+    },
+    {
+     "file": "pin-state.ts",
+     "kind": "whole beside",
+     "lines": [
+      "pin-state.ts"
+     ]
+    },
+    {
+     "file": "symbolAnchors.test.ts",
+     "kind": "whole beside",
+     "lines": [
+      "symbolAnchors.test.ts"
+     ]
+    },
+    {
+     "file": "card-model.ts",
+     "kind": "whole beside",
+     "lines": [
+      "card-model.ts"
+     ]
+    },
+    {
+     "file": "measurer.ts",
+     "kind": "whole beside",
+     "lines": [
+      "measurer.ts"
+     ]
+    }
+   ],
+   "press": 3
+  },
+  {
+   "k": 0.6993,
+   "lod": "middle",
+   "step": 4,
+   "names": [
+    {
+     "file": "still-picture.ts",
+     "kind": "whole beside",
+     "lines": [
+      "still-picture.ts"
+     ]
+    },
+    {
+     "file": "local-map-corset.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "local-map-corset.spec.ts"
+     ]
+    },
+    {
+     "file": "branches.ts",
+     "kind": "whole beside",
+     "lines": [
+      "branches.ts"
+     ]
+    },
+    {
+     "file": "branch-renderer.ts",
+     "kind": "cut beside",
+     "lines": [
+      "branch-re…"
+     ]
+    },
+    {
+     "file": "connections.ts",
+     "kind": "cut beside",
+     "lines": [
+      "connecti…"
+     ]
+    },
+    {
+     "file": "symbol-highlight.ts",
+     "kind": "cut beside",
+     "lines": [
+      "symbol-h…"
+     ]
+    },
+    {
+     "file": "controller.ts",
+     "kind": "cut beside",
+     "lines": [
+      "control…"
+     ]
+    },
+    {
+     "file": "symbolAnchors.ts",
+     "kind": "whole beside",
+     "lines": [
+      "symbolAnchors.ts"
+     ]
+    },
+    {
+     "file": "pin-state.ts",
+     "kind": "whole beside",
+     "lines": [
+      "pin-state.ts"
+     ]
+    },
+    {
+     "file": "symbolAnchors.test.ts",
+     "kind": "whole below",
+     "lines": [
+      "symbolAnchors.test.ts"
+     ]
+    },
+    {
+     "file": "card-model.ts",
+     "kind": "whole beside",
+     "lines": [
+      "card-model.ts"
+     ]
+    },
+    {
+     "file": "measurer.ts",
+     "kind": "whole beside",
+     "lines": [
+      "measurer.ts"
+     ]
+    }
+   ],
+   "press": 4
+  },
+  {
+   "k": 0.5827,
+   "lod": "far",
+   "step": 5,
+   "names": [
+    {
+     "file": "still-picture.ts",
+     "kind": "whole beside",
+     "lines": [
+      "still-picture.ts"
+     ]
+    },
+    {
+     "file": "local-map-corset.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "local-map-corset.spec.ts"
+     ]
+    },
+    {
+     "file": "branches.ts",
+     "kind": "whole beside",
+     "lines": [
+      "branches.ts"
+     ]
+    },
+    {
+     "file": "branch-renderer.ts",
+     "kind": "cut beside",
+     "lines": [
+      "branch-rend…"
+     ]
+    },
+    {
+     "file": "connections.ts",
+     "kind": "whole beside",
+     "lines": [
+      "connections.ts"
+     ]
+    },
+    {
+     "file": "symbol-highlight.ts",
+     "kind": "cut beside",
+     "lines": [
+      "symbol-highl…"
+     ]
+    },
+    {
+     "file": "controller.ts",
+     "kind": "whole beside",
+     "lines": [
+      "controller.ts"
+     ]
+    },
+    {
+     "file": "symbolAnchors.ts",
+     "kind": "whole beside",
+     "lines": [
+      "symbolAnchors.ts"
+     ]
+    },
+    {
+     "file": "pin-state.ts",
+     "kind": "whole beside",
+     "lines": [
+      "pin-state.ts"
+     ]
+    },
+    {
+     "file": "symbolAnchors.test.ts",
+     "kind": "whole beside",
+     "lines": [
+      "symbolAnchors.test.ts"
+     ]
+    },
+    {
+     "file": "card-model.ts",
+     "kind": "whole beside",
+     "lines": [
+      "card-model.ts"
+     ]
+    },
+    {
+     "file": "measurer.ts",
+     "kind": "whole beside",
+     "lines": [
+      "measurer.ts"
+     ]
+    }
+   ],
+   "press": 5
+  },
+  {
+   "k": 0.4856,
+   "lod": "far",
+   "step": 6,
+   "names": [
+    {
+     "file": "still-picture.ts",
+     "kind": "whole beside",
+     "lines": [
+      "still-picture.ts"
+     ]
+    },
+    {
+     "file": "local-map-corset.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-corset.s…"
+     ]
+    },
+    {
+     "file": "branches.ts",
+     "kind": "whole beside",
+     "lines": [
+      "branches.ts"
+     ]
+    },
+    {
+     "file": "branch-renderer.ts",
+     "kind": "cut beside",
+     "lines": [
+      "branch-re…"
+     ]
+    },
+    {
+     "file": "connections.ts",
+     "kind": "cut beside",
+     "lines": [
+      "connectio…"
+     ]
+    },
+    {
+     "file": "symbol-highlight.ts",
+     "kind": "cut beside",
+     "lines": [
+      "symbol-hi…"
+     ]
+    },
+    {
+     "file": "controller.ts",
+     "kind": "cut beside",
+     "lines": [
+      "controll…"
+     ]
+    },
+    {
+     "file": "symbolAnchors.ts",
+     "kind": "cut beside",
+     "lines": [
+      "symbolAnchor…"
+     ]
+    },
+    {
+     "file": "pin-state.ts",
+     "kind": "whole beside",
+     "lines": [
+      "pin-state.ts"
+     ]
+    },
+    {
+     "file": "symbolAnchors.test.ts",
+     "kind": "cut beside",
+     "lines": [
+      "symbolAnchors.…"
+     ]
+    },
+    {
+     "file": "card-model.ts",
+     "kind": "whole beside",
+     "lines": [
+      "card-model.ts"
+     ]
+    },
+    {
+     "file": "measurer.ts",
+     "kind": "whole beside",
+     "lines": [
+      "measurer.ts"
+     ]
+    }
+   ],
+   "press": 6
+  },
+  {
+   "k": 0.4047,
+   "lod": "overview",
+   "step": 7,
+   "names": [
+    {
+     "file": "still-picture.ts",
+     "kind": "whole beside",
+     "lines": [
+      "still-picture.ts"
+     ]
+    },
+    {
+     "file": "local-map-corset.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-cors…"
+     ]
+    },
+    {
+     "file": "branches.ts",
+     "kind": "whole beside",
+     "lines": [
+      "branches.ts"
+     ]
+    },
+    {
+     "file": "branch-renderer.ts",
+     "kind": "cut below",
+     "lines": [
+      "branch-re…"
+     ]
+    },
+    {
+     "file": "connections.ts",
+     "kind": "cut below",
+     "lines": [
+      "connectio…"
+     ]
+    },
+    {
+     "file": "symbol-highlight.ts",
+     "kind": "cut below",
+     "lines": [
+      "symbol-hi…"
+     ]
+    },
+    {
+     "file": "controller.ts",
+     "kind": "cut below",
+     "lines": [
+      "controlle…"
+     ]
+    },
+    {
+     "file": "symbolAnchors.ts",
+     "kind": "cut below",
+     "lines": [
+      "symbolAncho…"
+     ]
+    },
+    {
+     "file": "pin-state.ts",
+     "kind": "whole beside",
+     "lines": [
+      "pin-state.ts"
+     ]
+    },
+    {
+     "file": "symbolAnchors.test.ts",
+     "kind": "cut beside",
+     "lines": [
+      "symbolAnch…"
+     ]
+    },
+    {
+     "file": "card-model.ts",
+     "kind": "whole beside",
+     "lines": [
+      "card-model.ts"
+     ]
+    },
+    {
+     "file": "measurer.ts",
+     "kind": "whole below",
+     "lines": [
+      "measurer.ts"
+     ]
+    }
+   ],
+   "press": 7
+  },
+  {
+   "k": 0.3372,
+   "lod": "overview",
+   "step": 8,
+   "names": [
+    {
+     "file": "still-picture.ts",
+     "kind": "whole below",
+     "lines": [
+      "still-picture.ts"
+     ]
+    },
+    {
+     "file": "local-map-corset.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-map-cor…"
+     ]
+    },
+    {
+     "file": "branches.ts",
+     "kind": "whole beside",
+     "lines": [
+      "branches.ts"
+     ]
+    },
+    {
+     "file": "branch-renderer.ts",
+     "kind": "cut below",
+     "lines": [
+      "branch-r…"
+     ]
+    },
+    {
+     "file": "connections.ts",
+     "kind": "cut below",
+     "lines": [
+      "connect…"
+     ]
+    },
+    {
+     "file": "symbol-highlight.ts",
+     "kind": "cut below",
+     "lines": [
+      "symbol-…"
+     ]
+    },
+    {
+     "file": "controller.ts",
+     "kind": "cut below",
+     "lines": [
+      "control…"
+     ]
+    },
+    {
+     "file": "symbolAnchors.ts",
+     "kind": "cut below",
+     "lines": [
+      "symbolAnc…"
+     ]
+    },
+    {
+     "file": "pin-state.ts",
+     "kind": "whole beside",
+     "lines": [
+      "pin-state.ts"
+     ]
+    },
+    {
+     "file": "symbolAnchors.test.ts",
+     "kind": "cut below",
+     "lines": [
+      "symbolAnch…"
+     ]
+    },
+    {
+     "file": "card-model.ts",
+     "kind": "whole beside",
+     "lines": [
+      "card-model.ts"
+     ]
+    },
+    {
+     "file": "measurer.ts",
+     "kind": "cut below",
+     "lines": [
+      "measurer…"
+     ]
+    }
+   ],
+   "press": 8
+  },
+  {
+   "k": 0.281,
+   "lod": "overview",
+   "step": 9,
+   "names": [
+    {
+     "file": "still-picture.ts",
+     "kind": "cut below",
+     "lines": [
+      "still-pictur…"
+     ]
+    },
+    {
+     "file": "local-map-corset.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-map-c…"
+     ]
+    },
+    {
+     "file": "branches.ts",
+     "kind": "whole below",
+     "lines": [
+      "branches.ts"
+     ]
+    },
+    {
+     "file": "branch-renderer.ts",
+     "kind": "cut below",
+     "lines": [
+      "branc…"
+     ]
+    },
+    {
+     "file": "connections.ts",
+     "kind": "cut below",
+     "lines": [
+      "conne…"
+     ]
+    },
+    {
+     "file": "symbol-highlight.ts",
+     "kind": "cut below",
+     "lines": [
+      "symb…"
+     ]
+    },
+    {
+     "file": "controller.ts",
+     "kind": "cut below",
+     "lines": [
+      "contr…"
+     ]
+    },
+    {
+     "file": "symbolAnchors.ts",
+     "kind": "cut below",
+     "lines": [
+      "symbolA…"
+     ]
+    },
+    {
+     "file": "pin-state.ts",
+     "kind": "whole below",
+     "lines": [
+      "pin-state.ts"
+     ]
+    },
+    {
+     "file": "symbolAnchors.test.ts",
+     "kind": "cut beside",
+     "lines": [
+      "symbol…"
+     ]
+    },
+    {
+     "file": "card-model.ts",
+     "kind": "whole below",
+     "lines": [
+      "card-model.ts"
+     ]
+    },
+    {
+     "file": "measurer.ts",
+     "kind": "cut below",
+     "lines": [
+      "measur…"
+     ]
+    }
+   ],
+   "press": 9
+  },
+  {
+   "k": 0.2342,
+   "lod": "overview",
+   "step": 10,
+   "names": [
+    {
+     "file": "still-picture.ts",
+     "kind": "cut beside",
+     "lines": [
+      "still-pi…"
+     ]
+    },
+    {
+     "file": "local-map-corset.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-m…"
+     ]
+    },
+    {
+     "file": "branches.ts",
+     "kind": "cut below",
+     "lines": [
+      "branche…"
+     ]
+    },
+    {
+     "file": "branch-renderer.ts",
+     "kind": "cut below",
+     "lines": [
+      "bran…"
+     ]
+    },
+    {
+     "file": "connections.ts",
+     "kind": "cut beside",
+     "lines": [
+      "co…"
+     ]
+    },
+    {
+     "file": "symbol-highlight.ts",
+     "kind": "cut below",
+     "lines": [
+      "sym…"
+     ]
+    },
+    {
+     "file": "controller.ts",
+     "kind": "cut below",
+     "lines": [
+      "cont…"
+     ]
+    },
+    {
+     "file": "symbolAnchors.ts",
+     "kind": "cut below",
+     "lines": [
+      "symbol…"
+     ]
+    },
+    {
+     "file": "pin-state.ts",
+     "kind": "cut below",
+     "lines": [
+      "pin-stat…"
+     ]
+    },
+    {
+     "file": "symbolAnchors.test.ts",
+     "kind": "cut beside",
+     "lines": [
+      "symbo…"
+     ]
+    },
+    {
+     "file": "card-model.ts",
+     "kind": "cut below",
+     "lines": [
+      "card-mo…"
+     ]
+    },
+    {
+     "file": "measurer.ts",
+     "kind": "cut below",
+     "lines": [
+      "meas…"
+     ]
+    }
+   ],
+   "press": 10
+  }
+ ]
+}

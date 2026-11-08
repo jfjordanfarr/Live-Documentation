@@ -4,7 +4,6 @@ import { localMapStill } from "./still-picture";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { LAST_STEP, STEP_RATIO } from "../../packages/explorer/src/client/views/localView/ladder-steps";
-import { seamsOf } from "../../packages/explorer/src/client/views/localView/word-seams";
 
 /**
  * The card ladder's boxes, audited at every Zoom Out press from reading scale to the farthest zoom (the far-zoom review
@@ -49,12 +48,35 @@ test.beforeEach(async ({ page }) => {
  * across presses. Every drawn part is read from the page as drawn: an element's box, a pinned row's highlight from its
  * wrapper's layer, a directory label's held caption from its aria-hidden child's box.
  */
+/**
+ * The audit's own word on where a held name may break, independent of the code under test (`heldSegments`), from the
+ * design's words (the header round, 2026-11-08): after a hyphen; after a dot, unless what follows it is a short
+ * extension of one or two characters, which stays with its dot; before such a dot; and before a capital that follows a
+ * small letter. The name cut at those places, in order.
+ */
+function seamSegments(name: string): string[] {
+  const cuts = new Set<number>();
+  const shortExtension = /\.[^.-]{1,2}$/u.exec(name);
+  for (let at = 1; at < name.length; at++) {
+    const before = name[at - 1], here = name[at];
+    if (before === "-") cuts.add(at);
+    if (before === "." && !(shortExtension && at - 1 === shortExtension.index)) cuts.add(at);
+    if (shortExtension && at === shortExtension.index) cuts.add(at);
+    if (/\p{Ll}/u.test(before) && /\p{Lu}/u.test(here)) cuts.add(at);
+  }
+  const segments: string[] = [];
+  let start = 0;
+  for (const cut of [...cuts].sort((a, b) => a - b)) { segments.push(name.slice(start, cut)); start = cut; }
+  segments.push(name.slice(start));
+  return segments.filter(segment => segment);
+}
+
 const audit = async (page: Page) => {
-  // The seams of the files' names, which the page cannot compute: the rule a line's end is held to.
-  const fileNames = await page.evaluate(() => [...document.querySelectorAll<HTMLElement>("#map-container .local-file-name-held")].map(held => held.dataset.name ?? ""));
-  return page.evaluate(auditInPage, { half: 0.5, seams: Object.fromEntries(fileNames.map(name => [name, seamsOf(name)])) });
+  // The segments of the files' names by the audit's own oracle, which the page does not have: where a held line may end.
+  const names = await page.evaluate(() => [...document.querySelectorAll<HTMLElement>("#map-container .local-file-name-held")].map(held => held.dataset.name ?? ""));
+  return page.evaluate(auditInPage, { half: 0.5, segmentsOf: Object.fromEntries(names.map(name => [name, seamSegments(name)])) });
 };
-const auditInPage = ({ half, seams }: { half: number; seams: Record<string, string[]> }) => {
+const auditInPage = ({ half, segmentsOf }: { half: number; segmentsOf: Record<string, string[]> }) => {
   const map = document.querySelector<HTMLElement>("#map-container")!;
   const k = new DOMMatrix(getComputedStyle(document.querySelector("#map-viewport")!).transform).a;
   const lod = map.dataset.lod!, step = Number(map.dataset.step);
@@ -152,10 +174,12 @@ const auditInPage = ({ half, seams }: { half: number; seams: Record<string, stri
       const style = getComputedStyle(held!), scale = new DOMMatrix(style.transform).a;
       fileNames.push({ name: named(card), px: parseFloat(style.lineHeight) * scale * k });
       names.push({ row: null, rect: heldRect });
-      // Its lines as drawn (the owner, 2026-11-06: "main.r / s" and "verif / y.ts" beside the node's More), each
-      // measured here in the name's own font: no line but a cut last one ends inside a segment between the name's seams
-      // that would fit a full line; none runs past its room or under the node's buttons; and joined they are the name,
-      // or the last ends with an ellipsis.
+      // Its header as drawn, measured here in the name's own font, by the six principles of the header round (2026-11-08,
+      // the November 7 record's Turns 3 and 4): the name leads, its first line never empty; whole on the fewest lines,
+      // each filled (the next segment would not have fitted it) and ending at a seam unless its segment is wider than a
+      // line; cut with an ellipsis only on the room's last line, beside the controls; no line past its room or under the
+      // controls; and the controls at the header's right edge on the name's last line or the line after, never above
+      // the name's first line and never with a line of the name below them.
       const name = held!.dataset.name ?? "", chosen = held!.getAttribute(`data-lines-${lod}-${step}`);
       const drawn = (chosen ?? "").split("\n");
       const line = parseFloat(style.lineHeight);
@@ -172,28 +196,64 @@ const auditInPage = ({ half, seams }: { half: number; seams: Record<string, stri
       document.body.append(probe);
       const width = (text: string): number => { probe.textContent = text; return probe.getBoundingClientRect().width; };
       const full = parseFloat(style.width);
-      const segments: { start: number; end: number; fits: boolean }[] = [];
-      let at = 0;
-      for (const segment of seams[name] ?? [name]) { segments.push({ start: at, end: at + segment.length, fits: width(segment) <= full - 1 }); at += segment.length; }
-      let offset = 0;
       const buttons = [...card.querySelectorAll(".local-card-actions button")].map(button => shown(button)).filter((rect): rect is DOMRect => !!rect);
+      const lineOnScreen = line * scale * k;
       drawn.forEach((text, index) => {
         const drawnWidth = width(text);
         if (drawnWidth > full + half) broken.push(`${named(card)}: the file's name's line ${index + 1} runs ${(drawnWidth - full).toFixed(1)} past its room`);
-        const top = heldRect.top + index * line * scale * k;
-        const lineBox = { left: heldRect.left, right: heldRect.left + drawnWidth * scale * k, top, bottom: top + line * scale * k };
-        if (text && buttons.some(rect => overlap(lineBox, rect) > half)) broken.push(`${named(card)}: the file's name's line ${index + 1} runs under its buttons`);
-        if (index === drawn.length - 1) return;
-        offset += text.length;
-        const inside = segments.find(segment => offset > segment.start && offset < segment.end);
-        if (inside?.fits) broken.push(`${named(card)}: the file's name breaks inside "${name.slice(inside.start, inside.end)}", which fits a line: ${drawn.join(" / ")}`);
+        const top = heldRect.top + index * lineOnScreen;
+        const lineBox = { left: heldRect.left, right: heldRect.left + drawnWidth * scale * k, top, bottom: top + lineOnScreen };
+        if (text && buttons.some(rect => overlap(lineBox, rect) > half)) broken.push(`${named(card)}: the file's name's line ${index + 1} runs under its controls`);
+        if (index < drawn.length - 1 && text.includes("…")) broken.push(`${named(card)}: the file's name is cut on line ${index + 1}, not on the room's last line: ${drawn.join(" / ")}`);
       });
+      if (!drawn[0] && name) broken.push(`${named(card)}: the file's name's first line is empty: ${drawn.join(" / ")}`);
+      const cut = drawn.join("") !== name;
+      if (cut && !(drawn.at(-1)!.endsWith("…") && name.startsWith(drawn.join("").slice(0, -1)))) broken.push(`${named(card)}: the file's name is drawn "${drawn.join(" / ")}", neither whole nor cut at its end`);
+      // Where each line but the last ends: at a seam, the next segment not fitting it; or inside a segment wider than a line.
+      const segments = segmentsOf[name] ?? [name];
+      const bounds: { start: number; end: number; text: string }[] = [];
+      for (const segment of segments) bounds.push({ start: bounds.at(-1)?.end ?? 0, end: (bounds.at(-1)?.end ?? 0) + segment.length, text: segment });
+      let offset = 0;
+      drawn.slice(0, -1).forEach((text, index) => {
+        offset += text.length;
+        const next = bounds.find(bound => bound.start === offset), inside = bounds.find(bound => bound.start < offset && offset < bound.end);
+        if (next && width(text + next.text) <= full - 1) broken.push(`${named(card)}: the file's name's line ${index + 1} is not filled: "${text}" left room for "${next.text}"`);
+        if (inside && width(inside.text) <= full - 1) broken.push(`${named(card)}: the file's name breaks inside "${inside.text}", which fits a line: ${drawn.join(" / ")}`);
+      });
+      // The controls: the drawn ones' box against the header's right edge and the name's lines.
+      const header = card.querySelector<HTMLElement>(".node-title")!.getBoundingClientRect();
+      // From the middle band out More, at least, is drawn on every card: a header whose controls are not drawn is broken,
+      // not passed.
+      if (!buttons.length) broken.push(`${named(card)}: the file's controls are not drawn`);
+      if (buttons.length) {
+        const controls = { left: Math.min(...buttons.map(rect => rect.left)), right: Math.max(...buttons.map(rect => rect.right)), top: Math.min(...buttons.map(rect => rect.top)), bottom: Math.max(...buttons.map(rect => rect.bottom)) };
+        const lastTop = heldRect.top + (drawn.length - 1) * lineOnScreen;
+        if (Math.abs(card.querySelector<HTMLElement>(".local-card-actions")!.getBoundingClientRect().right - header.right) > half) broken.push(`${named(card)}: the file's controls do not stand at the header's right edge`);
+        if (controls.top < heldRect.top - half) broken.push(`${named(card)}: the file's controls stand above the name's first line`);
+        if (controls.top < lastTop - half) broken.push(`${named(card)}: a line of the file's name stands below its controls: ${drawn.join(" / ")}`);
+        if (controls.top > lastTop + lineOnScreen + half) broken.push(`${named(card)}: the file's controls stand ${(controls.top - lastTop - lineOnScreen).toFixed(1)} px below the line after the name's last`);
+        // A cut name shares its last line with the controls, unless they leave no room for even the ellipsis beside them,
+        // where the name keeps that line at its full width and they take the line after.
+        const besideRoom = full - ((controls.right - controls.left) / (scale * k) + 4 / scale);
+        if (cut && controls.top >= lastTop + lineOnScreen - half && width("…") <= besideRoom) broken.push(`${named(card)}: the file's name is cut while its controls stand on a line of their own`);
+      }
       probe.remove();
-      if (drawn.join("") !== name && !drawn.at(-1)!.endsWith("…")) broken.push(`${named(card)}: the file's name is drawn "${drawn.join(" / ")}"`);
     } else if (text && shown(text)) {
       const lines = new Set([...text.getClientRects()].map(rect => Math.round(rect.top))).size || 1;
       fileNames.push({ name: named(card), px: text.getBoundingClientRect().height / lines });
       names.push({ row: null, rect: text.getBoundingClientRect() });
+      // At the reading band the header is the browser's layout: the controls, as held at this step, stand clear of every
+      // line of the name's text, at the header's right edge, and never above its first line (the header round).
+      const buttons = [...card.querySelectorAll(".local-card-actions button")].map(button => shown(button)).filter((rect): rect is DOMRect => !!rect);
+      const header = card.querySelector<HTMLElement>(".node-title")!.getBoundingClientRect(), first = text.getClientRects()[0];
+      if (!buttons.length) broken.push(`${named(card)}: the file's controls are not drawn`);
+      for (const rect of buttons) {
+        if ([...text.getClientRects()].some(line => overlap(line, rect) > half)) broken.push(`${named(card)}: the file's controls lie over its name`);
+        // On a line it shares with the name a control is taller than the text, so it is compared by its bottom: it stands on
+        // the name's first line or below it, never above.
+        if (first && rect.bottom < first.bottom - half) broken.push(`${named(card)}: the file's controls stand above the name's first line`);
+      }
+      if (buttons.length && Math.abs(Math.max(...buttons.map(rect => rect.right)) - header.right) > half) broken.push(`${named(card)}: the file's controls do not stand at the header's right edge`);
     }
     // No two dots overlap, and no dot lies over a name.
     for (let i = 0; i < dots.length; i += 1) {
@@ -270,7 +330,8 @@ function expectBoxesHeld(audits: readonly Audit[]): void {
   const first = audits[0];
   for (const [press, each] of audits.entries()) {
     const where = `press ${press}, ${each.lod} step ${each.step}`;
-    expect(each.broken, where).toEqual([]);
+    // Soft, so that a failing walk reports every press it breaks, not only the first.
+    expect.soft(each.broken, where).toEqual([]);
     // Every card's box and every row's box stands where the layout put it, in the map's own units; the hub keeps its
     // size and its overhang there, the one part designed to stand past its card's edge.
     for (const [id, card] of Object.entries(first.cards)) {

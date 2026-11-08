@@ -1,5 +1,5 @@
 import { directoryNodeId } from "./forceGraphData";
-import { directoryOpacity, gatherWire, perspectivePhases, type TransitionPoint } from "./perspectiveGeometry";
+import { directoryOpacity, gatherWire, outlineLength, pathOutline, perspectivePhases, polygonOutline, sampleOutline, type TransitionPoint } from "./perspectiveGeometry";
 
 /** Screen-space correspondence between native cards and native force positions. */
 export interface SceneFile {
@@ -19,7 +19,8 @@ export interface ForceScene {
 
 interface CardSnapshot {
   file: SceneFile;
-  clone: HTMLElement;
+  /** The card's drawing, for a card whose box meets the transition's frame; none for one outside it, never seen. */
+  clone: HTMLElement | null;
   width: number;
   height: number;
   scale: number;
@@ -51,42 +52,83 @@ export interface LocalScene {
   directories: DirectorySnapshot[];
 }
 
-/** Capture native cards, rendered symbol curves and directory shells before hiding their view. */
-export function captureLocalScene(root: HTMLElement): LocalScene {
+/** A capture of the 2D map: its scene, complete once `copied` resolves, the cards' copies made a slice at a time. */
+export interface LocalCapture {
+  scene: LocalScene;
+  /** Resolves when every card the frame meets has its copy; the transition waits for it. */
+  copied: Promise<void>;
+  /** Stop copying, for a capture no transition will use. */
+  cancel: () => void;
+}
+
+/**
+ * How long one slice of the cards' copying may hold the page's main thread, in milliseconds, at least; and at most, where
+ * the page is slow to come back to the copying between slices. Between two slices the page draws a frame when one is
+ * due, and where the 3D picture's software renderer takes a few hundred milliseconds a frame, slices of 16 ms had kept
+ * the copying to a twentieth of the time and the transition waiting for seconds (the header round's specs, 2026-11-08);
+ * a slice as long as the page was away, up to the most, keeps the copying to about half of it.
+ */
+const COPY_SLICE = 16, COPY_SLICE_MOST = 100;
+
+/**
+ * Capture native cards, rendered symbol curves and directory shells before hiding their view. Every place, every wire
+ * and every shell is read at once, while the picture stands as it was pressed; the cards' copies, the costly part, are
+ * made in slices of the page's main thread between which it answers input and draws, while the caller holds the
+ * picture still ({@link holdPerspective}), and `copied` says when they are done (2026-11-07: made at once, they had held
+ * the page for seconds).
+ */
+export function captureLocalScene(root: HTMLElement, frame: DOMRect): LocalCapture {
+  const started = performance.now();
+  const copies: { card: CardSnapshot; steps: Generator<void, HTMLElement> }[] = [];
+  const moving = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // What the transition can show of a copy: its frame, grown so that a part standing a little past its box is kept.
+  const seen = { left: frame.left - SEEN_MARGIN, top: frame.top - SEEN_MARGIN, right: frame.right + SEEN_MARGIN, bottom: frame.bottom + SEEN_MARGIN };
   const cards = [...root.querySelectorAll<HTMLElement>(".node-card, .local-directory-closed")].flatMap(card => {
     const directory = card.classList.contains("local-directory-closed");
     const title = card.querySelector<HTMLElement>(directory ? ".local-directory-closed__name" : ".node-title");
     if (!title) return [];
     const rect = card.getBoundingClientRect(), t = title.getBoundingClientRect();
-    const clone = visualCopy(card);
+    // A card is drawn only inside its own box while it folds (it shrinks toward its title and has gone before its token
+    // moves), so a card outside the transition's frame is never seen and is not copied: its token travels all the same.
     const x = t.left + t.width / 2, y = t.top + t.height / 2;
-    return [{ file: { id: directory ? directoryNodeId(card.dataset.directory!) : card.dataset.id!,
+    const snapshot: CardSnapshot = { file: { id: directory ? directoryNodeId(card.dataset.directory!) : card.dataset.id!,
       name: title.textContent ?? "", x, y, radius: 5, color: directory ? "#e9984d" : "#0091ff" },
-      clone, width: card.offsetWidth, height: card.offsetHeight, scale: rect.width / card.offsetWidth,
-      offsetX: x - rect.left, offsetY: y - rect.top }];
+      clone: null, width: card.offsetWidth, height: card.offsetHeight, scale: rect.width / card.offsetWidth,
+      offsetX: x - rect.left, offsetY: y - rect.top };
+    // Under reduced motion there is no transition to draw a copy in: none is made, and the switch does not wait for any.
+    if (moving && meets(rect, frame)) copies.push({ card: snapshot, steps: visualCopySteps(card, true, seen, { x, y }) });
+    return [snapshot];
   });
+  const cardsDone = performance.now();
+  performance.measure("live-docs:capture-cards", { start: started, end: cardsDone });
   const wires = [...root.querySelectorAll<SVGPathElement>(".connection-path")].flatMap(path => {
     const matrix = path.getScreenCTM();
     if (!matrix || !path.dataset.sourceId || !path.dataset.targetId) return [];
-    const length = path.getTotalLength();
+    // The outline is read from the wire's own data where the Local Map wrote it in the forms it uses, the browser's
+    // sampling being some 15 ms a wire; any other form is sampled by the browser as before.
+    const outline = path.tagName === "polygon" ? polygonOutline(path.getAttribute("points") ?? "") : pathOutline(path.getAttribute("d") ?? "");
+    const length = outline ? outlineLength(outline) : path.getTotalLength();
     const steps = Math.max(24, Math.min(256, Math.ceil(length / 4)));
-    const points = Array.from({ length: steps + 1 }, (_, i) => {
-      const point = path.getPointAtLength(length * i / steps).matrixTransform(matrix);
-      return { x: point.x, y: point.y };
-    });
+    const local = outline ? sampleOutline(outline, steps)
+      : Array.from({ length: steps + 1 }, (_, i) => path.getPointAtLength(length * i / steps));
+    const points = local.map(point => ({ x: matrix.a * point.x + matrix.c * point.y + matrix.e, y: matrix.b * point.x + matrix.d * point.y + matrix.f }));
     const style = getComputedStyle(path);
     return [{ provider: path.dataset.targetId, consumer: path.dataset.sourceId, points,
       opacity: Number(style.opacity) * Number(path.tagName === "polygon" ? style.fillOpacity : style.strokeOpacity),
       width: parseFloat(style.strokeWidth) * Math.hypot(matrix.a, matrix.b) }];
   });
+  const wiresDone = performance.now();
+  performance.measure("live-docs:capture-wires", { start: cardsDone, end: wiresDone });
   const directories = [...root.querySelectorAll<HTMLElement>(".local-directory-band")].map(band => {
     const rect = band.getBoundingClientRect();
-    const clone = visualCopy(band, false);
+    // A band is drawn only inside its own box, so one outside the frame stands in the layer as an empty box of its
+    // size, keeping its identity and depth; its outline and its label are copied where the frame meets them.
+    const clone = meets(rect, seen) ? visualCopy(band, false) : document.createElement("div");
     // Only the shell travels here, its outline and its label; cards and nested bands each have one identity.
     const shape = band.querySelector<HTMLElement>(":scope > .local-membrane");
-    if (shape) clone.append(visualCopy(shape));
+    if (shape && meets(shape.getBoundingClientRect(), seen)) clone.append(visualCopy(shape, true, seen));
     const label = band.querySelector<HTMLElement>(":scope > .local-directory-label");
-    if (label) clone.append(visualCopy(label));
+    if (label && meets(label.getBoundingClientRect(), seen)) clone.append(visualCopy(label, true, seen));
     Object.assign(clone.style, { display: "block", width: `${band.offsetWidth}px`, height: `${band.offsetHeight}px`,
       boxSizing: "border-box", margin: "0", position: "absolute", transformOrigin: "0 0" });
     let depth = 0;
@@ -95,7 +137,35 @@ export function captureLocalScene(root: HTMLElement): LocalScene {
     }
     return { directory: band.dataset.directory ?? "", depth, clone, x: rect.left, y: rect.top, scale: rect.width / band.offsetWidth };
   });
-  return { cards, wires, directories };
+  performance.measure("live-docs:capture-directories", { start: wiresDone });
+  performance.mark("live-docs:capture-counts", { detail: { cards: cards.length, copied: copies.length, wires: wires.length, directories: directories.length } });
+  let cancelled = false;
+  const channel = new MessageChannel();
+  const copied = new Promise<void>(resolve => {
+    const copying = performance.now();
+    let paused = copying;
+    const slice = (): void => {
+      if (cancelled) { channel.port1.close(); resolve(); return; }
+      const begun = performance.now();
+      // As long as the page was away since the last slice, within the bounds.
+      const budget = Math.min(COPY_SLICE_MOST, Math.max(COPY_SLICE, begun - paused));
+      while (copies.length) {
+        let step: IteratorResult<void, HTMLElement>;
+        // A card the page removed or changed under the copy is left undrawn, rather than the transition never starting.
+        try { step = copies[0].steps.next(); } catch { copies.shift(); continue; }
+        if (step.done) { copies[0].card.clone = step.value; copies.shift(); continue; }
+        if (performance.now() - begun >= budget) { paused = performance.now(); channel.port2.postMessage(null); return; }
+      }
+      channel.port1.close();
+      performance.measure("live-docs:capture-copies", { start: copying });
+      resolve();
+    };
+    // A task of its own each slice, not a frame: the page answers input and draws between slices as it needs, and the
+    // copying is not paced by frames, which the 3D picture's software renderer makes slow on some machines.
+    channel.port1.onmessage = slice;
+    slice();
+  });
+  return { scene: { cards, wires, directories }, copied, cancel: () => { cancelled = true; } };
 }
 
 /**
@@ -141,11 +211,14 @@ export function animatePerspective(
   layer.dataset.symbolWires = String(wires.length);
   layer.dataset.filePairs = String(pairs.size);
   const ghosts = cards.map(card => {
-    const wrapper = document.createElement("div");
-    wrapper.className = "perspective-card local-column center";
-    Object.assign(wrapper.style, { position: "absolute", width: `${card.width}px`, height: `${card.height}px`, transformOrigin: "0 0" });
-    Object.assign(card.clone.style, { width: `${card.width}px`, height: `${card.height}px`, boxSizing: "border-box", margin: "0", transition: "none" });
-    wrapper.append(card.clone); layer.append(wrapper);
+    let wrapper: HTMLElement | null = null;
+    if (card.clone) {
+      wrapper = document.createElement("div");
+      wrapper.className = "perspective-card local-column center";
+      Object.assign(wrapper.style, { position: "absolute", width: `${card.width}px`, height: `${card.height}px`, transformOrigin: "0 0" });
+      Object.assign(card.clone.style, { width: `${card.width}px`, height: `${card.height}px`, boxSizing: "border-box", margin: "0", transition: "none" });
+      wrapper.append(card.clone); layer.append(wrapper);
+    }
     const label = document.createElement("div");
     label.className = "perspective-file-name";
     label.dataset.nodeId = card.file.id;
@@ -214,10 +287,12 @@ export function animatePerspective(
       // A closed folder has a hub in Structure, but no invented token in Connections. Its whole box fades in/out;
       // showing only its name during the fold would leave unexplained floating text with no corresponding sphere.
       const shrink = counterpart ? 1 - fold : 1;
-      wrapper.style.left = `${x - card.offsetX * shrink}px`;
-      wrapper.style.top = `${y - card.offsetY * shrink}px`;
-      wrapper.style.transform = `scale(${card.scale * shrink})`;
-      wrapper.style.opacity = String(1 - fold);
+      if (wrapper) {
+        wrapper.style.left = `${x - card.offsetX * shrink}px`;
+        wrapper.style.top = `${y - card.offsetY * shrink}px`;
+        wrapper.style.transform = `scale(${card.scale * shrink})`;
+        wrapper.style.opacity = String(1 - fold);
+      }
       label.style.left = `${x}px`; label.style.top = `${y + destination.radius + 10}px`;
       label.style.opacity = String(counterpart ? fold * (card.file.id === focusId ? 1 : 1 - background) : 0);
     }
@@ -229,23 +304,91 @@ export function animatePerspective(
   return () => { cancelAnimationFrame(frameId); layer.remove(); };
 }
 
-/** Hold the source picture while the destination renderer produces its first frame. */
+/**
+ * Hold the source picture while the destination renderer produces its first frame: the source surface itself stays
+ * drawn, as it stands, over the destination until released (`perspective-held` in local.css). An inactive view is laid
+ * out and drawn, only transparent, so nothing need be copied; until 2026-11-07 the hold was a copy of the whole surface
+ * with every computed property of every element, several seconds of the page's main thread on this repository's
+ * pictures, and on the way to 2D a copy never seen, since the 2D map is ready at once and the cover went in the same
+ * task. The surface is inert and hidden from assistive technology while inactive, as the copy was, and a transparent
+ * cover over the views' room takes the pointer while it is held, so that a click meant for the held picture reaches
+ * neither it nor the destination drawing beneath it.
+ *
+ * The surface keeps the size and border it was drawn with while held, since leaving the 2D map takes away the room its
+ * zoom controls kept below it, which would otherwise grow the held map into that room.
+ */
 export function holdPerspective(root: HTMLElement): () => void {
-  const rect = root.getBoundingClientRect();
-  const cover = document.createElement("div");
-  cover.className = "perspective-transition";
-  cover.setAttribute("aria-hidden", "true"); cover.inert = true;
-  Object.assign(cover.style, { left: `${rect.left}px`, top: `${rect.top}px`, width: `${rect.width}px`, height: `${rect.height}px` });
-  const copy = visualCopy(root);
-  Object.assign(copy.style, { position: "absolute", left: "0", top: "0", margin: "0" });
-  cover.append(copy); document.body.append(cover);
-  return () => cover.remove();
+  let hold = holds.get(root);
+  if (!hold) {
+    // The cover spans the views' common room, so that the destination drawing beneath, which may reach past the held
+    // source (the 3D picture into the 2D map's zoom controls' strip), takes no click either.
+    const style = getComputedStyle(root), rect = (root.parentElement ?? root).getBoundingClientRect();
+    hold = { count: 0, height: root.style.height, borderBottom: root.style.borderBottom, cover: document.createElement("div") };
+    root.style.height = style.height;
+    root.style.borderBottom = `${style.borderBottomWidth} ${style.borderBottomStyle} ${style.borderBottomColor}`;
+    root.classList.add("perspective-held");
+    hold.cover.className = "perspective-hold-cover";
+    hold.cover.setAttribute("aria-hidden", "true");
+    Object.assign(hold.cover.style, { left: `${rect.left}px`, top: `${rect.top}px`, width: `${rect.width}px`, height: `${rect.height}px` });
+    document.body.append(hold.cover);
+    holds.set(root, hold);
+  }
+  hold.count++;
+  const held = hold;
+  let released = false;
+  return () => {
+    if (released) return;
+    released = true;
+    if (--held.count > 0) return;
+    holds.delete(root);
+    held.cover.remove();
+    // Gone at once, as the copy's cover went, rather than fading for the view's 0.4 s from here.
+    const transition = root.style.transition;
+    root.style.transition = "none";
+    root.classList.remove("perspective-held");
+    void getComputedStyle(root).opacity;
+    root.style.transition = transition;
+    root.style.height = held.height;
+    root.style.borderBottom = held.borderBottom;
+  };
+}
+
+/** The surfaces held: how many holds stand, the inline size and border each had before the first, and its cover. */
+const holds = new WeakMap<HTMLElement, { count: number; height: string; borderBottom: string; cover: HTMLElement }>();
+
+interface Box { left: number; top: number; right: number; bottom: number }
+
+/** How far past the transition's frame a copy is kept, in screen pixels: more than any part stands past its box. */
+const SEEN_MARGIN = 64;
+
+/** A box grown to hold a point, when there is one. */
+function spanning(box: Box, point?: TransitionPoint): Box {
+  return point ? { left: Math.min(box.left, point.x), top: Math.min(box.top, point.y), right: Math.max(box.right, point.x), bottom: Math.max(box.bottom, point.y) } : box;
+}
+
+/** Whether two boxes overlap. */
+function meets(box: Box, frame: Box): boolean {
+  return box.right > frame.left && box.left < frame.right && box.bottom > frame.top && box.top < frame.bottom;
 }
 
 /** Freeze computed appearance without duplicating live selectors, IDs or controls. */
-function visualCopy(root: HTMLElement, deep = true): HTMLElement {
+function visualCopy(root: HTMLElement, deep = true, seen?: Box): HTMLElement {
+  const steps = visualCopySteps(root, deep, seen);
+  for (;;) {
+    const step = steps.next();
+    if (step.done) return step.value;
+  }
+}
+
+/** {@link visualCopy} an element at a time, pausing after each, so that a large copy can be spread over slices. */
+function* visualCopySteps(root: HTMLElement, deep = true, seen?: Box, anchor?: TransitionPoint): Generator<void, HTMLElement> {
   const copy = root.cloneNode(false) as HTMLElement;
   const style = getComputedStyle(root);
+  // A box the transition cannot show keeps its own declarations, and so its size and its place in its parent's layout,
+  // without its contents: a pinned file's card of a hundred rows is copied for the rows the frame meets (2026-11-07). A
+  // card shrinks toward its title (the anchor) while it folds, so a part of it stays unseen only if the box spanning it
+  // and the anchor misses the frame. An inline box is copied whole, since its size is its contents'.
+  if (deep && seen && !style.display.startsWith("inline") && style.display !== "contents" && !meets(spanning(root.getBoundingClientRect(), anchor), seen)) deep = false;
   // Remove live hooks before writing the large style, avoiding its lazy attribute serialization here.
   for (const name of [...copy.getAttributeNames()]) {
     if (name === "id" || name === "class" || name === "tabindex" || name === "role" || name.startsWith("data-") || name.startsWith("on")) copy.removeAttribute(name);
@@ -258,12 +401,15 @@ function visualCopy(root: HTMLElement, deep = true): HTMLElement {
   const declarations = new Array<string>(length);
   for (let property = 0; property < length; property++) {
     const name = style.item(property);
-    declarations[property] = `${name}: ${style.getPropertyValue(name)};`;
+    // A card copied in slices is read after its view was made inactive, and so inert; the copy is of the picture as it
+    // was pressed, live, and stands in a layer that is inert itself.
+    declarations[property] = `${name}: ${name === "interactivity" ? "auto" : style.getPropertyValue(name)};`;
   }
   copy.style.cssText = declarations.join("");
   if (root instanceof HTMLCanvasElement && copy instanceof HTMLCanvasElement) copy.getContext("2d")?.drawImage(root, 0, 0);
-  if (deep) for (const child of root.childNodes) {
-    copy.append(child instanceof Element ? visualCopy(child as HTMLElement) : child.cloneNode(true));
+  yield;
+  if (deep) for (const child of [...root.childNodes]) {
+    copy.append(child instanceof Element ? yield* visualCopySteps(child as HTMLElement, true, seen, anchor) : child.cloneNode(true));
   }
   return copy;
 }

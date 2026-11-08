@@ -60,7 +60,7 @@
     padding: 20px 24px 16px;
     border-radius: 12px;
 }
-.local-column .local-reading-card .node-title { font-size: 22px; line-height: 1.3; margin-bottom: 12px; padding-right: 112px; }
+.local-column .local-reading-card .node-title { font-size: 22px; line-height: 1.3; margin-bottom: 12px; --action-size: 28px; }
 .local-reading-card .node-path { font-size: 11px; line-height: 1.5; }
 .local-reading-card .node-symbols { margin-top: 12px; }
 .local-reading-card .symbol-grid { row-gap: 6px; column-gap: 10px; }
@@ -69,9 +69,8 @@
 .local-reading-card .local-reading-purpose { font-size: 16px; }
 .local-reading-card .symbol-row .symbol-label-wrapper { padding: 4px 7px; }
 .local-reading-card .symbol-anchor.hub { top: 36px; }
-.local-reading-card .local-card-actions { top: 12px; right: 12px; }
 .local-reading-card .local-card-actions button { width: 28px; height: 28px; color: var(--text-panel-muted); }
-.local-column .local-reading-card .node-title { padding-top: 0; padding-right: 160px; }
+.local-column .local-reading-card .node-title { padding-top: 0; }
 .local-reading-card .internals-row .symbol-label { font-size: 12px; }
 .local-reading-card .node-directory { display: none; }
 
@@ -90,18 +89,16 @@
 .local-symbol-read:hover, .local-symbol-read[aria-pressed=true], .local-file-read[aria-pressed=true] { color: var(--accent); }
 .local-reading-card :is(.local-symbol-read, .local-file-read, .local-symbol-pin, .local-file-pin)[aria-pressed=true] { color: var(--accent); background: var(--accent-subtle); border-color: var(--border-interactive); }
 .local-symbol-read:focus-visible, .local-file-read:focus-visible, .local-reading-full:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-.local-column .node-card:not(.local-reading-card):has(.local-file-read) .node-title { padding-right: 112px; }
 .local-column .local-reading-card .symbol-pinned .symbol-label-wrapper { background: var(--accent-muted); }
 
 @media (max-width: 600px) {
     .local-reading-card { padding: 16px 14px; }
-    .local-column .local-reading-card .node-title { padding-top: 25px; padding-right: 0; }
 }
 
 @media (pointer: coarse) {
     .local-reading-counts button { min-height: 44px; }
     .local-reading-card .local-card-actions button { width: 32px; height: 32px; }
-    .local-column .local-reading-card .node-title { padding-top: 28px; padding-right: 0; }
+    .local-column .local-reading-card .node-title { --action-size: 32px; }
     .local-reading-card :is(.local-symbol-read, .local-symbol-pin, .local-symbol-more) { flex-basis: 26px; width: 26px; height: 26px; padding: 4px; }
 }
 
@@ -138,8 +135,15 @@
    rendering results that emerge from extreme inputs") are those rooms: a row's head (its name, its buttons and its dots'
    line) scales about the row's top edge and stops at the row's bottom; a dot also stops at its card's edge; the node's
    buttons stop at a row's allotment; a name never draws smaller than in the map's own units. */
-.local-slot-card { --node-control-scale: clamp(1, var(--control-scale, 1), calc((32 + var(--slot-lines, 2) * 17) / 20)); }
-.local-slot-card .local-card-actions { transform: scale(var(--node-control-scale)); transform-origin: top right; }
+/* Closer than the middle band the controls stand in the room the name's button keeps for them, so they are held no
+   larger than it allows (--actions-hold): a step past the reading band's last can show for a moment at the band's edge. */
+.local-slot-card { --actions-hold: 1.2; --node-control-scale: clamp(1, var(--control-scale, 1), min(var(--actions-hold), calc((32 + var(--slot-lines, 2) * 17) / 20))); }
+[data-lod="middle"] .local-slot-card { --node-control-scale: clamp(1, var(--control-scale, 1), calc((32 + var(--slot-lines, 2) * 17) / 20)); }
+/* At the reading band the node's controls stand where the header's layout put them, on the name's last line or the line
+   after, and grow from their bottom right into the room the name's button keeps for them, which is as large as they are
+   at the band's last step (--actions-hold, the ladder's STEP_RATIO: the held scale of one press out). From the middle
+   band out they stand where the card reading chose for the band and step, below (the held name's header). */
+.local-slot-card .local-card-actions { transform: scale(var(--node-control-scale)); transform-origin: bottom right; }
 .local-slot-card .symbol-row {
     /* A row's buttons grow downward from their top, which is the row's, and stop 2 px above the row's bottom, so that a
        pinned row's highlight still holds them with air beneath. */
@@ -246,25 +250,33 @@
 [data-lod="overview"] .local-slot-card .symbol-row:not(.symbol-pinned-named) > :is(.symbol-label-wrapper, .symbol-anchor) { visibility: hidden; }
 [data-lod="overview"] .local-slot-card.file-pinned { box-shadow: 0 0 0 1px var(--accent), 0 0 8px var(--color-outbound-glow); }
 
-/* The file's name leads from the middle band out: held at its reading size on screen, the same on every card, it fills
-   the room the header's departed lines leave, from its top to the first row and from its left to the header's right
-   edge, clear of the node's held buttons; at the overview band, where the silent rows draw nothing, it takes the card
-   down to its first drawn row, or its bottom, standing where it stood at the far band. Where the room cannot hold one
-   line at its held size it follows the room, never smaller than the map's own scale. Its lines are the card reading's,
-   chosen at render for each band and step by four rules (held-lines.ts, after the owner's picture of 2026-11-06, where
-   the browser's own wrapping had broken "main.r / s" beside the node's More): a segment between seams breaks only when
-   it is wider than a full line, a name that fits whole below the buttons goes there, and where the room runs out the
-   last line ends with an ellipsis. The scale and the room here are the formulas that choice mirrors (heldTitle); the
-   lines are drawn as they are, one attribute a band and step. The name in the layout keeps the header's height in every
-   band and is not drawn; the drawing is the held element's generated content, and the button's label and the card's
-   title carry the full name for assistive technology and on hover. The page's find does not meet the name in these
-   bands: the layout's copy is hidden, and find does not search generated content. */
+/* The card's header from the middle band out, ordered under six principles (the header round of 2026-11-08, the
+   November 7 record's Turns 3 and 4; held-lines.ts states them): the file's name leads on the header's first line, held
+   at its reading size on screen, the same on every card; it fills the room the header's departed lines leave, from its
+   top to the first row and from its left to the header's right edge, and at the overview band, where the silent rows
+   draw nothing, down to its first drawn row or its bottom. Where the room cannot hold one line at its held size it
+   follows the room, never smaller than the map's own scale. It stands on one line when it fits, otherwise on the fewest
+   lines that hold it whole, each filled before the next, broken only at its seams, and cut with an ellipsis only when the
+   room's lines run out. The node's held controls follow it at the right edge, on its last line when its text leaves them
+   room, otherwise on the line after: all three at the middle band, that line as tall as they are, and More alone
+   beyond, held no taller than a line of the name. The card reading chooses the lines and the controls' place at render
+   for each band and step, one attribute and one custom property a band and step, and the scales and the room here are the
+   formulas it mirrors (heldTitle). The name in the layout keeps the header's height in every band and is not drawn; the
+   drawing is the held element's generated content, and the button's label and the card's title carry the full name for
+   assistive technology and on hover. The page's find does not meet the name in these bands: the layout's copy is
+   hidden, and find does not search generated content. */
 .local-slot-card { --title-line: 15; }
 .local-file-name-held { display: none; }
 :is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card {
     --title-room-h: var(--title-head-h, 0);
     --title-scale: max(1, min(var(--text-scale, 1), var(--title-room-h) / var(--title-line)));
 }
+/* More, held no taller than a line of the held name at the far and overview bands, so that it can share the name's last
+   line: its laid-out height is the card reading's --title-more-h. */
+:is([data-lod="far"], [data-lod="overview"]) .local-slot-card {
+    --node-control-scale: min(clamp(1, var(--control-scale, 1), calc((32 + var(--slot-lines, 2) * 17) / 20)), calc(var(--title-line) * var(--title-scale) / var(--title-more-h, 20)));
+}
+:is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card .local-card-actions { bottom: auto; transform-origin: top right; }
 [data-lod="overview"] .local-slot-card {
     --title-room-h: min(var(--title-card-h, 0), max(var(--title-head-h, 0), var(--title-head-h, 0) + var(--rows-before-pin, 100000) * var(--title-pitch, 1) - var(--title-row-gap, 0)));
 }
@@ -320,6 +332,41 @@
 [data-lod="overview"][data-step="8"] .local-slot-card .local-file-name-held::after { content: attr(data-lines-overview-8); }
 [data-lod="overview"][data-step="9"] .local-slot-card .local-file-name-held::after { content: attr(data-lines-overview-9); }
 [data-lod="overview"][data-step="10"] .local-slot-card .local-file-name-held::after { content: attr(data-lines-overview-10); }
+/* Each band and step stands the node's controls where the card reading chose, their top from the header's top in the
+   map's own units (--controls-y-<band>-<step> on the controls, written at render with the lines). */
+[data-lod="middle"][data-step="0"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-middle-0, 0) * 1px); }
+[data-lod="middle"][data-step="1"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-middle-1, 0) * 1px); }
+[data-lod="middle"][data-step="2"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-middle-2, 0) * 1px); }
+[data-lod="middle"][data-step="3"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-middle-3, 0) * 1px); }
+[data-lod="middle"][data-step="4"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-middle-4, 0) * 1px); }
+[data-lod="middle"][data-step="5"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-middle-5, 0) * 1px); }
+[data-lod="middle"][data-step="6"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-middle-6, 0) * 1px); }
+[data-lod="middle"][data-step="7"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-middle-7, 0) * 1px); }
+[data-lod="middle"][data-step="8"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-middle-8, 0) * 1px); }
+[data-lod="middle"][data-step="9"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-middle-9, 0) * 1px); }
+[data-lod="middle"][data-step="10"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-middle-10, 0) * 1px); }
+[data-lod="far"][data-step="0"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-far-0, 0) * 1px); }
+[data-lod="far"][data-step="1"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-far-1, 0) * 1px); }
+[data-lod="far"][data-step="2"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-far-2, 0) * 1px); }
+[data-lod="far"][data-step="3"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-far-3, 0) * 1px); }
+[data-lod="far"][data-step="4"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-far-4, 0) * 1px); }
+[data-lod="far"][data-step="5"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-far-5, 0) * 1px); }
+[data-lod="far"][data-step="6"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-far-6, 0) * 1px); }
+[data-lod="far"][data-step="7"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-far-7, 0) * 1px); }
+[data-lod="far"][data-step="8"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-far-8, 0) * 1px); }
+[data-lod="far"][data-step="9"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-far-9, 0) * 1px); }
+[data-lod="far"][data-step="10"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-far-10, 0) * 1px); }
+[data-lod="overview"][data-step="0"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-overview-0, 0) * 1px); }
+[data-lod="overview"][data-step="1"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-overview-1, 0) * 1px); }
+[data-lod="overview"][data-step="2"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-overview-2, 0) * 1px); }
+[data-lod="overview"][data-step="3"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-overview-3, 0) * 1px); }
+[data-lod="overview"][data-step="4"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-overview-4, 0) * 1px); }
+[data-lod="overview"][data-step="5"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-overview-5, 0) * 1px); }
+[data-lod="overview"][data-step="6"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-overview-6, 0) * 1px); }
+[data-lod="overview"][data-step="7"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-overview-7, 0) * 1px); }
+[data-lod="overview"][data-step="8"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-overview-8, 0) * 1px); }
+[data-lod="overview"][data-step="9"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-overview-9, 0) * 1px); }
+[data-lod="overview"][data-step="10"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-overview-10, 0) * 1px); }
 
 /* Text leads at reading scale; highlighted relationships retain their usual emphasis. */
 #map-viewport:has(.local-reading-card) .connection-path:not(.connection-highlighted) { filter: none; }

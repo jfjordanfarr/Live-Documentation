@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/capture.ts
-- Generated At: 2026-11-07T00:25:44.000Z
+- Generated At: 2026-11-08T10:06:47.508Z
 
 ## Authored
 ### Purpose
@@ -37,6 +37,8 @@ The [November 5 reading repair](../../../../AI-Agent-Workspace/ChatHistory/2026/
 Since [Turn 12](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-12--november-6) a card capture carries `slot` for the fixed-slot composition, now the Card Text default: every public row's explicit height, measured from the first such row or taken from Slot Lines, and the Purpose's slot height, so that the model needs no text to give a slot card's height.
 
 Since the far bands' round (2026-11-07, the root's fourth review) the pins it reads leave out the overview band's own hub (`overview-hub`), the node-level hub at a card's using side where that band's gathered wires arrive: the page registers it under `inbound:#hub`, never as the card's `inbound:*`, which stays Internals' dot. Read as a hub, it had stood in for that pin, and the lab and the headless command reported every card's `inbound:*` drifted, by the distance between Internals' dot and the card's middle, though the page's placement had not moved.
+
+Since 2026-11-08 the capture records each card's `titleRoom` (the controls its header holds, a control's size and their hold, as the page computes them for the room after the name) and checks a title's height in node, by the card model's own `titleHeight`, rather than by Pretext's height of the name alone in the page: the page returns the title's line widths and its own height, and the warning is written by the same rule the card model sizes the card with.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -78,21 +80,21 @@ One card, as the page built it.
 
 #### `CardConstants` {#symbol-cardconstants}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L116)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L118)
 
 ##### `CardConstants` — Summary
 The page's constants the card model composes with, read from computed styles.
 
 #### `Capture` {#symbol-capture}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L139)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L141)
 
 ##### `Capture` — Summary
 A scope's capture: the fonts, the constants, every card, every label, the page's truth and the warnings.
 
 #### `captureScope` {#symbol-capturescope}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L167)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L169)
 - Parameters: `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun); `preset`: [`LayoutPreset`](../../packages/explorer/src/client/layout-presets.ts.mdmd.md#symbol-layoutpreset)
 
 ##### `captureScope` — Summary
@@ -100,7 +102,7 @@ Opens the scope in a browser of the lab's own over the built bundle and reads th
 
 #### `captureFromPage` {#symbol-capturefrompage}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L188)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L190)
 - Parameters: `page`: `Page`; `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun)
 
 ##### `captureFromPage` — Summary
@@ -112,7 +114,7 @@ page's Content-Security-Policy runs no script written into it.
 
 #### `writeCapture` {#symbol-writecapture}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L569)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L600)
 - Parameters: `capture`: [`Capture`](#symbol-capture)
 
 ##### `writeCapture` — Summary
@@ -120,7 +122,7 @@ Writes a capture as compact JSON.
 
 #### `readCaptureFile` {#symbol-readcapturefile}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L575)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L606)
 
 ##### `readCaptureFile` — Summary
 Reads a capture written by `writeCapture`.
@@ -139,6 +141,8 @@ Reads a capture written by `writeCapture`.
 - [`local-storage.PERSISTED_UI_VERSION`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_version)
 - [`types.ExplorerFilters`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-explorerfilters) (type-only)
 - [`card-model.TEXT_TOLERANCE`](./card-model.ts.mdmd.md#symbol-text_tolerance)
+- [`card-model.TitleRoom`](./card-model.ts.mdmd.md#symbol-titleroom)
+- [`card-model.titleHeight`](./card-model.ts.mdmd.md#symbol-titleheight)
 - [`reading-model.ReadingFlow`](./reading-model.ts.mdmd.md#symbol-readingflow) (type-only)
 - [`scopes.ORIGIN`](./scopes.ts.mdmd.md#symbol-origin)
 - [`scopes.ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun)

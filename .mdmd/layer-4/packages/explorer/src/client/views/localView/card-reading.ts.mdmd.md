@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-reading.ts
-- Generated At: 2026-11-06T21:30:42.355Z
+- Generated At: 2026-11-08T06:36:55.552Z
 
 ## Authored
 ### Purpose
@@ -34,21 +34,21 @@ After the root's third review of the round (2026-11-06; the owner's picture of `
 ### Public Symbols
 #### `ReadingTarget` {#symbol-readingtarget}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L26)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L25)
 
 ##### `ReadingTarget` — Summary
 A file's Purpose or one exact symbol's description, named by the card it is read on.
 
 #### `CardReadingOptions` {#symbol-cardreadingoptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L29)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L28)
 
 ##### `CardReadingOptions` — Summary
 Canonical text, application-owned choices and the actions a card's text can lead to.
 
 #### `CardReading` {#symbol-cardreading}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L73)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L72)
 
 ##### `CardReading` — Summary
 Builds on-card explanations from the same bundled docs as the full reader. A description opens and folds only
@@ -62,7 +62,7 @@ out"). With fixed slots, the comparison composition, every symbol has the same a
 
 #### `markFirstPin` {#symbol-markfirstpin}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L583)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L589)
 
 ##### `markFirstPin` — Summary
 Write {@link firstPinWrite} for a card whose rows were just ordered, and its held name's lines at the overview band,
@@ -87,7 +87,8 @@ whose room it bounds, from the card's last reading: no layout is read.
 - [`held-lines.HELD_BANDS`](./held-lines.ts.mdmd.md#symbol-held_bands)
 - [`held-lines.HeldBand`](./held-lines.ts.mdmd.md#symbol-heldband)
 - [`held-lines.TitleRooms`](./held-lines.ts.mdmd.md#symbol-titlerooms)
-- [`held-lines.chooseHeldLines`](./held-lines.ts.mdmd.md#symbol-chooseheldlines)
+- [`held-lines.chooseHeldHeader`](./held-lines.ts.mdmd.md#symbol-chooseheldheader)
+- [`held-lines.heldSegments`](./held-lines.ts.mdmd.md#symbol-heldsegments)
 - [`held-lines.heldTitle`](./held-lines.ts.mdmd.md#symbol-heldtitle)
 - [`ladder-rooms.dotRoom`](./ladder-rooms.ts.mdmd.md#symbol-dotroom)
 - [`ladder-rooms.layoutTopOf`](./ladder-rooms.ts.mdmd.md#symbol-layouttopof)
@@ -100,6 +101,5 @@ whose room it bounds, from the card's last reading: no layout is read.
 - [`ladder-steps.ladderScales`](./ladder-steps.ts.mdmd.md#symbol-ladderscales-function)
 - [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)
 - [`types.ReadingControl`](./types.ts.mdmd.md#symbol-readingcontrol) (type-only)
-- [`word-seams.seamsOf`](./word-seams.ts.mdmd.md#symbol-seamsof)
 - [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

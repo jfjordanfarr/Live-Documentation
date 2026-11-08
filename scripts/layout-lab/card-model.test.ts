@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import type { Capture, CardCapture, PreparedText } from "./capture";
-import { cardMetrics, chipsHeight, registerPins, resolvePin, synthesizedHeight, type CardMetrics } from "./card-model";
+import { cardMetrics, chipsHeight, registerPins, resolvePin, synthesizedHeight, titleHeight, titleRoomBox, type CardMetrics } from "./card-model";
 import { cardViews } from "./measurer";
 import { insidePolygon } from "./signals";
 import { edgeKey, type BranchGraph } from "../../packages/explorer/src/client/views/localView/branches";
@@ -76,6 +76,24 @@ describe("the lab's card model, the parts that need no page", () => {
     // The public row's dot stands at the middle of its first track, the 10 px line, not of the 66 px allotment.
     expect(metrics.pins.get("inbound:X")).toBe(10 + 10 + 55 + 5);
     expect(metrics.pins.get("inbound:__internals__")).toBe(10 + 10 + 55 + 66 + 5);
+  });
+
+  it("sizes a title as the header lays it out: the room for the controls after the name, on its last line or a line of its own (2026-11-08)", () => {
+    // The room by local.css's rule: three controls of 20 px with 2 px gaps, held 1.2 on a slot card, and 4 px of air.
+    expect(titleRoomBox({ count: 3, size: 20, hold: 1.2 })).toEqual({ width: (3 * 22 - 2) * 1.2 + 4, height: 24 });
+    expect(titleRoomBox({ count: 8, size: 20, hold: 1 }).width).toBe(5 * 22 - 2 + 4);
+    const room = { count: 3, size: 20, hold: 1.2 };
+    // The gate's cases: "PaymentsController.cs" on one line beside the room, 24 px where the text alone was 15; a reading
+    // card's "document.ts" on one line with no room after it, its 28.59 and the room's own line of 32.
+    expect(titleHeight([120], 15, 222, room)).toBe(24);
+    // The same name with no room beside it (150 + 80.8 > 222): the room takes a line of its own.
+    expect(titleHeight([150], 15, 222, room)).toBe(15 + 24);
+    expect(titleHeight([270], 28.59, 280, { count: 4, size: 32, hold: 1 })).toBeCloseTo(28.59 + 32);
+    // Two lines, the room beside the second: the first line's height and the room's.
+    expect(titleHeight([200, 40], 15, 222, room)).toBe(15 + 24);
+    // A room shorter than a line leaves the line as it is; a page from before the round has no room.
+    expect(titleHeight([100], 28.59, 400, { count: 3, size: 20, hold: 1 })).toBeCloseTo(28.59);
+    expect(titleHeight([200, 40], 15, 222, null)).toBe(30);
   });
 
   it("wraps a row of chips as a flex row does: a line as tall as its tallest chip, the lines a gap apart", () => {

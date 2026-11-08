@@ -1038,6 +1038,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   let transitionDestination: LocalMapPerspective | null = null;
   let releasePerspectiveCover = (): void => {};
   let cancelPerspectiveAnimation = (): void => {};
+  let cancelPerspectiveCapture = (): void => {};
 
   /** Change representation around the map subject; the independently inspected evidence stays open. */
   function changePerspective(perspective: LocalMapPerspective, target = state.selectedNode): void {
@@ -1049,9 +1050,15 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     const previous = state.view === "map" ? state.perspective : null;
     const destination = perspective === "2d" ? "map" : "graph";
     const sourceSurface = previous === "2d" ? "map" : "graph";
-    const sourceCards = previous === "2d" ? captureLocalScene(requireElement("view-map")) : null;
+    const pressed = performance.now();
+    // The transition draws inside the destination's frame, so the cards it copies are those whose boxes meet that frame.
+    const sourceCapture = previous === "2d" ? captureLocalScene(requireElement("view-map"), requireElement(`view-${destination}`).getBoundingClientRect()) : null;
+    if (sourceCapture) cancelPerspectiveCapture = sourceCapture.cancel;
     const sourceGraph = previous === "3d" ? forceGraphView.captureScene() : null;
+    const captured = performance.now();
+    performance.measure("live-docs:switch-capture", { start: pressed, end: captured });
     const releaseCover = previous ? holdPerspective(requireElement(`view-${sourceSurface}`)) : () => {};
+    performance.measure("live-docs:switch-hold", { start: captured });
     releasePerspectiveCover = releaseCover;
     changingPerspective = true;
     syncPerspectiveControls();
@@ -1064,9 +1071,11 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     state.selectedNode = target;
     state.view = "map";
     state.perspective = perspective;
+    const rendering = performance.now();
     setActiveView(state.view, perspective);
     renderCurrentView(subjectChanged ? "change" : "show");
-    if (perspective === "3d" && sourceCards) forceGraphView.revealForTransition(sourceCards.cards.map(card => card.file.id));
+    if (perspective === "3d" && sourceCapture) forceGraphView.revealForTransition(sourceCapture.scene.cards.map(card => card.file.id));
+    performance.measure("live-docs:switch-render", { start: rendering });
     persistExploration();
     if (visualId && anchor) {
       const viewport = requireElement(`view-${destination}`).getBoundingClientRect();
@@ -1075,15 +1084,49 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
       } else anchor = null;
     }
     const ready = perspective === "3d" ? forceGraphView.whenReady() : Promise.resolve();
-    void ready.then(() => {
-      if (epoch !== perspectiveEpoch) { releaseCover(); return; }
+    // The destination is placed about the subject once it has drawn; on the way to 3D its picture is read then and held
+    // still until the transition has played, as before the cards' copies were made in slices. Left running while they
+    // were copied, the 3D view flew its camera on toward the subject unseen, behind the held map, so that the transition
+    // arrived at a picture the camera had already left, without the files now behind it (the gate of 2026-11-08); held,
+    // its flight goes on from where the transition leaves it.
+    const arrived = ready.then(() => {
+      if (epoch !== perspectiveEpoch) return null;
       if (visualId && anchor) (perspective === "2d" ? localView : forceGraphView).placeSubjectAnchor(visualId, anchor);
-      if (previous && previous !== perspective) {
-        const cards = perspective === "3d" ? sourceCards! : captureLocalScene(requireElement("view-map"));
-        const graph = perspective === "3d" ? forceGraphView.captureScene() : sourceGraph!;
+      if (perspective !== "3d" || !previous || previous === perspective) return null;
+      const graph = forceGraphView.captureScene();
+      forceGraphView.setActive(false);
+      return graph;
+    });
+    // The transition starts when the destination has drawn and the cards' copies, made in slices while the source is
+    // held still, are done: on the way to 3D those of the source, read at the press; on the way to 2D those of the map
+    // just drawn, read once it is placed.
+    void Promise.all([arrived, sourceCapture?.copied]).then(([arrivedGraph]) => {
+      if (epoch !== perspectiveEpoch) { sourceCapture?.cancel(); releaseCover(); return; }
+      if (!previous || previous === perspective) {
+        transitionDestination = null;
+        changingPerspective = false;
+        syncPerspectiveControls();
+        releaseCover();
+        return;
+      }
+      const capturing = performance.now();
+      const capture = perspective === "3d" ? sourceCapture! : captureLocalScene(requireElement("view-map"), requireElement(`view-${destination}`).getBoundingClientRect());
+      performance.measure("live-docs:switch-capture-destination", { start: capturing });
+      cancelPerspectiveCapture = capture.cancel;
+      // On the way to 2D the map is shown under the held 3D picture while its cards are copied; the hold's cover takes
+      // the pointer meanwhile, and the map's keys are held back, so that it takes no input until the transition has
+      // begun. (Making it inert instead recomputed the style of every element of the map twice, half a second here.)
+      const map = requireElement("view-map");
+      const holdKeys = (event: Event): void => { event.preventDefault(); event.stopPropagation(); };
+      if (perspective === "2d") map.addEventListener("keydown", holdKeys, true);
+      void capture.copied.then(() => {
+        map.removeEventListener("keydown", holdKeys, true);
+        if (epoch !== perspectiveEpoch) { releaseCover(); return; }
+        const graph = perspective === "3d" ? arrivedGraph! : sourceGraph!;
         forceGraphView.setActive(false);
         const named = visualId ?? "";
-        cancelPerspectiveAnimation = animatePerspective(cards, graph, perspective === "3d", named, requireElement(`view-${destination}`).getBoundingClientRect(), () => {
+        const starting = performance.now();
+        cancelPerspectiveAnimation = animatePerspective(capture.scene, graph, perspective === "3d", named, requireElement(`view-${destination}`).getBoundingClientRect(), () => {
           if (epoch !== perspectiveEpoch) return;
           transitionDestination = null;
           changingPerspective = false;
@@ -1094,14 +1137,12 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
           if (perspective === "2d") localView.settleIntoFrame();
           const pending = pendingPerspective; pendingPerspective = null; pending?.();
         });
-      } else {
-        transitionDestination = null;
-        changingPerspective = false;
-        syncPerspectiveControls();
-      }
-      releaseCover();
+        performance.measure("live-docs:switch-animation-setup", { start: starting });
+        releaseCover();
+      });
     });
     highlightSelectedCards();
+    performance.measure("live-docs:switch-press", { start: pressed });
   }
 
   // The page's controls are wired here, never by attributes in its HTML, which its Content-Security-Policy refuses to run.
@@ -1737,7 +1778,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     // History and navigation can interrupt an animated perspective change.
     if (changingPerspective && (state.view !== "map" || state.perspective !== transitionDestination)) {
       perspectiveEpoch++;
-      releasePerspectiveCover(); cancelPerspectiveAnimation();
+      releasePerspectiveCover(); cancelPerspectiveAnimation(); cancelPerspectiveCapture();
       changingPerspective = false; pendingPerspective = null; transitionDestination = null;
       syncPerspectiveControls();
     }

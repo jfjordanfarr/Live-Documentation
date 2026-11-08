@@ -47,7 +47,10 @@ const reading = (page: Page) => page.evaluate(id => {
     growth: number(container, "--name-growth"), textScale: number(container, "--text-scale"), controlScale: number(container, "--control-scale"),
     rowH: number(row, "--row-h"), rowRoomW: number(row, "--row-room-w"), rowNameW: number(row, "--row-name-w"), rowFillH: number(row, "--row-fill-h"),
     rowControlsW: number(row, "--row-controls-w"), rowMoreW: number(row, "--row-more-w"), rowDotRoom: number(row, "--row-dot-room"), slotLines: number(container, "--slot-lines"),
-    titleHeadH: number(card, "--title-head-h"), titleLine: number(card, "--title-line")
+    titleHeadH: number(card, "--title-head-h"), titleLine: number(card, "--title-line"),
+    // The held name's scale, 1 where it is not drawn: the far and overview bands hold the node's More no taller than a
+    // line of it (the header round, 2026-11-08).
+    titleScale: heldStyle.display === "none" ? 1 : new DOMMatrix(heldStyle.transform).a
   };
 }, payment);
 type Reading = Awaited<ReturnType<typeof reading>>;
@@ -116,7 +119,10 @@ test("each band below reading scale lets one tier leave, names and controls hold
     const byWidth = 0.9 * (band.rowRoomW - controlsW * rowControls) / band.rowNameW;
     return start.name * Math.max(1, Math.min(band.rowFillH, Math.max(band.textScale, Math.min(byWidth, band.textScale * band.growth)))) * ratioOf(band);
   };
-  const nodeControls = (band: Reading): number => held(band.controlScale, (32 + band.slotLines * 17) / 20);
+  const nodeControls = (band: Reading): number => {
+    const controls = held(band.controlScale, (32 + band.slotLines * 17) / 20);
+    return band.band === "far" || band.band === "overview" ? Math.min(controls, band.titleLine * band.titleScale / 20) : controls;
+  };
   // The file's name holds its step's scale whatever Name Growth says, wrapping rather than growing, as long as one of its
   // lines fits the header's room (2026-11-06, the far-zoom review).
   const expectedTitle = (band: Reading): number => start.title * Math.max(1, Math.min(band.textScale, band.titleHeadH / band.titleLine)) * ratioOf(band);
@@ -130,7 +136,8 @@ test("each band below reading scale lets one tier leave, names and controls hold
     expect(Math.abs(band.rowMore - start.rowMore * held(band.controlScale, (band.rowH - 2) / 17) * ratioOf(band))).toBeLessThan(1);
     expect(Math.abs(band.anchor - start.anchor * held(band.controlScale, dotCeiling(band)) * ratioOf(band))).toBeLessThan(1);
     const parts = band.controlScale <= dotCeiling(band) ? ["more", "rowMore", "anchor"] as const : ["more", "rowMore"] as const;
-    for (const part of parts) {
+    // Beyond the middle band the node's More holds no more than a line of the held name, so its screen size is that cap's.
+    for (const part of parts.filter(part => part !== "more" || band.band === "middle" || band.band === "reading")) {
       expect(band[part] / start[part]).toBeGreaterThan(heldLow - 0.01);
       expect(band[part] / start[part]).toBeLessThan(heldHigh + 0.01);
     }
@@ -321,6 +328,7 @@ const stepReading = (page: Page, id: string, pinned: string) => page.evaluate(({
     dot: mapUnits(`.symbol-row[data-symbol="${CSS.escape(pinned)}"] .symbol-anchor.dot.inbound`, 14),
     rowMore: mapUnits(`.symbol-row[data-symbol="${CSS.escape(pinned)}"] .local-symbol-more`, 17),
     nodeMore: mapUnits(".local-file-more", 20),
+    titleScale: new DOMMatrix(getComputedStyle(card.querySelector(".local-file-name-held")!).transform).a,
     name: new DOMMatrix(getComputedStyle(row.querySelector(".symbol-label-text")!).transform).a,
     prose: (() => {
       const prose = card.querySelector<HTMLElement>(".local-reading-slot .local-reading-prose")!, style = getComputedStyle(prose);
@@ -386,7 +394,8 @@ test("at every step a dot never covers its name, More stands on every drawn row 
     // A row's buttons stop 2 px above its bottom, so that a pinned row's highlight holds them with air (2026-11-06).
     expect(each.rowMore).toBeCloseTo((each.rowH - 2) / 17, 1);
     // The node's buttons stop at a slot row's allotment, which the pinned row is.
-    expect(each.nodeMore).toBeCloseTo(each.rowH / 20, 1);
+    // At the overview band More is held no taller than a line of the held name, 15 of its units (2026-11-08).
+    expect(each.nodeMore).toBeCloseTo(Math.min(each.rowH / 20, 15 * each.titleScale / 20), 1);
   }
   for (const each of atLast) for (const part of ["dot", "rowMore", "nodeMore", "name"] as const) expect(each[part]).toBeCloseTo(atLast[0][part], 2);
 

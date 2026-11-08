@@ -1,0 +1,8510 @@
+{
+ "subject": "tests/e2e/still-picture.ts",
+ "pin": "none",
+ "url": "http://127.0.0.1:8914/?s=N4IgbiBcDMA0IDsogC4FMDOKMHo0CY0csBLAGzIFoAHEgYxQFcAnNAOmxAF8g",
+ "viewport": {
+  "width": 1440,
+  "height": 960
+ },
+ "errors": [],
+ "presses": [
+  {
+   "k": 1,
+   "lod": "reading",
+   "step": 0,
+   "names": [],
+   "press": 0
+  },
+  {
+   "k": 0.8333,
+   "lod": "reading",
+   "step": 1,
+   "names": [],
+   "press": 1
+  },
+  {
+   "k": 0.6944,
+   "lod": "middle",
+   "step": 2,
+   "names": [
+    {
+     "file": "capture.ts",
+     "kind": "whole beside",
+     "lines": [
+      "capture.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "verify.ts",
+     "kind": "whole beside",
+     "lines": [
+      "verify.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "types.ts",
+     "kind": "whole beside",
+     "lines": [
+      "types.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "staticExplorerData.ts",
+     "kind": "whole beside",
+     "lines": [
+      "staticExplorerData.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "graph.ts",
+     "kind": "whole beside",
+     "lines": [
+      "graph.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-storage.ts",
+     "kind": "whole beside",
+     "lines": [
+      "local-storage.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "symbolAnchors.ts",
+     "kind": "whole beside",
+     "lines": [
+      "symbolAnchors.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture-geometry.ts",
+     "kind": "whole beside",
+     "lines": [
+      "still-picture-geometry.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "design-audit.ts",
+     "kind": "whole beside",
+     "lines": [
+      "design-audit.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture.ts",
+     "kind": "whole beside",
+     "lines": [
+      "still-picture.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-corset.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "local-map-corset.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-discovery.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "force-graph-discovery.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-reveal.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "force-graph-reveal.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-focus.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "force-graph-focus.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "explorer-navigation.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "explorer-navigation.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "perspective-zoom.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "perspective-zoom.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-wrappers.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "force-graph-wrappers.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-shells.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "force-graph-shells.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-slots.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "card-slots.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-row-motion.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "local-map-row-motion.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-ladder-boxes.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "card-ladder-boxes.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-ladder.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "card-ladder.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-overview.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "local-map-overview.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-hidden.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "local-map-hidden.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-directories.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "force-graph-directories.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-exploration.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "force-graph-exploration.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-motion.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "local-map-motion.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-search.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "local-map-search.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-keyboard.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "local-map-keyboard.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-learning.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "local-map-learning.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-branches.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "local-map-branches.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "inspection.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "inspection.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-framing.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "local-map-framing.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "pin-clicks.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "pin-clicks.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-path.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "local-map-path.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "explorer-history.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "explorer-history.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "still-picture.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-reading.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "card-reading.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-packing.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "local-map-packing.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-directories.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "local-map-directories.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "search-bar.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "search-bar.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-pins.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "local-map-pins.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "world-map-design.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "world-map-design.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "world-map-estate.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "world-map-estate.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "layout-lab.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "layout-lab.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-simplicity.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "local-map-simplicity.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    }
+   ],
+   "press": 2
+  },
+  {
+   "k": 0.5787,
+   "lod": "middle",
+   "step": 3,
+   "names": [
+    {
+     "file": "capture.ts",
+     "kind": "whole beside",
+     "lines": [
+      "capture.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "verify.ts",
+     "kind": "whole beside",
+     "lines": [
+      "verify.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "types.ts",
+     "kind": "whole beside",
+     "lines": [
+      "types.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "staticExplorerData.ts",
+     "kind": "whole beside",
+     "lines": [
+      "staticExplorerData.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "graph.ts",
+     "kind": "whole beside",
+     "lines": [
+      "graph.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-storage.ts",
+     "kind": "whole beside",
+     "lines": [
+      "local-storage.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "symbolAnchors.ts",
+     "kind": "whole beside",
+     "lines": [
+      "symbolAnchors.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture-geometry.ts",
+     "kind": "whole beside",
+     "lines": [
+      "still-picture-geometry.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "design-audit.ts",
+     "kind": "whole beside",
+     "lines": [
+      "design-audit.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture.ts",
+     "kind": "whole beside",
+     "lines": [
+      "still-picture.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-corset.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "local-map-corset.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-discovery.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "force-graph-discovery.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-reveal.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "force-graph-reveal.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-focus.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "force-graph-focus.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "explorer-navigation.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "explorer-navigation.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "perspective-zoom.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "perspective-zoom.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-wrappers.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "force-graph-wrappers.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-shells.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "force-graph-shells.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-slots.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "card-slots.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-row-motion.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "local-map-row-motion.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-ladder-boxes.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "card-ladder-boxes.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-ladder.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "card-ladder.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-overview.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "local-map-overview.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-hidden.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "local-map-hidden.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-directories.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "force-graph-directories.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-exploration.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "force-graph-exploration.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-motion.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "local-map-motion.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-search.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "local-map-search.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-keyboard.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "local-map-keyboard.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-learning.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "local-map-learning.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-branches.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "local-map-branches.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "inspection.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "inspection.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-framing.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "local-map-framing.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "pin-clicks.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "pin-clicks.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-path.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "local-map-path.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "explorer-history.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "explorer-history.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "still-picture.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-reading.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "card-reading.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-packing.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "local-map-packing.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-directories.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "local-map-directories.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "search-bar.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "search-bar.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-pins.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "local-map-pins.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "world-map-design.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "world-map-design.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "world-map-estate.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "world-map-estate.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "layout-lab.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "layout-lab.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-simplicity.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-map-simplicity.s…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    }
+   ],
+   "press": 3
+  },
+  {
+   "k": 0.4823,
+   "lod": "middle",
+   "step": 4,
+   "names": [
+    {
+     "file": "capture.ts",
+     "kind": "whole beside",
+     "lines": [
+      "capture.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "verify.ts",
+     "kind": "whole beside",
+     "lines": [
+      "verify.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "types.ts",
+     "kind": "whole beside",
+     "lines": [
+      "types.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "staticExplorerData.ts",
+     "kind": "whole beside",
+     "lines": [
+      "staticExplorerData.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "graph.ts",
+     "kind": "whole beside",
+     "lines": [
+      "graph.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-storage.ts",
+     "kind": "whole beside",
+     "lines": [
+      "local-storage.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "symbolAnchors.ts",
+     "kind": "whole beside",
+     "lines": [
+      "symbolAnchors.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture-geometry.ts",
+     "kind": "whole beside",
+     "lines": [
+      "still-picture-geometry.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "design-audit.ts",
+     "kind": "whole beside",
+     "lines": [
+      "design-audit.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture.ts",
+     "kind": "cut beside",
+     "lines": [
+      "still-pic…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-corset.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "local-map-corset.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-discovery.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "force-graph-discovery.sp…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-reveal.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "force-graph-reveal.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-focus.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "force-graph-focus.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "explorer-navigation.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "explorer-navigation.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "perspective-zoom.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "perspective-zoom.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-wrappers.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "force-graph-wrappers.spe…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-shells.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "force-graph-shells.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-slots.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "card-slots.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-row-motion.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-map-row-motion.sp…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-ladder-boxes.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "card-ladder-boxes.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-ladder.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "card-ladder.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-overview.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "local-map-overview.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-hidden.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "local-map-hidden.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-directories.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "force-graph-directories.s…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-exploration.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "force-graph-exploration.s…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-motion.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "local-map-motion.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-search.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "local-map-search.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-keyboard.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "local-map-keyboard.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-learning.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "local-map-learning.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-branches.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "local-map-branches.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "inspection.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "inspection.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-framing.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "local-map-framing.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "pin-clicks.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "pin-clicks.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-path.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "local-map-path.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "explorer-history.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "explorer-history.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "still-picture.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-reading.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "card-reading.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-packing.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "local-map-packing.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-directories.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-map-directories.spe…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "search-bar.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "search-bar.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-pins.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "local-map-pins.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "world-map-design.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "world-map-design.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "world-map-estate.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "world-map-estate.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "layout-lab.spec.ts",
+     "kind": "whole below",
+     "lines": [
+      "layout-lab.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-simplicity.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-map-simplic…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    }
+   ],
+   "press": 4
+  },
+  {
+   "k": 0.4019,
+   "lod": "far",
+   "step": 5,
+   "names": [
+    {
+     "file": "capture.ts",
+     "kind": "whole beside",
+     "lines": [
+      "capture.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "verify.ts",
+     "kind": "whole beside",
+     "lines": [
+      "verify.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "types.ts",
+     "kind": "whole beside",
+     "lines": [
+      "types.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "staticExplorerData.ts",
+     "kind": "whole beside",
+     "lines": [
+      "staticExplorerData.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "graph.ts",
+     "kind": "whole beside",
+     "lines": [
+      "graph.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-storage.ts",
+     "kind": "whole beside",
+     "lines": [
+      "local-storage.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "symbolAnchors.ts",
+     "kind": "whole beside",
+     "lines": [
+      "symbolAnchors.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture-geometry.ts",
+     "kind": "whole beside",
+     "lines": [
+      "still-picture-geometry.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "design-audit.ts",
+     "kind": "whole beside",
+     "lines": [
+      "design-audit.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture.ts",
+     "kind": "cut beside",
+     "lines": [
+      "still-picture…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-corset.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-corset.…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-discovery.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force-graph-disco…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-reveal.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force-graph-revea…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-focus.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force-graph-focus…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "explorer-navigation.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "explorer-navigatio…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "perspective-zoom.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "perspective-zoom…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-wrappers.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force-graph-wrap…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-shells.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force-graph-shell…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-slots.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "card-slots.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-row-motion.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-row-mo…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-ladder-boxes.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "card-ladder-boxes…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-ladder.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "card-ladder.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-overview.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-overvie…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-hidden.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-hidden.…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-directories.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force-graph-direct…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-exploration.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force-graph-explo…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-motion.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-motion.…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-search.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-search.…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-keyboard.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-keyboa…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-learning.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-learnin…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-branches.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-branch…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "inspection.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "inspection.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-framing.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-framing…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "pin-clicks.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "pin-clicks.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-path.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-path.sp…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "explorer-history.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "explorer-history.s…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "still-picture.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-reading.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "card-reading.spec…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-packing.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-packin…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-directories.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-directo…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "search-bar.spec.ts",
+     "kind": "whole beside",
+     "lines": [
+      "search-bar.spec.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-pins.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-pins.sp…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "world-map-design.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "world-map-design…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "world-map-estate.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "world-map-estate.…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "layout-lab.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "layout-lab.s…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-simplicity.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-s…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    }
+   ],
+   "press": 5
+  },
+  {
+   "k": 0.3349,
+   "lod": "far",
+   "step": 6,
+   "names": [
+    {
+     "file": "capture.ts",
+     "kind": "whole beside",
+     "lines": [
+      "capture.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "verify.ts",
+     "kind": "whole beside",
+     "lines": [
+      "verify.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "types.ts",
+     "kind": "whole beside",
+     "lines": [
+      "types.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "staticExplorerData.ts",
+     "kind": "whole beside",
+     "lines": [
+      "staticExplorerData.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "graph.ts",
+     "kind": "whole beside",
+     "lines": [
+      "graph.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-storage.ts",
+     "kind": "whole beside",
+     "lines": [
+      "local-storage.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "symbolAnchors.ts",
+     "kind": "whole beside",
+     "lines": [
+      "symbolAnchors.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture-geometry.ts",
+     "kind": "whole beside",
+     "lines": [
+      "still-picture-geometry.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "design-audit.ts",
+     "kind": "whole beside",
+     "lines": [
+      "design-audit.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture.ts",
+     "kind": "cut beside",
+     "lines": [
+      "still-pict…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-corset.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-cor…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-discovery.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force-graph-di…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-reveal.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force-graph-re…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-focus.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force-graph-fo…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "explorer-navigation.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "explorer-navi…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "perspective-zoom.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "perspective-z…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-wrappers.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force-graph-w…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-shells.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force-graph-s…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-slots.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "card-slots.spe…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-row-motion.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-row…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-ladder-boxes.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "card-ladder-b…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-ladder.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "card-ladder.sp…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-overview.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-ove…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-hidden.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-hid…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-directories.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force-graph-di…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-exploration.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force-graph-e…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-motion.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-mot…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-search.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-sea…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-keyboard.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-key…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-learning.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-lear…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-branches.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-bra…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "inspection.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "inspection.sp…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-framing.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-fra…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "pin-clicks.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "pin-clicks.spe…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-path.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-pat…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "explorer-history.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "explorer-histo…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "still-picture.sp…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-reading.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "card-reading.…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-packing.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-pac…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-directories.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-dire…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "search-bar.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "search-bar.sp…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-pins.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-pin…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "world-map-design.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "world-map-de…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "world-map-estate.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "world-map-est…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "layout-lab.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "layout-la…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-simplicity.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-ma…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    }
+   ],
+   "press": 6
+  },
+  {
+   "k": 0.2791,
+   "lod": "overview",
+   "step": 7,
+   "names": [
+    {
+     "file": "capture.ts",
+     "kind": "whole beside",
+     "lines": [
+      "capture.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "verify.ts",
+     "kind": "whole beside",
+     "lines": [
+      "verify.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "types.ts",
+     "kind": "whole beside",
+     "lines": [
+      "types.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "staticExplorerData.ts",
+     "kind": "whole below",
+     "lines": [
+      "staticExplorerData.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "graph.ts",
+     "kind": "whole beside",
+     "lines": [
+      "graph.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-storage.ts",
+     "kind": "whole beside",
+     "lines": [
+      "local-storage.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "symbolAnchors.ts",
+     "kind": "whole below",
+     "lines": [
+      "symbolAnchors.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture-geometry.ts",
+     "kind": "cut below",
+     "lines": [
+      "still-picture-geometr…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "design-audit.ts",
+     "kind": "whole beside",
+     "lines": [
+      "design-audit.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture.ts",
+     "kind": "cut below",
+     "lines": [
+      "still-pictu…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-corset.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-discovery.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force-grap…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-reveal.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force-grap…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-focus.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force-grap…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "explorer-navigation.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "explorer-n…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "perspective-zoom.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "perspectiv…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-wrappers.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force-grap…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-shells.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force-grap…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-slots.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "card-slots.…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-row-motion.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-r…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-ladder-boxes.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "card-ladde…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-ladder.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "card-ladde…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-overview.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-hidden.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-directories.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force-grap…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-exploration.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force-grap…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-motion.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-search.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-keyboard.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-learning.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-l…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-branches.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "inspection.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "inspection.…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-framing.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-f…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "pin-clicks.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "pin-clicks.…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-path.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "explorer-history.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "explorer-hi…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "still-picture…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-reading.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "card-readi…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-packing.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-directories.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "search-bar.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "search-bar.…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-pins.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-map-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "world-map-design.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "world-map-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "world-map-estate.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "world-map-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "layout-lab.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "layout…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-simplicity.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    }
+   ],
+   "press": 7
+  },
+  {
+   "k": 0.2326,
+   "lod": "overview",
+   "step": 8,
+   "names": [
+    {
+     "file": "capture.ts",
+     "kind": "whole beside",
+     "lines": [
+      "capture.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "verify.ts",
+     "kind": "whole beside",
+     "lines": [
+      "verify.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "types.ts",
+     "kind": "whole beside",
+     "lines": [
+      "types.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "staticExplorerData.ts",
+     "kind": "cut below",
+     "lines": [
+      "staticExplorerD…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "graph.ts",
+     "kind": "whole beside",
+     "lines": [
+      "graph.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-storage.ts",
+     "kind": "whole below",
+     "lines": [
+      "local-storage.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "symbolAnchors.ts",
+     "kind": "cut below",
+     "lines": [
+      "symbolAnchor…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture-geometry.ts",
+     "kind": "cut below",
+     "lines": [
+      "still-picture-geo…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "design-audit.ts",
+     "kind": "whole beside",
+     "lines": [
+      "design-audit.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture.ts",
+     "kind": "cut below",
+     "lines": [
+      "still-pic…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-corset.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-map-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-discovery.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "force-grap…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-reveal.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "force-grap…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-focus.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "force-grap…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "explorer-navigation.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "explorer-na…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "perspective-zoom.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "perspectiv…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-wrappers.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "force-grap…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-shells.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "force-grap…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-slots.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "card-slots.…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-row-motion.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-map-r…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-ladder-boxes.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "card-ladder…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-ladder.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "card-ladder…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-overview.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-map-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-hidden.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-map-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-directories.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "force-grap…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-exploration.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "force-grap…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-motion.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-map-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-search.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-map-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-keyboard.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-map-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-learning.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-map-l…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-branches.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-map-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "inspection.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "inspection.…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-framing.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-map-f…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "pin-clicks.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "pin-clicks.s…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-path.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-map-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "explorer-history.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "explorer-hi…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "still-picture…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-reading.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "card-readin…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-packing.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-map-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-directories.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-map-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "search-bar.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "search-bar.…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-pins.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-map-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "world-map-design.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "world-map-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "world-map-estate.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "world-map-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "layout-lab.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "layout-l…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-simplicity.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-m…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    }
+   ],
+   "press": 8
+  },
+  {
+   "k": 0.1938,
+   "lod": "overview",
+   "step": 9,
+   "names": [
+    {
+     "file": "capture.ts",
+     "kind": "whole below",
+     "lines": [
+      "capture.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "verify.ts",
+     "kind": "whole beside",
+     "lines": [
+      "verify.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "types.ts",
+     "kind": "whole beside",
+     "lines": [
+      "types.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "staticExplorerData.ts",
+     "kind": "cut below",
+     "lines": [
+      "staticExplore…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "graph.ts",
+     "kind": "whole beside",
+     "lines": [
+      "graph.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-storage.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-storag…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "symbolAnchors.ts",
+     "kind": "cut below",
+     "lines": [
+      "symbolAnc…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture-geometry.ts",
+     "kind": "cut below",
+     "lines": [
+      "still-picture-g…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "design-audit.ts",
+     "kind": "whole below",
+     "lines": [
+      "design-audit.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture.ts",
+     "kind": "cut below",
+     "lines": [
+      "still-p…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-corset.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-ma…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-discovery.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "force-gra…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-reveal.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "force-gra…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-focus.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "force-gra…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "explorer-navigation.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "explorer-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "perspective-zoom.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "perspect…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-wrappers.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "force-gra…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-shells.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "force-gra…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-slots.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "card-slot…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-row-motion.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-ladder-boxes.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "card-lad…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-ladder.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "card-lad…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-overview.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-ma…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-hidden.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-ma…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-directories.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "force-gra…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-exploration.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "force-gra…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-motion.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-search.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-ma…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-keyboard.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-ma…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-learning.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-ma…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-branches.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-ma…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "inspection.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "inspecti…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-framing.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-ma…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "pin-clicks.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "pin-click…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-path.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-ma…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "explorer-history.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "explorer-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "still-pict…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-reading.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "card-rea…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-packing.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-ma…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-directories.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "search-bar.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "search-b…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-pins.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-ma…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "world-map-design.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "world-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "world-map-estate.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "world-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "layout-lab.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "layou…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-simplicity.spec.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    }
+   ],
+   "press": 9
+  },
+  {
+   "k": 0.1615,
+   "lod": "overview",
+   "step": 10,
+   "names": [
+    {
+     "file": "capture.ts",
+     "kind": "cut below",
+     "lines": [
+      "captur…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "verify.ts",
+     "kind": "cut beside",
+     "lines": [
+      "verify…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "types.ts",
+     "kind": "whole beside",
+     "lines": [
+      "types.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "staticExplorerData.ts",
+     "kind": "cut below",
+     "lines": [
+      "staticExpl…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "graph.ts",
+     "kind": "whole beside",
+     "lines": [
+      "graph.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-storage.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-stor…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "symbolAnchors.ts",
+     "kind": "cut below",
+     "lines": [
+      "symbolA…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture-geometry.ts",
+     "kind": "cut below",
+     "lines": [
+      "still-picture…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "design-audit.ts",
+     "kind": "cut below",
+     "lines": [
+      "design-aud…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture.ts",
+     "kind": "cut below",
+     "lines": [
+      "still-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-corset.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-discovery.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-reveal.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-focus.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "explorer-navigation.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "explo…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "perspective-zoom.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "pers…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-wrappers.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-shells.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-slots.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "card-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-row-motion.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-ladder-boxes.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "card-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-ladder.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "card-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-overview.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-hidden.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-directories.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-exploration.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-motion.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-search.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-keyboard.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-learning.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-branches.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "inspection.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "inspe…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-framing.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "pin-clicks.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "pin-cl…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-path.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "explorer-history.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "explo…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "still-p…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-reading.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "card-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-packing.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-directories.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "search-bar.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "searc…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-pins.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "world-map-design.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "world…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "world-map-estate.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "world…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "layout-lab.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "lay…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-simplicity.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "loc…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    }
+   ],
+   "press": 10
+  },
+  {
+   "k": 0.1346,
+   "lod": "overview",
+   "step": 10,
+   "names": [
+    {
+     "file": "capture.ts",
+     "kind": "cut below",
+     "lines": [
+      "captur…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "verify.ts",
+     "kind": "cut beside",
+     "lines": [
+      "verify…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "types.ts",
+     "kind": "whole beside",
+     "lines": [
+      "types.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "staticExplorerData.ts",
+     "kind": "cut below",
+     "lines": [
+      "staticExpl…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "graph.ts",
+     "kind": "whole beside",
+     "lines": [
+      "graph.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-storage.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-stor…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "symbolAnchors.ts",
+     "kind": "cut below",
+     "lines": [
+      "symbolA…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture-geometry.ts",
+     "kind": "cut below",
+     "lines": [
+      "still-picture…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "design-audit.ts",
+     "kind": "cut below",
+     "lines": [
+      "design-aud…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture.ts",
+     "kind": "cut below",
+     "lines": [
+      "still-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-corset.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-discovery.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-reveal.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-focus.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "explorer-navigation.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "explo…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "perspective-zoom.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "pers…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-wrappers.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-shells.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-slots.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "card-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-row-motion.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-ladder-boxes.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "card-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-ladder.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "card-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-overview.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-hidden.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-directories.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-exploration.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-motion.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-search.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-keyboard.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-learning.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-branches.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "inspection.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "inspe…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-framing.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "pin-clicks.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "pin-cl…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-path.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "explorer-history.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "explo…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "still-p…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-reading.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "card-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-packing.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-directories.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "search-bar.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "searc…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-pins.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "world-map-design.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "world…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "world-map-estate.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "world…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "layout-lab.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "lay…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-simplicity.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "loc…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    }
+   ],
+   "press": 11
+  },
+  {
+   "k": 0.1122,
+   "lod": "overview",
+   "step": 10,
+   "names": [
+    {
+     "file": "capture.ts",
+     "kind": "cut below",
+     "lines": [
+      "captur…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "verify.ts",
+     "kind": "cut beside",
+     "lines": [
+      "verify…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "types.ts",
+     "kind": "whole beside",
+     "lines": [
+      "types.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "staticExplorerData.ts",
+     "kind": "cut below",
+     "lines": [
+      "staticExpl…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "graph.ts",
+     "kind": "whole beside",
+     "lines": [
+      "graph.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-storage.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-stor…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "symbolAnchors.ts",
+     "kind": "cut below",
+     "lines": [
+      "symbolA…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture-geometry.ts",
+     "kind": "cut below",
+     "lines": [
+      "still-picture…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "design-audit.ts",
+     "kind": "cut below",
+     "lines": [
+      "design-aud…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture.ts",
+     "kind": "cut below",
+     "lines": [
+      "still-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-corset.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-discovery.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-reveal.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-focus.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "explorer-navigation.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "explo…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "perspective-zoom.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "pers…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-wrappers.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-shells.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-slots.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "card-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-row-motion.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-ladder-boxes.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "card-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-ladder.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "card-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-overview.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-hidden.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-directories.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-exploration.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-motion.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-search.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-keyboard.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-learning.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-branches.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "inspection.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "inspe…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-framing.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "pin-clicks.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "pin-cl…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-path.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "explorer-history.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "explo…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "still-p…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-reading.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "card-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-packing.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-directories.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "search-bar.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "searc…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-pins.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "world-map-design.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "world…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "world-map-estate.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "world…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "layout-lab.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "lay…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-simplicity.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "loc…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    }
+   ],
+   "press": 12
+  },
+  {
+   "k": 0.0935,
+   "lod": "overview",
+   "step": 10,
+   "names": [
+    {
+     "file": "capture.ts",
+     "kind": "cut below",
+     "lines": [
+      "captur…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "verify.ts",
+     "kind": "cut beside",
+     "lines": [
+      "verify…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "types.ts",
+     "kind": "whole beside",
+     "lines": [
+      "types.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "staticExplorerData.ts",
+     "kind": "cut below",
+     "lines": [
+      "staticExpl…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "graph.ts",
+     "kind": "whole beside",
+     "lines": [
+      "graph.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-storage.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-stor…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "symbolAnchors.ts",
+     "kind": "cut below",
+     "lines": [
+      "symbolA…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture-geometry.ts",
+     "kind": "cut below",
+     "lines": [
+      "still-picture…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "design-audit.ts",
+     "kind": "cut below",
+     "lines": [
+      "design-aud…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture.ts",
+     "kind": "cut below",
+     "lines": [
+      "still-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-corset.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-discovery.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-reveal.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-focus.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "explorer-navigation.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "explo…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "perspective-zoom.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "pers…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-wrappers.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-shells.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-slots.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "card-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-row-motion.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-ladder-boxes.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "card-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-ladder.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "card-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-overview.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-hidden.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-directories.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-exploration.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-motion.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-search.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-keyboard.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-learning.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-branches.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "inspection.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "inspe…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-framing.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "pin-clicks.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "pin-cl…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-path.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "explorer-history.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "explo…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "still-p…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-reading.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "card-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-packing.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-directories.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "search-bar.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "searc…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-pins.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "world-map-design.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "world…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "world-map-estate.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "world…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "layout-lab.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "lay…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-simplicity.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "loc…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    }
+   ],
+   "press": 13
+  },
+  {
+   "k": 0.0779,
+   "lod": "overview",
+   "step": 10,
+   "names": [
+    {
+     "file": "capture.ts",
+     "kind": "cut below",
+     "lines": [
+      "captur…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "verify.ts",
+     "kind": "cut beside",
+     "lines": [
+      "verify…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "types.ts",
+     "kind": "whole beside",
+     "lines": [
+      "types.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "staticExplorerData.ts",
+     "kind": "cut below",
+     "lines": [
+      "staticExpl…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "graph.ts",
+     "kind": "whole beside",
+     "lines": [
+      "graph.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-storage.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-stor…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "symbolAnchors.ts",
+     "kind": "cut below",
+     "lines": [
+      "symbolA…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture-geometry.ts",
+     "kind": "cut below",
+     "lines": [
+      "still-picture…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "design-audit.ts",
+     "kind": "cut below",
+     "lines": [
+      "design-aud…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture.ts",
+     "kind": "cut below",
+     "lines": [
+      "still-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-corset.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-discovery.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-reveal.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-focus.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "explorer-navigation.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "explo…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "perspective-zoom.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "pers…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-wrappers.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-shells.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-slots.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "card-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-row-motion.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-ladder-boxes.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "card-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-ladder.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "card-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-overview.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-hidden.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-directories.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-exploration.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-motion.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-search.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-keyboard.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-learning.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-branches.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "inspection.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "inspe…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-framing.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "pin-clicks.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "pin-cl…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-path.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "explorer-history.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "explo…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "still-p…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-reading.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "card-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-packing.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-directories.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "search-bar.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "searc…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-pins.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "world-map-design.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "world…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "world-map-estate.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "world…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "layout-lab.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "lay…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-simplicity.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "loc…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    }
+   ],
+   "press": 14
+  },
+  {
+   "k": 0.0756,
+   "lod": "overview",
+   "step": 10,
+   "names": [
+    {
+     "file": "capture.ts",
+     "kind": "cut below",
+     "lines": [
+      "captur…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "verify.ts",
+     "kind": "cut beside",
+     "lines": [
+      "verify…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "types.ts",
+     "kind": "whole beside",
+     "lines": [
+      "types.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "staticExplorerData.ts",
+     "kind": "cut below",
+     "lines": [
+      "staticExpl…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "graph.ts",
+     "kind": "whole beside",
+     "lines": [
+      "graph.ts"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": true,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-storage.ts",
+     "kind": "cut below",
+     "lines": [
+      "local-stor…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "symbolAnchors.ts",
+     "kind": "cut below",
+     "lines": [
+      "symbolA…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture-geometry.ts",
+     "kind": "cut below",
+     "lines": [
+      "still-picture…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "design-audit.ts",
+     "kind": "cut below",
+     "lines": [
+      "design-aud…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture.ts",
+     "kind": "cut below",
+     "lines": [
+      "still-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": true,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-corset.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-discovery.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-reveal.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-focus.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "explorer-navigation.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "explo…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "perspective-zoom.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "pers…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-wrappers.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-shells.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-slots.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "card-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-row-motion.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-ladder-boxes.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "card-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-ladder.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "card-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-overview.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-hidden.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-directories.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "force-graph-exploration.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "force…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-motion.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-search.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-keyboard.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-learning.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-branches.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "inspection.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "inspe…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-framing.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "pin-clicks.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "pin-cl…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-path.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "explorer-history.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "explo…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "still-picture.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "still-p…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "card-reading.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "card-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-packing.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-directories.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "search-bar.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "searc…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-pins.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "local-…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "world-map-design.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "world…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "world-map-estate.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "world…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "layout-lab.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "lay…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    },
+    {
+     "file": "local-map-simplicity.spec.ts",
+     "kind": "cut beside",
+     "lines": [
+      "loc…"
+     ],
+     "order": {
+      "lines": 1,
+      "whole": false,
+      "firstEmpty": false,
+      "controls": "above"
+     }
+    }
+   ],
+   "press": 15
+  }
+ ]
+}

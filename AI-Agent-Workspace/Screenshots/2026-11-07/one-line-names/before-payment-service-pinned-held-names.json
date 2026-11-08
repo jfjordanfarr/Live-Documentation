@@ -1,0 +1,842 @@
+{
+ "subject": "tests/integration/programs/csharp/estate/PaymentService/PaymentService.cs",
+ "pin": "symbol:PaymentService",
+ "url": "http://127.0.0.1:8914/?s=N4IgbiBcDMA0IDsogC4FMDOKMHoCWC6A5gE4CGKeA9gjgA4lWlkC2uAxhgBZkl06YUFNDgAKZAJ4s0hAMpoSYPOxHipMlPMXK0AOk4gAvkA",
+ "viewport": {
+  "width": 1440,
+  "height": 960
+ },
+ "errors": [],
+ "presses": [
+  {
+   "k": 1.45,
+   "lod": "reading",
+   "step": 0,
+   "names": [],
+   "press": 0
+  },
+  {
+   "k": 1.2083,
+   "lod": "reading",
+   "step": 1,
+   "names": [],
+   "press": 1
+  },
+  {
+   "k": 1.0069,
+   "lod": "middle",
+   "step": 2,
+   "names": [
+    {
+     "file": "PaymentQuery.cs",
+     "kind": "whole beside",
+     "lines": [
+      "PaymentQuery.cs"
+     ]
+    },
+    {
+     "file": "PaymentResult.cs",
+     "kind": "whole beside",
+     "lines": [
+      "PaymentResult.cs"
+     ]
+    },
+    {
+     "file": "PaymentRequest.cs",
+     "kind": "whole beside",
+     "lines": [
+      "PaymentRequest.cs"
+     ]
+    },
+    {
+     "file": "IPaymentService.cs",
+     "kind": "whole beside",
+     "lines": [
+      "IPaymentService.cs"
+     ]
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "compiler-edges.json"
+     ]
+    },
+    {
+     "file": "hand-verified-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "hand-verified-edges.json"
+     ]
+    },
+    {
+     "file": "Payment.cs",
+     "kind": "whole beside",
+     "lines": [
+      "Payment.cs"
+     ]
+    },
+    {
+     "file": "PostPaymentRow.cs",
+     "kind": "whole beside",
+     "lines": [
+      "PostPaymentRow.cs"
+     ]
+    },
+    {
+     "file": "PaymentsContext.cs",
+     "kind": "whole beside",
+     "lines": [
+      "PaymentsContext.cs"
+     ]
+    },
+    {
+     "file": "App.config",
+     "kind": "whole beside",
+     "lines": [
+      "App.config"
+     ]
+    },
+    {
+     "file": "PaymentService.cs",
+     "kind": "whole beside",
+     "lines": [
+      "PaymentService.cs"
+     ]
+    }
+   ],
+   "press": 2
+  },
+  {
+   "k": 0.8391,
+   "lod": "middle",
+   "step": 3,
+   "names": [
+    {
+     "file": "PaymentQuery.cs",
+     "kind": "whole beside",
+     "lines": [
+      "PaymentQuery.cs"
+     ]
+    },
+    {
+     "file": "PaymentResult.cs",
+     "kind": "whole beside",
+     "lines": [
+      "PaymentResult.cs"
+     ]
+    },
+    {
+     "file": "PaymentRequest.cs",
+     "kind": "whole below",
+     "lines": [
+      "PaymentRequest.cs"
+     ]
+    },
+    {
+     "file": "IPaymentService.cs",
+     "kind": "whole below",
+     "lines": [
+      "IPaymentService.cs"
+     ]
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "whole beside",
+     "lines": [
+      "compiler-edges.json"
+     ]
+    },
+    {
+     "file": "hand-verified-edges.json",
+     "kind": "whole below",
+     "lines": [
+      "hand-verified-edges.json"
+     ]
+    },
+    {
+     "file": "Payment.cs",
+     "kind": "whole beside",
+     "lines": [
+      "Payment.cs"
+     ]
+    },
+    {
+     "file": "PostPaymentRow.cs",
+     "kind": "whole beside",
+     "lines": [
+      "PostPaymentRow.cs"
+     ]
+    },
+    {
+     "file": "PaymentsContext.cs",
+     "kind": "whole beside",
+     "lines": [
+      "PaymentsContext.cs"
+     ]
+    },
+    {
+     "file": "App.config",
+     "kind": "whole beside",
+     "lines": [
+      "App.config"
+     ]
+    },
+    {
+     "file": "PaymentService.cs",
+     "kind": "whole beside",
+     "lines": [
+      "PaymentService.cs"
+     ]
+    }
+   ],
+   "press": 3
+  },
+  {
+   "k": 0.6993,
+   "lod": "middle",
+   "step": 4,
+   "names": [
+    {
+     "file": "PaymentQuery.cs",
+     "kind": "two lines, whole",
+     "lines": [
+      "Payment",
+      "Query.cs"
+     ]
+    },
+    {
+     "file": "PaymentResult.cs",
+     "kind": "two lines, whole",
+     "lines": [
+      "Payment",
+      "Result.cs"
+     ]
+    },
+    {
+     "file": "PaymentRequest.cs",
+     "kind": "two lines, whole",
+     "lines": [
+      "Payment",
+      "Request.cs"
+     ]
+    },
+    {
+     "file": "IPaymentService.cs",
+     "kind": "two lines, whole",
+     "lines": [
+      "IPayment",
+      "Service.cs"
+     ]
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, whole",
+     "lines": [
+      "compiler-",
+      "edges.json"
+     ]
+    },
+    {
+     "file": "hand-verified-edges.json",
+     "kind": "two lines, whole",
+     "lines": [
+      "hand-verified-",
+      "edges.json"
+     ]
+    },
+    {
+     "file": "Payment.cs",
+     "kind": "whole beside",
+     "lines": [
+      "Payment.cs"
+     ]
+    },
+    {
+     "file": "PostPaymentRow.cs",
+     "kind": "two lines, whole",
+     "lines": [
+      "PostPayment",
+      "Row.cs"
+     ]
+    },
+    {
+     "file": "PaymentsContext.cs",
+     "kind": "two lines, whole",
+     "lines": [
+      "Payments",
+      "Context.cs"
+     ]
+    },
+    {
+     "file": "App.config",
+     "kind": "whole beside",
+     "lines": [
+      "App.config"
+     ]
+    },
+    {
+     "file": "PaymentService.cs",
+     "kind": "two lines, whole",
+     "lines": [
+      "Payment",
+      "Service.cs"
+     ]
+    }
+   ],
+   "press": 4
+  },
+  {
+   "k": 0.5827,
+   "lod": "far",
+   "step": 5,
+   "names": [
+    {
+     "file": "PaymentQuery.cs",
+     "kind": "two lines, whole",
+     "lines": [
+      "Payment",
+      "Query.cs"
+     ]
+    },
+    {
+     "file": "PaymentResult.cs",
+     "kind": "two lines, whole",
+     "lines": [
+      "Payment",
+      "Result.cs"
+     ]
+    },
+    {
+     "file": "PaymentRequest.cs",
+     "kind": "two lines, whole",
+     "lines": [
+      "Payment",
+      "Request.cs"
+     ]
+    },
+    {
+     "file": "IPaymentService.cs",
+     "kind": "two lines, whole",
+     "lines": [
+      "IPayment",
+      "Service.cs"
+     ]
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, whole",
+     "lines": [
+      "compiler-edges.",
+      "json"
+     ]
+    },
+    {
+     "file": "hand-verified-edges.json",
+     "kind": "two lines, whole",
+     "lines": [
+      "hand-verified-",
+      "edges.json"
+     ]
+    },
+    {
+     "file": "Payment.cs",
+     "kind": "whole beside",
+     "lines": [
+      "Payment.cs"
+     ]
+    },
+    {
+     "file": "PostPaymentRow.cs",
+     "kind": "whole beside",
+     "lines": [
+      "PostPaymentRow.cs"
+     ]
+    },
+    {
+     "file": "PaymentsContext.cs",
+     "kind": "whole beside",
+     "lines": [
+      "PaymentsContext.cs"
+     ]
+    },
+    {
+     "file": "App.config",
+     "kind": "whole beside",
+     "lines": [
+      "App.config"
+     ]
+    },
+    {
+     "file": "PaymentService.cs",
+     "kind": "whole beside",
+     "lines": [
+      "PaymentService.cs"
+     ]
+    }
+   ],
+   "press": 5
+  },
+  {
+   "k": 0.4856,
+   "lod": "far",
+   "step": 6,
+   "names": [
+    {
+     "file": "PaymentQuery.cs",
+     "kind": "two lines, whole",
+     "lines": [
+      "Payment",
+      "Query.cs"
+     ]
+    },
+    {
+     "file": "PaymentResult.cs",
+     "kind": "two lines, whole",
+     "lines": [
+      "Payment",
+      "Result.cs"
+     ]
+    },
+    {
+     "file": "PaymentRequest.cs",
+     "kind": "two lines, whole",
+     "lines": [
+      "Payment",
+      "Request.cs"
+     ]
+    },
+    {
+     "file": "IPaymentService.cs",
+     "kind": "two lines, whole",
+     "lines": [
+      "IPayment",
+      "Service.cs"
+     ]
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, whole",
+     "lines": [
+      "compiler-",
+      "edges.json"
+     ]
+    },
+    {
+     "file": "hand-verified-edges.json",
+     "kind": "two lines, whole",
+     "lines": [
+      "hand-verified-",
+      "edges.json"
+     ]
+    },
+    {
+     "file": "Payment.cs",
+     "kind": "whole beside",
+     "lines": [
+      "Payment.cs"
+     ]
+    },
+    {
+     "file": "PostPaymentRow.cs",
+     "kind": "two lines, whole",
+     "lines": [
+      "PostPayment",
+      "Row.cs"
+     ]
+    },
+    {
+     "file": "PaymentsContext.cs",
+     "kind": "two lines, whole",
+     "lines": [
+      "Payments",
+      "Context.cs"
+     ]
+    },
+    {
+     "file": "App.config",
+     "kind": "whole beside",
+     "lines": [
+      "App.config"
+     ]
+    },
+    {
+     "file": "PaymentService.cs",
+     "kind": "two lines, whole",
+     "lines": [
+      "Payment",
+      "Service.cs"
+     ]
+    }
+   ],
+   "press": 6
+  },
+  {
+   "k": 0.4047,
+   "lod": "overview",
+   "step": 7,
+   "names": [
+    {
+     "file": "PaymentQuery.cs",
+     "kind": "two lines, whole",
+     "lines": [
+      "Payment",
+      "Query.cs"
+     ]
+    },
+    {
+     "file": "PaymentResult.cs",
+     "kind": "two lines, whole",
+     "lines": [
+      "Payment",
+      "Result.cs"
+     ]
+    },
+    {
+     "file": "PaymentRequest.cs",
+     "kind": "two lines, whole",
+     "lines": [
+      "Payment",
+      "Request.cs"
+     ]
+    },
+    {
+     "file": "IPaymentService.cs",
+     "kind": "two lines, whole",
+     "lines": [
+      "IPayment",
+      "Service.cs"
+     ]
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, whole",
+     "lines": [
+      "compiler-",
+      "edges.json"
+     ]
+    },
+    {
+     "file": "hand-verified-edges.json",
+     "kind": "two lines, whole",
+     "lines": [
+      "hand-",
+      "verified-",
+      "edges.json"
+     ]
+    },
+    {
+     "file": "Payment.cs",
+     "kind": "whole beside",
+     "lines": [
+      "Payment.cs"
+     ]
+    },
+    {
+     "file": "PostPaymentRow.cs",
+     "kind": "two lines, whole",
+     "lines": [
+      "PostPayment",
+      "Row.cs"
+     ]
+    },
+    {
+     "file": "PaymentsContext.cs",
+     "kind": "two lines, whole",
+     "lines": [
+      "Payments",
+      "Context.cs"
+     ]
+    },
+    {
+     "file": "App.config",
+     "kind": "whole beside",
+     "lines": [
+      "App.config"
+     ]
+    },
+    {
+     "file": "PaymentService.cs",
+     "kind": "cut beside",
+     "lines": [
+      "PaymentS…"
+     ]
+    }
+   ],
+   "press": 7
+  },
+  {
+   "k": 0.3372,
+   "lod": "overview",
+   "step": 8,
+   "names": [
+    {
+     "file": "PaymentQuery.cs",
+     "kind": "two lines, whole",
+     "lines": [
+      "Payment",
+      "Query.cs"
+     ]
+    },
+    {
+     "file": "PaymentResult.cs",
+     "kind": "two lines, whole",
+     "lines": [
+      "Payment",
+      "Result.cs"
+     ]
+    },
+    {
+     "file": "PaymentRequest.cs",
+     "kind": "two lines, whole",
+     "lines": [
+      "Payment",
+      "Request.cs"
+     ]
+    },
+    {
+     "file": "IPaymentService.cs",
+     "kind": "two lines, whole",
+     "lines": [
+      "IPayment",
+      "Service.cs"
+     ]
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "two lines, whole",
+     "lines": [
+      "compiler-",
+      "edges.json"
+     ]
+    },
+    {
+     "file": "hand-verified-edges.json",
+     "kind": "two lines, cut",
+     "lines": [
+      "hand-",
+      "verified-e…"
+     ]
+    },
+    {
+     "file": "Payment.cs",
+     "kind": "whole below",
+     "lines": [
+      "Payment.cs"
+     ]
+    },
+    {
+     "file": "PostPaymentRow.cs",
+     "kind": "two lines, whole",
+     "lines": [
+      "PostPayment",
+      "Row.cs"
+     ]
+    },
+    {
+     "file": "PaymentsContext.cs",
+     "kind": "two lines, whole",
+     "lines": [
+      "Payments",
+      "Context.cs"
+     ]
+    },
+    {
+     "file": "App.config",
+     "kind": "whole beside",
+     "lines": [
+      "App.config"
+     ]
+    },
+    {
+     "file": "PaymentService.cs",
+     "kind": "cut beside",
+     "lines": [
+      "Paymen…"
+     ]
+    }
+   ],
+   "press": 8
+  },
+  {
+   "k": 0.281,
+   "lod": "overview",
+   "step": 9,
+   "names": [
+    {
+     "file": "PaymentQuery.cs",
+     "kind": "cut below",
+     "lines": [
+      "Payme…"
+     ]
+    },
+    {
+     "file": "PaymentResult.cs",
+     "kind": "cut below",
+     "lines": [
+      "Payme…"
+     ]
+    },
+    {
+     "file": "PaymentRequest.cs",
+     "kind": "cut below",
+     "lines": [
+      "Payme…"
+     ]
+    },
+    {
+     "file": "IPaymentService.cs",
+     "kind": "cut below",
+     "lines": [
+      "IPayme…"
+     ]
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "cut below",
+     "lines": [
+      "compile…"
+     ]
+    },
+    {
+     "file": "hand-verified-edges.json",
+     "kind": "two lines, cut",
+     "lines": [
+      "hand-",
+      "verified-…"
+     ]
+    },
+    {
+     "file": "Payment.cs",
+     "kind": "whole below",
+     "lines": [
+      "Payment.cs"
+     ]
+    },
+    {
+     "file": "PostPaymentRow.cs",
+     "kind": "two lines, cut",
+     "lines": [
+      "Post",
+      "Payment…"
+     ]
+    },
+    {
+     "file": "PaymentsContext.cs",
+     "kind": "cut below",
+     "lines": [
+      "Payment…"
+     ]
+    },
+    {
+     "file": "App.config",
+     "kind": "whole below",
+     "lines": [
+      "App.config"
+     ]
+    },
+    {
+     "file": "PaymentService.cs",
+     "kind": "cut beside",
+     "lines": [
+      "Paym…"
+     ]
+    }
+   ],
+   "press": 9
+  },
+  {
+   "k": 0.2342,
+   "lod": "overview",
+   "step": 10,
+   "names": [
+    {
+     "file": "PaymentQuery.cs",
+     "kind": "two lines, cut",
+     "lines": [
+      "Paym",
+      "entQu…"
+     ]
+    },
+    {
+     "file": "PaymentResult.cs",
+     "kind": "two lines, cut",
+     "lines": [
+      "Paym",
+      "entRe…"
+     ]
+    },
+    {
+     "file": "PaymentRequest.cs",
+     "kind": "two lines, cut",
+     "lines": [
+      "Paym",
+      "entRe…"
+     ]
+    },
+    {
+     "file": "IPaymentService.cs",
+     "kind": "two lines, cut",
+     "lines": [
+      "IPaym",
+      "entSe…"
+     ]
+    },
+    {
+     "file": "compiler-edges.json",
+     "kind": "cut beside",
+     "lines": [
+      "com…"
+     ]
+    },
+    {
+     "file": "hand-verified-edges.json",
+     "kind": "cut beside",
+     "lines": [
+      "han…"
+     ]
+    },
+    {
+     "file": "Payment.cs",
+     "kind": "two lines, whole",
+     "lines": [
+      "Paymen",
+      "t.cs"
+     ]
+    },
+    {
+     "file": "PostPaymentRow.cs",
+     "kind": "two lines, cut",
+     "lines": [
+      "Post",
+      "Payme…"
+     ]
+    },
+    {
+     "file": "PaymentsContext.cs",
+     "kind": "two lines, cut",
+     "lines": [
+      "Paymen",
+      "tsCont…"
+     ]
+    },
+    {
+     "file": "App.config",
+     "kind": "two lines, whole",
+     "lines": [
+      "App.",
+      "config"
+     ]
+    },
+    {
+     "file": "PaymentService.cs",
+     "kind": "cut beside",
+     "lines": [
+      "Pay…"
+     ]
+    }
+   ],
+   "press": 10
+  }
+ ]
+}
