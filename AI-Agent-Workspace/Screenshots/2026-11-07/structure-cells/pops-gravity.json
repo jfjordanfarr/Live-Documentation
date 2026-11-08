@@ -1,0 +1,71 @@
+{
+ "url": "http://127.0.0.1:8912/?s=N4IgbiBcDMA0IEcomgExPAnsgzgFwCcBXAY",
+ "start": {
+  "bubbles": 5,
+  "filesDrawn": 935,
+  "veiled": 0
+ },
+ "pops": [
+  {
+   "level": 1,
+   "directory": "packages",
+   "files": 368,
+   "skinRadius": 338.66869306472137,
+   "released": 4,
+   "matched": 4,
+   "bubbles": 4,
+   "worstOff": 0,
+   "allInside": true,
+   "sizesKept": true,
+   "hubStands": true,
+   "opened": [
+    "packages"
+   ],
+   "atRest": {
+    "bubbles": 8,
+    "filesDrawn": 935,
+    "veiled": 0
+   },
+   "restAfterPop": {
+    "seconds": 144.2,
+    "frames": 267
+   },
+   "framing": {
+    "framed": true,
+    "attempts": 2
+   },
+   "unmatched": []
+  },
+  {
+   "level": 2,
+   "directory": "packages/explorer",
+   "files": 209,
+   "skinRadius": 190.32467244962544,
+   "released": 3,
+   "matched": 3,
+   "bubbles": 1,
+   "worstOff": 0,
+   "allInside": true,
+   "sizesKept": true,
+   "hubStands": true,
+   "opened": [
+    "packages",
+    "packages/explorer"
+   ],
+   "atRest": {
+    "bubbles": 8,
+    "filesDrawn": 933,
+    "veiled": 0
+   },
+   "restAfterPop": {
+    "seconds": 113.1,
+    "frames": 325
+   },
+   "framing": {
+    "framed": true,
+    "attempts": 2
+   },
+   "unmatched": []
+  }
+ ]
+}

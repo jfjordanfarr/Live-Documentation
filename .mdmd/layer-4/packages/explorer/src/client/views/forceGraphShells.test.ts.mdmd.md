@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/forceGraphShells.test.ts
-- Generated At: 2026-11-07T07:49:38.252Z
+- Generated At: 2026-11-08T04:02:26.570Z
 
 ## Authored
 ### Purpose
@@ -25,6 +25,8 @@ _No public symbols detected_
 ### Dependencies
 - [`local-storage.getDefaultTuning`](../persistence/local-storage.ts.mdmd.md#symbol-getdefaulttuning)
 - [`fileConnections.FileConnection`](./fileConnections.ts.mdmd.md#symbol-fileconnection) (type-only)
+- [`forceGraphData.directoryNodeId`](./forceGraphData.ts.mdmd.md#symbol-directorynodeid)
+- [`forceGraphData.spatialGraphOf`](./forceGraphData.ts.mdmd.md#symbol-spatialgraphof)
 - [`forceGraphLayout.SpatialLink`](./forceGraphLayout.ts.mdmd.md#symbol-spatiallink)
 - [`forceGraphLayout.linkPulls`](./forceGraphLayout.ts.mdmd.md#symbol-linkpulls)
 - [`forceGraphLayout.shellRadiusOf`](./forceGraphLayout.ts.mdmd.md#symbol-shellradiusof)
@@ -43,10 +45,15 @@ _No public symbols detected_
 - [`forceGraphShells.partitionHidden`](./forceGraphShells.ts.mdmd.md#symbol-partitionhidden)
 - [`forceGraphShells.pictureVeils`](./forceGraphShells.ts.mdmd.md#symbol-pictureveils)
 - [`forceGraphShells.poppedAfter`](./forceGraphShells.ts.mdmd.md#symbol-poppedafter)
+- [`forceGraphShells.releaseOf`](./forceGraphShells.ts.mdmd.md#symbol-releaseof)
 - [`forceGraphShells.shellDirectory`](./forceGraphShells.ts.mdmd.md#symbol-shelldirectory)
 - [`forceGraphShells.shellId`](./forceGraphShells.ts.mdmd.md#symbol-shellid)
 - [`forceGraphShells.shellPicture`](./forceGraphShells.ts.mdmd.md#symbol-shellpicture-function)
+- [`forceGraphShells.structureCells`](./forceGraphShells.ts.mdmd.md#symbol-structurecells)
+- [`forceGraphShells.structureSpokes`](./forceGraphShells.ts.mdmd.md#symbol-structurespokes)
 - [`forceGraphWrappers.WrapperHull`](./forceGraphWrappers.ts.mdmd.md#symbol-wrapperhull-interface)
 - [`forceGraphWrappers.wrapperHull`](./forceGraphWrappers.ts.mdmd.md#symbol-wrapperhull-function)
+- [`types.ExplorerGraphPayload`](../../shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)
+- [`types.ExplorerNodePayload`](../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

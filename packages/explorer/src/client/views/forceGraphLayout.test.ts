@@ -65,6 +65,35 @@ describe("spatial layout grammar", () => {
     expect(distance(2) - distance(4)).toBeLessThan(distance(1) - distance(2));
     expect(spatialLinkDistance({ source, target, count: 50 }, { ...tuning, coupling: 0 })).toBe(distance(1));
     expect(spatialLinkDistance({ source, target, count: 500 }, { ...tuning, linkGap: 8, coupling: 3, collisionGap: 20 })).toBe(32);
+    // A structure spoke that carries its hub's packing keeps that length (2026-11-08); a length that is no length does not count.
+    expect(spatialLinkDistance({ source, target, count: 1, rest: 432.5 }, tuning)).toBe(432.5);
+    expect(spatialLinkDistance({ source, target, count: 1, rest: 0 }, tuning)).toBe(distance(1));
+    expect(spatialLinkDistance({ source, target, count: 1, rest: Number.NaN }, tuning)).toBe(distance(1));
+  });
+
+  it("builds a spoke's spring at the rest length it carries, and every other link as before", () => {
+    const tuning = getDefaultTuning().forceGraph;
+    const nodes = [{ ...node("directory:", 0), directoryPath: "" }, node("a.ts", 3), node("b.ts", 1)];
+    const links: SpatialLink<SpatialNode>[] = [{ source: "directory:", target: "a.ts", count: 1, kind: "containment", rest: 250 }, { source: "directory:", target: "b.ts", count: 1, kind: "containment" }];
+    const field = spatialFieldOf(nodes, links, tuning, "structure");
+    const plain = spatialFieldOf(nodes, links.map(({ rest, ...link }) => { void rest; return link; }), tuning, "structure");
+    expect(field.springs.map(spring => spring.rest)).toEqual([250, plain.springs[1].rest]);
+    expect(field.springs[1]).toEqual(plain.springs[1]);
+  });
+
+  it("bears a child of the structure layout where its hub's packing holds it, once its hub is placed, and the rest as before", () => {
+    const tuning = getDefaultTuning().forceGraph;
+    const nodes: PlaceableNode[] = [{ ...node("directory:", 0), directoryPath: "", x: 10, y: 20, z: 30 }, { ...node("directory:a", 0), directoryPath: "a" },
+      { ...node("a/x.ts", 1), codeRelativePath: "a/x.ts" }, { ...node("b.ts", 2), codeRelativePath: "b.ts" }];
+    const links: SpatialLink<PlaceableNode>[] = [{ source: "directory:", target: "directory:a", count: 1, kind: "containment" },
+      { source: "directory:a", target: "a/x.ts", count: 1, kind: "containment" }, { source: "directory:", target: "b.ts", count: 1, kind: "containment" }];
+    const spokes = new Map([["directory:a", { hub: "directory:", at: { x: 100, y: 0, z: 0 } }], ["a/x.ts", { hub: "directory:a", at: { x: 0, y: -7, z: 0 } }]]);
+    const starts = placeNewSpheres(nodes, links, tuning, "structure", id => spokes.get(id));
+    // The bubble's hub where the root's packing holds it, and its file beside it where its own packing does.
+    expect(starts.get("directory:a")).toEqual({ x: 110, y: 20, z: 30 });
+    expect(starts.get("a/x.ts")).toEqual({ x: 110, y: 13, z: 30 });
+    // A child the packing does not name is born as before.
+    expect(starts.get("b.ts")).toEqual(placeNewSpheres(nodes, links, tuning, "structure").get("b.ts"));
   });
 
   it("pulls by the links that pull in a layout alone, and still ends every link on its two spheres", () => {

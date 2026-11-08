@@ -543,12 +543,13 @@ const assembledFrom = new WeakMap<GroupShape, { root: BodyNode; gaps: BodyGaps }
  * The body a bubble inside this one would be as the shell of its directory (2026-11-07, third round): what a pop makes
  * of each bubble it releases. Since a bubble's packing depends only on what it holds, this is the shape `bodyShape`
  * would build for the bubble's files, taken from the packing already made instead of packing again; undefined when no
- * bubble directly inside the body is that directory's.
+ * bubble directly inside the body is that directory's. Its seed is the shell's id, or, in the Structure layout, the
+ * directory's hub's (`seed`, 2026-11-07).
  */
-export function innerShape(shape: GroupShape, directory: string): GroupShape | undefined {
+export function innerShape(shape: GroupShape, directory: string, seed = shellId(directory)): GroupShape | undefined {
   const from = assembledFrom.get(shape);
   const bubble = from?.root.children.find(child => child.node.kind === "directory" && child.node.id === directory)?.node;
-  return bubble && from ? assembled(shellId(directory), bubble, from.gaps) : undefined;
+  return bubble && from ? assembled(seed, bubble, from.gaps) : undefined;
 }
 
 /**
@@ -634,4 +635,132 @@ export function poppedAfter(popped: ReadonlySet<string>, directory: string, open
   if (open) { next.add(directory); return next; }
   for (const at of popped) if (at === directory || directory === "" || at.startsWith(`${directory}/`)) next.delete(at);
   return next;
+}
+
+/**
+ * What a body's pop releases, about the place the body stood (2026-11-05; the third round's bodies, 2026-11-07): each of
+ * its files where its packing held it, and each bubble of its own skin where the skin showed it, as the body of its
+ * directory, its packing taken from the popped body's (`innerShape`). A bubble is named by `bubbleId`: a directory
+ * shell's id in the Connections layout, the directory's hub's in the Structure layout, where the bubbles are hubs.
+ */
+export function releaseOf(shape: GroupShape, place: Placed, bubbleId: (directory: string) => string = shellId): { born: Map<string, Placed>; bodies: Map<string, GroupShape> } {
+  const born = new Map<string, Placed>(), bodies = new Map<string, GroupShape>();
+  for (const member of shape.members) born.set(member.id, { x: place.x + member.x, y: place.y + member.y, z: place.z + member.z });
+  for (const unit of shape.units ?? []) if (unit.kind === "directory" && unit.depth === 0) born.set(bubbleId(unit.id), { x: place.x + unit.x, y: place.y + unit.y, z: place.z + unit.z });
+  for (const part of shape.outline ?? []) {
+    const inner = innerShape(shape, part.id, bubbleId(part.id));
+    if (inner) bodies.set(bubbleId(part.id), inner);
+  }
+  return { born, bodies };
+}
+
+/** One bubble of the Structure layout: a directory's hub drawn as the body of what stands under it, by the hub's id. */
+export interface StructureCell {
+  id: string;
+  directory: string;
+  /** Every file and document under the directory, at any depth, that the picture does not show, in id order. */
+  files: string[];
+}
+
+/**
+ * The bubbles of the Structure layout with Group Wrappers on (2026-11-07, the bag of cells): every directory hub the
+ * picture shows none of whose children it shows, a hub at the frontier of the hops or one not opened, is drawn as the
+ * body of everything under its directory, built from the leaves as a shell's body is, and keeps the hub's place, its
+ * containment wire to its parent and its actions; a hub whose children the picture shows stays a hub with its spokes.
+ * The owner, of the shells of the Connections layout, "I LOOOOOOOOVE seeing the cells in these embryos", and then "can
+ * we also get the bag-of-cells look for the "structure" part too?" (Turn 8 of the November 6 record, linked from this file's
+ * Live Doc).
+ * The tree is read from the containment links, a hub's to its child hubs and to its own files and documents; a bubble
+ * holds what under it the picture does not show, so that nothing is drawn twice. In directory order.
+ *
+ * No bubble shows one cell (the owner, November 7: "Make no embryos which appear to have only one cell"): a hub at the
+ * frontier with one file under it is no bubble; that file stands in the hub's place, on the hub's wire to its parent
+ * (`lone`), as a bubble's packing holds a subdirectory of one file as that file.
+ */
+export function structureCells(nodes: ReadonlyArray<{ id: string; directoryPath?: string }>,
+  links: ReadonlyArray<{ source: string | { id: string }; target: string | { id: string }; kind?: string }>, shown: ReadonlySet<string>):
+  { cells: StructureCell[]; lone: Array<{ hub: string; file: string; parent?: string }> } {
+  const end = (endpoint: string | { id: string }): string => (typeof endpoint === "string" ? endpoint : endpoint.id);
+  const children = new Map<string, string[]>(), parents = new Map<string, string>();
+  for (const link of links) if (link.kind === "containment") {
+    const parent = end(link.source);
+    (children.get(parent) ?? children.set(parent, []).get(parent)!).push(end(link.target));
+    parents.set(end(link.target), parent);
+  }
+  const hubs = new Set(nodes.filter(node => node.directoryPath !== undefined).map(node => node.id));
+  const cells: StructureCell[] = [], lone: Array<{ hub: string; file: string; parent?: string }> = [];
+  for (const node of nodes) {
+    if (node.directoryPath === undefined || !shown.has(node.id)) continue;
+    const below = children.get(node.id) ?? [];
+    if (!below.length || below.some(id => shown.has(id))) continue;
+    // Every leaf beneath it, whatever the depth, but what the picture shows apart from it: a pinned file, or a directory
+    // opened deep inside, whose chain of hubs the hops did not join to this one, stands for itself and is not held twice.
+    const files: string[] = [], stack = [...below];
+    while (stack.length) {
+      const id = stack.pop()!;
+      if (shown.has(id)) continue;
+      if (hubs.has(id)) stack.push(...(children.get(id) ?? []));
+      else files.push(id);
+    }
+    if (files.length > 1) cells.push({ id: node.id, directory: node.directoryPath, files: files.sort() });
+    else if (files.length === 1) lone.push({ hub: node.id, file: files[0], ...(parents.has(node.id) ? { parent: parents.get(node.id) } : {}) });
+  }
+  return { cells: cells.sort((a, b) => (a.directory < b.directory ? -1 : a.directory > b.directory ? 1 : 0)), lone: lone.sort((a, b) => (a.hub < b.hub ? -1 : a.hub > b.hub ? 1 : 0)) };
+}
+
+/** Where a child of the structure layout stands about its hub: the hub's id, its spoke's rest length, its place about the hub. */
+export interface Spoke {
+  hub: string;
+  rest: number;
+  at: Placed;
+}
+
+/**
+ * The spokes of the structure layout's bag of cells (2026-11-08): each hub the picture shows with children shown is
+ * packed as a ball with its children about it, the hub the fixed centre, by `packBall` with the gap given; each
+ * child's distance from the hub there is its containment spoke's rest length, and its place about the hub where it is
+ * born once its hub is placed. A child is as large as it stands: a file its sphere, a bubble its body, and a hub shown
+ * open the ball of its own children, packed first, so that what an open subdirectory spreads around it has its room.
+ * The springs are then at rest where nothing overlaps: with spokes ruled by the two ends' sizes and the link gap, the
+ * bubbles of hundreds of files hung on spokes far shorter than themselves and stood through each other, and this
+ * repository's start at one hop rested in four and a half times the frames it took without them (2026-11-07).
+ *
+ * The skins keep their own packing, free of their hubs: a ball centred on a small hub must be twice as wide as its
+ * largest child, and nested so, the bubble of this repository's tests grew tenfold (545 units to 5,748, tried on
+ * 2026-11-08). So a pop releases its children where the skin showed them, and they move from there to where their
+ * spokes rest. By the child's id; the containment links read are those between shown nodes.
+ *
+ * The page packs the spokes with the tuning's link gap, the gap a spoke keeps between its ends when the wrappers are Off,
+ * not the collision's: packed as tight as a skin packs its files, a hub's many files were pressed together against the
+ * repulsion between them, and the headless twin of this repository's start at two hops took 824 ticks to rest against
+ * 326 Off; with the link gap 328, and at one hop 147 against Off's 162 (2026-11-08).
+ */
+export function structureSpokes(links: ReadonlyArray<{ source: string | { id: string }; target: string | { id: string }; kind?: string }>, shown: ReadonlySet<string>,
+  radiusOf: (id: string) => number, gap: number): Map<string, Spoke> {
+  const end = (endpoint: string | { id: string }): string => (typeof endpoint === "string" ? endpoint : endpoint.id);
+  const children = new Map<string, string[]>();
+  for (const link of links) {
+    if (link.kind !== "containment") continue;
+    const hub = end(link.source), child = end(link.target);
+    if (shown.has(hub) && shown.has(child)) (children.get(hub) ?? children.set(hub, []).get(hub)!).push(child);
+  }
+  const spokes = new Map<string, Spoke>(), extents = new Map<string, number>();
+  const extentOf = (hub: string, path: Set<string>): number => {
+    const known = extents.get(hub);
+    if (known !== undefined) return known;
+    const own = radiusOf(hub), below = children.get(hub) ?? [];
+    if (!below.length || path.has(hub)) return own;
+    path.add(hub);
+    const units = [{ id: hub, radius: own }, ...below.map(child => ({ id: child, radius: children.has(child) ? extentOf(child, path) : radiusOf(child) }))];
+    path.delete(hub);
+    const { places, extent } = packBall(units, gap, hub);
+    for (const child of below) {
+      const at = places.get(child)!;
+      spokes.set(child, { hub, rest: Math.hypot(at.x, at.y, at.z), at });
+    }
+    extents.set(hub, extent);
+    return extent;
+  };
+  for (const hub of [...children.keys()].sort()) extentOf(hub, new Set());
+  return spokes;
 }

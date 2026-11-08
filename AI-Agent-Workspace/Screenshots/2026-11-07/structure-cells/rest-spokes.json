@@ -1,0 +1,443 @@
+[
+ {
+  "base": "/",
+  "open": [],
+  "look": "skin",
+  "hops": 1,
+  "frames": 131,
+  "seconds": 67.72,
+  "spheres": 11,
+  "hubs": 1,
+  "bubbles": 5,
+  "bubbleFiles": 935,
+  "skins": 5,
+  "files": 935,
+  "balloons": 192,
+  "veiled": 0,
+  "packingParts": 5,
+  "packingMs": 115.3,
+  "longestPart": 26.4,
+  "longestTasks": [
+   1281,
+   899,
+   799
+  ]
+ },
+ {
+  "base": "/",
+  "open": [],
+  "look": "skin",
+  "hops": "saved",
+  "frames": 414,
+  "seconds": 194.64,
+  "spheres": 19,
+  "hubs": 7,
+  "bubbles": 12,
+  "bubbleFiles": 927,
+  "skins": 12,
+  "files": 927,
+  "balloons": 180,
+  "veiled": 0,
+  "packingParts": 5,
+  "packingMs": 113.7,
+  "longestPart": 26,
+  "longestTasks": [
+   826,
+   814,
+   758
+  ]
+ },
+ {
+  "base": "/samples/estate/",
+  "open": [],
+  "look": "skin",
+  "hops": 1,
+  "frames": 31,
+  "seconds": 3.06,
+  "spheres": 1,
+  "hubs": 1,
+  "bubbles": 6,
+  "bubbleFiles": 35,
+  "skins": 6,
+  "files": 35,
+  "balloons": 4,
+  "veiled": 0,
+  "packingParts": 1,
+  "packingMs": 16.6,
+  "longestPart": 16.6,
+  "longestTasks": [
+   581,
+   221,
+   168
+  ]
+ },
+ {
+  "url": "http://127.0.0.1:8912/?s=N4IgbiBcDMA0IEcomgExPAnsgzgFwCcBXAY",
+  "start": {
+   "bubbles": 5,
+   "filesDrawn": 935,
+   "veiled": 0
+  },
+  "pops": [
+   {
+    "level": 1,
+    "directory": "packages",
+    "files": 368,
+    "skinRadius": 338.66771270509446,
+    "released": 4,
+    "matched": 4,
+    "bubbles": 4,
+    "worstOff": 0,
+    "allInside": true,
+    "sizesKept": true,
+    "hubStands": true,
+    "opened": [
+     "packages"
+    ],
+    "atRest": {
+     "bubbles": 8,
+     "filesDrawn": 935,
+     "veiled": 0
+    },
+    "restAfterPop": {
+     "seconds": 166.9,
+     "frames": 342
+    },
+    "framing": {
+     "framed": true,
+     "attempts": 2
+    },
+    "unmatched": []
+   },
+   {
+    "level": 2,
+    "directory": "packages/explorer",
+    "files": 209,
+    "skinRadius": 190.32368906084588,
+    "released": 3,
+    "matched": 3,
+    "bubbles": 1,
+    "worstOff": 0,
+    "allInside": true,
+    "sizesKept": true,
+    "hubStands": true,
+    "opened": [
+     "packages",
+     "packages/explorer"
+    ],
+    "atRest": {
+     "bubbles": 8,
+     "filesDrawn": 933,
+     "veiled": 0
+    },
+    "restAfterPop": {
+     "seconds": 287.9,
+     "frames": 625
+    },
+    "framing": {
+     "framed": true,
+     "attempts": 2
+    },
+    "unmatched": []
+   }
+  ]
+ },
+ {
+  "base": "/",
+  "open": [],
+  "look": "off",
+  "hops": 1,
+  "frames": 123,
+  "seconds": 5.07,
+  "spheres": 10,
+  "hubs": 7,
+  "bubbles": 0,
+  "bubbleFiles": 0,
+  "skins": 0,
+  "files": 0,
+  "balloons": 0,
+  "veiled": 0,
+  "packingParts": 0,
+  "packingMs": 0,
+  "longestPart": 0,
+  "longestTasks": [
+   374,
+   284,
+   178
+  ]
+ },
+ {
+  "base": "/",
+  "open": [],
+  "look": "off",
+  "hops": "saved",
+  "frames": 236,
+  "seconds": 9.13,
+  "spheres": 19,
+  "hubs": 19,
+  "bubbles": 0,
+  "bubbleFiles": 0,
+  "skins": 0,
+  "files": 0,
+  "balloons": 0,
+  "veiled": 0,
+  "packingParts": 0,
+  "packingMs": 0,
+  "longestPart": 0,
+  "longestTasks": [
+   271,
+   248,
+   135
+  ]
+ },
+ {
+  "base": "/samples/estate/",
+  "open": [],
+  "look": "off",
+  "hops": 1,
+  "frames": 40,
+  "seconds": 2.02,
+  "spheres": 1,
+  "hubs": 7,
+  "bubbles": 0,
+  "bubbleFiles": 0,
+  "skins": 0,
+  "files": 0,
+  "balloons": 0,
+  "veiled": 0,
+  "packingParts": 0,
+  "packingMs": 0,
+  "longestPart": 0,
+  "longestTasks": [
+   287,
+   159,
+   145
+  ]
+ },
+ {
+  "base": "/samples/estate/",
+  "open": [],
+  "look": "off",
+  "hops": "saved",
+  "frames": 197,
+  "seconds": 7.87,
+  "spheres": 19,
+  "hubs": 18,
+  "bubbles": 0,
+  "bubbleFiles": 0,
+  "skins": 0,
+  "files": 0,
+  "balloons": 0,
+  "veiled": 0,
+  "packingParts": 0,
+  "packingMs": 0,
+  "longestPart": 0,
+  "longestTasks": [
+   328,
+   210,
+   158
+  ]
+ },
+ {
+  "base": "/",
+  "open": [
+   "packages"
+  ],
+  "look": "off",
+  "hops": "saved",
+  "frames": 1249,
+  "seconds": 180.7,
+  "spheres": 378,
+  "hubs": 36,
+  "bubbles": 0,
+  "bubbleFiles": 0,
+  "skins": 0,
+  "files": 0,
+  "balloons": 0,
+  "veiled": 0,
+  "packingParts": 0,
+  "packingMs": 0,
+  "longestPart": 0,
+  "longestTasks": [
+   264,
+   254,
+   253
+  ]
+ },
+ {
+  "base": "/",
+  "open": [
+   "packages",
+   "packages/explorer"
+  ],
+  "look": "off",
+  "hops": "saved",
+  "frames": 1250,
+  "seconds": 188.93,
+  "spheres": 378,
+  "hubs": 36,
+  "bubbles": 0,
+  "bubbleFiles": 0,
+  "skins": 0,
+  "files": 0,
+  "balloons": 0,
+  "veiled": 0,
+  "packingParts": 0,
+  "packingMs": 0,
+  "longestPart": 0,
+  "longestTasks": [
+   363,
+   318,
+   302
+  ]
+ },
+ {
+  "base": "/base/",
+  "open": [],
+  "look": "off",
+  "hops": 1,
+  "frames": 123,
+  "seconds": 4.03,
+  "spheres": 10,
+  "hubs": 7,
+  "bubbles": 0,
+  "bubbleFiles": 0,
+  "skins": 0,
+  "files": 0,
+  "balloons": 0,
+  "veiled": 0,
+  "packingParts": 0,
+  "packingMs": 0,
+  "longestPart": 0,
+  "longestTasks": [
+   270,
+   204,
+   108
+  ]
+ },
+ {
+  "base": "/base/",
+  "open": [],
+  "look": "off",
+  "hops": "saved",
+  "frames": 236,
+  "seconds": 8.34,
+  "spheres": 19,
+  "hubs": 19,
+  "bubbles": 0,
+  "bubbleFiles": 0,
+  "skins": 0,
+  "files": 0,
+  "balloons": 0,
+  "veiled": 0,
+  "packingParts": 0,
+  "packingMs": 0,
+  "longestPart": 0,
+  "longestTasks": [
+   226,
+   211,
+   122
+  ]
+ },
+ {
+  "base": "/base/samples/estate/",
+  "open": [],
+  "look": "off",
+  "hops": 1,
+  "frames": 40,
+  "seconds": 2.82,
+  "spheres": 1,
+  "hubs": 7,
+  "bubbles": 0,
+  "bubbleFiles": 0,
+  "skins": 0,
+  "files": 0,
+  "balloons": 0,
+  "veiled": 0,
+  "packingParts": 0,
+  "packingMs": 0,
+  "longestPart": 0,
+  "longestTasks": [
+   252,
+   124,
+   106
+  ]
+ },
+ {
+  "base": "/base/samples/estate/",
+  "open": [],
+  "look": "off",
+  "hops": "saved",
+  "frames": 197,
+  "seconds": 6.8,
+  "spheres": 19,
+  "hubs": 18,
+  "bubbles": 0,
+  "bubbleFiles": 0,
+  "skins": 0,
+  "files": 0,
+  "balloons": 0,
+  "veiled": 0,
+  "packingParts": 0,
+  "packingMs": 0,
+  "longestPart": 0,
+  "longestTasks": [
+   224,
+   138,
+   121
+  ]
+ },
+ {
+  "base": "/base/",
+  "open": [
+   "packages"
+  ],
+  "look": "off",
+  "hops": "saved",
+  "frames": 1250,
+  "seconds": 186.06,
+  "spheres": 378,
+  "hubs": 36,
+  "bubbles": 0,
+  "bubbleFiles": 0,
+  "skins": 0,
+  "files": 0,
+  "balloons": 0,
+  "veiled": 0,
+  "packingParts": 0,
+  "packingMs": 0,
+  "longestPart": 0,
+  "longestTasks": [
+   351,
+   323,
+   316
+  ]
+ },
+ {
+  "base": "/base/",
+  "open": [
+   "packages",
+   "packages/explorer"
+  ],
+  "look": "off",
+  "hops": "saved",
+  "frames": 1250,
+  "seconds": 190.19,
+  "spheres": 378,
+  "hubs": 36,
+  "bubbles": 0,
+  "bubbleFiles": 0,
+  "skins": 0,
+  "files": 0,
+  "balloons": 0,
+  "veiled": 0,
+  "packingParts": 0,
+  "packingMs": 0,
+  "longestPart": 0,
+  "longestTasks": [
+   323,
+   320,
+   299
+  ]
+ }
+]

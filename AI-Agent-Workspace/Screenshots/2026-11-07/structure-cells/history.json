@@ -1,0 +1,121 @@
+{
+ "url": "http://127.0.0.1:8912/samples/self-history/?s=N4IgbiBcDMA0IE",
+ "look": "skin",
+ "steps": 13,
+ "built": 11,
+ "notBuilt": [
+  "2",
+  "9"
+ ],
+ "framesPerStep": {
+  "median": 2,
+  "least": 1,
+  "most": 17
+ },
+ "packingMs": {
+  "total": 479,
+  "mostInAStep": 66
+ },
+ "seconds": 15.5,
+ "longestTasks": [
+  401,
+  395,
+  392,
+  392,
+  388
+ ],
+ "tasksOver200ms": 41,
+ "rows": [
+  {
+   "step": "0",
+   "ms": 1194,
+   "frames": 3,
+   "built": true,
+   "packingMs": 43
+  },
+  {
+   "step": "1",
+   "ms": 687,
+   "frames": 2,
+   "built": true,
+   "packingMs": 0
+  },
+  {
+   "step": "2",
+   "ms": 700,
+   "frames": 2,
+   "built": false,
+   "packingMs": 25
+  },
+  {
+   "step": "3",
+   "ms": 1102,
+   "frames": 3,
+   "built": true,
+   "packingMs": 45
+  },
+  {
+   "step": "4",
+   "ms": 727,
+   "frames": 2,
+   "built": true,
+   "packingMs": 35
+  },
+  {
+   "step": "5",
+   "ms": 873,
+   "frames": 2,
+   "built": true,
+   "packingMs": 66
+  },
+  {
+   "step": "6",
+   "ms": 758,
+   "frames": 2,
+   "built": true,
+   "packingMs": 45
+  },
+  {
+   "step": "7",
+   "ms": 411,
+   "frames": 1,
+   "built": true,
+   "packingMs": 39
+  },
+  {
+   "step": "8",
+   "ms": 796,
+   "frames": 2,
+   "built": true,
+   "packingMs": 44
+  },
+  {
+   "step": "9",
+   "ms": 745,
+   "frames": 2,
+   "built": false,
+   "packingMs": 27
+  },
+  {
+   "step": "10",
+   "ms": 853,
+   "frames": 2,
+   "built": true,
+   "packingMs": 41
+  },
+  {
+   "step": "11",
+   "ms": 760,
+   "frames": 2,
+   "built": true,
+   "packingMs": 50
+  },
+  {
+   "step": "12",
+   "ms": 5834,
+   "frames": 17,
+   "built": true,
+   "packingMs": 19
+  }
+ ]
+}

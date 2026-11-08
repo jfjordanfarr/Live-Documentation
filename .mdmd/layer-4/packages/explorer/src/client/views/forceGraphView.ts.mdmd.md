@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphView.ts
-- Generated At: 2026-11-07T07:49:38.864Z
+- Generated At: 2026-11-08T04:02:28.012Z
 
 ## Authored
 ### Purpose
@@ -74,19 +74,21 @@ Since the second round of 2026-11-06 a wrapped body's packing is built when the 
 
 Since the third round of 2026-11-07 the packing is no longer all done in the frame that names the bodies, a stall of one to two seconds on the T3 sample's first picture: the render packs what fits in `PACKING_BUDGET` and, while any body it names is unpacked, returns before it changes anything and leaves the picture standing as it was, the busy flag raised, packing a few bubbles a frame (`packBodies`, `packOn`, the timeline's "live-docs:body-packing") and rendering again when the last is packed. Since a body's size is its node's in the field, waiting changes nothing of the picture or its motion, only when it begins. Hiding the view stops the packing and showing it resumes it; bodies are not let go while a picture waits for its own. A pop takes each released bubble's body from the popped body's packing (`releasedBodies`, through `innerShape`), so a pop waits for nothing. The picture's budget veils the smallest bodies' interiors while the files drawn within skins pass `DRAWN_FILES` (`pictureVeiled`), and a popped directory's name stands beside the skin it had (`poppedSkins`), about the centroid of what it released, so that names of directories popped one inside another stand apart ([the evidence](../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-07/shell-faults/README.md)).
 
+Later on 2026-11-07, at the owner's "can we also get the bag-of-cells look for the "structure" part too?" ([Turn 8 of the November 6 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-06.1.record.md#turn-8)), Group Wrappers reach the structure layout (`wrapping` no longer names a layout; `shelling` is the connections layout's shells and their popped names). There an opened directory is asked about as its hub alone, the start stays with it, and every hub at the frontier is drawn as a bubble of what stands under it (`cells`, from `structureCells`): the hub's own node, given the body's size and the files it holds, keeping its containment wire and its directory's actions, never dimmed and with no ring; a click on it opens the directory through `onOpenDirectory`, the shared opened set, and a hub that was a bubble and stands open in the next render pops (`popCell`), its files and its subdirectories' bubbles born where the skin showed them, their bodies taken from its packing. A hub of one file is that file, standing in its place on its wire (`loneNames`), since no bubble may show one cell. Off is the picture it was; the view's own `popped` stays the connections layout's. Since 2026-11-08 the view passes the spokes through (`spokesOf`, from `structureSpokes` with the tuning's link gap): each containment link of the bag of cells carries its spoke's `rest`, kept on the cached link and in the membership, and `placeNewSpheres` bears a new child where its hub's packing holds it ([the evidence](../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-07/structure-cells/README.md)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ForceGraphLink` {#symbol-forcegraphlink}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L97)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L98)
 
 ##### `ForceGraphLink` — Summary
 A link in the Force Graph between two nodes.
 
 #### `ForceGraphNode` {#symbol-forcegraphnode}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L108)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L111)
 - Returns: [`SpatialGraphNode`](./forceGraphData.ts.mdmd.md#symbol-spatialgraphnode)
 
 ##### `ForceGraphNode` — Summary
@@ -94,28 +96,28 @@ A node in the Force Graph, extending the payload with optional archetype.
 
 #### `ForceGraphData` {#symbol-forcegraphdata}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L117)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L120)
 
 ##### `ForceGraphData` — Summary
 Complete data structure for the Force Graph view.
 
 #### `ForceGraphViewOptions` {#symbol-forcegraphviewoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L128)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L131)
 
 ##### `ForceGraphViewOptions` — Summary
 Options passed to the Force Graph view factory.
 
 #### `ForceGraphViewApi` {#symbol-forcegraphviewapi}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L157)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L160)
 
 ##### `ForceGraphViewApi` — Summary
 Public API surface of the Force Graph view.
 
 #### `createForceGraphView` {#symbol-createforcegraphview}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L184)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L187)
 - Returns: [`ForceGraphViewApi`](#symbol-forcegraphviewapi)
 - Parameters: `options`: [`ForceGraphViewOptions`](#symbol-forcegraphviewoptions)
 
@@ -185,12 +187,16 @@ Creates the Force Graph (3D) view for the Live Docs Explorer.
 - [`forceGraphScope.startOf`](./forceGraphScope.ts.mdmd.md#symbol-startof)
 - [`forceGraphShells.BodyBuilding`](./forceGraphShells.ts.mdmd.md#symbol-bodybuilding)
 - [`forceGraphShells.DirectoryShell`](./forceGraphShells.ts.mdmd.md#symbol-directoryshell)
+- [`forceGraphShells.Spoke`](./forceGraphShells.ts.mdmd.md#symbol-spoke)
+- [`forceGraphShells.StructureCell`](./forceGraphShells.ts.mdmd.md#symbol-structurecell)
 - [`forceGraphShells.bodySteps`](./forceGraphShells.ts.mdmd.md#symbol-bodysteps)
-- [`forceGraphShells.innerShape`](./forceGraphShells.ts.mdmd.md#symbol-innershape)
 - [`forceGraphShells.pictureVeils`](./forceGraphShells.ts.mdmd.md#symbol-pictureveils)
 - [`forceGraphShells.poppedAfter`](./forceGraphShells.ts.mdmd.md#symbol-poppedafter)
+- [`forceGraphShells.releaseOf`](./forceGraphShells.ts.mdmd.md#symbol-releaseof)
 - [`forceGraphShells.shellId`](./forceGraphShells.ts.mdmd.md#symbol-shellid)
 - [`forceGraphShells.shellPicture`](./forceGraphShells.ts.mdmd.md#symbol-shellpicture-function)
+- [`forceGraphShells.structureCells`](./forceGraphShells.ts.mdmd.md#symbol-structurecells)
+- [`forceGraphShells.structureSpokes`](./forceGraphShells.ts.mdmd.md#symbol-structurespokes)
 - [`forceGraphShells.veiledUnits`](./forceGraphShells.ts.mdmd.md#symbol-veiledunits)
 - [`forceGraphSizing.spatialSizeScale`](./forceGraphSizing.ts.mdmd.md#symbol-spatialsizescale)
 - [`forceGraphWrappers.BURST`](./forceGraphWrappers.ts.mdmd.md#symbol-burst)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphShells.ts
-- Generated At: 2026-11-07T09:31:43.850Z
+- Generated At: 2026-11-08T04:02:26.971Z
 
 ## Authored
 ### Purpose
@@ -20,6 +20,10 @@ Until 2026-11-06 a shell's body was its files' volume without their padding, the
 Since the second round of 2026-11-06, at the owner's wish to see "a bundle of nodes engulfed rather than just one which suddenly appears to multiply into many" ([Turn 4 of the November 6 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-06.1.record.md#turn-4)), `bodyShape` builds a body from the leaves: `bubbleOf` makes each directory a bubble of its own files and its subdirectories' bubbles, built first, a chain of single directories collapsed into what it holds and a lone subdirectory file that file; `packBall` packs a bubble's units apart by the collision's gap (`bodyGaps`), a greedy placement for a few units and a relaxation through a dense grid for many; and the body lists every file's place, the radius it keeps, and what its skin shows, every file and inner bubble, those past `DRAWN_FILES` veiled. A wrapped group is one bubble about its seed. `phantomShape`, `packingRadius`, `SHOWN_UNITS` and the relaxation inside a fixed size went with this; nesting makes large shells larger, which [the evidence](../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-06/shell-leaves/README.md) measures.
 
 The third round of 2026-11-07 fixed what the second left, without touching the nesting the owner still weighs. Packing every body a picture named in the frame that named it stalled the T3 sample's first picture one to two seconds, most of it in the 2,135 small bubbles of its largest shell: `packBall` now places up to 48 spheres testing each candidate place against the neighbours that can reach it and only when it would reach less far than the best yet, which chooses exactly the places it chose before (its tests pin three packings to the last digit), and `bodySteps` builds a body a bubble at a time, so that the view spreads a large picture's packing over frames (`bodyShape` runs the steps at once). `innerShape` takes the body a pop's bubble becomes from the popped body's packing instead of packing it again, since a bubble's packing depends only on what it holds. `pictureVeils` bounds the whole picture by `DRAWN_FILES` as one body is bounded, veiling the smallest bodies' interiors first (`veiledUnits`, the one veiled bubble such a skin shows); labels keep the true counts. The numbers are in [the evidence of November 7](../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-07/shell-faults/README.md).
+
+Later on 2026-11-07 the owner, delighted by the shells' cells, asked "can we also get the bag-of-cells look for the "structure" part too?" ([Turn 8 of the November 6 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-06.1.record.md#turn-8)). `structureCells` names the Structure layout's bubbles: every directory hub the picture shows none of whose children it shows, holding every file and document under it the picture does not show, and, since the owner's "Make no embryos which appear to have only one cell" of the same day, a hub of one such file as `lone`, that file standing in the hub's place. The bodies are packed by `bodySteps` as a shell's are, seeded by the hub's id. `releaseOf` is the pop's release shared by both layouts: every file where the packing held it and each bubble of the skin's own level as the body of its directory, named as a shell or, in Structure, as its hub (`innerShape` now takes the seed). The pictures and numbers are in [the evidence of the bag of cells](../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-07/structure-cells/README.md).
+
+On 2026-11-08 `structureSpokes` gave the structure layout's spokes their lengths: each hub shown with children shown is packed with them about it, the hub the fixed centre of `packBall`, a bubble at its body's size and an open child hub at the extent of its own children, packed first; each child's distance from its hub is its spoke's rest length and its place where it is born. A first try packed every bubble with its own hub at its centre, so that one packing would serve the skins, the spokes and the pops alike; a ball centred on a small hub must be twice as wide as its largest child, and nested so this repository's tests bubble grew from 545 units to 5,748, so the skins keep their packing free of their hubs and a pop's children move from where the skin showed them to where their spokes rest.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -191,7 +195,7 @@ result is `bodyShape`'s, whatever the steps are spread over.
 
 #### `innerShape` {#symbol-innershape}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L548)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L549)
 - Returns: [`GroupShape`](./forceGraphWrappers.ts.mdmd.md#symbol-groupshape)
 - Parameters: `shape`: [`GroupShape`](./forceGraphWrappers.ts.mdmd.md#symbol-groupshape)
 
@@ -199,11 +203,12 @@ result is `bodyShape`'s, whatever the steps are spread over.
 The body a bubble inside this one would be as the shell of its directory (2026-11-07, third round): what a pop makes
 of each bubble it releases. Since a bubble's packing depends only on what it holds, this is the shape `bodyShape`
 would build for the bubble's files, taken from the packing already made instead of packing again; undefined when no
-bubble directly inside the body is that directory's.
+bubble directly inside the body is that directory's. Its seed is the shell's id, or, in the Structure layout, the
+directory's hub's (`seed`, 2026-11-07).
 
 #### `veiledUnits` {#symbol-veiledunits}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L559)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L560)
 - Returns: [`BodyUnit`](./forceGraphWrappers.ts.mdmd.md#symbol-bodyunit)[]
 
 ##### `veiledUnits` — Summary
@@ -213,7 +218,7 @@ picture's budget (`pictureVeils`) veils.
 
 #### `pictureVeils` {#symbol-pictureveils}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L574)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L575)
 - Parameters: `bodies`: `ReadonlyArray`
 
 ##### `pictureVeils` — Summary
@@ -228,11 +233,81 @@ wired to no shown file; the ids veiled are returned. Labels keep the true counts
 
 #### `poppedAfter` {#symbol-poppedafter}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L632)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L633)
 - Parameters: `popped`: `ReadonlySet`
 
 ##### `poppedAfter` — Summary
 The pops of a picture after `directory` is popped open, or wrapped again with every pop beneath it.
+
+#### `releaseOf` {#symbol-releaseof}
+- Type: function
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L646)
+- Parameters: `shape`: [`GroupShape`](./forceGraphWrappers.ts.mdmd.md#symbol-groupshape); `place`: [`Placed`](./worldMap/layout.ts.mdmd.md#symbol-placed)
+
+##### `releaseOf` — Summary
+What a body's pop releases, about the place the body stood (2026-11-05; the third round's bodies, 2026-11-07): each of
+its files where its packing held it, and each bubble of its own skin where the skin showed it, as the body of its
+directory, its packing taken from the popped body's (`innerShape`). A bubble is named by `bubbleId`: a directory
+shell's id in the Connections layout, the directory's hub's in the Structure layout, where the bubbles are hubs.
+
+#### `StructureCell` {#symbol-structurecell}
+- Type: interface
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L658)
+
+##### `StructureCell` — Summary
+One bubble of the Structure layout: a directory's hub drawn as the body of what stands under it, by the hub's id.
+
+#### `structureCells` {#symbol-structurecells}
+- Type: function
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L680)
+- Parameters: `nodes`: `ReadonlyArray`; `links`: `ReadonlyArray`; `shown`: `ReadonlySet`
+
+##### `structureCells` — Summary
+The bubbles of the Structure layout with Group Wrappers on (2026-11-07, the bag of cells): every directory hub the
+picture shows none of whose children it shows, a hub at the frontier of the hops or one not opened, is drawn as the
+body of everything under its directory, built from the leaves as a shell's body is, and keeps the hub's place, its
+containment wire to its parent and its actions; a hub whose children the picture shows stays a hub with its spokes.
+The owner, of the shells of the Connections layout, "I LOOOOOOOOVE seeing the cells in these embryos", and then "can
+we also get the bag-of-cells look for the "structure" part too?" (Turn 8 of the November 6 record, linked from this file's
+Live Doc).
+The tree is read from the containment links, a hub's to its child hubs and to its own files and documents; a bubble
+holds what under it the picture does not show, so that nothing is drawn twice. In directory order.
+
+No bubble shows one cell (the owner, November 7: "Make no embryos which appear to have only one cell"): a hub at the
+frontier with one file under it is no bubble; that file stands in the hub's place, on the hub's wire to its parent
+(`lone`), as a bubble's packing holds a subdirectory of one file as that file.
+
+#### `Spoke` {#symbol-spoke}
+- Type: interface
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L712)
+
+##### `Spoke` — Summary
+Where a child of the structure layout stands about its hub: the hub's id, its spoke's rest length, its place about the hub.
+
+#### `structureSpokes` {#symbol-structurespokes}
+- Type: function
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L738)
+- Parameters: `links`: `ReadonlyArray`; `shown`: `ReadonlySet`
+
+##### `structureSpokes` — Summary
+The spokes of the structure layout's bag of cells (2026-11-08): each hub the picture shows with children shown is
+packed as a ball with its children about it, the hub the fixed centre, by `packBall` with the gap given; each
+child's distance from the hub there is its containment spoke's rest length, and its place about the hub where it is
+born once its hub is placed. A child is as large as it stands: a file its sphere, a bubble its body, and a hub shown
+open the ball of its own children, packed first, so that what an open subdirectory spreads around it has its room.
+The springs are then at rest where nothing overlaps: with spokes ruled by the two ends' sizes and the link gap, the
+bubbles of hundreds of files hung on spokes far shorter than themselves and stood through each other, and this
+repository's start at one hop rested in four and a half times the frames it took without them (2026-11-07).
+
+The skins keep their own packing, free of their hubs: a ball centred on a small hub must be twice as wide as its
+largest child, and nested so, the bubble of this repository's tests grew tenfold (545 units to 5,748, tried on
+2026-11-08). So a pop releases its children where the skin showed them, and they move from there to where their
+spokes rest. By the child's id; the containment links read are those between shown nodes.
+
+The page packs the spokes with the tuning's link gap, the gap a spoke keeps between its ends when the wrappers are Off,
+not the collision's: packed as tight as a skin packs its files, a hub's many files were pressed together against the
+repulsion between them, and the headless twin of this repository's start at two hops took 824 ticks to rest against
+326 Off; with the link gap 328, and at one hop 147 against Off's 162 (2026-11-08).
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

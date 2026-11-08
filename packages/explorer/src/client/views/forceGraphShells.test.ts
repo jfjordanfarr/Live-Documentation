@@ -1,10 +1,13 @@
 import { describe, expect, it } from "vitest";
 
 import type { FileConnection } from "./fileConnections";
+import { directoryNodeId, spatialGraphOf } from "./forceGraphData";
 import { linkPulls, shellRadiusOf, spatialNodeRadius, type SpatialLink } from "./forceGraphLayout";
 import { connectedNeighbours, spatialScope, type StartableNode } from "./forceGraphScope";
-import { bodyGaps, bodyShape, bodySteps, directoryAt, DRAWN_FILES, innerShape, packBall, partitionHidden, pictureVeils, poppedAfter, shellDirectory, shellId, shellPicture, type ShellPartition } from "./forceGraphShells";
+import { bodyGaps, bodyShape, bodySteps, directoryAt, DRAWN_FILES, innerShape, packBall, partitionHidden, pictureVeils, poppedAfter, releaseOf, shellDirectory, shellId, shellPicture,
+  structureCells, structureSpokes, type ShellPartition } from "./forceGraphShells";
 import { wrapperHull, type WrapperHull } from "./forceGraphWrappers";
+import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../shared/types";
 import { getDefaultTuning } from "../persistence/local-storage";
 
 const tuning = getDefaultTuning().forceGraph;
@@ -377,5 +380,155 @@ describe("a shell's radius told only its count", () => {
   it("is so many symbol-less files' padded volume, for a node whose body is not yet known", () => {
     expect(spatialNodeRadius({ id: "shell:x", publicSymbols: [], shellFiles: 64 }, tuning)).toBeCloseTo(shellRadiusOf(Array.from({ length: 64 }, () => tuning.nodeSize), tuning), 9);
     expect(spatialNodeRadius({ id: "shell:x", publicSymbols: [], shellFiles: 3, shellBody: 42 }, tuning)).toBe(42);
+  });
+});
+
+describe("the structure layout's bubbles (2026-11-07, the bag of cells)", () => {
+  const payload = (id: string, symbols = 0): ExplorerNodePayload => ({ id, name: id.split("/").pop()!, codePath: id, codeRelativePath: id, docPath: `docs/${id}.md`,
+    docRelativePath: `docs/${id}.md`, archetype: "implementation", publicSymbols: Array.from({ length: symbols }, (_, i) => `s${i}`), dependencies: [], dependents: [], missingDependencies: [] });
+  const FILES = ["root.ts", "packages/explorer/src/a.ts", "packages/explorer/src/b.ts", "packages/explorer/views/c.ts", "packages/explorer/d.ts",
+    "packages/cli/e.ts", "packages/cli/f.ts", "packages/engine/src/core/g.ts", "tests/x.ts", "tests/y.ts"];
+  const graph: ExplorerGraphPayload = { nodes: FILES.map((id, i) => payload(id, i % 4)), links: [], stats: { nodes: FILES.length, links: 0, references: 0, dependenciesOutsideScan: 0 } };
+  const tree = spatialGraphOf(graph, () => true, [], "structure");
+  const pulls = (link: { kind?: string }): boolean => linkPulls(link, "structure");
+  /** The picture's shown ids as the page scopes them: the start, the root, with the opened directories' hubs and the hops. */
+  const shownOf = (opened: readonly string[], hops = 1, extra: readonly string[] = []): Set<string> =>
+    new Set(spatialScope(tree.nodes, tree.links, new Set([directoryNodeId(""), ...opened.map(directoryNodeId), ...extra]), hops, pulls).hops.keys());
+  const cellsOf = (shown: ReadonlySet<string>): Record<string, readonly string[]> => Object.fromEntries(structureCells(tree.nodes, tree.links, shown).cells.map(cell => [cell.directory, cell.files]));
+  const loneOf = (shown: ReadonlySet<string>) => structureCells(tree.nodes, tree.links, shown).lone;
+  const filesOf = (directory: string) => tree.nodes.filter(node => node.directoryPath === undefined && node.id.startsWith(`${directory}/`));
+  const CORE = { hub: directoryNodeId("packages/engine/src/core"), file: "packages/engine/src/core/g.ts", parent: directoryNodeId("packages") };
+
+  it("draws each hub at the frontier as a bubble of everything under it, and the root with its own files as a hub", () => {
+    expect(cellsOf(shownOf([]))).toEqual({
+      packages: ["packages/cli/e.ts", "packages/cli/f.ts", "packages/engine/src/core/g.ts", "packages/explorer/d.ts", "packages/explorer/src/a.ts", "packages/explorer/src/b.ts", "packages/explorer/views/c.ts"],
+      tests: ["tests/x.ts", "tests/y.ts"]
+    });
+    expect(structureCells(tree.nodes, tree.links, shownOf([])).cells.map(cell => cell.id)).toEqual([directoryNodeId("packages"), directoryNodeId("tests")]);
+    expect(loneOf(shownOf([]))).toEqual([]);
+    // Two hops show the top level's children: its hubs with their spokes, and the next level's bubbles; the engine's
+    // chain of one file is no bubble of one cell, but that file in its hub's place, on the wire to packages.
+    expect(Object.keys(cellsOf(shownOf([], 2)))).toEqual(["packages/cli", "packages/explorer"]);
+    expect(loneOf(shownOf([], 2))).toEqual([CORE]);
+  });
+
+  it("opens a bubble into its hub with its files and its subdirectories' bubbles, a chain collapsed, and closing wraps it again", () => {
+    const start = cellsOf(shownOf([]));
+    expect(cellsOf(shownOf(["packages"]))).toEqual({
+      "packages/cli": ["packages/cli/e.ts", "packages/cli/f.ts"],
+      "packages/explorer": ["packages/explorer/d.ts", "packages/explorer/src/a.ts", "packages/explorer/src/b.ts", "packages/explorer/views/c.ts"],
+      tests: ["tests/x.ts", "tests/y.ts"]
+    });
+    expect(loneOf(shownOf(["packages"]))).toEqual([CORE]);
+    expect(cellsOf(shownOf(["packages", "packages/explorer"]))).toEqual({
+      "packages/cli": ["packages/cli/e.ts", "packages/cli/f.ts"],
+      "packages/explorer/src": ["packages/explorer/src/a.ts", "packages/explorer/src/b.ts"],
+      tests: ["tests/x.ts", "tests/y.ts"]
+    });
+    expect(loneOf(shownOf(["packages", "packages/explorer"]))).toEqual([CORE,
+      { hub: directoryNodeId("packages/explorer/views"), file: "packages/explorer/views/c.ts", parent: directoryNodeId("packages/explorer") }]);
+    // Closed again, the picture is the start's.
+    expect(cellsOf(shownOf([]))).toEqual(start);
+  });
+
+  it("holds every file once: what the picture shows stays out of a bubble, a pinned file far under a frontier hub among it", () => {
+    const pinned = shownOf([], 1, ["packages/explorer/src/a.ts"]);
+    expect(pinned.has("packages/explorer/src/a.ts")).toBe(true);
+    expect(cellsOf(pinned).packages).not.toContain("packages/explorer/src/a.ts");
+    const files = tree.nodes.filter(node => node.directoryPath === undefined).map(node => node.id);
+    for (const shown of [shownOf([]), shownOf(["packages"]), shownOf(["packages", "packages/explorer"]), shownOf([], 2)]) {
+      const { cells, lone } = structureCells(tree.nodes, tree.links, shown);
+      const held = [...cells.flatMap(cell => cell.files), ...lone.map(item => item.file)];
+      expect(new Set(held).size).toBe(held.length);
+      expect([...held, ...files.filter(id => shown.has(id))].sort()).toEqual([...files].sort());
+      // No bubble of one cell.
+      for (const cell of cells) expect(cell.files.length, cell.directory).toBeGreaterThan(1);
+    }
+    // Beside the pin its hub stands with that one spoke; its other file is hidden behind the hub's ring, as when Off,
+    // not held by the bubble beyond.
+    const held = structureCells(tree.nodes, tree.links, pinned).cells.flatMap(cell => cell.files);
+    expect(held.filter(id => pinned.has(id))).toEqual([]);
+    expect(pinned.has(directoryNodeId("packages/explorer/src"))).toBe(true);
+    expect(held).not.toContain("packages/explorer/src/b.ts");
+    // A hub with a child shown is no bubble.
+    expect(structureCells(tree.nodes, tree.links, new Set([directoryNodeId(""), "root.ts"]))).toEqual({ cells: [], lone: [] });
+  });
+
+  it("pops a bubble where its skin showed its files and its subdirectories' bubbles, each the body its hub's bubble then has", () => {
+    const packages = bodyShape(directoryNodeId("packages"), filesOf("packages"), tuning, undefined, "packages");
+    const place = { x: 100, y: -20, z: 7 };
+    const { born, bodies } = releaseOf(packages, place, directoryNodeId);
+    // Every file where the packing held it, about the place the bubble stood.
+    for (const member of packages.members) expect(born.get(member.id)).toEqual({ x: place.x + member.x, y: place.y + member.y, z: place.z + member.z });
+    // The bubbles of its own skin, as the hubs they are once it is open; the engine's chain of one file is that file,
+    // which stands in its hub's place once open, born where the packing held it.
+    const opened = structureCells(tree.nodes, tree.links, shownOf(["packages"]));
+    expect([...bodies.keys()].sort()).toEqual([directoryNodeId("packages/cli"), directoryNodeId("packages/explorer")]);
+    for (const [id, body] of bodies) {
+      const cell = opened.cells.find(item => item.id === id)!;
+      expect(body.members.map(member => member.id).sort()).toEqual(cell.files);
+      expect(body).toEqual(bodyShape(id, filesOf(cell.directory), tuning, undefined, cell.directory));
+      const unit = packages.units!.find(item => item.kind === "directory" && directoryNodeId(item.id) === id)!;
+      expect(born.get(id)).toEqual({ x: place.x + unit.x, y: place.y + unit.y, z: place.z + unit.z });
+    }
+    expect(born.has(CORE.hub)).toBe(false);
+    expect(opened.lone.map(item => item.file)).toEqual([CORE.file]);
+    expect(born.has(CORE.file)).toBe(true);
+    // A shell's pop names its bubbles as shells, as before.
+    expect([...releaseOf(packages, place).bodies.keys()].sort()).toEqual(["shell:packages/cli", "shell:packages/explorer"]);
+  });
+
+  // The packing of a bubble of the structure layout to the last digit, as this round built it (2026-11-07): what changes
+  // it changes every picture of the bag of cells.
+  it("packs the bubble of packages exactly as this round did", () => {
+    const shape = bodyShape(directoryNodeId("packages"), filesOf("packages"), tuning, undefined, "packages");
+    expect(shape.radius).toBe(47.975410505491055);
+    expect(shape.members.find(member => member.id === "packages/cli/e.ts"))
+      .toEqual({ id: "packages/cli/e.ts", x: 6.681185644246753, y: 37.34275147404498, z: 0.0006963861667658722, radius: 5.039684199579493 });
+    expect(shape.members.find(member => member.id === "packages/explorer/views/c.ts"))
+      .toEqual({ id: "packages/explorer/views/c.ts", x: 0.009503998292009985, y: -0.0011222831954853518, z: 0.018237244513121025, radius: 6.349604207872798 });
+  });
+
+  // The spokes (2026-11-08): each open hub packed with its children about it, the hub the fixed centre.
+  /** The picture as the page draws it with `packages` opened at one hop: the bubbles, a hub of one file as that file. */
+  const opened = (() => {
+    const shown = shownOf(["packages"]), { cells, lone } = structureCells(tree.nodes, tree.links, shown);
+    const links: Array<{ source: string; target: string; kind: string }> = tree.links.map(link => ({ source: link.source, target: link.target, kind: link.kind }));
+    for (const { hub, file, parent } of lone) { shown.delete(hub); shown.add(file); if (parent) links.push({ source: parent, target: file, kind: "containment" }); }
+    const bodies = new Map(cells.map(cell => [cell.id, bodyShape(cell.id, filesOf(cell.directory), tuning, undefined, cell.directory).radius!]));
+    const radiusOf = (id: string): number => bodies.get(id) ?? spatialNodeRadius(tree.nodes.find(node => node.id === id)!, tuning);
+    return { shown, links, radiusOf, spokes: structureSpokes(links, shown, radiusOf, tuning.linkGap) };
+  })();
+
+  it("hangs every shown child of an open hub on a spoke as long as the hub's packing holds it, apart from its hub and its siblings", () => {
+    const { shown, radiusOf, spokes } = opened, gap = tuning.linkGap;
+    // The root's own file, its bubble of tests, packages opened with its bubbles, the engine's file of one in its hub's place.
+    expect([...spokes.keys()].sort()).toEqual([...shown].filter(id => id !== directoryNodeId("")).sort());
+    expect(spokes.get("packages/engine/src/core/g.ts")!.hub).toBe(directoryNodeId("packages"));
+    expect(spokes.get(directoryNodeId("packages"))!.hub).toBe(directoryNodeId(""));
+    const siblings = new Map<string, string[]>();
+    for (const [id, spoke] of spokes) {
+      expect(spoke.rest).toBeCloseTo(Math.hypot(spoke.at.x, spoke.at.y, spoke.at.z), 12);
+      (siblings.get(spoke.hub) ?? siblings.set(spoke.hub, []).get(spoke.hub)!).push(id);
+    }
+    // Where each stands in the picture, the root at the origin and every hub where its spoke holds it.
+    const placed = (id: string): { x: number; y: number; z: number } => {
+      const spoke = spokes.get(id);
+      if (!spoke) return { x: 0, y: 0, z: 0 };
+      const hub = placed(spoke.hub);
+      return { x: hub.x + spoke.at.x, y: hub.y + spoke.at.y, z: hub.z + spoke.at.z };
+    };
+    // Nothing overlaps: every pair of the picture's spheres, hubs, files and bubbles, stands apart by the gap, the bubbles
+    // of packages clear of the root's bubble of tests and of its file.
+    const spheres = [...shown];
+    for (const [i, a] of spheres.entries()) for (const b of spheres.slice(i + 1)) {
+      const p = placed(a), q = placed(b);
+      expect(Math.hypot(p.x - q.x, p.y - q.y, p.z - q.z), `${a} apart from ${b}`).toBeGreaterThanOrEqual(radiusOf(a) + radiusOf(b) + gap - gap / 50);
+    }
+  });
+
+  it("does not depend on the order the links come in", () => {
+    const again = structureSpokes([...opened.links].reverse(), opened.shown, opened.radiusOf, tuning.linkGap);
+    expect(again).toEqual(opened.spokes);
   });
 });

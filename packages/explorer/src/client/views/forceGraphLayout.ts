@@ -37,6 +37,12 @@ export interface SpatialLink<N extends SpatialNode = SpatialNode> {
   count: number;
   /** Containment remains a separate structural relationship in reports. */
   kind?: string;
+  /**
+   * The spring's rest length when the picture knows it better than the sizes do: a containment spoke of the structure
+   * layout with Group Wrappers on, the child's distance from its hub in the packing of the hub's bubble (2026-11-08,
+   * `structureSpokes`). None for every other link, whose length is ruled by the sizes and the gap.
+   */
+  rest?: number;
 }
 
 /**
@@ -117,9 +123,13 @@ export function spatialNodeRadius(node: SpatialNode, tuning: ForceGraphTuning): 
   return tuning.nodeSize * Math.cbrt(spatialNodeValue(node, tuning));
 }
 
-/** More coupling reduces the desired surface gap with diminishing returns, without changing the node-size meaning. */
+/**
+ * More coupling reduces the desired surface gap with diminishing returns, without changing the node-size meaning; a link
+ * that carries its own rest length, a structure spoke from its hub's packing (2026-11-08), keeps that.
+ */
 export function spatialLinkDistance(link: SpatialLink, tuning: ForceGraphTuning): number {
   if (typeof link.source === "string" || typeof link.target === "string") throw new Error("Spatial link endpoints must be resolved before measuring distance.");
+  if (link.rest !== undefined && Number.isFinite(link.rest) && link.rest > 0) return link.rest;
   const gap = Math.max(tuning.collisionGap, tuning.linkGap / (1 + tuning.coupling * Math.log2(Math.max(1, link.count))));
   return spatialNodeRadius(link.source, tuning) + spatialNodeRadius(link.target, tuning) + gap;
 }
@@ -195,10 +205,13 @@ function massRadiusOf<N extends PlaceableNode>(nodes: readonly N[], positionOf: 
  * mass, at most some hundred units out, and it spent the settle pushing its way through what had already settled, so that
  * the owner could not find the islands and orphans ("Nice little stars -- or maybe a kuiper belt -- of orphans"). An
  * island's first sphere is born there and its members are placed beside it as they enter, so the island is born outside
- * as a whole. A directory shell is born outside the mass on the side of what it is wired to (2026-11-06, below). The
- * nodes are not changed; the result is the start of each sphere placed here.
+ * as a whole. A directory shell is born outside the mass on the side of what it is wired to (2026-11-06, below). A
+ * child of the structure layout that `spokeOf` places about its hub, from the packing of the hub's bubble (2026-11-08,
+ * `structureSpokes`), is born there once its hub is placed, where its spoke is at rest. The nodes are not changed; the
+ * result is the start of each sphere placed here.
  */
-export function placeNewSpheres<N extends PlaceableNode>(nodes: readonly N[], links: readonly SpatialLink<N>[], tuning: ForceGraphTuning, layout: SpatialLayout): Map<string, Placed> {
+export function placeNewSpheres<N extends PlaceableNode>(nodes: readonly N[], links: readonly SpatialLink<N>[], tuning: ForceGraphTuning, layout: SpatialLayout,
+  spokeOf?: (id: string) => { hub: string; at: Placed } | undefined): Map<string, Placed> {
   const starts = new Map<string, Placed>();
   const byId = new Map(nodes.map(node => [node.id, node]));
   const positionOf = (node: N): Placed | undefined => starts.get(node.id) ?? (isPlaced(node) ? { x: node.x, y: node.y, z: node.z } : undefined);
@@ -218,6 +231,8 @@ export function placeNewSpheres<N extends PlaceableNode>(nodes: readonly N[], li
     z: points.reduce((sum, point) => sum + point.z, 0) / points.length
   });
   const startOf = (node: N): Placed | undefined => {
+    const spoke = spokeOf?.(node.id), hub = spoke ? byId.get(spoke.hub) : undefined, from = hub && positionOf(hub);
+    if (spoke && from) return { x: from.x + spoke.at.x, y: from.y + spoke.at.y, z: from.z + spoke.at.z };
     if (node.directoryPath !== undefined) {
       const members = nodes.filter(other => other !== node && positionOf(other) && under(other.directoryPath ?? other.codeRelativePath ?? other.id, node.directoryPath!)).map(other => positionOf(other)!);
       if (members.length) return centroid(members);
