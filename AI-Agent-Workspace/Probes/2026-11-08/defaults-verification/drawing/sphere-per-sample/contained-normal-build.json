@@ -1,0 +1,21 @@
+{
+  "data": {
+    "/": "befc6ffb5a02c9dc0e421fd6ea3791bf3ffb5666413038d52d4816ec8b52fda4",
+    "samples/estate": "b952686d16b55d29b5d195442fae59f77a8932e05727e6c611f40ac4e223566f",
+    "samples/history": "e6404ddf2e4ff2a220f8cbb5595721c7f619615f86b9b222f3963bf2a570501d",
+    "samples/history-window": "8fec4f81aeda011abf0092e4abd2e53b01db9271c71b6669878adbd5264480d3",
+    "samples/history-collision": "561d2fd7424a4868e65421887ac9d2d50331b1362e4c136c18325717d530c7df",
+    "samples/history-growth": "ff4005bb0f3ba416c27c07c8cf9cb0fedc44c002857b640829ae59af91e6e552"
+  },
+  "assets": [
+    "/static",
+    "samples/estate/static",
+    "samples/history/static",
+    "samples/history-window/static",
+    "samples/history-collision/static",
+    "samples/history-growth/static"
+  ],
+  "source": "current source, native fallback before compile; no private production route/freeze",
+  "bundleSha256": "1e1c96084014b9b19b1cf8a2e02c450f023aa47f4654f79d627692f8944754f8",
+  "nativeControlSha256": "c4483de7403bdff7395115b01d9f1e69ab90690bb75305b228ea7cb95d2a9a3f"
+}

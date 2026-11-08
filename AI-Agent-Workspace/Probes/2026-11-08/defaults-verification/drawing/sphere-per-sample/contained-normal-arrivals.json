@@ -1,0 +1,465 @@
+{
+  "runs": [
+    {
+      "mode": "native",
+      "subject": "fresh default generator.ts Connections/Skin1",
+      "url": "http://localhost:8911/?view=local&mode=3d&node=packages%2Fgenerator%2Fsrc%2Fgenerator.ts",
+      "motionPaused": false,
+      "focusAvailableMs": 1550,
+      "first": {
+        "at": 1716.7000000178814,
+        "busy": "true",
+        "frames": 4,
+        "files": {
+          "count": 463,
+          "visible": true,
+          "material": "MeshLambertMaterial",
+          "vertices": 169
+        },
+        "nodes": 26,
+        "drawn": {
+          "frame": 4,
+          "calls": 5,
+          "triangles": 146384,
+          "points": 0,
+          "lines": 0
+        },
+        "camera": [
+          13.218468326500595,
+          -12.237303857671208,
+          312.06647992830494
+        ]
+      },
+      "tuningAvailableMs": 2848,
+      "defaults": {
+        "wrappers": "skin",
+        "hops": "1"
+      },
+      "settled": false,
+      "elapsedMs": 60026,
+      "final": {
+        "at": 60148.70000001788,
+        "busy": "true",
+        "frames": 186,
+        "files": {
+          "count": 829,
+          "visible": true,
+          "material": "MeshLambertMaterial",
+          "vertices": 169
+        },
+        "nodes": 55,
+        "drawn": {
+          "frame": 186,
+          "calls": 5,
+          "triangles": 255290,
+          "points": 0,
+          "lines": 0
+        },
+        "camera": [
+          -29.592134837575085,
+          -40.37329865642799,
+          459.57272004328655
+        ]
+      }
+    },
+    {
+      "mode": "analytic",
+      "subject": "fresh default generator.ts Connections/Skin1",
+      "url": "http://localhost:8911/?view=local&mode=3d&node=packages%2Fgenerator%2Fsrc%2Fgenerator.ts",
+      "motionPaused": false,
+      "focusAvailableMs": 2226,
+      "first": {
+        "at": 2363.800000011921,
+        "busy": "true",
+        "frames": 5,
+        "files": {
+          "count": 474,
+          "visible": true,
+          "material": "RawShaderMaterial",
+          "vertices": 4
+        },
+        "nodes": 26,
+        "drawn": {
+          "frame": 5,
+          "calls": 5,
+          "triangles": 25284,
+          "points": 0,
+          "lines": 0
+        },
+        "camera": [
+          13.218468326500595,
+          -12.224858469611062,
+          311.75371562178066
+        ]
+      },
+      "tuningAvailableMs": 2343,
+      "defaults": {
+        "wrappers": "skin",
+        "hops": "1"
+      },
+      "settled": false,
+      "elapsedMs": 60004,
+      "final": {
+        "at": 60221.5,
+        "busy": "true",
+        "frames": 193,
+        "files": {
+          "count": 829,
+          "visible": true,
+          "material": "RawShaderMaterial",
+          "vertices": 4
+        },
+        "nodes": 55,
+        "drawn": {
+          "frame": 193,
+          "calls": 5,
+          "triangles": 38092,
+          "points": 0,
+          "lines": 0
+        },
+        "camera": [
+          -29.663162496159053,
+          -40.41267289841795,
+          459.4129340772762
+        ]
+      }
+    },
+    {
+      "mode": "native",
+      "subject": "history today-selected",
+      "url": "http://localhost:8911/samples/history/?s=N4IgbiBcDMA0IBsqgGYHsBOBjApgcQwEMAHAC2RAFdiATQgFxwFEA7HDAcwE8oAGeUmmIBnKABYAvhPgBHKCGg0Q8HpBDD6GSlnqUMOZSBbzh2APQliZgLaEAliwB09URKA",
+      "motionPaused": false,
+      "elapsedMs": 5813,
+      "settled": true,
+      "first": {
+        "at": 739.4000000059605,
+        "busy": "true",
+        "frames": 3,
+        "files": {
+          "count": 0,
+          "visible": false,
+          "material": "MeshLambertMaterial",
+          "vertices": 169
+        },
+        "nodes": 4,
+        "drawn": {
+          "frame": 3,
+          "calls": 2,
+          "triangles": 1074,
+          "points": 0,
+          "lines": 0
+        },
+        "camera": [
+          -19.29339259206617,
+          11.826597808734553,
+          334.92343028368293
+        ]
+      },
+      "final": {
+        "at": 5814.5,
+        "busy": "false",
+        "frames": 254,
+        "files": {
+          "count": 2,
+          "visible": true,
+          "material": "MeshLambertMaterial",
+          "vertices": 169
+        },
+        "nodes": 10,
+        "drawn": {
+          "frame": 254,
+          "calls": 4,
+          "triangles": 3336,
+          "points": 0,
+          "lines": 0
+        },
+        "camera": [
+          -33.836366505498226,
+          -104.54978254710487,
+          508.0551384765034
+        ]
+      }
+    },
+    {
+      "mode": "native",
+      "subject": "history past-selected",
+      "url": "http://localhost:8911/samples/history/?s=N4IgbiBcDMA0IBsqgGYHsBOBjApgcQwEMAHAC2RAFdiATQgFxwFEA7HDAcwE8oAGeUmmIBnKABYAvhPgBHKCGg0Q8HpBDD6GSlnqUMOZSBbyEASwBGAegQ4OhLFwB09UQPkAOAKy8AnGIBM5gDsKACMAGyhWD6hnu5iNEG8KJ6eOJ7mhEE05u7uhGLQ4dCE7iASQA",
+      "motionPaused": false,
+      "elapsedMs": 5676,
+      "settled": true,
+      "first": {
+        "at": 616.2999999821186,
+        "busy": "true",
+        "frames": 2,
+        "files": {
+          "count": 0,
+          "visible": false,
+          "material": "MeshLambertMaterial",
+          "vertices": 169
+        },
+        "nodes": 6,
+        "drawn": {
+          "frame": 2,
+          "calls": 2,
+          "triangles": 1614,
+          "points": 0,
+          "lines": 0
+        },
+        "camera": [
+          -136.19385532500226,
+          17.463335423082647,
+          801.4445454330395
+        ]
+      },
+      "final": {
+        "at": 5675.199999988079,
+        "busy": "false",
+        "frames": 232,
+        "files": {
+          "count": 0,
+          "visible": false,
+          "material": "MeshLambertMaterial",
+          "vertices": 169
+        },
+        "nodes": 14,
+        "drawn": {
+          "frame": 232,
+          "calls": 2,
+          "triangles": 3774,
+          "points": 0,
+          "lines": 0
+        },
+        "camera": [
+          -120.99116916204358,
+          -52.676525869255514,
+          450.34509373511173
+        ]
+      }
+    },
+    {
+      "mode": "native",
+      "subject": "history whole",
+      "url": "http://localhost:8911/samples/history/?s=N4IgbiBcDMA0IBsqgGYHsBOBjApgcQwEMAHAC2RAFdiATQgFxwFEA7HDAcwE8oAGAOgCM8UmmIBnKABYAvjPgBHKCGg0Q8HpBDj6GSlnqUMOdSDWQA2iBABdGUA",
+      "motionPaused": false,
+      "elapsedMs": 8508,
+      "settled": true,
+      "first": {
+        "at": 481.30000001192093,
+        "busy": "true",
+        "frames": 3,
+        "files": {
+          "count": 0,
+          "visible": false,
+          "material": "MeshLambertMaterial",
+          "vertices": 169
+        },
+        "nodes": 3,
+        "drawn": {
+          "frame": 3,
+          "calls": 2,
+          "triangles": 804,
+          "points": 0,
+          "lines": 0
+        },
+        "camera": [
+          -33.26059034018476,
+          81.91820364427595,
+          605.1727510442938
+        ]
+      },
+      "final": {
+        "at": 8510.200000017881,
+        "busy": "false",
+        "frames": 410,
+        "files": {
+          "count": 0,
+          "visible": false,
+          "material": "MeshLambertMaterial",
+          "vertices": 169
+        },
+        "nodes": 14,
+        "drawn": {
+          "frame": 410,
+          "calls": 2,
+          "triangles": 3774,
+          "points": 0,
+          "lines": 0
+        },
+        "camera": [
+          -1.375171098675935,
+          -24.61929428656655,
+          437.87588769529
+        ]
+      }
+    },
+    {
+      "mode": "analytic",
+      "subject": "history today-selected",
+      "url": "http://localhost:8911/samples/history/?s=N4IgbiBcDMA0IBsqgGYHsBOBjApgcQwEMAHAC2RAFdiATQgFxwFEA7HDAcwE8oAGeUmmIBnKABYAvhPgBHKCGg0Q8HpBDD6GSlnqUMOZSBbzh2APQliZgLaEAliwB09URKA",
+      "motionPaused": false,
+      "elapsedMs": 6875,
+      "settled": true,
+      "first": {
+        "at": 628,
+        "busy": "true",
+        "frames": 2,
+        "files": {
+          "count": 0,
+          "visible": false,
+          "material": "RawShaderMaterial",
+          "vertices": 4
+        },
+        "nodes": 3,
+        "drawn": {
+          "frame": 2,
+          "calls": 2,
+          "triangles": 804,
+          "points": 0,
+          "lines": 0
+        },
+        "camera": [
+          -17.677378699541606,
+          10.573685842495566,
+          400.81610555930035
+        ]
+      },
+      "final": {
+        "at": 6875.4000000059605,
+        "busy": "false",
+        "frames": 254,
+        "files": {
+          "count": 2,
+          "visible": true,
+          "material": "RawShaderMaterial",
+          "vertices": 4
+        },
+        "nodes": 10,
+        "drawn": {
+          "frame": 254,
+          "calls": 4,
+          "triangles": 2812,
+          "points": 0,
+          "lines": 0
+        },
+        "camera": [
+          -33.836366505498226,
+          -104.54978254710487,
+          508.0551384765034
+        ]
+      }
+    },
+    {
+      "mode": "analytic",
+      "subject": "history past-selected",
+      "url": "http://localhost:8911/samples/history/?s=N4IgbiBcDMA0IBsqgGYHsBOBjApgcQwEMAHAC2RAFdiATQgFxwFEA7HDAcwE8oAGeUmmIBnKABYAvhPgBHKCGg0Q8HpBDD6GSlnqUMOZSBbyEASwBGAegQ4OhLFwB09UQPkAOAKy8AnGIBM5gDsKACMAGyhWD6hnu5iNEG8KJ6eOJ7mhEE05u7uhGLQ4dCE7iASQA",
+      "motionPaused": false,
+      "elapsedMs": 5453,
+      "settled": true,
+      "first": {
+        "at": 426.7000000178814,
+        "busy": "true",
+        "frames": 2,
+        "files": {
+          "count": 0,
+          "visible": false,
+          "material": "RawShaderMaterial",
+          "vertices": 4
+        },
+        "nodes": 6,
+        "drawn": {
+          "frame": 2,
+          "calls": 2,
+          "triangles": 1614,
+          "points": 0,
+          "lines": 0
+        },
+        "camera": [
+          -122.66001442122005,
+          15.727970764365942,
+          821.1753763598448
+        ]
+      },
+      "final": {
+        "at": 5453.4000000059605,
+        "busy": "false",
+        "frames": 232,
+        "files": {
+          "count": 0,
+          "visible": false,
+          "material": "RawShaderMaterial",
+          "vertices": 4
+        },
+        "nodes": 14,
+        "drawn": {
+          "frame": 232,
+          "calls": 2,
+          "triangles": 3774,
+          "points": 0,
+          "lines": 0
+        },
+        "camera": [
+          -120.99116916204358,
+          -52.676525869255514,
+          450.34509373511173
+        ]
+      }
+    },
+    {
+      "mode": "analytic",
+      "subject": "history whole",
+      "url": "http://localhost:8911/samples/history/?s=N4IgbiBcDMA0IBsqgGYHsBOBjApgcQwEMAHAC2RAFdiATQgFxwFEA7HDAcwE8oAGAOgCM8UmmIBnKABYAvjPgBHKCGg0Q8HpBDj6GSlnqUMOdSDWQA2iBABdGUA",
+      "motionPaused": false,
+      "elapsedMs": 9443,
+      "settled": true,
+      "first": {
+        "at": 354,
+        "busy": "true",
+        "frames": 2,
+        "files": {
+          "count": 0,
+          "visible": false,
+          "material": "RawShaderMaterial",
+          "vertices": 4
+        },
+        "nodes": 2,
+        "drawn": {
+          "frame": 2,
+          "calls": 2,
+          "triangles": 534,
+          "points": 0,
+          "lines": 0
+        },
+        "camera": [
+          -28.165259151214816,
+          -8.290397290572738,
+          656.1443541854624
+        ]
+      },
+      "final": {
+        "at": 9442.59999999404,
+        "busy": "false",
+        "frames": 410,
+        "files": {
+          "count": 0,
+          "visible": false,
+          "material": "RawShaderMaterial",
+          "vertices": 4
+        },
+        "nodes": 14,
+        "drawn": {
+          "frame": 410,
+          "calls": 2,
+          "triangles": 3774,
+          "points": 0,
+          "lines": 0
+        },
+        "camera": [
+          -1.375171098675935,
+          -24.61929428656655,
+          437.87588769529
+        ]
+      }
+    }
+  ],
+  "errors": []
+}

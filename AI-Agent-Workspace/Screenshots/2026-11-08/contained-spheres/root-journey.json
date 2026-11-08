@@ -1,0 +1,158 @@
+{
+  "clock": "real, unmodified; normal UI gestures and normal search; no routes or scene manipulation",
+  "viewport": "1440x960",
+  "assetSha256": "1e1c96084014b9b19b1cf8a2e02c450f023aa47f4654f79d627692f8944754f8",
+  "before": {
+    "selectedNodeId": null,
+    "pins": {
+      "entries": []
+    },
+    "directories": [
+      "Portal"
+    ]
+  },
+  "after": {
+    "selectedNodeId": null,
+    "pins": {
+      "entries": []
+    },
+    "directories": [
+      "Portal"
+    ]
+  },
+  "capabilities": {
+    "samples": 4,
+    "sampleVariables": true,
+    "sampleInterpolation": true,
+    "dpr": 1,
+    "backing": [
+      1179,
+      910
+    ]
+  },
+  "errors": [],
+  "readings": [
+    {
+      "name": "root-source-2d",
+      "at": 1794178372340,
+      "state": {
+        "selectedNodeId": null,
+        "pins": {
+          "entries": []
+        },
+        "directories": [
+          "Portal"
+        ]
+      }
+    },
+    {
+      "name": "root-skin-arrival",
+      "at": 1794178380941,
+      "state": {
+        "selectedNodeId": null,
+        "pins": {
+          "entries": []
+        },
+        "directories": [
+          "Portal"
+        ]
+      },
+      "elapsedIncludingCapture": 8597
+    },
+    {
+      "name": "root-skin-camera-gestures",
+      "at": 1794178384738,
+      "state": {
+        "selectedNodeId": null,
+        "pins": {
+          "entries": []
+        },
+        "directories": [
+          "Portal"
+        ]
+      }
+    },
+    {
+      "name": "root-skin-return-2d",
+      "at": 1794178387732,
+      "state": {
+        "selectedNodeId": null,
+        "pins": {
+          "entries": []
+        },
+        "directories": [
+          "Portal"
+        ]
+      },
+      "elapsedIncludingCapture": 2994
+    },
+    {
+      "name": "root-skin-return-3d",
+      "at": 1794178390823,
+      "state": {
+        "selectedNodeId": null,
+        "pins": {
+          "entries": []
+        },
+        "directories": [
+          "Portal"
+        ]
+      },
+      "elapsedIncludingCapture": 3092
+    },
+    {
+      "name": "root-cloud-3d",
+      "at": 1794178392581,
+      "state": {
+        "selectedNodeId": null,
+        "pins": {
+          "entries": []
+        },
+        "directories": [
+          "Portal"
+        ]
+      }
+    },
+    {
+      "name": "root-cloud-return-2d",
+      "at": 1794178395457,
+      "state": {
+        "selectedNodeId": null,
+        "pins": {
+          "entries": []
+        },
+        "directories": [
+          "Portal"
+        ]
+      },
+      "elapsedIncludingCapture": 2875
+    },
+    {
+      "name": "root-cloud-return-3d",
+      "at": 1794178397911,
+      "state": {
+        "selectedNodeId": null,
+        "pins": {
+          "entries": []
+        },
+        "directories": [
+          "Portal"
+        ]
+      },
+      "elapsedIncludingCapture": 2456
+    },
+    {
+      "name": "root-skin-final",
+      "at": 1794178398398,
+      "state": {
+        "selectedNodeId": null,
+        "pins": {
+          "entries": []
+        },
+        "directories": [
+          "Portal"
+        ]
+      }
+    }
+  ]
+}

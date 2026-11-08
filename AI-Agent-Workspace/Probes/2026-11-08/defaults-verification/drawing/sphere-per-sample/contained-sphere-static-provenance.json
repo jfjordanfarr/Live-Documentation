@@ -1,0 +1,20 @@
+{
+  "candidateBase": "5b610371a2a1d3625d1615c3acdc3152628c7326",
+  "payloadSource": "/tmp/live-docs-20261108-defaults-gate3/explorer",
+  "payloadHashes": "/tmp/live-docs-20261108-defaults-gate3/payload-sha256.json",
+  "mode": "Headless Chromium SwiftShader, viewport1280x800,4x MSAA, native Lambert/transparent depth-write, normal instanced submitted order",
+  "conditions": "All static comparisons pause motion and hold uploaded instance matrices. Native, analytic and restore share the same pose/camera/lights/colors within each run; different runs may freeze different motion revisions. searchStarts0. Main subject is Connections/Skin1 pinned packages/generator/src/generator.ts; estate is Structure/Skin1 and actual Portal/Models/PaymentRequestModel.cs contained mark. Standalone overlap fixture repositions four actual unit transforms around the target, all alpha.75, preserving one back-to-front batch and actual skin. These are diagnostics, not accepted motion results.",
+  "prototypeOnly": "Private page.route substitutes a locally bundled client with frozen-draw/pose helpers and factory access. dist assets/data and production initializer remain native. Contexts are closed after each run.",
+  "sourceNotes": "Main per-sample measurement preceded addition of the unused compatibility factory and quad-reference export; the per-sample shader itself is unchanged. Root preserved the original first-quad main native/analytic PNGs and JSON before overwrite in main commit a8047a8c at AI-Agent-Workspace/Probes/2026-11-08/defaults-verification/drawing/sphere-first/, with original hashes in capture-manifest.json. Original quad estate/source/bundle/log and new same-pose comparisons also remain here. No unique evidence was lost. The final compatibility guard additionally requires the existing NoToneMapping pipeline.",
+  "sha256": {
+    "containedSphere-per-sample.ts": "9128a881585518593a1faab551c8cff16da816f37346e09a9669a8f0f8a0e1e2",
+    "containedSphere-quad.ts": "38a71f66d8eeb5007768bb756dd8755337b6ce5b8ff380746f63c12589219311",
+    "sphere-prototype.js": "305593fae8bc6cf5c769aeaa4c7afc45a04bfb91abceddab453b94adf12567dd",
+    "sphere-prototype-quad.js": "0f671a479d14a46e66032ad67418689a28af2bee72a77b7a0ebfb2fa5c369e3d",
+    "per-sample-sphere-main-prototype.json": "e95c1b0d2267d5e86b6dbb4456180febf56bab5c60cf429987503060a2703e2c",
+    "per-sample-estate-reference.json": "a1be99b7f2f5f6522f78c482246c475a852f1ad49c892231eabe90e7f5234b50",
+    "high-res-estate-reference.json": "2c92e85c08a86b4c60787e7a51bfd453e764c83ea1851b85d53eabf234a50f35",
+    "per-sample-estate-interleaved-overlap-skin.json": "6bea6cb57a8667e1677e86da36835135bc82b258d0a466c2f03f6e25a60a4d0f",
+    "sphere-fallback.json": "3a126551f7fe745c0bfd3f3827ab6d3f3a1d2a86f00c2971716f7aa8bde02f92"
+  }
+}

@@ -1,0 +1,7 @@
+import {build} from 'esbuild';
+import{readFile}from'node:fs/promises';import path from'node:path';
+const root=process.cwd(),out='/tmp/live-docs-20261108-defaults-diagnostics';
+for(const mode of ['native','analytic'])await build({entryPoints:[root+'/packages/explorer/src/client/index.ts'],outfile:out+'/dynamic-'+mode+'.js',bundle:true,format:'esm',minify:true,target:'es2022',logLevel:'silent',plugins:[{name:'read-only-dynamic-state',setup(b){
+ b.onLoad({filter:/forceGraphBatches\.ts$/},async args=>{let source=await readFile(args.path,'utf8');if(mode==='native')source=source.replace('const containedFile = containedSpherePrimitive(renderer);','const containedFile = containedSpherePrimitive(undefined);');return{contents:source,loader:'ts',resolveDir:path.dirname(args.path)};});
+ b.onLoad({filter:/forceGraphView\.ts$/},async args=>{let source=await readFile(args.path,'utf8');const marker='  return { render, setActive, focusNode, focusDirectory';if(!source.includes(marker))throw Error('Missing diagnostic seam');source=source.replace(marker,`  (window as any).dynamicState=()=>({revision:motion?.revision,still:motion?.still,ready,packing:[...packing.keys()],revealed:reveal.shown,total:reveal.order.length,points:(forceGraphInstance?.graphData().nodes??[]).slice(0,8).map(n=>({id:n.id,x:n.x,y:n.y,z:n.z}))});\n`+marker);return{contents:source,loader:'ts',resolveDir:path.dirname(args.path)};});
+}}]});

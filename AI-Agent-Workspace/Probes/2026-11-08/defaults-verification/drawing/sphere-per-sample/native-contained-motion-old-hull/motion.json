@@ -1,0 +1,106 @@
+{
+  "events": [
+    {
+      "name": "source-native-3d",
+      "at": 1794177540689,
+      "url": "http://localhost:8911/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QJIZVx0BwMoFc7Bc3SMhxsLmALogWvwACOUBA0EkIHgeIW8LIRbICM7eYzIErZmrSFrSSAA"
+    },
+    {
+      "name": "clip-source",
+      "at": 1794177540879,
+      "url": "http://localhost:8911/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QJIZVx0BwMoFc7Bc3SMhxsLmALogWvwACOUBA0EkIHgeIW8LIRbICM7eYzIErZmrSFrSSAA"
+    },
+    {
+      "name": "clip-back-moving",
+      "at": 1794177541994,
+      "url": "http://localhost:8911/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QJIZVx0BwMoFc7Bc3SMhxsLmALogWvwPELeFkItkBEgeCSDMgStmatIWtJIA"
+    },
+    {
+      "name": "clip-back",
+      "progress": "0.31842857142431447",
+      "pressToFrame": 1111,
+      "measures": [
+        {
+          "name": "live-docs:switch-capture",
+          "ms": 21.599999994039536
+        },
+        {
+          "name": "live-docs:switch-press",
+          "ms": 134.09999999403954
+        },
+        {
+          "name": "live-docs:capture-bodies",
+          "ms": 20
+        },
+        {
+          "name": "live-docs:switch-hold",
+          "ms": 0.699999988079071
+        },
+        {
+          "name": "live-docs:switch-render",
+          "ms": 99.40000000596046
+        },
+        {
+          "name": "live-docs:switch-capture-destination",
+          "ms": 62.10000002384186
+        },
+        {
+          "name": "live-docs:capture-cards",
+          "ms": 1.2999999821186066
+        },
+        {
+          "name": "live-docs:capture-wires",
+          "ms": 0
+        },
+        {
+          "name": "live-docs:capture-directories",
+          "ms": 41.099999994039536
+        },
+        {
+          "name": "live-docs:capture-copies",
+          "ms": 247.30000001192093
+        },
+        {
+          "name": "live-docs:switch-animation-setup",
+          "ms": 10.900000005960464
+        }
+      ]
+    },
+    {
+      "name": "clip-back-rest",
+      "at": 1794177543164,
+      "url": "http://localhost:8911/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QJIZVx0BwMoFc7Bc3SMhxsLmALogWvwPELeFkItkBEgeCSDMgStmatIWtJIA"
+    }
+  ],
+  "errors": [],
+  "normalClock": true,
+  "initial": {
+    "pins": {
+      "entries": []
+    },
+    "opens": [
+      "Portal"
+    ]
+  },
+  "clip": {
+    "id": "Contracts/PaymentRequest.cs",
+    "slot": 25,
+    "depth": 389.6810482565806,
+    "radius": 5.8581109046936035,
+    "size": 0.01503309162943024,
+    "previousNear": 0.1,
+    "near": 384.40874844235634,
+    "controlledProjection": true,
+    "motionPaused": false,
+    "material": "MeshLambertMaterial",
+    "geometryVertices": 169
+  },
+  "returned": {
+    "pins": {
+      "entries": []
+    },
+    "opens": [
+      "Portal"
+    ]
+  }
+}

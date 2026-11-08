@@ -65,3 +65,15 @@ The [raw capture measurements](capture-cost.json) use separate fresh contexts at
 | Repository, root start | 143.8 ms | 134.1 ms | 1,420 / 1,290 ms |
 
 The body capture is a real synchronous cost. The larger observed waits include existing asynchronous card copies (262/246 ms on the estate, 734/819 ms on the repository), rendering and browser observation; they are not all blocked main-thread time. Transition drawing setup was 10.7/5.8 ms and 27.0/12.5 ms respectively. No multi-second body-capture stall appeared in these runs. These are individual measurements of the stated subjects, not a general performance guarantee or a matched comparison to the preceding session's different subjects.
+
+## Per-sample renderer recheck
+
+After activating the analytic contained-file sphere and correcting clipped native fallback capture, root repeated the normal-clock, normal-search Portal journey and personally viewed all nine pictures. [Source](portal-per-sample-source.png), [3D destination](portal-per-sample-out-rest.png) and [2D return](portal-per-sample-back-rest.png) retain the same directory and no explicit file pins or selection; the [readings](portal-per-sample-motion.json) record no page errors. Outgoing 10.493 seconds and return 2.335 include captures and rest, not pure animation duration.
+
+| Stage | Into 3D | Returning to 2D |
+| --- | --- | --- |
+| Early | [Folding](portal-per-sample-out-1.png) | [Containers returning](portal-per-sample-back-1.png) |
+| Middle | [Carried file marks](portal-per-sample-out-2.png) | [Unfolding](portal-per-sample-back-2.png) |
+| Late | [Arrival](portal-per-sample-out-3.png) | [Restored cards](portal-per-sample-back-3.png) |
+
+The [recording](portal-per-sample-roundtrip.webm) retains the full motion. Closely gathering names near the 3D destination remain an acknowledged limitation. The nominal return capture also prompted a title recheck: the [complete Skin/Cloud journey and separate handoff pictures](../contained-spheres/README.md) show the file titles present, so no persistent missing-title defect is inferred from the early frame. Root accepted this renderer's normal visual journey for integrated verification; large-scene settling and the full gate remain open.

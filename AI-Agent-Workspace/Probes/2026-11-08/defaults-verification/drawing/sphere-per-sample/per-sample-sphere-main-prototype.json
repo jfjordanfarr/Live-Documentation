@@ -1,0 +1,52 @@
+{
+  "timings": [
+    {
+      "mode": "native",
+      "motionPaused": true,
+      "elapsed": 5015.699999988079,
+      "frames": 16,
+      "fps": 3.1899834519684247,
+      "render": {
+        "frame": 55,
+        "calls": 5,
+        "triangles": 256604,
+        "points": 0,
+        "lines": 0
+      }
+    },
+    {
+      "mode": "analytic",
+      "motionPaused": true,
+      "elapsed": 5026.9000000059605,
+      "frames": 26,
+      "fps": 5.1721737054584676,
+      "render": {
+        "frame": 111,
+        "calls": 5,
+        "triangles": 39406,
+        "points": 0,
+        "lines": 0
+      }
+    },
+    {
+      "mode": "native",
+      "motionPaused": true,
+      "elapsed": 5087.5999999940395,
+      "frames": 16,
+      "fps": 3.144901328724496,
+      "render": {
+        "frame": 156,
+        "calls": 5,
+        "triangles": 256604,
+        "points": 0,
+        "lines": 0
+      }
+    }
+  ],
+  "errors": [],
+  "pixelComparison": {
+    "changedAbove3": 7873,
+    "maxChannelDifference": 154,
+    "meanPixelDifference": 0.3420529931305201
+  }
+}

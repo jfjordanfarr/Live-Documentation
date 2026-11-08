@@ -1,0 +1,50 @@
+[
+  {
+    "phase": "source",
+    "at": 1794178168996,
+    "names": [
+      {
+        "id": "Portal/Portal.csproj",
+        "text": "Portal.csproj\nPortal/Portal.csproj\nPortal\n+1 symbol",
+        "names": []
+      },
+      {
+        "id": "Portal/Web.config",
+        "text": "Web.config\nPortal/Web.config\nPortal\n+2 symbols\n2 connections outside this view",
+        "names": []
+      }
+    ]
+  },
+  {
+    "phase": "after-transition-and-search",
+    "at": 1794178178377,
+    "names": [
+      {
+        "id": "Portal/Portal.csproj",
+        "text": "Portal.csproj\nPortal/Portal.csproj\nPortal\n+1 symbol",
+        "names": []
+      },
+      {
+        "id": "Portal/Web.config",
+        "text": "Web.config\nPortal/Web.config\nPortal\n+2 symbols\n2 connections outside this view",
+        "names": []
+      }
+    ]
+  },
+  {
+    "phase": "2500ms-later",
+    "at": 1794178180953,
+    "names": [
+      {
+        "id": "Portal/Portal.csproj",
+        "text": "Portal.csproj\nPortal/Portal.csproj\nPortal\n+1 symbol",
+        "names": []
+      },
+      {
+        "id": "Portal/Web.config",
+        "text": "Web.config\nPortal/Web.config\nPortal\n+2 symbols\n2 connections outside this view",
+        "names": []
+      }
+    ]
+  }
+]

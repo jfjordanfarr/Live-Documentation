@@ -1,0 +1,81 @@
+{
+  "cases": [
+    {
+      "name": "near-cap",
+      "distance": 3,
+      "near": 2.1,
+      "offset": 0,
+      "far": 500,
+      "motionPaused": true,
+      "uploadedInstanceMatricesHeld": true,
+      "analytic96": {
+        "all": {
+          "pixels": 764250,
+          "changedAbove3": 1724,
+          "maxChannelDifference": 132,
+          "total": 91645,
+          "meanPixelDifference": 0.1199149492966961
+        },
+        "edge": {
+          "pixels": 14432,
+          "changedAbove3": 1724,
+          "maxChannelDifference": 132,
+          "total": 85485,
+          "meanPixelDifference": 5.923295454545454
+        },
+        "interior": {
+          "pixels": 160486,
+          "changedAbove3": 0,
+          "maxChannelDifference": 1,
+          "total": 6160,
+          "meanPixelDifference": 0.038383410390937525
+        }
+      },
+      "analytic": {
+        "all": {
+          "pixels": 764250,
+          "changedAbove3": 573,
+          "maxChannelDifference": 72,
+          "total": 31142,
+          "meanPixelDifference": 0.04074844618907426
+        },
+        "edge": {
+          "pixels": 14432,
+          "changedAbove3": 573,
+          "maxChannelDifference": 72,
+          "total": 22442,
+          "meanPixelDifference": 1.5550166297117516
+        },
+        "interior": {
+          "pixels": 160329,
+          "changedAbove3": 0,
+          "maxChannelDifference": 1,
+          "total": 8700,
+          "meanPixelDifference": 0.05426342084089591
+        }
+      }
+    }
+  ],
+  "errors": [],
+  "target": {
+    "id": "Portal/Models/PaymentRequestModel.cs",
+    "slot": 18,
+    "radius": 5.38795804977417,
+    "center": [
+      -10.037317276000977,
+      127.05077362060547,
+      -9.116978645324707
+    ],
+    "instances": 35,
+    "referenceTriangles": 12096,
+    "samples": 4,
+    "opacity": 0.75,
+    "referenceHighTriangles": 48768
+  },
+  "referenceSequence": {
+    "reference": "SphereGeometry(1,96,64):12096 triangles per sphere",
+    "analytic96": "compared against reference on the same held pose",
+    "referenceHigh": "SphereGeometry(1,192,128):48768 triangles per sphere",
+    "analytic": "compared against referenceHigh on the same held pose"
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "cases": [
+    {
+      "name": "interleaved-overlap-skin",
+      "distance": 5,
+      "near": 0.1,
+      "offset": 0,
+      "far": 500,
+      "overlap": true,
+      "motionPaused": true,
+      "uploadedInstanceMatricesHeld": false,
+      "quad": {
+        "all": {
+          "pixels": 764250,
+          "changedAbove3": 1909,
+          "maxChannelDifference": 96,
+          "total": 51929,
+          "meanPixelDifference": 0.06794766110565914
+        },
+        "edge": {
+          "pixels": 20108,
+          "changedAbove3": 1784,
+          "maxChannelDifference": 96,
+          "total": 48550,
+          "meanPixelDifference": 2.4144619057091705
+        },
+        "interior": {
+          "pixels": 106653,
+          "changedAbove3": 125,
+          "maxChannelDifference": 19,
+          "total": 3379,
+          "meanPixelDifference": 0.03168218427986086
+        }
+      },
+      "analytic": {
+        "all": {
+          "pixels": 764250,
+          "changedAbove3": 530,
+          "maxChannelDifference": 71,
+          "total": 19338,
+          "meanPixelDifference": 0.02530323846908734
+        },
+        "edge": {
+          "pixels": 20108,
+          "changedAbove3": 527,
+          "maxChannelDifference": 71,
+          "total": 12588,
+          "meanPixelDifference": 0.6260194947284663
+        },
+        "interior": {
+          "pixels": 106653,
+          "changedAbove3": 3,
+          "maxChannelDifference": 5,
+          "total": 6750,
+          "meanPixelDifference": 0.06328935894911536
+        }
+      }
+    }
+  ],
+  "errors": [],
+  "target": {
+    "id": "Portal/Models/PaymentRequestModel.cs",
+    "slot": 18,
+    "radius": 5.281429767608643,
+    "center": [
+      -10.022706031799316,
+      127.05461883544922,
+      -9.108540534973145
+    ],
+    "instances": 35,
+    "referenceTriangles": 12096,
+    "samples": 4,
+    "opacity": 0.75
+  }
+}

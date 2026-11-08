@@ -232,5 +232,461 @@
     "sourceBytes": 1543,
     "sourceSha256": "7c8da96274dfc57045195c3ef73dea7059bd18396cdfa297e96b573c55ef9e95",
     "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/contained-dynamic-arrivals.json",
+    "sourceBytes": 240715,
+    "sourceSha256": "51ad95b0801d56fb552f9d3c853d9f533e0a96e42be9e66ddad681a4ab930d5d",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/contained-motion-provenance.json",
+    "sourceBytes": 2767,
+    "sourceSha256": "8fb42ebf11fd05994e99937648e33460efe48f0f84a2af025b59007444b5c948",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/contained-normal-arrivals.json",
+    "sourceBytes": 11696,
+    "sourceSha256": "5b17e21dad681ac518992c615172c260b240acdf79c89f1c65af0489f5d874bd",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/contained-normal-build.json",
+    "sourceBytes": 1057,
+    "sourceSha256": "24fc412eadb12b20b40437259bef319a14ccd190f425dfabef090cff0af5ef65",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/contained-sphere-static-provenance.json",
+    "sourceBytes": 2790,
+    "sourceSha256": "4ef87dd76df1b991d73eb5decc91192b12864defdc5e074113b6e255ea1948cf",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/containedSphere-per-sample.ts",
+    "sourceBytes": 14393,
+    "sourceSha256": "9128a881585518593a1faab551c8cff16da816f37346e09a9669a8f0f8a0e1e2",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/containedSphere-quad.ts",
+    "sourceBytes": 11361,
+    "sourceSha256": "38a71f66d8eeb5007768bb756dd8755337b6ce5b8ff380746f63c12589219311",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/high-res-estate-near-cap-analytic.png",
+    "sourceBytes": 47539,
+    "sourceSha256": "b45ef03533ae5ccdd83027929d51e32237a40d7a4071d71bc27a3263665fb2f9",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/high-res-estate-near-cap-analytic96.png",
+    "sourceBytes": 47539,
+    "sourceSha256": "b45ef03533ae5ccdd83027929d51e32237a40d7a4071d71bc27a3263665fb2f9",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/high-res-estate-near-cap-reference.png",
+    "sourceBytes": 48285,
+    "sourceSha256": "10f8a46a0ac112590b78f32952b1a933dbc5ba2728e348b725ecdcee824c8d4e",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/high-res-estate-near-cap-referenceHigh.png",
+    "sourceBytes": 48081,
+    "sourceSha256": "f287788b8831f226aadce49fb775b17bc22f8a7edf36ac8eba5a5e52daf15b42",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/high-res-estate-reference.json",
+    "sourceBytes": 2180,
+    "sourceSha256": "2c92e85c08a86b4c60787e7a51bfd453e764c83ea1851b85d53eabf234a50f35",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/high-res-near-cap-convergence.png",
+    "sourceBytes": 7155,
+    "sourceSha256": "bee6d481ae1a06bd0fc7af0d631211f66860da6cf47e67a90d46d63a2e140425",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-close-edge-comparison.png",
+    "sourceBytes": 11064,
+    "sourceSha256": "87b95e9244f3fd15c320699f3d8f53789e73ade85800e5b04a965c13b9befa94",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-estate-close-analytic.png",
+    "sourceBytes": 113775,
+    "sourceSha256": "9c46806d45919f6fcdbd563381fadda98a98386038e9e852fe456e948df05214",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-estate-close-quad.png",
+    "sourceBytes": 112750,
+    "sourceSha256": "3936fd4e3bc261bd3010810b7c2e098e76c07d11d54c04f26593dc450b2dc3a2",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-estate-close-reference.png",
+    "sourceBytes": 114002,
+    "sourceSha256": "bd292beb4ddc4e6e8fb5ec5be67428d45a5856ea88dd755a8aef64e5b09e01ae",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-estate-eye-cross-outside-analytic.png",
+    "sourceBytes": 38555,
+    "sourceSha256": "d09fa4b69cde4e9f4ecb2f35fcb75efb5c1cb29dfa8121ca1a71d127ddd0a7e9",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-estate-eye-cross-outside-quad.png",
+    "sourceBytes": 37555,
+    "sourceSha256": "da73283cf2eb4a47707ab815f054fa9559bfcdf63c64997b6688eafe8e7d8d52",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-estate-eye-cross-outside-reference.png",
+    "sourceBytes": 38526,
+    "sourceSha256": "6a21e90dbbba27be7d8b87e7df04cdfead7e3861511e3dd1b7e775d892099227",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-estate-far-cap-analytic.png",
+    "sourceBytes": 26219,
+    "sourceSha256": "898c502916628e11e8dbbef447c0f15c0b85d1e5df75120d3b7ec3b2c647abb7",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-estate-far-cap-quad.png",
+    "sourceBytes": 24662,
+    "sourceSha256": "619edbe54d299c3b6db7e0ab3547d3377f5ef39317bd6d32dca34452bbaa3fdd",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-estate-far-cap-reference.png",
+    "sourceBytes": 26132,
+    "sourceSha256": "ccf935120757e61e954f5dde07cfa64d8a3660ee875a3071d503d16f534c6217",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-estate-front-clipped-analytic.png",
+    "sourceBytes": 30587,
+    "sourceSha256": "039e9a1ac91626e35939418e3feb6008f5b0155b4d03b13908242bae7de03f5f",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-estate-front-clipped-quad.png",
+    "sourceBytes": 30587,
+    "sourceSha256": "039e9a1ac91626e35939418e3feb6008f5b0155b4d03b13908242bae7de03f5f",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-estate-front-clipped-reference.png",
+    "sourceBytes": 30587,
+    "sourceSha256": "039e9a1ac91626e35939418e3feb6008f5b0155b4d03b13908242bae7de03f5f",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-estate-inside-analytic.png",
+    "sourceBytes": 25213,
+    "sourceSha256": "926b08e76d77042c25a91d9df0a65b19cb039f53a93292f8120b4a5b80bd1473",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-estate-inside-quad.png",
+    "sourceBytes": 25213,
+    "sourceSha256": "926b08e76d77042c25a91d9df0a65b19cb039f53a93292f8120b4a5b80bd1473",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-estate-inside-reference.png",
+    "sourceBytes": 25213,
+    "sourceSha256": "926b08e76d77042c25a91d9df0a65b19cb039f53a93292f8120b4a5b80bd1473",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-estate-interleaved-overlap-skin-analytic.png",
+    "sourceBytes": 120065,
+    "sourceSha256": "26400f981f73b421b2a0409b5d90d910ab12205cdecac8db15ceb5feeb2b320e",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-estate-interleaved-overlap-skin-quad.png",
+    "sourceBytes": 117185,
+    "sourceSha256": "b34164f1e3237ff4c3a04056ec0eaf872c6da90043a32fe88616dc332d769dab",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-estate-interleaved-overlap-skin-reference.png",
+    "sourceBytes": 120763,
+    "sourceSha256": "b2319f3dedcf59a0ef52d50b15c68a7b56d46725829b679465a05b5355a2a1e4",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-estate-interleaved-overlap-skin.json",
+    "sourceBytes": 1861,
+    "sourceSha256": "6bea6cb57a8667e1677e86da36835135bc82b258d0a466c2f03f6e25a60a4d0f",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-estate-isolated-close-analytic.png",
+    "sourceBytes": 131913,
+    "sourceSha256": "43f0d250fa7ee8f7cf5972e59f7d27a0c9f5b1d13909b9660a04d6760c81cb66",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-estate-isolated-close-quad.png",
+    "sourceBytes": 130736,
+    "sourceSha256": "af41aaff7b1404f3ff36c393d77872b7d31d297c37598ea803e4df0d15e3f92b",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-estate-isolated-close-reference.png",
+    "sourceBytes": 132145,
+    "sourceSha256": "e135ffc85db63037eea80f488dda6a12729472797a68f4b54b70e78f11626471",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-estate-isolated-near-rim-analytic.png",
+    "sourceBytes": 48387,
+    "sourceSha256": "260dee835417eb915940f0c9a6a64cb51b002f5ef0128d5e8570108d34a9a372",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-estate-isolated-near-rim-quad.png",
+    "sourceBytes": 44808,
+    "sourceSha256": "76ba858ea033df770d1ad395f141a161dcf4b93ab642135aed4c7d6dc7fd3d66",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-estate-isolated-near-rim-reference.png",
+    "sourceBytes": 48553,
+    "sourceSha256": "98b0834b248c4a51c15653417370f654df0a4458dae5cfed1778e618a4f4b91f",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-estate-near-cap-analytic.png",
+    "sourceBytes": 46616,
+    "sourceSha256": "2b270221f2966ff917244ca20dfc9e4c9e2a6caf951a47aee8d91f12ecb0917a",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-estate-near-cap-quad.png",
+    "sourceBytes": 43690,
+    "sourceSha256": "0b258c9b898ac043d1055117b092c77035dd0921f2a4449cfbcbabddf4b6b92f",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-estate-near-cap-reference.png",
+    "sourceBytes": 47132,
+    "sourceSha256": "a8c0c93ccea0d5e25441dded69b9c04b78bf5e31c0ce04dd55f516c8f199d8d0",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-estate-off-axis-analytic.png",
+    "sourceBytes": 120806,
+    "sourceSha256": "d0c08e8bdae55c4d264ef3a857b716a00486d72a9f1f61b677dc8437a0a887b4",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-estate-off-axis-quad.png",
+    "sourceBytes": 119851,
+    "sourceSha256": "c3fd595b76b8568fa23e5bb42520fc01d576f6b5aeff65b10e331cd321232572",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-estate-off-axis-reference.png",
+    "sourceBytes": 121333,
+    "sourceSha256": "0472a57fba0e56301d4a155aaa1d4b3f8a4eb4fd701ec57ece5aad4c9bdb36e1",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-estate-reference.json",
+    "sourceBytes": 16355,
+    "sourceSha256": "a1be99b7f2f5f6522f78c482246c475a852f1ad49c892231eabe90e7f5234b50",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-estate-shifted-lens-analytic.png",
+    "sourceBytes": 137886,
+    "sourceSha256": "76d04374382030e015f96f674c8bdbe6958e6b7a7c5c71d1b83834a3cf102820",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-estate-shifted-lens-quad.png",
+    "sourceBytes": 136552,
+    "sourceSha256": "8bed5feb8e19a27c292a209686dcdfdf145b80d1ed23de85e5fee268a585137c",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-estate-shifted-lens-reference.png",
+    "sourceBytes": 138310,
+    "sourceSha256": "c503079ecc46f6d800f641e1b0faafee33e6a7022fe6ebd396407d06a140033b",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-near-cap-edge-comparison.png",
+    "sourceBytes": 7312,
+    "sourceSha256": "b7970f65b40571b1c7a64b81666fda845f8d82eec40dbc2e758b84e49f68d12c",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-sphere-main-analytic.png",
+    "sourceBytes": 405867,
+    "sourceSha256": "799e9f53636451e7d3633ae1415e774850a57a923d77555afedd9cc0a0784964",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-sphere-main-native.png",
+    "sourceBytes": 408552,
+    "sourceSha256": "2e0159777e9ffdcf919194c6b1c6de500b8ad68b63c66366e4b432960952da27",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-sphere-main-prototype.json",
+    "sourceBytes": 1046,
+    "sourceSha256": "e95c1b0d2267d5e86b6dbb4456180febf56bab5c60cf429987503060a2703e2c",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/per-sample-sphere-main-restored.png",
+    "sourceBytes": 408552,
+    "sourceSha256": "2e0159777e9ffdcf919194c6b1c6de500b8ad68b63c66366e4b432960952da27",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/sphere-fallback-compatibility.png",
+    "sourceBytes": 100240,
+    "sourceSha256": "7ac157f5f334629660e16755f559674cac65d85add43e548009c5bead17343ff",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/sphere-fallback.json",
+    "sourceBytes": 346,
+    "sourceSha256": "3a126551f7fe745c0bfd3f3827ab6d3f3a1d2a86f00c2971716f7aa8bde02f92",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/sphere-native-compatibility.png",
+    "sourceBytes": 100240,
+    "sourceSha256": "7ac157f5f334629660e16755f559674cac65d85add43e548009c5bead17343ff",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/scripts/sphere-prototype-probe.mts",
+    "sourceBytes": 4380,
+    "sourceSha256": "cef5ecc822a9b5e0cfc192a1be8ac87fa37f2fe25a053497743bc05ea966bb57",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/scripts/sphere-prototype-bundle.mjs",
+    "sourceBytes": 2465,
+    "sourceSha256": "a4889c59a7a5929c8b977dc1188d2379798b67a4922f5e479f22f0d95b024f46",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/scripts/sphere-estate-reference.mts",
+    "sourceBytes": 11387,
+    "sourceSha256": "91ce27ca44fbc718ff56d4f31c6865cc5b34a0db002e1052659608b50a6281c0",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/scripts/sphere-fallback.mts",
+    "sourceBytes": 3446,
+    "sourceSha256": "19fc23e1e81cbf0a994f1a2e60adb8ba3283216275b580ccfca27652c1529bbd",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/scripts/contained-normal-probe.mts",
+    "sourceBytes": 5111,
+    "sourceSha256": "efc903918914d93421157c9b53b4d8b998d8a2413f3e212cc58a660eea0c5431",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/scripts/contained-normal-build.mts",
+    "sourceBytes": 2693,
+    "sourceSha256": "2facc1b45760fbddd716520c8a4613675ac84f6ba73f8810a254f82663d08286",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/scripts/contained-dynamic-probe.mts",
+    "sourceBytes": 3752,
+    "sourceSha256": "b0fb8b42f4a212a2862a60513f4835b81e4db07be31c5d1783297d0c9fc608c6",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/scripts/contained-dynamic-build.mjs",
+    "sourceBytes": 1412,
+    "sourceSha256": "85d7167d4c025548d3030d4b2ddcee1a5713947d86bf76bed9d0b0cf3c0bfbe7",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/scripts/contained-motion.mts",
+    "sourceBytes": 8374,
+    "sourceSha256": "27760f9e009cbe7026770d6e95f3322d7495ff8c2b7205a5cde12e21176246a6",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/native-contained-motion/motion.json",
+    "sourceBytes": 4834,
+    "sourceSha256": "04a0df6063a487c832db117114e867d71bc4dd271eadc024b3762c19bae1fcd7",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/native-contained-motion-old-hull/motion.json",
+    "sourceBytes": 4847,
+    "sourceSha256": "93f644cfd63de0112fcfd735db79f3fbe04c85bf5512b7edbc70aa040a3b2286",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/native-contained-motion/clip-source.png",
+    "sourceBytes": 128644,
+    "sourceSha256": "7e4f05936bf98a9ac8f940915f36d81b5b8c9ebc1c95f8be5b7a8e739f11b766",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/native-contained-motion-old-hull/clip-source.png",
+    "sourceBytes": 128644,
+    "sourceSha256": "7e4f05936bf98a9ac8f940915f36d81b5b8c9ebc1c95f8be5b7a8e739f11b766",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/native-contained-motion/clip-back-moving.png",
+    "sourceBytes": 88832,
+    "sourceSha256": "38131bfc988fcb197e3b530e257119ed8bea99eed5bd5819e01983e2f4ce2555",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/native-contained-motion-old-hull/clip-back-moving.png",
+    "sourceBytes": 94350,
+    "sourceSha256": "ca6a722c2e071c7c23677e647635686c36bb3c5c2daddc978d5aecb21ab0f2d1",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/quad-cost-probe.cjs",
+    "sourceBytes": 4544,
+    "sourceSha256": "a82c975a8f065d030012de301370d609f52683cc411de505145694af3f1e23da",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/quad-cost-analyze.cjs",
+    "sourceBytes": 2900,
+    "sourceSha256": "1ec8faebca4f1c08dc8019fe7f34a5f602d3ab3c68e6ea27e9d6b9e8f785ebd0",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/quad-cost-compact.json",
+    "sourceBytes": 99846,
+    "sourceSha256": "2bdcbaccc06960e4767e6f69aa2f420ebd9d78161fde5f6ffaafe7bfabd67de6",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/quad-cost-raw.json.gz",
+    "sourceBytes": 12160595,
+    "sourceSha256": "640e129064ebbf13ef33a7fd9b522798a4269f72e9241c12dbf87f600cb8a96d",
+    "compressed": true
   }
 ]

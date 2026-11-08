@@ -1,0 +1,3697 @@
+{
+  "description": "View-space sphere/six-plane separation and GPU-equivalent bounding quad clipped to viewport. Areas count overdraw, not union or covered sphere pixels. No depth occlusion assumptions.",
+  "input": {
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "assetManifest": {
+      "data": {
+        "/": "befc6ffb5a02c9dc0e421fd6ea3791bf3ffb5666413038d52d4816ec8b52fda4",
+        "samples/estate": "b952686d16b55d29b5d195442fae59f77a8932e05727e6c611f40ac4e223566f",
+        "samples/history": "e6404ddf2e4ff2a220f8cbb5595721c7f619615f86b9b222f3963bf2a570501d",
+        "samples/history-window": "8fec4f81aeda011abf0092e4abd2e53b01db9271c71b6669878adbd5264480d3",
+        "samples/history-collision": "561d2fd7424a4868e65421887ac9d2d50331b1362e4c136c18325717d530c7df",
+        "samples/history-growth": "ff4005bb0f3ba416c27c07c8cf9cb0fedc44c002857b640829ae59af91e6e552"
+      },
+      "assets": [
+        "/static",
+        "samples/estate/static",
+        "samples/history/static",
+        "samples/history-window/static",
+        "samples/history-collision/static",
+        "samples/history-growth/static"
+      ],
+      "source": "current source, native fallback before compile; no private production route/freeze",
+      "bundleSha256": "1e1c96084014b9b19b1cf8a2e02c450f023aa47f4654f79d627692f8944754f8",
+      "nativeControlSha256": "c4483de7403bdff7395115b01d9f1e69ab90690bb75305b228ea7cb95d2a9a3f"
+    }
+  },
+  "runs": [
+    {
+      "mode": "native",
+      "bundleSha256": "49ef5f485606a4225ba0655dbe8f277c40e1fc0c00dc6ea79b59913bf60a7461",
+      "dataSha256": "befc6ffb5a02c9dc0e421fd6ea3791bf3ffb5666413038d52d4816ec8b52fda4",
+      "defaults": {
+        "wrappers": "skin",
+        "hops": "1"
+      },
+      "elapsedMs": 66117,
+      "errors": [],
+      "last": {
+        "revision": 269,
+        "still": false,
+        "ready": true,
+        "packing": [],
+        "revealed": 129,
+        "total": 129,
+        "points": [
+          {
+            "id": ".devcontainer/devcontainer.json",
+            "x": 405.90001024690696,
+            "y": -61.44538552671163,
+            "z": 275.3027736748071
+          },
+          {
+            "id": ".devcontainer/post-create.sh",
+            "x": -408.64780187064383,
+            "y": -286.7699437539072,
+            "z": -21.075461436400154
+          },
+          {
+            "id": ".gitattributes",
+            "x": 304.0332995457817,
+            "y": 366.24579327829827,
+            "z": 42.13461899330961
+          },
+          {
+            "id": ".github/dependabot.yml",
+            "x": 97.61204081428649,
+            "y": 448.03702615997065,
+            "z": -130.36225038743535
+          },
+          {
+            "id": ".github/workflows/ci.yml",
+            "x": 291.78403494258134,
+            "y": -254.54795652942877,
+            "z": 322.1873056806559
+          },
+          {
+            "id": ".github/workflows/codeql.yml",
+            "x": 113.36234509342297,
+            "y": -408.2757151323411,
+            "z": 277.8417762807938
+          },
+          {
+            "id": ".github/workflows/npm-audit.yml",
+            "x": -132.8097457137906,
+            "y": -187.50098038853122,
+            "z": -407.8962451553195
+          },
+          {
+            "id": ".github/workflows/pages.yml",
+            "x": 177.06917263840884,
+            "y": 60.51895805364474,
+            "z": -422.6102661183846
+          }
+        ]
+      },
+      "samples": [
+        {
+          "revision": 101,
+          "at": 1894.5,
+          "frames": 2,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 351,
+          "revealed": 29,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 71,
+          "outsideByPlane": {
+            "y+": 11,
+            "x-": 16,
+            "y-": 44
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.19707863521554841,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 150617.34696348288,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 2143.7999999821186,
+          "frames": 3,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 369,
+          "revealed": 32,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 283,
+          "outsideByPlane": {
+            "x-": 218,
+            "y+": 66,
+            "y-": 97
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.1267083454663367,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 96836.85302264782,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 2369.699999988079,
+          "frames": 4,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 463,
+          "revealed": 35,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 351,
+          "outsideByPlane": {
+            "x-": 243,
+            "y+": 122,
+            "y-": 99
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.1407275939378133,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 107551.06366697383,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 2575.9000000059605,
+          "frames": 5,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 474,
+          "revealed": 38,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 351,
+          "outsideByPlane": {
+            "x-": 243,
+            "y+": 122,
+            "y-": 99
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.16620069738448037,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 127018.88297608911,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 2809.2999999821186,
+          "frames": 6,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 474,
+          "revealed": 41,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 351,
+          "outsideByPlane": {
+            "x-": 243,
+            "y+": 122,
+            "y-": 99
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.16619907245871793,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 127017.64112657518,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 3057.9000000059605,
+          "frames": 7,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 474,
+          "revealed": 44,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 351,
+          "outsideByPlane": {
+            "x-": 243,
+            "y+": 122,
+            "y-": 99
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.16619905498336718,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 127017.62777103837,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 3262.2999999821186,
+          "frames": 8,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 474,
+          "revealed": 47,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 351,
+          "outsideByPlane": {
+            "x-": 243,
+            "y+": 122,
+            "y-": 99
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.16619905467692322,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 127017.62753683857,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 3451.4000000059605,
+          "frames": 9,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 474,
+          "revealed": 50,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 351,
+          "outsideByPlane": {
+            "x-": 243,
+            "y+": 122,
+            "y-": 99
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.1661990546750994,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 127017.62753544473,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 3646.4000000059605,
+          "frames": 10,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 474,
+          "revealed": 53,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 351,
+          "outsideByPlane": {
+            "x-": 243,
+            "y+": 122,
+            "y-": 99
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.16619905467507778,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 127017.6275354282,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 3838.7999999821186,
+          "frames": 11,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 474,
+          "revealed": 56,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 351,
+          "outsideByPlane": {
+            "x-": 243,
+            "y+": 122,
+            "y-": 99
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.16619905467507748,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 127017.62753542796,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 4057.0999999940395,
+          "frames": 12,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 477,
+          "revealed": 59,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 354,
+          "outsideByPlane": {
+            "x-": 243,
+            "y+": 125,
+            "y-": 99
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.16619905467507748,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 127017.62753542796,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 4294,
+          "frames": 13,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 477,
+          "revealed": 62,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 354,
+          "outsideByPlane": {
+            "x-": 243,
+            "y+": 125,
+            "y-": 99
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.16619905467507748,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 127017.62753542796,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 4497.799999982119,
+          "frames": 14,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 480,
+          "revealed": 65,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 354,
+          "outsideByPlane": {
+            "x-": 243,
+            "y+": 125,
+            "y-": 99
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.16658770336129897,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 127314.65229387273,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 4724.9000000059605,
+          "frames": 15,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 492,
+          "revealed": 68,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 365,
+          "outsideByPlane": {
+            "x-": 243,
+            "y+": 136,
+            "y-": 99,
+            "x+": 3
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.16685899665690332,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 127521.98819503837,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 4991.5,
+          "frames": 16,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 499,
+          "revealed": 71,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 372,
+          "outsideByPlane": {
+            "x-": 243,
+            "y+": 136,
+            "y-": 99,
+            "x+": 10
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.16685899665690332,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 127521.98819503837,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 5213.299999982119,
+          "frames": 17,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 508,
+          "revealed": 74,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 381,
+          "outsideByPlane": {
+            "x-": 243,
+            "y+": 145,
+            "y-": 99,
+            "x+": 10
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.16685899665690332,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 127521.98819503837,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 5419.4000000059605,
+          "frames": 18,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 509,
+          "revealed": 77,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 381,
+          "outsideByPlane": {
+            "x-": 243,
+            "y+": 145,
+            "y-": 99,
+            "x+": 10
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.16705697752325963,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 127673.29507215117,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 5649.299999982119,
+          "frames": 19,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 511,
+          "revealed": 80,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 383,
+          "outsideByPlane": {
+            "x-": 245,
+            "y+": 145,
+            "y-": 99,
+            "x+": 10
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.16705697752325963,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 127673.29507215117,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 5891.0999999940395,
+          "frames": 20,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 512,
+          "revealed": 83,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 383,
+          "outsideByPlane": {
+            "x-": 245,
+            "y+": 145,
+            "y-": 99,
+            "x+": 10
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.16748361699058256,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 127999.35428505273,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 6095.4000000059605,
+          "frames": 21,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 513,
+          "revealed": 86,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 384,
+          "outsideByPlane": {
+            "x-": 245,
+            "y+": 145,
+            "x+": 11,
+            "y-": 99
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.16748361699058256,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 127999.35428505273,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 6311.199999988079,
+          "frames": 22,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 525,
+          "revealed": 89,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 386,
+          "outsideByPlane": {
+            "x-": 247,
+            "y+": 145,
+            "x+": 11,
+            "y-": 99
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.17146418393080443,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 131041.50256911728,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 6555.299999982119,
+          "frames": 23,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 541,
+          "revealed": 92,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 389,
+          "outsideByPlane": {
+            "x-": 249,
+            "y+": 145,
+            "x+": 11,
+            "y-": 102
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.17272412186064623,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 132004.41013199888,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 6769.5999999940395,
+          "frames": 24,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 542,
+          "revealed": 95,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 390,
+          "outsideByPlane": {
+            "x-": 250,
+            "y+": 145,
+            "x+": 11,
+            "y-": 102
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.17272412186064623,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 132004.41013199888,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 6986.799999982119,
+          "frames": 25,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 545,
+          "revealed": 98,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 393,
+          "outsideByPlane": {
+            "x-": 250,
+            "y+": 147,
+            "x+": 14,
+            "y-": 102
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.17272412186064623,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 132004.41013199888,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 7212.299999982119,
+          "frames": 26,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 549,
+          "revealed": 101,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 397,
+          "outsideByPlane": {
+            "x-": 251,
+            "y+": 151,
+            "x+": 14,
+            "y-": 102
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.17272412186064623,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 132004.41013199888,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 7444.299999982119,
+          "frames": 27,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 567,
+          "revealed": 104,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 412,
+          "outsideByPlane": {
+            "x-": 259,
+            "y+": 158,
+            "x+": 21,
+            "y-": 108
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.1731005231155902,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 132292.0747910898,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 7690.4000000059605,
+          "frames": 28,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 605,
+          "revealed": 107,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 418,
+          "outsideByPlane": {
+            "x-": 265,
+            "y+": 164,
+            "x+": 21,
+            "y-": 108
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.18420897280851528,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 140781.70746890779,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 7924.9000000059605,
+          "frames": 29,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 625,
+          "revealed": 110,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 432,
+          "outsideByPlane": {
+            "x-": 265,
+            "y+": 175,
+            "x+": 35,
+            "y-": 108
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.1855492889748555,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 141806.04409903332,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 8176.799999982119,
+          "frames": 30,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 656,
+          "revealed": 113,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 448,
+          "outsideByPlane": {
+            "y-": 115,
+            "x-": 265,
+            "y+": 175,
+            "x+": 44
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.19126416388332623,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 146173.63724783208,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 8454.09999999404,
+          "frames": 31,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 672,
+          "revealed": 116,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 455,
+          "outsideByPlane": {
+            "y-": 118,
+            "x-": 265,
+            "x+": 48,
+            "y+": 175
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.19500758699305332,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 149034.54835944102,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 8707.5,
+          "frames": 32,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 783,
+          "revealed": 119,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 527,
+          "outsideByPlane": {
+            "x+": 120,
+            "y-": 124,
+            "x-": 265,
+            "y+": 175
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.21101448684755447,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 161267.8215732435,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 9007.299999982119,
+          "frames": 33,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 798,
+          "revealed": 122,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 536,
+          "outsideByPlane": {
+            "y-": 129,
+            "x+": 120,
+            "x-": 265,
+            "y+": 179
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.212295831504891,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 162247.08922761297,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 9300.90000000596,
+          "frames": 34,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 821,
+          "revealed": 125,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 549,
+          "outsideByPlane": {
+            "y-": 129,
+            "x+": 120,
+            "x-": 278,
+            "y+": 185
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.21491452372698477,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 164248.42475834812,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 9578,
+          "frames": 35,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 829,
+          "revealed": 128,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 557,
+          "outsideByPlane": {
+            "y-": 129,
+            "x+": 120,
+            "x-": 278,
+            "y+": 193
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.21491452372698477,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 164248.42475834812,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 9895.799999982119,
+          "frames": 36,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 829,
+          "revealed": 129,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 557,
+          "outsideByPlane": {
+            "y-": 129,
+            "x+": 120,
+            "x-": 278,
+            "y+": 193
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.21491452372698477,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 164248.42475834812,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 110,
+          "at": 12882.699999988079,
+          "frames": 45,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 829,
+          "revealed": 129,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 475,
+          "outsideByPlane": {
+            "y+": 177,
+            "y-": 117,
+            "x+": 143,
+            "x-": 103
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.2715260985240965,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 207513.8207970407,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 120,
+          "at": 17384,
+          "frames": 55,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 829,
+          "revealed": 129,
+          "total": 129,
+          "packing": [],
+          "behind": 1,
+          "eyeInside": 0,
+          "eyeCrossing": 3,
+          "frustumOutside": 386,
+          "outsideByPlane": {
+            "x+": 168,
+            "y+": 164,
+            "z-": 1,
+            "y-": 76,
+            "x-": 38
+          },
+          "fullViewportQuads": 3,
+          "fullViewportOutside": 3,
+          "quadViewportAreas": 3.276174201157114,
+          "outsideQuadViewportAreas": 3,
+          "quadPixelAreas": 2503816.1332343244,
+          "outsideQuadPixelAreas": 2292750
+        },
+        {
+          "revision": 130,
+          "at": 21836.69999998808,
+          "frames": 65,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 829,
+          "revealed": 129,
+          "total": 129,
+          "packing": [],
+          "behind": 9,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 437,
+          "outsideByPlane": {
+            "x-": 47,
+            "y+": 204,
+            "z-": 9,
+            "x+": 176,
+            "y-": 99
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.2634579653267921,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 201347.75000100088,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 140,
+          "at": 25405.59999999404,
+          "frames": 75,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 829,
+          "revealed": 129,
+          "total": 129,
+          "packing": [],
+          "behind": 9,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 433,
+          "outsideByPlane": {
+            "x-": 45,
+            "y+": 194,
+            "z-": 9,
+            "x+": 171,
+            "y-": 109
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.2680370030117465,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 204847.27955172723,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 150,
+          "at": 28889.69999998808,
+          "frames": 85,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 829,
+          "revealed": 129,
+          "total": 129,
+          "packing": [],
+          "behind": 9,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 408,
+          "outsideByPlane": {
+            "x-": 44,
+            "y+": 166,
+            "z-": 9,
+            "x+": 168,
+            "y-": 112
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.2763958347816379,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 211235.51673186675,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 160,
+          "at": 32190.5,
+          "frames": 95,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 829,
+          "revealed": 129,
+          "total": 129,
+          "packing": [],
+          "behind": 6,
+          "eyeInside": 0,
+          "eyeCrossing": 2,
+          "frustumOutside": 378,
+          "outsideByPlane": {
+            "x-": 42,
+            "y+": 153,
+            "z-": 6,
+            "x+": 166,
+            "y-": 95
+          },
+          "fullViewportQuads": 2,
+          "fullViewportOutside": 2,
+          "quadViewportAreas": 2.283677627711919,
+          "outsideQuadViewportAreas": 2,
+          "quadPixelAreas": 1745300.626978834,
+          "outsideQuadPixelAreas": 1528500
+        },
+        {
+          "revision": 170,
+          "at": 35791.59999999404,
+          "frames": 105,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 829,
+          "revealed": 129,
+          "total": 129,
+          "packing": [],
+          "behind": 4,
+          "eyeInside": 0,
+          "eyeCrossing": 2,
+          "frustumOutside": 362,
+          "outsideByPlane": {
+            "x-": 36,
+            "y+": 152,
+            "z-": 4,
+            "x+": 165,
+            "y-": 79
+          },
+          "fullViewportQuads": 2,
+          "fullViewportOutside": 2,
+          "quadViewportAreas": 2.2889433223150744,
+          "outsideQuadViewportAreas": 2,
+          "quadPixelAreas": 1749324.9340792955,
+          "outsideQuadPixelAreas": 1528500
+        },
+        {
+          "revision": 180,
+          "at": 39750.5,
+          "frames": 116,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 829,
+          "revealed": 129,
+          "total": 129,
+          "packing": [],
+          "behind": 3,
+          "eyeInside": 0,
+          "eyeCrossing": 1,
+          "frustumOutside": 358,
+          "outsideByPlane": {
+            "x+": 165,
+            "y+": 159,
+            "z-": 3,
+            "y-": 70,
+            "x-": 34
+          },
+          "fullViewportQuads": 1,
+          "fullViewportOutside": 1,
+          "quadViewportAreas": 1.2887309161792517,
+          "outsideQuadViewportAreas": 1,
+          "quadPixelAreas": 984912.6026899931,
+          "outsideQuadPixelAreas": 764250
+        },
+        {
+          "revision": 190,
+          "at": 43317.5,
+          "frames": 126,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 829,
+          "revealed": 129,
+          "total": 129,
+          "packing": [],
+          "behind": 4,
+          "eyeInside": 0,
+          "eyeCrossing": 2,
+          "frustumOutside": 369,
+          "outsideByPlane": {
+            "x-": 37,
+            "y+": 169,
+            "z-": 4,
+            "x+": 165,
+            "y-": 70
+          },
+          "fullViewportQuads": 2,
+          "fullViewportOutside": 2,
+          "quadViewportAreas": 2.294390136481085,
+          "outsideQuadViewportAreas": 2,
+          "quadPixelAreas": 1753487.6618056693,
+          "outsideQuadPixelAreas": 1528500
+        },
+        {
+          "revision": 200,
+          "at": 47306.79999998212,
+          "frames": 136,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 829,
+          "revealed": 129,
+          "total": 129,
+          "packing": [],
+          "behind": 3,
+          "eyeInside": 0,
+          "eyeCrossing": 2,
+          "frustumOutside": 366,
+          "outsideByPlane": {
+            "x-": 37,
+            "y+": 169,
+            "x+": 164,
+            "z-": 3,
+            "y-": 69
+          },
+          "fullViewportQuads": 2,
+          "fullViewportOutside": 2,
+          "quadViewportAreas": 2.2957413209568363,
+          "outsideQuadViewportAreas": 2,
+          "quadPixelAreas": 1754520.304541262,
+          "outsideQuadPixelAreas": 1528500
+        },
+        {
+          "revision": 210,
+          "at": 50831.90000000596,
+          "frames": 146,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 829,
+          "revealed": 129,
+          "total": 129,
+          "packing": [],
+          "behind": 3,
+          "eyeInside": 0,
+          "eyeCrossing": 2,
+          "frustumOutside": 372,
+          "outsideByPlane": {
+            "x-": 37,
+            "y+": 174,
+            "x+": 164,
+            "z-": 3,
+            "y-": 70
+          },
+          "fullViewportQuads": 2,
+          "fullViewportOutside": 2,
+          "quadViewportAreas": 2.2978531388300025,
+          "outsideQuadViewportAreas": 2,
+          "quadPixelAreas": 1756134.2613508294,
+          "outsideQuadPixelAreas": 1528500
+        },
+        {
+          "revision": 220,
+          "at": 54707.90000000596,
+          "frames": 156,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 829,
+          "revealed": 129,
+          "total": 129,
+          "packing": [],
+          "behind": 3,
+          "eyeInside": 0,
+          "eyeCrossing": 2,
+          "frustumOutside": 373,
+          "outsideByPlane": {
+            "x-": 37,
+            "y+": 175,
+            "x+": 164,
+            "z-": 3,
+            "y-": 69
+          },
+          "fullViewportQuads": 2,
+          "fullViewportOutside": 2,
+          "quadViewportAreas": 2.2979108188078023,
+          "outsideQuadViewportAreas": 2,
+          "quadPixelAreas": 1756178.3432738632,
+          "outsideQuadPixelAreas": 1528500
+        },
+        {
+          "revision": 230,
+          "at": 58331.09999999404,
+          "frames": 166,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 829,
+          "revealed": 129,
+          "total": 129,
+          "packing": [],
+          "behind": 3,
+          "eyeInside": 0,
+          "eyeCrossing": 2,
+          "frustumOutside": 374,
+          "outsideByPlane": {
+            "x-": 37,
+            "y+": 176,
+            "x+": 164,
+            "z-": 3,
+            "y-": 69
+          },
+          "fullViewportQuads": 2,
+          "fullViewportOutside": 2,
+          "quadViewportAreas": 2.2978283256637457,
+          "outsideQuadViewportAreas": 2,
+          "quadPixelAreas": 1756115.2978885178,
+          "outsideQuadPixelAreas": 1528500
+        },
+        {
+          "revision": 240,
+          "at": 61789.90000000596,
+          "frames": 176,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 829,
+          "revealed": 129,
+          "total": 129,
+          "packing": [],
+          "behind": 3,
+          "eyeInside": 0,
+          "eyeCrossing": 2,
+          "frustumOutside": 374,
+          "outsideByPlane": {
+            "x-": 37,
+            "y+": 175,
+            "x+": 164,
+            "z-": 3,
+            "y-": 71
+          },
+          "fullViewportQuads": 2,
+          "fullViewportOutside": 2,
+          "quadViewportAreas": 2.2988419936094533,
+          "outsideQuadViewportAreas": 2,
+          "quadPixelAreas": 1756889.9936160245,
+          "outsideQuadPixelAreas": 1528500
+        },
+        {
+          "revision": 250,
+          "at": 65689.29999998212,
+          "frames": 186,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 829,
+          "revealed": 129,
+          "total": 129,
+          "packing": [],
+          "behind": 3,
+          "eyeInside": 0,
+          "eyeCrossing": 3,
+          "frustumOutside": 377,
+          "outsideByPlane": {
+            "x-": 37,
+            "y+": 177,
+            "x+": 164,
+            "z-": 3,
+            "y-": 72
+          },
+          "fullViewportQuads": 3,
+          "fullViewportOutside": 3,
+          "quadViewportAreas": 3.2996343235342156,
+          "outsideQuadViewportAreas": 3,
+          "quadPixelAreas": 2521745.531761024,
+          "outsideQuadPixelAreas": 2292750
+        }
+      ],
+      "lateOutsideEyeCrossings": [
+        {
+          "index": 0,
+          "id": "tests/integration/programs/csharp/webforms/src/Scripts/appConfig.js",
+          "center": [
+            -225.2741218762921,
+            97.65888978191627,
+            3.0347323492915734
+          ],
+          "radius": 3.1847453117370605,
+          "alpha": 0.44999998807907104,
+          "depth": -3.0347323492915734,
+          "behind": false,
+          "eyeInside": false,
+          "eyeCrossing": true,
+          "rejected": [
+            "x-",
+            "y+"
+          ],
+          "quadNdc": {
+            "low": [
+              -1,
+              -1
+            ],
+            "high": [
+              1,
+              1
+            ]
+          },
+          "viewportArea": 1
+        },
+        {
+          "index": 827,
+          "id": "tests/integration/programs/csharp/webforms/WebForms.csproj",
+          "center": [
+            -216.0853248792218,
+            106.66248322674049,
+            -3.5467801018803016
+          ],
+          "radius": 4.0125274658203125,
+          "alpha": 0.44999998807907104,
+          "depth": 3.5467801018803016,
+          "behind": false,
+          "eyeInside": false,
+          "eyeCrossing": true,
+          "rejected": [
+            "x-",
+            "y+"
+          ],
+          "quadNdc": {
+            "low": [
+              -1,
+              -1
+            ],
+            "high": [
+              1,
+              1
+            ]
+          },
+          "viewportArea": 1
+        },
+        {
+          "index": 828,
+          "id": "tests/integration/programs/csharp/webforms/src/Pages/Default.aspx.designer.cs",
+          "center": [
+            -237.4701210217999,
+            108.5063324088694,
+            -0.46517609797405157
+          ],
+          "radius": 5.0554680824279785,
+          "alpha": 0.44999998807907104,
+          "depth": 0.46517609797405157,
+          "behind": false,
+          "eyeInside": false,
+          "eyeCrossing": true,
+          "rejected": [
+            "x-",
+            "y+"
+          ],
+          "quadNdc": {
+            "low": [
+              -1,
+              -1
+            ],
+            "high": [
+              1,
+              1
+            ]
+          },
+          "viewportArea": 1
+        }
+      ]
+    },
+    {
+      "mode": "analytic",
+      "bundleSha256": "aba28f76c5d2e9d8d386f93a6dad50b98e13cfe44033d01586c42a09a2e9bc98",
+      "dataSha256": "befc6ffb5a02c9dc0e421fd6ea3791bf3ffb5666413038d52d4816ec8b52fda4",
+      "defaults": {
+        "wrappers": "skin",
+        "hops": "1"
+      },
+      "elapsedMs": 59036,
+      "errors": [],
+      "last": {
+        "revision": 281,
+        "still": false,
+        "ready": true,
+        "packing": [],
+        "revealed": 129,
+        "total": 129,
+        "points": [
+          {
+            "id": ".devcontainer/devcontainer.json",
+            "x": 405.88309555014285,
+            "y": -61.43559260822537,
+            "z": 275.2272901595964
+          },
+          {
+            "id": ".devcontainer/post-create.sh",
+            "x": -408.59461424769484,
+            "y": -286.7954302591119,
+            "z": -21.05463585096195
+          },
+          {
+            "id": ".gitattributes",
+            "x": 304.0003230892399,
+            "y": 366.17996833522017,
+            "z": 42.13272973098459
+          },
+          {
+            "id": ".github/dependabot.yml",
+            "x": 97.62498815555406,
+            "y": 447.9635552194828,
+            "z": -130.34717313628715
+          },
+          {
+            "id": ".github/workflows/ci.yml",
+            "x": 291.7947609648433,
+            "y": -254.48394673652172,
+            "z": 322.1480852983615
+          },
+          {
+            "id": ".github/workflows/codeql.yml",
+            "x": 113.39253884123133,
+            "y": -408.2333241530775,
+            "z": 277.8082479918206
+          },
+          {
+            "id": ".github/workflows/npm-audit.yml",
+            "x": -132.7378495323986,
+            "y": -187.49234832153448,
+            "z": -407.9305816658203
+          },
+          {
+            "id": ".github/workflows/pages.yml",
+            "x": 177.0789512680961,
+            "y": 60.52728346565558,
+            "z": -422.56231931398867
+          }
+        ]
+      },
+      "samples": [
+        {
+          "revision": 101,
+          "at": 1942.7999999821186,
+          "frames": 2,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 351,
+          "revealed": 29,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 60,
+          "outsideByPlane": {
+            "y+": 10,
+            "x-": 11,
+            "y-": 39
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.19690233824101644,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 150482.6120006968,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 2261.4000000059605,
+          "frames": 3,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 369,
+          "revealed": 32,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 297,
+          "outsideByPlane": {
+            "x-": 240,
+            "y+": 70,
+            "y-": 98
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.1200278071380934,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 91731.25160528788,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 2436.9000000059605,
+          "frames": 4,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 463,
+          "revealed": 35,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 351,
+          "outsideByPlane": {
+            "x-": 243,
+            "y+": 122,
+            "y-": 99
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.1406507200835614,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 107492.3128238618,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 2588.199999988079,
+          "frames": 5,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 474,
+          "revealed": 38,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 351,
+          "outsideByPlane": {
+            "x-": 243,
+            "y+": 122,
+            "y-": 99
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.16619939744957604,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 127017.88950083849,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 2731.699999988079,
+          "frames": 6,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 474,
+          "revealed": 41,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 351,
+          "outsideByPlane": {
+            "x-": 243,
+            "y+": 122,
+            "y-": 99
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.16619906113332272,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 127017.63247114189,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 2863.7999999821186,
+          "frames": 7,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 474,
+          "revealed": 44,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 351,
+          "outsideByPlane": {
+            "x-": 243,
+            "y+": 122,
+            "y-": 99
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.166199054707467,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 127017.62756018165,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 2978.7999999821186,
+          "frames": 8,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 474,
+          "revealed": 47,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 351,
+          "outsideByPlane": {
+            "x-": 243,
+            "y+": 122,
+            "y-": 99
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.16619905467546306,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 127017.62753572264,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 3088.2999999821186,
+          "frames": 9,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 474,
+          "revealed": 50,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 351,
+          "outsideByPlane": {
+            "x-": 243,
+            "y+": 122,
+            "y-": 99
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.16619905467508211,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 127017.62753543151,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 3200.0999999940395,
+          "frames": 10,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 474,
+          "revealed": 53,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 351,
+          "outsideByPlane": {
+            "x-": 243,
+            "y+": 122,
+            "y-": 99
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.16619905467507753,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 127017.62753542801,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 3313.4000000059605,
+          "frames": 11,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 474,
+          "revealed": 56,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 351,
+          "outsideByPlane": {
+            "x-": 243,
+            "y+": 122,
+            "y-": 99
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.16619905467507748,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 127017.62753542796,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 3426.4000000059605,
+          "frames": 12,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 477,
+          "revealed": 59,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 354,
+          "outsideByPlane": {
+            "x-": 243,
+            "y+": 125,
+            "y-": 99
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.16619905467507748,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 127017.62753542796,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 3564,
+          "frames": 13,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 477,
+          "revealed": 62,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 354,
+          "outsideByPlane": {
+            "x-": 243,
+            "y+": 125,
+            "y-": 99
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.16619905467507748,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 127017.62753542796,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 3680.199999988079,
+          "frames": 14,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 480,
+          "revealed": 65,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 354,
+          "outsideByPlane": {
+            "x-": 243,
+            "y+": 125,
+            "y-": 99
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.16658770336129897,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 127314.65229387273,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 3801,
+          "frames": 15,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 492,
+          "revealed": 68,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 365,
+          "outsideByPlane": {
+            "x-": 243,
+            "y+": 136,
+            "y-": 99,
+            "x+": 3
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.16685899665690332,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 127521.98819503837,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 3963,
+          "frames": 16,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 499,
+          "revealed": 71,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 372,
+          "outsideByPlane": {
+            "x-": 243,
+            "y+": 136,
+            "y-": 99,
+            "x+": 10
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.16685899665690332,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 127521.98819503837,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 4107.5999999940395,
+          "frames": 17,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 508,
+          "revealed": 74,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 381,
+          "outsideByPlane": {
+            "x-": 243,
+            "y+": 145,
+            "y-": 99,
+            "x+": 10
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.16685899665690332,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 127521.98819503837,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 4234.299999982119,
+          "frames": 18,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 509,
+          "revealed": 77,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 381,
+          "outsideByPlane": {
+            "x-": 243,
+            "y+": 145,
+            "y-": 99,
+            "x+": 10
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.16705697752325963,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 127673.29507215117,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 4369.199999988079,
+          "frames": 19,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 511,
+          "revealed": 80,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 383,
+          "outsideByPlane": {
+            "x-": 245,
+            "y+": 145,
+            "y-": 99,
+            "x+": 10
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.16705697752325963,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 127673.29507215117,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 4518.5999999940395,
+          "frames": 20,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 512,
+          "revealed": 83,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 383,
+          "outsideByPlane": {
+            "x-": 245,
+            "y+": 145,
+            "y-": 99,
+            "x+": 10
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.16748361699058256,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 127999.35428505273,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 4655.199999988079,
+          "frames": 21,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 513,
+          "revealed": 86,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 384,
+          "outsideByPlane": {
+            "x-": 245,
+            "y+": 145,
+            "x+": 11,
+            "y-": 99
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.16748361699058256,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 127999.35428505273,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 4773.5,
+          "frames": 22,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 525,
+          "revealed": 89,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 386,
+          "outsideByPlane": {
+            "x-": 247,
+            "y+": 145,
+            "x+": 11,
+            "y-": 99
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.17146418393080443,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 131041.50256911728,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 4899.4000000059605,
+          "frames": 23,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 541,
+          "revealed": 92,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 389,
+          "outsideByPlane": {
+            "x-": 249,
+            "y+": 145,
+            "x+": 11,
+            "y-": 102
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.17272412186064623,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 132004.41013199888,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 5032.199999988079,
+          "frames": 24,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 542,
+          "revealed": 95,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 390,
+          "outsideByPlane": {
+            "x-": 250,
+            "y+": 145,
+            "x+": 11,
+            "y-": 102
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.17272412186064623,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 132004.41013199888,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 5157.699999988079,
+          "frames": 25,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 545,
+          "revealed": 98,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 393,
+          "outsideByPlane": {
+            "x-": 250,
+            "y+": 147,
+            "x+": 14,
+            "y-": 102
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.17272412186064623,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 132004.41013199888,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 5281.699999988079,
+          "frames": 26,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 549,
+          "revealed": 101,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 397,
+          "outsideByPlane": {
+            "x-": 251,
+            "y+": 151,
+            "x+": 14,
+            "y-": 102
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.17272412186064623,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 132004.41013199888,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 5415.699999988079,
+          "frames": 27,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 567,
+          "revealed": 104,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 412,
+          "outsideByPlane": {
+            "x-": 259,
+            "y+": 158,
+            "x+": 21,
+            "y-": 108
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.1731005231155902,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 132292.0747910898,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 5542.9000000059605,
+          "frames": 28,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 605,
+          "revealed": 107,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 418,
+          "outsideByPlane": {
+            "x-": 265,
+            "y+": 164,
+            "x+": 21,
+            "y-": 108
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.18420897280851528,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 140781.70746890779,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 5675.5999999940395,
+          "frames": 29,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 625,
+          "revealed": 110,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 432,
+          "outsideByPlane": {
+            "x-": 265,
+            "y+": 175,
+            "x+": 35,
+            "y-": 108
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.1855492889748555,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 141806.04409903332,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 5819.0999999940395,
+          "frames": 30,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 656,
+          "revealed": 113,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 448,
+          "outsideByPlane": {
+            "y-": 115,
+            "x-": 265,
+            "y+": 175,
+            "x+": 44
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.19126416388332623,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 146173.63724783208,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 5980,
+          "frames": 31,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 672,
+          "revealed": 116,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 455,
+          "outsideByPlane": {
+            "y-": 118,
+            "x-": 265,
+            "x+": 48,
+            "y+": 175
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.19500758699305332,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 149034.54835944102,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 6128.4000000059605,
+          "frames": 32,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 783,
+          "revealed": 119,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 527,
+          "outsideByPlane": {
+            "x+": 120,
+            "y-": 124,
+            "x-": 265,
+            "y+": 175
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.21101448684755447,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 161267.8215732435,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 6286.199999988079,
+          "frames": 33,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 798,
+          "revealed": 122,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 536,
+          "outsideByPlane": {
+            "y-": 129,
+            "x+": 120,
+            "x-": 265,
+            "y+": 179
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.212295831504891,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 162247.08922761297,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 6419.5,
+          "frames": 34,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 821,
+          "revealed": 125,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 549,
+          "outsideByPlane": {
+            "y-": 129,
+            "x+": 120,
+            "x-": 278,
+            "y+": 185
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.21491452372698477,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 164248.42475834812,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 6556.5,
+          "frames": 35,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 829,
+          "revealed": 128,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 557,
+          "outsideByPlane": {
+            "y-": 129,
+            "x+": 120,
+            "x-": 278,
+            "y+": 193
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.21491452372698477,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 164248.42475834812,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 101,
+          "at": 6691.199999988079,
+          "frames": 36,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 829,
+          "revealed": 129,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 557,
+          "outsideByPlane": {
+            "y-": 129,
+            "x+": 120,
+            "x-": 278,
+            "y+": 193
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.21491452372698477,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 164248.42475834812,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 110,
+          "at": 8302,
+          "frames": 45,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 829,
+          "revealed": 129,
+          "total": 129,
+          "packing": [],
+          "behind": 0,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 475,
+          "outsideByPlane": {
+            "y+": 177,
+            "y-": 117,
+            "x+": 143,
+            "x-": 103
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.2715260985240965,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 207513.8207970407,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 120,
+          "at": 10444.199999988079,
+          "frames": 55,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 829,
+          "revealed": 129,
+          "total": 129,
+          "packing": [],
+          "behind": 1,
+          "eyeInside": 0,
+          "eyeCrossing": 3,
+          "frustumOutside": 386,
+          "outsideByPlane": {
+            "x+": 168,
+            "y+": 164,
+            "z-": 1,
+            "y-": 76,
+            "x-": 38
+          },
+          "fullViewportQuads": 3,
+          "fullViewportOutside": 3,
+          "quadViewportAreas": 3.276174201157114,
+          "outsideQuadViewportAreas": 3,
+          "quadPixelAreas": 2503816.1332343244,
+          "outsideQuadPixelAreas": 2292750
+        },
+        {
+          "revision": 130,
+          "at": 12904,
+          "frames": 65,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 829,
+          "revealed": 129,
+          "total": 129,
+          "packing": [],
+          "behind": 9,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 437,
+          "outsideByPlane": {
+            "x-": 47,
+            "y+": 204,
+            "z-": 9,
+            "x+": 176,
+            "y-": 99
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.2634579653267921,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 201347.75000100088,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 140,
+          "at": 14832.40000000596,
+          "frames": 75,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 829,
+          "revealed": 129,
+          "total": 129,
+          "packing": [],
+          "behind": 9,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 433,
+          "outsideByPlane": {
+            "x-": 45,
+            "y+": 194,
+            "z-": 9,
+            "x+": 171,
+            "y-": 109
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.2680370030117465,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 204847.27955172723,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 150,
+          "at": 16729.59999999404,
+          "frames": 85,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 829,
+          "revealed": 129,
+          "total": 129,
+          "packing": [],
+          "behind": 9,
+          "eyeInside": 0,
+          "eyeCrossing": 0,
+          "frustumOutside": 408,
+          "outsideByPlane": {
+            "x-": 44,
+            "y+": 166,
+            "z-": 9,
+            "x+": 168,
+            "y-": 112
+          },
+          "fullViewportQuads": 0,
+          "fullViewportOutside": 0,
+          "quadViewportAreas": 0.2763958347816379,
+          "outsideQuadViewportAreas": 0,
+          "quadPixelAreas": 211235.51673186675,
+          "outsideQuadPixelAreas": 0
+        },
+        {
+          "revision": 160,
+          "at": 19621.69999998808,
+          "frames": 95,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 829,
+          "revealed": 129,
+          "total": 129,
+          "packing": [],
+          "behind": 6,
+          "eyeInside": 0,
+          "eyeCrossing": 2,
+          "frustumOutside": 378,
+          "outsideByPlane": {
+            "x-": 42,
+            "y+": 153,
+            "z-": 6,
+            "x+": 166,
+            "y-": 95
+          },
+          "fullViewportQuads": 2,
+          "fullViewportOutside": 2,
+          "quadViewportAreas": 2.283677627711919,
+          "outsideQuadViewportAreas": 2,
+          "quadPixelAreas": 1745300.626978834,
+          "outsideQuadPixelAreas": 1528500
+        },
+        {
+          "revision": 170,
+          "at": 22988.40000000596,
+          "frames": 105,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 829,
+          "revealed": 129,
+          "total": 129,
+          "packing": [],
+          "behind": 4,
+          "eyeInside": 0,
+          "eyeCrossing": 2,
+          "frustumOutside": 362,
+          "outsideByPlane": {
+            "x-": 36,
+            "y+": 152,
+            "z-": 4,
+            "x+": 165,
+            "y-": 79
+          },
+          "fullViewportQuads": 2,
+          "fullViewportOutside": 2,
+          "quadViewportAreas": 2.2889433223150744,
+          "outsideQuadViewportAreas": 2,
+          "quadPixelAreas": 1749324.9340792955,
+          "outsideQuadPixelAreas": 1528500
+        },
+        {
+          "revision": 180,
+          "at": 26654.09999999404,
+          "frames": 116,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 829,
+          "revealed": 129,
+          "total": 129,
+          "packing": [],
+          "behind": 3,
+          "eyeInside": 0,
+          "eyeCrossing": 1,
+          "frustumOutside": 358,
+          "outsideByPlane": {
+            "x+": 165,
+            "y+": 159,
+            "z-": 3,
+            "y-": 70,
+            "x-": 34
+          },
+          "fullViewportQuads": 1,
+          "fullViewportOutside": 1,
+          "quadViewportAreas": 1.2887309161792517,
+          "outsideQuadViewportAreas": 1,
+          "quadPixelAreas": 984912.6026899931,
+          "outsideQuadPixelAreas": 764250
+        },
+        {
+          "revision": 190,
+          "at": 30456.40000000596,
+          "frames": 126,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 829,
+          "revealed": 129,
+          "total": 129,
+          "packing": [],
+          "behind": 4,
+          "eyeInside": 0,
+          "eyeCrossing": 2,
+          "frustumOutside": 369,
+          "outsideByPlane": {
+            "x-": 37,
+            "y+": 169,
+            "z-": 4,
+            "x+": 165,
+            "y-": 70
+          },
+          "fullViewportQuads": 2,
+          "fullViewportOutside": 2,
+          "quadViewportAreas": 2.294390136481085,
+          "outsideQuadViewportAreas": 2,
+          "quadPixelAreas": 1753487.6618056693,
+          "outsideQuadPixelAreas": 1528500
+        },
+        {
+          "revision": 200,
+          "at": 34643.19999998808,
+          "frames": 136,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 829,
+          "revealed": 129,
+          "total": 129,
+          "packing": [],
+          "behind": 3,
+          "eyeInside": 0,
+          "eyeCrossing": 2,
+          "frustumOutside": 366,
+          "outsideByPlane": {
+            "x-": 37,
+            "y+": 169,
+            "x+": 164,
+            "z-": 3,
+            "y-": 69
+          },
+          "fullViewportQuads": 2,
+          "fullViewportOutside": 2,
+          "quadViewportAreas": 2.2957413209568363,
+          "outsideQuadViewportAreas": 2,
+          "quadPixelAreas": 1754520.304541262,
+          "outsideQuadPixelAreas": 1528500
+        },
+        {
+          "revision": 210,
+          "at": 38622.09999999404,
+          "frames": 146,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 829,
+          "revealed": 129,
+          "total": 129,
+          "packing": [],
+          "behind": 3,
+          "eyeInside": 0,
+          "eyeCrossing": 2,
+          "frustumOutside": 372,
+          "outsideByPlane": {
+            "x-": 37,
+            "y+": 174,
+            "x+": 164,
+            "z-": 3,
+            "y-": 70
+          },
+          "fullViewportQuads": 2,
+          "fullViewportOutside": 2,
+          "quadViewportAreas": 2.2978531388300025,
+          "outsideQuadViewportAreas": 2,
+          "quadPixelAreas": 1756134.2613508294,
+          "outsideQuadPixelAreas": 1528500
+        },
+        {
+          "revision": 220,
+          "at": 42565.09999999404,
+          "frames": 156,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 829,
+          "revealed": 129,
+          "total": 129,
+          "packing": [],
+          "behind": 3,
+          "eyeInside": 0,
+          "eyeCrossing": 2,
+          "frustumOutside": 373,
+          "outsideByPlane": {
+            "x-": 37,
+            "y+": 175,
+            "x+": 164,
+            "z-": 3,
+            "y-": 69
+          },
+          "fullViewportQuads": 2,
+          "fullViewportOutside": 2,
+          "quadViewportAreas": 2.2979108188078023,
+          "outsideQuadViewportAreas": 2,
+          "quadPixelAreas": 1756178.3432738632,
+          "outsideQuadPixelAreas": 1528500
+        },
+        {
+          "revision": 230,
+          "at": 46272.09999999404,
+          "frames": 166,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 829,
+          "revealed": 129,
+          "total": 129,
+          "packing": [],
+          "behind": 3,
+          "eyeInside": 0,
+          "eyeCrossing": 2,
+          "frustumOutside": 374,
+          "outsideByPlane": {
+            "x-": 37,
+            "y+": 176,
+            "x+": 164,
+            "z-": 3,
+            "y-": 69
+          },
+          "fullViewportQuads": 2,
+          "fullViewportOutside": 2,
+          "quadViewportAreas": 2.2978283256637457,
+          "outsideQuadViewportAreas": 2,
+          "quadPixelAreas": 1756115.2978885178,
+          "outsideQuadPixelAreas": 1528500
+        },
+        {
+          "revision": 240,
+          "at": 50293.90000000596,
+          "frames": 176,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 829,
+          "revealed": 129,
+          "total": 129,
+          "packing": [],
+          "behind": 3,
+          "eyeInside": 0,
+          "eyeCrossing": 2,
+          "frustumOutside": 374,
+          "outsideByPlane": {
+            "x-": 37,
+            "y+": 175,
+            "x+": 164,
+            "z-": 3,
+            "y-": 71
+          },
+          "fullViewportQuads": 2,
+          "fullViewportOutside": 2,
+          "quadViewportAreas": 2.2988419936094533,
+          "outsideQuadViewportAreas": 2,
+          "quadPixelAreas": 1756889.9936160245,
+          "outsideQuadPixelAreas": 1528500
+        },
+        {
+          "revision": 250,
+          "at": 54384.19999998808,
+          "frames": 186,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 829,
+          "revealed": 129,
+          "total": 129,
+          "packing": [],
+          "behind": 3,
+          "eyeInside": 0,
+          "eyeCrossing": 3,
+          "frustumOutside": 377,
+          "outsideByPlane": {
+            "x-": 37,
+            "y+": 177,
+            "x+": 164,
+            "z-": 3,
+            "y-": 72
+          },
+          "fullViewportQuads": 3,
+          "fullViewportOutside": 3,
+          "quadViewportAreas": 3.2996343235342156,
+          "outsideQuadViewportAreas": 3,
+          "quadPixelAreas": 2521745.531761024,
+          "outsideQuadPixelAreas": 2292750
+        },
+        {
+          "revision": 260,
+          "at": 58613.90000000596,
+          "frames": 196,
+          "canvas": {
+            "width": 1019,
+            "height": 750,
+            "cssWidth": 1019,
+            "cssHeight": 750,
+            "dpr": 1
+          },
+          "count": 829,
+          "revealed": 129,
+          "total": 129,
+          "packing": [],
+          "behind": 4,
+          "eyeInside": 0,
+          "eyeCrossing": 2,
+          "frustumOutside": 377,
+          "outsideByPlane": {
+            "x-": 37,
+            "y+": 177,
+            "z-": 4,
+            "x+": 164,
+            "y-": 72
+          },
+          "fullViewportQuads": 2,
+          "fullViewportOutside": 2,
+          "quadViewportAreas": 2.3000358890097075,
+          "outsideQuadViewportAreas": 2,
+          "quadPixelAreas": 1757802.428175669,
+          "outsideQuadPixelAreas": 1528500
+        }
+      ],
+      "lateOutsideEyeCrossings": [
+        {
+          "index": 0,
+          "id": "tests/integration/programs/csharp/webforms/src/Scripts/appConfig.js",
+          "center": [
+            -225.2741218762921,
+            97.65888978191627,
+            3.0347323492915734
+          ],
+          "radius": 3.1847453117370605,
+          "alpha": 0.44999998807907104,
+          "depth": -3.0347323492915734,
+          "behind": false,
+          "eyeInside": false,
+          "eyeCrossing": true,
+          "rejected": [
+            "x-",
+            "y+"
+          ],
+          "quadNdc": {
+            "low": [
+              -1,
+              -1
+            ],
+            "high": [
+              1,
+              1
+            ]
+          },
+          "viewportArea": 1
+        },
+        {
+          "index": 827,
+          "id": "tests/integration/programs/csharp/webforms/WebForms.csproj",
+          "center": [
+            -216.0853248792218,
+            106.66248322674049,
+            -3.5467801018803016
+          ],
+          "radius": 4.0125274658203125,
+          "alpha": 0.44999998807907104,
+          "depth": 3.5467801018803016,
+          "behind": false,
+          "eyeInside": false,
+          "eyeCrossing": true,
+          "rejected": [
+            "x-",
+            "y+"
+          ],
+          "quadNdc": {
+            "low": [
+              -1,
+              -1
+            ],
+            "high": [
+              1,
+              1
+            ]
+          },
+          "viewportArea": 1
+        },
+        {
+          "index": 828,
+          "id": "tests/integration/programs/csharp/webforms/src/Pages/Default.aspx.designer.cs",
+          "center": [
+            -237.4701210217999,
+            108.5063324088694,
+            -0.46517609797405157
+          ],
+          "radius": 5.0554680824279785,
+          "alpha": 0.44999998807907104,
+          "depth": 0.46517609797405157,
+          "behind": false,
+          "eyeInside": false,
+          "eyeCrossing": true,
+          "rejected": [
+            "x-",
+            "y+"
+          ],
+          "quadNdc": {
+            "low": [
+              -1,
+              -1
+            ],
+            "high": [
+              1,
+              1
+            ]
+          },
+          "viewportArea": 1
+        }
+      ]
+    }
+  ],
+  "matchedRevisions": [
+    {
+      "revision": 101,
+      "unitsExact": true,
+      "projectionExact": true,
+      "viewExact": true
+    },
+    {
+      "revision": 110,
+      "unitsExact": true,
+      "projectionExact": true,
+      "viewExact": true
+    },
+    {
+      "revision": 120,
+      "unitsExact": true,
+      "projectionExact": true,
+      "viewExact": true
+    },
+    {
+      "revision": 130,
+      "unitsExact": true,
+      "projectionExact": true,
+      "viewExact": true
+    },
+    {
+      "revision": 140,
+      "unitsExact": true,
+      "projectionExact": true,
+      "viewExact": true
+    },
+    {
+      "revision": 150,
+      "unitsExact": true,
+      "projectionExact": true,
+      "viewExact": true
+    },
+    {
+      "revision": 160,
+      "unitsExact": true,
+      "projectionExact": true,
+      "viewExact": true
+    },
+    {
+      "revision": 170,
+      "unitsExact": true,
+      "projectionExact": true,
+      "viewExact": true
+    },
+    {
+      "revision": 180,
+      "unitsExact": true,
+      "projectionExact": true,
+      "viewExact": true
+    },
+    {
+      "revision": 190,
+      "unitsExact": true,
+      "projectionExact": true,
+      "viewExact": true
+    },
+    {
+      "revision": 200,
+      "unitsExact": true,
+      "projectionExact": true,
+      "viewExact": true
+    },
+    {
+      "revision": 210,
+      "unitsExact": true,
+      "projectionExact": true,
+      "viewExact": true
+    },
+    {
+      "revision": 220,
+      "unitsExact": true,
+      "projectionExact": true,
+      "viewExact": true
+    },
+    {
+      "revision": 230,
+      "unitsExact": true,
+      "projectionExact": true,
+      "viewExact": true
+    },
+    {
+      "revision": 240,
+      "unitsExact": true,
+      "projectionExact": true,
+      "viewExact": true
+    },
+    {
+      "revision": 250,
+      "unitsExact": true,
+      "projectionExact": true,
+      "viewExact": true
+    }
+  ],
+  "artifacts": {
+    "quad-cost-probe.cjs": "a82c975a8f065d030012de301370d609f52683cc411de505145694af3f1e23da",
+    "quad-cost-analyze.cjs": "1ec8faebca4f1c08dc8019fe7f34a5f602d3ab3c68e6ea27e9d6b9e8f785ebd0",
+    "quad-cost-raw.json": "640e129064ebbf13ef33a7fd9b522798a4269f72e9241c12dbf87f600cb8a96d",
+    "quad-cost-summary.json": "d16f4c9fdb432d859b0b4dfe1bc2c89e820dec62a96dd622d53f15282877fde9"
+  }
+}

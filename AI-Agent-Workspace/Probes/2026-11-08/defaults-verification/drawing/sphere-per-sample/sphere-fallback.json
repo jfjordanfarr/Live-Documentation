@@ -1,0 +1,16 @@
+{
+  "errors": [],
+  "comparison": {
+    "instances": 35,
+    "capabilitiesForcedUnavailable": [
+      "OES_sample_variables"
+    ],
+    "material": "MeshLambertMaterial",
+    "fallbackMaterialCreated": false,
+    "geometry": "SphereGeometry",
+    "triangles": 264,
+    "changedChannels": 0,
+    "maxDifference": 0,
+    "motionPaused": true
+  }
+}

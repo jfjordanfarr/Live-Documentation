@@ -1,0 +1,629 @@
+{
+  "cases": [
+    {
+      "name": "close",
+      "distance": 5,
+      "near": 0.1,
+      "offset": 0,
+      "far": 500,
+      "motionPaused": true,
+      "uploadedInstanceMatricesHeld": true,
+      "quad": {
+        "all": {
+          "pixels": 764250,
+          "changedAbove3": 705,
+          "maxChannelDifference": 94,
+          "total": 31398,
+          "meanPixelDifference": 0.041083415112855744
+        },
+        "edge": {
+          "pixels": 5264,
+          "changedAbove3": 705,
+          "maxChannelDifference": 94,
+          "total": 30556,
+          "meanPixelDifference": 5.804711246200608
+        },
+        "interior": {
+          "pixels": 82360,
+          "changedAbove3": 0,
+          "maxChannelDifference": 1,
+          "total": 842,
+          "meanPixelDifference": 0.010223409422049539
+        }
+      },
+      "analytic": {
+        "all": {
+          "pixels": 764250,
+          "changedAbove3": 112,
+          "maxChannelDifference": 65,
+          "total": 8655,
+          "meanPixelDifference": 0.011324828263002944
+        },
+        "edge": {
+          "pixels": 5264,
+          "changedAbove3": 112,
+          "maxChannelDifference": 65,
+          "total": 3944,
+          "meanPixelDifference": 0.7492401215805471
+        },
+        "interior": {
+          "pixels": 82360,
+          "changedAbove3": 0,
+          "maxChannelDifference": 1,
+          "total": 4711,
+          "meanPixelDifference": 0.05720009713453133
+        }
+      }
+    },
+    {
+      "name": "off-axis",
+      "distance": 5,
+      "near": 0.1,
+      "offset": 2,
+      "far": 500,
+      "motionPaused": true,
+      "uploadedInstanceMatricesHeld": true,
+      "quad": {
+        "all": {
+          "pixels": 764250,
+          "changedAbove3": 715,
+          "maxChannelDifference": 105,
+          "total": 33374,
+          "meanPixelDifference": 0.04366895649329408
+        },
+        "edge": {
+          "pixels": 5165,
+          "changedAbove3": 715,
+          "maxChannelDifference": 105,
+          "total": 31557,
+          "meanPixelDifference": 6.109777347531462
+        },
+        "interior": {
+          "pixels": 102836,
+          "changedAbove3": 0,
+          "maxChannelDifference": 1,
+          "total": 1817,
+          "meanPixelDifference": 0.017668909720331402
+        }
+      },
+      "analytic": {
+        "all": {
+          "pixels": 764250,
+          "changedAbove3": 220,
+          "maxChannelDifference": 71,
+          "total": 12689,
+          "meanPixelDifference": 0.016603205757278378
+        },
+        "edge": {
+          "pixels": 5165,
+          "changedAbove3": 220,
+          "maxChannelDifference": 71,
+          "total": 7548,
+          "meanPixelDifference": 1.461374636979671
+        },
+        "interior": {
+          "pixels": 102836,
+          "changedAbove3": 0,
+          "maxChannelDifference": 1,
+          "total": 5141,
+          "meanPixelDifference": 0.04999222062312809
+        }
+      }
+    },
+    {
+      "name": "near-cap",
+      "distance": 3,
+      "near": 2.1,
+      "offset": 0,
+      "far": 500,
+      "motionPaused": true,
+      "uploadedInstanceMatricesHeld": true,
+      "quad": {
+        "all": {
+          "pixels": 764250,
+          "changedAbove3": 2104,
+          "maxChannelDifference": 144,
+          "total": 130683,
+          "meanPixelDifference": 0.17099509322865555
+        },
+        "edge": {
+          "pixels": 14432,
+          "changedAbove3": 2104,
+          "maxChannelDifference": 144,
+          "total": 126902,
+          "meanPixelDifference": 8.79309866962306
+        },
+        "interior": {
+          "pixels": 160498,
+          "changedAbove3": 0,
+          "maxChannelDifference": 1,
+          "total": 3781,
+          "meanPixelDifference": 0.02355792595546362
+        }
+      },
+      "analytic": {
+        "all": {
+          "pixels": 764250,
+          "changedAbove3": 1660,
+          "maxChannelDifference": 108,
+          "total": 86425,
+          "meanPixelDifference": 0.11308472358521426
+        },
+        "edge": {
+          "pixels": 14432,
+          "changedAbove3": 1660,
+          "maxChannelDifference": 108,
+          "total": 80207,
+          "meanPixelDifference": 5.557580376940133
+        },
+        "interior": {
+          "pixels": 160498,
+          "changedAbove3": 0,
+          "maxChannelDifference": 1,
+          "total": 6218,
+          "meanPixelDifference": 0.03874191578711261
+        }
+      }
+    },
+    {
+      "name": "front-clipped",
+      "distance": 3,
+      "near": 2.8,
+      "offset": 0,
+      "far": 500,
+      "motionPaused": true,
+      "uploadedInstanceMatricesHeld": true,
+      "quad": {
+        "all": {
+          "pixels": 764250,
+          "changedAbove3": 0,
+          "maxChannelDifference": 0,
+          "total": 0,
+          "meanPixelDifference": 0
+        },
+        "edge": {
+          "pixels": 0,
+          "changedAbove3": 0,
+          "maxChannelDifference": 0,
+          "total": 0,
+          "meanPixelDifference": 0
+        },
+        "interior": {
+          "pixels": 0,
+          "changedAbove3": 0,
+          "maxChannelDifference": 0,
+          "total": 0,
+          "meanPixelDifference": 0
+        }
+      },
+      "analytic": {
+        "all": {
+          "pixels": 764250,
+          "changedAbove3": 0,
+          "maxChannelDifference": 0,
+          "total": 0,
+          "meanPixelDifference": 0
+        },
+        "edge": {
+          "pixels": 0,
+          "changedAbove3": 0,
+          "maxChannelDifference": 0,
+          "total": 0,
+          "meanPixelDifference": 0
+        },
+        "interior": {
+          "pixels": 0,
+          "changedAbove3": 0,
+          "maxChannelDifference": 0,
+          "total": 0,
+          "meanPixelDifference": 0
+        }
+      }
+    },
+    {
+      "name": "inside",
+      "distance": 0.4,
+      "near": 0.1,
+      "offset": 0,
+      "far": 500,
+      "motionPaused": true,
+      "uploadedInstanceMatricesHeld": true,
+      "quad": {
+        "all": {
+          "pixels": 764250,
+          "changedAbove3": 0,
+          "maxChannelDifference": 0,
+          "total": 0,
+          "meanPixelDifference": 0
+        },
+        "edge": {
+          "pixels": 0,
+          "changedAbove3": 0,
+          "maxChannelDifference": 0,
+          "total": 0,
+          "meanPixelDifference": 0
+        },
+        "interior": {
+          "pixels": 0,
+          "changedAbove3": 0,
+          "maxChannelDifference": 0,
+          "total": 0,
+          "meanPixelDifference": 0
+        }
+      },
+      "analytic": {
+        "all": {
+          "pixels": 764250,
+          "changedAbove3": 0,
+          "maxChannelDifference": 0,
+          "total": 0,
+          "meanPixelDifference": 0
+        },
+        "edge": {
+          "pixels": 0,
+          "changedAbove3": 0,
+          "maxChannelDifference": 0,
+          "total": 0,
+          "meanPixelDifference": 0
+        },
+        "interior": {
+          "pixels": 0,
+          "changedAbove3": 0,
+          "maxChannelDifference": 0,
+          "total": 0,
+          "meanPixelDifference": 0
+        }
+      }
+    },
+    {
+      "name": "far-cap",
+      "distance": 3,
+      "near": 0.1,
+      "offset": 0,
+      "far": 2.2,
+      "motionPaused": true,
+      "uploadedInstanceMatricesHeld": true,
+      "quad": {
+        "all": {
+          "pixels": 764250,
+          "changedAbove3": 1005,
+          "maxChannelDifference": 162,
+          "total": 68914,
+          "meanPixelDifference": 0.09017206411514557
+        },
+        "edge": {
+          "pixels": 7030,
+          "changedAbove3": 1005,
+          "maxChannelDifference": 162,
+          "total": 67739,
+          "meanPixelDifference": 9.63570412517781
+        },
+        "interior": {
+          "pixels": 147701,
+          "changedAbove3": 0,
+          "maxChannelDifference": 1,
+          "total": 1175,
+          "meanPixelDifference": 0.007955260966411873
+        }
+      },
+      "analytic": {
+        "all": {
+          "pixels": 764250,
+          "changedAbove3": 1197,
+          "maxChannelDifference": 105,
+          "total": 60119,
+          "meanPixelDifference": 0.07866404972194962
+        },
+        "edge": {
+          "pixels": 7030,
+          "changedAbove3": 1197,
+          "maxChannelDifference": 105,
+          "total": 57563,
+          "meanPixelDifference": 8.18819345661451
+        },
+        "interior": {
+          "pixels": 147701,
+          "changedAbove3": 0,
+          "maxChannelDifference": 1,
+          "total": 2556,
+          "meanPixelDifference": 0.01730523151502021
+        }
+      }
+    },
+    {
+      "name": "shifted-lens",
+      "distance": 5,
+      "near": 0.1,
+      "offset": 0,
+      "far": 500,
+      "shift": 0.25,
+      "motionPaused": true,
+      "uploadedInstanceMatricesHeld": true,
+      "quad": {
+        "all": {
+          "pixels": 764250,
+          "changedAbove3": 653,
+          "maxChannelDifference": 84,
+          "total": 28960,
+          "meanPixelDifference": 0.037893359502780506
+        },
+        "edge": {
+          "pixels": 4864,
+          "changedAbove3": 653,
+          "maxChannelDifference": 84,
+          "total": 28265,
+          "meanPixelDifference": 5.8110608552631575
+        },
+        "interior": {
+          "pixels": 69758,
+          "changedAbove3": 0,
+          "maxChannelDifference": 1,
+          "total": 695,
+          "meanPixelDifference": 0.009963014994695948
+        }
+      },
+      "analytic": {
+        "all": {
+          "pixels": 764250,
+          "changedAbove3": 93,
+          "maxChannelDifference": 66,
+          "total": 7232,
+          "meanPixelDifference": 0.009462872096826955
+        },
+        "edge": {
+          "pixels": 4864,
+          "changedAbove3": 93,
+          "maxChannelDifference": 66,
+          "total": 3265,
+          "meanPixelDifference": 0.6712582236842105
+        },
+        "interior": {
+          "pixels": 69758,
+          "changedAbove3": 0,
+          "maxChannelDifference": 1,
+          "total": 3967,
+          "meanPixelDifference": 0.056868029473322056
+        }
+      }
+    },
+    {
+      "name": "eye-cross-outside",
+      "distance": 0.4,
+      "lateral": 1.4,
+      "near": 0.1,
+      "offset": 0,
+      "far": 500,
+      "motionPaused": true,
+      "uploadedInstanceMatricesHeld": true,
+      "quad": {
+        "all": {
+          "pixels": 764250,
+          "changedAbove3": 597,
+          "maxChannelDifference": 160,
+          "total": 43392,
+          "meanPixelDifference": 0.05677723258096173
+        },
+        "edge": {
+          "pixels": 3600,
+          "changedAbove3": 597,
+          "maxChannelDifference": 160,
+          "total": 40436,
+          "meanPixelDifference": 11.232222222222223
+        },
+        "interior": {
+          "pixels": 57382,
+          "changedAbove3": 0,
+          "maxChannelDifference": 1,
+          "total": 2956,
+          "meanPixelDifference": 0.05151441218500575
+        }
+      },
+      "analytic": {
+        "all": {
+          "pixels": 764250,
+          "changedAbove3": 729,
+          "maxChannelDifference": 119,
+          "total": 38314,
+          "meanPixelDifference": 0.05013280994438993
+        },
+        "edge": {
+          "pixels": 3600,
+          "changedAbove3": 729,
+          "maxChannelDifference": 119,
+          "total": 37034,
+          "meanPixelDifference": 10.287222222222223
+        },
+        "interior": {
+          "pixels": 57382,
+          "changedAbove3": 0,
+          "maxChannelDifference": 1,
+          "total": 1280,
+          "meanPixelDifference": 0.022306646683629014
+        }
+      }
+    },
+    {
+      "name": "isolated-close",
+      "distance": 5,
+      "near": 0.1,
+      "offset": 0,
+      "far": 500,
+      "isolated": true,
+      "motionPaused": true,
+      "uploadedInstanceMatricesHeld": true,
+      "quad": {
+        "all": {
+          "pixels": 764250,
+          "changedAbove3": 669,
+          "maxChannelDifference": 82,
+          "total": 29137,
+          "meanPixelDifference": 0.0381249591102388
+        },
+        "edge": {
+          "pixels": 4864,
+          "changedAbove3": 669,
+          "maxChannelDifference": 82,
+          "total": 28364,
+          "meanPixelDifference": 5.831414473684211
+        },
+        "interior": {
+          "pixels": 69778,
+          "changedAbove3": 0,
+          "maxChannelDifference": 1,
+          "total": 773,
+          "meanPixelDifference": 0.011077990197483447
+        }
+      },
+      "analytic": {
+        "all": {
+          "pixels": 764250,
+          "changedAbove3": 93,
+          "maxChannelDifference": 57,
+          "total": 7235,
+          "meanPixelDifference": 0.009466797513902519
+        },
+        "edge": {
+          "pixels": 4864,
+          "changedAbove3": 93,
+          "maxChannelDifference": 57,
+          "total": 3292,
+          "meanPixelDifference": 0.6768092105263158
+        },
+        "interior": {
+          "pixels": 69778,
+          "changedAbove3": 0,
+          "maxChannelDifference": 1,
+          "total": 3943,
+          "meanPixelDifference": 0.05650778182235088
+        }
+      }
+    },
+    {
+      "name": "isolated-near-rim",
+      "distance": 3,
+      "near": 2.1,
+      "offset": 0,
+      "far": 500,
+      "isolated": true,
+      "motionPaused": true,
+      "uploadedInstanceMatricesHeld": true,
+      "quad": {
+        "all": {
+          "pixels": 764250,
+          "changedAbove3": 1925,
+          "maxChannelDifference": 144,
+          "total": 116726,
+          "meanPixelDifference": 0.152732744520772
+        },
+        "edge": {
+          "pixels": 13344,
+          "changedAbove3": 1925,
+          "maxChannelDifference": 144,
+          "total": 113412,
+          "meanPixelDifference": 8.49910071942446
+        },
+        "interior": {
+          "pixels": 135799,
+          "changedAbove3": 0,
+          "maxChannelDifference": 1,
+          "total": 3314,
+          "meanPixelDifference": 0.024403714313065632
+        }
+      },
+      "analytic": {
+        "all": {
+          "pixels": 764250,
+          "changedAbove3": 1410,
+          "maxChannelDifference": 142,
+          "total": 72247,
+          "meanPixelDifference": 0.09453320248609748
+        },
+        "edge": {
+          "pixels": 13344,
+          "changedAbove3": 1410,
+          "maxChannelDifference": 142,
+          "total": 66930,
+          "meanPixelDifference": 5.015737410071942
+        },
+        "interior": {
+          "pixels": 135799,
+          "changedAbove3": 0,
+          "maxChannelDifference": 1,
+          "total": 5317,
+          "meanPixelDifference": 0.03915345473825286
+        }
+      }
+    },
+    {
+      "name": "interleaved-overlap-skin",
+      "distance": 5,
+      "near": 0.1,
+      "offset": 0,
+      "far": 500,
+      "overlap": true,
+      "motionPaused": true,
+      "uploadedInstanceMatricesHeld": false,
+      "quad": {
+        "all": {
+          "pixels": 764250,
+          "changedAbove3": 1717,
+          "maxChannelDifference": 104,
+          "total": 47698,
+          "meanPixelDifference": 0.06241151455675499
+        },
+        "edge": {
+          "pixels": 5824,
+          "changedAbove3": 911,
+          "maxChannelDifference": 104,
+          "total": 36273,
+          "meanPixelDifference": 6.228193681318682
+        },
+        "interior": {
+          "pixels": 102064,
+          "changedAbove3": 806,
+          "maxChannelDifference": 23,
+          "total": 11425,
+          "meanPixelDifference": 0.11193956733030255
+        }
+      },
+      "analytic": {
+        "all": {
+          "pixels": 764250,
+          "changedAbove3": 477,
+          "maxChannelDifference": 71,
+          "total": 17945,
+          "meanPixelDifference": 0.023480536473666994
+        },
+        "edge": {
+          "pixels": 5824,
+          "changedAbove3": 322,
+          "maxChannelDifference": 71,
+          "total": 9619,
+          "meanPixelDifference": 1.651614010989011
+        },
+        "interior": {
+          "pixels": 102064,
+          "changedAbove3": 155,
+          "maxChannelDifference": 18,
+          "total": 8326,
+          "meanPixelDifference": 0.08157626587239379
+        }
+      }
+    }
+  ],
+  "errors": [],
+  "target": {
+    "id": "Portal/Models/PaymentRequestModel.cs",
+    "slot": 18,
+    "radius": 5.290562152862549,
+    "center": [
+      -10.022706031799316,
+      127.05461883544922,
+      -9.108540534973145
+    ],
+    "instances": 35,
+    "referenceTriangles": 12096,
+    "samples": 4,
+    "opacity": 0.75
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "candidateBase": "5b610371a2a1d3625d1615c3acdc3152628c7326",
+  "production": "Activated contained-file path, no private hooks/routes/freezes in served assets. Main/estate/original history data held at gate3; growth sample preserved separately. Actual source/shader hashes are in contained-normal-build.json.",
+  "conditions": "Normal-clock arrivals:1280x800,DPR1,searchStarts0-only saved preference, fresh factorySkin1. Focus availability then Tuning disclosure; expand3DLayout/Discovery only ifclosed, readSkin1, closeTuning. No camera gestures during arrival. Native control changes only primitive selector to undefined. Dynamic diagnostics add only a read-only getter and sample once per~1s; no freeze. History today-selected is first load per mode; past-selected/Whole reuse that context.",
+  "motion": "NormalUI1440x960,DPR1,Portal only,no filepins,searchStarts0,Skin1. Orbit75x25px,pan50x-20px,wheel-180,2D/3D,Skin/Cloud/Skin. State is identical on return. Separate clipping diagnostic moves only the near plane at settled live pose and restores it; never a claimed ordinary resting view.",
+  "nativeControl": "Forced missing sample extensions selects actual native169vertices/264triangles with original FrontSide material. Old-hull comparison uses saved pre-native-facing-fix dynamic-native.js, with unused read-only getter; actualGPU path unchanged. Each run retains its own pose and parameters.",
+  "allocation": "SphereGeometry(1,96,64) allocation measured241.917ms/100 constructions. Cut-capture now shares one lazy immutable positions/index template instead ofallocating one geometry per mark; sampling geometry/resolution unchanged. The71.5ms raw clip capture was measured before this allocation cleanup; no unsupported speedup claim.",
+  "knownFailed": "Both first normal native and activated arrivals staybusy at60s. Dynamic control remainsbusy at60s:251native versus272analytic revisions,187versus208draws,255290versus38092triangles,129/129reveal,packing[]. Fixed-pose gain is not a passing settling result. Off2 seed and mainConnectionsWhole150s blockers remain unresolved.",
+  "sha256": {
+    "contained-normal-build.json": "24fc412eadb12b20b40437259bef319a14ccd190f425dfabef090cff0af5ef65",
+    "contained-normal-arrivals.json": "5b17e21dad681ac518992c615172c260b240acdf79c89f1c65af0489f5d874bd",
+    "contained-dynamic-arrivals.json": "51ad95b0801d56fb552f9d3c853d9f533e0a96e42be9e66ddad681a4ab930d5d",
+    "contained-motion/motion.json": "a116d80779ae148e1ea885c5aa15a5bd267a76d72bb40b43a684ab263f498a2e",
+    "native-contained-motion/motion.json": "04a0df6063a487c832db117114e867d71bc4dd271eadc024b3762c19bae1fcd7",
+    "native-contained-motion-old-hull/motion.json": "93f644cfd63de0112fcfd735db79f3fbe04c85bf5512b7edbc70aa040a3b2286"
+  }
+}
