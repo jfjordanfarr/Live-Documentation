@@ -1,0 +1,106 @@
+{
+  "before": {
+    "settledMs": 55585.20000001788,
+    "final": {
+      "placementCost": "997218",
+      "placementOptimal": "true",
+      "orderStart": "seed 10",
+      "orderStarts": "1",
+      "orderScore": "2432088",
+      "searchStatus": "capped",
+      "searchAlignmentTried": "79",
+      "searchAlignmentAdopted": "14",
+      "searchTried": "80",
+      "searchNext": "81",
+      "searchAdopted": "17",
+      "searchShown": "2432088",
+      "searchBest": "2431960",
+      "searchPredicted": "2432065",
+      "searchMeasured": "2432088",
+      "searchPriced": "2432065",
+      "cards": 91
+    },
+    "initial": {
+      "at": 10256.199999988079,
+      "placementCost": "1272224",
+      "placementOptimal": "true",
+      "orderStart": "seed 1",
+      "orderStarts": "1",
+      "orderScore": "2992130",
+      "layoutMs": "944",
+      "searchStatus": "running",
+      "searchAlignmentTried": "2",
+      "searchAlignmentAdopted": "1",
+      "searchTried": "1",
+      "searchNext": "2",
+      "searchAdopted": "2",
+      "searchShown": "2976230",
+      "searchBest": "2976230",
+      "searchPredicted": "2992420",
+      "searchMeasured": "2992130",
+      "searchPriced": "2992420",
+      "cards": 91
+    },
+    "hashes": {
+      "explorer-data.json": "befc6ffb5a02c9dc0e421fd6ea3791bf3ffb5666413038d52d4816ec8b52fda4",
+      "static/index.js": "49756c8d897600b1e0ef06adf77e945bf9d2d1cdfaae5346f43ab0f4866bdc0c"
+    },
+    "errors": []
+  },
+  "candidate": {
+    "settledMs": 36853.19999998808,
+    "final": {
+      "placementCost": "997218",
+      "placementOptimal": "true",
+      "orderStart": "seed 10",
+      "orderStarts": "1",
+      "orderScore": "2432088",
+      "searchStatus": "capped",
+      "searchAlignmentTried": "79",
+      "searchAlignmentAdopted": "14",
+      "searchTried": "80",
+      "searchNext": "81",
+      "searchAdopted": "17",
+      "searchShown": "2432088",
+      "searchBest": "2431960",
+      "searchPredicted": "2432065",
+      "searchMeasured": "2432088",
+      "searchPriced": "2432065",
+      "cards": 91
+    },
+    "initial": {
+      "at": 8925.40000000596,
+      "placementCost": "1272224",
+      "placementOptimal": "true",
+      "orderStart": "seed 1",
+      "orderStarts": "1",
+      "orderScore": "2992130",
+      "layoutMs": "871",
+      "searchStatus": "running",
+      "searchAlignmentTried": "1",
+      "searchAlignmentAdopted": "1",
+      "searchTried": "1",
+      "searchNext": "2",
+      "searchAdopted": "2",
+      "searchShown": "2976230",
+      "searchBest": "2976230",
+      "searchPredicted": "2992420",
+      "searchMeasured": "2992130",
+      "searchPriced": "2992420",
+      "cards": 91
+    },
+    "hashes": {
+      "explorer-data.json": "befc6ffb5a02c9dc0e421fd6ea3791bf3ffb5666413038d52d4816ec8b52fda4",
+      "static/index.js": "948e38b9f7e0807f9e21f371c46737509470113cbb71fdd983bf2f68b410be03"
+    },
+    "errors": []
+  },
+  "finalSemanticEqual": true,
+  "solverSourceSha256": "3adfc63bc84238f385d6d59e05ccabca3eefee91a0def47e00e31a58fd84e6f0",
+  "pixels": {
+    "width": 1600,
+    "height": 1000,
+    "different": 0,
+    "bounds": null
+  }
+}

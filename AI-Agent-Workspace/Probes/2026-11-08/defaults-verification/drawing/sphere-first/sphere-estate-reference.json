@@ -1,0 +1,101 @@
+{
+  "cases": [
+    {
+      "name": "close",
+      "distance": 5,
+      "near": 0.1,
+      "offset": 0,
+      "far": 500,
+      "motionPaused": true,
+      "uploadedInstanceMatricesHeld": true,
+      "pixels": {
+        "changedAbove3": 702,
+        "maxChannelDifference": 96,
+        "meanPixelDifference": 0.039309126594700684
+      }
+    },
+    {
+      "name": "off-axis",
+      "distance": 5,
+      "near": 0.1,
+      "offset": 2,
+      "far": 500,
+      "motionPaused": true,
+      "uploadedInstanceMatricesHeld": true,
+      "pixels": {
+        "changedAbove3": 698,
+        "maxChannelDifference": 102,
+        "meanPixelDifference": 0.041655217533529604
+      }
+    },
+    {
+      "name": "near-cap",
+      "distance": 3,
+      "near": 2.1,
+      "offset": 0,
+      "far": 500,
+      "motionPaused": true,
+      "uploadedInstanceMatricesHeld": true,
+      "pixels": {
+        "changedAbove3": 2101,
+        "maxChannelDifference": 143,
+        "meanPixelDifference": 0.1717684003925417
+      }
+    },
+    {
+      "name": "front-clipped",
+      "distance": 3,
+      "near": 2.8,
+      "offset": 0,
+      "far": 500,
+      "motionPaused": true,
+      "uploadedInstanceMatricesHeld": true,
+      "pixels": {
+        "changedAbove3": 0,
+        "maxChannelDifference": 0,
+        "meanPixelDifference": 0
+      }
+    },
+    {
+      "name": "inside",
+      "distance": 0.4,
+      "near": 0.1,
+      "offset": 0,
+      "far": 500,
+      "motionPaused": true,
+      "uploadedInstanceMatricesHeld": true,
+      "pixels": {
+        "changedAbove3": 0,
+        "maxChannelDifference": 0,
+        "meanPixelDifference": 0
+      }
+    },
+    {
+      "name": "far-cap",
+      "distance": 3,
+      "near": 0.1,
+      "offset": 0,
+      "far": 2.2,
+      "motionPaused": true,
+      "uploadedInstanceMatricesHeld": true,
+      "pixels": {
+        "changedAbove3": 1000,
+        "maxChannelDifference": 160,
+        "meanPixelDifference": 0.08878246647039581
+      }
+    }
+  ],
+  "errors": [],
+  "target": {
+    "id": "Portal/Models/PaymentRequestModel.cs",
+    "slot": 18,
+    "radius": 5.200753688812256,
+    "center": [
+      -10.008301734924316,
+      127.0586166381836,
+      -9.100357055664062
+    ],
+    "instances": 35,
+    "referenceTriangles": 12096
+  }
+}

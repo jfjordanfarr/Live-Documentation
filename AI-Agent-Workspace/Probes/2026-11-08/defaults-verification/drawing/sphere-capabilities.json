@@ -1,0 +1,53 @@
+{
+  "context": {
+    "alpha": true,
+    "antialias": true,
+    "depth": true,
+    "desynchronized": false,
+    "failIfMajorPerformanceCaveat": false,
+    "powerPreference": "default",
+    "premultipliedAlpha": true,
+    "preserveDrawingBuffer": false,
+    "stencil": false,
+    "xrCompatible": false
+  },
+  "samples": 4,
+  "maxSamples": 4,
+  "sampleExtensions": [
+    "NV_shader_noperspective_interpolation",
+    "OES_sample_variables",
+    "OES_shader_multisample_interpolation"
+  ],
+  "sampleVariables": true,
+  "sampleInterpolation": true,
+  "sampleShading": false,
+  "attempts": [
+    {
+      "source": "#version 300 es\nprecision highp float;out vec4 result;void main(){result=vec4(float(gl_SampleID));}",
+      "compiled": false,
+      "log": "ERROR: 0:2: 'GL_OES_sample_variables' : extension is disabled\n\u0000"
+    },
+    {
+      "source": "#version 300 es\n#extension GL_OES_sample_variables : require\nprecision highp float;out vec4 result;void main(){result=vec4(float(gl_SampleID));}",
+      "compiled": true,
+      "log": ""
+    },
+    {
+      "source": "#version 300 es\n#extension GL_OES_sample_variables : require\n#extension GL_OES_shader_multisample_interpolation : require\nprecision highp float;in vec3 ray;out vec4 result;void main(){result=vec4(interpolateAtSample(ray,gl_SampleID),1.0);}",
+      "compiled": true,
+      "log": ""
+    }
+  ],
+  "sampleDraw": {
+    "samples": 4,
+    "linked": true,
+    "linkLog": "",
+    "pixel": [
+      64,
+      129,
+      0,
+      255
+    ],
+    "expectedOneRedSample": 63.75
+  }
+}

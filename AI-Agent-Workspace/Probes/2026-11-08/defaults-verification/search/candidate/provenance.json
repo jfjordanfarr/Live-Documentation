@@ -1,0 +1,12 @@
+{
+  "upstream": "http://localhost:8911",
+  "proxy": "http://localhost:8913",
+  "originalJsSha256": "49756c8d897600b1e0ef06adf77e945bf9d2d1cdfaae5346f43ab0f4866bdc0c",
+  "candidateJsSha256": "948e38b9f7e0807f9e21f371c46737509470113cbb71fdd983bf2f68b410be03",
+  "solverSourceSha256": "3adfc63bc84238f385d6d59e05ccabca3eefee91a0def47e00e31a58fd84e6f0",
+  "replaced": {
+    "start": 999062,
+    "end": 999539
+  },
+  "method": "Only original solver function delegates to the compiled current source; original helpers remain unused; all other upstream bytes untouched."
+}

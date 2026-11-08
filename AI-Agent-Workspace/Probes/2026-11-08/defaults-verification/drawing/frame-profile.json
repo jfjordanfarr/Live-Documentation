@@ -1,0 +1,619 @@
+[
+  {
+    "at": 1085.4000000059605,
+    "state": {
+      "timings": {
+        "physics": {
+          "count": 1,
+          "total": 0.20000001788139343,
+          "max": 0.20000001788139343
+        },
+        "frameDirectory": {
+          "count": 1,
+          "total": 0,
+          "max": 0
+        },
+        "buildBodies": {
+          "count": 1,
+          "total": 9.400000005960464,
+          "max": 9.400000005960464
+        },
+        "bursts": {
+          "count": 1,
+          "total": 0.19999998807907104,
+          "max": 0.19999998807907104
+        },
+        "controls": {
+          "count": 1,
+          "total": 0.09999999403953552,
+          "max": 0.09999999403953552
+        },
+        "focusAndNames": {
+          "count": 1,
+          "total": 6.700000017881393,
+          "max": 6.700000017881393
+        },
+        "draw": {
+          "count": 1,
+          "total": 72.40000000596046,
+          "max": 72.40000000596046
+        },
+        "hover": {
+          "count": 1,
+          "total": 0.09999999403953552,
+          "max": 0.09999999403953552
+        },
+        "grow": {
+          "count": 1,
+          "total": 3.0999999940395355,
+          "max": 3.0999999940395355
+        },
+        "frameCpu": {
+          "count": 1,
+          "total": 92.40000000596046,
+          "max": 92.40000000596046
+        }
+      },
+      "simulationRunning": true,
+      "motionStill": false,
+      "revision": 101,
+      "packing": [],
+      "reveal": {
+        "shown": 29,
+        "total": 129
+      }
+    },
+    "frames": 1,
+    "render": {
+      "frame": 1,
+      "calls": 2,
+      "triangles": 7242,
+      "points": 0,
+      "lines": 0
+    },
+    "drawn": [
+      {
+        "name": "Spatial nodes",
+        "count": 26,
+        "triangles": 264,
+        "range": null
+      },
+      {
+        "name": "Spatial links",
+        "count": 63,
+        "triangles": 6,
+        "range": null
+      },
+      {
+        "name": "Spatial arrows",
+        "count": 0,
+        "triangles": 16,
+        "range": null
+      },
+      {
+        "name": "Spatial rings",
+        "count": 0,
+        "triangles": 64,
+        "range": null
+      }
+    ],
+    "metrics": {
+      "Timestamp": 195029.865955,
+      "AudioHandlers": 0,
+      "AudioWorkletProcessors": 0,
+      "Documents": 3,
+      "Frames": 1,
+      "JSEventListeners": 230,
+      "LayoutObjects": 272,
+      "MediaKeySessions": 0,
+      "MediaKeys": 0,
+      "Nodes": 1948,
+      "Resources": 13,
+      "ContextLifecycleStateObservers": 23,
+      "V8PerContextDatas": 4,
+      "WorkerGlobalScopes": 0,
+      "UACSSResources": 0,
+      "RTCPeerConnections": 0,
+      "ResourceFetchers": 3,
+      "AdSubframes": 0,
+      "DetachedScriptStates": 2,
+      "ArrayBufferContents": 227,
+      "LayoutCount": 8,
+      "RecalcStyleCount": 12,
+      "LayoutDuration": 0.048661,
+      "RecalcStyleDuration": 0.017007,
+      "DevToolsCommandDuration": 0.01656,
+      "ScriptDuration": 0.390267,
+      "V8CompileDuration": 0,
+      "TaskDuration": 0.969787,
+      "TaskOtherDuration": 0.497292,
+      "ThreadTime": 0.696001,
+      "ProcessTime": 1.29,
+      "JSHeapUsedSize": 27551088,
+      "JSHeapTotalSize": 55906304,
+      "FirstMeaningfulPaint": 0,
+      "DomContentLoaded": 195029.047678,
+      "NavigationStart": 195028.773401
+    }
+  },
+  {
+    "at": 21136.79999998212,
+    "state": {
+      "timings": {
+        "physics": {
+          "count": 76,
+          "total": 132.99999976158142,
+          "max": 9
+        },
+        "frameDirectory": {
+          "count": 76,
+          "total": 0.20000001788139343,
+          "max": 0.10000002384185791
+        },
+        "buildBodies": {
+          "count": 76,
+          "total": 64.00000005960464,
+          "max": 19.700000017881393
+        },
+        "bursts": {
+          "count": 76,
+          "total": 1.2000000476837158,
+          "max": 0.19999998807907104
+        },
+        "controls": {
+          "count": 76,
+          "total": 4.600000023841858,
+          "max": 0.20000001788139343
+        },
+        "focusAndNames": {
+          "count": 76,
+          "total": 140.59999999403954,
+          "max": 6.700000017881393
+        },
+        "draw": {
+          "count": 76,
+          "total": 393.2000000476837,
+          "max": 72.40000000596046
+        },
+        "hover": {
+          "count": 76,
+          "total": 0.19999998807907104,
+          "max": 0.09999999403953552
+        },
+        "grow": {
+          "count": 76,
+          "total": 33.599999994039536,
+          "max": 3.5
+        },
+        "frameCpu": {
+          "count": 76,
+          "total": 785.1000000238419,
+          "max": 92.40000000596046
+        },
+        "cadence": {
+          "count": 75,
+          "total": 19790.59999999404,
+          "max": 404.19999998807907
+        }
+      },
+      "simulationRunning": true,
+      "motionStill": false,
+      "revision": 141,
+      "packing": [],
+      "reveal": {
+        "shown": 129,
+        "total": 129
+      }
+    },
+    "frames": 76,
+    "render": {
+      "frame": 76,
+      "calls": 5,
+      "triangles": 254492,
+      "points": 0,
+      "lines": 0
+    },
+    "drawn": [
+      {
+        "name": "Spatial nodes",
+        "count": 52,
+        "triangles": 264,
+        "range": null
+      },
+      {
+        "name": "Spatial links",
+        "count": 124,
+        "triangles": 6,
+        "range": null
+      },
+      {
+        "name": "Spatial arrows",
+        "count": 0,
+        "triangles": 16,
+        "range": null
+      },
+      {
+        "name": "Spatial rings",
+        "count": 0,
+        "triangles": 64,
+        "range": null
+      },
+      {
+        "name": "Spatial wrappers",
+        "count": 1,
+        "triangles": 8204,
+        "range": 24612
+      },
+      {
+        "name": "Spatial shell files",
+        "count": 829,
+        "triangles": 264,
+        "range": null
+      },
+      {
+        "name": "Spatial shell balloons",
+        "count": 18,
+        "triangles": 720,
+        "range": null
+      }
+    ],
+    "metrics": {
+      "Timestamp": 195050.236523,
+      "AudioHandlers": 0,
+      "AudioWorkletProcessors": 0,
+      "Documents": 1,
+      "Frames": 1,
+      "JSEventListeners": 349,
+      "LayoutObjects": 226,
+      "MediaKeySessions": 0,
+      "MediaKeys": 0,
+      "Nodes": 1834,
+      "Resources": 12,
+      "ContextLifecycleStateObservers": 21,
+      "V8PerContextDatas": 2,
+      "WorkerGlobalScopes": 0,
+      "UACSSResources": 0,
+      "RTCPeerConnections": 0,
+      "ResourceFetchers": 1,
+      "AdSubframes": 0,
+      "DetachedScriptStates": 0,
+      "ArrayBufferContents": 313,
+      "LayoutCount": 34,
+      "RecalcStyleCount": 96,
+      "LayoutDuration": 0.055686,
+      "RecalcStyleDuration": 0.072282,
+      "DevToolsCommandDuration": 0.021432,
+      "ScriptDuration": 1.094504,
+      "V8CompileDuration": 0,
+      "TaskDuration": 21.335423,
+      "TaskOtherDuration": 20.091519,
+      "ThreadTime": 1.717578,
+      "ProcessTime": 3.65,
+      "JSHeapUsedSize": 25554940,
+      "JSHeapTotalSize": 68751360,
+      "FirstMeaningfulPaint": 0,
+      "DomContentLoaded": 195029.047678,
+      "NavigationStart": 195028.773401
+    }
+  },
+  {
+    "at": 41624.59999999404,
+    "state": {
+      "timings": {
+        "physics": {
+          "count": 138,
+          "total": 221.4999997317791,
+          "max": 9
+        },
+        "frameDirectory": {
+          "count": 138,
+          "total": 0.5999999940395355,
+          "max": 0.10000002384185791
+        },
+        "buildBodies": {
+          "count": 138,
+          "total": 64.00000005960464,
+          "max": 19.700000017881393
+        },
+        "bursts": {
+          "count": 138,
+          "total": 1.8000000715255737,
+          "max": 0.19999998807907104
+        },
+        "controls": {
+          "count": 138,
+          "total": 8.300000011920929,
+          "max": 0.29999998211860657
+        },
+        "focusAndNames": {
+          "count": 138,
+          "total": 243.0999999344349,
+          "max": 6.700000017881393
+        },
+        "draw": {
+          "count": 138,
+          "total": 602.6000001430511,
+          "max": 72.40000000596046
+        },
+        "hover": {
+          "count": 138,
+          "total": 0.5999999642372131,
+          "max": 0.09999999403953552
+        },
+        "grow": {
+          "count": 138,
+          "total": 33.599999994039536,
+          "max": 3.5
+        },
+        "frameCpu": {
+          "count": 138,
+          "total": 1203.0000000298023,
+          "max": 92.40000000596046
+        },
+        "cadence": {
+          "count": 137,
+          "total": 40451,
+          "max": 490.5
+        }
+      },
+      "simulationRunning": true,
+      "motionStill": false,
+      "revision": 202,
+      "packing": [],
+      "reveal": {
+        "shown": 129,
+        "total": 129
+      }
+    },
+    "frames": 138,
+    "render": {
+      "frame": 138,
+      "calls": 5,
+      "triangles": 255290,
+      "points": 0,
+      "lines": 0
+    },
+    "drawn": [
+      {
+        "name": "Spatial nodes",
+        "count": 55,
+        "triangles": 264,
+        "range": null
+      },
+      {
+        "name": "Spatial links",
+        "count": 125,
+        "triangles": 6,
+        "range": null
+      },
+      {
+        "name": "Spatial arrows",
+        "count": 0,
+        "triangles": 16,
+        "range": null
+      },
+      {
+        "name": "Spatial rings",
+        "count": 0,
+        "triangles": 64,
+        "range": null
+      },
+      {
+        "name": "Spatial wrappers",
+        "count": 1,
+        "triangles": 8204,
+        "range": 24612
+      },
+      {
+        "name": "Spatial shell files",
+        "count": 829,
+        "triangles": 264,
+        "range": null
+      },
+      {
+        "name": "Spatial shell balloons",
+        "count": 18,
+        "triangles": 720,
+        "range": null
+      }
+    ],
+    "metrics": {
+      "Timestamp": 195070.405107,
+      "AudioHandlers": 0,
+      "AudioWorkletProcessors": 0,
+      "Documents": 1,
+      "Frames": 1,
+      "JSEventListeners": 349,
+      "LayoutObjects": 230,
+      "MediaKeySessions": 0,
+      "MediaKeys": 0,
+      "Nodes": 1834,
+      "Resources": 12,
+      "ContextLifecycleStateObservers": 21,
+      "V8PerContextDatas": 2,
+      "WorkerGlobalScopes": 0,
+      "UACSSResources": 0,
+      "RTCPeerConnections": 0,
+      "ResourceFetchers": 1,
+      "AdSubframes": 0,
+      "DetachedScriptStates": 0,
+      "ArrayBufferContents": 387,
+      "LayoutCount": 38,
+      "RecalcStyleCount": 157,
+      "LayoutDuration": 0.056673,
+      "RecalcStyleDuration": 0.133642,
+      "DevToolsCommandDuration": 0.02366,
+      "ScriptDuration": 1.516283,
+      "V8CompileDuration": 0,
+      "TaskDuration": 41.499697,
+      "TaskOtherDuration": 39.769439,
+      "ThreadTime": 2.450379,
+      "ProcessTime": 5.17,
+      "JSHeapUsedSize": 35967752,
+      "JSHeapTotalSize": 71372800,
+      "FirstMeaningfulPaint": 0,
+      "DomContentLoaded": 195029.047678,
+      "NavigationStart": 195028.773401
+    }
+  },
+  {
+    "at": 61694.29999998212,
+    "state": {
+      "timings": {
+        "physics": {
+          "count": 197,
+          "total": 307.89999982714653,
+          "max": 12
+        },
+        "frameDirectory": {
+          "count": 197,
+          "total": 0.699999988079071,
+          "max": 0.10000002384185791
+        },
+        "buildBodies": {
+          "count": 197,
+          "total": 64.20000007748604,
+          "max": 19.700000017881393
+        },
+        "bursts": {
+          "count": 197,
+          "total": 2.000000089406967,
+          "max": 0.19999998807907104
+        },
+        "controls": {
+          "count": 197,
+          "total": 11.39999994635582,
+          "max": 0.29999998211860657
+        },
+        "focusAndNames": {
+          "count": 197,
+          "total": 339.2999999821186,
+          "max": 6.700000017881393
+        },
+        "draw": {
+          "count": 197,
+          "total": 831.9000000953674,
+          "max": 72.40000000596046
+        },
+        "hover": {
+          "count": 197,
+          "total": 0.9999999701976776,
+          "max": 0.10000002384185791
+        },
+        "grow": {
+          "count": 197,
+          "total": 33.89999997615814,
+          "max": 3.5
+        },
+        "frameCpu": {
+          "count": 197,
+          "total": 1629.8000001311302,
+          "max": 92.40000000596046
+        },
+        "cadence": {
+          "count": 196,
+          "total": 60506,
+          "max": 490.5
+        }
+      },
+      "simulationRunning": true,
+      "motionStill": false,
+      "revision": 261,
+      "packing": [],
+      "reveal": {
+        "shown": 129,
+        "total": 129
+      }
+    },
+    "frames": 197,
+    "render": {
+      "frame": 197,
+      "calls": 5,
+      "triangles": 255290,
+      "points": 0,
+      "lines": 0
+    },
+    "drawn": [
+      {
+        "name": "Spatial nodes",
+        "count": 55,
+        "triangles": 264,
+        "range": null
+      },
+      {
+        "name": "Spatial links",
+        "count": 125,
+        "triangles": 6,
+        "range": null
+      },
+      {
+        "name": "Spatial arrows",
+        "count": 0,
+        "triangles": 16,
+        "range": null
+      },
+      {
+        "name": "Spatial rings",
+        "count": 0,
+        "triangles": 64,
+        "range": null
+      },
+      {
+        "name": "Spatial wrappers",
+        "count": 1,
+        "triangles": 8204,
+        "range": 24612
+      },
+      {
+        "name": "Spatial shell files",
+        "count": 829,
+        "triangles": 264,
+        "range": null
+      },
+      {
+        "name": "Spatial shell balloons",
+        "count": 18,
+        "triangles": 720,
+        "range": null
+      }
+    ],
+    "metrics": {
+      "Timestamp": 195090.474848,
+      "AudioHandlers": 0,
+      "AudioWorkletProcessors": 0,
+      "Documents": 1,
+      "Frames": 1,
+      "JSEventListeners": 349,
+      "LayoutObjects": 226,
+      "MediaKeySessions": 0,
+      "MediaKeys": 0,
+      "Nodes": 1834,
+      "Resources": 12,
+      "ContextLifecycleStateObservers": 21,
+      "V8PerContextDatas": 2,
+      "WorkerGlobalScopes": 0,
+      "UACSSResources": 0,
+      "RTCPeerConnections": 0,
+      "ResourceFetchers": 1,
+      "AdSubframes": 0,
+      "DetachedScriptStates": 0,
+      "ArrayBufferContents": 436,
+      "LayoutCount": 38,
+      "RecalcStyleCount": 216,
+      "LayoutDuration": 0.056673,
+      "RecalcStyleDuration": 0.193941,
+      "DevToolsCommandDuration": 0.026001,
+      "ScriptDuration": 1.947009,
+      "V8CompileDuration": 0,
+      "TaskDuration": 61.565652,
+      "TaskOtherDuration": 59.342028,
+      "ThreadTime": 3.180969,
+      "ProcessTime": 6.71,
+      "JSHeapUsedSize": 34675968,
+      "JSHeapTotalSize": 73994240,
+      "FirstMeaningfulPaint": 0,
+      "DomContentLoaded": 195029.047678,
+      "NavigationStart": 195028.773401
+    }
+  }
+]

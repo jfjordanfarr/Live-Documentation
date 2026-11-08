@@ -1,0 +1,115 @@
+{
+  "before": {
+    "state": {
+      "simulationRunning": false,
+      "motionStill": true,
+      "revision": 351,
+      "ready": true,
+      "packing": [],
+      "bodies": 8,
+      "reveal": {
+        "shown": 15,
+        "total": 15
+      },
+      "drawn": 15,
+      "wrapped": 8,
+      "cells": 0,
+      "hoveredId": "Estate.sln",
+      "pointerHoverId": "Estate.sln",
+      "focusedId": null,
+      "attentionSettings": "[[\"Estate.sln\"],\"Estate.sln\",null,null,\"connections\",false,1,\"none\",null]",
+      "root": {
+        "frontier": false,
+        "cell": false,
+        "lone": false,
+        "shell": false
+      },
+      "orphan": {
+        "hop": 0,
+        "frontier": false,
+        "cell": false,
+        "lone": false,
+        "shell": false,
+        "released": false
+      },
+      "focusVisible": []
+    },
+    "alpha": 0.75
+  },
+  "dimmedWhileHovered": false,
+  "hoverFailure": "Error: expect(received).toBeLessThan(expected)\n\nExpected: < 0.5\nReceived:   0.75\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate",
+  "afterClick": {
+    "state": {
+      "simulationRunning": false,
+      "motionStill": true,
+      "revision": 351,
+      "ready": true,
+      "packing": [],
+      "bodies": 8,
+      "reveal": {
+        "shown": 15,
+        "total": 15
+      },
+      "drawn": 15,
+      "wrapped": 8,
+      "cells": 0,
+      "hoveredId": "Estate.sln",
+      "pointerHoverId": "Estate.sln",
+      "focusedId": null,
+      "attentionSettings": "[[\"Estate.sln\"],\"Estate.sln\",null,null,\"connections\",false,1,\"none\",null]",
+      "root": {
+        "frontier": false,
+        "cell": false,
+        "lone": false,
+        "shell": false
+      },
+      "orphan": {
+        "hop": 2,
+        "frontier": true,
+        "cell": false,
+        "lone": false,
+        "shell": false,
+        "released": false
+      },
+      "focusVisible": []
+    },
+    "alpha": 0.75
+  },
+  "afterLeave": {
+    "state": {
+      "simulationRunning": false,
+      "motionStill": true,
+      "revision": 351,
+      "ready": true,
+      "packing": [],
+      "bodies": 8,
+      "reveal": {
+        "shown": 15,
+        "total": 15
+      },
+      "drawn": 15,
+      "wrapped": 8,
+      "cells": 0,
+      "hoveredId": null,
+      "pointerHoverId": null,
+      "focusedId": null,
+      "attentionSettings": "[null,null,null,null,\"connections\",false,1,\"none\",null]",
+      "root": {
+        "frontier": false,
+        "cell": false,
+        "lone": false,
+        "shell": false
+      },
+      "orphan": {
+        "hop": 2,
+        "frontier": true,
+        "cell": false,
+        "lone": false,
+        "shell": false,
+        "released": false
+      },
+      "focusVisible": []
+    },
+    "alpha": 0.30000001192092896
+  }
+}

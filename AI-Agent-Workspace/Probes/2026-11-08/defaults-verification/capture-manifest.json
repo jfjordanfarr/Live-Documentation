@@ -1,0 +1,236 @@
+[
+  {
+    "file": "drawing/frame-profile.json",
+    "sourceBytes": 14723,
+    "sourceSha256": "3fd110c8453ea614f9eed0ef8e27933d60d505280721166512648dee5741e3d3",
+    "compressed": false
+  },
+  {
+    "file": "drawing/visibility-profile.json",
+    "sourceBytes": 7685,
+    "sourceSha256": "2ef9b30f3c2fc512050734605220e85f22da00eb95b1ea1af6833c45a63e2206",
+    "compressed": false
+  },
+  {
+    "file": "drawing/frozen-layer-profile.json",
+    "sourceBytes": 1632,
+    "sourceSha256": "58ba7af42321c4a926b7d7371d0a181228daee3e72124cace9175db660c60ea2",
+    "compressed": false
+  },
+  {
+    "file": "drawing/unpin-hover.json",
+    "sourceBytes": 2746,
+    "sourceSha256": "e24625abd973440abcce485027acd6abbe48e3eac30b1c77aeddd5eed6749926",
+    "compressed": false
+  },
+  {
+    "file": "drawing/unpin-stable-hover.png",
+    "sourceBytes": 98260,
+    "sourceSha256": "a5bc63233dae6be155158e0710306b1e811f0de841dc636c06b6202ab0b2a825",
+    "compressed": false
+  },
+  {
+    "file": "drawing/unpin-after-empty-point.png",
+    "sourceBytes": 110367,
+    "sourceSha256": "4d78017d34fc713e72c73eb8fda07fc53de0978c25bfb6b3d4062ddf0765bb6d",
+    "compressed": false
+  },
+  {
+    "file": "search/comparison-summary.json",
+    "sourceBytes": 3098,
+    "sourceSha256": "cef3746ddeb8a2125051ecfe0c3f7b2359306f1328ecdab1f255f271047804f3",
+    "compressed": false
+  },
+  {
+    "file": "search/solver-original-provenance.json",
+    "sourceBytes": 246,
+    "sourceSha256": "b2eb8e619c493a5ab84ff7613b0ff912315dbc30a77c3beefec2ef7f418c1cdd",
+    "compressed": false
+  },
+  {
+    "file": "search/compare-solvers.ts",
+    "sourceBytes": 2682,
+    "sourceSha256": "bfb5069d6b0d8d85df867b647605351393997848467c9f2eb3ed28454f8770ad",
+    "compressed": false
+  },
+  {
+    "file": "search/capture-inputs.cjs",
+    "sourceBytes": 2793,
+    "sourceSha256": "448c799eeb027708f4434b172206d07d54ef7b1b3b72bba9ba42048bb60ae679",
+    "compressed": false
+  },
+  {
+    "file": "search/profile.cjs",
+    "sourceBytes": 5279,
+    "sourceSha256": "2b8cbac90df49f5ebfb3dee7e94d2a33dbdacd84096c0bbcd6b9459487b4dab8",
+    "compressed": false
+  },
+  {
+    "file": "search/profile-candidate.cjs",
+    "sourceBytes": 5289,
+    "sourceSha256": "e596174044548231edc17c95852f51598b4157bfd539cc167bb26135a094238b",
+    "compressed": false
+  },
+  {
+    "file": "search/solver-proxy.cjs",
+    "sourceBytes": 2769,
+    "sourceSha256": "ebb12e2b7b2f786e83c1a47f5b5c1aea6e17ce767da8a4ff80e20a4836d492dd",
+    "compressed": false
+  },
+  {
+    "file": "search/real-solver-inputs.json.gz",
+    "sourceBytes": 3120578,
+    "sourceSha256": "f5df4572a87f85ca4297e3fd1a88efe5381e2496653cd52669a1433382be54b5",
+    "compressed": true
+  },
+  {
+    "file": "search/solver-equivalence.json.gz",
+    "sourceBytes": 654918,
+    "sourceSha256": "7e194439f5b1732e623f84cf642e4a336508d2c0d64451e32b61c2229f9957c0",
+    "compressed": true
+  },
+  {
+    "file": "search/search.cpuprofile.gz",
+    "sourceBytes": 611390,
+    "sourceSha256": "2c9e130bca4a447159d7bc2275b821a426531ea88d1483d1e42949969831e8c7",
+    "compressed": true
+  },
+  {
+    "file": "search/measurements.json.gz",
+    "sourceBytes": 100814,
+    "sourceSha256": "b3b0cfd683045ab6a78449b758fab88d0973326ed80057202d4047e3cc7e0f43",
+    "compressed": true
+  },
+  {
+    "file": "search/profile-source-summary.json.gz",
+    "sourceBytes": 62795,
+    "sourceSha256": "ddc9f98826ad7a81ff13dabcee64d06d7d48747147a492f65dff7d496f1f6bad",
+    "compressed": true
+  },
+  {
+    "file": "search/candidate/provenance.json",
+    "sourceBytes": 565,
+    "sourceSha256": "df7809b16bdda644cffb2493d7c6d2adc5ba9261a8598805d0d7c6b4b4a8547c",
+    "compressed": false
+  },
+  {
+    "file": "search/candidate/finished.png",
+    "sourceBytes": 574348,
+    "sourceSha256": "fd9c99d8df77f0aa6e7dac2935e85a12f3345478d26462bbe08723e2c39c49f7",
+    "compressed": false
+  },
+  {
+    "file": "search/candidate/search.cpuprofile.gz",
+    "sourceBytes": 493555,
+    "sourceSha256": "a88faca40996824d4696737b30e2e254d507659cca89b7ae36bd33575ce7d28b",
+    "compressed": true
+  },
+  {
+    "file": "search/candidate/measurements.json.gz",
+    "sourceBytes": 98423,
+    "sourceSha256": "dc03025114e5e6e2004e63670058be7f3395f4a780468e2d199782b5c16b2eac",
+    "compressed": true
+  },
+  {
+    "file": "drawing/sphere-first/sphere-estate-close-analytic.png",
+    "sourceBytes": 105196,
+    "sourceSha256": "ca1c991396ee38ef4d546f20ae59cd336c7bdb62cb024881dd56c572c0a76037",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-first/sphere-estate-close-reference.png",
+    "sourceBytes": 106828,
+    "sourceSha256": "97e7d2c965b4e4315f6904608808278c903a7ac0742b97b272b9722421a36413",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-first/sphere-estate-far-cap-analytic.png",
+    "sourceBytes": 24621,
+    "sourceSha256": "5ff6bfd79ffdf28bc3d58750064c410db3faf5d7fa8d6d9c4a9d350b6525ec5f",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-first/sphere-estate-far-cap-reference.png",
+    "sourceBytes": 26136,
+    "sourceSha256": "9625505170263cd884cc9d8a684eeb21cef42333de1d504a15b743494b7d6fbe",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-first/sphere-estate-front-clipped-analytic.png",
+    "sourceBytes": 30804,
+    "sourceSha256": "9aaf46c598160526b5aa6ffa41895ed1097533e6460180f8ab9a689124600444",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-first/sphere-estate-front-clipped-reference.png",
+    "sourceBytes": 30804,
+    "sourceSha256": "9aaf46c598160526b5aa6ffa41895ed1097533e6460180f8ab9a689124600444",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-first/sphere-estate-inside-analytic.png",
+    "sourceBytes": 25238,
+    "sourceSha256": "1684b29812d155ba06b2d2877bb3ddb67c8f79f4249c6bdbd7fa9fedfdb52fc4",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-first/sphere-estate-inside-reference.png",
+    "sourceBytes": 25238,
+    "sourceSha256": "1684b29812d155ba06b2d2877bb3ddb67c8f79f4249c6bdbd7fa9fedfdb52fc4",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-first/sphere-estate-near-cap-analytic.png",
+    "sourceBytes": 43464,
+    "sourceSha256": "5a98e2feee8a1a8c7aa21ed3516383a0580e067c96d9fd5590ec0337a33d99b3",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-first/sphere-estate-near-cap-reference.png",
+    "sourceBytes": 46846,
+    "sourceSha256": "8186ea55621b8f08f5daced909f942928e377a9c84e63b87c00b58fc1d4b5477",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-first/sphere-estate-off-axis-analytic.png",
+    "sourceBytes": 113375,
+    "sourceSha256": "23e3f0e60f8b6c8f5a45ece66ab52284a4ec7526aa5dfb60bb98403ef13c1015",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-first/sphere-estate-off-axis-reference.png",
+    "sourceBytes": 115113,
+    "sourceSha256": "0720bbffbbe62183013f8d125c3fb898bae959111646127296eecadf36fb8200",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-first/sphere-estate-reference.json",
+    "sourceBytes": 2258,
+    "sourceSha256": "d772973945eda52f438ff862b51bd9a53a136f41e0c6c033d2c83aa9d8a01fe5",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-first/sphere-main-analytic.png",
+    "sourceBytes": 390619,
+    "sourceSha256": "77dc42ccafdc7e02539a5f07f9f1529ab4ab383171dba79df35cfeba23fba305",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-first/sphere-main-native.png",
+    "sourceBytes": 408784,
+    "sourceSha256": "d8518962de6d8c7a6d6a5be0fb6556c090d686290aa013bfa90569143b468eef",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-first/sphere-main-prototype.json",
+    "sourceBytes": 1033,
+    "sourceSha256": "708d519e664dd7b6b0d2b384b9a822bfa65ada2e9d4c994c2636b8fefd843ef4",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-capabilities.json",
+    "sourceBytes": 1543,
+    "sourceSha256": "7c8da96274dfc57045195c3ef73dea7059bd18396cdfa297e96b573c55ef9e95",
+    "compressed": false
+  }
+]

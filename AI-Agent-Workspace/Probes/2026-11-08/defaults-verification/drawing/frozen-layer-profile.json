@@ -1,0 +1,87 @@
+[
+  {
+    "name": "baseline",
+    "hidden": [],
+    "motionPaused": true,
+    "elapsed": 5164,
+    "frames": 16,
+    "fps": 3.098373353989156,
+    "render": {
+      "frame": 78,
+      "calls": 5,
+      "triangles": 256604,
+      "points": 0,
+      "lines": 0
+    }
+  },
+  {
+    "name": "without-files",
+    "hidden": [
+      "Spatial shell files"
+    ],
+    "motionPaused": true,
+    "elapsed": 5115.5999999940395,
+    "frames": 50,
+    "fps": 9.774024552361064,
+    "render": {
+      "frame": 130,
+      "calls": 4,
+      "triangles": 37748,
+      "points": 0,
+      "lines": 0
+    }
+  },
+  {
+    "name": "without-balloons",
+    "hidden": [
+      "Spatial shell balloons"
+    ],
+    "motionPaused": true,
+    "elapsed": 5040.5999999940395,
+    "frames": 18,
+    "fps": 3.571003451974226,
+    "render": {
+      "frame": 174,
+      "calls": 4,
+      "triangles": 243644,
+      "points": 0,
+      "lines": 0
+    }
+  },
+  {
+    "name": "without-skins",
+    "hidden": [
+      "Spatial wrappers"
+    ],
+    "motionPaused": true,
+    "elapsed": 5117.800000011921,
+    "frames": 18,
+    "fps": 3.5171362694826045,
+    "render": {
+      "frame": 216,
+      "calls": 4,
+      "triangles": 248400,
+      "points": 0,
+      "lines": 0
+    }
+  },
+  {
+    "name": "without-all-interiors-and-skins",
+    "hidden": [
+      "Spatial shell files",
+      "Spatial shell balloons",
+      "Spatial wrappers"
+    ],
+    "motionPaused": true,
+    "elapsed": 5042.300000011921,
+    "frames": 131,
+    "fps": 25.98020744495375,
+    "render": {
+      "frame": 370,
+      "calls": 2,
+      "triangles": 16584,
+      "points": 0,
+      "lines": 0
+    }
+  }
+]
