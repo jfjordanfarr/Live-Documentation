@@ -28,7 +28,8 @@ it("reports documented multiplicity, actual radius and the same preferred spacin
 });
 
 it("keeps explicitly retained tests/assets and can include the same documentation overlay", () => {
-  const report = spatialReport(graph, { ...run, scope: ["test", "asset"] }, getDefaultTuning().forceGraph, 400,
+  // Two hops reach the retained files' provider and then that provider's documentation.
+  const report = spatialReport(graph, { ...run, scope: ["test", "asset"] }, { ...getDefaultTuning().forceGraph, hops: 2 }, 400,
     { showTests: false, showAssets: false, showRelatedDocs: true }, [{ sourceId: "a", targetPath: "README.md", direction: "cites" }]);
   expect(report.nodes.map(file => file.id)).toEqual(["a", "b", "test", "asset", "related:README.md"]);
   expect(report.links).toHaveLength(4);
@@ -36,7 +37,8 @@ it("keeps explicitly retained tests/assets and can include the same documentatio
 });
 
 it("reports the declared structure separately, with uniform hubs and references that pull nothing", () => {
-  const tuning = getDefaultTuning().forceGraph;
+  // The bare-junction fixture needs both root files to exercise containment and their non-pulling reference.
+  const tuning = { ...getDefaultTuning().forceGraph, groupWrappers: "off" as const, hops: 2 };
   const filters = { showTests: false, showAssets: false };
   const tree = spatialReport(graph, run, tuning, 400, filters, [], "structure");
   const network = spatialReport(graph, run, tuning, 400, filters);

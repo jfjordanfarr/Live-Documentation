@@ -7,12 +7,12 @@ import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/
 
 type WireIsolation = { wire: InstancedMesh; setEnds(start: Vector3, end: Vector3): void; restore(): void };
 
-/** These contracts exercise both sizing endpoints explicitly, independently of the visually tuned defaults. */
+/** Bare spheres and wires exercise sizing endpoints explicitly; skins would contaminate isolated pixel reads. */
 async function seedSizing(page: Page): Promise<void> {
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
     key: PERSISTED_UI_KEY,
     value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: {
-      localMap: { searchStarts: 0 }, forceGraph: { nodeZoomResistance: 0, wireZoomResistance: 1, linkWidth: 1 }
+      localMap: { searchStarts: 0 }, forceGraph: { groupWrappers: "off", nodeZoomResistance: 0, wireZoomResistance: 1, linkWidth: 1 }
     } })
   });
 }

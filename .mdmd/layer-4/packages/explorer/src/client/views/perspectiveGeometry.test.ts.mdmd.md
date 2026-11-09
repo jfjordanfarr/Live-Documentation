@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/perspectiveGeometry.test.ts
-- Generated At: 2026-11-08T02:20:56.470Z
+- Generated At: 2026-11-08T17:57:47.538Z
 
 ## Authored
 ### Purpose
@@ -27,6 +27,7 @@ _No public symbols detected_
 - [`perspectiveGeometry.gatherWire`](./perspectiveGeometry.ts.mdmd.md#symbol-gatherwire)
 - [`perspectiveGeometry.outlineLength`](./perspectiveGeometry.ts.mdmd.md#symbol-outlinelength)
 - [`perspectiveGeometry.pathOutline`](./perspectiveGeometry.ts.mdmd.md#symbol-pathoutline)
+- [`perspectiveGeometry.perspectiveCorrespondences`](./perspectiveGeometry.ts.mdmd.md#symbol-perspectivecorrespondences)
 - [`perspectiveGeometry.perspectivePhases`](./perspectiveGeometry.ts.mdmd.md#symbol-perspectivephases)
 - [`perspectiveGeometry.polygonOutline`](./perspectiveGeometry.ts.mdmd.md#symbol-polygonoutline)
 - [`perspectiveGeometry.sampleOutline`](./perspectiveGeometry.ts.mdmd.md#symbol-sampleoutline)

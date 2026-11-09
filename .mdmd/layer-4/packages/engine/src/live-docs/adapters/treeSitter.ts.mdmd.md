@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/treeSitter.ts
-- Generated At: 2026-10-22T16:47:52.498Z
+- Generated At: 2026-11-09T00:01:53.839Z
 
 ## Authored
 ### Purpose
@@ -21,6 +21,7 @@ Loads the tree-sitter grammars the adapters parse with: one `web-tree-sitter` pa
 #### `SyntaxNode` {#symbol-syntaxnode}
 - Type: type
 - Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L15)
+- Returns: `Node`
 
 ##### `SyntaxNode` — Summary
 A node of a parsed tree; the runtime's own name for it collides with the DOM type.

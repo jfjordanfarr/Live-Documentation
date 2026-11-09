@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/force-graph-discovery.spec.ts
-- Generated At: 2026-11-02T17:03:48.352Z
+- Generated At: 2026-11-08T17:39:30.933Z
 
 ## Authored
 ### Purpose
@@ -12,6 +12,8 @@ Shows in the browser that the 3D Local Map under discovery holds exactly what th
 
 ### Notes
 Written on 2026-10-31 with the discovery pass ([Turns 4 to 8 of the October 31 record](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-4)). The expected picture is computed from the bundle by the same pure `spatialScope` and `startOf` the page uses, over the graph the page projects, so that each test says which spheres must be on screen and at what alpha (full spheres at .75, the frontier at .3, the batches' base alpha times the view's), not merely that some are; the frames and counts are read from the rendered scene through the observation instrument. The inspected file's growth is driven by the address, which carries the inspection, and its receding by the reader's Close, since a click on a sphere is held by `inspection.spec.ts` already.
+
+Since November 8, 2026, these bare-file scope and ring checks explicitly carry Off and two hops in their shared state. This preserves the exact spheres, frontier alpha and ring promises while fresh arrivals adopt Skin and one hop. The narrowing journey carries its one-hop override in the same shared state.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -24,7 +26,6 @@ _No public symbols detected_
 - `@playwright/test` - `Page`, `expect`, `test`
 - [`compressed-url-state.DEFAULT_SNAPSHOT`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-default_snapshot)
 - [`compressed-url-state.compressSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-compresssnapshot)
-- [`local-storage.getDefaultTuning`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-getdefaulttuning)
 - [`types.SpatialLayout`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-spatiallayout) (type-only)
 - [`forceGraphData.spatialGraphOf`](../../packages/explorer/src/client/views/forceGraphData.ts.mdmd.md#symbol-spatialgraphof)
 - [`forceGraphLayout.linkPulls`](../../packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md#symbol-linkpulls)

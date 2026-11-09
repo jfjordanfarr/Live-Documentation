@@ -2,7 +2,6 @@ import { test, expect, type Page } from "@playwright/test";
 
 import { observeGraph, renderedNodes } from "./force-graph-observation";
 import { currentSnapshot } from "./search-bar";
-import { localRetainUrl } from "./still-picture";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { getDefaultTuning } from "../../packages/explorer/src/client/persistence/local-storage";
 import { spatialGraphOf } from "../../packages/explorer/src/client/views/forceGraphData";
@@ -244,9 +243,12 @@ test("direct labels release independent pins, preserve required neighbors, and s
   const label = (id: string) => page.locator(`.force-graph-label[data-node-id="${id}"], .force-graph-focus[data-node-id="${id}"]`);
   await expect(label(orphan)).toHaveAttribute("aria-pressed", "true");
   await label(orphan).click();
+  expect(currentSnapshot(page).pinSet.entries).toEqual([{ nodeId: file, symbol: "*" }]);
+  // The pointer's preview still owns the released label until it leaves; then the lone seed is dimmed as the frontier.
+  const away = await emptyPoint(page);
+  await page.mouse.move(away.x, away.y);
   // Released, the lone file stays in the picture as its own group's seed, dimmed beyond the frontier (2026-11-02).
   await expect.poll(async () => (await renderedNodes(page)).find(node => node.id === orphan)?.opacity).toBeLessThan(0.5);
-  expect(currentSnapshot(page).pinSet.entries).toEqual([{ nodeId: file, symbol: "*" }]);
   const shared = await browser.newPage();
   try {
     await shared.goto(page.url());
@@ -259,7 +261,10 @@ test("direct labels release independent pins, preserve required neighbors, and s
   const neighbor = "Portal/Models/PaymentResultModel.cs";
   const neighbourSphere = (await renderedNodes(page)).find(node => node.id === neighbor)!;
   await page.mouse.move(neighbourSphere.x, neighbourSphere.y);
-  await label(neighbor).focus(); await page.keyboard.press("Enter");
+  await expect(label(neighbor)).toBeVisible();
+  await label(neighbor).focus();
+  await expect(label(neighbor)).toBeFocused();
+  await page.keyboard.press("Enter");
   await expect(label(neighbor)).toHaveAttribute("aria-pressed", "true");
   await label(neighbor).press("Enter");
   await expect(label(neighbor)).toHaveAttribute("aria-pressed", "false");
@@ -270,7 +275,7 @@ test("direct labels release independent pins, preserve required neighbors, and s
 test("a second directory click withdraws discovery without retaining its subtree", async ({ page }) => {
   test.setTimeout(60_000);
   await observeGraph(page);
-  await page.goto(`/samples/estate/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, perspective: "3d", spatialLayout: "structure" })}`);
+  await page.goto(`/samples/estate/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, perspective: "3d", spatialLayout: "structure", layout: { forceGraph: { groupWrappers: "off" } } })}`);
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
   // A hub not asked about is named at rest only when it draws large enough (2026-11-02): hovering it names it.
   const hub = (await renderedNodes(page)).find(node => node.id === "directory:Contracts")!;
@@ -496,7 +501,8 @@ test("hover peeks outside the retained scope, leaving restores it, and clearing 
   await page.setViewportSize({ width: 1600, height: 1000 });
   await observeGraph(page);
   const subject = "tests/integration/programs/typescript/rosetta/src/helpers.ts";
-  await page.goto(localRetainUrl("/", [subject]));
+  // This exact bare-sphere scope oracle excludes directory shells.
+  await page.goto(`/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, selectedNodeId: subject, pinSet: { entries: [{ nodeId: subject, symbol: "*" }] }, filters: { showTests: true, showAssets: true }, layout: { forceGraph: { groupWrappers: "off" } } })}`);
   // Compressed links carry their own representation; use the public control.
   if (await page.getByRole("button", { name: "3D", exact: true }).getAttribute("aria-pressed") !== "true") {
     await page.getByRole("button", { name: "3D", exact: true }).click();

@@ -13,6 +13,8 @@ Holds the network simplex solver to the optimum: enumeration on small instances,
 
 ### Notes
 
+The bookkeeping regression added on 2026-11-08 combines disconnected components, an isolated node, parallel constraints, zero weights and negative separations. Enumeration still supplies the optimum independently; subsequent calls with zero and changed weights verify that invocation-local scratch cannot carry one solve's balances into another. The existing oracle cases and thresholds remain intact.
+
 The enumeration is over integer positions in a small range, so every instance's true optimum is known; a solver that stopped early or pivoted wrongly would differ from it on some seed.
 
 ## Generated

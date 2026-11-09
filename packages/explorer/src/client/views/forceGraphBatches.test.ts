@@ -1,4 +1,4 @@
-import { Color, InstancedMesh, Matrix4, PerspectiveCamera, Quaternion, Raycaster, Scene, SphereGeometry, Vector2, Vector3, type WebGLRenderer } from "three";
+import { Color, InstancedMesh, Matrix4, NoToneMapping, PerspectiveCamera, SRGBColorSpace, Quaternion, Raycaster, Scene, SphereGeometry, Vector2, Vector3, type WebGLRenderer } from "three";
 import { describe, expect, it } from "vitest";
 
 import { createSpatialBuffers, drawSpatialGraphOnChange, screenWireIntersectsFrustum, type SpatialWrapperUnit } from "./forceGraphBatches";
@@ -8,13 +8,13 @@ interface Node { id: string; publicSymbols: string[]; x: number; y: number; z: n
 interface Link { source: Node; target: Node; width: number; color: string; visible: boolean; arrow: number }
 const node = (id: string, x: number, y: number, z: number, radius = 4): Node => ({ id, x, y, z, radius, color: "#0091ff", publicSymbols: [] });
 const link = (source: Node, target: Node, width = 1): Link => ({ source, target, width, color: "rgba(255, 255, 255, 0.16)", visible: true, arrow: 0 });
-const setup = (sphere?: (node: Node) => boolean) => {
+const setup = (sphere?: (node: Node) => boolean, renderer?: WebGLRenderer) => {
   const scene = new Scene(), camera = new PerspectiveCamera(60, 1, .1, 20000);
   camera.position.z = 1000; camera.updateMatrixWorld();
   const buffers = createSpatialBuffers<Node, Link>(scene, {
     radius: node => node.radius, nodeColor: node => node.color, linkColor: link => link.color,
     linkWidth: link => link.width, linkVisible: link => link.visible, arrowLength: link => link.arrow, ring: node => node.ring ?? null, sphere
-  });
+  }, renderer);
   return { scene, camera, buffers, draw: (nodes = 0, wires = 1) => buffers.update(camera, 1000, 1000, nodes, wires, new Vector3()) };
 };
 
@@ -394,12 +394,50 @@ describe("what a shell's skin shows within it (2026-11-06)", () => {
     buffers.dispose();
   });
 
+  it.each(["native", "analytic"] as const)("captures uploaded %s skin and interior geometry without following pending settings or reconstructing veiled contents", primitive => {
+    const renderer = primitive === "analytic" ? { outputColorSpace: SRGBColorSpace, toneMapping: NoToneMapping,
+      getContext: () => ({ getExtension: () => ({}) }) } as unknown as WebGLRenderer : undefined;
+    const { buffers, draw } = setup(node => !node.id.startsWith("shell:"), renderer), shell = node("shell:s", 100, 0, 0, 30);
+    buffers.setData({ nodes: [shell], links: [] });
+    buffers.setWrappers([shell.id], () => hull, "skin", undefined, () => units.map(unit => ({ ...unit, depth: 2, parent: "s", veiled: unit.kind === "directory" })));
+    buffers.styleWrappers({ alpha: () => .8, scale: () => 1.1, hovered: null, popping: new Set() }); draw(1);
+    const captured = buffers.captureBodies(new Set([shell.id]))[0];
+    expect(captured.positions).toEqual(Float32Array.from(buffers.wrappers.geometry.getAttribute("position").array));
+    expect(captured.indices).toEqual(Uint32Array.from(buffers.wrappers.geometry.index!.array));
+    expect(captured.alpha).toBe(buffers.wrappers.geometry.getAttribute("wrapperAlpha").getX(0));
+    for (const unit of captured.units) {
+      const native = mesh(buffers, unit.kind === "file" ? "Spatial shell files" : "Spatial shell balloons");
+      const matrix = new Matrix4(), color = new Color(); native.getMatrixAt(0, matrix); native.getColorAt(0, color);
+      expect(unit.matrix).toEqual(matrix.elements);
+      expect(unit.frontSide).toBe(unit.kind === "file");
+      expect(unit.primitive).toEqual(primitive === "analytic" && unit.kind === "file" ? { kind: "sphere", radius: 1 } : undefined);
+      expect(unit.positions).toEqual(Float32Array.from(native.geometry.getAttribute("position").array));
+      expect(unit.alpha).toBe(native.geometry.getAttribute("spatialOpacity").getX(0));
+      expect(unit.color).toBe(color.getStyle());
+      expect(unit).toMatchObject({ parent: "s", depth: 2, veiled: unit.kind === "directory" });
+    }
+    const original = captured.positions[0]; captured.positions[0] = 1e9;
+    buffers.styleWrappers({ alpha: () => .2, scale: () => 2, hovered: null, popping: new Set() });
+    const again = buffers.captureBodies(new Set([shell.id]))[0];
+    expect(again.positions[0], "capture reads the last uploaded geometry, not pending appearance").toBe(original);
+    expect(again.alpha).toBe(captured.alpha);
+    buffers.setWrappers([shell.id], () => hull, "cloud", undefined, () => units); draw();
+    expect(buffers.captureBodies(new Set([shell.id]))[0].units).toEqual([]);
+    expect(buffers.captureBodies(new Set(["absent"]))).toEqual([]);
+    buffers.dispose();
+  });
+
   it("stands a shell whose skin is not built yet as one balloon of its body, in every look but Off", () => {
     const { buffers, draw } = setup(node => !node.id.startsWith("shell:")), shell = node("shell:t", -50, 20, 0, 25), seed = node("seed", 0, 0, 0);
     buffers.setData({ nodes: [shell, seed], links: [] });
     for (const look of ["skin", "cloud", "cloud-rim"] as const) {
       buffers.setWrappers(["shell:t", "seed"], () => undefined, look); draw();
       // The seed, drawn as a sphere, needs no stand-in.
+      const fallback = buffers.captureBodies(new Set([shell.id]))[0];
+      expect(fallback).toMatchObject({ kind: "balloon", look });
+      expect(fallback.center).toEqual({ x: -50, y: 20, z: 0 });
+      expect(fallback.units).toEqual([]);
+      expect(fallback.positions).toEqual(Float32Array.from(mesh(buffers, "Spatial shell balloons").geometry.getAttribute("position").array));
       expect(shown(buffers, "Spatial shell balloons").map(({ id, x, y, radius }) => ({ id, x, y, radius }))).toEqual([{ id: "shell:t", x: -50, y: 20, radius: 25 }]);
     }
     buffers.setWrappers(["shell:t"], () => undefined, "off"); draw();

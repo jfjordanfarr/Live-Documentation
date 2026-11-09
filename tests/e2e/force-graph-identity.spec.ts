@@ -141,11 +141,12 @@ test("an unselected 3D arrival frames the estate without inventing pins", async 
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25000 });
   const frame = (await page.locator("#graph-svg canvas").boundingBox())!;
   const nodes = await renderedNodes(page);
-  // With no declared entry, the fresh start is Structure: root, children and grandchildren, including real hubs.
+  // The fresh Skin/one-hop start frames the root's own file and its six top-level directory cells.
   await expect(page.getByRole("button", { name: "Structure", exact: true })).toHaveAttribute("aria-pressed", "true");
   const files = nodes.filter(node => node.directory === undefined);
-  expect(files.length).toBeGreaterThan(10);
-  expect(files.length).toBeLessThan(36);
+  expect(files.map(node => node.id)).toEqual(["Estate.sln"]);
+  expect(nodes.filter(node => node.directory !== undefined).map(node => node.directory).sort())
+    .toEqual(["", "Contracts", "Database", "Gateway", "Hub", "PaymentService", "Portal"]);
   expect(nodes.some(node => node.directory === "")).toBe(true);
   for (const node of nodes) {
     expect(node.depth).toBeGreaterThan(-1); expect(node.depth).toBeLessThan(1);

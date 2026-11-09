@@ -1,6 +1,22 @@
 /** A screen point shared by a symbol route and its file-level connection. */
 export interface TransitionPoint { x: number; y: number }
 
+/** Match each destination once, preferring its exact card over directory aliases derived from canonical containment. */
+export function perspectiveCorrespondences(
+  localIds: readonly string[], destinations: ReadonlySet<string>, directoryRepresentatives?: ReadonlyMap<string, string>
+): Map<string, string> {
+  const matches = new Map(localIds.filter(id => destinations.has(id)).map(id => [id, id]));
+  const claimed = new Set(matches.values());
+  for (const id of localIds) {
+    if (matches.has(id)) continue;
+    const representative = directoryRepresentatives?.get(id);
+    if (!representative || !destinations.has(representative) || claimed.has(representative)) continue;
+    matches.set(id, representative);
+    claimed.add(representative);
+  }
+  return matches;
+}
+
 /** Smooth a bounded phase without overshoot. */
 export function transitionEase(value: number): number {
   const t = Math.max(0, Math.min(1, value));

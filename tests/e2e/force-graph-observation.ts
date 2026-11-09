@@ -1,5 +1,5 @@
 import type { Page } from "@playwright/test";
-import type { Camera, InstancedMesh, Scene, Vector3, WebGLRenderer } from "three";
+import type { BufferGeometry, Camera, InstancedMesh, Mesh, Scene, Vector3, WebGLRenderer } from "three";
 
 import type { SpatialDrawEntry } from "../../packages/explorer/src/client/views/forceGraphBatches";
 
@@ -222,4 +222,41 @@ export async function clearStroke(page: Page, spheres: readonly Sphere[], wires:
     if (await page.evaluate(point => document.elementFromPoint(point.x, point.y)?.tagName === "CANVAS", middle)) return middle;
   }
   return undefined;
+}
+
+/** Read skin vertices and interior marks from uploaded geometry, independently of transition capture/projection code. */
+export async function renderedBodyCarriers(page: Page) {
+  return page.evaluate(() => {
+    const observed = (window as unknown as ObservedWindow).renderedGraph!;
+    const frame = document.querySelector("#graph-svg canvas")!.getBoundingClientRect();
+    const wrapper = observed.scene.getObjectByName("Spatial wrappers") as Mesh<BufferGeometry>;
+    const positions = wrapper.geometry.getAttribute("position"), groups = wrapper.geometry.getAttribute("wrapperGroup");
+    const ranges = (wrapper.userData.spatialWrappers as { ranges: Array<{ seed: string; x: number; y: number; z: number }> }).ranges;
+    const project = (x: number, y: number, z: number, mesh: Mesh) => {
+      const point = observed.camera.position.clone().set(x, y, z).applyMatrix4(mesh.matrixWorld).project(observed.camera);
+      return { x: frame.left + (point.x + 1) * frame.width / 2, y: frame.top + (1 - point.y) * frame.height / 2 };
+    };
+    const files = observed.scene.getObjectByName("Spatial shell files") as InstancedMesh;
+    const records = files.userData.spatialUnits as Array<{ seed: string; id: string }>;
+    return ranges.map((range, group) => {
+      const boundary = [] as Array<{ x: number; y: number }>;
+      for (let index = 0; index < positions.count; index++) {
+        if (groups.getX(index) === group) boundary.push(project(positions.getX(index), positions.getY(index), positions.getZ(index), wrapper));
+      }
+      const marks = records.flatMap((record, slot) => {
+        if (record.seed !== range.seed || slot >= files.count) return [];
+        const matrix = observed.camera.matrixWorld.clone(); files.getMatrixAt(slot, matrix); matrix.premultiply(files.matrixWorld);
+        const center = observed.camera.position.clone().set(0, 0, 0).applyMatrix4(matrix);
+        const point = center.clone().project(observed.camera);
+        const radius = Math.hypot(matrix.elements[0], matrix.elements[1], matrix.elements[2]);
+        const right = observed.camera.matrixWorld.elements;
+        const rim = center.clone().add(center.clone().set(right[0], right[1], right[2]).multiplyScalar(radius)).project(observed.camera);
+        const colors = files.instanceColor!;
+        return [{ id: record.id, x: frame.left + (point.x + 1) * frame.width / 2, y: frame.top + (1 - point.y) * frame.height / 2,
+          radius: Math.abs(rim.x - point.x) * frame.width / 2,
+          color: [colors.getX(slot), colors.getY(slot), colors.getZ(slot)], alpha: files.geometry.getAttribute("spatialOpacity").getX(slot) }];
+      });
+      return { id: range.seed, ...project(range.x, range.y, range.z, wrapper), boundary, files: marks };
+    });
+  });
 }

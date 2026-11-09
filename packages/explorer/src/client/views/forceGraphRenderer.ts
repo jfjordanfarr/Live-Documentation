@@ -5,6 +5,7 @@ import { createSpatialBuffers, drawSpatialGraphOnChange, type SpatialDrawLink, t
 import type { CameraPoint } from "./forceGraphCamera";
 import type { Placed, SpatialNode } from "./forceGraphLayout";
 import type { GroupWrappers, WrapperHull } from "./forceGraphWrappers";
+import { projectSpatialBodies, type SceneBody } from "./perspectiveBodies";
 
 /** Mouse/touch motion within this CSS-pixel distance is still a click, shared with the view's press/hold handling. */
 export const SPATIAL_DRAG_SLOP = 6;
@@ -48,7 +49,7 @@ export class SpatialRenderer<N extends SpatialNode, L extends SpatialDrawLink<N>
     this.gpu.setClearColor(0x000011, 1); this.wrapper.append(this.gpu.domElement);
     this.eye.position.z = 1000;
     this.world.add(new AmbientLight(0xcccccc, Math.PI), new DirectionalLight(0xffffff, .6 * Math.PI));
-    this.buffers = createSpatialBuffers(this.world, options.style);
+    this.buffers = createSpatialBuffers(this.world, options.style, this.gpu);
     this.paint = { render: (): void => {
       const resistance = this.options.resistance();
       if (this.pendingData) { this.buffers.setData(this.data); this.pendingData = false; }
@@ -162,6 +163,18 @@ export class SpatialRenderer<N extends SpatialNode, L extends SpatialDrawLink<N>
   }
   /** Each wrapper's opacity and growth, the one hovered and those bursting open, for the next draw. */
   wrapperStyle(style: SpatialWrapperStyle): this { this.buffers.styleWrappers(style); this.appearance++; return this; }
+
+  /** Only links in the last submitted visible prefix, including the renderer's actual visibility and alpha. */
+  captureLinks(): L[] {
+    const { mesh, entries } = this.buffers.lines;
+    const alpha = mesh.geometry.getAttribute("spatialOpacity");
+    return entries.filter(entry => entry.enabled && entry.slot < mesh.count && alpha.getX(entry.slot) > 0).map(entry => entry.data);
+  }
+
+  /** Freeze selected submitted skins in CSS pixels without re-running layout or reading diagnostic metadata. */
+  captureBodies(selected: ReadonlySet<string>): Map<string, SceneBody> {
+    return projectSpatialBodies(this.buffers.captureBodies(selected), this.eye, this.viewWidth, this.viewHeight);
+  }
 
   /** Read or set the canvas width in CSS pixels. */
   width(): number;

@@ -4,13 +4,14 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/discovery.ts
-- Generated At: 2026-10-27T16:45:27.905Z
+- Generated At: 2026-11-09T00:01:53.955Z
 
 ## Authored
 ### Purpose
 File discovery and the workspace-wide indexes for Live Documentation. Locates workspace files matching configured globs for Live Doc generation and, in one pass over them, builds the symbol index that enables cross-file type reference linking and the entry index of the files manifests declare as entries.
 
 ### Notes
+- Current index provenance (2026-11-08): named re-exports retain the resolved provider and original export name from dependency analysis; star re-exports retain the provider already established by their resolver. Named default declarations are indexed under their declared name and `default`. Imported-type resolution follows only this supplied provenance; it does not infer a declaration from a nearby namesake.
 - The walk classifies symlink targets without recursively following directory links: links to files remain discoverable, while directory links and dangling links have no file content to analyze. T3 Code's `.claude/skills` directory link exposed that `glob`'s `nodir` alone does not make this distinction ([the external-project investigation](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-27.1.record.md#turn-3)).
 - Extracted 2025-12-06 from the monolithic `core.ts` during the "break up core.ts" refactoring
 - `discoverTargetFiles()` supports `--changed` mode via git intersection for fast iterations; an empty git change set selects no files. The generator discovers the full source set separately for workspace-wide indexes before selecting changed files for rendering.
@@ -28,7 +29,7 @@ File discovery and the workspace-wide indexes for Live Documentation. Locates wo
 ### Public Symbols
 #### `discoverTargetFiles` {#symbol-discovertargetfiles}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L210)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L211)
 - Parameters: `options`: `DiscoverOptions`
 
 ##### `discoverTargetFiles` — Summary
@@ -73,7 +74,7 @@ const files = await discoverTargetFiles({
 
 #### `discoverDocuments` {#symbol-discoverdocuments}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L238)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L239)
 
 ##### `discoverDocuments` — Summary
 The workspace's documents ({@link isDocument}), which never get a doc of
@@ -92,14 +93,14 @@ Workspace-relative paths with forward slashes, sorted.
 
 #### `WorkspaceIndexes` {#symbol-workspaceindexes}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L315)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L316)
 
 ##### `WorkspaceIndexes` — Summary
 The two indexes the first pass builds: the symbols every file publishes, and the files manifests declare as entries.
 
 #### `buildWorkspaceIndexes` {#symbol-buildworkspaceindexes}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L339)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L340)
 
 ##### `buildWorkspaceIndexes` — Summary
 Builds the workspace-wide indexes for cross-Live-Doc resolution in one pass
@@ -135,6 +136,7 @@ parser; every other file is read by its language adapter.
 - [`compose.computePublicSymbolHeadingInfo`](./compose.ts.mdmd.md#symbol-computepublicsymbolheadinginfo)
 - [`coreConstants.SUPPORTED_SCRIPT_EXTENSIONS`](./coreConstants.ts.mdmd.md#symbol-supported_script_extensions)
 - [`coreTypes.DeclaredEntry`](./coreTypes.ts.mdmd.md#symbol-declaredentry) (type-only)
+- [`coreTypes.DependencyEntry`](./coreTypes.ts.mdmd.md#symbol-dependencyentry) (type-only)
 - [`coreTypes.PublicSymbolEntry`](./coreTypes.ts.mdmd.md#symbol-publicsymbolentry) (type-only)
 - [`coreTypes.ReExportedSymbolInfo`](./coreTypes.ts.mdmd.md#symbol-reexportedsymbolinfo) (type-only)
 - [`coreTypes.ResolvedSymbolLocation`](./coreTypes.ts.mdmd.md#symbol-resolvedsymbollocation) (type-only)

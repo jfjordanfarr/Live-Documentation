@@ -1,5 +1,6 @@
 import { directoryNodeId } from "./forceGraphData";
-import { directoryOpacity, gatherWire, outlineLength, pathOutline, perspectivePhases, polygonOutline, sampleOutline, type TransitionPoint } from "./perspectiveGeometry";
+import type { SceneBody } from "./perspectiveBodies";
+import { directoryOpacity, gatherWire, outlineLength, pathOutline, perspectiveCorrespondences, perspectivePhases, polygonOutline, sampleOutline, type TransitionPoint } from "./perspectiveGeometry";
 
 /** Screen-space correspondence between native cards and native force positions. */
 export interface SceneFile {
@@ -9,12 +10,16 @@ export interface SceneFile {
   y: number;
   radius: number;
   color: string;
+  /** A frozen projection of a real container, never painted as an opaque sphere. */
+  body?: SceneBody;
 }
 
 /** A frozen projection of the native force scene, without introducing another layout. */
 export interface ForceScene {
   files: SceneFile[];
   links: { source: string; target: string }[];
+  /** A collapsed Structure directory whose real destination is its sole file, without duplicating the file node. */
+  directoryRepresentatives?: ReadonlyMap<string, string>;
 }
 
 interface CardSnapshot {
@@ -192,6 +197,26 @@ export function animatePerspective(
     Object.assign(clone.style, { left: `${directory.x - viewport.left}px`, top: `${directory.y - viewport.top}px`, transform: `scale(${directory.scale})` });
     layer.append(clone);
   }
+  const bodyPaths = new Map(graph.files.flatMap(file => {
+    if (!file.body) return [];
+    const pathOf = (boundaries: readonly (readonly TransitionPoint[])[]): Path2D => {
+      const path = new Path2D();
+      for (const boundary of boundaries) {
+        boundary.forEach((point, index) => { if (index) path.lineTo(point.x, point.y); else path.moveTo(point.x, point.y); });
+        path.closePath();
+      }
+      return path;
+    };
+    return [[file.id, { boundary: pathOf([file.body.boundary]), units: file.body.units.map(unit => ({ ...unit, path: pathOf(unit.polygons ?? [unit.boundary]) })) }]] as const;
+  }));
+  const bodyPrimitives = graph.files.flatMap(file => {
+    if (!file.body) return [];
+    const paths = bodyPaths.get(file.id)!, body = file.body;
+    return [
+      ...paths.units.map(unit => ({ id: file.id, pass: unit.kind === "file" ? 0 : 1, order: unit.order, path: unit.path, unit })),
+      { id: file.id, pass: body.kind === "balloon" ? 1 : 2, order: body.order, path: paths.boundary, unit: undefined }
+    ];
+  }).sort((a, b) => a.pass - b.pass || a.order - b.order);
   const levels = 1 + Math.max(0, ...directories.map(directory => directory.depth));
   const canvas = document.createElement("canvas");
   canvas.width = Math.ceil(viewport.width * devicePixelRatio); canvas.height = Math.ceil(viewport.height * devicePixelRatio);
@@ -201,6 +226,8 @@ export function animatePerspective(
   context.scale(devicePixelRatio, devicePixelRatio);
   const projected = new Map(graph.files.map(file => [file.id, file]));
   const local = new Map(cards.map(card => [card.file.id, card]));
+  const correspondences = perspectiveCorrespondences([...local.keys()], new Set(projected.keys()), graph.directoryRepresentatives);
+  const localForFile = new Map([...correspondences].map(([localId, graphId]) => [graphId, local.get(localId)!]));
   const pairKey = (a: string, b: string): string => JSON.stringify([a, b].sort());
   const pairs = new Map<string, WireSnapshot[]>();
   for (const wire of wires) {
@@ -237,7 +264,7 @@ export function animatePerspective(
     layer.style.backgroundColor = `rgb(${Math.round(30 * (1 - background))}, ${Math.round(30 * (1 - background))}, ${Math.round(30 * (1 - background) + 12 * background)})`;
     const positions = new Map<string, SceneFile>();
     for (const file of graph.files) {
-      const card = local.get(file.id);
+      const card = localForFile.get(file.id);
       positions.set(file.id, card ? { ...file, x: card.file.x + (file.x - card.file.x) * move, y: card.file.y + (file.y - card.file.y) * move } : file);
     }
     context.clearRect(0, 0, viewport.width, viewport.height);
@@ -245,8 +272,8 @@ export function animatePerspective(
     for (const group of pairs.values()) {
       if (fold === 1) continue;
       for (const wire of group) {
-        const provider = positions.get(wire.provider) ?? local.get(wire.provider)?.file;
-        const consumer = positions.get(wire.consumer) ?? local.get(wire.consumer)?.file;
+        const provider = positions.get(correspondences.get(wire.provider) ?? wire.provider) ?? local.get(wire.provider)?.file;
+        const consumer = positions.get(correspondences.get(wire.consumer) ?? wire.consumer) ?? local.get(wire.consumer)?.file;
         if (!provider || !consumer) continue;
         const points = gatherWire(wire.points, provider, consumer, fold);
         context.globalAlpha = wire.opacity * (1 - fold) + .32 / group.length * fold;
@@ -267,24 +294,47 @@ export function animatePerspective(
     for (const link of graph.links) {
       const a = positions.get(link.source), b = positions.get(link.target);
       if (!a || !b) continue;
-      if (fold < 1 && pairs.has(pairKey(a.id, b.id))) continue;
-      const inside = local.has(a.id) && local.has(b.id);
+      const localA = localForFile.get(a.id), localB = localForFile.get(b.id);
+      const inside = !!localA && !!localB && pairs.has(pairKey(localA.file.id, localB.file.id));
+      if (fold < 1 && inside) continue;
       context.globalAlpha = inside ? .32 : background * .16;
       context.strokeStyle = inside ? "#38bdf8" : "#9baec5";
       context.beginPath(); context.moveTo(a.x - viewport.left, a.y - viewport.top); context.lineTo(b.x - viewport.left, b.y - viewport.top); context.stroke();
     }
     for (const file of positions.values()) {
-      context.globalAlpha = local.has(file.id) ? fold : background;
+      if (file.body) continue;
+      context.globalAlpha = localForFile.has(file.id) ? fold : background;
       context.fillStyle = file.color;
       context.beginPath(); context.arc(file.x - viewport.left, file.y - viewport.top, Math.max(.5, Math.min(80, file.radius)), 0, 2 * Math.PI); context.fill();
     }
+    // Match the native global passes: file marks, inner/fallback balloons, then outer skins.
+    for (const primitive of bodyPrimitives) {
+      const file = positions.get(primitive.id)!, body = file.body!;
+      const presence = localForFile.has(file.id) ? fold : background;
+      context.save(); context.translate(file.x - viewport.left, file.y - viewport.top);
+      if (primitive.unit?.kind === "file") {
+        context.globalAlpha = presence * primitive.unit.alpha;
+        context.fillStyle = primitive.unit.color; context.fill(primitive.path);
+      } else {
+        const alpha = primitive.unit?.alpha ?? body.alpha;
+        const veiled = primitive.unit?.veiled ?? false;
+        const inner = !!primitive.unit || body.kind === "balloon";
+        const cloud = body.look !== "skin";
+        context.fillStyle = context.strokeStyle = cloud ? "#8bacc7" : "#83b9d4";
+        context.globalAlpha = presence * alpha * (cloud ? 0.27 : veiled ? 0.42 : inner ? 0.015 : 0.05);
+        context.fill(primitive.path);
+        context.globalAlpha = presence * alpha * (cloud ? body.hovered ? 0.6 : 0 : veiled ? 0.62 : inner ? 0.315 : 0.27);
+        context.stroke(primitive.path);
+      }
+      context.restore();
+    }
     context.globalAlpha = 1;
     for (const { card, wrapper, label } of ghosts) {
-      const counterpart = projected.get(card.file.id);
+      const counterpart = projected.get(correspondences.get(card.file.id) ?? "");
       const destination = counterpart ?? card.file;
       const x = card.file.x + (destination.x - card.file.x) * move - viewport.left;
       const y = card.file.y + (destination.y - card.file.y) * move - viewport.top;
-      // A closed folder has a hub in Structure, but no invented token in Connections. Its whole box fades in/out;
+      // A Structure folder travels to its cell hub or canonical sole file; an unmatched folder fades in/out;
       // showing only its name during the fold would leave unexplained floating text with no corresponding sphere.
       const shrink = counterpart ? 1 - fold : 1;
       if (wrapper) {

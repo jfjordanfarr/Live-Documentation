@@ -11,8 +11,9 @@
 TypeScript AST symbol extraction for Live Documentation. Walks the AST of TypeScript/JavaScript source files to extract exported declarations (functions, classes, interfaces, types, enums, constants) and their type references for cross-Live-Doc linking.
 
 ### Notes
+- Current binding extraction (2026-11-08): named, aliased, namespace and default imports retain their module/export identity per reference. Enclosing and nested generic parameters, mapped parameters and conditional inferred parameters shadow imports in their own lexical scopes. Deduplication includes binding identity so a real imported reference and a bound parameter of the same name and role both survive. A known import also takes precedence over the usual built-in-name filter.
 - Extracted 2025-12-06 from the monolithic `core.ts` during the "break up core.ts" refactoring
-- 766 lines — handles the complexity of TypeScript's export syntax variations
+- Reads TypeScript export and signature syntax without requiring a compiler program
 - `collectExportedSymbols()` is the main entry point, returning a location-sorted symbol list
 - `collectTypeReferencesFromFunction/Class/Interface/TypeAlias()` extract type dependencies
 - Filters out primitive types (string, number, boolean, etc.) from type references

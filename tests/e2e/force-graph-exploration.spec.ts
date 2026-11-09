@@ -1,9 +1,11 @@
 import { expect, test, type Page } from "@playwright/test";
+import type { Scene } from "three";
 
 import { observeGraph, renderedNodes } from "./force-graph-observation";
 import { currentSnapshot } from "./search-bar";
-import { localMapSettled } from "./still-picture";
+import { loadGraph, localMapSettled } from "./still-picture";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
+import { spatialGraphOf } from "../../packages/explorer/src/client/views/forceGraphData";
 
 test.use({ viewport: { width: 1440, height: 960 } });
 
@@ -14,14 +16,17 @@ async function settled(page: Page): Promise<void> {
 test("the visible hops control narrows a neighborhood without losing pins and survives sharing", async ({ page }) => {
   test.setTimeout(60_000);
   await observeGraph(page);
-  await page.goto("/samples/estate/?view=local&mode=3d&node=Portal/Services/GatewayClient.cs");
+  await page.goto(`/samples/estate/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, perspective: "3d", selectedNodeId: "Portal/Services/GatewayClient.cs", layout: { forceGraph: { hops: 2 } } })}`);
   await settled(page);
   const before = currentSnapshot(page);
-  const two = (await renderedNodes(page)).map(node => node.id);
+  // Skin represents the omitted files with shells; narrowing applies to the explicit file neighborhood, not its body count.
+  const files = new Set((await loadGraph(page, "/samples/estate/")).nodes.map(node => node.id));
+  const shownFiles = async () => (await renderedNodes(page)).map(node => node.id).filter(id => files.has(id));
+  const two = await shownFiles();
   const hops = page.getByRole("combobox", { name: "Hops shown", exact: true });
   await hops.selectOption("1");
   await settled(page);
-  const one = (await renderedNodes(page)).map(node => node.id);
+  const one = await shownFiles();
   expect(one.length).toBeLessThan(two.length);
   expect(one.every(id => two.includes(id))).toBe(true);
   expect(currentSnapshot(page)).toMatchObject({ pinSet: before.pinSet, selectedNodeId: before.selectedNodeId, layout: { forceGraph: { hops: 1 } } });
@@ -29,7 +34,7 @@ test("the visible hops control narrows a neighborhood without losing pins and su
   await page.reload();
   await settled(page);
   await expect(hops).toHaveValue("1");
-  expect((await renderedNodes(page)).map(node => node.id).sort()).toEqual(one.sort());
+  expect((await shownFiles()).sort()).toEqual(one.sort());
 });
 
 test("whole overview finds isolated files and returns to the independent directory and pins", async ({ page }) => {
@@ -79,7 +84,8 @@ test("whole overview finds isolated files and returns to the independent directo
 test("directory discovery survives a layout switch without opening or pinning its subtree, beside its reader", async ({ page }) => {
   test.setTimeout(60_000);
   await observeGraph(page);
-  await page.goto("/samples/estate/?view=local&mode=3d&layout=structure");
+  // Bare hubs discover; a Skin frontier cell instead opens its directory.
+  await page.goto(`/samples/estate/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, perspective: "3d", spatialLayout: "structure", layout: { forceGraph: { groupWrappers: "off", hops: 2 } } })}`);
   await settled(page);
   // A hub not asked about is named on approach or hover (2026-11-02): hovering it names it for the click.
   const hoverHub = async (id: string): Promise<void> => {
@@ -150,7 +156,7 @@ for (const scope of ["directory", "pins"] as const) {
     test.setTimeout(90_000);
     await observeGraph(page);
     const snapshot = { ...DEFAULT_SNAPSHOT, spatialLayout: "structure" as const,
-      ...(scope === "directory" ? { openDirectories: new Set(["Portal"]) }
+      ...(scope === "directory" ? { openDirectories: new Set(["Portal"]), layout: { forceGraph: { groupWrappers: "off" as const, hops: 2 } } }
         : { pinSet: { entries: [{ nodeId: "Portal/Services/GatewayClient.cs", symbol: "*" }, { nodeId: "Estate.sln", symbol: "*" }] } }) };
     await page.goto(`/samples/estate/?s=${compressSnapshot(snapshot)}`);
     await localMapSettled(page);
@@ -165,7 +171,7 @@ for (const scope of ["directory", "pins"] as const) {
     await expect(bridge).toBeVisible();
     const presented = await renderedNodes(page);
     expect(presented.some(node => identities.includes(node.id))).toBe(true);
-    // Closed folders in Structure have real matching hubs rather than fading into an as-yet-unrevealed target.
+    // This bare-hub journey explicitly uses Off and two hops; Skin cells and single-file representatives need their own correspondence checks.
     if (scope === "directory") {
       const closed = identities.filter(id => id.startsWith("directory:Portal/"));
       expect(closed.length).toBeGreaterThan(0);
@@ -193,5 +199,41 @@ for (const scope of ["directory", "pins"] as const) {
       return item.classList.contains("node-card") ? item.dataset.id! : `directory:${item.dataset.directory!}`;
     }));
     expect(after.sort()).toEqual(identities.sort());
+  });
+}
+
+for (const groupWrappers of ["skin", "off"] as const) {
+  test(`Whole in Structure with ${groupWrappers} shows every file and hub, then restores independent local retention`, async ({ page }) => {
+    test.setTimeout(60_000);
+    await observeGraph(page);
+    const snapshot = { ...DEFAULT_SNAPSHOT, perspective: "3d" as const, spatialLayout: "structure" as const,
+      openDirectories: new Set(["Portal"]), pinSet: { entries: [{ nodeId: "Estate.sln", symbol: "*" }] },
+      layout: { forceGraph: { groupWrappers, hops: 1 } } };
+    await page.goto(`/samples/estate/?s=${compressSnapshot(snapshot)}`);
+    await settled(page);
+    const local = (await renderedNodes(page)).map(node => node.id).sort();
+    const before = currentSnapshot(page);
+    const whole = page.getByRole("button", { name: "Whole", exact: true });
+    await whole.click();
+    await expect(whole).toHaveAttribute("aria-pressed", "true");
+    await settled(page);
+    const graph = await loadGraph(page, "/samples/estate/");
+    const expected = spatialGraphOf(graph, node => (node.archetype || "").toLowerCase() !== "asset", [], "structure");
+    expect((await renderedNodes(page)).map(node => node.id).sort(), "Whole includes every filtered file and its directory hubs")
+      .toEqual(expected.nodes.map(node => node.id).sort());
+    const files = expected.nodes.filter(node => node.directoryPath === undefined).length;
+    await expect(page.locator("#stats-line")).toContainText(`${files} of ${files} files shown`);
+    const wrapped = await page.evaluate(() => {
+      const { scene } = (window as unknown as { renderedGraph: { scene: Scene } }).renderedGraph;
+      let seeds: string[] = [];
+      scene.traverse(object => { if (object.name === "Spatial wrappers") seeds = object.userData.spatialWrappers.seeds; });
+      return seeds;
+    });
+    expect(wrapped, "no collapsed frontier bubble remains in the whole graph").toEqual([]);
+    await whole.click();
+    await expect(whole).toHaveAttribute("aria-pressed", "false");
+    await settled(page);
+    expect(currentSnapshot(page)).toMatchObject({ selectedNodeId: before.selectedNodeId, openDirectories: before.openDirectories, pinSet: before.pinSet });
+    expect((await renderedNodes(page)).map(node => node.id).sort(), "local membership returns after withdrawing only the root opening").toEqual(local);
   });
 }

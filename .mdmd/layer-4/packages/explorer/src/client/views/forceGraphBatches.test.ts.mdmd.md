@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/forceGraphBatches.test.ts
-- Generated At: 2026-11-06T18:06:28.194Z
+- Generated At: 2026-11-09T00:01:54.748Z
 
 ## Authored
 ### Purpose
@@ -21,6 +21,8 @@ Since 2026-11-06 it holds seven, the two more drawing what a shell's skin shows 
 
 Since 2026-11-05 the bounded scene holds five objects, the four instance batches and the wrappers' one mesh, and two cases check that mesh: nothing written while off, each hull drawn about its seed and following it, the nearest wrapper picked before the sphere it holds, a bursting one left out and unrimmed ([Group Wrappers](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#competing-layout-preferences)).
 
+The November 8 submitted-capture case runs with both native and analytic contained primitives. It compares actual uploaded matrices/geometry/alpha and requires the analytic mark's unit-sphere parameters, while ordinary nodes and balloons retain native capture. Hidden and veiled contents are still never reconstructed.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -35,6 +37,6 @@ _No public symbols detected_
 - [`forceGraphBatches.screenWireIntersectsFrustum`](./forceGraphBatches.ts.mdmd.md#symbol-screenwireintersectsfrustum)
 - [`forceGraphWrappers.GroupShape`](./forceGraphWrappers.ts.mdmd.md#symbol-groupshape)
 - [`forceGraphWrappers.wrapperHull`](./forceGraphWrappers.ts.mdmd.md#symbol-wrapperhull-function)
-- `three` - `Color`, `InstancedMesh`, `Matrix4`, `PerspectiveCamera`, `Quaternion`, `Raycaster`, `Scene`, `SphereGeometry`, `Vector2`, `Vector3`, `WebGLRenderer`
+- `three` - `Color`, `InstancedMesh`, `Matrix4`, `NoToneMapping`, `PerspectiveCamera`, `Quaternion`, `Raycaster`, `SRGBColorSpace`, `Scene`, `SphereGeometry`, `Vector2`, `Vector3`, `WebGLRenderer`
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

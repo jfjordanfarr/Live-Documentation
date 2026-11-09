@@ -1,7 +1,14 @@
-import { describe, expect, it } from "vitest";
+import * as fs from "node:fs/promises";
+import * as os from "node:os";
+import path from "node:path";
+import ts from "typescript";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
+import { composeDependencies, composeReExports, composeSymbolBlocks, computePublicSymbolHeadingInfo } from "./compose";
+import { buildWorkspaceIndexes } from "./discovery";
 import { renderLiveDoc, parseLiveDoc, type LiveDoc } from "./document";
 import { deriveLiveDocGraph, linkTarget } from "./graph";
+import { analyzeSourceFile } from "./sourceAnalysis";
 
 const location = { root: ".live-documentation", baseLayer: "source", extension: ".md" };
 
@@ -105,5 +112,132 @@ describe("linkTarget", () => {
 
   it("matches the extension without regard to case, as the workspace mount does", () => {
     expect(linkTarget(from, "../Types.ts.MD", location)?.codePath).toBe("src/Types.ts");
+  });
+});
+
+
+describe("TypeScript binding facts through analysis, composition, markdown and graph", () => {
+  let workspace: string;
+  let graph: ReturnType<typeof deriveLiveDocGraph>;
+  const sources: Record<string, string> = {
+    "src/camera.ts": "export interface Camera { zoom: number } export default class Lens {}",
+    "src/barrel.ts": 'export { Camera as PublicCamera, default as PublicLens } from "./camera";',
+    "src/star.ts": 'export * from "./camera";',
+    "src/loose.ts": "export interface Loose {}",
+    "src/nested.ts": 'import type { Camera } from "./camera"; export type NestedConditional = number extends (number extends infer Camera ? Camera : never) ? Camera : never;',
+    "src/wrong/names.ts": "export interface Camera { theta: number; phi: number } export interface Lens {} export interface PublicCamera {} export interface PublicLens {} export interface Loose {}",
+    "src/wrong/external.ts": 'import type { Camera } from "three"; export function external(camera: Camera): Camera { throw 0; }',
+    "src/wrong/use.ts": `
+      import BorrowedLens, { Camera, Camera as Renamed } from "../camera";
+      import * as Internal from "../camera";
+      import type { PublicCamera, PublicLens } from "../barrel";
+      import type { Camera as FromStar } from "../star";
+      import type { Camera as External } from "three";
+      import * as THREE from "three";
+      import type { Camera as Missing } from "../missing";
+      export interface Own {}
+      export function inspect(camera: Camera, alias: Renamed, namespace: Internal.Camera, lens: BorrowedLens,
+        publicType: PublicCamera, publicLens: PublicLens, star: FromStar,
+        external: External, qualifiedExternal: THREE.Camera, missing: Missing, own: Own, loose: Loose): void {}
+      export function separate(outer: Camera, callback: <Camera>(outer: Camera) => Camera): void {}
+      export function generic<Camera>(value: Camera): Camera { throw 0; }
+      export function inherited<Camera>(callback: <Other>(value: Camera) => Other): void {}
+      export type Mapped = { [Camera in "one"]: Camera };
+      export type Conditional = string extends infer Camera ? Camera : Camera;
+      export class Derived extends BorrowedLens {}
+      export interface Contract extends Internal.Camera {}
+    `
+  };
+
+  beforeAll(async () => {
+    workspace = await fs.mkdtemp(path.join(os.tmpdir(), "live-docs-type-bindings-"));
+    for (const [file, text] of Object.entries(sources)) {
+      await fs.mkdir(path.dirname(path.join(workspace, file)), { recursive: true });
+      await fs.writeFile(path.join(workspace, file), text, "utf8");
+    }
+    const liveDocsRoot = `${location.root}/${location.baseLayer}`;
+    const liveDocsRootAbsolute = path.join(workspace, liveDocsRoot);
+    const { symbols: symbolIndex } = await buildWorkspaceIndexes({ workspaceRoot: workspace,
+      targetFiles: Object.keys(sources).map(file => path.join(workspace, file)), liveDocsRoot, docExtension: location.extension });
+    const documents = [];
+    for (const sourceRelativePath of Object.keys(sources)) {
+      const sourceAbsolute = path.join(workspace, sourceRelativePath);
+      const analysis = await analyzeSourceFile(sourceAbsolute, workspace, undefined, symbolIndex);
+      const headings = computePublicSymbolHeadingInfo(analysis.symbols);
+      const docDir = path.dirname(path.join(liveDocsRootAbsolute, `${sourceRelativePath}${location.extension}`));
+      documents.push(doc(sourceRelativePath, {
+        symbols: composeSymbolBlocks({ headings, docDir, sourceAbsolute, sourceRelativePath, symbolIndex,
+          liveDocsRootAbsolute, dependencies: analysis.dependencies }),
+        dependencies: composeDependencies({ analysis, docDir, liveDocsRootAbsolute, docExtension: location.extension, headings, symbolIndex }),
+        reExports: analysis.reExportedSymbols?.length ? composeReExports({ reExports: analysis.reExportedSymbols, docDir, liveDocsRootAbsolute,
+          docExtension: location.extension, symbolIndex }) : undefined
+      }));
+    }
+    graph = deriveLiveDocGraph(documents, location);
+  });
+
+  afterAll(async () => { if (workspace) await fs.rm(workspace, { recursive: true, force: true }); });
+
+  const consumer = () => graph.files["src/wrong/use.ts"];
+  const signatureEdges = () => consumer().edges.filter(edge => edge.kind !== "import" && edge.kind !== "re-export");
+
+  it("rejects external and unresolved import collisions while retaining direct, alias, namespace and default internal edges", () => {
+    const parameters = signatureEdges().filter(edge => edge.from === "symbol-inspect");
+    expect(graph.files["src/wrong/external.ts"].edges.filter(edge => edge.kind !== "import")).toEqual([]);
+    expect(graph.files["src/wrong/external.ts"].outbound).toEqual([]);
+    expect(parameters.filter(edge => ["external", "qualifiedExternal", "missing"].includes(edge.parameter ?? ""))).toEqual([]);
+    for (const parameter of ["camera", "alias", "namespace", "lens"]) {
+      expect(parameters.filter(edge => edge.parameter === parameter)).toEqual([expect.objectContaining({
+        kind: "parameter", to: "src/camera.ts", parameter, toSymbol: parameter === "lens" ? "symbol-lens" : "symbol-camera"
+      })]);
+    }
+    expect(signatureEdges().filter(edge => edge.to === "src/wrong/names.ts").map(edge => edge.label)).toEqual(["Loose"]);
+  });
+
+  it("keeps proven named/star re-export declaration targets ahead of barrel anchors and unrelated namesakes", () => {
+    const edges = signatureEdges().filter(edge => edge.from === "symbol-inspect");
+    for (const parameter of ["publicType", "publicLens", "star"]) {
+      expect(edges.filter(edge => edge.parameter === parameter)).toEqual([expect.objectContaining({
+        to: "src/camera.ts", toSymbol: parameter === "publicLens" ? "symbol-lens" : "symbol-camera"
+      })]);
+    }
+    expect(signatureEdges()).toContainEqual(expect.objectContaining({ from: "symbol-derived", kind: "extends", to: "src/camera.ts", toSymbol: "symbol-lens" }));
+    expect(signatureEdges()).toContainEqual(expect.objectContaining({ from: "symbol-contract", kind: "extends", to: "src/camera.ts", toSymbol: "symbol-camera" }));
+  });
+
+  it("preserves a genuine imported parameter beside its same-name bound generic without introducing bound edges", () => {
+    const edges = signatureEdges();
+    expect(edges.filter(edge => edge.from === "symbol-separate")).toEqual([
+      expect.objectContaining({ kind: "parameter", parameter: "outer", label: "Camera", to: "src/camera.ts" })
+    ]);
+    for (const from of ["symbol-generic", "symbol-inherited", "symbol-mapped"]) expect(edges.filter(edge => edge.from === from), from).toEqual([]);
+    expect(edges.filter(edge => edge.from === "symbol-conditional")).toEqual([
+      expect.objectContaining({ kind: "returns", label: "Camera", to: "src/camera.ts" })
+    ]);
+    const separate = consumer().symbols.find(symbol => symbol.slug === "symbol-separate")!;
+    expect(separate.references).toContainEqual({ role: "Parameters", parameters: [{ name: "outer", types: [
+      { name: "Camera", link: "../camera.ts.md#symbol-camera" }, { name: "Camera" }
+    ] }] });
+  });
+
+  it("agrees with TypeScript that nested conditional inference does not bind the outer true branch", () => {
+    const program = ts.createProgram([path.join(workspace, "src/nested.ts")], { noLib: true, types: [] });
+    const source = program.getSourceFile(path.join(workspace, "src/nested.ts"))!;
+    const alias = source.statements.find((statement): statement is ts.TypeAliasDeclaration =>
+      ts.isTypeAliasDeclaration(statement) && statement.name.text === "NestedConditional")!;
+    const checker = program.getTypeChecker();
+    expect(program.getSyntacticDiagnostics(source)).toEqual([]);
+    expect(program.getSemanticDiagnostics(source)).toEqual([]);
+    // The nested conditional reduces to number. The outer true branch is the imported interface, with its zoom property.
+    expect(checker.getTypeAtLocation(alias.name).getProperties().map(symbol => symbol.name)).toEqual(["zoom"]);
+    const documented = graph.files["src/nested.ts"].edges.filter(edge => edge.kind === "returns");
+    expect(documented).toEqual([expect.objectContaining({ kind: "returns", to: "src/camera.ts", toSymbol: "symbol-camera" })]);
+  });
+
+  it("retains origin-free local and legacy name resolution alongside imported bindings", () => {
+    const edges = signatureEdges().filter(edge => edge.from === "symbol-inspect");
+    expect(edges).toContainEqual(expect.objectContaining({ parameter: "own", to: "src/wrong/use.ts", toSymbol: "symbol-own" }));
+    // Loose has no known binding: its existing same-language proximity rule still applies.
+    expect(edges).toContainEqual(expect.objectContaining({ parameter: "loose", to: "src/wrong/names.ts", toSymbol: "symbol-loose" }));
   });
 });

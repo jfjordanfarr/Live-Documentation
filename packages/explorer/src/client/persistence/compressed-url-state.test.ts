@@ -9,6 +9,8 @@ import {
   DEFAULT_SNAPSHOT,
 } from "./compressed-url-state";
 import type { UrlStateSnapshot, CompressedPayload } from "./compressed-url-state";
+import { applyLayoutSettings } from "../layout-presets";
+import { getDefaultTuning } from "./local-storage";
 import { addPin, EMPTY_PIN_SET, INTERNAL_SYMBOL } from "../views/pin-state";
 import type { PinSet } from "../views/pin-state";
 
@@ -138,6 +140,22 @@ describe("compress/decompress round-trip", () => {
     expect(restored.selectedNodeId).toBe(DEFAULT_SNAPSHOT.selectedNodeId);
     expect(restored.pinSet).toEqual(DEFAULT_SNAPSHOT.pinSet);
     expect(restored.filters).toEqual(DEFAULT_SNAPSHOT.filters);
+  });
+
+  it("preserves explicit Off and two hops in a shared link over the new factory defaults", () => {
+    const snapshot = { ...DEFAULT_SNAPSHOT, layout: { forceGraph: { groupWrappers: "off" as const, hops: 2 } } };
+    const restored = decompressSnapshot(compressSnapshot(snapshot));
+    expect(restored.layout).toEqual(snapshot.layout);
+    expect(applyLayoutSettings(getDefaultTuning(), restored.layout).forceGraph).toMatchObject({ groupWrappers: "off", hops: 2 });
+  });
+
+  it("keeps the viewer's preferences for fields omitted by an older or partial shared link", () => {
+    const tuning = getDefaultTuning();
+    tuning.forceGraph.groupWrappers = "off";
+    tuning.forceGraph.hops = 2;
+    expect(applyLayoutSettings(tuning, payloadToSnapshot({ v: 3 }).layout).forceGraph).toMatchObject({ groupWrappers: "off", hops: 2 });
+    const restored = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: { forceGraph: { gravity: 0.03 } } }));
+    expect(applyLayoutSettings(tuning, restored.layout).forceGraph).toMatchObject({ groupWrappers: "off", hops: 2, gravity: 0.03 });
   });
 
   it("round-trips a complex snapshot with pins, a 3D perspective, directories and filters", () => {

@@ -4,11 +4,11 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/history-scrubber.spec.ts
-- Generated At: 2026-10-22T16:47:58.297Z
+- Generated At: 2026-11-09T00:01:56.721Z
 
 ## Authored
 ### Purpose
-Holds the history of the 3D Local Map over the scripted sample's two bundles: the control and the scrubber's ticks, the keyboard grammar, a renamed file and its hub keeping their objects and places, a death shown as a death with "gone since", a pin not yet created said in the tray and its birth the one major tick, the address carrying the commit and the authors toggle, a drag placing every step without a tick and the rest settling, the window's truncated beginning, the Knowledge Sources line, and the design audit over each state.
+Holds the history of the 3D Local Map over controlled whole/window, collision and growth bundles: the control and the scrubber's ticks, the keyboard grammar, a renamed file and its hub keeping their objects and places, a death shown as a death with "gone since", a pin not yet created said in the tray and its birth the one major tick, the address carrying the commit and the authors toggle, a drag placing every step without a tick and the rest settling, the window's truncated beginning, the Knowledge Sources line, and the design audit over each state.
 
 ### Notes
 - Written 2026-10-18 for ticket C4 of [the change-over-time plan](../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions), after the looking ([the pictures](../../../../AI-Agent-Workspace/Screenshots/2026-10-18/history/README.md)). The bundles are `samples/history/` and `samples/history-window/`, built by `npm run live-docs:visualize:history-sample` from `tests/integration/live-docs/scripted-repository.ts`; the commits are read from each bundle's own history file, the spheres and lines from the rendered scene through `force-graph-observation.ts`, and the update energy is zero in the address so that a step moves a sphere only by what the step says. Its first run found a pinned file that was also the subject read as absent at its own step, a misalignment in the control's precomputed names, fixed that hour.
@@ -24,6 +24,8 @@ Since 2026-10-31 (discovery, [Turn 4 of the October 31 record](../../../../AI-Ag
 Since 2026-11-02 ([Turn 3 of the November 2 record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-02.1.record.md#turn-3)) the control opened with nothing asked about opens and retains the whole, so the tests that open it this way expect the whole's ticks, every step that changed a file's shape major and the content-only step minor, and the root's row in the tray beside a file's; and a moment at which the asked-about file does not yet stand shows the tree's root dimmed, the handle of what is there, where before the picture stayed empty. The run of that day found that the engine's `ticksFor` had never let the scan root hold a path.
 
 Since [Turn 12](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-12--november-6) `settled` waits for the view's next frame before reading the busy flag: a key press takes effect on that frame, and under load a stale "false" let the growth case count a partial picture (65 of 705 spheres at End).
+
+Since November 8, 2026 the large-growth camera case uses a separate fixed history, one root file growing into a 64-file import chain, through the normal repository/history/generator/static build. Its configuration stays in the normal lens, so complete canonical membership grows from two to 65 documents. It preserves the greater-than-tenfold membership and uncovered-frame checks, proves the final graph would lie outside the completed initial Fit, then holds the exact camera after a wheel gesture and Home. Its original repository-history input depended on an ignored cache that the gate does not build. The absent-request journey also checks the actual submitted interior/skin counts, including returning from a present directory's cells to the dim-root fallback, while preserving the absent pin and the existing birth journey.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -47,6 +49,7 @@ _No public symbols detected_
 - [`force-graph-observation.observeGraph`](./force-graph-observation.ts.mdmd.md#symbol-observegraph)
 - [`force-graph-observation.renderedLinks`](./force-graph-observation.ts.mdmd.md#symbol-renderedlinks)
 - [`force-graph-observation.renderedNodes`](./force-graph-observation.ts.mdmd.md#symbol-renderednodes)
+- [`search-bar.choose`](./search-bar.ts.mdmd.md#symbol-choose)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

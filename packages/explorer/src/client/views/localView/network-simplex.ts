@@ -56,8 +56,7 @@ export function rankByNetworkSimplex(count: number, constraints: readonly Constr
     const shift = slack(edges[entering], position);
     // Raising the leaving edge's head side by the entering edge's slack makes the entering edge tight and lowers the cost.
     for (let v = 0; v < count; v++) if (tree.onHeadSide(leaving, v)) position[v] += shift;
-    inTree[leaving] = false;
-    inTree[entering] = true;
+    tree.exchange(leaving, entering);
   }
   const least = Math.min(...position);
   for (let v = 0; v < count; v++) position[v] -= least;
@@ -136,52 +135,101 @@ function feasibleTree(count: number, edges: readonly Constraint[], position: num
 
 /** The spanning tree rooted at node zero, with postorder numbers that tell whether a node lies below a tree edge. */
 class TreeIndex {
-  private parentEdge: number[] = [];
-  private low: number[] = [];
-  private lim: number[] = [];
-  private treeEdges: number[] = [];
+  private readonly parentEdge: number[];
+  private readonly low: number[];
+  private readonly lim: number[];
+  private readonly treeEdges: number[] = [];
+  private readonly adjacency: number[][];
+  private readonly visited: boolean[];
+  private readonly stackNode: number[];
+  private readonly stackFrom: number[];
+  private readonly stackNext: number[];
+  private readonly byPostorder: number[];
+  /** Node balances depend only on this solve's immutable edges and weights, never on its tree. */
+  private readonly flow: number[];
+  private readonly subtree: number[];
+  private readonly cut: number[];
 
-  constructor(private readonly count: number, private readonly edges: readonly Constraint[], private readonly inTree: boolean[]) {}
+  constructor(private readonly count: number, private readonly edges: readonly Constraint[], private readonly inTree: boolean[]) {
+    this.adjacency = Array.from({ length: count }, () => [] as number[]);
+    this.parentEdge = new Array<number>(count).fill(-1);
+    this.low = new Array<number>(count).fill(0);
+    this.lim = new Array<number>(count).fill(0);
+    this.visited = new Array<boolean>(count).fill(false);
+    this.stackNode = new Array<number>(count).fill(0);
+    this.stackFrom = new Array<number>(count).fill(0);
+    this.stackNext = new Array<number>(count).fill(0);
+    this.byPostorder = new Array<number>(count).fill(0);
+    this.flow = new Array<number>(count).fill(0);
+    this.subtree = new Array<number>(count).fill(0);
+    this.cut = new Array<number>(edges.length).fill(0);
+    edges.forEach((edge, index) => {
+      this.flow[edge.head] += edge.weight;
+      this.flow[edge.tail] -= edge.weight;
+      if (!inTree[index]) return;
+      this.treeEdges.push(index);
+      this.adjacency[edge.tail].push(index);
+      this.adjacency[edge.head].push(index);
+    });
+  }
+
+  /** Exchange just the two tree edges, keeping the ascending edge order that a full rebuild produced. */
+  exchange(leaving: number, entering: number): void {
+    const removed = this.edges[leaving], added = this.edges[entering];
+    for (const list of [this.treeEdges, this.adjacency[removed.tail], this.adjacency[removed.head]]) {
+      list.splice(list.indexOf(leaving), 1);
+    }
+    for (const list of [this.treeEdges, this.adjacency[added.tail], this.adjacency[added.head]]) {
+      let low = 0, high = list.length;
+      while (low < high) {
+        const middle = (low + high) >>> 1;
+        if (list[middle] < entering) low = middle + 1;
+        else high = middle;
+      }
+      list.splice(low, 0, entering);
+    }
+    this.inTree[leaving] = false;
+    this.inTree[entering] = true;
+  }
 
   rebuild(): void {
-    const adjacency = Array.from({ length: this.count }, () => [] as number[]);
-    this.treeEdges = [];
-    this.edges.forEach((edge, index) => {
-      if (!this.inTree[index]) return;
-      this.treeEdges.push(index);
-      adjacency[edge.tail].push(index);
-      adjacency[edge.head].push(index);
-    });
-    this.parentEdge = new Array<number>(this.count).fill(-1);
-    this.low = new Array<number>(this.count).fill(0);
-    this.lim = new Array<number>(this.count).fill(0);
+    this.parentEdge.fill(-1);
+    this.low.fill(0);
+    this.lim.fill(0);
+    this.visited.fill(false);
     let next = 1;
-    const visited = new Array<boolean>(this.count).fill(false);
-    const visit = (root: number): void => {
-      // Iterative postorder: lim is the postorder number, low the least in the subtree.
-      const stack: Array<{ node: number; from: number; index: number }> = [{ node: root, from: -1, index: 0 }];
-      visited[root] = true;
+    for (let root = 0; root < this.count; root++) {
+      if (this.visited[root]) continue;
+      // The same iterative DFS, with reusable parallel stacks instead of one new object per visited node.
+      let depth = 0;
+      this.stackNode[depth] = root;
+      this.stackFrom[depth] = -1;
+      this.stackNext[depth] = 0;
+      this.visited[root] = true;
       this.low[root] = next;
-      while (stack.length) {
-        const frame = stack[stack.length - 1];
-        const list = adjacency[frame.node];
-        if (frame.index < list.length) {
-          const edgeIndex = list[frame.index++];
-          if (edgeIndex === frame.from) continue;
+      while (depth >= 0) {
+        const node = this.stackNode[depth], list = this.adjacency[node];
+        if (this.stackNext[depth] < list.length) {
+          const edgeIndex = list[this.stackNext[depth]++];
+          if (edgeIndex === this.stackFrom[depth]) continue;
           const edge = this.edges[edgeIndex];
-          const child = edge.tail === frame.node ? edge.head : edge.tail;
-          if (visited[child]) continue;
-          visited[child] = true;
+          const child = edge.tail === node ? edge.head : edge.tail;
+          if (this.visited[child]) continue;
+          this.visited[child] = true;
           this.parentEdge[child] = edgeIndex;
           this.low[child] = next;
-          stack.push({ node: child, from: edgeIndex, index: 0 });
+          depth++;
+          this.stackNode[depth] = child;
+          this.stackFrom[depth] = edgeIndex;
+          this.stackNext[depth] = 0;
         } else {
-          this.lim[frame.node] = next++;
-          stack.pop();
+          this.lim[node] = next;
+          this.byPostorder[next - 1] = node;
+          next++;
+          depth--;
         }
       }
-    };
-    for (let v = 0; v < this.count; v++) if (!visited[v]) visit(v);
+    }
   }
 
   /** Whether `node` lies in the subtree below the tree edge `index`, the side away from the root. */
@@ -197,40 +245,30 @@ class TreeIndex {
     return this.below(index, node) === this.below(index, edge.head);
   }
 
-  /**
-   * For each tree edge, the weight of edges crossing its cut toward its head's side less those crossing the other
-   * way. Found in one pass over the edges and one over the tree: an edge into a node counts for it and an edge out
-   * of it against it, and summed over a subtree the edges inside cancel, leaving the edges that cross its cut.
-   */
-  cutValues(): Map<number, number> {
-    const flow = new Array<number>(this.count).fill(0);
-    for (const edge of this.edges) { flow[edge.head] += edge.weight; flow[edge.tail] -= edge.weight; }
-    // Children before parents: a node's postorder number is greater than every number in its subtree.
-    const byPostorder = new Array<number>(this.count);
-    for (let v = 0; v < this.count; v++) byPostorder[this.lim[v] - 1] = v;
-    const subtree = flow.slice();
-    for (const v of byPostorder) {
+  /** Sum this solve's node balances in the current DFS postorder; each tree edge keeps its own indexed cut slot. */
+  cutValues(): readonly number[] {
+    for (let v = 0; v < this.count; v++) this.subtree[v] = this.flow[v];
+    for (const v of this.byPostorder) {
       const index = this.parentEdge[v];
       if (index < 0) continue;
       const edge = this.edges[index];
-      subtree[edge.tail === v ? edge.head : edge.tail] += subtree[v];
+      this.subtree[edge.tail === v ? edge.head : edge.tail] += this.subtree[v];
     }
-    const cut = new Map<number, number>();
     for (const index of this.treeEdges) {
       const edge = this.edges[index];
       const child = this.parentEdge[edge.head] === index ? edge.head : edge.tail;
       // The subtree's sum counts an edge into it toward the child; the cut value counts toward the tree edge's head.
-      cut.set(index, child === edge.head ? subtree[child] : -subtree[child]);
+      this.cut[index] = child === edge.head ? this.subtree[child] : -this.subtree[child];
     }
-    return cut;
+    return this.cut;
   }
 
   /** A tree edge whose cut value is negative, searched from `from` round the list so that no edge is favoured. */
-  leavingEdge(cut: ReadonlyMap<number, number>, from: number): number {
+  leavingEdge(cut: readonly number[], from: number): number {
     const order = this.treeEdges;
     for (let i = 0; i < order.length; i++) {
       const index = order[(from + i) % order.length];
-      if ((cut.get(index) ?? 0) < 0) return index;
+      if ((cut[index] ?? 0) < 0) return index;
     }
     return -1;
   }

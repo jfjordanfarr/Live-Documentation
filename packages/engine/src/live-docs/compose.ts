@@ -190,6 +190,7 @@ function ensureUniqueSymbolSlugs(headings: PublicSymbolHeadingInfo[]): void {
  * @param args.sourceAbsolute - Absolute path of the source file, for the `Source:` links.
  * @param args.sourceRelativePath - Workspace-relative source path, so a type declared in this file links within the doc.
  * @param args.symbolIndex - The workspace symbol index that resolves a type name to the doc that declares it.
+ * @param args.dependencies - The known module providers for imported signature types.
  * @param args.liveDocsRootAbsolute - Absolute path of the Live Docs root.
  */
 export function composeSymbolBlocks(args: {
@@ -199,6 +200,7 @@ export function composeSymbolBlocks(args: {
   sourceRelativePath: string;
   symbolIndex?: WorkspaceSymbolIndex;
   liveDocsRootAbsolute?: string;
+  dependencies?: readonly DependencyEntry[];
 }): SymbolBlock[] {
   return args.headings.map((info) => {
     const symbol = info.symbol;
@@ -273,6 +275,36 @@ function resolveTypeToLiveDoc(
   return here.length > 0 ? { location: here[0], isSelfReference: true } : undefined;
 }
 
+/** Resolve only recorded import/re-export providers; an unresolved import never falls back to a namesake. */
+function resolveImportedType(
+  binding: Extract<NonNullable<TypeReference["binding"]>, { kind: "import" }>,
+  dependencies: readonly DependencyEntry[],
+  index: WorkspaceSymbolIndex
+): ResolvedTypeLocation | undefined {
+  const dependency = dependencies.find(entry => entry.specifier === binding.specifier && (entry.kind === "import" || entry.kind === "require"));
+  if (!dependency?.resolvedPath) return undefined;
+  const name = dependency.symbolTargets?.[binding.exportedName] ?? binding.exportedName;
+  const at = (sourcePath: string, exportedName: string): ResolvedSymbolLocation | undefined => {
+    const candidates = index.get(exportedName) ?? [];
+    return candidates.filter(location => location.sourcePath === sourcePath)
+      .sort((a, b) => Number(Boolean(a.isReExport)) - Number(Boolean(b.isReExport)))[0];
+  };
+  let location = at(dependency.resolvedPath, name);
+  if (!location) return undefined;
+  const visited = new Set<string>();
+  // Each step is an explicit provider carried by the index, not a search for a declaration of the same name.
+  while (location.reExport) {
+    const provider = location.reExport;
+    const key = JSON.stringify([provider.sourcePath, provider.exportedName]);
+    if (visited.has(key)) break;
+    visited.add(key);
+    const declared = at(provider.sourcePath, provider.exportedName);
+    if (!declared) break;
+    location = declared;
+  }
+  return { location, isSelfReference: false };
+}
+
 /** Orders candidates: a file that declares the symbol before one that re-exports it, then by proximity. */
 function compareDeclarationsFirst(currentSourcePath: string) {
   const byProximity = createProximityAwareComparator(currentSourcePath);
@@ -291,7 +323,7 @@ function languageOf(sourcePath: string): string {
 
 function composeReferences(
   typeReferences: TypeReference[] | undefined,
-  args: { docDir: string; sourceRelativePath: string; symbolIndex?: WorkspaceSymbolIndex; liveDocsRootAbsolute?: string }
+  args: { docDir: string; sourceRelativePath: string; symbolIndex?: WorkspaceSymbolIndex; liveDocsRootAbsolute?: string; dependencies?: readonly DependencyEntry[] }
 ): ReferenceLine[] {
   if (!typeReferences || typeReferences.length === 0) {
     return [];
@@ -353,12 +385,14 @@ function composeReferences(
 
 function composeTypeRef(
   ref: TypeReference,
-  args: { docDir: string; sourceRelativePath: string; symbolIndex?: WorkspaceSymbolIndex; liveDocsRootAbsolute?: string }
+  args: { docDir: string; sourceRelativePath: string; symbolIndex?: WorkspaceSymbolIndex; liveDocsRootAbsolute?: string; dependencies?: readonly DependencyEntry[] }
 ): TypeRef {
   const type: TypeRef = { name: ref.name };
 
-  const resolved = args.symbolIndex
-    ? resolveTypeToLiveDoc(ref.name, args.symbolIndex, args.sourceRelativePath)
+  const resolved = args.symbolIndex && ref.binding?.kind !== "bound"
+    ? ref.binding?.kind === "import"
+      ? resolveImportedType(ref.binding, args.dependencies ?? [], args.symbolIndex)
+      : resolveTypeToLiveDoc(ref.name, args.symbolIndex, args.sourceRelativePath)
     : undefined;
 
   if (resolved && args.liveDocsRootAbsolute) {

@@ -49,7 +49,8 @@ const extent = (nodes: Rendered): number => Math.max(...["x", "y", "z"].map(axis
 test("the structure layout preserves files, uses uniform directory junctions, and draws references only on demand", async ({ page }) => {
   test.setTimeout(90_000); // Two complete settlings of the native simulation and a hover search.
   await observeGraph(page);
-  await page.goto(entry("connections", whole));
+  // Uniform junctions and subtree membership are the explicit bare-hub representation.
+  await page.goto(entry("connections", { ...whole, layout: { forceGraph: { groupWrappers: "off" } } }));
   // Uniform directory size is physical, with the same perspective treatment as files. Read the actual rendered
   // radii under explicit perspective sizing so different depths do not disguise unequal directory geometry.
   await page.getByText("Tuning", { exact: true }).click();
@@ -147,7 +148,8 @@ test("the structure layout preserves files, uses uniform directory junctions, an
 test("a directory hub inspects, its Open action frames its members, and the shared tray releases it", async ({ page }) => {
   test.setTimeout(45_000);
   await observeGraph(page);
-  await page.goto(entry("structure"));
+  // A bare hub inspects; a Skin frontier cell instead opens its directory.
+  await page.goto(entry("structure", { layout: { forceGraph: { groupWrappers: "off" } } }));
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
   const frame = (await page.locator("#graph-svg canvas").boundingBox())!;
   const nodes = await renderedNodes(page);
@@ -217,57 +219,66 @@ test("a directory hub inspects, its Open action frames its members, and the shar
   expect((await renderedNodes(page)).map(node => node.id).sort()).toEqual(nodes.map(node => node.id).sort());
 });
 
-test("changing a preset keeps the framed directory in place even when a file remains selected", async ({ page }) => {
-  test.setTimeout(60_000); // Initial layout and a complete reheat after the preset change.
-  await observeGraph(page);
-  const directory = "Portal/Models";
-  const file = "Contracts/IPaymentService.cs";
-  await page.goto(`/samples/estate/?s=${compressSnapshot({
-    ...DEFAULT_SNAPSHOT,
-    perspective: "3d",
-    spatialLayout: "structure",
-    selectedNodeId: file,
-    pinSet: { entries: [{ nodeId: file, symbol: "*" }] },
-    openDirectories: new Set([directory]),
-    filters: { showTests: true, showAssets: false }
-  })}`);
-  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
-  // The pinned file's references are drawn among the retained files, each between its two spheres.
-  expect(await expectDrawnBetweenSpheres(page)).toBeGreaterThan(0);
-  const id = (await renderedNodes(page)).find(node => node.directory === directory)!.id;
-  await page.getByRole("button", { name: "Show pins", exact: true }).click();
-  await page.getByRole("button", { name: `Show directory ${directory}`, exact: true }).click();
-  await expect(page.locator(".force-graph-focus")).toHaveAttribute("data-node-id", id);
-  await page.waitForTimeout(600); // The directory camera flight lasts 500 ms.
-  const sample = await page.evaluate(async () => {
-    const label = document.querySelector<HTMLElement>(".force-graph-focus")!;
-    const position = () => ({ id: label.dataset.nodeId, x: parseFloat(label.style.left), y: parseFloat(label.style.top) });
-    const before = position();
-    // A packing change through its lever (the Compact preset button went on 2026-11-02): the gap between connected spheres, narrowed.
-    const gap = document.querySelector<HTMLInputElement>("#tuning-force-link-gap")!;
-    gap.value = String(Number(gap.value) - 20); gap.dispatchEvent(new Event("input", { bubbles: true }));
-    const frames: ReturnType<typeof position>[] = [];
-    await new Promise<void>(resolve => {
-      const read = () => {
-        frames.push(position());
-        if (document.querySelector("#graph-svg")!.getAttribute("aria-busy") === "true") requestAnimationFrame(read);
-        else resolve();
-      };
-      requestAnimationFrame(read);
+for (const representation of ["bare spheres", "default Skin"] as const) {
+  test(`changing a packing lever keeps the framed directory in place even when a file remains selected: ${representation}`, async ({ page }) => {
+    test.setTimeout(60_000); // Initial layout and a complete reheat after the preset change.
+    await observeGraph(page);
+    const directory = "Portal/Models";
+    const file = "Contracts/IPaymentService.cs";
+    await page.goto(`/samples/estate/?s=${compressSnapshot({
+      ...DEFAULT_SNAPSHOT,
+      perspective: "3d",
+      spatialLayout: "structure",
+      selectedNodeId: file,
+      pinSet: { entries: [{ nodeId: file, symbol: "*" }] },
+      openDirectories: new Set([directory]),
+      ...(representation === "bare spheres" ? { layout: { forceGraph: { groupWrappers: "off", hops: 2 } } } : {}),
+      filters: { showTests: true, showAssets: false }
+    })}`);
+    await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
+    const nodes = await renderedNodes(page);
+    expect(nodes.some(node => node.id === file), "the selected file exists in the camera journey").toBe(true);
+    const framed = nodes.find(node => node.directory === directory);
+    expect(framed, "the independently opened directory exists in the camera journey").toBeDefined();
+    if (representation === "bare spheres") {
+      // Two containment hops expose the pinned file's reference neighbors, each wire between its bare spheres.
+      expect(await expectDrawnBetweenSpheres(page)).toBeGreaterThan(0);
+    }
+    const id = framed!.id;
+    await page.getByRole("button", { name: "Show pins", exact: true }).click();
+    await page.getByRole("button", { name: `Show directory ${directory}`, exact: true }).click();
+    await expect(page.locator(".force-graph-focus")).toHaveAttribute("data-node-id", id);
+    await page.waitForTimeout(600); // The directory camera flight lasts 500 ms.
+    const sample = await page.evaluate(async () => {
+      const label = document.querySelector<HTMLElement>(".force-graph-focus")!;
+      const position = () => ({ id: label.dataset.nodeId, x: parseFloat(label.style.left), y: parseFloat(label.style.top) });
+      const before = position();
+      // A packing change through its lever (the Compact preset button went on 2026-11-02): the gap between connected spheres, narrowed.
+      const gap = document.querySelector<HTMLInputElement>("#tuning-force-link-gap")!;
+      gap.value = String(Number(gap.value) - 20); gap.dispatchEvent(new Event("input", { bubbles: true }));
+      const frames: ReturnType<typeof position>[] = [];
+      await new Promise<void>(resolve => {
+        const read = () => {
+          frames.push(position());
+          if (document.querySelector("#graph-svg")!.getAttribute("aria-busy") === "true") requestAnimationFrame(read);
+          else resolve();
+        };
+        requestAnimationFrame(read);
+      });
+      return { before, frames };
     });
-    return { before, frames };
+    expect(sample.frames.length).toBeGreaterThan(4);
+    for (const frame of sample.frames) {
+      expect(frame.id).toBe(id);
+      expect(Math.hypot(frame.x - sample.before.x, frame.y - sample.before.y)).toBeLessThan(1.5);
+    }
+    const beforeZoom = (await renderedNodes(page)).find(node => node.id === id)!;
+    const canvas = (await page.locator("#graph-svg canvas").boundingBox())!;
+    await page.mouse.move(canvas.x + canvas.width * .7, canvas.y + canvas.height * .7);
+    await page.mouse.wheel(0, -120);
+    await expect.poll(async () => (await renderedNodes(page)).find(node => node.id === id)!.distance).toBeLessThan(beforeZoom.distance - 1);
+    await page.waitForTimeout(250); // Wheel interpolation lasts 180 ms.
+    const zoomed = (await renderedNodes(page)).find(node => node.id === id)!;
+    expect(Math.hypot(zoomed.x - beforeZoom.x, zoomed.y - beforeZoom.y)).toBeLessThan(.1);
   });
-  expect(sample.frames.length).toBeGreaterThan(4);
-  for (const frame of sample.frames) {
-    expect(frame.id).toBe(id);
-    expect(Math.hypot(frame.x - sample.before.x, frame.y - sample.before.y)).toBeLessThan(1.5);
-  }
-  const beforeZoom = (await renderedNodes(page)).find(node => node.id === id)!;
-  const canvas = (await page.locator("#graph-svg canvas").boundingBox())!;
-  await page.mouse.move(canvas.x + canvas.width * .7, canvas.y + canvas.height * .7);
-  await page.mouse.wheel(0, -120);
-  await expect.poll(async () => (await renderedNodes(page)).find(node => node.id === id)!.distance).toBeLessThan(beforeZoom.distance - 1);
-  await page.waitForTimeout(250); // Wheel interpolation lasts 180 ms.
-  const zoomed = (await renderedNodes(page)).find(node => node.id === id)!;
-  expect(Math.hypot(zoomed.x - beforeZoom.x, zoomed.y - beforeZoom.y)).toBeLessThan(.1);
-});
+}

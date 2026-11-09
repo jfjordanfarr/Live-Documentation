@@ -15,6 +15,8 @@ Checks summed reciprocal reference counts, known symbol-derived radii and spacin
 
 Created for [the October 13 shared-preset implementation](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation).
 
+Since November 8, 2026, the overlay fixture explicitly asks for two hops to reach the retained files' provider and its documentation; the uniform-junction fixture explicitly uses Off and two containment hops so both files and their non-pulling reference are present. Other default-based and explicit hop-scope checks retain their subjects.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

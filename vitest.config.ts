@@ -5,9 +5,13 @@ const engineSrc = path.resolve(__dirname, "packages/engine/src");
 const explorerSrc = path.resolve(__dirname, "packages/explorer/src");
 const generatorSrc = path.resolve(__dirname, "packages/generator/src");
 
-// Suites whose numerical comparisons must finish within the default five-second deadline only when nothing else
-// competes for the machine; they run in the `unit-serial` project, alone, after every other file.
-const serialUnitFiles = ["packages/explorer/src/client/views/forceGraphPhysics.test.ts"];
+// Suites measured to miss the unchanged five-second deadline under parallel load: numerical oracle comparisons and
+// full-history replay work. They run in `unit-serial`, alone after every other file; all cases and coverage remain.
+const serialUnitFiles = [
+  "packages/explorer/src/client/views/forceGraphPhysics.test.ts",
+  "packages/engine/src/live-docs/history/sequence.test.ts",
+  "scripts/layout-lab/approximation.test.ts"
+];
 
 const toPosix = (value: string): string => value.split(path.sep).join("/");
 

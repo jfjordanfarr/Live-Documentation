@@ -75,15 +75,26 @@ describe("persisted history tuning (2026-10-18)", () => {
   );
 });
 
-describe("persisted group wrappers (2026-11-05)", () => {
-  it("starts off, and restores a saved choice beside the numeric 3D settings", () => {
-    expect(getDefaultTuning().forceGraph.groupWrappers).toBe("off");
-    const restored = restoreTuning("forceGraph", '{"groupWrappers":"cloud-rim","gravity":0.03}').forceGraph;
-    expect(restored).toMatchObject({ groupWrappers: "cloud-rim", gravity: 0.03 });
+describe("persisted 3D discovery defaults", () => {
+  it("starts with Skin and one hop without saved preferences", () => {
+    vi.stubGlobal("window", { localStorage: { getItem: () => null, removeItem: vi.fn() } });
+    expect(applyPersistedUi({ filters: getDefaultFilters(), tuning: getDefaultTuning() }, readPersistedUi()).tuning.forceGraph)
+      .toMatchObject({ groupWrappers: "skin", hops: 1 });
   });
 
-  it.each(['"balloon"', "1", "null", "true"])("falls back from an invalid choice of %s to off, keeping the rest", saved => {
-    expect(restoreTuning("forceGraph", `{"groupWrappers":${saved},"hops":3}`).forceGraph).toMatchObject({ groupWrappers: "off", hops: 3 });
+  it.each(['{}', '{"gravity":0.03}', '{"shellDepth":4}'])("fills sparse settings %s with Skin and one hop", saved => {
+    expect(restoreTuning("forceGraph", saved).forceGraph).toMatchObject({ groupWrappers: "skin", hops: 1, ...JSON.parse(saved) });
+  });
+
+  it("retains each explicit choice while filling its missing companion from the new defaults", () => {
+    expect(restoreTuning("forceGraph", '{"groupWrappers":"off"}').forceGraph).toMatchObject({ groupWrappers: "off", hops: 1 });
+    expect(restoreTuning("forceGraph", '{"hops":2}').forceGraph).toMatchObject({ groupWrappers: "skin", hops: 2 });
+    expect(restoreTuning("forceGraph", '{"groupWrappers":"cloud-rim","gravity":0.03}').forceGraph)
+      .toMatchObject({ groupWrappers: "cloud-rim", gravity: 0.03 });
+  });
+
+  it.each(['"balloon"', "1", "null", "true"])("falls back from an invalid choice of %s to Skin, keeping the rest", saved => {
+    expect(restoreTuning("forceGraph", `{"groupWrappers":${saved},"hops":3}`).forceGraph).toMatchObject({ groupWrappers: "skin", hops: 3 });
   });
 });
 
@@ -121,6 +132,23 @@ describe("saving only what a person changed (2026-10-22)", () => {
     const restored = applyPersistedUi(defaults(), readPersistedUi());
     expect(restored.tuning.forceGraph.gravity).toBe(0.03);
     expect(restored.tuning.history.axis).toBe(getDefaultTuning().history.axis);
+  });
+
+  it("keeps explicit Off and two hops through a save and reload without changing the storage version", () => {
+    vi.useFakeTimers();
+    const store = new Map<string, string>([[PERSISTED_UI_KEY, '{"version":2,"tuning":{"forceGraph":{"groupWrappers":"off","hops":2}}}']]);
+    vi.stubGlobal("window", {
+      localStorage: { getItem: (key: string) => store.get(key) ?? null, setItem: (key: string, value: string) => store.set(key, value), removeItem: (key: string) => store.delete(key) },
+      setTimeout,
+      clearTimeout
+    });
+    const state = applyPersistedUi(defaults(), readPersistedUi());
+    expect(state.tuning.forceGraph).toMatchObject({ groupWrappers: "off", hops: 2 });
+    const scheduler = createPersistUiScheduler(() => state);
+    scheduler.schedule();
+    scheduler.flush();
+    expect(JSON.parse(store.get(PERSISTED_UI_KEY)!)).toEqual({ version: 2, tuning: { forceGraph: { groupWrappers: "off", hops: 2 } } });
+    expect(applyPersistedUi(defaults(), readPersistedUi()).tuning.forceGraph).toMatchObject({ groupWrappers: "off", hops: 2 });
   });
 
   it("removes a version 1 entry unread, since it held every setting and cannot tell a choice from an old default", () => {

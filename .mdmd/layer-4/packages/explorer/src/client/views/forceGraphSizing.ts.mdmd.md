@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphSizing.ts
-- Generated At: 2026-11-02T02:09:51.324Z
+- Generated At: 2026-11-09T00:01:54.974Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ Wire picking clips both endpoints to the camera's near/far interval before compu
 #### `pixelsPerWorldUnit` {#symbol-pixelsperworldunit}
 - Type: function
 - Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphSizing.ts#L4)
-- Parameters: `point`: `Vector3`; `camera`: [`Camera`](./worldMap/projection.ts.mdmd.md#symbol-camera)
+- Parameters: `point`: `Vector3`; `camera`: `Camera`
 
 ##### `pixelsPerWorldUnit` — Summary
 CSS pixels per world unit at a point's depth; behind-camera points have no visible size.
@@ -29,7 +29,7 @@ CSS pixels per world unit at a point's depth; behind-camera points have no visib
 #### `spatialSizeScale` {#symbol-spatialsizescale}
 - Type: function
 - Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphSizing.ts#L12)
-- Parameters: `target`: `Vector3`; `camera`: [`Camera`](./worldMap/projection.ts.mdmd.md#symbol-camera)
+- Parameters: `target`: `Vector3`; `camera`: `Camera`
 
 ##### `spatialSizeScale` — Summary
 Shared world-scale compensation at the orbit target: resist zoom without changing relative sizes during orbit.
@@ -45,7 +45,7 @@ Clip homogeneous endpoints to the visible depth interval; return their parameter
 #### `pickSpatialWire` {#symbol-pickspatialwire}
 - Type: function
 - Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphSizing.ts#L33)
-- Parameters: `matrix`: `Matrix4`; `camera`: [`Camera`](./worldMap/projection.ts.mdmd.md#symbol-camera); `viewport`: `Vector2`; `ray`: `Ray`
+- Parameters: `matrix`: `Matrix4`; `camera`: `Camera`; `viewport`: `Vector2`; `ray`: `Ray`
 
 ##### `pickSpatialWire` — Summary
 Pick a round-capped wire by its projected, possibly tapered stroke, including near/far clipping.

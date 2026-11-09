@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphCamera.ts
-- Generated At: 2026-11-01T21:06:15.640Z
+- Generated At: 2026-11-09T00:01:54.780Z
 
 ## Authored
 ### Purpose
@@ -63,7 +63,7 @@ Zoom around the inspected point, keeping its screen position and never reversing
 - Type: function
 - Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphCamera.ts#L100)
 - Returns: `Vector3`
-- Parameters: `camera`: [`Camera`](./worldMap/projection.ts.mdmd.md#symbol-camera); `point`: [`CameraPoint`](#symbol-camerapoint)
+- Parameters: `camera`: `Camera`; `point`: [`CameraPoint`](#symbol-camerapoint)
 
 ##### `screenAnchorTranslation` — Summary
 Translate a camera and its target together to place a world point at a normalized screen anchor.

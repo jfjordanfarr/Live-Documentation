@@ -93,6 +93,32 @@ describe("network simplex", () => {
     }
   });
 
+  it("keeps disconnected, parallel, zero-weight and negative-separation constraints exact across exchanges and separate solves", () => {
+    const constraints: Constraint[] = [
+      { tail: 0, head: 1, delta: 1, weight: 0 },
+      { tail: 0, head: 1, delta: 0, weight: 2 },
+      { tail: 2, head: 0, delta: -2, weight: 3 },
+      { tail: 2, head: 1, delta: 0, weight: 1 },
+      { tail: 3, head: 4, delta: -1, weight: 0 },
+      { tail: 3, head: 4, delta: 1, weight: 1 }
+    ];
+    // The sixth node is isolated. Parallel edges keep their individual objectives and separations.
+    const first = rankByNetworkSimplex(6, constraints);
+    expect(feasible(constraints, first.position)).toBe(true);
+    expect(first.optimal).toBe(true);
+    expect(first.cost).toBe(bruteForce(6, constraints, 6));
+    const unweighted = constraints.map(edge => ({ ...edge, weight: 0 }));
+    const zero = rankByNetworkSimplex(6, unweighted);
+    expect(feasible(unweighted, zero.position)).toBe(true);
+    expect(zero).toMatchObject({ cost: 0, optimal: true });
+    const changed = constraints.map((edge, index) => ({ ...edge, weight: index % 3 }));
+    const second = rankByNetworkSimplex(6, changed);
+    expect(feasible(changed, second.position)).toBe(true);
+    expect(second.optimal).toBe(true);
+    expect(second.cost).toBe(bruteForce(6, changed, 6));
+    expect(rankByNetworkSimplex(6, constraints)).toEqual(first);
+  });
+
   it("is the same answer every time", () => {
     const constraints = seeded(7, 12, 20);
     expect(rankByNetworkSimplex(12, constraints)).toEqual(rankByNetworkSimplex(12, constraints));

@@ -61,6 +61,7 @@ export function inferScriptKind(extension: string): ts.ScriptKind {
  */
 export function collectExportedSymbols(sourceFile: ts.SourceFile): PublicSymbolEntry[] {
   const collected: PublicSymbolEntry[] = [];
+  const bindingOf = typeBindings(sourceFile);
 
   const record = (entry: PublicSymbolEntry): void => {
     if (!entry.name) return;
@@ -91,6 +92,7 @@ export function collectExportedSymbols(sourceFile: ts.SourceFile): PublicSymbolE
             kind: declarationKind,
             isTypeOnly: specifier.isTypeOnly,
             isReExport: true,
+            ...(exportedName === "default" ? { isDefault: true } : {}),
             location: getNodeLocation(specifier.name, sourceFile)
           });
         }
@@ -113,11 +115,11 @@ export function collectExportedSymbols(sourceFile: ts.SourceFile): PublicSymbolE
     if (ts.isFunctionDeclaration(statement)) {
       const name = statement.name?.text ?? (hasDefaultModifier(statement) ? "default" : undefined);
       if (!name) continue;
-      const typeRefs = deduplicateTypeReferences(collectTypeReferencesFromFunction(statement));
+      const typeRefs = deduplicateTypeReferences(collectTypeReferencesFromFunction(statement, bindingOf));
       record({
         name,
         kind: "function",
-        isDefault: name === "default",
+        isDefault: hasDefaultModifier(statement),
         documentation: extractJsDocDocumentation(statement),
         location: getNodeLocation(statement.name ?? statement, sourceFile),
         typeReferences: typeRefs.length > 0 ? typeRefs : undefined
@@ -128,11 +130,11 @@ export function collectExportedSymbols(sourceFile: ts.SourceFile): PublicSymbolE
     if (ts.isClassDeclaration(statement)) {
       const name = statement.name?.text ?? (hasDefaultModifier(statement) ? "default" : undefined);
       if (!name) continue;
-      const typeRefs = deduplicateTypeReferences(collectTypeReferencesFromClass(statement));
+      const typeRefs = deduplicateTypeReferences(collectTypeReferencesFromClass(statement, bindingOf));
       record({
         name,
         kind: "class",
-        isDefault: name === "default",
+        isDefault: hasDefaultModifier(statement),
         documentation: extractJsDocDocumentation(statement),
         location: getNodeLocation(statement.name ?? statement, sourceFile),
         typeReferences: typeRefs.length > 0 ? typeRefs : undefined
@@ -141,10 +143,11 @@ export function collectExportedSymbols(sourceFile: ts.SourceFile): PublicSymbolE
     }
 
     if (ts.isInterfaceDeclaration(statement)) {
-      const typeRefs = deduplicateTypeReferences(collectTypeReferencesFromInterface(statement));
+      const typeRefs = deduplicateTypeReferences(collectTypeReferencesFromInterface(statement, bindingOf));
       record({
         name: statement.name.text,
         kind: "interface",
+        ...(hasDefaultModifier(statement) ? { isDefault: true } : {}),
         documentation: extractJsDocDocumentation(statement),
         location: getNodeLocation(statement.name, sourceFile),
         typeReferences: typeRefs.length > 0 ? typeRefs : undefined
@@ -153,7 +156,7 @@ export function collectExportedSymbols(sourceFile: ts.SourceFile): PublicSymbolE
     }
 
     if (ts.isTypeAliasDeclaration(statement)) {
-      const typeRefs = deduplicateTypeReferences(collectTypeReferencesFromTypeAlias(statement));
+      const typeRefs = deduplicateTypeReferences(collectTypeReferencesFromTypeAlias(statement, bindingOf));
       record({
         name: statement.name.text,
         kind: "type",
@@ -188,7 +191,7 @@ export function collectExportedSymbols(sourceFile: ts.SourceFile): PublicSymbolE
       const kind = inferVariableKind(statement);
       for (const declaration of statement.declarationList.declarations) {
         const names = collectBindingNames(declaration.name);
-        const typeRefs = deduplicateTypeReferences(collectTypeReferencesFromVariable(declaration));
+        const typeRefs = deduplicateTypeReferences(collectTypeReferencesFromVariable(declaration, bindingOf));
         for (const name of names) {
           record({
             name,
@@ -204,6 +207,47 @@ export function collectExportedSymbols(sourceFile: ts.SourceFile): PublicSymbolE
   }
 
   return collected;
+}
+
+type TypeBindingResolver = (node: ts.Node, name: string) => TypeReference["binding"];
+
+/** Read import identities once; lexical type parameters shadow them at each individual reference. */
+function typeBindings(sourceFile: ts.SourceFile): TypeBindingResolver {
+  const imports = new Map<string, { specifier: string; exportedName: string }>();
+  for (const statement of sourceFile.statements) {
+    if (!ts.isImportDeclaration(statement) || !ts.isStringLiteral(statement.moduleSpecifier) || !statement.importClause) continue;
+    const specifier = statement.moduleSpecifier.text, clause = statement.importClause;
+    if (clause.name) imports.set(clause.name.text, { specifier, exportedName: "default" });
+    const bindings = clause.namedBindings;
+    if (bindings && ts.isNamespaceImport(bindings)) imports.set(bindings.name.text, { specifier, exportedName: "*" });
+    else if (bindings && ts.isNamedImports(bindings)) for (const entry of bindings.elements) {
+      imports.set(entry.name.text, { specifier, exportedName: entry.propertyName?.text ?? entry.name.text });
+    }
+  }
+  return (node, name) => {
+    const [root, ...tail] = name.split(".");
+    let child = node;
+    for (let scope: ts.Node | undefined = node; scope; child = scope, scope = scope.parent) {
+      const parameters = (scope as ts.Node & { typeParameters?: readonly ts.TypeParameterDeclaration[] }).typeParameters;
+      if (parameters?.some(parameter => parameter.name.text === root)
+        || ts.isMappedTypeNode(scope) && scope.typeParameter.name.text === root) return { kind: "bound" };
+      // An inferred name is bound in the true branch of its conditional, not in the false branch.
+      if (ts.isConditionalTypeNode(scope) && child === scope.trueType) {
+        let inferred = false;
+        const visit = (part: ts.Node): void => {
+          if (ts.isConditionalTypeNode(part)) return; // Its inference belongs to its own true branch.
+          if (ts.isInferTypeNode(part) && part.typeParameter.name.text === root) inferred = true;
+          if (!inferred) ts.forEachChild(part, visit);
+        };
+        visit(scope.extendsType);
+        if (inferred) return { kind: "bound" };
+      }
+    }
+    const imported = imports.get(root);
+    if (!imported) return undefined;
+    const exportedName = imported.exportedName === "*" ? tail.join(".") || "*" : [imported.exportedName, ...tail].join(".");
+    return { kind: "import", specifier: imported.specifier, exportedName };
+  };
 }
 
 // ============================================================================
@@ -357,6 +401,7 @@ const PRIMITIVE_TYPE_NAMES = new Set([
 function extractTypeReferencesFromTypeNode(
   typeNode: ts.TypeNode | undefined,
   role: TypeReference["role"],
+  bindingOf: TypeBindingResolver,
   options?: {
     parameterName?: string;
     argumentIndex?: number;
@@ -376,7 +421,7 @@ function extractTypeReferencesFromTypeNode(
   if (ts.isUnionTypeNode(typeNode)) {
     for (const member of typeNode.types) {
       references.push(
-        ...extractTypeReferencesFromTypeNode(member, role, {
+        ...extractTypeReferencesFromTypeNode(member, role, bindingOf, {
           ...options,
           isUnionMember: true
         })
@@ -389,7 +434,7 @@ function extractTypeReferencesFromTypeNode(
   if (ts.isIntersectionTypeNode(typeNode)) {
     for (const member of typeNode.types) {
       references.push(
-        ...extractTypeReferencesFromTypeNode(member, role, {
+        ...extractTypeReferencesFromTypeNode(member, role, bindingOf, {
           ...options,
           isIntersectionMember: true
         })
@@ -401,7 +446,7 @@ function extractTypeReferencesFromTypeNode(
   // Handle array types: Widget[]
   if (ts.isArrayTypeNode(typeNode)) {
     references.push(
-      ...extractTypeReferencesFromTypeNode(typeNode.elementType, role, {
+      ...extractTypeReferencesFromTypeNode(typeNode.elementType, role, bindingOf, {
         ...options,
         isArrayElement: true
       })
@@ -411,7 +456,7 @@ function extractTypeReferencesFromTypeNode(
 
   // Handle parenthesized types: (Widget | Error)
   if (ts.isParenthesizedTypeNode(typeNode)) {
-    references.push(...extractTypeReferencesFromTypeNode(typeNode.type, role, options));
+    references.push(...extractTypeReferencesFromTypeNode(typeNode.type, role, bindingOf, options));
     return references;
   }
 
@@ -429,12 +474,13 @@ function extractTypeReferencesFromTypeNode(
       return references;
     }
 
-    // Skip primitive types
-    if (!PRIMITIVE_TYPE_NAMES.has(name)) {
+    const binding = bindingOf(typeNode, name);
+    // A known binding takes precedence over names usually supplied by the language.
+    if (binding || !PRIMITIVE_TYPE_NAMES.has(name)) {
       // Special handling for Promise<T> - extract the resolution type
-      if (name === "Promise" && typeNode.typeArguments && typeNode.typeArguments.length > 0) {
+      if (!binding && name === "Promise" && typeNode.typeArguments && typeNode.typeArguments.length > 0) {
         references.push(
-          ...extractTypeReferencesFromTypeNode(typeNode.typeArguments[0], role, {
+          ...extractTypeReferencesFromTypeNode(typeNode.typeArguments[0], role, bindingOf, {
             ...options,
             isPromiseResolution: true
           })
@@ -443,6 +489,7 @@ function extractTypeReferencesFromTypeNode(
         references.push({
           name,
           role,
+          ...(binding ? { binding } : {}),
           ...options
         });
       }
@@ -452,7 +499,7 @@ function extractTypeReferencesFromTypeNode(
     if (typeNode.typeArguments) {
       typeNode.typeArguments.forEach((typeArg, index) => {
         references.push(
-          ...extractTypeReferencesFromTypeNode(typeArg, "type-argument", {
+          ...extractTypeReferencesFromTypeNode(typeArg, "type-argument", bindingOf, {
             argumentIndex: index
           })
         );
@@ -467,7 +514,7 @@ function extractTypeReferencesFromTypeNode(
     typeNode.elements.forEach((element, index) => {
       const elementNode = ts.isNamedTupleMember(element) ? element.type : element;
       references.push(
-        ...extractTypeReferencesFromTypeNode(elementNode, "type-argument", {
+        ...extractTypeReferencesFromTypeNode(elementNode, "type-argument", bindingOf, {
           argumentIndex: index
         })
       );
@@ -482,7 +529,7 @@ function extractTypeReferencesFromTypeNode(
       if (param.type) {
         const paramName = ts.isIdentifier(param.name) ? param.name.text : undefined;
         references.push(
-          ...extractTypeReferencesFromTypeNode(param.type, "parameter", {
+          ...extractTypeReferencesFromTypeNode(param.type, "parameter", bindingOf, {
             parameterName: paramName
           })
         );
@@ -490,7 +537,7 @@ function extractTypeReferencesFromTypeNode(
     }
     // Extract return type
     if (typeNode.type) {
-      references.push(...extractTypeReferencesFromTypeNode(typeNode.type, "return"));
+      references.push(...extractTypeReferencesFromTypeNode(typeNode.type, "return", bindingOf));
     }
     return references;
   }
@@ -499,7 +546,7 @@ function extractTypeReferencesFromTypeNode(
   if (ts.isTypeLiteralNode(typeNode)) {
     for (const member of typeNode.members) {
       if (ts.isPropertySignature(member) && member.type) {
-        references.push(...extractTypeReferencesFromTypeNode(member.type, "property"));
+        references.push(...extractTypeReferencesFromTypeNode(member.type, "property", bindingOf));
       }
     }
     return references;
@@ -508,26 +555,26 @@ function extractTypeReferencesFromTypeNode(
   // Handle conditional types: T extends Widget ? A : B
   if (ts.isConditionalTypeNode(typeNode)) {
     references.push(
-      ...extractTypeReferencesFromTypeNode(typeNode.checkType, "generic-constraint")
+      ...extractTypeReferencesFromTypeNode(typeNode.checkType, "generic-constraint", bindingOf)
     );
     references.push(
-      ...extractTypeReferencesFromTypeNode(typeNode.extendsType, "generic-constraint")
+      ...extractTypeReferencesFromTypeNode(typeNode.extendsType, "generic-constraint", bindingOf)
     );
-    references.push(...extractTypeReferencesFromTypeNode(typeNode.trueType, role));
-    references.push(...extractTypeReferencesFromTypeNode(typeNode.falseType, role));
+    references.push(...extractTypeReferencesFromTypeNode(typeNode.trueType, role, bindingOf));
+    references.push(...extractTypeReferencesFromTypeNode(typeNode.falseType, role, bindingOf));
     return references;
   }
 
   // Handle indexed access types: Widget["property"]
   if (ts.isIndexedAccessTypeNode(typeNode)) {
-    references.push(...extractTypeReferencesFromTypeNode(typeNode.objectType, role));
+    references.push(...extractTypeReferencesFromTypeNode(typeNode.objectType, role, bindingOf));
     return references;
   }
 
   // Handle mapped types: { [K in keyof Widget]: ... }
   if (ts.isMappedTypeNode(typeNode)) {
     if (typeNode.type) {
-      references.push(...extractTypeReferencesFromTypeNode(typeNode.type, "property"));
+      references.push(...extractTypeReferencesFromTypeNode(typeNode.type, "property", bindingOf));
     }
     return references;
   }
@@ -561,7 +608,8 @@ function getQualifiedNameText(qualifiedName: ts.QualifiedName): string {
  * @returns An array of type references from parameters and return type.
  */
 function collectTypeReferencesFromFunction(
-  declaration: ts.FunctionDeclaration | ts.MethodDeclaration | ts.ArrowFunction
+  declaration: ts.FunctionDeclaration | ts.MethodDeclaration | ts.ArrowFunction,
+  bindingOf: TypeBindingResolver
 ): TypeReference[] {
   const references: TypeReference[] = [];
 
@@ -570,7 +618,7 @@ function collectTypeReferencesFromFunction(
     for (const typeParam of declaration.typeParameters) {
       if (typeParam.constraint) {
         references.push(
-          ...extractTypeReferencesFromTypeNode(typeParam.constraint, "generic-constraint")
+          ...extractTypeReferencesFromTypeNode(typeParam.constraint, "generic-constraint", bindingOf)
         );
       }
     }
@@ -581,7 +629,7 @@ function collectTypeReferencesFromFunction(
     if (param.type) {
       const paramName = ts.isIdentifier(param.name) ? param.name.text : undefined;
       references.push(
-        ...extractTypeReferencesFromTypeNode(param.type, "parameter", {
+        ...extractTypeReferencesFromTypeNode(param.type, "parameter", bindingOf, {
           parameterName: paramName
         })
       );
@@ -590,7 +638,7 @@ function collectTypeReferencesFromFunction(
 
   // Extract return type
   if (declaration.type) {
-    references.push(...extractTypeReferencesFromTypeNode(declaration.type, "return"));
+    references.push(...extractTypeReferencesFromTypeNode(declaration.type, "return", bindingOf));
   }
 
   return references;
@@ -602,7 +650,7 @@ function collectTypeReferencesFromFunction(
  * @param declaration - The class declaration to analyze.
  * @returns An array of type references from extends, implements, and properties.
  */
-function collectTypeReferencesFromClass(declaration: ts.ClassDeclaration): TypeReference[] {
+function collectTypeReferencesFromClass(declaration: ts.ClassDeclaration, bindingOf: TypeBindingResolver): TypeReference[] {
   const references: TypeReference[] = [];
 
   // Extract heritage clauses: extends BaseClass, implements Interface
@@ -614,19 +662,21 @@ function collectTypeReferencesFromClass(declaration: ts.ClassDeclaration): TypeR
       for (const type of clause.types) {
         const typeName = type.expression;
         if (ts.isIdentifier(typeName)) {
-          if (!PRIMITIVE_TYPE_NAMES.has(typeName.text)) {
-            references.push({ name: typeName.text, role });
+          const binding = bindingOf(typeName, typeName.text);
+          if (binding || !PRIMITIVE_TYPE_NAMES.has(typeName.text)) {
+            references.push({ name: typeName.text, role, ...(binding ? { binding } : {}) });
           }
         } else if (ts.isPropertyAccessExpression(typeName)) {
           const fullName = typeName.getText();
-          references.push({ name: fullName, role });
+          const binding = bindingOf(typeName, fullName);
+          references.push({ name: fullName, role, ...(binding ? { binding } : {}) });
         }
 
         // Extract type arguments: extends Base<Widget>
         if (type.typeArguments) {
           type.typeArguments.forEach((typeArg, index) => {
             references.push(
-              ...extractTypeReferencesFromTypeNode(typeArg, "type-argument", {
+              ...extractTypeReferencesFromTypeNode(typeArg, "type-argument", bindingOf, {
                 argumentIndex: index
               })
             );
@@ -641,7 +691,7 @@ function collectTypeReferencesFromClass(declaration: ts.ClassDeclaration): TypeR
     for (const typeParam of declaration.typeParameters) {
       if (typeParam.constraint) {
         references.push(
-          ...extractTypeReferencesFromTypeNode(typeParam.constraint, "generic-constraint")
+          ...extractTypeReferencesFromTypeNode(typeParam.constraint, "generic-constraint", bindingOf)
         );
       }
     }
@@ -657,7 +707,8 @@ function collectTypeReferencesFromClass(declaration: ts.ClassDeclaration): TypeR
  * @returns An array of type references from extends clauses.
  */
 function collectTypeReferencesFromInterface(
-  declaration: ts.InterfaceDeclaration
+  declaration: ts.InterfaceDeclaration,
+  bindingOf: TypeBindingResolver
 ): TypeReference[] {
   const references: TypeReference[] = [];
 
@@ -667,19 +718,21 @@ function collectTypeReferencesFromInterface(
       for (const type of clause.types) {
         const typeName = type.expression;
         if (ts.isIdentifier(typeName)) {
-          if (!PRIMITIVE_TYPE_NAMES.has(typeName.text)) {
-            references.push({ name: typeName.text, role: "extends" });
+          const binding = bindingOf(typeName, typeName.text);
+          if (binding || !PRIMITIVE_TYPE_NAMES.has(typeName.text)) {
+            references.push({ name: typeName.text, role: "extends", ...(binding ? { binding } : {}) });
           }
         } else if (ts.isPropertyAccessExpression(typeName)) {
           const fullName = typeName.getText();
-          references.push({ name: fullName, role: "extends" });
+          const binding = bindingOf(typeName, fullName);
+          references.push({ name: fullName, role: "extends", ...(binding ? { binding } : {}) });
         }
 
         // Extract type arguments
         if (type.typeArguments) {
           type.typeArguments.forEach((typeArg, index) => {
             references.push(
-              ...extractTypeReferencesFromTypeNode(typeArg, "type-argument", {
+              ...extractTypeReferencesFromTypeNode(typeArg, "type-argument", bindingOf, {
                 argumentIndex: index
               })
             );
@@ -694,7 +747,7 @@ function collectTypeReferencesFromInterface(
     for (const typeParam of declaration.typeParameters) {
       if (typeParam.constraint) {
         references.push(
-          ...extractTypeReferencesFromTypeNode(typeParam.constraint, "generic-constraint")
+          ...extractTypeReferencesFromTypeNode(typeParam.constraint, "generic-constraint", bindingOf)
         );
       }
     }
@@ -710,7 +763,8 @@ function collectTypeReferencesFromInterface(
  * @returns An array of type references from the aliased type.
  */
 function collectTypeReferencesFromTypeAlias(
-  declaration: ts.TypeAliasDeclaration
+  declaration: ts.TypeAliasDeclaration,
+  bindingOf: TypeBindingResolver
 ): TypeReference[] {
   const references: TypeReference[] = [];
 
@@ -719,14 +773,14 @@ function collectTypeReferencesFromTypeAlias(
     for (const typeParam of declaration.typeParameters) {
       if (typeParam.constraint) {
         references.push(
-          ...extractTypeReferencesFromTypeNode(typeParam.constraint, "generic-constraint")
+          ...extractTypeReferencesFromTypeNode(typeParam.constraint, "generic-constraint", bindingOf)
         );
       }
     }
   }
 
   // Extract references from the aliased type
-  references.push(...extractTypeReferencesFromTypeNode(declaration.type, "return"));
+  references.push(...extractTypeReferencesFromTypeNode(declaration.type, "return", bindingOf));
 
   return references;
 }
@@ -738,10 +792,11 @@ function collectTypeReferencesFromTypeAlias(
  * @returns An array of type references from the variable's type annotation.
  */
 function collectTypeReferencesFromVariable(
-  declaration: ts.VariableDeclaration
+  declaration: ts.VariableDeclaration,
+  bindingOf: TypeBindingResolver
 ): TypeReference[] {
   if (declaration.type) {
-    return extractTypeReferencesFromTypeNode(declaration.type, "return");
+    return extractTypeReferencesFromTypeNode(declaration.type, "return", bindingOf);
   }
   return [];
 }
@@ -756,7 +811,8 @@ function deduplicateTypeReferences(references: TypeReference[]): TypeReference[]
   const seen = new Map<string, TypeReference>();
 
   for (const ref of references) {
-    const key = `${ref.name}::${ref.role}::${ref.parameterName ?? ""}`;
+    const binding = ref.binding?.kind === "import" ? [ref.binding.kind, ref.binding.specifier, ref.binding.exportedName] : ref.binding?.kind;
+    const key = JSON.stringify([ref.name, ref.role, ref.parameterName ?? "", binding ?? null]);
     const existing = seen.get(key);
 
     if (!existing) {

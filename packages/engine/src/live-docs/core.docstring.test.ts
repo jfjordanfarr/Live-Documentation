@@ -185,3 +185,63 @@ export async function orchestrate<T>(options: { workspaceRoot: string; includePa
     expect(constHeading?.slug).toBe("symbol-layoutconstants-const");
   });
 });
+
+
+describe("TypeScript signature bindings", () => {
+  const symbolsOf = (text: string) => collectExportedSymbols(ts.createSourceFile("binding.ts", text, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS));
+
+  it("keeps named, renamed, namespace and default import identities, including heritage", () => {
+    const symbols = symbolsOf(`
+      import Lens, { Camera as Eye } from "three";
+      import * as THREE from "three";
+      export function inspect(eye: Eye, qualified: THREE.Camera, lens: Lens): void {}
+      export class Derived extends Eye {}
+      export interface Contract extends THREE.Camera {}
+    `);
+    expect(symbols[0].typeReferences).toEqual([
+      { name: "Eye", role: "parameter", parameterName: "eye", binding: { kind: "import", specifier: "three", exportedName: "Camera" } },
+      { name: "THREE.Camera", role: "parameter", parameterName: "qualified", binding: { kind: "import", specifier: "three", exportedName: "Camera" } },
+      { name: "Lens", role: "parameter", parameterName: "lens", binding: { kind: "import", specifier: "three", exportedName: "default" } }
+    ]);
+    expect(symbols[1].typeReferences).toEqual([{ name: "Eye", role: "extends", binding: { kind: "import", specifier: "three", exportedName: "Camera" } }]);
+    expect(symbols[2].typeReferences).toEqual([{ name: "THREE.Camera", role: "extends", binding: { kind: "import", specifier: "three", exportedName: "Camera" } }]);
+  });
+
+  it("keeps a genuine import and a shadowed generic separate even at the same parameter name and role", () => {
+    const [symbol] = symbolsOf(`import type { Camera } from "./camera";
+      export function inspect(outer: Camera, callback: <Camera>(outer: Camera) => Camera): void {}`);
+    expect(symbol.typeReferences).toEqual([
+      { name: "Camera", role: "parameter", parameterName: "outer", binding: { kind: "import", specifier: "./camera", exportedName: "Camera" } },
+      { name: "Camera", role: "parameter", parameterName: "outer", binding: { kind: "bound" } },
+      { name: "Camera", role: "return", binding: { kind: "bound" } }
+    ]);
+  });
+
+  it("recognizes inherited, mapped and inferred bindings at their lexical scope, leaving origin-free types alone", () => {
+    const symbols = symbolsOf(`import type { Camera } from "./camera";
+      export function generic<Camera>(callback: <Other>(value: Camera) => Other): Camera { throw 0; }
+      export type Mapped = { [Camera in "one"]: Camera };
+      export type Conditional = string extends infer Camera ? Camera : Camera;
+      export type NestedConditional = string extends (number extends infer Camera ? string : string) ? Camera : never;
+      export function local(value: Own): Own { throw 0; }
+      export default class NamedLens {}
+    `);
+    expect(symbols[0].typeReferences).toEqual([
+      { name: "Camera", role: "parameter", parameterName: "value", binding: { kind: "bound" } },
+      { name: "Other", role: "return", binding: { kind: "bound" } },
+      { name: "Camera", role: "return", binding: { kind: "bound" } }
+    ]);
+    expect(symbols[1].typeReferences).toEqual([{ name: "Camera", role: "property", binding: { kind: "bound" } }]);
+    expect(symbols[2].typeReferences).toEqual([
+      { name: "Camera", role: "return", binding: { kind: "bound" } },
+      { name: "Camera", role: "return", binding: { kind: "import", specifier: "./camera", exportedName: "Camera" } }
+    ]);
+    expect(symbols[3].typeReferences).toEqual([
+      { name: "Camera", role: "return", binding: { kind: "import", specifier: "./camera", exportedName: "Camera" } }
+    ]);
+    expect(symbols[4].typeReferences).toEqual([
+      { name: "Own", role: "parameter", parameterName: "value" }, { name: "Own", role: "return" }
+    ]);
+    expect(symbols[5].isDefault).toBe(true);
+  });
+});

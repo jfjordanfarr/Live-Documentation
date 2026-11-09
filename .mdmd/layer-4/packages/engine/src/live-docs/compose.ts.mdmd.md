@@ -4,13 +4,14 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/compose.ts
-- Generated At: 2026-10-22T16:47:52.666Z
+- Generated At: 2026-11-09T00:01:53.896Z
 
 ## Authored
 ### Purpose
 Turns a source file's analysis into the document model: headings with unique anchors, links from type references and dependencies to the docs that declare them, and the documentation sections. The renderer in `document.ts` then writes the model out.
 
 ### Notes
+- Current binding resolution (2026-11-08): imported signature types use the matching dependency, its original-symbol mapping and explicit indexed re-export providers before the imported module anchor. Known imported or lexically bound names never use workspace proximity. External and unresolved imports, and bound type parameters, remain plain types; rendering and parsing preserve that absence of a graph edge. References with no established binding retain the local/same-language rule below. The [November 8 investigation](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-08.1.record.md#separate-documentation-finding) began with Three's imported Camera falsely linked to the unrelated World Map Camera.
 - Extracted 2025-12-06 from the monolithic `core.ts` as `rendering.ts`, which produced markdown lines directly; on 2026-09-27 it was recast to produce the model instead, and the line formatting moved into the grammar module.
 - `computePublicSymbolHeadingInfo` disambiguates symbols that share a name (`Widget (interface)`, `draw (function overload 2)`) and keeps every anchor unique within a doc.
 - A type reference resolves through the workspace symbol index. A type the file itself declares links within the doc, whatever other files declare under that name. Otherwise, among files of the same language, a declaration wins over a barrel that only re-exports the name, then the nearest file. A name never resolves into a file of another language (decided 2026-09-28 after the Local Map drew a wire no code justified).
@@ -41,13 +42,14 @@ Array of heading info with display names and slugs
 
 #### `composeSymbolBlocks` {#symbol-composesymbolblocks}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L195)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L196)
 - Returns: [`SymbolBlock`](./document.ts.mdmd.md#symbol-symbolblock)[]
 
 ##### `composeSymbolBlocks` — Summary
 Composes the `Public Symbols` section of a Live Doc.
 
 ##### `composeSymbolBlocks` — Parameters
+- `args.dependencies`: The known module providers for imported signature types.
 - `args.docDir`: Absolute directory of the Live Doc being written; links are relative to it.
 - `args.headings`: The symbols with their display names and anchors, from {@link computePublicSymbolHeadingInfo}.
 - `args.liveDocsRootAbsolute`: Absolute path of the Live Docs root.
@@ -57,7 +59,7 @@ Composes the `Public Symbols` section of a Live Doc.
 
 #### `composeDependencies` {#symbol-composedependencies}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L526)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L560)
 - Returns: [`Dependency`](./document.ts.mdmd.md#symbol-dependency)[]
 
 ##### `composeDependencies` — Summary
@@ -81,7 +83,7 @@ its own even when a source-observed dependency names the same file.
 
 #### `composeCitedBy` {#symbol-composecitedby}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L727)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L761)
 - Returns: [`CitedBy`](./document.ts.mdmd.md#symbol-citedby)[]
 
 ##### `composeCitedBy` — Summary
@@ -98,7 +100,7 @@ engine's rule, `citingDocuments`.
 
 #### `composeEntries` {#symbol-composeentries}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L762)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L796)
 - Returns: [`Entry`](./document.ts.mdmd.md#symbol-entry)[]
 
 ##### `composeEntries` — Summary
@@ -128,7 +130,7 @@ no line here.
 
 #### `composeReExports` {#symbol-composereexports}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L827)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L861)
 - Returns: [`ReExport`](./document.ts.mdmd.md#symbol-reexport)[]
 
 ##### `composeReExports` — Summary

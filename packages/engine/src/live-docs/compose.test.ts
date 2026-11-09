@@ -2,7 +2,7 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 
 import { composeDependencies, composeEntries, composeReExports, composeSymbolBlocks, computePublicSymbolHeadingInfo } from "./compose";
-import type { WorkspaceSymbolIndex } from "./coreTypes";
+import type { TypeReference, WorkspaceSymbolIndex } from "./coreTypes";
 import { renderLiveDoc, parseLiveDoc } from "./document";
 
 const workspaceRoot = path.resolve("/workspace-root");
@@ -119,6 +119,51 @@ describe("composeSymbolBlocks", () => {
     const [block] = composeSymbolBlocks({ headings, docDir, sourceAbsolute, sourceRelativePath, symbolIndex, liveDocsRootAbsolute });
 
     expect(block.references).toEqual([{ role: "Returns", types: [{ name: "Quantity" }] }]);
+  });
+});
+
+
+describe("import-bound signature composition", () => {
+  const provider = "src/camera.ts", barrel = "src/barrel.ts";
+  const located = (sourcePath: string, anchor: string, extra = {}) => ({ sourcePath, liveDocPath: `.live-documentation/source/${sourcePath}.md`, anchor, kind: "interface", ...extra });
+  const index: WorkspaceSymbolIndex = new Map([
+    ["Camera", [located("src/wrong.ts", "symbol-camera"), located(provider, "symbol-camera")]],
+    ["PublicCamera", [located(barrel, "symbol-publiccamera", { isReExport: true, reExport: { sourcePath: provider, exportedName: "Camera" } })]],
+    ["Lens", [located(provider, "symbol-lens")]],
+    ["default", [located(provider, "symbol-lens")]]
+  ]);
+  const compose = (reference: TypeReference, dependencies: Parameters<typeof composeSymbolBlocks>[0]["dependencies"] = []) =>
+    composeSymbolBlocks({ headings: computePublicSymbolHeadingInfo([{ name: "inspect", kind: "function", typeReferences: [reference] }]),
+      docDir, sourceAbsolute, sourceRelativePath, symbolIndex: index, liveDocsRootAbsolute, dependencies })[0].references;
+
+  it("does not guess a workspace target for external, unresolved or lexical bindings", () => {
+    for (const binding of [{ kind: "bound" } as const,
+      { kind: "import", specifier: "three", exportedName: "Camera" } as const,
+      { kind: "import", specifier: "./missing", exportedName: "Camera" } as const]) {
+      expect(compose({ name: "Camera", role: "return", binding }, [{ specifier: "three", symbols: ["Camera"], kind: "import" }]))
+        .toEqual([{ role: "Returns", types: [{ name: "Camera" }] }]);
+    }
+  });
+
+  it("uses symbolTargets and recorded re-export providers while retaining the source spelling", () => {
+    const dependencies = [{ specifier: "./barrel", resolvedPath: barrel, symbols: ["ImportedCamera"], kind: "import" as const,
+      symbolTargets: { ImportedCamera: "PublicCamera" } }];
+    const references = compose({ name: "Eye", role: "return", binding: { kind: "import", specifier: "./barrel", exportedName: "ImportedCamera" } }, dependencies);
+    expect(references).toEqual([{ role: "Returns", types: [{ name: "Eye", link: "../../../../src/camera.ts.md#symbol-camera" }] }]);
+  });
+
+  it("keeps a known barrel anchor when its provider is not indexed, and resolves default identity", () => {
+    const unresolvedProvider: WorkspaceSymbolIndex = new Map([["PublicCamera", [located(barrel, "symbol-publiccamera", {
+      isReExport: true, reExport: { sourcePath: "src/outside.ts", exportedName: "Camera" }
+    })]]]);
+    const [block] = composeSymbolBlocks({ headings: computePublicSymbolHeadingInfo([{ name: "inspect", kind: "function", typeReferences: [
+      { name: "Eye", role: "return", binding: { kind: "import", specifier: "./barrel", exportedName: "PublicCamera" } }
+    ] }]), docDir, sourceAbsolute, sourceRelativePath, symbolIndex: unresolvedProvider, liveDocsRootAbsolute,
+    dependencies: [{ specifier: "./barrel", resolvedPath: barrel, symbols: ["PublicCamera"], kind: "import" }] });
+    expect(block.references).toEqual([{ role: "Returns", types: [{ name: "Eye", link: "../../../../src/barrel.ts.md#symbol-publiccamera" }] }]);
+    expect(compose({ name: "ImportedLens", role: "return", binding: { kind: "import", specifier: "./camera", exportedName: "default" } },
+      [{ specifier: "./camera", resolvedPath: provider, symbols: ["ImportedLens"], kind: "import" }]))
+      .toEqual([{ role: "Returns", types: [{ name: "ImportedLens", link: "../../../../src/camera.ts.md#symbol-lens" }] }]);
   });
 });
 

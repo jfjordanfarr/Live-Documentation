@@ -1,10 +1,12 @@
-import { BufferAttribute, BufferGeometry, Color, ConeGeometry, DoubleSide, DynamicDrawUsage, Frustum, InstancedBufferAttribute, InstancedMesh, Material, Matrix4, Mesh, MeshBasicMaterial, MeshLambertMaterial, Quaternion, RingGeometry, ShaderMaterial, Sphere, SphereGeometry, Vector2, Vector3, Vector4, type Camera, type Intersection, type Raycaster, type Scene, type WebGLRenderer } from "three";
+import { BufferAttribute, BufferGeometry, Color, ConeGeometry, DoubleSide, DynamicDrawUsage, FrontSide, Frustum, InstancedBufferAttribute, InstancedMesh, Material, Matrix4, Mesh, MeshBasicMaterial, MeshLambertMaterial, Quaternion, RingGeometry, ShaderMaterial, Sphere, SphereGeometry, Vector2, Vector3, Vector4, type Camera, type Intersection, type Raycaster, type Scene, type WebGLRenderer } from "three";
 import { LineMaterial } from "three/addons/lines/LineMaterial.js";
 import { LineSegmentsGeometry } from "three/addons/lines/LineSegmentsGeometry.js";
 
+import { containedSpherePrimitive, ContainedSphereMaterial } from "./containedSphere";
 import type { Placed, SpatialNode } from "./forceGraphLayout";
 import { clipSpatialWireDepth, pickSpatialWire, spatialSizeScale } from "./forceGraphSizing";
 import { mergeWrappers, wrapperAt, type GroupWrappers, type WrapperGeometry, type WrapperHull } from "./forceGraphWrappers";
+import type { FrozenBodyMesh, FrozenBodyUnit, FrozenSpatialBody } from "./perspectiveBodies";
 
 /** The endpoints already resolved by the graph feed. */
 export interface SpatialDrawLink<N> { source: string | N; target: string | N }
@@ -83,7 +85,7 @@ export interface SpatialWrapperUnit {
 }
 
 /** Pack documented nodes and wires straight into three instance buffers; camera changes never build scene proxies. */
-export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDrawLink<N>>(scene: Scene, style: SpatialDrawStyle<N, L>) {
+export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDrawLink<N>>(scene: Scene, style: SpatialDrawStyle<N, L>, renderer?: WebGLRenderer) {
   const alphaMaterial = (lit = true): MeshLambertMaterial | MeshBasicMaterial => {
     const material = lit ? new MeshLambertMaterial({ color: 0xffffff, transparent: true }) : new MeshBasicMaterial({ color: 0xffffff, transparent: true, depthWrite: false });
     material.onBeforeCompile = shader => {
@@ -170,10 +172,12 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
     scene.add(mesh);
     return mesh;
   };
-  const unitFiles = unitMesh("Spatial shell files", new SphereGeometry(1, 12, 12), alphaMaterial(), 10);
+  const containedFile = containedSpherePrimitive(renderer);
+  const unitFiles = unitMesh("Spatial shell files", containedFile.geometry, containedFile.material ?? alphaMaterial(), 10);
   const balloonMaterial = wrapperShader(true);
   const unitBalloons = unitMesh("Spatial shell balloons", new SphereGeometry(1, 24, 16), balloonMaterial, 11);
   unitBalloons.geometry.setAttribute("spatialVeil", new InstancedBufferAttribute(new Float32Array(1), 1).setUsage(DynamicDrawUsage));
+  const unitBindings = new Map<InstancedMesh, readonly { seed: string; id: string; kind: FrozenBodyUnit["kind"]; parent?: string; level?: number }[]>();
   let wrapperSeeds: readonly string[] = [], wrapperHullOf: (seed: string) => WrapperHull | undefined = () => undefined, wrapperLook: GroupWrappers = "off";
   let wrapperPlaceOf: (seed: string) => Placed | undefined = () => undefined;
   let wrapperUnitsOf: (seed: string) => readonly SpatialWrapperUnit[] | undefined = () => undefined;
@@ -406,7 +410,7 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
    * look alone, since the clouds veil what they hold, and never for one bursting open, whose units now stand in the picture.
    */
   const updateUnits = (): void => {
-    type Drawn = { seed: string; id: string; kind: string; x: number; y: number; z: number; radius: number; color: Color; alpha: number; veil: number; depth: number; parent?: string; level?: number };
+    type Drawn = { seed: string; id: string; kind: FrozenBodyUnit["kind"]; x: number; y: number; z: number; radius: number; color: Color; alpha: number; veil: number; depth: number; parent?: string; level?: number };
     const files: Drawn[] = [], balloons: Drawn[] = [];
     const white = colorOf("#ffffff").color;
     const ranges = new Map(wrapperDrawn.ranges.map(range => [range.seed, range]));
@@ -456,6 +460,7 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
       });
       if (veils) veils.needsUpdate = true;
       mesh.count = drawn.length; mesh.visible = drawn.length > 0;
+      unitBindings.set(mesh, drawn);
       mesh.instanceMatrix.needsUpdate = true; mesh.instanceColor!.needsUpdate = true; opacity.needsUpdate = true;
       mesh.userData.spatialUnits = drawn.map(({ seed, id, kind, x, y, z, radius, alpha, veil, parent, level }) => ({ seed, id, kind, x, y, z, radius, alpha, veiled: veil > 0, ...(level === undefined ? {} : { depth: level }), ...(parent === undefined ? {} : { parent }) }));
     };
@@ -489,6 +494,52 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
     }
     return picked;
   };
+  /** Copy only the last uploaded skins and interior instances; capture never reconstructs hidden contents. */
+  const captureBodies = (selected: ReadonlySet<string>): FrozenSpatialBody[] => {
+    if (!selected.size) return [];
+    const geometryOf = (geometry: BufferGeometry): Pick<FrozenBodyMesh, "positions" | "indices"> => ({
+      positions: Float32Array.from(geometry.getAttribute("position").array),
+      indices: Uint32Array.from(geometry.getIndex()!.array)
+    });
+    const units = new Map<string, FrozenBodyUnit[]>();
+    const matrix = new Matrix4(), color = new Color();
+    for (const mesh of [unitFiles, unitBalloons]) {
+      if (!mesh.visible) continue;
+      const geometry = geometryOf(mesh.geometry), bindings = unitBindings.get(mesh) ?? [];
+      for (let slot = 0; slot < mesh.count; slot++) {
+        const binding = bindings[slot];
+        if (!binding || !selected.has(binding.seed)) continue;
+        mesh.getMatrixAt(slot, matrix); matrix.premultiply(mesh.matrixWorld); mesh.getColorAt(slot, color);
+        const group = units.get(binding.seed) ?? [];
+        group.push({ ...geometry, matrix: [...matrix.elements], id: binding.id, kind: binding.kind,
+          ...(mesh.material instanceof ContainedSphereMaterial ? { primitive: { kind: "sphere" as const, radius: mesh.material.sphereRadius } } : {}),
+          frontSide: (mesh.material as Material).side === FrontSide, color: color.getStyle(), alpha: mesh.geometry.getAttribute("spatialOpacity").getX(slot),
+          veiled: (mesh.geometry.getAttribute("spatialVeil")?.getX(slot) ?? 0) > 0, order: slot, depth: binding.level, parent: binding.parent });
+        units.set(binding.seed, group);
+      }
+    }
+    const result: FrozenSpatialBody[] = [];
+    const look = wrapperMaterial.uniforms.uLook.value === 0 ? "skin" : wrapperMaterial.uniforms.uRim.value === 1 ? "cloud-rim" : "cloud";
+    if (wrappers.visible) for (const range of wrapperDrawn.ranges) {
+      if (!selected.has(range.seed)) continue;
+      const start = range.vertexStart;
+      const center = new Vector3(range.centre.x, range.centre.y, range.centre.z).applyMatrix4(wrappers.matrixWorld);
+      result.push({ id: range.seed, kind: "skin", look, hovered: wrapperMaterial.uniforms.uHover.value === range.group, center: { x: center.x, y: center.y, z: center.z }, matrix: [...wrappers.matrixWorld.elements],
+        positions: wrapperDrawn.positions.slice(3 * start, 3 * (start + range.vertexCount)),
+        indices: Uint32Array.from(wrapperDrawn.indices.slice(range.indexStart, range.indexStart + range.indexCount), index => index - start),
+        alpha: wrappers.geometry.getAttribute("wrapperAlpha").getX(start), order: range.group, units: units.get(range.seed) ?? [] });
+      units.delete(range.seed);
+    }
+    // A pending hull is drawn as its uploaded body balloon; preserve that exact fallback.
+    for (const [id, group] of units) {
+      const body = group.find(unit => unit.kind === "body");
+      if (!body) continue;
+      result.push({ ...body, id, kind: "balloon", look, hovered: false, order: body.order, center: { x: body.matrix[12], y: body.matrix[13], z: body.matrix[14] },
+        units: group.filter(unit => unit !== body) });
+    }
+    return result;
+  };
+
   /**
    * Which groups are wrapped, their hulls, how they are drawn, where one stands whose node is not drawn, and what a skin
    * shows within it; drawn from the next update.
@@ -498,7 +549,7 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
     wrapperSeeds = seeds; wrapperHullOf = hullOf; wrapperLook = look; wrapperPlaceOf = placeOf; wrapperUnitsOf = unitsOf;
   };
   const styleWrappers = (style: SpatialWrapperStyle): void => { wrapperStyle = style; };
-  return { nodes, lines, arrows, rings, wrappers, setData, update, pickNode, pickNodeHit, pickLink, pickWrapper, setWrappers, styleWrappers, invalidateAppearance: (): void => { appearanceDirty = true; }, dispose(): void {
+  return { nodes, lines, arrows, rings, wrappers, captureBodies, setData, update, pickNode, pickNodeHit, pickLink, pickWrapper, setWrappers, styleWrappers, invalidateAppearance: (): void => { appearanceDirty = true; }, dispose(): void {
     for (const batch of [nodes, lines, arrows, rings]) { batch.mesh.removeFromParent(); batch.mesh.dispose(); batch.mesh.geometry.dispose(); batch.mesh.material.dispose(); }
     wrappers.removeFromParent(); wrappers.geometry.dispose(); wrapperMaterial.dispose();
     for (const mesh of [unitFiles, unitBalloons]) { mesh.removeFromParent(); mesh.dispose(); mesh.geometry.dispose(); (mesh.material as Material).dispose(); }

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphWrappers.ts
-- Generated At: 2026-11-06T21:42:36.655Z
+- Generated At: 2026-11-09T00:01:55.037Z
 
 ## Authored
 ### Purpose
@@ -45,7 +45,7 @@ The seeds of the groups wrapped: those the scope shows only by their seed, of tw
 #### `GroupMember` {#symbol-groupmember}
 - Type: interface
 - Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L33)
-- Extends: [`Placed`](./worldMap/layout.ts.mdmd.md#symbol-placed)
+- Extends: [`Placed`](./forceGraphLayout.ts.mdmd.md#symbol-placed)
 
 ##### `GroupMember` — Summary
 One member of a wrapped body: where it stands relative to the body's centre, and its sphere's radius.
@@ -114,7 +114,7 @@ Every wrapper in one geometry: world positions, normals, each vertex's group and
 #### `mergeWrappers` {#symbol-mergewrappers}
 - Type: function
 - Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L232)
-- Returns: [`WrapperHull`](#symbol-wrapperhull-interface), [`Placed`](./worldMap/layout.ts.mdmd.md#symbol-placed), [`WrapperGeometry`](#symbol-wrappergeometry)
+- Returns: [`WrapperHull`](#symbol-wrapperhull-interface), [`Placed`](./forceGraphLayout.ts.mdmd.md#symbol-placed), [`WrapperGeometry`](#symbol-wrappergeometry)
 
 ##### `mergeWrappers` — Summary
 Merge the hulls of the groups wrapped into one geometry, each centred on its seed's live position: the wrappers are the
@@ -124,7 +124,7 @@ grows a group's hull about its seed, as a pop does (one when absent).
 #### `wrapperAt` {#symbol-wrapperat}
 - Type: function
 - Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L270)
-- Parameters: `geometry`: [`WrapperGeometry`](#symbol-wrappergeometry); `origin`: [`Placed`](./worldMap/layout.ts.mdmd.md#symbol-placed); `direction`: [`Placed`](./worldMap/layout.ts.mdmd.md#symbol-placed)
+- Parameters: `geometry`: [`WrapperGeometry`](#symbol-wrappergeometry); `origin`: [`Placed`](./forceGraphLayout.ts.mdmd.md#symbol-placed); `direction`: [`Placed`](./forceGraphLayout.ts.mdmd.md#symbol-placed)
 
 ##### `wrapperAt` — Summary
 The nearest wrapper a ray meets, and how far along the ray: each group's bounding sphere first, then its triangles,

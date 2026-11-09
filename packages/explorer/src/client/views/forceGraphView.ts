@@ -313,6 +313,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
    * with one file under it, which no bubble wraps since none may show one cell (the owner, 2026-11-07).
    */
   let loneNames = new Map<string, string>();
+  /** Canonical single-file directory hubs replaced by their files in the Structure picture. */
+  let directoryRepresentatives = new Map<string, string>();
   /** The bubbles popped for the picture waiting to be built, whose bursts have begun: a burst plays once, however long the wait. */
   let poppingCells = new Set<string>();
   /** The structure layout's spokes with Group Wrappers on (2026-11-08): each child's rest length and place about its hub. */
@@ -1209,7 +1211,9 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     // its hub alone, so that it stands with its hops around it, its files and its subdirectories' bubbles, as the 2D opens
     // a directory one level deep, and the start stands with it; what lies deeper stands in the bubbles (`cells`).
     const cellsMode = wrapping() && state.spatialLayout === "structure";
-    if (cellsMode) for (const directory of directories) {
+    // Whole is the scan root opened: unlike an ordinary bubble, it asks for every filtered file and hub.
+    const wholeRoot = directories.includes("");
+    if (cellsMode && !wholeRoot) for (const directory of directories) {
       const hub = directoryHubOf(data.nodes, directory);
       if (hub) members.add(hub);
     }
@@ -1220,7 +1224,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     if (path?.length) { asked.clear(); members.clear(); for (const id of path) asked.add(id); }
     const inPicture = new Set(data.nodes.map(node => node.id));
     for (const id of asked) if (!inPicture.has(id)) asked.delete(id);
-    const hasQuestion = todayPins.entries.length > 0 || !!subject || (directories.length > 0 && !cellsMode) || !!discovery || !!path?.length;
+    const hasQuestion = todayPins.entries.length > 0 || !!subject || (directories.length > 0 && (!cellsMode || wholeRoot)) || !!discovery || !!path?.length;
+    const absentRequest = hasQuestion && asked.size === 0 && members.size === 0;
     if (!hasQuestion) for (const id of startOf(data.nodes, data.links, state.spatialLayout, pulls)) asked.add(id);
     // The hops shown: around a question the tuning's; around a start what the start shows, the archipelago's seeds
     // alone and the root with its children (2026-11-02).
@@ -1247,9 +1252,12 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         // The structure layout's bubbles (2026-11-07): one hub tree, no islands and no shells. A hub that was a bubble
         // and stands open now, its directory opened, pops: what its skin showed enters where the skin showed it, its
         // subdirectories' bubbles with their packings, so that the pop waits for nothing.
-        ({ cells: heldCells, lone } = structureCells(data.nodes, data.links, new Set(scope.hops.keys())));
-        const still = new Set(heldCells.map(cell => cell.id));
-        for (const id of cells.keys()) if (!still.has(id) && scope.hops.has(id)) popCell(id);
+        // An absent request keeps the scope's dim root marker, without turning it into a container of unrelated files.
+        if (!absentRequest) {
+          ({ cells: heldCells, lone } = structureCells(data.nodes, data.links, new Set(scope.hops.keys())));
+          const still = new Set(heldCells.map(cell => cell.id));
+          for (const id of cells.keys()) if (!still.has(id) && scope.hops.has(id)) popCell(id);
+        }
         for (const cell of heldCells) named.push({ id: cell.id, key: `cell\0${cell.directory}\0${keyOf(cell.files)}`, files: cell.files, directory: cell.directory });
       } else {
         for (const seed of wrappedSeeds(scope.groups)) {
@@ -1294,7 +1302,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         for (const id of held.released) scopeHops.set(id, hopsShown + 1);
         scopeBeyond = held.beyond;
         shells = new Map(held.shells.map(shell => [shell.id, shell]));
-        cells = new Map(); loneNames = new Map(); spokesOf = null;
+        cells = new Map(); loneNames = new Map(); directoryRepresentatives = new Map(); spokesOf = null;
         for (const shell of held.shells) {
           const body = bodies.get(nextWrapped.get(shell.id)!)!.shape;
           scopeHops.set(shell.id, hopsShown + 1);
@@ -1314,6 +1322,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         }
         // A hub of one file is that file, at the hub's hop and on its wire, named by the hub's chain and its own name.
         loneNames = new Map();
+        directoryRepresentatives = new Map(lone.map(({ hub, file }) => [hub, file]));
         for (const { hub, file, parent } of lone) {
           scopeHops.set(file, scopeHops.get(hub)!);
           scopeHops.delete(hub);
@@ -1328,7 +1337,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       cancelPacking();
       scopeHops = scope.hops;
       scopeBeyond = scope.beyond;
-      shells = new Map(); released = new Set(); cells = new Map(); loneNames = new Map(); spokesOf = null;
+      shells = new Map(); released = new Set(); cells = new Map(); loneNames = new Map(); directoryRepresentatives = new Map(); spokesOf = null;
     }
     scopeGroups = scope.groups;
     frontierHop = hopsShown;
@@ -1981,8 +1990,15 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     camera.updateMatrixWorld();
     const rect = requireElement("graph-svg").getBoundingClientRect();
     const colorForNode = instance.nodeColor();
+    const bodyStarted = performance.now();
+    const bodyCarriers = cells.size ? instance.captureBodies(new Set(cells.keys())) : null;
+    if (cells.size) performance.measure("live-docs:capture-bodies", { start: bodyStarted });
     const files = (instance.graphData().nodes).flatMap(node => {
-      if (!Number.isFinite(node.x) || node.shellFiles !== undefined) return [];
+      if (!Number.isFinite(node.x) || shells.has(node.id)) return [];
+      const body = bodyCarriers?.get(node.id);
+      if (body) return [{ id: node.id, name: node.name, x: rect.left + body.x, y: rect.top + body.y,
+        radius: Math.max(0, ...body.boundary.map(point => point.y)), color: "#83b9d4", body }];
+      if (cells.has(node.id)) return [];
       const point = new Vector3(node.x, node.y, node.z);
       const depth = point.clone().project(camera).z;
       if (depth < -1 || depth > 1) return [];
@@ -1993,8 +2009,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       return [{ id: node.id, name: node.name, x: rect.left + center.x, y: rect.top + center.y,
         radius: Math.abs(screenEdge.x - center.x), color: typeof colorForNode === "function" ? colorForNode(node) : "#888888" }];
     });
-    return { files, links: instance.graphData().links.map(link => ({ source: resolveLinkEndpoint(link.source as string | { id: string }), target: resolveLinkEndpoint(link.target as string | { id: string }) }))
-      .filter(link => !shells.has(link.source) && !shells.has(link.target) && !cells.has(link.source) && !cells.has(link.target)) };
+    return { files, directoryRepresentatives: new Map(directoryRepresentatives), links: instance.captureLinks().map(link => ({ source: resolveLinkEndpoint(link.source as string | { id: string }), target: resolveLinkEndpoint(link.target as string | { id: string }) }))
+      .filter(link => !shells.has(link.source) && !shells.has(link.target)) };
   }
 
   function setMoment(next: HistoryMoment | null, renames: Renames, energy?: number, changes: HistoryChanges | null = next): void {
@@ -2226,7 +2242,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     if (!forceGraphInstance || !motion) return;
     // A picture waiting for its bodies is not the one these files belong to; they are revealed once it is built.
     if (packing.size) { pendingReveal = nodeIds; return; }
-    const next = revealCorresponding(reveal.order, reveal.shown, new Set(nodeIds));
+    const next = revealCorresponding(reveal.order, reveal.shown, new Set(nodeIds.map(id => directoryRepresentatives.get(id) ?? id)));
     if (next.shown === reveal.shown) return;
     Object.assign(reveal, next);
     setPiece(shownData());

@@ -2,6 +2,7 @@ import { expect, test, type Page } from "@playwright/test";
 
 import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
 import { engineActivity, markedRenderedLinks, markRenderedLinks, observeGraph, renderedLinks, renderedNodes } from "./force-graph-observation";
+import { choose } from "./search-bar";
 import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 
 /**
@@ -285,13 +286,15 @@ test("commit search, range selection and adjacent controls investigate an interv
 });
 
 test("a requested overview follows historical growth, and a manual camera gesture cancels that following", async ({ page }) => {
-  const commits = await commitsOf(page, "/");
+  const base = "/samples/history-growth/";
+  const commits = await commitsOf(page, base);
   await observeGraph(page);
-  await page.goto(entry("/", { spatialLayout: "connections", openDirectories: new Set([""]), commit: commits[0].id }));
+  await page.goto(entry(base, { spatialLayout: "connections", openDirectories: new Set([""]), commit: commits[0].id }));
   await settled(page);
   await page.getByRole("button", { name: "Hide step details", exact: true }).click();
   await page.getByRole("button", { name: "Fit current scope", exact: true }).click();
   const first = (await renderedNodes(page)).length;
+  expect(first, "the controlled history begins with its configuration and one TypeScript file").toBe(2);
   const outside = async (): Promise<string[]> => {
     const frame = (await page.locator("#graph-svg").boundingBox())!;
     const controls = (await page.locator(".perspective-controls").boundingBox())!;
@@ -300,9 +303,38 @@ test("a requested overview follows historical growth, and a manual camera gestur
       || node.y + node.screenRadius > controls.y || node.depth < -1 || node.depth > 1).map(node => node.id);
   };
   await expect.poll(outside, { timeout: 10_000 }).toEqual([]);
+  // Capture the completed initial Fit, rather than an incidental wider camera part way through its flight.
+  let previousFrame = -1, idleSamples = 0;
+  await expect.poll(async () => {
+    const frame = (await engineActivity(page)).frames;
+    idleSamples = frame === previousFrame ? idleSamples + 1 : 0;
+    previousFrame = frame;
+    return idleSamples;
+  }, { intervals: [100] }).toBeGreaterThanOrEqual(3);
+  const initialCamera = await page.evaluate(() => {
+    const camera = (window as unknown as { renderedGraph: { camera: { matrixWorld: { elements: number[] }; projectionMatrix: { elements: number[] } } } }).renderedGraph.camera;
+    return { world: [...camera.matrixWorld.elements], projection: [...camera.projectionMatrix.elements] };
+  });
   await track(page).press("End");
   await settled(page);
+  await expect.poll(async () => (await renderedNodes(page)).length, { message: "the intended gradual reveal finishes with the configuration and all 64 chain files" }).toBe(65);
   expect((await renderedNodes(page)).length).toBeGreaterThan(first * 10);
+  const grownPlaces = (await renderedNodes(page)).map(node => ({ id: node.id, ...node.world }));
+  const frozenOutside = await page.evaluate(({ initialCamera, grownPlaces }) => {
+    const { camera } = (window as unknown as { renderedGraph: { camera: import("three").PerspectiveCamera } }).renderedGraph;
+    const frozen = camera.clone();
+    frozen.matrixWorld.fromArray(initialCamera.world);
+    frozen.matrixWorldInverse.copy(frozen.matrixWorld).invert();
+    frozen.projectionMatrix.fromArray(initialCamera.projection);
+    const frame = document.querySelector("#graph-svg")!.getBoundingClientRect();
+    const bottom = document.querySelector(".perspective-controls")!.getBoundingClientRect().top;
+    return grownPlaces.filter(node => {
+      const point = camera.position.clone().set(node.x, node.y, node.z).project(frozen);
+      const x = frame.left + (point.x + 1) * frame.width / 2, y = frame.top + (1 - point.y) * frame.height / 2;
+      return point.z < -1 || point.z > 1 || x < frame.left || x > frame.right || y < frame.top || y > bottom;
+    }).map(node => node.id);
+  }, { initialCamera, grownPlaces });
+  expect(frozenOutside.length, "the final graph cannot fit a camera frozen at the initial Fit").toBeGreaterThan(0);
   await expect.poll(outside, { timeout: 10_000, message: "the growing scope remains in the uncovered frame" }).toEqual([]);
   const frame = (await page.locator("#graph-svg").boundingBox())!;
   await page.mouse.move(frame.x + frame.width / 2, frame.y + frame.height / 2);
@@ -458,11 +490,34 @@ test("an absent historical request shows only the tree's root, dimmed, and resum
   const idle = await renderedNodes(page);
   expect(idle.map(node => node.id)).toEqual(["directory:"]);
   expect(idle[0].opacity).toBeLessThan(.35);
+  const interiors = () => page.evaluate(() => {
+    const scene = (window as unknown as { renderedGraph: { scene: import("three").Scene } }).renderedGraph.scene;
+    const files = scene.getObjectByName("Spatial shell files") as import("three").InstancedMesh;
+    const balloons = scene.getObjectByName("Spatial shell balloons") as import("three").InstancedMesh;
+    const skin = scene.getObjectByName("Spatial wrappers") as import("three").Mesh;
+    return { files: files.visible ? files.count : 0, balloons: balloons.visible ? balloons.count : 0,
+      skinVertices: skin.visible ? skin.geometry.drawRange.count : 0 };
+  });
+  expect(await interiors(), "an absent request's root marker exposes no unrelated historical contents").toEqual({ files: 0, balloons: 0, skinVertices: 0 });
   await expect(page.locator("#search-subject-absence")).toHaveText("not yet created");
   await track(page).press("PageUp");
   await expect(track(page)).toHaveAttribute("aria-valuenow", "3");
   await settled(page);
   expect((await renderedNodes(page)).some(node => node.id === "lib/huge.ts")).toBe(true);
+  await track(page).press("Home");
+  await settled(page);
+  // Give the absent file an independent, present directory question, producing real cells in the same cached view.
+  await choose(page, "subject", "src", { directory: "src" });
+  await settled(page);
+  expect((await interiors()).files, "the reverse journey starts with actual contained historical files").toBeGreaterThan(0);
+  await page.getByRole("button", { name: "Show pins", exact: true }).click();
+  await page.getByRole("button", { name: "Release directory src", exact: true }).click();
+  await settled(page);
+  const returned = await renderedNodes(page);
+  expect(returned.map(node => node.id)).toEqual(["directory:"]);
+  expect(returned[0].opacity).toBeLessThan(.35);
+  expect(await interiors(), "withdrawing the directory leaves no cached cell or pop contents beside the absent request").toEqual({ files: 0, balloons: 0, skinVertices: 0 });
+  expect(decompressSnapshot(new URL(page.url()).searchParams.get("s")!).pinSet.entries).toEqual([{ nodeId: "lib/huge.ts", symbol: "*" }]);
 });
 
 test("the address carries the commit and the authors toggle, a link to a moment opens on it, and leaving 3D returns the picture to today", async ({ page }) => {

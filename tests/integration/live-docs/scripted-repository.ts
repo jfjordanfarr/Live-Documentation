@@ -27,6 +27,9 @@ export const SCRIPTED_CONFIG = { root: ".mdmd", baseLayer: "layer-4", extension:
 /** The lens of the second script, whose user file is its entry. */
 export const COLLISION_CONFIG = { root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md", entryPoints: ["src/user.ts"] };
 
+/** The independent growth sample begins with its first root-level file. */
+export const GROWTH_CONFIG = { root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md", entryPoints: ["part00.ts"] };
+
 /** The fixture's git is isolated from the person's configuration, and its authors and dates are fixed. */
 export const FIXTURE_GIT_ENV = {
   ...process.env,
@@ -321,6 +324,26 @@ export const COLLISION_SCRIPT: ScriptedCommit[] = [
       // Today the second user imports nothing, so a walk back from today makes its link to the old path afresh, and that link alone stands for the path at the rename step.
       "src/x.ts": `/** Uses nothing now. */\nexport function x(): unknown {\n  return null;\n}\n`
     }
+  }
+];
+
+/** A separate fixed history grows one root file into a 64-file import chain, to exercise overview reframing. */
+export const GROWTH_SCRIPT: ScriptedCommit[] = [
+  {
+    message: "Begin the chain with one file",
+    date: "2026-01-01T10:00:00+00:00",
+    write: {
+      ".live-docs.config.json": `${JSON.stringify(GROWTH_CONFIG, null, 2)}\n`,
+      "part00.ts": "/** Begins the chain. */\nexport function value00(): number { return 0; }\n"
+    }
+  },
+  {
+    message: "Grow the chain to sixty-four files",
+    date: "2026-12-01T10:00:00+00:00",
+    write: Object.fromEntries(Array.from({ length: 63 }, (_, index) => {
+      const name = String(index + 1).padStart(2, "0"), previous = String(index).padStart(2, "0");
+      return [`part${name}.ts`, `import { value${previous} } from "./part${previous}";\n\n/** Continues the chain. */\nexport function value${name}(): number { return value${previous}() + 1; }\n`];
+    }))
   }
 ];
 

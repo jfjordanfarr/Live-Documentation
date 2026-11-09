@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphShells.ts
-- Generated At: 2026-11-08T04:02:26.971Z
+- Generated At: 2026-11-09T00:01:54.961Z
 
 ## Authored
 ### Purpose
@@ -242,7 +242,7 @@ The pops of a picture after `directory` is popped open, or wrapped again with ev
 #### `releaseOf` {#symbol-releaseof}
 - Type: function
 - Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L646)
-- Parameters: `shape`: [`GroupShape`](./forceGraphWrappers.ts.mdmd.md#symbol-groupshape); `place`: [`Placed`](./worldMap/layout.ts.mdmd.md#symbol-placed)
+- Parameters: `shape`: [`GroupShape`](./forceGraphWrappers.ts.mdmd.md#symbol-groupshape); `place`: [`Placed`](./forceGraphLayout.ts.mdmd.md#symbol-placed)
 
 ##### `releaseOf` — Summary
 What a body's pop releases, about the place the body stood (2026-11-05; the third round's bodies, 2026-11-07): each of

@@ -1,8 +1,29 @@
 import { describe, expect, it } from "vitest";
 
-import { directoryOpacity, gatherWire, outlineLength, pathOutline, perspectivePhases, polygonOutline, sampleOutline } from "./perspectiveGeometry";
+import { directoryOpacity, gatherWire, outlineLength, pathOutline, perspectiveCorrespondences, perspectivePhases, polygonOutline, sampleOutline } from "./perspectiveGeometry";
 
 describe("native perspective correspondence", () => {
+  it("matches real cell hubs and single-file directory representatives without inventing absent destinations", () => {
+    const representatives = new Map([["directory:src/one", "src/one/a.ts"], ["directory:missing", "missing.ts"]]);
+    expect(perspectiveCorrespondences(["directory:src/many", "directory:src/one", "directory:missing"],
+      new Set(["directory:src/many", "src/one/a.ts"]), representatives))
+      .toEqual(new Map([["directory:src/many", "directory:src/many"], ["directory:src/one", "src/one/a.ts"]]));
+  });
+
+  it.each([false, true])("draws and names a canonical file once when its directory alias also appears, exact card first: %s", reverse => {
+    const ids = ["directory:src", "src/a.ts"];
+    if (reverse) ids.reverse();
+    expect(perspectiveCorrespondences(ids, new Set(["src/a.ts"]), new Map([["directory:src", "src/a.ts"]])))
+      .toEqual(new Map([["src/a.ts", "src/a.ts"]]));
+  });
+
+  it("uses only one of several aliases for the same real destination and does not infer Connections counterparts", () => {
+    const aliases = new Map([["directory:src", "src/deep/a.ts"], ["directory:src/deep", "src/deep/a.ts"]]);
+    expect(perspectiveCorrespondences([...aliases.keys()], new Set(["src/deep/a.ts"]), aliases))
+      .toEqual(new Map([["directory:src", "src/deep/a.ts"]]));
+    expect(perspectiveCorrespondences(["directory:src"], new Set(["src/deep/a.ts"]))).toEqual(new Map());
+  });
+
   it("preserves the original curve and gathers distinct symbol routes onto the same file segment", () => {
     const a = { x: 20, y: 30 }, b = { x: 300, y: 150 };
     const upper = [{ x: 50, y: 70 }, { x: 160, y: -40 }, { x: 260, y: 80 }];

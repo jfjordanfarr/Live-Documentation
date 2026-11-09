@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/scripted-repository.ts
-- Generated At: 2026-10-22T16:48:01.073Z
+- Generated At: 2026-11-09T00:01:57.611Z
 
 ## Authored
 ### Purpose
@@ -14,6 +14,7 @@ A small git repository built from a script of seven commits, the subject of the 
 - Extracted 2026-10-18 from `history.test.ts`, where it was written with C1 of [the change-over-time plan](../../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions), so that `scripts/live-docs/visualize-history-sample.ts` can build the same repository into a bundle for the Playwright specs of C4. The test and the sample share one script, so what the specs scrub is what the oracles hold.
 - `COLLISION_SCRIPT` (2026-10-18) is a second script of four commits, a helper moved onto the path of a file that died the commit before, built as a third sample bundle for the scrubber spec after the owner found lines leading nowhere in the played history ([Turn 8](../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-8)).
 - Since 2026-10-20 ([Turn 9](../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-9)) the mirror the script commits links documents in its authored words: the main file's doc links the design and a plan written only at the fourth commit, the legacy helper's links its old notes and is retired with them, the main file's doc drops the design at the fifth, and the orphan's doc links the design too, a link that must never count.
+- `GROWTH_SCRIPT` and `GROWTH_CONFIG` (November 8, 2026) supply a separate two-commit camera-follow fixture: one root-level TypeScript file on January 1 becomes a 64-file import chain on December 1. The configuration remains in the normal lens, making canonical membership two then 65 documents. The normal history/generator/static build produces its canonical facts; it changes none of the original script's counts or expected steps.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -32,30 +33,37 @@ The configuration the fixture commits, and the lens its history is read under.
 ##### `COLLISION_CONFIG` — Summary
 The lens of the second script, whose user file is its entry.
 
-#### `FIXTURE_GIT_ENV` {#symbol-fixture_git_env}
+#### `GROWTH_CONFIG` {#symbol-growth_config}
 - Type: const
 - Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L31)
+
+##### `GROWTH_CONFIG` — Summary
+The independent growth sample begins with its first root-level file.
+
+#### `FIXTURE_GIT_ENV` {#symbol-fixture_git_env}
+- Type: const
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L34)
 
 ##### `FIXTURE_GIT_ENV` — Summary
 The fixture's git is isolated from the person's configuration, and its authors and dates are fixed.
 
 #### `MODEL` {#symbol-model}
 - Type: const
-- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L114)
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L117)
 
 ##### `MODEL` — Summary
 The model, with the factor its size grows by: the same symbols whatever the factor, so a change of it moves nothing in the shape.
 
 #### `ScriptedCommit` {#symbol-scriptedcommit}
 - Type: interface
-- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L148)
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L151)
 
 ##### `ScriptedCommit` — Summary
 One commit of the script: its message, its date, and what it does to the tree.
 
 #### `SCRIPT` {#symbol-script}
 - Type: const
-- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L157)
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L160)
 - Returns: [`ScriptedCommit`](#symbol-scriptedcommit)[]
 
 ##### `SCRIPT` — Summary
@@ -63,14 +71,14 @@ The seven commits, oldest first.
 
 #### `git` {#symbol-git}
 - Type: function
-- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L284)
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L287)
 
 ##### `git` — Summary
 Runs git in the fixture, isolated from the person's configuration.
 
 #### `COLLISION_SCRIPT` {#symbol-collision_script}
 - Type: const
-- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L296)
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L299)
 - Returns: [`ScriptedCommit`](#symbol-scriptedcommit)[]
 
 ##### `COLLISION_SCRIPT` — Summary
@@ -80,9 +88,17 @@ then finds; and the first user is touched while the second drops its import. Mad
 history, whose caches had kept the dead file's object and let the renamed helper collide with it, so that the
 lines resolved to the dropped object led nowhere after a play through this repository's history.
 
+#### `GROWTH_SCRIPT` {#symbol-growth_script}
+- Type: const
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L331)
+- Returns: [`ScriptedCommit`](#symbol-scriptedcommit)[]
+
+##### `GROWTH_SCRIPT` — Summary
+A separate fixed history grows one root file into a 64-file import chain, to exercise overview reframing.
+
 #### `buildRepository` {#symbol-buildrepository}
 - Type: function
-- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L327)
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L350)
 - Parameters: `script`: [`ScriptedCommit`](#symbol-scriptedcommit)[]
 <!-- LIVE-DOC:END Public Symbols -->
 

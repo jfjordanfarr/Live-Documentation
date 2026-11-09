@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/persistence/compressed-url-state.test.ts
-- Generated At: 2026-10-20T14:51:18.393Z
+- Generated At: 2026-11-08T17:39:28.813Z
 
 ## Authored
 ### Purpose
@@ -19,6 +19,8 @@ Protects portable Explorer state through explicit payload expectations, compress
 - `d`, the opened directories (2026-10-08): sorted in the payload, absent when none, scrubbed to those with a live file under them.
 - Evidence cases cover file symbols, the scan root, bundled-document sections, old and ambiguous payloads, explicit closure, and removed targets without disturbing valid exploration. The Internals endpoint must survive validation without becoming a public symbol or a whole-file pin. These protect the [October 20 inspection-state work](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-2).
 
+The November 8 default cases apply decoded settings over current tuning: an explicit Off/two-hop link retains that meaning, while an older or partial link keeps the viewer's omitted preferences. These complement the real-browser precedence cases and the storage reader tests.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -27,6 +29,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`layout-presets.applyLayoutSettings`](../layout-presets.ts.mdmd.md#symbol-applylayoutsettings)
 - [`compressed-url-state.CompressedPayload`](./compressed-url-state.ts.mdmd.md#symbol-compressedpayload)
 - [`compressed-url-state.DEFAULT_SNAPSHOT`](./compressed-url-state.ts.mdmd.md#symbol-default_snapshot)
 - [`compressed-url-state.UrlStateSnapshot`](./compressed-url-state.ts.mdmd.md#symbol-urlstatesnapshot)
@@ -35,6 +38,7 @@ _No public symbols detected_
 - [`compressed-url-state.payloadToSnapshot`](./compressed-url-state.ts.mdmd.md#symbol-payloadtosnapshot)
 - [`compressed-url-state.scrubSnapshot`](./compressed-url-state.ts.mdmd.md#symbol-scrubsnapshot)
 - [`compressed-url-state.snapshotToPayload`](./compressed-url-state.ts.mdmd.md#symbol-snapshottopayload)
+- [`local-storage.getDefaultTuning`](./local-storage.ts.mdmd.md#symbol-getdefaulttuning)
 - [`pin-state.EMPTY_PIN_SET`](../views/pin-state.ts.mdmd.md#symbol-empty_pin_set)
 - [`pin-state.INTERNAL_SYMBOL`](../views/pin-state.ts.mdmd.md#symbol-internal_symbol)
 - [`pin-state.PinSet`](../views/pin-state.ts.mdmd.md#symbol-pinset)

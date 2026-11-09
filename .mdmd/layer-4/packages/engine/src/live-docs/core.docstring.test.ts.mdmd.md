@@ -11,6 +11,7 @@
 Verifies the Live Docs extraction engine emits structured docstrings for TypeScript sources, guarding the JSDoc bridge introduced for reverse documentation workflows.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-14.SUMMARIZED.md#turn-11-plan-the-typescript-docstring-bridge-lines-2101-2400]
 
 ### Notes
+- Since 2026-11-08, also checks signature import identities and lexical generic shadowing, including same-name/same-role deduplication, namespace and default imports, heritage, mapped parameters and the true branch of conditional inferred types.
 - Added while extending `extractJsDocDocumentation` so Live Docs could round-trip docstrings into generated sections without losing tags or formatting.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-14.SUMMARIZED.md#turn-11-plan-the-typescript-docstring-bridge-lines-2101-2400]
 - Works in concert with the polyglot adapter tests landed the same week, ensuring the shared core honors language-specific docstring structures.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-12.SUMMARIZED.md#turn-08-stand-up-co-activation-infrastructure-lines-1101-1220]
 

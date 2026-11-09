@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/history/snapshot.ts
-- Generated At: 2026-10-30T16:26:05.195Z
+- Generated At: 2026-11-09T00:01:54.355Z
 
 ## Authored
 ### Purpose
@@ -23,7 +23,7 @@ A shape of the history (the engine's `Shape` at one step) as the 3D Local Map's 
 - Type: function
 - Source: [source](../../../../../../../packages/explorer/src/client/history/snapshot.ts#L24)
 - Returns: [`ExplorerGraphPayload`](../../shared/types.ts.mdmd.md#symbol-explorergraphpayload)
-- Parameters: `shape`: [`Shape`](../views/worldMap/layout.ts.mdmd.md#symbol-shape)
+- Parameters: `shape`: [`Shape`](../../../../engine/src/live-docs/history/shape.ts.mdmd.md#symbol-shape)
 
 ##### `snapshotGraphOf` — Summary
 The payload the views render, for the shape at one step.
@@ -32,7 +32,7 @@ The payload the views render, for the shape at one step.
 - Type: function
 - Source: [source](../../../../../../../packages/explorer/src/client/history/snapshot.ts#L60)
 - Returns: [`RelatedDocLink`](../../shared/staticExplorerData.ts.mdmd.md#symbol-relateddoclink)[]
-- Parameters: `shape`: [`Shape`](../views/worldMap/layout.ts.mdmd.md#symbol-shape)
+- Parameters: `shape`: [`Shape`](../../../../engine/src/live-docs/history/shape.ts.mdmd.md#symbol-shape)
 
 ##### `relatedDocLinksOf` — Summary
 The links from each file's authored words to a document at the step, as today's bundle names its Related Docs: what

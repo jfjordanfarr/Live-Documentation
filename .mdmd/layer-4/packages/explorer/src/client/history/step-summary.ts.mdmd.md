@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/history/step-summary.ts
-- Generated At: 2026-11-01T20:26:50.013Z
+- Generated At: 2026-11-09T00:01:54.376Z
 
 ## Authored
 ### Purpose
@@ -63,7 +63,7 @@ How many things the step changed, the wires counted with the files.
 - Type: function
 - Source: [source](../../../../../../../packages/explorer/src/client/history/step-summary.ts#L80)
 - Returns: [`StepSummary`](#symbol-stepsummary-interface)
-- Parameters: `sequence`: [`HistorySequence`](../../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence); `shape`: [`Shape`](../views/worldMap/layout.ts.mdmd.md#symbol-shape)
+- Parameters: `sequence`: [`HistorySequence`](../../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence); `shape`: [`Shape`](../../../../engine/src/live-docs/history/shape.ts.mdmd.md#symbol-shape)
 
 ##### `stepSummary (function)` — Summary
 The summary of a step, given the shape at that step (so that the caller's

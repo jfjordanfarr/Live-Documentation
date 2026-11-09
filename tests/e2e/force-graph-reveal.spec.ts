@@ -26,6 +26,8 @@ const entry = (showTests: boolean, selectedNodeId?: string): string => `/?s=${co
   ...DEFAULT_SNAPSHOT,
   perspective: "3d",
   spatialLayout: "connections",
+  // Bare-file reveal waves need a second hop after the initial first-hop piece.
+  layout: { forceGraph: { groupWrappers: "off", hops: 2 } },
   filters: { showTests, showAssets: true },
   ...(selectedNodeId ? { selectedNodeId } : {})
 })}`;
@@ -52,7 +54,7 @@ test("the first picture enters from the subject with its first hop, a share of t
   // The first piece, by the shared scope: the subject and the files one hop from it.
   const graph = await loadGraph(page, "/");
   const data = spatialGraphOf(graph, () => true, [], "connections");
-  const scope = spatialScope(data.nodes, data.links, new Set([subject]), getDefaultTuning().forceGraph.hops, link => linkPulls(link, "connections"));
+  const scope = spatialScope(data.nodes, data.links, new Set([subject]), 2, link => linkPulls(link, "connections"));
   const first = [...scope.hops.values()].filter(hop => hop <= 1).length;
   expect(sizes[0], "the first piece is the subject with its first hop").toBe(first);
   expect(whole, "the subject's two hops are many files").toBeGreaterThan(FRAMES);
@@ -78,7 +80,7 @@ test("a membership change keeps what is shown and brings the newcomers in pieces
   const graph = await loadGraph(page, "/");
   const scopeOf = (showTests: boolean): Set<string> => {
     const data = spatialGraphOf(graph, node => showTests || (node.archetype || "").toLowerCase() !== "test", [], "connections");
-    return new Set(spatialScope(data.nodes, data.links, new Set([subject]), getDefaultTuning().forceGraph.hops, link => linkPulls(link, "connections")).hops.keys());
+    return new Set(spatialScope(data.nodes, data.links, new Set([subject]), 2, link => linkPulls(link, "connections")).hops.keys());
   };
   const was = scopeOf(false), is = scopeOf(true);
   const kept = [...was].filter(id => is.has(id));

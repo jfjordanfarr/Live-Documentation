@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/perspectiveTransition.ts
-- Generated At: 2026-11-08T06:36:56.908Z
+- Generated At: 2026-11-09T00:01:55.489Z
 
 ## Authored
 ### Purpose
@@ -22,40 +22,44 @@ The [November 2 exploration pass](../../../../../../../AI-Agent-Workspace/ChatHi
 
 The pin-only handoff uses the newest retained file as a visual anchor without making it the selected subject. This follows the T3 repeat that exposed a near-empty 2D arrival despite correct membership; the frame still settles afterward by the existing minimum-motion rule.
 
+Since November 8, 2026, Structure cells remain real captured hubs and single-file directory aliases resolve through canonical containment metadata. The same one-to-one correspondence controls native token origins, card destinations and travelling names in both directions. An exact file card takes precedence over an alias, so each canonical destination is drawn and named once; unmatched Connections folders keep their existing fade.
+
+The November 8 container carrier uses frozen projected skin boundaries and actual interior marks, prepared as paths once and translated during the existing phases. It retains native global file/balloon/skin passes, draw kind, alpha, veils and nested ordering. Transparent outlines replace the rejected flat amber disks; native lighting and cloud noise are simplified by the temporary vector drawing. Links are captured only when submitted visibly by 3D; a graph-only link fades with the 3D side even when both ends have corresponding cards, while a real source 2D wire retains its existing gather/fold behavior.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SceneFile` {#symbol-scenefile}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L5)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L6)
 
 ##### `SceneFile` — Summary
 Screen-space correspondence between native cards and native force positions.
 
 #### `ForceScene` {#symbol-forcescene}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L15)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L18)
 
 ##### `ForceScene` — Summary
 A frozen projection of the native force scene, without introducing another layout.
 
 #### `LocalScene` {#symbol-localscene}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L49)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L54)
 
 ##### `LocalScene` — Summary
 Native reading geometry, captured before the view is hidden or its camera changes.
 
 #### `LocalCapture` {#symbol-localcapture}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L56)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L61)
 
 ##### `LocalCapture` — Summary
 A capture of the 2D map: its scene, complete once `copied` resolves, the cards' copies made a slice at a time.
 
 #### `captureLocalScene` {#symbol-capturelocalscene}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L80)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L85)
 - Returns: [`LocalCapture`](#symbol-localcapture)
 - Parameters: `frame`: `DOMRect`
 
@@ -68,7 +72,7 @@ the page for seconds).
 
 #### `animatePerspective` {#symbol-animateperspective}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L176)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L181)
 - Parameters: `scene`: [`LocalScene`](#symbol-localscene); `graph`: [`ForceScene`](#symbol-forcescene); `viewport`: `DOMRect`
 
 ##### `animatePerspective` — Summary
@@ -78,7 +82,7 @@ are not changed by this temporary, non-interactive drawing.
 
 #### `holdPerspective` {#symbol-holdperspective}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L320)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L370)
 
 ##### `holdPerspective` — Summary
 Hold the source picture while the destination renderer produces its first frame: the source surface itself stays
@@ -97,11 +101,13 @@ zoom controls kept below it, which would otherwise grow the held map into that r
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`forceGraphData.directoryNodeId`](./forceGraphData.ts.mdmd.md#symbol-directorynodeid)
+- [`perspectiveBodies.SceneBody`](./perspectiveBodies.ts.mdmd.md#symbol-scenebody) (type-only)
 - [`perspectiveGeometry.TransitionPoint`](./perspectiveGeometry.ts.mdmd.md#symbol-transitionpoint)
 - [`perspectiveGeometry.directoryOpacity`](./perspectiveGeometry.ts.mdmd.md#symbol-directoryopacity)
 - [`perspectiveGeometry.gatherWire`](./perspectiveGeometry.ts.mdmd.md#symbol-gatherwire)
 - [`perspectiveGeometry.outlineLength`](./perspectiveGeometry.ts.mdmd.md#symbol-outlinelength)
 - [`perspectiveGeometry.pathOutline`](./perspectiveGeometry.ts.mdmd.md#symbol-pathoutline)
+- [`perspectiveGeometry.perspectiveCorrespondences`](./perspectiveGeometry.ts.mdmd.md#symbol-perspectivecorrespondences)
 - [`perspectiveGeometry.perspectivePhases`](./perspectiveGeometry.ts.mdmd.md#symbol-perspectivephases)
 - [`perspectiveGeometry.polygonOutline`](./perspectiveGeometry.ts.mdmd.md#symbol-polygonoutline)
 - [`perspectiveGeometry.sampleOutline`](./perspectiveGeometry.ts.mdmd.md#symbol-sampleoutline)

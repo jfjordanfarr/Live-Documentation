@@ -105,6 +105,9 @@ export interface ResolvedSymbolLocation {
 
   /** True when the file re-exports the symbol rather than declaring it. */
   isReExport?: boolean;
+
+  /** A provider established by this file's re-export syntax, never inferred by name proximity. */
+  reExport?: { sourcePath: string; exportedName: string };
 }
 
 /**
@@ -154,6 +157,11 @@ export interface TypeReference {
    * For qualified names like `Foo.Bar`, this contains the full path.
    */
   name: string;
+
+  /** Known lexical binding; absent for references whose origin was not established by the reader. */
+  binding?:
+    | { kind: "bound" }
+    | { kind: "import"; specifier: string; exportedName: string };
 
   /**
    * The role this type plays in the symbol's signature.

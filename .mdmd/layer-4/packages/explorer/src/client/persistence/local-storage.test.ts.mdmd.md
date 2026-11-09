@@ -23,7 +23,7 @@ The navigation cases support the [October 20 inspection-state implementation](..
 
 Since 2026-10-22 ([Turn 10 of the October 21 session](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-10)) the history's default axis is by date, and three cases hold the saving rule: nothing to save at the defaults and only the differing settings otherwise; the scheduler writing only the changes, so that a later default reaches what was never touched; and a version 1 entry removed unread.
 
-Since 2026-11-05 cases check that Group Wrappers starts off, restores a saved choice beside the numeric settings, and falls back to off from anything else ([the experiment](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#competing-layout-preferences)).
+The Group Wrappers cases introduced November 5 now protect the November 8 delivery of Skin and one hop: fresh and sparse settings inherit both, invalid values fall back individually, and an explicit Off/two-hop preference survives the unchanged version 2 reader and a scheduler save/reload. Other named and numeric preferences retain their values ([the experiment](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#competing-layout-preferences)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

@@ -21,6 +21,7 @@ import { computePublicSymbolHeadingInfo } from "./compose";
 import { SUPPORTED_SCRIPT_EXTENSIONS } from "./coreConstants";
 import type {
   DeclaredEntry,
+  DependencyEntry,
   PublicSymbolEntry,
   ReExportedSymbolInfo,
   ResolvedSymbolLocation,
@@ -366,6 +367,7 @@ export async function buildWorkspaceIndexes(options: {
     let symbols: PublicSymbolEntry[] = [];
     let declares: DeclaredEntry[] = [];
     let reExports: ReExportedSymbolInfo[] = [];
+    let exportDependencies: DependencyEntry[] = [];
     try {
       const ext = path.extname(absolutePath).toLowerCase();
 
@@ -381,16 +383,18 @@ export async function buildWorkspaceIndexes(options: {
           scriptKind
         );
         symbols = collectExportedSymbols(sourceFile);
-        // The doc's re-export section has anchors for bare star exports.
-        // Index only files with that syntax, using the same resolver that renders those anchors.
-        if (sourceFile.statements.some((statement) => ts.isExportDeclaration(statement) && statement.moduleSpecifier && !statement.exportClause)) {
-          const dependencies = await collectDependencies({ sourceFile, absolutePath, workspaceRoot: options.workspaceRoot });
-          ({ reExports } = await augmentWithReExportedSymbols({
-            sourceAbsolute: absolutePath,
-            workspaceRoot: options.workspaceRoot,
-            dependencies,
-            existingSymbols: symbols
-          }));
+        // Preserve providers named by export syntax; bare star exports also publish the peer resolver's anchors.
+        if (sourceFile.statements.some((statement) => ts.isExportDeclaration(statement) && statement.moduleSpecifier)) {
+          exportDependencies = (await collectDependencies({ sourceFile, absolutePath, workspaceRoot: options.workspaceRoot }))
+            .filter(dependency => dependency.kind === "export");
+          if (exportDependencies.some(dependency => dependency.reExportAll)) {
+            ({ reExports } = await augmentWithReExportedSymbols({
+              sourceAbsolute: absolutePath,
+              workspaceRoot: options.workspaceRoot,
+              dependencies: exportDependencies,
+              existingSymbols: symbols
+            }));
+          }
         }
       } else {
         // Try language-specific adapters for other file types (C#, Java, Python, etc.)
@@ -421,16 +425,22 @@ export async function buildWorkspaceIndexes(options: {
     // Register each symbol in the index
     for (const heading of headings) {
       const symbol = heading.symbol;
+      const provider = symbol.isReExport ? exportDependencies.find(dependency => dependency.symbols.includes(symbol.name)) : undefined;
       const location: ResolvedSymbolLocation = {
         liveDocPath,
         sourcePath,
         anchor: heading.slug,
         kind: symbol.kind,
-        ...(symbol.isReExport ? { isReExport: true } : {})
+        ...(symbol.isReExport ? { isReExport: true } : {}),
+        ...(provider?.resolvedPath ? { reExport: {
+          sourcePath: provider.resolvedPath,
+          exportedName: provider.symbolTargets?.[symbol.name] ?? symbol.name
+        } } : {})
       };
 
       // Register by primary name
       register(symbol.name, location);
+      if (symbol.isDefault && symbol.name !== "default") register("default", location);
 
       // Also register by qualified name if different
       if (symbol.qualifiedName && symbol.qualifiedName !== symbol.name) {
@@ -439,7 +449,8 @@ export async function buildWorkspaceIndexes(options: {
     }
     for (const entry of reExports) {
       const anchor = createSymbolSlug(entry.name);
-      if (anchor) register(entry.name, { liveDocPath, sourcePath, anchor, kind: entry.kind, isReExport: true });
+      if (anchor) register(entry.name, { liveDocPath, sourcePath, anchor, kind: entry.kind, isReExport: true,
+        ...(entry.sourceModulePath ? { reExport: { sourcePath: entry.sourceModulePath, exportedName: entry.name } } : {}) });
     }
   }
 

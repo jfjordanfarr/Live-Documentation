@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/force-graph-observation.ts
-- Generated At: 2026-11-03T00:48:36.298Z
+- Generated At: 2026-11-08T18:31:08.008Z
 
 ## Authored
 ### Purpose
@@ -97,13 +97,21 @@ Whether a wire is a documented reference between two files, rather than containm
 A point on a reference wire where a hover reaches the wire and nothing else: the middle of the longest stroke on
 screen whose middle stands clear of every sphere, inside the canvas, and on the bare canvas rather than a name or a
 control, since a sphere or a label under the pointer takes the hover instead.
+
+#### `renderedBodyCarriers` {#symbol-renderedbodycarriers}
+- Type: function
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L228)
+- Parameters: `page`: `Page`
+
+##### `renderedBodyCarriers` — Summary
+Read skin vertices and interior marks from uploaded geometry, independently of transition capture/projection code.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `@playwright/test` - `Page` (type-only)
 - [`forceGraphBatches.SpatialDrawEntry`](../../packages/explorer/src/client/views/forceGraphBatches.ts.mdmd.md#symbol-spatialdrawentry) (type-only)
-- `three` - `Camera`, `InstancedMesh`, `Scene`, `Vector3`, `WebGLRenderer` (type-only)
+- `three` - `BufferGeometry`, `Camera`, `InstancedMesh`, `Mesh`, `Scene`, `Vector3`, `WebGLRenderer` (type-only)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

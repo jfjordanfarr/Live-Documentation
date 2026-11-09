@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/programs/typescript/rosetta/src/processor.ts
-- Generated At: 2026-10-02T20:20:09.217Z
+- Generated At: 2026-11-09T00:01:58.386Z
 
 ## Authored
 ### Purpose
@@ -19,8 +19,8 @@ Demonstrates multiple import patterns for heuristic testing; see [2026-01-14.1.m
 #### `run` {#symbol-run}
 - Type: function
 - Source: [source](../../../../../../../../tests/integration/programs/typescript/rosetta/src/processor.ts#L31)
-- Returns: `Models.Report`
-- Parameters: `records`: `Models.Record`[]; `config`: [`ProcessorConfig`](./types.ts.mdmd.md#symbol-processorconfig)
+- Returns: [`Models.Report`](./models.ts.mdmd.md#symbol-report)
+- Parameters: `records`: [`Models.Record`](./models.ts.mdmd.md#symbol-record)[]; `config`: [`ProcessorConfig`](./types.ts.mdmd.md#symbol-processorconfig)
 
 ##### `run` — Summary
 Processes a batch of records and generates a report.
@@ -38,7 +38,7 @@ Summary report of processed records
 #### `summarize` {#symbol-summarize}
 - Type: function
 - Source: [source](../../../../../../../../tests/integration/programs/typescript/rosetta/src/processor.ts#L57)
-- Parameters: `report`: `Models.Report`
+- Parameters: `report`: [`Models.Report`](./models.ts.mdmd.md#symbol-report)
 
 ##### `summarize` — Summary
 Creates a formatted summary string from a report.

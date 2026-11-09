@@ -14,7 +14,7 @@ import { shellPicture, type ShellPicture } from "../../packages/explorer/src/cli
 /**
  * Directory shells, experiment 2 of the shrink-wrap work behind the Group Wrappers choice (2026-11-05; the owner's
  * correction of [Turn 11 of the November 5 record](../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-11)):
- * with the choice Off, the default, no shell is drawn; with Skin, the files a pinned picture leaves out of the group it
+ * with the choice Off, no shell is drawn; with Skin, the files a pinned picture leaves out of the group it
  * shows in part stand as one body per directory at the Shell Depth, each wired to what its files reference; a click pops
  * a shell into its own files and its subdirectories' shells, and its directory's name wraps it again. The shells drawn
  * are read from the page's own buffers and the shells expected are computed from the bundle by the pure functions the
@@ -157,8 +157,9 @@ async function shownUnits(page: Page): Promise<Array<{ seed: string; id: string;
 const legendRow = (page: Page, label: RegExp) => page.locator("#spatial-legend .legend-row").filter({ hasText: label });
 const SHELL_ROW = /^Shell: N files of a directory; click to open it$/;
 
-test("off, the default, draws no shell: the pinned picture is its hops alone", async ({ page }) => {
+test("explicit Off draws no shell: the pinned picture is its hops alone", async ({ page }) => {
   await observeGraph(page);
+  await choose(page, "off");
   await page.goto(entry("/samples/estate/", ESTATE_PIN));
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
   expect(await page.locator("#tuning-force-group-wrappers").inputValue()).toBe("off");

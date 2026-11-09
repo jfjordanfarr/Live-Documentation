@@ -13,7 +13,7 @@ import { wrappedSeeds } from "../../packages/explorer/src/client/views/forceGrap
 /**
  * Group Wrappers, an experiment behind one Tuning choice (2026-11-05; the owner's proposal of November 4, [Turn 16 of the
  * November 3 record](../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-03.1.record.md#turn-16--november-4)): with the
- * choice Off, the default, the 3D Local Map draws no wrapper; with Skin, every disconnected group the picture shows only
+ * choice Off, the 3D Local Map draws no wrapper; with Skin, every disconnected group the picture shows only
  * by its seed, of two files or more, is drawn in a hull of its own files, a click on which pins the seed as a click on
  * the seed does, and releasing the pin wraps the group again. The wrappers are read from the mesh the page draws and the
  * groups expected are computed from the bundle by the same pure scope the page uses. On this repository's archipelago.
@@ -56,8 +56,9 @@ const legendRow = (page: Page, label: RegExp) => page.locator("#spatial-legend .
 const WRAPPED_ROW = /^Wrapped group: its files, not shown; click to open it$/;
 const RING_ROW = /^Ring: more connected, not shown; click to see it$/;
 
-test("off, the default, draws no wrapper, and the groups' seeds keep their rings", async ({ page }) => {
+test("explicit Off draws no wrapper, and the groups' seeds keep their rings", async ({ page }) => {
   await observeGraph(page);
+  await chooseWrappers(page, "off");
   await page.goto(entry());
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
   expect(await page.locator("#tuning-force-group-wrappers").inputValue()).toBe("off");
@@ -66,10 +67,9 @@ test("off, the default, draws no wrapper, and the groups' seeds keep their rings
   await expect(legendRow(page, WRAPPED_ROW)).toHaveCount(0);
 });
 
-/** The page started with Skin chosen, its wrappers built, and the groups it must wrap. */
+/** The page started with the default Skin, its wrappers built, and the groups it must wrap. */
 async function skinArchipelago(page: Page): Promise<{ wrapped: string[]; sizes: Map<string, number> }> {
   await observeGraph(page);
-  await chooseWrappers(page, "skin");
   await page.goto(entry());
   const groups = await expectedGroups(page);
   // The research of November 5 counted 42 groups of two files or more among this repository's 95.

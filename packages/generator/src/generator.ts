@@ -512,7 +512,8 @@ function composeGenerated(params: {
     sourceAbsolute,
     sourceRelativePath: params.sourceRelativePath,
     symbolIndex: params.symbolIndex,
-    liveDocsRootAbsolute: params.liveDocsRootAbsolute
+    liveDocsRootAbsolute: params.liveDocsRootAbsolute,
+    dependencies: params.analysis.dependencies
   });
 
   const dependencies = composeDependencies({

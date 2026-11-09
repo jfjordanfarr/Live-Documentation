@@ -538,8 +538,8 @@ describe("the reveal of a picture", () => {
 
   it("shows the tuning's hops around what was asked about, the archipelago when nothing in the picture was, and the whole when asked for as members", () => {
     const around = easeSpatialLayout(crowd, ring, tuning, "connections", { maxTicks: 400, reveal: { asked: new Set(["n5"]) } });
-    expect(around.nodes.map(file => file.id)).toEqual(["n3", "n4", "n5", "n6", "n7"]);
-    expect(around.links.length, "the wires among the spheres shown").toBe(4);
+    expect(around.nodes.map(file => file.id)).toEqual(["n4", "n5", "n6"]);
+    expect(around.links.length, "the wires among the spheres shown at the one-hop default").toBe(2);
     // The ring is one group: its seed alone, nothing grown (2026-11-02); every sphere has two neighbours, ties by id.
     const start = easeSpatialLayout(crowd, ring, tuning, "connections", { maxTicks: 400, reveal: { asked: new Set(["elsewhere"]) } });
     expect(start.nodes.map(file => file.id)).toEqual(["n0"]);

@@ -3,7 +3,6 @@ import { expect, test, type Page } from "@playwright/test";
 import { observeGraph, renderedLinks, renderedNodes } from "./force-graph-observation";
 import { loadGraph } from "./still-picture";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
-import { getDefaultTuning } from "../../packages/explorer/src/client/persistence/local-storage";
 import type { SpatialLayout } from "../../packages/explorer/src/client/types";
 import { spatialGraphOf } from "../../packages/explorer/src/client/views/forceGraphData";
 import { linkPulls } from "../../packages/explorer/src/client/views/forceGraphLayout";
@@ -17,14 +16,15 @@ import { spatialScope, startHops, startOf } from "../../packages/explorer/src/cl
  * Connections the archipelago of every group's seed ([Turn 3 of the November 2 record]
  * (../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-02.1.record.md#turn-3)). The spheres are read from the rendered scene and the expected picture is
  * computed from the bundle by the same pure scope the page uses, so that the test says what the picture must hold and
- * not merely that it holds something. On this repository's bundle; the counts are read from the sidebar's line.
+ * not merely that it holds something. These bare-file scope checks explicitly share Off and two hops;
+ * fresh Skin and one-hop arrivals are covered separately. On this repository's bundle; the counts are read from the sidebar's line.
  */
 test.use({ viewport: { width: 1280, height: 800 } });
 
 const FULL = 0.75, FRONTIER = 0.3;
 
 const entry = (extra: Partial<typeof DEFAULT_SNAPSHOT> = {}): string => `/?s=${compressSnapshot({
-  ...DEFAULT_SNAPSHOT, perspective: "3d", spatialLayout: "connections", filters: { showTests: true, showAssets: false }, ...extra
+  ...DEFAULT_SNAPSHOT, perspective: "3d", spatialLayout: "connections", layout: { forceGraph: { groupWrappers: "off", hops: 2 } }, filters: { showTests: true, showAssets: false }, ...extra
 })}`;
 
 async function settled(page: Page): Promise<void> {
@@ -32,7 +32,7 @@ async function settled(page: Page): Promise<void> {
 }
 
 /** The picture the page must show: the hops around the attention set, or around the start, over the bundle's own graph. */
-async function expected(page: Page, layout: SpatialLayout, attention: ReadonlySet<string>, hops = getDefaultTuning().forceGraph.hops) {
+async function expected(page: Page, layout: SpatialLayout, attention: ReadonlySet<string>, hops = 2) {
   const graph = await loadGraph(page, "/");
   const data = spatialGraphOf(graph, node => (node.archetype || "").toLowerCase() !== "asset", [], layout);
   const pulls = (link: { kind?: string }): boolean => linkPulls(link, layout);
@@ -132,10 +132,7 @@ test("a pin is asked about: its hops are the picture, the hops lever narrows it,
   expect(pinned.counts.shown).toBe(two.scope.hops.size);
 
   // One hop shown: the direct connections, as the frontier.
-  await page.addInitScript(() => {
-    window.localStorage.setItem("live-docs-explorer:ui:v2", JSON.stringify({ version: 2, tuning: { localMap: { searchStarts: 0 }, forceGraph: { hops: 1 } } }));
-  });
-  await page.goto(entry({ pinSet: { entries: [{ nodeId: pin, symbol: "*" }] } }));
+  await page.goto(entry({ pinSet: { entries: [{ nodeId: pin, symbol: "*" }] }, layout: { forceGraph: { groupWrappers: "off", hops: 1 } } }));
   await settled(page);
   const one = await expected(page, "connections", new Set([pin]), 1);
   const narrowed = await shown(page);
@@ -145,7 +142,6 @@ test("a pin is asked about: its hops are the picture, the hops lever narrows it,
   await expect(page.locator("#tuning-force-hops")).toHaveValue("1");
 
   // The structure layout, with nothing asked about, starts at the scan root: its children in full, their children dimmed.
-  await page.addInitScript(() => { window.localStorage.removeItem("live-docs-explorer:ui:v2"); });
   await page.goto(entry({ spatialLayout: "structure" }));
   await settled(page);
   const tree = await expected(page, "structure", new Set());
