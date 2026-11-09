@@ -1,0 +1,85 @@
+{
+  "viewport": "1440x960",
+  "clock": "normal",
+  "search": "normal defaults",
+  "assetSha256": "596fbc8e254e7c8205111ce9173ebdeb4232ee5f1ccba01c70d9259335779079",
+  "errors": [],
+  "readings": [
+    {
+      "name": "defaults",
+      "nodeId": "packages/explorer/src/client/persistence/local-storage.ts",
+      "url": "http://localhost:8900/?s=N4IgbiBcDMA0IBsqgGYHsBOBjApgcQwEMAHAC2RFLWIGcoBGeAcwzQFdiB1I44nDOpBA0A1gEsAdiAC%2B0%2BFKHFCWEYSY4aAehwAPYgkz9NNbJqwIxOCQBdNfAWJrWruTQayEEAWieY1OADprOnhiKABtUAUQJRV-LV19QwxjU3NLGzt%2BGkdnCVd3Tx9rP3UgkOEoEAAqGQBdaSA",
+      "screenshot": "integration-defaults-pinned.png",
+      "pins": [
+        {
+          "nodeId": "packages/explorer/src/client/persistence/local-storage.ts",
+          "symbol": "*"
+        }
+      ],
+      "status": {
+        "moving": "",
+        "search": "running"
+      },
+      "note": "Initial readable picture; ongoing background search is not awaited."
+    },
+    {
+      "name": "scene",
+      "nodeId": "packages/explorer/src/client/views/perspectiveBodies.ts",
+      "url": "http://localhost:8900/?s=N4IgbiBcDMA0IBsqgGYHsBOBjApgcQwEMAHAC2RFLWIGcoBGeAcwzQFdiB1I44nDOpBA0A1gEsAdiAC%2B0%2BFKHFCWEYSY4aAehwAPYgkz9NNbJqwIxOCQBdNYSwHctfAXyzWxYHACE0AE0saADprOnhiKABtUAUQJRU1DW09AwwjEywzCytbexwnTRcaNw8vXwCNELDhKBAAKhkAXWkgA",
+      "screenshot": "integration-scene-pinned.png",
+      "pins": [
+        {
+          "nodeId": "packages/explorer/src/client/views/perspectiveBodies.ts",
+          "symbol": "*"
+        }
+      ],
+      "status": {
+        "moving": "",
+        "search": "settled"
+      },
+      "note": "Initial readable picture; ongoing background search is not awaited."
+    },
+    {
+      "name": "types",
+      "nodeId": "packages/engine/src/live-docs/symbolExtraction.ts",
+      "url": "http://localhost:8900/?s=N4IgbiBcDMA0IBsqgGYHsBOBjApgcQwEMAHAC2RFLWIGcoBGeAcwzQFdiB1I44nDOpBA0A1gEsAdiAC%2B0%2BFKHFCWEYSY4aAehwSmknJprZNCMWBwBaACZosWmgE8AtgCM0CAKIAPAC5EsPmJoEgB0PnTwxFAA2qAKIEoqahrauvqGxqbm1rb2zm6evv6BwWERwlAgAFQyALrSQA",
+      "screenshot": "integration-types-pinned.png",
+      "pins": [
+        {
+          "nodeId": "packages/engine/src/live-docs/symbolExtraction.ts",
+          "symbol": "*"
+        }
+      ],
+      "status": {
+        "moving": "",
+        "search": "settled"
+      },
+      "note": "Initial readable picture; ongoing background search is not awaited."
+    },
+    {
+      "name": "search",
+      "nodeId": "packages/explorer/src/client/views/localView/network-simplex.ts",
+      "url": "http://localhost:8900/?s=N4IgbiBcDMA0IBsqgGYHsBOBjApgcQwEMAHAC2RFLWIGcoBGeAcwzQFdiB1I44nDOpBA0A1gEsAdiAC%2B0%2BFKHFCWEYSY4aAehwAPYgkz9NNbJqwIxOCQBdNYSwHctBrIQQA1R5ok5rDzCIAtDRiALb6ugB01nTwxFAA2qAKIEoqahraegYYRiZYZhZWtvY4Tpoubp5l3r7%2BGEEh4QhRMSDwgiAAVDIAutJAA",
+      "screenshot": "integration-search-pinned.png",
+      "pins": [
+        {
+          "nodeId": "packages/explorer/src/client/views/localView/network-simplex.ts",
+          "symbol": "*"
+        }
+      ],
+      "status": {
+        "moving": "",
+        "search": "settled"
+      },
+      "note": "Initial readable picture; ongoing background search is not awaited."
+    },
+    {
+      "name": "estate",
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwACOUBA0EkIHgeIW8LI6A4ZARIaAA",
+      "screenshot": "integration-estate-default.png",
+      "wrappers": "skin",
+      "hops": 1,
+      "busy": false
+    }
+  ]
+}

@@ -1,0 +1,184 @@
+{
+  "modes": [
+    {
+      "mode": "baseline",
+      "elapsedMs": 4070.0999999940395,
+      "draws": 26,
+      "fps": 6.388049433684203,
+      "drawn": {
+        "frame": 215,
+        "calls": 5,
+        "triangles": 38092,
+        "points": 0,
+        "lines": 0
+      },
+      "changedChannels": 0,
+      "maxDifference": 0
+    },
+    {
+      "mode": "without-nodes",
+      "elapsedMs": 4037.300000011921,
+      "draws": 29,
+      "fps": 7.183018353829136,
+      "drawn": {
+        "frame": 249,
+        "calls": 4,
+        "triangles": 23572,
+        "points": 0,
+        "lines": 0
+      },
+      "changedChannels": 29600,
+      "maxDifference": 140
+    },
+    {
+      "mode": "restored-nodes",
+      "elapsedMs": 4141.799999982119,
+      "draws": 25,
+      "fps": 6.036022985201587,
+      "drawn": {
+        "frame": 279,
+        "calls": 5,
+        "triangles": 38092,
+        "points": 0,
+        "lines": 0
+      },
+      "changedChannels": 0,
+      "maxDifference": 0
+    },
+    {
+      "mode": "without-balloons",
+      "elapsedMs": 4067.2999999821186,
+      "draws": 37,
+      "fps": 9.096943918610052,
+      "drawn": {
+        "frame": 321,
+        "calls": 4,
+        "triangles": 25132,
+        "points": 0,
+        "lines": 0
+      },
+      "changedChannels": 1004485,
+      "maxDifference": 86
+    },
+    {
+      "mode": "restored-balloons",
+      "elapsedMs": 4143.800000011921,
+      "draws": 26,
+      "fps": 6.274434094291521,
+      "drawn": {
+        "frame": 352,
+        "calls": 5,
+        "triangles": 38092,
+        "points": 0,
+        "lines": 0
+      },
+      "changedChannels": 0,
+      "maxDifference": 0
+    },
+    {
+      "mode": "without-files",
+      "elapsedMs": 4118.5,
+      "draws": 37,
+      "fps": 8.98385334466432,
+      "drawn": {
+        "frame": 394,
+        "calls": 4,
+        "triangles": 36434,
+        "points": 0,
+        "lines": 0
+      },
+      "changedChannels": 425037,
+      "maxDifference": 202
+    },
+    {
+      "mode": "restored-files",
+      "elapsedMs": 4015.300000011921,
+      "draws": 24,
+      "fps": 5.977137449238848,
+      "drawn": {
+        "frame": 423,
+        "calls": 5,
+        "triangles": 38092,
+        "points": 0,
+        "lines": 0
+      },
+      "changedChannels": 0,
+      "maxDifference": 0
+    }
+  ],
+  "errors": [],
+  "motionPaused": true,
+  "diagnosticOnly": true,
+  "pose": {
+    "revision": 250,
+    "still": false,
+    "ready": true,
+    "packing": 0,
+    "revealed": 129,
+    "total": 129,
+    "camera": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      -29.592134837575085,
+      -40.37329865642799,
+      459.57272004328655,
+      1
+    ],
+    "projection": [
+      1.5783907658313732,
+      0,
+      0,
+      0,
+      0,
+      2.1445069205095586,
+      0,
+      0,
+      0,
+      0,
+      -1.0000016000012801,
+      -1,
+      0,
+      0,
+      -0.20000016000012802,
+      0
+    ],
+    "canvas": {
+      "width": 1019,
+      "height": 750,
+      "dpr": 1
+    },
+    "counts": [
+      {
+        "name": "Spatial nodes",
+        "count": 55,
+        "visible": true,
+        "vertices": 169,
+        "material": "MeshLambertMaterial"
+      },
+      {
+        "name": "Spatial shell balloons",
+        "count": 18,
+        "visible": true,
+        "vertices": 425,
+        "material": "ShaderMaterial"
+      },
+      {
+        "name": "Spatial shell files",
+        "count": 829,
+        "visible": true,
+        "vertices": 4,
+        "material": "RawShaderMaterial"
+      }
+    ]
+  }
+}

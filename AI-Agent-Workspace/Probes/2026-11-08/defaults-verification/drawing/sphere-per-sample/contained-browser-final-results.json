@@ -1,0 +1,1492 @@
+[
+  {
+    "title": "per-sample contained files match independent native rendering through clipping, lens shifts and overlap",
+    "name": "native-rendering-comparison",
+    "body": {
+      "material": "RawShaderMaterial",
+      "vertices": 4,
+      "samples": 4,
+      "results": [
+        {
+          "name": "close",
+          "visible": true,
+          "overlap": false,
+          "covered": 85019,
+          "overlapInterior": 0,
+          "all": {
+            "pixels": 764250,
+            "changed": 104,
+            "total": 12952,
+            "max": 55
+          },
+          "edge": {
+            "pixels": 6388,
+            "changed": 104,
+            "total": 4371,
+            "max": 55
+          },
+          "interior": {
+            "pixels": 81849,
+            "changed": 0,
+            "total": 8581,
+            "max": 1
+          },
+          "outside": {
+            "pixels": 676013,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          }
+        },
+        {
+          "name": "shifted off axis",
+          "visible": true,
+          "overlap": false,
+          "covered": 92068,
+          "overlapInterior": 0,
+          "all": {
+            "pixels": 764250,
+            "changed": 69,
+            "total": 11343,
+            "max": 89
+          },
+          "edge": {
+            "pixels": 6657,
+            "changed": 69,
+            "total": 3248,
+            "max": 89
+          },
+          "interior": {
+            "pixels": 88764,
+            "changed": 0,
+            "total": 8095,
+            "max": 1
+          },
+          "outside": {
+            "pixels": 668829,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          }
+        },
+        {
+          "name": "near-cut annulus",
+          "visible": true,
+          "overlap": false,
+          "covered": 167546,
+          "overlapInterior": 0,
+          "all": {
+            "pixels": 764250,
+            "changed": 607,
+            "total": 34846,
+            "max": 83
+          },
+          "edge": {
+            "pixels": 17513,
+            "changed": 607,
+            "total": 25326,
+            "max": 83
+          },
+          "interior": {
+            "pixels": 158789,
+            "changed": 0,
+            "total": 9520,
+            "max": 1
+          },
+          "outside": {
+            "pixels": 587948,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          }
+        },
+        {
+          "name": "far-cut cap",
+          "visible": true,
+          "overlap": false,
+          "covered": 151501,
+          "overlapInterior": 0,
+          "all": {
+            "pixels": 764250,
+            "changed": 337,
+            "total": 20299,
+            "max": 88
+          },
+          "edge": {
+            "pixels": 8533,
+            "changed": 337,
+            "total": 13638,
+            "max": 88
+          },
+          "interior": {
+            "pixels": 147259,
+            "changed": 0,
+            "total": 6661,
+            "max": 1
+          },
+          "outside": {
+            "pixels": 608458,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          }
+        },
+        {
+          "name": "eye-plane crossing outside eye",
+          "visible": true,
+          "overlap": false,
+          "covered": 9786,
+          "overlapInterior": 0,
+          "all": {
+            "pixels": 764250,
+            "changed": 173,
+            "total": 6638,
+            "max": 78
+          },
+          "edge": {
+            "pixels": 2524,
+            "changed": 173,
+            "total": 6488,
+            "max": 78
+          },
+          "interior": {
+            "pixels": 8747,
+            "changed": 0,
+            "total": 150,
+            "max": 1
+          },
+          "outside": {
+            "pixels": 752979,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          }
+        },
+        {
+          "name": "eye-plane crossing wholly off axis",
+          "visible": false,
+          "overlap": false,
+          "covered": 0,
+          "overlapInterior": 0,
+          "all": {
+            "pixels": 764250,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "edge": {
+            "pixels": 0,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "interior": {
+            "pixels": 0,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "outside": {
+            "pixels": 764250,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          }
+        },
+        {
+          "name": "behind eye",
+          "visible": false,
+          "overlap": false,
+          "covered": 0,
+          "overlapInterior": 0,
+          "all": {
+            "pixels": 764250,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "edge": {
+            "pixels": 0,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "interior": {
+            "pixels": 0,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "outside": {
+            "pixels": 764250,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          }
+        },
+        {
+          "name": "eye inside",
+          "visible": false,
+          "overlap": false,
+          "covered": 0,
+          "overlapInterior": 0,
+          "all": {
+            "pixels": 764250,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "edge": {
+            "pixels": 0,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "interior": {
+            "pixels": 0,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "outside": {
+            "pixels": 764250,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          }
+        },
+        {
+          "name": "front completely clipped",
+          "visible": false,
+          "overlap": false,
+          "covered": 0,
+          "overlapInterior": 0,
+          "all": {
+            "pixels": 764250,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "edge": {
+            "pixels": 0,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "interior": {
+            "pixels": 0,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "outside": {
+            "pixels": 764250,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          }
+        },
+        {
+          "name": "beyond far plane",
+          "visible": false,
+          "overlap": false,
+          "covered": 0,
+          "overlapInterior": 0,
+          "all": {
+            "pixels": 764250,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "edge": {
+            "pixels": 0,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "interior": {
+            "pixels": 0,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "outside": {
+            "pixels": 764250,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          }
+        },
+        {
+          "name": "before near plane",
+          "visible": false,
+          "overlap": false,
+          "covered": 0,
+          "overlapInterior": 0,
+          "all": {
+            "pixels": 764250,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "edge": {
+            "pixels": 0,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "interior": {
+            "pixels": 0,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "outside": {
+            "pixels": 764250,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          }
+        },
+        {
+          "name": "interleaved translucent overlap under skin",
+          "visible": true,
+          "overlap": true,
+          "covered": 123630,
+          "overlapInterior": 96708,
+          "all": {
+            "pixels": 764250,
+            "changed": 201,
+            "total": 16263,
+            "max": 64
+          },
+          "edge": {
+            "pixels": 24163,
+            "changed": 201,
+            "total": 6162,
+            "max": 64
+          },
+          "interior": {
+            "pixels": 103337,
+            "changed": 0,
+            "total": 10101,
+            "max": 3
+          },
+          "outside": {
+            "pixels": 636750,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          }
+        },
+        {
+          "name": "side-plane 0 intersection",
+          "visible": true,
+          "overlap": false,
+          "covered": 3568,
+          "overlapInterior": 0,
+          "all": {
+            "pixels": 764250,
+            "changed": 28,
+            "total": 1268,
+            "max": 41
+          },
+          "edge": {
+            "pixels": 1230,
+            "changed": 28,
+            "total": 1068,
+            "max": 41
+          },
+          "interior": {
+            "pixels": 3052,
+            "changed": 0,
+            "total": 200,
+            "max": 1
+          },
+          "outside": {
+            "pixels": 759968,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          }
+        },
+        {
+          "name": "side-plane 1 intersection",
+          "visible": true,
+          "overlap": false,
+          "covered": 3568,
+          "overlapInterior": 0,
+          "all": {
+            "pixels": 764250,
+            "changed": 27,
+            "total": 1240,
+            "max": 40
+          },
+          "edge": {
+            "pixels": 1216,
+            "changed": 27,
+            "total": 1029,
+            "max": 40
+          },
+          "interior": {
+            "pixels": 2891,
+            "changed": 0,
+            "total": 211,
+            "max": 1
+          },
+          "outside": {
+            "pixels": 760143,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          }
+        },
+        {
+          "name": "side-plane 2 intersection",
+          "visible": true,
+          "overlap": false,
+          "covered": 2540,
+          "overlapInterior": 0,
+          "all": {
+            "pixels": 764250,
+            "changed": 9,
+            "total": 717,
+            "max": 89
+          },
+          "edge": {
+            "pixels": 1039,
+            "changed": 9,
+            "total": 544,
+            "max": 89
+          },
+          "interior": {
+            "pixels": 1963,
+            "changed": 0,
+            "total": 173,
+            "max": 1
+          },
+          "outside": {
+            "pixels": 761248,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          }
+        },
+        {
+          "name": "side-plane 3 intersection",
+          "visible": true,
+          "overlap": false,
+          "covered": 2540,
+          "overlapInterior": 0,
+          "all": {
+            "pixels": 764250,
+            "changed": 10,
+            "total": 359,
+            "max": 70
+          },
+          "edge": {
+            "pixels": 1054,
+            "changed": 10,
+            "total": 359,
+            "max": 70
+          },
+          "interior": {
+            "pixels": 2102,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "outside": {
+            "pixels": 761094,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "title": "per-sample clipped contained marks keep their real hole and rim while travelling in both directions",
+    "name": "clipped-gpu-source",
+    "body": {
+      "id": "Portal/Models/PaymentRequestModel.cs",
+      "seed": "directory:Portal/Models",
+      "sidesInside": true,
+      "visibleSkinBottom": 215,
+      "geometricSkinBottom": 215,
+      "holeOffsetFromProjectedCenter": {
+        "x": -0.3093226076975384,
+        "y": -1.8727781378355814
+      },
+      "hole": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "holePoint": {
+        "x": 703.5,
+        "y": 220.5
+      },
+      "rimPoints": [
+        {
+          "x": 710.5,
+          "y": 220.5
+        },
+        {
+          "x": 700.5,
+          "y": 215.5
+        },
+        {
+          "x": 699.5,
+          "y": 226.5
+        }
+      ],
+      "enclosed": true,
+      "color": [
+        0,
+        0.28314873576164246,
+        1
+      ],
+      "body": {
+        "x": 701.2361509909051,
+        "labelY": 275.5
+      },
+      "near": 509.02976295755184,
+      "material": "RawShaderMaterial"
+    }
+  },
+  {
+    "title": "per-sample clipped contained marks keep their real hole and rim while travelling in both directions",
+    "name": "skin-anchor-difference",
+    "body": {
+      "sourceAnchor": {
+        "x": 701.236,
+        "y": 276.03
+      },
+      "geometricRasterAnchor": {
+        "x": 701.2361509909051,
+        "labelY": 275.5
+      },
+      "dx": -0.00015099090512649127,
+      "dy": 0.5299999999999727
+    }
+  },
+  {
+    "title": "per-sample clipped contained marks keep their real hole and rim while travelling in both directions",
+    "name": "carried-mark-back",
+    "body": {
+      "probes": {
+        "id": "Portal/Models/PaymentRequestModel.cs",
+        "seed": "directory:Portal/Models",
+        "sidesInside": true,
+        "visibleSkinBottom": 215,
+        "geometricSkinBottom": 215,
+        "holeOffsetFromProjectedCenter": {
+          "x": -0.3093226076975384,
+          "y": -1.8727781378355814
+        },
+        "hole": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "holePoint": {
+          "x": 703.5,
+          "y": 220.5
+        },
+        "rimPoints": [
+          {
+            "x": 710.5,
+            "y": 220.5
+          },
+          {
+            "x": 700.5,
+            "y": 215.5
+          },
+          {
+            "x": 699.5,
+            "y": 226.5
+          }
+        ],
+        "enclosed": true,
+        "color": [
+          0,
+          0.28314873576164246,
+          1
+        ],
+        "body": {
+          "x": 701.2361509909051,
+          "labelY": 275.5
+        },
+        "near": 509.02976295755184,
+        "material": "RawShaderMaterial"
+      },
+      "painted": {
+        "shift": {
+          "x": 65.67484900909494,
+          "y": -26.80000000000001
+        },
+        "mapped": {
+          "x": 508.17484900909494,
+          "y": 143.7
+        },
+        "selectedPixel": {
+          "x": 508,
+          "y": 143
+        },
+        "selectedCenter": {
+          "x": 508.5,
+          "y": 143.5
+        },
+        "holeFilled": false,
+        "rimDrawn": [
+          true,
+          true,
+          true
+        ],
+        "opacity": 0.335624
+      }
+    }
+  },
+  {
+    "title": "per-sample clipped contained marks keep their real hole and rim while travelling in both directions",
+    "name": "carried-mark-out",
+    "body": {
+      "probes": {
+        "id": "Portal/Models/PaymentRequestModel.cs",
+        "seed": "directory:Portal/Models",
+        "sidesInside": true,
+        "visibleSkinBottom": 215,
+        "geometricSkinBottom": 215,
+        "holeOffsetFromProjectedCenter": {
+          "x": -0.3093226076975384,
+          "y": -1.8727781378355814
+        },
+        "hole": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "holePoint": {
+          "x": 703.5,
+          "y": 220.5
+        },
+        "rimPoints": [
+          {
+            "x": 710.5,
+            "y": 220.5
+          },
+          {
+            "x": 700.5,
+            "y": 215.5
+          },
+          {
+            "x": 699.5,
+            "y": 226.5
+          }
+        ],
+        "enclosed": true,
+        "color": [
+          0,
+          0.28314873576164246,
+          1
+        ],
+        "body": {
+          "x": 701.2361509909051,
+          "labelY": 275.5
+        },
+        "near": 509.02976295755184,
+        "material": "RawShaderMaterial"
+      },
+      "painted": {
+        "shift": {
+          "x": 346.2388490090948,
+          "y": -9.104000000000042
+        },
+        "mapped": {
+          "x": 788.7388490090948,
+          "y": 161.39599999999996
+        },
+        "selectedPixel": {
+          "x": 788,
+          "y": 161
+        },
+        "selectedCenter": {
+          "x": 788.5,
+          "y": 161.5
+        },
+        "holeFilled": false,
+        "rimDrawn": [
+          true,
+          true,
+          true
+        ],
+        "opacity": 0.97427
+      }
+    }
+  },
+  {
+    "title": "native compatibility contained files match independent native rendering through clipping, lens shifts and overlap",
+    "name": "native-rendering-comparison",
+    "body": {
+      "material": "MeshLambertMaterial",
+      "vertices": 169,
+      "samples": 4,
+      "results": [
+        {
+          "name": "close",
+          "visible": true,
+          "overlap": false,
+          "covered": 82172,
+          "overlapInterior": 0,
+          "all": {
+            "pixels": 764250,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "edge": {
+            "pixels": 6314,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "interior": {
+            "pixels": 79041,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "outside": {
+            "pixels": 678895,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          }
+        },
+        {
+          "name": "shifted off axis",
+          "visible": true,
+          "overlap": false,
+          "covered": 90126,
+          "overlapInterior": 0,
+          "all": {
+            "pixels": 764250,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "edge": {
+            "pixels": 6615,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "interior": {
+            "pixels": 86846,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "outside": {
+            "pixels": 670789,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          }
+        },
+        {
+          "name": "near-cut annulus",
+          "visible": true,
+          "overlap": false,
+          "covered": 189658,
+          "overlapInterior": 0,
+          "all": {
+            "pixels": 764250,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "edge": {
+            "pixels": 16743,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "interior": {
+            "pixels": 181279,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "outside": {
+            "pixels": 566228,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          }
+        },
+        {
+          "name": "far-cut cap",
+          "visible": true,
+          "overlap": false,
+          "covered": 134289,
+          "overlapInterior": 0,
+          "all": {
+            "pixels": 764250,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "edge": {
+            "pixels": 8197,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "interior": {
+            "pixels": 130220,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "outside": {
+            "pixels": 625833,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          }
+        },
+        {
+          "name": "eye-plane crossing outside eye",
+          "visible": true,
+          "overlap": false,
+          "covered": 7007,
+          "overlapInterior": 0,
+          "all": {
+            "pixels": 764250,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "edge": {
+            "pixels": 2397,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "interior": {
+            "pixels": 6023,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "outside": {
+            "pixels": 755830,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          }
+        },
+        {
+          "name": "eye-plane crossing wholly off axis",
+          "visible": false,
+          "overlap": false,
+          "covered": 0,
+          "overlapInterior": 0,
+          "all": {
+            "pixels": 764250,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "edge": {
+            "pixels": 0,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "interior": {
+            "pixels": 0,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "outside": {
+            "pixels": 764250,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          }
+        },
+        {
+          "name": "behind eye",
+          "visible": false,
+          "overlap": false,
+          "covered": 0,
+          "overlapInterior": 0,
+          "all": {
+            "pixels": 764250,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "edge": {
+            "pixels": 0,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "interior": {
+            "pixels": 0,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "outside": {
+            "pixels": 764250,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          }
+        },
+        {
+          "name": "eye inside",
+          "visible": false,
+          "overlap": false,
+          "covered": 0,
+          "overlapInterior": 0,
+          "all": {
+            "pixels": 764250,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "edge": {
+            "pixels": 0,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "interior": {
+            "pixels": 0,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "outside": {
+            "pixels": 764250,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          }
+        },
+        {
+          "name": "front completely clipped",
+          "visible": false,
+          "overlap": false,
+          "covered": 0,
+          "overlapInterior": 0,
+          "all": {
+            "pixels": 764250,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "edge": {
+            "pixels": 0,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "interior": {
+            "pixels": 0,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "outside": {
+            "pixels": 764250,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          }
+        },
+        {
+          "name": "beyond far plane",
+          "visible": false,
+          "overlap": false,
+          "covered": 0,
+          "overlapInterior": 0,
+          "all": {
+            "pixels": 764250,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "edge": {
+            "pixels": 0,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "interior": {
+            "pixels": 0,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "outside": {
+            "pixels": 764250,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          }
+        },
+        {
+          "name": "before near plane",
+          "visible": false,
+          "overlap": false,
+          "covered": 0,
+          "overlapInterior": 0,
+          "all": {
+            "pixels": 764250,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "edge": {
+            "pixels": 0,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "interior": {
+            "pixels": 0,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "outside": {
+            "pixels": 764250,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          }
+        },
+        {
+          "name": "interleaved translucent overlap under skin",
+          "visible": true,
+          "overlap": true,
+          "covered": 119774,
+          "overlapInterior": 93525,
+          "all": {
+            "pixels": 764250,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "edge": {
+            "pixels": 23814,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "interior": {
+            "pixels": 99763,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "outside": {
+            "pixels": 640673,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          }
+        },
+        {
+          "name": "side-plane 0 intersection",
+          "visible": true,
+          "overlap": false,
+          "covered": 3247,
+          "overlapInterior": 0,
+          "all": {
+            "pixels": 764250,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "edge": {
+            "pixels": 1181,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "interior": {
+            "pixels": 2753,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "outside": {
+            "pixels": 760316,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          }
+        },
+        {
+          "name": "side-plane 1 intersection",
+          "visible": true,
+          "overlap": false,
+          "covered": 3247,
+          "overlapInterior": 0,
+          "all": {
+            "pixels": 764250,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "edge": {
+            "pixels": 1167,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "interior": {
+            "pixels": 2601,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "outside": {
+            "pixels": 760482,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          }
+        },
+        {
+          "name": "side-plane 2 intersection",
+          "visible": true,
+          "overlap": false,
+          "covered": 2234,
+          "overlapInterior": 0,
+          "all": {
+            "pixels": 764250,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "edge": {
+            "pixels": 994,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "interior": {
+            "pixels": 1685,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "outside": {
+            "pixels": 761571,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          }
+        },
+        {
+          "name": "side-plane 3 intersection",
+          "visible": true,
+          "overlap": false,
+          "covered": 2234,
+          "overlapInterior": 0,
+          "all": {
+            "pixels": 764250,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "edge": {
+            "pixels": 1010,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "interior": {
+            "pixels": 1818,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          },
+          "outside": {
+            "pixels": 761422,
+            "changed": 0,
+            "total": 0,
+            "max": 0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "title": "native compatibility clipped contained marks keep their real hole and rim while travelling in both directions",
+    "name": "clipped-gpu-source",
+    "body": {
+      "id": "Portal/Models/PaymentRequestModel.cs",
+      "seed": "directory:Portal/Models",
+      "sidesInside": true,
+      "visibleSkinBottom": 215,
+      "geometricSkinBottom": 215,
+      "holeOffsetFromProjectedCenter": {
+        "x": -0.3093226076975384,
+        "y": -1.8727781378355814
+      },
+      "hole": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "holePoint": {
+        "x": 703.5,
+        "y": 220.5
+      },
+      "rimPoints": [
+        {
+          "x": 710.5,
+          "y": 220.5
+        },
+        {
+          "x": 700.5,
+          "y": 215.5
+        },
+        {
+          "x": 700.5,
+          "y": 226.5
+        }
+      ],
+      "enclosed": true,
+      "color": [
+        0,
+        0.28314873576164246,
+        1
+      ],
+      "body": {
+        "x": 701.2361509909051,
+        "labelY": 275.5
+      },
+      "near": 509.02976295755184,
+      "material": "MeshLambertMaterial"
+    }
+  },
+  {
+    "title": "native compatibility clipped contained marks keep their real hole and rim while travelling in both directions",
+    "name": "skin-anchor-difference",
+    "body": {
+      "sourceAnchor": {
+        "x": 701.236,
+        "y": 276.03
+      },
+      "geometricRasterAnchor": {
+        "x": 701.2361509909051,
+        "labelY": 275.5
+      },
+      "dx": -0.00015099090512649127,
+      "dy": 0.5299999999999727
+    }
+  },
+  {
+    "title": "native compatibility clipped contained marks keep their real hole and rim while travelling in both directions",
+    "name": "carried-mark-back",
+    "body": {
+      "probes": {
+        "id": "Portal/Models/PaymentRequestModel.cs",
+        "seed": "directory:Portal/Models",
+        "sidesInside": true,
+        "visibleSkinBottom": 215,
+        "geometricSkinBottom": 215,
+        "holeOffsetFromProjectedCenter": {
+          "x": -0.3093226076975384,
+          "y": -1.8727781378355814
+        },
+        "hole": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "holePoint": {
+          "x": 703.5,
+          "y": 220.5
+        },
+        "rimPoints": [
+          {
+            "x": 710.5,
+            "y": 220.5
+          },
+          {
+            "x": 700.5,
+            "y": 215.5
+          },
+          {
+            "x": 700.5,
+            "y": 226.5
+          }
+        ],
+        "enclosed": true,
+        "color": [
+          0,
+          0.28314873576164246,
+          1
+        ],
+        "body": {
+          "x": 701.2361509909051,
+          "labelY": 275.5
+        },
+        "near": 509.02976295755184,
+        "material": "MeshLambertMaterial"
+      },
+      "painted": {
+        "shift": {
+          "x": 69.32984900909491,
+          "y": -28.320999999999998
+        },
+        "mapped": {
+          "x": 511.8298490090949,
+          "y": 142.179
+        },
+        "selectedPixel": {
+          "x": 511,
+          "y": 142
+        },
+        "selectedCenter": {
+          "x": 511.5,
+          "y": 142.5
+        },
+        "holeFilled": false,
+        "rimDrawn": [
+          true,
+          true,
+          true
+        ],
+        "opacity": 0.347891
+      }
+    }
+  },
+  {
+    "title": "native compatibility clipped contained marks keep their real hole and rim while travelling in both directions",
+    "name": "carried-mark-out",
+    "body": {
+      "probes": {
+        "id": "Portal/Models/PaymentRequestModel.cs",
+        "seed": "directory:Portal/Models",
+        "sidesInside": true,
+        "visibleSkinBottom": 215,
+        "geometricSkinBottom": 215,
+        "holeOffsetFromProjectedCenter": {
+          "x": -0.3093226076975384,
+          "y": -1.8727781378355814
+        },
+        "hole": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "holePoint": {
+          "x": 703.5,
+          "y": 220.5
+        },
+        "rimPoints": [
+          {
+            "x": 710.5,
+            "y": 220.5
+          },
+          {
+            "x": 700.5,
+            "y": 215.5
+          },
+          {
+            "x": 700.5,
+            "y": 226.5
+          }
+        ],
+        "enclosed": true,
+        "color": [
+          0,
+          0.28314873576164246,
+          1
+        ],
+        "body": {
+          "x": 701.2361509909051,
+          "labelY": 275.5
+        },
+        "near": 509.02976295755184,
+        "material": "MeshLambertMaterial"
+      },
+      "painted": {
+        "shift": {
+          "x": 347.08284900909484,
+          "y": -9.127999999999986
+        },
+        "mapped": {
+          "x": 789.5828490090948,
+          "y": 161.372
+        },
+        "selectedPixel": {
+          "x": 789,
+          "y": 161
+        },
+        "selectedCenter": {
+          "x": 789.5,
+          "y": 161.5
+        },
+        "holeFilled": false,
+        "rimDrawn": [
+          true,
+          true,
+          true
+        ],
+        "opacity": 0.977158
+      }
+    }
+  }
+]

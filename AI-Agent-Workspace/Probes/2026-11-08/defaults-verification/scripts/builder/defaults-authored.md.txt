@@ -1,0 +1,12 @@
+# tests/e2e/force-graph-defaults.spec.ts
+
+## Authored
+### Purpose
+
+Protects the Explorer's fresh Skin and one-hop defaults in both 3D layouts, while preserving sparse saved tuning, explicit Off/two-hop preferences and shared-link precedence.
+
+### Notes
+
+Current browser regressions, introduced November 8, 2026 to deliver the owner's [November 7 choice, Turn 2](../../../../AI-Agent-Workspace/ChatHistory/2026/11/Summarized/2026-11-07.1.SUMMARIZED.md#turn-2). The suite begins without the usual saved search preference. Fresh arrivals check the actual skin mesh and contained file instances alongside the controls; saved values are seeded once so reload reads the application's subsequent write. Shared links override opposing saved choices in both directions, and a link without layout settings retains explicit saved Off and two hops. Unit tests cover malformed values and sparse merging independently.
+
+## Generated

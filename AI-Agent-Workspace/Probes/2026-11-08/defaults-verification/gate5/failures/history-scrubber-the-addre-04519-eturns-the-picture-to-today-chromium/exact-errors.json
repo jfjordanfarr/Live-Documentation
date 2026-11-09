@@ -1,0 +1,24 @@
+[
+  {
+    "type": "error",
+    "message": "Test timeout of 30000ms exceeded.",
+    "stack": []
+  },
+  {
+    "type": "error",
+    "message": "Error: expect(locator).toHaveAttribute(expected) failed\n\nLocator:  locator('#graph-svg')\nExpected: \"false\"\nReceived: \"true\"\n\nCall log:\n  - Expect \"toHaveAttribute\" with timeout 60000ms\n  - waiting for locator('#graph-svg')\n    24 \u00d7 locator resolved to <div id=\"graph-svg\" aria-busy=\"true\" data-history-step=\"2\" data-hovered-node=\"false\" data-directory-scope=\"[\"\"]\" data-spatial-layout=\"structure\" data-layout-settings=\"{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"gravity\":0.025,\"componentSeparation\":0.2,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":0,\"tether\":0.02,\"citedByPull\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.9,\"nameAt\":18,\"hops\":4,\"revealFrames\":60,\"she\u2026>\u2026</div>\n       - unexpected value \"true\"\n",
+    "stack": [
+      {
+        "file": "/tmp/live-docs-20261108-defaults/tests/e2e/history-scrubber.spec.ts",
+        "line": 64,
+        "column": 44,
+        "function": "settled"
+      },
+      {
+        "file": "/tmp/live-docs-20261108-defaults/tests/e2e/history-scrubber.spec.ts",
+        "line": 544,
+        "column": 3
+      }
+    ]
+  }
+]

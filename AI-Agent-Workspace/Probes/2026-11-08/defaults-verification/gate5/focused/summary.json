@@ -1,0 +1,100 @@
+{
+  "capture": {
+    "testSeconds": 23.8,
+    "cards": 102,
+    "rows": 711,
+    "queueMs": 11,
+    "callbackMs": 11745.59999999404,
+    "returnTransportAndSerializationMs": 2593.400146484375,
+    "setupToPretextMs": 4658,
+    "titleRoomsMs": 5.5,
+    "naturalWidthsMs": 62.19999998807907,
+    "cardsMs": 11637.40000000596,
+    "labelsMs": 40.30000001192093,
+    "perCardTotals": {
+      "total": 11632.200000047684,
+      "rowsMs": 4933.300000041723,
+      "probesMs": 3200.9999998807907
+    }
+  },
+  "visibility": {
+    "hostEvents": [
+      {
+        "phase": "wait-issued",
+        "epoch": 1794187231776,
+        "requestedDeadline": 1794187276776
+      },
+      {
+        "phase": "wait-ended",
+        "epoch": 1794187276835
+      }
+    ],
+    "resume": {
+      "phase": "dispatched-visible",
+      "epoch": 1794187231773.4001,
+      "visibility": "visible",
+      "camera": "",
+      "moving": "",
+      "search": "running",
+      "tried": "1",
+      "next": "2",
+      "adopted": "2",
+      "alignmentTried": "1",
+      "alignmentAdopted": "1",
+      "shown": "2521871",
+      "best": "2521871",
+      "cards": 91
+    },
+    "lastAtOrBeforeRequestedDeadline": {
+      "phase": "mutation",
+      "epoch": 1794187276772.1,
+      "visibility": "visible",
+      "camera": "",
+      "moving": "",
+      "search": "running",
+      "tried": "80",
+      "next": "81",
+      "adopted": "29",
+      "alignmentTried": "99",
+      "alignmentAdopted": "25",
+      "shown": "2490598",
+      "best": "2490598",
+      "cards": 91
+    },
+    "deadlineCallbacks": [
+      {
+        "phase": "deadline-callback-actual-time",
+        "epoch": 1794187276836.9001,
+        "visibility": "visible",
+        "camera": "",
+        "moving": "",
+        "search": "running",
+        "tried": "80",
+        "next": "81",
+        "adopted": "29",
+        "alignmentTried": "100",
+        "alignmentAdopted": "25",
+        "shown": "2490598",
+        "best": "2490598",
+        "cards": 91
+      }
+    ],
+    "last": {
+      "phase": "mutation",
+      "epoch": 1794187277379.3,
+      "visibility": "visible",
+      "camera": "",
+      "moving": "",
+      "search": "capped",
+      "tried": "80",
+      "next": "81",
+      "adopted": "29",
+      "alignmentTried": "109",
+      "alignmentAdopted": "25",
+      "shown": "2490598",
+      "best": "2490598",
+      "cards": 91
+    },
+    "lastMillisecondsAfterResume": 45605.89990234375
+  }
+}

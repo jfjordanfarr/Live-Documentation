@@ -1,0 +1,819 @@
+{
+  "beforeFiles": 950,
+  "afterFiles": 954,
+  "beforeEdges": 6943,
+  "afterEdges": 6971,
+  "addedFiles": [
+    "packages/explorer/src/client/views/containedSphere.test.ts",
+    "packages/explorer/src/client/views/containedSphere.ts",
+    "tests/e2e/contained-sphere-reference.ts",
+    "tests/e2e/force-graph-contained.spec.ts"
+  ],
+  "removedFiles": [],
+  "removedEdges": [
+    [
+      "packages/explorer/src/client/history/snapshot.ts",
+      "parameter",
+      "Shape",
+      "symbol-relateddoclinksof",
+      "shape",
+      "packages/explorer/src/client/views/worldMap/layout.ts",
+      "symbol-shape"
+    ],
+    [
+      "packages/explorer/src/client/history/snapshot.ts",
+      "parameter",
+      "Shape",
+      "symbol-snapshotgraphof",
+      "shape",
+      "packages/explorer/src/client/views/worldMap/layout.ts",
+      "symbol-shape"
+    ],
+    [
+      "packages/explorer/src/client/history/step-summary.ts",
+      "parameter",
+      "Shape",
+      "symbol-stepsummary-function",
+      "shape",
+      "packages/explorer/src/client/views/worldMap/layout.ts",
+      "symbol-shape"
+    ],
+    [
+      "packages/explorer/src/client/search/graph-search.ts",
+      "parameter",
+      "Reach",
+      "symbol-destinationscope",
+      "reach",
+      "packages/explorer/src/client/panels/sources-facts.ts",
+      "symbol-reach"
+    ],
+    [
+      "packages/explorer/src/client/search/graph-search.ts",
+      "parameter",
+      "Reach",
+      "symbol-reachwords",
+      "reach",
+      "packages/explorer/src/client/panels/sources-facts.ts",
+      "symbol-reach"
+    ],
+    [
+      "packages/explorer/src/client/views/forceGraphBatches.ts",
+      "parameter",
+      "Camera",
+      "symbol-drawspatialgraphonchange",
+      "camera",
+      "packages/explorer/src/client/views/worldMap/projection.ts",
+      "symbol-camera"
+    ],
+    [
+      "packages/explorer/src/client/views/forceGraphBatches.ts",
+      "parameter",
+      "Scene",
+      "symbol-createspatialbuffers",
+      "scene",
+      "packages/explorer/src/client/views/localView/branch-scene.ts",
+      "symbol-scene"
+    ],
+    [
+      "packages/explorer/src/client/views/forceGraphCamera.ts",
+      "parameter",
+      "Camera",
+      "symbol-screenanchortranslation",
+      "camera",
+      "packages/explorer/src/client/views/worldMap/projection.ts",
+      "symbol-camera"
+    ],
+    [
+      "packages/explorer/src/client/views/forceGraphShells.ts",
+      "parameter",
+      "Placed",
+      "symbol-releaseof",
+      "place",
+      "packages/explorer/src/client/views/worldMap/layout.ts",
+      "symbol-placed"
+    ],
+    [
+      "packages/explorer/src/client/views/forceGraphSizing.ts",
+      "parameter",
+      "Camera",
+      "symbol-pickspatialwire",
+      "camera",
+      "packages/explorer/src/client/views/worldMap/projection.ts",
+      "symbol-camera"
+    ],
+    [
+      "packages/explorer/src/client/views/forceGraphSizing.ts",
+      "parameter",
+      "Camera",
+      "symbol-pixelsperworldunit",
+      "camera",
+      "packages/explorer/src/client/views/worldMap/projection.ts",
+      "symbol-camera"
+    ],
+    [
+      "packages/explorer/src/client/views/forceGraphSizing.ts",
+      "parameter",
+      "Camera",
+      "symbol-spatialsizescale",
+      "camera",
+      "packages/explorer/src/client/views/worldMap/projection.ts",
+      "symbol-camera"
+    ],
+    [
+      "packages/explorer/src/client/views/forceGraphWrappers.ts",
+      "extends",
+      "Placed",
+      "symbol-groupmember",
+      null,
+      "packages/explorer/src/client/views/worldMap/layout.ts",
+      "symbol-placed"
+    ],
+    [
+      "packages/explorer/src/client/views/forceGraphWrappers.ts",
+      "parameter",
+      "Placed",
+      "symbol-wrapperat",
+      "direction",
+      "packages/explorer/src/client/views/worldMap/layout.ts",
+      "symbol-placed"
+    ],
+    [
+      "packages/explorer/src/client/views/forceGraphWrappers.ts",
+      "parameter",
+      "Placed",
+      "symbol-wrapperat",
+      "origin",
+      "packages/explorer/src/client/views/worldMap/layout.ts",
+      "symbol-placed"
+    ],
+    [
+      "packages/explorer/src/client/views/forceGraphWrappers.ts",
+      "returns",
+      "Placed",
+      "symbol-mergewrappers",
+      null,
+      "packages/explorer/src/client/views/worldMap/layout.ts",
+      "symbol-placed"
+    ],
+    [
+      "packages/explorer/src/client/views/perspectiveBodies.ts",
+      "parameter",
+      "Camera",
+      "symbol-projectspatialbodies",
+      "camera",
+      "packages/explorer/src/client/views/worldMap/projection.ts",
+      "symbol-camera"
+    ]
+  ],
+  "addedEdges": [
+    [
+      "packages/engine/src/live-docs/compose.test.ts",
+      "import",
+      "coreTypes.TypeReference",
+      null,
+      null,
+      "packages/engine/src/live-docs/coreTypes.ts",
+      "symbol-typereference"
+    ],
+    [
+      "packages/engine/src/live-docs/discovery.ts",
+      "import",
+      "coreTypes.DependencyEntry",
+      null,
+      null,
+      "packages/engine/src/live-docs/coreTypes.ts",
+      "symbol-dependencyentry"
+    ],
+    [
+      "packages/engine/src/live-docs/graph.test.ts",
+      "import",
+      "compose.composeDependencies",
+      null,
+      null,
+      "packages/engine/src/live-docs/compose.ts",
+      "symbol-composedependencies"
+    ],
+    [
+      "packages/engine/src/live-docs/graph.test.ts",
+      "import",
+      "compose.composeReExports",
+      null,
+      null,
+      "packages/engine/src/live-docs/compose.ts",
+      "symbol-composereexports"
+    ],
+    [
+      "packages/engine/src/live-docs/graph.test.ts",
+      "import",
+      "compose.composeSymbolBlocks",
+      null,
+      null,
+      "packages/engine/src/live-docs/compose.ts",
+      "symbol-composesymbolblocks"
+    ],
+    [
+      "packages/engine/src/live-docs/graph.test.ts",
+      "import",
+      "compose.computePublicSymbolHeadingInfo",
+      null,
+      null,
+      "packages/engine/src/live-docs/compose.ts",
+      "symbol-computepublicsymbolheadinginfo"
+    ],
+    [
+      "packages/engine/src/live-docs/graph.test.ts",
+      "import",
+      "discovery.buildWorkspaceIndexes",
+      null,
+      null,
+      "packages/engine/src/live-docs/discovery.ts",
+      "symbol-buildworkspaceindexes"
+    ],
+    [
+      "packages/engine/src/live-docs/graph.test.ts",
+      "import",
+      "node:fs/promises",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "packages/engine/src/live-docs/graph.test.ts",
+      "import",
+      "node:os",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "packages/engine/src/live-docs/graph.test.ts",
+      "import",
+      "node:path",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "packages/engine/src/live-docs/graph.test.ts",
+      "import",
+      "sourceAnalysis.analyzeSourceFile",
+      null,
+      null,
+      "packages/engine/src/live-docs/sourceAnalysis.ts",
+      "symbol-analyzesourcefile"
+    ],
+    [
+      "packages/engine/src/live-docs/graph.test.ts",
+      "import",
+      "typescript",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "packages/explorer/src/client/history/snapshot.ts",
+      "parameter",
+      "Shape",
+      "symbol-relateddoclinksof",
+      "shape",
+      "packages/engine/src/live-docs/history/shape.ts",
+      "symbol-shape"
+    ],
+    [
+      "packages/explorer/src/client/history/snapshot.ts",
+      "parameter",
+      "Shape",
+      "symbol-snapshotgraphof",
+      "shape",
+      "packages/engine/src/live-docs/history/shape.ts",
+      "symbol-shape"
+    ],
+    [
+      "packages/explorer/src/client/history/step-summary.ts",
+      "parameter",
+      "Shape",
+      "symbol-stepsummary-function",
+      "shape",
+      "packages/engine/src/live-docs/history/shape.ts",
+      "symbol-shape"
+    ],
+    [
+      "packages/explorer/src/client/search/graph-search.ts",
+      "parameter",
+      "Reach",
+      "symbol-destinationscope",
+      "reach",
+      "packages/explorer/src/client/pathfind.ts",
+      "symbol-reach"
+    ],
+    [
+      "packages/explorer/src/client/search/graph-search.ts",
+      "parameter",
+      "Reach",
+      "symbol-reachwords",
+      "reach",
+      "packages/explorer/src/client/pathfind.ts",
+      "symbol-reach"
+    ],
+    [
+      "packages/explorer/src/client/views/containedSphere.test.ts",
+      "import",
+      "containedSphere.ContainedSphereMaterial",
+      null,
+      null,
+      "packages/explorer/src/client/views/containedSphere.ts",
+      "symbol-containedspherematerial"
+    ],
+    [
+      "packages/explorer/src/client/views/containedSphere.test.ts",
+      "import",
+      "containedSphere.containedSpherePrimitive",
+      null,
+      null,
+      "packages/explorer/src/client/views/containedSphere.ts",
+      "symbol-containedsphereprimitive"
+    ],
+    [
+      "packages/explorer/src/client/views/containedSphere.test.ts",
+      "import",
+      "containedSphere.projectSphereSurface",
+      null,
+      null,
+      "packages/explorer/src/client/views/containedSphere.ts",
+      "symbol-projectspheresurface"
+    ],
+    [
+      "packages/explorer/src/client/views/containedSphere.test.ts",
+      "import",
+      "three",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "packages/explorer/src/client/views/containedSphere.test.ts",
+      "import",
+      "vitest",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "packages/explorer/src/client/views/containedSphere.ts",
+      "import",
+      "three",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "packages/explorer/src/client/views/forceGraphBatches.ts",
+      "import",
+      "containedSphere.ContainedSphereMaterial",
+      null,
+      null,
+      "packages/explorer/src/client/views/containedSphere.ts",
+      "symbol-containedspherematerial"
+    ],
+    [
+      "packages/explorer/src/client/views/forceGraphBatches.ts",
+      "import",
+      "containedSphere.containedSpherePrimitive",
+      null,
+      null,
+      "packages/explorer/src/client/views/containedSphere.ts",
+      "symbol-containedsphereprimitive"
+    ],
+    [
+      "packages/explorer/src/client/views/forceGraphShells.ts",
+      "parameter",
+      "Placed",
+      "symbol-releaseof",
+      "place",
+      "packages/explorer/src/client/views/forceGraphLayout.ts",
+      "symbol-placed"
+    ],
+    [
+      "packages/explorer/src/client/views/forceGraphWrappers.ts",
+      "extends",
+      "Placed",
+      "symbol-groupmember",
+      null,
+      "packages/explorer/src/client/views/forceGraphLayout.ts",
+      "symbol-placed"
+    ],
+    [
+      "packages/explorer/src/client/views/forceGraphWrappers.ts",
+      "parameter",
+      "Placed",
+      "symbol-wrapperat",
+      "direction",
+      "packages/explorer/src/client/views/forceGraphLayout.ts",
+      "symbol-placed"
+    ],
+    [
+      "packages/explorer/src/client/views/forceGraphWrappers.ts",
+      "parameter",
+      "Placed",
+      "symbol-wrapperat",
+      "origin",
+      "packages/explorer/src/client/views/forceGraphLayout.ts",
+      "symbol-placed"
+    ],
+    [
+      "packages/explorer/src/client/views/forceGraphWrappers.ts",
+      "returns",
+      "Placed",
+      "symbol-mergewrappers",
+      null,
+      "packages/explorer/src/client/views/forceGraphLayout.ts",
+      "symbol-placed"
+    ],
+    [
+      "packages/explorer/src/client/views/perspectiveBodies.ts",
+      "import",
+      "containedSphere.projectSphereSurface",
+      null,
+      null,
+      "packages/explorer/src/client/views/containedSphere.ts",
+      "symbol-projectspheresurface"
+    ],
+    [
+      "scripts/live-docs/visualize-history-sample.ts",
+      "import",
+      "scripted-repository.GROWTH_CONFIG",
+      null,
+      null,
+      "tests/integration/live-docs/scripted-repository.ts",
+      "symbol-growth_config"
+    ],
+    [
+      "scripts/live-docs/visualize-history-sample.ts",
+      "import",
+      "scripted-repository.GROWTH_SCRIPT",
+      null,
+      null,
+      "tests/integration/live-docs/scripted-repository.ts",
+      "symbol-growth_script"
+    ],
+    [
+      "tests/e2e/contained-sphere-reference.ts",
+      "import",
+      "@playwright/test",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "tests/e2e/contained-sphere-reference.ts",
+      "import",
+      "three",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "tests/e2e/force-graph-contained.spec.ts",
+      "import",
+      "@playwright/test",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "tests/e2e/force-graph-contained.spec.ts",
+      "import",
+      "contained-sphere-reference.clippedContainedMark",
+      null,
+      null,
+      "tests/e2e/contained-sphere-reference.ts",
+      "symbol-clippedcontainedmark"
+    ],
+    [
+      "tests/e2e/force-graph-contained.spec.ts",
+      "import",
+      "contained-sphere-reference.compareContainedRendering",
+      null,
+      null,
+      "tests/e2e/contained-sphere-reference.ts",
+      "symbol-comparecontainedrendering"
+    ],
+    [
+      "tests/e2e/force-graph-contained.spec.ts",
+      "import",
+      "force-graph-observation.observeGraph",
+      null,
+      null,
+      "tests/e2e/force-graph-observation.ts",
+      "symbol-observegraph"
+    ],
+    [
+      "tests/e2e/force-graph-contained.spec.ts",
+      "import",
+      "still-picture.localMapSettled",
+      null,
+      null,
+      "tests/e2e/still-picture.ts",
+      "symbol-localmapsettled"
+    ],
+    [
+      "tests/e2e/history-scrubber.spec.ts",
+      "import",
+      "search-bar.choose",
+      null,
+      null,
+      "tests/e2e/search-bar.ts",
+      "symbol-choose"
+    ],
+    [
+      "tests/integration/live-docs/scripted-repository.ts",
+      "returns",
+      "ScriptedCommit",
+      "symbol-growth_script",
+      null,
+      "tests/integration/live-docs/scripted-repository.ts",
+      "symbol-scriptedcommit"
+    ],
+    [
+      "tests/integration/programs/typescript/rosetta/src/processor.ts",
+      "parameter",
+      "Models.Record",
+      "symbol-run",
+      "records",
+      "tests/integration/programs/typescript/rosetta/src/models.ts",
+      "symbol-record"
+    ],
+    [
+      "tests/integration/programs/typescript/rosetta/src/processor.ts",
+      "parameter",
+      "Models.Report",
+      "symbol-summarize",
+      "report",
+      "tests/integration/programs/typescript/rosetta/src/models.ts",
+      "symbol-report"
+    ],
+    [
+      "tests/integration/programs/typescript/rosetta/src/processor.ts",
+      "returns",
+      "Models.Report",
+      "symbol-run",
+      null,
+      "tests/integration/programs/typescript/rosetta/src/models.ts",
+      "symbol-report"
+    ]
+  ],
+  "preservedInternalTypedEdges": 637,
+  "preservedInternalTypedExamples": [
+    [
+      "packages/engine/src/languages/index.ts",
+      "returns",
+      "LanguageSyntax",
+      "symbol-getsyntaxbyextension",
+      null,
+      "packages/engine/src/languages/syntax.ts",
+      "symbol-languagesyntax"
+    ],
+    [
+      "packages/engine/src/languages/index.ts",
+      "returns",
+      "LanguageSyntax",
+      "symbol-getsyntaxbyid",
+      null,
+      "packages/engine/src/languages/syntax.ts",
+      "symbol-languagesyntax"
+    ],
+    [
+      "packages/engine/src/languages/index.ts",
+      "returns",
+      "LanguageSyntax",
+      "symbol-getsyntaxbypath",
+      null,
+      "packages/engine/src/languages/syntax.ts",
+      "symbol-languagesyntax"
+    ],
+    [
+      "packages/engine/src/live-docs/adapters/aspnet.ts",
+      "returns",
+      "LanguageAdapter",
+      "symbol-aspnetmarkupadapter",
+      null,
+      "packages/engine/src/live-docs/adapters/index.ts",
+      "symbol-languageadapter"
+    ],
+    [
+      "packages/engine/src/live-docs/adapters/c.ts",
+      "returns",
+      "LanguageAdapter",
+      "symbol-cadapter",
+      null,
+      "packages/engine/src/live-docs/adapters/index.ts",
+      "symbol-languageadapter"
+    ],
+    [
+      "packages/engine/src/live-docs/adapters/cargo.ts",
+      "returns",
+      "LanguageAdapter",
+      "symbol-cargoadapter",
+      null,
+      "packages/engine/src/live-docs/adapters/index.ts",
+      "symbol-languageadapter"
+    ],
+    [
+      "packages/engine/src/live-docs/adapters/csharp.dependencies.ts",
+      "returns",
+      "DependencyEntry",
+      "symbol-resolvereflectiontargets",
+      null,
+      "packages/engine/src/live-docs/coreTypes.ts",
+      "symbol-dependencyentry"
+    ],
+    [
+      "packages/engine/src/live-docs/adapters/csharp.ts",
+      "parameter",
+      "WorkspaceFileIndex",
+      "symbol-resolveworkspacetypes",
+      "fileIndex",
+      "packages/engine/src/live-docs/adapters/index.ts",
+      "symbol-workspacefileindex"
+    ],
+    [
+      "packages/engine/src/live-docs/adapters/csharp.ts",
+      "returns",
+      "LanguageAdapter",
+      "symbol-csharpadapter",
+      null,
+      "packages/engine/src/live-docs/adapters/index.ts",
+      "symbol-languageadapter"
+    ],
+    [
+      "packages/engine/src/live-docs/adapters/csharp.xmldoc.ts",
+      "parameter",
+      "SymbolDocumentation",
+      "symbol-hasstructuredcontent",
+      "doc",
+      "packages/engine/src/live-docs/coreTypes.ts",
+      "symbol-symboldocumentation"
+    ],
+    [
+      "packages/engine/src/live-docs/adapters/csharp.xmldoc.ts",
+      "returns",
+      "SymbolDocumentation",
+      "symbol-builddocumentationfromlines",
+      null,
+      "packages/engine/src/live-docs/coreTypes.ts",
+      "symbol-symboldocumentation"
+    ],
+    [
+      "packages/engine/src/live-docs/adapters/csharp.xmldoc.ts",
+      "returns",
+      "SymbolDocumentationExample",
+      "symbol-extractexampletags",
+      null,
+      "packages/engine/src/live-docs/coreTypes.ts",
+      "symbol-symboldocumentationexample"
+    ],
+    [
+      "packages/engine/src/live-docs/adapters/csharp.xmldoc.ts",
+      "returns",
+      "SymbolDocumentationException",
+      "symbol-extractexceptiontags",
+      null,
+      "packages/engine/src/live-docs/coreTypes.ts",
+      "symbol-symboldocumentationexception"
+    ],
+    [
+      "packages/engine/src/live-docs/adapters/csharp.xmldoc.ts",
+      "returns",
+      "SymbolDocumentationLink",
+      "symbol-extractlinktags",
+      null,
+      "packages/engine/src/live-docs/coreTypes.ts",
+      "symbol-symboldocumentationlink"
+    ],
+    [
+      "packages/engine/src/live-docs/adapters/csharp.xmldoc.ts",
+      "returns",
+      "SymbolDocumentationParameter",
+      "symbol-extractparametertags",
+      null,
+      "packages/engine/src/live-docs/coreTypes.ts",
+      "symbol-symboldocumentationparameter"
+    ]
+  ],
+  "falseThreeCameraBefore": [
+    {
+      "from": "symbol-drawspatialgraphonchange",
+      "kind": "parameter",
+      "label": "Camera",
+      "link": "./worldMap/projection.ts.mdmd.md#symbol-camera",
+      "to": "packages/explorer/src/client/views/worldMap/projection.ts",
+      "toSymbol": "symbol-camera",
+      "parameter": "camera"
+    },
+    {
+      "from": "symbol-screenanchortranslation",
+      "kind": "parameter",
+      "label": "Camera",
+      "link": "./worldMap/projection.ts.mdmd.md#symbol-camera",
+      "to": "packages/explorer/src/client/views/worldMap/projection.ts",
+      "toSymbol": "symbol-camera",
+      "parameter": "camera"
+    },
+    {
+      "from": "symbol-pixelsperworldunit",
+      "kind": "parameter",
+      "label": "Camera",
+      "link": "./worldMap/projection.ts.mdmd.md#symbol-camera",
+      "to": "packages/explorer/src/client/views/worldMap/projection.ts",
+      "toSymbol": "symbol-camera",
+      "parameter": "camera"
+    },
+    {
+      "from": "symbol-spatialsizescale",
+      "kind": "parameter",
+      "label": "Camera",
+      "link": "./worldMap/projection.ts.mdmd.md#symbol-camera",
+      "to": "packages/explorer/src/client/views/worldMap/projection.ts",
+      "toSymbol": "symbol-camera",
+      "parameter": "camera"
+    },
+    {
+      "from": "symbol-pickspatialwire",
+      "kind": "parameter",
+      "label": "Camera",
+      "link": "./worldMap/projection.ts.mdmd.md#symbol-camera",
+      "to": "packages/explorer/src/client/views/worldMap/projection.ts",
+      "toSymbol": "symbol-camera",
+      "parameter": "camera"
+    },
+    {
+      "from": "symbol-projectspatialbodies",
+      "kind": "parameter",
+      "label": "Camera",
+      "link": "./worldMap/projection.ts.mdmd.md#symbol-camera",
+      "to": "packages/explorer/src/client/views/worldMap/projection.ts",
+      "toSymbol": "symbol-camera",
+      "parameter": "camera"
+    }
+  ],
+  "falseThreeCameraAfter": [],
+  "terminalPathInspectionCounts": {
+    "local-storage": {
+      "reached": 61,
+      "direct": 47,
+      "maxDepth": 9
+    },
+    "forceGraphView": {
+      "reached": 2,
+      "direct": 1,
+      "maxDepth": 2
+    },
+    "forceGraphBatches": {
+      "reached": 27,
+      "direct": 6,
+      "maxDepth": 4
+    },
+    "coreTypes": {
+      "reached": 85,
+      "direct": 37,
+      "maxDepth": 9
+    },
+    "perspectiveBodies": {
+      "reached": 2,
+      "direct": 2,
+      "maxDepth": 1
+    }
+  },
+  "breadthFirstInboundCounts": {
+    "local-storage": {
+      "inboundReached": 99,
+      "direct": 47,
+      "maxShortestHops": 4
+    },
+    "forceGraphView": {
+      "inboundReached": 2,
+      "direct": 1,
+      "maxShortestHops": 2
+    },
+    "forceGraphBatches": {
+      "inboundReached": 27,
+      "direct": 6,
+      "maxShortestHops": 3
+    },
+    "coreTypes": {
+      "inboundReached": 122,
+      "direct": 37,
+      "maxShortestHops": 5
+    }
+  }
+}

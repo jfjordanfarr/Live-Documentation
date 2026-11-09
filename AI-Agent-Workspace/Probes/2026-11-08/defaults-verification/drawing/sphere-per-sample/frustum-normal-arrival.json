@@ -1,0 +1,67 @@
+{
+  "runs": [
+    {
+      "mode": "analytic",
+      "subject": "fresh default generator.ts Connections/Skin1",
+      "url": "http://localhost:8911/?view=local&mode=3d&node=packages%2Fgenerator%2Fsrc%2Fgenerator.ts",
+      "motionPaused": false,
+      "focusAvailableMs": 1593,
+      "first": {
+        "at": 1687.699999988079,
+        "busy": "true",
+        "frames": 4,
+        "files": {
+          "count": 463,
+          "visible": true,
+          "material": "RawShaderMaterial",
+          "vertices": 4
+        },
+        "nodes": 26,
+        "drawn": {
+          "frame": 4,
+          "calls": 5,
+          "triangles": 25078,
+          "points": 0,
+          "lines": 0
+        },
+        "camera": [
+          13.218468326500595,
+          -12.225761678942595,
+          311.7764141217276
+        ]
+      },
+      "tuningAvailableMs": 1640,
+      "defaults": {
+        "wrappers": "skin",
+        "hops": "1"
+      },
+      "settled": false,
+      "elapsedMs": 60027,
+      "final": {
+        "at": 60105,
+        "busy": "true",
+        "frames": 318,
+        "files": {
+          "count": 829,
+          "visible": true,
+          "material": "RawShaderMaterial",
+          "vertices": 4
+        },
+        "nodes": 55,
+        "drawn": {
+          "frame": 318,
+          "calls": 5,
+          "triangles": 38092,
+          "points": 0,
+          "lines": 0
+        },
+        "camera": [
+          -29.358221690371163,
+          -40.407645042362624,
+          458.12929335817535
+        ]
+      }
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,36 @@
+[
+  {
+    "case": "capture",
+    "command": [
+      "node_modules/.bin/playwright",
+      "test",
+      "--config",
+      "tests/e2e/playwright.config.ts",
+      "tests/e2e/layout-lab.spec.ts",
+      "--grep",
+      "the layout lab reproduces the page to the pixel: repository, chain$",
+      "--output",
+      "/tmp/live-docs-20261108-defaults-focused/capture-results"
+    ],
+    "startedEpoch": 1794187193936.254,
+    "duration": 27.90861439704895,
+    "exitCode": 0
+  },
+  {
+    "case": "visibility",
+    "command": [
+      "node_modules/.bin/playwright",
+      "test",
+      "--config",
+      "tests/e2e/playwright.config.ts",
+      "tests/e2e/local-map-hidden.spec.ts",
+      "--grep",
+      "the search pauses while the page is hidden and resumes when it is visible again$",
+      "--output",
+      "/tmp/live-docs-20261108-defaults-focused/visibility-results"
+    ],
+    "startedEpoch": 1794187221844.9797,
+    "duration": 57.380582332611084,
+    "exitCode": 1
+  }
+]

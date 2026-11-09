@@ -1,0 +1,21 @@
+import { chromium } from 'playwright';
+import fs from 'node:fs';
+const out='AI-Agent-Workspace/Screenshots/2026-11-08/astra-review';
+const browser=await chromium.launch({headless:true});
+const page=await browser.newPage({viewport:{width:1440,height:960},deviceScaleFactor:1});
+const errors=[];page.on('pageerror',e=>errors.push(String(e)));
+await page.goto('http://localhost:8900/?s=N4IgbiBcDMA0IEcomgExPAnsgzgFwCcBXAYzyIIFMQBfIA');
+await page.getByRole('combobox',{name:'Hops shown',exact:true}).selectOption('1');
+await page.getByRole('button',{name:'Layout tuning',exact:true}).click();
+await page.locator('#tuning-force-group-wrappers').selectOption('skin');
+await page.getByRole('button',{name:'Layout tuning',exact:true}).click();
+const readings=[];
+async function read(tag){const state=await page.evaluate(()=>({url:location.href,busy:[...document.querySelectorAll('[aria-busy]')].map(e=>({id:e.id,busy:e.getAttribute('aria-busy')})),sidebar:document.querySelector('aside')?.innerText,buttons:[...document.querySelectorAll('button')].filter(e=>e.getBoundingClientRect().width>0).map(e=>({name:e.getAttribute('aria-label')||e.innerText,title:e.title,pressed:e.getAttribute('aria-pressed'),data:[...e.attributes].filter(a=>a.name.startsWith('data-')).map(a=>[a.name,a.value])})).filter(e=>/packages|Whole|Local|Structure|Connections|Fit/i.test(e.name+' '+e.title))}));readings.push({tag,...state});console.log(tag,JSON.stringify(state));}
+await page.waitForTimeout(1200);await read('entering');
+await page.waitForFunction(()=>[...document.querySelectorAll('[aria-busy]')].filter(e=>e.getBoundingClientRect().width>0).every(e=>e.getAttribute('aria-busy')==='false'),{},{timeout:120000}).catch(()=>console.log('Rest wait expired; capture is moving'));
+await page.screenshot({path:`${out}/06-structure-skin-one-hop.png`});await read('start');
+await page.getByRole('button',{name:'Whole',exact:true}).click();
+await page.waitForTimeout(2500);
+await page.screenshot({path:`${out}/07-structure-whole.png`});await read('whole');
+fs.writeFileSync(`${out}/structure-readings.json`,JSON.stringify({viewport:[1440,960],readings,errors},null,2)+'\n');
+await browser.close();

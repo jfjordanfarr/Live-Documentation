@@ -1,0 +1,446 @@
+[
+  {
+    "context": [
+      "per-sample clipped contained marks keep their real hole and rim while travelling in both directions"
+    ],
+    "name": "clipped-gpu-source",
+    "body": {
+      "id": "Portal/Models/PaymentRequestModel.cs",
+      "seed": "directory:Portal/Models",
+      "sidesInside": true,
+      "visibleSkinBottom": 215,
+      "geometricSkinBottom": 215,
+      "holeOffsetFromProjectedCenter": {
+        "x": -0.30932260769748154,
+        "y": -1.8727781378355814
+      },
+      "hole": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "holePoint": {
+        "x": 703.5,
+        "y": 220.5
+      },
+      "rimPoints": [
+        {
+          "x": 711.5,
+          "y": 221.5
+        },
+        {
+          "x": 696.5,
+          "y": 219.5
+        },
+        {
+          "x": 699.5,
+          "y": 227.5
+        }
+      ],
+      "enclosed": true,
+      "color": [
+        0,
+        0.28314873576164246,
+        1
+      ],
+      "body": {
+        "x": 701.2361509909051,
+        "labelY": 275.5
+      },
+      "near": 509.85685629651823,
+      "material": "RawShaderMaterial"
+    }
+  },
+  {
+    "context": [
+      "per-sample clipped contained marks keep their real hole and rim while travelling in both directions"
+    ],
+    "name": "skin-anchor-difference",
+    "body": {
+      "sourceAnchor": {
+        "x": 701.236,
+        "y": 276.03
+      },
+      "geometricRasterAnchor": {
+        "x": 701.2361509909051,
+        "labelY": 275.5
+      },
+      "dx": -0.00015099090512649127,
+      "dy": 0.5299999999999727
+    }
+  },
+  {
+    "context": [
+      "per-sample clipped contained marks keep their real hole and rim while travelling in both directions"
+    ],
+    "name": "carried-mark-back",
+    "body": {
+      "probes": {
+        "id": "Portal/Models/PaymentRequestModel.cs",
+        "seed": "directory:Portal/Models",
+        "sidesInside": true,
+        "visibleSkinBottom": 215,
+        "geometricSkinBottom": 215,
+        "holeOffsetFromProjectedCenter": {
+          "x": -0.30932260769748154,
+          "y": -1.8727781378355814
+        },
+        "hole": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "holePoint": {
+          "x": 703.5,
+          "y": 220.5
+        },
+        "rimPoints": [
+          {
+            "x": 711.5,
+            "y": 221.5
+          },
+          {
+            "x": 696.5,
+            "y": 219.5
+          },
+          {
+            "x": 699.5,
+            "y": 227.5
+          }
+        ],
+        "enclosed": true,
+        "color": [
+          0,
+          0.28314873576164246,
+          1
+        ],
+        "body": {
+          "x": 701.2361509909051,
+          "labelY": 275.5
+        },
+        "near": 509.85685629651823,
+        "material": "RawShaderMaterial"
+      },
+      "painted": {
+        "shift": {
+          "x": 65.07184900909488,
+          "y": -26.549000000000007
+        },
+        "holeFilled": false,
+        "rimDrawn": [
+          true,
+          true,
+          true
+        ],
+        "opacity": 0.333589
+      }
+    }
+  },
+  {
+    "context": [
+      "per-sample clipped contained marks keep their real hole and rim while travelling in both directions"
+    ],
+    "name": "carried-mark-out",
+    "body": {
+      "probes": {
+        "id": "Portal/Models/PaymentRequestModel.cs",
+        "seed": "directory:Portal/Models",
+        "sidesInside": true,
+        "visibleSkinBottom": 215,
+        "geometricSkinBottom": 215,
+        "holeOffsetFromProjectedCenter": {
+          "x": -0.30932260769748154,
+          "y": -1.8727781378355814
+        },
+        "hole": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "holePoint": {
+          "x": 703.5,
+          "y": 220.5
+        },
+        "rimPoints": [
+          {
+            "x": 711.5,
+            "y": 221.5
+          },
+          {
+            "x": 696.5,
+            "y": 219.5
+          },
+          {
+            "x": 699.5,
+            "y": 227.5
+          }
+        ],
+        "enclosed": true,
+        "color": [
+          0,
+          0.28314873576164246,
+          1
+        ],
+        "body": {
+          "x": 701.2361509909051,
+          "labelY": 275.5
+        },
+        "near": 509.85685629651823,
+        "material": "RawShaderMaterial"
+      },
+      "painted": {
+        "shift": {
+          "x": 346.87984900909487,
+          "y": -9.122000000000014
+        },
+        "holeFilled": false,
+        "rimDrawn": [
+          true,
+          true,
+          true
+        ],
+        "opacity": 0.976451
+      }
+    }
+  },
+  {
+    "context": [
+      "native compatibility clipped contained marks keep their real hole and rim while travelling in both directions"
+    ],
+    "name": "clipped-gpu-source",
+    "body": {
+      "id": "Portal/Models/PaymentRequestModel.cs",
+      "seed": "directory:Portal/Models",
+      "sidesInside": true,
+      "visibleSkinBottom": 215,
+      "geometricSkinBottom": 215,
+      "holeOffsetFromProjectedCenter": {
+        "x": -0.30932260769748154,
+        "y": -1.8727781378355814
+      },
+      "hole": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "holePoint": {
+        "x": 703.5,
+        "y": 220.5
+      },
+      "rimPoints": [
+        {
+          "x": 710.5,
+          "y": 220.5
+        },
+        {
+          "x": 702.5,
+          "y": 214.5
+        },
+        {
+          "x": 699.5,
+          "y": 227.5
+        }
+      ],
+      "enclosed": true,
+      "color": [
+        0,
+        0.28314873576164246,
+        1
+      ],
+      "body": {
+        "x": 701.2361509909051,
+        "labelY": 275.5
+      },
+      "near": 509.85685629651823,
+      "material": "MeshLambertMaterial"
+    }
+  },
+  {
+    "context": [
+      "native compatibility clipped contained marks keep their real hole and rim while travelling in both directions"
+    ],
+    "name": "skin-anchor-difference",
+    "body": {
+      "sourceAnchor": {
+        "x": 701.236,
+        "y": 276.03
+      },
+      "geometricRasterAnchor": {
+        "x": 701.2361509909051,
+        "labelY": 275.5
+      },
+      "dx": -0.00015099090512649127,
+      "dy": 0.5299999999999727
+    }
+  },
+  {
+    "context": [
+      "native compatibility clipped contained marks keep their real hole and rim while travelling in both directions"
+    ],
+    "name": "carried-mark-back",
+    "body": {
+      "probes": {
+        "id": "Portal/Models/PaymentRequestModel.cs",
+        "seed": "directory:Portal/Models",
+        "sidesInside": true,
+        "visibleSkinBottom": 215,
+        "geometricSkinBottom": 215,
+        "holeOffsetFromProjectedCenter": {
+          "x": -0.30932260769748154,
+          "y": -1.8727781378355814
+        },
+        "hole": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "holePoint": {
+          "x": 703.5,
+          "y": 220.5
+        },
+        "rimPoints": [
+          {
+            "x": 710.5,
+            "y": 220.5
+          },
+          {
+            "x": 702.5,
+            "y": 214.5
+          },
+          {
+            "x": 699.5,
+            "y": 227.5
+          }
+        ],
+        "enclosed": true,
+        "color": [
+          0,
+          0.28314873576164246,
+          1
+        ],
+        "body": {
+          "x": 701.2361509909051,
+          "labelY": 275.5
+        },
+        "near": 509.85685629651823,
+        "material": "MeshLambertMaterial"
+      },
+      "painted": {
+        "shift": {
+          "x": 64.47084900909488,
+          "y": -26.299000000000007
+        },
+        "holeFilled": false,
+        "rimDrawn": [
+          true,
+          true,
+          true
+        ],
+        "opacity": 0.331557
+      }
+    }
+  },
+  {
+    "context": [
+      "native compatibility clipped contained marks keep their real hole and rim while travelling in both directions"
+    ],
+    "name": "carried-mark-out",
+    "body": {
+      "probes": {
+        "id": "Portal/Models/PaymentRequestModel.cs",
+        "seed": "directory:Portal/Models",
+        "sidesInside": true,
+        "visibleSkinBottom": 215,
+        "geometricSkinBottom": 215,
+        "holeOffsetFromProjectedCenter": {
+          "x": -0.30932260769748154,
+          "y": -1.8727781378355814
+        },
+        "hole": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "holePoint": {
+          "x": 703.5,
+          "y": 220.5
+        },
+        "rimPoints": [
+          {
+            "x": 710.5,
+            "y": 220.5
+          },
+          {
+            "x": 702.5,
+            "y": 214.5
+          },
+          {
+            "x": 699.5,
+            "y": 227.5
+          }
+        ],
+        "enclosed": true,
+        "color": [
+          0,
+          0.28314873576164246,
+          1
+        ],
+        "body": {
+          "x": 701.2361509909051,
+          "labelY": 275.5
+        },
+        "near": 509.85685629651823,
+        "material": "MeshLambertMaterial"
+      },
+      "painted": {
+        "shift": {
+          "x": 347.28084900909494,
+          "y": -9.133000000000038
+        },
+        "holeFilled": false,
+        "rimDrawn": [
+          true,
+          true,
+          true
+        ],
+        "opacity": 0.977855
+      }
+    }
+  }
+]

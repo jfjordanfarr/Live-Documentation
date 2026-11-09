@@ -1,0 +1,19 @@
+[
+  {
+    "type": "error",
+    "message": "TimeoutError: page.waitForFunction: Timeout 45000ms exceeded.",
+    "stack": [
+      {
+        "file": "/tmp/live-docs-20261108-defaults/tests/e2e/still-picture.ts",
+        "line": 163,
+        "column": 14,
+        "function": "localMapSettled"
+      },
+      {
+        "file": "/tmp/live-docs-20261108-defaults/tests/e2e/local-map-hidden.spec.ts",
+        "line": 111,
+        "column": 24
+      }
+    ]
+  }
+]

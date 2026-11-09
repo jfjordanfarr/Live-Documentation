@@ -1,0 +1,133 @@
+{
+  "history-scrubber-the-addre-04519-eturns-the-picture-to-today-chromium": {
+    "recordedConsole": [],
+    "recordedPageErrorsOrCrashes": [],
+    "recordedTestErrors": [
+      "Test timeout of 30000ms exceeded.",
+      "Error: expect(locator).toHaveAttribute(expected) failed\n\nLocator:  locator('#graph-svg')\nExpected: \"false\"\nReceived: \"true\"\n\nCall log:\n  - Expect \"toHaveAttribute\" with timeout 60000ms\n  - waiting for locator('#graph-svg')\n    24 \u00d7 locator resolved to <div id=\"graph-svg\" aria-busy=\"true\" data-history-step=\"2\" data-hovered-node=\"false\" data-directory-scope=\"[\"\"]\" data-spatial-layout=\"structure\" data-layout-settings=\"{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"gravity\":0.025,\"componentSeparation\":0.2,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":0,\"tether\":0.02,\"citedByPull\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.9,\"nameAt\":18,\"hops\":4,\"revealFrames\":60,\"she\u2026>\u2026</div>\n       - unexpected value \"true\"\n"
+    ],
+    "networkEntries": 0,
+    "responseBodiesAvailable": false
+  },
+  "history-scrubber-a-drag-pl-2eba7-tles-at-the-tuning-s-energy-chromium": {
+    "recordedConsole": [
+      {
+        "messageType": "warning",
+        "text": "[.WebGL-0x14940014bc00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+        "time": 2257420.836,
+        "location": {
+          "url": "http://localhost:8911/samples/history/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBVGHLYgbjIrhmF4nJqcLiSABCgQACmQWiNocUAOpsSTIlljCYALVQqAoX0cbD0EiykPgETYCIFQpFbXFVEl%2BIAnKNMCYAIL6SAMBQgRSofDOfVhWJcbAAMQsJjNjQWyhaABFbtzBNtwv02bl8KSzQsioMQEkUiAyZBUtgdFx4AArKDRhCx%2BAARygIGgkhA8DxC3hZHQHDICNDQA",
+          "lineNumber": 0,
+          "columnNumber": 0
+        }
+      },
+      {
+        "messageType": "warning",
+        "text": "[.WebGL-0x14940014bc00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+        "time": 2257579.003,
+        "location": {
+          "url": "http://localhost:8911/samples/history/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBVGHLYgbjIrhmF4nJqcLiSABCgQACmQWiNocUAOpsSTIlljCYALVQqAoX0cbD0EiykPgETYCIFQpFbXFVEl%2BIAnKNMCYAIL6SAMBQgRSofDOfVhWJcbAAMQsJjNjQWyhaABFbtzBNtwv02bl8KSzQsioMQEkUiAyZBUtgdFx4AArKDRhCx%2BAARygIGgkhA8DxC3hZHQHDICNDQA",
+          "lineNumber": 0,
+          "columnNumber": 0
+        }
+      },
+      {
+        "messageType": "warning",
+        "text": "[.WebGL-0x14940014bc00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+        "time": 2257690.036,
+        "location": {
+          "url": "http://localhost:8911/samples/history/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBVGHLYgbjIrhmF4nJqcLiSABCgQACmQWiNocUAOpsSTIlljCYALVQqAoX0cbD0EiykPgETYCIFQpFbXFVEl%2BIAnKNMCYAIL6SAMBQgRSofDOfVhWJcbAAMQsJjNjQWyhaABFbtzBNtwv02bl8KSzQsioMQEkUiAyZBUtgdFx4AArKDRhCx%2BAARygIGgkhA8DxC3hZHQHDICNDQA",
+          "lineNumber": 0,
+          "columnNumber": 0
+        }
+      },
+      {
+        "messageType": "warning",
+        "text": "[.WebGL-0x14940014bc00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)",
+        "time": 2257836.645,
+        "location": {
+          "url": "http://localhost:8911/samples/history/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBVGHLYgbjIrhmF4nJqcLiSABCgQACmQWiNocUAOpsSTIlljCYALVQqAoX0cbD0EiykPgETYCIFQpFbXFVEl%2BIAnKNMCYAIL6SAMBQgRSofDOfVhWJcbAAMQsJjNjQWyhaABFbtzBNtwv02bl8KSzQsioMQEkUiAyZBUtgdFx4AArKDRhCx%2BAARygIGgkhA8DxC3hZHQHDICNDQA",
+          "lineNumber": 0,
+          "columnNumber": 0
+        }
+      }
+    ],
+    "recordedPageErrorsOrCrashes": [],
+    "recordedTestErrors": [
+      "Error: expect(locator).toHaveAttribute(expected) failed\n\nLocator:  locator('#graph-svg')\nExpected: \"false\"\nReceived: \"true\"\nTimeout:  60000ms\n\nCall log:\n  - Expect \"toHaveAttribute\" with timeout 60000ms\n  - waiting for locator('#graph-svg')\n    63 \u00d7 locator resolved to <div id=\"graph-svg\" aria-busy=\"true\" data-history-step=\"0\" data-hovered-node=\"false\" data-directory-scope=\"[\"\"]\" data-spatial-layout=\"structure\" data-layout-settings=\"{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"gravity\":0.025,\"componentSeparation\":0.2,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":0.1,\"tether\":0.02,\"citedByPull\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.9,\"nameAt\":18,\"hops\":1,\"revealFrames\":60,\"s\u2026>\u2026</div>\n       - unexpected value \"true\"\n"
+    ],
+    "networkEntries": 0,
+    "responseBodiesAvailable": false
+  },
+  "canonicalFixture": {
+    "source": "existing gate5 served files on disk; trace network response bodies unavailable",
+    "todayFiles": 8,
+    "baseAndFirstTwoSteps": [
+      8,
+      8,
+      8
+    ],
+    "baseEdges": 8,
+    "initialDeltas": [
+      {
+        "commit": {
+          "id": "234d9fa4ef391a7358c2fff98a69d7a96a941153",
+          "parents": [
+            "8bc53e26b7fa5683d8d75b4b8b13bab0ffce9e1e"
+          ],
+          "date": "2026-01-06T10:00:00Z",
+          "author": "Ada Fixture",
+          "subject": "Rename the core to the engine"
+        },
+        "delta": {
+          "renamed": [
+            [
+              5,
+              10
+            ],
+            [
+              6,
+              11
+            ]
+          ],
+          "directoriesRenamed": [
+            [
+              "src/core",
+              "src/engine"
+            ]
+          ],
+          "touched": [
+            3,
+            4
+          ]
+        }
+      },
+      {
+        "commit": {
+          "id": "9096bd48c5150319eb6df4a57314ca53c0f77318",
+          "parents": [
+            "234d9fa4ef391a7358c2fff98a69d7a96a941153"
+          ],
+          "date": "2026-01-07T10:00:00Z",
+          "author": "Ada Fixture",
+          "subject": "Call the view a screen"
+        },
+        "delta": {
+          "renamed": [
+            [
+              4,
+              12
+            ]
+          ],
+          "touched": [
+            3
+          ]
+        }
+      }
+    ],
+    "sha256": {
+      "dist/explorer/samples/history/explorer-data.json": "1d1c1aee2072f0396dcbf3f59dcec2736240393d4d5e8dbe4df8a988fe894cab",
+      "dist/explorer/samples/history/explorer-history.json": "453cd0f27ef9a2539a43cff0e8b30518142235973f78c9dc4b93b83db9c623f7"
+    }
+  }
+}

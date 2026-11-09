@@ -1,0 +1,62 @@
+{
+  "evidenceDirectory": "/tmp/live-docs-20261108-defaults-gate5-failures/force-graph-update-a-chang-102db-the-levers-ride-the-address-chromium",
+  "snapshotsAvailable": false,
+  "error": {
+    "type": "error",
+    "message": "Error: expect(locator).toHaveAttribute(expected) failed\n\nLocator:  locator('#graph-svg')\nExpected: \"false\"\nReceived: \"true\"\nTimeout:  150000ms\n\nCall log:\n  - Expect \"toHaveAttribute\" with timeout 150000ms\n  - waiting for locator('#graph-svg')\n    131 \u00d7 locator resolved to <div id=\"graph-svg\" aria-busy=\"true\" data-history-step=\"\" data-hovered-node=\"false\" data-directory-scope=\"[\"\"]\" data-spatial-layout=\"connections\" data-layout-settings=\"{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"gravity\":0.025,\"componentSeparation\":0.2,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.9,\"nameAt\":18,\"hops\":1,\"revealFrames\":60,\"sh\u2026>\u2026</div>\n        - unexpected value \"true\"\n",
+    "stack": [
+      {
+        "file": "/tmp/live-docs-20261108-defaults/tests/e2e/force-graph-update.spec.ts",
+        "line": 57,
+        "column": 44,
+        "function": "settled"
+      },
+      {
+        "file": "/tmp/live-docs-20261108-defaults/tests/e2e/force-graph-update.spec.ts",
+        "line": 132,
+        "column": 9
+      }
+    ]
+  },
+  "context": {
+    "noDefaultViewport": false,
+    "viewport": {
+      "width": 1100,
+      "height": 700
+    },
+    "ignoreHTTPSErrors": false,
+    "javaScriptEnabled": true,
+    "bypassCSP": false,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.6 Safari/537.36",
+    "locale": "en-US",
+    "offline": false,
+    "deviceScaleFactor": 1,
+    "isMobile": false,
+    "hasTouch": false,
+    "colorScheme": "light",
+    "acceptDownloads": "accept",
+    "baseURL": "http://localhost:8911",
+    "serviceWorkers": "allow",
+    "selectorEngines": [],
+    "testIdAttributeName": "data-testid",
+    "storageState": {
+      "cookies": [],
+      "origins": [
+        {
+          "origin": "http://localhost:8911",
+          "localStorage": [
+            {
+              "name": "live-docs-explorer:ui:v2",
+              "value": "{\"version\":2,\"tuning\":{\"localMap\":{\"searchStarts\":0}}}"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "navigation": {
+    "url": "/?s=N4IgbiBcDMA0IBsqgGYHsBOBjApgcQwEMAHAC2RAFdiATQgFxwFEA7HDAcwE8oBGAX37wAjlBDQaIeJMgBtECAC6-IA",
+    "timeout": 0,
+    "waitUntil": "load"
+  }
+}

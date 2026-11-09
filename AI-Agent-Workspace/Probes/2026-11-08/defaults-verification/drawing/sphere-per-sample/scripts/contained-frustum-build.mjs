@@ -1,0 +1,9 @@
+import {build} from 'esbuild';
+import{readFile}from'node:fs/promises';import path from'node:path';
+const root=process.cwd(),out='/tmp/live-docs-20261108-defaults-diagnostics';
+await build({entryPoints:[root+'/packages/explorer/src/client/index.ts'],outfile:out+'/frustum-held.js',bundle:true,format:'esm',minify:true,target:'es2022',logLevel:'silent',plugins:[{name:'matched-held-primitive-only',setup(b){
+ b.onResolve({filter:/^diagnostic-before-frustum$/},()=>({path:'before',namespace:'diagnostic-before-frustum'}));
+ b.onLoad({filter:/.*/,namespace:'diagnostic-before-frustum'},async()=>({contents:await readFile(out+'/containedSphere-per-sample.ts','utf8'),loader:'ts',resolveDir:root+'/packages/explorer/src/client/views'}));
+ b.onLoad({filter:/forceGraphBatches\.ts$/},async args=>({contents:'import { ContainedSphereMaterial as BeforeContainedSphereMaterial } from "diagnostic-before-frustum";\n'+await readFile(args.path,'utf8')+'\n(window as any).frustumMaterials={before:()=>new BeforeContainedSphereMaterial(),after:()=>new ContainedSphereMaterial()};',loader:'ts',resolveDir:path.dirname(args.path)}));
+ b.onLoad({filter:/forceGraphView\.ts$/},async args=>{let source=await readFile(args.path,'utf8');const marker='    if (!active || !instance) return;';if(!source.includes(marker))throw Error('Missing held seam');source=source.replace(marker,marker+'\n    if ((window as any).__heldFrustumPose) { const observed=(window as any).renderedGraph; observed.renderer.render(observed.scene,observed.camera); animation=requestAnimationFrame(animateFocus); return; }');source=source.replace('  return { render, setActive, focusNode, focusDirectory','  (window as any).frustumRevision=()=>({revision:motion?.revision,still:motion?.still,ready,packing:packing.size,revealed:reveal.shown,total:reveal.order.length});\n  return { render, setActive, focusNode, focusDirectory');return{contents:source,loader:'ts',resolveDir:path.dirname(args.path)};});
+}}]});

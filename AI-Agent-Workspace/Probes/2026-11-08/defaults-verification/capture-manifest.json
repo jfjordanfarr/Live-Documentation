@@ -688,5 +688,551 @@
     "sourceBytes": 12160595,
     "sourceSha256": "640e129064ebbf13ef33a7fd9b522798a4269f72e9241c12dbf87f600cb8a96d",
     "compressed": true
+  },
+  {
+    "file": "drawing/sphere-per-sample/frustum-held-comparison.json.gz",
+    "sourceBytes": 460519,
+    "sourceSha256": "20ea6f665a07fea37325e5deaa4fb8eb85d7c650533420c8f98adbbb67cab1bb",
+    "compressed": true
+  },
+  {
+    "file": "drawing/sphere-per-sample/frustum-normal-arrival.json",
+    "sourceBytes": 1538,
+    "sourceSha256": "90913c7ba68d13465f7f558179a3de00297291255e0bb1c0756bd1ed8de6ca3a",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/frustum-normal-generator-analytic.png",
+    "sourceBytes": 457840,
+    "sourceSha256": "67d48ce9a3098686a8aff8083414b43721482059c82782426c364fe3b6528cc5",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/frustum-held-110-before.png",
+    "sourceBytes": 648938,
+    "sourceSha256": "8a2160e3ee433d280594a13a0a55918432a6099cd6213382dcbec68f172772d6",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/frustum-held-110-after.png",
+    "sourceBytes": 648938,
+    "sourceSha256": "8a2160e3ee433d280594a13a0a55918432a6099cd6213382dcbec68f172772d6",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/frustum-held-110-restored.png",
+    "sourceBytes": 648938,
+    "sourceSha256": "8a2160e3ee433d280594a13a0a55918432a6099cd6213382dcbec68f172772d6",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/frustum-held-250-before.png",
+    "sourceBytes": 662741,
+    "sourceSha256": "e3747286262f6cd071d1163006964f2717f0cb38be844288c657cb9103e75281",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/frustum-held-250-after.png",
+    "sourceBytes": 662741,
+    "sourceSha256": "e3747286262f6cd071d1163006964f2717f0cb38be844288c657cb9103e75281",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/frustum-held-250-restored.png",
+    "sourceBytes": 662741,
+    "sourceSha256": "e3747286262f6cd071d1163006964f2717f0cb38be844288c657cb9103e75281",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/post-frustum-layer-profile.json",
+    "sourceBytes": 3545,
+    "sourceSha256": "b7775b5843baf6838f13c579af220cafc23787e082d38664761256321b0ba2aa",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/contained-browser-final-results.json",
+    "sourceBytes": 33893,
+    "sourceSha256": "9a2c2ac5237aaef901b4977dc46f3c317d8548c79eee678ea1aa2aee79b4e25c",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/contained-browser-fourth-pass-attachments.json",
+    "sourceBytes": 9473,
+    "sourceSha256": "6643b3eb3c62e204d3b56f64250d4dace096b76467ea849fff2de78d2d438fb5",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/scripts/contained-frustum-build.mjs",
+    "sourceBytes": 1961,
+    "sourceSha256": "83ec46132c9ee423100290a16c255eebc356a938138d5f9d0baf7eabde18368a",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/scripts/contained-frustum-held.mts",
+    "sourceBytes": 3885,
+    "sourceSha256": "b1a7379daaffec51d6c05af0e3ea55417e668e71444f9a94b771122706228f42",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/scripts/contained-frustum-normal.mts",
+    "sourceBytes": 3610,
+    "sourceSha256": "9262e22d6ff547c249161fa5a0f7352a6f178928a3b0d52d4f6d20335372d24a",
+    "compressed": false
+  },
+  {
+    "file": "drawing/sphere-per-sample/scripts/contained-layer-after-frustum.mts",
+    "sourceBytes": 4016,
+    "sourceSha256": "394abda1a22b29c8facf143d0fb21e9a00a2a6326a3325a9e5d883b90e48aaa4",
+    "compressed": false
+  },
+  {
+    "file": "graph/semantic-diff.json",
+    "sourceBytes": 21235,
+    "sourceSha256": "3d6a6a7ba60c3c319affbef0e9477407cda1ba89ab6a077e5b9152a2aebcd3a4",
+    "compressed": false
+  },
+  {
+    "file": "gate5/failures/force-graph-update-a-chang-102db-the-levers-ride-the-address-chromium/error-context.md.gz",
+    "sourceBytes": 4358,
+    "sourceSha256": "6b2e0a31f69d5c78fd11c813a43b0c16d16f9d718c429e84882d9ac553769f6b",
+    "compressed": true
+  },
+  {
+    "file": "gate5/failures/force-graph-update-a-chang-102db-the-levers-ride-the-address-chromium/test-failed-1.png",
+    "sourceBytes": 136761,
+    "sourceSha256": "2d756b6786a218cf1a22d00cae135f0107da7910259991d7372dce15ec4623bb",
+    "compressed": false
+  },
+  {
+    "file": "gate5/failures/force-graph-update-a-chang-102db-the-levers-ride-the-address-chromium/trace.zip",
+    "sourceBytes": 17931141,
+    "sourceSha256": "0497213a571370017859991b5683f386f425f42ed11221d9588311eb56ea11f3",
+    "compressed": false
+  },
+  {
+    "file": "gate5/failures/history-recorded-errors-and-fixture.json",
+    "sourceBytes": 7877,
+    "sourceSha256": "16f19e67db80710bcaf7d6532a98534b784c0e50956f373fc6e3f33e421caa87",
+    "compressed": false
+  },
+  {
+    "file": "gate5/failures/history-scrubber-a-drag-pl-2eba7-tles-at-the-tuning-s-energy-chromium/error-context.md.gz",
+    "sourceBytes": 7326,
+    "sourceSha256": "6c2f0f843bdea35b0e9d72dce43c1ee6f197aaae1bec42b1782a82975f066846",
+    "compressed": true
+  },
+  {
+    "file": "gate5/failures/history-scrubber-a-drag-pl-2eba7-tles-at-the-tuning-s-energy-chromium/exact-errors.json",
+    "sourceBytes": 1300,
+    "sourceSha256": "2b02b74f83874c467168a1c9ba99356b79bc9ffc6ada8b9020816c872a5a394b",
+    "compressed": false
+  },
+  {
+    "file": "gate5/failures/history-scrubber-a-drag-pl-2eba7-tles-at-the-tuning-s-energy-chromium/test-failed-1.png",
+    "sourceBytes": 85323,
+    "sourceSha256": "18b42c39fdb038c1b47a904332cc5f549831ba7404f7fa0194192b6b9865bc20",
+    "compressed": false
+  },
+  {
+    "file": "gate5/failures/history-scrubber-a-drag-pl-2eba7-tles-at-the-tuning-s-energy-chromium/trace.zip",
+    "sourceBytes": 11122595,
+    "sourceSha256": "02cc661d876b2e412d52bb4a0dfaea8a128ff8708f1019a810fd84b1be8570da",
+    "compressed": false
+  },
+  {
+    "file": "gate5/failures/history-scrubber-the-addre-04519-eturns-the-picture-to-today-chromium/error-context.md.gz",
+    "sourceBytes": 8485,
+    "sourceSha256": "b4d0c821532b45a663480892f9417ea28ce4142ce3bf6c5fec874ac60456db9a",
+    "compressed": true
+  },
+  {
+    "file": "gate5/failures/history-scrubber-the-addre-04519-eturns-the-picture-to-today-chromium/exact-errors.json",
+    "sourceBytes": 1379,
+    "sourceSha256": "7addd8a3e24e8f7601ca10e694669833edf3b4599bc912a91ba7f2a6192f2df6",
+    "compressed": false
+  },
+  {
+    "file": "gate5/failures/history-scrubber-the-addre-04519-eturns-the-picture-to-today-chromium/test-failed-1.png",
+    "sourceBytes": 92425,
+    "sourceSha256": "c4e5d76ec07e2ac96ea975e908016c173968b75396e7d2ab061d573858647fdf",
+    "compressed": false
+  },
+  {
+    "file": "gate5/failures/history-scrubber-the-addre-04519-eturns-the-picture-to-today-chromium/trace.zip",
+    "sourceBytes": 5487483,
+    "sourceSha256": "1e4e0b9a927812a19f2315daa8bccf2da40bf7723943598eff6f45e0edbedff9",
+    "compressed": false
+  },
+  {
+    "file": "gate5/failures/layout-lab-the-layout-lab--d25f8--the-pixel-repository-chain-chromium/exact-errors.json",
+    "sourceBytes": 720,
+    "sourceSha256": "107a7a4d86497008133e33eda14436a2407fdfc54bd1fb6334d921cc87c710dc",
+    "compressed": false
+  },
+  {
+    "file": "gate5/failures/layout-lab-the-layout-lab--d25f8--the-pixel-repository-chain-chromium/trace.zip",
+    "sourceBytes": 605274,
+    "sourceSha256": "ec89ecd949e339358a6bd2f8579fdb8f3c9d181d4475c33b2052dac516415c73",
+    "compressed": false
+  },
+  {
+    "file": "gate5/failures/local-map-hidden-the-searc-4ef8f-es-when-it-is-visible-again-chromium/error-context.md.gz",
+    "sourceBytes": 334005,
+    "sourceSha256": "0bb9daa5fcd828c94dcaae83ca4b9f59eade45f19f1ad0d37a99f12ea15e03fc",
+    "compressed": true
+  },
+  {
+    "file": "gate5/failures/local-map-hidden-the-searc-4ef8f-es-when-it-is-visible-again-chromium/exact-errors.json",
+    "sourceBytes": 456,
+    "sourceSha256": "28000aab1bddd2de48b4ede0dc125b3311d0817c8ebfc3b6b9465269f7f047ba",
+    "compressed": false
+  },
+  {
+    "file": "gate5/failures/local-map-hidden-the-searc-4ef8f-es-when-it-is-visible-again-chromium/test-failed-1.png",
+    "sourceBytes": 563427,
+    "sourceSha256": "976332be5a779435e78d43cc7205486bbf63a04623f16d2ed267cc0dccb1f512",
+    "compressed": false
+  },
+  {
+    "file": "gate5/failures/local-map-hidden-the-searc-4ef8f-es-when-it-is-visible-again-chromium/trace.zip",
+    "sourceBytes": 4277144,
+    "sourceSha256": "498d388f3f71465d927def19d507dd56939dd2075bb3e94fa8e22dd4acc2f5e7",
+    "compressed": false
+  },
+  {
+    "file": "gate5/failures/whole-update-states.json",
+    "sourceBytes": 2674,
+    "sourceSha256": "fb6665f67b5ce35dd5bcac8a359698cb5ce78e15841ca46552135b33b6301420",
+    "compressed": false
+  },
+  {
+    "file": "gate5/asset-sha256.json",
+    "sourceBytes": 10608,
+    "sourceSha256": "c82ae95d360d956abf6149639f05de08c7ec4ca753b74d0ae05c789735cd7f9a",
+    "compressed": false
+  },
+  {
+    "file": "gate5/source-sha256.json",
+    "sourceBytes": 12820,
+    "sourceSha256": "6f638a7b5f0eda02b6df5f5fe6370f6abae34acac53cf3f59ee8302dd0198ddf",
+    "compressed": false
+  },
+  {
+    "file": "gate5/full-gate.log.gz",
+    "sourceBytes": 91035,
+    "sourceSha256": "72a724a549ba58d1a3bb83902e739f9240ca8e0da4f1450d7a6cc76536e7dd01",
+    "compressed": true
+  },
+  {
+    "file": "gate5/focused/capture-events.json",
+    "sourceBytes": 25944,
+    "sourceSha256": "283d0078791b61d23bfd4be72f678403ddb99933fc23470d7d48ed353b13da9e",
+    "compressed": false
+  },
+  {
+    "file": "gate5/focused/capture.log.gz",
+    "sourceBytes": 19017,
+    "sourceSha256": "015659bd8aa6b1f0484c526665af3fd5b5fb8dfba68dc2375fb6fcc7ede5e4e2",
+    "compressed": true
+  },
+  {
+    "file": "gate5/focused/capture.ts.diagnostic.patch.gz",
+    "sourceBytes": 6928,
+    "sourceSha256": "fad6de070081affab71a7dae9fb249e9ba140df9c57f40947bab53e3ec76603a",
+    "compressed": true
+  },
+  {
+    "file": "gate5/focused/capture.ts.original.gz",
+    "sourceBytes": 37551,
+    "sourceSha256": "e1c12c3a0967c16e612004de46b306d7637af3e358b0a4c310cdf15969e19e2a",
+    "compressed": true
+  },
+  {
+    "file": "gate5/focused/local-map-hidden.spec.ts.diagnostic.patch.gz",
+    "sourceBytes": 3597,
+    "sourceSha256": "4f3db3928b13e13502639fde3f32ca7f1f63e4c950b1a628b320ec484467b50c",
+    "compressed": true
+  },
+  {
+    "file": "gate5/focused/local-map-hidden.spec.ts.original.gz",
+    "sourceBytes": 9733,
+    "sourceSha256": "2cc5ed75a10f3c9a613117b7f7bfdc1f810e8761aa05a7fd16523d5dc4969eee",
+    "compressed": true
+  },
+  {
+    "file": "gate5/focused/original-helper-sha256.json",
+    "sourceBytes": 280,
+    "sourceSha256": "05ffaef573a1f4855eb1124bf9345f1304f4e529d292a2bfa0916f3c2f318e25",
+    "compressed": false
+  },
+  {
+    "file": "gate5/focused/restored-helper-sha256.json",
+    "sourceBytes": 280,
+    "sourceSha256": "05ffaef573a1f4855eb1124bf9345f1304f4e529d292a2bfa0916f3c2f318e25",
+    "compressed": false
+  },
+  {
+    "file": "gate5/focused/run-results.json",
+    "sourceBytes": 974,
+    "sourceSha256": "8149d6461c3fbe2e0eab0715f31bf6be0ded0b9db6aaafba6229ada72526fefc",
+    "compressed": false
+  },
+  {
+    "file": "gate5/focused/summary.json",
+    "sourceBytes": 2417,
+    "sourceSha256": "c241d872f105b9838f3c98be4e7d37fba1fd36c62c9f37944452b2007005764d",
+    "compressed": false
+  },
+  {
+    "file": "gate5/focused/visibility-events.json",
+    "sourceBytes": 71904,
+    "sourceSha256": "33adccecb3ac07134a2081042dbb2f5cd582875ea3b1be5ec8d5d9db580babfd",
+    "compressed": false
+  },
+  {
+    "file": "gate5/focused/visibility.log.gz",
+    "sourceBytes": 53551,
+    "sourceSha256": "2279bc44d22f5cba87cacf3888a27b2b6974e9260c0dcfbc7f866d8fae2340c3",
+    "compressed": true
+  },
+  {
+    "file": "gate5/focused/observe.py",
+    "sourceBytes": 9642,
+    "sourceSha256": "7b8f0747808cb4fd45b45acd95a5da83f4b2a59c40880c714fdb582169730c07",
+    "compressed": false
+  },
+  {
+    "file": "builder-handback.txt",
+    "sourceBytes": 20313,
+    "sourceSha256": "4a8ee4034722c72726385737ae3d580cae577e0418769757d153561cd97e45cc",
+    "compressed": false
+  },
+  {
+    "file": "scripts/builder/README.txt",
+    "sourceBytes": 476,
+    "sourceSha256": "7b574692e229af759320fcc5551687bfd5ee4bbd851be68c790000f71c86afb8",
+    "compressed": false
+  },
+  {
+    "file": "scripts/builder/build-whole-baseline.mjs",
+    "sourceBytes": 1488,
+    "sourceSha256": "6344b0b154ef17f5515d92243e630e76a9c80bee5dc1883c9dfab17df80a2f1d",
+    "compressed": false
+  },
+  {
+    "file": "scripts/builder/capture-cost.mts",
+    "sourceBytes": 1976,
+    "sourceSha256": "99ace0f93023e49327f7a5b03fc6efc530b492ea280ca07b9daf65c48c359056",
+    "compressed": false
+  },
+  {
+    "file": "scripts/builder/defaults-authored.md.txt",
+    "sourceBytes": 919,
+    "sourceSha256": "3a815b6a3dffda8aac4ce276d9ef78c557293b5eaa9c304dccc82742168c55c7",
+    "compressed": false
+  },
+  {
+    "file": "scripts/builder/defaults-review.mts",
+    "sourceBytes": 4068,
+    "sourceSha256": "53c8919d37d89cd3db5137ec46dd517fdfcd111bf7028caf80e8bba4a461691d",
+    "compressed": false
+  },
+  {
+    "file": "scripts/builder/frozen-bundle.mjs",
+    "sourceBytes": 1256,
+    "sourceSha256": "741a09adf2b6e81b52046cbd7e2bde1ab97166dd9527f5e327a8b3c339e027e1",
+    "compressed": false
+  },
+  {
+    "file": "scripts/builder/frozen-probe.mts",
+    "sourceBytes": 3814,
+    "sourceSha256": "4319e673b9d0abe27e309ef2b79a4a039bb3e1e1c6fc4a7b4ba6b635911a7259",
+    "compressed": false
+  },
+  {
+    "file": "scripts/builder/profile-bundle.mjs",
+    "sourceBytes": 2714,
+    "sourceSha256": "b401b6b51cbe76eb7ed1c9017f3a247be43246656cb02d959f719ee193847713",
+    "compressed": false
+  },
+  {
+    "file": "scripts/builder/profile-probe.mts",
+    "sourceBytes": 2487,
+    "sourceSha256": "4c44bae7c03acf73a7ce3b049a2d968f864020e678a618d8caa18d997d82298f",
+    "compressed": false
+  },
+  {
+    "file": "scripts/builder/settling-bundles.mjs",
+    "sourceBytes": 2125,
+    "sourceSha256": "ac9e97b92bd5512cdb8d9d217fb690194e258009ed786f8516d38bd2f8e5d67d",
+    "compressed": false
+  },
+  {
+    "file": "scripts/builder/settling-probe.mts",
+    "sourceBytes": 7613,
+    "sourceSha256": "01e40cb2dcf5b072c4c1293faf020ad5bdbd2c26aaa5723cd2face08e6cf7fc3",
+    "compressed": false
+  },
+  {
+    "file": "scripts/builder/sphere-capabilities.mts",
+    "sourceBytes": 3986,
+    "sourceSha256": "c1cabb3b100b6b3b003ac5b772f287f86613aad85e9eb5083b2f235e2d1c7c92",
+    "compressed": false
+  },
+  {
+    "file": "scripts/builder/transition-frames.mts",
+    "sourceBytes": 2338,
+    "sourceSha256": "86abacda308fe94724a620c4182b31db9dff670af928ce1235d69701d5feff2c",
+    "compressed": false
+  },
+  {
+    "file": "scripts/builder/transition-probe.mts",
+    "sourceBytes": 1575,
+    "sourceSha256": "a1e2e2f38eca82ea6814aa6faeaa430317aedd7da2a8bc51eed942cdbc97fa2b",
+    "compressed": false
+  },
+  {
+    "file": "scripts/builder/unpin-probe.mts",
+    "sourceBytes": 3154,
+    "sourceSha256": "ebc204a622ddb80bafbe8fd7700773728a96dda7793663146249ab2a407956fa",
+    "compressed": false
+  },
+  {
+    "file": "scripts/builder/visibility-probe.mts",
+    "sourceBytes": 3841,
+    "sourceSha256": "d44ab12ca8359ca1dde62dbd648aa38f0a3c1dc52e3fa396a9da7a7e873318ab",
+    "compressed": false
+  },
+  {
+    "file": "scripts/root/batches-impact-before.json.gz",
+    "sourceBytes": 6195,
+    "sourceSha256": "1899b2ba96b234188daa23193e227276adb5ac197f860005a225eb662dff8d14",
+    "compressed": true
+  },
+  {
+    "file": "scripts/root/candidate-motion.mjs",
+    "sourceBytes": 3611,
+    "sourceSha256": "34964e15b528426194d1efed15d9edea31a64fd5d14b879f7662a4b7bce5a7e3",
+    "compressed": false
+  },
+  {
+    "file": "scripts/root/contained-journey.mjs",
+    "sourceBytes": 5315,
+    "sourceSha256": "20e9c05ba5f48c88a9a6226b06bb4fcce3f76ef91c7c209781a6a98af849c91d",
+    "compressed": false
+  },
+  {
+    "file": "scripts/root/defaults-impact.json.gz",
+    "sourceBytes": 22405,
+    "sourceSha256": "3649a1b292de347dfb8630d8e1e34ca7f6b320a88dba18e2430dd34f618b439c",
+    "compressed": true
+  },
+  {
+    "file": "scripts/root/estate.mjs",
+    "sourceBytes": 3077,
+    "sourceSha256": "a5326ad11a91d89fc37e36914d05a6f2ee67300c70cd18c3f264c356f7d76295",
+    "compressed": false
+  },
+  {
+    "file": "scripts/root/header-check.mjs",
+    "sourceBytes": 2255,
+    "sourceSha256": "a477a7c68635c50a8b49a7b2040bf345a29cea82a81ab7adab1986aabf0f6ca2",
+    "compressed": false
+  },
+  {
+    "file": "scripts/root/integration-review.mjs",
+    "sourceBytes": 3829,
+    "sourceSha256": "8f34aeb2e7795a9b45ecce44359e67c25e504fd4e1f885b02200e6a98779e597",
+    "compressed": false
+  },
+  {
+    "file": "scripts/root/look.mjs",
+    "sourceBytes": 2337,
+    "sourceSha256": "df50f50e4a7a7d17f26441bcae891651e8683cb952f6e90ef41ac677660217e6",
+    "compressed": false
+  },
+  {
+    "file": "scripts/root/open-close.mjs",
+    "sourceBytes": 1816,
+    "sourceSha256": "fb29c1150a8bf54095f43527c0bc64db083e9b29cf3e6a7ee412bd7dc897d9f6",
+    "compressed": false
+  },
+  {
+    "file": "scripts/root/structure.mjs",
+    "sourceBytes": 2168,
+    "sourceSha256": "553cbcb5ec9276c5fa39429f838eb26873212f9a5c30a6cfb747bc462e55a7ed",
+    "compressed": false
+  },
+  {
+    "file": "graph/inspect-local-storage-after.json.gz",
+    "sourceBytes": 213156,
+    "sourceSha256": "32ae92a287537478762ec7dc8cadac0c39b742a11c98ec58f310a577845ef644",
+    "compressed": true
+  },
+  {
+    "file": "graph/inspect-forceGraphView-after.json.gz",
+    "sourceBytes": 1894,
+    "sourceSha256": "a9169b69bd2e1bc5c7842e37a65b0d9e871b53e041705050edab92a78ba09c50",
+    "compressed": true
+  },
+  {
+    "file": "graph/inspect-forceGraphBatches-after.json.gz",
+    "sourceBytes": 16156,
+    "sourceSha256": "5cbf7086a886396ad25983ee369afc2f415834619e6c44dbf2ab8c0105f92403",
+    "compressed": true
+  },
+  {
+    "file": "graph/inspect-coreTypes-after.json.gz",
+    "sourceBytes": 306829,
+    "sourceSha256": "c80a687f91f7af05f511b6e2d842a18bda647e40b7466e22436203fca88b386d",
+    "compressed": true
+  },
+  {
+    "file": "graph/inspect-perspectiveBodies-after.json.gz",
+    "sourceBytes": 1351,
+    "sourceSha256": "84939eb70246a350f487fed6c7b1de1935e021fc86f8a33b7a0fc2e53989e245",
+    "compressed": true
+  },
+  {
+    "file": "gate5/main-integration.log.gz",
+    "sourceBytes": 2231,
+    "sourceSha256": "186054483e078f7d40a6bab157e7ae321c66e0f2f241b5087cbc632d582accc2",
+    "compressed": true
+  },
+  {
+    "file": "graph/batches-before.json.gz",
+    "sourceBytes": 6171,
+    "sourceSha256": "4ab4680c2dc5602c7b6a5ae4c4ba37d0ab628fd4cf8c3f4d69138b48a096f685",
+    "compressed": true
+  },
+  {
+    "file": "graph/coretypes-before.json.gz",
+    "sourceBytes": 30077,
+    "sourceSha256": "1a66291f79739a337d58d7fa24cc30c04ba6ad8d794d1a4fa30472c28fe37297",
+    "compressed": true
+  },
+  {
+    "file": "graph/impact-before.json.gz",
+    "sourceBytes": 22153,
+    "sourceSha256": "ccbd6dad844a620970b4410bf699eb5c1e7d4d951e93ef5e29bed3f023b529dc",
+    "compressed": true
+  },
+  {
+    "file": "graph/template-impact-before.json.gz",
+    "sourceBytes": 2255,
+    "sourceSha256": "0d03dc87474135fcb91a286fa5207ed2d686175e468a0fcaf5cdb1b5714eb6ee",
+    "compressed": true
+  },
+  {
+    "file": "graph/view-impact-before.json.gz",
+    "sourceBytes": 729,
+    "sourceSha256": "077de0e5f0e8b06650c6dd03c12841087b6978b452a6cd8a5800129291bd7f67",
+    "compressed": true
+  },
+  {
+    "file": "drawing/sphere-per-sample/root-early-wait-trial.webm",
+    "sourceBytes": 2681946,
+    "sourceSha256": "de7327d47ec08be047298605463573634120dfc39fbf76e569bc07a39021456f",
+    "compressed": false
   }
 ]

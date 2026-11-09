@@ -1,0 +1,944 @@
+[
+  {
+    "phase": "setup-entry",
+    "epoch": 1794187198226,
+    "elapsed": 7
+  },
+  {
+    "phase": "branch-ready",
+    "epoch": 1794187201763,
+    "elapsed": 3544
+  },
+  {
+    "phase": "wires-ready",
+    "epoch": 1794187202083,
+    "elapsed": 3864
+  },
+  {
+    "phase": "pretext-ready",
+    "epoch": 1794187202877,
+    "elapsed": 4658
+  },
+  {
+    "phase": "evaluate-issued",
+    "epoch": 1794187202878
+  },
+  {
+    "phase": "callback-entry",
+    "epoch": 1794187202889,
+    "elapsed": 0
+  },
+  {
+    "phase": "title-rooms",
+    "epoch": 1794187202894.5,
+    "elapsed": 5.5,
+    "cards": 102,
+    "rows": 711,
+    "titles": 102
+  },
+  {
+    "phase": "natural-widths-restored",
+    "epoch": 1794187202956.7,
+    "elapsed": 67.69999998807907,
+    "wrappers": 102
+  },
+  {
+    "phase": "card-progress",
+    "epoch": 1794187203511.8,
+    "elapsed": 622.8000000119209,
+    "count": 1,
+    "card": {
+      "id": "packages/engine/src/live-docs/history/format.ts",
+      "rows": 22,
+      "total": 553.7999999821186,
+      "rowsMs": 320.69999998807907,
+      "probesMs": 36.30000001192093
+    }
+  },
+  {
+    "phase": "card-progress",
+    "epoch": 1794187204721.9,
+    "elapsed": 1832.9000000059605,
+    "count": 10,
+    "card": {
+      "id": "packages/explorer/src/client/history/history-control.ts",
+      "rows": 7,
+      "total": 129,
+      "rowsMs": 66.90000000596046,
+      "probesMs": 30.799999982118607
+    }
+  },
+  {
+    "phase": "card-progress",
+    "epoch": 1794187205873.5,
+    "elapsed": 2984.5,
+    "count": 20,
+    "card": {
+      "id": "packages/explorer/src/client/search/search-bar.ts",
+      "rows": 6,
+      "total": 134.30000001192093,
+      "rowsMs": 68.5,
+      "probesMs": 32.5
+    }
+  },
+  {
+    "phase": "card-progress",
+    "epoch": 1794187207461.9,
+    "elapsed": 4573,
+    "count": 30,
+    "card": {
+      "id": "packages/explorer/src/client/persistence/url-state.test.ts",
+      "rows": 1,
+      "total": 60.5,
+      "rowsMs": 0.09999999403953552,
+      "probesMs": 30.400000005960464
+    }
+  },
+  {
+    "phase": "card-progress",
+    "epoch": 1794187208353.9,
+    "elapsed": 5464.9000000059605,
+    "count": 40,
+    "card": {
+      "id": "packages/explorer/src/client/views/localView/branch-scene.test.ts",
+      "rows": 1,
+      "total": 66.09999999403954,
+      "rowsMs": 0.19999998807907104,
+      "probesMs": 32.900000005960464
+    }
+  },
+  {
+    "phase": "card-progress",
+    "epoch": 1794187209369.5,
+    "elapsed": 6480.5,
+    "count": 46,
+    "card": {
+      "id": "packages/explorer/src/client/views/pin-state.ts",
+      "rows": 17,
+      "total": 549.4000000059605,
+      "rowsMs": 484.7000000178814,
+      "probesMs": 31.399999976158142
+    }
+  },
+  {
+    "phase": "card-progress",
+    "epoch": 1794187210094.4,
+    "elapsed": 7205.4000000059605,
+    "count": 50,
+    "card": {
+      "id": "packages/explorer/src/client/views/forceGraphScope.ts",
+      "rows": 13,
+      "total": 104.5,
+      "rowsMs": 35.69999998807907,
+      "probesMs": 32.400000005960464
+    }
+  },
+  {
+    "phase": "card-progress",
+    "epoch": 1794187211810.4,
+    "elapsed": 8921.40000000596,
+    "count": 60,
+    "card": {
+      "id": "packages/explorer/src/client/download.ts",
+      "rows": 7,
+      "total": 173.2000000178814,
+      "rowsMs": 116.40000000596046,
+      "probesMs": 28.30000001192093
+    }
+  },
+  {
+    "phase": "card-progress",
+    "epoch": 1794187212536.5,
+    "elapsed": 9647.5,
+    "count": 70,
+    "card": {
+      "id": "scripts/layout-lab/approximation.ts",
+      "rows": 16,
+      "total": 73,
+      "rowsMs": 4.4000000059604645,
+      "probesMs": 34.5
+    }
+  },
+  {
+    "phase": "card-progress",
+    "epoch": 1794187213236.8,
+    "elapsed": 10347.800000011921,
+    "count": 80,
+    "card": {
+      "id": "tests/e2e/force-graph-discovery.spec.ts",
+      "rows": 1,
+      "total": 77.90000000596046,
+      "rowsMs": 0.09999999403953552,
+      "probesMs": 33.69999998807907
+    }
+  },
+  {
+    "phase": "card-progress",
+    "epoch": 1794187213881.5999,
+    "elapsed": 10992.59999999404,
+    "count": 90,
+    "card": {
+      "id": "tests/e2e/inspection.spec.ts",
+      "rows": 1,
+      "total": 57.30000001192093,
+      "rowsMs": 0.20000001788139343,
+      "probesMs": 28.799999982118607
+    }
+  },
+  {
+    "phase": "card-progress",
+    "epoch": 1794187214471.7,
+    "elapsed": 11582.699999988079,
+    "count": 100,
+    "card": {
+      "id": "tests/e2e/force-graph-exploration.spec.ts",
+      "rows": 1,
+      "total": 68.5,
+      "rowsMs": 0.20000001788139343,
+      "probesMs": 33.79999998211861
+    }
+  },
+  {
+    "phase": "cards-complete",
+    "epoch": 1794187214594.0999,
+    "elapsed": 11705.09999999404,
+    "count": 102,
+    "timings": [
+      {
+        "id": "packages/engine/src/live-docs/history/format.ts",
+        "rows": 22,
+        "total": 553.7999999821186,
+        "rowsMs": 320.69999998807907,
+        "probesMs": 36.30000001192093
+      },
+      {
+        "id": "packages/explorer/src/shared/types.ts",
+        "rows": 9,
+        "total": 154.69999998807907,
+        "rowsMs": 79.69999998807907,
+        "probesMs": 37.900000005960464
+      },
+      {
+        "id": "packages/explorer/src/shared/graph.ts",
+        "rows": 3,
+        "total": 104.7000000178814,
+        "rowsMs": 34.70000001788139,
+        "probesMs": 32.79999998211861
+      },
+      {
+        "id": "packages/explorer/src/shared/staticExplorerData.ts",
+        "rows": 7,
+        "total": 103.7999999821186,
+        "rowsMs": 35.5,
+        "probesMs": 32.099999994039536
+      },
+      {
+        "id": "packages/explorer/src/shared/template.html",
+        "rows": 153,
+        "total": 281.7000000178814,
+        "rowsMs": 217.2000000178814,
+        "probesMs": 31.599999994039536
+      },
+      {
+        "id": "packages/explorer/src/client/bootstrap/index.ts",
+        "rows": 2,
+        "total": 93.59999999403954,
+        "rowsMs": 30.69999998807907,
+        "probesMs": 31.200000017881393
+      },
+      {
+        "id": "packages/explorer/src/client/bootstrap/landing.ts",
+        "rows": 4,
+        "total": 95.09999999403954,
+        "rowsMs": 31.400000005960464,
+        "probesMs": 30.69999998807907
+      },
+      {
+        "id": "packages/explorer/src/client/history/file-identity.ts",
+        "rows": 6,
+        "total": 143.09999999403954,
+        "rowsMs": 69.7000000178814,
+        "probesMs": 37.099999994039536
+      },
+      {
+        "id": "packages/explorer/src/client/history/moment.ts",
+        "rows": 3,
+        "total": 103.7000000178814,
+        "rowsMs": 33,
+        "probesMs": 35.5
+      },
+      {
+        "id": "packages/explorer/src/client/history/history-control.ts",
+        "rows": 7,
+        "total": 129,
+        "rowsMs": 66.90000000596046,
+        "probesMs": 30.799999982118607
+      },
+      {
+        "id": "packages/explorer/src/client/history/moment-paths.ts",
+        "rows": 5,
+        "total": 186.09999999403954,
+        "rowsMs": 120.7000000178814,
+        "probesMs": 30.399999976158142
+      },
+      {
+        "id": "packages/explorer/src/client/panels/stats-line.ts",
+        "rows": 2,
+        "total": 93.30000001192093,
+        "rowsMs": 30.30000001192093,
+        "probesMs": 30.900000005960464
+      },
+      {
+        "id": "packages/explorer/src/client/panels/sources-facts.ts",
+        "rows": 13,
+        "total": 105.5,
+        "rowsMs": 33.80000001192093,
+        "probesMs": 31.399999976158142
+      },
+      {
+        "id": "packages/explorer/src/client/panels/sources-view.ts",
+        "rows": 6,
+        "total": 95.69999998807907,
+        "rowsMs": 32.900000005960464,
+        "probesMs": 29.400000005960464
+      },
+      {
+        "id": "packages/explorer/src/client/panels/icon-button.ts",
+        "rows": 7,
+        "total": 94.10000002384186,
+        "rowsMs": 31.30000001192093,
+        "probesMs": 29.099999994039536
+      },
+      {
+        "id": "packages/explorer/src/client/panels/pin-tray.ts",
+        "rows": 3,
+        "total": 92.89999997615814,
+        "rowsMs": 32.099999994039536,
+        "probesMs": 30
+      },
+      {
+        "id": "packages/explorer/src/client/panels/item-menu.ts",
+        "rows": 3,
+        "total": 102,
+        "rowsMs": 37.20000001788139,
+        "probesMs": 32.5
+      },
+      {
+        "id": "packages/explorer/src/client/panels/tuning.ts",
+        "rows": 5,
+        "total": 100,
+        "rowsMs": 33.5,
+        "probesMs": 31.80000001192093
+      },
+      {
+        "id": "packages/explorer/src/client/search/graph-search.ts",
+        "rows": 19,
+        "total": 147.5,
+        "rowsMs": 67.90000000596046,
+        "probesMs": 39.20000001788139
+      },
+      {
+        "id": "packages/explorer/src/client/search/search-bar.ts",
+        "rows": 6,
+        "total": 134.30000001192093,
+        "rowsMs": 68.5,
+        "probesMs": 32.5
+      },
+      {
+        "id": "packages/explorer/src/client/persistence/navigation.ts",
+        "rows": 4,
+        "total": 182,
+        "rowsMs": 97.69999998807907,
+        "probesMs": 31.80000001192093
+      },
+      {
+        "id": "packages/explorer/src/client/persistence/history.ts",
+        "rows": 9,
+        "total": 261.89999997615814,
+        "rowsMs": 196.39999997615814,
+        "probesMs": 33.20000001788139
+      },
+      {
+        "id": "packages/explorer/src/client/persistence/local-storage.ts",
+        "rows": 17,
+        "total": 103.30000001192093,
+        "rowsMs": 35.5,
+        "probesMs": 32.80000001192093
+      },
+      {
+        "id": "packages/explorer/src/client/persistence/compressed-url-state.ts",
+        "rows": 11,
+        "total": 404.90000000596046,
+        "rowsMs": 341.09999999403954,
+        "probesMs": 30.900000005960464
+      },
+      {
+        "id": "packages/explorer/src/client/persistence/local-storage.test.ts",
+        "rows": 1,
+        "total": 59.599999994039536,
+        "rowsMs": 0.29999998211860657,
+        "probesMs": 29
+      },
+      {
+        "id": "packages/explorer/src/client/persistence/compressed-url-state.test.ts",
+        "rows": 1,
+        "total": 62.19999998807907,
+        "rowsMs": 0.19999998807907104,
+        "probesMs": 30.700000017881393
+      },
+      {
+        "id": "packages/explorer/src/client/persistence/url-state.ts",
+        "rows": 5,
+        "total": 62.70000001788139,
+        "rowsMs": 1.5,
+        "probesMs": 30
+      },
+      {
+        "id": "packages/explorer/src/client/persistence/index.ts",
+        "rows": 10,
+        "total": 299,
+        "rowsMs": 237.5,
+        "probesMs": 29.900000005960464
+      },
+      {
+        "id": "packages/explorer/src/client/persistence/place.ts",
+        "rows": 2,
+        "total": 91.90000000596046,
+        "rowsMs": 31,
+        "probesMs": 29.599999994039536
+      },
+      {
+        "id": "packages/explorer/src/client/persistence/url-state.test.ts",
+        "rows": 1,
+        "total": 60.5,
+        "rowsMs": 0.09999999403953552,
+        "probesMs": 30.400000005960464
+      },
+      {
+        "id": "packages/explorer/src/client/persistence/place.test.ts",
+        "rows": 1,
+        "total": 60.70000001788139,
+        "rowsMs": 0.20000001788139343,
+        "probesMs": 30.5
+      },
+      {
+        "id": "packages/explorer/src/client/views/worldMap/index.ts",
+        "rows": 4,
+        "total": 99.40000000596046,
+        "rowsMs": 32.099999994039536,
+        "probesMs": 34.099999994039536
+      },
+      {
+        "id": "packages/explorer/src/client/views/localView/directory-state.ts",
+        "rows": 8,
+        "total": 180.19999998807907,
+        "rowsMs": 117.2999999821186,
+        "probesMs": 30.80000001192093
+      },
+      {
+        "id": "packages/explorer/src/client/views/localView/types.ts",
+        "rows": 12,
+        "total": 98.59999999403954,
+        "rowsMs": 32.80000001192093,
+        "probesMs": 31.399999976158142
+      },
+      {
+        "id": "packages/explorer/src/client/views/localView/symbol-highlight.ts",
+        "rows": 5,
+        "total": 64.7000000178814,
+        "rowsMs": 1.5,
+        "probesMs": 31.599999994039536
+      },
+      {
+        "id": "packages/explorer/src/client/views/localView/branches.ts",
+        "rows": 21,
+        "total": 133.69999998807907,
+        "rowsMs": 67,
+        "probesMs": 32.89999997615814
+      },
+      {
+        "id": "packages/explorer/src/client/views/localView/branch-renderer.ts",
+        "rows": 7,
+        "total": 61.80000001192093,
+        "rowsMs": 1.800000011920929,
+        "probesMs": 29.799999982118607
+      },
+      {
+        "id": "packages/explorer/src/client/views/localView/connections.ts",
+        "rows": 4,
+        "total": 66.89999997615814,
+        "rowsMs": 1.0999999940395355,
+        "probesMs": 30.799999982118607
+      },
+      {
+        "id": "packages/explorer/src/client/views/localView/branch-motion.test.ts",
+        "rows": 1,
+        "total": 59.60000002384186,
+        "rowsMs": 0.10000002384185791,
+        "probesMs": 29.599999994039536
+      },
+      {
+        "id": "packages/explorer/src/client/views/localView/branch-scene.test.ts",
+        "rows": 1,
+        "total": 66.09999999403954,
+        "rowsMs": 0.19999998807907104,
+        "probesMs": 32.900000005960464
+      },
+      {
+        "id": "packages/explorer/src/client/views/localView/branches.test.ts",
+        "rows": 1,
+        "total": 64,
+        "rowsMs": 0.30000001192092896,
+        "probesMs": 32.599999994039536
+      },
+      {
+        "id": "packages/explorer/src/client/views/localView/controller.ts",
+        "rows": 2,
+        "total": 59.900000005960464,
+        "rowsMs": 0.5999999940395355,
+        "probesMs": 29.5
+      },
+      {
+        "id": "packages/explorer/src/client/views/localView/index.ts",
+        "rows": 4,
+        "total": 92.09999999403954,
+        "rowsMs": 31.799999982118607,
+        "probesMs": 29.200000017881393
+      },
+      {
+        "id": "packages/explorer/src/client/views/symbolAnchors.ts",
+        "rows": 5,
+        "total": 186.5,
+        "rowsMs": 124.5,
+        "probesMs": 29.400000005960464
+      },
+      {
+        "id": "packages/explorer/src/client/views/symbolAnchors.test.ts",
+        "rows": 1,
+        "total": 63.599999994039536,
+        "rowsMs": 0.30000001192092896,
+        "probesMs": 31.399999976158142
+      },
+      {
+        "id": "packages/explorer/src/client/views/pin-state.ts",
+        "rows": 17,
+        "total": 549.4000000059605,
+        "rowsMs": 484.7000000178814,
+        "probesMs": 31.399999976158142
+      },
+      {
+        "id": "packages/explorer/src/client/views/pin-state.test.ts",
+        "rows": 1,
+        "total": 66.7999999821186,
+        "rowsMs": 0.19999998807907104,
+        "probesMs": 35.19999998807907
+      },
+      {
+        "id": "packages/explorer/src/client/views/retained-state.ts",
+        "rows": 12,
+        "total": 386.59999999403954,
+        "rowsMs": 310.2000000178814,
+        "probesMs": 38.89999997615814
+      },
+      {
+        "id": "packages/explorer/src/client/views/perspectiveTransition.ts",
+        "rows": 8,
+        "total": 166.60000002384186,
+        "rowsMs": 99.40000000596046,
+        "probesMs": 34.599999994039536
+      },
+      {
+        "id": "packages/explorer/src/client/views/forceGraphScope.ts",
+        "rows": 13,
+        "total": 104.5,
+        "rowsMs": 35.69999998807907,
+        "probesMs": 32.400000005960464
+      },
+      {
+        "id": "packages/explorer/src/client/views/forceGraphView.ts",
+        "rows": 7,
+        "total": 103.5,
+        "rowsMs": 39.599999994039536,
+        "probesMs": 30.900000005960464
+      },
+      {
+        "id": "packages/explorer/src/client/views/retained-state.test.ts",
+        "rows": 1,
+        "total": 63.099999994039536,
+        "rowsMs": 0.20000001788139343,
+        "probesMs": 31.299999982118607
+      },
+      {
+        "id": "packages/explorer/src/client/reading-state.ts",
+        "rows": 8,
+        "total": 221.60000002384186,
+        "rowsMs": 156.30000001192093,
+        "probesMs": 32.5
+      },
+      {
+        "id": "packages/explorer/src/client/types.ts",
+        "rows": 23,
+        "total": 290,
+        "rowsMs": 225,
+        "probesMs": 30.69999998807907
+      },
+      {
+        "id": "packages/explorer/src/client/graph-helpers.ts",
+        "rows": 5,
+        "total": 167.2999999821186,
+        "rowsMs": 99.19999998807907,
+        "probesMs": 32.400000005960464
+      },
+      {
+        "id": "packages/explorer/src/client/pathfind.ts",
+        "rows": 9,
+        "total": 271.2000000178814,
+        "rowsMs": 177.40000000596046,
+        "probesMs": 39.400000005960464
+      },
+      {
+        "id": "packages/explorer/src/client/layout-presets.ts",
+        "rows": 9,
+        "total": 196.2999999821186,
+        "rowsMs": 131.19999998807907,
+        "probesMs": 32.80000001192093
+      },
+      {
+        "id": "packages/explorer/src/client/dom.ts",
+        "rows": 4,
+        "total": 112.2000000178814,
+        "rowsMs": 54.80000001192093,
+        "probesMs": 29.299999982118607
+      },
+      {
+        "id": "packages/explorer/src/client/detailPanel.ts",
+        "rows": 5,
+        "total": 117.2999999821186,
+        "rowsMs": 56.099999994039536,
+        "probesMs": 30.30000001192093
+      },
+      {
+        "id": "packages/explorer/src/client/download.ts",
+        "rows": 7,
+        "total": 173.2000000178814,
+        "rowsMs": 116.40000000596046,
+        "probesMs": 28.30000001192093
+      },
+      {
+        "id": "packages/explorer/src/client/layout-presets.test.ts",
+        "rows": 1,
+        "total": 57.10000002384186,
+        "rowsMs": 0.10000002384185791,
+        "probesMs": 29.399999976158142
+      },
+      {
+        "id": "packages/explorer/src/client/errors.ts",
+        "rows": 3,
+        "total": 117.89999997615814,
+        "rowsMs": 61.19999998807907,
+        "probesMs": 28.900000005960464
+      },
+      {
+        "id": "packages/explorer/src/client/index.ts",
+        "rows": 1,
+        "total": 58.30000001192093,
+        "rowsMs": 0.20000001788139343,
+        "probesMs": 27.400000005960464
+      },
+      {
+        "id": "scripts/layout-lab/card-model.ts",
+        "rows": 16,
+        "total": 64.19999998807907,
+        "rowsMs": 4.300000011920929,
+        "probesMs": 30.099999994039536
+      },
+      {
+        "id": "scripts/layout-lab/measurer.ts",
+        "rows": 4,
+        "total": 57.900000005960464,
+        "rowsMs": 0.9000000059604645,
+        "probesMs": 28.099999994039536
+      },
+      {
+        "id": "scripts/layout-lab/evaluate.ts",
+        "rows": 10,
+        "total": 114.30000001192093,
+        "rowsMs": 56.599999994039536,
+        "probesMs": 27.600000023841858
+      },
+      {
+        "id": "scripts/layout-lab/card-model.test.ts",
+        "rows": 1,
+        "total": 54.900000005960464,
+        "rowsMs": 0.19999998807907104,
+        "probesMs": 27
+      },
+      {
+        "id": "scripts/layout-lab/spatial.ts",
+        "rows": 3,
+        "total": 68.39999997615814,
+        "rowsMs": 0.7999999821186066,
+        "probesMs": 36.30000001192093
+      },
+      {
+        "id": "scripts/layout-lab/evaluate.test.ts",
+        "rows": 1,
+        "total": 59.80000001192093,
+        "rowsMs": 0.20000001788139343,
+        "probesMs": 29.69999998807907
+      },
+      {
+        "id": "scripts/layout-lab/approximation.ts",
+        "rows": 16,
+        "total": 73,
+        "rowsMs": 4.4000000059604645,
+        "probesMs": 34.5
+      },
+      {
+        "id": "scripts/layout-lab/approximation.test.ts",
+        "rows": 1,
+        "total": 64.2000000178814,
+        "rowsMs": 0.20000001788139343,
+        "probesMs": 31.5
+      },
+      {
+        "id": "tests/e2e/still-picture.ts",
+        "rows": 59,
+        "total": 84.2999999821186,
+        "rowsMs": 18,
+        "probesMs": 33.599999994039536
+      },
+      {
+        "id": "tests/e2e/no-network.spec.ts",
+        "rows": 1,
+        "total": 63.10000002384186,
+        "rowsMs": 0.20000001788139343,
+        "probesMs": 30.900000005960464
+      },
+      {
+        "id": "tests/e2e/search-bar.ts",
+        "rows": 7,
+        "total": 94.2999999821186,
+        "rowsMs": 32,
+        "probesMs": 30.69999998807907
+      },
+      {
+        "id": "tests/e2e/force-graph-update.spec.ts",
+        "rows": 1,
+        "total": 60.599999994039536,
+        "rowsMs": 0.20000001788139343,
+        "probesMs": 29.399999976158142
+      },
+      {
+        "id": "tests/e2e/force-graph-structure-cells.spec.ts",
+        "rows": 1,
+        "total": 63.60000002384186,
+        "rowsMs": 0.20000001788139343,
+        "probesMs": 29.799999982118607
+      },
+      {
+        "id": "tests/e2e/force-graph-wrappers.spec.ts",
+        "rows": 1,
+        "total": 60.599999994039536,
+        "rowsMs": 0.19999998807907104,
+        "probesMs": 29.400000005960464
+      },
+      {
+        "id": "tests/e2e/history-emphasis.spec.ts",
+        "rows": 1,
+        "total": 62.599999994039536,
+        "rowsMs": 0.19999998807907104,
+        "probesMs": 31
+      },
+      {
+        "id": "tests/e2e/spatial-legend.spec.ts",
+        "rows": 1,
+        "total": 68.90000000596046,
+        "rowsMs": 0.19999998807907104,
+        "probesMs": 32.30000001192093
+      },
+      {
+        "id": "tests/e2e/force-graph-discovery.spec.ts",
+        "rows": 1,
+        "total": 77.90000000596046,
+        "rowsMs": 0.09999999403953552,
+        "probesMs": 33.69999998807907
+      },
+      {
+        "id": "tests/e2e/card-slots.spec.ts",
+        "rows": 1,
+        "total": 72.5,
+        "rowsMs": 0.19999998807907104,
+        "probesMs": 39.30000001192093
+      },
+      {
+        "id": "tests/e2e/force-graph-directories.spec.ts",
+        "rows": 1,
+        "total": 71.19999998807907,
+        "rowsMs": 0.09999999403953552,
+        "probesMs": 32.30000001192093
+      },
+      {
+        "id": "tests/e2e/card-ladder.spec.ts",
+        "rows": 1,
+        "total": 78.2000000178814,
+        "rowsMs": 0.30000001192092896,
+        "probesMs": 44.69999998807907
+      },
+      {
+        "id": "tests/e2e/card-ladder-boxes.spec.ts",
+        "rows": 1,
+        "total": 61.099999994039536,
+        "rowsMs": 0.29999998211860657,
+        "probesMs": 29.100000023841858
+      },
+      {
+        "id": "tests/e2e/local-map-overview.spec.ts",
+        "rows": 1,
+        "total": 64.40000000596046,
+        "rowsMs": 0.19999998807907104,
+        "probesMs": 29.900000005960464
+      },
+      {
+        "id": "tests/e2e/force-graph-reveal.spec.ts",
+        "rows": 1,
+        "total": 67.5,
+        "rowsMs": 0.19999998807907104,
+        "probesMs": 34.30000001192093
+      },
+      {
+        "id": "tests/e2e/local-map-keyboard.spec.ts",
+        "rows": 1,
+        "total": 57.400000005960464,
+        "rowsMs": 0.09999999403953552,
+        "probesMs": 28.30000001192093
+      },
+      {
+        "id": "tests/e2e/local-map-pins.spec.ts",
+        "rows": 1,
+        "total": 57.599999994039536,
+        "rowsMs": 0.19999998807907104,
+        "probesMs": 27.900000005960464
+      },
+      {
+        "id": "tests/e2e/local-map-corset.spec.ts",
+        "rows": 1,
+        "total": 57.19999998807907,
+        "rowsMs": 0.09999999403953552,
+        "probesMs": 27.69999998807907
+      },
+      {
+        "id": "tests/e2e/inspection.spec.ts",
+        "rows": 1,
+        "total": 57.30000001192093,
+        "rowsMs": 0.20000001788139343,
+        "probesMs": 28.799999982118607
+      },
+      {
+        "id": "tests/e2e/local-map-learning.spec.ts",
+        "rows": 1,
+        "total": 56.69999998807907,
+        "rowsMs": 0.19999998807907104,
+        "probesMs": 28.19999998807907
+      },
+      {
+        "id": "tests/e2e/pin-clicks.spec.ts",
+        "rows": 1,
+        "total": 58.30000001192093,
+        "rowsMs": 0.30000001192092896,
+        "probesMs": 29.5
+      },
+      {
+        "id": "tests/e2e/force-graph-focus.spec.ts",
+        "rows": 1,
+        "total": 58,
+        "rowsMs": 0.19999998807907104,
+        "probesMs": 27.599999994039536
+      },
+      {
+        "id": "tests/e2e/history-scrubber.spec.ts",
+        "rows": 1,
+        "total": 56.599999994039536,
+        "rowsMs": 0.19999998807907104,
+        "probesMs": 27.5
+      },
+      {
+        "id": "tests/e2e/force-graph-shells.spec.ts",
+        "rows": 1,
+        "total": 56.599999994039536,
+        "rowsMs": 0.29999998211860657,
+        "probesMs": 27.100000023841858
+      },
+      {
+        "id": "tests/e2e/force-graph-defaults.spec.ts",
+        "rows": 1,
+        "total": 60.400000005960464,
+        "rowsMs": 0.09999999403953552,
+        "probesMs": 29.700000017881393
+      },
+      {
+        "id": "tests/e2e/cited-by.spec.ts",
+        "rows": 1,
+        "total": 57.400000005960464,
+        "rowsMs": 0.19999998807907104,
+        "probesMs": 27.900000005960464
+      },
+      {
+        "id": "tests/e2e/card-reading.spec.ts",
+        "rows": 1,
+        "total": 56.69999998807907,
+        "rowsMs": 0.09999999403953552,
+        "probesMs": 28.19999998807907
+      },
+      {
+        "id": "tests/e2e/history-panel.spec.ts",
+        "rows": 1,
+        "total": 60.69999998807907,
+        "rowsMs": 0.09999999403953552,
+        "probesMs": 28.5
+      },
+      {
+        "id": "tests/e2e/force-graph-exploration.spec.ts",
+        "rows": 1,
+        "total": 68.5,
+        "rowsMs": 0.20000001788139343,
+        "probesMs": 33.79999998211861
+      },
+      {
+        "id": "tests/e2e/local-map-path.spec.ts",
+        "rows": 1,
+        "total": 59,
+        "rowsMs": 0.09999999403953552,
+        "probesMs": 30.599999994039536
+      },
+      {
+        "id": ".live-docs.config.json",
+        "rows": 8,
+        "total": 63,
+        "rowsMs": 2,
+        "probesMs": 30.400000005960464
+      }
+    ]
+  },
+  {
+    "phase": "labels-complete",
+    "epoch": 1794187214634.4,
+    "elapsed": 11745.40000000596,
+    "labels": 15,
+    "fonts": 9
+  },
+  {
+    "phase": "before-return",
+    "epoch": 1794187214634.5999,
+    "elapsed": 11745.59999999404
+  },
+  {
+    "phase": "evaluate-returned",
+    "epoch": 1794187217228
+  },
+  {
+    "phase": "capture-result",
+    "epoch": 1794187217228,
+    "elapsed": 19009
+  }
+]

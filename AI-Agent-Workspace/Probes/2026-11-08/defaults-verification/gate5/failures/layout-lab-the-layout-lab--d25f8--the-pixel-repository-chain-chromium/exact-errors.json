@@ -1,0 +1,30 @@
+[
+  {
+    "type": "error",
+    "message": "Test timeout of 30000ms exceeded.",
+    "stack": []
+  },
+  {
+    "type": "error",
+    "message": "Error: page.evaluate: Test timeout of 30000ms exceeded.",
+    "stack": [
+      {
+        "file": "/tmp/live-docs-20261108-defaults/scripts/layout-lab/capture.ts",
+        "line": 219,
+        "column": 15,
+        "function": "readCapture"
+      },
+      {
+        "file": "/tmp/live-docs-20261108-defaults/scripts/layout-lab/capture.ts",
+        "line": 202,
+        "column": 42,
+        "function": "captureFromPage"
+      },
+      {
+        "file": "/tmp/live-docs-20261108-defaults/tests/e2e/layout-lab.spec.ts",
+        "line": 23,
+        "column": 21
+      }
+    ]
+  }
+]
