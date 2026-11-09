@@ -1,0 +1,112 @@
+{
+  "firstStill": {
+    "epoch": 1794194090285,
+    "elapsed": 74308.90000000037,
+    "actualNodes": 953,
+    "actualFiles": 953,
+    "reveal": {
+      "shown": 953,
+      "total": 953
+    },
+    "packing": 0,
+    "motion": {
+      "calls": 533,
+      "completeTicks": 387,
+      "cpuMs": 3305.30000001844,
+      "maxCpuMs": 14.700000000186265,
+      "initialized": 62,
+      "wakes": 0,
+      "invalidations": 0,
+      "stirs": 60,
+      "lastMoveMax": 0.08627763792294041,
+      "lastDiagonal": 4877.1473216911545,
+      "quiet": 10,
+      "still": true,
+      "holding": true,
+      "pendingStart": null,
+      "nodes": 953,
+      "fieldNodes": 953,
+      "fixed": 0,
+      "threshold": 0.14631441965073463,
+      "strength": 1,
+      "revealReady": true
+    },
+    "phases": {
+      "physics": {
+        "count": 433,
+        "total": 3318.4000000152737,
+        "max": 14.800000000745058
+      },
+      "frameDirectory": {
+        "count": 450,
+        "total": 1.299999998882413,
+        "max": 0.10000000055879354
+      },
+      "bodies": {
+        "count": 450,
+        "total": 1.2000000020489097,
+        "max": 0.10000000055879354
+      },
+      "bursts": {
+        "count": 450,
+        "total": 1.8999999975785613,
+        "max": 0.10000000055879354
+      },
+      "controls": {
+        "count": 450,
+        "total": 14.800000005401671,
+        "max": 0.20000000018626451
+      },
+      "focus": {
+        "count": 450,
+        "total": 575.7999999951571,
+        "max": 4.8999999994412065
+      },
+      "draw": {
+        "count": 450,
+        "total": 879.6999999973923,
+        "max": 38.299999999813735
+      },
+      "hover": {
+        "count": 450,
+        "total": 0.5000000009313226,
+        "max": 0.10000000055879354
+      },
+      "grow": {
+        "count": 450,
+        "total": 138.69999999925494,
+        "max": 5.699999999254942
+      },
+      "frameCpu": {
+        "count": 450,
+        "total": 4958.200000007637,
+        "max": 45.40000000037253
+      },
+      "cadence": {
+        "count": 449,
+        "total": 73859,
+        "max": 236.1000000005588
+      }
+    },
+    "triangles": 265812,
+    "drawCalls": 2
+  },
+  "previousBusyElapsed": 73314.70000000019,
+  "firstCompleteMembershipElapsed": 7651.9000000003725,
+  "initialMeanMs": {
+    "physics": 7.663741339527191,
+    "frameDirectory": 0.002888888886405362,
+    "bodies": 0.002666666671219799,
+    "bursts": 0.0042222222168412475,
+    "controls": 0.0328888889008926,
+    "focus": 1.2795555555447935,
+    "draw": 1.954888888883094,
+    "hover": 0.0011111111131807169,
+    "grow": 0.30822222222056656,
+    "frameCpu": 11.018222222239192,
+    "cadence": 164.4966592427617
+  },
+  "visibleFrames": 450,
+  "cadenceHz": 6.07915081438958,
+  "unassignedCpuUpperBoundMsPerFrame": 0.05755555554603537
+}

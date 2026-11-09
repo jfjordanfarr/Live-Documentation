@@ -6,6 +6,7 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
   const controller = new LocalViewController(options);
   return {
     render: () => controller.render(),
+    tryRefreshReading: () => controller.tryRefreshReading(),
     isShown: () => controller.isShown(),
     show: () => controller.show(),
     capturePinChange: (nodeId, symbol, nextSubjectId, closeExpansion) => controller.capturePinChange(nodeId, symbol, nextSubjectId, closeExpansion),

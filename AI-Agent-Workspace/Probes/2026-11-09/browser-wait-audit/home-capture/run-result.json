@@ -1,0 +1,17 @@
+{
+  "command": [
+    "node_modules/.bin/playwright",
+    "test",
+    "--config",
+    "tests/e2e/playwright.config.ts",
+    "tests/e2e/history-scrubber.spec.ts",
+    "--grep",
+    "a drag places every step it crosses without a tick, and the rest settles at the tuning's energy$",
+    "--output",
+    "/tmp/live-docs-20261109-waits/home-capture/results",
+    "--reporter=list"
+  ],
+  "exitCode": 1,
+  "startedEpoch": 1794195431466.46,
+  "durationSeconds": 88.87073636054993
+}

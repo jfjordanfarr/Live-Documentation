@@ -1,0 +1,73 @@
+[
+  {
+    "label": "neighbor-fold-and-disclosure",
+    "initial": [
+      "PaymentsContext (class)"
+    ],
+    "before": {
+      "width": 282,
+      "height": 249,
+      "box": {
+        "x": 285,
+        "y": 504.9500732421875,
+        "width": 408.9000244140625,
+        "height": 361.0499267578125,
+        "top": 504.9500732421875,
+        "right": 693.9000244140625,
+        "bottom": 866,
+        "left": 285
+      }
+    },
+    "folded": {
+      "width": 282,
+      "height": 249,
+      "box": {
+        "x": 285.0001220703125,
+        "y": 504.9500427246094,
+        "width": 408.9000244140625,
+        "height": 361.0499572753906,
+        "top": 504.9500427246094,
+        "right": 693.900146484375,
+        "bottom": 866,
+        "left": 285.0001220703125
+      }
+    },
+    "disclosed": [
+      "PaymentsContext (class)",
+      "PostPayment",
+      "ConnectionName",
+      "PostPaymentProcedure",
+      "PaymentsContext (constructor)",
+      "Payments",
+      "__internals__"
+    ],
+    "opened": {
+      "width": 288,
+      "height": 614,
+      "box": {
+        "x": 285.0037841796875,
+        "y": 74,
+        "width": 417.5999755859375,
+        "height": 890.300048828125,
+        "top": 74,
+        "right": 702.603759765625,
+        "bottom": 964.300048828125,
+        "left": 285.0037841796875
+      }
+    }
+  },
+  {
+    "label": "none-shared-reload-back",
+    "choices": [
+      {
+        "nodeId": "packages/explorer/src/client/reading-state.ts",
+        "open": false
+      }
+    ]
+  },
+  {
+    "label": "same-target-refresh-keeps-scroll",
+    "scroll": 303,
+    "after": 303
+  }
+]

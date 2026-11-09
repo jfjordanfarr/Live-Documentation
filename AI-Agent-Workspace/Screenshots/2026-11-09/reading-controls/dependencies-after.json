@@ -1,0 +1,41 @@
+{
+  "kind": "fanout",
+  "direction": "inbound",
+  "from": {
+    "codePath": "packages/explorer/src/client/views/localView/card-reading.ts",
+    "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/localView/card-reading.ts.mdmd.md"
+  },
+  "documents": {
+    "cites": [],
+    "citedBy": []
+  },
+  "maxDepth": 1,
+  "terminalPaths": [
+    {
+      "length": 1,
+      "nodes": [
+        {
+          "codePath": "packages/explorer/src/client/views/localView/card-reading.ts",
+          "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/localView/card-reading.ts.mdmd.md"
+        },
+        {
+          "codePath": "packages/explorer/src/client/views/localView/controller.ts",
+          "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/localView/controller.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 1,
+      "nodes": [
+        {
+          "codePath": "packages/explorer/src/client/views/localView/card-reading.ts",
+          "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/localView/card-reading.ts.mdmd.md"
+        },
+        {
+          "codePath": "packages/explorer/src/client/views/localView/branch-renderer.ts",
+          "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/localView/branch-renderer.ts.mdmd.md"
+        }
+      ]
+    }
+  ]
+}

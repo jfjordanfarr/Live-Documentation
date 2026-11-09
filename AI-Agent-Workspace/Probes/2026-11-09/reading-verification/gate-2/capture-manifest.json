@@ -1,0 +1,117 @@
+[
+  {
+    "file": "run-gate.mjs",
+    "sourceBytes": 6263,
+    "sourceSha256": "85ef625b4619b034e23de769ba0e07958f21b4016d7b2d44ecc87bb064d3001d",
+    "compressed": false
+  },
+  {
+    "file": "gate.log.gz",
+    "sourceBytes": 79622,
+    "sourceSha256": "11ae68c6cf460f51c5f5a62e75771c7c84440daff47e46782761067e54845568",
+    "compressed": true
+  },
+  {
+    "file": "run.json",
+    "sourceBytes": 583,
+    "sourceSha256": "b7e203d00b9a6d08eb89655250c2bb057dfcd500fdcdc5df6305efbe91ba9cff",
+    "compressed": false
+  },
+  {
+    "file": "summary.json",
+    "sourceBytes": 1664,
+    "sourceSha256": "6d8408c9578f83a9784531437741604c586ac627c1313ea08dc5ee8e2a9cf4e4",
+    "compressed": false
+  },
+  {
+    "file": "integration-check.json",
+    "sourceBytes": 201,
+    "sourceSha256": "8c8a4d4fca69aa456e6a0b9f915b8b753f526350168ade0aadb62b7446480f05",
+    "compressed": false
+  },
+  {
+    "file": "source-test-before.json.gz",
+    "sourceBytes": 161390,
+    "sourceSha256": "2483f5597df0315d35093b40a206296e90701c7c6876776c7b820575a78fd290",
+    "compressed": true
+  },
+  {
+    "file": "source-test-after.json.gz",
+    "sourceBytes": 161390,
+    "sourceSha256": "2483f5597df0315d35093b40a206296e90701c7c6876776c7b820575a78fd290",
+    "compressed": true
+  },
+  {
+    "file": "source-test-differences.json",
+    "sourceBytes": 3,
+    "sourceSha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "compressed": false
+  },
+  {
+    "file": "preexisting-outputs-manifest.json",
+    "sourceBytes": 10981,
+    "sourceSha256": "0405cdb346d7051d67753fecdf1f9a78cb75fd795387465ef136cf4a94ea7c54",
+    "compressed": false
+  },
+  {
+    "file": "output-attribution.json",
+    "sourceBytes": 26378,
+    "sourceSha256": "fea8fdadbe4d0faedabe6177037445274bcbe01a0715c02b754821482a2d4402",
+    "compressed": false
+  },
+  {
+    "file": "outputs-manifest.json",
+    "sourceBytes": 10455,
+    "sourceSha256": "6ea01961741d06a813fa85c3d4766c6561939f947877732cbedf30b48e7825cd",
+    "compressed": false
+  },
+  {
+    "file": "served-assets-manifest.json",
+    "sourceBytes": 30658,
+    "sourceSha256": "f11bacb147e938d09aea4f55700f243b000a93c8a92a339fb2b0b9774c9b3761",
+    "compressed": false
+  },
+  {
+    "file": "product-before.patch.gz",
+    "sourceBytes": 136057,
+    "sourceSha256": "026614efea7aaf82265ad8a64f9ddeb9ae2a509fba2f0738395e539f45fddf38",
+    "compressed": true
+  },
+  {
+    "file": "product-after.patch.gz",
+    "sourceBytes": 136057,
+    "sourceSha256": "026614efea7aaf82265ad8a64f9ddeb9ae2a509fba2f0738395e539f45fddf38",
+    "compressed": true
+  },
+  {
+    "file": "test-results/.last-run.json",
+    "sourceBytes": 96,
+    "sourceSha256": "f5fb7963b58ad1a6e14abb2f8b15bdcf67540093d257a697939aaca7d5718cf0",
+    "compressed": false
+  },
+  {
+    "file": "test-results/perspective-zoom-native-sy-8b651-rse-their-containment-order-chromium/error-context.md.gz",
+    "sourceBytes": 28473,
+    "sourceSha256": "ca9306a3278e657e8c50e34c5365445e76baf471e63bae0f57c408c581221458",
+    "compressed": true
+  },
+  {
+    "file": "test-results/perspective-zoom-native-sy-8b651-rse-their-containment-order-chromium/test-failed-1.png",
+    "sourceBytes": 351349,
+    "sourceSha256": "608935792c30f6b33dad4554a4c1bc9244fdd06a41618c0d5baab52ed886f411",
+    "compressed": false
+  },
+  {
+    "file": "test-results/perspective-zoom-native-sy-8b651-rse-their-containment-order-chromium/trace.zip",
+    "sourceBytes": 2003837,
+    "sourceSha256": "bed4bfb5543af216b77b36d925df14452acbb93d1670edd949dda32f9c3a616d",
+    "compressed": false
+  },
+  {
+    "file": "playwright-report.zip",
+    "sourceBytes": 4006194,
+    "sourceSha256": "9bba00b25ff191830f7c9f5ed8853d81b259b8980c2d4faa51865ea96ee44362",
+    "compressed": false,
+    "reportEntries": 20
+  }
+]

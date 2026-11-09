@@ -573,13 +573,30 @@ test("the address carries the commit and the authors toggle, a link to a moment 
 test("a drag places every step it crosses without a tick, and the rest settles at the tuning's energy", async ({ page }) => {
   test.setTimeout(120_000);
   await observeGraph(page);
-  // The tuning's energy, a tenth: a rest reheats, a drag does not.
-  await page.goto(entry("/samples/history/", { layout: { forceGraph: { updateEnergy: 0.1 } } }));
+  // Establish Home at full energy; the drag's release below is what this case feeds at a tenth.
+  await page.goto(entry("/samples/history/", { layout: { forceGraph: { updateEnergy: 1, hops: 1 } } }));
   await settled(page);
   await openHistory(page);
   await track(page).focus();
   await page.keyboard.press("Home");
   await settled(page);
+  const idleBeforeEnergy = await engineActivity(page);
+  await page.getByText("Tuning", { exact: true }).click();
+  const energy = page.locator("#tuning-force-update-energy");
+  if (!await energy.isVisible()) await page.getByText("3D Layout", { exact: true }).click();
+  await expect(energy).toHaveValue("1");
+  await energy.focus();
+  await energy.press("Home");
+  for (let step = 0; step < 10; step++) await energy.press("ArrowRight");
+  await expect(energy).toHaveValue("0.1");
+  await expect(page.locator("#tuning-force-update-energy-value")).toHaveText("0.1");
+  await expect.poll(async () => JSON.parse((await page.locator("#graph-svg").getAttribute("data-layout-settings"))!).updateEnergy).toBe(.1);
+  await expect.poll(() => decompressSnapshot(new URL(page.url()).searchParams.get("s")!).layout?.forceGraph?.updateEnergy).toBe(.1);
+  await expect.poll(() => decompressSnapshot(new URL(page.url()).searchParams.get("s")!).layout?.forceGraph?.hops).toBe(1);
+  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false");
+  expect((await engineActivity(page)).changes.length, "changing only energy does not restart the settled Home picture").toBe(idleBeforeEnergy.changes.length);
+  await page.getByText("Tuning", { exact: true }).click();
+  await track(page).focus();
   const before = await engineActivity(page);
   const from = (await page.locator('.history-tick[data-step="0"]').boundingBox())!;
   const to = (await page.locator('.history-tick[data-step="6"]').boundingBox())!;

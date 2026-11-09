@@ -30,6 +30,11 @@ export interface CardPresentation {
   isDirectlyPinned(symbol: string): boolean;
 }
 
+/** A card can close its own retention, subject or locally expanded symbol list. */
+export function hasCloseAction(presentation: Pick<CardPresentation, "retained" | "subject" | "expanded">): boolean {
+  return presentation.retained || presentation.subject || presentation.expanded;
+}
+
 /** Only the facts and actions a card needs; navigation targets are looked up when their event occurs. */
 export interface CardContext {
   presentation(node: ExplorerNodePayload): CardPresentation;
@@ -201,7 +206,7 @@ export function createNodeCard(
   close.setAttribute("aria-label", `Close ${node.name}`);
   close.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>';
   close.addEventListener("click", event => { event.stopPropagation(); context.closeNode(node.id); });
-  const { retained, subject } = presentation;
+  const { subject } = presentation;
   // Every card but the subject's can be made the subject: the one visible way to go there, since a double-click
   // reached the card's click twice first (the owner's challenge, 2026-10-14; one grammar for every input, 2026-10-15).
   if (!subject) {
@@ -213,7 +218,7 @@ export function createNodeCard(
     recentre.addEventListener("click", event => { event.stopPropagation(); void context.recenterNode(node); });
     actions.append(recentre);
   }
-  if (retained || subject || presentation.expanded) actions.append(close);
+  if (hasCloseAction(presentation)) actions.append(close);
   header.append(actions);
 
   const pathElement = document.createElement("div");

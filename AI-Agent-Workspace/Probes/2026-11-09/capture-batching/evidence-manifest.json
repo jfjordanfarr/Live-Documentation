@@ -1,0 +1,210 @@
+{
+  "0-repository-five-files-grow-candidate.json.gz": {
+    "bytes": 89600,
+    "sha256": "11aa15910621472e77cb92ef6619d8336dfda720cbca40505800760582e2b550"
+  },
+  "0-repository-five-files-grow-old.json.gz": {
+    "bytes": 89600,
+    "sha256": "0a7ef569af117090049b31d2cb2b611e6dd7b8ee8192237712e1111d60917f13"
+  },
+  "0-repository-five-files-grow-restored-old.json.gz": {
+    "bytes": 89600,
+    "sha256": "c42cd174901cdd4050891a32b33aa35a58e98c85e55a2bdcbca3efbfa6b3010f"
+  },
+  "0-repository-five-files-slot-candidate.json.gz": {
+    "bytes": 198608,
+    "sha256": "d57837f9b2ead5874291ade57767bbb919ff020b1eba67297c7b293a9fbb76ca"
+  },
+  "0-repository-five-files-slot-old.json.gz": {
+    "bytes": 198608,
+    "sha256": "51b153a2664eafadd5b5c5251c066738c5c17f0ca3dacb47d2e349e054751e38"
+  },
+  "0-repository-five-files-slot-restored-old.json.gz": {
+    "bytes": 198608,
+    "sha256": "4e1cb796bdf884ad60b30e74aa5f566bb4ca3cdb29d7201b976696506a4ef913"
+  },
+  "1-repository-chain-grow-candidate.json.gz": {
+    "bytes": 93412,
+    "sha256": "6222846830b78da82e7acfc817eb456f758085eb2f8a897bd1ffe48780e8d52b"
+  },
+  "1-repository-chain-grow-old.json.gz": {
+    "bytes": 93412,
+    "sha256": "978deb08f15ccc9f63a7500dadc3900705960673e88836ed915ba0a28240d9a6"
+  },
+  "1-repository-chain-grow-restored-old.json.gz": {
+    "bytes": 93412,
+    "sha256": "dda7ce9e164f8ec8639e05bdfd8b6593dc686b0dfb6e8e82ef71c6cffa8b29f7"
+  },
+  "1-repository-chain-slot-candidate.json.gz": {
+    "bytes": 208662,
+    "sha256": "e6d2df8914821ce691e6f4ef27ba47451cb554db23d171821265f9bf04f41135"
+  },
+  "1-repository-chain-slot-old.json.gz": {
+    "bytes": 208662,
+    "sha256": "83e9beb8399c9cefe036fad011af01f3bf631c22d083aa272e7858e67f6554b2"
+  },
+  "1-repository-chain-slot-restored-old.json.gz": {
+    "bytes": 208662,
+    "sha256": "e3eda32b497ccb1a19e7f94f7e00b052d6430b1ac62f50d51374092acd600504"
+  },
+  "2-estate-five-files-grow-candidate.json.gz": {
+    "bytes": 22554,
+    "sha256": "8e567faa6a50b0f21f6233c5c942543d7d9dbda60bb3498354a3de16095b0d6d"
+  },
+  "2-estate-five-files-grow-old.json.gz": {
+    "bytes": 22554,
+    "sha256": "96ed50a4b8252d1972fe17f602af04cece10a0d915d458a138e80601cc944dee"
+  },
+  "2-estate-five-files-grow-restored-old.json.gz": {
+    "bytes": 22554,
+    "sha256": "b1d7ea8d86a65d2a6c0dace230b44f53eab706ede054f72b1d0ba38693b3d538"
+  },
+  "2-estate-five-files-slot-candidate.json.gz": {
+    "bytes": 18222,
+    "sha256": "8865d4b273c7a8c05a1096a7480116ad9b7f74c5990eda83398b691b390155e4"
+  },
+  "2-estate-five-files-slot-old.json.gz": {
+    "bytes": 18222,
+    "sha256": "54fbaaba88442503b7c729a3be76dcb278e917adf0e42e7fbc3e6447f6d4f53b"
+  },
+  "2-estate-five-files-slot-restored-old.json.gz": {
+    "bytes": 18222,
+    "sha256": "6bd6a1c16901659f3f233be40fe30771bbf814d42f7c968d7512fb14d44149da"
+  },
+  "3-estate-chain-grow-candidate.json.gz": {
+    "bytes": 16563,
+    "sha256": "772d8d3fa4f90abd1a68b40f9f9e56ae426a4aed1f5d9aaab80f5ff93b1b5c65"
+  },
+  "3-estate-chain-grow-old.json.gz": {
+    "bytes": 16563,
+    "sha256": "8d1649aac3f75bf9e44786bce4b344471c1db72787fa74b5b2318e94ae7915cb"
+  },
+  "3-estate-chain-grow-restored-old.json.gz": {
+    "bytes": 16563,
+    "sha256": "9a0085ee412ed2de44e0ffdeddbde4b903dedf2b835b7e6769dacca1adb89761"
+  },
+  "3-estate-chain-slot-candidate.json.gz": {
+    "bytes": 13962,
+    "sha256": "4eba8edf7e59c741d83801201b7b8e4ea34c9f09dd23507445f5d0275193c88a"
+  },
+  "3-estate-chain-slot-old.json.gz": {
+    "bytes": 13962,
+    "sha256": "5e5e74beb2629f99109a6de10128ee2d235a40011a29baac1765eb9e2eeab07a"
+  },
+  "3-estate-chain-slot-restored-old.json.gz": {
+    "bytes": 13962,
+    "sha256": "b91db71996e73397c103d6660022523ead439faa849c0c6ddc1a28b9356584fb"
+  },
+  "README.md": {
+    "bytes": 2637,
+    "sha256": "1051a17e3242522818d92bacb5890be670c5f9fa17cfed181ab5848c1afa43ca"
+  },
+  "capture-original-external.ts": {
+    "bytes": 37857,
+    "sha256": "187f651c71fd62de44ef2c709d0dce1a9101c734e8e3b788f1e475072eee5d4e"
+  },
+  "capture.candidate.ts": {
+    "bytes": 38256,
+    "sha256": "19d09a4c75bb71a4f1ba1ea843d100bf854e6c0815f31dc6d734269f00f8544a"
+  },
+  "capture.original.ts": {
+    "bytes": 37551,
+    "sha256": "e1c12c3a0967c16e612004de46b306d7637af3e358b0a4c310cdf15969e19e2a"
+  },
+  "compare.mts": {
+    "bytes": 5407,
+    "sha256": "26e83b08d932bd4e6bb7028bff3c18bc50c6e07d61138b2245fd757993040e04"
+  },
+  "comparison.json": {
+    "bytes": 20351,
+    "sha256": "2af1c7014c606d324c4a104bba7a12497b58fe9bb1ced32eb04469b9940fd698"
+  },
+  "comparison.log": {
+    "bytes": 4736,
+    "sha256": "f1ea7812c8ea1c15b6f18d73415dca74aed84091fe46668cf3e53d53884f173a"
+  },
+  "estate-code-narrow-grow-candidate.json.gz": {
+    "bytes": 18282,
+    "sha256": "ab9973ee4312bfe219c582005bcd4a36b6ae213528d5418164e6efc57b3aa76f"
+  },
+  "estate-code-narrow-grow-old.json.gz": {
+    "bytes": 18281,
+    "sha256": "0fa7d882c18a60bc3ec387fc86c1e5df50be393a0fd58c9a56c0209d035a2aea"
+  },
+  "estate-code-narrow-grow-restored-old.json.gz": {
+    "bytes": 18282,
+    "sha256": "8084ee9bc727e19a7402163cdfb8ac9d9da7b6d8a238a55475f3e7027527f461"
+  },
+  "inspect-after.json": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "inspect-after.stderr": {
+    "bytes": 129,
+    "sha256": "41eaa146fd3a37a76a8d591a8e7e3bc146862dda1914ae39824caa8b53a1cd38"
+  },
+  "inspect-before.json": {
+    "bytes": 176237,
+    "sha256": "bd47fa1c0957ea0f9f0f94da4bb79c28ff1c4617d3800bbba43f429fa33c3d2b"
+  },
+  "layout-lab.log": {
+    "bytes": 2156,
+    "sha256": "e974326d54f7094a5116240116426892ab5f601b37ac1b45e970507ce55c6443"
+  },
+  "lint.log": {
+    "bytes": 150,
+    "sha256": "6839ad0642096b6f1a8168fd8940098422a34c6d80129b85dfe7eb3ae24b0942"
+  },
+  "owned-files.json": {
+    "bytes": 627,
+    "sha256": "08cda929a1721f709b1131e9d54686fff184d874d4ae00dc1cabc8088543a809"
+  },
+  "phone-estate-code-narrow-grow-candidate.json.gz": {
+    "bytes": 18038,
+    "sha256": "53a727098f285ccc848a5c713cbef53e56aed7cb3ac87daeeed92596d583f02d"
+  },
+  "phone-estate-code-narrow-grow-old.json.gz": {
+    "bytes": 18037,
+    "sha256": "77f0832b7df1ce6aec03794355b71e2964fd12587593bd9801659f7f806d661a"
+  },
+  "phone-estate-code-narrow-grow-restored-old.json.gz": {
+    "bytes": 18037,
+    "sha256": "c0960e9fe3d964f5e4cc5fdd27c5776e3a056f4e6b1c15700af1ba9177ca0e1b"
+  },
+  "phone-repository-narrow-grow-candidate.json.gz": {
+    "bytes": 89736,
+    "sha256": "1a3b6c8b8932596918a12a93502fcb7d5e88c4b55ce2bf44b1a9f0ea9103d295"
+  },
+  "phone-repository-narrow-grow-old.json.gz": {
+    "bytes": 89736,
+    "sha256": "a2766c69b892c3354f2d6cd0aeaf591b7e7476b5344ee157295227a147d590d4"
+  },
+  "phone-repository-narrow-grow-restored-old.json.gz": {
+    "bytes": 89736,
+    "sha256": "8c0400b7b5d47e97b53b136ccad459844a1f4a01d87fb0da470e31be64bb01e2"
+  },
+  "provenance.json": {
+    "bytes": 1534,
+    "sha256": "48ea8cb6137f46e632b0e0af13bc7062a5bc408db3c864da32b228693195fe6c"
+  },
+  "repository-narrow-grow-candidate.json.gz": {
+    "bytes": 89628,
+    "sha256": "554a0ae229b0384afc920f39ceca196da468e662eb3192a6a9b7efa52ae4dfe9"
+  },
+  "repository-narrow-grow-old.json.gz": {
+    "bytes": 89628,
+    "sha256": "375eee72e7bdb4e40c38da91a6515c19665833ac142e395f0a1ddc06e2953f3a"
+  },
+  "repository-narrow-grow-restored-old.json.gz": {
+    "bytes": 89628,
+    "sha256": "2b64dbb8505527ec935dcef5e583077de6986cd8db1963757ea29bed64e787a1"
+  },
+  "site-manifest.json": {
+    "bytes": 3092,
+    "sha256": "367ccd95b118418f65c17e0d3c77e39dc4a47d8fb5f46b14683022961f67376d"
+  },
+  "summary.json": {
+    "bytes": 3154,
+    "sha256": "40501f33da6dedf9a26d0769f5c0200f374d9930437c7965c8ee80f83ec6b8e1"
+  }
+}

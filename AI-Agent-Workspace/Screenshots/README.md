@@ -2,11 +2,17 @@
 
 _The owner's standing request (2026-09-29): after changing the Explorer, build it, look at it, and keep the pictures here, so that a sense of the UI accrues in the workspace and a change can be judged against what came before. Each dated folder is listed below with what each picture shows and how it was taken. The probe records under `../Probes/` keep their own pictures; the World Map's first pictures, from 2026-09-28, are there._
 
+## 2026-11-09
+
+[Zoom composition and directory opening](2026-11-09/zoom-review/README.md): root-driven repository/estate zoom round trips, actual wheel state crossings, a normal Structure opening and independent reading-choice/reader checks in the candidate. Current behavior and design hypotheses are distinguished; the original button-run font estimate is explicitly disqualified.
+
+[Reading controls and exact symbol arrivals](2026-11-09/reading-controls/README.md): restored all/none/subset books, empty-slot boundaries, compact-neighbor disclosure, same-file reader targeting and normal-default text refresh. The evidence retains the failed scroll and focus baselines alongside the corrected checks; 41 distinct focused cases pass across the recorded runs.
+
 ## 2026-11-08
 
 [Astra's baseline review](2026-11-08/astra-review/README.md): the current card across four zoom levels, Structure skins and Whole's contradictory claim, directory opening/inspection, and a two-pin estate journey through 2D and 3D. Firsthand findings before this session's product edits; the moving and intermediate captures are explicitly qualified.
 
-[Skin defaults and perspective handoff](2026-11-08/skin-defaults/README.md): fresh Skin/one-hop arrivals on the estate and repository, Whole's complete estate graph, and the directory correspondence defect exposed by the defaults round. Includes the rejected amber disks, two root normal-clock round trips, the accepted vector carrier and wire-visibility correction, and measured capture costs. The full gate passed 1,718 unit, 115 integration and 328/345 browser cases; the 17 failures remain under investigation.
+[Skin defaults and perspective handoff](2026-11-08/skin-defaults/README.md): fresh Skin/one-hop arrivals on the estate and repository, Whole's complete estate graph, and the directory correspondence defect exposed by the defaults round. Includes the rejected amber disks, two root normal-clock round trips, the accepted vector carrier and wire-visibility correction, and measured capture costs. The third checkpoint passed 1,718 unit and 115 integration cases, then failed 17 of 345 browser cases. The final round passed 1,740 unit and 115 integration cases, then 345/350 browsers; that full gate still failed. Its five remaining waits are retained in the verification probe.
 
 [Header order](2026-11-08/header-order/README.md): the 2D card's header under the six principles of the November 7 record's Turns 3 and 4, the name leading on the first line, whole on the fewest filled lines, the node's controls after it at the right edge; `symbolAnchors.ts` where the middle band's three controls move and the owner's band at the far steps, and the box audit's three subjects at the far and overview bands, before (milestone 1's one-line header) and after, with the counts of names whole on one line, on two or more, and cut, and where the controls stand; implementation evidence for the owner's eye (2026-11-08).
 

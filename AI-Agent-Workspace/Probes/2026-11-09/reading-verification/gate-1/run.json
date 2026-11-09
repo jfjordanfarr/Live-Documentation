@@ -1,0 +1,15 @@
+{
+  "cwd": "/workspaces/Live-Documentation",
+  "head": "acf3311c181b0ccfee4c4fcd362984a17af1a2be",
+  "command": "LIVE_DOCS_E2E_PORT=8913 flock /tmp/live-docs-20261108-browser.lock npm run safe:commit -- --e2e",
+  "port": 8913,
+  "startedAt": "2026-11-09T04:48:47.518Z",
+  "node": "v22.22.0",
+  "parentPid": 43722,
+  "gatePid": 43921,
+  "finishedAt": "2026-11-09T04:58:29.212Z",
+  "exitCode": 1,
+  "signal": null,
+  "reachedPlaywright": false,
+  "assetAttribution": "Gate did not reach Playwright; copied assets are not claimed as served by this run. Compare preexisting-assets-manifest.json."
+}

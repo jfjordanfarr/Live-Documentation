@@ -1,0 +1,16 @@
+{
+  "scripts/layout-lab/capture.ts": {
+    "sha256": "19d09a4c75bb71a4f1ba1ea843d100bf854e6c0815f31dc6d734269f00f8544a"
+  },
+  ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md": {
+    "sha256": "0f90c74682b8429f6223bd7376e1f853aaaf8b78abeb69850b4703157ac5a817",
+    "generatedRegionsEqualHead": true
+  },
+  "tests/e2e/history-scrubber.spec.ts": {
+    "sha256": "f48a267d6319c98337a72d4519cd1212cddb82e8db360532ddba0050dacfd2f9"
+  },
+  ".mdmd/layer-4/tests/e2e/history-scrubber.spec.ts.mdmd.md": {
+    "sha256": "a70be2a73f7059bdc6ea04515eb1a9a6c7199dbe6b5ed48c6b38e2e1a72f1372",
+    "generatedRegionsEqualHead": true
+  }
+}

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/capture.ts
-- Generated At: 2026-11-08T10:06:47.508Z
+- Generated At: 2026-11-09T04:43:27.183Z
 
 ## Authored
 ### Purpose
@@ -32,7 +32,9 @@ The current capture uses PERSISTED_UI_VERSION rather than a stale literal, so it
 
 The same learning-journey pass captures relationship controls above Purpose, including their intrinsic button sizes for independent flex wrapping. Short test labels are measured at intrinsic height rather than a neighboring chip’s stretched flex height. Rich prose preserves its computed word-wrapping behavior; the product explicitly wraps long prose tokens. Coarse-pointer browser checks compare the original phone capture with a separately rendered narrower cap. Older captures without placement metadata retain bottom-count behavior.
 
-The [November 5 reading repair](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-9) exposed a capture-performance failure in the 93-card repository chain: repeated append/read/remove probes caused over a thousand stylesheet recalculations, and the test exceeded its deadline despite matching geometry. Independent constant probes are now appended together, read together and removed together for each card. The unused node-meta probe is removed. Complete before/after captures agree after excluding only their capture timestamp; this changes the measurement work, not the fixture, model, deadline or tolerances.
+The [November 5 reading repair](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-9) exposed a capture-performance failure in the 93-card repository chain: repeated append/read/remove probes caused over a thousand stylesheet recalculations, and the test exceeded its deadline despite matching geometry. That round appended, read and removed independent constant probes together for each card, and removed the unused node-meta probe. Complete before/after captures agree after excluding only their capture timestamp; this changes the measurement work, not the fixture, model, deadline or tolerances.
+
+The [November 9 audit](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-08.1.record.md#turn-2) found that the remaining per-card probe cycles still invalidated scene styles between cards. The current capture appends the seven probes for every card before reading any, copies each card's own measured scalar values, then removes every probe in `finally` before normal card and text measurements. Parents, classes, captured fields and measurement rules remain unchanged; values are neither shared between cards nor cached across captures. Complete same-page captures are compared before and after, with the original implementation restored as a control and only `capturedAt` excluded. This is an instrument optimization; the page, card model, fixtures, deadlines and geometry tolerances are unchanged.
 
 Since [Turn 12](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-12--november-6) a card capture carries `slot` for the fixed-slot composition, now the Card Text default: every public row's explicit height, measured from the first such row or taken from Slot Lines, and the Purpose's slot height, so that the model needs no text to give a slot card's height.
 
@@ -114,7 +116,7 @@ page's Content-Security-Policy runs no script written into it.
 
 #### `writeCapture` {#symbol-writecapture}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L600)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L610)
 - Parameters: `capture`: [`Capture`](#symbol-capture)
 
 ##### `writeCapture` — Summary
@@ -122,7 +124,7 @@ Writes a capture as compact JSON.
 
 #### `readCaptureFile` {#symbol-readcapturefile}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L606)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L616)
 
 ##### `readCaptureFile` — Summary
 Reads a capture written by `writeCapture`.

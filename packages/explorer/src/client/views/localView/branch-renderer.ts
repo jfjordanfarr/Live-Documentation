@@ -5,7 +5,7 @@ import { candidateStarts, layoutStarts, scoreOf, signalsOf, startName, startOrde
 import { BAND_BORDER, hostOf, layoutScene, planBranches, type Scene, type SceneBox, type SceneMeasurer, type ScenePlan, type SceneTuning } from "./branch-scene";
 import { beginSearch, endpointKey, judgeAlignment, judgeStart, nextTrialKind, pinFor, rowBounds, type CardRows, type ResolvedPin, type RowMeasure, type SearchState } from "./branch-search";
 import { edgeKey, exploreBranches, isClosedDirectory, orderExploration, type BranchGraph, type DirectoryDisclosure, type Exploration } from "./branches";
-import { countsOf, createClosedDirectory, createNodeCard } from "./card-factory";
+import { countsOf, createClosedDirectory, createNodeCard, hasCloseAction } from "./card-factory";
 import { markFirstPin } from "./card-reading";
 import type { LocalViewController } from "./controller";
 import { ancestryButton } from "./directory-ancestry";
@@ -100,6 +100,87 @@ export function dropStage(stage: BranchStage): void {
   endMove(stage, false);
 }
 
+/** The same canonical disclosure is used to build a scene and to recognize a text-only reading change. */
+function explorationOf(controller: LocalViewController): Exploration {
+  const { state, graphData } = controller.options;
+  const tuning = state.tuning.localMap;
+  return exploreBranches(state.selectedNode, graphData, controller.pins, node => controller.shouldIncludeNode(node), {
+    symbolOrder: tuning.symbolOrder,
+    ranking: { pull: tuning.rankingPull, tie: tuning.rankingTie },
+    membraneDepth: tuning.membraneDepth,
+    openDirectories: controller.openDirectories,
+    reading: state.reading,
+    path: controller.getActivePath() ?? undefined
+  });
+}
+
+/** Update fixed-slot text and its controls without rebuilding an unchanged scene or restarting its search. */
+export function refreshReadingPresentation(controller: LocalViewController, stage: BranchStage): boolean {
+  const reading = controller.reading, search = stage.search;
+  if (!reading || !search || !stage.pose || controller.options.state.tuning.localMap.cardText !== "slot") return false;
+  const next = explorationOf(controller);
+  if (!sameReadingScope(search.exploration, next)) return false;
+  const presentRow = rowPresentation(controller, next);
+  const rows: Array<{ row: HTMLElement; muted: boolean }> = [];
+  for (const card of cardsOf(stage)) {
+    if (!card.classList.contains("node-card")) continue;
+    const node = controller.options.nodesById.get(card.dataset.id!);
+    const closes = card.querySelector(".local-file-close") !== null;
+    if (!node || closes !== hasCloseAction(controller.cardContext.presentation(node))) return false;
+    for (const row of card.querySelectorAll<HTMLElement>(".symbol-row")) {
+      const state = presentRow(node.id, row.dataset.symbol);
+      if (row.classList.contains("branch-symbol-hidden") !== state.hidden) return false;
+      rows.push({ row, muted: state.muted });
+    }
+  }
+  // Every structural check precedes every write. The current row order, measured answers and search counters survive.
+  reading.updatePresentation();
+  for (const { row, muted } of rows) row.classList.toggle("branch-symbol-muted", muted);
+  search.exploration = next;
+  return true;
+}
+
+/** Membership, not a learned arrangement or a raw list of reading choices, determines whether a scene is unchanged. */
+function sameReadingScope(before: Exploration, after: Exploration): boolean {
+  const links = (value: Exploration): Map<string, LocalEdge> => new Map(value.subgraph.links.map(edge => [edgeKey(edge), edge]));
+  return sameMembers(before.subgraph.nodes.map(node => node.id), after.subgraph.nodes.map(node => node.id))
+    && sameMap(links(before), links(after), (a, b) => a.referenceCount === b.referenceCount && a.direction === b.direction)
+    && sameMembers(before.members, after.members)
+    && sameMap(before.order.rows, after.order.rows, sameMembers)
+    && sameMap(before.hiddenConnections, after.hiddenConnections, (a, b) => a === b)
+    && sameMap(before.closed, after.closed, (a, b) => a.files === b.files && a.directories === b.directories)
+    && sameMap(before.directories, after.directories, (a, b) => a.state === b.state
+      && a.hiddenFiles === b.hiddenFiles && a.hiddenDirectories === b.hiddenDirectories);
+}
+
+function sameMembers<T>(before: Iterable<T>, after: Iterable<T>): boolean {
+  const left = new Set(before), right = new Set(after);
+  return left.size === right.size && [...left].every(value => right.has(value));
+}
+
+function sameMap<T>(before: ReadonlyMap<string, T>, after: ReadonlyMap<string, T>, same: (left: T, right: T) => boolean): boolean {
+  return before.size === after.size && [...before].every(([key, value]) => after.has(key) && same(value, after.get(key)!));
+}
+
+/** The canonical row disclosure and emphasis, shared by structural rendering and text-only reading refreshes. */
+function rowPresentation(controller: LocalViewController, exploration: Exploration): (id: string, symbol?: string) => { hidden: boolean; muted: boolean } {
+  const { state } = controller.options;
+  const path = controller.getActivePath();
+  const connected = new Set<string>();
+  const key = (id: string, symbol?: string): string => `${id}\0${normalizeSymbolIdentifier(symbol) ?? "__internals__"}`;
+  for (const [id, rows] of exploration.relevantSymbols) for (const row of rows) connected.add(key(id, row));
+  if (!path) for (const pin of controller.pins.entries) connected.add(key(pin.nodeId, pin.symbol));
+  return (id, symbol) => {
+    const all = controller.expandedCards.has(id) || (!path && (controller.reading?.showsAllRows(id) || controller.isPinned(id, "*") || id === state.selectedNode?.id));
+    const read = controller.reading?.showsRow(id, symbol ?? "__internals__");
+    const joined = connected.has(key(id, symbol));
+    return {
+      hidden: !all && Boolean(path || !read) && Boolean(path || state.tuning.localMap.collapseOnPin) && !joined,
+      muted: !controller.isPinned(id, "*") && !read && !joined
+    };
+  };
+}
+
 /**
  * Render the independently retained branches with the Local Map's cards,
  * symbol pins and interface colours, placed by the scene of
@@ -125,7 +206,7 @@ export function dropStage(stage: BranchStage): void {
  */
 export function renderBranches(controller: LocalViewController, stage: BranchStage): void {
   const started = performance.now();
-  const { state, graphData } = controller.options;
+  const { state } = controller.options;
   const tuning = state.tuning.localMap;
   const { root } = stage;
   const path = controller.getActivePath();
@@ -138,14 +219,7 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
   endMove(stage, false);
   const previous = stage.pose;
 
-  const exploration = exploreBranches(state.selectedNode, graphData, controller.pins, node => controller.shouldIncludeNode(node), {
-    symbolOrder: tuning.symbolOrder,
-    ranking: { pull: tuning.rankingPull, tie: tuning.rankingTie },
-    membraneDepth: tuning.membraneDepth,
-    openDirectories: controller.openDirectories,
-    reading: state.reading,
-    path: path ?? undefined
-  });
+  const exploration = explorationOf(controller);
   // Every drawn directory's label says what this picture makes of it; the labels already made are refilled.
   stage.disclosures = exploration.directories;
   for (const [directory, label] of stage.labels) fillLabel(controller, label, directory, exploration.directories.get(directory));
@@ -1104,12 +1178,7 @@ function orderRows(cards: readonly HTMLElement[], rows: ReadonlyMap<string, read
  * any start is measured, since they take room on the card.
  */
 function dressCards(controller: LocalViewController, cards: readonly HTMLElement[], exploration: Exploration): void {
-  const { state } = controller.options;
-  const path = controller.getActivePath();
-  const connected = new Set<string>();
-  const key = (id: string, symbol?: string): string => `${id}\0${normalizeSymbolIdentifier(symbol) ?? "__internals__"}`;
-  for (const [id, rows] of exploration.relevantSymbols) for (const row of rows) connected.add(key(id, row));
-  if (!path) for (const pin of controller.pins.entries) connected.add(key(pin.nodeId, pin.symbol));
+  const presentRow = rowPresentation(controller, exploration);
   const backReferences = new Map<string, LocalEdge[]>();
   for (const edge of exploration.subgraph.links) {
     if (!exploration.ranking.back.has(edgeKey(edge))) continue;
@@ -1119,16 +1188,13 @@ function dressCards(controller: LocalViewController, cards: readonly HTMLElement
     // A closed directory's box has no rows and no notes.
     if (!card.classList.contains("node-card")) continue;
     const id = card.dataset.id!;
-    const all = controller.expandedCards.has(id) || (!path && (controller.reading?.showsAllRows(id) || controller.isPinned(id, "*") || id === state.selectedNode?.id));
     let hidden = 0;
     card.querySelectorAll<HTMLElement>(".symbol-row").forEach(row => {
-      const collapse = !all && (path || !controller.reading?.showsRow(id, row.dataset.symbol ?? "__internals__"))
-        && (path || state.tuning.localMap.collapseOnPin) && !connected.has(key(id, row.dataset.symbol));
-      row.classList.toggle("branch-symbol-hidden", collapse);
-      row.classList.toggle("branch-symbol-muted", !controller.isPinned(id, "*") && !controller.reading?.showsRow(id, row.dataset.symbol ?? "__internals__")
-        && !connected.has(key(id, row.dataset.symbol)));
+      const state = presentRow(id, row.dataset.symbol);
+      row.classList.toggle("branch-symbol-hidden", state.hidden);
+      row.classList.toggle("branch-symbol-muted", state.muted);
       // The Internals row stands for the file's private contents, not for a symbol: it is not counted on the reveal.
-      if (collapse && !row.classList.contains("internals-row")) hidden++;
+      if (state.hidden && !row.classList.contains("internals-row")) hidden++;
     });
     if (hidden) {
       const reveal = document.createElement("button");

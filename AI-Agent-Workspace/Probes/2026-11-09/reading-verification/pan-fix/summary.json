@@ -1,0 +1,53 @@
+{
+  "changedFiles": [
+    "tests/e2e/perspective-zoom.spec.ts",
+    ".mdmd/layer-4/tests/e2e/perspective-zoom.spec.ts.mdmd.md"
+  ],
+  "sourceChange": "Existing panIntoView import; first-Pin localMapSettled, then panIntoView(second actual Pin). Original click/oracle tail unchanged.",
+  "browser": {
+    "cases": 6,
+    "passed": 6,
+    "failed": 0,
+    "suiteReportedSeconds": 58.7,
+    "correctedCaseDurationMs": 8677,
+    "originalGlobalTimeoutMs": 30000,
+    "workers": 1,
+    "retries": 0
+  },
+  "checks": {
+    "targetedGeneration": {
+      "processed": 1,
+      "updated": 1,
+      "created": 0,
+      "deleted": 0
+    },
+    "ownedFileEslint": "passed",
+    "testTypecheck": "passed",
+    "cachedWhitespace": "passed",
+    "beforeAfterInspector": "identical30outboundfiles; generated panIntoView symbol dependency present"
+  },
+  "tailProof": {
+    "exactApprovedSourceDiff": true,
+    "oracleTailByteIdentical": true,
+    "oracleTailSha256": "9ee8c8a3d05af0b1c8c2884a207cd4e205ab7ccbf1ca2333e3c836b078e907a2",
+    "sourceSha256": "05469c82b826f63dccb61fbaebad3631d55f178738cc4c228955d4970c8266bd",
+    "originalGlobalTimeoutMs": 30000,
+    "timeoutConfigurationChanged": false,
+    "diagnosticCodeAdded": false
+  },
+  "ownedFiles": {
+    "tests/e2e/perspective-zoom.spec.ts": {
+      "bytes": 17986,
+      "sha256": "05469c82b826f63dccb61fbaebad3631d55f178738cc4c228955d4970c8266bd"
+    },
+    ".mdmd/layer-4/tests/e2e/perspective-zoom.spec.ts.mdmd.md": {
+      "bytes": 6502,
+      "sha256": "4191e171c693d5854d5879c7808dc81081e1d3374c98e0f12c4ec6fa63cef204"
+    }
+  },
+  "noOtherSourceEdits": true,
+  "helper": null,
+  "processes": "browser/server8913/heavy checks closed; lock released",
+  "gate3": "not started; awaiting explicit root go",
+  "panDiagnostic": "/tmp/live-docs-20261109-pan retained with source/provenance/video"
+}

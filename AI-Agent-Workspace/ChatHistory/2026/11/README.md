@@ -12,7 +12,7 @@ Source inventory, maintained by the root agent. The October 31 session that ende
 ## November 8, session 1 — Codex, GPT-6 Astra
 
 - [Maintained root record](2026-11-08.1.record.md): opens with the owner's request to complete the November 7–8 summary and recover Fable's final reply, then personally inspect the Explorer before resuming Root/Builder work. This is a new development-day session; the preceding session retains its November 7 identity.
-- No native capture has been supplied for this session. The root records delivered messages and authored work notes as it proceeds; a prepared final reply is not evidence of delivery.
+- [Supplementary visible export](2026-11-08.export.md): received at Turn 2 under this filename, 552946 bytes, SHA-256 `87f76fce0462959a243c573102da9748ce99a80cf3509d76d77b2b4dcf6e9a41`. Root checked the opening and ending, including Turn 1’s delivered final and the new owner feedback; the intervening tool-invocation text was not read in full. Local file links become inline-code labels in the export. Source bytes are preserved; no particular export mechanism is inferred. The maintained record distinguishes its prepared final from delivery and corrects one link transcription against the active conversation.
 
 ## November 1, session 1 — Codex/Astra, completed by 6.1 Sol, November 1–2
 

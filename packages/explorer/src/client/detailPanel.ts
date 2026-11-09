@@ -170,7 +170,8 @@ export function createDetailPanel(
   /** Bring an element of the reader to the reader's top, or the reader to its start. */
   function scrollReaderTo(target?: Element): void {
     body.scrollTop = target
-      ? body.scrollTop + target.getBoundingClientRect().top - body.getBoundingClientRect().top
+      // Scroll positions round to whole pixels in Chromium. Round down so a heading's fractional top stays visible.
+      ? Math.floor(body.scrollTop + target.getBoundingClientRect().top - body.getBoundingClientRect().top)
       : 0;
   }
 
@@ -217,8 +218,9 @@ export function createDetailPanel(
     const moment = options.history?.() ?? null;
     const file = files[node.id];
     const evidence = file ? null : moment?.commit.id ?? null;
-    if (currentTarget?.kind === "file" && currentTarget.nodeId === node.id && currentTarget.symbol === symbol && currentNode === node && evidenceMoment === evidence) return;
-    const scroll = currentTarget?.kind === "file" && currentTarget.nodeId === node.id ? body.scrollTop : 0;
+    const sameTarget = currentTarget?.kind === "file" && currentTarget.nodeId === node.id && currentTarget.symbol === symbol;
+    if (sameTarget && currentNode === node && evidenceMoment === evidence) return;
+    const scroll = sameTarget ? body.scrollTop : 0;
     setLoading(node);
     evidenceMoment = evidence;
     currentTarget = { kind: "file", nodeId: node.id, ...(symbol ? { symbol } : {}) };
@@ -231,6 +233,15 @@ export function createDetailPanel(
       attachReaderLinks();
       fillSectionJumps();
       body.scrollTop = scroll;
+      if (symbol && !sameTarget) {
+        // The shell chooses the reader's final presentation after this call. Follow the exact canonical block's
+        // heading once that presentation is in place; a newer target or Close cancels this pending arrival.
+        const target = currentTarget;
+        requestAnimationFrame(() => {
+          if (currentTarget !== target) return;
+          scrollReaderTo(body.querySelector<HTMLElement>("[data-reader-symbol] > h4") ?? undefined);
+        });
+      }
     } catch (error) {
       console.error(error);
       body.innerHTML = '<p class="error-message">Failed to load documentation for this node.</p>';
@@ -378,7 +389,7 @@ function renderDocumentation(
   } else if (inspectedSymbol) {
     const block = file.symbols.find(entry => entry.name === inspectedSymbol);
     parts.push(sectionHtml("Inspected symbol", block
-      ? `<div class="reader-prose">${renderMarkdown(renderSymbolBlocks([{ ...block, slug: undefined }]).join("\n"), { linkHandler })}</div>`
+      ? `<div class="reader-prose" data-reader-symbol="${escapeHtml(block.name)}">${renderMarkdown(renderSymbolBlocks([{ ...block, slug: undefined }]).join("\n"), { linkHandler })}</div>`
       : `<strong>${escapeHtml(inspectedSymbol)}</strong>`));
   }
 

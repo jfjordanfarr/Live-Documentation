@@ -1,0 +1,143 @@
+{
+  "scenarios": 12,
+  "fullCaptures": 36,
+  "allCandidateExact": true,
+  "allRestoredExact": true,
+  "onlyIgnoredField": "capturedAt",
+  "allWarningsEmpty": true,
+  "errors": [],
+  "measurements": [
+    {
+      "name": "0-repository-five-files-slot",
+      "cards": 91,
+      "rows": 535,
+      "callbackMsOldCandidateRestored": [
+        6859.651,
+        5114.43,
+        6802.882
+      ],
+      "candidateGainAgainstRestoredPercent": 24.82
+    },
+    {
+      "name": "0-repository-five-files-grow",
+      "cards": 91,
+      "rows": 535,
+      "callbackMsOldCandidateRestored": [
+        3494.486,
+        1831.992,
+        3155.156
+      ],
+      "candidateGainAgainstRestoredPercent": 41.94
+    },
+    {
+      "name": "1-repository-chain-slot",
+      "cards": 102,
+      "rows": 711,
+      "callbackMsOldCandidateRestored": [
+        10894.644,
+        8089.804,
+        10647.539
+      ],
+      "candidateGainAgainstRestoredPercent": 24.02
+    },
+    {
+      "name": "1-repository-chain-grow",
+      "cards": 102,
+      "rows": 711,
+      "callbackMsOldCandidateRestored": [
+        4221.406,
+        2135.648,
+        4146.083
+      ],
+      "candidateGainAgainstRestoredPercent": 48.49
+    },
+    {
+      "name": "2-estate-five-files-slot",
+      "cards": 20,
+      "rows": 99,
+      "callbackMsOldCandidateRestored": [
+        489.938,
+        379.889,
+        434.046
+      ],
+      "candidateGainAgainstRestoredPercent": 12.48
+    },
+    {
+      "name": "2-estate-five-files-grow",
+      "cards": 20,
+      "rows": 99,
+      "callbackMsOldCandidateRestored": [
+        426.349,
+        332.79,
+        348.752
+      ],
+      "candidateGainAgainstRestoredPercent": 4.58
+    },
+    {
+      "name": "3-estate-chain-slot",
+      "cards": 14,
+      "rows": 70,
+      "callbackMsOldCandidateRestored": [
+        323.563,
+        259.843,
+        282.561
+      ],
+      "candidateGainAgainstRestoredPercent": 8.04
+    },
+    {
+      "name": "3-estate-chain-grow",
+      "cards": 14,
+      "rows": 70,
+      "callbackMsOldCandidateRestored": [
+        284.316,
+        211.932,
+        225.569
+      ],
+      "candidateGainAgainstRestoredPercent": 6.05
+    },
+    {
+      "name": "repository-narrow-grow",
+      "cards": 91,
+      "rows": 535,
+      "callbackMsOldCandidateRestored": [
+        3458.36,
+        1924.979,
+        3318.44
+      ],
+      "candidateGainAgainstRestoredPercent": 41.99
+    },
+    {
+      "name": "estate-code-narrow-grow",
+      "cards": 14,
+      "rows": 70,
+      "callbackMsOldCandidateRestored": [
+        323.437,
+        236.583,
+        243.336
+      ],
+      "candidateGainAgainstRestoredPercent": 2.78
+    },
+    {
+      "name": "phone-repository-narrow-grow",
+      "cards": 91,
+      "rows": 535,
+      "callbackMsOldCandidateRestored": [
+        3198.085,
+        1809.095,
+        3018.953
+      ],
+      "candidateGainAgainstRestoredPercent": 40.08
+    },
+    {
+      "name": "phone-estate-code-narrow-grow",
+      "cards": 14,
+      "rows": 70,
+      "callbackMsOldCandidateRestored": [
+        312.311,
+        216.623,
+        238.971
+      ],
+      "candidateGainAgainstRestoredPercent": 9.35
+    }
+  ]
+}

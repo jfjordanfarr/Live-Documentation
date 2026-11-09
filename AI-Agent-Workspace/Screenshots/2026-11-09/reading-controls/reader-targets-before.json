@@ -1,0 +1,125 @@
+[
+  {
+    "label": "first-open-reachability",
+    "state": {
+      "kind": "file",
+      "nodeId": "packages/engine/src/live-docs/pathfind.ts",
+      "symbol": "reachability (function)",
+      "presentation": "reading"
+    },
+    "reader": {
+      "scroll": 0,
+      "rect": {
+        "x": 341,
+        "y": 80,
+        "width": 758,
+        "height": 793,
+        "top": 80,
+        "right": 1099,
+        "bottom": 873,
+        "left": 341
+      },
+      "h4": [
+        {
+          "text": "reachability (function)",
+          "top": 280.546875
+        }
+      ],
+      "h5": [
+        "reachability (function) — Summary",
+        "reachability (function) — Parameters"
+      ]
+    }
+  },
+  {
+    "label": "switch-reachability-to-Walk",
+    "state": {
+      "kind": "file",
+      "nodeId": "packages/engine/src/live-docs/pathfind.ts",
+      "symbol": "Walk (interface)",
+      "presentation": "reading"
+    },
+    "reader": {
+      "scroll": 531,
+      "rect": {
+        "x": 341,
+        "y": 80,
+        "width": 758,
+        "height": 793,
+        "top": 80,
+        "right": 1099,
+        "bottom": 873,
+        "left": 341
+      },
+      "h4": [
+        {
+          "text": "Walk (interface)",
+          "top": -250.453125
+        }
+      ],
+      "h5": [
+        "Walk (interface) — Summary"
+      ]
+    }
+  },
+  {
+    "label": "same-name-constructor-first-open",
+    "state": {
+      "kind": "file",
+      "nodeId": "PaymentService/Data/PaymentsContext.cs",
+      "symbol": "PaymentsContext (constructor)",
+      "presentation": "reading"
+    },
+    "reader": {
+      "scroll": 0,
+      "rect": {
+        "x": 341,
+        "y": 80,
+        "width": 758,
+        "height": 793,
+        "top": 80,
+        "right": 1099,
+        "bottom": 873,
+        "left": 341
+      },
+      "h4": [
+        {
+          "text": "PaymentsContext (constructor)",
+          "top": 280.546875
+        }
+      ],
+      "h5": []
+    }
+  },
+  {
+    "label": "same-name-class-switch",
+    "state": {
+      "kind": "file",
+      "nodeId": "PaymentService/Data/PaymentsContext.cs",
+      "symbol": "PaymentsContext (class)",
+      "presentation": "reading"
+    },
+    "reader": {
+      "scroll": 0,
+      "rect": {
+        "x": 341,
+        "y": 80,
+        "width": 758,
+        "height": 793,
+        "top": 80,
+        "right": 1099,
+        "bottom": 873,
+        "left": 341
+      },
+      "h4": [
+        {
+          "text": "PaymentsContext (class)",
+          "top": 280.546875
+        }
+      ],
+      "h5": [
+        "PaymentsContext (class) — Summary"
+      ]
+    }
+  }
+]

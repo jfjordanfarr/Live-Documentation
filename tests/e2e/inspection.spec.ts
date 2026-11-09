@@ -158,9 +158,11 @@ test("a real bundled section link uses its canonical punctuation-bearing anchor 
   await expect(heading).toContainText("Turn 19: Config & Schema Hardening");
   const atSection = async () => Math.abs((await heading.boundingBox())!.y - (await page.locator("#detail-body").boundingBox())!.y);
   await expect.poll(atSection).toBeLessThan(2);
+  await expect(heading).toBeInViewport({ ratio: 1 });
   await page.reload();
   await expect(heading).toBeVisible();
   await expect.poll(atSection).toBeLessThan(2);
+  await expect(heading).toBeInViewport({ ratio: 1 });
   expect(snapshot(page).inspection).toEqual(target);
   await page.goBack();
   await expect(page.locator("#detail-panel.visible")).toContainText(source);
@@ -205,11 +207,12 @@ test("a file's evidence reads Purpose, then its facts, then Notes, and a jump li
   await jumps.filter({ hasText: /^Notes$/u }).click();
   const atNotes = async () => Math.abs(await top(notes) - (await body.boundingBox())!.y);
   await expect.poll(atNotes).toBeLessThan(2);
-  await expect(notes).toBeInViewport();
+  await expect(notes).toBeInViewport({ ratio: 1 });
   await expect(notes).toBeFocused();
   expect(await page.evaluate(() => [window.scrollX, window.scrollY, document.documentElement.scrollTop])).toEqual(pageScroll);
   await jumps.filter({ hasText: /^Public Symbols$/u }).click();
   await expect.poll(async () => Math.abs(await top(symbols) - (await body.boundingBox())!.y)).toBeLessThan(2);
+  await expect(symbols.locator(":scope > .detail-label")).toBeInViewport({ ratio: 1 });
 });
 
 test("a bundled document reads like a Live Doc's authored words: their text size and colour, and no link in the browser's own colour", async ({ page }) => {

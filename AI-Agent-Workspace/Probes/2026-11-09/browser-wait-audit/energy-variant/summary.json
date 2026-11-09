@@ -1,0 +1,261 @@
+{
+  "result": "PASS with original120s total/60s settle waits",
+  "variantSourceDiff": "variant.diff",
+  "ui": {
+    "snapshot": {
+      "view": "map",
+      "perspective": "3d",
+      "spatialLayout": "structure",
+      "selectedNodeId": null,
+      "inspection": null,
+      "pinSet": {
+        "entries": []
+      },
+      "openDirectories": {},
+      "filters": {
+        "showTests": true,
+        "showAssets": false,
+        "showRelatedDocs": false,
+        "showCitingDocs": false
+      },
+      "retentionOrder": [
+        "[\"directory\",\"\"]"
+      ],
+      "layout": {
+        "localMap": {
+          "columnGap": 100,
+          "itemGap": 24,
+          "bandGap": 28,
+          "heightCost": 5,
+          "membraneEvenness": 2,
+          "membraneSimplicity": 200,
+          "rowLevelness": 2
+        },
+        "forceGraph": {
+          "linkGap": 60,
+          "charge": 60,
+          "collisionGap": 5,
+          "coupling": 1,
+          "nodeSize": 4,
+          "symbolScale": 1,
+          "gravity": 0.025,
+          "componentSeparation": 0.2,
+          "chargeRange": 0,
+          "approximation": 0.3,
+          "linkStrength": 0.5,
+          "updateEnergy": 0.1,
+          "tether": 0.02,
+          "citedByPull": 1,
+          "linkWidth": 1,
+          "nodeZoomResistance": 0.3,
+          "wireZoomResistance": 0.9,
+          "nameAt": 18,
+          "hops": 1,
+          "revealFrames": 60,
+          "shellDepth": 2,
+          "groupWrappers": "skin"
+        }
+      },
+      "destination": null,
+      "reachFrom": null,
+      "commit": "8bc53e26b7fa5683d8d75b4b8b13bab0ffce9e1e",
+      "authors": false
+    },
+    "activity": {
+      "frames": 1792,
+      "changes": [
+        {
+          "busy": true,
+          "frame": 0
+        },
+        {
+          "busy": false,
+          "frame": 48
+        },
+        {
+          "busy": true,
+          "frame": 48
+        },
+        {
+          "busy": false,
+          "frame": 1781
+        }
+      ]
+    }
+  },
+  "homeFullEnergyStart": {
+    "epoch": 1794196661408.2,
+    "elapsed": 1770.2999999998137,
+    "strength": 1,
+    "motion": {
+      "calls": 152,
+      "completeTicks": 149,
+      "cpuMs": 14.099999999627471,
+      "maxCpuMs": 2.2999999998137355,
+      "initialized": 5,
+      "wakes": 2,
+      "invalidations": 0,
+      "stirs": 1,
+      "lastMoveMax": 7.039744242523329,
+      "lastDiagonal": 294.683462394896,
+      "quiet": 0,
+      "still": false,
+      "holding": true,
+      "pendingStart": "hold",
+      "nodes": 9,
+      "fixed": 0,
+      "threshold": 0.00884050387184688,
+      "strength": 1,
+      "revealReady": false
+    }
+  },
+  "dragMoves": [
+    {
+      "moment": 1,
+      "epoch": 1794196691361.2,
+      "strength": 0,
+      "busy": "false",
+      "completeTicks": 1870,
+      "nodes": 12,
+      "reveal": {
+        "shown": 12,
+        "total": 14
+      },
+      "packing": 0
+    },
+    {
+      "moment": 2,
+      "epoch": 1794196691609.5,
+      "strength": 0,
+      "busy": "false",
+      "completeTicks": 1870,
+      "nodes": 14,
+      "reveal": {
+        "shown": 14,
+        "total": 14
+      },
+      "packing": 0
+    },
+    {
+      "moment": 3,
+      "epoch": 1794196691849.5999,
+      "strength": 0,
+      "busy": "false",
+      "completeTicks": 1870,
+      "nodes": 14,
+      "reveal": {
+        "shown": 14,
+        "total": 14
+      },
+      "packing": 0
+    },
+    {
+      "moment": 4,
+      "epoch": 1794196692190.5,
+      "strength": 0,
+      "busy": "false",
+      "completeTicks": 1870,
+      "nodes": 13,
+      "reveal": {
+        "shown": 13,
+        "total": 13
+      },
+      "packing": 0
+    },
+    {
+      "moment": 5,
+      "epoch": 1794196692503.0999,
+      "strength": 0,
+      "busy": "false",
+      "completeTicks": 1870,
+      "nodes": 13,
+      "reveal": {
+        "shown": 13,
+        "total": 13
+      },
+      "packing": 0
+    },
+    {
+      "moment": null,
+      "epoch": 1794196692778,
+      "strength": 0,
+      "busy": "false",
+      "completeTicks": 1870,
+      "nodes": 14,
+      "reveal": {
+        "shown": 14,
+        "total": 14
+      },
+      "packing": 0
+    }
+  ],
+  "release": {
+    "epoch": 1794196692928.2998,
+    "elapsed": 33290.39999999944,
+    "strength": 0.1,
+    "busy": "true",
+    "motion": {
+      "calls": 1881,
+      "completeTicks": 1870,
+      "cpuMs": 167.99999996181577,
+      "maxCpuMs": 2.2999999998137355,
+      "initialized": 18,
+      "wakes": 3,
+      "invalidations": 0,
+      "stirs": 8,
+      "lastMoveMax": 0.011281538976774978,
+      "lastDiagonal": 388.7402446295796,
+      "quiet": 0,
+      "still": false,
+      "holding": true,
+      "pendingStart": "hold",
+      "nodes": 14,
+      "fixed": 0,
+      "threshold": 0.011662207338887388,
+      "strength": 0.1,
+      "revealReady": true
+    },
+    "reveal": {
+      "shown": 14,
+      "total": 14
+    },
+    "packing": 0,
+    "actualNodes": 14
+  },
+  "lastRecordedReleaseSample": {
+    "epoch": 1794196723825.9,
+    "elapsed": 64188,
+    "busy": "true",
+    "motion": {
+      "calls": 3671,
+      "completeTicks": 3659,
+      "cpuMs": 327.79999997559935,
+      "maxCpuMs": 2.2999999998137355,
+      "initialized": 18,
+      "wakes": 3,
+      "invalidations": 0,
+      "stirs": 8,
+      "lastMoveMax": 0.011793747187727441,
+      "lastDiagonal": 402.73774516957224,
+      "quiet": 9,
+      "still": false,
+      "holding": true,
+      "pendingStart": null,
+      "nodes": 14,
+      "fieldNodes": 14,
+      "fixed": 0,
+      "threshold": 0.012082132355087167,
+      "strength": 0.1,
+      "revealReady": true
+    },
+    "reveal": {
+      "shown": 14,
+      "total": 14
+    },
+    "packing": 0
+  },
+  "lastSampleMsAfterRelease": 30897.60009765625,
+  "finalStillness": "Original settled assertion passed after last1Hz sample; exact final instant not independently logged",
+  "pageErrors": [],
+  "consoleErrors": []
+}

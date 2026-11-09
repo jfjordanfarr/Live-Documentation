@@ -1,6 +1,6 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
 
-import { localMapSettled } from "./still-picture";
+import { localMapSettled, panIntoView } from "./still-picture";
 import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT, type UrlStateSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 
@@ -8,11 +8,13 @@ import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/
  * The fixed-slot card composition of the November 5 comparison, behind the Card Text tuning switch: a card's box
  * depends on the file's structure alone, never on what is read or on zoom. The Purpose and every described symbol
  * have a two-line slot cut with an ellipsis in the ordinary type; a tap or Enter on a name opens the full text in
- * the reader dialog; below reading scale the prose fades rather than folds; and no tap saves a reading choice.
+ * the reader dialog. Books save exact open/fold choices while leaving each slot's space allotted; the ladder hides
+ * prose below reading scale without changing those choices. A name's reader action changes no reading choice.
  * The growing composition keeps its own spec in card-reading.spec.ts.
  */
 const payment = "tests/integration/programs/csharp/estate/PaymentService/PaymentService.cs";
 const pathfind = "packages/engine/src/live-docs/pathfind.ts";
+const readingState = "packages/explorer/src/client/reading-state.ts";
 const url = (state: Partial<UrlStateSnapshot>): string => `/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, view: "map", perspective: "2d", ...state })}`;
 const state = (page: Page) => decompressSnapshot(new URL(page.url()).searchParams.get("s")!);
 const card = (page: Page, id: string) => page.locator(`.node-card[data-id="${id}"]`);
@@ -100,7 +102,10 @@ test("fixed slots keep the ordinary drawing, give every symbol the same allotmen
   await page.mouse.move(280, 55);
   await expect(subject).toHaveClass(/local-slot-card/u);
   await expect(subject).not.toHaveClass(/local-reading-card/u);
-  await expect(subject.locator(".local-file-read, .local-symbol-read")).toHaveCount(0);
+  await expect(subject.locator(".local-file-read")).toHaveCount(1);
+  await expect(subject.locator(".local-symbol-read")).toHaveCount(1);
+  await expect(subject.locator('.symbol-row[data-symbol="Get"] .local-symbol-read')).toHaveCount(0);
+  await expect(subject.locator('.symbol-row[data-symbol="Post"] .local-symbol-read')).toHaveCount(0);
   await expect(subject.locator(".local-reading-counts")).toBeHidden();
   // Every symbol has the same allotment, two lines by default, filled or not: Get and Post have facts but no prose
   // and keep their empty slots, and a row without facts is no shorter than one with hidden facts.
@@ -209,7 +214,7 @@ test("Enter on a described name opens the reader, and the Tuning switch moves be
   await expect(subject).toHaveClass(/local-reading-card/u);
   await control.selectOption("slot");
   await still(page);
-  await expect(subject.locator(".local-file-read")).toHaveCount(0);
+  await expect(subject.locator(".local-file-read")).toHaveCount(1);
   await expect(subject.locator(".local-reading-purpose.local-reading-slot")).toBeVisible();
   await expect(subject).not.toHaveClass(/local-reading-card/u);
 });
@@ -241,4 +246,191 @@ test("Slot Lines sets every symbol's allotment at once, and the card's box follo
     expect(Math.sign(box.height - two.height)).toBe(Math.sign(lines - 2));
     expect(box.width).toBe(two.width);
   }
+});
+
+test("books compose all, none and one description without moving slots, and report visible prose separately from saved intent", async ({ page }) => {
+  const pinSet = { entries: [{ nodeId: readingState, symbol: "*" }] };
+  await page.goto(url({ selectedNodeId: readingState, pinSet }));
+  const subject = card(page, readingState), book = subject.locator(".local-file-read");
+  const row = subject.locator('.symbol-row[data-symbol="descriptionIsOpen"]');
+  const symbolBook = row.locator(".local-symbol-read"), description = row.locator(".local-reading-slot");
+  const prose = subject.locator(".local-reading-slot:has(.local-reading-prose:not(:empty))");
+  await subject.waitFor();
+  await still(page);
+  const all = await prose.count(), layout = await layoutBoxes(page);
+  expect(all).toBeGreaterThan(2);
+  await expect(prose.filter({ visible: true })).toHaveCount(all);
+  await expect(book).toHaveAttribute("aria-pressed", "true");
+  await expect(book).toHaveAttribute("aria-expanded", "true");
+
+  await pointAt(page, book, true);
+  await still(page);
+  await expect(prose.filter({ visible: true })).toHaveCount(0);
+  await expect(book).toHaveAttribute("aria-pressed", "false");
+  await expect(book).toHaveAttribute("aria-expanded", "false");
+  expect(await layoutBoxes(page)).toEqual(layout);
+  expect(state(page)).toMatchObject({ pinSet, reading: [{ nodeId: readingState, open: false }] });
+
+  await pointAt(page, symbolBook, true);
+  await still(page);
+  await expect(prose.filter({ visible: true })).toHaveCount(1);
+  await expect(description).toBeVisible();
+  await expect(book).toHaveAttribute("aria-pressed", "false");
+  await expect(book).toHaveAttribute("aria-expanded", "true");
+  await expect(symbolBook).toHaveAttribute("aria-pressed", "true");
+  await expect(symbolBook).toHaveAttribute("aria-expanded", "true");
+  expect(await layoutBoxes(page)).toEqual(layout);
+  const subset = [{ nodeId: readingState, open: false }, { nodeId: readingState, symbol: "descriptionIsOpen", open: true }];
+  expect(state(page)).toMatchObject({ pinSet, reading: subset });
+
+  await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
+  await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
+  await still(page);
+  await expect(page.locator("#map-container")).toHaveAttribute("data-lod", "middle");
+  await expect(prose.filter({ visible: true })).toHaveCount(0);
+  await expect(book).toHaveAttribute("aria-expanded", "false");
+  await expect(symbolBook).toHaveAttribute("aria-expanded", "false");
+  await expect(symbolBook).toHaveAttribute("aria-pressed", "true");
+  expect(state(page).reading).toEqual(subset);
+  expect(await layoutBoxes(page)).toEqual(layout);
+
+  // One press back restores the reading band before the growing card's separate fade threshold has recovered.
+  await page.getByRole("button", { name: "Zoom In", exact: true }).click();
+  await still(page);
+  await expect(page.locator("#map-container")).toHaveAttribute("data-lod", "reading");
+  await expect(description).toBeVisible();
+  await expect(symbolBook).toHaveAttribute("aria-expanded", "true");
+  expect(state(page).reading).toEqual(subset);
+  expect(await layoutBoxes(page)).toEqual(layout);
+  await page.getByRole("button", { name: "Zoom In", exact: true }).click();
+  await still(page);
+
+  // A whole-card action replaces individual overrides; an individual fold then wins over that whole-card choice.
+  await pointAt(page, book, true);
+  await still(page);
+  expect(state(page).reading).toEqual([{ nodeId: readingState, open: true }]);
+  await expect(prose.filter({ visible: true })).toHaveCount(all);
+  await pointAt(page, symbolBook, true);
+  await still(page);
+  await expect(description).toBeHidden();
+  await expect(prose.filter({ visible: true })).toHaveCount(all - 1);
+  expect(state(page).reading).toEqual([{ nodeId: readingState, open: true }, { nodeId: readingState, symbol: "descriptionIsOpen", open: false }]);
+  expect(await layoutBoxes(page)).toEqual(layout);
+});
+
+for (const composition of [
+  { name: "none", choices: [{ nodeId: readingState, open: false }], purpose: false, symbol: false },
+  { name: "one description", choices: [{ nodeId: readingState, open: false }, { nodeId: readingState, symbol: "descriptionIsOpen", open: true }], purpose: false, symbol: true },
+  { name: "an explicit symbol fold in an open card", choices: [{ nodeId: readingState, open: true }, { nodeId: readingState, symbol: "descriptionIsOpen", open: false }], purpose: true, symbol: false }
+]) test(`${composition.name} survives a fresh shared visit, reload and Back without book toggles becoming navigation entries`, async ({ page, browser }) => {
+  // Keep a preceding place so that a second Back can prove reading choices did not add their own history entries.
+  await page.goto(url({ selectedNodeId: payment }));
+  await card(page, payment).waitFor();
+  await page.goto(url({ selectedNodeId: readingState, pinSet: { entries: [{ nodeId: readingState, symbol: "*" }] } }));
+  const subject = card(page, readingState);
+  await subject.waitFor();
+  await still(page);
+  const book = subject.locator(".local-file-read"), row = subject.locator('.symbol-row[data-symbol="descriptionIsOpen"]');
+  if (composition.name !== "an explicit symbol fold in an open card") {
+    await pointAt(page, book, true);
+    await still(page);
+  } else {
+    await pointAt(page, book, true);
+    await still(page);
+    await pointAt(page, book, true);
+    await still(page);
+  }
+  if (composition.name !== "none") {
+    await pointAt(page, row.locator(".local-symbol-read"), true);
+    await still(page);
+  }
+  expect(state(page).reading).toEqual(composition.choices);
+  const shared = page.url();
+  const assertComposition = async (target: Page): Promise<void> => {
+    const shown = card(target, readingState);
+    await shown.waitFor();
+    await expect(shown.locator(".local-reading-purpose"))[composition.purpose ? "toBeVisible" : "toBeHidden"]();
+    await expect(shown.locator('.symbol-row[data-symbol="descriptionIsOpen"] .local-reading-slot'))[composition.symbol ? "toBeVisible" : "toBeHidden"]();
+    expect(state(target).reading).toEqual(composition.choices);
+  };
+  await page.reload();
+  await subject.waitFor();
+  await still(page);
+  await assertComposition(page);
+  const recipient = await browser.newContext({ viewport: { width: 1440, height: 960 } });
+  try {
+    const other = await recipient.newPage();
+    await other.goto(shared);
+    await assertComposition(other);
+  } finally { await recipient.close(); }
+
+  await pointAt(page, row.locator(".symbol-label"), true);
+  await expect(page.getByRole("dialog")).toBeVisible();
+  await page.goBack();
+  await expect(page.locator("#detail-panel")).not.toHaveClass(/visible/u);
+  await assertComposition(page);
+  await page.goBack();
+  await expect(card(page, payment)).toBeVisible();
+  expect(state(page).selectedNodeId).toBe(payment);
+  await page.goForward();
+  await assertComposition(page);
+});
+
+test("exact symbol arrivals reveal their heading, while refreshing the same target preserves an intentional scroll", async ({ page }) => {
+  await page.goto(url({ selectedNodeId: pathfind }));
+  const subject = card(page, pathfind);
+  await subject.waitFor();
+  await still(page);
+  const reachability = subject.locator('.symbol-row[data-symbol="reachability (function)"] .symbol-label');
+  await panIntoView(page, reachability);
+  await pointAt(page, reachability, true);
+  const reader = page.locator("#detail-panel"), body = page.locator("#detail-body");
+  const atHeading = async (symbol: string): Promise<void> => {
+    const heading = body.locator("[data-reader-symbol] > h4");
+    await expect(reader).toHaveClass(/visible/u);
+    await expect(heading).toHaveText(symbol);
+    await expect(heading).toBeInViewport({ ratio: 1 });
+    // A short document may reach its end before its heading can reach the top. Require the nearest possible arrival.
+    await expect.poll(() => heading.evaluate(element => {
+      const reader = document.querySelector<HTMLElement>("#detail-body")!;
+      const top = element.getBoundingClientRect().top - reader.getBoundingClientRect().top + reader.scrollTop;
+      return Math.abs(reader.scrollTop - Math.min(top, reader.scrollHeight - reader.clientHeight));
+    })).toBeLessThan(1);
+  };
+  await atHeading("reachability (function)");
+  await body.evaluate(element => { element.scrollTop = 200; });
+  const scroll = await body.evaluate(element => element.scrollTop);
+  expect(scroll).toBeGreaterThan(0);
+  await reader.getByRole("button", { name: "Pin symbol", exact: true }).click();
+  await expect(reader.getByRole("button", { name: "Unpin symbol", exact: true })).toBeVisible();
+  await still(page);
+  expect(await body.evaluate(element => element.scrollTop)).toBe(scroll);
+  const pins = state(page).pinSet;
+
+  // The long previous description puts Public Symbols well below its heading; its scroll must not hide the new one.
+  await body.locator('.symbol-badge[data-symbol="Walk (interface)"]').click();
+  await atHeading("Walk (interface)");
+  expect(state(page).pinSet).toEqual(pins);
+  await page.keyboard.press("Escape");
+  await expect(reader).not.toHaveClass(/visible/u);
+  const walk = subject.locator('.symbol-row[data-symbol="walk (function)"] .symbol-label');
+  await panIntoView(page, walk);
+  await pointAt(page, walk, true);
+  await atHeading("walk (function)");
+  expect(state(page).pinSet).toEqual(pins);
+  await page.goBack();
+  await expect(reader).not.toHaveClass(/visible/u);
+  await page.goForward();
+  await atHeading("walk (function)");
+
+  const context = "PaymentService/Data/PaymentsContext.cs";
+  await page.goto(`/samples/estate${url({ selectedNodeId: context })}`);
+  await card(page, context).waitFor();
+  await still(page);
+  const constructor = card(page, context).locator('.symbol-row[data-symbol="PaymentsContext (constructor)"] .symbol-label');
+  await panIntoView(page, constructor);
+  await pointAt(page, constructor, true);
+  await atHeading("PaymentsContext (constructor)");
+  await body.locator('.symbol-badge[data-symbol="PaymentsContext (class)"]').click();
+  await atHeading("PaymentsContext (class)");
 });

@@ -8,9 +8,12 @@
 
 ## Authored
 ### Purpose
-Exercises independent evidence reading, map subjects and explicit pins through real browser journeys, including sharing, history, keyboard focus and perspective changes.
+Current browser journeys for independent evidence reading, map subjects and explicit pins, including sharing, history, keyboard focus and perspective changes.
 
 ### Notes
+
+The November 9 UTC reader-arrival repair, following the owner’s [reading feedback](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-08.1.record.md#turn-3-additional-reading-feedback-during-the-review), rounds target offsets down so browser scroll rounding cannot clip the top of a heading. Existing bundled-fragment and Notes/Public Symbols jump journeys require the complete heading to remain visible, including after fragment reload, protecting the same helper outside symbol navigation.
+
 Created after the [October 20 visual playtest](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-2) of the owner's approved inspect-first/direct-Pin interaction. The estate's GatewayClient and PaymentResultModel supply different subject and evidence identities, so an accidental recenter or implicit pin cannot pass as a same-file success.
 
 Inspection and evidence-only Back must preserve exact card rectangles and the map DOM, after the entry camera has settled. A direct symbol pin, a followed reader link, reload and a fresh recipient must retain their separate identities. Internals keeps its own endpoint, and centring an already-open directory must clear the former subject. The 3D check observes the actual rendered camera and spheres through Three's development-tool event.

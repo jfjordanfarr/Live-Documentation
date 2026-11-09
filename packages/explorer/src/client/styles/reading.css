@@ -102,13 +102,14 @@
     .local-reading-card :is(.local-symbol-read, .local-symbol-pin, .local-symbol-more) { flex-basis: 26px; width: 26px; height: 26px; padding: 4px; }
 }
 
-/* Fixed slots, the comparison of 2026-11-05: a card's box depends on the file's structure, never on what is read or on
-   zoom. The ordinary type stays; every symbol's slot holds the same number of lines (Slot Lines in Tuning), filled or
-   not, cut with an ellipsis; a tap on the name opens the reader. */
+/* A fixed-slot card's box depends on its structure, never on reading choices or zoom. Each slot reserves the same
+   number of lines (Slot Lines in Tuning), filled or not, cut with an ellipsis. Books fold text while keeping that
+   space; a tap on the name opens the reader. */
 /* A slot card is as wide as an ordinary card, its names, path and chips deciding: the slots' prose contributes nothing
    to the card's intrinsic width (Turn 12, when a 440 px minimum kept a directory from being framed whole) and wraps at
    whatever width the card has. The prose clips rather than hides, so that no reveal by the browser can scroll it. */
 .local-reading-slot { padding: 1px 2px 6px; font-size: 12px; line-height: 17px; contain: inline-size; }
+.local-reading-slot[data-reading-open="false"] { visibility: hidden; }
 .local-reading-slot .local-reading-prose { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: var(--slot-lines, 2); overflow: clip; height: calc(var(--slot-lines, 2) * 17px); max-height: none; }
 .local-reading-slot .local-reading-prose:empty { display: -webkit-box; }
 .local-reading-slot .local-reading-prose :is(p, ul, ol, h1, h2, h3) { margin: 0; }
@@ -165,6 +166,7 @@
    reading band only, move left by what both grew. */
 .local-slot-card .local-symbol-more { transform: scale(var(--row-control-scale)); transform-origin: right top; }
 .local-slot-card .local-symbol-pin { transform: translateX(calc(var(--row-more-w, 0) * (1 - var(--row-control-scale)) * 1px)) scale(var(--row-control-scale)); transform-origin: right top; }
+.local-slot-card .local-symbol-read { transform: translateX(calc(var(--row-after-read-w, 0) * (1 - var(--row-control-scale)) * 1px)) scale(var(--row-control-scale)); transform-origin: right top; }
 .local-slot-card .type-refs-indicator { transform: translateX(calc(var(--row-controls-w, 0) * (1 - var(--row-control-scale)) * 1px)); }
 /* A symbol's name holds its step's size (on screen between 0.87 and 1.15 of its reading size across the step, Turn 19)
    in the room across its box less its row's badges and controls at their held size: Pin and More through the middle
@@ -240,7 +242,7 @@
    Turn 9: "the symbol buttons too when we can"), and folds into the row's More beyond it, whose menu pins and unpins;
    More stands on every row through the far band (Turn 17), the one held button a row keeps, which is also the phone's
    rule. */
-:is([data-lod="far"], [data-lod="overview"]) .local-slot-card :is(.local-symbol-pin, .local-disclosure, .local-back-references) { visibility: hidden; }
+:is([data-lod="far"], [data-lod="overview"]) .local-slot-card :is(.local-symbol-read, .local-symbol-pin, .local-disclosure, .local-back-references) { visibility: hidden; }
 :is([data-lod="far"], [data-lod="overview"]) .local-slot-card .local-card-actions > :not(.local-file-more) { display: none; }
 /* The overview band is the file's own (from the seventh step since the far bands' review of 2026-11-06): a row goes
    silent and draws nothing, its name, its buttons, its badges, Internals' label and its dots, since the wires there end
@@ -258,7 +260,7 @@
    follows the room, never smaller than the map's own scale. It stands on one line when it fits, otherwise on the fewest
    lines that hold it whole, each filled before the next, broken only at its seams, and cut with an ellipsis only when the
    room's lines run out. The node's held controls follow it at the right edge, on its last line when its text leaves them
-   room, otherwise on the line after: all three at the middle band, that line as tall as they are, and More alone
+   room, otherwise on the line after: all available controls at the middle band, that line as tall as they are, and More alone
    beyond, held no taller than a line of the name. The card reading chooses the lines and the controls' place at render
    for each band and step, one attribute and one custom property a band and step, and the scales and the room here are the
    formulas it mirrors (heldTitle). The name in the layout keeps the header's height in every band and is not drawn; the

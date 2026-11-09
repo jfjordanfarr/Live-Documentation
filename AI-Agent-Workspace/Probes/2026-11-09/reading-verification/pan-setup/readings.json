@@ -1,0 +1,48 @@
+{
+  "beforePan": {
+    "button": {
+      "x": 1616.400146484375,
+      "y": 94.8857421875,
+      "width": 26.9244384765625,
+      "height": 26.924392700195312
+    },
+    "frame": {
+      "x": 261,
+      "y": 50,
+      "width": 1339,
+      "height": 880
+    },
+    "viewport": {
+      "width": 1600,
+      "height": 1000
+    },
+    "transform": "matrix(1.34622, 0, 0, 1.34622, -163.136, -11.6555)"
+  },
+  "panMs": 1265.6685760000018,
+  "afterPan": {
+    "button": {
+      "x": 1549.070556640625,
+      "y": 94.88551330566406,
+      "width": 26.92431640625,
+      "height": 26.92431640625
+    },
+    "frame": {
+      "x": 261,
+      "y": 50,
+      "width": 1339,
+      "height": 880
+    },
+    "viewport": {
+      "width": 1600,
+      "height": 1000
+    },
+    "transform": "matrix(1.34622, 0, 0, 1.34622, -230.461, -11.6555)"
+  },
+  "finalWires": 22,
+  "finalPins": [
+    "Unpin symbolReferences.ts",
+    "Unpin check-symbols.ts"
+  ],
+  "status": "passed",
+  "errors": []
+}

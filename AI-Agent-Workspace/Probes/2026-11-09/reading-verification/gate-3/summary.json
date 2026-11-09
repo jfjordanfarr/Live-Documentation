@@ -1,0 +1,40 @@
+{
+  "exitCode": 0,
+  "unitFiles": 165,
+  "unitCases": 1740,
+  "integrationFiles": 20,
+  "integrationCases": 115,
+  "browserCases": 358,
+  "browserPassed": 358,
+  "browserFailed": 0,
+  "playwrightDuration": "48.2m",
+  "failures": [],
+  "previousFailureAreas": {
+    "whole": [
+      "\u2713  122 [chromium] \u203a tests/e2e/force-graph-update.spec.ts:128:5 \u203a a change at full energy and a gentler one each come to rest and stay still, both keep the lines' objects, and the levers ride the address (3.3m)"
+    ],
+    "historyAddress": [
+      "\u2713  162 [chromium] \u203a tests/e2e/history-scrubber.spec.ts:523:5 \u203a the address carries the commit and the authors toggle, a link to a moment opens on it, and leaving 3D returns the picture to today (21.9s)"
+    ],
+    "historyDrag": [
+      "\u2713  163 [chromium] \u203a tests/e2e/history-scrubber.spec.ts:573:5 \u203a a drag places every step it crosses without a tick, and the rest settles at the tuning's energy (1.2m)"
+    ],
+    "layoutLabChain": [
+      "\u2713  194 [chromium] \u203a tests/e2e/layout-lab.spec.ts:20:7 \u203a the layout lab reproduces the page to the pixel: repository, chain (17.7s)"
+    ],
+    "hiddenVisibility": [
+      "\u2713  230 [chromium] \u203a tests/e2e/local-map-hidden.spec.ts:95:5 \u203a the search pauses while the page is hidden and resumes when it is visible again (38.0s)"
+    ],
+    "nativeWirePan": [
+      "\u2713  294 [chromium] \u203a tests/e2e/perspective-zoom.spec.ts:202:5 \u203a native symbol wires gather by file pair and directory shells reverse their containment order (8.9s)"
+    ]
+  },
+  "sourceTestDifferences": [],
+  "product33HashDifferences": [],
+  "earlierGates": "untouched",
+  "server8913": "closed after completed preservation",
+  "sourceTestAuditEditsDuringRun": false,
+  "retries": 0,
+  "workers": 1,
+  "helper": null
+}

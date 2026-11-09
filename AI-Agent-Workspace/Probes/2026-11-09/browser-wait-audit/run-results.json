@@ -1,0 +1,56 @@
+[
+  {
+    "case": "history-address",
+    "exitCode": 0,
+    "startedEpoch": 1794193846837.5989,
+    "durationSeconds": 46.63730835914612,
+    "command": [
+      "node_modules/.bin/playwright",
+      "test",
+      "--config",
+      "tests/e2e/playwright.config.ts",
+      "tests/e2e/history-scrubber.spec.ts",
+      "--grep",
+      "the address carries the commit and the authors toggle, a link to a moment opens on it, and leaving 3D returns the picture to today$",
+      "--output",
+      "/tmp/live-docs-20261109-waits/history-address-results",
+      "--reporter=list"
+    ]
+  },
+  {
+    "case": "history-home",
+    "exitCode": 1,
+    "startedEpoch": 1794193893475.2144,
+    "durationSeconds": 91.40809345245361,
+    "command": [
+      "node_modules/.bin/playwright",
+      "test",
+      "--config",
+      "tests/e2e/playwright.config.ts",
+      "tests/e2e/history-scrubber.spec.ts",
+      "--grep",
+      "a drag places every step it crosses without a tick, and the rest settles at the tuning's energy$",
+      "--output",
+      "/tmp/live-docs-20261109-waits/history-home-results",
+      "--reporter=list"
+    ]
+  },
+  {
+    "case": "whole-initial",
+    "exitCode": 0,
+    "startedEpoch": 1794193984883.688,
+    "durationSeconds": 231.90833950042725,
+    "command": [
+      "node_modules/.bin/playwright",
+      "test",
+      "--config",
+      "tests/e2e/playwright.config.ts",
+      "tests/e2e/force-graph-update.spec.ts",
+      "--grep",
+      "a change at full energy and a gentler one each come to rest and stay still, both keep the lines' objects, and the levers ride the address$",
+      "--output",
+      "/tmp/live-docs-20261109-waits/whole-initial-results",
+      "--reporter=list"
+    ]
+  }
+]

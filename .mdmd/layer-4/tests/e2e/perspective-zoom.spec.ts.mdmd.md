@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/perspective-zoom.spec.ts
-- Generated At: 2026-10-31T22:13:32.928Z
+- Generated At: 2026-11-09T06:15:21.206Z
 
 ## Authored
 ### Purpose
@@ -26,6 +26,8 @@ Since [Turn 12](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.
 
 Since 2026-11-06 ([Turns 17 to 19](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-17--november-6)) the SVG copy comparison leaves out the ladder's properties as the map now writes them, at each step rather than each frame: `--text-scale`, `--control-scale`, `--name-growth`, `--name-scale` and `--node-control-scale`; the close band's `--prose-scale` and `--prose-lines` are gone.
 
+The current gathering case settles after its first file pin, then brings the second Pin into view with `panIntoView` before its ordinary pointer click. The Local Map deliberately holds its camera after pinning; a wider picture is reached by a native background drag. The [November 9 integration audit in Turn 3](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-08.1.record.md#turn-3-additional-reading-feedback-during-the-review) found that the second control stood beyond the 1600 px viewport, so the setup timed out before any wire or containment assertion ran. On the same frozen assets, the established pan reached that control without changing zoom and the complete original assertion tail passed within its thirty-second deadline. This correction adds navigation to the setup; wire and pair counts, every sampled containment/fold assertion, both transition directions, final retention and the deadline remain unchanged.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -45,6 +47,7 @@ _No public symbols detected_
 - [`search-bar.pathAddress`](./search-bar.ts.mdmd.md#symbol-pathaddress)
 - [`still-picture.loadGraph`](./still-picture.ts.mdmd.md#symbol-loadgraph)
 - [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)
+- [`still-picture.panIntoView`](./still-picture.ts.mdmd.md#symbol-panintoview)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

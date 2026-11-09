@@ -1,0 +1,80 @@
+[
+  {
+    "file": "run-gate.mjs",
+    "sourceBytes": 6262,
+    "sourceSha256": "a6a58ffb308c35724d7ea47f8f5568cab321743baa594a298ca1e850c963f083",
+    "compressed": false
+  },
+  {
+    "file": "gate.log.gz",
+    "sourceBytes": 10614,
+    "sourceSha256": "7fa4a9d78c015bf90604ae3d1f4f2544253359e0f6e4d5453502da88ec133689",
+    "compressed": true
+  },
+  {
+    "file": "run.json",
+    "sourceBytes": 595,
+    "sourceSha256": "97f1c532ee67289846c2f469d34fdc4449a09f2d774ad3c0ddfb26e4dc24fe8b",
+    "compressed": false
+  },
+  {
+    "file": "summary.json",
+    "sourceBytes": 830,
+    "sourceSha256": "79619091e3c2402022ba0f39ca55ab9a59cf8a103fd9ee7a96b372ee722d9240",
+    "compressed": false
+  },
+  {
+    "file": "integration-check.json",
+    "sourceBytes": 177,
+    "sourceSha256": "5d6885ab03f8ce4cb216a18a994acd907d9a38aafc5b987fce230935ade0a034",
+    "compressed": false
+  },
+  {
+    "file": "source-test-before.json.gz",
+    "sourceBytes": 161390,
+    "sourceSha256": "2483f5597df0315d35093b40a206296e90701c7c6876776c7b820575a78fd290",
+    "compressed": true
+  },
+  {
+    "file": "source-test-after.json.gz",
+    "sourceBytes": 161390,
+    "sourceSha256": "2483f5597df0315d35093b40a206296e90701c7c6876776c7b820575a78fd290",
+    "compressed": true
+  },
+  {
+    "file": "source-test-differences.json",
+    "sourceBytes": 3,
+    "sourceSha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "compressed": false
+  },
+  {
+    "file": "preexisting-outputs-manifest.json",
+    "sourceBytes": 10981,
+    "sourceSha256": "0405cdb346d7051d67753fecdf1f9a78cb75fd795387465ef136cf4a94ea7c54",
+    "compressed": false
+  },
+  {
+    "file": "output-attribution.json",
+    "sourceBytes": 27329,
+    "sourceSha256": "9b0226b48b2942a4fc2e00a9d8f7f23105702d8c16644f053f7c347f65dcb16d",
+    "compressed": false
+  },
+  {
+    "file": "outputs-manifest.json",
+    "sourceBytes": 10908,
+    "sourceSha256": "e882ea5d73a1d1a0ff0e8f0717b72c0269c039727edb70cebaf0a439be2fd48c",
+    "compressed": false
+  },
+  {
+    "file": "product-before.patch.gz",
+    "sourceBytes": 136057,
+    "sourceSha256": "026614efea7aaf82265ad8a64f9ddeb9ae2a509fba2f0738395e539f45fddf38",
+    "compressed": true
+  },
+  {
+    "file": "product-after.patch.gz",
+    "sourceBytes": 136057,
+    "sourceSha256": "026614efea7aaf82265ad8a64f9ddeb9ae2a509fba2f0738395e539f45fddf38",
+    "compressed": true
+  }
+]

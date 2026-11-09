@@ -1,0 +1,5355 @@
+{
+  "kind": "fanout",
+  "direction": "inbound",
+  "from": {
+    "codePath": "scripts/layout-lab/capture.ts",
+    "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+  },
+  "documents": {
+    "cites": [],
+    "citedBy": []
+  },
+  "maxDepth": 25,
+  "terminalPaths": [
+    {
+      "length": 1,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "tests/e2e/local-map-simplicity.spec.ts",
+          "docPath": ".mdmd/layer-4/tests/e2e/local-map-simplicity.spec.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 1,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "tests/e2e/layout-lab.spec.ts",
+          "docPath": ".mdmd/layer-4/tests/e2e/layout-lab.spec.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/verify.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/verify.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 6,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 6,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 3,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 3,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 3,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "tests/e2e/local-map-simplicity.spec.ts",
+          "docPath": ".mdmd/layer-4/tests/e2e/local-map-simplicity.spec.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "tests/e2e/layout-lab.spec.ts",
+          "docPath": ".mdmd/layer-4/tests/e2e/layout-lab.spec.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/verify.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/verify.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 6,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 6,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 6,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 7,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 7,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 6,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/spatial.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/spatial.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/spatial.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/spatial.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/spatial.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/spatial.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 6,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/spatial.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/spatial.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/approximation.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/approximation.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 6,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/spatial.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/spatial.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/approximation.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/approximation.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/approximation.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/approximation.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 6,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 6,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/refine.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/refine.ts.mdmd.md"
+        },
+        {
+          "codePath": "tests/e2e/local-map-simplicity.spec.ts",
+          "docPath": ".mdmd/layer-4/tests/e2e/local-map-simplicity.spec.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/refine.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/refine.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/refine.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/refine.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/approximation.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/approximation.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/approximation.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/approximation.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/approximation.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/approximation.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 3,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 2,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 3,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "tests/e2e/local-map-simplicity.spec.ts",
+          "docPath": ".mdmd/layer-4/tests/e2e/local-map-simplicity.spec.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 3,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "tests/e2e/layout-lab.spec.ts",
+          "docPath": ".mdmd/layer-4/tests/e2e/layout-lab.spec.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/verify.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/verify.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 6,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 6,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 3,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/spatial.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/spatial.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/spatial.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/spatial.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/spatial.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/spatial.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/spatial.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/spatial.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/approximation.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/approximation.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/spatial.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/spatial.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/approximation.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/approximation.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/approximation.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/approximation.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 3,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/refine.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/refine.ts.mdmd.md"
+        },
+        {
+          "codePath": "tests/e2e/local-map-simplicity.spec.ts",
+          "docPath": ".mdmd/layer-4/tests/e2e/local-map-simplicity.spec.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/refine.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/refine.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/refine.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/refine.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 3,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 3,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/approximation.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/approximation.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/approximation.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/approximation.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/approximation.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/approximation.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 2,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 2,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 2,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 3,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 3,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 2,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 2,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/refine.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/refine.ts.mdmd.md"
+        },
+        {
+          "codePath": "tests/e2e/local-map-simplicity.spec.ts",
+          "docPath": ".mdmd/layer-4/tests/e2e/local-map-simplicity.spec.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 2,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/refine.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/refine.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 2,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/refine.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/refine.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 3,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/measurer.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/measurer.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "tests/e2e/local-map-simplicity.spec.ts",
+          "docPath": ".mdmd/layer-4/tests/e2e/local-map-simplicity.spec.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 3,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/measurer.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/measurer.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "tests/e2e/layout-lab.spec.ts",
+          "docPath": ".mdmd/layer-4/tests/e2e/layout-lab.spec.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/measurer.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/measurer.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/verify.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/verify.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/measurer.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/measurer.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/measurer.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/measurer.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/measurer.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/measurer.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/measurer.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/measurer.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 6,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/measurer.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/measurer.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 6,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/measurer.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/measurer.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/measurer.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/measurer.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/measurer.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/measurer.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 3,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/measurer.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/measurer.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/measurer.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/measurer.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/spatial.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/spatial.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/spatial.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/spatial.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/measurer.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/measurer.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/spatial.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/spatial.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/measurer.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/measurer.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/spatial.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/spatial.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/approximation.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/approximation.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/measurer.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/measurer.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/spatial.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/spatial.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/approximation.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/approximation.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/approximation.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/approximation.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/measurer.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/measurer.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/measurer.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/measurer.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 3,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/measurer.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/measurer.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/measurer.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/measurer.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/measurer.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/measurer.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/measurer.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/measurer.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/measurer.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/measurer.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/measurer.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/measurer.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/refine.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/refine.ts.mdmd.md"
+        },
+        {
+          "codePath": "tests/e2e/local-map-simplicity.spec.ts",
+          "docPath": ".mdmd/layer-4/tests/e2e/local-map-simplicity.spec.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/measurer.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/measurer.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/refine.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/refine.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/measurer.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/measurer.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/refine.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/refine.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 3,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/measurer.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/measurer.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 3,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/measurer.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/measurer.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/measurer.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/measurer.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/approximation.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/approximation.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/measurer.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/measurer.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/approximation.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/approximation.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/approximation.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/approximation.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 2,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/measurer.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/measurer.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 1,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 2,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "tests/e2e/local-map-simplicity.spec.ts",
+          "docPath": ".mdmd/layer-4/tests/e2e/local-map-simplicity.spec.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 2,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "tests/e2e/layout-lab.spec.ts",
+          "docPath": ".mdmd/layer-4/tests/e2e/layout-lab.spec.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 3,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/verify.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/verify.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 3,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 3,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 2,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 3,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/spatial.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/spatial.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/spatial.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/spatial.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 3,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/spatial.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/spatial.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/spatial.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/spatial.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/approximation.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/approximation.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/spatial.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/spatial.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/approximation.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/approximation.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/approximation.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/approximation.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 3,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 3,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 2,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 3,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 3,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 3,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/refine.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/refine.ts.mdmd.md"
+        },
+        {
+          "codePath": "tests/e2e/local-map-simplicity.spec.ts",
+          "docPath": ".mdmd/layer-4/tests/e2e/local-map-simplicity.spec.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 3,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/refine.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/refine.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 3,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/refine.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/refine.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 2,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 2,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 3,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/approximation.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/approximation.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 3,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/approximation.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/approximation.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/approximation.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/approximation.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 1,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/verify.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/verify.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 6,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 6,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 6,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 7,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 7,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 6,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 4,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 6,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 6,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "tests/e2e/local-map-simplicity.spec.ts",
+          "docPath": ".mdmd/layer-4/tests/e2e/local-map-simplicity.spec.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "tests/e2e/layout-lab.spec.ts",
+          "docPath": ".mdmd/layer-4/tests/e2e/layout-lab.spec.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 6,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/verify.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/verify.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 6,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 7,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 7,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 7,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 8,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 8,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 7,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 6,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 6,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/spatial.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/spatial.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/spatial.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/spatial.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 6,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/spatial.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/spatial.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 7,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/spatial.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/spatial.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/approximation.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/approximation.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 7,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/spatial.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/spatial.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/approximation.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/approximation.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/approximation.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/approximation.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 6,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 6,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 6,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/sweep.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/sweep.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 7,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 7,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/restarts.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/restarts.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 6,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/report.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/report.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 6,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/refine.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/refine.ts.mdmd.md"
+        },
+        {
+          "codePath": "tests/e2e/local-map-simplicity.spec.ts",
+          "docPath": ".mdmd/layer-4/tests/e2e/local-map-simplicity.spec.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 6,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/refine.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/refine.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 6,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/refine.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/refine.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.test.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/lab.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/lab.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 5,
+      "nodes": [
+        {
+          "codePath": "scripts/layout-lab/capture.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/card-model.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/card-model.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/routes.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/routes.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/signals.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/signals.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.ts.mdmd.md"
+        },
+        {
+          "codePath": "scripts/layout-lab/evaluate.test.ts",
+          "docPath": ".mdmd/layer-4/scripts/layout-lab/evaluate.test.ts.mdmd.md"
+        }
+      ]
+    }
+  ]
+}

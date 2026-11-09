@@ -1,0 +1,12 @@
+{
+  "mainHead": "acf3311c",
+  "source": "/workspaces/Live-Documentation/tests/e2e/history-scrubber.spec.ts",
+  "originalSha256": "020078820b4b321a0850e9a49595bb121a500c966e4b80c22e24cae3f182cece",
+  "semanticVariantSha256": "36c4d8180283ee1bf96bbe13f89d64d03dfec3d3053d14b044c75e68f3786bbc",
+  "externalImportResolvedSha256": "1198bc3c974db3bacfca9b757425b1cab3036984a5e9e45207281778dc0b6041",
+  "originalActionAssertionTailSha256": "725afdf931bf11f17b488e3c27e12ef114b0a4ae3636be92e08ea27e1cf167cd",
+  "globalMs": 120000,
+  "settleMs": 60000,
+  "scopeHops": 1,
+  "changes": "setup energy1; realUI .1 after Home rest; idle/settings guards; original drag tail byte-identical"
+}

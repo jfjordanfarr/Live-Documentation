@@ -1,0 +1,3000 @@
+{
+  "observations": [
+    {
+      "label": "initial-settled",
+      "t": 2160.5,
+      "rootIdentity": 1,
+      "search": {
+        "orderStart": "seed 6",
+        "orderStarts": "3",
+        "orderScore": "17028",
+        "searchStatus": "settled",
+        "searchAlignmentTried": "0",
+        "searchAlignmentAdopted": "0",
+        "searchTried": "12",
+        "searchNext": "15",
+        "searchAdopted": "2",
+        "searchShown": "16928",
+        "searchBest": "16928",
+        "searchPredicted": "17014",
+        "searchMeasured": "17028",
+        "searchPriced": "17014"
+      },
+      "settings": {
+        "order-starts": "2",
+        "search-starts": "32",
+        "search-patience": "8",
+        "card-text": "slot"
+      },
+      "cards": [
+        {
+          "id": "packages/explorer/src/client/persistence/local-storage.ts",
+          "identity": 2,
+          "rect": {
+            "x": 1838.504638671875,
+            "y": 784.9427490234375,
+            "width": 511.27490234375,
+            "height": 261.3951416015625
+          },
+          "size": [
+            444,
+            227
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 3,
+              "rect": {
+                "x": 1853.474365234375,
+                "y": 915.0645141601562,
+                "width": 481.33544921875,
+                "height": 21.87884521484375
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/persistence/compressed-url-state.ts",
+          "identity": 4,
+          "rect": {
+            "x": 2524.810546875,
+            "y": 750.3971557617188,
+            "width": 545.8203125,
+            "height": 261.39501953125
+          },
+          "size": [
+            474,
+            227
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 5,
+              "rect": {
+                "x": 2539.7802734375,
+                "y": 880.5189208984375,
+                "width": 515.880859375,
+                "height": 21.87884521484375
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/views/localView/card-reading.ts",
+          "identity": 6,
+          "rect": {
+            "x": 1838.504638671875,
+            "y": 15.727363586425781,
+            "width": 511.27490234375,
+            "height": 232.6070556640625
+          },
+          "size": [
+            444,
+            202
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 7,
+              "rect": {
+                "x": 1853.474365234375,
+                "y": 145.84912109375,
+                "width": 481.33544921875,
+                "height": 21.878875732421875
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/views/localView/branches.ts",
+          "identity": 8,
+          "rect": {
+            "x": 1838.504638671875,
+            "y": 275.97088623046875,
+            "width": 511.27490234375,
+            "height": 261.39508056640625
+          },
+          "size": [
+            444,
+            227
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 9,
+              "rect": {
+                "x": 1853.474365234375,
+                "y": 406.0926513671875,
+                "width": 481.33544921875,
+                "height": 21.878875732421875
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/views/localView/controller.ts",
+          "identity": 10,
+          "rect": {
+            "x": 2524.810546875,
+            "y": 15.727363586425781,
+            "width": 545.8203125,
+            "height": 232.6070556640625
+          },
+          "size": [
+            474,
+            202
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 11,
+              "rect": {
+                "x": 2539.7802734375,
+                "y": 145.84912109375,
+                "width": 515.880859375,
+                "height": 21.878875732421875
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/reading-state.ts",
+          "identity": 12,
+          "rect": {
+            "x": 683.530029296875,
+            "y": 71.00032806396484,
+            "width": 333.9407958984375,
+            "height": 798.00341796875
+          },
+          "size": [
+            290,
+            693
+          ],
+          "rows": [
+            {
+              "symbol": "chooseReading",
+              "identity": 13,
+              "rect": {
+                "x": 699.6512451171875,
+                "y": 202.27362060546875,
+                "width": 301.6982421875,
+                "height": 76.00030517578125
+              },
+              "slot": [
+                {
+                  "identity": 14,
+                  "rect": {
+                    "x": 727.2877807617188,
+                    "y": 229.91009521484375,
+                    "width": 246.42523193359375,
+                    "height": 47.212310791015625
+                  },
+                  "visibility": "visible"
+                }
+              ]
+            },
+            {
+              "symbol": "descriptionIsOpen",
+              "identity": 15,
+              "rect": {
+                "x": 699.6512451171875,
+                "y": 285.18304443359375,
+                "width": 301.6982421875,
+                "height": 76.00033569335938
+              },
+              "slot": [
+                {
+                  "identity": 16,
+                  "rect": {
+                    "x": 727.2877807617188,
+                    "y": 312.8195495605469,
+                    "width": 246.42523193359375,
+                    "height": 47.212310791015625
+                  },
+                  "visibility": "visible"
+                }
+              ]
+            },
+            {
+              "symbol": "releaseReading",
+              "identity": 17,
+              "rect": {
+                "x": 699.6512451171875,
+                "y": 368.0924987792969,
+                "width": 301.6982421875,
+                "height": 76.00030517578125
+              },
+              "slot": [
+                {
+                  "identity": 18,
+                  "rect": {
+                    "x": 727.2877807617188,
+                    "y": 395.7289733886719,
+                    "width": 246.42523193359375,
+                    "height": 47.212310791015625
+                  },
+                  "visibility": "visible"
+                }
+              ]
+            },
+            {
+              "symbol": "readingFiles",
+              "identity": 19,
+              "rect": {
+                "x": 699.6512451171875,
+                "y": 451.001953125,
+                "width": 301.6982421875,
+                "height": 76.00030517578125
+              },
+              "slot": [
+                {
+                  "identity": 20,
+                  "rect": {
+                    "x": 727.2877807617188,
+                    "y": 478.638427734375,
+                    "width": 246.42523193359375,
+                    "height": 47.2122802734375
+                  },
+                  "visibility": "visible"
+                }
+              ]
+            },
+            {
+              "symbol": "scrubReadingChoices",
+              "identity": 21,
+              "rect": {
+                "x": 699.6512451171875,
+                "y": 533.911376953125,
+                "width": 301.6982421875,
+                "height": 76.00030517578125
+              },
+              "slot": [
+                {
+                  "identity": 22,
+                  "rect": {
+                    "x": 727.2877807617188,
+                    "y": 561.5478515625,
+                    "width": 246.42523193359375,
+                    "height": 47.21234130859375
+                  },
+                  "visibility": "visible"
+                }
+              ]
+            },
+            {
+              "symbol": "readReadingChoices",
+              "identity": 23,
+              "rect": {
+                "x": 699.6512451171875,
+                "y": 616.82080078125,
+                "width": 301.6982421875,
+                "height": 76.0003662109375
+              },
+              "slot": [
+                {
+                  "identity": 24,
+                  "rect": {
+                    "x": 727.2877807617188,
+                    "y": 644.457275390625,
+                    "width": 246.42523193359375,
+                    "height": 47.21234130859375
+                  },
+                  "visibility": "visible"
+                }
+              ]
+            },
+            {
+              "symbol": "ReadingChoice",
+              "identity": 25,
+              "rect": {
+                "x": 699.6512451171875,
+                "y": 699.7302856445312,
+                "width": 301.6982421875,
+                "height": 76.00030517578125
+              },
+              "slot": [
+                {
+                  "identity": 26,
+                  "rect": {
+                    "x": 727.2877807617188,
+                    "y": 727.3667602539062,
+                    "width": 246.42523193359375,
+                    "height": 47.2122802734375
+                  },
+                  "visibility": "visible"
+                }
+              ]
+            },
+            {
+              "symbol": "__internals__",
+              "identity": 27,
+              "rect": {
+                "x": 699.6512451171875,
+                "y": 782.6397094726562,
+                "width": 301.6982421875,
+                "height": 21.87884521484375
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/types.ts",
+          "identity": 28,
+          "rect": {
+            "x": 1162.562255859375,
+            "y": 749.24560546875,
+            "width": 515.881103515625,
+            "height": 261.39508056640625
+          },
+          "size": [
+            448,
+            227
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 29,
+              "rect": {
+                "x": 1177.5321044921875,
+                "y": 879.3673706054688,
+                "width": 485.94140625,
+                "height": 21.87890625
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/reading-state.test.ts",
+          "identity": 30,
+          "rect": {
+            "x": 1162.562255859375,
+            "y": 267.9102478027344,
+            "width": 515.881103515625,
+            "height": 199.21298217773438
+          },
+          "size": [
+            448,
+            173
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 31,
+              "rect": {
+                "x": 1177.5321044921875,
+                "y": 410.69873046875,
+                "width": 485.94140625,
+                "height": 21.878875732421875
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/index.ts",
+          "identity": 32,
+          "rect": {
+            "x": 3230.692138671875,
+            "y": 446.3958435058594,
+            "width": 230.30419921875,
+            "height": 222.24337768554688
+          },
+          "size": [
+            200,
+            193
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 33,
+              "rect": {
+                "x": 3245.661865234375,
+                "y": 589.184326171875,
+                "width": 200.364501953125,
+                "height": 21.87890625
+              },
+              "slot": []
+            }
+          ]
+        }
+      ],
+      "reading": []
+    },
+    {
+      "label": "fold-immediate",
+      "t": 2450,
+      "rootIdentity": 1,
+      "search": {
+        "orderStart": "previous",
+        "orderStarts": "4",
+        "orderScore": "16928",
+        "searchStatus": "running",
+        "searchAlignmentTried": "0",
+        "searchAlignmentAdopted": "0",
+        "searchTried": "0",
+        "searchNext": "3",
+        "searchAdopted": "0",
+        "searchShown": "16928",
+        "searchBest": "16928",
+        "searchPredicted": "17014",
+        "searchMeasured": "17028",
+        "searchPriced": "17014",
+        "moving": "true"
+      },
+      "settings": {
+        "order-starts": "2",
+        "search-starts": "32",
+        "search-patience": "8",
+        "card-text": "slot"
+      },
+      "cards": [
+        {
+          "id": "packages/explorer/src/client/persistence/local-storage.ts",
+          "identity": 34,
+          "rect": {
+            "x": 1838.504638671875,
+            "y": 784.9427490234375,
+            "width": 511.27490234375,
+            "height": 261.3951416015625
+          },
+          "size": [
+            444,
+            227
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 35,
+              "rect": {
+                "x": 1853.474365234375,
+                "y": 915.0645141601562,
+                "width": 481.33544921875,
+                "height": 21.87884521484375
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/persistence/compressed-url-state.ts",
+          "identity": 36,
+          "rect": {
+            "x": 2524.810546875,
+            "y": 750.3971557617188,
+            "width": 545.8203125,
+            "height": 261.39501953125
+          },
+          "size": [
+            474,
+            227
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 37,
+              "rect": {
+                "x": 2539.7802734375,
+                "y": 880.5189208984375,
+                "width": 515.880859375,
+                "height": 21.87884521484375
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/views/localView/card-reading.ts",
+          "identity": 38,
+          "rect": {
+            "x": 1838.504638671875,
+            "y": 15.727363586425781,
+            "width": 511.27490234375,
+            "height": 232.6070556640625
+          },
+          "size": [
+            444,
+            202
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 39,
+              "rect": {
+                "x": 1853.474365234375,
+                "y": 145.84912109375,
+                "width": 481.33544921875,
+                "height": 21.878875732421875
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/views/localView/branches.ts",
+          "identity": 40,
+          "rect": {
+            "x": 1838.504638671875,
+            "y": 275.97088623046875,
+            "width": 511.27490234375,
+            "height": 261.39508056640625
+          },
+          "size": [
+            444,
+            227
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 41,
+              "rect": {
+                "x": 1853.474365234375,
+                "y": 406.0926513671875,
+                "width": 481.33544921875,
+                "height": 21.878875732421875
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/views/localView/controller.ts",
+          "identity": 42,
+          "rect": {
+            "x": 2524.810546875,
+            "y": 15.727363586425781,
+            "width": 545.8203125,
+            "height": 232.6070556640625
+          },
+          "size": [
+            474,
+            202
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 43,
+              "rect": {
+                "x": 2539.7802734375,
+                "y": 145.84912109375,
+                "width": 515.880859375,
+                "height": 21.878875732421875
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/reading-state.ts",
+          "identity": 44,
+          "rect": {
+            "x": 683.530029296875,
+            "y": 71.00032806396484,
+            "width": 333.9407958984375,
+            "height": 798.00341796875
+          },
+          "size": [
+            290,
+            693
+          ],
+          "rows": [
+            {
+              "symbol": "chooseReading",
+              "identity": 45,
+              "rect": {
+                "x": 699.6512451171875,
+                "y": 202.27362060546875,
+                "width": 301.6982421875,
+                "height": 76.00030517578125
+              },
+              "slot": [
+                {
+                  "identity": 46,
+                  "rect": {
+                    "x": 727.2877807617188,
+                    "y": 229.91009521484375,
+                    "width": 246.42523193359375,
+                    "height": 47.212310791015625
+                  },
+                  "visibility": "hidden"
+                }
+              ]
+            },
+            {
+              "symbol": "descriptionIsOpen",
+              "identity": 47,
+              "rect": {
+                "x": 699.6512451171875,
+                "y": 285.18304443359375,
+                "width": 301.6982421875,
+                "height": 76.00033569335938
+              },
+              "slot": [
+                {
+                  "identity": 48,
+                  "rect": {
+                    "x": 727.2877807617188,
+                    "y": 312.8195495605469,
+                    "width": 246.42523193359375,
+                    "height": 47.212310791015625
+                  },
+                  "visibility": "hidden"
+                }
+              ]
+            },
+            {
+              "symbol": "releaseReading",
+              "identity": 49,
+              "rect": {
+                "x": 699.6512451171875,
+                "y": 368.0924987792969,
+                "width": 301.6982421875,
+                "height": 76.00030517578125
+              },
+              "slot": [
+                {
+                  "identity": 50,
+                  "rect": {
+                    "x": 727.2877807617188,
+                    "y": 395.7289733886719,
+                    "width": 246.42523193359375,
+                    "height": 47.212310791015625
+                  },
+                  "visibility": "hidden"
+                }
+              ]
+            },
+            {
+              "symbol": "readingFiles",
+              "identity": 51,
+              "rect": {
+                "x": 699.6512451171875,
+                "y": 451.001953125,
+                "width": 301.6982421875,
+                "height": 76.00030517578125
+              },
+              "slot": [
+                {
+                  "identity": 52,
+                  "rect": {
+                    "x": 727.2877807617188,
+                    "y": 478.638427734375,
+                    "width": 246.42523193359375,
+                    "height": 47.2122802734375
+                  },
+                  "visibility": "hidden"
+                }
+              ]
+            },
+            {
+              "symbol": "scrubReadingChoices",
+              "identity": 53,
+              "rect": {
+                "x": 699.6512451171875,
+                "y": 533.911376953125,
+                "width": 301.6982421875,
+                "height": 76.00030517578125
+              },
+              "slot": [
+                {
+                  "identity": 54,
+                  "rect": {
+                    "x": 727.2877807617188,
+                    "y": 561.5478515625,
+                    "width": 246.42523193359375,
+                    "height": 47.21234130859375
+                  },
+                  "visibility": "hidden"
+                }
+              ]
+            },
+            {
+              "symbol": "readReadingChoices",
+              "identity": 55,
+              "rect": {
+                "x": 699.6512451171875,
+                "y": 616.82080078125,
+                "width": 301.6982421875,
+                "height": 76.0003662109375
+              },
+              "slot": [
+                {
+                  "identity": 56,
+                  "rect": {
+                    "x": 727.2877807617188,
+                    "y": 644.457275390625,
+                    "width": 246.42523193359375,
+                    "height": 47.21234130859375
+                  },
+                  "visibility": "hidden"
+                }
+              ]
+            },
+            {
+              "symbol": "ReadingChoice",
+              "identity": 57,
+              "rect": {
+                "x": 699.6512451171875,
+                "y": 699.7302856445312,
+                "width": 301.6982421875,
+                "height": 76.00030517578125
+              },
+              "slot": [
+                {
+                  "identity": 58,
+                  "rect": {
+                    "x": 727.2877807617188,
+                    "y": 727.3667602539062,
+                    "width": 246.42523193359375,
+                    "height": 47.2122802734375
+                  },
+                  "visibility": "hidden"
+                }
+              ]
+            },
+            {
+              "symbol": "__internals__",
+              "identity": 59,
+              "rect": {
+                "x": 699.6512451171875,
+                "y": 782.6397094726562,
+                "width": 301.6982421875,
+                "height": 21.87884521484375
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/reading-state.test.ts",
+          "identity": 60,
+          "rect": {
+            "x": 1162.562255859375,
+            "y": 267.9102478027344,
+            "width": 515.881103515625,
+            "height": 199.21298217773438
+          },
+          "size": [
+            448,
+            173
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 61,
+              "rect": {
+                "x": 1177.5321044921875,
+                "y": 410.69873046875,
+                "width": 485.94140625,
+                "height": 21.878875732421875
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/types.ts",
+          "identity": 62,
+          "rect": {
+            "x": 1162.562255859375,
+            "y": 749.24560546875,
+            "width": 515.881103515625,
+            "height": 261.39508056640625
+          },
+          "size": [
+            448,
+            227
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 63,
+              "rect": {
+                "x": 1177.5321044921875,
+                "y": 879.3673706054688,
+                "width": 485.94140625,
+                "height": 21.87890625
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/index.ts",
+          "identity": 64,
+          "rect": {
+            "x": 3230.692138671875,
+            "y": 446.3958435058594,
+            "width": 230.30419921875,
+            "height": 222.24337768554688
+          },
+          "size": [
+            200,
+            193
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 65,
+              "rect": {
+                "x": 3245.661865234375,
+                "y": 589.184326171875,
+                "width": 200.364501953125,
+                "height": 21.87890625
+              },
+              "slot": []
+            }
+          ]
+        }
+      ],
+      "reading": [
+        {
+          "nodeId": "packages/explorer/src/client/reading-state.ts",
+          "open": false
+        }
+      ]
+    },
+    {
+      "label": "fold-settled",
+      "t": 3192.7999999998137,
+      "rootIdentity": 1,
+      "search": {
+        "orderStart": "previous",
+        "orderStarts": "4",
+        "orderScore": "16928",
+        "searchStatus": "settled",
+        "searchAlignmentTried": "0",
+        "searchAlignmentAdopted": "0",
+        "searchTried": "8",
+        "searchNext": "11",
+        "searchAdopted": "0",
+        "searchShown": "16928",
+        "searchBest": "16928",
+        "searchPredicted": "16914",
+        "searchMeasured": "16928",
+        "searchPriced": "17014"
+      },
+      "settings": {
+        "order-starts": "2",
+        "search-starts": "32",
+        "search-patience": "8",
+        "card-text": "slot"
+      },
+      "cards": [
+        {
+          "id": "packages/explorer/src/client/persistence/local-storage.ts",
+          "identity": 34,
+          "rect": {
+            "x": 1838.504638671875,
+            "y": 784.9427490234375,
+            "width": 511.27490234375,
+            "height": 261.3951416015625
+          },
+          "size": [
+            444,
+            227
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 35,
+              "rect": {
+                "x": 1853.474365234375,
+                "y": 915.0645141601562,
+                "width": 481.33544921875,
+                "height": 21.87884521484375
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/persistence/compressed-url-state.ts",
+          "identity": 36,
+          "rect": {
+            "x": 2524.810546875,
+            "y": 750.3971557617188,
+            "width": 545.8203125,
+            "height": 261.39501953125
+          },
+          "size": [
+            474,
+            227
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 37,
+              "rect": {
+                "x": 2539.7802734375,
+                "y": 880.5189208984375,
+                "width": 515.880859375,
+                "height": 21.87884521484375
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/views/localView/card-reading.ts",
+          "identity": 38,
+          "rect": {
+            "x": 1838.504638671875,
+            "y": 15.727363586425781,
+            "width": 511.27490234375,
+            "height": 232.6070556640625
+          },
+          "size": [
+            444,
+            202
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 39,
+              "rect": {
+                "x": 1853.474365234375,
+                "y": 145.84912109375,
+                "width": 481.33544921875,
+                "height": 21.878875732421875
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/views/localView/branches.ts",
+          "identity": 40,
+          "rect": {
+            "x": 1838.504638671875,
+            "y": 275.97088623046875,
+            "width": 511.27490234375,
+            "height": 261.39508056640625
+          },
+          "size": [
+            444,
+            227
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 41,
+              "rect": {
+                "x": 1853.474365234375,
+                "y": 406.0926513671875,
+                "width": 481.33544921875,
+                "height": 21.878875732421875
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/views/localView/controller.ts",
+          "identity": 42,
+          "rect": {
+            "x": 2524.810546875,
+            "y": 15.727363586425781,
+            "width": 545.8203125,
+            "height": 232.6070556640625
+          },
+          "size": [
+            474,
+            202
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 43,
+              "rect": {
+                "x": 2539.7802734375,
+                "y": 145.84912109375,
+                "width": 515.880859375,
+                "height": 21.878875732421875
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/reading-state.ts",
+          "identity": 44,
+          "rect": {
+            "x": 683.530029296875,
+            "y": 71.00032806396484,
+            "width": 333.9407958984375,
+            "height": 798.00341796875
+          },
+          "size": [
+            290,
+            693
+          ],
+          "rows": [
+            {
+              "symbol": "chooseReading",
+              "identity": 45,
+              "rect": {
+                "x": 699.6512451171875,
+                "y": 202.27362060546875,
+                "width": 301.6982421875,
+                "height": 76.00030517578125
+              },
+              "slot": [
+                {
+                  "identity": 46,
+                  "rect": {
+                    "x": 727.2877807617188,
+                    "y": 229.91009521484375,
+                    "width": 246.42523193359375,
+                    "height": 47.212310791015625
+                  },
+                  "visibility": "hidden"
+                }
+              ]
+            },
+            {
+              "symbol": "descriptionIsOpen",
+              "identity": 47,
+              "rect": {
+                "x": 699.6512451171875,
+                "y": 285.18304443359375,
+                "width": 301.6982421875,
+                "height": 76.00033569335938
+              },
+              "slot": [
+                {
+                  "identity": 48,
+                  "rect": {
+                    "x": 727.2877807617188,
+                    "y": 312.8195495605469,
+                    "width": 246.42523193359375,
+                    "height": 47.212310791015625
+                  },
+                  "visibility": "hidden"
+                }
+              ]
+            },
+            {
+              "symbol": "releaseReading",
+              "identity": 49,
+              "rect": {
+                "x": 699.6512451171875,
+                "y": 368.0924987792969,
+                "width": 301.6982421875,
+                "height": 76.00030517578125
+              },
+              "slot": [
+                {
+                  "identity": 50,
+                  "rect": {
+                    "x": 727.2877807617188,
+                    "y": 395.7289733886719,
+                    "width": 246.42523193359375,
+                    "height": 47.212310791015625
+                  },
+                  "visibility": "hidden"
+                }
+              ]
+            },
+            {
+              "symbol": "readingFiles",
+              "identity": 51,
+              "rect": {
+                "x": 699.6512451171875,
+                "y": 451.001953125,
+                "width": 301.6982421875,
+                "height": 76.00030517578125
+              },
+              "slot": [
+                {
+                  "identity": 52,
+                  "rect": {
+                    "x": 727.2877807617188,
+                    "y": 478.638427734375,
+                    "width": 246.42523193359375,
+                    "height": 47.2122802734375
+                  },
+                  "visibility": "hidden"
+                }
+              ]
+            },
+            {
+              "symbol": "scrubReadingChoices",
+              "identity": 53,
+              "rect": {
+                "x": 699.6512451171875,
+                "y": 533.911376953125,
+                "width": 301.6982421875,
+                "height": 76.00030517578125
+              },
+              "slot": [
+                {
+                  "identity": 54,
+                  "rect": {
+                    "x": 727.2877807617188,
+                    "y": 561.5478515625,
+                    "width": 246.42523193359375,
+                    "height": 47.21234130859375
+                  },
+                  "visibility": "hidden"
+                }
+              ]
+            },
+            {
+              "symbol": "readReadingChoices",
+              "identity": 55,
+              "rect": {
+                "x": 699.6512451171875,
+                "y": 616.82080078125,
+                "width": 301.6982421875,
+                "height": 76.0003662109375
+              },
+              "slot": [
+                {
+                  "identity": 56,
+                  "rect": {
+                    "x": 727.2877807617188,
+                    "y": 644.457275390625,
+                    "width": 246.42523193359375,
+                    "height": 47.21234130859375
+                  },
+                  "visibility": "hidden"
+                }
+              ]
+            },
+            {
+              "symbol": "ReadingChoice",
+              "identity": 57,
+              "rect": {
+                "x": 699.6512451171875,
+                "y": 699.7302856445312,
+                "width": 301.6982421875,
+                "height": 76.00030517578125
+              },
+              "slot": [
+                {
+                  "identity": 58,
+                  "rect": {
+                    "x": 727.2877807617188,
+                    "y": 727.3667602539062,
+                    "width": 246.42523193359375,
+                    "height": 47.2122802734375
+                  },
+                  "visibility": "hidden"
+                }
+              ]
+            },
+            {
+              "symbol": "__internals__",
+              "identity": 59,
+              "rect": {
+                "x": 699.6512451171875,
+                "y": 782.6397094726562,
+                "width": 301.6982421875,
+                "height": 21.87884521484375
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/reading-state.test.ts",
+          "identity": 60,
+          "rect": {
+            "x": 1162.562255859375,
+            "y": 267.9102478027344,
+            "width": 515.881103515625,
+            "height": 199.21298217773438
+          },
+          "size": [
+            448,
+            173
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 61,
+              "rect": {
+                "x": 1177.5321044921875,
+                "y": 410.69873046875,
+                "width": 485.94140625,
+                "height": 21.878875732421875
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/types.ts",
+          "identity": 62,
+          "rect": {
+            "x": 1162.562255859375,
+            "y": 749.24560546875,
+            "width": 515.881103515625,
+            "height": 261.39508056640625
+          },
+          "size": [
+            448,
+            227
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 63,
+              "rect": {
+                "x": 1177.5321044921875,
+                "y": 879.3673706054688,
+                "width": 485.94140625,
+                "height": 21.87890625
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/index.ts",
+          "identity": 64,
+          "rect": {
+            "x": 3230.692138671875,
+            "y": 446.3958435058594,
+            "width": 230.30419921875,
+            "height": 222.24337768554688
+          },
+          "size": [
+            200,
+            193
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 65,
+              "rect": {
+                "x": 3245.661865234375,
+                "y": 589.184326171875,
+                "width": 200.364501953125,
+                "height": 21.87890625
+              },
+              "slot": []
+            }
+          ]
+        }
+      ],
+      "reading": [
+        {
+          "nodeId": "packages/explorer/src/client/reading-state.ts",
+          "open": false
+        }
+      ]
+    },
+    {
+      "label": "one-immediate",
+      "t": 3445,
+      "rootIdentity": 1,
+      "search": {
+        "orderStart": "previous",
+        "orderStarts": "4",
+        "orderScore": "16928",
+        "searchStatus": "running",
+        "searchAlignmentTried": "0",
+        "searchAlignmentAdopted": "0",
+        "searchTried": "0",
+        "searchNext": "3",
+        "searchAdopted": "0",
+        "searchShown": "16928",
+        "searchBest": "16928",
+        "searchPredicted": "16914",
+        "searchMeasured": "16928",
+        "searchPriced": "17014",
+        "moving": "true"
+      },
+      "settings": {
+        "order-starts": "2",
+        "search-starts": "32",
+        "search-patience": "8",
+        "card-text": "slot"
+      },
+      "cards": [
+        {
+          "id": "packages/explorer/src/client/persistence/local-storage.ts",
+          "identity": 66,
+          "rect": {
+            "x": 1838.5035400390625,
+            "y": 784.9417114257812,
+            "width": 511.2750244140625,
+            "height": 261.39508056640625
+          },
+          "size": [
+            444,
+            227
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 67,
+              "rect": {
+                "x": 1853.4732666015625,
+                "y": 915.0634765625,
+                "width": 481.3355712890625,
+                "height": 21.87884521484375
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/persistence/compressed-url-state.ts",
+          "identity": 68,
+          "rect": {
+            "x": 2524.8095703125,
+            "y": 750.3961181640625,
+            "width": 545.8203125,
+            "height": 261.39501953125
+          },
+          "size": [
+            474,
+            227
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 69,
+              "rect": {
+                "x": 2539.779296875,
+                "y": 880.5178833007812,
+                "width": 515.880859375,
+                "height": 21.87884521484375
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/views/localView/card-reading.ts",
+          "identity": 70,
+          "rect": {
+            "x": 1838.5035400390625,
+            "y": 15.726356506347656,
+            "width": 511.2750244140625,
+            "height": 232.6070556640625
+          },
+          "size": [
+            444,
+            202
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 71,
+              "rect": {
+                "x": 1853.4732666015625,
+                "y": 145.84811401367188,
+                "width": 481.3355712890625,
+                "height": 21.878875732421875
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/views/localView/branches.ts",
+          "identity": 72,
+          "rect": {
+            "x": 1838.5035400390625,
+            "y": 275.9698791503906,
+            "width": 511.2750244140625,
+            "height": 261.3951110839844
+          },
+          "size": [
+            444,
+            227
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 73,
+              "rect": {
+                "x": 1853.4732666015625,
+                "y": 406.0916442871094,
+                "width": 481.3355712890625,
+                "height": 21.878875732421875
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/views/localView/controller.ts",
+          "identity": 74,
+          "rect": {
+            "x": 2524.8095703125,
+            "y": 15.726356506347656,
+            "width": 545.8203125,
+            "height": 232.6070556640625
+          },
+          "size": [
+            474,
+            202
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 75,
+              "rect": {
+                "x": 2539.779296875,
+                "y": 145.84811401367188,
+                "width": 515.880859375,
+                "height": 21.878875732421875
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/reading-state.ts",
+          "identity": 76,
+          "rect": {
+            "x": 683.5289916992188,
+            "y": 70.99932098388672,
+            "width": 333.9407958984375,
+            "height": 798.0033569335938
+          },
+          "size": [
+            290,
+            693
+          ],
+          "rows": [
+            {
+              "symbol": "chooseReading",
+              "identity": 77,
+              "rect": {
+                "x": 699.6502685546875,
+                "y": 202.27261352539062,
+                "width": 301.6982421875,
+                "height": 76.00030517578125
+              },
+              "slot": [
+                {
+                  "identity": 78,
+                  "rect": {
+                    "x": 727.2867431640625,
+                    "y": 229.90908813476562,
+                    "width": 246.42529296875,
+                    "height": 47.212310791015625
+                  },
+                  "visibility": "hidden"
+                }
+              ]
+            },
+            {
+              "symbol": "descriptionIsOpen",
+              "identity": 79,
+              "rect": {
+                "x": 699.6502685546875,
+                "y": 285.1820373535156,
+                "width": 301.6982421875,
+                "height": 76.00033569335938
+              },
+              "slot": [
+                {
+                  "identity": 80,
+                  "rect": {
+                    "x": 727.2867431640625,
+                    "y": 312.81854248046875,
+                    "width": 246.42529296875,
+                    "height": 47.212310791015625
+                  },
+                  "visibility": "visible"
+                }
+              ]
+            },
+            {
+              "symbol": "releaseReading",
+              "identity": 81,
+              "rect": {
+                "x": 699.6502685546875,
+                "y": 368.09149169921875,
+                "width": 301.6982421875,
+                "height": 76.00030517578125
+              },
+              "slot": [
+                {
+                  "identity": 82,
+                  "rect": {
+                    "x": 727.2867431640625,
+                    "y": 395.72796630859375,
+                    "width": 246.42529296875,
+                    "height": 47.212310791015625
+                  },
+                  "visibility": "hidden"
+                }
+              ]
+            },
+            {
+              "symbol": "readingFiles",
+              "identity": 83,
+              "rect": {
+                "x": 699.6502685546875,
+                "y": 451.0009460449219,
+                "width": 301.6982421875,
+                "height": 76.00027465820312
+              },
+              "slot": [
+                {
+                  "identity": 84,
+                  "rect": {
+                    "x": 727.2867431640625,
+                    "y": 478.6374206542969,
+                    "width": 246.42529296875,
+                    "height": 47.212310791015625
+                  },
+                  "visibility": "hidden"
+                }
+              ]
+            },
+            {
+              "symbol": "scrubReadingChoices",
+              "identity": 85,
+              "rect": {
+                "x": 699.6502685546875,
+                "y": 533.910400390625,
+                "width": 301.6982421875,
+                "height": 76.000244140625
+              },
+              "slot": [
+                {
+                  "identity": 86,
+                  "rect": {
+                    "x": 727.2867431640625,
+                    "y": 561.546875,
+                    "width": 246.42529296875,
+                    "height": 47.2122802734375
+                  },
+                  "visibility": "hidden"
+                }
+              ]
+            },
+            {
+              "symbol": "readReadingChoices",
+              "identity": 87,
+              "rect": {
+                "x": 699.6502685546875,
+                "y": 616.8197631835938,
+                "width": 301.6982421875,
+                "height": 76.0003662109375
+              },
+              "slot": [
+                {
+                  "identity": 88,
+                  "rect": {
+                    "x": 727.2867431640625,
+                    "y": 644.4562377929688,
+                    "width": 246.42529296875,
+                    "height": 47.21234130859375
+                  },
+                  "visibility": "hidden"
+                }
+              ]
+            },
+            {
+              "symbol": "ReadingChoice",
+              "identity": 89,
+              "rect": {
+                "x": 699.6502685546875,
+                "y": 699.729248046875,
+                "width": 301.6982421875,
+                "height": 76.00030517578125
+              },
+              "slot": [
+                {
+                  "identity": 90,
+                  "rect": {
+                    "x": 727.2867431640625,
+                    "y": 727.36572265625,
+                    "width": 246.42529296875,
+                    "height": 47.2122802734375
+                  },
+                  "visibility": "hidden"
+                }
+              ]
+            },
+            {
+              "symbol": "__internals__",
+              "identity": 91,
+              "rect": {
+                "x": 699.6502685546875,
+                "y": 782.638671875,
+                "width": 301.6982421875,
+                "height": 21.87884521484375
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/reading-state.test.ts",
+          "identity": 92,
+          "rect": {
+            "x": 1162.561279296875,
+            "y": 267.90924072265625,
+            "width": 515.8809814453125,
+            "height": 199.21298217773438
+          },
+          "size": [
+            448,
+            173
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 93,
+              "rect": {
+                "x": 1177.5311279296875,
+                "y": 410.6977233886719,
+                "width": 485.94140625,
+                "height": 21.878875732421875
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/types.ts",
+          "identity": 94,
+          "rect": {
+            "x": 1162.561279296875,
+            "y": 749.2445678710938,
+            "width": 515.8809814453125,
+            "height": 261.39508056640625
+          },
+          "size": [
+            448,
+            227
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 95,
+              "rect": {
+                "x": 1177.5311279296875,
+                "y": 879.3663330078125,
+                "width": 485.94140625,
+                "height": 21.87890625
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/index.ts",
+          "identity": 96,
+          "rect": {
+            "x": 3230.691162109375,
+            "y": 446.39483642578125,
+            "width": 230.30419921875,
+            "height": 222.24334716796875
+          },
+          "size": [
+            200,
+            193
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 97,
+              "rect": {
+                "x": 3245.660888671875,
+                "y": 589.1832885742188,
+                "width": 200.364501953125,
+                "height": 21.87890625
+              },
+              "slot": []
+            }
+          ]
+        }
+      ],
+      "reading": [
+        {
+          "nodeId": "packages/explorer/src/client/reading-state.ts",
+          "open": false
+        },
+        {
+          "nodeId": "packages/explorer/src/client/reading-state.ts",
+          "symbol": "descriptionIsOpen",
+          "open": true
+        }
+      ]
+    },
+    {
+      "label": "one-settled",
+      "t": 4214.299999999814,
+      "rootIdentity": 1,
+      "search": {
+        "orderStart": "previous",
+        "orderStarts": "4",
+        "orderScore": "16928",
+        "searchStatus": "settled",
+        "searchAlignmentTried": "0",
+        "searchAlignmentAdopted": "0",
+        "searchTried": "8",
+        "searchNext": "11",
+        "searchAdopted": "0",
+        "searchShown": "16928",
+        "searchBest": "16928",
+        "searchPredicted": "16914",
+        "searchMeasured": "16928",
+        "searchPriced": "17014"
+      },
+      "settings": {
+        "order-starts": "2",
+        "search-starts": "32",
+        "search-patience": "8",
+        "card-text": "slot"
+      },
+      "cards": [
+        {
+          "id": "packages/explorer/src/client/persistence/local-storage.ts",
+          "identity": 66,
+          "rect": {
+            "x": 1838.5035400390625,
+            "y": 784.9427490234375,
+            "width": 511.2750244140625,
+            "height": 261.3951416015625
+          },
+          "size": [
+            444,
+            227
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 67,
+              "rect": {
+                "x": 1853.4732666015625,
+                "y": 915.0645141601562,
+                "width": 481.3355712890625,
+                "height": 21.87884521484375
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/persistence/compressed-url-state.ts",
+          "identity": 68,
+          "rect": {
+            "x": 2524.8095703125,
+            "y": 750.3971557617188,
+            "width": 545.8203125,
+            "height": 261.39501953125
+          },
+          "size": [
+            474,
+            227
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 69,
+              "rect": {
+                "x": 2539.779296875,
+                "y": 880.5189208984375,
+                "width": 515.880859375,
+                "height": 21.87884521484375
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/views/localView/card-reading.ts",
+          "identity": 70,
+          "rect": {
+            "x": 1838.5035400390625,
+            "y": 15.727363586425781,
+            "width": 511.2750244140625,
+            "height": 232.6070556640625
+          },
+          "size": [
+            444,
+            202
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 71,
+              "rect": {
+                "x": 1853.4732666015625,
+                "y": 145.84912109375,
+                "width": 481.3355712890625,
+                "height": 21.878875732421875
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/views/localView/branches.ts",
+          "identity": 72,
+          "rect": {
+            "x": 1838.5035400390625,
+            "y": 275.97088623046875,
+            "width": 511.2750244140625,
+            "height": 261.39508056640625
+          },
+          "size": [
+            444,
+            227
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 73,
+              "rect": {
+                "x": 1853.4732666015625,
+                "y": 406.0926513671875,
+                "width": 481.3355712890625,
+                "height": 21.878875732421875
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/views/localView/controller.ts",
+          "identity": 74,
+          "rect": {
+            "x": 2524.8095703125,
+            "y": 15.727363586425781,
+            "width": 545.8203125,
+            "height": 232.6070556640625
+          },
+          "size": [
+            474,
+            202
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 75,
+              "rect": {
+                "x": 2539.779296875,
+                "y": 145.84912109375,
+                "width": 515.880859375,
+                "height": 21.878875732421875
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/reading-state.ts",
+          "identity": 76,
+          "rect": {
+            "x": 683.5289916992188,
+            "y": 71.00032806396484,
+            "width": 333.9407958984375,
+            "height": 798.00341796875
+          },
+          "size": [
+            290,
+            693
+          ],
+          "rows": [
+            {
+              "symbol": "chooseReading",
+              "identity": 77,
+              "rect": {
+                "x": 699.6502685546875,
+                "y": 202.27362060546875,
+                "width": 301.6982421875,
+                "height": 76.00030517578125
+              },
+              "slot": [
+                {
+                  "identity": 78,
+                  "rect": {
+                    "x": 727.2867431640625,
+                    "y": 229.91009521484375,
+                    "width": 246.42529296875,
+                    "height": 47.212310791015625
+                  },
+                  "visibility": "hidden"
+                }
+              ]
+            },
+            {
+              "symbol": "descriptionIsOpen",
+              "identity": 79,
+              "rect": {
+                "x": 699.6502685546875,
+                "y": 285.18304443359375,
+                "width": 301.6982421875,
+                "height": 76.00033569335938
+              },
+              "slot": [
+                {
+                  "identity": 80,
+                  "rect": {
+                    "x": 727.2867431640625,
+                    "y": 312.8195495605469,
+                    "width": 246.42529296875,
+                    "height": 47.212310791015625
+                  },
+                  "visibility": "visible"
+                }
+              ]
+            },
+            {
+              "symbol": "releaseReading",
+              "identity": 81,
+              "rect": {
+                "x": 699.6502685546875,
+                "y": 368.0924987792969,
+                "width": 301.6982421875,
+                "height": 76.00030517578125
+              },
+              "slot": [
+                {
+                  "identity": 82,
+                  "rect": {
+                    "x": 727.2867431640625,
+                    "y": 395.7289733886719,
+                    "width": 246.42529296875,
+                    "height": 47.212310791015625
+                  },
+                  "visibility": "hidden"
+                }
+              ]
+            },
+            {
+              "symbol": "readingFiles",
+              "identity": 83,
+              "rect": {
+                "x": 699.6502685546875,
+                "y": 451.001953125,
+                "width": 301.6982421875,
+                "height": 76.00030517578125
+              },
+              "slot": [
+                {
+                  "identity": 84,
+                  "rect": {
+                    "x": 727.2867431640625,
+                    "y": 478.638427734375,
+                    "width": 246.42529296875,
+                    "height": 47.2122802734375
+                  },
+                  "visibility": "hidden"
+                }
+              ]
+            },
+            {
+              "symbol": "scrubReadingChoices",
+              "identity": 85,
+              "rect": {
+                "x": 699.6502685546875,
+                "y": 533.911376953125,
+                "width": 301.6982421875,
+                "height": 76.00030517578125
+              },
+              "slot": [
+                {
+                  "identity": 86,
+                  "rect": {
+                    "x": 727.2867431640625,
+                    "y": 561.5478515625,
+                    "width": 246.42529296875,
+                    "height": 47.21234130859375
+                  },
+                  "visibility": "hidden"
+                }
+              ]
+            },
+            {
+              "symbol": "readReadingChoices",
+              "identity": 87,
+              "rect": {
+                "x": 699.6502685546875,
+                "y": 616.82080078125,
+                "width": 301.6982421875,
+                "height": 76.0003662109375
+              },
+              "slot": [
+                {
+                  "identity": 88,
+                  "rect": {
+                    "x": 727.2867431640625,
+                    "y": 644.457275390625,
+                    "width": 246.42529296875,
+                    "height": 47.21234130859375
+                  },
+                  "visibility": "hidden"
+                }
+              ]
+            },
+            {
+              "symbol": "ReadingChoice",
+              "identity": 89,
+              "rect": {
+                "x": 699.6502685546875,
+                "y": 699.7302856445312,
+                "width": 301.6982421875,
+                "height": 76.00030517578125
+              },
+              "slot": [
+                {
+                  "identity": 90,
+                  "rect": {
+                    "x": 727.2867431640625,
+                    "y": 727.3667602539062,
+                    "width": 246.42529296875,
+                    "height": 47.2122802734375
+                  },
+                  "visibility": "hidden"
+                }
+              ]
+            },
+            {
+              "symbol": "__internals__",
+              "identity": 91,
+              "rect": {
+                "x": 699.6502685546875,
+                "y": 782.6397094726562,
+                "width": 301.6982421875,
+                "height": 21.87884521484375
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/reading-state.test.ts",
+          "identity": 92,
+          "rect": {
+            "x": 1162.561279296875,
+            "y": 267.9102478027344,
+            "width": 515.8809814453125,
+            "height": 199.21298217773438
+          },
+          "size": [
+            448,
+            173
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 93,
+              "rect": {
+                "x": 1177.5311279296875,
+                "y": 410.69873046875,
+                "width": 485.94140625,
+                "height": 21.878875732421875
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/types.ts",
+          "identity": 94,
+          "rect": {
+            "x": 1162.561279296875,
+            "y": 749.24560546875,
+            "width": 515.8809814453125,
+            "height": 261.39508056640625
+          },
+          "size": [
+            448,
+            227
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 95,
+              "rect": {
+                "x": 1177.5311279296875,
+                "y": 879.3673706054688,
+                "width": 485.94140625,
+                "height": 21.87890625
+              },
+              "slot": []
+            }
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/index.ts",
+          "identity": 96,
+          "rect": {
+            "x": 3230.691162109375,
+            "y": 446.3958435058594,
+            "width": 230.30419921875,
+            "height": 222.24337768554688
+          },
+          "size": [
+            200,
+            193
+          ],
+          "rows": [
+            {
+              "symbol": "__internals__",
+              "identity": 97,
+              "rect": {
+                "x": 3245.660888671875,
+                "y": 589.184326171875,
+                "width": 200.364501953125,
+                "height": 21.87890625
+              },
+              "slot": []
+            }
+          ]
+        }
+      ],
+      "reading": [
+        {
+          "nodeId": "packages/explorer/src/client/reading-state.ts",
+          "open": false
+        },
+        {
+          "nodeId": "packages/explorer/src/client/reading-state.ts",
+          "symbol": "descriptionIsOpen",
+          "open": true
+        }
+      ]
+    }
+  ],
+  "comparisons": [
+    {
+      "from": "initial-settled",
+      "to": "fold-settled",
+      "scopeSame": true,
+      "changed": [
+        {
+          "id": "packages/explorer/src/client/persistence/local-storage.ts",
+          "recreated": true,
+          "rowsRecreated": 1,
+          "rowOrderChanged": false,
+          "maxScreenBoxDelta": 0,
+          "sizeBefore": [
+            444,
+            227
+          ],
+          "sizeAfter": [
+            444,
+            227
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/persistence/compressed-url-state.ts",
+          "recreated": true,
+          "rowsRecreated": 1,
+          "rowOrderChanged": false,
+          "maxScreenBoxDelta": 0,
+          "sizeBefore": [
+            474,
+            227
+          ],
+          "sizeAfter": [
+            474,
+            227
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/views/localView/card-reading.ts",
+          "recreated": true,
+          "rowsRecreated": 1,
+          "rowOrderChanged": false,
+          "maxScreenBoxDelta": 0,
+          "sizeBefore": [
+            444,
+            202
+          ],
+          "sizeAfter": [
+            444,
+            202
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/views/localView/branches.ts",
+          "recreated": true,
+          "rowsRecreated": 1,
+          "rowOrderChanged": false,
+          "maxScreenBoxDelta": 0,
+          "sizeBefore": [
+            444,
+            227
+          ],
+          "sizeAfter": [
+            444,
+            227
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/views/localView/controller.ts",
+          "recreated": true,
+          "rowsRecreated": 1,
+          "rowOrderChanged": false,
+          "maxScreenBoxDelta": 0,
+          "sizeBefore": [
+            474,
+            202
+          ],
+          "sizeAfter": [
+            474,
+            202
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/reading-state.ts",
+          "recreated": true,
+          "rowsRecreated": 8,
+          "rowOrderChanged": false,
+          "maxScreenBoxDelta": 0,
+          "sizeBefore": [
+            290,
+            693
+          ],
+          "sizeAfter": [
+            290,
+            693
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/types.ts",
+          "recreated": true,
+          "rowsRecreated": 1,
+          "rowOrderChanged": false,
+          "maxScreenBoxDelta": 0,
+          "sizeBefore": [
+            448,
+            227
+          ],
+          "sizeAfter": [
+            448,
+            227
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/reading-state.test.ts",
+          "recreated": true,
+          "rowsRecreated": 1,
+          "rowOrderChanged": false,
+          "maxScreenBoxDelta": 0,
+          "sizeBefore": [
+            448,
+            173
+          ],
+          "sizeAfter": [
+            448,
+            173
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/index.ts",
+          "recreated": true,
+          "rowsRecreated": 1,
+          "rowOrderChanged": false,
+          "maxScreenBoxDelta": 0,
+          "sizeBefore": [
+            200,
+            193
+          ],
+          "sizeAfter": [
+            200,
+            193
+          ]
+        }
+      ]
+    },
+    {
+      "from": "fold-settled",
+      "to": "one-settled",
+      "scopeSame": true,
+      "changed": [
+        {
+          "id": "packages/explorer/src/client/persistence/local-storage.ts",
+          "recreated": true,
+          "rowsRecreated": 1,
+          "rowOrderChanged": false,
+          "maxScreenBoxDelta": 0.0010986328125,
+          "sizeBefore": [
+            444,
+            227
+          ],
+          "sizeAfter": [
+            444,
+            227
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/persistence/compressed-url-state.ts",
+          "recreated": true,
+          "rowsRecreated": 1,
+          "rowOrderChanged": false,
+          "maxScreenBoxDelta": 0.0009765625,
+          "sizeBefore": [
+            474,
+            227
+          ],
+          "sizeAfter": [
+            474,
+            227
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/views/localView/card-reading.ts",
+          "recreated": true,
+          "rowsRecreated": 1,
+          "rowOrderChanged": false,
+          "maxScreenBoxDelta": 0.0010986328125,
+          "sizeBefore": [
+            444,
+            202
+          ],
+          "sizeAfter": [
+            444,
+            202
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/views/localView/branches.ts",
+          "recreated": true,
+          "rowsRecreated": 1,
+          "rowOrderChanged": false,
+          "maxScreenBoxDelta": 0.0010986328125,
+          "sizeBefore": [
+            444,
+            227
+          ],
+          "sizeAfter": [
+            444,
+            227
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/views/localView/controller.ts",
+          "recreated": true,
+          "rowsRecreated": 1,
+          "rowOrderChanged": false,
+          "maxScreenBoxDelta": 0.0009765625,
+          "sizeBefore": [
+            474,
+            202
+          ],
+          "sizeAfter": [
+            474,
+            202
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/reading-state.ts",
+          "recreated": true,
+          "rowsRecreated": 8,
+          "rowOrderChanged": false,
+          "maxScreenBoxDelta": 0.00103759765625,
+          "sizeBefore": [
+            290,
+            693
+          ],
+          "sizeAfter": [
+            290,
+            693
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/reading-state.test.ts",
+          "recreated": true,
+          "rowsRecreated": 1,
+          "rowOrderChanged": false,
+          "maxScreenBoxDelta": 0.0009765625,
+          "sizeBefore": [
+            448,
+            173
+          ],
+          "sizeAfter": [
+            448,
+            173
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/types.ts",
+          "recreated": true,
+          "rowsRecreated": 1,
+          "rowOrderChanged": false,
+          "maxScreenBoxDelta": 0.0009765625,
+          "sizeBefore": [
+            448,
+            227
+          ],
+          "sizeAfter": [
+            448,
+            227
+          ]
+        },
+        {
+          "id": "packages/explorer/src/client/index.ts",
+          "recreated": true,
+          "rowsRecreated": 1,
+          "rowOrderChanged": false,
+          "maxScreenBoxDelta": 0.0009765625,
+          "sizeBefore": [
+            200,
+            193
+          ],
+          "sizeAfter": [
+            200,
+            193
+          ]
+        }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "t": 2428.5,
+      "phase": "fold",
+      "added": 542,
+      "removed": 529,
+      "attributes": [
+        "data-moving",
+        "data-search-status",
+        "data-search-tried",
+        "data-search-adopted"
+      ],
+      "state": {
+        "orderStart": "previous",
+        "orderStarts": "4",
+        "orderScore": "16928",
+        "searchStatus": "running",
+        "searchAlignmentTried": "0",
+        "searchAlignmentAdopted": "0",
+        "searchTried": "0",
+        "searchNext": "3",
+        "searchAdopted": "0",
+        "searchShown": "16928",
+        "searchBest": "16928",
+        "searchPredicted": "17014",
+        "searchMeasured": "17028",
+        "searchPriced": "17014",
+        "moving": "true"
+      }
+    },
+    {
+      "t": 2881.2999999998137,
+      "phase": "fold",
+      "added": 0,
+      "removed": 0,
+      "attributes": [
+        "data-moving"
+      ],
+      "state": {
+        "orderStart": "previous",
+        "orderStarts": "4",
+        "orderScore": "16928",
+        "searchStatus": "running",
+        "searchAlignmentTried": "0",
+        "searchAlignmentAdopted": "0",
+        "searchTried": "0",
+        "searchNext": "3",
+        "searchAdopted": "0",
+        "searchShown": "16928",
+        "searchBest": "16928",
+        "searchPredicted": "17014",
+        "searchMeasured": "17028",
+        "searchPriced": "17014"
+      }
+    },
+    {
+      "t": 2887.5,
+      "phase": "fold",
+      "added": 0,
+      "removed": 0,
+      "attributes": [
+        "data-search-status",
+        "data-search-tried",
+        "data-search-adopted"
+      ],
+      "state": {
+        "orderStart": "previous",
+        "orderStarts": "4",
+        "orderScore": "16928",
+        "searchStatus": "running",
+        "searchAlignmentTried": "0",
+        "searchAlignmentAdopted": "0",
+        "searchTried": "1",
+        "searchNext": "4",
+        "searchAdopted": "0",
+        "searchShown": "16928",
+        "searchBest": "16928",
+        "searchPredicted": "17014",
+        "searchMeasured": "17028",
+        "searchPriced": "17014"
+      }
+    },
+    {
+      "t": 2898,
+      "phase": "fold",
+      "added": 0,
+      "removed": 0,
+      "attributes": [
+        "data-search-status",
+        "data-search-tried",
+        "data-search-adopted"
+      ],
+      "state": {
+        "orderStart": "previous",
+        "orderStarts": "4",
+        "orderScore": "16928",
+        "searchStatus": "running",
+        "searchAlignmentTried": "0",
+        "searchAlignmentAdopted": "0",
+        "searchTried": "2",
+        "searchNext": "5",
+        "searchAdopted": "0",
+        "searchShown": "16928",
+        "searchBest": "16928",
+        "searchPredicted": "17014",
+        "searchMeasured": "17028",
+        "searchPriced": "17014"
+      }
+    },
+    {
+      "t": 2913.7999999998137,
+      "phase": "fold",
+      "added": 0,
+      "removed": 0,
+      "attributes": [
+        "data-search-status",
+        "data-search-tried",
+        "data-search-adopted"
+      ],
+      "state": {
+        "orderStart": "previous",
+        "orderStarts": "4",
+        "orderScore": "16928",
+        "searchStatus": "running",
+        "searchAlignmentTried": "0",
+        "searchAlignmentAdopted": "0",
+        "searchTried": "3",
+        "searchNext": "6",
+        "searchAdopted": "0",
+        "searchShown": "16928",
+        "searchBest": "16928",
+        "searchPredicted": "17014",
+        "searchMeasured": "17028",
+        "searchPriced": "17014"
+      }
+    },
+    {
+      "t": 2943.7999999998137,
+      "phase": "fold",
+      "added": 196,
+      "removed": 196,
+      "attributes": [
+        "data-search-status",
+        "data-search-tried",
+        "data-search-adopted"
+      ],
+      "state": {
+        "orderStart": "previous",
+        "orderStarts": "4",
+        "orderScore": "16928",
+        "searchStatus": "running",
+        "searchAlignmentTried": "0",
+        "searchAlignmentAdopted": "0",
+        "searchTried": "4",
+        "searchNext": "7",
+        "searchAdopted": "0",
+        "searchShown": "16928",
+        "searchBest": "16928",
+        "searchPredicted": "16914",
+        "searchMeasured": "16928",
+        "searchPriced": "17014"
+      }
+    },
+    {
+      "t": 2952.699999999255,
+      "phase": "fold",
+      "added": 0,
+      "removed": 0,
+      "attributes": [
+        "data-search-status",
+        "data-search-tried",
+        "data-search-adopted"
+      ],
+      "state": {
+        "orderStart": "previous",
+        "orderStarts": "4",
+        "orderScore": "16928",
+        "searchStatus": "running",
+        "searchAlignmentTried": "0",
+        "searchAlignmentAdopted": "0",
+        "searchTried": "5",
+        "searchNext": "8",
+        "searchAdopted": "0",
+        "searchShown": "16928",
+        "searchBest": "16928",
+        "searchPredicted": "16914",
+        "searchMeasured": "16928",
+        "searchPriced": "17014"
+      }
+    },
+    {
+      "t": 2964,
+      "phase": "fold",
+      "added": 0,
+      "removed": 0,
+      "attributes": [
+        "data-search-status",
+        "data-search-tried",
+        "data-search-adopted"
+      ],
+      "state": {
+        "orderStart": "previous",
+        "orderStarts": "4",
+        "orderScore": "16928",
+        "searchStatus": "running",
+        "searchAlignmentTried": "0",
+        "searchAlignmentAdopted": "0",
+        "searchTried": "6",
+        "searchNext": "9",
+        "searchAdopted": "0",
+        "searchShown": "16928",
+        "searchBest": "16928",
+        "searchPredicted": "16914",
+        "searchMeasured": "16928",
+        "searchPriced": "17014"
+      }
+    },
+    {
+      "t": 2979.899999999441,
+      "phase": "fold",
+      "added": 0,
+      "removed": 0,
+      "attributes": [
+        "data-search-status",
+        "data-search-tried",
+        "data-search-adopted"
+      ],
+      "state": {
+        "orderStart": "previous",
+        "orderStarts": "4",
+        "orderScore": "16928",
+        "searchStatus": "running",
+        "searchAlignmentTried": "0",
+        "searchAlignmentAdopted": "0",
+        "searchTried": "7",
+        "searchNext": "10",
+        "searchAdopted": "0",
+        "searchShown": "16928",
+        "searchBest": "16928",
+        "searchPredicted": "16914",
+        "searchMeasured": "16928",
+        "searchPriced": "17014"
+      }
+    },
+    {
+      "t": 2996.0999999996275,
+      "phase": "fold",
+      "added": 0,
+      "removed": 0,
+      "attributes": [
+        "data-search-status",
+        "data-search-tried",
+        "data-search-adopted"
+      ],
+      "state": {
+        "orderStart": "previous",
+        "orderStarts": "4",
+        "orderScore": "16928",
+        "searchStatus": "settled",
+        "searchAlignmentTried": "0",
+        "searchAlignmentAdopted": "0",
+        "searchTried": "8",
+        "searchNext": "11",
+        "searchAdopted": "0",
+        "searchShown": "16928",
+        "searchBest": "16928",
+        "searchPredicted": "16914",
+        "searchMeasured": "16928",
+        "searchPriced": "17014"
+      }
+    },
+    {
+      "t": 3420.0999999996275,
+      "phase": "one-description",
+      "added": 542,
+      "removed": 529,
+      "attributes": [
+        "data-moving",
+        "data-search-status",
+        "data-search-tried",
+        "data-search-adopted"
+      ],
+      "state": {
+        "orderStart": "previous",
+        "orderStarts": "4",
+        "orderScore": "16928",
+        "searchStatus": "running",
+        "searchAlignmentTried": "0",
+        "searchAlignmentAdopted": "0",
+        "searchTried": "0",
+        "searchNext": "3",
+        "searchAdopted": "0",
+        "searchShown": "16928",
+        "searchBest": "16928",
+        "searchPredicted": "16914",
+        "searchMeasured": "16928",
+        "searchPriced": "17014",
+        "moving": "true"
+      }
+    },
+    {
+      "t": 3882.899999999441,
+      "phase": "one-description",
+      "added": 0,
+      "removed": 0,
+      "attributes": [
+        "data-moving"
+      ],
+      "state": {
+        "orderStart": "previous",
+        "orderStarts": "4",
+        "orderScore": "16928",
+        "searchStatus": "running",
+        "searchAlignmentTried": "0",
+        "searchAlignmentAdopted": "0",
+        "searchTried": "0",
+        "searchNext": "3",
+        "searchAdopted": "0",
+        "searchShown": "16928",
+        "searchBest": "16928",
+        "searchPredicted": "16914",
+        "searchMeasured": "16928",
+        "searchPriced": "17014"
+      }
+    },
+    {
+      "t": 3891,
+      "phase": "one-description",
+      "added": 0,
+      "removed": 0,
+      "attributes": [
+        "data-search-status",
+        "data-search-tried",
+        "data-search-adopted"
+      ],
+      "state": {
+        "orderStart": "previous",
+        "orderStarts": "4",
+        "orderScore": "16928",
+        "searchStatus": "running",
+        "searchAlignmentTried": "0",
+        "searchAlignmentAdopted": "0",
+        "searchTried": "1",
+        "searchNext": "4",
+        "searchAdopted": "0",
+        "searchShown": "16928",
+        "searchBest": "16928",
+        "searchPredicted": "16914",
+        "searchMeasured": "16928",
+        "searchPriced": "17014"
+      }
+    },
+    {
+      "t": 3898.7999999998137,
+      "phase": "one-description",
+      "added": 0,
+      "removed": 0,
+      "attributes": [
+        "data-search-status",
+        "data-search-tried",
+        "data-search-adopted"
+      ],
+      "state": {
+        "orderStart": "previous",
+        "orderStarts": "4",
+        "orderScore": "16928",
+        "searchStatus": "running",
+        "searchAlignmentTried": "0",
+        "searchAlignmentAdopted": "0",
+        "searchTried": "2",
+        "searchNext": "5",
+        "searchAdopted": "0",
+        "searchShown": "16928",
+        "searchBest": "16928",
+        "searchPredicted": "16914",
+        "searchMeasured": "16928",
+        "searchPriced": "17014"
+      }
+    },
+    {
+      "t": 3913.5999999996275,
+      "phase": "one-description",
+      "added": 0,
+      "removed": 0,
+      "attributes": [
+        "data-search-status",
+        "data-search-tried",
+        "data-search-adopted"
+      ],
+      "state": {
+        "orderStart": "previous",
+        "orderStarts": "4",
+        "orderScore": "16928",
+        "searchStatus": "running",
+        "searchAlignmentTried": "0",
+        "searchAlignmentAdopted": "0",
+        "searchTried": "3",
+        "searchNext": "6",
+        "searchAdopted": "0",
+        "searchShown": "16928",
+        "searchBest": "16928",
+        "searchPredicted": "16914",
+        "searchMeasured": "16928",
+        "searchPriced": "17014"
+      }
+    },
+    {
+      "t": 3963.2999999998137,
+      "phase": "one-description",
+      "added": 196,
+      "removed": 196,
+      "attributes": [
+        "data-search-status",
+        "data-search-tried",
+        "data-search-adopted"
+      ],
+      "state": {
+        "orderStart": "previous",
+        "orderStarts": "4",
+        "orderScore": "16928",
+        "searchStatus": "running",
+        "searchAlignmentTried": "0",
+        "searchAlignmentAdopted": "0",
+        "searchTried": "4",
+        "searchNext": "7",
+        "searchAdopted": "0",
+        "searchShown": "16928",
+        "searchBest": "16928",
+        "searchPredicted": "16914",
+        "searchMeasured": "16928",
+        "searchPriced": "17014"
+      }
+    },
+    {
+      "t": 3973.699999999255,
+      "phase": "one-description",
+      "added": 0,
+      "removed": 0,
+      "attributes": [
+        "data-search-status",
+        "data-search-tried",
+        "data-search-adopted"
+      ],
+      "state": {
+        "orderStart": "previous",
+        "orderStarts": "4",
+        "orderScore": "16928",
+        "searchStatus": "running",
+        "searchAlignmentTried": "0",
+        "searchAlignmentAdopted": "0",
+        "searchTried": "5",
+        "searchNext": "8",
+        "searchAdopted": "0",
+        "searchShown": "16928",
+        "searchBest": "16928",
+        "searchPredicted": "16914",
+        "searchMeasured": "16928",
+        "searchPriced": "17014"
+      }
+    },
+    {
+      "t": 3980.0999999996275,
+      "phase": "one-description",
+      "added": 0,
+      "removed": 0,
+      "attributes": [
+        "data-search-status",
+        "data-search-tried",
+        "data-search-adopted"
+      ],
+      "state": {
+        "orderStart": "previous",
+        "orderStarts": "4",
+        "orderScore": "16928",
+        "searchStatus": "running",
+        "searchAlignmentTried": "0",
+        "searchAlignmentAdopted": "0",
+        "searchTried": "6",
+        "searchNext": "9",
+        "searchAdopted": "0",
+        "searchShown": "16928",
+        "searchBest": "16928",
+        "searchPredicted": "16914",
+        "searchMeasured": "16928",
+        "searchPriced": "17014"
+      }
+    },
+    {
+      "t": 3996.2999999998137,
+      "phase": "one-description",
+      "added": 0,
+      "removed": 0,
+      "attributes": [
+        "data-search-status",
+        "data-search-tried",
+        "data-search-adopted"
+      ],
+      "state": {
+        "orderStart": "previous",
+        "orderStarts": "4",
+        "orderScore": "16928",
+        "searchStatus": "running",
+        "searchAlignmentTried": "0",
+        "searchAlignmentAdopted": "0",
+        "searchTried": "7",
+        "searchNext": "10",
+        "searchAdopted": "0",
+        "searchShown": "16928",
+        "searchBest": "16928",
+        "searchPredicted": "16914",
+        "searchMeasured": "16928",
+        "searchPriced": "17014"
+      }
+    },
+    {
+      "t": 4012.5,
+      "phase": "one-description",
+      "added": 0,
+      "removed": 0,
+      "attributes": [
+        "data-search-status",
+        "data-search-tried",
+        "data-search-adopted"
+      ],
+      "state": {
+        "orderStart": "previous",
+        "orderStarts": "4",
+        "orderScore": "16928",
+        "searchStatus": "settled",
+        "searchAlignmentTried": "0",
+        "searchAlignmentAdopted": "0",
+        "searchTried": "8",
+        "searchNext": "11",
+        "searchAdopted": "0",
+        "searchShown": "16928",
+        "searchBest": "16928",
+        "searchPredicted": "16914",
+        "searchMeasured": "16928",
+        "searchPriced": "17014"
+      }
+    }
+  ],
+  "errors": []
+}

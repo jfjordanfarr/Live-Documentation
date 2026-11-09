@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/index.ts
-- Generated At: 2026-11-04T15:03:17.687Z
+- Generated At: 2026-11-09T04:43:26.937Z
 
 ## Authored
 ### Purpose
@@ -18,6 +18,8 @@ Constructs the 2D Local Map controller and exposes its rendering, camera, path a
 - `isShown` and `show` (2026-10-16): whether the map is the view shown, and the map shown again, the owed render's two doors for the application's view switch.
 
 Since [November 5](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-1) `captureReadingChange` forwards the control used, so focus can return to a tapped name as well as to a book.
+
+The [November 8 reading feedback](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-08.1.record.md#turn-3-additional-reading-feedback-during-the-review), addressed November 9 UTC, adds forwarding for `tryRefreshReading`, so the application can preserve an unchanged fixed-slot scene when only its descriptions change. The controller and renderer decide whether the normal structural render is needed.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -33,11 +35,11 @@ Creates a Local Map view backed by a {@link LocalViewController}.
 
 #### `LocalViewApi` {#symbol-localviewapi}
 - Type: unknown
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/index.ts#L34)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/index.ts#L35)
 
 #### `LocalViewOptions` {#symbol-localviewoptions}
 - Type: unknown
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/index.ts#L34)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/index.ts#L35)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

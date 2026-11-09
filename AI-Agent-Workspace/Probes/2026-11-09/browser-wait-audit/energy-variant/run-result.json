@@ -1,0 +1,15 @@
+{
+  "command": [
+    "node_modules/.bin/playwright",
+    "test",
+    "--config",
+    "/tmp/live-docs-20261109-waits/energy-variant/playwright.config.ts",
+    "--grep",
+    "a drag places every step it crosses without a tick, and the rest settles at the tuning's energy$",
+    "--reporter=list"
+  ],
+  "exitCode": 0,
+  "startedEpoch": 1794196633743.386,
+  "durationSeconds": 90.53346014022827,
+  "head": "acf3311c181b0ccfee4c4fcd362984a17af1a2be"
+}

@@ -1,0 +1,601 @@
+{
+  "test-results": {
+    ".last-run.json": {
+      "attribution": "changed since gate start",
+      "before": {
+        "bytes": 96,
+        "sha256": "f5fb7963b58ad1a6e14abb2f8b15bdcf67540093d257a697939aaca7d5718cf0"
+      },
+      "after": {
+        "bytes": 45,
+        "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903"
+      }
+    },
+    "perspective-zoom-native-sy-8b651-rse-their-containment-order-chromium/error-context.md": {
+      "attribution": "removed by run",
+      "before": {
+        "bytes": 28473,
+        "sha256": "ca9306a3278e657e8c50e34c5365445e76baf471e63bae0f57c408c581221458"
+      }
+    },
+    "perspective-zoom-native-sy-8b651-rse-their-containment-order-chromium/test-failed-1.png": {
+      "attribution": "removed by run",
+      "before": {
+        "bytes": 351349,
+        "sha256": "608935792c30f6b33dad4554a4c1bc9244fdd06a41618c0d5baab52ed886f411"
+      }
+    },
+    "perspective-zoom-native-sy-8b651-rse-their-containment-order-chromium/trace.zip": {
+      "attribution": "removed by run",
+      "before": {
+        "bytes": 2003837,
+        "sha256": "bed4bfb5543af216b77b36d925df14452acbb93d1670edd949dda32f9c3a616d"
+      }
+    }
+  },
+  "tests/e2e/test-results": {},
+  "reports": {
+    "e2e/data/2f300f81e56344842bf3cb605f8bb1e5b02fc7d0.png": {
+      "attribution": "removed by run",
+      "before": {
+        "bytes": 351349,
+        "sha256": "608935792c30f6b33dad4554a4c1bc9244fdd06a41618c0d5baab52ed886f411"
+      }
+    },
+    "e2e/data/3417b2152e83182b88f716b7c646691de60afc84.md": {
+      "attribution": "removed by run",
+      "before": {
+        "bytes": 28473,
+        "sha256": "ca9306a3278e657e8c50e34c5365445e76baf471e63bae0f57c408c581221458"
+      }
+    },
+    "e2e/data/b59b3a92794417ddafa5701b1525bf8516136feb.zip": {
+      "attribution": "removed by run",
+      "before": {
+        "bytes": 2003837,
+        "sha256": "bed4bfb5543af216b77b36d925df14452acbb93d1670edd949dda32f9c3a616d"
+      }
+    },
+    "e2e/index.html": {
+      "attribution": "changed since gate start",
+      "before": {
+        "bytes": 1904912,
+        "sha256": "eaec16eb15e13efb53d2a551aa95a149f5bfba75c3ddb0d727c74e73610004cf"
+      },
+      "after": {
+        "bytes": 1903884,
+        "sha256": "8f1104f39dedd399ebfa7a329b116eae69a9605b6f8f53724b706f3004198c3a"
+      }
+    },
+    "e2e/trace/assets/codeMirrorModule-a5XoALAZ.js": {
+      "attribution": "removed by run",
+      "before": {
+        "bytes": 313023,
+        "sha256": "7fa7b36aa0539fcfbc08a2410478610ac59db22716a5093b506430baa7a9f7d4"
+      }
+    },
+    "e2e/trace/assets/defaultSettingsView-CJSZINFr.js": {
+      "attribution": "removed by run",
+      "before": {
+        "bytes": 640870,
+        "sha256": "212b6c02335b370bbc200c211ade1b44748db88f3232ff370b192c6aee551f18"
+      }
+    },
+    "e2e/trace/codeMirrorModule.DYBRYzYX.css": {
+      "attribution": "removed by run",
+      "before": {
+        "bytes": 6421,
+        "sha256": "70bf421a13e87857ca684bfa2cc55f06d7c5a50f71253a3ff1d74769b14a957e"
+      }
+    },
+    "e2e/trace/codicon.DCmgc-ay.ttf": {
+      "attribution": "removed by run",
+      "before": {
+        "bytes": 80340,
+        "sha256": "0f1d5219934e96e83b8db162d60b4d8c09b5de1e7d38031cbafe4a3c0f2889c9"
+      }
+    },
+    "e2e/trace/defaultSettingsView.7ch9cixO.css": {
+      "attribution": "removed by run",
+      "before": {
+        "bytes": 110370,
+        "sha256": "720aa332b48bb329475a42fe0c1f94ee69ae54cff40550bf0e3422db49db4bc9"
+      }
+    },
+    "e2e/trace/index.BDwrLSGN.js": {
+      "attribution": "removed by run",
+      "before": {
+        "bytes": 6492,
+        "sha256": "ea9dc27cc67a69c2f49d418da3f339c66a9e1ce3dc2eb14b201c7271995a41e4"
+      }
+    },
+    "e2e/trace/index.BVu7tZDe.css": {
+      "attribution": "removed by run",
+      "before": {
+        "bytes": 1893,
+        "sha256": "d2c1b8bd3c3a95602fbab460860b5239f6baf6d6b70bc9a2a68ea88f5ba9636a"
+      }
+    },
+    "e2e/trace/index.html": {
+      "attribution": "removed by run",
+      "before": {
+        "bytes": 2283,
+        "sha256": "9b5c3f348e8b07cf57b94cb92897b0f929e9e836ed444e9e1eeef86f6329e8da"
+      }
+    },
+    "e2e/trace/manifest.webmanifest": {
+      "attribution": "removed by run",
+      "before": {
+        "bytes": 429,
+        "sha256": "d8540500603a32a39fe7e5a0375dc0f9ebafd11118e06a846db7efc608223ab9"
+      }
+    },
+    "e2e/trace/playwright-logo.svg": {
+      "attribution": "removed by run",
+      "before": {
+        "bytes": 5033,
+        "sha256": "6b0a4367bdeab10995bc239278f04c68c10e48adbec15e799e01909a0d66dcb9"
+      }
+    },
+    "e2e/trace/snapshot.html": {
+      "attribution": "removed by run",
+      "before": {
+        "bytes": 935,
+        "sha256": "e192546675329f804bb9d4afbd96f7a1368e53cc42a05f0cc4a57949df7bc245"
+      }
+    },
+    "e2e/trace/sw.bundle.js": {
+      "attribution": "removed by run",
+      "before": {
+        "bytes": 95179,
+        "sha256": "7802aa86c13b0bbee2f7bf0584686b685914c271677889864af18f1670ae2e2e"
+      }
+    },
+    "e2e/trace/uiMode.Btcz36p_.css": {
+      "attribution": "removed by run",
+      "before": {
+        "bytes": 60239,
+        "sha256": "bfe8330cc78eeb1b1c4d8983aab7068d725526e407903ee19e515996250cb221"
+      }
+    },
+    "e2e/trace/uiMode.CQJ9SCIQ.js": {
+      "attribution": "removed by run",
+      "before": {
+        "bytes": 37370,
+        "sha256": "b252aab460c320d77954e5a0fb588a30dce98ba1e95b41f855b97709ebcc7524"
+      }
+    },
+    "e2e/trace/uiMode.html": {
+      "attribution": "removed by run",
+      "before": {
+        "bytes": 647,
+        "sha256": "34f183da065bf3c736ddab89752f0418989a50c5aab836445cffd6e8e217fe9b"
+      }
+    },
+    "e2e/trace/xtermModule.DYP7pi_n.css": {
+      "attribution": "removed by run",
+      "before": {
+        "bytes": 4150,
+        "sha256": "7c5a01f382f76539fc9b4db6b18e18a7035741845fd14968c5cdc0a7e373d817"
+      }
+    },
+    "still-picture/estate-chain-force-graph-state.png": {
+      "attribution": "changed since gate start",
+      "before": {
+        "bytes": 166243,
+        "sha256": "37699d4182319ff2350cbe5d4a287c6525f10c94bcfce4cb82f00bd852b0735c"
+      },
+      "after": {
+        "bytes": 166089,
+        "sha256": "690e2f89ae19bda439568995c942ddee03171b6641a3a1578e0a9207f38bee29"
+      }
+    },
+    "still-picture/estate-chain-local-map-chain-path.png": {
+      "attribution": "changed since gate start",
+      "before": {
+        "bytes": 159035,
+        "sha256": "00c754babcbe5247d5da179abd3f170454ec3bc8a453bbd1f5f8d9d7afd09be4"
+      },
+      "after": {
+        "bytes": 159051,
+        "sha256": "12363452182b8979d60e058b0fde5e860937615407c88000e0f231de3ed3cb79"
+      }
+    },
+    "still-picture/estate-chain-local-map-chain-return.png": {
+      "attribution": "identical to preexisting output; not independently attributed",
+      "before": {
+        "bytes": 71992,
+        "sha256": "23b6fc2e369648551c6bcfaa2c0986b7c92196421ed16e2db7fe0e7aa34144f1"
+      },
+      "after": {
+        "bytes": 71992,
+        "sha256": "23b6fc2e369648551c6bcfaa2c0986b7c92196421ed16e2db7fe0e7aa34144f1"
+      }
+    },
+    "still-picture/estate-chain-local-map-retained-state.png": {
+      "attribution": "changed since gate start",
+      "before": {
+        "bytes": 260267,
+        "sha256": "8fd347203dd5b3883bd27f774b71a9185d8c68af7861b43d8abcb3f483b32453"
+      },
+      "after": {
+        "bytes": 260177,
+        "sha256": "dcd27aa21573569c716d61993df156d9a3b45101f2eb4f0e3bf1af857dfc2f2a"
+      }
+    },
+    "still-picture/estate-chain-local-map-state.png": {
+      "attribution": "changed since gate start",
+      "before": {
+        "bytes": 264014,
+        "sha256": "c23c43d067df1bbe6de301dd4ce3f342297a32a0ccfb202a7d4c529c61bc8575"
+      },
+      "after": {
+        "bytes": 264186,
+        "sha256": "dbb35bb68a2f48cc0f4b47e235ef223d8700d143eaea3e3f3c4a93a41d72c26d"
+      }
+    },
+    "still-picture/estate-chain-membrane-map-chain-answer.png": {
+      "attribution": "identical to preexisting output; not independently attributed",
+      "before": {
+        "bytes": 240223,
+        "sha256": "bf0b2faeb97a83ab066e1f58c4ec29d04e171f469559a34960dc94bee127f2f8"
+      },
+      "after": {
+        "bytes": 240223,
+        "sha256": "bf0b2faeb97a83ab066e1f58c4ec29d04e171f469559a34960dc94bee127f2f8"
+      }
+    },
+    "still-picture/estate-chain-membrane-map-chain-return.png": {
+      "attribution": "identical to preexisting output; not independently attributed",
+      "before": {
+        "bytes": 62180,
+        "sha256": "3d64e4311785de8c1c4eceed965751e77da684c6e647360219f9833ed2603d9c"
+      },
+      "after": {
+        "bytes": 62180,
+        "sha256": "3d64e4311785de8c1c4eceed965751e77da684c6e647360219f9833ed2603d9c"
+      }
+    },
+    "still-picture/estate-chain-membrane-map-state.png": {
+      "attribution": "identical to preexisting output; not independently attributed",
+      "before": {
+        "bytes": 242083,
+        "sha256": "f98a97242f52998b85dee8081fd2b1fb69b03636a65f39cd1681ae083b7255d7"
+      },
+      "after": {
+        "bytes": 242083,
+        "sha256": "f98a97242f52998b85dee8081fd2b1fb69b03636a65f39cd1681ae083b7255d7"
+      }
+    },
+    "still-picture/estate-force-graph-state.png": {
+      "attribution": "changed since gate start",
+      "before": {
+        "bytes": 156355,
+        "sha256": "4750d9647735a616cab117e93f3cb8cf44e28e3b417eb2441bbef78330e3c740"
+      },
+      "after": {
+        "bytes": 157098,
+        "sha256": "77c845def59ad90ffa6699ee986431e9249c3fbec5b3262d837811750a988f5b"
+      }
+    },
+    "still-picture/estate-local-map-journey-answer.png": {
+      "attribution": "changed since gate start",
+      "before": {
+        "bytes": 212710,
+        "sha256": "7ce3682c1371e4012788792630bee8098eea1daa3fea00d8c00bd8c250447dd0"
+      },
+      "after": {
+        "bytes": 212713,
+        "sha256": "a1f339c907bd7950a1f1eddc1456c3ce95850e1960b7ae30710a312283e6e5a6"
+      }
+    },
+    "still-picture/estate-local-map-journey-return.png": {
+      "attribution": "changed since gate start",
+      "before": {
+        "bytes": 212710,
+        "sha256": "7ce3682c1371e4012788792630bee8098eea1daa3fea00d8c00bd8c250447dd0"
+      },
+      "after": {
+        "bytes": 212713,
+        "sha256": "a1f339c907bd7950a1f1eddc1456c3ce95850e1960b7ae30710a312283e6e5a6"
+      }
+    },
+    "still-picture/estate-local-map-journey-start.png": {
+      "attribution": "changed since gate start",
+      "before": {
+        "bytes": 297404,
+        "sha256": "b862b44474040dc99dd6713f3aa48e06a9f84ebb9ab1c1bb7e857322b3f07877"
+      },
+      "after": {
+        "bytes": 297419,
+        "sha256": "ed2889fcebe15acda10f9afc86600b0db20d23426aa5647dc81783520ac8d9b1"
+      }
+    },
+    "still-picture/estate-local-map-retained-state.png": {
+      "attribution": "changed since gate start",
+      "before": {
+        "bytes": 378419,
+        "sha256": "9f9dadf58b3519f22016ed335e0b0eb2c167f234bcbf8b6b4e28b4cd5c99fdd2"
+      },
+      "after": {
+        "bytes": 378406,
+        "sha256": "ea74cdf265108bdac3c15d1871edb58a52b7fa42ffa210ee773c4c83064212d6"
+      }
+    },
+    "still-picture/estate-local-map-state.png": {
+      "attribution": "changed since gate start",
+      "before": {
+        "bytes": 158215,
+        "sha256": "73ed4a907ce8428135d26815bdcced607981bb3efd8087c1a3c0d4ba1d2ad664"
+      },
+      "after": {
+        "bytes": 158251,
+        "sha256": "78ee8ec31e96b6a2d20fbd63218d44b2d8163e1f60d8108d13351eea971475a3"
+      }
+    },
+    "still-picture/estate-membrane-map-journey-answer.png": {
+      "attribution": "identical to preexisting output; not independently attributed",
+      "before": {
+        "bytes": 208332,
+        "sha256": "ee63dbe8d439917e620f61ed034eb2c0211b014e213f256039944cf1c8d2c6ab"
+      },
+      "after": {
+        "bytes": 208332,
+        "sha256": "ee63dbe8d439917e620f61ed034eb2c0211b014e213f256039944cf1c8d2c6ab"
+      }
+    },
+    "still-picture/estate-membrane-map-journey-return.png": {
+      "attribution": "identical to preexisting output; not independently attributed",
+      "before": {
+        "bytes": 149761,
+        "sha256": "b3b8b11cd440b4b54ca24cb7e7a9b7af7c720fec97d962fac7fa128d7ffb0192"
+      },
+      "after": {
+        "bytes": 149761,
+        "sha256": "b3b8b11cd440b4b54ca24cb7e7a9b7af7c720fec97d962fac7fa128d7ffb0192"
+      }
+    },
+    "still-picture/estate-membrane-map-journey-start.png": {
+      "attribution": "identical to preexisting output; not independently attributed",
+      "before": {
+        "bytes": 82482,
+        "sha256": "971ec2ffe9db1371fa92e2888997b3542fa7d5e302aebc38ef3aa1525e1090e5"
+      },
+      "after": {
+        "bytes": 82482,
+        "sha256": "971ec2ffe9db1371fa92e2888997b3542fa7d5e302aebc38ef3aa1525e1090e5"
+      }
+    },
+    "still-picture/estate-membrane-map-state.png": {
+      "attribution": "identical to preexisting output; not independently attributed",
+      "before": {
+        "bytes": 256948,
+        "sha256": "cb7f0a941b94397e99e3602f12145487e6d56cb35de5d56c14aacaee3d410c7b"
+      },
+      "after": {
+        "bytes": 256948,
+        "sha256": "cb7f0a941b94397e99e3602f12145487e6d56cb35de5d56c14aacaee3d410c7b"
+      }
+    },
+    "still-picture/repository-chain-force-graph-state.png": {
+      "attribution": "changed since gate start",
+      "before": {
+        "bytes": 544724,
+        "sha256": "a538eb1351cf33668129244d954cab41377d8a36a94abb93d0716bf1211da54e"
+      },
+      "after": {
+        "bytes": 540570,
+        "sha256": "c1b6fba28ba8aecc2b3daec38898de552aac5224dbd77b2133e5d31581495898"
+      }
+    },
+    "still-picture/repository-chain-local-map-chain-path.png": {
+      "attribution": "changed since gate start",
+      "before": {
+        "bytes": 214842,
+        "sha256": "30398b2d830c0acabaecc46adbc70aaa42cfc8c11dbcc7943d5488185a8d4734"
+      },
+      "after": {
+        "bytes": 214893,
+        "sha256": "2bc4aee035edc0644ae4c2d0d4909ae7059627ad713ae600c91f0322ec7d691a"
+      }
+    },
+    "still-picture/repository-chain-local-map-chain-return.png": {
+      "attribution": "changed since gate start",
+      "before": {
+        "bytes": 258904,
+        "sha256": "481feafaef49d3ff2d750996797d1e19976ef65ea2305f3aca835ab2f8b9a158"
+      },
+      "after": {
+        "bytes": 258909,
+        "sha256": "812f6f54f38f58658ad81fd12d33dfb06fa73cd5ceaece969b63a5a2cb73ab5c"
+      }
+    },
+    "still-picture/repository-chain-local-map-retained-state.png": {
+      "attribution": "changed since gate start",
+      "before": {
+        "bytes": 411053,
+        "sha256": "a33e88e99ae3131873101b3c87d584e858c92ab60887de2287a741ce43328336"
+      },
+      "after": {
+        "bytes": 411096,
+        "sha256": "518d41854ac185248003a0f2172e504ca5f3d0f68bf1d55aab615f438e98ab34"
+      }
+    },
+    "still-picture/repository-chain-local-map-state.png": {
+      "attribution": "changed since gate start",
+      "before": {
+        "bytes": 393830,
+        "sha256": "eeaac4e7df15ae0b4da02155addf579de5ac3f5ea6b4fd189cf821b42eb48051"
+      },
+      "after": {
+        "bytes": 393806,
+        "sha256": "6db87f16128893ce544e0b2485971da377d6e0e94c38d80dac5629f657b293f6"
+      }
+    },
+    "still-picture/repository-chain-membrane-map-chain-answer.png": {
+      "attribution": "identical to preexisting output; not independently attributed",
+      "before": {
+        "bytes": 259510,
+        "sha256": "f76eca83a9d739f78e03bb4537b842d7e6c5899ca450dd0f1acbd1a3237ce918"
+      },
+      "after": {
+        "bytes": 259510,
+        "sha256": "f76eca83a9d739f78e03bb4537b842d7e6c5899ca450dd0f1acbd1a3237ce918"
+      }
+    },
+    "still-picture/repository-chain-membrane-map-chain-return.png": {
+      "attribution": "identical to preexisting output; not independently attributed",
+      "before": {
+        "bytes": 165938,
+        "sha256": "64a31b4158b3542c85867043c42077a8e3ee8aa4de1aedd4ad91e3f673d06f56"
+      },
+      "after": {
+        "bytes": 165938,
+        "sha256": "64a31b4158b3542c85867043c42077a8e3ee8aa4de1aedd4ad91e3f673d06f56"
+      }
+    },
+    "still-picture/repository-chain-membrane-map-state.png": {
+      "attribution": "identical to preexisting output; not independently attributed",
+      "before": {
+        "bytes": 327908,
+        "sha256": "b6e7dc4861b517c94e226145083989a74d950115906fc7b8cbadd73581c3db1e"
+      },
+      "after": {
+        "bytes": 327908,
+        "sha256": "b6e7dc4861b517c94e226145083989a74d950115906fc7b8cbadd73581c3db1e"
+      }
+    },
+    "still-picture/repository-force-graph-state.png": {
+      "attribution": "changed since gate start",
+      "before": {
+        "bytes": 485095,
+        "sha256": "ca7b9cb34745cff355da23e505be55ca05c8618f2a85122844584bfc6a1675e9"
+      },
+      "after": {
+        "bytes": 483809,
+        "sha256": "7f5c991d1c1b1afb64f4f77fd9a85b05315e6a055c5e2509852d742e59d2576f"
+      }
+    },
+    "still-picture/repository-local-map-journey-answer.png": {
+      "attribution": "changed since gate start",
+      "before": {
+        "bytes": 308430,
+        "sha256": "8d77aba0c2bd8053e0f1e421efd9d61f21e50a1a1eca77297fb48cb40695fae5"
+      },
+      "after": {
+        "bytes": 308468,
+        "sha256": "881a7924e2add8e7e00d12997a5ca973c63dff2419f3ed9e2526afa564946eff"
+      }
+    },
+    "still-picture/repository-local-map-journey-return.png": {
+      "attribution": "changed since gate start",
+      "before": {
+        "bytes": 308430,
+        "sha256": "8d77aba0c2bd8053e0f1e421efd9d61f21e50a1a1eca77297fb48cb40695fae5"
+      },
+      "after": {
+        "bytes": 308468,
+        "sha256": "881a7924e2add8e7e00d12997a5ca973c63dff2419f3ed9e2526afa564946eff"
+      }
+    },
+    "still-picture/repository-local-map-journey-start.png": {
+      "attribution": "changed since gate start",
+      "before": {
+        "bytes": 425345,
+        "sha256": "13a41a2605cc9aeb0a09d21b4dc113589a2e38e279f0ec15835ae3881a7f9049"
+      },
+      "after": {
+        "bytes": 425390,
+        "sha256": "49fc0e56817ed6035ef78c1b46094672046d3d8ce3e7fc4dafdfca5da58bd3f7"
+      }
+    },
+    "still-picture/repository-local-map-retained-state.png": {
+      "attribution": "changed since gate start",
+      "before": {
+        "bytes": 545359,
+        "sha256": "7c2cccb405975b90e3d0dcfba4e0b6b93d2453b7244758509b5b05b0a0a8a26f"
+      },
+      "after": {
+        "bytes": 545387,
+        "sha256": "fd2986846477507c608aff815f99543349535d55a1e69e1e350e3c13a5505b95"
+      }
+    },
+    "still-picture/repository-local-map-state.png": {
+      "attribution": "changed since gate start",
+      "before": {
+        "bytes": 425345,
+        "sha256": "13a41a2605cc9aeb0a09d21b4dc113589a2e38e279f0ec15835ae3881a7f9049"
+      },
+      "after": {
+        "bytes": 425390,
+        "sha256": "49fc0e56817ed6035ef78c1b46094672046d3d8ce3e7fc4dafdfca5da58bd3f7"
+      }
+    },
+    "still-picture/repository-membrane-map-journey-answer.png": {
+      "attribution": "identical to preexisting output; not independently attributed",
+      "before": {
+        "bytes": 246019,
+        "sha256": "af741ec04df667cbf692c3340ac25a22fb0d77d6607a912a0aa30190f9c543f5"
+      },
+      "after": {
+        "bytes": 246019,
+        "sha256": "af741ec04df667cbf692c3340ac25a22fb0d77d6607a912a0aa30190f9c543f5"
+      }
+    },
+    "still-picture/repository-membrane-map-journey-return.png": {
+      "attribution": "identical to preexisting output; not independently attributed",
+      "before": {
+        "bytes": 269830,
+        "sha256": "8f9cd8414f8f306b869c796f084ac08d83df3faf9b3b81902cd9bb3d7fe77b48"
+      },
+      "after": {
+        "bytes": 269830,
+        "sha256": "8f9cd8414f8f306b869c796f084ac08d83df3faf9b3b81902cd9bb3d7fe77b48"
+      }
+    },
+    "still-picture/repository-membrane-map-journey-start.png": {
+      "attribution": "identical to preexisting output; not independently attributed",
+      "before": {
+        "bytes": 160473,
+        "sha256": "23fbee5bf3655e7abe3c8bbc86f5eadec70333bb5bec87f47a0f73a431c8182b"
+      },
+      "after": {
+        "bytes": 160473,
+        "sha256": "23fbee5bf3655e7abe3c8bbc86f5eadec70333bb5bec87f47a0f73a431c8182b"
+      }
+    },
+    "still-picture/repository-membrane-map-state.png": {
+      "attribution": "identical to preexisting output; not independently attributed",
+      "before": {
+        "bytes": 352169,
+        "sha256": "93804b4f7e69f47fe4dbd60ee7f24ddf046fb3df9c9997ce002cfbc3ff0a7b43"
+      },
+      "after": {
+        "bytes": 352169,
+        "sha256": "93804b4f7e69f47fe4dbd60ee7f24ddf046fb3df9c9997ce002cfbc3ff0a7b43"
+      }
+    },
+    "still-picture/scoreboard.json": {
+      "attribution": "changed since gate start",
+      "before": {
+        "bytes": 32167,
+        "sha256": "7d2af5a18d7dc0420b60a8e27dffeeb5538560043dda2880edb7ea4ecfcff685"
+      },
+      "after": {
+        "bytes": 32167,
+        "sha256": "7eba602fd8a110a76da53ffa34d50c68106eababad5d200568aa46b5a3829c63"
+      }
+    },
+    "still-picture/scoreboard.md": {
+      "attribution": "changed since gate start",
+      "before": {
+        "bytes": 17065,
+        "sha256": "27c335a7fc23bf99057427da2ba1cbd6304fd1b1b6684e4fd2da7202a585f766"
+      },
+      "after": {
+        "bytes": 17065,
+        "sha256": "72da2a92d9b2784e102f540e7d501e9f6d08e27155c5196fa5968c49a6f6c18b"
+      }
+    }
+  }
+}

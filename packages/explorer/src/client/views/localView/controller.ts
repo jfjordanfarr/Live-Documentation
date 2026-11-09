@@ -1,5 +1,5 @@
 import { EMPTY_PIN_SET, isSymbolPinned as isExplorationPin, type PinSet } from "../pin-state";
-import { createStage, dropStage, refreshReadingGeometry, renderBranches, type BranchStage } from "./branch-renderer";
+import { createStage, dropStage, refreshReadingGeometry, refreshReadingPresentation, renderBranches, type BranchStage } from "./branch-renderer";
 import type { BranchGraph } from "./branches";
 import type { CardContext } from "./card-factory";
 import { CardReading, type ReadingTarget } from "./card-reading";
@@ -716,6 +716,14 @@ export class LocalViewController implements LocalViewApi {
     } };
   }
 
+  /** Keep fixed-slot text changes inside an unchanged scene, preserving its DOM, focus and continuing search. */
+  tryRefreshReading(): boolean {
+    if (!this.isShown() || this.renderOwed || this.pendingRender || !this.stage) return false;
+    const refreshed = refreshReadingPresentation(this, this.stage);
+    if (refreshed) this.readingHold = false;
+    return refreshed;
+  }
+
   /**
    * Deliberate reading changes share the native anchor/focus transaction, without changing the pin set. The card
    * being read is what the eye is on, so its name is held still and the card grows downward from the tapped row;
@@ -1282,10 +1290,13 @@ export class LocalViewController implements LocalViewApi {
     });
     this.ladderWritten = written;
     const style = this.container.style;
+    const bandChanged = this.container.dataset.lod !== this.lod;
     this.container.dataset.lod = this.lod;
     style.setProperty("--text-scale", text);
     style.setProperty("--name-growth", growth);
     style.setProperty("--control-scale", control);
+    // Slot prose follows the band; keep its reading controls in sync with what the stylesheet now shows.
+    if (bandChanged) this.reading?.updatePresentation(this.readingVisible);
   }
 
   /** Pan only as far as the focused command needs, including while its native row is moving. */

@@ -1,0 +1,137 @@
+{
+  "base": "acf3311c181b0ccfee4c4fcd362984a17af1a2be",
+  "files": {
+    ".mdmd/layer-3/live-documentation-explorer.mdmd.md": {
+      "bytes": 163601,
+      "sha256": "46cff630f83376aefe11881a5684a90bf7711bdf69d5ceabf088f216c139e424"
+    },
+    ".mdmd/layer-4/packages/explorer/src/client/detailPanel.ts.mdmd.md": {
+      "bytes": 9697,
+      "sha256": "11db21256e93403d0f3973d26086d0b4de34434cc416097d3725974027ec306c"
+    },
+    ".mdmd/layer-4/packages/explorer/src/client/index.ts.mdmd.md": {
+      "bytes": 24175,
+      "sha256": "1ffc9ba2e75eda6fcce131a949568e0dab250fb828638ffbb7e5f34af8f3b04f"
+    },
+    ".mdmd/layer-4/packages/explorer/src/client/styles/reading.css.mdmd.md": {
+      "bytes": 10256,
+      "sha256": "ba516a80859f510138041bd15dc5b09955b63613d644489f61410024c1c0ec46"
+    },
+    ".mdmd/layer-4/packages/explorer/src/client/views/localView/branch-renderer.ts.mdmd.md": {
+      "bytes": 31051,
+      "sha256": "a41742f599400f148daf53afe694437399fce77d6f66e661090574749c4d6585"
+    },
+    ".mdmd/layer-4/packages/explorer/src/client/views/localView/card-factory.ts.mdmd.md": {
+      "bytes": 12716,
+      "sha256": "34aa5a63a308a4e040c9ae7107500b58ae165bd32e330c75e7eee60c9b7848d5"
+    },
+    ".mdmd/layer-4/packages/explorer/src/client/views/localView/card-reading.ts.mdmd.md": {
+      "bytes": 15294,
+      "sha256": "4e3901bdeec202962ac01b5ea41542a41c82adabad51c5011c662bfad0c0aac8"
+    },
+    ".mdmd/layer-4/packages/explorer/src/client/views/localView/controller.ts.mdmd.md": {
+      "bytes": 25567,
+      "sha256": "8c741d33d608e5ee3f014f3b87832c2c7d6bef3d15457a4a10a42dbea4a3a3d7"
+    },
+    ".mdmd/layer-4/packages/explorer/src/client/views/localView/held-lines.ts.mdmd.md": {
+      "bytes": 10259,
+      "sha256": "0a06644b0dec4111a52b93b8d7860ca24f82e7d82678bf33a5335320cfd1430e"
+    },
+    ".mdmd/layer-4/packages/explorer/src/client/views/localView/index.ts.mdmd.md": {
+      "bytes": 3924,
+      "sha256": "603595e5469a718f613e376d17f8c0e213342880654bc8f8d61e826329b4316a"
+    },
+    ".mdmd/layer-4/packages/explorer/src/client/views/localView/types.ts.mdmd.md": {
+      "bytes": 9409,
+      "sha256": "9363db4c83f1f0a0d6454db29798c8b2317184928057e219e21cf5cbf6871464"
+    },
+    ".mdmd/layer-4/scripts/layout-lab/capture.ts.mdmd.md": {
+      "bytes": 15263,
+      "sha256": "44205657b495001c7a4a40f6b6bbd46404efd9d945e49582aa75400f4c5a64bf"
+    },
+    ".mdmd/layer-4/tests/e2e/card-reading-refresh.spec.ts.mdmd.md": {
+      "bytes": 3510,
+      "sha256": "8e50e2a096992502b5031750978ba207c2be748b8c978d9af906f45f2551a00c"
+    },
+    ".mdmd/layer-4/tests/e2e/card-slots.spec.ts.mdmd.md": {
+      "bytes": 4878,
+      "sha256": "818103228bdc14e7121b65fd276c9c8f35470b7ce9c58ad24e31bd83fadef8f4"
+    },
+    ".mdmd/layer-4/tests/e2e/history-scrubber.spec.ts.mdmd.md": {
+      "bytes": 8546,
+      "sha256": "a70be2a73f7059bdc6ea04515eb1a9a6c7199dbe6b5ed48c6b38e2e1a72f1372"
+    },
+    ".mdmd/layer-4/tests/e2e/inspection.spec.ts.mdmd.md": {
+      "bytes": 5989,
+      "sha256": "bc9b00c380779f3b71c3ac1595ada82df1eb0b7f4167ef3faf5be40436afe032"
+    },
+    ".mdmd/layer-4/tests/e2e/perspective-zoom.spec.ts.mdmd.md": {
+      "bytes": 6502,
+      "sha256": "4191e171c693d5854d5879c7808dc81081e1d3374c98e0f12c4ec6fa63cef204"
+    },
+    "packages/explorer/src/client/detailPanel.ts": {
+      "bytes": 30140,
+      "sha256": "f45adb407941ebc6cdf353bc03432f34aed25532015ace689296e8295f3477a1"
+    },
+    "packages/explorer/src/client/index.ts": {
+      "bytes": 93947,
+      "sha256": "2ae04d8e31643c47ae51f7cc0fedbf36338495bc566ac86c6ce1576bef3e68ab"
+    },
+    "packages/explorer/src/client/styles/reading.css": {
+      "bytes": 36181,
+      "sha256": "c922861177037211171dcd066c02f91cb18d9175b4a6c33aeffefa1f2dfeb78d"
+    },
+    "packages/explorer/src/client/views/localView/branch-renderer.ts": {
+      "bytes": 69107,
+      "sha256": "9bc8fd80507341d7f5426c859565e93fea03b3e84deab34dd024233b3a15086e"
+    },
+    "packages/explorer/src/client/views/localView/card-factory.ts": {
+      "bytes": 29156,
+      "sha256": "f55851bb023629380200acdd992d9ec64c5e7ed64527b6e52187f59089c2e1e4"
+    },
+    "packages/explorer/src/client/views/localView/card-reading.ts": {
+      "bytes": 35810,
+      "sha256": "ae050a9e7c07a82190eaa8a0360b75b682056f3427e994bfb187f6ccf79e4d4f"
+    },
+    "packages/explorer/src/client/views/localView/controller.ts": {
+      "bytes": 79830,
+      "sha256": "8c9a2d0a2e5311689047db738b30beb0a12c8f5ddf1e06fb68b10788911417a2"
+    },
+    "packages/explorer/src/client/views/localView/held-lines.ts": {
+      "bytes": 10802,
+      "sha256": "d324bffc096a9505bb678e76d504fdb08df132bd0db3aa2461a6c4da1b6a3c63"
+    },
+    "packages/explorer/src/client/views/localView/index.ts": {
+      "bytes": 1863,
+      "sha256": "1a7c9af8318f3800a17e03fb1c298cde0442bb26d692e49b35c728147456a327"
+    },
+    "packages/explorer/src/client/views/localView/types.ts": {
+      "bytes": 8509,
+      "sha256": "9d6f041f310861c5dee1355cab490845f87b7ffe49f4b6ee16b83e65ecf20b51"
+    },
+    "scripts/layout-lab/capture.ts": {
+      "bytes": 38256,
+      "sha256": "19d09a4c75bb71a4f1ba1ea843d100bf854e6c0815f31dc6d734269f00f8544a"
+    },
+    "tests/e2e/card-reading-refresh.spec.ts": {
+      "bytes": 8562,
+      "sha256": "e7849fa8431e7d2eea69f17ccf31ac5b7ecd596f1a263b8e1176dbe422a48175"
+    },
+    "tests/e2e/card-slots.spec.ts": {
+      "bytes": 24859,
+      "sha256": "3f8b04c3450b2be3194dbd710f509581a38a2d4d81294770dce3dfb6558f6947"
+    },
+    "tests/e2e/history-scrubber.spec.ts": {
+      "bytes": 43916,
+      "sha256": "f48a267d6319c98337a72d4519cd1212cddb82e8db360532ddba0050dacfd2f9"
+    },
+    "tests/e2e/inspection.spec.ts": {
+      "bytes": 23566,
+      "sha256": "28f6fe714d80d2fe49f5cb0c6f14835b31b7861fc9c3802a88e0ca1125a01714"
+    },
+    "tests/e2e/perspective-zoom.spec.ts": {
+      "bytes": 17986,
+      "sha256": "05469c82b826f63dccb61fbaebad3631d55f178738cc4c228955d4970c8266bd"
+    }
+  }
+}

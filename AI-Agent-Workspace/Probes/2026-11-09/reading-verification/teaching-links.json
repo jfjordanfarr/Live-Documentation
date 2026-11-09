@@ -1,0 +1,127 @@
+{
+  "links": {
+    "controls": "http://localhost:8900/?s=N4IgbiBcDMA0IDsogA4EMDGBrNBzApgM4D0%2BAHigDYD2ATvrcYbRsRpQJb4IAuxYXAO4kaGNJQBqQtmloATALT00cjglwA6HoRDwUUANqgkkVJhwES5KnQZMWbTtz4D8w4qPFS3M%2BUvwqaprauiA6pgBUIAC%2BALrRQA",
+    "textRefresh": "http://localhost:8900/?s=N4IgbiBcDMA0IDsogA4EMDGBrNBzApgM4D0%2BAHigDYD2ATvrcYbRsRpQJb4IAuxYXAO4kaGNJQBqQ4gCNaaBBgAWAWnoIAJgwYA6HoRDwOUUEkipMOAiXJU6DJizadufAfmHFR4qR9nzFVXUtelo9A3gDc3oAM3pCJQAlfDQNDgRcAAV41zQeDmokeFooHloAV3wAX3gUKABtU2R0bDwiUgoaUMdWdi5efiERajFJaTkFZTVuEN19QxAokAAqECqAXSqgA",
+    "subset": "http://localhost:8900/?s=N4IgbiBcDMA0IDsogA4EMDGBrNBzApgM4D0%2BAHigDYD2ATvrcYbRsRpQJb4IAux9aACYcEuALSEeaHvgB0PQiHgooAbVBJIqTDgIlyVOgyYs2nbnwHDREqTPmL4irQCoQAXwC68AK5qN1IL4AJKCyOjYeESkFDT0jMys7Fy8-PhCIuKS0nIKSiDUKNxQAGZolIT47rABQaHhOlH6sUYJpskWaRk22fZ5TgCeALYARtSUyEGEGLQcKDwc1AjBhADyRUjwhcWQPLQ%2BVZ7uQA",
+    "none": "http://localhost:8900/?s=N4IgbiBcDMA0IDsogA4EMDGBrNBzApgM4D0%2BAHigDYD2ATvrcYbRsRpQJb4IAux9aACYcEuALSEeaHvgB0PQiHgooAbVBJIqTDgIlyVOgyYs2nbnwHDREqTPmL4irQCoQAXwC68AK5qN1IL4AJKCyOjYeESkFDT0jMys7Fy8-PhCIuKS0nIKSiDUKNxQAGZolIT4Xu5AA"
+  },
+  "verified": "Fresh recipient browser contexts on main8900 after the final gate: each explicit pin and intended reading/inspection state checked, screenshots saved for separate root review.",
+  "presentation": "Card Text is a local preference, not a shareable layout setting; the current default is slot. These links preserve the canonical reading choices in either composition.",
+  "browserResults": [
+    {
+      "name": "controls",
+      "url": "http://localhost:8900/?s=N4IgbiBcDMA0IDsogA4EMDGBrNBzApgM4D0%2BAHigDYD2ATvrcYbRsRpQJb4IAuxYXAO4kaGNJQBqQtmloATALT00cjglwA6HoRDwUUANqgkkVJhwES5KnQZMWbTtz4D8w4qPFS3M%2BUvwqaprauiA6pgBUIAC%2BALrRQA",
+      "pageUrl": "http://localhost:8900/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QPhBrnYLm7ugipg6joAPRcYG%2BDIkys6TKV9B%2BK6VvZcCJVtDrABqbC7LZqkgAtAjMJJBqpDhwdIXcwAqXMAXRAK9GUDzmFL5cc1draARZkbzdbg6oHA7g%2B7ld72AHQ6wZjHE6nQ1nzng-HToGekG3XcKwPOtj1PdAWzbS9ry7HsMAfG9hxfcdLXfGc5xAeAA0XEMVySIA",
+      "pinSet": {
+        "entries": [
+          {
+            "nodeId": "packages/explorer/src/client/views/localView/card-reading.ts",
+            "symbol": "*"
+          }
+        ]
+      },
+      "inspection": null,
+      "heading": null,
+      "background": null,
+      "errors": []
+    },
+    {
+      "name": "textRefresh",
+      "url": "http://localhost:8900/?s=N4IgbiBcDMA0IDsogA4EMDGBrNBzApgM4D0%2BAHigDYD2ATvrcYbRsRpQJb4IAuxYXAO4kaGNJQBqQ4gCNaaBBgAWAWnoIAJgwYA6HoRDwOUUEkipMOAiXJU6DJizadufAfmHFR4qR9nzFVXUtelo9A3gDc3oAM3pCJQAlfDQNDgRcAAV41zQeDmokeFooHloAV3wAX3gUKABtU2R0bDwiUgoaUMdWdi5efiERajFJaTkFZTVuEN19QxAokAAqECqAXSqgA",
+      "pageUrl": "http://localhost:8900/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QPhBrnYLm7ugipg6joAPRcYG%2BDIkys6TKV9B%2BK6VvZcCJVtDrABqbC7lfM4sUAFoEVISSTDhwdIXcwAqXMAXRAK9GUDzmFL5cc1draARZkbzdbg6oHA7g%2B7ld72AHQ5HyvHk4mx9nzng-HToGekG3XcKwPOtj1PdAWzbS9ry7HsMAfG9h3cdBXzsd8ZznEB4ADRcQxXJIgA",
+      "pinSet": {
+        "entries": [
+          {
+            "nodeId": "packages/explorer/src/client/views/localView/branch-renderer.ts",
+            "symbol": "*"
+          }
+        ]
+      },
+      "inspection": {
+        "kind": "file",
+        "nodeId": "packages/explorer/src/client/views/localView/branch-renderer.ts",
+        "symbol": "refreshReadingPresentation",
+        "presentation": "reading"
+      },
+      "heading": {
+        "x": 367,
+        "y": 80.546875,
+        "width": 706,
+        "height": 24.75
+      },
+      "background": {
+        "whileReading": {
+          "status": "running",
+          "tried": "0"
+        },
+        "afterClose": {
+          "status": "settled",
+          "tried": "16"
+        }
+      },
+      "errors": []
+    },
+    {
+      "name": "subset",
+      "url": "http://localhost:8900/?s=N4IgbiBcDMA0IDsogA4EMDGBrNBzApgM4D0%2BAHigDYD2ATvrcYbRsRpQJb4IAux9aACYcEuALSEeaHvgB0PQiHgooAbVBJIqTDgIlyVOgyYs2nbnwHDREqTPmL4irQCoQAXwC68AK5qN1IL4AJKCyOjYeESkFDT0jMys7Fy8-PhCIuKS0nIKSiDUKNxQAGZolIT47rABQaHhOlH6sUYJpskWaRk22fZ5TgCeALYARtSUyEGEGLQcKDwc1AjBhADyRUjwhcWQPLQ%2BVZ7uQA",
+      "pageUrl": "http://localhost:8900/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QPhBrnYLm7ugipg6joAPRcYG%2BDIkys6TKV9B%2BK6VhGYSSDVQAWjF3EOHB0hdzACpcwBdECT0ZQPOYUvlxzV2toBFmRvN1tsdud7tDfscLFD5zwfjp0DPSALpcV1d1jdb9AtttUDgdy0HvsDrinkDwAGY4hrOIBkBmV7jFwACSkjziWZb3jWj4Nk2L47nuX49keJ7DgBIDGnYibRlwKSQRMsHwYuiErsh66odub4fvu2G-v%2BgFLCsSA3hMOjoGYbD4I8HTQToADyfrPKmklQPCZCkZOSRAA",
+      "pinSet": {
+        "entries": [
+          {
+            "nodeId": "packages/explorer/src/client/reading-state.ts",
+            "symbol": "*"
+          }
+        ]
+      },
+      "reading": [
+        {
+          "nodeId": "packages/explorer/src/client/reading-state.ts",
+          "open": false
+        },
+        {
+          "nodeId": "packages/explorer/src/client/reading-state.ts",
+          "symbol": "descriptionIsOpen",
+          "open": true
+        }
+      ],
+      "inspection": null,
+      "heading": null,
+      "background": null,
+      "errors": []
+    },
+    {
+      "name": "none",
+      "url": "http://localhost:8900/?s=N4IgbiBcDMA0IDsogA4EMDGBrNBzApgM4D0%2BAHigDYD2ATvrcYbRsRpQJb4IAux9aACYcEuALSEeaHvgB0PQiHgooAbVBJIqTDgIlyVOgyYs2nbnwHDREqTPmL4irQCoQAXwC68AK5qN1IL4AJKCyOjYeESkFDT0jMys7Fy8-PhCIuKS0nIKSiDUKNxQAGZolIT4Xu5AA",
+      "pageUrl": "http://localhost:8900/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QPhBrnYLm7ugipg6joAPRcYG%2BDIkys6TKV9B%2BK6VhGYSSDVQAWjF3EOHB0hdzACpcwBdECT0ZQPOYUvlxzV2toBFmRvN1tsdud7tDfscLFD5zwfjp0DPSALpcV1d1jdb9AtttUDgdy0HvsDrinkDwAGY4hrOIBkBmV7jFwACSkjziWZb3jWj4Nk2L47nuX49keJ7DgBIDGnYibRlwSSTkkQA",
+      "pinSet": {
+        "entries": [
+          {
+            "nodeId": "packages/explorer/src/client/reading-state.ts",
+            "symbol": "*"
+          }
+        ]
+      },
+      "reading": [
+        {
+          "nodeId": "packages/explorer/src/client/reading-state.ts",
+          "open": false
+        }
+      ],
+      "inspection": null,
+      "heading": null,
+      "background": null,
+      "errors": []
+    }
+  ],
+  "rootReview": {
+    "viewed": [
+      "teaching-controls.png",
+      "teaching-subset.png",
+      "teaching-none.png",
+      "teaching-textRefresh.png",
+      "teaching-textRefresh-closed.png"
+    ],
+    "result": "All four pinned links show the intended reading/inspection state; closing full reading resumes the background search from try zero to sixteen/settled.",
+    "measurementMoment": "pinSet, reading, inspection and heading describe the initial linked state. pageUrl is the final journey URL; for textRefresh it is recorded after closing the reader."
+  }
+}

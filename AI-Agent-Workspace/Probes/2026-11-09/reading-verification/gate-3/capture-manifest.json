@@ -1,0 +1,99 @@
+[
+  {
+    "file": "run-gate.mjs",
+    "sourceBytes": 6263,
+    "sourceSha256": "76b05f73879f800e3ad5eb6a22d9ebdc4f177f603ee349b61f4c7c07e0969931",
+    "compressed": false
+  },
+  {
+    "file": "gate.log.gz",
+    "sourceBytes": 77665,
+    "sourceSha256": "d0476742c69ab87f2ff12ba95945e156e4c540cd312d8a11097e57b9474bd8cc",
+    "compressed": true
+  },
+  {
+    "file": "run.json",
+    "sourceBytes": 583,
+    "sourceSha256": "5a02271cf3b1f5c2a186094eb3c0ae2457a768f70460c38bda9fb722b8cc3903",
+    "compressed": false
+  },
+  {
+    "file": "summary.json",
+    "sourceBytes": 1844,
+    "sourceSha256": "a5319eda910c3f8a4bef4184e8651fdc2eee854fd3f84b0b8e9ad65a2eb3b23f",
+    "compressed": false
+  },
+  {
+    "file": "integration-check.json",
+    "sourceBytes": 208,
+    "sourceSha256": "5874a09244e779126c375014b5da86b5fa4026449f89f3ff5af4e0aadb64e98f",
+    "compressed": false
+  },
+  {
+    "file": "source-test-before.json.gz",
+    "sourceBytes": 161390,
+    "sourceSha256": "ca20d6895dba69449dbdb888b8cdad965dea1d60c83fed80e8a9cef8217a0d26",
+    "compressed": true
+  },
+  {
+    "file": "source-test-after.json.gz",
+    "sourceBytes": 161390,
+    "sourceSha256": "ca20d6895dba69449dbdb888b8cdad965dea1d60c83fed80e8a9cef8217a0d26",
+    "compressed": true
+  },
+  {
+    "file": "source-test-differences.json",
+    "sourceBytes": 3,
+    "sourceSha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "compressed": false
+  },
+  {
+    "file": "preexisting-outputs-manifest.json",
+    "sourceBytes": 10510,
+    "sourceSha256": "2eaaee511f490c445d8f59a5fbc0bacd34dc595ed88f049e9e709eb659d2f00d",
+    "compressed": false
+  },
+  {
+    "file": "output-attribution.json",
+    "sourceBytes": 21175,
+    "sourceSha256": "9942b871c06a3672ad50af731c7c36aab65ff4b6d850ecf185d4b71e1050aa46",
+    "compressed": false
+  },
+  {
+    "file": "outputs-manifest.json",
+    "sourceBytes": 6854,
+    "sourceSha256": "54cf58cb968f8253a7de3a237ea1e34fbf042f0a7138fec9a14aed5af8e2bb49",
+    "compressed": false
+  },
+  {
+    "file": "served-assets-manifest.json",
+    "sourceBytes": 30658,
+    "sourceSha256": "5129e64699d2d2d09c88be0eb92f860f37ffb076571e0a83b54f34697b945256",
+    "compressed": false
+  },
+  {
+    "file": "product-before.patch.gz",
+    "sourceBytes": 140013,
+    "sourceSha256": "41bd4626067383f42a6ae9a0c5e04f53ae1c3b54e18012574ed78735a88d1c32",
+    "compressed": true
+  },
+  {
+    "file": "product-after.patch.gz",
+    "sourceBytes": 140013,
+    "sourceSha256": "41bd4626067383f42a6ae9a0c5e04f53ae1c3b54e18012574ed78735a88d1c32",
+    "compressed": true
+  },
+  {
+    "file": "test-results/.last-run.json",
+    "sourceBytes": 45,
+    "sourceSha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903",
+    "compressed": false
+  },
+  {
+    "file": "playwright-report.zip",
+    "sourceBytes": 1223874,
+    "sourceSha256": "b7d980da5fcb07d3efd325e89b78e14cc7a2421e586c9b5b111c928ab893fbac",
+    "compressed": false,
+    "reportEntries": 1
+  }
+]

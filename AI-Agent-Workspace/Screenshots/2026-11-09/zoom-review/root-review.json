@@ -1,0 +1,1824 @@
+{
+  "viewport": [
+    1440,
+    960
+  ],
+  "clock": "normal",
+  "readingCandidate": "8912",
+  "zoomAndPopMain": "8900",
+  "errors": [],
+  "readings": [
+    {
+      "kind": "reading",
+      "before": {
+        "width": 290,
+        "height": 693
+      },
+      "after": {
+        "width": 290,
+        "height": 693
+      },
+      "shared": "http://localhost:8912/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QPhBrnYLm7ugipg6joAPRcYG%2BDIkys6TKV9B%2BK6VhGYSSDVQAWjF3EOHB0hdzACpcwBdECT0ZQPOYUvlxzV2toBFmRvN1tsdud7tDfscLFD5zwfjp0DPSALpcV1d1jdb9AtttUDgdy0HvsDrinkDwAGY4hrOIBkBmV7jFwACSkjziWZb3jWj4Nk2L47nuX49keJ7DgBIDGnYibRlwKSQRMsHwYuiErsh66odub4fvu2G-v%2BgFLCsSA3hMOjoGYbD4I8HTQToADyfrPKmklQPCZCkZOSRAA",
+      "choices": [
+        {
+          "nodeId": "packages/explorer/src/client/reading-state.ts",
+          "open": false
+        },
+        {
+          "nodeId": "packages/explorer/src/client/reading-state.ts",
+          "symbol": "descriptionIsOpen",
+          "open": true
+        }
+      ]
+    },
+    {
+      "kind": "reader",
+      "heading": "chooseReading",
+      "position": {
+        "x": 367,
+        "y": 79.546875,
+        "width": 706,
+        "height": 24.75
+      }
+    },
+    {
+      "kind": "wheel",
+      "frames": [
+        {
+          "at": 1948.1000000005588,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 1957.1000000005588,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 1986.4000000003725,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 2005.2000000001863,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 2023.7999999998137,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 2044.2999999998137,
+          "step": "0",
+          "band": "reading",
+          "k": 1.35997,
+          "font": 14.95967,
+          "title": null
+        },
+        {
+          "at": 2067.4000000003725,
+          "step": "0",
+          "band": "reading",
+          "k": 1.28646,
+          "font": 14.15106,
+          "title": null
+        },
+        {
+          "at": 2089.600000000559,
+          "step": "1",
+          "band": "reading",
+          "k": 1.21955,
+          "font": 16.098059999999997,
+          "title": null
+        },
+        {
+          "at": 2112.2000000001863,
+          "step": "1",
+          "band": "reading",
+          "k": 1.16043,
+          "font": 15.317676,
+          "title": null
+        },
+        {
+          "at": 2145.100000000559,
+          "step": "1",
+          "band": "reading",
+          "k": 1.06127,
+          "font": 14.008764,
+          "title": null
+        },
+        {
+          "at": 2168.5,
+          "step": "2",
+          "band": "middle",
+          "k": 0.985227,
+          "font": 15.60599568,
+          "title": "PaymentService.cs"
+        },
+        {
+          "at": 2174.600000000559,
+          "step": "2",
+          "band": "middle",
+          "k": 0.955186,
+          "font": 15.13014624,
+          "title": "PaymentService.cs"
+        },
+        {
+          "at": 2198.7000000001863,
+          "step": "2",
+          "band": "middle",
+          "k": 0.929635,
+          "font": 14.725418399999999,
+          "title": "PaymentService.cs"
+        },
+        {
+          "at": 2230,
+          "step": "2",
+          "band": "middle",
+          "k": 0.908374,
+          "font": 14.388644159999998,
+          "title": "PaymentService.cs"
+        },
+        {
+          "at": 2263.7000000001863,
+          "step": "3",
+          "band": "middle",
+          "k": 0.877219,
+          "font": 16.674178752,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2281.2999999998137,
+          "step": "3",
+          "band": "middle",
+          "k": 0.858389,
+          "font": 16.316258112,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2299.2000000001863,
+          "step": "3",
+          "band": "middle",
+          "k": 0.85268,
+          "font": 16.20774144,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2316.7000000001863,
+          "step": "3",
+          "band": "middle",
+          "k": 0.848878,
+          "font": 16.135473024,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2329,
+          "step": "3",
+          "band": "middle",
+          "k": 0.846585,
+          "font": 16.09188768,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2342,
+          "step": "3",
+          "band": "middle",
+          "k": 0.845434,
+          "font": 16.070009472,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2356.4000000003725,
+          "step": "3",
+          "band": "middle",
+          "k": 0.845033,
+          "font": 16.062387264,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2373.2000000001863,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2389.7000000001863,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2406.4000000003725,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2423.100000000559,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2439.7000000001863,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2456.4000000003725,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2473,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2489.7000000001863,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2506.2999999998137,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2523.9000000003725,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2540.4000000003725,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2556.5,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2573,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2589.600000000559,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2606.4000000003725,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2623.100000000559,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2640.600000000559,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2656.4000000003725,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2673.9000000003725,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2689.7000000001863,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2706.4000000003725,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2723,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2739.7999999998137,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2757.5,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2773.7000000001863,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2789.7999999998137,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2806.2999999998137,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2823,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2840.600000000559,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2857.2999999998137,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2873.100000000559,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2889.9000000003725,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2906.2999999998137,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2923.2000000001863,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2939.600000000559,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2956.2999999998137,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2973.2999999998137,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 2989.7999999998137,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 3006.7999999998137,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 3023.2999999998137,
+          "step": "3",
+          "band": "middle",
+          "k": 0.844985,
+          "font": 16.06147488,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 3041.2999999998137,
+          "step": "3",
+          "band": "middle",
+          "k": 0.798534,
+          "font": 15.178534271999998,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 3056.4000000003725,
+          "step": "3",
+          "band": "middle",
+          "k": 0.755109,
+          "font": 14.353111872000001,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 3074.600000000559,
+          "step": "4",
+          "band": "middle",
+          "k": 0.715776,
+          "font": 16.329713664,
+          "title": "Payment\nSe…"
+        },
+        {
+          "at": 3090.2999999998137,
+          "step": "4",
+          "band": "middle",
+          "k": 0.680778,
+          "font": 15.531269292,
+          "title": "Payment\nSe…"
+        },
+        {
+          "at": 3106.5,
+          "step": "4",
+          "band": "middle",
+          "k": 0.649464,
+          "font": 14.816871696,
+          "title": "Payment\nSe…"
+        },
+        {
+          "at": 3123,
+          "step": "4",
+          "band": "middle",
+          "k": 0.621829,
+          "font": 14.186406805999997,
+          "title": "Payment\nSe…"
+        },
+        {
+          "at": 3140.100000000559,
+          "step": "5",
+          "band": "middle",
+          "k": 0.597642,
+          "font": 16.356266255999998,
+          "title": "Payment\n…"
+        },
+        {
+          "at": 3177.2999999998137,
+          "step": "5",
+          "band": "far",
+          "k": 0.57679,
+          "font": 15.785588720000002,
+          "title": "Payment\nService.…"
+        },
+        {
+          "at": 3196.7999999998137,
+          "step": "5",
+          "band": "far",
+          "k": 0.54364,
+          "font": 14.87833952,
+          "title": "Payment\nService.…"
+        },
+        {
+          "at": 3213.2999999998137,
+          "step": "5",
+          "band": "far",
+          "k": 0.53092,
+          "font": 14.530218559999998,
+          "title": "Payment\nService.…"
+        },
+        {
+          "at": 3225.7999999998137,
+          "step": "5",
+          "band": "far",
+          "k": 0.520557,
+          "font": 14.246603976,
+          "title": "Payment\nService.…"
+        },
+        {
+          "at": 3239.7999999998137,
+          "step": "5",
+          "band": "far",
+          "k": 0.512199,
+          "font": 14.017862231999999,
+          "title": "Payment\nService.…"
+        },
+        {
+          "at": 3256.7999999998137,
+          "step": "6",
+          "band": "far",
+          "k": 0.505686,
+          "font": 16.609762356,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3283.2000000001863,
+          "step": "6",
+          "band": "far",
+          "k": 0.500786,
+          "font": 16.448816955999998,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3290.5,
+          "step": "6",
+          "band": "far",
+          "k": 0.497287,
+          "font": 16.333888802,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3323.2000000001863,
+          "step": "6",
+          "band": "far",
+          "k": 0.49492,
+          "font": 16.256142320000002,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3339.7999999998137,
+          "step": "6",
+          "band": "far",
+          "k": 0.492737,
+          "font": 16.184439502,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3356.5,
+          "step": "6",
+          "band": "far",
+          "k": 0.492456,
+          "font": 16.175209776,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3373.100000000559,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3389.7999999998137,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3406.5,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3423.2000000001863,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3439.7999999998137,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3456.5,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3473.100000000559,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3489.7999999998137,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3506.2999999998137,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3523.100000000559,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3539.7000000001863,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3556.2999999998137,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3573,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3589.7000000001863,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3606.2999999998137,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3624.100000000559,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3640.7000000001863,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3657.7999999998137,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3673.7999999998137,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3689.7999999998137,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3706.4000000003725,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3723.100000000559,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3739.7000000001863,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3756.2000000001863,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3773.100000000559,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3789.600000000559,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3806.2999999998137,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3823.7999999998137,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3840.7000000001863,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3856.2999999998137,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3873.100000000559,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3889.7999999998137,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3906.5,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3923.2000000001863,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3939.7000000001863,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3956.4000000003725,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3973.2999999998137,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 3989.7999999998137,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 4006.7999999998137,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 4023.100000000559,
+          "step": "6",
+          "band": "far",
+          "k": 0.492414,
+          "font": 16.173830244,
+          "title": "Payment\nServi…"
+        },
+        {
+          "at": 4047.9000000003725,
+          "step": "5",
+          "band": "far",
+          "k": 0.618575,
+          "font": 16.9291606,
+          "title": "Payment\nService.…"
+        },
+        {
+          "at": 4068.5,
+          "step": "4",
+          "band": "middle",
+          "k": 0.737191,
+          "font": 16.818275474,
+          "title": "Payment\nSe…"
+        },
+        {
+          "at": 4100.700000000186,
+          "step": "3",
+          "band": "middle",
+          "k": 0.843346,
+          "font": 16.030320768000003,
+          "title": "PaymentService\n.cs"
+        },
+        {
+          "at": 4119.799999999814,
+          "step": "2",
+          "band": "middle",
+          "k": 1.02393,
+          "font": 16.2190512,
+          "title": "PaymentService.cs"
+        },
+        {
+          "at": 4138.299999999814,
+          "step": "2",
+          "band": "middle",
+          "k": 1.09893,
+          "font": 17.407051199999998,
+          "title": "PaymentService.cs"
+        },
+        {
+          "at": 4171.100000000559,
+          "step": "1",
+          "band": "middle",
+          "k": 1.1642,
+          "font": 15.367439999999998,
+          "title": "PaymentService.cs"
+        },
+        {
+          "at": 4188.200000000186,
+          "step": "1",
+          "band": "reading",
+          "k": 1.26971,
+          "font": 16.760171999999997,
+          "title": null
+        },
+        {
+          "at": 4202,
+          "step": "1",
+          "band": "reading",
+          "k": 1.31109,
+          "font": 17.306388000000002,
+          "title": null
+        },
+        {
+          "at": 4222.799999999814,
+          "step": "1",
+          "band": "reading",
+          "k": 1.34542,
+          "font": 17.759543999999998,
+          "title": null
+        },
+        {
+          "at": 4240.5,
+          "step": "0",
+          "band": "reading",
+          "k": 1.39638,
+          "font": 15.36018,
+          "title": null
+        },
+        {
+          "at": 4256.600000000559,
+          "step": "0",
+          "band": "reading",
+          "k": 1.41405,
+          "font": 15.55455,
+          "title": null
+        },
+        {
+          "at": 4273.100000000559,
+          "step": "0",
+          "band": "reading",
+          "k": 1.42726,
+          "font": 15.69986,
+          "title": null
+        },
+        {
+          "at": 4289.700000000186,
+          "step": "0",
+          "band": "reading",
+          "k": 1.43676,
+          "font": 15.80436,
+          "title": null
+        },
+        {
+          "at": 4306.4000000003725,
+          "step": "0",
+          "band": "reading",
+          "k": 1.44322,
+          "font": 15.87542,
+          "title": null
+        },
+        {
+          "at": 4323,
+          "step": "0",
+          "band": "reading",
+          "k": 1.44711,
+          "font": 15.918209999999998,
+          "title": null
+        },
+        {
+          "at": 4339.700000000186,
+          "step": "0",
+          "band": "reading",
+          "k": 1.44913,
+          "font": 15.940430000000001,
+          "title": null
+        },
+        {
+          "at": 4356.9000000003725,
+          "step": "0",
+          "band": "reading",
+          "k": 1.44989,
+          "font": 15.948789999999999,
+          "title": null
+        },
+        {
+          "at": 4380.100000000559,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4399.4000000003725,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4416.600000000559,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4426.799999999814,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4439.600000000559,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4456.4000000003725,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4473.100000000559,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4489.700000000186,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4506.4000000003725,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4523.200000000186,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4543.4000000003725,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4556.299999999814,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4572.9000000003725,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4589.700000000186,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4607.200000000186,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4623.100000000559,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4639.700000000186,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4656.200000000186,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4673.100000000559,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4690.799999999814,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4707.100000000559,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4723.100000000559,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4739.700000000186,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4756.299999999814,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4773.200000000186,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4790.700000000186,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4807.200000000186,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4823,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4839.600000000559,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4856.299999999814,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4874.100000000559,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4890.700000000186,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4907.100000000559,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4923.100000000559,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4939.700000000186,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4956.4000000003725,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4973,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 4989.799999999814,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 5006.799999999814,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 5023,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 5039.700000000186,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 5056.299999999814,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 5072.9000000003725,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 5090.4000000003725,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 5107.200000000186,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 5124.100000000559,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 5140.700000000186,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 5157.4000000003725,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 5174.100000000559,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 5190.799999999814,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 5207.299999999814,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 5223.700000000186,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 5239.9000000003725,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 5256.4000000003725,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 5273,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        },
+        {
+          "at": 5289.600000000559,
+          "step": "0",
+          "band": "reading",
+          "k": 1.45,
+          "font": 15.95,
+          "title": null
+        }
+      ]
+    },
+    {
+      "kind": "directory-pop",
+      "elapsedToSettled": 6752,
+      "frames": [
+        {
+          "elapsed": 306,
+          "image": "root-pop-0.png",
+          "busy": "true",
+          "labels": [
+            {
+              "text": "Contracts · 6",
+              "id": "directory:Contracts",
+              "kind": "shell",
+              "x": 1270.0933837890625,
+              "y": 433.8908996582031
+            },
+            {
+              "text": "Scan root",
+              "id": "directory:",
+              "kind": "directory",
+              "x": 1166.488525390625,
+              "y": 596.0292358398438
+            },
+            {
+              "text": "Database · 3",
+              "id": "directory:Database",
+              "kind": "shell",
+              "x": 1100.581787109375,
+              "y": 330.4674072265625
+            },
+            {
+              "text": "Hub · 4",
+              "id": "directory:Hub",
+              "kind": "shell",
+              "x": 1113.0162353515625,
+              "y": 802.5186767578125
+            },
+            {
+              "text": "Portal · 11",
+              "id": "directory:Portal",
+              "kind": "shell",
+              "x": 995.0462036132812,
+              "y": 155.17030334472656
+            },
+            {
+              "text": "Data · 3",
+              "id": "directory:PaymentService/Data",
+              "kind": "shell",
+              "x": 675.8695068359375,
+              "y": 790.5951538085938
+            },
+            {
+              "text": "PaymentService.cs",
+              "id": "PaymentService/PaymentService.cs",
+              "kind": "file",
+              "x": 869.9512939453125,
+              "y": 274.7711181640625
+            },
+            {
+              "text": "App.config",
+              "id": "PaymentService/App.config",
+              "kind": "file",
+              "x": 753.292724609375,
+              "y": 170.472900390625
+            }
+          ]
+        },
+        {
+          "elapsed": 642,
+          "image": "root-pop-1.png",
+          "busy": "true",
+          "labels": [
+            {
+              "text": "Contracts · 6",
+              "id": "directory:Contracts",
+              "kind": "shell",
+              "x": 1184.0009765625,
+              "y": 486.3219299316406
+            },
+            {
+              "text": "Portal · 11",
+              "id": "directory:Portal",
+              "kind": "shell",
+              "x": 1166.14404296875,
+              "y": 93.75013732910156
+            },
+            {
+              "text": "Data · 3",
+              "id": "directory:PaymentService/Data",
+              "kind": "shell",
+              "x": 743.5765380859375,
+              "y": 798.7638549804688
+            },
+            {
+              "text": "PaymentService.cs",
+              "id": "PaymentService/PaymentService.cs",
+              "kind": "file",
+              "x": 862.3433227539062,
+              "y": 307.5947570800781
+            },
+            {
+              "text": "App.config",
+              "id": "PaymentService/App.config",
+              "kind": "file",
+              "x": 833.6978149414062,
+              "y": 160.0350341796875
+            }
+          ]
+        },
+        {
+          "elapsed": 1063,
+          "image": "root-pop-2.png",
+          "busy": "true",
+          "labels": [
+            {
+              "text": "Contracts · 6",
+              "id": "directory:Contracts",
+              "kind": "shell",
+              "x": 1188.5850830078125,
+              "y": 492.8053283691406
+            },
+            {
+              "text": "Scan root",
+              "id": "directory:",
+              "kind": "directory",
+              "x": 1304.9332275390625,
+              "y": 578.8770751953125
+            },
+            {
+              "text": "Data · 3",
+              "id": "directory:PaymentService/Data",
+              "kind": "shell",
+              "x": 746.564208984375,
+              "y": 809.360595703125
+            },
+            {
+              "text": "PaymentService.cs",
+              "id": "PaymentService/PaymentService.cs",
+              "kind": "file",
+              "x": 859.264404296875,
+              "y": 359.3483581542969
+            },
+            {
+              "text": "App.config",
+              "id": "PaymentService/App.config",
+              "kind": "file",
+              "x": 810.8242797851562,
+              "y": 164.14877319335938
+            }
+          ]
+        },
+        {
+          "elapsed": 1709,
+          "image": "root-pop-3.png",
+          "busy": "true",
+          "labels": [
+            {
+              "text": "Contracts · 6",
+              "id": "directory:Contracts",
+              "kind": "shell",
+              "x": 1194.14794921875,
+              "y": 499.6583557128906
+            },
+            {
+              "text": "Scan root",
+              "id": "directory:",
+              "kind": "directory",
+              "x": 1295.388916015625,
+              "y": 592.5089111328125
+            },
+            {
+              "text": "Data · 3",
+              "id": "directory:PaymentService/Data",
+              "kind": "shell",
+              "x": 765.224609375,
+              "y": 810.2388305664062
+            },
+            {
+              "text": "PaymentService.cs",
+              "id": "PaymentService/PaymentService.cs",
+              "kind": "file",
+              "x": 829.1829223632812,
+              "y": 340.01751708984375
+            },
+            {
+              "text": "App.config",
+              "id": "PaymentService/App.config",
+              "kind": "file",
+              "x": 870.6393432617188,
+              "y": 169.56918334960938
+            }
+          ]
+        },
+        {
+          "elapsed": 2735,
+          "image": "root-pop-4.png",
+          "busy": "true",
+          "labels": [
+            {
+              "text": "Contracts · 6",
+              "id": "directory:Contracts",
+              "kind": "shell",
+              "x": 1203.900390625,
+              "y": 499.5090637207031
+            },
+            {
+              "text": "Scan root",
+              "id": "directory:",
+              "kind": "directory",
+              "x": 1314.2655029296875,
+              "y": 595.3436889648438
+            },
+            {
+              "text": "Data · 3",
+              "id": "directory:PaymentService/Data",
+              "kind": "shell",
+              "x": 776.9479370117188,
+              "y": 809.880859375
+            },
+            {
+              "text": "PaymentService.cs",
+              "id": "PaymentService/PaymentService.cs",
+              "kind": "file",
+              "x": 823.5999755859375,
+              "y": 308.1656494140625
+            },
+            {
+              "text": "App.config",
+              "id": "PaymentService/App.config",
+              "kind": "file",
+              "x": 912.401611328125,
+              "y": 181.14105224609375
+            }
+          ]
+        }
+      ],
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QJIZVx0BwMoFc7Bc3TMEsrjczHssrmALogRvwACOUBA0EkIHgeIW8LIRbICN7eYzIEr1ao1xJ9fqjaSQA"
+    }
+  ]
+}

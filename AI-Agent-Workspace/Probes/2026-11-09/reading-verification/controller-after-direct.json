@@ -1,0 +1,66 @@
+
+> live-documentation@0.0.0 live-docs:inspect
+> tsx --tsconfig ./tsconfig.base.json scripts/live-docs/inspect.ts --config ./.live-docs.config.json --from packages/explorer/src/client/views/localView/controller.ts --direction inbound --max-depth 1 --json
+
+{
+  "kind": "fanout",
+  "direction": "inbound",
+  "from": {
+    "codePath": "packages/explorer/src/client/views/localView/controller.ts",
+    "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/localView/controller.ts.mdmd.md"
+  },
+  "documents": {
+    "cites": [
+      ".mdmd/layer-3/architectural-decisions.mdmd.md",
+      "AI-Agent-Workspace/ChatHistory/2025/12/Summarized/2025-12-04.SUMMARIZED.md",
+      "AI-Agent-Workspace/ChatHistory/2026/11/Summarized/2026-11-03.1.SUMMARIZED.md",
+      "AI-Agent-Workspace/Screenshots/2026-11-06/card-breakpoints/README.md"
+    ],
+    "citedBy": [
+      ".mdmd/layer-3/architectural-decisions.mdmd.md",
+      ".mdmd/layer-3/live-documentation-explorer.mdmd.md"
+    ]
+  },
+  "maxDepth": 1,
+  "terminalPaths": [
+    {
+      "length": 1,
+      "nodes": [
+        {
+          "codePath": "packages/explorer/src/client/views/localView/controller.ts",
+          "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/localView/controller.ts.mdmd.md"
+        },
+        {
+          "codePath": "packages/explorer/src/client/views/localView/index.ts",
+          "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/localView/index.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 1,
+      "nodes": [
+        {
+          "codePath": "packages/explorer/src/client/views/localView/controller.ts",
+          "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/localView/controller.ts.mdmd.md"
+        },
+        {
+          "codePath": "packages/explorer/src/client/views/localView/directory-ancestry.ts",
+          "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/localView/directory-ancestry.ts.mdmd.md"
+        }
+      ]
+    },
+    {
+      "length": 1,
+      "nodes": [
+        {
+          "codePath": "packages/explorer/src/client/views/localView/controller.ts",
+          "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/localView/controller.ts.mdmd.md"
+        },
+        {
+          "codePath": "packages/explorer/src/client/views/localView/branch-renderer.ts",
+          "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/localView/branch-renderer.ts.mdmd.md"
+        }
+      ]
+    }
+  ]
+}

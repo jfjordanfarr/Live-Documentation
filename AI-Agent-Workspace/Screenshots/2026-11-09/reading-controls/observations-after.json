@@ -1,0 +1,1394 @@
+[
+  {
+    "label": "repo-all",
+    "state": {
+      "view": "map",
+      "perspective": "2d",
+      "spatialLayout": "connections",
+      "selectedNodeId": "packages/explorer/src/client/reading-state.ts",
+      "inspection": null,
+      "pinSet": {
+        "entries": [
+          {
+            "nodeId": "packages/explorer/src/client/reading-state.ts",
+            "symbol": "*"
+          }
+        ]
+      },
+      "openDirectories": {},
+      "filters": {
+        "showTests": true,
+        "showAssets": false,
+        "showRelatedDocs": false,
+        "showCitingDocs": false
+      },
+      "retentionOrder": [
+        "[\"pin\",\"packages/explorer/src/client/reading-state.ts\",\"*\"]"
+      ],
+      "layout": {
+        "localMap": {
+          "columnGap": 100,
+          "itemGap": 24,
+          "bandGap": 28,
+          "heightCost": 5,
+          "membraneEvenness": 2,
+          "membraneSimplicity": 200,
+          "rowLevelness": 2
+        },
+        "forceGraph": {
+          "linkGap": 60,
+          "charge": 60,
+          "collisionGap": 5,
+          "coupling": 1,
+          "nodeSize": 4,
+          "symbolScale": 1,
+          "gravity": 0.025,
+          "componentSeparation": 0.2,
+          "chargeRange": 0,
+          "approximation": 0.3,
+          "linkStrength": 0.5,
+          "updateEnergy": 1,
+          "tether": 0.02,
+          "citedByPull": 1,
+          "linkWidth": 1,
+          "nodeZoomResistance": 0.3,
+          "wireZoomResistance": 0.9,
+          "nameAt": 18,
+          "hops": 1,
+          "revealFrames": 60,
+          "shellDepth": 2,
+          "groupWrappers": "skin"
+        }
+      },
+      "destination": null,
+      "reachFrom": null,
+      "commit": null,
+      "authors": false
+    },
+    "reading": {
+      "band": "reading",
+      "blocks": [
+        {
+          "symbol": null,
+          "visibility": "visible",
+          "open": "true"
+        },
+        {
+          "symbol": "ReadingChoice",
+          "visibility": "visible",
+          "open": "true"
+        },
+        {
+          "symbol": "descriptionIsOpen",
+          "visibility": "visible",
+          "open": "true"
+        },
+        {
+          "symbol": "chooseReading",
+          "visibility": "visible",
+          "open": "true"
+        },
+        {
+          "symbol": "readingFiles",
+          "visibility": "visible",
+          "open": "true"
+        },
+        {
+          "symbol": "releaseReading",
+          "visibility": "visible",
+          "open": "true"
+        },
+        {
+          "symbol": "readReadingChoices",
+          "visibility": "visible",
+          "open": "true"
+        },
+        {
+          "symbol": "scrubReadingChoices",
+          "visibility": "visible",
+          "open": "true"
+        }
+      ],
+      "books": [
+        {
+          "name": "Fold reading-state.ts",
+          "pressed": "true",
+          "expanded": "true"
+        },
+        {
+          "name": "Fold ReadingChoice in reading-state.ts",
+          "pressed": "true",
+          "expanded": "true"
+        },
+        {
+          "name": "Fold descriptionIsOpen in reading-state.ts",
+          "pressed": "true",
+          "expanded": "true"
+        },
+        {
+          "name": "Fold chooseReading in reading-state.ts",
+          "pressed": "true",
+          "expanded": "true"
+        },
+        {
+          "name": "Fold readingFiles in reading-state.ts",
+          "pressed": "true",
+          "expanded": "true"
+        },
+        {
+          "name": "Fold releaseReading in reading-state.ts",
+          "pressed": "true",
+          "expanded": "true"
+        },
+        {
+          "name": "Fold readReadingChoices in reading-state.ts",
+          "pressed": "true",
+          "expanded": "true"
+        },
+        {
+          "name": "Fold scrubReadingChoices in reading-state.ts",
+          "pressed": "true",
+          "expanded": "true"
+        }
+      ]
+    }
+  },
+  {
+    "label": "repo-none",
+    "state": {
+      "view": "map",
+      "perspective": "2d",
+      "spatialLayout": "connections",
+      "selectedNodeId": "packages/explorer/src/client/reading-state.ts",
+      "inspection": null,
+      "pinSet": {
+        "entries": [
+          {
+            "nodeId": "packages/explorer/src/client/reading-state.ts",
+            "symbol": "*"
+          }
+        ]
+      },
+      "openDirectories": {},
+      "filters": {
+        "showTests": true,
+        "showAssets": false,
+        "showRelatedDocs": false,
+        "showCitingDocs": false
+      },
+      "retentionOrder": [
+        "[\"pin\",\"packages/explorer/src/client/reading-state.ts\",\"*\"]"
+      ],
+      "layout": {
+        "localMap": {
+          "columnGap": 100,
+          "itemGap": 24,
+          "bandGap": 28,
+          "heightCost": 5,
+          "membraneEvenness": 2,
+          "membraneSimplicity": 200,
+          "rowLevelness": 2
+        },
+        "forceGraph": {
+          "linkGap": 60,
+          "charge": 60,
+          "collisionGap": 5,
+          "coupling": 1,
+          "nodeSize": 4,
+          "symbolScale": 1,
+          "gravity": 0.025,
+          "componentSeparation": 0.2,
+          "chargeRange": 0,
+          "approximation": 0.3,
+          "linkStrength": 0.5,
+          "updateEnergy": 1,
+          "tether": 0.02,
+          "citedByPull": 1,
+          "linkWidth": 1,
+          "nodeZoomResistance": 0.3,
+          "wireZoomResistance": 0.9,
+          "nameAt": 18,
+          "hops": 1,
+          "revealFrames": 60,
+          "shellDepth": 2,
+          "groupWrappers": "skin"
+        }
+      },
+      "reading": [
+        {
+          "nodeId": "packages/explorer/src/client/reading-state.ts",
+          "open": false
+        }
+      ],
+      "destination": null,
+      "reachFrom": null,
+      "commit": null,
+      "authors": false
+    },
+    "reading": {
+      "band": "reading",
+      "blocks": [
+        {
+          "symbol": null,
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "ReadingChoice",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "descriptionIsOpen",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "chooseReading",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "readingFiles",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "releaseReading",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "readReadingChoices",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "scrubReadingChoices",
+          "visibility": "hidden",
+          "open": "false"
+        }
+      ],
+      "books": [
+        {
+          "name": "Read reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Read ReadingChoice in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Read descriptionIsOpen in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Read chooseReading in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Read readingFiles in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Read releaseReading in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Read readReadingChoices in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Read scrubReadingChoices in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        }
+      ]
+    }
+  },
+  {
+    "label": "repo-subset",
+    "state": {
+      "view": "map",
+      "perspective": "2d",
+      "spatialLayout": "connections",
+      "selectedNodeId": "packages/explorer/src/client/reading-state.ts",
+      "inspection": null,
+      "pinSet": {
+        "entries": [
+          {
+            "nodeId": "packages/explorer/src/client/reading-state.ts",
+            "symbol": "*"
+          }
+        ]
+      },
+      "openDirectories": {},
+      "filters": {
+        "showTests": true,
+        "showAssets": false,
+        "showRelatedDocs": false,
+        "showCitingDocs": false
+      },
+      "retentionOrder": [
+        "[\"pin\",\"packages/explorer/src/client/reading-state.ts\",\"*\"]"
+      ],
+      "layout": {
+        "localMap": {
+          "columnGap": 100,
+          "itemGap": 24,
+          "bandGap": 28,
+          "heightCost": 5,
+          "membraneEvenness": 2,
+          "membraneSimplicity": 200,
+          "rowLevelness": 2
+        },
+        "forceGraph": {
+          "linkGap": 60,
+          "charge": 60,
+          "collisionGap": 5,
+          "coupling": 1,
+          "nodeSize": 4,
+          "symbolScale": 1,
+          "gravity": 0.025,
+          "componentSeparation": 0.2,
+          "chargeRange": 0,
+          "approximation": 0.3,
+          "linkStrength": 0.5,
+          "updateEnergy": 1,
+          "tether": 0.02,
+          "citedByPull": 1,
+          "linkWidth": 1,
+          "nodeZoomResistance": 0.3,
+          "wireZoomResistance": 0.9,
+          "nameAt": 18,
+          "hops": 1,
+          "revealFrames": 60,
+          "shellDepth": 2,
+          "groupWrappers": "skin"
+        }
+      },
+      "reading": [
+        {
+          "nodeId": "packages/explorer/src/client/reading-state.ts",
+          "open": false
+        },
+        {
+          "nodeId": "packages/explorer/src/client/reading-state.ts",
+          "symbol": "descriptionIsOpen",
+          "open": true
+        }
+      ],
+      "destination": null,
+      "reachFrom": null,
+      "commit": null,
+      "authors": false
+    },
+    "reading": {
+      "band": "reading",
+      "blocks": [
+        {
+          "symbol": null,
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "ReadingChoice",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "descriptionIsOpen",
+          "visibility": "visible",
+          "open": "true"
+        },
+        {
+          "symbol": "chooseReading",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "readingFiles",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "releaseReading",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "readReadingChoices",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "scrubReadingChoices",
+          "visibility": "hidden",
+          "open": "false"
+        }
+      ],
+      "books": [
+        {
+          "name": "Read reading-state.ts",
+          "pressed": "false",
+          "expanded": "true"
+        },
+        {
+          "name": "Read ReadingChoice in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Fold descriptionIsOpen in reading-state.ts",
+          "pressed": "true",
+          "expanded": "true"
+        },
+        {
+          "name": "Read chooseReading in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Read readingFiles in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Read releaseReading in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Read readReadingChoices in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Read scrubReadingChoices in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        }
+      ]
+    }
+  },
+  {
+    "label": "subset-reload",
+    "reading": {
+      "band": "reading",
+      "blocks": [
+        {
+          "symbol": null,
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "ReadingChoice",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "descriptionIsOpen",
+          "visibility": "visible",
+          "open": "true"
+        },
+        {
+          "symbol": "chooseReading",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "readingFiles",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "releaseReading",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "readReadingChoices",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "scrubReadingChoices",
+          "visibility": "hidden",
+          "open": "false"
+        }
+      ],
+      "books": [
+        {
+          "name": "Read reading-state.ts",
+          "pressed": "false",
+          "expanded": "true"
+        },
+        {
+          "name": "Read ReadingChoice in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Fold descriptionIsOpen in reading-state.ts",
+          "pressed": "true",
+          "expanded": "true"
+        },
+        {
+          "name": "Read chooseReading in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Read readingFiles in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Read releaseReading in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Read readReadingChoices in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Read scrubReadingChoices in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        }
+      ]
+    }
+  },
+  {
+    "label": "subset-middle-band",
+    "reading": {
+      "band": "middle",
+      "blocks": [
+        {
+          "symbol": null,
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "ReadingChoice",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "descriptionIsOpen",
+          "visibility": "hidden",
+          "open": "true"
+        },
+        {
+          "symbol": "chooseReading",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "readingFiles",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "releaseReading",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "readReadingChoices",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "scrubReadingChoices",
+          "visibility": "hidden",
+          "open": "false"
+        }
+      ],
+      "books": [
+        {
+          "name": "Read reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Read ReadingChoice in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Fold descriptionIsOpen in reading-state.ts",
+          "pressed": "true",
+          "expanded": "false"
+        },
+        {
+          "name": "Read chooseReading in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Read readingFiles in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Read releaseReading in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Read readReadingChoices in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Read scrubReadingChoices in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        }
+      ]
+    }
+  },
+  {
+    "label": "subset-zoom-return",
+    "reading": {
+      "band": "reading",
+      "blocks": [
+        {
+          "symbol": null,
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "ReadingChoice",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "descriptionIsOpen",
+          "visibility": "visible",
+          "open": "true"
+        },
+        {
+          "symbol": "chooseReading",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "readingFiles",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "releaseReading",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "readReadingChoices",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "scrubReadingChoices",
+          "visibility": "hidden",
+          "open": "false"
+        }
+      ],
+      "books": [
+        {
+          "name": "Read reading-state.ts",
+          "pressed": "false",
+          "expanded": "true"
+        },
+        {
+          "name": "Read ReadingChoice in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Fold descriptionIsOpen in reading-state.ts",
+          "pressed": "true",
+          "expanded": "true"
+        },
+        {
+          "name": "Read chooseReading in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Read readingFiles in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Read releaseReading in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Read readReadingChoices in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Read scrubReadingChoices in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        }
+      ]
+    }
+  },
+  {
+    "label": "subset-back-from-reader",
+    "state": {
+      "view": "map",
+      "perspective": "2d",
+      "spatialLayout": "connections",
+      "selectedNodeId": "packages/explorer/src/client/reading-state.ts",
+      "inspection": null,
+      "pinSet": {
+        "entries": [
+          {
+            "nodeId": "packages/explorer/src/client/reading-state.ts",
+            "symbol": "*"
+          }
+        ]
+      },
+      "openDirectories": {},
+      "filters": {
+        "showTests": true,
+        "showAssets": false,
+        "showRelatedDocs": false,
+        "showCitingDocs": false
+      },
+      "retentionOrder": [
+        "[\"pin\",\"packages/explorer/src/client/reading-state.ts\",\"*\"]"
+      ],
+      "layout": {
+        "localMap": {
+          "columnGap": 100,
+          "itemGap": 24,
+          "bandGap": 28,
+          "heightCost": 5,
+          "membraneEvenness": 2,
+          "membraneSimplicity": 200,
+          "rowLevelness": 2
+        },
+        "forceGraph": {
+          "linkGap": 60,
+          "charge": 60,
+          "collisionGap": 5,
+          "coupling": 1,
+          "nodeSize": 4,
+          "symbolScale": 1,
+          "gravity": 0.025,
+          "componentSeparation": 0.2,
+          "chargeRange": 0,
+          "approximation": 0.3,
+          "linkStrength": 0.5,
+          "updateEnergy": 1,
+          "tether": 0.02,
+          "citedByPull": 1,
+          "linkWidth": 1,
+          "nodeZoomResistance": 0.3,
+          "wireZoomResistance": 0.9,
+          "nameAt": 18,
+          "hops": 1,
+          "revealFrames": 60,
+          "shellDepth": 2,
+          "groupWrappers": "skin"
+        }
+      },
+      "reading": [
+        {
+          "nodeId": "packages/explorer/src/client/reading-state.ts",
+          "open": false
+        },
+        {
+          "nodeId": "packages/explorer/src/client/reading-state.ts",
+          "symbol": "descriptionIsOpen",
+          "open": true
+        }
+      ],
+      "destination": null,
+      "reachFrom": null,
+      "commit": null,
+      "authors": false
+    },
+    "reading": {
+      "band": "reading",
+      "blocks": [
+        {
+          "symbol": null,
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "ReadingChoice",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "descriptionIsOpen",
+          "visibility": "visible",
+          "open": "true"
+        },
+        {
+          "symbol": "chooseReading",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "readingFiles",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "releaseReading",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "readReadingChoices",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "scrubReadingChoices",
+          "visibility": "hidden",
+          "open": "false"
+        }
+      ],
+      "books": [
+        {
+          "name": "Read reading-state.ts",
+          "pressed": "false",
+          "expanded": "true"
+        },
+        {
+          "name": "Read ReadingChoice in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Fold descriptionIsOpen in reading-state.ts",
+          "pressed": "true",
+          "expanded": "true"
+        },
+        {
+          "name": "Read chooseReading in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Read readingFiles in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Read releaseReading in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Read readReadingChoices in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Read scrubReadingChoices in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        }
+      ]
+    }
+  },
+  {
+    "label": "shared-subset-fresh-context",
+    "state": {
+      "view": "map",
+      "perspective": "2d",
+      "spatialLayout": "connections",
+      "selectedNodeId": "packages/explorer/src/client/reading-state.ts",
+      "inspection": null,
+      "pinSet": {
+        "entries": [
+          {
+            "nodeId": "packages/explorer/src/client/reading-state.ts",
+            "symbol": "*"
+          }
+        ]
+      },
+      "openDirectories": {},
+      "filters": {
+        "showTests": true,
+        "showAssets": false,
+        "showRelatedDocs": false,
+        "showCitingDocs": false
+      },
+      "retentionOrder": [
+        "[\"pin\",\"packages/explorer/src/client/reading-state.ts\",\"*\"]"
+      ],
+      "layout": {
+        "localMap": {
+          "columnGap": 100,
+          "itemGap": 24,
+          "bandGap": 28,
+          "heightCost": 5,
+          "membraneEvenness": 2,
+          "membraneSimplicity": 200,
+          "rowLevelness": 2
+        },
+        "forceGraph": {
+          "linkGap": 60,
+          "charge": 60,
+          "collisionGap": 5,
+          "coupling": 1,
+          "nodeSize": 4,
+          "symbolScale": 1,
+          "gravity": 0.025,
+          "componentSeparation": 0.2,
+          "chargeRange": 0,
+          "approximation": 0.3,
+          "linkStrength": 0.5,
+          "updateEnergy": 1,
+          "tether": 0.02,
+          "citedByPull": 1,
+          "linkWidth": 1,
+          "nodeZoomResistance": 0.3,
+          "wireZoomResistance": 0.9,
+          "nameAt": 18,
+          "hops": 1,
+          "revealFrames": 60,
+          "shellDepth": 2,
+          "groupWrappers": "skin"
+        }
+      },
+      "reading": [
+        {
+          "nodeId": "packages/explorer/src/client/reading-state.ts",
+          "open": false
+        },
+        {
+          "nodeId": "packages/explorer/src/client/reading-state.ts",
+          "symbol": "descriptionIsOpen",
+          "open": true
+        }
+      ],
+      "destination": null,
+      "reachFrom": null,
+      "commit": null,
+      "authors": false
+    },
+    "reading": {
+      "band": "reading",
+      "blocks": [
+        {
+          "symbol": null,
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "chooseReading",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "readingFiles",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "releaseReading",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "descriptionIsOpen",
+          "visibility": "visible",
+          "open": "true"
+        },
+        {
+          "symbol": "scrubReadingChoices",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "readReadingChoices",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "ReadingChoice",
+          "visibility": "hidden",
+          "open": "false"
+        }
+      ],
+      "books": [
+        {
+          "name": "Read reading-state.ts",
+          "pressed": "false",
+          "expanded": "true"
+        },
+        {
+          "name": "Read chooseReading in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Read readingFiles in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Read releaseReading in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Fold descriptionIsOpen in reading-state.ts",
+          "pressed": "true",
+          "expanded": "true"
+        },
+        {
+          "name": "Read scrubReadingChoices in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Read readReadingChoices in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Read ReadingChoice in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        }
+      ]
+    }
+  },
+  {
+    "label": "symbol-fold-over-whole-open",
+    "reading": {
+      "band": "reading",
+      "blocks": [
+        {
+          "symbol": null,
+          "visibility": "visible",
+          "open": "true"
+        },
+        {
+          "symbol": "ReadingChoice",
+          "visibility": "visible",
+          "open": "true"
+        },
+        {
+          "symbol": "descriptionIsOpen",
+          "visibility": "hidden",
+          "open": "false"
+        },
+        {
+          "symbol": "chooseReading",
+          "visibility": "visible",
+          "open": "true"
+        },
+        {
+          "symbol": "readingFiles",
+          "visibility": "visible",
+          "open": "true"
+        },
+        {
+          "symbol": "releaseReading",
+          "visibility": "visible",
+          "open": "true"
+        },
+        {
+          "symbol": "readReadingChoices",
+          "visibility": "visible",
+          "open": "true"
+        },
+        {
+          "symbol": "scrubReadingChoices",
+          "visibility": "visible",
+          "open": "true"
+        }
+      ],
+      "books": [
+        {
+          "name": "Read reading-state.ts",
+          "pressed": "false",
+          "expanded": "true"
+        },
+        {
+          "name": "Fold ReadingChoice in reading-state.ts",
+          "pressed": "true",
+          "expanded": "true"
+        },
+        {
+          "name": "Read descriptionIsOpen in reading-state.ts",
+          "pressed": "false",
+          "expanded": "false"
+        },
+        {
+          "name": "Fold chooseReading in reading-state.ts",
+          "pressed": "true",
+          "expanded": "true"
+        },
+        {
+          "name": "Fold readingFiles in reading-state.ts",
+          "pressed": "true",
+          "expanded": "true"
+        },
+        {
+          "name": "Fold releaseReading in reading-state.ts",
+          "pressed": "true",
+          "expanded": "true"
+        },
+        {
+          "name": "Fold readReadingChoices in reading-state.ts",
+          "pressed": "true",
+          "expanded": "true"
+        },
+        {
+          "name": "Fold scrubReadingChoices in reading-state.ts",
+          "pressed": "true",
+          "expanded": "true"
+        }
+      ]
+    }
+  },
+  {
+    "label": "estate-no-empty-books",
+    "reading": {
+      "band": "reading",
+      "blocks": [
+        {
+          "symbol": "PaymentService",
+          "visibility": "visible",
+          "open": "true"
+        }
+      ],
+      "books": [
+        {
+          "name": "Fold PaymentService.cs",
+          "pressed": "true",
+          "expanded": "true"
+        },
+        {
+          "name": "Fold PaymentService in PaymentService.cs",
+          "pressed": "true",
+          "expanded": "true"
+        }
+      ]
+    }
+  },
+  {
+    "label": "compact-neighbor-folded",
+    "rows": [
+      "PaymentsContext (class)"
+    ],
+    "state": {
+      "view": "map",
+      "perspective": "2d",
+      "spatialLayout": "connections",
+      "selectedNodeId": "PaymentService/PaymentService.cs",
+      "inspection": null,
+      "pinSet": {
+        "entries": [
+          {
+            "nodeId": "PaymentService/PaymentService.cs",
+            "symbol": "*"
+          }
+        ]
+      },
+      "openDirectories": {},
+      "filters": {
+        "showTests": true,
+        "showAssets": false,
+        "showRelatedDocs": false,
+        "showCitingDocs": false
+      },
+      "retentionOrder": [
+        "[\"pin\",\"PaymentService/PaymentService.cs\",\"*\"]"
+      ],
+      "layout": {
+        "localMap": {
+          "columnGap": 100,
+          "itemGap": 24,
+          "bandGap": 28,
+          "heightCost": 5,
+          "membraneEvenness": 2,
+          "membraneSimplicity": 200,
+          "rowLevelness": 2
+        },
+        "forceGraph": {
+          "linkGap": 60,
+          "charge": 60,
+          "collisionGap": 5,
+          "coupling": 1,
+          "nodeSize": 4,
+          "symbolScale": 1,
+          "gravity": 0.025,
+          "componentSeparation": 0.2,
+          "chargeRange": 0,
+          "approximation": 0.3,
+          "linkStrength": 0.5,
+          "updateEnergy": 1,
+          "tether": 0.02,
+          "citedByPull": 1,
+          "linkWidth": 1,
+          "nodeZoomResistance": 0.3,
+          "wireZoomResistance": 0.9,
+          "nameAt": 18,
+          "hops": 1,
+          "revealFrames": 60,
+          "shellDepth": 2,
+          "groupWrappers": "skin"
+        }
+      },
+      "reading": [
+        {
+          "nodeId": "PaymentService/Data/PaymentsContext.cs",
+          "open": false
+        }
+      ],
+      "destination": null,
+      "reachFrom": null,
+      "commit": null,
+      "authors": false
+    }
+  },
+  {
+    "label": "compact-neighbor-whole-open-disclosure",
+    "rows": [
+      "PaymentsContext (class)",
+      "PostPayment",
+      "ConnectionName",
+      "PostPaymentProcedure",
+      "PaymentsContext (constructor)",
+      "Payments",
+      "__internals__"
+    ],
+    "state": {
+      "view": "map",
+      "perspective": "2d",
+      "spatialLayout": "connections",
+      "selectedNodeId": "PaymentService/PaymentService.cs",
+      "inspection": null,
+      "pinSet": {
+        "entries": [
+          {
+            "nodeId": "PaymentService/PaymentService.cs",
+            "symbol": "*"
+          }
+        ]
+      },
+      "openDirectories": {},
+      "filters": {
+        "showTests": true,
+        "showAssets": false,
+        "showRelatedDocs": false,
+        "showCitingDocs": false
+      },
+      "retentionOrder": [
+        "[\"pin\",\"PaymentService/PaymentService.cs\",\"*\"]"
+      ],
+      "layout": {
+        "localMap": {
+          "columnGap": 100,
+          "itemGap": 24,
+          "bandGap": 28,
+          "heightCost": 5,
+          "membraneEvenness": 2,
+          "membraneSimplicity": 200,
+          "rowLevelness": 2
+        },
+        "forceGraph": {
+          "linkGap": 60,
+          "charge": 60,
+          "collisionGap": 5,
+          "coupling": 1,
+          "nodeSize": 4,
+          "symbolScale": 1,
+          "gravity": 0.025,
+          "componentSeparation": 0.2,
+          "chargeRange": 0,
+          "approximation": 0.3,
+          "linkStrength": 0.5,
+          "updateEnergy": 1,
+          "tether": 0.02,
+          "citedByPull": 1,
+          "linkWidth": 1,
+          "nodeZoomResistance": 0.3,
+          "wireZoomResistance": 0.9,
+          "nameAt": 18,
+          "hops": 1,
+          "revealFrames": 60,
+          "shellDepth": 2,
+          "groupWrappers": "skin"
+        }
+      },
+      "reading": [
+        {
+          "nodeId": "PaymentService/Data/PaymentsContext.cs",
+          "open": true
+        }
+      ],
+      "destination": null,
+      "reachFrom": null,
+      "commit": null,
+      "authors": false
+    }
+  },
+  {
+    "label": "exact-first-symbol-after",
+    "heading": {
+      "text": "reachability (function)",
+      "top": 79.546875,
+      "bodyTop": 80
+    }
+  },
+  {
+    "label": "same-file-reader-link-after",
+    "heading": {
+      "text": "Walk (interface)",
+      "top": 79.546875,
+      "bodyTop": 80
+    }
+  },
+  {
+    "label": "different-map-symbol-after-close",
+    "heading": {
+      "text": "walk (function)",
+      "top": 79.546875,
+      "bodyTop": 80
+    }
+  },
+  {
+    "label": "reader-back-forward",
+    "heading": {
+      "text": "walk (function)",
+      "top": 79.546875,
+      "bodyTop": 80
+    }
+  },
+  {
+    "label": "class-constructor-exact-targets",
+    "heading": {
+      "text": "PaymentsContext (class)",
+      "top": 79.546875,
+      "bodyTop": 80
+    }
+  }
+]

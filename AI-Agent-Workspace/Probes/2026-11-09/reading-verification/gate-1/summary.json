@@ -1,0 +1,24 @@
+{
+  "exitCode": 1,
+  "reachedPlaywright": false,
+  "passed": {
+    "liveDocsFiles": 955,
+    "unitFiles": 165,
+    "unitCases": 1740,
+    "integrationFiles": 20,
+    "integrationCases": 115,
+    "lint": true,
+    "build": true,
+    "testsTypecheck": true,
+    "documentationLinks": true,
+    "markdownAudit": true
+  },
+  "stoppingPoint": "SlopCop asset audit",
+  "assetFindings": 10,
+  "assetFindingFile": "AI-Agent-Workspace/Screenshots/2026-11-09/reading-controls/actual-reports/playwright-final-refresh-three.html",
+  "browserCasesAttempted": 0,
+  "sourceTestChanges": [],
+  "assetsAndReportsAttribution": "Playwright not reached; copied assets and prior browser reports are not attributed to this run. See preexisting/output-attribution manifests.",
+  "server8913": "closed after gate completion",
+  "fixesAttempted": false
+}

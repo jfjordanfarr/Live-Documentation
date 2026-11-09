@@ -11,7 +11,7 @@
  * 3. The controls follow the name at the right edge: on the name's last line when its text leaves them their width and
  *    a gap, otherwise on the line after it; never above the name, and the name never wraps around them.
  * 4. A control shares a line only where it fits the line: at the far and overview bands More is held no taller than a
- *    line of the name; at the middle band the three controls are taller, so the line they stand on, shared or their own,
+ *    line of the name; at the middle band the available controls are taller, so the line they stand on, shared or their own,
  *    is as tall as they are.
  * 5. No empty line, nothing shrinks: the name is never drawn smaller than its held size; when the lines run out the room's
  *    last line is cut with an ellipsis beside the controls, which keep their place, and where the controls leave no room
@@ -107,7 +107,7 @@ export interface TitleRooms {
  * formulas (reading.css, the file's name in the card ladder), which draw it. The name holds its step's size, never smaller
  * than the map's own nor larger than one line of its room's height; it takes the header's room down to the first row, or
  * at the overview band down to the card's first drawn row (after the rows before the first pinned by name, null for
- * none) or its bottom. The controls hold their step's size below their ceiling: all three at the middle band, More alone
+ * none) or its bottom. The controls hold their step's size below their ceiling: all available controls at the middle band, More alone
  * beyond, where it is held no taller than a line of the name (principle 4).
  */
 export function heldTitle(rooms: TitleRooms, band: HeldBand, scales: { text: number; control: number }, rowsBeforePin: number | null): { scale: number; control: number; room: HeldRoom } {

@@ -692,8 +692,10 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     if (!nodesById.has(nodeId)) return;
     const frame = localView.captureReadingChange(nodeId, symbol, control);
     state.reading = chooseReading(state.reading ?? [], nodeId, symbol, open);
-    localView.render();
-    frame.afterRender();
+    if (!localView.tryRefreshReading()) {
+      localView.render();
+      frame.afterRender();
+    }
     persistExploration();
   }
 

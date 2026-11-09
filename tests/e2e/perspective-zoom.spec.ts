@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 import { currentSnapshot, newestKey, pathAddress } from "./search-bar";
-import { loadGraph, localMapSettled } from "./still-picture";
+import { loadGraph, localMapSettled, panIntoView } from "./still-picture";
 import { getDefaultTuning } from "../../packages/explorer/src/client/persistence/local-storage";
 import { spatialGraphOf } from "../../packages/explorer/src/client/views/forceGraphData";
 import { linkPulls } from "../../packages/explorer/src/client/views/forceGraphLayout";
@@ -203,6 +203,8 @@ test("native symbol wires gather by file pair and directory shells reverse their
   await page.goto("/?view=local&node=scripts/slopcop/symbolReferences.ts");
   const card = (name: string) => page.locator(`#map-container .node-card[data-id="scripts/slopcop/${name}"]`);
   await card("symbolReferences.ts").getByRole("button", { name: "Pin symbolReferences.ts", exact: true }).click();
+  await localMapSettled(page);
+  await panIntoView(page, card("check-symbols.ts").getByRole("button", { name: "Pin check-symbols.ts", exact: true }));
   await card("check-symbols.ts").getByRole("button", { name: "Pin check-symbols.ts", exact: true }).click();
   await localMapSettled(page);
   await page.mouse.move(1500, 950);

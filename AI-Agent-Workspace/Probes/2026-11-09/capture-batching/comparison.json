@@ -1,0 +1,796 @@
+[
+  {
+    "name": "0-repository-five-files-slot",
+    "scenario": {
+      "name": "0-repository-five-files-slot",
+      "run": {
+        "bundle": "repository",
+        "base": "/",
+        "scopeName": "five files",
+        "scope": [
+          "packages/engine/src/live-docs/graph.ts",
+          "packages/engine/src/live-docs/document.ts",
+          "packages/engine/src/live-docs/graphFiles.ts",
+          "packages/explorer/src/shared/staticExplorerData.ts",
+          "packages/explorer/src/shared/staticBuilder.ts"
+        ],
+        "subject": "packages/engine/src/live-docs/graph.ts",
+        "journey": {
+          "file": "packages/engine/src/live-docs/graph.ts",
+          "symbol": "GraphFile"
+        }
+      },
+      "mode": "slot",
+      "width": 1600,
+      "height": 1000
+    },
+    "cards": 91,
+    "rows": 535,
+    "warnings": [
+      [],
+      [],
+      []
+    ],
+    "equalCandidate": true,
+    "equalRestored": true,
+    "hashes": [
+      "56da169dce95c8e8f13932b6fff2a026ef60870da576839c6bf8430e87ec9707",
+      "56da169dce95c8e8f13932b6fff2a026ef60870da576839c6bf8430e87ec9707",
+      "56da169dce95c8e8f13932b6fff2a026ef60870da576839c6bf8430e87ec9707"
+    ],
+    "times": [
+      {
+        "label": "old",
+        "totalMs": 7900.408631999999,
+        "readCaptureMs": [
+          6859.651167
+        ]
+      },
+      {
+        "label": "candidate",
+        "totalMs": 5655.41404,
+        "readCaptureMs": [
+          5114.429846000001
+        ]
+      },
+      {
+        "label": "restored-old",
+        "totalMs": 7343.324111999998,
+        "readCaptureMs": [
+          6802.8824730000015
+        ]
+      }
+    ],
+    "errors": [],
+    "differences": []
+  },
+  {
+    "name": "0-repository-five-files-grow",
+    "scenario": {
+      "name": "0-repository-five-files-grow",
+      "run": {
+        "bundle": "repository",
+        "base": "/",
+        "scopeName": "five files",
+        "scope": [
+          "packages/engine/src/live-docs/graph.ts",
+          "packages/engine/src/live-docs/document.ts",
+          "packages/engine/src/live-docs/graphFiles.ts",
+          "packages/explorer/src/shared/staticExplorerData.ts",
+          "packages/explorer/src/shared/staticBuilder.ts"
+        ],
+        "subject": "packages/engine/src/live-docs/graph.ts",
+        "journey": {
+          "file": "packages/engine/src/live-docs/graph.ts",
+          "symbol": "GraphFile"
+        }
+      },
+      "mode": "grow",
+      "width": 1600,
+      "height": 1000
+    },
+    "cards": 91,
+    "rows": 535,
+    "warnings": [
+      [],
+      [],
+      []
+    ],
+    "equalCandidate": true,
+    "equalRestored": true,
+    "hashes": [
+      "6e1f001b00ee1b6d6b30c7fadc35af70cf01ddfecdb08debc65ee25043c9deff",
+      "6e1f001b00ee1b6d6b30c7fadc35af70cf01ddfecdb08debc65ee25043c9deff",
+      "6e1f001b00ee1b6d6b30c7fadc35af70cf01ddfecdb08debc65ee25043c9deff"
+    ],
+    "times": [
+      {
+        "label": "old",
+        "totalMs": 4073.6859430000004,
+        "readCaptureMs": [
+          3494.485595000002
+        ]
+      },
+      {
+        "label": "candidate",
+        "totalMs": 2367.735535,
+        "readCaptureMs": [
+          1831.9917969999988
+        ]
+      },
+      {
+        "label": "restored-old",
+        "totalMs": 3692.4571369999976,
+        "readCaptureMs": [
+          3155.156315
+        ]
+      }
+    ],
+    "errors": [],
+    "differences": []
+  },
+  {
+    "name": "1-repository-chain-slot",
+    "scenario": {
+      "name": "1-repository-chain-slot",
+      "run": {
+        "bundle": "repository",
+        "base": "/",
+        "scopeName": "chain",
+        "scope": [
+          "packages/explorer/src/client/index.ts",
+          "packages/explorer/src/client/persistence/compressed-url-state.ts",
+          "packages/explorer/src/client/views/pin-state.ts",
+          "packages/explorer/src/client/views/symbolAnchors.ts"
+        ],
+        "subject": "packages/explorer/src/client/index.ts",
+        "chain": [
+          "packages/explorer/src/client/index.ts",
+          "packages/explorer/src/client/persistence/compressed-url-state.ts",
+          "packages/explorer/src/client/views/pin-state.ts",
+          "packages/explorer/src/client/views/symbolAnchors.ts"
+        ]
+      },
+      "mode": "slot",
+      "width": 1600,
+      "height": 1000
+    },
+    "cards": 102,
+    "rows": 711,
+    "warnings": [
+      [],
+      [],
+      []
+    ],
+    "equalCandidate": true,
+    "equalRestored": true,
+    "hashes": [
+      "94f94b4053851a184e78fb6fcad002665fd26e35df99c7eb57d20543a3e10163",
+      "94f94b4053851a184e78fb6fcad002665fd26e35df99c7eb57d20543a3e10163",
+      "94f94b4053851a184e78fb6fcad002665fd26e35df99c7eb57d20543a3e10163"
+    ],
+    "times": [
+      {
+        "label": "old",
+        "totalMs": 11962.503132999998,
+        "readCaptureMs": [
+          10894.643712999998
+        ]
+      },
+      {
+        "label": "candidate",
+        "totalMs": 8622.942817000003,
+        "readCaptureMs": [
+          8089.804367000004
+        ]
+      },
+      {
+        "label": "restored-old",
+        "totalMs": 11186.774169999997,
+        "readCaptureMs": [
+          10647.539279999997
+        ]
+      }
+    ],
+    "errors": [],
+    "differences": []
+  },
+  {
+    "name": "1-repository-chain-grow",
+    "scenario": {
+      "name": "1-repository-chain-grow",
+      "run": {
+        "bundle": "repository",
+        "base": "/",
+        "scopeName": "chain",
+        "scope": [
+          "packages/explorer/src/client/index.ts",
+          "packages/explorer/src/client/persistence/compressed-url-state.ts",
+          "packages/explorer/src/client/views/pin-state.ts",
+          "packages/explorer/src/client/views/symbolAnchors.ts"
+        ],
+        "subject": "packages/explorer/src/client/index.ts",
+        "chain": [
+          "packages/explorer/src/client/index.ts",
+          "packages/explorer/src/client/persistence/compressed-url-state.ts",
+          "packages/explorer/src/client/views/pin-state.ts",
+          "packages/explorer/src/client/views/symbolAnchors.ts"
+        ]
+      },
+      "mode": "grow",
+      "width": 1600,
+      "height": 1000
+    },
+    "cards": 102,
+    "rows": 711,
+    "warnings": [
+      [],
+      [],
+      []
+    ],
+    "equalCandidate": true,
+    "equalRestored": true,
+    "hashes": [
+      "f00b11e97e8c72f0fb4948094806b29a17c78cd7376e4681124cf7958f76eb24",
+      "f00b11e97e8c72f0fb4948094806b29a17c78cd7376e4681124cf7958f76eb24",
+      "f00b11e97e8c72f0fb4948094806b29a17c78cd7376e4681124cf7958f76eb24"
+    ],
+    "times": [
+      {
+        "label": "old",
+        "totalMs": 4808.633306000003,
+        "readCaptureMs": [
+          4221.406304999997
+        ]
+      },
+      {
+        "label": "candidate",
+        "totalMs": 2672.235063999993,
+        "readCaptureMs": [
+          2135.648054999998
+        ]
+      },
+      {
+        "label": "restored-old",
+        "totalMs": 4701.623875000005,
+        "readCaptureMs": [
+          4146.083142000003
+        ]
+      }
+    ],
+    "errors": [],
+    "differences": []
+  },
+  {
+    "name": "2-estate-five-files-slot",
+    "scenario": {
+      "name": "2-estate-five-files-slot",
+      "run": {
+        "bundle": "estate",
+        "base": "/samples/estate/",
+        "scopeName": "five files",
+        "scope": [
+          "Contracts/IPaymentService.cs",
+          "PaymentService/PaymentService.cs",
+          "Gateway/Wcf/HubProxy.cs",
+          "Hub/PaymentHub.cs",
+          "Portal/Services/GatewayClient.cs"
+        ],
+        "subject": "PaymentService/PaymentService.cs",
+        "journey": {
+          "file": "Contracts/IPaymentService.cs",
+          "symbol": "IPaymentService"
+        }
+      },
+      "mode": "slot",
+      "width": 1600,
+      "height": 1000
+    },
+    "cards": 20,
+    "rows": 99,
+    "warnings": [
+      [],
+      [],
+      []
+    ],
+    "equalCandidate": true,
+    "equalRestored": true,
+    "hashes": [
+      "5b60bab2c4b37a12777aab4eb0936940885003f7f4f18bb148f2ddd4f4fe932f",
+      "5b60bab2c4b37a12777aab4eb0936940885003f7f4f18bb148f2ddd4f4fe932f",
+      "5b60bab2c4b37a12777aab4eb0936940885003f7f4f18bb148f2ddd4f4fe932f"
+    ],
+    "times": [
+      {
+        "label": "old",
+        "totalMs": 1211.337725999998,
+        "readCaptureMs": [
+          489.9382429999969
+        ]
+      },
+      {
+        "label": "candidate",
+        "totalMs": 900.0232600000018,
+        "readCaptureMs": [
+          379.88938100000087
+        ]
+      },
+      {
+        "label": "restored-old",
+        "totalMs": 953.1119370000088,
+        "readCaptureMs": [
+          434.0456159999885
+        ]
+      }
+    ],
+    "errors": [],
+    "differences": []
+  },
+  {
+    "name": "2-estate-five-files-grow",
+    "scenario": {
+      "name": "2-estate-five-files-grow",
+      "run": {
+        "bundle": "estate",
+        "base": "/samples/estate/",
+        "scopeName": "five files",
+        "scope": [
+          "Contracts/IPaymentService.cs",
+          "PaymentService/PaymentService.cs",
+          "Gateway/Wcf/HubProxy.cs",
+          "Hub/PaymentHub.cs",
+          "Portal/Services/GatewayClient.cs"
+        ],
+        "subject": "PaymentService/PaymentService.cs",
+        "journey": {
+          "file": "Contracts/IPaymentService.cs",
+          "symbol": "IPaymentService"
+        }
+      },
+      "mode": "grow",
+      "width": 1600,
+      "height": 1000
+    },
+    "cards": 20,
+    "rows": 99,
+    "warnings": [
+      [],
+      [],
+      []
+    ],
+    "equalCandidate": true,
+    "equalRestored": true,
+    "hashes": [
+      "e58f24f81d38b0be502c4fad4010c415be63fd2a7448b9a87bc42015f2406643",
+      "e58f24f81d38b0be502c4fad4010c415be63fd2a7448b9a87bc42015f2406643",
+      "e58f24f81d38b0be502c4fad4010c415be63fd2a7448b9a87bc42015f2406643"
+    ],
+    "times": [
+      {
+        "label": "old",
+        "totalMs": 987.5123000000021,
+        "readCaptureMs": [
+          426.3489980000013
+        ]
+      },
+      {
+        "label": "candidate",
+        "totalMs": 854.3686869999947,
+        "readCaptureMs": [
+          332.79022900000564
+        ]
+      },
+      {
+        "label": "restored-old",
+        "totalMs": 870.1336410000076,
+        "readCaptureMs": [
+          348.75189499999397
+        ]
+      }
+    ],
+    "errors": [],
+    "differences": []
+  },
+  {
+    "name": "3-estate-chain-slot",
+    "scenario": {
+      "name": "3-estate-chain-slot",
+      "run": {
+        "bundle": "estate",
+        "base": "/samples/estate/",
+        "scopeName": "chain",
+        "scope": [
+          "Portal/Services/GatewayClient.cs",
+          "Gateway/Controllers/PaymentsController.cs",
+          "Gateway/Wcf/HubProxy.cs",
+          "Contracts/IPaymentHub.cs"
+        ],
+        "subject": "Portal/Services/GatewayClient.cs",
+        "chain": [
+          "Portal/Services/GatewayClient.cs",
+          "Gateway/Controllers/PaymentsController.cs",
+          "Gateway/Wcf/HubProxy.cs",
+          "Contracts/IPaymentHub.cs"
+        ]
+      },
+      "mode": "slot",
+      "width": 1600,
+      "height": 1000
+    },
+    "cards": 14,
+    "rows": 70,
+    "warnings": [
+      [],
+      [],
+      []
+    ],
+    "equalCandidate": true,
+    "equalRestored": true,
+    "hashes": [
+      "086c72d60fcb5533d287148c07e24c081592301ae7341186a9a6427d704f629e",
+      "086c72d60fcb5533d287148c07e24c081592301ae7341186a9a6427d704f629e",
+      "086c72d60fcb5533d287148c07e24c081592301ae7341186a9a6427d704f629e"
+    ],
+    "times": [
+      {
+        "label": "old",
+        "totalMs": 882.3093260000023,
+        "readCaptureMs": [
+          323.5625890000083
+        ]
+      },
+      {
+        "label": "candidate",
+        "totalMs": 778.6566880000028,
+        "readCaptureMs": [
+          259.84284499999194
+        ]
+      },
+      {
+        "label": "restored-old",
+        "totalMs": 802.4582749999972,
+        "readCaptureMs": [
+          282.5610730000044
+        ]
+      }
+    ],
+    "errors": [],
+    "differences": []
+  },
+  {
+    "name": "3-estate-chain-grow",
+    "scenario": {
+      "name": "3-estate-chain-grow",
+      "run": {
+        "bundle": "estate",
+        "base": "/samples/estate/",
+        "scopeName": "chain",
+        "scope": [
+          "Portal/Services/GatewayClient.cs",
+          "Gateway/Controllers/PaymentsController.cs",
+          "Gateway/Wcf/HubProxy.cs",
+          "Contracts/IPaymentHub.cs"
+        ],
+        "subject": "Portal/Services/GatewayClient.cs",
+        "chain": [
+          "Portal/Services/GatewayClient.cs",
+          "Gateway/Controllers/PaymentsController.cs",
+          "Gateway/Wcf/HubProxy.cs",
+          "Contracts/IPaymentHub.cs"
+        ]
+      },
+      "mode": "grow",
+      "width": 1600,
+      "height": 1000
+    },
+    "cards": 14,
+    "rows": 70,
+    "warnings": [
+      [],
+      [],
+      []
+    ],
+    "equalCandidate": true,
+    "equalRestored": true,
+    "hashes": [
+      "d814ccb83548a8248efa394d1411c97589b864534d5ffc160d9b8efb0133c856",
+      "d814ccb83548a8248efa394d1411c97589b864534d5ffc160d9b8efb0133c856",
+      "d814ccb83548a8248efa394d1411c97589b864534d5ffc160d9b8efb0133c856"
+    ],
+    "times": [
+      {
+        "label": "old",
+        "totalMs": 842.1064179999958,
+        "readCaptureMs": [
+          284.3160680000001
+        ]
+      },
+      {
+        "label": "candidate",
+        "totalMs": 740.5246269999916,
+        "readCaptureMs": [
+          211.9315559999959
+        ]
+      },
+      {
+        "label": "restored-old",
+        "totalMs": 754.5956870000082,
+        "readCaptureMs": [
+          225.5694930000027
+        ]
+      }
+    ],
+    "errors": [],
+    "differences": []
+  },
+  {
+    "name": "repository-narrow-grow",
+    "scenario": {
+      "name": "repository-narrow-grow",
+      "run": {
+        "bundle": "repository",
+        "base": "/",
+        "scopeName": "five files",
+        "scope": [
+          "packages/engine/src/live-docs/graph.ts",
+          "packages/engine/src/live-docs/document.ts",
+          "packages/engine/src/live-docs/graphFiles.ts",
+          "packages/explorer/src/shared/staticExplorerData.ts",
+          "packages/explorer/src/shared/staticBuilder.ts"
+        ],
+        "subject": "packages/engine/src/live-docs/graph.ts",
+        "journey": {
+          "file": "packages/engine/src/live-docs/graph.ts",
+          "symbol": "GraphFile"
+        }
+      },
+      "mode": "grow",
+      "width": 1600,
+      "height": 1000,
+      "cap": 400
+    },
+    "cards": 91,
+    "rows": 535,
+    "warnings": [
+      [],
+      [],
+      []
+    ],
+    "equalCandidate": true,
+    "equalRestored": true,
+    "hashes": [
+      "75532e06c3ff8ba35c2e2837f92a77ab71db6baf6d44925d23cb0833975bcb4e",
+      "75532e06c3ff8ba35c2e2837f92a77ab71db6baf6d44925d23cb0833975bcb4e",
+      "75532e06c3ff8ba35c2e2837f92a77ab71db6baf6d44925d23cb0833975bcb4e"
+    ],
+    "times": [
+      {
+        "label": "old",
+        "totalMs": 4040.717000000004,
+        "readCaptureMs": [
+          3458.360321999993
+        ]
+      },
+      {
+        "label": "candidate",
+        "totalMs": 2454.9578540000075,
+        "readCaptureMs": [
+          1924.9793630000058
+        ]
+      },
+      {
+        "label": "restored-old",
+        "totalMs": 3848.267491000006,
+        "readCaptureMs": [
+          3318.4397070000123
+        ]
+      }
+    ],
+    "errors": [],
+    "differences": []
+  },
+  {
+    "name": "estate-code-narrow-grow",
+    "scenario": {
+      "name": "estate-code-narrow-grow",
+      "run": {
+        "bundle": "estate",
+        "base": "/samples/estate/",
+        "scopeName": "chain",
+        "scope": [
+          "Portal/Services/GatewayClient.cs",
+          "Gateway/Controllers/PaymentsController.cs",
+          "Gateway/Wcf/HubProxy.cs",
+          "Contracts/IPaymentHub.cs"
+        ],
+        "subject": "Portal/Services/GatewayClient.cs",
+        "chain": [
+          "Portal/Services/GatewayClient.cs",
+          "Gateway/Controllers/PaymentsController.cs",
+          "Gateway/Wcf/HubProxy.cs",
+          "Contracts/IPaymentHub.cs"
+        ]
+      },
+      "mode": "grow",
+      "width": 1600,
+      "height": 1000,
+      "cap": 400,
+      "code": true
+    },
+    "cards": 14,
+    "rows": 70,
+    "warnings": [
+      [],
+      [],
+      []
+    ],
+    "equalCandidate": true,
+    "equalRestored": true,
+    "hashes": [
+      "3e68f3704634bef0b7cb04c33b00a33a11e065558c02c5eeedc2429390511279",
+      "3e68f3704634bef0b7cb04c33b00a33a11e065558c02c5eeedc2429390511279",
+      "3e68f3704634bef0b7cb04c33b00a33a11e065558c02c5eeedc2429390511279"
+    ],
+    "times": [
+      {
+        "label": "old",
+        "totalMs": 881.7324770000123,
+        "readCaptureMs": [
+          323.4365220000036
+        ]
+      },
+      {
+        "label": "candidate",
+        "totalMs": 757.0816779999877,
+        "readCaptureMs": [
+          236.58312500000466
+        ]
+      },
+      {
+        "label": "restored-old",
+        "totalMs": 774.9741249999934,
+        "readCaptureMs": [
+          243.33618099999148
+        ]
+      }
+    ],
+    "errors": [],
+    "differences": []
+  },
+  {
+    "name": "phone-repository-narrow-grow",
+    "scenario": {
+      "name": "phone-repository-narrow-grow",
+      "run": {
+        "bundle": "repository",
+        "base": "/",
+        "scopeName": "five files",
+        "scope": [
+          "packages/engine/src/live-docs/graph.ts",
+          "packages/engine/src/live-docs/document.ts",
+          "packages/engine/src/live-docs/graphFiles.ts",
+          "packages/explorer/src/shared/staticExplorerData.ts",
+          "packages/explorer/src/shared/staticBuilder.ts"
+        ],
+        "subject": "packages/engine/src/live-docs/graph.ts",
+        "journey": {
+          "file": "packages/engine/src/live-docs/graph.ts",
+          "symbol": "GraphFile"
+        }
+      },
+      "mode": "grow",
+      "width": 390,
+      "height": 844,
+      "cap": 225,
+      "phone": true
+    },
+    "cards": 91,
+    "rows": 535,
+    "warnings": [
+      [],
+      [],
+      []
+    ],
+    "equalCandidate": true,
+    "equalRestored": true,
+    "hashes": [
+      "37bcf6394799e08cb63f7c392acbcd5893d64a464a876566f0aa352c66a0c89a",
+      "37bcf6394799e08cb63f7c392acbcd5893d64a464a876566f0aa352c66a0c89a",
+      "37bcf6394799e08cb63f7c392acbcd5893d64a464a876566f0aa352c66a0c89a"
+    ],
+    "times": [
+      {
+        "label": "old",
+        "totalMs": 3770.3496860000014,
+        "readCaptureMs": [
+          3198.084791000001
+        ]
+      },
+      {
+        "label": "candidate",
+        "totalMs": 2342.085217999993,
+        "readCaptureMs": [
+          1809.0945260000008
+        ]
+      },
+      {
+        "label": "restored-old",
+        "totalMs": 3569.0612339999934,
+        "readCaptureMs": [
+          3018.9528169999976
+        ]
+      }
+    ],
+    "errors": [],
+    "differences": []
+  },
+  {
+    "name": "phone-estate-code-narrow-grow",
+    "scenario": {
+      "name": "phone-estate-code-narrow-grow",
+      "run": {
+        "bundle": "estate",
+        "base": "/samples/estate/",
+        "scopeName": "chain",
+        "scope": [
+          "Portal/Services/GatewayClient.cs",
+          "Gateway/Controllers/PaymentsController.cs",
+          "Gateway/Wcf/HubProxy.cs",
+          "Contracts/IPaymentHub.cs"
+        ],
+        "subject": "Portal/Services/GatewayClient.cs",
+        "chain": [
+          "Portal/Services/GatewayClient.cs",
+          "Gateway/Controllers/PaymentsController.cs",
+          "Gateway/Wcf/HubProxy.cs",
+          "Contracts/IPaymentHub.cs"
+        ]
+      },
+      "mode": "grow",
+      "width": 390,
+      "height": 844,
+      "cap": 225,
+      "phone": true,
+      "code": true
+    },
+    "cards": 14,
+    "rows": 70,
+    "warnings": [
+      [],
+      [],
+      []
+    ],
+    "equalCandidate": true,
+    "equalRestored": true,
+    "hashes": [
+      "7113dea64a3de21e9e2ce9ab00a29f3bec4c24eca225964bee9a4926450e8963",
+      "7113dea64a3de21e9e2ce9ab00a29f3bec4c24eca225964bee9a4926450e8963",
+      "7113dea64a3de21e9e2ce9ab00a29f3bec4c24eca225964bee9a4926450e8963"
+    ],
+    "times": [
+      {
+        "label": "old",
+        "totalMs": 869.8445820000052,
+        "readCaptureMs": [
+          312.3107400000008
+        ]
+      },
+      {
+        "label": "candidate",
+        "totalMs": 736.5240499999927,
+        "readCaptureMs": [
+          216.62284999999974
+        ]
+      },
+      {
+        "label": "restored-old",
+        "totalMs": 756.4418310000037,
+        "readCaptureMs": [
+          238.97066300000006
+        ]
+      }
+    ],
+    "errors": [],
+    "differences": []
+  }
+]

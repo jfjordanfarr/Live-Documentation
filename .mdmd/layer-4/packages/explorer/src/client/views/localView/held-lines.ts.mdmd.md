@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/held-lines.ts
-- Generated At: 2026-11-08T06:36:56.078Z
+- Generated At: 2026-11-09T03:50:01.360Z
 
 ## Authored
 ### Purpose
@@ -95,7 +95,7 @@ The held header's scale, its controls' scale and its room at a band and a step's
 formulas (reading.css, the file's name in the card ladder), which draw it. The name holds its step's size, never smaller
 than the map's own nor larger than one line of its room's height; it takes the header's room down to the first row, or
 at the overview band down to the card's first drawn row (after the rows before the first pinned by name, null for
-none) or its bottom. The controls hold their step's size below their ceiling: all three at the middle band, More alone
+none) or its bottom. The controls hold their step's size below their ceiling: all available controls at the middle band, More alone
 beyond, where it is held no taller than a line of the name (principle 4).
 
 #### `chooseHeldHeader` {#symbol-chooseheldheader}

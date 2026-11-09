@@ -1,0 +1,18 @@
+{
+  "zoom-journey.mjs.gz": {
+    "sourceBytes": 4446,
+    "sourceSha256": "d393a724748b88b7eaf9373009d5f156da552262c5e5a3250aa6dd6600a042a9"
+  },
+  "root-review.mjs.gz": {
+    "sourceBytes": 6434,
+    "sourceSha256": "c8c8ce1a42e37f83f03e1e97898f29b483d5b82aa1c40d7f62c18d025decc30c"
+  },
+  "reading-final.mjs.gz": {
+    "sourceBytes": 3486,
+    "sourceSha256": "d80142544187009a428dc70b6fdf968916ab4539caac2a019df2574e60b05882"
+  },
+  "teaching-links.mjs.gz": {
+    "sourceBytes": 3380,
+    "sourceSha256": "88ccad653b6d8449cc3298c3b54d3b07db5b71f0dcb2031e573c258854b346b7"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "cwd": "/workspaces/Live-Documentation",
+  "head": "acf3311c181b0ccfee4c4fcd362984a17af1a2be",
+  "command": "LIVE_DOCS_E2E_PORT=8913 flock /tmp/live-docs-20261108-browser.lock npm run safe:commit -- --e2e",
+  "port": 8913,
+  "startedAt": "2026-11-09T05:02:49.321Z",
+  "node": "v22.22.0",
+  "parentPid": 51875,
+  "gatePid": 52011,
+  "finishedAt": "2026-11-09T06:02:21.772Z",
+  "exitCode": 1,
+  "signal": null,
+  "reachedPlaywright": true,
+  "assetAttribution": "Post-run copy of assets built by this gate before Playwright; sources/assets unchanged during tests by the runner."
+}

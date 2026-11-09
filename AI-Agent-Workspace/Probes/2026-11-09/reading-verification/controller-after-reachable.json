@@ -1,0 +1,54 @@
+
+> live-documentation@0.0.0 live-docs:inspect
+> tsx --tsconfig ./tsconfig.base.json scripts/live-docs/inspect.ts --config ./.live-docs.config.json --from packages/explorer/src/client/views/localView/controller.ts --reachable --direction inbound --max-depth 25 --json
+
+{
+  "kind": "reachable",
+  "from": {
+    "codePath": "packages/explorer/src/client/views/localView/controller.ts",
+    "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/localView/controller.ts.mdmd.md"
+  },
+  "maxDepth": 25,
+  "reached": [
+    {
+      "direction": "inbound",
+      "files": [
+        {
+          "hops": 1,
+          "node": {
+            "codePath": "packages/explorer/src/client/views/localView/branch-renderer.ts",
+            "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/localView/branch-renderer.ts.mdmd.md"
+          }
+        },
+        {
+          "hops": 1,
+          "node": {
+            "codePath": "packages/explorer/src/client/views/localView/directory-ancestry.ts",
+            "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/localView/directory-ancestry.ts.mdmd.md"
+          }
+        },
+        {
+          "hops": 1,
+          "node": {
+            "codePath": "packages/explorer/src/client/views/localView/index.ts",
+            "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/localView/index.ts.mdmd.md"
+          }
+        },
+        {
+          "hops": 2,
+          "node": {
+            "codePath": "packages/explorer/src/client/index.ts",
+            "docPath": ".mdmd/layer-4/packages/explorer/src/client/index.ts.mdmd.md"
+          }
+        },
+        {
+          "hops": 3,
+          "node": {
+            "codePath": ".live-docs.config.json",
+            "docPath": ".mdmd/layer-4/.live-docs.config.json.mdmd.md"
+          }
+        }
+      ]
+    }
+  ]
+}

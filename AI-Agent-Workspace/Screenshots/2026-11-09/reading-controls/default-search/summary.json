@@ -1,0 +1,30 @@
+{
+  "settings": {
+    "order-starts": "2",
+    "search-starts": "32",
+    "search-patience": "8",
+    "card-text": "slot"
+  },
+  "stats": [
+    {
+      "from": "initial-settled",
+      "to": "fold-settled",
+      "cards": 9,
+      "rows": 16,
+      "symbol_slots": 7,
+      "max_row_screen_delta": 0,
+      "max_slot_screen_delta": 0,
+      "elapsed_to_settle_ms": 742.7999999998137
+    },
+    {
+      "from": "fold-settled",
+      "to": "one-settled",
+      "cards": 9,
+      "rows": 16,
+      "symbol_slots": 7,
+      "max_row_screen_delta": 0.0010986328125,
+      "max_slot_screen_delta": 0.00103759765625,
+      "elapsed_to_settle_ms": 769.2999999998137
+    }
+  ]
+}

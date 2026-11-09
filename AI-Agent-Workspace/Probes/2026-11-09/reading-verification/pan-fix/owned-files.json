@@ -1,0 +1,10 @@
+{
+  "tests/e2e/perspective-zoom.spec.ts": {
+    "bytes": 17986,
+    "sha256": "05469c82b826f63dccb61fbaebad3631d55f178738cc4c228955d4970c8266bd"
+  },
+  ".mdmd/layer-4/tests/e2e/perspective-zoom.spec.ts.mdmd.md": {
+    "bytes": 6502,
+    "sha256": "4191e171c693d5854d5879c7808dc81081e1d3374c98e0f12c4ec6fa63cef204"
+  }
+}

@@ -72,6 +72,8 @@ export interface LocalExplorationFrame {
  */
 export interface LocalViewApi {
   render(): void;
+  /** Refresh unchanged fixed-slot reading in place; false when a structural render is required. */
+  tryRefreshReading(): boolean;
   /** Whether the Local Map is the view the page shows: the map view in its 2D perspective. */
   isShown(): boolean;
   /** The map shown again: an owed render runs; else the picture stands and its search resumes. */

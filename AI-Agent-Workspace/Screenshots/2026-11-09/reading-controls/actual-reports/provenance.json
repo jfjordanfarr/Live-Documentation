@@ -1,0 +1,19 @@
+[
+  {
+    "source": "/tmp/live-docs-20261109-reading/reports/e2e/index.html",
+    "preserved": "AI-Agent-Workspace/Screenshots/2026-11-09/reading-controls/actual-reports/playwright-final-refresh-three.html.gz",
+    "size_bytes": 539112,
+    "source_mtime_utc": "2026-11-09T04:42:28.682391+00:00",
+    "sha256": "9b87e66900203f0c0aacbd528ab54d7cb668af4246cbfbf5553b71c410636d9c",
+    "storage_encoding": "gzip",
+    "stored_size_bytes": 204799,
+    "stored_sha256": "d53275f17b45d62529968ae0f74a5bbbf230140b016d32b5a7ad50b97491f831"
+  },
+  {
+    "source": "/tmp/live-docs-20261109-reading/test-results/.last-run.json",
+    "preserved": "AI-Agent-Workspace/Screenshots/2026-11-09/reading-controls/actual-reports/playwright-final-last-run.json",
+    "size_bytes": 45,
+    "source_mtime_utc": "2026-11-09T04:42:28.686392+00:00",
+    "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903"
+  }
+]

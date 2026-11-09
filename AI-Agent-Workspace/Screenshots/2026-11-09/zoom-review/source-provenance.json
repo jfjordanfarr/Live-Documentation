@@ -1,0 +1,12 @@
+{
+  "mainProductCommit": "54f90f80",
+  "mainClient": "596fbc8e254e7c8205111ce9173ebdeb4232ee5f1ccba01c70d9259335779079",
+  "readingCandidateClient": "99aa6c7fa74d22ecbf201dfeaf5110437ceb24a3adbca72a347845707efe7ac0",
+  "readingCandidateSources": {
+    "packages/explorer/src/client/detailPanel.ts": "fade4aa05e346cddcc8f4486c0e3073f4e01e555c678c056bcecf39682dee98d",
+    "packages/explorer/src/client/styles/reading.css": "63ba4fd1266ee0a68cb4058b8524eefb2743e6a2d1df5416ecc9a3b74a975587",
+    "packages/explorer/src/client/views/localView/card-reading.ts": "ae050a9e7c07a82190eaa8a0360b75b682056f3427e994bfb187f6ccf79e4d4f",
+    "packages/explorer/src/client/views/localView/controller.ts": "b2b613d91e44d126639cc6da0e5fb1b568d55ef2bd1587bb66ecdac1a6170243"
+  },
+  "provenance": "Recorded after root visual review while builders held source/build stable; candidate is not committed."
+}

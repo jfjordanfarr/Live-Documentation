@@ -1,0 +1,24 @@
+
+Running 12 tests using 1 worker
+
+[1A[2K(node:35017) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:35017) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K[1/12] [chromium] › tests/e2e/layout-lab.spec.ts:20:7 › the layout lab reproduces the page to the pixel: repository, five files
+[1A[2K[2/12] [chromium] › tests/e2e/layout-lab.spec.ts:31:7 › the page keeps the cheapest of the order step's starts: repository, five files
+[1A[2K[3/12] [chromium] › tests/e2e/layout-lab.spec.ts:20:7 › the layout lab reproduces the page to the pixel: repository, chain
+[1A[2K[4/12] [chromium] › tests/e2e/layout-lab.spec.ts:31:7 › the page keeps the cheapest of the order step's starts: repository, chain
+[1A[2K[5/12] [chromium] › tests/e2e/layout-lab.spec.ts:20:7 › the layout lab reproduces the page to the pixel: estate, five files
+[1A[2K[6/12] [chromium] › tests/e2e/layout-lab.spec.ts:31:7 › the page keeps the cheapest of the order step's starts: estate, five files
+[1A[2K[7/12] [chromium] › tests/e2e/layout-lab.spec.ts:20:7 › the layout lab reproduces the page to the pixel: estate, chain
+[1A[2K[8/12] [chromium] › tests/e2e/layout-lab.spec.ts:31:7 › the page keeps the cheapest of the order step's starts: estate, chain
+[1A[2K[9/12] [chromium] › tests/e2e/layout-lab.spec.ts:57:7 › the captured reading text predicts a narrower card cap: repository
+[1A[2K[10/12] [chromium] › tests/e2e/layout-lab.spec.ts:57:7 › the captured reading text predicts a narrower card cap: estate
+[1A[2K[11/12] [chromium] › tests/e2e/layout-lab.spec.ts:83:7 › phone coarse-pointer reading geometry › the original capture predicts narrower cards with wrapped relationship buttons and long names
+[1A[2K[12/12] [chromium] › tests/e2e/layout-lab.spec.ts:117:5 › indented code in a reading block preserves whitespace in the capture and narrower prediction
+[1A[2K  12 passed (1.6m)

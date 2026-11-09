@@ -1,0 +1,225 @@
+{
+  "kind": "reachable",
+  "from": {
+    "codePath": "tests/e2e/perspective-zoom.spec.ts",
+    "docPath": ".mdmd/layer-4/tests/e2e/perspective-zoom.spec.ts.mdmd.md"
+  },
+  "maxDepth": 25,
+  "reached": [
+    {
+      "direction": "outbound",
+      "files": [
+        {
+          "hops": 1,
+          "node": {
+            "codePath": "packages/explorer/src/client/persistence/local-storage.ts",
+            "docPath": ".mdmd/layer-4/packages/explorer/src/client/persistence/local-storage.ts.mdmd.md"
+          }
+        },
+        {
+          "hops": 1,
+          "node": {
+            "codePath": "packages/explorer/src/client/views/forceGraphData.ts",
+            "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/forceGraphData.ts.mdmd.md"
+          }
+        },
+        {
+          "hops": 1,
+          "node": {
+            "codePath": "packages/explorer/src/client/views/forceGraphLayout.ts",
+            "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md"
+          }
+        },
+        {
+          "hops": 1,
+          "node": {
+            "codePath": "packages/explorer/src/client/views/forceGraphScope.ts",
+            "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/forceGraphScope.ts.mdmd.md"
+          }
+        },
+        {
+          "hops": 1,
+          "node": {
+            "codePath": "packages/explorer/src/client/views/retained-state.ts",
+            "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/retained-state.ts.mdmd.md"
+          }
+        },
+        {
+          "hops": 1,
+          "node": {
+            "codePath": "tests/e2e/search-bar.ts",
+            "docPath": ".mdmd/layer-4/tests/e2e/search-bar.ts.mdmd.md"
+          }
+        },
+        {
+          "hops": 1,
+          "node": {
+            "codePath": "tests/e2e/still-picture.ts",
+            "docPath": ".mdmd/layer-4/tests/e2e/still-picture.ts.mdmd.md"
+          }
+        },
+        {
+          "hops": 2,
+          "node": {
+            "codePath": "packages/explorer/src/client/layout-presets.ts",
+            "docPath": ".mdmd/layer-4/packages/explorer/src/client/layout-presets.ts.mdmd.md"
+          }
+        },
+        {
+          "hops": 2,
+          "node": {
+            "codePath": "packages/explorer/src/client/persistence/compressed-url-state.ts",
+            "docPath": ".mdmd/layer-4/packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md"
+          }
+        },
+        {
+          "hops": 2,
+          "node": {
+            "codePath": "packages/explorer/src/client/persistence/navigation.ts",
+            "docPath": ".mdmd/layer-4/packages/explorer/src/client/persistence/navigation.ts.mdmd.md"
+          }
+        },
+        {
+          "hops": 2,
+          "node": {
+            "codePath": "packages/explorer/src/client/reading-state.ts",
+            "docPath": ".mdmd/layer-4/packages/explorer/src/client/reading-state.ts.mdmd.md"
+          }
+        },
+        {
+          "hops": 2,
+          "node": {
+            "codePath": "packages/explorer/src/client/types.ts",
+            "docPath": ".mdmd/layer-4/packages/explorer/src/client/types.ts.mdmd.md"
+          }
+        },
+        {
+          "hops": 2,
+          "node": {
+            "codePath": "packages/explorer/src/client/views/fileConnections.ts",
+            "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/fileConnections.ts.mdmd.md"
+          }
+        },
+        {
+          "hops": 2,
+          "node": {
+            "codePath": "packages/explorer/src/client/views/forceGraphPhysics.ts",
+            "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/forceGraphPhysics.ts.mdmd.md"
+          }
+        },
+        {
+          "hops": 2,
+          "node": {
+            "codePath": "packages/explorer/src/client/views/forceGraphReveal.ts",
+            "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/forceGraphReveal.ts.mdmd.md"
+          }
+        },
+        {
+          "hops": 2,
+          "node": {
+            "codePath": "packages/explorer/src/client/views/localView/directory-bands.ts",
+            "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/localView/directory-bands.ts.mdmd.md"
+          }
+        },
+        {
+          "hops": 2,
+          "node": {
+            "codePath": "packages/explorer/src/client/views/localView/directory-state.ts",
+            "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/localView/directory-state.ts.mdmd.md"
+          }
+        },
+        {
+          "hops": 2,
+          "node": {
+            "codePath": "packages/explorer/src/client/views/pin-state.ts",
+            "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/pin-state.ts.mdmd.md"
+          }
+        },
+        {
+          "hops": 2,
+          "node": {
+            "codePath": "packages/explorer/src/client/views/symbolAnchors.ts",
+            "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/symbolAnchors.ts.mdmd.md"
+          }
+        },
+        {
+          "hops": 2,
+          "node": {
+            "codePath": "packages/explorer/src/shared/graph.ts",
+            "docPath": ".mdmd/layer-4/packages/explorer/src/shared/graph.ts.mdmd.md"
+          }
+        },
+        {
+          "hops": 2,
+          "node": {
+            "codePath": "packages/explorer/src/shared/staticExplorerData.ts",
+            "docPath": ".mdmd/layer-4/packages/explorer/src/shared/staticExplorerData.ts.mdmd.md"
+          }
+        },
+        {
+          "hops": 2,
+          "node": {
+            "codePath": "packages/explorer/src/shared/types.ts",
+            "docPath": ".mdmd/layer-4/packages/explorer/src/shared/types.ts.mdmd.md"
+          }
+        },
+        {
+          "hops": 2,
+          "node": {
+            "codePath": "tests/e2e/design-audit.ts",
+            "docPath": ".mdmd/layer-4/tests/e2e/design-audit.ts.mdmd.md"
+          }
+        },
+        {
+          "hops": 2,
+          "node": {
+            "codePath": "tests/e2e/still-picture-geometry.ts",
+            "docPath": ".mdmd/layer-4/tests/e2e/still-picture-geometry.ts.mdmd.md"
+          }
+        },
+        {
+          "hops": 3,
+          "node": {
+            "codePath": "packages/engine/src/live-docs/graph.ts",
+            "docPath": ".mdmd/layer-4/packages/engine/src/live-docs/graph.ts.mdmd.md"
+          }
+        },
+        {
+          "hops": 3,
+          "node": {
+            "codePath": "packages/engine/src/live-docs/history/format.ts",
+            "docPath": ".mdmd/layer-4/packages/engine/src/live-docs/history/format.ts.mdmd.md"
+          }
+        },
+        {
+          "hops": 3,
+          "node": {
+            "codePath": "packages/explorer/src/client/persistence/history.ts",
+            "docPath": ".mdmd/layer-4/packages/explorer/src/client/persistence/history.ts.mdmd.md"
+          }
+        },
+        {
+          "hops": 3,
+          "node": {
+            "codePath": "packages/explorer/src/client/views/forceGraphOctree.ts",
+            "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/forceGraphOctree.ts.mdmd.md"
+          }
+        },
+        {
+          "hops": 4,
+          "node": {
+            "codePath": "packages/engine/src/config/liveDocumentationConfig.ts",
+            "docPath": ".mdmd/layer-4/packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md"
+          }
+        },
+        {
+          "hops": 4,
+          "node": {
+            "codePath": "packages/engine/src/live-docs/document.ts",
+            "docPath": ".mdmd/layer-4/packages/engine/src/live-docs/document.ts.mdmd.md"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "frozen": "596fbc8e254e7c8205111ce9173ebdeb4232ee5f1ccba01c70d9259335779079",
+  "baseline": "596fbc8e254e7c8205111ce9173ebdeb4232ee5f1ccba01c70d9259335779079",
+  "diagnostic": "c502c674401e964922f0338cca7fabb054b3a6057ca3726958e586dcd24c824f",
+  "sources": 143,
+  "changes": "read-only diagnostic state/counters/timers/logging in frozen forceGraphView and forceGraphLayout only"
+}

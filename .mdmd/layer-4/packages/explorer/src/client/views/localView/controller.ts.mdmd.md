@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/controller.ts
-- Generated At: 2026-11-06T20:08:40.679Z
+- Generated At: 2026-11-09T04:43:26.914Z
 
 ## Authored
 ### Purpose
@@ -50,6 +50,10 @@ Since the same pass `watchCamera` says `data-camera="moving"` on the container w
 
 Since the far bands' rounds (2026-11-06) the controller draws the wires again on any change the ladder writes, a band's included, since a dot's place follows its name's held size and the overview band draws other wires; derives the farthest zoom (`zoom-limits.ts`) whenever it measures the picture, from the frame as last read and the calibrated reading scale, and brings a camera left beyond it to it at once, unless a gesture or a move holds the camera; and tells the application through `onZoomLimits` when the camera stands at its farthest or closest zoom, so that the Zoom buttons are disabled there.
 
+Since the restored reading books ([November 8, Turn 3](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-08.1.record.md#turn-3-additional-reading-feedback-during-the-review), continuing November 9 UTC), a change of the slot card's band refreshes the reading controls after writing the new `data-lod`. Slot prose follows that band, while the growing composition retains its separate visibility thresholds. A book's saved intent and its actually shown explanation therefore stay distinguishable as the camera crosses a band. This refresh occurs only when the band changes; it neither measures nor changes geometry.
+
+The same round adds `tryRefreshReading` at the application boundary. It permits the fixed-slot presentation refresh only for the shown view with an existing stage and no pending or owed render. The renderer checks scope, row disclosure and card controls before any write. Successful refresh leaves the scene and its search in place; a structural reading change uses the existing capture/render/restore transaction.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -70,6 +74,7 @@ Coordinates the native Local Map, independent exploration pins and explicit FROM
 - [`branch-renderer.createStage`](./branch-renderer.ts.mdmd.md#symbol-createstage)
 - [`branch-renderer.dropStage`](./branch-renderer.ts.mdmd.md#symbol-dropstage)
 - [`branch-renderer.refreshReadingGeometry`](./branch-renderer.ts.mdmd.md#symbol-refreshreadinggeometry)
+- [`branch-renderer.refreshReadingPresentation`](./branch-renderer.ts.mdmd.md#symbol-refreshreadingpresentation)
 - [`branch-renderer.renderBranches`](./branch-renderer.ts.mdmd.md#symbol-renderbranches)
 - [`branches.BranchGraph`](./branches.ts.mdmd.md#symbol-branchgraph) (type-only)
 - [`card-factory.CardContext`](./card-factory.ts.mdmd.md#symbol-cardcontext) (type-only)

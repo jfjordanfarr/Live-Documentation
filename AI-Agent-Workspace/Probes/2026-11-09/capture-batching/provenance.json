@@ -1,0 +1,30 @@
+{
+  "candidate": "/tmp/live-docs-20261109-reading",
+  "oldCaptureSha256": "e1c12c3a0967c16e612004de46b306d7637af3e358b0a4c310cdf15969e19e2a",
+  "candidateCaptureSha256": "19d09a4c75bb71a4f1ba1ea843d100bf854e6c0815f31dc6d734269f00f8544a",
+  "page": "existing built reading candidate copied unchanged; no client build/generation",
+  "comparison": "same stable page, old/candidate/old; only capturedAt omitted",
+  "baseHead": "acf3311c181b0ccfee4c4fcd362984a17af1a2be",
+  "oldSourceEqualsGitHead": true,
+  "browser": "repository-installed Playwright Chromium; one worker under /tmp/live-docs-20261108-browser.lock",
+  "server": "Python port8911 started outside flock; immutable site copy",
+  "desktopViewport": [
+    1600,
+    1000
+  ],
+  "phoneViewport": [
+    390,
+    844
+  ],
+  "deviceScaleFactor": 1,
+  "phone": "Desktop Chrome configuration with isMobile:true,hasTouch:true",
+  "searchStarts": 0,
+  "cardText": "explicit slot or grow per scenario",
+  "narrowCaps": [
+    400,
+    225
+  ],
+  "callbackTiming": "wall duration around page.evaluate containing GLYPHS; includes IPC/serialization, no callback instrumentation",
+  "adapterChanges": "Original external copy changes only Node import paths and PRETEXT_DIST. Initial launch failed before any capture because a broad temporary import rewrite also changed embedded browser imports; corrected before measurements.",
+  "repositoryEdits": "capture probe phases and authored Notes only; existing layout-lab specs unchanged; no client build/generation/force/scope/timing changes"
+}

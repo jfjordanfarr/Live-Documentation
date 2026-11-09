@@ -1,0 +1,71 @@
+{
+  "firstHomeSnapshotCumulativeTick": 154,
+  "lastSnapshotRelativeTick": 3501,
+  "continuationTicksToStill": 986,
+  "totalHomeTicksToStill": 4488,
+  "sixtyHzMinimumSeconds": 74.8,
+  "continuationWallMs": 44.778392,
+  "continuationCpuMicroseconds": {
+    "user": 105791,
+    "system": 0
+  },
+  "firstOneTickProof": {
+    "positions": 0,
+    "velocity": 0,
+    "anchor": 0,
+    "forceCache": 0
+  },
+  "tailOneTickProof": {
+    "positions": 0,
+    "velocity": 0,
+    "anchor": 0,
+    "forceCache": 0
+  },
+  "last": {
+    "tick": 986,
+    "moveMax": 0.011587224347691267,
+    "threshold": 0.011634753104356129,
+    "quiet": 10,
+    "overlaps": 0,
+    "worstOverlap": 0,
+    "stiffness": 1.3269928222593037,
+    "dominant": [
+      {
+        "id": "src/core/util.ts",
+        "travel": 0.011587224347691267,
+        "speed": 0.023140669498602197,
+        "cachedForce": 0.0461071649267313,
+        "fromStart": 14.624306701003103,
+        "sincePrevious": 1.0148837452618278
+      },
+      {
+        "id": "src/core/model.ts",
+        "travel": 0.007612284044052353,
+        "speed": 0.015201444283964643,
+        "cachedForce": 0.030250919352431873,
+        "fromStart": 9.60174444016531,
+        "sincePrevious": 0.6699432888501801
+      },
+      {
+        "id": "src/app/main.ts",
+        "travel": 0.007525773182873769,
+        "speed": 0.015020554606465298,
+        "cachedForce": 0.029565186794315326,
+        "fromStart": 13.485032604403276,
+        "sincePrevious": 0.6932342021990852
+      },
+      {
+        "id": "directory:src/core",
+        "travel": 0.0062685587675282775,
+        "speed": 0.012519287465452054,
+        "cachedForce": 0.024961923075648238,
+        "fromStart": 7.338355031176514,
+        "sincePrevious": 0.5471260038335762
+      }
+    ],
+    "maxCachedForce": 0.0461071649267313,
+    "maxFromStart": 14.624306701003103,
+    "maxSincePrevious": 1.0148837452618278
+  },
+  "scope": "unchanged original14-body Home trajectory; no force ablation; browser and CPU slots released"
+}

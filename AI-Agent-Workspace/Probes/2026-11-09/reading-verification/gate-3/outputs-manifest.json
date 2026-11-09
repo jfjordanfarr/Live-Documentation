@@ -1,0 +1,162 @@
+{
+  "reports/e2e/index.html": {
+    "bytes": 1903884,
+    "sha256": "8f1104f39dedd399ebfa7a329b116eae69a9605b6f8f53724b706f3004198c3a"
+  },
+  "reports/still-picture/estate-chain-force-graph-state.png": {
+    "bytes": 166089,
+    "sha256": "690e2f89ae19bda439568995c942ddee03171b6641a3a1578e0a9207f38bee29"
+  },
+  "reports/still-picture/estate-chain-local-map-chain-path.png": {
+    "bytes": 159051,
+    "sha256": "12363452182b8979d60e058b0fde5e860937615407c88000e0f231de3ed3cb79"
+  },
+  "reports/still-picture/estate-chain-local-map-chain-return.png": {
+    "bytes": 71992,
+    "sha256": "23b6fc2e369648551c6bcfaa2c0986b7c92196421ed16e2db7fe0e7aa34144f1"
+  },
+  "reports/still-picture/estate-chain-local-map-retained-state.png": {
+    "bytes": 260177,
+    "sha256": "dcd27aa21573569c716d61993df156d9a3b45101f2eb4f0e3bf1af857dfc2f2a"
+  },
+  "reports/still-picture/estate-chain-local-map-state.png": {
+    "bytes": 264186,
+    "sha256": "dbb35bb68a2f48cc0f4b47e235ef223d8700d143eaea3e3f3c4a93a41d72c26d"
+  },
+  "reports/still-picture/estate-chain-membrane-map-chain-answer.png": {
+    "bytes": 240223,
+    "sha256": "bf0b2faeb97a83ab066e1f58c4ec29d04e171f469559a34960dc94bee127f2f8"
+  },
+  "reports/still-picture/estate-chain-membrane-map-chain-return.png": {
+    "bytes": 62180,
+    "sha256": "3d64e4311785de8c1c4eceed965751e77da684c6e647360219f9833ed2603d9c"
+  },
+  "reports/still-picture/estate-chain-membrane-map-state.png": {
+    "bytes": 242083,
+    "sha256": "f98a97242f52998b85dee8081fd2b1fb69b03636a65f39cd1681ae083b7255d7"
+  },
+  "reports/still-picture/estate-force-graph-state.png": {
+    "bytes": 157098,
+    "sha256": "77c845def59ad90ffa6699ee986431e9249c3fbec5b3262d837811750a988f5b"
+  },
+  "reports/still-picture/estate-local-map-journey-answer.png": {
+    "bytes": 212713,
+    "sha256": "a1f339c907bd7950a1f1eddc1456c3ce95850e1960b7ae30710a312283e6e5a6"
+  },
+  "reports/still-picture/estate-local-map-journey-return.png": {
+    "bytes": 212713,
+    "sha256": "a1f339c907bd7950a1f1eddc1456c3ce95850e1960b7ae30710a312283e6e5a6"
+  },
+  "reports/still-picture/estate-local-map-journey-start.png": {
+    "bytes": 297419,
+    "sha256": "ed2889fcebe15acda10f9afc86600b0db20d23426aa5647dc81783520ac8d9b1"
+  },
+  "reports/still-picture/estate-local-map-retained-state.png": {
+    "bytes": 378406,
+    "sha256": "ea74cdf265108bdac3c15d1871edb58a52b7fa42ffa210ee773c4c83064212d6"
+  },
+  "reports/still-picture/estate-local-map-state.png": {
+    "bytes": 158251,
+    "sha256": "78ee8ec31e96b6a2d20fbd63218d44b2d8163e1f60d8108d13351eea971475a3"
+  },
+  "reports/still-picture/estate-membrane-map-journey-answer.png": {
+    "bytes": 208332,
+    "sha256": "ee63dbe8d439917e620f61ed034eb2c0211b014e213f256039944cf1c8d2c6ab"
+  },
+  "reports/still-picture/estate-membrane-map-journey-return.png": {
+    "bytes": 149761,
+    "sha256": "b3b8b11cd440b4b54ca24cb7e7a9b7af7c720fec97d962fac7fa128d7ffb0192"
+  },
+  "reports/still-picture/estate-membrane-map-journey-start.png": {
+    "bytes": 82482,
+    "sha256": "971ec2ffe9db1371fa92e2888997b3542fa7d5e302aebc38ef3aa1525e1090e5"
+  },
+  "reports/still-picture/estate-membrane-map-state.png": {
+    "bytes": 256948,
+    "sha256": "cb7f0a941b94397e99e3602f12145487e6d56cb35de5d56c14aacaee3d410c7b"
+  },
+  "reports/still-picture/repository-chain-force-graph-state.png": {
+    "bytes": 540570,
+    "sha256": "c1b6fba28ba8aecc2b3daec38898de552aac5224dbd77b2133e5d31581495898"
+  },
+  "reports/still-picture/repository-chain-local-map-chain-path.png": {
+    "bytes": 214893,
+    "sha256": "2bc4aee035edc0644ae4c2d0d4909ae7059627ad713ae600c91f0322ec7d691a"
+  },
+  "reports/still-picture/repository-chain-local-map-chain-return.png": {
+    "bytes": 258909,
+    "sha256": "812f6f54f38f58658ad81fd12d33dfb06fa73cd5ceaece969b63a5a2cb73ab5c"
+  },
+  "reports/still-picture/repository-chain-local-map-retained-state.png": {
+    "bytes": 411096,
+    "sha256": "518d41854ac185248003a0f2172e504ca5f3d0f68bf1d55aab615f438e98ab34"
+  },
+  "reports/still-picture/repository-chain-local-map-state.png": {
+    "bytes": 393806,
+    "sha256": "6db87f16128893ce544e0b2485971da377d6e0e94c38d80dac5629f657b293f6"
+  },
+  "reports/still-picture/repository-chain-membrane-map-chain-answer.png": {
+    "bytes": 259510,
+    "sha256": "f76eca83a9d739f78e03bb4537b842d7e6c5899ca450dd0f1acbd1a3237ce918"
+  },
+  "reports/still-picture/repository-chain-membrane-map-chain-return.png": {
+    "bytes": 165938,
+    "sha256": "64a31b4158b3542c85867043c42077a8e3ee8aa4de1aedd4ad91e3f673d06f56"
+  },
+  "reports/still-picture/repository-chain-membrane-map-state.png": {
+    "bytes": 327908,
+    "sha256": "b6e7dc4861b517c94e226145083989a74d950115906fc7b8cbadd73581c3db1e"
+  },
+  "reports/still-picture/repository-force-graph-state.png": {
+    "bytes": 483809,
+    "sha256": "7f5c991d1c1b1afb64f4f77fd9a85b05315e6a055c5e2509852d742e59d2576f"
+  },
+  "reports/still-picture/repository-local-map-journey-answer.png": {
+    "bytes": 308468,
+    "sha256": "881a7924e2add8e7e00d12997a5ca973c63dff2419f3ed9e2526afa564946eff"
+  },
+  "reports/still-picture/repository-local-map-journey-return.png": {
+    "bytes": 308468,
+    "sha256": "881a7924e2add8e7e00d12997a5ca973c63dff2419f3ed9e2526afa564946eff"
+  },
+  "reports/still-picture/repository-local-map-journey-start.png": {
+    "bytes": 425390,
+    "sha256": "49fc0e56817ed6035ef78c1b46094672046d3d8ce3e7fc4dafdfca5da58bd3f7"
+  },
+  "reports/still-picture/repository-local-map-retained-state.png": {
+    "bytes": 545387,
+    "sha256": "fd2986846477507c608aff815f99543349535d55a1e69e1e350e3c13a5505b95"
+  },
+  "reports/still-picture/repository-local-map-state.png": {
+    "bytes": 425390,
+    "sha256": "49fc0e56817ed6035ef78c1b46094672046d3d8ce3e7fc4dafdfca5da58bd3f7"
+  },
+  "reports/still-picture/repository-membrane-map-journey-answer.png": {
+    "bytes": 246019,
+    "sha256": "af741ec04df667cbf692c3340ac25a22fb0d77d6607a912a0aa30190f9c543f5"
+  },
+  "reports/still-picture/repository-membrane-map-journey-return.png": {
+    "bytes": 269830,
+    "sha256": "8f9cd8414f8f306b869c796f084ac08d83df3faf9b3b81902cd9bb3d7fe77b48"
+  },
+  "reports/still-picture/repository-membrane-map-journey-start.png": {
+    "bytes": 160473,
+    "sha256": "23fbee5bf3655e7abe3c8bbc86f5eadec70333bb5bec87f47a0f73a431c8182b"
+  },
+  "reports/still-picture/repository-membrane-map-state.png": {
+    "bytes": 352169,
+    "sha256": "93804b4f7e69f47fe4dbd60ee7f24ddf046fb3df9c9997ce002cfbc3ff0a7b43"
+  },
+  "reports/still-picture/scoreboard.json": {
+    "bytes": 32167,
+    "sha256": "7eba602fd8a110a76da53ffa34d50c68106eababad5d200568aa46b5a3829c63"
+  },
+  "reports/still-picture/scoreboard.md": {
+    "bytes": 17065,
+    "sha256": "72da2a92d9b2784e102f540e7d501e9f6d08e27155c5196fa5968c49a6f6c18b"
+  },
+  "test-results/.last-run.json": {
+    "bytes": 45,
+    "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903"
+  }
+}

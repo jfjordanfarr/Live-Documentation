@@ -11,6 +11,9 @@
 Current presentation of portrait reading cards and the explicit full-text dialog.
 
 ### Notes
+
+Current reading correction, November 9 UTC, following the owner’s [additional reading feedback](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-08.1.record.md#turn-3-additional-reading-feedback-during-the-review): a fixed slot whose saved reading choice is folded uses `visibility: hidden`, retaining its allotted space. The restored symbol book holds beside Pin and More using the measured widths of the controls after it; Book and Pin leave together beyond the middle band. This changes deliberate text visibility without changing the ladder’s bands or the geometry modules. Earlier paragraphs preserve the comparison’s successive designs.
+
 Descriptions occupy measured space under their own symbol rows. Subgrid keeps the label and both pins together while prose takes a second row. Reading text has a viewport-aware width and a bounded preview with an explicit full reader, never a nested scrollbar. The dialog uses the existing canonical reader, one scroll surface and the map’s original state.
 
 Introduced during the [November 4 portrait integration](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-2).

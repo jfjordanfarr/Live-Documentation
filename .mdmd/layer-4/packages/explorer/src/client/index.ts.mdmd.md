@@ -43,6 +43,8 @@ Since [November 5](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026
 
 Since the far bands' second milestone (2026-11-06) the Local Map's `onZoomLimits` disables the Zoom Out button at the farthest zoom and Zoom In at the closest, which a reader of the page is told.
 
+The [November 8 reading feedback](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-08.1.record.md#turn-3-additional-reading-feedback-during-the-review), addressed November 9 UTC, restores books to fixed-slot cards while their names continue to open the evidence reader. `changeReading` first asks the Local Map to refresh an unchanged fixed-slot scene in place. Text-only choices preserve the existing cards, keyboard focus and continuing layout search; a change in retained files, visible rows or card controls falls back to the normal render and anchor-restoration transaction. Either path persists the same canonical reading choices for sharing.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

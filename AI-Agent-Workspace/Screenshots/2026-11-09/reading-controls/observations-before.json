@@ -1,0 +1,324 @@
+[
+  {
+    "step": "initial",
+    "url": "http://localhost:8912/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QPhBrnYLm6ZgllcbmY9lkAPQlstUa4kqtcQ7oHSF3MAKlzAF0QD3RlAQHWTA2K83a6XR43K-4W22QPB%2BOnQM9IMOp%2BWm3PJ-WZ83W854AHOyGe0kgA",
+    "cards": [
+      {
+        "id": "Contracts/PaymentRequest.cs",
+        "read": 1,
+        "fileBook": 1,
+        "rows": [
+          "PaymentRequest"
+        ]
+      },
+      {
+        "id": "Contracts/PaymentResult.cs",
+        "read": 1,
+        "fileBook": 1,
+        "rows": [
+          "PaymentResult"
+        ]
+      },
+      {
+        "id": "Contracts/PaymentQuery.cs",
+        "read": 1,
+        "fileBook": 1,
+        "rows": [
+          "PaymentQuery"
+        ]
+      },
+      {
+        "id": "Contracts/IPaymentService.cs",
+        "read": 1,
+        "fileBook": 1,
+        "rows": [
+          "IPaymentService"
+        ]
+      },
+      {
+        "id": "PaymentService/Data/Payment.cs",
+        "read": 1,
+        "fileBook": 1,
+        "rows": [
+          "Payment"
+        ]
+      },
+      {
+        "id": "PaymentService/Data/PostPaymentRow.cs",
+        "read": 1,
+        "fileBook": 1,
+        "rows": [
+          "PostPaymentRow"
+        ]
+      },
+      {
+        "id": "PaymentService/Data/PaymentsContext.cs",
+        "read": 1,
+        "fileBook": 1,
+        "rows": [
+          "PaymentsContext (class)"
+        ]
+      },
+      {
+        "id": "PaymentService/App.config",
+        "read": 0,
+        "fileBook": 0,
+        "rows": [
+          "__internals__"
+        ]
+      },
+      {
+        "id": "PaymentService/PaymentService.cs",
+        "read": 1,
+        "fileBook": 1,
+        "rows": [
+          "PaymentService",
+          "Post",
+          "Get",
+          "__internals__"
+        ]
+      }
+    ]
+  },
+  {
+    "step": "symbol-first-open",
+    "state": {
+      "view": "map",
+      "perspective": "2d",
+      "spatialLayout": "connections",
+      "selectedNodeId": "PaymentService/PaymentService.cs",
+      "inspection": {
+        "kind": "file",
+        "nodeId": "PaymentService/PaymentService.cs",
+        "symbol": "PaymentService",
+        "presentation": "reading"
+      },
+      "pinSet": {
+        "entries": [
+          {
+            "nodeId": "PaymentService/PaymentService.cs",
+            "symbol": "*"
+          }
+        ]
+      },
+      "openDirectories": {},
+      "filters": {
+        "showTests": true,
+        "showAssets": false,
+        "showRelatedDocs": false,
+        "showCitingDocs": false
+      },
+      "retentionOrder": [
+        "[\"pin\",\"PaymentService/PaymentService.cs\",\"*\"]"
+      ],
+      "layout": {
+        "localMap": {
+          "columnGap": 100,
+          "itemGap": 24,
+          "bandGap": 28,
+          "heightCost": 5,
+          "membraneEvenness": 2,
+          "membraneSimplicity": 200,
+          "rowLevelness": 2
+        },
+        "forceGraph": {
+          "linkGap": 60,
+          "charge": 60,
+          "collisionGap": 5,
+          "coupling": 1,
+          "nodeSize": 4,
+          "symbolScale": 1,
+          "gravity": 0.025,
+          "componentSeparation": 0.2,
+          "chargeRange": 0,
+          "approximation": 0.3,
+          "linkStrength": 0.5,
+          "updateEnergy": 1,
+          "tether": 0.02,
+          "citedByPull": 1,
+          "linkWidth": 1,
+          "nodeZoomResistance": 0.3,
+          "wireZoomResistance": 0.9,
+          "nameAt": 18,
+          "hops": 1,
+          "revealFrames": 60,
+          "shellDepth": 2,
+          "groupWrappers": "skin"
+        }
+      },
+      "destination": null,
+      "reachFrom": null,
+      "commit": null,
+      "authors": false
+    },
+    "reader": {
+      "scroll": 0,
+      "rect": {
+        "x": 341,
+        "y": 80,
+        "width": 758,
+        "height": 793,
+        "top": 80,
+        "right": 1099,
+        "bottom": 873,
+        "left": 341
+      },
+      "headings": [
+        {
+          "text": "PaymentService",
+          "rect": {
+            "x": 367,
+            "y": 280.546875,
+            "width": 706,
+            "height": 24.75,
+            "top": 280.546875,
+            "right": 1073,
+            "bottom": 305.296875,
+            "left": 367
+          }
+        }
+      ],
+      "text": "Purpose\nPublic Symbols\nDependencies\nDependents\nNotes\n◆\nImplementation\nCODE:\nPaymentService/PaymentService.cs\nGENERATED:\nNov 9, 2026\nINSPECTED SYMBOL\nPaymentService\nType: class\nSource: source\nImplements: IPaymentService\nPaymentService — Summary\n\nThe on-prem WCF payment service. Posting goes through a stored procedure; lookups go through Entity Framework.\n\nPurpose\n\nPending authored purpose\n\nPUBLIC SYMBOLS\nPaymentService\nPost\nGet\nDEPENDENCIES\nContracts/IPaymentService.cs\nIPaymentService\nContracts/I"
+    }
+  },
+  {
+    "step": "same-file-symbol-switch-after-scroll",
+    "state": {
+      "view": "map",
+      "perspective": "2d",
+      "spatialLayout": "connections",
+      "selectedNodeId": "PaymentService/PaymentService.cs",
+      "inspection": {
+        "kind": "file",
+        "nodeId": "PaymentService/PaymentService.cs",
+        "symbol": "Post",
+        "presentation": "reading"
+      },
+      "pinSet": {
+        "entries": [
+          {
+            "nodeId": "PaymentService/PaymentService.cs",
+            "symbol": "*"
+          }
+        ]
+      },
+      "openDirectories": {},
+      "filters": {
+        "showTests": true,
+        "showAssets": false,
+        "showRelatedDocs": false,
+        "showCitingDocs": false
+      },
+      "retentionOrder": [
+        "[\"pin\",\"PaymentService/PaymentService.cs\",\"*\"]"
+      ],
+      "layout": {
+        "localMap": {
+          "columnGap": 100,
+          "itemGap": 24,
+          "bandGap": 28,
+          "heightCost": 5,
+          "membraneEvenness": 2,
+          "membraneSimplicity": 200,
+          "rowLevelness": 2
+        },
+        "forceGraph": {
+          "linkGap": 60,
+          "charge": 60,
+          "collisionGap": 5,
+          "coupling": 1,
+          "nodeSize": 4,
+          "symbolScale": 1,
+          "gravity": 0.025,
+          "componentSeparation": 0.2,
+          "chargeRange": 0,
+          "approximation": 0.3,
+          "linkStrength": 0.5,
+          "updateEnergy": 1,
+          "tether": 0.02,
+          "citedByPull": 1,
+          "linkWidth": 1,
+          "nodeZoomResistance": 0.3,
+          "wireZoomResistance": 0.9,
+          "nameAt": 18,
+          "hops": 1,
+          "revealFrames": 60,
+          "shellDepth": 2,
+          "groupWrappers": "skin"
+        }
+      },
+      "destination": null,
+      "reachFrom": null,
+      "commit": null,
+      "authors": false
+    },
+    "reader": {
+      "scroll": 160,
+      "rect": {
+        "x": 341,
+        "y": 80,
+        "width": 758,
+        "height": 793,
+        "top": 80,
+        "right": 1099,
+        "bottom": 873,
+        "left": 341
+      },
+      "headings": [
+        {
+          "text": "Post",
+          "rect": {
+            "x": 367,
+            "y": 120.546875,
+            "width": 706,
+            "height": 24.75,
+            "top": 120.546875,
+            "right": 1073,
+            "bottom": 145.296875,
+            "left": 367
+          }
+        }
+      ],
+      "text": "Purpose\nPublic Symbols\nDependencies\nDependents\nNotes\n◆\nImplementation\nCODE:\nPaymentService/PaymentService.cs\nGENERATED:\nNov 9, 2026\nINSPECTED SYMBOL\nPost\nType: method\nSource: source\nReturns: PaymentResult\nParameters: request: PaymentRequest\nPurpose\n\nPending authored purpose\n\nPUBLIC SYMBOLS\nPaymentService\nPost\nGet\nDEPENDENCIES\nContracts/IPaymentService.cs\nIPaymentService\nContracts/IPaymentService.cs\nIPaymentService\nContracts/PaymentQuery.cs\nPaymentQuery\nContracts/PaymentQuery.cs\nPaymentQuery\nCont"
+    }
+  },
+  {
+    "step": "middle-band-books",
+    "books": {
+      "band": "middle",
+      "controls": [
+        {
+          "name": "Fold PaymentService.cs",
+          "pressed": "true",
+          "expanded": "true"
+        },
+        {
+          "name": "Fold PaymentService in PaymentService.cs",
+          "pressed": "true",
+          "expanded": "true"
+        }
+      ],
+      "prose": [
+        {
+          "visibility": "hidden",
+          "open": "true"
+        },
+        {
+          "symbol": "PaymentService",
+          "visibility": "hidden",
+          "open": "true"
+        },
+        {
+          "symbol": "Post",
+          "visibility": "hidden",
+          "open": "true"
+        },
+        {
+          "symbol": "Get",
+          "visibility": "hidden",
+          "open": "true"
+        }
+      ]
+    }
+  }
+]

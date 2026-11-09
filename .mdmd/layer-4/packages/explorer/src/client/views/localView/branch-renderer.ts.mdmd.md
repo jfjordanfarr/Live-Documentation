@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-renderer.ts
-- Generated At: 2026-11-07T00:25:41.515Z
+- Generated At: 2026-11-09T04:43:26.829Z
 
 ## Authored
 ### Purpose
@@ -12,6 +12,9 @@
 Builds, measures and animates the 2D Local Map's retained branch scene, keeping file cards, directory membranes and symbol rows connected while the layout improves.
 
 ### Notes
+
+Current reading-refresh boundary, November 9 UTC, after the root’s normal-default review of the owner’s reading feedback: construction and refresh share one canonical `exploreBranches` call and one row-visibility/emphasis calculation. `refreshReadingPresentation` accepts only fixed-slot changes with identical canonical files, links, member/directory scope and row membership, unchanged actual row visibility, and unchanged Close controls. It updates text, accessible states and row emphasis in place while preserving the stage, learned row order, measured answers and continuing search. Growing text or changed disclosure/retention falls back to the existing structural render. The scope comparison reads the existing canonical Exploration fields; it is not a serialized-object cache or a comparison of raw choices.
+
 - The [November 5 owner test](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-9) found cumulative displacement while hovering between descriptions, despite exact restoration on leaving. A reading visit now retains its initial held element and screen anchor alongside the original scene/camera. Both instant and animated disclosure use that element until the visit ends, independently of later hover-tuning updates to the exploration anchor. This prevents each replacement from treating the previous expansion's displaced row as a new baseline.
 
 The original scene/camera remain available until the return animation completes. Reentering during that return resumes the same visit; it must not adopt the intermediate camera as a new home. The visual probe reproduced almost 397 px of displacement after ten such interruptions when the home was cleared at the start of the return. Instant returns release it immediately, and a genuine action may still supersede it.
@@ -81,9 +84,17 @@ A stage for a root that holds nothing yet.
 ##### `dropStage` — Summary
 Ends whatever move the stage runs, where it stands, and its search; the stage's elements are the caller's to remove.
 
+#### `refreshReadingPresentation` {#symbol-refreshreadingpresentation}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L118)
+- Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `stage`: [`BranchStage`](#symbol-branchstage)
+
+##### `refreshReadingPresentation` — Summary
+Update fixed-slot text and its controls without rebuilding an unchanged scene or restarting its search.
+
 #### `renderBranches` {#symbol-renderbranches}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L126)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L207)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `renderBranches` — Summary
@@ -111,7 +122,7 @@ The layout's dials come from the Local Map's tuning.
 
 #### `refreshReadingGeometry` {#symbol-refreshreadinggeometry}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L262)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L336)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `refreshReadingGeometry` — Summary
@@ -122,7 +133,7 @@ competition begins from the new picture.
 
 #### `BAND_BORDER` {#symbol-band_border}
 - Type: unknown
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L298)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L372)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -172,6 +183,7 @@ competition begins from the new picture.
 - [`card-factory.countsOf`](./card-factory.ts.mdmd.md#symbol-countsof)
 - [`card-factory.createClosedDirectory`](./card-factory.ts.mdmd.md#symbol-createcloseddirectory)
 - [`card-factory.createNodeCard`](./card-factory.ts.mdmd.md#symbol-createnodecard)
+- [`card-factory.hasCloseAction`](./card-factory.ts.mdmd.md#symbol-hascloseaction)
 - [`card-reading.markFirstPin`](./card-reading.ts.mdmd.md#symbol-markfirstpin)
 - [`controller.LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller) (type-only)
 - [`directory-ancestry.ancestryButton`](./directory-ancestry.ts.mdmd.md#symbol-ancestrybutton)

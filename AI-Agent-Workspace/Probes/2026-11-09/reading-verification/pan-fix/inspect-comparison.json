@@ -1,0 +1,10 @@
+{
+  "beforeReached": {
+    "outbound": 30
+  },
+  "afterReached": {
+    "outbound": 30
+  },
+  "completeFileReachabilityEqual": true,
+  "generatedSymbolDependencyAdded": "still-picture.panIntoView"
+}

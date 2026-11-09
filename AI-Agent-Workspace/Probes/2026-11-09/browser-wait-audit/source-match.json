@@ -1,0 +1,7 @@
+{
+  "productCommit": "54f90f80",
+  "matches": {
+    "forceGraphPhysics": true,
+    "forceGraphOctree": true
+  }
+}

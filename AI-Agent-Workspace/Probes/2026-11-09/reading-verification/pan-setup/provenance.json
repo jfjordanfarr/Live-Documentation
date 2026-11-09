@@ -1,0 +1,11 @@
+{
+  "source": "tests/e2e/perspective-zoom.spec.ts",
+  "sourceSha256": "caab54c9346e2eed63caa6f6575d36bc23f7b52ad2136a4c6df8e1c30dff78ee",
+  "originalCaseSha256": "5ecb2d785bac5349f19152141d13299165ade0d4a20d6468b33300ecf90b2ef3",
+  "originalAssertionTailSha256": "9ee8c8a3d05af0b1c8c2884a207cd4e205ab7ccbf1ca2333e3c836b078e907a2",
+  "assertionTailByteIdentical": true,
+  "change": "Only preparatory camera-settle and established real-mouse panIntoView before original second Pin click; read-only boxes/screenshots and teardown readings. No DOM mutation/force click.",
+  "limitMs": 30000,
+  "assets": "/tmp/live-docs-20261109-reading-gate2/served-assets",
+  "recordingOverhead": "Two viewport screenshots and read-only geometry readings inside original30s deadline; video and retained trace use no DOM snapshots."
+}

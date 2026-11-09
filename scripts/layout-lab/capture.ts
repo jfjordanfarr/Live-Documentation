@@ -365,6 +365,46 @@ function readCapture(page: Page): Promise<PageCapture & { titleChecks: TitleChec
     // As the page reads them (`naturalWidthOf`, 2026-10-31): whole pixels, taken up from the browser's 1/64 px unit.
     const naturals = wrappers.map(wrapper => Math.ceil(Math.round(wrapper.getBoundingClientRect().width / scale * 64) / 64));
     wrappers.forEach((wrapper, i) => Object.assign(wrapper.style, { width: saved[i][0], maxWidth: saved[i][1] }));
+    // Every card keeps its own inherited probe values. Append all probes before reading any, then remove all before
+    // the ordinary card/text measurements: per-card append/read/remove cycles invalidate the whole scene's styles.
+    const probeReadings = new Map<HTMLElement, {
+      dotHeight: number; testsStyle: CSSStyleDeclaration; badgeStyle: CSSStyleDeclaration;
+      disclosureStyle: CSSStyleDeclaration; labelStyle: CSSStyleDeclaration;
+      internalsDot: CSSStyleDeclaration; placeholder: CSSStyleDeclaration;
+    }>();
+    const probes: HTMLElement[] = [];
+    const probeOf = (className: string, parent: HTMLElement): HTMLElement => {
+      const element = document.createElement("div");
+      element.className = className;
+      element.style.visibility = "hidden";
+      parent.append(element);
+      probes.push(element);
+      return element;
+    };
+    const styleOf = (element: HTMLElement): CSSStyleDeclaration => {
+      const style = getComputedStyle(element);
+      // Copy the scalar values: the live style object would outlast the probe's measurement phase.
+      return Object.fromEntries(["marginTop", "marginBottom", "gap", "columnGap", "rowGap", "height", "paddingBottom"]
+        .map(key => [key, style[key as keyof CSSStyleDeclaration] as string])) as unknown as CSSStyleDeclaration;
+    };
+    try {
+      const staged = wrappers.flatMap(wrapper => {
+        const card = wrapper.querySelector<HTMLElement>(".node-card");
+        if (!card) return [];
+        const grid = card.querySelector<HTMLElement>(":scope > .node-symbols > .symbol-grid")!;
+        return [{ card, dot: probeOf("symbol-anchor dot inbound", grid), tests: probeOf("node-tests", card),
+          badge: probeOf("type-badge", card), disclosure: probeOf("local-disclosure", card),
+          label: probeOf("local-directory-label", root), internals: probeOf("symbol-anchor dot inbound internals-anchor", grid),
+          placeholder: probeOf("symbol-anchor-placeholder", grid) }];
+      });
+      for (const probe of staged) probeReadings.set(probe.card, {
+        dotHeight: unit(probe.dot.getBoundingClientRect().height / scale), testsStyle: styleOf(probe.tests),
+        badgeStyle: styleOf(probe.badge), disclosureStyle: styleOf(probe.disclosure), labelStyle: styleOf(probe.label),
+        internalsDot: styleOf(probe.internals), placeholder: styleOf(probe.placeholder)
+      });
+    } finally {
+      for (const probe of probes) probe.remove();
+    }
     let constants: CardConstants | null = null;
     // Every row's label stands in a wrapper with its badges and its controls; the controls are the wrapper's other children.
     let shownControls: { width: number; height: number } | null = null;
@@ -415,37 +455,7 @@ function readCapture(page: Page): Promise<PageCapture & { titleChecks: TitleChec
       });
       {
         // A dot of the stylesheet's size, from a probe rather than this card's first dot, which may be collapsed to nothing.
-        const probes: HTMLElement[] = [];
-        const probeOf = (className: string, parent: HTMLElement): HTMLElement => {
-          const element = document.createElement("div");
-          element.className = className;
-          element.style.visibility = "hidden";
-          parent.append(element);
-          probes.push(element);
-          return element;
-        };
-        // Add every independent probe before reading any of them. Interleaving each append with a computed-style
-        // read invalidates the entire scene's styles once per probe, which dominates captures of large scopes.
-        const dot = probeOf("symbol-anchor dot inbound", grid);
-        const testsProbe = probeOf("node-tests", card);
-        const badgeProbe = probeOf("type-badge", card);
-        const disclosureProbe = probeOf("local-disclosure", card);
-        const labelProbe = probeOf("local-directory-label", root);
-        const internalsProbe = probeOf("symbol-anchor dot inbound internals-anchor", grid);
-        const placeholderProbe = probeOf("symbol-anchor-placeholder", grid);
-        const styleOf = (element: HTMLElement): CSSStyleDeclaration => {
-          const style = getComputedStyle(element);
-          return Object.fromEntries(["marginTop", "marginBottom", "gap", "columnGap", "rowGap", "height", "paddingBottom"]
-            .map(key => [key, style[key as keyof CSSStyleDeclaration] as string])) as unknown as CSSStyleDeclaration;
-        };
-        const dotHeight = unit(dot.getBoundingClientRect().height / scale);
-        const testsStyle = styleOf(testsProbe);
-        const badgeStyle = styleOf(badgeProbe);
-        const disclosureStyle = styleOf(disclosureProbe);
-        const labelStyle = styleOf(labelProbe);
-        const internalsDot = styleOf(internalsProbe);
-        const placeholder = styleOf(placeholderProbe);
-        for (const probe of probes) probe.remove();
+        const { dotHeight, testsStyle, badgeStyle, disclosureStyle, labelStyle, internalsDot, placeholder } = probeReadings.get(card)!;
         const gridStyle = getComputedStyle(grid);
         const titleStyle = getComputedStyle(title);
         constants = {

@@ -4,13 +4,16 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-reading.ts
-- Generated At: 2026-11-08T06:36:55.552Z
+- Generated At: 2026-11-09T03:50:01.313Z
 
 ## Authored
 ### Purpose
-Current on-map reading surface built from canonical file Purpose, exact symbol sections and recorded type references, opened and folded by a tap on a name or on the book beside it.
+Current on-map reading surface built from canonical file Purpose, exact symbol sections and recorded type references. Books open and fold descriptions in either composition; fixed-slot names open full text in the reader, while growing-card names share their books’ reading choice.
 
 ### Notes
+
+Current reading correction, November 9 UTC, following the owner’s [additional reading feedback](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-08.1.record.md#turn-3-additional-reading-feedback-during-the-review): fixed-slot cards again expose file and exact-symbol books. They save the same application-owned choices as growing cards, including per-symbol overrides of a whole-card choice. Slots start open, and folding hides their text while reserving its space. Names keep opening the reader. Explicit reading remains independent of pins and survives share, reload, history restoration and zoom. A whole-card opening retains the existing disclosure contract, making that file’s complete symbol list available; a single-symbol fold changes only its text. The restored book’s width participates in the row’s measured control room and follows Pin through the middle band. Empty fixed slots receive no book. A book’s pressed state reports saved intent, while its expanded state reports meaningful prose actually shown at the current band; the controller synchronizes those states on band changes. Earlier paragraphs below record the comparison’s initial behavior.
+
 The application owns deliberate reading choices; this module owns their controls, the names that share them and the text itself. A description opens and folds only by a deliberate act: `toggle` serves the book beside a description and, through the card context, the name it belongs to. A symbol's name opens its own description; the file's name opens its Purpose and every described symbol, or folds them when all are kept visible. Hover draws no text and moves nothing, the owner's verdict of [November 5](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-1): expansion on hover was "too difficult and finicky to actually work as a human end user with a computer mouse". The controller holds the card's name still while the layout grows, and focus returns to the control used. Full descriptions use the shared reader and link resolver. Missing prose is not fabricated; a card with nothing to open returns false from `toggle` so that its name can inspect instead.
 
 Introduced during the [November 4 portrait integration](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-2) with hover and keyboard-focus previews, an intent timer, dismissals and Escape; the [November 5 repair](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-9) scoped requested presentation to a file or exact symbol so that overview folding could not veto a direct request. That scoping stays: the book offers Fold only when its descriptions are being kept visible, a suppressed description offers Read, an outward scale change clears scoped requests, and pans and inward zoom retain them. The previews and their machinery were removed on November 5 rather than repaired further. Keep-open intent is exposed with aria-pressed on the books; aria-expanded on books and names describes the content actually shown, including semantic zoom. Empty Summary-only records do not create a blank reading control. A file-level overflow action remains reachable when Purpose is folded.
@@ -48,7 +51,7 @@ Canonical text, application-owned choices and the actions a card's text can lead
 
 #### `CardReading` {#symbol-cardreading}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L72)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L74)
 
 ##### `CardReading` — Summary
 Builds on-card explanations from the same bundled docs as the full reader. A description opens and folds only
@@ -58,11 +61,12 @@ as a human end user with a computer mouse"). The application saves every choice,
 what a shared link shows. Geometry changes belong to the controller and the renderer, which hold the acted-on
 name still while the card grows or shrinks around it. Zoom never changes a card's box: below reading scale the
 prose fades (the owner, 2026-11-05: "I really would prefer that the cards don't themselves resize when we zoom
-out"). With fixed slots, the comparison composition, every symbol has the same allotment of text lines.
+out"). With fixed slots every symbol keeps the same allotment of text lines; books fold or restore their text,
+while names open full descriptions in the reader.
 
 #### `markFirstPin` {#symbol-markfirstpin}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L589)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L603)
 
 ##### `markFirstPin` — Summary
 Write {@link firstPinWrite} for a card whose rows were just ordered, and its held name's lines at the overview band,
