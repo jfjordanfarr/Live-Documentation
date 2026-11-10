@@ -1,0 +1,61 @@
+{
+  "errors": [],
+  "comparisons": [
+    {
+      "name": "structure-start",
+      "before": 7,
+      "after": 7,
+      "lost": [],
+      "gained": [],
+      "beforeOverlaps": [],
+      "afterOverlaps": []
+    },
+    {
+      "name": "structure-open",
+      "before": 5,
+      "after": 5,
+      "lost": [],
+      "gained": [],
+      "beforeOverlaps": [],
+      "afterOverlaps": []
+    },
+    {
+      "name": "structure-return",
+      "before": 5,
+      "after": 5,
+      "lost": [],
+      "gained": [],
+      "beforeOverlaps": [],
+      "afterOverlaps": []
+    },
+    {
+      "name": "connections-ending",
+      "before": 9,
+      "after": 9,
+      "lost": [],
+      "gained": [],
+      "beforeOverlaps": [
+        {
+          "label": "shell:Hub",
+          "ring": "Contracts/PaymentResult.cs",
+          "clearance": -0.30710784039924377
+        },
+        {
+          "label": "shell:Gateway",
+          "ring": "Hub/App.config",
+          "clearance": -17.76193725761452
+        }
+      ],
+      "afterOverlaps": []
+    },
+    {
+      "name": "main-structure-start",
+      "before": 4,
+      "after": 4,
+      "lost": [],
+      "gained": [],
+      "beforeOverlaps": [],
+      "afterOverlaps": []
+    }
+  ]
+}

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphBatches.ts
-- Generated At: 2026-11-09T00:01:54.766Z
+- Generated At: 2026-11-10T16:20:12.318Z
 
 ## Authored
 ### Purpose
@@ -37,40 +37,49 @@ Since November 8, 2026 the contained-file batch selects its [per-sample sphere p
 
 Native contained capture also records the submitted material's facing, so a clipped FrontSide fallback retains only its actual uploaded front surfaces.
 
+Since the correction in [November 10, Turn 3](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-10.1.record.md#turn-3), `SPATIAL_RING_OUTER_RADIUS` names the ring geometry's outer edge in drawn-sphere units. Projected name placement reads that same constant, so its clearance includes the actual ring without a second renderer-specific radius.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
+#### `SPATIAL_RING_OUTER_RADIUS` {#symbol-spatial_ring_outer_radius}
+- Type: const
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L12)
+
+##### `SPATIAL_RING_OUTER_RADIUS` — Summary
+The outer edge of a frontier ring, in its sphere's drawn-radius units.
+
 #### `SpatialDrawLink` {#symbol-spatialdrawlink}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L12)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L15)
 
 ##### `SpatialDrawLink` — Summary
 The endpoints already resolved by the graph feed.
 
 #### `SpatialDrawEntry` {#symbol-spatialdrawentry}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L15)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L18)
 
 ##### `SpatialDrawEntry` — Summary
 A stable datum-to-buffer binding for picking; its slot follows the uploaded depth order.
 
 #### `SpatialDrawBatch` {#symbol-spatialdrawbatch}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L23)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L26)
 
 ##### `SpatialDrawBatch` — Summary
 Geometry shares a GPU batch; numeric working arrays keep preparation independent of graph-object shapes.
 
 #### `SpatialDrawStyle` {#symbol-spatialdrawstyle}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L38)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L41)
 
 ##### `SpatialDrawStyle` — Summary
 Values with visual meaning, supplied by the view without involving the force model.
 
 #### `SpatialWrapperStyle` {#symbol-spatialwrapperstyle}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L59)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L62)
 
 ##### `SpatialWrapperStyle` — Summary
 How the wrapped groups are drawn this frame (2026-11-05): each wrapper's opacity, as its seed's, and the growth of one
@@ -79,7 +88,7 @@ seeds bursting open, drawn but no longer picked.
 
 #### `SpatialWrapperUnit` {#symbol-spatialwrapperunit}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L71)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L74)
 
 ##### `SpatialWrapperUnit` — Summary
 One unit a wrapper shows within its skin (2026-11-06), relative to its centre: a file, drawn as a sphere in its colour
@@ -88,7 +97,7 @@ skin's look.
 
 #### `createSpatialBuffers` {#symbol-createspatialbuffers}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L88)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L91)
 - Parameters: `scene`: `Scene`; `style`: [`SpatialDrawStyle`](#symbol-spatialdrawstyle); `renderer`: `WebGLRenderer`
 - Constraints: [`SpatialNode`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnode), [`SpatialDrawLink`](#symbol-spatialdrawlink)
 
@@ -97,7 +106,7 @@ Pack documented nodes and wires straight into three instance buffers; camera cha
 
 #### `drawSpatialGraphOnChange` {#symbol-drawspatialgraphonchange}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L560)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L563)
 - Parameters: `camera`: `Camera`; `renderer`: `WebGLRenderer`
 
 ##### `drawSpatialGraphOnChange` — Summary
@@ -105,7 +114,7 @@ Draw when the camera or the caller's picture revision changes, leaving stationar
 
 #### `screenWireIntersectsFrustum` {#symbol-screenwireintersectsfrustum}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L590)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L593)
 - Parameters: `clipMatrix`: `Matrix4`; `viewport`: `Vector2`
 
 ##### `screenWireIntersectsFrustum` — Summary

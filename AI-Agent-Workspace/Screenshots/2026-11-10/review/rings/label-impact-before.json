@@ -1,0 +1,43 @@
+{
+  "kind": "reachable",
+  "from": {
+    "codePath": "packages/explorer/src/client/views/forceGraphLabels.ts",
+    "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/forceGraphLabels.ts.mdmd.md"
+  },
+  "maxDepth": 25,
+  "reached": [
+    {
+      "direction": "inbound",
+      "files": [
+        {
+          "hops": 1,
+          "node": {
+            "codePath": "packages/explorer/src/client/views/forceGraphLabels.test.ts",
+            "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/forceGraphLabels.test.ts.mdmd.md"
+          }
+        },
+        {
+          "hops": 1,
+          "node": {
+            "codePath": "packages/explorer/src/client/views/forceGraphView.ts",
+            "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/forceGraphView.ts.mdmd.md"
+          }
+        },
+        {
+          "hops": 2,
+          "node": {
+            "codePath": "packages/explorer/src/client/index.ts",
+            "docPath": ".mdmd/layer-4/packages/explorer/src/client/index.ts.mdmd.md"
+          }
+        },
+        {
+          "hops": 3,
+          "node": {
+            "codePath": ".live-docs.config.json",
+            "docPath": ".mdmd/layer-4/.live-docs.config.json.mdmd.md"
+          }
+        }
+      ]
+    }
+  ]
+}

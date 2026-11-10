@@ -3,6 +3,7 @@ import { test, expect, type Page } from "@playwright/test";
 import { overlapsAmong, textBoxes, truncations } from "./design-audit";
 import { engineActivity, observeGraph, renderedNodes, renderedLinks } from "./force-graph-observation";
 import { currentSnapshot } from "./search-bar";
+import { localMapSettled } from "./still-picture";
 
 const names = [".force-graph-focus", ".force-graph-label"];
 
@@ -158,4 +159,86 @@ test("an unselected 3D arrival frames the estate without inventing pins", async 
   expect(currentSnapshot(page).pinSet.entries).toEqual([]);
   expect(currentSnapshot(page).selectedNodeId).toBeFalsy();
   await readableNames(page);
+});
+
+test.describe("names beside visible rings", () => {
+  // This is the owner's ordinary journey: the 2D search and all motion retain their product defaults.
+  test.use({ storageState: { cookies: [], origins: [] }, viewport: { width: 1440, height: 960 }, deviceScaleFactor: 1 });
+
+  test("directory names clear visible rings through the perspective journey and a rewrap", async ({ page }, testInfo) => {
+    test.setTimeout(90_000);
+    await observeGraph(page);
+    const settled = (): Promise<void> => expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
+    const switchTo = async (name: "2D" | "3D"): Promise<void> => {
+      const begun = page.locator(".perspective-transition").waitFor({ state: "visible" });
+      await page.getByRole("button", { name, exact: true }).click();
+      await begun;
+      await expect(page.locator(".perspective-transition")).toHaveCount(0, { timeout: 25_000 });
+      if (name === "2D") await localMapSettled(page);
+      else await settled();
+    };
+    const checkRings = async (name: string): Promise<void> => {
+      await page.mouse.move(300, 900);
+      // Wait for the pointer's temporary attention to leave before reading the ordinary names and uploaded picture.
+      await expect(page.locator("#graph-svg")).toHaveAttribute("data-hovered-node", "false");
+      const picture = await page.evaluate(() => {
+        const observed = window as unknown as { renderedGraph: { scene: import("three").Scene; camera: import("three").Camera } };
+        const { scene, camera } = observed.renderedGraph;
+        const canvas = document.querySelector("#graph-svg canvas")!.getBoundingClientRect();
+        const mesh = scene.getObjectByName("Spatial rings") as import("three").InstancedMesh;
+        const entries = mesh.userData.spatialBatch.entries as Array<{ data: { id: string }; slot: number; enabled: boolean }>;
+        if (!mesh.geometry.boundingSphere) mesh.geometry.computeBoundingSphere();
+        // Read the submitted ring geometry and matrices, independently of the label candidates and radius constant.
+        const rings = entries.filter(entry => entry.enabled && entry.slot < mesh.count).map(entry => {
+          const matrix = mesh.matrixWorld.clone(); mesh.getMatrixAt(entry.slot, matrix); matrix.premultiply(mesh.matrixWorld);
+          const sphere = mesh.geometry.boundingSphere!.clone().applyMatrix4(matrix);
+          const point = sphere.center.clone().project(camera), right = camera.matrixWorld.elements;
+          const rim = sphere.center.clone().add(sphere.center.clone().set(right[0], right[1], right[2]).multiplyScalar(sphere.radius)).project(camera);
+          return { id: entry.data.id, x: canvas.left + (point.x + 1) * canvas.width / 2,
+            y: canvas.top + (1 - point.y) * canvas.height / 2, radius: Math.abs(rim.x - point.x) * canvas.width / 2 };
+        });
+        const labels = [...document.querySelectorAll<HTMLButtonElement>(".force-graph-label")].filter(label => !label.hidden).map(label => {
+          const box = label.getBoundingClientRect();
+          return { id: label.dataset.nodeId, text: label.textContent, x: box.x, y: box.y, width: box.width, height: box.height };
+        });
+        const clearances = labels.flatMap(label => rings.map(ring => {
+          const dx = Math.max(label.x, Math.min(ring.x, label.x + label.width)) - ring.x;
+          const dy = Math.max(label.y, Math.min(ring.y, label.y + label.height)) - ring.y;
+          return { label: label.id, ring: ring.id, clearance: Math.hypot(dx, dy) - ring.radius };
+        }));
+        return { labels, rings, clearances };
+      });
+      await testInfo.attach(`${name}-geometry`, { body: JSON.stringify(picture, null, 2), contentType: "application/json" });
+      expect(picture.labels.map(label => label.id).sort(), `${name} retains every independently observed ordinary name`).toEqual([
+        "Contracts/PaymentQuery.cs", "Contracts/PaymentRequest.cs", "PaymentService/Data/Payment.cs",
+        "PaymentService/Data/PaymentsContext.cs", "PaymentService/Data/PostPaymentRow.cs", "shell:Gateway", "shell:Hub",
+        "shell:Portal/Models", "shell:Portal/Pages"
+      ]);
+      expect(picture.rings.map(ring => ring.id).sort()).toEqual([
+        "Contracts/PaymentQuery.cs", "Contracts/PaymentRequest.cs", "Contracts/PaymentResult.cs",
+        "Database/SqlServer/dbo.usp_PostPayment.sql", "Hub/App.config"
+      ]);
+      // Allow 0.1 CSS pixels for rounding between uploaded geometry and the browser's measured label rectangles.
+      expect(picture.clearances.filter(pair => pair.clearance < 1.9), `${name}: every name clears the uploaded outer rings by two CSS pixels, within rounding`).toEqual([]);
+      expect(currentSnapshot(page).openDirectories).toEqual(new Set(["PaymentService"]));
+      expect(currentSnapshot(page).pinSet.entries).toEqual([]);
+    };
+
+    await page.goto("/samples/estate/?view=local&mode=3d&layout=structure");
+    await settled();
+    await page.locator('.force-graph-label[data-node-id="directory:PaymentService"]').click();
+    await settled();
+    await switchTo("2D");
+    await switchTo("3D");
+    await page.getByRole("button", { name: "Connections", exact: true }).click();
+    await settled();
+    await checkRings("connections-ending");
+
+    // Repacking changes the projected obstacles; a remembered name side must be checked against the new picture.
+    await page.locator('.force-graph-label[data-node-id="shell:Gateway"]').click();
+    await settled();
+    await page.getByRole("button", { name: "Wrap Gateway again", exact: true }).click();
+    await settled();
+    await checkRings("gateway-rewrapped");
+  });
 });

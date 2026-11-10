@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { placeSpatialLabels, type SpatialLabel } from "./forceGraphLabels";
+import { placeSpatialLabels, type SpatialLabel, type SpatialLabelBody } from "./forceGraphLabels";
 
 const label = (id: string, priority = 3): SpatialLabel => ({ id, priority, x: 120, y: 90, radius: 10, width: 110, height: 28 });
 
@@ -40,6 +40,68 @@ describe("spatial names", () => {
     const dx = Math.max(box.x, Math.min(subject.x, box.x + box.width)) - subject.x;
     const dy = Math.max(box.y, Math.min(subject.y, box.y + box.height)) - subject.y;
     expect(Math.hypot(dx, dy)).toBeGreaterThanOrEqual(subject.radius + 2);
+  });
+
+  it("stands a name outside its own ring's visible edge", () => {
+    // A ten-pixel sphere has a sixteen-pixel outer ring. The name must clear the latter, including on a retained diagonal.
+    const ringed = { ...label("ringed"), radius: 16 };
+    const placed = placeSpatialLabels([ringed], { width: 340, height: 220 }, [], new Map([[ringed.id, 4]]));
+    const box = placed.get(ringed.id)!;
+    expect(box.side).toBe(4);
+    expect(Math.hypot(box.x - ringed.x, box.y - ringed.y)).toBeGreaterThanOrEqual(ringed.radius + 2);
+    expect(placeSpatialLabels([ringed], { width: 340, height: 220 }, [], new Map()).get(ringed.id)?.y).toBe(90 + 16 + 7);
+  });
+
+  it.each([0, 3])("keeps a name clear of an unnamed ring with priority %i", priority => {
+    const context = label("context");
+    const ring: SpatialLabelBody = { id: "unnamed", priority, x: 195, y: 120, radius: 25 };
+    // The first position clears the ten-pixel sphere but intersects its ring. Its name is absent from the candidates.
+    const sphereOnly = placeSpatialLabels([context], { width: 340, height: 220 }, [], new Map(), [{ ...ring, radius: 10 }]);
+    expect(sphereOnly.get(context.id)?.side).toBe(0);
+    const placed = placeSpatialLabels([context], { width: 340, height: 220 }, [], new Map(), [ring]);
+    const box = placed.get(context.id)!;
+    expect(box.side).toBe(1);
+    const dx = Math.max(box.x, Math.min(ring.x, box.x + box.width)) - ring.x;
+    const dy = Math.max(box.y, Math.min(ring.y, box.y + box.height)) - ring.y;
+    expect(Math.hypot(dx, dy)).toBeGreaterThanOrEqual(ring.radius + 2);
+    expect(placed.has(ring.id)).toBe(false);
+  });
+
+  it("rechecks a remembered side against new visible geometry while preserving its priority rules", () => {
+    const context = label("context"), viewport = { width: 340, height: 220 };
+    const ring: SpatialLabelBody = { id: "new", priority: 3, x: 195, y: 120, radius: 25 };
+    const before = placeSpatialLabels([context], viewport, [], new Map());
+    const remembered = new Map([[context.id, before.get(context.id)!.side]]);
+    expect(remembered.get(context.id)).toBe(0);
+    expect(placeSpatialLabels([context], viewport, [], remembered, [ring]).get(context.id)?.side).toBe(1);
+    expect(placeSpatialLabels([context], viewport, [], remembered, [{ ...ring, priority: 5 }]).get(context.id)?.side).toBe(0);
+  });
+
+  it("avoids the visible edge of an unnamed ring whose centre is outside the viewport", () => {
+    const context = { ...label("near-edge"), x: 63 };
+    const ring: SpatialLabelBody = { id: "outside", priority: 3, x: -10, y: 120, radius: 25 };
+    const viewport = { width: 340, height: 220 };
+    // The text begins at the viewport's eight-pixel inset. The off-screen centre cannot disclose a name, but its
+    // outer ring reaches fifteen pixels into the viewport and would meet that text.
+    expect(placeSpatialLabels([context], viewport, [], new Map(), [{ ...ring, radius: 10 }]).get(context.id)?.side).toBe(0);
+    const box = placeSpatialLabels([context], viewport, [], new Map(), [ring]).get(context.id)!;
+    expect(box.side).toBe(1);
+    expect(box.x).toBe(8);
+    const dx = Math.max(box.x, Math.min(ring.x, box.x + box.width)) - ring.x;
+    const dy = Math.max(box.y, Math.min(ring.y, box.y + box.height)) - ring.y;
+    expect(Math.hypot(dx, dy)).toBeGreaterThanOrEqual(ring.radius + 2);
+  });
+
+  it("reserves no body at a popped chip's point while keeping its own offset", () => {
+    const chip = { ...label("popped", 0), x: 120, y: 120, radius: 60, clear: 0, width: 50, height: 20 };
+    const context = label("released");
+    const placed = placeSpatialLabels([chip, context], { width: 340, height: 300 }, [], new Map());
+    expect(placed.get(chip.id)?.y).toBe(120 + 60 + 7);
+    expect(placed.get(context.id)?.side).toBe(0);
+    // The released name may cover the chip's old centre, where there is now no visible body.
+    const box = placed.get(context.id)!;
+    expect(box.y).toBeLessThan(chip.y);
+    expect(box.y + box.height).toBeGreaterThan(chip.y);
   });
 
   it("lays the names of directories popped one inside another apart, each beside the skin it had, and keeps nothing clear of them (third round)", () => {

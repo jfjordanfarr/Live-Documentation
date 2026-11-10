@@ -1,0 +1,146 @@
+{
+  "recordedAt": "2026-11-10T16:44:29.382Z",
+  "kind": "Focused regression and old-client control, before the full gate",
+  "notes": [
+    "The final unchanged test passes candidate client and fails original client over the same candidate estate data.",
+    "The preserved old-client failure is intentional and is not a failure of the candidate.",
+    "Reports preserve original scratch attachment paths; related failure assets are retained here under explicit names.",
+    "The compressed proxy script retains its original scratch paths and needs those paths restored for replay."
+  ],
+  "entries": [
+    {
+      "file": "baseline-final.log.gz",
+      "source": "baseline-final.log",
+      "bytes": 1142,
+      "sha256": "d3e2897ae6a7f49c04007e0f7b960703e344d19e449bdaf60b97f52e820a6d99",
+      "originalBytes": 4772,
+      "originalSha256": "f702a2e36557ba553615eadce51c71b7b3a2450817e91fd9422f327fbb559f15"
+    },
+    {
+      "file": "candidate-final.log.gz",
+      "source": "candidate-final.log",
+      "bytes": 310,
+      "sha256": "b0319cc5cbe334ab4c3c18f2d0a9f28c2ede7ce0d51dd161fa876ea4b261163f",
+      "originalBytes": 599,
+      "originalSha256": "4dc80fbd0c895c3dfaff82f57406a820f14380c4d0cfa8772333f69e4c9efff3"
+    },
+    {
+      "file": "baseline-final-report.json.gz",
+      "source": "baseline-final-report.json",
+      "bytes": 4643,
+      "sha256": "35b3ae2f3e8421f38f8bad1c155ea5348bcf37289ed0934bef8bb2740d1589b8",
+      "originalBytes": 23506,
+      "originalSha256": "f9f663df0cb1bec8330e10f5c295f6815fffe925e7799b132c29b594bfb0f41b"
+    },
+    {
+      "file": "candidate-final-report.json.gz",
+      "source": "candidate-final-report.json",
+      "bytes": 5282,
+      "sha256": "558f23ae7b2e1b94dd070586b65c80da88f7cd7181611e74ac16964918d224ba",
+      "originalBytes": 27036,
+      "originalSha256": "5d956bb694f8e020fcd0eb039a21b662ad294b7bfc0155b182c5373e09e59c03"
+    },
+    {
+      "file": "adjacent-unit.log.gz",
+      "source": "adjacent-unit.log",
+      "bytes": 578,
+      "sha256": "dc1afc1723b892f27da26d0a20b5f11c9f366825a8031c1ee15812cfb38bb213",
+      "originalBytes": 2075,
+      "originalSha256": "1511d28f109c5bdcc7c4c2f80cde7afaee0beec92323e60f2691b4d892bfc6e1"
+    },
+    {
+      "file": "baseline-index.js.gz",
+      "source": "baseline-index.js",
+      "bytes": 376485,
+      "sha256": "6f8fa5b7281ee583b08f2b5688bfb27058e0a66c7e7fa3ecd7527b54fd1c2669",
+      "originalBytes": 1279780,
+      "originalSha256": "7e1654311f63245fb1926c2202d03e6e67b6a1f64240e2a0875e2338c5d7ae48"
+    },
+    {
+      "file": "baseline-proxy.mjs.gz",
+      "source": "baseline-proxy.mjs",
+      "bytes": 412,
+      "sha256": "1898906e4f20ec3c7de1fc3e134882c6afcd77fc98fddef2a8c31aaa6b270648",
+      "originalBytes": 685,
+      "originalSha256": "bfe05305ae25be0e2790bd2919a3f7818f98a297880fdf04fb6661fa9a8d83ad"
+    },
+    {
+      "file": "final-source.sha256",
+      "source": "final-source.sha256",
+      "bytes": 593,
+      "sha256": "b023d0f9c572e11c69e9bba06d8bc84eb7f918d1fd8fb5f3ad1c090e027539f4",
+      "originalBytes": 593,
+      "originalSha256": "b023d0f9c572e11c69e9bba06d8bc84eb7f918d1fd8fb5f3ad1c090e027539f4"
+    },
+    {
+      "file": "runtime-before.txt",
+      "source": "runtime-before.txt",
+      "bytes": 442,
+      "sha256": "c65aff5c841316890f5cc1be308ef20e2c6eaca033b940101383873bc7045d73",
+      "originalBytes": 442,
+      "originalSha256": "c65aff5c841316890f5cc1be308ef20e2c6eaca033b940101383873bc7045d73"
+    },
+    {
+      "file": "served-hashes.json",
+      "source": "served-hashes.json",
+      "bytes": 796,
+      "sha256": "29f492985c40d1cb8004168b7b25489d6a2bd0011dd90e197a88d1edef117aa6",
+      "originalBytes": 796,
+      "originalSha256": "29f492985c40d1cb8004168b7b25489d6a2bd0011dd90e197a88d1edef117aa6"
+    },
+    {
+      "file": "baseline-connections-ending-geometry.json",
+      "source": "baseline-connections-ending-geometry.json",
+      "bytes": 8754,
+      "sha256": "d8a89b0937a1db87cddae3fd17ec45011bdae5d118b8f92bbe8f59b6c6842b36",
+      "originalBytes": 8754,
+      "originalSha256": "d8a89b0937a1db87cddae3fd17ec45011bdae5d118b8f92bbe8f59b6c6842b36"
+    },
+    {
+      "file": "candidate-connections-ending-geometry.json",
+      "source": "candidate-connections-ending-geometry.json",
+      "bytes": 8730,
+      "sha256": "9cd22d1479188e6a169d568bf940c2f9f43eecffb240ac675258854a468c7033",
+      "originalBytes": 8730,
+      "originalSha256": "9cd22d1479188e6a169d568bf940c2f9f43eecffb240ac675258854a468c7033"
+    },
+    {
+      "file": "candidate-gateway-rewrapped-geometry.json",
+      "source": "candidate-gateway-rewrapped-geometry.json",
+      "bytes": 8739,
+      "sha256": "3c91a6b88fffb71e081387c9ab1a4c34aa6dc5f7bf85be512245bb2011feb22f",
+      "originalBytes": 8739,
+      "originalSha256": "3c91a6b88fffb71e081387c9ab1a4c34aa6dc5f7bf85be512245bb2011feb22f"
+    },
+    {
+      "file": "baseline-failure.png",
+      "source": "baseline-final-results/force-graph-identity-names-24f1e-ective-journey-and-a-rewrap-chromium/test-failed-1.png",
+      "bytes": 119704,
+      "sha256": "0fca1783273a1e81bfcba2fbc49df64f11b312ce899ba0e1285aefa9caaa8aa9",
+      "originalBytes": 119704,
+      "originalSha256": "0fca1783273a1e81bfcba2fbc49df64f11b312ce899ba0e1285aefa9caaa8aa9"
+    },
+    {
+      "file": "baseline-error-context.md.gz",
+      "source": "baseline-final-results/force-graph-identity-names-24f1e-ective-journey-and-a-rewrap-chromium/error-context.md",
+      "bytes": 1898,
+      "sha256": "23a7dc6e5e9fc788ac4d3a8569dcf9ff82e85fa46ede7abc01f02b9995328042",
+      "originalBytes": 8572,
+      "originalSha256": "2821c11dd648555b8295ad61aa1fa61e9ce463b00619706411514d3162f734b8"
+    },
+    {
+      "file": "baseline-trace.zip",
+      "source": "baseline-final-results/force-graph-identity-names-24f1e-ective-journey-and-a-rewrap-chromium/trace.zip",
+      "bytes": 4337256,
+      "sha256": "697008cbd5d2e7a663cd629122e601019acd5e7054d7679f5509c64faacfbba5",
+      "originalBytes": 4337256,
+      "originalSha256": "697008cbd5d2e7a663cd629122e601019acd5e7054d7679f5509c64faacfbba5"
+    },
+    {
+      "file": "label-impact-after.json",
+      "source": "label-impact-final.json (npm prefix removed; JSON parsed and formatted)",
+      "bytes": 1255,
+      "sha256": "0fe3b25a10b07eaaff1d93d1d8a6f53a4c8f721eb5e4bbce31e00b58d9ee024f"
+    }
+  ]
+}

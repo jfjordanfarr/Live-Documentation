@@ -1,0 +1,335 @@
+{
+  "labels": [
+    {
+      "id": "PaymentService/Data/PaymentsContext.cs",
+      "text": "PaymentsContext.cs",
+      "x": 686.5450439453125,
+      "y": 554.3948974609375,
+      "width": 133.21875,
+      "height": 23
+    },
+    {
+      "id": "PaymentService/Data/Payment.cs",
+      "text": "Payment.cs",
+      "x": 933.82861328125,
+      "y": 511.267822265625,
+      "width": 81.921875,
+      "height": 23
+    },
+    {
+      "id": "PaymentService/Data/PostPaymentRow.cs",
+      "text": "PostPaymentRow.cs",
+      "x": 585.6737060546875,
+      "y": 438.21856689453125,
+      "width": 133.21875,
+      "height": 23
+    },
+    {
+      "id": "Contracts/PaymentQuery.cs",
+      "text": "PaymentQuery.cs",
+      "x": 729.2269287109375,
+      "y": 77.21109008789062,
+      "width": 116.359375,
+      "height": 23
+    },
+    {
+      "id": "Contracts/PaymentRequest.cs",
+      "text": "PaymentRequest.cs",
+      "x": 851.2962036132812,
+      "y": 166.8409423828125,
+      "width": 130.34375,
+      "height": 23
+    },
+    {
+      "id": "shell:Hub",
+      "text": "Hub · 3",
+      "x": 691.1868896484375,
+      "y": 185.53684997558594,
+      "width": 56.640625,
+      "height": 23
+    },
+    {
+      "id": "shell:Gateway",
+      "text": "Gateway · 3",
+      "x": 851.1393432617188,
+      "y": 396.1640319824219,
+      "width": 84.09375,
+      "height": 23
+    },
+    {
+      "id": "shell:Portal/Models",
+      "text": "Models · 2",
+      "x": 1147.51416015625,
+      "y": 203.2692413330078,
+      "width": 74.703125,
+      "height": 23
+    },
+    {
+      "id": "shell:Portal/Pages",
+      "text": "Pages · 3",
+      "x": 431.4037170410156,
+      "y": 616.016845703125,
+      "width": 69.65625,
+      "height": 23
+    }
+  ],
+  "rings": [
+    {
+      "id": "Contracts/PaymentQuery.cs",
+      "x": 787.2269666679339,
+      "y": 130.07325554368035,
+      "radius": 22.862159388933357
+    },
+    {
+      "id": "Contracts/PaymentRequest.cs",
+      "x": 916.2962319596309,
+      "y": 136.1495649539916,
+      "radius": 23.691367196414287
+    },
+    {
+      "id": "Contracts/PaymentResult.cs",
+      "x": 746.1057712416597,
+      "y": 259.26170261386176,
+      "radius": 21.343121266708312
+    },
+    {
+      "id": "Database/SqlServer/dbo.usp_PostPayment.sql",
+      "x": 772.7036695626418,
+      "y": 744.9184985676872,
+      "radius": 17.272049963535494
+    },
+    {
+      "id": "Hub/App.config",
+      "x": 947.5077027755976,
+      "y": 352.58551770571825,
+      "radius": 17.76193725761452
+    }
+  ],
+  "clearances": [
+    {
+      "label": "PaymentService/Data/PaymentsContext.cs",
+      "ring": "Contracts/PaymentQuery.cs",
+      "clearance": 401.45948252832375
+    },
+    {
+      "label": "PaymentService/Data/PaymentsContext.cs",
+      "ring": "Contracts/PaymentRequest.cs",
+      "clearance": 405.5494390567121
+    },
+    {
+      "label": "PaymentService/Data/PaymentsContext.cs",
+      "ring": "Contracts/PaymentResult.cs",
+      "clearance": 273.79007358036745
+    },
+    {
+      "label": "PaymentService/Data/PaymentsContext.cs",
+      "ring": "Database/SqlServer/dbo.usp_PostPayment.sql",
+      "clearance": 150.25155114321416
+    },
+    {
+      "label": "PaymentService/Data/PaymentsContext.cs",
+      "ring": "Hub/App.config",
+      "clearance": 221.08012771509186
+    },
+    {
+      "label": "PaymentService/Data/Payment.cs",
+      "ring": "Contracts/PaymentQuery.cs",
+      "clearance": 385.5510388405885
+    },
+    {
+      "label": "PaymentService/Data/Payment.cs",
+      "ring": "Contracts/PaymentRequest.cs",
+      "clearance": 351.83638326062385
+    },
+    {
+      "label": "PaymentService/Data/Payment.cs",
+      "ring": "Contracts/PaymentResult.cs",
+      "clearance": 292.897152672454
+    },
+    {
+      "label": "PaymentService/Data/Payment.cs",
+      "ring": "Database/SqlServer/dbo.usp_PostPayment.sql",
+      "clearance": 247.93533099491526
+    },
+    {
+      "label": "PaymentService/Data/Payment.cs",
+      "ring": "Hub/App.config",
+      "clearance": 140.92036730229222
+    },
+    {
+      "label": "PaymentService/Data/PostPaymentRow.cs",
+      "ring": "Contracts/PaymentQuery.cs",
+      "clearance": 292.76917341607304
+    },
+    {
+      "label": "PaymentService/Data/PostPaymentRow.cs",
+      "ring": "Contracts/PaymentRequest.cs",
+      "clearance": 337.16030963893434
+    },
+    {
+      "label": "PaymentService/Data/PostPaymentRow.cs",
+      "ring": "Contracts/PaymentResult.cs",
+      "clearance": 159.67103231426296
+    },
+    {
+      "label": "PaymentService/Data/PostPaymentRow.cs",
+      "ring": "Database/SqlServer/dbo.usp_PostPayment.sql",
+      "clearance": 271.48614979978197
+    },
+    {
+      "label": "PaymentService/Data/PostPaymentRow.cs",
+      "ring": "Hub/App.config",
+      "clearance": 226.36497675769084
+    },
+    {
+      "label": "Contracts/PaymentQuery.cs",
+      "ring": "Contracts/PaymentQuery.cs",
+      "clearance": 7.000006066856365
+    },
+    {
+      "label": "Contracts/PaymentQuery.cs",
+      "ring": "Contracts/PaymentRequest.cs",
+      "clearance": 55.62740692823249
+    },
+    {
+      "label": "Contracts/PaymentQuery.cs",
+      "ring": "Contracts/PaymentResult.cs",
+      "clearance": 137.7074912592628
+    },
+    {
+      "label": "Contracts/PaymentQuery.cs",
+      "ring": "Database/SqlServer/dbo.usp_PostPayment.sql",
+      "clearance": 627.435358516261
+    },
+    {
+      "label": "Contracts/PaymentQuery.cs",
+      "ring": "Hub/App.config",
+      "clearance": 254.41598856063365
+    },
+    {
+      "label": "Contracts/PaymentRequest.cs",
+      "ring": "Contracts/PaymentQuery.cs",
+      "clearance": 51.00752260753631
+    },
+    {
+      "label": "Contracts/PaymentRequest.cs",
+      "ring": "Contracts/PaymentRequest.cs",
+      "clearance": 7.000010232406627
+    },
+    {
+      "label": "Contracts/PaymentRequest.cs",
+      "ring": "Contracts/PaymentResult.cs",
+      "clearance": 104.68968800764502
+    },
+    {
+      "label": "Contracts/PaymentRequest.cs",
+      "ring": "Database/SqlServer/dbo.usp_PostPayment.sql",
+      "clearance": 543.341791988903
+    },
+    {
+      "label": "Contracts/PaymentRequest.cs",
+      "ring": "Hub/App.config",
+      "clearance": 144.9826380652912
+    },
+    {
+      "label": "shell:Hub",
+      "ring": "Contracts/PaymentQuery.cs",
+      "clearance": 45.17112016411705
+    },
+    {
+      "label": "shell:Hub",
+      "ring": "Contracts/PaymentRequest.cs",
+      "clearance": 151.86720603281591
+    },
+    {
+      "label": "shell:Hub",
+      "ring": "Contracts/PaymentResult.cs",
+      "clearance": 29.381731371567508
+    },
+    {
+      "label": "shell:Hub",
+      "ring": "Database/SqlServer/dbo.usp_PostPayment.sql",
+      "clearance": 519.686138380488
+    },
+    {
+      "label": "shell:Hub",
+      "ring": "Hub/App.config",
+      "clearance": 228.4538140771125
+    },
+    {
+      "label": "shell:Gateway",
+      "ring": "Contracts/PaymentQuery.cs",
+      "clearance": 250.79655724117524
+    },
+    {
+      "label": "shell:Gateway",
+      "ring": "Contracts/PaymentRequest.cs",
+      "clearance": 236.32309983201603
+    },
+    {
+      "label": "shell:Gateway",
+      "ring": "Contracts/PaymentResult.cs",
+      "clearance": 151.2091868541356
+    },
+    {
+      "label": "shell:Gateway",
+      "ring": "Database/SqlServer/dbo.usp_PostPayment.sql",
+      "clearance": 317.79231312045283
+    },
+    {
+      "label": "shell:Gateway",
+      "ring": "Hub/App.config",
+      "clearance": 27.512260087927324
+    },
+    {
+      "label": "shell:Portal/Models",
+      "ring": "Contracts/PaymentQuery.cs",
+      "clearance": 344.7851092359794
+    },
+    {
+      "label": "shell:Portal/Models",
+      "ring": "Contracts/PaymentRequest.cs",
+      "clearance": 217.07154788138746
+    },
+    {
+      "label": "shell:Portal/Models",
+      "ring": "Contracts/PaymentResult.cs",
+      "clearance": 381.4188396883646
+    },
+    {
+      "label": "shell:Portal/Models",
+      "ring": "Database/SqlServer/dbo.usp_PostPayment.sql",
+      "clearance": 622.6341587023171
+    },
+    {
+      "label": "shell:Portal/Models",
+      "ring": "Hub/App.config",
+      "clearance": 218.79330929300772
+    },
+    {
+      "label": "shell:Portal/Pages",
+      "ring": "Contracts/PaymentQuery.cs",
+      "clearance": 541.081742513129
+    },
+    {
+      "label": "shell:Portal/Pages",
+      "ring": "Contracts/PaymentRequest.cs",
+      "clearance": 610.8901979606032
+    },
+    {
+      "label": "shell:Portal/Pages",
+      "ring": "Contracts/PaymentResult.cs",
+      "clearance": 411.463623455438
+    },
+    {
+      "label": "shell:Portal/Pages",
+      "ring": "Database/SqlServer/dbo.usp_PostPayment.sql",
+      "clearance": 274.2849105074915
+    },
+    {
+      "label": "shell:Portal/Pages",
+      "ring": "Hub/App.config",
+      "clearance": 500.6121027106428
+    }
+  ]
+}

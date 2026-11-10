@@ -1,0 +1,4050 @@
+{
+  "errors": [],
+  "readings": [
+    {
+      "name": "structure-before",
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwACOUBA0EkIHgeIW8LI6A4ZARIaAA",
+      "layout": "structure",
+      "openDirectories": [],
+      "pins": [],
+      "nodes": [
+        {
+          "id": "Estate.sln",
+          "name": "Estate.sln",
+          "x": 814.4139178408411,
+          "y": 627.3511226974365,
+          "depth": 0.9995538626062609,
+          "distance": 450.49175371440634,
+          "opacity": 0.30000001192092896,
+          "radius": 3.0328686556933535,
+          "screenRadius": 6.624993805769308,
+          "ring": false,
+          "world": {
+            "x": -58.90110778808594,
+            "y": -53.8972053527832,
+            "z": -65.98302459716797
+          }
+        },
+        {
+          "id": "directory:Contracts",
+          "name": "Contracts",
+          "directory": "Contracts",
+          "files": 6,
+          "x": 974.6639220072893,
+          "y": 503.99712113409083,
+          "depth": 0.9995743212147371,
+          "distance": 471.8535467712463,
+          "opacity": 0.75,
+          "radius": 24.769754670809327,
+          "screenRadius": 51.63468624598686,
+          "ring": false,
+          "world": {
+            "x": 17.18167495727539,
+            "y": 2.595242977142334,
+            "z": -87.37110137939453
+          }
+        },
+        {
+          "id": "directory:",
+          "name": "Scan root",
+          "directory": "",
+          "files": 36,
+          "x": 870.8862127364877,
+          "y": 539.4100233618918,
+          "depth": 0.9994924049515471,
+          "distance": 393.1069324966916,
+          "opacity": 0.75,
+          "radius": 4.814378789136391,
+          "screenRadius": 11.960048355768919,
+          "ring": false,
+          "world": {
+            "x": -34.174957275390625,
+            "y": -11.737205505371094,
+            "z": -12.069368362426758
+          }
+        },
+        {
+          "id": "directory:Database",
+          "name": "Database",
+          "directory": "Database",
+          "files": 3,
+          "x": 776.950374910459,
+          "y": 475.46993563005844,
+          "depth": 0.999353699085744,
+          "distance": 309.70606484492765,
+          "opacity": 0.75,
+          "radius": 25.119577672542576,
+          "screenRadius": 79.40163270558439,
+          "ring": false,
+          "world": {
+            "x": -65.64942169189453,
+            "y": 11.456310272216797,
+            "z": 72.01831817626953
+          }
+        },
+        {
+          "id": "directory:Gateway",
+          "name": "Gateway",
+          "directory": "Gateway",
+          "files": 5,
+          "x": 1100.1922773802735,
+          "y": 589.397828364817,
+          "depth": 0.9994521020396278,
+          "distance": 377.0136212630425,
+          "opacity": 0.75,
+          "radius": 24.031723275702983,
+          "screenRadius": 64.42575339138267,
+          "ring": false,
+          "world": {
+            "x": 50.75758361816406,
+            "y": -29.367441177368164,
+            "z": 16.73885726928711
+          }
+        },
+        {
+          "id": "directory:Hub",
+          "name": "Hub",
+          "directory": "Hub",
+          "files": 4,
+          "x": 841.5893804189706,
+          "y": 758.0278673922496,
+          "depth": 0.9994361158017052,
+          "distance": 365.3918607942415,
+          "opacity": 0.75,
+          "radius": 20.468036867299876,
+          "screenRadius": 56.46835948551316,
+          "ring": false,
+          "world": {
+            "x": -45.61101531982422,
+            "y": -89.60063934326172,
+            "z": 27.028257369995117
+          }
+        },
+        {
+          "id": "directory:PaymentService",
+          "name": "PaymentService",
+          "directory": "PaymentService",
+          "files": 6,
+          "x": 656.5941591928681,
+          "y": 463.70952515826264,
+          "depth": 0.999523407407363,
+          "distance": 426.78753597109113,
+          "opacity": 0.75,
+          "radius": 33.03068958757351,
+          "screenRadius": 77.05999773247805,
+          "ring": false,
+          "world": {
+            "x": -125.4962158203125,
+            "y": 19.812734603881836,
+            "z": -37.53411865234375
+          }
+        },
+        {
+          "id": "directory:Portal",
+          "name": "Portal",
+          "directory": "Portal",
+          "files": 11,
+          "x": 918.2380797015934,
+          "y": 270.019662272195,
+          "depth": 0.9994883215807571,
+          "distance": 401.7037621898412,
+          "opacity": 0.75,
+          "radius": 43.02431533375371,
+          "screenRadius": 107.73962991345473,
+          "ring": false,
+          "world": {
+            "x": -15.33093547821045,
+            "y": 95.95026397705078,
+            "z": -8.944642066955566
+          }
+        }
+      ],
+      "wrappers": [
+        "directory:Contracts",
+        "directory:Database",
+        "directory:Gateway",
+        "directory:Hub",
+        "directory:PaymentService",
+        "directory:Portal"
+      ],
+      "units": [
+        {
+          "seed": "directory:Contracts",
+          "id": "Contracts/PaymentResult.cs"
+        },
+        {
+          "seed": "directory:Contracts",
+          "id": "Contracts/Contracts.csproj"
+        },
+        {
+          "seed": "directory:Contracts",
+          "id": "Contracts/PaymentRequest.cs"
+        },
+        {
+          "seed": "directory:Contracts",
+          "id": "Contracts/PaymentQuery.cs"
+        },
+        {
+          "seed": "directory:Contracts",
+          "id": "Contracts/IPaymentService.cs"
+        },
+        {
+          "seed": "directory:Contracts",
+          "id": "Contracts/IPaymentHub.cs"
+        },
+        {
+          "seed": "directory:PaymentService",
+          "id": "PaymentService/PaymentService.csproj"
+        },
+        {
+          "seed": "directory:PaymentService",
+          "id": "PaymentService/Data/PaymentsContext.cs"
+        },
+        {
+          "seed": "directory:PaymentService",
+          "id": "PaymentService/Data/Payment.cs"
+        },
+        {
+          "seed": "directory:PaymentService",
+          "id": "PaymentService/App.config"
+        },
+        {
+          "seed": "directory:PaymentService",
+          "id": "PaymentService/Data/PostPaymentRow.cs"
+        },
+        {
+          "seed": "directory:PaymentService",
+          "id": "PaymentService/PaymentService.cs"
+        },
+        {
+          "seed": "directory:Portal",
+          "id": "Portal/Web.config"
+        },
+        {
+          "seed": "directory:Portal",
+          "id": "Portal/Controllers/PaymentsController.cs"
+        },
+        {
+          "seed": "directory:Portal",
+          "id": "Portal/Services/GatewayClient.cs"
+        },
+        {
+          "seed": "directory:Portal",
+          "id": "Portal/Portal.csproj"
+        },
+        {
+          "seed": "directory:Portal",
+          "id": "Portal/Pages/Default.aspx.designer.cs"
+        },
+        {
+          "seed": "directory:Portal",
+          "id": "Portal/Pages/Default.aspx"
+        },
+        {
+          "seed": "directory:Portal",
+          "id": "Portal/Models/PaymentRequestModel.cs"
+        },
+        {
+          "seed": "directory:Portal",
+          "id": "Portal/Models/PaymentResultModel.cs"
+        },
+        {
+          "seed": "directory:Portal",
+          "id": "Portal/Pages/Default.aspx.cs"
+        },
+        {
+          "seed": "directory:Gateway",
+          "id": "Gateway/Web.config"
+        },
+        {
+          "seed": "directory:Portal",
+          "id": "Portal/Scripts/portal.js"
+        },
+        {
+          "seed": "directory:Portal",
+          "id": "Portal/App_Code/Globals.cs"
+        },
+        {
+          "seed": "directory:Gateway",
+          "id": "Gateway/GatewaySettings.cs"
+        },
+        {
+          "seed": "directory:Gateway",
+          "id": "Gateway/Controllers/PaymentsController.cs"
+        },
+        {
+          "seed": "directory:Gateway",
+          "id": "Gateway/Gateway.csproj"
+        },
+        {
+          "seed": "directory:Hub",
+          "id": "Hub/PaymentHub.cs"
+        },
+        {
+          "seed": "directory:Hub",
+          "id": "Hub/App.config"
+        },
+        {
+          "seed": "directory:Gateway",
+          "id": "Gateway/Wcf/HubProxy.cs"
+        },
+        {
+          "seed": "directory:Hub",
+          "id": "Hub/Hub.csproj"
+        },
+        {
+          "seed": "directory:Hub",
+          "id": "Hub/ServiceRouting.cs"
+        },
+        {
+          "seed": "directory:Database",
+          "id": "Database/Oracle/CENTRAL.ACCOUNT.sql"
+        },
+        {
+          "seed": "directory:Database",
+          "id": "Database/SqlServer/dbo.Payment.sql"
+        },
+        {
+          "seed": "directory:Database",
+          "id": "Database/SqlServer/dbo.usp_PostPayment.sql"
+        }
+      ],
+      "ringMarks": [],
+      "labels": [
+        {
+          "id": "directory:Contracts",
+          "text": "Contracts · 6",
+          "title": "Contracts · 6 files · Open this directory",
+          "kind": "shell",
+          "context": "false",
+          "box": {
+            "x": 1015.7081909179688,
+            "y": 439.9528503417969,
+            "w": 88.42193603515625,
+            "h": 23
+          }
+        },
+        {
+          "id": "directory:",
+          "text": "Scan root",
+          "title": "Scan root · 36 visible files · Explore this directory",
+          "kind": "directory",
+          "context": "false",
+          "box": {
+            "x": 835.88623046875,
+            "y": 558.3700561523438,
+            "w": 69.65625,
+            "h": 23
+          }
+        },
+        {
+          "id": "directory:Database",
+          "text": "Database · 3",
+          "title": "Database · 3 files · Open this directory",
+          "kind": "shell",
+          "context": "false",
+          "box": {
+            "x": 732.9503784179688,
+            "y": 366.06829833984375,
+            "w": 88.4375,
+            "h": 23
+          }
+        },
+        {
+          "id": "directory:Gateway",
+          "text": "Gateway · 5",
+          "title": "Gateway · 5 files · Open this directory",
+          "kind": "shell",
+          "context": "false",
+          "box": {
+            "x": 1058.1922607421875,
+            "y": 660.8236083984375,
+            "w": 84.09375,
+            "h": 23
+          }
+        },
+        {
+          "id": "directory:Hub",
+          "text": "Hub · 4",
+          "title": "Hub · 4 files · Open this directory",
+          "kind": "shell",
+          "context": "false",
+          "box": {
+            "x": 813.08935546875,
+            "y": 821.4962158203125,
+            "w": 56.640625,
+            "h": 23
+          }
+        },
+        {
+          "id": "directory:PaymentService",
+          "text": "PaymentService · 6",
+          "title": "PaymentService · 6 files · Open this directory",
+          "kind": "shell",
+          "context": "false",
+          "box": {
+            "x": 445.5341796875,
+            "y": 452.20953369140625,
+            "w": 127.4375,
+            "h": 23
+          }
+        },
+        {
+          "id": "directory:Portal",
+          "text": "Portal · 11",
+          "title": "Portal · 11 files · Open this directory",
+          "kind": "shell",
+          "context": "false",
+          "box": {
+            "x": 881.7380981445312,
+            "y": 132.280029296875,
+            "w": 73.015625,
+            "h": 23
+          }
+        }
+      ]
+    },
+    {
+      "name": "structure-open",
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QJIZVx0BwMoFc7Bc3TMEsrjczHssrmALogRvwACOUBA0EkIHgeIW8LIRbICN7eYzIEr1ao1xJ9fqjaSQA",
+      "layout": "structure",
+      "openDirectories": [
+        "PaymentService"
+      ],
+      "pins": [],
+      "nodes": [
+        {
+          "id": "Estate.sln",
+          "name": "Estate.sln",
+          "x": 1163.5165280789538,
+          "y": 779.0848292665848,
+          "depth": 0.9992857655442619,
+          "distance": 303.73305079271853,
+          "opacity": 0.30000001192092896,
+          "radius": 2.64133122366518,
+          "screenRadius": 9.224524112623595,
+          "ring": false,
+          "world": {
+            "x": -17.912553787231445,
+            "y": -73.01904296875,
+            "z": -66.14822387695312
+          }
+        },
+        {
+          "id": "PaymentService/App.config",
+          "name": "App.config",
+          "x": 961.3895893356486,
+          "y": 169.76500042160365,
+          "depth": 0.9991837326731591,
+          "distance": 260.05773313902415,
+          "opacity": 0.30000001192092896,
+          "radius": 4.192852064447204,
+          "screenRadius": 16.73019121476739,
+          "ring": false,
+          "world": {
+            "x": -79.7503662109375,
+            "y": 89.47706604003906,
+            "z": -31.292428970336914
+          }
+        },
+        {
+          "id": "PaymentService/PaymentService.cs",
+          "name": "PaymentService.cs",
+          "x": 901.2092074295907,
+          "y": 333.7842942867791,
+          "depth": 0.9989355686781527,
+          "distance": 190.7276627001027,
+          "opacity": 0.30000001192092896,
+          "radius": 4.192852064447204,
+          "screenRadius": 21.806602689248667,
+          "ring": false,
+          "world": {
+            "x": -97.79097747802734,
+            "y": 38.38224411010742,
+            "z": 25.634307861328125
+          }
+        },
+        {
+          "id": "PaymentService/PaymentService.csproj",
+          "name": "PaymentService.csproj",
+          "x": 937.1121236092932,
+          "y": 425.3449397398633,
+          "depth": 0.9993405664492363,
+          "distance": 304.7489012112583,
+          "opacity": 0.30000001192092896,
+          "radius": 3.327868973514539,
+          "screenRadius": 10.732434035043084,
+          "ring": false,
+          "world": {
+            "x": -80.68473052978516,
+            "y": 30.16095542907715,
+            "z": -89.31053924560547
+          }
+        },
+        {
+          "id": "directory:Contracts",
+          "name": "Contracts",
+          "directory": "Contracts",
+          "files": 6,
+          "x": 1381.8946212781916,
+          "y": 511.11370502344795,
+          "depth": 0.9993192704121251,
+          "distance": 333.7675102384938,
+          "opacity": 0.75,
+          "radius": 24.769754670809327,
+          "screenRadius": 82.45640870079914,
+          "ring": false,
+          "world": {
+            "x": 52.08891296386719,
+            "y": 3.6252963542938232,
+            "z": -79.86750793457031
+          }
+        },
+        {
+          "id": "directory:",
+          "name": "Scan root",
+          "directory": "",
+          "files": 36,
+          "x": 1411.6640806832281,
+          "y": 607.4684158706806,
+          "depth": 0.9990497405373929,
+          "distance": 243.387424916667,
+          "opacity": 0.75,
+          "radius": 4.192852064447204,
+          "screenRadius": 19.471117494084666,
+          "ring": false,
+          "world": {
+            "x": 13.29832935333252,
+            "y": -16.6033992767334,
+            "z": 3.1309866905212402
+          }
+        },
+        {
+          "id": "directory:Database",
+          "name": "Database",
+          "directory": "Database",
+          "files": 3,
+          "x": 1518.6443019405353,
+          "y": 498.0319305232434,
+          "depth": 0.9984031932950831,
+          "distance": 151.65052861786953,
+          "opacity": 0.75,
+          "radius": 25.119577672542576,
+          "screenRadius": 195.88813529393852,
+          "ring": false,
+          "world": {
+            "x": -21.862045288085938,
+            "y": 6.3553876876831055,
+            "z": 88.12150573730469
+          }
+        },
+        {
+          "id": "directory:Gateway",
+          "name": "Gateway",
+          "directory": "Gateway",
+          "files": 5,
+          "x": 1958.5037649003507,
+          "y": 696.4882817899784,
+          "depth": 0.9988861810913732,
+          "distance": 273.5775436750714,
+          "opacity": 0.75,
+          "radius": 24.031723275702983,
+          "screenRadius": 130.77701580852298,
+          "ring": false,
+          "world": {
+            "x": 96.06688690185547,
+            "y": -29.726247787475586,
+            "z": 33.94123077392578
+          }
+        },
+        {
+          "id": "directory:Hub",
+          "name": "Hub",
+          "directory": "Hub",
+          "files": 4,
+          "x": 1359.532305125982,
+          "y": 1109.118541321449,
+          "depth": 0.9988280326648592,
+          "distance": 219.27239811146984,
+          "opacity": 0.75,
+          "radius": 20.468036867299876,
+          "screenRadius": 117.19058159943116,
+          "ring": false,
+          "world": {
+            "x": -18.635520935058594,
+            "y": -100.05107879638672,
+            "z": 42.82551193237305
+          }
+        },
+        {
+          "id": "directory:PaymentService",
+          "name": "PaymentService",
+          "directory": "PaymentService",
+          "files": 6,
+          "x": 750.1203859615216,
+          "y": 374.33084631907457,
+          "depth": 0.9992105027473609,
+          "distance": 256.39299223435194,
+          "opacity": 0.75,
+          "radius": 4.192852064447204,
+          "screenRadius": 16.182585943310162,
+          "ring": false,
+          "world": {
+            "x": -133.549072265625,
+            "y": 39.31776809692383,
+            "z": -39.567413330078125
+          }
+        },
+        {
+          "id": "directory:PaymentService/Data",
+          "name": "Data",
+          "directory": "PaymentService/Data",
+          "files": 3,
+          "x": 808.9569842764444,
+          "y": 713.5695648881052,
+          "depth": 0.9991494969292157,
+          "distance": 240.22369719291098,
+          "opacity": 0.75,
+          "radius": 21.4113771787543,
+          "screenRadius": 89.01131942746298,
+          "ring": false,
+          "world": {
+            "x": -117.53409576416016,
+            "y": -44.7088737487793,
+            "z": -21.467370986938477
+          }
+        },
+        {
+          "id": "directory:Portal",
+          "name": "Portal",
+          "directory": "Portal",
+          "files": 11,
+          "x": 1486.2481944434712,
+          "y": 90.4197058749514,
+          "depth": 0.9990392772222253,
+          "distance": 263.3010387321252,
+          "opacity": 0.75,
+          "radius": 43.02431533375371,
+          "screenRadius": 201.99621867407294,
+          "ring": false,
+          "world": {
+            "x": 27.87053680419922,
+            "y": 93.76564025878906,
+            "z": 5.415565013885498
+          }
+        }
+      ],
+      "wrappers": [
+        "directory:Contracts",
+        "directory:Database",
+        "directory:Gateway",
+        "directory:Hub",
+        "directory:PaymentService/Data",
+        "directory:Portal"
+      ],
+      "units": [
+        {
+          "seed": "directory:Contracts",
+          "id": "Contracts/PaymentResult.cs"
+        },
+        {
+          "seed": "directory:Contracts",
+          "id": "Contracts/Contracts.csproj"
+        },
+        {
+          "seed": "directory:Contracts",
+          "id": "Contracts/PaymentRequest.cs"
+        },
+        {
+          "seed": "directory:Contracts",
+          "id": "Contracts/PaymentQuery.cs"
+        },
+        {
+          "seed": "directory:Contracts",
+          "id": "Contracts/IPaymentService.cs"
+        },
+        {
+          "seed": "directory:Contracts",
+          "id": "Contracts/IPaymentHub.cs"
+        },
+        {
+          "seed": "directory:PaymentService/Data",
+          "id": "PaymentService/Data/PaymentsContext.cs"
+        },
+        {
+          "seed": "directory:PaymentService/Data",
+          "id": "PaymentService/Data/Payment.cs"
+        },
+        {
+          "seed": "directory:PaymentService/Data",
+          "id": "PaymentService/Data/PostPaymentRow.cs"
+        },
+        {
+          "seed": "directory:Portal",
+          "id": "Portal/Web.config"
+        },
+        {
+          "seed": "directory:Portal",
+          "id": "Portal/Controllers/PaymentsController.cs"
+        },
+        {
+          "seed": "directory:Portal",
+          "id": "Portal/Services/GatewayClient.cs"
+        },
+        {
+          "seed": "directory:Portal",
+          "id": "Portal/Portal.csproj"
+        },
+        {
+          "seed": "directory:Portal",
+          "id": "Portal/Pages/Default.aspx.designer.cs"
+        },
+        {
+          "seed": "directory:Portal",
+          "id": "Portal/Pages/Default.aspx"
+        },
+        {
+          "seed": "directory:Portal",
+          "id": "Portal/Models/PaymentRequestModel.cs"
+        },
+        {
+          "seed": "directory:Portal",
+          "id": "Portal/Models/PaymentResultModel.cs"
+        },
+        {
+          "seed": "directory:Portal",
+          "id": "Portal/Pages/Default.aspx.cs"
+        },
+        {
+          "seed": "directory:Gateway",
+          "id": "Gateway/Web.config"
+        },
+        {
+          "seed": "directory:Portal",
+          "id": "Portal/Scripts/portal.js"
+        },
+        {
+          "seed": "directory:Portal",
+          "id": "Portal/App_Code/Globals.cs"
+        },
+        {
+          "seed": "directory:Gateway",
+          "id": "Gateway/GatewaySettings.cs"
+        },
+        {
+          "seed": "directory:Gateway",
+          "id": "Gateway/Controllers/PaymentsController.cs"
+        },
+        {
+          "seed": "directory:Gateway",
+          "id": "Gateway/Gateway.csproj"
+        },
+        {
+          "seed": "directory:Hub",
+          "id": "Hub/PaymentHub.cs"
+        },
+        {
+          "seed": "directory:Hub",
+          "id": "Hub/App.config"
+        },
+        {
+          "seed": "directory:Gateway",
+          "id": "Gateway/Wcf/HubProxy.cs"
+        },
+        {
+          "seed": "directory:Hub",
+          "id": "Hub/Hub.csproj"
+        },
+        {
+          "seed": "directory:Hub",
+          "id": "Hub/ServiceRouting.cs"
+        },
+        {
+          "seed": "directory:Database",
+          "id": "Database/Oracle/CENTRAL.ACCOUNT.sql"
+        },
+        {
+          "seed": "directory:Database",
+          "id": "Database/SqlServer/dbo.Payment.sql"
+        },
+        {
+          "seed": "directory:Database",
+          "id": "Database/SqlServer/dbo.usp_PostPayment.sql"
+        }
+      ],
+      "ringMarks": [],
+      "labels": [
+        {
+          "id": "directory:Contracts",
+          "text": "Contracts · 6",
+          "title": "Contracts · 6 files · Open this directory",
+          "kind": "shell",
+          "context": "false",
+          "box": {
+            "x": 1204.438232421875,
+            "y": 499.61370849609375,
+            "w": 88.421875,
+            "h": 23
+          }
+        },
+        {
+          "id": "directory:",
+          "text": "Scan root",
+          "title": "Scan root · 36 visible files · Explore this directory",
+          "kind": "directory",
+          "context": "false",
+          "box": {
+            "x": 1315.1929931640625,
+            "y": 595.9684448242188,
+            "w": 69.65625,
+            "h": 23
+          }
+        },
+        {
+          "id": "directory:PaymentService/Data",
+          "text": "Data · 3",
+          "title": "PaymentService/Data · 3 files · Open this directory",
+          "kind": "shell",
+          "context": "false",
+          "box": {
+            "x": 778.9569702148438,
+            "y": 809.5808715820312,
+            "w": 60.25,
+            "h": 23
+          }
+        },
+        {
+          "id": "PaymentService/PaymentService.cs",
+          "text": "PaymentService.cs",
+          "title": "PaymentService/PaymentService.cs · 3 public symbols · Pin this file",
+          "kind": "file",
+          "context": "true",
+          "box": {
+            "x": 838.709228515625,
+            "y": 281.97772216796875,
+            "w": 125.265625,
+            "h": 23
+          }
+        },
+        {
+          "id": "PaymentService/App.config",
+          "text": "App.config",
+          "title": "PaymentService/App.config · 3 public symbols · Pin this file",
+          "kind": "file",
+          "context": "true",
+          "box": {
+            "x": 923.8895874023438,
+            "y": 193.4951934814453,
+            "w": 75.4375,
+            "h": 23
+          }
+        }
+      ]
+    },
+    {
+      "name": "structure-closed-again",
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwACOUBA0EkIHgeIW8LI6A4ZARIaAA",
+      "layout": "structure",
+      "openDirectories": [],
+      "pins": [],
+      "nodes": [
+        {
+          "id": "Estate.sln",
+          "name": "Estate.sln",
+          "x": 1169.3618418076167,
+          "y": 741.520085671329,
+          "depth": 0.9992658429078185,
+          "distance": 293.46789924013257,
+          "opacity": 0.30000001192092896,
+          "radius": 2.64133122366518,
+          "screenRadius": 9.481255034776373,
+          "ring": false,
+          "world": {
+            "x": -18.711076736450195,
+            "y": -60.42900085449219,
+            "z": -58.582855224609375
+          }
+        },
+        {
+          "id": "directory:Contracts",
+          "name": "Contracts",
+          "directory": "Contracts",
+          "files": 6,
+          "x": 1378.9466299700644,
+          "y": 485.0916904695453,
+          "depth": 0.99931057711086,
+          "distance": 329.1992592808424,
+          "opacity": 0.75,
+          "radius": 24.769754670809327,
+          "screenRadius": 83.50695438056928,
+          "ring": false,
+          "world": {
+            "x": 49.20628356933594,
+            "y": 11.367026329040527,
+            "z": -76.18003845214844
+          }
+        },
+        {
+          "id": "directory:",
+          "name": "Scan root",
+          "directory": "",
+          "files": 36,
+          "x": 1318.8317634837945,
+          "y": 590.0456721268266,
+          "depth": 0.9990809787323244,
+          "distance": 241.71531134822231,
+          "opacity": 0.75,
+          "radius": 4.192852064447204,
+          "screenRadius": 18.832112906861315,
+          "ring": false,
+          "world": {
+            "x": -3.269925594329834,
+            "y": -13.473044395446777,
+            "z": -3.998568534851074
+          }
+        },
+        {
+          "id": "directory:Database",
+          "name": "Database",
+          "directory": "Database",
+          "files": 3,
+          "x": 1485.522749360379,
+          "y": 444.26517460975833,
+          "depth": 0.9984663996294191,
+          "distance": 155.6471809540655,
+          "opacity": 0.75,
+          "radius": 25.119577672542576,
+          "screenRadius": 188.1420648327447,
+          "ring": false,
+          "world": {
+            "x": -22.7567081451416,
+            "y": 13.570784568786621,
+            "z": 82.9699478149414
+          }
+        },
+        {
+          "id": "directory:Gateway",
+          "name": "Gateway",
+          "directory": "Gateway",
+          "files": 5,
+          "x": 1863.180351659549,
+          "y": 653.7029845802451,
+          "depth": 0.9989105624448055,
+          "distance": 265.6664780352531,
+          "opacity": 0.75,
+          "radius": 24.031723275702983,
+          "screenRadius": 127.9184300207862,
+          "ring": false,
+          "world": {
+            "x": 82.70872497558594,
+            "y": -22.474624633789062,
+            "z": 29.93431282043457
+          }
+        },
+        {
+          "id": "directory:Hub",
+          "name": "Hub",
+          "directory": "Hub",
+          "files": 4,
+          "x": 1355.1325273562093,
+          "y": 1035.5061479702608,
+          "depth": 0.998839201558465,
+          "distance": 215.11179276105867,
+          "opacity": 0.75,
+          "radius": 20.468036867299876,
+          "screenRadius": 116.07527351540355,
+          "ring": false,
+          "world": {
+            "x": -18.557104110717773,
+            "y": -88.08451843261719,
+            "z": 41.188026428222656
+          }
+        },
+        {
+          "id": "directory:PaymentService",
+          "name": "PaymentService",
+          "directory": "PaymentService",
+          "files": 6,
+          "x": 906.1449460824526,
+          "y": 410.04875525729756,
+          "depth": 0.9991704234479536,
+          "distance": 242.14867429920608,
+          "opacity": 0.75,
+          "radius": 33.03068958757351,
+          "screenRadius": 133.94281745344347,
+          "ring": false,
+          "world": {
+            "x": -93.81885528564453,
+            "y": 28.87709617614746,
+            "z": -27.376750946044922
+          }
+        },
+        {
+          "id": "directory:Portal",
+          "name": "Portal",
+          "directory": "Portal",
+          "files": 11,
+          "x": 1469.1526551344502,
+          "y": 95.35918020437506,
+          "depth": 0.9990366972947367,
+          "distance": 260.3954700525653,
+          "opacity": 0.75,
+          "radius": 43.02431533375371,
+          "screenRadius": 202.53775796678855,
+          "ring": false,
+          "world": {
+            "x": 23.876937866210938,
+            "y": 92.48026275634766,
+            "z": 5.971256256103516
+          }
+        }
+      ],
+      "wrappers": [
+        "directory:Contracts",
+        "directory:Database",
+        "directory:Gateway",
+        "directory:Hub",
+        "directory:PaymentService",
+        "directory:Portal"
+      ],
+      "units": [
+        {
+          "seed": "directory:Contracts",
+          "id": "Contracts/PaymentResult.cs"
+        },
+        {
+          "seed": "directory:Contracts",
+          "id": "Contracts/Contracts.csproj"
+        },
+        {
+          "seed": "directory:Contracts",
+          "id": "Contracts/PaymentRequest.cs"
+        },
+        {
+          "seed": "directory:Contracts",
+          "id": "Contracts/PaymentQuery.cs"
+        },
+        {
+          "seed": "directory:Contracts",
+          "id": "Contracts/IPaymentService.cs"
+        },
+        {
+          "seed": "directory:Contracts",
+          "id": "Contracts/IPaymentHub.cs"
+        },
+        {
+          "seed": "directory:PaymentService",
+          "id": "PaymentService/PaymentService.csproj"
+        },
+        {
+          "seed": "directory:PaymentService",
+          "id": "PaymentService/Data/PaymentsContext.cs"
+        },
+        {
+          "seed": "directory:PaymentService",
+          "id": "PaymentService/Data/Payment.cs"
+        },
+        {
+          "seed": "directory:PaymentService",
+          "id": "PaymentService/App.config"
+        },
+        {
+          "seed": "directory:PaymentService",
+          "id": "PaymentService/Data/PostPaymentRow.cs"
+        },
+        {
+          "seed": "directory:PaymentService",
+          "id": "PaymentService/PaymentService.cs"
+        },
+        {
+          "seed": "directory:Portal",
+          "id": "Portal/Web.config"
+        },
+        {
+          "seed": "directory:Portal",
+          "id": "Portal/Controllers/PaymentsController.cs"
+        },
+        {
+          "seed": "directory:Portal",
+          "id": "Portal/Services/GatewayClient.cs"
+        },
+        {
+          "seed": "directory:Portal",
+          "id": "Portal/Portal.csproj"
+        },
+        {
+          "seed": "directory:Portal",
+          "id": "Portal/Pages/Default.aspx.designer.cs"
+        },
+        {
+          "seed": "directory:Portal",
+          "id": "Portal/Pages/Default.aspx"
+        },
+        {
+          "seed": "directory:Portal",
+          "id": "Portal/Models/PaymentRequestModel.cs"
+        },
+        {
+          "seed": "directory:Portal",
+          "id": "Portal/Models/PaymentResultModel.cs"
+        },
+        {
+          "seed": "directory:Portal",
+          "id": "Portal/Pages/Default.aspx.cs"
+        },
+        {
+          "seed": "directory:Gateway",
+          "id": "Gateway/Web.config"
+        },
+        {
+          "seed": "directory:Portal",
+          "id": "Portal/Scripts/portal.js"
+        },
+        {
+          "seed": "directory:Portal",
+          "id": "Portal/App_Code/Globals.cs"
+        },
+        {
+          "seed": "directory:Gateway",
+          "id": "Gateway/GatewaySettings.cs"
+        },
+        {
+          "seed": "directory:Gateway",
+          "id": "Gateway/Controllers/PaymentsController.cs"
+        },
+        {
+          "seed": "directory:Gateway",
+          "id": "Gateway/Gateway.csproj"
+        },
+        {
+          "seed": "directory:Hub",
+          "id": "Hub/PaymentHub.cs"
+        },
+        {
+          "seed": "directory:Hub",
+          "id": "Hub/App.config"
+        },
+        {
+          "seed": "directory:Gateway",
+          "id": "Gateway/Wcf/HubProxy.cs"
+        },
+        {
+          "seed": "directory:Hub",
+          "id": "Hub/Hub.csproj"
+        },
+        {
+          "seed": "directory:Hub",
+          "id": "Hub/ServiceRouting.cs"
+        },
+        {
+          "seed": "directory:Database",
+          "id": "Database/Oracle/CENTRAL.ACCOUNT.sql"
+        },
+        {
+          "seed": "directory:Database",
+          "id": "Database/SqlServer/dbo.Payment.sql"
+        },
+        {
+          "seed": "directory:Database",
+          "id": "Database/SqlServer/dbo.usp_PostPayment.sql"
+        }
+      ],
+      "ringMarks": [],
+      "labels": [
+        {
+          "id": "directory:Contracts",
+          "text": "Contracts · 6",
+          "title": "Contracts · 6 files · Open this directory",
+          "kind": "shell",
+          "context": "false",
+          "box": {
+            "x": 1200.439697265625,
+            "y": 473.5917053222656,
+            "w": 88.421875,
+            "h": 23
+          }
+        },
+        {
+          "id": "directory:",
+          "text": "Scan root",
+          "title": "Scan root · 36 visible files · Explore this directory",
+          "kind": "directory",
+          "context": "false",
+          "box": {
+            "x": 1222.9996337890625,
+            "y": 578.545654296875,
+            "w": 69.65625,
+            "h": 23
+          }
+        }
+      ]
+    },
+    {
+      "name": "recording-ending",
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QJIZVx0BwMoFc7Bc3TMEsrjczHssrmALogRvwACOUBA0EkIHgPcgmcr1ao1xJ9fqjaSQA",
+      "layout": "connections",
+      "openDirectories": [
+        "PaymentService"
+      ],
+      "pins": [],
+      "nodes": [
+        {
+          "id": "Contracts/Contracts.csproj",
+          "name": "Contracts.csproj",
+          "x": 745.6720316941595,
+          "y": 350.2834585211434,
+          "depth": 0.9996187897194014,
+          "distance": 531.948849084291,
+          "opacity": 0.30000001192092896,
+          "radius": 3.9673343122843616,
+          "screenRadius": 7.409534046927317,
+          "ring": false,
+          "world": {
+            "x": -63.06467056274414,
+            "y": 43.4620246887207,
+            "z": -103.48706817626953
+          }
+        },
+        {
+          "id": "Contracts/IPaymentService.cs",
+          "name": "IPaymentService.cs",
+          "x": 883.9527326832464,
+          "y": 261.7086976441084,
+          "depth": 0.9994963346453679,
+          "distance": 408.1763540815973,
+          "opacity": 0.30000001192092896,
+          "radius": 4.99852805636623,
+          "screenRadius": 12.32168667750964,
+          "ring": false,
+          "world": {
+            "x": 6.634781837463379,
+            "y": 59.31692886352539,
+            "z": 23.1334285736084
+          }
+        },
+        {
+          "id": "Contracts/PaymentQuery.cs",
+          "name": "PaymentQuery.cs",
+          "x": 787.2269666679339,
+          "y": 130.07325554368035,
+          "depth": 0.9994576696670034,
+          "distance": 394.6251722990346,
+          "opacity": 0.30000001192092896,
+          "radius": 5.384501037118116,
+          "screenRadius": 14.28884910985502,
+          "ring": true,
+          "world": {
+            "x": -30.779287338256836,
+            "y": 101.90569305419922,
+            "z": 51.27091598510742
+          }
+        },
+        {
+          "id": "Contracts/PaymentRequest.cs",
+          "name": "PaymentRequest.cs",
+          "x": 916.2962319596309,
+          "y": 136.1495649539916,
+          "depth": 0.9994711769337773,
+          "distance": 403.8998350457729,
+          "opacity": 0.30000001192092896,
+          "radius": 5.721886218285726,
+          "screenRadius": 14.807103971097217,
+          "ring": true,
+          "world": {
+            "x": 18.48957633972168,
+            "y": 103.15545654296875,
+            "z": 41.90754699707031
+          }
+        },
+        {
+          "id": "Contracts/PaymentResult.cs",
+          "name": "PaymentResult.cs",
+          "x": 746.1057712416597,
+          "y": 259.26170261386176,
+          "depth": 0.9994938102125899,
+          "distance": 408.34278757972623,
+          "opacity": 0.30000001192092896,
+          "radius": 5.384501037118116,
+          "screenRadius": 13.339450317232743,
+          "ring": true,
+          "world": {
+            "x": -49.0749397277832,
+            "y": 59.81400680541992,
+            "z": 25.101272583007812
+          }
+        },
+        {
+          "id": "Database/SqlServer/dbo.Payment.sql",
+          "name": "dbo.Payment.sql",
+          "x": 969.4188525758631,
+          "y": 728.6267282605385,
+          "depth": 0.9993839657246506,
+          "distance": 334.5478423750716,
+          "opacity": 0.30000001192092896,
+          "radius": 3.9673343122843616,
+          "screenRadius": 11.954700325125405,
+          "ring": false,
+          "world": {
+            "x": 32.52892303466797,
+            "y": -113.59249877929688,
+            "z": 95.14887237548828
+          }
+        },
+        {
+          "id": "Database/SqlServer/dbo.usp_PostPayment.sql",
+          "name": "dbo.usp_PostPayment.sql",
+          "x": 772.7036695626418,
+          "y": 744.9184985676872,
+          "depth": 0.9994438795327837,
+          "distance": 370.3890748428612,
+          "opacity": 0.30000001192092896,
+          "radius": 3.9673343122843616,
+          "screenRadius": 10.795030843250103,
+          "ring": true,
+          "world": {
+            "x": -35.52726745605469,
+            "y": -127.55245971679688,
+            "z": 60.36248779296875
+          }
+        },
+        {
+          "id": "Estate.sln",
+          "name": "Estate.sln",
+          "x": 991.0332787808883,
+          "y": 746.2476851553281,
+          "depth": 0.9996085204757568,
+          "distance": 529.2221159995707,
+          "opacity": 0.30000001192092896,
+          "radius": 3.1488752696935207,
+          "screenRadius": 6.038712963599466,
+          "ring": false,
+          "world": {
+            "x": 66.3448486328125,
+            "y": -165.17698669433594,
+            "z": -89.83794403076172
+          }
+        },
+        {
+          "id": "Hub/App.config",
+          "name": "App.config",
+          "x": 947.5077027755976,
+          "y": 352.58551770571825,
+          "depth": 0.9995790127773184,
+          "distance": 481.31978648283865,
+          "opacity": 0.30000001192092896,
+          "radius": 5.384501037118116,
+          "screenRadius": 11.101210391159237,
+          "ring": true,
+          "world": {
+            "x": 40.11639404296875,
+            "y": 34.5478630065918,
+            "z": -54.310096740722656
+          }
+        },
+        {
+          "id": "PaymentService/App.config",
+          "name": "App.config",
+          "x": 923.0932120515162,
+          "y": 460.672079116259,
+          "depth": 0.9995072595259239,
+          "distance": 406.11403031573167,
+          "opacity": 0.75,
+          "radius": 4.99852805636623,
+          "screenRadius": 12.055266362669549,
+          "ring": false,
+          "world": {
+            "x": 23.16368293762207,
+            "y": -20.998964309692383,
+            "z": 14.385578155517578
+          }
+        },
+        {
+          "id": "PaymentService/Data/Payment.cs",
+          "name": "Payment.cs",
+          "x": 974.8286181854845,
+          "y": 484.97951260806843,
+          "depth": 0.9993452574280497,
+          "distance": 307.2464524887196,
+          "opacity": 0.75,
+          "radius": 6.0235820451343765,
+          "screenRadius": 19.288298175657847,
+          "ring": false,
+          "world": {
+            "x": 31.890878677368164,
+            "y": -33.12660598754883,
+            "z": 114.2461929321289
+          }
+        },
+        {
+          "id": "PaymentService/Data/PaymentsContext.cs",
+          "name": "PaymentsContext.cs",
+          "x": 753.0450351030647,
+          "y": 530.1260273141675,
+          "depth": 0.9994139749863359,
+          "distance": 342.15901244658727,
+          "opacity": 0.75,
+          "radius": 6.0235820451343765,
+          "screenRadius": 17.26885770632593,
+          "ring": false,
+          "world": {
+            "x": -40.929405212402344,
+            "y": -48.14310073852539,
+            "z": 78.61197662353516
+          }
+        },
+        {
+          "id": "PaymentService/Data/PostPaymentRow.cs",
+          "name": "PostPaymentRow.cs",
+          "x": 652.1737256140831,
+          "y": 414.1849250243324,
+          "depth": 0.9993531843525967,
+          "distance": 316.0576745135971,
+          "opacity": 0.75,
+          "radius": 5.384501037118116,
+          "screenRadius": 17.033639752462122,
+          "ring": false,
+          "world": {
+            "x": -69.62884521484375,
+            "y": -10.671306610107422,
+            "z": 110.52098083496094
+          }
+        },
+        {
+          "id": "PaymentService/PaymentService.cs",
+          "name": "PaymentService.cs",
+          "x": 829.6357605830515,
+          "y": 278.04964591184205,
+          "depth": 0.9994272631095202,
+          "distance": 357.6007041976407,
+          "opacity": 0.75,
+          "radius": 4.99852805636623,
+          "screenRadius": 14.006104208002665,
+          "ring": false,
+          "world": {
+            "x": -14.382033348083496,
+            "y": 41.61567687988281,
+            "z": 70.7374038696289
+          }
+        },
+        {
+          "id": "PaymentService/PaymentService.csproj",
+          "name": "PaymentService.csproj",
+          "x": 730.3330164646154,
+          "y": 481.75778081443775,
+          "depth": 0.9996358726685667,
+          "distance": 551.1412906341867,
+          "opacity": 0.75,
+          "radius": 3.9673343122843616,
+          "screenRadius": 7.078882809344624,
+          "ring": false,
+          "world": {
+            "x": -74.28311157226562,
+            "y": -26.352827072143555,
+            "z": -127.89057159423828
+          }
+        },
+        {
+          "id": "Portal/Portal.csproj",
+          "name": "Portal.csproj",
+          "x": 1307.9334699062608,
+          "y": 553.7533563769753,
+          "depth": 0.9995324186245089,
+          "distance": 471.2739238064823,
+          "opacity": 0.30000001192092896,
+          "radius": 3.9673343122843616,
+          "screenRadius": 9.081300973187238,
+          "ring": false,
+          "world": {
+            "x": 192.90231323242188,
+            "y": -60.677650451660156,
+            "z": -7.30936336517334
+          }
+        },
+        {
+          "id": "shell:Gateway",
+          "name": "Gateway",
+          "x": 893.1393230673038,
+          "y": 356.0541041355577,
+          "depth": 0.9996449056946379,
+          "distance": 567.728589565472,
+          "opacity": 0.75,
+          "radius": 19.026260576471927,
+          "screenRadius": 33.10991939284621,
+          "ring": false,
+          "world": {
+            "x": 17.56627082824707,
+            "y": 46.21131896972656,
+            "z": -141.7393035888672
+          }
+        },
+        {
+          "id": "shell:Hub",
+          "name": "Hub",
+          "x": 795.6417861050171,
+          "y": 197.0368406180379,
+          "depth": 0.9995476065438572,
+          "distance": 462.6197326567335,
+          "opacity": 0.75,
+          "radius": 18.26472492391575,
+          "screenRadius": 40.45490966618983,
+          "ring": false,
+          "world": {
+            "x": -31.70353889465332,
+            "y": 99.66144561767578,
+            "z": -21.569978713989258
+          }
+        },
+        {
+          "id": "shell:Portal/Models",
+          "name": "Models",
+          "x": 1185.0142163079438,
+          "y": 267.9051012056707,
+          "depth": 0.9996113030835785,
+          "distance": 555.8335461666212,
+          "opacity": 0.75,
+          "radius": 18.189569664945065,
+          "screenRadius": 34.63586607222417,
+          "ring": false,
+          "world": {
+            "x": 168.73944091796875,
+            "y": 85.13526916503906,
+            "z": -93.46543884277344
+          }
+        },
+        {
+          "id": "shell:Portal/Pages",
+          "name": "Pages",
+          "x": 466.40371407077293,
+          "y": 567.5579978722363,
+          "depth": 0.9995724072963502,
+          "distance": 501.68577103401685,
+          "opacity": 0.75,
+          "radius": 19.799604624538283,
+          "screenRadius": 41.458859916826704,
+          "ring": false,
+          "world": {
+            "x": -190.36972045898438,
+            "y": -69.25481414794922,
+            "z": -47.026161193847656
+          }
+        }
+      ],
+      "wrappers": [
+        "shell:Gateway",
+        "shell:Hub",
+        "shell:Portal/Models",
+        "shell:Portal/Pages"
+      ],
+      "units": [
+        {
+          "seed": "shell:Gateway",
+          "id": "Gateway/GatewaySettings.cs"
+        },
+        {
+          "seed": "shell:Gateway",
+          "id": "Gateway/Web.config"
+        },
+        {
+          "seed": "shell:Gateway",
+          "id": "Gateway/Gateway.csproj"
+        },
+        {
+          "seed": "shell:Portal/Models",
+          "id": "Portal/Models/PaymentRequestModel.cs"
+        },
+        {
+          "seed": "shell:Portal/Models",
+          "id": "Portal/Models/PaymentResultModel.cs"
+        },
+        {
+          "seed": "shell:Portal/Pages",
+          "id": "Portal/Pages/Default.aspx.designer.cs"
+        },
+        {
+          "seed": "shell:Portal/Pages",
+          "id": "Portal/Pages/Default.aspx"
+        },
+        {
+          "seed": "shell:Portal/Pages",
+          "id": "Portal/Pages/Default.aspx.cs"
+        },
+        {
+          "seed": "shell:Hub",
+          "id": "Hub/Hub.csproj"
+        },
+        {
+          "seed": "shell:Hub",
+          "id": "Hub/ServiceRouting.cs"
+        },
+        {
+          "seed": "shell:Hub",
+          "id": "Hub/PaymentHub.cs"
+        }
+      ],
+      "ringMarks": [
+        {
+          "id": "Contracts/PaymentQuery.cs",
+          "x": 787.2269666679339,
+          "y": 130.07325554368035,
+          "r": 22.862159388933357
+        },
+        {
+          "id": "Contracts/PaymentRequest.cs",
+          "x": 916.2962319596309,
+          "y": 136.1495649539916,
+          "r": 23.691367196414287
+        },
+        {
+          "id": "Contracts/PaymentResult.cs",
+          "x": 746.1057712416597,
+          "y": 259.26170261386176,
+          "r": 21.343121266708312
+        },
+        {
+          "id": "Database/SqlServer/dbo.usp_PostPayment.sql",
+          "x": 772.7036695626418,
+          "y": 744.9184985676872,
+          "r": 17.272049963535494
+        },
+        {
+          "id": "Hub/App.config",
+          "x": 947.5077027755976,
+          "y": 352.58551770571825,
+          "r": 17.76193725761452
+        }
+      ],
+      "labels": [
+        {
+          "id": "PaymentService/Data/PaymentsContext.cs",
+          "text": "PaymentsContext.cs",
+          "title": "PaymentService/Data/PaymentsContext.cs · 6 public symbols · Pin this file",
+          "kind": "file",
+          "context": "false",
+          "box": {
+            "x": 686.5450439453125,
+            "y": 554.3948974609375,
+            "w": 133.21875,
+            "h": 23
+          }
+        },
+        {
+          "id": "PaymentService/Data/Payment.cs",
+          "text": "Payment.cs",
+          "title": "PaymentService/Data/Payment.cs · 6 public symbols · Pin this file",
+          "kind": "file",
+          "context": "false",
+          "box": {
+            "x": 933.82861328125,
+            "y": 511.267822265625,
+            "w": 81.921875,
+            "h": 23
+          }
+        },
+        {
+          "id": "PaymentService/Data/PostPaymentRow.cs",
+          "text": "PostPaymentRow.cs",
+          "title": "PaymentService/Data/PostPaymentRow.cs · 4 public symbols · Pin this file",
+          "kind": "file",
+          "context": "false",
+          "box": {
+            "x": 585.6737060546875,
+            "y": 367.1512756347656,
+            "w": 133.21875,
+            "h": 23
+          }
+        },
+        {
+          "id": "Contracts/PaymentQuery.cs",
+          "text": "PaymentQuery.cs",
+          "title": "Contracts/PaymentQuery.cs · 4 public symbols · 3 more connected, not shown · Pin this file",
+          "kind": "file",
+          "context": "true",
+          "box": {
+            "x": 729.2269287109375,
+            "y": 85.78439331054688,
+            "w": 116.359375,
+            "h": 23
+          }
+        },
+        {
+          "id": "Contracts/PaymentRequest.cs",
+          "text": "PaymentRequest.cs",
+          "title": "Contracts/PaymentRequest.cs · 5 public symbols · 3 more connected, not shown · Pin this file",
+          "kind": "file",
+          "context": "true",
+          "box": {
+            "x": 851.2962036132812,
+            "y": 157.95668029785156,
+            "w": 130.34375,
+            "h": 23
+          }
+        },
+        {
+          "id": "shell:Hub",
+          "text": "Hub · 3",
+          "title": "Hub · 3 files · Open this shell",
+          "kind": "shell",
+          "context": "false",
+          "box": {
+            "x": 767.1417846679688,
+            "y": 244.4917449951172,
+            "w": 56.640625,
+            "h": 23.000015258789062
+          }
+        },
+        {
+          "id": "shell:Gateway",
+          "text": "Gateway · 3",
+          "title": "Gateway · 3 files · Open this shell",
+          "kind": "shell",
+          "context": "false",
+          "box": {
+            "x": 933.249267578125,
+            "y": 344.5541076660156,
+            "w": 84.09375,
+            "h": 23
+          }
+        },
+        {
+          "id": "shell:Portal/Models",
+          "text": "Models · 2",
+          "title": "Portal/Models · 2 files · Open this shell",
+          "kind": "shell",
+          "context": "false",
+          "box": {
+            "x": 1147.51416015625,
+            "y": 203.2692413330078,
+            "w": 74.703125,
+            "h": 23
+          }
+        },
+        {
+          "id": "shell:Portal/Pages",
+          "text": "Pages · 3",
+          "title": "Portal/Pages · 3 files · Open this shell",
+          "kind": "shell",
+          "context": "false",
+          "box": {
+            "x": 431.4037170410156,
+            "y": 616.016845703125,
+            "w": 69.65625,
+            "h": 23
+          }
+        }
+      ]
+    },
+    {
+      "name": "connections-Hub-open",
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QJIZVx0BwMoFc7Bc3TMEsrjczHssrmALogRvwACOUBA0EkIHgPcgmcr1ao1xJ9fqjaSQA",
+      "layout": "connections",
+      "openDirectories": [
+        "PaymentService"
+      ],
+      "pins": [],
+      "nodes": [
+        {
+          "id": "Contracts/Contracts.csproj",
+          "name": "Contracts.csproj",
+          "x": 750.9934624961716,
+          "y": 386.3931367436489,
+          "depth": 0.9996361981312506,
+          "distance": 554.1899496273985,
+          "opacity": 0.30000001192092896,
+          "radius": 3.9673343122843616,
+          "screenRadius": 7.0725832741686165,
+          "ring": false,
+          "world": {
+            "x": -62.75371170043945,
+            "y": 27.15315055847168,
+            "z": -128.37765502929688
+          }
+        },
+        {
+          "id": "Contracts/IPaymentService.cs",
+          "name": "IPaymentService.cs",
+          "x": 904.650787988845,
+          "y": 269.4831406589425,
+          "depth": 0.999480456699617,
+          "distance": 395.3668997583342,
+          "opacity": 0.30000001192092896,
+          "radius": 4.99852805636623,
+          "screenRadius": 12.708895240958329,
+          "ring": false,
+          "world": {
+            "x": 14.362054824829102,
+            "y": 53.25215148925781,
+            "z": 35.19344711303711
+          }
+        },
+        {
+          "id": "Contracts/PaymentQuery.cs",
+          "name": "PaymentQuery.cs",
+          "x": 807.9835800269642,
+          "y": 129.5754982265541,
+          "depth": 0.9994279887364192,
+          "distance": 373.8946544145814,
+          "opacity": 0.30000001192092896,
+          "radius": 5.384501037118116,
+          "screenRadius": 15.068556200692866,
+          "ring": true,
+          "world": {
+            "x": -22.128503799438477,
+            "y": 94.77293395996094,
+            "z": 70.29689025878906
+          }
+        },
+        {
+          "id": "Contracts/PaymentRequest.cs",
+          "name": "PaymentRequest.cs",
+          "x": 952.032739370084,
+          "y": 141.58185760985896,
+          "depth": 0.999439724627817,
+          "distance": 381.6397655637673,
+          "opacity": 0.30000001192092896,
+          "radius": 5.721886218285726,
+          "screenRadius": 15.685115492495827,
+          "ring": true,
+          "world": {
+            "x": 30.1028995513916,
+            "y": 93.19507598876953,
+            "z": 63.014251708984375
+          }
+        },
+        {
+          "id": "Contracts/PaymentResult.cs",
+          "name": "PaymentResult.cs",
+          "x": 767.1692142610599,
+          "y": 254.4070098563684,
+          "depth": 0.999481439019927,
+          "distance": 398.33006656239354,
+          "opacity": 0.30000001192092896,
+          "radius": 5.384501037118116,
+          "screenRadius": 13.664436982119629,
+          "ring": true,
+          "world": {
+            "x": -39.77263641357422,
+            "y": 59.36786651611328,
+            "z": 34.46869659423828
+          }
+        },
+        {
+          "id": "Database/SqlServer/dbo.Payment.sql",
+          "name": "dbo.Payment.sql",
+          "x": 981.7355688239282,
+          "y": 753.1203288586079,
+          "depth": 0.9993819940289373,
+          "distance": 335.87607666026616,
+          "opacity": 0.30000001192092896,
+          "radius": 3.9673343122843616,
+          "screenRadius": 11.992863737156656,
+          "ring": false,
+          "world": {
+            "x": 36.477806091308594,
+            "y": -121.45901489257812,
+            "z": 96.17931365966797
+          }
+        },
+        {
+          "id": "Database/SqlServer/dbo.usp_PostPayment.sql",
+          "name": "dbo.usp_PostPayment.sql",
+          "x": 782.3979535000299,
+          "y": 765.8009111721269,
+          "depth": 0.999442015674192,
+          "distance": 370.7948680653745,
+          "opacity": 0.30000001192092896,
+          "radius": 3.9673343122843616,
+          "screenRadius": 10.831106999892297,
+          "ring": true,
+          "world": {
+            "x": -31.8811092376709,
+            "y": -134.90780639648438,
+            "z": 61.55691909790039
+          }
+        },
+        {
+          "id": "Estate.sln",
+          "name": "Estate.sln",
+          "x": 989.2456268858778,
+          "y": 751.9879942776674,
+          "depth": 0.9996130464491322,
+          "distance": 535.9849141166357,
+          "opacity": 0.30000001192092896,
+          "radius": 3.1488752696935207,
+          "screenRadius": 5.969182366555328,
+          "ring": false,
+          "world": {
+            "x": 66.25541687011719,
+            "y": -169.6704559326172,
+            "z": -95.76461791992188
+          }
+        },
+        {
+          "id": "Hub/App.config",
+          "name": "App.config",
+          "x": 951.8146741017857,
+          "y": 342.7365623270768,
+          "depth": 0.9995718692890273,
+          "distance": 474.26789398130643,
+          "opacity": 0.30000001192092896,
+          "radius": 5.384501037118116,
+          "screenRadius": 11.288867191816228,
+          "ring": true,
+          "world": {
+            "x": 41.3885498046875,
+            "y": 38.016666412353516,
+            "z": -46.44275665283203
+          }
+        },
+        {
+          "id": "Hub/Hub.csproj",
+          "name": "Hub.csproj",
+          "x": 725.5031768479032,
+          "y": 259.4168306796426,
+          "depth": 0.9996075412653097,
+          "distance": 527.3904895201729,
+          "opacity": 0.75,
+          "radius": 3.9673343122843616,
+          "screenRadius": 7.627254958603707,
+          "ring": false,
+          "world": {
+            "x": -71.9533462524414,
+            "y": 88.36180877685547,
+            "z": -88.57360076904297
+          }
+        },
+        {
+          "id": "Hub/PaymentHub.cs",
+          "name": "PaymentHub.cs",
+          "x": 840.7675506458977,
+          "y": 162.73850286652038,
+          "depth": 0.9995114797465858,
+          "distance": 432.45817024855285,
+          "opacity": 0.75,
+          "radius": 4.99852805636623,
+          "screenRadius": 11.952349675233181,
+          "ring": true,
+          "world": {
+            "x": -11.006114959716797,
+            "y": 103.75650024414062,
+            "z": 10.901910781860352
+          }
+        },
+        {
+          "id": "Hub/ServiceRouting.cs",
+          "name": "ServiceRouting.cs",
+          "x": 774.993372779412,
+          "y": 74.91663638442918,
+          "depth": 0.9995568897844078,
+          "distance": 492.7110876680827,
+          "opacity": 0.75,
+          "radius": 4.99852805636623,
+          "screenRadius": 10.844954815267942,
+          "ring": false,
+          "world": {
+            "x": -41.737579345703125,
+            "y": 158.85008239746094,
+            "z": -30.766069412231445
+          }
+        },
+        {
+          "id": "PaymentService/App.config",
+          "name": "App.config",
+          "x": 921.6485452047323,
+          "y": 473.5579958543819,
+          "depth": 0.9995049268026296,
+          "distance": 403.9571175195371,
+          "opacity": 0.75,
+          "radius": 4.99852805636623,
+          "screenRadius": 12.112153471986247,
+          "ring": false,
+          "world": {
+            "x": 22.426118850708008,
+            "y": -26.403139114379883,
+            "z": 16.2857666015625
+          }
+        },
+        {
+          "id": "PaymentService/Data/Payment.cs",
+          "name": "Payment.cs",
+          "x": 978.2657972359453,
+          "y": 517.6366078901588,
+          "depth": 0.9993324257671693,
+          "distance": 301.4522210699394,
+          "opacity": 0.75,
+          "radius": 6.0235820451343765,
+          "screenRadius": 19.66538921202473,
+          "ring": false,
+          "world": {
+            "x": 32.199180603027344,
+            "y": -43.24948501586914,
+            "z": 120.08929443359375
+          }
+        },
+        {
+          "id": "PaymentService/Data/PaymentsContext.cs",
+          "name": "PaymentsContext.cs",
+          "x": 752.6120705908105,
+          "y": 553.368148973586,
+          "depth": 0.9994098543561636,
+          "distance": 340.0927591810371,
+          "opacity": 0.75,
+          "radius": 6.0235820451343765,
+          "screenRadius": 17.389952918914176,
+          "ring": false,
+          "world": {
+            "x": -40.8426628112793,
+            "y": -56.13274383544922,
+            "z": 80.9820327758789
+          }
+        },
+        {
+          "id": "PaymentService/Data/PostPaymentRow.cs",
+          "name": "PostPaymentRow.cs",
+          "x": 642.013139705432,
+          "y": 442.7257036000778,
+          "depth": 0.9993508624664572,
+          "distance": 314.8928047828239,
+          "opacity": 0.75,
+          "radius": 5.384501037118116,
+          "screenRadius": 17.09463484430737,
+          "ring": false,
+          "world": {
+            "x": -72.60555267333984,
+            "y": -19.763566970825195,
+            "z": 111.62153625488281
+          }
+        },
+        {
+          "id": "PaymentService/PaymentService.cs",
+          "name": "PaymentService.cs",
+          "x": 838.530758112663,
+          "y": 297.56034205079993,
+          "depth": 0.9994106163889273,
+          "distance": 346.0072197111745,
+          "opacity": 0.75,
+          "radius": 4.99852805636623,
+          "screenRadius": 14.41206054946527,
+          "ring": false,
+          "world": {
+            "x": -11.08724594116211,
+            "y": 32.567352294921875,
+            "z": 80.54622650146484
+          }
+        },
+        {
+          "id": "PaymentService/PaymentService.csproj",
+          "name": "PaymentService.csproj",
+          "x": 725.4482566584661,
+          "y": 513.9137348613542,
+          "depth": 0.9996391446651736,
+          "distance": 556.3285060368787,
+          "opacity": 0.75,
+          "radius": 3.9673343122843616,
+          "screenRadius": 7.0155512547685,
+          "ring": false,
+          "world": {
+            "x": -77.65343475341797,
+            "y": -44.419612884521484,
+            "z": -132.82720947265625
+          }
+        },
+        {
+          "id": "Portal/Portal.csproj",
+          "name": "Portal.csproj",
+          "x": 1317.7818226121087,
+          "y": 569.2765405782251,
+          "depth": 0.9995327326947308,
+          "distance": 473.7852862681848,
+          "opacity": 0.30000001192092896,
+          "radius": 3.9673343122843616,
+          "screenRadius": 9.075221946285662,
+          "ring": false,
+          "world": {
+            "x": 197.34149169921875,
+            "y": -67.4780502319336,
+            "z": -7.594902992248535
+          }
+        },
+        {
+          "id": "shell:Gateway",
+          "name": "Gateway",
+          "x": 909.7720029234584,
+          "y": 382.5977472094448,
+          "depth": 0.9996430618248038,
+          "distance": 563.2132122350203,
+          "opacity": 0.75,
+          "radius": 19.026260576471927,
+          "screenRadius": 33.28107542323535,
+          "ring": false,
+          "world": {
+            "x": 26.94890022277832,
+            "y": 30.596572875976562,
+            "z": -138.85574340820312
+          }
+        },
+        {
+          "id": "shell:Portal/Models",
+          "name": "Models",
+          "x": 1202.1336037923902,
+          "y": 279.7242059510215,
+          "depth": 0.9996118402257992,
+          "distance": 558.1579659505474,
+          "opacity": 0.75,
+          "radius": 18.189569664945065,
+          "screenRadius": 34.58819880872016,
+          "ring": false,
+          "world": {
+            "x": 177.9844512939453,
+            "y": 79.09132385253906,
+            "z": -94.17163848876953
+          }
+        },
+        {
+          "id": "shell:Portal/Pages",
+          "name": "Pages",
+          "x": 457.2498719033648,
+          "y": 588.5924909636424,
+          "depth": 0.9995697019851099,
+          "distance": 500.83978478040757,
+          "opacity": 0.75,
+          "radius": 19.799604624538283,
+          "screenRadius": 41.720185699992044,
+          "ring": false,
+          "world": {
+            "x": -193.56497192382812,
+            "y": -79.05024719238281,
+            "z": -44.107295989990234
+          }
+        }
+      ],
+      "wrappers": [
+        "shell:Gateway",
+        "shell:Portal/Models",
+        "shell:Portal/Pages"
+      ],
+      "units": [
+        {
+          "seed": "shell:Gateway",
+          "id": "Gateway/GatewaySettings.cs"
+        },
+        {
+          "seed": "shell:Gateway",
+          "id": "Gateway/Web.config"
+        },
+        {
+          "seed": "shell:Gateway",
+          "id": "Gateway/Gateway.csproj"
+        },
+        {
+          "seed": "shell:Portal/Models",
+          "id": "Portal/Models/PaymentRequestModel.cs"
+        },
+        {
+          "seed": "shell:Portal/Models",
+          "id": "Portal/Models/PaymentResultModel.cs"
+        },
+        {
+          "seed": "shell:Portal/Pages",
+          "id": "Portal/Pages/Default.aspx.designer.cs"
+        },
+        {
+          "seed": "shell:Portal/Pages",
+          "id": "Portal/Pages/Default.aspx"
+        },
+        {
+          "seed": "shell:Portal/Pages",
+          "id": "Portal/Pages/Default.aspx.cs"
+        }
+      ],
+      "ringMarks": [
+        {
+          "id": "Contracts/PaymentQuery.cs",
+          "x": 807.9835800269642,
+          "y": 129.5754982265541,
+          "r": 24.109690778646332
+        },
+        {
+          "id": "Contracts/PaymentRequest.cs",
+          "x": 952.032739370084,
+          "y": 141.58185760985896,
+          "r": 25.09618568061889
+        },
+        {
+          "id": "Contracts/PaymentResult.cs",
+          "x": 767.1692142610599,
+          "y": 254.4070098563684,
+          "r": 21.863099949022022
+        },
+        {
+          "id": "Database/SqlServer/dbo.usp_PostPayment.sql",
+          "x": 782.3979535000299,
+          "y": 765.8009111721269,
+          "r": 17.32977181621606
+        },
+        {
+          "id": "Hub/App.config",
+          "x": 951.8146741017857,
+          "y": 342.7365623270768,
+          "r": 18.062188149345083
+        },
+        {
+          "id": "Hub/PaymentHub.cs",
+          "x": 840.7675506458977,
+          "y": 162.73850286652038,
+          "r": 19.123760160570377
+        }
+      ],
+      "labels": [
+        {
+          "id": "PaymentService/PaymentService.cs",
+          "text": "PaymentService.cs",
+          "title": "PaymentService/PaymentService.cs · 3 public symbols · Pin this file",
+          "kind": "file",
+          "context": "false",
+          "box": {
+            "x": 776.03076171875,
+            "y": 318.972412109375,
+            "w": 125.265625,
+            "h": 23
+          }
+        },
+        {
+          "id": "PaymentService/Data/PaymentsContext.cs",
+          "text": "PaymentsContext.cs",
+          "title": "PaymentService/Data/PaymentsContext.cs · 6 public symbols · Pin this file",
+          "kind": "file",
+          "context": "false",
+          "box": {
+            "x": 686.112060546875,
+            "y": 577.7581176757812,
+            "w": 133.21875,
+            "h": 23
+          }
+        },
+        {
+          "id": "PaymentService/Data/Payment.cs",
+          "text": "Payment.cs",
+          "title": "PaymentService/Data/Payment.cs · 6 public symbols · Pin this file",
+          "kind": "file",
+          "context": "false",
+          "box": {
+            "x": 937.2658081054688,
+            "y": 544.302001953125,
+            "w": 81.921875,
+            "h": 23
+          }
+        },
+        {
+          "id": "PaymentService/Data/PostPaymentRow.cs",
+          "text": "PostPaymentRow.cs",
+          "title": "PaymentService/Data/PostPaymentRow.cs · 4 public symbols · Pin this file",
+          "kind": "file",
+          "context": "false",
+          "box": {
+            "x": 575.5131225585938,
+            "y": 395.6310729980469,
+            "w": 133.21875,
+            "h": 23
+          }
+        },
+        {
+          "id": "Contracts/PaymentQuery.cs",
+          "text": "PaymentQuery.cs",
+          "title": "Contracts/PaymentQuery.cs · 4 public symbols · 3 more connected, not shown · Pin this file",
+          "kind": "file",
+          "context": "true",
+          "box": {
+            "x": 749.9835815429688,
+            "y": 84.5069351196289,
+            "w": 116.359375,
+            "h": 23
+          }
+        },
+        {
+          "id": "Contracts/PaymentRequest.cs",
+          "text": "PaymentRequest.cs",
+          "title": "Contracts/PaymentRequest.cs · 5 public symbols · 3 more connected, not shown · Pin this file",
+          "kind": "file",
+          "context": "true",
+          "box": {
+            "x": 974.7178344726562,
+            "y": 130.08184814453125,
+            "w": 130.34368896484375,
+            "h": 23
+          }
+        },
+        {
+          "id": "shell:Gateway",
+          "text": "Gateway · 3",
+          "title": "Gateway · 3 files · Open this shell",
+          "kind": "shell",
+          "context": "false",
+          "box": {
+            "x": 950.0531005859375,
+            "y": 371.0977478027344,
+            "w": 84.09375,
+            "h": 23
+          }
+        },
+        {
+          "id": "shell:Portal/Models",
+          "text": "Models · 2",
+          "title": "Portal/Models · 2 files · Open this shell",
+          "kind": "shell",
+          "context": "false",
+          "box": {
+            "x": 1164.633544921875,
+            "y": 215.13600158691406,
+            "w": 74.703125,
+            "h": 23
+          }
+        },
+        {
+          "id": "shell:Portal/Pages",
+          "text": "Pages · 3",
+          "title": "Portal/Pages · 3 files · Open this shell",
+          "kind": "shell",
+          "context": "false",
+          "box": {
+            "x": 422.2498779296875,
+            "y": 637.3126831054688,
+            "w": 69.65625,
+            "h": 23
+          }
+        },
+        {
+          "text": "Hub",
+          "title": "Hub · opened · Wrap its files again",
+          "kind": "popped",
+          "context": "true",
+          "box": {
+            "x": 692.09521484375,
+            "y": 158.2490692138672,
+            "w": 37.859375,
+            "h": 23
+          }
+        }
+      ]
+    },
+    {
+      "name": "connections-Hub-rewrapped",
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QJIZVx0BwMoFc7Bc3TMEsrjczHssrmALogRvwACOUBA0EkIHgPcgmcr1ao1xJ9fqjaSQA",
+      "layout": "connections",
+      "openDirectories": [
+        "PaymentService"
+      ],
+      "pins": [],
+      "nodes": [
+        {
+          "id": "Contracts/Contracts.csproj",
+          "name": "Contracts.csproj",
+          "x": 754.5631450298836,
+          "y": 353.36766105155914,
+          "depth": 0.9996217911511711,
+          "distance": 535.4106114840889,
+          "opacity": 0.30000001192092896,
+          "radius": 3.9673343122843616,
+          "screenRadius": 7.351439445134587,
+          "ring": false,
+          "world": {
+            "x": -58.70998001098633,
+            "y": 42.45222854614258,
+            "z": -107.61573791503906
+          }
+        },
+        {
+          "id": "Contracts/IPaymentService.cs",
+          "name": "IPaymentService.cs",
+          "x": 891.93782111425,
+          "y": 260.2024198368422,
+          "depth": 0.9994900939889292,
+          "distance": 403.4617693531351,
+          "opacity": 0.30000001192092896,
+          "radius": 4.99852805636623,
+          "screenRadius": 12.473874854274902,
+          "ring": false,
+          "world": {
+            "x": 9.668993949890137,
+            "y": 58.71638107299805,
+            "z": 27.962797164916992
+          }
+        },
+        {
+          "id": "Contracts/PaymentQuery.cs",
+          "name": "PaymentQuery.cs",
+          "x": 787.6771612735556,
+          "y": 133.5771572723971,
+          "depth": 0.9994507920312462,
+          "distance": 389.2226869519273,
+          "opacity": 0.30000001192092896,
+          "radius": 5.384501037118116,
+          "screenRadius": 14.469522062571203,
+          "ring": true,
+          "world": {
+            "x": -30.31403923034668,
+            "y": 98.83765411376953,
+            "z": 55.86211395263672
+          }
+        },
+        {
+          "id": "Contracts/PaymentRequest.cs",
+          "name": "PaymentRequest.cs",
+          "x": 918.2472259764818,
+          "y": 134.39875374350518,
+          "depth": 0.9994606523661318,
+          "distance": 396.32343363994113,
+          "opacity": 0.30000001192092896,
+          "radius": 5.721886218285726,
+          "screenRadius": 15.100904103342096,
+          "ring": true,
+          "world": {
+            "x": 18.734153747558594,
+            "y": 101.04573822021484,
+            "z": 49.243507385253906
+          }
+        },
+        {
+          "id": "Contracts/PaymentResult.cs",
+          "name": "PaymentResult.cs",
+          "x": 754.7316688685607,
+          "y": 260.3028435280925,
+          "depth": 0.999491641690566,
+          "distance": 406.1616873161874,
+          "opacity": 0.30000001192092896,
+          "radius": 5.384501037118116,
+          "screenRadius": 13.396416590368315,
+          "ring": true,
+          "world": {
+            "x": -45.42869186401367,
+            "y": 58.973731994628906,
+            "z": 26.776121139526367
+          }
+        },
+        {
+          "id": "Database/SqlServer/dbo.Payment.sql",
+          "name": "dbo.Payment.sql",
+          "x": 987.9938742444023,
+          "y": 736.1755817091104,
+          "depth": 0.9993824020056026,
+          "distance": 335.04595386929583,
+          "opacity": 0.30000001192092896,
+          "radius": 3.9673343122843616,
+          "screenRadius": 11.984967091916563,
+          "ring": false,
+          "world": {
+            "x": 38.57807159423828,
+            "y": -115.90394592285156,
+            "z": 95.96663665771484
+          }
+        },
+        {
+          "id": "Database/SqlServer/dbo.usp_PostPayment.sql",
+          "name": "dbo.usp_PostPayment.sql",
+          "x": 791.3972790513567,
+          "y": 757.0440121225372,
+          "depth": 0.9994432666677251,
+          "distance": 370.6023597068509,
+          "opacity": 0.30000001192092896,
+          "radius": 3.9673343122843616,
+          "screenRadius": 10.806893232356051,
+          "ring": true,
+          "world": {
+            "x": -28.63324546813965,
+            "y": -131.90708923339844,
+            "z": 60.7561149597168
+          }
+        },
+        {
+          "id": "Estate.sln",
+          "name": "Estate.sln",
+          "x": 979.2577847418677,
+          "y": 740.8851826462333,
+          "depth": 0.9996156441732391,
+          "distance": 537.4889460401746,
+          "opacity": 0.30000001192092896,
+          "radius": 3.1488752696935207,
+          "screenRadius": 5.9292746399429435,
+          "ring": false,
+          "world": {
+            "x": 61.44377136230469,
+            "y": -164.6510009765625,
+            "z": -99.22907257080078
+          }
+        },
+        {
+          "id": "Hub/App.config",
+          "name": "App.config",
+          "x": 952.7779239998544,
+          "y": 344.8685709555384,
+          "depth": 0.9995752963104715,
+          "distance": 477.96171133865914,
+          "opacity": 0.30000001192092896,
+          "radius": 5.384501037118116,
+          "screenRadius": 11.198840603436672,
+          "ring": true,
+          "world": {
+            "x": 42.24016571044922,
+            "y": 37.61375427246094,
+            "z": -50.18413543701172
+          }
+        },
+        {
+          "id": "PaymentService/App.config",
+          "name": "App.config",
+          "x": 919.9292712269101,
+          "y": 462.99213550959473,
+          "depth": 0.9995069158168364,
+          "distance": 405.6944222046102,
+          "opacity": 0.75,
+          "radius": 4.99852805636623,
+          "screenRadius": 12.063648246829183,
+          "ring": false,
+          "world": {
+            "x": 21.831802368164062,
+            "y": -21.973041534423828,
+            "z": 14.666682243347168
+          }
+        },
+        {
+          "id": "PaymentService/Data/Payment.cs",
+          "name": "Payment.cs",
+          "x": 972.4037063665625,
+          "y": 496.7191718142325,
+          "depth": 0.9993387195996652,
+          "distance": 304.070079306091,
+          "opacity": 0.75,
+          "radius": 6.0235820451343765,
+          "screenRadius": 19.480428914158413,
+          "ring": false,
+          "world": {
+            "x": 30.758127212524414,
+            "y": -36.81831359863281,
+            "z": 117.2515640258789
+          }
+        },
+        {
+          "id": "PaymentService/Data/PaymentsContext.cs",
+          "name": "PaymentsContext.cs",
+          "x": 754.5020721425324,
+          "y": 543.8051318348602,
+          "depth": 0.999414890741431,
+          "distance": 342.7985856294801,
+          "opacity": 0.75,
+          "radius": 6.0235820451343765,
+          "screenRadius": 17.24194591049146,
+          "ring": false,
+          "world": {
+            "x": -40.47343826293945,
+            "y": -52.93566131591797,
+            "z": 78.08074188232422
+          }
+        },
+        {
+          "id": "PaymentService/Data/PostPaymentRow.cs",
+          "name": "PostPaymentRow.cs",
+          "x": 644.312822991071,
+          "y": 433.9133094359211,
+          "depth": 0.9993595368334732,
+          "distance": 319.182433738666,
+          "opacity": 0.75,
+          "radius": 5.384501037118116,
+          "screenRadius": 16.866762424614965,
+          "ring": false,
+          "world": {
+            "x": -72.75861358642578,
+            "y": -16.68531608581543,
+            "z": 107.46927642822266
+          }
+        },
+        {
+          "id": "PaymentService/PaymentService.cs",
+          "name": "PaymentService.cs",
+          "x": 828.0254708774414,
+          "y": 286.4264174073051,
+          "depth": 0.9994220154894646,
+          "distance": 353.7160786717536,
+          "opacity": 0.75,
+          "radius": 4.99852805636623,
+          "screenRadius": 14.134075638005921,
+          "ring": false,
+          "world": {
+            "x": -14.884096145629883,
+            "y": 37.919891357421875,
+            "z": 73.89029693603516
+          }
+        },
+        {
+          "id": "PaymentService/PaymentService.csproj",
+          "name": "PaymentService.csproj",
+          "x": 721.7796198062033,
+          "y": 482.29474275241483,
+          "depth": 0.9996363681792699,
+          "distance": 552.4891018069827,
+          "opacity": 0.75,
+          "radius": 3.9673343122843616,
+          "screenRadius": 7.069291887681701,
+          "ring": false,
+          "world": {
+            "x": -79.1747055053711,
+            "y": -26.63650131225586,
+            "z": -128.6324920654297
+          }
+        },
+        {
+          "id": "Portal/Portal.csproj",
+          "name": "Portal.csproj",
+          "x": 1308.3933583000255,
+          "y": 568.3565992481427,
+          "depth": 0.9995324502278338,
+          "distance": 471.72225700871115,
+          "opacity": 0.30000001192092896,
+          "radius": 3.9673343122843616,
+          "screenRadius": 9.080689270935082,
+          "ring": false,
+          "world": {
+            "x": 193.11669921875,
+            "y": -67.05921173095703,
+            "z": -7.338078498840332
+          }
+        },
+        {
+          "id": "shell:Gateway",
+          "name": "Gateway",
+          "x": 905.411394105473,
+          "y": 384.6065796897309,
+          "depth": 0.9996431874253136,
+          "distance": 563.1244331115519,
+          "opacity": 0.75,
+          "radius": 19.026260576471927,
+          "screenRadius": 33.26941663675743,
+          "ring": false,
+          "world": {
+            "x": 24.467010498046875,
+            "y": 29.472274780273438,
+            "z": -139.0512237548828
+          }
+        },
+        {
+          "id": "shell:Hub",
+          "name": "Hub",
+          "x": 797.0946330414939,
+          "y": 194.24070635075765,
+          "depth": 0.9995455468771014,
+          "distance": 460.8752021612744,
+          "opacity": 0.75,
+          "radius": 18.26472492391575,
+          "screenRadius": 40.638444541389184,
+          "ring": false,
+          "world": {
+            "x": -30.93870735168457,
+            "y": 100.29020690917969,
+            "z": -19.580394744873047
+          }
+        },
+        {
+          "id": "shell:Portal/Models",
+          "name": "Models",
+          "x": 1199.5221420474325,
+          "y": 281.73074865409444,
+          "depth": 0.9996091188562178,
+          "distance": 553.6158353345604,
+          "opacity": 0.75,
+          "radius": 18.189569664945065,
+          "screenRadius": 34.829699543363695,
+          "ring": false,
+          "world": {
+            "x": 175.33843994140625,
+            "y": 77.22197723388672,
+            "z": -90.6136703491211
+          }
+        },
+        {
+          "id": "shell:Portal/Pages",
+          "name": "Pages",
+          "x": 467.0252817236207,
+          "y": 588.6741817275505,
+          "depth": 0.9995698955292246,
+          "distance": 499.3564844122502,
+          "opacity": 0.75,
+          "radius": 19.799604624538283,
+          "screenRadius": 41.701489859530795,
+          "ring": false,
+          "world": {
+            "x": -189.00733947753906,
+            "y": -79.10681915283203,
+            "z": -44.314903259277344
+          }
+        }
+      ],
+      "wrappers": [
+        "shell:Gateway",
+        "shell:Hub",
+        "shell:Portal/Models",
+        "shell:Portal/Pages"
+      ],
+      "units": [
+        {
+          "seed": "shell:Gateway",
+          "id": "Gateway/GatewaySettings.cs"
+        },
+        {
+          "seed": "shell:Gateway",
+          "id": "Gateway/Web.config"
+        },
+        {
+          "seed": "shell:Gateway",
+          "id": "Gateway/Gateway.csproj"
+        },
+        {
+          "seed": "shell:Portal/Models",
+          "id": "Portal/Models/PaymentRequestModel.cs"
+        },
+        {
+          "seed": "shell:Portal/Models",
+          "id": "Portal/Models/PaymentResultModel.cs"
+        },
+        {
+          "seed": "shell:Portal/Pages",
+          "id": "Portal/Pages/Default.aspx.designer.cs"
+        },
+        {
+          "seed": "shell:Portal/Pages",
+          "id": "Portal/Pages/Default.aspx"
+        },
+        {
+          "seed": "shell:Portal/Pages",
+          "id": "Portal/Pages/Default.aspx.cs"
+        },
+        {
+          "seed": "shell:Hub",
+          "id": "Hub/Hub.csproj"
+        },
+        {
+          "seed": "shell:Hub",
+          "id": "Hub/ServiceRouting.cs"
+        },
+        {
+          "seed": "shell:Hub",
+          "id": "Hub/PaymentHub.cs"
+        }
+      ],
+      "ringMarks": [
+        {
+          "id": "Contracts/PaymentQuery.cs",
+          "x": 787.6771612735556,
+          "y": 133.5771572723971,
+          "r": 23.151236123561176
+        },
+        {
+          "id": "Contracts/PaymentRequest.cs",
+          "x": 918.2472259764818,
+          "y": 134.39875374350518,
+          "r": 24.16144742472599
+        },
+        {
+          "id": "Contracts/PaymentResult.cs",
+          "x": 754.7316688685607,
+          "y": 260.3028435280925,
+          "r": 21.43426730696712
+        },
+        {
+          "id": "Database/SqlServer/dbo.usp_PostPayment.sql",
+          "x": 791.3972790513567,
+          "y": 757.0440121225372,
+          "r": 17.291029786780086
+        },
+        {
+          "id": "Hub/App.config",
+          "x": 952.7779239998544,
+          "y": 344.8685709555384,
+          "r": 17.918145602814477
+        }
+      ],
+      "labels": [
+        {
+          "id": "PaymentService/Data/PaymentsContext.cs",
+          "text": "PaymentsContext.cs",
+          "title": "PaymentService/Data/PaymentsContext.cs · 6 public symbols · Pin this file",
+          "kind": "file",
+          "context": "false",
+          "box": {
+            "x": 688.0020751953125,
+            "y": 568.0470581054688,
+            "w": 133.21875,
+            "h": 23
+          }
+        },
+        {
+          "id": "PaymentService/Data/Payment.cs",
+          "text": "Payment.cs",
+          "title": "PaymentService/Data/Payment.cs · 6 public symbols · Pin this file",
+          "kind": "file",
+          "context": "false",
+          "box": {
+            "x": 931.4036865234375,
+            "y": 523.1995849609375,
+            "w": 81.921875,
+            "h": 23
+          }
+        },
+        {
+          "id": "PaymentService/Data/PostPaymentRow.cs",
+          "text": "PostPaymentRow.cs",
+          "title": "PaymentService/Data/PostPaymentRow.cs · 4 public symbols · Pin this file",
+          "kind": "file",
+          "context": "false",
+          "box": {
+            "x": 577.8128662109375,
+            "y": 387.0465393066406,
+            "w": 133.21875,
+            "h": 23
+          }
+        },
+        {
+          "id": "Contracts/PaymentQuery.cs",
+          "text": "PaymentQuery.cs",
+          "title": "Contracts/PaymentQuery.cs · 4 public symbols · 3 more connected, not shown · Pin this file",
+          "kind": "file",
+          "context": "true",
+          "box": {
+            "x": 729.6771240234375,
+            "y": 89.10763549804688,
+            "w": 116.359375,
+            "h": 23
+          }
+        },
+        {
+          "id": "Contracts/PaymentRequest.cs",
+          "text": "PaymentRequest.cs",
+          "title": "Contracts/PaymentRequest.cs · 5 public symbols · 3 more connected, not shown · Pin this file",
+          "kind": "file",
+          "context": "true",
+          "box": {
+            "x": 940.34814453125,
+            "y": 122.89875030517578,
+            "w": 130.34375,
+            "h": 22.99999237060547
+          }
+        },
+        {
+          "id": "shell:Gateway",
+          "text": "Gateway · 3",
+          "title": "Gateway · 3 files · Open this shell",
+          "kind": "shell",
+          "context": "false",
+          "box": {
+            "x": 945.6807861328125,
+            "y": 373.1065673828125,
+            "w": 84.09375,
+            "h": 23
+          }
+        },
+        {
+          "id": "shell:Portal/Models",
+          "text": "Models · 2",
+          "title": "Portal/Models · 2 files · Open this shell",
+          "kind": "shell",
+          "context": "false",
+          "box": {
+            "x": 1162.022216796875,
+            "y": 216.90106201171875,
+            "w": 74.703125,
+            "h": 23
+          }
+        },
+        {
+          "id": "shell:Portal/Pages",
+          "text": "Pages · 3",
+          "title": "Portal/Pages · 3 files · Open this shell",
+          "kind": "shell",
+          "context": "false",
+          "box": {
+            "x": 432.0252685546875,
+            "y": 637.3756713867188,
+            "w": 69.65625,
+            "h": 23
+          }
+        },
+        {
+          "id": "shell:Hub",
+          "text": "Hub · 3",
+          "title": "Hub · 3 files · Open this shell",
+          "kind": "shell",
+          "context": "false",
+          "box": {
+            "x": 844.7330932617188,
+            "y": 182.74070739746094,
+            "w": 56.640625,
+            "h": 23
+          }
+        }
+      ]
+    },
+    {
+      "name": "connections-Gateway-open",
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QJIZVx0BwMoFc7Bc3TMEsrjczHssrmALogRvwACOUBA0EkIHgPcgmcr1ao1xJ9fqjaSQA",
+      "layout": "connections",
+      "openDirectories": [
+        "PaymentService"
+      ],
+      "pins": [],
+      "nodes": [
+        {
+          "id": "Contracts/Contracts.csproj",
+          "name": "Contracts.csproj",
+          "x": 719.0305975454073,
+          "y": 331.8872536620461,
+          "depth": 0.9996125216779812,
+          "distance": 526.6370776927429,
+          "opacity": 0.15000000596046448,
+          "radius": 3.9673343122843616,
+          "screenRadius": 7.5308559353657945,
+          "ring": false,
+          "world": {
+            "x": -76.19542694091797,
+            "y": 51.81877517700195,
+            "z": -95.07037353515625
+          }
+        },
+        {
+          "id": "Contracts/IPaymentService.cs",
+          "name": "IPaymentService.cs",
+          "x": 886.0701002964536,
+          "y": 246.20426570842503,
+          "depth": 0.9994801617862993,
+          "distance": 397.0625449868242,
+          "opacity": 0.15000000596046448,
+          "radius": 4.99852805636623,
+          "screenRadius": 12.716087163891206,
+          "ring": false,
+          "world": {
+            "x": 7.046183109283447,
+            "y": 62.35038375854492,
+            "z": 35.410499572753906
+          }
+        },
+        {
+          "id": "Contracts/PaymentQuery.cs",
+          "name": "PaymentQuery.cs",
+          "x": 771.090156054461,
+          "y": 121.58857741090165,
+          "depth": 0.9994406957191411,
+          "distance": 384.2044446132385,
+          "opacity": 0.15000000596046448,
+          "radius": 5.384501037118116,
+          "screenRadius": 14.734748454898666,
+          "ring": true,
+          "world": {
+            "x": -35.9546012878418,
+            "y": 100.73072052001953,
+            "z": 62.39799499511719
+          }
+        },
+        {
+          "id": "Contracts/PaymentRequest.cs",
+          "name": "PaymentRequest.cs",
+          "x": 904.0463779930268,
+          "y": 114.22800794819143,
+          "depth": 0.999450574302042,
+          "distance": 391.49186111865396,
+          "opacity": 0.15000000596046448,
+          "radius": 5.721886218285726,
+          "screenRadius": 15.382239799221916,
+          "ring": true,
+          "world": {
+            "x": 12.982224464416504,
+            "y": 105.98053741455078,
+            "z": 56.00558853149414
+          }
+        },
+        {
+          "id": "Contracts/PaymentResult.cs",
+          "name": "PaymentResult.cs",
+          "x": 744.3057031466312,
+          "y": 254.91613697370536,
+          "depth": 0.9994828641688089,
+          "distance": 400.22071081757696,
+          "opacity": 0.15000000596046448,
+          "radius": 5.384501037118116,
+          "screenRadius": 13.626998847034992,
+          "ring": true,
+          "world": {
+            "x": -48.89701843261719,
+            "y": 59.437984466552734,
+            "z": 33.412349700927734
+          }
+        },
+        {
+          "id": "Database/SqlServer/dbo.Payment.sql",
+          "name": "dbo.Payment.sql",
+          "x": 996.5312937476938,
+          "y": 736.0482769026713,
+          "depth": 0.9993724079853903,
+          "distance": 330.10397236507913,
+          "opacity": 0.15000000596046448,
+          "radius": 3.9673343122843616,
+          "screenRadius": 12.178407645980021,
+          "ring": false,
+          "world": {
+            "x": 40.636348724365234,
+            "y": -114.64695739746094,
+            "z": 101.09711456298828
+          }
+        },
+        {
+          "id": "Database/SqlServer/dbo.usp_PostPayment.sql",
+          "name": "dbo.usp_PostPayment.sql",
+          "x": 798.1645934116995,
+          "y": 763.4292216831863,
+          "depth": 0.9994359498174761,
+          "distance": 366.2578795369417,
+          "opacity": 0.15000000596046448,
+          "radius": 3.9673343122843616,
+          "screenRadius": 10.948515476068684,
+          "ring": true,
+          "world": {
+            "x": -25.900362014770508,
+            "y": -133.0239715576172,
+            "z": 65.38965606689453
+          }
+        },
+        {
+          "id": "Estate.sln",
+          "name": "Estate.sln",
+          "x": 971.9795351248877,
+          "y": 759.4510604146558,
+          "depth": 0.999613692780177,
+          "distance": 536.6827073305383,
+          "opacity": 0.15000000596046448,
+          "radius": 3.1488752696935207,
+          "screenRadius": 5.95925305860105,
+          "ring": false,
+          "world": {
+            "x": 57.25394821166992,
+            "y": -173.83103942871094,
+            "z": -96.62226104736328
+          }
+        },
+        {
+          "id": "Gateway/Gateway.csproj",
+          "name": "Gateway.csproj",
+          "x": 815.9337840764314,
+          "y": 344.06103145900585,
+          "depth": 0.9996499643928634,
+          "distance": 576.8078131756695,
+          "opacity": 0.15000000596046448,
+          "radius": 3.9673343122843616,
+          "screenRadius": 6.806128612558129,
+          "ring": false,
+          "world": {
+            "x": -27.084819793701172,
+            "y": 54.4334716796875,
+            "z": -149.8057098388672
+          }
+        },
+        {
+          "id": "Gateway/GatewaySettings.cs",
+          "name": "GatewaySettings.cs",
+          "x": 943.6388542009763,
+          "y": 454.17782722084945,
+          "depth": 0.9996503647776696,
+          "distance": 572.7760125255762,
+          "opacity": 0.75,
+          "radius": 5.721886218285726,
+          "screenRadius": 9.80495908444846,
+          "ring": true,
+          "world": {
+            "x": 47.41714096069336,
+            "y": -9.7205171585083,
+            "z": -150.45407104492188
+          }
+        },
+        {
+          "id": "Gateway/Web.config",
+          "name": "Web.config",
+          "x": 968.5253316865544,
+          "y": 384.2899168971146,
+          "depth": 0.9996318657400979,
+          "distance": 548.9661671401949,
+          "opacity": 0.75,
+          "radius": 4.99852805636623,
+          "screenRadius": 9.01654876376954,
+          "ring": true,
+          "world": {
+            "x": 58.494056701660156,
+            "y": 27.53952407836914,
+            "z": -121.96411895751953
+          }
+        },
+        {
+          "id": "Hub/App.config",
+          "name": "App.config",
+          "x": 961.5168339824996,
+          "y": 331.9480698386395,
+          "depth": 0.9995673509815156,
+          "distance": 470.67886421601594,
+          "opacity": 0.75,
+          "radius": 5.384501037118116,
+          "screenRadius": 11.407561462388408,
+          "ring": true,
+          "world": {
+            "x": 45.46527099609375,
+            "y": 42.30366897583008,
+            "z": -41.600242614746094
+          }
+        },
+        {
+          "id": "PaymentService/App.config",
+          "name": "App.config",
+          "x": 925.7865600562583,
+          "y": 453.88784158018734,
+          "depth": 0.9994963998250493,
+          "distance": 397.60080871250324,
+          "opacity": 0.15000000596046448,
+          "radius": 4.99852805636623,
+          "screenRadius": 12.32009716894149,
+          "ring": false,
+          "world": {
+            "x": 23.60941505432129,
+            "y": -18.641544342041016,
+            "z": 23.082359313964844
+          }
+        },
+        {
+          "id": "PaymentService/Data/Payment.cs",
+          "name": "Payment.cs",
+          "x": 972.1047153247606,
+          "y": 491.3322898668314,
+          "depth": 0.9993275081015014,
+          "distance": 299.0198082228546,
+          "opacity": 0.15000000596046448,
+          "radius": 6.0235820451343765,
+          "screenRadius": 19.809907342652103,
+          "ring": false,
+          "world": {
+            "x": 30.040285110473633,
+            "y": -35.22291564941406,
+            "z": 122.26966857910156
+          }
+        },
+        {
+          "id": "PaymentService/Data/PaymentsContext.cs",
+          "name": "PaymentsContext.cs",
+          "x": 753.8050158247895,
+          "y": 546.9485245051636,
+          "depth": 0.999406919058571,
+          "distance": 338.2715460078158,
+          "opacity": 0.15000000596046448,
+          "radius": 6.0235820451343765,
+          "screenRadius": 17.47621411468089,
+          "ring": false,
+          "world": {
+            "x": -40.26412582397461,
+            "y": -53.83737564086914,
+            "z": 82.6502914428711
+          }
+        },
+        {
+          "id": "PaymentService/Data/PostPaymentRow.cs",
+          "name": "PostPaymentRow.cs",
+          "x": 636.4864172781124,
+          "y": 438.13737515632994,
+          "depth": 0.9993523886160629,
+          "distance": 316.0949884794292,
+          "opacity": 0.15000000596046448,
+          "radius": 5.384501037118116,
+          "screenRadius": 17.054543457489828,
+          "ring": false,
+          "world": {
+            "x": -74.50483703613281,
+            "y": -18.268817901611328,
+            "z": 110.89904022216797
+          }
+        },
+        {
+          "id": "PaymentService/PaymentService.cs",
+          "name": "PaymentService.cs",
+          "x": 818.4853584416785,
+          "y": 277.3382618055195,
+          "depth": 0.9994114878954922,
+          "distance": 348.1993290052695,
+          "opacity": 0.15000000596046448,
+          "radius": 4.99852805636623,
+          "screenRadius": 14.390807497572165,
+          "ring": false,
+          "world": {
+            "x": -18.055980682373047,
+            "y": 39.69757843017578,
+            "z": 80.04643249511719
+          }
+        },
+        {
+          "id": "PaymentService/PaymentService.csproj",
+          "name": "PaymentService.csproj",
+          "x": 684.3349808629944,
+          "y": 463.48990348278346,
+          "depth": 0.9996294370837489,
+          "distance": 545.6153292527722,
+          "opacity": 0.15000000596046448,
+          "radius": 3.9673343122843616,
+          "screenRadius": 7.20344760573875,
+          "ring": false,
+          "world": {
+            "x": -98.45216369628906,
+            "y": -16.51695442199707,
+            "z": -118.43412780761719
+          }
+        },
+        {
+          "id": "Portal/Portal.csproj",
+          "name": "Portal.csproj",
+          "x": 1324.6224524139345,
+          "y": 582.0552294609381,
+          "depth": 0.9995243839002341,
+          "distance": 467.12761354622637,
+          "opacity": 0.15000000596046448,
+          "radius": 3.9673343122843616,
+          "screenRadius": 9.236818120687046,
+          "ring": false,
+          "world": {
+            "x": 196.70584106445312,
+            "y": -72.4750747680664,
+            "z": -0.13232170045375824
+          }
+        },
+        {
+          "id": "shell:Hub",
+          "name": "Hub",
+          "x": 787.8333547872722,
+          "y": 182.72791018819416,
+          "depth": 0.9995360604190001,
+          "distance": 453.27561615012684,
+          "opacity": 0.15000000596046448,
+          "radius": 18.26472492391575,
+          "screenRadius": 41.48377347568602,
+          "ring": false,
+          "world": {
+            "x": -34.52720642089844,
+            "y": 102.51304626464844,
+            "z": -10.643999099731445
+          }
+        },
+        {
+          "id": "shell:Portal/Models",
+          "name": "Models",
+          "x": 1229.9277930701423,
+          "y": 268.5447132096285,
+          "depth": 0.9995995462922129,
+          "distance": 547.1762385686334,
+          "opacity": 0.15000000596046448,
+          "radius": 18.189569664945065,
+          "screenRadius": 35.679191378432364,
+          "ring": false,
+          "world": {
+            "x": 186.4997100830078,
+            "y": 81.16816711425781,
+            "z": -78.48101806640625
+          }
+        },
+        {
+          "id": "shell:Portal/Pages",
+          "name": "Pages",
+          "x": 457.8144979710139,
+          "y": 609.4353172153712,
+          "depth": 0.9995654542173759,
+          "distance": 496.7351403602797,
+          "opacity": 0.15000000596046448,
+          "radius": 19.799604624538283,
+          "screenRadius": 42.13050862817135,
+          "ring": false,
+          "world": {
+            "x": -191.4819793701172,
+            "y": -88.45914459228516,
+            "z": -39.5972785949707
+          }
+        }
+      ],
+      "wrappers": [
+        "shell:Hub",
+        "shell:Portal/Models",
+        "shell:Portal/Pages"
+      ],
+      "units": [
+        {
+          "seed": "shell:Portal/Models",
+          "id": "Portal/Models/PaymentRequestModel.cs"
+        },
+        {
+          "seed": "shell:Portal/Models",
+          "id": "Portal/Models/PaymentResultModel.cs"
+        },
+        {
+          "seed": "shell:Portal/Pages",
+          "id": "Portal/Pages/Default.aspx.designer.cs"
+        },
+        {
+          "seed": "shell:Portal/Pages",
+          "id": "Portal/Pages/Default.aspx"
+        },
+        {
+          "seed": "shell:Portal/Pages",
+          "id": "Portal/Pages/Default.aspx.cs"
+        },
+        {
+          "seed": "shell:Hub",
+          "id": "Hub/Hub.csproj"
+        },
+        {
+          "seed": "shell:Hub",
+          "id": "Hub/ServiceRouting.cs"
+        },
+        {
+          "seed": "shell:Hub",
+          "id": "Hub/PaymentHub.cs"
+        }
+      ],
+      "ringMarks": [
+        {
+          "id": "Contracts/PaymentQuery.cs",
+          "x": 771.090156054461,
+          "y": 121.58857741090165,
+          "r": 23.57559836637892
+        },
+        {
+          "id": "Contracts/PaymentRequest.cs",
+          "x": 904.0463779930268,
+          "y": 114.22800794819143,
+          "r": 24.61158455414426
+        },
+        {
+          "id": "Contracts/PaymentResult.cs",
+          "x": 744.3057031466312,
+          "y": 254.91613697370536,
+          "r": 21.80319893075603
+        },
+        {
+          "id": "Database/SqlServer/dbo.usp_PostPayment.sql",
+          "x": 798.1645934116995,
+          "y": 763.4292216831863,
+          "r": 17.517625384779887
+        },
+        {
+          "id": "Gateway/GatewaySettings.cs",
+          "x": 943.6388542009763,
+          "y": 454.17782722084945,
+          "r": 15.687935093108793
+        },
+        {
+          "id": "Gateway/Web.config",
+          "x": 968.5253316865544,
+          "y": 384.2899168971146,
+          "r": 14.426478535154828
+        },
+        {
+          "id": "Hub/App.config",
+          "x": 961.5168339824996,
+          "y": 331.9480698386395,
+          "r": 18.252098989015327
+        }
+      ],
+      "labels": [
+        {
+          "id": "PaymentService/PaymentService.cs",
+          "text": "PaymentService.cs",
+          "title": "PaymentService/PaymentService.cs · 3 public symbols · Pin this file",
+          "kind": "file",
+          "context": "false",
+          "box": {
+            "x": 755.9853515625,
+            "y": 298.72906494140625,
+            "w": 125.265625,
+            "h": 23
+          }
+        },
+        {
+          "id": "PaymentService/Data/PaymentsContext.cs",
+          "text": "PaymentsContext.cs",
+          "title": "PaymentService/Data/PaymentsContext.cs · 6 public symbols · Pin this file",
+          "kind": "file",
+          "context": "false",
+          "box": {
+            "x": 687.3050537109375,
+            "y": 571.4247436523438,
+            "w": 133.21875,
+            "h": 23
+          }
+        },
+        {
+          "id": "PaymentService/Data/Payment.cs",
+          "text": "Payment.cs",
+          "title": "PaymentService/Data/Payment.cs · 6 public symbols · Pin this file",
+          "kind": "file",
+          "context": "false",
+          "box": {
+            "x": 931.104736328125,
+            "y": 518.1422119140625,
+            "w": 81.921875,
+            "h": 23
+          }
+        },
+        {
+          "id": "PaymentService/Data/PostPaymentRow.cs",
+          "text": "PostPaymentRow.cs",
+          "title": "PaymentService/Data/PostPaymentRow.cs · 4 public symbols · Pin this file",
+          "kind": "file",
+          "context": "false",
+          "box": {
+            "x": 569.9864501953125,
+            "y": 391.08282470703125,
+            "w": 133.21875,
+            "h": 23
+          }
+        },
+        {
+          "id": "Contracts/PaymentQuery.cs",
+          "text": "PaymentQuery.cs",
+          "title": "Contracts/PaymentQuery.cs · 4 public symbols · 3 more connected, not shown · Pin this file",
+          "kind": "file",
+          "context": "true",
+          "box": {
+            "x": 713.0901489257812,
+            "y": 76.85382080078125,
+            "w": 116.359375,
+            "h": 23
+          }
+        },
+        {
+          "id": "Contracts/PaymentRequest.cs",
+          "text": "PaymentRequest.cs",
+          "title": "Contracts/PaymentRequest.cs · 5 public symbols · 3 more connected, not shown · Pin this file",
+          "kind": "file",
+          "context": "true",
+          "box": {
+            "x": 926.4285888671875,
+            "y": 102.72801208496094,
+            "w": 130.34375,
+            "h": 23
+          }
+        },
+        {
+          "id": "shell:Portal/Models",
+          "text": "Models · 2",
+          "title": "Portal/Models · 2 files · Open this shell",
+          "kind": "shell",
+          "context": "false",
+          "box": {
+            "x": 1192.427734375,
+            "y": 202.8655242919922,
+            "w": 74.703125,
+            "h": 23
+          }
+        },
+        {
+          "id": "shell:Portal/Pages",
+          "text": "Pages · 3",
+          "title": "Portal/Pages · 3 files · Open this shell",
+          "kind": "shell",
+          "context": "false",
+          "box": {
+            "x": 422.8144836425781,
+            "y": 658.5657958984375,
+            "w": 69.65625,
+            "h": 23
+          }
+        },
+        {
+          "id": "shell:Hub",
+          "text": "Hub · 3",
+          "title": "Hub · 3 files · Open this shell",
+          "kind": "shell",
+          "context": "false",
+          "box": {
+            "x": 836.317138671875,
+            "y": 171.2279052734375,
+            "w": 56.640625,
+            "h": 23
+          }
+        },
+        {
+          "text": "Gateway",
+          "title": "Gateway · opened · Wrap its files again",
+          "kind": "popped",
+          "context": "true",
+          "box": {
+            "x": 803.2293701171875,
+            "y": 382.86334228515625,
+            "w": 65.3125,
+            "h": 23
+          }
+        },
+        {
+          "id": "Gateway/Web.config",
+          "text": "Web.config",
+          "title": "Gateway/Web.config · 3 public symbols · 2 more connected, not shown · Pin this file",
+          "kind": "file",
+          "context": "false",
+          "box": {
+            "x": 929.0253295898438,
+            "y": 400.30645751953125,
+            "w": 78.796875,
+            "h": 23
+          }
+        }
+      ]
+    },
+    {
+      "name": "connections-Gateway-rewrapped",
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QJIZVx0BwMoFc7Bc3TMEsrjczHssrmALogRvwACOUBA0EkIHgPcgmcr1ao1xJ9fqjaSQA",
+      "layout": "connections",
+      "openDirectories": [
+        "PaymentService"
+      ],
+      "pins": [],
+      "nodes": [
+        {
+          "id": "Contracts/Contracts.csproj",
+          "name": "Contracts.csproj",
+          "x": 746.2088277751079,
+          "y": 330.0604962158428,
+          "depth": 0.9996170192657253,
+          "distance": 531.2551601563708,
+          "opacity": 0.30000001192092896,
+          "radius": 3.9673343122843616,
+          "screenRadius": 7.443802292615381,
+          "ring": false,
+          "world": {
+            "x": -62.520179748535156,
+            "y": 53.85892105102539,
+            "z": -101.0819091796875
+          }
+        },
+        {
+          "id": "Contracts/IPaymentService.cs",
+          "name": "IPaymentService.cs",
+          "x": 885.8943435543052,
+          "y": 249.49543803105223,
+          "depth": 0.9994879863856984,
+          "distance": 402.77458718598314,
+          "opacity": 0.30000001192092896,
+          "radius": 4.99852805636623,
+          "screenRadius": 12.525272058431275,
+          "ring": false,
+          "world": {
+            "x": 7.189052581787109,
+            "y": 62.58674240112305,
+            "z": 29.56726837158203
+          }
+        },
+        {
+          "id": "Contracts/PaymentQuery.cs",
+          "name": "PaymentQuery.cs",
+          "x": 769.5371571889989,
+          "y": 129.02945050672463,
+          "depth": 0.9994489625543345,
+          "distance": 388.9978178501867,
+          "opacity": 0.30000001192092896,
+          "radius": 5.384501037118116,
+          "screenRadius": 14.517581745759125,
+          "ring": true,
+          "world": {
+            "x": -36.96468734741211,
+            "y": 100.06681823730469,
+            "z": 57.06414794921875
+          }
+        },
+        {
+          "id": "Contracts/PaymentRequest.cs",
+          "name": "PaymentRequest.cs",
+          "x": 902.0137563566141,
+          "y": 118.58165440710158,
+          "depth": 0.9994568194400929,
+          "distance": 395.33625975965356,
+          "opacity": 0.30000001192092896,
+          "radius": 5.721886218285726,
+          "screenRadius": 15.207902719822492,
+          "ring": true,
+          "world": {
+            "x": 12.445796012878418,
+            "y": 106.00884246826172,
+            "z": 51.84476852416992
+          }
+        },
+        {
+          "id": "Contracts/PaymentResult.cs",
+          "name": "PaymentResult.cs",
+          "x": 748.0875046227723,
+          "y": 261.10336009008904,
+          "depth": 0.9994916564839299,
+          "distance": 406.35751792359633,
+          "opacity": 0.30000001192092896,
+          "radius": 5.384501037118116,
+          "screenRadius": 13.396027974162871,
+          "ring": true,
+          "world": {
+            "x": -48.10041427612305,
+            "y": 58.65481948852539,
+            "z": 26.76474380493164
+          }
+        },
+        {
+          "id": "Database/SqlServer/dbo.Payment.sql",
+          "name": "dbo.Payment.sql",
+          "x": 1003.076776366094,
+          "y": 721.2918568440434,
+          "depth": 0.999376103960913,
+          "distance": 331.30233314574576,
+          "opacity": 0.30000001192092896,
+          "radius": 3.9673343122843616,
+          "screenRadius": 12.106869712523677,
+          "ring": false,
+          "world": {
+            "x": 43.062355041503906,
+            "y": -110.25613403320312,
+            "z": 99.2188720703125
+          }
+        },
+        {
+          "id": "Database/SqlServer/dbo.usp_PostPayment.sql",
+          "name": "dbo.usp_PostPayment.sql",
+          "x": 809.3875924191253,
+          "y": 754.7916968228446,
+          "depth": 0.9994407466850812,
+          "distance": 368.4058786541753,
+          "opacity": 0.30000001192092896,
+          "radius": 3.9673343122843616,
+          "screenRadius": 10.855669083168143,
+          "ring": true,
+          "world": {
+            "x": -21.960981369018555,
+            "y": -130.668212890625,
+            "z": 62.36559295654297
+          }
+        },
+        {
+          "id": "Estate.sln",
+          "name": "Estate.sln",
+          "x": 963.2034251167934,
+          "y": 742.1670928001392,
+          "depth": 0.9996171288251422,
+          "distance": 538.7025180387159,
+          "opacity": 0.30000001192092896,
+          "radius": 3.1488752696935207,
+          "screenRadius": 5.906466566485289,
+          "ring": false,
+          "world": {
+            "x": 53.148868560791016,
+            "y": -165.8181610107422,
+            "z": -101.2301025390625
+          }
+        },
+        {
+          "id": "Hub/App.config",
+          "name": "App.config",
+          "x": 953.4865306449591,
+          "y": 335.7948965812115,
+          "depth": 0.9995739831864666,
+          "distance": 477.248916654986,
+          "opacity": 0.30000001192092896,
+          "radius": 5.384501037118116,
+          "screenRadius": 11.233335886354087,
+          "ring": true,
+          "world": {
+            "x": 42.42881393432617,
+            "y": 41.72663116455078,
+            "z": -48.743473052978516
+          }
+        },
+        {
+          "id": "PaymentService/App.config",
+          "name": "App.config",
+          "x": 926.5284342956023,
+          "y": 451.4372997462905,
+          "depth": 0.9995040645361821,
+          "distance": 403.8034956075366,
+          "opacity": 0.75,
+          "radius": 4.99852805636623,
+          "screenRadius": 12.133181189156703,
+          "ring": false,
+          "world": {
+            "x": 24.385608673095703,
+            "y": -17.312524795532227,
+            "z": 16.983640670776367
+          }
+        },
+        {
+          "id": "PaymentService/Data/Payment.cs",
+          "name": "Payment.cs",
+          "x": 971.8330868011697,
+          "y": 479.1118494414499,
+          "depth": 0.999334179203557,
+          "distance": 302.0737837772862,
+          "opacity": 0.75,
+          "radius": 6.0235820451343765,
+          "screenRadius": 19.613860017887067,
+          "ring": false,
+          "world": {
+            "x": 30.32645606994629,
+            "y": -31.428375244140625,
+            "z": 119.30409240722656
+          }
+        },
+        {
+          "id": "PaymentService/Data/PaymentsContext.cs",
+          "name": "PaymentsContext.cs",
+          "x": 760.3154648635659,
+          "y": 541.6281951100043,
+          "depth": 0.9994149695182698,
+          "distance": 342.62260413166865,
+          "opacity": 0.75,
+          "radius": 6.0235820451343765,
+          "screenRadius": 17.239630852439607,
+          "ring": false,
+          "world": {
+            "x": -38.44672393798828,
+            "y": -52.17685317993164,
+            "z": 78.03496551513672
+          }
+        },
+        {
+          "id": "PaymentService/Data/PostPaymentRow.cs",
+          "name": "PostPaymentRow.cs",
+          "x": 641.9999333867872,
+          "y": 437.68240261332,
+          "depth": 0.9993621502219812,
+          "distance": 320.5570287274767,
+          "opacity": 0.75,
+          "radius": 5.384501037118116,
+          "screenRadius": 16.798109673146623,
+          "ring": false,
+          "world": {
+            "x": -73.76900482177734,
+            "y": -17.800722122192383,
+            "z": 106.19621276855469
+          }
+        },
+        {
+          "id": "PaymentService/PaymentService.cs",
+          "name": "PaymentService.cs",
+          "x": 818.6565522324938,
+          "y": 279.0734975571287,
+          "depth": 0.9994206877172078,
+          "distance": 353.57324225704616,
+          "opacity": 0.75,
+          "radius": 4.99852805636623,
+          "screenRadius": 14.166455443065216,
+          "ring": false,
+          "world": {
+            "x": -18.171682357788086,
+            "y": 40.3376350402832,
+            "z": 74.67902374267578
+          }
+        },
+        {
+          "id": "PaymentService/PaymentService.csproj",
+          "name": "PaymentService.csproj",
+          "x": 689.511262638224,
+          "y": 450.8081421825072,
+          "depth": 0.9996311411999361,
+          "distance": 547.991175750179,
+          "opacity": 0.75,
+          "radius": 3.9673343122843616,
+          "screenRadius": 7.170463363917392,
+          "ring": false,
+          "world": {
+            "x": -96.00916290283203,
+            "y": -9.39511775970459,
+            "z": -120.90617370605469
+          }
+        },
+        {
+          "id": "Portal/Portal.csproj",
+          "name": "Portal.csproj",
+          "x": 1308.1342228240903,
+          "y": 580.7258006197776,
+          "depth": 0.9995293714336505,
+          "distance": 468.9447753398905,
+          "opacity": 0.30000001192092896,
+          "radius": 3.9673343122843616,
+          "screenRadius": 9.140281270954624,
+          "ring": false,
+          "world": {
+            "x": 191.69993591308594,
+            "y": -72.24758911132812,
+            "z": -4.5587029457092285
+          }
+        },
+        {
+          "id": "shell:Gateway",
+          "name": "Gateway",
+          "x": 894.6480227459166,
+          "y": 389.45538638998613,
+          "depth": 0.9996412005467932,
+          "distance": 559.3812783254307,
+          "opacity": 0.75,
+          "radius": 19.026260576471927,
+          "screenRadius": 33.453847356357734,
+          "ring": false,
+          "world": {
+            "x": 18.17241668701172,
+            "y": 26.33502960205078,
+            "z": -135.97488403320312
+          }
+        },
+        {
+          "id": "shell:Hub",
+          "name": "Hub",
+          "x": 793.1319543585867,
+          "y": 184.25088993453892,
+          "depth": 0.99954105828224,
+          "distance": 457.845333314504,
+          "opacity": 0.75,
+          "radius": 18.26472492391575,
+          "screenRadius": 41.03841880682551,
+          "ring": false,
+          "world": {
+            "x": -32.468414306640625,
+            "y": 103.37505340576172,
+            "z": -15.306180000305176
+          }
+        },
+        {
+          "id": "shell:Portal/Models",
+          "name": "Models",
+          "x": 1219.1250973229494,
+          "y": 277.63368565072676,
+          "depth": 0.9995997640805038,
+          "distance": 544.542962500496,
+          "opacity": 0.75,
+          "radius": 18.189569664945065,
+          "screenRadius": 35.65986433348883,
+          "ring": false,
+          "world": {
+            "x": 181.09425354003906,
+            "y": 76.59735107421875,
+            "z": -78.75062561035156
+          }
+        },
+        {
+          "id": "shell:Portal/Pages",
+          "name": "Pages",
+          "x": 476.27900168911845,
+          "y": 615.8019847122092,
+          "depth": 0.9995678337938141,
+          "distance": 496.59289844127085,
+          "opacity": 0.75,
+          "radius": 19.799604624538283,
+          "screenRadius": 41.9006479500091,
+          "ring": false,
+          "world": {
+            "x": -183.7692108154297,
+            "y": -91.73687744140625,
+            "z": -42.112884521484375
+          }
+        }
+      ],
+      "wrappers": [
+        "shell:Gateway",
+        "shell:Hub",
+        "shell:Portal/Models",
+        "shell:Portal/Pages"
+      ],
+      "units": [
+        {
+          "seed": "shell:Gateway",
+          "id": "Gateway/GatewaySettings.cs"
+        },
+        {
+          "seed": "shell:Gateway",
+          "id": "Gateway/Web.config"
+        },
+        {
+          "seed": "shell:Gateway",
+          "id": "Gateway/Gateway.csproj"
+        },
+        {
+          "seed": "shell:Portal/Models",
+          "id": "Portal/Models/PaymentRequestModel.cs"
+        },
+        {
+          "seed": "shell:Portal/Models",
+          "id": "Portal/Models/PaymentResultModel.cs"
+        },
+        {
+          "seed": "shell:Portal/Pages",
+          "id": "Portal/Pages/Default.aspx.designer.cs"
+        },
+        {
+          "seed": "shell:Portal/Pages",
+          "id": "Portal/Pages/Default.aspx"
+        },
+        {
+          "seed": "shell:Portal/Pages",
+          "id": "Portal/Pages/Default.aspx.cs"
+        },
+        {
+          "seed": "shell:Hub",
+          "id": "Hub/Hub.csproj"
+        },
+        {
+          "seed": "shell:Hub",
+          "id": "Hub/ServiceRouting.cs"
+        },
+        {
+          "seed": "shell:Hub",
+          "id": "Hub/PaymentHub.cs"
+        }
+      ],
+      "ringMarks": [
+        {
+          "id": "Contracts/PaymentQuery.cs",
+          "x": 769.5371571889989,
+          "y": 129.02945050672463,
+          "r": 23.228131619396894
+        },
+        {
+          "id": "Contracts/PaymentRequest.cs",
+          "x": 902.0137563566141,
+          "y": 118.58165440710158,
+          "r": 24.332645217183835
+        },
+        {
+          "id": "Contracts/PaymentResult.cs",
+          "x": 748.0875046227723,
+          "y": 261.10336009008904,
+          "r": 21.433645521016306
+        },
+        {
+          "id": "Database/SqlServer/dbo.usp_PostPayment.sql",
+          "x": 809.3875924191253,
+          "y": 754.7916968228446,
+          "r": 17.36907115085522
+        },
+        {
+          "id": "Hub/App.config",
+          "x": 953.4865306449591,
+          "y": 335.7948965812115,
+          "r": 17.97333805744542
+        }
+      ],
+      "labels": [
+        {
+          "id": "PaymentService/Data/PaymentsContext.cs",
+          "text": "PaymentsContext.cs",
+          "title": "PaymentService/Data/PaymentsContext.cs · 6 public symbols · Pin this file",
+          "kind": "file",
+          "context": "false",
+          "box": {
+            "x": 693.8154296875,
+            "y": 565.8677978515625,
+            "w": 133.21875,
+            "h": 23
+          }
+        },
+        {
+          "id": "PaymentService/Data/Payment.cs",
+          "text": "Payment.cs",
+          "title": "PaymentService/Data/Payment.cs · 6 public symbols · Pin this file",
+          "kind": "file",
+          "context": "false",
+          "box": {
+            "x": 930.8330688476562,
+            "y": 505.7257080078125,
+            "w": 81.921875,
+            "h": 23
+          }
+        },
+        {
+          "id": "PaymentService/Data/PostPaymentRow.cs",
+          "text": "PostPaymentRow.cs",
+          "title": "PaymentService/Data/PostPaymentRow.cs · 4 public symbols · Pin this file",
+          "kind": "file",
+          "context": "false",
+          "box": {
+            "x": 575.4998779296875,
+            "y": 390.88427734375,
+            "w": 133.21875,
+            "h": 23
+          }
+        },
+        {
+          "id": "Contracts/PaymentQuery.cs",
+          "text": "PaymentQuery.cs",
+          "title": "Contracts/PaymentQuery.cs · 4 public symbols · 3 more connected, not shown · Pin this file",
+          "kind": "file",
+          "context": "true",
+          "box": {
+            "x": 711.5371704101562,
+            "y": 84.51187896728516,
+            "w": 116.359375,
+            "h": 23
+          }
+        },
+        {
+          "id": "Contracts/PaymentRequest.cs",
+          "text": "PaymentRequest.cs",
+          "title": "Contracts/PaymentRequest.cs · 5 public symbols · 3 more connected, not shown · Pin this file",
+          "kind": "file",
+          "context": "true",
+          "box": {
+            "x": 924.2216796875,
+            "y": 107.0816421508789,
+            "w": 130.34375,
+            "h": 22.99999237060547
+          }
+        },
+        {
+          "id": "shell:Portal/Models",
+          "text": "Models · 2",
+          "title": "Portal/Models · 2 files · Open this shell",
+          "kind": "shell",
+          "context": "false",
+          "box": {
+            "x": 1181.625,
+            "y": 211.9738311767578,
+            "w": 74.703125,
+            "h": 23
+          }
+        },
+        {
+          "id": "shell:Portal/Pages",
+          "text": "Pages · 3",
+          "title": "Portal/Pages · 3 files · Open this shell",
+          "kind": "shell",
+          "context": "false",
+          "box": {
+            "x": 441.27899169921875,
+            "y": 664.70263671875,
+            "w": 69.65625,
+            "h": 23
+          }
+        },
+        {
+          "id": "shell:Hub",
+          "text": "Hub · 3",
+          "title": "Hub · 3 files · Open this shell",
+          "kind": "shell",
+          "context": "false",
+          "box": {
+            "x": 841.1703491210938,
+            "y": 172.75088500976562,
+            "w": 56.640625,
+            "h": 23
+          }
+        },
+        {
+          "id": "shell:Gateway",
+          "text": "Gateway · 3",
+          "title": "Gateway · 3 files · Open this shell",
+          "kind": "shell",
+          "context": "false",
+          "box": {
+            "x": 852.6480102539062,
+            "y": 429.90924072265625,
+            "w": 84.09375,
+            "h": 23
+          }
+        }
+      ]
+    }
+  ]
+}

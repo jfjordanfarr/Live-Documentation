@@ -1,0 +1,108 @@
+{
+  "recordedAt": "2026-11-10T17:52:16.816Z",
+  "command": "LIVE_DOCS_E2E_PORT=8916 npm run safe:commit -- --e2e",
+  "exitCode": 0,
+  "unit": {
+    "files": 165,
+    "passed": 1746
+  },
+  "integration": {
+    "files": 20,
+    "passed": 115
+  },
+  "browser": {
+    "total": 359,
+    "expected": 359,
+    "unexpected": 0,
+    "flaky": 0,
+    "skipped": 0,
+    "ok": true
+  },
+  "notes": [
+    "The complete original log and self-contained HTML report are preserved losslessly compressed.",
+    "The last-run bytes match the earlier successful report because the status content is identical; gate-after records its fresh November 10 modification time.",
+    "Source/test files stayed frozen through this run; the hash list is in ../regression/final-source.sha256."
+  ],
+  "entries": [
+    {
+      "file": "gate-before.json",
+      "source": "AI-Agent-Workspace/tmp/2026-11-10-rings/regression/gate-before.json",
+      "bytes": 1489,
+      "sha256": "6a71da19f5765a2bb1f6690b89da2826b594396461812df203f74da3b8617551",
+      "originalBytes": 1489,
+      "originalSha256": "6a71da19f5765a2bb1f6690b89da2826b594396461812df203f74da3b8617551"
+    },
+    {
+      "file": "gate-after.json",
+      "source": "AI-Agent-Workspace/tmp/2026-11-10-rings/regression/gate-after.json",
+      "bytes": 1903,
+      "sha256": "69e7a84a87c6a3ea656e88d8081e57293a5b8189aa61aae4d7d593dae18d44ef",
+      "originalBytes": 1903,
+      "originalSha256": "69e7a84a87c6a3ea656e88d8081e57293a5b8189aa61aae4d7d593dae18d44ef"
+    },
+    {
+      "file": "gate-browser-summary.json",
+      "source": "AI-Agent-Workspace/tmp/2026-11-10-rings/regression/gate-browser-summary.json",
+      "bytes": 1175,
+      "sha256": "30c5586bc1a639415106023a0693285e4455904f1e9881deb2a2e1d4416fdee9",
+      "originalBytes": 1175,
+      "originalSha256": "30c5586bc1a639415106023a0693285e4455904f1e9881deb2a2e1d4416fdee9"
+    },
+    {
+      "file": "gate-served-hashes.json",
+      "source": "AI-Agent-Workspace/tmp/2026-11-10-rings/regression/gate-served-hashes.json",
+      "bytes": 937,
+      "sha256": "049ecc313d9990578276fc4b639e91abaaca720693fd30efe94d2d1aa35a9cfe",
+      "originalBytes": 937,
+      "originalSha256": "049ecc313d9990578276fc4b639e91abaaca720693fd30efe94d2d1aa35a9cfe"
+    },
+    {
+      "file": "gate-connections-ending-geometry.json",
+      "source": "AI-Agent-Workspace/tmp/2026-11-10-rings/regression/gate-connections-ending-geometry.json",
+      "bytes": 8730,
+      "sha256": "9cd22d1479188e6a169d568bf940c2f9f43eecffb240ac675258854a468c7033",
+      "originalBytes": 8730,
+      "originalSha256": "9cd22d1479188e6a169d568bf940c2f9f43eecffb240ac675258854a468c7033"
+    },
+    {
+      "file": "gate-gateway-rewrapped-geometry.json",
+      "source": "AI-Agent-Workspace/tmp/2026-11-10-rings/regression/gate-gateway-rewrapped-geometry.json",
+      "bytes": 8739,
+      "sha256": "3c91a6b88fffb71e081387c9ab1a4c34aa6dc5f7bf85be512245bb2011feb22f",
+      "originalBytes": 8739,
+      "originalSha256": "3c91a6b88fffb71e081387c9ab1a4c34aa6dc5f7bf85be512245bb2011feb22f"
+    },
+    {
+      "file": "full-gate.log.gz",
+      "source": "AI-Agent-Workspace/tmp/2026-11-10-rings/regression/full-gate.log",
+      "bytes": 19000,
+      "sha256": "927724a6b147c59f7f21945469b91a9485d05768579c917d258d121a013dee60",
+      "originalBytes": 77032,
+      "originalSha256": "93777695a1d9de74e4963e84d80d656d99b85d273aa368dc794b8112014d9c33"
+    },
+    {
+      "file": "generate-final.log.gz",
+      "source": "AI-Agent-Workspace/tmp/2026-11-10-rings/regression/generate-final.log",
+      "bytes": 307,
+      "sha256": "f8da1ba0aeea45e168be32154529d828d60f7dcf46a3ab0420516ecdaa77d86d",
+      "originalBytes": 532,
+      "originalSha256": "456951024655475c94e644b7be498aa9dbd5eac4cbb452e7e68eace0dfa4451f"
+    },
+    {
+      "file": "report.html.gz",
+      "source": "reports/e2e/index.html",
+      "bytes": 1229548,
+      "sha256": "936394e53f3081476fa0c32a2023194aa60bedf23f06d37d4d1ae4794b4810c4",
+      "originalBytes": 1918884,
+      "originalSha256": "658a83a1ffa0d6eb56daecc71853afaaaf06a72ffcc63ab888903a0e513d7ae0"
+    },
+    {
+      "file": "last-run.json",
+      "source": "test-results/.last-run.json",
+      "bytes": 45,
+      "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903",
+      "originalBytes": 45,
+      "originalSha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903"
+    }
+  ]
+}

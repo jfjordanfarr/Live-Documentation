@@ -1,0 +1,102 @@
+[
+  {
+    "file": "before-connections-ending.png",
+    "bytes": 119704,
+    "sha256": "0fca1783273a1e81bfcba2fbc49df64f11b312ce899ba0e1285aefa9caaa8aa9"
+  },
+  {
+    "file": "after-connections-ending.png",
+    "bytes": 119874,
+    "sha256": "2d54f13b1fdccd943850fa8e414317afa578788d3b87b9cecaa9119cceca0534"
+  },
+  {
+    "file": "after-hover-Gateway.png",
+    "bytes": 110457,
+    "sha256": "2bfa286ef3d37a22f0afd90fd2b901a3c3005c4acc34ed12ebac059558d122ac"
+  },
+  {
+    "file": "after-hover-Hub.png",
+    "bytes": 112411,
+    "sha256": "40c5355d92f281da0bbfcee9fd2548df6e56fc0dde9dccd6ae361223f048c4f9"
+  },
+  {
+    "file": "before-main-structure-start.png",
+    "bytes": 188703,
+    "sha256": "0f61f866120f947e4a7c4808782ac40121792cdaa9a222603706c0da030c73c3"
+  },
+  {
+    "file": "after-main-structure-start.png",
+    "bytes": 188014,
+    "sha256": "8e72bb96d93314413b9dea0305ef6fc8b512dca83040645edab053f90c8dc07a"
+  },
+  {
+    "file": "before-journey.webm",
+    "bytes": 4782084,
+    "sha256": "ab5fd5045007e7c3bb86363167b4723a09b7aae74ecbe31740f66cb3350c755b"
+  },
+  {
+    "file": "after-journey.webm",
+    "bytes": 4083229,
+    "sha256": "4d78578a3e38b2d82e7ee523e2237cc9eea03945d060dd389814d3e6170f5b52"
+  },
+  {
+    "file": "comparison.json",
+    "bytes": 1211,
+    "sha256": "fc1732a804130368a8a384e1914f6b820ac8839ac97a67eecd0f4edf469ea45b"
+  },
+  {
+    "file": "readings.json",
+    "bytes": 112243,
+    "sha256": "7386a98a0481f548e19b814043252030cdc0b7fd5cd18baef035309a95301498"
+  },
+  {
+    "file": "root-recording-ending.png",
+    "bytes": 119874,
+    "sha256": "2d54f13b1fdccd943850fa8e414317afa578788d3b87b9cecaa9119cceca0534"
+  },
+  {
+    "file": "root-connections-Gateway-rewrapped.png",
+    "bytes": 122550,
+    "sha256": "877870e18929fe7a97b734151b8741ac3b4fcfe3ac6640f4fac62d3c4e4d0abc"
+  },
+  {
+    "file": "root-replay.json",
+    "bytes": 125448,
+    "sha256": "1d6131c845a9b928a09def926461c0092c2d011f0b83cd72af5a06af82d70a6e"
+  },
+  {
+    "file": "root-replay.mjs.gz",
+    "bytes": 2221,
+    "sha256": "30c5775a138394be1709d730a7a1c782fb3f7acb35ad88293bd7e71bd09d6ed1",
+    "sourceBytes": 5763,
+    "sourceSha256": "c6fbc99f5d2ffb29b3b3c9a7f5a745bf1fb035679b0e7441d126304b96fdf256"
+  },
+  {
+    "file": "label-candidate.mjs.gz",
+    "bytes": 2281,
+    "sha256": "688933bfd1d092213da41c70c402f46736ec2388312f6e44e14afe924f7b42f9",
+    "sourceBytes": 5499,
+    "sourceSha256": "f6310dd2e22e9c1a29bb79ab1b41c1f36316f775826cf6133d7663bd3a86e5aa"
+  },
+  {
+    "file": "handoff.json",
+    "bytes": 825,
+    "sha256": "f6718e3e4ccd8a3d9a62b3428bfbbffcb750f48d0df83164cb594c78757e4217",
+    "sourceBytes": 825,
+    "sourceSha256": "f6718e3e4ccd8a3d9a62b3428bfbbffcb750f48d0df83164cb594c78757e4217"
+  },
+  {
+    "file": "handoff-labels.png",
+    "bytes": 232503,
+    "sha256": "c9d15749d97262e6e36741b2db8d404fff7232b7f861984af52dba7fb5c58124",
+    "sourceBytes": 232503,
+    "sourceSha256": "c9d15749d97262e6e36741b2db8d404fff7232b7f861984af52dba7fb5c58124"
+  },
+  {
+    "file": "handoff.cjs.gz",
+    "bytes": 634,
+    "sha256": "8306d8061963a1e62db52c3c1bdf0aff11c07c8de4698b095dc0e478118a8e70",
+    "sourceBytes": 1221,
+    "sourceSha256": "27937440a8c2d50c9ab6703a9f075f3d4e7b9280896a8451ede630a3442be856"
+  }
+]

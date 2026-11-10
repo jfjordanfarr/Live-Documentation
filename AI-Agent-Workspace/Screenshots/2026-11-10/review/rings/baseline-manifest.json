@@ -1,0 +1,52 @@
+{
+  "head": "81ade1c6eae16c90fe6797fc4f297da69746655d",
+  "viewport": [
+    1440,
+    960
+  ],
+  "clientSha256": "7e1654311f63245fb1926c2202d03e6e67b6a1f64240e2a0875e2338c5d7ae48",
+  "entries": [
+    {
+      "file": "recording-ending.png",
+      "bytes": 119704,
+      "sha256": "0fca1783273a1e81bfcba2fbc49df64f11b312ce899ba0e1285aefa9caaa8aa9"
+    },
+    {
+      "file": "hover-Gateway.png",
+      "bytes": 110307,
+      "sha256": "f733bb98b5d4c9c3549e58f1c453a20b383a9243f90f8fd9c5cba12041df87c2"
+    },
+    {
+      "file": "structure-closed-again.png",
+      "bytes": 164290,
+      "sha256": "1b893c4272aa56fb2921d90176738198afba4033090451198dcd217dad7fc755"
+    },
+    {
+      "file": "connections-Hub-rewrapped.png",
+      "bytes": 119294,
+      "sha256": "d3e9973304018a48f6adef0a26b9717296240125f14f275ddd7b04acb6308640"
+    },
+    {
+      "file": "connections-Gateway-rewrapped.png",
+      "bytes": 121973,
+      "sha256": "40542d3d5aebabb8188a08d84fdc8177497467994a6877648a808c298922bb39"
+    },
+    {
+      "file": "replay.json",
+      "bytes": 125306,
+      "sha256": "37ee02d860a5f5a06a88ef9e84bfd4ee025d99c840916b71e1ba37ed07c2357e"
+    },
+    {
+      "file": "replay.mjs.gz",
+      "sourceBytes": 5712,
+      "sourceSha256": "1286999e618986f56b84b08a810f90f173cc3042d30bda56d0f67b2987e56fcf"
+    },
+    {
+      "file": "shell-impact-before.txt.gz",
+      "bytes": 437,
+      "sha256": "7071d6b4396093bbf20e701e05264bad719abd8dd927ca8435bc99cc9d898d19",
+      "sourceBytes": 2238,
+      "sourceSha256": "49abf9d44e5e9115435310fa4bc419f352619f5a483655625d44818a8c14f068"
+    }
+  ]
+}

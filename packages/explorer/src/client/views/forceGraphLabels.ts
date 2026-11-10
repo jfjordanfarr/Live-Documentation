@@ -1,21 +1,25 @@
 /** Screen-space placement for readable names beside the 3D Local Map's spheres. */
 export interface LabelBox { x: number; y: number; width: number; height: number }
 
-/** A measured name and its projected sphere; lower priorities are placed first. */
-export interface SpatialLabel {
+/** A projected body's visible extent, including any ring, whether or not its name is eligible. */
+export interface SpatialLabelBody {
   id: string;
   x: number;
   y: number;
-  /** How far from its point the name stands: its sphere's radius, or the radius a popped directory's skin had. */
+  /** How far from its point the name stands: its visible radius, or the radius a popped directory's skin had. */
   radius: number;
   /**
-   * How far from its point less important names keep clear, the radius unless said: a popped directory's name stands
+   * How far from its point equal or less important names keep clear, the radius unless said: a popped directory's name stands
    * beside all it released, whose own names stand among it (2026-11-07, third round).
    */
   clear?: number;
+  priority: number;
+}
+
+/** A measured name beside its projected body; lower priorities are placed first. */
+export interface SpatialLabel extends SpatialLabelBody {
   width: number;
   height: number;
-  priority: number;
 }
 
 /** Place names near their spheres, keeping text readable and leaving crowded names for a closer view. */
@@ -23,7 +27,8 @@ export function placeSpatialLabels(
   labels: readonly SpatialLabel[],
   viewport: { width: number; height: number },
   obstacles: readonly LabelBox[],
-  previous: ReadonlyMap<string, number>
+  previous: ReadonlyMap<string, number>,
+  bodies: readonly SpatialLabelBody[] = labels
 ): Map<string, LabelBox & { side: number }> {
   const placed = new Map<string, LabelBox & { side: number }>();
   const occupied = [...obstacles];
@@ -49,12 +54,14 @@ export function placeSpatialLabels(
       const box = { ...candidates[side], width, height, side };
       if (box.x < 8 || box.y < 8 || box.x + width > viewport.width - 8 || box.y + height > viewport.height - 8) continue;
       if (occupied.some(other => overlaps(box, other))) continue;
-      // A contextual name must not cover a more important sphere and look like that sphere's identity.
-      if (labels.some(other => {
+      // A name must not cover an equal or more important body and look like its identity, even when it has no name.
+      if (bodies.some(other => {
         if (other.id === label.id || other.priority > label.priority) return false;
+        const radius = other.clear ?? other.radius;
+        if (radius <= 0) return false;
         const dx = Math.max(box.x, Math.min(other.x, box.x + width)) - other.x;
         const dy = Math.max(box.y, Math.min(other.y, box.y + height)) - other.y;
-        return dx * dx + dy * dy < ((other.clear ?? other.radius) + 2) ** 2;
+        return dx * dx + dy * dy < (radius + 2) ** 2;
       })) continue;
       placed.set(label.id, box);
       occupied.push(box);

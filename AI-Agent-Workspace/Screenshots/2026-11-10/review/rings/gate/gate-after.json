@@ -1,0 +1,56 @@
+{
+  "recordedAt": "2026-11-10T17:47:37.779811+00:00",
+  "exitCode": 0,
+  "frozenSourceChecks": "5 of 5 match",
+  "files": {
+    "reports/e2e/index.html": {
+      "sha256": "658a83a1ffa0d6eb56daecc71853afaaaf06a72ffcc63ab888903a0e513d7ae0",
+      "size": 1918884,
+      "modifiedAt": "2026-11-10T17:46:50.480335+00:00"
+    },
+    "test-results/.last-run.json": {
+      "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903",
+      "size": 45,
+      "modifiedAt": "2026-11-10T17:46:50.489302+00:00"
+    },
+    "dist/explorer/static/index.js": {
+      "sha256": "3818b98d50f99e42a624f88d98c944dd133e3531668af8118987a579b0eb50bd",
+      "size": 1279973,
+      "modifiedAt": "2026-11-10T16:52:29.215293+00:00"
+    },
+    "dist/explorer/explorer-data.json": {
+      "sha256": "9e6bea7119d5101bdc53f0e341dedb506ad0d06c0c746ee209b3950d07c08b58",
+      "size": 7798454,
+      "modifiedAt": "2026-11-10T16:52:28.111453+00:00"
+    },
+    "dist/explorer/samples/estate/static/index.js": {
+      "sha256": "3818b98d50f99e42a624f88d98c944dd133e3531668af8118987a579b0eb50bd",
+      "size": 1279973,
+      "modifiedAt": "2026-11-10T16:52:35.305132+00:00"
+    },
+    "dist/explorer/samples/estate/explorer-data.json": {
+      "sha256": "1d5a5e5e1825284993e11b5c4d663030f2557ae083f3269867dd5f1d1a08aeab",
+      "size": 74189,
+      "modifiedAt": "2026-11-10T16:52:34.171238+00:00"
+    },
+    "AI-Agent-Workspace/tmp/2026-11-10-rings/regression/full-gate.log": {
+      "sha256": "93777695a1d9de74e4963e84d80d656d99b85d273aa368dc794b8112014d9c33",
+      "size": 77032,
+      "modifiedAt": "2026-11-10T17:46:56.891654+00:00"
+    }
+  },
+  "lastRun": {
+    "status": "passed",
+    "failedTests": []
+  },
+  "browserStats": {
+    "total": 359,
+    "expected": 359,
+    "unexpected": 0,
+    "flaky": 0,
+    "skipped": 0,
+    "ok": true
+  },
+  "browserDurationMs": 3187970.1859999998,
+  "reportErrors": []
+}

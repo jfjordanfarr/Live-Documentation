@@ -37,11 +37,11 @@ import { forceSimulation } from "d3-force-3d";
 import { Matrix4, PerspectiveCamera, Vector3 } from "three";
 
 import { spatialNodeStyle } from "./forceGraphAppearance";
-import type { SpatialWrapperUnit } from "./forceGraphBatches";
+import { SPATIAL_RING_OUTER_RADIUS, type SpatialWrapperUnit } from "./forceGraphBatches";
 import { focusedCameraPosition, frameCameraSpheres, screenAnchorTranslation, wheelZoomCamera, type CameraPoint } from "./forceGraphCamera";
 import { directoryNodeId, labelNamesOf, spatialGraphOf, type SpatialGraphData, type SpatialGraphNode, type SpatialLinkKind } from "./forceGraphData";
 import { emphasizedSphere, emphasizedWireAlpha, pairKey } from "./forceGraphEmphasis";
-import { placeSpatialLabels, type SpatialLabel, type LabelBox } from "./forceGraphLabels";
+import { placeSpatialLabels, type SpatialLabel, type SpatialLabelBody, type LabelBox } from "./forceGraphLabels";
 import { linkPulls, motionForce, placeNewSpheres, spatialNodeRadius, symbolCountOf, type MotionForce, type MotionStart, type Placed } from "./forceGraphLayout";
 import { SPATIAL_DRAG_SLOP, SpatialRenderer } from "./forceGraphRenderer";
 import { nextRevealCount, REVEAL, revealCorresponding, revealLayers } from "./forceGraphReveal";
@@ -367,6 +367,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   };
   /** Whether a node stands wrapped now: wrapping, and a group's seed or a directory shell with its hull built. */
   const isWrapped = (id: string): boolean => wrapping() && wrapped.has(id) && !!bodies.get(wrapped.get(id)!)?.hull;
+  /** A ring marks connections beyond the picture, unless a wrapper already carries that meaning. */
+  const hasRing = (id: string): boolean => !!scopeBeyond.get(id) && !isWrapped(id);
   /**
    * Whether a shown sphere is dimmed: at the last hop shown, or an unreached group's seed one past it; never at hop 0. A
    * directory shell and the files a pop shows stand one past the hops too, and are never dimmed for it (2026-11-06): the
@@ -660,28 +662,36 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     if (nameState === placedNames) return;
     placedNames = nameState;
     const candidates: SpatialLabel[] = [];
+    const labelBodies: SpatialLabelBody[] = [];
     const measuring: Array<Omit<SpatialLabel, "width" | "height"> & { label: HTMLButtonElement; name: string }> = [];
     const buttons = new Map<string, HTMLButtonElement>();
     // A directory's framing scope includes its entire subtree, but its deep descendants are not all label priorities.
     const projection = new Matrix4().multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
     const point = new Vector3(), projected = new Vector3(), edge = new Vector3();
     const right = new Vector3(1, 0, 0).applyQuaternion(camera.quaternion);
+    const sphereScale = spatialSizeScale(instance.controls().target, camera, frame.height, state.tuning.forceGraph.nodeZoomResistance);
     for (const node of instance.graphData().nodes) {
       if (!Number.isFinite(node.x)) continue;
       point.set(node.x!, node.y!, node.z);
       projected.copy(point).applyMatrix4(projection);
       const x = (projected.x + 1) * frame.width / 2, y = (1 - projected.y) * frame.height / 2;
-      if (projected.z < -1 || projected.z > 1 || x < 0 || y < 0 || x > frame.width || y > frame.height) continue;
+      if (projected.z < -1 || projected.z > 1) continue;
       edge.copy(point).addScaledVector(right, spatialNodeRadius(node, state.tuning.forceGraph)).applyMatrix4(projection);
       const perspectiveRadius = Math.abs(edge.x - projected.x) * frame.width / 2;
       const basePriority = labelPriorities.get(node.id) ?? 5;
       const priority = node.id === focusedId ? 0 : node.id === hoveredId || node.id === inspectedActionId ? 1 : basePriority;
+      // A shell is drawn at its body's size, whatever the zoom's resistance does to a sphere. A ring belongs to the
+      // same visible identity and extends beyond its sphere; use the renderer's outer edge for both label clearances.
+      const radius = (node.shellFiles !== undefined ? perspectiveRadius
+        : perspectiveRadius * sphereScale)
+        * (hasRing(node.id) ? SPATIAL_RING_OUTER_RADIUS : 1);
+      // Bodies reserve room even without an eligible name, including a body whose edge enters the viewport.
+      if (x + radius < 0 || y + radius < 0 || x - radius > frame.width || y - radius > frame.height) continue;
+      labelBodies.push({ id: node.id, x, y, radius, priority });
+      if (x < 0 || y < 0 || x > frame.width || y > frame.height) continue;
       // Disclosure follows proximity, at the tuning's size (2026-11-02; six pixels before, which named far too much):
       // resistance changes the sphere's outline, not when a name becomes useful.
       if (priority >= 5 && perspectiveRadius < state.tuning.forceGraph.nameAt) continue;
-      // A shell is drawn at its body's size, whatever the zoom's resistance does to a sphere.
-      const radius = node.shellFiles !== undefined ? perspectiveRadius
-        : perspectiveRadius * spatialSizeScale(instance.controls().target, camera, frame.height, state.tuning.forceGraph.nodeZoomResistance);
       let label = node.id === focusedId ? focusLabel : nameLabels.get(node.id);
       if (!label) {
         label = document.createElement("button");
@@ -776,7 +786,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       }
       candidates.push({ ...candidate, width: size.width, height: size.height });
     }
-    const placements = placeSpatialLabels(candidates, { width: frame.width, height: frame.height }, obstacles, labelSides);
+    const placements = placeSpatialLabels(candidates, { width: frame.width, height: frame.height }, obstacles, labelSides, labelBodies);
     labelSides = new Map([...placements].map(([id, box]) => [id, box.side]));
     for (const label of [focusLabel, ...nameLabels.values()]) {
       const id = label.dataset.nodeId ?? "";
@@ -1698,7 +1708,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       // choice of 2026-11-02, B over A, the frontier's dimming kept and the ring saying where there is more. The ring
       // keeps its strength at the frontier, where it is the cue, and fades with the hover's attention.
       forceGraphInstance?.nodeRing((node: ForceGraphNode) => {
-        if (!scopeBeyond.get(node.id) || isWrapped(node.id)) return null;
+        if (!hasRing(node.id)) return null;
         const alpha = attention ? (attention.has(node.id) ? .85 : .15) : .85;
         return emphasizedSphere(spatialNodeStyle(node.archetype).color, alpha, changedNodes.has(node.id), emphasis);
       });

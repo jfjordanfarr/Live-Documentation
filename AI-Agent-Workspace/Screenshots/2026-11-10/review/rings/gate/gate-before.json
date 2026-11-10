@@ -1,0 +1,40 @@
+{
+  "beforeGateAt": "2026-11-10T16:42:25.753405+00:00",
+  "port8916Unused": true,
+  "node": "v22.22.0",
+  "npm": "10.9.4",
+  "playwright": "1.58.2",
+  "HEAD": "81ade1c6eae16c90fe6797fc4f297da69746655d",
+  "files": {
+    "reports/e2e/index.html": {
+      "sha256": "8f1104f39dedd399ebfa7a329b116eae69a9605b6f8f53724b706f3004198c3a",
+      "size": 1903884,
+      "modifiedAt": "2026-11-09T07:21:38.555397+00:00"
+    },
+    "test-results/.last-run.json": {
+      "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903",
+      "size": 45,
+      "modifiedAt": "2026-11-09T07:21:38.563392+00:00"
+    },
+    "dist/explorer/static/index.js": {
+      "sha256": "7e1654311f63245fb1926c2202d03e6e67b6a1f64240e2a0875e2338c5d7ae48",
+      "size": 1279780,
+      "modifiedAt": "2026-11-10T15:01:54.649098+00:00"
+    },
+    "dist/explorer/explorer-data.json": {
+      "sha256": "01d8dc9049422680195870bc68f9da3a031c9c0622b17991306e4b8ec98d9736",
+      "size": 7792742,
+      "modifiedAt": "2026-11-10T15:01:53.540184+00:00"
+    },
+    "dist/explorer/samples/estate/static/index.js": {
+      "sha256": "7e1654311f63245fb1926c2202d03e6e67b6a1f64240e2a0875e2338c5d7ae48",
+      "size": 1279780,
+      "modifiedAt": "2026-11-10T14:43:28.110732+00:00"
+    },
+    "dist/explorer/samples/estate/explorer-data.json": {
+      "sha256": "5066a9efaa793165d6d563aeeef547f3f889d8b14a7b94f1eabcd13f708ed9d2",
+      "size": 74189,
+      "modifiedAt": "2026-11-10T14:43:27.264336+00:00"
+    }
+  }
+}

@@ -1,0 +1,940 @@
+{
+  "recordedAt": "2026-11-10T17:56:12.713Z",
+  "verifiedManifestEntries": 53,
+  "verifiedFrozenSources": 5,
+  "verifiedSourceCaptures": 2,
+  "scope": "AI-Agent-Workspace/tmp/2026-11-10-rings",
+  "notes": [
+    "Only the named task scratch directory is removed after preservation and review.",
+    "The final reports/e2e and test-results outputs remain in their usual ignored locations.",
+    "The owner server on 8900 remains running; task servers 8915 and 8917 are stopped."
+  ],
+  "files": [
+    {
+      "file": "candidate-built.mjs",
+      "bytes": 40155,
+      "sha256": "91a249b4ad192e019ca5aa72ca12db5ff451d8c2774bfdec952b7eecb000468a",
+      "reason": "derived esbuild entry"
+    },
+    {
+      "file": "candidate-replay.mjs",
+      "bytes": 5763,
+      "sha256": "c6fbc99f5d2ffb29b3b3c9a7f5a745bf1fb035679b0e7441d126304b96fdf256",
+      "preservedAs": [
+        "root-replay.mjs.gz (decompressed)"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "candidate-site/explorer-data.json",
+      "bytes": 7796721,
+      "sha256": "a6595376eef509499df4f71bbaf435ab12574c7253ea425294e5ca8005a9861b",
+      "reason": "rebuildable candidate bundle"
+    },
+    {
+      "file": "candidate-site/explorer-history.json",
+      "bytes": 541475,
+      "sha256": "2fa1bba5b6bc340fb80a8ca7025da3de981b51b62ea49c776b2a1d80d0e46c54",
+      "reason": "rebuildable candidate bundle"
+    },
+    {
+      "file": "candidate-site/index.html",
+      "bytes": 25826,
+      "sha256": "1fd0dde721c213cffedaf029510986c2d5ed65f0d8bf515906e5ea82fbfc0ac3",
+      "reason": "rebuildable candidate bundle"
+    },
+    {
+      "file": "candidate-site/samples/estate/explorer-data.json",
+      "bytes": 74189,
+      "sha256": "393deb08b2b61e262d30f57f85749ba1dcf63e7bc4400679c6762319d2f48794",
+      "reason": "rebuildable candidate bundle"
+    },
+    {
+      "file": "candidate-site/samples/estate/index.html",
+      "bytes": 25826,
+      "sha256": "1fd0dde721c213cffedaf029510986c2d5ed65f0d8bf515906e5ea82fbfc0ac3",
+      "reason": "rebuildable candidate bundle"
+    },
+    {
+      "file": "candidate-site/samples/estate/static/index.js",
+      "bytes": 1279973,
+      "sha256": "3818b98d50f99e42a624f88d98c944dd133e3531668af8118987a579b0eb50bd",
+      "reason": "rebuildable candidate bundle"
+    },
+    {
+      "file": "candidate-site/samples/estate/static/index.js.map",
+      "bytes": 5994269,
+      "sha256": "64b6e194f0b951d2110ca20dcfed8151cdc968e6232a13f024b57718b5efbe34",
+      "reason": "rebuildable candidate bundle"
+    },
+    {
+      "file": "candidate-site/samples/estate/static/styles/graph.css",
+      "bytes": 3417,
+      "sha256": "39ebf6f97139ddba55ef2c6842f667680994053261e82322395e588b1b25ee70",
+      "reason": "rebuildable candidate bundle"
+    },
+    {
+      "file": "candidate-site/samples/estate/static/styles/history.css",
+      "bytes": 9054,
+      "sha256": "98c6beca638fe27de2b530886a2f7c3dcdb99e5427e3d213d559e424d9130a97",
+      "reason": "rebuildable candidate bundle"
+    },
+    {
+      "file": "candidate-site/samples/estate/static/styles/local.css",
+      "bytes": 28549,
+      "sha256": "0301239a609c9ec0758a84e1cd4faf37b5ab7cd362a4a4f2d0b8a4e6e26a75d4",
+      "reason": "rebuildable candidate bundle"
+    },
+    {
+      "file": "candidate-site/samples/estate/static/styles/reading.css",
+      "bytes": 36181,
+      "sha256": "c922861177037211171dcd066c02f91cb18d9175b4a6c33aeffefa1f2dfeb78d",
+      "reason": "rebuildable candidate bundle"
+    },
+    {
+      "file": "candidate-site/samples/estate/static/styles/search.css",
+      "bytes": 9599,
+      "sha256": "27ab1094f6a76051a1cf8cc96579b5abf715dda9f1cf466807d238815e4ed850",
+      "reason": "rebuildable candidate bundle"
+    },
+    {
+      "file": "candidate-site/samples/estate/static/styles/shell.css",
+      "bytes": 28163,
+      "sha256": "1810a891e640f0849e9652ebcfafa10244f29855ae6882accd12e661342db824",
+      "reason": "rebuildable candidate bundle"
+    },
+    {
+      "file": "candidate-site/samples/estate/static/styles/sources.css",
+      "bytes": 9871,
+      "sha256": "8ffa8a858bb8e4c7aa9e88dae7a0698ae399d7868d3d84150414d9957cafe598",
+      "reason": "rebuildable candidate bundle"
+    },
+    {
+      "file": "candidate-site/samples/estate/static/styles/theme.css",
+      "bytes": 5845,
+      "sha256": "b9e614b11345f7ca09dc9ee099a652c9ae7d126b66ddcabcea25f6e9443e9df1",
+      "reason": "rebuildable candidate bundle"
+    },
+    {
+      "file": "candidate-site/samples/estate/static/styles/view-shared.css",
+      "bytes": 13009,
+      "sha256": "6d955b2e6a1437a4f7ebbea2039abeb6a0eab89b28c5a2e14065f86ef81d1f02",
+      "reason": "rebuildable candidate bundle"
+    },
+    {
+      "file": "candidate-site/samples/estate/static/styles/world.css",
+      "bytes": 11349,
+      "sha256": "af56828b919544503939185df389e6e39ae9fbc76e7296f42fed6c90523fc0fc",
+      "reason": "rebuildable candidate bundle"
+    },
+    {
+      "file": "candidate-site/samples/estate/static/styles.css",
+      "bytes": 363,
+      "sha256": "13c31d49feead56430fc56b11c9c87eddc69edf6508ec5f16d73610d6d957643",
+      "reason": "rebuildable candidate bundle"
+    },
+    {
+      "file": "candidate-site/static/index.js",
+      "bytes": 1279973,
+      "sha256": "3818b98d50f99e42a624f88d98c944dd133e3531668af8118987a579b0eb50bd",
+      "reason": "rebuildable candidate bundle"
+    },
+    {
+      "file": "candidate-site/static/index.js.map",
+      "bytes": 5994269,
+      "sha256": "64b6e194f0b951d2110ca20dcfed8151cdc968e6232a13f024b57718b5efbe34",
+      "reason": "rebuildable candidate bundle"
+    },
+    {
+      "file": "candidate-site/static/styles/graph.css",
+      "bytes": 3417,
+      "sha256": "39ebf6f97139ddba55ef2c6842f667680994053261e82322395e588b1b25ee70",
+      "reason": "rebuildable candidate bundle"
+    },
+    {
+      "file": "candidate-site/static/styles/history.css",
+      "bytes": 9054,
+      "sha256": "98c6beca638fe27de2b530886a2f7c3dcdb99e5427e3d213d559e424d9130a97",
+      "reason": "rebuildable candidate bundle"
+    },
+    {
+      "file": "candidate-site/static/styles/local.css",
+      "bytes": 28549,
+      "sha256": "0301239a609c9ec0758a84e1cd4faf37b5ab7cd362a4a4f2d0b8a4e6e26a75d4",
+      "reason": "rebuildable candidate bundle"
+    },
+    {
+      "file": "candidate-site/static/styles/reading.css",
+      "bytes": 36181,
+      "sha256": "c922861177037211171dcd066c02f91cb18d9175b4a6c33aeffefa1f2dfeb78d",
+      "reason": "rebuildable candidate bundle"
+    },
+    {
+      "file": "candidate-site/static/styles/search.css",
+      "bytes": 9599,
+      "sha256": "27ab1094f6a76051a1cf8cc96579b5abf715dda9f1cf466807d238815e4ed850",
+      "reason": "rebuildable candidate bundle"
+    },
+    {
+      "file": "candidate-site/static/styles/shell.css",
+      "bytes": 28163,
+      "sha256": "1810a891e640f0849e9652ebcfafa10244f29855ae6882accd12e661342db824",
+      "reason": "rebuildable candidate bundle"
+    },
+    {
+      "file": "candidate-site/static/styles/sources.css",
+      "bytes": 9871,
+      "sha256": "8ffa8a858bb8e4c7aa9e88dae7a0698ae399d7868d3d84150414d9957cafe598",
+      "reason": "rebuildable candidate bundle"
+    },
+    {
+      "file": "candidate-site/static/styles/theme.css",
+      "bytes": 5845,
+      "sha256": "b9e614b11345f7ca09dc9ee099a652c9ae7d126b66ddcabcea25f6e9443e9df1",
+      "reason": "rebuildable candidate bundle"
+    },
+    {
+      "file": "candidate-site/static/styles/view-shared.css",
+      "bytes": 13009,
+      "sha256": "6d955b2e6a1437a4f7ebbea2039abeb6a0eab89b28c5a2e14065f86ef81d1f02",
+      "reason": "rebuildable candidate bundle"
+    },
+    {
+      "file": "candidate-site/static/styles/world.css",
+      "bytes": 11349,
+      "sha256": "af56828b919544503939185df389e6e39ae9fbc76e7296f42fed6c90523fc0fc",
+      "reason": "rebuildable candidate bundle"
+    },
+    {
+      "file": "candidate-site/static/styles.css",
+      "bytes": 363,
+      "sha256": "13c31d49feead56430fc56b11c9c87eddc69edf6508ec5f16d73610d6d957643",
+      "reason": "rebuildable candidate bundle"
+    },
+    {
+      "file": "connections-Gateway-open.png",
+      "bytes": 115603,
+      "sha256": "570a51b5accd9bd8b22aef6ac714e62bd1d8108114489c3173b15568e1b0b31f",
+      "reason": "unselected intermediate picture; relevant finding retained in named pictures and complete observation journals/motion"
+    },
+    {
+      "file": "connections-Gateway-rewrapped.png",
+      "bytes": 121973,
+      "sha256": "40542d3d5aebabb8188a08d84fdc8177497467994a6877648a808c298922bb39",
+      "preservedAs": [
+        "connections-Gateway-rewrapped.png"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "connections-Hub-open.png",
+      "bytes": 118476,
+      "sha256": "fc393ddad8c74afa1c9e21de9dfc8c08850965f35d082cae3d057cd856c0c418",
+      "reason": "unselected intermediate picture; relevant finding retained in named pictures and complete observation journals/motion"
+    },
+    {
+      "file": "connections-Hub-rewrapped.png",
+      "bytes": 119294,
+      "sha256": "d3e9973304018a48f6adef0a26b9717296240125f14f275ddd7b04acb6308640",
+      "preservedAs": [
+        "connections-Hub-rewrapped.png"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "final-links.ts",
+      "bytes": 899,
+      "sha256": "1551d556dd14f5a30355120b956ff7680f28fc736cf4e08118b74dabee9a7997",
+      "reason": "task probe/metadata; adopted findings and final proof retained in record, manifests and canonical scripts"
+    },
+    {
+      "file": "handoff-labels.png",
+      "bytes": 232503,
+      "sha256": "c9d15749d97262e6e36741b2db8d404fff7232b7f861984af52dba7fb5c58124",
+      "preservedAs": [
+        "handoff-labels.png"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "handoff.cjs",
+      "bytes": 1221,
+      "sha256": "27937440a8c2d50c9ab6703a9f075f3d4e7b9280896a8451ede630a3442be856",
+      "preservedAs": [
+        "handoff.cjs.gz (decompressed)"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "handoff.json",
+      "bytes": 825,
+      "sha256": "f6718e3e4ccd8a3d9a62b3428bfbbffcb750f48d0df83164cb594c78757e4217",
+      "preservedAs": [
+        "handoff.json"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "hover-Gateway.png",
+      "bytes": 110307,
+      "sha256": "f733bb98b5d4c9c3549e58f1c453a20b383a9243f90f8fd9c5cba12041df87c2",
+      "preservedAs": [
+        "hover-Gateway.png"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "hover-Hub.png",
+      "bytes": 112282,
+      "sha256": "1cd4137cb19dcb8010109b19dee2fc32a02e66baa1162cf746eacdb36ca0099a",
+      "reason": "unselected intermediate picture; relevant finding retained in named pictures and complete observation journals/motion"
+    },
+    {
+      "file": "label-candidate/after-connections-ending.png",
+      "bytes": 119874,
+      "sha256": "2d54f13b1fdccd943850fa8e414317afa578788d3b87b9cecaa9119cceca0534",
+      "preservedAs": [
+        "after-connections-ending.png",
+        "root-recording-ending.png"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "label-candidate/after-hover-Gateway.png",
+      "bytes": 110457,
+      "sha256": "2bfa286ef3d37a22f0afd90fd2b901a3c3005c4acc34ed12ebac059558d122ac",
+      "preservedAs": [
+        "after-hover-Gateway.png"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "label-candidate/after-hover-Hub.png",
+      "bytes": 112411,
+      "sha256": "40c5355d92f281da0bbfcee9fd2548df6e56fc0dde9dccd6ae361223f048c4f9",
+      "preservedAs": [
+        "after-hover-Hub.png"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "label-candidate/after-journey.webm",
+      "bytes": 4083229,
+      "sha256": "4d78578a3e38b2d82e7ee523e2237cc9eea03945d060dd389814d3e6170f5b52",
+      "preservedAs": [
+        "after-journey.webm"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "label-candidate/after-main-structure-start.png",
+      "bytes": 188014,
+      "sha256": "8e72bb96d93314413b9dea0305ef6fc8b512dca83040645edab053f90c8dc07a",
+      "preservedAs": [
+        "after-main-structure-start.png"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "label-candidate/after-structure-open.png",
+      "bytes": 137962,
+      "sha256": "c4729d033078ee9f4e34953b530802fd20801ef3754aff75f872669247fa45cc",
+      "reason": "unselected intermediate picture; relevant finding retained in named pictures and complete observation journals/motion"
+    },
+    {
+      "file": "label-candidate/after-structure-return.png",
+      "bytes": 137967,
+      "sha256": "da25f5389190d360e5f8eababeb7ef4709a8c7082107686f3d4b0fc22509038d",
+      "reason": "unselected intermediate picture; relevant finding retained in named pictures and complete observation journals/motion"
+    },
+    {
+      "file": "label-candidate/after-structure-start.png",
+      "bytes": 160014,
+      "sha256": "01689dd665191538e866a188f2cf8b19f9a9349441eeabab8d94b49b6db89465",
+      "reason": "unselected intermediate picture; relevant finding retained in named pictures and complete observation journals/motion"
+    },
+    {
+      "file": "label-candidate/before-connections-ending.png",
+      "bytes": 119704,
+      "sha256": "0fca1783273a1e81bfcba2fbc49df64f11b312ce899ba0e1285aefa9caaa8aa9",
+      "preservedAs": [
+        "recording-ending.png",
+        "before-connections-ending.png",
+        "regression/baseline-failure.png"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "label-candidate/before-hover-Gateway.png",
+      "bytes": 110307,
+      "sha256": "f733bb98b5d4c9c3549e58f1c453a20b383a9243f90f8fd9c5cba12041df87c2",
+      "preservedAs": [
+        "hover-Gateway.png"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "label-candidate/before-hover-Hub.png",
+      "bytes": 112282,
+      "sha256": "1cd4137cb19dcb8010109b19dee2fc32a02e66baa1162cf746eacdb36ca0099a",
+      "reason": "unselected intermediate picture; relevant finding retained in named pictures and complete observation journals/motion"
+    },
+    {
+      "file": "label-candidate/before-journey.webm",
+      "bytes": 4782084,
+      "sha256": "ab5fd5045007e7c3bb86363167b4723a09b7aae74ecbe31740f66cb3350c755b",
+      "preservedAs": [
+        "before-journey.webm"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "label-candidate/before-main-structure-start.png",
+      "bytes": 188703,
+      "sha256": "0f61f866120f947e4a7c4808782ac40121792cdaa9a222603706c0da030c73c3",
+      "preservedAs": [
+        "before-main-structure-start.png"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "label-candidate/before-structure-open.png",
+      "bytes": 137962,
+      "sha256": "c4729d033078ee9f4e34953b530802fd20801ef3754aff75f872669247fa45cc",
+      "reason": "unselected intermediate picture; relevant finding retained in named pictures and complete observation journals/motion"
+    },
+    {
+      "file": "label-candidate/before-structure-return.png",
+      "bytes": 137967,
+      "sha256": "da25f5389190d360e5f8eababeb7ef4709a8c7082107686f3d4b0fc22509038d",
+      "reason": "unselected intermediate picture; relevant finding retained in named pictures and complete observation journals/motion"
+    },
+    {
+      "file": "label-candidate/before-structure-start.png",
+      "bytes": 160014,
+      "sha256": "01689dd665191538e866a188f2cf8b19f9a9349441eeabab8d94b49b6db89465",
+      "reason": "unselected intermediate picture; relevant finding retained in named pictures and complete observation journals/motion"
+    },
+    {
+      "file": "label-candidate/comparison.json",
+      "bytes": 1211,
+      "sha256": "fc1732a804130368a8a384e1914f6b820ac8839ac97a67eecd0f4edf469ea45b",
+      "preservedAs": [
+        "comparison.json"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "label-candidate/motion/a27fa9d8f07ed296e1a9b953a5dae9da.webm",
+      "bytes": 4782084,
+      "sha256": "ab5fd5045007e7c3bb86363167b4723a09b7aae74ecbe31740f66cb3350c755b",
+      "preservedAs": [
+        "before-journey.webm"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "label-candidate/motion/e10d65069336f72ed369e40f83309035.webm",
+      "bytes": 4083229,
+      "sha256": "4d78578a3e38b2d82e7ee523e2237cc9eea03945d060dd389814d3e6170f5b52",
+      "preservedAs": [
+        "after-journey.webm"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "label-candidate/readings.json",
+      "bytes": 112243,
+      "sha256": "7386a98a0481f548e19b814043252030cdc0b7fd5cd18baef035309a95301498",
+      "preservedAs": [
+        "readings.json"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "label-candidate-bundled.mjs",
+      "bytes": 40269,
+      "sha256": "e3880d918b63562686a4c6288d19eb95d78a8e1d43e7cc6990b577d367d2fd55",
+      "reason": "derived esbuild entry"
+    },
+    {
+      "file": "label-candidate.log",
+      "bytes": 2720,
+      "sha256": "eef6be00f8431776cdb3670f07cb99edcbfdeaff1536816425caf56c0983ad3c",
+      "reason": "task probe/metadata; adopted findings and final proof retained in record, manifests and canonical scripts"
+    },
+    {
+      "file": "label-candidate.mjs",
+      "bytes": 5499,
+      "sha256": "f6310dd2e22e9c1a29bb79ab1b41c1f36316f775826cf6133d7663bd3a86e5aa",
+      "preservedAs": [
+        "label-candidate.mjs.gz (decompressed)"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "label-impact-after.json",
+      "bytes": 1504,
+      "sha256": "fb0a102331d8031c3269ec5d7851e1d2d55906334fb48d07be34c9f44be00078",
+      "reason": "task probe/metadata; adopted findings and final proof retained in record, manifests and canonical scripts"
+    },
+    {
+      "file": "label-impact.txt",
+      "bytes": 1504,
+      "sha256": "fb0a102331d8031c3269ec5d7851e1d2d55906334fb48d07be34c9f44be00078",
+      "reason": "task probe/metadata; adopted findings and final proof retained in record, manifests and canonical scripts"
+    },
+    {
+      "file": "recording-ending.png",
+      "bytes": 119704,
+      "sha256": "0fca1783273a1e81bfcba2fbc49df64f11b312ce899ba0e1285aefa9caaa8aa9",
+      "preservedAs": [
+        "recording-ending.png",
+        "before-connections-ending.png",
+        "regression/baseline-failure.png"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "regression/adjacent-unit.log",
+      "bytes": 2075,
+      "sha256": "1511d28f109c5bdcc7c4c2f80cde7afaee0beec92323e60f2691b4d892bfc6e1",
+      "preservedAs": [
+        "regression/adjacent-unit.log.gz (decompressed)"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "regression/baseline-connections-ending-geometry.json",
+      "bytes": 8754,
+      "sha256": "d8a89b0937a1db87cddae3fd17ec45011bdae5d118b8f92bbe8f59b6c6842b36",
+      "preservedAs": [
+        "regression/baseline-connections-ending-geometry.json"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "regression/baseline-final-report.json",
+      "bytes": 23506,
+      "sha256": "f9f663df0cb1bec8330e10f5c295f6815fffe925e7799b132c29b594bfb0f41b",
+      "preservedAs": [
+        "regression/baseline-final-report.json.gz (decompressed)"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "regression/baseline-final-results/.last-run.json",
+      "bytes": 96,
+      "sha256": "acc74cf5f12478a42d774f374863bcd93070fb3831bdc632e006f99b82255f9d",
+      "reason": "task probe/metadata; adopted findings and final proof retained in record, manifests and canonical scripts"
+    },
+    {
+      "file": "regression/baseline-final-results/force-graph-identity-names-24f1e-ective-journey-and-a-rewrap-chromium/error-context.md",
+      "bytes": 8572,
+      "sha256": "2821c11dd648555b8295ad61aa1fa61e9ce463b00619706411514d3162f734b8",
+      "preservedAs": [
+        "regression/baseline-error-context.md.gz (decompressed)"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "regression/baseline-final-results/force-graph-identity-names-24f1e-ective-journey-and-a-rewrap-chromium/test-failed-1.png",
+      "bytes": 119704,
+      "sha256": "0fca1783273a1e81bfcba2fbc49df64f11b312ce899ba0e1285aefa9caaa8aa9",
+      "preservedAs": [
+        "recording-ending.png",
+        "before-connections-ending.png",
+        "regression/baseline-failure.png"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "regression/baseline-final-results/force-graph-identity-names-24f1e-ective-journey-and-a-rewrap-chromium/trace.zip",
+      "bytes": 4337256,
+      "sha256": "697008cbd5d2e7a663cd629122e601019acd5e7054d7679f5509c64faacfbba5",
+      "preservedAs": [
+        "regression/baseline-trace.zip"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "regression/baseline-final.log",
+      "bytes": 4772,
+      "sha256": "f702a2e36557ba553615eadce51c71b7b3a2450817e91fd9422f327fbb559f15",
+      "preservedAs": [
+        "regression/baseline-final.log.gz (decompressed)"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "regression/baseline-index.js",
+      "bytes": 1279780,
+      "sha256": "7e1654311f63245fb1926c2202d03e6e67b6a1f64240e2a0875e2338c5d7ae48",
+      "preservedAs": [
+        "regression/baseline-index.js.gz (decompressed)"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "regression/baseline-proxy.mjs",
+      "bytes": 685,
+      "sha256": "bfe05305ae25be0e2790bd2919a3f7818f98a297880fdf04fb6661fa9a8d83ad",
+      "preservedAs": [
+        "regression/baseline-proxy.mjs.gz (decompressed)"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "regression/baseline-results/.last-run.json",
+      "bytes": 96,
+      "sha256": "acc74cf5f12478a42d774f374863bcd93070fb3831bdc632e006f99b82255f9d",
+      "reason": "superseded by strengthened focused control and complete gate"
+    },
+    {
+      "file": "regression/baseline-results/force-graph-identity-names-24f1e-ective-journey-and-a-rewrap-chromium/error-context.md",
+      "bytes": 8572,
+      "sha256": "2821c11dd648555b8295ad61aa1fa61e9ce463b00619706411514d3162f734b8",
+      "preservedAs": [
+        "regression/baseline-error-context.md.gz (decompressed)"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "regression/baseline-results/force-graph-identity-names-24f1e-ective-journey-and-a-rewrap-chromium/test-failed-1.png",
+      "bytes": 119704,
+      "sha256": "0fca1783273a1e81bfcba2fbc49df64f11b312ce899ba0e1285aefa9caaa8aa9",
+      "preservedAs": [
+        "recording-ending.png",
+        "before-connections-ending.png",
+        "regression/baseline-failure.png"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "regression/baseline-results/force-graph-identity-names-24f1e-ective-journey-and-a-rewrap-chromium/trace.zip",
+      "bytes": 4398742,
+      "sha256": "3df62a833524a2ffa5838273d0bae6f1f7b034799c49df4c91673ab40c3a41be",
+      "reason": "superseded by strengthened focused control and complete gate"
+    },
+    {
+      "file": "regression/baseline.log",
+      "bytes": 4654,
+      "sha256": "31aec3ded796d8e84f03bdf6aa469c7b4891405d4d58874ad4c1bbe965ec2bf6",
+      "reason": "superseded by strengthened focused control and complete gate"
+    },
+    {
+      "file": "regression/candidate-connections-ending-geometry.json",
+      "bytes": 8730,
+      "sha256": "9cd22d1479188e6a169d568bf940c2f9f43eecffb240ac675258854a468c7033",
+      "preservedAs": [
+        "regression/candidate-connections-ending-geometry.json",
+        "gate/gate-connections-ending-geometry.json"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "regression/candidate-final-report.json",
+      "bytes": 27036,
+      "sha256": "5d956bb694f8e020fcd0eb039a21b662ad294b7bfc0155b182c5373e09e59c03",
+      "preservedAs": [
+        "regression/candidate-final-report.json.gz (decompressed)"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "regression/candidate-final-results/.last-run.json",
+      "bytes": 45,
+      "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903",
+      "preservedAs": [
+        "gate/last-run.json"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "regression/candidate-final.log",
+      "bytes": 599,
+      "sha256": "4dc80fbd0c895c3dfaff82f57406a820f14380c4d0cfa8772333f69e4c9efff3",
+      "preservedAs": [
+        "regression/candidate-final.log.gz (decompressed)"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "regression/candidate-gateway-rewrapped-geometry.json",
+      "bytes": 8739,
+      "sha256": "3c91a6b88fffb71e081387c9ab1a4c34aa6dc5f7bf85be512245bb2011feb22f",
+      "preservedAs": [
+        "regression/candidate-gateway-rewrapped-geometry.json",
+        "gate/gate-gateway-rewrapped-geometry.json"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "regression/candidate-results/.last-run.json",
+      "bytes": 45,
+      "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903",
+      "preservedAs": [
+        "gate/last-run.json"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "regression/candidate.log",
+      "bytes": 1429,
+      "sha256": "8f3e5b94822f993c10d8d3cff61de4dab4810cfee997eb6f656ffdb1ab3e3170",
+      "reason": "superseded by strengthened focused control and complete gate"
+    },
+    {
+      "file": "regression/final-source.sha256",
+      "bytes": 593,
+      "sha256": "b023d0f9c572e11c69e9bba06d8bc84eb7f918d1fd8fb5f3ad1c090e027539f4",
+      "preservedAs": [
+        "regression/final-source.sha256"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "regression/full-gate.log",
+      "bytes": 77032,
+      "sha256": "93777695a1d9de74e4963e84d80d656d99b85d273aa368dc794b8112014d9c33",
+      "preservedAs": [
+        "gate/full-gate.log.gz (decompressed)"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "regression/gate-after.json",
+      "bytes": 1903,
+      "sha256": "69e7a84a87c6a3ea656e88d8081e57293a5b8189aa61aae4d7d593dae18d44ef",
+      "preservedAs": [
+        "gate/gate-after.json"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "regression/gate-before.json",
+      "bytes": 1489,
+      "sha256": "6a71da19f5765a2bb1f6690b89da2826b594396461812df203f74da3b8617551",
+      "preservedAs": [
+        "gate/gate-before.json"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "regression/gate-browser-summary.json",
+      "bytes": 1175,
+      "sha256": "30c5586bc1a639415106023a0693285e4455904f1e9881deb2a2e1d4416fdee9",
+      "preservedAs": [
+        "gate/gate-browser-summary.json"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "regression/gate-connections-ending-geometry.json",
+      "bytes": 8730,
+      "sha256": "9cd22d1479188e6a169d568bf940c2f9f43eecffb240ac675258854a468c7033",
+      "preservedAs": [
+        "regression/candidate-connections-ending-geometry.json",
+        "gate/gate-connections-ending-geometry.json"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "regression/gate-gateway-rewrapped-geometry.json",
+      "bytes": 8739,
+      "sha256": "3c91a6b88fffb71e081387c9ab1a4c34aa6dc5f7bf85be512245bb2011feb22f",
+      "preservedAs": [
+        "regression/candidate-gateway-rewrapped-geometry.json",
+        "gate/gate-gateway-rewrapped-geometry.json"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "regression/gate-served-hashes.json",
+      "bytes": 937,
+      "sha256": "049ecc313d9990578276fc4b639e91abaaca720693fd30efe94d2d1aa35a9cfe",
+      "preservedAs": [
+        "gate/gate-served-hashes.json"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "regression/generate-final.log",
+      "bytes": 532,
+      "sha256": "456951024655475c94e644b7be498aa9dbd5eac4cbb452e7e68eace0dfa4451f",
+      "preservedAs": [
+        "gate/generate-final.log.gz (decompressed)"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "regression/handoff-inventory.json",
+      "bytes": 2192,
+      "sha256": "62458be66f012ff42eb9b1a43c8c51b85bba1a2e5d13bf4311719b760f840fab",
+      "reason": "task probe/metadata; adopted findings and final proof retained in record, manifests and canonical scripts"
+    },
+    {
+      "file": "regression/label-impact-final.json",
+      "bytes": 1504,
+      "sha256": "fb0a102331d8031c3269ec5d7851e1d2d55906334fb48d07be34c9f44be00078",
+      "reason": "task probe/metadata; adopted findings and final proof retained in record, manifests and canonical scripts"
+    },
+    {
+      "file": "regression/runtime-before.txt",
+      "bytes": 442,
+      "sha256": "c65aff5c841316890f5cc1be308ef20e2c6eaca033b940101383873bc7045d73",
+      "preservedAs": [
+        "regression/runtime-before.txt"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "regression/served-hashes.json",
+      "bytes": 796,
+      "sha256": "29f492985c40d1cb8004168b7b25489d6a2bd0011dd90e197a88d1edef117aa6",
+      "preservedAs": [
+        "regression/served-hashes.json"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "replay-built.mjs",
+      "bytes": 40080,
+      "sha256": "c02cf64400c8d03015a69397d57cdb4c4fed2b33c7f3127480083efee92a5648",
+      "reason": "derived esbuild entry"
+    },
+    {
+      "file": "replay.json",
+      "bytes": 125306,
+      "sha256": "37ee02d860a5f5a06a88ef9e84bfd4ee025d99c840916b71e1ba37ed07c2357e",
+      "preservedAs": [
+        "replay.json"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "replay.mjs",
+      "bytes": 5712,
+      "sha256": "1286999e618986f56b84b08a810f90f173cc3042d30bda56d0f67b2987e56fcf",
+      "preservedAs": [
+        "replay.mjs.gz (decompressed)"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "root-candidate/connections-Gateway-open.png",
+      "bytes": 115644,
+      "sha256": "ac4c640da7dd2a12d1449ece53865c0fc100110f5ebb083db9039bc3b3359a20",
+      "reason": "unselected intermediate picture; relevant finding retained in named pictures and complete observation journals/motion"
+    },
+    {
+      "file": "root-candidate/connections-Gateway-rewrapped.png",
+      "bytes": 122550,
+      "sha256": "877870e18929fe7a97b734151b8741ac3b4fcfe3ac6640f4fac62d3c4e4d0abc",
+      "preservedAs": [
+        "root-connections-Gateway-rewrapped.png"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "root-candidate/connections-Hub-open.png",
+      "bytes": 108684,
+      "sha256": "95755219c2813db76b2a923b3bf9f8b2ca448825852966ab6335984559ae884e",
+      "reason": "unselected intermediate picture; relevant finding retained in named pictures and complete observation journals/motion"
+    },
+    {
+      "file": "root-candidate/connections-Hub-rewrapped.png",
+      "bytes": 112490,
+      "sha256": "b47afeffb3143ef49e5e4e444fc9ca87a2f8daa9e6584ecb3fc977a3e028f4db",
+      "reason": "unselected intermediate picture; relevant finding retained in named pictures and complete observation journals/motion"
+    },
+    {
+      "file": "root-candidate/hover-Gateway.png",
+      "bytes": 110457,
+      "sha256": "2bfa286ef3d37a22f0afd90fd2b901a3c3005c4acc34ed12ebac059558d122ac",
+      "preservedAs": [
+        "after-hover-Gateway.png"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "root-candidate/hover-Hub.png",
+      "bytes": 112411,
+      "sha256": "40c5355d92f281da0bbfcee9fd2548df6e56fc0dde9dccd6ae361223f048c4f9",
+      "preservedAs": [
+        "after-hover-Hub.png"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "root-candidate/recording-ending.png",
+      "bytes": 119874,
+      "sha256": "2d54f13b1fdccd943850fa8e414317afa578788d3b87b9cecaa9119cceca0534",
+      "preservedAs": [
+        "after-connections-ending.png",
+        "root-recording-ending.png"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "root-candidate/replay.json",
+      "bytes": 125448,
+      "sha256": "1d6131c845a9b928a09def926461c0092c2d011f0b83cd72af5a06af82d70a6e",
+      "preservedAs": [
+        "root-replay.json"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "root-candidate/structure-before.png",
+      "bytes": 160017,
+      "sha256": "2a52edc77be844c93ae8f17ee66b604c26c0a91b26a370c2ae6012bf1ddf9791",
+      "reason": "unselected intermediate picture; relevant finding retained in named pictures and complete observation journals/motion"
+    },
+    {
+      "file": "root-candidate/structure-closed-again.png",
+      "bytes": 164290,
+      "sha256": "1b893c4272aa56fb2921d90176738198afba4033090451198dcd217dad7fc755",
+      "preservedAs": [
+        "structure-closed-again.png"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "root-candidate/structure-open.png",
+      "bytes": 137962,
+      "sha256": "c4729d033078ee9f4e34953b530802fd20801ef3754aff75f872669247fa45cc",
+      "reason": "unselected intermediate picture; relevant finding retained in named pictures and complete observation journals/motion"
+    },
+    {
+      "file": "shell-impact.txt",
+      "bytes": 2238,
+      "sha256": "49abf9d44e5e9115435310fa4bc419f352619f5a483655625d44818a8c14f068",
+      "reason": "byte-identical preserved evidence",
+      "preservedAs": [
+        "shell-impact-before.txt.gz (decompressed)"
+      ]
+    },
+    {
+      "file": "structure-before.png",
+      "bytes": 160014,
+      "sha256": "01689dd665191538e866a188f2cf8b19f9a9349441eeabab8d94b49b6db89465",
+      "reason": "unselected intermediate picture; relevant finding retained in named pictures and complete observation journals/motion"
+    },
+    {
+      "file": "structure-closed-again.png",
+      "bytes": 164290,
+      "sha256": "1b893c4272aa56fb2921d90176738198afba4033090451198dcd217dad7fc755",
+      "preservedAs": [
+        "structure-closed-again.png"
+      ],
+      "reason": "byte-identical preserved evidence"
+    },
+    {
+      "file": "structure-open.png",
+      "bytes": 137962,
+      "sha256": "c4729d033078ee9f4e34953b530802fd20801ef3754aff75f872669247fa45cc",
+      "reason": "unselected intermediate picture; relevant finding retained in named pictures and complete observation journals/motion"
+    }
+  ]
+}

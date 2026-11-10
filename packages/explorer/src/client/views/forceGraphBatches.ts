@@ -8,6 +8,9 @@ import { clipSpatialWireDepth, pickSpatialWire, spatialSizeScale } from "./force
 import { mergeWrappers, wrapperAt, type GroupWrappers, type WrapperGeometry, type WrapperHull } from "./forceGraphWrappers";
 import type { FrozenBodyMesh, FrozenBodyUnit, FrozenSpatialBody } from "./perspectiveBodies";
 
+/** The outer edge of a frontier ring, in its sphere's drawn-radius units. */
+export const SPATIAL_RING_OUTER_RADIUS = 1.6;
+
 /** The endpoints already resolved by the graph feed. */
 export interface SpatialDrawLink<N> { source: string | N; target: string | N }
 
@@ -137,7 +140,7 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
   // A ring around a sphere that has more behind it (the owner's choice of 2026-11-02): flat, turned to the camera, unlit
   // so that it reads the same from every side, drawn after the spheres and writing no depth, so that it cuts no wire.
   // One entry per sphere, enabled while the style gives it a colour, so that the set of rings follows the appearance.
-  const rings = make<N>("rings", new RingGeometry(1.35, 1.6, 32), alphaMaterial(false), 11);
+  const rings = make<N>("rings", new RingGeometry(1.35, SPATIAL_RING_OUTER_RADIUS, 32), alphaMaterial(false), 11);
   const nodeEntries = new WeakMap<N, SpatialDrawEntry<N>>(), linkEntries = new WeakMap<L, SpatialDrawEntry<L>>(), arrowEntries = new WeakMap<L, SpatialDrawEntry<L>>();
   const ringEntries = new WeakMap<N, SpatialDrawEntry<N>>();
   const colors = new Map<string, { color: Color; alpha: number }>();

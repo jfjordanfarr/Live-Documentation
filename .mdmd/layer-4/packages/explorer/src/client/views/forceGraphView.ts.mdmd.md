@@ -4,13 +4,14 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphView.ts
-- Generated At: 2026-11-08T04:02:28.012Z
+- Generated At: 2026-11-10T16:20:12.966Z
 
 ## Authored
 ### Purpose
 Renders the force-directed 3D Local Map in either of its layouts, the analyzed connections or the declared structure, with shared retained selections, historical snapshots and the Related Documentation overlay. Owns displayed graph state, motion pacing, framing and projected controls; delegates direct GPU drawing and camera/input mechanics to the renderer, and inspection, retention and navigation to the application.
 
 ### Notes
+- Names clear the complete visible body, including a file's outer ring, even when the foreign body's own name is not eligible ([November 10, Turn 3](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-10.1.record.md#turn-3)). The ring extent comes from the renderer's shared outer-radius constant and the same ring predicate used for drawing. The underlying sphere's perspective radius still controls name disclosure; geometry clearance does not reveal distant names earlier. Popped directory chips keep their former-skin offset and reserve no body.
 - Whole/root-open asks about every filtered file and hub in Structure even with Skin (November 8, 2026). The bag-of-cells branch had reduced the opened scan root to its hub, contradicting the established Whole action; only ordinary directory openings use one-level bubble discovery. Removing the root opening returns to the independent pins and other opened directories.
 - A request absent at the displayed moment keeps only the scope's dim root marker in Structure. Cell construction is suppressed for that fallback, so it cannot expose unrelated historical contents or pop a cached cell into the absent question (November 8, 2026).
 - Wheel motion changes the camera only. Switching to the Local Map is an explicit application action.
@@ -152,7 +153,8 @@ Creates the Force Graph (3D) view for the Live Docs Explorer.
 - [`spatial-legend.renderSpatialLegend`](../panels/spatial-legend.ts.mdmd.md#symbol-renderspatiallegend)
 - [`types.ExplorerState`](../types.ts.mdmd.md#symbol-explorerstate) (type-only)
 - [`forceGraphAppearance.spatialNodeStyle`](./forceGraphAppearance.ts.mdmd.md#symbol-spatialnodestyle)
-- [`forceGraphBatches.SpatialWrapperUnit`](./forceGraphBatches.ts.mdmd.md#symbol-spatialwrapperunit) (type-only)
+- [`forceGraphBatches.SPATIAL_RING_OUTER_RADIUS`](./forceGraphBatches.ts.mdmd.md#symbol-spatial_ring_outer_radius)
+- [`forceGraphBatches.SpatialWrapperUnit`](./forceGraphBatches.ts.mdmd.md#symbol-spatialwrapperunit)
 - [`forceGraphCamera.CameraPoint`](./forceGraphCamera.ts.mdmd.md#symbol-camerapoint)
 - [`forceGraphCamera.focusedCameraPosition`](./forceGraphCamera.ts.mdmd.md#symbol-focusedcameraposition)
 - [`forceGraphCamera.frameCameraSpheres`](./forceGraphCamera.ts.mdmd.md#symbol-framecameraspheres)
@@ -169,6 +171,7 @@ Creates the Force Graph (3D) view for the Live Docs Explorer.
 - [`forceGraphEmphasis.pairKey`](./forceGraphEmphasis.ts.mdmd.md#symbol-pairkey)
 - [`forceGraphLabels.LabelBox`](./forceGraphLabels.ts.mdmd.md#symbol-labelbox)
 - [`forceGraphLabels.SpatialLabel`](./forceGraphLabels.ts.mdmd.md#symbol-spatiallabel)
+- [`forceGraphLabels.SpatialLabelBody`](./forceGraphLabels.ts.mdmd.md#symbol-spatiallabelbody)
 - [`forceGraphLabels.placeSpatialLabels`](./forceGraphLabels.ts.mdmd.md#symbol-placespatiallabels)
 - [`forceGraphLayout.MotionForce`](./forceGraphLayout.ts.mdmd.md#symbol-motionforce-interface)
 - [`forceGraphLayout.MotionStart`](./forceGraphLayout.ts.mdmd.md#symbol-motionstart)

@@ -1,0 +1,3536 @@
+{
+  "readings": [
+    {
+      "variant": "before",
+      "name": "structure-start",
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwACOUBA0EkIHgeIW8LI6A4ZARIaAA",
+      "openDirectories": [],
+      "pins": [],
+      "nodes": [
+        {
+          "id": "Estate.sln",
+          "name": "Estate.sln",
+          "x": 814.4139178408411,
+          "y": 627.3511226974365,
+          "depth": 0.9995538626062609,
+          "distance": 450.49175371440634,
+          "opacity": 0.30000001192092896,
+          "radius": 3.0328686556933535,
+          "screenRadius": 6.624993805769308,
+          "ring": false,
+          "world": {
+            "x": -58.90110778808594,
+            "y": -53.8972053527832,
+            "z": -65.98302459716797
+          }
+        },
+        {
+          "id": "directory:Contracts",
+          "name": "Contracts",
+          "directory": "Contracts",
+          "files": 6,
+          "x": 974.6639220072893,
+          "y": 503.99712113409083,
+          "depth": 0.9995743212147371,
+          "distance": 471.8535467712463,
+          "opacity": 0.75,
+          "radius": 24.769754670809327,
+          "screenRadius": 51.63468624598686,
+          "ring": false,
+          "world": {
+            "x": 17.18167495727539,
+            "y": 2.595242977142334,
+            "z": -87.37110137939453
+          }
+        },
+        {
+          "id": "directory:",
+          "name": "Scan root",
+          "directory": "",
+          "files": 36,
+          "x": 870.8862127364877,
+          "y": 539.4100233618918,
+          "depth": 0.9994924049515471,
+          "distance": 393.1069324966916,
+          "opacity": 0.75,
+          "radius": 4.814378789136391,
+          "screenRadius": 11.960048355768919,
+          "ring": false,
+          "world": {
+            "x": -34.174957275390625,
+            "y": -11.737205505371094,
+            "z": -12.069368362426758
+          }
+        },
+        {
+          "id": "directory:Database",
+          "name": "Database",
+          "directory": "Database",
+          "files": 3,
+          "x": 776.950374910459,
+          "y": 475.46993563005844,
+          "depth": 0.999353699085744,
+          "distance": 309.70606484492765,
+          "opacity": 0.75,
+          "radius": 25.119577672542576,
+          "screenRadius": 79.40163270558439,
+          "ring": false,
+          "world": {
+            "x": -65.64942169189453,
+            "y": 11.456310272216797,
+            "z": 72.01831817626953
+          }
+        },
+        {
+          "id": "directory:Gateway",
+          "name": "Gateway",
+          "directory": "Gateway",
+          "files": 5,
+          "x": 1100.1922773802735,
+          "y": 589.397828364817,
+          "depth": 0.9994521020396278,
+          "distance": 377.0136212630425,
+          "opacity": 0.75,
+          "radius": 24.031723275702983,
+          "screenRadius": 64.42575339138267,
+          "ring": false,
+          "world": {
+            "x": 50.75758361816406,
+            "y": -29.367441177368164,
+            "z": 16.73885726928711
+          }
+        },
+        {
+          "id": "directory:Hub",
+          "name": "Hub",
+          "directory": "Hub",
+          "files": 4,
+          "x": 841.5893804189706,
+          "y": 758.0278673922496,
+          "depth": 0.9994361158017052,
+          "distance": 365.3918607942415,
+          "opacity": 0.75,
+          "radius": 20.468036867299876,
+          "screenRadius": 56.46835948551316,
+          "ring": false,
+          "world": {
+            "x": -45.61101531982422,
+            "y": -89.60063934326172,
+            "z": 27.028257369995117
+          }
+        },
+        {
+          "id": "directory:PaymentService",
+          "name": "PaymentService",
+          "directory": "PaymentService",
+          "files": 6,
+          "x": 656.5941591928681,
+          "y": 463.70952515826264,
+          "depth": 0.999523407407363,
+          "distance": 426.78753597109113,
+          "opacity": 0.75,
+          "radius": 33.03068958757351,
+          "screenRadius": 77.05999773247805,
+          "ring": false,
+          "world": {
+            "x": -125.4962158203125,
+            "y": 19.812734603881836,
+            "z": -37.53411865234375
+          }
+        },
+        {
+          "id": "directory:Portal",
+          "name": "Portal",
+          "directory": "Portal",
+          "files": 11,
+          "x": 918.2380797015934,
+          "y": 270.019662272195,
+          "depth": 0.9994883215807571,
+          "distance": 401.7037621898412,
+          "opacity": 0.75,
+          "radius": 43.02431533375371,
+          "screenRadius": 107.73962991345473,
+          "ring": false,
+          "world": {
+            "x": -15.33093547821045,
+            "y": 95.95026397705078,
+            "z": -8.944642066955566
+          }
+        }
+      ],
+      "ringMarks": [],
+      "wrappers": [
+        "directory:Contracts",
+        "directory:Database",
+        "directory:Gateway",
+        "directory:Hub",
+        "directory:PaymentService",
+        "directory:Portal"
+      ],
+      "labels": [
+        {
+          "id": "directory:Contracts",
+          "text": "Contracts · 6",
+          "title": "Contracts · 6 files · Open this directory",
+          "priority": 5,
+          "kind": "shell",
+          "box": {
+            "x": 1015.7081909179688,
+            "y": 439.9528503417969,
+            "width": 88.42193603515625,
+            "height": 23
+          }
+        },
+        {
+          "id": "directory:",
+          "text": "Scan root",
+          "title": "Scan root · 36 visible files · Explore this directory",
+          "priority": 1,
+          "kind": "directory",
+          "box": {
+            "x": 835.88623046875,
+            "y": 558.3700561523438,
+            "width": 69.65625,
+            "height": 23
+          }
+        },
+        {
+          "id": "directory:Database",
+          "text": "Database · 3",
+          "title": "Database · 3 files · Open this directory",
+          "priority": 5,
+          "kind": "shell",
+          "box": {
+            "x": 732.9503784179688,
+            "y": 366.06829833984375,
+            "width": 88.4375,
+            "height": 23
+          }
+        },
+        {
+          "id": "directory:Gateway",
+          "text": "Gateway · 5",
+          "title": "Gateway · 5 files · Open this directory",
+          "priority": 5,
+          "kind": "shell",
+          "box": {
+            "x": 1058.1922607421875,
+            "y": 660.8236083984375,
+            "width": 84.09375,
+            "height": 23
+          }
+        },
+        {
+          "id": "directory:Hub",
+          "text": "Hub · 4",
+          "title": "Hub · 4 files · Open this directory",
+          "priority": 5,
+          "kind": "shell",
+          "box": {
+            "x": 813.08935546875,
+            "y": 821.4962158203125,
+            "width": 56.640625,
+            "height": 23
+          }
+        },
+        {
+          "id": "directory:PaymentService",
+          "text": "PaymentService · 6",
+          "title": "PaymentService · 6 files · Open this directory",
+          "priority": 5,
+          "kind": "shell",
+          "box": {
+            "x": 445.5341796875,
+            "y": 452.20953369140625,
+            "width": 127.4375,
+            "height": 23
+          }
+        },
+        {
+          "id": "directory:Portal",
+          "text": "Portal · 11",
+          "title": "Portal · 11 files · Open this directory",
+          "priority": 5,
+          "kind": "shell",
+          "box": {
+            "x": 881.7380981445312,
+            "y": 132.280029296875,
+            "width": 73.015625,
+            "height": 23
+          }
+        }
+      ],
+      "overlaps": []
+    },
+    {
+      "variant": "before",
+      "name": "structure-open",
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QJIZVx0BwMoFc7Bc3TMEsrjczHssrmALogRvwACOUBA0EkIHgeIW8LIRbICN7eYzIEr1ao1xJ9fqjaSQA",
+      "openDirectories": [
+        "PaymentService"
+      ],
+      "pins": [],
+      "nodes": [
+        {
+          "id": "Estate.sln",
+          "name": "Estate.sln",
+          "x": 1163.5165280789538,
+          "y": 779.0848292665848,
+          "depth": 0.9992857655442619,
+          "distance": 303.73305079271853,
+          "opacity": 0.30000001192092896,
+          "radius": 2.64133122366518,
+          "screenRadius": 9.224524112623595,
+          "ring": false,
+          "world": {
+            "x": -17.912553787231445,
+            "y": -73.01904296875,
+            "z": -66.14822387695312
+          }
+        },
+        {
+          "id": "PaymentService/App.config",
+          "name": "App.config",
+          "x": 961.3895893356486,
+          "y": 169.76500042160365,
+          "depth": 0.9991837326731591,
+          "distance": 260.05773313902415,
+          "opacity": 0.30000001192092896,
+          "radius": 4.192852064447204,
+          "screenRadius": 16.73019121476739,
+          "ring": false,
+          "world": {
+            "x": -79.7503662109375,
+            "y": 89.47706604003906,
+            "z": -31.292428970336914
+          }
+        },
+        {
+          "id": "PaymentService/PaymentService.cs",
+          "name": "PaymentService.cs",
+          "x": 901.2092074295907,
+          "y": 333.7842942867791,
+          "depth": 0.9989355686781527,
+          "distance": 190.7276627001027,
+          "opacity": 0.30000001192092896,
+          "radius": 4.192852064447204,
+          "screenRadius": 21.806602689248667,
+          "ring": false,
+          "world": {
+            "x": -97.79097747802734,
+            "y": 38.38224411010742,
+            "z": 25.634307861328125
+          }
+        },
+        {
+          "id": "PaymentService/PaymentService.csproj",
+          "name": "PaymentService.csproj",
+          "x": 937.1121236092932,
+          "y": 425.3449397398633,
+          "depth": 0.9993405664492363,
+          "distance": 304.7489012112583,
+          "opacity": 0.30000001192092896,
+          "radius": 3.327868973514539,
+          "screenRadius": 10.732434035043084,
+          "ring": false,
+          "world": {
+            "x": -80.68473052978516,
+            "y": 30.16095542907715,
+            "z": -89.31053924560547
+          }
+        },
+        {
+          "id": "directory:Contracts",
+          "name": "Contracts",
+          "directory": "Contracts",
+          "files": 6,
+          "x": 1381.8946212781916,
+          "y": 511.11370502344795,
+          "depth": 0.9993192704121251,
+          "distance": 333.7675102384938,
+          "opacity": 0.75,
+          "radius": 24.769754670809327,
+          "screenRadius": 82.45640870079914,
+          "ring": false,
+          "world": {
+            "x": 52.08891296386719,
+            "y": 3.6252963542938232,
+            "z": -79.86750793457031
+          }
+        },
+        {
+          "id": "directory:",
+          "name": "Scan root",
+          "directory": "",
+          "files": 36,
+          "x": 1411.6640806832281,
+          "y": 607.4684158706806,
+          "depth": 0.9990497405373929,
+          "distance": 243.387424916667,
+          "opacity": 0.75,
+          "radius": 4.192852064447204,
+          "screenRadius": 19.471117494084666,
+          "ring": false,
+          "world": {
+            "x": 13.29832935333252,
+            "y": -16.6033992767334,
+            "z": 3.1309866905212402
+          }
+        },
+        {
+          "id": "directory:Database",
+          "name": "Database",
+          "directory": "Database",
+          "files": 3,
+          "x": 1518.6443019405353,
+          "y": 498.0319305232434,
+          "depth": 0.9984031932950831,
+          "distance": 151.65052861786953,
+          "opacity": 0.75,
+          "radius": 25.119577672542576,
+          "screenRadius": 195.88813529393852,
+          "ring": false,
+          "world": {
+            "x": -21.862045288085938,
+            "y": 6.3553876876831055,
+            "z": 88.12150573730469
+          }
+        },
+        {
+          "id": "directory:Gateway",
+          "name": "Gateway",
+          "directory": "Gateway",
+          "files": 5,
+          "x": 1958.5037649003507,
+          "y": 696.4882817899784,
+          "depth": 0.9988861810913732,
+          "distance": 273.5775436750714,
+          "opacity": 0.75,
+          "radius": 24.031723275702983,
+          "screenRadius": 130.77701580852298,
+          "ring": false,
+          "world": {
+            "x": 96.06688690185547,
+            "y": -29.726247787475586,
+            "z": 33.94123077392578
+          }
+        },
+        {
+          "id": "directory:Hub",
+          "name": "Hub",
+          "directory": "Hub",
+          "files": 4,
+          "x": 1359.532305125982,
+          "y": 1109.118541321449,
+          "depth": 0.9988280326648592,
+          "distance": 219.27239811146984,
+          "opacity": 0.75,
+          "radius": 20.468036867299876,
+          "screenRadius": 117.19058159943116,
+          "ring": false,
+          "world": {
+            "x": -18.635520935058594,
+            "y": -100.05107879638672,
+            "z": 42.82551193237305
+          }
+        },
+        {
+          "id": "directory:PaymentService",
+          "name": "PaymentService",
+          "directory": "PaymentService",
+          "files": 6,
+          "x": 750.1203859615216,
+          "y": 374.33084631907457,
+          "depth": 0.9992105027473609,
+          "distance": 256.39299223435194,
+          "opacity": 0.75,
+          "radius": 4.192852064447204,
+          "screenRadius": 16.182585943310162,
+          "ring": false,
+          "world": {
+            "x": -133.549072265625,
+            "y": 39.31776809692383,
+            "z": -39.567413330078125
+          }
+        },
+        {
+          "id": "directory:PaymentService/Data",
+          "name": "Data",
+          "directory": "PaymentService/Data",
+          "files": 3,
+          "x": 808.9569842764444,
+          "y": 713.5695648881052,
+          "depth": 0.9991494969292157,
+          "distance": 240.22369719291098,
+          "opacity": 0.75,
+          "radius": 21.4113771787543,
+          "screenRadius": 89.01131942746298,
+          "ring": false,
+          "world": {
+            "x": -117.53409576416016,
+            "y": -44.7088737487793,
+            "z": -21.467370986938477
+          }
+        },
+        {
+          "id": "directory:Portal",
+          "name": "Portal",
+          "directory": "Portal",
+          "files": 11,
+          "x": 1486.2481944434712,
+          "y": 90.4197058749514,
+          "depth": 0.9990392772222253,
+          "distance": 263.3010387321252,
+          "opacity": 0.75,
+          "radius": 43.02431533375371,
+          "screenRadius": 201.99621867407294,
+          "ring": false,
+          "world": {
+            "x": 27.87053680419922,
+            "y": 93.76564025878906,
+            "z": 5.415565013885498
+          }
+        }
+      ],
+      "ringMarks": [],
+      "wrappers": [
+        "directory:Contracts",
+        "directory:Database",
+        "directory:Gateway",
+        "directory:Hub",
+        "directory:PaymentService/Data",
+        "directory:Portal"
+      ],
+      "labels": [
+        {
+          "id": "directory:Contracts",
+          "text": "Contracts · 6",
+          "title": "Contracts · 6 files · Open this directory",
+          "priority": 5,
+          "kind": "shell",
+          "box": {
+            "x": 1204.438232421875,
+            "y": 499.61370849609375,
+            "width": 88.421875,
+            "height": 23
+          }
+        },
+        {
+          "id": "directory:",
+          "text": "Scan root",
+          "title": "Scan root · 36 visible files · Explore this directory",
+          "priority": 1,
+          "kind": "directory",
+          "box": {
+            "x": 1315.1929931640625,
+            "y": 595.9684448242188,
+            "width": 69.65625,
+            "height": 23
+          }
+        },
+        {
+          "id": "directory:PaymentService/Data",
+          "text": "Data · 3",
+          "title": "PaymentService/Data · 3 files · Open this directory",
+          "priority": 5,
+          "kind": "shell",
+          "box": {
+            "x": 778.9569702148438,
+            "y": 809.5808715820312,
+            "width": 60.25,
+            "height": 23
+          }
+        },
+        {
+          "id": "PaymentService/PaymentService.cs",
+          "text": "PaymentService.cs",
+          "title": "PaymentService/PaymentService.cs · 3 public symbols · Pin this file",
+          "priority": 5,
+          "kind": "file",
+          "box": {
+            "x": 838.709228515625,
+            "y": 281.97772216796875,
+            "width": 125.265625,
+            "height": 23
+          }
+        },
+        {
+          "id": "PaymentService/App.config",
+          "text": "App.config",
+          "title": "PaymentService/App.config · 3 public symbols · Pin this file",
+          "priority": 5,
+          "kind": "file",
+          "box": {
+            "x": 923.8895874023438,
+            "y": 193.4951934814453,
+            "width": 75.4375,
+            "height": 23
+          }
+        }
+      ],
+      "overlaps": []
+    },
+    {
+      "variant": "before",
+      "name": "structure-return",
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QJIZVx0BwMoFc7Bc3TMEsrjczHssrmALogRvwACOUBA0EkIHgeIW8LIRbICN7eYzIEr1ao1xJ9fqjaSQA",
+      "openDirectories": [
+        "PaymentService"
+      ],
+      "pins": [],
+      "nodes": [
+        {
+          "id": "Estate.sln",
+          "name": "Estate.sln",
+          "x": 1163.5165280789538,
+          "y": 779.0848292665848,
+          "depth": 0.9992857655442619,
+          "distance": 303.73305079271853,
+          "opacity": 0.30000001192092896,
+          "radius": 2.64133122366518,
+          "screenRadius": 9.224524112623595,
+          "ring": false,
+          "world": {
+            "x": -17.912553787231445,
+            "y": -73.01904296875,
+            "z": -66.14822387695312
+          }
+        },
+        {
+          "id": "PaymentService/App.config",
+          "name": "App.config",
+          "x": 961.3895893356486,
+          "y": 169.76500042160365,
+          "depth": 0.9991837326731591,
+          "distance": 260.05773313902415,
+          "opacity": 0.30000001192092896,
+          "radius": 4.192852064447204,
+          "screenRadius": 16.73019121476739,
+          "ring": false,
+          "world": {
+            "x": -79.7503662109375,
+            "y": 89.47706604003906,
+            "z": -31.292428970336914
+          }
+        },
+        {
+          "id": "PaymentService/PaymentService.cs",
+          "name": "PaymentService.cs",
+          "x": 901.2092074295907,
+          "y": 333.7842942867791,
+          "depth": 0.9989355686781527,
+          "distance": 190.7276627001027,
+          "opacity": 0.30000001192092896,
+          "radius": 4.192852064447204,
+          "screenRadius": 21.806602689248667,
+          "ring": false,
+          "world": {
+            "x": -97.79097747802734,
+            "y": 38.38224411010742,
+            "z": 25.634307861328125
+          }
+        },
+        {
+          "id": "PaymentService/PaymentService.csproj",
+          "name": "PaymentService.csproj",
+          "x": 937.1121236092932,
+          "y": 425.3449397398633,
+          "depth": 0.9993405664492363,
+          "distance": 304.7489012112583,
+          "opacity": 0.30000001192092896,
+          "radius": 3.327868973514539,
+          "screenRadius": 10.732434035043084,
+          "ring": false,
+          "world": {
+            "x": -80.68473052978516,
+            "y": 30.16095542907715,
+            "z": -89.31053924560547
+          }
+        },
+        {
+          "id": "directory:Contracts",
+          "name": "Contracts",
+          "directory": "Contracts",
+          "files": 6,
+          "x": 1381.8946212781916,
+          "y": 511.11370502344795,
+          "depth": 0.9993192704121251,
+          "distance": 333.7675102384938,
+          "opacity": 0.75,
+          "radius": 24.769754670809327,
+          "screenRadius": 82.45640870079914,
+          "ring": false,
+          "world": {
+            "x": 52.08891296386719,
+            "y": 3.6252963542938232,
+            "z": -79.86750793457031
+          }
+        },
+        {
+          "id": "directory:",
+          "name": "Scan root",
+          "directory": "",
+          "files": 36,
+          "x": 1411.6640806832281,
+          "y": 607.4684158706806,
+          "depth": 0.9990497405373929,
+          "distance": 243.387424916667,
+          "opacity": 0.75,
+          "radius": 4.192852064447204,
+          "screenRadius": 19.471117494084666,
+          "ring": false,
+          "world": {
+            "x": 13.29832935333252,
+            "y": -16.6033992767334,
+            "z": 3.1309866905212402
+          }
+        },
+        {
+          "id": "directory:Database",
+          "name": "Database",
+          "directory": "Database",
+          "files": 3,
+          "x": 1518.6443019405353,
+          "y": 498.0319305232434,
+          "depth": 0.9984031932950831,
+          "distance": 151.65052861786953,
+          "opacity": 0.75,
+          "radius": 25.119577672542576,
+          "screenRadius": 195.88813529393852,
+          "ring": false,
+          "world": {
+            "x": -21.862045288085938,
+            "y": 6.3553876876831055,
+            "z": 88.12150573730469
+          }
+        },
+        {
+          "id": "directory:Gateway",
+          "name": "Gateway",
+          "directory": "Gateway",
+          "files": 5,
+          "x": 1958.5037649003507,
+          "y": 696.4882817899784,
+          "depth": 0.9988861810913732,
+          "distance": 273.5775436750714,
+          "opacity": 0.75,
+          "radius": 24.031723275702983,
+          "screenRadius": 130.77701580852298,
+          "ring": false,
+          "world": {
+            "x": 96.06688690185547,
+            "y": -29.726247787475586,
+            "z": 33.94123077392578
+          }
+        },
+        {
+          "id": "directory:Hub",
+          "name": "Hub",
+          "directory": "Hub",
+          "files": 4,
+          "x": 1359.532305125982,
+          "y": 1109.118541321449,
+          "depth": 0.9988280326648592,
+          "distance": 219.27239811146984,
+          "opacity": 0.75,
+          "radius": 20.468036867299876,
+          "screenRadius": 117.19058159943116,
+          "ring": false,
+          "world": {
+            "x": -18.635520935058594,
+            "y": -100.05107879638672,
+            "z": 42.82551193237305
+          }
+        },
+        {
+          "id": "directory:PaymentService",
+          "name": "PaymentService",
+          "directory": "PaymentService",
+          "files": 6,
+          "x": 750.1203859615216,
+          "y": 374.33084631907457,
+          "depth": 0.9992105027473609,
+          "distance": 256.39299223435194,
+          "opacity": 0.75,
+          "radius": 4.192852064447204,
+          "screenRadius": 16.182585943310162,
+          "ring": false,
+          "world": {
+            "x": -133.549072265625,
+            "y": 39.31776809692383,
+            "z": -39.567413330078125
+          }
+        },
+        {
+          "id": "directory:PaymentService/Data",
+          "name": "Data",
+          "directory": "PaymentService/Data",
+          "files": 3,
+          "x": 808.9569842764444,
+          "y": 713.5695648881052,
+          "depth": 0.9991494969292157,
+          "distance": 240.22369719291098,
+          "opacity": 0.75,
+          "radius": 21.4113771787543,
+          "screenRadius": 89.01131942746298,
+          "ring": false,
+          "world": {
+            "x": -117.53409576416016,
+            "y": -44.7088737487793,
+            "z": -21.467370986938477
+          }
+        },
+        {
+          "id": "directory:Portal",
+          "name": "Portal",
+          "directory": "Portal",
+          "files": 11,
+          "x": 1486.2481944434712,
+          "y": 90.4197058749514,
+          "depth": 0.9990392772222253,
+          "distance": 263.3010387321252,
+          "opacity": 0.75,
+          "radius": 43.02431533375371,
+          "screenRadius": 201.99621867407294,
+          "ring": false,
+          "world": {
+            "x": 27.87053680419922,
+            "y": 93.76564025878906,
+            "z": 5.415565013885498
+          }
+        }
+      ],
+      "ringMarks": [],
+      "wrappers": [
+        "directory:Contracts",
+        "directory:Database",
+        "directory:Gateway",
+        "directory:Hub",
+        "directory:PaymentService/Data",
+        "directory:Portal"
+      ],
+      "labels": [
+        {
+          "id": "directory:Contracts",
+          "text": "Contracts · 6",
+          "title": "Contracts · 6 files · Open this directory",
+          "priority": 5,
+          "kind": "shell",
+          "box": {
+            "x": 1204.438232421875,
+            "y": 499.61370849609375,
+            "width": 88.421875,
+            "height": 23
+          }
+        },
+        {
+          "id": "directory:",
+          "text": "Scan root",
+          "title": "Scan root · 36 visible files · Explore this directory",
+          "priority": 1,
+          "kind": "directory",
+          "box": {
+            "x": 1315.1929931640625,
+            "y": 595.9684448242188,
+            "width": 69.65625,
+            "height": 23
+          }
+        },
+        {
+          "id": "directory:PaymentService/Data",
+          "text": "Data · 3",
+          "title": "PaymentService/Data · 3 files · Open this directory",
+          "priority": 5,
+          "kind": "shell",
+          "box": {
+            "x": 778.9569702148438,
+            "y": 809.5808715820312,
+            "width": 60.25,
+            "height": 23
+          }
+        },
+        {
+          "id": "PaymentService/PaymentService.cs",
+          "text": "PaymentService.cs",
+          "title": "PaymentService/PaymentService.cs · 3 public symbols · Pin this file",
+          "priority": 5,
+          "kind": "file",
+          "box": {
+            "x": 838.709228515625,
+            "y": 281.97772216796875,
+            "width": 125.265625,
+            "height": 23
+          }
+        },
+        {
+          "id": "PaymentService/App.config",
+          "text": "App.config",
+          "title": "PaymentService/App.config · 3 public symbols · Pin this file",
+          "priority": 5,
+          "kind": "file",
+          "box": {
+            "x": 923.8895874023438,
+            "y": 193.4951934814453,
+            "width": 75.4375,
+            "height": 23
+          }
+        }
+      ],
+      "overlaps": []
+    },
+    {
+      "variant": "before",
+      "name": "connections-ending",
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QJIZVx0BwMoFc7Bc3TMEsrjczHssrmALogRvwACOUBA0EkIHgPcgmcr1ao1xJ9fqjaSQA",
+      "openDirectories": [
+        "PaymentService"
+      ],
+      "pins": [],
+      "nodes": [
+        {
+          "id": "Contracts/Contracts.csproj",
+          "name": "Contracts.csproj",
+          "x": 745.6720316941595,
+          "y": 350.2834585211434,
+          "depth": 0.9996187897194014,
+          "distance": 531.948849084291,
+          "opacity": 0.30000001192092896,
+          "radius": 3.9673343122843616,
+          "screenRadius": 7.409534046927317,
+          "ring": false,
+          "world": {
+            "x": -63.06467056274414,
+            "y": 43.4620246887207,
+            "z": -103.48706817626953
+          }
+        },
+        {
+          "id": "Contracts/IPaymentService.cs",
+          "name": "IPaymentService.cs",
+          "x": 883.9527326832464,
+          "y": 261.7086976441084,
+          "depth": 0.9994963346453679,
+          "distance": 408.1763540815973,
+          "opacity": 0.30000001192092896,
+          "radius": 4.99852805636623,
+          "screenRadius": 12.32168667750964,
+          "ring": false,
+          "world": {
+            "x": 6.634781837463379,
+            "y": 59.31692886352539,
+            "z": 23.1334285736084
+          }
+        },
+        {
+          "id": "Contracts/PaymentQuery.cs",
+          "name": "PaymentQuery.cs",
+          "x": 787.2269666679339,
+          "y": 130.07325554368035,
+          "depth": 0.9994576696670034,
+          "distance": 394.6251722990346,
+          "opacity": 0.30000001192092896,
+          "radius": 5.384501037118116,
+          "screenRadius": 14.28884910985502,
+          "ring": true,
+          "world": {
+            "x": -30.779287338256836,
+            "y": 101.90569305419922,
+            "z": 51.27091598510742
+          }
+        },
+        {
+          "id": "Contracts/PaymentRequest.cs",
+          "name": "PaymentRequest.cs",
+          "x": 916.2962319596309,
+          "y": 136.1495649539916,
+          "depth": 0.9994711769337773,
+          "distance": 403.8998350457729,
+          "opacity": 0.30000001192092896,
+          "radius": 5.721886218285726,
+          "screenRadius": 14.807103971097217,
+          "ring": true,
+          "world": {
+            "x": 18.48957633972168,
+            "y": 103.15545654296875,
+            "z": 41.90754699707031
+          }
+        },
+        {
+          "id": "Contracts/PaymentResult.cs",
+          "name": "PaymentResult.cs",
+          "x": 746.1057712416597,
+          "y": 259.26170261386176,
+          "depth": 0.9994938102125899,
+          "distance": 408.34278757972623,
+          "opacity": 0.30000001192092896,
+          "radius": 5.384501037118116,
+          "screenRadius": 13.339450317232743,
+          "ring": true,
+          "world": {
+            "x": -49.0749397277832,
+            "y": 59.81400680541992,
+            "z": 25.101272583007812
+          }
+        },
+        {
+          "id": "Database/SqlServer/dbo.Payment.sql",
+          "name": "dbo.Payment.sql",
+          "x": 969.4188525758631,
+          "y": 728.6267282605385,
+          "depth": 0.9993839657246506,
+          "distance": 334.5478423750716,
+          "opacity": 0.30000001192092896,
+          "radius": 3.9673343122843616,
+          "screenRadius": 11.954700325125405,
+          "ring": false,
+          "world": {
+            "x": 32.52892303466797,
+            "y": -113.59249877929688,
+            "z": 95.14887237548828
+          }
+        },
+        {
+          "id": "Database/SqlServer/dbo.usp_PostPayment.sql",
+          "name": "dbo.usp_PostPayment.sql",
+          "x": 772.7036695626418,
+          "y": 744.9184985676872,
+          "depth": 0.9994438795327837,
+          "distance": 370.3890748428612,
+          "opacity": 0.30000001192092896,
+          "radius": 3.9673343122843616,
+          "screenRadius": 10.795030843250103,
+          "ring": true,
+          "world": {
+            "x": -35.52726745605469,
+            "y": -127.55245971679688,
+            "z": 60.36248779296875
+          }
+        },
+        {
+          "id": "Estate.sln",
+          "name": "Estate.sln",
+          "x": 991.0332787808883,
+          "y": 746.2476851553281,
+          "depth": 0.9996085204757568,
+          "distance": 529.2221159995707,
+          "opacity": 0.30000001192092896,
+          "radius": 3.1488752696935207,
+          "screenRadius": 6.038712963599466,
+          "ring": false,
+          "world": {
+            "x": 66.3448486328125,
+            "y": -165.17698669433594,
+            "z": -89.83794403076172
+          }
+        },
+        {
+          "id": "Hub/App.config",
+          "name": "App.config",
+          "x": 947.5077027755976,
+          "y": 352.58551770571825,
+          "depth": 0.9995790127773184,
+          "distance": 481.31978648283865,
+          "opacity": 0.30000001192092896,
+          "radius": 5.384501037118116,
+          "screenRadius": 11.101210391159237,
+          "ring": true,
+          "world": {
+            "x": 40.11639404296875,
+            "y": 34.5478630065918,
+            "z": -54.310096740722656
+          }
+        },
+        {
+          "id": "PaymentService/App.config",
+          "name": "App.config",
+          "x": 923.0932120515162,
+          "y": 460.672079116259,
+          "depth": 0.9995072595259239,
+          "distance": 406.11403031573167,
+          "opacity": 0.75,
+          "radius": 4.99852805636623,
+          "screenRadius": 12.055266362669549,
+          "ring": false,
+          "world": {
+            "x": 23.16368293762207,
+            "y": -20.998964309692383,
+            "z": 14.385578155517578
+          }
+        },
+        {
+          "id": "PaymentService/Data/Payment.cs",
+          "name": "Payment.cs",
+          "x": 974.8286181854845,
+          "y": 484.97951260806843,
+          "depth": 0.9993452574280497,
+          "distance": 307.2464524887196,
+          "opacity": 0.75,
+          "radius": 6.0235820451343765,
+          "screenRadius": 19.288298175657847,
+          "ring": false,
+          "world": {
+            "x": 31.890878677368164,
+            "y": -33.12660598754883,
+            "z": 114.2461929321289
+          }
+        },
+        {
+          "id": "PaymentService/Data/PaymentsContext.cs",
+          "name": "PaymentsContext.cs",
+          "x": 753.0450351030647,
+          "y": 530.1260273141675,
+          "depth": 0.9994139749863359,
+          "distance": 342.15901244658727,
+          "opacity": 0.75,
+          "radius": 6.0235820451343765,
+          "screenRadius": 17.26885770632593,
+          "ring": false,
+          "world": {
+            "x": -40.929405212402344,
+            "y": -48.14310073852539,
+            "z": 78.61197662353516
+          }
+        },
+        {
+          "id": "PaymentService/Data/PostPaymentRow.cs",
+          "name": "PostPaymentRow.cs",
+          "x": 652.1737256140831,
+          "y": 414.1849250243324,
+          "depth": 0.9993531843525967,
+          "distance": 316.0576745135971,
+          "opacity": 0.75,
+          "radius": 5.384501037118116,
+          "screenRadius": 17.033639752462122,
+          "ring": false,
+          "world": {
+            "x": -69.62884521484375,
+            "y": -10.671306610107422,
+            "z": 110.52098083496094
+          }
+        },
+        {
+          "id": "PaymentService/PaymentService.cs",
+          "name": "PaymentService.cs",
+          "x": 829.6357605830515,
+          "y": 278.04964591184205,
+          "depth": 0.9994272631095202,
+          "distance": 357.6007041976407,
+          "opacity": 0.75,
+          "radius": 4.99852805636623,
+          "screenRadius": 14.006104208002665,
+          "ring": false,
+          "world": {
+            "x": -14.382033348083496,
+            "y": 41.61567687988281,
+            "z": 70.7374038696289
+          }
+        },
+        {
+          "id": "PaymentService/PaymentService.csproj",
+          "name": "PaymentService.csproj",
+          "x": 730.3330164646154,
+          "y": 481.75778081443775,
+          "depth": 0.9996358726685667,
+          "distance": 551.1412906341867,
+          "opacity": 0.75,
+          "radius": 3.9673343122843616,
+          "screenRadius": 7.078882809344624,
+          "ring": false,
+          "world": {
+            "x": -74.28311157226562,
+            "y": -26.352827072143555,
+            "z": -127.89057159423828
+          }
+        },
+        {
+          "id": "Portal/Portal.csproj",
+          "name": "Portal.csproj",
+          "x": 1307.9334699062608,
+          "y": 553.7533563769753,
+          "depth": 0.9995324186245089,
+          "distance": 471.2739238064823,
+          "opacity": 0.30000001192092896,
+          "radius": 3.9673343122843616,
+          "screenRadius": 9.081300973187238,
+          "ring": false,
+          "world": {
+            "x": 192.90231323242188,
+            "y": -60.677650451660156,
+            "z": -7.30936336517334
+          }
+        },
+        {
+          "id": "shell:Gateway",
+          "name": "Gateway",
+          "x": 893.1393230673038,
+          "y": 356.0541041355577,
+          "depth": 0.9996449056946379,
+          "distance": 567.728589565472,
+          "opacity": 0.75,
+          "radius": 19.026260576471927,
+          "screenRadius": 33.10991939284621,
+          "ring": false,
+          "world": {
+            "x": 17.56627082824707,
+            "y": 46.21131896972656,
+            "z": -141.7393035888672
+          }
+        },
+        {
+          "id": "shell:Hub",
+          "name": "Hub",
+          "x": 795.6417861050171,
+          "y": 197.0368406180379,
+          "depth": 0.9995476065438572,
+          "distance": 462.6197326567335,
+          "opacity": 0.75,
+          "radius": 18.26472492391575,
+          "screenRadius": 40.45490966618983,
+          "ring": false,
+          "world": {
+            "x": -31.70353889465332,
+            "y": 99.66144561767578,
+            "z": -21.569978713989258
+          }
+        },
+        {
+          "id": "shell:Portal/Models",
+          "name": "Models",
+          "x": 1185.0142163079438,
+          "y": 267.9051012056707,
+          "depth": 0.9996113030835785,
+          "distance": 555.8335461666212,
+          "opacity": 0.75,
+          "radius": 18.189569664945065,
+          "screenRadius": 34.63586607222417,
+          "ring": false,
+          "world": {
+            "x": 168.73944091796875,
+            "y": 85.13526916503906,
+            "z": -93.46543884277344
+          }
+        },
+        {
+          "id": "shell:Portal/Pages",
+          "name": "Pages",
+          "x": 466.40371407077293,
+          "y": 567.5579978722363,
+          "depth": 0.9995724072963502,
+          "distance": 501.68577103401685,
+          "opacity": 0.75,
+          "radius": 19.799604624538283,
+          "screenRadius": 41.458859916826704,
+          "ring": false,
+          "world": {
+            "x": -190.36972045898438,
+            "y": -69.25481414794922,
+            "z": -47.026161193847656
+          }
+        }
+      ],
+      "ringMarks": [
+        {
+          "id": "Contracts/PaymentQuery.cs",
+          "x": 787.2269666679339,
+          "y": 130.07325554368035,
+          "r": 22.862159388933357
+        },
+        {
+          "id": "Contracts/PaymentRequest.cs",
+          "x": 916.2962319596309,
+          "y": 136.1495649539916,
+          "r": 23.691367196414287
+        },
+        {
+          "id": "Contracts/PaymentResult.cs",
+          "x": 746.1057712416597,
+          "y": 259.26170261386176,
+          "r": 21.343121266708312
+        },
+        {
+          "id": "Database/SqlServer/dbo.usp_PostPayment.sql",
+          "x": 772.7036695626418,
+          "y": 744.9184985676872,
+          "r": 17.272049963535494
+        },
+        {
+          "id": "Hub/App.config",
+          "x": 947.5077027755976,
+          "y": 352.58551770571825,
+          "r": 17.76193725761452
+        }
+      ],
+      "wrappers": [
+        "shell:Gateway",
+        "shell:Hub",
+        "shell:Portal/Models",
+        "shell:Portal/Pages"
+      ],
+      "labels": [
+        {
+          "id": "PaymentService/Data/PaymentsContext.cs",
+          "text": "PaymentsContext.cs",
+          "title": "PaymentService/Data/PaymentsContext.cs · 6 public symbols · Pin this file",
+          "priority": 5,
+          "kind": "file",
+          "box": {
+            "x": 686.5450439453125,
+            "y": 554.3948974609375,
+            "width": 133.21875,
+            "height": 23
+          }
+        },
+        {
+          "id": "PaymentService/Data/Payment.cs",
+          "text": "Payment.cs",
+          "title": "PaymentService/Data/Payment.cs · 6 public symbols · Pin this file",
+          "priority": 5,
+          "kind": "file",
+          "box": {
+            "x": 933.82861328125,
+            "y": 511.267822265625,
+            "width": 81.921875,
+            "height": 23
+          }
+        },
+        {
+          "id": "PaymentService/Data/PostPaymentRow.cs",
+          "text": "PostPaymentRow.cs",
+          "title": "PaymentService/Data/PostPaymentRow.cs · 4 public symbols · Pin this file",
+          "priority": 5,
+          "kind": "file",
+          "box": {
+            "x": 585.6737060546875,
+            "y": 367.1512756347656,
+            "width": 133.21875,
+            "height": 23
+          }
+        },
+        {
+          "id": "Contracts/PaymentQuery.cs",
+          "text": "PaymentQuery.cs",
+          "title": "Contracts/PaymentQuery.cs · 4 public symbols · 3 more connected, not shown · Pin this file",
+          "priority": 5,
+          "kind": "file",
+          "box": {
+            "x": 729.2269287109375,
+            "y": 85.78439331054688,
+            "width": 116.359375,
+            "height": 23
+          }
+        },
+        {
+          "id": "Contracts/PaymentRequest.cs",
+          "text": "PaymentRequest.cs",
+          "title": "Contracts/PaymentRequest.cs · 5 public symbols · 3 more connected, not shown · Pin this file",
+          "priority": 5,
+          "kind": "file",
+          "box": {
+            "x": 851.2962036132812,
+            "y": 157.95668029785156,
+            "width": 130.34375,
+            "height": 23
+          }
+        },
+        {
+          "id": "shell:Hub",
+          "text": "Hub · 3",
+          "title": "Hub · 3 files · Open this shell",
+          "priority": 5,
+          "kind": "shell",
+          "box": {
+            "x": 767.1417846679688,
+            "y": 244.4917449951172,
+            "width": 56.640625,
+            "height": 23.000015258789062
+          }
+        },
+        {
+          "id": "shell:Gateway",
+          "text": "Gateway · 3",
+          "title": "Gateway · 3 files · Open this shell",
+          "priority": 5,
+          "kind": "shell",
+          "box": {
+            "x": 933.249267578125,
+            "y": 344.5541076660156,
+            "width": 84.09375,
+            "height": 23
+          }
+        },
+        {
+          "id": "shell:Portal/Models",
+          "text": "Models · 2",
+          "title": "Portal/Models · 2 files · Open this shell",
+          "priority": 5,
+          "kind": "shell",
+          "box": {
+            "x": 1147.51416015625,
+            "y": 203.2692413330078,
+            "width": 74.703125,
+            "height": 23
+          }
+        },
+        {
+          "id": "shell:Portal/Pages",
+          "text": "Pages · 3",
+          "title": "Portal/Pages · 3 files · Open this shell",
+          "priority": 5,
+          "kind": "shell",
+          "box": {
+            "x": 431.4037170410156,
+            "y": 616.016845703125,
+            "width": 69.65625,
+            "height": 23
+          }
+        }
+      ],
+      "overlaps": [
+        {
+          "label": "shell:Hub",
+          "ring": "Contracts/PaymentResult.cs",
+          "clearance": -0.30710784039924377
+        },
+        {
+          "label": "shell:Gateway",
+          "ring": "Hub/App.config",
+          "clearance": -17.76193725761452
+        }
+      ]
+    },
+    {
+      "variant": "before",
+      "name": "main-structure-start",
+      "url": "http://localhost:8900/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwACOUBA0EkIHgeIW8LI6A4ZARIaAA",
+      "openDirectories": [],
+      "pins": [],
+      "nodes": [
+        {
+          "id": ".gitattributes",
+          "name": ".gitattributes",
+          "x": 820.4535626421646,
+          "y": 550.7707118559314,
+          "depth": 0.9999455985429647,
+          "distance": 3576.956361764436,
+          "opacity": 0.30000001192092896,
+          "radius": 5.966080728457881,
+          "screenRadius": 1.6300351429084348,
+          "ring": false,
+          "world": {
+            "x": -87.82475280761719,
+            "y": 32.1643180847168,
+            "z": 115.95154571533203
+          }
+        },
+        {
+          "id": ".gitignore",
+          "name": ".gitignore",
+          "x": 833.1873790175374,
+          "y": 555.6247512162847,
+          "depth": 0.999946343221704,
+          "distance": 3624.9054029605286,
+          "opacity": 0.30000001192092896,
+          "radius": 5.966080728457881,
+          "screenRadius": 1.6083597695973335,
+          "ring": false,
+          "world": {
+            "x": -42.07175827026367,
+            "y": 11.90096664428711,
+            "z": 67.82170867919922
+          }
+        },
+        {
+          "id": ".live-docs.config.json",
+          "name": ".live-docs.config.json",
+          "x": 826.3594509040116,
+          "y": 577.468480267497,
+          "depth": 0.9999493503935893,
+          "distance": 3839.493499560718,
+          "opacity": 0.30000001192092896,
+          "radius": 11.932161456915763,
+          "screenRadius": 3.0416599603323182,
+          "ring": false,
+          "world": {
+            "x": -72.55321502685547,
+            "y": -84.59800720214844,
+            "z": -140.49302673339844
+          }
+        },
+        {
+          "id": ".nvmrc",
+          "name": ".nvmrc",
+          "x": 836.05693059758,
+          "y": 572.2959417372932,
+          "depth": 0.999944938428473,
+          "distance": 3538.502493715079,
+          "opacity": 0.30000001192092896,
+          "radius": 5.966080728457881,
+          "screenRadius": 1.6492491036215744,
+          "ring": false,
+          "world": {
+            "x": -30.099109649658203,
+            "y": -43.75049591064453,
+            "z": 157.55809020996094
+          }
+        },
+        {
+          "id": ".vscode/settings.json",
+          "name": "settings.json",
+          "x": 843.4694744968502,
+          "y": 552.6035208019402,
+          "depth": 0.999949354975226,
+          "distance": 3832.7709269731818,
+          "opacity": 0.75,
+          "radius": 11.932161456915763,
+          "screenRadius": 3.041393244818938,
+          "ring": false,
+          "world": {
+            "x": -5.43453311920166,
+            "y": 12.928640365600586,
+            "z": -140.82870483398438
+          }
+        },
+        {
+          "id": "eslint.config.js",
+          "name": "eslint.config.js",
+          "x": 804.1102068072704,
+          "y": 544.1360888736805,
+          "depth": 0.9999487131994237,
+          "distance": 3788.973450937767,
+          "opacity": 0.30000001192092896,
+          "radius": 5.966080728457881,
+          "screenRadius": 1.5393767986634523,
+          "ring": false,
+          "world": {
+            "x": -157.64244079589844,
+            "y": 48.01173782348633,
+            "z": -94.37488555908203
+          }
+        },
+        {
+          "id": "package.json",
+          "name": "package.json",
+          "x": 851.5193183777037,
+          "y": 608.0936962300012,
+          "depth": 0.9999475490442057,
+          "distance": 3720.812665815629,
+          "opacity": 0.30000001192092896,
+          "radius": 7.516790946062419,
+          "screenRadius": 1.9821858245833437,
+          "ring": false,
+          "world": {
+            "x": 26.013442993164062,
+            "y": -191.25970458984375,
+            "z": -12.924988746643066
+          }
+        },
+        {
+          "id": "slopcop.config.json",
+          "name": "slopcop.config.json",
+          "x": 848.5951617891857,
+          "y": 593.8899930846509,
+          "depth": 0.9999487374627208,
+          "distance": 3799.074643032283,
+          "opacity": 0.30000001192092896,
+          "radius": 15.033581892124838,
+          "screenRadius": 3.877207000783831,
+          "ring": false,
+          "world": {
+            "x": 14.7621431350708,
+            "y": -144.97494506835938,
+            "z": -96.11062622070312
+          }
+        },
+        {
+          "id": "tsconfig.base.json",
+          "name": "tsconfig.base.json",
+          "x": 869.5487855897911,
+          "y": 559.0087527911452,
+          "depth": 0.9999482832499584,
+          "distance": 3757.6248326648856,
+          "opacity": 0.30000001192092896,
+          "radius": 16.717193779678453,
+          "screenRadius": 4.348460821796639,
+          "ring": false,
+          "world": {
+            "x": 95.37903594970703,
+            "y": -7.941494464874268,
+            "z": -63.87931442260742
+          }
+        },
+        {
+          "id": "tsconfig.json",
+          "name": "tsconfig.json",
+          "x": 884.8166661708705,
+          "y": 556.9902533479249,
+          "depth": 0.999947614234849,
+          "distance": 3712.225443890265,
+          "opacity": 0.30000001192092896,
+          "radius": 8.604577155187672,
+          "screenRadius": 2.2662995376836306,
+          "ring": false,
+          "world": {
+            "x": 152.43988037109375,
+            "y": 2.295299530029297,
+            "z": -17.393192291259766
+          }
+        },
+        {
+          "id": "vitest.config.ts",
+          "name": "vitest.config.ts",
+          "x": 858.7261558924624,
+          "y": 568.5666097861035,
+          "depth": 0.9999493546703501,
+          "distance": 3836.3468021342615,
+          "opacity": 0.30000001192092896,
+          "radius": 7.516790946062419,
+          "screenRadius": 1.9159689296082567,
+          "ring": false,
+          "world": {
+            "x": 54.4211311340332,
+            "y": -49.697174072265625,
+            "z": -140.80636596679688
+          }
+        },
+        {
+          "id": "directory:.devcontainer",
+          "name": ".devcontainer",
+          "directory": ".devcontainer",
+          "files": 2,
+          "x": 819.9167205240683,
+          "y": 553.92445172181,
+          "depth": 0.9999489447074726,
+          "distance": 3804.9260833936983,
+          "opacity": 0.75,
+          "radius": 22.208175893205514,
+          "screenRadius": 5.7051022767551505,
+          "ring": false,
+          "world": {
+            "x": -96.90311431884766,
+            "y": 9.241830825805664,
+            "z": -111.00162506103516
+          }
+        },
+        {
+          "id": "directory:",
+          "name": "Scan root",
+          "directory": "",
+          "files": 954,
+          "x": 835.2187467592909,
+          "y": 564.5739948692712,
+          "depth": 0.9999472207829615,
+          "distance": 3685.1772605417323,
+          "opacity": 0.75,
+          "radius": 9.470563034674605,
+          "screenRadius": 2.5125647649567835,
+          "ring": false,
+          "world": {
+            "x": -35.45132827758789,
+            "y": -24.86174201965332,
+            "z": 9.411433219909668
+          }
+        },
+        {
+          "id": "directory:.github",
+          "name": ".github",
+          "directory": ".github",
+          "files": 5,
+          "x": 842.990645147414,
+          "y": 561.2798020998367,
+          "depth": 0.9999483915027841,
+          "distance": 3765.159385346506,
+          "opacity": 0.75,
+          "radius": 24.05250574662511,
+          "screenRadius": 6.243812262994291,
+          "ring": false,
+          "world": {
+            "x": -6.779635906219482,
+            "y": -17.112489700317383,
+            "z": -71.51107788085938
+          }
+        },
+        {
+          "id": "directory:packages",
+          "name": "packages",
+          "directory": "packages",
+          "files": 372,
+          "x": 754.1538835886818,
+          "y": 619.8459843381812,
+          "depth": 0.9999471593710179,
+          "distance": 3716.83237987097,
+          "opacity": 0.75,
+          "radius": 330.016360899529,
+          "screenRadius": 87.65306786867265,
+          "ring": false,
+          "world": {
+            "x": -340.5979309082031,
+            "y": -232.70909118652344,
+            "z": 13.560276985168457
+          }
+        },
+        {
+          "id": "directory:scripts",
+          "name": "scripts",
+          "directory": "scripts",
+          "files": 72,
+          "x": 874.6366837495179,
+          "y": 580.667854458434,
+          "depth": 0.9999460035488097,
+          "distance": 3609.2524257238774,
+          "opacity": 0.75,
+          "radius": 88.84663484738292,
+          "screenRadius": 24.098863930341196,
+          "ring": false,
+          "world": {
+            "x": 111.13407897949219,
+            "y": -79.27953338623047,
+            "z": 89.93526458740234
+          }
+        },
+        {
+          "id": "directory:tests",
+          "name": "tests",
+          "directory": "tests",
+          "files": 492,
+          "x": 860.8484133203468,
+          "y": 412.2788804467178,
+          "depth": 0.9999475335684638,
+          "distance": 3716.026769345208,
+          "opacity": 0.75,
+          "radius": 546.9186459000506,
+          "screenRadius": 144.26432638879479,
+          "ring": false,
+          "world": {
+            "x": 61.3797492980957,
+            "y": 551.2032470703125,
+            "z": -11.86585521697998
+          }
+        }
+      ],
+      "ringMarks": [],
+      "wrappers": [
+        "directory:.devcontainer",
+        "directory:.github",
+        "directory:packages",
+        "directory:scripts",
+        "directory:tests"
+      ],
+      "labels": [
+        {
+          "id": "directory:",
+          "text": "Scan root",
+          "title": "Scan root · 954 visible files · Explore this directory",
+          "priority": 1,
+          "kind": "directory",
+          "box": {
+            "x": 800.21875,
+            "y": 574.0865478515625,
+            "width": 69.65625,
+            "height": 23
+          }
+        },
+        {
+          "id": "directory:packages",
+          "text": "packages · 372",
+          "title": "packages · 372 files · Open this directory",
+          "priority": 5,
+          "kind": "shell",
+          "box": {
+            "x": 702.6538696289062,
+            "y": 714.4990234375,
+            "width": 102.90625,
+            "height": 23
+          }
+        },
+        {
+          "id": "directory:scripts",
+          "text": "scripts · 72",
+          "title": "scripts · 72 files · Open this directory",
+          "priority": 5,
+          "kind": "shell",
+          "box": {
+            "x": 905.7355346679688,
+            "y": 569.1678466796875,
+            "width": 77.578125,
+            "height": 23
+          }
+        },
+        {
+          "id": "directory:tests",
+          "text": "tests · 492",
+          "title": "tests · 492 files · Open this directory",
+          "priority": 5,
+          "kind": "shell",
+          "box": {
+            "x": 823.348388671875,
+            "y": 238.01455688476562,
+            "width": 74.703125,
+            "height": 23
+          }
+        }
+      ],
+      "overlaps": []
+    },
+    {
+      "variant": "after",
+      "name": "structure-start",
+      "url": "http://localhost:8915/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwACOUBA0EkIHgeIW8LI6A4ZARIaAA",
+      "openDirectories": [],
+      "pins": [],
+      "nodes": [
+        {
+          "id": "Estate.sln",
+          "name": "Estate.sln",
+          "x": 814.4139178408411,
+          "y": 627.3511226974365,
+          "depth": 0.9995538626062609,
+          "distance": 450.49175371440634,
+          "opacity": 0.30000001192092896,
+          "radius": 3.0328686556933535,
+          "screenRadius": 6.624993805769308,
+          "ring": false,
+          "world": {
+            "x": -58.90110778808594,
+            "y": -53.8972053527832,
+            "z": -65.98302459716797
+          }
+        },
+        {
+          "id": "directory:Contracts",
+          "name": "Contracts",
+          "directory": "Contracts",
+          "files": 6,
+          "x": 974.6639220072893,
+          "y": 503.99712113409083,
+          "depth": 0.9995743212147371,
+          "distance": 471.8535467712463,
+          "opacity": 0.75,
+          "radius": 24.769754670809327,
+          "screenRadius": 51.63468624598686,
+          "ring": false,
+          "world": {
+            "x": 17.18167495727539,
+            "y": 2.595242977142334,
+            "z": -87.37110137939453
+          }
+        },
+        {
+          "id": "directory:",
+          "name": "Scan root",
+          "directory": "",
+          "files": 36,
+          "x": 870.8862127364877,
+          "y": 539.4100233618918,
+          "depth": 0.9994924049515471,
+          "distance": 393.1069324966916,
+          "opacity": 0.75,
+          "radius": 4.814378789136391,
+          "screenRadius": 11.960048355768919,
+          "ring": false,
+          "world": {
+            "x": -34.174957275390625,
+            "y": -11.737205505371094,
+            "z": -12.069368362426758
+          }
+        },
+        {
+          "id": "directory:Database",
+          "name": "Database",
+          "directory": "Database",
+          "files": 3,
+          "x": 776.950374910459,
+          "y": 475.46993563005844,
+          "depth": 0.999353699085744,
+          "distance": 309.70606484492765,
+          "opacity": 0.75,
+          "radius": 25.119577672542576,
+          "screenRadius": 79.40163270558439,
+          "ring": false,
+          "world": {
+            "x": -65.64942169189453,
+            "y": 11.456310272216797,
+            "z": 72.01831817626953
+          }
+        },
+        {
+          "id": "directory:Gateway",
+          "name": "Gateway",
+          "directory": "Gateway",
+          "files": 5,
+          "x": 1100.1922773802735,
+          "y": 589.397828364817,
+          "depth": 0.9994521020396278,
+          "distance": 377.0136212630425,
+          "opacity": 0.75,
+          "radius": 24.031723275702983,
+          "screenRadius": 64.42575339138267,
+          "ring": false,
+          "world": {
+            "x": 50.75758361816406,
+            "y": -29.367441177368164,
+            "z": 16.73885726928711
+          }
+        },
+        {
+          "id": "directory:Hub",
+          "name": "Hub",
+          "directory": "Hub",
+          "files": 4,
+          "x": 841.5893804189706,
+          "y": 758.0278673922496,
+          "depth": 0.9994361158017052,
+          "distance": 365.3918607942415,
+          "opacity": 0.75,
+          "radius": 20.468036867299876,
+          "screenRadius": 56.46835948551316,
+          "ring": false,
+          "world": {
+            "x": -45.61101531982422,
+            "y": -89.60063934326172,
+            "z": 27.028257369995117
+          }
+        },
+        {
+          "id": "directory:PaymentService",
+          "name": "PaymentService",
+          "directory": "PaymentService",
+          "files": 6,
+          "x": 656.5941591928681,
+          "y": 463.70952515826264,
+          "depth": 0.999523407407363,
+          "distance": 426.78753597109113,
+          "opacity": 0.75,
+          "radius": 33.03068958757351,
+          "screenRadius": 77.05999773247805,
+          "ring": false,
+          "world": {
+            "x": -125.4962158203125,
+            "y": 19.812734603881836,
+            "z": -37.53411865234375
+          }
+        },
+        {
+          "id": "directory:Portal",
+          "name": "Portal",
+          "directory": "Portal",
+          "files": 11,
+          "x": 918.2380797015934,
+          "y": 270.019662272195,
+          "depth": 0.9994883215807571,
+          "distance": 401.7037621898412,
+          "opacity": 0.75,
+          "radius": 43.02431533375371,
+          "screenRadius": 107.73962991345473,
+          "ring": false,
+          "world": {
+            "x": -15.33093547821045,
+            "y": 95.95026397705078,
+            "z": -8.944642066955566
+          }
+        }
+      ],
+      "ringMarks": [],
+      "wrappers": [
+        "directory:Contracts",
+        "directory:Database",
+        "directory:Gateway",
+        "directory:Hub",
+        "directory:PaymentService",
+        "directory:Portal"
+      ],
+      "labels": [
+        {
+          "id": "directory:Contracts",
+          "text": "Contracts · 6",
+          "title": "Contracts · 6 files · Open this directory",
+          "priority": 5,
+          "kind": "shell",
+          "box": {
+            "x": 1015.7081909179688,
+            "y": 439.9528503417969,
+            "width": 88.42193603515625,
+            "height": 23
+          }
+        },
+        {
+          "id": "directory:",
+          "text": "Scan root",
+          "title": "Scan root · 36 visible files · Explore this directory",
+          "priority": 1,
+          "kind": "directory",
+          "box": {
+            "x": 835.88623046875,
+            "y": 558.3700561523438,
+            "width": 69.65625,
+            "height": 23
+          }
+        },
+        {
+          "id": "directory:Database",
+          "text": "Database · 3",
+          "title": "Database · 3 files · Open this directory",
+          "priority": 5,
+          "kind": "shell",
+          "box": {
+            "x": 732.9503784179688,
+            "y": 366.06829833984375,
+            "width": 88.4375,
+            "height": 23
+          }
+        },
+        {
+          "id": "directory:Gateway",
+          "text": "Gateway · 5",
+          "title": "Gateway · 5 files · Open this directory",
+          "priority": 5,
+          "kind": "shell",
+          "box": {
+            "x": 1058.1922607421875,
+            "y": 660.8236083984375,
+            "width": 84.09375,
+            "height": 23
+          }
+        },
+        {
+          "id": "directory:Hub",
+          "text": "Hub · 4",
+          "title": "Hub · 4 files · Open this directory",
+          "priority": 5,
+          "kind": "shell",
+          "box": {
+            "x": 813.08935546875,
+            "y": 821.4962158203125,
+            "width": 56.640625,
+            "height": 23
+          }
+        },
+        {
+          "id": "directory:PaymentService",
+          "text": "PaymentService · 6",
+          "title": "PaymentService · 6 files · Open this directory",
+          "priority": 5,
+          "kind": "shell",
+          "box": {
+            "x": 445.5341796875,
+            "y": 452.20953369140625,
+            "width": 127.4375,
+            "height": 23
+          }
+        },
+        {
+          "id": "directory:Portal",
+          "text": "Portal · 11",
+          "title": "Portal · 11 files · Open this directory",
+          "priority": 5,
+          "kind": "shell",
+          "box": {
+            "x": 881.7380981445312,
+            "y": 132.280029296875,
+            "width": 73.015625,
+            "height": 23
+          }
+        }
+      ],
+      "overlaps": []
+    },
+    {
+      "variant": "after",
+      "name": "structure-open",
+      "url": "http://localhost:8915/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QJIZVx0BwMoFc7Bc3TMEsrjczHssrmALogRvwACOUBA0EkIHgeIW8LIRbICN7eYzIEr1ao1xJ9fqjaSQA",
+      "openDirectories": [
+        "PaymentService"
+      ],
+      "pins": [],
+      "nodes": [
+        {
+          "id": "Estate.sln",
+          "name": "Estate.sln",
+          "x": 1163.5165280789538,
+          "y": 779.0848292665848,
+          "depth": 0.9992857655442619,
+          "distance": 303.73305079271853,
+          "opacity": 0.30000001192092896,
+          "radius": 2.64133122366518,
+          "screenRadius": 9.224524112623595,
+          "ring": false,
+          "world": {
+            "x": -17.912553787231445,
+            "y": -73.01904296875,
+            "z": -66.14822387695312
+          }
+        },
+        {
+          "id": "PaymentService/App.config",
+          "name": "App.config",
+          "x": 961.3895893356486,
+          "y": 169.76500042160365,
+          "depth": 0.9991837326731591,
+          "distance": 260.05773313902415,
+          "opacity": 0.30000001192092896,
+          "radius": 4.192852064447204,
+          "screenRadius": 16.73019121476739,
+          "ring": false,
+          "world": {
+            "x": -79.7503662109375,
+            "y": 89.47706604003906,
+            "z": -31.292428970336914
+          }
+        },
+        {
+          "id": "PaymentService/PaymentService.cs",
+          "name": "PaymentService.cs",
+          "x": 901.2092074295907,
+          "y": 333.7842942867791,
+          "depth": 0.9989355686781527,
+          "distance": 190.7276627001027,
+          "opacity": 0.30000001192092896,
+          "radius": 4.192852064447204,
+          "screenRadius": 21.806602689248667,
+          "ring": false,
+          "world": {
+            "x": -97.79097747802734,
+            "y": 38.38224411010742,
+            "z": 25.634307861328125
+          }
+        },
+        {
+          "id": "PaymentService/PaymentService.csproj",
+          "name": "PaymentService.csproj",
+          "x": 937.1121236092932,
+          "y": 425.3449397398633,
+          "depth": 0.9993405664492363,
+          "distance": 304.7489012112583,
+          "opacity": 0.30000001192092896,
+          "radius": 3.327868973514539,
+          "screenRadius": 10.732434035043084,
+          "ring": false,
+          "world": {
+            "x": -80.68473052978516,
+            "y": 30.16095542907715,
+            "z": -89.31053924560547
+          }
+        },
+        {
+          "id": "directory:Contracts",
+          "name": "Contracts",
+          "directory": "Contracts",
+          "files": 6,
+          "x": 1381.8946212781916,
+          "y": 511.11370502344795,
+          "depth": 0.9993192704121251,
+          "distance": 333.7675102384938,
+          "opacity": 0.75,
+          "radius": 24.769754670809327,
+          "screenRadius": 82.45640870079914,
+          "ring": false,
+          "world": {
+            "x": 52.08891296386719,
+            "y": 3.6252963542938232,
+            "z": -79.86750793457031
+          }
+        },
+        {
+          "id": "directory:",
+          "name": "Scan root",
+          "directory": "",
+          "files": 36,
+          "x": 1411.6640806832281,
+          "y": 607.4684158706806,
+          "depth": 0.9990497405373929,
+          "distance": 243.387424916667,
+          "opacity": 0.75,
+          "radius": 4.192852064447204,
+          "screenRadius": 19.471117494084666,
+          "ring": false,
+          "world": {
+            "x": 13.29832935333252,
+            "y": -16.6033992767334,
+            "z": 3.1309866905212402
+          }
+        },
+        {
+          "id": "directory:Database",
+          "name": "Database",
+          "directory": "Database",
+          "files": 3,
+          "x": 1518.6443019405353,
+          "y": 498.0319305232434,
+          "depth": 0.9984031932950831,
+          "distance": 151.65052861786953,
+          "opacity": 0.75,
+          "radius": 25.119577672542576,
+          "screenRadius": 195.88813529393852,
+          "ring": false,
+          "world": {
+            "x": -21.862045288085938,
+            "y": 6.3553876876831055,
+            "z": 88.12150573730469
+          }
+        },
+        {
+          "id": "directory:Gateway",
+          "name": "Gateway",
+          "directory": "Gateway",
+          "files": 5,
+          "x": 1958.5037649003507,
+          "y": 696.4882817899784,
+          "depth": 0.9988861810913732,
+          "distance": 273.5775436750714,
+          "opacity": 0.75,
+          "radius": 24.031723275702983,
+          "screenRadius": 130.77701580852298,
+          "ring": false,
+          "world": {
+            "x": 96.06688690185547,
+            "y": -29.726247787475586,
+            "z": 33.94123077392578
+          }
+        },
+        {
+          "id": "directory:Hub",
+          "name": "Hub",
+          "directory": "Hub",
+          "files": 4,
+          "x": 1359.532305125982,
+          "y": 1109.118541321449,
+          "depth": 0.9988280326648592,
+          "distance": 219.27239811146984,
+          "opacity": 0.75,
+          "radius": 20.468036867299876,
+          "screenRadius": 117.19058159943116,
+          "ring": false,
+          "world": {
+            "x": -18.635520935058594,
+            "y": -100.05107879638672,
+            "z": 42.82551193237305
+          }
+        },
+        {
+          "id": "directory:PaymentService",
+          "name": "PaymentService",
+          "directory": "PaymentService",
+          "files": 6,
+          "x": 750.1203859615216,
+          "y": 374.33084631907457,
+          "depth": 0.9992105027473609,
+          "distance": 256.39299223435194,
+          "opacity": 0.75,
+          "radius": 4.192852064447204,
+          "screenRadius": 16.182585943310162,
+          "ring": false,
+          "world": {
+            "x": -133.549072265625,
+            "y": 39.31776809692383,
+            "z": -39.567413330078125
+          }
+        },
+        {
+          "id": "directory:PaymentService/Data",
+          "name": "Data",
+          "directory": "PaymentService/Data",
+          "files": 3,
+          "x": 808.9569842764444,
+          "y": 713.5695648881052,
+          "depth": 0.9991494969292157,
+          "distance": 240.22369719291098,
+          "opacity": 0.75,
+          "radius": 21.4113771787543,
+          "screenRadius": 89.01131942746298,
+          "ring": false,
+          "world": {
+            "x": -117.53409576416016,
+            "y": -44.7088737487793,
+            "z": -21.467370986938477
+          }
+        },
+        {
+          "id": "directory:Portal",
+          "name": "Portal",
+          "directory": "Portal",
+          "files": 11,
+          "x": 1486.2481944434712,
+          "y": 90.4197058749514,
+          "depth": 0.9990392772222253,
+          "distance": 263.3010387321252,
+          "opacity": 0.75,
+          "radius": 43.02431533375371,
+          "screenRadius": 201.99621867407294,
+          "ring": false,
+          "world": {
+            "x": 27.87053680419922,
+            "y": 93.76564025878906,
+            "z": 5.415565013885498
+          }
+        }
+      ],
+      "ringMarks": [],
+      "wrappers": [
+        "directory:Contracts",
+        "directory:Database",
+        "directory:Gateway",
+        "directory:Hub",
+        "directory:PaymentService/Data",
+        "directory:Portal"
+      ],
+      "labels": [
+        {
+          "id": "directory:Contracts",
+          "text": "Contracts · 6",
+          "title": "Contracts · 6 files · Open this directory",
+          "priority": 5,
+          "kind": "shell",
+          "box": {
+            "x": 1204.438232421875,
+            "y": 499.61370849609375,
+            "width": 88.421875,
+            "height": 23
+          }
+        },
+        {
+          "id": "directory:",
+          "text": "Scan root",
+          "title": "Scan root · 36 visible files · Explore this directory",
+          "priority": 1,
+          "kind": "directory",
+          "box": {
+            "x": 1315.1929931640625,
+            "y": 595.9684448242188,
+            "width": 69.65625,
+            "height": 23
+          }
+        },
+        {
+          "id": "directory:PaymentService/Data",
+          "text": "Data · 3",
+          "title": "PaymentService/Data · 3 files · Open this directory",
+          "priority": 5,
+          "kind": "shell",
+          "box": {
+            "x": 778.9569702148438,
+            "y": 809.5808715820312,
+            "width": 60.25,
+            "height": 23
+          }
+        },
+        {
+          "id": "PaymentService/PaymentService.cs",
+          "text": "PaymentService.cs",
+          "title": "PaymentService/PaymentService.cs · 3 public symbols · Pin this file",
+          "priority": 5,
+          "kind": "file",
+          "box": {
+            "x": 838.709228515625,
+            "y": 281.97772216796875,
+            "width": 125.265625,
+            "height": 23
+          }
+        },
+        {
+          "id": "PaymentService/App.config",
+          "text": "App.config",
+          "title": "PaymentService/App.config · 3 public symbols · Pin this file",
+          "priority": 5,
+          "kind": "file",
+          "box": {
+            "x": 923.8895874023438,
+            "y": 193.4951934814453,
+            "width": 75.4375,
+            "height": 23
+          }
+        }
+      ],
+      "overlaps": []
+    },
+    {
+      "variant": "after",
+      "name": "structure-return",
+      "url": "http://localhost:8915/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QJIZVx0BwMoFc7Bc3TMEsrjczHssrmALogRvwACOUBA0EkIHgeIW8LIRbICN7eYzIEr1ao1xJ9fqjaSQA",
+      "openDirectories": [
+        "PaymentService"
+      ],
+      "pins": [],
+      "nodes": [
+        {
+          "id": "Estate.sln",
+          "name": "Estate.sln",
+          "x": 1163.5165280789538,
+          "y": 779.0848292665848,
+          "depth": 0.9992857655442619,
+          "distance": 303.73305079271853,
+          "opacity": 0.30000001192092896,
+          "radius": 2.64133122366518,
+          "screenRadius": 9.224524112623595,
+          "ring": false,
+          "world": {
+            "x": -17.912553787231445,
+            "y": -73.01904296875,
+            "z": -66.14822387695312
+          }
+        },
+        {
+          "id": "PaymentService/App.config",
+          "name": "App.config",
+          "x": 961.3895893356486,
+          "y": 169.76500042160365,
+          "depth": 0.9991837326731591,
+          "distance": 260.05773313902415,
+          "opacity": 0.30000001192092896,
+          "radius": 4.192852064447204,
+          "screenRadius": 16.73019121476739,
+          "ring": false,
+          "world": {
+            "x": -79.7503662109375,
+            "y": 89.47706604003906,
+            "z": -31.292428970336914
+          }
+        },
+        {
+          "id": "PaymentService/PaymentService.cs",
+          "name": "PaymentService.cs",
+          "x": 901.2092074295907,
+          "y": 333.7842942867791,
+          "depth": 0.9989355686781527,
+          "distance": 190.7276627001027,
+          "opacity": 0.30000001192092896,
+          "radius": 4.192852064447204,
+          "screenRadius": 21.806602689248667,
+          "ring": false,
+          "world": {
+            "x": -97.79097747802734,
+            "y": 38.38224411010742,
+            "z": 25.634307861328125
+          }
+        },
+        {
+          "id": "PaymentService/PaymentService.csproj",
+          "name": "PaymentService.csproj",
+          "x": 937.1121236092932,
+          "y": 425.3449397398633,
+          "depth": 0.9993405664492363,
+          "distance": 304.7489012112583,
+          "opacity": 0.30000001192092896,
+          "radius": 3.327868973514539,
+          "screenRadius": 10.732434035043084,
+          "ring": false,
+          "world": {
+            "x": -80.68473052978516,
+            "y": 30.16095542907715,
+            "z": -89.31053924560547
+          }
+        },
+        {
+          "id": "directory:Contracts",
+          "name": "Contracts",
+          "directory": "Contracts",
+          "files": 6,
+          "x": 1381.8946212781916,
+          "y": 511.11370502344795,
+          "depth": 0.9993192704121251,
+          "distance": 333.7675102384938,
+          "opacity": 0.75,
+          "radius": 24.769754670809327,
+          "screenRadius": 82.45640870079914,
+          "ring": false,
+          "world": {
+            "x": 52.08891296386719,
+            "y": 3.6252963542938232,
+            "z": -79.86750793457031
+          }
+        },
+        {
+          "id": "directory:",
+          "name": "Scan root",
+          "directory": "",
+          "files": 36,
+          "x": 1411.6640806832281,
+          "y": 607.4684158706806,
+          "depth": 0.9990497405373929,
+          "distance": 243.387424916667,
+          "opacity": 0.75,
+          "radius": 4.192852064447204,
+          "screenRadius": 19.471117494084666,
+          "ring": false,
+          "world": {
+            "x": 13.29832935333252,
+            "y": -16.6033992767334,
+            "z": 3.1309866905212402
+          }
+        },
+        {
+          "id": "directory:Database",
+          "name": "Database",
+          "directory": "Database",
+          "files": 3,
+          "x": 1518.6443019405353,
+          "y": 498.0319305232434,
+          "depth": 0.9984031932950831,
+          "distance": 151.65052861786953,
+          "opacity": 0.75,
+          "radius": 25.119577672542576,
+          "screenRadius": 195.88813529393852,
+          "ring": false,
+          "world": {
+            "x": -21.862045288085938,
+            "y": 6.3553876876831055,
+            "z": 88.12150573730469
+          }
+        },
+        {
+          "id": "directory:Gateway",
+          "name": "Gateway",
+          "directory": "Gateway",
+          "files": 5,
+          "x": 1958.5037649003507,
+          "y": 696.4882817899784,
+          "depth": 0.9988861810913732,
+          "distance": 273.5775436750714,
+          "opacity": 0.75,
+          "radius": 24.031723275702983,
+          "screenRadius": 130.77701580852298,
+          "ring": false,
+          "world": {
+            "x": 96.06688690185547,
+            "y": -29.726247787475586,
+            "z": 33.94123077392578
+          }
+        },
+        {
+          "id": "directory:Hub",
+          "name": "Hub",
+          "directory": "Hub",
+          "files": 4,
+          "x": 1359.532305125982,
+          "y": 1109.118541321449,
+          "depth": 0.9988280326648592,
+          "distance": 219.27239811146984,
+          "opacity": 0.75,
+          "radius": 20.468036867299876,
+          "screenRadius": 117.19058159943116,
+          "ring": false,
+          "world": {
+            "x": -18.635520935058594,
+            "y": -100.05107879638672,
+            "z": 42.82551193237305
+          }
+        },
+        {
+          "id": "directory:PaymentService",
+          "name": "PaymentService",
+          "directory": "PaymentService",
+          "files": 6,
+          "x": 750.1203859615216,
+          "y": 374.33084631907457,
+          "depth": 0.9992105027473609,
+          "distance": 256.39299223435194,
+          "opacity": 0.75,
+          "radius": 4.192852064447204,
+          "screenRadius": 16.182585943310162,
+          "ring": false,
+          "world": {
+            "x": -133.549072265625,
+            "y": 39.31776809692383,
+            "z": -39.567413330078125
+          }
+        },
+        {
+          "id": "directory:PaymentService/Data",
+          "name": "Data",
+          "directory": "PaymentService/Data",
+          "files": 3,
+          "x": 808.9569842764444,
+          "y": 713.5695648881052,
+          "depth": 0.9991494969292157,
+          "distance": 240.22369719291098,
+          "opacity": 0.75,
+          "radius": 21.4113771787543,
+          "screenRadius": 89.01131942746298,
+          "ring": false,
+          "world": {
+            "x": -117.53409576416016,
+            "y": -44.7088737487793,
+            "z": -21.467370986938477
+          }
+        },
+        {
+          "id": "directory:Portal",
+          "name": "Portal",
+          "directory": "Portal",
+          "files": 11,
+          "x": 1486.2481944434712,
+          "y": 90.4197058749514,
+          "depth": 0.9990392772222253,
+          "distance": 263.3010387321252,
+          "opacity": 0.75,
+          "radius": 43.02431533375371,
+          "screenRadius": 201.99621867407294,
+          "ring": false,
+          "world": {
+            "x": 27.87053680419922,
+            "y": 93.76564025878906,
+            "z": 5.415565013885498
+          }
+        }
+      ],
+      "ringMarks": [],
+      "wrappers": [
+        "directory:Contracts",
+        "directory:Database",
+        "directory:Gateway",
+        "directory:Hub",
+        "directory:PaymentService/Data",
+        "directory:Portal"
+      ],
+      "labels": [
+        {
+          "id": "directory:Contracts",
+          "text": "Contracts · 6",
+          "title": "Contracts · 6 files · Open this directory",
+          "priority": 5,
+          "kind": "shell",
+          "box": {
+            "x": 1204.438232421875,
+            "y": 499.61370849609375,
+            "width": 88.421875,
+            "height": 23
+          }
+        },
+        {
+          "id": "directory:",
+          "text": "Scan root",
+          "title": "Scan root · 36 visible files · Explore this directory",
+          "priority": 1,
+          "kind": "directory",
+          "box": {
+            "x": 1315.1929931640625,
+            "y": 595.9684448242188,
+            "width": 69.65625,
+            "height": 23
+          }
+        },
+        {
+          "id": "directory:PaymentService/Data",
+          "text": "Data · 3",
+          "title": "PaymentService/Data · 3 files · Open this directory",
+          "priority": 5,
+          "kind": "shell",
+          "box": {
+            "x": 778.9569702148438,
+            "y": 809.5808715820312,
+            "width": 60.25,
+            "height": 23
+          }
+        },
+        {
+          "id": "PaymentService/PaymentService.cs",
+          "text": "PaymentService.cs",
+          "title": "PaymentService/PaymentService.cs · 3 public symbols · Pin this file",
+          "priority": 5,
+          "kind": "file",
+          "box": {
+            "x": 838.709228515625,
+            "y": 281.97772216796875,
+            "width": 125.265625,
+            "height": 23
+          }
+        },
+        {
+          "id": "PaymentService/App.config",
+          "text": "App.config",
+          "title": "PaymentService/App.config · 3 public symbols · Pin this file",
+          "priority": 5,
+          "kind": "file",
+          "box": {
+            "x": 923.8895874023438,
+            "y": 193.4951934814453,
+            "width": 75.4375,
+            "height": 23
+          }
+        }
+      ],
+      "overlaps": []
+    },
+    {
+      "variant": "after",
+      "name": "connections-ending",
+      "url": "http://localhost:8915/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QJIZVx0BwMoFc7Bc3TMEsrjczHssrmALogRvwACOUBA0EkIHgPcgmcr1ao1xJ9fqjaSQA",
+      "openDirectories": [
+        "PaymentService"
+      ],
+      "pins": [],
+      "nodes": [
+        {
+          "id": "Contracts/Contracts.csproj",
+          "name": "Contracts.csproj",
+          "x": 745.6720316941595,
+          "y": 350.2834585211434,
+          "depth": 0.9996187897194014,
+          "distance": 531.948849084291,
+          "opacity": 0.30000001192092896,
+          "radius": 3.9673343122843616,
+          "screenRadius": 7.409534046927317,
+          "ring": false,
+          "world": {
+            "x": -63.06467056274414,
+            "y": 43.4620246887207,
+            "z": -103.48706817626953
+          }
+        },
+        {
+          "id": "Contracts/IPaymentService.cs",
+          "name": "IPaymentService.cs",
+          "x": 883.9527326832464,
+          "y": 261.7086976441084,
+          "depth": 0.9994963346453679,
+          "distance": 408.1763540815973,
+          "opacity": 0.30000001192092896,
+          "radius": 4.99852805636623,
+          "screenRadius": 12.32168667750964,
+          "ring": false,
+          "world": {
+            "x": 6.634781837463379,
+            "y": 59.31692886352539,
+            "z": 23.1334285736084
+          }
+        },
+        {
+          "id": "Contracts/PaymentQuery.cs",
+          "name": "PaymentQuery.cs",
+          "x": 787.2269666679339,
+          "y": 130.07325554368035,
+          "depth": 0.9994576696670034,
+          "distance": 394.6251722990346,
+          "opacity": 0.30000001192092896,
+          "radius": 5.384501037118116,
+          "screenRadius": 14.28884910985502,
+          "ring": true,
+          "world": {
+            "x": -30.779287338256836,
+            "y": 101.90569305419922,
+            "z": 51.27091598510742
+          }
+        },
+        {
+          "id": "Contracts/PaymentRequest.cs",
+          "name": "PaymentRequest.cs",
+          "x": 916.2962319596309,
+          "y": 136.1495649539916,
+          "depth": 0.9994711769337773,
+          "distance": 403.8998350457729,
+          "opacity": 0.30000001192092896,
+          "radius": 5.721886218285726,
+          "screenRadius": 14.807103971097217,
+          "ring": true,
+          "world": {
+            "x": 18.48957633972168,
+            "y": 103.15545654296875,
+            "z": 41.90754699707031
+          }
+        },
+        {
+          "id": "Contracts/PaymentResult.cs",
+          "name": "PaymentResult.cs",
+          "x": 746.1057712416597,
+          "y": 259.26170261386176,
+          "depth": 0.9994938102125899,
+          "distance": 408.34278757972623,
+          "opacity": 0.30000001192092896,
+          "radius": 5.384501037118116,
+          "screenRadius": 13.339450317232743,
+          "ring": true,
+          "world": {
+            "x": -49.0749397277832,
+            "y": 59.81400680541992,
+            "z": 25.101272583007812
+          }
+        },
+        {
+          "id": "Database/SqlServer/dbo.Payment.sql",
+          "name": "dbo.Payment.sql",
+          "x": 969.4188525758631,
+          "y": 728.6267282605385,
+          "depth": 0.9993839657246506,
+          "distance": 334.5478423750716,
+          "opacity": 0.30000001192092896,
+          "radius": 3.9673343122843616,
+          "screenRadius": 11.954700325125405,
+          "ring": false,
+          "world": {
+            "x": 32.52892303466797,
+            "y": -113.59249877929688,
+            "z": 95.14887237548828
+          }
+        },
+        {
+          "id": "Database/SqlServer/dbo.usp_PostPayment.sql",
+          "name": "dbo.usp_PostPayment.sql",
+          "x": 772.7036695626418,
+          "y": 744.9184985676872,
+          "depth": 0.9994438795327837,
+          "distance": 370.3890748428612,
+          "opacity": 0.30000001192092896,
+          "radius": 3.9673343122843616,
+          "screenRadius": 10.795030843250103,
+          "ring": true,
+          "world": {
+            "x": -35.52726745605469,
+            "y": -127.55245971679688,
+            "z": 60.36248779296875
+          }
+        },
+        {
+          "id": "Estate.sln",
+          "name": "Estate.sln",
+          "x": 991.0332787808883,
+          "y": 746.2476851553281,
+          "depth": 0.9996085204757568,
+          "distance": 529.2221159995707,
+          "opacity": 0.30000001192092896,
+          "radius": 3.1488752696935207,
+          "screenRadius": 6.038712963599466,
+          "ring": false,
+          "world": {
+            "x": 66.3448486328125,
+            "y": -165.17698669433594,
+            "z": -89.83794403076172
+          }
+        },
+        {
+          "id": "Hub/App.config",
+          "name": "App.config",
+          "x": 947.5077027755976,
+          "y": 352.58551770571825,
+          "depth": 0.9995790127773184,
+          "distance": 481.31978648283865,
+          "opacity": 0.30000001192092896,
+          "radius": 5.384501037118116,
+          "screenRadius": 11.101210391159237,
+          "ring": true,
+          "world": {
+            "x": 40.11639404296875,
+            "y": 34.5478630065918,
+            "z": -54.310096740722656
+          }
+        },
+        {
+          "id": "PaymentService/App.config",
+          "name": "App.config",
+          "x": 923.0932120515162,
+          "y": 460.672079116259,
+          "depth": 0.9995072595259239,
+          "distance": 406.11403031573167,
+          "opacity": 0.75,
+          "radius": 4.99852805636623,
+          "screenRadius": 12.055266362669549,
+          "ring": false,
+          "world": {
+            "x": 23.16368293762207,
+            "y": -20.998964309692383,
+            "z": 14.385578155517578
+          }
+        },
+        {
+          "id": "PaymentService/Data/Payment.cs",
+          "name": "Payment.cs",
+          "x": 974.8286181854845,
+          "y": 484.97951260806843,
+          "depth": 0.9993452574280497,
+          "distance": 307.2464524887196,
+          "opacity": 0.75,
+          "radius": 6.0235820451343765,
+          "screenRadius": 19.288298175657847,
+          "ring": false,
+          "world": {
+            "x": 31.890878677368164,
+            "y": -33.12660598754883,
+            "z": 114.2461929321289
+          }
+        },
+        {
+          "id": "PaymentService/Data/PaymentsContext.cs",
+          "name": "PaymentsContext.cs",
+          "x": 753.0450351030647,
+          "y": 530.1260273141675,
+          "depth": 0.9994139749863359,
+          "distance": 342.15901244658727,
+          "opacity": 0.75,
+          "radius": 6.0235820451343765,
+          "screenRadius": 17.26885770632593,
+          "ring": false,
+          "world": {
+            "x": -40.929405212402344,
+            "y": -48.14310073852539,
+            "z": 78.61197662353516
+          }
+        },
+        {
+          "id": "PaymentService/Data/PostPaymentRow.cs",
+          "name": "PostPaymentRow.cs",
+          "x": 652.1737256140831,
+          "y": 414.1849250243324,
+          "depth": 0.9993531843525967,
+          "distance": 316.0576745135971,
+          "opacity": 0.75,
+          "radius": 5.384501037118116,
+          "screenRadius": 17.033639752462122,
+          "ring": false,
+          "world": {
+            "x": -69.62884521484375,
+            "y": -10.671306610107422,
+            "z": 110.52098083496094
+          }
+        },
+        {
+          "id": "PaymentService/PaymentService.cs",
+          "name": "PaymentService.cs",
+          "x": 829.6357605830515,
+          "y": 278.04964591184205,
+          "depth": 0.9994272631095202,
+          "distance": 357.6007041976407,
+          "opacity": 0.75,
+          "radius": 4.99852805636623,
+          "screenRadius": 14.006104208002665,
+          "ring": false,
+          "world": {
+            "x": -14.382033348083496,
+            "y": 41.61567687988281,
+            "z": 70.7374038696289
+          }
+        },
+        {
+          "id": "PaymentService/PaymentService.csproj",
+          "name": "PaymentService.csproj",
+          "x": 730.3330164646154,
+          "y": 481.75778081443775,
+          "depth": 0.9996358726685667,
+          "distance": 551.1412906341867,
+          "opacity": 0.75,
+          "radius": 3.9673343122843616,
+          "screenRadius": 7.078882809344624,
+          "ring": false,
+          "world": {
+            "x": -74.28311157226562,
+            "y": -26.352827072143555,
+            "z": -127.89057159423828
+          }
+        },
+        {
+          "id": "Portal/Portal.csproj",
+          "name": "Portal.csproj",
+          "x": 1307.9334699062608,
+          "y": 553.7533563769753,
+          "depth": 0.9995324186245089,
+          "distance": 471.2739238064823,
+          "opacity": 0.30000001192092896,
+          "radius": 3.9673343122843616,
+          "screenRadius": 9.081300973187238,
+          "ring": false,
+          "world": {
+            "x": 192.90231323242188,
+            "y": -60.677650451660156,
+            "z": -7.30936336517334
+          }
+        },
+        {
+          "id": "shell:Gateway",
+          "name": "Gateway",
+          "x": 893.1393230673038,
+          "y": 356.0541041355577,
+          "depth": 0.9996449056946379,
+          "distance": 567.728589565472,
+          "opacity": 0.75,
+          "radius": 19.026260576471927,
+          "screenRadius": 33.10991939284621,
+          "ring": false,
+          "world": {
+            "x": 17.56627082824707,
+            "y": 46.21131896972656,
+            "z": -141.7393035888672
+          }
+        },
+        {
+          "id": "shell:Hub",
+          "name": "Hub",
+          "x": 795.6417861050171,
+          "y": 197.0368406180379,
+          "depth": 0.9995476065438572,
+          "distance": 462.6197326567335,
+          "opacity": 0.75,
+          "radius": 18.26472492391575,
+          "screenRadius": 40.45490966618983,
+          "ring": false,
+          "world": {
+            "x": -31.70353889465332,
+            "y": 99.66144561767578,
+            "z": -21.569978713989258
+          }
+        },
+        {
+          "id": "shell:Portal/Models",
+          "name": "Models",
+          "x": 1185.0142163079438,
+          "y": 267.9051012056707,
+          "depth": 0.9996113030835785,
+          "distance": 555.8335461666212,
+          "opacity": 0.75,
+          "radius": 18.189569664945065,
+          "screenRadius": 34.63586607222417,
+          "ring": false,
+          "world": {
+            "x": 168.73944091796875,
+            "y": 85.13526916503906,
+            "z": -93.46543884277344
+          }
+        },
+        {
+          "id": "shell:Portal/Pages",
+          "name": "Pages",
+          "x": 466.40371407077293,
+          "y": 567.5579978722363,
+          "depth": 0.9995724072963502,
+          "distance": 501.68577103401685,
+          "opacity": 0.75,
+          "radius": 19.799604624538283,
+          "screenRadius": 41.458859916826704,
+          "ring": false,
+          "world": {
+            "x": -190.36972045898438,
+            "y": -69.25481414794922,
+            "z": -47.026161193847656
+          }
+        }
+      ],
+      "ringMarks": [
+        {
+          "id": "Contracts/PaymentQuery.cs",
+          "x": 787.2269666679339,
+          "y": 130.07325554368035,
+          "r": 22.862159388933357
+        },
+        {
+          "id": "Contracts/PaymentRequest.cs",
+          "x": 916.2962319596309,
+          "y": 136.1495649539916,
+          "r": 23.691367196414287
+        },
+        {
+          "id": "Contracts/PaymentResult.cs",
+          "x": 746.1057712416597,
+          "y": 259.26170261386176,
+          "r": 21.343121266708312
+        },
+        {
+          "id": "Database/SqlServer/dbo.usp_PostPayment.sql",
+          "x": 772.7036695626418,
+          "y": 744.9184985676872,
+          "r": 17.272049963535494
+        },
+        {
+          "id": "Hub/App.config",
+          "x": 947.5077027755976,
+          "y": 352.58551770571825,
+          "r": 17.76193725761452
+        }
+      ],
+      "wrappers": [
+        "shell:Gateway",
+        "shell:Hub",
+        "shell:Portal/Models",
+        "shell:Portal/Pages"
+      ],
+      "labels": [
+        {
+          "id": "PaymentService/Data/PaymentsContext.cs",
+          "text": "PaymentsContext.cs",
+          "title": "PaymentService/Data/PaymentsContext.cs · 6 public symbols · Pin this file",
+          "priority": 5,
+          "kind": "file",
+          "box": {
+            "x": 686.5450439453125,
+            "y": 554.3948974609375,
+            "width": 133.21875,
+            "height": 23
+          }
+        },
+        {
+          "id": "PaymentService/Data/Payment.cs",
+          "text": "Payment.cs",
+          "title": "PaymentService/Data/Payment.cs · 6 public symbols · Pin this file",
+          "priority": 5,
+          "kind": "file",
+          "box": {
+            "x": 933.82861328125,
+            "y": 511.267822265625,
+            "width": 81.921875,
+            "height": 23
+          }
+        },
+        {
+          "id": "PaymentService/Data/PostPaymentRow.cs",
+          "text": "PostPaymentRow.cs",
+          "title": "PaymentService/Data/PostPaymentRow.cs · 4 public symbols · Pin this file",
+          "priority": 5,
+          "kind": "file",
+          "box": {
+            "x": 585.6737060546875,
+            "y": 438.21856689453125,
+            "width": 133.21875,
+            "height": 23
+          }
+        },
+        {
+          "id": "Contracts/PaymentQuery.cs",
+          "text": "PaymentQuery.cs",
+          "title": "Contracts/PaymentQuery.cs · 4 public symbols · 3 more connected, not shown · Pin this file",
+          "priority": 5,
+          "kind": "file",
+          "box": {
+            "x": 729.2269287109375,
+            "y": 77.21109008789062,
+            "width": 116.359375,
+            "height": 23
+          }
+        },
+        {
+          "id": "Contracts/PaymentRequest.cs",
+          "text": "PaymentRequest.cs",
+          "title": "Contracts/PaymentRequest.cs · 5 public symbols · 3 more connected, not shown · Pin this file",
+          "priority": 5,
+          "kind": "file",
+          "box": {
+            "x": 851.2962036132812,
+            "y": 166.8409423828125,
+            "width": 130.34375,
+            "height": 23
+          }
+        },
+        {
+          "id": "shell:Hub",
+          "text": "Hub · 3",
+          "title": "Hub · 3 files · Open this shell",
+          "priority": 5,
+          "kind": "shell",
+          "box": {
+            "x": 691.1868896484375,
+            "y": 185.53684997558594,
+            "width": 56.640625,
+            "height": 23
+          }
+        },
+        {
+          "id": "shell:Gateway",
+          "text": "Gateway · 3",
+          "title": "Gateway · 3 files · Open this shell",
+          "priority": 5,
+          "kind": "shell",
+          "box": {
+            "x": 851.1393432617188,
+            "y": 396.1640319824219,
+            "width": 84.09375,
+            "height": 23
+          }
+        },
+        {
+          "id": "shell:Portal/Models",
+          "text": "Models · 2",
+          "title": "Portal/Models · 2 files · Open this shell",
+          "priority": 5,
+          "kind": "shell",
+          "box": {
+            "x": 1147.51416015625,
+            "y": 203.2692413330078,
+            "width": 74.703125,
+            "height": 23
+          }
+        },
+        {
+          "id": "shell:Portal/Pages",
+          "text": "Pages · 3",
+          "title": "Portal/Pages · 3 files · Open this shell",
+          "priority": 5,
+          "kind": "shell",
+          "box": {
+            "x": 431.4037170410156,
+            "y": 616.016845703125,
+            "width": 69.65625,
+            "height": 23
+          }
+        }
+      ],
+      "overlaps": []
+    },
+    {
+      "variant": "after",
+      "name": "main-structure-start",
+      "url": "http://localhost:8915/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwACOUBA0EkIHgeIW8LI6A4ZARIaAA",
+      "openDirectories": [],
+      "pins": [],
+      "nodes": [
+        {
+          "id": ".gitattributes",
+          "name": ".gitattributes",
+          "x": 848.6180529801698,
+          "y": 607.6161316600363,
+          "depth": 0.9999480813731971,
+          "distance": 3757.635291270737,
+          "opacity": 0.30000001192092896,
+          "radius": 5.971027437189208,
+          "screenRadius": 1.5590589777862103,
+          "ring": false,
+          "world": {
+            "x": 14.73287296295166,
+            "y": -190.1686248779297,
+            "z": -34.25602722167969
+          }
+        },
+        {
+          "id": ".gitignore",
+          "name": ".gitignore",
+          "x": 848.2147956184032,
+          "y": 598.6196234476324,
+          "depth": 0.9999458788264529,
+          "distance": 3605.795586092519,
+          "opacity": 0.30000001192092896,
+          "radius": 5.971027437189208,
+          "screenRadius": 1.623221688944491,
+          "ring": false,
+          "world": {
+            "x": 13.534393310546875,
+            "y": -141.5400848388672,
+            "z": 113.46089172363281
+          }
+        },
+        {
+          "id": ".live-docs.config.json",
+          "name": ".live-docs.config.json",
+          "x": 868.689633457783,
+          "y": 556.1082089756303,
+          "depth": 0.9999487037462171,
+          "distance": 3786.8280449226704,
+          "opacity": 0.30000001192092896,
+          "radius": 11.942054874378416,
+          "screenRadius": 3.0818570767247278,
+          "ring": false,
+          "world": {
+            "x": 92.42452239990234,
+            "y": 4.798105716705322,
+            "z": -78.22549438476562
+          }
+        },
+        {
+          "id": ".nvmrc",
+          "name": ".nvmrc",
+          "x": 851.7365826478211,
+          "y": 550.2993336745849,
+          "depth": 0.9999497474057187,
+          "distance": 3861.248054044597,
+          "opacity": 0.30000001192092896,
+          "radius": 5.971027437189208,
+          "screenRadius": 1.510525540863289,
+          "ring": false,
+          "world": {
+            "x": 26.828672409057617,
+            "y": 23.774206161499023,
+            "z": -154.32708740234375
+          }
+        },
+        {
+          "id": ".vscode/settings.json",
+          "name": "settings.json",
+          "x": 818.2407759543495,
+          "y": 551.6727969056013,
+          "depth": 0.9999460020675328,
+          "distance": 3603.3348865251355,
+          "opacity": 0.75,
+          "radius": 11.942054874378416,
+          "screenRadius": 3.2392630700672034,
+          "ring": false,
+          "world": {
+            "x": -96.98819732666016,
+            "y": 30.773435592651367,
+            "z": 105.50466918945312
+          }
+        },
+        {
+          "id": "eslint.config.js",
+          "name": "eslint.config.js",
+          "x": 831.7257246630074,
+          "y": 586.3536807062338,
+          "depth": 0.9999496284773403,
+          "distance": 3862.3264861475513,
+          "opacity": 0.30000001192092896,
+          "radius": 5.971027437189208,
+          "screenRadius": 1.5139900608407997,
+          "ring": false,
+          "world": {
+            "x": -52.103363037109375,
+            "y": -118.01081848144531,
+            "z": -145.50076293945312
+          }
+        },
+        {
+          "id": "package.json",
+          "name": "package.json",
+          "x": 857.5272723119559,
+          "y": 587.7046648249334,
+          "depth": 0.9999489313062939,
+          "distance": 3811.039356749981,
+          "opacity": 0.30000001192092896,
+          "radius": 7.523023207785808,
+          "screenRadius": 1.9330961899415964,
+          "ring": false,
+          "world": {
+            "x": 49.288536071777344,
+            "y": -119.0213623046875,
+            "z": -94.56161499023438
+          }
+        },
+        {
+          "id": "slopcop.config.json",
+          "name": "slopcop.config.json",
+          "x": 830.7709620594836,
+          "y": 556.7278659557176,
+          "depth": 0.9999468896403207,
+          "distance": 3661.497061767629,
+          "opacity": 0.30000001192092896,
+          "radius": 15.046046415571617,
+          "screenRadius": 4.016062685757162,
+          "ring": false,
+          "world": {
+            "x": -51.973663330078125,
+            "y": 9.043328285217285,
+            "z": 47.145904541015625
+          }
+        },
+        {
+          "id": "tsconfig.base.json",
+          "name": "tsconfig.base.json",
+          "x": 847.9642653628956,
+          "y": 557.5142203633487,
+          "depth": 0.9999459538171486,
+          "distance": 3599.3533075736227,
+          "opacity": 0.30000001192092896,
+          "radius": 16.73105257499051,
+          "screenRadius": 4.5422094662079555,
+          "ring": false,
+          "world": {
+            "x": 12.60024642944336,
+            "y": 9.405976295471191,
+            "z": 108.62382507324219
+          }
+        },
+        {
+          "id": "tsconfig.json",
+          "name": "tsconfig.json",
+          "x": 832.628694503625,
+          "y": 580.3130524261496,
+          "depth": 0.9999459308568254,
+          "distance": 3603.9437892618807,
+          "opacity": 0.30000001192092896,
+          "radius": 8.611711592823887,
+          "screenRadius": 2.3389047151955804,
+          "ring": false,
+          "world": {
+            "x": -43.8605842590332,
+            "y": -74.45822143554688,
+            "z": 110.106201171875
+          }
+        },
+        {
+          "id": "vitest.config.ts",
+          "name": "vitest.config.ts",
+          "x": 869.1659627514122,
+          "y": 554.8633270184416,
+          "depth": 0.9999455491918889,
+          "distance": 3573.50202591318,
+          "opacity": 0.30000001192092896,
+          "radius": 7.523023207785808,
+          "screenRadius": 2.0572297473088366,
+          "ring": false,
+          "world": {
+            "x": 90.19953918457031,
+            "y": 20.4963321685791,
+            "z": 134.56956481933594
+          }
+        },
+        {
+          "id": "directory:.devcontainer",
+          "name": ".devcontainer",
+          "directory": ".devcontainer",
+          "files": 2,
+          "x": 816.4014563192583,
+          "y": 550.3006952091215,
+          "depth": 0.9999495093315318,
+          "distance": 3845.939028130473,
+          "opacity": 0.75,
+          "radius": 22.208175893205514,
+          "screenRadius": 5.6439263194854865,
+          "ring": false,
+          "world": {
+            "x": -112.23316955566406,
+            "y": 24.587247848510742,
+            "z": -136.69871520996094
+          }
+        },
+        {
+          "id": "directory:",
+          "name": "Scan root",
+          "directory": "",
+          "files": 954,
+          "x": 833.0575190983171,
+          "y": 561.2419986662735,
+          "depth": 0.9999479283285667,
+          "distance": 3733.142791430982,
+          "opacity": 0.75,
+          "radius": 9.478414635404317,
+          "screenRadius": 2.4819289184650826,
+          "ring": false,
+          "world": {
+            "x": -44.67180252075195,
+            "y": -11.946491241455078,
+            "z": -23.599925994873047
+          }
+        },
+        {
+          "id": "directory:.github",
+          "name": ".github",
+          "directory": ".github",
+          "files": 5,
+          "x": 840.3491545600826,
+          "y": 560.5144334326747,
+          "depth": 0.9999491002211973,
+          "distance": 3815.9092619964827,
+          "opacity": 0.75,
+          "radius": 24.05250574662511,
+          "screenRadius": 6.160646888194802,
+          "ring": false,
+          "world": {
+            "x": -17.690582275390625,
+            "y": -13.90035343170166,
+            "z": -106.77928161621094
+          }
+        },
+        {
+          "id": "directory:packages",
+          "name": "packages",
+          "directory": "packages",
+          "files": 372,
+          "x": 755.6541287343499,
+          "y": 620.666782492069,
+          "depth": 0.99994713598259,
+          "distance": 3715.0501657316445,
+          "opacity": 0.75,
+          "radius": 329.94009747099096,
+          "screenRadius": 87.67046037131637,
+          "ring": false,
+          "world": {
+            "x": -335.00360107421875,
+            "y": -232.46173095703125,
+            "z": 30.6114444732666
+          }
+        },
+        {
+          "id": "directory:scripts",
+          "name": "scripts",
+          "directory": "scripts",
+          "files": 72,
+          "x": 878.3682864950969,
+          "y": 579.4570724663563,
+          "depth": 0.9999472322731229,
+          "distance": 3690.846108116577,
+          "opacity": 0.75,
+          "radius": 88.84663484738292,
+          "screenRadius": 23.56626052282561,
+          "ring": false,
+          "world": {
+            "x": 127.00613403320312,
+            "y": -77.86888122558594,
+            "z": 24.10770606994629
+          }
+        },
+        {
+          "id": "directory:tests",
+          "name": "tests",
+          "directory": "tests",
+          "files": 492,
+          "x": 859.1931989670161,
+          "y": 411.694900534721,
+          "depth": 0.9999476827237898,
+          "distance": 3726.456229292312,
+          "opacity": 0.75,
+          "radius": 546.9186459000506,
+          "screenRadius": 143.86633836720048,
+          "ring": false,
+          "world": {
+            "x": 54.988372802734375,
+            "y": 557.54638671875,
+            "z": -6.625540256500244
+          }
+        }
+      ],
+      "ringMarks": [],
+      "wrappers": [
+        "directory:.devcontainer",
+        "directory:.github",
+        "directory:packages",
+        "directory:scripts",
+        "directory:tests"
+      ],
+      "labels": [
+        {
+          "id": "directory:",
+          "text": "Scan root",
+          "title": "Scan root · 954 visible files · Explore this directory",
+          "priority": 1,
+          "kind": "directory",
+          "box": {
+            "x": 798.0574951171875,
+            "y": 570.7239379882812,
+            "width": 69.65625,
+            "height": 23
+          }
+        },
+        {
+          "id": "directory:packages",
+          "text": "packages · 372",
+          "title": "packages · 372 files · Open this directory",
+          "priority": 5,
+          "kind": "shell",
+          "box": {
+            "x": 704.1541748046875,
+            "y": 715.3372192382812,
+            "width": 102.90625,
+            "height": 23
+          }
+        },
+        {
+          "id": "directory:scripts",
+          "text": "scripts · 72",
+          "title": "scripts · 72 files · Open this directory",
+          "priority": 5,
+          "kind": "shell",
+          "box": {
+            "x": 908.9345703125,
+            "y": 567.9570922851562,
+            "width": 77.578125,
+            "height": 23
+          }
+        },
+        {
+          "id": "directory:tests",
+          "text": "tests · 492",
+          "title": "tests · 492 files · Open this directory",
+          "priority": 5,
+          "kind": "shell",
+          "box": {
+            "x": 821.6931762695312,
+            "y": 237.8285675048828,
+            "width": 74.703125,
+            "height": 22.999984741210938
+          }
+        }
+      ],
+      "overlaps": []
+    }
+  ],
+  "errors": []
+}

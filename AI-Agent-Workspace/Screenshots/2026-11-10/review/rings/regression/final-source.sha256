@@ -1,0 +1,5 @@
+54e393411bfe558fe03c403a6b9582c59b7990357be4f8bb6afa5e6fd7a72c74  packages/explorer/src/client/views/forceGraphBatches.ts
+0b26e33df400b3656885e78d1bfefb70dbba0c46a5cfd1b64c7cd728a89dd91a  packages/explorer/src/client/views/forceGraphLabels.ts
+3f9deed37839140a3a080ec6750f5606f945db7441e4538dda4001892a7d3475  packages/explorer/src/client/views/forceGraphLabels.test.ts
+ee867dd8b03f3599c5eaffa4ab40452b2d3c5edd966c1860805009bece571f5e  packages/explorer/src/client/views/forceGraphView.ts
+e0e15c0fb1dadf9ac574f5d84a77b48c5989b39403d95ac5fea953e9e88819eb  tests/e2e/force-graph-identity.spec.ts

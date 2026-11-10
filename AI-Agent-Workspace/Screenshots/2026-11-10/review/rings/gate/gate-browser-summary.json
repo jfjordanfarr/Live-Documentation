@@ -1,0 +1,51 @@
+{
+  "startTime": 1794329621431,
+  "duration": 3187970.1859999998,
+  "stats": {
+    "total": 359,
+    "expected": 359,
+    "unexpected": 0,
+    "flaky": 0,
+    "skipped": 0,
+    "ok": true
+  },
+  "errors": [],
+  "projectNames": [
+    "chromium"
+  ],
+  "startedAtUTC": "2026-11-10T16:53:41.431000+00:00",
+  "ringRegression": [
+    {
+      "testId": "fc8acd30e296dbe03117-4a3c20e6e6f6e0c588f5",
+      "title": "directory names clear visible rings through the perspective journey and a rewrap",
+      "projectName": "chromium",
+      "location": {
+        "file": "force-graph-identity.spec.ts",
+        "line": 168,
+        "column": 7
+      },
+      "duration": 26475,
+      "annotations": [],
+      "tags": [],
+      "outcome": "expected",
+      "path": [
+        "names beside visible rings"
+      ],
+      "ok": true,
+      "results": [
+        {
+          "attachments": [
+            {
+              "name": "connections-ending-geometry",
+              "contentType": "application/json"
+            },
+            {
+              "name": "gateway-rewrapped-geometry",
+              "contentType": "application/json"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

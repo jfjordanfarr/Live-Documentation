@@ -1,0 +1,17 @@
+{
+  "recordedAt": "2026-11-10T16:37:22.653747+00:00",
+  "served": {
+    "8900": {
+      "/samples/estate/static/index.js": "7e1654311f63245fb1926c2202d03e6e67b6a1f64240e2a0875e2338c5d7ae48",
+      "/samples/estate/explorer-data.json": "5066a9efaa793165d6d563aeeef547f3f889d8b14a7b94f1eabcd13f708ed9d2"
+    },
+    "8915": {
+      "/samples/estate/static/index.js": "3818b98d50f99e42a624f88d98c944dd133e3531668af8118987a579b0eb50bd",
+      "/samples/estate/explorer-data.json": "393deb08b2b61e262d30f57f85749ba1dcf63e7bc4400679c6762319d2f48794"
+    },
+    "8917": {
+      "/samples/estate/static/index.js": "7e1654311f63245fb1926c2202d03e6e67b6a1f64240e2a0875e2338c5d7ae48",
+      "/samples/estate/explorer-data.json": "393deb08b2b61e262d30f57f85749ba1dcf63e7bc4400679c6762319d2f48794"
+    }
+  }
+}
