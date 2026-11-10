@@ -1,0 +1,92 @@
+{
+  "clock": "normal",
+  "wait": "transition visible then removed, followed by destination settling",
+  "errors": [],
+  "observations": [
+    {
+      "name": "transition-source",
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QJIZVx0BwMoFc7Bc3TMEsrjczHssrmALogRvwACOUBA0EkIHgeIW8LIRbICN7eYzIEr1ao1xJ9fqjaSQA",
+      "transitionCount": 0,
+      "cards": [],
+      "labels": [
+        "Contracts · 6",
+        "Scan root",
+        "Data · 3",
+        "PaymentService.cs",
+        "App.config"
+      ]
+    },
+    {
+      "name": "structure-to-2d-settled",
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QJIZVx0BwMoFc7Bc3TMEsrjczHssrmALogRvwPELeFkItkBEgeCSDMgSvVqjXEn1%2BqNpJAA",
+      "transitionCount": 0,
+      "cards": [
+        "PaymentService/PaymentService.cs",
+        "PaymentService/App.config",
+        "PaymentService/PaymentService.csproj"
+      ],
+      "labels": [
+        "Contracts · 6",
+        "Scan root",
+        "Data · 3",
+        "PaymentService.cs",
+        "App.config"
+      ]
+    },
+    {
+      "name": "structure-to-2d-later",
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QJIZVx0BwMoFc7Bc3TMEsrjczHssrmALogRvwPELeFkItkBEgeCSDMgSvVqjXEn1%2BqNpJAA",
+      "transitionCount": 0,
+      "cards": [
+        "PaymentService/PaymentService.cs",
+        "PaymentService/App.config",
+        "PaymentService/PaymentService.csproj"
+      ],
+      "labels": [
+        "Contracts · 6",
+        "Scan root",
+        "Data · 3",
+        "PaymentService.cs",
+        "App.config"
+      ]
+    },
+    {
+      "name": "structure-return-settled",
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QJIZVx0BwMoFc7Bc3TMEsrjczHssrmALogRvwACOUBA0EkIHgeIW8LIRbICN7eYzIEr1ao1xJ9fqjaSQA",
+      "transitionCount": 0,
+      "cards": [
+        "PaymentService/PaymentService.cs",
+        "PaymentService/App.config",
+        "PaymentService/PaymentService.csproj"
+      ],
+      "labels": [
+        "Contracts · 6",
+        "Scan root",
+        "Data · 3",
+        "PaymentService.cs",
+        "App.config"
+      ]
+    },
+    {
+      "name": "connections-settled",
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QJIZVx0BwMoFc7Bc3TMEsrjczHssrmALogRvwACOUBA0EkIHgPcgmcr1ao1xJ9fqjaSQA",
+      "transitionCount": 0,
+      "cards": [
+        "PaymentService/PaymentService.cs",
+        "PaymentService/App.config",
+        "PaymentService/PaymentService.csproj"
+      ],
+      "labels": [
+        "PaymentsContext.cs",
+        "Payment.cs",
+        "PostPaymentRow.cs",
+        "PaymentQuery.cs",
+        "PaymentRequest.cs",
+        "Hub · 3",
+        "Gateway · 3",
+        "Models · 2",
+        "Pages · 3"
+      ]
+    }
+  ]
+}

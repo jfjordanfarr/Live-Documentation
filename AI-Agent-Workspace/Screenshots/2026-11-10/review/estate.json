@@ -1,0 +1,198 @@
+{
+  "subject": {
+    "name": "estate",
+    "base": "http://localhost:8900/samples/estate/",
+    "file": "PaymentService/PaymentService.cs"
+  },
+  "startUrl": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IDsogAoEMCeBbApggLgMo4BOYAlgMY4D062eRpF1AdJQM4jwAOUA2qCSRUmXAWJkqteuKZS2nbiC4iAVCAC%2BAXU1A",
+  "viewport": [
+    1440,
+    960
+  ],
+  "clock": "normal",
+  "search": "fresh context, normal defaults; initial search allowed to finish",
+  "assetSha256": "7e1654311f63245fb1926c2202d03e6e67b6a1f64240e2a0875e2338c5d7ae48",
+  "errors": [],
+  "readings": [
+    {
+      "name": "reading",
+      "band": "reading",
+      "step": "0",
+      "search": "settled",
+      "titleLines": null,
+      "card": {
+        "x": 666.35009765625,
+        "y": 180,
+        "width": 368.300048828125,
+        "height": 580
+      },
+      "viewport": [
+        1440,
+        960
+      ],
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QPhBrnYLm6ZgllcbmY9lkAPQlstUa4kqtcQ7oHSF3MAKlzAF0QD3RlAQHWTA2K83a6XR43K-4W22QPB%2BOnQM9IMOp%2BWm3PJ-WZ83W854AHOyGe0kgA"
+    },
+    {
+      "name": "out-1",
+      "band": "reading",
+      "step": "1",
+      "search": "settled",
+      "titleLines": null,
+      "card": {
+        "x": 697.0362548828125,
+        "y": 228.416259765625,
+        "width": 306.9158935546875,
+        "height": 483.33203125
+      },
+      "viewport": [
+        1440,
+        960
+      ],
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QPhBrnYLm6ZgllcbmY9lkAPQlstUa4kqtcQ7oHSF3MAKlzAF0QD3RlAQHWTA2K83a6XR43K-4W22QPB%2BOnQM9IMOp%2BWm3PJ-WZ83W854AHOyGe0kgA"
+    },
+    {
+      "name": "out-2",
+      "band": "middle",
+      "step": "2",
+      "search": "settled",
+      "titleLines": "PaymentService.cs",
+      "card": {
+        "x": 722.61083984375,
+        "y": 268.76336669921875,
+        "width": 255.7626953125,
+        "height": 402.7760009765625
+      },
+      "viewport": [
+        1440,
+        960
+      ],
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QPhBrnYLm6ZgllcbmY9lkAPQlstUa4kqtcQ7oHSF3MAKlzAF0QD3RlAQHWTA2K83a6XR43K-4W22QPB%2BOnQM9IMOp%2BWm3PJ-WZ83W854AHOyGe0kgA"
+    },
+    {
+      "name": "out-3",
+      "band": "middle",
+      "step": "3",
+      "search": "settled",
+      "titleLines": "PaymentService.cs",
+      "card": {
+        "x": 743.931396484375,
+        "y": 302.38665771484375,
+        "width": 213.136474609375,
+        "height": 335.64801025390625
+      },
+      "viewport": [
+        1440,
+        960
+      ],
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QPhBrnYLm6ZgllcbmY9lkAPQlstUa4kqtcQ7oHSF3MAKlzAF0QD3RlAQHWTA2K83a6XR43K-4W22QPB%2BOnQM9IMOp%2BWm3PJ-WZ83W854AHOyGe0kgA"
+    },
+    {
+      "name": "out-4",
+      "band": "middle",
+      "step": "4",
+      "search": "settled",
+      "titleLines": "PaymentService\n.cs",
+      "card": {
+        "x": 761.6930541992188,
+        "y": 330.40557861328125,
+        "width": 177.6138916015625,
+        "height": 279.70684814453125
+      },
+      "viewport": [
+        1440,
+        960
+      ],
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QPhBrnYLm6ZgllcbmY9lkAPQlstUa4kqtcQ7oHSF3MAKlzAF0QD3RlAQHWTA2K83a6XR43K-4W22QPB%2BOnQM9IMOp%2BWm3PJ-WZ83W854AHOyGe0kgA"
+    },
+    {
+      "name": "out-5",
+      "band": "far",
+      "step": "5",
+      "search": "settled",
+      "titleLines": "Payment\nService.cs",
+      "card": {
+        "x": 776.4939575195312,
+        "y": 353.75408935546875,
+        "width": 148.01141357421875,
+        "height": 233.08880615234375
+      },
+      "viewport": [
+        1440,
+        960
+      ],
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QPhBrnYLm6ZgllcbmY9lkAPQlstUa4kqtcQ7oHSF3MAKlzAF0QD3RlAQHWTA2K83a6XR43K-4W22QPB%2BOnQM9IMOp%2BWm3PJ-WZ83W854AHOyGe0kgA"
+    },
+    {
+      "name": "out-6",
+      "band": "far",
+      "step": "6",
+      "search": "settled",
+      "titleLines": "Payment\nService…",
+      "card": {
+        "x": 788.8284912109375,
+        "y": 373.2124328613281,
+        "width": 123.3428955078125,
+        "height": 194.24081420898438
+      },
+      "viewport": [
+        1440,
+        960
+      ],
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QPhBrnYLm6ZgllcbmY9lkAPQlstUa4kqtcQ7oHSF3MAKlzAF0QD3RlAQHWTA2K83a6XR43K-4W22QPB%2BOnQM9IMOp%2BWm3PJ-WZ83W854AHOyGe0kgA"
+    },
+    {
+      "name": "out-7",
+      "band": "overview",
+      "step": "7",
+      "search": "settled",
+      "titleLines": "Payment\nService\n.cs",
+      "card": {
+        "x": 799.1065063476562,
+        "y": 389.426513671875,
+        "width": 102.78564453125,
+        "height": 161.8671875
+      },
+      "viewport": [
+        1440,
+        960
+      ],
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QPhBrnYLm6ZgllcbmY9lkAPQlstUa4kqtcQ7oHSF3MAKlzAF0QD3RlAQHWTA2K83a6XR43K-4W22QPB%2BOnQM9IMOp%2BWm3PJ-WZ83W854AHOyGe0kgA"
+    },
+    {
+      "name": "out-8",
+      "band": "overview",
+      "step": "8",
+      "search": "settled",
+      "titleLines": "Paymen\ntService\n.cs",
+      "card": {
+        "x": 807.6731567382812,
+        "y": 402.9393310546875,
+        "width": 85.6549072265625,
+        "height": 134.88958740234375
+      },
+      "viewport": [
+        1440,
+        960
+      ],
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QPhBrnYLm6ZgllcbmY9lkAPQlstUa4kqtcQ7oHSF3MAKlzAF0QD3RlAQHWTA2K83a6XR43K-4W22QPB%2BOnQM9IMOp%2BWm3PJ-WZ83W854AHOyGe0kgA"
+    },
+    {
+      "name": "returned",
+      "band": "reading",
+      "step": "0",
+      "search": "settled",
+      "titleLines": null,
+      "card": {
+        "x": 666.35009765625,
+        "y": 180,
+        "width": 368.300048828125,
+        "height": 580
+      },
+      "viewport": [
+        1440,
+        960
+      ],
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QPhBrnYLm6ZgllcbmY9lkAPQlstUa4kqtcQ7oHSF3MAKlzAF0QD3RlAQHWTA2K83a6XR43K-4W22QPB%2BOnQM9IMOp%2BWm3PJ-WZ83W854AHOyGe0kgA"
+    }
+  ]
+}

@@ -1,0 +1,539 @@
+{
+  "clock": "normal",
+  "settings": "fresh context, default Skin/one hop",
+  "errors": [],
+  "frames": [
+    {
+      "name": "structure-closed",
+      "elapsed": null,
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwACOUBA0EkIHgeIW8LI6A4ZARIaAA",
+      "viewport": [
+        1440,
+        960
+      ],
+      "busy": "false",
+      "labels": [
+        {
+          "text": "Contracts · 6",
+          "id": "directory:Contracts",
+          "box": {
+            "x": 1015.7081909179688,
+            "y": 439.9528503417969
+          }
+        },
+        {
+          "text": "Scan root",
+          "id": "directory:",
+          "box": {
+            "x": 835.88623046875,
+            "y": 558.3700561523438
+          }
+        },
+        {
+          "text": "Database · 3",
+          "id": "directory:Database",
+          "box": {
+            "x": 732.9503784179688,
+            "y": 366.06829833984375
+          }
+        },
+        {
+          "text": "Gateway · 5",
+          "id": "directory:Gateway",
+          "box": {
+            "x": 1058.1922607421875,
+            "y": 660.8236083984375
+          }
+        },
+        {
+          "text": "Hub · 4",
+          "id": "directory:Hub",
+          "box": {
+            "x": 813.08935546875,
+            "y": 821.4962158203125
+          }
+        },
+        {
+          "text": "PaymentService · 6",
+          "id": "directory:PaymentService",
+          "box": {
+            "x": 445.5341796875,
+            "y": 452.20953369140625
+          }
+        },
+        {
+          "text": "Portal · 11",
+          "id": "directory:Portal",
+          "box": {
+            "x": 881.7380981445312,
+            "y": 132.280029296875
+          }
+        }
+      ]
+    },
+    {
+      "name": "structure-opening-0",
+      "elapsed": 357,
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QJIZVx0BwMoFc7Bc3TMEsrjczHssrmALogRvwACOUBA0EkIHgeIW8LIRbICN7eYzIEr1ao1xJ9fqjaSQA",
+      "viewport": [
+        1440,
+        960
+      ],
+      "busy": "true",
+      "labels": [
+        {
+          "text": "Contracts · 6",
+          "id": "directory:Contracts",
+          "box": {
+            "x": 1228.52880859375,
+            "y": 421.9949645996094
+          }
+        },
+        {
+          "text": "Scan root",
+          "id": "directory:",
+          "box": {
+            "x": 1129.421630859375,
+            "y": 566.6095581054688
+          }
+        },
+        {
+          "text": "Database · 3",
+          "id": "directory:Database",
+          "box": {
+            "x": 1020.9500732421875,
+            "y": 570.3265991210938
+          }
+        },
+        {
+          "text": "Hub · 4",
+          "id": "directory:Hub",
+          "box": {
+            "x": 1058.845458984375,
+            "y": 759.740478515625
+          }
+        },
+        {
+          "text": "Portal · 11",
+          "id": "directory:Portal",
+          "box": {
+            "x": 1127.8564453125,
+            "y": 313.0939025878906
+          }
+        },
+        {
+          "text": "Data · 3",
+          "id": "directory:PaymentService/Data",
+          "box": {
+            "x": 655.2377319335938,
+            "y": 790.9183349609375
+          }
+        },
+        {
+          "text": "PaymentService.cs",
+          "id": "PaymentService/PaymentService.cs",
+          "box": {
+            "x": 871.62744140625,
+            "y": 288.5910339355469
+          }
+        },
+        {
+          "text": "App.config",
+          "id": "PaymentService/App.config",
+          "box": {
+            "x": 737.747314453125,
+            "y": 177.34963989257812
+          }
+        }
+      ]
+    },
+    {
+      "name": "structure-opening-1",
+      "elapsed": 687,
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QJIZVx0BwMoFc7Bc3TMEsrjczHssrmALogRvwACOUBA0EkIHgeIW8LIRbICN7eYzIEr1ao1xJ9fqjaSQA",
+      "viewport": [
+        1440,
+        960
+      ],
+      "busy": "true",
+      "labels": [
+        {
+          "text": "Contracts · 6",
+          "id": "directory:Contracts",
+          "box": {
+            "x": 1233.6976318359375,
+            "y": 478.1993713378906
+          }
+        },
+        {
+          "text": "Data · 3",
+          "id": "directory:PaymentService/Data",
+          "box": {
+            "x": 736.4605712890625,
+            "y": 802.6101684570312
+          }
+        },
+        {
+          "text": "PaymentService.cs",
+          "id": "PaymentService/PaymentService.cs",
+          "box": {
+            "x": 895.7024536132812,
+            "y": 283.53887939453125
+          }
+        },
+        {
+          "text": "App.config",
+          "id": "PaymentService/App.config",
+          "box": {
+            "x": 831.5480346679688,
+            "y": 163.13357543945312
+          }
+        }
+      ]
+    },
+    {
+      "name": "structure-opening-2",
+      "elapsed": 1200,
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QJIZVx0BwMoFc7Bc3TMEsrjczHssrmALogRvwACOUBA0EkIHgeIW8LIRbICN7eYzIEr1ao1xJ9fqjaSQA",
+      "viewport": [
+        1440,
+        960
+      ],
+      "busy": "true",
+      "labels": [
+        {
+          "text": "Contracts · 6",
+          "id": "directory:Contracts",
+          "box": {
+            "x": 1188.249755859375,
+            "y": 492.7785339355469
+          }
+        },
+        {
+          "text": "Scan root",
+          "id": "directory:",
+          "box": {
+            "x": 1307.9571533203125,
+            "y": 575.8701171875
+          }
+        },
+        {
+          "text": "Data · 3",
+          "id": "directory:PaymentService/Data",
+          "box": {
+            "x": 746.1162109375,
+            "y": 809.4921875
+          }
+        },
+        {
+          "text": "PaymentService.cs",
+          "id": "PaymentService/PaymentService.cs",
+          "box": {
+            "x": 871.4491577148438,
+            "y": 359.273681640625
+          }
+        },
+        {
+          "text": "App.config",
+          "id": "PaymentService/App.config",
+          "box": {
+            "x": 810.5958862304688,
+            "y": 163.15609741210938
+          }
+        }
+      ]
+    },
+    {
+      "name": "structure-opening-3",
+      "elapsed": 2009,
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QJIZVx0BwMoFc7Bc3TMEsrjczHssrmALogRvwACOUBA0EkIHgeIW8LIRbICN7eYzIEr1ao1xJ9fqjaSQA",
+      "viewport": [
+        1440,
+        960
+      ],
+      "busy": "true",
+      "labels": [
+        {
+          "text": "Contracts · 6",
+          "id": "directory:Contracts",
+          "box": {
+            "x": 1195.3948974609375,
+            "y": 499.378173828125
+          }
+        },
+        {
+          "text": "Scan root",
+          "id": "directory:",
+          "box": {
+            "x": 1299.3868408203125,
+            "y": 592.6257934570312
+          }
+        },
+        {
+          "text": "Data · 3",
+          "id": "directory:PaymentService/Data",
+          "box": {
+            "x": 766.498779296875,
+            "y": 810.1956787109375
+          }
+        },
+        {
+          "text": "PaymentService.cs",
+          "id": "PaymentService/PaymentService.cs",
+          "box": {
+            "x": 828.1704711914062,
+            "y": 336.1438293457031
+          }
+        },
+        {
+          "text": "App.config",
+          "id": "PaymentService/App.config",
+          "box": {
+            "x": 876.2951049804688,
+            "y": 171.2086181640625
+          }
+        }
+      ]
+    },
+    {
+      "name": "structure-open",
+      "elapsed": 7061,
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QJIZVx0BwMoFc7Bc3TMEsrjczHssrmALogRvwACOUBA0EkIHgeIW8LIRbICN7eYzIEr1ao1xJ9fqjaSQA",
+      "viewport": [
+        1440,
+        960
+      ],
+      "busy": "false",
+      "labels": [
+        {
+          "text": "Contracts · 6",
+          "id": "directory:Contracts",
+          "box": {
+            "x": 1204.438232421875,
+            "y": 499.61370849609375
+          }
+        },
+        {
+          "text": "Scan root",
+          "id": "directory:",
+          "box": {
+            "x": 1315.1929931640625,
+            "y": 595.9684448242188
+          }
+        },
+        {
+          "text": "Data · 3",
+          "id": "directory:PaymentService/Data",
+          "box": {
+            "x": 778.9569702148438,
+            "y": 809.5808715820312
+          }
+        },
+        {
+          "text": "PaymentService.cs",
+          "id": "PaymentService/PaymentService.cs",
+          "box": {
+            "x": 838.709228515625,
+            "y": 281.97772216796875
+          }
+        },
+        {
+          "text": "App.config",
+          "id": "PaymentService/App.config",
+          "box": {
+            "x": 923.8895874023438,
+            "y": 193.4951934814453
+          }
+        }
+      ]
+    },
+    {
+      "name": "structure-to-2d",
+      "elapsed": null,
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QJIZVx0BwMoFc7Bc3TMEsrjczHssrmALogRvwPELeFkItkBEgeCSDMgSvVqjXEn1%2BqNpJAA",
+      "viewport": [
+        1440,
+        960
+      ],
+      "busy": "false",
+      "labels": [
+        {
+          "text": "Contracts · 6",
+          "id": "directory:Contracts",
+          "box": {
+            "x": 1204.438232421875,
+            "y": 499.61370849609375
+          }
+        },
+        {
+          "text": "Scan root",
+          "id": "directory:",
+          "box": {
+            "x": 1315.1929931640625,
+            "y": 595.9684448242188
+          }
+        },
+        {
+          "text": "Data · 3",
+          "id": "directory:PaymentService/Data",
+          "box": {
+            "x": 778.9569702148438,
+            "y": 809.5808715820312
+          }
+        },
+        {
+          "text": "PaymentService.cs",
+          "id": "PaymentService/PaymentService.cs",
+          "box": {
+            "x": 838.709228515625,
+            "y": 281.97772216796875
+          }
+        },
+        {
+          "text": "App.config",
+          "id": "PaymentService/App.config",
+          "box": {
+            "x": 923.8895874023438,
+            "y": 193.4951934814453
+          }
+        }
+      ]
+    },
+    {
+      "name": "structure-return",
+      "elapsed": null,
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QJIZVx0BwMoFc7Bc3TMEsrjczHssrmALogRvwACOUBA0EkIHgeIW8LIRbICN7eYzIEr1ao1xJ9fqjaSQA",
+      "viewport": [
+        1440,
+        960
+      ],
+      "busy": "false",
+      "labels": [
+        {
+          "text": "Contracts · 6",
+          "id": "directory:Contracts",
+          "box": {
+            "x": 1204.438232421875,
+            "y": 499.61370849609375
+          }
+        },
+        {
+          "text": "Scan root",
+          "id": "directory:",
+          "box": {
+            "x": 1315.1929931640625,
+            "y": 595.9684448242188
+          }
+        },
+        {
+          "text": "Data · 3",
+          "id": "directory:PaymentService/Data",
+          "box": {
+            "x": 778.9569702148438,
+            "y": 809.5808715820312
+          }
+        },
+        {
+          "text": "PaymentService.cs",
+          "id": "PaymentService/PaymentService.cs",
+          "box": {
+            "x": 838.709228515625,
+            "y": 281.97772216796875
+          }
+        },
+        {
+          "text": "App.config",
+          "id": "PaymentService/App.config",
+          "box": {
+            "x": 923.8895874023438,
+            "y": 193.4951934814453
+          }
+        }
+      ]
+    },
+    {
+      "name": "connections",
+      "elapsed": null,
+      "url": "http://localhost:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIswzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeDhmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQFC%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQAIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QJIZVx0BwMoFc7Bc3TMEsrjczHssrmALogRvwACOUBA0EkIHgPcgmcr1ao1xJ9fqjaSQA",
+      "viewport": [
+        1440,
+        960
+      ],
+      "busy": "false",
+      "labels": [
+        {
+          "text": "PaymentsContext.cs",
+          "id": "PaymentService/Data/PaymentsContext.cs",
+          "box": {
+            "x": 686.5450439453125,
+            "y": 554.3948974609375
+          }
+        },
+        {
+          "text": "Payment.cs",
+          "id": "PaymentService/Data/Payment.cs",
+          "box": {
+            "x": 933.82861328125,
+            "y": 511.267822265625
+          }
+        },
+        {
+          "text": "PostPaymentRow.cs",
+          "id": "PaymentService/Data/PostPaymentRow.cs",
+          "box": {
+            "x": 585.6737060546875,
+            "y": 367.1512756347656
+          }
+        },
+        {
+          "text": "PaymentQuery.cs",
+          "id": "Contracts/PaymentQuery.cs",
+          "box": {
+            "x": 729.2269287109375,
+            "y": 85.78439331054688
+          }
+        },
+        {
+          "text": "PaymentRequest.cs",
+          "id": "Contracts/PaymentRequest.cs",
+          "box": {
+            "x": 851.2962036132812,
+            "y": 157.95668029785156
+          }
+        },
+        {
+          "text": "Hub · 3",
+          "id": "shell:Hub",
+          "box": {
+            "x": 767.1417846679688,
+            "y": 244.4917449951172
+          }
+        },
+        {
+          "text": "Gateway · 3",
+          "id": "shell:Gateway",
+          "box": {
+            "x": 933.249267578125,
+            "y": 344.5541076660156
+          }
+        },
+        {
+          "text": "Models · 2",
+          "id": "shell:Portal/Models",
+          "box": {
+            "x": 1147.51416015625,
+            "y": 203.2692413330078
+          }
+        },
+        {
+          "text": "Pages · 3",
+          "id": "shell:Portal/Pages",
+          "box": {
+            "x": 431.4037170410156,
+            "y": 616.016845703125
+          }
+        }
+      ]
+    }
+  ]
+}

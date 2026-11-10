@@ -1,0 +1,26 @@
+{
+  "head": "291a6c0c477137dd9f2abe17e79d297e0912478e",
+  "productCommit": "add3a341f003b2e4ad2f2f5cb78901fb6fd89cc2",
+  "viewport": [
+    1440,
+    960
+  ],
+  "runtimeSha256": "7e1654311f63245fb1926c2202d03e6e67b6a1f64240e2a0875e2338c5d7ae48",
+  "mainDataSha256": "411a362c7f8ac2478d9d6ff7e1a76c7e6c17617db70cc7e57cc80567c35e5f11",
+  "estateDataSha256": "5066a9efaa793165d6d563aeeef547f3f889d8b14a7b94f1eabcd13f708ed9d2",
+  "removedIntermediatePngs": [
+    "connections.png",
+    "estate-out-2.png",
+    "estate-returned.png",
+    "main-out-2.png",
+    "main-out-3.png",
+    "main-out-5.png",
+    "main-out-8.png",
+    "main-returned.png",
+    "structure-opening-2.png",
+    "structure-opening-3.png",
+    "structure-return.png",
+    "structure-to-2d-later.png",
+    "transition-source.png"
+  ]
+}

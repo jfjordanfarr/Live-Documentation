@@ -2,6 +2,10 @@
 
 _The owner's standing request (2026-09-29): after changing the Explorer, build it, look at it, and keep the pictures here, so that a sense of the UI accrues in the workspace and a change can be judged against what came before. Each dated folder is listed below with what each picture shows and how it was taken. The probe records under `../Probes/` keep their own pictures; the World Map's first pictures, from 2026-09-28, are there._
 
+## 2026-11-10
+
+[Current-build aesthetic review](2026-11-10/review/README.md): fresh main/estate reading and zoom journeys, the estate Structure opening, and a corrected full perspective round trip. Root judges the middle 2D composition the first design target, keeps the closed Structure cells as a strong reference, and records the remaining count/key and emphasis problems. No product redesign was adopted; the first early transition capture is explicitly qualified.
+
 ## 2026-11-09
 
 [Zoom composition and directory opening](2026-11-09/zoom-review/README.md): root-driven repository/estate zoom round trips, actual wheel state crossings, a normal Structure opening and independent reading-choice/reader checks in the candidate. Current behavior and design hypotheses are distinguished; the original button-run font estimate is explicitly disqualified.
