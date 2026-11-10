@@ -1,0 +1,33 @@
+{
+  "recordedAt": "2026-11-10T19:56:37.809Z",
+  "directory": "dist/reading-focus-2026-11-10",
+  "port": 8918,
+  "sourceBaseCommit": "2a890e08eb3447daba272fd1c6be2541d1daa35c",
+  "productionAdopted": false,
+  "verifiedServedAssets": [
+    {
+      "path": "http://127.0.0.1:8918/static/index.js",
+      "sha256": "726fbad5eb56b5b7b6a3cd44476fedee945dc1dba92eedb55b7a0c4ba7efeaf5"
+    },
+    {
+      "path": "http://127.0.0.1:8918/static/styles/reading.css",
+      "sha256": "c04a0c3ecdcda64a13bedb7c6b2c4f2f35e393a9e74a547bbe35c03caefa51eb"
+    },
+    {
+      "path": "http://127.0.0.1:8918/explorer-data.json",
+      "sha256": "5d40e4137b9cce94c3328c550713965c6db2057a09866e64217c90bdd805f42f"
+    },
+    {
+      "path": "http://127.0.0.1:8918/samples/estate/static/index.js",
+      "sha256": "726fbad5eb56b5b7b6a3cd44476fedee945dc1dba92eedb55b7a0c4ba7efeaf5"
+    },
+    {
+      "path": "http://127.0.0.1:8918/samples/estate/static/styles/reading.css",
+      "sha256": "c04a0c3ecdcda64a13bedb7c6b2c4f2f35e393a9e74a547bbe35c03caefa51eb"
+    },
+    {
+      "path": "http://127.0.0.1:8918/samples/estate/explorer-data.json",
+      "sha256": "d33651e4b7f5948ac207fb8c456c6c626406e4ed1c40d11e9d29f0e769d4a905"
+    }
+  ]
+}

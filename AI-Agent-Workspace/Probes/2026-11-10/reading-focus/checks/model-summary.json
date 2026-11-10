@@ -1,0 +1,38 @@
+{
+  "startedAt": "2026-11-10T19:28:53.063Z",
+  "cases": [
+    {
+      "bundle": "repository",
+      "elapsedMs": 2601.471539,
+      "counts": {
+        "cards": 12,
+        "heightMismatches": 0,
+        "rowScopeMismatches": 0,
+        "ports": 32,
+        "portMismatches": 0
+      },
+      "captureWarnings": [],
+      "pageErrors": [],
+      "capturePreservedDOMGeometry": true,
+      "capturePreservedSearch": true
+    },
+    {
+      "bundle": "estate",
+      "elapsedMs": 2886.9015789999994,
+      "counts": {
+        "cards": 9,
+        "heightMismatches": 0,
+        "rowScopeMismatches": 0,
+        "ports": 31,
+        "portMismatches": 0
+      },
+      "captureWarnings": [],
+      "pageErrors": [],
+      "capturePreservedDOMGeometry": true,
+      "capturePreservedSearch": true
+    }
+  ],
+  "errors": [],
+  "endedAt": "2026-11-10T19:28:58.996Z",
+  "hashesUnchanged": true
+}

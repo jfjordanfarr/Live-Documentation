@@ -1,0 +1,575 @@
+{
+  "bundle": "estate",
+  "subject": "PaymentService/PaymentService.cs",
+  "symbol": "PaymentService",
+  "url": "http://127.0.0.1:8918/samples/estate/?s=N4IgbiBcDMA0IDsogAoEMCeBbApggLgMo4BOYAlgMY4D062eRpF1AdJQM4jwAOUA2qCSRUmXAWJkqteuKZS2nbiC4iAVCAC+AXXgBXAUID2AExwBJE8lmNJLGWNvNp7LvCM88UAGZoANhw4mrDGZpbWjhLO1HSR8vauyhzYAEZGfhEMUQo4yh5ekPgkekHamkA",
+  "elapsedMs": 2886.9015789999994,
+  "captureWarnings": [],
+  "pageErrors": [],
+  "capturePreservedDOMGeometry": true,
+  "capturePreservedSearch": true,
+  "comparisons": [
+    {
+      "id": "Contracts/PaymentRequest.cs",
+      "browser": {
+        "width": 257,
+        "height": 249,
+        "pins": {
+          "outbound:*": 125,
+          "inbound:PaymentRequest": 122,
+          "outbound:PaymentRequest": 122
+        }
+      },
+      "modeled": {
+        "width": 257,
+        "height": 249,
+        "roundedHeight": 249,
+        "pins": {
+          "outbound:*": 124.5,
+          "inbound:PaymentRequest": 121.5,
+          "normalized:inbound:PaymentRequest": 121.5,
+          "outbound:PaymentRequest": 121.5,
+          "normalized:outbound:PaymentRequest": 121.5
+        }
+      },
+      "equalHeight": true,
+      "equalRowScopeAndOrder": true,
+      "visibleDOM": [
+        "PaymentRequest"
+      ],
+      "visibleModel": [
+        "PaymentRequest"
+      ],
+      "foldedRows": [],
+      "ports": [
+        {
+          "key": "outbound:*",
+          "actual": 125,
+          "predicted": 125,
+          "unrounded": 124.5,
+          "equal": true
+        },
+        {
+          "key": "inbound:PaymentRequest",
+          "actual": 122,
+          "predicted": 122,
+          "unrounded": 121.5,
+          "equal": true
+        },
+        {
+          "key": "outbound:PaymentRequest",
+          "actual": 122,
+          "predicted": 122,
+          "unrounded": 121.5,
+          "equal": true
+        }
+      ]
+    },
+    {
+      "id": "Contracts/PaymentResult.cs",
+      "browser": {
+        "width": 257,
+        "height": 249,
+        "pins": {
+          "outbound:*": 125,
+          "inbound:PaymentResult": 122,
+          "outbound:PaymentResult": 122
+        }
+      },
+      "modeled": {
+        "width": 257,
+        "height": 249,
+        "roundedHeight": 249,
+        "pins": {
+          "outbound:*": 124.5,
+          "inbound:PaymentResult": 121.5,
+          "normalized:inbound:PaymentResult": 121.5,
+          "outbound:PaymentResult": 121.5,
+          "normalized:outbound:PaymentResult": 121.5
+        }
+      },
+      "equalHeight": true,
+      "equalRowScopeAndOrder": true,
+      "visibleDOM": [
+        "PaymentResult"
+      ],
+      "visibleModel": [
+        "PaymentResult"
+      ],
+      "foldedRows": [],
+      "ports": [
+        {
+          "key": "outbound:*",
+          "actual": 125,
+          "predicted": 125,
+          "unrounded": 124.5,
+          "equal": true
+        },
+        {
+          "key": "inbound:PaymentResult",
+          "actual": 122,
+          "predicted": 122,
+          "unrounded": 121.5,
+          "equal": true
+        },
+        {
+          "key": "outbound:PaymentResult",
+          "actual": 122,
+          "predicted": 122,
+          "unrounded": 121.5,
+          "equal": true
+        }
+      ]
+    },
+    {
+      "id": "Contracts/PaymentQuery.cs",
+      "browser": {
+        "width": 257,
+        "height": 249,
+        "pins": {
+          "outbound:*": 125,
+          "inbound:PaymentQuery": 122,
+          "outbound:PaymentQuery": 122
+        }
+      },
+      "modeled": {
+        "width": 257,
+        "height": 249,
+        "roundedHeight": 249,
+        "pins": {
+          "outbound:*": 124.5,
+          "inbound:PaymentQuery": 121.5,
+          "normalized:inbound:PaymentQuery": 121.5,
+          "outbound:PaymentQuery": 121.5,
+          "normalized:outbound:PaymentQuery": 121.5
+        }
+      },
+      "equalHeight": true,
+      "equalRowScopeAndOrder": true,
+      "visibleDOM": [
+        "PaymentQuery"
+      ],
+      "visibleModel": [
+        "PaymentQuery"
+      ],
+      "foldedRows": [],
+      "ports": [
+        {
+          "key": "outbound:*",
+          "actual": 125,
+          "predicted": 125,
+          "unrounded": 124.5,
+          "equal": true
+        },
+        {
+          "key": "inbound:PaymentQuery",
+          "actual": 122,
+          "predicted": 122,
+          "unrounded": 121.5,
+          "equal": true
+        },
+        {
+          "key": "outbound:PaymentQuery",
+          "actual": 122,
+          "predicted": 122,
+          "unrounded": 121.5,
+          "equal": true
+        }
+      ]
+    },
+    {
+      "id": "Contracts/IPaymentService.cs",
+      "browser": {
+        "width": 256,
+        "height": 249,
+        "pins": {
+          "outbound:*": 125,
+          "inbound:IPaymentService": 122,
+          "outbound:IPaymentService": 122
+        }
+      },
+      "modeled": {
+        "width": 256,
+        "height": 249,
+        "roundedHeight": 249,
+        "pins": {
+          "outbound:*": 124.5,
+          "inbound:IPaymentService": 121.5,
+          "normalized:inbound:IPaymentService": 121.5,
+          "outbound:IPaymentService": 121.5,
+          "normalized:outbound:IPaymentService": 121.5
+        }
+      },
+      "equalHeight": true,
+      "equalRowScopeAndOrder": true,
+      "visibleDOM": [
+        "IPaymentService"
+      ],
+      "visibleModel": [
+        "IPaymentService"
+      ],
+      "foldedRows": [],
+      "ports": [
+        {
+          "key": "outbound:*",
+          "actual": 125,
+          "predicted": 125,
+          "unrounded": 124.5,
+          "equal": true
+        },
+        {
+          "key": "inbound:IPaymentService",
+          "actual": 122,
+          "predicted": 122,
+          "unrounded": 121.5,
+          "equal": true
+        },
+        {
+          "key": "outbound:IPaymentService",
+          "actual": 122,
+          "predicted": 122,
+          "unrounded": 121.5,
+          "equal": true
+        }
+      ]
+    },
+    {
+      "id": "PaymentService/Data/Payment.cs",
+      "browser": {
+        "width": 261,
+        "height": 249,
+        "pins": {
+          "outbound:*": 125,
+          "inbound:Payment": 122,
+          "outbound:Payment": 122
+        }
+      },
+      "modeled": {
+        "width": 261,
+        "height": 249,
+        "roundedHeight": 249,
+        "pins": {
+          "outbound:*": 124.5,
+          "inbound:Payment": 121.5,
+          "normalized:inbound:Payment": 121.5,
+          "outbound:Payment": 121.5,
+          "normalized:outbound:Payment": 121.5
+        }
+      },
+      "equalHeight": true,
+      "equalRowScopeAndOrder": true,
+      "visibleDOM": [
+        "Payment"
+      ],
+      "visibleModel": [
+        "Payment"
+      ],
+      "foldedRows": [],
+      "ports": [
+        {
+          "key": "outbound:*",
+          "actual": 125,
+          "predicted": 125,
+          "unrounded": 124.5,
+          "equal": true
+        },
+        {
+          "key": "inbound:Payment",
+          "actual": 122,
+          "predicted": 122,
+          "unrounded": 121.5,
+          "equal": true
+        },
+        {
+          "key": "outbound:Payment",
+          "actual": 122,
+          "predicted": 122,
+          "unrounded": 121.5,
+          "equal": true
+        }
+      ]
+    },
+    {
+      "id": "PaymentService/Data/PostPaymentRow.cs",
+      "browser": {
+        "width": 261,
+        "height": 229,
+        "pins": {
+          "outbound:*": 115,
+          "inbound:PostPaymentRow": 122,
+          "outbound:PostPaymentRow": 122
+        }
+      },
+      "modeled": {
+        "width": 261,
+        "height": 229,
+        "roundedHeight": 229,
+        "pins": {
+          "outbound:*": 114.5,
+          "inbound:PostPaymentRow": 121.5,
+          "normalized:inbound:PostPaymentRow": 121.5,
+          "outbound:PostPaymentRow": 121.5,
+          "normalized:outbound:PostPaymentRow": 121.5
+        }
+      },
+      "equalHeight": true,
+      "equalRowScopeAndOrder": true,
+      "visibleDOM": [
+        "PostPaymentRow"
+      ],
+      "visibleModel": [
+        "PostPaymentRow"
+      ],
+      "foldedRows": [],
+      "ports": [
+        {
+          "key": "outbound:*",
+          "actual": 115,
+          "predicted": 115,
+          "unrounded": 114.5,
+          "equal": true
+        },
+        {
+          "key": "inbound:PostPaymentRow",
+          "actual": 122,
+          "predicted": 122,
+          "unrounded": 121.5,
+          "equal": true
+        },
+        {
+          "key": "outbound:PostPaymentRow",
+          "actual": 122,
+          "predicted": 122,
+          "unrounded": 121.5,
+          "equal": true
+        }
+      ]
+    },
+    {
+      "id": "PaymentService/Data/PaymentsContext.cs",
+      "browser": {
+        "width": 282,
+        "height": 249,
+        "pins": {
+          "outbound:*": 125,
+          "inbound:PaymentsContext (class)": 122,
+          "outbound:PaymentsContext (class)": 122
+        }
+      },
+      "modeled": {
+        "width": 282,
+        "height": 249,
+        "roundedHeight": 249,
+        "pins": {
+          "outbound:*": 124.5,
+          "inbound:PaymentsContext (class)": 121.5,
+          "normalized:inbound:PaymentsContext (class)": 121.5,
+          "outbound:PaymentsContext (class)": 121.5,
+          "normalized:outbound:PaymentsContext (class)": 121.5
+        }
+      },
+      "equalHeight": true,
+      "equalRowScopeAndOrder": true,
+      "visibleDOM": [
+        "PaymentsContext (class)"
+      ],
+      "visibleModel": [
+        "PaymentsContext (class)"
+      ],
+      "foldedRows": [],
+      "ports": [
+        {
+          "key": "outbound:*",
+          "actual": 125,
+          "predicted": 125,
+          "unrounded": 124.5,
+          "equal": true
+        },
+        {
+          "key": "inbound:PaymentsContext (class)",
+          "actual": 122,
+          "predicted": 122,
+          "unrounded": 121.5,
+          "equal": true
+        },
+        {
+          "key": "outbound:PaymentsContext (class)",
+          "actual": 122,
+          "predicted": 122,
+          "unrounded": 121.5,
+          "equal": true
+        }
+      ]
+    },
+    {
+      "id": "PaymentService/App.config",
+      "browser": {
+        "width": 287,
+        "height": 222,
+        "pins": {
+          "outbound:*": 111,
+          "inbound:__internals__": 125
+        }
+      },
+      "modeled": {
+        "width": 287,
+        "height": 222,
+        "roundedHeight": 222,
+        "pins": {
+          "outbound:*": 111,
+          "inbound:__internals__": 124.5,
+          "normalized:inbound:__internals__": 124.5,
+          "inbound:*": 124.5
+        }
+      },
+      "equalHeight": true,
+      "equalRowScopeAndOrder": true,
+      "visibleDOM": [
+        "__internals__"
+      ],
+      "visibleModel": [
+        "__internals__"
+      ],
+      "foldedRows": [],
+      "ports": [
+        {
+          "key": "outbound:*",
+          "actual": 111,
+          "predicted": 111,
+          "unrounded": 111,
+          "equal": true
+        },
+        {
+          "key": "inbound:__internals__",
+          "actual": 125,
+          "predicted": 125,
+          "unrounded": 124.5,
+          "equal": true
+        }
+      ]
+    },
+    {
+      "id": "PaymentService/PaymentService.cs",
+      "browser": {
+        "width": 254,
+        "height": 302,
+        "pins": {
+          "outbound:*": 151,
+          "inbound:PaymentService": 123,
+          "outbound:PaymentService": 123,
+          "inbound:Post": 195,
+          "outbound:Post": 195,
+          "inbound:Get": 218,
+          "outbound:Get": 218,
+          "inbound:__internals__": 244
+        }
+      },
+      "modeled": {
+        "width": 254,
+        "height": 302,
+        "roundedHeight": 302,
+        "pins": {
+          "outbound:*": 151,
+          "inbound:PaymentService": 122.5,
+          "normalized:inbound:PaymentService": 122.5,
+          "outbound:PaymentService": 122.5,
+          "normalized:outbound:PaymentService": 122.5,
+          "inbound:Post": 194.5,
+          "normalized:inbound:Post": 194.5,
+          "outbound:Post": 194.5,
+          "normalized:outbound:Post": 194.5,
+          "inbound:Get": 217.5,
+          "normalized:inbound:Get": 217.5,
+          "outbound:Get": 217.5,
+          "normalized:outbound:Get": 217.5,
+          "inbound:__internals__": 243.5,
+          "normalized:inbound:__internals__": 243.5,
+          "inbound:*": 243.5
+        }
+      },
+      "equalHeight": true,
+      "equalRowScopeAndOrder": true,
+      "visibleDOM": [
+        "PaymentService",
+        "Post",
+        "Get",
+        "__internals__"
+      ],
+      "visibleModel": [
+        "PaymentService",
+        "Post",
+        "Get",
+        "__internals__"
+      ],
+      "foldedRows": [
+        "Post",
+        "Get"
+      ],
+      "ports": [
+        {
+          "key": "outbound:*",
+          "actual": 151,
+          "predicted": 151,
+          "unrounded": 151,
+          "equal": true
+        },
+        {
+          "key": "inbound:PaymentService",
+          "actual": 123,
+          "predicted": 123,
+          "unrounded": 122.5,
+          "equal": true
+        },
+        {
+          "key": "outbound:PaymentService",
+          "actual": 123,
+          "predicted": 123,
+          "unrounded": 122.5,
+          "equal": true
+        },
+        {
+          "key": "inbound:Post",
+          "actual": 195,
+          "predicted": 195,
+          "unrounded": 194.5,
+          "equal": true
+        },
+        {
+          "key": "outbound:Post",
+          "actual": 195,
+          "predicted": 195,
+          "unrounded": 194.5,
+          "equal": true
+        },
+        {
+          "key": "inbound:Get",
+          "actual": 218,
+          "predicted": 218,
+          "unrounded": 217.5,
+          "equal": true
+        },
+        {
+          "key": "outbound:Get",
+          "actual": 218,
+          "predicted": 218,
+          "unrounded": 217.5,
+          "equal": true
+        },
+        {
+          "key": "inbound:__internals__",
+          "actual": 244,
+          "predicted": 244,
+          "unrounded": 243.5,
+          "equal": true
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "cards": 9,
+    "heightMismatches": 0,
+    "rowScopeMismatches": 0,
+    "ports": 31,
+    "portMismatches": 0
+  }
+}

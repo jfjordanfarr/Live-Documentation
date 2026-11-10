@@ -1,0 +1,290 @@
+diff --git a/packages/explorer/src/client/styles/reading.css b/packages/explorer/src/client/styles/reading.css
+index b4c33868..99ff5fa8 100644
+--- a/packages/explorer/src/client/styles/reading.css
++++ b/packages/explorer/src/client/styles/reading.css
+@@ -102,9 +102,8 @@
+     .local-reading-card :is(.local-symbol-read, .local-symbol-pin, .local-symbol-more) { flex-basis: 26px; width: 26px; height: 26px; padding: 4px; }
+ }
+ 
+-/* A fixed-slot card's box depends on its structure, never on reading choices or zoom. Each slot reserves the same
+-   number of lines (Slot Lines in Tuning), filled or not, cut with an ellipsis. Books fold text while keeping that
+-   space; a tap on the name opens the reader. */
++/* Isolated trial: open symbol slots retain the reference drawing; explicitly folded symbols give back their
++   description space. Purpose keeps its allotted slot. Zoom never changes these geometry choices. */
+ /* A slot card is as wide as an ordinary card, its names, path and chips deciding: the slots' prose contributes nothing
+    to the card's intrinsic width (Turn 12, when a 440 px minimum kept a directory from being framed whole) and wraps at
+    whatever width the card has. The prose clips rather than hides, so that no reveal by the browser can scroll it. */
+@@ -231,6 +230,14 @@
+ /* A symbol row keeps its allotment in every band; when the slot leaves, its track stays and takes the room below, so the
+    name keeps the row's top (measured 2026-11-06: an alignment to the centre had no free space to act on). */
+ .local-slot-card .symbol-row:not(.internals-row) { height: calc(32px + var(--slot-lines, 2) * 17px); grid-template-rows: auto minmax(0, 1fr); align-content: start; }
++.local-slot-card .symbol-row.local-slot-folded:not(.internals-row) { height: var(--slot-head-h, auto); grid-template-rows: auto; }
++/* Measure the ordinary head at its assigned width, including wrapped names, only during a real layout pass.
++   The resulting height stands through every zoom band; the ladder still draws its own held name inside it. */
++.local-slot-card.local-slot-measuring .symbol-row.local-slot-folded:not(.internals-row) { height: auto; }
++.local-slot-card.local-slot-measuring .local-slot-folded .symbol-label .symbol-label-text {
++    display: inline-block; width: auto; max-width: none; white-space: normal; transform: none;
++}
++.local-slot-card.local-slot-measuring .local-slot-folded .symbol-label .symbol-label-text wbr { display: inline; }
+ /* The slot is hidden rather than taken out, so that a row's children lay out alike in every band and a render or the layout
+    search reads the same rows at any zoom (2026-11-06); the row's allotment holds its box either way. */
+ :is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card .symbol-row .local-reading-slot { visibility: hidden; }
+@@ -280,7 +287,7 @@
+ }
+ :is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card .local-card-actions { bottom: auto; transform-origin: top right; }
+ [data-lod="overview"] .local-slot-card {
+-    --title-room-h: min(var(--title-card-h, 0), max(var(--title-head-h, 0), var(--title-head-h, 0) + var(--rows-before-pin, 100000) * var(--title-pitch, 1) - var(--title-row-gap, 0)));
++    --title-room-h: min(var(--title-card-h, 0), max(var(--title-head-h, 0), var(--title-head-h, 0) + var(--title-before-pin-h, var(--title-card-h, 0)) - var(--title-row-gap, 0)));
+ }
+ :is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card .local-file-name { position: relative; }
+ :is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card .local-file-name-text { visibility: hidden; }
+diff --git a/packages/explorer/src/client/views/localView/branch-renderer.ts b/packages/explorer/src/client/views/localView/branch-renderer.ts
+index 634e87cb..ce770b08 100644
+--- a/packages/explorer/src/client/views/localView/branch-renderer.ts
++++ b/packages/explorer/src/client/views/localView/branch-renderer.ts
+@@ -118,6 +118,8 @@ function explorationOf(controller: LocalViewController): Exploration {
+ export function refreshReadingPresentation(controller: LocalViewController, stage: BranchStage): boolean {
+   const reading = controller.reading, search = stage.search;
+   if (!reading || !search || !stage.pose || controller.options.state.tuning.localMap.cardText !== "slot") return false;
++  // Trial: a symbol slot changing its allotment needs the existing measured structural render and title anchor.
++  if (reading.hasPendingSlotGeometry()) return false;
+   const next = explorationOf(controller);
+   if (!sameReadingScope(search.exploration, next)) return false;
+   const presentRow = rowPresentation(controller, next);
+diff --git a/packages/explorer/src/client/views/localView/card-reading.ts b/packages/explorer/src/client/views/localView/card-reading.ts
+index 5615dd2f..f1f2257e 100644
+--- a/packages/explorer/src/client/views/localView/card-reading.ts
++++ b/packages/explorer/src/client/views/localView/card-reading.ts
+@@ -259,6 +259,12 @@ export class CardReading {
+     for (const card of this.cards.values()) this.updateCard(card);
+   }
+ 
++  /** Trial: symbol folds change slot geometry; the structural renderer must measure their new rows. */
++  hasPendingSlotGeometry(): boolean {
++    return this.slots && [...this.cards.values()].some(model => [...model.symbols].some(([symbol, block]) =>
++      block.element.hidden !== !this.held(model.node.id, symbol)));
++  }
++
+   /** Explicit whole-card reading also discloses its symbol rows, without claiming additional connections. */
+   showsAllRows(nodeId: string): boolean {
+     return descriptionIsOpen(this.options.choices(), nodeId, undefined, false);
+@@ -285,6 +291,16 @@ export class CardReading {
+       if (overflow && (!purpose || purpose.element.hidden) && card.classList.contains("local-reading-card") && card.scrollHeight > available) overflow.hidden = false;
+     }
+     if (!this.slots) return;
++    // Trial: compact heads are measured in the reading layout at their assigned width, then held through zoom.
++    // Otherwise a wrapped name becoming a held single line would change an auto-height row at a ladder boundary.
++    const compact = [...this.cards.values()].filter(({ card }) => card.querySelector(".local-slot-folded"));
++    for (const { card } of compact) card.classList.add("local-slot-measuring");
++    const heads = compact.flatMap(({ card }) => [...card.querySelectorAll<HTMLElement>(".local-slot-folded")].flatMap(row => {
++      const height = parseFloat(getComputedStyle(row).height);
++      return height > 0 ? [{ row, height }] : [];
++    }));
++    for (const { card } of compact) card.classList.remove("local-slot-measuring");
++    for (const { row, height } of heads) row.style.setProperty("--slot-head-h", `${height}px`);
+     // The rooms of every slot card are read before any is written, so that the page lays out once for them all rather
+     // than once a row (direction.md's November 6 cost finding).
+     const resistances = this.options.resistances();
+@@ -297,8 +313,10 @@ export class CardReading {
+     const slots = this.slots;
+     const open = (symbol?: string): boolean => this.held(model.node.id, symbol);
+     const present = (block: ReadingBlock, symbol?: string): void => {
+-      // Folding text in a fixed slot keeps its allotment, so the card and its connections stay put.
+-      block.element.hidden = !slots && !open(symbol);
++      // Isolated trial: explicitly folded symbol slots give back their space. Purpose keeps its original allotment.
++      const folded = !open(symbol);
++      block.element.hidden = folded && (!slots || symbol !== undefined);
++      block.element.closest(".symbol-row")?.classList.toggle("local-slot-folded", slots && folded);
+       block.element.dataset.readingOpen = String(open(symbol));
+     };
+     if (model.purpose) present(model.purpose);
+@@ -408,6 +426,7 @@ export class CardReading {
+  */
+ function measureRooms(card: HTMLElement, resistances: LadderResistances): RoomWrite[] {
+   const writes: RoomWrite[] = [];
++  const rowHeights = new Map<HTMLElement, number>();
+   const k = card.offsetHeight ? card.getBoundingClientRect().height / card.offsetHeight : 0;
+   if (!(k > 0)) return writes;
+   // Across the card, from its border box's left edge: the inner edges of its border, which no dot may cross.
+@@ -434,6 +453,7 @@ function measureRooms(card: HTMLElement, resistances: LadderResistances): RoomWr
+     const roomWidth = wrapper.clientWidth - parseFloat(wrapperStyle.paddingLeft) - parseFloat(wrapperStyle.paddingRight);
+     const rowRect = row.getBoundingClientRect(), wrapperRect = wrapper.getBoundingClientRect(), labelRect = label.getBoundingClientRect();
+     const rowHeight = row.clientHeight, nameTop = (labelRect.top - rowRect.top) / k, nameHeight = label.offsetHeight;
++    rowHeights.set(row, rowHeight);
+     if (!firstRow && !row.classList.contains("internals-row")) firstRow = { height: rowHeight };
+     const gap = parseFloat(wrapperStyle.columnGap) || 0;
+     const pin = row.querySelector<HTMLElement>(".local-symbol-pin")?.offsetWidth ?? 0;
+@@ -490,6 +510,7 @@ function measureRooms(card: HTMLElement, resistances: LadderResistances): RoomWr
+     cardH: fixed((contentBottom - titleRect.top) / k),
+     pitch: Math.max(1, (firstRow?.height ?? 0) + rowGap),
+     rowGap,
++    beforePinHeight: heightBeforePin(card, rowHeights, rowGap),
+     // The controls that stay at each band follow the name at the header's right edge: all of them at the middle band,
+     // More alone further out. Their width is counted from their number, since the farther bands hide all but More.
+     actionsW: actions.children.length * (more?.offsetWidth ?? 0) + Math.max(0, actions.children.length - 1) * (parseFloat(getComputedStyle(actions).columnGap) || 0),
+@@ -504,12 +525,13 @@ function measureRooms(card: HTMLElement, resistances: LadderResistances): RoomWr
+     [card, "--title-card-h", String(rooms.cardH)],
+     [card, "--title-pitch", String(rooms.pitch)],
+     [card, "--title-row-gap", String(rooms.rowGap)],
++    [card, "--title-before-pin-h", String(rooms.beforePinHeight ?? rooms.cardH)],
+     [card, "--title-more-h", String(rooms.moreH)]
+   );
+   const held = title.querySelector<HTMLElement>(".local-file-name-held");
+   if (held) {
+     const name: HeldName = { held, actions, nameY: fixed((titleRect.top - headerRect.top) / k), segments: heldSegments(held.dataset.name ?? ""),
+-      measure: textMeasure(getComputedStyle(held)), rooms, resistances };
++      measure: textMeasure(getComputedStyle(held)), rooms, rowHeights, resistances };
+     heldNames.set(card, name);
+     writes.push(...heldLineWrites(name, HELD_BANDS, rowsBeforePin(card)));
+   }
+@@ -525,6 +547,7 @@ interface HeldName {
+   segments: string[];
+   measure: (text: string) => number;
+   rooms: TitleRooms;
++  rowHeights: ReadonlyMap<HTMLElement, number>;
+   resistances: LadderResistances;
+ }
+ const heldNames = new WeakMap<HTMLElement, HeldName>();
+@@ -596,6 +619,17 @@ function rowsBeforePin(card: HTMLElement): number | null {
+   })));
+ }
+ 
++/** Sum the measured rows in their current order; a mixed open/folded card has no single row pitch. */
++function heightBeforePin(card: HTMLElement, heights: ReadonlyMap<HTMLElement, number>, gap: number): number | null {
++  let height = 0;
++  for (const row of card.querySelectorAll<HTMLElement>(".symbol-row")) {
++    if (row.classList.contains("branch-symbol-hidden") || row.classList.contains("symbol-collapsed")) continue;
++    if (row.classList.contains("symbol-pinned-named")) return height;
++    height += (heights.get(row) ?? 0) + gap;
++  }
++  return null;
++}
++
+ /**
+  * Write {@link firstPinWrite} for a card whose rows were just ordered, and its held name's lines at the overview band,
+  * whose room it bounds, from the card's last reading: no layout is read.
+@@ -603,7 +637,11 @@ function rowsBeforePin(card: HTMLElement): number | null {
+ export function markFirstPin(card: HTMLElement): void {
+   applyRoomWrite([card, "--rows-before-pin", firstPinWrite(card)]);
+   const name = heldNames.get(card);
+-  if (name?.held.isConnected) for (const write of heldLineWrites(name, ["overview"], rowsBeforePin(card))) applyRoomWrite(write);
++  if (name?.held.isConnected) {
++    name.rooms.beforePinHeight = heightBeforePin(card, name.rowHeights, name.rooms.rowGap);
++    applyRoomWrite([card, "--title-before-pin-h", String(name.rooms.beforePinHeight ?? name.rooms.cardH)]);
++    for (const write of heldLineWrites(name, ["overview"], rowsBeforePin(card))) applyRoomWrite(write);
++  }
+ }
+ 
+ /** A write's name says what it sets: a `data-` attribute, a custom property, or else a class. */
+diff --git a/packages/explorer/src/client/views/localView/held-lines.test.ts b/packages/explorer/src/client/views/localView/held-lines.test.ts
+index 2b1e0164..4b8c0b0c 100644
+--- a/packages/explorer/src/client/views/localView/held-lines.test.ts
++++ b/packages/explorer/src/client/views/localView/held-lines.test.ts
+@@ -127,6 +127,19 @@ describe("heldTitle", () => {
+   };
+   const at = (step: number) => ({ text: 1.2 ** step, control: 1.2 ** step });
+ 
++  it("bounds the overview header by measured mixed-height rows instead of a uniform pitch in the slot-fold trial", () => {
++    const height = (beforePinHeight: number | null, count: number | null) => {
++      const title = heldTitle({ ...rooms, beforePinHeight }, "overview", at(8), count);
++      return title.room.height * title.scale;
++    };
++    // Two compact 21 px heads and their 4 px gaps, rather than two full 66 px slots.
++    expect(height(21 + 4 + 21 + 4, 2)).toBeCloseTo(40 + 50 - 4);
++    // A full slot and a compact head; the room's measured sum wins over the first row's pitch.
++    expect(height(66 + 4 + 21 + 4, 2)).toBeCloseTo(40 + 95 - 4);
++    expect(height(0, 0)).toBeCloseTo(40);
++    expect(height(null, null)).toBeCloseTo(300);
++  });
++
+   it("holds the step's size, never below the map's own nor taller than the room's height", () => {
+     expect(heldTitle(rooms, "far", { text: 0.5, control: 0.5 }, null).scale).toBe(1);
+     expect(heldTitle(rooms, "far", at(5), null).scale).toBeCloseTo(1.2 ** 5);
+diff --git a/packages/explorer/src/client/views/localView/held-lines.ts b/packages/explorer/src/client/views/localView/held-lines.ts
+index e26119d9..a10c71da 100644
+--- a/packages/explorer/src/client/views/localView/held-lines.ts
++++ b/packages/explorer/src/client/views/localView/held-lines.ts
+@@ -93,6 +93,8 @@ export interface TitleRooms {
+   cardH: number;
+   pitch: number;
+   rowGap: number;
++  /** Trial: measured distance to the first pinned row on cards with mixed open/folded rows; null means none. */
++  beforePinHeight?: number | null;
+   actionsW: number;
+   moreW: number;
+   moreH: number;
+@@ -111,8 +113,9 @@ export interface TitleRooms {
+  * beyond, where it is held no taller than a line of the name (principle 4).
+  */
+ export function heldTitle(rooms: TitleRooms, band: HeldBand, scales: { text: number; control: number }, rowsBeforePin: number | null): { scale: number; control: number; room: HeldRoom } {
++  const before = rooms.beforePinHeight === undefined ? (rowsBeforePin ?? 100000) * rooms.pitch : rooms.beforePinHeight ?? Infinity;
+   const roomH = band === "overview"
+-    ? Math.min(rooms.cardH, Math.max(rooms.headH, rooms.headH + (rowsBeforePin ?? 100000) * rooms.pitch - rooms.rowGap))
++    ? Math.min(rooms.cardH, Math.max(rooms.headH, rooms.headH + before - rooms.rowGap))
+     : rooms.headH;
+   const scale = Math.max(1, Math.min(scales.text, roomH / rooms.line));
+   const held = Math.min(Math.max(1, scales.control), Math.max(1, rooms.controlCeiling));
+diff --git a/scripts/layout-lab/capture.ts b/scripts/layout-lab/capture.ts
+index 38b3c298..4d95531c 100644
+--- a/scripts/layout-lab/capture.ts
++++ b/scripts/layout-lab/capture.ts
+@@ -61,6 +61,8 @@ export interface RowCapture {
+   frame?: { width: number; height: number };
+   /** Open description under this row's name and pins, measured again at the proposed text width. */
+   reading?: ReadingFlow;
++  /** Isolated slot trial: this row returns its description space and takes its natural head height. */
++  slotFolded?: boolean;
+ }
+ 
+ /** A test chip's, or the test label's, box as the page drew it. */
+@@ -448,6 +450,7 @@ function readCapture(page: Page): Promise<PageCapture & { titleChecks: TitleChec
+           height: sides("marginTop", "marginBottom", "paddingTop", "paddingBottom", "borderTopWidth", "borderBottomWidth")
+         };
+         const captured: RowCapture = { symbol: row.dataset.symbol ?? "", label: prepared(label), badgesWidth: badges ? badges.getBoundingClientRect().width / scale : 0, frame };
++        if (card.classList.contains("local-slot-card") && !row.classList.contains("internals-row")) captured.slotFolded = row.classList.contains("local-slot-folded");
+         captured.reading = visibleFlow(row.querySelector<HTMLElement>(".local-reading-block"));
+         if (controls) captured.controls = controls;
+         else if (label.parentElement!.children.length > (badges ? 2 : 1)) unmeasuredControls.push(captured);
+@@ -524,7 +527,7 @@ function readCapture(page: Page): Promise<PageCapture & { titleChecks: TitleChec
+         readingFrameHeight: card.classList.contains("local-reading-card") ? px(cardStyle.getPropertyValue("--reading-frame-height")) : undefined,
+         constants: constants!,
+         slot: card.classList.contains("local-slot-card") ? (() => {
+-          const row = grid.querySelector<HTMLElement>(":scope > .symbol-row:not(.internals-row)");
++          const row = grid.querySelector<HTMLElement>(":scope > .symbol-row:not(.internals-row):not(.local-slot-folded):not(.branch-symbol-hidden):not(.symbol-collapsed)");
+           const lines = Math.max(1, Math.round(parseFloat(getComputedStyle(root).getPropertyValue("--slot-lines")) || 2));
+           const purposeElement = card.querySelector<HTMLElement>(":scope > .local-reading-purpose");
+           return { rowHeight: row ? unit(row.getBoundingClientRect().height / scale) : 32 + 17 * lines,
+diff --git a/scripts/layout-lab/card-model.test.ts b/scripts/layout-lab/card-model.test.ts
+index aa6baeda..c3573d2e 100644
+--- a/scripts/layout-lab/card-model.test.ts
++++ b/scripts/layout-lab/card-model.test.ts
+@@ -76,6 +76,16 @@ describe("the lab's card model, the parts that need no page", () => {
+     // The public row's dot stands at the middle of its first track, the 10 px line, not of the 66 px allotment.
+     expect(metrics.pins.get("inbound:X")).toBe(10 + 10 + 55 + 5);
+     expect(metrics.pins.get("inbound:__internals__")).toBe(10 + 10 + 55 + 66 + 5);
++
++    // The isolated fold trial retains old captures' allotments, but a marked compact row takes its actual head:
++    // the taller of its label, dots and controls. An adjacent open row and Purpose keep their full slots.
++    const folded = { ...rows[0], symbol: "Folded", slotFolded: true, controls: { width: 20, height: 17 } };
++    const mixed = [rows[0], folded, rows[1]];
++    const compact = cardMetrics(capture, { ...card, rows: mixed }, 208, { ...view, rows: mixed, registration: mixed });
++    expect(compact.height).toBe(10 + 10 + 55 + 66 + 17 + 10);
++    expect(compact.pins.get("inbound:X")).toBe(metrics.pins.get("inbound:X"));
++    expect(compact.pins.get("inbound:Folded")).toBe(10 + 10 + 55 + 66 + 8.5);
++    expect(compact.pins.get("inbound:__internals__")).toBe(10 + 10 + 55 + 66 + 17 + 5);
+   });
+ 
+   it("sizes a title as the header lays it out: the room for the controls after the name, on its last line or a line of its own (2026-11-08)", () => {
+diff --git a/scripts/layout-lab/card-model.ts b/scripts/layout-lab/card-model.ts
+index 76381e28..4ecb975e 100644
+--- a/scripts/layout-lab/card-model.ts
++++ b/scripts/layout-lab/card-model.ts
+@@ -158,7 +158,7 @@ export function cardMetrics(capture: Capture, card: CardCapture, width: number,
+     const natural = Math.max(c.dotHeight + dotMargin, internals ? c.placeholderHeight : 0, wrapper);
+     // A slot card's public row keeps its fixed allotment, its name and dot in the first track at the top, its slot in
+     // the rest (2026-11-06); the Internals row and every row of the other compositions take their content.
+-    const height = card.slot && !internals ? card.slot.rowHeight : natural;
++    const height = card.slot && !internals && !row.slotFolded ? card.slot.rowHeight : natural;
+     if (i > 0) y += c.gridRowGap;
+     const centre = y + Math.floor((natural - c.dotHeight - dotMargin) / 2 * 64 + 1e-3) / 64 + dotMargin + c.dotHeight / 2;
+     centres.set(row, centre);

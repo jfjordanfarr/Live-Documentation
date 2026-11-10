@@ -1,0 +1,1153 @@
+{
+  "errors": [],
+  "comparisons": [
+    {
+      "subject": "repository",
+      "mode": "slot",
+      "states": [
+        {
+          "name": "all",
+          "card": {
+            "x": 561.9500122070312,
+            "y": 124.175048828125,
+            "width": 577.1000366210938,
+            "height": 691.6500244140625
+          },
+          "order": [
+            "normalizeSymbolIdentifier",
+            "buildNormalizedAnchorKey",
+            "tryBuildNormalizedKeyFromAnchorKey",
+            "AnchorDirection",
+            "__internals__"
+          ],
+          "rowHeights": [
+            {
+              "name": "normalizeSymbolIdentifier",
+              "height": 95.699951171875,
+              "open": "true"
+            },
+            {
+              "name": "buildNormalizedAnchorKey",
+              "height": 95.699951171875,
+              "open": "true"
+            },
+            {
+              "name": "tryBuildNormalizedKeyFromAnchorKey",
+              "height": 95.7000732421875,
+              "open": "true"
+            },
+            {
+              "name": "AnchorDirection",
+              "height": 95.7000732421875,
+              "open": "true"
+            },
+            {
+              "name": "__internals__",
+              "height": 27.550048828125
+            }
+          ],
+          "pins": {
+            "entries": [
+              {
+                "nodeId": "packages/explorer/src/client/views/symbolAnchors.ts",
+                "symbol": "*"
+              }
+            ]
+          },
+          "reading": [
+            {
+              "nodeId": "packages/explorer/src/client/views/symbolAnchors.ts",
+              "open": true
+            }
+          ]
+        },
+        {
+          "name": "none",
+          "card": {
+            "x": 561.9500122070312,
+            "y": 124.175048828125,
+            "width": 577.1000366210938,
+            "height": 691.6500244140625
+          },
+          "order": [
+            "normalizeSymbolIdentifier",
+            "buildNormalizedAnchorKey",
+            "tryBuildNormalizedKeyFromAnchorKey",
+            "AnchorDirection",
+            "__internals__"
+          ],
+          "rowHeights": [
+            {
+              "name": "normalizeSymbolIdentifier",
+              "height": 95.699951171875,
+              "open": "false"
+            },
+            {
+              "name": "buildNormalizedAnchorKey",
+              "height": 95.699951171875,
+              "open": "false"
+            },
+            {
+              "name": "tryBuildNormalizedKeyFromAnchorKey",
+              "height": 95.7000732421875,
+              "open": "false"
+            },
+            {
+              "name": "AnchorDirection",
+              "height": 95.7000732421875,
+              "open": "false"
+            },
+            {
+              "name": "__internals__",
+              "height": 27.550048828125
+            }
+          ],
+          "pins": {
+            "entries": [
+              {
+                "nodeId": "packages/explorer/src/client/views/symbolAnchors.ts",
+                "symbol": "*"
+              }
+            ]
+          },
+          "reading": [
+            {
+              "nodeId": "packages/explorer/src/client/views/symbolAnchors.ts",
+              "open": false
+            }
+          ]
+        },
+        {
+          "name": "one",
+          "card": {
+            "x": 561.9500122070312,
+            "y": 124.175048828125,
+            "width": 577.1000366210938,
+            "height": 691.6500244140625
+          },
+          "order": [
+            "normalizeSymbolIdentifier",
+            "buildNormalizedAnchorKey",
+            "tryBuildNormalizedKeyFromAnchorKey",
+            "AnchorDirection",
+            "__internals__"
+          ],
+          "rowHeights": [
+            {
+              "name": "normalizeSymbolIdentifier",
+              "height": 95.699951171875,
+              "open": "true"
+            },
+            {
+              "name": "buildNormalizedAnchorKey",
+              "height": 95.699951171875,
+              "open": "false"
+            },
+            {
+              "name": "tryBuildNormalizedKeyFromAnchorKey",
+              "height": 95.7000732421875,
+              "open": "false"
+            },
+            {
+              "name": "AnchorDirection",
+              "height": 95.7000732421875,
+              "open": "false"
+            },
+            {
+              "name": "__internals__",
+              "height": 27.550048828125
+            }
+          ],
+          "pins": {
+            "entries": [
+              {
+                "nodeId": "packages/explorer/src/client/views/symbolAnchors.ts",
+                "symbol": "*"
+              }
+            ]
+          },
+          "reading": [
+            {
+              "nodeId": "packages/explorer/src/client/views/symbolAnchors.ts",
+              "open": false
+            },
+            {
+              "nodeId": "packages/explorer/src/client/views/symbolAnchors.ts",
+              "symbol": "normalizeSymbolIdentifier",
+              "open": true
+            }
+          ]
+        },
+        {
+          "name": "two",
+          "card": {
+            "x": 561.9500122070312,
+            "y": 124.175048828125,
+            "width": 577.1000366210938,
+            "height": 691.6500244140625
+          },
+          "order": [
+            "normalizeSymbolIdentifier",
+            "buildNormalizedAnchorKey",
+            "tryBuildNormalizedKeyFromAnchorKey",
+            "AnchorDirection",
+            "__internals__"
+          ],
+          "rowHeights": [
+            {
+              "name": "normalizeSymbolIdentifier",
+              "height": 95.699951171875,
+              "open": "true"
+            },
+            {
+              "name": "buildNormalizedAnchorKey",
+              "height": 95.699951171875,
+              "open": "true"
+            },
+            {
+              "name": "tryBuildNormalizedKeyFromAnchorKey",
+              "height": 95.7000732421875,
+              "open": "false"
+            },
+            {
+              "name": "AnchorDirection",
+              "height": 95.7000732421875,
+              "open": "false"
+            },
+            {
+              "name": "__internals__",
+              "height": 27.550048828125
+            }
+          ],
+          "pins": {
+            "entries": [
+              {
+                "nodeId": "packages/explorer/src/client/views/symbolAnchors.ts",
+                "symbol": "*"
+              }
+            ]
+          },
+          "reading": [
+            {
+              "nodeId": "packages/explorer/src/client/views/symbolAnchors.ts",
+              "open": false
+            },
+            {
+              "nodeId": "packages/explorer/src/client/views/symbolAnchors.ts",
+              "symbol": "normalizeSymbolIdentifier",
+              "open": true
+            },
+            {
+              "nodeId": "packages/explorer/src/client/views/symbolAnchors.ts",
+              "symbol": "buildNormalizedAnchorKey",
+              "open": true
+            }
+          ]
+        },
+        {
+          "name": "second-only",
+          "card": {
+            "x": 561.9500122070312,
+            "y": 124.175048828125,
+            "width": 577.1000366210938,
+            "height": 691.6500244140625
+          },
+          "order": [
+            "normalizeSymbolIdentifier",
+            "buildNormalizedAnchorKey",
+            "tryBuildNormalizedKeyFromAnchorKey",
+            "AnchorDirection",
+            "__internals__"
+          ],
+          "rowHeights": [
+            {
+              "name": "normalizeSymbolIdentifier",
+              "height": 95.699951171875,
+              "open": "false"
+            },
+            {
+              "name": "buildNormalizedAnchorKey",
+              "height": 95.699951171875,
+              "open": "true"
+            },
+            {
+              "name": "tryBuildNormalizedKeyFromAnchorKey",
+              "height": 95.7000732421875,
+              "open": "false"
+            },
+            {
+              "name": "AnchorDirection",
+              "height": 95.7000732421875,
+              "open": "false"
+            },
+            {
+              "name": "__internals__",
+              "height": 27.550048828125
+            }
+          ],
+          "pins": {
+            "entries": [
+              {
+                "nodeId": "packages/explorer/src/client/views/symbolAnchors.ts",
+                "symbol": "*"
+              }
+            ]
+          },
+          "reading": [
+            {
+              "nodeId": "packages/explorer/src/client/views/symbolAnchors.ts",
+              "open": false
+            },
+            {
+              "nodeId": "packages/explorer/src/client/views/symbolAnchors.ts",
+              "symbol": "buildNormalizedAnchorKey",
+              "open": true
+            },
+            {
+              "nodeId": "packages/explorer/src/client/views/symbolAnchors.ts",
+              "symbol": "normalizeSymbolIdentifier",
+              "open": false
+            }
+          ]
+        },
+        {
+          "name": "all-again",
+          "card": {
+            "x": 561.9500122070312,
+            "y": 124.175048828125,
+            "width": 577.1000366210938,
+            "height": 691.6500244140625
+          },
+          "order": [
+            "normalizeSymbolIdentifier",
+            "buildNormalizedAnchorKey",
+            "tryBuildNormalizedKeyFromAnchorKey",
+            "AnchorDirection",
+            "__internals__"
+          ],
+          "rowHeights": [
+            {
+              "name": "normalizeSymbolIdentifier",
+              "height": 95.699951171875,
+              "open": "true"
+            },
+            {
+              "name": "buildNormalizedAnchorKey",
+              "height": 95.699951171875,
+              "open": "true"
+            },
+            {
+              "name": "tryBuildNormalizedKeyFromAnchorKey",
+              "height": 95.7000732421875,
+              "open": "true"
+            },
+            {
+              "name": "AnchorDirection",
+              "height": 95.7000732421875,
+              "open": "true"
+            },
+            {
+              "name": "__internals__",
+              "height": 27.550048828125
+            }
+          ],
+          "pins": {
+            "entries": [
+              {
+                "nodeId": "packages/explorer/src/client/views/symbolAnchors.ts",
+                "symbol": "*"
+              }
+            ]
+          },
+          "reading": [
+            {
+              "nodeId": "packages/explorer/src/client/views/symbolAnchors.ts",
+              "open": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "subject": "repository",
+      "mode": "grow",
+      "states": [
+        {
+          "name": "all",
+          "card": {
+            "x": 473.5,
+            "y": 109.2449951171875,
+            "width": 754,
+            "height": 1628.23681640625
+          },
+          "order": [
+            "normalizeSymbolIdentifier",
+            "buildNormalizedAnchorKey",
+            "tryBuildNormalizedKeyFromAnchorKey",
+            "AnchorDirection",
+            "__internals__"
+          ],
+          "rowHeights": [
+            {
+              "name": "normalizeSymbolIdentifier",
+              "height": 203,
+              "open": "true"
+            },
+            {
+              "name": "buildNormalizedAnchorKey",
+              "height": 320.5859375,
+              "open": "true"
+            },
+            {
+              "name": "tryBuildNormalizedKeyFromAnchorKey",
+              "height": 282.0250244140625,
+              "open": "true"
+            },
+            {
+              "name": "AnchorDirection",
+              "height": 259.91259765625,
+              "open": "true"
+            },
+            {
+              "name": "__internals__",
+              "height": 43.5
+            }
+          ],
+          "pins": {
+            "entries": [
+              {
+                "nodeId": "packages/explorer/src/client/views/symbolAnchors.ts",
+                "symbol": "*"
+              }
+            ]
+          },
+          "reading": [
+            {
+              "nodeId": "packages/explorer/src/client/views/symbolAnchors.ts",
+              "open": true
+            }
+          ]
+        },
+        {
+          "name": "none",
+          "card": {
+            "x": 490.8999938964844,
+            "y": 120.84600830078125,
+            "width": 577.0999755859375,
+            "height": 330.60003662109375
+          },
+          "order": [
+            "normalizeSymbolIdentifier",
+            "buildNormalizedAnchorKey",
+            "tryBuildNormalizedKeyFromAnchorKey",
+            "AnchorDirection",
+            "__internals__"
+          ],
+          "rowHeights": [
+            {
+              "name": "normalizeSymbolIdentifier",
+              "height": 24.6500244140625,
+              "open": "false"
+            },
+            {
+              "name": "buildNormalizedAnchorKey",
+              "height": 24.64996337890625,
+              "open": "false"
+            },
+            {
+              "name": "tryBuildNormalizedKeyFromAnchorKey",
+              "height": 24.6500244140625,
+              "open": "false"
+            },
+            {
+              "name": "AnchorDirection",
+              "height": 24.64996337890625,
+              "open": "false"
+            },
+            {
+              "name": "__internals__",
+              "height": 27.5499267578125
+            }
+          ],
+          "pins": {
+            "entries": [
+              {
+                "nodeId": "packages/explorer/src/client/views/symbolAnchors.ts",
+                "symbol": "*"
+              }
+            ]
+          },
+          "reading": [
+            {
+              "nodeId": "packages/explorer/src/client/views/symbolAnchors.ts",
+              "open": false
+            }
+          ]
+        },
+        {
+          "name": "one",
+          "card": {
+            "x": 473.5,
+            "y": 109.24603271484375,
+            "width": 754,
+            "height": 667.135986328125
+          },
+          "order": [
+            "normalizeSymbolIdentifier",
+            "buildNormalizedAnchorKey",
+            "tryBuildNormalizedKeyFromAnchorKey",
+            "AnchorDirection",
+            "__internals__"
+          ],
+          "rowHeights": [
+            {
+              "name": "normalizeSymbolIdentifier",
+              "height": 203.00006103515625,
+              "open": "true"
+            },
+            {
+              "name": "buildNormalizedAnchorKey",
+              "height": 40.5999755859375,
+              "open": "false"
+            },
+            {
+              "name": "tryBuildNormalizedKeyFromAnchorKey",
+              "height": 40.5999755859375,
+              "open": "false"
+            },
+            {
+              "name": "AnchorDirection",
+              "height": 40.60009765625,
+              "open": "false"
+            },
+            {
+              "name": "__internals__",
+              "height": 43.5
+            }
+          ],
+          "pins": {
+            "entries": [
+              {
+                "nodeId": "packages/explorer/src/client/views/symbolAnchors.ts",
+                "symbol": "*"
+              }
+            ]
+          },
+          "reading": [
+            {
+              "nodeId": "packages/explorer/src/client/views/symbolAnchors.ts",
+              "open": false
+            },
+            {
+              "nodeId": "packages/explorer/src/client/views/symbolAnchors.ts",
+              "symbol": "normalizeSymbolIdentifier",
+              "open": true
+            }
+          ]
+        },
+        {
+          "name": "two",
+          "card": {
+            "x": 473.5,
+            "y": 109.24600219726562,
+            "width": 754,
+            "height": 947.1219482421875
+          },
+          "order": [
+            "normalizeSymbolIdentifier",
+            "buildNormalizedAnchorKey",
+            "tryBuildNormalizedKeyFromAnchorKey",
+            "AnchorDirection",
+            "__internals__"
+          ],
+          "rowHeights": [
+            {
+              "name": "normalizeSymbolIdentifier",
+              "height": 203,
+              "open": "true"
+            },
+            {
+              "name": "buildNormalizedAnchorKey",
+              "height": 320.5860595703125,
+              "open": "true"
+            },
+            {
+              "name": "tryBuildNormalizedKeyFromAnchorKey",
+              "height": 40.5999755859375,
+              "open": "false"
+            },
+            {
+              "name": "AnchorDirection",
+              "height": 40.5999755859375,
+              "open": "false"
+            },
+            {
+              "name": "__internals__",
+              "height": 43.5
+            }
+          ],
+          "pins": {
+            "entries": [
+              {
+                "nodeId": "packages/explorer/src/client/views/symbolAnchors.ts",
+                "symbol": "*"
+              }
+            ]
+          },
+          "reading": [
+            {
+              "nodeId": "packages/explorer/src/client/views/symbolAnchors.ts",
+              "open": false
+            },
+            {
+              "nodeId": "packages/explorer/src/client/views/symbolAnchors.ts",
+              "symbol": "normalizeSymbolIdentifier",
+              "open": true
+            },
+            {
+              "nodeId": "packages/explorer/src/client/views/symbolAnchors.ts",
+              "symbol": "buildNormalizedAnchorKey",
+              "open": true
+            }
+          ]
+        },
+        {
+          "name": "second-only",
+          "card": {
+            "x": 473.5,
+            "y": 109.24603271484375,
+            "width": 754,
+            "height": 784.7218627929688
+          },
+          "order": [
+            "normalizeSymbolIdentifier",
+            "buildNormalizedAnchorKey",
+            "tryBuildNormalizedKeyFromAnchorKey",
+            "AnchorDirection",
+            "__internals__"
+          ],
+          "rowHeights": [
+            {
+              "name": "normalizeSymbolIdentifier",
+              "height": 40.5999755859375,
+              "open": "false"
+            },
+            {
+              "name": "buildNormalizedAnchorKey",
+              "height": 320.58599853515625,
+              "open": "true"
+            },
+            {
+              "name": "tryBuildNormalizedKeyFromAnchorKey",
+              "height": 40.5999755859375,
+              "open": "false"
+            },
+            {
+              "name": "AnchorDirection",
+              "height": 40.5999755859375,
+              "open": "false"
+            },
+            {
+              "name": "__internals__",
+              "height": 43.5
+            }
+          ],
+          "pins": {
+            "entries": [
+              {
+                "nodeId": "packages/explorer/src/client/views/symbolAnchors.ts",
+                "symbol": "*"
+              }
+            ]
+          },
+          "reading": [
+            {
+              "nodeId": "packages/explorer/src/client/views/symbolAnchors.ts",
+              "open": false
+            },
+            {
+              "nodeId": "packages/explorer/src/client/views/symbolAnchors.ts",
+              "symbol": "buildNormalizedAnchorKey",
+              "open": true
+            },
+            {
+              "nodeId": "packages/explorer/src/client/views/symbolAnchors.ts",
+              "symbol": "normalizeSymbolIdentifier",
+              "open": false
+            }
+          ]
+        },
+        {
+          "name": "all-again",
+          "card": {
+            "x": 473.5,
+            "y": 109.24600219726562,
+            "width": 754,
+            "height": 1628.23681640625
+          },
+          "order": [
+            "normalizeSymbolIdentifier",
+            "buildNormalizedAnchorKey",
+            "tryBuildNormalizedKeyFromAnchorKey",
+            "AnchorDirection",
+            "__internals__"
+          ],
+          "rowHeights": [
+            {
+              "name": "normalizeSymbolIdentifier",
+              "height": 203,
+              "open": "true"
+            },
+            {
+              "name": "buildNormalizedAnchorKey",
+              "height": 320.5859375,
+              "open": "true"
+            },
+            {
+              "name": "tryBuildNormalizedKeyFromAnchorKey",
+              "height": 282.0250244140625,
+              "open": "true"
+            },
+            {
+              "name": "AnchorDirection",
+              "height": 259.91259765625,
+              "open": "true"
+            },
+            {
+              "name": "__internals__",
+              "height": 43.5
+            }
+          ],
+          "pins": {
+            "entries": [
+              {
+                "nodeId": "packages/explorer/src/client/views/symbolAnchors.ts",
+                "symbol": "*"
+              }
+            ]
+          },
+          "reading": [
+            {
+              "nodeId": "packages/explorer/src/client/views/symbolAnchors.ts",
+              "open": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "subject": "estate",
+      "mode": "slot",
+      "states": [
+        {
+          "name": "all",
+          "card": {
+            "x": 666.35009765625,
+            "y": 180,
+            "width": 368.300048828125,
+            "height": 580
+          },
+          "order": [
+            "PaymentService",
+            "Post",
+            "Get",
+            "__internals__"
+          ],
+          "rowHeights": [
+            {
+              "name": "PaymentService",
+              "height": 95.70001220703125,
+              "open": "true"
+            },
+            {
+              "name": "Post",
+              "height": 95.70001220703125
+            },
+            {
+              "name": "Get",
+              "height": 95.70001220703125
+            },
+            {
+              "name": "__internals__",
+              "height": 27.54998779296875
+            }
+          ],
+          "pins": {
+            "entries": [
+              {
+                "nodeId": "PaymentService/PaymentService.cs",
+                "symbol": "*"
+              }
+            ]
+          },
+          "reading": [
+            {
+              "nodeId": "PaymentService/PaymentService.cs",
+              "open": true
+            }
+          ]
+        },
+        {
+          "name": "none",
+          "card": {
+            "x": 666.35009765625,
+            "y": 180,
+            "width": 368.300048828125,
+            "height": 580
+          },
+          "order": [
+            "PaymentService",
+            "Post",
+            "Get",
+            "__internals__"
+          ],
+          "rowHeights": [
+            {
+              "name": "PaymentService",
+              "height": 95.70001220703125,
+              "open": "false"
+            },
+            {
+              "name": "Post",
+              "height": 95.70001220703125
+            },
+            {
+              "name": "Get",
+              "height": 95.70001220703125
+            },
+            {
+              "name": "__internals__",
+              "height": 27.54998779296875
+            }
+          ],
+          "pins": {
+            "entries": [
+              {
+                "nodeId": "PaymentService/PaymentService.cs",
+                "symbol": "*"
+              }
+            ]
+          },
+          "reading": [
+            {
+              "nodeId": "PaymentService/PaymentService.cs",
+              "open": false
+            }
+          ]
+        },
+        {
+          "name": "one",
+          "card": {
+            "x": 666.35009765625,
+            "y": 180,
+            "width": 368.300048828125,
+            "height": 580
+          },
+          "order": [
+            "PaymentService",
+            "Post",
+            "Get",
+            "__internals__"
+          ],
+          "rowHeights": [
+            {
+              "name": "PaymentService",
+              "height": 95.70001220703125,
+              "open": "true"
+            },
+            {
+              "name": "Post",
+              "height": 95.70001220703125
+            },
+            {
+              "name": "Get",
+              "height": 95.70001220703125
+            },
+            {
+              "name": "__internals__",
+              "height": 27.54998779296875
+            }
+          ],
+          "pins": {
+            "entries": [
+              {
+                "nodeId": "PaymentService/PaymentService.cs",
+                "symbol": "*"
+              }
+            ]
+          },
+          "reading": [
+            {
+              "nodeId": "PaymentService/PaymentService.cs",
+              "open": false
+            },
+            {
+              "nodeId": "PaymentService/PaymentService.cs",
+              "symbol": "PaymentService",
+              "open": true
+            }
+          ]
+        },
+        {
+          "name": "all-again",
+          "card": {
+            "x": 666.35009765625,
+            "y": 180,
+            "width": 368.300048828125,
+            "height": 580
+          },
+          "order": [
+            "PaymentService",
+            "Post",
+            "Get",
+            "__internals__"
+          ],
+          "rowHeights": [
+            {
+              "name": "PaymentService",
+              "height": 95.70001220703125,
+              "open": "true"
+            },
+            {
+              "name": "Post",
+              "height": 95.70001220703125
+            },
+            {
+              "name": "Get",
+              "height": 95.70001220703125
+            },
+            {
+              "name": "__internals__",
+              "height": 27.54998779296875
+            }
+          ],
+          "pins": {
+            "entries": [
+              {
+                "nodeId": "PaymentService/PaymentService.cs",
+                "symbol": "*"
+              }
+            ]
+          },
+          "reading": [
+            {
+              "nodeId": "PaymentService/PaymentService.cs",
+              "open": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "subject": "estate",
+      "mode": "grow",
+      "states": [
+        {
+          "name": "all",
+          "card": {
+            "x": 473.500244140625,
+            "y": 165.06961059570312,
+            "width": 754,
+            "height": 749.7406005859375
+          },
+          "order": [
+            "PaymentService",
+            "Post",
+            "Get",
+            "__internals__"
+          ],
+          "rowHeights": [
+            {
+              "name": "PaymentService",
+              "height": 174.13595581054688,
+              "open": "true"
+            },
+            {
+              "name": "Post",
+              "height": 122.07183837890625,
+              "open": "true"
+            },
+            {
+              "name": "Get",
+              "height": 122.0718994140625,
+              "open": "true"
+            },
+            {
+              "name": "__internals__",
+              "height": 43.5
+            }
+          ],
+          "pins": {
+            "entries": [
+              {
+                "nodeId": "PaymentService/PaymentService.cs",
+                "symbol": "*"
+              }
+            ]
+          },
+          "reading": [
+            {
+              "nodeId": "PaymentService/PaymentService.cs",
+              "open": true
+            }
+          ]
+        },
+        {
+          "name": "none",
+          "card": {
+            "x": 490.900146484375,
+            "y": 176.6690216064453,
+            "width": 343.64990234375,
+            "height": 290
+          },
+          "order": [
+            "PaymentService",
+            "Post",
+            "Get",
+            "__internals__"
+          ],
+          "rowHeights": [
+            {
+              "name": "PaymentService",
+              "height": 24.6500244140625,
+              "open": "false"
+            },
+            {
+              "name": "Post",
+              "height": 24.6500244140625,
+              "open": "false"
+            },
+            {
+              "name": "Get",
+              "height": 24.64996337890625,
+              "open": "false"
+            },
+            {
+              "name": "__internals__",
+              "height": 27.54998779296875
+            }
+          ],
+          "pins": {
+            "entries": [
+              {
+                "nodeId": "PaymentService/PaymentService.cs",
+                "symbol": "*"
+              }
+            ]
+          },
+          "reading": [
+            {
+              "nodeId": "PaymentService/PaymentService.cs",
+              "open": false
+            }
+          ]
+        },
+        {
+          "name": "one",
+          "card": {
+            "x": 473.500244140625,
+            "y": 165.06838989257812,
+            "width": 754,
+            "height": 586.796875
+          },
+          "order": [
+            "PaymentService",
+            "Post",
+            "Get",
+            "__internals__"
+          ],
+          "rowHeights": [
+            {
+              "name": "PaymentService",
+              "height": 174.13592529296875,
+              "open": "true"
+            },
+            {
+              "name": "Post",
+              "height": 40.60003662109375,
+              "open": "false"
+            },
+            {
+              "name": "Get",
+              "height": 40.60003662109375,
+              "open": "false"
+            },
+            {
+              "name": "__internals__",
+              "height": 43.5
+            }
+          ],
+          "pins": {
+            "entries": [
+              {
+                "nodeId": "PaymentService/PaymentService.cs",
+                "symbol": "*"
+              }
+            ]
+          },
+          "reading": [
+            {
+              "nodeId": "PaymentService/PaymentService.cs",
+              "open": false
+            },
+            {
+              "nodeId": "PaymentService/PaymentService.cs",
+              "symbol": "PaymentService",
+              "open": true
+            }
+          ]
+        },
+        {
+          "name": "all-again",
+          "card": {
+            "x": 473.500244140625,
+            "y": 165.06838989257812,
+            "width": 754,
+            "height": 749.74072265625
+          },
+          "order": [
+            "PaymentService",
+            "Post",
+            "Get",
+            "__internals__"
+          ],
+          "rowHeights": [
+            {
+              "name": "PaymentService",
+              "height": 174.13592529296875,
+              "open": "true"
+            },
+            {
+              "name": "Post",
+              "height": 122.0718994140625,
+              "open": "true"
+            },
+            {
+              "name": "Get",
+              "height": 122.0718994140625,
+              "open": "true"
+            },
+            {
+              "name": "__internals__",
+              "height": 43.5
+            }
+          ],
+          "pins": {
+            "entries": [
+              {
+                "nodeId": "PaymentService/PaymentService.cs",
+                "symbol": "*"
+              }
+            ]
+          },
+          "reading": [
+            {
+              "nodeId": "PaymentService/PaymentService.cs",
+              "open": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

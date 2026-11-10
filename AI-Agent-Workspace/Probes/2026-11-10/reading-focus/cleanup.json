@@ -1,0 +1,1311 @@
+{
+  "recordedAt": "2026-11-10T20:07:41.155Z",
+  "scope": "AI-Agent-Workspace/tmp/2026-11-10-reading-focus",
+  "manifestEntriesVerified": 72,
+  "archivedSourceFilesVerified": 8,
+  "ownerCaptureSha256": "2babedd00823ef87f34c324413f617a6c10a6d5fa1030dbe9b49e4f04aa6ff59",
+  "worktreeRemoved": true,
+  "previewRetained": "dist/reading-focus-2026-11-10 on port 8918",
+  "files": [
+    {
+      "file": "capture-model/estate-capture.json",
+      "bytes": 133766,
+      "sha256": "e36666ead72a1ecd4533dc8994cde9b62a7702cc9c668672666e1eaa2994bd22",
+      "preservedAs": [
+        "source/estate-capture.json.gz (decompressed)"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "capture-model/estate-comparison.json",
+      "bytes": 14124,
+      "sha256": "ebadcd069e90269f18c2fc2aa497dde73cf8f4293d38fe007ec181bb9211c4b7",
+      "preservedAs": [
+        "checks/model-estate-comparison.json"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "capture-model/estate-dom-after.json",
+      "bytes": 13209,
+      "sha256": "840d6940b33e5c15b9ba0c86ab5b3b5787c4a72a5cd8f0b5c928cf7ebaf3101c",
+      "preservedAs": [
+        "source/estate-dom-after.json.gz (decompressed)"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "capture-model/estate-dom-before.json",
+      "bytes": 15808,
+      "sha256": "f8c57e0320fdca4d62151b8eeb863bfde265e9ce6b17afcf4992cbfd76790f61",
+      "preservedAs": [
+        "source/estate-dom-before.json.gz (decompressed)"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "capture-model/repository-capture.json",
+      "bytes": 330063,
+      "sha256": "1d8ad223f9ff9d68e425024c784af6e1ec6a492f517d62abb0984dfde0fe7358",
+      "preservedAs": [
+        "source/repository-capture.json.gz (decompressed)"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "capture-model/repository-comparison.json",
+      "bytes": 16990,
+      "sha256": "f872015be137b3cf99daf3992f57f2de74762730439cb686c15daa9fe5c7d499",
+      "preservedAs": [
+        "checks/model-repository-comparison.json"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "capture-model/repository-dom-after.json",
+      "bytes": 38454,
+      "sha256": "1ca9d8461b3e3271a30c5b44341e232805d87f1fea0b209ab6cf15b2d5cf1e12",
+      "preservedAs": [
+        "source/repository-dom-after.json.gz (decompressed)"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "capture-model/repository-dom-before.json",
+      "bytes": 41248,
+      "sha256": "c42db134284f533e524a96d9472d47e690a4575674a02c02d5e964909df5c143",
+      "preservedAs": [
+        "source/repository-dom-before.json.gz (decompressed)"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "capture-model/source-and-asset-hashes.json",
+      "bytes": 3468,
+      "sha256": "8277b43f4d03d6c1b7d2c03a8b6e14c919acbcc1d5410200ebeb5cf5e07d0387",
+      "preservedAs": [
+        "checks/model-source-and-asset-hashes.json"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "capture-model/summary.json",
+      "bytes": 887,
+      "sha256": "1230119505a9b795f4485e4c60d83b6170faf28c890bb1b77b149636d0121f05",
+      "preservedAs": [
+        "checks/model-summary.json"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "capture-model.log",
+      "bytes": 494,
+      "sha256": "a1d609a8d8b0d192b9f908f2965926af0fc0ce301616a9d6ce89db59420eed2a",
+      "preservedAs": [
+        "checks/capture-model.log.gz (decompressed)"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "capture-model.ts",
+      "bytes": 10042,
+      "sha256": "5673dd8b52b2b880a625dc9281aed4b7839e75ecba56c4ebd334cc78569fc119",
+      "preservedAs": [
+        "source/capture-model.ts.gz (decompressed)"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "final-links.ts",
+      "bytes": 492,
+      "sha256": "0fc40567e769fd60c966fe7474cdcf0838557a393a90ec3a61498a297e07f6ce",
+      "reason": "one-off documentation check"
+    },
+    {
+      "file": "frames/manifest.json",
+      "bytes": 344,
+      "sha256": "8681a0b9f263e818b28de778bd69f38756adf0f3d25a4780478dd3f0e65df773",
+      "preservedAs": [
+        "frames/extraction.json"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "frames/repository-12.0.png",
+      "bytes": 506573,
+      "sha256": "104578b33e53922c1c3b98e4abec2eafb1998d5a3037c04d106ccf990dc999aa",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "frames/repository-14.0.png",
+      "bytes": 592342,
+      "sha256": "afdf11d8ec345b0cd174902cd10f19486b0b6fd34768db30889fb3ea2e31fe57",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "frames/repository-14.2.png",
+      "bytes": 596025,
+      "sha256": "1394a563940ec228e7a8498950e2174c8224ac0c6ae22d31dedcff8a8d1b89a6",
+      "preservedAs": [
+        "frames/repository-14.2.png"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "frames/repository-14.4.png",
+      "bytes": 493424,
+      "sha256": "c4e27666b67ecd15c72a52bf2d7472982c405ac7364a41008df55138b7d3d070",
+      "preservedAs": [
+        "frames/repository-14.4.png"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "frames/repository-14.6.png",
+      "bytes": 524317,
+      "sha256": "eaf183d654b671532a03722bb4ffe6ed24c1c50d003171ed2fd86ca324b015d6",
+      "preservedAs": [
+        "frames/repository-14.6.png"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "frames/repository-14.8.png",
+      "bytes": 544558,
+      "sha256": "faeb9d9ac0a557d9233f88ee474bb3383b2dc3b2a33876ff5afe77c7f46ce9ea",
+      "preservedAs": [
+        "frames/repository-14.8.png"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "frames/repository-15.0.png",
+      "bytes": 556593,
+      "sha256": "bd052d3e787d62de09204b31fda33f596d1653d3f218b6c41383f9d22c01912e",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "frames/repository-15.5.png",
+      "bytes": 478640,
+      "sha256": "facea9cd3dbfeec8607c8edf5764fd33493c2aef3184d6771a09fa4ef9194ad3",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "frames/repository-16.0.png",
+      "bytes": 557007,
+      "sha256": "333150fe8c51a9ceba0f661e17961c6ca4f6abe7a3234a5861185eafdc24f3f3",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "frames/repository-16.5.png",
+      "bytes": 707789,
+      "sha256": "8d832503c89ba3a67a0cb4ea3c4ce428b4d6b8af4656700e36c14692ba74abc3",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "frames/repository-17.0.png",
+      "bytes": 722212,
+      "sha256": "1488925fecb0f1d5343f203f65767b79077f30f51947776e75cedb7d225bed19",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "frames/repository-17.5.png",
+      "bytes": 727149,
+      "sha256": "d7a14f0c13b77a03ecd0353eab1b935f5786f921932144afd483a8be000554fb",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "matched/estate-current-all-again.png",
+      "bytes": 168131,
+      "sha256": "e45acb9c618f4c9361a1425d23266169e4975b2881e02f2115aecbe00daf34ed",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "matched/estate-current-all.png",
+      "bytes": 168118,
+      "sha256": "04b9ffded381ca3e3ae8f5a505e62ec6c191a8c9b83002818df5a06cae90e116",
+      "preservedAs": [
+        "pictures/estate-current-all.png"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "matched/estate-current-journey.webm",
+      "bytes": 1151010,
+      "sha256": "5d2b82a89574753c16d1d88fd1a6379d20e4bf58e94af9e26c5452415ac1c566",
+      "preservedAs": [
+        "motion/estate-current.webm"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "matched/estate-current-none.png",
+      "bytes": 161110,
+      "sha256": "54e394540307973deeda33a4af6355c7d751a910e912691f2e828f8547f3d714",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "matched/estate-current-one-out-2.png",
+      "bytes": 137970,
+      "sha256": "a48f67964f88714961c0bee106e93baef8407ba3a5ef34278146bca446a05c16",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "matched/estate-current-one-out-4.png",
+      "bytes": 144460,
+      "sha256": "80ee9cd414b0796872a98a2a16ba15d5ef33b90e4d520ccc2c5481c0343ea9c1",
+      "preservedAs": [
+        "pictures/estate-current-one-out-4.png"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "matched/estate-current-one-out-7.png",
+      "bytes": 104767,
+      "sha256": "3f251d1d6f3c426b9978a66714158916223c1778649adc47d8570e882dda876b",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "matched/estate-current-one-out-8.png",
+      "bytes": 100281,
+      "sha256": "c1b57a308ca85e793db0f0c545eed5d0328ebf1dc17cc6bbaf0fc87f0f26cf0f",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "matched/estate-current-one-return-0.png",
+      "bytes": 168073,
+      "sha256": "9b7a62a5005642659e78a093cfd96fb16c2bf808c8b37a6e4de022342b60700a",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "matched/estate-current-one.png",
+      "bytes": 168045,
+      "sha256": "a13d6e8c375fc1381161ae3d40c711d6fdfb098ef4cffce5c4a174b3b2747568",
+      "preservedAs": [
+        "pictures/estate-current-one.png",
+        "pictures/native-estate-slot-one.png"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "matched/estate-folded-all-again.png",
+      "bytes": 168102,
+      "sha256": "adcdcfdddfe8388a16e81e1e0338cf2c854db7ee1764f0018ef516b420a3612f",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "matched/estate-folded-all.png",
+      "bytes": 168108,
+      "sha256": "09550b6d0c1ac0914d3c646676ff45b9a440a17daac2d002501fc173b0a8b94f",
+      "preservedAs": [
+        "pictures/estate-folded-all.png"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "matched/estate-folded-journey.webm",
+      "bytes": 1663401,
+      "sha256": "121fc3b4fcd28bb7133579cbe1d88103f6f49949c6ed38334e4e1eb47df26424",
+      "preservedAs": [
+        "motion/estate-folded.webm"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "matched/estate-folded-none.png",
+      "bytes": 155525,
+      "sha256": "c9ab1018ebdce8dd57d63b4bc9cd9d61385f641cd88189e26e4214c46b2d969c",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "matched/estate-folded-one-out-2.png",
+      "bytes": 129814,
+      "sha256": "9254482e032bdee7fc3ce2427a010f93a30d26ece5ae2bf55c2ac0af0f64a571",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "matched/estate-folded-one-out-4.png",
+      "bytes": 140539,
+      "sha256": "148e379dc5d4df93c9ff3d4bcd1864ec48dc43627abd866ecb3b3df49e1edd37",
+      "preservedAs": [
+        "pictures/estate-folded-one-out-4.png"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "matched/estate-folded-one-out-7.png",
+      "bytes": 103938,
+      "sha256": "364cf26b59a3aca9b2ba21251c2a640561e3e257a9b955e768ab12f7eb0de972",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "matched/estate-folded-one-out-8.png",
+      "bytes": 100114,
+      "sha256": "7d2586ee3950e97c5422f88541e0f8ddf104dd4b8ceec1ae163a8346aa38d6b4",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "matched/estate-folded-one-return-0.png",
+      "bytes": 165602,
+      "sha256": "49054db54e84c11df7ba7f3512ebbed7bebbddfdd1dd4774e51b2a59454a5a6b",
+      "preservedAs": [
+        "pictures/estate-folded-one-return-0.png"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "matched/estate-folded-one.png",
+      "bytes": 165592,
+      "sha256": "6ff586742ea4f7a21bbb7d793bac00978792260ad5043b64715658b11a38dcc7",
+      "preservedAs": [
+        "pictures/estate-folded-one.png"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "matched/motion/35ab8b1808a33f76b33696884025ed43.webm",
+      "bytes": 1507117,
+      "sha256": "1dadcb80c6b65162893e27b9a51facd52e0f84b606503b19ca24a95aec272484",
+      "preservedAs": [
+        "motion/repository-current.webm"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "matched/motion/55eac10f1c21c08ba7112c3981f64712.webm",
+      "bytes": 2042077,
+      "sha256": "d41b1eb010b3c7fc02ef8f1dd4141e479aed1abbdf3cc2eeeec1b7ad7dd0fb58",
+      "preservedAs": [
+        "motion/repository-folded.webm"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "matched/motion/a5a5399dff2d50e29f7681c83592126a.webm",
+      "bytes": 1663401,
+      "sha256": "121fc3b4fcd28bb7133579cbe1d88103f6f49949c6ed38334e4e1eb47df26424",
+      "preservedAs": [
+        "motion/estate-folded.webm"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "matched/motion/bb26e0049745146b3661f0fb52e10a16.webm",
+      "bytes": 1151010,
+      "sha256": "5d2b82a89574753c16d1d88fd1a6379d20e4bf58e94af9e26c5452415ac1c566",
+      "preservedAs": [
+        "motion/estate-current.webm"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "matched/observations.json",
+      "bytes": 699535,
+      "sha256": "26ba82e425a9e5b63cc70adf29cf68000cff6b9ae7be528b283236311828db3f",
+      "preservedAs": [
+        "source/matched-observations.json.gz (decompressed)"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "matched/repository-current-all-again.png",
+      "bytes": 271498,
+      "sha256": "f016ecb3bf9f2a34842f1115f63c9ee2c77ea2752b79fcb0db0c68aad0189951",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "matched/repository-current-all.png",
+      "bytes": 271189,
+      "sha256": "c61803a58e7bd851ca09e2239e0c96b6628b4f17246ef2d619111c9982832d3e",
+      "preservedAs": [
+        "pictures/repository-current-all.png"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "matched/repository-current-journey.webm",
+      "bytes": 1507117,
+      "sha256": "1dadcb80c6b65162893e27b9a51facd52e0f84b606503b19ca24a95aec272484",
+      "preservedAs": [
+        "motion/repository-current.webm"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "matched/repository-current-none.png",
+      "bytes": 226952,
+      "sha256": "facae450af10026ed5eee74c342ac39f40cc339a6dbd637bfd6471563721386d",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "matched/repository-current-one-out-2.png",
+      "bytes": 164236,
+      "sha256": "c23b00f86a6e4aec6e1ceea571ed1d628bdf62191deccb7ef0bf574a8d3a4844",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "matched/repository-current-one-out-4.png",
+      "bytes": 158705,
+      "sha256": "605a4152eb7d680ff6a078a13ed83a72985ffe1ad75cc6f84f454b8a1b6534f8",
+      "preservedAs": [
+        "pictures/repository-current-one-out-4.png"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "matched/repository-current-one-out-7.png",
+      "bytes": 124341,
+      "sha256": "48535986dec5d404ea5a436f261da002aa0854d779d27491daf8026da84adb19",
+      "preservedAs": [
+        "pictures/repository-current-one-out-7.png"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "matched/repository-current-one-out-8.png",
+      "bytes": 128221,
+      "sha256": "3e5d69d15fcb891ff6fdfdde9cc40a35cb38183b7c99b0a466e30cfda26a3087",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "matched/repository-current-one-return-0.png",
+      "bytes": 237747,
+      "sha256": "b3229d1f6c38cbad30b373ec4bf2b84a02ecd11479c3134a3a2a5499016893fa",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "matched/repository-current-one.png",
+      "bytes": 238167,
+      "sha256": "427d38125496420bb036b0441b57b83ba61d982a7d356a9103fe3f688305e174",
+      "preservedAs": [
+        "pictures/repository-current-one.png",
+        "pictures/native-repository-slot-one.png"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "matched/repository-current-second-only.png",
+      "bytes": 234562,
+      "sha256": "1ee32c34740b00925545d53f10bf9e41febba03cc3cc49792bd7aff834208aba",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "matched/repository-current-two.png",
+      "bytes": 245370,
+      "sha256": "451fb5b6b66c84838fa419f25f59d5fd954ae6df69fffe1b1e030a4cf7656032",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "matched/repository-folded-all-again.png",
+      "bytes": 271189,
+      "sha256": "c61803a58e7bd851ca09e2239e0c96b6628b4f17246ef2d619111c9982832d3e",
+      "preservedAs": [
+        "pictures/repository-current-all.png"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "matched/repository-folded-all.png",
+      "bytes": 271189,
+      "sha256": "c61803a58e7bd851ca09e2239e0c96b6628b4f17246ef2d619111c9982832d3e",
+      "preservedAs": [
+        "pictures/repository-current-all.png"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "matched/repository-folded-journey.webm",
+      "bytes": 2042077,
+      "sha256": "d41b1eb010b3c7fc02ef8f1dd4141e479aed1abbdf3cc2eeeec1b7ad7dd0fb58",
+      "preservedAs": [
+        "motion/repository-folded.webm"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "matched/repository-folded-none.png",
+      "bytes": 220201,
+      "sha256": "5203ced119a800a7a577ab2872a7f528bdb34ab138c757669b9dfa7c5ab0ec2e",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "matched/repository-folded-one-out-2.png",
+      "bytes": 156409,
+      "sha256": "914d1a2a3bb63c3e832d201cef98127ce8f31949934bfbfaaf4bfc18e7b77ebc",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "matched/repository-folded-one-out-4.png",
+      "bytes": 149284,
+      "sha256": "2045335ac2ddf89bc46f9e37c24ca41ab8a4f9e5514c0134aab9aa12d27164da",
+      "preservedAs": [
+        "pictures/repository-folded-one-out-4.png"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "matched/repository-folded-one-out-7.png",
+      "bytes": 124490,
+      "sha256": "deab68100dcf0b66ed9539572fa513a8a94927f80ceb841779ab8efcc43c18a4",
+      "preservedAs": [
+        "pictures/repository-folded-one-out-7.png"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "matched/repository-folded-one-out-8.png",
+      "bytes": 128172,
+      "sha256": "1dc79234eacdaca7b592634b104d6adc37004714fc2397d36e75c0da373a7de5",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "matched/repository-folded-one-return-0.png",
+      "bytes": 231534,
+      "sha256": "ca6946c745f844814d3cc49bfdd8ba0c7dfe0efc5eca65b15ca409bc91d4918f",
+      "preservedAs": [
+        "pictures/repository-folded-one-return-0.png"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "matched/repository-folded-one.png",
+      "bytes": 231766,
+      "sha256": "946bcfe276fe1924c3bf8268bd33abae7887e609e8811eb4997599e74d901e54",
+      "preservedAs": [
+        "pictures/repository-folded-one.png"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "matched/repository-folded-second-only.png",
+      "bytes": 230225,
+      "sha256": "e5aa262cbaf4788720b67a845e5f3559893660ca60969490d1f3d1208b6a12fe",
+      "preservedAs": [
+        "pictures/repository-folded-second-only.png"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "matched/repository-folded-two.png",
+      "bytes": 241289,
+      "sha256": "7837d1d76b63455c24f1f347e20206cb66006ab2d8637ca5fa2d90bd7a8b2e8c",
+      "preservedAs": [
+        "pictures/repository-folded-two.png"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "matched-built.mjs",
+      "bytes": 42704,
+      "sha256": "d34ea0dfafc3ba0973f19030e3cbe0fb1d44b0ec308310a5e0e932c5cdd50069",
+      "reason": "derived esbuild output"
+    },
+    {
+      "file": "matched-summary.json",
+      "bytes": 15445,
+      "sha256": "675ee57f87d1b7670c8886e2860a702769f7fe9b69575c880e88e2deb0e47e24",
+      "reason": "intermediate authored analysis; final annotated comparison retained"
+    },
+    {
+      "file": "matched.log",
+      "bytes": 17514,
+      "sha256": "064401139b3b6e7cc2528dede9b1c43c334f63939beff5abeb6f1888db23e6de",
+      "reason": "intermediate verification log; final same-source result retained"
+    },
+    {
+      "file": "matched.mjs",
+      "bytes": 4756,
+      "sha256": "e6b26a2f681f4aaeea0e0621cfa12b9def00bccda33b2e80ff3d00b466d06ef2",
+      "preservedAs": [
+        "source/matched.mjs.gz (decompressed)"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "native/estate-grow-all-again.png",
+      "bytes": 183391,
+      "sha256": "17c07d41c44dedec1f9a72e763f861443928ac928b803023b10241b40edd47b1",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "native/estate-grow-all.png",
+      "bytes": 183731,
+      "sha256": "7ded2b65d34ef9bd622d7c5085d4a53f9c87d1b23814454d2c8cea1f1ac48566",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "native/estate-grow-journey.webm",
+      "bytes": 947566,
+      "sha256": "4bd7eb8dc63247236f846a76a180ea53e3fafcfd375e669ace096a555fcada35",
+      "preservedAs": [
+        "diagnostics/attended-estate-grow.webm"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "native/estate-grow-none.png",
+      "bytes": 141601,
+      "sha256": "bcffd28834c9c84b967687abf3a811be433261abbfaf25932141a5a16f4ff285",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "native/estate-grow-one.png",
+      "bytes": 161811,
+      "sha256": "367cfdd8253e7b47e5866201cfba075c7b74213906b003006d9f63b5baa0357e",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "native/estate-slot-all-again.png",
+      "bytes": 168195,
+      "sha256": "db4b042522f7111a07c0216c7ae4d53d203bb1a61b3143b023bf6c35b25b57a6",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "native/estate-slot-all.png",
+      "bytes": 168094,
+      "sha256": "1bb258e3f3f04ee3164ebea0a806d4958205431ad92d619b7b812eab1e7ba3de",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "native/estate-slot-journey.webm",
+      "bytes": 570351,
+      "sha256": "e1cf8aee85defd58b0d5ad137bee7cd7f167fcbd7e9903e9f79bc5428a911999",
+      "preservedAs": [
+        "diagnostics/attended-estate-slot.webm"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "native/estate-slot-none.png",
+      "bytes": 161124,
+      "sha256": "ba2ff9321abc44eca24d57e80d484d4db50516a623a719485ba1b97a97306c80",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "native/estate-slot-one.png",
+      "bytes": 149321,
+      "sha256": "d62233b8f0b5db08a04124517d9166db8572caa7493208262607817097b8089b",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "native/motion/1db209946d9da6871772b2ccb1856bbf.webm",
+      "bytes": 1193432,
+      "sha256": "f8ad568bdd33827685e922ee0d9ace8d08ebe58bd08e1fa521c99e0d24ca7ee8",
+      "preservedAs": [
+        "diagnostics/attended-repository-grow.webm"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "native/motion/9c13eafb9ba4a55157e34cd3b5393d32.webm",
+      "bytes": 570351,
+      "sha256": "e1cf8aee85defd58b0d5ad137bee7cd7f167fcbd7e9903e9f79bc5428a911999",
+      "preservedAs": [
+        "diagnostics/attended-estate-slot.webm"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "native/motion/9d055b09bce58c2be63b81e2ae027235.webm",
+      "bytes": 798636,
+      "sha256": "823bd44fa54ab7de8913716f399a78b21da0f8ac989de61e40878743148a16ab",
+      "preservedAs": [
+        "diagnostics/attended-repository-slot.webm"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "native/motion/ee882ff85eb21aa4cfc582f1e4612217.webm",
+      "bytes": 947566,
+      "sha256": "4bd7eb8dc63247236f846a76a180ea53e3fafcfd375e669ace096a555fcada35",
+      "preservedAs": [
+        "diagnostics/attended-estate-grow.webm"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "native/observations.json",
+      "bytes": 230250,
+      "sha256": "33f3e139f9ddd11071b68022192e3af51ef5434f12124735dc5bec63bd39c240",
+      "preservedAs": [
+        "diagnostics/attended-observations.json.gz (decompressed)"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "native/repository-grow-all-again.png",
+      "bytes": 236550,
+      "sha256": "a9e0d7ca064330e3218441c08ee5a11d36b46a61c79b6343938b7962e631284b",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "native/repository-grow-all.png",
+      "bytes": 237540,
+      "sha256": "d3e4b8a71fa8cac85043b793ddebbae3f698e404eb5da5d1efd86dbed4c1168f",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "native/repository-grow-journey.webm",
+      "bytes": 1193432,
+      "sha256": "f8ad568bdd33827685e922ee0d9ace8d08ebe58bd08e1fa521c99e0d24ca7ee8",
+      "preservedAs": [
+        "diagnostics/attended-repository-grow.webm"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "native/repository-grow-none.png",
+      "bytes": 215558,
+      "sha256": "86e5c0260d7476ecc72d95ba81b466e8f491d6a10f006932190c348190fe5608",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "native/repository-grow-one.png",
+      "bytes": 211756,
+      "sha256": "2f35c8bdb629e57b21a3f5f4e517ec313268c4f99adafab7a308d9df4d1df2e0",
+      "preservedAs": [
+        "diagnostics/attended-repository-grow-one.png"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "native/repository-grow-second-only.png",
+      "bytes": 231261,
+      "sha256": "36a11bef33d8c44fcae7d62d8f546e0a7a71e0e9f997f2c6c4d9325a5f0dde17",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "native/repository-grow-two.png",
+      "bytes": 230558,
+      "sha256": "4ebe01913012da8cd071026e467ae7b70ea722d78bb860764e7444c8f8281c80",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "native/repository-slot-all-again.png",
+      "bytes": 270961,
+      "sha256": "6608e61358b4b331ce0726a03bb392db4cbd6d59e881492b4059ef9e4279b7f1",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "native/repository-slot-all.png",
+      "bytes": 271089,
+      "sha256": "15d28542b10001c5d9d4458e9b3607eea44c9be391bf275383e38f6bd5cc7e9b",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "native/repository-slot-journey.webm",
+      "bytes": 798636,
+      "sha256": "823bd44fa54ab7de8913716f399a78b21da0f8ac989de61e40878743148a16ab",
+      "preservedAs": [
+        "diagnostics/attended-repository-slot.webm"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "native/repository-slot-none.png",
+      "bytes": 226444,
+      "sha256": "590f4bcac2867822e0c05a4c60d71ff35862e33ea206bc49ad94bf949b11f938",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "native/repository-slot-one.png",
+      "bytes": 224093,
+      "sha256": "477a4ad3c0e2021eaf6f01c71038eb1353c504eabaecf40ee0d4dbdc4e63ce26",
+      "preservedAs": [
+        "diagnostics/attended-repository-slot-one.png"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "native/repository-slot-second-only.png",
+      "bytes": 219480,
+      "sha256": "ea0bc10fe4f76dac5409aa10396889928d0d33f06b20d71bcac45a99a7c48ccd",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "native/repository-slot-two.png",
+      "bytes": 226269,
+      "sha256": "3a7b5e2d394c79e52a229554aee3289002b581c61cc7616562c33a5797077ffc",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "native-attended.mjs",
+      "bytes": 3870,
+      "sha256": "b7ce474ac4f5fba461998e9a82fff82ff8c1865092c97a55c06e9b764a369e60",
+      "preservedAs": [
+        "source/native-attended.mjs.gz (decompressed)"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "native-built.mjs",
+      "bytes": 41884,
+      "sha256": "a2bd1dd0def1699028f4224db8fd0b476272961340deb2231347f43746b27b5c",
+      "reason": "derived esbuild output"
+    },
+    {
+      "file": "native-setup-failed.json",
+      "bytes": 37,
+      "sha256": "7634ba3e77133f78274bf0f8e0326bc57c596e9a3faf57ae655d711bfc5fea2b",
+      "reason": "empty failed-navigation observation; error log retained"
+    },
+    {
+      "file": "native-setup-failed.log",
+      "bytes": 810,
+      "sha256": "a9bfb6401b34549e11fff740f508da4524436ecb869007bff3ac073532dbd199",
+      "preservedAs": [
+        "diagnostics/setup-failed.log.gz (decompressed)"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "native-summary.json",
+      "bytes": 31074,
+      "sha256": "957292685e2f4de517133289279bd9fe9dd800d9c50d27519c5550c930085985",
+      "preservedAs": [
+        "checks/native-summary.json"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "native.log",
+      "bytes": 6865,
+      "sha256": "2dce38a27ac6ed54219be98bdb1d4ed372541d328e09faa3bdcfbf0db352672d",
+      "reason": "intermediate verification log; final same-source result retained"
+    },
+    {
+      "file": "native.mjs",
+      "bytes": 4083,
+      "sha256": "cf7d5f8df7e644e220e4b6148cc3247e84866088eadfd9253b0a43b3ae31fb34",
+      "preservedAs": [
+        "source/native.mjs.gz (decompressed)"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "neutral/estate-grow-all-again.png",
+      "bytes": 183687,
+      "sha256": "5888079a0b8e7e2c1918428ab60e87475ffa06330c4c4475013b7587bcd25be7",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "neutral/estate-grow-all.png",
+      "bytes": 183676,
+      "sha256": "4edfb8e487970657045c7fec89b942e0ce51f3650e0954e6439fb5a87485e126",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "neutral/estate-grow-journey.webm",
+      "bytes": 1165837,
+      "sha256": "8783e2e8d447c0ce3582bb150996f105f02d96a3667bab8a7ccfa45bab98ca01",
+      "preservedAs": [
+        "motion/native-estate-grow.webm"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "neutral/estate-grow-none.png",
+      "bytes": 141654,
+      "sha256": "4f4ed100b5066801cc602399d6f417e8c089d38a87723c97f7619dbf129972d4",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "neutral/estate-grow-one.png",
+      "bytes": 162470,
+      "sha256": "4d4bd592942c9f95d5c4d93e967cbac2257305c9ee2d938ee18fd24bd0c9f213",
+      "preservedAs": [
+        "pictures/native-estate-grow-one.png"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "neutral/estate-slot-all-again.png",
+      "bytes": 168106,
+      "sha256": "11c27cf148c89deec86435734700b34761aacb204c5f6d7d242ed4abe7a1a7d5",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "neutral/estate-slot-all.png",
+      "bytes": 168118,
+      "sha256": "04b9ffded381ca3e3ae8f5a505e62ec6c191a8c9b83002818df5a06cae90e116",
+      "preservedAs": [
+        "pictures/estate-current-all.png"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "neutral/estate-slot-journey.webm",
+      "bytes": 622110,
+      "sha256": "94e3e3f62dc777d415aaad9e0de5f20719d702f84b1164fbf5372e8abd2aceb8",
+      "preservedAs": [
+        "motion/native-estate-slot.webm"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "neutral/estate-slot-none.png",
+      "bytes": 161110,
+      "sha256": "54e394540307973deeda33a4af6355c7d751a910e912691f2e828f8547f3d714",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "neutral/estate-slot-one.png",
+      "bytes": 168045,
+      "sha256": "a13d6e8c375fc1381161ae3d40c711d6fdfb098ef4cffce5c4a174b3b2747568",
+      "preservedAs": [
+        "pictures/estate-current-one.png",
+        "pictures/native-estate-slot-one.png"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "neutral/motion/a7fcf807dde1f529438addad2bba7437.webm",
+      "bytes": 622110,
+      "sha256": "94e3e3f62dc777d415aaad9e0de5f20719d702f84b1164fbf5372e8abd2aceb8",
+      "preservedAs": [
+        "motion/native-estate-slot.webm"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "neutral/motion/a813d2ea4e610d7ac9c2ecb9d92cef42.webm",
+      "bytes": 912617,
+      "sha256": "8825b937acc7aff1e15d8ed9224414bdd92847315d3e342a92235a4ecaebe6d1",
+      "preservedAs": [
+        "motion/native-repository-slot.webm"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "neutral/motion/ddd3cc14ef85c8d8a276e1b9c3e9bdec.webm",
+      "bytes": 1571898,
+      "sha256": "60128dfda79fc4fea3856b5e5705731b0d189235512bf336daf3a6263e444c52",
+      "preservedAs": [
+        "motion/native-repository-grow.webm"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "neutral/motion/f02d8e6ff69d41f108cb076f082196af.webm",
+      "bytes": 1165837,
+      "sha256": "8783e2e8d447c0ce3582bb150996f105f02d96a3667bab8a7ccfa45bab98ca01",
+      "preservedAs": [
+        "motion/native-estate-grow.webm"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "neutral/observations.json",
+      "bytes": 236322,
+      "sha256": "27c691f8d3b440348154229dfd0601c72ad8ec38a621bcc8dc19a67f22b967ec",
+      "preservedAs": [
+        "source/native-observations.json.gz (decompressed)"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "neutral/repository-grow-all-again.png",
+      "bytes": 237515,
+      "sha256": "c8d4e1a344799c75e2faeac74642a49c7936aa36f0d8e496053e6d740eaf0559",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "neutral/repository-grow-all.png",
+      "bytes": 237516,
+      "sha256": "3c0517bca038b1380f6c4f1dbafa6b2243155df57f787efe348c53f21d668baa",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "neutral/repository-grow-journey.webm",
+      "bytes": 1571898,
+      "sha256": "60128dfda79fc4fea3856b5e5705731b0d189235512bf336daf3a6263e444c52",
+      "preservedAs": [
+        "motion/native-repository-grow.webm"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "neutral/repository-grow-none.png",
+      "bytes": 215112,
+      "sha256": "508605a279c6b3e3aa5b6ac19c761253e93d617bc1673ca41339fd19e451a1b7",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "neutral/repository-grow-one.png",
+      "bytes": 212188,
+      "sha256": "c7dc41f9aac5a906a1a1ef9edad06e70439c09e8c32aa442eec0d10346ff43ba",
+      "preservedAs": [
+        "pictures/native-repository-grow-one.png"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "neutral/repository-grow-second-only.png",
+      "bytes": 230703,
+      "sha256": "f7dcdd52735da27285cdc36fcd6480b9e720834c4b64f0386dc82962b68e73f2",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "neutral/repository-grow-two.png",
+      "bytes": 233208,
+      "sha256": "02be6766753ccde0e3ed39b3297480e018edc069cf0e380e9a432e39342cd27b",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "neutral/repository-slot-all-again.png",
+      "bytes": 271498,
+      "sha256": "f016ecb3bf9f2a34842f1115f63c9ee2c77ea2752b79fcb0db0c68aad0189951",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "neutral/repository-slot-all.png",
+      "bytes": 271189,
+      "sha256": "c61803a58e7bd851ca09e2239e0c96b6628b4f17246ef2d619111c9982832d3e",
+      "preservedAs": [
+        "pictures/repository-current-all.png"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "neutral/repository-slot-journey.webm",
+      "bytes": 912617,
+      "sha256": "8825b937acc7aff1e15d8ed9224414bdd92847315d3e342a92235a4ecaebe6d1",
+      "preservedAs": [
+        "motion/native-repository-slot.webm"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "neutral/repository-slot-none.png",
+      "bytes": 226952,
+      "sha256": "facae450af10026ed5eee74c342ac39f40cc339a6dbd637bfd6471563721386d",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "neutral/repository-slot-one.png",
+      "bytes": 238167,
+      "sha256": "427d38125496420bb036b0441b57b83ba61d982a7d356a9103fe3f688305e174",
+      "preservedAs": [
+        "pictures/repository-current-one.png",
+        "pictures/native-repository-slot-one.png"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "neutral/repository-slot-second-only.png",
+      "bytes": 234562,
+      "sha256": "1ee32c34740b00925545d53f10bf9e41febba03cc3cc49792bd7aff834208aba",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "neutral/repository-slot-two.png",
+      "bytes": 245407,
+      "sha256": "dab860c522faec485308f7f39e1374050e564053d51e3dd7bc7b7092534e8828",
+      "reason": "unselected intermediate picture; full recordings and observations retained"
+    },
+    {
+      "file": "neutral.log",
+      "bytes": 6537,
+      "sha256": "e06e0be1383ffce79e28926653f6e8e270b0e7c21a2da91464bbbafcac9a8c8e",
+      "reason": "intermediate verification log; final same-source result retained"
+    },
+    {
+      "file": "source-verification/packages/explorer/src/client/styles/reading.css",
+      "bytes": 36868,
+      "sha256": "c04a0c3ecdcda64a13bedb7c6b2c4f2f35e393a9e74a547bbe35c03caefa51eb",
+      "preservedAs": [
+        "source/trial-source.tar.gz :: packages/explorer/src/client/styles/reading.css"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "source-verification/packages/explorer/src/client/views/localView/branch-renderer.ts",
+      "bytes": 69274,
+      "sha256": "07c04c239c09ff9f7271d17d0a936b3ee8f523d181d33fb74c5b6e7779ba78a4",
+      "preservedAs": [
+        "source/trial-source.tar.gz :: packages/explorer/src/client/views/localView/branch-renderer.ts"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "source-verification/packages/explorer/src/client/views/localView/card-reading.ts",
+      "bytes": 38213,
+      "sha256": "38296cfdb686c51bf8a8e7508681bcf652ad8f9745eb3bd600cb9369a5951134",
+      "preservedAs": [
+        "source/trial-source.tar.gz :: packages/explorer/src/client/views/localView/card-reading.ts"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "source-verification/packages/explorer/src/client/views/localView/held-lines.test.ts",
+      "bytes": 13035,
+      "sha256": "b461118691bc9730bc84d1bb556e5d38bc71ead3d561cb42dc6d1276ae4a60da",
+      "preservedAs": [
+        "source/trial-source.tar.gz :: packages/explorer/src/client/views/localView/held-lines.test.ts"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "source-verification/packages/explorer/src/client/views/localView/held-lines.ts",
+      "bytes": 11049,
+      "sha256": "96e22affd266e5d2e7dcfe4480e40476405157588a5b3e4c40888c27d447dd5c",
+      "preservedAs": [
+        "source/trial-source.tar.gz :: packages/explorer/src/client/views/localView/held-lines.ts"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "source-verification/scripts/layout-lab/capture.ts",
+      "bytes": 38625,
+      "sha256": "00af4c2a0fb4322b14aeb75c3b87efb51a05f0a0cc5fbc2e3ff7f932d0646eb1",
+      "preservedAs": [
+        "source/trial-source.tar.gz :: scripts/layout-lab/capture.ts"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "source-verification/scripts/layout-lab/card-model.test.ts",
+      "bytes": 16979,
+      "sha256": "a85fd35f3716543a171a1d9753a81d75214903750f22fd8dc10bd2cdcc21fa66",
+      "preservedAs": [
+        "source/trial-source.tar.gz :: scripts/layout-lab/card-model.test.ts"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "source-verification/scripts/layout-lab/card-model.ts",
+      "bytes": 13691,
+      "sha256": "6a8a80a8b566e9494ad9175ffec8b8e7c31f30d2fc8c37e132e5023ccfdea320",
+      "preservedAs": [
+        "source/trial-source.tar.gz :: scripts/layout-lab/card-model.ts"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "trial-build.log",
+      "bytes": 394,
+      "sha256": "0d12da67bdefc0153c502af081e9ff8aa355d61facbe11d0e2f2b3e35718dc9e",
+      "preservedAs": [
+        "checks/trial-build.log.gz (decompressed)"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "trial-dependencies-after.json",
+      "bytes": 1137,
+      "sha256": "562651ea565dea441dc59cb0a942eeffc6eaeee7617bf23065ef538f37290373",
+      "preservedAs": [
+        "checks/dependency-inspection.txt.gz (decompressed)"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "trial-estate-preview-final.log",
+      "bytes": 398,
+      "sha256": "8096cc121d5c2c5068c08c12a33e2d62ce757f747d03ce368814308125f16721",
+      "preservedAs": [
+        "checks/trial-estate-preview-final.log.gz (decompressed)"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "trial-estate-preview.log",
+      "bytes": 398,
+      "sha256": "8096cc121d5c2c5068c08c12a33e2d62ce757f747d03ce368814308125f16721",
+      "preservedAs": [
+        "checks/trial-estate-preview-final.log.gz (decompressed)"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "trial-explorer-build-final.log",
+      "bytes": 112,
+      "sha256": "51bde6179523b732827eb414aee7e5df44156b59f4e7aee938896e25927d66c8",
+      "preservedAs": [
+        "checks/trial-explorer-build-final.log.gz (decompressed)"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "trial-explorer-build.log",
+      "bytes": 112,
+      "sha256": "51bde6179523b732827eb414aee7e5df44156b59f4e7aee938896e25927d66c8",
+      "preservedAs": [
+        "checks/trial-explorer-build-final.log.gz (decompressed)"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "trial-lint-final.log",
+      "bytes": 150,
+      "sha256": "6839ad0642096b6f1a8168fd8940098422a34c6d80129b85dfe7eb3ae24b0942",
+      "preservedAs": [
+        "checks/trial-lint-final.log.gz (decompressed)"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "trial-lint.log",
+      "bytes": 150,
+      "sha256": "6839ad0642096b6f1a8168fd8940098422a34c6d80129b85dfe7eb3ae24b0942",
+      "preservedAs": [
+        "checks/trial-lint-final.log.gz (decompressed)"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "trial-main-preview-final.log",
+      "bytes": 1134,
+      "sha256": "e284ab5a48f49836025b9c98abce5ddefe91141a3684d17aeddba852fe9d24e3",
+      "preservedAs": [
+        "checks/trial-main-preview-final.log.gz (decompressed)"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "trial-main-preview.log",
+      "bytes": 1134,
+      "sha256": "6aeddf8146a36ae3d1bdffd1622b3c29e2cea1f506f50d767a395bebedbd7b60",
+      "reason": "intermediate verification log; final same-source result retained"
+    },
+    {
+      "file": "trial-manifest.json",
+      "bytes": 7437,
+      "sha256": "7e2b2efede681f6267494f33ad6e35d88917d07cedbcf99ee16a6419d9b9b441",
+      "preservedAs": [
+        "source/trial-manifest.json"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "trial-pure-tests-final.log",
+      "bytes": 2129,
+      "sha256": "dd83afaddb7a536a55719792c157cccb5867a4316d415e887582d63596862528",
+      "preservedAs": [
+        "checks/trial-pure-tests-final.log.gz (decompressed)"
+      ],
+      "reason": "exact preserved bytes"
+    },
+    {
+      "file": "trial-pure-tests.log",
+      "bytes": 2129,
+      "sha256": "f0170a36faefd6cbe16d61526e5bd82cb511cd25ca67bddae548dcfc79e426c6",
+      "reason": "intermediate verification log; final same-source result retained"
+    },
+    {
+      "file": "trial-server.log",
+      "bytes": 5944,
+      "sha256": "a21091ec273e9cc3ff7a4009bfc96e4f2088cbf88875584b2b1dc444c311b188",
+      "reason": "intermediate verification log; final same-source result retained"
+    },
+    {
+      "file": "trial.patch",
+      "bytes": 20592,
+      "sha256": "9a286230a9e298d4791a80c270341dc4d4a6e86143fdd7ad9f8a2979848f21a6",
+      "preservedAs": [
+        "source/trial.patch"
+      ],
+      "reason": "exact preserved bytes"
+    }
+  ]
+}

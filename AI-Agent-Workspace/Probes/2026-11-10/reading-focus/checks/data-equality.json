@@ -1,0 +1,32 @@
+{
+  "checks": [
+    {
+      "dataset": "repository",
+      "baselineDataSha256": "9e6bea7119d5101bdc53f0e341dedb506ad0d06c0c746ee209b3950d07c08b58",
+      "trialDataSha256": "5d40e4137b9cce94c3328c550713965c6db2057a09866e64217c90bdd805f42f",
+      "equalApartFrom": [
+        "generatedAt",
+        "top-level history",
+        "CRLF versus LF"
+      ],
+      "equal": true,
+      "allOpenScreenshotBytesEqual": true,
+      "baselineAllOpenScreenshotSha256": "c61803a58e7bd851ca09e2239e0c96b6628b4f17246ef2d619111c9982832d3e",
+      "trialAllOpenScreenshotSha256": "c61803a58e7bd851ca09e2239e0c96b6628b4f17246ef2d619111c9982832d3e"
+    },
+    {
+      "dataset": "estate",
+      "baselineDataSha256": "1d5a5e5e1825284993e11b5c4d663030f2557ae083f3269867dd5f1d1a08aeab",
+      "trialDataSha256": "d33651e4b7f5948ac207fb8c456c6c626406e4ed1c40d11e9d29f0e769d4a905",
+      "equalApartFrom": [
+        "generatedAt",
+        "top-level history",
+        "CRLF versus LF"
+      ],
+      "equal": true,
+      "allOpenScreenshotBytesEqual": false,
+      "baselineAllOpenScreenshotSha256": "04b9ffded381ca3e3ae8f5a505e62ec6c191a8c9b83002818df5a06cae90e116",
+      "trialAllOpenScreenshotSha256": "09550b6d0c1ac0914d3c646676ff45b9a440a17daac2d002501fc173b0a8b94f"
+    }
+  ]
+}

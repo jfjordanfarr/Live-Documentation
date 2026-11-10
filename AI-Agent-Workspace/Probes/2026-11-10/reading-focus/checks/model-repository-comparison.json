@@ -1,0 +1,676 @@
+{
+  "bundle": "repository",
+  "subject": "packages/explorer/src/client/views/symbolAnchors.ts",
+  "symbol": "normalizeSymbolIdentifier",
+  "url": "http://127.0.0.1:8918/?s=N4IgbiBcDMA0IDsogA4EMDGBrNBzApgM4D0+AHigDYD2ATvrcYbRsRpQJb4IAuxYXAO4lCATwC2AI2qUAgggwALOoQB0PQiHgooAbVBJIqTDgIlyVOgyYs2nbnwH5hTCdLkLltNRq0hNRgBUIAC+ALrwAK56BtQAJvgAknHI6Nh4RKQUNPSMzKzsXLz8QiJuMvJKKuqa8NQo3FAAZmiUhPghsLEJyakmGebZVnm2hQ4lzmVSFZ7VvvBi05TICHTirRwAXvgAyuWUyQ4cTVy0fvWNkDy0kR1hIUA",
+  "elapsedMs": 2601.471539,
+  "captureWarnings": [],
+  "pageErrors": [],
+  "capturePreservedDOMGeometry": true,
+  "capturePreservedSearch": true,
+  "comparisons": [
+    {
+      "id": "tests/e2e/still-picture.ts",
+      "browser": {
+        "width": 434,
+        "height": 202,
+        "pins": {
+          "outbound:*": 101,
+          "inbound:__internals__": 125
+        }
+      },
+      "modeled": {
+        "width": 434,
+        "height": 202,
+        "roundedHeight": 202,
+        "pins": {
+          "outbound:*": 101,
+          "inbound:__internals__": 124.5,
+          "normalized:inbound:__internals__": 124.5,
+          "inbound:*": 124.5
+        }
+      },
+      "equalHeight": true,
+      "equalRowScopeAndOrder": true,
+      "visibleDOM": [
+        "__internals__"
+      ],
+      "visibleModel": [
+        "__internals__"
+      ],
+      "foldedRows": [],
+      "ports": [
+        {
+          "key": "outbound:*",
+          "actual": 101,
+          "predicted": 101,
+          "unrounded": 101,
+          "equal": true
+        },
+        {
+          "key": "inbound:__internals__",
+          "actual": 125,
+          "predicted": 125,
+          "unrounded": 124.5,
+          "equal": true
+        }
+      ]
+    },
+    {
+      "id": "tests/e2e/local-map-corset.spec.ts",
+      "browser": {
+        "width": 470,
+        "height": 193,
+        "pins": {
+          "outbound:*": 97,
+          "inbound:__internals__": 136
+        }
+      },
+      "modeled": {
+        "width": 470,
+        "height": 193,
+        "roundedHeight": 193,
+        "pins": {
+          "outbound:*": 96.5,
+          "inbound:__internals__": 135.5,
+          "normalized:inbound:__internals__": 135.5,
+          "inbound:*": 135.5
+        }
+      },
+      "equalHeight": true,
+      "equalRowScopeAndOrder": true,
+      "visibleDOM": [
+        "__internals__"
+      ],
+      "visibleModel": [
+        "__internals__"
+      ],
+      "foldedRows": [],
+      "ports": [
+        {
+          "key": "outbound:*",
+          "actual": 97,
+          "predicted": 97,
+          "unrounded": 96.5,
+          "equal": true
+        },
+        {
+          "key": "inbound:__internals__",
+          "actual": 136,
+          "predicted": 136,
+          "unrounded": 135.5,
+          "equal": true
+        }
+      ]
+    },
+    {
+      "id": "packages/explorer/src/client/views/localView/branches.ts",
+      "browser": {
+        "width": 444,
+        "height": 227,
+        "pins": {
+          "outbound:*": 114,
+          "inbound:__internals__": 125
+        }
+      },
+      "modeled": {
+        "width": 444,
+        "height": 227,
+        "roundedHeight": 227,
+        "pins": {
+          "outbound:*": 113.5,
+          "inbound:__internals__": 124.5,
+          "normalized:inbound:__internals__": 124.5,
+          "inbound:*": 124.5
+        }
+      },
+      "equalHeight": true,
+      "equalRowScopeAndOrder": true,
+      "visibleDOM": [
+        "__internals__"
+      ],
+      "visibleModel": [
+        "__internals__"
+      ],
+      "foldedRows": [],
+      "ports": [
+        {
+          "key": "outbound:*",
+          "actual": 114,
+          "predicted": 114,
+          "unrounded": 113.5,
+          "equal": true
+        },
+        {
+          "key": "inbound:__internals__",
+          "actual": 125,
+          "predicted": 125,
+          "unrounded": 124.5,
+          "equal": true
+        }
+      ]
+    },
+    {
+      "id": "packages/explorer/src/client/views/localView/branch-renderer.ts",
+      "browser": {
+        "width": 309,
+        "height": 222,
+        "pins": {
+          "outbound:*": 111,
+          "inbound:__internals__": 125
+        }
+      },
+      "modeled": {
+        "width": 309,
+        "height": 222,
+        "roundedHeight": 222,
+        "pins": {
+          "outbound:*": 111,
+          "inbound:__internals__": 124.5,
+          "normalized:inbound:__internals__": 124.5,
+          "inbound:*": 124.5
+        }
+      },
+      "equalHeight": true,
+      "equalRowScopeAndOrder": true,
+      "visibleDOM": [
+        "__internals__"
+      ],
+      "visibleModel": [
+        "__internals__"
+      ],
+      "foldedRows": [],
+      "ports": [
+        {
+          "key": "outbound:*",
+          "actual": 111,
+          "predicted": 111,
+          "unrounded": 111,
+          "equal": true
+        },
+        {
+          "key": "inbound:__internals__",
+          "actual": 125,
+          "predicted": 125,
+          "unrounded": 124.5,
+          "equal": true
+        }
+      ]
+    },
+    {
+      "id": "packages/explorer/src/client/views/localView/connections.ts",
+      "browser": {
+        "width": 309,
+        "height": 202,
+        "pins": {
+          "outbound:*": 101,
+          "inbound:__internals__": 125
+        }
+      },
+      "modeled": {
+        "width": 309,
+        "height": 202,
+        "roundedHeight": 202,
+        "pins": {
+          "outbound:*": 101,
+          "inbound:__internals__": 124.5,
+          "normalized:inbound:__internals__": 124.5,
+          "inbound:*": 124.5
+        }
+      },
+      "equalHeight": true,
+      "equalRowScopeAndOrder": true,
+      "visibleDOM": [
+        "__internals__"
+      ],
+      "visibleModel": [
+        "__internals__"
+      ],
+      "foldedRows": [],
+      "ports": [
+        {
+          "key": "outbound:*",
+          "actual": 101,
+          "predicted": 101,
+          "unrounded": 101,
+          "equal": true
+        },
+        {
+          "key": "inbound:__internals__",
+          "actual": 125,
+          "predicted": 125,
+          "unrounded": 124.5,
+          "equal": true
+        }
+      ]
+    },
+    {
+      "id": "packages/explorer/src/client/views/localView/symbol-highlight.ts",
+      "browser": {
+        "width": 309,
+        "height": 227,
+        "pins": {
+          "outbound:*": 114,
+          "inbound:__internals__": 125
+        }
+      },
+      "modeled": {
+        "width": 309,
+        "height": 227,
+        "roundedHeight": 227,
+        "pins": {
+          "outbound:*": 113.5,
+          "inbound:__internals__": 124.5,
+          "normalized:inbound:__internals__": 124.5,
+          "inbound:*": 124.5
+        }
+      },
+      "equalHeight": true,
+      "equalRowScopeAndOrder": true,
+      "visibleDOM": [
+        "__internals__"
+      ],
+      "visibleModel": [
+        "__internals__"
+      ],
+      "foldedRows": [],
+      "ports": [
+        {
+          "key": "outbound:*",
+          "actual": 114,
+          "predicted": 114,
+          "unrounded": 113.5,
+          "equal": true
+        },
+        {
+          "key": "inbound:__internals__",
+          "actual": 125,
+          "predicted": 125,
+          "unrounded": 124.5,
+          "equal": true
+        }
+      ]
+    },
+    {
+      "id": "packages/explorer/src/client/views/localView/controller.ts",
+      "browser": {
+        "width": 277,
+        "height": 222,
+        "pins": {
+          "outbound:*": 111,
+          "inbound:__internals__": 125
+        }
+      },
+      "modeled": {
+        "width": 277,
+        "height": 222,
+        "roundedHeight": 222,
+        "pins": {
+          "outbound:*": 111,
+          "inbound:__internals__": 124.5,
+          "normalized:inbound:__internals__": 124.5,
+          "inbound:*": 124.5
+        }
+      },
+      "equalHeight": true,
+      "equalRowScopeAndOrder": true,
+      "visibleDOM": [
+        "__internals__"
+      ],
+      "visibleModel": [
+        "__internals__"
+      ],
+      "foldedRows": [],
+      "ports": [
+        {
+          "key": "outbound:*",
+          "actual": 111,
+          "predicted": 111,
+          "unrounded": 111,
+          "equal": true
+        },
+        {
+          "key": "inbound:__internals__",
+          "actual": 125,
+          "predicted": 125,
+          "unrounded": 124.5,
+          "equal": true
+        }
+      ]
+    },
+    {
+      "id": "packages/explorer/src/client/views/symbolAnchors.ts",
+      "browser": {
+        "width": 398,
+        "height": 330,
+        "pins": {
+          "outbound:*": 165,
+          "inbound:normalizeSymbolIdentifier": 123,
+          "outbound:normalizeSymbolIdentifier": 123,
+          "inbound:buildNormalizedAnchorKey": 195,
+          "outbound:buildNormalizedAnchorKey": 195,
+          "inbound:tryBuildNormalizedKeyFromAnchorKey": 218,
+          "outbound:tryBuildNormalizedKeyFromAnchorKey": 218,
+          "inbound:AnchorDirection": 241,
+          "outbound:AnchorDirection": 241,
+          "inbound:__internals__": 267
+        }
+      },
+      "modeled": {
+        "width": 398,
+        "height": 330,
+        "roundedHeight": 330,
+        "pins": {
+          "outbound:*": 165,
+          "inbound:AnchorDirection": 240.5,
+          "normalized:inbound:AnchorDirection": 240.5,
+          "outbound:AnchorDirection": 240.5,
+          "normalized:outbound:AnchorDirection": 240.5,
+          "inbound:normalizeSymbolIdentifier": 122.5,
+          "normalized:inbound:normalizeSymbolIdentifier": 122.5,
+          "outbound:normalizeSymbolIdentifier": 122.5,
+          "normalized:outbound:normalizeSymbolIdentifier": 122.5,
+          "inbound:buildNormalizedAnchorKey": 194.5,
+          "normalized:inbound:buildNormalizedAnchorKey": 194.5,
+          "outbound:buildNormalizedAnchorKey": 194.5,
+          "normalized:outbound:buildNormalizedAnchorKey": 194.5,
+          "inbound:tryBuildNormalizedKeyFromAnchorKey": 217.5,
+          "normalized:inbound:tryBuildNormalizedKeyFromAnchorKey": 217.5,
+          "outbound:tryBuildNormalizedKeyFromAnchorKey": 217.5,
+          "normalized:outbound:tryBuildNormalizedKeyFromAnchorKey": 217.5,
+          "inbound:__internals__": 266.5,
+          "normalized:inbound:__internals__": 266.5,
+          "inbound:*": 266.5
+        }
+      },
+      "equalHeight": true,
+      "equalRowScopeAndOrder": true,
+      "visibleDOM": [
+        "normalizeSymbolIdentifier",
+        "buildNormalizedAnchorKey",
+        "tryBuildNormalizedKeyFromAnchorKey",
+        "AnchorDirection",
+        "__internals__"
+      ],
+      "visibleModel": [
+        "normalizeSymbolIdentifier",
+        "buildNormalizedAnchorKey",
+        "tryBuildNormalizedKeyFromAnchorKey",
+        "AnchorDirection",
+        "__internals__"
+      ],
+      "foldedRows": [
+        "buildNormalizedAnchorKey",
+        "tryBuildNormalizedKeyFromAnchorKey",
+        "AnchorDirection"
+      ],
+      "ports": [
+        {
+          "key": "outbound:*",
+          "actual": 165,
+          "predicted": 165,
+          "unrounded": 165,
+          "equal": true
+        },
+        {
+          "key": "inbound:normalizeSymbolIdentifier",
+          "actual": 123,
+          "predicted": 123,
+          "unrounded": 122.5,
+          "equal": true
+        },
+        {
+          "key": "outbound:normalizeSymbolIdentifier",
+          "actual": 123,
+          "predicted": 123,
+          "unrounded": 122.5,
+          "equal": true
+        },
+        {
+          "key": "inbound:buildNormalizedAnchorKey",
+          "actual": 195,
+          "predicted": 195,
+          "unrounded": 194.5,
+          "equal": true
+        },
+        {
+          "key": "outbound:buildNormalizedAnchorKey",
+          "actual": 195,
+          "predicted": 195,
+          "unrounded": 194.5,
+          "equal": true
+        },
+        {
+          "key": "inbound:tryBuildNormalizedKeyFromAnchorKey",
+          "actual": 218,
+          "predicted": 218,
+          "unrounded": 217.5,
+          "equal": true
+        },
+        {
+          "key": "outbound:tryBuildNormalizedKeyFromAnchorKey",
+          "actual": 218,
+          "predicted": 218,
+          "unrounded": 217.5,
+          "equal": true
+        },
+        {
+          "key": "inbound:AnchorDirection",
+          "actual": 241,
+          "predicted": 241,
+          "unrounded": 240.5,
+          "equal": true
+        },
+        {
+          "key": "outbound:AnchorDirection",
+          "actual": 241,
+          "predicted": 241,
+          "unrounded": 240.5,
+          "equal": true
+        },
+        {
+          "key": "inbound:__internals__",
+          "actual": 267,
+          "predicted": 267,
+          "unrounded": 266.5,
+          "equal": true
+        }
+      ]
+    },
+    {
+      "id": "packages/explorer/src/client/views/pin-state.ts",
+      "browser": {
+        "width": 434,
+        "height": 227,
+        "pins": {
+          "outbound:*": 114,
+          "inbound:__internals__": 125
+        }
+      },
+      "modeled": {
+        "width": 434,
+        "height": 227,
+        "roundedHeight": 227,
+        "pins": {
+          "outbound:*": 113.5,
+          "inbound:__internals__": 124.5,
+          "normalized:inbound:__internals__": 124.5,
+          "inbound:*": 124.5
+        }
+      },
+      "equalHeight": true,
+      "equalRowScopeAndOrder": true,
+      "visibleDOM": [
+        "__internals__"
+      ],
+      "visibleModel": [
+        "__internals__"
+      ],
+      "foldedRows": [],
+      "ports": [
+        {
+          "key": "outbound:*",
+          "actual": 114,
+          "predicted": 114,
+          "unrounded": 113.5,
+          "equal": true
+        },
+        {
+          "key": "inbound:__internals__",
+          "actual": 125,
+          "predicted": 125,
+          "unrounded": 124.5,
+          "equal": true
+        }
+      ]
+    },
+    {
+      "id": "packages/explorer/src/client/views/symbolAnchors.test.ts",
+      "browser": {
+        "width": 434,
+        "height": 173,
+        "pins": {
+          "outbound:*": 87,
+          "inbound:__internals__": 136
+        }
+      },
+      "modeled": {
+        "width": 434,
+        "height": 173,
+        "roundedHeight": 173,
+        "pins": {
+          "outbound:*": 86.5,
+          "inbound:__internals__": 135.5,
+          "normalized:inbound:__internals__": 135.5,
+          "inbound:*": 135.5
+        }
+      },
+      "equalHeight": true,
+      "equalRowScopeAndOrder": true,
+      "visibleDOM": [
+        "__internals__"
+      ],
+      "visibleModel": [
+        "__internals__"
+      ],
+      "foldedRows": [],
+      "ports": [
+        {
+          "key": "outbound:*",
+          "actual": 87,
+          "predicted": 87,
+          "unrounded": 86.5,
+          "equal": true
+        },
+        {
+          "key": "inbound:__internals__",
+          "actual": 136,
+          "predicted": 136,
+          "unrounded": 135.5,
+          "equal": true
+        }
+      ]
+    },
+    {
+      "id": "scripts/layout-lab/card-model.ts",
+      "browser": {
+        "width": 470,
+        "height": 227,
+        "pins": {
+          "outbound:*": 114,
+          "inbound:__internals__": 125
+        }
+      },
+      "modeled": {
+        "width": 470,
+        "height": 227,
+        "roundedHeight": 227,
+        "pins": {
+          "outbound:*": 113.5,
+          "inbound:__internals__": 124.5,
+          "normalized:inbound:__internals__": 124.5,
+          "inbound:*": 124.5
+        }
+      },
+      "equalHeight": true,
+      "equalRowScopeAndOrder": true,
+      "visibleDOM": [
+        "__internals__"
+      ],
+      "visibleModel": [
+        "__internals__"
+      ],
+      "foldedRows": [],
+      "ports": [
+        {
+          "key": "outbound:*",
+          "actual": 114,
+          "predicted": 114,
+          "unrounded": 113.5,
+          "equal": true
+        },
+        {
+          "key": "inbound:__internals__",
+          "actual": 125,
+          "predicted": 125,
+          "unrounded": 124.5,
+          "equal": true
+        }
+      ]
+    },
+    {
+      "id": "scripts/layout-lab/measurer.ts",
+      "browser": {
+        "width": 335,
+        "height": 227,
+        "pins": {
+          "outbound:*": 114,
+          "inbound:__internals__": 125
+        }
+      },
+      "modeled": {
+        "width": 335,
+        "height": 227,
+        "roundedHeight": 227,
+        "pins": {
+          "outbound:*": 113.5,
+          "inbound:__internals__": 124.5,
+          "normalized:inbound:__internals__": 124.5,
+          "inbound:*": 124.5
+        }
+      },
+      "equalHeight": true,
+      "equalRowScopeAndOrder": true,
+      "visibleDOM": [
+        "__internals__"
+      ],
+      "visibleModel": [
+        "__internals__"
+      ],
+      "foldedRows": [],
+      "ports": [
+        {
+          "key": "outbound:*",
+          "actual": 114,
+          "predicted": 114,
+          "unrounded": 113.5,
+          "equal": true
+        },
+        {
+          "key": "inbound:__internals__",
+          "actual": 125,
+          "predicted": 125,
+          "unrounded": 124.5,
+          "equal": true
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "cards": 12,
+    "heightMismatches": 0,
+    "rowScopeMismatches": 0,
+    "ports": 32,
+    "portMismatches": 0
+  }
+}

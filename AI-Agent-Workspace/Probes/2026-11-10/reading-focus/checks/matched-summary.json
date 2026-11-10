@@ -1,0 +1,570 @@
+{
+  "errors": [],
+  "comparisons": [
+    {
+      "subject": "repository",
+      "variants": [
+        {
+          "variant": "current",
+          "states": [
+            {
+              "name": "all",
+              "card": {
+                "x": 561.9500122070312,
+                "y": 124.175048828125,
+                "width": 577.1000366210938,
+                "height": 691.6500244140625
+              },
+              "mapSize": {
+                "width": 398,
+                "height": 477
+              },
+              "open": [
+                "normalizeSymbolIdentifier",
+                "buildNormalizedAnchorKey",
+                "tryBuildNormalizedKeyFromAnchorKey",
+                "AnchorDirection"
+              ]
+            },
+            {
+              "name": "none",
+              "card": {
+                "x": 561.9500122070312,
+                "y": 124.175048828125,
+                "width": 577.1000366210938,
+                "height": 691.6500244140625
+              },
+              "mapSize": {
+                "width": 398,
+                "height": 477
+              },
+              "open": []
+            },
+            {
+              "name": "one",
+              "card": {
+                "x": 561.9500122070312,
+                "y": 124.175048828125,
+                "width": 577.1000366210938,
+                "height": 691.6500244140625
+              },
+              "mapSize": {
+                "width": 398,
+                "height": 477
+              },
+              "open": [
+                "normalizeSymbolIdentifier"
+              ]
+            },
+            {
+              "name": "two",
+              "card": {
+                "x": 561.9500122070312,
+                "y": 124.175048828125,
+                "width": 577.1000366210938,
+                "height": 691.6500244140625
+              },
+              "mapSize": {
+                "width": 398,
+                "height": 477
+              },
+              "open": [
+                "normalizeSymbolIdentifier",
+                "buildNormalizedAnchorKey"
+              ]
+            },
+            {
+              "name": "second-only",
+              "card": {
+                "x": 561.9500122070312,
+                "y": 124.175048828125,
+                "width": 577.1000366210938,
+                "height": 691.6500244140625
+              },
+              "mapSize": {
+                "width": 398,
+                "height": 477
+              },
+              "open": [
+                "buildNormalizedAnchorKey"
+              ]
+            },
+            {
+              "name": "all-again",
+              "card": {
+                "x": 561.9500122070312,
+                "y": 124.175048828125,
+                "width": 577.1000366210938,
+                "height": 691.6500244140625
+              },
+              "mapSize": {
+                "width": 398,
+                "height": 477
+              },
+              "open": [
+                "normalizeSymbolIdentifier",
+                "buildNormalizedAnchorKey",
+                "tryBuildNormalizedKeyFromAnchorKey",
+                "AnchorDirection"
+              ]
+            }
+          ],
+          "motion": [
+            {
+              "step": "none",
+              "titleDx": 0,
+              "titleDy": 0,
+              "rowOrderChanged": false
+            },
+            {
+              "step": "one",
+              "titleDx": 0,
+              "titleDy": 0,
+              "rowOrderChanged": false
+            },
+            {
+              "step": "two",
+              "titleDx": 0,
+              "titleDy": 0,
+              "rowOrderChanged": false
+            },
+            {
+              "step": "second-only",
+              "titleDx": 0,
+              "titleDy": 0,
+              "rowOrderChanged": false
+            },
+            {
+              "step": "all-again",
+              "titleDx": 0,
+              "titleDy": 0,
+              "rowOrderChanged": false
+            }
+          ],
+          "middleButtonLayoutBoxes": [
+            {
+              "symbol": "normalizeSymbolIdentifier",
+              "height": 8.39117431640625,
+              "width": 181.11016845703125
+            },
+            {
+              "symbol": "buildNormalizedAnchorKey",
+              "height": 8.39117431640625,
+              "width": 165.72625732421875
+            },
+            {
+              "symbol": "tryBuildNormalizedKeyFromAnchorKey",
+              "height": 8.39117431640625,
+              "width": 181.11016845703125
+            },
+            {
+              "symbol": "AnchorDirection",
+              "height": 8.39117431640625,
+              "width": 181.11016845703125
+            },
+            {
+              "symbol": "__internals__",
+              "height": 8.3912353515625,
+              "width": 194.396240234375
+            }
+          ]
+        },
+        {
+          "variant": "folded",
+          "states": [
+            {
+              "name": "all",
+              "card": {
+                "x": 561.9500122070312,
+                "y": 124.175048828125,
+                "width": 577.1000366210938,
+                "height": 691.6500244140625
+              },
+              "mapSize": {
+                "width": 398,
+                "height": 477
+              },
+              "open": [
+                "normalizeSymbolIdentifier",
+                "buildNormalizedAnchorKey",
+                "tryBuildNormalizedKeyFromAnchorKey",
+                "AnchorDirection"
+              ]
+            },
+            {
+              "name": "none",
+              "card": {
+                "x": 561.9500122070312,
+                "y": 124.175048828125,
+                "width": 577.1000366210938,
+                "height": 407.4500732421875
+              },
+              "mapSize": {
+                "width": 398,
+                "height": 281
+              },
+              "open": []
+            },
+            {
+              "name": "one",
+              "card": {
+                "x": 561.9500122070312,
+                "y": 124.175048828125,
+                "width": 577.1000366210938,
+                "height": 478.5
+              },
+              "mapSize": {
+                "width": 398,
+                "height": 330
+              },
+              "open": [
+                "normalizeSymbolIdentifier"
+              ]
+            },
+            {
+              "name": "two",
+              "card": {
+                "x": 561.9500122070312,
+                "y": 124.175048828125,
+                "width": 577.1000366210938,
+                "height": 549.550048828125
+              },
+              "mapSize": {
+                "width": 398,
+                "height": 379
+              },
+              "open": [
+                "normalizeSymbolIdentifier",
+                "buildNormalizedAnchorKey"
+              ]
+            },
+            {
+              "name": "second-only",
+              "card": {
+                "x": 561.9500122070312,
+                "y": 124.175048828125,
+                "width": 577.1000366210938,
+                "height": 478.5
+              },
+              "mapSize": {
+                "width": 398,
+                "height": 330
+              },
+              "open": [
+                "buildNormalizedAnchorKey"
+              ]
+            },
+            {
+              "name": "all-again",
+              "card": {
+                "x": 561.9500122070312,
+                "y": 124.175048828125,
+                "width": 577.1000366210938,
+                "height": 691.6500244140625
+              },
+              "mapSize": {
+                "width": 398,
+                "height": 477
+              },
+              "open": [
+                "normalizeSymbolIdentifier",
+                "buildNormalizedAnchorKey",
+                "tryBuildNormalizedKeyFromAnchorKey",
+                "AnchorDirection"
+              ]
+            }
+          ],
+          "motion": [
+            {
+              "step": "none",
+              "titleDx": 0,
+              "titleDy": 0,
+              "rowOrderChanged": false
+            },
+            {
+              "step": "one",
+              "titleDx": 0,
+              "titleDy": 0,
+              "rowOrderChanged": false
+            },
+            {
+              "step": "two",
+              "titleDx": 0,
+              "titleDy": 0,
+              "rowOrderChanged": false
+            },
+            {
+              "step": "second-only",
+              "titleDx": 0,
+              "titleDy": 0,
+              "rowOrderChanged": false
+            },
+            {
+              "step": "all-again",
+              "titleDx": 0,
+              "titleDy": 0,
+              "rowOrderChanged": false
+            }
+          ],
+          "middleButtonLayoutBoxes": [
+            {
+              "symbol": "normalizeSymbolIdentifier",
+              "height": 8.39117431640625,
+              "width": 181.11016845703125
+            },
+            {
+              "symbol": "buildNormalizedAnchorKey",
+              "height": 8.39117431640625,
+              "width": 165.72625732421875
+            },
+            {
+              "symbol": "tryBuildNormalizedKeyFromAnchorKey",
+              "height": 8.39117431640625,
+              "width": 181.11016845703125
+            },
+            {
+              "symbol": "AnchorDirection",
+              "height": 8.3912353515625,
+              "width": 181.11016845703125
+            },
+            {
+              "symbol": "__internals__",
+              "height": 8.3912353515625,
+              "width": 194.396240234375
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "subject": "estate",
+      "variants": [
+        {
+          "variant": "current",
+          "states": [
+            {
+              "name": "all",
+              "card": {
+                "x": 666.35009765625,
+                "y": 180,
+                "width": 368.300048828125,
+                "height": 580
+              },
+              "mapSize": {
+                "width": 254,
+                "height": 400
+              },
+              "open": [
+                "PaymentService"
+              ]
+            },
+            {
+              "name": "none",
+              "card": {
+                "x": 666.35009765625,
+                "y": 180,
+                "width": 368.300048828125,
+                "height": 580
+              },
+              "mapSize": {
+                "width": 254,
+                "height": 400
+              },
+              "open": []
+            },
+            {
+              "name": "one",
+              "card": {
+                "x": 666.35009765625,
+                "y": 180,
+                "width": 368.300048828125,
+                "height": 580
+              },
+              "mapSize": {
+                "width": 254,
+                "height": 400
+              },
+              "open": [
+                "PaymentService"
+              ]
+            },
+            {
+              "name": "all-again",
+              "card": {
+                "x": 666.35009765625,
+                "y": 180,
+                "width": 368.300048828125,
+                "height": 580
+              },
+              "mapSize": {
+                "width": 254,
+                "height": 400
+              },
+              "open": [
+                "PaymentService"
+              ]
+            }
+          ],
+          "motion": [
+            {
+              "step": "none",
+              "titleDx": 0,
+              "titleDy": 0,
+              "rowOrderChanged": false
+            },
+            {
+              "step": "one",
+              "titleDx": 0,
+              "titleDy": 0,
+              "rowOrderChanged": false
+            },
+            {
+              "step": "all-again",
+              "titleDx": 0,
+              "titleDy": 0,
+              "rowOrderChanged": false
+            }
+          ],
+          "middleButtonLayoutBoxes": [
+            {
+              "symbol": "PaymentService",
+              "height": 8.3912353515625,
+              "width": 69.2275390625
+            },
+            {
+              "symbol": "Post",
+              "height": 8.391204833984375,
+              "width": 73.423095703125
+            },
+            {
+              "symbol": "Get",
+              "height": 8.39117431640625,
+              "width": 73.423095703125
+            },
+            {
+              "symbol": "__internals__",
+              "height": 8.39117431640625,
+              "width": 93.7017822265625
+            }
+          ]
+        },
+        {
+          "variant": "folded",
+          "states": [
+            {
+              "name": "all",
+              "card": {
+                "x": 666.35009765625,
+                "y": 180.00010681152344,
+                "width": 368.300048828125,
+                "height": 580
+              },
+              "mapSize": {
+                "width": 254,
+                "height": 400
+              },
+              "open": [
+                "PaymentService"
+              ]
+            },
+            {
+              "name": "none",
+              "card": {
+                "x": 666.35009765625,
+                "y": 180.00003051757812,
+                "width": 368.300048828125,
+                "height": 366.8500061035156
+              },
+              "mapSize": {
+                "width": 254,
+                "height": 253
+              },
+              "open": []
+            },
+            {
+              "name": "one",
+              "card": {
+                "x": 666.35009765625,
+                "y": 180,
+                "width": 368.300048828125,
+                "height": 437.9000244140625
+              },
+              "mapSize": {
+                "width": 254,
+                "height": 302
+              },
+              "open": [
+                "PaymentService"
+              ]
+            },
+            {
+              "name": "all-again",
+              "card": {
+                "x": 666.35009765625,
+                "y": 179.99981689453125,
+                "width": 368.300048828125,
+                "height": 580
+              },
+              "mapSize": {
+                "width": 254,
+                "height": 400
+              },
+              "open": [
+                "PaymentService"
+              ]
+            }
+          ],
+          "motion": [
+            {
+              "step": "none",
+              "titleDx": 0,
+              "titleDy": -0.000091552734375,
+              "rowOrderChanged": false
+            },
+            {
+              "step": "one",
+              "titleDx": 0,
+              "titleDy": 0,
+              "rowOrderChanged": false
+            },
+            {
+              "step": "all-again",
+              "titleDx": 0,
+              "titleDy": -0.000213623046875,
+              "rowOrderChanged": false
+            }
+          ],
+          "middleButtonLayoutBoxes": [
+            {
+              "symbol": "PaymentService",
+              "height": 8.391204833984375,
+              "width": 69.2275390625
+            },
+            {
+              "symbol": "Post",
+              "height": 8.39117431640625,
+              "width": 73.423095703125
+            },
+            {
+              "symbol": "Get",
+              "height": 8.3912353515625,
+              "width": 73.423095703125
+            },
+            {
+              "symbol": "__internals__",
+              "height": 8.3912353515625,
+              "width": 93.7017822265625
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "geometryChanges": [],
+  "stateChanges": [],
+  "measurementNotes": [
+    "Map-unit card and row sizes use integer DOM offsetWidth/offsetHeight. No changes were recorded across eight outward and eight return steps for each subject/variant.",
+    "Button layout rectangles exclude transformed text children. They are not measurements of the visible held text; legibility judgments come from retained pictures.",
+    "Title positions are compared before and after ordinary reading actions, after any separate native panning."
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "baseCommit": "2a890e08eb3447daba272fd1c6be2541d1daa35c",
+  "sourceFiles": {
+    "packages/explorer/src/client/styles/reading.css": "c04a0c3ecdcda64a13bedb7c6b2c4f2f35e393a9e74a547bbe35c03caefa51eb",
+    "packages/explorer/src/client/views/localView/branch-renderer.ts": "07c04c239c09ff9f7271d17d0a936b3ee8f523d181d33fb74c5b6e7779ba78a4",
+    "packages/explorer/src/client/views/localView/card-reading.ts": "38296cfdb686c51bf8a8e7508681bcf652ad8f9745eb3bd600cb9369a5951134",
+    "packages/explorer/src/client/views/localView/held-lines.test.ts": "b461118691bc9730bc84d1bb556e5d38bc71ead3d561cb42dc6d1276ae4a60da",
+    "packages/explorer/src/client/views/localView/held-lines.ts": "96e22affd266e5d2e7dcfe4480e40476405157588a5b3e4c40888c27d447dd5c",
+    "scripts/layout-lab/capture.ts": "00af4c2a0fb4322b14aeb75c3b87efb51a05f0a0cc5fbc2e3ff7f932d0646eb1",
+    "scripts/layout-lab/card-model.test.ts": "a85fd35f3716543a171a1d9753a81d75214903750f22fd8dc10bd2cdcc21fa66",
+    "scripts/layout-lab/card-model.ts": "6a8a80a8b566e9494ad9175ffec8b8e7c31f30d2fc8c37e132e5023ccfdea320"
+  },
+  "assets": {
+    "dist/explorer/static/index.js": "726fbad5eb56b5b7b6a3cd44476fedee945dc1dba92eedb55b7a0c4ba7efeaf5",
+    "dist/explorer/static/styles/reading.css": "c04a0c3ecdcda64a13bedb7c6b2c4f2f35e393a9e74a547bbe35c03caefa51eb",
+    "dist/explorer/explorer-data.json": "5d40e4137b9cce94c3328c550713965c6db2057a09866e64217c90bdd805f42f",
+    "dist/explorer/samples/estate/static/index.js": "726fbad5eb56b5b7b6a3cd44476fedee945dc1dba92eedb55b7a0c4ba7efeaf5",
+    "dist/explorer/samples/estate/static/styles/reading.css": "c04a0c3ecdcda64a13bedb7c6b2c4f2f35e393a9e74a547bbe35c03caefa51eb",
+    "dist/explorer/samples/estate/explorer-data.json": "d33651e4b7f5948ac207fb8c456c6c626406e4ed1c40d11e9d29f0e769d4a905"
+  },
+  "dataComparison": {
+    "main": {
+      "topLevelDifferences": [
+        "bundledMarkdown",
+        "history"
+      ],
+      "differentLeaves": 28,
+      "nonMetadataContentEqual": true,
+      "paths": [
+        "/history",
+        "/bundledMarkdown/AI-Agent-Workspace/ChatHistory/2025/12/Summarized/2025-12-17.2.SUMMARIZED.md",
+        "/bundledMarkdown/AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-21.SUMMARIZED.md",
+        "/bundledMarkdown/AI-Agent-Workspace/ChatHistory/2025/12/Summarized/2025-12-04.SUMMARIZED.md",
+        "/bundledMarkdown/tests/integration/fixtures/slopcop-symbols/workspace/docs/overview.md",
+        "/bundledMarkdown/tests/integration/fixtures/csharp-advanced-symbols/docs/registry.md",
+        "/bundledMarkdown/tests/integration/fixtures/slopcop-symbols/workspace/docs/index.md",
+        "/bundledMarkdown/AI-Agent-Workspace/ChatHistory/2025/12/Summarized/2025-12-16.1.SUMMARIZED.md",
+        "/bundledMarkdown/AI-Agent-Workspace/ChatHistory/2025/12/Summarized/2025-12-02.SUMMARIZED.md",
+        "/bundledMarkdown/AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-21.SUMMARIZED.md",
+        "/bundledMarkdown/AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-25.SUMMARIZED.md",
+        "/bundledMarkdown/AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-24.SUMMARIZED.md",
+        "/bundledMarkdown/AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-16.SUMMARIZED.md",
+        "/bundledMarkdown/AI-Agent-Workspace/ChatHistory/2025/12/Summarized/2025-12-06.3.SUMMARIZED.md",
+        "/bundledMarkdown/AI-Agent-Workspace/ChatHistory/2025/12/Summarized/2025-12-07.1.SUMMARIZED.md",
+        "/bundledMarkdown/tests/integration/fixtures/csharp-advanced-symbols/docs/symbol-scenarios.md",
+        "/bundledMarkdown/AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-05.SUMMARIZED.md",
+        "/bundledMarkdown/AI-Agent-Workspace/ChatHistory/2026/01/Summarized/2026-01-14.1.SUMMARIZED.md",
+        "/bundledMarkdown/tests/integration/fixtures/slopcop-symbols/workspace/docs/symbol-map.md",
+        "/bundledMarkdown/tests/integration/fixtures/csharp-advanced-symbols/docs/index.md",
+        "/bundledMarkdown/AI-Agent-Workspace/ChatHistory/2026/01/Summarized/2026-01-26.1.SUMMARIZED.md",
+        "/bundledMarkdown/AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-27.SUMMARIZED.md",
+        "/bundledMarkdown/tests/integration/fixtures/csharp-advanced-symbols/README.md",
+        "/bundledMarkdown/AI-Agent-Workspace/ChatHistory/2025/12/Summarized/2025-12-13.1.SUMMARIZED.md",
+        "/bundledMarkdown/AI-Agent-Workspace/ChatHistory/2025/12/Summarized/2025-12-19.2.SUMMARIZED.md",
+        "/bundledMarkdown/AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md",
+        "/bundledMarkdown/AI-Agent-Workspace/ChatHistory/2025/12/Summarized/2025-12-03.SUMMARIZED.md",
+        "/bundledMarkdown/AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-09.SUMMARIZED.md"
+      ]
+    },
+    "samples/estate/": {
+      "topLevelDifferences": [
+        "graph"
+      ],
+      "differentLeaves": 36,
+      "nonMetadataContentEqual": true,
+      "paths": [
+        "/graph/files/Portal/Services/GatewayClient.cs/generatedAt",
+        "/graph/files/Database/SqlServer/dbo.usp_PostPayment.sql/generatedAt",
+        "/graph/files/Hub/ServiceRouting.cs/generatedAt",
+        "/graph/files/Database/SqlServer/dbo.Payment.sql/generatedAt",
+        "/graph/files/Contracts/IPaymentHub.cs/generatedAt",
+        "/graph/files/PaymentService/Data/PaymentsContext.cs/generatedAt",
+        "/graph/files/PaymentService/Data/PostPaymentRow.cs/generatedAt",
+        "/graph/files/Gateway/Wcf/HubProxy.cs/generatedAt",
+        "/graph/files/Gateway/Web.config/generatedAt",
+        "/graph/files/PaymentService/Data/Payment.cs/generatedAt",
+        "/graph/files/Estate.sln/generatedAt",
+        "/graph/files/Portal/Pages/Default.aspx.designer.cs/generatedAt",
+        "/graph/files/PaymentService/PaymentService.cs/generatedAt",
+        "/graph/files/Portal/Pages/Default.aspx.cs/generatedAt",
+        "/graph/files/Gateway/GatewaySettings.cs/generatedAt",
+        "/graph/files/PaymentService/PaymentService.csproj/generatedAt",
+        "/graph/files/Hub/PaymentHub.cs/generatedAt",
+        "/graph/files/Gateway/Controllers/PaymentsController.cs/generatedAt",
+        "/graph/files/Contracts/Contracts.csproj/generatedAt",
+        "/graph/files/Portal/Portal.csproj/generatedAt",
+        "/graph/files/Gateway/Gateway.csproj/generatedAt",
+        "/graph/files/Contracts/PaymentQuery.cs/generatedAt",
+        "/graph/files/Database/Oracle/CENTRAL.ACCOUNT.sql/generatedAt",
+        "/graph/files/Portal/Controllers/PaymentsController.cs/generatedAt",
+        "/graph/files/Portal/Pages/Default.aspx/generatedAt",
+        "/graph/files/Contracts/PaymentRequest.cs/generatedAt",
+        "/graph/files/Hub/App.config/generatedAt",
+        "/graph/files/Portal/Models/PaymentRequestModel.cs/generatedAt",
+        "/graph/files/Portal/Web.config/generatedAt",
+        "/graph/files/Hub/Hub.csproj/generatedAt",
+        "/graph/files/Portal/Models/PaymentResultModel.cs/generatedAt",
+        "/graph/files/Contracts/PaymentResult.cs/generatedAt",
+        "/graph/files/Portal/Scripts/portal.js/generatedAt",
+        "/graph/files/Portal/App_Code/Globals.cs/generatedAt",
+        "/graph/files/Contracts/IPaymentService.cs/generatedAt",
+        "/graph/files/PaymentService/App.config/generatedAt"
+      ]
+    }
+  },
+  "urls": [
+    "http://127.0.0.1:8918/",
+    "http://127.0.0.1:8918/samples/estate/"
+  ],
+  "browserRuns": 0,
+  "serverSession": 99204
+}

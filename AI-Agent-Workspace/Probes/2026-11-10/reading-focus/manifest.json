@@ -1,0 +1,584 @@
+{
+  "recordedAt": "2026-11-10T19:45:35.357Z",
+  "baseCommit": "2a890e08eb3447daba272fd1c6be2541d1daa35c",
+  "viewport": [
+    1440,
+    960
+  ],
+  "deviceScaleFactor": 1,
+  "baselineClientSha256": "3818b98d50f99e42a624f88d98c944dd133e3531668af8118987a579b0eb50bd",
+  "trialClientSha256": "726fbad5eb56b5b7b6a3cd44476fedee945dc1dba92eedb55b7a0c4ba7efeaf5",
+  "acceptedAsDefault": false,
+  "entries": [
+    {
+      "file": "pictures/repository-current-one.png",
+      "source": "matched/repository-current-one.png",
+      "bytes": 238167,
+      "sha256": "427d38125496420bb036b0441b57b83ba61d982a7d356a9103fe3f688305e174",
+      "originalBytes": 238167,
+      "originalSha256": "427d38125496420bb036b0441b57b83ba61d982a7d356a9103fe3f688305e174"
+    },
+    {
+      "file": "pictures/repository-folded-one.png",
+      "source": "matched/repository-folded-one.png",
+      "bytes": 231766,
+      "sha256": "946bcfe276fe1924c3bf8268bd33abae7887e609e8811eb4997599e74d901e54",
+      "originalBytes": 231766,
+      "originalSha256": "946bcfe276fe1924c3bf8268bd33abae7887e609e8811eb4997599e74d901e54"
+    },
+    {
+      "file": "pictures/estate-current-one.png",
+      "source": "matched/estate-current-one.png",
+      "bytes": 168045,
+      "sha256": "a13d6e8c375fc1381161ae3d40c711d6fdfb098ef4cffce5c4a174b3b2747568",
+      "originalBytes": 168045,
+      "originalSha256": "a13d6e8c375fc1381161ae3d40c711d6fdfb098ef4cffce5c4a174b3b2747568"
+    },
+    {
+      "file": "pictures/estate-folded-one.png",
+      "source": "matched/estate-folded-one.png",
+      "bytes": 165592,
+      "sha256": "6ff586742ea4f7a21bbb7d793bac00978792260ad5043b64715658b11a38dcc7",
+      "originalBytes": 165592,
+      "originalSha256": "6ff586742ea4f7a21bbb7d793bac00978792260ad5043b64715658b11a38dcc7"
+    },
+    {
+      "file": "pictures/repository-folded-two.png",
+      "source": "matched/repository-folded-two.png",
+      "bytes": 241289,
+      "sha256": "7837d1d76b63455c24f1f347e20206cb66006ab2d8637ca5fa2d90bd7a8b2e8c",
+      "originalBytes": 241289,
+      "originalSha256": "7837d1d76b63455c24f1f347e20206cb66006ab2d8637ca5fa2d90bd7a8b2e8c"
+    },
+    {
+      "file": "pictures/repository-folded-second-only.png",
+      "source": "matched/repository-folded-second-only.png",
+      "bytes": 230225,
+      "sha256": "e5aa262cbaf4788720b67a845e5f3559893660ca60969490d1f3d1208b6a12fe",
+      "originalBytes": 230225,
+      "originalSha256": "e5aa262cbaf4788720b67a845e5f3559893660ca60969490d1f3d1208b6a12fe"
+    },
+    {
+      "file": "pictures/repository-current-one-out-4.png",
+      "source": "matched/repository-current-one-out-4.png",
+      "bytes": 158705,
+      "sha256": "605a4152eb7d680ff6a078a13ed83a72985ffe1ad75cc6f84f454b8a1b6534f8",
+      "originalBytes": 158705,
+      "originalSha256": "605a4152eb7d680ff6a078a13ed83a72985ffe1ad75cc6f84f454b8a1b6534f8"
+    },
+    {
+      "file": "pictures/repository-folded-one-out-4.png",
+      "source": "matched/repository-folded-one-out-4.png",
+      "bytes": 149284,
+      "sha256": "2045335ac2ddf89bc46f9e37c24ca41ab8a4f9e5514c0134aab9aa12d27164da",
+      "originalBytes": 149284,
+      "originalSha256": "2045335ac2ddf89bc46f9e37c24ca41ab8a4f9e5514c0134aab9aa12d27164da"
+    },
+    {
+      "file": "pictures/estate-current-one-out-4.png",
+      "source": "matched/estate-current-one-out-4.png",
+      "bytes": 144460,
+      "sha256": "80ee9cd414b0796872a98a2a16ba15d5ef33b90e4d520ccc2c5481c0343ea9c1",
+      "originalBytes": 144460,
+      "originalSha256": "80ee9cd414b0796872a98a2a16ba15d5ef33b90e4d520ccc2c5481c0343ea9c1"
+    },
+    {
+      "file": "pictures/estate-folded-one-out-4.png",
+      "source": "matched/estate-folded-one-out-4.png",
+      "bytes": 140539,
+      "sha256": "148e379dc5d4df93c9ff3d4bcd1864ec48dc43627abd866ecb3b3df49e1edd37",
+      "originalBytes": 140539,
+      "originalSha256": "148e379dc5d4df93c9ff3d4bcd1864ec48dc43627abd866ecb3b3df49e1edd37"
+    },
+    {
+      "file": "pictures/repository-current-one-out-7.png",
+      "source": "matched/repository-current-one-out-7.png",
+      "bytes": 124341,
+      "sha256": "48535986dec5d404ea5a436f261da002aa0854d779d27491daf8026da84adb19",
+      "originalBytes": 124341,
+      "originalSha256": "48535986dec5d404ea5a436f261da002aa0854d779d27491daf8026da84adb19"
+    },
+    {
+      "file": "pictures/repository-folded-one-out-7.png",
+      "source": "matched/repository-folded-one-out-7.png",
+      "bytes": 124490,
+      "sha256": "deab68100dcf0b66ed9539572fa513a8a94927f80ceb841779ab8efcc43c18a4",
+      "originalBytes": 124490,
+      "originalSha256": "deab68100dcf0b66ed9539572fa513a8a94927f80ceb841779ab8efcc43c18a4"
+    },
+    {
+      "file": "pictures/repository-folded-one-return-0.png",
+      "source": "matched/repository-folded-one-return-0.png",
+      "bytes": 231534,
+      "sha256": "ca6946c745f844814d3cc49bfdd8ba0c7dfe0efc5eca65b15ca409bc91d4918f",
+      "originalBytes": 231534,
+      "originalSha256": "ca6946c745f844814d3cc49bfdd8ba0c7dfe0efc5eca65b15ca409bc91d4918f"
+    },
+    {
+      "file": "pictures/estate-folded-one-return-0.png",
+      "source": "matched/estate-folded-one-return-0.png",
+      "bytes": 165602,
+      "sha256": "49054db54e84c11df7ba7f3512ebbed7bebbddfdd1dd4774e51b2a59454a5a6b",
+      "originalBytes": 165602,
+      "originalSha256": "49054db54e84c11df7ba7f3512ebbed7bebbddfdd1dd4774e51b2a59454a5a6b"
+    },
+    {
+      "file": "pictures/native-repository-slot-one.png",
+      "source": "neutral/repository-slot-one.png",
+      "bytes": 238167,
+      "sha256": "427d38125496420bb036b0441b57b83ba61d982a7d356a9103fe3f688305e174",
+      "originalBytes": 238167,
+      "originalSha256": "427d38125496420bb036b0441b57b83ba61d982a7d356a9103fe3f688305e174"
+    },
+    {
+      "file": "pictures/native-repository-grow-one.png",
+      "source": "neutral/repository-grow-one.png",
+      "bytes": 212188,
+      "sha256": "c7dc41f9aac5a906a1a1ef9edad06e70439c09e8c32aa442eec0d10346ff43ba",
+      "originalBytes": 212188,
+      "originalSha256": "c7dc41f9aac5a906a1a1ef9edad06e70439c09e8c32aa442eec0d10346ff43ba"
+    },
+    {
+      "file": "pictures/native-estate-slot-one.png",
+      "source": "neutral/estate-slot-one.png",
+      "bytes": 168045,
+      "sha256": "a13d6e8c375fc1381161ae3d40c711d6fdfb098ef4cffce5c4a174b3b2747568",
+      "originalBytes": 168045,
+      "originalSha256": "a13d6e8c375fc1381161ae3d40c711d6fdfb098ef4cffce5c4a174b3b2747568"
+    },
+    {
+      "file": "pictures/native-estate-grow-one.png",
+      "source": "neutral/estate-grow-one.png",
+      "bytes": 162470,
+      "sha256": "4d4bd592942c9f95d5c4d93e967cbac2257305c9ee2d938ee18fd24bd0c9f213",
+      "originalBytes": 162470,
+      "originalSha256": "4d4bd592942c9f95d5c4d93e967cbac2257305c9ee2d938ee18fd24bd0c9f213"
+    },
+    {
+      "file": "diagnostics/attended-repository-slot-one.png",
+      "source": "native/repository-slot-one.png",
+      "bytes": 224093,
+      "sha256": "477a4ad3c0e2021eaf6f01c71038eb1353c504eabaecf40ee0d4dbdc4e63ce26",
+      "originalBytes": 224093,
+      "originalSha256": "477a4ad3c0e2021eaf6f01c71038eb1353c504eabaecf40ee0d4dbdc4e63ce26"
+    },
+    {
+      "file": "diagnostics/attended-repository-grow-one.png",
+      "source": "native/repository-grow-one.png",
+      "bytes": 211756,
+      "sha256": "2f35c8bdb629e57b21a3f5f4e517ec313268c4f99adafab7a308d9df4d1df2e0",
+      "originalBytes": 211756,
+      "originalSha256": "2f35c8bdb629e57b21a3f5f4e517ec313268c4f99adafab7a308d9df4d1df2e0"
+    },
+    {
+      "file": "frames/repository-14.2.png",
+      "source": "frames/repository-14.2.png",
+      "bytes": 596025,
+      "sha256": "1394a563940ec228e7a8498950e2174c8224ac0c6ae22d31dedcff8a8d1b89a6",
+      "originalBytes": 596025,
+      "originalSha256": "1394a563940ec228e7a8498950e2174c8224ac0c6ae22d31dedcff8a8d1b89a6"
+    },
+    {
+      "file": "frames/repository-14.4.png",
+      "source": "frames/repository-14.4.png",
+      "bytes": 493424,
+      "sha256": "c4e27666b67ecd15c72a52bf2d7472982c405ac7364a41008df55138b7d3d070",
+      "originalBytes": 493424,
+      "originalSha256": "c4e27666b67ecd15c72a52bf2d7472982c405ac7364a41008df55138b7d3d070"
+    },
+    {
+      "file": "frames/repository-14.6.png",
+      "source": "frames/repository-14.6.png",
+      "bytes": 524317,
+      "sha256": "eaf183d654b671532a03722bb4ffe6ed24c1c50d003171ed2fd86ca324b015d6",
+      "originalBytes": 524317,
+      "originalSha256": "eaf183d654b671532a03722bb4ffe6ed24c1c50d003171ed2fd86ca324b015d6"
+    },
+    {
+      "file": "frames/repository-14.8.png",
+      "source": "frames/repository-14.8.png",
+      "bytes": 544558,
+      "sha256": "faeb9d9ac0a557d9233f88ee474bb3383b2dc3b2a33876ff5afe77c7f46ce9ea",
+      "originalBytes": 544558,
+      "originalSha256": "faeb9d9ac0a557d9233f88ee474bb3383b2dc3b2a33876ff5afe77c7f46ce9ea"
+    },
+    {
+      "file": "frames/extraction.json",
+      "source": "frames/manifest.json",
+      "bytes": 344,
+      "sha256": "8681a0b9f263e818b28de778bd69f38756adf0f3d25a4780478dd3f0e65df773",
+      "originalBytes": 344,
+      "originalSha256": "8681a0b9f263e818b28de778bd69f38756adf0f3d25a4780478dd3f0e65df773"
+    },
+    {
+      "file": "motion/repository-current.webm",
+      "source": "matched/repository-current-journey.webm",
+      "bytes": 1507117,
+      "sha256": "1dadcb80c6b65162893e27b9a51facd52e0f84b606503b19ca24a95aec272484",
+      "originalBytes": 1507117,
+      "originalSha256": "1dadcb80c6b65162893e27b9a51facd52e0f84b606503b19ca24a95aec272484"
+    },
+    {
+      "file": "motion/repository-folded.webm",
+      "source": "matched/repository-folded-journey.webm",
+      "bytes": 2042077,
+      "sha256": "d41b1eb010b3c7fc02ef8f1dd4141e479aed1abbdf3cc2eeeec1b7ad7dd0fb58",
+      "originalBytes": 2042077,
+      "originalSha256": "d41b1eb010b3c7fc02ef8f1dd4141e479aed1abbdf3cc2eeeec1b7ad7dd0fb58"
+    },
+    {
+      "file": "motion/native-repository-slot.webm",
+      "source": "neutral/repository-slot-journey.webm",
+      "bytes": 912617,
+      "sha256": "8825b937acc7aff1e15d8ed9224414bdd92847315d3e342a92235a4ecaebe6d1",
+      "originalBytes": 912617,
+      "originalSha256": "8825b937acc7aff1e15d8ed9224414bdd92847315d3e342a92235a4ecaebe6d1"
+    },
+    {
+      "file": "diagnostics/attended-repository-slot.webm",
+      "source": "native/repository-slot-journey.webm",
+      "bytes": 798636,
+      "sha256": "823bd44fa54ab7de8913716f399a78b21da0f8ac989de61e40878743148a16ab",
+      "originalBytes": 798636,
+      "originalSha256": "823bd44fa54ab7de8913716f399a78b21da0f8ac989de61e40878743148a16ab"
+    },
+    {
+      "file": "motion/native-repository-grow.webm",
+      "source": "neutral/repository-grow-journey.webm",
+      "bytes": 1571898,
+      "sha256": "60128dfda79fc4fea3856b5e5705731b0d189235512bf336daf3a6263e444c52",
+      "originalBytes": 1571898,
+      "originalSha256": "60128dfda79fc4fea3856b5e5705731b0d189235512bf336daf3a6263e444c52"
+    },
+    {
+      "file": "diagnostics/attended-repository-grow.webm",
+      "source": "native/repository-grow-journey.webm",
+      "bytes": 1193432,
+      "sha256": "f8ad568bdd33827685e922ee0d9ace8d08ebe58bd08e1fa521c99e0d24ca7ee8",
+      "originalBytes": 1193432,
+      "originalSha256": "f8ad568bdd33827685e922ee0d9ace8d08ebe58bd08e1fa521c99e0d24ca7ee8"
+    },
+    {
+      "file": "motion/estate-current.webm",
+      "source": "matched/estate-current-journey.webm",
+      "bytes": 1151010,
+      "sha256": "5d2b82a89574753c16d1d88fd1a6379d20e4bf58e94af9e26c5452415ac1c566",
+      "originalBytes": 1151010,
+      "originalSha256": "5d2b82a89574753c16d1d88fd1a6379d20e4bf58e94af9e26c5452415ac1c566"
+    },
+    {
+      "file": "motion/estate-folded.webm",
+      "source": "matched/estate-folded-journey.webm",
+      "bytes": 1663401,
+      "sha256": "121fc3b4fcd28bb7133579cbe1d88103f6f49949c6ed38334e4e1eb47df26424",
+      "originalBytes": 1663401,
+      "originalSha256": "121fc3b4fcd28bb7133579cbe1d88103f6f49949c6ed38334e4e1eb47df26424"
+    },
+    {
+      "file": "motion/native-estate-slot.webm",
+      "source": "neutral/estate-slot-journey.webm",
+      "bytes": 622110,
+      "sha256": "94e3e3f62dc777d415aaad9e0de5f20719d702f84b1164fbf5372e8abd2aceb8",
+      "originalBytes": 622110,
+      "originalSha256": "94e3e3f62dc777d415aaad9e0de5f20719d702f84b1164fbf5372e8abd2aceb8"
+    },
+    {
+      "file": "diagnostics/attended-estate-slot.webm",
+      "source": "native/estate-slot-journey.webm",
+      "bytes": 570351,
+      "sha256": "e1cf8aee85defd58b0d5ad137bee7cd7f167fcbd7e9903e9f79bc5428a911999",
+      "originalBytes": 570351,
+      "originalSha256": "e1cf8aee85defd58b0d5ad137bee7cd7f167fcbd7e9903e9f79bc5428a911999"
+    },
+    {
+      "file": "motion/native-estate-grow.webm",
+      "source": "neutral/estate-grow-journey.webm",
+      "bytes": 1165837,
+      "sha256": "8783e2e8d447c0ce3582bb150996f105f02d96a3667bab8a7ccfa45bab98ca01",
+      "originalBytes": 1165837,
+      "originalSha256": "8783e2e8d447c0ce3582bb150996f105f02d96a3667bab8a7ccfa45bab98ca01"
+    },
+    {
+      "file": "diagnostics/attended-estate-grow.webm",
+      "source": "native/estate-grow-journey.webm",
+      "bytes": 947566,
+      "sha256": "4bd7eb8dc63247236f846a76a180ea53e3fafcfd375e669ace096a555fcada35",
+      "originalBytes": 947566,
+      "originalSha256": "4bd7eb8dc63247236f846a76a180ea53e3fafcfd375e669ace096a555fcada35"
+    },
+    {
+      "file": "diagnostics/attended-observations.json.gz",
+      "source": "native/observations.json",
+      "bytes": 7950,
+      "sha256": "a257b45b1f0c66c6e32ac2c844b449f89be25ef18271ba26b1980e834c63629a",
+      "originalBytes": 230250,
+      "originalSha256": "33f3e139f9ddd11071b68022192e3af51ef5434f12124735dc5bec63bd39c240"
+    },
+    {
+      "file": "source/native-observations.json.gz",
+      "source": "neutral/observations.json",
+      "bytes": 7986,
+      "sha256": "f50bdd602b07e9e218fc3aa33ec67d761dd04d0cd6c38ae5ccbe5f4bc9195dc7",
+      "originalBytes": 236322,
+      "originalSha256": "27c691f8d3b440348154229dfd0601c72ad8ec38a621bcc8dc19a67f22b967ec"
+    },
+    {
+      "file": "source/matched-observations.json.gz",
+      "source": "matched/observations.json",
+      "bytes": 29165,
+      "sha256": "2abe8bee0fc8b1afae3d87bfbe590ab179ed545e3dfa1f4bbca19ef574174d9a",
+      "originalBytes": 699535,
+      "originalSha256": "26ba82e425a9e5b63cc70adf29cf68000cff6b9ae7be528b283236311828db3f"
+    },
+    {
+      "file": "source/native-attended.mjs.gz",
+      "source": "native-attended.mjs",
+      "bytes": 1717,
+      "sha256": "1512ef5d823bb720a26b903d31b09b8c5f788f1456a35e376946f1e8d3d26bfb",
+      "originalBytes": 3870,
+      "originalSha256": "b7ce474ac4f5fba461998e9a82fff82ff8c1865092c97a55c06e9b764a369e60"
+    },
+    {
+      "file": "source/native.mjs.gz",
+      "source": "native.mjs",
+      "bytes": 1783,
+      "sha256": "e3188f0355fadb4c4569dc1386c4e73c2d4f7ceab0293f4047e8bbdb1d44a22b",
+      "originalBytes": 4083,
+      "originalSha256": "cf7d5f8df7e644e220e4b6148cc3247e84866088eadfd9253b0a43b3ae31fb34"
+    },
+    {
+      "file": "source/matched.mjs.gz",
+      "source": "matched.mjs",
+      "bytes": 2006,
+      "sha256": "109ad666d4343df108d6452b92ad506e715e2fa2835cb22d835947f24e58359c",
+      "originalBytes": 4756,
+      "originalSha256": "e6b26a2f681f4aaeea0e0621cfa12b9def00bccda33b2e80ff3d00b466d06ef2"
+    },
+    {
+      "file": "source/capture-model.ts.gz",
+      "source": "capture-model.ts",
+      "bytes": 3309,
+      "sha256": "07ebae0192eafceeb8706d2091fbdcdf233811425813fd56018ff1f2f023d436",
+      "originalBytes": 10042,
+      "originalSha256": "5673dd8b52b2b880a625dc9281aed4b7839e75ecba56c4ebd334cc78569fc119"
+    },
+    {
+      "file": "diagnostics/setup-failed.log.gz",
+      "source": "native-setup-failed.log",
+      "bytes": 489,
+      "sha256": "34a9a10a374b666f5469ee39ffa458c10fe7b548c177990f829fc485c145dd35",
+      "originalBytes": 810,
+      "originalSha256": "a9bfb6401b34549e11fff740f508da4524436ecb869007bff3ac073532dbd199"
+    },
+    {
+      "file": "checks/matched-summary.json",
+      "source": "matched-summary.json, with measurement scope clarified",
+      "bytes": 15960,
+      "sha256": "4f8354d2f348c1b97eff90c6bc3dfcdc0de1db3a2041484900e3372ff192c69a"
+    },
+    {
+      "file": "checks/native-summary.json",
+      "source": "native-summary.json",
+      "bytes": 31074,
+      "sha256": "957292685e2f4de517133289279bd9fe9dd800d9c50d27519c5550c930085985",
+      "originalBytes": 31074,
+      "originalSha256": "957292685e2f4de517133289279bd9fe9dd800d9c50d27519c5550c930085985"
+    },
+    {
+      "file": "checks/trial-build.log.gz",
+      "source": "trial-build.log",
+      "bytes": 163,
+      "sha256": "52291c9247877f5f8f3ede8c4c0f26f50f3d348305b8007e4d0df5168b56889d",
+      "originalBytes": 394,
+      "originalSha256": "0d12da67bdefc0153c502af081e9ff8aa355d61facbe11d0e2f2b3e35718dc9e"
+    },
+    {
+      "file": "checks/trial-explorer-build-final.log.gz",
+      "source": "trial-explorer-build-final.log",
+      "bytes": 110,
+      "sha256": "c0b942143d8beabd3164abdbffc78e729b4cc18e1449ea42b2fd8978178579de",
+      "originalBytes": 112,
+      "originalSha256": "51bde6179523b732827eb414aee7e5df44156b59f4e7aee938896e25927d66c8"
+    },
+    {
+      "file": "checks/trial-lint-final.log.gz",
+      "source": "trial-lint-final.log",
+      "bytes": 128,
+      "sha256": "b26959abc378e8441a01b579c5d12d1aa72c47d7901766990d8f21cbb6fd30c9",
+      "originalBytes": 150,
+      "originalSha256": "6839ad0642096b6f1a8168fd8940098422a34c6d80129b85dfe7eb3ae24b0942"
+    },
+    {
+      "file": "checks/trial-pure-tests-final.log.gz",
+      "source": "trial-pure-tests-final.log",
+      "bytes": 580,
+      "sha256": "f89380b4105aedf262bb84d7facdb4b64fbb4b6eb7270a3a4e81d7f844342ad0",
+      "originalBytes": 2129,
+      "originalSha256": "dd83afaddb7a536a55719792c157cccb5867a4316d415e887582d63596862528"
+    },
+    {
+      "file": "checks/trial-main-preview-final.log.gz",
+      "source": "trial-main-preview-final.log",
+      "bytes": 504,
+      "sha256": "88daa0361218b0776ccf188afe2be73271f4bc9524b95dfa95cffc0f409833bb",
+      "originalBytes": 1134,
+      "originalSha256": "e284ab5a48f49836025b9c98abce5ddefe91141a3684d17aeddba852fe9d24e3"
+    },
+    {
+      "file": "checks/trial-estate-preview-final.log.gz",
+      "source": "trial-estate-preview-final.log",
+      "bytes": 258,
+      "sha256": "4d53e09881ede421d010a8ca617e7254867cce004ea302194f4db9aea9e9311a",
+      "originalBytes": 398,
+      "originalSha256": "8096cc121d5c2c5068c08c12a33e2d62ce757f747d03ce368814308125f16721"
+    },
+    {
+      "file": "checks/capture-model.log.gz",
+      "source": "capture-model.log",
+      "bytes": 220,
+      "sha256": "19bc4e03064997966427aba061d93568cf86bfd471e8ff14b3a35cada3b4b1d6",
+      "originalBytes": 494,
+      "originalSha256": "a1d609a8d8b0d192b9f908f2965926af0fc0ce301616a9d6ce89db59420eed2a"
+    },
+    {
+      "file": "checks/dependency-inspection.txt.gz",
+      "source": "trial-dependencies-after.json",
+      "bytes": 367,
+      "sha256": "2d8820d2ea2ae6c7775bef89b969ce5c056a555043b12e703fc820d201564c22",
+      "originalBytes": 1137,
+      "originalSha256": "562651ea565dea441dc59cb0a942eeffc6eaeee7617bf23065ef538f37290373"
+    },
+    {
+      "file": "checks/model-summary.json",
+      "source": "capture-model/summary.json",
+      "bytes": 887,
+      "sha256": "1230119505a9b795f4485e4c60d83b6170faf28c890bb1b77b149636d0121f05",
+      "originalBytes": 887,
+      "originalSha256": "1230119505a9b795f4485e4c60d83b6170faf28c890bb1b77b149636d0121f05"
+    },
+    {
+      "file": "checks/model-repository-comparison.json",
+      "source": "capture-model/repository-comparison.json",
+      "bytes": 16990,
+      "sha256": "f872015be137b3cf99daf3992f57f2de74762730439cb686c15daa9fe5c7d499",
+      "originalBytes": 16990,
+      "originalSha256": "f872015be137b3cf99daf3992f57f2de74762730439cb686c15daa9fe5c7d499"
+    },
+    {
+      "file": "checks/model-estate-comparison.json",
+      "source": "capture-model/estate-comparison.json",
+      "bytes": 14124,
+      "sha256": "ebadcd069e90269f18c2fc2aa497dde73cf8f4293d38fe007ec181bb9211c4b7",
+      "originalBytes": 14124,
+      "originalSha256": "ebadcd069e90269f18c2fc2aa497dde73cf8f4293d38fe007ec181bb9211c4b7"
+    },
+    {
+      "file": "checks/model-source-and-asset-hashes.json",
+      "source": "capture-model/source-and-asset-hashes.json",
+      "bytes": 3468,
+      "sha256": "8277b43f4d03d6c1b7d2c03a8b6e14c919acbcc1d5410200ebeb5cf5e07d0387",
+      "originalBytes": 3468,
+      "originalSha256": "8277b43f4d03d6c1b7d2c03a8b6e14c919acbcc1d5410200ebeb5cf5e07d0387"
+    },
+    {
+      "file": "source/repository-capture.json.gz",
+      "source": "capture-model/repository-capture.json",
+      "bytes": 25547,
+      "sha256": "b1c7b9ad70e59837609befba30e864fb481265e37ec1e323ec60e81f23f8ede1",
+      "originalBytes": 330063,
+      "originalSha256": "1d8ad223f9ff9d68e425024c784af6e1ec6a492f517d62abb0984dfde0fe7358"
+    },
+    {
+      "file": "source/estate-capture.json.gz",
+      "source": "capture-model/estate-capture.json",
+      "bytes": 9455,
+      "sha256": "54b7409e7141e991b29db4586cfa90a549d6646cc8c3de9934effed92b9b50ad",
+      "originalBytes": 133766,
+      "originalSha256": "e36666ead72a1ecd4533dc8994cde9b62a7702cc9c668672666e1eaa2994bd22"
+    },
+    {
+      "file": "source/trial.patch",
+      "source": "trial.patch",
+      "bytes": 20592,
+      "sha256": "9a286230a9e298d4791a80c270341dc4d4a6e86143fdd7ad9f8a2979848f21a6",
+      "originalBytes": 20592,
+      "originalSha256": "9a286230a9e298d4791a80c270341dc4d4a6e86143fdd7ad9f8a2979848f21a6"
+    },
+    {
+      "file": "source/trial-manifest.json",
+      "source": "trial-manifest.json",
+      "bytes": 7437,
+      "sha256": "7e2b2efede681f6267494f33ad6e35d88917d07cedbcf99ee16a6419d9b9b441",
+      "originalBytes": 7437,
+      "originalSha256": "7e2b2efede681f6267494f33ad6e35d88917d07cedbcf99ee16a6419d9b9b441"
+    },
+    {
+      "file": "source/trial-source.tar.gz",
+      "source": "eight changed source/test files, exact bytes",
+      "bytes": 66034,
+      "sha256": "9ebe8230a8b00b13bc10e8d59cafdb67bac5121ccb5259ec99ca8d1c64054027"
+    },
+    {
+      "file": "checks/data-equality.json",
+      "source": "independent root comparison of current served build files",
+      "bytes": 1264,
+      "sha256": "b6e183a55337ce49ad7e1f4c1e1f1fb8f43d7ee45659f18e9e3fe0de3124d5a0"
+    },
+    {
+      "file": "pictures/repository-current-all.png",
+      "source": "matched/repository-current-all.png",
+      "bytes": 271189,
+      "sha256": "c61803a58e7bd851ca09e2239e0c96b6628b4f17246ef2d619111c9982832d3e",
+      "originalBytes": 271189,
+      "originalSha256": "c61803a58e7bd851ca09e2239e0c96b6628b4f17246ef2d619111c9982832d3e"
+    },
+    {
+      "file": "pictures/estate-current-all.png",
+      "source": "matched/estate-current-all.png",
+      "bytes": 168118,
+      "sha256": "04b9ffded381ca3e3ae8f5a505e62ec6c191a8c9b83002818df5a06cae90e116",
+      "originalBytes": 168118,
+      "originalSha256": "04b9ffded381ca3e3ae8f5a505e62ec6c191a8c9b83002818df5a06cae90e116"
+    },
+    {
+      "file": "pictures/estate-folded-all.png",
+      "source": "matched/estate-folded-all.png",
+      "bytes": 168108,
+      "sha256": "09550b6d0c1ac0914d3c646676ff45b9a440a17daac2d002501fc173b0a8b94f",
+      "originalBytes": 168108,
+      "originalSha256": "09550b6d0c1ac0914d3c646676ff45b9a440a17daac2d002501fc173b0a8b94f"
+    },
+    {
+      "file": "source/repository-dom-before.json.gz",
+      "source": "capture-model/repository-dom-before.json",
+      "bytes": 3153,
+      "sha256": "41ba68b8f6fbf16c4ac7b259231f3a00886dcfa6e87efb22d0096a289c1413e4",
+      "originalBytes": 41248,
+      "originalSha256": "c42db134284f533e524a96d9472d47e690a4575674a02c02d5e964909df5c143"
+    },
+    {
+      "file": "source/repository-dom-after.json.gz",
+      "source": "capture-model/repository-dom-after.json",
+      "bytes": 1803,
+      "sha256": "a80bc83f6f2930862aa0c4866bc804d51b4b201833e220b2d79f3a5e58577692",
+      "originalBytes": 38454,
+      "originalSha256": "1ca9d8461b3e3271a30c5b44341e232805d87f1fea0b209ab6cf15b2d5cf1e12"
+    },
+    {
+      "file": "source/estate-dom-before.json.gz",
+      "source": "capture-model/estate-dom-before.json",
+      "bytes": 2138,
+      "sha256": "612049d9d4b2240fa63ff0fadf2fc0af9ecaa9cd862bb8c23bdec53b31450d7f",
+      "originalBytes": 15808,
+      "originalSha256": "f8c57e0320fdca4d62151b8eeb863bfde265e9ce6b17afcf4992cbfd76790f61"
+    },
+    {
+      "file": "source/estate-dom-after.json.gz",
+      "source": "capture-model/estate-dom-after.json",
+      "bytes": 887,
+      "sha256": "fa8ccb80c707b2bd9e444506205ed096ca23e70ddfdf013c4eae649f2c8b7388",
+      "originalBytes": 13209,
+      "originalSha256": "840d6940b33e5c15b9ba0c86ab5b3b5787c4a72a5cd8f0b5c928cf7ebaf3101c"
+    }
+  ]
+}
