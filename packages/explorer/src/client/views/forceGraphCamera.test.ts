@@ -1,13 +1,15 @@
 import { PerspectiveCamera, Vector3 } from "three";
 import { describe, expect, it } from "vitest";
 
-import { focusedCameraPosition, frameCameraSpheres, screenAnchorTranslation, wheelZoomCamera } from "./forceGraphCamera";
+import { cornerPanelInsets, focusedCameraPosition, frameCameraSpheres, screenAnchorTranslation, wheelZoomCamera } from "./forceGraphCamera";
 
 describe("Force Graph focus camera", () => {
   it.each([
     { left: 0, right: 400, top: 0, bottom: 90 },
     { left: 400, right: 0, top: 0, bottom: 90 },
-    { left: 200, right: 100, top: 0, bottom: 140 }
+    { left: 200, right: 100, top: 0, bottom: 140 },
+    { left: 0, right: 0, top: 130, bottom: 100 },
+    { left: 0, right: 300, top: 127, bottom: 95 }
   ])("fits complete bodies into the uncovered rectangle %j without changing bearing", insets => {
     const camera = new PerspectiveCamera(60, 800 / 600, .1, 100000);
     camera.position.set(70, 90, 200); camera.lookAt(30, 20, 10); camera.updateMatrixWorld();
@@ -107,6 +109,24 @@ describe("Force Graph focus camera", () => {
   it("has a finite fallback when the camera coincides with its target", () => {
     const point = { x: 10, y: 20, z: 30 };
     expect(focusedCameraPosition(point, point, { x: -1, y: -2, z: -3 })).toEqual({ x: -1, y: -2, z: 137 });
+  });
+});
+
+describe("a panel in the picture's top left corner", () => {
+  it("frames the picture beside the panel while 320 px of width remain there, and below it where they do not", () => {
+    // The compact step panel at 1440 by 960, 408 px across and 127 down: beside it, as the tall panel always was.
+    expect(cornerPanelInsets({ width: 1179, height: 815 }, { right: 408, bottom: 127 })).toEqual({ left: 408, top: 0 });
+    // Exactly 320 px remain beside it: still beside; one pixel fewer: below.
+    expect(cornerPanelInsets({ width: 728, height: 815 }, { right: 408, bottom: 127 })).toEqual({ left: 408, top: 0 });
+    expect(cornerPanelInsets({ width: 727, height: 815 }, { right: 408, bottom: 127 })).toEqual({ left: 0, top: 127 });
+    // The column a docked reader leaves at 1000 px, 379 px wide with the panel 363 across: below.
+    expect(cornerPanelInsets({ width: 379, height: 700 }, { right: 363, bottom: 109 })).toEqual({ left: 0, top: 109 });
+  });
+
+  it("takes nothing for a panel outside the room, never more than the room, and honours another least width", () => {
+    expect(cornerPanelInsets({ width: 800, height: 600 }, { right: -20, bottom: -5 })).toEqual({ left: 0, top: 0 });
+    expect(cornerPanelInsets({ width: 300, height: 600 }, { right: 900, bottom: 700 })).toEqual({ left: 0, top: 600 });
+    expect(cornerPanelInsets({ width: 800, height: 600 }, { right: 400, bottom: 90 }, 500)).toEqual({ left: 0, top: 90 });
   });
 });
 

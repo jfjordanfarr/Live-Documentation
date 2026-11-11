@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphView.ts
-- Generated At: 2026-11-10T16:20:12.966Z
+- Generated At: 2026-11-11T08:52:45.127Z
 
 ## Authored
 ### Purpose
@@ -83,19 +83,21 @@ Since November 8, 2026, the captured transition scene includes real Structure ce
 
 The final November 8 carrier capture uses actual submitted skin geometry and interior instances rather than the earlier body-radius proxy, which incorrectly applied sphere zoom resistance to unresisted skins. Labels clear the true projected boundary. Ordinary file capture remains unchanged, and only submitted visible 3D links enter the temporary scene.
 
+Since 2026-11-11 ([Turn 6 of the November 10 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-10.1.record.md#turn-6)) a step of the history reaches inside the wrappers: `emphasizeBodies`, run by each render once the bodies and the picture's veils are known, colours what each wrapped body shows within its skin and its skin by `bodyChanges` (`forceGraphEmphasis.ts`), and `unitsOf` hands the renderer that coloured view, the plain one when no step is shown or Changed Files is None. A body is coloured again only when what the step changes in it, the deleted files given to it, the mode or the look does, so that a step recolours the bodies it or the step before touched; no body is packed again, no hull or list of units rebuilt. The files each packing holds are read once per packing, and a skin bursting open after its pop keeps the step it carried until it is gone. The page's timeline measures the pass as "live-docs:history-units". The Structure layout's lighting of every ancestor hub drawn as a sphere is unchanged.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ForceGraphLink` {#symbol-forcegraphlink}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L98)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L100)
 
 ##### `ForceGraphLink` — Summary
 A link in the Force Graph between two nodes.
 
 #### `ForceGraphNode` {#symbol-forcegraphnode}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L111)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L113)
 - Returns: [`SpatialGraphNode`](./forceGraphData.ts.mdmd.md#symbol-spatialgraphnode)
 
 ##### `ForceGraphNode` — Summary
@@ -103,28 +105,28 @@ A node in the Force Graph, extending the payload with optional archetype.
 
 #### `ForceGraphData` {#symbol-forcegraphdata}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L120)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L122)
 
 ##### `ForceGraphData` — Summary
 Complete data structure for the Force Graph view.
 
 #### `ForceGraphViewOptions` {#symbol-forcegraphviewoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L131)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L133)
 
 ##### `ForceGraphViewOptions` — Summary
 Options passed to the Force Graph view factory.
 
 #### `ForceGraphViewApi` {#symbol-forcegraphviewapi}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L160)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L162)
 
 ##### `ForceGraphViewApi` — Summary
 Public API surface of the Force Graph view.
 
 #### `createForceGraphView` {#symbol-createforcegraphview}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L187)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L191)
 - Returns: [`ForceGraphViewApi`](#symbol-forcegraphviewapi)
 - Parameters: `options`: [`ForceGraphViewOptions`](#symbol-forcegraphviewoptions)
 
@@ -156,6 +158,7 @@ Creates the Force Graph (3D) view for the Live Docs Explorer.
 - [`forceGraphBatches.SPATIAL_RING_OUTER_RADIUS`](./forceGraphBatches.ts.mdmd.md#symbol-spatial_ring_outer_radius)
 - [`forceGraphBatches.SpatialWrapperUnit`](./forceGraphBatches.ts.mdmd.md#symbol-spatialwrapperunit)
 - [`forceGraphCamera.CameraPoint`](./forceGraphCamera.ts.mdmd.md#symbol-camerapoint)
+- [`forceGraphCamera.cornerPanelInsets`](./forceGraphCamera.ts.mdmd.md#symbol-cornerpanelinsets)
 - [`forceGraphCamera.focusedCameraPosition`](./forceGraphCamera.ts.mdmd.md#symbol-focusedcameraposition)
 - [`forceGraphCamera.frameCameraSpheres`](./forceGraphCamera.ts.mdmd.md#symbol-framecameraspheres)
 - [`forceGraphCamera.screenAnchorTranslation`](./forceGraphCamera.ts.mdmd.md#symbol-screenanchortranslation)
@@ -166,7 +169,11 @@ Creates the Force Graph (3D) view for the Live Docs Explorer.
 - [`forceGraphData.directoryNodeId`](./forceGraphData.ts.mdmd.md#symbol-directorynodeid)
 - [`forceGraphData.labelNamesOf`](./forceGraphData.ts.mdmd.md#symbol-labelnamesof)
 - [`forceGraphData.spatialGraphOf`](./forceGraphData.ts.mdmd.md#symbol-spatialgraphof)
+- [`forceGraphEmphasis.bodyChanges`](./forceGraphEmphasis.ts.mdmd.md#symbol-bodychanges-function)
+- [`forceGraphEmphasis.deletionHomes`](./forceGraphEmphasis.ts.mdmd.md#symbol-deletionhomes)
+- [`forceGraphEmphasis.emphasizedSkin`](./forceGraphEmphasis.ts.mdmd.md#symbol-emphasizedskin)
 - [`forceGraphEmphasis.emphasizedSphere`](./forceGraphEmphasis.ts.mdmd.md#symbol-emphasizedsphere)
+- [`forceGraphEmphasis.emphasizedUnits`](./forceGraphEmphasis.ts.mdmd.md#symbol-emphasizedunits)
 - [`forceGraphEmphasis.emphasizedWireAlpha`](./forceGraphEmphasis.ts.mdmd.md#symbol-emphasizedwirealpha)
 - [`forceGraphEmphasis.pairKey`](./forceGraphEmphasis.ts.mdmd.md#symbol-pairkey)
 - [`forceGraphLabels.LabelBox`](./forceGraphLabels.ts.mdmd.md#symbol-labelbox)

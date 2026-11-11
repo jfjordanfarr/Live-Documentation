@@ -23,6 +23,8 @@ Since 2026-11-05 the bounded scene holds five objects, the four instance batches
 
 The November 8 submitted-capture case runs with both native and analytic contained primitives. It compares actual uploaded matrices/geometry/alpha and requires the analytic mark's unit-sphere parameters, while ordinary nodes and balloons retain native capture. Hidden and veiled contents are still never reconstructed.
 
+Since 2026-11-11 ([Turn 6 of the November 10 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-10.1.record.md#turn-6)) a case checks that what a skin shows carries the step as the view colours it: a white dot's colour and alpha, a lit bubble's `spatialLit` and a dimmed one's opacity, the skin's `wrapperLit` and `wrapperAlpha`, and a pending skin's balloon carrying the skin's step.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

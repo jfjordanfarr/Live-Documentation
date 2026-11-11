@@ -21,6 +21,8 @@ export interface FrozenBodyUnit extends FrozenBodyMesh {
   color: string;
   alpha: number;
   veiled: boolean;
+  /** Lit by the step of the history shown, as the innermost thing drawn for a change (2026-11-11). */
+  lit?: boolean;
   order: number;
   depth?: number;
   parent?: string;
@@ -34,6 +36,8 @@ export interface FrozenSpatialBody extends FrozenBodyMesh {
   hovered: boolean;
   center: { x: number; y: number; z: number };
   alpha: number;
+  /** Lit by the step of the history shown (2026-11-11). */
+  lit?: boolean;
   order: number;
   units: FrozenBodyUnit[];
 }
@@ -47,8 +51,9 @@ export interface SceneBody {
   y: number;
   boundary: TransitionPoint[];
   alpha: number;
+  lit?: boolean;
   order: number;
-  units: Array<Pick<FrozenBodyUnit, "id" | "kind" | "color" | "alpha" | "veiled" | "order" | "depth" | "parent"> & { boundary: TransitionPoint[]; polygons?: TransitionPoint[][] }>;
+  units: Array<Pick<FrozenBodyUnit, "id" | "kind" | "color" | "alpha" | "veiled" | "lit" | "order" | "depth" | "parent"> & { boundary: TransitionPoint[]; polygons?: TransitionPoint[][] }>;
 }
 
 type ClipPoint = [number, number, number, number];
@@ -133,13 +138,13 @@ export function projectSpatialBodies(bodies: readonly FrozenSpatialBody[], camer
     const y = center.w > 0 && Number.isFinite(center.y / center.w) ? (1 - center.y / center.w) * height / 2
       : (Math.min(...boundary.map(point => point.y)) + Math.max(...boundary.map(point => point.y))) / 2;
     const relative = (points: TransitionPoint[]): TransitionPoint[] => points.map(point => ({ x: point.x - x, y: point.y - y }));
-    result.set(body.id, { x, y, kind: body.kind, look: body.look, hovered: body.hovered, boundary: relative(boundary), alpha: body.alpha, order: body.order,
+    result.set(body.id, { x, y, kind: body.kind, look: body.look, hovered: body.hovered, boundary: relative(boundary), alpha: body.alpha, ...(body.lit ? { lit: true } : {}), order: body.order,
       units: body.units.flatMap(unit => {
         const surface = unit.primitive?.kind === "sphere" ? projectSphereSurface(unit.matrix, unit.primitive.radius, camera, width, height)
           : projectMesh(unit, projection, width, height, unit.frontSide);
         const projected = unit.primitive ? outline(surface.boundary) : surface.boundary;
         if (!projected.length) return [];
-        return [{ id: unit.id, kind: unit.kind, color: unit.color, alpha: unit.alpha, veiled: unit.veiled, order: unit.order,
+        return [{ id: unit.id, kind: unit.kind, color: unit.color, alpha: unit.alpha, veiled: unit.veiled, ...(unit.lit ? { lit: true } : {}), order: unit.order,
           depth: unit.depth, parent: unit.parent, boundary: relative(projected), ...(surface?.polygons ? { polygons: surface.polygons.map(relative) } : {}) }];
       }) });
   }

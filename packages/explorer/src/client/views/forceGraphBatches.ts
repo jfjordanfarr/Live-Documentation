@@ -64,7 +64,15 @@ export interface SpatialWrapperStyle {
   scale: (seed: string) => number;
   hovered: string | null;
   popping: ReadonlySet<string>;
+  /**
+   * How the skin itself carries the step of the history shown (2026-11-11), apart from what it shows within it: lit when
+   * it is the innermost thing drawn for a change, and the share of its alpha it keeps where the mode dims. Plain when absent.
+   */
+  skin?: (seed: string) => { lit: boolean; alpha: number };
 }
+
+/** A skin that carries no step of the history. */
+const PLAIN_SKIN = { lit: false, alpha: 1 } as const;
 
 /**
  * One unit a wrapper shows within its skin (2026-11-06), relative to its centre: a file, drawn as a sphere in its colour
@@ -85,6 +93,13 @@ export interface SpatialWrapperUnit {
   depth?: number;
   /** A bubble whose files are not drawn, which is drawn veiled so that it never looks as if it held few (2026-11-06, second round). */
   veiled?: boolean;
+  /**
+   * Under the step of the history shown (2026-11-11): a bubble lit as the innermost thing drawn for a change, in the skin's
+   * own look, and a bubble's own share of its alpha, lower where the mode dims one holding no change. A file's dot carries
+   * the step in its `color`, alpha included, as a sphere's colour does.
+   */
+  lit?: boolean;
+  alpha?: number;
 }
 
 /** Pack documented nodes and wires straight into three instance buffers; camera changes never build scene proxies. */
@@ -179,7 +194,9 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
   const unitFiles = unitMesh("Spatial shell files", containedFile.geometry, containedFile.material ?? alphaMaterial(), 10);
   const balloonMaterial = wrapperShader(true);
   const unitBalloons = unitMesh("Spatial shell balloons", new SphereGeometry(1, 24, 16), balloonMaterial, 11);
-  unitBalloons.geometry.setAttribute("spatialVeil", new InstancedBufferAttribute(new Float32Array(1), 1).setUsage(DynamicDrawUsage));
+  /** Each balloon's own instance values beside its matrix, colour and opacity: whether it is veiled, and whether the step lights it. */
+  const BALLOON_VALUES = ["spatialVeil", "spatialLit"] as const;
+  for (const name of BALLOON_VALUES) unitBalloons.geometry.setAttribute(name, new InstancedBufferAttribute(new Float32Array(1), 1).setUsage(DynamicDrawUsage));
   const unitBindings = new Map<InstancedMesh, readonly { seed: string; id: string; kind: FrozenBodyUnit["kind"]; parent?: string; level?: number }[]>();
   let wrapperSeeds: readonly string[] = [], wrapperHullOf: (seed: string) => WrapperHull | undefined = () => undefined, wrapperLook: GroupWrappers = "off";
   let wrapperPlaceOf: (seed: string) => Placed | undefined = () => undefined;
@@ -187,6 +204,7 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
   /** The zoom's resistance on a sphere this frame, which a shell's files within its skin draw at as the spheres do. */
   let sphereScale = 1;
   let wrapperStyle: SpatialWrapperStyle = { alpha: () => 1, scale: () => 1, hovered: null, popping: new Set() };
+  const skinOf = (seed: string): { lit: boolean; alpha: number } => wrapperStyle.skin?.(seed) ?? PLAIN_SKIN;
   let wrapperDrawn: WrapperGeometry = mergeWrappers([], () => undefined, () => undefined);
   const nodeIndex = new Map<string, number>();
   const seedPlace = { x: 0, y: 0, z: 0 };
@@ -384,15 +402,20 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
     const ordered = [...distance.keys()].sort((a, b) => distance.get(b)! - distance.get(a)! || (a < b ? -1 : a > b ? 1 : 0));
     wrapperDrawn = mergeWrappers(ordered, wrapperHullOf, placeOf, wrapperStyle.scale);
     const geometry = wrappers.geometry, count = wrapperDrawn.groups.length;
-    const alphas = new Float32Array(count);
-    for (const range of wrapperDrawn.ranges) alphas.fill(wrapperStyle.alpha(range.seed), range.vertexStart, range.vertexStart + range.vertexCount);
+    // A skin's opacity is its node's, at the share the step of the history leaves it, and it is lit where it carries a change.
+    const alphas = new Float32Array(count), lit = new Float32Array(count);
+    const skinAlpha = (seed: string): number => wrapperStyle.alpha(seed) * skinOf(seed).alpha;
+    for (const range of wrapperDrawn.ranges) {
+      alphas.fill(skinAlpha(range.seed), range.vertexStart, range.vertexStart + range.vertexCount);
+      if (skinOf(range.seed).lit) lit.fill(1, range.vertexStart, range.vertexStart + range.vertexCount);
+    }
     const attribute = (name: string, array: Float32Array, size: number): void => {
       const current = geometry.getAttribute(name) as BufferAttribute | undefined;
       if (current && current.array.length === array.length) { (current.array as Float32Array).set(array); current.needsUpdate = true; }
       else geometry.setAttribute(name, new BufferAttribute(array, size).setUsage(DynamicDrawUsage));
     };
     attribute("position", wrapperDrawn.positions, 3); attribute("normal", wrapperDrawn.normals, 3); attribute("wrapperLocal", wrapperDrawn.local, 3);
-    attribute("wrapperGroup", wrapperDrawn.groups, 1); attribute("wrapperAlpha", alphas, 1);
+    attribute("wrapperGroup", wrapperDrawn.groups, 1); attribute("wrapperAlpha", alphas, 1); attribute("wrapperLit", lit, 1);
     const index = geometry.getIndex();
     if (index && index.array.length === wrapperDrawn.indices.length) { (index.array as Uint32Array).set(wrapperDrawn.indices); index.needsUpdate = true; }
     else geometry.setIndex(new BufferAttribute(wrapperDrawn.indices, 1).setUsage(DynamicDrawUsage));
@@ -405,7 +428,7 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
     wrappers.userData.spatialWrappers = { look: wrapperLook, seeds: wrapperDrawn.ranges.map(range => range.seed).filter(seed => !wrapperStyle.popping.has(seed)).sort(),
       popping: wrapperDrawn.ranges.map(range => range.seed).filter(seed => wrapperStyle.popping.has(seed)).sort(),
       vertices: count, triangles: wrapperDrawn.indices.length / 3,
-      ranges: wrapperDrawn.ranges.map(range => ({ seed: range.seed, x: range.centre.x, y: range.centre.y, z: range.centre.z, radius: range.radius, alpha: wrapperStyle.alpha(range.seed) })) };
+      ranges: wrapperDrawn.ranges.map(range => ({ seed: range.seed, x: range.centre.x, y: range.centre.y, z: range.centre.z, radius: range.radius, alpha: skinAlpha(range.seed), lit: skinOf(range.seed).lit })) };
     updateUnits();
   };
   /**
@@ -413,7 +436,7 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
    * look alone, since the clouds veil what they hold, and never for one bursting open, whose units now stand in the picture.
    */
   const updateUnits = (): void => {
-    type Drawn = { seed: string; id: string; kind: FrozenBodyUnit["kind"]; x: number; y: number; z: number; radius: number; color: Color; alpha: number; veil: number; depth: number; parent?: string; level?: number };
+    type Drawn = { seed: string; id: string; kind: FrozenBodyUnit["kind"]; x: number; y: number; z: number; radius: number; color: Color; alpha: number; veil: number; lit: number; depth: number; parent?: string; level?: number };
     const files: Drawn[] = [], balloons: Drawn[] = [];
     const white = colorOf("#ffffff").color;
     const ranges = new Map(wrapperDrawn.ranges.map(range => [range.seed, range]));
@@ -423,9 +446,12 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
       const centre = range?.centre ?? (index === undefined ? wrapperPlaceOf(seed) : { x: positions[3 * index], y: positions[3 * index + 1], z: positions[3 * index + 2] });
       if (!centre) continue;
       const scale = range ? wrapperStyle.scale(seed) : 1, alpha = wrapperStyle.alpha(seed);
-      // A shell not drawn as a sphere whose skin is not built yet stands as one clear balloon of its body, in every look.
+      // A shell not drawn as a sphere whose skin is not built yet stands as one clear balloon of its body, in every look,
+      // and carries the step of the history as its skin will.
       if (!range && index !== undefined && !nodes.enabled[index]) {
-        balloons.push({ seed, id: seed, kind: "body", ...centre, radius: nodes.appearance[5 * index + 4], color: white, alpha, veil: 0, depth: depthOf(centre.x, centre.y, centre.z) });
+        const skin = skinOf(seed);
+        balloons.push({ seed, id: seed, kind: "body", ...centre, radius: nodes.appearance[5 * index + 4], color: white, alpha: alpha * skin.alpha, veil: 0, lit: skin.lit ? 1 : 0,
+          depth: depthOf(centre.x, centre.y, centre.z) });
       }
       const units = wrapperLook === "skin" && !wrapperStyle.popping.has(seed) ? wrapperUnitsOf(seed) : undefined;
       if (!units) continue;
@@ -435,7 +461,8 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
         const file = unit.kind === "file", tint = file ? colorOf(unit.color ?? "#ffffff") : null;
         (file ? files : balloons).push({ seed, id: unit.id, kind: unit.kind, x, y, z,
           radius: (file ? Math.min(unit.radius * sphereScale, unit.reach) : unit.radius) * scale, color: tint?.color ?? white,
-          alpha: (file ? .75 * (tint?.alpha ?? 1) : 1) * alpha, veil: unit.veiled ? 1 : 0, depth: depthOf(x, y, z), parent: unit.parent, level: unit.depth });
+          alpha: (file ? .75 * (tint?.alpha ?? 1) : unit.alpha ?? 1) * alpha, veil: unit.veiled ? 1 : 0, lit: !file && unit.lit ? 1 : 0,
+          depth: depthOf(x, y, z), parent: unit.parent, level: unit.depth });
       }
     }
     const write = (mesh: InstancedMesh, drawn: Drawn[]): void => {
@@ -448,9 +475,14 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
         mesh.instanceColor = new InstancedBufferAttribute(new Float32Array(3 * capacity), 3).setUsage(DynamicDrawUsage);
         mesh.geometry.setAttribute("spatialOpacity", new InstancedBufferAttribute(new Float32Array(capacity), 1).setUsage(DynamicDrawUsage));
       }
-      const veil = mesh.geometry.getAttribute("spatialVeil") as InstancedBufferAttribute | undefined;
-      if (veil && veil.count < mesh.instanceMatrix.count) mesh.geometry.setAttribute("spatialVeil", new InstancedBufferAttribute(new Float32Array(mesh.instanceMatrix.count), 1).setUsage(DynamicDrawUsage));
-      const veils = mesh.geometry.getAttribute("spatialVeil") as InstancedBufferAttribute | undefined;
+      // The balloons' own values, veiled and lit, each grown with the instances.
+      const values = mesh === unitBalloons ? BALLOON_VALUES.map(name => {
+        const current = mesh.geometry.getAttribute(name) as InstancedBufferAttribute;
+        if (current.count >= mesh.instanceMatrix.count) return current;
+        const grown = new InstancedBufferAttribute(new Float32Array(mesh.instanceMatrix.count), 1).setUsage(DynamicDrawUsage);
+        mesh.geometry.setAttribute(name, grown);
+        return grown;
+      }) : null;
       const matrices = mesh.instanceMatrix.array, colors = mesh.instanceColor!.array, opacity = mesh.geometry.getAttribute("spatialOpacity") as InstancedBufferAttribute;
       drawn.forEach((unit, slot) => {
         const at = 16 * slot;
@@ -459,13 +491,14 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
         matrices[at + 12] = unit.x; matrices[at + 13] = unit.y; matrices[at + 14] = unit.z;
         colors[3 * slot] = unit.color.r; colors[3 * slot + 1] = unit.color.g; colors[3 * slot + 2] = unit.color.b;
         opacity.array[slot] = unit.alpha;
-        if (veils) veils.array[slot] = unit.veil;
+        if (values) { values[0].array[slot] = unit.veil; values[1].array[slot] = unit.lit; }
       });
-      if (veils) veils.needsUpdate = true;
+      if (values) for (const value of values) value.needsUpdate = true;
       mesh.count = drawn.length; mesh.visible = drawn.length > 0;
       unitBindings.set(mesh, drawn);
       mesh.instanceMatrix.needsUpdate = true; mesh.instanceColor!.needsUpdate = true; opacity.needsUpdate = true;
-      mesh.userData.spatialUnits = drawn.map(({ seed, id, kind, x, y, z, radius, alpha, veil, parent, level }) => ({ seed, id, kind, x, y, z, radius, alpha, veiled: veil > 0, ...(level === undefined ? {} : { depth: level }), ...(parent === undefined ? {} : { parent }) }));
+      mesh.userData.spatialUnits = drawn.map(({ seed, id, kind, x, y, z, radius, alpha, veil, lit, parent, level }) => ({ seed, id, kind, x, y, z, radius, alpha, veiled: veil > 0, lit: lit > 0,
+        ...(level === undefined ? {} : { depth: level }), ...(parent === undefined ? {} : { parent }) }));
     };
     write(unitFiles, files); write(unitBalloons, balloons);
   };
@@ -517,7 +550,8 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
         group.push({ ...geometry, matrix: [...matrix.elements], id: binding.id, kind: binding.kind,
           ...(mesh.material instanceof ContainedSphereMaterial ? { primitive: { kind: "sphere" as const, radius: mesh.material.sphereRadius } } : {}),
           frontSide: (mesh.material as Material).side === FrontSide, color: color.getStyle(), alpha: mesh.geometry.getAttribute("spatialOpacity").getX(slot),
-          veiled: (mesh.geometry.getAttribute("spatialVeil")?.getX(slot) ?? 0) > 0, order: slot, depth: binding.level, parent: binding.parent });
+          veiled: (mesh.geometry.getAttribute("spatialVeil")?.getX(slot) ?? 0) > 0, ...((mesh.geometry.getAttribute("spatialLit")?.getX(slot) ?? 0) > 0 ? { lit: true } : {}),
+          order: slot, depth: binding.level, parent: binding.parent });
         units.set(binding.seed, group);
       }
     }
@@ -530,7 +564,8 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
       result.push({ id: range.seed, kind: "skin", look, hovered: wrapperMaterial.uniforms.uHover.value === range.group, center: { x: center.x, y: center.y, z: center.z }, matrix: [...wrappers.matrixWorld.elements],
         positions: wrapperDrawn.positions.slice(3 * start, 3 * (start + range.vertexCount)),
         indices: Uint32Array.from(wrapperDrawn.indices.slice(range.indexStart, range.indexStart + range.indexCount), index => index - start),
-        alpha: wrappers.geometry.getAttribute("wrapperAlpha").getX(start), order: range.group, units: units.get(range.seed) ?? [] });
+        alpha: wrappers.geometry.getAttribute("wrapperAlpha").getX(start), ...(wrappers.geometry.getAttribute("wrapperLit").getX(start) > 0 ? { lit: true } : {}),
+        order: range.group, units: units.get(range.seed) ?? [] });
       units.delete(range.seed);
     }
     // A pending hull is drawn as its uploaded body balloon; preserve that exact fallback.
@@ -641,6 +676,7 @@ function wrapperShader(instanced: boolean): ShaderMaterial {
     vertexShader: instanced ? `
       attribute float spatialOpacity;
       attribute float spatialVeil;
+      attribute float spatialLit;
       varying vec3 vNormal;
       varying vec3 vView;
       varying vec3 vLocal;
@@ -648,6 +684,7 @@ function wrapperShader(instanced: boolean): ShaderMaterial {
       varying float vHover;
       varying float vInner;
       varying float vVeil;
+      varying float vLit;
       void main() {
         vec4 view = modelViewMatrix * instanceMatrix * vec4(position, 1.0);
         vNormal = normalize(normalMatrix * mat3(instanceMatrix) * normal);
@@ -657,10 +694,12 @@ function wrapperShader(instanced: boolean): ShaderMaterial {
         vHover = 0.0;
         vInner = 1.0;
         vVeil = spatialVeil;
+        vLit = spatialLit;
         gl_Position = projectionMatrix * view;
       }` : `
       attribute float wrapperAlpha;
       attribute float wrapperGroup;
+      attribute float wrapperLit;
       attribute vec3 wrapperLocal;
       uniform float uHover;
       varying vec3 vNormal;
@@ -670,10 +709,12 @@ function wrapperShader(instanced: boolean): ShaderMaterial {
       varying float vHover;
       varying float vInner;
       varying float vVeil;
+      varying float vLit;
       void main() {
         vec4 view = modelViewMatrix * vec4(position, 1.0);
         vInner = 0.0;
         vVeil = 0.0;
+        vLit = wrapperLit;
         vNormal = normalize(normalMatrix * normal);
         vView = normalize(-view.xyz);
         vLocal = wrapperLocal;
@@ -691,6 +732,7 @@ function wrapperShader(instanced: boolean): ShaderMaterial {
       varying float vHover;
       varying float vInner;
       varying float vVeil;
+      varying float vLit;
       void main() {
         vec3 n = normalize(vNormal);
         if (!gl_FrontFacing) n = -n;
@@ -714,6 +756,16 @@ function wrapperShader(instanced: boolean): ShaderMaterial {
           float noise = sin(p.x * 7.0) * sin(p.y * 6.0) * sin(p.z * 5.0);
           color = vec3(0.545, 0.675, 0.78);
           alpha = (0.62 + 0.38 * noise) * smoothstep(0.0, 0.45, facing) * 0.27;
+        }
+        // A bubble or skin the step of the history lights (2026-11-11) is white, as a changed sphere is, with a bright
+        // edge a few pixels wide on screen whatever its size, so that a small open bubble, a rim alone, and a veiled one,
+        // already milky, both read as lit while a large one stays calm (an edge that was a share of the radius made a
+        // body of a thousand files a glaring halo, the root's review); face-on it stays as faint as it was, and the dots
+        // an open one holds read through it. The edge's width is read from the facing's change across a pixel.
+        float edge = 1.0 - smoothstep(0.0, 2.5 * fwidth(facing), facing);
+        if (vLit > 0.0) {
+          color = mix(color, vec3(1.0), vLit);
+          alpha += 0.7 * vLit * edge;
         }
         float rim = uRim * vHover * pow(1.0 - facing, 3.0);
         color = mix(color, vec3(0.86, 0.93, 1.0), rim);

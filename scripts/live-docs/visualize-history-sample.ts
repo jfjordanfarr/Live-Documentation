@@ -5,14 +5,15 @@
  * history control can be looked at and tested over a sequence that is not this
  * repository's own and is the same on every machine (2026-10-18). The whole
  * history and a window of its last commits share one repository; separate
- * repositories exercise a rename collision and large growth. Each temporary
+ * repositories exercise a rename collision, large growth and, since 2026-11-11, a picture
+ * large enough to veil. Each temporary
  * repository is removed when its bundles are built.
  *
  * ## Usage
  *
  * ```bash
  * npm run live-docs:visualize:history-sample
- * npx tsx --tsconfig ./tsconfig.base.json scripts/live-docs/visualize-history-sample.ts --output dist/explorer/samples/history --window-output dist/explorer/samples/history-window --window 4 --collision-output dist/explorer/samples/history-collision --growth-output dist/explorer/samples/history-growth
+ * npx tsx --tsconfig ./tsconfig.base.json scripts/live-docs/visualize-history-sample.ts --output dist/explorer/samples/history --window-output dist/explorer/samples/history-window --window 4 --collision-output dist/explorer/samples/history-collision --growth-output dist/explorer/samples/history-growth --veil-output dist/explorer/samples/history-veil
  * ```
  */
 
@@ -25,7 +26,7 @@ import { buildStaticExplorer } from "@live-documentation/explorer/shared/staticB
 import { generateLiveDocs } from "@live-documentation/generator/generator";
 
 import { computeHistory } from "../../packages/generator/src/history/computeHistory";
-import { buildRepository, COLLISION_CONFIG, COLLISION_SCRIPT, GROWTH_CONFIG, GROWTH_SCRIPT, SCRIPT, SCRIPTED_CONFIG, type ScriptedCommit } from "../../tests/integration/live-docs/scripted-repository";
+import { buildRepository, COLLISION_CONFIG, COLLISION_SCRIPT, GROWTH_CONFIG, GROWTH_SCRIPT, SCRIPT, SCRIPTED_CONFIG, VEIL_CONFIG, VEIL_SCRIPT, type ScriptedCommit } from "../../tests/integration/live-docs/scripted-repository";
 
 interface CliOptions {
     outputDir: string;
@@ -35,6 +36,8 @@ interface CliOptions {
     collisionOutputDir?: string;
     /** A separate history growing one to 64 TypeScript files plus its configuration. */
     growthOutputDir?: string;
+    /** A history whose 3D picture veils, past the 1,024 files it draws within skins (2026-11-11). */
+    veilOutputDir?: string;
 }
 
 function parseArgs(args: string[]): CliOptions {
@@ -49,6 +52,8 @@ function parseArgs(args: string[]): CliOptions {
             options.collisionOutputDir = args[++i];
         } else if (arg === "--growth-output") {
             options.growthOutputDir = args[++i];
+        } else if (arg === "--veil-output") {
+            options.veilOutputDir = args[++i];
         } else if (arg === "--window") {
             const count = Number(args[++i]);
             if (!Number.isInteger(count) || count < 1) {
@@ -60,7 +65,7 @@ function parseArgs(args: string[]): CliOptions {
         }
     }
     if (!options.outputDir) {
-        throw new Error("Usage: visualize-history-sample.ts --output <folder> [--window-output <folder> --window <n>] [--collision-output <folder>] [--growth-output <folder>]");
+        throw new Error("Usage: visualize-history-sample.ts --output <folder> [--window-output <folder> --window <n>] [--collision-output <folder>] [--growth-output <folder>] [--veil-output <folder>]");
     }
     return options;
 }
@@ -94,6 +99,9 @@ async function main(): Promise<void> {
     }
     if (options.growthOutputDir) {
         await buildSample(GROWTH_SCRIPT, GROWTH_CONFIG, [{ dir: options.growthOutputDir, history: { rule: "all" } as const, label: "the two-to-sixty-five-document growth" }]);
+    }
+    if (options.veilOutputDir) {
+        await buildSample(VEIL_SCRIPT, VEIL_CONFIG, [{ dir: options.veilOutputDir, history: { rule: "all" } as const, label: "the picture that veils" }]);
     }
 }
 

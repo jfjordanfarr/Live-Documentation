@@ -320,7 +320,9 @@ export function animatePerspective(
         const veiled = primitive.unit?.veiled ?? false;
         const inner = !!primitive.unit || body.kind === "balloon";
         const cloud = body.look !== "skin";
-        context.fillStyle = context.strokeStyle = cloud ? "#8bacc7" : "#83b9d4";
+        // A bubble or skin the step of the history lights folds white, as it was drawn (2026-11-11).
+        const lit = primitive.unit ? !!primitive.unit.lit : !!body.lit;
+        context.fillStyle = context.strokeStyle = lit ? "#ffffff" : cloud ? "#8bacc7" : "#83b9d4";
         context.globalAlpha = presence * alpha * (cloud ? 0.27 : veiled ? 0.42 : inner ? 0.015 : 0.05);
         context.fill(primitive.path);
         context.globalAlpha = presence * alpha * (cloud ? body.hovered ? 0.6 : 0 : veiled ? 0.62 : inner ? 0.315 : 0.27);

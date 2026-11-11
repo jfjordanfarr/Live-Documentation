@@ -30,6 +30,9 @@ export const COLLISION_CONFIG = { root: ".mdmd", baseLayer: "layer-4", extension
 /** The independent growth sample begins with its first root-level file. */
 export const GROWTH_CONFIG = { root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md", entryPoints: ["part00.ts"] };
 
+/** The veiling sample's lens: its one entry stands apart from the trees it veils. */
+export const VEIL_CONFIG = { root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md", entryPoints: ["src/main.ts"] };
+
 /** The fixture's git is isolated from the person's configuration, and its authors and dates are fixed. */
 export const FIXTURE_GIT_ENV = {
   ...process.env,
@@ -345,6 +348,43 @@ export const GROWTH_SCRIPT: ScriptedCommit[] = [
       return [`part${name}.ts`, `import { value${previous} } from "./part${previous}";\n\n/** Continues the chain. */\nexport function value${name}(): number { return value${previous}() + 1; }\n`];
     }))
   }
+];
+
+/** A file of the veiling sample: one function, named by its path, and what is added to it. */
+const VEIL_FILE = (path: string, added = ""): string => `/** ${path}. */\nexport function ${path.replace(/\W/g, "_")}(): number { return 1; }\n${added}`;
+const VEIL_ADDED = "/** Added. */\nexport function more(): number { return 2; }\n";
+/** The big tree: 21 directories of 5 of 10 files, 1,050 files, more than the 1,024 files a 3D picture draws within skins. */
+const VEIL_BIG = Object.fromEntries(Array.from({ length: 21 * 5 * 10 }, (_, index) => {
+  const path = `big/d${String(Math.floor(index / 50)).padStart(2, "0")}/e${Math.floor(index / 10) % 5}/f${String(index % 10).padStart(2, "0")}.ts`;
+  return [path, VEIL_FILE(path)];
+}));
+/** A small second tree, which brings the picture past the limit while it stands. */
+const VEIL_WIDE = Object.fromEntries(Array.from({ length: 10 }, (_, index) => {
+  const path = `wide/h${String(index).padStart(2, "0")}.ts`;
+  return [path, VEIL_FILE(path)];
+}));
+
+/**
+ * A separate history large enough that the 3D Structure picture veils what it cannot draw (2026-11-11), so that the
+ * history's emphasis can be checked inside veils. While `wide` stands, the picture's files pass 1,024 and the `big`
+ * bubble is veiled whole; once `wide` is gone, `big` is open and its last three directories of ten files,
+ * `big/d20/e2` to `e4`, are veiled bubbles within it. Each step touches one file of a veiled part, and the last
+ * deletes one.
+ */
+export const VEIL_SCRIPT: ScriptedCommit[] = [
+  {
+    message: "Begin with a big tree, a small one and an entry",
+    date: "2026-02-01T10:00:00+00:00",
+    write: { ".live-docs.config.json": `${JSON.stringify(VEIL_CONFIG, null, 2)}\n`, "src/main.ts": VEIL_FILE("src/main.ts"), ...VEIL_BIG, ...VEIL_WIDE }
+  },
+  { message: "Touch a corner of the big tree", date: "2026-02-02T10:00:00+00:00", write: { "big/d07/e1/f03.ts": VEIL_FILE("big/d07/e1/f03.ts", VEIL_ADDED) } },
+  {
+    message: "Retire the small tree and touch a veiled corner",
+    date: "2026-02-03T10:00:00+00:00",
+    remove: Object.keys(VEIL_WIDE),
+    write: { "big/d20/e3/f04.ts": VEIL_FILE("big/d20/e3/f04.ts", VEIL_ADDED) }
+  },
+  { message: "Delete a file in the veiled corner", date: "2026-02-04T10:00:00+00:00", remove: ["big/d20/e2/f05.ts"] }
 ];
 
 export function buildRepository(root: string, script: ScriptedCommit[] = SCRIPT): string[] {

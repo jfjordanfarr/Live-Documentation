@@ -366,8 +366,8 @@ describe("what a shell's skin shows within it (2026-11-06)", () => {
     expect(mesh(buffers, "Spatial shell balloons").visible).toBe(false);
     buffers.setWrappers(["shell:s"], () => hull, "skin", undefined, () => units);
     buffers.styleWrappers({ alpha: () => .8, scale: () => 1, hovered: null, popping: new Set() }); draw();
-    expect(shown(buffers, "Spatial shell files")).toEqual([{ seed: "shell:s", id: "s/own.ts", kind: "file", x: 110, y: 0, z: 0, radius: 4, alpha: .75 * .8, veiled: false }]);
-    expect(shown(buffers, "Spatial shell balloons")).toEqual([{ seed: "shell:s", id: "s/sub", kind: "directory", x: 85, y: 0, z: 0, radius: 12, alpha: .8, veiled: false }]);
+    expect(shown(buffers, "Spatial shell files")).toEqual([{ seed: "shell:s", id: "s/own.ts", kind: "file", x: 110, y: 0, z: 0, radius: 4, alpha: .75 * .8, veiled: false, lit: false }]);
+    expect(shown(buffers, "Spatial shell balloons")).toEqual([{ seed: "shell:s", id: "s/sub", kind: "directory", x: 85, y: 0, z: 0, radius: 12, alpha: .8, veiled: false, lit: false }]);
     const files = mesh(buffers, "Spatial shell files"), matrix = new Matrix4(), color = new Color();
     files.getMatrixAt(0, matrix); files.getColorAt(0, color);
     expect(new Vector3().setFromMatrixPosition(matrix).toArray()).toEqual([110, 0, 0]);
@@ -391,6 +391,46 @@ describe("what a shell's skin shows within it (2026-11-06)", () => {
     buffers.styleWrappers({ alpha: () => 1, scale: () => 1, hovered: null, popping: new Set() }); draw();
     expect(shown(buffers, "Spatial shell files")).toEqual([]);
     expect(mesh(buffers, "Spatial shell balloons").visible).toBe(false);
+    buffers.dispose();
+  });
+
+  it("carries the step of the history as the view colours it: a dot's colour and alpha, a bubble's light and alpha, the skin's own (2026-11-11)", () => {
+    const { buffers, draw } = setup(node => !node.id.startsWith("shell:")), shell = node("shell:s", 100, 0, 0, 30);
+    buffers.setData({ nodes: [shell], links: [] });
+    const lit: SpatialWrapperUnit[] = [{ ...units[0], color: "rgba(255, 255, 255, 1.000)" }, { ...units[1], lit: true, alpha: 1 }];
+    buffers.setWrappers(["shell:s"], () => hull, "skin", undefined, () => lit);
+    buffers.styleWrappers({ alpha: () => .8, scale: () => 1, hovered: null, popping: new Set(), skin: () => ({ lit: true, alpha: 1 }) }); draw();
+    const files = mesh(buffers, "Spatial shell files"), balloons = mesh(buffers, "Spatial shell balloons"), color = new Color();
+    files.getColorAt(0, color);
+    expect([color.r, color.g, color.b]).toEqual([1, 1, 1]);
+    expect(files.geometry.getAttribute("spatialOpacity").getX(0)).toBeCloseTo(.75 * .8, 6);
+    expect(balloons.geometry.getAttribute("spatialLit").getX(0)).toBe(1);
+    expect(balloons.geometry.getAttribute("spatialOpacity").getX(0)).toBeCloseTo(.8, 6);
+    const skinLit = buffers.wrappers.geometry.getAttribute("wrapperLit"), skinAlpha = buffers.wrappers.geometry.getAttribute("wrapperAlpha");
+    expect(new Set(Array.from({ length: skinLit.count }, (_, i) => skinLit.getX(i)))).toEqual(new Set([1]));
+    expect(shown(buffers, "Spatial shell balloons")[0]).toMatchObject({ lit: true });
+    // The transition's frozen bodies carry the light as drawn.
+    const frozen = buffers.captureBodies(new Set(["shell:s"]))[0];
+    expect(frozen.lit).toBe(true);
+    expect(frozen.units.map(unit => [unit.kind, unit.lit ?? false])).toEqual([["file", false], ["directory", true]]);
+    // Dimmed: the dot's colour carries its alpha, the bubble's and the skin's own share multiply their node's, nothing lit.
+    const dimmed: SpatialWrapperUnit[] = [{ ...units[0], color: "rgba(255, 102, 0, 0.200)" }, { ...units[1], lit: false, alpha: .2 }];
+    buffers.setWrappers(["shell:s"], () => hull, "skin", undefined, () => dimmed);
+    buffers.styleWrappers({ alpha: () => .8, scale: () => 1, hovered: null, popping: new Set(), skin: () => ({ lit: false, alpha: .2 }) }); draw();
+    expect(files.geometry.getAttribute("spatialOpacity").getX(0)).toBeCloseTo(.75 * .2 * .8, 6);
+    expect(balloons.geometry.getAttribute("spatialLit").getX(0)).toBe(0);
+    expect(balloons.geometry.getAttribute("spatialOpacity").getX(0)).toBeCloseTo(.2 * .8, 6);
+    const skinAfter = buffers.wrappers.geometry.getAttribute("wrapperAlpha"), litAfter = buffers.wrappers.geometry.getAttribute("wrapperLit");
+    expect(new Set(Array.from({ length: skinAfter.count }, (_, i) => Math.fround(skinAfter.getX(i))))).toEqual(new Set([Math.fround(.2 * .8)]));
+    expect(new Set(Array.from({ length: litAfter.count }, (_, i) => litAfter.getX(i)))).toEqual(new Set([0]));
+    expect(skinAlpha.count).toBe(skinAfter.count);
+    // A skin not built yet stands as one balloon of its body, carrying the skin's step.
+    const pending = setup(node => !node.id.startsWith("shell:"));
+    pending.buffers.setData({ nodes: [node("shell:s", 100, 0, 0, 30)], links: [] });
+    pending.buffers.setWrappers(["shell:s"], () => undefined, "skin", undefined, () => undefined);
+    pending.buffers.styleWrappers({ alpha: () => 1, scale: () => 1, hovered: null, popping: new Set(), skin: () => ({ lit: true, alpha: .2 }) }); pending.draw();
+    expect(shown(pending.buffers, "Spatial shell balloons")).toEqual([expect.objectContaining({ id: "shell:s", kind: "body", lit: true, alpha: .2 })]);
+    pending.buffers.dispose();
     buffers.dispose();
   });
 

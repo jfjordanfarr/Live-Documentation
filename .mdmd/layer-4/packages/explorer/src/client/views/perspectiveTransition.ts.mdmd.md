@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/perspectiveTransition.ts
-- Generated At: 2026-11-09T00:01:55.489Z
+- Generated At: 2026-11-11T06:51:22.084Z
 
 ## Authored
 ### Purpose
@@ -25,6 +25,7 @@ The pin-only handoff uses the newest retained file as a visual anchor without ma
 Since November 8, 2026, Structure cells remain real captured hubs and single-file directory aliases resolve through canonical containment metadata. The same one-to-one correspondence controls native token origins, card destinations and travelling names in both directions. An exact file card takes precedence over an alias, so each canonical destination is drawn and named once; unmatched Connections folders keep their existing fade.
 
 The November 8 container carrier uses frozen projected skin boundaries and actual interior marks, prepared as paths once and translated during the existing phases. It retains native global file/balloon/skin passes, draw kind, alpha, veils and nested ordering. Transparent outlines replace the rejected flat amber disks; native lighting and cloud noise are simplified by the temporary vector drawing. Links are captured only when submitted visibly by 3D; a graph-only link fades with the 3D side even when both ends have corresponding cards, while a real source 2D wire retains its existing gather/fold behavior.
+Since 2026-11-11 ([Turn 6 of the November 10 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-10.1.record.md#turn-6)) a frozen bubble or skin that the step of the history lit folds in white, as the 3D picture drew it, rather than in the skin's own colour.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -82,7 +83,7 @@ are not changed by this temporary, non-interactive drawing.
 
 #### `holdPerspective` {#symbol-holdperspective}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L370)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L372)
 
 ##### `holdPerspective` — Summary
 Hold the source picture while the destination renderer produces its first frame: the source surface itself stays

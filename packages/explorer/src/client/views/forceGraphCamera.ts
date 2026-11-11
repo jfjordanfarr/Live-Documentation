@@ -60,6 +60,21 @@ export function frameCameraSpheres(
   return { camera: target.clone().addScaledVector(back, distance), target };
 }
 
+/**
+ * What a panel standing in the picture's top left corner takes from the camera's room (2026-11-11): the room beside it,
+ * as the view has always framed the picture, while that leaves the picture `least` pixels of width; where it does not,
+ * the room above the panel's lower edge, so that the picture is framed below the panel and never under it. The history's
+ * step panel was as tall as the picture, and where nothing was left beside it the panel was hidden or the picture drawn
+ * under it; a few lines high since this date, it can stand above the picture instead. The room beside is kept wherever
+ * it serves because it is the taller one: a picture as tall as it is wide is drawn larger there than below (measured on
+ * this repository's root Structure picture, which a rule by the larger area had drawn a fifth smaller). `room` is the
+ * picture's room before the panel, `panel` the panel's right and bottom edges within it.
+ */
+export function cornerPanelInsets(room: { width: number; height: number }, panel: { right: number; bottom: number }, least = 320): { left: number; top: number } {
+  const right = Math.max(0, Math.min(room.width, panel.right)), bottom = Math.max(0, Math.min(room.height, panel.bottom));
+  return room.width - right >= least ? { left: right, top: 0 } : { left: 0, top: bottom };
+}
+
 /** Move toward a file without changing the direction from which the person is looking. */
 export function focusedCameraPosition(
   camera: CameraPoint,

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/visualize-history-sample.ts
 - Entry: command `live-docs:visualize:history-sample` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-09T00:01:56.064Z
+- Generated At: 2026-11-11T06:51:24.209Z
 
 ## Authored
 ### Purpose
@@ -15,6 +15,7 @@ Builds controlled history bundles through the real history, generator and static
 - Built 2026-10-18 for ticket C4 of [the change-over-time plan](../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions), so that `tests/e2e/history-scrubber.spec.ts` does not depend on this repository's own history, which CI does not compute. `npm run live-docs:visualize:history-sample` writes `dist/explorer/samples/history/` and `dist/explorer/samples/history-window/`, and `npm run test:e2e` runs it before Playwright, beside the estate sample's build. The repository is built in a temporary folder by `tests/integration/live-docs/scripted-repository.ts` and removed when the build is done.
 - `--collision-output` (2026-10-18) builds the second script's bundle, the rename onto a dead file's path, beside the first script's whole history and its window; one build function serves all three.
 - `--growth-output` (November 8, 2026) builds a separate two-commit history dated January 1 and December 1, growing one root-level TypeScript file into a 64-file import chain. The configuration remains part of the normal lens, so canonical membership grows from two to 65 documents. The camera-follow regression keeps its greater-than-tenfold growth, framing and manual-gesture assertions without depending on a machine's repository-history cache. The original samples are unchanged.
+- `--veil-output` (2026-11-11, [Turn 6 of the November 10 record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-10.1.record.md#turn-6)) builds the veiling sample (`VEIL_SCRIPT`) at `dist/explorer/samples/history-veil`. Measured on a quiet machine, it adds 30 seconds to `npm run live-docs:visualize:history-sample` (53.9 s without it, 83.9 s with it).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -38,6 +39,8 @@ _No public symbols detected_
 - [`scripted-repository.SCRIPT`](../../tests/integration/live-docs/scripted-repository.ts.mdmd.md#symbol-script)
 - [`scripted-repository.SCRIPTED_CONFIG`](../../tests/integration/live-docs/scripted-repository.ts.mdmd.md#symbol-scripted_config)
 - [`scripted-repository.ScriptedCommit`](../../tests/integration/live-docs/scripted-repository.ts.mdmd.md#symbol-scriptedcommit)
+- [`scripted-repository.VEIL_CONFIG`](../../tests/integration/live-docs/scripted-repository.ts.mdmd.md#symbol-veil_config)
+- [`scripted-repository.VEIL_SCRIPT`](../../tests/integration/live-docs/scripted-repository.ts.mdmd.md#symbol-veil_script)
 - [`scripted-repository.buildRepository`](../../tests/integration/live-docs/scripted-repository.ts.mdmd.md#symbol-buildrepository)
 <!-- LIVE-DOC:END Dependencies -->
 

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphBatches.ts
-- Generated At: 2026-11-10T16:20:12.318Z
+- Generated At: 2026-11-11T06:51:19.644Z
 
 ## Authored
 ### Purpose
@@ -38,6 +38,8 @@ Since November 8, 2026 the contained-file batch selects its [per-sample sphere p
 Native contained capture also records the submitted material's facing, so a clipped FrontSide fallback retains only its actual uploaded front surfaces.
 
 Since the correction in [November 10, Turn 3](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-10.1.record.md#turn-3), `SPATIAL_RING_OUTER_RADIUS` names the ring geometry's outer edge in drawn-sphere units. Projected name placement reads that same constant, so its clearance includes the actual ring without a second renderer-specific radius.
+
+Since 2026-11-11 ([Turn 6 of the November 10 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-10.1.record.md#turn-6)) what a skin shows within it carries the step of the history shown, as the view colours it (`forceGraphEmphasis.ts`). A file's dot carries the step in its colour, alpha included, parsed as a sphere's colour is. A bubble carries two values of its own: `lit`, written to a per-instance `spatialLit` attribute beside `spatialVeil`, and `alpha`, its own share of its opacity before its node's. The skin itself takes the style's `skin` accessor, its light written to a per-vertex `wrapperLit` attribute and its share multiplied into `wrapperAlpha`; the balloon a pending skin stands as carries the same. `wrapperShader` draws anything lit white, as a changed sphere is white, with a bright edge about two and a half pixels wide on screen whatever its size, read from the facing's change across a pixel (`fwidth`), and its face as faint as before, so that a small open bubble, a rim alone, and a veiled one, already milky, both read as lit, a large one stays calm, and an open one's dots read through it. The root refused the first edge, a share of the radius, which made a body of a thousand files a glaring halo. `captureBodies` records the light of each skin and unit it freezes. The attention's fade still multiplies everything a skin shows, and the step's dimming is applied once to each thing, never again through its skin.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -88,7 +90,7 @@ seeds bursting open, drawn but no longer picked.
 
 #### `SpatialWrapperUnit` {#symbol-spatialwrapperunit}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L74)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L82)
 
 ##### `SpatialWrapperUnit` — Summary
 One unit a wrapper shows within its skin (2026-11-06), relative to its centre: a file, drawn as a sphere in its colour
@@ -97,7 +99,7 @@ skin's look.
 
 #### `createSpatialBuffers` {#symbol-createspatialbuffers}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L91)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L106)
 - Parameters: `scene`: `Scene`; `style`: [`SpatialDrawStyle`](#symbol-spatialdrawstyle); `renderer`: `WebGLRenderer`
 - Constraints: [`SpatialNode`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnode), [`SpatialDrawLink`](#symbol-spatialdrawlink)
 
@@ -106,7 +108,7 @@ Pack documented nodes and wires straight into three instance buffers; camera cha
 
 #### `drawSpatialGraphOnChange` {#symbol-drawspatialgraphonchange}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L563)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L598)
 - Parameters: `camera`: `Camera`; `renderer`: `WebGLRenderer`
 
 ##### `drawSpatialGraphOnChange` — Summary
@@ -114,7 +116,7 @@ Draw when the camera or the caller's picture revision changes, leaving stationar
 
 #### `screenWireIntersectsFrustum` {#symbol-screenwireintersectsfrustum}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L593)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L628)
 - Parameters: `clipMatrix`: `Matrix4`; `viewport`: `Vector2`
 
 ##### `screenWireIntersectsFrustum` — Summary

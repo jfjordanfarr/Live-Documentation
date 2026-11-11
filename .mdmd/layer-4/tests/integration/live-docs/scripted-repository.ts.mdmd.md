@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/scripted-repository.ts
-- Generated At: 2026-11-09T00:01:57.611Z
+- Generated At: 2026-11-11T06:51:30.477Z
 
 ## Authored
 ### Purpose
@@ -15,6 +15,7 @@ A small git repository built from a script of seven commits, the subject of the 
 - `COLLISION_SCRIPT` (2026-10-18) is a second script of four commits, a helper moved onto the path of a file that died the commit before, built as a third sample bundle for the scrubber spec after the owner found lines leading nowhere in the played history ([Turn 8](../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-8)).
 - Since 2026-10-20 ([Turn 9](../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-9)) the mirror the script commits links documents in its authored words: the main file's doc links the design and a plan written only at the fourth commit, the legacy helper's links its old notes and is retired with them, the main file's doc drops the design at the fifth, and the orphan's doc links the design too, a link that must never count.
 - `GROWTH_SCRIPT` and `GROWTH_CONFIG` (November 8, 2026) supply a separate two-commit camera-follow fixture: one root-level TypeScript file on January 1 becomes a 64-file import chain on December 1. The configuration remains in the normal lens, making canonical membership two then 65 documents. The normal history/generator/static build produces its canonical facts; it changes none of the original script's counts or expected steps.
+- `VEIL_SCRIPT` and `VEIL_CONFIG` (2026-11-11, for [Turn 6 of the November 10 record](../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-10.1.record.md#turn-6)) supply a four-commit history large enough that the 3D Structure picture veils: a `big` tree of 1,050 files, past the 1,024 files a picture draws within skins, a small `wide` tree of ten files and the entry. While `wide` stands `big` is veiled whole; once it is gone `big` is open and `big/d20/e2` to `e4` are veiled bubbles within it. The steps touch a file in each veiled part and delete one, so that the history's emphasis can be checked inside veils.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -40,30 +41,37 @@ The lens of the second script, whose user file is its entry.
 ##### `GROWTH_CONFIG` — Summary
 The independent growth sample begins with its first root-level file.
 
-#### `FIXTURE_GIT_ENV` {#symbol-fixture_git_env}
+#### `VEIL_CONFIG` {#symbol-veil_config}
 - Type: const
 - Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L34)
+
+##### `VEIL_CONFIG` — Summary
+The veiling sample's lens: its one entry stands apart from the trees it veils.
+
+#### `FIXTURE_GIT_ENV` {#symbol-fixture_git_env}
+- Type: const
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L37)
 
 ##### `FIXTURE_GIT_ENV` — Summary
 The fixture's git is isolated from the person's configuration, and its authors and dates are fixed.
 
 #### `MODEL` {#symbol-model}
 - Type: const
-- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L117)
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L120)
 
 ##### `MODEL` — Summary
 The model, with the factor its size grows by: the same symbols whatever the factor, so a change of it moves nothing in the shape.
 
 #### `ScriptedCommit` {#symbol-scriptedcommit}
 - Type: interface
-- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L151)
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L154)
 
 ##### `ScriptedCommit` — Summary
 One commit of the script: its message, its date, and what it does to the tree.
 
 #### `SCRIPT` {#symbol-script}
 - Type: const
-- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L160)
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L163)
 - Returns: [`ScriptedCommit`](#symbol-scriptedcommit)[]
 
 ##### `SCRIPT` — Summary
@@ -71,14 +79,14 @@ The seven commits, oldest first.
 
 #### `git` {#symbol-git}
 - Type: function
-- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L287)
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L290)
 
 ##### `git` — Summary
 Runs git in the fixture, isolated from the person's configuration.
 
 #### `COLLISION_SCRIPT` {#symbol-collision_script}
 - Type: const
-- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L299)
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L302)
 - Returns: [`ScriptedCommit`](#symbol-scriptedcommit)[]
 
 ##### `COLLISION_SCRIPT` — Summary
@@ -90,15 +98,27 @@ lines resolved to the dropped object led nowhere after a play through this repos
 
 #### `GROWTH_SCRIPT` {#symbol-growth_script}
 - Type: const
-- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L331)
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L334)
 - Returns: [`ScriptedCommit`](#symbol-scriptedcommit)[]
 
 ##### `GROWTH_SCRIPT` — Summary
 A separate fixed history grows one root file into a 64-file import chain, to exercise overview reframing.
 
+#### `VEIL_SCRIPT` {#symbol-veil_script}
+- Type: const
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L374)
+- Returns: [`ScriptedCommit`](#symbol-scriptedcommit)[]
+
+##### `VEIL_SCRIPT` — Summary
+A separate history large enough that the 3D Structure picture veils what it cannot draw (2026-11-11), so that the
+history's emphasis can be checked inside veils. While `wide` stands, the picture's files pass 1,024 and the `big`
+bubble is veiled whole; once `wide` is gone, `big` is open and its last three directories of ten files,
+`big/d20/e2` to `e4`, are veiled bubbles within it. Each step touches one file of a veiled part, and the last
+deletes one.
+
 #### `buildRepository` {#symbol-buildrepository}
 - Type: function
-- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L350)
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L390)
 - Parameters: `script`: [`ScriptedCommit`](#symbol-scriptedcommit)[]
 <!-- LIVE-DOC:END Public Symbols -->
 

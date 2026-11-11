@@ -19,7 +19,7 @@ The workspace manifest: the four npm workspaces (engine, generator, explorer, cl
 - `tree-sitter-cli` is pinned exactly (0.27.1, since 2026-10-16) for `packages/engine/grammars/powershell/build.sh`, which builds the engine's own PowerShell grammar; the pin fixes the generator and the wasi-sdk and binaryen the CLI fetches to compile it, so that a rebuild gives the committed wasm byte for byte.
 - This doc is written by the JSON adapter's manifest branch (since 2026-09-28): the package as its one symbol, the workspace packages linked by name, the rest external with their ranges.
 
-`live-docs:visualize:history-sample` (2026-10-18, the plan's C4) builds the scripted repository's whole/window bundles and the separate collision and growth histories for the history specs; `test:e2e` runs it before Playwright.
+`live-docs:visualize:history-sample` (2026-10-18, the plan's C4) builds the scripted repository's whole/window bundles and the separate collision, growth and, since 2026-11-11, veiling histories for the history specs; `test:e2e` runs it before Playwright.
 
 `test:unit` runs the `unit` and `unit-serial` projects since [2026-11-05](../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-8): measured deadline-bound suites run alone on one worker after everything else, the rest on the default workers. The current membership and unchanged-deadline rationale are recorded in [the Vitest configuration's Live Doc](./vitest.config.ts.mdmd.md).
 

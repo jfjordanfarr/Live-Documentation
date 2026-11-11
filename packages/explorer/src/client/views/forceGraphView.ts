@@ -17,7 +17,9 @@
  * rest only beside what was asked about and the hovered sphere; the rest are
  * named when their sphere draws at the tuning's `nameAt` (the owner, 2026-11-02:
  * "until _the very last second_"). While a moment of the history is shown, the
- * files the step changed glow or the rest dim, by the tuning.
+ * files the step changed glow or the rest dim, by the tuning; since 2026-11-11
+ * inside the wrappers too, each change at the innermost thing drawn for it: a
+ * dot, or the veiled bubble or skin that holds it (`emphasizeBodies`).
  *
  * Two layouts share the renderer (2026-10-14): in the connections layout the
  * documented references pull and are drawn; in the structure layout every file
@@ -38,9 +40,9 @@ import { Matrix4, PerspectiveCamera, Vector3 } from "three";
 
 import { spatialNodeStyle } from "./forceGraphAppearance";
 import { SPATIAL_RING_OUTER_RADIUS, type SpatialWrapperUnit } from "./forceGraphBatches";
-import { focusedCameraPosition, frameCameraSpheres, screenAnchorTranslation, wheelZoomCamera, type CameraPoint } from "./forceGraphCamera";
+import { cornerPanelInsets, focusedCameraPosition, frameCameraSpheres, screenAnchorTranslation, wheelZoomCamera, type CameraPoint } from "./forceGraphCamera";
 import { directoryNodeId, labelNamesOf, spatialGraphOf, type SpatialGraphData, type SpatialGraphNode, type SpatialLinkKind } from "./forceGraphData";
-import { emphasizedSphere, emphasizedWireAlpha, pairKey } from "./forceGraphEmphasis";
+import { bodyChanges, deletionHomes, emphasizedSkin, emphasizedSphere, emphasizedUnits, emphasizedWireAlpha, pairKey } from "./forceGraphEmphasis";
 import { placeSpatialLabels, type SpatialLabel, type SpatialLabelBody, type LabelBox } from "./forceGraphLabels";
 import { linkPulls, motionForce, placeNewSpheres, spatialNodeRadius, symbolCountOf, type MotionForce, type MotionStart, type Placed } from "./forceGraphLayout";
 import { SPATIAL_DRAG_SLOP, SpatialRenderer } from "./forceGraphRenderer";
@@ -173,6 +175,8 @@ export interface ForceGraphViewApi {
   fit(): void;
   /** Keep newly opened evidence from covering the file being inspected, without changing its selected identity. */
   keepInspectionVisible(): void;
+  /** The room the camera frames the picture in, within the view: beside the reader and clear of the history's controls. */
+  cameraRoom(): { left: number; top: number; width: number; height: number };
   /**
    * Show a moment of the history in place of today, or today again (null), re-keying the picture through the renames
    * from the moment shown before; the change is fed at `energy`, or at the tuning's when none is given. Drawn at once
@@ -321,6 +325,14 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   let spokesOf: Map<string, Spoke> | null = null;
   /** What each shell's skin shows within it, with its files' colours, by its packing. */
   const shownUnits = new WeakMap<GroupShape, SpatialWrapperUnit[]>();
+  /**
+   * The step of the history inside the wrappers (2026-11-11, the owner's "Is it possible to still get the illumination of
+   * the changed node even if it's buried deep in the bubbles?"): each wrapped body's units as the step colours them and how
+   * its skin carries the step, by the body's node, with the units they were coloured from and what of the step they were
+   * coloured for, so that a body is coloured again only when that changes; and the files each packing holds, by path.
+   */
+  let emphasized = new Map<string, { base: readonly SpatialWrapperUnit[] | undefined; key: string; units: readonly SpatialWrapperUnit[] | undefined; skin: { lit: boolean; alpha: number } }>();
+  const bodyMembers = new WeakMap<GroupShape, ReadonlySet<string>>();
   const poppedChips = new Map<string, HTMLButtonElement>();
   /** The radius each popped directory's skin had when it was popped, which its name stands beside (2026-11-07, third round). */
   const poppedSkins = new Map<string, number>();
@@ -353,7 +365,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
    */
   const fitOf = (id: string): number => bursts.get(id)?.fit ?? 1;
   /** What a wrapped body's skin shows within it: every file, in its kind's colour, and every inner bubble. */
-  const unitsOf = (id: string): readonly SpatialWrapperUnit[] | undefined => {
+  const plainUnitsOf = (id: string): readonly SpatialWrapperUnit[] | undefined => {
     const shape = wrapped.has(id) ? shapeOf(id) : undefined;
     if (!shape?.units) return undefined;
     if (pictureVeiled.has(id)) {
@@ -365,6 +377,14 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     if (!units) shownUnits.set(shape, units = shape.units.map(unit => ({ ...unit, color: unit.kind === "file" ? spatialNodeStyle(unit.archetype).color : undefined })));
     return units;
   };
+  /** What a wrapped body's skin shows within it, as the step of the history shown colours it (`emphasizeBodies`). */
+  const unitsOf = (id: string): readonly SpatialWrapperUnit[] | undefined => {
+    const plain = plainUnitsOf(id), coloured = emphasized.get(id);
+    return coloured && coloured.base === plain ? coloured.units : plain;
+  };
+  /** How a wrapped body's skin carries the step of the history shown. */
+  const PLAIN_SKIN = { lit: false, alpha: 1 };
+  const skinOf = (id: string): { lit: boolean; alpha: number } => emphasized.get(id)?.skin ?? PLAIN_SKIN;
   /** Whether a node stands wrapped now: wrapping, and a group's seed or a directory shell with its hull built. */
   const isWrapped = (id: string): boolean => wrapping() && wrapped.has(id) && !!bodies.get(wrapped.get(id)!)?.hull;
   /** A ring marks connections beyond the picture, unless a wrapper already carries that meaning. */
@@ -1099,21 +1119,33 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     zoomMotion = null;
   }
 
-  /** The rectangular space left by evidence and timeline controls; a full-screen reader leaves framing unchanged. */
+  /**
+   * The rectangular space left by evidence and timeline controls; a full-screen reader leaves framing unchanged. The
+   * history's step panel, in the top left corner, takes the room beside it, or, where too little would be left there,
+   * the room above its lower edge (`cornerPanelInsets`, 2026-11-11, when the panel became a few lines high).
+   */
   function cameraInsets(): { left: number; right: number; top: number; bottom: number } {
     const frame = requireElement("graph-svg").getBoundingClientRect();
     const inset = { left: 0, right: 0, top: 0, bottom: 0 };
     const reader = document.querySelector<HTMLElement>("#detail-panel.visible");
     if (reader) inset.right = Math.max(0, Math.min(frame.width, reader.offsetWidth));
-    const history = document.querySelector<HTMLElement>(".history-step-panel:not([hidden])");
-    if (history) inset.left = Math.max(0, history.getBoundingClientRect().right - frame.left);
     if (frame.width - inset.right < 240) inset.right = 0;
-    if (frame.width - inset.left - inset.right < 240) inset.left = 0;
     for (const controls of document.querySelectorAll<HTMLElement>(".perspective-controls:not([hidden]), .history-scrubber:not([hidden])")) {
       const box = controls.getBoundingClientRect();
       if (box.width && box.top > frame.top && box.bottom <= frame.bottom + 1) inset.bottom = Math.max(inset.bottom, frame.bottom - box.top);
     }
+    const history = document.querySelector<HTMLElement>(".history-step-panel:not([hidden])");
+    if (history) {
+      const box = history.getBoundingClientRect();
+      Object.assign(inset, cornerPanelInsets({ width: frame.width - inset.right, height: frame.height - inset.bottom }, { right: box.right - frame.left, bottom: box.bottom - frame.top }));
+    }
     return inset;
+  }
+
+  /** The room the camera frames the picture in, within the view: what the evidence and the history's controls leave uncovered. */
+  function cameraRoom(): { left: number; top: number; width: number; height: number } {
+    const frame = requireElement("graph-svg").getBoundingClientRect(), inset = cameraInsets();
+    return { left: inset.left, top: inset.top, width: frame.width - inset.left - inset.right, height: frame.height - inset.top - inset.bottom };
   }
 
   function keepInspectionVisible(): void {
@@ -1379,6 +1411,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     const wanted = new Set(wrapped.values());
     bodyWork = bodyWork.filter(key => wanted.has(key)).sort((a, b) => (bodies.get(a)!.shape.files ?? 0) - (bodies.get(b)!.shape.files ?? 0) || (a < b ? -1 : a > b ? 1 : 0));
     if (wrapped.size) performance.measure("live-docs:shells", { start: building });
+    emphasizeBodies(data.nodes);
     // A wrapped group's seed keeps its body's room in the field, its own sphere or its group's volume and a wrapper's
     // padding, known before its hull is built, so that no wrapper covers another or what is shown and the room does not
     // change when the hull arrives; the hull is drawn to fit it.
@@ -2070,6 +2103,50 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     return { nodes, links };
   }
 
+  /**
+   * Colour what each wrapped body shows within its skin, and its skin, by the step of the history shown (2026-11-11): a
+   * change is shown at the innermost thing the picture draws for it (`bodyChanges`). A body is coloured again only when
+   * what the step changes in it, the mode or the look does, so that a step recolours the bodies it or the step before
+   * touched and nothing else: no packing, hull or list of units is built again, and the work is bounded by the units
+   * drawn. A file the step deleted is shown in the body of the deepest directory drawn that held it, none when that is a
+   * hub drawn as a sphere, which lights by its own emphasis (`deletionHomes`). A skin bursting open keeps what it carried
+   * until it is gone. The page's timeline measures this as "live-docs:history-units".
+   */
+  function emphasizeBodies(nodes: readonly SpatialGraphNode[]): void {
+    const changes = historyChanges, mode = changes ? state.tuning.history.changeEmphasis : "none";
+    if (!changes || mode === "none") { emphasized = new Map(); return; }
+    const started = performance.now();
+    const look = state.tuning.forceGraph.groupWrappers;
+    const homes = new Map<string, string | null>();
+    for (const shell of shells.values()) homes.set(shell.directory, shell.id);
+    for (const cell of cells.values()) homes.set(cell.directory, cell.id);
+    if (state.spatialLayout === "structure") for (const node of nodes) {
+      if (node.directoryPath !== undefined && scopeHops.has(node.id) && !homes.has(node.directoryPath)) homes.set(node.directoryPath, null);
+    }
+    const gone = deletionHomes(changes.deletedFiles, homes), changed = [...changes.changed];
+    const next: typeof emphasized = new Map();
+    let coloured = 0, units = 0;
+    for (const id of wrapped.keys()) {
+      const shape = shapeOf(id);
+      if (!shape) continue;
+      let members = bodyMembers.get(shape);
+      if (!members) bodyMembers.set(shape, members = new Set(shape.members.map(member => member.id)));
+      const base = plainUnitsOf(id), deleted = gone.get(id) ?? [];
+      const touched = changed.filter(file => file !== id && members.has(file));
+      const key = JSON.stringify([mode, look, touched, deleted]);
+      const kept = emphasized.get(id);
+      if (kept && kept.base === base && kept.key === key) { next.set(id, kept); continue; }
+      // The cloud looks draw nothing within a skin, so the skin is the innermost thing drawn for every change in it.
+      const where = bodyChanges(look === "skin" ? base ?? [] : [], members, id, touched, deleted);
+      next.set(id, { base, key, units: base && emphasizedUnits(base, where, mode), skin: emphasizedSkin(where, mode) });
+      coloured++; units += base?.length ?? 0;
+    }
+    // A skin bursting open after its pop keeps the step it carried until it is gone.
+    for (const id of bursts.keys()) if (!next.has(id) && emphasized.has(id)) next.set(id, emphasized.get(id)!);
+    emphasized = next;
+    performance.measure("live-docs:history-units", { start: started, detail: { bodies: wrapped.size, coloured, units } });
+  }
+
   /** Pack the bodies the picture waits for, a bubble at a time, within a part of the frame and at least one a frame; whether all are packed. */
   function packBodies(budget = PACKING_BUDGET): boolean {
     const started = performance.now();
@@ -2206,7 +2283,10 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     else { styleWrappers(); pictureChanged(); }
   }
 
-  /** Each wrapper's opacity, as its node's, a bursting one's growth and fading, and the hovered or focused node's, for the rim. */
+  /**
+   * Each wrapper's opacity, as its node's, a bursting one's growth and fading, the hovered or focused node's, for the rim,
+   * and how each skin carries the step of the history shown.
+   */
   function styleWrappers(): void {
     if (!forceGraphInstance) return;
     const now = performance.now(), reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -2215,7 +2295,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       alpha: seed => attentionAlpha(seed) * (1 - burst(seed)),
       scale: seed => fitOf(seed) * (1 + BURST.growth * burst(seed)),
       hovered: hoveredId !== null && isWrapped(hoveredId) ? hoveredId : null,
-      popping: new Set(bursts.keys())
+      popping: new Set(bursts.keys()),
+      skin: skinOf
     });
   }
 
@@ -2291,5 +2372,5 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     container.setAttribute("aria-busy", "true");
   }
 
-  return { render, setActive, focusNode, focusDirectory, fit, keepInspectionVisible, getSubjectAnchor, placeSubjectAnchor, captureScene, revealForTransition, setMoment, settle, whenReady: () => ready && !packing.size ? Promise.resolve() : new Promise(resolve => readyWaiters.push(resolve)) };
+  return { render, setActive, focusNode, focusDirectory, fit, keepInspectionVisible, cameraRoom, getSubjectAnchor, placeSubjectAnchor, captureScene, revealForTransition, setMoment, settle, whenReady: () => ready && !packing.size ? Promise.resolve() : new Promise(resolve => readyWaiters.push(resolve)) };
 }

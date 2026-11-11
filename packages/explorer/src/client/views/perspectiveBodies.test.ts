@@ -19,6 +19,16 @@ const bounds = (body: SceneBody) => ({
 });
 
 describe("frozen submitted skin projection", () => {
+  it("carries the step of the history's light on a skin and on a bubble within it, and none where none was drawn (2026-11-11)", () => {
+    const source = { ...box(), lit: true };
+    source.units.push({ ...box(), id: "src/deep", kind: "directory", color: "rgb(255, 255, 255)", alpha: 0.6, veiled: true, lit: true, order: 0, depth: 0 },
+      { ...box(), id: "src/open", kind: "directory", color: "rgb(255, 255, 255)", alpha: 0.6, veiled: false, order: 1, depth: 0 });
+    const body = projectSpatialBodies([source], camera(), 200, 200).get("directory:src")!;
+    expect(body.lit).toBe(true);
+    expect(body.units.map(unit => [unit.id, unit.lit ?? false])).toEqual([["src/deep", true], ["src/open", false]]);
+    expect(projectSpatialBodies([box()], camera(), 200, 200).get("directory:src")!.lit).toBeUndefined();
+  });
+
   it("projects the real boundary, independent of ordinary sphere zoom resistance", () => {
     const body = projectSpatialBodies([box()], camera(), 200, 200).get("directory:src")!;
     // A 90-degree camera puts the box's front corners, x/y=±1 at z=-3, one third of a half-frame from center.
