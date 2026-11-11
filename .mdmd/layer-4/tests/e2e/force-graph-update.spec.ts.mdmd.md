@@ -20,6 +20,8 @@ Since 2026-10-21 the second test holds the motion ([Turn 5](../../../../AI-Agent
 
 Since 2026-10-31 (discovery, [Turn 4 of the October 31 record](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-4)) the entry opens the root, so that the change moves the whole repository's spheres as the measure wants; the whole enters from one sphere and settles on screen in some eighty seconds of the software renderer, where the first piece's hidden warm-up once took a third of the ticks unseen, so the settle allowance is 150 seconds.
 
+**Measured on 2026-11-11** ([Turn 5 of the November 10 record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-10.1.record.md#turn-5)), alone on an idle machine, with a temporary probe of the second test's journey: the whole root with tests is 955 spheres and enters in 111.5 s over 494 frames (4.4 frames a second); hiding the tests at full energy takes 26.0 s (146 frames, 661 spheres left); showing them again 52.1 s (220 frames); the fifty slider steps 12.8 s; hiding them at half energy 28.1 s (166 frames); the tether's change 18.6 s (107 frames). The five settles alone are 236 s against the test's 240 s, before any of its own readings, so at that frame rate the test cannot pass; on November 8 it passed in 3.4 minutes. Its time grows with the repository's file count and falls with the renderer's frame rate, and its budget does neither. The budget was not changed: what should bound the test is an open question put to the owner on [October 30](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md) and since.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

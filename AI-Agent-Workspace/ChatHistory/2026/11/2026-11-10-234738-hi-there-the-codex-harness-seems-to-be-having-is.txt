@@ -1,0 +1,893 @@
+
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/ChatHistory/2026/11/2026-11-10.export.md in the IDE. This may
+  or may not be related to the current task.</ide_opened_file>
+
+❯ Hi there! The Codex harness seems to be having issues. Would you be able to
+  pick up today's coding work? Looks like the model is Fable 5.2! Cool! Hope
+  the vision capabilities are better than Fable 5.1! The Claude Code harness is
+  pretty good!
+
+● I'll pick it up. Starting with the handoff routine: the Memory documents, the
+  chat-history conventions, and where today's record stands.
+
+  Searched for 1 pattern, read 6 files, ran 5 shell commands (ctrl+o to expand)
+
+● Today's session record is current through Turn 4 (commit 3d84c62d), and the
+  newer export adds no later turn. I'm recording this handover in the same day's
+  record, then reading the startup code before touching anything. · summary
+
+  Read 1 file, ran 3 shell commands (ctrl+o to expand)
+
+● I've read today's record and the priorities back to late October, but the
+  Memory files are too large to load in full, so I'm covering only the parts
+  that govern today's 2D card work. Both preview servers are down, so I'll
+  rebuild and check the Explorer myself next. · summary
+
+  Read 5 files, listed 2 directories, ran 3 shell commands (ctrl+o to expand)
+
+● I've checked the current build's close, middle and overview views, and the
+  same problem shows up at nearly every zoom step: some text stays full size
+  while the rest shrinks, so names get cut off. I'm reading the zoom-ladder code
+  next so I can brief a builder on the few-looks trial. · summary
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Record and export are committed as dd68c1bf. Dispatching the builder for the
+  three-looks zoom trial now.
+
+● Agent(Build three zoom looks trial) Opus 5.5
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+● Yes, I've picked it up. The builder for the next piece of work is running now;
+  nothing of its result is known yet.
+
+  Where the day stood
+
+  - Turn 4 was finished and committed by Codex as 3d84c62d, but your newest
+    export ends at the commit command with no final reply in it, so I assume you
+    never received the answer.
+  - The Turn 4 answer: collapsing the other symbols' description space does make
+    the open description easier to find at close reading. Codex did not adopt
+    that version, for two reasons:
+    - the folded names become tiny at middle zoom;
+    - the footer briefly crosses the moving rows during a fold.
+  - Evidence: the pictures, recordings and the exact trial patch are in the
+    reading-focus probe
+    (AI-Agent-Workspace/Probes/2026-11-10/reading-focus/README.md). Main source
+    was left unchanged.
+  - Previews: both servers had stopped. I restarted port 8900 on the existing
+    build; the separate trial preview on 8918 is not running.
+  - Record: I continued the same day's record as Turn 5
+    (AI-Agent-Workspace/ChatHistory/2026/11/2026-11-10.1.record.md#turn-5) and
+    committed it with your newer export as dd68c1bf.
+
+  Startup reading was partial
+
+  The four Memory files are about 884 KB and the harness refused further large
+  reads in this context, so I did not complete the full startup read.
+
+  - Read in full: AGENTS.md, the chat-history README, and today's record.
+  - Read in part: direction from today back through October 24, most of owner.md
+    including visual taste, most of ideas.md, and the narrative's last two
+    chapters.
+  - Not read: any session summary in full. I read your November 8 words on zoom
+    at the source instead.
+
+  Exact line ranges are in the record.
+
+  What I'm building
+
+  No owner turn followed Turn 4, so I chose the item both previous roots ranked
+  first and never built: your November 8 hypothesis of "very very FEW
+  breakpoints (2-3)" without automatic font scaling.
+
+  I looked at this morning's close, middle and overview pictures of
+  PaymentService.cs. Four presses out, one card shows three apparent scales:
+  - the file name breaks as PaymentService / .cs, with four full-size buttons
+    beside the orphaned suffix;
+  - the first symbol name is cut to P… beside three held buttons;
+  - the Internals row and footer are a fraction of the names' size.
+
+  The cause is in ladder-steps.ts
+  (packages/explorer/src/client/views/localView/ladder-steps.ts): five bands
+  decide what leaves a card, and eleven separate 20% steps re-fit what stays.
+  Most zoom presses cross a step boundary, so names re-wrap or re-truncate.
+
+  The trial adds a Zoom Looks choice under Tuning → 2D Layout. The default stays
+  as today's ladder. The other value gives three looks, in the sense of
+  discrete levels of detail with a short cross-fade between them:
+
+  ┌─────────────┬───────────────┬───────────────────────────────┬──────────┐
+  │             │               │                               │ Size in  │
+  │    Look     │  Zoom range   │      What the card shows      │   map    │
+  │             │               │                               │  units   │
+  ├─────────────┼───────────────┼───────────────────────────────┼──────────┤
+  │ Reading     │ up to two     │ the card as composed          │ 1×       │
+  │             │ presses out   │                               │          │
+  ├─────────────┼───────────────┼───────────────────────────────┼──────────┤
+  │             │ three to six  │ file name, then each symbol   │ about    │
+  │ Connections │ presses out   │ name with one control; no     │ 2.2×     │
+  │             │               │ descriptions                  │          │
+  ├─────────────┼───────────────┼───────────────────────────────┼──────────┤
+  │             │ seven presses │                               │ about    │
+  │ Overview    │  out and      │ file name and gathered wires  │ 4.4×     │
+  │             │ beyond        │                               │          │
+  └─────────────┴───────────────┴───────────────────────────────┴──────────┘
+
+  Within a look nothing re-wraps, re-truncates or changes size relative to the
+  card, and a press out followed by a press back shows the same look.
+
+  The cost: text is smaller at a look's far edge than the ladder holds it today,
+  roughly 0.72 of reading size. A narrow card will also fit only about eleven
+  characters of a symbol name in Connections. Whether that reads better is for
+  the pictures and then your eye. Turn 4's compact folded rows are not in this
+  round.
+
+  An Opus builder at extra-high effort is implementing it in the shared
+  checkout, uncommitted. When it hands back I will review the pictures and
+  motion myself, run the full gate, and give you Explorer links.
+
+  You can try the opposite extreme now on port 8900: set Text Resistance and
+  Control Resistance to 0 under Tuning → 2D Layout. Nothing is re-fitted, and
+  far text becomes unreadably small, which is why each look needs its own size.
+
+  On vision: I could read these screenshots down to the truncated row names and
+  the small footer text. That is three stills, not yet a judgment of motion.
+
+› Message from general-purpose
+  ## Zoom Looks trial: handback (builder; started at dd68c1bf with a clean tree,
+  nothing committed or stashed)
+
+  The trial is built and verified. Evidence is captured, and the docs are
+  regenerated and authored. The trial's worst picture is its overview look: at
+  4.5 it breaks file names inside words on narrow estate cards (see section 6).
+
+  ### 1. Files
+  **Changed**
+  - `packages/explorer/src/client/views/localView/ladder-steps.ts`: `zoomLook`,
+  `LOOK_BANDS`, `LOOK_SCALES` and the `ZoomLook` type. `ladderBand` now shares
+  two helpers with the looks, `edgesAfter` and `stateOf`, and behaves exactly as
+  before.
+  - `.../localView/controller.ts`: `applyLevelOfDetail` is branched for the
+  looks, plus a new `fadeLook()`.
+  - `.../localView/card-reading.ts`: new option `zoomLooks()`. With the trial
+  on, it writes the look lines `data-lines-look-{connections,overview}` and
+  `--controls-y-look-*`, and gives the Internals row the room down to its card's
+  content bottom.
+  - `styles/reading.css`: a new block, all under `[data-looks="three"]`: 4 rules
+  for the look lines and controls, plus the fade, inside
+  `prefers-reduced-motion: no-preference`.
+  - `types.ts`: `ZoomLooks`, `ZOOM_LOOKS`, and `zoomLooks` on `LocalMapTuning`.
+  - `persistence/local-storage.ts`: default `"stepped"`.
+  - `layout-presets.ts`: `readLayoutSettings` carries `localMap.zoomLooks`.
+  - `panels/tuning.ts`, `panels/tuning-levers.ts`, `shared/template.html`: the
+  new select, its help text and its wiring (a change re-renders, as Card Text
+  does).
+  - Tests: `ladder-steps.test.ts` (5 zoomLook cases), `held-lines.test.ts` (a
+  CSS contract case for the look rules), `panels/tuning-levers.test.ts` (count
+  55→56 in two places), `tests/e2e/tuning.spec.ts` (count 55→56 with a comment).
+  - Mirror: 11 regenerated docs under `.mdmd/layer-4/`. I added authored Notes
+  paragraphs to the docs for `ladder-steps.ts`, `card-reading.ts` and
+  `controller.ts`.
+
+  **Created**
+  - `tests/e2e/zoom-looks.spec.ts` (3 tests).
+  - `.mdmd/layer-4/tests/e2e/zoom-looks.spec.ts.mdmd.md`, with authored Purpose
+  and Notes citing 11-10 Turn 5 and 11-08 Turn 2.
+  - `AI-Agent-Workspace/Screenshots/2026-11-10/zoom-looks/`: 48 PNGs, 6 webm
+  videos, `measurements.json`, `README.md`.
+
+  ### 2. Commands and results
+  - `npm run build`: exit 0.
+  - Vitest over `views/localView`, `panels`, `persistence` and
+  `layout-presets.test.ts`: 35 files, 428 passed.
+  - `tuning-levers.test.ts` failed 2 cases on the inventory count (56 against
+  55) before I updated it, and passes after.
+  - Focused Playwright run (zoom-looks, card-ladder-boxes, card-ladder,
+  card-slots, local-map-overview, tuning, inventory-counts): **32 passed** in
+  5.2 min. All existing specs passed unmodified apart from the tuning count.
+  - I then added a reading-choices and pins invariance check to zoom-looks and
+  re-ran it: 3 passed.
+  - **The new spec can fail.** I temporarily made the trial write the ladder's
+  step and withheld `data-looks`, so each step's own lines were drawn inside a
+  look. The spec then failed on every file name in connections ("names"
+  mismatches; heights went from 33 to 66 map px). I restored the source and
+  rebuilt.
+  - `npm run live-docs:generate`: exit 0 (956 files; 1 created, 11 updated).
+  - The design audit ran inside the evidence capture at every press, both modes,
+  both subjects: no collisions anywhere. Cut-offs per press are in the evidence
+  README.
+
+  ### 3. Numbers
+  - **Edges** (same rule and BAND_MARGIN as the bands):
+    - reading to connections: leaves below ratio 0.591 and returns above 0.680,
+  between presses 2 and 3.
+    - connections to overview: leaves below 0.285 and returns above 0.328,
+  between presses 6 and 7.
+  - **Scales:** connections **2.2**, overview **4.5**. The brief said "near
+  4.4"; 4.4 would give 0.711 at press 10, so I took 4.5 to keep the far edge at
+  or above 0.72.
+  - **Name size on screen against reading size:** connections 1.27 at the near
+  edge and 0.74 at the far edge; overview 1.26 and 0.73.
+  - **Measured on the estate** (reading scale 1.45, so a symbol name reads at
+  about 16 px and a file name at 18.8 px):
+    - Symbol names in connections: 20.3 px at press 3, 11.7 px at press 6.
+    - File names in connections: 23.9 px, then 13.9 px.
+    - File names in overview: 23.8 px, then 13.8 px.
+    - The repository is the same to within 0.1 px.
+  - **Names cut, inside the frame, presses 1 to 10:**
+
+  | Subject and mode | Counts |
+  | --- | --- |
+  | estate stepped | 2,2,2,2,3,7,0,2,7,8 |
+  | estate three | 0,0,2,2,3,4,2,3,3,3 |
+  | repository stepped | 0,1,3,3,3,3,0,2,4,7 |
+  | repository three | 0,0,3,3,3,3,2,4,4,4 |
+
+    The frame takes in more cards as you zoom out, so a count can grow inside a
+  look; the spec, which reads every card, confirms no name changes.
+  - **Smallest in slot cards, connections and overview:** text 11.6 px, controls
+  13.1 px. Stepped at press 6 had Internals' name at 5.8 px and a More at 8.3
+  px.
+
+  ### 4. Forks I decided, and departures from the brief
+  - **Card Text is not carried in links.** I checked: links carry only numeric
+  layout settings plus the 3D wrappers' setting `groupWrappers`. So I carried
+  `zoomLooks` the way `groupWrappers` is carried, through `readLayoutSettings`.
+  That one path also persists it in saved settings.
+  - **Every link now carries `zoomLooks`**, including `"stepped"` in default
+  mode.
+  - **A look is a (band, fixed scale) pair** through the existing path: reading
+  uses band reading at step 0, connections uses band far, overview uses band
+  overview.
+    - For connections and overview `data-step` is removed and `data-look` is
+  added.
+    - The only look-specific CSS is the held name's lines and its controls'
+  place.
+    - The rooms and held-lines machinery is reused with the look's scale;
+  nothing was forked.
+  - **Internals row:** to hold it at the same scale as the public rows, with the
+  trial on its room is extended to the card's content bottom. Its head now
+  extends below its own row's box, though still inside the card.
+  - **Card Text = grow:** the trial does nothing; stepped behaviour applies.
+  - **Levers in the trial:** Text and Control Resistance do not apply (each
+  look's scale is fixed); Name Growth still does.
+  - **Rule 6:** I shipped only the fade. Leaving parts keep their visibility for
+  160 ms while they fade out, entering parts fade in, and the file's held name
+  and controls animate in. Easing held sizes would need registered custom
+  properties, which would touch the default, so I left it out.
+  - **Rule 4 in the spec covers slot cards only**, which is the trial's scope
+  (reasoning in section 6).
+
+  ### 5. What changes in the default mode
+  - The new Tuning control.
+  - The extra `zoomLooks: "stepped"` field in link and saved payloads.
+  - Otherwise, in effect, nothing: identical stylesheet writes in the same
+  order, no extra attributes, and `ladderBand`'s refactor passes its unchanged
+  tests.
+
+  ### 6. Unfinished or doubtful (details in the evidence README)
+  - **Overview at 4.5 breaks names inside words on the estate's narrow cards**,
+  for example `Paymen / t / Service / .cs` and `IPayme / nt / Ser…`
+  (`estate-three-out-07` to `-10`). The stepped ladder at press 7 (scale 3.58)
+  keeps those names whole. A scale near 3.6 would avoid this, at 1.0 to 0.58 of
+  reading size; I did not build it.
+  - **Two big jumps, by design:**
+    - Presses 2 to 3: names grow 1.8×, and the descriptions, path and Pin leave.
+    - Presses 6 to 7: file names grow 1.7× and re-wrap.
+  - **Still present:**
+    - The orphaned suffix `PaymentService / .cs` remains, now with only More
+  beside `.cs`.
+    - The subject's own `PaymentService` row reads `Payment…` throughout
+  connections.
+  - **Directory captions fall below 8 px** at overview presses 9 and 10 (7.2 px,
+  6.0 px), the same as stepped. They are outside slot cards; making them leave
+  would need the reading scale in CSS. Not fixed.
+  - **The held file name fades in from nothing** at each change of look, which
+  reads as a blink.
+  - **Untested:**
+    - The reduced-motion path.
+    - The card-ladder-boxes audit in three mode, which would flag the Internals
+  row's head extending past its row.
+  - **Proposed sentence for the layer-3 design page:** "Since 2026-11-10
+  Tuning's Zoom Looks offers a trial beside the ladder: three looks (reading
+  through the second Zoom Out press, connections to the sixth drawn as the far
+  band at one held scale of 2.2, overview beyond drawn as the overview band at
+  4.5), so that a slot card changes only twice on the way out; the stepped
+  ladder remains the default."
+
+  ### 7. Cleanup
+  - Scratch `AI-Agent-Workspace/tmp/2026-11-10-zoom-looks/` is deleted.
+  - No browser or server of mine is running. The root's server on port 8900 is
+  still running, and `dist/explorer` was rebuilt under it, so it now serves the
+  trial.
+  - No helper agent was used. Nothing was committed.
+
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Build three zoom looks trial" finished · 33m 20s
+
+  Read 1 file (ctrl+o to expand)
+
+● Builder is back with the trial built. I'm reviewing its pictures myself now,
+  starting with the estate journey in the new mode.
+
+  Read 5 files, ran 1 shell command (ctrl+o to expand)
+
+● The Connections look is more coherent than today's middle zoom, but Overview
+  breaks names inside words and Internals has a stray dotted line; I'm sending
+  those back for a second pass. · summary
+  ⎿  Resuming agent a9bd071
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The trial is built and I've sent it back to the builder for a second pass;
+  that pass is still running, so nothing below reflects its result yet.
+
+  What the first pass showed
+
+  I looked at four of the builder's estate pictures in the new mode and read the
+  core diff.
+
+  - Two presses out (far edge of Reading): the whole card is small but in
+    proportion. Nothing has re-wrapped. (picture (AI-Agent-Workspace/Screenshots
+    /2026-11-10/zoom-looks/estate-three-out-02.png))
+  - Three presses out (near edge of Connections): the card shows PaymentService
+    / .cs with one control, then four rows of one size, each a name and one
+    More. This is a clear gain over today's middle zoom, where the first row
+    read P… beside three buttons. (picture (AI-Agent-Workspace/Screenshots/2026-
+    11-10/zoom-looks/estate-three-out-03.png))
+  - Six presses out (far edge of Connections): every card is a name and its
+    rows, small but legible. (picture (AI-Agent-Workspace/Screenshots/2026-11-10
+    /zoom-looks/estate-three-out-06.png))
+  - Seven presses out (Overview): rejected. At the scale I specified, names
+    break inside words: Paymen / t / Service / .cs. (picture (AI-Agent-Workspace
+    /Screenshots/2026-11-10/zoom-looks/estate-three-out-07.png))
+
+  The builder's numbers, which I have not re-run:
+  - names cut on the estate, by press 1 to 10: 2,2,2,2,3,7,0,2,7,8 on today's
+    ladder against 0,0,2,2,3,4,2,3,3,3 in the trial, and in the trial the same
+    names stay cut the same way throughout a look;
+  - smallest text inside a card in Connections and Overview: 11.6 px, against
+    5.8 px for the Internals name on today's ladder at press 6;
+  - build, 428 unit cases and 32 focused browser cases pass; the full gate has
+    not been run.
+
+  What I sent back
+
+  - Overview scale 3.6 instead of 4.5. Whole words matter more than my 0.72 size
+    floor; names then run from about 1.0 to 0.58 of reading size.
+  - A dotted rule crosses the enlarged Internals row in Connections. Fix it at
+    its cause and add a box audit for the new mode.
+  - Names blink at each change of look. I asked for held text and controls to
+    grow or shrink from their old size over the same 160 ms, with an instant cut
+    as the fallback.
+  - Tests: a reduced-motion case, and a check of every test that expects a
+    particular link payload, since every shared link now carries the new
+    setting.
+  - Motion evidence as stills: contact sheets of the frames across each change,
+    because I cannot play video.
+
+  Still wrong, and not in this round
+
+  - The orphaned .cs on its own line remains.
+  - The subject's own row reads Payment… throughout Connections.
+  - The description slots stand empty under the rows in Connections, which is
+    the fixed-slot layout's cost showing.
+  - Directory captions fall under 8 px at the last two presses, as they do
+    today.
+
+  Port 8900 now serves the first-pass build, so you can try it under Tuning → 2D
+  Layout → Zoom Looks; expect the Overview fault above until the second pass
+  lands. Nothing of the trial is committed. When the builder hands back I'll
+  judge the sheets and pictures, run the full gate, and commit only if it
+  passes.
+
+› Message from general-purpose
+  ## Zoom Looks trial, round 2: handback (builder; still based on dd68c1bf,
+  nothing committed)
+
+  All five corrections are built and the focused set passes: **63 passed**, with
+  every existing spec unmodified. The new spec was not re-run against the old
+  dashed border, so it is not yet shown that the box audit can fail (section 4).
+
+  ### 1. Files changed since round 1
+  - `views/localView/ladder-steps.ts`: overview scale `LOOK_SCALES.overview` is
+  now **3.6**. Its comment gives the reason: whole words outrank the 0.72 floor,
+  since 4.5 broke "Paymen / t / Service / .cs".
+  - `views/localView/ladder-steps.test.ts`: connections keeps the 1.3 to 0.72
+  aim test. A new overview test checks about 1.0 at press 7 and above 0.55 at
+  press 10.
+  - `views/localView/controller.ts`: `fadeLook` is replaced by `morphLook(from,
+  to)`, with an accurate doc comment.
+    - Before the new look it writes `data-look-from`, `--look-from` (old scale
+  over new), `--look-to` (the inverse) and `--look-from-scale`.
+    - It sets the class `local-look-fading` afresh and removes both after 200
+  ms.
+  - `styles/reading.css`, everything under `[data-looks="three"]`:
+    - **Internals box (B):** the wrapper draws no border or background from
+  connections out. The dashed box is now an `::after` layer sized by the pinned
+  highlight's own height formula, so it grows with the head. In the trial the
+  Internals wrapper's background no longer fades on hover.
+    - **Morph (C):** an `@keyframes` animation on the individual `scale`
+  property (`from { scale: var(--look-from) }`), under `prefers-reduced-motion:
+  no-preference` only. No registered properties.
+    - Names, dots and row More travel when they are drawn in both looks; the
+  node's More travels about its top-right corner.
+    - A part drawn in only one look does not travel: one that leaves fades out
+  at its old size (`local-look-stay`), one that enters fades in at its new size.
+    - The file name crosses over in place:
+      - Reading → connections: the layout's name fades out while the held lines
+  grow in from its size and fade in.
+      - Connections → reading: the connections lines stay drawn at their old
+  scale for the fade and shrink as they fade out, while the layout's name fades
+  in.
+      - Connections ↔ overview: one element, which only changes size.
+  - `tests/e2e/zoom-looks.spec.ts`: now 4 tests.
+    - Box audit in three mode: every head part inside its card, no head over
+  another row's box or head, and no border or `::before`/`::after` layer of the
+  name box running through a head part.
+    - Overview seam check using the oracle copied from card-ladder-boxes
+  (`seamSegments`). A line may end inside a segment only if that segment is
+  wider than a line.
+    - A reduced-motion test: two fresh contexts each press across both edges
+  each way and read running animations at once. Where motion is welcome there
+  must be some at each of the 4 changes; under `reduce` there must be none.
+  - Authored docs: notes added or updated for `ladder-steps.ts`,
+  `controller.ts`, `card-reading.ts` and `zoom-looks.spec.ts`. The mirror was
+  regenerated.
+  - Evidence README: rewritten.
+
+  Default mode is still unaffected apart from the lever and the `zoomLooks`
+  field in links.
+
+  ### 2. Commands and counts
+  - **The reduced-motion test found a real fault on its first run.** Under
+  `reduce` the Internals wrapper's existing `background-color` hover transition
+  still ran at reading ↔ connections. I fixed it by limiting that wrapper's
+  `transition-property` to `box-shadow` in the trial. After the fix it passed:
+  under reduce `[[], [], [], []]`, and running animations at all 4 changes
+  otherwise.
+  - **Playwright, focused set** (single worker, existing config): **63 passed**
+  in 10.8 min. All existing ones ran unmodified.
+    - Round 1's set: zoom-looks (4), card-ladder-boxes, card-ladder, card-slots,
+  local-map-overview, tuning, inventory-counts.
+    - The share-link specs: explorer-navigation, force-graph-exploration,
+  force-graph-focus.
+  - **Share links (F):** I grepped for layout payloads, URL lengths and exact
+  share addresses.
+    - Unit specs: `layout-presets.test.ts`, `compressed-url-state.test.ts`,
+  `url-state.test.ts`. All in the Vitest run below, all passing.
+    - Browser specs: `explorer-navigation.spec.ts` (shared-link recipients),
+  `force-graph-exploration.spec.ts` (compares two URLs' lengths),
+  `force-graph-focus.spec.ts`. All pass.
+    - No spec pins an exact share address.
+  - `npm run build`: exit 0.
+  - Vitest over localView, panels, persistence and layout-presets: 35 files,
+  **429 passed**.
+  - `npm run live-docs:generate`: exit 0 (956 files, 1 updated).
+
+  ### 3. Overview at 3.6 (A)
+  - No file name is cut or broken inside a word on either subject at any
+  overview press, out or back; the measured `wordBreaks` list is empty at every
+  press.
+  - Estate press 10: `Payment / Request / .cs`, `IPayment / Service / .cs`,
+  `Post / Payment / Row.cs`, `Payments / Context.cs`, `App.config`.
+  - Repository press 10: `local-map-corset. / spec.ts`, `branch- / renderer.ts`,
+  `symbolAnchors / .ts`.
+  - File names on screen: 19.0, 15.8, 13.2 and 11.0 px at presses 7 to 10 on
+  both subjects (smallest 10.9 px). Controls are at least 12.6 px.
+  - Names cut, presses 1 to 10:
+
+  | Subject | Names cut |
+  | --- | --- |
+  | estate three | 0,0,2,2,3,4,0,0,0,0 |
+  | repository three | 0,0,3,3,3,3,0,0,0,0 |
+
+  ### 4. Motion sheets (E)
+  All are in `AI-Agent-Workspace/Screenshots/2026-11-10/zoom-looks/`. Frames
+  were recorded at the recorder's 25 fps, decoded with Playwright's ffmpeg, and
+  each tile is labelled with its frame, its time and its change from the
+  previous frame.
+
+  - **`motion-out-2-3.png`** (frames 87–94): path, descriptions, Pin and book
+  fade out at their old size; the plain file name fades as `PaymentService /
+  .cs` grows in over it; row names grow from reading size to held size. Settled
+  by about +160 ms.
+  - **`motion-out-6-7.png`** (139–146): the file name re-wraps at once to
+  `Payment / Service / .cs` at its old size and grows; the rows fade out at
+  their old size. They are briefly re-cut to `Pa…` while fading, because their
+  room is already the overview's.
+  - **`motion-back-7-6.png`** (153–159): the name re-wraps at once to
+  `PaymentService / .cs` at its overview size, stands past the card's right edge
+  for two frames, then shrinks while the rows fade in.
+  - **`motion-back-3-2.png`** (207–214): the held lines shrink and fade as the
+  plain name fades in. For two or three frames it is crowded: `PaymentService`
+  is no longer cut and runs under its buttons, and the node's More travels from
+  where it stood in connections across the leaving name. Settled by about +160
+  ms.
+  - **`motion-wheel-2-3.png`** (237–259): the change lands at frame 245 during
+  camera motion. The leaving description shows faintly until about +200 ms. The
+  Post row is highlighted only because the wheel's pointer rests on it.
+
+  ### 5. What I could not do as asked, or what remains
+  - **Wires lag the dots during the morph.** They are drawn to the dots' final
+  places on the frame after a change, while the dots are still travelling for
+  160 ms.
+  - **The `scale` property did not conflict** with the existing transforms, the
+  dots' edge anchoring or the compositor layer used while the camera moves.
+  - **The leaving held name keeps the old look's height ceiling**
+  (`--title-head-h` capped by `--look-from-scale`). It renders correctly on both
+  subjects.
+  - **The new box audit is not yet shown able to fail.** I did not re-run the
+  spec against the round-1 CSS to see it catch the old dashed border; rebuilding
+  mid-run would have disturbed the gate. It is the next check if you want that
+  proof.
+  - **Videos are from round 1:** the round-1 `.webm` videos still show the old
+  fade; the sheets supersede them. Three-mode stills `out-00` to `out-02` are
+  also round 1's, but the reading look is unchanged, so they still apply.
+  - **Left for later, as you asked:** the orphaned `.cs`, the empty description
+  slots in connections, and directory captions under 8 px at presses 9–10.
+  - **Not mine:**
+  `AI-Agent-Workspace/ChatHistory/2026/11/2026-11-10.1.record.md` shows as
+  modified in the tree; I did not touch it.
+
+  ### 6. Cleanup
+  Scratch (`AI-Agent-Workspace/tmp/2026-11-10-zoom-looks/` and my session
+  scratchpad) is removed. No browser, tsx or Playwright process of mine is
+  running. The root's server on port 8900 is untouched; `dist/explorer` was
+  rebuilt under it and now serves round 2. Nothing was committed or stashed.
+
+● Second pass is back. I'm looking at the motion sheets and the recaptured
+  stills myself before deciding whether this is ready for the full gate.
+
+  Read 4 files (ctrl+o to expand)
+
+● Agent "Build three zoom looks trial" finished · 28m 27s
+  ⎿  Resuming agent a9bd071
+
+  Read 1 file (ctrl+o to expand)
+
+● The second pass fixed three of the four faults; the transition still needs one
+  more correction, so the builder is on a third and final pass and the full
+  gate has not started.
+
+  Accepted from the second pass
+
+  - Overview at 3.6 keeps names whole. The builder measures no file name cut or
+    broken inside a word at any Overview press on either subject; the estate
+    reads Payment / Service / .cs. Names run from 19.0 px down to 11.0 px across
+    presses 7 to 10.
+  - The Internals row is boxed like its neighbours, with no rule through it. I
+    confirmed this from the settled frames of the motion sheets.
+  - Reduced motion is now tested, and the new test found a real fault: an old
+    hover transition on the Internals row still ran under reduced motion in the
+    trial. It is fixed.
+  - No test pins an exact share address, so every link carrying the new setting
+    broke nothing in the focused runs.
+
+  The builder reports 429 unit cases and 63 focused browser cases passing, with
+  existing specs unmodified. I have not re-run them.
+
+  What is still wrong: the motion on the way back in
+
+  I judged the motion from contact sheets of consecutive frames, eight per
+  change. These are stills, not a moving picture.
+
+  - Zooming out from Reading to Connections reads well. The labels swell as the
+    detail drops away, settled in about 120 ms. (sheet
+    (AI-Agent-Workspace/Screenshots/2026-11-10/zoom-looks/motion-out-2-3.png))
+  - Both changes on the way in start with a bulge. A Zoom button moves the
+    camera at once, but the animation starts from the old look's size at the new
+    zoom, so everything is first drawn 1.2 times too large and then shrinks:
+    - From Connections to Reading, the name and rows stand at about one and a
+      half times reading size for a frame, with the More button over the name.
+      (sheet (AI-Agent-Workspace/Screenshots/2026-11-10/zoom-looks/motion-back-3
+      -2.png))
+    - From Overview to Connections, PaymentService stands past the card's right
+      edge for two frames. (sheet (AI-Agent-Workspace/Screenshots/2026-11-10/zoo
+      m-looks/motion-back-7-6.png))
+  - From Connections to Overview, the leaving rows are re-cut to Pa… while they
+    fade, and the name's third line lies over the first row for about 80 ms.
+    (sheet
+    (AI-Agent-Workspace/Screenshots/2026-11-10/zoom-looks/motion-out-6-7.png))
+
+  The third pass
+
+  - One rule for the animation: a label's size on screen at the first frame of a
+    change must equal its size at the last frame before it. The new spec will
+    check this from the page.
+  - The file name dissolves between its two line breaks at the Overview edge,
+    never past its card or over a row that is still drawn.
+  - Leaving rows are not re-cut while they fade.
+  - Proof that the new box audit can fail, which the builder had not yet run.
+  - Recordings re-made, since the current .webm files still show the first pass.
+
+  If any of this would require touching today's ladder code, I'll take an
+  instant cut at each change instead, with no animation.
+
+  Port 8900 is serving the second-pass build and will change again as the
+  builder rebuilds. Only the session record is committed (dd68c1bf); the trial
+  and my later record notes are uncommitted. After the third handback I'll check
+  the sheets, run the full gate, and commit if it passes.
+
+› Message from general-purpose
+  ## Zoom Looks trial, round 3 (pass 3): handback (builder; still based on
+  dd68c1bf, nothing committed)
+
+  All six items are done without touching the stepped mode's code paths, and the
+  focused set passes, **64 of 64**. Two things look rough in the new sheets:
+  the first 2–3 frames back to reading are still busy (overlap, though nothing
+  grows larger than its before/after size), and the change back from overview
+  now takes about 320 ms instead of 160 ms.
+
+  ### Files changed since round 2
+  - **`views/localView/controller.ts`:** the controller keeps `lookRatio`, the
+  zoom ratio at which the current look was last drawn. `morphLook(from, zoom)`
+  writes `--look-from-scale`, `--look-zoom` (that last drawn ratio over the
+  ratio now) and `--look-keep` (the lesser of that and 1). `--look-from` and
+  `--look-to` are gone, and the doc comment says what now happens.
+  - **`styles/reading.css`** (the trial's morph block, rewritten, all under
+  `[data-looks="three"]` and `prefers-reduced-motion: no-preference`):
+    - **Held scales of the look left.** Each element's held scale in the look it
+  leaves is reckoned by the stylesheet's own formulas with the old look's
+  scale: `--name-scale-from`, `--row-control-scale-from`, `--dot-scale-from`,
+  `--title-scale-from`, `--node-scale-from`. Room ceilings therefore count as
+  they did in that look.
+    - **Starting size.** The keyframes start each held element at `scale:
+  calc(<from-scale> * var(--look-zoom) / <new scale>)`, so its first frame on
+  screen equals its last frame in the look it left.
+    - **File name, connections ↔ overview.** The old lines are drawn as a
+  `::before` of the held element at their own on-screen size (map size when
+  zooming out, so they stay inside the card) and fade out. The new lines in
+  `::after` fade in at their new size, and the held element's `overflow` is
+  visible during the fade.
+    - **Back to reading.** The leaving connections lines stay at their own
+  on-screen size (`scale: var(--look-keep)`) and fade out.
+    - **Rows between connections and overview:**
+      - Item 3: rows going silent at 6→7 now **leave at once**. I chose this
+  over holding their room through the fade.
+      - Rows returning at 7→6 come in **after** the name's crossing (160 ms
+  delay, then a 160 ms fade), so no name line lies over a row still drawn.
+  - **`tests/e2e/zoom-looks.spec.ts`:** a fifth test covers each of the four
+  changes (two out, two in).
+    - Before the press it reads every held thing's size on screen.
+    - It then pauses every animation in the map and sets `currentTime` to 0, 80
+  and 159 ms, then reads again after rest.
+    - It asserts that nothing is larger at any sample than the larger of its
+  before and after sizes (+0.5 px).
+    - It asserts that no drawing of a file name lies outside its card or over a
+  drawn row's name box. The drawings checked are the layout text, `::after` and
+  `::before`, with the `::before` box taken from its computed width, height and
+  transform.
+  - **Authored notes:** updated in the Live Docs of `controller.ts` and
+  `zoom-looks.spec.ts`.
+  - **Evidence:** the evidence README is updated. Six sheets and four
+  `*-three-*.webm` videos were re-recorded.
+
+  ### Commands and counts
+  - **Item 4, box audit shown able to fail.** I temporarily removed the
+  Internals layer rules, which restores round 1's dashed wrapper border in the
+  trial. In the same build I set `--look-zoom` to 1, which gives round 2's start
+  from the looks' scales alone. `zoom-looks.spec.ts`: **2 failed**.
+    - The box audit failed at out and back presses 3–6 with:
+  `PaymentService/App.config:__internals__: its name box's border runs through
+  its symbol-label-text` (and `… through its local-symbol-more`).
+    - The sampling test failed 55 times at connections → reading and 9 times at
+  overview → connections, e.g. `connections → reading, sample 0:
+  Contracts/IPaymentService.cs:IPaymentService symbol-label-text 26.6 px against
+  22.2 before and 12.1 after` and `overview → connections, sample 0:
+  Contracts/PaymentRequest.cs node More 26.2 px against 21.9 before and 16.0
+  after`.
+    - After restoring, rebuilding and rerunning: **5 passed**.
+  - **Focused Playwright set:** **64 passed** in 10.8 min. That is the round-2
+  set of 63 plus the new test; all existing specs ran unmodified.
+  - `npm run build`: exit 0.
+  - Vitest over localView, panels, persistence and layout-presets: 35 files,
+  **429 passed**.
+  - `npm run live-docs:generate`: exit 0 (956 unchanged; the mirror matches).
+
+  ### The six sheets (in
+  `AI-Agent-Workspace/Screenshots/2026-11-10/zoom-looks/`)
+  - **`motion-out-2-3.png`:** the first frame shows the row names at the size
+  they had on screen and the layout name at map size, with the held lines not
+  yet visible. Settled at +200 ms with `PaymentService / .cs` and held rows.
+  - **`motion-out-6-7.png`:** the first frame shows the rows gone, the
+  connections lines at map size and `Payment / Service / .cs` beginning to fade
+  in. Settled at +160 ms with only the overview lines.
+  - **`motion-back-7-6.png`:** the first frame shows `Payment / Service / .cs`
+  at exactly its earlier on-screen size, with `PaymentService / .cs` fading in
+  and no rows. The rows come in from +200 ms; settled at about +280 ms.
+  - **`motion-back-3-2.png`:** the first frame shows the held lines and row
+  names at their earlier on-screen sizes (no bulge), with the layout name and
+  controls fading in. Settled at +160 ms in the reading card.
+  - **`motion-wheel-2-3.png`:** the same crossing as out 2→3 at frame 151 during
+  continuous zoom. The wheel's pointer highlights the Post row.
+  - **`motion-wheel-7-6.png`** (new): the name crosses over at about frame 341
+  during a continuous wheel zoom in, and the rows appear about 200 ms later.
+
+  ### Not done as asked, or doubtful
+  - **Videos.** The three-mode videos for both subjects are now round 3's.
+  `*-three-wheel.webm` begins with one Zoom Out and Zoom In press, which places
+  the page's clock in the video (offset 20 ms). The stepped videos are from
+  round 1, unchanged.
+  - **Stills.** The three-mode stills and `measurements.json` were not
+  recaptured: round 3 changed only what moves during a change, not any resting
+  picture.
+  - **Simplification in `--name-scale-from`:** it assumes Name Growth stays at
+  its default of 1.
+  - **Still visible in the sheets** (all now in the README):
+    - Back to reading, in frames 288–290 the uncut `PaymentService` reaches its
+  row's controls as they fade in, and the node's book, Pin and close fade in
+  over the leaving held name.
+    - Out of reading, the layout name is inline text that cannot be scaled, so
+  it shrinks with the press's jump while the held lines grow in from its old
+  size.
+    - The change back from overview takes about 320 ms because the rows are
+  delayed.
+    - The wires still lag the dots by 160 ms.
+
+  ### Cleanup
+  Scratch is removed and no browser, tsx or ffmpeg process of mine is running.
+  The root's server on port 8900 is untouched; `dist/explorer` is rebuilt with
+  round 3. Nothing was committed.
+  `AI-Agent-Workspace/ChatHistory/2026/11/2026-11-10.1.record.md` shows modified
+  in the tree, but I did not touch it.
+
+● Third pass is back. Checking the two return transitions that were wrong, and
+  the size of the animation code it took to fix them.
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● Agent "Build three zoom looks trial" finished · 54m 32s
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The third pass removed the bulge and the overflow, so I'm accepting the round.
+  Writing the design page, direction and record entries now, then starting the
+  full gate.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The trial has had its three review passes and I've accepted it for
+  verification; the full local gate is running now, and nothing is committed
+  until it passes.
+
+  Third pass
+
+  I checked the two return transitions that were wrong, from re-made contact
+  sheets:
+
+  - Connections back to Reading: the first frame now shows each label at the
+    size it had before the press, inside its card. For two or three frames the
+    old and new headers overlap at part strength, as a dissolve does. (sheet
+    (AI-Agent-Workspace/Screenshots/2026-11-10/zoom-looks/motion-back-3-2.png))
+  - Overview back to Connections: the three-line name fades out in place while
+    the two-line name fades in, then the rows appear. This change takes about
+    320 ms because the rows wait for the name. (sheet
+    (AI-Agent-Workspace/Screenshots/2026-11-10/zoom-looks/motion-back-7-6.png))
+
+  Nothing bulges and nothing leaves its card. This is a judgment from stills; I
+  have not seen it move, and you may read the overlap differently.
+
+  The builder also showed the new tests can fail: with the first pass's dashed
+  border and the second pass's animation start restored, the new spec failed in
+  two cases, then passed again once reverted. It reports 429 unit and 64 focused
+  browser cases passing; I have not re-run them, and the gate is the check.
+
+  What the trial costs
+
+  - Size: 414 lines across fourteen source and test files, plus a 486-line
+    browser spec.
+  - The animation is the expensive part. About 25 lines of stylesheet make the
+    three looks; about 90 make the motion, and those repeat existing size
+    formulas for the look being left. If someone changes an original formula
+    without the copy, only one test would catch it.
+  - My position: I asked for this motion and accept the duplication for a trial.
+    I would not accept it as the adopted form. If you keep the looks, the
+    copied formulas should be replaced by measuring each label before and after
+    a change; if you keep today's ladder, the whole block goes with the switch.
+
+  Still visibly wrong, and left out of this round
+
+  - The orphaned .cs on its own line.
+  - The subject's own row cut to Payment… across Connections.
+  - Empty description slots under the rows in Connections.
+  - Directory captions under 8 px at the last two presses, as today.
+  - Wires are drawn to the dots' final places while the dots move for 160 ms.
+
+  Trying it
+
+  Port 8900 serves the third-pass build, though the gate rebuilds the bundles
+  partway through. Switch Tuning → 2D Layout → Zoom Looks to the three-looks
+  value, or use these links with the trial already on:
+
+  - estate, PaymentService.cs pinned
+    (http://127.0.0.1:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UE
+    BXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iA
+    ThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTrIAvvAAZqhm6Fw0FviKRH5
+    UANYykABsrMSKmGaqXFAV8CQIfjpsqLT0kEbEqGS%2BbFSqjPBUqJJcXgBe9ZAiIDqBFKKkHlgIs
+    wzwqhZgQVBMAHRMAj0kPh12HB5c%2BDWYHO1UB4cCTdW1XABKEnUH8AR8OEAB7eB5PF5wRCDIoeD
+    hmOyqDj5SBHHr9SQPawOWrBSBbEDcZFcMwvE5NThcSQAIUCAAUyC0RtDigB1NiSZHMsYTABaqFQF
+    C%2BjjYegkWUh8AibAR-MFwraYqoEtRhwAnKNMCYAIL6fEKECKVD4Zz4sKxLjYABiFhMpsaC2ULQ
+    AIrcuYJtuF%2BqzcvgSaaFkVBiAkikQKTIKlsDouPAAFZQKMIGPwVBQADaIHTAB0QPhBrnYLm6Zg
+    llcbmY9lkAPQlstUa4kqtcQ7oHSF3MAKlzAF0QD3RlAQHWTA2K83a6XR43K-4W22QPB%2BOnQM9I
+    MOp%2BWm3PJ-WZ83W854AHOyGByAyBnV%2BMuABJSRDkdb2c1p9j7dZQ%2BLkDGuyJ6NcCk14TPe
+    j6bu%2BL5cLu07jnOX7HksKxIOub77nO36-mu8JkIBPZJEAA) is the same subject in
+    today's mode; I will hand over a verified trial link once the gate allows a
+    browser run, since I have not yet checked the builder's saved links myself.
+
+  That last point matters: the link above is the morning's link in the default
+  mode, not a trial link. The builder's four saved addresses are in
+  measurements.json
+  (AI-Agent-Workspace/Screenshots/2026-11-10/zoom-looks/measurements.json) under
+  each subject's url, and I will not run a browser beside the gate to confirm
+  them.
+
+  What happens next
+
+  The gate takes about an hour. If it passes I'll commit the trial with its
+  evidence and docs, then give you verified Explorer links with the trial on and
+  the changed code pinned. If it fails I'll report the failure as it is. The
+  design page, direction and today's record already describe the trial as built
+  and not adopted; whether the ladder or the looks is deleted is your call after
+  you've seen both move.
+
+● Background command "Run the complete local gate including the browser suite"
+completed (exit code 0)
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● The first gate run failed at lint on an unused variable in the new browser
+  spec, which I've removed without changing the audit's checks. I'm confirming
+  the generated docs are current before restarting the full gate. · summary
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● The full gate is running again; the first attempt failed at lint after four
+  minutes, so the trial has not yet passed verification and nothing is
+  committed.
+
+  - The failure: one lint error in the new browser spec, zoom-looks.spec.ts
+    (tests/e2e/zoom-looks.spec.ts): a variable assigned and never read. The
+    builder's focused runs had not included lint, and I had not run it before
+    starting the gate.
+  - The fix: I removed the unused value. It was never part of an assertion, so
+    the box audit's checks are unchanged. Lint now passes on the spec and the
+    Explorer client.
+  - Now: the gate restarted on that tree and takes about an hour. No browser
+    runs beside it, so I still have not verified the builder's trial links
+    myself.
+
+  When it finishes I'll either commit the trial with its evidence and give you
+  verified links with the trial switched on, or report the failure as it is.
+  Everything in my previous message about what the trial shows and what it costs
+  still stands.
+
+● Background command "Remove the unused variable, lint the trial's files, check
+the mirror" completed (exit code 0)
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● Background command "Run the complete local gate again after the lint fix"
+failed with exit code 144
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Correction to my last message: the gate had not actually restarted when I said
+  it had. It is running now, started at 23:04 UTC, and I've confirmed the
+  process and its log this time.
+
+  - What went wrong: I chained the restart behind a wait for a docs check to
+    finish. The wait's own search pattern matched the shell running it, so it
+    waited on itself and the gate never began.
+  - How I found it: the docs check finished (all 956 generated docs unchanged)
+    and no gate log existed. I stopped the stuck shell and started the gate
+    directly.
+  - State now: the lint fix is in place, the gate is in its early stages, and it
+    takes about an hour. Nothing of the trial is committed.
+
+  The correction is in today's record beside the reply it corrects. When the
+  gate ends I'll commit and hand you verified trial links, or report the failure
+  as it is.
