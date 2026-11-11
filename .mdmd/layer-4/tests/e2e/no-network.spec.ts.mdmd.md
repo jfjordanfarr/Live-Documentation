@@ -17,6 +17,7 @@ Proves that the Explorer asks nothing of any site but its own: the owner's ask o
 - The allowed origin comes from Playwright’s configured `baseURL`, so an isolated verification server is still its own site. A different scheme, host or port remains another origin. The October 23 full run exposed the former hardcoded port by refusing the test page itself before its script loaded.
 - A link to another site opens only when a person clicks it, and these tests never click one.
 - Each case was seen to fail with its defence removed: the policy, the escaping, the archetype's class and the count's conversion.
+- Since 2026-11-11 the step's resized count is written in the whole step's dialog, opened from the compact panel, so the markup case opens it and looks for the hostile element in both.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

@@ -1643,9 +1643,15 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     itemMenu.close();
     renderInspection();
     if (state.view === "map" && state.perspective === "3d" && !readingDialog()) {
+      // The step panel gives way when, with the reader open, the picture's room would be narrower than 320 px, or, the
+      // picture framed below the panel, narrower than the panel itself, which would then reach under the reader. Compact
+      // since 2026-11-11, it seldom does. The room is read from layout, not from the reader's place while it slides in.
       const stepPanel = document.querySelector<HTMLElement>(".history-step-panel:not([hidden])");
-      const room = requireElement("graph-svg").clientWidth - requireElement("detail-panel").offsetWidth - (stepPanel?.offsetWidth ?? 0);
-      if (stepPanel && !readerRoom.matches && room < 320) historyControl.hideDetails();
+      if (stepPanel && !readerRoom.matches) {
+        const room = forceGraphView.cameraRoom();
+        const reach = stepPanel.getBoundingClientRect().right - requireElement("graph-svg").getBoundingClientRect().left;
+        if (room.width < 320 || (room.left === 0 && room.width < reach)) historyControl.hideDetails();
+      }
       forceGraphView.render();
       if (validated.kind === "directory") forceGraphView.fit();
       else forceGraphView.keepInspectionVisible();

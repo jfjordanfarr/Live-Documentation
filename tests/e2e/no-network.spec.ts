@@ -181,8 +181,11 @@ test("a history file's counts reach the step panel as numbers, never as markup",
   });
   await page.goto(address("/samples/history/", { view: "map", perspective: "3d", spatialLayout: "structure", commit: steps[resizing].commit.id }));
   await settled3d(page);
-  await expect(page.locator(".history-step-panel")).toContainText("Resized");
-  expect(await page.locator(".history-step-panel .hostile").count()).toBe(0);
+  await expect(page.locator(".history-step-panel .history-step-counts")).toHaveText("Changed: 1 file");
+  // The whole step, where the resized count is written, opened from the panel (2026-11-11).
+  await page.getByRole("button", { name: "Show the whole step", exact: true }).click();
+  await expect(page.locator("dialog.history-step-dialog")).toContainText("Resized");
+  expect(await page.locator(".history-step-panel .hostile, dialog.history-step-dialog .hostile").count()).toBe(0);
   await expectNothingAsked(watched);
 });
 

@@ -5,7 +5,7 @@ import type { CommitInfo, HistorySequence } from "@live-documentation/engine/liv
 import { seek, SequenceBuilder } from "@live-documentation/engine/live-docs/history/sequence";
 import { edgeKey, type Shape } from "@live-documentation/engine/live-docs/history/shape";
 
-import { changeCount, stepSummary } from "./step-summary";
+import { changeCount, countWords, stepCounts, stepSummary } from "./step-summary";
 
 const HEAD = {
   lens: { key: "k", generator: { version: "0.0.0", code: null, commit: null, modified: null }, configuration: DEFAULT_LIVE_DOCUMENTATION_CONFIG },
@@ -98,5 +98,47 @@ describe("stepSummary", () => {
     const touched = stepSummary(history, 3, seek(history, 3), (path) => path !== "main.ts");
     expect(touched.touched).toEqual([{ at: 3, path: "main.ts", name: "main.ts", archetype: "implementation", symbols: 3, today: { kind: "gone", since: null } }]);
     expect(changeCount(touched)).toBe(1);
+  });
+});
+
+describe("stepCounts and countWords, the compact panel's one line", () => {
+  const all = (): boolean => true;
+
+  it("counts a file renamed and resized in the same step once, and says the directory renamed whole", () => {
+    const builder = new SequenceBuilder(HEAD, commit(0), shape({ "core/a.ts": ["implementation", 1], "core/b.ts": ["implementation", 2], "main.ts": ["implementation", 1] }, [["main.ts", "core/a.ts", 1]]));
+    builder.add(commit(1), shape({ "engine/a.ts": ["implementation", 3], "engine/b.ts": ["implementation", 2], "main.ts": ["implementation", 1] }, [["main.ts", "engine/a.ts", 1]]), { renamed: [["core/a.ts", "engine/a.ts"], ["core/b.ts", "engine/b.ts"]], modified: ["engine/a.ts"] });
+    const history = builder.finish();
+    const summary = stepSummary(history, 1, seek(history, 1), all);
+    // The groups name a.ts twice, renamed and resized; the count names it once.
+    expect(summary.renamed.map(rename => rename.file.path)).toEqual(["engine/a.ts", "engine/b.ts"]);
+    expect(summary.resized.map(resized => resized.file.path)).toEqual(["engine/a.ts"]);
+    expect(stepCounts(summary)).toEqual({ files: 2, wires: 0, documentLinks: 0, directoriesRenamed: 1 });
+    expect(countWords(stepCounts(summary))).toBe("Changed: 2 files, 1 directory renamed whole");
+  });
+
+  it("counts the files created, deleted and touched, the wires added, removed and changed, and says only the nonzero", () => {
+    const history = sequence();
+    const deathAndBirth = stepSummary(history, 2, seek(history, 2), all);
+    expect(stepCounts(deathAndBirth)).toEqual({ files: 2, wires: 3, documentLinks: 0, directoriesRenamed: 0 });
+    expect(countWords(stepCounts(deathAndBirth))).toBe("Changed: 2 files, 3 wires");
+    const touched = stepSummary(history, 3, seek(history, 3), all);
+    expect(countWords(stepCounts(touched))).toBe("Changed: 1 file");
+    // The base changed nothing, and nothing is said.
+    const base = stepSummary(history, 0, seek(history, 0), all);
+    expect(stepCounts(base)).toEqual({ files: 0, wires: 0, documentLinks: 0, directoriesRenamed: 0 });
+    expect(countWords(stepCounts(base))).toBe("");
+  });
+
+  it("counts the document links linked and unlinked, a dead file's link with them", () => {
+    const builder = new SequenceBuilder(HEAD, commit(0), shape({ "main.ts": ["implementation", 1], "lib/old.ts": ["implementation", 0] }, [], [["lib/old.ts", "docs/old.md"]]));
+    builder.add(commit(1), shape({ "main.ts": ["implementation", 1] }, [], [["main.ts", "docs/notes.md"]]), { renamed: [], modified: [] });
+    const history = builder.finish();
+    const summary = stepSummary(history, 1, seek(history, 1), all);
+    expect(stepCounts(summary)).toEqual({ files: 1, wires: 0, documentLinks: 2, directoriesRenamed: 0 });
+    expect(countWords(stepCounts(summary))).toBe("Changed: 1 file, 2 document links");
+  });
+
+  it("writes large counts with their thousands separated and every noun in the singular for one", () => {
+    expect(countWords({ files: 1234, wires: 1, documentLinks: 1, directoriesRenamed: 2 })).toBe("Changed: 1,234 files, 1 wire, 1 document link, 2 directories renamed whole");
   });
 });

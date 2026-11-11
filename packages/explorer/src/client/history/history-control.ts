@@ -175,7 +175,9 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
       refresh();
       // The button that had the focus is gone with the panel: the focus goes to the toggle that brings it back.
       scrubber.focusDetails();
-    }
+    },
+    // Reading the whole step stops on it; closing the dialog does not play on (2026-11-11).
+    onOpenStep: () => pause()
   });
 
   /** Register a past-only file for shared selection without adding it to today's graph or inventing old prose. */

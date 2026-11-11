@@ -20,6 +20,8 @@ The history control of the 3D Local Map: fetches the bundle's sequence when firs
 
 The [November 1 repairs](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-01.1.record.md#turn-2) introduced lifetime-anchored historical selections, moment-specific search and actionable deleted rows. Validated historical lookup nodes never enter the current canonical graph. Each past-only pin supplies its own anchor to salient-tick calculation; a tray focus can return to the nearest moment in its lifetime. Manual seeking, search and explicit inspection pause playback. Range selection restricts presentation and playback, not the loaded history.
 
+Since 2026-11-11 ([Turn 6 of the November 10 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-10.1.record.md#turn-6)) opening the whole step in the step panel's dialog pauses a playing history. Closing it does not play on; the root's choice, since reading a step means stopping on it. Choosing a file in the dialog pauses, rests at the file's moment and pins it, as a file chosen in the panel did before.
+
 Back and Forward can require an asynchronously loaded historical selection. Restoration waits for that sequence before validating retained identities, stays a replacement of the existing browser-history entry while it waits, and yields to a newer navigation. This fixes the [November 1 reload-and-Back journey](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-01.1.record.md#turn-2), where a cleared present-day page otherwise dropped its past-only pin before loading the evidence needed to recognize it.
 
 ## Generated

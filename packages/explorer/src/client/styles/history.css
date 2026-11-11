@@ -1,7 +1,8 @@
 /* The history of the 3D Local Map (the change-over-time plan's C4, 2026-10-18): a scrubber along the bottom of the
    picture, one tick per step, the pinned-salient steps major and the content-only ones minor, the rest faint, a ruler
-   of dates beneath; and the step panel beside the picture saying what the step changed. Both stand inside the 3D view,
-   so they come and go with it; the controls and the tray stand above the open scrubber by the room it asks for. */
+   of dates beneath; the step panel beside the picture counting what the step changed, and the dialog it opens with the
+   whole step. All stand inside the 3D view, so they come and go with it; the controls and the tray stand above the
+   open scrubber by the room it asks for. */
 
 .history-scrubber { position: absolute; left: 18px; right: 18px; bottom: 18px; z-index: 105; container-type: inline-size; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-deep); color: var(--text); font-size: 12px; }
 .history-controls { display: flex; align-items: center; gap: 12px; }
@@ -57,29 +58,50 @@
 .history-notice { color: var(--text-panel-muted); white-space: nowrap; }
 .history-notice[hidden] { display: none; }
 
-/* The panel is as tall as what it says, never taller than the room between its top margin and the scrubber, where it
-   scrolls inside; a one-line step no longer masks the picture with a full-height panel (2026-10-30). The height is the
-   content's, so the margins, the room, and its own padding and borders (12px and 1px, top and bottom) come off it. */
-.history-step-panel { position: absolute; left: 18px; top: 18px; max-height: calc(100% - 36px - var(--history-room) - 26px); width: min(360px, calc(45% - 18px)); z-index: 104; overflow: auto; padding: 12px 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-deep); color: var(--text); font-size: 13px; box-shadow: 0 8px 24px #0006; }
+/* The panel is compact (2026-11-11, the owner's "relegated to '...'"): the subject in at most two lines, the meta, and
+   one line of counts; the whole step opens in the dialog below. It never reaches the view's control strip, which stands
+   18px plus the scrubber's room from the bottom and is 46px tall: its margins, the room, the strip with a 10px gap, and
+   its own padding and borders (26px) come off its height, and should a narrow panel's few lines pass that, it scrolls
+   inside. */
+.history-step-panel { position: absolute; left: 18px; top: 18px; max-height: calc(100% - 36px - var(--history-room) - 56px - 26px); width: min(360px, calc(45% - 18px)); z-index: 104; overflow: auto; padding: 12px 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-deep); color: var(--text); font-size: 13px; box-shadow: 0 8px 24px #0006; }
 .history-step-panel[hidden] { display: none; }
-/* The panel's own hide button, at its top right; the subject's words wrap around it. */
-.history-step-hide { float: right; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; margin: -6px -8px 4px 8px; padding: 0; border: 1px solid transparent; border-radius: 4px; background: transparent; color: var(--text-panel-muted); cursor: pointer; }
-.history-step-hide:hover { background: var(--accent-subtle); color: var(--text); }
-.history-step-hide:focus-visible { outline: 2px solid var(--accent); }
+/* The header: the subject beside the panel's two buttons, which keep their place whatever the step says, drawn into
+   the panel's top right corner. */
+.history-step-header { display: flex; align-items: flex-start; gap: 6px; margin-bottom: 4px; }
+.history-step-actions { display: flex; flex: none; gap: 2px; margin: -6px -8px 0 0; }
+:is(.history-step-actions, .history-step-dialog-header) button { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; padding: 0; border: 1px solid transparent; border-radius: 4px; background: transparent; color: var(--text-panel-muted); cursor: pointer; }
+:is(.history-step-actions, .history-step-dialog-header) button:hover { background: var(--accent-subtle); color: var(--text); }
+:is(.history-step-actions, .history-step-dialog-header) button:focus-visible { outline: 2px solid var(--accent); }
+/* The subject in two lines at most, cut with an ellipsis, whole in its title and in the dialog; clipped rather than
+   hidden, so that no reveal by the browser can scroll it, as the cards' folded descriptions are. */
+.history-step-header h2 { flex: 1; min-width: 0; margin: 0; font-size: 15px; line-height: 1.35; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: clip; }
 /* The panel ends at its padding: the last words' own bottom margin would leave a gap below them that the top does not have. */
-.history-step-content > :last-child { margin-bottom: 0; }
-.history-step-panel h2 { margin: 0 0 6px; font-size: 15px; line-height: 1.35; overflow-wrap: anywhere; }
-.history-step-meta { margin: 0 0 10px; display: flex; flex-wrap: wrap; gap: 4px 10px; color: var(--text-panel-muted); font-size: 12px; }
+:is(.history-step-content, .history-step-dialog-body) > :last-child { margin-bottom: 0; }
+.history-step-meta { margin: 0 0 6px; display: flex; flex-wrap: wrap; gap: 4px 10px; color: var(--text-panel-muted); font-size: 12px; }
 .history-step-meta code { font-size: 12px; user-select: all; }
+.history-step-counts { margin: 0; line-height: 1.4; }
 .history-step-note { margin: 0 0 10px; color: var(--text-panel-muted); font-size: 12px; line-height: 1.45; }
-.history-step-panel details { border-top: 1px solid var(--border); padding: 6px 0; }
-.history-step-panel summary { cursor: pointer; display: flex; justify-content: space-between; gap: 8px; }
-.history-step-panel summary::before { content: ""; width: 6px; height: 6px; border-right: 1px solid currentColor; border-bottom: 1px solid currentColor; transform: rotate(-45deg); align-self: center; flex: none; }
-.history-step-panel details[open] > summary::before { transform: rotate(45deg); }
-.history-step-panel summary > span:first-child { flex: 1; }
-.history-step-panel summary .history-count { color: var(--text-panel-subtle); }
-.history-step-panel ul { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-direction: column; gap: 5px; }
-.history-step-panel li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; overflow-wrap: anywhere; }
+
+/* The whole step, a modal dialog over the page: a readable width, never wider than the viewport less its margins nor
+   taller, its header standing while its body scrolls. */
+.history-step-dialog { box-sizing: border-box; width: min(720px, calc(100vw - 32px)); max-width: calc(100vw - 32px); max-height: calc(100dvh - 48px); padding: 0; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-deep); color: var(--text); font-size: 13px; box-shadow: 0 12px 40px #0009; overflow: hidden; }
+.history-step-dialog[open] { display: flex; flex-direction: column; }
+.history-step-dialog::backdrop { background: #000a; }
+.history-step-dialog-header { display: flex; align-items: flex-start; gap: 12px; padding: 16px 14px 10px 20px; border-bottom: 1px solid var(--border); }
+/* A subject can be a whole first paragraph joined into one line: past a third of the viewport it scrolls, so that the
+   groups below keep their room. */
+.history-step-dialog-header h2 { flex: 1; min-width: 0; max-height: 33dvh; overflow-y: auto; margin: 0; font-size: 17px; line-height: 1.35; overflow-wrap: anywhere; }
+.history-step-dialog:focus-visible { outline: none; }
+.history-step-dialog-body { min-height: 0; overflow: auto; overscroll-behavior: contain; padding: 12px 20px 16px; }
+.history-step-dialog-body .history-step-meta { margin-bottom: 10px; }
+.history-step-dialog details { border-top: 1px solid var(--border); padding: 6px 0; }
+.history-step-dialog summary { cursor: pointer; display: flex; justify-content: space-between; gap: 8px; }
+.history-step-dialog summary::before { content: ""; width: 6px; height: 6px; border-right: 1px solid currentColor; border-bottom: 1px solid currentColor; transform: rotate(-45deg); align-self: center; flex: none; }
+.history-step-dialog details[open] > summary::before { transform: rotate(45deg); }
+.history-step-dialog summary > span:first-child { flex: 1; }
+.history-step-dialog summary .history-count { color: var(--text-panel-subtle); }
+.history-step-dialog ul { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-direction: column; gap: 5px; }
+.history-step-dialog li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; overflow-wrap: anywhere; }
 .history-file { font: inherit; color: var(--text-active); background: none; border: 0; padding: 0; cursor: pointer; text-align: left; overflow-wrap: anywhere; }
 .history-file:hover, .history-file:focus-visible { color: var(--accent); outline: none; text-decoration: underline; }
 .history-file-name { color: var(--text-active); }

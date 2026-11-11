@@ -7,7 +7,9 @@
  * file is read where it stands today, through every rename since, so that the
  * panel can pin it where it still exists and say "gone since" where it does
  * not, with its archetype and its symbol count at the step, since the docs of
- * that day are not in the bundle.
+ * that day are not in the bundle. The compact panel counts what the step
+ * changed in one line (`stepCounts`, `countWords`; 2026-11-11), the whole
+ * standing in the dialog it opens.
  *
  * Pure-function module: no DOM. The engine's sequence is the only source.
  *
@@ -72,6 +74,42 @@ export interface StepSummary {
 export const changeCount = (summary: StepSummary): number =>
   summary.born.length + summary.dead.length + summary.renamed.length + summary.resized.length + summary.edgesAdded.length + summary.edgesRemoved.length + summary.edgesChanged.length
   + summary.docLinksAdded.length + summary.docLinksRemoved.length + summary.touched.length;
+
+/** What the compact step panel counts (2026-11-11): the files the step changed, each once, its wires, its document links and its whole-directory renames. */
+export interface StepCounts {
+  files: number;
+  wires: number;
+  documentLinks: number;
+  directoriesRenamed: number;
+}
+
+/**
+ * The step's changes counted for the compact panel. A file is counted once however many groups name it, a file both
+ * renamed and resized for instance, by its path at the step; a deleted file's path does not stand at the step (the
+ * engine's `deriveChange`), so it never meets another's.
+ */
+export function stepCounts(summary: StepSummary): StepCounts {
+  const files = new Set([...summary.born, ...summary.dead, ...summary.renamed.map(rename => rename.file), ...summary.resized.map(resized => resized.file), ...summary.touched].map(file => file.path));
+  return {
+    files: files.size,
+    wires: summary.edgesAdded.length + summary.edgesRemoved.length + summary.edgesChanged.length,
+    documentLinks: summary.docLinksAdded.length + summary.docLinksRemoved.length,
+    directoriesRenamed: summary.directoriesRenamed.length
+  };
+}
+
+const counted = (count: number, one: string, many: string): string => `${count.toLocaleString("en-US")} ${count === 1 ? one : many}`;
+
+/** The counts in one line, the nonzero ones only, as "Changed: 45 files, 36 wires, 3 document links"; empty when nothing is counted. */
+export function countWords(counts: StepCounts): string {
+  const parts = [
+    counts.files ? counted(counts.files, "file", "files") : "",
+    counts.wires ? counted(counts.wires, "wire", "wires") : "",
+    counts.documentLinks ? counted(counts.documentLinks, "document link", "document links") : "",
+    counts.directoriesRenamed ? counted(counts.directoriesRenamed, "directory renamed whole", "directories renamed whole") : ""
+  ].filter(Boolean);
+  return parts.length ? `Changed: ${parts.join(", ")}` : "";
+}
 
 /**
  * The summary of a step, given the shape at that step (so that the caller's

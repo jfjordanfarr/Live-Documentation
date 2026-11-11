@@ -16,13 +16,12 @@ import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT } from "../../pa
 
 test.use({ viewport: { width: 1400, height: 900 } });
 
-/** The text the design audit reads with the history open. */
+/** The text the design audit reads with the history open, the compact step panel's among it. */
 const TEXT = [
   ".history-step-panel h2",
-  ".history-step-meta > *",
-  ".history-step-note",
-  ".history-step-panel summary > span",
-  ".history-step-panel li > *",
+  ".history-step-panel .history-step-meta > *",
+  ".history-step-panel .history-step-note",
+  ".history-step-counts",
   ".history-readout > *",
   ".history-ruler-label",
   ".history-notice",
@@ -33,6 +32,15 @@ const TEXT = [
   ".pin-tray-absent",
   ".pin-tray-toggle",
   ".perspective-controls button"
+];
+
+/** The text the design audit reads in the whole step's dialog, alone, since the dialog stands over the rest. */
+const DIALOG_TEXT = [
+  ".history-step-dialog h2",
+  ".history-step-dialog .history-step-meta > *",
+  ".history-step-dialog .history-step-note",
+  ".history-step-dialog summary > span",
+  ".history-step-dialog li > *"
 ];
 
 interface Head { commits: number }
@@ -71,7 +79,21 @@ async function openHistory(page: Page): Promise<void> {
 
 const track = (page: Page) => page.locator(".history-track");
 const panel = (page: Page) => page.locator(".history-step-panel");
-const group = (page: Page, title: string) => panel(page).locator("details").filter({ has: page.locator(`summary > span:first-child:text-is("${title}")`) });
+const dialog = (page: Page) => page.locator("dialog.history-step-dialog");
+/** A group of what the step changed, in the whole step's dialog (since 2026-11-11; before, in the panel). */
+const group = (page: Page, title: string) => dialog(page).locator("details").filter({ has: page.locator(`summary > span:first-child:text-is("${title}")`) });
+
+/** Open the whole step from the compact panel's "…" button. */
+async function openStep(page: Page): Promise<void> {
+  await panel(page).getByRole("button", { name: "Show the whole step", exact: true }).click();
+  await expect(dialog(page)).toBeVisible();
+}
+
+/** Close it by Escape; the focus returns to the "…" button. */
+async function closeStep(page: Page): Promise<void> {
+  await page.keyboard.press("Escape");
+  await expect(dialog(page)).toBeHidden();
+}
 
 async function stepTo(page: Page, step: number): Promise<void> {
   const box = (await page.locator(`.history-tick[data-step="${step}"]`).boundingBox())!;
@@ -80,11 +102,11 @@ async function stepTo(page: Page, step: number): Promise<void> {
   await settled(page);
 }
 
-async function audit(page: Page, what: string): Promise<void> {
-  const boxes = await textBoxes(page, TEXT);
-  expect(boxes.length, `${what}: words to audit`).toBeGreaterThan(8);
+async function audit(page: Page, what: string, text = TEXT, least = 8): Promise<void> {
+  const boxes = await textBoxes(page, text);
+  expect(boxes.length, `${what}: words to audit`).toBeGreaterThan(least);
   const overlaps = overlapsAmong(boxes);
-  const cut = await truncations(page, TEXT);
+  const cut = await truncations(page, text);
   expect(overlaps.length + cut.length, `${what}: ${describeFaults(overlaps, cut)}`).toBe(0);
 }
 
@@ -135,12 +157,16 @@ test("the control opens a scrubber with one tick per step and the panel says wha
   await expect(page.locator(".history-readout code")).toHaveText(commits[last].id.slice(0, 8));
   await expect(page.locator(".history-truncated")).toBeHidden();
 
-  // The panel: the commit, and the one file whose content changed while its shape did not.
+  // The panel: the commit, and the one file whose content changed while its shape did not, counted; the dialog names it.
   await expect(panel(page).locator("h2")).toHaveText(commits[last].subject);
   await expect(panel(page).locator(".history-step-meta code")).toHaveText(commits[last].id.slice(0, 8));
+  await expect(panel(page).locator(".history-step-counts")).toHaveText("Changed: 1 file");
+  await openStep(page);
   await expect(group(page, "Content changed, shape kept").locator("summary .history-count")).toHaveText("1");
   await expect(group(page, "Content changed, shape kept").locator("li button")).toHaveText("model.ts");
   await expect(group(page, "Created")).toHaveCount(0);
+  await audit(page, "the whole of today's step", DIALOG_TEXT, 4);
+  await closeStep(page);
 
   // The open scrubber takes the bottom: the controls and the tray stand above it.
   const scrubber = (await page.locator(".history-scrubber").boundingBox())!;
@@ -179,10 +205,15 @@ test("the keys walk the steps: a renamed file and its directory's hub keep their
   await expect(track(page)).toHaveAttribute("aria-valuenow", "1");
   await settled(page);
   await expect(panel(page).locator("h2")).toHaveText(commits[1].subject);
+  await expect(panel(page).locator(".history-step-counts")).toHaveText("Changed: 4 files, 1 directory renamed whole");
+  await openStep(page);
   await expect(group(page, "Renamed").locator("summary .history-count")).toHaveText("2");
   await expect(group(page, "Renamed").locator("li").first()).toContainText("src/core/model.ts");
   await expect(group(page, "Renamed").locator("li").first().locator("button")).toHaveText("model.ts");
   await expect(group(page, "Renamed whole").locator("li")).toHaveText(/src\/core\s*to\s*src\/engine/);
+  await audit(page, "the whole rename step", DIALOG_TEXT);
+  await closeStep(page);
+  await track(page).focus();
   const renamed = byId(await renderedNodes(page));
   expect(renamed.has("src/core/model.ts")).toBe(false);
   expect(renamed.get("src/engine/model.ts")).toEqual(beginning.get("src/core/model.ts"));
@@ -216,6 +247,7 @@ test("deleted and created files are actionable at their own moments without inve
 
   // Step 3: big.ts rewritten below the threshold is a death and a birth; huge.ts stands today.
   await stepTo(page, 3);
+  await openStep(page);
   const born = group(page, "Created").locator("li");
   await expect(born).toHaveCount(1);
   await expect(born.locator("button")).toHaveText("huge.ts");
@@ -225,6 +257,7 @@ test("deleted and created files are actionable at their own moments without inve
   await expect(dead.locator("button")).toHaveText("big.ts");
   await expect(dead.locator("button")).toHaveAttribute("data-at", "2");
   await expect(dead.locator(".history-gone")).toHaveText(`gone since ${commits[3].id.slice(0, 8)}`);
+  await closeStep(page);
   const at3 = byId(await renderedNodes(page));
   expect(at3.has("lib/huge.ts")).toBe(true);
   expect(at3.has("lib/big.ts")).toBe(false);
@@ -232,13 +265,17 @@ test("deleted and created files are actionable at their own moments without inve
   // Step 4: the legacy helper retired; its sphere leaves and its wire goes.
   await stepTo(page, 4);
   await expect(panel(page).locator("h2")).toHaveText(commits[4].subject);
+  await openStep(page);
   await expect(group(page, "Deleted").locator("li button")).toHaveText("legacy.ts");
   await expect(group(page, "Wires removed").locator("li")).toHaveText(/src\/app\/main\.ts\s*to\s*lib\/legacy\.ts/);
+  await closeStep(page);
   expect(byId(await renderedNodes(page)).has("lib/legacy.ts")).toBe(false);
 
-  // The created file's name pins it today.
+  // The created file's name pins it today, and the dialog closes so that it is seen.
   await stepTo(page, 3);
+  await openStep(page);
   await born.locator("button").click();
+  await expect(dialog(page)).toBeHidden();
   // The whole the control opened is retained beside it (2026-11-02): the root's row and the file's, in the tray's order.
   await expect(page.locator(".pin-tray-toggle")).toHaveText("2 pins");
   await page.getByRole("button", { name: "Show pins", exact: true }).click();
@@ -357,7 +394,9 @@ test("a deleted file can be found, read and shared in its own lifetime, and rema
   await settled(page);
   await openHistory(page);
   await stepTo(page, 4);
+  await openStep(page);
   await group(page, "Deleted").locator("button[data-file='lib/legacy.ts']").click();
+  await expect(dialog(page)).toBeHidden();
   await expect(track(page)).toHaveAttribute("aria-valuenow", "3");
   await page.locator("#search-subject").fill("legacy");
   await expect(page.locator("#search-subject-results .search-row--file")).toHaveCount(1);
@@ -418,20 +457,27 @@ test("a moment draws the documents its files' authored words linked to then, the
   // The plan is written at step 3, and only now counts.
   await stepTo(page, 3);
   await expect.poll(documents).toEqual(["related:docs/design.md", "related:docs/later.md", "related:docs/old-notes.md"]);
+  await expect(panel(page).locator(".history-step-counts")).toHaveText("Changed: 2 files, 2 wires, 1 document link");
+  await openStep(page);
   const linked = group(page, "Documents linked").locator("li");
   await expect(linked).toHaveCount(1);
   await expect(linked.locator("button[data-file]")).toHaveText("main.ts");
   await expect(linked.locator("button[data-read]")).toHaveText("later.md");
+  await closeStep(page);
 
   // Step 4: the legacy helper's link leaves with it, its notes deleted; the main file's doc drops the design.
   await stepTo(page, 4);
   await expect.poll(documents).toEqual(["related:docs/later.md"]);
+  await openStep(page);
   const unlinked = group(page, "Documents unlinked").locator("li");
   await expect(unlinked).toHaveCount(2);
   await expect(unlinked.nth(0)).toContainText("old-notes.md");
   await expect(unlinked.nth(0).locator(".history-gone").last()).toHaveText("not in this bundle");
   await expect(unlinked.nth(0).locator("button[data-read]")).toHaveCount(0);
+  await audit(page, "the whole of a step's documents", DIALOG_TEXT);
+  // A document chosen closes the dialog and opens the reader on today's version.
   await unlinked.nth(1).locator('button[data-read="docs/design.md"]').click();
+  await expect(dialog(page)).toBeHidden();
   const reader = page.locator("#detail-panel");
   await expect(reader).toHaveClass(/visible/u);
   await expect(reader.locator("#detail-title")).toHaveText("design.md");
@@ -632,7 +678,12 @@ test("the window's beginning is marked truncated and says why; the whole history
   await page.keyboard.press("Home");
   await settled(page);
   await expect(panel(page).locator(".history-step-note")).toHaveText("The beginning of what is known: 8 files and 8 wires. The export carries the history from this commit on; what came before is not in it.");
-  await expect(group(page, "Created")).toHaveCount(0);
+  await expect(panel(page).locator(".history-step-counts")).toHaveCount(0);
+  // The whole step at the base says the same, and lists nothing.
+  await openStep(page);
+  await expect(dialog(page).locator(".history-step-note")).toHaveText("The beginning of what is known: 8 files and 8 wires. The export carries the history from this commit on; what came before is not in it.");
+  await expect(dialog(page).locator("details")).toHaveCount(0);
+  await closeStep(page);
   // The lane and the ruler start after the band.
   const band = (await mark.boundingBox())!;
   const firstTick = (await page.locator('.history-tick[data-step="0"]').boundingBox())!;
