@@ -22,6 +22,16 @@ Since 2026-10-31 (discovery, [Turn 4 of the October 31 record](../../../../AI-Ag
 
 **Measured on 2026-11-11** ([Turn 5 of the November 10 record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-10.1.record.md#turn-5)), alone on an idle machine, with a temporary probe of the second test's journey: the whole root with tests is 955 spheres and enters in 111.5 s over 494 frames (4.4 frames a second); hiding the tests at full energy takes 26.0 s (146 frames, 661 spheres left); showing them again 52.1 s (220 frames); the fifty slider steps 12.8 s; hiding them at half energy 28.1 s (166 frames); the tether's change 18.6 s (107 frames). The five settles alone are 236 s against the test's 240 s, before any of its own readings, so at that frame rate the test cannot pass; on November 8 it passed in 3.4 minutes. Its time grows with the repository's file count and falls with the renderer's frame rate, and its budget does neither. The budget was not changed: what should bound the test is an open question put to the owner on [October 30](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md) and since.
 
+**Measured again on 2026-11-11, 10:22 to 10:40 UTC**, after the day's fourth gate run failed this case alone, 378 of 379, this time at its first wait: the whole repository had not settled in the 150 s `settled` allows. The same address, alone, the machine otherwise idle, timed from the page's load to stillness:
+
+| Code | Data | Seconds | Frames | Frames a second |
+| --- | --- | --- | --- | --- |
+| The round's working tree | The round's (2,377 wires) | 165.0, 163.9 | 641, 641 | 3.88, 3.91 |
+| `9bdbf7cd`, built apart | `9bdbf7cd`'s (2,376 wires) | 153.6, 158.2 | 608, 616 | 3.96, 3.89 |
+| `9bdbf7cd`, built apart | The round's | 167.7 | 646 | 3.85 |
+
+The night before, the same code and data as the second row settled in 111.5 s over 494 frames at 4.4 frames a second. So on this day the case fails on the commit it passed its neighbours on: the machine draws about a tenth fewer frames a second, and the settle takes a quarter more frames, which shows that the frames a settle takes are not fixed by the code and the data. The round's code draws at the old code's rate, and over the same data takes the same frames (641 against 646): the round did not slow this picture, which has no wrapper in it. No wait or budget was changed. What should bound this case is still the owner's question of October 30.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

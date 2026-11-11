@@ -4,6 +4,10 @@ _The owner's standing request (2026-09-29): after changing the Explorer, build i
 
 ## 2026-11-10
 
+[History inside the bubbles](2026-11-10/history-bubbles/README.md): a step of the history shown within the wrappers' skins, each change at the innermost thing drawn for it, on this repository at steps 695 and 697 before and after under Glow, Dim and Both, on the scripted sample, and on a temporary sample large enough to veil; with playback frames and per-step costs measured before and after. Implementation evidence for the root's review and the owner's eye (2026-11-11).
+
+[The compact step panel](2026-11-10/step-panel/README.md): the history's step panel cut to a subject of two lines, the hash, date and step, and one line of counts, with the whole step in a modal dialog behind its "…" button; this repository at steps 691 and 695 before and after, the dialog at 1440, 900 and 480 px wide, the base and a short step of the scripted sample, the design audit's findings, and the camera's room beside the compact panel with the rule the root rejected.
+
 [Current-build aesthetic review](2026-11-10/review/README.md): fresh main/estate reading and zoom journeys, the estate Structure opening, and a corrected full perspective round trip. Root judges the middle 2D composition the first design target, keeps the closed Structure cells as a strong reference, and records the remaining count/key and emphasis problems. No product redesign was adopted; the first early transition capture is explicitly qualified.
 
 ## 2026-11-09
