@@ -1,0 +1,48 @@
+# Links to explore, November 11, 2026
+
+Current as of the session's close ([Turn 7 of the November 10 record](../../../ChatHistory/2026/11/2026-11-10.1.record.md#turn-7)). The owner asked for a fresh build, hosted, "with several more links for me to explore", to interpret in the next chat. Every link below was opened headlessly by the root at 1440 by 960 with no page error; what the root saw is said beside it, and what the root did not do is said too. Nothing here is a verdict: in a disagreement about a picture the owner's eye decides.
+
+**What is served.** Port 8900 serves `dist/explorer`, the build of `main` made fresh at 15:54 UTC on November 11. Its history of this repository ends at November 2 (699 commits); a recomputation through November 11 was running when the session closed, and `npm run live-docs:history`, then `npm run live-docs:visualize`, finish it. Port 8901 serves `dist/still-pointer-trial/`, the client of the branch `trial/still-pointer` over the same data. Both servers were started apart from the chat so that they outlive it; if either is down, `npx http-server dist/explorer -p 8900 -c-1` and `npx http-server dist/still-pointer-trial -p 8901 -c-1` from the repository's root bring them back.
+
+## The history, lit inside the bubbles
+
+The emphasis mode is not carried by a link: Tuning, History, Changed Files chooses Glow (the default), Dim, Both or None. Play from any of these with the scrubber's play button.
+
+- [Step 695, Structure, nothing pinned](http://127.0.0.1:8900/?s=N4IgbiBcDMA0IEcomgExPAnsgzgFwCcBXAYzyIIFMMQALZSgTkdQFZGAmVRgQwDMAHABYA7ACMAjD1QA2PhKGMRPRtDGtWlPqhHRoABgHRGIAL5A): `e99d592d`, 45 files changed; white dots inside the `packages` bubble and a few in `tests`. The compact panel; its "…" opens the whole step.
+- [Step 691, Structure](http://127.0.0.1:8900/?s=N4IgbiBcDMA0IEcomgExPAnsgzgFwCcBXAYzyIIFMMQALZADgFYAjAQwDYBGATgDMADHw4AmETxIMelaJR7sRAFiZcA7NDaUGbZk0UCS0EAF8gA): `85ba619f`, a subject of a hundred characters cut at two lines.
+- [Step 604, Structure](http://127.0.0.1:8900/?s=N4IgbiBcDMA0IEcomgExPAnsgzgFwCcBXAYzyIIFMMQALZARgCYmBWAIwDNUB2Jy9gA5oANjSDB7AJydKA9gBYGDSiWhTBnBjykieJEAF8gA): `1225bfd7`, a commit that also deleted three files, among them `localView/render.ts`; by the rule a deleted file lights the innermost drawn bubble of its directory. The root checked the step and the panel ("Changed: 30 files, 21 wires, 2 document links"), not which bubble is ringed.
+- [Step 695, Connections](http://127.0.0.1:8900/?s=N4IgbiBcDMA0IEcomgExPAFsgpgTj1QFY8AmVPAQwDMAOAFgHYAjARktQDZrX69HKeaMyJEc1VI2jQADLWh4QAXyA): the same commit over the archipelago of wrapped groups; the changed files white inside the largest group's skin.
+
+## Bubbles too full to draw their files
+
+The scripted sample `samples/history-veil` holds 1,050 files in one tree, more than a picture draws inside skins, so that the cases this repository is too small to show can be seen.
+
+- [Step 1: a body veiled whole, lit for one change](http://127.0.0.1:8900/samples/history-veil/?s=N4IgbiBcDMA0IEcomgExPAnsgzgFwCcBXAYzyIIFMMQALZABgCMSAzJ1kgNlQYdYAcTAIwAmACyVW0EgIEkSAQ24sA7AE5pqRdEolxIAL5A): "Touch a corner of the big tree". The whole `big` bubble is pale with a thin white edge. The root refused an earlier look of this, a thick halo.
+- [Step 2: a veiled bubble inside an open body](http://127.0.0.1:8900/samples/history-veil/?s=N4IgbiBcDMA0IEcomgExPAnsgzgFwCcBXAYzyIIFMMQALZABgHYBWB1AIwE4mmSmAjKkoBDAGYcxqAGwAmBtIAsYyrIGUBJZYoYNoYkgJABfIA): "Retire the small tree and touch a veiled corner". One white ball among the open bubbles of `big`.
+- [Step 3: a deletion](http://127.0.0.1:8900/samples/history-veil/?s=N4IgbiBcDMA0IEcomgExPAnsgzgFwCcBXAYzyIIFMMQALZANgE4AOBgdiZIFYOOAjAIxsm-AIYAmQdzEAWFrMEAzAAwtBs1P1kqN7dAF8gA): "Delete a file in the veiled corner". The bubble the file stood in is ringed white.
+
+## The step panel and the dialog
+
+Any history link above shows the compact panel. Things to try by hand: the "…" button and Escape; the dialog's file names, which pin a file at its moment; play, then open the dialog (it pauses); the hide button and the scrubber's Step details toggle; a narrower window with a reader open beside the picture.
+
+## Zoom Looks, the trial of three looks beside the 2D ladder
+
+From the night of November 10; still the owner's to choose. Tuning, 2D Layout, Zoom Looks switches between `stepped` and `three` on one picture.
+
+- [The sample estate, three looks](http://127.0.0.1:8900/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTi4gAF6oqBRRaQDWzpAgHIpmXFwgAL7wAGaoZuhcNBb4ikR%2BVFkykABsrMSKmGaqJZ3dJAh%2BOmyotPSQRsSoZL5sVKqM8FSoklxeyYMiIDqBFKKkHlgIgwzwqhZgQVBMAHRMArMkPpN2HB5c%2BH2YHBMqPcHgJ4Ohev0uAAlCQDe7wAj4cIAD28-0BwLgiCWWQ8HCKywKwNmC0k-2sDn6wUgl3yXAKXDMwOeYM4XEkACFAgAFMijVbY1oAdTYkiJNLWGy4AC00hQoY42HoJLVMfAImwirL0grxsqqKrII8AJxrTAmACC%2BhpChAilQ%2BFytKKtmwADELCZcl14DplKMACI-cWgkDXeb4IUNfCM3L7LJLMrlEBMyAVbA6LjwABWUHTCEz8FQUAA2iASwAdED4JZV2BV7mYQ6fb5mW61AD0jebVC%2BjPbXAe6B0darACoqwBdECTtZQEDdky91sDrtNpd9tv%2BQfDkDwfgl0BAvKLlv97drnubgdD5y%2B%2BdjsqzkBkUtHqUASUk89Py-Pnd-a9t1vPcQAdOw8wzLhynfTYvx-dczy3ADEL-ZCdzvfZDmOJAT1QoDVSLGNj3xMhoMnUogA)
+- [This repository, three looks](http://127.0.0.1:8900/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTi4gAF6oqBRRaQDWzpAgHIpmXFwgAL7wAGaoZuhcNBb4ikR%2BVFkykABsrMSKmGaqJZ3dJAh%2BOmyotPSQRsSoZL5sVKqM8FSoklxeyYMiIDqBFKKkHlgIgwzwqhZgQVBMAHRMArMkPpN2HB5c%2BH2YHBMqPcHgJ4Ohev0uAAlCQDe7wAj4cIAD28-0BwLgiCWWQ8HCKywKwNmC0k-2sDn6wUgl3yXAKXDMwOeYM4XEkACFAgAFMijVbY1oAdTYkiJNLWGy4AC00hQoY42HoJLVMfAImwirL0grxsqqKrII8AJxrTAmACC%2BhpChAilQ%2BFytKKtmwADELCZcl14DplKMACI-cWgkDXeb4IUNfCM3L7LJLMrlEBMyAVbA6LjwABWUHTCEz8FQUAA2iASwAdED4JZV2BV37oLKYAY6AD0XGRvmqjLbOhqbfQfk%2BbduXAi7YOR1IFoN9rMOgeHB0darACoqwBdECbtZQauYJstxwdrtoIpmPsDodsEdjid9w7HBCz8HVRfLkDwfgl0BAvKNs2rant2F5Xugg7DlQHCjreD5Ts%2Br7zh%2Bzi%2Bvua5lLuIBkKWf5SgAkpI%2B6Ace7adqBvb9hBN53nBk5PjOc7vkuqEgA6dh5hmXDlHhmyEcRh5ASe5HnpR15QTB970dOL5MQuLFfvsDFIHk6xmBQ2BsDsHjKYRnxsBUt5MkWMb-viZDcZupRAA)
+- [The change itself, three looks](http://127.0.0.1:8900/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeBR6iAThK4BRMFypUuOnbOOmLDgMpsK%2BBG3ScAJ6yLPBmqADuADJctggOTi4gAF6oqBRRaQDWzpAgHIpmXFwgAL7wAGaoZuhcNBb4ikR%2BVFkykABsrMSKmGaqJZ3dJAh%2BOmyotPSQRsSoZL5sVKqM8FSoklxeyYMiIDqBFKKkHlgIgwzwqhZgQVBMAHRMArMkPpN2HB5c%2BH2YHBMqPcHgJ4Ohev0uAAlCQDe7wAj4cIAD28-0BwLgiCWWQ8HCKywKwNmC0k-2sDn6wUgl3yXAKXDMwOeYM4XEkACFAgAFMijVbY1oAdTYkiJNLWGy4AC00hQoY42HoJLVMfAImwirL0grxsqqKrII8AJxrTAmACC%2BhpChAilQ%2BFytKKtmwADELCZcl14DplKMACI-cWgkDXeb4IUNfCM3L7LJLMrlEBMyAVbA6LjwABWUHTCEz8FQUAA2iASwAdED4JZV2BV37oLKYAY6AD0XGRvmqjLbOhqbfQfk%2BbduXAi7bQZwAamxx22EJhJJszABaPQ-HQPDg6OtVgBUVYAuiB4JXq7XTw3ME2W44O120EUzH2B0O51QOKO5xOFxhsLO84kJ%2B4SjIy267leICIgggQxHEADyFRBhwmBsAgx4gEeaxQNWN7Nq2D7ds%2Br7oIOw6ft%2B46Tv%2BCCAREC5Liu67cI6EGntWpagECeSNgR96dsRvb9mR74jmOv5TgBP6McujIsZu7G%2Brh%2B5lLA3G4Xxd7toJT7CW%2BFFfhJNEzjJwH4qQ5xmEp%2By4TBcGxFwCBIShaFIKUR6lEAA)
+
+## Still Pointer, the trial on its own branch (port 8901)
+
+Click a large seed's name, for instance `client/types.ts`, and keep the mouse still while the picture grows; then rest the pointer over the picture and zoom with the wheel; then play the history with the pointer resting on the picture. The root opened each link and saw the mode loaded; it did not drive the hover by hand.
+
+- [Follows](http://127.0.0.1:8901/?s=N4IgbiBcDMA0IBsqgGYHsBOBjApgcQwEMAHAC2RAGcAXASwQQAU1aA7anDKEdBtAd0ogAvsPgBHbtAAmIoA): today's behaviour and the default; the grown picture arrives faded around whatever landed under the pointer.
+- [Waits](http://127.0.0.1:8901/?s=N4IgbiBcDMA0IBsqgGYHsBOBjApgcQwEMAHAC2RAGcAXASwQQAU1aA7anDKEAd0NuqUQAX2HwAjt2gATEUA): only the pointer's own move or press begins a hover.
+- [Names](http://127.0.0.1:8901/?s=N4IgbiBcDMA0IBsqgGYHsBOBjApgcQwEMAHAC2RAGcAXASwQQAU1aA7anDKEVwgWxyUQAX2HwAjt2gATEUA): what arrives is named and offers its actions; nothing fades until the pointer moves.
+
+## The code that changed, as the Explorer shows it
+
+- [The rule for what lights](http://127.0.0.1:8900/?s=N4IgbiBcDMA0IDsogA4EMDGBrNBzApgM4D0+AHigDYD2ATvrcYbRsRpQJb4IAuxYXAO4kAZnQz4A4rTQoAFgFEAtvLSEOhAHQ9CIeCigBtUEkipMOAiXJU6DJizadufAfmHExLKTPnLV6lo6eiC6ZgBUIAC+sCbI6Nh4RKQUNPSMzKzsXLzEcho8dACeTDz4KAC06Aj4lNq68GEgGPRoZQDKZSgACmg1lNGxiPEWSdapdhmO2S78QqLiPrJyAMJoSgxo9SFNGHQ1tL39AJIIhPjBUQC6UUA): 2D, `forceGraphEmphasis.ts` the subject, pinned whole, with `createStepPanel` and `cornerPanelInsets` pinned.
+- [The step panel's code](http://127.0.0.1:8900/?s=N4IgbiBcDMA0IDsogA4EMDGBrNBzApgM4D0+AHigDYD2ATvrcYbRsRpQJb4IAuxAFh0I86ATyY98KALToE+SgDoehEPBRQA2qCSRUmHARLkqdBkxZtO3PoOFiJU2WnlKVakKr0AqEAF9YHWR0bDwiUgoaekZmVnYuXgEhEVpxYSdCAFcAW2y0VOVVeC9PSRQAYWpM3lU-AF0-IA): 2D, `step-panel.ts` pinned whole and `stepCounts` of `step-summary.ts`.
+- [The emphasis module in 3D](http://127.0.0.1:8900/?s=N4IgbiBcDMA0IEcomgExPAdsgDgQwGMBrPAcwFMBnAenIA8cAbAewCdzXrLWDqDGAluUwAXamCEB3GgDM2BcgHFWeHAAsAogFt1eSgMoA6EZQwgcUANqhskc4RIUa9Jmw5cefQcLETy06jkeJRV1bV19IxMzUzsAKhAAXwBdRKA): Connections, `forceGraphEmphasis.ts` pinned, its neighbourhood by hops.
