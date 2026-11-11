@@ -91,6 +91,13 @@ test("with nothing asked about, the connections layout starts at the archipelago
   // A click pins the seed: its hops are shown in full with the last hop dimmed, and every other group stands by its seed, dimmed past the frontier.
   await label.click();
   await settled(page);
+  // The grown picture is read at rest, with the pointer off it. The pointer was left where the seed's name stood while
+  // the group grew around it, and a hover fades everything but the hovered file's connections. Measured on 2026-11-11,
+  // when this repository's picture first settled so: the actions of scripts/layout-lab/verify.ts stood under the
+  // pointer and held the hover, with no sphere under it, and 237 of the 245 spheres were drawn at .15.
+  await page.mouse.move(130, 700);
+  await expect(page.locator("#graph-svg")).toHaveAttribute("data-hovered-node", "false");
+  await expect(page.locator(".force-graph-actions")).toBeHidden();
   const grown = await expected(page, "connections", new Set([seed.id]));
   const after = await shown(page);
   expect([...after.ids].sort(), "the pinned seed's hops, and the other seeds").toEqual([...grown.scope.hops.keys()].sort());
