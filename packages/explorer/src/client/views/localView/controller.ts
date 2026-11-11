@@ -53,7 +53,7 @@ import {
 } from "../symbolAnchors";
 import { clearConnections, drawConnections } from "./connections";
 import { createEdgeSigns, type EdgeSigns, type FramePlace } from "./edge-signs";
-import { ladderBand, ladderScales, ladderStep, type LadderBand } from "./ladder-steps";
+import { ladderBand, ladderScales, ladderStep, LOOK_BANDS, LOOK_SCALES, zoomLook, type LadderBand, type ZoomLook } from "./ladder-steps";
 import {
   computeSymbolHighlight,
   applySymbolHighlight,
@@ -121,6 +121,12 @@ export class LocalViewController implements LocalViewApi {
   private lod: LadderBand = "reading";
   /** The card ladder's step (2026-11-06, Turns 17 to 19), read by the stylesheet from the container's `data-step`; null before the first. */
   private ladderStep: number | null = null;
+  /** The zoom look of the trial beside the ladder (Tuning's Zoom Looks, 2026-11-10), read from the container's `data-look`. */
+  private look: ZoomLook = "reading";
+  /** The timer that ends a change of look's fade; 0 when none runs. */
+  private lookFade = 0;
+  /** The zoom ratio at which the look shown was last drawn, from which a change of look starts its held things' sizes. */
+  private lookRatio = 1;
   /** What the stylesheet was last given by the ladder, so that a frame with the same band and held scales writes nothing. */
   private ladderWritten = "";
   /** Whether a gesture, inertia or an animation moves the camera, as the container's `data-camera` last said. */
@@ -314,6 +320,7 @@ export class LocalViewController implements LocalViewApi {
       },
       mode: () => options.state.tuning.localMap.cardText,
       resistances: () => options.state.tuning.localMap,
+      zoomLooks: () => options.state.tuning.localMap.zoomLooks,
       change: (nodeId, symbol, open, control) => options.onReadingChange?.(nodeId, symbol, open, control),
       inspect: (target, fragment) => options.onReadTarget?.(target, fragment),
       navigate: node => { void this.recenterNode(node); }
@@ -1271,15 +1278,36 @@ export class LocalViewController implements LocalViewApi {
     if (!Number.isFinite(ratio) || ratio <= 0) return;
     this.lod = ladderBand(ratio, this.lod);
     this.ladderStep = ladderStep(ratio, this.ladderStep);
-    const step = String(this.ladderStep);
-    if (this.container.dataset.step !== step) this.container.dataset.step = step;
-    const { textResistance, controlResistance, nameGrowth } = this.options.state.tuning.localMap;
+    this.look = zoomLook(ratio, this.look);
+    const { textResistance, controlResistance, nameGrowth, zoomLooks, cardText } = this.options.state.tuning.localMap;
+    // The trial's three looks replace the band and the step for slot cards: each look is a band of the ladder drawn at
+    // one held scale for every zoom inside it, and the step leaves, so that nothing changes between the looks' edges.
+    const looks = zoomLooks === "three" && cardText === "slot";
+    const band = looks ? LOOK_BANDS[this.look] : this.lod;
+    const step = looks ? (this.look === "reading" ? "0" : null) : String(this.ladderStep);
     const growth = Math.max(1, Number.isFinite(nameGrowth) ? nameGrowth : 1).toFixed(2);
-    const held = ladderScales(this.ladderStep, { textResistance, controlResistance });
+    const held = looks ? { text: LOOK_SCALES[this.look], control: LOOK_SCALES[this.look] }
+      : ladderScales(this.ladderStep, { textResistance, controlResistance });
     const text = held.text.toFixed(3), control = held.control.toFixed(3);
+    const container = this.container, dataset = container.dataset;
+    if (step === null) delete dataset.step;
+    else if (dataset.step !== step) dataset.step = step;
+    if (looks) {
+      dataset.looks = "three";
+      if (dataset.look !== this.look) {
+        // At a change of look the held things travel from their old size to their new one, where motion is welcome.
+        const left = dataset.look as ZoomLook | undefined;
+        if (left && this.ladderWritten) this.morphLook(left, this.lookRatio / ratio);
+        dataset.look = this.look;
+      }
+      this.lookRatio = ratio;
+    } else {
+      delete dataset.looks;
+      delete dataset.look;
+    }
     // Only what the stylesheet reads is compared: a step whose held scales equal the last one's (at resistance 0, or
     // past a ceiling) writes nothing, and the page has nothing to draw again.
-    const written = `${this.lod} ${text} ${control} ${growth}`;
+    const written = `${band} ${text} ${control} ${growth}${looks ? " looks" : ""}`;
     if (written === this.ladderWritten) return;
     // A new band or held size draws the anchor dots anew: at a new size from their edge beside the name, on their
     // name's line as it is held, or following the map where the overview silences their rows; so the wires that end at
@@ -1289,15 +1317,43 @@ export class LocalViewController implements LocalViewApi {
       if (this.stage && this.isShown()) this.drawConnections();
     });
     this.ladderWritten = written;
-    const style = this.container.style;
-    const bandChanged = this.container.dataset.lod !== this.lod;
-    this.container.dataset.lod = this.lod;
+    const style = container.style;
+    const bandChanged = dataset.lod !== band;
+    dataset.lod = band;
     style.setProperty("--text-scale", text);
     style.setProperty("--name-growth", growth);
     style.setProperty("--control-scale", control);
     // Slot prose follows the band; keep its reading controls in sync with what the stylesheet now shows.
     if (bandChanged) this.reading?.updatePresentation(this.readingVisible);
   }
+
+  /**
+   * The trial's change of look, for the stylesheet to animate over 160 ms (reading.css, the zoom looks; nothing where
+   * the person prefers reduced motion), written before the new look: the look left as `data-look-from` and its scale as
+   * `--look-from-scale`, from which the stylesheet reckons each held thing's scale in that look; the zoom ratio at which
+   * that look was last drawn over the ratio now as `--look-zoom` (a Zoom button moves the camera at once, by 1.2 a
+   * press), so that a thing starts at the size it had on screen; the lesser of that and 1 as `--look-keep`, at which the
+   * file name's leaving lines stay; and the class `local-look-fading`, set afresh so that its animations start again at
+   * every change and taken away with the attribute once they have ended.
+   */
+  private morphLook(from: ZoomLook, zoom: number): void {
+    const container = this.container, style = container.style;
+    container.classList.remove("local-look-fading");
+    container.dataset.lookFrom = from;
+    const moved = Number.isFinite(zoom) && zoom > 0 ? zoom : 1;
+    style.setProperty("--look-from-scale", LOOK_SCALES[from].toFixed(3));
+    style.setProperty("--look-zoom", moved.toFixed(4));
+    style.setProperty("--look-keep", Math.min(1, moved).toFixed(4));
+    // A new animation starts only from a style without the class: reading a box flushes it.
+    void container.offsetWidth;
+    container.classList.add("local-look-fading");
+    window.clearTimeout(this.lookFade);
+    this.lookFade = window.setTimeout(() => {
+      container.classList.remove("local-look-fading");
+      delete container.dataset.lookFrom;
+    }, 200);
+  }
+
 
   /** Pan only as far as the focused command needs, including while its native row is moving. */
   private revealKeyboardFocus(): boolean {

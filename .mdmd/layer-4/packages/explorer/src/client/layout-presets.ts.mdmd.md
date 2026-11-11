@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/layout-presets.ts
-- Generated At: 2026-11-06T06:45:39.745Z
+- Generated At: 2026-11-10T21:46:13.473Z
 
 ## Authored
 ### Purpose
@@ -77,13 +77,13 @@ Return a fresh tuning record with both representations' packing set together.
 - Returns: [`LayoutSettings`](#symbol-layoutsettings)
 
 ##### `readLayoutSettings` — Summary
-Read only known settings: the finite numbers, bound to their public control ranges, and the one named 3D setting a
-link or a saved tuning carries beside them, the wrappers' look (2026-11-06, so that a shared link shows the group
-wrappers and the directory shells without a switch).
+Read only known settings: the finite numbers, bound to their public control ranges, and the named settings a link or a
+saved tuning carries beside them: the 3D wrappers' look (2026-11-06, so that a shared link shows the group wrappers and
+the directory shells without a switch) and the 2D Zoom Looks (2026-11-10, so that a link shows the trial's three looks).
 
 #### `layoutSettingsOf` {#symbol-layoutsettingsof}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L78)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L79)
 - Returns: [`LayoutSettings`](#symbol-layoutsettings)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 
@@ -92,7 +92,7 @@ Snapshot the controls that affect packing and spatial encodings, independent of 
 
 #### `applyLayoutSettings` {#symbol-applylayoutsettings}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L83)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L84)
 - Returns: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig); `settings`: [`LayoutSettings`](#symbol-layoutsettings)
 
@@ -106,6 +106,7 @@ Merge a validated partial snapshot over the current values, leaving unrelated pr
 - [`types.GROUP_WRAPPERS`](./types.ts.mdmd.md#symbol-group_wrappers)
 - [`types.LocalMapTuning`](./types.ts.mdmd.md#symbol-localmaptuning)
 - [`types.TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
+- [`types.ZOOM_LOOKS`](./types.ts.mdmd.md#symbol-zoom_looks)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

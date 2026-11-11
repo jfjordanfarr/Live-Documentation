@@ -38,6 +38,7 @@ export const TUNING_HELP: Readonly<Record<string, string>> = {
   "tuning-move-ms":                   "How long the picture takes to move to a new arrangement; zero jumps.",
   "tuning-hold-still":                "Which card stays put on screen while the picture moves around it.",
   "tuning-card-text":                 "How a card shows its text: every symbol has a fixed slot cut with an ellipsis, or a description opens on a tap.",
+  "tuning-zoom-looks":                "With fixed slots, how cards change as the map zooms out: at every press, or only twice, between three looks.",
   "tuning-slot-lines":                "With fixed slots, how many lines of text each symbol's slot holds, filled or not.",
   "tuning-text-resistance":           "With fixed slots, how much names resist the zoom below reading scale: 0 follows it, 1 holds their screen size.",
   "tuning-name-growth":               "With fixed slots, how much symbol names grow into the room descriptions leave below reading scale: 1 keeps one size.",

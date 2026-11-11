@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-reading.ts
-- Generated At: 2026-11-09T03:50:01.313Z
+- Generated At: 2026-11-10T21:46:15.798Z
 
 ## Authored
 ### Purpose
@@ -32,6 +32,8 @@ Since the far bands' round (2026-11-06, after the owner's report in [Turn 1](../
 
 After the root's third review of the round (2026-11-06; the owner's picture of `rosetta-manifest.json` pinned whole, where the browser's own wrapping broke file names inside a word beside the node's More, "main.r / s"), `measureRooms` also chooses the held file name's lines: for every band from the middle out and every step, with Tuning's resistances from the new `resistances()` option, it gives `heldTitle` and `chooseHeldLines` (`held-lines.ts`) the rooms it measured and a canvas measure of the name's font, and writes the lines as `data-lines-<band>-<step>` on the held element, which the stylesheet draws as they are. A write whose name begins with `data-` is an attribute. The card's rooms are kept per card so that `markFirstPin` chooses the overview band's lines again when the rows are reordered without a reading. The button overhang properties are no longer written, since only the line choice reads them.
 
+Since 2026-11-10, with Tuning's Zoom Looks set to three looks (a trial, [Turn 5 of the November 10 record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-10.1.record.md#turn-5)), the held file name's lines are also chosen once a render for each look that draws it, the connections look in the far band's room and the overview look in the overview band's, at the look's one scale (`data-lines-look-<look>` and `--controls-y-look-<look>`), so that inside a look the name never changes its lines; and the Internals row, the card's last, is given the room down to the card's content bottom as its row height, so that its name, its More and its dot are held at the look's scale like the rows above it instead of following the map to a few pixels; the stylesheet then draws its dashed box as a layer that grows with the held head, since the wrapper's own border had run through the enlarged name. With the default steps nothing here changes.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -51,7 +53,7 @@ Canonical text, application-owned choices and the actions a card's text can lead
 
 #### `CardReading` {#symbol-cardreading}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L74)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L76)
 
 ##### `CardReading` — Summary
 Builds on-card explanations from the same bundled docs as the full reader. A description opens and folds only
@@ -66,7 +68,7 @@ while names open full descriptions in the reader.
 
 #### `markFirstPin` {#symbol-markfirstpin}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L603)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L623)
 
 ##### `markFirstPin` — Summary
 Write {@link firstPinWrite} for a card whose rows were just ordered, and its held name's lines at the overview band,
@@ -101,7 +103,10 @@ whose room it bounds, from the card's last reading: no layout is read.
 - [`ladder-rooms.rowsBeforeFirstPin`](./ladder-rooms.ts.mdmd.md#symbol-rowsbeforefirstpin)
 - [`ladder-steps.FIRST_STEP`](./ladder-steps.ts.mdmd.md#symbol-first_step)
 - [`ladder-steps.LAST_STEP`](./ladder-steps.ts.mdmd.md#symbol-last_step)
+- [`ladder-steps.LOOK_BANDS`](./ladder-steps.ts.mdmd.md#symbol-look_bands)
+- [`ladder-steps.LOOK_SCALES`](./ladder-steps.ts.mdmd.md#symbol-look_scales)
 - [`ladder-steps.LadderResistances`](./ladder-steps.ts.mdmd.md#symbol-ladderresistances)
+- [`ladder-steps.ZoomLook`](./ladder-steps.ts.mdmd.md#symbol-zoomlook-type)
 - [`ladder-steps.ladderScales`](./ladder-steps.ts.mdmd.md#symbol-ladderscales-function)
 - [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)
 - [`types.ReadingControl`](./types.ts.mdmd.md#symbol-readingcontrol) (type-only)

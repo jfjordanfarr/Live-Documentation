@@ -79,6 +79,12 @@ export interface LocalMapTuning {
    * file's structure alone, never on what is read or on zoom.
    */
   cardText: "grow" | "slot";
+  /**
+   * With fixed slots, how a card changes as the map zooms out, a comparison the owner asked for on 2026-11-08: "stepped",
+   * the card ladder's five bands and eleven held steps; "three", three looks (reading, connections, overview), each held
+   * at one scale for every zoom inside it, so that a card changes only twice on the way out.
+   */
+  zoomLooks: ZoomLooks;
   /** With fixed slots, how many lines of text each symbol's slot holds, filled or not; the default is to be found by eye (2026-11-05). */
   slotLines: number;
   /** With fixed slots, how much names resist the zoom below reading scale: 0 follows the map, 1 holds screen size (2026-11-05). */
@@ -206,6 +212,12 @@ export type GroupWrappers = "off" | "skin" | "cloud" | "cloud-rim";
 
 /** Every wrapper choice, in the order the control offers them. */
 export const GROUP_WRAPPERS: readonly GroupWrappers[] = ["off", "skin", "cloud", "cloud-rim"];
+
+/** How a slot card changes as the 2D map zooms out: the card ladder's steps, or the three looks of the 2026-11-10 trial. */
+export type ZoomLooks = "stepped" | "three";
+
+/** Every Zoom Looks choice, in the order the control offers them. */
+export const ZOOM_LOOKS: readonly ZoomLooks[] = ["stepped", "three"];
 
 /** The 3D Local Map's packing and stable visual encodings, shared with the headless layout lab. */
 export interface ForceGraphTuning {

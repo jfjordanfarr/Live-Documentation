@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { BAND_MARGIN, FIRST_STEP, LAST_STEP, ladderBand, ladderScales, ladderStep, STEP_HYSTERESIS, STEP_RATIO } from "./ladder-steps";
+import { BAND_MARGIN, FIRST_STEP, LAST_STEP, ladderBand, ladderScales, ladderStep, LOOK_SCALES, STEP_HYSTERESIS, STEP_RATIO, zoomLook, type ZoomLook } from "./ladder-steps";
 
 /** The ratio a given number of steps out from reading scale. */
 const stepsOut = (steps: number): number => STEP_RATIO ** -steps;
@@ -140,5 +140,76 @@ describe("ladderScales", () => {
     expect(ladderScales(-4, { textResistance: 1, controlResistance: 1 })).toEqual({ text: 1, control: 1 });
     expect(ladderScales(5, { textResistance: 7, controlResistance: -3 })).toEqual({ text: STEP_RATIO ** 5, control: 1 });
     expect(ladderScales(5, { textResistance: Number.NaN, controlResistance: 1 }).text).toBeCloseTo(STEP_RATIO ** 5, 10);
+  });
+});
+
+describe("zoomLook", () => {
+  /** The look of each press, walking from one press to the next in the given order, each ratio a hair off its press. */
+  const walk = (presses: readonly number[], start: ZoomLook, wobble = 0): Map<number, ZoomLook> => {
+    const looks = new Map<number, ZoomLook>();
+    let look = start;
+    for (const press of presses) {
+      look = zoomLook(stepsOut(press) * (1 + wobble), look);
+      looks.set(press, look);
+    }
+    return looks;
+  };
+  const out = Array.from({ length: 15 }, (_, index) => index - 4); // four presses in to the tenth out
+
+  it("gives each press its look: reading closer than reading scale and through two presses out, connections the third to the sixth, overview from the seventh", () => {
+    expect([...walk(out, "reading")].map(([press, look]) => `${press} ${look}`)).toEqual([
+      "-4 reading", "-3 reading", "-2 reading", "-1 reading", "0 reading", "1 reading", "2 reading",
+      "3 connections", "4 connections", "5 connections", "6 connections",
+      "7 overview", "8 overview", "9 overview", "10 overview"
+    ]);
+    expect(zoomLook(40, "overview")).toBe("reading");
+    expect(zoomLook(1e-6, "reading")).toBe("overview");
+  });
+
+  it("shows the same look at every press walking out and walking back in, from any look the walk starts in", () => {
+    for (const wobble of [0, 1e-9, -1e-9]) for (const start of ["reading", "connections", "overview"] as const) {
+      const going = walk(out, start, wobble);
+      const coming = walk([...out].reverse(), going.get(10)!, wobble);
+      for (let press = 0; press <= 10; press += 1) expect(coming.get(press), `press ${press}, from ${start}`).toBe(going.get(press));
+    }
+  });
+
+  it("changes look between presses, farther out at an edge and closer again only a margin past it", () => {
+    for (const [last, near, far] of [[2, "reading", "connections"], [6, "connections", "overview"]] as const) {
+      const edge = stepsOut(last) / Math.sqrt(BAND_MARGIN * STEP_RATIO);
+      // The edge lies between the two presses, and so does the margin past it.
+      expect(edge).toBeLessThan(stepsOut(last));
+      expect(edge).toBeGreaterThan(stepsOut(last + 1));
+      expect(edge * BAND_MARGIN).toBeLessThan(stepsOut(last));
+      expect(zoomLook(edge * 1.001, near)).toBe(near);
+      expect(zoomLook(edge * 0.999, near)).toBe(far);
+      expect(zoomLook(edge * 1.1, far)).toBe(far);
+      expect(zoomLook(edge * BAND_MARGIN * 1.001, far)).toBe(near);
+      // A camera trembling across the edge keeps the look it had.
+      let look = zoomLook(edge * 0.99, near);
+      for (const wobble of [1.01, 0.99, 1.05, 0.98, 1.1]) look = zoomLook(edge * wobble, look);
+      expect(look).toBe(far);
+    }
+  });
+
+  it("keeps the look for a ratio that is not a positive number", () => {
+    for (const look of ["reading", "connections", "overview"] as const) {
+      for (const ratio of [Number.NaN, 0, -1, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY]) expect(zoomLook(ratio, look)).toBe(look);
+    }
+  });
+
+  it("holds connections at one scale that draws a name on screen near 1.3 of its reading size at its nearest press and no smaller than 0.72 at its farthest", () => {
+    expect(LOOK_SCALES.reading).toBe(1);
+    const near = stepsOut(3) * LOOK_SCALES.connections, far = stepsOut(6) * LOOK_SCALES.connections;
+    expect(near).toBeLessThanOrEqual(1.3);
+    expect(near).toBeGreaterThan(1.2);
+    expect(far).toBeGreaterThanOrEqual(0.72);
+  });
+
+  it("holds overview no larger than about the reading size at its nearest press, where a larger scale broke names inside a word, and above half of it at the tenth", () => {
+    const near = stepsOut(7) * LOOK_SCALES.overview, far = stepsOut(10) * LOOK_SCALES.overview;
+    expect(near).toBeGreaterThan(0.95);
+    expect(near).toBeLessThan(1.05);
+    expect(far).toBeGreaterThan(0.55);
   });
 });

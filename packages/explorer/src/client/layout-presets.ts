@@ -1,4 +1,4 @@
-import { GROUP_WRAPPERS, type ForceGraphTuning, type LocalMapTuning, type TuningConfig } from "./types";
+import { GROUP_WRAPPERS, ZOOM_LOOKS, type ForceGraphTuning, type LocalMapTuning, type TuningConfig } from "./types";
 
 /** One packing preference interpreted by both Local Map representations. */
 export type LayoutPreset = "compact" | "relaxed";
@@ -8,7 +8,7 @@ type SpatialPacking = Pick<ForceGraphTuning, "linkGap" | "charge" | "collisionGa
 
 /** Portable numeric settings behind the presets and spatial encodings; older URLs may omit them. */
 export interface LayoutSettings {
-  localMap?: Partial<FlatPacking>;
+  localMap?: Partial<FlatPacking & Pick<LocalMapTuning, "zoomLooks">>;
   forceGraph?: Partial<ForceGraphTuning>;
 }
 
@@ -45,9 +45,9 @@ export function applyLayoutPreset(tuning: TuningConfig, preset: LayoutPreset): T
 }
 
 /**
- * Read only known settings: the finite numbers, bound to their public control ranges, and the one named 3D setting a
- * link or a saved tuning carries beside them, the wrappers' look (2026-11-06, so that a shared link shows the group
- * wrappers and the directory shells without a switch).
+ * Read only known settings: the finite numbers, bound to their public control ranges, and the named settings a link or a
+ * saved tuning carries beside them: the 3D wrappers' look (2026-11-06, so that a shared link shows the group wrappers and
+ * the directory shells without a switch) and the 2D Zoom Looks (2026-11-10, so that a link shows the trial's three looks).
  */
 export function readLayoutSettings(value: unknown): LayoutSettings | undefined {
   if (!value || typeof value !== "object" || Array.isArray(value)) return undefined;
@@ -65,7 +65,8 @@ export function readLayoutSettings(value: unknown): LayoutSettings | undefined {
       }
     }
     if (group === "localMap") {
-      if (Object.keys(numbers).length) result.localMap = numbers;
+      const zoomLooks = ZOOM_LOOKS.find(choice => choice === (input as Record<string, unknown>).zoomLooks);
+      if (Object.keys(numbers).length || zoomLooks) result.localMap = { ...numbers, ...(zoomLooks ? { zoomLooks } : null) };
       continue;
     }
     const groupWrappers = GROUP_WRAPPERS.find(choice => choice === (input as Record<string, unknown>).groupWrappers);

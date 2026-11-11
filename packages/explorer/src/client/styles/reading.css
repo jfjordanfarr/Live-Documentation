@@ -370,6 +370,136 @@
 [data-lod="overview"][data-step="9"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-overview-9, 0) * 1px); }
 [data-lod="overview"][data-step="10"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-overview-10, 0) * 1px); }
 
+/* The zoom looks, a trial beside the ladder (Tuning → 2D Layout → Zoom Looks, 2026-11-10; the owner's hypothesis of
+   2026-11-08, a few quantized looks rather than a change at every press): the controller writes data-looks="three" and
+   each look as a band of the ladder drawn at one held scale for every zoom inside it (ladder-steps.ts's LOOK_BANDS and
+   LOOK_SCALES), the reading look as step 0 and the others with no step, so that the band rules above draw it. Only the
+   held name's lines and its controls' place are the look's own, chosen once a render by the card reading for the look's
+   scale; nothing here applies to the stepped ladder. */
+[data-looks="three"][data-lod="far"] .local-slot-card .local-file-name-held::after { content: attr(data-lines-look-connections); }
+[data-looks="three"][data-lod="overview"] .local-slot-card .local-file-name-held::after { content: attr(data-lines-look-overview); }
+[data-looks="three"][data-lod="far"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-look-connections, 0) * 1px); }
+[data-looks="three"][data-lod="overview"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-look-overview, 0) * 1px); }
+/* The Internals row's quiet dashed box is its wrapper's border, which stays the size of the row's line while the look
+   holds the row's head larger: the border ran through the held name. From the connections look out the box is a layer
+   under the head that grows with it, as a pinned row's highlight does (above), and the wrapper draws no box of its own. */
+[data-looks="three"]:is([data-lod="far"], [data-lod="overview"]) .local-slot-card .internals-row .internals-label { position: relative; isolation: isolate; border-color: transparent; background: none; }
+/* The box's change of place at a change of look is no hover: its colour does not fade (a fade is motion the person may
+   have declined), only the hover's glow keeps its ease. */
+[data-looks="three"] .local-slot-card .internals-row .internals-label { transition-property: box-shadow; }
+[data-looks="three"]:is([data-lod="far"], [data-lod="overview"]) .local-slot-card .internals-row .internals-label::after {
+    content: "";
+    position: absolute;
+    left: -1px;
+    right: -1px;
+    top: -1px;
+    z-index: -1;
+    box-sizing: border-box;
+    height: clamp(calc(100% + 2px), calc((max((var(--row-name-y, 0) + var(--row-name-h, 0)) * var(--name-scale, 1), var(--row-more-y, 0) + var(--row-more-h, 17) * var(--row-control-scale, 1)) - var(--row-wrapper-y, -2) + 2) * 1px), calc((var(--row-h, 0) - var(--row-wrapper-y, -2)) * 1px));
+    border: 1px dashed rgba(100, 100, 120, 0.5);
+    border-radius: 4px;
+    background: rgba(40, 40, 50, 0.6);
+    pointer-events: none;
+}
+/* At a change of look, where motion is welcome, each held thing that both looks draw travels over 160 ms from the size
+   it had on screen to the size it gets, so that the eye follows it: its size on screen at the change's first frame is its
+   size on screen in the look it leaves. The controller writes, for the moment of the change, the look left
+   (data-look-from), its scale (--look-from-scale), the zoom ratio at which it was last drawn over the ratio now
+   (--look-zoom, 1.2 for a Zoom button press out) and the lesser of that and 1 (--look-keep), with the class
+   local-look-fading. A thing's held scale in the look left is the stylesheet's own formula for it with the old look's
+   scale, so that a room's ceiling counts as it did. A thing that one look draws and the other does not fades: out at the
+   size it had on screen, or in at its new size. The file's name changes its lines at every change, so its drawings
+   cross over in place rather than travel: the leaving lines stay at the size they had on screen (never larger than the
+   card allows) and fade out while the entering ones fade in, at their new size, or growing from the leaving size where
+   that is smaller. Between connections and overview the rows that go silent leave at once and those that return come
+   after the name's crossing, so that no line of a name ever lies over a row still drawn. Nothing moves where the person
+   prefers reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+    [data-looks="three"] .local-slot-card :is(.local-reading-purpose, .type-refs-indicator, .node-path, .node-directory, .node-tests, .node-meta, .local-reading-slot, .local-symbol-read, .local-symbol-pin, .local-disclosure, .local-back-references, .local-file-name-text, .symbol-row > .symbol-label-wrapper, .symbol-row > .symbol-anchor) {
+        transition: opacity 160ms ease, visibility 0s;
+    }
+    [data-looks="three"]:is([data-lod="far"], [data-lod="overview"]) .local-slot-card :is(.local-reading-purpose, .type-refs-indicator, .node-path, .node-directory, .node-tests, .node-meta, .local-reading-slot, .local-symbol-read, .local-symbol-pin, .local-disclosure, .local-back-references, .local-file-name-text),
+    [data-looks="three"][data-lod="overview"] .local-slot-card .symbol-row:not(.symbol-pinned-named) > :is(.symbol-label-wrapper, .symbol-anchor) {
+        opacity: 0;
+        transition: opacity 160ms ease, visibility 0s 160ms;
+    }
+    .local-look-fading[data-looks="three"][data-look-from="connections"][data-lod="overview"] .local-slot-card .symbol-row:not(.symbol-pinned-named) > :is(.symbol-label-wrapper, .symbol-anchor) { transition: none; }
+    .local-look-fading[data-looks="three"][data-look-from="overview"][data-lod="far"] .local-slot-card .symbol-row:not(.symbol-pinned-named) > :is(.symbol-label-wrapper, .symbol-anchor) { transition: opacity 160ms ease 160ms, visibility 0s 160ms; }
+    /* The held scales of the look left, by the formulas above with its scale. */
+    .local-look-fading[data-looks="three"] .local-slot-card {
+        --title-scale-from: 1;
+        --node-scale-from: 1;
+    }
+    .local-look-fading[data-looks="three"][data-look-from="connections"] .local-slot-card { --title-room-from: var(--title-head-h, 0); }
+    .local-look-fading[data-looks="three"][data-look-from="overview"] .local-slot-card {
+        --title-room-from: min(var(--title-card-h, 0), max(var(--title-head-h, 0), var(--title-head-h, 0) + var(--rows-before-pin, 100000) * var(--title-pitch, 1) - var(--title-row-gap, 0)));
+    }
+    .local-look-fading[data-looks="three"]:not([data-look-from="reading"]) .local-slot-card {
+        --title-scale-from: max(1, min(var(--look-from-scale, 1), var(--title-room-from) / var(--title-line)));
+        --node-scale-from: min(clamp(1, var(--look-from-scale, 1), calc((32 + var(--slot-lines, 2) * 17) / 20)), calc(var(--title-line) * var(--title-scale-from) / var(--title-more-h, 20)));
+    }
+    .local-look-fading[data-looks="three"] .local-slot-card .symbol-row {
+        --name-scale-from: max(1, min(var(--row-fill-h, 1), var(--look-from-scale, 1)));
+        --row-control-scale-from: clamp(1, var(--look-from-scale, 1), calc((var(--row-h, 17) - var(--row-more-y, 0) - 2) / var(--row-more-h, 17)));
+        --dot-scale-from: clamp(1, var(--look-from-scale, 1), min(var(--row-dot-room, 1), var(--row-h, 14) / var(--row-dot-h, 14)));
+    }
+    /* What both looks draw travels. */
+    .local-look-fading[data-looks="three"] .local-slot-card .symbol-label-text { animation: local-look-name 160ms ease-out; }
+    .local-look-fading[data-looks="three"] .local-slot-card .local-symbol-more { animation: local-look-more 160ms ease-out; }
+    .local-look-fading[data-looks="three"] .local-slot-card .symbol-anchor.dot { animation: local-look-dot 160ms ease-out; }
+    .local-look-fading[data-looks="three"] .local-slot-card .local-card-actions > .local-file-more { transform-origin: right top; animation: local-look-node 160ms ease-out; }
+    /* What one look draws fades: a row's Pin and book out at the size they had; the node's other controls in. */
+    .local-look-fading[data-looks="three"][data-look-from="reading"] .local-slot-card :is(.local-symbol-pin, .local-symbol-read) { animation: local-look-more-stay 160ms linear; }
+    .local-look-fading[data-looks="three"][data-lod="reading"] .local-slot-card .local-card-actions > :not(.local-file-more) { animation: local-look-appear 160ms ease-out; }
+    .local-look-fading[data-looks="three"]:is([data-lod="overview"], [data-look-from="overview"]) .local-slot-card .symbol-row:not(.symbol-pinned-named) :is(.symbol-label-text, .symbol-anchor.dot, .local-symbol-more) { animation: none; }
+    /* The file's name: from reading the held lines grow in from the layout's name's size as it fades; back to reading the
+       held lines of connections stay, drawn as they were at the size they had, and fade as the layout's name fades in. */
+    .local-look-fading[data-looks="three"][data-look-from="reading"] .local-slot-card .local-file-name-held { animation: local-look-title-in 160ms ease-out; }
+    .local-look-fading[data-looks="three"][data-lod="reading"][data-look-from="connections"] .local-slot-card { --title-scale: var(--title-scale-from); }
+    .local-look-fading[data-looks="three"][data-lod="reading"][data-look-from="connections"] .local-slot-card .local-file-name { position: relative; }
+    .local-look-fading[data-looks="three"][data-lod="reading"][data-look-from="connections"] .local-slot-card .local-file-name-held {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: calc(var(--title-room-w, 0) / var(--title-scale) * 1px);
+        overflow: hidden;
+        line-height: calc(var(--title-line) * 1px);
+        white-space: pre;
+        text-align: left;
+        transform: scale(var(--title-scale));
+        transform-origin: left top;
+        scale: var(--look-keep, 1);
+        animation: local-look-leave 160ms ease-in forwards;
+    }
+    .local-look-fading[data-looks="three"][data-lod="reading"][data-look-from="connections"] .local-slot-card .local-file-name-held::after { content: attr(data-lines-look-connections); }
+    /* Between connections and overview the held name's element stays: its new lines fade in as they are and its old lines,
+       drawn beside them as they were at the size they had, fade out. */
+    .local-look-fading[data-looks="three"]:is([data-look-from="connections"][data-lod="overview"], [data-look-from="overview"][data-lod="far"]) .local-slot-card .local-file-name-held { overflow: visible; }
+    .local-look-fading[data-looks="three"]:is([data-look-from="connections"][data-lod="overview"], [data-look-from="overview"][data-lod="far"]) .local-slot-card .local-file-name-held::after { animation: local-look-appear 160ms ease-out; }
+    .local-look-fading[data-looks="three"]:is([data-look-from="connections"][data-lod="overview"], [data-look-from="overview"][data-lod="far"]) .local-slot-card .local-file-name-held::before {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: calc(var(--title-room-w, 0) / var(--title-scale-from) * 1px);
+        overflow: hidden;
+        white-space: pre;
+        transform-origin: left top;
+        transform: scale(calc(var(--title-scale-from) * var(--look-keep, 1) / var(--title-scale)));
+        animation: local-look-leave 160ms ease-in forwards;
+    }
+    .local-look-fading[data-looks="three"][data-look-from="connections"][data-lod="overview"] .local-slot-card .local-file-name-held::before { content: attr(data-lines-look-connections); }
+    .local-look-fading[data-looks="three"][data-look-from="overview"][data-lod="far"] .local-slot-card .local-file-name-held::before { content: attr(data-lines-look-overview); }
+}
+@keyframes local-look-name { from { scale: calc(var(--name-scale-from, 1) * var(--look-zoom, 1) / var(--name-scale, 1)); } }
+@keyframes local-look-more { from { scale: calc(var(--row-control-scale-from, 1) * var(--look-zoom, 1) / var(--row-control-scale, 1)); } }
+@keyframes local-look-more-stay { from, to { scale: calc(var(--row-control-scale-from, 1) * var(--look-zoom, 1) / var(--row-control-scale, 1)); } }
+@keyframes local-look-dot { from { scale: calc(var(--dot-scale-from, 1) * var(--look-zoom, 1) / var(--dot-scale, 1)); } }
+@keyframes local-look-node { from { scale: calc(var(--node-scale-from, 1) * var(--look-zoom, 1) / var(--node-control-scale, 1)); } }
+@keyframes local-look-title-in { from { opacity: 0; scale: calc(var(--title-scale-from, 1) * var(--look-zoom, 1) / var(--title-scale, 1)); } }
+@keyframes local-look-leave { to { opacity: 0; } }
+@keyframes local-look-appear { from { opacity: 0; } }
+
 /* Text leads at reading scale; highlighted relationships retain their usual emphasis. */
 #map-viewport:has(.local-reading-card) .connection-path:not(.connection-highlighted) { filter: none; }
 

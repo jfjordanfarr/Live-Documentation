@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/controller.ts
-- Generated At: 2026-11-09T04:43:26.914Z
+- Generated At: 2026-11-10T21:46:15.925Z
 
 ## Authored
 ### Purpose
@@ -54,6 +54,8 @@ Since the restored reading books ([November 8, Turn 3](../../../../../../../../A
 
 The same round adds `tryRefreshReading` at the application boundary. It permits the fixed-slot presentation refresh only for the shown view with an existing stage and no pending or owed render. The renderer checks scope, row disclosure and card controls before any write. Successful refresh leaves the scene and its search in place; a structural reading change uses the existing capture/render/restore transaction.
 
+Since 2026-11-10 `applyLevelOfDetail` also serves Tuning's Zoom Looks, a trial beside the ladder ([Turn 5 of the November 10 record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-10.1.record.md#turn-5)): with three looks and fixed slots it writes the look's band as `data-lod`, the look as `data-look` beside `data-looks="three"`, step 0 for the reading look and no step for the others, and the look's one held scale for names and controls, so that the stylesheet's band rules draw each look and nothing changes between its edges; at a change of look `morphLook` writes, before the new look, the look left (`data-look-from`) and its scale (`--look-from-scale`), the zoom ratio at which that look was last drawn (kept as `lookRatio`) over the ratio now (`--look-zoom`) and the lesser of that and 1 (`--look-keep`), and sets the class `local-look-fading` afresh for 200 ms. From these the stylesheet makes each held thing that both looks draw travel from its size on screen in the look left to its new one over 160 ms, and the file's name cross over in place. The zoom ratio counts since the root's third review of the trial (the same day): a Zoom button moves the camera at once, and a start reckoned from the looks' scales alone made everything bulge by a press's 1.2 on the way in. The band and step it keeps are computed as before whatever the choice, and with the default steps it writes what it wrote before.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -87,10 +89,14 @@ Coordinates the native Local Map, independent exploration pins and explicit FROM
 - [`edge-signs.EdgeSigns`](./edge-signs.ts.mdmd.md#symbol-edgesigns)
 - [`edge-signs.FramePlace`](./edge-signs.ts.mdmd.md#symbol-frameplace)
 - [`edge-signs.createEdgeSigns`](./edge-signs.ts.mdmd.md#symbol-createedgesigns)
+- [`ladder-steps.LOOK_BANDS`](./ladder-steps.ts.mdmd.md#symbol-look_bands)
+- [`ladder-steps.LOOK_SCALES`](./ladder-steps.ts.mdmd.md#symbol-look_scales)
 - [`ladder-steps.LadderBand`](./ladder-steps.ts.mdmd.md#symbol-ladderband-type)
+- [`ladder-steps.ZoomLook`](./ladder-steps.ts.mdmd.md#symbol-zoomlook-type)
 - [`ladder-steps.ladderBand`](./ladder-steps.ts.mdmd.md#symbol-ladderband-function)
 - [`ladder-steps.ladderScales`](./ladder-steps.ts.mdmd.md#symbol-ladderscales-function)
 - [`ladder-steps.ladderStep`](./ladder-steps.ts.mdmd.md#symbol-ladderstep)
+- [`ladder-steps.zoomLook`](./ladder-steps.ts.mdmd.md#symbol-zoomlook-function)
 - [`layout-measure.Bounds`](./layout-measure.ts.mdmd.md#symbol-bounds)
 - [`layout-measure.Frame`](./layout-measure.ts.mdmd.md#symbol-frame)
 - [`layout-measure.LayoutExtents`](./layout-measure.ts.mdmd.md#symbol-layoutextents)

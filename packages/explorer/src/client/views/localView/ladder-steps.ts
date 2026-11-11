@@ -35,7 +35,24 @@ const BAND_LAST_PRESSES = [6, 4, 1, -2];
  * square root of BAND_MARGIN times STEP_RATIO (about 1.175). The literal edges had stood where the press just closer fell
  * inside the margin, so that one press out was the reading band going out and the middle band coming back.
  */
-const BAND_EDGES = BAND_LAST_PRESSES.map(press => STEP_RATIO ** -press / Math.sqrt(BAND_MARGIN * STEP_RATIO));
+const BAND_EDGES = edgesAfter(BAND_LAST_PRESSES);
+
+/** The edges after these last presses, each in the middle of the window that serves both directions (above). */
+function edgesAfter(lastPresses: readonly number[]): number[] {
+  return lastPresses.map(press => STEP_RATIO ** -press / Math.sqrt(BAND_MARGIN * STEP_RATIO));
+}
+
+/**
+ * The state of a zoom ratio among states ordered from the farthest, given the state shown: farther out at an edge,
+ * closer again only BAND_MARGIN past it. A ratio that is not a positive number keeps the state.
+ */
+function stateOf<State>(states: readonly State[], edges: readonly number[], ratio: number, previous: State): State {
+  if (!Number.isFinite(ratio) || ratio <= 0) return previous;
+  let index = states.indexOf(previous);
+  while (index > 0 && ratio < edges[index - 1]) index -= 1;
+  while (index < edges.length && ratio > edges[index] * BAND_MARGIN) index += 1;
+  return states[index];
+}
 /** A step is left only a quarter step past its edges, so that a camera resting on one does not chatter. */
 export const STEP_HYSTERESIS = 0.25;
 /** The first step holds reading size and covers every closer zoom: zooming in never shrinks anything. */
@@ -48,11 +65,44 @@ export const LAST_STEP = 10;
  * A ratio that is not a positive number keeps the band.
  */
 export function ladderBand(ratio: number, previous: LadderBand): LadderBand {
-  if (!Number.isFinite(ratio) || ratio <= 0) return previous;
-  let index = BANDS.indexOf(previous);
-  while (index > 0 && ratio < BAND_EDGES[index - 1]) index -= 1;
-  while (index < BAND_EDGES.length && ratio > BAND_EDGES[index] * BAND_MARGIN) index += 1;
-  return BANDS[index];
+  return stateOf(BANDS, BAND_EDGES, ratio, previous);
+}
+
+/**
+ * The zoom looks, a trial beside the ladder (Tuning → 2D Layout → Zoom Looks; the owner's hypothesis of 2026-11-08, "very
+ * very FEW breakpoints (2-3) for heavily quanitized different looks of the nodes", and the trial's design of 2026-11-10):
+ * one state in place of the band and the step, so that a slot card changes only twice on the way out. Reading is the card
+ * as composed at reading scale, everything following the map; connections is the far band's drawing (names, one More a
+ * row, the file's name and its More) and overview the overview band's, each at one held scale for every zoom inside it.
+ */
+export type ZoomLook = "reading" | "connections" | "overview";
+
+const LOOKS: readonly ZoomLook[] = ["overview", "connections", "reading"];
+/** The last Zoom button press out of each look before the next one: reading through the second, connections the sixth. */
+const LOOK_LAST_PRESSES = [6, 2];
+const LOOK_EDGES = edgesAfter(LOOK_LAST_PRESSES);
+
+/** The ladder's band each look draws with: the stylesheet's rules for that band say what has left. */
+export const LOOK_BANDS: Readonly<Record<ZoomLook, LadderBand>> = { reading: "reading", connections: "far", overview: "overview" };
+
+/**
+ * Each look's one held scale for names, controls and dots, in the map's own units. Inside a look a name on screen is its
+ * reading size times the zoom ratio times this scale; the design aimed at about 1.3 at the look's nearest press and 0.72
+ * at its farthest. Connections spans presses 3 to 6 (ratios 0.579 to 0.335): 2.2 draws 1.27 to 0.74. Overview spans
+ * presses 7 to 10 (0.279 to 0.162), where a file's name is the card's only text and a card is no wider than its rows
+ * made it: whole words outrank the 0.72 floor (the root's review of the trial, 2026-11-10), since at 4.5, the aim's
+ * scale, the estate's narrow cards broke names inside a word ("Paymen / t / Service / .cs"), so 3.6, about the ladder's
+ * seventh step, which kept them whole, draws 1.0 to 0.58, a file's name still above 8 px at the tenth press. Reading
+ * holds nothing.
+ */
+export const LOOK_SCALES: Readonly<Record<ZoomLook, number>> = { reading: 1, connections: 2.2, overview: 3.6 };
+
+/**
+ * The look of a zoom ratio, given the look shown: the band's edges and margin, so that a press out and the press back
+ * show the same look and a camera resting on a press does not chatter. A ratio that is not a positive number keeps it.
+ */
+export function zoomLook(ratio: number, previous: ZoomLook): ZoomLook {
+  return stateOf(LOOKS, LOOK_EDGES, ratio, previous);
 }
 
 /**

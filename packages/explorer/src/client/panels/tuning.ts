@@ -61,6 +61,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   const moveMsInput = document.getElementById("tuning-move-ms") as HTMLInputElement | null;
   const holdStillSelect = document.getElementById("tuning-hold-still") as HTMLSelectElement | null;
   const cardTextSelect = document.getElementById("tuning-card-text") as HTMLSelectElement | null;
+  const zoomLooksSelect = document.getElementById("tuning-zoom-looks") as HTMLSelectElement | null;
   const slotLinesInput = document.getElementById("tuning-slot-lines") as HTMLInputElement | null;
   const textResistanceInput = document.getElementById("tuning-text-resistance") as HTMLInputElement | null;
   const controlResistanceInput = document.getElementById("tuning-control-resistance") as HTMLInputElement | null;
@@ -162,6 +163,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     state.tuning.localMap.moveMs = setSlider(moveMsInput, "tuning-move-ms-value", state.tuning.localMap.moveMs, v => String(v));
     if (holdStillSelect) holdStillSelect.value = state.tuning.localMap.holdStill;
     if (cardTextSelect) cardTextSelect.value = state.tuning.localMap.cardText;
+    if (zoomLooksSelect) zoomLooksSelect.value = state.tuning.localMap.zoomLooks;
     state.tuning.localMap.slotLines = setSlider(slotLinesInput, "tuning-slot-lines-value", state.tuning.localMap.slotLines, v => String(v));
     state.tuning.localMap.textResistance = setSlider(textResistanceInput, "tuning-text-resistance-value", state.tuning.localMap.textResistance, v => String(v));
     state.tuning.localMap.controlResistance = setSlider(controlResistanceInput, "tuning-control-resistance-value", state.tuning.localMap.controlResistance, v => String(v));
@@ -233,6 +235,14 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   if (cardTextSelect) {
     cardTextSelect.addEventListener("change", () => {
       state.tuning.localMap.cardText = cardTextSelect.value === "slot" ? "slot" : "grow";
+      onTuningChange();
+      if (state.view === "map" && state.perspective === "2d") onRender();
+    });
+  }
+  // The looks a slot card takes as the map zooms out change how each card's held header is chosen: the view re-renders.
+  if (zoomLooksSelect) {
+    zoomLooksSelect.addEventListener("change", () => {
+      state.tuning.localMap.zoomLooks = zoomLooksSelect.value === "three" ? "three" : "stepped";
       onTuningChange();
       if (state.view === "map" && state.perspective === "2d") onRender();
     });

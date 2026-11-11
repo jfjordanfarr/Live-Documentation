@@ -21,8 +21,8 @@ test("every tuning control explains what changing it does, as its tooltip and it
   const controls = page.locator(".tuning-content input[type=range], .tuning-content select");
   // Card Text, Slot Lines, Text Resistance, Name Growth and Control Resistance joined the 2D layout group on 2026-11-05
   // (the card composition comparison and its ladder); Group Wrappers and then Shell Depth joined the 3D layout group the
-  // same day.
-  await expect(controls).toHaveCount(55);
+  // same day. Zoom Looks joined the 2D layout group on 2026-11-10 (the trial of three looks beside the card ladder).
+  await expect(controls).toHaveCount(56);
   const facts = await controls.evaluateAll(elements => elements.map(element => {
     const describedBy = element.getAttribute("aria-describedby") ?? "";
     const description = document.getElementById(describedBy);

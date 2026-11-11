@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/localView/held-lines.test.ts
-- Generated At: 2026-11-08T06:36:56.032Z
+- Generated At: 2026-11-10T21:46:16.064Z
 
 ## Authored
 ### Purpose
@@ -35,5 +35,6 @@ _No public symbols detected_
 - [`held-lines.heldTitle`](./held-lines.ts.mdmd.md#symbol-heldtitle)
 - [`ladder-steps.FIRST_STEP`](./ladder-steps.ts.mdmd.md#symbol-first_step)
 - [`ladder-steps.LAST_STEP`](./ladder-steps.ts.mdmd.md#symbol-last_step)
+- [`ladder-steps.LOOK_BANDS`](./ladder-steps.ts.mdmd.md#symbol-look_bands)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

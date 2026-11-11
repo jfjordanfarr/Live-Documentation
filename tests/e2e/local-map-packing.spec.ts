@@ -75,7 +75,9 @@ for (const [base, subject] of [["/", generator], ["/samples/estate/", "Contracts
     await page.getByRole("button", { name: "Export layout settings", exact: true }).click();
     const download = await downloadPromise;
     const settings = JSON.parse(await fs.readFile((await download.path())!, "utf8")) as { localMap: object; forceGraph: object };
-    expect(settings.localMap).toEqual(LAYOUT_PRESETS.relaxed.localMap);
+    // The 2D settings an export carries are the packing and, since 2026-11-10, the one named setting a link must also
+    // carry to show the same cards: Zoom Looks, here at its default.
+    expect(settings.localMap).toEqual({ ...LAYOUT_PRESETS.relaxed.localMap, zoomLooks: "stepped" });
     expect(settings.forceGraph).toMatchObject({ ...LAYOUT_PRESETS.relaxed.forceGraph, coupling: 1.1, nodeSize: 4.25, symbolScale: 1, linkWidth: 1.1, nodeZoomResistance: 0.35, wireZoomResistance: 0.95 });
     const shared = page.url();
     // A share must stand on its own. Close the publisher before starting the

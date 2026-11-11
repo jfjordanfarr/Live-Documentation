@@ -3,7 +3,7 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 
 import { chooseHeldHeader, HELD_BANDS, heldSegments, heldTitle, type HeldRoom, type TitleRooms } from "./held-lines";
-import { FIRST_STEP, LAST_STEP } from "./ladder-steps";
+import { FIRST_STEP, LAST_STEP, LOOK_BANDS } from "./ladder-steps";
 
 /** One unit a character, as a monospaced font would measure; a line one unit tall. */
 const measure = (text: string): number => text.length;
@@ -170,6 +170,17 @@ describe("the stylesheet's held header", () => {
       const lines = `[data-lod="${band}"][data-step="${step}"] .local-slot-card .local-file-name-held::after { content: attr(data-lines-${band}-${step}); }`;
       expect(css.includes(lines), lines).toBe(true);
       const controls = `[data-lod="${band}"][data-step="${step}"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-${band}-${step}, 0) * 1px); }`;
+      expect(css.includes(controls), controls).toBe(true);
+    }
+  });
+
+  it("draws the lines and stands the controls of each zoom look that holds the name, under the trial's attribute only", () => {
+    const css = readFileSync(path.resolve(__dirname, "../../styles/reading.css"), "utf8");
+    for (const look of ["connections", "overview"] as const) {
+      const band = LOOK_BANDS[look];
+      const lines = `[data-looks="three"][data-lod="${band}"] .local-slot-card .local-file-name-held::after { content: attr(data-lines-look-${look}); }`;
+      expect(css.includes(lines), lines).toBe(true);
+      const controls = `[data-looks="three"][data-lod="${band}"] .local-slot-card .local-card-actions { top: calc(var(--controls-y-look-${look}, 0) * 1px); }`;
       expect(css.includes(controls), controls).toBe(true);
     }
   });

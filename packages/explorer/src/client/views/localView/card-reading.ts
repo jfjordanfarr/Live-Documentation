@@ -4,7 +4,7 @@ import { pathTo, walk } from "@live-documentation/engine/live-docs/pathfind";
 
 import { chooseHeldHeader, HELD_BANDS, heldSegments, heldTitle, type HeldBand, type TitleRooms } from "./held-lines";
 import { dotRoom, layoutTopOf, nameFill, nameWraps, rowsBeforeFirstPin } from "./ladder-rooms";
-import { FIRST_STEP, LAST_STEP, ladderScales, type LadderResistances } from "./ladder-steps";
+import { FIRST_STEP, LAST_STEP, ladderScales, LOOK_BANDS, LOOK_SCALES, type LadderResistances, type ZoomLook } from "./ladder-steps";
 import type { LocalEdge, ReadingControl } from "./types";
 import type { ExplorerNodePayload } from "../../../shared/types";
 import { escapeHtml } from "../../graph-helpers";
@@ -33,6 +33,8 @@ export interface CardReadingOptions {
   mode(): "grow" | "slot";
   /** Tuning's resistances, which set each step's held scales: the held name's lines are chosen for them at render. */
   resistances(): LadderResistances;
+  /** Tuning's Zoom Looks: with the trial's three looks, the held name's lines are chosen for each look's scale too. */
+  zoomLooks(): "stepped" | "three";
   change(nodeId: string, symbol: string | undefined, open: boolean, control: ReadingControl): void;
   inspect(target: InspectionTarget, fragment?: string): void;
   navigate(node: ExplorerNodePayload): void;
@@ -287,8 +289,8 @@ export class CardReading {
     if (!this.slots) return;
     // The rooms of every slot card are read before any is written, so that the page lays out once for them all rather
     // than once a row (direction.md's November 6 cost finding).
-    const resistances = this.options.resistances();
-    const rooms = [...this.cards.values()].flatMap(({ card }) => measureRooms(card, resistances));
+    const resistances = this.options.resistances(), looks = this.options.zoomLooks() === "three";
+    const rooms = [...this.cards.values()].flatMap(({ card }) => measureRooms(card, resistances, looks));
     for (const write of rooms) applyRoomWrite(write);
   }
 
@@ -406,7 +408,7 @@ export class CardReading {
  * header's right edge and down to the first row, to the card's bottom and the row pitch for the overview band, and the
  * card's buttons' widths and overhang, which intrude on its first lines at their held size.
  */
-function measureRooms(card: HTMLElement, resistances: LadderResistances): RoomWrite[] {
+function measureRooms(card: HTMLElement, resistances: LadderResistances, looks: boolean): RoomWrite[] {
   const writes: RoomWrite[] = [];
   const k = card.offsetHeight ? card.getBoundingClientRect().height / card.offsetHeight : 0;
   if (!(k > 0)) return writes;
@@ -423,6 +425,9 @@ function measureRooms(card: HTMLElement, resistances: LadderResistances): RoomWr
     const lines = new Set([...range.getClientRects()].map(rect => Math.round(rect.top))).size;
     return { width: range.getBoundingClientRect().width / (k * own), lines };
   };
+  // The card's content's bottom edge on screen, inside its border and padding.
+  const cardStyle = getComputedStyle(card);
+  const contentBottom = cardRect.bottom - (parseFloat(cardStyle.borderBottomWidth) + parseFloat(cardStyle.paddingBottom)) * k;
   // The first symbol row gives the rows' pitch.
   let firstRow: { height: number } | null = null;
   for (const row of card.querySelectorAll<HTMLElement>(".symbol-row")) {
@@ -433,7 +438,11 @@ function measureRooms(card: HTMLElement, resistances: LadderResistances): RoomWr
     const wrapperStyle = getComputedStyle(wrapper);
     const roomWidth = wrapper.clientWidth - parseFloat(wrapperStyle.paddingLeft) - parseFloat(wrapperStyle.paddingRight);
     const rowRect = row.getBoundingClientRect(), wrapperRect = wrapper.getBoundingClientRect(), labelRect = label.getBoundingClientRect();
-    const rowHeight = row.clientHeight, nameTop = (labelRect.top - rowRect.top) / k, nameHeight = label.offsetHeight;
+    // With the trial's zoom looks the Internals row, the card's last, has the room down to the card's content bottom,
+    // which nothing else uses, so that it is held at the look's scale as the rows above it are (its own row is a line).
+    const rowHeight = looks && row.classList.contains("internals-row") && !row.nextElementSibling
+      ? Math.max(row.clientHeight, Math.floor((contentBottom - rowRect.top) / k)) : row.clientHeight;
+    const nameTop = (labelRect.top - rowRect.top) / k, nameHeight = label.offsetHeight;
     if (!firstRow && !row.classList.contains("internals-row")) firstRow = { height: rowHeight };
     const gap = parseFloat(wrapperStyle.columnGap) || 0;
     const pin = row.querySelector<HTMLElement>(".local-symbol-pin")?.offsetWidth ?? 0;
@@ -478,8 +487,7 @@ function measureRooms(card: HTMLElement, resistances: LadderResistances): RoomWr
   const title = card.querySelector<HTMLElement>(".local-file-name"), header = card.querySelector<HTMLElement>(".node-title");
   const grid = card.querySelector<HTMLElement>(".symbol-grid"), actions = card.querySelector<HTMLElement>(".local-card-actions");
   if (!title || !header || !grid || !actions || !title.offsetHeight) return writes;
-  const cardStyle = getComputedStyle(card), headerRect = header.getBoundingClientRect(), titleRect = title.getBoundingClientRect();
-  const contentBottom = cardRect.bottom - (parseFloat(cardStyle.borderBottomWidth) + parseFloat(cardStyle.paddingBottom)) * k;
+  const headerRect = header.getBoundingClientRect(), titleRect = title.getBoundingClientRect();
   const rowGap = parseFloat(getComputedStyle(grid).rowGap) || 0;
   const more = card.querySelector<HTMLElement>(".local-file-more");
   // Each room as the stylesheet reads it, rounded as written, so that the lines chosen below are the lines it draws.
@@ -509,7 +517,7 @@ function measureRooms(card: HTMLElement, resistances: LadderResistances): RoomWr
   const held = title.querySelector<HTMLElement>(".local-file-name-held");
   if (held) {
     const name: HeldName = { held, actions, nameY: fixed((titleRect.top - headerRect.top) / k), segments: heldSegments(held.dataset.name ?? ""),
-      measure: textMeasure(getComputedStyle(held)), rooms, resistances };
+      measure: textMeasure(getComputedStyle(held)), rooms, resistances, looks };
     heldNames.set(card, name);
     writes.push(...heldLineWrites(name, HELD_BANDS, rowsBeforePin(card)));
   }
@@ -526,6 +534,8 @@ interface HeldName {
   measure: (text: string) => number;
   rooms: TitleRooms;
   resistances: LadderResistances;
+  /** Whether the trial's zoom looks draw the card, whose lines are chosen for each look's one scale as well. */
+  looks: boolean;
 }
 const heldNames = new WeakMap<HTMLElement, HeldName>();
 
@@ -534,24 +544,34 @@ const heldNames = new WeakMap<HTMLElement, HeldName>();
  * stylesheet gives it there: the name's lines written as an attribute a band and step, `data-lines-<band>-<step>`, which
  * the stylesheet draws as they are, and the controls' top from the header's top in the map's own units, a custom
  * property a band and step on the controls, `--controls-y-<band>-<step>`, where the stylesheet stands them; a step's
- * held scales as the controller writes them, rounded alike.
+ * held scales as the controller writes them, rounded alike. With the trial's zoom looks, the same once for each look
+ * that holds the name, in its band at its one scale: `data-lines-look-<look>` and `--controls-y-look-<look>`, chosen once
+ * a render, so that the name's lines are the same at every zoom inside the look.
  */
 function heldLineWrites(name: HeldName, bands: readonly HeldBand[], before: number | null): RoomWrite[] {
   const writes: RoomWrite[] = [];
+  const write = (band: HeldBand, key: string, scales: { text: number; control: number }): void => {
+    const { scale, room } = heldTitle(name.rooms, band, scales, before);
+    const header = chooseHeldHeader(name.segments, room, name.measure);
+    writes.push(
+      [name.held, `data-lines-${key}`, header.lines.join("\n")],
+      [name.actions, `--controls-y-${key}`, (name.nameY + header.controls.top * scale).toFixed(2)]
+    );
+  };
   for (let step = FIRST_STEP; step <= LAST_STEP; step += 1) {
     const held = ladderScales(step, name.resistances);
     const scales = { text: Number(held.text.toFixed(3)), control: Number(held.control.toFixed(3)) };
-    for (const band of bands) {
-      const { scale, room } = heldTitle(name.rooms, band, scales, before);
-      const header = chooseHeldHeader(name.segments, room, name.measure);
-      writes.push(
-        [name.held, `data-lines-${band}-${step}`, header.lines.join("\n")],
-        [name.actions, `--controls-y-${band}-${step}`, (name.nameY + header.controls.top * scale).toFixed(2)]
-      );
-    }
+    for (const band of bands) write(band, `${band}-${step}`, scales);
+  }
+  if (name.looks) for (const look of HELD_LOOKS) {
+    const band = LOOK_BANDS[look] as HeldBand;
+    if (bands.includes(band)) write(band, `look-${look}`, { text: LOOK_SCALES[look], control: LOOK_SCALES[look] });
   }
   return writes;
 }
+
+/** The zoom looks that draw the held name: the reading look draws the name as composed. */
+const HELD_LOOKS: readonly ZoomLook[] = ["connections", "overview"];
 
 /**
  * A text's width in its element's font, without laying anything out: a canvas measures it in the font's own pixels,
