@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/localView/wire-gathering.test.ts
-- Generated At: 2026-11-06T20:08:42.323Z
+- Generated At: 2026-11-12T22:02:43.443Z
 
 ## Authored
 ### Purpose
@@ -25,7 +25,9 @@ _No public symbols detected_
 ### Dependencies
 - [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)
 - [`wire-gathering.GATHERED_WIDTH`](./wire-gathering.ts.mdmd.md#symbol-gathered_width)
+- [`wire-gathering.NODE_HUB`](./wire-gathering.ts.mdmd.md#symbol-node_hub)
 - [`wire-gathering.gatherWires`](./wire-gathering.ts.mdmd.md#symbol-gatherwires)
+- [`wire-gathering.gatheredCount`](./wire-gathering.ts.mdmd.md#symbol-gatheredcount)
 - [`wire-gathering.gatheredDescription`](./wire-gathering.ts.mdmd.md#symbol-gathereddescription)
 - [`wire-gathering.gatheredWidth`](./wire-gathering.ts.mdmd.md#symbol-gatheredwidth)
 - [`wire-gathering.ownWires`](./wire-gathering.ts.mdmd.md#symbol-ownwires)

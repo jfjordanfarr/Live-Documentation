@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/types.ts
-- Generated At: 2026-11-12T17:42:25.970Z
+- Generated At: 2026-11-12T22:02:35.229Z
 
 ## Authored
 ### Purpose
@@ -47,6 +47,8 @@ The history's levers (2026-10-18, ticket C4 of [the change-over-time plan](../..
 `nameGrowth` joined `LocalMapTuning` on [Turn 11](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-11): how much larger than its held size a name may grow on screen into the room its description leaves below reading scale.
 
 Since 2026-11-05 `ForceGraphTuning` carries `shellDepth`, the directory shells' depth under the scan root (1 to 6, default 2), and the Group Wrappers comments name the shells.
+
+`directoryLayout` (2026-11-12) is the switch of the directory flow trial: the grid of 2026-10-07, the default, or an opened directory in flow order with a line for each pair of files. It is a trial for comparison, not a decision; [its evidence](../../../../../../AI-Agent-Workspace/Screenshots/2026-11-12/directory-flow-trial/README.md) has the pictures.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -99,7 +101,7 @@ added 2025-12-07 (commit `a99ac04`) and 2025-12-17 (commit `f373c45`).
 
 #### `SymbolOrder` {#symbol-symbolorder}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L163)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L170)
 
 ##### `SymbolOrder` — Summary
 How a card's symbol rows stand: where their wires lead, which the many-file
@@ -108,14 +110,14 @@ Live Doc lists them, the order of appearance in the file.
 
 #### `TuningConfig` {#symbol-tuningconfig}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L166)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L173)
 
 ##### `TuningConfig` — Summary
 Aggregate tuning configuration threading through into every Explorer view.
 
 #### `HistoryGranularity` {#symbol-historygranularity}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L178)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L185)
 
 ##### `HistoryGranularity` — Summary
 Which ticks the history's scrubber draws and the step key moves between: every step; one per day, week or month
@@ -124,21 +126,21 @@ five-commit repository shows five ticks and a long history shows months (the vie
 
 #### `HISTORY_GRANULARITIES` {#symbol-history_granularities}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L181)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L188)
 
 ##### `HISTORY_GRANULARITIES` — Summary
 Every granularity, in the order the control offers them.
 
 #### `HistoryAxis` {#symbol-historyaxis}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L184)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L191)
 
 ##### `HistoryAxis` — Summary
 How the scrubber lays its steps out: evenly by step, or by date, where a quiet stretch reads as a gap (scenario 14).
 
 #### `ChangeEmphasis` {#symbol-changeemphasis}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L191)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L198)
 
 ##### `ChangeEmphasis` — Summary
 How the files a step of the history changed are told apart in the 3D picture while the history is shown (the owner's
@@ -147,21 +149,21 @@ emphasis holds for the whole displayed commit, in playback and at rest; the next
 
 #### `CHANGE_EMPHASES` {#symbol-change_emphases}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L194)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L201)
 
 ##### `CHANGE_EMPHASES` — Summary
 Every emphasis, in the order the control offers them.
 
 #### `HistoryTuning` {#symbol-historytuning}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L197)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L204)
 
 ##### `HistoryTuning` — Summary
 The levers of the history's scrubber, the view's half of the granularity seam (2026-10-18), and the picture's emphasis on a step's changes (2026-10-31).
 
 #### `GroupWrappers` {#symbol-groupwrappers}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L211)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L218)
 
 ##### `GroupWrappers` — Summary
 How the 3D Local Map wraps the files it does not show (an experiment, 2026-11-05): not at all, the default; or, in a
@@ -170,56 +172,70 @@ only by its seed and, inside a group it shows in part, the hidden files of each 
 
 #### `GROUP_WRAPPERS` {#symbol-group_wrappers}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L214)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L221)
 
 ##### `GROUP_WRAPPERS` — Summary
 Every wrapper choice, in the order the control offers them.
 
 #### `ZoomLooks` {#symbol-zoomlooks}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L217)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L224)
 
 ##### `ZoomLooks` — Summary
 How a slot card changes as the 2D map zooms out: the card ladder's steps, or the three looks of the 2026-11-10 trial.
 
 #### `ZOOM_LOOKS` {#symbol-zoom_looks}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L220)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L227)
 
 ##### `ZOOM_LOOKS` — Summary
 Every Zoom Looks choice, in the order the control offers them.
 
+#### `DirectoryLayout` {#symbol-directorylayout}
+- Type: type
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L230)
+
+##### `DirectoryLayout` — Summary
+How an opened directory stands in the 2D map: today's grid, or the flow order and pair lines of the 2026-11-12 trial.
+
+#### `DIRECTORY_LAYOUTS` {#symbol-directory_layouts}
+- Type: const
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L233)
+
+##### `DIRECTORY_LAYOUTS` — Summary
+Every Opened Directory choice, in the order the control offers them; the first is the default.
+
 #### `ForceGraphTuning` {#symbol-forcegraphtuning}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L223)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L236)
 
 ##### `ForceGraphTuning` — Summary
 The 3D Local Map's packing and stable visual encodings, shared with the headless layout lab.
 
 #### `PathDestination` {#symbol-pathdestination}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L327)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L340)
 
 ##### `PathDestination` — Summary
 The end of a path a person asked for: a file, perhaps one symbol of it, or a directory. The path starts at the newest pin (2026-10-14).
 
 #### `InspectionTarget` {#symbol-inspectiontarget}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L332)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L345)
 
 ##### `InspectionTarget` — Summary
 The evidence explicitly open in the reader, independent of the Local Map subject and its pins.
 
 #### `DiscoveryTarget` {#symbol-discoverytarget}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L339)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L352)
 
 ##### `DiscoveryTarget` — Summary
 The latest discovery remains in the map after its evidence closes; a new discovery replaces it and Pin keeps it.
 
 #### `ExplorerState` {#symbol-explorerstate}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L345)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L358)
 
 ##### `ExplorerState` — Summary
 Root state object for the Explorer client, managed by
@@ -227,7 +243,7 @@ Root state object for the Explorer client, managed by
 
 #### `TestCoverageMap` {#symbol-testcoveragemap}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L374)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L387)
 
 ##### `TestCoverageMap` — Summary
 Map from implementation file path → covering test node(s).

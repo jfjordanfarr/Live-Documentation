@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-renderer.ts
-- Generated At: 2026-11-12T17:14:36.415Z
+- Generated At: 2026-11-12T22:02:39.216Z
 
 ## Authored
 ### Purpose
@@ -54,12 +54,14 @@ Since the far bands' round (2026-11-06, [Turn 3](../../../../../../../../AI-Agen
 
 Since 2026-11-12 a card's count of connections outside the view, the control that pins the file to reveal them, is drawn as a control (`revealControl`) after a newcomer read the faint line as static text and concluded that the map draws no connections ([the first-visit review](../../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-12/first-visit/README.md), finding 3): framed as the directory's Open, by `local.css`, the Pin glyph beside `+21 connections`, its accessible name those words and "outside this view". The root chose the frame over an underlined link the same day, after comparing the two ([the pictures](../../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-12/local-map-repairs/README.md)). It keeps the line's box. A pinned file's count of connections hidden by filters stays a plain fact (`hiddenByFilters`).
 
+Since 2026-11-12 the renderer passes Tuning's Opened Directory to the exploration and, where the exploration stands in flow order, asks the scene to stand its columns from the top; a cycle's note counts a pair line by the links it stands for and names its two files, since a pair line names no symbol.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BranchStage` {#symbol-branchstage}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L30)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L31)
 
 ##### `BranchStage` — Summary
 The branch picture's elements, kept across renders by what each one is: a
@@ -72,7 +74,7 @@ also carries the continuing search that runs after each picture.
 
 #### `createStage` {#symbol-createstage}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L93)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L94)
 - Returns: [`BranchStage`](#symbol-branchstage)
 
 ##### `createStage` — Summary
@@ -80,7 +82,7 @@ A stage for a root that holds nothing yet.
 
 #### `dropStage` {#symbol-dropstage}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L98)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L99)
 - Parameters: `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `dropStage` — Summary
@@ -88,7 +90,7 @@ Ends whatever move the stage runs, where it stands, and its search; the stage's 
 
 #### `refreshReadingPresentation` {#symbol-refreshreadingpresentation}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L118)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L120)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `refreshReadingPresentation` — Summary
@@ -96,7 +98,7 @@ Update fixed-slot text and its controls without rebuilding an unchanged scene or
 
 #### `renderBranches` {#symbol-renderbranches}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L207)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L209)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `renderBranches` — Summary
@@ -124,7 +126,7 @@ The layout's dials come from the Local Map's tuning.
 
 #### `refreshReadingGeometry` {#symbol-refreshreadinggeometry}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L336)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L340)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `refreshReadingGeometry` — Summary
@@ -135,7 +137,7 @@ competition begins from the new picture.
 
 #### `BAND_BORDER` {#symbol-band_border}
 - Type: unknown
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L372)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L376)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -190,6 +192,8 @@ competition begins from the new picture.
 - [`card-reading.markFirstPin`](./card-reading.ts.mdmd.md#symbol-markfirstpin)
 - [`controller.LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller) (type-only)
 - [`directory-ancestry.ancestryButton`](./directory-ancestry.ts.mdmd.md#symbol-ancestrybutton)
+- [`directory-flow.isPairLine`](./directory-flow.ts.mdmd.md#symbol-ispairline)
+- [`directory-flow.linksOf`](./directory-flow.ts.mdmd.md#symbol-linksof)
 - [`ladder-rooms.layoutTopOf`](./ladder-rooms.ts.mdmd.md#symbol-layouttopof)
 - [`membrane-outline.membranePath`](./membrane-outline.ts.mdmd.md#symbol-membranepath)
 - [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)

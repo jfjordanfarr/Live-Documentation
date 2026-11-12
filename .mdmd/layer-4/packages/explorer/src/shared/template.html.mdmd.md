@@ -213,6 +213,9 @@ Since November 8, 2026, the literal initial controls agree with `getDefaultTunin
 #### `tuning-control-resistance-value` {#symbol-tuning-control-resistance-value}
 - Type: variable
 
+#### `tuning-directory-layout` {#symbol-tuning-directory-layout}
+- Type: variable
+
 #### `tuning-force-approximation` {#symbol-tuning-force-approximation}
 - Type: variable
 

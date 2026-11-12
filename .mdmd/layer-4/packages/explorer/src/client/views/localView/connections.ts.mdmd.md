@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/connections.ts
-- Generated At: 2026-11-07T11:16:38.184Z
+- Generated At: 2026-11-12T22:02:40.908Z
 
 ## Authored
 ### Purpose
@@ -26,6 +26,8 @@ SVG wire drawing for the Local Map: Bézier splines between the symbol pins of t
 Since the far bands' second milestone (2026-11-06, [Turn 3](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-06.1.record.md#turn-3)) the overview band draws its own wires (`drawOverviewWires`): one gathered wire for each pair of files, each way, from the offering card's node-level hub to the using card's, threaded through the lanes one of its references was given, as wide as `wire-gathering.ts` says, carrying `data-references` and an accessible name; a pair that reads against the columns as the laces of a return at its hubs; and a pinned symbol's own wires after them, so above them, from its row's dots to the far files' hubs or to a dot where that symbol is pinned too. It gathers only the references the closer bands draw, whose ends are laid out. Every drawing marks the hubs a wire of the band shown ends on (`hub-ends-wire`), the only hubs the stylesheet draws. The threading of a wire through its lanes became one helper, used by both bands.
 
 In the root's fourth review of the round (2026-11-07) a second reader found that a hub was marked before the check that its wire's other end had a box, so a hub could be drawn with no wire; both bands now measure a wire's two ends through one helper (`WireEnds`), which marks a hub only once both ends are measured and the wire is drawn. The overview band also counts its backward wires again, which the 3D button's word about wires running backward in 2D reads: a gathered wire whose route reads backward counts the references it carries, a pinned symbol's own wire being among them.
+
+Since 2026-11-12 a pair line of the directory flow trial is drawn at every band as the overview band draws a gathered wire: hub to hub, as wide as the links it stands for, described by its two files, and under the same element key, so that zooming out to the overview keeps the element. It joins no bundle's shared run, as the overview's gathered wires do not; lines of one hub still share a lane's slot through a column they pass together. `NODE_HUB` moved to `wire-gathering.ts`, which has no DOM, so that `directory-flow.ts` could name the hubs.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -79,13 +81,17 @@ Takes every wire off the overlay and forgets the layer; the next drawing makes a
 - [`branch-routing.threadedRoute`](./branch-routing.ts.mdmd.md#symbol-threadedroute)
 - [`branches.BranchGraph`](./branches.ts.mdmd.md#symbol-branchgraph)
 - [`branches.edgeKey`](./branches.ts.mdmd.md#symbol-edgekey)
-- [`card-factory.NODE_HUB`](./card-factory.ts.mdmd.md#symbol-node_hub)
+- [`directory-flow.isPairLine`](./directory-flow.ts.mdmd.md#symbol-ispairline)
+- [`directory-flow.linksOf`](./directory-flow.ts.mdmd.md#symbol-linksof)
 - [`runtime.LocalViewRuntime`](./runtime.ts.mdmd.md#symbol-localviewruntime) (type-only)
 - [`runtime.WireLayer`](./runtime.ts.mdmd.md#symbol-wirelayer) (type-only)
 - [`types.ColumnRole`](./types.ts.mdmd.md#symbol-columnrole) (type-only)
 - [`types.LayoutExtents`](./types.ts.mdmd.md#symbol-layoutextents) (type-only)
 - [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)
+- [`wire-gathering.GatheredWire`](./wire-gathering.ts.mdmd.md#symbol-gatheredwire)
+- [`wire-gathering.NODE_HUB`](./wire-gathering.ts.mdmd.md#symbol-node_hub)
 - [`wire-gathering.gatherWires`](./wire-gathering.ts.mdmd.md#symbol-gatherwires)
+- [`wire-gathering.gatheredCount`](./wire-gathering.ts.mdmd.md#symbol-gatheredcount)
 - [`wire-gathering.gatheredDescription`](./wire-gathering.ts.mdmd.md#symbol-gathereddescription)
 - [`wire-gathering.gatheredWidth`](./wire-gathering.ts.mdmd.md#symbol-gatheredwidth)
 - [`wire-gathering.ownWires`](./wire-gathering.ts.mdmd.md#symbol-ownwires)

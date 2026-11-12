@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-factory.ts
-- Generated At: 2026-11-12T17:14:37.015Z
+- Generated At: 2026-11-12T22:02:40.566Z
 
 ## Authored
 ### Purpose
@@ -41,43 +41,35 @@ Since 2026-11-08 (the header round, [November 7 record, Turn 3](../../../../../.
 ### Public Symbols
 #### `CardPresentation` {#symbol-cardpresentation}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L20)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L21)
 
 ##### `CardPresentation` — Summary
 The values a fresh card reads while it is built. The wrapper may survive a render, but its card is rebuilt.
 
 #### `hasCloseAction` {#symbol-hascloseaction}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L34)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L35)
 
 ##### `hasCloseAction` — Summary
 A card can close its own retention, subject or locally expanded symbol list.
 
 #### `CardContext` {#symbol-cardcontext}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L39)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L40)
 
 ##### `CardContext` — Summary
 Only the facts and actions a card needs; navigation targets are looked up when their event occurs.
 
-#### `NODE_HUB` {#symbol-node_hub}
-- Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L65)
-
-##### `NODE_HUB` — Summary
-The registry's name for a card's node-level hubs, `inbound:#hub` and `outbound:#hub`, by which the overview band's
-gathered wires find them (2026-11-06); no symbol is named so.
-
 #### `PIN_GLYPH` {#symbol-pin_glyph}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L68)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L63)
 
 ##### `PIN_GLYPH` — Summary
 The Pin glyph, a pushpin, in a 24-unit box: the card's Pin, a row's Pin and the card's reveal of its connections outside the view.
 
 #### `createNodeCard` {#symbol-createnodecard}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L83)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L78)
 - Parameters: `context`: [`CardContext`](#symbol-cardcontext); `node`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload); `columnRole`: [`ColumnRole`](./types.ts.mdmd.md#symbol-columnrole)
 
 ##### `createNodeCard` — Summary
@@ -93,7 +85,7 @@ The created card element
 
 #### `createClosedDirectory` {#symbol-createcloseddirectory}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L287)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L282)
 - Parameters: `context`: [`CardContext`](#symbol-cardcontext); `closed`: [`ClosedDirectory`](./branches.ts.mdmd.md#symbol-closeddirectory)
 
 ##### `createClosedDirectory` — Summary
@@ -104,7 +96,7 @@ under it is at least encasing, so no wire ever reaches a closed box.
 
 #### `countsOf` {#symbol-countsof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L322)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L317)
 
 ##### `countsOf` — Summary
 "3 files, 2 directories", either part left out at zero; "empty" when both are.
@@ -118,6 +110,7 @@ under it is at least encasing, so no wire ever reaches a closed box.
 - [`branches.compareSymbolNames`](./branches.ts.mdmd.md#symbol-comparesymbolnames)
 - [`directory-bands.parentDirectory`](./directory-bands.ts.mdmd.md#symbol-parentdirectory)
 - [`types.ColumnRole`](./types.ts.mdmd.md#symbol-columnrole) (type-only)
+- [`wire-gathering.NODE_HUB`](./wire-gathering.ts.mdmd.md#symbol-node_hub)
 - [`word-seams.countOf`](./word-seams.ts.mdmd.md#symbol-countof)
 - [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 - [`types.ExplorerPublicSymbol`](../../../shared/types.ts.mdmd.md#symbol-explorerpublicsymbol) (type-only)

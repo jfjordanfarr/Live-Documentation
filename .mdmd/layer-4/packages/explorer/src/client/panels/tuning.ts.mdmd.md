@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/tuning.ts
-- Generated At: 2026-11-12T17:42:24.420Z
+- Generated At: 2026-11-12T22:02:33.207Z
 
 ## Authored
 ### Purpose
@@ -46,6 +46,8 @@ Name Growth ([Turn 11](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/
 
 Since 2026-11-05 the panel wires the Shell Depth slider to `forceGraph.shellDepth`.
 
+Opened Directory joined the 2D layout group on 2026-11-12, the switch of the directory flow trial; changing it re-renders the 2D map, since it changes which cards are ranked and which lines are drawn.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -85,6 +87,7 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`tuning-levers.TUNING_HELP`](./tuning-levers.ts.mdmd.md#symbol-tuning_help)
 - [`tuning-levers.tuningHelpId`](./tuning-levers.ts.mdmd.md#symbol-tuninghelpid)
 - [`types.CHANGE_EMPHASES`](../types.ts.mdmd.md#symbol-change_emphases)
+- [`types.DIRECTORY_LAYOUTS`](../types.ts.mdmd.md#symbol-directory_layouts)
 - [`types.ExplorerState`](../types.ts.mdmd.md#symbol-explorerstate)
 - [`types.GROUP_WRAPPERS`](../types.ts.mdmd.md#symbol-group_wrappers)
 - [`template.export-layout-settings`](../../shared/template.html.mdmd.md#symbol-export-layout-settings)
@@ -92,6 +95,7 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`template.tuning-churn-cost`](../../shared/template.html.mdmd.md#symbol-tuning-churn-cost)
 - [`template.tuning-column-gap`](../../shared/template.html.mdmd.md#symbol-tuning-column-gap)
 - [`template.tuning-control-resistance`](../../shared/template.html.mdmd.md#symbol-tuning-control-resistance)
+- [`template.tuning-directory-layout`](../../shared/template.html.mdmd.md#symbol-tuning-directory-layout)
 - [`template.tuning-force-group-wrappers`](../../shared/template.html.mdmd.md#symbol-tuning-force-group-wrappers)
 - [`template.tuning-history-axis`](../../shared/template.html.mdmd.md#symbol-tuning-history-axis)
 - [`template.tuning-history-change-emphasis`](../../shared/template.html.mdmd.md#symbol-tuning-history-change-emphasis)

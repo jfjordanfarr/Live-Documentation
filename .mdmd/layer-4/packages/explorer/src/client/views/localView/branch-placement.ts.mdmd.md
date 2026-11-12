@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-placement.ts
-- Generated At: 2026-10-22T16:47:55.485Z
+- Generated At: 2026-11-12T22:02:38.696Z
 
 ## Authored
 ### Purpose
@@ -23,6 +23,8 @@ Places the cards and lanes of a retained Local Map exploration on the vertical a
 Boundary-alignment candidates use validated inclusive column intervals whose top or bottom variables share node IDs. Overlapping groups merge; independent adjacent runs remain separate. Existing containment, labels, sibling separation and neck constraints remain in force. The returned `optimal` flag describes this constrained linear solve, not a globally optimal count of outline steps. A separate row-item list lets a drawn directory price its directly owned loose-file bucket without changing containment. These distinctions follow [the October13 refinement](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply).
 
 The November 1 root-framing repair applies neck overlap only to drawn membranes. After the linear solve, disconnected constraint components align at their own content origins. Translating a complete component preserves all inequalities and the objective, while an actual wire or membrane still couples its columns. This prevents an invisible root from producing an arbitrary staircase. See the [accepted review](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-01.1.record.md#turn-2).
+
+`fromTop` (2026-11-12) stands every column from the top instead of where the wires are shortest, for an opened directory in flow order: the root's answer when the trial's first pictures arrived on empty space, the thin first ranks standing at the middle of a tall picture where their lines were shortest. Every item is drawn to a ceiling by more than the shapes' prices can ask and the wires are left out of the solve; the membranes, lanes and necks hold as before, and the cost reported is still the wires' length. The two placements are pictured side by side in [the trial's evidence](../../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-12/directory-flow-trial/README.md).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -87,14 +89,14 @@ What the placement takes.
 
 #### `Placement` {#symbol-placement}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-placement.ts#L139)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-placement.ts#L147)
 
 ##### `Placement` — Summary
 The placement: every item's top, every membrane's segments, and the objective.
 
 #### `placementCost` {#symbol-placementcost}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-placement.ts#L197)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-placement.ts#L205)
 - Parameters: `top`: `ReadonlyMap`
 
 ##### `placementCost` — Summary
@@ -102,7 +104,7 @@ The weighted sum of the wires' vertical distances at given tops; a wire whose pi
 
 #### `placeBranches` {#symbol-placebranches}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-placement.ts#L208)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-placement.ts#L216)
 - Returns: [`Placement`](#symbol-placement)
 - Parameters: `input`: [`PlacementInput`](#symbol-placementinput)
 

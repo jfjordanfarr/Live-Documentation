@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/layout-presets.ts
-- Generated At: 2026-11-10T21:46:13.473Z
+- Generated At: 2026-11-12T22:02:32.268Z
 
 ## Authored
 ### Purpose
@@ -30,6 +30,8 @@ Wire Thickness (`linkWidth`, 0.1 to 4 by 0.1) and Node/Wire Zoom Resistance (`no
 Since 2026-11-05 `shellDepth` is one of the numeric 3D settings, read and bounded from 1 to 6 like the hops.
 
 Since November 6 (the directory shells merged, experiment 2 of [Turn 11](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-11)) `readLayoutSettings` also carries `groupWrappers` when it is one of the four choices, so that a shared link's layout payload, a saved tuning and the 3D view's `data-layout-settings` attribute all carry the wrappers' look with the numbers, and a link shows the group wrappers and the directory shells without a switch; an unknown look is dropped, and the storage's own reading of the choice is gone.
+
+Since 2026-11-12 the settings carry how an opened directory stands, so that the directory flow trial is compared by link, but only when it is not the grid: a link made with the trial off is the link it was before the trial. Because the grid is never written, `applyLayoutSettings` reads a snapshot that carries the 2D map's settings without it as the grid, so that such a link shows the grid in a browser whose own tuning last held the trial; an address that carries no layout leaves the browser's choice alone.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -73,17 +75,20 @@ Return a fresh tuning record with both representations' packing set together.
 
 #### `readLayoutSettings` {#symbol-readlayoutsettings}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L52)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L55)
 - Returns: [`LayoutSettings`](#symbol-layoutsettings)
 
 ##### `readLayoutSettings` — Summary
 Read only known settings: the finite numbers, bound to their public control ranges, and the named settings a link or a
 saved tuning carries beside them: the 3D wrappers' look (2026-11-06, so that a shared link shows the group wrappers and
-the directory shells without a switch) and the 2D Zoom Looks (2026-11-10, so that a link shows the trial's three looks).
+the directory shells without a switch), the 2D Zoom Looks (2026-11-10, so that a link shows the trial's three looks)
+and how an opened directory stands (2026-11-12, so that the owner and the test agents compare that trial by link). The
+last is carried only when it is not the default grid, so that a link made with the trial off is the link it was before
+the trial; {@link applyLayoutSettings} reads its absence as the grid.
 
 #### `layoutSettingsOf` {#symbol-layoutsettingsof}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L79)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L85)
 - Returns: [`LayoutSettings`](#symbol-layoutsettings)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 
@@ -92,16 +97,19 @@ Snapshot the controls that affect packing and spatial encodings, independent of 
 
 #### `applyLayoutSettings` {#symbol-applylayoutsettings}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L84)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L94)
 - Returns: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig); `settings`: [`LayoutSettings`](#symbol-layoutsettings)
 
 ##### `applyLayoutSettings` — Summary
-Merge a validated partial snapshot over the current values, leaving unrelated preferences intact.
+Merge a validated partial snapshot over the current values, leaving unrelated preferences intact. A snapshot that
+carries the 2D map's settings without saying how an opened directory stands says the grid, since only the trial's
+layouts are written (2026-11-12): a link made with the trial off shows the grid in a browser that last saw the trial.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`types.DIRECTORY_LAYOUTS`](./types.ts.mdmd.md#symbol-directory_layouts)
 - [`types.ForceGraphTuning`](./types.ts.mdmd.md#symbol-forcegraphtuning)
 - [`types.GROUP_WRAPPERS`](./types.ts.mdmd.md#symbol-group_wrappers)
 - [`types.LocalMapTuning`](./types.ts.mdmd.md#symbol-localmaptuning)

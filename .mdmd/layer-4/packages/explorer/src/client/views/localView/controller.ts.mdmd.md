@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/controller.ts
-- Generated At: 2026-11-12T17:14:37.298Z
+- Generated At: 2026-11-12T22:02:41.188Z
 
 ## Authored
 ### Purpose
@@ -58,12 +58,14 @@ Since 2026-11-10 `applyLevelOfDetail` also serves Tuning's Zoom Looks, a trial b
 
 Since 2026-11-12 `fitWhole` is the 2D map's Fit current scope, the 3D map's first toolbar control: a person's press only, it takes the camera as a gesture does, eases to `wholeTransform` over everything the map shows, and leaves the camera the person's (`mapUserAdjusted`), so that no later render frames back toward the arrival ([the first-visit review](../../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-12/first-visit/README.md), finding 5). `resetZoom`, the control now named Return to reading size, is unchanged.
 
+The directory flow trial's hover (2026-11-12): while opened directories stand in flow order, the card under the pointer or holding the keyboard's focus keeps its lines and the cards at their far ends, and the stylesheet fades every other line, card and closed box; a return's stubs light at both ends and its route is not drawn, since nothing may be added. The container listens for every card because a render builds the cards afresh, and the marks are written again after each drawing of the wires. A hovered symbol row's own highlight outranks it.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LocalViewController` {#symbol-localviewcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L76)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L77)
 - Implements: [`LocalViewApi`](./types.ts.mdmd.md#symbol-localviewapi)
 
 ##### `LocalViewController` — Summary
@@ -86,6 +88,7 @@ Coordinates the native Local Map, independent exploration pins and explicit FROM
 - [`card-reading.ReadingTarget`](./card-reading.ts.mdmd.md#symbol-readingtarget)
 - [`connections.clearConnections`](./connections.ts.mdmd.md#symbol-clearconnections)
 - [`connections.drawConnections`](./connections.ts.mdmd.md#symbol-drawconnections)
+- [`directory-flow.flowNeighbours`](./directory-flow.ts.mdmd.md#symbol-flowneighbours)
 - [`directory-state.NO_OPEN_DIRECTORIES`](./directory-state.ts.mdmd.md#symbol-no_open_directories)
 - [`directory-state.OpenDirectories`](./directory-state.ts.mdmd.md#symbol-opendirectories)
 - [`edge-signs.EdgeSigns`](./edge-signs.ts.mdmd.md#symbol-edgesigns)

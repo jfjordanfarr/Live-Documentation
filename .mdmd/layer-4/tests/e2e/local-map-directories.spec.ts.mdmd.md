@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/local-map-directories.spec.ts
-- Generated At: 2026-10-22T16:47:58.472Z
+- Generated At: 2026-11-12T22:02:54.114Z
 
 ## Authored
 ### Purpose
@@ -16,6 +16,8 @@ Written for the [October 8 directory disclosure design](../../../../.mdmd/layer-
 The tests activate Open and Pin controls explicitly: names now inspect under the grammar accepted in [October 19, Turn 24](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-19.1.record.md#turn-24) and implemented in the [October 20 continuation](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-2). The text audit of `design-audit.ts` checks the opened pictures. Controls outside the frame in the wide geometry case receive dispatched element clicks; that case measures disclosure geometry, while the in-frame and keyboard cases exercise normal activation.
 - The box-opening test also asserts the reveal's count (2026-10-16): `graph.ts` reads "+N symbols" with N its public rows only, and `graph.test.ts`, which has no public symbol, shows no reveal.
 
+Three cases were added on 2026-11-12 for the directory flow trial (Tuning's Opened Directory, a trial beside the grid): with Flow, a directory's files stand in the order of use with one line for each pair, its boxes level above its files, its line-less files after the last joined one, and each card's count and lines adding up to what the grid's card counted; a card's hover or focus lights its lines and fades the rest with nothing moved or added; and the choice travels in the page's link while a link made with it off carries nothing of it. Each fails on the build before the trial: no line is drawn there and Tuning has no such control. The trial's pictures and numbers are in [its evidence](../../../../AI-Agent-Workspace/Screenshots/2026-11-12/directory-flow-trial/README.md).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -25,6 +27,9 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `@playwright/test` - `Page`, `expect`, `test`
+- [`compressed-url-state.DEFAULT_SNAPSHOT`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-default_snapshot)
+- [`compressed-url-state.compressSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-compresssnapshot)
+- [`compressed-url-state.decompressSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-decompresssnapshot)
 - [`design-audit.describeFaults`](./design-audit.ts.mdmd.md#symbol-describefaults)
 - [`design-audit.overlapsAmong`](./design-audit.ts.mdmd.md#symbol-overlapsamong)
 - [`design-audit.textBoxes`](./design-audit.ts.mdmd.md#symbol-textboxes)
