@@ -224,6 +224,34 @@ describe("ordering the retained files", () => {
   });
 });
 
+describe("items that keep the head of their column (the directory flow trial, 2026-11-12)", () => {
+  // Two columns of one directory. In the second, the boxes y and x stand with the files n and m; m's wire leads to the
+  // first column's top, so the sweep would stand m first.
+  const columns = [["d/a", "d/b"], ["d/n", "d/y", "d/m", "d/x"]];
+  const edges = [edge("d/a", "d/m"), edge("d/b", "d/n")];
+  const leading = new Set(["d/x", "d/y"]);
+
+  it("stands the leading items first in their column, alphabetical among themselves, from every start", () => {
+    // From the ranking's own start the sweep uncrosses the two wires beneath the boxes.
+    expect(orderBranches({ ...input(columns, edges, directoryOf), leading }).columns[1]).toEqual(["d/x", "d/y", "d/m", "d/n"]);
+    for (const seed of [1, 2, 3, 4, 5]) {
+      const order = orderBranches({ ...input(columns, edges, directoryOf), leading, seed });
+      expect(order.columns[1].slice(0, 2), `seed ${seed}`).toEqual(["d/x", "d/y"]);
+      expect(order.columns[1].slice(2).sort(), `seed ${seed}`).toEqual(["d/m", "d/n"]);
+      expect(order.crossings, `seed ${seed}`).toBe(0);
+    }
+    const started = orderBranches({ ...input(columns, edges, directoryOf), leading, start: [["d/b", "d/a"], ["d/n", "d/m", "d/y", "d/x"]] });
+    expect(started.columns[1].slice(0, 2)).toEqual(["d/x", "d/y"]);
+  });
+
+  it("holds nothing when no leading item is given: the order is the order it was", () => {
+    const plain = orderBranches(input(columns, edges, directoryOf));
+    expect(orderBranches({ ...input(columns, edges, directoryOf), leading: new Set() })).toEqual(plain);
+    // Without the hold, the sweep is free to stand a wired file above a box.
+    expect(plain.columns[1].indexOf("d/m")).toBeLessThan(plain.columns[1].indexOf("d/x"));
+  });
+});
+
 describe("ordering the rows of a card", () => {
   it("keeps every row as given unless told which may move", () => {
     const given = input([["p"], ["a", "b"]], [edge("p", "b", "r0"), edge("p", "a", "r2")]);

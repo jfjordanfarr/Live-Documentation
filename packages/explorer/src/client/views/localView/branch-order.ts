@@ -52,6 +52,12 @@ export interface OrderInput {
    * wires lead alike, drawing the two rows of a reference together; a wire to another card always outweighs them.
    */
   internal?: ReadonlyMap<string, readonly (readonly [string, string])[]>;
+  /**
+   * Items that keep the head of their column's list in their directory, in alphabetical order among themselves,
+   * whatever the start and the sweeps ask: an opened directory's closed boxes under the directory flow trial
+   * (2026-11-12), which stand as a band above its files. Omitted, no item is held.
+   */
+  leading?: ReadonlySet<string>;
   /** How many left-and-right sweeps to try; the best order seen is kept. Zero keeps the starting order. */
   sweeps?: number;
   /** A seed for a shuffled starting order of each column, so that the sweep starts elsewhere; omitted, the columns start as given. */
@@ -153,18 +159,18 @@ export function orderBranches(input: OrderInput): BranchOrder {
   }
   const startKey = (id: string): number => start.get(id) ?? 0;
   let bands = placeVirtuals(computeDirectoryBands(flow), virtuals, input.directoryOf);
-  for (let column = 0; column < columnCount; column++) bands = reorderColumn(bands, column, startKey);
+  for (let column = 0; column < columnCount; column++) bands = reorderColumn(bands, column, startKey, input.leading);
   bands = repackRows(bands, startKey);
 
   const sweeps = input.sweeps ?? 4;
-  let best = sweepColumns(bands, segments, columnCount, sweeps);
+  let best = sweepColumns(bands, segments, columnCount, sweeps, input.leading);
   let rows = given;
   if (input.movable) {
     // The rows of each card, by where their wires lead at the settled order; then the columns once more at the new heights.
     const merged = walkColumns(best.bands, columnCount);
     const moved = orderRows(given, merged, positionsOf(merged), segments, input.movable, input.internal ?? new Map());
     const resegmented = bundleWires(input.edges, columnOf, fractionsOf(moved)).segments;
-    const next = sweepColumns(best.bands, resegmented, columnCount, sweeps);
+    const next = sweepColumns(best.bands, resegmented, columnCount, sweeps, input.leading);
     if (next.crossings <= best.crossings) { best = next; rows = moved; }
   }
 
@@ -242,8 +248,8 @@ function shuffledColumns(columns: readonly (readonly string[])[], seed: number):
   });
 }
 
-/** A barycenter sweep from a starting band tree: the order with the fewest crossings seen, the start included. */
-function sweepColumns(start: readonly DirectoryBand[], segments: readonly Segment[], columnCount: number, sweeps: number): { bands: DirectoryBand[]; crossings: number } {
+/** A barycenter sweep from a starting band tree: the order with the fewest crossings seen, the start included; the leading items keep their columns' heads. */
+function sweepColumns(start: readonly DirectoryBand[], segments: readonly Segment[], columnCount: number, sweeps: number, leading?: ReadonlySet<string>): { bands: DirectoryBand[]; crossings: number } {
   let bands = [...start];
   const keys = new Map<string, number>();
   const keyOf = (id: string): number | undefined => keys.get(id);
@@ -258,7 +264,7 @@ function sweepColumns(start: readonly DirectoryBand[], segments: readonly Segmen
       for (const column of order) {
         const bary = barycenters(segments, positions, side, column);
         for (const id of merged[column]) keys.set(id, bary.get(id) ?? positions.get(id) ?? 0);
-        bands = reorderColumn(bands, column, keyOf);
+        bands = reorderColumn(bands, column, keyOf, leading);
         merged[column] = walkColumns(bands, columnCount)[column];
         merged[column].forEach((id, index) => positions.set(id, index));
       }
@@ -444,16 +450,22 @@ export function walkColumns(bands: readonly DirectoryBand[], columnCount: number
   return columns;
 }
 
-/** The bands with one column's lists sorted by key, ties alphabetical; rows untouched. */
-function reorderColumn(bands: readonly DirectoryBand[], column: number, key: (id: string) => number | undefined): DirectoryBand[] {
+/**
+ * The bands with one column's lists sorted by key, ties alphabetical; rows untouched. The leading items, when any are
+ * given, stand before every other item of their list, alphabetical among themselves whatever their keys.
+ */
+function reorderColumn(bands: readonly DirectoryBand[], column: number, key: (id: string) => number | undefined, leading?: ReadonlySet<string>): DirectoryBand[] {
   const value = (id: string): number => key(id) ?? 0;
+  const follows = (id: string): number => (leading?.has(id) ? 0 : 1);
+  const compare = (a: string, b: string): number =>
+    follows(a) - follows(b) || (follows(a) ? value(a) - value(b) : 0) || a.localeCompare(b);
   return bands.map(band => {
     const ids = band.nodesByColumn.get(column);
     return {
       ...band,
-      children: band.children.length ? reorderColumn(band.children, column, key) : band.children,
+      children: band.children.length ? reorderColumn(band.children, column, key, leading) : band.children,
       nodesByColumn: ids
-        ? new Map([...band.nodesByColumn, [column, [...ids].sort((a, b) => value(a) - value(b) || a.localeCompare(b))]])
+        ? new Map([...band.nodesByColumn, [column, [...ids].sort(compare)]])
         : band.nodesByColumn
     };
   });

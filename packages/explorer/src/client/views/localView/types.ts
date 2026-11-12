@@ -135,6 +135,11 @@ export interface LocalEdge {
   targetSymbol?: string;
   /** Number of documented references sharing these endpoints, preserved by the graph projection. */
   referenceCount?: number;
+  /**
+   * On a pair line of an opened directory (the directory flow trial, 2026-11-12): how many of the graph's links between
+   * its two files it stands for, the unit a card's count of connections outside the view uses. Absent on a reference.
+   */
+  gathered?: number;
 }
 
 /**

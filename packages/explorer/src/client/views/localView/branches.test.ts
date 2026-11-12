@@ -354,6 +354,74 @@ describe("directories opening in the Local Map (2026-10-08)", () => {
     expect(ordered.order.bands.map(band => band.directory)).toEqual(["a"]);
   });
 
+  describe("under the directory flow trial (2026-11-12)", () => {
+    const ids = (columns: readonly (readonly ExplorerNodePayload[])[]): string[][] => columns.map(column => column.map(file => file.id));
+    /** The links a card's lines stand for. */
+    const drawnAt = (links: readonly LocalEdge[], card: string): number =>
+      links.filter(edge => edge.sourceId === card || edge.targetId === card).reduce((sum, edge) => sum + (edge.gathered ?? 0), 0);
+
+    it("joins each pair of cards by one line between their hubs, stands a file left of its users, and counts only what is not drawn", () => {
+      const grid = exploreBranches(null, graph, EMPTY_PIN_SET, () => true, { openDirectories: new Set(["a"]) });
+      const flow = exploreBranches(null, graph, EMPTY_PIN_SET, () => true, { openDirectories: new Set(["a"]), directoryFlow: { wrap: false } });
+      // The same cards, still compact: no row is opened by a line.
+      expect(flow.subgraph.nodes.map(file => file.id).sort()).toEqual(grid.subgraph.nodes.map(file => file.id).sort());
+      expect([...flow.members].sort()).toEqual(["a/x.ts", "a/y.ts"]);
+      expect(flow.order.rows.get("a/x.ts")).toEqual([]);
+      expect(flow.order.rows.get("a/y.ts")).toEqual([]);
+      expect(flow.relevantSymbols.size).toBe(0);
+      // y uses x: one line, from x's hub to y's.
+      expect(flow.subgraph.links).toEqual([
+        { sourceId: "a/y.ts", targetId: "a/x.ts", sourceSymbol: "#hub", targetSymbol: "#hub", kind: "dependency", direction: "inbound", gathered: 1 }
+      ]);
+      // x stands left of y; the closed box heads the directory's first column and is told to keep it.
+      expect(ids(flow.ranking.columns)).toEqual([["a/sub", "a/x.ts"], ["a/y.ts"]]);
+      expect(flow.order.leading).toEqual(new Set(["a/sub"]));
+      const ordered = orderExploration(flow);
+      expect(ids(ordered.columns)).toEqual([["a/sub", "a/x.ts"], ["a/y.ts"]]);
+      expect(ordered.back.size).toBe(0);
+      // A card's count and its lines add up to the grid's count: y's one connection is drawn, x keeps z's, off screen.
+      for (const card of ["a/x.ts", "a/y.ts"]) {
+        expect((flow.hiddenConnections.get(card) ?? 0) + drawnAt(flow.subgraph.links, card), card).toBe(grid.hiddenConnections.get(card));
+      }
+      expect(flow.hiddenConnections.has("a/y.ts")).toBe(false);
+      expect(flow.hiddenConnections.get("a/x.ts")).toBe(1);
+    });
+
+    it("joins a compact file to a retained one by a line, beside the retained files' wires between symbols", () => {
+      // z pinned whole retains x, its provider, and their wire joins symbols; y, compact in the opened a, uses x.
+      const pins = addPin(EMPTY_PIN_SET, "b/z.ts", "*");
+      const flow = exploreBranches(byId.get("b/z.ts")!, graph, pins, () => true, { openDirectories: new Set(["a"]), directoryFlow: { wrap: false } });
+      expect(flow.subgraph.links.filter(edge => edge.gathered === undefined && edge.sourceId !== edge.targetId))
+        .toEqual([expect.objectContaining({ sourceId: "b/z.ts", targetId: "a/x.ts", sourceSymbol: "value", targetSymbol: "value" })]);
+      expect(flow.subgraph.links.filter(edge => edge.gathered !== undefined))
+        .toEqual([expect.objectContaining({ sourceId: "a/y.ts", targetId: "a/x.ts", gathered: 1 })]);
+      expect(ids(flow.ranking.columns)).toEqual([["a/sub", "a/x.ts"], ["a/y.ts", "b/z.ts"]]);
+      expect(flow.hiddenConnections.has("a/y.ts")).toBe(false);
+    });
+
+    it("stands the files no line joins after the directory's last column", () => {
+      // b holds z, which uses a file not on screen, and w, which uses nothing: neither is joined, so b is the grid's b.
+      const b = exploreBranches(null, graph, EMPTY_PIN_SET, () => true, { openDirectories: new Set(["b"]), directoryFlow: { wrap: false } });
+      expect(b.subgraph.links).toEqual([]);
+      expect(ids(b.ranking.columns)).toEqual(ids(exploreBranches(null, graph, EMPTY_PIN_SET, () => true, { openDirectories: new Set(["b"]) }).ranking.columns));
+      // With a and b both open, z's use of x is drawn across the two directories, and w stands after b's last column.
+      const both = exploreBranches(null, graph, EMPTY_PIN_SET, () => true, { openDirectories: new Set(["a", "b"]), directoryFlow: { wrap: false } });
+      expect(both.subgraph.links.map(edge => [edge.targetId, edge.sourceId, edge.gathered]).sort()).toEqual([["a/x.ts", "a/y.ts", 1], ["a/x.ts", "b/z.ts", 1]]);
+      expect(ids(both.ranking.columns)).toEqual([["a/sub", "a/x.ts"], ["a/y.ts", "b/z.ts"], ["b/w.ts"]]);
+      expect(both.hiddenConnections.size).toBe(0);
+    });
+
+    it("changes nothing where no directory is open: a pinned neighbourhood stands as it did", () => {
+      const pins = addPin(EMPTY_PIN_SET, "b/z.ts", "*");
+      const plain = exploreBranches(byId.get("b/z.ts")!, graph, pins, () => true);
+      const trial = exploreBranches(byId.get("b/z.ts")!, graph, pins, () => true, { directoryFlow: { wrap: true } });
+      expect(trial.subgraph).toEqual(plain.subgraph);
+      expect(ids(trial.ranking.columns)).toEqual(ids(plain.ranking.columns));
+      expect(trial.hiddenConnections).toEqual(plain.hiddenConnections);
+      expect(trial.order.leading).toBeUndefined();
+    });
+  });
+
   it("lays an opened directory's items from its party's first column, as wide as its span or the square root of their count, appending columns", () => {
     const directoryOf = (id: string): string => id.slice(0, id.lastIndexOf("/"));
     const items = (directory: string): string[] => directory === "p" ? ["p/1", "p/2", "p/3", "p/4", "p/5"] : directory === "p/q" ? ["p/q/1", "p/q/2"] : [];

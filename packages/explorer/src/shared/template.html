@@ -219,6 +219,14 @@
             </select>
           </label>
           <label class="tuning-slider">
+            <span>Opened Directory</span>
+            <select id="tuning-directory-layout">
+              <option value="grid" selected>Grid: no lines until a file is pinned</option>
+              <option value="flow">Flow: in order of use, a line for each pair</option>
+              <option value="flow-tall">Flow, with tall columns left unwrapped</option>
+            </select>
+          </label>
+          <label class="tuning-slider">
             <span>Slot Lines</span>
             <input type="range" id="tuning-slot-lines" min="1" max="4" step="1" value="2" />
             <output id="tuning-slot-lines-value">2</output>

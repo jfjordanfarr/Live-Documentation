@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import type { LocalEdge } from "./types";
-import { GATHERED_WIDTH, gatheredDescription, gatheredWidth, gatherWires, ownWires } from "./wire-gathering";
+import { GATHERED_WIDTH, gatheredCount, gatheredDescription, gatheredWidth, gatherWires, NODE_HUB, ownWires } from "./wire-gathering";
 
 /** A wire from what offers (`target`) to what uses (`source`), by file and symbol. */
 const wire = (uses: string, usesSymbol: string | undefined, offers: string, offersSymbol: string | undefined): LocalEdge => ({
@@ -41,6 +41,20 @@ describe("gatherWires", () => {
 
   it("gathers nothing from no wires", () => {
     expect(gatherWires([], () => false)).toEqual([]);
+  });
+});
+
+describe("gatheredCount", () => {
+  it("counts one for each wire, and for a pair line of an opened directory the links it already stands for", () => {
+    const [pair] = gatherWires(wires, () => false);
+    expect(gatheredCount(pair)).toBe(3);
+    expect(gatheredDescription(pair, id => id)).toBe("still.ts offers spec.ts 3 references");
+    // A pair line is alone between its two files, and says its own count.
+    const line: LocalEdge = { ...wire("spec.ts", NODE_HUB, "still.ts", NODE_HUB), gathered: 5 };
+    const [gathered] = gatherWires([line], () => false);
+    expect(gathered.members).toEqual([line]);
+    expect(gatheredCount(gathered)).toBe(5);
+    expect(gatheredDescription(gathered, id => id)).toBe("still.ts offers spec.ts 5 references");
   });
 });
 

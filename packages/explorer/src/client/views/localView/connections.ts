@@ -4,8 +4,8 @@ import type { LocalViewRuntime, WireLayer } from "./runtime";
 import type { ColumnRole, LayoutExtents, LocalEdge } from "./types";
 import type { BezierTuning, ExplorerState, LocalMapTuning } from "../../types";
 import { computeSelfLoopStubs, DEFAULT_SELF_LOOP_PARAMS, type LaceEdges, type SelfLoopParams } from "../connection-geometry";
-import { NODE_HUB } from "./card-factory";
-import { gatheredDescription, gatheredWidth, gatherWires, ownWires } from "./wire-gathering";
+import { isPairLine, linksOf } from "./directory-flow";
+import { gatheredCount, gatheredDescription, gatheredWidth, gatherWires, NODE_HUB, ownWires, type GatheredWire } from "./wire-gathering";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
 
 /**
@@ -328,7 +328,9 @@ function drawLaces(
  * French Corset stubs at its pins with its full route drawn only on hover.
  * The wires of one pin that pass a column together share one slot there, and
  * their shared run is drawn once more beneath them, as wide as their number,
- * so a bundle says how many it carries before they part.
+ * so a bundle says how many it carries before they part. A pair line of an opened directory (the directory flow trial,
+ * 2026-11-12) is drawn in every band as the overview band draws a gathered wire, hub to hub and as wide as its count,
+ * under the same key, so that one element is the pair's line at every zoom; it joins no bundle's shared run.
  */
 function drawBranchConnections(context: ConnectionsContext, layer: WireLayer, seen: Set<string>): { drawn: number; backward: number } {
   const { runtime, branches, state } = context;
@@ -409,6 +411,12 @@ function drawBranchConnections(context: ConnectionsContext, layer: WireLayer, se
   }
   // One shared run per lane slot: the curve into the lane and the run along it, from the first wire drawn through it.
   const runs = new Map<string, { curve: RoutePiece; lane: RoutePiece; gradient: string; members: number; presence: number }>();
+  const nameOf = (nodeId: string): string => branches.subgraph.nodes.find(node => node.id === nodeId)?.name ?? nodeId;
+  // A pair line's dress: its laces or its path marked gathered, as wide as its count, described by its two files.
+  const dressLine = (edge: LocalEdge, role: string): void => {
+    const wire: GatheredWire = { key: "", providerId: edge.targetId, consumerId: edge.sourceId, members: [edge], back: false };
+    dressGathered(layer.elements.get(JSON.stringify([edgeKey(edge), role])), linksOf(edge), gatheredDescription(wire, nameOf));
+  };
   branches.subgraph.links.forEach(edge => {
     const measured = wireEnds(edge.targetId, edge.targetSymbol, edge.sourceId, edge.sourceSymbol);
     if (!measured) return;
@@ -423,15 +431,24 @@ function drawBranchConnections(context: ConnectionsContext, layer: WireLayer, se
       return;
     }
     const key = edgeKey(edge);
+    const line = isPairLine(edge);
     if (branches.back.has(key)) {
       drawLaces(layer, seen, from, to, cardEdgesOf(provider, consumer, bounds), edge, context.svgNamespace, shape, laceRanks, presence);
       drawWire(layer, seen, from, to, "outbound", edge, context.svgNamespace, state.tuning.bezier, undefined, "back-route", presence);
+      if (line) {
+        for (const role of ["provider", "consumer"]) layer.elements.get(JSON.stringify([key, role]))?.classList.add("gathered");
+        dressLine(edge, "back-route");
+      }
       return;
     }
     const a = columnOf.get(edge.targetId)!, b = columnOf.get(edge.sourceId)!;
     const routed = routeFor(key, a, b, from, to);
-    if (presence >= 1 && routeBacktracks(routed.pieces, state.tuning.bezier)) backward++;
-    const gradientId = drawWire(layer, seen, from, to, "outbound", edge, context.svgNamespace, state.tuning.bezier, routed.d, undefined, presence);
+    if (presence >= 1 && routeBacktracks(routed.pieces, state.tuning.bezier)) backward += linksOf(edge);
+    const gradientId = drawWire(layer, seen, from, to, "outbound", edge, context.svgNamespace, state.tuning.bezier, routed.d, line ? "gathered" : undefined, presence);
+    if (line) {
+      dressLine(edge, "gathered");
+      return;
+    }
     // The first wire drawn through a slot lends its run and its gradient to the bundle's shared run there.
     routed.slots.forEach((slot, i) => {
       const existing = runs.get(slot);
@@ -508,17 +525,11 @@ function drawOverviewWires(
       const a = columnOf.get(wire.providerId)!, b = columnOf.get(wire.consumerId)!;
       // Through the lanes one of its references was given, where all of that reference's passages stand; else the one curve.
       const routed = wire.members.map(member => threadFor(edgeKey(member), a, b, from, to)).find(Boolean) ?? routeFor(edgeKey(wire.members[0]), a, b, from, to);
-      if (presence >= 1 && routeBacktracks(routed.pieces, state.tuning.bezier)) backward += wire.members.length;
+      if (presence >= 1 && routeBacktracks(routed.pieces, state.tuning.bezier)) backward += gatheredCount(wire);
       drawWire(layer, seen, from, to, "outbound", gathered, svgNamespace, state.tuning.bezier, routed.d, "gathered", presence);
       path = layer.elements.get(JSON.stringify([edgeKey(gathered), "gathered"])) as SVGPathElement | undefined;
     }
-    if (path) {
-      path.classList.add("gathered");
-      path.style.strokeWidth = `${gatheredWidth(wire.members.length).toFixed(2)}px`;
-      path.dataset.references = String(wire.members.length);
-      path.setAttribute("role", "img");
-      path.setAttribute("aria-label", gatheredDescription(wire, nameOf));
-    }
+    dressGathered(path, gatheredCount(wire), gatheredDescription(wire, nameOf));
   }
   // A pinned symbol's own wires, drawn after the gathered ones and so above them.
   for (const edge of ownWires(links, (nodeId, symbol, direction) => pinnedDot(nodeId, direction, symbol))) {
@@ -538,6 +549,19 @@ function drawOverviewWires(
     drawWire(layer, seen, from, to, "outbound", edge, svgNamespace, state.tuning.bezier, routeFor(edgeKey(edge), a, b, from, to).d, "own", presence);
   }
   return { drawn, backward };
+}
+
+/**
+ * A gathered wire's dress, the overview band's and a pair line's alike: marked gathered, as wide as the references it
+ * carries, which it also says in its data and, with its two files, in its accessible name.
+ */
+function dressGathered(path: SVGElement | undefined, count: number, description: string): void {
+  if (!path) return;
+  path.classList.add("gathered");
+  path.style.strokeWidth = `${gatheredWidth(count).toFixed(2)}px`;
+  path.dataset.references = String(count);
+  path.setAttribute("role", "img");
+  path.setAttribute("aria-label", description);
 }
 
 /**

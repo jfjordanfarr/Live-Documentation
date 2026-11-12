@@ -5,6 +5,7 @@ import type { SymbolOrder } from "../../types";
 import { getVisibleConnections, retainFile, type PinSet } from "../pin-state";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
 import { orderBranches, type BranchOrder, type ForwardReference, type OrderInput } from "./branch-order";
+import { flowColumns, linksOf, pairLines, squareRows, type UndrawnLink } from "./directory-flow";
 import { directoryState, NO_OPEN_DIRECTORIES, under, type OpenDirectories } from "./directory-state";
 import { rankByNetworkSimplex, type Constraint } from "./network-simplex";
 import type { PathResult } from "./state";
@@ -76,6 +77,14 @@ export interface BranchOptions {
   openDirectories?: OpenDirectories;
   /** Explicit reading keeps those files available without disclosing their neighbors or changing pins. */
   reading?: readonly ReadingChoice[];
+  /**
+   * The directory flow trial (2026-11-12), beside the grid: given, every pair of file cards on screen where one uses the
+   * other, and which no wire between symbols joins, is joined by one line between their hubs; the files of an opened
+   * directory stand in the ranking's columns with the retained files, a file left of the files that use it; its closed
+   * boxes head its columns; and its files that no line joins stand together after its last column. With `wrap`, a tall
+   * rank wraps into neighbouring columns until the ranks stand about as wide as tall. Omitted, the grid.
+   */
+  directoryFlow?: { wrap: boolean };
 }
 
 /** A closed directory drawn as a box: a pseudo-node with no symbols, standing in for everything under it. */
@@ -104,7 +113,10 @@ export interface Exploration {
   ranking: BranchRanking;
   hiddenConnections: Map<string, number>;
   relevantSymbols: Map<string, Set<string>>;
-  /** The files drawn compact and unwired because their directory is open; their references are hidden connections. */
+  /**
+   * The files drawn compact because their directory is open. In the grid they are unwired and their references are
+   * hidden connections; under the directory flow trial a pair line joins each to every card on screen it uses or serves.
+   */
   members: Set<string>;
   /** The closed directories drawn as boxes, by path. */
   closed: Map<string, ClosedDirectory>;
@@ -223,7 +235,7 @@ export function exploreBranches(
   graph: ExplorerGraphPayload,
   pins: PinSet,
   include: (node: ExplorerNodePayload) => boolean,
-  options: Pick<BranchOptions, "symbolOrder" | "ranking" | "membraneDepth" | "openDirectories" | "path" | "reading"> = {}
+  options: Pick<BranchOptions, "symbolOrder" | "ranking" | "membraneDepth" | "openDirectories" | "path" | "reading" | "directoryFlow"> = {}
 ): Exploration {
   const symbolOrder = options.symbolOrder ?? "layout";
   const id = (endpoint: string | { id: string }): string => typeof endpoint === "string" ? endpoint : endpoint.id;
@@ -277,6 +289,10 @@ export function exploreBranches(
   const nodes = [...files, ...boxes];
   for (const box of boxes) byId.set(box.id, box);
   const shown = new Set(nodes.map(node => node.id));
+  // The directory flow trial stands wherever a directory is open, the scan root's landing among them; a path opens none.
+  const flow = opened.size > 0 ? options.directoryFlow : undefined;
+  const cards = new Set(files.map(node => node.id));
+  const undrawn: UndrawnLink[] = [];
   const links: LocalEdge[] = [];
   const hiddenConnections = new Map<string, number>();
   for (const link of graph.links) {
@@ -286,12 +302,20 @@ export function exploreBranches(
       links.push({ sourceId, targetId, sourceSymbol: link.sourceSymbol, targetSymbol: link.targetSymbol,
         kind: link.kind, referenceCount: link.referenceCount, direction: !path && sourceId === center?.id ? "outbound" : "inbound" });
       if (path) { remember(sourceId, link.sourceSymbol); remember(targetId, link.targetSymbol); }
+    } else if (flow && sourceId !== targetId && cards.has(sourceId) && cards.has(targetId)) {
+      // Both ends are file cards on screen: the link is drawn, in its pair's line, and so is no hidden connection.
+      undrawn.push({ sourceId, targetId, kind: link.kind });
     } else {
       for (const endpoint of new Set([sourceId, targetId])) {
         if (shown.has(endpoint)) hiddenConnections.set(endpoint, (hiddenConnections.get(endpoint) ?? 0) + 1);
       }
     }
   }
+  // The pair lines join the references: the ranking, the ordering, the placement and the drawing take them as wires
+  // between the two cards' hubs. A member a line joins is ranked with the retained files.
+  const lines = pairLines(undrawn);
+  links.push(...lines);
+  const joined = new Set(lines.flatMap(line => [line.sourceId, line.targetId]));
   const keys = new Set(links.map(edgeKey));
   const party = files.filter(node => retained.has(node.id));
   const row = (symbol: string | undefined): string => normalizeSymbolIdentifier(symbol) ?? "__internals__";
@@ -310,12 +334,14 @@ export function exploreBranches(
     if (pinned?.has(row(edge.targetSymbol))) remember(node.id, edge.sourceSymbol);
   }
   const directoryOfNode = (nodeId: string): string => parentDirectory(byId.get(nodeId)?.codeRelativePath ?? nodeId);
-  const ranked = rankBranches(party, links, options.ranking);
-  const columns = placeMembers(ranked.columns.map(column => column.map(node => node.id)), opened, directory => {
-    const contents = index.get(directory);
-    const inside = (path: string): boolean => parentDirectory(path) === directory;
-    return [...[...closed.keys()].filter(inside), ...(contents?.files ?? []).filter(file => members.has(file))];
-  }, directoryOfNode);
+  const ranked = rankBranches(flow ? files.filter(node => retained.has(node.id) || joined.has(node.id)) : party, links, options.ranking);
+  const rankedIds = ranked.columns.map(column => column.map(node => node.id));
+  const boxesOf = (directory: string): string[] => [...closed.keys()].filter(path => parentDirectory(path) === directory);
+  const membersOf = (directory: string): string[] => (index.get(directory)?.files ?? []).filter(file => members.has(file));
+  const columns = flow
+    ? flowColumns({ ranked: rankedIds, opened, boxesOf, looseOf: directory => membersOf(directory).filter(file => !joined.has(file)),
+      directoryOf: directoryOfNode, rows: flow.wrap ? squareRows(rankedIds) : null })
+    : placeMembers(rankedIds, opened, directory => [...boxesOf(directory), ...membersOf(directory)], directoryOfNode);
   const ranking: BranchRanking = { columns: columns.map(column => column.flatMap(nodeId => byId.get(nodeId) ?? [])), back: ranked.back };
   if (path?.fromSymbol && pathGraph) remember(pathGraph.nodes[0].id, path.fromSymbol);
   if (path?.toSymbol && pathGraph) remember(pathGraph.nodes[pathGraph.nodes.length - 1].id, path.toSymbol);
@@ -367,7 +393,9 @@ export function exploreBranches(
       // Only the layout order moves rows, and Internals keeps the foot of the card.
       movable: symbolOrder === "layout" ? name => name !== "__internals__" : undefined,
       edges: forward,
-      internal
+      internal,
+      // Under the directory flow trial a directory's closed boxes keep the head of their columns, a band above its files.
+      ...(flow ? { leading: new Set(closed.keys()) } : null)
     }
   };
 }
@@ -517,7 +545,7 @@ export function rankBranches(nodes: ExplorerNodePayload[], links: LocalEdge[], o
   for (const edge of edges) {
     if (back.has(edgeKey(edge))) continue;
     const pair = `${edge.targetId}\0${edge.sourceId}`;
-    weights.set(pair, (weights.get(pair) ?? 0) + 1);
+    weights.set(pair, (weights.get(pair) ?? 0) + linksOf(edge));
   }
   const pairs: Constraint[] = [...weights].sort(([x], [y]) => x.localeCompare(y)).map(([pair, weight]) => {
     const [provider, consumer] = pair.split("\0");

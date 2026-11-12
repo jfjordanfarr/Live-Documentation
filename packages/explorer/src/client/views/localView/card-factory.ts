@@ -11,6 +11,7 @@
 import { compareSymbolNames, type ClosedDirectory } from "./branches";
 import { parentDirectory } from "./directory-bands";
 import type { ColumnRole } from "./types";
+import { NODE_HUB } from "./wire-gathering";
 import { countOf } from "./word-seams";
 import type { ExplorerNodePayload, ExplorerPublicSymbol, ExplorerTypeReference } from "../../../shared/types";
 import { setSeamedText } from "../../dom";
@@ -57,12 +58,6 @@ export interface CardContext {
   /** The reading surface receives canonical documentation separately from the graph's render projection. */
   attachReading?(card: HTMLElement, node: ExplorerNodePayload): void;
 }
-
-/**
- * The registry's name for a card's node-level hubs, `inbound:#hub` and `outbound:#hub`, by which the overview band's
- * gathered wires find them (2026-11-06); no symbol is named so.
- */
-export const NODE_HUB = "#hub";
 
 /** The Pin glyph, a pushpin, in a 24-unit box: the card's Pin, a row's Pin and the card's reveal of its connections outside the view. */
 export const PIN_GLYPH = "M8 3h8l-1 6 3 3v2H6v-2l3-3-1-6ZM12 14v7";

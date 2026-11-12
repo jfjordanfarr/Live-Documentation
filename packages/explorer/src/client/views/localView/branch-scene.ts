@@ -277,7 +277,8 @@ export function layoutScene(plan: ScenePlan, branches: BranchGraph, measurer: Sc
     if (box.kind !== "lane") box.insetTop = box.inset + (measured.labelHeights.get(box.key) ?? 0);
   }
 
-  // A wire per reference, through the slot of each lane it passes; wires between the same pins add up.
+  // A wire per reference, through the slot of each lane it passes; wires between the same pins add up. A pair line of
+  // an opened directory (the directory flow trial, 2026-11-12) weighs as many links as it stands for.
   const columnOf = new Map(branches.columns.flatMap((nodes, column) => nodes.map(node => [node.id, column] as const)));
   const wires = new Map<string, PlacementWire>();
   const addWire = (from: { item: string; offset: number }, to: { item: string; offset: number }, count: number): void => {
@@ -299,10 +300,10 @@ export function layoutScene(plan: ScenePlan, branches: BranchGraph, measurer: Sc
       const slots = passage ? lanes.get(passage.lane)?.slots : undefined;
       if (!passage || !slots) break;
       const slot = { item: slots[passage.index], offset: SLOT_LINE };
-      addWire(previous, slot, edge.referenceCount ?? 1);
+      addWire(previous, slot, edge.gathered ?? edge.referenceCount ?? 1);
       previous = slot;
     }
-    addWire(previous, { item: edge.sourceId, offset: consumer }, edge.referenceCount ?? 1);
+    addWire(previous, { item: edge.sourceId, offset: consumer }, edge.gathered ?? edge.referenceCount ?? 1);
   }
 
   const toPlacementBand = (box: SceneBox): PlacementBand => ({

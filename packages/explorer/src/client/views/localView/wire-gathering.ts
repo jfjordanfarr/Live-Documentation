@@ -10,6 +10,13 @@
 
 import type { LocalEdge } from "./types";
 
+/**
+ * The registry's name for a card's node-level hubs, `inbound:#hub` and `outbound:#hub`, by which the overview band's
+ * gathered wires find them (2026-11-06) and which a pair line of an opened directory carries for its symbols at both
+ * ends (the directory flow trial, 2026-11-12); no symbol is named so.
+ */
+export const NODE_HUB = "#hub";
+
 /** One wire standing for every wire from one file to another at the overview band. */
 export interface GatheredWire {
   /** The pair's key, the offering file's id and the using file's, in that order. */
@@ -61,9 +68,17 @@ export function gatheredWidth(count: number): number {
   return Math.min(GATHERED_WIDTH.greatest, GATHERED_WIDTH.least + 1.6 * Math.log(count));
 }
 
+/**
+ * How many references a gathered wire carries: one for each member wire, and for a member that is itself a pair line of
+ * an opened directory, already gathered from the graph's links, as many as it stands for.
+ */
+export function gatheredCount(wire: Pick<GatheredWire, "members">): number {
+  return wire.members.reduce((sum, member) => sum + (member.gathered ?? 1), 0);
+}
+
 /** The accessible description of a gathered wire: its two files and its count, by the names the cards show. */
 export function gatheredDescription(wire: GatheredWire, nameOf: (nodeId: string) => string): string {
-  const count = wire.members.length;
+  const count = gatheredCount(wire);
   return `${nameOf(wire.providerId)} offers ${nameOf(wire.consumerId)} ${count} ${count === 1 ? "reference" : "references"}`;
 }
 

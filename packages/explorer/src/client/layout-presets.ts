@@ -1,4 +1,4 @@
-import { GROUP_WRAPPERS, ZOOM_LOOKS, type ForceGraphTuning, type LocalMapTuning, type TuningConfig } from "./types";
+import { DIRECTORY_LAYOUTS, GROUP_WRAPPERS, ZOOM_LOOKS, type ForceGraphTuning, type LocalMapTuning, type TuningConfig } from "./types";
 
 /** One packing preference interpreted by both Local Map representations. */
 export type LayoutPreset = "compact" | "relaxed";
@@ -8,7 +8,7 @@ type SpatialPacking = Pick<ForceGraphTuning, "linkGap" | "charge" | "collisionGa
 
 /** Portable numeric settings behind the presets and spatial encodings; older URLs may omit them. */
 export interface LayoutSettings {
-  localMap?: Partial<FlatPacking & Pick<LocalMapTuning, "zoomLooks">>;
+  localMap?: Partial<FlatPacking & Pick<LocalMapTuning, "zoomLooks" | "directoryLayout">>;
   forceGraph?: Partial<ForceGraphTuning>;
 }
 
@@ -47,7 +47,10 @@ export function applyLayoutPreset(tuning: TuningConfig, preset: LayoutPreset): T
 /**
  * Read only known settings: the finite numbers, bound to their public control ranges, and the named settings a link or a
  * saved tuning carries beside them: the 3D wrappers' look (2026-11-06, so that a shared link shows the group wrappers and
- * the directory shells without a switch) and the 2D Zoom Looks (2026-11-10, so that a link shows the trial's three looks).
+ * the directory shells without a switch), the 2D Zoom Looks (2026-11-10, so that a link shows the trial's three looks)
+ * and how an opened directory stands (2026-11-12, so that the owner and the test agents compare that trial by link). The
+ * last is carried only when it is not the default grid, so that a link made with the trial off is the link it was before
+ * the trial; {@link applyLayoutSettings} reads its absence as the grid.
  */
 export function readLayoutSettings(value: unknown): LayoutSettings | undefined {
   if (!value || typeof value !== "object" || Array.isArray(value)) return undefined;
@@ -66,7 +69,10 @@ export function readLayoutSettings(value: unknown): LayoutSettings | undefined {
     }
     if (group === "localMap") {
       const zoomLooks = ZOOM_LOOKS.find(choice => choice === (input as Record<string, unknown>).zoomLooks);
-      if (Object.keys(numbers).length || zoomLooks) result.localMap = { ...numbers, ...(zoomLooks ? { zoomLooks } : null) };
+      const directoryLayout = DIRECTORY_LAYOUTS.slice(1).find(choice => choice === (input as Record<string, unknown>).directoryLayout);
+      if (Object.keys(numbers).length || zoomLooks || directoryLayout) {
+        result.localMap = { ...numbers, ...(zoomLooks ? { zoomLooks } : null), ...(directoryLayout ? { directoryLayout } : null) };
+      }
       continue;
     }
     const groupWrappers = GROUP_WRAPPERS.find(choice => choice === (input as Record<string, unknown>).groupWrappers);
@@ -80,7 +86,12 @@ export function layoutSettingsOf(tuning: TuningConfig): LayoutSettings {
   return readLayoutSettings(tuning)!;
 }
 
-/** Merge a validated partial snapshot over the current values, leaving unrelated preferences intact. */
+/**
+ * Merge a validated partial snapshot over the current values, leaving unrelated preferences intact. A snapshot that
+ * carries the 2D map's settings without saying how an opened directory stands says the grid, since only the trial's
+ * layouts are written (2026-11-12): a link made with the trial off shows the grid in a browser that last saw the trial.
+ */
 export function applyLayoutSettings(tuning: TuningConfig, settings: LayoutSettings | undefined): TuningConfig {
-  return { ...tuning, localMap: { ...tuning.localMap, ...settings?.localMap }, forceGraph: { ...tuning.forceGraph, ...settings?.forceGraph } };
+  const directory = settings?.localMap ? { directoryLayout: DIRECTORY_LAYOUTS[0] } : null;
+  return { ...tuning, localMap: { ...tuning.localMap, ...directory, ...settings?.localMap }, forceGraph: { ...tuning.forceGraph, ...settings?.forceGraph } };
 }

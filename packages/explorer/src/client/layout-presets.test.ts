@@ -56,4 +56,26 @@ describe("shared packing preferences", () => {
     const restored = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, perspective: "3d", layout: layoutSettingsOf(tuning) }));
     expect(applyLayoutSettings(getDefaultTuning(), restored.layout).forceGraph.groupWrappers).toBe("skin");
   });
+
+  it("carries how an opened directory stands only for the trial's layouts, and reads its absence as the grid", () => {
+    // With the trial off a link is the link it was before the trial: the setting is not written.
+    const grid = getDefaultTuning();
+    expect(grid.localMap.directoryLayout).toBe("grid");
+    expect(layoutSettingsOf(grid).localMap).not.toHaveProperty("directoryLayout");
+    expect(readLayoutSettings({ localMap: { directoryLayout: "grid" } })).toBeUndefined();
+    expect(readLayoutSettings({ localMap: { directoryLayout: "spiral" } })).toBeUndefined();
+    // With it on, the link carries it through the address and back.
+    for (const layout of ["flow", "flow-tall"] as const) {
+      const tuning = getDefaultTuning();
+      tuning.localMap.directoryLayout = layout;
+      expect(readLayoutSettings({ localMap: { directoryLayout: layout } })).toEqual({ localMap: { directoryLayout: layout } });
+      const restored = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(tuning) }));
+      expect(applyLayoutSettings(getDefaultTuning(), restored.layout).localMap.directoryLayout).toBe(layout);
+      // A link made with the trial off shows the grid in a browser whose own tuning last held the trial.
+      const off = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(grid) }));
+      expect(applyLayoutSettings(tuning, off.layout).localMap.directoryLayout).toBe("grid");
+      // An address that carries no layout at all leaves the browser's own choice alone.
+      expect(applyLayoutSettings(tuning, undefined).localMap.directoryLayout).toBe(layout);
+    }
+  });
 });

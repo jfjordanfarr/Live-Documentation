@@ -9,6 +9,7 @@ import { countsOf, createClosedDirectory, createNodeCard, hasCloseAction, PIN_GL
 import { markFirstPin } from "./card-reading";
 import type { LocalViewController } from "./controller";
 import { ancestryButton } from "./directory-ancestry";
+import { isPairLine, linksOf } from "./directory-flow";
 import { layoutTopOf } from "./ladder-rooms";
 import { membranePath } from "./membrane-outline";
 import type { LocalEdge } from "./types";
@@ -110,7 +111,9 @@ function explorationOf(controller: LocalViewController): Exploration {
     membraneDepth: tuning.membraneDepth,
     openDirectories: controller.openDirectories,
     reading: state.reading,
-    path: controller.getActivePath() ?? undefined
+    path: controller.getActivePath() ?? undefined,
+    // The directory flow trial (2026-11-12): a tall rank wraps, or none does.
+    ...(tuning.directoryLayout === "grid" ? null : { directoryFlow: { wrap: tuning.directoryLayout === "flow" } })
   });
 }
 
@@ -144,7 +147,7 @@ export function refreshReadingPresentation(controller: LocalViewController, stag
 function sameReadingScope(before: Exploration, after: Exploration): boolean {
   const links = (value: Exploration): Map<string, LocalEdge> => new Map(value.subgraph.links.map(edge => [edgeKey(edge), edge]));
   return sameMembers(before.subgraph.nodes.map(node => node.id), after.subgraph.nodes.map(node => node.id))
-    && sameMap(links(before), links(after), (a, b) => a.referenceCount === b.referenceCount && a.direction === b.direction)
+    && sameMap(links(before), links(after), (a, b) => a.referenceCount === b.referenceCount && a.direction === b.direction && a.gathered === b.gathered)
     && sameMembers(before.members, after.members)
     && sameMap(before.order.rows, after.order.rows, sameMembers)
     && sameMap(before.hiddenConnections, after.hiddenConnections, (a, b) => a === b)
@@ -1207,11 +1210,12 @@ function dressCards(controller: LocalViewController, cards: readonly HTMLElement
       card.append(reveal);
     }
     const back = backReferences.get(id) ?? [];
-    controller.reading?.setBackReferences(id, back);
+    // A pair line names no symbol: its return is told by its two files, and counted by the links it stands for.
+    controller.reading?.setBackReferences(id, back.map(edge => (isPairLine(edge) ? { ...edge, sourceSymbol: undefined, targetSymbol: undefined } : edge)));
     if (back.length) {
       const note = document.createElement(controller.reading ? "button" : "span");
       note.className = "local-disclosure local-back-references";
-      note.textContent = `${countOf(back.length, "connection returns", "connections return")} in a cycle`;
+      note.textContent = `${countOf(back.reduce((sum, edge) => sum + linksOf(edge), 0), "connection returns", "connections return")} in a cycle`;
       note.title = "Show the files joined by connections that return against the layout's reading direction";
       if (controller.reading) {
         note.setAttribute("aria-haspopup", "menu");
