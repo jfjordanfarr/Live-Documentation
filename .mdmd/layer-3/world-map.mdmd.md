@@ -77,7 +77,7 @@ Markdown is canonical and the graph is derived from it. Headless and UI are peer
 
 ### Decisions so far
 
-One line each; the detail is in direction.md as of 2f88a579 and the decisions log.
+One line each; the detail is in direction.md and the decisions log.
 
 - The picture: things on a board, doors, wires door to door, the inside reached by zooming (the board's verdict, 2026-09-28).
 - The board text: two nouns, kinds through a legend, layout as positions only (2026-09-28).

@@ -1,6 +1,6 @@
 # Live Documentation
 
-_Current as of 2026-11-06. Nothing below is set in stone: the picture is on trial, and the owner's words at every fork are in direction.md as of 2f88a579, and those that still govern in [the current direction.md](../../AI-Agent-Workspace/Memory/direction.md)._
+_Current as of 2026-11-06. Nothing below is set in stone: the picture is on trial, and the owner's words at every fork are in [direction.md](../../AI-Agent-Workspace/Memory/direction.md)._
 
 _Design clarification, 2026-09-30: the owner has [reopened the dimensional split and separation of views](../../AI-Agent-Workspace/ChatHistory/2026/09/2026-09-30.2.record.md#turn-19). File symbols and system endpoints pose the same interface-display problem: show relevant connections and selectively reveal contents while preserving orientation. The September 28 picture below records the design explored then; its allocation of 2D/3D and separate renderings is under exploration, with no replacement chosen._
 
