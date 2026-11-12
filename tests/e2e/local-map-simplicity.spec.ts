@@ -70,9 +70,16 @@ test("the simplicity slider restarts competition and removes unnecessary generat
   await localMapSettled(page);
   const after = await picture(page);
   expect(after.identity).toEqual(before.identity);
-  expect(after.alignmentAdopted).toBeGreaterThan(0);
-  expect(after.steps).toBeLessThan(before.steps);
-  expect(after.score, "the accepted picture beats the old picture under the new weight").toBeLessThan(before.score + 50 * before.steps);
+  // What the middle weight promises of any picture: the competition starts again and its alignment trials run, no fact
+  // is lost, no step is added, and the picture shown is never worse than the old one priced under the new weight.
+  // Whether a trial is worth adopting there depends on the neighbourhood. Until 2026-11-12 this picture had six steps
+  // and joined one at 50; that day the generator came to import `tooling/gitIgnored.ts`, the picture gained that card
+  // and stood at three steps before the slider moved, and at 50 its three trials each cost more than the step they
+  // would remove (the score rose by exactly 50 for each of the three steps kept). The join is asserted at 100 below,
+  // where this picture makes it, three steps to two.
+  expect(after.alignmentTried).toBeGreaterThan(0);
+  expect(after.steps).toBeLessThanOrEqual(before.steps);
+  expect(after.score, "the picture shown is no worse than the old picture under the new weight").toBeLessThanOrEqual(before.score + 50 * before.steps);
   // At weight 100 the picture is drawn anew: the first paint takes the cheapest
   // of its starts under the new weight, the previous order among them, and the
   // continuing search only lowers that price. Which start wins depends on the
@@ -91,6 +98,7 @@ test("the simplicity slider restarts competition and removes unnecessary generat
   const geometric = await picture(page);
   expect(geometric.identity).toEqual(before.identity);
   expect(geometric.alignmentAdopted).toBeGreaterThan(0);
+  expect(geometric.steps, "an unnecessary step is removed").toBeLessThan(before.steps);
   const engine = geometric.membranes.find(band => band.directory === "packages/engine/src")!;
   expect(engine.segments.length).toBeGreaterThan(1);
   expect(engine.segments[0].top).toBe(engine.segments[1].top);

@@ -21,6 +21,8 @@ The [November 4–5 reading pass](../../../../AI-Agent-Workspace/ChatHistory/202
 
 The animation case reads, since 2026-10-22, whichever membranes stand differently once the new weight has settled, and requires each to have passed through intermediate poses; until then it watched the engine's band alone, and the dependency the generator gained that day (`relatedDocs.ts`, for the `Cited By` sections) left that band a rectangle under both weights, so the band it watched had nothing to animate ([Turn 2 of the October 22 record](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-22.1.record.md#turn-2)).
 
+The generator case's middle weight asserts, since 2026-11-12, only what holds of any picture: the alignment trials run, no fact is lost, no step is added, and the picture shown is no worse than the old one priced under the new weight. That day the generator came to import `tooling/gitIgnored.ts`; the picture gained that card and stood at three steps where it had six, and at 50 its three trials each cost more than the step they would remove, so nothing was adopted, which is the competition working. The removal of a step is asserted at 100, where this picture makes it (three steps to two), beside the engine band's joined top. Measured on both builds the same hour: the day before's picture, 26 cards, six steps to five at 50; that day's, 27 cards, three steps at 0 and at 50, two at 100 ([the November 12 record's Turn 5 notes](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-12.1.record.md#turn-5)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
