@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/worldMap/imports.test.ts
-- Generated At: 2026-11-12T21:56:27.140Z
+- Generated At: 2026-11-12T22:44:13.255Z
 
 ## Authored
 ### Purpose
@@ -26,3 +26,8 @@ _No public symbols detected_
 - `typescript` - `ts`
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/world-map.mdmd.md`](../../../../../../../layer-3/world-map.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

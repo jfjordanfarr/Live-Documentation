@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/worldMap/layout.test.ts
-- Generated At: 2026-11-12T21:56:27.316Z
+- Generated At: 2026-11-12T22:44:13.429Z
 
 ## Authored
 ### Purpose
@@ -35,6 +35,7 @@ _No public symbols detected_
 - [`layout.roadCurve`](./layout.ts.mdmd.md#symbol-roadcurve)
 - [`layout.silhouette`](./layout.ts.mdmd.md#symbol-silhouette)
 - [`layout.solidFor`](./layout.ts.mdmd.md#symbol-solidfor)
+- [`layout.spanWithin`](./layout.ts.mdmd.md#symbol-spanwithin)
 - [`layout.spreadTokens`](./layout.ts.mdmd.md#symbol-spreadtokens)
 - [`layout.unitsToPixels`](./layout.ts.mdmd.md#symbol-unitstopixels)
 - [`layout.wallOf`](./layout.ts.mdmd.md#symbol-wallof)

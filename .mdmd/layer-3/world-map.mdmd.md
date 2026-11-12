@@ -5,7 +5,7 @@
 - Layer: 3
 - Audience: Contributors
 
-_Current as of 2026-10-23. This document is the plan of the World Map's design, agreed with the owner ([Turn 12 of the October 8 session](../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-08.1.record.md#turn-12)), and it becomes the design as its questions close. A question is closed only when [direction.md](../../AI-Agent-Workspace/Memory/direction.md) records the owner's word on it._
+_Current as of 2026-11-12. This document is the plan of the World Map's design, agreed with the owner ([Turn 12 of the October 8 session](../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-08.1.record.md#turn-12)), and it becomes the design as its questions close. A question is closed only when [direction.md](../../AI-Agent-Workspace/Memory/direction.md) records the owner's word on it._
 
 ## Authored
 
@@ -27,6 +27,8 @@ The [October 23 review](../../AI-Agent-Workspace/Screenshots/2026-10-23/README.m
 - [ ] **Make evidence readable without masking the question**. Names, paths and claims in the retained panel need readable type and useful spacing; a compact panel must not become a dense block that obscures the map it explains. Keep every claim traceable. Long door names and projected overlaps remain visual work, judged through orbit and zoom as well as still pictures.
 
 Since 2026-10-30 the pinned evidence panel stands in at most half the view's height and scrolls inside, so the map stays in sight beside it, and its file, door and package names read at the panel's 12 px in its own sans-serif instead of 11 px monospace; every name is still a link.
+
+Since 2026-11-12, after [an outsider's first visit](../../AI-Agent-Workspace/Screenshots/2026-11-12/first-visit/README.md) (findings 6, 7, 12, 17 and 19), these repairs answer the second criterion in part; the owner judges whether it closes. A piece's panel leads with what the piece is and who it talks to, then the way inside, its files folded behind their count. Its close control stays in sight, and it stands beside its piece rather than on it. Labels stand clear of every piece's outline. The board's tools are icons. The pieces are reachable by keyboard, though wires and doors are not yet. The walkthrough ends where it began. A wordless sign stands in the main area while the bundle loads. Still open: wires and the built-on line drawn through words, and labels that cannot clear the pieces where a board's rows line up with the line of sight. The pictures, the audit's output before and after, and an orbit sweep's counts are in [the round's evidence](../../AI-Agent-Workspace/Screenshots/2026-11-12/world-map-repairs/README.md).
 
 The detailed common criteria and verification are in the [Explorer remediation checklist](live-documentation-explorer.mdmd.md#remediation-work). T12's future cross-system symbol path does not block repair of today's Local Map path feedback. Preserve the World Map's useful offers/uses grammar and the visual distinction for imagined pieces.
 
@@ -73,7 +75,7 @@ How each scenario's person engages, one line each, written at T1's close (2026-1
 
 ### The standing rules
 
-Markdown is canonical and the graph is derived from it. Headless and UI are peers: what a person can do by clicking they can do by a command. A scan is never hidden; a declaration is drawn beside it. Orientation is kept across every move. Nothing reaches the internet, no CDN and no fetch, and tests prove it. The World Map reads a board and the graphs its things name, and never source: it knows what the person wrote and what the docs know, and nothing else, and a test holds its modules to that import list (2026-10-09).
+Markdown is canonical and the graph is derived from it. Headless and UI are peers: what a person can do by clicking they can do by a command. A scan is never hidden; a declaration is drawn beside it. Orientation is kept across every move. Nothing reaches the internet, no CDN and no fetch, and tests prove it. The World Map reads a board and the graphs its things name, and never source: it knows what the person wrote and what the docs know, and nothing else, and a test holds its modules to that import list (the rule of 2026-10-09; the test, [imports.test.ts](../layer-4/packages/explorer/src/client/views/worldMap/imports.test.ts.mdmd.md), written 2026-11-12 when none was found).
 
 ### Decisions so far
 

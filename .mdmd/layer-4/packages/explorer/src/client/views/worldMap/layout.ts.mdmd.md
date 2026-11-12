@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/worldMap/layout.ts
-- Generated At: 2026-11-12T21:56:27.391Z
+- Generated At: 2026-11-12T22:44:13.521Z
 
 ## Authored
 ### Purpose
@@ -269,36 +269,55 @@ quarter of the label's width aside each count as one step; moves as far as each 
 ##### `ScreenBox` — Summary
 A box on the screen, in pixels.
 
-#### `coveredArea` {#symbol-coveredarea}
+#### `clipToBox` {#symbol-cliptobox}
 - Type: function
 - Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L298)
+- Returns: [`Point2`](./projection.ts.mdmd.md#symbol-point2)[]
+- Parameters: `polygon`: [`Point2`](./projection.ts.mdmd.md#symbol-point2)[]; `box`: [`ScreenBox`](#symbol-screenbox)
+
+##### `clipToBox` — Summary
+The part of a convex polygon inside a box (Sutherland and Hodgman's clipping), empty when they do not meet.
+
+#### `coveredArea` {#symbol-coveredarea}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L328)
 - Parameters: `box`: [`ScreenBox`](#symbol-screenbox); `polygon`: [`Point2`](./projection.ts.mdmd.md#symbol-point2)[]
 
 ##### `coveredArea` — Summary
 How much of a box a convex polygon covers, in square pixels.
 
+#### `spanWithin` {#symbol-spanwithin}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L343)
+- Parameters: `polygon`: [`Point2`](./projection.ts.mdmd.md#symbol-point2)[]
+
+##### `spanWithin` — Summary
+How far a convex polygon reaches left and right within a band of the screen, or nothing when it does not reach the
+band: where a label beside it must start to stand clear of it.
+
 #### `Avoid` {#symbol-avoid}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L335)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L349)
 
 ##### `Avoid` — Summary
 Something a panel had better not cover, and what covering it costs.
 
 #### `panelBeside` {#symbol-panelbeside}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L347)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L362)
 - Parameters: `subject`: [`ScreenBox`](#symbol-screenbox); `room`: [`ScreenBox`](#symbol-screenbox); `avoid`: [`Avoid`](#symbol-avoid)[]
 
 ##### `panelBeside` — Summary
 Where a panel about something stands, on the screen: beside it rather than on
-it. It tries the right of the subject, then the left, below and above, each
-held inside the room it has, and takes the first that covers the subject
-least, then what it is asked to avoid least. Before 2026-11-12 the pinned
-panel stood at the pointer, on the piece it explained.
+it. It tries the right of the subject, then the left, below and above, level
+with the subject's top or left edge, then the same four sides level with its
+bottom or right edge, each held inside the room it has, and takes the first
+that covers the subject least, then what it is asked to avoid least. Before
+2026-11-12 the pinned panel stood at the pointer, on the piece it explained.
 
 #### `clamp` {#symbol-clamp}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L402)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L421)
 
 ##### `clamp` — Summary
 The value held within the bounds.

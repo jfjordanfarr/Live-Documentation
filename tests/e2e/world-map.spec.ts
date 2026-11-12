@@ -1,5 +1,6 @@
 import { test, expect, type Page } from "@playwright/test";
 
+import { outlines, textOverShapes, type TextBox } from "./design-audit";
 import { currentSnapshot } from "./search-bar";
 
 /**
@@ -122,13 +123,162 @@ test.describe("World Map", () => {
     await expect(evidence).toHaveClass(/pinned/);
     await expect(evidence).toContainText("engine");
     expect(await page.evaluate(() => window.__worldMap!.state().pinned)).toEqual({ kind: "piece", id: "engine" });
-    const link = evidence.locator("a[data-file]").first();
+    // The files are folded behind their count, last in the panel (2026-11-12); unfolded, each is a link.
+    await evidence.locator("details.files summary").click();
+    const link = evidence.locator("details.files a[data-file]").first();
     await expect(link).toHaveAttribute("href", /view=local&node=/);
     const file = await link.getAttribute("data-file");
     expect(file).toMatch(/^packages\/engine\//u);
     await link.click();
     await expect(page.locator("#view-map.active")).toHaveCount(1);
     await expect.poll(() => currentSnapshot(page).selectedNodeId).toBe(file);
+  });
+
+  // A newcomer clicked explorer and got 213 file names first, "called by" and "open explorer" ten panel-heights down,
+  // the close button scrolled away, and the panel over the piece it explained (2026-11-12, the first visit's finding 7).
+  test("a pinned piece's panel says what it is and who it talks to, then the way inside, with its files folded behind their count", async ({ page }) => {
+    await openWorldMap(page);
+    const [sx, sy] = await page.evaluate(() => window.__worldMap!.screenPointOf("explorer"));
+    await page.mouse.click(sx, sy);
+    const evidence = page.locator("#view-world .world-evidence");
+    await expect(evidence).toHaveClass(/pinned/);
+    const text = (await evidence.innerText()).replace(/\s+/gu, " ");
+    const order = ["packages/explorer", "called by", "stands on", "open explorer", "files ·"].map((words) => text.indexOf(words));
+    expect(order.every((at) => at >= 0), `the panel reads: ${text.slice(0, 300)}`).toBe(true);
+    expect(order, "what it is, who it talks to, the way inside, then the files").toEqual([...order].sort((a, b) => a - b));
+    await expect(evidence.locator("details.files")).not.toHaveAttribute("open", "");
+    await expect(evidence.locator("details.files a[data-file]").first()).toBeHidden();
+    // The way inside is in sight without scrolling.
+    const open = (await evidence.locator("a[data-open='explorer']").boundingBox())!;
+    const panel = (await evidence.boundingBox())!;
+    expect(open.y + open.height).toBeLessThanOrEqual(panel.y + panel.height);
+  });
+
+  test("the pinned panel's close control stays in sight however far its files are scrolled", async ({ page }) => {
+    await openWorldMap(page);
+    await page.evaluate(() => window.__worldMap!.pin("piece", "explorer"));
+    const evidence = page.locator("#view-world .world-evidence");
+    await evidence.locator("details.files summary").click({ timeout: 5_000 });
+    const scrolled = await evidence.evaluate((panel) => {
+      panel.scrollTop = panel.scrollHeight;
+      return panel.scrollTop;
+    });
+    expect(scrolled, "explorer's files are longer than the panel").toBeGreaterThan(100);
+    const close = evidence.getByRole("button", { name: "Close", exact: true });
+    await expect(close).toBeInViewport({ ratio: 1 });
+    const closeBox = (await close.boundingBox())!;
+    const panelBox = (await evidence.boundingBox())!;
+    expect(closeBox.y).toBeGreaterThanOrEqual(panelBox.y);
+    expect(closeBox.y + closeBox.height).toBeLessThanOrEqual(panelBox.y + 40);
+    await close.click();
+    expect(await page.evaluate(() => window.__worldMap!.state().pinned)).toBeNull();
+  });
+
+  test("the pinned panel stands beside its piece, never on it, and inside the view, folded and unfolded", async ({ page }) => {
+    await openWorldMap(page);
+    const [sx, sy] = await page.evaluate(() => window.__worldMap!.screenPointOf("explorer"));
+    await page.mouse.click(sx, sy);
+    const evidence = page.locator("#view-world .world-evidence");
+    await expect(evidence).toHaveClass(/pinned/);
+    const judge = async (state: string): Promise<void> => {
+      const box = (await evidence.boundingBox())!;
+      const view = (await page.locator("#view-world").boundingBox())!;
+      const panel: TextBox = { text: "the pinned panel", tag: "div", x: box.x, y: box.y, w: box.width, h: box.height };
+      const own = (await outlines(page, "#view-world .w-piece .w-face", "data-piece")).filter((outline) => outline.owner === "explorer");
+      expect(own.length).toBeGreaterThan(0);
+      expect(textOverShapes([panel], own), `${state}: the panel covers explorer`).toEqual([]);
+      expect(box.x, `${state}: inside the view`).toBeGreaterThanOrEqual(view.x);
+      expect(box.y).toBeGreaterThanOrEqual(view.y);
+      expect(box.x + box.width).toBeLessThanOrEqual(view.x + view.width);
+      expect(box.y + box.height).toBeLessThanOrEqual(view.y + view.height);
+    };
+    await judge("folded");
+    await evidence.locator("details.files summary").click({ timeout: 5_000 });
+    await judge("unfolded");
+  });
+
+  // The owner (2026-10-30): "everything is an icon and text only appears when it is user-authored"; a newcomer met nine
+  // text buttons on the first screen (2026-11-12).
+  test("the board's tools are icons, each named, with its key in its tooltip, the toggles saying whether they are on", async ({ page }) => {
+    await openWorldMap(page);
+    const tools = await page.locator("#view-world .world-tools button").evaluateAll((buttons) => buttons.map((button) => ({
+      text: (button.textContent ?? "").trim(), name: button.getAttribute("aria-label"), title: button.getAttribute("title"),
+      pressed: button.getAttribute("aria-pressed"), drawn: !!button.querySelector("svg")
+    })));
+    expect(tools).toHaveLength(9);
+    for (const tool of tools) {
+      expect(tool.text, `${tool.name} shows no words of ours`).toBe("");
+      expect(tool.drawn).toBe(true);
+      expect(tool.name).toBeTruthy();
+    }
+    expect(tools.filter((tool) => /\([A-Z]\)$/u.test(tool.title ?? "")).map((tool) => tool.title)).toEqual(
+      ["Turn left (Q)", "Turn right (E)", "Look straight down (T)", "Built on (U)", "Snap to grid (G)", "Dark board (D)", "Fit (F)", "Reset layout (R)"]);
+    const down = page.getByRole("button", { name: "Look straight down" });
+    await expect(down).toHaveAttribute("aria-pressed", "false");
+    await down.click();
+    await expect(down).toHaveAttribute("aria-pressed", "true");
+    await page.keyboard.press("d");
+    await expect(page.getByRole("button", { name: "Dark board" })).toHaveAttribute("aria-pressed", "true");
+  });
+
+  // By keyboard a newcomer could rotate the first screen but not read or enter any piece on it (2026-11-12).
+  test("each piece is a keyboard stop in the board's order; Enter pins it and takes the keyboard into its panel, Escape brings it back", async ({ page }) => {
+    await openWorldMap(page);
+    const order = await page.evaluate(() => window.__worldMap!.pieces());
+    await page.locator("#search-subject").focus();
+    const stops: string[] = [];
+    for (let i = 0; i < 3; i += 1) {
+      await page.keyboard.press("Tab");
+      stops.push(await page.evaluate(() => document.activeElement?.getAttribute("aria-label") ?? document.activeElement?.tagName ?? ""));
+    }
+    expect(stops.map((stop) => stop.split(",")[0])).toEqual(order.slice(0, 3));
+    expect(stops[0]).toMatch(/^[^,]+, [^,]+, \d+ files?$/u);
+    const stop = page.locator(`#view-world [data-focus="${order[2]}"]`);
+    await expect(stop).toBeFocused();
+    expect(await stop.locator("polygon").evaluate((ring) => getComputedStyle(ring).stroke), "a visible ring").not.toBe("none");
+    // A turn redraws the board; the keyboard stays on the piece.
+    await page.keyboard.press("e");
+    await expect(stop).toBeFocused();
+    await page.keyboard.press("Enter");
+    expect(await page.evaluate(() => window.__worldMap!.state().pinned)).toEqual({ kind: "piece", id: order[2] });
+    expect(await page.evaluate(() => !!document.activeElement?.closest("#view-world .world-evidence"))).toBe(true);
+    await page.keyboard.press("Tab");
+    expect(await page.evaluate(() => document.activeElement?.tagName)).toBe("A");
+    await page.keyboard.press("Escape");
+    expect(await page.evaluate(() => window.__worldMap!.state().pinned)).toBeNull();
+    await expect(stop).toBeFocused();
+  });
+
+  // The walkthrough's last step shows orbit, and "done" used to leave the board turned (2026-11-12).
+  test("the walkthrough ends where it began", async ({ page }) => {
+    await openWorldMap(page);
+    const before = await page.evaluate(() => window.__worldMap!.state());
+    await page.evaluate(() => window.__worldMap!.tour(4));
+    const during = await page.evaluate(() => window.__worldMap!.state());
+    expect(during.theta, "the last step turns the board").not.toBeCloseTo(before.theta, 3);
+    await page.locator('#view-world .world-tour [data-tour="done"]').click();
+    await expect.poll(() => page.evaluate(() => window.__worldMap!.state().theta)).toBeCloseTo(before.theta, 6);
+    const after = await page.evaluate(() => window.__worldMap!.state());
+    expect(after.phi).toBeCloseTo(before.phi, 6);
+    expect(after.k).toBeCloseTo(before.k, 6);
+    expect(after.under).toBe(before.under);
+    expect(after.pinned).toBeNull();
+  });
+
+  // For the first half second the main area stood empty, the only sign an 11 px "Loading..." in the sidebar (2026-11-12).
+  test("while the bundle loads, the main area shows a wordless sign, gone once the map is drawn", async ({ page }) => {
+    await page.route("**/explorer-data.json", async (route) => {
+      await new Promise((resolve) => setTimeout(resolve, 1_500));
+      await route.continue();
+    });
+    await page.goto("/?view=world");
+    const sign = page.locator("#views > #explorer-loading");
+    await expect(sign).toBeVisible();
+    await expect(sign).toHaveAttribute("role", "status");
+    await expect(sign).toHaveAccessibleName("Loading");
+    expect((await sign.textContent())?.trim()).toBe("");
+    await page.waitForFunction(() => window.__worldMap?.ready === true, null, { timeout: 20_000 });
+    await expect(sign).toHaveCount(0);
   });
 
   test("a name in the pinned panel pins the thing it names, and a click on the board lets go", async ({ page }) => {

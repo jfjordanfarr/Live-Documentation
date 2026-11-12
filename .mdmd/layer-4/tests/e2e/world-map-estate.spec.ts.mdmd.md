@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/world-map-estate.spec.ts
-- Generated At: 2026-10-22T16:47:59.029Z
+- Generated At: 2026-11-12T22:44:25.550Z
 
 ## Authored
 ### Purpose
@@ -13,6 +13,7 @@ Keeps the estate sample on its own board, the owner's target shape: seven things
 ### Notes
 - Written on 2026-09-29 with the design audit ([Turn 48](../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md#turn-48)), over the bundle `scripts/live-docs/visualize-sample.ts` builds into `samples/estate/`. The Playwright suite builds both bundles first, since the same session found stale bundles passing ([Turn 13 of the September 29 session](../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-29.2.SUMMARIZED.md#turn-13)), so this spec runs on fresh output.
 - The panel's test was added on 2026-10-30 for the October 23 review's finding, accepted at [Turn 3](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md#turn-3), that the pinned panel was cramped and covered the map. Portal is measured because its evidence is longer than the cap at that size, so the test fails if the cap goes: before the change the panel stood 486 px tall with its names at 11 px monospace.
+- Since 2026-11-12 the panel case unfolds portal's files, now folded behind their count, before it measures, so that the panel is again longer than its cap; `measured.scrolls`, with the height and `overflowY` checks, still proves that such a panel scrolls inside. A new case holds the hub's pinned panel clear of the hub and of the things wired to it, where [the first visit](../../../../AI-Agent-Workspace/Screenshots/2026-11-12/first-visit/README.md) found it over the chain it explained.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -23,9 +24,12 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `@playwright/test` - `Page`, `expect`, `test`
+- [`design-audit.TextBox`](./design-audit.ts.mdmd.md#symbol-textbox)
 - [`design-audit.describeFaults`](./design-audit.ts.mdmd.md#symbol-describefaults)
+- [`design-audit.outlines`](./design-audit.ts.mdmd.md#symbol-outlines)
 - [`design-audit.overlapsAmong`](./design-audit.ts.mdmd.md#symbol-overlapsamong)
 - [`design-audit.textBoxes`](./design-audit.ts.mdmd.md#symbol-textboxes)
+- [`design-audit.textOverShapes`](./design-audit.ts.mdmd.md#symbol-textovershapes)
 - [`design-audit.truncations`](./design-audit.ts.mdmd.md#symbol-truncations)
 - [`still-picture.LOCAL_MAP`](./still-picture.ts.mdmd.md#symbol-local_map)
 <!-- LIVE-DOC:END Dependencies -->

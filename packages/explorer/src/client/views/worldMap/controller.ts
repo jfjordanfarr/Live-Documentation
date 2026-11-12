@@ -29,6 +29,7 @@ import {
   rectAround,
   roadCurve,
   silhouette,
+  spanWithin,
   spreadTokens,
   unitsToPixels,
   wallOf,
@@ -96,12 +97,15 @@ const LONGEST_STRAND = 26;
  */
 const TOOLS: Array<Array<{ act: string; label: string; key?: string; toggle?: boolean; drawing: string }>> = [
   [
-    { act: "rotl", label: "Turn left", key: "Q", drawing: '<path d="M18.5 15.75A7.5 7.5 0 1 0 5.5 15.75"/><path d="M6.4 12.4 5.5 15.75 2.1 14.85"/><path d="M12 10l4 2-4 2-4-2Z"/>' },
-    { act: "rotr", label: "Turn right", key: "E", drawing: '<path d="M5.5 15.75A7.5 7.5 0 1 1 18.5 15.75"/><path d="M17.6 12.4 18.5 15.75 21.9 14.85"/><path d="M12 10l4 2-4 2-4-2Z"/>' },
-    { act: "tilt", label: "Look straight down", key: "T", toggle: true, drawing: '<path d="M12 2.5V10M8.5 6.5 12 10l3.5-3.5"/><rect x="5" y="13" width="14" height="8" rx="1"/>' }
+    // Open circular arrows, the usual sign for turning; a cube with its top face filled, the usual sign for a view from
+    // above; layers, for what lies under the things. First drawn as arcs round a diamond, an arrow onto a box and a
+    // block on strands, which read as gauges, a download and a stool (2026-11-12).
+    { act: "rotl", label: "Turn left", key: "Q", drawing: '<path d="M8.25 5.5A7.5 7.5 0 1 0 15.75 5.5"/><path d="M16.65 8.9 15.75 5.5 19.15 4.6"/>' },
+    { act: "rotr", label: "Turn right", key: "E", drawing: '<path d="M15.75 5.5A7.5 7.5 0 1 1 8.25 5.5"/><path d="M7.35 8.9 8.25 5.5 4.85 4.6"/>' },
+    { act: "tilt", label: "Look straight down", key: "T", toggle: true, drawing: '<path d="M12 3 20 7.5 12 12 4 7.5Z" fill="currentColor"/><path d="M4 7.5v9L12 21l8-4.5v-9M12 12v9"/>' }
   ],
   [
-    { act: "under", label: "Built on", key: "U", toggle: true, drawing: '<rect x="6" y="3.5" width="12" height="9" rx="1"/><path d="M8.5 12.5c0 3-1 4.5-1.5 8M12 12.5v8M15.5 12.5c0 3 1 4.5 1.5 8"/>' },
+    { act: "under", label: "Built on", key: "U", toggle: true, drawing: '<path d="M12 4 20 8.5 12 13 4 8.5Z"/><path d="m4 12.5 8 4.5 8-4.5M4 16.5 12 21l8-4.5"/>' },
     { act: "snap", label: "Snap to grid", key: "G", toggle: true, drawing: '<rect x="4" y="4" width="16" height="16" rx="1"/><path d="M9.33 4v16M14.67 4v16M4 9.33h16M4 14.67h16"/>' },
     { act: "theme", label: "Dark board", key: "D", toggle: true, drawing: '<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/>' }
   ],
@@ -896,11 +900,16 @@ export class WorldMapController {
           node.setAttribute("dx", String(sideDx));
           node.setAttribute("dy", String(rest));
           const box = node.getBoundingClientRect();
+          // A door sits on its piece's wall, so its label starts just beyond the piece's outline at the label's height.
+          const own = side ? outlineOf.get(node.dataset.piece ?? "") : undefined;
           for (const step of steps[kind]) {
             for (const shift of shifts) {
-              const cover = covered(moved(box, shift * box.width, step));
+              const candidate = moved(box, shift * box.width, step);
+              const span = own ? spanWithin(own, candidate.top, candidate.bottom) : undefined;
+              const beyond = !span ? 0 : side?.anchor === "end" ? Math.min(0, span[0] - 4 - candidate.right) : Math.max(0, span[1] + 4 - candidate.left);
+              const cover = covered(moved(candidate, beyond, 0));
               if (cover < best.cover) {
-                best = { dy: rest + step, dx: sideDx + shift * box.width, cover, side };
+                best = { dy: rest + step, dx: sideDx + shift * box.width + beyond, cover, side };
               }
               if (cover === 0) {
                 break search;
@@ -1230,6 +1239,13 @@ export class WorldMapController {
       const avoid: Avoid[] = this.model.pieces
         .filter((piece) => piece.name !== h.id)
         .map((piece) => ({ box: this.pieceBox(piece.name), weight: wired.has(piece.name) ? 1 : 0.2 }));
+      // The piece's doors' names, shown while it is pinned, are part of what the panel explains.
+      for (const label of this.layers.labels.querySelectorAll<SVGElement>(`text.w-doorlabel[data-piece="${CSS.escape(h.id)}"]`)) {
+        const rect = label.getBoundingClientRect();
+        if (label.style.display !== "none" && rect.width > 0) {
+          avoid.push({ box: { left: rect.left - this.svgLeft(), top: rect.top - this.svgTop(), right: rect.right - this.svgLeft(), bottom: rect.bottom - this.svgTop() }, weight: 1 });
+        }
+      }
       const at = panelBeside(this.pieceBox(h.id), { width: rect.width, height: rect.height }, this.panelRoom(), avoid);
       box.style.left = `${at.left}px`;
       box.style.top = `${at.top}px`;
@@ -1684,17 +1700,18 @@ export class WorldMapController {
       }
     });
 
-    // Unfolding a piece's files makes its panel taller; it stays inside the view.
+    // Unfolding a piece's files makes its panel taller and wider; it is placed again, beside its piece and in the view.
     on(this.evidence, "toggle", () => {
-      const room = this.panelRoom();
-      const height = this.evidence.getBoundingClientRect().height;
-      this.evidence.style.top = `${clamp(parseFloat(this.evidence.style.top) || 0, room.top, room.bottom - height)}px`;
+      if (this.pinned) {
+        this.placeEvidence(this.pinned, true);
+      }
     }, { capture: true });
 
     // The keyboard on a piece peeks at it as the pointer does; Enter or Space pins it as a click does and takes the
-    // keyboard into its panel, where who it talks to, the way inside and its files are the next stops.
+    // keyboard into its panel, where who it talks to, the way inside and its files are the next stops. The listeners
+    // stand on the view's HTML, since Chrome makes an SVG element with focus listeners a stop of its own.
     const focusedPiece = (event: Event): string | undefined => (event.target as Element).closest<SVGElement>(".w-focus")?.dataset.focus;
-    on(this.layers.focus, "focusin", (event: FocusEvent) => {
+    on(this.world, "focusin", (event: FocusEvent) => {
       const name = focusedPiece(event);
       if (!name) {
         return;
@@ -1705,14 +1722,17 @@ export class WorldMapController {
         this.applyHover();
       }
     });
-    on(this.layers.focus, "focusout", () => {
+    on(this.world, "focusout", (event: FocusEvent) => {
+      if (!focusedPiece(event)) {
+        return;
+      }
       this.focused = null;
       if (!this.pinned) {
         this.hover = null;
         this.applyHover();
       }
     });
-    on(this.layers.focus, "keydown", (event: KeyboardEvent) => {
+    on(this.world, "keydown", (event: KeyboardEvent) => {
       const name = focusedPiece(event);
       if (!name || (event.key !== "Enter" && event.key !== " ")) {
         return;

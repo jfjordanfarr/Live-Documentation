@@ -1,0 +1,30 @@
+  ✘  1 [chromium] › tests/e2e/world-map-estate.spec.ts:100:7 › The estate on the World Map › the hub's pinned panel stands clear of the hub and of the things it is wired to, inside the view (2.9s)
+  ✘  2 [chromium] › tests/e2e/world-map.spec.ts:139:7 › World Map › a pinned piece's panel says what it is and who it talks to, then the way inside, with its files folded behind their count (2.9s)
+  ✘  3 [chromium] › tests/e2e/world-map.spec.ts:157:7 › World Map › the pinned panel's close control stays in sight however far its files are scrolled (7.8s)
+  ✘  4 [chromium] › tests/e2e/world-map.spec.ts:177:7 › World Map › the pinned panel stands beside its piece, never on it, and inside the view, folded and unfolded (3.6s)
+    Error: expect(received).toEqual(expected) // deep equality
+    test-results/world-map-estate-The-estat-7f35d-is-wired-to-inside-the-view-chromium/test-failed-1.png
+    Error: what it is, who it talks to, the way inside, then the files
+    test-results/world-map-World-Map-a-pinn-5c567-s-folded-behind-their-count-chromium/test-failed-1.png
+    TimeoutError: locator.click: Timeout 5000ms exceeded.
+    test-results/world-map-World-Map-the-pi-fe161--far-its-files-are-scrolled-chromium/test-failed-1.png
+    Error: folded: the panel covers explorer
+    > 189 |       expect(textOverShapes([panel], own), `${state}: the panel covers explorer`).toEqual([]);
+    test-results/world-map-World-Map-the-pi-d9341-he-view-folded-and-unfolded-chromium/test-failed-1.png
+  4 failed
+  ✘  1 [chromium] › tests/e2e/world-map.spec.ts:202:7 › World Map › the board's tools are icons, each named, with its key in its tooltip, the toggles saying whether they are on (2.8s)
+  ✘  2 [chromium] › tests/e2e/world-map.spec.ts:225:7 › World Map › each piece is a keyboard stop in the board's order; Enter pins it and takes the keyboard into its panel, Escape brings it back (2.4s)
+  ✘  3 [chromium] › tests/e2e/world-map.spec.ts:253:7 › World Map › the walkthrough ends where it began (9.8s)
+  ✘  4 [chromium] › tests/e2e/world-map.spec.ts:269:7 › World Map › while the bundle loads, the main area shows a wordless sign, gone once the map is drawn (6.9s)
+    Error: null shows no words of ours
+    test-results/world-map-World-Map-the-bo-ab816--saying-whether-they-are-on-chromium/test-failed-1.png
+    Error: expect(received).toEqual(expected) // deep equality
+    test-results/world-map-World-Map-each-p-9a627-panel-Escape-brings-it-back-chromium/test-failed-1.png
+    Error: expect(received).toBeCloseTo(expected, precision)
+    - Timeout 5000ms exceeded while waiting on the predicate
+    test-results/world-map-World-Map-the-walkthrough-ends-where-it-began-chromium/test-failed-1.png
+    Error: expect(locator).toBeVisible() failed
+    Timeout: 5000ms
+    Error: element(s) not found
+    test-results/world-map-World-Map-while--7e428--gone-once-the-map-is-drawn-chromium/test-failed-1.png
+  4 failed

@@ -294,12 +294,8 @@ export interface ScreenBox {
   bottom: number;
 }
 
-/** How much of a box a convex polygon covers, in square pixels. */
-export function coveredArea(box: ScreenBox, polygon: Point2[]): number {
-  if (box.right <= box.left || box.bottom <= box.top || polygon.length < 3) {
-    return 0;
-  }
-  // The polygon clipped by each side of the box in turn (Sutherland and Hodgman), then its area.
+/** The part of a convex polygon inside a box (Sutherland and Hodgman's clipping), empty when they do not meet. */
+export function clipToBox(polygon: Point2[], box: ScreenBox): Point2[] {
   const sides: Array<[(p: Point2) => boolean, (a: Point2, b: Point2) => Point2]> = [
     [(p) => p[0] >= box.left, (a, b) => along(a, b, (box.left - a[0]) / (b[0] - a[0]))],
     [(p) => p[0] <= box.right, (a, b) => along(a, b, (box.right - a[0]) / (b[0] - a[0]))],
@@ -322,13 +318,31 @@ export function coveredArea(box: ScreenBox, polygon: Point2[]): number {
     });
     clipped = next;
     if (clipped.length < 3) {
-      return 0;
+      return [];
     }
   }
+  return clipped;
+}
+
+/** How much of a box a convex polygon covers, in square pixels. */
+export function coveredArea(box: ScreenBox, polygon: Point2[]): number {
+  if (box.right <= box.left || box.bottom <= box.top || polygon.length < 3) {
+    return 0;
+  }
+  const clipped = clipToBox(polygon, box);
   return Math.abs(clipped.reduce((sum, p, i) => {
     const q = clipped[(i + 1) % clipped.length];
     return sum + p[0] * q[1] - q[0] * p[1];
   }, 0)) / 2;
+}
+
+/**
+ * How far a convex polygon reaches left and right within a band of the screen, or nothing when it does not reach the
+ * band: where a label beside it must start to stand clear of it.
+ */
+export function spanWithin(polygon: Point2[], top: number, bottom: number): [number, number] | undefined {
+  const clipped = clipToBox(polygon, { left: Number.NEGATIVE_INFINITY, right: Number.POSITIVE_INFINITY, top, bottom });
+  return clipped.length ? [Math.min(...clipped.map((p) => p[0])), Math.max(...clipped.map((p) => p[0]))] : undefined;
 }
 
 /** Something a panel had better not cover, and what covering it costs. */
@@ -339,10 +353,11 @@ export interface Avoid {
 
 /**
  * Where a panel about something stands, on the screen: beside it rather than on
- * it. It tries the right of the subject, then the left, below and above, each
- * held inside the room it has, and takes the first that covers the subject
- * least, then what it is asked to avoid least. Before 2026-11-12 the pinned
- * panel stood at the pointer, on the piece it explained.
+ * it. It tries the right of the subject, then the left, below and above, level
+ * with the subject's top or left edge, then the same four sides level with its
+ * bottom or right edge, each held inside the room it has, and takes the first
+ * that covers the subject least, then what it is asked to avoid least. Before
+ * 2026-11-12 the pinned panel stood at the pointer, on the piece it explained.
  */
 export function panelBeside(subject: ScreenBox, size: { width: number; height: number }, room: ScreenBox, avoid: Avoid[] = [], gap = 14): { left: number; top: number } {
   const hold = (left: number, top: number): { left: number; top: number } => ({
@@ -353,7 +368,11 @@ export function panelBeside(subject: ScreenBox, size: { width: number; height: n
     hold(subject.right + gap, subject.top),
     hold(subject.left - gap - size.width, subject.top),
     hold(subject.left, subject.bottom + gap),
-    hold(subject.left, subject.top - gap - size.height)
+    hold(subject.left, subject.top - gap - size.height),
+    hold(subject.right + gap, subject.bottom - size.height),
+    hold(subject.left - gap - size.width, subject.bottom - size.height),
+    hold(subject.right - size.width, subject.bottom + gap),
+    hold(subject.right - size.width, subject.top - gap - size.height)
   ];
   let best = { at: candidates[0], own: Number.POSITIVE_INFINITY, others: Number.POSITIVE_INFINITY };
   for (const at of candidates) {

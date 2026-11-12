@@ -1,6 +1,6 @@
 import { test, expect, type Page } from "@playwright/test";
 
-import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
+import { describeFaults, outlines, overlapsAmong, textBoxes, textOverShapes, truncations, type TextBox } from "./design-audit";
 import { LOCAL_MAP } from "./still-picture";
 
 
@@ -93,6 +93,27 @@ test.describe("The estate on the World Map", () => {
       expect(name.family, "the panel's own sans-serif").toBe(measured.family);
     }
     expect(measured.names.every(name => name.linked), "every file, door and package line links to where it was found").toBe(true);
+  });
+
+  // A newcomer pinned the hub and its panel covered payments, sqlserver and oracle, the next links of the chain it
+  // explained (2026-11-12, the first visit's finding 7).
+  test("the hub's pinned panel stands clear of the hub and of the things it is wired to, inside the view", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await openEstate(page);
+    const [sx, sy] = await page.evaluate(() => window.__worldMap!.screenPointOf("hub"));
+    await page.mouse.click(sx, sy);
+    const evidence = page.locator("#view-world .world-evidence");
+    await expect(evidence).toHaveClass(/pinned/);
+    const box = (await evidence.boundingBox())!;
+    const view = (await page.locator("#view-world").boundingBox())!;
+    const panel: TextBox = { text: "the pinned panel", tag: "div", x: box.x, y: box.y, w: box.width, h: box.height };
+    const wired = new Set(["hub", "gateway", "payments", "contracts"]);
+    const covered = textOverShapes([panel], (await outlines(page, "#view-world .w-piece .w-face", "data-piece")).filter((outline) => wired.has(outline.owner)));
+    expect(covered.map((strike) => strike.outline.owner)).toEqual([]);
+    expect(box.x).toBeGreaterThanOrEqual(view.x);
+    expect(box.y).toBeGreaterThanOrEqual(view.y);
+    expect(box.x + box.width).toBeLessThanOrEqual(view.x + view.width);
+    expect(box.y + box.height).toBeLessThanOrEqual(view.y + view.height);
   });
 
   test("its labels stay off each other at rest and with the built-on layer showing", async ({ page }) => {

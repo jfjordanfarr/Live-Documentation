@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/worldMap/controller.ts
-- Generated At: 2026-11-12T21:56:27.065Z
+- Generated At: 2026-11-12T22:44:13.182Z
 
 ## Authored
 ### Purpose
@@ -17,6 +17,12 @@ The World Map, drawn. Everything that touches the DOM is here: the SVG the board
 - Since 2026-10-10 ([Turn 12 of the October 9 session](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-09.1.record.md#turn-12)) a thing's ghosts, what its files call that nothing on the board serves, are doors that use with no road: keyed `ghost:<thing>:<basis>:<name>`, on the wall facing away from the board's middle, dashed, with a short dashed stub along the wall's normal and an empty ring at its end; pinned, a ghost says who calls it, from which files and on what basis, and that pointing at the folder that serves it would make it a wire; a thing's panel lists them under "calls out to". The same day door labels were found never to have shown on hover, the stylesheet hiding them and the hover clearing only an inline style; they show now and settle like the other movable labels after every hover, with the estate's spec auditing them pinned.
 - Since 2026-10-10 ([Turn 14 of the October 9 session](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-09.1.record.md#turn-14)), with this repository's board re-authored as its delivery shape: an imagined thing is drawn hollow, its faces at `HOLLOW` opacity and its edges dashed, with its kind under its name and no word for its state, the owner's "visual grammar for 'proposed' elements"; a door the board declares that no road lands on is a door that offers with no road, keyed like a served one, dashed with a stub into the air, the mirror of a ghost, since a promise is never hidden; `enter` pins an imagined thing instead of returning silently; the crumbs count what the join found wanting and the help lists it, as the board command prints it; a door's label may cross to the other side of its door when no step up or down clears it, and a sub-line a door's label still covers goes; a region's name sits just outside its left point, off the feet of the things at its corners.
 - Since 2026-11-12 a piece's label stands above the top of its outline (`labelAnchor`) rather than on the middle of its lid, where an outsider's first visit found every second line drawn through the piece's own edges ([finding 6](../../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-12/first-visit/README.md)). `settleLabels` keeps every label off every piece's outline as well as off the others. A piece's name moves, nearest piece first, up a line at most or sideways by up to half its width; the line under it keeps its height and may find its own place aside. Failing both, the label stands below its piece, clear of the strands, and only then does the second line go. Region names, tags, tokens and door labels settle after the names, a region's name with more room since it names an area. A label lifted further had read as the next piece's; the rules tried on the way, and an orbit sweep's counts for each, are in [the round's evidence](../../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-12/world-map-repairs/README.md). The crossing tag's own guess at where the names stood went with it.
+- Also since 2026-11-12, from the same visit (findings 7, 12 and 17):
+  - **The pinned panel.** A piece's panel is the piece's kind, region and folder, then what it offers, calls, is called by, calls out to, stands on and is under, then "open", then its files in a `details` folded behind their count. `evidenceFor` returns a head and a body; the head, with the close icon, is sticky in the scrolling panel. `placeEvidence` stands a pinned piece's panel, or the peek at the keyboard's piece, beside the piece with `panelBeside`. It avoids the piece's wired neighbours and its door names, and places the panel again when the files unfold. Other panels still follow the pointer.
+  - **The tools.** The board's tools are `iconButton`s in three groups, named, with their key in the tooltip and `aria-keyshortcuts`; the toggles carry `aria-pressed`. The first drawings for turning, looking down and built on read as gauges, a download and a stool, and were redrawn as circular arrows, a cube with its top filled, and layers.
+  - **Keyboard stops.** Each piece has a keyboard stop in a focus layer that `draw` moves in place rather than rebuilds, so focus survives a turn; they are kept in the board's order. The stops' listeners stand on the view's HTML, because Chrome made the SVG layer that held them a stop of its own. Focus peeks, Enter or Space pins and moves focus into the panel, and `unpin` returns focus to the piece when the keyboard was in its panel. Wires and doors are not stops yet.
+  - **The walkthrough.** It remembers the view it began on. Each step stands on that view but for the state it shows, and `endTour` eases back to it; `orbitTo` takes the framing to end on.
+  - **Door labels** start just beyond their piece's outline at their own height (`spanWithin`), since settling against outlines had flung them far from their doors.
 - Since 2026-10-20 the map's keys ignore a key another surface has already used, such as the Escape that closed the reader over it, and any key typed inside a full-screen dialog, so a phone's full reader cannot toggle the theme or reset the layout behind it ([the record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-7)).
 
 ## Generated
@@ -24,28 +30,28 @@ The World Map, drawn. Everything that touches the DOM is here: the SVG the board
 ### Public Symbols
 #### `Hover` {#symbol-hover}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L116)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L120)
 
 ##### `Hover` — Summary
 What the pointer is on.
 
 #### `WorldMapOptions` {#symbol-worldmapoptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L122)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L126)
 
 ##### `WorldMapOptions` — Summary
 What the controller is given: where to draw, the board and its join, the graph, and the doors out of the view.
 
 #### `WorldMapController` {#symbol-worldmapcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L199)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L203)
 
 ##### `WorldMapController` — Summary
 Draws a board and answers the pointer.
 
 #### `WorldMapApi` {#symbol-worldmapapi}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L2032)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L2052)
 
 ##### `WorldMapApi` — Summary
 The handle a test or a screenshot script drives, at `window.__worldMap`.
@@ -85,6 +91,7 @@ The handle a test or a screenshot script drives, at `window.__worldMap`.
 - [`layout.rectAround`](./layout.ts.mdmd.md#symbol-rectaround)
 - [`layout.roadCurve`](./layout.ts.mdmd.md#symbol-roadcurve)
 - [`layout.silhouette`](./layout.ts.mdmd.md#symbol-silhouette)
+- [`layout.spanWithin`](./layout.ts.mdmd.md#symbol-spanwithin)
 - [`layout.spreadTokens`](./layout.ts.mdmd.md#symbol-spreadtokens)
 - [`layout.unitsToPixels`](./layout.ts.mdmd.md#symbol-unitstopixels)
 - [`layout.wallOf`](./layout.ts.mdmd.md#symbol-wallof)

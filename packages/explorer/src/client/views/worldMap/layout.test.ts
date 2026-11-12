@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { autoPlace, corners, coveredArea, drawOrder, inRect, labelAnchor, labelMoves, panelBeside, pixelsToUnits, placePiece, rectAround, roadCurve, silhouette, solidFor, spreadTokens, unitsToPixels, wallOf, wallPoint } from "./layout";
+import { autoPlace, corners, coveredArea, drawOrder, inRect, labelAnchor, labelMoves, panelBeside, pixelsToUnits, placePiece, rectAround, roadCurve, silhouette, solidFor, spanWithin, spreadTokens, unitsToPixels, wallOf, wallPoint } from "./layout";
 import { REST_ELEVATION, TOP_DOWN, pointInPolygon, project, ring, type Point2 } from "./projection";
 
 describe("solids and placement", () => {
@@ -176,6 +176,19 @@ describe("covered area", () => {
   });
 });
 
+describe("how far a shape reaches within a band", () => {
+  // A diamond: corners at (50, 0), (100, 25), (50, 50) and (0, 25).
+  const diamond: Point2[] = [[50, 0], [100, 25], [50, 50], [0, 25]];
+
+  it("is the widest reach inside the band, and nothing for a band the shape does not reach", () => {
+    expect(spanWithin(diamond, 20, 30)).toEqual([0, 100]);
+    const [left, right] = spanWithin(diamond, 0, 10)!;
+    expect(left).toBeCloseTo(30, 9);
+    expect(right).toBeCloseTo(70, 9);
+    expect(spanWithin(diamond, 60, 70)).toBeUndefined();
+  });
+});
+
 describe("a panel beside its subject", () => {
   const room = { left: 0, top: 50, right: 1000, bottom: 800 };
   const size = { width: 300, height: 200 };
@@ -201,6 +214,14 @@ describe("a panel beside its subject", () => {
     expect(at.top + size.height).toBeLessThanOrEqual(room.bottom);
     expect(at.top).toBeGreaterThanOrEqual(room.top);
     expect(covers(at, low)).toBe(false);
+  });
+
+  it("stands below and level with the subject's right edge when the room beside, above and below its left edge is taken", () => {
+    const subject = { left: 600, top: 300, right: 680, bottom: 380 };
+    // A chain going on below and to the right, neighbours up and to the left, and more above.
+    const chain = [{ left: 690, top: 360, right: 1000, bottom: 800 }, { left: 0, top: 50, right: 590, bottom: 380 }, { left: 590, top: 50, right: 1000, bottom: 300 }];
+    const at = panelBeside(subject, size, room, chain.map((box) => ({ box, weight: 1 })));
+    expect(at).toEqual({ left: 380, top: 394 });
   });
 
   it("takes the side that covers less of what it is asked to avoid", () => {
