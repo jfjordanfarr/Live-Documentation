@@ -2,6 +2,10 @@
 
 _The owner's standing request (2026-09-29): after changing the Explorer, build it, look at it, and keep the pictures here, so that a sense of the UI accrues in the workspace and a change can be judged against what came before. Each dated folder is listed below with what each picture shows and how it was taken. The probe records under `../Probes/` keep their own pictures; the World Map's first pictures, from 2026-09-28, are there._
 
+## 2026-11-12
+
+[A first visit, by an outsider](2026-11-12/first-visit/README.md): an evaluation by a subagent with no project background, from the README through the commands to the running Explorer on this repository and the estate sample, at desktop, tablet and phone sizes and by keyboard; twenty ranked findings with reproductions and measured sizes, what worked and should be protected, and what it could not work out. An outsider's observations, not decisions; root's reading of them against the record is in [the session record](../ChatHistory/2026/11/2026-11-12.1.record.md).
+
 ## 2026-11-10
 
 [History inside the bubbles](2026-11-10/history-bubbles/README.md): a step of the history shown within the wrappers' skins, each change at the innermost thing drawn for it, on this repository at steps 695 and 697 before and after under Glow, Dim and Both, on the scripted sample, and on a temporary sample large enough to veil; with playback frames and per-step costs measured before and after. Implementation evidence for the root's review and the owner's eye (2026-11-11).

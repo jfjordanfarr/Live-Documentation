@@ -4,7 +4,9 @@ _Current as of 2026-11-12. This file records what the owner decided at each fork
 
 ## Next
 
-As the November 10 to 11 session left it ([the summary](../ChatHistory/2026/11/Summarized/2026-11-10.1.SUMMARIZED.md)). Each item says whose it is.
+As the November 12 session stands, on the order the November 10 to 11 session left ([its summary](../ChatHistory/2026/11/Summarized/2026-11-10.1.SUMMARIZED.md)). Each item says whose it is.
+
+0. **The first visit, and the fixes agreed from it** (the owner's request of 2026-11-12, [Turn 1](../ChatHistory/2026/11/2026-11-12.1.record.md#turn-1): "Evaluate Live Documentation as if you were an outsider experiencing it for the first time and start dispatching builders to fix the problems that we agree on designs for the fixes to"). [The evaluation](../Screenshots/2026-11-12/first-visit/README.md) is in; each finding is being set against the record before a fix is proposed, at the owner's word the same day that many mistakes here come from "not checking if we'd already tried that before". Under way without a fork: the commands and user-facing documents made to do what they say. For the owner, with alternatives and a recommendation: the findings that touch a decision of theirs or an open design. This item is item 7 below, the stranger's journey, reached from its first hour.
 
 1. **The owner's reading of the links to explore** (the owner's eye). The session closed at the owner's word on 2026-11-11 with [links to explore](../Screenshots/2026-11-10/explore/README.md); the next chat opens with their interpretations of them, which are their eye on the questions under "Open with the owner" and may reorder this list.
 2. **The 2D zoom: the stepped ladder or three looks** (the owner's hypothesis of 2026-11-08, on trial since 2026-11-10; the order is the root's). First the owner's eye on both in motion, which decides which is deleted. If the looks stay, the root's next steps are the compact folded rows inside the reading look, a balanced break for suffix-only title lines, and measuring before and after a change in place of the motion block's repeated formulas.
