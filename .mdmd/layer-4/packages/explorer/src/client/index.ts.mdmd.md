@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/index.ts
 - Entry: declared
-- Generated At: 2026-11-12T16:06:49.047Z
+- Generated At: 2026-11-12T22:44:00.468Z
 
 ## Authored
 ### Purpose
@@ -45,6 +45,7 @@ Since the far bands' second milestone (2026-11-06) the Local Map's `onZoomLimits
 
 The [November 8 reading feedback](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-08.1.record.md#turn-3-additional-reading-feedback-during-the-review), addressed November 9 UTC, restores books to fixed-slot cards while their names continue to open the evidence reader. `changeReading` first asks the Local Map to refresh an unchanged fixed-slot scene in place. Text-only choices preserve the existing cards, keyboard focus and continuing layout search; a change in retained files, visible rows or card controls falls back to the normal render and anchor-restoration transaction. Either path persists the same canonical reading choices for sharing.
 Since 2026-11-12 what stops the page that a reader can act on is an `ExplorerRefusal` from [errors.ts](errors.ts.mdmd.md), said in one sentence where the map would be: a page opened as a file, refused before it asks for anything, data or a history named off the page's own site, data or a history missing or not of a form this Explorer reads.
+Since 2026-11-12 `bootstrapExplorer` removes the loading sign, `#explorer-loading`, before the first view draws, and before a refusal is shown when loading fails ([the round's evidence](../../../../../../AI-Agent-Workspace/Screenshots/2026-11-12/world-map-repairs/README.md)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -157,6 +158,7 @@ _No public symbols detected_
 - [`graph.explorerGraphOf`](../shared/graph.ts.mdmd.md#symbol-explorergraphof)
 - [`StaticExplorerData`](../shared/staticExplorerData.ts.mdmd.md#symbol-staticexplorerdata) (type-only)
 - [`template.context-name`](../shared/template.html.mdmd.md#symbol-context-name)
+- [`template.explorer-loading`](../shared/template.html.mdmd.md#symbol-explorer-loading)
 - [`template.history-back`](../shared/template.html.mdmd.md#symbol-history-back)
 - [`template.history-forward`](../shared/template.html.mdmd.md#symbol-history-forward)
 - [`template.sidebar`](../shared/template.html.mdmd.md#symbol-sidebar)

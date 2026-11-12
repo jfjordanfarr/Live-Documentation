@@ -181,6 +181,44 @@
     text-align: center;
 }
 
+/* While the bundle loads, in the refusal's place: three dots that brighten in turn, and no words (2026-11-12; before, the
+   main area stood empty and the only sign was the sidebar footer's 11 px "Loading..."). Still under reduced motion. */
+.explorer-loading {
+    position: absolute;
+    inset: 0;
+    width: fit-content;
+    height: fit-content;
+    margin: auto;
+    color: var(--text-muted);
+}
+
+.explorer-loading circle {
+    fill: currentColor;
+    opacity: 0.25;
+    animation: explorer-loading 1.2s ease-in-out infinite;
+}
+
+.explorer-loading circle:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.explorer-loading circle:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes explorer-loading {
+    50% {
+        opacity: 1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .explorer-loading circle {
+        animation: none;
+        opacity: 0.6;
+    }
+}
+
 .view-toolbar {
     position: absolute;
     top: 20px;

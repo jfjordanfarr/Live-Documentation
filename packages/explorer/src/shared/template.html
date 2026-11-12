@@ -444,6 +444,10 @@
 
     <!-- The views, under the bar and report; the detail panel and the zoom controls stand over them -->
     <div id="views">
+    <!-- While the bundle loads: a wordless sign where the map will be, gone before the first view draws or a refusal shows -->
+    <div id="explorer-loading" class="explorer-loading" role="status" aria-label="Loading">
+      <svg viewBox="0 0 44 12" width="44" height="12" aria-hidden="true"><circle cx="6" cy="6" r="4" /><circle cx="22" cy="6" r="4" /><circle cx="38" cy="6" r="4" /></svg>
+    </div>
     <div id="view-world" class="view-container">
       <div id="world-root" class="world-root"></div>
     </div>

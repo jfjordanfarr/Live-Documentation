@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-11-12T17:42:33.511Z
+- Generated At: 2026-11-12T22:44:14.313Z
 
 ## Authored
 ### Purpose
@@ -49,6 +49,7 @@ Since 2026-11-05 Discovery holds a Shell Depth slider (1 to 6, default 2) after 
 
 Since November 8, 2026, the literal initial controls agree with `getDefaultTuning`: Group Wrappers selects Skin and Hops Shown starts at 1, with its readout at 1. This makes the owner's [November 7 choice, Turn 2](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/Summarized/2026-11-07.1.SUMMARIZED.md#turn-2) visible before the client synchronizes saved/shared settings; explicit restoration still takes precedence.
 - Since 2026-11-12 the page loads `static/index.js` as a classic deferred script (`<script defer>`) instead of a module, so that a page opened as a file still runs it and can say that it must be served; a module script is refused to such a page. The policy is unchanged.
+- Since 2026-11-12 `#views` begins with `#explorer-loading`, the wordless loading sign (`role="status"`, named "Loading", an inline drawing of three dots), which the client removes before the first view draws or a refusal shows ([the round's evidence](../../../../../../AI-Agent-Workspace/Screenshots/2026-11-12/world-map-repairs/README.md)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -75,6 +76,9 @@ Since November 8, 2026, the literal initial controls agree with `getDefaultTunin
 - Type: variable
 
 #### `download-doc-btn` {#symbol-download-doc-btn}
+- Type: variable
+
+#### `explorer-loading` {#symbol-explorer-loading}
 - Type: variable
 
 #### `export-layout-settings` {#symbol-export-layout-settings}

@@ -72,8 +72,11 @@ async function bootstrapExplorer(): Promise<void> {
     }
     const needsHistory = snapshot.commit || selectedFileIds(snapshot).some(id => id.startsWith("history:"));
     const history = needsHistory && bundle.history ? await loadHistory(bundle.history.file) : undefined;
+    // The loading sign goes before the first view draws, or before a refusal takes its place.
+    document.getElementById("explorer-loading")?.remove();
     startExplorer(bundle, snapshot, history);
   } catch (error) {
+    document.getElementById("explorer-loading")?.remove();
     reportFatalExplorerError(error);
   }
 }
