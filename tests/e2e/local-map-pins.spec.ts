@@ -67,6 +67,47 @@ test("the newest-first tray releases a parent independently, survives sharing, a
   await expect(page.locator(".pin-tray-toggle")).toHaveText("0 pins");
 });
 
+test("Escape closes the open tray, after the search field and a menu have taken theirs", async ({ page }) => {
+  // The first-visit review of 2026-11-12, finding 15: Escape did not close the open pin tray.
+  await page.goto(sharedUrl(state));
+  await localMapSettled(page);
+  const toggle = page.locator(".pin-tray-toggle"), panel = page.locator("#pin-tray-panel");
+  // From the toggle that opened it: the tray closes and the toggle keeps the focus.
+  await openTray(page);
+  await expect(panel).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(panel).toBeHidden();
+  await expect(toggle).toHaveAttribute("aria-expanded", "false");
+  await expect(toggle).toBeFocused();
+  // From inside the tray: the focus returns to the toggle rather than to nothing.
+  await openTray(page);
+  await page.getByRole("button", { name: "Clear exploration pins", exact: true }).focus();
+  await page.keyboard.press("Escape");
+  await expect(panel).toBeHidden();
+  await expect(toggle).toBeFocused();
+  // The search field above the map takes the first Escape; the tray the next, the pins untouched by either.
+  await openTray(page);
+  await page.locator("#search-subject").focus();
+  await page.keyboard.press("Escape");
+  await expect(page.locator("#search-subject")).not.toBeFocused();
+  await expect(panel).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(panel).toBeHidden();
+  // A card's menu, opened while the tray stands open, takes the first Escape; the tray the next. (The reader and the tray
+  // never stand open together: each closes the other.)
+  await openTray(page);
+  await page.locator(`.node-card[data-id="${PROCESSOR}"] .local-file-more`).focus();
+  await page.keyboard.press("Enter");
+  await expect(page.getByRole("menuitem", { name: "Inspect processor.ts", exact: true })).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("menuitem", { name: "Inspect processor.ts", exact: true })).toBeHidden();
+  await expect(panel).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(panel).toBeHidden();
+  expect(current(page).pinSet).toEqual(state.pinSet);
+  expect(current(page).openDirectories).toEqual(state.openDirectories);
+});
+
 test("directory bulk clearing preserves an outside pin and the inside file its reference still needs", async ({ page }) => {
   const directory = "packages/engine/src/live-docs";
   const inside = `${directory}/document.ts`;

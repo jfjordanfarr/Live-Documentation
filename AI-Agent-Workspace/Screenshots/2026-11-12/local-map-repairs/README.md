@@ -24,3 +24,26 @@ A stranger shown only the two reading-scale and one-press-out pictures would soo
 ## The reading dialog's own Back and Forward (finding 10)
 
 [reader-dialog-own-back-forward.png](reader-dialog-own-back-forward.png): `detailPanel.ts` read by its name, then its dependency `dom.ts` followed. The dialog now carries Back and Forward beside its title, as the full reader of a narrow screen does; the app's Back stands under the backdrop. The Dependencies list `types.ts` / `LocalMapPerspective` and `types.ts` / `ViewName` once each, where the review saw each twice.
+
+## Escape and the pin tray (finding 15)
+
+Escape now closes the open tray, after every surface above it has taken its own: the search field, a card's menu, an open popover or a modal dialog keep theirs, and a second Escape closes the tray. The focus returns to the toggle when it was inside the tray. No picture: the browser regression in `local-map-pins.spec.ts` holds it, and fails on the previous commit's build at the first Escape.
+
+## Centre from the overview (finding 12): what happens, measured
+
+Investigation only, nothing changed. The review's scene (`client` opened, `detailPanel.ts` pinned), six Zoom Out presses to the far band at scale 0.335, then More → Centre on `dom.ts`; [before](centre-from-overview-before.png), [after](centre-from-overview-after.png). A per-frame log of the camera and four cards, headless Chromium with software raster, the idle search on and off alike:
+
+- 0.93 to 1.37 s with no frame at all after the press: one task renders the new subject's scene (1.35 s of script, 0.3 s of style, 0.2 s of layout in the traced run).
+- About 0.45 s of the cards' move at the far scale, the camera only translating to hold the subject's name: the "tiles flying over each other".
+- Then the camera's eased zoom to 1.45, which is 350 ms by the clock, gets two frames: 0.335, 0.52 or 0.62, then 1.45, because the main thread waits 0.8 s and then 0.4 to 0.5 s in the middle of it. The trace shows the main thread nearly idle in that wait while raster workers spend 2.3 s rasterizing a layer of about 16,000 by 15,000 px: the map's viewport, promoted to a compositor layer for as long as the camera moves (`data-camera="moving"`, the decision of 2026-11-06), rasterized in software. Zoom In presses across the same bands, which are instant and promote nothing, cost 70 to 100 ms each.
+
+So the transitions are there, a move and then an eased zoom, but on a software rasterizer the zoom is starved into a jump. A GPU browser rasterizes far faster, and the record already names that measurement as open (the containment and skipping section of the Explorer design). Two smaller observations: the camera eases the scale linearly with an ease-out cubic, which puts most of a zoom-in into its first frames even when frames are plentiful; and the zoom follows the move rather than accompanying it.
+
+## Names in the 3D Local Map: what is drawn, looked at
+
+Investigation only, nothing changed. A fresh 3D picture of this repository at 1440 by 900, Connections with Skin and one hop, the archipelago: 94 of 955 files, 42 groups and 52 alone ([names-3d-fresh-at-rest.png](names-3d-fresh-at-rest.png)).
+
+- **At rest, no name at all.** Nothing is asked about, and the spheres measure 2.5 to 12 px in radius, a median near 4.5, against Name At's 18: the design's rule (names at rest only for what was asked about, the hovered sphere and pins, the rest at Name At) as built.
+- **A hover that hits names the sphere.** On the centre of `.github/workflows/pages.yml`, 2.5 px in radius, its name stands beneath it and the Pin, Centre and More strip above ([names-3d-hover-hits-sphere.png](names-3d-hover-hits-sphere.png)).
+- **A hover 9 px off names nothing** ([names-3d-hover-9px-off.png](names-3d-hover-9px-off.png)): the pick is the drawn sphere and has no tolerance around it, so on a sphere 5 px across the pointer has to be within 2.5 px.
+- **A bubble shows nothing at rest** ([names-3d-bubble-at-rest.png](names-3d-bubble-at-rest.png)); **hovered, it takes its seed's file name**: the main group's bubble of 506 files reads `local-storage.ts`, its most connected file, with the strip above ([names-3d-bubble-hovered.png](names-3d-bubble-hovered.png)). A pointer on a sphere drawn inside the bubble shows the same: the files inside a skin are not picked one by one. The group's size is only in the name's tooltip ("506 files in this group").

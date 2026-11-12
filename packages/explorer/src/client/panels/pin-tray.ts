@@ -77,6 +77,15 @@ export function createPinTray(options: PinTrayOptions): {
   });
   tray.append(panel, toggle);
   options.parent.append(tray);
+  // Escape closes the open tray (the first-visit review of 2026-11-12, finding 15), after every surface above it: the
+  // listener stands on the window, so that the search field, a menu and the reader, which take their Escape on the way up
+  // and mark it used, act first, and an open popover or modal dialog keeps the Escape the browser gives it.
+  window.addEventListener("keydown", event => {
+    if (event.key !== "Escape" || event.defaultPrevented || panel.hidden || tray.hidden) return;
+    if (document.querySelector(":popover-open, dialog:modal") || (event.target instanceof Element && event.target.closest('[aria-modal="true"]'))) return;
+    event.preventDefault();
+    setOpen(false);
+  });
 
   const rows = new Map<string, HTMLLIElement>();
 

@@ -19,6 +19,8 @@ That test now activates the explicit **Unpin run in processor.ts** control; the 
 
 Introduced for the owner’s [October 14 pin-management request](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-11--pin-management-approved-ancestor-disclosure-and-directory-hubs).
 
+Since 2026-11-12 a case holds that Escape closes the open tray ([the first-visit review](../../../../AI-Agent-Workspace/Screenshots/2026-11-12/first-visit/README.md), finding 15): from the toggle, which keeps the focus; from inside the tray, the focus returning to the toggle; and after the search field and then a card's menu have each taken the first Escape, the tray staying open until the second; the pins and opened directories untouched. It fails on the previous commit's build at the first Escape.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

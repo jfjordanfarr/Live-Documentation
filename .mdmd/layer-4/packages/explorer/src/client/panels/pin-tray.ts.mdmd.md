@@ -19,6 +19,8 @@ Introduced for the owner’s [October 14 pin-management request](../../../../../
 
 At a moment of the history (2026-10-18, ticket C4 of [the change-over-time plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions) and its scenario 9) a pin whose thing does not stand there is said so on its row, "not yet created" for a file (until 2026-10-30, "not yet born") and "nothing under it at this commit" for a directory, faint beneath its words, and never dropped; the client gives `sync` the words through `absent`.
 
+Since 2026-11-12 Escape closes the open tray ([the first-visit review](../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-12/first-visit/README.md), finding 15). The listener stands on the window, so that the surfaces above the tray, the search field, a card's menu and the reader, which take their Escape on the way up and mark it used, act first; an open popover or modal dialog, which the browser closes on the same key, and a key typed inside an `aria-modal` surface are left alone. The focus returns to the toggle when it was inside the tray.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
