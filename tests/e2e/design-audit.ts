@@ -19,6 +19,22 @@ export interface TextBox {
   y: number;
   w: number;
   h: number;
+  /** What the text belongs to, when the spec asked for an owner attribute and the text has one. */
+  owner?: string;
+}
+
+/** A shape drawn on the page, its corners in screen pixels, and what it belongs to. */
+export interface Outline {
+  owner: string;
+  points: Array<[number, number]>;
+}
+
+/** Text drawn across a shape: a piece's edge through a label, which a screenshot shows as struck-through words. */
+export interface Strike {
+  text: TextBox;
+  outline: Outline;
+  /** Whether the shape belongs to the same thing as the text. */
+  own: boolean;
 }
 
 export interface Overlap {
@@ -42,10 +58,12 @@ export interface Truncation {
  * Hidden elements and those faded below a fifth by their ancestors are left
  * out, since the fade is the design's way of putting them out of the way; the
  * fade of a whole view as it appears is not counted, so a spec must wait for
- * the view before it audits.
+ * the view before it audits. Given an owner attribute, each box says what it
+ * belongs to: the attribute's value on the text or its nearest ancestor that
+ * carries it.
  */
-export async function textBoxes(page: Page, selectors: string[]): Promise<TextBox[]> {
-  return page.evaluate((list) => {
+export async function textBoxes(page: Page, selectors: string[], ownerAttribute?: string): Promise<TextBox[]> {
+  return page.evaluate(({ list, ownerAttribute }) => {
     const boxes: TextBox[] = [];
     const seen = new Set<Element>();
     for (const selector of list) {
@@ -85,16 +103,128 @@ export async function textBoxes(page: Page, selectors: string[]): Promise<TextBo
         // bounding box would span every line and collide with whatever shares its last line (a membrane's name and the
         // count beside it, 2026-10-08).
         const className = node.getAttribute("class")?.split(" ")[0];
+        const owner = ownerAttribute ? node.closest(`[${ownerAttribute}]`)?.getAttribute(ownerAttribute) ?? undefined : undefined;
         for (const rect of node.getClientRects()) {
           if (rect.width < 1 || rect.height < 1) {
             continue;
           }
-          boxes.push({ text: text.slice(0, 60), tag: `${node.tagName.toLowerCase()}${className ? `.${className}` : ""}`, x: rect.left, y: rect.top, w: rect.width, h: rect.height });
+          boxes.push({ text: text.slice(0, 60), tag: `${node.tagName.toLowerCase()}${className ? `.${className}` : ""}`, x: rect.left, y: rect.top, w: rect.width, h: rect.height, ...(owner === undefined ? {} : { owner }) });
         }
       }
     }
     return boxes;
-  }, selectors);
+  }, { list: selectors, ownerAttribute });
+}
+
+/**
+ * The visible SVG polygons a selector names, each with its corners in screen pixels and the value of the owner
+ * attribute on it or its nearest ancestor that carries it. Polygons faded below a fifth are left out, as text is.
+ */
+export async function outlines(page: Page, selector: string, ownerAttribute: string): Promise<Outline[]> {
+  return page.evaluate(({ selector, ownerAttribute }) => {
+    const result: Outline[] = [];
+    for (const node of document.querySelectorAll<SVGPolygonElement>(selector)) {
+      let opacity = 1;
+      let hidden = false;
+      for (let element: Element | null = node; element && element !== document.body; element = element.parentElement) {
+        if (element.classList.contains("view-container")) {
+          break;
+        }
+        const style = getComputedStyle(element);
+        if (style.display === "none" || style.visibility === "hidden") {
+          hidden = true;
+          break;
+        }
+        opacity *= Number(style.opacity || "1");
+      }
+      const matrix = node.getScreenCTM();
+      if (hidden || opacity < 0.2 || !matrix || !node.points) {
+        continue;
+      }
+      const points: Array<[number, number]> = [];
+      for (let i = 0; i < node.points.numberOfItems; i += 1) {
+        const point = new DOMPoint(node.points.getItem(i).x, node.points.getItem(i).y).matrixTransform(matrix);
+        points.push([point.x, point.y]);
+      }
+      if (points.length >= 3) {
+        result.push({ owner: node.closest(`[${ownerAttribute}]`)?.getAttribute(ownerAttribute) ?? "", points });
+      }
+    }
+    return result;
+  }, { selector, ownerAttribute });
+}
+
+/**
+ * Every text box that a shape crosses, holds or lies under, past the tolerance: the box is shrunk by it on each side,
+ * then meets the polygon when one of the polygon's edges passes through it or it lies inside the polygon. One strike
+ * for each text and each owner, however many of the owner's polygons meet it; a text's own shape is marked as such.
+ */
+export function textOverShapes(boxes: TextBox[], shapes: Outline[], tolerance = 1): Strike[] {
+  const result: Strike[] = [];
+  for (const text of boxes) {
+    const left = text.x + tolerance;
+    const top = text.y + tolerance;
+    const right = text.x + text.w - tolerance;
+    const bottom = text.y + text.h - tolerance;
+    if (right <= left || bottom <= top) {
+      continue;
+    }
+    const struck = new Set<string>();
+    for (const outline of shapes) {
+      if (struck.has(outline.owner) || !meets({ left, top, right, bottom }, outline.points)) {
+        continue;
+      }
+      struck.add(outline.owner);
+      result.push({ text, outline, own: text.owner !== undefined && text.owner === outline.owner });
+    }
+  }
+  return result;
+}
+
+/** Whether a polygon and an axis-aligned box share any point: an edge clipped by the box, or the box inside the polygon. */
+function meets(box: { left: number; top: number; right: number; bottom: number }, polygon: Array<[number, number]>): boolean {
+  for (let i = 0; i < polygon.length; i += 1) {
+    if (segmentMeetsBox(polygon[i], polygon[(i + 1) % polygon.length], box)) {
+      return true;
+    }
+  }
+  // No edge reaches the box, so the box is either wholly inside the polygon or wholly outside it: test one corner.
+  let inside = false;
+  const [x, y] = [box.left, box.top];
+  for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+    const [xi, yi] = polygon[i];
+    const [xj, yj] = polygon[j];
+    if (yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) {
+      inside = !inside;
+    }
+  }
+  return inside;
+}
+
+/** Whether a segment passes through a box (Liang and Barsky's clipping, keeping only the yes or no). */
+function segmentMeetsBox(a: [number, number], b: [number, number], box: { left: number; top: number; right: number; bottom: number }): boolean {
+  const dx = b[0] - a[0];
+  const dy = b[1] - a[1];
+  let t0 = 0;
+  let t1 = 1;
+  for (const [p, q] of [[-dx, a[0] - box.left], [dx, box.right - a[0]], [-dy, a[1] - box.top], [dy, box.bottom - a[1]]]) {
+    if (p === 0) {
+      if (q < 0) {
+        return false;
+      }
+    } else {
+      const t = q / p;
+      if (p < 0) {
+        t0 = Math.max(t0, t);
+      } else {
+        t1 = Math.min(t1, t);
+      }
+      if (t0 > t1) {
+        return false;
+      }
+    }
+  }
+  return true;
 }
 
 /** Every pair of boxes that intersect by more than the tolerance on both axes. */
@@ -246,10 +376,11 @@ export async function truncations(page: Page, selectors: string[]): Promise<Trun
 }
 
 /** The faults in words, for an assertion's message. */
-export function describeFaults(overlaps: Overlap[], cut: Truncation[] = []): string {
+export function describeFaults(overlaps: Overlap[], cut: Truncation[] = [], strikes: Strike[] = []): string {
   const lines = [
     ...overlaps.map((overlap) => `"${overlap.a.text}" (${overlap.a.tag}) collides with "${overlap.b.text}" (${overlap.b.tag}) over ${overlap.area} px²`),
-    ...cut.map((item) => `"${item.text}" (${item.tag}) is cut off by ${item.hidden} px`)
+    ...cut.map((item) => `"${item.text}" (${item.tag}) is cut off by ${item.hidden} px`),
+    ...strikes.map((strike) => `"${strike.text.text}" (${strike.text.tag}) is drawn across ${strike.own ? "its own" : `${strike.outline.owner}'s`} outline`)
   ];
   return lines.length ? lines.join("\n") : "no faults";
 }

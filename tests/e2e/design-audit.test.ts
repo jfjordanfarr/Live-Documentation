@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { overlapsAmong, type TextBox } from "./design-audit";
+import { overlapsAmong, textOverShapes, type Outline, type TextBox } from "./design-audit";
 
 /**
  * The collision judge of the browser specs: about fifteen of them expect it to find nothing among a view's text boxes,
@@ -37,5 +37,40 @@ describe("overlapsAmong", () => {
     expect(found.map(overlap => [overlap.a.text, overlap.b.text])).toEqual([["base", "large"], ["small", "large"], ["base", "small"]]);
     expect(found[0].area).toBeGreaterThan(found[1].area);
     expect(found[1].area).toBeGreaterThan(found[2].area);
+  });
+});
+
+/**
+ * The World Map's judge of words drawn across a piece (2026-11-12): a newcomer found every piece's second line struck
+ * through by the piece's own edges, which no comparison of text with text could see.
+ */
+describe("textOverShapes", () => {
+  const owned = (text: string, owner: string, x: number, y: number, w: number, h: number): TextBox => ({ ...box(text, x, y, w, h), owner });
+  // A diamond, as a lid is drawn at an angle: corners at (50, 0), (100, 25), (50, 50) and (0, 25).
+  const lid = (owner: string): Outline => ({ owner, points: [[50, 0], [100, 25], [50, 50], [0, 25]] });
+
+  it("finds a text an edge passes through, and says whether the shape is the text's own", () => {
+    const found = textOverShapes([owned("workflow", "ci", 30, 2, 40, 12)], [lid("ci"), lid("other")]);
+    expect(found.map(strike => [strike.text.text, strike.outline.owner, strike.own])).toEqual([["workflow", "ci", true], ["workflow", "other", false]]);
+  });
+
+  it("finds a text lying wholly on a face, where no edge reaches it", () => {
+    expect(textOverShapes([owned("files", "a", 40, 20, 20, 10)], [lid("a")])).toHaveLength(1);
+  });
+
+  it("finds a shape wholly inside a text's box", () => {
+    expect(textOverShapes([owned("long words", "b", -10, -10, 200, 80)], [lid("a")])).toHaveLength(1);
+  });
+
+  it("ignores a text above the shape, one that touches a corner within the tolerance, and one beside it", () => {
+    expect(textOverShapes([owned("name", "a", 30, -15, 40, 14)], [lid("a")])).toEqual([]);
+    // Half a pixel over the top corner, within the one-pixel tolerance.
+    expect(textOverShapes([owned("touch", "a", 30, -13.5, 40, 14)], [lid("a")])).toEqual([]);
+    expect(textOverShapes([owned("beside", "a", 101, 20, 40, 10)], [lid("a")])).toEqual([]);
+  });
+
+  it("counts a shape once for a text however many of its owner's faces meet it", () => {
+    const faces: Outline[] = [lid("a"), { owner: "a", points: [[0, 25], [50, 50], [50, 80], [0, 55]] }];
+    expect(textOverShapes([owned("files", "a", 30, 40, 40, 12)], faces)).toHaveLength(1);
   });
 });

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/design-audit.test.ts
-- Generated At: 2026-11-05T20:59:21.142Z
+- Generated At: 2026-11-12T21:56:32.936Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,9 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`design-audit.Outline`](./design-audit.ts.mdmd.md#symbol-outline)
 - [`design-audit.TextBox`](./design-audit.ts.mdmd.md#symbol-textbox)
 - [`design-audit.overlapsAmong`](./design-audit.ts.mdmd.md#symbol-overlapsamong)
+- [`design-audit.textOverShapes`](./design-audit.ts.mdmd.md#symbol-textovershapes)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
