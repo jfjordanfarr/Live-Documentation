@@ -66,7 +66,6 @@ export const getDefaultTuning = (): TuningConfig => ({
     holdStill: "click",
     cardText: "slot",
     zoomLooks: "stepped",
-    revealControl: "link",
     slotLines: 2,
     textResistance: 1,
     controlResistance: 1,
@@ -125,9 +124,6 @@ const readHoldStill = (value: unknown): "click" | "hover" | undefined =>
 
 const readCardText = (value: unknown): "grow" | "slot" | undefined =>
   value === "grow" || value === "slot" ? value : undefined;
-
-const readRevealControl = (value: unknown): "link" | "button" | undefined =>
-  value === "link" || value === "button" ? value : undefined;
 
 const readHistoryAxis = (value: unknown): HistoryAxis | undefined =>
   value === "steps" || value === "time" ? value : undefined;
@@ -219,7 +215,6 @@ export const readPersistedUi = (): PersistedUi | null => {
         const moveMs = readFiniteNumber(localMapRaw.moveMs);
         const holdStill = readHoldStill(localMapRaw.holdStill);
         const cardText = readCardText(localMapRaw.cardText);
-        const revealControl = readRevealControl(localMapRaw.revealControl);
         const slotLines = readFiniteNumber(localMapRaw.slotLines);
         const textResistance = readFiniteNumber(localMapRaw.textResistance);
         const controlResistance = readFiniteNumber(localMapRaw.controlResistance);
@@ -257,7 +252,6 @@ export const readPersistedUi = (): PersistedUi | null => {
           ...(moveMs !== undefined ? { moveMs } : null),
           ...(holdStill !== undefined ? { holdStill } : null),
           ...(cardText !== undefined ? { cardText } : null),
-          ...(revealControl !== undefined ? { revealControl } : null),
           ...(slotLines !== undefined ? { slotLines } : null),
           ...(textResistance !== undefined ? { textResistance } : null),
           ...(controlResistance !== undefined ? { controlResistance } : null),

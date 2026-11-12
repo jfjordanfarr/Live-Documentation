@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/tuning.ts
-- Generated At: 2026-11-12T17:14:33.555Z
+- Generated At: 2026-11-12T17:42:24.420Z
 
 ## Authored
 ### Purpose
@@ -110,7 +110,6 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`template.tuning-move-ms-value`](../../shared/template.html.mdmd.md#symbol-tuning-move-ms-value)
 - [`template.tuning-name-growth`](../../shared/template.html.mdmd.md#symbol-tuning-name-growth)
 - [`template.tuning-order-starts`](../../shared/template.html.mdmd.md#symbol-tuning-order-starts)
-- [`template.tuning-reveal-control`](../../shared/template.html.mdmd.md#symbol-tuning-reveal-control)
 - [`template.tuning-row-levelness`](../../shared/template.html.mdmd.md#symbol-tuning-row-levelness)
 - [`template.tuning-search-patience`](../../shared/template.html.mdmd.md#symbol-tuning-search-patience)
 - [`template.tuning-search-starts`](../../shared/template.html.mdmd.md#symbol-tuning-search-starts)

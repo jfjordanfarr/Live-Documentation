@@ -1,8 +1,14 @@
-Evidence from the builder's first milestone of the 2026-11-12 Local Map repairs, after [the first-visit review](../first-visit/README.md): pictures of the built page in headless Chromium at 1440 by 900, the card pictures at device scale 2. Not decisions: the two looks of the reveal control are for the root and the owner to choose between by eye.
+Evidence from the builder's rounds of the 2026-11-12 Local Map repairs, after [the first-visit review](../first-visit/README.md): pictures of the built page in headless Chromium at 1440 by 900, the card pictures at device scale 2.
 
-## The connections outside the view, two looks (finding 3)
+## The connections outside the view (finding 3)
 
-The same three cards of `packages/explorer/src/client` (`detailPanel.ts`, `index.ts`, `layout-presets.test.ts`), opened by `?view=local&mode=2d&dir=packages/explorer/src/client`, at reading scale and one Zoom Out press out. The line was faint grey 11 px text at 3.3 to 1 ([the review's picture 07](../first-visit/07-local-map-after-opening-client-clipped.png)); it is the control that pins the file, which reveals its connections. Tuning → 2D Layout → Reveal Control switches the look; neither changes any card's box.
+The root chose the framed button on November 12, as `+21 connections`: on a card what acts is framed or filled (the header's icon buttons, the directory's Open), while underlined text is a link to a file, and the stranger below reached for the frame first. The `+` is the card's own idiom for what is not drawn here, as `+4 symbols` says, which answers the stranger's question of what the number counts without more words on screen; the accessible name is "+21 connections outside this view", and the trial's switch is gone.
+
+The final form on the same three cards at reading scale ([reveal-final-reading-scale.png](reveal-final-reading-scale.png)) and one press out ([reveal-final-one-press-out.png](reveal-final-one-press-out.png)), and on the estate's Portal, where `Web.config` carries one ([reveal-final-estate-portal.png](reveal-final-estate-portal.png)). Every card's box was compared with the previous commit's build in nine scenes of this repository and the estate: 138 boxes, 87 of these controls drawn, none different.
+
+The two looks that were compared, as they were:
+
+The same three cards of `packages/explorer/src/client` (`detailPanel.ts`, `index.ts`, `layout-presets.test.ts`), opened by `?view=local&mode=2d&dir=packages/explorer/src/client`, at reading scale and one Zoom Out press out. The line was faint grey 11 px text at 3.3 to 1 ([the review's picture 07](../first-visit/07-local-map-after-opening-client-clipped.png)); it is the control that pins the file, which reveals its connections. Tuning → 2D Layout → Reveal Control switched the look during the trial; neither changed any card's box.
 
 | Look | Reading scale | One press out | Focus |
 | --- | --- | --- | --- |

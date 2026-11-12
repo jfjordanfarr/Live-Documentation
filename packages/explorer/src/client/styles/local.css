@@ -289,25 +289,18 @@
 .local-disclosure { display: block; margin-top: 8px; padding: 0; border: 0; background: none; color: var(--text-panel-subtle); cursor: pointer; text-align: left; font: inherit; font-size: 11px; }
 button.local-disclosure:hover { color: var(--accent); }
 span.local-disclosure { cursor: default; }
-/* The connections outside the view, a control that pins the file to reveal them (the trial of 2026-11-12, Tuning's
-   Reveal Control, written on the map as data-reveal-control). It keeps the line's box, its margin and its one line of
-   text, so that no card's box changes and the layout lab's card model stands: the glyph is no taller than the line, and
-   the button look's frame is drawn beside the box, taking no room. It reads in the colour of the card's other text
-   controls, the directory's Open, rather than the faint grey of the facts beside it. The link look underlines its words;
-   the button look is the directory's Open, its frame at the text column's edge and as tall, the count framed and the
-   rest of the words in its name and title. */
-.local-disclosure.local-reveal-connections { display: flex; align-items: center; gap: 4px; width: fit-content; max-width: 100%; color: var(--text-panel-muted); }
+/* The connections outside the view, a control that pins the file to reveal them (2026-11-12): drawn as the directory's
+   Open is, the card's own frame for "press me", in the colour of its text rather than the faint grey of the facts beside
+   it, the frame's edge on the text column and as tall as Open's. It keeps the line's box, its margin and its one line of
+   text, so that no card's box changes and the layout lab's card model stands: the glyph is no taller than the line, the
+   padding is only across, and the frame is drawn beside the box, taking no room; the keyboard's focus thickens it. */
+.local-disclosure.local-reveal-connections { position: relative; display: flex; align-items: center; gap: 4px; width: fit-content; max-width: 100%; padding-inline: 6px; color: var(--text-panel-muted); }
 .local-reveal-connections > svg { flex: 0 0 auto; }
-.local-reveal-connections .local-reveal-words { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; }
+.local-reveal-connections::before { content: ""; position: absolute; inset: -3px 0; border: 1px solid var(--border); border-radius: 4px; pointer-events: none; }
 .local-disclosure.local-reveal-connections:hover { color: var(--accent); }
-.local-reveal-connections:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
-[data-reveal-control="button"] .local-disclosure.local-reveal-connections { position: relative; padding-inline: 6px; }
-[data-reveal-control="button"] .local-reveal-connections::before { content: ""; position: absolute; inset: -3px 0; border: 1px solid var(--border); border-radius: 4px; pointer-events: none; }
-[data-reveal-control="button"] .local-reveal-connections:hover::before { border-color: var(--accent); }
-[data-reveal-control="button"] .local-reveal-connections:focus-visible { outline: none; }
-[data-reveal-control="button"] .local-reveal-connections:focus-visible::before { inset: -4px -1px; border: 2px solid var(--accent); border-radius: 5px; }
-[data-reveal-control="button"] .local-reveal-connections .local-reveal-words { text-decoration: none; }
-[data-reveal-control="button"] .local-reveal-connections .local-reveal-rest { display: none; }
+.local-reveal-connections:hover::before { border-color: var(--accent); }
+.local-reveal-connections:focus-visible { outline: none; }
+.local-reveal-connections:focus-visible::before { inset: -4px -1px; border: 2px solid var(--accent); border-radius: 5px; }
 .branch-symbol-hidden > * { display: none; }
 .branch-mode .local-column-label:empty { min-height: 13px; }
 .local-file-name:focus-visible, .local-column .symbol-label:focus-visible, .local-column .type-badge:focus-visible, .local-card-actions button:focus-visible, .local-symbol-pin:focus-visible, .local-symbol-more:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }

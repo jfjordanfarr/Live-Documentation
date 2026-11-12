@@ -577,7 +577,6 @@ export class LocalViewController implements LocalViewApi {
     }
     this.contentRoot = root;
     this.container.style.setProperty("--slot-lines", String(Math.max(1, Math.round(this.options.state.tuning.localMap.slotLines))));
-    this.container.dataset.revealControl = this.options.state.tuning.localMap.revealControl;
     this.applyLevelOfDetail(this.mapTransform.k / this.readingReferenceScale);
     this.reading?.updatePresentation(this.readingVisible);
     const stage = this.stage ?? (this.stage = createStage(root, this.overlay));

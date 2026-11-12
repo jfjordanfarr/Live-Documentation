@@ -85,12 +85,6 @@ export interface LocalMapTuning {
    * at one scale for every zoom inside it, so that a card changes only twice on the way out.
    */
   zoomLooks: ZoomLooks;
-  /**
-   * How a card draws its count of connections outside the view, the control that pins the file to reveal them, a trial
-   * of 2026-11-12 after a newcomer read it as faint static text: "link", the Pin icon beside the words, underlined;
-   * "button", the Pin icon and the count, framed. Neither changes the card's box. Temporary until the owner chooses.
-   */
-  revealControl: RevealControl;
   /** With fixed slots, how many lines of text each symbol's slot holds, filled or not; the default is to be found by eye (2026-11-05). */
   slotLines: number;
   /** With fixed slots, how much names resist the zoom below reading scale: 0 follows the map, 1 holds screen size (2026-11-05). */
@@ -224,9 +218,6 @@ export type ZoomLooks = "stepped" | "three";
 
 /** Every Zoom Looks choice, in the order the control offers them. */
 export const ZOOM_LOOKS: readonly ZoomLooks[] = ["stepped", "three"];
-
-/** How a 2D card draws its count of connections outside the view, the 2026-11-12 trial (`LocalMapTuning.revealControl`). */
-export type RevealControl = "link" | "button";
 
 /** The 3D Local Map's packing and stable visual encodings, shared with the headless layout lab. */
 export interface ForceGraphTuning {

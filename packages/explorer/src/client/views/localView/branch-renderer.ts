@@ -1238,27 +1238,21 @@ function hiddenByFilters(count: number): HTMLElement {
 
 /**
  * The control a card's connections outside the view are counted on, which pins the file and so reveals them (since
- * 2026-10-02). A newcomer read the faint line as static text and concluded the map draws no connections (the first-visit
- * review of 2026-11-12), so it carries the Pin glyph, the action's own icon, and is drawn as a control in one of the
- * trial's two ways, the map's `data-reveal-control`: a link, its words underlined, or a framed count, the rest of its
- * words in its name and title. Both keep the line's box, so that no card's box changes. Its name is its words whole.
+ * 2026-10-02). A newcomer read the faint line, "21 connections outside this view", as static text and concluded the map
+ * draws no connections (the first-visit review of 2026-11-12). It is drawn as the card's other text control, the
+ * directory's Open, is: framed, the Pin glyph, the action's own icon, beside the count in the card's idiom of what is not
+ * drawn here, "+21 connections", as "+4 symbols" above it says. Its name begins with those words and carries the rest,
+ * so that a spoken command using what is drawn finds it. The root chose this form over an underlined link the same day:
+ * on a card what acts is framed or filled, and underlined text is a link to a file. It keeps the line's box.
  */
 function revealControl(controller: LocalViewController, id: string, count: number): HTMLElement {
   const reveal = document.createElement("button");
   reveal.className = "local-disclosure local-reveal-connections";
-  const said = countOf(count, "connection");
-  reveal.setAttribute("aria-label", `${said} outside this view`);
+  const drawn = `+${countOf(count, "connection")}`;
+  reveal.setAttribute("aria-label", `${drawn} outside this view`);
   reveal.title = "Pin this file to reveal its connections; display filters still apply";
   reveal.innerHTML = `<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${PIN_GLYPH}"/></svg>`;
-  const words = document.createElement("span");
-  words.className = "local-reveal-words";
-  const counted = document.createElement("span");
-  counted.textContent = said;
-  const rest = document.createElement("span");
-  rest.className = "local-reveal-rest";
-  rest.textContent = " outside this view";
-  words.append(counted, rest);
-  reveal.append(words);
+  reveal.append(drawn);
   reveal.addEventListener("click", event => { event.stopPropagation(); controller.options.onPressPin(id, "*"); });
   return reveal;
 }
