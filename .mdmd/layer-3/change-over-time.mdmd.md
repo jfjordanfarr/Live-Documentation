@@ -72,7 +72,7 @@ Markdown is canonical and the graph is derived from it; the sequence is derived 
 
 ### Decisions so far
 
-One line each; the owner's words are in direction.md's entries of 2026-10-16.
+One line each; the owner's words are in [Turn 2](../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-16.1.record.md#turn-2) and [Turn 3](../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-16.1.record.md#turn-3) of the October 16 record.
 
 - The place is the 3D Local Map, the trajectory "just a 3D version of" Gource, and not the World Map, which is for connectivity between systems and deployment shapes (2026-10-08).
 - The feature is the next big thing, in the declared-structure layout "going snapshot by snapshot to show us the history of this repo" (2026-10-16).
