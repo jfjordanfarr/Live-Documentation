@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { autoPlace, drawOrder, inRect, pixelsToUnits, placePiece, rectAround, roadCurve, solidFor, spreadTokens, unitsToPixels, wallOf, wallPoint } from "./layout";
-import { REST_ELEVATION, TOP_DOWN } from "./projection";
+import { autoPlace, corners, coveredArea, drawOrder, inRect, labelAnchor, labelMoves, panelBeside, pixelsToUnits, placePiece, rectAround, roadCurve, silhouette, solidFor, spreadTokens, unitsToPixels, wallOf, wallPoint } from "./layout";
+import { REST_ELEVATION, TOP_DOWN, pointInPolygon, project, ring, type Point2 } from "./projection";
 
 describe("solids and placement", () => {
   it("gives every shape word a solid, the tile flat and the drum round", () => {
@@ -86,5 +86,129 @@ describe("doors and wires", () => {
       expect(y).toBeLessThanOrEqual(1340);
     }
     expect(Math.hypot(tokens[0][0] - tokens[1][0], tokens[0][1] - tokens[1][1])).toBeGreaterThanOrEqual(149);
+  });
+});
+
+describe("outlines and labels", () => {
+  const pivot = { x: 0, y: 0 };
+  const degrees = (value: number): number => (value * Math.PI) / 180;
+  /** Every point a piece's faces are drawn through, on the picture plane. */
+  const drawnPoints = (camera: { theta: number; phi: number }, piece: ReturnType<typeof placePiece>): Point2[] =>
+    [piece.z0, piece.z0 + piece.h].flatMap((z) => (piece.form === "tank"
+      ? ring(piece.cx, piece.cy, piece.r, z, 40).map((p) => project(camera, pivot, p[0], p[1], p[2]))
+      : corners(piece).map(([x, y]) => project(camera, pivot, x, y, z))));
+  const inOrOn = (polygon: Point2[], point: Point2): boolean =>
+    pointInPolygon(polygon, point) || polygon.some((p) => Math.hypot(p[0] - point[0], p[1] - point[1]) < 1e-9);
+
+  it("draws a cube at rest as a hexagon holding every corner, and seen from above as its lid", () => {
+    const cube = placePiece("a", "cube", [100, 50]);
+    const rest = { theta: 0.3, phi: REST_ELEVATION };
+    const outline = silhouette(rest, pivot, cube);
+    expect(outline).toHaveLength(6);
+    for (const point of drawnPoints(rest, cube)) {
+      expect(inOrOn(outline, point)).toBe(true);
+    }
+    // Straight down, the top and bottom corners coincide but for rounding: the outline is the lid.
+    const down = { theta: 0, phi: TOP_DOWN };
+    const lid = corners(cube).map(([x, y]) => project(down, pivot, x, y, cube.z0 + cube.h));
+    for (const point of silhouette(down, pivot, cube)) {
+      expect(lid.some((corner) => Math.hypot(corner[0] - point[0], corner[1] - point[1]) < 1e-6)).toBe(true);
+    }
+  });
+
+  it("holds both rims of a drum", () => {
+    const drum = placePiece("db", "drum", [0, 0]);
+    const camera = { theta: 0, phi: REST_ELEVATION };
+    const outline = silhouette(camera, pivot, drum);
+    for (const point of drawnPoints(camera, drum)) {
+      expect(inOrOn(outline, point)).toBe(true);
+    }
+  });
+
+  it("stands a label over the piece's middle, above its whole outline, from every side and height", () => {
+    for (const shape of ["cube", "tile", "sheet", "figure", "drum", "cloud"] as const) {
+      const piece = placePiece("p", shape, [240, -60]);
+      for (let azimuth = 0; azimuth < 360; azimuth += 15) {
+        for (const elevation of [8, 20, 30, 42, 60, 90]) {
+          const camera = { theta: degrees(azimuth), phi: degrees(elevation) };
+          const [x, y] = labelAnchor(camera, pivot, piece);
+          expect(x).toBeCloseTo(project(camera, pivot, piece.cx, piece.cy, piece.z0)[0], 9);
+          for (const point of drawnPoints(camera, piece)) {
+            expect(point[1]).toBeGreaterThanOrEqual(y - 1e-9);
+          }
+        }
+      }
+    }
+  });
+
+  it("stands a label higher than the middle of the lid, where it stood before and the lid's edges struck through it", () => {
+    const cube = placePiece("a", "cube", [0, 0]);
+    const camera = { theta: 0, phi: REST_ELEVATION };
+    const lidMiddle = project(camera, pivot, cube.cx, cube.cy, cube.z0 + cube.h);
+    // The lid's far corner is half the lid's diagonal, 42√2, behind its middle, foreshortened by the elevation.
+    expect(labelAnchor(camera, pivot, cube)[1]).toBeCloseTo(lidMiddle[1] - 42 * Math.SQRT2 * Math.sin(REST_ELEVATION), 6);
+  });
+});
+
+describe("a label's moves", () => {
+  it("tries staying put first, then a quarter aside or a line up, then farther, left before right", () => {
+    const moves = labelMoves([0, -14, -28], [0, -0.25, 0.25, -0.5, 0.5]).map((move) => [move.rise, move.shift]);
+    expect(moves.slice(0, 5)).toEqual([[0, 0], [0, -0.25], [0, 0.25], [-14, 0], [-14, -0.25]]);
+    expect(moves).toHaveLength(15);
+    expect(moves[moves.length - 1]).toEqual([-28, 0.5]);
+  });
+});
+
+describe("covered area", () => {
+  const box = { left: 0, top: 0, right: 20, bottom: 10 };
+
+  it("is the polygon's area when the polygon lies inside the box, and the box's when the box lies inside it", () => {
+    expect(coveredArea(box, [[2, 2], [6, 2], [6, 6], [2, 6]])).toBeCloseTo(16, 9);
+    expect(coveredArea(box, [[-10, -10], [40, -10], [40, 40], [-10, 40]])).toBeCloseTo(200, 9);
+  });
+
+  it("counts only the part inside, and nothing for a polygon apart or for an empty box", () => {
+    expect(coveredArea(box, [[10, -5], [30, -5], [30, 20], [10, 20]])).toBeCloseTo(100, 9);
+    // A diamond about the box's right edge: half of it inside.
+    expect(coveredArea(box, [[20, 0], [25, 5], [20, 10], [15, 5]])).toBeCloseTo(25, 9);
+    expect(coveredArea(box, [[30, 0], [40, 0], [40, 10], [30, 10]])).toBe(0);
+    expect(coveredArea({ left: 5, top: 5, right: 5, bottom: 9 }, [[0, 0], [10, 0], [10, 10], [0, 10]])).toBe(0);
+  });
+});
+
+describe("a panel beside its subject", () => {
+  const room = { left: 0, top: 50, right: 1000, bottom: 800 };
+  const size = { width: 300, height: 200 };
+  const covers = (at: { left: number; top: number }, box: { left: number; top: number; right: number; bottom: number }): boolean =>
+    at.left < box.right && at.left + size.width > box.left && at.top < box.bottom && at.top + size.height > box.top;
+
+  it("stands to the right of its subject, level with its top, when there is room", () => {
+    const subject = { left: 200, top: 300, right: 280, bottom: 380 };
+    expect(panelBeside(subject, size, room)).toEqual({ left: 294, top: 300 });
+  });
+
+  it("stands to the left of a subject at the right edge, and below one as wide as the room", () => {
+    const right = { left: 900, top: 300, right: 980, bottom: 380 };
+    const left = panelBeside(right, size, room);
+    expect(left).toEqual({ left: 586, top: 300 });
+    const wide = { left: 0, top: 100, right: 1000, bottom: 200 };
+    expect(panelBeside(wide, size, room)).toEqual({ left: 0, top: 214 });
+  });
+
+  it("stays inside the room, and never on its subject while any side is free", () => {
+    const low = { left: 400, top: 760, right: 480, bottom: 790 };
+    const at = panelBeside(low, size, room);
+    expect(at.top + size.height).toBeLessThanOrEqual(room.bottom);
+    expect(at.top).toBeGreaterThanOrEqual(room.top);
+    expect(covers(at, low)).toBe(false);
+  });
+
+  it("takes the side that covers less of what it is asked to avoid", () => {
+    const subject = { left: 450, top: 300, right: 530, bottom: 380 };
+    const neighbour = { left: 560, top: 320, right: 640, bottom: 400 };
+    const at = panelBeside(subject, size, room, [{ box: neighbour, weight: 1 }]);
+    expect(covers(at, neighbour)).toBe(false);
+    expect(covers(at, subject)).toBe(false);
+    expect(at.left + size.width).toBeLessThanOrEqual(subject.left);
   });
 });

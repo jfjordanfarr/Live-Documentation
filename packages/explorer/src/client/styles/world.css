@@ -17,6 +17,7 @@
   --w-faint: #8b95a5;
   --w-green: #059669;
   --w-blue: #0284c7;
+  --w-blue-subtle: #e0f2fe;
   --w-warm: #c17f16;
   --w-panel: #ffffff;
   --w-line: #c3cad4;
@@ -35,6 +36,7 @@
   --w-faint: #5f6d80;
   --w-green: #34d399;
   --w-blue: #38bdf8;
+  --w-blue-subtle: rgba(56, 189, 248, 0.16);
   --w-warm: #e2b45f;
   --w-panel: #161b23;
   --w-line: #283040;
@@ -249,6 +251,25 @@
   stroke-width: 1.5;
 }
 
+/* A piece's keyboard stop: it takes no pointer, so a click lands on the piece beneath, and its ring on the piece's
+   outline shows only while the keyboard is on it. */
+.world .w-focus {
+  outline: none;
+  pointer-events: none;
+}
+
+.world .w-focus-ring {
+  fill: none;
+  stroke: none;
+}
+
+.world .w-focus:focus-visible .w-focus-ring {
+  stroke: var(--w-blue);
+  stroke-width: 3;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
 .world text {
   font: 600 13px system-ui, -apple-system, "Segoe UI", sans-serif;
   fill: var(--w-text);
@@ -361,15 +382,41 @@
   padding: 0;
 }
 
+/* The board's tools: icons in three groups parted by rules, as in the Local Map's toolbar; a pressed toggle is filled. */
 .world-tools {
   pointer-events: auto;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
-  gap: 6px;
+  align-items: center;
+  gap: 4px;
 }
 
-.world-tools button,
+.world-tool-group {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.world-tool-group + .world-tool-group {
+  margin-left: 4px;
+  padding-left: 8px;
+  border-left: 1px solid var(--w-line);
+}
+
+.world-tools button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 30px;
+  padding: 0;
+  background: var(--w-panel);
+  color: var(--w-text);
+  border: 1px solid var(--w-line);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
 .world-help button,
 .world-tour button {
   background: var(--w-panel);
@@ -385,9 +432,17 @@
   border-color: var(--w-muted);
 }
 
-.world-tools button.on {
+.world-tools button[aria-pressed="true"] {
   border-color: var(--w-blue);
   color: var(--w-blue);
+  background: var(--w-blue-subtle);
+}
+
+.world-tools button:focus-visible,
+.world-help-btn:focus-visible,
+.world-evidence:focus-visible {
+  outline: 2px solid var(--w-blue);
+  outline-offset: 1px;
 }
 
 .world-help-btn {
@@ -549,6 +604,41 @@
   border-left-width: 3px;
   max-height: 50%;
   overflow: auto;
+  padding-top: 0;
+}
+
+/* The line that names what the panel is about, with the close control: pinned, it stays at the top while the rest
+   scrolls under it (2026-11-12; the close control had scrolled away with the first lines). */
+.world-evidence .head {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.world-evidence .head .h {
+  flex: 1;
+}
+
+.world-evidence.pinned .head {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding-top: 10px;
+  background: var(--w-panel);
+}
+
+/* A piece's files, folded behind their count, last in its panel */
+.world-evidence details.files {
+  margin-top: 8px;
+}
+
+.world-evidence details.files summary {
+  cursor: pointer;
+  color: var(--w-muted);
+}
+
+.world-evidence details.files summary:hover {
+  color: var(--w-blue);
 }
 
 .world-evidence a {
@@ -579,21 +669,30 @@
 }
 
 .world-evidence .close {
-  position: absolute;
-  top: 6px;
-  right: 8px;
+  flex: none;
+  display: inline-flex;
+  margin: -4px -6px 0 0;
+  padding: 3px;
   border: 0;
+  border-radius: 4px;
   background: none;
   color: var(--w-faint);
-  font: 14px system-ui, sans-serif;
   cursor: pointer;
+}
+
+.world-evidence .close:hover,
+.world-evidence .close:focus-visible {
+  color: var(--w-blue);
+}
+
+.world-evidence .close:focus-visible {
+  outline: 2px solid var(--w-blue);
 }
 
 .world-evidence .h {
   font-weight: 600;
   font-size: 13px;
   margin-bottom: 3px;
-  padding-right: 18px;
 }
 
 .world-evidence .tier {

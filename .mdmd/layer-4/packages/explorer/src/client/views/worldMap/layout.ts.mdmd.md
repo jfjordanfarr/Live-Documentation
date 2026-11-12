@@ -4,15 +4,16 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/worldMap/layout.ts
-- Generated At: 2026-10-22T16:47:56.553Z
+- Generated At: 2026-11-12T21:56:27.391Z
 
 ## Authored
 ### Purpose
-The World Map's geometry, pure and tested: the solid each shape word is drawn as; a piece's box around its centre, floating above the board and lifted while dragged; the rectangle around some rectangles; board units to pixels and back; rows for the things nobody has placed, a region's members together; the wall of a piece that faces a counterpart among the walls the viewer sees, and the point on it where a door sits (on a drum, a point on the visible rim); the curve a wire hangs along between two doors; tokens pushed clear of the pieces and of each other; and the order to draw pieces in, far first.
+The World Map's geometry, pure and tested: the solid each shape word is drawn as; a piece's box around its centre, floating above the board and lifted while dragged; the rectangle around some rectangles; board units to pixels and back; rows for the things nobody has placed, a region's members together; the wall of a piece that faces a counterpart among the walls the viewer sees, and the point on it where a door sits (on a drum, a point on the visible rim); the curve a wire hangs along between two doors; tokens pushed clear of the pieces and of each other; the order to draw pieces in, far first; a piece's outline on the screen and the point above it where its label stands; the moves a label may make when something is in its way; how much of a box an outline covers; and where a panel about a piece stands, beside it rather than on it.
 
 ### Notes
 - Written on 2026-09-28 with the view ([Turn 46](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md#turn-46)). The numbers here are the picture's: one board unit is 60 pixels, a piece floats 46 above the board, the grid is 50. Nothing here touches the DOM; `controller.ts` draws what this returns and keeps the labels apart afterwards, since a label's box is only known once it is drawn.
 - `solidFor` is reached through `placePiece` and by the tests; `UNIT` and `LIFT` are exported and read by nothing outside, kept as the names of the picture's units. Measured by `layout.test.ts`.
+- Since 2026-11-12 ([the first visit's finding 6](../../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-12/first-visit/README.md), [the repair's evidence](../../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-12/world-map-repairs/README.md)): `silhouette` is a piece's outline as drawn, the hull of its corners or of a drum's rims, and `labelAnchor` the top of it, over the piece's middle. Before, labels stood at the middle of the lid, and a piece's own edges struck through its words. `labelMoves` orders a label's moves fewest steps first, `coveredArea` measures how much of a label's box an outline covers, and the controller's label settling uses all three. `panelBeside` places a pinned piece's panel beside the piece, inside the room below the tools, covering the piece's wired neighbours as little as it can; before, the panel stood at the pointer, on the piece it explained.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -220,9 +221,84 @@ of each other.
 ##### `drawOrder` — Summary
 The order to draw pieces in: far ones first.
 
+#### `silhouette` {#symbol-silhouette}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L242)
+- Returns: [`Point2`](./projection.ts.mdmd.md#symbol-point2)[]
+- Parameters: `camera`: [`Camera`](./projection.ts.mdmd.md#symbol-camera); `pivot`: [`Pivot`](./projection.ts.mdmd.md#symbol-pivot); `placed`: [`Placed`](#symbol-placed)
+
+##### `silhouette` — Summary
+A piece's outline on the picture plane: the convex hull of its corners, or of
+a drum's two rims as they are drawn. Everything the piece's faces paint lies
+inside it, so a label kept off it is kept off the piece.
+
+#### `labelAnchor` {#symbol-labelanchor}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L265)
+- Returns: [`Point2`](./projection.ts.mdmd.md#symbol-point2)
+- Parameters: `camera`: [`Camera`](./projection.ts.mdmd.md#symbol-camera); `pivot`: [`Pivot`](./projection.ts.mdmd.md#symbol-pivot); `placed`: [`Placed`](#symbol-placed)
+
+##### `labelAnchor` — Summary
+Where a piece's label stands, on the picture plane: over the piece's middle,
+at the top of its outline. The label is drawn above this point, so however
+wide its words are and however the camera turns, it never crosses its own
+piece. Before 2026-11-12 labels stood on the middle of the lid, and a piece's
+own edges struck through its words.
+
+#### `LabelMove` {#symbol-labelmove}
+- Type: interface
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L274)
+
+##### `LabelMove` — Summary
+A move a label may make from where it rests: pixels up or down, a fraction of its own width sideways, and whether it
+stands below its piece instead of above it.
+
+#### `labelMoves` {#symbol-labelmoves}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L284)
+- Returns: [`LabelMove`](#symbol-labelmove)[]
+
+##### `labelMoves` — Summary
+The moves a label may make, every rise with every shift, fewest steps first, where a line of text up or down and a
+quarter of the label's width aside each count as one step; moves as far as each other keep the order they were given.
+
+#### `ScreenBox` {#symbol-screenbox}
+- Type: interface
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L290)
+
+##### `ScreenBox` — Summary
+A box on the screen, in pixels.
+
+#### `coveredArea` {#symbol-coveredarea}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L298)
+- Parameters: `box`: [`ScreenBox`](#symbol-screenbox); `polygon`: [`Point2`](./projection.ts.mdmd.md#symbol-point2)[]
+
+##### `coveredArea` — Summary
+How much of a box a convex polygon covers, in square pixels.
+
+#### `Avoid` {#symbol-avoid}
+- Type: interface
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L335)
+
+##### `Avoid` — Summary
+Something a panel had better not cover, and what covering it costs.
+
+#### `panelBeside` {#symbol-panelbeside}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L347)
+- Parameters: `subject`: [`ScreenBox`](#symbol-screenbox); `room`: [`ScreenBox`](#symbol-screenbox); `avoid`: [`Avoid`](#symbol-avoid)[]
+
+##### `panelBeside` — Summary
+Where a panel about something stands, on the screen: beside it rather than on
+it. It tries the right of the subject, then the left, below and above, each
+held inside the room it has, and takes the first that covers the subject
+least, then what it is asked to avoid least. Before 2026-11-12 the pinned
+panel stood at the pointer, on the piece it explained.
+
 #### `clamp` {#symbol-clamp}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L238)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L402)
 
 ##### `clamp` — Summary
 The value held within the bounds.
@@ -237,6 +313,8 @@ The value held within the bounds.
 - [`projection.Point3`](./projection.ts.mdmd.md#symbol-point3)
 - [`projection.depthOf`](./projection.ts.mdmd.md#symbol-depthof)
 - [`projection.facing`](./projection.ts.mdmd.md#symbol-facing)
+- [`projection.project`](./projection.ts.mdmd.md#symbol-project)
+- [`projection.ring`](./projection.ts.mdmd.md#symbol-ring)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

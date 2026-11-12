@@ -70,6 +70,10 @@ test.describe("The estate on the World Map", () => {
     await page.evaluate(() => window.__worldMap!.pin("piece", "portal"));
     const evidence = page.locator("#view-world .world-evidence");
     await expect(evidence).toHaveClass(/pinned/);
+    // Since 2026-11-12 a piece's files are folded behind their count, last in its panel; unfolded, portal's evidence is
+    // again longer than the cap, which is what this case measures.
+    await evidence.locator("details.files summary").click();
+    await expect(evidence.locator("details.files")).toHaveAttribute("open", "");
     const measured = await evidence.evaluate(panel => {
       const box = panel.getBoundingClientRect();
       const view = document.querySelector("#view-world")!.getBoundingClientRect();

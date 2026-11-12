@@ -1,0 +1,187 @@
+  ✘  1 [chromium] › tests/e2e/world-map-design.spec.ts:108:11 › World Map labels clear the pieces › this repository's board as it first opens: no label crosses a piece or another label (3.1s)
+  ✘  2 [chromium] › tests/e2e/world-map-design.spec.ts:108:11 › World Map labels clear the pieces › this repository's board seen from straight above: no label crosses a piece or another label (3.5s)
+  ✘  3 [chromium] › tests/e2e/world-map-design.spec.ts:108:11 › World Map labels clear the pieces › this repository's board turned a quarter: no label crosses a piece or another label (3.7s)
+  ✘  4 [chromium] › tests/e2e/world-map-design.spec.ts:108:11 › World Map labels clear the pieces › this repository's board orbited as the walkthrough orbits: no label crosses a piece or another label (3.4s)
+  ✘  5 [chromium] › tests/e2e/world-map-design.spec.ts:108:11 › World Map labels clear the pieces › the estate as it first opens: no label crosses a piece or another label (2.6s)
+  ✘  6 [chromium] › tests/e2e/world-map-design.spec.ts:108:11 › World Map labels clear the pieces › the estate seen from straight above: no label crosses a piece or another label (2.5s)
+  ✘  7 [chromium] › tests/e2e/world-map-design.spec.ts:108:11 › World Map labels clear the pieces › the estate turned a quarter: no label crosses a piece or another label (3.2s)
+  ✘  8 [chromium] › tests/e2e/world-map-design.spec.ts:108:11 › World Map labels clear the pieces › the estate orbited as the walkthrough orbits: no label crosses a piece or another label (2.7s)
+    Error: "engine" (text) is drawn across its own outline
+    "library · 150 files" (text.w-sub) is drawn across its own outline
+    "generator" (text) is drawn across its own outline
+    "library · 7 files" (text.w-sub) is drawn across its own outline
+    "explorer" (text) is drawn across its own outline
+    "live-docs" (text) is drawn across its own outline
+    "package" (text.w-sub) is drawn across its own outline
+    "action" (text) is drawn across its own outline
+    "action" (text.w-sub) is drawn across its own outline
+    "vscode-panel" (text) is drawn across its own outline
+    "extension" (text.w-sub) is drawn across its own outline
+    "scripts" (text) is drawn across its own outline
+    "program · 72 files" (text.w-sub) is drawn across its own outline
+    "tests · 94 files" (text.w-sub) is drawn across its own outline
+    "samples · 302 files" (text.w-sub) is drawn across its own outline
+    "samples · 97 files" (text.w-sub) is drawn across its own outline
+    "publish-workflow" (text) is drawn across its own outline
+    "workflow" (text.w-sub) is drawn across its own outline
+    "ci-workflow" (text) is drawn across its own outline
+    "workflow" (text.w-sub) is drawn across its own outline
+    "pages-workflow" (text) is drawn across ci-workflow's outline
+    "pages-workflow" (text) is drawn across its own outline
+    "workflow" (text.w-sub) is drawn across its own outline
+    "site" (text.w-sub) is drawn across its own outline
+    "registry" (text.w-sub) is drawn across its own outline
+    test-results/world-map-design-World-Map-fdc71-es-a-piece-or-another-label-chromium/test-failed-1.png
+    Error: "engine" (text) is drawn across its own outline
+    "library · 150 files" (text.w-sub) is drawn across its own outline
+    "generator" (text) is drawn across its own outline
+    "library · 7 files" (text.w-sub) is drawn across its own outline
+    "explorer" (text) is drawn across its own outline
+    "web · 213 files" (text.w-sub) is drawn across its own outline
+    "live-docs" (text) is drawn across its own outline
+    "package" (text.w-sub) is drawn across its own outline
+    "action" (text) is drawn across its own outline
+    "action" (text.w-sub) is drawn across its own outline
+    "vscode-panel" (text) is drawn across its own outline
+    "extension" (text.w-sub) is drawn across its own outline
+    "scripts" (text) is drawn across its own outline
+    "program · 72 files" (text.w-sub) is drawn across its own outline
+    "tests · 94 files" (text.w-sub) is drawn across its own outline
+    "samples · 302 files" (text.w-sub) is drawn across its own outline
+    "samples · 97 files" (text.w-sub) is drawn across its own outline
+    "publish-workflow" (text) is drawn across its own outline
+    "workflow" (text.w-sub) is drawn across its own outline
+    "ci-workflow" (text) is drawn across its own outline
+    "workflow" (text.w-sub) is drawn across its own outline
+    "pages-workflow" (text) is drawn across its own outline
+    "workflow" (text.w-sub) is drawn across its own outline
+    "site" (text.w-sub) is drawn across its own outline
+    "registry" (text) is drawn across its own outline
+    "registry" (text.w-sub) is drawn across its own outline
+    test-results/world-map-design-World-Map-fd500-es-a-piece-or-another-label-chromium/test-failed-1.png
+    Error: "REPOSITORY" (text.w-zone) collides with "library · 150 files" (text.w-sub) over 30 px²
+    "REPOSITORY" (text.w-zone) is drawn across engine's outline
+    "GITHUB" (text.w-zone) is drawn across publish-workflow's outline
+    "engine" (text) is drawn across its own outline
+    "library · 150 files" (text.w-sub) is drawn across its own outline
+    "generator" (text) is drawn across its own outline
+    "library · 7 files" (text.w-sub) is drawn across its own outline
+    "explorer" (text) is drawn across its own outline
+    "live-docs" (text) is drawn across its own outline
+    "action" (text) is drawn across its own outline
+    "action" (text.w-sub) is drawn across its own outline
+    "vscode-panel" (text) is drawn across its own outline
+    "extension" (text.w-sub) is drawn across its own outline
+    "scripts" (text) is drawn across its own outline
+    "program · 72 files" (text.w-sub) is drawn across explorer's outline
+    "program · 72 files" (text.w-sub) is drawn across its own outline
+    "tests · 94 files" (text.w-sub) is drawn across its own outline
+    "samples · 302 files" (text.w-sub) is drawn across its own outline
+    "samples · 97 files" (text.w-sub) is drawn across its own outline
+    "publish-workflow" (text) is drawn across live-docs's outline
+    "publish-workflow" (text) is drawn across its own outline
+    "workflow" (text.w-sub) is drawn across its own outline
+    "ci-workflow" (text) is drawn across its own outline
+    "workflow" (text.w-sub) is drawn across its own outline
+    "pages-workflow" (text) is drawn across ci-workflow's outline
+    "pages-workflow" (text) is drawn across its own outline
+    "workflow" (text.w-sub) is drawn across its own outline
+    "site" (text.w-sub) is drawn across its own outline
+    "registry" (text.w-sub) is drawn across its own outline
+    test-results/world-map-design-World-Map-3cf8a-es-a-piece-or-another-label-chromium/test-failed-1.png
+    Error: "publish-workflow" (text) collides with "ci-workflow" (text) over 3 px²
+    "engine" (text) is drawn across its own outline
+    "library · 150 files" (text.w-sub) is drawn across its own outline
+    "generator" (text) is drawn across its own outline
+    "library · 7 files" (text.w-sub) is drawn across its own outline
+    "explorer" (text) is drawn across its own outline
+    "web · 213 files" (text.w-sub) is drawn across its own outline
+    "live-docs" (text) is drawn across its own outline
+    "package" (text.w-sub) is drawn across its own outline
+    "action" (text) is drawn across its own outline
+    "action" (text.w-sub) is drawn across its own outline
+    "vscode-panel" (text) is drawn across its own outline
+    "extension" (text.w-sub) is drawn across its own outline
+    "scripts" (text) is drawn across its own outline
+    "program · 72 files" (text.w-sub) is drawn across its own outline
+    "tests · 94 files" (text.w-sub) is drawn across its own outline
+    "samples · 302 files" (text.w-sub) is drawn across its own outline
+    "samples · 97 files" (text.w-sub) is drawn across its own outline
+    "publish-workflow" (text) is drawn across its own outline
+    "workflow" (text.w-sub) is drawn across its own outline
+    "ci-workflow" (text) is drawn across its own outline
+    "workflow" (text.w-sub) is drawn across its own outline
+    "pages-workflow" (text) is drawn across its own outline
+    "workflow" (text.w-sub) is drawn across its own outline
+    "site" (text.w-sub) is drawn across its own outline
+    "registry" (text) is drawn across its own outline
+    "registry" (text.w-sub) is drawn across its own outline
+    test-results/world-map-design-World-Map-37f8d-es-a-piece-or-another-label-chromium/test-failed-1.png
+    Error: "IPsec tunnel · declared" (text.w-tag) is drawn across gateway's outline
+    "portal" (text) is drawn across its own outline
+    "web · 11 files" (text.w-sub) is drawn across its own outline
+    "gateway" (text) is drawn across its own outline
+    "web · 5 files" (text.w-sub) is drawn across its own outline
+    "contracts" (text) is drawn across its own outline
+    "library · 6 files" (text.w-sub) is drawn across its own outline
+    "hub" (text) is drawn across its own outline
+    "service · 4 files" (text.w-sub) is drawn across its own outline
+    "payments" (text) is drawn across its own outline
+    "service · 6 files" (text.w-sub) is drawn across its own outline
+    "sqlserver" (text) is drawn across its own outline
+    "database · 2 files" (text.w-sub) is drawn across payments's outline
+    "database · 2 files" (text.w-sub) is drawn across its own outline
+    "oracle" (text) is drawn across its own outline
+    "database · 1 file" (text.w-sub) is drawn across its own outline
+    test-results/world-map-design-World-Map-f0087-es-a-piece-or-another-label-chromium/test-failed-1.png
+    Error: "portal" (text) is drawn across its own outline
+    "web · 11 files" (text.w-sub) is drawn across its own outline
+    "gateway" (text) is drawn across its own outline
+    "web · 5 files" (text.w-sub) is drawn across its own outline
+    "contracts" (text) is drawn across its own outline
+    "library · 6 files" (text.w-sub) is drawn across its own outline
+    "hub" (text) is drawn across its own outline
+    "service · 4 files" (text.w-sub) is drawn across its own outline
+    "payments" (text) is drawn across its own outline
+    "service · 6 files" (text.w-sub) is drawn across its own outline
+    "sqlserver" (text) is drawn across its own outline
+    "database · 2 files" (text.w-sub) is drawn across its own outline
+    "oracle" (text) is drawn across its own outline
+    "database · 1 file" (text.w-sub) is drawn across its own outline
+    test-results/world-map-design-World-Map-a21ca-es-a-piece-or-another-label-chromium/test-failed-1.png
+    Error: "CLOUD" (text.w-zone) is drawn across portal's outline
+    "ON-PREM" (text.w-zone) is drawn across hub's outline
+    "IPsec tunnel · declared" (text.w-tag) is drawn across hub's outline
+    "portal" (text) is drawn across its own outline
+    "web · 11 files" (text.w-sub) is drawn across its own outline
+    "gateway" (text) is drawn across its own outline
+    "web · 5 files" (text.w-sub) is drawn across its own outline
+    "contracts" (text) is drawn across its own outline
+    "library · 6 files" (text.w-sub) is drawn across its own outline
+    "hub" (text) is drawn across contracts's outline
+    "hub" (text) is drawn across its own outline
+    "service · 4 files" (text.w-sub) is drawn across its own outline
+    "payments" (text) is drawn across its own outline
+    "service · 6 files" (text.w-sub) is drawn across its own outline
+    "sqlserver" (text) is drawn across its own outline
+    "database · 2 files" (text.w-sub) is drawn across payments's outline
+    "database · 2 files" (text.w-sub) is drawn across its own outline
+    "oracle" (text) is drawn across its own outline
+    "database · 1 file" (text.w-sub) is drawn across its own outline
+    test-results/world-map-design-World-Map-63d72-es-a-piece-or-another-label-chromium/test-failed-1.png
+    Error: "portal" (text) is drawn across its own outline
+    "web · 11 files" (text.w-sub) is drawn across its own outline
+    "gateway" (text) is drawn across its own outline
+    "web · 5 files" (text.w-sub) is drawn across its own outline
+    "contracts" (text) is drawn across its own outline
+    "library · 6 files" (text.w-sub) is drawn across its own outline
+    "hub" (text) is drawn across its own outline
+    "service · 4 files" (text.w-sub) is drawn across its own outline
+    "payments" (text) is drawn across its own outline
+    "service · 6 files" (text.w-sub) is drawn across its own outline
+    "sqlserver" (text) is drawn across its own outline
+    "database · 2 files" (text.w-sub) is drawn across its own outline
+    "oracle" (text) is drawn across its own outline
+    "database · 1 file" (text.w-sub) is drawn across its own outline
+    test-results/world-map-design-World-Map-8f037-es-a-piece-or-another-label-chromium/test-failed-1.png
+  8 failed

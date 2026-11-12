@@ -5,7 +5,7 @@
  * what they return.
  */
 
-import { depthOf, facing, type Box, type Camera, type Pivot, type Point2, type Point3 } from "./projection";
+import { depthOf, facing, project, ring, type Box, type Camera, type Pivot, type Point2, type Point3 } from "./projection";
 
 /** One board unit, the unit of a board's Layout lines, in board pixels. */
 export const UNIT = 60;
@@ -232,6 +232,170 @@ export function spreadTokens(seeds: Point2[], obstacles: Point2[], clearSeed: nu
 /** The order to draw pieces in: far ones first. */
 export function drawOrder(camera: Camera, pivot: Pivot, pieces: Placed[]): Placed[] {
   return [...pieces].sort((a, b) => depthOf(camera, pivot, a.cx, a.cy) - depthOf(camera, pivot, b.cx, b.cy));
+}
+
+/**
+ * A piece's outline on the picture plane: the convex hull of its corners, or of
+ * a drum's two rims as they are drawn. Everything the piece's faces paint lies
+ * inside it, so a label kept off it is kept off the piece.
+ */
+export function silhouette(camera: Camera, pivot: Pivot, placed: Placed, count = 40): Point2[] {
+  const points: Point2[] = [];
+  for (const z of [placed.z0, placed.z0 + placed.h]) {
+    if (placed.form === "tank") {
+      for (const p of ring(placed.cx, placed.cy, placed.r, z, count)) {
+        points.push(project(camera, pivot, p[0], p[1], p[2]));
+      }
+    } else {
+      for (const [x, y] of corners({ x: placed.x, y: placed.y, w: placed.w, d: placed.d })) {
+        points.push(project(camera, pivot, x, y, z));
+      }
+    }
+  }
+  return convexHull(points);
+}
+
+/**
+ * Where a piece's label stands, on the picture plane: over the piece's middle,
+ * at the top of its outline. The label is drawn above this point, so however
+ * wide its words are and however the camera turns, it never crosses its own
+ * piece. Before 2026-11-12 labels stood on the middle of the lid, and a piece's
+ * own edges struck through its words.
+ */
+export function labelAnchor(camera: Camera, pivot: Pivot, placed: Placed): Point2 {
+  const top = Math.min(...silhouette(camera, pivot, placed).map((p) => p[1]));
+  return [project(camera, pivot, placed.cx, placed.cy, 0)[0], top];
+}
+
+/**
+ * A move a label may make from where it rests: pixels up or down, a fraction of its own width sideways, and whether it
+ * stands below its piece instead of above it.
+ */
+export interface LabelMove {
+  rise: number;
+  shift: number;
+  below?: boolean;
+}
+
+/**
+ * The moves a label may make, every rise with every shift, fewest steps first, where a line of text up or down and a
+ * quarter of the label's width aside each count as one step; moves as far as each other keep the order they were given.
+ */
+export function labelMoves(rises: number[], shifts: number[], line = 14): LabelMove[] {
+  const steps = (move: LabelMove): number => (move.rise / line) ** 2 + (move.shift / 0.25) ** 2;
+  return rises.flatMap((rise) => shifts.map((shift) => ({ rise, shift }))).sort((a, b) => steps(a) - steps(b));
+}
+
+/** A box on the screen, in pixels. */
+export interface ScreenBox {
+  left: number;
+  top: number;
+  right: number;
+  bottom: number;
+}
+
+/** How much of a box a convex polygon covers, in square pixels. */
+export function coveredArea(box: ScreenBox, polygon: Point2[]): number {
+  if (box.right <= box.left || box.bottom <= box.top || polygon.length < 3) {
+    return 0;
+  }
+  // The polygon clipped by each side of the box in turn (Sutherland and Hodgman), then its area.
+  const sides: Array<[(p: Point2) => boolean, (a: Point2, b: Point2) => Point2]> = [
+    [(p) => p[0] >= box.left, (a, b) => along(a, b, (box.left - a[0]) / (b[0] - a[0]))],
+    [(p) => p[0] <= box.right, (a, b) => along(a, b, (box.right - a[0]) / (b[0] - a[0]))],
+    [(p) => p[1] >= box.top, (a, b) => along(a, b, (box.top - a[1]) / (b[1] - a[1]))],
+    [(p) => p[1] <= box.bottom, (a, b) => along(a, b, (box.bottom - a[1]) / (b[1] - a[1]))]
+  ];
+  let clipped = polygon;
+  for (const [inside, cut] of sides) {
+    const next: Point2[] = [];
+    clipped.forEach((p, i) => {
+      const q = clipped[(i + 1) % clipped.length];
+      if (inside(p)) {
+        next.push(p);
+        if (!inside(q)) {
+          next.push(cut(p, q));
+        }
+      } else if (inside(q)) {
+        next.push(cut(p, q));
+      }
+    });
+    clipped = next;
+    if (clipped.length < 3) {
+      return 0;
+    }
+  }
+  return Math.abs(clipped.reduce((sum, p, i) => {
+    const q = clipped[(i + 1) % clipped.length];
+    return sum + p[0] * q[1] - q[0] * p[1];
+  }, 0)) / 2;
+}
+
+/** Something a panel had better not cover, and what covering it costs. */
+export interface Avoid {
+  box: ScreenBox;
+  weight: number;
+}
+
+/**
+ * Where a panel about something stands, on the screen: beside it rather than on
+ * it. It tries the right of the subject, then the left, below and above, each
+ * held inside the room it has, and takes the first that covers the subject
+ * least, then what it is asked to avoid least. Before 2026-11-12 the pinned
+ * panel stood at the pointer, on the piece it explained.
+ */
+export function panelBeside(subject: ScreenBox, size: { width: number; height: number }, room: ScreenBox, avoid: Avoid[] = [], gap = 14): { left: number; top: number } {
+  const hold = (left: number, top: number): { left: number; top: number } => ({
+    left: Math.max(room.left, Math.min(room.right - size.width, left)),
+    top: Math.max(room.top, Math.min(room.bottom - size.height, top))
+  });
+  const candidates = [
+    hold(subject.right + gap, subject.top),
+    hold(subject.left - gap - size.width, subject.top),
+    hold(subject.left, subject.bottom + gap),
+    hold(subject.left, subject.top - gap - size.height)
+  ];
+  let best = { at: candidates[0], own: Number.POSITIVE_INFINITY, others: Number.POSITIVE_INFINITY };
+  for (const at of candidates) {
+    const box = { left: at.left, top: at.top, right: at.left + size.width, bottom: at.top + size.height };
+    const own = overlap(box, subject);
+    const others = avoid.reduce((sum, item) => sum + item.weight * overlap(box, item.box), 0);
+    if (own < best.own || (own === best.own && others < best.others)) {
+      best = { at, own, others };
+    }
+  }
+  return best.at;
+}
+
+/** The area two boxes share. */
+function overlap(a: ScreenBox, b: ScreenBox): number {
+  return Math.max(0, Math.min(a.right, b.right) - Math.max(a.left, b.left)) * Math.max(0, Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top));
+}
+
+/** The point a fraction of the way from one point to another. */
+function along(a: Point2, b: Point2, t: number): Point2 {
+  return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
+}
+
+/** The convex hull of some points (Andrew's monotone chain). */
+function convexHull(points: Point2[]): Point2[] {
+  const sorted = [...points].sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+  if (sorted.length < 3) {
+    return sorted;
+  }
+  const cross = (o: Point2, a: Point2, b: Point2): number => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
+  const half = (list: Point2[]): Point2[] => {
+    const chain: Point2[] = [];
+    for (const p of list) {
+      while (chain.length >= 2 && cross(chain[chain.length - 2], chain[chain.length - 1], p) <= 0) {
+        chain.pop();
+      }
+      chain.push(p);
+    }
+    chain.pop();
+    return chain;
+  };
+  return [...half(sorted), ...half([...sorted].reverse())];
 }
 
 /** The value held within the bounds. */

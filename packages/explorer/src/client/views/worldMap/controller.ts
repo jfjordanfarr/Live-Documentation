@@ -18,19 +18,27 @@ import {
   autoPlace,
   clamp,
   corners,
+  coveredArea,
   drawOrder,
   inRect,
+  labelAnchor,
+  labelMoves,
+  panelBeside,
   pixelsToUnits,
   placePiece,
   rectAround,
   roadCurve,
+  silhouette,
   spreadTokens,
   unitsToPixels,
   wallOf,
   wallPoint,
   type Anchor,
+  type Avoid,
+  type LabelMove,
   type Placed,
   type Rect,
+  type ScreenBox,
   type Wall
 } from "./layout";
 import { regionsOf, type Tint, type WorldModel, type WorldRoad } from "./model";
@@ -59,9 +67,50 @@ import {
   type Screen
 } from "./projection";
 import { escapeHtml } from "../../graph-helpers";
+import { CLOSE_ICON, iconButton } from "../../panels/icon-button";
 import { parseInitialState } from "../../persistence/url-state";
 
 const SVG = "http://www.w3.org/2000/svg";
+
+/**
+ * Where a piece's two lines stand above the top of its outline, in screen pixels: the second line's box ends a few
+ * pixels clear of the outline, and the name stands one line above it.
+ */
+const SUB_DY = -6;
+const NAME_DY = -21;
+/** How far a label may move sideways, in fractions of its own width: up to half, so that it stays over what it names. */
+const SHIFTS = [0, -0.25, 0.25, -0.5, 0.5];
+/**
+ * Where a piece's label may move from where it rests when a nearer piece's label or any piece's outline is in its way:
+ * above its piece, up a line at most and sideways; then below its piece, clear of the strands it hangs, and sideways.
+ * A label lifted further read as the next piece's (2026-11-12).
+ */
+const LABEL_MOVES = [...labelMoves([0, -14], SHIFTS), ...labelMoves([0, 14], SHIFTS).map((move) => ({ ...move, below: true }))];
+/** The longest strand a piece hangs, in board pixels: the longest `drawStrands` draws. */
+const LONGEST_STRAND = 26;
+
+/**
+ * The board's tools, three groups parted by rules: turning the camera, what the board shows, and the layout. Each is an
+ * icon with its name and key in its tooltip (the owner, 2026-10-30: "everything is an icon and text only appears when
+ * it is user-authored"). The drawings are the application's own.
+ */
+const TOOLS: Array<Array<{ act: string; label: string; key?: string; toggle?: boolean; drawing: string }>> = [
+  [
+    { act: "rotl", label: "Turn left", key: "Q", drawing: '<path d="M18.5 15.75A7.5 7.5 0 1 0 5.5 15.75"/><path d="M6.4 12.4 5.5 15.75 2.1 14.85"/><path d="M12 10l4 2-4 2-4-2Z"/>' },
+    { act: "rotr", label: "Turn right", key: "E", drawing: '<path d="M5.5 15.75A7.5 7.5 0 1 1 18.5 15.75"/><path d="M17.6 12.4 18.5 15.75 21.9 14.85"/><path d="M12 10l4 2-4 2-4-2Z"/>' },
+    { act: "tilt", label: "Look straight down", key: "T", toggle: true, drawing: '<path d="M12 2.5V10M8.5 6.5 12 10l3.5-3.5"/><rect x="5" y="13" width="14" height="8" rx="1"/>' }
+  ],
+  [
+    { act: "under", label: "Built on", key: "U", toggle: true, drawing: '<rect x="6" y="3.5" width="12" height="9" rx="1"/><path d="M8.5 12.5c0 3-1 4.5-1.5 8M12 12.5v8M15.5 12.5c0 3 1 4.5 1.5 8"/>' },
+    { act: "snap", label: "Snap to grid", key: "G", toggle: true, drawing: '<rect x="4" y="4" width="16" height="16" rx="1"/><path d="M9.33 4v16M14.67 4v16M4 9.33h16M4 14.67h16"/>' },
+    { act: "theme", label: "Dark board", key: "D", toggle: true, drawing: '<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/>' }
+  ],
+  [
+    { act: "fit", label: "Fit", key: "F", drawing: '<path d="M9 3H3v6m12-6h6v6M3 15v6h6m12-6v6h-6"/>' },
+    { act: "reset", label: "Reset layout", key: "R", drawing: '<path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/>' },
+    { act: "save", label: "Save board", drawing: '<path d="M12 3v12M7.5 10.5 12 15l4.5-4.5M4 15v4.5h16V15"/>' }
+  ]
+];
 
 /** What the pointer is on. */
 export interface Hover {
@@ -161,8 +210,13 @@ export class WorldMapController {
   private readonly defs: SVGElement;
   private readonly camGroup: SVGGElement;
   private readonly layers: Record<string, SVGGElement> = {};
+  private readonly hud: HTMLElement;
   private readonly crumbs: HTMLElement;
   private readonly tools: HTMLElement;
+  /** One keyboard stop per piece, in the board's own order, kept across draws so that focus survives a turn. */
+  private readonly focusTargets = new Map<string, SVGGElement>();
+  /** The piece the keyboard is on, whose peek stands beside it as a pinned panel does. */
+  private focused: string | null = null;
   private readonly evidence: HTMLElement;
   private readonly helpButton: HTMLButtonElement;
   private readonly help: HTMLElement;
@@ -186,7 +240,8 @@ export class WorldMapController {
   private doors: Door[] = [];
   private tokens: Token[] = [];
   private roadCurves = new Map<string, [Point3, Point3, Point3, Point3]>();
-  private tour = { on: false, at: 0 };
+  /** The walkthrough, and the view it began on, to which it returns. */
+  private tour: { on: boolean; at: number; start?: { camera: Camera; screen: Screen; under: boolean } } = { on: false, at: 0 };
   /** What the last press landed on; a click and a double-click are retargeted to the surface by the pointer capture. */
   private lastPressed: Element | null = null;
   private readonly disposers: Array<() => void> = [];
@@ -208,19 +263,36 @@ export class WorldMapController {
     const blur = svgElement("filter", { id: "world-blur", x: "-30%", y: "-30%", width: "160%", height: "160%" }, svgElement("defs", {}, this.svg));
     svgElement("feGaussianBlur", { stdDeviation: "7" }, blur);
     this.camGroup = svgElement("g", { class: "w-cam" }, this.svg) as SVGGElement;
-    for (const name of ["ground", "under", "shadows", "roads", "blocks", "roots", "doors", "labels"]) {
+    for (const name of ["ground", "under", "shadows", "roads", "blocks", "roots", "doors", "labels", "focus"]) {
       this.layers[name] = svgElement("g", { class: `w-layer-${name}` }, this.camGroup) as SVGGElement;
     }
-    const hud = element("div", "world-hud", this.world);
-    this.crumbs = element("div", "world-crumbs", hud);
-    this.tools = element("div", "world-tools", hud);
-    for (const [act, label] of [["rotl", "rotate left"], ["rotr", "rotate right"], ["tilt", "top-down"], ["under", "built on"], ["snap", "snap to grid"], ["theme", "dark"], ["fit", "fit"], ["reset", "reset layout"], ["save", "save board"]]) {
-      const button = element("button", "", this.tools, label);
-      button.dataset.act = act;
+    this.hud = element("div", "world-hud", this.world);
+    this.crumbs = element("div", "world-crumbs", this.hud);
+    this.tools = element("div", "world-tools", this.hud);
+    this.tools.setAttribute("role", "toolbar");
+    this.tools.setAttribute("aria-label", "Board");
+    for (const group of TOOLS) {
+      const span = element("span", "world-tool-group", this.tools);
+      for (const tool of group) {
+        const button = iconButton(tool.label, tool.drawing);
+        button.dataset.act = tool.act;
+        if (tool.key) {
+          button.title = `${tool.label} (${tool.key})`;
+          button.setAttribute("aria-keyshortcuts", tool.key);
+        }
+        if (tool.toggle) {
+          button.setAttribute("aria-pressed", "false");
+        }
+        span.append(button);
+      }
     }
     this.evidence = element("div", "world-evidence", this.world);
+    // The pinned panel takes focus when a piece is pinned from the keyboard, so that its links are the next stops.
+    this.evidence.tabIndex = -1;
     this.helpButton = element("button", "world-help-btn", this.world, "?");
-    this.helpButton.title = "what am I looking at?";
+    this.helpButton.title = "Help (?)";
+    this.helpButton.setAttribute("aria-label", "Help");
+    this.helpButton.setAttribute("aria-keyshortcuts", "?");
     this.help = element("div", "world-help", this.world);
     this.tourBox = element("div", "world-tour", this.world);
     this.tourBox.innerHTML = `<div class="step"></div><div class="text"></div><div class="row"><button data-tour="back">back</button><button data-tour="next" class="primary">next</button><button data-tour="done">done</button></div>`;
@@ -231,6 +303,7 @@ export class WorldMapController {
     this.pivot = { x: this.bench.x + this.bench.w / 2, y: this.bench.y + this.bench.d / 2 };
     this.restoreTheme();
     this.writeHelp();
+    this.buildFocusTargets();
     this.attachInput();
   }
 
@@ -362,8 +435,11 @@ export class WorldMapController {
   }
 
   private draw(): void {
-    for (const layer of Object.values(this.layers)) {
-      layer.innerHTML = "";
+    // Everything is drawn afresh but the keyboard's stops, which are moved in place so that a focused piece keeps focus.
+    for (const [name, layer] of Object.entries(this.layers)) {
+      if (name !== "focus") {
+        layer.innerHTML = "";
+      }
     }
     this.defs.innerHTML = "";
     const regionRects = this.regionRects();
@@ -377,8 +453,26 @@ export class WorldMapController {
       this.drawStrands(placed);
     }
     this.drawLabels();
+    for (const [name, target] of this.focusTargets) {
+      target.querySelector("polygon")?.setAttribute("points", silhouette(this.camera, this.pivot, this.place(name)).map((p) => p.join(",")).join(" "));
+    }
     this.applyCamera();
     this.applyHover();
+  }
+
+  /**
+   * The pieces' keyboard stops, in the board's own order, the order its author wrote its things in: each a button
+   * named for what the piece is, with a ring on the piece's outline that shows while the keyboard is on it. They stand
+   * over the drawing and take no pointer, so a click still lands on the piece beneath.
+   */
+  private buildFocusTargets(): void {
+    for (const piece of this.model.pieces) {
+      const files = `${piece.files.length} file${piece.files.length === 1 ? "" : "s"}`;
+      const said = [piece.name, piece.kind, piece.imagined ? "imagined, nothing inside yet" : files].filter(Boolean).join(", ");
+      const target = svgElement("g", { class: "w-focus", tabindex: 0, role: "button", "aria-label": said, "data-focus": piece.name }, this.layers.focus) as SVGGElement;
+      svgElement("polygon", { class: "w-focus-ring" }, target);
+      this.focusTargets.set(piece.name, target);
+    }
   }
 
   private themeColours(): (typeof THEMES)["light"] {
@@ -640,15 +734,8 @@ export class WorldMapController {
     }
     const mid = points[Math.floor(points.length / 2)];
     const at = project(this.camera, this.pivot, mid[0], mid[1], mid[2]);
-    const collides = (dy: number): boolean =>
-      this.model.pieces.some((piece) => {
-        const placed = this.place(piece.name);
-        const label = project(this.camera, this.pivot, placed.cx, placed.cy, placed.z0 + placed.h);
-        const tagY = at[1] * this.screen.k + dy;
-        return Math.abs(label[0] - at[0]) * this.screen.k < 100 && (Math.abs(tagY - (label[1] * this.screen.k - 14)) < 16 || Math.abs(tagY - (label[1] * this.screen.k + 1)) < 16);
-      });
-    const dy = !collides(24) ? 24 : !collides(-22) ? -22 : !collides(44) ? 44 : 24;
-    const tag = svgElement("text", { class: "w-tag", "data-fixed": at.join(","), "text-anchor": "middle", dy, "data-dy": dy }, this.layers.labels);
+    // The tag rests below the sleeve's middle; settling moves it off the labels and the pieces' outlines from there.
+    const tag = svgElement("text", { class: "w-tag", "data-fixed": at.join(","), "text-anchor": "middle", dy: 24, "data-dy": 24 }, this.layers.labels);
     tag.textContent = `${crossing.over ?? "crossing"} · declared`;
   }
 
@@ -678,7 +765,7 @@ export class WorldMapController {
       const per = Math.ceil(n / 2);
       const t = 0.15 + 0.7 * (((i >> 1) + 0.5) / per);
       const p: Point2 = [a[0] + (c[0] - a[0]) * t, a[1] + (c[1] - a[1]) * t];
-      const length = 12 + 7 * ((i * 7) % 3);
+      const length = LONGEST_STRAND - 7 * (2 - ((i * 7) % 3));
       const [sx, sy] = project(this.camera, this.pivot, p[0], p[1], placed.z0);
       const [ex, ey] = project(this.camera, this.pivot, p[0], p[1], placed.z0 - length);
       const wobble = (((i * 13) % 5) - 2) * 2.5;
@@ -714,14 +801,15 @@ export class WorldMapController {
     }
   }
 
+  /** Each piece's name, and under it its kind and its files, standing above the top of the piece's outline. */
   private drawLabels(): void {
     for (const piece of this.model.pieces) {
       const placed = this.place(piece.name);
       const group = svgElement("g", { class: "w-label", "data-piece": piece.name }, this.layers.labels);
-      const c = project(this.camera, this.pivot, placed.cx, placed.cy, placed.z0 + placed.h);
-      const name = svgElement("text", { "data-fixed": c.join(","), "text-anchor": "middle", dy: -14 }, group);
+      const c = labelAnchor(this.camera, this.pivot, placed);
+      const name = svgElement("text", { class: "w-name", "data-fixed": c.join(","), "text-anchor": "middle", dy: NAME_DY }, group);
       name.textContent = piece.name;
-      const sub = svgElement("text", { class: "w-sub", "data-fixed": c.join(","), "text-anchor": "middle", dy: 1 }, group);
+      const sub = svgElement("text", { class: "w-sub", "data-fixed": c.join(","), "text-anchor": "middle", dy: SUB_DY }, group);
       sub.textContent = piece.imagined ? (piece.kind ?? "") : `${piece.kind ? `${piece.kind} · ` : ""}${piece.files.length} file${piece.files.length === 1 ? "" : "s"}`;
     }
   }
@@ -744,40 +832,50 @@ export class WorldMapController {
   }
 
   /**
-   * Keeps labels off each other. A thing's name stays where it is, since it
-   * names the thing. The line under a name, its kind and its files, goes
-   * when it would cover another label, as it does when the world is zoomed
-   * out and names draw together. A region's label, a crossing's tag, a
-   * token's label and a door's label, shown while its thing, its road or the
-   * door itself is under the pointer or pinned, move a step up or down from
-   * where they rest until they cover nothing, in that order, each keeping
-   * clear of the ones settled before it. Labels keep their size while the
-   * world scales, so this runs after every camera move and every hover.
+   * Keeps labels off each other and off the pieces' outlines, since a word
+   * with an edge through it reads as struck out whichever piece the edge is
+   * (2026-11-12). A thing's name, with its kind and its files under it,
+   * stands above its own piece; while a nearer piece's label or any piece's
+   * outline is in its way it moves up a line at most or sideways by up to half
+   * its width, the line under it keeping to its height and finding its own
+   * place aside; failing that, it stands below its piece, clear of the
+   * strands, never on it; nearer pieces settle first. Where no move clears
+   * both lines, the second goes and the name stands alone, as it does when the
+   * world is zoomed out
+   * and names draw together; the hover, the pinned panel and the keyboard's
+   * name for the piece still say what it said. A region's label, a crossing's
+   * tag, a token's label and a door's label, shown while its thing, its road
+   * or the door itself is under the pointer or pinned, then settle in that
+   * order: each moves a step up or down, a region's further since it names an
+   * area, and all but a door's sideways, from where it rests until it covers
+   * nothing, keeping clear of the labels settled before it.
+   * Labels keep their size while the world scales, so this runs after every
+   * camera move and every hover.
    */
   private settleLabels(): void {
     if (!this.world.isConnected) {
       return;
     }
     const visible = (node: SVGElement): boolean => node.style.display !== "none" && node.getBoundingClientRect().width > 0;
-    const placed: DOMRect[] = [];
-    for (const node of this.layers.labels.querySelectorAll<SVGElement>(".w-label text:not(.w-sub)")) {
-      if (visible(node)) {
-        placed.push(node.getBoundingClientRect());
-      }
-    }
-    const covered = (box: DOMRect): number => placed.reduce((sum, other) => sum + Math.max(0, Math.min(box.right, other.right) - Math.max(box.left, other.left) - 1) * Math.max(0, Math.min(box.bottom, other.bottom) - Math.max(box.top, other.top) - 1), 0);
-    for (const node of this.layers.labels.querySelectorAll<SVGElement>(".w-label text.w-sub")) {
-      node.style.display = "";
-      const box = node.getBoundingClientRect();
-      if (covered(box) > 0) {
-        node.style.display = "none";
-      } else {
-        placed.push(box);
-      }
-    }
-    const steps: Record<string, number[]> = { "w-zone": [0, -18, 18, -36, 36], "w-tag": [0, -20, 20, -40, 40], "w-tokenlabel": [0, -52, 18, -70, 36], "w-doorlabel": [0, -14, 14, -28, 28, -42, 42, -56, 56, -70, 70] };
+    const left = this.svgLeft();
+    const top = this.svgTop();
+    const outlineOf = new Map(this.model.pieces.map((piece) => [piece.name, silhouette(this.camera, this.pivot, this.place(piece.name)).map((p): Point2 => {
+      const s = toScreen(this.screen, p);
+      return [s[0] + left, s[1] + top];
+    })]));
+    const outlines = [...outlineOf.values()];
+    // How far below its outline a piece's strands hang on the screen, which a label below the piece keeps clear of.
+    const strands = LONGEST_STRAND * Math.cos(this.camera.phi) * this.screen.k;
+    const placed: ScreenBox[] = [];
+    const covered = (box: ScreenBox): number =>
+      placed.reduce((sum, other) => sum + Math.max(0, Math.min(box.right, other.right) - Math.max(box.left, other.left) - 1) * Math.max(0, Math.min(box.bottom, other.bottom) - Math.max(box.top, other.top) - 1), 0)
+      + outlines.reduce((sum, outline) => sum + coveredArea(box, outline), 0);
+    const moved = (box: ScreenBox, dx: number, dy: number): ScreenBox => ({ left: box.left + dx, right: box.right + dx, top: box.top + dy, bottom: box.bottom + dy });
+    // A region's name labels an area, not a point, so it may travel further along the region's side than the others.
+    const steps: Record<string, number[]> = { "w-zone": [0, -18, 18, -36, 36, -54, 54, -72, 72], "w-tag": [0, -20, 20, -40, 40, -60, 60], "w-tokenlabel": [0, -52, 18, -70, 36, -88, 54, -106, 72], "w-doorlabel": [0, -14, 14, -28, 28, -42, 42, -56, 56, -70, 70] };
     const doorBoxes: DOMRect[] = [];
-    for (const kind of ["w-zone", "w-tag", "w-tokenlabel", "w-doorlabel"]) {
+    // Each label of a kind takes the first step from where it rests that covers nothing, or else the one covering least.
+    const settle = (kind: string): void => {
       for (const node of this.layers.labels.querySelectorAll<SVGElement>(`text.${kind}`)) {
         if (!visible(node)) {
           continue;
@@ -787,33 +885,93 @@ export class WorldMapController {
         const sides: Array<{ anchor: string; dx: string } | undefined> = node.dataset.anchor
           ? [{ anchor: node.dataset.anchor, dx: node.dataset.dx ?? "0" }, { anchor: node.dataset.anchor === "end" ? "start" : "end", dx: String(-Number(node.dataset.dx ?? "0")) }]
           : [undefined];
-        let best = { dy: rest, cover: Number.POSITIVE_INFINITY, side: sides[0] };
+        // A door's label keeps to its door; any other may also move sideways, by up to half its width.
+        const shifts = node.dataset.anchor ? [0] : SHIFTS;
+        let best = { dy: rest, dx: Number(node.dataset.dx ?? "0"), cover: Number.POSITIVE_INFINITY, side: sides[0] };
         search: for (const side of sides) {
           if (side) {
             node.setAttribute("text-anchor", side.anchor);
-            node.setAttribute("dx", side.dx);
           }
+          const sideDx = Number(side?.dx ?? "0");
+          node.setAttribute("dx", String(sideDx));
+          node.setAttribute("dy", String(rest));
+          const box = node.getBoundingClientRect();
           for (const step of steps[kind]) {
-            node.setAttribute("dy", String(rest + step));
-            const cover = covered(node.getBoundingClientRect());
-            if (cover < best.cover) {
-              best = { dy: rest + step, cover, side };
-            }
-            if (cover === 0) {
-              break search;
+            for (const shift of shifts) {
+              const cover = covered(moved(box, shift * box.width, step));
+              if (cover < best.cover) {
+                best = { dy: rest + step, dx: sideDx + shift * box.width, cover, side };
+              }
+              if (cover === 0) {
+                break search;
+              }
             }
           }
         }
         if (best.side) {
           node.setAttribute("text-anchor", best.side.anchor);
-          node.setAttribute("dx", best.side.dx);
         }
+        node.setAttribute("dx", String(best.dx));
         node.setAttribute("dy", String(best.dy));
         placed.push(node.getBoundingClientRect());
         if (kind === "w-doorlabel") {
           doorBoxes.push(node.getBoundingClientRect());
         }
       }
+    };
+    const nearestFirst = this.model.pieces
+      .map((piece) => ({ name: piece.name, depth: depthOf(this.camera, this.pivot, this.place(piece.name).cx, this.place(piece.name).cy) }))
+      .sort((a, b) => b.depth - a.depth)
+      .map((entry) => this.layers.labels.querySelector<SVGGElement>(`.w-label[data-piece="${CSS.escape(entry.name)}"]`))
+      .filter((group): group is SVGGElement => group !== null);
+    // A piece's name takes the smallest move where it covers nothing and the line under it, at the same height, has a
+    // place that covers nothing, under the name or aside by up to half the label's width; failing that, the name alone
+    // where it covers nothing, and the line under it goes; failing that, the name where it covers least.
+    for (const group of nearestFirst) {
+      const name = group.querySelector<SVGElement>("text.w-name");
+      const sub = group.querySelector<SVGElement>("text.w-sub");
+      if (!name) {
+        continue;
+      }
+      for (const [node, dy] of [[name, NAME_DY], [sub, SUB_DY]] as Array<[SVGElement | null, number]>) {
+        node?.setAttribute("dy", String(dy));
+        node?.setAttribute("dx", "0");
+      }
+      if (sub) {
+        sub.style.display = "";
+      }
+      const nameBox = name.getBoundingClientRect();
+      const subRect = sub?.getBoundingClientRect();
+      const subBox = subRect && subRect.width > 0 ? subRect : undefined;
+      const width = Math.max(nameBox.width, subBox?.width ?? 0);
+      // Below its piece, the name's top stands a few pixels under the lowest of the outline and its strands.
+      const own = outlineOf.get(group.dataset.piece ?? "") ?? [];
+      const below = own.length ? Math.max(...own.map((p) => p[1])) + strands + 4 - nameBox.top : 0;
+      const drop = (move: LabelMove): number => move.rise + (move.below ? below : 0);
+      const nameCover = (move: LabelMove): number => covered(moved(nameBox, move.shift * width, drop(move)));
+      // The line under the name, at the name's height: under the name first, then aside.
+      const subPlace = (move: LabelMove): number | undefined =>
+        subBox ? [move.shift, ...SHIFTS.filter((shift) => shift !== move.shift)].find((shift) => covered(moved(subBox, shift * width, drop(move))) === 0) : undefined;
+      let move = LABEL_MOVES.find((candidate) => nameCover(candidate) === 0 && (!subBox || subPlace(candidate) !== undefined));
+      let subShift = move ? subPlace(move) : undefined;
+      if (!move) {
+        move = LABEL_MOVES.find((candidate) => nameCover(candidate) === 0) ?? LABEL_MOVES.reduce((best, candidate) => (nameCover(candidate) < nameCover(best) ? candidate : best));
+        subShift = undefined;
+      }
+      name.setAttribute("dx", String(move.shift * width));
+      name.setAttribute("dy", String(NAME_DY + drop(move)));
+      placed.push(moved(nameBox, move.shift * width, drop(move)));
+      if (sub) {
+        sub.style.display = subShift === undefined ? "none" : "";
+        if (subShift !== undefined && subBox) {
+          sub.setAttribute("dx", String(subShift * width));
+          sub.setAttribute("dy", String(SUB_DY + drop(move)));
+          placed.push(moved(subBox, subShift * width, drop(move)));
+        }
+      }
+    }
+    for (const kind of ["w-zone", "w-tag", "w-tokenlabel", "w-doorlabel"]) {
+      settle(kind);
     }
     // A sub-line that a door's label still covers goes, as it does under a name: the pinned panel says the same words.
     for (const node of this.layers.labels.querySelectorAll<SVGElement>(".w-label text.w-sub")) {
@@ -876,18 +1034,23 @@ export class WorldMapController {
     });
   }
 
-    /** Eases the camera to an azimuth and elevation about the centre of the view, refitting the board after when asked. */
-  async orbitTo(theta: number, phi: number, ms = 520, fitAfter = false): Promise<void> {
+  /**
+   * Eases the camera to an azimuth and elevation about the centre of the view; or, given where the picture should end,
+   * eases the pan and zoom there with it: the board refitted, or a framing kept from before.
+   */
+  async orbitTo(theta: number, phi: number, ms = 520, finish?: "fit" | Screen): Promise<void> {
     const from = { ...this.camera };
     const to = { theta, phi: clamp(phi, MIN_ELEVATION, TOP_DOWN) };
     const { width, height } = this.viewport();
     const pivot = this.pivotAt(width / 2, height / 2);
     let end: Screen | null = null;
-    if (fitAfter) {
+    if (finish === "fit") {
       const kept = this.camera;
       this.camera = to;
       end = this.fitParams();
       this.camera = kept;
+    } else if (finish) {
+      end = { ...finish };
     }
     const screen0 = { ...this.screen };
     await this.tween(ms, (t) => {
@@ -913,7 +1076,7 @@ export class WorldMapController {
 
   /** Straight down, squared to the screen with the whole board in view; or back to the resting angle. */
   topDown(): Promise<void> {
-    return isTopDown(this.camera) ? this.orbitTo(this.camera.theta + Math.PI / 4, REST_ELEVATION, 520, true) : this.orbitTo(this.camera.theta - Math.PI / 4, TOP_DOWN, 520, true);
+    return isTopDown(this.camera) ? this.orbitTo(this.camera.theta + Math.PI / 4, REST_ELEVATION, 520, "fit") : this.orbitTo(this.camera.theta - Math.PI / 4, TOP_DOWN, 520, "fit");
   }
 
   // ==========================================================================
@@ -1007,8 +1170,9 @@ export class WorldMapController {
         }
       }
     }
-    this.showEvidence(h);
+    // Labels first: a piece's panel stands clear of the piece's label where it has settled.
     this.settleLabels();
+    this.showEvidence(h);
   }
 
   private showEvidence(h: Hover | null): void {
@@ -1022,29 +1186,100 @@ export class WorldMapController {
     if (pinned && box.dataset.pin === `${h.kind}:${h.id}`) {
       return;
     }
-    let out = this.evidenceFor(h, pinned);
-    if (pinned) {
-      out += `<button class="close" title="dismiss">&times;</button>`;
-    }
-    box.innerHTML = out;
+    const keyboardWasHere = box.contains(document.activeElement);
+    const { head, body } = this.evidenceFor(h, pinned);
+    // The head holds what the panel is about and, pinned, its close control; it stays at the top while the rest scrolls.
+    box.innerHTML = `<div class="head">${head}</div>${body}`;
     box.style.display = "block";
     box.classList.toggle("pinned", pinned);
     box.dataset.pin = pinned ? `${h.kind}:${h.id}` : "";
     if (pinned) {
-      box.querySelector(".close")?.addEventListener("click", () => this.unpin());
+      const close = iconButton("Close", CLOSE_ICON);
+      close.className = "close";
+      close.title = "Close (Esc)";
+      close.setAttribute("aria-keyshortcuts", "Escape");
+      close.addEventListener("click", () => this.unpin());
+      box.querySelector(".head")?.append(close);
+      box.setAttribute("role", "region");
+      box.setAttribute("aria-label", h.id);
+    } else {
+      box.removeAttribute("role");
+      box.removeAttribute("aria-label");
     }
+    this.placeEvidence(h, pinned);
+    // A name followed from the keyboard inside the panel draws a new panel: the keyboard stays in it.
+    if (pinned && keyboardWasHere) {
+      box.focus();
+    }
+  }
+
+  /**
+   * Where the panel stands. A piece's panel, pinned or peeking at the keyboard's piece, stands beside the piece, never
+   * on it, inside the view below the tools, and as clear as it can be of the pieces wired to it; any other panel, and a
+   * peek at the pointer's piece, follows the pointer.
+   */
+  private placeEvidence(h: Hover, pinned: boolean): void {
+    const box = this.evidence;
     const { width, height } = this.viewport();
+    // Measured at the left edge, where nothing narrows it, so that its size is its own wherever it then stands.
+    box.style.left = "0px";
+    box.style.top = "0px";
     const rect = box.getBoundingClientRect();
+    if (h.kind === "piece" && (pinned || this.focused === h.id)) {
+      const wired = new Set(this.model.roads.filter((road) => road.from === h.id || road.to === h.id).flatMap((road) => [road.from, road.to]));
+      const avoid: Avoid[] = this.model.pieces
+        .filter((piece) => piece.name !== h.id)
+        .map((piece) => ({ box: this.pieceBox(piece.name), weight: wired.has(piece.name) ? 1 : 0.2 }));
+      const at = panelBeside(this.pieceBox(h.id), { width: rect.width, height: rect.height }, this.panelRoom(), avoid);
+      box.style.left = `${at.left}px`;
+      box.style.top = `${at.top}px`;
+      return;
+    }
     box.style.left = `${clamp(this.lastPointer[0] + 18, 12, width - rect.width - 12)}px`;
     box.style.top = `${clamp(this.lastPointer[1] + 18, 12, height - rect.height - 12)}px`;
   }
 
-  /** The panel's words for what the pointer is on: a peek on hover, everything when pinned. */
-  private evidenceFor(h: Hover, full: boolean): string {
+  /** The room a panel has, in the view's pixels: inside the view, below the board's title and tools. */
+  private panelRoom(): ScreenBox {
+    const { width, height } = this.viewport();
+    const below = this.hud.getBoundingClientRect().bottom - this.svgTop();
+    return { left: 12, top: Math.max(12, below + 8), right: width - 12, bottom: height - 12 };
+  }
+
+  /** A piece on the screen, in the view's pixels: its outline and the label above it. */
+  private pieceBox(name: string): ScreenBox {
+    const outline = silhouette(this.camera, this.pivot, this.place(name)).map((p) => toScreen(this.screen, p));
+    const box = {
+      left: Math.min(...outline.map((p) => p[0])),
+      top: Math.min(...outline.map((p) => p[1])),
+      right: Math.max(...outline.map((p) => p[0])),
+      bottom: Math.max(...outline.map((p) => p[1]))
+    };
+    const left = this.svgLeft();
+    const top = this.svgTop();
+    for (const text of this.layers.labels.querySelectorAll<SVGElement>(`.w-label[data-piece="${CSS.escape(name)}"] text`)) {
+      const rect = text.getBoundingClientRect();
+      if (rect.width > 0) {
+        box.left = Math.min(box.left, rect.left - left);
+        box.top = Math.min(box.top, rect.top - top);
+        box.right = Math.max(box.right, rect.right - left);
+        box.bottom = Math.max(box.bottom, rect.bottom - top);
+      }
+    }
+    return box;
+  }
+
+  /**
+   * The panel's words for what the pointer is on, a peek on hover and everything when pinned: its head, the line that
+   * names it, and its body.
+   */
+  private evidenceFor(h: Hover, full: boolean): { head: string; body: string } {
+    const nothing = { head: "", body: "" };
+    const title = (name: string, tier: string): string => `<div class="h">${name}<span class="tier">${tier}</span></div>`;
     if (h.kind === "road") {
       const road = this.model.roads.find((candidate) => candidate.id === h.id);
       if (!road) {
-        return "";
+        return nothing;
       }
       const verb = road.kind === "call" ? "calls" : "stands on";
       const door = road.door ? `<div>${escapeHtml(road.door.name)}${road.door.kind ? ` <span class="k">· ${escapeHtml(road.door.kind)}</span>` : ""}</div>` : "";
@@ -1054,12 +1289,12 @@ export class WorldMapController {
       const lines = shown.map((line) => `<div class="via">${escapeHtml(line.label)}</div><div class="f">${this.fileLink(line.from)} &rarr; ${this.fileLink(line.to)}</div>`).join("");
       const more = road.lines.length > shown.length ? `<div class="src">and ${road.lines.length - shown.length} more; click to pin and see them all</div>` : "";
       const source = road.basis === "declared" ? `<div class="src">declared on the board</div>` : `<div class="src">${road.count} edge${road.count === 1 ? "" : "s"} in the docs</div>`;
-      return `<div class="h">${this.pinLink("piece", road.from)} ${verb} ${this.pinLink("piece", road.to)}<span class="tier">${BASIS_WORDS[road.basis]}</span></div>${door}${over}${meaning}${lines}${more}${source}`;
+      return { head: title(`${this.pinLink("piece", road.from)} ${verb} ${this.pinLink("piece", road.to)}`, BASIS_WORDS[road.basis]), body: `${door}${over}${meaning}${lines}${more}${source}` };
     }
     if (h.kind === "piece") {
       const piece = this.model.pieces.find((candidate) => candidate.name === h.id);
       if (!piece) {
-        return "";
+        return nothing;
       }
       const folder = piece.folder ?? "";
       const inside = (file: string): string => (folder && file.startsWith(`${folder}/`) ? file.slice(folder.length + 1) : file);
@@ -1079,62 +1314,73 @@ export class WorldMapController {
         packages.length ? `${packages.length} package${packages.length === 1 ? "" : "s"}` : "",
         references.length ? `${references.length} reference${references.length === 1 ? "" : "s"}` : ""
       ].filter(Boolean).join(", ");
-      const files = full && piece.files.length ? `<div class="list">${piece.files.map((file) => `<span class="f">${this.fileLink(file, inside(file))}</span>`).join("")}</div>` : "";
       const served = piece.doors.map((door) => (full
         ? `<span class="f">${escapeHtml(door.name)} <span class="k">· ${escapeHtml(door.kind)}${door.file ? ` in ${this.fileLink(door.file, inside(door.file))}` : ", declared"}</span></span>`
         : escapeHtml(door.name)));
       const standsList = full && piece.standsOn.length ? `<div class="list">${piece.standsOn.map((item) => `<span class="f">${escapeHtml(item.label)} <span class="k">in ${this.fileLink(item.manifest, inside(item.manifest))}</span></span>`).join("")}</div>` : "";
       const named = piece.standsOn.length && !full ? `<div class="src">named in ${manifests.map((manifest) => this.fileLink(manifest, inside(manifest))).join(", ")}</div>` : "";
-      return `<div class="h">${escapeHtml(piece.name)}<span class="tier">${escapeHtml(piece.kind ?? "thing")}${regions.length ? ` · ${regions.map((region) => this.pinLink("region", region.name)).join(" · ")}` : ""}</span></div>`
-        + (piece.imagined ? `<div>imagined: no folder yet, nothing inside to open</div>` : `<div>${piece.files.length} file${piece.files.length === 1 ? "" : "s"} · ${piece.symbols} symbol${piece.symbols === 1 ? "" : "s"}</div>${files}`)
-        + (served.length ? `<div class="via"><span class="k">offers</span> ${full ? `<div class="list">${served.join("")}</div>` : served.join(", ")}</div>` : "")
+      // What the piece is, who it talks to, the way inside, and last its files, folded behind their count when pinned
+      // (2026-11-12: a newcomer found 213 file names first and "called by" and "open" ten panel-heights down).
+      const what = piece.imagined ? `<div>imagined: no folder yet, nothing inside to open</div>` : piece.folder ? `<div class="k">${escapeHtml(piece.folder)}</div>` : "";
+      const talks = (served.length ? `<div class="via"><span class="k">offers</span> ${full ? `<div class="list">${served.join("")}</div>` : served.join(", ")}</div>` : "")
         + (calls.length ? `<div class="via"><span class="k">calls</span> ${calls.map((name) => this.pinLink("piece", name)).join(", ")}</div>` : "")
         + (calledBy.length ? `<div class="via"><span class="k">called by</span> ${calledBy.map((name) => this.pinLink("piece", name)).join(", ")}</div>` : "")
         + (ghosts.length ? `<div class="via"><span class="k">calls out to</span> ${full ? `<div class="list">${ghosts.join("")}</div><div class="src">nothing on the board serves ${ghosts.length === 1 ? "it" : "them"}; a ghost until something does</div>` : ghosts.join(", ")}</div>` : "")
         + (stands ? `<div class="via"><span class="k">stands on</span> ${stands}</div>${standsList}${named}` : "")
-        + (under.length ? `<div class="via"><span class="k">under</span> ${under.map((name) => this.pinLink("piece", name)).join(", ")}</div>` : "")
-        + (piece.folder ? `<div class="src">${escapeHtml(piece.folder)}</div>` : "")
-        + (piece.folder && full ? `<a href="#" class="open" data-open="${escapeHtml(piece.name)}">open ${escapeHtml(piece.name)}</a>` : "");
+        + (under.length ? `<div class="via"><span class="k">under</span> ${under.map((name) => this.pinLink("piece", name)).join(", ")}</div>` : "");
+      const open = piece.folder && full ? `<a href="#" class="open" data-open="${escapeHtml(piece.name)}">open ${escapeHtml(piece.name)}</a>` : "";
+      const count = `${piece.files.length} file${piece.files.length === 1 ? "" : "s"} · ${piece.symbols} symbol${piece.symbols === 1 ? "" : "s"}`;
+      const files = piece.imagined
+        ? ""
+        : full && piece.files.length
+          ? `<details class="files"><summary>${count}</summary><div class="list">${piece.files.map((file) => `<span class="f">${this.fileLink(file, inside(file))}</span>`).join("")}</div></details>`
+          : `<div class="src">${count}</div>`;
+      const tier = `${escapeHtml(piece.kind ?? "thing")}${regions.length ? ` · ${regions.map((region) => this.pinLink("region", region.name)).join(" · ")}` : ""}`;
+      return { head: title(escapeHtml(piece.name), tier), body: `${what}${talks}${open}${files}` };
     }
     if (h.kind === "token") {
       const token = this.tokens.find((candidate) => candidate.key === h.id);
       if (!token) {
-        return "";
+        return nothing;
       }
       const rows: string[] = [];
       for (const user of token.users) {
         const item = this.model.pieces.find((candidate) => candidate.name === user)?.standsOn.find((candidate) => candidate.label === token.label);
         rows.push(`<span class="f">${this.pinLink("piece", user)}${item ? ` <span class="k">in ${this.fileLink(item.manifest)}</span>` : ""}</span>`);
       }
-      return `<div class="h">${escapeHtml(token.label)}<span class="tier">${token.kind}</span></div>`
-        + (full ? `<div class="via"><span class="k">under</span></div><div class="list">${rows.join("")}</div>` : `<div><span class="k">under</span> ${token.users.map((user) => this.pinLink("piece", user)).join(", ")}</div><div class="src">named in the manifests</div>`);
+      return {
+        head: title(escapeHtml(token.label), token.kind),
+        body: full ? `<div class="via"><span class="k">under</span></div><div class="list">${rows.join("")}</div>` : `<div><span class="k">under</span> ${token.users.map((user) => this.pinLink("piece", user)).join(", ")}</div><div class="src">named in the manifests</div>`
+      };
     }
     if (h.kind === "door") {
       const door = this.doors.find((candidate) => candidate.key === h.id);
       if (!door) {
-        return "";
+        return nothing;
       }
       if (door.ghost) {
         const from = door.ghost.files.map((file) => this.fileLink(file)).join(", ");
-        return `<div class="h">${escapeHtml(door.label)}<span class="tier">a ghost</span></div><div class="k">a call ${this.pinLink("piece", door.piece)} makes that nothing on the board serves; point at the folder that serves it and it becomes a wire</div><div><span class="k">from</span> ${from}</div><div class="src">${BASIS_WORDS[door.ghost.basis]}</div>`;
+        return { head: title(escapeHtml(door.label), "a ghost"), body: `<div class="k">a call ${this.pinLink("piece", door.piece)} makes that nothing on the board serves; point at the folder that serves it and it becomes a wire</div><div><span class="k">from</span> ${from}</div><div class="src">${BASIS_WORDS[door.ghost.basis]}</div>` };
       }
       if (door.declared) {
-        return `<div class="h">${escapeHtml(door.label)}<span class="tier">a door declared</span></div><div class="k">a door ${this.pinLink("piece", door.piece)} promises on the board that nothing on the board uses; a thing that called it would draw a wire</div><div class="src">${escapeHtml(door.declared.kind)}, declared</div>`;
+        return { head: title(escapeHtml(door.label), "a door declared"), body: `<div class="k">a door ${this.pinLink("piece", door.piece)} promises on the board that nothing on the board uses; a thing that called it would draw a wire</div><div class="src">${escapeHtml(door.declared.kind)}, declared</div>` };
       }
       const served = door.role === "offers" ? this.model.pieces.find((candidate) => candidate.name === door.piece)?.doors.find((candidate) => candidate.name === door.label) : undefined;
       const where = served?.file ? `<div class="src">in ${this.fileLink(served.file)}</div>` : "";
-      return `<div class="h">${escapeHtml(door.label)}<span class="tier">${door.role === "offers" ? "a door that offers" : "a door that uses"}</span></div><div class="k">${escapeHtml(door.sub)}</div><div><span class="k">on</span> ${this.pinLink("piece", door.piece)}</div>${where}`;
+      return { head: title(escapeHtml(door.label), door.role === "offers" ? "a door that offers" : "a door that uses"), body: `<div class="k">${escapeHtml(door.sub)}</div><div><span class="k">on</span> ${this.pinLink("piece", door.piece)}</div>${where}` };
     }
     if (h.kind === "region") {
       const region = this.model.regions.find((candidate) => candidate.name === h.id);
       if (!region) {
-        return "";
+        return nothing;
       }
       const isRegion = (name: string): boolean => this.model.regions.some((candidate) => candidate.name === name);
-      return `<div class="h">${escapeHtml(region.name)}<span class="tier">${escapeHtml(region.kind ?? "region")}</span></div><div><span class="k">holds</span> ${region.holds.map((name) => this.pinLink(isRegion(name) ? "region" : "piece", name)).join(", ")}</div>`;
+      return { head: title(escapeHtml(region.name), escapeHtml(region.kind ?? "region")), body: `<div><span class="k">holds</span> ${region.holds.map((name) => this.pinLink(isRegion(name) ? "region" : "piece", name)).join(", ")}</div>` };
     }
     const crossing = this.model.crossings.find((candidate) => candidate.id === h.id);
-    return crossing ? `<div class="h">${this.pinLink("region", crossing.from)} and ${this.pinLink("region", crossing.to)}<span class="tier">declared</span></div>${crossing.over ? `<div><span class="k">over</span> ${escapeHtml(crossing.over)}</div>` : ""}<div class="src">declared on the board</div>` : "";
+    return crossing
+      ? { head: title(`${this.pinLink("region", crossing.from)} and ${this.pinLink("region", crossing.to)}`, "declared"), body: `${crossing.over ? `<div><span class="k">over</span> ${escapeHtml(crossing.over)}</div>` : ""}<div class="src">declared on the board</div>` }
+      : nothing;
   }
 
   /** A name in a panel that pins the thing it names. */
@@ -1154,11 +1400,19 @@ export class WorldMapController {
     this.applyHover();
   }
 
-    /** Lets go of the pinned thing. */
-  unpin(): void {
+  /**
+   * Lets go of the pinned thing. When the keyboard was in a piece's panel it goes back to that piece, unless the
+   * caller is leaving the board.
+   */
+  unpin(returnFocus = true): void {
+    const from = this.pinned;
+    const keyboardWasHere = this.evidence.contains(document.activeElement);
     this.pinned = null;
     this.evidence.dataset.pin = "";
     this.applyHover();
+    if (returnFocus && keyboardWasHere && from?.kind === "piece") {
+      this.focusTargets.get(from.id)?.focus();
+    }
   }
 
   // ==========================================================================
@@ -1183,7 +1437,7 @@ export class WorldMapController {
       return;
     }
     this.hover = null;
-    this.unpin();
+    this.unpin(false);
     const [p0, p1, , p3] = this.lidCorners(name);
     const span = Math.hypot(p1[0] - p0[0], p1[1] - p0[1]) + Math.hypot(p3[0] - p0[0], p3[1] - p0[1]);
     const { width } = this.viewport();
@@ -1430,6 +1684,44 @@ export class WorldMapController {
       }
     });
 
+    // Unfolding a piece's files makes its panel taller; it stays inside the view.
+    on(this.evidence, "toggle", () => {
+      const room = this.panelRoom();
+      const height = this.evidence.getBoundingClientRect().height;
+      this.evidence.style.top = `${clamp(parseFloat(this.evidence.style.top) || 0, room.top, room.bottom - height)}px`;
+    }, { capture: true });
+
+    // The keyboard on a piece peeks at it as the pointer does; Enter or Space pins it as a click does and takes the
+    // keyboard into its panel, where who it talks to, the way inside and its files are the next stops.
+    const focusedPiece = (event: Event): string | undefined => (event.target as Element).closest<SVGElement>(".w-focus")?.dataset.focus;
+    on(this.layers.focus, "focusin", (event: FocusEvent) => {
+      const name = focusedPiece(event);
+      if (!name) {
+        return;
+      }
+      this.focused = name;
+      if (!this.pinned) {
+        this.hover = { kind: "piece", id: name };
+        this.applyHover();
+      }
+    });
+    on(this.layers.focus, "focusout", () => {
+      this.focused = null;
+      if (!this.pinned) {
+        this.hover = null;
+        this.applyHover();
+      }
+    });
+    on(this.layers.focus, "keydown", (event: KeyboardEvent) => {
+      const name = focusedPiece(event);
+      if (!name || (event.key !== "Enter" && event.key !== " ")) {
+        return;
+      }
+      event.preventDefault();
+      this.pin({ kind: "piece", id: name });
+      this.evidence.focus();
+    });
+
     on(this.helpButton, "click", () => this.toggleHelp());
     on(this.tourBox, "click", (event: MouseEvent) => {
       const button = (event.target as Element).closest("button");
@@ -1490,13 +1782,10 @@ export class WorldMapController {
     return this.tools.querySelector<HTMLButtonElement>(`[data-act="${act}"]`);
   }
 
+  /** Each toggle says whether it is on, for the eye by its fill and for a screen reader by its pressed state. */
   private syncButtons(): void {
-    this.button("tilt")?.classList.toggle("on", isTopDown(this.camera));
-    this.button("under")?.classList.toggle("on", this.under);
-    this.button("snap")?.classList.toggle("on", this.snap);
-    const theme = this.button("theme");
-    if (theme) {
-      theme.textContent = this.theme === "dark" ? "light" : "dark";
+    for (const [act, on] of [["tilt", isTopDown(this.camera)], ["under", this.under], ["snap", this.snap], ["theme", this.theme === "dark"]] as Array<[string, boolean]>) {
+      this.button(act)?.setAttribute("aria-pressed", String(on));
     }
   }
 
@@ -1614,47 +1903,78 @@ export class WorldMapController {
     this.helpButton.classList.toggle("on", on);
   }
 
-  private tourSteps(): Array<{ text: string; go: () => void | Promise<void> }> {
+  /** The walkthrough's steps: what each says, what it does, and which of the view's states it changes to show its point. */
+  private tourSteps(): Array<{ text: string; shows?: "under" | "orbit"; go: () => void | Promise<void> }> {
     const firstPiece = this.model.pieces[0]?.name;
     const firstRoad = this.model.roads.find((road) => road.kind === "call") ?? this.model.roads[0];
     const { width, height } = this.viewport();
     const point: Point2 = [width * 0.5, height * 0.42];
+    const theta = this.tour.start?.camera.theta ?? this.camera.theta;
     return [
       { text: "Each thing on the board is one system, database or person, drawn by its kind. Click one to pin what it offers, calls and stands on; every name in the panel is a link.", go: () => { if (firstPiece) { this.hover = { kind: "piece", id: firstPiece }; this.lastPointer = point; this.applyHover(); } } },
       { text: "A wire is one call, from the blue door that offers to the green door that uses it. Hover it for how it is known and which files carry it.", go: () => { if (firstRoad) { this.hover = { kind: "road", id: firstRoad.id }; this.lastPointer = point; this.applyHover(); } } },
-      { text: "The strands under a thing are what it is built with: another thing's code, a dotted line on the board, or a package from its manifests. Built on shows what things share.", go: () => { this.hover = null; this.applyHover(); this.setUnder(true); } },
-      { text: "Nothing inside a thing shows until you open it: wheel in, double-click, or follow open in its pinned panel. It opens in the Local Map, folder by folder.", go: () => { this.setUnder(false); const first = this.model.pieces.find((piece) => piece.folder); if (first) { this.lastPointer = point; this.pin({ kind: "piece", id: first.name }); } } },
-      { text: "Drag to pan, right-drag to orbit, wheel to zoom. Things stay where you put them, and save board writes them into the text.", go: async () => { this.unpin(); await this.orbitTo((-35 * Math.PI) / 180, (42 * Math.PI) / 180); } }
+      { text: "The strands under a thing are what it is built with: another thing's code, a dotted line on the board, or a package from its manifests. Built on shows what things share.", shows: "under", go: () => { this.hover = null; this.applyHover(); this.setUnder(true); } },
+      { text: "Nothing inside a thing shows until you open it: wheel in, double-click, or follow open in its pinned panel. It opens in the Local Map, folder by folder.", go: () => { const first = this.model.pieces.find((piece) => piece.folder); if (first) { this.lastPointer = point; this.pin({ kind: "piece", id: first.name }); } } },
+      { text: "Drag to pan, right-drag to orbit, wheel to zoom. Things stay where you put them, and save board writes them into the text.", shows: "orbit", go: async () => { this.unpin(); await this.orbitTo(theta - (35 * Math.PI) / 180, (42 * Math.PI) / 180); } }
     ];
   }
 
-    /** Shows one step of the walkthrough and does what it describes. */
+  /**
+   * Shows one step of the walkthrough and does what it describes. A step stands on the view the walkthrough began
+   * on, but for the one state it changes to show its point, so that stepping back undoes what the next step showed.
+   */
   async tourStep(index: number): Promise<void> {
     const steps = this.tourSteps();
     this.tour.at = clamp(index, 0, steps.length - 1);
+    const step = steps[this.tour.at];
     this.tourBox.querySelector(".step")!.textContent = `${this.tour.at + 1} of ${steps.length}`;
-    this.tourBox.querySelector(".text")!.textContent = steps[this.tour.at].text;
+    this.tourBox.querySelector(".text")!.textContent = step.text;
     (this.tourBox.querySelector<HTMLButtonElement>("[data-tour=back]"))!.disabled = this.tour.at === 0;
     (this.tourBox.querySelector<HTMLElement>("[data-tour=next]"))!.style.display = this.tour.at === steps.length - 1 ? "none" : "";
-    await steps[this.tour.at].go();
+    const start = this.tour.start;
+    if (start && step.shows !== "under" && this.under !== start.under) {
+      this.setUnder(start.under);
+    }
+    if (start && step.shows !== "orbit") {
+      await this.returnTo(start);
+    }
+    await step.go();
   }
 
-    /** Begins the walkthrough at its first step. */
+  /** Begins the walkthrough at its first step, remembering the view it began on. */
   async startTour(): Promise<void> {
+    if (!this.tour.on) {
+      this.tour.start = { camera: { ...this.camera }, screen: { ...this.screen }, under: this.under };
+    }
     this.tour.on = true;
     this.tourBox.classList.add("on");
     await this.tourStep(0);
   }
 
-    /** Ends the walkthrough and lets go of what it pinned or showed. */
+  /**
+   * Ends the walkthrough, lets go of what it pinned or showed, and eases the board back to the view it began on
+   * (2026-11-12: a newcomer finished it with the board left turned by its last step).
+   */
   endTour(): void {
-    this.tour.on = false;
+    const start = this.tour.start;
+    this.tour = { on: false, at: 0 };
     this.tourBox.classList.remove("on");
     this.hover = null;
     this.unpin();
-    if (this.under) {
-      this.setUnder(false);
+    if (start) {
+      if (this.under !== start.under) {
+        this.setUnder(start.under);
+      }
+      void this.returnTo(start);
     }
+  }
+
+  /** Eases the camera, the pan and the zoom back to a view kept from before, if any of them has moved. */
+  private returnTo(view: { camera: Camera; screen: Screen }): Promise<void> {
+    const close = (a: number, b: number): boolean => Math.abs(a - b) < 1e-6;
+    const unmoved = close(this.camera.theta, view.camera.theta) && close(this.camera.phi, view.camera.phi)
+      && close(this.screen.x, view.screen.x) && close(this.screen.y, view.screen.y) && close(this.screen.k, view.screen.k);
+    return unmoved ? Promise.resolve() : this.orbitTo(view.camera.theta, view.camera.phi, 520, view.screen);
   }
 
   // ==========================================================================

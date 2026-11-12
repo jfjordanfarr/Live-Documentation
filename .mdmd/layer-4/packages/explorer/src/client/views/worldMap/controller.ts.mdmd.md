@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/worldMap/controller.ts
-- Generated At: 2026-10-22T16:47:56.479Z
+- Generated At: 2026-11-12T21:56:27.065Z
 
 ## Authored
 ### Purpose
@@ -16,6 +16,7 @@ The World Map, drawn. Everything that touches the DOM is here: the SVG the board
 - Kept by `tests/e2e/world-map.spec.ts` (what is drawn and what a person can do), `world-map-design.spec.ts` (no two labels collide and nothing is cut off, in each state) and `world-map-estate.spec.ts` (the same over the estate), through the handle rather than pixels.
 - Since 2026-10-10 ([Turn 12 of the October 9 session](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-09.1.record.md#turn-12)) a thing's ghosts, what its files call that nothing on the board serves, are doors that use with no road: keyed `ghost:<thing>:<basis>:<name>`, on the wall facing away from the board's middle, dashed, with a short dashed stub along the wall's normal and an empty ring at its end; pinned, a ghost says who calls it, from which files and on what basis, and that pointing at the folder that serves it would make it a wire; a thing's panel lists them under "calls out to". The same day door labels were found never to have shown on hover, the stylesheet hiding them and the hover clearing only an inline style; they show now and settle like the other movable labels after every hover, with the estate's spec auditing them pinned.
 - Since 2026-10-10 ([Turn 14 of the October 9 session](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-09.1.record.md#turn-14)), with this repository's board re-authored as its delivery shape: an imagined thing is drawn hollow, its faces at `HOLLOW` opacity and its edges dashed, with its kind under its name and no word for its state, the owner's "visual grammar for 'proposed' elements"; a door the board declares that no road lands on is a door that offers with no road, keyed like a served one, dashed with a stub into the air, the mirror of a ghost, since a promise is never hidden; `enter` pins an imagined thing instead of returning silently; the crumbs count what the join found wanting and the help lists it, as the board command prints it; a door's label may cross to the other side of its door when no step up or down clears it, and a sub-line a door's label still covers goes; a region's name sits just outside its left point, off the feet of the things at its corners.
+- Since 2026-11-12 a piece's label stands above the top of its outline (`labelAnchor`) rather than on the middle of its lid, where an outsider's first visit found every second line drawn through the piece's own edges ([finding 6](../../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-12/first-visit/README.md)). `settleLabels` keeps every label off every piece's outline as well as off the others. A piece's name moves, nearest piece first, up a line at most or sideways by up to half its width; the line under it keeps its height and may find its own place aside. Failing both, the label stands below its piece, clear of the strands, and only then does the second line go. Region names, tags, tokens and door labels settle after the names, a region's name with more room since it names an area. A label lifted further had read as the next piece's; the rules tried on the way, and an orbit sweep's counts for each, are in [the round's evidence](../../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-12/world-map-repairs/README.md). The crossing tag's own guess at where the names stood went with it.
 - Since 2026-10-20 the map's keys ignore a key another surface has already used, such as the Escape that closed the reader over it, and any key typed inside a full-screen dialog, so a phone's full reader cannot toggle the theme or reset the layout behind it ([the record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-7)).
 
 ## Generated
@@ -23,28 +24,28 @@ The World Map, drawn. Everything that touches the DOM is here: the SVG the board
 ### Public Symbols
 #### `Hover` {#symbol-hover}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L67)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L116)
 
 ##### `Hover` — Summary
 What the pointer is on.
 
 #### `WorldMapOptions` {#symbol-worldmapoptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L73)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L122)
 
 ##### `WorldMapOptions` — Summary
 What the controller is given: where to draw, the board and its join, the graph, and the doors out of the view.
 
 #### `WorldMapController` {#symbol-worldmapcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L150)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L199)
 
 ##### `WorldMapController` — Summary
 Draws a board and answers the pointer.
 
 #### `WorldMapApi` {#symbol-worldmapapi}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L1712)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L2032)
 
 ##### `WorldMapApi` — Summary
 The handle a test or a screenshot script drives, at `window.__worldMap`.
@@ -58,22 +59,32 @@ The handle a test or a screenshot script drives, at `window.__worldMap`.
 - [`boardGraph.ServedDoor`](../../../../../engine/src/live-docs/boardGraph.ts.mdmd.md#symbol-serveddoor) (type-only)
 - [`graph.LiveDocGraph`](../../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`graph-helpers.escapeHtml`](../../graph-helpers.ts.mdmd.md#symbol-escapehtml)
+- [`icon-button.CLOSE_ICON`](../../panels/icon-button.ts.mdmd.md#symbol-close_icon)
+- [`icon-button.iconButton`](../../panels/icon-button.ts.mdmd.md#symbol-iconbutton)
 - [`url-state.parseInitialState`](../../persistence/url-state.ts.mdmd.md#symbol-parseinitialstate)
 - [`layout.Anchor`](./layout.ts.mdmd.md#symbol-anchor)
+- [`layout.Avoid`](./layout.ts.mdmd.md#symbol-avoid)
 - [`layout.FLOAT`](./layout.ts.mdmd.md#symbol-float)
 - [`layout.GRID`](./layout.ts.mdmd.md#symbol-grid)
+- [`layout.LabelMove`](./layout.ts.mdmd.md#symbol-labelmove)
 - [`layout.Placed`](./layout.ts.mdmd.md#symbol-placed)
 - [`layout.Rect`](./layout.ts.mdmd.md#symbol-rect)
+- [`layout.ScreenBox`](./layout.ts.mdmd.md#symbol-screenbox)
 - [`layout.Wall`](./layout.ts.mdmd.md#symbol-wall)
 - [`layout.autoPlace`](./layout.ts.mdmd.md#symbol-autoplace)
 - [`layout.clamp`](./layout.ts.mdmd.md#symbol-clamp)
 - [`layout.corners`](./layout.ts.mdmd.md#symbol-corners)
+- [`layout.coveredArea`](./layout.ts.mdmd.md#symbol-coveredarea)
 - [`layout.drawOrder`](./layout.ts.mdmd.md#symbol-draworder)
 - [`layout.inRect`](./layout.ts.mdmd.md#symbol-inrect)
+- [`layout.labelAnchor`](./layout.ts.mdmd.md#symbol-labelanchor)
+- [`layout.labelMoves`](./layout.ts.mdmd.md#symbol-labelmoves)
+- [`layout.panelBeside`](./layout.ts.mdmd.md#symbol-panelbeside)
 - [`layout.pixelsToUnits`](./layout.ts.mdmd.md#symbol-pixelstounits)
 - [`layout.placePiece`](./layout.ts.mdmd.md#symbol-placepiece)
 - [`layout.rectAround`](./layout.ts.mdmd.md#symbol-rectaround)
 - [`layout.roadCurve`](./layout.ts.mdmd.md#symbol-roadcurve)
+- [`layout.silhouette`](./layout.ts.mdmd.md#symbol-silhouette)
 - [`layout.spreadTokens`](./layout.ts.mdmd.md#symbol-spreadtokens)
 - [`layout.unitsToPixels`](./layout.ts.mdmd.md#symbol-unitstopixels)
 - [`layout.wallOf`](./layout.ts.mdmd.md#symbol-wallof)

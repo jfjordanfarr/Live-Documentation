@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/worldMap/layout.test.ts
-- Generated At: 2026-10-22T16:47:56.532Z
+- Generated At: 2026-11-12T21:56:27.316Z
 
 ## Authored
 ### Purpose
@@ -22,19 +22,29 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`layout.autoPlace`](./layout.ts.mdmd.md#symbol-autoplace)
+- [`layout.corners`](./layout.ts.mdmd.md#symbol-corners)
+- [`layout.coveredArea`](./layout.ts.mdmd.md#symbol-coveredarea)
 - [`layout.drawOrder`](./layout.ts.mdmd.md#symbol-draworder)
 - [`layout.inRect`](./layout.ts.mdmd.md#symbol-inrect)
+- [`layout.labelAnchor`](./layout.ts.mdmd.md#symbol-labelanchor)
+- [`layout.labelMoves`](./layout.ts.mdmd.md#symbol-labelmoves)
+- [`layout.panelBeside`](./layout.ts.mdmd.md#symbol-panelbeside)
 - [`layout.pixelsToUnits`](./layout.ts.mdmd.md#symbol-pixelstounits)
 - [`layout.placePiece`](./layout.ts.mdmd.md#symbol-placepiece)
 - [`layout.rectAround`](./layout.ts.mdmd.md#symbol-rectaround)
 - [`layout.roadCurve`](./layout.ts.mdmd.md#symbol-roadcurve)
+- [`layout.silhouette`](./layout.ts.mdmd.md#symbol-silhouette)
 - [`layout.solidFor`](./layout.ts.mdmd.md#symbol-solidfor)
 - [`layout.spreadTokens`](./layout.ts.mdmd.md#symbol-spreadtokens)
 - [`layout.unitsToPixels`](./layout.ts.mdmd.md#symbol-unitstopixels)
 - [`layout.wallOf`](./layout.ts.mdmd.md#symbol-wallof)
 - [`layout.wallPoint`](./layout.ts.mdmd.md#symbol-wallpoint)
+- [`projection.Point2`](./projection.ts.mdmd.md#symbol-point2)
 - [`projection.REST_ELEVATION`](./projection.ts.mdmd.md#symbol-rest_elevation)
 - [`projection.TOP_DOWN`](./projection.ts.mdmd.md#symbol-top_down)
+- [`projection.pointInPolygon`](./projection.ts.mdmd.md#symbol-pointinpolygon)
+- [`projection.project`](./projection.ts.mdmd.md#symbol-project)
+- [`projection.ring`](./projection.ts.mdmd.md#symbol-ring)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
 
