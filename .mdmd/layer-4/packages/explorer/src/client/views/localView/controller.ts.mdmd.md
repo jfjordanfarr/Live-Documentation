@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/controller.ts
-- Generated At: 2026-11-10T21:46:15.925Z
+- Generated At: 2026-11-12T17:14:37.298Z
 
 ## Authored
 ### Purpose
@@ -56,12 +56,14 @@ The same round adds `tryRefreshReading` at the application boundary. It permits 
 
 Since 2026-11-10 `applyLevelOfDetail` also serves Tuning's Zoom Looks, a trial beside the ladder ([Turn 5 of the November 10 record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-10.1.record.md#turn-5)): with three looks and fixed slots it writes the look's band as `data-lod`, the look as `data-look` beside `data-looks="three"`, step 0 for the reading look and no step for the others, and the look's one held scale for names and controls, so that the stylesheet's band rules draw each look and nothing changes between its edges; at a change of look `morphLook` writes, before the new look, the look left (`data-look-from`) and its scale (`--look-from-scale`), the zoom ratio at which that look was last drawn (kept as `lookRatio`) over the ratio now (`--look-zoom`) and the lesser of that and 1 (`--look-keep`), and sets the class `local-look-fading` afresh for 200 ms. From these the stylesheet makes each held thing that both looks draw travel from its size on screen in the look left to its new one over 160 ms, and the file's name cross over in place. The zoom ratio counts since the root's third review of the trial (the same day): a Zoom button moves the camera at once, and a start reckoned from the looks' scales alone made everything bulge by a press's 1.2 on the way in. The band and step it keeps are computed as before whatever the choice, and with the default steps it writes what it wrote before.
 
+Since 2026-11-12 `fitWhole` is the 2D map's Fit current scope, the 3D map's first toolbar control: a person's press only, it takes the camera as a gesture does, eases to `wholeTransform` over everything the map shows, and leaves the camera the person's (`mapUserAdjusted`), so that no later render frames back toward the arrival ([the first-visit review](../../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-12/first-visit/README.md), finding 5). `resetZoom`, the control now named Return to reading size, is unchanged. `drawScene` also writes Tuning's Reveal Control on the container as `data-reveal-control`.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LocalViewController` {#symbol-localviewcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L75)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L76)
 - Implements: [`LocalViewApi`](./types.ts.mdmd.md#symbol-localviewapi)
 
 ##### `LocalViewController` — Summary
@@ -107,6 +109,7 @@ Coordinates the native Local Map, independent exploration pins and explicit FROM
 - [`layout-measure.computePathFitTransform`](./layout-measure.ts.mdmd.md#symbol-computepathfittransform)
 - [`layout-measure.focusTransform`](./layout-measure.ts.mdmd.md#symbol-focustransform)
 - [`layout-measure.settleTransform`](./layout-measure.ts.mdmd.md#symbol-settletransform)
+- [`layout-measure.wholeTransform`](./layout-measure.ts.mdmd.md#symbol-wholetransform)
 - [`layout-measure.withTransformReset`](./layout-measure.ts.mdmd.md#symbol-withtransformreset)
 - [`pan-zoom.animateMapTransform`](./pan-zoom.ts.mdmd.md#symbol-animatemaptransform)
 - [`pan-zoom.cancelInertia`](./pan-zoom.ts.mdmd.md#symbol-cancelinertia)

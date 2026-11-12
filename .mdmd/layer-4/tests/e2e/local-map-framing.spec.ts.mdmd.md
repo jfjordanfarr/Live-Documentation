@@ -17,6 +17,8 @@ The browser checks of how the 2D Local Map frames itself on arrival, written aft
 
 Since [November 5](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-1) the reader case opens the evidence reader from More → Inspect, since a card's name reads its descriptions.
 
+Since 2026-11-12 a case presses the 2D map's Fit current scope on `packages/explorer/src/client` at 1440 by 900: the arrival is at reading size with the picture past the frame; the press is the first control of the toolbar, eases the camera, and frames the picture whole and centred inside the padding with no edge sign, smaller than the arrival and still short of the farthest zoom, the address unchanged; nothing frames back on its own; and Return to reading size, the former Reset Zoom, brings the arrival's scale back ([the first-visit review](../../../../AI-Agent-Workspace/Screenshots/2026-11-12/first-visit/README.md), finding 5). It fails on a build without a 2D Fit, or whose Fit leaves the picture cut or at the zoom-out limit.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

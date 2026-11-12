@@ -64,6 +64,9 @@ export interface CardContext {
  */
 export const NODE_HUB = "#hub";
 
+/** The Pin glyph, a pushpin, in a 24-unit box: the card's Pin, a row's Pin and the card's reveal of its connections outside the view. */
+export const PIN_GLYPH = "M8 3h8l-1 6 3 3v2H6v-2l3-3-1-6ZM12 14v7";
+
 const actionAnchor = (element: HTMLElement): { x: number; y: number } => {
   const rect = element.getBoundingClientRect();
   return { x: rect.left + rect.width / 2, y: rect.bottom };
@@ -181,7 +184,7 @@ export function createNodeCard(
   filePin.setAttribute("aria-label", `${presentation.filePinned ? "Unpin" : "Pin"} ${node.name}`);
   filePin.setAttribute("aria-pressed", String(presentation.filePinned));
   filePin.title = presentation.filePinned ? "Unpin this file" : "Pin this file and its connections";
-  filePin.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3h8l-1 6 3 3v2H6v-2l3-3-1-6ZM12 14v7"/></svg>';
+  filePin.innerHTML = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${PIN_GLYPH}"/></svg>`;
   filePin.addEventListener("click", event => {
     event.stopPropagation();
     if (presentation.filePinned) context.unpinNode(node.id);
@@ -503,7 +506,7 @@ function appendSymbolActions(context: CardContext, presentation: CardPresentatio
   const action = pinned ? "Unpin" : presentation.filePinned ? "Pin only" : "Pin";
   pin.setAttribute("aria-label", `${action} ${symbol === "__internals__" ? "Internals" : symbol} in ${node.name}`);
   pin.title = pinned ? "Release this symbol pin" : presentation.filePinned ? "Narrow the whole-file pin to this symbol" : "Pin this symbol's connections";
-  pin.innerHTML = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3h8l-1 6 3 3v2H6v-2l3-3-1-6ZM12 14v7"/></svg>';
+  pin.innerHTML = `<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${PIN_GLYPH}"/></svg>`;
   pin.addEventListener("click", event => { event.stopPropagation(); context.togglePinnedSymbol(node.id, symbol); });
   wrapper.append(pin);
 

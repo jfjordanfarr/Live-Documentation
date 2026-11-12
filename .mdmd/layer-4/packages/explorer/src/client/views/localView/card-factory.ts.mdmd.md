@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-factory.ts
-- Generated At: 2026-11-09T04:43:26.883Z
+- Generated At: 2026-11-12T17:14:37.015Z
 
 ## Authored
 ### Purpose
@@ -68,9 +68,16 @@ Only the facts and actions a card needs; navigation targets are looked up when t
 The registry's name for a card's node-level hubs, `inbound:#hub` and `outbound:#hub`, by which the overview band's
 gathered wires find them (2026-11-06); no symbol is named so.
 
+#### `PIN_GLYPH` {#symbol-pin_glyph}
+- Type: const
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L68)
+
+##### `PIN_GLYPH` — Summary
+The Pin glyph, a pushpin, in a 24-unit box: the card's Pin, a row's Pin and the card's reveal of its connections outside the view.
+
 #### `createNodeCard` {#symbol-createnodecard}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L80)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L83)
 - Parameters: `context`: [`CardContext`](#symbol-cardcontext); `node`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload); `columnRole`: [`ColumnRole`](./types.ts.mdmd.md#symbol-columnrole)
 
 ##### `createNodeCard` — Summary
@@ -86,7 +93,7 @@ The created card element
 
 #### `createClosedDirectory` {#symbol-createcloseddirectory}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L284)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L287)
 - Parameters: `context`: [`CardContext`](#symbol-cardcontext); `closed`: [`ClosedDirectory`](./branches.ts.mdmd.md#symbol-closeddirectory)
 
 ##### `createClosedDirectory` — Summary
@@ -97,7 +104,7 @@ under it is at least encasing, so no wire ever reaches a closed box.
 
 #### `countsOf` {#symbol-countsof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L319)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L322)
 
 ##### `countsOf` — Summary
 "3 files, 2 directories", either part left out at zero; "empty" when both are.

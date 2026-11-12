@@ -572,9 +572,13 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     if (!historyControl.isOpen() && nothingAsked() && !state.openDirectories?.has("")) openRetainedDirectory("");
     historyControl.toggle();
   });
+  // Fit stands first in both representations (in 2D since 2026-11-12, when a newcomer pressed Reset Zoom to see the
+  // whole and was taken to the newest pin): it frames everything shown and changes neither pins nor the question.
   const fitButton = iconButton("Fit current scope", '<path d="M9 3H3v6m12-6h6v6M3 15v6h6m12-6v6h-6"/>');
-  fitButton.title = "Fit the current path or retained scope";
-  fitButton.addEventListener("click", () => forceGraphView.fit());
+  fitButton.addEventListener("click", () => {
+    if (state.perspective === "3d") forceGraphView.fit();
+    else localView.fitWhole();
+  });
   // One group per choice, parted by rules: the fit, the whole or local picture and the tuning, 2D or 3D, the 3D layout, the history.
   const group = (...buttons: HTMLElement[]): HTMLElement => {
     const element = document.createElement("span");
@@ -977,7 +981,8 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
       ?? ([...(state.openDirectories ?? [])].map(path => (shownMoment?.directoryAt(path) ?? path) || "Scan root").join(", ") || discoveredPath || "Scan root");
     perspectiveControls.hidden = state.view !== "map";
     for (const button of [fitButton, wholeButton, tuningButton, mapButton, graphButton, connectionsButton, structureButton, historyButton]) button.disabled = changingPerspective;
-    fitButton.hidden = connectionsButton.hidden = structureButton.hidden = state.perspective !== "3d";
+    connectionsButton.hidden = structureButton.hidden = state.perspective !== "3d";
+    fitButton.title = state.perspective === "3d" ? "Fit the current path or retained scope" : "Fit everything the map shows";
     hopsSelect.hidden = state.perspective !== "3d";
     hopsSelect.disabled = changingPerspective || !!localView.getActivePath();
     hopsSelect.value = String(state.tuning.forceGraph.hops);

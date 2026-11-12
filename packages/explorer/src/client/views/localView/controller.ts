@@ -12,6 +12,7 @@ import {
   settleTransform,
   focusTransform,
   cardReadingTransform,
+  wholeTransform,
   withTransformReset,
   type Bounds,
   type Frame,
@@ -576,6 +577,7 @@ export class LocalViewController implements LocalViewApi {
     }
     this.contentRoot = root;
     this.container.style.setProperty("--slot-lines", String(Math.max(1, Math.round(this.options.state.tuning.localMap.slotLines))));
+    this.container.dataset.revealControl = this.options.state.tuning.localMap.revealControl;
     this.applyLevelOfDetail(this.mapTransform.k / this.readingReferenceScale);
     this.reading?.updatePresentation(this.readingVisible);
     const stage = this.stage ?? (this.stage = createStage(root, this.overlay));
@@ -949,6 +951,18 @@ export class LocalViewController implements LocalViewApi {
     }
     if (this.getActivePath()) this.fitMapToPath();
     else this.fitMapToContent();
+  }
+
+  /**
+   * Fit, the 3D map's first control in 2D (2026-11-12): frames everything the map shows, with the camera's eased move,
+   * at reading scale or smaller, and only when a person presses it. It is the person's camera from then on, as a Zoom
+   * press is: a later render keeps it, and nothing re-frames toward an arrival it has taken over.
+   */
+  fitWhole(): void {
+    if (!this.runtime.contentRoot) return;
+    this.beginCameraGesture();
+    this.fitMap((extents, frame) => wholeTransform(extents.content, frame, this.readingReferenceScale));
+    this.mapUserAdjusted = true;
   }
 
   private startInertia(initialVx: number, initialVy: number): void {

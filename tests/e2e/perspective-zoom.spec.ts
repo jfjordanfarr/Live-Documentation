@@ -106,7 +106,7 @@ test("scroll zooms within each perspective; only the 2D and 3D buttons change it
   expect(scale).toBeLessThan(0.4);
   expect(scale).toBeGreaterThan(0);
   await expect(page.locator(".zoom-boundary, .perspective-transition")).toHaveCount(0);
-  await page.getByRole("button", { name: "Reset Zoom" }).click();
+  await page.getByRole("button", { name: "Return to reading size" }).click();
   await page.waitForTimeout(450);
   await page.getByRole("button", { name: "3D", exact: true }).click();
   const bridge = page.locator(".perspective-transition[data-graph-files]");

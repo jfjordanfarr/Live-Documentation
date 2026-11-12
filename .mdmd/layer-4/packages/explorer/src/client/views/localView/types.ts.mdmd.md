@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/types.ts
-- Generated At: 2026-11-09T04:43:26.988Z
+- Generated At: 2026-11-12T17:14:38.323Z
 
 ## Authored
 ### Purpose
@@ -68,7 +68,7 @@ Independent exploration pins belong to the shared Explorer state.
 
 #### `LocalEdge` {#symbol-localedge}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L126)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L129)
 
 ##### `LocalEdge` — Summary
 A directed edge in the local subgraph, annotated with direction relative
@@ -84,7 +84,7 @@ Created 2025-12-04 during Local Map modularization.
 
 #### `LocalSubgraphLink` {#symbol-localsubgraphlink}
 - Type: type
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L140)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L143)
 - Returns: [`LocalEdge`](#symbol-localedge)
 
 ##### `LocalSubgraphLink` — Summary
@@ -92,7 +92,7 @@ Alias for LocalEdge - used in subgraph contexts.
 
 #### `LocalSubgraph` {#symbol-localsubgraph}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L147)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L150)
 
 ##### `LocalSubgraph` — Summary
 The graph disclosed by the current Local Map scope: its files and
@@ -101,7 +101,7 @@ by direction; the common scene determines their layout.
 
 #### `Bounds` {#symbol-bounds}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L160)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L163)
 
 ##### `Bounds` — Summary
 Axis-aligned bounding rectangle in pixel coordinates, used for DOM
@@ -109,7 +109,7 @@ measurement of cards, columns, and the overall layout container.
 
 #### `LayoutExtents` {#symbol-layoutextents}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L178)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L181)
 
 ##### `LayoutExtents` — Summary
 The measured bounding boxes of the Local Map layout, used by
@@ -122,7 +122,7 @@ node's card mounts).
 
 #### `MapTransform` {#symbol-maptransform}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L191)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L194)
 
 ##### `MapTransform` — Summary
 Pan/zoom state for the Local Map viewport.
@@ -134,7 +134,7 @@ and its SVG connection overlay.
 
 #### `ColumnRole` {#symbol-columnrole}
 - Type: type
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L206)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L209)
 
 ##### `ColumnRole` — Summary
 Column role for anchor registration disambiguation.

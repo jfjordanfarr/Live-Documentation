@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-11-10T21:46:17.115Z
+- Generated At: 2026-11-12T17:14:39.661Z
 
 ## Authored
 ### Purpose
@@ -426,6 +426,9 @@ Since November 8, 2026, the literal initial controls agree with `getDefaultTunin
 - Type: variable
 
 #### `tuning-order-starts-value` {#symbol-tuning-order-starts-value}
+- Type: variable
+
+#### `tuning-reveal-control` {#symbol-tuning-reveal-control}
 - Type: variable
 
 #### `tuning-row-levelness` {#symbol-tuning-row-levelness}

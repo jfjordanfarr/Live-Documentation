@@ -93,7 +93,10 @@ export interface LocalViewApi {
   highlightSelection(): void;
   zoomIn(): void;
   zoomOut(): void;
+  /** Return to reading size, framed as on arrival: the subject or the newest pin, a path from its start, or the picture's start. */
   resetZoom(): void;
+  /** Frame everything the map shows, at reading scale or smaller; a person's press only (2026-11-12). */
+  fitWhole(): void;
   
   /** Observable state store for hover and explicit paths. */
   readonly localMapState: StateStore<LocalMapState>;

@@ -149,7 +149,7 @@ for (const viewport of [{ width: 900, height: 700 }, { width: 1440, height: 960 
     expect(state(page).reading).toEqual([{ nodeId: payment, open: true }]);
     await localMapStill(page);
     // Back at reading scale the prose returns to full strength; with everything open again, no box has changed.
-    await page.getByRole("button", { name: "Reset Zoom", exact: true }).click();
+    await page.getByRole("button", { name: "Return to reading size", exact: true }).click();
     await localMapStill(page);
     await expect(subject).not.toHaveClass(/local-reading-faded/u);
     expect(await layoutBoxes(page)).toEqual(layout);
@@ -277,7 +277,7 @@ test("the portrait reading frame returns from overview and follows a phone resiz
   await expect(subject).toHaveClass(/local-reading-faded/u);
   await expect(subject.locator(".local-file-read")).toHaveAttribute("aria-expanded", "true");
   await expect(subject.locator(".local-file-read")).toHaveAttribute("aria-pressed", "true");
-  await page.getByRole("button", { name: "Reset Zoom", exact: true }).click();
+  await page.getByRole("button", { name: "Return to reading size", exact: true }).click();
   await expect(subject).not.toHaveClass(/local-reading-faded/u);
   await expect(subject.locator(".local-reading-purpose")).toBeVisible();
   await localMapStill(page);

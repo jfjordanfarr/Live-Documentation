@@ -518,6 +518,11 @@
     transform: none;
     transition: none;
 }
+/* The dialog is modal at every size: it covers the map's controls and makes them inert, so it carries its own Back and
+   Forward, as the full reader of a narrow or short screen does (the design of 2026-10-20). At a wide window the app's
+   Back had stood under the backdrop, where a reader who had followed a link could not reach it (2026-11-12). */
+#detail-panel.reading-dialog .detail-navigation { display: flex; flex-shrink: 0; }
+#detail-panel.reading-dialog .detail-header h2 { flex: 1; }
 #detail-panel.reading-dialog .detail-scroll { font-size: 15px; line-height: 1.65; padding: 20px 26px; }
 #detail-panel.reading-dialog .detail-section { font-size: 15px; line-height: 1.65; }
 #detail-panel.reading-dialog .reader-prose, #detail-panel.reading-dialog .detail-content { font-size: 15px; line-height: 1.65; }

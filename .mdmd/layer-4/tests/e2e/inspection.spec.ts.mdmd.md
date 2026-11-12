@@ -32,6 +32,8 @@ Since [Turn 11](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.
 
 On [Turn 12](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-12--november-6) the pin became `keepGrowingComposition`, which merges the choice into the saved tuning rather than replacing it.
 
+Since 2026-11-12 two cases from [the first-visit review](../../../../AI-Agent-Workspace/Screenshots/2026-11-12/first-visit/README.md), finding 10. At 1440 by 900 the reading dialog for `detailPanel.ts` follows its link to `dom.ts`, and then a Back and a Forward must exist that the pointer can press, shown, enabled, outside anything inert and topmost at their middle, and return between the two; before, the dialog's backdrop covered the app's Back and the dialog had none. And the reader lists each of `dom.ts`'s dependencies once, where it had drawn `types.ts` / `ViewName` and `LocalMapPerspective` twice.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-renderer.ts
-- Generated At: 2026-11-09T04:43:26.829Z
+- Generated At: 2026-11-12T17:14:36.415Z
 
 ## Authored
 ### Purpose
@@ -51,6 +51,8 @@ Reading measurements keep containers in their existing parents when there is no 
 On [November 5](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-1) the temporary reading visit left this file with hover reading: the stage's return point, the move's held-element and camera-target overrides and the search's pause on reading attention are gone. `refreshReadingGeometry` keeps one job, remeasuring the same branches after a disclosure change and beginning a fresh competition from the new picture, with the acted-on element held by the ordinary rule. The end of a move also clears the controller's `readingHold`, so a hover that arrives after a tap's move may anchor again.
 
 Since the far bands' round (2026-11-06, [Turn 3](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-06.1.record.md#turn-3)): a directory label carries its caption in an aria-hidden child, `local-directory-held`, whose `data-held` holds it between left-to-right marks, and its path as its title, for the card ladder's held caption, which is cut at its start so that its last segments and count stay; `roomsOfLabel` measures the label's room at render beside the label heights; `orderRows` tells the card reading how many rows stand above the first pinned one, since the search reorders rows without measuring; and the placement's pins (`anchorCentre`) and the layout search's rows (`rowsOf`) read an anchor dot and a row's children from their boxes as the layout put them, the shift and scale the ladder draws a dot with taken back (`laidOutBox`) and the reading put back on the layout's 1/64 px grid (`onLayoutGrid`), so that a render at any zoom places the cards as a render at reading scale does; a slot card's description slot is hidden rather than taken out below reading scale, so that a row's children are the same in every band. The way there, through the root's reviews of the round: a pin made one press out placed eight cards two or three pixels from where the same pin made at reading scale put them; a repair that read the layout's offsets up to the card's wrapper never took effect, since the wrapper is not among an anchor's offset parents, and every pin was still read from the dot as drawn (112.5 at reading scale, 114.2 one press out); and with the shift taken back, an Internals dot 4292 px down the picture read 4292.4984 for 4292.5, the single-precision noise of a transformed page's boxes, which tipped its half-pixel rounding until the grid removed it. A hub's centring by its own transform is part of where it stands.
+
+Since 2026-11-12 a card's count of connections outside the view, the control that pins the file to reveal them, is drawn as a control (`revealControl`): the Pin glyph beside its words, which carry its accessible name whole, after a newcomer read the faint line as static text and concluded that the map draws no connections ([the first-visit review](../../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-12/first-visit/README.md), finding 3). Its two looks, a link and a framed count, are a trial under Tuning's Reveal Control, written on the map as `data-reveal-control` and drawn by `local.css`; both keep the line's box. A pinned file's count of connections hidden by filters stays a plain fact (`hiddenByFilters`).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -180,6 +182,7 @@ competition begins from the new picture.
 - [`branches.exploreBranches`](./branches.ts.mdmd.md#symbol-explorebranches)
 - [`branches.isClosedDirectory`](./branches.ts.mdmd.md#symbol-iscloseddirectory)
 - [`branches.orderExploration`](./branches.ts.mdmd.md#symbol-orderexploration)
+- [`card-factory.PIN_GLYPH`](./card-factory.ts.mdmd.md#symbol-pin_glyph)
 - [`card-factory.countsOf`](./card-factory.ts.mdmd.md#symbol-countsof)
 - [`card-factory.createClosedDirectory`](./card-factory.ts.mdmd.md#symbol-createcloseddirectory)
 - [`card-factory.createNodeCard`](./card-factory.ts.mdmd.md#symbol-createnodecard)

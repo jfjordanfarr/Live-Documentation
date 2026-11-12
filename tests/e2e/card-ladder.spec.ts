@@ -108,7 +108,7 @@ test("each band below reading scale lets one tier leave, names and controls hold
   expect(closer.step).toBe(0);
   expect(closer.scale).toBeGreaterThan(start.scale);
   for (const part of ["name", "more", "rowMore", "anchor"] as const) expect(closer[part] / start[part]).toBeCloseTo(closer.scale / start.scale, 1);
-  await page.getByRole("button", { name: "Reset Zoom", exact: true }).click();
+  await page.getByRole("button", { name: "Return to reading size", exact: true }).click();
   await localMapStill(page);
 
   const ratioOf = (band: { scale: number }): number => band.scale / start.scale;
@@ -181,8 +181,8 @@ test("each band below reading scale lets one tier leave, names and controls hold
   expectHeld(far);
   expect(await layoutBoxes(page)).toEqual(boxes);
 
-  // Reset Zoom returns the reading band with everything back.
-  await page.getByRole("button", { name: "Reset Zoom", exact: true }).click();
+  // Return to reading size brings the reading band back with everything in it.
+  await page.getByRole("button", { name: "Return to reading size", exact: true }).click();
   await localMapStill(page);
   const back = await reading(page);
   expect(back.band).toBe("reading");
@@ -402,7 +402,7 @@ test("at every step a dot never covers its name, More stands on every drawn row 
   // In: from reading scale, one Zoom In at a time, until the camera can come no closer. Nothing shrinks in the map's
   // own units, so on screen everything grows with the map: the first step holds reading size for every closer zoom,
   // and a description stays at its reading size (Turn 17's close band no longer shrinks the prose).
-  await page.getByRole("button", { name: "Reset Zoom", exact: true }).click();
+  await page.getByRole("button", { name: "Return to reading size", exact: true }).click();
   await localMapStill(page);
   let previous = await stepReading(page, stillPicture, pinned);
   const zoomIn = page.getByRole("button", { name: "Zoom In", exact: true });

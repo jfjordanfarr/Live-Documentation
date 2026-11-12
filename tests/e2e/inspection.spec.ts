@@ -143,6 +143,52 @@ test("keyboard reading keeps focus through links and an Inspect–Back–Forward
   await expect(opener).toBeFocused();
 });
 
+test("at a wide window the reading dialog carries a Back and a Forward a person can press after following a link in it", async ({ page }) => {
+  // The first-visit review of 2026-11-12, finding 10: at 1440 by 900 a newcomer followed a dependency inside the reader
+  // and could not return, the app's Back standing under the dialog's backdrop. The dialog is modal at every size, so it
+  // carries its own Back and Forward, as the full reader of a narrow screen does (2026-10-20).
+  await page.setViewportSize({ width: 1440, height: 900 });
+  const from = "packages/explorer/src/client/detailPanel.ts", to = "packages/explorer/src/client/dom.ts";
+  await page.goto(`/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, view: "map", selectedNodeId: from, inspection: { kind: "file", nodeId: from, presentation: "reading" } })}`);
+  const reader = page.locator("#detail-panel.reading-dialog.visible");
+  await expect(reader.locator("#detail-title")).toHaveText("detailPanel.ts");
+  await reader.locator(`.node-link[data-node-id="${to}"]`).first().click();
+  await expect(reader.locator("#detail-title")).toHaveText("dom.ts");
+  // A control the pointer can reach: shown, enabled, outside anything inert, and the topmost element at its middle.
+  const pressable = (name: string) => page.evaluate(name => {
+    for (const button of document.querySelectorAll<HTMLButtonElement>("button")) {
+      if (button.getAttribute("aria-label") !== name || button.disabled || button.closest("[inert]") || !button.getClientRects().length) continue;
+      const box = button.getBoundingClientRect(), x = box.left + box.width / 2, y = box.top + box.height / 2;
+      const hit = document.elementFromPoint(x, y);
+      if (hit && button.contains(hit)) return { x, y };
+    }
+    return null;
+  }, name);
+  const back = await pressable("Back");
+  expect(back, "a Back the pointer can press").not.toBeNull();
+  await page.mouse.click(back!.x, back!.y);
+  await expect(reader.locator("#detail-title")).toHaveText("detailPanel.ts");
+  const forward = await pressable("Forward");
+  expect(forward, "a Forward the pointer can press").not.toBeNull();
+  await page.mouse.click(forward!.x, forward!.y);
+  await expect(reader.locator("#detail-title")).toHaveText("dom.ts");
+  // Both stay inside the dialog's own focus loop, where the keyboard reaches them.
+  await expect(reader.getByRole("button", { name: "Back", exact: true })).toBeEnabled();
+});
+
+test("the reader lists each dependency once, although a symbol's signature names it again", async ({ page }) => {
+  // dom.ts imports two types from types.ts, which its doc's Dependencies lists once each, and setActiveView's parameters
+  // name both again under the symbol: the reader drew each twice, identically (the first-visit review, 2026-11-12).
+  const source = "packages/explorer/src/client/dom.ts";
+  await page.goto(`/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, view: "map", selectedNodeId: source, inspection: { kind: "file", nodeId: source } })}`);
+  const rows = page.locator('#detail-body [data-reader-section="dependencies"] .dep-item');
+  await expect(rows.first()).toBeVisible();
+  const texts = (await rows.allInnerTexts()).map(text => text.replace(/\s+/gu, " ").trim());
+  expect(texts.length, JSON.stringify(texts)).toBe(new Set(texts).size);
+  expect(texts.filter(text => text === "packages/explorer/src/client/types.ts ViewName")).toHaveLength(1);
+  expect(texts.filter(text => text === "packages/explorer/src/client/types.ts LocalMapPerspective")).toHaveLength(1);
+});
+
 test("a real bundled section link uses its canonical punctuation-bearing anchor through reload and Back", async ({ page }) => {
   const source = "packages/engine/src/config/liveDocumentationConfig.ts";
   const path = "AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md";

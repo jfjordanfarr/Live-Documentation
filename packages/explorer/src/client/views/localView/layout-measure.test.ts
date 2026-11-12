@@ -9,7 +9,8 @@
 
 import { describe, expect, it } from "vitest";
 
-import { cardReadingTransform, clamp, computeFitTransform, computePathFitTransform, focusTransform, framePadding, hiddenEdges, settleTransform, type Bounds, type LayoutExtents } from "./layout-measure";
+import { cardReadingTransform, clamp, computeFitTransform, computePathFitTransform, focusTransform, framePadding, hiddenEdges, settleTransform, wholeTransform, type Bounds, type LayoutExtents } from "./layout-measure";
+import { farthestScale } from "./zoom-limits";
 
 describe("layout-measure", () => {
   const box = (left: number, top: number, width: number, height: number): Bounds =>
@@ -101,6 +102,45 @@ describe("layout-measure", () => {
       const transform = computeFitTransform({ content: box(0, 0, 3000, 400), focus: null }, frame, { minScale: 1 });
       expect(transform.x).toBeCloseTo(framePadding(frame).horizontal);
       expect(transform.y + 200).toBeCloseTo(425);
+    });
+  });
+
+  describe("wholeTransform, the 2D map's Fit", () => {
+    const frame = { width: 1179, height: 780 };
+    const inside = (content: Bounds, t: { x: number; y: number; k: number }): void => {
+      const { horizontal, vertical } = framePadding(frame);
+      expect(t.x + content.left * t.k).toBeGreaterThanOrEqual(horizontal - 1e-6);
+      expect(t.x + content.right * t.k).toBeLessThanOrEqual(frame.width - horizontal + 1e-6);
+      expect(t.y + content.top * t.k).toBeGreaterThanOrEqual(vertical - 1e-6);
+      expect(t.y + content.bottom * t.k).toBeLessThanOrEqual(frame.height - vertical + 1e-6);
+    };
+
+    it("scales a picture larger than the frame down until all of it stands inside the padding, centred", () => {
+      // The first-visit review's scene: packages/explorer/src/client opened, about 3,000 by 2,600 map pixels.
+      const content = box(0, 0, 3000, 2600);
+      const t = wholeTransform(content, frame, 1);
+      expect(t.k).toBeLessThan(1);
+      inside(content, t);
+      expect(t.x + 1500 * t.k).toBeCloseTo(frame.width / 2);
+      expect(t.y + 1300 * t.k).toBeCloseTo(frame.height / 2);
+      // The limiting axis touches its padding: no smaller than it must be.
+      expect(2600 * t.k).toBeCloseTo(frame.height - 2 * framePadding(frame).vertical);
+    });
+
+    it("never draws text larger than reading size: a small picture is centred at the reading scale", () => {
+      const content = box(40, 60, 580, 345);
+      const t = wholeTransform(content, frame, 1.45);
+      expect(t.k).toBe(1.45);
+      inside(content, t);
+      expect(wholeTransform(content, frame, 1).k).toBe(1);
+    });
+
+    it("lands closer than the farthest zoom, so that a Zoom Out press still has somewhere to go", () => {
+      for (const [width, height, reading] of [[3000, 2600, 1], [12000, 900, 1], [400, 9000, 1.45], [580, 345, 1], [2400, 6000, 1]] as const) {
+        const content = box(0, 0, width, height);
+        const floor = farthestScale({ width, height }, frame, reading)!;
+        expect(wholeTransform(content, frame, reading).k, `${width} by ${height}`).toBeGreaterThan(floor);
+      }
     });
   });
 

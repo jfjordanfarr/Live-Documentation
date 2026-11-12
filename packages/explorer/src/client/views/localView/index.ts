@@ -23,6 +23,7 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
     zoomIn: () => controller.zoomIn(),
     zoomOut: () => controller.zoomOut(),
     resetZoom: () => controller.resetZoom(),
+    fitWhole: () => controller.fitWhole(),
     // Multi-hop API
     get localMapState() { return controller.localMapState; },
     // Path mode API

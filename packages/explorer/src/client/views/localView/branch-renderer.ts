@@ -5,7 +5,7 @@ import { candidateStarts, layoutStarts, scoreOf, signalsOf, startName, startOrde
 import { BAND_BORDER, hostOf, layoutScene, planBranches, type Scene, type SceneBox, type SceneMeasurer, type ScenePlan, type SceneTuning } from "./branch-scene";
 import { beginSearch, endpointKey, judgeAlignment, judgeStart, nextTrialKind, pinFor, rowBounds, type CardRows, type ResolvedPin, type RowMeasure, type SearchState } from "./branch-search";
 import { edgeKey, exploreBranches, isClosedDirectory, orderExploration, type BranchGraph, type DirectoryDisclosure, type Exploration } from "./branches";
-import { countsOf, createClosedDirectory, createNodeCard, hasCloseAction } from "./card-factory";
+import { countsOf, createClosedDirectory, createNodeCard, hasCloseAction, PIN_GLYPH } from "./card-factory";
 import { markFirstPin } from "./card-reading";
 import type { LocalViewController } from "./controller";
 import { ancestryButton } from "./directory-ancestry";
@@ -1224,18 +1224,43 @@ function dressCards(controller: LocalViewController, cards: readonly HTMLElement
       card.append(note);
     }
     const outside = exploration.hiddenConnections.get(id) ?? 0;
-    if (outside) {
-      const filePinned = controller.isPinned(id, "*");
-      const reveal = document.createElement(filePinned ? "span" : "button");
-      reveal.className = "local-disclosure";
-      reveal.textContent = `${countOf(outside, "connection")} ${filePinned ? "hidden by filters" : "outside this view"}`;
-      if (!filePinned) {
-        reveal.title = "Pin this file to reveal its connections; display filters still apply";
-        reveal.addEventListener("click", event => { event.stopPropagation(); controller.options.onPressPin(id, "*"); });
-      }
-      card.append(reveal);
-    }
+    if (outside) card.append(controller.isPinned(id, "*") ? hiddenByFilters(outside) : revealControl(controller, id, outside));
   }
+}
+
+/** A pinned file's count of the connections the display filters hide: a fact, not a control. */
+function hiddenByFilters(count: number): HTMLElement {
+  const note = document.createElement("span");
+  note.className = "local-disclosure";
+  note.textContent = `${countOf(count, "connection")} hidden by filters`;
+  return note;
+}
+
+/**
+ * The control a card's connections outside the view are counted on, which pins the file and so reveals them (since
+ * 2026-10-02). A newcomer read the faint line as static text and concluded the map draws no connections (the first-visit
+ * review of 2026-11-12), so it carries the Pin glyph, the action's own icon, and is drawn as a control in one of the
+ * trial's two ways, the map's `data-reveal-control`: a link, its words underlined, or a framed count, the rest of its
+ * words in its name and title. Both keep the line's box, so that no card's box changes. Its name is its words whole.
+ */
+function revealControl(controller: LocalViewController, id: string, count: number): HTMLElement {
+  const reveal = document.createElement("button");
+  reveal.className = "local-disclosure local-reveal-connections";
+  const said = countOf(count, "connection");
+  reveal.setAttribute("aria-label", `${said} outside this view`);
+  reveal.title = "Pin this file to reveal its connections; display filters still apply";
+  reveal.innerHTML = `<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${PIN_GLYPH}"/></svg>`;
+  const words = document.createElement("span");
+  words.className = "local-reveal-words";
+  const counted = document.createElement("span");
+  counted.textContent = said;
+  const rest = document.createElement("span");
+  rest.className = "local-reveal-rest";
+  rest.textContent = " outside this view";
+  words.append(counted, rest);
+  reveal.append(words);
+  reveal.addEventListener("click", event => { event.stopPropagation(); controller.options.onPressPin(id, "*"); });
+  return reveal;
 }
 
 /** The room a lane's bundles pass through; the placement sizes it, and the router reads its place and its slots back from the page. */

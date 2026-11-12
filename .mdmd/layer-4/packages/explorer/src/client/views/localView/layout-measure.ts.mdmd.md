@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/layout-measure.ts
-- Generated At: 2026-11-04T15:03:17.732Z
+- Generated At: 2026-11-12T17:14:37.867Z
 
 ## Authored
 ### Purpose
@@ -17,6 +17,7 @@ Pure functions for measuring layout extents and computing fit transforms. Calcul
 - Extracted from controller.ts during Dev Day 50 (12/19). Functions like `computeLayoutExtents()` and `computeFitTransform()` are pure math; DOM measurement is isolated to `withTransformReset()` callbacks.
 - `computeFitTransform` frames the focus card with buffers around it, at a scale between 0.6 and 1.45. `computePathFitTransform` frames a drawn path at reading size only: centred when the whole path fits the frame, its first file at the left edge when it is wider, so what the frame cannot hold is to the right and never the start ([Turn 10 of 2026-10-01](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-01.1.record.md#turn-10)).
 - The fit keeps a picture that fits the frame whole (2026-10-08, `keepVisible`): the camera centres on the focus but is shifted no further than the padding allows on either side when the content fits, where before the clamp was written for the case where it does not fit and a picture that would have fit was cut when its focus stood at its edge, as a directory entered with no file in focus showed. A closed directory's box counts among the tracked elements of the content's extents.
+- `wholeTransform` (2026-11-12) is the camera of the 2D map's Fit: everything shown, centred inside the frame's padding, at the reading scale when it fits there and smaller when it does not. It never magnifies past the reading scale, and it always stands closer than the farthest zoom of `zoom-limits.ts`, which is at most four fifths of the whole map's fit ([the first-visit review](../../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-12/first-visit/README.md), finding 5).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -113,9 +114,21 @@ The camera after the subject has been held where another view left it (a return 
 scale, moved the least that brings the picture into the frame, by the rule of {@link keepVisible} on each axis;
 a picture already inside it does not move.
 
+#### `wholeTransform` {#symbol-wholetransform}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L270)
+- Returns: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform)
+- Parameters: `content`: [`Bounds`](#symbol-bounds); `frame`: [`Frame`](#symbol-frame)
+
+##### `wholeTransform` — Summary
+The camera of the 2D map's Fit (2026-11-12, the first-visit review's finding 5): everything the map shows, centred,
+inside the frame's padding, at the reading scale when it fits there and smaller when it does not. Only a person's
+press asks for it: an arrival keeps reading size and is never scaled down to fit (the owner, 2026-10-30). The scale
+is always closer than the farthest zoom, which is at most four fifths of the whole map's fit.
+
 #### `focusTransform` {#symbol-focustransform}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L265)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L279)
 - Returns: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform)
 - Parameters: `target`: [`Bounds`](#symbol-bounds); `current`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `frame`: [`Frame`](#symbol-frame)
 
@@ -124,7 +137,7 @@ Frame an explicitly requested row or file at reading size, including its actions
 
 #### `cardReadingTransform` {#symbol-cardreadingtransform}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L280)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L294)
 - Returns: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform)
 - Parameters: `card`: [`Bounds`](#symbol-bounds); `frame`: [`Frame`](#symbol-frame)
 
@@ -133,7 +146,7 @@ A card's own reading reference: use available room, keep text at least its autho
 
 #### `hiddenEdges` {#symbol-hiddenedges}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L292)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L306)
 - Parameters: `content`: [`Bounds`](#symbol-bounds); `transform`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `frame`: [`Frame`](#symbol-frame)
 
 ##### `hiddenEdges` — Summary
@@ -141,7 +154,7 @@ Which edges of the frame the picture continues past, by more than `tolerance` px
 
 #### `computePathFitTransform` {#symbol-computepathfittransform}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L322)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L336)
 - Returns: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform)
 - Parameters: `content`: [`Bounds`](#symbol-bounds); `frame`: [`Frame`](#symbol-frame)
 
@@ -153,7 +166,7 @@ lies to the right, one pan away, and never the start.
 
 #### `applyContainerDimensions` {#symbol-applycontainerdimensions}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L336)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L350)
 - Parameters: `content`: [`Bounds`](#symbol-bounds)
 
 ##### `applyContainerDimensions` — Summary

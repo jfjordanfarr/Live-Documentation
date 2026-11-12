@@ -157,7 +157,7 @@ test("fixed slots keep the ordinary drawing, give every symbol the same allotmen
   samePicture(overview, await geometry(page));
   expect(await layoutBoxes(page)).toEqual(layout);
   await page.keyboard.press("Escape");
-  await page.getByRole("button", { name: "Reset Zoom", exact: true }).click();
+  await page.getByRole("button", { name: "Return to reading size", exact: true }).click();
   await still(page);
   await expect(page.locator("#map-container")).toHaveAttribute("data-lod", "reading");
   await expect(subject.locator(".local-reading-purpose")).toBeVisible();

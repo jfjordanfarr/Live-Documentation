@@ -261,6 +261,20 @@ export function settleTransform(content: Bounds, current: MapTransform, frame: F
   };
 }
 
+/**
+ * The camera of the 2D map's Fit (2026-11-12, the first-visit review's finding 5): everything the map shows, centred,
+ * inside the frame's padding, at the reading scale when it fits there and smaller when it does not. Only a person's
+ * press asks for it: an arrival keeps reading size and is never scaled down to fit (the owner, 2026-10-30). The scale
+ * is always closer than the farthest zoom, which is at most four fifths of the whole map's fit.
+ */
+export function wholeTransform(content: Bounds, frame: Frame, readingScale: number): MapTransform {
+  const { horizontal, vertical } = framePadding(frame);
+  const k = Math.min(readingScale,
+    (frame.width - 2 * horizontal) / Math.max(1, content.width),
+    (frame.height - 2 * vertical) / Math.max(1, content.height));
+  return { x: frame.width / 2 - (content.left + content.width / 2) * k, y: frame.height / 2 - (content.top + content.height / 2) * k, k };
+}
+
 /** Frame an explicitly requested row or file at reading size, including its actions, inside the usable canvas. */
 export function focusTransform(target: Bounds, current: MapTransform, frame: Frame): MapTransform {
   const { horizontal, vertical } = framePadding(frame);

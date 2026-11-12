@@ -147,8 +147,8 @@ test("the open reader is kept out of the frame: a fit beside it never puts the s
   const readerBox = await boxOf(page, "#detail-panel");
   // Opening the reader moves nothing: the subject's card stands where it was, under the reader or not.
   expect(await boxOf(page, "#map-container .node-card.local-focus")).toEqual(before);
-  // Framing again, by the Reset Zoom control, fits the picture to the frame the reader leaves.
-  await page.getByRole("button", { name: "Reset Zoom", exact: true }).click();
+  // Framing again, by the Return to reading size control, fits the picture to the frame the reader leaves.
+  await page.getByRole("button", { name: "Return to reading size", exact: true }).click();
   await page.waitForTimeout(700);
   await expect(reader).toHaveClass(/visible/);
   const frame = await frameOf(page);
@@ -161,4 +161,51 @@ test("the open reader is kept out of the frame: a fit beside it never puts the s
   // The subject's card is centred in that narrower frame when the picture around it does not fit, as here.
   const picture = await pictureOf(page);
   if (picture.width > frame.width) expect(Math.abs((focus.left + focus.right) / 2 - (frame.left + frame.right) / 2)).toBeLessThan(2);
+});
+
+test("Fit, pressed, frames everything the 2D map shows inside its zoom limits; the arrival keeps reading size", async ({ page }) => {
+  // The first-visit review of 2026-11-12, finding 5: a newcomer pressed what was named Reset Zoom to see the whole and was
+  // taken to the newest pin. The 3D map's first control, Fit current scope, stands in 2D too, in the same place, and only a
+  // press runs it: the arrival is framed at reading size and never scaled down (the owner, 2026-10-30).
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/?view=local&mode=2d&dir=packages/explorer/src/client");
+  await settled(page);
+  const scale = (): Promise<number> => page.locator("#map-viewport").evaluate(layer => Number(/scale\(([-\d.]+)\)/u.exec((layer as HTMLElement).style.transform)![1]));
+  const arrival = await scale();
+  expect(Object.values(await signsOf(page)), "the arrival is at reading size, the picture continuing past the frame").toContain("true");
+  const address = new URL(page.url()).searchParams.toString();
+
+  const fit = page.locator(".perspective-controls button:visible").first();
+  await expect(fit).toHaveAccessibleName("Fit current scope");
+  await expect(fit).toHaveAttribute("title", "Fit everything the map shows");
+  await fit.click();
+  // The camera's eased move, not a jump.
+  await expect(page.locator("#map-container")).toHaveAttribute("data-camera", "moving");
+  await settled(page);
+  const frame = await frameOf(page), picture = await pictureOf(page);
+  const { horizontal, vertical } = framePadding(frame);
+  expect(picture.left).toBeGreaterThanOrEqual(frame.left + horizontal - 1);
+  expect(picture.right).toBeLessThanOrEqual(frame.right - horizontal + 1);
+  expect(picture.top).toBeGreaterThanOrEqual(frame.top + vertical - 1);
+  expect(picture.bottom).toBeLessThanOrEqual(frame.bottom - vertical + 1);
+  expect(Math.abs((picture.left - frame.left) - (frame.right - picture.right))).toBeLessThan(2);
+  expect(Math.abs((picture.top - frame.top) - (frame.bottom - picture.bottom))).toBeLessThan(2);
+  expect(await signsOf(page)).toEqual({ above: "false", below: "false", left: "false", right: "false" });
+  const fitted = await scale();
+  expect(fitted).toBeLessThan(arrival);
+  // Inside the zoom-out limit: Zoom Out still has somewhere to go.
+  await expect(page.getByRole("button", { name: "Zoom Out", exact: true })).toBeEnabled();
+  // Neither the pins, the opened directories nor the question changed.
+  expect(new URL(page.url()).searchParams.toString()).toBe(address);
+
+  // The press is the person's camera: nothing frames the picture back on its own.
+  await page.waitForTimeout(800);
+  expect(await scale()).toBeCloseTo(fitted, 6);
+
+  // Return to reading size says what it does and does it.
+  const reading = page.getByRole("button", { name: "Return to reading size", exact: true });
+  await expect(reading).toHaveAttribute("title", /reading size/u);
+  await reading.click();
+  await settled(page);
+  expect(await scale()).toBeCloseTo(arrival, 3);
 });

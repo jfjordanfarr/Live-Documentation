@@ -448,11 +448,13 @@ function renderGeneratedContent(
     parts.push(sectionHtml("Public Symbols", `<div class="symbol-badges">${symbolBadges}</div>`, "symbols"));
   }
   
-  // Dependencies - render as clickable list items
+  // Dependencies - render as clickable list items. The node's dependencies hold the doc's Dependencies lines and, beside
+  // them, the references its symbols' signatures make (a parameter's type, say), which the doc states under the symbol;
+  // drawn without the symbol that makes them, a signature's reference to a type the file imports is the same row as the
+  // import's, so a row is listed once (dom.ts listed types.ts / ViewName twice, the first-visit review of 2026-11-12).
   const resolvedDeps = node.dependencies.filter(d => d.resolved);
   if (resolvedDeps.length > 0) {
-    const depItems = resolvedDeps
-      .map(d => renderDependencyItem(d, links))
+    const depItems = [...new Set(resolvedDeps.map(d => renderDependencyItem(d, links)))]
       .sort()
       .join("");
     parts.push(sectionHtml("Dependencies", `<div class="dep-list">${depItems}</div>`, "dependencies"));
@@ -597,9 +599,10 @@ function renderFallbackDetails(
   }
 
   if (node.dependencies.length > 0) {
-    const deps = node.dependencies
+    // One row for each dependency as drawn, as in the reader above.
+    const deps = [...new Set(node.dependencies
       .filter(d => d.resolved)
-      .map(d => describeDependency(d, nodesById))
+      .map(d => describeDependency(d, nodesById)))]
       .sort();
     if (deps.length > 0) {
       parts.push(sectionHtml("Dependencies", listHtml(deps)));

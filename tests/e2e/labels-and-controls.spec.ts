@@ -1,5 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
+import { AA_SMALL_TEXT, backdrop, contrastRatio, parseColour } from "./contrast";
 import { clearStroke, observeGraph, referenceWire, renderedLinks, renderedNodes } from "./force-graph-observation";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { seamBefore } from "../../packages/explorer/src/client/views/localView/word-seams";
@@ -117,11 +118,89 @@ test("the toolbar's groups stand parted by rules, each choice group with one cho
   expect(facts.map(group => group.pressed)).toEqual([0, 0, 1, 1]);
   expect(facts.map(group => group.rule)).toEqual(["0px", "1px", "1px", "1px"]);
   await expect(page.locator(".scene-nav-info")).toHaveCount(0);
-  // In 2D the fit's group and the 3D layout's go with their buttons, and no rule is left standing alone.
+  // In 2D the 3D layout's group goes with its buttons, and no rule is left standing alone; the fit stays first, since
+  // 2026-11-12 the 2D map's own Fit.
   await page.getByRole("button", { name: "2D", exact: true }).click();
   await expect(page.locator(".local-placed")).toBeVisible();
-  await expect(groups).toHaveCount(2);
-  expect(await groups.first().evaluate(element => getComputedStyle(element).borderLeftWidth)).toBe("0px");
+  await expect(groups).toHaveCount(3);
+  expect(await groups.evaluateAll(elements => elements.map(element => getComputedStyle(element).borderLeftWidth))).toEqual(["0px", "1px", "1px"]);
+  expect(await groups.first().locator("button:visible").getAttribute("aria-label")).toBe("Fit current scope");
+});
+
+test("a card's connections outside the view read as the control they are, in both looks of the trial, and change no box", async ({ page }) => {
+  // The first-visit review of 2026-11-12: the line that pins a file to reveal its connections read as faint static text,
+  // 11 px at 3.3 to 1, and a newcomer concluded that the map draws no connections. It carries the Pin glyph, reads in
+  // the colour of the card's other text controls, says it has the focus and keeps its name, whichever look Tuning's
+  // Reveal Control chooses, and neither look moves a card.
+  await page.setViewportSize({ width: 1440, height: 900 });
+  const look = async (choice: "link" | "button"): Promise<Array<{ id: string; x: number; y: number; width: number; height: number }>> => {
+    await page.evaluate(({ key, version, choice }) => localStorage.setItem(key, JSON.stringify({ version, tuning: { localMap: { searchStarts: 0, revealControl: choice } } })),
+      { key: PERSISTED_UI_KEY, version: PERSISTED_UI_VERSION, choice });
+    await page.goto("/?view=local&mode=2d&dir=packages/explorer/src/client");
+    await page.locator(".local-placed").waitFor();
+    // The link look is the default; the button look must have taken.
+    if (choice === "button") await expect(page.locator("#map-container")).toHaveAttribute("data-reveal-control", choice);
+    // Every box in the map's own pixels, so that the camera does not disturb the comparison.
+    return page.locator("#map-container .node-card").evaluateAll(cards => cards.map(card => ({
+      id: (card as HTMLElement).dataset.id!, x: (card as HTMLElement).offsetLeft, y: (card as HTMLElement).offsetTop,
+      width: (card as HTMLElement).offsetWidth, height: (card as HTMLElement).offsetHeight
+    })));
+  };
+  await page.goto("/");
+  const linkBoxes = await look("link");
+  const reveals = page.getByRole("button", { name: /^\d+\sconnections? outside this view$/u });
+  expect(await reveals.count(), "cards with connections outside the view").toBeGreaterThan(5);
+  const facts = await reveals.evaluateAll(buttons => buttons.map(button => {
+    const layers: string[] = [];
+    for (let layer: Element | null = button; layer; layer = layer.parentElement) layers.unshift(getComputedStyle(layer).backgroundColor);
+    const card = button.closest(".node-card")!;
+    const fact = card.querySelector<HTMLElement>(".node-directory");
+    return {
+      colour: getComputedStyle(button).color, layers, glyph: !!button.querySelector("svg path"), title: (button as HTMLElement).title,
+      underlined: getComputedStyle(button.querySelector(".local-reveal-words") ?? button).textDecorationLine,
+      fact: fact ? getComputedStyle(fact).color : null, height: button.getBoundingClientRect().height,
+      symbols: card.querySelector<HTMLElement>(":scope > .local-disclosure:not(.local-reveal-connections)")?.getBoundingClientRect().height ?? null
+    };
+  }));
+  for (const fact of facts) {
+    expect(fact.glyph, "the Pin glyph, the action's own icon").toBe(true);
+    expect(fact.title).toBe("Pin this file to reveal its connections; display filters still apply");
+    expect(contrastRatio(parseColour(fact.colour), backdrop(fact.layers)), "legible small text").toBeGreaterThanOrEqual(AA_SMALL_TEXT);
+    expect(fact.colour, "not the faint grey of the facts beside it").not.toBe(fact.fact);
+    expect(fact.underlined, "the link look underlines its words").toBe("underline");
+    if (fact.symbols !== null) expect(fact.height, "one line, as tall as the line above it").toBe(fact.symbols);
+  }
+  // The keyboard's focus is drawn: a ring in the accent colour, two pixels wide. detailPanel.ts stands in the frame.
+  const subject = (): ReturnType<Page["locator"]> => page.locator('.node-card[data-id="packages/explorer/src/client/detailPanel.ts"]').getByRole("button", { name: /outside this view$/u });
+  const first = subject();
+  await first.focus();
+  await page.keyboard.press("Shift+Tab");
+  await page.keyboard.press("Tab");
+  await expect(first).toBeFocused();
+  expect(await first.evaluate(button => { const style = getComputedStyle(button); return [style.outlineStyle, style.outlineWidth, style.outlineColor]; }))
+    .toEqual(["solid", "2px", "rgb(0, 145, 255)"]);
+
+  // The button look: the count framed, the rest of the words in the name and the title, and no card moved.
+  const buttonBoxes = await look("button");
+  expect(buttonBoxes).toEqual(linkBoxes);
+  const framed = subject();
+  await expect(framed).toHaveText(/^\d+\sconnections?$/u, { useInnerText: true });
+  const frame = await framed.evaluate(button => {
+    const before = getComputedStyle(button, "::before"), box = button.getBoundingClientRect(), column = button.closest(".node-card")!.querySelector(".node-directory")!.getBoundingClientRect();
+    return { border: before.borderTopWidth, style: before.borderTopStyle, left: box.left, column: column.left };
+  });
+  expect(frame).toMatchObject({ border: "1px", style: "solid" });
+  expect(Math.abs(frame.left - frame.column), "the frame stands at the text column's edge, as the directory's Open does").toBeLessThan(0.5);
+  await framed.focus();
+  await page.keyboard.press("Shift+Tab");
+  await page.keyboard.press("Tab");
+  expect(await framed.evaluate(button => { const before = getComputedStyle(button, "::before"); return [before.borderTopWidth, before.borderTopColor]; })).toEqual(["2px", "rgb(0, 145, 255)"]);
+
+  // Either look pins the file, which reveals its connections.
+  const id = await framed.evaluate(button => (button.closest(".node-card") as HTMLElement).dataset.id!);
+  await framed.click();
+  await expect(page.locator(`.node-card[data-id="${id}"] .local-file-pin`)).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator(`.node-card[data-id="${id}"]`).getByRole("button", { name: /outside this view$/u })).toHaveCount(0);
 });
 
 test("every view in the navigation has an icon, and the application's name is whole", async ({ page }) => {

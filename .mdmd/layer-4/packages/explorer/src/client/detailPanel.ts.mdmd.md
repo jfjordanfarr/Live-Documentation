@@ -27,6 +27,8 @@ Current symbol-arrival correction, November 9 UTC, following the owner’s [addi
 
 November 4 uses this same canonical reader for an explicitly opened full-text dialog. Selected-symbol content is rendered from the grammar’s complete symbol block, including references, Parameters and other sections; the former Summary-only fragment was insufficient for a full-description action. Link resolution is shared with on-map prose through reader-links. The ordinary directory/history/evidence functions remain available. See the [integration record](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-2).
 
+Since 2026-11-12 a dependency is listed once. A node's dependencies hold the doc's Dependencies lines and, beside them, the references its symbols' signatures make, which the doc states under the symbol; drawn without the symbol that makes them, a parameter's type that the file also imports drew the same row twice, as `types.ts` / `ViewName` under `dom.ts` ([the first-visit review](../../../../../../AI-Agent-Workspace/Screenshots/2026-11-12/first-visit/README.md), finding 10). The doc was right; 191 of this repository's files had repeated rows. The rows are deduplicated as drawn.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
