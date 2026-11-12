@@ -6,6 +6,10 @@ _The owner's standing request (2026-09-29): after changing the Explorer, build i
 
 [A first visit, by an outsider](2026-11-12/first-visit/README.md): an evaluation by a subagent with no project background, from the README through the commands to the running Explorer on this repository and the estate sample, at desktop, tablet and phone sizes and by keyboard; twenty ranked findings with reproductions and measured sizes, what worked and should be protected, and what it could not work out. An outsider's observations, not decisions; root's reading of them against the record is in [the session record](../ChatHistory/2026/11/2026-11-12.1.record.md).
 
+[The Local Map repairs](2026-11-12/local-map-repairs/README.md): a builder's evidence for the first repairs after that visit: the count of a card's undrawn connections as a framed control (two trial looks and the one chosen), Fit in 2D, the reading dialog's own Back and Forward, and two investigations with nothing changed, the Centre motion from far out and names in a fresh 3D picture.
+
+[The World Map repairs](2026-11-12/world-map-repairs/README.md): labels standing clear of every piece's outline, with the audit's failing output on the build before and the sweep of 148 camera states behind the rule chosen; the pinned panel beside its piece; the nine tools as icons, first drawn and as built; keyboard reach; the walk-through ending where it began; the loading sign.
+
 ## 2026-11-10
 
 [History inside the bubbles](2026-11-10/history-bubbles/README.md): a step of the history shown within the wrappers' skins, each change at the innermost thing drawn for it, on this repository at steps 695 and 697 before and after under Glow, Dim and Both, on the scripted sample, and on a temporary sample large enough to veil; with playback frames and per-step costs measured before and after. Implementation evidence for the root's review and the owner's eye (2026-11-11).
