@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/inspect.ts
 - Entry: command `live-docs:inspect` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-02T16:50:56.094Z
+- Generated At: 2026-11-12T16:06:56.391Z
 
 ## Authored
 ### Purpose
@@ -20,6 +20,7 @@ Trace Live Documentation dependencies from the command line, supporting outbound
 - Since 2026-10-18 `--version` prints the engine package's version, whose graph and pathfinder answer every question, through [cli.ts](cli.ts.mdmd.md), and a reader that closes the pipe early, as `head` does, ends the listing quietly instead of with an EPIPE trace.
 - A fan-out from a file (2026-10-22, [the decision](../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#related-documents-run-both-ways-a-docs-cited-by-section-is-generated-from-the-documents-own-links-recorded-2026-10-22)) also names the file's documents both ways, `Cites:` from its doc's authored words by `relatedDocsOf` and `Cited by:` from its doc's `Cited By` section, and `--json` carries them as `documents`; the headless form of the reader's Cited By list and the 3D picture's citation lines.
 - `--groups` (2026-11-02) is the headless form of the Knowledge Sources panel's Groups section, from the engine's `fileGroups`: how many files hang together in how many groups and how many stand alone, each group by its seed and size, largest first, then the lone files; `--json` prints `{ kind, files, groups: [{ seed, size, members }], alone }`. The groups are of the whole graph as today's docs say, so it refuses `--from`, `--to`, `--direction`, `--reachable`, `--at` and `--between`. The ask and the owner's answers are in [Turns 2 to 4 of the November 2 record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-02.1.record.md#turn-2).
+- Since 2026-11-12 a refused argument ends through `runCommand` in [cli.ts](cli.ts.mdmd.md), one line with the command that lists the options, and an option is never taken as the value of another (`--from --to` read `--to` as a path). The usage says that a symbol in `--from` needs `--to`, which the fan-out refuses for a symbol; the CLI reference's positional "quick summary" form, which the command never accepted, went from the guide the same day.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -29,12 +30,10 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs/promises` - `fs`
 - `node:path` - `path`
 - `node:process` - `process`
 - [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
 - [`LiveDocumentationConfig`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
-- [`liveDocumentationConfig.LiveDocumentationConfigInput`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfiginput)
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`graph.GraphFile`](../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-graphfile)
 - [`graph.resolveDocLink`](../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-resolvedoclink)
@@ -49,8 +48,12 @@ _No public symbols detected_
 - [`pathfind.searchGraph`](../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-searchgraph)
 - [`pathfind.searchSymbolPath`](../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-searchsymbolpath)
 - [`relatedDocs.relatedDocsOf`](../../packages/engine/src/live-docs/relatedDocs.ts.mdmd.md#symbol-relateddocsof)
+- [`cli.UsageError`](./cli.ts.mdmd.md#symbol-usageerror)
 - [`cli.endQuietlyWhenThePipeCloses`](./cli.ts.mdmd.md#symbol-endquietlywhenthepipecloses)
+- [`cli.optionValue`](./cli.ts.mdmd.md#symbol-optionvalue)
 - [`cli.packageVersion`](./cli.ts.mdmd.md#symbol-packageversion)
+- [`cli.readConfiguration`](./cli.ts.mdmd.md#symbol-readconfiguration)
+- [`cli.runCommand`](./cli.ts.mdmd.md#symbol-runcommand)
 - [`emit.emitDualDirectionResult`](./inspect/emit.ts.mdmd.md#symbol-emitdualdirectionresult)
 - [`emit.emitDualDirectionSymbolResult`](./inspect/emit.ts.mdmd.md#symbol-emitdualdirectionsymbolresult)
 - [`emit.emitFanoutResult`](./inspect/emit.ts.mdmd.md#symbol-emitfanoutresult)

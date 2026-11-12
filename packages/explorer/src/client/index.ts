@@ -5,7 +5,7 @@ import { landingOf } from "./bootstrap/landing";
 import { createDetailPanel, type DetailPanelAction } from "./detailPanel";
 import { requireElement, setActiveView } from "./dom";
 import { downloadDocs, downloadFactsJson, type DownloadBundleType, type DownloadFormat } from "./download";
-import { attachGlobalErrorHandler, reportFatalExplorerError } from "./errors";
+import { attachGlobalErrorHandler, ExplorerRefusal, OPENED_AS_FILE, reportFatalExplorerError } from "./errors";
 import { buildTestCoverageMap, resolveLinkEndpoint, getInputById } from "./graph-helpers";
 import { historicalDirectories, historicalNode } from "./history/file-identity";
 import { createHistoryControl, isHistorySequence } from "./history/history-control";
@@ -100,7 +100,7 @@ function dataUrl(): URL {
 function onOwnSite(path: string, base: string | URL): URL {
   const url = new URL(path, base);
   if (url.origin !== window.location.origin) {
-    throw new Error(`The Explorer reads only from its own site, and ${url.origin} is not it.`);
+    throw new ExplorerRefusal(`The Explorer reads only from its own site, and ${url.origin} is not it.`);
   }
   return url;
 }
@@ -110,11 +110,11 @@ async function loadHistory(file: string): Promise<HistorySequence> {
   const url = onOwnSite(file, dataUrl());
   const response = await fetch(url, { cache: "no-store" });
   if (!response.ok) {
-    throw new Error(`No history at ${url.pathname} (${response.status}).`);
+    throw new ExplorerRefusal(`No history at ${url.pathname} (${response.status}).`);
   }
   const sequence: unknown = await response.json();
   if (!isHistorySequence(sequence)) {
-    throw new Error(`${url.pathname} is not a history this Explorer reads.`);
+    throw new ExplorerRefusal(`${url.pathname} is not a history this Explorer reads.`);
   }
   return sequence;
 }
@@ -123,16 +123,20 @@ async function loadHistory(file: string): Promise<HistorySequence> {
  * Loads the bundle: from the path named by `?data=` on the page's own site, or from `explorer-data.json` beside the page.
  */
 async function loadExplorerData(): Promise<StaticExplorerData> {
+  // A browser lets a page opened as a file read nothing beside it, so the data cannot load: say so, not "Loading..." forever.
+  if (window.location.protocol === "file:") {
+    throw new ExplorerRefusal(OPENED_AS_FILE);
+  }
   const url = dataUrl();
   const response = await fetch(url, { cache: "no-store" });
   if (!response.ok) {
-    throw new Error(
+    throw new ExplorerRefusal(
       `No explorer data at ${url.pathname} (${response.status}). Build a static bundle first with \`npm run live-docs:visualize\`.`
     );
   }
   const bundle = (await response.json()) as Partial<StaticExplorerData>;
   if (!bundle.graph || typeof bundle.graph.files !== "object") {
-    throw new Error(`${url.pathname} is not an Explorer bundle: it holds no graph.`);
+    throw new ExplorerRefusal(`${url.pathname} is not an Explorer bundle: it holds no graph.`);
   }
   return bundle as StaticExplorerData;
 }

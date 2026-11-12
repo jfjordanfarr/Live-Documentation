@@ -6,15 +6,14 @@ import process from "node:process";
 
 import {
   DEFAULT_LIVE_DOCUMENTATION_CONFIG,
-  normalizeLiveDocumentationConfig,
-  type LiveDocumentationConfigInput
+  normalizeLiveDocumentationConfig
 } from "@live-documentation/engine/config/liveDocumentationConfig";
 import { hasMeaningfulAuthoredContent } from "@live-documentation/engine/live-docs/core";
 import { LiveDocSyntaxError, authoredBlockOf, parseLiveDoc, type LiveDoc } from "@live-documentation/engine/live-docs/document";
 import { deriveLiveDocGraph, type LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 import { fileGroups } from "@live-documentation/engine/live-docs/pathfind";
 
-import { packageVersion } from "./cli";
+import { optionValue, packageVersion, readConfiguration, runCommand, UsageError } from "./cli";
 
 /** Maximum number of islands to display before truncating */
 const MAX_ISLAND_DISPLAY = 30;
@@ -59,30 +58,27 @@ function parseArgs(argv: string[]): ParsedArgs {
         break;
       }
       case "--workspace": {
-        parsed.workspace = expectValue(argv, ++index, current);
+        parsed.workspace = optionValue(argv, ++index, current);
         break;
       }
       case "--config": {
-        parsed.configPath = expectValue(argv, ++index, current);
+        parsed.configPath = optionValue(argv, ++index, current);
         break;
       }
       case "--root": {
-        parsed.root = expectValue(argv, ++index, current);
+        parsed.root = optionValue(argv, ++index, current);
         break;
       }
       case "--base-layer": {
-        parsed.baseLayer = expectValue(argv, ++index, current);
+        parsed.baseLayer = optionValue(argv, ++index, current);
         break;
       }
       case "--extension": {
-        parsed.extension = expectValue(argv, ++index, current);
+        parsed.extension = optionValue(argv, ++index, current);
         break;
       }
       default: {
-        if (current.startsWith("-")) {
-          throw new Error(`Unknown option: ${current}`);
-        }
-        throw new Error(`Unexpected argument: ${current}`);
+        throw new UsageError(current.startsWith("-") ? `${current} is not an option.` : `${current} is not an option; lint takes no paths.`);
       }
     }
   }
@@ -90,33 +86,23 @@ function parseArgs(argv: string[]): ParsedArgs {
   return parsed;
 }
 
-function expectValue(argv: string[], index: number, flag: string): string {
-  const value = argv[index];
-  if (!value || value.startsWith("-")) {
-    throw new Error(`Option ${flag} requires a value.`);
-  }
-  return value;
-}
-
 function usage(): string {
   return [
     "Usage: npm run live-docs:lint -- [options]",
     "",
+    "Checks that every Live Doc parses and that its links are relative, and warns about authored",
+    "sections still to be written and files with no dependencies and no dependents.",
+    "",
     "Options:",
-    "  --workspace <path>     Workspace root (defaults to current directory).",
-    "  --config <file>        Load configuration from JSON file.",
-    "  --root <path>          Override liveDocumentation.root.",
-    "  --base-layer <name>    Override liveDocumentation.baseLayer.",
-    "  --extension <suffix>   Override liveDocumentation.extension.",
-    "  --version              Print CLI version.",
-    "  --help                 Show this help message."
+    "  --workspace <path>     The folder whose docs to check (default: the current directory).",
+    "  --config <file>        The configuration (default: the workspace's .live-docs.config.json",
+    "                         when it has one, else the shipped defaults).",
+    "  --root <path>          In place of the configuration's root.",
+    "  --base-layer <name>    In place of the configuration's baseLayer.",
+    "  --extension <suffix>   In place of the configuration's extension.",
+    "  -v, --version          Print the engine's version.",
+    "  -h, --help             Print this help."
   ].join("\n");
-}
-
-async function readConfigFile(configPath: string): Promise<LiveDocumentationConfigInput> {
-  const resolved = path.resolve(configPath);
-  const raw = await fs.readFile(resolved, "utf8");
-  return JSON.parse(raw) as LiveDocumentationConfigInput;
 }
 
 async function main(): Promise<void> {
@@ -134,10 +120,7 @@ async function main(): Promise<void> {
 
   const workspaceRoot = path.resolve(args.workspace ?? process.cwd());
 
-  let configInput: LiveDocumentationConfigInput = {};
-  if (args.configPath) {
-    configInput = await readConfigFile(args.configPath);
-  }
+  const configInput = await readConfiguration(workspaceRoot, args.configPath);
 
   if (args.root) {
     configInput.root = args.root;
@@ -384,10 +367,4 @@ function hasMeaningfulSubsection(section: string, placeholders: string[]): boole
   return true;
 }
 
-main().catch((error) => {
-  console.error("live-docs:lint failed");
-  if (error instanceof Error) {
-    console.error(error.message);
-  }
-  process.exit(1);
-});
+runCommand("live-docs:lint", main);

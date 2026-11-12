@@ -5,7 +5,7 @@
 - Layer: 3
 - Audience: Contributors
 
-_Current as of 2026-10-10._
+_Current as of 2026-10-10; where a workspace's board is named, as of 2026-11-12._
 
 ## Authored
 
@@ -40,6 +40,8 @@ An empty Things or Connections section says so, `_No things declared_` or `_No c
 Names are unique. Every name a `Holds`, a connection or a layout line uses is declared. A thing is held by at most one other, and holds nothing that leads back to it. A door's kind is an opening kind. A legend word is a shape or a tint. The layout names each thing once. A connection does not join a thing to itself. What needs the docs is checked where the board meets the graph, and reported rather than refused: a `From` that resolves to no docs, a `From` outside the workspace, a declared door nothing serves.
 
 ### Where a board meets the graph
+
+A workspace's board is the one its `.live-docs.config.json` names as `board`, a path from the workspace root, unless a command is handed another: `live-docs:visualize -- --board <file>` or `live-docs:board <file>`. Since 2026-11-12, when `live-docs:visualize -- --workspace <folder>` had to find a board it was not handed; before, this repository's npm script passed its board on every build.
 
 `boardGraph.ts` joins a parsed board to the graph derived from the workspace's docs:
 

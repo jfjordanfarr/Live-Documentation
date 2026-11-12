@@ -15,6 +15,12 @@ const encodeHtml = (value: string): string =>
 const isObject = (value: unknown): value is Record<string, unknown> =>
   typeof value === "object" && value !== null;
 
+/** What stops the Explorer that the reader can act on, said in one plain sentence: shown where the map would be, never with a stack. */
+export class ExplorerRefusal extends Error {}
+
+/** The refusal of a page opened as a file, whose browser lets it read nothing beside it (2026-11-12). */
+export const OPENED_AS_FILE = "The Explorer cannot load its data when opened as a file; serve its folder with a web server and open that address.";
+
 const describeError = (error: unknown): { message: string; stack: string } => {
   if (error instanceof Error) {
     const stack = error.stack ?? error.message;
@@ -43,7 +49,11 @@ const describeError = (error: unknown): { message: string; stack: string } => {
   return { message: "Unknown error", stack: "Unknown error" };
 };
 
-/** Renders a full-page fatal error overlay with encoded stack trace. */
+/**
+ * Says what stopped the Explorer in the status line, as `Error: <message>`. A refusal is also its one sentence where
+ * the map would be, at reading size and alone; a fault the reader cannot act on opens the detail panel with its
+ * encoded stack.
+ */
 export function reportFatalExplorerError(error: unknown): void {
   console.error("Live Docs Explorer fatal error", error);
 
@@ -54,13 +64,29 @@ export function reportFatalExplorerError(error: unknown): void {
     statsLine.textContent = `Error: ${message}`;
   }
 
-  const detailBody = document.getElementById("detail-body");
-  if (detailBody) {
-    detailBody.innerHTML = `<pre style="white-space:pre-wrap;color:#f88;">${encodeHtml(stack)}</pre>`;
-  }
+  if (error instanceof ExplorerRefusal) {
+    // One sentence in the main area, never two: a second refusal replaces the first.
+    const views = document.getElementById("views");
+    if (views) {
+      let sentence = document.getElementById("explorer-refusal");
+      if (!sentence) {
+        sentence = document.createElement("p");
+        sentence.id = "explorer-refusal";
+        sentence.className = "explorer-refusal";
+        sentence.setAttribute("role", "alert");
+        views.append(sentence);
+      }
+      sentence.textContent = message;
+    }
+  } else {
+    const detailBody = document.getElementById("detail-body");
+    if (detailBody) {
+      detailBody.innerHTML = `<pre style="white-space:pre-wrap;color:#f88;">${encodeHtml(stack)}</pre>`;
+    }
 
-  const overlay = document.getElementById("detail-panel");
-  overlay?.classList.add("visible");
+    const overlay = document.getElementById("detail-panel");
+    overlay?.classList.add("visible");
+  }
 
   (window as Window & { __liveDocsExplorerError?: unknown }).__liveDocsExplorerError = error;
 }

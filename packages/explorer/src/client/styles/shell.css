@@ -167,6 +167,20 @@
     pointer-events: all;
 }
 
+/* What stops the Explorer that a reader can act on, as a page opened as a file: its one sentence where the map would
+   be, at the reader's size and in the page's text colour, alone (2026-11-12). */
+.explorer-refusal {
+    position: absolute;
+    inset: 0;
+    width: min(36em, calc(100% - 48px));
+    height: fit-content;
+    margin: auto;
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--text);
+    text-align: center;
+}
+
 .view-toolbar {
     position: absolute;
     top: 20px;

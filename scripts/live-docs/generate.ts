@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-import fs from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
@@ -10,7 +9,7 @@ import {
   normalizeLiveDocumentationConfig
 } from "@live-documentation/engine/config/liveDocumentationConfig";
 
-import { packageVersion } from "./cli";
+import { optionValue, packageVersion, readConfiguration, runCommand, UsageError } from "./cli";
 import { generateLiveDocs } from "../../packages/generator/src/generator";
 
 interface ParsedArgs {
@@ -58,37 +57,37 @@ function parseArgs(argv: string[]): ParsedArgs {
       }
 
       case "--workspace": {
-        parsed.workspace = expectValue(argv, ++index, current);
+        parsed.workspace = optionValue(argv, ++index, current);
         break;
       }
 
       case "--root": {
-        parsed.root = expectValue(argv, ++index, current);
+        parsed.root = optionValue(argv, ++index, current);
         break;
       }
 
       case "--base-layer": {
-        parsed.baseLayer = expectValue(argv, ++index, current);
+        parsed.baseLayer = optionValue(argv, ++index, current);
         break;
       }
 
       case "--extension": {
-        parsed.extension = expectValue(argv, ++index, current);
+        parsed.extension = optionValue(argv, ++index, current);
         break;
       }
 
       case "--glob": {
-        parsed.globs.push(expectValue(argv, ++index, current));
+        parsed.globs.push(optionValue(argv, ++index, current));
         break;
       }
 
       case "--include": {
-        parsed.include.push(expectValue(argv, ++index, current));
+        parsed.include.push(optionValue(argv, ++index, current));
         break;
       }
 
       case "--config": {
-        parsed.configPath = expectValue(argv, ++index, current);
+        parsed.configPath = optionValue(argv, ++index, current);
         break;
       }
 
@@ -109,7 +108,7 @@ function parseArgs(argv: string[]): ParsedArgs {
 
       default: {
         if (current.startsWith("-")) {
-          throw new Error(`Unknown option: ${current}`);
+          throw new UsageError(`${current} is not an option.`);
         }
 
         // Treat bare arguments as glob patterns
@@ -124,50 +123,28 @@ function parseArgs(argv: string[]): ParsedArgs {
   return parsed;
 }
 
-function expectValue(argv: string[], index: number, flag: string): string {
-  const value = argv[index];
-  if (!value || value.startsWith("-")) {
-    throw new Error(`Option ${flag} requires a value.`);
-  }
-  return value;
-}
-
 function usage(): string {
-  return `Usage: npm run live-docs:generate -- [options]\n\n` +
+  return `Usage: npm run live-docs:generate -- [options] [glob ...]\n\n` +
+    `Writes a Live Doc for each file of the workspace, and the graph index beside them.\n\n` +
     `Options:\n` +
-    `  --workspace <path>        Workspace root (defaults to current directory).\n` +
-    `  --root <path>             Override liveDocumentation.root.\n` +
-    `  --base-layer <name>       Override liveDocumentation.baseLayer.\n` +
-    `  --extension <suffix>      Override liveDocumentation.extension (default .md).\n` +
-    `  --glob <pattern>          Additional glob pattern (can repeat).\n` +
-    `  --include <pattern>       Target a specific file or glob (can repeat).\n` +
-    `  --config <file>           Load configuration from JSON file (default: the workspace's\n` +
-    `                            .live-docs.config.json when it has one).\n` +
-    `  --dry-run                 Preview changes without writing files.\n` +
-    `  --check                   Fail if docs would be created, changed or deleted; write nothing.\n` +
-    `  --changed                 Limit regeneration to changed files (git status).\n` +
-    `  --version                 Print generator version.\n` +
-    `  --help                    Display this help text.\n` +
+    `  --workspace <path>        The folder to document (default: the current directory).\n` +
+    `  --config <file>           The configuration (default: the workspace's .live-docs.config.json\n` +
+    `                            when it has one, else the shipped defaults).\n` +
+    `  --root <path>             In place of the configuration's root.\n` +
+    `  --base-layer <name>       In place of the configuration's baseLayer.\n` +
+    `  --extension <suffix>      In place of the configuration's extension (default .md).\n` +
+    `  --glob <pattern>          Which files receive docs, in place of the configuration's glob (can\n` +
+    `                            repeat); an argument that is not an option is taken as one too.\n` +
+    `  --include <pattern>       Write only this file or glob, resolved against the whole workspace (can repeat).\n` +
+    `  --dry-run                 Report what would change; write nothing.\n` +
+    `  --check                   Exit 1 when docs would be created, changed or deleted; write nothing.\n` +
+    `  --changed                 Only the files git reports as changed.\n` +
+    `  -v, --version             Print the generator's version.\n` +
+    `  -h, --help                Print this help.\n` +
     `\nExamples:\n` +
     `  npm run live-docs:generate\n` +
-  `  npm run live-docs:generate -- --dry-run --changed\n` +
-  `  npm run live-docs:generate -- --glob packages/**/*.ts --include tests/**/*.ts`;
-}
-
-async function readConfigFile(configPath: string): Promise<LiveDocumentationConfigInput> {
-  const resolved = path.resolve(configPath);
-  const raw = await fs.readFile(resolved, "utf8");
-  const parsed = JSON.parse(raw) as LiveDocumentationConfigInput;
-  return parsed;
-}
-
-async function exists(file: string): Promise<boolean> {
-  try {
-    await fs.access(file);
-    return true;
-  } catch {
-    return false;
-  }
+    `  npm run live-docs:generate -- --dry-run --changed\n` +
+    `  npm run live-docs:generate -- --include "scripts/live-docs/*.ts" --dry-run`;
 }
 
 async function main(): Promise<void> {
@@ -185,14 +162,8 @@ async function main(): Promise<void> {
 
   const workspaceRoot = path.resolve(args.workspace ?? process.cwd());
 
-  // The file given, else the workspace's own configuration, as inspect reads it; without either, the defaults.
-  let configInput: LiveDocumentationConfigInput = {};
-  const workspaceConfigPath = path.join(workspaceRoot, ".live-docs.config.json");
-  if (args.configPath) {
-    configInput = await readConfigFile(args.configPath);
-  } else if (await exists(workspaceConfigPath)) {
-    configInput = await readConfigFile(workspaceConfigPath);
-  }
+  // The file given, else the workspace's own configuration, as every command reads it; without either, the defaults.
+  const configInput: LiveDocumentationConfigInput = await readConfiguration(workspaceRoot, args.configPath);
 
   if (args.root) {
     configInput.root = args.root;
@@ -276,8 +247,4 @@ async function main(): Promise<void> {
   }
 }
 
-main().catch((error) => {
-  const message = error instanceof Error ? error.message : String(error);
-  console.error(`live-docs:generate failed: ${message}`);
-  process.exitCode = 1;
-});
+runCommand("live-docs:generate", main);

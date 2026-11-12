@@ -28,7 +28,9 @@ export async function withExplorerAssets(consume: (assets: ExplorerAssets) => Pr
             entryPoints: [entryPoint],
             outfile: outFile,
             bundle: true,
-            format: "esm",
+            // A classic script, not a module: a browser refuses a module script to a page opened as a file, and the
+            // page must run there to say that it must be served (2026-11-12). esbuild keeps it strict, as the module was.
+            format: "iife",
             sourcemap: true,
             // The force graph brings three.js, which unminified makes the bundle several times larger.
             minify: true,

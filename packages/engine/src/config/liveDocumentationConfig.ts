@@ -90,6 +90,14 @@ export interface LiveDocumentationConfig {
    * the documents discovery finds, held to `exclude` and `bundleExclude`.
    */
   citedBy: boolean;
+  /**
+   * The board the Explorer draws its World Map from, as a path from the
+   * workspace root; a `--board` given to a command takes its place. Absent by
+   * default, when the Explorer opens on the Local Map. Where a board lives was
+   * left open on 2026-09-28 until a command had to find one it was not handed,
+   * which `live-docs:visualize -- --workspace <folder>` did on 2026-11-12.
+   */
+  board?: string;
 }
 
 /**
@@ -266,6 +274,7 @@ export function normalizeLiveDocumentationConfig(
     .map(root => root.replace(/\\/g, "/").replace(/^(?:\.\/)+/, "").replace(/\/+$/, "") || ".");
   const entryPoints = normalizeWorkspacePatterns(input?.entryPoints);
   const exclude = normalizeWorkspacePatterns(input?.exclude);
+  const board = typeof input?.board === "string" ? normalizeWorkspacePatterns([input.board])[0] : undefined;
 
   return {
     root: normalizeStringOption(input?.root, DEFAULT_LIVE_DOCUMENTATION_CONFIG.root),
@@ -286,7 +295,8 @@ export function normalizeLiveDocumentationConfig(
       input?.requireRelativeLinks ?? DEFAULT_LIVE_DOCUMENTATION_CONFIG.requireRelativeLinks,
     slugDialect: input?.slugDialect ?? DEFAULT_LIVE_DOCUMENTATION_CONFIG.slugDialect,
     bundleExclude,
-    citedBy: typeof input?.citedBy === "boolean" ? input.citedBy : DEFAULT_LIVE_DOCUMENTATION_CONFIG.citedBy
+    citedBy: typeof input?.citedBy === "boolean" ? input.citedBy : DEFAULT_LIVE_DOCUMENTATION_CONFIG.citedBy,
+    ...(board ? { board } : {})
   };
 }
 

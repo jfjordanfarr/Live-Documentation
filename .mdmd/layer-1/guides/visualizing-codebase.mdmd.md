@@ -1,6 +1,6 @@
 # Visualizing Your Codebase
 
-_Current as of 2026-10-23. This guide describes the available controls; the known gaps below link to the accepted remediation target._
+_Current as of 2026-11-12. This guide describes the available controls; the known gaps below link to the accepted remediation target._
 
 ## Metadata
 
@@ -15,22 +15,22 @@ The Explorer is a static web page that renders your Live Doc graph. This guide c
 
 ```bash
 npm run live-docs:visualize
-npx serve dist/explorer
+npx http-server dist/explorer -a 127.0.0.1 -p 8766 -c-1
 ```
 
-`live-docs:visualize` reads the mirror and writes a self-contained bundle to `dist/explorer/`. Open it through any static server; most browsers block the page's data fetch when it is opened as a plain file.
+`live-docs:visualize` reads the mirror and writes a self-contained bundle to `dist/explorer/`; then open `http://127.0.0.1:8766/`. Any static server will do, but the folder must be served: a page opened as a file cannot load its data, and says so.
 
 ---
 
 ## The Views
 
-A fresh page opens on the **World Map** when the bundle carries a board (`--board <board.md>`), otherwise the **Local Map** at its entry point or workspace root. A shared or remembered place takes precedence. The sidebar has three views: World Map, Local Map and Knowledge Sources. **Back** and **Forward** retrace places; pins, pan and zoom change the current place without adding a step.
+A fresh page opens on the **World Map** when the bundle carries a board (the one the configuration names as `board`, or `--board <board.md>`), otherwise the **Local Map** at its entry point or workspace root. A shared or remembered place takes precedence. The sidebar has three views: World Map, Local Map and Knowledge Sources. **Back** and **Forward** retrace places; pins, pan and zoom change the current place without adding a step.
 
 ### World Map
 
 The outside of an estate: each system is a piece on a board, with blue doors where it offers an opening and green doors where it uses one. Wires connect doors; regions group pieces; declared crossings describe connections between regions. What a piece stands on hangs beneath it. Imagined pieces are hollow and dashed.
 
-Drag to orbit and scroll to zoom. Hover peeks; click retains an evidence panel. Wheel in on a piece, double-click it, or use the link in its panel to open its folder in the **Local Map**, in the remembered 2D or 3D representation. **Save board** downloads board text with the positions written in. See [Boards](../../layer-3/boards.mdmd.md).
+Drag to pan, right-drag or Shift-drag to orbit, and scroll to zoom; drag a piece to move it. Hover peeks; click retains an evidence panel. Wheel in on a piece, double-click it, or use the link in its panel to open its folder in the **Local Map**, in the remembered 2D or 3D representation. **Save board** downloads board text with the positions written in. See [Boards](../../layer-3/boards.mdmd.md).
 
 ### Local Map
 

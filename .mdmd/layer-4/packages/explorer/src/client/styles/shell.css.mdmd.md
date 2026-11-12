@@ -22,6 +22,7 @@ Layout and interaction styles for the Explorer's application shell: sidebar (nav
 - Since 2026-11-05 `.spatial-legend-sample--wrapped` draws the key's wrapped group, a translucent convex shell around its seed ([Group Wrappers](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#competing-layout-preferences)).
 
 Since 2026-11-05 the key draws a Shell sample: the wrapped group's skin with no sphere at its heart.
+`.explorer-refusal` (2026-11-12) sets a refusal's one sentence where the map would be, centred in `#views`, at the reader's 15 px and in the page's text colour, after the sentence for a page opened as a file was first put in the sidebar's 11 px grey status line, where the first visitor had not seen "Loading...".
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

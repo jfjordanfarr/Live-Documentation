@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/visualize-sample.ts
 - Entry: command `live-docs:visualize:estate` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-10-22T00:39:42.655Z
+- Generated At: 2026-11-12T16:06:56.871Z
 
 ## Authored
 ### Purpose
@@ -14,6 +14,7 @@ Builds the static Explorer over one of the sample programs under `tests/integrat
 ### Notes
 - Written on 2026-09-29 for the design audit ([Turn 48](../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md#turn-48)), so that the estate sample is audited in the same suite as this repository, served by the suite's own server.
 - The copy's docs are generated fresh under the product's default configuration (the oracle's fixture globs until 2026-10-22, which equalled it), so they carry the generator's placeholders in their authored sections: the authored content the sample's docs have in this repository's mirror (`.mdmd/layer-4/tests/integration/programs/`) does not reach the sample's bundle, and a reader of the estate's Explorer sees the generator's pending placeholder on every file (35 of them on 2026-10-08). Carrying a sample's authored docs into its bundle is a gap.
+- Since 2026-11-12 `--help` prints the usage, where it died with a stack trace, and a refused argument ends through `runCommand` in [cli.ts](cli.ts.mdmd.md) under the npm script's name, `live-docs:visualize:estate`.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -28,5 +29,8 @@ _No public symbols detected_
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`staticBuilder.buildStaticExplorer`](../../packages/explorer/src/shared/staticBuilder.ts.mdmd.md#symbol-buildstaticexplorer)
 - [`generator.generateLiveDocs`](../../packages/generator/src/generator.ts.mdmd.md#symbol-generatelivedocs)
+- [`cli.UsageError`](./cli.ts.mdmd.md#symbol-usageerror)
+- [`cli.optionValue`](./cli.ts.mdmd.md#symbol-optionvalue)
+- [`cli.runCommand`](./cli.ts.mdmd.md#symbol-runcommand)
 - [`fixture.copyFixture`](../oracle/fixture.ts.mdmd.md#symbol-copyfixture)
 <!-- LIVE-DOC:END Dependencies -->

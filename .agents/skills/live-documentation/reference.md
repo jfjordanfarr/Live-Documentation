@@ -69,7 +69,7 @@ Other commands: `npm run live-docs:generate` (regenerate the docs and the graph;
 
 ## The Explorer's addresses
 
-Served from `dist/explorer/` (for example `npx http-server dist/explorer -p 8766 -c-1`):
+Served from `dist/explorer/` (for example `npx http-server dist/explorer -a 127.0.0.1 -p 8766 -c-1`):
 
 | Address | Opens |
 | --- | --- |

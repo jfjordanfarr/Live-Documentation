@@ -269,9 +269,11 @@ describe("generateLiveDocs and nested scans", () => {
     await generateLiveDocs({ workspaceRoot, config, logger });
 
     expect(warnings).toEqual([
-      "A scan lies inside this folder at packages/bar; a scan never lies inside another scan. Point at one of them.",
-      "A scan lies inside this folder at packages/foo; a scan never lies inside another scan. Point at one of them."
+      "A scan lies inside this folder at packages/bar. This folder's docs are written all the same, but a scan never lies inside another: a board that names both reads only the scan of this folder.",
+      "A scan lies inside this folder at packages/foo. This folder's docs are written all the same, but a scan never lies inside another: a board that names both reads only the scan of this folder."
     ]);
+    // The warning says the docs are written, and they are.
+    expect(await fs.readdir(path.join(workspaceRoot, DEFAULT_LIVE_DOCUMENTATION_CONFIG.root, DEFAULT_LIVE_DOCUMENTATION_CONFIG.baseLayer, "packages", "foo", "src"))).toEqual(["index.ts.md"]);
   });
 
   it("warns when the folder being scanned lies inside a scan", async () => {
@@ -280,12 +282,38 @@ describe("generateLiveDocs and nested scans", () => {
 
     await generateLiveDocs({ workspaceRoot: path.join(workspaceRoot, "packages", "foo"), config, logger });
 
-    expect(warnings).toEqual([`This folder lies inside a scan at ${workspaceRoot}; a scan never lies inside another scan. Point at one of them.`]);
+    expect(warnings).toEqual([`This folder lies inside the scan at ${workspaceRoot}. Its docs are written all the same, but a scan never lies inside another: a board that names both reads only the scan at ${workspaceRoot}.`]);
+    // The warning says the docs are written, and they are.
+    expect(await fs.readdir(path.join(workspaceRoot, "packages", "foo", DEFAULT_LIVE_DOCUMENTATION_CONFIG.root, DEFAULT_LIVE_DOCUMENTATION_CONFIG.baseLayer, "src"))).toEqual(["index.ts.md"]);
   });
 
   it("says nothing when no scan nests", async () => {
     const config = normalizeLiveDocumentationConfig({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, glob: ["packages/foo/src/**/*.ts"] });
     await generateLiveDocs({ workspaceRoot, config, logger });
+    expect(warnings).toEqual([]);
+  });
+
+  it("takes no folder git ignores for a scan, either way round, as an agent's worktree inside the checkout", async () => {
+    // What git ignores is never part of the map (2026-10-19): a worktree under an ignored folder carries a copy of the
+    // configuration, and every run here warned of it until 2026-11-12.
+    execFileSync("git", ["init", "-q"], { cwd: workspaceRoot });
+    await fs.writeFile(path.join(workspaceRoot, ".gitignore"), "worktrees/\n", "utf8");
+    await fs.writeFile(path.join(workspaceRoot, ".live-docs.config.json"), "{}\n", "utf8");
+    const worktree = path.join(workspaceRoot, "worktrees", "agent");
+    await fs.mkdir(path.join(worktree, "src"), { recursive: true });
+    await fs.writeFile(path.join(worktree, ".live-docs.config.json"), "{}\n", "utf8");
+    await fs.writeFile(path.join(worktree, "src", "index.ts"), "export const two = 2;\n", "utf8");
+    // A scan git does not ignore still nests, and is still said.
+    await fs.mkdir(path.join(workspaceRoot, "packages", "bar"), { recursive: true });
+    await fs.writeFile(path.join(workspaceRoot, "packages", "bar", ".live-docs.config.json"), "{}\n", "utf8");
+
+    await generateLiveDocs({ workspaceRoot, config: normalizeLiveDocumentationConfig({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, glob: ["packages/foo/src/**/*.ts"] }), logger });
+    expect(warnings).toEqual([
+      "A scan lies inside this folder at packages/bar. This folder's docs are written all the same, but a scan never lies inside another: a board that names both reads only the scan of this folder."
+    ]);
+
+    warnings.length = 0;
+    await generateLiveDocs({ workspaceRoot: worktree, config: normalizeLiveDocumentationConfig({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, glob: ["src/**/*.ts"] }), logger });
     expect(warnings).toEqual([]);
   });
 });

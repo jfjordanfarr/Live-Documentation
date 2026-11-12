@@ -5,15 +5,15 @@
 - Archetype: implementation
 - Code Path: package.json
 - Entry: tooling
-- Generated At: 2026-11-04T02:15:48.564Z
+- Generated At: 2026-11-12T16:06:42.875Z
 
 ## Authored
 ### Purpose
 The workspace manifest: the four npm workspaces (engine, generator, explorer, cli), the commands that matter (build, lint, the unit, integration and Playwright suites, the Live Docs pipeline, the oracle, the layout lab, the gate) and the development dependencies they share. Nothing is published from here; the package is private and its version stays 0.0.0.
 
 ### Notes
-- Born 2025-10-16 with the repository. Its scripts are the table in AGENTS.md's "Commands that matter"; each is a `tsx` run of a script under `scripts/`, with this repository's own configuration (`.live-docs.config.json`) and board passed explicitly, so that the product reads configuration and never assumes this workspace's conventions.
-- `live-docs:history` (2026-10-17, C1 of [the plan](../../.mdmd/layer-3/change-over-time.mdmd.md)) is the one command that passes no `--config`: it reads the workspace's own configuration, which here is this repository's, so that `--workspace` over another repository reads that repository's or the shipped defaults.
+- Born 2025-10-16 with the repository. Its scripts are the table in AGENTS.md's "Commands that matter"; each is a `tsx` run of a script under `scripts/`. Since 2026-11-12 no script passes `--config`: every command reads the workspace's own `.live-docs.config.json`, here this repository's, so that the product reads configuration and never assumes this workspace's conventions, and `--workspace <folder>` reads that folder's. Until then the scripts passed this repository's configuration explicitly, which applied it to any other folder named by `--workspace`, as [the first-visit evaluation](../../AI-Agent-Workspace/Screenshots/2026-11-12/first-visit/README.md) found. Since the same day `live-docs:visualize` passes no `--board` either: the configuration names the board.
+- `live-docs:history` (2026-10-17, C1 of [the plan](../../.mdmd/layer-3/change-over-time.mdmd.md)) was the first command to pass no `--config`, so that `--workspace` over another repository reads that repository's configuration or the shipped defaults; the others followed on 2026-11-12.
 - On 2026-10-08 the `pretest:e2e` hook was removed: `test:e2e` builds both bundles itself, and the hook had built them a second time before every run since 2026-09-29.
 - On 2026-10-22 the `format` script went with Prettier, `eslint-config-prettier` and `eslint-plugin-import`; the lint is ESLint 10 with typescript-eslint 8.72, `eslint-plugin-import-x` and `eslint-plugin-jsdoc` 63.3.3, the newest of that plugin whose engines admit the container's Node 22.22.0 ([the decision](../../.mdmd/layer-3/architectural-decisions.mdmd.md#no-formatter-for-typescript-lint-for-correctness-on-eslint-10-and-the-tsconfig-off-baseurl-and-node10-recorded-2026-10-22)).
 - `tree-sitter-cli` is pinned exactly (0.27.1, since 2026-10-16) for `packages/engine/grammars/powershell/build.sh`, which builds the engine's own PowerShell grammar; the pin fixes the generator and the wasi-sdk and binaryen the CLI fetches to compile it, so that a rebuild gives the committed wasm byte for byte.
@@ -22,6 +22,7 @@ The workspace manifest: the four npm workspaces (engine, generator, explorer, cl
 `live-docs:visualize:history-sample` (2026-10-18, the plan's C4) builds the scripted repository's whole/window bundles and the separate collision, growth and, since 2026-11-11, veiling histories for the history specs; `test:e2e` runs it before Playwright.
 
 `test:unit` runs the `unit` and `unit-serial` projects since [2026-11-05](../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-8): measured deadline-bound suites run alone on one worker after everything else, the rest on the default workers. The current membership and unchanged-deadline rationale are recorded in [the Vitest configuration's Live Doc](./vitest.config.ts.mdmd.md).
+`http-server` became a development dependency on 2026-11-12, so that the serve command the Explorer's build prints and the guides give, `npx http-server dist/explorer -a 127.0.0.1 -p 8766 -c-1`, resolves from this checkout without a download; the Playwright configuration's web server already ran it through `npx`, which fetched it on a machine that lacked it.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -44,6 +45,7 @@ The workspace manifest: the four npm workspaces (engine, generator, explorer, cl
 - `eslint-plugin-jsdoc@^63.3.3`
 - `eslint@^10.13.0`
 - `glob@^13.0.6`
+- `http-server@^14.1.1`
 - `lz-string@^1.5.0`
 - `tree-sitter-cli@0.27.1`
 - `tsx@^4.23.15`

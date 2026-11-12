@@ -55,7 +55,10 @@ export interface BuildStaticExplorerOptions {
     /** Pretty-print the JSON (larger, easier to read). */
     prettyPrint?: boolean;
 
-    /** A board file to carry in the bundle, relative to the workspace root or absolute; the World Map draws it. */
+    /**
+     * A board file to carry in the bundle, relative to the workspace root or absolute; the World Map draws it. By
+     * default the board the configuration names, and none when it names none.
+     */
     boardPath?: string;
 
     /**
@@ -82,7 +85,8 @@ export interface BuildStaticExplorerResult {
         fileCount: number;
         edgeCount: number;
         bundledMarkdownCount: number;
-        totalSizeBytes: number;
+        /** The bytes this build wrote, its page, data, history, scripts and styles: not whatever else lies in the output folder. */
+        bundleSizeBytes: number;
         /** How many commits the carried history holds; absent when the bundle carries none. */
         historyCommits?: number;
     };
@@ -99,7 +103,7 @@ export async function buildStaticExplorer(
         outputDir,
         config = normalizeLiveDocumentationConfig(DEFAULT_LIVE_DOCUMENTATION_CONFIG),
         prettyPrint = false,
-        boardPath,
+        boardPath = config.board,
         history,
         logger = console
     } = options;
@@ -157,19 +161,22 @@ export async function buildStaticExplorer(
     logger.log(`Wrote ${dataFile} (${formatBytes(jsonContent.length)})`);
 
     logger.log("Building HTML viewer...");
+    const viewerFile = path.join(outputDir, "index.html");
+    const assetsDir = path.join(outputDir, "static");
     const withExplorerAssets = await withExplorerAssetsModule();
     await withExplorerAssets(async (assets) => {
-        const viewerFile = path.join(outputDir, "index.html");
         await fs.writeFile(viewerFile, assets.htmlTemplate, "utf-8");
         logger.log(`Wrote ${viewerFile}`);
 
-        const assetsDir = path.join(outputDir, "static");
         await fs.rm(assetsDir, { recursive: true, force: true });
         await copyDirectory(assets.outDir, assetsDir);
         logger.log(`Copied static assets to ${assetsDir}`);
     });
 
-    const totalSize = await calculateDirectorySize(outputDir);
+    // What this build wrote, and nothing else the output folder holds: other builds, as the samples under
+    // dist/explorer/samples, made the count of the whole folder 708.7 MB beside a bundle of 16 (2026-11-12).
+    const written = [viewerFile, dataFile, assetsDir, ...(carried ? [path.join(outputDir, BUNDLED_HISTORY_FILE)] : [])];
+    const bundleSize = (await Promise.all(written.map(sizeOnDisk))).reduce((sum, size) => sum + size, 0);
 
     return {
         outputDir,
@@ -178,7 +185,7 @@ export async function buildStaticExplorer(
             fileCount: files.length,
             edgeCount,
             bundledMarkdownCount,
-            totalSizeBytes: totalSize,
+            bundleSizeBytes: bundleSize,
             ...(carried ? { historyCommits: carried.steps.length + 1 } : {})
         }
     };
@@ -266,21 +273,12 @@ async function copyDirectory(src: string, dest: string): Promise<void> {
     }
 }
 
-async function calculateDirectorySize(dir: string): Promise<number> {
-    let size = 0;
-    const entries = await fs.readdir(dir, { withFileTypes: true });
-
-    for (const entry of entries) {
-        const fullPath = path.join(dir, entry.name);
-        if (entry.isDirectory()) {
-            size += await calculateDirectorySize(fullPath);
-        } else {
-            // What is on disk here, a link counted as the link: a page left in the output by a probe, linking to a
-            // history this build did not write, must not stop the build (found 2026-10-28).
-            const stat = await fs.lstat(fullPath);
-            size += stat.size;
-        }
+/** The bytes of a file, or of every file beneath a folder; a link is counted as the link, never followed. */
+async function sizeOnDisk(target: string): Promise<number> {
+    const stat = await fs.lstat(target);
+    if (!stat.isDirectory()) {
+        return stat.size;
     }
-
-    return size;
+    const entries = await fs.readdir(target);
+    return (await Promise.all(entries.map(entry => sizeOnDisk(path.join(target, entry))))).reduce((sum, size) => sum + size, 0);
 }

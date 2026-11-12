@@ -1,4 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
+import path from "node:path";
+import { pathToFileURL } from "node:url";
 
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import type { InspectionTarget } from "../../packages/explorer/src/client/types";
@@ -190,12 +192,25 @@ test("a history file's counts reach the step panel as numbers, never as markup",
 });
 
 const REFUSED = /^Error: The Explorer reads only from its own site, and https?:\/\/example\.com is not it\.$/u;
+const REFUSAL = /^The Explorer reads only from its own site, and https?:\/\/example\.com is not it\.$/u;
+
+/** A refusal is one sentence where the map would be, at reading size, and no panel with a stack (2026-11-12). */
+async function refusedInTheMainArea(page: Page, sentence: string | RegExp): Promise<void> {
+  const refusal = page.locator("#views > #explorer-refusal");
+  await expect(refusal).toHaveText(sentence);
+  await expect(page.locator("#views").getByRole("alert")).toHaveCount(1);
+  await expect(refusal).toBeInViewport({ ratio: 1 });
+  await expect(refusal).toHaveCSS("font-size", "15px");
+  await expect(refusal).toHaveCSS("color", "rgb(228, 228, 228)");
+  await expect(page.locator("#detail-panel")).not.toHaveClass(/(?:^|\s)visible(?:\s|$)/u);
+}
 
 test("an address naming data on another site is refused before anything is asked of it", async ({ page }) => {
   const watched = await watch(page);
   for (const elsewhere of ["https://example.com/explorer-data.json", "//example.com/explorer-data.json"]) {
     await page.goto(`/samples/history/?data=${encodeURIComponent(elsewhere)}`);
     await expect(page.locator("#stats-line")).toHaveText(REFUSED);
+    await refusedInTheMainArea(page, REFUSAL);
   }
   await page.goto(`/samples/history/?data=${encodeURIComponent("/samples/estate/explorer-data.json")}`);
   await started(page);
@@ -208,7 +223,32 @@ test("a bundle naming a history on another site is refused before anything is as
   const history = await (await page.request.get("/samples/history/explorer-history.json")).json() as { base: { commit: { id: string } } };
   await page.goto(address("/samples/history/", { view: "map", perspective: "3d", selectedNodeId: "src/app/main.ts", commit: history.base.commit.id }));
   await expect(page.locator("#stats-line")).toHaveText(REFUSED);
+  await refusedInTheMainArea(page, REFUSAL);
   await expectNothingAsked(watched);
+});
+
+const OPENED_AS_FILE = "The Explorer cannot load its data when opened as a file; serve its folder with a web server and open that address.";
+
+test("a page opened as a file says where the map would be that it must be served, and asks nothing of any site", async ({ page }) => {
+  // A page opened as a file sat at "Loading..." forever, its module script refused (the first-visit evaluation,
+  // 2026-11-12); it now runs as a classic script and refuses in one sentence. Its own files are file: URLs, so the
+  // watch here is any request that is not one, and the policy's refusals.
+  const offTheFile: string[] = [];
+  page.on("request", request => {
+    if (!/^(?:file|data|blob):/u.test(request.url())) offTheFile.push(request.url());
+  });
+  await page.addInitScript(() => {
+    const refusals: string[] = [];
+    (window as unknown as { __refusals: string[] }).__refusals = refusals;
+    document.addEventListener("securitypolicyviolation", event => {
+      refusals.push(`${event.effectiveDirective} ${event.blockedURI}`);
+    }, true);
+  });
+  await page.goto(pathToFileURL(path.resolve(__dirname, "../../dist/explorer/index.html")).href);
+  await refusedInTheMainArea(page, OPENED_AS_FILE);
+  await expect(page.locator("#stats-line")).toHaveText(`Error: ${OPENED_AS_FILE}`);
+  expect(offTheFile, "requests off the file").toEqual([]);
+  expect(await page.evaluate(() => [...(window as unknown as { __refusals: string[] }).__refusals]), "the policy's refusals").toEqual([]);
 });
 
 test("the page's policy refuses what code in the page might attempt", async ({ page }) => {

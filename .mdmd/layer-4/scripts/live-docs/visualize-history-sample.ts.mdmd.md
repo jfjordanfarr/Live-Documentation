@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/visualize-history-sample.ts
 - Entry: command `live-docs:visualize:history-sample` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-11T06:51:24.209Z
+- Generated At: 2026-11-12T16:06:56.791Z
 
 ## Authored
 ### Purpose
@@ -16,6 +16,7 @@ Builds controlled history bundles through the real history, generator and static
 - `--collision-output` (2026-10-18) builds the second script's bundle, the rename onto a dead file's path, beside the first script's whole history and its window; one build function serves all three.
 - `--growth-output` (November 8, 2026) builds a separate two-commit history dated January 1 and December 1, growing one root-level TypeScript file into a 64-file import chain. The configuration remains part of the normal lens, so canonical membership grows from two to 65 documents. The camera-follow regression keeps its greater-than-tenfold growth, framing and manual-gesture assertions without depending on a machine's repository-history cache. The original samples are unchanged.
 - `--veil-output` (2026-11-11, [Turn 6 of the November 10 record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-10.1.record.md#turn-6)) builds the veiling sample (`VEIL_SCRIPT`) at `dist/explorer/samples/history-veil`. Measured on a quiet machine, it adds 30 seconds to `npm run live-docs:visualize:history-sample` (53.9 s without it, 83.9 s with it).
+- Since 2026-11-12 `--help` prints the usage, where it died with a stack trace, and a refused argument ends through `runCommand` in [cli.ts](cli.ts.mdmd.md).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -32,6 +33,9 @@ _No public symbols detected_
 - [`staticBuilder.buildStaticExplorer`](../../packages/explorer/src/shared/staticBuilder.ts.mdmd.md#symbol-buildstaticexplorer)
 - [`generator.generateLiveDocs`](../../packages/generator/src/generator.ts.mdmd.md#symbol-generatelivedocs)
 - [`computeHistory`](../../packages/generator/src/history/computeHistory.ts.mdmd.md#symbol-computehistory)
+- [`cli.UsageError`](./cli.ts.mdmd.md#symbol-usageerror)
+- [`cli.optionValue`](./cli.ts.mdmd.md#symbol-optionvalue)
+- [`cli.runCommand`](./cli.ts.mdmd.md#symbol-runcommand)
 - [`scripted-repository.COLLISION_CONFIG`](../../tests/integration/live-docs/scripted-repository.ts.mdmd.md#symbol-collision_config)
 - [`scripted-repository.COLLISION_SCRIPT`](../../tests/integration/live-docs/scripted-repository.ts.mdmd.md#symbol-collision_script)
 - [`scripted-repository.GROWTH_CONFIG`](../../tests/integration/live-docs/scripted-repository.ts.mdmd.md#symbol-growth_config)

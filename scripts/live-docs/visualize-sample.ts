@@ -24,36 +24,60 @@ import { normalizeLiveDocumentationConfig } from "@live-documentation/engine/con
 import { buildStaticExplorer } from "@live-documentation/explorer/shared/staticBuilder";
 import { generateLiveDocs } from "@live-documentation/generator/generator";
 
+import { optionValue, runCommand, UsageError } from "./cli";
 import { copyFixture } from "../oracle/fixture";
 
 interface CliOptions {
+    help: boolean;
     program: string;
     outputDir: string;
     boardPath?: string;
 }
 
 function parseArgs(args: string[]): CliOptions {
-    const options: CliOptions = { program: "", outputDir: "" };
+    const options: CliOptions = { help: false, program: "", outputDir: "" };
     for (let i = 0; i < args.length; i++) {
         const arg = args[i];
-        if (arg === "--program") {
-            options.program = args[++i] ?? "";
+        if (arg === "--help" || arg === "-h") {
+            options.help = true;
+        } else if (arg === "--program") {
+            options.program = optionValue(args, ++i, arg);
         } else if (arg === "--output" || arg === "-o") {
-            options.outputDir = args[++i] ?? "";
+            options.outputDir = optionValue(args, ++i, arg);
         } else if (arg === "--board") {
-            options.boardPath = args[++i];
+            options.boardPath = optionValue(args, ++i, arg);
         } else {
-            throw new Error(`Unknown argument '${arg}'.`);
+            throw new UsageError(`${arg} is not an option.`);
         }
     }
-    if (!options.program || !options.outputDir) {
-        throw new Error("Usage: visualize-sample.ts --program <folder> --output <folder> [--board <path inside the program>]");
+    if (!options.help && (!options.program || !options.outputDir)) {
+        throw new UsageError("Name the sample with --program and where to write with --output.");
     }
     return options;
 }
 
+function usage(): string {
+    return [
+        "Usage: npm run live-docs:visualize:estate -- [options]",
+        "",
+        "Builds the Explorer over a sample program, with its Live Docs generated into a temporary copy;",
+        "the sample itself is never written to. The npm script names the estate sample and its board;",
+        "options given after it replace those.",
+        "",
+        "Options:",
+        "  --program <folder>     The sample program's folder.",
+        "  -o, --output <dir>     Where to write the site.",
+        "  --board <path>         A board inside the program to draw the World Map from.",
+        "  -h, --help             Print this help."
+    ].join("\n");
+}
+
 async function main(): Promise<void> {
     const options = parseArgs(process.argv.slice(2));
+    if (options.help) {
+        console.log(usage());
+        return;
+    }
     const program = path.resolve(options.program);
     const outputDir = path.resolve(options.outputDir);
     if (!fs.existsSync(program)) {
@@ -77,7 +101,4 @@ async function main(): Promise<void> {
     }
 }
 
-main().catch(error => {
-    console.error("Sample bundle build failed:", error);
-    process.exitCode = 1;
-});
+runCommand("live-docs:visualize:estate", main);

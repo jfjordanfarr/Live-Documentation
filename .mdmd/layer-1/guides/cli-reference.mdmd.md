@@ -1,13 +1,13 @@
 # CLI Reference
 
-_Current as of 2026-11-03._
+_Current as of 2026-11-12._
 
 ## Metadata
 
 - Layer: 1
 - Guide Type: reference
 
-Complete catalog of Live Documentation CLI commands for external adopters. All commands are invoked via `npm run <script> [-- <options>]`.
+Complete catalog of Live Documentation CLI commands for external adopters. All commands are invoked via `npm run <script> [-- <options>]`, from the root of this checkout. Every command prints its options on `--help` (as `npm run live-docs:inspect -- --help`), refuses an option it does not know on one line, and exits 1 when it fails. Each reads the configuration of the folder it works on, its `.live-docs.config.json`, unless `--config <file>` names another; without either it uses the defaults. In the examples, a word in angle brackets, such as `<folder>`, stands for your own value.
 
 > **Note**: This reference covers user-facing commands. Contributor tooling (test suites, fixture management, audits) is in the [Internal Tooling Reference](../../layer-2/internal-tooling.mdmd.md).
 
@@ -38,8 +38,8 @@ npm run live-docs:generate
 # Regenerate only recently modified files
 npm run live-docs:generate -- --changed
 
-# Custom workspace and config
-npm run live-docs:generate -- --workspace /path/to/repo --config custom.json
+# Another folder, with a configuration file of your choosing
+npm run live-docs:generate -- --workspace <folder> --config <file>
 ```
 
 **Options:**
@@ -49,8 +49,8 @@ npm run live-docs:generate -- --workspace /path/to/repo --config custom.json
 | `--check` | Fail when a doc would be created, updated or deleted; leave docs and the derived index untouched |
 | `--changed` | Only process Git-modified source files, using the full workspace for link resolution |
 | `--include <pattern>` | Render an explicit file or glob subset using workspace-wide resolution context; repeat to include several |
-| `--workspace <path>` | Target workspace root |
-| `--config <file>` | Path to config file |
+| `--workspace <path>` | The folder to document (default: the current directory) |
+| `--config <file>` | The configuration (default: the workspace's `.live-docs.config.json` when it has one) |
 
 `--changed` requires Git status. If Git cannot report status, the command fails with the Git error; run full generation in a folder without Git. The file and symbol indexes still cover the full workspace, so a changed file can link to an unchanged provider. `--include` also uses full workspace context while rendering only its explicit subset.
 
@@ -69,7 +69,8 @@ npm run live-docs:generate -- --workspace /path/to/repo --config custom.json
 Validates the structure of every generated doc and its links, and warns about what a person still has to write.
 
 ```bash
-npm run live-docs:lint -- --workspace /path/to/repo
+npm run live-docs:lint
+npm run live-docs:lint -- --workspace <folder>
 ```
 
 **What's Enforced:**
@@ -95,39 +96,38 @@ npm run live-docs:lint -- --workspace /path/to/repo
 
 The "Oracle of Bacon" for code. Traces dependency chains through the Live Doc graph.
 
+Every question starts from a file named by `--from`, except `--reachable` alone, `--groups` and `--between`. The examples name files of this repository.
+
 ```bash
-# Quick summary of an artifact
-npm run live-docs:inspect -- packages/engine/src/types.ts
-
 # Find path between two files
-npm run live-docs:inspect -- --from src/auth.ts --to src/api.ts
+npm run live-docs:inspect -- --from scripts/live-docs/generate.ts --to packages/engine/src/live-docs/core.ts
 
-# Symbol-level pathfinding
-npm run live-docs:inspect -- --from src/auth.ts#validateToken --to src/api.ts#handler
+# Symbol-level pathfinding (a symbol needs --to)
+npm run live-docs:inspect -- --from packages/generator/src/generator.ts#generateLiveDocs --to packages/engine/src/live-docs/core.ts#analyzeSourceFile
 
 # Reverse lookup (who depends on this?)
-npm run live-docs:inspect -- --from src/types.ts --direction inbound
+npm run live-docs:inspect -- --from packages/engine/src/config/liveDocumentationConfig.ts --direction inbound
 
 # Fan-out (what does this depend on?)
-npm run live-docs:inspect -- --from src/main.ts --direction outbound
+npm run live-docs:inspect -- --from packages/generator/src/generator.ts --direction outbound
 
 # Bidirectional search between two files
-npm run live-docs:inspect -- --from src/auth.ts --to src/api.ts --direction both
+npm run live-docs:inspect -- --from packages/generator/src/generator.ts --to packages/generator/src/generator.test.ts --direction both
 
 # Everything a path reaches from a file, nearest first, both ways
-npm run live-docs:inspect -- --from src/main.ts --reachable --direction both
+npm run live-docs:inspect -- --from packages/generator/src/generator.ts --reachable --direction both
 
 # The entry points, what they reach, what nothing reaches, and what only a test reaches
 npm run live-docs:inspect -- --reachable
 
 # Machine-readable output
-npm run live-docs:inspect -- --from src/auth.ts --to src/api.ts --json
+npm run live-docs:inspect -- --from scripts/live-docs/generate.ts --to packages/engine/src/live-docs/core.ts --json
 ```
 
 **Options:**
 | Flag | Description |
 |------|-------------|
-| `--from <path[#symbol]>` | Starting artifact |
+| `--from <path[#symbol]>` | Starting artifact; a symbol needs `--to` |
 | `--to <path[#symbol]>` | Destination artifact |
 | `--reachable` | List every file a path reaches from `--from`, nearest first, with its hops; without `--from`, the entry points the docs declare, what they reach, what nothing reaches and what only a test reaches |
 | `--groups` | List the disconnected groups of files in the graph. |
@@ -137,6 +137,8 @@ npm run live-docs:inspect -- --from src/auth.ts --to src/api.ts --json
 | `--max-depth <n>` | Maximum hops (default: 25) |
 | `--json` | Machine-readable output |
 | `--verbose` | Include additional diagnostics |
+| `--workspace <path>` | The folder whose docs to read (default: the current directory) |
+| `--config <file>` | The configuration (default: the workspace's `.live-docs.config.json` when it has one) |
 
 `--groups` describes today's entire graph and does not combine with path, reachability or history selectors. Historical inspection supports a file's wires or entry reachability at one commit, and changes between commits; `--at` and `--between` do not accept `--to` or `--direction`. `--between` also takes no `--from` or `--reachable`.
 
@@ -148,7 +150,7 @@ npm run live-docs:inspect -- --from src/auth.ts --to src/api.ts --json
 
 ### Boards
 
-`npm run live-docs:board -- <board.md>` reads a board, validates it, joins it to the Live Docs, and prints its things, doors, wires and their bases. Pass that board to the visualization command to build its World Map.
+`npm run live-docs:board -- <board.md>` reads a board, validates it, joins it to the Live Docs, and prints its things, doors, wires and their bases. Without `<board.md>` it reads the board the configuration names as `board`; `npm run live-docs:board` reads this repository's own, `.mdmd/layer-3/board.mdmd.md`. The visualization command draws the same board as the World Map.
 
 ### Visualization
 
@@ -158,18 +160,22 @@ npm run live-docs:inspect -- --from src/auth.ts --to src/api.ts --json
 
 #### `live-docs:visualize`
 
-Builds a self-contained static Explorer bundle: the Local Map with explicit 2D and 3D representations, Knowledge Sources, and the World Map when a board is given. Deployable to GitHub Pages or any static host. See [Visualizing Your Codebase](visualizing-codebase.mdmd.md).
+Builds a self-contained static Explorer bundle: the Local Map with explicit 2D and 3D representations, Knowledge Sources, and the World Map when a board is given. Deployable to GitHub Pages or any static host. The folder must be served, for example by `npx http-server dist/explorer -a 127.0.0.1 -p 8766 -c-1`: a page opened as a file cannot load its data. See [Visualizing Your Codebase](visualizing-codebase.mdmd.md).
+
+The World Map is drawn from the board the configuration names as `board`, this repository's `.mdmd/layer-3/board.mdmd.md`, unless `--board` names another; a folder whose configuration names none gets an Explorer without a World Map.
 
 ```bash
 npm run live-docs:visualize -- --output ./public --pretty
+npm run live-docs:visualize -- --workspace <folder>
 ```
 
 **Options:**
 | Flag | Description |
 |------|-------------|
+| `--workspace <path>` | The folder whose docs to read (default: the current directory) |
 | `--output <dir>` | Output directory (default: `dist/explorer/`) |
-| `--config <file>` | Path to config file |
-| `--board <file>` | A board file (see `live-docs:board`) to draw the World Map from; the bundle then opens on it |
+| `--config <file>` | The configuration (default: the workspace's `.live-docs.config.json` when it has one) |
+| `--board <file>` | A board file (see `live-docs:board`) to draw the World Map from, in place of the configuration's `board`; the bundle then opens on it |
 | `--history none\|all\|since <date>\|last <n>` | Choose how much generated history is included in the Explorer bundle. |
 | `--pretty` | Pretty-print JSON for debugging |
 

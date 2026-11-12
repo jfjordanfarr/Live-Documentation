@@ -5,6 +5,8 @@ import process from "node:process";
 
 import { LIVE_DOCUMENTATION_FILE_EXTENSION } from "@live-documentation/engine/config/liveDocumentationConfig";
 
+import { optionValue, runCommand, UsageError } from "./cli";
+
 interface CliOptions {
   help: boolean;
   workspace: string;
@@ -38,17 +40,17 @@ function parseArgs(argv: string[]): CliOptions {
       }
 
       case "--workspace": {
-        options.workspace = expectValue(argv, ++index, arg);
+        options.workspace = optionValue(argv, ++index, arg);
         break;
       }
 
       case "--docs-root": {
-        options.docsRoot = expectValue(argv, ++index, arg);
+        options.docsRoot = optionValue(argv, ++index, arg);
         break;
       }
 
       case "--base-layer": {
-        options.baseLayer = expectValue(argv, ++index, arg);
+        options.baseLayer = optionValue(argv, ++index, arg);
         break;
       }
 
@@ -58,12 +60,7 @@ function parseArgs(argv: string[]): CliOptions {
       }
 
       default: {
-        if (arg.startsWith("-")) {
-          throw new Error(`Unknown option: ${arg}`);
-        }
-
-        // Bare arguments are not supported for now; reserve for future filters.
-        throw new Error(`Unexpected argument: ${arg}`);
+        throw new UsageError(arg.startsWith("-") ? `${arg} is not an option.` : `${arg} is not an option; the command takes no paths.`);
       }
     }
   }
@@ -71,22 +68,16 @@ function parseArgs(argv: string[]): CliOptions {
   return options;
 }
 
-function expectValue(argv: string[], index: number, flag: string): string {
-  const value = argv[index];
-  if (!value || value.startsWith("-")) {
-    throw new Error(`Option ${flag} requires a value.`);
-  }
-  return value;
-}
-
 function usage(): string {
-  return "Usage: tsx scripts/live-docs/find-orphans.ts [options]\n\n" +
+  return "Usage: npm run live-docs:orphans -- [options]\n\n" +
+    "Lists the Live Docs whose source file no longer exists, and exits 1 when there is one.\n" +
+    "The npm script passes this repository's --docs-root .mdmd --base-layer layer-4.\n\n" +
     "Options:\n" +
-    "  --workspace <path>    Workspace root (default: current directory).\n" +
-    "  --docs-root <path>    Relative path to the live documentation mirror (default: .live-documentation).\n" +
-    "  --base-layer <name>   Base layer folder to scan (default: source).\n" +
-    "  --quiet               Suppress success output (still prints orphans).\n" +
-    "  --help                Show this help message.\n";
+    "  --workspace <path>    Workspace root (default: the current directory).\n" +
+    "  --docs-root <path>    The docs root, relative to the workspace (default: .live-documentation).\n" +
+    "  --base-layer <name>   The folder under it that mirrors the source (default: source).\n" +
+    "  --quiet               Print nothing when there is no orphan.\n" +
+    "  -h, --help            Print this help.";
 }
 
 async function collectLiveDocFiles(root: string): Promise<string[]> {
@@ -166,32 +157,27 @@ async function findOrphans(options: CliOptions): Promise<OrphanRecord[]> {
 }
 
 async function main(): Promise<void> {
-  try {
-    const options = parseArgs(process.argv.slice(2));
+  const options = parseArgs(process.argv.slice(2));
 
-    if (options.help) {
-      console.log(usage());
-      return;
-    }
-
-    const orphans = await findOrphans(options);
-
-    if (orphans.length === 0) {
-      if (!options.quiet) {
-        console.log("No orphan live documentation files found.");
-      }
-      return;
-    }
-
-    console.error(`Found ${orphans.length} orphan live documentation file(s):`);
-    for (const orphan of orphans) {
-      console.error(` - ${orphan.docPath} (expected code path: ${orphan.expectedCodePath})`);
-    }
-    process.exitCode = 1;
-  } catch (error) {
-    console.error(error instanceof Error ? error.message : error);
-    process.exitCode = 1;
+  if (options.help) {
+    console.log(usage());
+    return;
   }
+
+  const orphans = await findOrphans(options);
+
+  if (orphans.length === 0) {
+    if (!options.quiet) {
+      console.log("No orphan live documentation files found.");
+    }
+    return;
+  }
+
+  console.error(`Found ${orphans.length} orphan live documentation file(s):`);
+  for (const orphan of orphans) {
+    console.error(` - ${orphan.docPath} (expected code path: ${orphan.expectedCodePath})`);
+  }
+  process.exitCode = 1;
 }
 
-void main();
+runCommand("live-docs:orphans", main);

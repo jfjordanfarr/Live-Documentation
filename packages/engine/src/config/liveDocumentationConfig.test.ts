@@ -94,6 +94,12 @@ describe("normalizeLiveDocumentationConfig", () => {
     expect(normalizeLiveDocumentationConfig({}).exclude).toEqual([]);
   });
 
+  it("keeps the board as a workspace-relative path, and has none unless one is named", () => {
+    expect(normalizeLiveDocumentationConfig({ board: " ./.mdmd\\layer-3\\board.mdmd.md " }).board).toBe(".mdmd/layer-3/board.mdmd.md");
+    expect("board" in normalizeLiveDocumentationConfig({})).toBe(false);
+    expect("board" in normalizeLiveDocumentationConfig({ board: "  " })).toBe(false);
+  });
+
   it("merges overrides and de-duplicates glob patterns", () => {
     const config = normalizeLiveDocumentationConfig({
       root: "  docs/ld  ",

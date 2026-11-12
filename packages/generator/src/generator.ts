@@ -20,6 +20,7 @@ import {
 import { detectChangedFiles } from "@live-documentation/engine/live-docs/gitUtils";
 import { readLiveDocGraph, writeLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
 import { citingDocuments, isMarkdownDocument, type DocumentText } from "@live-documentation/engine/live-docs/relatedDocs";
+import { gitIgnored } from "@live-documentation/engine/tooling/gitIgnored";
 import {
   normalizeWorkspacePath,
   toWorkspaceFileUri,
@@ -110,12 +111,14 @@ export async function generateLiveDocs(
 
   const includeSet = new Set<string>((options.include ?? []).map((entry) => normalizeWorkspacePath(entry)));
 
-  // A scan never lies inside another scan: say so when this one would, either way round.
+  // A scan never lies inside another scan: say so when this one would, either way round, and write the docs all the
+  // same, for the generator warns and the estate reader refuses (the World Map's first ticket, 2026-10-09). The
+  // warning says what the refusal will mean, since until 2026-11-12 its "Point at one of them" read as a refusal.
   for (const outer of await scansAbove(workspaceRoot, normalizedConfig)) {
-    logger.warn(`This folder lies inside a scan at ${outer}; a scan never lies inside another scan. Point at one of them.`);
+    logger.warn(`This folder lies inside the scan at ${outer}. Its docs are written all the same, but a scan never lies inside another: a board that names both reads only the scan at ${outer}.`);
   }
   for (const inner of await scansWithin(workspaceRoot, normalizedConfig)) {
-    logger.warn(`A scan lies inside this folder at ${inner}; a scan never lies inside another scan. Point at one of them.`);
+    logger.warn(`A scan lies inside this folder at ${inner}. This folder's docs are written all the same, but a scan never lies inside another: a board that names both reads only the scan of this folder.`);
   }
 
   const workspaceFiles = await discoverTargetFiles({
@@ -312,7 +315,9 @@ async function scansAbove(workspaceRoot: string, config: LiveDocumentationConfig
   const found: string[] = [];
   let current = path.dirname(workspaceRoot);
   for (let depth = 0; depth < 64 && current !== path.dirname(current); depth += 1) {
-    if (await isScan(current, config)) {
+    // A folder the scan above has git ignore is no part of that scan's map, so this one does not lie inside it.
+    const here = normalizeWorkspacePath(path.relative(current, workspaceRoot));
+    if (await isScan(current, config) && !gitIgnored(current, [here])?.has(here)) {
       found.push(current);
     }
     current = path.dirname(current);
@@ -324,10 +329,16 @@ async function scansAbove(workspaceRoot: string, config: LiveDocumentationConfig
 async function scansWithin(workspaceRoot: string, config: LiveDocumentationConfig): Promise<string[]> {
   const docsRoot = normalizeWorkspacePath(path.join(config.root, config.baseLayer));
   const patterns = [`**/${docsRoot}`, "**/.live-docs.config.json"];
-  const matches = await glob(patterns, { cwd: workspaceRoot, dot: true, ignore: ["**/node_modules/**", `${config.root}/**`], windowsPathsNoEscape: true });
+  const matches = (await glob(patterns, { cwd: workspaceRoot, dot: true, ignore: ["**/node_modules/**", `${config.root}/**`], windowsPathsNoEscape: true }))
+    .map((match) => normalizeWorkspacePath(match));
+  // What git ignores is never part of the map (the owner, 2026-10-19), so a docs root or a configuration there, as in
+  // another agent's worktree, makes no scan; without git, every one counts.
+  const ignored = gitIgnored(workspaceRoot, matches);
   const folders = new Set<string>();
-  for (const match of matches) {
-    const relative = normalizeWorkspacePath(match);
+  for (const relative of matches) {
+    if (ignored?.has(relative)) {
+      continue;
+    }
     const folder = relative.endsWith(docsRoot) ? relative.slice(0, -docsRoot.length).replace(/\/$/u, "") : path.posix.dirname(relative);
     if (folder !== "" && folder !== ".") {
       folders.add(folder);

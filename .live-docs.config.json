@@ -2,6 +2,7 @@
   "root": ".mdmd",
   "baseLayer": "layer-4",
   "extension": ".mdmd.md",
+  "board": ".mdmd/layer-3/board.mdmd.md",
   "sampleRoots": ["tests/integration/programs", "tests/integration/fixtures"],
   "entryPoints": ["packages/explorer/src/client/index.ts", "packages/explorer/src/client/styles.css"],
   "exclude": ["AI-Agent-Workspace/**"],

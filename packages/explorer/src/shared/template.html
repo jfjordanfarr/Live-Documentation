@@ -490,7 +490,8 @@
     </div>
   </div>
 
-  <script type="module" src="./static/index.js"></script>
+  <!-- A classic deferred script, which a page opened as a file still runs, so that it can say it must be served. -->
+  <script defer src="./static/index.js"></script>
 </body>
 
 </html>

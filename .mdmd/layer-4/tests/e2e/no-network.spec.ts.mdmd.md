@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/no-network.spec.ts
-- Generated At: 2026-10-22T16:47:58.723Z
+- Generated At: 2026-11-12T17:12:27.845Z
 
 ## Authored
 ### Purpose
@@ -18,6 +18,7 @@ Proves that the Explorer asks nothing of any site but its own: the owner's ask o
 - A link to another site opens only when a person clicks it, and these tests never click one.
 - Each case was seen to fail with its defence removed: the policy, the escaping, the archetype's class and the count's conversion.
 - Since 2026-11-11 the step's resized count is written in the whole step's dialog, opened from the compact panel, so the markup case opens it and looks for the hostile element in both.
+- Since 2026-11-12 the refusals of data and of a history on another site are also asserted where the map would be: one sentence in `#views`, at reading size and colour, and no panel with a stack. A page opened as a file is its own case: it says in the main area that it must be served, and asks nothing that is not a file and meets no refusal of the policy; its watch is any request off the file, since its own files are `file:` addresses, not the site the other cases serve.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -28,6 +29,8 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `@playwright/test` - `Page`, `expect`, `test`
+- `node:path` - `path`
+- `node:url` - `pathToFileURL`
 - [`compressed-url-state.DEFAULT_SNAPSHOT`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-default_snapshot)
 - [`compressed-url-state.compressSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-compresssnapshot)
 - [`types.InspectionTarget`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-inspectiontarget) (type-only)

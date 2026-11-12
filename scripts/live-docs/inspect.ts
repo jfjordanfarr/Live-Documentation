@@ -14,15 +14,13 @@
  * 
  * @module inspect
  */
-import fs from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
 import {
   DEFAULT_LIVE_DOCUMENTATION_CONFIG,
   normalizeLiveDocumentationConfig,
-  type LiveDocumentationConfig,
-  type LiveDocumentationConfigInput
+  type LiveDocumentationConfig
 } from "@live-documentation/engine/config/liveDocumentationConfig";
 import { resolveDocLink, type GraphFile } from "@live-documentation/engine/live-docs/graph";
 import { readLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
@@ -39,7 +37,7 @@ import {
 } from "@live-documentation/engine/live-docs/pathfind";
 import { relatedDocsOf } from "@live-documentation/engine/live-docs/relatedDocs";
 
-import { endQuietlyWhenThePipeCloses, packageVersion } from "./cli";
+import { endQuietlyWhenThePipeCloses, optionValue, packageVersion, readConfiguration, runCommand, UsageError } from "./cli";
 import {
   emitDualDirectionResult,
   emitDualDirectionSymbolResult,
@@ -108,23 +106,7 @@ async function main(): Promise<void> {
 
   const workspaceRoot = path.resolve(args.workspace ?? process.cwd());
 
-  let configFileInput: LiveDocumentationConfigInput = {};
-  let resolvedConfigPath: string | undefined;
-  if (args.configPath) {
-    resolvedConfigPath = args.configPath;
-  } else {
-    const defaultConfigPath = path.join(workspaceRoot, ".live-docs.config.json");
-    try {
-      await fs.access(defaultConfigPath);
-      resolvedConfigPath = defaultConfigPath;
-    } catch {
-      // No default config present.
-    }
-  }
-
-  if (resolvedConfigPath) {
-    configFileInput = await readConfigFile(resolvedConfigPath);
-  }
+  const configFileInput = await readConfiguration(workspaceRoot, args.configPath);
 
   const configInput: LiveDocumentationConfig = normalizeLiveDocumentationConfig({
     ...DEFAULT_LIVE_DOCUMENTATION_CONFIG,
@@ -381,37 +363,37 @@ function parseArgs(argv: string[]): ParsedArgs {
       }
 
       case "--workspace": {
-        parsed.workspace = expectValue(argv, ++index, current);
+        parsed.workspace = optionValue(argv, ++index, current);
         break;
       }
 
       case "--config": {
-        parsed.configPath = expectValue(argv, ++index, current);
+        parsed.configPath = optionValue(argv, ++index, current);
         break;
       }
 
       case "--root": {
-        parsed.root = expectValue(argv, ++index, current);
+        parsed.root = optionValue(argv, ++index, current);
         break;
       }
 
       case "--base-layer": {
-        parsed.baseLayer = expectValue(argv, ++index, current);
+        parsed.baseLayer = optionValue(argv, ++index, current);
         break;
       }
 
       case "--extension": {
-        parsed.extension = expectValue(argv, ++index, current);
+        parsed.extension = optionValue(argv, ++index, current);
         break;
       }
 
       case "--from": {
-        parsed.from = expectValue(argv, ++index, current);
+        parsed.from = optionValue(argv, ++index, current);
         break;
       }
 
       case "--to": {
-        parsed.to = expectValue(argv, ++index, current);
+        parsed.to = optionValue(argv, ++index, current);
         break;
       }
 
@@ -426,9 +408,9 @@ function parseArgs(argv: string[]): ParsedArgs {
       }
 
       case "--direction": {
-        const value = expectValue(argv, ++index, current).toLowerCase();
+        const value = optionValue(argv, ++index, current).toLowerCase();
         if (value !== "outbound" && value !== "inbound" && value !== "both") {
-          throw new Error("--direction must be 'outbound', 'inbound', or 'both'.");
+          throw new UsageError("--direction takes outbound, inbound or both.");
         }
         parsed.direction = value as Direction;
         parsed.directionGiven = true;
@@ -436,27 +418,27 @@ function parseArgs(argv: string[]): ParsedArgs {
       }
 
       case "--at": {
-        parsed.at = expectValue(argv, ++index, current);
+        parsed.at = optionValue(argv, ++index, current);
         break;
       }
 
       case "--between": {
-        parsed.between = [expectValue(argv, ++index, current), expectValue(argv, ++index, current)];
+        parsed.between = [optionValue(argv, ++index, current), optionValue(argv, ++index, current)];
         break;
       }
 
       case "--max-depth": {
-        const raw = expectValue(argv, ++index, current);
+        const raw = optionValue(argv, ++index, current);
         const depth = Number.parseInt(raw, 10);
         if (!Number.isFinite(depth) || depth <= 0) {
-          throw new Error("--max-depth must be a positive integer.");
+          throw new UsageError("--max-depth takes a whole number of one or more.");
         }
         parsed.maxDepth = depth;
         break;
       }
 
       default: {
-        throw new Error(`Unknown argument '${current}'.`);
+        throw new UsageError(current.startsWith("-") ? `${current} is not an option.` : `${current} is not an option; name a file with --from.`);
       }
     }
   }
@@ -464,25 +446,12 @@ function parseArgs(argv: string[]): ParsedArgs {
   return parsed;
 }
 
-async function readConfigFile(configPath: string): Promise<LiveDocumentationConfigInput> {
-  const resolved = path.resolve(configPath);
-  const raw = await fs.readFile(resolved, "utf8");
-  return JSON.parse(raw) as LiveDocumentationConfigInput;
-}
-
-function expectValue(argv: string[], index: number, flag: string): string {
-  if (index >= argv.length) {
-    throw new Error(`Expected value after ${flag}.`);
-  }
-  return argv[index];
-}
-
 function usage(): string {
   return `Usage: npm run live-docs:inspect -- [options]\n\n` +
     `Options:\n` +
     `  --from <path>            Starting artefact (code or Live Doc path).\n` +
-    `                           Use path#Symbol syntax for symbol-level search.\n` +
-    `  --to <path>              Target artefact. Omit to list terminal paths from --from.\n` +
+    `                           Use path#Symbol syntax for symbol-level search, which needs --to.\n` +
+    `  --to <path>              Target artefact. Omit to list terminal paths from a file named by --from.\n` +
     `                           Use path#Symbol syntax for symbol-level search.\n` +
     `  --reachable              List every file a path reaches from --from, nearest first, with its hops.\n` +
     `                           Without --from: the entry points, what they reach, what nothing reaches,\n` +
@@ -493,7 +462,8 @@ function usage(): string {
     `                           With --json: { kind: "groups", files, groups: [{ seed, size, members }], alone }.\n` +
     `  --direction <dir>        Traversal direction: outbound (default) or inbound; both with --to or --reachable.\n` +
     `  --max-depth <n>          Maximum traversal depth (default ${DEFAULT_MAX_DEPTH}).\n` +
-    `  --config <file>          Load configuration from JSON file.\n` +
+    `  --config <file>          The configuration (default: the workspace's .live-docs.config.json when it\n` +
+    `                           has one, else the shipped defaults).\n` +
     `  --json                   Emit JSON instead of text.\n` +
     `  --verbose                Include full symbol lists in output (default: slim).\n` +
     `  --at <commit>            From the history, at a commit (a prefix of its id): with --from, whether the\n` +
@@ -502,11 +472,11 @@ function usage(): string {
     `  --between <a> <b>        From the history, what changed from commit a to the later commit b: files created,\n` +
     `                           deleted, renamed and resized, wires added and removed. From the shape alone.\n` +
     `  --workspace <path>       Workspace root (defaults to current working directory).\n` +
-    `  --root <path>            Override liveDocumentation.root.\n` +
-    `  --base-layer <name>      Override liveDocumentation.baseLayer.\n` +
-    `  --extension <suffix>     Override liveDocumentation.extension.\n` +
-    `  --version                Print inspect CLI version.\n` +
-    `  --help                   Display this help text.\n` +
+    `  --root <path>            In place of the configuration's root.\n` +
+    `  --base-layer <name>      In place of the configuration's baseLayer.\n` +
+    `  --extension <suffix>     In place of the configuration's extension.\n` +
+    `  -v, --version            Print the engine's version.\n` +
+    `  -h, --help               Print this help.\n` +
     `\nSymbol Reference Syntax:\n` +
     `  path/to/file.ts#SymbolName   Hash-separated (preferred, markdown-compatible)\n` +
     `  path/to/file.ts:SymbolName   Colon-separated (Windows-safe alternative)\n` +
@@ -521,10 +491,4 @@ function usage(): string {
     `  npm run live-docs:inspect -- --between cad63bdd d23a6f90 --json\n`;
 }
 
-main().catch((error) => {
-  console.error("live-docs:inspect failed");
-  if (error instanceof Error) {
-    console.error(error.message);
-  }
-  process.exit(1);
-});
+runCommand("live-docs:inspect", main);

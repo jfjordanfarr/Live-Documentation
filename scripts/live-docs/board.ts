@@ -6,7 +6,12 @@
  * and what the reading and the join found wanting.
  *
  * Usage:
- *   npm run live-docs:board -- <board.md> [--workspace <dir>] [--config <file>]
+ *   npm run live-docs:board -- [<board.md>] [--workspace <dir>] [--config <file>]
+ *
+ * The configuration is the file given, else the workspace's own
+ * `.live-docs.config.json` when it has one, else the shipped defaults; the
+ * board is the one named, else the one the configuration names, as the
+ * Explorer's build chooses it.
  *
  * A fault in the board's text or its names exits 1; a `From` with no docs or a
  * declared door nothing serves is printed and exits 0, because a board may name
@@ -16,11 +21,13 @@ import * as fs from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
-import { normalizeLiveDocumentationConfig, type LiveDocumentationConfigInput } from "@live-documentation/engine/config/liveDocumentationConfig";
+import { normalizeLiveDocumentationConfig } from "@live-documentation/engine/config/liveDocumentationConfig";
 import { lintBoard, parseBoard } from "@live-documentation/engine/live-docs/board";
 import { deriveBoardGraph, type BoardGraph } from "@live-documentation/engine/live-docs/boardGraph";
 import { LiveDocSyntaxError } from "@live-documentation/engine/live-docs/document";
 import { readEstateGraph } from "@live-documentation/engine/live-docs/graphFiles";
+
+import { optionValue, readConfiguration, runCommand, UsageError } from "./cli";
 
 interface ParsedArgs {
   help: boolean;
@@ -39,17 +46,17 @@ function parseArgs(argv: string[]): ParsedArgs {
         parsed.help = true;
         break;
       case "--workspace":
-        parsed.workspace = expectValue(argv, ++index, current);
+        parsed.workspace = optionValue(argv, ++index, current);
         break;
       case "--config":
-        parsed.configPath = expectValue(argv, ++index, current);
+        parsed.configPath = optionValue(argv, ++index, current);
         break;
       default:
         if (current.startsWith("-")) {
-          throw new Error(`Unknown option: ${current}`);
+          throw new UsageError(`${current} is not an option.`);
         }
         if (parsed.board !== undefined) {
-          throw new Error(`Unexpected argument: ${current}`);
+          throw new UsageError(`${current} is a second board; the command reads one.`);
         }
         parsed.board = current;
     }
@@ -57,22 +64,18 @@ function parseArgs(argv: string[]): ParsedArgs {
   return parsed;
 }
 
-function expectValue(argv: string[], index: number, flag: string): string {
-  const value = argv[index];
-  if (!value || value.startsWith("-")) {
-    throw new Error(`Option ${flag} requires a value.`);
-  }
-  return value;
-}
-
 function usage(): string {
   return [
-    "Usage: npm run live-docs:board -- <board.md> [options]",
+    "Usage: npm run live-docs:board -- [<board.md>] [options]",
+    "",
+    "Reads a board, checks it, joins it to the docs of the scans its things name, and prints its",
+    "things, doors and wires. Without <board.md>, the board the configuration names as \"board\".",
     "",
     "Options:",
-    "  --workspace <path>   Workspace root (defaults to the current directory).",
-    "  --config <file>      Load configuration from a JSON file.",
-    "  --help               Show this help message."
+    "  --workspace <path>   Workspace root (default: the current directory).",
+    "  --config <file>      The configuration (default: the workspace's .live-docs.config.json",
+    "                       when it has one, else the shipped defaults).",
+    "  -h, --help           Print this help."
   ].join("\n");
 }
 
@@ -115,22 +118,22 @@ function renderBoardReport(boardPath: string, title: string, scans: string[], de
 
 async function main(): Promise<void> {
   const args = parseArgs(process.argv.slice(2));
-  if (args.help || args.board === undefined) {
+  if (args.help) {
     console.log(usage());
-    process.exit(args.help ? 0 : 1);
+    return;
   }
-
   const workspaceRoot = path.resolve(args.workspace ?? process.cwd());
-  let configInput: LiveDocumentationConfigInput = {};
-  if (args.configPath) {
-    configInput = JSON.parse(await fs.readFile(path.resolve(args.configPath), "utf8")) as LiveDocumentationConfigInput;
+  const config = normalizeLiveDocumentationConfig(await readConfiguration(workspaceRoot, args.configPath));
+  const named = args.board ?? config.board;
+  if (named === undefined) {
+    throw new UsageError("Name the board file to read; the configuration names none as \"board\".");
   }
-  const config = normalizeLiveDocumentationConfig(configInput);
 
-  const boardAbsolute = path.resolve(args.board);
+  // A board named here is a path from the current directory, the configuration's one a path from the workspace root.
+  const boardAbsolute = path.resolve(args.board === undefined ? workspaceRoot : process.cwd(), named);
   const boardPath = path.relative(workspaceRoot, boardAbsolute).split(path.sep).join("/");
   if (boardPath.startsWith("../")) {
-    throw new Error(`${args.board} is outside the workspace ${workspaceRoot}`);
+    throw new Error(`${named} is outside the workspace ${workspaceRoot}`);
   }
   const text = await fs.readFile(boardAbsolute, "utf8");
   let board;
@@ -157,8 +160,5 @@ async function main(): Promise<void> {
 }
 
 if (require.main === module) {
-  main().catch((error: unknown) => {
-    console.error(error instanceof Error ? error.message : String(error));
-    process.exit(1);
-  });
+  runCommand("live-docs:board", main);
 }

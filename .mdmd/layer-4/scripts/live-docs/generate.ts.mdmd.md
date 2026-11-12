@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/generate.ts
 - Entry: command `live-docs:generate` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-10-22T16:47:57.532Z
+- Generated At: 2026-11-12T16:06:56.295Z
 
 ## Authored
 ### Purpose
@@ -16,6 +16,7 @@ CLI entry point that applies workspace configuration, resolves include/changed f
 - `--check` uses the generator's dry run and fails when a doc would be created, updated or deleted, without writing docs or the derived graph index. It is the CI mirror-freshness gate added after the [October 19 audit](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-19.1.record.md#turn-16). `--dry-run` keeps its preview-only success behavior.
 - Since 2026-10-17 the configuration is the file `--config` names, else the workspace's own `.live-docs.config.json`, as inspect reads it, else the shipped defaults. Until then `--workspace` without `--config` read no configuration and wrote the shipped default root, which the history probe of 2026-10-16 found while regenerating past commits; the history command ([the plan's C1](../../../../.mdmd/layer-3/change-over-time.mdmd.md)) applies its lens's configuration explicitly in any case.
 - `--version` prints the generator package's version from its manifest since 2026-10-18, through [cli.ts](cli.ts.mdmd.md); until then it printed a constant, 0.1.0, or an environment variable, while the package is 0.0.0, which the history command's lens showed up, since the lens carries the manifest's version.
+- Since 2026-11-12 its usage says what it does: `--glob` replaces the configuration's glob, where the usage said it added one, and an argument that is not an option is taken as a glob. A refused argument ends through `runCommand` in [cli.ts](cli.ts.mdmd.md), one line with the command that lists the options, and the configuration is read by `readConfiguration` there, the same rule as before.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -25,7 +26,6 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs/promises` - `fs`
 - `node:path` - `path`
 - `node:process` - `process`
 - [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
@@ -33,7 +33,11 @@ _No public symbols detected_
 - [`liveDocumentationConfig.LiveDocumentationConfigInput`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfiginput)
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`generator.generateLiveDocs`](../../packages/generator/src/generator.ts.mdmd.md#symbol-generatelivedocs)
+- [`cli.UsageError`](./cli.ts.mdmd.md#symbol-usageerror)
+- [`cli.optionValue`](./cli.ts.mdmd.md#symbol-optionvalue)
 - [`cli.packageVersion`](./cli.ts.mdmd.md#symbol-packageversion)
+- [`cli.readConfiguration`](./cli.ts.mdmd.md#symbol-readconfiguration)
+- [`cli.runCommand`](./cli.ts.mdmd.md#symbol-runcommand)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

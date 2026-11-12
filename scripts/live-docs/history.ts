@@ -13,7 +13,7 @@ import process from "node:process";
 import type { HistorySequence, Sampling } from "@live-documentation/engine/live-docs/history/format";
 import { changeAt, headOf } from "@live-documentation/engine/live-docs/history/sequence";
 
-import { endQuietlyWhenThePipeCloses } from "./cli";
+import { endQuietlyWhenThePipeCloses, optionValue, runCommand, UsageError } from "./cli";
 import { computeHistory } from "../../packages/generator/src/history/computeHistory";
 
 interface ParsedArgs {
@@ -65,7 +65,7 @@ function defaultJobs(): number {
 function samplingOf(args: ParsedArgs): Sampling {
   const since = args.since === undefined ? {} : { since: args.since };
   if (args.every !== undefined && args.step !== "commit") {
-    throw new Error("--every counts commits; it takes --step commit, the default.");
+    throw new UsageError("--every counts commits; it takes --step commit, the default.");
   }
   switch (args.step) {
     case "commit":
@@ -108,32 +108,32 @@ function parseArgs(argv: string[]): ParsedArgs {
         parsed.json = true;
         break;
       case "--workspace":
-        parsed.workspace = expectValue(argv, ++index, current);
+        parsed.workspace = optionValue(argv, ++index, current);
         break;
       case "--config":
-        parsed.configPath = expectValue(argv, ++index, current);
+        parsed.configPath = optionValue(argv, ++index, current);
         break;
       case "--every":
-        parsed.every = positiveInteger(expectValue(argv, ++index, current), current);
+        parsed.every = positiveInteger(optionValue(argv, ++index, current), current);
         break;
       case "--since": {
-        const value = expectValue(argv, ++index, current);
+        const value = optionValue(argv, ++index, current);
         if (Number.isNaN(Date.parse(value))) {
-          throw new Error(`--since takes a date, as 2026-09-01; ${value} is not one.`);
+          throw new UsageError(`--since takes a date, as 2026-09-01; ${value} is not one.`);
         }
         parsed.since = value;
         break;
       }
       case "--step": {
-        const value = expectValue(argv, ++index, current);
+        const value = optionValue(argv, ++index, current);
         if (value !== "commit" && value !== "day" && value !== "week" && value !== "tag") {
-          throw new Error("--step takes commit, day, week or tag.");
+          throw new UsageError("--step takes commit, day, week or tag.");
         }
         parsed.step = value;
         break;
       }
       case "--jobs":
-        parsed.jobs = positiveInteger(expectValue(argv, ++index, current), current);
+        parsed.jobs = positiveInteger(optionValue(argv, ++index, current), current);
         break;
       case "--keep-index":
         parsed.keepIndex = true;
@@ -142,24 +142,16 @@ function parseArgs(argv: string[]): ParsedArgs {
         parsed.authors = false;
         break;
       default:
-        throw new Error(`Unknown argument '${current}'. See --help.`);
+        throw new UsageError(`${current} is not an option.`);
     }
   }
   return parsed;
 }
 
-function expectValue(argv: string[], index: number, flag: string): string {
-  const value = argv[index];
-  if (value === undefined || value.startsWith("--")) {
-    throw new Error(`${flag} takes a value.`);
-  }
-  return value;
-}
-
 function positiveInteger(value: string, flag: string): number {
   const parsed = Number(value);
   if (!Number.isInteger(parsed) || parsed < 1) {
-    throw new Error(`${flag} takes a whole number of one or more; ${value} is not one.`);
+    throw new UsageError(`${flag} takes a whole number of one or more; ${value} is not one.`);
   }
   return parsed;
 }
@@ -188,7 +180,7 @@ function usage(): string {
     `  --keep-index         Keep each commit's full index.json, gzipped, in the cache.\n` +
     `  --no-authors         Leave the authors' names out of the sequence.\n` +
     `  --json               Print the sequence's head and one line per step as JSON lines.\n` +
-    `  --help               Display this help text.\n` +
+    `  -h, --help           Print this help.\n` +
     `\nThe first and the last commit are always regenerated, so the sequence spans what it samples.\n` +
     `Progress goes to stderr.\n` +
     `\nExamples:\n` +
@@ -198,7 +190,4 @@ function usage(): string {
   );
 }
 
-main().catch((error: unknown) => {
-  console.error(`live-docs:history failed: ${error instanceof Error ? error.message : String(error)}`);
-  process.exitCode = 1;
-});
+runCommand("live-docs:history", main);

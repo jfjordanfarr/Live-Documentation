@@ -6,7 +6,7 @@
 
 Live Documentation is a CLI suite and a static Explorer that turn any codebase into a **navigable, shareable graph of what connects to what**.
 
-**[🔗 Explore the Live Demo →](https://jfjordanfarr.github.io/Live-Documentation/)**
+**[Explore the Live Demo →](https://jfjordanfarr.github.io/Live-Documentation/)**
 
 ---
 
@@ -88,7 +88,7 @@ Choose a subject through search, which makes it the newest pin, then choose **Pa
 The same pathfinding is available via CLI:
 
 ```powershell
-npm run live-docs:inspect -- --from src/auth.ts --to src/api/endpoints.ts
+npm run live-docs:inspect -- --from scripts/live-docs/generate.ts --to packages/engine/src/live-docs/core.ts
 ```
 
 ### Shareable Links
@@ -154,7 +154,7 @@ Traces the dependency graph to answer "What does this touch?" or "What touches t
 ### Visualization Explorer
 
 ```powershell
-npm run live-docs:visualize             # Static Explorer bundle in dist/explorer/; this repository's build carries its own board
+npm run live-docs:visualize             # Static Explorer bundle in dist/explorer/, with the board the configuration names
 npm run live-docs:board -- <board.md>   # Read a board, check it against the docs, and print its things, doors and wires
 ```
 
@@ -179,7 +179,7 @@ For contributors to this repository:
 
 ## Configuration
 
-Live Documentation adapts to your documentation conventions:
+Live Documentation adapts to your documentation conventions, read from a `.live-docs.config.json` at the root of the folder it documents:
 
 ```json
 {
@@ -202,7 +202,18 @@ This repository uses an internal MDMD convention (`.mdmd/layer-4/*.mdmd.md`) to 
 npm install
 npm run build
 npm run live-docs:generate   # Materialize the graph
-npm run live-docs:visualize  # Build the Explorer into dist/explorer/, then serve that folder
+npm run live-docs:visualize  # Build the Explorer into dist/explorer/
+npx http-server dist/explorer -a 127.0.0.1 -p 8766 -c-1   # Serve that folder, then open http://127.0.0.1:8766/
+```
+
+The Explorer must be served: a page opened as a file cannot load its data. Every command prints its options on `--help`, as `npm run live-docs:visualize -- --help`.
+
+To map another folder, document it and build its Explorer from this checkout, with `<folder>` standing for its path. The folder's own `.live-docs.config.json` applies when it has one; without one the docs go to `<folder>/.live-documentation/source/`.
+
+```bash
+npm run live-docs:generate -- --workspace <folder>
+npm run live-docs:visualize -- --workspace <folder>
+npx http-server dist/explorer -a 127.0.0.1 -p 8766 -c-1
 ```
 
 ---

@@ -31,7 +31,7 @@ The guide to the command is [cli-reference](../../../.mdmd/layer-1/guides/cli-re
 ## 3. Answer, then hand over the picture
 
 - Answer in plain words and cite the doc: the file, the section, the symbol, the dependency line. Keep what the docs observed apart from what you inferred by reading the code, and say which is which.
-- Build the Explorer when `dist/explorer/index.html` is missing or older than the docs: `npm run live-docs:visualize`. Serve it: `npx http-server dist/explorer -p 8766 -c-1`. Then give the address with the subject pinned:
+- Build the Explorer when `dist/explorer/index.html` is missing or older than the docs: `npm run live-docs:visualize`. Serve it: `npx http-server dist/explorer -a 127.0.0.1 -p 8766 -c-1`. Then give the address with the subject pinned:
   - a file: `http://localhost:8766/?view=local&node=<path>`
   - a directory: `http://localhost:8766/?view=local&dir=<path>`
   - the inventory, the entry points and what nothing reaches: `http://localhost:8766/?view=sources`

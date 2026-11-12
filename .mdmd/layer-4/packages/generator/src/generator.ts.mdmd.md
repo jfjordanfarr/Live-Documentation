@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/generator/src/generator.ts
 - Entry: module of [`packages/generator/package.json`](../package.json.mdmd.md)
-- Generated At: 2026-10-22T16:47:56.908Z
+- Generated At: 2026-11-12T17:12:19.988Z
 
 ## Authored
 ### Purpose
@@ -22,13 +22,15 @@ Coordinates Live Documentation generation: analyzes source files, carries author
 - `keepAuthoredStaleDocs` (2026-10-20, [Turn 9](../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-9)) decides whether a stale doc with authored words is kept: true for a person's workspace, so no written words vanish unread; false for the history's lens, so that a past commit's mirror regenerated in place gives exactly the files this run documents.
 - Since 2026-10-22 ([Turn 8 of the October 21 session](../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-8)) a new doc of a file no reader handles (`noReaderHandles`: no reader by name or extension, and not an image, a font or a recording) starts with `UNREAD_AUTHORED_BLOCK`, whose Notes say so in place of `_Pending notes_`. The note is written once, when the doc is made; from then on it is the author's to keep or revise, and a doc holding nothing but it is pruned with its file like one holding the pending placeholders.
 - Since 2026-10-22 ([the decision](../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#related-documents-run-both-ways-a-docs-cited-by-section-is-generated-from-the-documents-own-links-recorded-2026-10-22)) a run reads every markdown document discovery finds (`readMarkdownDocuments`), whatever subset it renders, and `citingDocuments` turns their links into the `Cited By` index that `composeGenerated` writes on each cited file's doc, when the configuration's `citedBy` is on; on this repository the reading adds under a second to a run. A document's change therefore moves the docs of the files it cites or stops citing, which a full run or `--check` sees and a `--changed` run, which renders changed sources alone, does not.
+- Since 2026-11-12 the nested-scan warning says that the run writes the docs all the same and what the rule will mean, that a board naming both scans reads only the outer one. Its words were "Point at one of them", which read as a refusal while the run carried on, as [the first-visit evaluation](../../../../../AI-Agent-Workspace/Screenshots/2026-11-12/first-visit/README.md) found; the rule and the behaviour are unchanged.
+- Since 2026-11-12 a folder git ignores is no scan: `scansWithin` asks git, through `gitIgnored`, of the docs roots and configuration files it finds, and `scansAbove` does not count an outer scan whose git ignores this folder, after an agent's worktree under the ignored `.claude/worktrees/`, which carries a copy of the configuration, made every run in the checkout warn of a nested scan. It is the owner's rule of 2026-10-19 that what git ignores never becomes part of the map; without git, every one still counts.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LiveDocGeneratorResult` {#symbol-livedocgeneratorresult}
 - Type: interface
-- Source: [source](../../../../../packages/generator/src/generator.ts#L57)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L58)
 
 ##### `LiveDocGeneratorResult` — Summary
 Summary returned by {@link generateLiveDocs} after processing all target files.
@@ -38,7 +40,7 @@ the `files` array gives per-file detail for dry-run previews and CI checks.
 
 #### `generateLiveDocs` {#symbol-generatelivedocs}
 - Type: function
-- Source: [source](../../../../../packages/generator/src/generator.ts#L103)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L104)
 - Parameters: `options`: `GenerateLiveDocsOptions`
 
 ##### `generateLiveDocs` — Summary
@@ -103,6 +105,7 @@ behind the `Entry` lines (2026-10-15).
 - [`relatedDocs.DocumentText`](../../engine/src/live-docs/relatedDocs.ts.mdmd.md#symbol-documenttext)
 - [`relatedDocs.citingDocuments`](../../engine/src/live-docs/relatedDocs.ts.mdmd.md#symbol-citingdocuments)
 - [`relatedDocs.isMarkdownDocument`](../../engine/src/live-docs/relatedDocs.ts.mdmd.md#symbol-ismarkdowndocument)
+- [`gitIgnored`](../../engine/src/tooling/gitIgnored.ts.mdmd.md#symbol-gitignored)
 - [`pathUtils.normalizeWorkspacePath`](../../engine/src/tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`pathUtils.toWorkspaceFileUri`](../../engine/src/tooling/pathUtils.ts.mdmd.md#symbol-toworkspacefileuri)
 - [`pathUtils.toWorkspaceRelativePath`](../../engine/src/tooling/pathUtils.ts.mdmd.md#symbol-toworkspacerelativepath)

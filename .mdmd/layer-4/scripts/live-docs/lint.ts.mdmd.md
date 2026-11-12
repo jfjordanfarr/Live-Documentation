@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/lint.ts
 - Entry: command `live-docs:lint` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-03T00:48:35.565Z
+- Generated At: 2026-11-12T16:06:56.672Z
 
 ## Authored
 ### Purpose
@@ -17,6 +17,7 @@ Checks every Live Doc against the grammar, refuses absolute links, warns about a
 - Since 2026-10-18 `--version` prints the engine package's version, whose grammar the lint applies, through [cli.ts](cli.ts.mdmd.md); until then a constant, 0.1.0, or an environment variable.
 
 Since 2026-11-02 the connectivity warning's islands are the files the engine's `fileGroups` calls alone, the set `inspect --groups` prints and the Knowledge Sources panel lists, so that the three give one answer; before, the lint counted the files with no outbound and no inbound edge itself, the same set by a second computation, a note the builder of the groups left for the root ([Turn 12 of the November 2 record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-02.1.record.md#turn-12)). The groups test of `tests/integration/live-docs/inspect-cli.test.ts` holds the agreement.
+Since 2026-11-12 the configuration is the file `--config` names, else the workspace's own `.live-docs.config.json`, else the defaults, by `readConfiguration` in [cli.ts](cli.ts.mdmd.md); it read only the file given, and the npm script passed this repository's, so `--workspace <folder>` checked another folder under this repository's layout. A refused argument is one line with the command that lists the options, and `-h` prints the usage.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -31,7 +32,6 @@ _No public symbols detected_
 - `node:path` - `path`
 - `node:process` - `process`
 - [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
-- [`liveDocumentationConfig.LiveDocumentationConfigInput`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfiginput)
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`core.hasMeaningfulAuthoredContent`](../../packages/engine/src/live-docs/core.ts.mdmd.md#symbol-hasmeaningfulauthoredcontent)
 - [`document.LiveDoc`](../../packages/engine/src/live-docs/document.ts.mdmd.md#symbol-livedoc)
@@ -41,7 +41,11 @@ _No public symbols detected_
 - [`graph.LiveDocGraph`](../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
 - [`graph.deriveLiveDocGraph`](../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-derivelivedocgraph)
 - [`pathfind.fileGroups`](../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-filegroups-function)
+- [`cli.UsageError`](./cli.ts.mdmd.md#symbol-usageerror)
+- [`cli.optionValue`](./cli.ts.mdmd.md#symbol-optionvalue)
 - [`cli.packageVersion`](./cli.ts.mdmd.md#symbol-packageversion)
+- [`cli.readConfiguration`](./cli.ts.mdmd.md#symbol-readconfiguration)
+- [`cli.runCommand`](./cli.ts.mdmd.md#symbol-runcommand)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->
