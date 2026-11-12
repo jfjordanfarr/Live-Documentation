@@ -1,223 +1,151 @@
 # Live Documentation
 
-**A map of any codebase. Offline, static, shareable, markdown-first.**
+**Live Documentation turns a folder of source files into a map you can look at.**
 
-> Point Live Documentation at any folder of interconnected files, and it reveals the public connection surface between them—generating markdown documents that serve as a **lightweight, verifiable AST** for your entire workspace.
+It writes one markdown file for every source file, saying what that file offers to the rest of the code and what it uses. Those markdown files are the product. The Explorer, a static site you can host or hand to a colleague, and the command line both read them and nothing else. It runs offline, calls no model and makes no network request.
 
-Live Documentation is a CLI suite and a static Explorer that turn any codebase into a **navigable, shareable graph of what connects to what**.
+**[Open the live demo](https://jfjordanfarr.github.io/Live-Documentation/)**, which is this repository mapped by itself.
 
-**[Explore the Live Demo →](https://jfjordanfarr.github.io/Live-Documentation/)**
+## Why it exists
 
----
+Two things its author wanted, in their words:
 
-## Quick Links
+> We want to be able to look at directories and understand their contents well, especially if those contents have interconnectivity of some kind.
 
-| Guide                                                                          | Description                                               |
-| ------------------------------------------------------------------------------ | --------------------------------------------------------- |
-| [Getting Started](.mdmd/layer-1/guides/getting-started.mdmd.md)                | Installation, configuration, and your first session       |
-| [Tracing Impact](.mdmd/layer-1/guides/tracing-impact.mdmd.md)                  | Dependency pathfinding and "what will this change break?" |
-| [Visualizing Your Codebase](.mdmd/layer-1/guides/visualizing-codebase.mdmd.md) | Explorer views, shareability, and static exports          |
-| [CLI Reference](.mdmd/layer-1/guides/cli-reference.mdmd.md)                    | Complete command catalog                                  |
+> I just want to be able to show non-software people what I do and they can _see it_ the way I understand it. I don't want to keep drawing bespoke diagrams.
 
----
+So the map is made from the code, not drawn by hand. It is regenerated when the code changes, and a view of it is a link you can send.
 
-## The Core Insight
+## Map your own repository
 
-Software is a web of interconnected files. Understanding that web has always required holding complex mental models, reading code line-by-line, or trusting ephemeral AI explanations.
+Live Documentation is not yet published to npm. Run it from a clone, with Node.js 22 or newer, and point it at your folder:
 
-**Live Documentation takes a different approach**: we generate a markdown file for every source file, using **markdown headers as lightweight AST nodes** and **markdown links as edges**. The result is a **pseudocode surface of your entire workspace**—a common language that:
+```bash
+git clone https://github.com/jfjordanfarr/Live-Documentation.git
+cd Live-Documentation
+npm install
+npm run build
 
-- **Engineers** can inspect for ripple effects before merging
-- **Architects** can explore visually without reading implementation details
-- **Non-technical stakeholders** can navigate to understand what the system does
-- **Agents** can read, like anyone else, given the hosted site or the file
+npm run live-docs:generate -- --workspace <folder>
+npm run live-docs:visualize -- --workspace <folder>
+npx http-server dist/explorer -a 127.0.0.1 -p 8766 -c-1
+```
 
-This shared representation closes the gap between the people who build a system and the people who need to understand it.
+Then open `http://127.0.0.1:8766/`.
 
----
+- `generate` writes the markdown into `<folder>/.live-documentation/source/`, one file per source file. Add `--dry-run` to see what it would write first. This repository's thousand files take a few minutes.
+- `visualize` builds the Explorer into `dist/explorer/` in this checkout. Copy that folder to any static host to share it.
+- The Explorer has to be served, as the last line does. A browser will not let a page opened as a file read the data beside it, and the page says so if you try.
+- In a git repository, files that git ignores are left out. Elsewhere, name build output to leave out in the [configuration](#configuration).
+- Every command prints its options with `--help`, for example `npm run live-docs:generate -- --help`.
 
-## What Makes This Different
+To try it without a repository of your own, leave out `--workspace`: the same three commands map this one.
 
-### The Bridge Between Blueprints and Code
+## What you can ask it
 
-If you've ever used node-based visual programming (Unreal Blueprints, Blender nodes, Max/MSP), you know the power of seeing connections explicitly. But "real" code lives in text files, and the connections between them are implicit—hidden in import statements and function calls.
+In the Explorer:
 
-**Live Documentation makes those connections explicit and visual.** Every public symbol becomes a navigable anchor. Every dependency becomes a traceable edge. The Explorer lets you zoom from macro (entire workspace) to micro (individual symbols) without leaving the map.
+- **What does this file offer, and who uses it?** The Local Map draws a file as a card: what it offers on its right edge in blue, what it uses on its left in green, and wires to the files on either side. Pin the files you care about and the picture keeps them.
+- **What is in this directory?** Open a directory on the Local Map to see its files side by side, or switch to 3D to see the same files as a graph you can turn.
+- **How does this reach that?** Search for a file, then choose **Path to** another, and the map shows the shortest route between them.
+- **Which files matter most?** Knowledge Sources lists the most used files, the files that use the most, where the program starts and what nothing reaches.
+- **How do our systems talk to each other?** The World Map shows several systems as pieces on a board, with a door wherever one offers or uses an address, and wires between the doors. You describe the board in one markdown file; the doors and wires come from the code.
+- **How did it get this way?** Run `npm run live-docs:history` before building, and the 3D map can play the repository's commits as changes to the picture.
 
-### Shareable Understanding
+Whatever you are looking at is in the address bar. Send the link, and a colleague with the same build sees the same thing.
 
-Found a critical dependency path? **Share the link.** The Explorer generates stable URLs for any node, any path, any view. When you need to explain "here's exactly how data flows from A to B," you send a hyperlink—not a wall of text or a screenshot that goes stale.
+At the command line, the same questions, here asked of this repository:
 
-### Durable Truth
+```bash
+# What depends on this file?
+npm run live-docs:inspect -- --from packages/generator/src/generator.ts --direction inbound
 
-- **Cloud wikis** drift from code. **AI chat contexts** vanish when the session ends. **Just-in-time maps** disappear when you close the tab.
-- **Live Documentation** writes the intelligence _back into your repo_. It travels with your code, works offline, and survives any vendor switch. Delete the cache? Regenerate it deterministically.
-
-### Written for people, readable by a machine
-
-Every CLI command has a `--json` mode, and the Explorer reads the same graph index the CLI does, so whatever a person can learn by clicking, a script can learn by a command. Live Documentation calls no model and makes no network request. It is not shaped around feeding a coding agent context: an agent you point at a hosted Explorer, or hand the bundle, can read the same map as anyone else, and that is all it promises.
-
----
-
-## How It Works
-
-Live Documentation turns your workspace into a navigable markdown graph:
-
-1. **Discovery**: Selects source artifacts via configurable glob patterns.
-2. **Analysis**: Extracts public symbols and dependency edges (language-aware where possible).
-3. **Materialization**: Writes deterministic markdown mirrors—each file gets a `.md` companion with headers for every public symbol.
-4. **Exploration**: The Explorer's views (Knowledge Sources, World Map, Local Map) and CLI commands let you navigate, trace paths, and share links.
-5. **Consumption**: Reviewers, CI checks and any agent you hand it to read the same markdown.
-
----
-
-## The Explorer: See Your Code Like Never Before
-
-Live Documentation includes a visual Explorer with three navigable views over one graph:
-
-| View              | Purpose                                                                                                           |
-| ----------------- | ----------------------------------------------------------------------------------------------------------------- |
-| **Knowledge Sources** | The graph’s inventory, related documentation and exports |
-| **World Map**     | The outside: systems as closed pieces on a board, doors where they offer and use openings, wires between them     |
-| **Local Map** | Files, symbols and directories in 2D, or file connectivity in 3D; the representation is remembered and travels in shared links |
-
-### Path Mode: The "Oracle of Bacon" for Code
-
-Choose a subject through search, which makes it the newest pin, then choose **Path to**. The 2D Local Map shows a shortest route from provider to consumer, with the relevant symbol connections, and offers the reverse question when appropriate. Making that result and recovery equally readable in 3D is part of the [accepted remediation work](.mdmd/layer-3/live-documentation-explorer.mdmd.md#remediation-work).
-
-The same pathfinding is available via CLI:
-
-```powershell
+# How does one file reach another?
 npm run live-docs:inspect -- --from scripts/live-docs/generate.ts --to packages/engine/src/live-docs/core.ts
+
+# Where does the program start, and what does nothing reach?
+npm run live-docs:inspect -- --reachable
 ```
 
-### Shareable Links
+Add `--workspace <folder>` to ask them of your own, and `--json` for output a script can read.
 
-Every view generates stable URLs. When you need to explain a complex dependency chain, share the link. With the same bundle, your colleagues reopen the shared exploration; viewport and physics arrangement can differ.
+## What it writes
 
----
+A Live Doc is ordinary markdown. Headings are the file's public symbols and links are its dependencies, so the map can be read, searched, diffed and reviewed like any other file in the repository. Shortened, one looks like this:
 
-## Supported Languages
+```markdown
+# packages/explorer/src/client/errors.ts
 
-Live Documentation is polyglot. Support varies by language (some have richer symbol graphs than others), but all are unified into the same markdown mirror format.
+## Authored
+### Purpose
+What the Explorer says when it cannot start, or stops.
 
-- **TypeScript / JavaScript**: the TypeScript compiler API resolves public symbols and module dependencies.
-- **C#, Python, Java, Go, Rust, C and C++**: tree-sitter parsers, with names resolved by each language's own rules (namespaces, packages, modules, crates, include directories) and measured against the compiler's resolution through SCIP indexers.
-- **PowerShell**: a tree-sitter parser, on a grammar the engine builds and ships until upstream takes its fix, for functions with their comment-based help, classes and enums, what a module exports, and dot-sources, module imports, `using module` and `#requires`, paths found as Windows finds them; a module manifest (`.psd1`) is read as a manifest. Measured against PowerShell's own parser. No PowerShell installation is needed to generate docs.
-- **Ruby**: a hand-written scanner for symbols and for requires; no compiler oracle yet.
-- **ASP.NET markup**: `.aspx`, `.ascx`, `.cshtml`, `.razor`, connected to code-behind and configuration conventions.
-- **.NET configuration and SQL**: the addresses and connection strings of `web.config` and `app.config`, and the procedures, tables and views of `.sql` files, read as the openings a system offers and uses.
-- **Manifests**: `.csproj`, `packages.config`, `package.json`, `Cargo.toml`, `pyproject.toml`, `go.mod`, `pom.xml` and a PowerShell module's `.psd1`, read as what a project stands on and what it starts.
-- **HTML / CSS / JSON**: asset and reference extraction.
+## Generated
+### Public Symbols
+#### `reportFatalExplorerError`
+- Type: function
+- Source: [source](../../../../../../packages/explorer/src/client/errors.ts#L56)
 
----
-
-## Competitive Landscape
-
-| Feature              | **Live Documentation**        | **Google CodeWiki**    | **Windsurf Codemaps** | **GitLab Knowledge Graph** |
-| :------------------- | :---------------------------- | :--------------------- | :-------------------- | :------------------------- |
-| **Primary Goal**     | **Falsifiable Truth**         | Exploration & Search   | Flow State & Speed    | Cross-Project Intelligence |
-| **Hosting**          | **Local & Git-based**         | Cloud-hosted           | Local (Session-based) | Server-side                |
-| **Durability**       | **High** (Version Controlled) | Low (External Service) | Low (Ephemeral)       | High (Database)            |
-| **Offline Access**   | **100%**                      | No                     | Yes                   | No                         |
-| **Shareable Links**  | **Yes** (stable URLs)         | Yes                    | No                    | Yes                        |
-| **Machine-readable** | **Yes** (`--json` everywhere) | No                     | No                    | API only                   |
-| **Cost**             | **Free** (MIT License)        | Free (Public Repos)    | Paid                  | Enterprise                 |
-
-**The key difference**: Other tools own the data or let it vanish. Live Documentation writes intelligence _back into your repo_ where it belongs.
-
----
-
-## CLI Reference
-
-### Generate Live Docs
-
-```powershell
-npm run live-docs:generate
+### Dependencies
+- [`template.detail-panel`](../shared/template.html.mdmd.md#symbol-detail-panel)
 ```
 
-Scans your workspace and materializes the documentation mirror. Add `-- --dry-run` to preview changes.
+The generated sections are rewritten on every run. The authored section is yours: say what the file is for, and the Explorer shows your words on its card. Commit the Live Docs with the code, and a pull request shows what a change did to the shape of the system.
 
-### The Pathfinder
+## Languages
 
-```powershell
-npm run live-docs:inspect -- --from <path>
-```
+- **TypeScript and JavaScript**, resolved by the TypeScript compiler.
+- **C#, Python, Java, Go, Rust, C and C++**, parsed with tree-sitter and resolved by each language's own rules for namespaces, packages, modules and includes. The results are measured against each language's compiler.
+- **PowerShell**, including modules, dot-sourcing and manifests. No PowerShell installation is needed.
+- **Ruby**, for symbols and requires.
+- **ASP.NET markup** (`.aspx`, `.ascx`, `.cshtml`, `.razor`), connected to its code-behind.
+- **.NET configuration and SQL**: the addresses and connection strings in `web.config` and `app.config`, and the procedures, tables and views in `.sql` files.
+- **Project manifests**: `.csproj`, `packages.config`, `package.json`, `Cargo.toml`, `pyproject.toml`, `go.mod`, `pom.xml` and `.psd1`.
+- **HTML, CSS and JSON**, for the files they reference.
 
-Traces the dependency graph to answer "What does this touch?" or "What touches this?".
-
-- **Hop-chain tracing**: `npm run live-docs:inspect -- --from <path> --to <path>`
-- **Reverse lookup**: `--direction inbound` | **Bidirectional**: `--direction both`
-- **Everything a path reaches**: `--reachable` lists every file a path reaches from `--from`, nearest first, with its hops; without `--from`, the entry points the docs declare, what they reach, what nothing reaches and what only a test reaches
-- **Machine-readable output**: add `--json` for AI/automation consumption
-
-### Visualization Explorer
-
-```powershell
-npm run live-docs:visualize             # Static Explorer bundle in dist/explorer/, with the board the configuration names
-npm run live-docs:board -- <board.md>   # Read a board, check it against the docs, and print its things, doors and wires
-```
-
-### Quality Gates
-
-- `npm run live-docs:lint` — validate Live Doc structure and coverage
-
-For contributors to this repository:
-
-- `npm run safe:commit` — full readiness gate (lint + tests + audits)
-- `npm run slopcop:markdown` — verify every markdown link is valid
-
----
-
-## Security & Privacy
-
-- **Offline-first**: No telemetry. No external HTTP calls required for core functionality.
-- **No lifecycle scripts**: `postinstall`/`preinstall` hooks are explicitly avoided.
-- **No network access**: the generator, the CLI and the bundle builder make no network requests at all, not even to localhost. The Explorer page reads only the site that serves it, and its Content-Security-Policy refuses anything else. See [SECURITY.md](SECURITY.md) for how to verify that.
-
----
+Support is deeper in some languages than in others; every one of them lands in the same markdown.
 
 ## Configuration
 
-Live Documentation adapts to your documentation conventions, read from a `.live-docs.config.json` at the root of the folder it documents:
+None is required. To change where the Live Docs go, what is left out or which board the World Map draws, put a `.live-docs.config.json` at the root of the folder being mapped:
 
 ```json
 {
   "root": ".live-documentation",
   "baseLayer": "source",
   "extension": ".md",
-  "slugDialect": "github"
+  "exclude": ["**/obj/**", "**/bin/**"],
+  "board": "board.md"
 }
 ```
 
-This repository uses an internal MDMD convention (`.mdmd/layer-4/*.mdmd.md`) to prove the flexibility. Your project can use whatever structure fits your team.
+[Getting started](.mdmd/layer-1/guides/getting-started.mdmd.md) lists every setting.
 
----
+## Privacy
 
-## Getting Started
+- The generator, the commands and the Explorer build make no network request and send no telemetry.
+- The Explorer page reads only the site that serves it, and its content security policy refuses anything else.
+- Nothing runs at install time: there are no `preinstall` or `postinstall` scripts.
 
-```bash
-# Prerequisites: Node.js 22.x
+[SECURITY.md](SECURITY.md) says how to check each of these yourself.
 
-npm install
-npm run build
-npm run live-docs:generate   # Materialize the graph
-npm run live-docs:visualize  # Build the Explorer into dist/explorer/
-npx http-server dist/explorer -a 127.0.0.1 -p 8766 -c-1   # Serve that folder, then open http://127.0.0.1:8766/
-```
+## How it differs
 
-The Explorer must be served: a page opened as a file cannot load its data. Every command prints its options on `--help`, as `npm run live-docs:visualize -- --help`.
+Google CodeWiki, Windsurf Codemaps and GitLab Knowledge Graph answer related questions from a hosted service or inside an editor. Live Documentation's answer is files in your own repository: they work offline, they are versioned with the code, any tool that reads markdown can read them, and the licence is MIT.
 
-To map another folder, document it and build its Explorer from this checkout, with `<folder>` standing for its path. The folder's own `.live-docs.config.json` applies when it has one; without one the docs go to `<folder>/.live-documentation/source/`.
+## Guides
 
-```bash
-npm run live-docs:generate -- --workspace <folder>
-npm run live-docs:visualize -- --workspace <folder>
-npx http-server dist/explorer -a 127.0.0.1 -p 8766 -c-1
-```
+- [Getting started](.mdmd/layer-1/guides/getting-started.mdmd.md): installation, configuration and a first session.
+- [Tracing impact](.mdmd/layer-1/guides/tracing-impact.mdmd.md): what a change will touch, and how one file reaches another.
+- [Visualizing your codebase](.mdmd/layer-1/guides/visualizing-codebase.mdmd.md): the Explorer's views, sharing and hosting.
+- [CLI reference](.mdmd/layer-1/guides/cli-reference.mdmd.md): every command and option.
 
----
+## Where it stands
+
+The map of a single repository is what works today, and it is still changing week to week. The World Map is younger. The 3D view takes a while to settle on a repository of a thousand files. [The vision](.mdmd/layer-1/vision.mdmd.md) says where it is going.
+
+This repository is built by one person working with AI coding agents, and the whole record of that work is kept in [AI-Agent-Workspace](AI-Agent-Workspace/README.md). Contributors run `npm run safe:commit` before committing.
 
 ## License
 
-MIT — use it, fork it, ship it.
+MIT.
