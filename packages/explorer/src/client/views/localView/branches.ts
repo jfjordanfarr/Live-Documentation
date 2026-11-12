@@ -25,6 +25,8 @@ export interface BranchGraph {
   rows: Map<string, string[]>;
   /** The bands, lanes and crossings of the chosen order. */
   order: BranchOrder;
+  /** Whether the picture's opened directories stand in flow order, with pair lines (the directory flow trial, 2026-11-12). */
+  flow?: boolean;
 }
 
 /** The ranking of retained files into columns, and the references the ranking reads backward. */
@@ -81,10 +83,10 @@ export interface BranchOptions {
    * The directory flow trial (2026-11-12), beside the grid: given, every pair of file cards on screen where one uses the
    * other, and which no wire between symbols joins, is joined by one line between their hubs; the files of an opened
    * directory stand in the ranking's columns with the retained files, a file left of the files that use it; its closed
-   * boxes head its columns; and its files that no line joins stand together after its last column. With `wrap`, a tall
-   * rank wraps into neighbouring columns until the ranks stand about as wide as tall. Omitted, the grid.
+   * boxes head its columns; and its files that no line joins stand together after its last column. A tall rank wraps
+   * into neighbouring columns until the ranks stand about as wide as tall. Omitted or false, the grid.
    */
-  directoryFlow?: { wrap: boolean };
+  directoryFlow?: boolean;
 }
 
 /** A closed directory drawn as a box: a pseudo-node with no symbols, standing in for everything under it. */
@@ -120,6 +122,8 @@ export interface Exploration {
   members: Set<string>;
   /** The closed directories drawn as boxes, by path. */
   closed: Map<string, ClosedDirectory>;
+  /** Whether the picture's opened directories stand in flow order, with pair lines (the directory flow trial, 2026-11-12). */
+  flow: boolean;
   /** Every directory the picture may draw as a membrane, by path: its state and what it hides. */
   directories: Map<string, DirectoryDisclosure>;
   /** What the order step takes, its sweeps and start apart. */
@@ -290,7 +294,7 @@ export function exploreBranches(
   for (const box of boxes) byId.set(box.id, box);
   const shown = new Set(nodes.map(node => node.id));
   // The directory flow trial stands wherever a directory is open, the scan root's landing among them; a path opens none.
-  const flow = opened.size > 0 ? options.directoryFlow : undefined;
+  const flow = opened.size > 0 && options.directoryFlow === true;
   const cards = new Set(files.map(node => node.id));
   const undrawn: UndrawnLink[] = [];
   const links: LocalEdge[] = [];
@@ -340,7 +344,7 @@ export function exploreBranches(
   const membersOf = (directory: string): string[] => (index.get(directory)?.files ?? []).filter(file => members.has(file));
   const columns = flow
     ? flowColumns({ ranked: rankedIds, opened, boxesOf, looseOf: directory => membersOf(directory).filter(file => !joined.has(file)),
-      directoryOf: directoryOfNode, rows: flow.wrap ? squareRows(rankedIds) : null })
+      directoryOf: directoryOfNode, rows: squareRows(rankedIds) })
     : placeMembers(rankedIds, opened, directory => [...boxesOf(directory), ...membersOf(directory)], directoryOfNode);
   const ranking: BranchRanking = { columns: columns.map(column => column.flatMap(nodeId => byId.get(nodeId) ?? [])), back: ranked.back };
   if (path?.fromSymbol && pathGraph) remember(pathGraph.nodes[0].id, path.fromSymbol);
@@ -385,6 +389,7 @@ export function exploreBranches(
     relevantSymbols,
     members,
     closed,
+    flow,
     directories,
     order: {
       columns,
@@ -411,7 +416,8 @@ export function orderExploration(exploration: Exploration, options: OrderOptions
     relevantSymbols: exploration.relevantSymbols,
     back: exploration.ranking.back,
     rows: order.rows,
-    order
+    order,
+    ...(exploration.flow ? { flow: true } : null)
   };
 }
 

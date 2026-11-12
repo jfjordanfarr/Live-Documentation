@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { placeMembers } from "./branches";
-import { flowColumns, isPairLine, linksOf, pairLines, squareRows, wrapRanks, type FlowInput, type UndrawnLink } from "./directory-flow";
+import { flowColumns, flowNeighbours, isPairLine, linksOf, pairLines, squareRows, wrapRanks, type FlowInput, type UndrawnLink } from "./directory-flow";
 import { NODE_HUB } from "./wire-gathering";
 
 /** A link of the graph: `uses` depends on `offers`. */
@@ -46,6 +46,22 @@ describe("pair lines of an opened directory", () => {
     const reference = { sourceId: "d/b", targetId: "d/a", sourceSymbol: "x", targetSymbol: "y", kind: "dependency" as const, direction: "inbound" as const };
     expect(isPairLine(reference)).toBe(false);
     expect(linksOf(reference)).toBe(1);
+  });
+});
+
+describe("the cards a hovered card keeps lit", () => {
+  const lines = pairLines([link("d/b", "d/a"), link("d/c", "d/a"), link("d/e", "d/c"), link("d/a", "d/e")]);
+  const cards = new Set(["d/a", "d/b", "d/c", "d/e", "d/lone"]);
+
+  it("is the card and the card at the far end of each of its lines, whichever way the line reads", () => {
+    expect(flowNeighbours(lines, cards, "d/a")).toEqual(new Set(["d/a", "d/b", "d/c", "d/e"]));
+    expect(flowNeighbours(lines, cards, "d/b")).toEqual(new Set(["d/b", "d/a"]));
+    expect(flowNeighbours(lines, cards, "d/c")).toEqual(new Set(["d/c", "d/a", "d/e"]));
+  });
+
+  it("is the card alone when no line touches it, and nothing when the card is not in the picture", () => {
+    expect(flowNeighbours(lines, cards, "d/lone")).toEqual(new Set(["d/lone"]));
+    expect(flowNeighbours(lines, cards, "d/gone")).toBeNull();
   });
 });
 

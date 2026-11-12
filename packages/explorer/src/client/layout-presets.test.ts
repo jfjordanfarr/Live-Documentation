@@ -64,8 +64,10 @@ describe("shared packing preferences", () => {
     expect(layoutSettingsOf(grid).localMap).not.toHaveProperty("directoryLayout");
     expect(readLayoutSettings({ localMap: { directoryLayout: "grid" } })).toBeUndefined();
     expect(readLayoutSettings({ localMap: { directoryLayout: "spiral" } })).toBeUndefined();
+    // The unwrapped flow was a second trial value for one afternoon; a link that names it carries nothing.
+    expect(readLayoutSettings({ localMap: { directoryLayout: "flow-tall" } })).toBeUndefined();
     // With it on, the link carries it through the address and back.
-    for (const layout of ["flow", "flow-tall"] as const) {
+    for (const layout of ["flow"] as const) {
       const tuning = getDefaultTuning();
       tuning.localMap.directoryLayout = layout;
       expect(readLayoutSettings({ localMap: { directoryLayout: layout } })).toEqual({ localMap: { directoryLayout: layout } });

@@ -133,6 +133,14 @@ export interface PlacementInput {
   evenness?: number;
   /** What a pixel between the tops of the k-th cards of a membrane's neighbouring columns costs, in the same units; zero, or absent, leaves the cards to their wires. */
   levelness?: number;
+  /**
+   * Stand every column from the top, its cards and lanes in their order with the gap between them, instead of where the
+   * wires are shortest: an opened directory in flow order (the directory flow trial, 2026-11-12), where the height a
+   * card stands at says nothing, so that the picture's top holds the directory's boxes and the start of the flow
+   * together. The membranes, the lanes and the necks hold as they do otherwise; the wires place nothing, and their
+   * lengths are still reported as the cost.
+   */
+  fromTop?: boolean;
 }
 
 /** The placement: every item's top, every membrane's segments, and the objective. */
@@ -332,7 +340,13 @@ export function placeBranches(input: PlacementInput): Placement {
 
   // A wire costs its vertical distance: an auxiliary node both pins stay above, each by its offset, so the
   // cheapest place for it is the lower pin and the cost is the distance to the other (Gansner et al., section 4.2).
-  for (const wire of input.wires) {
+  if (input.fromTop) {
+    // Every item is drawn to a ceiling above them all, by more than the shapes' prices can ask of it, so each column is
+    // its stack pressed to the top; the wires, which would only pull against that, are left out.
+    const ceiling = node("ceiling"), pull = WIRE_WEIGHT + 4 * Math.max(even, level);
+    for (const id of input.heights.keys()) constraints.push({ tail: ceiling, head: itemNode(id), delta: 0, weight: pull });
+  }
+  for (const wire of input.fromTop ? [] : input.wires) {
     if (!input.heights.has(wire.from.item) || !input.heights.has(wire.to.item)) continue;
     const aux = node(`wire\0${constraints.length}`);
     constraints.push({ tail: aux, head: itemNode(wire.from.item), delta: -Math.round(wire.from.offset), weight: wire.weight * WIRE_WEIGHT });

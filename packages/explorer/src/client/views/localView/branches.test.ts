@@ -362,7 +362,7 @@ describe("directories opening in the Local Map (2026-10-08)", () => {
 
     it("joins each pair of cards by one line between their hubs, stands a file left of its users, and counts only what is not drawn", () => {
       const grid = exploreBranches(null, graph, EMPTY_PIN_SET, () => true, { openDirectories: new Set(["a"]) });
-      const flow = exploreBranches(null, graph, EMPTY_PIN_SET, () => true, { openDirectories: new Set(["a"]), directoryFlow: { wrap: false } });
+      const flow = exploreBranches(null, graph, EMPTY_PIN_SET, () => true, { openDirectories: new Set(["a"]), directoryFlow: true });
       // The same cards, still compact: no row is opened by a line.
       expect(flow.subgraph.nodes.map(file => file.id).sort()).toEqual(grid.subgraph.nodes.map(file => file.id).sort());
       expect([...flow.members].sort()).toEqual(["a/x.ts", "a/y.ts"]);
@@ -390,7 +390,7 @@ describe("directories opening in the Local Map (2026-10-08)", () => {
     it("joins a compact file to a retained one by a line, beside the retained files' wires between symbols", () => {
       // z pinned whole retains x, its provider, and their wire joins symbols; y, compact in the opened a, uses x.
       const pins = addPin(EMPTY_PIN_SET, "b/z.ts", "*");
-      const flow = exploreBranches(byId.get("b/z.ts")!, graph, pins, () => true, { openDirectories: new Set(["a"]), directoryFlow: { wrap: false } });
+      const flow = exploreBranches(byId.get("b/z.ts")!, graph, pins, () => true, { openDirectories: new Set(["a"]), directoryFlow: true });
       expect(flow.subgraph.links.filter(edge => edge.gathered === undefined && edge.sourceId !== edge.targetId))
         .toEqual([expect.objectContaining({ sourceId: "b/z.ts", targetId: "a/x.ts", sourceSymbol: "value", targetSymbol: "value" })]);
       expect(flow.subgraph.links.filter(edge => edge.gathered !== undefined))
@@ -401,11 +401,11 @@ describe("directories opening in the Local Map (2026-10-08)", () => {
 
     it("stands the files no line joins after the directory's last column", () => {
       // b holds z, which uses a file not on screen, and w, which uses nothing: neither is joined, so b is the grid's b.
-      const b = exploreBranches(null, graph, EMPTY_PIN_SET, () => true, { openDirectories: new Set(["b"]), directoryFlow: { wrap: false } });
+      const b = exploreBranches(null, graph, EMPTY_PIN_SET, () => true, { openDirectories: new Set(["b"]), directoryFlow: true });
       expect(b.subgraph.links).toEqual([]);
       expect(ids(b.ranking.columns)).toEqual(ids(exploreBranches(null, graph, EMPTY_PIN_SET, () => true, { openDirectories: new Set(["b"]) }).ranking.columns));
       // With a and b both open, z's use of x is drawn across the two directories, and w stands after b's last column.
-      const both = exploreBranches(null, graph, EMPTY_PIN_SET, () => true, { openDirectories: new Set(["a", "b"]), directoryFlow: { wrap: false } });
+      const both = exploreBranches(null, graph, EMPTY_PIN_SET, () => true, { openDirectories: new Set(["a", "b"]), directoryFlow: true });
       expect(both.subgraph.links.map(edge => [edge.targetId, edge.sourceId, edge.gathered]).sort()).toEqual([["a/x.ts", "a/y.ts", 1], ["a/x.ts", "b/z.ts", 1]]);
       expect(ids(both.ranking.columns)).toEqual([["a/sub", "a/x.ts"], ["a/y.ts", "b/z.ts"], ["b/w.ts"]]);
       expect(both.hiddenConnections.size).toBe(0);
@@ -414,7 +414,7 @@ describe("directories opening in the Local Map (2026-10-08)", () => {
     it("changes nothing where no directory is open: a pinned neighbourhood stands as it did", () => {
       const pins = addPin(EMPTY_PIN_SET, "b/z.ts", "*");
       const plain = exploreBranches(byId.get("b/z.ts")!, graph, pins, () => true);
-      const trial = exploreBranches(byId.get("b/z.ts")!, graph, pins, () => true, { directoryFlow: { wrap: true } });
+      const trial = exploreBranches(byId.get("b/z.ts")!, graph, pins, () => true, { directoryFlow: true });
       expect(trial.subgraph).toEqual(plain.subgraph);
       expect(ids(trial.ranking.columns)).toEqual(ids(plain.ranking.columns));
       expect(trial.hiddenConnections).toEqual(plain.hiddenConnections);

@@ -39,6 +39,8 @@ export interface SceneTuning {
   evenness: number;
   /** What a pixel between the tops of the k-th cards of a membrane's neighbouring columns costs, in the same units (2026-10-07). */
   levelness: number;
+  /** Not a dial: whether every column stands from the top, as an opened directory in flow order does (the directory flow trial, 2026-11-12). */
+  fromTop?: boolean;
 }
 
 /** The values the picture was designed at. */
@@ -312,7 +314,8 @@ export function layoutScene(plan: ScenePlan, branches: BranchGraph, measurer: Sc
   });
   const placement = placeBranches({
     columns, heights, wires: [...wires.values()], bands: [toPlacementBand(root)], alignments,
-    gap: tuning.itemGap, bandGap: tuning.bandGap, neck: tuning.neck, evenness: tuning.evenness, levelness: tuning.levelness
+    gap: tuning.itemGap, bandGap: tuning.bandGap, neck: tuning.neck, evenness: tuning.evenness, levelness: tuning.levelness,
+    ...(tuning.fromTop ? { fromTop: true } : null)
   });
 
   const placeDown = (box: SceneBox): void => {

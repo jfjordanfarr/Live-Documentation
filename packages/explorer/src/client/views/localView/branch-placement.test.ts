@@ -173,6 +173,49 @@ describe("placing the retained files", () => {
     expect(placement.cost).toBe(0);
   });
 
+  it("stands every column from the top when asked, whatever the wires pull, and still reports their length", () => {
+    // The same two cards: the wire would lower graph by 280; from the top both stand at zero.
+    const input: PlacementInput = {
+      columns: [["document"], ["graph"]],
+      heights: heights([["document", 400], ["graph", 120]]),
+      wires: [wire(["document", 300], ["graph", 20])],
+      bands: [band("root", ["document", "graph"], [0, 1], 0, [], [0, 0])],
+      gap: 24, bandGap: 28, neck: 60, fromTop: true
+    };
+    const placement = placeBranches(input);
+    expect([placement.top.get("document"), placement.top.get("graph")]).toEqual([0, 0]);
+    expect(placement.cost).toBe(280);
+    expectWellFormed(input, placement);
+  });
+
+  it("from the top, presses each column's cards and lanes together inside a membrane, the first cards level under its label", () => {
+    // A membrane over two columns with its label's room in the first; a lane between the second column's cards; wires
+    // and both shape prices pulling. Every column is its stack at the gap, and the two first cards stand level.
+    const l = lane("lane", 1, 2);
+    const input: PlacementInput = {
+      columns: [["a", "b"], ["c", l.entry, "d"]],
+      heights: heights([["a", 100], ["b", 50], ["c", 80], ["d", 60], ...l.heights]),
+      wires: [wire(["a", 90], ["d", 10], 5), wire(["b", 10], ["lane/0", LINE]), wire(["lane/0", LINE], ["d", 30])],
+      bands: [band("root", [], [0, 1], 0, [band("dir", ["a", "b", "c", "d"], [0, 1], 0, [l.band])], [0, 0])],
+      gap: 24, bandGap: 28, neck: 60, evenness: 2, levelness: 2, fromTop: true
+    };
+    const placement = placeBranches(input);
+    expectWellFormed(input, placement);
+    const top = (id: string): number => placement.top.get(id)!;
+    expect(top("a")).toBe(top("c"));
+    expect(top("b")).toBe(top("a") + 100 + 24);
+    const laneBox = placement.boxes.get("lane")![0];
+    expect(laneBox.top).toBe(top("c") + 80 + 24);
+    expect(laneBox.bottom - laneBox.top).toBe(2 * PADDING + 2 * PITCH);
+    expect(top("d")).toBe(laneBox.bottom + 24);
+    // The outline's top is level across both columns, stretched over the second to the label's room.
+    expect(placement.boxes.get("dir")!.map(segment => segment.top)).toEqual([0, 0]);
+    expect(top("a")).toBe(30);
+    // The same input without the ask stands its cards where the wires are shortest: d rises or a falls to meet.
+    const wired = placeBranches({ ...input, fromTop: false });
+    expect(wired.cost).toBeLessThan(placement.cost);
+  });
+
   it("stands a lane in its column's stack like a card: the gap to its neighbours, and its slots at their pitch inside its padding", () => {
     const l = lane("lane", 0, 2);
     const input: PlacementInput = {

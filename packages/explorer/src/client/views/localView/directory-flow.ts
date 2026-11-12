@@ -46,6 +46,21 @@ export function pairLines(undrawn: readonly UndrawnLink[]): LocalEdge[] {
   return [...pairs.values()];
 }
 
+/**
+ * The cards a hover of one card keeps lit (the directory flow trial's hover): the card itself and the card at the far
+ * end of every line and wire that touches it, a return's among them. Null when the card is not in the picture, and then
+ * nothing is faded.
+ */
+export function flowNeighbours(links: readonly LocalEdge[], cards: ReadonlySet<string>, id: string): Set<string> | null {
+  if (!cards.has(id)) return null;
+  const lit = new Set([id]);
+  for (const edge of links) {
+    if (edge.sourceId === id) lit.add(edge.targetId);
+    if (edge.targetId === id) lit.add(edge.sourceId);
+  }
+  return lit;
+}
+
 /** Whether an edge is a pair line of an opened directory rather than a reference between two symbols. */
 export const isPairLine = (edge: LocalEdge): boolean => edge.gathered !== undefined;
 

@@ -112,8 +112,7 @@ function explorationOf(controller: LocalViewController): Exploration {
     openDirectories: controller.openDirectories,
     reading: state.reading,
     path: controller.getActivePath() ?? undefined,
-    // The directory flow trial (2026-11-12): a tall rank wraps, or none does.
-    ...(tuning.directoryLayout === "grid" ? null : { directoryFlow: { wrap: tuning.directoryLayout === "flow" } })
+    directoryFlow: tuning.directoryLayout === "flow"
   });
 }
 
@@ -232,7 +231,9 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
   root.style.alignItems = "";
   const sceneTuning: SceneTuning = {
     columnGap: tuning.columnGap, itemGap: tuning.itemGap, bandGap: tuning.bandGap, neck: tuning.membraneNeck, bandPadding: tuning.membranePadding, cardMaxWidth: tuning.cardMaxWidth,
-    evenness: tuning.membraneEvenness, levelness: tuning.rowLevelness
+    evenness: tuning.membraneEvenness, levelness: tuning.rowLevelness,
+    // An opened directory in flow order stands its columns from the top (the directory flow trial, 2026-11-12).
+    ...(exploration.flow ? { fromTop: true } : null)
   };
 
   // The cards, once per render, each built afresh for this render's state inside the wrapper that stood for its file

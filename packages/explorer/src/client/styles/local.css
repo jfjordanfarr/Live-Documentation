@@ -445,6 +445,14 @@ body:has(#map-container[data-lod="overview"]) #local-legend .legend-row--gathere
 .local-placed .local-column .node-card { margin: 0; }
 .local-directory-band .local-column-label { display: none; }
 .local-map-host:not(.symbol-hover-active) .branch-symbol-muted > * { opacity: var(--hover-dim-symbols, .5); }
+/* The directory flow trial's hover (2026-11-12): while a card of a picture whose opened directories stand in flow order
+   is hovered or holds the keyboard's focus, its lines and the cards at their far ends keep their look and everything else
+   is faded, by the dims a hovered symbol uses. Nothing is boosted, moved or added. A hovered symbol's own highlight
+   outranks it. */
+.flow-hover:not(.symbol-hover-active) .connection-path:not(.flow-lit) { opacity: var(--hover-dim-connections, 0.1); }
+.flow-hover:not(.symbol-hover-active) .node-card:not(.flow-lit),
+.flow-hover:not(.symbol-hover-active) .local-directory-closed { opacity: var(--hover-dim-symbols, 0.5); }
+.local-directory-closed { transition: opacity 0.15s ease-out; }
 /* The room between two cards through which threaded wires pass; the router reads its place from the page. */
 .local-pass-through { flex: none; width: 100%; pointer-events: none; }
 /* A reference that reads against the columns shows as stubs at its pins; its route appears when a symbol is hovered. */

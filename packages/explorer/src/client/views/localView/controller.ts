@@ -3,6 +3,7 @@ import { createStage, dropStage, refreshReadingGeometry, refreshReadingPresentat
 import type { BranchGraph } from "./branches";
 import type { CardContext } from "./card-factory";
 import { CardReading, type ReadingTarget } from "./card-reading";
+import { flowNeighbours } from "./directory-flow";
 import { NO_OPEN_DIRECTORIES, type OpenDirectories } from "./directory-state";
 import {
   computeLayoutExtents,
@@ -114,6 +115,8 @@ export class LocalViewController implements LocalViewApi {
   lastInteractedSymbol: string | null = null;
   /** Cards whose complete symbol list the person has explicitly opened. */
   readonly expandedCards = new Set<string>();
+  /** The card under the pointer or holding the keyboard's focus while opened directories stand in flow order; null otherwise. */
+  private flowHover: string | null = null;
   /** Stable card text and temporary attention, with deliberate choices owned by the application. */
   readonly reading: CardReading | null;
   /** A reading change holds the card's name through its move; under hover anchoring the pointer re-anchors only once that move has ended. */
@@ -334,6 +337,10 @@ export class LocalViewController implements LocalViewApi {
     this.bindPointerEvents();
     this.bindWheelEvents();
     this.viewport.addEventListener("pointerleave", this.handlePointerLeave);
+    this.container.addEventListener("pointerover", this.handleCardAttention);
+    this.container.addEventListener("pointerleave", this.handleCardAttention);
+    this.container.addEventListener("focusin", this.handleCardAttention);
+    this.container.addEventListener("focusout", this.handleCardAttention);
     document.addEventListener("visibilitychange", this.handleVisibilityChange);
     this.subscribeToStateChanges();
     this.bindLayerObserver();
@@ -446,6 +453,10 @@ export class LocalViewController implements LocalViewApi {
     this.reading?.dispose();
     cancelAnimationFrame(this.pendingRender);
     this.viewport.removeEventListener("pointerleave", this.handlePointerLeave);
+    this.container.removeEventListener("pointerover", this.handleCardAttention);
+    this.container.removeEventListener("pointerleave", this.handleCardAttention);
+    this.container.removeEventListener("focusin", this.handleCardAttention);
+    this.container.removeEventListener("focusout", this.handleCardAttention);
     document.removeEventListener("visibilitychange", this.handleVisibilityChange);
     if (this.stateUnsubscribe) {
       this.stateUnsubscribe();
@@ -587,6 +598,41 @@ export class LocalViewController implements LocalViewApi {
     this.scheduleConnectionRedraw();
   }
 
+  /**
+   * The directory flow trial's hover (2026-11-12): the card the pointer is over, or the card holding the keyboard's
+   * focus, as the pointer moves between elements and focus between controls. The cards are built afresh by every
+   * render, so the map's container listens for them all.
+   */
+  private readonly handleCardAttention = (event: Event): void => {
+    const leaving = event.type === "pointerleave" || event.type === "focusout";
+    const target = leaving ? (event as FocusEvent).relatedTarget : event.target;
+    const card = target instanceof Element && this.container.contains(target) ? target.closest<HTMLElement>(".node-card") : null;
+    const id = this.branches?.flow ? card?.dataset.id ?? null : null;
+    if (id === this.flowHover) return;
+    this.flowHover = id;
+    this.applyFlowHover();
+  };
+
+  /**
+   * Lights the hovered card's lines and fades the rest, where opened directories stand in flow order: the lines and
+   * wires that touch the card and the cards at their far ends keep their look, every other line, card and closed box is
+   * faded by the stylesheet, a return's stubs at both its ends among the lit, its route not drawn. Nothing moves and
+   * nothing is added. A hovered symbol row's own highlight outranks it (local.css). Marked again after every drawing of
+   * the wires, since a render makes new cards and may make new lines under a resting pointer.
+   */
+  private applyFlowHover(): void {
+    const branches = this.branches, id = this.flowHover;
+    const lit = id && branches?.flow ? flowNeighbours(branches.subgraph.links, new Set(branches.subgraph.nodes.map(node => node.id)), id) : null;
+    const on = lit !== null;
+    if (!on && !this.container.classList.contains("flow-hover")) return;
+    this.container.classList.toggle("flow-hover", on);
+    this.overlay.classList.toggle("flow-hover", on);
+    for (const path of this.overlay.querySelectorAll<SVGElement>(".connection-path")) {
+      path.classList.toggle("flow-lit", on && (path.dataset.sourceId === id || path.dataset.targetId === id));
+    }
+    for (const card of this.container.querySelectorAll<HTMLElement>(".node-card")) card.classList.toggle("flow-lit", lit !== null && lit.has(card.dataset.id ?? ""));
+  }
+
   /** Redraws all SVG connection lines between symbol anchors in the current subgraph. */
   drawConnections(): void {
     const backward = drawConnections({
@@ -599,6 +645,7 @@ export class LocalViewController implements LocalViewApi {
     });
     // A transient crossing during rearrangement is not a reason to leave 2D. The final frame reports again.
     this.options.onBackwardConnections?.(this.stage?.move ? 0 : backward);
+    if (this.flowHover) this.applyFlowHover();
   }
 
   /** Applies or removes the `selected` / `local-focus` CSS classes on node cards to reflect the current selection. */
