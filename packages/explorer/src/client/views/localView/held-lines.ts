@@ -162,6 +162,42 @@ export function chooseHeldHeader(segments: readonly string[], room: HeldRoom, me
   return { lines: [...lines, own], controls: place(kept, false) };
 }
 
+/**
+ * A symbol's name's segments where its row lets it wrap (2026-11-13, the zoom looks): its seams, where the card puts a
+ * line break opportunity (`setSeamedText`), and after each space, where the browser breaks anyway ("PaymentsContext
+ * (class)"). Unlike {@link heldSegments} a short extension keeps its dot: a row has no control to stand beside it.
+ */
+export function rowSegments(name: string): string[] {
+  return seamsOf(name).flatMap(segment => segment.split(/(?<=\s)/u).filter(Boolean));
+}
+
+/**
+ * How many lines a wrapping symbol name takes at a width, at most `most`, as the browser draws it with the card's break
+ * opportunities and `overflow-wrap: break-word` (the stylesheet's zoom looks): whole before cut, each line filled before
+ * the next, a segment that does not fit what is left of a line starting the next, and only a segment wider than a whole
+ * line broken inside, at each line's end. A space at a line's end hangs, as the browser lets it. The count sets the box
+ * the name is drawn in, so that the box is as tall as the lines drawn.
+ */
+export function heldLineCount(segments: readonly string[], width: number, most: number, measure: (text: string) => number): number {
+  if (!segments.length || !(width > 0)) return 1;
+  const fits = (text: string): boolean => measure(text.trimEnd()) <= width + 1e-6;
+  let lines = 1, current = "";
+  for (const segment of segments) {
+    if (fits(current + segment)) { current += segment; continue; }
+    // The segment starts the next line, unless the line it does not fit is still empty.
+    if (current) lines += 1;
+    let rest = segment;
+    while (!fits(rest) && rest.length > 1) {
+      let take = 1;
+      while (take < rest.length && fits(rest.slice(0, take + 1))) take += 1;
+      rest = rest.slice(take);
+      lines += 1;
+    }
+    current = rest;
+  }
+  return Math.max(1, Math.min(Math.floor(most), lines));
+}
+
 /** As much of a text's start as fits a width with an ellipsis after, or nothing where not even the ellipsis fits. */
 function cut(text: string, width: number, measure: (text: string) => number): string {
   let kept = text;

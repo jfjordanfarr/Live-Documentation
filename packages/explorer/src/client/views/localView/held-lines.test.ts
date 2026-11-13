@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { chooseHeldHeader, HELD_BANDS, heldSegments, heldTitle, type HeldRoom, type TitleRooms } from "./held-lines";
+import { chooseHeldHeader, HELD_BANDS, heldLineCount, heldSegments, heldTitle, rowSegments, type HeldRoom, type TitleRooms } from "./held-lines";
 import { FIRST_STEP, LAST_STEP, LOOK_BANDS } from "./ladder-steps";
 
 /** One unit a character, as a monospaced font would measure; a line one unit tall. */
@@ -20,6 +20,45 @@ describe("heldSegments", () => {
     expect(heldSegments("rosetta-manifest.json")).toEqual(["rosetta-", "manifest.", "json"]);
     expect(heldSegments("Makefile")).toEqual(["Makefile"]);
     expect(heldSegments("")).toEqual([]);
+  });
+});
+
+describe("rowSegments", () => {
+  it("breaks a symbol's name where the card breaks it: at its seams and after a space, a short extension kept", () => {
+    expect(rowSegments("DocumentationLinkEnforcementResult")).toEqual(["Documentation", "Link", "Enforcement", "Result"]);
+    expect(rowSegments("PaymentsContext (class)")).toEqual(["Payments", "Context ", "(class)"]);
+    expect(rowSegments("DEFAULT_RULES")).toEqual(["DEFAULT_", "RULES"]);
+    expect(rowSegments("index.ts")).toEqual(["index.ts"]);
+    expect(rowSegments("")).toEqual([]);
+  });
+});
+
+describe("heldLineCount", () => {
+  const count = (name: string, width: number, most = 9) => heldLineCount(rowSegments(name), width, most, measure);
+  it("counts one line for a name that fits, and the fewest lines that hold it whole for one that does not", () => {
+    expect(count("Post", 10)).toBe(1);
+    // "DocumentationLink" is 17 wide: it fills the first line and "Violation" the second.
+    expect(count("DocumentationLinkViolation", 20)).toBe(2);
+    expect(count("DocumentationLinkEnforcementResult", 20)).toBe(2);
+    expect(count("DocumentationLinkEnforcementResult", 13)).toBe(4);
+  });
+
+  it("starts a segment on the next line where it does not fit what is left, and breaks inside only one wider than a line", () => {
+    // "extract" leaves 3 of 10; "References" (10) starts the next line whole, as the browser breaks it, where the header's
+    // flow would fill the first line with "ext" of it.
+    expect(count("extractReferences", 10)).toBe(2);
+    // A segment twice a line's width takes two lines of its own after the line it could not join: "ab" /
+    // "Supercalif" / "ragilistic".
+    expect(count("abSupercalifragilistic", 10)).toBe(3);
+    expect(count("Supercalifragilistic", 10)).toBe(2);
+  });
+
+  it("lets a space at a line's end hang, and never counts more lines than the row holds", () => {
+    // "Payments" + "Context " is 16 with its space, 15 without: it fits a line of 15.
+    expect(count("PaymentsContext (class)", 15)).toBe(2);
+    expect(count("DocumentationLinkEnforcementResult", 13, 2)).toBe(2);
+    expect(count("Post", 0)).toBe(1);
+    expect(heldLineCount([], 10, 3, measure)).toBe(1);
   });
 });
 

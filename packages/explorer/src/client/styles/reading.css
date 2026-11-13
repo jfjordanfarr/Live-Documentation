@@ -179,7 +179,6 @@
     --name-room: calc(var(--row-room-w, 0) - var(--row-badges-w, 0) - var(--row-controls-w, 0) * var(--row-control-scale));
     --name-scale: max(1, min(var(--row-fill-h, 1), var(--text-scale, 1)));
 }
-[data-lod="middle"] .local-slot-card .symbol-row { --name-room: calc(var(--row-room-w, 0) - var(--row-controls-w, 0) * var(--row-control-scale)); }
 :is([data-lod="far"], [data-lod="overview"]) .local-slot-card .symbol-row { --name-room: calc(var(--row-room-w, 0) - var(--row-more-w, 0) * var(--row-control-scale)); }
 :is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card .symbol-row { --name-scale: max(1, min(var(--row-fill-h, 1), max(var(--text-scale, 1), min(0.9 * var(--name-room) / var(--row-name-w, 1), var(--text-scale, 1) * var(--name-growth, 1))))); }
 /* The ladder scales a name's text, never its button, whose box fills the row and would cover the row's buttons scaled
@@ -222,7 +221,7 @@
     right: 0;
     top: 0;
     z-index: -1;
-    height: clamp(100%, calc((max((var(--row-name-y, 0) + var(--row-name-h, 0)) * var(--name-scale, 1), var(--row-more-y, 0) + var(--row-more-h, 17) * var(--row-control-scale, 1)) - var(--row-wrapper-y, -2) + 2) * 1px), calc((var(--row-h, 0) - var(--row-wrapper-y, -2)) * 1px));
+    height: clamp(100%, calc((max((var(--row-name-y, 0) + var(--row-name-h, 0) + (var(--row-lines, 1) - 1) * var(--row-line, 0)) * var(--name-scale, 1), var(--row-more-y, 0) + var(--row-more-h, 17) * var(--row-control-scale, 1)) - var(--row-wrapper-y, -2) + 2) * 1px), calc((var(--row-h, 0) - var(--row-wrapper-y, -2)) * 1px));
     border-radius: 4px;
     background: var(--accent-subtle);
     box-shadow: 0 0 0 1px var(--accent), 0 0 8px var(--color-outbound-glow);
@@ -243,6 +242,13 @@
    More stands on every row through the far band (Turn 17), the one held button a row keeps, which is also the phone's
    rule. */
 :is([data-lod="far"], [data-lod="overview"]) .local-slot-card :is(.local-symbol-read, .local-symbol-pin, .local-disclosure, .local-back-references) { visibility: hidden; }
+/* A control leaves with the thing it acts on (2026-11-13; the owner: "why would we preserve the Reading button at zoom
+   levels where you cannot read the description? That is a button which, to a new user, would appear to do absolutely
+   nothing"): the books leave at the middle band with the descriptions they fold, the card's from its header and each
+   row's from its row, neither drawn, focused nor announced, and a row's name has the book's room. */
+[data-lod="middle"] .local-slot-card .local-symbol-read { visibility: hidden; }
+[data-lod="middle"] .local-slot-card .local-card-actions > .local-file-read { display: none; }
+[data-lod="middle"] .local-slot-card .symbol-row { --name-room: calc(var(--row-room-w, 0) - var(--row-after-read-w, 0) * var(--row-control-scale)); }
 :is([data-lod="far"], [data-lod="overview"]) .local-slot-card .local-card-actions > :not(.local-file-more) { display: none; }
 /* The overview band is the file's own (from the seventh step since the far bands' review of 2026-11-06): a row goes
    silent and draws nothing, its name, its buttons, its badges, Internals' label and its dots, since the wires there end
@@ -395,11 +401,45 @@
     top: -1px;
     z-index: -1;
     box-sizing: border-box;
-    height: clamp(calc(100% + 2px), calc((max((var(--row-name-y, 0) + var(--row-name-h, 0)) * var(--name-scale, 1), var(--row-more-y, 0) + var(--row-more-h, 17) * var(--row-control-scale, 1)) - var(--row-wrapper-y, -2) + 2) * 1px), calc((var(--row-h, 0) - var(--row-wrapper-y, -2)) * 1px));
+    height: clamp(calc(100% + 2px), calc((max((var(--row-name-y, 0) + var(--row-name-h, 0) + (var(--row-lines, 1) - 1) * var(--row-line, 0)) * var(--name-scale, 1), var(--row-more-y, 0) + var(--row-more-h, 17) * var(--row-control-scale, 1)) - var(--row-wrapper-y, -2) + 2) * 1px), calc((var(--row-h, 0) - var(--row-wrapper-y, -2)) * 1px));
     border: 1px dashed rgba(100, 100, 120, 0.5);
     border-radius: 4px;
     background: rgba(40, 40, 50, 0.6);
     pointer-events: none;
+}
+/* When a text leaves a card in a look, its room goes to the name it belonged to (2026-11-13; the owner's "That text space
+   we're reserving? That should be space that the symbols themselves should be able to take up" of 2026-11-05). A symbol's
+   name the room across cannot hold at the look's scale takes the room its description left: it wraps where the card
+   breaks it, at its seams and spaces, on as many lines as its row holds at that scale, and is cut with an ellipsis only
+   when those run out. The card reading counts the lines at render (--row-lines-<look>, one line of the name --row-line)
+   and marks a row whose name takes more than one; the name's box is that many lines tall and stands in the layout as its
+   one line did, so that nothing else in the row moves: its dots stay on its first line and More beside it. */
+[data-looks="three"][data-lod="far"] .local-slot-card .symbol-row.local-name-lines-connections { --row-lines: var(--row-lines-connections, 1); }
+[data-looks="three"][data-lod="overview"] .local-slot-card .symbol-row.local-name-lines-overview { --row-lines: var(--row-lines-overview, 1); }
+[data-looks="three"][data-lod="far"] .local-slot-card .symbol-row.local-name-lines-connections .symbol-label .symbol-label-text,
+[data-looks="three"][data-lod="overview"] .local-slot-card .symbol-row.local-name-lines-overview .symbol-label .symbol-label-text {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: var(--row-lines);
+    white-space: normal;
+    overflow-wrap: break-word;
+    overflow: clip;
+    line-height: calc(var(--row-line) * 1px);
+    height: calc(var(--row-lines) * var(--row-line) * 1px);
+    margin-bottom: calc((1 - var(--row-lines)) * var(--row-line) * 1px);
+}
+[data-looks="three"][data-lod="far"] .local-slot-card .symbol-row.local-name-lines-connections .symbol-label .symbol-label-text wbr,
+[data-looks="three"][data-lod="overview"] .local-slot-card .symbol-row.local-name-lines-overview .symbol-label .symbol-label-text wbr { display: inline; }
+/* The counts at a card's foot in the connections look, "+N symbols" and the framed "+N connections" (2026-11-13): in a
+   look made for connections they are what a card without drawn rows has to say, and the second reveals them. Where the
+   card's room below what it draws holds them at the look's scale they stand there, held together about the last one's
+   foot, at the card's bottom left (the card reading marks the card local-foot-held and writes each one's distance above
+   that foot, --foot-y, and the scale, --foot-scale); elsewhere they are not drawn, as before. */
+[data-looks="three"][data-lod="far"] .local-slot-card.local-foot-held > button.local-disclosure:not(.local-back-references) {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(calc(var(--foot-y, 0) * (1 - var(--foot-scale, 1)) * 1px)) scale(var(--foot-scale, 1));
+    transform-origin: left bottom;
 }
 /* At a change of look, where motion is welcome, each held thing that both looks draw travels over 160 ms from the size
    it had on screen to the size it gets, so that the eye follows it: its size on screen at the change's first frame is its
@@ -488,6 +528,15 @@
         transform: scale(calc(var(--title-scale-from) * var(--look-keep, 1) / var(--title-scale)));
         animation: local-look-leave 160ms ease-in forwards;
     }
+    /* The counts held at a card's foot travel too, from the size they had on screen, between reading and connections; out
+       to the overview they fade at the size they had, as the rows' silent parts do. */
+    .local-look-fading[data-looks="three"][data-look-from="reading"][data-lod="far"] .local-slot-card.local-foot-held > button.local-disclosure:not(.local-back-references) { --foot-from: var(--look-zoom, 1); animation: local-look-foot 160ms ease-out; }
+    .local-look-fading[data-looks="three"][data-look-from="connections"][data-lod="reading"] .local-slot-card.local-foot-held > button.local-disclosure:not(.local-back-references) { --foot-from: calc(var(--foot-scale, 1) * var(--look-zoom, 1)); transform-origin: left bottom; animation: local-look-foot 160ms ease-out; }
+    .local-look-fading[data-looks="three"][data-look-from="connections"][data-lod="overview"] .local-slot-card.local-foot-held > button.local-disclosure:not(.local-back-references) {
+        transform: translateY(calc(var(--foot-y, 0) * (1 - var(--foot-scale, 1)) * 1px)) scale(var(--foot-scale, 1));
+        transform-origin: left bottom;
+        scale: var(--look-keep, 1);
+    }
     .local-look-fading[data-looks="three"][data-look-from="connections"][data-lod="overview"] .local-slot-card .local-file-name-held::before { content: attr(data-lines-look-connections); }
     .local-look-fading[data-looks="three"][data-look-from="overview"][data-lod="far"] .local-slot-card .local-file-name-held::before { content: attr(data-lines-look-overview); }
 }
@@ -497,6 +546,7 @@
 @keyframes local-look-dot { from { scale: calc(var(--dot-scale-from, 1) * var(--look-zoom, 1) / var(--dot-scale, 1)); } }
 @keyframes local-look-node { from { scale: calc(var(--node-scale-from, 1) * var(--look-zoom, 1) / var(--node-control-scale, 1)); } }
 @keyframes local-look-title-in { from { opacity: 0; scale: calc(var(--title-scale-from, 1) * var(--look-zoom, 1) / var(--title-scale, 1)); } }
+@keyframes local-look-foot { from { transform: translateY(calc(var(--foot-y, 0) * (1 - var(--foot-from, 1)) * 1px)) scale(var(--foot-from, 1)); } }
 @keyframes local-look-leave { to { opacity: 0; } }
 @keyframes local-look-appear { from { opacity: 0; } }
 

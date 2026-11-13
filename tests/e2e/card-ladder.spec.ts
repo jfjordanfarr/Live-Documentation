@@ -46,7 +46,7 @@ const reading = (page: Page) => page.evaluate(id => {
     anchor: width('.symbol-row[data-symbol="PaymentService"] .symbol-anchor.inbound'),
     growth: number(container, "--name-growth"), textScale: number(container, "--text-scale"), controlScale: number(container, "--control-scale"),
     rowH: number(row, "--row-h"), rowRoomW: number(row, "--row-room-w"), rowNameW: number(row, "--row-name-w"), rowFillH: number(row, "--row-fill-h"),
-    rowControlsW: number(row, "--row-controls-w"), rowMoreW: number(row, "--row-more-w"), rowDotRoom: number(row, "--row-dot-room"), slotLines: number(container, "--slot-lines"),
+    rowControlsW: number(row, "--row-controls-w"), rowAfterReadW: number(row, "--row-after-read-w"), rowMoreW: number(row, "--row-more-w"), rowDotRoom: number(row, "--row-dot-room"), slotLines: number(container, "--slot-lines"),
     titleHeadH: number(card, "--title-head-h"), titleLine: number(card, "--title-line"),
     // The held name's scale, 1 where it is not drawn: the far and overview bands hold the node's More no taller than a
     // line of it (the header round, 2026-11-08).
@@ -96,6 +96,8 @@ test("each band below reading scale lets one tier leave, names and controls hold
   await expect(row.locator(".local-reading-slot")).toBeVisible();
   await expect(row.locator(".local-symbol-pin")).toBeVisible();
   await expect(row.locator(".local-symbol-more")).toBeVisible();
+  await expect(row.locator(".local-symbol-read")).toBeVisible();
+  await expect(subject.locator(".local-file-read")).toBeVisible();
   await expect(subject.locator(".node-path")).toBeVisible();
   await expect(subject.locator(".local-file-pin")).toBeVisible();
 
@@ -143,14 +145,17 @@ test("each band below reading scale lets one tier leave, names and controls hold
     }
   };
 
-  // Middle: the descriptions, the badges, the path and the directory line leave; the row's Pin and More stay, held;
-  // the name holds its screen size (resistance 1) and grows into its row's room up to Name Growth (1.5 here), the file's
-  // name holds its size and wraps within its header, short of the card's buttons; the node's controls and the anchor
-  // dots hold their size; every box is the same.
+  // Middle: the descriptions, the badges, the path and the directory line leave, and the books with the descriptions
+  // they fold (2026-11-13); the row's Pin and More stay, held; the name holds its screen size (resistance 1) and grows
+  // into its row's room up to Name Growth (1.5 here), the book's room its own; the file's name holds its size and wraps
+  // within its header, short of the card's buttons; the node's controls and the anchor dots hold their size; every box
+  // is the same.
   await zoomOutTo(page, "middle");
   const middle = await reading(page);
   await expect(row.locator(".local-reading-slot")).toBeHidden();
   await expect(subject.locator(".local-reading-purpose")).toBeHidden();
+  await expect(row.locator(".local-symbol-read")).toBeHidden();
+  await expect(subject.locator(".local-file-read")).toBeHidden();
   await expect(row.locator(".local-symbol-pin")).toBeVisible();
   await expect(row.locator(".local-symbol-more")).toBeVisible();
   await expect(subject.locator(".node-path")).toBeHidden();
@@ -158,7 +163,7 @@ test("each band below reading scale lets one tier leave, names and controls hold
   expect(middle.step).toBeGreaterThan(0);
   expect(middle.textScale).toBeCloseTo(STEP_RATIO ** middle.step, 2);
   expect(middle.growth).toBe(1.5);
-  expect(Math.abs(middle.name - expectedName(middle, middle.rowControlsW))).toBeLessThan(1);
+  expect(Math.abs(middle.name - expectedName(middle, middle.rowAfterReadW))).toBeLessThan(1);
   expect(middle.name).toBeGreaterThan(start.name);
   expect(Math.abs(middle.title - expectedTitle(middle))).toBeLessThan(1);
   expect(Math.abs(middle.title - start.title)).toBeLessThan(1);
@@ -193,6 +198,45 @@ test("each band below reading scale lets one tier leave, names and controls hold
   expect(Math.abs(back.name - start.name)).toBeLessThan(0.5);
   expect(Math.abs(back.title - start.title)).toBeLessThan(0.5);
   expect(await layoutBoxes(page)).toEqual(boxes);
+});
+
+/**
+ * A control leaves with the thing it acts on (the owner, 2026-11-13: "why would we preserve the Reading button at zoom
+ * levels where you cannot read the description? That is a button which, to a new user, would appear to do absolutely
+ * nothing"). From the middle band out the descriptions are not drawn, so neither is a book, the card's or a row's: a
+ * pointer cannot meet it, the keyboard cannot reach it and assistive technology does not announce it.
+ */
+test("from the middle band out no book is drawn, reached by the keyboard or announced, and at reading scale every one is", async ({ page }) => {
+  await page.goto(url({ selectedNodeId: payment }));
+  const subject = page.locator(`.node-card[data-id="${payment}"]`);
+  await subject.waitFor();
+  await localMapStill(page);
+  const books = page.locator("#map-container .local-slot-card :is(.local-file-read, .local-symbol-read)");
+  // The books by their accessible names, as assistive technology meets them: hidden elements are not in the tree.
+  const announced = page.locator("#map-container").getByRole("button", { name: /^(Read|Fold) /u });
+  // What the keyboard meets from the file's name on, Tab by Tab through the card's controls.
+  const tabbed = async (): Promise<string[]> => {
+    await subject.locator(".local-file-name").focus();
+    const met: string[] = [];
+    for (let press = 0; press < 12; press += 1) {
+      await page.keyboard.press("Tab");
+      met.push(await page.evaluate(() => document.activeElement?.className ?? ""));
+    }
+    return met;
+  };
+  const drawn = () => books.evaluateAll(elements => elements.filter(element => getComputedStyle(element).visibility === "visible" && element.getBoundingClientRect().width > 0).length);
+  expect(await drawn()).toBeGreaterThan(1);
+  expect(await announced.count()).toBeGreaterThan(1);
+  expect((await tabbed()).some(name => /local-(file|symbol)-read/u.test(name))).toBe(true);
+  // The keyboard's walk may have panned the camera to the controls it reached; reading size again, then out.
+  await page.getByRole("button", { name: "Return to reading size", exact: true }).click();
+  await localMapStill(page);
+  for (const band of ["middle", "far", "overview"]) {
+    await zoomOutTo(page, band);
+    expect(await drawn(), `${band}: books drawn`).toBe(0);
+    await expect(announced, `${band}: books announced`).toHaveCount(0);
+    expect((await tabbed()).filter(name => /local-(file|symbol)-read/u.test(name)), `${band}: books reached by Tab`).toEqual([]);
+  }
 });
 
 test("the resistances and the growth in Tuning change how much names and controls hold their size, and 0 and 1 follow the map", async ({ page }) => {

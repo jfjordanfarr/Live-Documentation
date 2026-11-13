@@ -121,7 +121,8 @@ const readInPage = (segmentsOf: Record<string, string[]>) => {
       const key = `${id}:${row.dataset.symbol}`;
       const text = row.querySelector<HTMLElement>(".symbol-label-text");
       if (text && shown(text)) {
-        const cut = text.scrollWidth > text.clientWidth + 0.5;
+        // Cut across its one line, or below its last line where it wraps.
+        const cut = text.scrollWidth > text.clientWidth + 0.5 || text.scrollHeight > text.clientHeight + 0.5;
         names[key] = `${text.textContent} ${lineCount(text)} lines ${cut ? "cut" : "whole"}`;
         const rect = text.getBoundingClientRect();
         held[`${key} name`] = rect.height / k;
@@ -297,6 +298,111 @@ test("with three looks, a slot card changes only at two edges, each the same bot
   }
   // The walk read something in each look: names in all three and held parts beyond reading.
   for (const look of ["reading", "connections", "overview"]) expect(Object.keys(out.find(each => each.look === look)!.names).length, look).toBeGreaterThan(0);
+});
+
+/**
+ * When a text leaves a card, its room goes to the name it belonged to (2026-11-13; the owner, 2026-11-05: "That text
+ * space we're reserving? That should be space that the symbols themselves should be able to take up once we're at a
+ * sufficiently far-away zoom"). Read from the page as drawn, with an oracle of its own: a symbol's name drawn cut, across
+ * its line or below its last, while its row has room on screen below that last line for another line of the name at the
+ * size it is drawn, with the highlight's two units of air, is a name cut while room of its own stands empty.
+ */
+const cutBesideRoom = (page: Page) => page.evaluate(() => {
+  const map = document.querySelector<HTMLElement>("#map-container")!;
+  const k = new DOMMatrix(getComputedStyle(document.querySelector("#map-viewport")!).transform).a;
+  const shown = (element: Element): boolean => {
+    for (let at: Element | null = element; at && at !== map; at = at.parentElement) {
+      const style = getComputedStyle(at);
+      if (style.display === "none" || Number(style.opacity) === 0) return false;
+    }
+    return getComputedStyle(element).visibility === "visible" && element.getBoundingClientRect().width > 0.05;
+  };
+  const cut: string[] = [], whole: string[] = [], wrapped: string[] = [];
+  for (const card of map.querySelectorAll<HTMLElement>(".local-slot-card")) {
+    for (const row of card.querySelectorAll<HTMLElement>(".symbol-row")) {
+      const text = row.querySelector<HTMLElement>(".symbol-label-text");
+      if (!text || !shown(text)) continue;
+      const name = `${card.dataset.id}:${row.dataset.symbol}`;
+      const box = text.getBoundingClientRect();
+      // A line of the name on screen: its font at the scale it is drawn.
+      const line = parseFloat(getComputedStyle(text).fontSize) * box.width / text.offsetWidth;
+      const range = document.createRange();
+      range.selectNodeContents(text);
+      if (new Set([...range.getClientRects()].filter(rect => rect.width > 0 && rect.top < box.bottom).map(rect => Math.round(rect.top))).size > 1) wrapped.push(name);
+      if (!(text.scrollWidth > text.clientWidth + 0.5 || text.scrollHeight > text.clientHeight + 0.5)) { whole.push(name); continue; }
+      const room = row.getBoundingClientRect().bottom - box.bottom - 2 * k;
+      if (room >= line) cut.push(`${name}: cut with ${room.toFixed(1)} px below it, a line being ${line.toFixed(1)} px`);
+    }
+  }
+  return { look: map.dataset.look ?? null, cut, whole, wrapped };
+});
+
+test("in the connections and overview looks a symbol's name is cut only where its row holds no further line of it", async ({ page }) => {
+  test.setTimeout(120_000);
+  await page.goto(estate("three"));
+  await page.locator(`.node-card[data-id="${payment}"]`).waitFor();
+  await still(page);
+  await page.mouse.move(120, 400);
+  const wrapped = new Set<string>();
+  for (let press = 1; press <= 8; press += 1) {
+    await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
+    await still(page);
+    const seen = await cutBesideRoom(page);
+    if (seen.look === "reading") continue;
+    expect.soft(seen.cut, `press ${press}, ${seen.look}`).toEqual([]);
+    for (const name of seen.wrapped) wrapped.add(`${seen.look} ${name}`);
+  }
+  // The subject's own class, "PaymentService", had read "Payment…" across the whole connections look over a blank line
+  // of its row: it now stands whole on two lines there, broken at its seam.
+  expect([...wrapped]).toContain(`connections ${payment}:PaymentService`);
+});
+
+/**
+ * The counts at a card's foot in the connections look (2026-11-13): "+N symbols" and the framed "+N connections" either
+ * stand at the look's held size or are not drawn, never at the map's own size; in a look made for connections they are
+ * what a card without drawn rows has to say, and "+N connections" still reveals them where it stands. Read on this
+ * repository's `scripts/doc-tools` opened, the root's subject, where `documentationLinks.ts` draws no row.
+ */
+test("in the connections look a card's counts stand at the look's held size or not at all, and +N connections still reveals", async ({ page }) => {
+  test.setTimeout(120_000);
+  await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, zoomLooks: "three" } } })
+  });
+  const links = "scripts/doc-tools/documentationLinks.ts";
+  await page.goto("/?view=local&dir=scripts/doc-tools");
+  const card = page.locator(`.node-card[data-id="${links}"]`);
+  await card.waitFor();
+  await still(page);
+  const counts = () => page.evaluate(() => {
+    const map = document.querySelector<HTMLElement>("#map-container")!;
+    const k = new DOMMatrix(getComputedStyle(document.querySelector("#map-viewport")!).transform).a;
+    const drawn: Record<string, number> = {};
+    for (const count of map.querySelectorAll<HTMLElement>(".local-slot-card .local-disclosure")) {
+      if (getComputedStyle(count).visibility !== "visible" || !count.offsetHeight) continue;
+      drawn[`${count.closest<HTMLElement>(".node-card")!.dataset.id}: ${count.textContent}`] = count.getBoundingClientRect().height / (count.offsetHeight * k);
+    }
+    return { look: map.dataset.look ?? null, drawn };
+  });
+  for (let press = 1; press <= 6; press += 1) {
+    await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
+    await still(page);
+    const { look, drawn } = await counts();
+    if (look !== "connections") continue;
+    for (const [count, scale] of Object.entries(drawn)) expect.soft(scale, `press ${press}: ${count} drawn at ${scale.toFixed(2)} of its size`).toBeCloseTo(2.2, 2);
+    // The card that draws no row says what it does not draw, at the look's size.
+    const own = Object.keys(drawn).filter(count => count.startsWith(`${links}: `));
+    expect(own.some(count => /\+\d+\s+symbols$/u.test(count)), `press ${press}: ${own.join(", ")}`).toBe(true);
+    expect(own.some(count => /\+\d+\s+connections$/u.test(count)), `press ${press}: ${own.join(", ")}`).toBe(true);
+  }
+  // Back to the look's first press, "+N connections" pins the file where it stands, as at reading scale.
+  for (let press = 6; press > 3; press -= 1) {
+    await page.getByRole("button", { name: "Zoom In", exact: true }).click();
+    await still(page);
+  }
+  await expect(page.locator("#map-container")).toHaveAttribute("data-look", "connections");
+  await card.getByRole("button", { name: /^\+\d+\s+connections outside this view/u }).click();
+  await still(page);
+  await expect(page.locator(`.node-card[data-id="${links}"]`)).toHaveClass(/file-pinned/u);
 });
 
 test("stepped, the default, still reports the card ladder's bands and steps at every press", async ({ page }) => {

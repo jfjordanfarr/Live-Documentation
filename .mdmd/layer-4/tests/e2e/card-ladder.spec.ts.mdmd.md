@@ -23,6 +23,8 @@ Since the far bands' round (2026-11-06, [Turn 3](../../../../AI-Agent-Workspace/
 
 Since 2026-11-08 (the header round) the node's More is held no taller than a line of the held file name from the far band out, so that it can share the name's last line: the held-size checks expect the More at the smaller of its step's held scale and fifteen twentieths of the name's held scale there, and leave it out of the screen-size margins its step's scale would give, while the row's More and the dots keep them.
 
+Since 2026-11-13 ([Turn 2 of that day's record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-2): "why would we preserve the Reading button at zoom levels where you cannot read the description?") the books leave at the middle band with the descriptions they fold. The first case expects them at reading scale and gone at the middle band, and a row's name to have the book's room there (the room across less Pin and More held); a new case walks the subject out through the middle, far and overview bands and fails on any book drawn, announced (a button named "Read …" or "Fold …" in the accessibility tree) or reached by Tab from the file's name. On the code before the change it failed at the middle band with 19 books drawn.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

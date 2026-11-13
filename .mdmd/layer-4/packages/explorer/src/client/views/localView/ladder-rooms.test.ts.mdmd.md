@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/localView/ladder-rooms.test.ts
-- Generated At: 2026-11-06T18:00:01.121Z
+- Generated At: 2026-11-13T17:09:16.507Z
 
 ## Authored
 ### Purpose
@@ -25,9 +25,12 @@ _No public symbols detected_
 ### Dependencies
 - [`ladder-rooms.HIGHLIGHT_BELOW`](./ladder-rooms.ts.mdmd.md#symbol-highlight_below)
 - [`ladder-rooms.dotRoom`](./ladder-rooms.ts.mdmd.md#symbol-dotroom)
+- [`ladder-rooms.footHold`](./ladder-rooms.ts.mdmd.md#symbol-foothold)
 - [`ladder-rooms.layoutTopOf`](./ladder-rooms.ts.mdmd.md#symbol-layouttopof)
 - [`ladder-rooms.nameFill`](./ladder-rooms.ts.mdmd.md#symbol-namefill)
+- [`ladder-rooms.nameLinesHeld`](./ladder-rooms.ts.mdmd.md#symbol-namelinesheld)
 - [`ladder-rooms.nameWraps`](./ladder-rooms.ts.mdmd.md#symbol-namewraps)
 - [`ladder-rooms.rowsBeforeFirstPin`](./ladder-rooms.ts.mdmd.md#symbol-rowsbeforefirstpin)
+- [`ladder-steps.LOOK_SCALES`](./ladder-steps.ts.mdmd.md#symbol-look_scales)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-reading.ts
-- Generated At: 2026-11-10T21:46:15.798Z
+- Generated At: 2026-11-13T17:09:15.871Z
 
 ## Authored
 ### Purpose
@@ -33,6 +33,8 @@ Since the far bands' round (2026-11-06, after the owner's report in [Turn 1](../
 After the root's third review of the round (2026-11-06; the owner's picture of `rosetta-manifest.json` pinned whole, where the browser's own wrapping broke file names inside a word beside the node's More, "main.r / s"), `measureRooms` also chooses the held file name's lines: for every band from the middle out and every step, with Tuning's resistances from the new `resistances()` option, it gives `heldTitle` and `chooseHeldLines` (`held-lines.ts`) the rooms it measured and a canvas measure of the name's font, and writes the lines as `data-lines-<band>-<step>` on the held element, which the stylesheet draws as they are. A write whose name begins with `data-` is an attribute. The card's rooms are kept per card so that `markFirstPin` chooses the overview band's lines again when the rows are reordered without a reading. The button overhang properties are no longer written, since only the line choice reads them.
 
 Since 2026-11-10, with Tuning's Zoom Looks set to three looks (a trial, [Turn 5 of the November 10 record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-10.1.record.md#turn-5)), the held file name's lines are also chosen once a render for each look that draws it, the connections look in the far band's room and the overview look in the overview band's, at the look's one scale (`data-lines-look-<look>` and `--controls-y-look-<look>`), so that inside a look the name never changes its lines; and the Internals row, the card's last, is given the room down to the card's content bottom as its row height, so that its name, its More and its dot are held at the look's scale like the rows above it instead of following the map to a few pixels; the stylesheet then draws its dashed box as a layer that grows with the held head, since the wrapper's own border had run through the enlarged name. With the default steps nothing here changes.
+
+Since 2026-11-13 ([Turn 2 of that day's record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-2), the owner's "a LOT of the actual node cards' real estate goes totally unused" and the dead Reading button), with the three looks `measureRooms` also gives a symbol's name the room below it that its description left: for each look that holds names it counts the lines the name takes at the look's scale in its room across (`heldLineCount`, `held-lines.ts`, with a canvas measure of the name's font and the card's break opportunities, `rowSegments`), at most the lines its row holds there (`nameLinesHeld`, `ladder-rooms.ts`), and writes the count as `--row-lines-<look>`, one line of the name as `--row-line`, and a `local-name-lines-<look>` class where it is more than one, from which the stylesheet draws the name wrapped. It also measures the counts at the card's foot for the connections look (`footWrites`): where the card's room below what it draws, its drawn rows or on a card with none its file's name as the look holds it, takes them at the look's scale, the card is marked `local-foot-held` with that scale and each count gets its distance above the last one's foot. `measure` first takes back those classes on every card at once, since a reading can come between renders and must read the boxes as the layout put them. At the middle band the node's controls counted for the held header leave out the book, which leaves there with the descriptions.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -68,7 +70,7 @@ while names open full descriptions in the reader.
 
 #### `markFirstPin` {#symbol-markfirstpin}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L623)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L689)
 
 ##### `markFirstPin` — Summary
 Write {@link firstPinWrite} for a card whose rows were just ordered, and its held name's lines at the overview band,
@@ -90,15 +92,22 @@ whose room it bounds, from the card's last reading: no layout is read.
 - [`reading-state.ReadingChoice`](../../reading-state.ts.mdmd.md#symbol-readingchoice)
 - [`reading-state.descriptionIsOpen`](../../reading-state.ts.mdmd.md#symbol-descriptionisopen)
 - [`types.InspectionTarget`](../../types.ts.mdmd.md#symbol-inspectiontarget) (type-only)
+- [`held-lines.CONTROLS_GAP`](./held-lines.ts.mdmd.md#symbol-controls_gap)
 - [`held-lines.HELD_BANDS`](./held-lines.ts.mdmd.md#symbol-held_bands)
 - [`held-lines.HeldBand`](./held-lines.ts.mdmd.md#symbol-heldband)
 - [`held-lines.TitleRooms`](./held-lines.ts.mdmd.md#symbol-titlerooms)
 - [`held-lines.chooseHeldHeader`](./held-lines.ts.mdmd.md#symbol-chooseheldheader)
+- [`held-lines.heldLineCount`](./held-lines.ts.mdmd.md#symbol-heldlinecount)
 - [`held-lines.heldSegments`](./held-lines.ts.mdmd.md#symbol-heldsegments)
 - [`held-lines.heldTitle`](./held-lines.ts.mdmd.md#symbol-heldtitle)
+- [`held-lines.rowSegments`](./held-lines.ts.mdmd.md#symbol-rowsegments)
+- [`ladder-rooms.FootCount`](./ladder-rooms.ts.mdmd.md#symbol-footcount)
+- [`ladder-rooms.HIGHLIGHT_BELOW`](./ladder-rooms.ts.mdmd.md#symbol-highlight_below)
 - [`ladder-rooms.dotRoom`](./ladder-rooms.ts.mdmd.md#symbol-dotroom)
+- [`ladder-rooms.footHold`](./ladder-rooms.ts.mdmd.md#symbol-foothold)
 - [`ladder-rooms.layoutTopOf`](./ladder-rooms.ts.mdmd.md#symbol-layouttopof)
 - [`ladder-rooms.nameFill`](./ladder-rooms.ts.mdmd.md#symbol-namefill)
+- [`ladder-rooms.nameLinesHeld`](./ladder-rooms.ts.mdmd.md#symbol-namelinesheld)
 - [`ladder-rooms.nameWraps`](./ladder-rooms.ts.mdmd.md#symbol-namewraps)
 - [`ladder-rooms.rowsBeforeFirstPin`](./ladder-rooms.ts.mdmd.md#symbol-rowsbeforefirstpin)
 - [`ladder-steps.FIRST_STEP`](./ladder-steps.ts.mdmd.md#symbol-first_step)

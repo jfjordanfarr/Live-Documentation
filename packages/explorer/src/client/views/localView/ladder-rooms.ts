@@ -22,6 +22,41 @@ export function nameFill(rowHeight: number, nameTop: number, nameHeight: number)
 }
 
 /**
+ * How many lines of a symbol's name its row holds at a held scale (2026-11-13: in the zoom looks a name the room across
+ * cannot hold takes the room its description left, the owner's "space that the symbols themselves should be able to take
+ * up" of 2026-11-05): the name is held about the row's top edge, so its lines end at the name's top plus that many lines,
+ * times the scale, and the last must end with the highlight's air inside the row. One at least: a name is never erased.
+ */
+export function nameLinesHeld(rowHeight: number, nameTop: number, lineHeight: number, scale: number): number {
+  if (!(rowHeight > 0) || !(lineHeight > 0) || !(scale > 0)) return 1;
+  return Math.max(1, Math.floor(((rowHeight - HIGHLIGHT_BELOW) / scale - nameTop) / lineHeight + 1e-6));
+}
+
+/** A count at a card's foot as laid out, in the map's own units on one vertical axis: its top, bottom, left and width. */
+export interface FootCount {
+  top: number;
+  bottom: number;
+  left: number;
+  width: number;
+}
+
+/**
+ * Whether the counts at a card's foot stand at a held scale (2026-11-13, the connections look), and each one's distance
+ * above the last one's foot, about which they are held together, so that each is lifted by that distance times the
+ * scale's growth and stays above the one below it. They stand only where all of them fit at that scale between the top
+ * of the room left free above them and their foot, with `frame` of each count's frame above the first and `gap` of air
+ * under what stands above, and across between each one's left and the card's content right; otherwise none is held.
+ */
+export function footHold(counts: readonly FootCount[], free: number, right: number, scale: number, frame: number, gap: number): { held: boolean; above: number[] } {
+  if (!counts.length || !(scale > 0)) return { held: false, above: [] };
+  const foot = Math.max(...counts.map(count => count.bottom));
+  const top = Math.min(...counts.map(count => count.top)) - frame;
+  const tall = (foot - top) * scale <= foot - free - gap + 1e-6;
+  const wide = counts.every(count => count.width * scale <= right - count.left + 1e-6);
+  return { held: tall && wide, above: counts.map(count => foot - count.bottom) };
+}
+
+/**
  * Whether a symbol's name wraps at the reading width, read in whichever band the map shows: across more than one line
  * where it may wrap, or wider than its button where it is held on one line and cut. A wrapped name is not held in the
  * reading band, since holding it would mean cutting lines and moving its description.

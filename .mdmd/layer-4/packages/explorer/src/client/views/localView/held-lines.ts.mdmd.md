@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/held-lines.ts
-- Generated At: 2026-11-09T03:50:01.360Z
+- Generated At: 2026-11-13T17:09:16.415Z
 
 ## Authored
 ### Purpose
@@ -18,6 +18,8 @@ Written in the far bands' round on 2026-11-06, after the root's third review of 
 Until 2026-11-07 the name could take several lines, by four rules (a segment between the name's seams broken only when wider than a full line, a name that fit whole below the buttons moved there, a segment wider than a line broken inside, the last line kept ending with an ellipsis). The owner, looking at `symbolAnchors.ts` alone, found that "the choice to allow up to 2 lines of text on the card titles at certain breakpoints has caused rather silly clunky layouts at certain zoom distances" ([November 6 record, Turn 8](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-06.1.record.md#turn-8)): at the far band the node's held More stood about one and a half lines of the name tall in a header room of two lines, so no line below the button was free and the rules broke "branch- / renderer.ts" and "symbol- / highlight.ts" beside it. One line is the root's decision of November 7, reversible by the owner; the alternative pictured for the owner then, a held More no taller than one line of the name, is in [the one-line names evidence](../../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-07/one-line-names/README.md).
 
 Since 2026-11-08 (the header round) the module chooses the whole header, not the name's lines alone. The one line of November 7 had cut names alike at the overview band (five cards of the test-suite picture read "local-map-…"); the owner handed the choice back with a bar, more lines only under principles that make the header whole and never "one upper-left corner button" with "a naked zone to its left, leaving the card title underneath" ([November 7 record, Turn 3](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-07.1.record.md#turn-3)), and cleared the round under the six principles the root stated ([Turn 4](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-07.1.record.md#turn-4--november-8)). The flow is the four rules' of November 6 at the header's full width, the controls no longer standing in the name's first lines but after its last. The split before a short extension's dot gives "branch-renderer" / ".ts" beside More at the far step, where the seams alone gave "branch-" / "renderer.ts": the price of a filled first line, which the root named to the owner. `TitleRooms` lost the controls' overhang past the header's edge and above the name, since the controls now stand in the header at its right edge (`card-factory.ts`).
+
+Since 2026-11-13 ([Turn 2 of that day's record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-2)) the module also counts a symbol's name's lines for the zoom looks, where a name the room across cannot hold takes the room its description left: `rowSegments` gives the card's own break opportunities (the seams, where `setSeamedText` puts them, and after a space) and `heldLineCount` how many lines the name takes at a width, at most those its row holds. The symbol's name is drawn by the browser's own wrapping, not by chosen lines as the file's name is, so that its text stays the page's to find and announce; the count therefore follows the browser's rule rather than `flow`'s: a segment that does not fit what is left of a line starts the next, and only one wider than a whole line is broken inside. The count sets the height of the box the name is drawn in.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -109,6 +111,26 @@ The header for a room, by the six principles: the name's seams' segments in orde
 the room. The name flows at the full width; the controls share its last line when they fit beside it, else take the
 line after; when that runs past the room's height, the name keeps as many lines as the room holds with the controls
 sharing the last, which is cut with an ellipsis.
+
+#### `rowSegments` {#symbol-rowsegments}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/held-lines.ts#L170)
+
+##### `rowSegments` — Summary
+A symbol's name's segments where its row lets it wrap (2026-11-13, the zoom looks): its seams, where the card puts a
+line break opportunity (`setSeamedText`), and after each space, where the browser breaks anyway ("PaymentsContext
+(class)"). Unlike {@link heldSegments} a short extension keeps its dot: a row has no control to stand beside it.
+
+#### `heldLineCount` {#symbol-heldlinecount}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/held-lines.ts#L181)
+
+##### `heldLineCount` — Summary
+How many lines a wrapping symbol name takes at a width, at most `most`, as the browser draws it with the card's break
+opportunities and `overflow-wrap: break-word` (the stylesheet's zoom looks): whole before cut, each line filled before
+the next, a segment that does not fit what is left of a line starting the next, and only a segment wider than a whole
+line broken inside, at each line's end. A space at a line's end hangs, as the browser lets it. The count sets the box
+the name is drawn in, so that the box is as tall as the lines drawn.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
