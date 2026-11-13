@@ -117,6 +117,14 @@
 /* Hidden facts must not keep the margin the reading card gives prose beneath them: every slot is the same height. */
 .local-reading-slot .local-reading-types + .local-reading-prose:not(:empty) { margin-top: 0; }
 .local-slot-card .local-reading-purpose { padding: 6px 0 8px; }
+/* A slot card's lines are the stylesheet's, not the platform font's (2026-11-13): the app's font is "Segoe UI",
+   sans-serif, and the normal line of Segoe UI, on the owner's Windows browser, is 1.33 of the font's size, where the
+   fallback font of a machine without it is about 1.09 to 1.16. A symbol's name was a 15 px line there and a 12 px line
+   here, so a two-line slot's row held two lines of it at the connections look here and one there, and the foot's counts
+   fitted fewer cards: what a card showed far out depended on the machine. Every line of a slot card that the browser
+   would size by the font is 1.15 of its size, tight enough that two lines of a held name fit a two-line slot's row with
+   air to spare; the lines that are stated already (the slots' prose, the held file name) keep theirs. */
+.node-card.local-slot-card { line-height: 1.15; }
 /* Below reading scale the prose of a growing card fades; no box changes with zoom (the owner, 2026-11-05). A slot card
    follows the ladder below instead. */
 .local-reading-faded:not(.local-slot-card) .local-reading-block { opacity: .35; }

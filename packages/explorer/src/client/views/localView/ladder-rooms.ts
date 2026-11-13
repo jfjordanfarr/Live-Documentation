@@ -56,6 +56,29 @@ export function footHold(counts: readonly FootCount[], free: number, right: numb
   return { held: tall && wide, above: counts.map(count => foot - count.bottom) };
 }
 
+/** A text fragment's box as the page gives it, for counting lines. */
+export interface FragmentBox {
+  top: number;
+  height: number;
+  width: number;
+}
+
+/**
+ * How many lines a text's fragments stand on (2026-11-13): the empty boxes of its word breaks (`<wbr>`) left out, and two
+ * fragments on one line when their centres lie within half the shortest fragment's height of each other. Counting each
+ * rounded top as a line had read one line as two where a font's metrics put a word break's box a pixel off its text's
+ * (Segoe UI's line, emulated, on 2026-11-13), which halved the line a wrapped name was drawn with.
+ */
+export function linesOf(fragments: readonly FragmentBox[]): number {
+  const drawn = fragments.filter(fragment => fragment.width > 0 && fragment.height > 0);
+  if (!drawn.length) return 0;
+  const half = Math.min(...drawn.map(fragment => fragment.height)) / 2;
+  const centres = drawn.map(fragment => fragment.top + fragment.height / 2).sort((a, b) => a - b);
+  let lines = 1;
+  for (let index = 1; index < centres.length; index += 1) if (centres[index] - centres[index - 1] > half) lines += 1;
+  return lines;
+}
+
 /**
  * Whether a symbol's name wraps at the reading width, read in whichever band the map shows: across more than one line
  * where it may wrap, or wider than its button where it is held on one line and cut. A wrapped name is not held in the

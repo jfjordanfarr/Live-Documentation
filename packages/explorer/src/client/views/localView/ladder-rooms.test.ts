@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { dotRoom, footHold, HIGHLIGHT_BELOW, layoutTopOf, nameFill, nameLinesHeld, nameWraps, rowsBeforeFirstPin } from "./ladder-rooms";
+import { dotRoom, footHold, HIGHLIGHT_BELOW, layoutTopOf, linesOf, nameFill, nameLinesHeld, nameWraps, rowsBeforeFirstPin } from "./ladder-rooms";
 import { LOOK_SCALES } from "./ladder-steps";
 
 describe("nameFill", () => {
@@ -65,6 +65,20 @@ describe("footHold", () => {
     // A card whose content ends at 240 holds "+16 connections" (236 units at 2.2) from 13 no more.
     expect(footHold(counts, 46, 240, LOOK_SCALES.connections, 3, 4).held).toBe(false);
     expect(footHold([], 46, 372, LOOK_SCALES.connections, 3, 4)).toEqual({ held: false, above: [] });
+  });
+});
+
+describe("linesOf", () => {
+  it("counts a name's lines by its fragments' centres, leaving out its word breaks' empty boxes", () => {
+    // "DocumentationLinkViolation" on one line under Segoe UI's lines, emulated: its three text fragments share a line,
+    // and its two word breaks' boxes stand a pixel above them, which counting rounded tops had read as a second line.
+    const one = [{ top: 10, height: 15, width: 60 }, { top: 9, height: 15, width: 0 }, { top: 10, height: 15, width: 20 }, { top: 9.4, height: 15, width: 0 }, { top: 10, height: 15, width: 40 }];
+    expect(linesOf(one)).toBe(1);
+    // Two fragments a line apart are two lines, however their tops round.
+    expect(linesOf([{ top: 10.4, height: 12, width: 80 }, { top: 22.6, height: 12, width: 40 }])).toBe(2);
+    expect(linesOf([{ top: 10.49, height: 12, width: 80 }, { top: 10.51, height: 12, width: 40 }])).toBe(1);
+    expect(linesOf([])).toBe(0);
+    expect(linesOf([{ top: 3, height: 12, width: 0 }])).toBe(0);
   });
 });
 

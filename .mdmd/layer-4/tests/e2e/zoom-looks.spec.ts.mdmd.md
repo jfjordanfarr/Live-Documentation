@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/zoom-looks.spec.ts
-- Generated At: 2026-11-10T21:46:21.177Z
+- Generated At: 2026-11-13T18:24:39.058Z
 
 ## Authored
 ### Purpose
@@ -17,6 +17,8 @@ Written with the trial (2026-11-10) from the root's design of it, [Turn 5 of the
 
 Since 2026-11-13 ([Turn 2 of that day's record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-2), the owner's unused card space) two more tests hold that a text's room goes to its name. One walks the estate's subject out through the connections and overview looks and fails on any symbol name drawn cut, across its line or below its last, while its row has room on screen below that last line for another line of the name at its drawn size with the highlight's air; it was shown failing on the code before the change at every connections press, on seven names ("PaymentService: cut with 26.9 px below it, a line being 20.3 px" at press 3), and asks that the subject's own class stand on two lines there. The other opens this repository's `scripts/doc-tools` and holds the counts at a card's foot in the connections look at the look's scale or not drawn, asks that `documentationLinks.ts`, which draws no row, show both, and presses its "+N connections" there, which must pin the file; before the change no count was drawn there and it failed at press 3. The walk's own reading of a symbol name's ellipsis now counts a name cut below its last line as well as across.
 
+Every picture until the evening of 2026-11-13 was drawn with this container's fallback font, DejaVu Sans, while the owner's browser draws the app's "Segoe UI" with a taller normal line; the owner's screen then showed the connections look's names unwrapped. A test now draws this repository's pinned `documentationLinks.ts` and its opened `scripts/doc-tools` three presses out twice, once with the fallback's lines and once with Segoe UI's line metrics emulated over the same glyphs (a font face over DejaVu Sans with Segoe UI's ascent and descent, the root's emulation), and holds that under Segoe UI's lines no name is cut while its row holds another line and the same names wrap and the same cards hold their counts as under the fallback's. On the code before the stated line it failed on all three: fourteen names wrapped under the fallback and none under Segoe UI's lines, and one card held its counts instead of two. The glyphs' widths are not emulated, so a name that breaks differently because Segoe UI's letters are narrower is not covered. The walk's reading of a name cut below its last line now asks for more than half a line hidden, since a font whose glyphs reach past a stated line overflows its box by a pixel or two without hiding anything.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -25,7 +27,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@playwright/test` - `Page`, `expect`, `test`
+- `@playwright/test` - `Browser`, `Page`, `expect`, `test`
 - [`compressed-url-state.DEFAULT_SNAPSHOT`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-default_snapshot)
 - [`compressed-url-state.compressSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-compresssnapshot)
 - [`compressed-url-state.decompressSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-decompresssnapshot)

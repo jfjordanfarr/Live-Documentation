@@ -3,7 +3,7 @@ import type { GraphFile } from "@live-documentation/engine/live-docs/graph";
 import { pathTo, walk } from "@live-documentation/engine/live-docs/pathfind";
 
 import { chooseHeldHeader, CONTROLS_GAP, HELD_BANDS, heldLineCount, heldSegments, heldTitle, rowSegments, type HeldBand, type TitleRooms } from "./held-lines";
-import { dotRoom, footHold, HIGHLIGHT_BELOW, layoutTopOf, nameFill, nameLinesHeld, nameWraps, rowsBeforeFirstPin, type FootCount } from "./ladder-rooms";
+import { dotRoom, footHold, HIGHLIGHT_BELOW, layoutTopOf, linesOf, nameFill, nameLinesHeld, nameWraps, rowsBeforeFirstPin, type FootCount } from "./ladder-rooms";
 import { FIRST_STEP, LAST_STEP, ladderScales, LOOK_BANDS, LOOK_SCALES, type LadderResistances, type ZoomLook } from "./ladder-steps";
 import type { LocalEdge, ReadingControl } from "./types";
 import type { ExplorerNodePayload } from "../../../shared/types";
@@ -428,7 +428,7 @@ function measureRooms(card: HTMLElement, resistances: LadderResistances, looks: 
     range.selectNodeContents(element);
     const inner = element.querySelector<HTMLElement>(".symbol-label-text") ?? element;
     const own = new DOMMatrix(getComputedStyle(inner).transform).a || 1;
-    const lines = new Set([...range.getClientRects()].map(rect => Math.round(rect.top))).size;
+    const lines = Math.max(1, linesOf([...range.getClientRects()]));
     return { width: range.getBoundingClientRect().width / (k * own), lines };
   };
   // The card's content's bottom edge on screen, inside its border and padding.

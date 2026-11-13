@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-reading.ts
-- Generated At: 2026-11-13T17:09:15.871Z
+- Generated At: 2026-11-13T18:24:29.190Z
 
 ## Authored
 ### Purpose
@@ -35,6 +35,8 @@ After the root's third review of the round (2026-11-06; the owner's picture of `
 Since 2026-11-10, with Tuning's Zoom Looks set to three looks (a trial, [Turn 5 of the November 10 record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-10.1.record.md#turn-5)), the held file name's lines are also chosen once a render for each look that draws it, the connections look in the far band's room and the overview look in the overview band's, at the look's one scale (`data-lines-look-<look>` and `--controls-y-look-<look>`), so that inside a look the name never changes its lines; and the Internals row, the card's last, is given the room down to the card's content bottom as its row height, so that its name, its More and its dot are held at the look's scale like the rows above it instead of following the map to a few pixels; the stylesheet then draws its dashed box as a layer that grows with the held head, since the wrapper's own border had run through the enlarged name. With the default steps nothing here changes.
 
 Since 2026-11-13 ([Turn 2 of that day's record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-2), the owner's "a LOT of the actual node cards' real estate goes totally unused" and the dead Reading button), with the three looks `measureRooms` also gives a symbol's name the room below it that its description left: for each look that holds names it counts the lines the name takes at the look's scale in its room across (`heldLineCount`, `held-lines.ts`, with a canvas measure of the name's font and the card's break opportunities, `rowSegments`), at most the lines its row holds there (`nameLinesHeld`, `ladder-rooms.ts`), and writes the count as `--row-lines-<look>`, one line of the name as `--row-line`, and a `local-name-lines-<look>` class where it is more than one, from which the stylesheet draws the name wrapped. It also measures the counts at the card's foot for the connections look (`footWrites`): where the card's room below what it draws, its drawn rows or on a card with none its file's name as the look holds it, takes them at the look's scale, the card is marked `local-foot-held` with that scale and each count gets its distance above the last one's foot. `measure` first takes back those classes on every card at once, since a reading can come between renders and must read the boxes as the layout put them. At the middle band the node's controls counted for the held header leave out the book, which leaves there with the descriptions.
+
+Later the same day a name's lines at render are counted by `linesOf` (`ladder-rooms.ts`), so that a word break's empty box, which stood a pixel off its text under Segoe UI's line metrics, no longer makes one line read as two; that had halved `--row-line` and laid a wrapped name's two lines over each other on such a font.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -106,6 +108,7 @@ whose room it bounds, from the card's last reading: no layout is read.
 - [`ladder-rooms.dotRoom`](./ladder-rooms.ts.mdmd.md#symbol-dotroom)
 - [`ladder-rooms.footHold`](./ladder-rooms.ts.mdmd.md#symbol-foothold)
 - [`ladder-rooms.layoutTopOf`](./ladder-rooms.ts.mdmd.md#symbol-layouttopof)
+- [`ladder-rooms.linesOf`](./ladder-rooms.ts.mdmd.md#symbol-linesof)
 - [`ladder-rooms.nameFill`](./ladder-rooms.ts.mdmd.md#symbol-namefill)
 - [`ladder-rooms.nameLinesHeld`](./ladder-rooms.ts.mdmd.md#symbol-namelinesheld)
 - [`ladder-rooms.nameWraps`](./ladder-rooms.ts.mdmd.md#symbol-namewraps)

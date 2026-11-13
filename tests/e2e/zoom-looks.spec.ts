@@ -1,4 +1,4 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test, type Browser, type Page } from "@playwright/test";
 
 import { localMapStill } from "./still-picture";
 import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
@@ -122,7 +122,7 @@ const readInPage = (segmentsOf: Record<string, string[]>) => {
       const text = row.querySelector<HTMLElement>(".symbol-label-text");
       if (text && shown(text)) {
         // Cut across its one line, or below its last line where it wraps.
-        const cut = text.scrollWidth > text.clientWidth + 0.5 || text.scrollHeight > text.clientHeight + 0.5;
+        const cut = text.scrollWidth > text.clientWidth + 0.5 || text.scrollHeight - text.clientHeight > parseFloat(getComputedStyle(text).fontSize) / 2;
         names[key] = `${text.textContent} ${lineCount(text)} lines ${cut ? "cut" : "whole"}`;
         const rect = text.getBoundingClientRect();
         held[`${key} name`] = rect.height / k;
@@ -329,7 +329,7 @@ const cutBesideRoom = (page: Page) => page.evaluate(() => {
       const range = document.createRange();
       range.selectNodeContents(text);
       if (new Set([...range.getClientRects()].filter(rect => rect.width > 0 && rect.top < box.bottom).map(rect => Math.round(rect.top))).size > 1) wrapped.push(name);
-      if (!(text.scrollWidth > text.clientWidth + 0.5 || text.scrollHeight > text.clientHeight + 0.5)) { whole.push(name); continue; }
+      if (!(text.scrollWidth > text.clientWidth + 0.5 || text.scrollHeight - text.clientHeight > parseFloat(getComputedStyle(text).fontSize) / 2)) { whole.push(name); continue; }
       const room = row.getBoundingClientRect().bottom - box.bottom - 2 * k;
       if (room >= line) cut.push(`${name}: cut with ${room.toFixed(1)} px below it, a line being ${line.toFixed(1)} px`);
     }
@@ -363,6 +363,66 @@ test("in the connections and overview looks a symbol's name is cut only where it
  * what a card without drawn rows has to say, and "+N connections" still reveals them where it stands. Read on this
  * repository's `scripts/doc-tools` opened, the root's subject, where `documentationLinks.ts` draws no row.
  */
+/**
+ * Segoe UI's line metrics over this machine's fallback font (the root's emulation of 2026-11-13): the app's font is
+ * "Segoe UI", sans-serif; the owner's Windows browser has it, whose normal line is 1.33 of the font's size, while the
+ * suite's Chromium falls back to DejaVu Sans, about 1.09 to 1.16. The owner's screen showed every long symbol name of
+ * the pinned-file subject cut on one line in the connections look, where every picture here showed them wrapped. The
+ * glyphs stay DejaVu Sans's, wider than Segoe UI's: only the lines are emulated.
+ */
+const SEGOE_LINES = ["400", "700"].map(weight => `@font-face { font-family: "Segoe UI"; font-weight: ${weight}; src: local("DejaVu Sans${weight === "700" ? " Bold" : ""}"); ascent-override: 107.9%; descent-override: 25.1%; line-gap-override: 0%; }`).join(" ");
+
+/** What the connections look shows of a subject three presses out, under this machine's lines or Segoe UI's. */
+async function connectionsUnder(browser: Browser, path: string, subject: string, lines: "fallback" | "segoe") {
+  const context = await browser.newContext({ viewport: { width: 1440, height: 960 }, deviceScaleFactor: 1 });
+  await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, zoomLooks: "three" } } })
+  });
+  if (lines === "segoe") await context.addInitScript(css => {
+    const add = (): void => { const style = document.createElement("style"); style.textContent = css; document.documentElement.appendChild(style); };
+    if (document.documentElement) add(); else document.addEventListener("readystatechange", add, { once: true });
+  }, SEGOE_LINES);
+  const page = await context.newPage();
+  await page.goto(path);
+  await page.locator(`.node-card[data-id="${subject}"]`).waitFor();
+  await still(page);
+  for (let press = 0; press < 3; press += 1) await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
+  await still(page);
+  await page.mouse.move(120, 400);
+  const line = await page.evaluate(() => getComputedStyle(document.querySelector(".local-slot-card .symbol-row .symbol-label-text")!).lineHeight);
+  const seen = await cutBesideRoom(page);
+  const held = await page.evaluate(() => {
+    const k = new DOMMatrix(getComputedStyle(document.querySelector("#map-viewport")!).transform).a;
+    return [...document.querySelectorAll<HTMLElement>("#map-container .local-slot-card")].filter(card => [...card.querySelectorAll<HTMLElement>(":scope > button.local-disclosure")]
+      .some(count => getComputedStyle(count).visibility === "visible" && count.getBoundingClientRect().height / (parseFloat(getComputedStyle(count).height) * k) > 2)).map(card => card.dataset.id!).sort();
+  });
+  await context.close();
+  return { look: seen.look, line, wrapped: seen.wrapped.sort(), cut: seen.cut, held };
+}
+
+test("what the connections look shows does not depend on the platform font's line: with Segoe UI's lines the names still wrap and the counts still stand", async ({ browser }) => {
+  test.setTimeout(240_000);
+  const subjects = [
+    { path: "/?view=local&node=scripts/doc-tools/documentationLinks.ts", subject: "scripts/doc-tools/documentationLinks.ts" },
+    { path: "/?view=local&dir=scripts/doc-tools", subject: "scripts/doc-tools/documentationLinks.ts" }
+  ];
+  for (const { path, subject } of subjects) {
+    const here = await connectionsUnder(browser, path, subject, "fallback");
+    const there = await connectionsUnder(browser, path, subject, "segoe");
+    expect([here.look, there.look], path).toEqual(["connections", "connections"]);
+    // Under either font's lines, no name is cut while its row holds another line of it, the same names wrap, and the same
+    // cards hold their counts at the look's size.
+    expect.soft(there.cut, `${path}, Segoe UI's lines: line ${there.line}`).toEqual([]);
+    expect.soft(there.wrapped, `${path}: names wrapped under Segoe UI's lines (line ${there.line}) against the fallback's (${here.line})`).toEqual(here.wrapped);
+    expect.soft(there.held, `${path}: cards holding their counts under Segoe UI's lines against the fallback's`).toEqual(here.held);
+  }
+  // The pinned file's long names wrap and the opened directory's row-less cards hold their counts: the walk saw something.
+  const links = await connectionsUnder(browser, subjects[0].path, subjects[0].subject, "segoe");
+  expect(links.wrapped.length).toBeGreaterThan(5);
+  const directory = await connectionsUnder(browser, subjects[1].path, subjects[1].subject, "segoe");
+  expect(directory.held).toContain("scripts/doc-tools/documentationLinks.ts");
+});
+
 test("in the connections look a card's counts stand at the look's held size or not at all, and +N connections still reveals", async ({ page }) => {
   test.setTimeout(120_000);
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
@@ -379,7 +439,9 @@ test("in the connections look a card's counts stand at the look's held size or n
     const drawn: Record<string, number> = {};
     for (const count of map.querySelectorAll<HTMLElement>(".local-slot-card .local-disclosure")) {
       if (getComputedStyle(count).visibility !== "visible" || !count.offsetHeight) continue;
-      drawn[`${count.closest<HTMLElement>(".node-card")!.dataset.id}: ${count.textContent}`] = count.getBoundingClientRect().height / (count.offsetHeight * k);
+      // Its size on screen over its layout height unrounded: with the card's stated lines a count is a fractional
+      // number of pixels tall, which `offsetHeight` rounds.
+      drawn[`${count.closest<HTMLElement>(".node-card")!.dataset.id}: ${count.textContent}`] = count.getBoundingClientRect().height / (parseFloat(getComputedStyle(count).height) * k);
     }
     return { look: map.dataset.look ?? null, drawn };
   });

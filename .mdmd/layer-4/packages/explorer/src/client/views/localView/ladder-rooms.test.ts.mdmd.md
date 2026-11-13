@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/localView/ladder-rooms.test.ts
-- Generated At: 2026-11-13T17:09:16.507Z
+- Generated At: 2026-11-13T18:24:29.799Z
 
 ## Authored
 ### Purpose
@@ -27,6 +27,7 @@ _No public symbols detected_
 - [`ladder-rooms.dotRoom`](./ladder-rooms.ts.mdmd.md#symbol-dotroom)
 - [`ladder-rooms.footHold`](./ladder-rooms.ts.mdmd.md#symbol-foothold)
 - [`ladder-rooms.layoutTopOf`](./ladder-rooms.ts.mdmd.md#symbol-layouttopof)
+- [`ladder-rooms.linesOf`](./ladder-rooms.ts.mdmd.md#symbol-linesof)
 - [`ladder-rooms.nameFill`](./ladder-rooms.ts.mdmd.md#symbol-namefill)
 - [`ladder-rooms.nameLinesHeld`](./ladder-rooms.ts.mdmd.md#symbol-namelinesheld)
 - [`ladder-rooms.nameWraps`](./ladder-rooms.ts.mdmd.md#symbol-namewraps)
