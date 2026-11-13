@@ -52,9 +52,9 @@ import {
   depthOf,
   fitScreen,
   fromScreen,
-  isTopDown,
   lookDown,
   lookUp,
+  looksDown,
   pointInPolygon,
   project,
   ring,
@@ -175,6 +175,8 @@ interface Drag {
   screen0: Screen;
   world0: Point2;
   pos0?: Point2;
+  /** Where the drawing's corner stands on the page, read once when the drag begins: nothing moves it while the drag lasts. */
+  origin: Point2;
 }
 
 const TINT_COLOURS: Record<Tint, { light: string; dark: string }> = {
@@ -252,6 +254,9 @@ export class WorldMapController {
   private tour: { on: boolean; at: number; start?: { camera: Camera; screen: Screen; under: boolean } } = { on: false, at: 0 };
   /** What the last press landed on; a click and a double-click are retargeted to the surface by the pointer capture. */
   private lastPressed: Element | null = null;
+  /** What the next frame must bring up to date for the pointer: the whole drawing, or the pan and zoom alone; and that frame. */
+  private pending: "draw" | "camera" | null = null;
+  private frame = 0;
   private readonly disposers: Array<() => void> = [];
   private readonly resizeHandler = (): void => this.applyCamera();
 
@@ -328,6 +333,9 @@ export class WorldMapController {
 
     /** Removes every listener and empties the root. */
   dispose(): void {
+    cancelAnimationFrame(this.frame);
+    this.frame = 0;
+    this.pending = null;
     for (const dispose of this.disposers) {
       dispose();
     }
@@ -443,6 +451,8 @@ export class WorldMapController {
   }
 
   private draw(): void {
+    // A frame asked for by the pointer has nothing left to do once the whole board is drawn.
+    this.pending = null;
     // Everything is drawn afresh but the keyboard's stops, which are moved in place so that a focused piece keeps focus.
     for (const [name, layer] of Object.entries(this.layers)) {
       if (name !== "focus") {
@@ -464,7 +474,8 @@ export class WorldMapController {
     for (const [name, target] of this.focusTargets) {
       target.querySelector("polygon")?.setAttribute("points", silhouette(this.camera, this.pivot, this.place(name)).map((p) => p.join(",")).join(" "));
     }
-    this.applyCamera();
+    // The hover settles the labels, once; settling them before it as well was work thrown away (2026-11-13).
+    this.placeCamera();
     this.applyHover();
   }
 
@@ -704,6 +715,8 @@ export class WorldMapController {
       const leftward = door.anchor.out[0] < 0 || (door.anchor.out[0] === 0 && door.anchor.out[1] < 0);
       const text = svgElement("text", { class: "w-doorlabel", "data-fixed": s.join(","), "data-piece": door.piece, "data-roads": door.roads.join(" "), "data-anchor": leftward ? "end" : "start", "data-dx": leftward ? -10 : 10, "text-anchor": leftward ? "end" : "start", dx: leftward ? -10 : 10, dy: door.role === "offers" ? -6 : 14 }, this.layers.labels);
       text.textContent = door.label;
+      // Hidden until the hover shows it, by its own style as well as the sheet's, so that settling passes it by unread.
+      text.style.display = "none";
     }
   }
 
@@ -830,13 +843,45 @@ export class WorldMapController {
     return { width: this.root.clientWidth || window.innerWidth, height: this.root.clientHeight || window.innerHeight };
   }
 
+  /** Pans and zooms the drawing to the screen, keeping what stands at a fixed size at that size, and settles the labels. */
   private applyCamera(): void {
+    if (this.pending === "camera") {
+      this.pending = null;
+    }
+    this.placeCamera();
+    this.settleLabels();
+  }
+
+  private placeCamera(): void {
     this.camGroup.setAttribute("transform", `translate(${this.screen.x} ${this.screen.y}) scale(${this.screen.k})`);
     for (const node of this.svg.querySelectorAll<SVGElement>("[data-fixed]")) {
       const [x, y] = (node.dataset.fixed ?? "0,0").split(",").map(Number);
       node.setAttribute("transform", `translate(${x} ${y}) scale(${1 / this.screen.k})`);
     }
-    this.settleLabels();
+  }
+
+  /**
+   * Asks for the drawing to catch up with the camera, or with a piece being dragged, at the next frame. A browser may
+   * deliver several pointer moves or wheel steps between two frames, and each was drawn in full (2026-11-13); now the
+   * frame draws once, from where the last of them left the camera.
+   */
+  private request(work: "draw" | "camera"): void {
+    this.pending = this.pending === "draw" || work === "draw" ? "draw" : "camera";
+    if (this.frame === 0) {
+      this.frame = requestAnimationFrame(() => {
+        this.frame = 0;
+        this.flush();
+      });
+    }
+  }
+
+  /** Does now what the next frame was asked to do, so that the drawing and the camera agree, as when the pointer lets go. */
+  private flush(): void {
+    if (this.pending === "draw") {
+      this.draw();
+    } else if (this.pending === "camera") {
+      this.applyCamera();
+    }
   }
 
   /**
@@ -858,15 +903,64 @@ export class WorldMapController {
    * area, and all but a door's sideways, from where it rests until it covers
    * nothing, keeping clear of the labels settled before it.
    * Labels keep their size while the world scales, so this runs after every
-   * camera move and every hover.
+   * camera move and every hover. Every label is read where it rests in one
+   * batch, and every place it might go is arithmetic on that box.
    */
   private settleLabels(): void {
     if (!this.world.isConnected) {
       return;
     }
-    const visible = (node: SVGElement): boolean => node.style.display !== "none" && node.getBoundingClientRect().width > 0;
+    const labels = this.layers.labels;
+    const kinds = ["w-zone", "w-tag", "w-tokenlabel", "w-doorlabel"];
+    // A door's label rests on the side its door faces; when no step up or down clears it there, it may cross to the other side of the door.
+    const sidesOf = (node: SVGElement): Array<{ anchor: string; dx: string } | undefined> => (node.dataset.anchor
+      ? [{ anchor: node.dataset.anchor, dx: node.dataset.dx ?? "0" }, { anchor: node.dataset.anchor === "end" ? "start" : "end", dx: String(-Number(node.dataset.dx ?? "0")) }]
+      : [undefined]);
+    const nearestFirst = this.model.pieces
+      .map((piece) => ({ name: piece.name, depth: depthOf(this.camera, this.pivot, this.place(piece.name).cx, this.place(piece.name).cy) }))
+      .sort((a, b) => b.depth - a.depth)
+      .map((entry) => labels.querySelector<SVGGElement>(`.w-label[data-piece="${CSS.escape(entry.name)}"]`))
+      .filter((group): group is SVGGElement => group !== null)
+      .map((group) => ({ group, name: group.querySelector<SVGElement>("text.w-name"), sub: group.querySelector<SVGElement>("text.w-sub") }));
+    const others = kinds.map((kind) => ({ kind, nodes: [...labels.querySelectorAll<SVGElement>(`text.${kind}`)].filter((node) => node.style.display !== "none") }));
+    // Every label goes back to where it rests, and then every resting box is read at once, so that the page is laid out
+    // once for all of them; until 2026-11-13 each label was put back and read in turn, the page laid out again for
+    // each, about forty-five times a turn's move on this repository's board. The boxes are the browser's own, so that
+    // ties between places break as they always did.
+    for (const { name, sub } of nearestFirst) {
+      for (const [node, dy] of [[name, NAME_DY], [sub, SUB_DY]] as Array<[SVGElement | null, number]>) {
+        node?.setAttribute("dy", String(dy));
+        node?.setAttribute("dx", "0");
+      }
+      if (sub) {
+        sub.style.display = "";
+      }
+    }
+    for (const { nodes } of others) {
+      for (const node of nodes) {
+        const side = sidesOf(node)[0];
+        if (side) {
+          node.setAttribute("text-anchor", side.anchor);
+        }
+        node.setAttribute("dx", String(Number(side?.dx ?? "0")));
+        node.setAttribute("dy", String(Number(node.dataset.dy ?? node.getAttribute("dy") ?? "0")));
+      }
+    }
     const left = this.svgLeft();
     const top = this.svgTop();
+    const rests = new Map<SVGElement, DOMRect>();
+    for (const { name, sub } of nearestFirst) {
+      for (const node of [name, sub]) {
+        if (node) {
+          rests.set(node, node.getBoundingClientRect());
+        }
+      }
+    }
+    for (const { nodes } of others) {
+      for (const node of nodes) {
+        rests.set(node, node.getBoundingClientRect());
+      }
+    }
     const outlineOf = new Map(this.model.pieces.map((piece) => [piece.name, silhouette(this.camera, this.pivot, this.place(piece.name)).map((p): Point2 => {
       const s = toScreen(this.screen, p);
       return [s[0] + left, s[1] + top];
@@ -881,29 +975,70 @@ export class WorldMapController {
     const moved = (box: ScreenBox, dx: number, dy: number): ScreenBox => ({ left: box.left + dx, right: box.right + dx, top: box.top + dy, bottom: box.bottom + dy });
     // A region's name labels an area, not a point, so it may travel further along the region's side than the others.
     const steps: Record<string, number[]> = { "w-zone": [0, -18, 18, -36, 36, -54, 54, -72, 72], "w-tag": [0, -20, 20, -40, 40, -60, 60], "w-tokenlabel": [0, -52, 18, -70, 36, -88, 54, -106, 72], "w-doorlabel": [0, -14, 14, -28, 28, -42, 42, -56, 56, -70, 70] };
-    const doorBoxes: DOMRect[] = [];
-    // Each label of a kind takes the first step from where it rests that covers nothing, or else the one covering least.
-    const settle = (kind: string): void => {
-      for (const node of this.layers.labels.querySelectorAll<SVGElement>(`text.${kind}`)) {
-        if (!visible(node)) {
+    const doorBoxes: ScreenBox[] = [];
+    const subsShown = new Map<SVGElement, ScreenBox>();
+    // A piece's name takes the smallest move where it covers nothing and the line under it, at the same height, has a
+    // place that covers nothing, under the name or aside by up to half the label's width; failing that, the name alone
+    // where it covers nothing, and the line under it goes; failing that, the name where it covers least.
+    for (const { group, name, sub } of nearestFirst) {
+      const nameBox = name ? rests.get(name) : undefined;
+      if (!name || !nameBox) {
+        continue;
+      }
+      const subRect = sub ? rests.get(sub) : undefined;
+      const subBox = subRect && subRect.width > 0 ? subRect : undefined;
+      const span = Math.max(nameBox.width, subBox?.width ?? 0);
+      // Below its piece, the name's top stands a few pixels under the lowest of the outline and its strands.
+      const own = outlineOf.get(group.dataset.piece ?? "") ?? [];
+      const below = own.length ? Math.max(...own.map((p) => p[1])) + strands + 4 - nameBox.top : 0;
+      const drop = (move: LabelMove): number => move.rise + (move.below ? below : 0);
+      const nameCover = (move: LabelMove): number => covered(moved(nameBox, move.shift * span, drop(move)));
+      // The line under the name, at the name's height: under the name first, then aside.
+      const subPlace = (move: LabelMove): number | undefined =>
+        subBox ? [move.shift, ...SHIFTS.filter((shift) => shift !== move.shift)].find((shift) => covered(moved(subBox, shift * span, drop(move))) === 0) : undefined;
+      let move = LABEL_MOVES.find((candidate) => nameCover(candidate) === 0 && (!subBox || subPlace(candidate) !== undefined));
+      let subShift = move ? subPlace(move) : undefined;
+      if (!move) {
+        move = LABEL_MOVES.find((candidate) => nameCover(candidate) === 0) ?? LABEL_MOVES.reduce((best, candidate) => (nameCover(candidate) < nameCover(best) ? candidate : best));
+        subShift = undefined;
+      }
+      name.setAttribute("dx", String(move.shift * span));
+      name.setAttribute("dy", String(NAME_DY + drop(move)));
+      placed.push(moved(nameBox, move.shift * span, drop(move)));
+      if (sub) {
+        sub.style.display = subShift === undefined ? "none" : "";
+        if (subShift !== undefined && subBox) {
+          sub.setAttribute("dx", String(subShift * span));
+          sub.setAttribute("dy", String(SUB_DY + drop(move)));
+          const box = moved(subBox, subShift * span, drop(move));
+          placed.push(box);
+          subsShown.set(sub, box);
+        }
+      }
+    }
+    // A region's label, a crossing's tag, a token's label and a door's label then settle in that order: each takes the
+    // first step from where it rests that covers nothing, or else the one covering least.
+    for (const { kind, nodes } of others) {
+      for (const node of nodes) {
+        const resting = rests.get(node);
+        if (!resting || resting.width <= 0) {
           continue;
         }
         const rest = Number(node.dataset.dy ?? node.getAttribute("dy") ?? "0");
-        // A door's label rests on the side its door faces; when no step up or down clears it there, it may cross to the other side of the door.
-        const sides: Array<{ anchor: string; dx: string } | undefined> = node.dataset.anchor
-          ? [{ anchor: node.dataset.anchor, dx: node.dataset.dx ?? "0" }, { anchor: node.dataset.anchor === "end" ? "start" : "end", dx: String(-Number(node.dataset.dx ?? "0")) }]
-          : [undefined];
+        const sides = sidesOf(node);
         // A door's label keeps to its door; any other may also move sideways, by up to half its width.
         const shifts = node.dataset.anchor ? [0] : SHIFTS;
-        let best = { dy: rest, dx: Number(node.dataset.dx ?? "0"), cover: Number.POSITIVE_INFINITY, side: sides[0] };
-        search: for (const side of sides) {
-          if (side) {
-            node.setAttribute("text-anchor", side.anchor);
-          }
+        let best = { dy: rest, dx: Number(node.dataset.dx ?? "0"), cover: Number.POSITIVE_INFINITY, side: sides[0], box: resting as ScreenBox, sideDx: 0 };
+        search: for (const [index, side] of sides.entries()) {
           const sideDx = Number(side?.dx ?? "0");
-          node.setAttribute("dx", String(sideDx));
-          node.setAttribute("dy", String(rest));
-          const box = node.getBoundingClientRect();
+          let box: DOMRect = resting;
+          if (index > 0 && side) {
+            // The other side of a door is measured where it stands, only when the first side found no clear place.
+            node.setAttribute("text-anchor", side.anchor);
+            node.setAttribute("dx", String(sideDx));
+            node.setAttribute("dy", String(rest));
+            box = node.getBoundingClientRect();
+          }
           // A door sits on its piece's wall, so its label starts just beyond the piece's outline at the label's height.
           const own = side ? outlineOf.get(node.dataset.piece ?? "") : undefined;
           for (const step of steps[kind]) {
@@ -913,7 +1048,7 @@ export class WorldMapController {
               const beyond = !span ? 0 : side?.anchor === "end" ? Math.min(0, span[0] - 4 - candidate.right) : Math.max(0, span[1] + 4 - candidate.left);
               const cover = covered(moved(candidate, beyond, 0));
               if (cover < best.cover) {
-                best = { dy: rest + step, dx: sideDx + shift * box.width + beyond, cover, side };
+                best = { dy: rest + step, dx: sideDx + shift * box.width + beyond, cover, side, box, sideDx };
               }
               if (cover === 0) {
                 break search;
@@ -926,72 +1061,15 @@ export class WorldMapController {
         }
         node.setAttribute("dx", String(best.dx));
         node.setAttribute("dy", String(best.dy));
-        placed.push(node.getBoundingClientRect());
+        const box = moved(best.box, best.dx - best.sideDx, best.dy - rest);
+        placed.push(box);
         if (kind === "w-doorlabel") {
-          doorBoxes.push(node.getBoundingClientRect());
+          doorBoxes.push(box);
         }
       }
-    };
-    const nearestFirst = this.model.pieces
-      .map((piece) => ({ name: piece.name, depth: depthOf(this.camera, this.pivot, this.place(piece.name).cx, this.place(piece.name).cy) }))
-      .sort((a, b) => b.depth - a.depth)
-      .map((entry) => this.layers.labels.querySelector<SVGGElement>(`.w-label[data-piece="${CSS.escape(entry.name)}"]`))
-      .filter((group): group is SVGGElement => group !== null);
-    // A piece's name takes the smallest move where it covers nothing and the line under it, at the same height, has a
-    // place that covers nothing, under the name or aside by up to half the label's width; failing that, the name alone
-    // where it covers nothing, and the line under it goes; failing that, the name where it covers least.
-    for (const group of nearestFirst) {
-      const name = group.querySelector<SVGElement>("text.w-name");
-      const sub = group.querySelector<SVGElement>("text.w-sub");
-      if (!name) {
-        continue;
-      }
-      for (const [node, dy] of [[name, NAME_DY], [sub, SUB_DY]] as Array<[SVGElement | null, number]>) {
-        node?.setAttribute("dy", String(dy));
-        node?.setAttribute("dx", "0");
-      }
-      if (sub) {
-        sub.style.display = "";
-      }
-      const nameBox = name.getBoundingClientRect();
-      const subRect = sub?.getBoundingClientRect();
-      const subBox = subRect && subRect.width > 0 ? subRect : undefined;
-      const width = Math.max(nameBox.width, subBox?.width ?? 0);
-      // Below its piece, the name's top stands a few pixels under the lowest of the outline and its strands.
-      const own = outlineOf.get(group.dataset.piece ?? "") ?? [];
-      const below = own.length ? Math.max(...own.map((p) => p[1])) + strands + 4 - nameBox.top : 0;
-      const drop = (move: LabelMove): number => move.rise + (move.below ? below : 0);
-      const nameCover = (move: LabelMove): number => covered(moved(nameBox, move.shift * width, drop(move)));
-      // The line under the name, at the name's height: under the name first, then aside.
-      const subPlace = (move: LabelMove): number | undefined =>
-        subBox ? [move.shift, ...SHIFTS.filter((shift) => shift !== move.shift)].find((shift) => covered(moved(subBox, shift * width, drop(move))) === 0) : undefined;
-      let move = LABEL_MOVES.find((candidate) => nameCover(candidate) === 0 && (!subBox || subPlace(candidate) !== undefined));
-      let subShift = move ? subPlace(move) : undefined;
-      if (!move) {
-        move = LABEL_MOVES.find((candidate) => nameCover(candidate) === 0) ?? LABEL_MOVES.reduce((best, candidate) => (nameCover(candidate) < nameCover(best) ? candidate : best));
-        subShift = undefined;
-      }
-      name.setAttribute("dx", String(move.shift * width));
-      name.setAttribute("dy", String(NAME_DY + drop(move)));
-      placed.push(moved(nameBox, move.shift * width, drop(move)));
-      if (sub) {
-        sub.style.display = subShift === undefined ? "none" : "";
-        if (subShift !== undefined && subBox) {
-          sub.setAttribute("dx", String(subShift * width));
-          sub.setAttribute("dy", String(SUB_DY + drop(move)));
-          placed.push(moved(subBox, subShift * width, drop(move)));
-        }
-      }
-    }
-    for (const kind of ["w-zone", "w-tag", "w-tokenlabel", "w-doorlabel"]) {
-      settle(kind);
     }
     // A sub-line that a door's label still covers goes, as it does under a name: the pinned panel says the same words.
-    for (const node of this.layers.labels.querySelectorAll<SVGElement>(".w-label text.w-sub")) {
-      if (!visible(node)) {
-        continue;
-      }
-      const box = node.getBoundingClientRect();
+    for (const [node, box] of subsShown) {
       if (doorBoxes.some((other) => Math.min(box.right, other.right) - Math.max(box.left, other.left) > 1 && Math.min(box.bottom, other.bottom) - Math.max(box.top, other.top) > 1)) {
         node.style.display = "none";
       }
@@ -1014,12 +1092,17 @@ export class WorldMapController {
   }
 
   private setCamera(theta: number, phi: number, pivot?: { s: Point2; w: Point2 }): void {
+    this.turnTo(theta, phi, pivot);
+    this.draw();
+  }
+
+  /** Turns the camera, keeping a board point under the same screen point if one is given, and draws nothing. */
+  private turnTo(theta: number, phi: number, pivot?: { s: Point2; w: Point2 }): void {
     this.camera = { theta, phi: clamp(phi, MIN_ELEVATION, TOP_DOWN) };
     if (pivot) {
       const s = toScreen(this.screen, project(this.camera, this.pivot, pivot.w[0], pivot.w[1], 0));
       this.screen = { ...this.screen, x: this.screen.x + pivot.s[0] - s[0], y: this.screen.y + pivot.s[1] - s[1] };
     }
-    this.draw();
   }
 
   private pivotAt(sx: number, sy: number): { s: Point2; w: Point2 } {
@@ -1066,19 +1149,18 @@ export class WorldMapController {
       end = { ...finish };
     }
     const screen0 = { ...this.screen };
+    // The pan and zoom move first, so that each frame is drawn once.
     await this.tween(ms, (t) => {
       const k = smooth(t);
-      this.setCamera(from.theta + (to.theta - from.theta) * k, from.phi + (to.phi - from.phi) * k, end ? undefined : pivot);
       if (end) {
         this.screen = { k: screen0.k + (end.k - screen0.k) * k, x: screen0.x + (end.x - screen0.x) * k, y: screen0.y + (end.y - screen0.y) * k };
-        this.applyCamera();
       }
+      this.setCamera(from.theta + (to.theta - from.theta) * k, from.phi + (to.phi - from.phi) * k, end ? undefined : pivot);
     });
-    this.setCamera(to.theta, to.phi, end ? undefined : pivot);
     if (end) {
       this.screen = end;
-      this.applyCamera();
     }
+    this.setCamera(to.theta, to.phi, end ? undefined : pivot);
     this.syncButtons();
   }
 
@@ -1088,11 +1170,12 @@ export class WorldMapController {
   }
 
   /**
-   * Straight down, squared to the screen at the nearest squared azimuth, with the whole board in view; or back up: to
-   * the view it looked down from if the camera has not turned since, else on an eighth turn to the resting elevation.
+   * Straight down, squared to the screen at the nearest squared azimuth, with the whole board in view, which from
+   * straight above at another azimuth squares the board where it stands; or, once there, back up: to the view it looked
+   * down from if the camera has not turned since, else on an eighth turn to the resting elevation.
    */
   topDown(): Promise<void> {
-    if (isTopDown(this.camera)) {
+    if (looksDown(this.camera)) {
       const to = lookUp(this.camera, this.lookedDown ?? undefined);
       this.lookedDown = null;
       return this.orbitTo(to.theta, to.phi, 520, "fit");
@@ -1195,7 +1278,11 @@ export class WorldMapController {
     }
     // Labels first: a piece's panel stands clear of the piece's label where it has settled.
     this.settleLabels();
-    this.showEvidence(h);
+    // Nothing about the hover changes while a drag is under way, and the panel was written and placed again on every
+    // frame of it (2026-11-13); it is placed again once the pointer lets go.
+    if (!this.drag?.moved) {
+      this.showEvidence(h);
+    }
   }
 
   private showEvidence(h: Hover | null): void {
@@ -1519,7 +1606,8 @@ export class WorldMapController {
       const pieceNode = orbit ? null : target.closest<SVGElement>(".w-piece");
       const piece = pieceNode?.dataset.piece;
       svg.setPointerCapture(event.pointerId);
-      const [px, py] = fromScreen(this.screen, event.clientX - this.svgLeft(), event.clientY - this.svgTop());
+      const origin: Point2 = [this.svgLeft(), this.svgTop()];
+      const [px, py] = fromScreen(this.screen, event.clientX - origin[0], event.clientY - origin[1]);
       const { width, height } = this.viewport();
       this.drag = {
         x0: event.clientX,
@@ -1533,7 +1621,8 @@ export class WorldMapController {
         piece,
         screen0: { ...this.screen },
         world0: unproject(this.camera, this.pivot, px, py),
-        pos0: piece ? [...(this.positions.get(piece) ?? [0, 0])] as Point2 : undefined
+        pos0: piece ? [...(this.positions.get(piece) ?? [0, 0])] as Point2 : undefined,
+        origin
       };
       if (!piece) {
         svg.classList.add("panning");
@@ -1541,7 +1630,10 @@ export class WorldMapController {
     });
 
     on(svg, "pointermove", (event: PointerEvent) => {
-      this.lastPointer = [event.clientX - this.svgLeft(), event.clientY - this.svgTop()];
+      // During a drag the drawing's corner is the one read when it began: reading it again could make the browser lay
+      // the page out between frames, which the wires' flowing dashes leave due now and then.
+      const origin = this.drag?.origin ?? [this.svgLeft(), this.svgTop()];
+      this.lastPointer = [event.clientX - origin[0], event.clientY - origin[1]];
       if (this.drag) {
         const drag = this.drag;
         if (Math.hypot(event.clientX - drag.x0, event.clientY - drag.y0) > 3) {
@@ -1554,13 +1646,14 @@ export class WorldMapController {
           const padX = placed.w / 2;
           const padY = placed.d / 2;
           this.positions.set(drag.piece, [clamp(drag.pos0[0] + w[0] - drag.world0[0], this.bench.x + padX, this.bench.x + this.bench.w - padX), clamp(drag.pos0[1] + w[1] - drag.world0[1], this.bench.y + padY, this.bench.y + this.bench.d - padY)]);
-          this.draw();
+          this.request("draw");
         } else if (drag.orbit) {
           // The world follows the pointer, as it does in the force graph: drag right and the camera turns left, drag down and the camera rises.
-          this.setCamera(drag.theta0 - (event.clientX - drag.x0) * 0.006, drag.phi0 + (event.clientY - drag.y0) * 0.005, drag.pivot);
+          this.turnTo(drag.theta0 - (event.clientX - drag.x0) * 0.006, drag.phi0 + (event.clientY - drag.y0) * 0.005, drag.pivot);
+          this.request("draw");
         } else if (!drag.piece) {
           this.screen = { ...this.screen, x: drag.screen0.x + event.clientX - drag.x0, y: drag.screen0.y + event.clientY - drag.y0 };
-          this.applyCamera();
+          this.request("camera");
         }
         return;
       }
@@ -1578,6 +1671,8 @@ export class WorldMapController {
     });
 
     on(svg, "pointerup", () => {
+      // The picture catches up with the last move before anything else happens.
+      this.flush();
       const drag = this.drag;
       this.drag = null;
       svg.classList.remove("panning");
@@ -1591,6 +1686,9 @@ export class WorldMapController {
         }
         this.savePositions();
         this.draw();
+      } else if (drag?.moved) {
+        // The panel waited out the turn or the pan where it stood; it takes its place again now.
+        this.showEvidence(this.pinned ?? this.hover);
       } else if (drag && !drag.moved && !drag.orbit) {
         const h = this.hoverAt(drag.target, true);
         if (h) {
@@ -1612,7 +1710,8 @@ export class WorldMapController {
       event.preventDefault();
       const sx = event.clientX - this.svgLeft();
       const sy = event.clientY - this.svgTop();
-      this.zoomBy(Math.exp(-event.deltaY * 0.0016), sx, sy);
+      this.screen = zoomAt(this.screen, Math.exp(-event.deltaY * 0.0016), sx, sy);
+      this.request("camera");
       if (event.deltaY < 0) {
         this.maybeEnter(sx, sy);
       }
@@ -1818,7 +1917,7 @@ export class WorldMapController {
 
   /** Each toggle says whether it is on, for the eye by its fill and for a screen reader by its pressed state. */
   private syncButtons(): void {
-    for (const [act, on] of [["tilt", isTopDown(this.camera)], ["under", this.under], ["snap", this.snap], ["theme", this.theme === "dark"]] as Array<[string, boolean]>) {
+    for (const [act, on] of [["tilt", looksDown(this.camera)], ["under", this.under], ["snap", this.snap], ["theme", this.theme === "dark"]] as Array<[string, boolean]>) {
       this.button(act)?.setAttribute("aria-pressed", String(on));
     }
   }

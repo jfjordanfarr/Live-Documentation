@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/worldMap/controller.ts
-- Generated At: 2026-11-13T16:45:56.741Z
+- Generated At: 2026-11-13T18:08:55.111Z
 
 ## Authored
 ### Purpose
@@ -23,7 +23,12 @@ The World Map, drawn. Everything that touches the DOM is here: the SVG the board
   - **Keyboard stops.** Each piece has a keyboard stop in a focus layer that `draw` moves in place rather than rebuilds, so focus survives a turn; they are kept in the board's order. The stops' listeners stand on the view's HTML, because Chrome made the SVG layer that held them a stop of its own. Focus peeks, Enter or Space pins and moves focus into the panel, and `unpin` returns focus to the piece when the keyboard was in its panel. Wires and doors are not stops yet.
   - **The walkthrough.** It remembers the view it began on. Each step stands on that view but for the state it shows, and `endTour` eases back to it; `orbitTo` takes the framing to end on.
   - **Door labels** start just beyond their piece's outline at their own height (`spanWithin`), since settling against outlines had flung them far from their doors.
-- Since 2026-11-13, on the owner's report that the view from above came out askew after a turn by drag ([the session record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md)), `topDown` looks down at the squared azimuth nearest the camera's (`lookDown` in `projection.ts`), so the board turns the least it can and stands square to the screen after any turn by drag; it remembers the view it left in `lookedDown`, and looking up returns there unless the camera turned while above (`lookUp`).
+- Since 2026-11-13, on the owner's report that the view from above came out askew after a turn by drag ([the session record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-2)), `topDown` looks down at the squared azimuth nearest the camera's (`lookDown` in `projection.ts`), so the board turns the least it can and stands square to the screen after any turn by drag; it remembers the view it left in `lookedDown`, and looking up returns there unless the camera turned while above (`lookUp`). The tool shows pressed only straight above with the board squared (`looksDown`); dragged to straight above at another azimuth it shows unpressed, and pressing it squares the board where it stands, after which it looks up on an eighth turn to the resting elevation rather than back to the askew view.
+- Also since 2026-11-13, on the owner's report in the same turn that turning the camera by right-drag had become very slow:
+  - **The cost.** `settleLabels` had put each label back where it rests and read its box with `getBoundingClientRect`, one label after another, between attribute writes; each read laid the page out again. `draw` settled twice, from `applyCamera` and again from `applyHover`, the first result always thrown away. On this repository's board a turn's pointer move cost about 45 layouts of the page, against about 12 before the November 12 label rule and 2 since, counted over a scripted right-drag; times in the headless browser moved too much with the machine's load to be quoted here.
+  - **One batch.** Settling now puts every label back where it rests, reads every resting box in one batch, so the page is laid out once, and computes every place a label might go from those boxes, as before. A door's label is measured on its other side only when its first side finds no clear place. The boxes are the browser's own because they must be: a box worked out by arithmetic from a size measured once differs from the browser's by its rounding, up to a sixty-fourth of a pixel, and at the angles where this board's rows line up with the line of sight that broke ties between places differently for 58 of 11,036 labels over 260 camera states. A label's width also differs by up to a tenth of a pixel from one zoom to another, because the browser shapes words for their scale on the screen. Over those 260 states every label now takes the move it took before.
+  - **One drawing a frame.** A drag's pointer moves and the wheel's steps change the camera at once and ask for the drawing at the next animation frame (`request`); several moves between two frames are drawn once, and `pointerup` draws whatever is still waiting (`flush`), so the picture and the camera agree when the pointer lets go. The handle's calls and the keys still draw at once. An eased turn moves the pan and zoom before drawing, so each of its frames is drawn once.
+  - **The panel waits.** While a drag is under way the hover does not change, so `applyHover` leaves the evidence panel as it is instead of writing and placing it again on every frame; it is placed again when the pointer lets go. A drag reads where the drawing stands on the page once, when it begins, rather than at every move.
 - Since 2026-10-20 the map's keys ignore a key another surface has already used, such as the Escape that closed the reader over it, and any key typed inside a full-screen dialog, so a phone's full reader cannot toggle the theme or reset the layout behind it ([the record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-7)).
 
 ## Generated
@@ -45,14 +50,14 @@ What the controller is given: where to draw, the board and its join, the graph, 
 
 #### `WorldMapController` {#symbol-worldmapcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L205)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L207)
 
 ##### `WorldMapController` — Summary
 Draws a board and answers the pointer.
 
 #### `WorldMapApi` {#symbol-worldmapapi}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L2066)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L2165)
 
 ##### `WorldMapApi` — Summary
 The handle a test or a screenshot script drives, at `window.__worldMap`.
@@ -114,9 +119,9 @@ The handle a test or a screenshot script drives, at `window.__worldMap`.
 - [`projection.depthOf`](./projection.ts.mdmd.md#symbol-depthof)
 - [`projection.fitScreen`](./projection.ts.mdmd.md#symbol-fitscreen)
 - [`projection.fromScreen`](./projection.ts.mdmd.md#symbol-fromscreen)
-- [`projection.isTopDown`](./projection.ts.mdmd.md#symbol-istopdown)
 - [`projection.lookDown`](./projection.ts.mdmd.md#symbol-lookdown)
 - [`projection.lookUp`](./projection.ts.mdmd.md#symbol-lookup)
+- [`projection.looksDown`](./projection.ts.mdmd.md#symbol-looksdown)
 - [`projection.pointInPolygon`](./projection.ts.mdmd.md#symbol-pointinpolygon)
 - [`projection.project`](./projection.ts.mdmd.md#symbol-project)
 - [`projection.ring`](./projection.ts.mdmd.md#symbol-ring)

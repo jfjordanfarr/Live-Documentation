@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/worldMap/projection.ts
-- Generated At: 2026-11-13T16:45:57.733Z
+- Generated At: 2026-11-13T17:30:08.203Z
 
 ## Authored
 ### Purpose
@@ -12,7 +12,7 @@ The World Map's camera: an orthographic projection of the board seen from an azi
 
 ### Notes
 - Written on 2026-09-28 with the view ([Turn 46](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md#turn-46)). The board plane is z = 0 and z grows upward. `REST_ELEVATION` is the angle the board is first seen at, `MIN_ELEVATION` the lowest before the board is a line, and `TOP_DOWN` straight down, where the board is a plain two-dimensional canvas and the labels keep their size. Pure functions over numbers; `controller.ts` applies them to SVG. Measured by `projection.test.ts`, which round-trips a point through every azimuth and elevation it tries.
-- Since 2026-11-13, on the owner's report that the view from above came out askew after any turn by drag ([the session record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md)): `squaredAzimuth` finds the azimuth nearest the camera's at which the board seen from above is squared to the screen. Those lie an eighth turn either side of the resting azimuths the quarter turns reach, because at azimuth 0 the board's edges run at 45° on the screen; before, looking down always turned back an eighth, which squared the board only from a resting azimuth. From a resting azimuth, halfway between two squared ones, it still takes the one an eighth back, with a tolerance for quarter turns summed in floating point. `lookDown` goes there; `lookUp` returns to the view looked down from when the camera has not turned since it arrived above, and otherwise goes on an eighth turn to the resting elevation, as before.
+- Since 2026-11-13, on the owner's report that the view from above came out askew after any turn by drag ([the session record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-2)): `squaredAzimuth` finds the azimuth nearest the camera's at which the board seen from above is squared to the screen. Those lie an eighth turn either side of the resting azimuths the quarter turns reach, because at azimuth 0 the board's edges run at 45° on the screen; before, looking down always turned back an eighth, which squared the board only from a resting azimuth. From a resting azimuth, halfway between two squared ones, it still takes the one an eighth back, with a tolerance for quarter turns summed in floating point. `lookDown` goes there; `lookUp` returns to the view looked down from when the camera has not turned since it arrived above, and otherwise goes on an eighth turn to the resting elevation, as before; it never returns to a view that was itself from above. `looksDown` says whether the camera stands where looking down leaves it, straight above and squared, which is when the tool shows pressed.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -189,20 +189,30 @@ behind it. Until 2026-11-13 looking down always turned back an eighth, which lef
 ##### `lookDown` — Summary
 Where "look straight down" takes the camera from where it is: above the board, squared to the screen.
 
-#### `lookUp` {#symbol-lookup}
+#### `looksDown` {#symbol-looksdown}
 - Type: function
 - Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L148)
+- Parameters: `camera`: [`Camera`](#symbol-camera)
+
+##### `looksDown` — Summary
+Whether the camera stands where "look straight down" leaves it: straight above, the board squared to the screen. A
+camera dragged to straight above at another azimuth is not; the tool shows unpressed there, and squares the board
+where it stands (decided 2026-11-13).
+
+#### `lookUp` {#symbol-lookup}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L157)
 - Returns: [`Camera`](#symbol-camera)
 - Parameters: `camera`: [`Camera`](#symbol-camera)
 
 ##### `lookUp` — Summary
 Where the camera goes when it leaves the view from above: back to the view it looked down from, when it has not
-turned since it arrived above; otherwise on by an eighth turn, to the resting elevation, which from a squared azimuth
-is the resting azimuth beside it.
+turned since it arrived above and that view was not itself from above; otherwise on by an eighth turn, to the resting
+elevation, which from a squared azimuth is the resting azimuth beside it.
 
 #### `facing` {#symbol-facing}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L154)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L163)
 - Parameters: `camera`: [`Camera`](#symbol-camera); `normal`: [`Point2`](#symbol-point2)
 
 ##### `facing` — Summary
@@ -210,7 +220,7 @@ Whether the viewer sees a wall with this outward normal on the board plane.
 
 #### `shade` {#symbol-shade}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L161)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L170)
 - Parameters: `camera`: [`Camera`](#symbol-camera); `normal`: [`Point3`](#symbol-point3)
 
 ##### `shade` — Summary
@@ -218,21 +228,21 @@ How light a face with this normal is, from a light that sits off the front-left 
 
 #### `Box` {#symbol-box}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L176)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L185)
 
 ##### `Box` — Summary
 A box on the board: its top-left corner, its footprint, the height it floats at and its own height.
 
 #### `Face` {#symbol-face}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L186)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L195)
 
 ##### `Face` — Summary
 One face of a solid: its corners, its outward normal and its depth.
 
 #### `cuboidFaces` {#symbol-cuboidfaces}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L193)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L202)
 - Returns: [`Face`](#symbol-face)[]
 - Parameters: `camera`: [`Camera`](#symbol-camera); `pivot`: [`Pivot`](#symbol-pivot); `box`: [`Box`](#symbol-box)
 
@@ -241,7 +251,7 @@ The six faces of a box, sorted far to near, so that drawing them in order paints
 
 #### `ring` {#symbol-ring}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L214)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L223)
 - Returns: [`Point3`](#symbol-point3)[]
 
 ##### `ring` — Summary
@@ -249,7 +259,7 @@ The points of a circle on the board at a height, for a drum.
 
 #### `bezierAt` {#symbol-bezierat}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L222)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L231)
 - Returns: [`Point3`](#symbol-point3)
 
 ##### `bezierAt` — Summary
@@ -257,7 +267,7 @@ A cubic Bezier through four points at a parameter.
 
 #### `pointInPolygon` {#symbol-pointinpolygon}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L228)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L237)
 - Parameters: `polygon`: [`Point2`](#symbol-point2)[]; `point`: [`Point2`](#symbol-point2)
 
 ##### `pointInPolygon` — Summary
@@ -265,7 +275,7 @@ Whether a point lies inside a polygon, by ray casting.
 
 #### `smooth` {#symbol-smooth}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L241)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L250)
 
 ##### `smooth` — Summary
 A smooth step from 0 to 1.

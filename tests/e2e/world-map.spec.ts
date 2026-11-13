@@ -22,6 +22,23 @@ async function openWorldMap(page: Page): Promise<void> {
   });
 }
 
+/** The board's edges as the page draws them run along the screen's, each within a hundredth of a degree. */
+async function expectSquared(page: Page): Promise<void> {
+  const edges = await page.locator("#view-world polygon.w-bench").evaluate((polygon) => {
+    const points = (polygon.getAttribute("points") ?? "").trim().split(/\s+/u).map((pair) => pair.split(",").map(Number));
+    // Each edge folded to its angle from the nearer of the screen's axes.
+    return points.map(([x, y], i) => {
+      const [nx, ny] = points[(i + 1) % points.length];
+      const degrees = (Math.atan2(ny - y, nx - x) * 180) / Math.PI;
+      return ((((degrees + 45) % 90) + 90) % 90) - 45;
+    });
+  });
+  expect(edges).toHaveLength(4);
+  for (const angle of edges) {
+    expect(Math.abs(angle), `the board's edges run at ${edges.map((a) => a.toFixed(1)).join(", ")} degrees to the screen`).toBeLessThan(0.01);
+  }
+}
+
 test.describe("World Map", () => {
   test("opens on the board and draws its things, regions and wires", async ({ page }) => {
     await openWorldMap(page);
@@ -325,19 +342,7 @@ test.describe("World Map", () => {
     const down = page.getByRole("button", { name: "Look straight down" });
     await down.click();
     await expect(down).toHaveAttribute("aria-pressed", "true");
-    // The board's edges as the page draws them, each folded to its angle from the nearer of the screen's axes.
-    const edges = await page.locator("#view-world polygon.w-bench").evaluate((polygon) => {
-      const points = (polygon.getAttribute("points") ?? "").trim().split(/\s+/u).map((pair) => pair.split(",").map(Number));
-      return points.map(([x, y], i) => {
-        const [nx, ny] = points[(i + 1) % points.length];
-        const degrees = (Math.atan2(ny - y, nx - x) * 180) / Math.PI;
-        return ((((degrees + 45) % 90) + 90) % 90) - 45;
-      });
-    });
-    expect(edges).toHaveLength(4);
-    for (const angle of edges) {
-      expect(Math.abs(angle), `the board's edges run at ${edges.map((a) => a.toFixed(1)).join(", ")} degrees to the screen`).toBeLessThan(0.01);
-    }
+    await expectSquared(page);
     await down.click();
     await expect(down).toHaveAttribute("aria-pressed", "false");
     const back = await page.evaluate(() => window.__worldMap!.state());
@@ -360,6 +365,125 @@ test.describe("World Map", () => {
     expect(up.theta).toBeCloseTo(0, 9);
     expect(up.phi).toBeCloseTo(Math.PI / 6, 9);
   });
+
+  test("dragged to straight above at another angle, the tool shows unpressed and squares the board where it stands", async ({ page }) => {
+    await openWorldMap(page);
+    const box = (await page.locator("#view-world svg.world-svg").boundingBox())!;
+    const cx = box.x + box.width / 2;
+    const cy = box.y + box.height / 2;
+    await page.mouse.move(cx, cy - 130);
+    await page.mouse.down({ button: "right" });
+    await page.mouse.move(cx + 110, cy + 130, { steps: 6 });
+    await page.mouse.up({ button: "right" });
+    const dragged = await page.evaluate(() => window.__worldMap!.state());
+    expect(dragged.phi, "straight above").toBeCloseTo(Math.PI / 2, 9);
+    const down = page.getByRole("button", { name: "Look straight down" });
+    await expect(down, "above, but askew").toHaveAttribute("aria-pressed", "false");
+    await down.click();
+    await expect(down).toHaveAttribute("aria-pressed", "true");
+    const squared = await page.evaluate(() => window.__worldMap!.state());
+    expect(squared.phi).toBeCloseTo(Math.PI / 2, 9);
+    expect(Math.abs(squared.theta - dragged.theta), "the least turn").toBeLessThanOrEqual(Math.PI / 4 + 1e-9);
+    await expectSquared(page);
+    // Pressed again it looks up, on an eighth turn to the resting elevation, rather than back to the askew view above.
+    await down.click();
+    await expect(down).toHaveAttribute("aria-pressed", "false");
+    const up = await page.evaluate(() => window.__worldMap!.state());
+    expect(up.phi).toBeCloseTo(Math.PI / 6, 9);
+    expect(up.theta).toBeCloseTo(squared.theta + Math.PI / 4, 9);
+  });
+
+  // The owner (2026-11-13): "Right click-and-drag-based rotation is EXTREMELY slow". Each pointer move drew the whole
+  // board and settled every label by measuring it at each place it might go, the page laid out again for each
+  // measurement: about forty-five layouts a move on this board.
+  test("a turn by drag draws the board once a frame however many pointer moves arrive in it, and has caught up by then", async ({ page }) => {
+    await openWorldMap(page);
+    const box = (await page.locator("#view-world svg.world-svg").boundingBox())!;
+    const cx = box.x + box.width / 2;
+    const cy = box.y + box.height / 2;
+    await page.mouse.move(cx, cy);
+    await page.mouse.down({ button: "right" });
+    const before = await page.evaluate(() => window.__worldMap!.state().theta);
+    const drawn = await page.evaluate(async ([x, y]) => {
+      const svg = document.querySelector("#view-world svg.world-svg")!;
+      const removals = (records: MutationRecord[]): number => records.filter((record) => record.removedNodes.length > 0).length;
+      let draws = 0;
+      const observer = new MutationObserver((records) => { draws += removals(records); });
+      observer.observe(svg.querySelector(".w-layer-blocks")!, { childList: true });
+      const frame = (): Promise<number> => new Promise((resolve) => requestAnimationFrame(resolve));
+      await frame();
+      // Six moves between two frames, as a browser may deliver them while the page is busy.
+      for (let i = 1; i <= 6; i += 1) {
+        svg.dispatchEvent(new PointerEvent("pointermove", { bubbles: true, pointerId: 1, pointerType: "mouse", clientX: x + 15 * i, clientY: y, buttons: 2 }));
+      }
+      await frame();
+      await frame();
+      draws += removals(observer.takeRecords());
+      observer.disconnect();
+      return { draws, bench: svg.querySelector("polygon.w-bench")!.getAttribute("points") };
+    }, [cx, cy]);
+    expect(drawn.draws, "whole drawings for six moves in one frame").toBe(1);
+    const turned = await page.evaluate(() => window.__worldMap!.state().theta);
+    expect(turned).toBeCloseTo(before - 90 * 0.006, 9);
+    await page.mouse.up({ button: "right" });
+    // Nothing was left to draw when the pointer let go: the frame had drawn the last move.
+    expect(await page.locator("#view-world polygon.w-bench").getAttribute("points")).toBe(drawn.bench);
+  });
+
+  for (const board of [{ name: "this repository's board", address: "/?view=world" }, { name: "the estate", address: "/samples/estate/index.html?view=world" }]) {
+    test(`on ${board.name}, turning, panning and zooming lay the page out at most twice a move, not once a label`, async ({ page }) => {
+      await page.goto(board.address);
+      await page.waitForFunction(() => window.__worldMap?.ready === true, null, { timeout: 20_000 });
+      await page.evaluate(() => {
+        window.__worldMap!.instant(true);
+        window.localStorage.clear();
+        window.__worldMap!.reset();
+      });
+      const box = (await page.locator("#view-world svg.world-svg").boundingBox())!;
+      const cdp = await page.context().newCDPSession(page);
+      await cdp.send("Performance.enable");
+      const layouts = async (): Promise<number> => (await cdp.send("Performance.getMetrics")).metrics.find((metric) => metric.name === "LayoutCount")!.value;
+      const frames = (): Promise<unknown> => page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+      // A transition that ends, the view's entrance or a piece's fading when the hover changes, ends in a change of style
+      // that lays the page out once on its own clock (traced 2026-11-13). Each count begins when every animation that
+      // ends has ended, leaving the wires' endless flowing dashes, which lay nothing out.
+      const settled = (): Promise<unknown> => page.waitForFunction(() => document.getAnimations().every((animation) => animation.playState !== "running" || animation.effect?.getTiming().iterations === Infinity));
+      // Only the moves are counted: the pointer is pressed or in place first, and lets go after.
+      const counted = async (start: () => Promise<void>, move: (i: number) => Promise<void>, end: () => Promise<void>): Promise<number> => {
+        await start();
+        await settled();
+        await frames();
+        const before = await layouts();
+        for (let i = 1; i <= moves; i += 1) {
+          await move(i);
+        }
+        await frames();
+        const count = (await layouts()) - before;
+        await end();
+        return count;
+      };
+      const moves = 20;
+      const middle = { x: box.x + box.width / 2, y: box.y + box.height / 2 };
+      const corner = { x: box.x + 12, y: box.y + box.height - 12 };
+      const turning = await counted(
+        async () => { await page.mouse.move(middle.x, middle.y); await page.mouse.down({ button: "right" }); },
+        (i) => page.mouse.move(middle.x + 10 * i, middle.y + 1.5 * i),
+        () => page.mouse.up({ button: "right" }));
+      const panning = await counted(
+        async () => { await page.mouse.move(corner.x, corner.y); await page.mouse.down(); },
+        (i) => page.mouse.move(corner.x + 10 * i, corner.y - 1.5 * i),
+        () => page.mouse.up());
+      const zooming = await counted(
+        () => page.mouse.move(box.x + 30, box.y + 30),
+        (i) => page.mouse.wheel(0, i <= moves / 2 ? 40 : -40),
+        async () => undefined);
+      // A move is laid out at most twice: once when every label is read where it rests, in one batch, and once when the
+      // frame is drawn. Before 2026-11-13 a turn's move was laid out about forty-five times on this repository's board.
+      for (const [gesture, count] of [["turning", turning], ["panning", panning], ["zooming", zooming]] as const) {
+        expect(count / moves, `${gesture}: ${count} layouts for ${moves} moves`).toBeLessThanOrEqual(2);
+      }
+    });
+  }
 
   test("keeps a moved thing where it was put and writes it into the board text", async ({ page }) => {
     await openWorldMap(page);

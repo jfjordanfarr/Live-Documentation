@@ -141,13 +141,22 @@ export function lookDown(camera: Camera): Camera {
 }
 
 /**
+ * Whether the camera stands where "look straight down" leaves it: straight above, the board squared to the screen. A
+ * camera dragged to straight above at another azimuth is not; the tool shows unpressed there, and squares the board
+ * where it stands (decided 2026-11-13).
+ */
+export function looksDown(camera: Camera): boolean {
+  return isTopDown(camera) && Math.abs(camera.theta - squaredAzimuth(camera.theta)) < 1e-6;
+}
+
+/**
  * Where the camera goes when it leaves the view from above: back to the view it looked down from, when it has not
- * turned since it arrived above; otherwise on by an eighth turn, to the resting elevation, which from a squared azimuth
- * is the resting azimuth beside it.
+ * turned since it arrived above and that view was not itself from above; otherwise on by an eighth turn, to the resting
+ * elevation, which from a squared azimuth is the resting azimuth beside it.
  */
 export function lookUp(camera: Camera, arrived?: { from: Camera; above: Camera }): Camera {
   const unturned = arrived !== undefined && Math.abs(camera.theta - arrived.above.theta) < 1e-6 && Math.abs(camera.phi - arrived.above.phi) < 1e-6;
-  return unturned ? { ...arrived.from } : { theta: camera.theta + Math.PI / 4, phi: REST_ELEVATION };
+  return unturned && !isTopDown(arrived.from) ? { ...arrived.from } : { theta: camera.theta + Math.PI / 4, phi: REST_ELEVATION };
 }
 
 /** Whether the viewer sees a wall with this outward normal on the board plane. */

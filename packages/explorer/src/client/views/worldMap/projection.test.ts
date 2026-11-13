@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { REST_ELEVATION, TOP_DOWN, bezierAt, cuboidFaces, depthOf, fitScreen, fromScreen, isTopDown, lookDown, lookUp, pointInPolygon, project, shade, squaredAzimuth, toScreen, unproject, zoomAt } from "./projection";
+import { REST_ELEVATION, TOP_DOWN, bezierAt, cuboidFaces, depthOf, fitScreen, fromScreen, isTopDown, lookDown, lookUp, looksDown, pointInPolygon, project, shade, squaredAzimuth, toScreen, unproject, zoomAt } from "./projection";
 
 const pivot = { x: 700, y: 450 };
 
@@ -100,6 +100,22 @@ describe("the view from straight above", () => {
     const above = lookDown(from);
     expect(above).toEqual({ theta: squaredAzimuth(-0.6), phi: TOP_DOWN });
     expect(lookUp(above, { from, above })).toEqual(from);
+  });
+
+  it("counts as looking down only straight above with the board squared", () => {
+    expect(looksDown({ theta: Math.PI / 4, phi: TOP_DOWN })).toBe(true);
+    expect(looksDown({ theta: -9 * Math.PI / 4, phi: TOP_DOWN })).toBe(true);
+    expect(looksDown({ theta: 0.3, phi: TOP_DOWN }), "dragged to straight above at another azimuth").toBe(false);
+    expect(looksDown({ theta: Math.PI / 4, phi: REST_ELEVATION })).toBe(false);
+  });
+
+  it("squares the board where it stands when dragged to straight above, and then looks up rather than back to the drag", () => {
+    const dragged = { theta: 0.3, phi: TOP_DOWN };
+    const above = lookDown(dragged);
+    expect(above).toEqual({ theta: Math.PI / 4, phi: TOP_DOWN });
+    const up = lookUp(above, { from: dragged, above });
+    expect(up.theta).toBeCloseTo(Math.PI / 2, 12);
+    expect(up.phi).toBe(REST_ELEVATION);
   });
 
   it("goes on an eighth turn to the resting elevation when the camera turned above, or nothing is known of how it got there", () => {
