@@ -41,7 +41,7 @@ describe("the lab's alignment evaluation", () => {
     const graph: ExplorerGraphPayload = { nodes, links: [{ source: "a/y.ts", target: "a/x.ts", sourceSymbol: "value", targetSymbol: "value", kind: "dependency" }], stats: { nodes: 2, links: 1, references: 1, dependenciesOutsideScan: 0 } };
     const run: ScopeRun = { bundle: "repository", base: "/", scopeName: "pair", subject: nodes[0].id, scope: nodes.map(file => file.id) };
     const capture = {} as Capture;
-    const config = { ...baselineConfig(), orderStarts: 0, membraneEvenness: 0, membraneSimplicity: 50, rowLevelness: 0, crossingCost: 0, heightCost: 0 };
+    const config = { ...baselineConfig(), orderStarts: 0, membraneEvenness: 0, membraneSimplicity: 50, rowLevelness: 0, crossingCost: 0, heightCost: 0, widthCost: 0 };
     const initial = evaluate(capture, graph, run, config);
     expect(initial.signals.steps).toBeGreaterThan(0);
     expect(initial.starts[0].score).toBe(initial.signals.placementCost + 50 * initial.signals.steps);
@@ -67,7 +67,7 @@ describe("the lab's alignment evaluation", () => {
     const graph: ExplorerGraphPayload = { nodes, links: [{ source: "a/y.ts", target: "a/x.ts", sourceSymbol: "value", targetSymbol: "value", kind: "dependency" }], stats: { nodes: 2, links: 1, references: 1, dependenciesOutsideScan: 0 } };
     const run: ScopeRun = { bundle: "repository", base: "/", scopeName: "pair", subject: nodes[0].id, scope: nodes.map(file => file.id) };
     const capture = { capturedAt: "2026-10-13" } as Capture;
-    const config = { ...baselineConfig(), orderStarts: 0, membraneEvenness: 0, membraneSimplicity: 50, rowLevelness: 0, crossingCost: 0, heightCost: 0 };
+    const config = { ...baselineConfig(), orderStarts: 0, membraneEvenness: 0, membraneSimplicity: 50, rowLevelness: 0, crossingCost: 0, heightCost: 0, widthCost: 0 };
     const settings = { searchStarts: 3, searchPatience: 2, churnCost: 0 };
     const result = refine(capture, graph, run, config, settings);
     expect(result.trials.slice(0, 3).map(trial => trial.kind)).toEqual(["alignment", "seed", "alignment"]);

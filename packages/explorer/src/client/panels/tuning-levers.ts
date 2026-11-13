@@ -26,6 +26,7 @@ export const TUNING_HELP: Readonly<Record<string, string>> = {
   "tuning-item-gap":                  "The least space between cards, and between wire lanes, in a column.",
   "tuning-band-gap":                  "The least space between neighbouring directories' outlines.",
   "tuning-height-cost":               "Higher prefers a shorter picture over shorter wires.",
+  "tuning-width-cost":                "Higher prefers a narrower picture: an opened directory's boxes, unlinked files and tall ranks stack deeper.",
   "tuning-membrane-simplicity":       "Higher prefers directory outlines with fewer steps; zero has no preference.",
   "tuning-row-levelness":             "Higher stands a directory's cards in level rows; zero lets each stand where its wires are shortest.",
   "tuning-hover-dim-symbols":         "How visible symbols and cards unrelated to the hovered symbol stay; lower is fainter.",

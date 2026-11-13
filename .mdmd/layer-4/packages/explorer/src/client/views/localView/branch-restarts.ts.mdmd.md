@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-restarts.ts
-- Generated At: 2026-10-13T16:52:34.786Z
+- Generated At: 2026-11-13T18:41:40.509Z
 
 ## Authored
 ### Purpose
@@ -13,9 +13,11 @@ Defines the Local Map’s ordering starts and complete layout score, shared by i
 
 ### Notes
 
-Ranking and placement are exact, so running them twice gives one answer; the barycenter sweep of `branch-order.ts` is a local search, and where it ends depends on where it begins. The layout lab's first sweep found the start the largest layout lever and a lottery (on this repository's five-file scope a shuffled start ends a quarter to a third shorter than the ranking's own order), so the page tries several: the ranking's order first, then the order the previous picture stood its files in (by their tops, the files that picture did not show following in their ranked order), then the shuffles by the seeds 1 to `orderStarts`; a forced `orderSeed` is tried alone, so the lab can ask for one start by name. Every start is laid out by the caller's `layout` function (the renderer measures the page's own cards for each, the lab its capture) and priced in pixels of wire: the vertical length (the placement's measure) plus `crossingCost` per crossing of the order's own count, `heightCost` per pixel of the picture's height and `churnCost` per pair of cards in one column that stand the other way round from the previous picture. The same score includes membrane step distance, nonzero step count and directly owned card-row misalignment under their independent weights. Of two starts at one price the earlier wins, so the ranking's order stands unless another is cheaper and the previous picture's stands before any shuffle, which is what keeps a picture put across a re-layout. The starts are fixed, so the same inputs and previous picture give the same choice. The costs were set from the lab's `restarts` tabulation on 2026-10-06, at the values where the page's cheap choice agrees with the full weighted score on all four deck scopes (a crossing at 80 px, a pixel of height at 5); the initial churn cost of 100 was chosen before the later previous-picture tabulation. Built after the owner's go ([Turn 12](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-12): "Let's try it out!"), who asked for "a weighted score that can be tabulated and tuned" ([Turn 11](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-11)).
+Ranking and placement are exact, so running them twice gives one answer; the barycenter sweep of `branch-order.ts` is a local search, and where it ends depends on where it begins. The layout lab's first sweep found the start the largest layout lever and a lottery (on this repository's five-file scope a shuffled start ends a quarter to a third shorter than the ranking's own order), so the page tries several: the ranking's order first, then the order the previous picture stood its files in (by their tops, the files that picture did not show following in their ranked order), then the shuffles by the seeds 1 to `orderStarts`; a forced `orderSeed` is tried alone, so the lab can ask for one start by name. Every start is laid out by the caller's `layout` function (the renderer measures the page's own cards for each, the lab its capture) and priced in pixels of wire: the vertical length (the placement's measure) plus `crossingCost` per crossing of the order's own count, `heightCost` per pixel of the picture's height, `widthCost` per pixel of its width and `churnCost` per pair of cards in one column that stand the other way round from the previous picture. The same score includes membrane step distance, nonzero step count and directly owned card-row misalignment under their independent weights. Of two starts at one price the earlier wins, so the ranking's order stands unless another is cheaper and the previous picture's stands before any shuffle, which is what keeps a picture put across a re-layout. The starts are fixed, so the same inputs and previous picture give the same choice. The costs were set from the lab's `restarts` tabulation on 2026-10-06, at the values where the page's cheap choice agrees with the full weighted score on all four deck scopes (a crossing at 80 px, a pixel of height at 5); the initial churn cost of 100 was chosen before the later previous-picture tabulation. Built after the owner's go ([Turn 12](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-12): "Let's try it out!"), who asked for "a weighted score that can be tabulated and tuned" ([Turn 11](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-11)).
 
 The shape signals were unified for [the October 13 competition refinement](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply): geometry preferences must participate when choosing between pictures, not only when placing each candidate. A zero step-count price does not remove the independent evenness or row-alignment preferences.
+
+The width joined the price on 2026-11-13, by the owner's leave ([Turn 4](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-4)), so that the price, not a rule, chooses how an opened directory's things that no line places stand in flow order (`searchFlowShape` in `directory-flow.ts`). The order alone never changes a picture's width, so among one exploration's starts the term is a constant and changes no choice; it decides only between shapes. Its default equals the height's (5, and 12 in the compact preset), found by eye on four directories of this repository and one of the estate sample: below it a directory of eleven files stood as a ribbon five times wider than tall, and between 5 and 12 no subject's picture changed.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -36,7 +38,7 @@ What a start's picture costs beyond its vertical wire length, each in pixels of 
 
 #### `StartSignals` {#symbol-startsignals}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-restarts.ts#L42)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-restarts.ts#L48)
 - Extends: [`ShapeSignals`](./branch-shape.ts.mdmd.md#symbol-shapesignals)
 
 ##### `StartSignals` — Summary
@@ -44,28 +46,28 @@ The signals a start is priced on, every one known the moment its placement is so
 
 #### `StartOutcome` {#symbol-startoutcome}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-restarts.ts#L54)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-restarts.ts#L62)
 
 ##### `StartOutcome` — Summary
 A start laid out and priced.
 
 #### `startName` {#symbol-startname}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-restarts.ts#L64)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-restarts.ts#L72)
 
 ##### `startName` — Summary
 A start's name, as the page and the lab's reports write it.
 
 #### `startOrder` {#symbol-startorder}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-restarts.ts#L67)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-restarts.ts#L75)
 
 ##### `startOrder` — Summary
 The order step's options for a start.
 
 #### `candidateStarts` {#symbol-candidatestarts}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-restarts.ts#L75)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-restarts.ts#L83)
 - Returns: [`Start`](#symbol-start)[]
 - Parameters: `previous`: `ReadonlyMap`
 
@@ -76,7 +78,7 @@ name and the page draws that start.
 
 #### `previousStart` {#symbol-previousstart}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-restarts.ts#L84)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-restarts.ts#L92)
 - Parameters: `previous`: `ReadonlyMap`
 
 ##### `previousStart` — Summary
@@ -84,7 +86,7 @@ Each ranked column in the order the previous picture stood its files, by their t
 
 #### `churnOf` {#symbol-churnof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-restarts.ts#L92)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-restarts.ts#L100)
 - Parameters: `previous`: `ReadonlyMap`
 
 ##### `churnOf` — Summary
@@ -92,7 +94,7 @@ Pairs of cards in one column that stand the other way round from the previous pi
 
 #### `signalsOf` {#symbol-signalsof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-restarts.ts#L105)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-restarts.ts#L113)
 - Returns: [`StartSignals`](#symbol-startsignals)
 - Parameters: `branches`: [`BranchGraph`](./branches.ts.mdmd.md#symbol-branchgraph); `scene`: [`Scene`](./branch-scene.ts.mdmd.md#symbol-scene); `previousTops`: `ReadonlyMap`
 
@@ -101,15 +103,15 @@ The signals available as soon as a placement is solved, shared by first paint an
 
 #### `scoreOf` {#symbol-scoreof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-restarts.ts#L116)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-restarts.ts#L125)
 - Parameters: `signals`: [`StartSignals`](#symbol-startsignals); `costs`: [`StartCosts`](#symbol-startcosts)
 
 ##### `scoreOf` — Summary
-A start's price: its vertical length and what its crossings, height, churn and shape cost, in pixels of wire.
+A start's price: its vertical length and what its crossings, height, width, churn and shape cost, in pixels of wire.
 
 #### `layoutStarts` {#symbol-layoutstarts}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-restarts.ts#L125)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-restarts.ts#L134)
 - Parameters: `start`: [`Start`](#symbol-start); `costs`: [`StartCosts`](#symbol-startcosts); `previous`: `ReadonlyMap`
 
 ##### `layoutStarts` — Summary

@@ -3,7 +3,7 @@ import { DIRECTORY_LAYOUTS, GROUP_WRAPPERS, ZOOM_LOOKS, type ForceGraphTuning, t
 /** One packing preference interpreted by both Local Map representations. */
 export type LayoutPreset = "compact" | "relaxed";
 
-type FlatPacking = Pick<LocalMapTuning, "columnGap" | "itemGap" | "bandGap" | "heightCost" | "membraneEvenness" | "membraneSimplicity" | "rowLevelness">;
+type FlatPacking = Pick<LocalMapTuning, "columnGap" | "itemGap" | "bandGap" | "heightCost" | "widthCost" | "membraneEvenness" | "membraneSimplicity" | "rowLevelness">;
 type SpatialPacking = Pick<ForceGraphTuning, "linkGap" | "charge" | "collisionGap">;
 
 /** Portable numeric settings behind the presets and spatial encodings; older URLs may omit them. */
@@ -15,7 +15,7 @@ export interface LayoutSettings {
 /** Public control minimum, maximum and step, also used when reading saved or shared values. */
 export const LAYOUT_RANGES = {
   localMap: {
-    columnGap: [24, 160, 4], itemGap: [8, 80, 2], bandGap: [8, 80, 2], heightCost: [0, 40, 1],
+    columnGap: [24, 160, 4], itemGap: [8, 80, 2], bandGap: [8, 80, 2], heightCost: [0, 40, 1], widthCost: [0, 40, 1],
     membraneEvenness: [0, 5, 0.25], membraneSimplicity: [0, 1000, 10], rowLevelness: [0, 5, 0.25]
   },
   forceGraph: {
@@ -29,11 +29,11 @@ export const LAYOUT_RANGES = {
 /** Packing defaults only: selecting a preset preserves coupling, symbol scaling and unrelated controls. */
 export const LAYOUT_PRESETS: Readonly<Record<LayoutPreset, { localMap: FlatPacking; forceGraph: SpatialPacking }>> = {
   compact: {
-    localMap: { columnGap: 72, itemGap: 16, bandGap: 20, heightCost: 12, membraneEvenness: 1, membraneSimplicity: 100, rowLevelness: 0.25 },
+    localMap: { columnGap: 72, itemGap: 16, bandGap: 20, heightCost: 12, widthCost: 12, membraneEvenness: 1, membraneSimplicity: 100, rowLevelness: 0.25 },
     forceGraph: { linkGap: 32, charge: 30, collisionGap: 2 }
   },
   relaxed: {
-    localMap: { columnGap: 100, itemGap: 24, bandGap: 28, heightCost: 5, membraneEvenness: 2, membraneSimplicity: 200, rowLevelness: 2 },
+    localMap: { columnGap: 100, itemGap: 24, bandGap: 28, heightCost: 5, widthCost: 5, membraneEvenness: 2, membraneSimplicity: 200, rowLevelness: 2 },
     forceGraph: { linkGap: 60, charge: 60, collisionGap: 5 }
   }
 };

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { placeMembers } from "./branches";
-import { flowColumns, flowNeighbours, isPairLine, linksOf, pairLines, squareRows, wrapRanks, type FlowInput, type UndrawnLink } from "./directory-flow";
+import { flowColumns, flowNeighbours, isPairLine, linksOf, NARROW_SHAPE, NOMINAL_BOX, NOMINAL_CARD, NOMINAL_LABEL, nominalMeasurer, pairLines, searchFlowShape, wrapChoices, wrapRanks, type FlowInput, type FlowShape, type UndrawnLink } from "./directory-flow";
 import { NODE_HUB } from "./wire-gathering";
 
 /** A link of the graph: `uses` depends on `offers`. */
@@ -10,8 +10,8 @@ const link = (uses: string, offers: string, kind: UndrawnLink["kind"] = "depende
 const directoryOf = (id: string): string => (id.includes("/") ? id.slice(0, id.lastIndexOf("/")) : "");
 
 /** A flow over the given ranks, with each opened directory's boxes and line-less files by directory. */
-const flow = (ranked: string[][], contents: Record<string, { boxes?: string[]; loose?: string[] }>, rows: number | null = null): FlowInput => ({
-  ranked, opened: new Set(Object.keys(contents)), rows, directoryOf,
+const flow = (ranked: string[][], contents: Record<string, { boxes?: string[]; loose?: string[] }>): FlowInput => ({
+  ranked, opened: new Set(Object.keys(contents)), directoryOf,
   boxesOf: directory => contents[directory]?.boxes ?? [],
   looseOf: directory => contents[directory]?.loose ?? []
 });
@@ -65,37 +65,6 @@ describe("the cards a hovered card keeps lit", () => {
   });
 });
 
-describe("the rows at which ranks stand about as wide as tall", () => {
-  const ranks = (...sizes: number[]): string[][] => sizes.map((size, rank) => Array.from({ length: size }, (_, index) => `r${rank}/${index}`));
-
-  it("is the least number of rows at which the wrapped ranks take no more columns than rows", () => {
-    // One provider and nine users: three rows give four columns, four rows give four.
-    expect(squareRows(ranks(1, 9))).toBe(4);
-    expect(wrapRanks(ranks(1, 9), 4).map(column => column.length)).toEqual([1, 3, 3, 3]);
-    // Two ranks before thirty leaves: seven rows give seven columns.
-    expect(squareRows(ranks(2, 5, 30))).toBe(7);
-    // This repository's Local Map directory on 2026-11-12: only its rank of twelve wraps.
-    expect(squareRows(ranks(1, 3, 8, 12, 11, 7, 5, 9, 4))).toBe(11);
-    expect(wrapRanks(ranks(1, 3, 8, 12, 11, 7, 5, 9, 4), 11).map(column => column.length)).toEqual([1, 3, 8, 6, 6, 11, 7, 5, 9, 4]);
-  });
-
-  it("wraps nothing where the ranks are already wider than tall, and holds one row for no rank", () => {
-    expect(squareRows(ranks(1, 1, 1, 1, 1))).toBe(1);
-    expect(squareRows(ranks(2, 2, 2, 2))).toBe(2);
-    expect(wrapRanks(ranks(2, 2, 2, 2), squareRows(ranks(2, 2, 2, 2)))).toEqual(ranks(2, 2, 2, 2));
-    expect(squareRows([])).toBe(1);
-  });
-
-  it("never asks for a cap under which a rank would lose a card", () => {
-    for (const sizes of [[1, 9], [2, 5, 30], [40], [3, 3, 3], [1, 2, 3, 4, 5, 6, 7, 8]]) {
-      const ranked = ranks(...sizes), rows = squareRows(ranked);
-      const wrapped = wrapRanks(ranked, rows);
-      expect(wrapped.flat()).toEqual(ranked.flat());
-      for (const column of wrapped) expect(column.length).toBeLessThanOrEqual(rows);
-    }
-  });
-});
-
 describe("wrapping a tall rank", () => {
   const ranked = [["a1", "a2"], ["b1", "b2", "b3", "b4", "b5", "b6", "b7"], ["c1"]];
 
@@ -124,48 +93,88 @@ describe("wrapping a tall rank", () => {
   });
 });
 
+/** A shape with the given choices, the rest narrowest. */
+const shaped = (choices: { rows?: number | null; boxRows?: Record<string, number>; looseColumns?: Record<string, number> }): FlowShape => ({
+  rows: choices.rows ?? null, boxRows: new Map(Object.entries(choices.boxRows ?? {})), looseColumns: new Map(Object.entries(choices.looseColumns ?? {}))
+});
+
+describe("the rows at which the ranks wrap differently", () => {
+  const ranks = (...sizes: number[]): string[][] => sizes.map((size, rank) => Array.from({ length: size }, (_, index) => `r${rank}/${index}`));
+
+  it("are the caps, from the tallest rank's down, at which the wrapped ranks take more columns than at the cap before", () => {
+    // One provider and nine users: eight rows give three columns, four give four, two give six, one gives ten.
+    expect(wrapChoices(ranks(1, 9))).toEqual([8, 4, 2, 1]);
+    expect(wrapChoices(ranks(1, 9)).map(rows => wrapRanks(ranks(1, 9), rows).length)).toEqual([3, 4, 6, 10]);
+    expect(wrapChoices(ranks(2, 2, 2))).toEqual([1]);
+  });
+
+  it("are none where no rank holds two cards, or there is no rank", () => {
+    expect(wrapChoices(ranks(1, 1, 1))).toEqual([]);
+    expect(wrapChoices([])).toEqual([]);
+  });
+});
+
 describe("the columns of a directory in flow order", () => {
-  it("stands the files no line joins together after the directory's last column, read row by row", () => {
-    // d: a is used by b and c, which e uses; five files join nothing. The tallest column holds two, the square root of five is three.
-    const columns = flowColumns(flow([["d/a"], ["d/b", "d/c"], ["d/e"]], { d: { loose: ["d/p", "d/q", "d/r", "d/s", "d/t"] } }));
-    expect(columns).toEqual([["d/a"], ["d/b", "d/c"], ["d/e"], ["d/p", "d/r", "d/t"], ["d/q", "d/s"]]);
+  it("in the narrowest shape, stands the files no line joins in one column after the directory's last, and more columns when the shape asks", () => {
+    // d: a is used by b and c, which e uses; five files join nothing.
+    const input = flow([["d/a"], ["d/b", "d/c"], ["d/e"]], { d: { loose: ["d/p", "d/q", "d/r", "d/s", "d/t"] } });
+    expect(flowColumns(input)).toEqual([["d/a"], ["d/b", "d/c"], ["d/e"], ["d/p", "d/q", "d/r", "d/s", "d/t"]]);
+    expect(flowColumns(input, shaped({ looseColumns: { d: 2 } }))).toEqual([["d/a"], ["d/b", "d/c"], ["d/e"], ["d/p", "d/r", "d/t"], ["d/q", "d/s"]]);
+    // No more columns than files.
+    expect(flowColumns(input, shaped({ looseColumns: { d: 9 } })).slice(3)).toEqual([["d/p"], ["d/q"], ["d/r"], ["d/s"], ["d/t"]]);
   });
 
-  it("stands the closed boxes at the head of the directory's columns, one to a column and again from the first", () => {
-    const columns = flowColumns(flow([["d/a"], ["d/b", "d/c"]], { d: { boxes: ["d/x", "d/y", "d/z"], loose: ["d/p"] } }));
-    // Three boxes across two columns: x and z head the first, y the second; the line-less file stands after the last.
-    expect(columns).toEqual([["d/x", "d/z", "d/a"], ["d/y", "d/b", "d/c"], ["d/p"]]);
+  it("stands the closed boxes at the head of the directory's columns, within its files' columns or in the rows the shape asks", () => {
+    const input = flow([["d/a"], ["d/b", "d/c"]], { d: { boxes: ["d/x", "d/y", "d/z"], loose: ["d/p"] } });
+    // Narrowest: three boxes across the files' two columns, x and z heading the first; the line-less file after the last.
+    expect(flowColumns(input)).toEqual([["d/x", "d/z", "d/a"], ["d/y", "d/b", "d/c"], ["d/p"]]);
+    // One row: z stands in a column of its own past the files, and the line-less file stands under it.
+    expect(flowColumns(input, shaped({ boxRows: { d: 1 } }))).toEqual([["d/x", "d/a"], ["d/y", "d/b", "d/c"], ["d/z", "d/p"]]);
+    // A shape asking for more rows than the files' columns need is the narrowest.
+    expect(flowColumns(input, shaped({ boxRows: { d: 5 } }))).toEqual(flowColumns(input));
   });
 
-  it("holds every item exactly once, whatever the cap", () => {
-    const contents = { d: { boxes: ["d/x", "d/y"], loose: ["d/p", "d/q", "d/r", "d/s", "d/t", "d/u", "d/v"] } };
+  it("holds every item exactly once and keeps the order of use, whatever the shape", () => {
+    const contents = { d: { boxes: ["d/x", "d/y", "d/w"], loose: ["d/p", "d/q", "d/r", "d/s", "d/t", "d/u", "d/v"] } };
     const ranked = [["d/a"], ["d/b", "d/c", "d/e", "d/f", "d/g"], ["d/h"]];
     const all = [...ranked.flat(), ...contents.d.boxes, ...contents.d.loose].sort();
-    for (const rows of [2, 3, 4, null]) {
-      const columns = flowColumns(flow(ranked, contents, rows));
+    for (const rows of [1, 2, 3, 4, null]) for (const boxRows of [1, 2, 3]) for (const looseColumns of [1, 2, 4, 7]) {
+      const columns = flowColumns(flow(ranked, contents), shaped({ rows, boxRows: { d: boxRows }, looseColumns: { d: looseColumns } }));
       expect(columns.flat().sort()).toEqual(all);
       const at = columnOf(columns);
       // The ranks keep their order through the wrap, and the line-less files stand right of every ranked file.
       expect(at.get("d/a")!).toBeLessThan(at.get("d/b")!);
       expect(Math.max(...ranked[1].map(id => at.get(id)!))).toBeLessThan(at.get("d/h")!);
       for (const file of contents.d.loose) expect(at.get(file)!).toBeGreaterThan(at.get("d/h")!);
-      // No column of line-less files is taller than the directory's tallest column or the square root of their count.
-      const tallest = Math.max(Math.ceil(Math.sqrt(contents.d.loose.length)), ...columns.slice(0, at.get("d/h")! + 1).map(column => column.length));
-      for (const column of columns.slice(at.get("d/h")! + 1)) expect(column.length).toBeLessThanOrEqual(tallest);
+      // Every box heads its column.
+      for (const box of contents.d.boxes) {
+        const column = columns[at.get(box)!];
+        expect(column.slice(0, column.indexOf(box)).every(id => contents.d.boxes.includes(id)), box).toBe(true);
+      }
     }
   });
 
-  it("wraps a rank taller than the cap and still ends with the line-less files", () => {
-    const columns = flowColumns(flow([["d/a"], ["d/b", "d/c", "d/e", "d/f", "d/g"]], { d: { loose: ["d/p", "d/q", "d/r"] } }, 2));
+  it("wraps a rank taller than the shape's rows and still ends with the line-less files", () => {
+    const columns = flowColumns(flow([["d/a"], ["d/b", "d/c", "d/e", "d/f", "d/g"]], { d: { loose: ["d/p", "d/q", "d/r"] } }), shaped({ rows: 2, looseColumns: { d: 2 } }));
     expect(columns).toEqual([["d/a"], ["d/b", "d/c"], ["d/e", "d/f"], ["d/g"], ["d/p", "d/r"], ["d/q"]]);
   });
 
-  it("stands a short flow's line-less files about as wide as tall, not in one row", () => {
+  it("can stand a short flow's line-less files about as wide as tall, when that is the shape asked for", () => {
     // Two files joined by one line, six boxes above them, eight files that join nothing: the scan root on 2026-11-12.
     const boxes = ["b1", "b2", "b3", "b4", "b5", "b6"], loose = ["l1", "l2", "l3", "l4", "l5", "l6", "l7", "l8"];
-    const columns = flowColumns(flow([["a"], ["b"]], { "": { boxes, loose } }, 1));
+    const columns = flowColumns(flow([["a"], ["b"]], { "": { boxes, loose } }), shaped({ rows: 1, looseColumns: { "": 2 } }));
     expect(columns.map(column => column.length)).toEqual([4, 4, 4, 4]);
     expect(columns[0]).toEqual(["b1", "b3", "b5", "a"]);
+  });
+
+  it("wraps only the opened directories' own files: a pinned neighbour keeps its rank unwrapped, in a column of its own at the left", () => {
+    // d's rank of four users, with two cards a pin brought from elsewhere, o/x and o/y.
+    const input = flow([["d/a"], ["o/x", "d/b", "d/c", "o/y", "d/e", "d/f"]], { d: {} });
+    expect(flowColumns(input, shaped({ rows: 2 }))).toEqual([["d/a"], ["o/x", "o/y"], ["d/b", "d/c"], ["d/e", "d/f"]]);
+    // A rank whose own files fit the cap stands as it did, one column, its other cards in it.
+    expect(flowColumns(input, shaped({ rows: 4 }))).toEqual([["d/a"], ["o/x", "d/b", "d/c", "o/y", "d/e", "d/f"]]);
+    // A rank of outside cards alone never wraps.
+    expect(flowColumns(flow([["o/x", "o/y", "o/z"]], { d: {} }), shaped({ rows: 1 }))).toEqual([["o/x", "o/y", "o/z"]]);
   });
 
   it("lays the deepest directory first, so that a directory's own line-less files stand after everything under it", () => {
@@ -174,15 +183,72 @@ describe("the columns of a directory in flow order", () => {
     expect(columns).toEqual([["d/a"], ["d/in/x", "d/in/b"], ["d/in/q"], ["d/p"]]);
   });
 
-  it("lays a directory with no file in the ranks as the grid lays it: a directory of subdirectories gains nothing", () => {
+  it("lays a directory with no file in the ranks as the grid lays it, in every shape: a directory of subdirectories gains nothing", () => {
     const boxes = ["d/w", "d/x", "d/y", "d/z"], loose = ["d/p", "d/q", "d/r"];
     const items = (directory: string): string[] => (directory === "d" ? [...boxes, ...loose] : []);
-    for (const rows of [2, null]) {
-      expect(flowColumns(flow([], { d: { boxes, loose } }, rows))).toEqual(placeMembers([], new Set(["d"]), items, directoryOf));
-      expect(flowColumns(flow([], { d: { boxes } }, rows))).toEqual(placeMembers([], new Set(["d"]), () => boxes, directoryOf));
+    for (const shape of [NARROW_SHAPE, shaped({ rows: 2, boxRows: { d: 1 }, looseColumns: { d: 3 } })]) {
+      expect(flowColumns(flow([], { d: { boxes, loose } }), shape)).toEqual(placeMembers([], new Set(["d"]), items, directoryOf));
+      expect(flowColumns(flow([], { d: { boxes } }), shape)).toEqual(placeMembers([], new Set(["d"]), () => boxes, directoryOf));
     }
     // Beside a pinned neighbourhood elsewhere it starts, as the grid does, from the first column.
     expect(flowColumns(flow([["o/a"], ["o/b"]], { d: { boxes } })))
       .toEqual(placeMembers([["o/a"], ["o/b"]], new Set(["d"]), () => boxes, directoryOf));
   });
 });
+
+describe("the nominal model the shape is chosen on", () => {
+  it("gives every file card one size and every closed box another, a label one height and a line's end the card's middle", () => {
+    const measurer = nominalMeasurer(["d/a", "d/b", "d/box"], id => id === "d/box");
+    expect(measurer.widths(null)).toEqual(new Map([["d/a", NOMINAL_CARD.width], ["d/b", NOMINAL_CARD.width], ["d/box", NOMINAL_BOX.width]]));
+    expect(measurer.widths(200).get("d/a")).toBe(Math.min(200, NOMINAL_CARD.width));
+    const measured = measurer.measure(new Map([["d/a", 300], ["d/box", 300]]), new Map([["d label", 300]]));
+    expect(measured.heights).toEqual(new Map([["d/a", NOMINAL_CARD.height], ["d/box", NOMINAL_BOX.height]]));
+    expect(measured.labelHeights).toEqual(new Map([["d label", NOMINAL_LABEL]]));
+    expect(measured.pin("d/a", "inbound", "#hub")).toBe(NOMINAL_CARD.height / 2);
+    expect(measured.pin("d/box", "outbound", "#hub")).toBeNull();
+  });
+});
+
+describe("the shape the price chooses", () => {
+  // The root's example of 2026-11-13, `scripts`: one file used by three, and five closed boxes.
+  const input = flow([["s/steps"], ["s/verify", "s/steps.test", "s/safe"]], { s: { boxes: ["s/b1", "s/b2", "s/b3", "s/b4", "s/b5"] } });
+  /** A price of the columns alone: so much a column, so much a card of the tallest column. */
+  const priceOf = (column: number, card: number) => (shape: FlowShape): number => {
+    const columns = flowColumns(input, shape);
+    return column * columns.length + card * Math.max(...columns.map(each => each.length));
+  };
+  const record = (shape: FlowShape) => ({ rows: shape.rows, boxRows: Object.fromEntries(shape.boxRows), looseColumns: Object.fromEntries(shape.looseColumns) });
+
+  it("keeps the narrowest shape when width costs more than the height it would save", () => {
+    const found = searchFlowShape(input, priceOf(10, 1));
+    expect(found.shape).toBe(NARROW_SHAPE);
+    expect(found.price).toBe(25);
+    // It priced the narrowest shape, the first wrap and the first wider band of boxes, and stopped at each.
+    expect(found.priced.map(each => [record(each.shape), each.price])).toEqual([
+      [record(NARROW_SHAPE), 25], [record(shaped({ rows: 2 })), 34], [record(shaped({ boxRows: { s: 2 } })), 35]
+    ]);
+  });
+
+  it("widens while each step is strictly cheaper: the wrap first, then the directory's boxes", () => {
+    const found = searchFlowShape(input, priceOf(1, 10));
+    // No wrap 2 + 50; two rows 3 + 40; one row 4 + 30; then the boxes in one row across five columns, 5 + 20.
+    expect(found.priced.map(each => each.price)).toEqual([52, 43, 34, 25]);
+    expect(record(found.shape)).toEqual(record(shaped({ rows: 1, boxRows: { s: 1 } })));
+    expect(flowColumns(input, found.shape)).toEqual([["s/b1", "s/steps"], ["s/b2", "s/verify"], ["s/b3", "s/steps.test"], ["s/b4", "s/safe"], ["s/b5"]]);
+  });
+
+  it("keeps the narrower shape at a tie, so a choice the price does not ask for is never made", () => {
+    const found = searchFlowShape(input, priceOf(1, 1));
+    expect(found.shape).toBe(NARROW_SHAPE);
+    expect(found.priced.map(each => each.price)).toEqual([7, 7, 8]);
+  });
+
+  it("walks the line-less files' columns from one toward one row, and only shapes that differ", () => {
+    const loose = flow([["d/a"], ["d/b"]], { d: { loose: ["d/p", "d/q", "d/r", "d/s", "d/t"] } });
+    const asked: number[] = [];
+    searchFlowShape(loose, shape => { asked.push(shape.looseColumns.get("d") ?? 1); return -asked.length; });
+    // Five files: one column, then two (rows of three), three (rows of two), five (one row); four rows also gives two columns.
+    expect(asked).toEqual([1, 2, 3, 5]);
+  });
+});
+

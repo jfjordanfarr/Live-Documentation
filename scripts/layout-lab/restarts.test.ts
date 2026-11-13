@@ -4,7 +4,7 @@ import { baselineConfig } from "./evaluate";
 import { parseCosts, simulateSearch, summarizeSetting, trialCosts, type StartRow } from "./restarts";
 import type { Signals } from "./signals";
 
-const noShape = { evenness: 0, levelness: 0, steps: 0 };
+const noShape = { evenness: 0, levelness: 0, steps: 0, width: 0 };
 
 const signals = (lengthPx: number, spots: number): Signals => ({
   wires: 1, lengthPx, meanPx: lengthPx, horizontalPx: lengthPx, verticalPx: 0,
@@ -14,7 +14,7 @@ const signals = (lengthPx: number, spots: number): Signals => ({
 });
 
 const row = (name: string, vertical: number, crossings: number, lengthPx: number, spots: number, columns: string[][] = [["a", "b", "c"]]): StartRow =>
-  ({ name, seed: name === "ranked" ? null : Number(name.replace("seed ", "")), cheap: { vertical, crossings, height: 1000, churn: 0, unevenness: 0, steps: 0, unlevel: 0 }, signals: signals(lengthPx, spots), ms: 1,
+  ({ name, seed: name === "ranked" ? null : Number(name.replace("seed ", "")), cheap: { vertical, crossings, height: 1000, width: 1000, churn: 0, unevenness: 0, steps: 0, unlevel: 0 }, signals: signals(lengthPx, spots), ms: 1,
     columns, tops: Object.fromEntries(columns.flat().map((id, i) => [id, i * 100])) });
 
 describe("the restarts tabulated", () => {
@@ -26,8 +26,8 @@ describe("the restarts tabulated", () => {
     expect(parseCosts(undefined, noShape).length).toBe(20);
     expect(() => parseCosts("gravity=1", noShape)).toThrow(/No cost/u);
     expect(parseCosts("steps=0,50;levelness=2", { evenness: 3, levelness: 4, steps: 25 })).toEqual([
-      { crossing: 0, height: 0, churn: 0, evenness: 3, levelness: 2, steps: 0 },
-      { crossing: 0, height: 0, churn: 0, evenness: 3, levelness: 2, steps: 50 }
+      { crossing: 0, height: 0, width: 0, churn: 0, evenness: 3, levelness: 2, steps: 0 },
+      { crossing: 0, height: 0, width: 0, churn: 0, evenness: 3, levelness: 2, steps: 50 }
     ]);
   });
 

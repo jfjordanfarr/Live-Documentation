@@ -28,6 +28,12 @@ export interface StartCosts {
   crossing: number;
   /** Per pixel of the picture's height. */
   height: number;
+  /**
+   * Per pixel of the picture's width. Set against the height's cost, it chooses how the things no line places stand in an
+   * opened directory in flow order: free things settle toward a shape whose width is to its height as the height's cost
+   * is to the width's (2026-11-13). The order alone never changes a picture's width, so elsewhere it decides nothing.
+   */
+  width: number;
   /** Per pair of cards in one column that stand the other way round from the previous picture. */
   churn: number;
   /** Per pixel of change between adjacent membrane tops or bottoms. */
@@ -46,6 +52,8 @@ export interface StartSignals extends ShapeSignals {
   crossings: number;
   /** The picture's height in pixels. */
   height: number;
+  /** The picture's width in pixels. */
+  width: number;
   /** Pairs of cards in one column that swapped places against the previous picture; none without one. */
   churn: number;
 }
@@ -56,7 +64,7 @@ export interface StartOutcome {
   branches: BranchGraph;
   scene: Scene;
   signals: StartSignals;
-  /** The vertical length plus the costs of the crossings, height, churn and shape, in pixels of wire. */
+  /** The vertical length plus the costs of the crossings, height, width, churn and shape, in pixels of wire. */
   score: number;
 }
 
@@ -107,14 +115,15 @@ export function signalsOf(branches: BranchGraph, scene: Scene, previousTops: Rea
     vertical: scene.placement.cost,
     crossings: branches.order.crossings,
     height: scene.pictureHeight,
+    width: scene.pictureWidth,
     churn: churnOf(branches.columns.map(column => column.map(node => node.id)), previousTops),
     ...shapeSignalsOf(scene, branches)
   };
 }
 
-/** A start's price: its vertical length and what its crossings, height, churn and shape cost, in pixels of wire. */
+/** A start's price: its vertical length and what its crossings, height, width, churn and shape cost, in pixels of wire. */
 export function scoreOf(signals: StartSignals, costs: StartCosts): number {
-  return signals.vertical + costs.crossing * signals.crossings + costs.height * signals.height + costs.churn * signals.churn
+  return signals.vertical + costs.crossing * signals.crossings + costs.height * signals.height + costs.width * signals.width + costs.churn * signals.churn
     + costs.evenness * signals.unevenness + costs.levelness * signals.unlevel + costs.steps * signals.steps;
 }
 

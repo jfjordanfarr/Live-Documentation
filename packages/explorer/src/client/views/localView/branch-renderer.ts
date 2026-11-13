@@ -4,16 +4,18 @@ import type { BoundaryAlignment } from "./branch-placement";
 import { candidateStarts, layoutStarts, scoreOf, signalsOf, startName, startOrder, type StartCosts } from "./branch-restarts";
 import { BAND_BORDER, hostOf, layoutScene, planBranches, type Scene, type SceneBox, type SceneMeasurer, type ScenePlan, type SceneTuning } from "./branch-scene";
 import { beginSearch, endpointKey, judgeAlignment, judgeStart, nextTrialKind, pinFor, rowBounds, type CardRows, type ResolvedPin, type RowMeasure, type SearchState } from "./branch-search";
-import { edgeKey, exploreBranches, isClosedDirectory, orderExploration, type BranchGraph, type DirectoryDisclosure, type Exploration } from "./branches";
+import { arrangeExploration, edgeKey, exploreBranches, isClosedDirectory, orderExploration, type BranchGraph, type DirectoryDisclosure, type Exploration } from "./branches";
 import { countsOf, createClosedDirectory, createNodeCard, hasCloseAction, PIN_GLYPH } from "./card-factory";
 import { markFirstPin } from "./card-reading";
 import type { LocalViewController } from "./controller";
 import { ancestryButton } from "./directory-ancestry";
-import { isPairLine, linksOf } from "./directory-flow";
+import { isPairLine, linksOf, NARROW_SHAPE, nominalMeasurer, searchFlowShape, shapeRecord, type FlowShape, type ShapeSearch } from "./directory-flow";
 import { layoutTopOf } from "./ladder-rooms";
 import { membranePath } from "./membrane-outline";
 import type { LocalEdge } from "./types";
+import type { ExplorerNodePayload } from "../../../shared/types";
 import { setSeamedText } from "../../dom";
+import { EMPTY_PIN_SET } from "../pin-state";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
 import { countOf } from "./word-seams";
 
@@ -42,6 +44,8 @@ export interface BranchStage {
   pose: Pose | null;
   move: Move | null;
   search: Search | null;
+  /** The flow shape chosen for each set of opened directories under its filters and tuning, kept while the page lives. */
+  flowShapes: Map<string, ShapeSearch>;
 }
 
 /** One move of the picture from one pose to the next, running. */
@@ -92,7 +96,7 @@ interface Search {
 
 /** A stage for a root that holds nothing yet. */
 export function createStage(root: HTMLElement, overlay: HTMLElement): BranchStage {
-  return { root, overlay, wrappers: new Map(), boxes: new Map(), shapes: new Map(), labels: new Map(), disclosures: new Map(), pose: null, move: null, search: null };
+  return { root, overlay, wrappers: new Map(), boxes: new Map(), shapes: new Map(), labels: new Map(), disclosures: new Map(), pose: null, move: null, search: null, flowShapes: new Map() };
 }
 
 /** Ends whatever move the stage runs, where it stands, and its search; the stage's elements are the caller's to remove. */
@@ -221,10 +225,10 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
   endMove(stage, false);
   const previous = stage.pose;
 
-  const exploration = explorationOf(controller);
+  const explored = explorationOf(controller);
   // Every drawn directory's label says what this picture makes of it; the labels already made are refilled.
-  stage.disclosures = exploration.directories;
-  for (const [directory, label] of stage.labels) fillLabel(controller, label, directory, exploration.directories.get(directory));
+  stage.disclosures = explored.directories;
+  for (const [directory, label] of stage.labels) fillLabel(controller, label, directory, explored.directories.get(directory));
   root.classList.add("branch-mode", "local-placed");
   root.classList.toggle("path-mode", !!path);
   root.style.gridTemplateColumns = "";
@@ -233,7 +237,7 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
     columnGap: tuning.columnGap, itemGap: tuning.itemGap, bandGap: tuning.bandGap, neck: tuning.membraneNeck, bandPadding: tuning.membranePadding, cardMaxWidth: tuning.cardMaxWidth,
     evenness: tuning.membraneEvenness, levelness: tuning.rowLevelness,
     // An opened directory in flow order stands its columns from the top (the directory flow trial, 2026-11-12).
-    ...(exploration.flow ? { fromTop: true } : null)
+    ...(explored.flow ? { fromTop: true } : null)
   };
 
   // The cards, once per render, each built afresh for this render's state inside the wrapper that stood for its file
@@ -242,7 +246,7 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
   // takes a wrapper of the same kind, by its path, and no card.
   const entering: HTMLElement[] = [];
   const kept = new Set<string>();
-  for (const node of exploration.subgraph.nodes) {
+  for (const node of explored.subgraph.nodes) {
     let wrapper = stage.wrappers.get(node.id);
     if (!wrapper) {
       wrapper = document.createElement("div");
@@ -254,11 +258,11 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
       if (previous) entering.push(wrapper);
     }
     if (isClosedDirectory(node)) {
-      wrapper.replaceChildren(createClosedDirectory(controller.cardContext, exploration.closed.get(node.id)!));
+      wrapper.replaceChildren(createClosedDirectory(controller.cardContext, explored.closed.get(node.id)!));
     } else {
       const card = createNodeCard(controller.cardContext, node, "center");
       card.classList.add("focus-node");
-      card.classList.toggle("branch-member", exploration.members.has(node.id));
+      card.classList.toggle("branch-member", explored.members.has(node.id));
       wrapper.replaceChildren(card);
     }
     const hop = path?.nodeIds.indexOf(node.id) ?? -1;
@@ -276,7 +280,7 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
     stage.wrappers.delete(id);
     leaving.push(wrapper);
   }
-  dressCards(controller, cardsOf(stage), exploration);
+  dressCards(controller, cardsOf(stage), explored);
   for (const [id, symbol] of [[path?.nodeIds[0], path?.fromSymbol], [path?.nodeIds[path.nodeIds.length - 1], path?.toSymbol]]) {
     if (!id || !symbol) continue;
     stage.wrappers.get(id)?.querySelectorAll<HTMLElement>(".symbol-row").forEach(row => {
@@ -287,10 +291,32 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
   // The starts, each ordered, its rows stood on the cards, planned, measured on the page and placed; the cheapest
   // picture is kept. The page's answers that no start changes are kept for the search.
   const answers: PageAnswers = { natural: new Map(), heights: new Map(), labelHeights: new Map() };
+  const costs: StartCosts = { crossing: tuning.crossingCost, height: tuning.heightCost, width: tuning.widthCost, churn: tuning.churnCost,
+    evenness: tuning.membraneEvenness, levelness: tuning.rowLevelness, steps: tuning.membraneSimplicity };
+  // In flow order the opened directories stand in the shape the price chooses (2026-11-13), on the directories alone:
+  // their own files unpinned under the filters, the lines among them and the tuning, every card at the nominal model's
+  // size (`nominalMeasurer`), churn aside since no picture came before. No pin, no path the person took and no font
+  // enters it, so the same link shows the same shape on every screen. It is chosen once for those directories, filters
+  // and tuning, and reused while the page lives: a pin prices no shape, and the picture is then drawn and measured as ever.
+  let exploration = explored;
+  delete root.dataset.flowShape;
+  delete root.dataset.flowShapes;
+  delete root.dataset.flowShapeMs;
+  if (explored.arrangement) {
+    const key = JSON.stringify([[...controller.openDirectories].sort(), state.filters.showTests, state.filters.showAssets, tuning]);
+    let chosenShape = stage.flowShapes.get(key);
+    if (!chosenShape) {
+      const shaping = performance.now();
+      chosenShape = shapeOfDirectories(controller, sceneTuning, costs);
+      stage.flowShapes.set(key, chosenShape);
+      root.dataset.flowShapeMs = String(Math.round(performance.now() - shaping));
+    }
+    exploration = arrangeExploration(explored, chosenShape.shape);
+    root.dataset.flowShape = JSON.stringify(shapeRecord(chosenShape.shape));
+    root.dataset.flowShapes = JSON.stringify(chosenShape.priced.map(({ shape, price }) => ({ ...shapeRecord(shape), price: Math.round(price) })));
+  }
   const ranked = exploration.ranking.columns.map(column => column.map(node => node.id));
   const starts = candidateStarts(tuning.orderStarts, tuning.orderSeed, controller.previousTops, ranked);
-  const costs: StartCosts = { crossing: tuning.crossingCost, height: tuning.heightCost, churn: tuning.churnCost,
-    evenness: tuning.membraneEvenness, levelness: tuning.rowLevelness, steps: tuning.membraneSimplicity };
   const { chosen, outcomes } = layoutStarts(starts, start => {
     const branches = orderExploration(exploration, { sweeps: tuning.orderSweeps, ...startOrder(start) });
     orderRows(cardsOf(stage), branches.rows);
@@ -307,6 +333,7 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
   root.dataset.orderStart = startName(chosen.start);
   root.dataset.orderStarts = String(outcomes.length);
   root.dataset.orderScore = String(chosen.score);
+  root.dataset.orderSignals = JSON.stringify(chosen.signals);
   root.dataset.layoutMs = String(Math.round(performance.now() - started));
 
   const reduced = typeof matchMedia === "function" && matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -329,6 +356,39 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
   stage.search = search;
   writeSearch(stage);
   if (!stage.move) scheduleSearch(controller, stage);
+}
+
+/**
+ * The shape the price chooses for the opened directories alone (2026-11-13): their files under the filters, with no
+ * pin, no selected file and no reading, laid out on the nominal model at the cheapest of the starts the page tries from
+ * nothing before, churn aside. A filter is the filters alone, with no exception for a pinned file, so that the shape
+ * does not depend on what is pinned.
+ */
+function shapeOfDirectories(controller: LocalViewController, sceneTuning: SceneTuning, costs: StartCosts): ShapeSearch {
+  const { state, graphData } = controller.options;
+  const tuning = state.tuning.localMap;
+  const filtered = (node: ExplorerNodePayload): boolean => {
+    const archetype = (node.archetype || "").toLowerCase();
+    return !(archetype === "test" && !state.filters.showTests) && !(archetype === "asset" && !state.filters.showAssets);
+  };
+  const own = exploreBranches(null, graphData, EMPTY_PIN_SET, filtered, {
+    symbolOrder: tuning.symbolOrder, ranking: { pull: tuning.rankingPull, tie: tuning.rankingTie }, membraneDepth: tuning.membraneDepth,
+    openDirectories: controller.openDirectories, directoryFlow: true
+  });
+  const input = own.arrangement;
+  const boxes = new Set(own.closed.keys());
+  const price = (shape: FlowShape): number => {
+    const laid = arrangeExploration(own, shape);
+    let best = Infinity;
+    for (const start of candidateStarts(tuning.orderStarts, tuning.orderSeed, null, laid.ranking.columns.map(column => column.map(node => node.id)))) {
+      const branches = orderExploration(laid, { sweeps: tuning.orderSweeps, ...startOrder(start) });
+      const plan = planBranches(branches, sceneTuning.bandPadding);
+      const scene = layoutScene(plan, branches, nominalMeasurer(plan.items.keys(), id => boxes.has(id)), sceneTuning);
+      best = Math.min(best, scoreOf(signalsOf(branches, scene, null), { ...costs, churn: 0 }));
+    }
+    return best;
+  };
+  return input ? searchFlowShape(input, price) : { shape: NARROW_SHAPE, price: 0, priced: [] };
 }
 
 /**
@@ -1008,6 +1068,7 @@ function tryAdoptPicture(controller: LocalViewController, stage: BranchStage, se
   root.dataset.placementOptimal = String(scene.placement.optimal);
   root.dataset.orderStart = name;
   root.dataset.orderScore = String(scoreOf(signals, search.costs));
+  root.dataset.orderSignals = JSON.stringify(signals);
   root.dataset.searchPriced = String(priced);
   showScene(controller, stage, scene, search.sceneTuning, search.moveMs, [], [], oldRows);
   return true;

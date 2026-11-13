@@ -4,16 +4,16 @@ import { candidateStarts, churnOf, layoutStarts, previousStart, scoreOf, signals
 import type { Scene, SceneBox } from "./branch-scene";
 import type { BranchGraph } from "./branches";
 
-const noShape = { evenness: 0, levelness: 0, steps: 0 };
+const noShape = { evenness: 0, levelness: 0, steps: 0, width: 0 };
 
 const ranked = [["a", "b", "c"], ["d", "e"]];
 /** A previous picture: c above a above b in the first column, e above d in the second. */
 const tops = new Map([["c", 0], ["a", 100], ["b", 200], ["e", 0], ["d", 300]]);
 
 /** A start laid out: what `layoutStarts` reads of a branch graph and a scene, and nothing else. */
-const laid = (vertical: number, crossings: number, height: number, columns: string[][]): { branches: BranchGraph; scene: Scene } => ({
+const laid = (vertical: number, crossings: number, height: number, columns: string[][], width = 0): { branches: BranchGraph; scene: Scene } => ({
   branches: { columns: columns.map(column => column.map(id => ({ id }))), order: { crossings } } as unknown as BranchGraph,
-  scene: { placement: { cost: vertical }, pictureHeight: height, boxes: [], tops: new Map() } as unknown as Scene
+  scene: { placement: { cost: vertical }, pictureHeight: height, pictureWidth: width, boxes: [], tops: new Map() } as unknown as Scene
 });
 
 describe("the order step's starts", () => {
@@ -44,10 +44,12 @@ describe("the order step's starts", () => {
     expect(churnOf([["b", "a"]], null)).toBe(0);
   });
 
-  it("prices a start by its vertical length and what its crossings, height and churn cost", () => {
-    expect(scoreOf({ vertical: 1000, crossings: 10, height: 500, churn: 2, unevenness: 90, unlevel: 40, steps: 3 }, { ...noShape, crossing: 5, height: 0.1, churn: 25 })).toBe(1150);
-    expect(scoreOf({ vertical: 1000, crossings: 10, height: 500, churn: 2, unevenness: 90, unlevel: 40, steps: 3 }, { ...noShape, crossing: 0, height: 0, churn: 0 })).toBe(1000);
-    expect(scoreOf({ vertical: 1000, crossings: 10, height: 500, churn: 2, unevenness: 90, unlevel: 40, steps: 3 }, { crossing: 5, height: 0.1, churn: 25, evenness: 2, levelness: 3, steps: 50 })).toBe(1600);
+  it("prices a start by its vertical length and what its crossings, height, width and churn cost", () => {
+    expect(scoreOf({ vertical: 1000, crossings: 10, height: 500, width: 800, churn: 2, unevenness: 90, unlevel: 40, steps: 3 }, { ...noShape, crossing: 5, height: 0.1, churn: 25 })).toBe(1150);
+    expect(scoreOf({ vertical: 1000, crossings: 10, height: 500, width: 800, churn: 2, unevenness: 90, unlevel: 40, steps: 3 }, { ...noShape, crossing: 0, height: 0, churn: 0 })).toBe(1000);
+    expect(scoreOf({ vertical: 1000, crossings: 10, height: 500, width: 800, churn: 2, unevenness: 90, unlevel: 40, steps: 3 }, { crossing: 5, height: 0.1, width: 0, churn: 25, evenness: 2, levelness: 3, steps: 50 })).toBe(1600);
+    // The width is priced beside the height: eight hundred pixels at a quarter each.
+    expect(scoreOf({ vertical: 1000, crossings: 10, height: 500, width: 800, churn: 2, unevenness: 90, unlevel: 40, steps: 3 }, { ...noShape, crossing: 0, height: 0, churn: 0, width: 0.25 })).toBe(1200);
   });
 
   it("keeps the cheapest start, the earlier of two at one price, and lays out every start once", () => {
@@ -98,7 +100,7 @@ describe("the order step's starts", () => {
     const starts = candidateStarts(1, null, null, [["a"], ["b"]]);
     const layout = (start: { kind: string }): ReturnType<typeof laid> => start.kind === "ranked" ? short : smooth;
     const costs = { ...noShape, crossing: 0, height: 0, churn: 0 };
-    expect(signalsOf(short.branches, short.scene, null)).toEqual({ vertical: 200, crossings: 0, height: 200, churn: 0, unevenness: 40, steps: 2, unlevel: 30 });
+    expect(signalsOf(short.branches, short.scene, null)).toEqual({ vertical: 200, crossings: 0, height: 200, width: 0, churn: 0, unevenness: 40, steps: 2, unlevel: 30 });
     expect(startName(layoutStarts(starts, layout, costs, null).chosen.start)).toBe("ranked");
     // Two steps at 60, forty uneven pixels at 3, or thirty row pixels at 4 each pay 120 to save 100.
     for (const weight of [{ steps: 60 }, { evenness: 3 }, { levelness: 4 }]) {

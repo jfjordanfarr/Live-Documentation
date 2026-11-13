@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-renderer.ts
-- Generated At: 2026-11-12T22:02:39.216Z
+- Generated At: 2026-11-13T19:56:27.888Z
 
 ## Authored
 ### Purpose
@@ -61,7 +61,7 @@ Since 2026-11-12 the renderer passes Tuning's Opened Directory to the exploratio
 ### Public Symbols
 #### `BranchStage` {#symbol-branchstage}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L31)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L33)
 
 ##### `BranchStage` — Summary
 The branch picture's elements, kept across renders by what each one is: a
@@ -74,7 +74,7 @@ also carries the continuing search that runs after each picture.
 
 #### `createStage` {#symbol-createstage}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L94)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L98)
 - Returns: [`BranchStage`](#symbol-branchstage)
 
 ##### `createStage` — Summary
@@ -82,7 +82,7 @@ A stage for a root that holds nothing yet.
 
 #### `dropStage` {#symbol-dropstage}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L99)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L103)
 - Parameters: `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `dropStage` — Summary
@@ -90,7 +90,7 @@ Ends whatever move the stage runs, where it stands, and its search; the stage's 
 
 #### `refreshReadingPresentation` {#symbol-refreshreadingpresentation}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L120)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L124)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `refreshReadingPresentation` — Summary
@@ -98,7 +98,7 @@ Update fixed-slot text and its controls without rebuilding an unchanged scene or
 
 #### `renderBranches` {#symbol-renderbranches}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L209)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L213)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `renderBranches` — Summary
@@ -126,7 +126,7 @@ The layout's dials come from the Local Map's tuning.
 
 #### `refreshReadingGeometry` {#symbol-refreshreadinggeometry}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L340)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L400)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `refreshReadingGeometry` — Summary
@@ -137,7 +137,7 @@ competition begins from the new picture.
 
 #### `BAND_BORDER` {#symbol-band_border}
 - Type: unknown
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L376)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L436)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -180,6 +180,7 @@ competition begins from the new picture.
 - [`branches.BranchGraph`](./branches.ts.mdmd.md#symbol-branchgraph)
 - [`branches.DirectoryDisclosure`](./branches.ts.mdmd.md#symbol-directorydisclosure)
 - [`branches.Exploration`](./branches.ts.mdmd.md#symbol-exploration)
+- [`branches.arrangeExploration`](./branches.ts.mdmd.md#symbol-arrangeexploration)
 - [`branches.edgeKey`](./branches.ts.mdmd.md#symbol-edgekey)
 - [`branches.exploreBranches`](./branches.ts.mdmd.md#symbol-explorebranches)
 - [`branches.isClosedDirectory`](./branches.ts.mdmd.md#symbol-iscloseddirectory)
@@ -192,13 +193,21 @@ competition begins from the new picture.
 - [`card-reading.markFirstPin`](./card-reading.ts.mdmd.md#symbol-markfirstpin)
 - [`controller.LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller) (type-only)
 - [`directory-ancestry.ancestryButton`](./directory-ancestry.ts.mdmd.md#symbol-ancestrybutton)
+- [`directory-flow.FlowShape`](./directory-flow.ts.mdmd.md#symbol-flowshape)
+- [`directory-flow.NARROW_SHAPE`](./directory-flow.ts.mdmd.md#symbol-narrow_shape)
+- [`directory-flow.ShapeSearch`](./directory-flow.ts.mdmd.md#symbol-shapesearch)
 - [`directory-flow.isPairLine`](./directory-flow.ts.mdmd.md#symbol-ispairline)
 - [`directory-flow.linksOf`](./directory-flow.ts.mdmd.md#symbol-linksof)
+- [`directory-flow.nominalMeasurer`](./directory-flow.ts.mdmd.md#symbol-nominalmeasurer)
+- [`directory-flow.searchFlowShape`](./directory-flow.ts.mdmd.md#symbol-searchflowshape)
+- [`directory-flow.shapeRecord`](./directory-flow.ts.mdmd.md#symbol-shaperecord)
 - [`ladder-rooms.layoutTopOf`](./ladder-rooms.ts.mdmd.md#symbol-layouttopof)
 - [`membrane-outline.membranePath`](./membrane-outline.ts.mdmd.md#symbol-membranepath)
 - [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)
 - [`word-seams.countOf`](./word-seams.ts.mdmd.md#symbol-countof)
+- [`pin-state.EMPTY_PIN_SET`](../pin-state.ts.mdmd.md#symbol-empty_pin_set)
 - [`symbolAnchors.normalizeSymbolIdentifier`](../symbolAnchors.ts.mdmd.md#symbol-normalizesymbolidentifier)
+- [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

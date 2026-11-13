@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-11-12T22:44:14.313Z
+- Generated At: 2026-11-13T19:56:31.184Z
 
 ## Authored
 ### Purpose
@@ -496,6 +496,12 @@ Since November 8, 2026, the literal initial controls agree with `getDefaultTunin
 - Type: variable
 
 #### `tuning-vertical-offset-value` {#symbol-tuning-vertical-offset-value}
+- Type: variable
+
+#### `tuning-width-cost` {#symbol-tuning-width-cost}
+- Type: variable
+
+#### `tuning-width-cost-value` {#symbol-tuning-width-cost-value}
 - Type: variable
 
 #### `tuning-zoom-looks` {#symbol-tuning-zoom-looks}

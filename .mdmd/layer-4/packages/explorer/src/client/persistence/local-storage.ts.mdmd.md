@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/persistence/local-storage.ts
-- Generated At: 2026-11-12T22:02:33.826Z
+- Generated At: 2026-11-13T19:56:25.192Z
 
 ## Authored
 ### Purpose

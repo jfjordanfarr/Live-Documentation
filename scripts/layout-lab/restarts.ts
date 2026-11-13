@@ -50,13 +50,13 @@ export const DEFAULT_COST_GRID = "crossing=0,5,10,20,40;height=0,1,2,5";
 
 /** Every combination of the requested costs, retaining the supplied shape prices unless the grid varies them; no churn without a previous picture. */
 export function parseCosts(spec: string | undefined, shape: Pick<StartCosts, "evenness" | "levelness" | "steps">): StartCosts[] {
-  const lists: Record<string, number[]> = { crossing: [0], height: [0], evenness: [shape.evenness], levelness: [shape.levelness], steps: [shape.steps] };
+  const lists: Record<string, number[]> = { crossing: [0], height: [0], width: [0], evenness: [shape.evenness], levelness: [shape.levelness], steps: [shape.steps] };
   for (const part of (spec ?? DEFAULT_COST_GRID).split(";").map(s => s.trim()).filter(Boolean)) {
     const [name, list] = part.split("=").map(s => s.trim());
-    if (!(name in lists)) throw new Error(`No cost ${JSON.stringify(name)}; the costs are crossing, height, evenness, levelness and steps.`);
+    if (!(name in lists)) throw new Error(`No cost ${JSON.stringify(name)}; the costs are crossing, height, width, evenness, levelness and steps.`);
     lists[name] = (list ?? "").split(",").map(s => Number(s.trim())).filter(value => Number.isFinite(value));
   }
-  let grid: StartCosts[] = [{ crossing: 0, height: 0, churn: 0, ...shape }];
+  let grid: StartCosts[] = [{ crossing: 0, height: 0, width: 0, churn: 0, ...shape }];
   for (const [name, values] of Object.entries(lists)) grid = grid.flatMap(costs => values.map(value => ({ ...costs, [name]: value })));
   return grid;
 }

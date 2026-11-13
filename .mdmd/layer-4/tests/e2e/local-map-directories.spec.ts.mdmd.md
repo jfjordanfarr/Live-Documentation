@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/local-map-directories.spec.ts
-- Generated At: 2026-11-12T22:02:54.114Z
+- Generated At: 2026-11-13T19:56:37.060Z
 
 ## Authored
 ### Purpose
@@ -30,6 +30,7 @@ _No public symbols detected_
 - [`compressed-url-state.DEFAULT_SNAPSHOT`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-default_snapshot)
 - [`compressed-url-state.compressSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-compresssnapshot)
 - [`compressed-url-state.decompressSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-decompresssnapshot)
+- [`directory-flow.NOMINAL_CARD`](../../packages/explorer/src/client/views/localView/directory-flow.ts.mdmd.md#symbol-nominal_card)
 - [`design-audit.describeFaults`](./design-audit.ts.mdmd.md#symbol-describefaults)
 - [`design-audit.overlapsAmong`](./design-audit.ts.mdmd.md#symbol-overlapsamong)
 - [`design-audit.textBoxes`](./design-audit.ts.mdmd.md#symbol-textboxes)

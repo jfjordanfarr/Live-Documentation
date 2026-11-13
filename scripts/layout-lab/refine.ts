@@ -47,7 +47,7 @@ export interface Refinement {
 /** Runs the same finite seed budget and alignment neighborhoods as the page, using the capture's measurements. */
 export function refine(capture: Capture, graph: ExplorerGraphPayload, run: ScopeRun, config: LabConfig, settings: RefinementSettings): Refinement {
   const initial = evaluate(capture, graph, run, config);
-  const costs: StartCosts = { crossing: config.crossingCost, height: config.heightCost, churn: settings.churnCost,
+  const costs: StartCosts = { crossing: config.crossingCost, height: config.heightCost, width: config.widthCost, churn: settings.churnCost,
     evenness: config.membraneEvenness, levelness: config.rowLevelness, steps: config.membraneSimplicity };
   const from = config.orderSeed !== null ? 1 : Math.max(0, Math.floor(config.orderStarts)) + 1;
   const to = config.orderSeed !== null ? 0 : from - 1 + Math.max(0, Math.floor(settings.searchStarts));

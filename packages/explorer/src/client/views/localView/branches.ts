@@ -5,7 +5,7 @@ import type { SymbolOrder } from "../../types";
 import { getVisibleConnections, retainFile, type PinSet } from "../pin-state";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
 import { orderBranches, type BranchOrder, type ForwardReference, type OrderInput } from "./branch-order";
-import { flowColumns, linksOf, pairLines, squareRows, type UndrawnLink } from "./directory-flow";
+import { flowColumns, linksOf, pairLines, type FlowInput, type FlowShape, type UndrawnLink } from "./directory-flow";
 import { directoryState, NO_OPEN_DIRECTORIES, under, type OpenDirectories } from "./directory-state";
 import { rankByNetworkSimplex, type Constraint } from "./network-simplex";
 import type { PathResult } from "./state";
@@ -83,8 +83,9 @@ export interface BranchOptions {
    * The directory flow trial (2026-11-12), beside the grid: given, every pair of file cards on screen where one uses the
    * other, and which no wire between symbols joins, is joined by one line between their hubs; the files of an opened
    * directory stand in the ranking's columns with the retained files, a file left of the files that use it; its closed
-   * boxes head its columns; and its files that no line joins stand together after its last column. A tall rank wraps
-   * into neighbouring columns until the ranks stand about as wide as tall. Omitted or false, the grid.
+   * boxes head its columns; and its files that no line joins stand together after its last column. How many rows the
+   * boxes take, how many columns the line-less files take and how a tall rank wraps are the price's to choose
+   * (`arrangeExploration`, 2026-11-13). Omitted or false, the grid.
    */
   directoryFlow?: boolean;
 }
@@ -124,6 +125,11 @@ export interface Exploration {
   closed: Map<string, ClosedDirectory>;
   /** Whether the picture's opened directories stand in flow order, with pair lines (the directory flow trial, 2026-11-12). */
   flow: boolean;
+  /**
+   * In flow order, what the columns are laid out from, so that the page can lay the same exploration out in another shape
+   * ({@link arrangeExploration}) and let the price choose; the columns given are the narrowest shape's.
+   */
+  arrangement?: FlowInput;
   /** Every directory the picture may draw as a membrane, by path: its state and what it hides. */
   directories: Map<string, DirectoryDisclosure>;
   /** What the order step takes, its sweeps and start apart. */
@@ -342,10 +348,10 @@ export function exploreBranches(
   const rankedIds = ranked.columns.map(column => column.map(node => node.id));
   const boxesOf = (directory: string): string[] => [...closed.keys()].filter(path => parentDirectory(path) === directory);
   const membersOf = (directory: string): string[] => (index.get(directory)?.files ?? []).filter(file => members.has(file));
-  const columns = flow
-    ? flowColumns({ ranked: rankedIds, opened, boxesOf, looseOf: directory => membersOf(directory).filter(file => !joined.has(file)),
-      directoryOf: directoryOfNode, rows: squareRows(rankedIds) })
-    : placeMembers(rankedIds, opened, directory => [...boxesOf(directory), ...membersOf(directory)], directoryOfNode);
+  const arrangement: FlowInput | null = flow
+    ? { ranked: rankedIds, opened, boxesOf, looseOf: directory => membersOf(directory).filter(file => !joined.has(file)), directoryOf: directoryOfNode }
+    : null;
+  const columns = arrangement ? flowColumns(arrangement) : placeMembers(rankedIds, opened, directory => [...boxesOf(directory), ...membersOf(directory)], directoryOfNode);
   const ranking: BranchRanking = { columns: columns.map(column => column.flatMap(nodeId => byId.get(nodeId) ?? [])), back: ranked.back };
   if (path?.fromSymbol && pathGraph) remember(pathGraph.nodes[0].id, path.fromSymbol);
   if (path?.toSymbol && pathGraph) remember(pathGraph.nodes[pathGraph.nodes.length - 1].id, path.toSymbol);
@@ -390,6 +396,7 @@ export function exploreBranches(
     members,
     closed,
     flow,
+    ...(arrangement ? { arrangement } : null),
     directories,
     order: {
       columns,
@@ -402,6 +409,18 @@ export function exploreBranches(
       // Under the directory flow trial a directory's closed boxes keep the head of their columns, a band above its files.
       ...(flow ? { leading: new Set(closed.keys()) } : null)
     }
+  };
+}
+
+/** The same exploration with its opened directories laid out in another flow shape; one not in flow order is returned as it is. */
+export function arrangeExploration(exploration: Exploration, shape: FlowShape): Exploration {
+  if (!exploration.arrangement) return exploration;
+  const byId = new Map(exploration.subgraph.nodes.map(node => [node.id, node]));
+  const columns = flowColumns(exploration.arrangement, shape);
+  return {
+    ...exploration,
+    ranking: { ...exploration.ranking, columns: columns.map(column => column.flatMap(nodeId => byId.get(nodeId) ?? [])) },
+    order: { ...exploration.order, columns }
   };
 }
 

@@ -90,8 +90,8 @@ describe("the continuing search", () => {
   });
 
   it("judges the complete alignment score strictly, so fewer steps cannot hide a more expensive picture", () => {
-    const costs: StartCosts = { crossing: 80, height: 1, churn: 100, evenness: 1, levelness: 1, steps: 50 };
-    const signals: StartSignals = { vertical: 100, crossings: 0, height: 100, churn: 0, unevenness: 0, unlevel: 0, steps: 2 };
+    const costs: StartCosts = { crossing: 80, height: 1, width: 0, churn: 100, evenness: 1, levelness: 1, steps: 50 };
+    const signals: StartSignals = { vertical: 100, crossings: 0, height: 100, width: 300, churn: 0, unevenness: 0, unlevel: 0, steps: 2 };
     const state = beginSearch(settings, scoreOf(signals, costs));
     const expensive = scoreOf({ ...signals, vertical: 210, steps: 0 }, costs);
     const equal = scoreOf({ ...signals, vertical: 200, steps: 0 }, costs);

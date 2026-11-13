@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/evaluate.ts
-- Generated At: 2026-10-16T21:14:11.374Z
+- Generated At: 2026-11-13T18:41:45.803Z
 
 ## Authored
 ### Purpose
@@ -33,7 +33,7 @@ The levers: the Local Map tuning the layout reads.
 
 #### `LEVERS` {#symbol-levers}
 - Type: const
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L50)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L51)
 - Returns: `ReadonlyArray`
 
 ##### `LEVERS` — Summary
@@ -41,7 +41,7 @@ The levers in the order the reports name them.
 
 #### `baselineConfig` {#symbol-baselineconfig}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L53)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L54)
 - Returns: [`LabConfig`](#symbol-labconfig)
 - Parameters: `preset`: [`LayoutPreset`](../../packages/explorer/src/client/layout-presets.ts.mdmd.md#symbol-layoutpreset)
 
@@ -50,14 +50,14 @@ The page's own tuning: the configuration the picture was designed at.
 
 #### `Evaluation` {#symbol-evaluation}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L59)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L60)
 
 ##### `Evaluation` — Summary
 A configuration laid out and scored, with the exploration, the scene and the routes behind the signals.
 
 #### `scopePins` {#symbol-scopepins}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L76)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L77)
 - Returns: [`PinSet`](../../packages/explorer/src/client/views/pin-state.ts.mdmd.md#symbol-pinset)
 - Parameters: `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun)
 
@@ -66,7 +66,7 @@ The scope's pins, every file retained whole, and its subject.
 
 #### `includeNode` {#symbol-includenode}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L84)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L85)
 - Parameters: `pins`: [`PinSet`](../../packages/explorer/src/client/views/pin-state.ts.mdmd.md#symbol-pinset); `node`: [`ExplorerNodePayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorernodepayload)
 
 ##### `includeNode` — Summary
@@ -75,7 +75,7 @@ version 1 payload without filters, which means both shown); a pinned or selected
 
 #### `evaluate` {#symbol-evaluate}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L105)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L106)
 - Returns: [`Evaluation`](#symbol-evaluation)
 - Parameters: `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture); `graph`: [`ExplorerGraphPayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorergraphpayload); `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun); `config`: [`LabConfig`](#symbol-labconfig)
 
@@ -84,7 +84,7 @@ Lays out and scores one configuration of the levers over a capture.
 
 #### `evaluateAlignment` {#symbol-evaluatealignment}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L138)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L139)
 - Returns: [`Evaluation`](#symbol-evaluation)
 - Parameters: `previous`: [`Evaluation`](#symbol-evaluation); `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture); `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun)
 
@@ -93,7 +93,7 @@ Re-solves a shown order with explicit alignment constraints, preserving its sour
 
 #### `driftOf` {#symbol-driftof}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L152)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L153)
 - Parameters: `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture); `evaluation`: [`Evaluation`](#symbol-evaluation)
 
 ##### `driftOf` — Summary

@@ -34,7 +34,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     persistChange();
   };
   const packingSliders = [
-    ...([ ["itemGap", "item-gap"], ["bandGap", "band-gap"], ["heightCost", "height-cost"] ] as const).map(([key, name]) => ({
+    ...([ ["itemGap", "item-gap"], ["bandGap", "band-gap"], ["heightCost", "height-cost"], ["widthCost", "width-cost"] ] as const).map(([key, name]) => ({
       id: `tuning-${name}`, get: () => state.tuning.localMap[key], set: (value: number) => { state.tuning.localMap[key] = value; }
     })),
     ...([ ["linkGap", "link-gap"], ["charge", "charge"], ["collisionGap", "collision-gap"],

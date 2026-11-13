@@ -3,6 +3,7 @@ import { expect, test, type Page } from "@playwright/test";
 import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
 import { LOCAL_MAP, localMapSettled, localRetainUrl } from "./still-picture";
 import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
+import { NOMINAL_CARD } from "../../packages/explorer/src/client/views/localView/directory-flow";
 
 /**
  * Directories open and close inside the Local Map (the owner's grammar,
@@ -409,4 +410,129 @@ test("Opened Directory is chosen in Tuning, travels in the page's link, and a li
   await settled(page);
   await expect(linesOf(page)).toHaveCount(0);
   await expect(page.locator("#tuning-directory-layout")).toHaveValue("grid");
+});
+
+// How the boxes, the files no line joins and a tall rank stand is the picture's price's to choose, its width set against
+// its height (the owner's leave, 2026-11-13): the page prices several shapes and draws the cheapest.
+test("with Opened Directory at Flow, the price chooses how a directory stands, Width Cost turns the choice, and the link shows it again", async ({ page }) => {
+  test.setTimeout(120_000);
+  const LIVE_DOCS_SCRIPTS = "scripts/live-docs";
+  const shapeOf = (target: Page) => target.evaluate(() => {
+    const root = document.querySelector<HTMLElement>("#map-container .branch-mode")!;
+    return {
+      shape: JSON.parse(root.dataset.flowShape ?? "null") as unknown,
+      priced: JSON.parse(root.dataset.flowShapes ?? "[]") as Array<{ rows: number | null; boxRows: unknown; looseColumns: unknown; price: number }>,
+      columns: new Set([...document.querySelectorAll<HTMLElement>("#map-container .local-column")].map(wrapper => wrapper.dataset.column)).size,
+      width: document.querySelector<HTMLElement>("#map-container .local-layout")!.offsetWidth
+    };
+  });
+  const layoutOf = (address: string): Record<string, unknown> | undefined =>
+    decompressSnapshot(new URL(address).searchParams.get("s") ?? "").layout?.localMap as Record<string, unknown> | undefined;
+  await page.goto(opened(LIVE_DOCS_SCRIPTS, "flow"));
+  await settled(page);
+  const chosen = await shapeOf(page);
+  // Several shapes were priced, and the one drawn is the cheapest of them.
+  expect(chosen.priced.length).toBeGreaterThan(1);
+  const cheapest = chosen.priced.reduce((best, each) => (each.price < best.price ? each : best));
+  expect(chosen.shape).toEqual({ rows: cheapest.rows, boxRows: cheapest.boxRows, looseColumns: cheapest.looseColumns });
+  // With the width free the same directory stands wider, in more columns.
+  await page.getByRole("button", { name: /^Layout tuning/ }).click();
+  const lever = page.getByRole("slider", { name: /^Width Cost/ });
+  await lever.focus();
+  await page.keyboard.press("Home");
+  await expect(lever).toHaveValue("0");
+  await settled(page);
+  const free = await shapeOf(page);
+  expect(free.shape).not.toEqual(chosen.shape);
+  expect(free.columns).toBeGreaterThan(chosen.columns);
+  expect(free.width).toBeGreaterThan(chosen.width);
+  // The lever travels in the link, and a visitor with no saved choice is shown the same picture.
+  expect(layoutOf(page.url())).toHaveProperty("widthCost", 0);
+  const fresh = await page.context().browser()!.newContext({ viewport: { width: 1800, height: 1100 } });
+  const visitor = await fresh.newPage();
+  await visitor.goto(page.url());
+  await settled(visitor);
+  const seen = await shapeOf(visitor);
+  expect({ shape: seen.shape, columns: seen.columns, width: seen.width }).toEqual({ shape: free.shape, columns: free.columns, width: free.width });
+  await fresh.close();
+});
+
+// A directory's shape is chosen on the directory alone, its files unpinned on a nominal card model, once for its
+// filters and tuning (2026-11-13): a pin prices no shape, and the picture a person pins their way to is the picture its
+// link opens on another screen.
+
+/** Each card's and box's column, by id. */
+const columnsOf = (target: Page) => target.evaluate(() => Object.fromEntries([...document.querySelectorAll<HTMLElement>("#map-container .local-column")]
+  .map(wrapper => [(wrapper.firstElementChild as HTMLElement).dataset.id ?? (wrapper.firstElementChild as HTMLElement).dataset.directory ?? "", Number(wrapper.dataset.column)])));
+
+/** Presses a file's own pin, as a person does, and waits for the picture drawn after it. */
+async function pinByHand(page: Page, file: string): Promise<void> {
+  const address = page.url();
+  await page.locator(`#map-container .node-card[data-id="${file}"] button[aria-label^="Pin "]`).first().evaluate(button => (button as HTMLButtonElement).click());
+  await expect.poll(() => page.url(), { message: "the pin is in the page's link" }).not.toBe(address);
+  await settled(page);
+}
+
+test("with Opened Directory at Flow, a pin in a directory prices no shape and keeps the cards already on screen in their columns", async ({ page }) => {
+  test.setTimeout(120_000);
+  const LOCAL_VIEW = "packages/explorer/src/client/views/localView";
+  await page.goto(opened(LOCAL_VIEW, "flow"));
+  await settled(page);
+  const root = page.locator("#map-container .branch-mode");
+  await expect(root).toHaveAttribute("data-flow-shape-ms", /\d/u);
+  const before = await columnsOf(page);
+  expect(Object.keys(before).length).toBeGreaterThan(40);
+  await pinByHand(page, `${LOCAL_VIEW}/directory-flow.ts`);
+  const after = await columnsOf(page);
+  expect(Object.keys(after).length).toBeGreaterThan(Object.keys(before).length - 1);
+  const moved = Object.keys(before).filter(id => id in after && after[id] !== before[id]);
+  expect(moved, "cards that changed column").toEqual([]);
+  // The shape chosen for the directory was reused: the pin priced none.
+  await expect(root).not.toHaveAttribute("data-flow-shape-ms", /./u);
+});
+
+test("with Opened Directory at Flow, the picture pinned by hand and the picture its link opens stand the directory's cards in the same columns", async ({ page }) => {
+  test.setTimeout(180_000);
+  // The explorer's client: a pin of types.ts brings some forty cards from other directories.
+  await page.goto(opened(CLIENT, "flow"));
+  await settled(page);
+  await pinByHand(page, `${CLIENT}/types.ts`);
+  const own = (columns: Record<string, number>): Record<string, number> =>
+    Object.fromEntries(Object.entries(columns).filter(([id]) => id.startsWith(`${CLIENT}/`) && !id.slice(CLIENT.length + 1).includes("/")));
+  const byHand = own(await columnsOf(page));
+  expect(Object.keys(byHand).length).toBeGreaterThan(10);
+  const fresh = await page.context().browser()!.newContext({ viewport: { width: 1800, height: 1100 } });
+  const visitor = await fresh.newPage();
+  await visitor.goto(page.url());
+  await settled(visitor);
+  const byLink = own(await columnsOf(visitor));
+  await fresh.close();
+  expect(byLink).toEqual(byHand);
+});
+
+test("the nominal file card the shape is chosen on stays near the page's own unpinned card", async ({ page }) => {
+  test.setTimeout(120_000);
+  // The unpinned cards measured on 2026-11-13 stood 154 to 208 tall (about 15% either side of the nominal 180) and their
+  // medians 200 to 311 wide (about 30% either side of the nominal 240): a nominal card further than 20% from the page's
+  // median height or 40% from its median width has been left behind by a change to the card.
+  await page.goto(opened(CLIENT, "flow"));
+  await settled(page);
+  const median = await page.evaluate(() => {
+    const layout = document.querySelector<HTMLElement>("#map-container .local-layout")!;
+    const k = layout.getBoundingClientRect().width / layout.offsetWidth;
+    const sizes = [...document.querySelectorAll<HTMLElement>("#map-container .local-column")]
+      .filter(wrapper => wrapper.firstElementChild?.classList.contains("branch-member"))
+      .map(wrapper => {
+        const width = wrapper.style.width;
+        wrapper.style.width = "max-content";
+        const box = wrapper.getBoundingClientRect();
+        wrapper.style.width = width;
+        return { width: box.width / k, height: box.height / k };
+      });
+    const middle = (values: number[]): number => values.sort((a, b) => a - b)[Math.floor(values.length / 2)];
+    return { count: sizes.length, width: middle(sizes.map(size => size.width)), height: middle(sizes.map(size => size.height)) };
+  });
+  expect(median.count).toBeGreaterThan(10);
+  expect(Math.abs(NOMINAL_CARD.height - median.height) / median.height, `nominal height ${NOMINAL_CARD.height} against the page's ${median.height}`).toBeLessThanOrEqual(0.2);
+  expect(Math.abs(NOMINAL_CARD.width - median.width) / median.width, `nominal width ${NOMINAL_CARD.width} against the page's ${median.width}`).toBeLessThanOrEqual(0.4);
 });

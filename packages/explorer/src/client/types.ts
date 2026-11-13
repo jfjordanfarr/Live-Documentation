@@ -128,6 +128,11 @@ export interface LocalMapTuning {
   crossingCost: number;
   /** What one pixel of the picture's height costs when a start's picture is priced, in pixels of wire. */
   heightCost: number;
+  /**
+   * What one pixel of the picture's width costs, in pixels of wire: set against the height's cost, it chooses how an
+   * opened directory's closed boxes, its files no line joins and its tall ranks stand in flow order (2026-11-13).
+   */
+  widthCost: number;
   /** What one pair of cards swapped against the previous picture costs when a start's picture is priced, in pixels of wire; a slider since 2026-10-07. */
   churnCost: number;
   /** The room between neighbouring cards and lanes of a column, in CSS pixels. */

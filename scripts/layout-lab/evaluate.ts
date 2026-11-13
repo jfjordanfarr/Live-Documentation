@@ -33,6 +33,7 @@ export interface LabConfig {
   orderStarts: number;
   crossingCost: number;
   heightCost: number;
+  widthCost: number;
   symbolOrder: SymbolOrder;
   columnGap: number;
   itemGap: number;
@@ -47,7 +48,7 @@ export interface LabConfig {
 }
 
 /** The levers in the order the reports name them. */
-export const LEVERS: ReadonlyArray<keyof LabConfig> = ["rankingPull", "rankingTie", "orderSweeps", "orderSeed", "orderStarts", "crossingCost", "heightCost", "symbolOrder", "columnGap", "itemGap", "bandGap", "membraneNeck", "membranePadding", "cardMaxWidth", "membraneDepth", "membraneEvenness", "membraneSimplicity", "rowLevelness"];
+export const LEVERS: ReadonlyArray<keyof LabConfig> = ["rankingPull", "rankingTie", "orderSweeps", "orderSeed", "orderStarts", "crossingCost", "heightCost", "widthCost", "symbolOrder", "columnGap", "itemGap", "bandGap", "membraneNeck", "membranePadding", "cardMaxWidth", "membraneDepth", "membraneEvenness", "membraneSimplicity", "rowLevelness"];
 
 /** The page's own tuning: the configuration the picture was designed at. */
 export function baselineConfig(preset: LayoutPreset = "relaxed"): LabConfig {
@@ -122,7 +123,7 @@ export function evaluate(capture: Capture, graph: ExplorerGraphPayload, run: Sco
     const { scene, metrics } = placeConfiguration(capture, run, config, branches);
     metricsOf.set(scene, metrics);
     return { branches, scene };
-  }, { crossing: config.crossingCost, height: config.heightCost, churn: 0, evenness: config.membraneEvenness, levelness: config.rowLevelness, steps: config.membraneSimplicity }, null);
+  }, { crossing: config.crossingCost, height: config.heightCost, width: config.widthCost, churn: 0, evenness: config.membraneEvenness, levelness: config.rowLevelness, steps: config.membraneSimplicity }, null);
   const { branches, scene } = chosen;
   const metrics = metricsOf.get(scene)!;
   const routes = routeScene(scene, branches, capture, metrics, getDefaultTuning().bezier);
@@ -141,7 +142,7 @@ export function evaluateAlignment(previous: Evaluation, capture: Capture, run: S
   const { scene, metrics } = placeConfiguration(capture, run, config, branches, alignments);
   const routes = routeScene(scene, branches, capture, metrics, getDefaultTuning().bezier);
   const signals = signalsOf(branches, scene, previous.scene.tops);
-  const score = scoreOf(signals, { crossing: config.crossingCost, height: config.heightCost, churn: 0, evenness: config.membraneEvenness, levelness: config.rowLevelness, steps: config.membraneSimplicity });
+  const score = scoreOf(signals, { crossing: config.crossingCost, height: config.heightCost, width: config.widthCost, churn: 0, evenness: config.membraneEvenness, levelness: config.rowLevelness, steps: config.membraneSimplicity });
   return {
     config, signals: measureScene(scene, branches, routes), ms: performance.now() - started, branches, scene, routes, metrics,
     start: previous.start, starts: [{ name: previous.start, signals, score }], alignments: [...alignments]

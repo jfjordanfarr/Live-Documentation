@@ -294,7 +294,7 @@ async function main(): Promise<void> {
     const churnCosts = (options.churn ?? "0,50,100,200,400").split(",").map(Number).filter(Number.isFinite);
     const first = Number(options.first ?? config.orderStarts);
     const patience = Number(options.patience ?? getDefaultTuning().localMap.searchPatience);
-    const pageCosts = { crossing: config.crossingCost, height: config.heightCost, churn: 0, evenness: config.membraneEvenness, levelness: config.rowLevelness, steps: config.membraneSimplicity };
+    const pageCosts = { crossing: config.crossingCost, height: config.heightCost, width: config.widthCost, churn: 0, evenness: config.membraneEvenness, levelness: config.rowLevelness, steps: config.membraneSimplicity };
     const trials = trialCosts(rows, parseCosts(options.costs, pageCosts), weights);
     const search = { trials: simulateSearch(rows, pageCosts, churnCosts, first, patience), costs: pageCosts, orderStarts: first, patience };
     const label = options.label ?? "restarts";
@@ -320,7 +320,7 @@ async function main(): Promise<void> {
     const seeds = Number(options.starts ?? 16);
     const weights = parseWeights(options.weights);
     const defaults = getDefaultTuning().localMap;
-    const judge = { costs: { crossing: baseline.crossingCost, height: baseline.heightCost, churn: 0, evenness: baseline.membraneEvenness, levelness: baseline.rowLevelness, steps: baseline.membraneSimplicity }, churn: Number(options.churn ?? defaults.churnCost), first: Number(options.first ?? baseline.orderStarts), patience: Number(options.patience ?? defaults.searchPatience) };
+    const judge = { costs: { crossing: baseline.crossingCost, height: baseline.heightCost, width: baseline.widthCost, churn: 0, evenness: baseline.membraneEvenness, levelness: baseline.rowLevelness, steps: baseline.membraneSimplicity }, churn: Number(options.churn ?? defaults.churnCost), first: Number(options.first ?? baseline.orderStarts), patience: Number(options.patience ?? defaults.searchPatience) };
     const settings = widenStarts(capture, graph, run, baseline, grid, seeds, weights, judge.costs, judge.churn, judge.first, judge.patience, (setting, done, count) => console.log(`  ${done} of ${count}: ${setting}`));
     const label = options.label ?? "wide";
     await fs.mkdir(out, { recursive: true });
