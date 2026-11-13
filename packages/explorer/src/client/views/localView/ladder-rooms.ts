@@ -32,6 +32,27 @@ export function nameLinesHeld(rowHeight: number, nameTop: number, lineHeight: nu
   return Math.max(1, Math.floor(((rowHeight - HIGHLIGHT_BELOW) / scale - nameTop) / lineHeight + 1e-6));
 }
 
+/** A row's More, 17 px square (local.css). */
+export const ROW_MORE = 17;
+/** A symbol name's line, 1.15 of its 11 px (reading.css, the slot card's stated line). */
+export const NAME_LINE = 1.15 * 11;
+
+/**
+ * The least space between one row's head and the next's in the far looks: a pinned row's highlight stands 2 px above its
+ * head and ends 2 px below it, so that two highlights keep this less 2 of clear air between them.
+ */
+export const HEAD_SPACE = 4;
+
+/**
+ * A short row's height at a held scale (2026-11-13): a symbol whose description is not shown keeps only the room its head
+ * needs at the connections look, its More held at that scale beside one line of its name (centred on More, as the row
+ * lays them out), with the highlight's air and the space before the next head, in whole pixels. The stylesheet states
+ * the result for the look's 2.2.
+ */
+export function shortRowHeight(scale: number): number {
+  return Math.ceil(headHeight({ nameTop: (ROW_MORE - NAME_LINE) / 2, line: NAME_LINE, moreTop: 0, moreHeight: ROW_MORE }, 1, scale) + HEAD_SPACE);
+}
+
 /** A count at a card's foot as laid out, in the map's own units on one vertical axis: its top, bottom, left and width. */
 export interface FootCount {
   top: number;
@@ -115,17 +136,23 @@ export function layoutTopOf(drawnTop: number, height: number, shift: number, sca
   return drawnTop - shift - (height / 2) * (1 - scale);
 }
 
-/** A symbol row as the title's room sees it: whether it is laid out at all, and whether it is pinned. */
+/** A symbol row as the title's room sees it: whether it is laid out at all, whether it is pinned, and its height. */
 export interface RowMark {
   shown: boolean;
   pinned: boolean;
+  /** Its height as laid out; a short row's (2026-11-13) is less than a slot row's. */
+  height: number;
+  /** Its head's height in the far looks ({@link evenRows}); its height where none is known. */
+  head?: number;
+  /** Whether it is the Internals row, which stands apart from the rows that share their room evenly. */
+  internals?: boolean;
 }
 
 /**
  * How many shown rows stand above a card's first pinned row, in the rows' order, or null when no shown row is pinned:
  * at the overview band the file's name may wrap down over the silent rows only as far as the first row still drawn.
  */
-export function rowsBeforeFirstPin(rows: readonly RowMark[]): number | null {
+export function rowsBeforeFirstPin(rows: readonly Pick<RowMark, "shown" | "pinned">[]): number | null {
   let shown = 0;
   for (const row of rows) {
     if (!row.shown) continue;
@@ -133,4 +160,81 @@ export function rowsBeforeFirstPin(rows: readonly RowMark[]): number | null {
     shown += 1;
   }
   return null;
+}
+
+/**
+ * How far below the rows' top the first pinned shown row's top stands, less the row gap, or null when none is: the room
+ * the file's name may take at the overview below the header's (2026-11-13: since rows have two heights, a count of rows
+ * times one pitch no longer finds it). As laid out, or with the rows' heads shared evenly ({@link evenRows}), as the
+ * zoom looks draw them.
+ */
+export function pinDepth(rows: readonly RowMark[], gap: number, even: boolean): number | null {
+  const before = rowsBeforeFirstPin(rows);
+  if (before === null) return null;
+  const shown = rows.filter(row => row.shown);
+  const laid = shown.slice(0, before).reduce((sum, row) => sum + row.height + gap, 0) - gap;
+  const pinned = shown[before];
+  if (!even || pinned.internals) return laid;
+  // The pinned row's head as the looks draw it: its layout top shifted to its even place.
+  let top = 0;
+  const bands = shown.filter(row => !row.internals).map(row => {
+    const band = { top, height: row.height, head: row.head ?? row.height };
+    top += row.height + gap;
+    return band;
+  });
+  const index = shown.filter(row => !row.internals).indexOf(pinned);
+  return laid + evenRows(bands, gap)[index].shift;
+}
+
+/** A drawn row's band as laid out, its top and its height, and its head's height in the far looks, in one unit. */
+export interface HeadBand {
+  top: number;
+  height: number;
+  head: number;
+}
+
+/**
+ * The rows' heads spaced evenly over their card's row room in the far looks (2026-11-13): with short rows beside slot
+ * rows a card's names would stand at uneven gaps with nothing visible to explain them. Each drawn row's head, as tall
+ * as its name's lines and its controls need there, follows the one above with the same space after it: the room the
+ * rows' boxes span with one more gap, less their heads, shared out, so that rows of one height move nothing. A name on
+ * two lines takes two lines and the gap after every name is the same. Each head is shifted by `shift` from its row's
+ * top, and holds its name and controls in `height`, its own and the space after it less the gap. The rows' boxes do not
+ * move.
+ */
+export function evenRows(rows: readonly HeadBand[], gap: number): { shift: number; height: number }[] {
+  if (!rows.length) return [];
+  const first = rows[0].top, last = rows[rows.length - 1];
+  const heads = rows.reduce((sum, row) => sum + row.head, 0);
+  const space = Math.max(0, last.top + last.height + gap - first - heads) / rows.length;
+  let top = first;
+  return rows.map(row => {
+    const placed = { shift: top - row.top, height: Math.max(row.head, row.head + space - gap) };
+    top += row.head + space;
+    return placed;
+  });
+}
+
+/**
+ * How many lines each drawn row's name takes in the far looks: as many as it wants, until the heads they make are taller
+ * than the rows' room; then one fewer at a time, from the name that takes the most (the later of equals), down to one.
+ */
+export function fitLines(want: readonly number[], head: (index: number, lines: number) => number, room: number): number[] {
+  const lines = want.map(count => Math.max(1, count));
+  const total = (): number => lines.reduce((sum, count, index) => sum + head(index, count), 0);
+  while (total() > room + 1e-6) {
+    let most = -1;
+    lines.forEach((count, index) => { if (count > 1 && (most < 0 || count >= lines[most])) most = index; });
+    if (most < 0) break;
+    lines[most] -= 1;
+  }
+  return lines;
+}
+
+/**
+ * A row's head's height in the far looks at a held scale: the taller of its More, held at the scale from its top, and
+ * its name's lines, held about the row's top, with the highlight's air.
+ */
+export function headHeight(at: { nameTop: number; line: number; moreTop: number; moreHeight: number }, lines: number, scale: number): number {
+  return Math.max(at.moreTop + at.moreHeight * scale, (at.nameTop + lines * at.line) * scale) + HIGHLIGHT_BELOW;
 }

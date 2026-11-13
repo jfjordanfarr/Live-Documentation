@@ -156,12 +156,12 @@
 .local-slot-card .symbol-row {
     /* A row's buttons grow downward from their top, which is the row's, and stop 2 px above the row's bottom, so that a
        pinned row's highlight still holds them with air beneath. */
-    --row-control-scale: clamp(1, var(--control-scale, 1), calc((var(--row-h, 17) - var(--row-more-y, 0) - 2) / var(--row-more-h, 17)));
+    --row-control-scale: clamp(1, var(--control-scale, 1), calc((var(--row-held-h, var(--row-h, 17)) - var(--row-more-y, 0) - 2) / var(--row-more-h, 17)));
     /* A dot holds its size only as far as its card's edge and its row's height allow. */
-    --dot-scale: clamp(1, var(--control-scale, 1), min(var(--row-dot-room, 1), var(--row-h, 14) / var(--row-dot-h, 14)));
+    --dot-scale: clamp(1, var(--control-scale, 1), min(var(--row-dot-room, 1), var(--row-held-h, var(--row-h, 14)) / var(--row-dot-h, 14)));
     /* A dot stays on its name's line: it moves down as far as the name's centre does, held about the row's top, as far
        as its row lets it. The placement reads the dot where the layout put it, this shift taken back. */
-    --dot-y: calc((clamp(var(--row-dot-h, 14) / 2 * var(--dot-scale), var(--row-dot-mid, 7) + (var(--row-name-y, 0) + var(--row-name-h, 0) / 2) * (var(--name-scale, 1) - 1), var(--row-h, 14) - var(--row-dot-h, 14) / 2 * var(--dot-scale)) - var(--row-dot-mid, 7)) * 1px);
+    --dot-y: calc((clamp(var(--row-dot-h, 14) / 2 * var(--dot-scale), var(--row-dot-mid, 7) + (var(--row-name-y, 0) + var(--row-name-h, 0) / 2) * (var(--name-scale, 1) - 1), var(--row-held-h, var(--row-h, 14)) - var(--row-dot-h, 14) / 2 * var(--dot-scale)) - var(--row-dot-mid, 7) + var(--row-held-y, 0)) * 1px);
 }
 /* A dot grows from its edge beside the name, away from it: the use-dot leftward, the offer-dot rightward, as wires enter
    on the left and leave on the right, and about its own centre up and down; the controller draws the wires again at a
@@ -172,7 +172,7 @@
 /* A row's controls hold their size together from the row's right edge: More scales about its own right edge, and the
    Pin beside it scales about its right edge and moves left by what More and the gap grew; the badges, which stand in the
    reading band only, move left by what both grew. */
-.local-slot-card .local-symbol-more { transform: scale(var(--row-control-scale)); transform-origin: right top; }
+.local-slot-card .local-symbol-more { transform: translateY(calc(var(--row-held-y, 0) * 1px)) scale(var(--row-control-scale)); transform-origin: right top; }
 .local-slot-card .local-symbol-pin { transform: translateX(calc(var(--row-more-w, 0) * (1 - var(--row-control-scale)) * 1px)) scale(var(--row-control-scale)); transform-origin: right top; }
 .local-slot-card .local-symbol-read { transform: translateX(calc(var(--row-after-read-w, 0) * (1 - var(--row-control-scale)) * 1px)) scale(var(--row-control-scale)); transform-origin: right top; }
 .local-slot-card .type-refs-indicator { transform: translateX(calc(var(--row-controls-w, 0) * (1 - var(--row-control-scale)) * 1px)); }
@@ -188,10 +188,10 @@
     --name-scale: max(1, min(var(--row-fill-h, 1), var(--text-scale, 1)));
 }
 :is([data-lod="far"], [data-lod="overview"]) .local-slot-card .symbol-row { --name-room: calc(var(--row-room-w, 0) - var(--row-more-w, 0) * var(--row-control-scale)); }
-:is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card .symbol-row { --name-scale: max(1, min(var(--row-fill-h, 1), max(var(--text-scale, 1), min(0.9 * var(--name-room) / var(--row-name-w, 1), var(--text-scale, 1) * var(--name-growth, 1))))); }
+:is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card .symbol-row { --name-scale: max(1, min(var(--row-held-fill, var(--row-fill-h, 1)), max(var(--text-scale, 1), min(0.9 * var(--name-room) / var(--row-name-w, 1), var(--text-scale, 1) * var(--name-growth, 1))))); }
 /* The ladder scales a name's text, never its button, whose box fills the row and would cover the row's buttons scaled
    (2026-11-06), about the row's top edge, so that the name, its buttons and its dots keep their reading alignment. */
-.local-slot-card .symbol-label .symbol-label-text { display: inline-block; transform: scale(var(--name-scale, 1)); transform-origin: left calc(var(--row-name-y, 0) * -1px); }
+.local-slot-card .symbol-label .symbol-label-text { display: inline-block; transform: translateY(calc(var(--row-held-y, 0) * 1px)) scale(var(--name-scale, 1)); transform-origin: left calc(var(--row-name-y, 0) * -1px); }
 /* A held name is one line, as wide as its text up to its room, ending with an ellipsis of its own where the room runs
    out, so that it never runs under a button. Below reading scale it is a block at its label's top, so that its box is
    the label's line and the highlight below holds it exactly; in the reading band it stays the inline block it is there,
@@ -227,9 +227,9 @@
     position: absolute;
     left: 0;
     right: 0;
-    top: 0;
+    top: calc(var(--row-held-y, 0) * 1px);
     z-index: -1;
-    height: clamp(100%, calc((max((var(--row-name-y, 0) + var(--row-name-h, 0) + (var(--row-lines, 1) - 1) * var(--row-line, 0)) * var(--name-scale, 1), var(--row-more-y, 0) + var(--row-more-h, 17) * var(--row-control-scale, 1)) - var(--row-wrapper-y, -2) + 2) * 1px), calc((var(--row-h, 0) - var(--row-wrapper-y, -2)) * 1px));
+    height: clamp(100%, calc((max((var(--row-name-y, 0) + var(--row-name-h, 0) + (var(--row-lines, 1) - 1) * var(--row-line, 0)) * var(--name-scale, 1), var(--row-more-y, 0) + var(--row-more-h, 17) * var(--row-control-scale, 1)) - var(--row-wrapper-y, -2) + 2) * 1px), calc((var(--row-held-h, var(--row-h, 0)) - var(--row-wrapper-y, -2)) * 1px));
     border-radius: 4px;
     background: var(--accent-subtle);
     box-shadow: 0 0 0 1px var(--accent), 0 0 8px var(--color-outbound-glow);
@@ -238,6 +238,13 @@
 /* A symbol row keeps its allotment in every band; when the slot leaves, its track stays and takes the room below, so the
    name keeps the row's top (measured 2026-11-06: an alignment to the centre had no free space to act on). */
 .local-slot-card .symbol-row:not(.internals-row) { height: calc(32px + var(--slot-lines, 2) * 17px); grid-template-rows: auto minmax(0, 1fr); align-content: start; }
+/* A symbol whose description is not shown, none written or folded with its book, has a short row and no slot (the
+   owner, 2026-11-13: "symbols with no description shown to occupy less vertical space on their row"), as tall as its
+   head needs at the connections look: the row's More held at the look's 2.2, which also holds one line of its name,
+   and the highlight's air (ladder-rooms.ts's shortRowHeight, held to this rule by its unit test). A fold or a restore
+   is a deliberate act, so the card's box may change then; the zoom changes none. */
+.local-slot-card .symbol-row.local-row-short:not(.internals-row) { height: 44px; }
+.local-slot-card .symbol-row.local-row-short .local-reading-slot { display: none; }
 /* The slot is hidden rather than taken out, so that a row's children lay out alike in every band and a render or the layout
    search reads the same rows at any zoom (2026-11-06); the row's allotment holds its box either way. */
 :is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card .symbol-row .local-reading-slot { visibility: hidden; }
@@ -294,7 +301,11 @@
 }
 :is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card .local-card-actions { bottom: auto; transform-origin: top right; }
 [data-lod="overview"] .local-slot-card {
-    --title-room-h: min(var(--title-card-h, 0), max(var(--title-head-h, 0), var(--title-head-h, 0) + var(--rows-before-pin, 100000) * var(--title-pitch, 1) - var(--title-row-gap, 0)));
+    --title-room-h: min(var(--title-card-h, 0), max(var(--title-head-h, 0), var(--title-head-h, 0) + var(--title-pin-depth, 100000)));
+}
+/* The looks draw a pinned row's head at its even place (below), so the file's name reaches down to that. */
+[data-looks="three"][data-lod="overview"] .local-slot-card {
+    --title-room-h: min(var(--title-card-h, 0), max(var(--title-head-h, 0), var(--title-head-h, 0) + var(--title-pin-depth-even, 100000)));
 }
 :is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card .local-file-name { position: relative; }
 :is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card .local-file-name-text { visibility: hidden; }
@@ -397,6 +408,57 @@
 /* The Internals row's quiet dashed box is its wrapper's border, which stays the size of the row's line while the look
    holds the row's head larger: the border ran through the held name. From the connections look out the box is a layer
    under the head that grows with it, as a pinned row's highlight does (above), and the wrapper draws no box of its own. */
+/* A closed directory's box inside an opened directory follows a file's card in the far looks (2026-11-13): its name is
+   held at the look's size on the lines the card reading chose (data-lines-look-<look>), drawn by an element of its own
+   from the box's content's top left; Open and the box's More follow it at the box's right edge, held no taller than a
+   line of it, where the box holds them (local-closed-controls-<look>, each moved by --closed-x/y-<look>); the count of
+   what it holds, and the controls the box cannot hold, are not drawn. The name's button keeps its place, its label and
+   its focus, its own text transparent. Its line is the stylesheet's, as a slot card's is, so that the box shows the
+   same on every machine. */
+.local-directory-closed { line-height: 1.15; }
+.local-directory-closed__held { display: none; }
+[data-looks="three"][data-lod="far"] .local-directory-closed { --closed-scale: var(--closed-scale-connections, 1); --closed-control: var(--closed-control-connections, 1); }
+[data-looks="three"][data-lod="overview"] .local-directory-closed { --closed-scale: var(--closed-scale-overview, 1); --closed-control: var(--closed-control-overview, 1); }
+[data-looks="three"]:is([data-lod="far"], [data-lod="overview"]) .local-directory-closed :is(.local-directory-closed__count, .local-directory-open, .local-directory-actions) { visibility: hidden; }
+[data-looks="three"]:is([data-lod="far"], [data-lod="overview"]) .local-directory-closed .local-directory-closed__name { color: transparent; }
+[data-looks="three"]:is([data-lod="far"], [data-lod="overview"]) .local-directory-closed__held {
+    display: block;
+    position: absolute;
+    left: calc(var(--closed-left, 12) * 1px);
+    top: calc(var(--closed-top, 10) * 1px);
+    width: calc(var(--closed-width, 0) / var(--closed-scale) * 1px);
+    overflow: hidden;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: calc(var(--closed-line, 15) * 1px);
+    white-space: pre;
+    color: var(--text);
+    transform: scale(var(--closed-scale));
+    transform-origin: left top;
+    pointer-events: none;
+}
+[data-looks="three"][data-lod="far"] .local-directory-closed__held::after { content: attr(data-lines-look-connections); }
+[data-looks="three"][data-lod="overview"] .local-directory-closed__held::after { content: attr(data-lines-look-overview); }
+[data-looks="three"][data-lod="far"] .local-directory-closed.local-closed-controls-connections :is(.local-directory-open, .local-directory-actions) {
+    visibility: visible;
+    transform: translate(calc(var(--closed-x-connections, 0) * 1px), calc(var(--closed-y-connections, 0) * 1px)) scale(var(--closed-control));
+    transform-origin: right top;
+}
+[data-looks="three"][data-lod="overview"] .local-directory-closed.local-closed-controls-overview :is(.local-directory-open, .local-directory-actions) {
+    visibility: visible;
+    transform: translate(calc(var(--closed-x-overview, 0) * 1px), calc(var(--closed-y-overview, 0) * 1px)) scale(var(--closed-control));
+    transform-origin: right top;
+}
+/* In the far looks a card's drawn rows share its row room evenly (2026-11-13): with short rows beside slot rows the names
+   would otherwise stand at uneven gaps with nothing visible to explain them. The card reading shares the rows' heights
+   and gaps out (ladder-rooms.ts's evenRows) and writes each row's shift to its even place and its share's height; the
+   row's head, its name, dots, More and highlight, is drawn shifted and held in that share, its box where the layout put
+   it, so that nothing is laid out again and the wires follow the dots. */
+[data-looks="three"]:is([data-lod="far"], [data-lod="overview"]) .local-slot-card .symbol-row {
+    --row-held-h: var(--row-even-h, var(--row-h, 17));
+    --row-held-fill: var(--row-fill-even, var(--row-fill-h, 1));
+    --row-held-y: var(--row-even-y, 0);
+}
 [data-looks="three"]:is([data-lod="far"], [data-lod="overview"]) .local-slot-card .internals-row .internals-label { position: relative; isolation: isolate; border-color: transparent; background: none; }
 /* The box's change of place at a change of look is no hover: its colour does not fade (a fade is motion the person may
    have declined), only the hover's glow keeps its ease. */
@@ -409,7 +471,7 @@
     top: -1px;
     z-index: -1;
     box-sizing: border-box;
-    height: clamp(calc(100% + 2px), calc((max((var(--row-name-y, 0) + var(--row-name-h, 0) + (var(--row-lines, 1) - 1) * var(--row-line, 0)) * var(--name-scale, 1), var(--row-more-y, 0) + var(--row-more-h, 17) * var(--row-control-scale, 1)) - var(--row-wrapper-y, -2) + 2) * 1px), calc((var(--row-h, 0) - var(--row-wrapper-y, -2)) * 1px));
+    height: clamp(calc(100% + 2px), calc((max((var(--row-name-y, 0) + var(--row-name-h, 0) + (var(--row-lines, 1) - 1) * var(--row-line, 0)) * var(--name-scale, 1), var(--row-more-y, 0) + var(--row-more-h, 17) * var(--row-control-scale, 1)) - var(--row-wrapper-y, -2) + 2) * 1px), calc((var(--row-held-h, var(--row-h, 0)) - var(--row-wrapper-y, -2)) * 1px));
     border: 1px dashed rgba(100, 100, 120, 0.5);
     border-radius: 4px;
     background: rgba(40, 40, 50, 0.6);
@@ -480,16 +542,16 @@
     }
     .local-look-fading[data-looks="three"][data-look-from="connections"] .local-slot-card { --title-room-from: var(--title-head-h, 0); }
     .local-look-fading[data-looks="three"][data-look-from="overview"] .local-slot-card {
-        --title-room-from: min(var(--title-card-h, 0), max(var(--title-head-h, 0), var(--title-head-h, 0) + var(--rows-before-pin, 100000) * var(--title-pitch, 1) - var(--title-row-gap, 0)));
+        --title-room-from: min(var(--title-card-h, 0), max(var(--title-head-h, 0), var(--title-head-h, 0) + var(--title-pin-depth-even, 100000)));
     }
     .local-look-fading[data-looks="three"]:not([data-look-from="reading"]) .local-slot-card {
         --title-scale-from: max(1, min(var(--look-from-scale, 1), var(--title-room-from) / var(--title-line)));
         --node-scale-from: min(clamp(1, var(--look-from-scale, 1), calc((32 + var(--slot-lines, 2) * 17) / 20)), calc(var(--title-line) * var(--title-scale-from) / var(--title-more-h, 20)));
     }
     .local-look-fading[data-looks="three"] .local-slot-card .symbol-row {
-        --name-scale-from: max(1, min(var(--row-fill-h, 1), var(--look-from-scale, 1)));
-        --row-control-scale-from: clamp(1, var(--look-from-scale, 1), calc((var(--row-h, 17) - var(--row-more-y, 0) - 2) / var(--row-more-h, 17)));
-        --dot-scale-from: clamp(1, var(--look-from-scale, 1), min(var(--row-dot-room, 1), var(--row-h, 14) / var(--row-dot-h, 14)));
+        --name-scale-from: max(1, min(var(--row-held-fill, var(--row-fill-h, 1)), var(--look-from-scale, 1)));
+        --row-control-scale-from: clamp(1, var(--look-from-scale, 1), calc((var(--row-held-h, var(--row-h, 17)) - var(--row-more-y, 0) - 2) / var(--row-more-h, 17)));
+        --dot-scale-from: clamp(1, var(--look-from-scale, 1), min(var(--row-dot-room, 1), var(--row-held-h, var(--row-h, 14)) / var(--row-dot-h, 14)));
     }
     /* What both looks draw travels. */
     .local-look-fading[data-looks="three"] .local-slot-card .symbol-label-text { animation: local-look-name 160ms ease-out; }

@@ -1,6 +1,8 @@
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { dotRoom, footHold, HIGHLIGHT_BELOW, layoutTopOf, linesOf, nameFill, nameLinesHeld, nameWraps, rowsBeforeFirstPin } from "./ladder-rooms";
+import { dotRoom, evenRows, fitLines, footHold, HEAD_SPACE, headHeight, HIGHLIGHT_BELOW, layoutTopOf, linesOf, NAME_LINE, nameFill, nameLinesHeld, nameWraps, pinDepth, ROW_MORE, rowsBeforeFirstPin, shortRowHeight } from "./ladder-rooms";
 import { LOOK_SCALES } from "./ladder-steps";
 
 describe("nameFill", () => {
@@ -65,6 +67,78 @@ describe("footHold", () => {
     // A card whose content ends at 240 holds "+16 connections" (236 units at 2.2) from 13 no more.
     expect(footHold(counts, 46, 240, LOOK_SCALES.connections, 3, 4).held).toBe(false);
     expect(footHold([], 46, 372, LOOK_SCALES.connections, 3, 4)).toEqual({ held: false, above: [] });
+  });
+});
+
+describe("shortRowHeight", () => {
+  it("is the row's head at the connections look, More held there beside one line of its name, with the highlight's air and the space before the next head", () => {
+    // More 17 × 2.2 = 37.4 is taller than the name's line ((17 + 12.65) / 2 × 2.2 = 32.6); 37.4 + 2 + 4 = 43.4.
+    expect(shortRowHeight(LOOK_SCALES.connections)).toBe(44);
+    const head = headHeight({ nameTop: (ROW_MORE - NAME_LINE) / 2, line: NAME_LINE, moreTop: 0, moreHeight: ROW_MORE }, 1, LOOK_SCALES.connections);
+    expect(head + HEAD_SPACE).toBeLessThanOrEqual(shortRowHeight(LOOK_SCALES.connections));
+  });
+
+  it("is the height the stylesheet states for a short row", () => {
+    const css = readFileSync(path.resolve(__dirname, "../../styles/reading.css"), "utf8");
+    const stated = /\.symbol-row\.local-row-short:not\(\.internals-row\) \{ height: (\d+)px; \}/u.exec(css);
+    expect(Number(stated?.[1])).toBe(shortRowHeight(LOOK_SCALES.connections));
+  });
+});
+
+describe("headHeight", () => {
+  const at = { nameTop: 2.18, line: 12.65, moreTop: 0, moreHeight: 17 };
+  it("is the taller of More held at the scale and the name's lines held about the row's top, with the highlight's air", () => {
+    expect(headHeight(at, 1, 2.2)).toBeCloseTo(17 * 2.2 + 2, 6);
+    expect(headHeight(at, 2, 2.2)).toBeCloseTo((2.18 + 2 * 12.65) * 2.2 + 2, 6);
+  });
+});
+
+describe("evenRows", () => {
+  it("spaces the heads evenly over the rows' room, each head as tall as it needs and the same space after each", () => {
+    // The estate's PaymentService pinned: its class's row of 66 with a name on two lines (head 62.5), Post and Get short
+    // rows of 44 (heads 39.4), gaps of 6: the rows span 166, one more gap 172, the heads 141.3, so 10.23 after each.
+    const rows = [{ top: 0, height: 66, head: 62.5 }, { top: 72, height: 44, head: 39.4 }, { top: 122, height: 44, head: 39.4 }];
+    const placed = evenRows(rows, 6);
+    const space = (172 - 141.3) / 3;
+    expect(placed.map(each => each.height)).toEqual([62.5, 39.4, 39.4].map(head => expect.closeTo(head + space - 6, 6)));
+    expect(placed[0].shift).toBeCloseTo(0, 6);
+    expect(placed[1].shift).toBeCloseTo(62.5 + space - 72, 6);
+    expect(placed[2].shift).toBeCloseTo(62.5 + 39.4 + 2 * space - 122, 6);
+    // The gaps between one head's bottom and the next head's top are the same.
+    const tops = rows.map((row, index) => row.top + placed[index].shift);
+    expect(tops[1] - (tops[0] + 62.5)).toBeCloseTo(tops[2] - (tops[1] + 39.4), 6);
+  });
+
+  it("moves nothing where every row is of one height, whatever its head, and nothing at all for no rows", () => {
+    const rows = [{ top: 0, height: 66, head: 50 }, { top: 72, height: 66, head: 50 }, { top: 144, height: 66, head: 30 }];
+    expect(evenRows(rows.slice(0, 2), 6).map(each => Number(each.shift.toFixed(6)))).toEqual([0, 0]);
+    expect(evenRows(rows.slice(0, 2), 6).map(each => Number(each.height.toFixed(6)))).toEqual([66, 66]);
+    expect(evenRows([], 6)).toEqual([]);
+  });
+});
+
+describe("fitLines", () => {
+  const head = (_: number, lines: number): number => 20 + 30 * lines;
+  it("gives each name the lines it wants while the heads fit, then one fewer from the name that takes most", () => {
+    expect(fitLines([2, 1, 2], head, 500)).toEqual([2, 1, 2]);
+    // 80 + 50 + 80 = 210 > 190: the later of the two-line names gives one up.
+    expect(fitLines([2, 1, 2], head, 190)).toEqual([2, 1, 1]);
+    expect(fitLines([2, 1, 2], head, 10)).toEqual([1, 1, 1]);
+  });
+});
+
+describe("pinDepth", () => {
+  const rows = [
+    { shown: true, pinned: false, height: 66, head: 62.5 },
+    { shown: false, pinned: false, height: 0 },
+    { shown: true, pinned: false, height: 44, head: 39.4 },
+    { shown: true, pinned: true, height: 44, head: 39.4 }
+  ];
+  it("finds the first pinned row's top less the gap, as laid out and as the looks draw its head", () => {
+    expect(pinDepth(rows, 6, false)).toBeCloseTo(66 + 6 + 44 + 6 - 6, 6);
+    const space = (172 - 141.3) / 3;
+    expect(pinDepth(rows, 6, true)).toBeCloseTo(62.5 + 39.4 + 2 * space - 6, 6);
+    expect(pinDepth([{ shown: true, pinned: false, height: 66 }], 6, false)).toBeNull();
   });
 });
 

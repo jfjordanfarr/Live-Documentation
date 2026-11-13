@@ -58,7 +58,7 @@ interface Move {
   /** Elements new to the picture: they fade in at their place. */
   entering: HTMLElement[];
   /** Boxed rows (or children of legacy display:contents rows), with their displacement from the new place. */
-  rows: Array<{ element: HTMLElement; delta: number }>;
+  rows: RowMotion[];
   heights?: Array<{ element: HTMLElement; from: number; to: number }>;
   anchor?: DOMRect;
 }
@@ -140,9 +140,15 @@ export function refreshReadingPresentation(controller: LocalViewController, stag
     }
   }
   // Every structural check precedes every write. The current row order, measured answers and search counters survive.
-  reading.updatePresentation();
-  for (const { row, muted } of rows) row.classList.toggle("branch-symbol-muted", muted);
-  search.exploration = next;
+  const change = (): void => {
+    reading.updatePresentation();
+    for (const { row, muted } of rows) row.classList.toggle("branch-symbol-muted", muted);
+    search.exploration = next;
+  };
+  // A fold or a restore that shortens or lengthens a slot row (2026-11-13) changes its card's box: the same scene is laid
+  // out again around the acted-on card held still, its rows, foot and height travelling together.
+  if (reading.rowsChange()) refreshReadingGeometry(controller, stage, change, false);
+  else change();
   return true;
 }
 
@@ -397,7 +403,7 @@ function shapeOfDirectories(controller: LocalViewController, sceneTuning: SceneT
  * same branches are laid out again and moved to with the acted-on element held still, and a fresh measured
  * competition begins from the new picture.
  */
-export function refreshReadingGeometry(controller: LocalViewController, stage: BranchStage, change: () => void): void {
+export function refreshReadingGeometry(controller: LocalViewController, stage: BranchStage, change: () => void, restart = true): void {
   const search = stage.search;
   const previous = stage.pose;
   if (!search || !previous) { change(); return; }
@@ -419,10 +425,17 @@ export function refreshReadingGeometry(controller: LocalViewController, stage: B
   search.incumbent = { branches, scene };
   search.answers = answers;
   search.rows = rowsOf(controller, stage, scale, branches);
-  const options = controller.options.state.tuning.localMap;
-  search.state = beginSearch({ from: 1, to: Math.max(0, Math.floor(options.searchStarts)), patience: Math.floor(options.searchPatience) }, scoreOf(signalsOf(branches, scene, scene.tops), { ...search.costs, churn: 0 }));
-  search.alignments = search.alignmentEnabled ? alignmentCandidates(scene) : [];
-  search.alignmentIndex = 0;
+  // A fold or a restore of a slot row (2026-11-13) keeps the search where it stood, so that nothing but the acted-on card
+  // and what it pushes moves after the person's own act; a resize or an arrival begins a fresh competition. Either way
+  // the shown picture is priced again, its cards' heights having changed: a search still running would otherwise judge
+  // its next starts against the price of a picture no longer shown, and a shortened card could let a worse one in.
+  const shown = scoreOf(signalsOf(branches, scene, scene.tops), { ...search.costs, churn: 0 });
+  if (restart) {
+    const options = controller.options.state.tuning.localMap;
+    search.state = beginSearch({ from: 1, to: Math.max(0, Math.floor(options.searchStarts)), patience: Math.floor(options.searchPatience) }, shown);
+    search.alignments = search.alignmentEnabled ? alignmentCandidates(scene) : [];
+    search.alignmentIndex = 0;
+  } else search.state = { ...search.state, shown, best: shown };
   controller.previousTops = scene.tops;
   const heights = fileCards.flatMap(card => {
     const from = beforeHeights.get(card.dataset.id!), to = card.offsetHeight;
@@ -829,7 +842,7 @@ function startMove(controller: LocalViewController, stage: BranchStage, from: Po
   stage.overlay.classList.add("moving");
   applyPose(stage, tweenPose(from, to, 0), move.bandPadding);
   for (const element of move.entering) element.style.opacity = "0";
-  for (const { element, delta } of move.rows) element.style.transform = `translateY(${delta}px)`;
+  for (const motion of move.rows) shiftRow(motion, motion.delta);
   let heldId = controller.lastInteracted;
   let heldSymbol = controller.lastInteractedSymbol;
   let heldElement = elementHeld(controller, stage, from, to);
@@ -878,7 +891,7 @@ function startMove(controller: LocalViewController, stage: BranchStage, from: Po
     for (const { element, from, to } of move.heights ?? []) element.style.height = `${from + (to - from) * eased}px`;
     for (const element of move.entering) element.style.opacity = String(eased);
     for (const element of move.leaving) element.style.opacity = String(1 - eased);
-    for (const { element, delta } of move.rows) element.style.transform = `translateY(${delta * (1 - eased)}px)`;
+    for (const motion of move.rows) shiftRow(motion, motion.delta * (1 - eased));
     hold();
     stage.pose = frame;
     controller.drawConnections();
@@ -911,9 +924,9 @@ function endMove(stage: BranchStage, finished: boolean): void {
   cancelAnimationFrame(move.frame);
   for (const element of move.leaving) element.remove();
   for (const element of move.entering) element.style.opacity = "";
-  for (const { element } of move.rows) {
-    element.style.transform = "";
-    element.classList.remove("local-row-moving");
+  for (const motion of move.rows) {
+    shiftRow(motion, null);
+    motion.element.classList.remove("local-row-moving");
   }
   for (const { element } of move.heights ?? []) { element.style.height = ""; element.style.overflow = ""; }
   if (finished) {
@@ -1179,23 +1192,55 @@ function rowOffsets(stage: BranchStage, scale: number): Map<string, Map<string, 
       if (!rect || (!rect.width && !rect.height)) continue;
       rows.set(key, (rect.top - cardTop) / scale);
     }
+    for (const [element, key] of footKeys(card)) {
+      const rect = element.getBoundingClientRect();
+      if (rect.width || rect.height) rows.set(key, (rect.top - cardTop) / scale);
+    }
     offsets.set(id, rows);
   }
   return offsets;
+}
+
+/** A row, or a part of a card's foot, travelling from where it stood by `delta` back to its place. */
+interface RowMotion {
+  element: HTMLElement;
+  delta: number;
+  /** A foot's part moves by its `translate`, which composes with a transform the stylesheet may hold it at. */
+  foot?: boolean;
+}
+
+/** Draw a travelling row or foot part `by` above or below its place, or at its place again (null). */
+function shiftRow(motion: RowMotion, by: number | null): void {
+  if (motion.foot) motion.element.style.translate = by === null ? "" : `0 ${by}px`;
+  else motion.element.style.transform = by === null ? "" : `translateY(${by}px)`;
+}
+
+/**
+ * The parts of a card below its rows, its test chips, directory line and counts, by a key of their own: when a fold or
+ * a restore changes a slot row's height (2026-11-13), they travel with the rows above them instead of standing at once
+ * where the rows will end, which had laid the directory line over a row still on its way.
+ */
+function footKeys(card: HTMLElement): Array<[HTMLElement, string]> {
+  return [...card.children].filter((child): child is HTMLElement => child instanceof HTMLElement
+    && child.matches(".node-tests, .node-directory, .local-disclosure")).map((element, index) => [element, `\0foot\0${index}`]);
 }
 
 /**
  * Move a boxed symbol as one surface, so its explanation and name cannot be interleaved with another row's text
  * when their order changes. Legacy display:contents rows have no surface and still move through their children.
  */
-function rowMotions(stage: BranchStage, before: Map<string, Map<string, number>>, scale: number): Array<{ element: HTMLElement; delta: number }> {
-  const motions: Array<{ element: HTMLElement; delta: number }> = [];
+function rowMotions(stage: BranchStage, before: Map<string, Map<string, number>>, scale: number): RowMotion[] {
+  const motions: RowMotion[] = [];
   const after = rowOffsets(stage, scale);
   for (const [id, wrapper] of stage.wrappers) {
     const was = before.get(id), now = after.get(id);
     if (!was || !now) continue;
     const card = wrapper.querySelector<HTMLElement>(".node-card");
     if (!card) continue;
+    for (const [element, key] of footKeys(card)) {
+      const from = was.get(key), to = now.get(key);
+      if (from !== undefined && to !== undefined && Math.abs(from - to) >= 0.5) motions.push({ element, delta: from - to, foot: true });
+    }
     for (const [row, key] of rowKeys(card)) {
       const from = was.get(key), to = now.get(key);
       if (from === undefined || to === undefined || Math.abs(from - to) < 0.5) continue;

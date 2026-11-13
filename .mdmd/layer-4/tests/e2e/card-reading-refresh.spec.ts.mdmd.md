@@ -17,6 +17,8 @@ A fresh context uses the current product defaults rather than the suite’s spar
 
 The first normal-default test’s original rectangle baseline preceded keyboard focus, whose camera rewrite changed screen boxes by 0.010498 px before the reading action. An independent focus-only probe established that both subsequent reading actions changed boxes by exactly zero. Baselines now bracket each reading action after focus framing settles, retaining exact equality and the original search/DOM continuity checks. A separate diagnostic toggled books while the normal search remained at try one/running; the same cards and rows survived while that search continued to twelve/settled.
 
+Since 2026-11-13 ([the milestone after Turn 3](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-3)) a fold or a restore with fixed slots changes the card's box, the row going short or coming back: the cases hold the search where it stood, the DOM, the row order, focus and the pins, and the acted-on control held still on screen, where they had held every box unchanged.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

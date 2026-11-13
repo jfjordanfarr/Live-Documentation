@@ -61,6 +61,11 @@ export interface RowCapture {
   frame?: { width: number; height: number };
   /** Open description under this row's name and pins, measured again at the proposed text width. */
   reading?: ReadingFlow;
+  /**
+   * A fixed-slot row whose description is not shown, none written or folded (2026-11-13): it takes the card's short
+   * allotment instead of the slot row's. Absent in older captures and for every other row.
+   */
+  short?: boolean;
 }
 
 /** A test chip's, or the test label's, box as the page drew it. */
@@ -86,8 +91,9 @@ export interface CardCapture {
   /**
    * The fixed-slot composition's allotments (2026-11-06): every public row's explicit height, and the Purpose's slot
    * height, which depend on Slot Lines alone; absent for an ordinary or a reading card, whose rows take their content.
+   * Since 2026-11-13 a row whose description is not shown is short, `shortHeight` (absent in older captures).
    */
-  slot?: { rowHeight: number; purposeHeight: number };
+  slot?: { rowHeight: number; purposeHeight: number; shortHeight?: number };
   constants?: CardConstants;
   purpose?: ReadingFlow;
   overflow?: ReadingFlow;
@@ -449,6 +455,7 @@ function readCapture(page: Page): Promise<PageCapture & { titleChecks: TitleChec
         };
         const captured: RowCapture = { symbol: row.dataset.symbol ?? "", label: prepared(label), badgesWidth: badges ? badges.getBoundingClientRect().width / scale : 0, frame };
         captured.reading = visibleFlow(row.querySelector<HTMLElement>(".local-reading-block"));
+        if (row.classList.contains("local-row-short")) captured.short = true;
         if (controls) captured.controls = controls;
         else if (label.parentElement!.children.length > (badges ? 2 : 1)) unmeasuredControls.push(captured);
         return captured;
@@ -524,10 +531,12 @@ function readCapture(page: Page): Promise<PageCapture & { titleChecks: TitleChec
         readingFrameHeight: card.classList.contains("local-reading-card") ? px(cardStyle.getPropertyValue("--reading-frame-height")) : undefined,
         constants: constants!,
         slot: card.classList.contains("local-slot-card") ? (() => {
-          const row = grid.querySelector<HTMLElement>(":scope > .symbol-row:not(.internals-row)");
+          const row = grid.querySelector<HTMLElement>(":scope > .symbol-row:not(.internals-row):not(.local-row-short)");
+          const short = grid.querySelector<HTMLElement>(":scope > .symbol-row.local-row-short:not(.internals-row)");
           const lines = Math.max(1, Math.round(parseFloat(getComputedStyle(root).getPropertyValue("--slot-lines")) || 2));
           const purposeElement = card.querySelector<HTMLElement>(":scope > .local-reading-purpose");
           return { rowHeight: row ? unit(row.getBoundingClientRect().height / scale) : 32 + 17 * lines,
+            ...(short ? { shortHeight: unit(short.getBoundingClientRect().height / scale) } : null),
             purposeHeight: purposeElement && getComputedStyle(purposeElement).display !== "none" ? unit(purposeElement.getBoundingClientRect().height / scale) : 0 };
         })() : undefined,
         purpose: visibleFlow(card.querySelector<HTMLElement>(":scope > .local-reading-purpose")),

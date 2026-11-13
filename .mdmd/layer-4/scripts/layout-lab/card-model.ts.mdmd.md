@@ -27,6 +27,8 @@ Since [Turn 12](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.
 
 Since 2026-11-08 a card's title is sized by `titleTextHeight`, by the header's layout of the header round: the node's controls follow the file's name in the header, and the name's button ends with a room for them (`.local-file-name-room` in `local.css`), whose box `titleRoomBox` mirrors from the stylesheet's rule: as wide as the controls side by side with their 2 px gaps, counted one to five by the header's own children, times the hold (`--actions-hold`, 1.2 on a slot card), and 4 px of air; as tall as one control (`--action-size`) times the hold. `titleHeight` sets that room, the last inline box, on the name's last line where the line leaves it its width, that line then as tall as the taller of the two, and otherwise on a line of its own after the name. Pretext's own layout of the name had held the title to its lines alone, so that the gate over the merged round found the model short of the page by the room ("PaymentsController.cs" 15 against 24, a reading card's "document.ts" 28.59 against 60.59), and the lab, the headless command and the drift check disagreeing with the page. A capture from before the round has no room, and its titles are their lines, as before.
 
+Since 2026-11-13 ([the milestone after Turn 3](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-3)) a fixed-slot row whose description is not shown is short: the capture records it (`short`) and the slot's short height, and the card model gives such a row that height.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

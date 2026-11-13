@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-reading.ts
-- Generated At: 2026-11-13T18:24:29.190Z
+- Generated At: 2026-11-13T21:12:10.201Z
 
 ## Authored
 ### Purpose
@@ -38,26 +38,28 @@ Since 2026-11-13 ([Turn 2 of that day's record](../../../../../../../../AI-Agent
 
 Later the same day a name's lines at render are counted by `linesOf` (`ladder-rooms.ts`), so that a word break's empty box, which stood a pixel off its text under Segoe UI's line metrics, no longer makes one line read as two; that had halved `--row-line` and laid a wrapped name's two lines over each other on such a font.
 
+Later on 2026-11-13 (the milestone after [Turn 3 of that day's record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-3)) a fixed-slot symbol whose description is not shown, none written or folded, has a short row: `updateCard` marks it `local-row-short`, and `rowsChange` tells the branch renderer when the reading choices shorten or restore a row, so that the card is laid out again around the acted-on card held still rather than only redrawn. With the zoom looks `measureRooms` reads each row's head (`LookHead`) and `lookHeadWrites` places them for the far looks: each name takes the lines it needs at the connections look up to what a slot row holds there (`fitLines` when the rows cannot hold them all), the heads are spaced evenly over the rows' room (`evenRows`), and each row gets its shift (`--row-even-y`), its height (`--row-even-h`), its fill (`--row-fill-even`) and its head's height (`data-head-h`), from which `markFirstPin` finds the shifts again when the rows are reordered. A row's More is read with its shift taken back. The file's name's room at the overview is now a depth to the first pinned row (`--title-pin-depth`, and `--title-pin-depth-even` as the looks draw its head; `pinDepth`), since rows have two heights. In the looks its header is chosen by `chooseNameHeader`, which keeps a short extension from a line of its own; the ladder's headers keep their filled first line. `closedBoxWrites` gives a closed directory's box its far-look drawing: the name's lines and scale for each look, and Open and the box's More moved beside the name where the box holds them.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ReadingTarget` {#symbol-readingtarget}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L25)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L26)
 
 ##### `ReadingTarget` — Summary
 A file's Purpose or one exact symbol's description, named by the card it is read on.
 
 #### `CardReadingOptions` {#symbol-cardreadingoptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L28)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L29)
 
 ##### `CardReadingOptions` — Summary
 Canonical text, application-owned choices and the actions a card's text can lead to.
 
 #### `CardReading` {#symbol-cardreading}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L76)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L77)
 
 ##### `CardReading` — Summary
 Builds on-card explanations from the same bundled docs as the full reader. A description opens and folds only
@@ -72,11 +74,11 @@ while names open full descriptions in the reader.
 
 #### `markFirstPin` {#symbol-markfirstpin}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L689)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L837)
 
 ##### `markFirstPin` — Summary
-Write {@link firstPinWrite} for a card whose rows were just ordered, and its held name's lines at the overview band,
-whose room it bounds, from the card's last reading: no layout is read.
+Write the pin depths for a card whose rows were just ordered, and its held name's lines at the overview band, whose
+room they bound, from the card's last reading: no layout is read.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -97,22 +99,28 @@ whose room it bounds, from the card's last reading: no layout is read.
 - [`held-lines.CONTROLS_GAP`](./held-lines.ts.mdmd.md#symbol-controls_gap)
 - [`held-lines.HELD_BANDS`](./held-lines.ts.mdmd.md#symbol-held_bands)
 - [`held-lines.HeldBand`](./held-lines.ts.mdmd.md#symbol-heldband)
+- [`held-lines.HeldRoom`](./held-lines.ts.mdmd.md#symbol-heldroom)
 - [`held-lines.TitleRooms`](./held-lines.ts.mdmd.md#symbol-titlerooms)
 - [`held-lines.chooseHeldHeader`](./held-lines.ts.mdmd.md#symbol-chooseheldheader)
+- [`held-lines.chooseNameHeader`](./held-lines.ts.mdmd.md#symbol-choosenameheader)
 - [`held-lines.heldLineCount`](./held-lines.ts.mdmd.md#symbol-heldlinecount)
 - [`held-lines.heldSegments`](./held-lines.ts.mdmd.md#symbol-heldsegments)
 - [`held-lines.heldTitle`](./held-lines.ts.mdmd.md#symbol-heldtitle)
 - [`held-lines.rowSegments`](./held-lines.ts.mdmd.md#symbol-rowsegments)
 - [`ladder-rooms.FootCount`](./ladder-rooms.ts.mdmd.md#symbol-footcount)
+- [`ladder-rooms.HEAD_SPACE`](./ladder-rooms.ts.mdmd.md#symbol-head_space)
 - [`ladder-rooms.HIGHLIGHT_BELOW`](./ladder-rooms.ts.mdmd.md#symbol-highlight_below)
 - [`ladder-rooms.dotRoom`](./ladder-rooms.ts.mdmd.md#symbol-dotroom)
+- [`ladder-rooms.evenRows`](./ladder-rooms.ts.mdmd.md#symbol-evenrows)
+- [`ladder-rooms.fitLines`](./ladder-rooms.ts.mdmd.md#symbol-fitlines)
 - [`ladder-rooms.footHold`](./ladder-rooms.ts.mdmd.md#symbol-foothold)
+- [`ladder-rooms.headHeight`](./ladder-rooms.ts.mdmd.md#symbol-headheight)
 - [`ladder-rooms.layoutTopOf`](./ladder-rooms.ts.mdmd.md#symbol-layouttopof)
 - [`ladder-rooms.linesOf`](./ladder-rooms.ts.mdmd.md#symbol-linesof)
 - [`ladder-rooms.nameFill`](./ladder-rooms.ts.mdmd.md#symbol-namefill)
 - [`ladder-rooms.nameLinesHeld`](./ladder-rooms.ts.mdmd.md#symbol-namelinesheld)
 - [`ladder-rooms.nameWraps`](./ladder-rooms.ts.mdmd.md#symbol-namewraps)
-- [`ladder-rooms.rowsBeforeFirstPin`](./ladder-rooms.ts.mdmd.md#symbol-rowsbeforefirstpin)
+- [`ladder-rooms.pinDepth`](./ladder-rooms.ts.mdmd.md#symbol-pindepth)
 - [`ladder-steps.FIRST_STEP`](./ladder-steps.ts.mdmd.md#symbol-first_step)
 - [`ladder-steps.LAST_STEP`](./ladder-steps.ts.mdmd.md#symbol-last_step)
 - [`ladder-steps.LOOK_BANDS`](./ladder-steps.ts.mdmd.md#symbol-look_bands)
@@ -122,5 +130,6 @@ whose room it bounds, from the card's last reading: no layout is read.
 - [`ladder-steps.ladderScales`](./ladder-steps.ts.mdmd.md#symbol-ladderscales-function)
 - [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)
 - [`types.ReadingControl`](./types.ts.mdmd.md#symbol-readingcontrol) (type-only)
+- [`word-seams.seamsOf`](./word-seams.ts.mdmd.md#symbol-seamsof)
 - [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

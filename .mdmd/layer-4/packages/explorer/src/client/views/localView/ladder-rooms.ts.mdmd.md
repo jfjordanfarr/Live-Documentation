@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/ladder-rooms.ts
-- Generated At: 2026-11-13T18:24:29.836Z
+- Generated At: 2026-11-13T21:12:10.911Z
 
 ## Authored
 ### Purpose
@@ -18,6 +18,8 @@ Written in the far bands' round (2026-11-06), after the owner reported "things e
 `nameLinesHeld` (2026-11-13, [Turn 2 of that day's record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-2)) is `nameFill`'s count in lines: how many lines of a name held about its row's top at a scale end inside the row with the highlight's air. In a two-line slot's row, 66 px with the name's 12 px line from 2.5 px down, the connections look's 2.2 holds two and the overview look's 3.6 one; the zoom looks let a name the room across cannot hold take that many. `footHold`, of the same day, decides whether "+N symbols" and the framed "+N connections" stand at the connections look's scale, held together about the last one's foot: only where all of them fit between what the card draws above them and their foot, and across the card's content; otherwise none is drawn, so that they are never left at the map's own size, five pixels tall five presses out.
 
 `linesOf`, of the same day, counts a text's lines from its fragments for the card reading: the empty boxes of the name's word breaks are left out and fragments whose centres lie within half a line of each other share a line. Counting rounded tops had read one line as two under Segoe UI's line metrics, where a word break's box stood a pixel off its text's, and a wrapped name was then drawn with half its line.
+
+Later the same day, with short rows ([the milestone after Turn 3](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-3)): `shortRowHeight` (44 at the connections look's 2.2, which the stylesheet states and a unit test holds it to), `headHeight`, `fitLines` and `evenRows`, which space the far looks' heads evenly over the rows' room with one more gap shared so that rows of one height move nothing, and `pinDepth`, the room to the first pinned row as laid out or as the looks draw its head, which replaced a count of rows times one pitch.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -48,16 +50,48 @@ cannot hold takes the room its description left, the owner's "space that the sym
 up" of 2026-11-05): the name is held about the row's top edge, so its lines end at the name's top plus that many lines,
 times the scale, and the last must end with the highlight's air inside the row. One at least: a name is never erased.
 
+#### `ROW_MORE` {#symbol-row_more}
+- Type: const
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L36)
+
+##### `ROW_MORE` — Summary
+A row's More, 17 px square (local.css).
+
+#### `NAME_LINE` {#symbol-name_line}
+- Type: const
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L38)
+
+##### `NAME_LINE` — Summary
+A symbol name's line, 1.15 of its 11 px (reading.css, the slot card's stated line).
+
+#### `HEAD_SPACE` {#symbol-head_space}
+- Type: const
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L44)
+
+##### `HEAD_SPACE` — Summary
+The least space between one row's head and the next's in the far looks: a pinned row's highlight stands 2 px above its
+head and ends 2 px below it, so that two highlights keep this less 2 of clear air between them.
+
+#### `shortRowHeight` {#symbol-shortrowheight}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L52)
+
+##### `shortRowHeight` — Summary
+A short row's height at a held scale (2026-11-13): a symbol whose description is not shown keeps only the room its head
+needs at the connections look, its More held at that scale beside one line of its name (centred on More, as the row
+lays them out), with the highlight's air and the space before the next head, in whole pixels. The stylesheet states
+the result for the look's 2.2.
+
 #### `FootCount` {#symbol-footcount}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L36)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L57)
 
 ##### `FootCount` — Summary
 A count at a card's foot as laid out, in the map's own units on one vertical axis: its top, bottom, left and width.
 
 #### `footHold` {#symbol-foothold}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L50)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L71)
 
 ##### `footHold` — Summary
 Whether the counts at a card's foot stand at a held scale (2026-11-13, the connections look), and each one's distance
@@ -68,14 +102,14 @@ under what stands above, and across between each one's left and the card's conte
 
 #### `FragmentBox` {#symbol-fragmentbox}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L60)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L81)
 
 ##### `FragmentBox` — Summary
 A text fragment's box as the page gives it, for counting lines.
 
 #### `linesOf` {#symbol-linesof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L72)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L93)
 
 ##### `linesOf` — Summary
 How many lines a text's fragments stand on (2026-11-13): the empty boxes of its word breaks (`<wbr>`) left out, and two
@@ -85,7 +119,7 @@ rounded top as a line had read one line as two where a font's metrics put a word
 
 #### `nameWraps` {#symbol-namewraps}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L87)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L108)
 
 ##### `nameWraps` — Summary
 Whether a symbol's name wraps at the reading width, read in whichever band the map shows: across more than one line
@@ -94,14 +128,14 @@ reading band, since holding it would mean cutting lines and moving its descripti
 
 #### `DotSpan` {#symbol-dotspan}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L92)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L113)
 
 ##### `DotSpan` — Summary
 An anchor dot's layout box across its card and the inner edges of the card it may not cross, in one unit.
 
 #### `dotRoom` {#symbol-dotroom}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L103)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L124)
 - Parameters: `dot`: [`DotSpan`](#symbol-dotspan)
 
 ##### `dotRoom` — Summary
@@ -111,7 +145,7 @@ that edge to the card's edge on its side, over the dot's width. A dot with no ro
 
 #### `layoutTopOf` {#symbol-layouttopof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L114)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L135)
 
 ##### `layoutTopOf` — Summary
 The layout top of an element drawn with `translateY(shift) scale(scale)` about its vertical centre, from the top it is
@@ -119,18 +153,64 @@ drawn at: the measurement at render reads the box the layout gave, whatever the 
 
 #### `RowMark` {#symbol-rowmark}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L119)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L140)
 
 ##### `RowMark` — Summary
-A symbol row as the title's room sees it: whether it is laid out at all, and whether it is pinned.
+A symbol row as the title's room sees it: whether it is laid out at all, whether it is pinned, and its height.
 
 #### `rowsBeforeFirstPin` {#symbol-rowsbeforefirstpin}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L128)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L155)
 
 ##### `rowsBeforeFirstPin` — Summary
 How many shown rows stand above a card's first pinned row, in the rows' order, or null when no shown row is pinned:
 at the overview band the file's name may wrap down over the silent rows only as far as the first row still drawn.
+
+#### `pinDepth` {#symbol-pindepth}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L171)
+
+##### `pinDepth` — Summary
+How far below the rows' top the first pinned shown row's top stands, less the row gap, or null when none is: the room
+the file's name may take at the overview below the header's (2026-11-13: since rows have two heights, a count of rows
+times one pitch no longer finds it). As laid out, or with the rows' heads shared evenly ({@link evenRows}), as the
+zoom looks draw them.
+
+#### `HeadBand` {#symbol-headband}
+- Type: interface
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L190)
+
+##### `HeadBand` — Summary
+A drawn row's band as laid out, its top and its height, and its head's height in the far looks, in one unit.
+
+#### `evenRows` {#symbol-evenrows}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L205)
+
+##### `evenRows` — Summary
+The rows' heads spaced evenly over their card's row room in the far looks (2026-11-13): with short rows beside slot
+rows a card's names would stand at uneven gaps with nothing visible to explain them. Each drawn row's head, as tall
+as its name's lines and its controls need there, follows the one above with the same space after it: the room the
+rows' boxes span with one more gap, less their heads, shared out, so that rows of one height move nothing. A name on
+two lines takes two lines and the gap after every name is the same. Each head is shifted by `shift` from its row's
+top, and holds its name and controls in `height`, its own and the space after it less the gap. The rows' boxes do not
+move.
+
+#### `fitLines` {#symbol-fitlines}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L222)
+
+##### `fitLines` — Summary
+How many lines each drawn row's name takes in the far looks: as many as it wants, until the heads they make are taller
+than the rows' room; then one fewer at a time, from the name that takes the most (the later of equals), down to one.
+
+#### `headHeight` {#symbol-headheight}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L238)
+
+##### `headHeight` — Summary
+A row's head's height in the far looks at a held scale: the taller of its More, held at the scale from its top, and
+its name's lines, held about the row's top, with the highlight's air.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-renderer.ts
-- Generated At: 2026-11-13T19:56:27.888Z
+- Generated At: 2026-11-13T21:28:26.558Z
 
 ## Authored
 ### Purpose
@@ -56,6 +56,8 @@ Since 2026-11-12 a card's count of connections outside the view, the control tha
 
 Since 2026-11-12 the renderer passes Tuning's Opened Directory to the exploration and, where the exploration stands in flow order, asks the scene to stand its columns from the top; a cycle's note counts a pair line by the links it stands for and names its two files, since a pair line names no symbol.
 
+Since 2026-11-13 ([the milestone after Turn 3](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-3)) a fold or a restore that shortens or lengthens a fixed-slot row goes through `refreshReadingGeometry` without restarting the search: the same scene is laid out again around the acted-on card held still, and the card's height, its rows and its foot (test chips, directory line, counts; `footKeys`) travel together, the foot by its `translate` so that a transform the stylesheet holds it at is kept. Until then a card's foot stood at once where the rows would end and lay over a row still on its way, which the trial of November 10 had shown. The search keeps its progress, but the shown picture is priced again at its new heights (a correction on review, the same day): a search still running would otherwise have judged its next starts against the price of a picture no longer shown, and a shortened card could have let a worse arrangement in.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -98,7 +100,7 @@ Update fixed-slot text and its controls without rebuilding an unchanged scene or
 
 #### `renderBranches` {#symbol-renderbranches}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L213)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L219)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `renderBranches` — Summary
@@ -126,7 +128,7 @@ The layout's dials come from the Local Map's tuning.
 
 #### `refreshReadingGeometry` {#symbol-refreshreadinggeometry}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L400)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L406)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `refreshReadingGeometry` — Summary
@@ -137,7 +139,7 @@ competition begins from the new picture.
 
 #### `BAND_BORDER` {#symbol-band_border}
 - Type: unknown
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L436)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L449)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

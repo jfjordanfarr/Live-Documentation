@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/held-lines.ts
-- Generated At: 2026-11-13T17:09:16.415Z
+- Generated At: 2026-11-13T21:12:10.767Z
 
 ## Authored
 ### Purpose
@@ -20,6 +20,8 @@ Until 2026-11-07 the name could take several lines, by four rules (a segment bet
 Since 2026-11-08 (the header round) the module chooses the whole header, not the name's lines alone. The one line of November 7 had cut names alike at the overview band (five cards of the test-suite picture read "local-map-…"); the owner handed the choice back with a bar, more lines only under principles that make the header whole and never "one upper-left corner button" with "a naked zone to its left, leaving the card title underneath" ([November 7 record, Turn 3](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-07.1.record.md#turn-3)), and cleared the round under the six principles the root stated ([Turn 4](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-07.1.record.md#turn-4--november-8)). The flow is the four rules' of November 6 at the header's full width, the controls no longer standing in the name's first lines but after its last. The split before a short extension's dot gives "branch-renderer" / ".ts" beside More at the far step, where the seams alone gave "branch-" / "renderer.ts": the price of a filled first line, which the root named to the owner. `TitleRooms` lost the controls' overhang past the header's edge and above the name, since the controls now stand in the header at its right edge (`card-factory.ts`).
 
 Since 2026-11-13 ([Turn 2 of that day's record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-2)) the module also counts a symbol's name's lines for the zoom looks, where a name the room across cannot hold takes the room its description left: `rowSegments` gives the card's own break opportunities (the seams, where `setSeamedText` puts them, and after a space) and `heldLineCount` how many lines the name takes at a width, at most those its row holds. The symbol's name is drawn by the browser's own wrapping, not by chosen lines as the file's name is, so that its text stays the page's to find and announce; the count therefore follows the browser's rule rather than `flow`'s: a segment that does not fit what is left of a line starts the next, and only one wider than a whole line is broken inside. The count sets the height of the box the name is drawn in.
+
+`chooseNameHeader` (2026-11-13, [the milestone after Turn 3](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-3)) keeps a file's name from leaving a short extension alone on its last line where the name's seams without that split carry it in no more lines, controls included, breaking only at seams and cutting nothing more ("enforce- / documentation- / links.ts", "Payment / Service.cs"). It reverses for the zoom looks, on the root's call, the November 8 acceptance of "branch-renderer / .ts" as the price of a filled first line; the card reading chooses the ladder's headers as before, with every line filled, which the ladder's box audit holds. `heldTitle` now takes the depth to the first pinned row, since rows have two heights.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -84,25 +86,25 @@ The air between the name's text and the controls on a shared line, in the map's 
 ##### `TitleRooms` — Summary
 A card's title rooms, in the map's own units, as the card reading measures them at render and writes them for the
 stylesheet (each as written, rounded alike): the room across from the name's left to the header's right edge, down to
-the first row and to the card's bottom; the row pitch and gap; the node's controls' widths and More's height as laid
-out; and the controls' ceiling.
+the first row and to the card's bottom; the node's controls' widths and More's height as laid out; and the controls'
+ceiling.
 
 #### `heldTitle` {#symbol-heldtitle}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/held-lines.ts#L113)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/held-lines.ts#L111)
 - Parameters: `rooms`: [`TitleRooms`](#symbol-titlerooms); `band`: [`HeldBand`](#symbol-heldband)
 
 ##### `heldTitle` — Summary
 The held header's scale, its controls' scale and its room at a band and a step's held scales, by the stylesheet's own
 formulas (reading.css, the file's name in the card ladder), which draw it. The name holds its step's size, never smaller
 than the map's own nor larger than one line of its room's height; it takes the header's room down to the first row, or
-at the overview band down to the card's first drawn row (after the rows before the first pinned by name, null for
-none) or its bottom. The controls hold their step's size below their ceiling: all available controls at the middle band, More alone
-beyond, where it is held no taller than a line of the name (principle 4).
+at the overview band down to the card's first drawn row (`pinDepth` below the header's room, `ladder-rooms.ts`'s
+pinDepth, null for none) or its bottom. The controls hold their step's size below their ceiling: all available controls
+at the middle band, More alone beyond, where it is held no taller than a line of the name (principle 4).
 
 #### `chooseHeldHeader` {#symbol-chooseheldheader}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/held-lines.ts#L140)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/held-lines.ts#L138)
 - Returns: [`HeldHeader`](#symbol-heldheader)
 - Parameters: `room`: [`HeldRoom`](#symbol-heldroom)
 
@@ -114,7 +116,7 @@ sharing the last, which is cut with an ellipsis.
 
 #### `rowSegments` {#symbol-rowsegments}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/held-lines.ts#L170)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/held-lines.ts#L168)
 
 ##### `rowSegments` — Summary
 A symbol's name's segments where its row lets it wrap (2026-11-13, the zoom looks): its seams, where the card puts a
@@ -123,7 +125,7 @@ line break opportunity (`setSeamedText`), and after each space, where the browse
 
 #### `heldLineCount` {#symbol-heldlinecount}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/held-lines.ts#L181)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/held-lines.ts#L179)
 
 ##### `heldLineCount` — Summary
 How many lines a wrapping symbol name takes at a width, at most `most`, as the browser draws it with the card's break
@@ -131,6 +133,19 @@ opportunities and `overflow-wrap: break-word` (the stylesheet's zoom looks): who
 the next, a segment that does not fit what is left of a line starting the next, and only a segment wider than a whole
 line broken inside, at each line's end. A space at a line's end hangs, as the browser lets it. The count sets the box
 the name is drawn in, so that the box is as tall as the lines drawn.
+
+#### `chooseNameHeader` {#symbol-choosenameheader}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/held-lines.ts#L206)
+- Returns: [`HeldHeader`](#symbol-heldheader)
+- Parameters: `room`: [`HeldRoom`](#symbol-heldroom)
+
+##### `chooseNameHeader` — Summary
+A file's name's header ({@link chooseHeldHeader}) without its extension standing alone on its last line where the same
+room carries it with the segment before it (2026-11-13): the split before a short extension's dot fills a first line
+beside More ("branch-renderer" / ".ts"), but where the name takes three lines it left ".ts" alone on the third
+("enforce- / documentation-links / .ts") when "enforce- / documentation- / links.ts" takes no more. The name's seams
+without that split are taken when they use no more lines, controls included, and cut nothing the split did not.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

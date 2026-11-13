@@ -308,7 +308,14 @@ export function createClosedDirectory(context: CardContext, closed: ClosedDirect
   more.title = `More actions for ${closed.path}`;
   more.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>';
   more.addEventListener("click", event => { event.stopPropagation(); void context.showDirectoryActions(closed.path, actionAnchor(more)); });
-  box.append(name, count, open, more);
+  // In the far zoom looks the box's name is drawn held at the look's size, on the lines the card reading chooses for it
+  // (2026-11-13), as a file card's name is: generated content of an element of its own, hidden from assistive
+  // technology, the name's button keeping its label and its place in the focus order.
+  const held = document.createElement("span");
+  held.className = "local-directory-closed__held";
+  held.setAttribute("aria-hidden", "true");
+  held.dataset.name = closed.name;
+  box.append(name, count, open, more, held);
   box.addEventListener("click", event => { event.stopPropagation(); void context.inspectDirectory(closed.path); });
   return box;
 }

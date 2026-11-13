@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { chooseHeldHeader, HELD_BANDS, heldLineCount, heldSegments, heldTitle, rowSegments, type HeldRoom, type TitleRooms } from "./held-lines";
+import { chooseHeldHeader, chooseNameHeader, HELD_BANDS, heldLineCount, heldSegments, heldTitle, rowSegments, type HeldRoom, type TitleRooms } from "./held-lines";
 import { FIRST_STEP, LAST_STEP, LOOK_BANDS } from "./ladder-steps";
 
 /** One unit a character, as a monospaced font would measure; a line one unit tall. */
@@ -59,6 +59,26 @@ describe("heldLineCount", () => {
     expect(count("DocumentationLinkEnforcementResult", 13, 2)).toBe(2);
     expect(count("Post", 0)).toBe(1);
     expect(heldLineCount([], 10, 3, measure)).toBe(1);
+  });
+});
+
+describe("chooseNameHeader", () => {
+  it("does not leave a short extension alone on the name's last line where the segment before it can carry it in as many lines", () => {
+    // Three lines either way: "enforce- / documentation-links / .ts" becomes "enforce- / documentation- / links.ts", More
+    // beside the last line in both.
+    expect(chooseNameHeader("enforce-documentation-links.ts", room(20, 3, 1), measure)).toEqual({ lines: ["enforce-", "documentation-", "links.ts"], controls: { line: 2, shared: true, top: 2 } });
+    // Two lines either way (2026-11-13: the root's call on the lone ".ts", which the header round of November 8 had
+    // accepted as the price of a filled first line).
+    expect(chooseNameHeader("branch-renderer.ts", room(16, 2, 1), measure).lines).toEqual(["branch-", "renderer.ts"]);
+    expect(chooseNameHeader("PaymentService.cs", room(12, 3, 1), measure).lines).toEqual(["Payment", "Service.cs"]);
+  });
+
+  it("keeps the split where carrying the extension would take another line or cut the name", () => {
+    // "renderer.ts" fits no line of 9: carrying the extension would break the name inside a segment and take more lines.
+    expect(chooseNameHeader("branch-renderer.ts", room(9, 3, 1), measure).lines).toEqual(["branch-", "renderer", ".ts"]);
+    // A name on one line, or not ending in a lone extension, is the header's own choice.
+    expect(chooseNameHeader("index.ts", room(20, 2, 1), measure)).toEqual(chooseHeldHeader(heldSegments("index.ts"), room(20, 2, 1), measure));
+    expect(chooseNameHeader("rosetta-manifest.json", room(12, 3, 1), measure)).toEqual(chooseHeldHeader(heldSegments("rosetta-manifest.json"), room(12, 3, 1), measure));
   });
 });
 
@@ -161,7 +181,7 @@ describe("chooseHeldHeader", () => {
 
 describe("heldTitle", () => {
   const rooms: TitleRooms = {
-    roomW: 200, headH: 40, cardH: 300, pitch: 66, rowGap: 4,
+    roomW: 200, headH: 40, cardH: 300,
     actionsW: 64, moreW: 20, moreH: 20, controlCeiling: 3.3, line: 15
   };
   const at = (step: number) => ({ text: 1.2 ** step, control: 1.2 ** step });
@@ -193,9 +213,11 @@ describe("heldTitle", () => {
     const far = heldTitle(rooms, "far", at(8), null);
     expect(far.room.height * far.scale).toBeCloseTo(40);
     expect(heldTitle(rooms, "overview", at(8), null).room.height * heldTitle(rooms, "overview", at(8), null).scale).toBeCloseTo(300);
-    const pinned = heldTitle(rooms, "overview", at(8), 0);
+    // A pinned first row leaves the header's room (its depth is less the row gap above it, -4); two rows of 62 with a gap
+    // of 4 after each before the pin leave 2 × 66 - 4 more.
+    const pinned = heldTitle(rooms, "overview", at(8), -4);
     expect(pinned.room.height * pinned.scale).toBeCloseTo(40);
-    const twoRows = heldTitle(rooms, "overview", at(8), 2);
+    const twoRows = heldTitle(rooms, "overview", at(8), 2 * (62 + 4) - 4);
     expect(twoRows.room.height * twoRows.scale).toBeCloseTo(40 + 2 * 66 - 4);
   });
 });

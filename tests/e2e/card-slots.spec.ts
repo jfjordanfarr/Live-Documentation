@@ -84,17 +84,18 @@ test.beforeEach(async ({ page }) => {
   });
 });
 
-/** Every visible symbol row's label and slot heights, in the map's own pixels: the allotment each symbol gets. */
+/** Every visible symbol row's, label's and slot's heights, in the map's own pixels: the allotment each symbol gets. */
 const allotments = (card: Locator) => card.locator(".symbol-row:not(.internals-row)").evaluateAll(rows => rows
   .filter(row => (row as HTMLElement).getClientRects().length)
   .map(row => ({
     symbol: (row as HTMLElement).dataset.symbol!,
+    row: (row as HTMLElement).offsetHeight,
     label: row.querySelector<HTMLElement>(".symbol-label-wrapper")!.offsetHeight,
     slot: row.querySelector<HTMLElement>(".local-reading-slot")?.offsetHeight ?? null,
     prose: row.querySelector<HTMLElement>(".local-reading-prose")?.offsetHeight ?? null
   })));
 
-test("fixed slots keep the ordinary drawing, give every symbol the same allotment, and no tap or zoom changes a box", async ({ page }) => {
+test("fixed slots keep the ordinary drawing, give every described symbol the same allotment and an undescribed one a short row, and no tap or zoom changes a box", async ({ page }) => {
   await page.goto(url({ selectedNodeId: payment }));
   const subject = card(page, payment);
   await subject.waitFor();
@@ -107,20 +108,23 @@ test("fixed slots keep the ordinary drawing, give every symbol the same allotmen
   await expect(subject.locator('.symbol-row[data-symbol="Get"] .local-symbol-read')).toHaveCount(0);
   await expect(subject.locator('.symbol-row[data-symbol="Post"] .local-symbol-read')).toHaveCount(0);
   await expect(subject.locator(".local-reading-counts")).toBeHidden();
-  // Every symbol has the same allotment, two lines by default, filled or not: Get and Post have facts but no prose
-  // and keep their empty slots, and a row without facts is no shorter than one with hidden facts.
+  // A described symbol has its slot, two lines by default; Get and Post have facts but no prose, so since 2026-11-13
+  // (the owner: "symbols with no description shown to occupy less vertical space on their row") their rows are short,
+  // with no slot, each as tall as the other.
   const purpose = subject.locator(".local-reading-purpose .local-reading-prose");
   await expect(purpose).toBeVisible();
   const row = subject.locator('.symbol-row[data-symbol="PaymentService"]');
   await expect(row.locator(".local-reading-slot")).toBeVisible();
   await expect(row.locator(".local-reading-types")).toBeHidden();
-  await expect(subject.locator('.symbol-row[data-symbol="Get"] .local-reading-slot')).toBeVisible();
-  await expect(subject.locator('.symbol-row[data-symbol="Get"] .local-reading-prose')).toBeEmpty();
+  await expect(subject.locator('.symbol-row[data-symbol="Get"] .local-reading-slot')).toBeHidden();
   const rows = await allotments(subject);
   expect(rows.map(item => item.symbol)).toEqual(["PaymentService", "Get", "Post"]);
   expect(new Set(rows.map(item => item.label)).size, "one label height").toBe(1);
-  expect(new Set(rows.map(item => item.slot)).size, "one slot height").toBe(1);
-  expect(rows.every(item => item.prose === 34), "two lines of 17 px").toBe(true);
+  const [described, ...undescribed] = rows;
+  expect(described.prose, "two lines of 17 px").toBe(34);
+  expect(undescribed.map(item => item.slot), "no slot").toEqual([0, 0]);
+  expect(new Set(undescribed.map(item => item.row)).size, "one short row's height").toBe(1);
+  expect(undescribed[0].row, "a short row").toBeLessThan(described.row);
   expect(await proseLines(purpose)).toEqual({ shown: 2, clipped: true });
   // At the ordinary card width, the slot card's since 2026-11-06, the service's description no longer fits two lines either.
   expect(await proseLines(row.locator(".local-reading-prose"))).toEqual({ shown: 2, clipped: true });
@@ -219,13 +223,18 @@ test("Enter on a described name opens the reader, and the Tuning switch moves be
   await expect(subject).not.toHaveClass(/local-reading-card/u);
 });
 
-test("Slot Lines sets every symbol's allotment at once, and the card's box follows", async ({ page }) => {
+test("Slot Lines sets every described symbol's allotment at once, an undescribed one's short row stays, and the card's box follows", async ({ page }) => {
   await page.goto(url({ selectedNodeId: payment }));
   const subject = card(page, payment);
   await subject.waitFor();
   await still(page);
   const two = (await layoutBoxes(page)).find(item => item.id === payment)!;
-  expect((await allotments(subject)).every(item => item.prose === 34)).toBe(true);
+  // PaymentService is described; Get and Post are not, and have short rows whatever Slot Lines says (2026-11-13).
+  const described = (rows: Awaited<ReturnType<typeof allotments>>) => rows.filter(item => item.symbol === "PaymentService");
+  const undescribed = (rows: Awaited<ReturnType<typeof allotments>>) => rows.filter(item => item.symbol !== "PaymentService");
+  const first = await allotments(subject);
+  expect(described(first).every(item => item.prose === 34)).toBe(true);
+  const shortRow = undescribed(first)[0].row;
   await page.getByText("Tuning", { exact: true }).click();
   const section = page.locator("details.tuning-subsection").filter({ hasText: "2D Layout" });
   if (!await section.evaluate(details => (details as HTMLDetailsElement).open)) await section.locator("summary").click();
@@ -239,8 +248,8 @@ test("Slot Lines sets every symbol's allotment at once, and the card's box follo
     await expect(page.locator("#tuning-slot-lines-value")).toHaveText(String(lines));
     await still(page);
     const rows = await allotments(subject);
-    expect(rows.every(item => item.prose === prose), `${lines} lines of 17 px`).toBe(true);
-    expect(new Set(rows.map(item => item.slot)).size).toBe(1);
+    expect(described(rows).every(item => item.prose === prose), `${lines} lines of 17 px`).toBe(true);
+    expect(undescribed(rows).map(item => item.row), "the short rows stay").toEqual([shortRow, shortRow]);
     expect(await subject.locator(".local-reading-purpose .local-reading-prose").evaluate(element => element.clientHeight)).toBe(prose);
     const box = (await layoutBoxes(page)).find(item => item.id === payment)!;
     expect(Math.sign(box.height - two.height)).toBe(Math.sign(lines - 2));
@@ -248,7 +257,11 @@ test("Slot Lines sets every symbol's allotment at once, and the card's box follo
   }
 });
 
-test("books compose all, none and one description without moving slots, and report visible prose separately from saved intent", async ({ page }) => {
+/**
+ * Since 2026-11-13 a folded description's row is short (the owner: "symbols with no description shown to occupy less
+ * vertical space on their row"): a book's fold or restore changes the card's box, a deliberate act; the zoom changes none.
+ */
+test("books compose all, none and one description, folding rows short and restoring them, and report visible prose separately from saved intent", async ({ page }) => {
   const pinSet = { entries: [{ nodeId: readingState, symbol: "*" }] };
   await page.goto(url({ selectedNodeId: readingState, pinSet }));
   const subject = card(page, readingState), book = subject.locator(".local-file-read");
@@ -263,12 +276,17 @@ test("books compose all, none and one description without moving slots, and repo
   await expect(book).toHaveAttribute("aria-pressed", "true");
   await expect(book).toHaveAttribute("aria-expanded", "true");
 
+  const height = (boxes: Awaited<ReturnType<typeof layoutBoxes>>): number => boxes.find(item => item.id === readingState)!.height;
+  const shortRows = () => subject.locator(".symbol-row.local-row-short");
+  const described = await subject.locator(".symbol-row:not(.internals-row):not(.local-row-short)").count();
   await pointAt(page, book, true);
   await still(page);
   await expect(prose.filter({ visible: true })).toHaveCount(0);
   await expect(book).toHaveAttribute("aria-pressed", "false");
   await expect(book).toHaveAttribute("aria-expanded", "false");
-  expect(await layoutBoxes(page)).toEqual(layout);
+  const folded = await layoutBoxes(page);
+  expect(height(folded), "every row folded short").toBeLessThan(height(layout));
+  await expect(subject.locator(".symbol-row:not(.internals-row):not(.local-row-short)")).toHaveCount(0);
   expect(state(page)).toMatchObject({ pinSet, reading: [{ nodeId: readingState, open: false }] });
 
   await pointAt(page, symbolBook, true);
@@ -279,7 +297,9 @@ test("books compose all, none and one description without moving slots, and repo
   await expect(book).toHaveAttribute("aria-expanded", "true");
   await expect(symbolBook).toHaveAttribute("aria-pressed", "true");
   await expect(symbolBook).toHaveAttribute("aria-expanded", "true");
-  expect(await layoutBoxes(page)).toEqual(layout);
+  const one = await layoutBoxes(page);
+  expect(height(one), "one row restored").toBeGreaterThan(height(folded));
+  await expect(row).not.toHaveClass(/local-row-short/u);
   const subset = [{ nodeId: readingState, open: false }, { nodeId: readingState, symbol: "descriptionIsOpen", open: true }];
   expect(state(page)).toMatchObject({ pinSet, reading: subset });
 
@@ -293,7 +313,7 @@ test("books compose all, none and one description without moving slots, and repo
   await expect(symbolBook).toHaveAttribute("aria-expanded", "false");
   await expect(symbolBook).toHaveAttribute("aria-pressed", "true");
   expect(state(page).reading).toEqual(subset);
-  expect(await layoutBoxes(page)).toEqual(layout);
+  expect(await layoutBoxes(page)).toEqual(one);
 
   // One press back restores the reading band before the growing card's separate fade threshold has recovered.
   await page.getByRole("button", { name: "Zoom In", exact: true }).click();
@@ -302,7 +322,7 @@ test("books compose all, none and one description without moving slots, and repo
   await expect(description).toBeVisible();
   await expect(symbolBook).toHaveAttribute("aria-expanded", "true");
   expect(state(page).reading).toEqual(subset);
-  expect(await layoutBoxes(page)).toEqual(layout);
+  expect(await layoutBoxes(page)).toEqual(one);
   await page.getByRole("button", { name: "Zoom In", exact: true }).click();
   await still(page);
 
@@ -316,7 +336,8 @@ test("books compose all, none and one description without moving slots, and repo
   await expect(description).toBeHidden();
   await expect(prose.filter({ visible: true })).toHaveCount(all - 1);
   expect(state(page).reading).toEqual([{ nodeId: readingState, open: true }, { nodeId: readingState, symbol: "descriptionIsOpen", open: false }]);
-  expect(await layoutBoxes(page)).toEqual(layout);
+  await expect(shortRows()).toHaveCount(await subject.locator(".symbol-row:not(.internals-row)").count() - described + 1);
+  await expect(row).toHaveClass(/local-row-short/u);
 });
 
 for (const composition of [

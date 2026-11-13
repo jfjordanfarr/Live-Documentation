@@ -24,6 +24,27 @@ What the root saw in the six it looked at itself:
 
 The other thirty are described by the builder's handback, summarized in [the record's notes for that day](../../../ChatHistory/2026/11/2026-11-13.1.record.md#turn-4); the root did not open them.
 
+## The round's later steps, the same day
+
+Written by the root at the landing of the last step. The first step above was followed by a stated line height for slot cards, so that names wrap alike on every machine (`a7a49c18`), and by the three looks becoming the default (`49990525`). The last step answered the owner's "symbols with no description shown to occupy less vertical space on their row" ([Turn 2](../../../ChatHistory/2026/11/2026-11-13.1.record.md#turn-2)):
+
+- **Short rows at reading size.** A symbol whose description is not shown, none written or folded with its book, has a row of 44 map pixels where a described one has 66. It is not shorter still because the same row must hold one line of the name at the connections look's size, and a card's box never changes with zoom. Folding or restoring a description changes the card's height: the row acted on stays still, the rows below, the card's foot and the cards wired to those rows move together, and the layout search is not begun again.
+- **Even air between names in the connections and overview looks.** Each name takes the lines it needs, up to what a slot row holds, and the room left over is shared equally between them.
+- **A closed directory's box** inside an opened directory holds its name at the look's size, with Open and More beside it at the connections look and the name alone at the overview; its count of files is not drawn in either.
+- **A file's extension keeps company** in the looks: "Payment / Service.cs", "enforce- / documentation- / links.ts". The stepped ladder keeps its filled first line.
+
+The twenty-four pictures named `…-2b-after.png` and the three `estate-payment-fold-motion-…-2b.png` are the builder's, each subject drawn under this machine's fallback lines (`fallback`) and under Segoe UI's line metrics (`segoe-lines`), which is what the owner's screen draws. The root opened nine of the Segoe set and the fold's motion stills, and saw:
+
+- `estate-payment-…-press-00`: Post, Get and Internals stand close under PaymentService; the band between the path and the first row is still blank, since the file has no Purpose written and that room is what the title takes two looks out.
+- `estate-payment-…-press-03`: "Payment / Service.cs" over "Payment / Service", Post, Get and Internals at even air.
+- `documentationLinks-folds-…-press-03` and `-press-05`: thirteen names, one or two lines each, the same air after every one.
+- `doc-tools-dir-…-press-03`: `__fixtures__` with Open and More, readable beside the file cards; at `-press-08` its name alone.
+- Still wrong and not in this step: at the overview a narrow card breaks names inside words, and ".cs" can still stand alone on a line there.
+
+The root then ran the merged build itself under both metrics: folding `DocumentationRule` on `documentationLinks.ts` took its row from 66 to 44 and its card from 1,199 to 1,177; the six other cards rose by the same 22 with the rows they are wired to; none moved again in the four seconds after; and the air between the names at the connections look was 18.1 between two-line names and 22.9 after a one-line name, whose More is taller than its text.
+
+To see it on the day's preview (three looks are the default, so the links carry no setting): [the pinned file](http://127.0.0.1:8999/?view=local&node=scripts/doc-tools/documentationLinks.ts), fold a description with its book, then press Zoom Out three times; [the opened directory](http://127.0.0.1:8999/?view=local&dir=scripts/doc-tools), Zoom Out three times; [the estate sample's payment card](http://127.0.0.1:8999/samples/estate/?view=local&node=PaymentService/PaymentService.cs), where no symbol has a description.
+
 ## To see it in the product
 
 Open either link and press Zoom Out three times; both carry the three looks in their address (the address is the day's local preview):

@@ -84,15 +84,13 @@ export const CONTROLS_GAP = 4;
 /**
  * A card's title rooms, in the map's own units, as the card reading measures them at render and writes them for the
  * stylesheet (each as written, rounded alike): the room across from the name's left to the header's right edge, down to
- * the first row and to the card's bottom; the row pitch and gap; the node's controls' widths and More's height as laid
- * out; and the controls' ceiling.
+ * the first row and to the card's bottom; the node's controls' widths and More's height as laid out; and the controls'
+ * ceiling.
  */
 export interface TitleRooms {
   roomW: number;
   headH: number;
   cardH: number;
-  pitch: number;
-  rowGap: number;
   actionsW: number;
   moreW: number;
   moreH: number;
@@ -106,13 +104,13 @@ export interface TitleRooms {
  * The held header's scale, its controls' scale and its room at a band and a step's held scales, by the stylesheet's own
  * formulas (reading.css, the file's name in the card ladder), which draw it. The name holds its step's size, never smaller
  * than the map's own nor larger than one line of its room's height; it takes the header's room down to the first row, or
- * at the overview band down to the card's first drawn row (after the rows before the first pinned by name, null for
- * none) or its bottom. The controls hold their step's size below their ceiling: all available controls at the middle band, More alone
- * beyond, where it is held no taller than a line of the name (principle 4).
+ * at the overview band down to the card's first drawn row (`pinDepth` below the header's room, `ladder-rooms.ts`'s
+ * pinDepth, null for none) or its bottom. The controls hold their step's size below their ceiling: all available controls
+ * at the middle band, More alone beyond, where it is held no taller than a line of the name (principle 4).
  */
-export function heldTitle(rooms: TitleRooms, band: HeldBand, scales: { text: number; control: number }, rowsBeforePin: number | null): { scale: number; control: number; room: HeldRoom } {
+export function heldTitle(rooms: TitleRooms, band: HeldBand, scales: { text: number; control: number }, pinDepth: number | null): { scale: number; control: number; room: HeldRoom } {
   const roomH = band === "overview"
-    ? Math.min(rooms.cardH, Math.max(rooms.headH, rooms.headH + (rowsBeforePin ?? 100000) * rooms.pitch - rooms.rowGap))
+    ? Math.min(rooms.cardH, Math.max(rooms.headH, rooms.headH + (pinDepth ?? Infinity)))
     : rooms.headH;
   const scale = Math.max(1, Math.min(scales.text, roomH / rooms.line));
   const held = Math.min(Math.max(1, scales.control), Math.max(1, rooms.controlCeiling));
@@ -196,6 +194,28 @@ export function heldLineCount(segments: readonly string[], width: number, most: 
     current = rest;
   }
   return Math.max(1, Math.min(Math.floor(most), lines));
+}
+
+/**
+ * A file's name's header ({@link chooseHeldHeader}) without its extension standing alone on its last line where the same
+ * room carries it with the segment before it (2026-11-13): the split before a short extension's dot fills a first line
+ * beside More ("branch-renderer" / ".ts"), but where the name takes three lines it left ".ts" alone on the third
+ * ("enforce- / documentation-links / .ts") when "enforce- / documentation- / links.ts" takes no more. The name's seams
+ * without that split are taken when they use no more lines, controls included, and cut nothing the split did not.
+ */
+export function chooseNameHeader(name: string, room: HeldRoom, measure: (text: string) => number): HeldHeader {
+  const split = chooseHeldHeader(heldSegments(name), room, measure);
+  const last = split.lines.at(-1) ?? "";
+  if (split.lines.length < 2 || !/^\.[^.]{1,2}$/u.test(last)) return split;
+  const segments = seamsOf(name);
+  const glued = chooseHeldHeader(segments, room, measure);
+  const used = (header: HeldHeader): number => Math.max(header.lines.length, header.controls.line + 1);
+  const cut = (header: HeldHeader): boolean => header.lines.some(line => line.endsWith(ELLIPSIS));
+  // Every line but the last ends at a seam: a segment wider than a line would otherwise be broken inside a word.
+  const seams = new Set(segments.map((_, index) => segments.slice(0, index + 1).join("").length));
+  let end = 0;
+  const atSeams = glued.lines.slice(0, -1).every(line => seams.has(end += line.length));
+  return atSeams && used(glued) <= used(split) && (!cut(glued) || cut(split)) ? glued : split;
 }
 
 /** As much of a text's start as fits a width with an ellipsis after, or nothing where not even the ellipsis fits. */

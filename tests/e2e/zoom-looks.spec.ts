@@ -373,8 +373,8 @@ test("in the connections and overview looks a symbol's name is cut only where it
  */
 const SEGOE_LINES = ["400", "700"].map(weight => `@font-face { font-family: "Segoe UI"; font-weight: ${weight}; src: local("DejaVu Sans${weight === "700" ? " Bold" : ""}"); ascent-override: 107.9%; descent-override: 25.1%; line-gap-override: 0%; }`).join(" ");
 
-/** What the connections look shows of a subject three presses out, under this machine's lines or Segoe UI's. */
-async function connectionsUnder(browser: Browser, path: string, subject: string, lines: "fallback" | "segoe") {
+/** A fresh visitor with the three looks, under this machine's lines or Segoe UI's, so many presses out from a subject. */
+async function openUnder(browser: Browser, path: string, subject: string, lines: "fallback" | "segoe", presses: number) {
   const context = await browser.newContext({ viewport: { width: 1440, height: 960 }, deviceScaleFactor: 1 });
   await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
     key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, zoomLooks: "three" } } })
@@ -387,9 +387,17 @@ async function connectionsUnder(browser: Browser, path: string, subject: string,
   await page.goto(path);
   await page.locator(`.node-card[data-id="${subject}"]`).waitFor();
   await still(page);
-  for (let press = 0; press < 3; press += 1) await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
-  await still(page);
+  for (let press = 0; press < presses; press += 1) {
+    await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
+    await still(page);
+  }
   await page.mouse.move(120, 400);
+  return { context, page };
+}
+
+/** What the connections look shows of a subject three presses out, under this machine's lines or Segoe UI's. */
+async function connectionsUnder(browser: Browser, path: string, subject: string, lines: "fallback" | "segoe") {
+  const { context, page } = await openUnder(browser, path, subject, lines, 3);
   const line = await page.evaluate(() => getComputedStyle(document.querySelector(".local-slot-card .symbol-row .symbol-label-text")!).lineHeight);
   const seen = await cutBesideRoom(page);
   const held = await page.evaluate(() => {
@@ -422,6 +430,93 @@ test("what the connections look shows does not depend on the platform font's lin
   expect(links.wrapped.length).toBeGreaterThan(5);
   const directory = await connectionsUnder(browser, subjects[1].path, subjects[1].subject, "segoe");
   expect(directory.held).toContain("scripts/doc-tools/documentationLinks.ts");
+});
+
+/**
+ * The drawn rows' heads of one card in the connections look, read from the page as drawn, top to bottom: each head the
+ * union of its name's text, its More and its dots, and its pinned highlight where it has one, on screen.
+ */
+const headsOf = (page: Page, id: string) => page.evaluate(cardId => {
+  const card = document.querySelector<HTMLElement>(`.node-card[data-id="${cardId}"]`)!;
+  const shown = (element: Element): boolean => getComputedStyle(element).visibility === "visible" && element.getBoundingClientRect().height > 0;
+  return [...card.querySelectorAll<HTMLElement>(".symbol-row:not(.internals-row)")].filter(row => row.offsetHeight > 0).map(row => {
+    const parts = [...row.querySelectorAll<HTMLElement>(".symbol-label-text, .local-symbol-more, .symbol-anchor.dot")].filter(shown).map(part => part.getBoundingClientRect());
+    const wrapper = row.querySelector<HTMLElement>(".symbol-label-wrapper")!;
+    const layer = getComputedStyle(wrapper, "::before");
+    const k = wrapper.getBoundingClientRect().height / wrapper.offsetHeight;
+    const highlight = row.classList.contains("symbol-pinned") && layer.content !== "none"
+      ? { top: wrapper.getBoundingClientRect().top + parseFloat(layer.top) * k, bottom: wrapper.getBoundingClientRect().top + (parseFloat(layer.top) + parseFloat(layer.height)) * k } : null;
+    return { symbol: row.dataset.symbol!, top: Math.min(...parts.map(part => part.top)), bottom: Math.max(...parts.map(part => part.bottom)), highlight };
+  }).sort((a, b) => a.top - b.top);
+}, id);
+
+/**
+ * Since 2026-11-13 a symbol whose description is not shown has a short row, so a card's rows have two heights; in the
+ * far looks the drawn rows' heads are spaced evenly over the rows' room, a name on two lines taking two lines, so that
+ * the gap after every name is the same, with nothing visible to explain an uneven one; a pinned row's highlight keeps
+ * clear air from the next one's. Read on the estate's subject pinned whole (its class described, Post and Get not) and on
+ * this repository's documentationLinks.ts with two descriptions folded, under this machine's lines and Segoe UI's.
+ */
+test("in the connections look a card's names stand at even gaps whatever their rows' heights, and pinned highlights keep clear of each other", async ({ browser }) => {
+  test.setTimeout(240_000);
+  const links = "scripts/doc-tools/documentationLinks.ts";
+  const folded = `/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, view: "map", perspective: "2d", selectedNodeId: links,
+    reading: [{ nodeId: links, symbol: "DEFAULT_RULES", open: false }, { nodeId: links, symbol: "DocumentationLinkViolation", open: false }] })}`;
+  for (const lines of ["fallback", "segoe"] as const) {
+    for (const [path, subject] of [[estate(), payment], [folded, links]]) {
+      const { context, page } = await openUnder(browser, path, subject, lines, 3);
+      expect(await page.locator("#map-container").getAttribute("data-look")).toBe("connections");
+      const heads = await headsOf(page, subject);
+      const gaps = heads.slice(1).map((head, index) => head.top - heads[index].bottom);
+      expect(heads.length, `${subject}, ${lines}`).toBeGreaterThan(2);
+      expect.soft(Math.max(...gaps) - Math.min(...gaps), `${subject}, ${lines}: gaps ${gaps.map(gap => gap.toFixed(1)).join(", ")}`).toBeLessThan(2);
+      const lit = heads.filter(head => head.highlight);
+      for (const [index, head] of lit.slice(1).entries()) {
+        expect.soft(head.highlight!.top - lit[index].highlight!.bottom, `${subject}, ${lines}: ${head.symbol}'s highlight clear of ${lit[index].symbol}'s`).toBeGreaterThan(1);
+      }
+      await context.close();
+    }
+  }
+});
+
+/**
+ * A closed directory's box inside an opened directory follows a file's card in the far looks (2026-11-13): its name held
+ * at the look's size, its count of what it holds not drawn, and its Open kept beside the name where the box holds it.
+ * Read on this repository's scripts/doc-tools opened, whose __fixtures__ is closed, under both lines.
+ */
+test("in the far looks a closed directory's name is held at the look's size, its count not drawn and its Open kept where it fits", async ({ browser }) => {
+  test.setTimeout(240_000);
+  for (const lines of ["fallback", "segoe"] as const) {
+    for (const [presses, look, scale] of [[3, "connections", 2.2], [8, "overview", 3.6]] as const) {
+      const { context, page } = await openUnder(browser, "/?view=local&dir=scripts/doc-tools", "scripts/doc-tools/documentationLinks.ts", lines, presses);
+      const box = page.locator(".local-directory-closed").first();
+      const seen = await box.evaluate(element => {
+        const k = new DOMMatrix(getComputedStyle(document.querySelector("#map-viewport")!).transform).a;
+        const held = element.querySelector<HTMLElement>(".local-directory-closed__held")!, open = element.querySelector<HTMLElement>(".local-directory-open")!;
+        const visible = (part: Element): boolean => getComputedStyle(part).visibility === "visible" && getComputedStyle(part).display !== "none";
+        const boxRect = element.getBoundingClientRect(), openRect = open.getBoundingClientRect();
+        const content = getComputedStyle(held, "::after").content;
+        return {
+          look: document.querySelector<HTMLElement>("#map-container")!.dataset.look,
+          held: visible(held) ? held.getBoundingClientRect().width / held.offsetWidth / k : 0,
+          lines: content.startsWith("\"") ? content.slice(1, -1) : "",
+          count: visible(element.querySelector(".local-directory-closed__count")!),
+          open: visible(open) ? { inside: openRect.left >= boxRect.left - 0.5 && openRect.right <= boxRect.right + 0.5 && openRect.bottom <= boxRect.bottom + 0.5, scale: openRect.height / open.offsetHeight / k } : null
+        };
+      });
+      const where = `${lines}, ${look}`;
+      expect(seen.look, where).toBe(look);
+      expect.soft(seen.held, `${where}: the name held at the look's size`).toBeCloseTo(scale, 1);
+      expect.soft(seen.lines, `${where}: the name whole`).not.toContain("…");
+      expect.soft(seen.count, `${where}: the count not drawn`).toBe(false);
+      if (seen.open) {
+        expect.soft(seen.open.inside, `${where}: Open inside the box`).toBe(true);
+        expect.soft(seen.open.scale, `${where}: Open held, not at the map's size`).toBeGreaterThan(1.4);
+      }
+      if (look === "connections") expect.soft(seen.open, `${where}: Open kept, the box holding it beside the name`).not.toBeNull();
+      await context.close();
+    }
+  }
 });
 
 test("in the connections look a card's counts stand at the look's held size or not at all, and +N connections still reveals", async ({ page }) => {

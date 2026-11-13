@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/capture.ts
-- Generated At: 2026-11-09T04:43:27.183Z
+- Generated At: 2026-11-13T21:12:13.182Z
 
 ## Authored
 ### Purpose
@@ -42,6 +42,8 @@ Since the far bands' round (2026-11-07, the root's fourth review) the pins it re
 
 Since 2026-11-08 the capture records each card's `titleRoom` (the controls its header holds, a control's size and their hold, as the page computes them for the room after the name) and checks a title's height in node, by the card model's own `titleHeight`, rather than by Pretext's height of the name alone in the page: the page returns the title's line widths and its own height, and the warning is written by the same rule the card model sizes the card with.
 
+Since 2026-11-13 ([the milestone after Turn 3](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-3)) a fixed-slot row whose description is not shown is short: the capture records it (`short`) and the slot's short height, and the card model gives such a row that height.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -68,35 +70,35 @@ One symbol row of a card: its name, its label's prepared text and the width of i
 
 #### `ChipCapture` {#symbol-chipcapture}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L67)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L72)
 
 ##### `ChipCapture` — Summary
 A test chip's, or the test label's, box as the page drew it.
 
 #### `CardCapture` {#symbol-cardcapture}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L73)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L78)
 
 ##### `CardCapture` — Summary
 One card, as the page built it.
 
 #### `CardConstants` {#symbol-cardconstants}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L118)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L124)
 
 ##### `CardConstants` — Summary
 The page's constants the card model composes with, read from computed styles.
 
 #### `Capture` {#symbol-capture}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L141)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L147)
 
 ##### `Capture` — Summary
 A scope's capture: the fonts, the constants, every card, every label, the page's truth and the warnings.
 
 #### `captureScope` {#symbol-capturescope}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L169)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L175)
 - Parameters: `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun); `preset`: [`LayoutPreset`](../../packages/explorer/src/client/layout-presets.ts.mdmd.md#symbol-layoutpreset)
 
 ##### `captureScope` — Summary
@@ -104,7 +106,7 @@ Opens the scope in a browser of the lab's own over the built bundle and reads th
 
 #### `captureFromPage` {#symbol-capturefrompage}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L190)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L196)
 - Parameters: `page`: `Page`; `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun)
 
 ##### `captureFromPage` — Summary
@@ -116,7 +118,7 @@ page's Content-Security-Policy runs no script written into it.
 
 #### `writeCapture` {#symbol-writecapture}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L610)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L619)
 - Parameters: `capture`: [`Capture`](#symbol-capture)
 
 ##### `writeCapture` — Summary
@@ -124,7 +126,7 @@ Writes a capture as compact JSON.
 
 #### `readCaptureFile` {#symbol-readcapturefile}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L616)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L625)
 
 ##### `readCaptureFile` — Summary
 Reads a capture written by `writeCapture`.

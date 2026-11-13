@@ -158,7 +158,7 @@ export function cardMetrics(capture: Capture, card: CardCapture, width: number, 
     const natural = Math.max(c.dotHeight + dotMargin, internals ? c.placeholderHeight : 0, wrapper);
     // A slot card's public row keeps its fixed allotment, its name and dot in the first track at the top, its slot in
     // the rest (2026-11-06); the Internals row and every row of the other compositions take their content.
-    const height = card.slot && !internals ? card.slot.rowHeight : natural;
+    const height = card.slot && !internals ? (row.short ? card.slot.shortHeight ?? card.slot.rowHeight : card.slot.rowHeight) : natural;
     if (i > 0) y += c.gridRowGap;
     const centre = y + Math.floor((natural - c.dotHeight - dotMargin) / 2 * 64 + 1e-3) / 64 + dotMargin + c.dotHeight / 2;
     centres.set(row, centre);

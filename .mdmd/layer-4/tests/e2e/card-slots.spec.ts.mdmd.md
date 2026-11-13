@@ -22,6 +22,8 @@ Since [Turn 12](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.
 
 Since the three looks became Zoom Looks' default on 2026-11-13 ([Turn 3 of that day's record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-3)) the two cases that zoom out read the default: the descriptions leave at the connections look, three presses out, where they left at the ladder's middle band, two presses out; the ladder's middle band is `card-ladder.spec.ts`'s, which chooses the ladder.
 
+Since 2026-11-13 ([the milestone after Turn 3](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-3)) the first case holds that every described symbol has the same allotment and a symbol without a description a short row with no slot, each short row as tall as the other.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
