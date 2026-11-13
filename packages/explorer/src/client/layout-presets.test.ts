@@ -57,28 +57,30 @@ describe("shared packing preferences", () => {
     expect(applyLayoutSettings(getDefaultTuning(), restored.layout).forceGraph.groupWrappers).toBe("skin");
   });
 
-  it("carries how an opened directory stands only for the trial's layouts, and reads its absence as the grid", () => {
-    // With the trial off a link is the link it was before the trial: the setting is not written.
-    const grid = getDefaultTuning();
-    expect(grid.localMap.directoryLayout).toBe("grid");
-    expect(layoutSettingsOf(grid).localMap).not.toHaveProperty("directoryLayout");
-    expect(readLayoutSettings({ localMap: { directoryLayout: "grid" } })).toBeUndefined();
+  it("opens a link in Flow unless it says the grid, which it carries only when chosen (2026-11-13)", () => {
+    // The default is Flow, and a link made with it does not write it.
+    const flow = getDefaultTuning();
+    expect(flow.localMap.directoryLayout).toBe("flow");
+    expect(layoutSettingsOf(flow).localMap).not.toHaveProperty("directoryLayout");
     expect(readLayoutSettings({ localMap: { directoryLayout: "spiral" } })).toBeUndefined();
     // The unwrapped flow was a second trial value for one afternoon; a link that names it carries nothing.
     expect(readLayoutSettings({ localMap: { directoryLayout: "flow-tall" } })).toBeUndefined();
-    // With it on, the link carries it through the address and back.
-    for (const layout of ["flow"] as const) {
-      const tuning = getDefaultTuning();
-      tuning.localMap.directoryLayout = layout;
-      expect(readLayoutSettings({ localMap: { directoryLayout: layout } })).toEqual({ localMap: { directoryLayout: layout } });
-      const restored = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(tuning) }));
-      expect(applyLayoutSettings(getDefaultTuning(), restored.layout).localMap.directoryLayout).toBe(layout);
-      // A link made with the trial off shows the grid in a browser whose own tuning last held the trial.
-      const off = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(grid) }));
-      expect(applyLayoutSettings(tuning, off.layout).localMap.directoryLayout).toBe("grid");
-      // An address that carries no layout at all leaves the browser's own choice alone.
-      expect(applyLayoutSettings(tuning, undefined).localMap.directoryLayout).toBe(layout);
-    }
+    // A link with the grid chosen carries it through the address and opens in it, whatever the browser last held.
+    const grid = getDefaultTuning();
+    grid.localMap.directoryLayout = "grid";
+    expect(readLayoutSettings({ localMap: { directoryLayout: "grid" } })).toEqual({ localMap: { directoryLayout: "grid" } });
+    const restored = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(grid) }));
+    expect(restored.layout?.localMap?.directoryLayout).toBe("grid");
+    expect(applyLayoutSettings(getDefaultTuning(), restored.layout).localMap.directoryLayout).toBe("grid");
+    // A link with the 2D map's settings and no Opened Directory, made with the grid on November 12 or 13, before the
+    // trial, or since with the default, opens in Flow even in a browser whose own tuning holds the grid; one that says
+    // "flow", as links made with the trial on November 12 and 13 do, likewise.
+    const unsaid = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(flow) }));
+    expect(applyLayoutSettings(grid, unsaid.layout).localMap.directoryLayout).toBe("flow");
+    expect(readLayoutSettings({ localMap: { directoryLayout: "flow" } })).toBeUndefined();
+    expect(applyLayoutSettings(grid, readLayoutSettings({ localMap: { columnGap: 72, directoryLayout: "flow" } })).localMap.directoryLayout).toBe("flow");
+    // An address that carries no layout at all leaves the browser's own choice alone.
+    expect(applyLayoutSettings(grid, undefined).localMap.directoryLayout).toBe("grid");
   });
 
   it("opens a link in the three looks unless it says the ladder, which it carries only when chosen (2026-11-13)", () => {

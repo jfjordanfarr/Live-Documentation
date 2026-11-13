@@ -15,6 +15,8 @@ Written 2026-10-30 after the pieces were looked at by eye on the built page, und
 
 Since 2026-11-12 a case holds a card's connections outside the view to the control they are ([the first-visit review](../../../../AI-Agent-Workspace/Screenshots/2026-11-12/first-visit/README.md), finding 3), on `packages/explorer/src/client` at 1440 by 900: found by their accessible name, each draws `+N connections`, its name those words and "outside this view", carries the Pin glyph and its title, stands in a one-pixel frame drawn beside its box at the text column's edge, reads at 4.5 to 1 or more in a colour other than the directory line's, and keeps the line's box (an 8 px margin, no padding or border down the page, as tall as the line above); the keyboard's focus thickens the frame in the accent; a press pins the file. That no card's box changed was measured once against the previous commit's build, 138 boxes over nine scenes of this repository and the estate, none different. The toolbar case counts three groups in 2D since the 2D map gained Fit.
 
+Since Flow became Opened Directory's default on 2026-11-13 the connections control's case chooses the grid, in which every card counts all its connections and the keyboard's walk to `detailPanel.ts` was written, and a second case holds the same control's look in Flow, on the cards whose connections are not all drawn. A line's height is compared on the page's grid of 1/64 px, since in Flow the transformed boxes read 12.640609741 against 12.640625.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

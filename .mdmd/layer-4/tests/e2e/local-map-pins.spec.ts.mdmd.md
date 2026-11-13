@@ -21,6 +21,8 @@ Introduced for the owner’s [October 14 pin-management request](../../../../AI-
 
 Since 2026-11-12 a case holds that Escape closes the open tray ([the first-visit review](../../../../AI-Agent-Workspace/Screenshots/2026-11-12/first-visit/README.md), finding 15): from the toggle, which keeps the focus; from inside the tray, the focus returning to the toggle; and after the search field and then a card's menu have each taken the first Escape, the tray staying open until the second; the pins and opened directories untouched. It fails on the previous commit's build at the first Escape.
 
+Since Flow became Opened Directory's default on 2026-11-13 the unpinned scan root a cleared tray returns to stands in Flow, so the case that clears the pins expects no wire between symbols and only the pair lines of files directly at the scan root.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

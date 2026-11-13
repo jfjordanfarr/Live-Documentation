@@ -25,6 +25,8 @@ Since [Turn 11](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.
 
 On [Turn 12](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-12--november-6) the pin became `keepGrowingComposition`, which merges the choice into the saved tuning rather than replacing it.
 
+Since Flow became Opened Directory's default on 2026-11-13 the unpinned scan root a cleared tray returns to stands in Flow, so the case that clears the pins expects no wire between symbols and only the pair lines of files directly at the scan root.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

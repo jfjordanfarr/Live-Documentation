@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/local-map-directories.spec.ts
-- Generated At: 2026-11-13T19:56:37.060Z
+- Generated At: 2026-11-13T22:10:36.615Z
 
 ## Authored
 ### Purpose
@@ -18,6 +18,8 @@ The tests activate Open and Pin controls explicitly: names now inspect under the
 
 Three cases were added on 2026-11-12 for the directory flow trial (Tuning's Opened Directory, a trial beside the grid): with Flow, a directory's files stand in the order of use with one line for each pair, its boxes level above its files, its line-less files after the last joined one, and each card's count and lines adding up to what the grid's card counted; a card's hover or focus lights its lines and fades the rest with nothing moved or added; and the choice travels in the page's link while a link made with it off carries nothing of it. Each fails on the build before the trial: no line is drawn there and Tuning has no such control. The trial's pictures and numbers are in [its evidence](../../../../AI-Agent-Workspace/Screenshots/2026-11-12/directory-flow-trial/README.md).
 
+Since Flow became Opened Directory's default on 2026-11-13 a closed box opening in place and an encasing membrane's Open each run in both layouts: the grid draws no line, and Flow one line for each pair of the opened directory's cards where one uses the other, with the wires between symbols the same in both. The box's opening is read from the move's first frame in the page, since a reading taken from the test some frames in had moved 53 to 73 px in Flow, whose opened picture is larger and reframed, while its first frame stood exactly where the box stood. The case of the Tuning control now holds the new default: a directory opened by its address draws its lines, the control offers Flow first, a link carries only the grid, and a link that says nothing opens in Flow even in a browser whose own tuning holds the grid.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -30,6 +32,8 @@ _No public symbols detected_
 - [`compressed-url-state.DEFAULT_SNAPSHOT`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-default_snapshot)
 - [`compressed-url-state.compressSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-compresssnapshot)
 - [`compressed-url-state.decompressSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-decompresssnapshot)
+- [`local-storage.PERSISTED_UI_KEY`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_key)
+- [`local-storage.PERSISTED_UI_VERSION`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_version)
 - [`directory-flow.NOMINAL_CARD`](../../packages/explorer/src/client/views/localView/directory-flow.ts.mdmd.md#symbol-nominal_card)
 - [`design-audit.describeFaults`](./design-audit.ts.mdmd.md#symbol-describefaults)
 - [`design-audit.overlapsAmong`](./design-audit.ts.mdmd.md#symbol-overlapsamong)

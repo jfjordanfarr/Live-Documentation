@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/types.ts
-- Generated At: 2026-11-13T20:06:42.388Z
+- Generated At: 2026-11-13T22:10:29.827Z
 
 ## Authored
 ### Purpose
@@ -197,46 +197,48 @@ when the owner asked that what they judge be what the build shows without a swit
 - Source: [source](../../../../../../packages/explorer/src/client/types.ts#L239)
 
 ##### `DirectoryLayout` — Summary
-How an opened directory stands in the 2D map: today's grid, or the flow order and pair lines of the 2026-11-12 trial.
+How an opened directory stands in the 2D map: the flow order and pair lines first tried on 2026-11-12, or the grid.
 
 #### `DIRECTORY_LAYOUTS` {#symbol-directory_layouts}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L242)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L246)
 
 ##### `DIRECTORY_LAYOUTS` — Summary
-Every Opened Directory choice, in the order the control offers them; the first is the default.
+Every Opened Directory choice, in the order the control offers them, the default first: Flow since 2026-11-13, when
+the owner had found it better "in basically every place I look" and asked that what they judge be what the build
+shows without a switch; the grid one choice away.
 
 #### `ForceGraphTuning` {#symbol-forcegraphtuning}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L245)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L249)
 
 ##### `ForceGraphTuning` — Summary
 The 3D Local Map's packing and stable visual encodings, shared with the headless layout lab.
 
 #### `PathDestination` {#symbol-pathdestination}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L349)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L353)
 
 ##### `PathDestination` — Summary
 The end of a path a person asked for: a file, perhaps one symbol of it, or a directory. The path starts at the newest pin (2026-10-14).
 
 #### `InspectionTarget` {#symbol-inspectiontarget}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L354)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L358)
 
 ##### `InspectionTarget` — Summary
 The evidence explicitly open in the reader, independent of the Local Map subject and its pins.
 
 #### `DiscoveryTarget` {#symbol-discoverytarget}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L361)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L365)
 
 ##### `DiscoveryTarget` — Summary
 The latest discovery remains in the map after its evidence closes; a new discovery replaces it and Pin keeps it.
 
 #### `ExplorerState` {#symbol-explorerstate}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L367)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L371)
 
 ##### `ExplorerState` — Summary
 Root state object for the Explorer client, managed by
@@ -244,7 +246,7 @@ Root state object for the Explorer client, managed by
 
 #### `TestCoverageMap` {#symbol-testcoveragemap}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L396)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L400)
 
 ##### `TestCoverageMap` — Summary
 Map from implementation file path → covering test node(s).

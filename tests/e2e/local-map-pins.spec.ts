@@ -57,7 +57,11 @@ test("the newest-first tray releases a parent independently, survives sharing, a
   await expect(page.locator(".pin-tray-toggle")).toHaveText("0 pins");
   expect(current(page).openDirectories.size).toBe(0);
   expect(current(page).selectedNodeId).toBeNull();
-  await expect(page.locator("#map-connections .connection-path")).toHaveCount(0);
+  // No wire between symbols is left; the unpinned scan root stands in Flow, the default since 2026-11-13, its own files'
+  // pair lines drawn.
+  await expect(page.locator("#map-connections .connection-path:not(.gathered)")).toHaveCount(0);
+  const ends = await page.locator("#map-connections .connection-path.gathered").evaluateAll(paths => paths.flatMap(path => [(path as SVGElement).dataset.sourceId ?? "", (path as SVGElement).dataset.targetId ?? ""]));
+  expect(ends.filter(id => id.includes("/")), "a line's end at a file not directly at the scan root").toEqual([]);
   const directories = await page.locator(".local-directory-closed").count();
   expect(directories).toBeGreaterThan(0);
   await expect(page.locator(".node-card .local-file-close")).toHaveCount(0);

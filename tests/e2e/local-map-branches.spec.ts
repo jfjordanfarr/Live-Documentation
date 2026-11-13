@@ -115,7 +115,11 @@ test("independent symbol branches retain cross-connections, survive reload, and 
   await expect(page.locator("#map-container .local-symbol-pin[aria-pressed='true'], #map-container .local-file-pin[aria-pressed='true']")).toHaveCount(0);
   await expect(page.locator("#map-container .local-placed")).toBeVisible();
   expect(await page.locator("#map-container .local-directory-closed").count()).toBeGreaterThan(0);
-  await expect(page.locator("#map-connections .connection-path")).toHaveCount(0);
+  // No wire between symbols is left. The unpinned scan root stands in Flow, the default since 2026-11-13, so a line
+  // joins each pair of its own files where one uses the other, and nothing else is drawn.
+  await expect(page.locator("#map-connections .connection-path:not(.gathered)")).toHaveCount(0);
+  const ends = await page.locator("#map-connections .connection-path.gathered").evaluateAll(paths => paths.flatMap(path => [(path as SVGElement).dataset.sourceId ?? "", (path as SVGElement).dataset.targetId ?? ""]));
+  expect(ends.filter(id => id.includes("/")), "a line's end at a file not directly at the scan root").toEqual([]);
 });
 
 test("both perspective changes keep the subject at its screen anchor during motion and preserve branch history", async ({ page }) => {

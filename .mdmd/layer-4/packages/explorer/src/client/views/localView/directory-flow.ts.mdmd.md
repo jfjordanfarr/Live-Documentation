@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/directory-flow.ts
-- Generated At: 2026-11-13T19:56:29.115Z
+- Generated At: 2026-11-13T22:10:31.690Z
 
 ## Authored
 ### Purpose
@@ -13,7 +13,7 @@ The pure half of the directory flow trial, in which an opened directory of the 2
 
 ### Notes
 
-Current, and a trial: Tuning's Opened Directory chooses it, the grid of 2026-10-07 stays the default, and no production decision has been made. Written on 2026-11-12 from the root's brief, after a newcomer opened three directories, saw cards and no line, and concluded that the map draws no connections ([the first-visit review](../../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-12/first-visit/README.md), finding 3), and the owner asked for something to feel and test rather than a decision. A pair line is an ordinary edge of the picture between the two cards' node-level hubs with a count, so that the ranking, the ordering, the placement and the wire drawing that solve a pinned neighbourhood solve an opened directory too; this module adds only what they cannot decide. Three choices were made by looking, and are recorded with their pictures in [the trial's evidence](../../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-12/directory-flow-trial/README.md): the wrap is decided by the ranks alone (`squareRows`), after a first cap, the cards the frame holds, drew the sixty-file directory 23 columns wide and would have changed with the window's height; the block of files no line joins is as tall as the directory's tallest column or the square root of its count, after a first rule drew the scan root's eight as one row; and the closed boxes stand as a band above the files, across the flow's columns, by the root's answer that a person browsing looks for the next directory to open first.
+Current: Tuning's Opened Directory chooses it, the default since 2026-11-13 with the grid of 2026-10-07 one choice away. Written on 2026-11-12 from the root's brief, after a newcomer opened three directories, saw cards and no line, and concluded that the map draws no connections ([the first-visit review](../../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-12/first-visit/README.md), finding 3), and the owner asked for something to feel and test rather than a decision. A pair line is an ordinary edge of the picture between the two cards' node-level hubs with a count, so that the ranking, the ordering, the placement and the wire drawing that solve a pinned neighbourhood solve an opened directory too; this module adds only what they cannot decide. Three choices were made by looking, and are recorded with their pictures in [the trial's evidence](../../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-12/directory-flow-trial/README.md): the wrap is decided by the ranks alone (`squareRows`), after a first cap, the cards the frame holds, drew the sixty-file directory 23 columns wide and would have changed with the window's height; the block of files no line joins is as tall as the directory's tallest column or the square root of its count, after a first rule drew the scan root's eight as one row; and the closed boxes stand as a band above the files, across the flow's columns, by the root's answer that a person browsing looks for the next directory to open first.
 
 On 2026-11-13 the first two rules and the boxes' dealing gave way to the price ([the record, Turn 4](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-4): "If a user can understand software at a glance better by adding that extra term to the "price", go ahead and add it"): the price gained a term for the picture's width, and `searchFlowShape` walks from the narrowest shape (no wrap, the boxes within the files' columns, the line-less files in one column), widening one choice at a time while each step is strictly cheaper, the wrap first and then each directory's boxes and line-less files, the deepest directory first. The walk only bounds how many shapes are priced; the price decides. `squareRows`, which stood the ranks about as wide as tall counted in cards and so drew the sixty-file directory far wider than tall in pixels, was removed, as was the line-less block's square-root rule. What stays a rule is where things stand, not how many rows or columns they take: the boxes head their directory's columns from its first, and the line-less files stand after its files' last column. [The pictures and numbers](../../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-13/directory-flow-price/) are the evidence.
 
@@ -24,14 +24,14 @@ The same day a pin on the sixty-file directory re-wrapped its tallest rank and m
 ### Public Symbols
 #### `UndrawnLink` {#symbol-undrawnlink}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L25)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L26)
 
 ##### `UndrawnLink` — Summary
 A link of the graph between two file cards on screen that the picture draws no wire for.
 
 #### `pairLines` {#symbol-pairlines}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L38)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L39)
 - Returns: [`LocalEdge`](./types.ts.mdmd.md#symbol-localedge)[]
 
 ##### `pairLines` — Summary
@@ -41,7 +41,7 @@ cards and make no line.
 
 #### `flowNeighbours` {#symbol-flowneighbours}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L55)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L56)
 - Parameters: `cards`: `ReadonlySet`
 
 ##### `flowNeighbours` — Summary
@@ -51,21 +51,21 @@ nothing is faded.
 
 #### `isPairLine` {#symbol-ispairline}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L66)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L67)
 
 ##### `isPairLine` — Summary
 Whether an edge is a pair line of an opened directory rather than a reference between two symbols.
 
 #### `linksOf` {#symbol-linksof}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L69)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L70)
 
 ##### `linksOf` — Summary
 How many of the graph's links an edge stands for: a pair line's count, one for a reference.
 
 #### `wrapRanks` {#symbol-wrapranks}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L76)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L77)
 
 ##### `wrapRanks` — Summary
 The ranking's columns with every rank that holds more than `rows` cards wrapped into neighbouring columns, as few as
@@ -74,14 +74,14 @@ drops nothing; the ranks keep their order, so a file still never stands left of 
 
 #### `FlowInput` {#symbol-flowinput}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L86)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L87)
 
 ##### `FlowInput` — Summary
 What {@link flowColumns} lays out.
 
 #### `FlowShape` {#symbol-flowshape}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L105)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L106)
 
 ##### `FlowShape` — Summary
 How the things no line places stand in a picture in flow order: how a tall rank wraps, how many rows each opened
@@ -92,7 +92,7 @@ the "price", go ahead and add it", 2026-11-13).
 
 #### `NARROW_SHAPE` {#symbol-narrow_shape}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L115)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L116)
 - Returns: [`FlowShape`](#symbol-flowshape)
 
 ##### `NARROW_SHAPE` — Summary
@@ -100,14 +100,14 @@ The narrowest shape, where the search begins: no rank wrapped, every box within 
 
 #### `shapeRecord` {#symbol-shaperecord}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L118)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L119)
 
 ##### `shapeRecord` — Summary
 A shape as plain data, for the page to say which it drew.
 
 #### `flowColumns` {#symbol-flowcolumns}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L214)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L215)
 - Parameters: `input`: [`FlowInput`](#symbol-flowinput); `shape`: [`FlowShape`](#symbol-flowshape)
 
 ##### `flowColumns` — Summary
@@ -131,7 +131,7 @@ Every id given stands in exactly one column, and the ranks' cards keep their ord
 
 #### `NOMINAL_CARD` {#symbol-nominal_card}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L229)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L230)
 
 ##### `NOMINAL_CARD` — Summary
 The nominal sizes the shape is chosen on, in the picture's own pixels (2026-11-13). A directory's shape is a coarse
@@ -146,21 +146,21 @@ case holds the file card to the page's median unpinned card, so that a change to
 
 #### `NOMINAL_BOX` {#symbol-nominal_box}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L231)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L232)
 
 ##### `NOMINAL_BOX` — Summary
 A closed directory's box on the nominal model: every box the page drew on 2026-11-13.
 
 #### `NOMINAL_LABEL` {#symbol-nominal_label}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L233)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L234)
 
 ##### `NOMINAL_LABEL` — Summary
 A directory's label on the nominal model: one line.
 
 #### `nominalMeasurer` {#symbol-nominalmeasurer}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L240)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L241)
 - Returns: [`SceneMeasurer`](./branch-scene.ts.mdmd.md#symbol-scenemeasurer)
 - Parameters: `ids`: `Iterable`
 
@@ -171,14 +171,14 @@ card's node-level hub, half way down it as the stylesheet stands it. A closed bo
 
 #### `ShapeSearch` {#symbol-shapesearch}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L254)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L255)
 
 ##### `ShapeSearch` — Summary
 What {@link searchFlowShape} found: the cheapest shape it met and its price, and every shape it priced, in order.
 
 #### `searchFlowShape` {#symbol-searchflowshape}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L271)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L272)
 - Returns: [`ShapeSearch`](#symbol-shapesearch)
 - Parameters: `input`: [`FlowInput`](#symbol-flowinput); `shape`: [`FlowShape`](#symbol-flowshape)
 
@@ -195,7 +195,7 @@ filters takes the same shape on every screen, after any pins and from any link.
 
 #### `wrapChoices` {#symbol-wrapchoices}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L328)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L329)
 
 ##### `wrapChoices` — Summary
 The rows at which the ranks wrap differently, from the tallest rank's down: each wraps them into more columns than the last.

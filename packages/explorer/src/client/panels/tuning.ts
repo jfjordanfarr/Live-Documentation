@@ -252,7 +252,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   // How an opened directory stands changes which cards are ranked and which lines are drawn: the view re-renders.
   if (directoryLayoutSelect) {
     directoryLayoutSelect.addEventListener("change", () => {
-      state.tuning.localMap.directoryLayout = DIRECTORY_LAYOUTS.find(choice => choice === directoryLayoutSelect.value) ?? "grid";
+      state.tuning.localMap.directoryLayout = DIRECTORY_LAYOUTS.find(choice => choice === directoryLayoutSelect.value) ?? DIRECTORY_LAYOUTS[0];
       onTuningChange();
       if (state.view === "map" && state.perspective === "2d") onRender();
     });

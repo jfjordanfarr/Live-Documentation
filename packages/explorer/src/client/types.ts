@@ -87,10 +87,10 @@ export interface LocalMapTuning {
    */
   zoomLooks: ZoomLooks;
   /**
-   * How an opened directory stands, a trial for comparison (2026-11-12): "grid", its files about as wide as tall with no
-   * line until a file is pinned, the design since 2026-10-07; "flow", its files in the order the code flows, a file left
-   * of the files that use it, one line for each pair of cards where one uses the other, a tall rank wrapped into
-   * neighbouring columns until the ranks stand about as wide as tall.
+   * How an opened directory stands: "flow", the default since 2026-11-13, its files in the order the code flows, a file
+   * left of the files that use it, one line for each pair of cards where one uses the other, and how its boxes, its files
+   * no line joins and its tall ranks stand chosen by the picture's price; "grid", its files about as wide as tall with no
+   * line until a file is pinned, the design from 2026-10-07 to 2026-11-13, one choice away.
    */
   directoryLayout: DirectoryLayout;
   /** With fixed slots, how many lines of text each symbol's slot holds, filled or not; the default is to be found by eye (2026-11-05). */
@@ -235,11 +235,15 @@ export type ZoomLooks = "stepped" | "three";
  */
 export const ZOOM_LOOKS: readonly ZoomLooks[] = ["three", "stepped"];
 
-/** How an opened directory stands in the 2D map: today's grid, or the flow order and pair lines of the 2026-11-12 trial. */
+/** How an opened directory stands in the 2D map: the flow order and pair lines first tried on 2026-11-12, or the grid. */
 export type DirectoryLayout = "grid" | "flow";
 
-/** Every Opened Directory choice, in the order the control offers them; the first is the default. */
-export const DIRECTORY_LAYOUTS: readonly DirectoryLayout[] = ["grid", "flow"];
+/**
+ * Every Opened Directory choice, in the order the control offers them, the default first: Flow since 2026-11-13, when
+ * the owner had found it better "in basically every place I look" and asked that what they judge be what the build
+ * shows without a switch; the grid one choice away.
+ */
+export const DIRECTORY_LAYOUTS: readonly DirectoryLayout[] = ["flow", "grid"];
 
 /** The 3D Local Map's packing and stable visual encodings, shared with the headless layout lab. */
 export interface ForceGraphTuning {

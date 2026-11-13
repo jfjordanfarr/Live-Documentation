@@ -3,6 +3,7 @@ import { expect, test, type Page } from "@playwright/test";
 import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
 import { LOCAL_MAP, localMapSettled, localRetainUrl } from "./still-picture";
 import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
+import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { NOMINAL_CARD } from "../../packages/explorer/src/client/views/localView/directory-flow";
 
 /**
@@ -16,6 +17,13 @@ import { NOMINAL_CARD } from "../../packages/explorer/src/client/views/localView
  */
 
 const ENGINE = "packages/engine/src";
+const CLIENT = "packages/explorer/src/client";
+/** The page's link for a directory opened with nothing pinned, in the layout named or, without one, as a link says nothing of it. */
+const opened = (directory: string, layout?: "flow" | "grid"): string => `/?s=${compressSnapshot({
+  ...DEFAULT_SNAPSHOT, view: "map", perspective: "2d", openDirectories: new Set([directory]),
+  ...(layout ? { layout: { localMap: { directoryLayout: layout } } } : {})
+})}`;
+
 const LIVE_DOCS = `${ENGINE}/live-docs`;
 
 test.use({ viewport: { width: 1800, height: 1100 } });
@@ -29,6 +37,13 @@ async function settled(page: Page): Promise<void> {
   await page.waitForSelector("#map-container .branch-mode", { timeout: 20_000 });
   await localMapSettled(page);
   await page.waitForTimeout(600);
+}
+
+/** Chooses how an opened directory stands for every page this test opens, beside the suite's own saved tuning. */
+async function chooseLayout(page: Page, layout: "flow" | "grid"): Promise<void> {
+  await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, directoryLayout: layout } } })
+  });
 }
 
 /** Every text box of the Local Map, checked for collisions and cut-offs as the design audit does. */
@@ -86,22 +101,34 @@ test("a directory entered with nothing pinned is a grid of compact cards and clo
   await expect(page.locator("#map-container .local-directory-closed")).toHaveCount(3);
 });
 
-test("a closed box opens in place, the membrane growing from the box while the picture moves, and its X closes it back to a box", async ({ page }) => {
-  await page.goto(`/?view=local&dir=${ENGINE}`);
+for (const layout of ["flow", "grid"] as const) test(`a closed box opens in place, the membrane growing from the box while the picture moves, and its X closes it back to a box (${layout})`, async ({ page }) => {
+  await page.goto(opened(ENGINE, layout));
   await settled(page);
   const before = (await box(page, LIVE_DOCS).boundingBox())!;
   const moveStarted = page.waitForFunction(() => document.querySelector<HTMLElement>("#map-container .local-placed")?.dataset.moving === "true", undefined, { timeout: 5_000 });
+  // The new membrane as the move's first frame draws it, read in the page: a reading taken from the test after the move
+  // began landed some frames in, and in Flow, whose opened picture is larger and reframed, frames in had moved it 53 to
+  // 73 px (2026-11-13), while its first frame stood exactly where the box stood.
+  const firstFrame = page.evaluate(directory => new Promise<{ x: number; y: number; width: number; height: number }>(resolve => {
+    const look = (): void => {
+      const band = document.querySelector(`#map-container .local-directory-band[data-directory="${directory}"]`);
+      const moving = document.querySelector<HTMLElement>("#map-container .local-placed")?.dataset.moving === "true";
+      if (band && moving) { const { x, y, width, height } = band.getBoundingClientRect(); resolve({ x, y, width, height }); } else requestAnimationFrame(look);
+    };
+    requestAnimationFrame(look);
+  }), LIVE_DOCS);
   await box(page, LIVE_DOCS).locator(".local-directory-open").click();
   await moveStarted;
   // Early in the move the new membrane stands where the box stood, no wider than the box was, and grows from there.
-  const early = (await page.locator(`#map-container .local-directory-band[data-directory="${LIVE_DOCS}"]`).boundingBox())!;
+  const early = await firstFrame;
   expect(Math.abs(early.x - before.x)).toBeLessThan(40);
   expect(Math.abs(early.y - before.y)).toBeLessThan(40);
   await settled(page);
   const after = (await page.locator(`#map-container .local-directory-band[data-directory="${LIVE_DOCS}"]`).boundingBox())!;
   expect(after.width).toBeGreaterThan(early.width);
   expect(after.height).toBeGreaterThan(early.height);
-  // Open: its files compact, its subdirectories closed boxes, the parent's other boxes still boxes, and still no wire.
+  // Open: its files compact, its subdirectories closed boxes, the parent's other boxes still boxes; no wire between
+  // symbols, and in Flow one line for each pair of its files where one uses the other, none in the grid.
   await expect(box(page, LIVE_DOCS)).toHaveCount(0);
   await expect(box(page, `${LIVE_DOCS}/adapters`)).toBeVisible();
   await expect(box(page, `${LIVE_DOCS}/heuristics`)).toBeVisible();
@@ -109,7 +136,9 @@ test("a closed box opens in place, the membrane growing from the box while the p
   const compact = await cards(page).count();
   expect(compact).toBeGreaterThan(20);
   await expect(page.locator("#map-container .node-card .symbol-row:not(.branch-symbol-hidden)")).toHaveCount(0);
-  await expect(wires(page)).toHaveCount(0);
+  await expect(page.locator("#map-connections .connection-path:not(.bundle-run):not(.gathered)")).toHaveCount(0);
+  if (layout === "grid") await expect(wires(page)).toHaveCount(0);
+  else expect(await wires(page).count()).toBeGreaterThan(0);
   // A compact card counts its collapsed public symbols on its reveal; a file with none, a test file, has no reveal, since the Internals row is not a symbol.
   const graphCard = page.locator(`#map-container .node-card[data-id="${LIVE_DOCS}/graph.ts"]`);
   const publicRows = await graphCard.locator(".symbol-row:not(.internals-row)").count();
@@ -122,12 +151,12 @@ test("a closed box opens in place, the membrane growing from the box while the p
   await expect(testCard.getByRole("button", { name: /^\+\d+\ssymbols$/ })).toHaveCount(0);
   // The unfolding began at the clicked box (asserted above). The final camera may recover the expanded picture's
   // frame; its directory identity and Close remain inside that frame instead of being held offscreen indefinitely.
-  const opened = (await label(page, LIVE_DOCS).boundingBox())!;
+  const unfolded = (await label(page, LIVE_DOCS).boundingBox())!;
   const frame = (await page.locator("#view-map").boundingBox())!;
-  expect(opened.x).toBeGreaterThanOrEqual(frame.x);
-  expect(opened.y).toBeGreaterThanOrEqual(frame.y);
-  expect(opened.x + opened.width).toBeLessThanOrEqual(frame.x + frame.width);
-  expect(opened.y + opened.height).toBeLessThanOrEqual(frame.y + frame.height);
+  expect(unfolded.x).toBeGreaterThanOrEqual(frame.x);
+  expect(unfolded.y).toBeGreaterThanOrEqual(frame.y);
+  expect(unfolded.x + unfolded.width).toBeLessThanOrEqual(frame.x + frame.width);
+  expect(unfolded.y + unfolded.height).toBeLessThanOrEqual(frame.y + frame.height);
   await expect(label(page, LIVE_DOCS).locator(".local-directory-close")).toBeInViewport();
   await label(page, LIVE_DOCS).locator(".local-directory-close").click();
   await settled(page);
@@ -136,9 +165,10 @@ test("a closed box opens in place, the membrane growing from the box while the p
   await expect(page.locator("#map-container .local-directory-closed")).toHaveCount(4);
 });
 
-test("an encasing membrane counts what it hides, Open discloses it around pinned files, and no wire reaches a closed box", async ({ page }) => {
+for (const layout of ["flow", "grid"] as const) test(`an encasing membrane counts what it hides, Open discloses it around pinned files, and no wire reaches a closed box (${layout})`, async ({ page }) => {
   const graph = `${LIVE_DOCS}/graph.ts`;
   const builder = "packages/explorer/src/shared/staticBuilder.ts";
+  await chooseLayout(page, layout);
   await page.goto(localRetainUrl("/", [graph, builder]));
   await settled(page);
   await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached" });
@@ -153,12 +183,15 @@ test("an encasing membrane counts what it hides, Open discloses it around pinned
   // the click is dispatched to Open rather than aimed at the frame, as the member's Pin and the X are below.
   await label(page, LIVE_DOCS).locator(".local-directory-open").evaluate(button => (button as HTMLButtonElement).click());
   await settled(page);
-  // Open: every file of live-docs is drawn, the ones not party compact and unwired, and its subdirectories are boxes; the wires are the same.
+  // Open: every file of live-docs is drawn, the ones not party compact, and its subdirectories are boxes; the wires between
+  // symbols are the same, and in Flow one line joins each pair of the opened directory's cards where one uses the other.
   await expect(label(page, LIVE_DOCS).locator(".local-directory-close")).toBeVisible();
   await expect(more).toHaveCount(0);
   expect(await cards(page).count()).toBeGreaterThan(partyCards);
   await expect(page.locator("#map-container .node-card.branch-member .symbol-row:not(.branch-symbol-hidden)")).toHaveCount(0);
-  await expect(wires(page)).toHaveCount(drawn);
+  await expect(page.locator("#map-connections .connection-path:not(.bundle-run):not(.gathered)")).toHaveCount(drawn);
+  if (layout === "grid") await expect(wires(page)).toHaveCount(drawn);
+  else expect(await wires(page).count()).toBeGreaterThan(drawn);
   await expect(box(page, `${LIVE_DOCS}/adapters`)).toBeVisible();
   await expect(box(page, `${LIVE_DOCS}/heuristics`)).toBeVisible();
   // No wire's end lies inside a closed box.
@@ -218,19 +251,11 @@ test("keyboard release preserves an independently opened child and the enclosure
   await expect(page.locator(`#map-container .node-card[data-id="${graph}"]`)).toBeVisible();
 });
 
-// ─── The directory flow trial (Tuning → 2D Layout → Opened Directory, 2026-11-12) ───────────────────────────────────────
+// ─── Flow and the grid (Tuning → 2D Layout → Opened Directory, a trial on 2026-11-12, Flow the default since 2026-11-13) ─
 // A newcomer opened three directories, saw cards and no line, and concluded that the map draws no connections (the
-// first-visit review of 2026-11-12, finding 3). The trial, beside the grid above, which stays the default: an opened
-// directory's files stand in the order the code flows, one line joins each pair of cards where one uses the other, a
-// card counts only what is not drawn, and a card's hover lights its lines and fades the rest.
-
-const CLIENT = "packages/explorer/src/client";
-
-/** The page's link for a directory opened with nothing pinned, with the trial's layout or, without one, as any link was before the trial. */
-const opened = (directory: string, layout?: "flow"): string => `/?s=${compressSnapshot({
-  ...DEFAULT_SNAPSHOT, view: "map", perspective: "2d", openDirectories: new Set([directory]),
-  ...(layout ? { layout: { localMap: { directoryLayout: layout } } } : {})
-})}`;
+// first-visit review of 2026-11-12, finding 3). In Flow an opened directory's files stand in the order the code flows,
+// one line joins each pair of cards where one uses the other, a card counts only what is not drawn, and a card's hover
+// lights its lines and fades the rest; the grid, the default until 2026-11-13, is one choice away.
 
 /** What a directory's picture holds, read from the page: each card's and box's column and box, its count of connections not drawn, and each pair line. */
 const flowPicture = (page: Page) => page.evaluate(() => {
@@ -252,8 +277,8 @@ const flowPicture = (page: Page) => page.evaluate(() => {
 
 test("with Opened Directory at Flow, a directory's files stand in the order of use, one line joins each pair, and a card counts only what is not drawn", async ({ page }) => {
   test.setTimeout(120_000);
-  // The grid, the default: the same directory's cards with no line, each counting every connection it has.
-  await page.goto(opened(CLIENT));
+  // The grid, one choice away: the same directory's cards with no line, each counting every connection it has.
+  await page.goto(opened(CLIENT, "grid"));
   await settled(page);
   const grid = await flowPicture(page);
   expect(grid.lines).toHaveLength(0);
@@ -372,44 +397,45 @@ test("with Opened Directory at Flow, a card's hover or focus lights its lines an
   await expectRest();
 });
 
-test("Opened Directory is chosen in Tuning, travels in the page's link, and a link made with it off carries nothing of it", async ({ page }) => {
+test("Opened Directory defaults to Flow, the grid is chosen in Tuning and travels in the page's link, and a link that says nothing opens in Flow", async ({ page }) => {
   test.setTimeout(120_000);
   const linesOf = (target: Page) => target.locator("#map-connections path.connection-path.gathered");
   const layoutOf = (address: string): Record<string, unknown> | undefined =>
     decompressSnapshot(new URL(address).searchParams.get("s") ?? "").layout?.localMap as Record<string, unknown> | undefined;
+  // A directory opened by its address, with nothing saved, stands in Flow: its lines are drawn.
   await page.goto(`/?view=local&dir=${CLIENT}`);
   await settled(page);
-  await expect(linesOf(page)).toHaveCount(0);
+  expect(await linesOf(page).count()).toBeGreaterThan(3);
   await page.getByRole("button", { name: /^Layout tuning/ }).click();
   const control = page.locator("#tuning-directory-layout");
-  await expect(control).toHaveValue("grid");
-  await expect(control.locator("option")).toHaveCount(2);
-  await control.selectOption("flow");
-  await settled(page);
-  expect(await linesOf(page).count()).toBeGreaterThan(3);
-  expect(layoutOf(page.url())).toHaveProperty("directoryLayout", "flow");
-  // A link made with the trial off says nothing of it: it is the link it was before the trial.
+  await expect(control).toHaveValue("flow");
+  // The default is offered first, the grid one choice away.
+  await expect(control.locator("option")).toHaveText([/^Flow/u, /^Grid/u]);
   await control.selectOption("grid");
   await settled(page);
   await expect(linesOf(page)).toHaveCount(0);
-  expect(layoutOf(page.url())).toBeDefined();
-  expect(layoutOf(page.url())).not.toHaveProperty("directoryLayout");
-  const off = page.url();
+  expect(layoutOf(page.url())).toHaveProperty("directoryLayout", "grid");
+  const gridLink = page.url();
+  // A link made with the default says nothing of it.
   await control.selectOption("flow");
   await settled(page);
-  // The link shows the trial to a visitor with no saved choice.
+  expect(await linesOf(page).count()).toBeGreaterThan(3);
+  expect(layoutOf(page.url())).toBeDefined();
+  expect(layoutOf(page.url())).not.toHaveProperty("directoryLayout");
+  const flowLink = page.url();
+  // The grid's link shows the grid to a visitor with no saved choice.
   const fresh = await page.context().browser()!.newContext({ viewport: { width: 1800, height: 1100 } });
   const visitor = await fresh.newPage();
-  await visitor.goto(page.url());
+  await visitor.goto(gridLink);
+  await settled(visitor);
+  await expect(linesOf(visitor)).toHaveCount(0);
+  await expect(visitor.locator("#tuning-directory-layout")).toHaveValue("grid");
+  // And the link that says nothing shows Flow even there, where the grid was last chosen and is kept for the next visit.
+  await visitor.goto(flowLink);
   await settled(visitor);
   expect(await linesOf(visitor).count()).toBe(await linesOf(page).count());
   await expect(visitor.locator("#tuning-directory-layout")).toHaveValue("flow");
   await fresh.close();
-  // The link made with the trial off shows the grid even here, where the trial was last chosen and is kept for the next visit.
-  await page.goto(off);
-  await settled(page);
-  await expect(linesOf(page)).toHaveCount(0);
-  await expect(page.locator("#tuning-directory-layout")).toHaveValue("grid");
 });
 
 // How the boxes, the files no line joins and a tall rank stand is the picture's price's to choose, its width set against

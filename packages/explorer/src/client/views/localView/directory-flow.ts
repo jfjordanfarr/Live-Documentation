@@ -1,9 +1,10 @@
 /**
- * An opened directory that shows how its own files connect: a trial for comparison beside the grid of 2026-10-07, behind
- * Tuning's Opened Directory (2026-11-12). A newcomer opened three directories, saw cards and no line, and concluded that
- * the map draws no connections (the first-visit review of 2026-11-12, finding 3); the owner asked for a trial to feel.
+ * An opened directory that shows how its own files connect: Flow, first a trial beside the grid of 2026-10-07 behind
+ * Tuning's Opened Directory (2026-11-12), the default since 2026-11-13 with the grid one choice away. A newcomer opened
+ * three directories, saw cards and no line, and concluded that the map draws no connections (the first-visit review of
+ * 2026-11-12, finding 3); the owner asked for a trial to feel, and then found it better "in basically every place I look".
  *
- * With the trial on, every pair of file cards on screen where one uses the other is joined by one line, from the offering
+ * In Flow, every pair of file cards on screen where one uses the other is joined by one line, from the offering
  * card's node-level hub to the using card's, standing for every link between them the picture does not draw symbol by
  * symbol ({@link pairLines}). The lines join the picture's references, so the ranking stands a file left of the files that
  * use it, and the ordering and the placement solve the picture as they solve a pinned neighbourhood. This module lays out

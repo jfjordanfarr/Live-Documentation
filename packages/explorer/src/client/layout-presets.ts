@@ -48,12 +48,14 @@ export function applyLayoutPreset(tuning: TuningConfig, preset: LayoutPreset): T
  * Read only known settings: the finite numbers, bound to their public control ranges, and the named settings a link or a
  * saved tuning carries beside them: the 3D wrappers' look (2026-11-06, so that a shared link shows the group wrappers and
  * the directory shells without a switch), the 2D Zoom Looks (2026-11-10, so that a link shows the trial's three looks)
- * and how an opened directory stands (2026-11-12, so that the owner and the test agents compare that trial by link). The
- * last is carried only when it is not the default grid, so that a link made with the trial off is the link it was before
- * the trial; {@link applyLayoutSettings} reads its absence as the grid. Zoom Looks likewise since its default became the
- * three looks (2026-11-13): only the stepped ladder is carried, and its absence reads as the three looks, so that a link
- * made before the trial, or made since with the default, shows what the build shows without a switch, while a link that
- * says the ladder still opens in it. A link made between November 10 and 13 says either, since the default was written.
+ * and how an opened directory stands (2026-11-12, so that the owner and the test agents compare that trial by link). Each
+ * of the last two is carried only when it is not its default, and {@link applyLayoutSettings} reads its absence as the
+ * default, so that a link shows what the build shows without a switch while a link that names the other choice still
+ * opens in it. Zoom Looks: only the stepped ladder is carried since the three looks became the default (2026-11-13); a
+ * link made between November 10 and 13 says either, since the default was written. Opened Directory: only the grid is
+ * carried since Flow became the default (2026-11-13); a link made on November 12 or 13 says "flow" when Flow was chosen
+ * and nothing when the grid was, so such a link now opens in Flow either way, and a link that says "grid" exists only
+ * from now on.
  */
 export function readLayoutSettings(value: unknown): LayoutSettings | undefined {
   if (!value || typeof value !== "object" || Array.isArray(value)) return undefined;
@@ -91,9 +93,9 @@ export function layoutSettingsOf(tuning: TuningConfig): LayoutSettings {
 
 /**
  * Merge a validated partial snapshot over the current values, leaving unrelated preferences intact. A snapshot that
- * carries the 2D map's settings without saying how an opened directory stands says the grid, since only the trial's
- * layouts are written (2026-11-12): a link made with the trial off shows the grid in a browser that last saw the trial.
- * One that does not say its Zoom Looks says the three looks, the default, since only the ladder is written (2026-11-13).
+ * carries the 2D map's settings without saying how an opened directory stands says Flow, the default, since only the
+ * grid is written (2026-11-13); one that does not say its Zoom Looks says the three looks, since only the ladder is
+ * written (2026-11-13). So a link made with the defaults shows them in a browser whose own tuning holds the other choices.
  */
 export function applyLayoutSettings(tuning: TuningConfig, settings: LayoutSettings | undefined): TuningConfig {
   const directory = settings?.localMap ? { directoryLayout: DIRECTORY_LAYOUTS[0] } : null;

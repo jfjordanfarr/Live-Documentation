@@ -127,17 +127,27 @@ test("the toolbar's groups stand parted by rules, each choice group with one cho
   expect(await groups.first().locator("button:visible").getAttribute("aria-label")).toBe("Fit current scope");
 });
 
-test("a card's connections outside the view are a framed control with the Pin glyph, legible, focusable, and change no box", async ({ page }) => {
-  // The first-visit review of 2026-11-12: the line that pins a file to reveal its connections read as faint static text,
-  // "21 connections outside this view" at 11 px and 3.3 to 1, and a newcomer concluded that the map draws no connections.
-  // It is drawn as the card's other text control, the directory's Open, is: framed, the Pin glyph beside "+21 connections",
-  // the card's idiom for what is not drawn here, its name beginning with those words and carrying the rest (the root's
-  // choice of the same day over an underlined link).
-  await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/?view=local&mode=2d&dir=packages/explorer/src/client");
-  await page.locator(".local-placed").waitFor();
+/** Chooses how an opened directory stands for every page this test opens, beside the suite's own saved tuning. */
+async function chooseLayout(page: Page, layout: "flow" | "grid"): Promise<void> {
+  await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, directoryLayout: layout } } })
+  });
+}
+
+/** A length on the layout's grid of 1/64 px: a transformed page's boxes carry single-precision noise below it. */
+const onLayoutGrid = (value: number): number => Math.round(value * 64) / 64;
+
+/**
+ * Every card's control for its connections outside the view, as drawn, and holds each to the look below: the first-visit
+ * review of 2026-11-12 found the line that pins a file to reveal its connections read as faint static text, "21
+ * connections outside this view" at 11 px and 3.3 to 1, and a newcomer concluded that the map draws no connections. It is
+ * drawn as the card's other text control, the directory's Open, is: framed, the Pin glyph beside "+21 connections", the
+ * card's idiom for what is not drawn here, its name beginning with those words and carrying the rest (the root's choice
+ * of the same day over an underlined link).
+ */
+async function expectConnectionsControls(page: Page, least: number): Promise<void> {
   const reveals = page.getByRole("button", { name: /connections? outside this view$/u });
-  expect(await reveals.count(), "cards with connections outside the view").toBeGreaterThan(5);
+  expect(await reveals.count(), "cards with connections outside the view").toBeGreaterThan(least);
   const facts = await reveals.evaluateAll(buttons => buttons.map(button => {
     const layers: string[] = [];
     for (let layer: Element | null = button; layer; layer = layer.parentElement) layers.unshift(getComputedStyle(layer).backgroundColor);
@@ -165,8 +175,17 @@ test("a card's connections outside the view are a framed control with the Pin gl
     expect(fact.colour, "not the faint grey of the facts beside it").not.toBe(fact.fact);
     // The line's own box as it was: its margin, no padding or border down the page, and one line as tall as the line above.
     expect(fact.box).toEqual(["8px", "0px", "0px", "0px"]);
-    if (fact.above !== null) expect(fact.height, "one line, as tall as the line above it").toBe(fact.above);
+    if (fact.above !== null) expect(onLayoutGrid(fact.height), "one line, as tall as the line above it").toBe(onLayoutGrid(fact.above));
   }
+}
+
+test("a card's connections outside the view are a framed control with the Pin glyph, legible, focusable, and change no box (grid)", async ({ page }) => {
+  // The grid, one choice away since 2026-11-13: every card counts all its connections, and detailPanel.ts stands in the frame.
+  await chooseLayout(page, "grid");
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/?view=local&mode=2d&dir=packages/explorer/src/client");
+  await page.locator(".local-placed").waitFor();
+  await expectConnectionsControls(page, 5);
   // The keyboard's focus thickens the frame in the accent colour. detailPanel.ts stands in the frame.
   const control = page.locator('.node-card[data-id="packages/explorer/src/client/detailPanel.ts"]').getByRole("button", { name: /outside this view$/u });
   await control.focus();
@@ -179,6 +198,16 @@ test("a card's connections outside the view are a framed control with the Pin gl
   const card = page.locator('.node-card[data-id="packages/explorer/src/client/detailPanel.ts"]');
   await expect(card.locator(".local-file-pin")).toHaveAttribute("aria-pressed", "true");
   await expect(card.getByRole("button", { name: /outside this view$/u })).toHaveCount(0);
+});
+
+test("a card's connections outside the view are the same framed control in Flow, on the cards whose connections are not all drawn", async ({ page }) => {
+  // Flow, the default since 2026-11-13: a card counts only what its lines do not draw, and one whose connections are all
+  // drawn carries no control; the control the others carry is the grid's.
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/?view=local&mode=2d&dir=packages/explorer/src/client");
+  await page.locator(".local-placed").waitFor();
+  await expect(page.locator("#tuning-directory-layout")).toHaveValue("flow");
+  await expectConnectionsControls(page, 2);
 });
 
 test("every view in the navigation has an icon, and the application's name is whole", async ({ page }) => {
