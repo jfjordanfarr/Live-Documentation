@@ -36,10 +36,12 @@ const FAR_LAST_STEP = 6;
 test.use({ viewport: { width: 1440, height: 960 } });
 
 test.beforeEach(async ({ page }) => {
-  // A fresh visitor's settings but the continuing search, which the suite keeps off so that a picture stays as drawn.
+  // A fresh visitor's settings but the continuing search, which the suite keeps off so that a picture stays as drawn,
+  // and the stepped ladder this spec audits, one choice away from the three looks since they became the default
+  // (2026-11-13; `zoom-looks.spec.ts` audits those).
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
     key: PERSISTED_UI_KEY,
-    value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0 } } })
+    value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, zoomLooks: "stepped" } } })
   });
 });
 
@@ -415,11 +417,12 @@ const pinBy = {
 
 /**
  * Open the still picture with the continuing search off or on, zoom out by so many presses (or as far as the camera
- * goes), make the pin and read the layout once the picture and any search are at rest.
+ * goes), make the pin and read the layout once the picture and any search are at rest; in the stepped ladder unless the
+ * three looks are asked for.
  */
-async function drawnAfter(page: Page, presses: number, pin: (page: Page) => Promise<unknown>, searchStarts = 0) {
+async function drawnAfter(page: Page, presses: number, pin: (page: Page) => Promise<unknown>, searchStarts = 0, zoomLooks: "stepped" | "three" = "stepped") {
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts, zoomLooks } } })
   });
   await page.goto(url(stillPicture));
   await page.locator(`.node-card[data-id="${stillPicture}"]`).waitFor();
@@ -455,6 +458,28 @@ test("a picture drawn at any zoom lays out every card, row and pin as the pictur
     const reference = await drawnAfter(page, 0, state.pin, state.searchStarts);
     expect(reference.state).toBe("reading 0");
     const drawn = await drawnAfter(page, state.presses, state.pin, state.searchStarts);
+    expect(drawn.state, state.name).toBe(state.expect);
+    expect(Object.keys(drawn.layout).sort(), state.name).toEqual(Object.keys(reference.layout).sort());
+    for (const [id, card] of Object.entries(reference.layout)) expect(drawn.layout[id], `${state.name}: ${id}`).toEqual(card);
+  }
+});
+
+test("in the three looks too, a picture drawn at any zoom lays out every card, row and pin as the picture drawn at reading scale", async ({ page }) => {
+  test.setTimeout(360_000);
+  // The same promise for the default since 2026-11-13, whose looks draw a symbol's name wrapped below its line and hold
+  // the counts at a card's foot (the round of that day): neither may reach the layout. The connections look draws no
+  // row's Pin, so its pins are made from a row's More.
+  const states = [
+    { name: "the reading look's last press", presses: 2, pin: pinBy.rowPin, expect: "reading 0" },
+    { name: "the connections look's first press", presses: 3, pin: pinBy.rowMore, expect: "far undefined" },
+    { name: "the connections look's last press", presses: 6, pin: pinBy.rowMore, expect: "far undefined" },
+    { name: "the overview look", presses: 8, pin: pinBy.nodeMore, expect: "overview undefined" },
+    { name: "the farthest zoom", presses: 40, pin: pinBy.nodeMore, expect: "overview undefined" }
+  ];
+  for (const state of states) {
+    const reference = await drawnAfter(page, 0, state.pin, 0, "three");
+    expect(reference.state).toBe("reading 0");
+    const drawn = await drawnAfter(page, state.presses, state.pin, 0, "three");
     expect(drawn.state, state.name).toBe(state.expect);
     expect(Object.keys(drawn.layout).sort(), state.name).toEqual(Object.keys(reference.layout).sort());
     for (const [id, card] of Object.entries(reference.layout)) expect(drawn.layout[id], `${state.name}: ${id}`).toEqual(card);

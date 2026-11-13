@@ -46,8 +46,10 @@ const moving = (page: Page): Promise<boolean> => page.evaluate(() => document.qu
 const LONG_MOVE_MS = 1500;
 
 test("wires keep their elements and follow pins through interrupted, zoomed pin transitions", async ({ page }) => {
+  // The stepped ladder, which at the wheel's zoom below still draws a row's Pin to press and to press again by the
+  // keyboard: the three looks, the default since 2026-11-13, draw only a row's More there.
   await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); },
-    { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { moveMs: 1200, searchStarts: 0 } } }) });
+    { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { moveMs: 1200, searchStarts: 0, zoomLooks: "stepped" } } }) });
   await page.goto(`/?view=local&node=${ROOT}main.ts`);
   await localMapSettled(page);
   await page.waitForTimeout(700);

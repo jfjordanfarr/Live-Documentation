@@ -16,6 +16,8 @@ Checks animated pin changes in the browser: retained wrappers and wires keep the
 - Direct symbol Pin is the action, and the held measurement is the symbol label's screen position, including its movement within the card. The original test held the containing card; the [October 19 connection-following requirement](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-19.1.record.md#turn-24) and [October 20 visual inspection](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-2) make the acted-on row the identity to preserve. The 1.5-pixel tolerance remains, alongside shared wrapper identity, monotonic movement of other cards and the absence of fades or row transforms at rest.
 - The interrupted, zoomed transition case retains the same SVG wire element, checks each endpoint against its actual pin on every sampled frame, requires entering wires to fade with their cards, and rejects a restarted layer fade. A stable Pin-button locator permits a second keyboard activation after its accessible name changes to Unpin. Zero-duration and reduced-motion cases still require the next arrangement to be settled immediately.
 
+Since the three looks became Zoom Looks' default on 2026-11-13 ([Turn 3 of that day's record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-3)) the case of interrupted, zoomed pin transitions chooses the stepped ladder: it presses a row's Pin, and again by the keyboard, at a zoom where the ladder still draws it and the three looks draw only the row's More. Pinning through More in the three looks is held in `card-ladder.spec.ts` and `card-ladder-boxes.spec.ts`.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

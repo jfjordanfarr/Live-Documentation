@@ -80,4 +80,27 @@ describe("shared packing preferences", () => {
       expect(applyLayoutSettings(tuning, undefined).localMap.directoryLayout).toBe(layout);
     }
   });
+
+  it("opens a link in the three looks unless it says the ladder, which it carries only when chosen (2026-11-13)", () => {
+    // The default is the three looks, and a link made with it does not write it.
+    const three = getDefaultTuning();
+    expect(three.localMap.zoomLooks).toBe("three");
+    expect(layoutSettingsOf(three).localMap).not.toHaveProperty("zoomLooks");
+    // A link with the ladder chosen carries it through the address and opens in it, whatever the browser last held.
+    const stepped = getDefaultTuning();
+    stepped.localMap.zoomLooks = "stepped";
+    const ladder = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(stepped) }));
+    expect(ladder.layout?.localMap?.zoomLooks).toBe("stepped");
+    expect(applyLayoutSettings(getDefaultTuning(), ladder.layout).localMap.zoomLooks).toBe("stepped");
+    // A link with the 2D map's settings and no Zoom Looks, made before the trial or since with the default, opens in
+    // the three looks even in a browser whose own tuning holds the ladder; one that says "three", as links of November
+    // 10 to 13 may, likewise.
+    const unsaid = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: { localMap: { columnGap: 72 } } }));
+    expect(applyLayoutSettings(stepped, unsaid.layout).localMap.zoomLooks).toBe("three");
+    expect(applyLayoutSettings(stepped, readLayoutSettings({ localMap: { columnGap: 72, zoomLooks: "three" } })).localMap.zoomLooks).toBe("three");
+    expect(readLayoutSettings({ localMap: { zoomLooks: "three" } })).toBeUndefined();
+    expect(readLayoutSettings({ localMap: { zoomLooks: "ladder" } })).toBeUndefined();
+    // An address that carries no layout at all leaves the browser's own choice alone.
+    expect(applyLayoutSettings(stepped, undefined).localMap.zoomLooks).toBe("stepped");
+  });
 });

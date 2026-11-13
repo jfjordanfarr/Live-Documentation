@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/layout-presets.ts
-- Generated At: 2026-11-12T22:02:32.268Z
+- Generated At: 2026-11-13T19:05:41.984Z
 
 ## Authored
 ### Purpose
@@ -32,6 +32,8 @@ Since 2026-11-05 `shellDepth` is one of the numeric 3D settings, read and bounde
 Since November 6 (the directory shells merged, experiment 2 of [Turn 11](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-11)) `readLayoutSettings` also carries `groupWrappers` when it is one of the four choices, so that a shared link's layout payload, a saved tuning and the 3D view's `data-layout-settings` attribute all carry the wrappers' look with the numbers, and a link shows the group wrappers and the directory shells without a switch; an unknown look is dropped, and the storage's own reading of the choice is gone.
 
 Since 2026-11-12 the settings carry how an opened directory stands, so that the directory flow trial is compared by link, but only when it is not the grid: a link made with the trial off is the link it was before the trial. Because the grid is never written, `applyLayoutSettings` reads a snapshot that carries the 2D map's settings without it as the grid, so that such a link shows the grid in a browser whose own tuning last held the trial; an address that carries no layout leaves the browser's choice alone.
+
+Since 2026-11-13 ([Turn 3 of that day's record](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-3): the owner judges what the build shows without a switch) the three looks are Zoom Looks' default, first in `ZOOM_LOOKS`, and the settings carry Zoom Looks only when it is the stepped ladder, as they carry the opened directory only when it is not the grid. `applyLayoutSettings` reads a snapshot that carries the 2D map's settings without it as the three looks, so that a link made before the trial, or since with the default, opens in them even in a browser whose own tuning holds the ladder, while a link that says the ladder opens in it. A link of November 10 to 13 always says one or the other, the default of its day included, since the value was written then whatever it was.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -75,7 +77,7 @@ Return a fresh tuning record with both representations' packing set together.
 
 #### `readLayoutSettings` {#symbol-readlayoutsettings}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L55)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L58)
 - Returns: [`LayoutSettings`](#symbol-layoutsettings)
 
 ##### `readLayoutSettings` — Summary
@@ -84,11 +86,14 @@ saved tuning carries beside them: the 3D wrappers' look (2026-11-06, so that a s
 the directory shells without a switch), the 2D Zoom Looks (2026-11-10, so that a link shows the trial's three looks)
 and how an opened directory stands (2026-11-12, so that the owner and the test agents compare that trial by link). The
 last is carried only when it is not the default grid, so that a link made with the trial off is the link it was before
-the trial; {@link applyLayoutSettings} reads its absence as the grid.
+the trial; {@link applyLayoutSettings} reads its absence as the grid. Zoom Looks likewise since its default became the
+three looks (2026-11-13): only the stepped ladder is carried, and its absence reads as the three looks, so that a link
+made before the trial, or made since with the default, shows what the build shows without a switch, while a link that
+says the ladder still opens in it. A link made between November 10 and 13 says either, since the default was written.
 
 #### `layoutSettingsOf` {#symbol-layoutsettingsof}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L85)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L88)
 - Returns: [`LayoutSettings`](#symbol-layoutsettings)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 
@@ -97,7 +102,7 @@ Snapshot the controls that affect packing and spatial encodings, independent of 
 
 #### `applyLayoutSettings` {#symbol-applylayoutsettings}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L94)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L98)
 - Returns: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig); `settings`: [`LayoutSettings`](#symbol-layoutsettings)
 
@@ -105,6 +110,7 @@ Snapshot the controls that affect packing and spatial encodings, independent of 
 Merge a validated partial snapshot over the current values, leaving unrelated preferences intact. A snapshot that
 carries the 2D map's settings without saying how an opened directory stands says the grid, since only the trial's
 layouts are written (2026-11-12): a link made with the trial off shows the grid in a browser that last saw the trial.
+One that does not say its Zoom Looks says the three looks, the default, since only the ladder is written (2026-11-13).
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

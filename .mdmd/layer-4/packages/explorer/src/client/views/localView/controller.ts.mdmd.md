@@ -60,6 +60,8 @@ Since 2026-11-12 `fitWhole` is the 2D map's Fit current scope, the 3D map's firs
 
 The directory flow trial's hover (2026-11-12): while opened directories stand in flow order, the card under the pointer or holding the keyboard's focus keeps its lines and the cards at their far ends, and the stylesheet fades every other line, card and closed box; a return's stubs light at both ends and its route is not drawn, since nothing may be added. The container listens for every card because a render builds the cards afresh, and the marks are written again after each drawing of the wires. A hovered symbol row's own highlight outranks it.
 
+Since 2026-11-13 ([Turn 3 of that day's record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-3), the three looks made the default) `morphLook` draws the wires again when a change of look's animations end: drawn the frame after the change, they had ended where a travelling anchor dot stood at its first frame and stayed there at rest, a pinned symbol's wire 1.47 px off its dot at the overview look, which `local-map-overview.spec.ts` found once it ran in the default.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

@@ -244,7 +244,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   // The looks a slot card takes as the map zooms out change how each card's held header is chosen: the view re-renders.
   if (zoomLooksSelect) {
     zoomLooksSelect.addEventListener("change", () => {
-      state.tuning.localMap.zoomLooks = zoomLooksSelect.value === "three" ? "three" : "stepped";
+      state.tuning.localMap.zoomLooks = zoomLooksSelect.value === "stepped" ? "stepped" : "three";
       onTuningChange();
       if (state.view === "map" && state.perspective === "2d") onRender();
     });

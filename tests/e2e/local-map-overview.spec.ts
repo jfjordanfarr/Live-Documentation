@@ -211,6 +211,10 @@ test("zooming out stops where the whole of a large map stands in the frame, beyo
 
 test("zooming out a small map stops at the ladder's last step, where its drawing stops changing", async ({ page }) => {
   test.setTimeout(120_000);
+  // The stepped ladder, whose last step the map reports; the three looks have a case of their own below.
+  await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, zoomLooks: "stepped" } } })
+  });
   await open(page, payment);
   const scales = await walkToFarthest(page);
   // The estate's payment service and its neighbours stand whole in the frame long before the last step. Each scale is
@@ -218,4 +222,19 @@ test("zooming out a small map stops at the ladder's last step, where its drawing
   expect(Math.abs(scales.at(-1)! / (scales[0] * STEP_RATIO ** -LAST_STEP) - 1)).toBeLessThan(1e-5);
   expect(scales).toHaveLength(LAST_STEP + 1);
   await expect(page.locator("#map-container")).toHaveAttribute("data-step", String(LAST_STEP));
+});
+
+test("in the three looks too, zooming out a small map stops at the ladder's last step, in the overview look", async ({ page }) => {
+  test.setTimeout(120_000);
+  // The default since 2026-11-13: the far limit is the same, and the look there is the overview, whose drawing a further
+  // press could not change.
+  await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, zoomLooks: "three" } } })
+  });
+  await open(page, payment);
+  const scales = await walkToFarthest(page);
+  expect(Math.abs(scales.at(-1)! / (scales[0] * STEP_RATIO ** -LAST_STEP) - 1)).toBeLessThan(1e-5);
+  expect(scales).toHaveLength(LAST_STEP + 1);
+  await expect(page.locator("#map-container")).toHaveAttribute("data-look", "overview");
+  await expect(page.locator("#map-container")).toHaveAttribute("data-lod", "overview");
 });

@@ -80,9 +80,10 @@ export interface LocalMapTuning {
    */
   cardText: "grow" | "slot";
   /**
-   * With fixed slots, how a card changes as the map zooms out, a comparison the owner asked for on 2026-11-08: "stepped",
-   * the card ladder's five bands and eleven held steps; "three", three looks (reading, connections, overview), each held
-   * at one scale for every zoom inside it, so that a card changes only twice on the way out.
+   * With fixed slots, how a card changes as the map zooms out, a comparison the owner asked for on 2026-11-08: "three",
+   * the default since 2026-11-13, three looks (reading, connections, overview), each held at one scale for every zoom
+   * inside it, so that a card changes only twice on the way out; "stepped", the card ladder's five bands and eleven held
+   * steps.
    */
   zoomLooks: ZoomLooks;
   /**
@@ -223,8 +224,11 @@ export const GROUP_WRAPPERS: readonly GroupWrappers[] = ["off", "skin", "cloud",
 /** How a slot card changes as the 2D map zooms out: the card ladder's steps, or the three looks of the 2026-11-10 trial. */
 export type ZoomLooks = "stepped" | "three";
 
-/** Every Zoom Looks choice, in the order the control offers them. */
-export const ZOOM_LOOKS: readonly ZoomLooks[] = ["stepped", "three"];
+/**
+ * Every Zoom Looks choice, in the order the control offers them, the default first: the three looks since 2026-11-13,
+ * when the owner asked that what they judge be what the build shows without a switch; the ladder's steps one choice away.
+ */
+export const ZOOM_LOOKS: readonly ZoomLooks[] = ["three", "stepped"];
 
 /** How an opened directory stands in the 2D map: today's grid, or the flow order and pair lines of the 2026-11-12 trial. */
 export type DirectoryLayout = "grid" | "flow";

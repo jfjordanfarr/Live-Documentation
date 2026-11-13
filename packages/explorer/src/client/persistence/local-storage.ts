@@ -65,7 +65,7 @@ export const getDefaultTuning = (): TuningConfig => ({
     moveMs: 450,
     holdStill: "click",
     cardText: "slot",
-    zoomLooks: "stepped",
+    zoomLooks: "three",
     directoryLayout: "grid",
     slotLines: 2,
     textResistance: 1,

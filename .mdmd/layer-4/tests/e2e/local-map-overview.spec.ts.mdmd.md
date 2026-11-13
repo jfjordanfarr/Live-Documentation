@@ -15,6 +15,8 @@ Browser regressions for the 2D Local Map's overview band and farthest zoom: one 
 
 Written in the far bands' second milestone (2026-11-06), from the root's brief and its amendments of the same day ([Turn 3](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-06.1.record.md#turn-3) gave the go-ahead): a silent row draws nothing at the overview band, its dots included, so that a wire ends on a dot only on a pinned row and on its file's hub otherwise. The cases walk the still picture out to the far band's last step and one press farther, compare the wires before and after a round trip to the hundredth of a pixel, and pin the subject's first symbol row, which the arrival frames at its title whatever the picture holds.
 
+Since the three looks became Zoom Looks' default on 2026-11-13 ([Turn 3 of that day's record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-3)) the spec reads the default, whose overview look draws the overview band's drawing, except the case of a small map stopping at the ladder's last step, which chooses the ladder whose step it reads; a case of its own holds the same far limit in the three looks, in the overview look. Run in the three looks, the pinned symbol's case found its wire starting 1.47 px from its dot at rest, past its 1 px bound: the wires were drawn the frame after the change of look, where the travelling dot stood at its first frame, and not again. The controller now draws them again when the change's animations end, and the case is unchanged.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

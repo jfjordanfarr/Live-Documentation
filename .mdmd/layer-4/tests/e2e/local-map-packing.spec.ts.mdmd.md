@@ -25,6 +25,8 @@ The journey over this repository takes about 27 seconds on one worker and ran to
 
 Since [Turn 12](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-12--november-6) the folded Rosetta cards' case keeps the growing composition, whose folding it measures; the other cases run on the default.
 
+Since 2026-11-13 ([Turn 3 of that day's record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-3)) the exported 2D settings carry no Zoom Looks at the default, the three looks, since a link carries it only when it is the stepped ladder.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

@@ -25,6 +25,8 @@ Since 2026-11-08 (the header round) the node's More is held no taller than a lin
 
 Since 2026-11-13 ([Turn 2 of that day's record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-2): "why would we preserve the Reading button at zoom levels where you cannot read the description?") the books leave at the middle band with the descriptions they fold. The first case expects them at reading scale and gone at the middle band, and a row's name to have the book's room there (the room across less Pin and More held); a new case walks the subject out through the middle, far and overview bands and fails on any book drawn, announced (a button named "Read …" or "Fold …" in the accessibility tree) or reached by Tab from the file's name. On the code before the change it failed at the middle band with 19 books drawn.
 
+Since the three looks became Zoom Looks' default on 2026-11-13 ([Turn 3 of that day's record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-3)) the spec chooses the stepped ladder it holds in every page's saved tuning; the ladder is one choice away and its promises are unchanged. The case of a row's Pin folding into its More, which the keyboard reaches and which pins and unpins, runs in the three looks' connections look as well, where a row draws no Pin either and More is how a person pins a symbol.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

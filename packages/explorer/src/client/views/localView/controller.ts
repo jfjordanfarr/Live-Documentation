@@ -1394,7 +1394,9 @@ export class LocalViewController implements LocalViewApi {
    * that look was last drawn over the ratio now as `--look-zoom` (a Zoom button moves the camera at once, by 1.2 a
    * press), so that a thing starts at the size it had on screen; the lesser of that and 1 as `--look-keep`, at which the
    * file name's leaving lines stay; and the class `local-look-fading`, set afresh so that its animations start again at
-   * every change and taken away with the attribute once they have ended.
+   * every change and taken away with the attribute once they have ended. The wires are drawn again then: drawn the frame
+   * after the change, they had ended where a travelling dot stood at its first frame, and stayed there at rest (a pinned
+   * symbol's wire 1.5 px off its dot at the overview, found 2026-11-13).
    */
   private morphLook(from: ZoomLook, zoom: number): void {
     const container = this.container, style = container.style;
@@ -1411,6 +1413,7 @@ export class LocalViewController implements LocalViewApi {
     this.lookFade = window.setTimeout(() => {
       container.classList.remove("local-look-fading");
       delete container.dataset.lookFrom;
+      if (this.stage && this.isShown()) this.drawConnections();
     }, 200);
   }
 

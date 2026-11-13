@@ -142,12 +142,12 @@ test("fixed slots keep the ordinary drawing, give every symbol the same allotmen
   expect(state(page).reading ?? []).toEqual([]);
   await page.keyboard.press("Escape");
   await expect(reader).not.toHaveClass(/visible/u);
-  // Two steps out is the ladder's middle band: the descriptions leave (card-ladder.spec.ts holds the rest of the
-  // ladder); no box changes, and a tap there opens the reader without moving anything.
-  await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
-  await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
+  // Three presses out is the connections look of the default three looks (since 2026-11-13; the stepped ladder's middle
+  // band, two presses out, is card-ladder.spec.ts's): the descriptions leave; no box changes, and a tap there opens the
+  // reader without moving anything.
+  for (let press = 0; press < 3; press += 1) await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
   await still(page);
-  await expect(page.locator("#map-container")).toHaveAttribute("data-lod", "middle");
+  await expect(page.locator("#map-container")).toHaveAttribute("data-look", "connections");
   await expect(subject.locator(".local-reading-purpose")).toBeHidden();
   expect(await layoutBoxes(page)).toEqual(layout);
   const overview = await geometry(page);
@@ -283,10 +283,11 @@ test("books compose all, none and one description without moving slots, and repo
   const subset = [{ nodeId: readingState, open: false }, { nodeId: readingState, symbol: "descriptionIsOpen", open: true }];
   expect(state(page)).toMatchObject({ pinSet, reading: subset });
 
-  await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
-  await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
+  // The connections look of the default three looks, where the descriptions leave (the ladder's middle band before
+  // 2026-11-13).
+  for (let press = 0; press < 3; press += 1) await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
   await still(page);
-  await expect(page.locator("#map-container")).toHaveAttribute("data-lod", "middle");
+  await expect(page.locator("#map-container")).toHaveAttribute("data-look", "connections");
   await expect(prose.filter({ visible: true })).toHaveCount(0);
   await expect(book).toHaveAttribute("aria-expanded", "false");
   await expect(symbolBook).toHaveAttribute("aria-expanded", "false");

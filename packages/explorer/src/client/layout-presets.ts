@@ -50,7 +50,10 @@ export function applyLayoutPreset(tuning: TuningConfig, preset: LayoutPreset): T
  * the directory shells without a switch), the 2D Zoom Looks (2026-11-10, so that a link shows the trial's three looks)
  * and how an opened directory stands (2026-11-12, so that the owner and the test agents compare that trial by link). The
  * last is carried only when it is not the default grid, so that a link made with the trial off is the link it was before
- * the trial; {@link applyLayoutSettings} reads its absence as the grid.
+ * the trial; {@link applyLayoutSettings} reads its absence as the grid. Zoom Looks likewise since its default became the
+ * three looks (2026-11-13): only the stepped ladder is carried, and its absence reads as the three looks, so that a link
+ * made before the trial, or made since with the default, shows what the build shows without a switch, while a link that
+ * says the ladder still opens in it. A link made between November 10 and 13 says either, since the default was written.
  */
 export function readLayoutSettings(value: unknown): LayoutSettings | undefined {
   if (!value || typeof value !== "object" || Array.isArray(value)) return undefined;
@@ -68,7 +71,7 @@ export function readLayoutSettings(value: unknown): LayoutSettings | undefined {
       }
     }
     if (group === "localMap") {
-      const zoomLooks = ZOOM_LOOKS.find(choice => choice === (input as Record<string, unknown>).zoomLooks);
+      const zoomLooks = ZOOM_LOOKS.slice(1).find(choice => choice === (input as Record<string, unknown>).zoomLooks);
       const directoryLayout = DIRECTORY_LAYOUTS.slice(1).find(choice => choice === (input as Record<string, unknown>).directoryLayout);
       if (Object.keys(numbers).length || zoomLooks || directoryLayout) {
         result.localMap = { ...numbers, ...(zoomLooks ? { zoomLooks } : null), ...(directoryLayout ? { directoryLayout } : null) };
@@ -90,8 +93,10 @@ export function layoutSettingsOf(tuning: TuningConfig): LayoutSettings {
  * Merge a validated partial snapshot over the current values, leaving unrelated preferences intact. A snapshot that
  * carries the 2D map's settings without saying how an opened directory stands says the grid, since only the trial's
  * layouts are written (2026-11-12): a link made with the trial off shows the grid in a browser that last saw the trial.
+ * One that does not say its Zoom Looks says the three looks, the default, since only the ladder is written (2026-11-13).
  */
 export function applyLayoutSettings(tuning: TuningConfig, settings: LayoutSettings | undefined): TuningConfig {
   const directory = settings?.localMap ? { directoryLayout: DIRECTORY_LAYOUTS[0] } : null;
-  return { ...tuning, localMap: { ...tuning.localMap, ...directory, ...settings?.localMap }, forceGraph: { ...tuning.forceGraph, ...settings?.forceGraph } };
+  const looks = settings?.localMap ? { zoomLooks: ZOOM_LOOKS[0] } : null;
+  return { ...tuning, localMap: { ...tuning.localMap, ...directory, ...looks, ...settings?.localMap }, forceGraph: { ...tuning.forceGraph, ...settings?.forceGraph } };
 }

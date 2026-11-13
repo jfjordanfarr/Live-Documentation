@@ -71,9 +71,10 @@ async function zoomOutTo(page: Page, band: string): Promise<void> {
 test.use({ viewport: { width: 1440, height: 960 } });
 
 test.beforeEach(async ({ page }) => {
+  // The stepped ladder this spec holds, one choice away from the three looks since they became the default (2026-11-13).
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
     key: PERSISTED_UI_KEY,
-    value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, cardText: "slot" } } })
+    value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, cardText: "slot", zoomLooks: "stepped" } } })
   });
 });
 
@@ -82,7 +83,7 @@ test("each band below reading scale lets one tier leave, names and controls hold
   // sees a symbol's name grow into the room its description leaves.
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
     key: PERSISTED_UI_KEY,
-    value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, cardText: "slot", nameGrowth: 1.5 } } })
+    value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, cardText: "slot", nameGrowth: 1.5, zoomLooks: "stepped" } } })
   });
   await page.goto(url({ selectedNodeId: payment }));
   const subject = page.locator(`.node-card[data-id="${payment}"]`);
@@ -469,7 +470,14 @@ test("at every step a dot never covers its name, More stands on every drawn row 
   expect(await layoutBoxes(page)).toEqual(boxes);
 });
 
-test("beyond the middle band a row's Pin folds into its More, which a keyboard reaches and which pins and unpins", async ({ page }) => {
+// In the three looks, the default since 2026-11-13, the connections look draws no row's Pin either: a person pins and
+// unpins a symbol there through its More, by pointer or keyboard, as beyond the ladder's middle band.
+for (const looks of ["stepped", "three"] as const) test(looks === "stepped"
+  ? "beyond the middle band a row's Pin folds into its More, which a keyboard reaches and which pins and unpins"
+  : "in the three looks' connections look a row's Pin folds into its More, which a keyboard reaches and which pins and unpins", async ({ page }) => {
+  if (looks === "three") await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, cardText: "slot", zoomLooks: "three" } } })
+  });
   await page.goto(url({ selectedNodeId: stillPicture }));
   const subject = page.locator(`.node-card[data-id="${stillPicture}"]`);
   await subject.waitFor();
@@ -481,7 +489,14 @@ test("beyond the middle band a row's Pin folds into its More, which a keyboard r
   await row.locator(".local-symbol-pin").click();
   await localMapStill(page);
   await expect(row).toHaveClass(/symbol-pinned/u);
-  await zoomOutTo(page, "far");
+  if (looks === "stepped") await zoomOutTo(page, "far");
+  else {
+    for (let press = 0; press < 3; press += 1) {
+      await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
+      await localMapStill(page);
+    }
+    await expect(page.locator("#map-container")).toHaveAttribute("data-look", "connections");
+  }
   const pin = row.locator(".local-symbol-pin"), more = row.getByRole("button", { name: `More actions for ${pinned} in still-picture.ts` });
   await expect(pin).toBeHidden();
   await expect(more).toBeVisible();

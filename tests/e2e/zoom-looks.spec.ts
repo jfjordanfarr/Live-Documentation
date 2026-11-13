@@ -5,13 +5,14 @@ import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT } from "../../pa
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 
 /**
- * The zoom looks, a trial beside the card ladder (Tuning → 2D Layout → Zoom Looks; the owner's hypothesis of 2026-11-08,
- * "very very FEW breakpoints (2-3) for heavily quanitized different looks of the nodes", and the trial's design of
- * 2026-11-10). With three looks a slot card changes only at two edges on the way out: reading through the second Zoom Out
- * press, connections from the third to the sixth, overview from the seventh. Read from the page as drawn: a press out and
- * the press back show the same look; inside a look every visible name keeps its text, its lines and its ellipsis, and every
- * held part its size in the map's own units; no card's box changes; and nothing drawn in a slot card in the connections or
- * overview look is smaller than 8 px on screen. With the default, stepped, the page still reports the ladder's bands and
+ * The zoom looks (Tuning → 2D Layout → Zoom Looks; the owner's hypothesis of 2026-11-08, "very very FEW breakpoints (2-3)
+ * for heavily quanitized different looks of the nodes", the trial's design of 2026-11-10, and the default since
+ * 2026-11-13, when the owner asked that what they judge be what the build shows without a switch). With three looks a slot
+ * card changes only at two edges on the way out: reading through the second Zoom Out press, connections from the third
+ * to the sixth, overview from the seventh. Read from the page as drawn: a press out and the press back show the same look;
+ * inside a look every visible name keeps its text, its lines and its ellipsis, and every held part its size in the map's
+ * own units; no card's box changes; and nothing drawn in a slot card in the connections or overview look is smaller than
+ * 8 px on screen. With the stepped ladder chosen, by Tuning or by a link, the page still reports the ladder's bands and
  * steps press by press.
  */
 const payment = "PaymentService/PaymentService.cs";
@@ -467,9 +468,9 @@ test("in the connections look a card's counts stand at the look's held size or n
   await expect(page.locator(`.node-card[data-id="${links}"]`)).toHaveClass(/file-pinned/u);
 });
 
-test("stepped, the default, still reports the card ladder's bands and steps at every press", async ({ page }) => {
+test("stepped, chosen by a link, still reports the card ladder's bands and steps at every press", async ({ page }) => {
   test.setTimeout(120_000);
-  await page.goto(estate());
+  await page.goto(estate("stepped"));
   await page.locator(`.node-card[data-id="${payment}"]`).waitFor();
   await localMapStill(page);
   const states = [await page.locator("#map-container").evaluate(map => `${(map as HTMLElement).dataset.lod} ${(map as HTMLElement).dataset.step} ${(map as HTMLElement).dataset.look ?? "-"}`)];
@@ -485,27 +486,37 @@ test("stepped, the default, still reports the card ladder's bands and steps at e
   await expect(page.locator("#map-container")).not.toHaveAttribute("data-looks", /./u);
 });
 
-test("Zoom Looks is chosen in Tuning, kept for the next visit and carried by the page's link", async ({ page }) => {
+test("the three looks are the default, the ladder is chosen in Tuning, kept for the next visit and carried by the page's link", async ({ page }) => {
+  // Without a switch the page shows the three looks (2026-11-13: the owner judges what the build shows unswitched).
   await page.goto(estate());
   await page.locator(`.node-card[data-id="${payment}"]`).waitFor();
   await localMapStill(page);
+  await expect(page.locator("#map-container")).toHaveAttribute("data-looks", "three");
   await page.getByRole("button", { name: /^Layout tuning/ }).click();
   const control = page.locator("#tuning-zoom-looks");
-  await expect(control).toHaveValue("stepped");
-  await control.selectOption("three");
+  await expect(control).toHaveValue("three");
+  await control.selectOption("stepped");
   await page.locator(`.node-card[data-id="${payment}"]`).waitFor();
   await localMapStill(page);
-  await expect(page.locator("#map-container")).toHaveAttribute("data-looks", "three");
+  await expect(page.locator("#map-container")).not.toHaveAttribute("data-looks", /./u);
   const saved = await page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? "{}"), PERSISTED_UI_KEY);
-  expect(saved.tuning.localMap.zoomLooks).toBe("three");
-  // The page's own link shows the trial to a visitor with no saved choice.
+  expect(saved.tuning.localMap.zoomLooks).toBe("stepped");
+  // The page's own link shows the ladder to a visitor with no saved choice.
   const link = page.url();
   const fresh = await page.context().browser()!.newContext({ viewport: { width: 1440, height: 960 } });
   const visitor = await fresh.newPage();
   await visitor.goto(link);
   await visitor.locator(`.node-card[data-id="${payment}"]`).waitFor();
-  await expect(visitor.locator("#map-container")).toHaveAttribute("data-looks", "three");
+  await localMapStill(visitor);
+  await expect(visitor.locator("#map-container")).toHaveAttribute("data-lod", "reading");
+  await expect(visitor.locator("#map-container")).not.toHaveAttribute("data-looks", /./u);
   await fresh.close();
+  // A link that carries the 2D map's settings but no Zoom Looks, as every link made before the trial does, opens in the
+  // three looks, even in this browser, whose own tuning now holds the ladder.
+  await page.goto(`/samples/estate/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, view: "map", perspective: "2d", selectedNodeId: payment, layout: { localMap: { columnGap: 72 } } })}`);
+  await page.locator(`.node-card[data-id="${payment}"]`).waitFor();
+  await localMapStill(page);
+  await expect(page.locator("#map-container")).toHaveAttribute("data-looks", "three");
 });
 
 /** The animations and transitions running in the Local Map, read the moment after a press, with the style flushed. */

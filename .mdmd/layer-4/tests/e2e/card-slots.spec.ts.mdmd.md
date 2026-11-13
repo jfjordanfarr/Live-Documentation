@@ -20,6 +20,8 @@ Since the ladder's first pass later on November 5 ([Turn 10](../../../../AI-Agen
 
 Since [Turn 12](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-12--november-6) the service's two-line slot is expected clipped, since a slot card took the ordinary card's width that day.
 
+Since the three looks became Zoom Looks' default on 2026-11-13 ([Turn 3 of that day's record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-3)) the two cases that zoom out read the default: the descriptions leave at the connections look, three presses out, where they left at the ladder's middle band, two presses out; the ladder's middle band is `card-ladder.spec.ts`'s, which chooses the ladder.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
