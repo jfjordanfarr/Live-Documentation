@@ -4,14 +4,15 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/worldMap/projection.ts
-- Generated At: 2026-10-22T16:47:56.648Z
+- Generated At: 2026-11-13T16:45:57.733Z
 
 ## Authored
 ### Purpose
-The World Map's camera: an orthographic projection of the board seen from an azimuth and an elevation about a pivot, so that nothing changes size as the camera turns, and the pan and zoom applied to the projected picture; the way back from the picture to the board plane; the depth that orders drawing; the fit of some corners into a viewport; a zoom about a screen point within limits; the shading of a face by its normal; a box's six faces sorted far to near; the ring of a drum; a point along a cubic Bezier; a point in a polygon; and a smooth step for easing.
+The World Map's camera: an orthographic projection of the board seen from an azimuth and an elevation about a pivot, so that nothing changes size as the camera turns, and the pan and zoom applied to the projected picture; the way back from the picture to the board plane; the depth that orders drawing; the fit of some corners into a viewport; a zoom about a screen point within limits; the shading of a face by its normal; a box's six faces sorted far to near; the ring of a drum; a point along a cubic Bezier; a point in a polygon; a smooth step for easing; and where "look straight down" takes the camera and where it comes back to.
 
 ### Notes
 - Written on 2026-09-28 with the view ([Turn 46](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md#turn-46)). The board plane is z = 0 and z grows upward. `REST_ELEVATION` is the angle the board is first seen at, `MIN_ELEVATION` the lowest before the board is a line, and `TOP_DOWN` straight down, where the board is a plain two-dimensional canvas and the labels keep their size. Pure functions over numbers; `controller.ts` applies them to SVG. Measured by `projection.test.ts`, which round-trips a point through every azimuth and elevation it tries.
+- Since 2026-11-13, on the owner's report that the view from above came out askew after any turn by drag ([the session record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md)): `squaredAzimuth` finds the azimuth nearest the camera's at which the board seen from above is squared to the screen. Those lie an eighth turn either side of the resting azimuths the quarter turns reach, because at azimuth 0 the board's edges run at 45° on the screen; before, looking down always turned back an eighth, which squared the board only from a resting azimuth. From a resting azimuth, halfway between two squared ones, it still takes the one an eighth back, with a tolerance for quarter turns summed in floating point. `lookDown` goes there; `lookUp` returns to the view looked down from when the camera has not turned since it arrived above, and otherwise goes on an eighth turn to the resting elevation, as before.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -167,9 +168,41 @@ The pan and zoom after zooming by a factor about a screen point, within limits.
 ##### `isTopDown` — Summary
 Whether the camera looks straight down.
 
+#### `squaredAzimuth` {#symbol-squaredazimuth}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L130)
+
+##### `squaredAzimuth` — Summary
+The azimuth nearest a given one at which the board, seen from straight above, stands squared to the screen, so that
+looking down turns it the least it can. At azimuth 0 the board's edges run at 45° on the screen; it stands squared an
+eighth turn either side of every resting azimuth the quarter turns reach. A resting azimuth lies halfway between two
+of them, and from there the one an eighth turn back is taken, as it was before any other azimuth was considered. The
+answer keeps the given azimuth's winding, so the turn to it is never more than an eighth, whatever full turns lie
+behind it. Until 2026-11-13 looking down always turned back an eighth, which left the board askew after a free turn.
+
+#### `lookDown` {#symbol-lookdown}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L139)
+- Returns: [`Camera`](#symbol-camera)
+- Parameters: `camera`: [`Camera`](#symbol-camera)
+
+##### `lookDown` — Summary
+Where "look straight down" takes the camera from where it is: above the board, squared to the screen.
+
+#### `lookUp` {#symbol-lookup}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L148)
+- Returns: [`Camera`](#symbol-camera)
+- Parameters: `camera`: [`Camera`](#symbol-camera)
+
+##### `lookUp` — Summary
+Where the camera goes when it leaves the view from above: back to the view it looked down from, when it has not
+turned since it arrived above; otherwise on by an eighth turn, to the resting elevation, which from a squared azimuth
+is the resting azimuth beside it.
+
 #### `facing` {#symbol-facing}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L123)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L154)
 - Parameters: `camera`: [`Camera`](#symbol-camera); `normal`: [`Point2`](#symbol-point2)
 
 ##### `facing` — Summary
@@ -177,7 +210,7 @@ Whether the viewer sees a wall with this outward normal on the board plane.
 
 #### `shade` {#symbol-shade}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L130)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L161)
 - Parameters: `camera`: [`Camera`](#symbol-camera); `normal`: [`Point3`](#symbol-point3)
 
 ##### `shade` — Summary
@@ -185,21 +218,21 @@ How light a face with this normal is, from a light that sits off the front-left 
 
 #### `Box` {#symbol-box}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L145)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L176)
 
 ##### `Box` — Summary
 A box on the board: its top-left corner, its footprint, the height it floats at and its own height.
 
 #### `Face` {#symbol-face}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L155)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L186)
 
 ##### `Face` — Summary
 One face of a solid: its corners, its outward normal and its depth.
 
 #### `cuboidFaces` {#symbol-cuboidfaces}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L162)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L193)
 - Returns: [`Face`](#symbol-face)[]
 - Parameters: `camera`: [`Camera`](#symbol-camera); `pivot`: [`Pivot`](#symbol-pivot); `box`: [`Box`](#symbol-box)
 
@@ -208,7 +241,7 @@ The six faces of a box, sorted far to near, so that drawing them in order paints
 
 #### `ring` {#symbol-ring}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L183)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L214)
 - Returns: [`Point3`](#symbol-point3)[]
 
 ##### `ring` — Summary
@@ -216,7 +249,7 @@ The points of a circle on the board at a height, for a drum.
 
 #### `bezierAt` {#symbol-bezierat}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L191)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L222)
 - Returns: [`Point3`](#symbol-point3)
 
 ##### `bezierAt` — Summary
@@ -224,7 +257,7 @@ A cubic Bezier through four points at a parameter.
 
 #### `pointInPolygon` {#symbol-pointinpolygon}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L197)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L228)
 - Parameters: `polygon`: [`Point2`](#symbol-point2)[]; `point`: [`Point2`](#symbol-point2)
 
 ##### `pointInPolygon` — Summary
@@ -232,7 +265,7 @@ Whether a point lies inside a polygon, by ray casting.
 
 #### `smooth` {#symbol-smooth}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L210)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/projection.ts#L241)
 
 ##### `smooth` — Summary
 A smooth step from 0 to 1.

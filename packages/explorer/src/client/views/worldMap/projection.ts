@@ -119,6 +119,37 @@ export function isTopDown(camera: Camera): boolean {
   return Math.abs(camera.phi - TOP_DOWN) < 0.02;
 }
 
+/**
+ * The azimuth nearest a given one at which the board, seen from straight above, stands squared to the screen, so that
+ * looking down turns it the least it can. At azimuth 0 the board's edges run at 45° on the screen; it stands squared an
+ * eighth turn either side of every resting azimuth the quarter turns reach. A resting azimuth lies halfway between two
+ * of them, and from there the one an eighth turn back is taken, as it was before any other azimuth was considered. The
+ * answer keeps the given azimuth's winding, so the turn to it is never more than an eighth, whatever full turns lie
+ * behind it. Until 2026-11-13 looking down always turned back an eighth, which left the board askew after a free turn.
+ */
+export function squaredAzimuth(theta: number): number {
+  const quarter = Math.PI / 2;
+  // Squared azimuths are an eighth turn short of whole quarters; a hair's tolerance keeps a resting azimuth reached by
+  // quarter turns, a sum that is never exact, on the side an eighth turn back.
+  const quarters = Math.ceil((theta + Math.PI / 4) / quarter - 0.5 - 1e-9);
+  return quarters * quarter - Math.PI / 4;
+}
+
+/** Where "look straight down" takes the camera from where it is: above the board, squared to the screen. */
+export function lookDown(camera: Camera): Camera {
+  return { theta: squaredAzimuth(camera.theta), phi: TOP_DOWN };
+}
+
+/**
+ * Where the camera goes when it leaves the view from above: back to the view it looked down from, when it has not
+ * turned since it arrived above; otherwise on by an eighth turn, to the resting elevation, which from a squared azimuth
+ * is the resting azimuth beside it.
+ */
+export function lookUp(camera: Camera, arrived?: { from: Camera; above: Camera }): Camera {
+  const unturned = arrived !== undefined && Math.abs(camera.theta - arrived.above.theta) < 1e-6 && Math.abs(camera.phi - arrived.above.phi) < 1e-6;
+  return unturned ? { ...arrived.from } : { theta: camera.theta + Math.PI / 4, phi: REST_ELEVATION };
+}
+
 /** Whether the viewer sees a wall with this outward normal on the board plane. */
 export function facing(camera: Camera, normal: Point2): number {
   const c = Math.cos(camera.theta);

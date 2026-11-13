@@ -53,6 +53,8 @@ import {
   fitScreen,
   fromScreen,
   isTopDown,
+  lookDown,
+  lookUp,
   pointInPolygon,
   project,
   ring,
@@ -227,6 +229,8 @@ export class WorldMapController {
   private readonly tourBox: HTMLElement;
 
   private camera: Camera = { theta: 0, phi: REST_ELEVATION };
+  /** The view "look straight down" left and the one it went to, so that looking up again returns there if nothing turned between. */
+  private lookedDown: { from: Camera; above: Camera } | null = null;
   private screen: Screen = { x: 0, y: 0, k: 1 };
   private pivot: Pivot = { x: 0, y: 0 };
   private bench: Rect = { x: 0, y: 0, w: 1400, d: 900 };
@@ -1083,9 +1087,19 @@ export class WorldMapController {
     return this.orbitTo(this.camera.theta + radians, this.camera.phi);
   }
 
-  /** Straight down, squared to the screen with the whole board in view; or back to the resting angle. */
+  /**
+   * Straight down, squared to the screen at the nearest squared azimuth, with the whole board in view; or back up: to
+   * the view it looked down from if the camera has not turned since, else on an eighth turn to the resting elevation.
+   */
   topDown(): Promise<void> {
-    return isTopDown(this.camera) ? this.orbitTo(this.camera.theta + Math.PI / 4, REST_ELEVATION, 520, "fit") : this.orbitTo(this.camera.theta - Math.PI / 4, TOP_DOWN, 520, "fit");
+    if (isTopDown(this.camera)) {
+      const to = lookUp(this.camera, this.lookedDown ?? undefined);
+      this.lookedDown = null;
+      return this.orbitTo(to.theta, to.phi, 520, "fit");
+    }
+    const above = lookDown(this.camera);
+    this.lookedDown = { from: { ...this.camera }, above };
+    return this.orbitTo(above.theta, above.phi, 520, "fit");
   }
 
   // ==========================================================================

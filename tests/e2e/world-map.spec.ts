@@ -308,6 +308,59 @@ test.describe("World Map", () => {
     expect(after.phi).toBeGreaterThan(before.phi);
   });
 
+  // The owner (2026-11-13): "Using the button which takes you to the top-level view takes you to a skewed/oddly-rotated
+  // top-down view if you have already performed any amount of rotation beyond what the scene starts with".
+  test("looking straight down after a free turn squares the board to the screen, and looking up goes back to the turn", async ({ page }) => {
+    await openWorldMap(page);
+    const box = (await page.locator("#view-world svg.world-svg").boundingBox())!;
+    const cx = box.x + box.width / 2;
+    const cy = box.y + box.height / 2;
+    await page.mouse.move(cx, cy);
+    await page.mouse.down({ button: "right" });
+    await page.mouse.move(cx + 110, cy + 40, { steps: 5 });
+    await page.mouse.up({ button: "right" });
+    const turned = await page.evaluate(() => window.__worldMap!.state());
+    const quarter = Math.PI / 2;
+    expect(Math.abs(turned.theta / quarter - Math.round(turned.theta / quarter)), "a free turn, not a quarter").toBeGreaterThan(0.1);
+    const down = page.getByRole("button", { name: "Look straight down" });
+    await down.click();
+    await expect(down).toHaveAttribute("aria-pressed", "true");
+    // The board's edges as the page draws them, each folded to its angle from the nearer of the screen's axes.
+    const edges = await page.locator("#view-world polygon.w-bench").evaluate((polygon) => {
+      const points = (polygon.getAttribute("points") ?? "").trim().split(/\s+/u).map((pair) => pair.split(",").map(Number));
+      return points.map(([x, y], i) => {
+        const [nx, ny] = points[(i + 1) % points.length];
+        const degrees = (Math.atan2(ny - y, nx - x) * 180) / Math.PI;
+        return ((((degrees + 45) % 90) + 90) % 90) - 45;
+      });
+    });
+    expect(edges).toHaveLength(4);
+    for (const angle of edges) {
+      expect(Math.abs(angle), `the board's edges run at ${edges.map((a) => a.toFixed(1)).join(", ")} degrees to the screen`).toBeLessThan(0.01);
+    }
+    await down.click();
+    await expect(down).toHaveAttribute("aria-pressed", "false");
+    const back = await page.evaluate(() => window.__worldMap!.state());
+    expect(back.theta, "back to the turn it looked down from").toBeCloseTo(turned.theta, 6);
+    expect(back.phi).toBeCloseTo(turned.phi, 6);
+  });
+
+  test("from a quarter turn, looking straight down and up again goes where it always went", async ({ page }) => {
+    await openWorldMap(page);
+    await page.evaluate(() => window.__worldMap!.rotate(1));
+    await page.evaluate(() => window.__worldMap!.tilt());
+    const down = await page.evaluate(() => window.__worldMap!.state());
+    expect(down.theta).toBeCloseTo(Math.PI / 4, 9);
+    expect(down.phi).toBeCloseTo(Math.PI / 2, 9);
+    // A quarter turn above keeps the board squared, and the way up then goes on an eighth turn to the resting elevation.
+    await page.evaluate(() => window.__worldMap!.rotate(-1));
+    expect((await page.evaluate(() => window.__worldMap!.state())).theta).toBeCloseTo(-Math.PI / 4, 9);
+    await page.evaluate(() => window.__worldMap!.tilt());
+    const up = await page.evaluate(() => window.__worldMap!.state());
+    expect(up.theta).toBeCloseTo(0, 9);
+    expect(up.phi).toBeCloseTo(Math.PI / 6, 9);
+  });
+
   test("keeps a moved thing where it was put and writes it into the board text", async ({ page }) => {
     await openWorldMap(page);
     const before = await page.evaluate(() => window.__worldMap!.state().positions.engine);

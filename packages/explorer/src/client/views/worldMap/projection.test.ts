@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { REST_ELEVATION, TOP_DOWN, bezierAt, cuboidFaces, depthOf, fitScreen, fromScreen, isTopDown, pointInPolygon, project, shade, toScreen, unproject, zoomAt } from "./projection";
+import { REST_ELEVATION, TOP_DOWN, bezierAt, cuboidFaces, depthOf, fitScreen, fromScreen, isTopDown, lookDown, lookUp, pointInPolygon, project, shade, squaredAzimuth, toScreen, unproject, zoomAt } from "./projection";
 
 const pivot = { x: 700, y: 450 };
 
@@ -53,6 +53,63 @@ describe("the camera", () => {
   it("knows top-down", () => {
     expect(isTopDown({ theta: 1, phi: TOP_DOWN })).toBe(true);
     expect(isTopDown({ theta: 1, phi: REST_ELEVATION })).toBe(false);
+  });
+});
+
+describe("the view from straight above", () => {
+  /** The angle a board edge running along x makes with the screen's horizontal, seen from straight above, in (-45°, 45°]. */
+  const edgeAngle = (theta: number): number => {
+    const camera = { theta, phi: TOP_DOWN };
+    const [ax, ay] = project(camera, pivot, 0, 0);
+    const [bx, by] = project(camera, pivot, 100, 0);
+    const degrees = (Math.atan2(by - ay, bx - ax) * 180) / Math.PI;
+    return ((((degrees + 45) % 90) + 90) % 90) - 45;
+  };
+
+  it("squares the board to the screen from any azimuth, negative or beyond a full turn, turning it at most an eighth", () => {
+    for (const theta of [0.3, -0.3, 1.1, -0.6, 2.9, -2.9, 4, -5, 7, 13.7, -13.7, 100.25]) {
+      const squared = squaredAzimuth(theta);
+      expect(edgeAngle(squared), `from ${theta}`).toBeCloseTo(0, 9);
+      expect(Math.abs(squared - theta), `from ${theta}`).toBeLessThanOrEqual(Math.PI / 4 + 1e-12);
+    }
+    expect(squaredAzimuth(0.3)).toBeCloseTo(Math.PI / 4, 12);
+    expect(squaredAzimuth(-0.3)).toBeCloseTo(-Math.PI / 4, 12);
+    expect(squaredAzimuth(-5)).toBeCloseTo(-7 * Math.PI / 4, 12);
+    expect(squaredAzimuth(7)).toBeCloseTo(9 * Math.PI / 4, 12);
+  });
+
+  it("turns back an eighth from a resting azimuth, as it always did, however the quarter turns were summed", () => {
+    for (let quarters = -9; quarters <= 9; quarters += 1) {
+      let summed = 0;
+      for (let i = 0; i < Math.abs(quarters); i += 1) {
+        summed += Math.sign(quarters) * (Math.PI / 2);
+      }
+      expect(squaredAzimuth(summed), `${quarters} quarter turns`).toBeCloseTo(summed - Math.PI / 4, 12);
+      expect(squaredAzimuth(quarters * (Math.PI / 2))).toBeCloseTo(quarters * (Math.PI / 2) - Math.PI / 4, 12);
+    }
+  });
+
+  it("leaves a squared view unchanged", () => {
+    for (const squared of [Math.PI / 4, -Math.PI / 4, 3 * Math.PI / 4, -9 * Math.PI / 4]) {
+      expect(squaredAzimuth(squared)).toBeCloseTo(squared, 12);
+    }
+  });
+
+  it("looks down squared, and back up to where it looked down from when the camera has not turned", () => {
+    const from = { theta: -0.6, phi: 0.9 };
+    const above = lookDown(from);
+    expect(above).toEqual({ theta: squaredAzimuth(-0.6), phi: TOP_DOWN });
+    expect(lookUp(above, { from, above })).toEqual(from);
+  });
+
+  it("goes on an eighth turn to the resting elevation when the camera turned above, or nothing is known of how it got there", () => {
+    const from = { theta: 0, phi: REST_ELEVATION };
+    const above = lookDown(from);
+    const turned = { theta: above.theta + Math.PI / 2, phi: TOP_DOWN };
+    const up = lookUp(turned, { from, above });
+    expect(up.theta).toBeCloseTo(Math.PI / 2, 12);
+    expect(up.phi).toBe(REST_ELEVATION);
+    expect(lookUp(above)).toEqual({ theta: above.theta + Math.PI / 4, phi: REST_ELEVATION });
   });
 });
 

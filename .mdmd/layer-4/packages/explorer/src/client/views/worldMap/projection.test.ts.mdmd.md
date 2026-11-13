@@ -4,11 +4,11 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/worldMap/projection.test.ts
-- Generated At: 2026-10-22T16:47:56.629Z
+- Generated At: 2026-11-13T16:45:57.604Z
 
 ## Authored
 ### Purpose
-Keeps the camera honest: a board point projects and unprojects through every azimuth and elevation tried; a point rises on the picture as it rises off the board, and never when seen from straight above; nearer is deeper, so it draws later; the board's corners fit the viewport with room around them; a zoom keeps the point under the pointer still and stays within its limits; top-down is known; the top of a solid is lit brightest, the underside darkest, the walls between; a box's faces sort far to near with the top last from above; a Bezier runs from its first point to its last; and inside is told from outside a polygon.
+Keeps the camera honest: a board point projects and unprojects through every azimuth and elevation tried; a point rises on the picture as it rises off the board, and never when seen from straight above; nearer is deeper, so it draws later; the board's corners fit the viewport with room around them; a zoom keeps the point under the pointer still and stays within its limits; top-down is known; the top of a solid is lit brightest, the underside darkest, the walls between; a box's faces sort far to near with the top last from above; a Bezier runs from its first point to its last; inside is told from outside a polygon; and the view from above is squared to the screen from any azimuth, negative or past a full turn, turning at most an eighth, turns back an eighth from a resting azimuth however the quarter turns were summed, and looks up to where it looked down from unless the camera turned above.
 
 ### Notes
 - Written on 2026-09-28 with the view ([Turn 46](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md#turn-46)).
@@ -29,9 +29,12 @@ _No public symbols detected_
 - [`projection.fitScreen`](./projection.ts.mdmd.md#symbol-fitscreen)
 - [`projection.fromScreen`](./projection.ts.mdmd.md#symbol-fromscreen)
 - [`projection.isTopDown`](./projection.ts.mdmd.md#symbol-istopdown)
+- [`projection.lookDown`](./projection.ts.mdmd.md#symbol-lookdown)
+- [`projection.lookUp`](./projection.ts.mdmd.md#symbol-lookup)
 - [`projection.pointInPolygon`](./projection.ts.mdmd.md#symbol-pointinpolygon)
 - [`projection.project`](./projection.ts.mdmd.md#symbol-project)
 - [`projection.shade`](./projection.ts.mdmd.md#symbol-shade)
+- [`projection.squaredAzimuth`](./projection.ts.mdmd.md#symbol-squaredazimuth)
 - [`projection.toScreen`](./projection.ts.mdmd.md#symbol-toscreen)
 - [`projection.unproject`](./projection.ts.mdmd.md#symbol-unproject)
 - [`projection.zoomAt`](./projection.ts.mdmd.md#symbol-zoomat)
