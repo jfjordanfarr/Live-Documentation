@@ -11,5 +11,16 @@
         "**/tests/integration/programs/**": true
     },
     "markdown.validate.enabled": true,
-    "editor.formatOnSave": false
+    "editor.formatOnSave": false,
+    // The Explorer's previews are served on ports 8900 to 8999, often by an agent from a shell VS Code prints nothing
+    // of. Forward them by watching processes, and never fall back to reading terminal output: by default VS Code makes
+    // that switch once twenty ports have been forwarded, the likely reason the owner could reach an agent's preview
+    // early in a session and not later (2026-11-13). The short-lived servers that test runs open on other ports are
+    // not forwarded, so the count stays low and the Ports panel holds only the previews.
+    "remote.autoForwardPortsSource": "process",
+    "remote.autoForwardPortsFallback": 0,
+    "remote.portsAttributes": {
+        "8900-8999": { "label": "Explorer preview", "onAutoForward": "silent" }
+    },
+    "remote.otherPortsAttributes": { "onAutoForward": "ignore" }
 }
