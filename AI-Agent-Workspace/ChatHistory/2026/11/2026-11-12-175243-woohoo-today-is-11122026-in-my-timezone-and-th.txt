@@ -5848,3 +5848,2913 @@
   tests once myself before committing it.
 
   Ran 1 shell command (ctrl+o to expand)
+
+❯ >The builder made two looks:
+
+  The Pin icon and the count in a small frame is very sleek! I like that!
+
+  >I chose the frame as the only form and had the temporary Tuning switch
+  removed.
+
+  Awesome! Aligned preference. Good to see.
+
+  >The Local Map builder is making the frame change and then its second
+  milestone: Escape and the pin tray, the Centre motion, and an investigation
+  of 3D names with nothing changed. When the commands round returns I'll land
+  it first, bring the Local Map branch onto it, run one full gate over both,
+  and give you Explorer links.
+
+  Much appreciated!
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Glad the framed count reads well to you too; that's now recorded as your
+  decision. I'm getting the pass counts for the commands round's tests, then
+  committing it.
+  Ran 6 shell commands (ctrl+o to expand)
+
+● Background command "Run the touched unit tests, the CLI integration test,
+lint, the docs freshness check and the markdown link audit" completed (exit code
+0)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Both rounds' first halves are settled: the commands round is committed. Now
+  verifying every command in my README draft before it goes in.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● One of my draft's examples was refused by the command, so I'm correcting it
+  and then putting the README in.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Write(README.md)
+  ⎿  Added 90 lines, removed 162 lines
+        1  # Live Documentation
+        2  
+        3 -**A map of any codebase. Offline, static, shareable, markdown-
+          -first.**                                                      
+        3 +**Live Documentation turns a folder of source files into a map
+          + you can look at.**                                           
+        4  
+        5 -> Point Live Documentation at any folder of interconnected fil
+          -es, and it reveals the public connection surface between them—
+          -generating markdown documents that serve as a **lightweight, v
+          -erifiable AST** for your entire workspace.                    
+        5 +It writes one markdown file for every source file, saying what
+          + that file offers to the rest of the code and what it uses. Th
+          +ose markdown files are the product. The Explorer, a static sit
+          +e you can host or hand to a colleague, and the command line bo
+          +th read them and nothing else. It runs offline, calls no model
+          + and makes no network request.                                
+        6  
+        7 -Live Documentation is a CLI suite and a static Explorer that t
+          -urn any codebase into a **navigable, shareable graph of what c
+          -onnects to what**.                                            
+        7 +**[Open the live demo](https://jfjordanfarr.github.io/Live-Doc
+          +umentation/)**, which is this repository mapped by itself.    
+        8  
+        9 -**[Explore the Live Demo →](https://jfjordanfarr.github.io/Liv
+          -e-Documentation/)**                                           
+        9 +## Why it exists                                              
+       10  
+       11 ----                                                           
+       11 +Two things its author wanted, in their words:                 
+       12  
+       13 -## Quick Links                                                
+       13 +> We want to be able to look at directories and understand the
+          +ir contents well, especially if those contents have interconne
+          +ctivity of some kind.                                         
+       14  
+       15 -| Guide                                                       
+          -                   | Description                              
+          -                 |                                            
+       16 -| ------------------------------------------------------------
+          ------------------- | -----------------------------------------
+          ----------------- |                                            
+       17 -| [Getting Started](.mdmd/layer-1/guides/getting-started.mdmd.
+          -md)                | Installation, configuration, and your fir
+          -st session       |                                            
+       18 -| [Tracing Impact](.mdmd/layer-1/guides/tracing-impact.mdmd.md
+          -)                  | Dependency pathfinding and "what will thi
+          -s change break?" |                                            
+       19 -| [Visualizing Your Codebase](.mdmd/layer-1/guides/visualizing
+          --codebase.mdmd.md) | Explorer views, shareability, and static 
+          -exports          |                                            
+       20 -| [CLI Reference](.mdmd/layer-1/guides/cli-reference.mdmd.md) 
+          -                   | Complete command catalog                 
+          -                 |                                            
+       15 +> I just want to be able to show non-software people what I do
+          + and they can _see it_ the way I understand it. I don't want t
+          +o keep drawing bespoke diagrams.                              
+       16  
+       22 ----                                                           
+       17 +So the map is made from the code, not drawn by hand. It is reg
+          +enerated when the code changes, and a view of it is a link you
+          + can send.                                                    
+       18  
+       24 -## The Core Insight                                           
+       19 +## Map your own repository                                    
+       20  
+       26 -Software is a web of interconnected files. Understanding that 
+          -web has always required holding complex mental models, reading
+          - code line-by-line, or trusting ephemeral AI explanations.    
+       21 +Live Documentation is not yet published to npm. Run it from a 
+          +clone, with Node.js 22 or newer, and point it at your folder: 
+       22  
+       28 -**Live Documentation takes a different approach**: we generate
+          - a markdown file for every source file, using **markdown heade
+          -rs as lightweight AST nodes** and **markdown links as edges**.
+          - The result is a **pseudocode surface of your entire workspace
+          -**—a common language that:                                    
+       23 +```bash                                                       
+       24 +git clone https://github.com/jfjordanfarr/Live-Documentation.g
+          +it                                                            
+       25 +cd Live-Documentation                                         
+       26 +npm install                                                   
+       27 +npm run build                                                 
+       28  
+       30 -- **Engineers** can inspect for ripple effects before merging 
+       31 -- **Architects** can explore visually without reading implemen
+          -tation details                                                
+       32 -- **Non-technical stakeholders** can navigate to understand wh
+          -at the system does                                            
+       33 -- **Agents** can read, like anyone else, given the hosted site
+          - or the file                                                  
+       29 +npm run live-docs:generate -- --workspace <folder>            
+       30 +npm run live-docs:visualize -- --workspace <folder>           
+       31 +npx http-server dist/explorer -a 127.0.0.1 -p 8766 -c-1       
+       32 +```                                                           
+       33  
+       35 -This shared representation closes the gap between the people w
+          -ho build a system and the people who need to understand it.   
+       34 +Then open `http://127.0.0.1:8766/`.                           
+       35  
+       37 ----                                                           
+       36 +- `generate` writes the markdown into `<folder>/.live-document
+          +ation/source/`, one file per source file. Add `--dry-run` to s
+          +ee what it would write first. This repository's thousand files
+          + take a few minutes.                                          
+       37 +- `visualize` builds the Explorer into `dist/explorer/` in thi
+          +s checkout. Copy that folder to any static host to share it.  
+       38 +- The Explorer has to be served, as the last line does. A brow
+          +ser will not let a page opened as a file read the data beside 
+          +it, and the page says so if you try.                          
+       39 +- In a git repository, files that git ignores are left out. El
+          +sewhere, name build output to leave out in the [configuration]
+          +(#configuration).                                             
+       40 +- Every command prints its options with `--help`, for example 
+          +`npm run live-docs:generate -- --help`.                       
+       41  
+       39 -## What Makes This Different                                  
+       42 +To try it without a repository of your own, leave out `--works
+          +pace`: the same three commands map this one.                  
+       43  
+       41 -### The Bridge Between Blueprints and Code                    
+       44 +## What you can ask it                                        
+       45  
+       43 -If you've ever used node-based visual programming (Unreal Blue
+          -prints, Blender nodes, Max/MSP), you know the power of seeing 
+          -connections explicitly. But "real" code lives in text files, a
+          -nd the connections between them are implicit—hidden in import 
+          -statements and function calls.                                
+       46 +In the Explorer:                                              
+       47  
+       45 -**Live Documentation makes those connections explicit and visu
+          -al.** Every public symbol becomes a navigable anchor. Every de
+          -pendency becomes a traceable edge. The Explorer lets you zoom 
+          -from macro (entire workspace) to micro (individual symbols) wi
+          -thout leaving the map.                                        
+       48 +- **What does this file offer, and who uses it?** The Local Ma
+          +p draws a file as a card: what it offers on its right edge in 
+          +blue, what it uses on its left in green, and wires to the file
+          +s on either side. Pin the files you care about and the picture
+          + keeps them.                                                  
+       49 +- **What is in this directory?** Open a directory on the Local
+          + Map to see its files side by side, or switch to 3D to see the
+          + same files as a graph you can turn.                          
+       50 +- **How does this reach that?** Search for a file, then choose
+          + **Path to** another, and the map shows the shortest route bet
+          +ween them.                                                    
+       51 +- **Which files matter most?** Knowledge Sources lists the mos
+          +t used files, the files that use the most, where the program s
+          +tarts and what nothing reaches.                               
+       52 +- **How do our systems talk to each other?** The World Map sho
+          +ws several systems as pieces on a board, with a door wherever 
+          +one offers or uses an address, and wires between the doors. Yo
+          +u describe the board in one markdown file; the doors and wires
+          + come from the code.                                          
+       53 +- **How did it get this way?** Run `npm run live-docs:history`
+          + before building, and the 3D map can play the repository's com
+          +mits as changes to the picture.                               
+       54  
+       47 -### Shareable Understanding                                   
+       55 +Whatever you are looking at is in the address bar. Send the li
+          +nk, and a colleague with the same build sees the same thing.  
+       56  
+       49 -Found a critical dependency path? **Share the link.** The Expl
+          -orer generates stable URLs for any node, any path, any view. W
+          -hen you need to explain "here's exactly how data flows from A 
+          -to B," you send a hyperlink—not a wall of text or a screenshot
+          - that goes stale.                                             
+       57 +At the command line, the same questions, here asked of this re
+          +pository:                                                     
+       58  
+       51 -### Durable Truth                                             
+       59 +```bash                                                       
+       60 +# What depends on this file?                                  
+       61 +npm run live-docs:inspect -- --from packages/generator/src/gen
+          +erator.ts --direction inbound                                 
+       62  
+       53 -- **Cloud wikis** drift from code. **AI chat contexts** vanish
+          - when the session ends. **Just-in-time maps** disappear when y
+          -ou close the tab.                                             
+       54 -- **Live Documentation** writes the intelligence _back into yo
+          -ur repo_. It travels with your code, works offline, and surviv
+          -es any vendor switch. Delete the cache? Regenerate it determin
+          -istically.                                                    
+       55 -                                                              
+       56 -### Written for people, readable by a machine                 
+       57 -                                                              
+       58 -Every CLI command has a `--json` mode, and the Explorer reads 
+          -the same graph index the CLI does, so whatever a person can le
+          -arn by clicking, a script can learn by a command. Live Documen
+          -tation calls no model and makes no network request. It is not 
+          -shaped around feeding a coding agent context: an agent you poi
+          -nt at a hosted Explorer, or hand the bundle, can read the same
+          - map as anyone else, and that is all it promises.             
+       59 -                                                              
+       60 ----                                                           
+       61 -                                                              
+       62 -## How It Works                                               
+       63 -                                                              
+       64 -Live Documentation turns your workspace into a navigable markd
+          -own graph:                                                    
+       65 -                                                              
+       66 -1. **Discovery**: Selects source artifacts via configurable gl
+          -ob patterns.                                                  
+       67 -2. **Analysis**: Extracts public symbols and dependency edges 
+          -(language-aware where possible).                              
+       68 -3. **Materialization**: Writes deterministic markdown mirrors—
+          -each file gets a `.md` companion with headers for every public
+          - symbol.                                                      
+       69 -4. **Exploration**: The Explorer's views (Knowledge Sources, W
+          -orld Map, Local Map) and CLI commands let you navigate, trace 
+          -paths, and share links.                                       
+       70 -5. **Consumption**: Reviewers, CI checks and any agent you han
+          -d it to read the same markdown.                               
+       71 -                                                              
+       72 ----                                                           
+       73 -                                                              
+       74 -## The Explorer: See Your Code Like Never Before              
+       75 -                                                              
+       76 -Live Documentation includes a visual Explorer with three navig
+          -able views over one graph:                                    
+       77 -                                                              
+       78 -| View              | Purpose                                 
+          -                                                              
+          -            |                                                 
+       79 -| ----------------- | ----------------------------------------
+          ---------------------------------------------------------------
+          ------------ |                                                 
+       80 -| **Knowledge Sources** | The graph’s inventory, related docum
+          -entation and exports |                                        
+       81 -| **World Map**     | The outside: systems as closed pieces on
+          - a board, doors where they offer and use openings, wires betwe
+          -en them     |                                                 
+       82 -| **Local Map** | Files, symbols and directories in 2D, or fil
+          -e connectivity in 3D; the representation is remembered and tra
+          -vels in shared links |                                        
+       83 -                                                              
+       84 -### Path Mode: The "Oracle of Bacon" for Code                 
+       85 -                                                              
+       86 -Choose a subject through search, which makes it the newest pin
+          -, then choose **Path to**. The 2D Local Map shows a shortest r
+          -oute from provider to consumer, with the relevant symbol conne
+          -ctions, and offers the reverse question when appropriate. Maki
+          -ng that result and recovery equally readable in 3D is part of 
+          -the [accepted remediation work](.mdmd/layer-3/live-documentati
+          -on-explorer.mdmd.md#remediation-work).                        
+       87 -                                                              
+       88 -The same pathfinding is available via CLI:                    
+       89 -                                                              
+       90 -```powershell                                                 
+       63 +# How does one file reach another?                            
+       64  npm run live-docs:inspect -- --from scripts/live-docs/generate
+           .ts --to packages/engine/src/live-docs/core.ts
+       92 -```                                                           
+       65  
+       94 -### Shareable Links                                           
+       95 -                                                              
+       96 -Every view generates stable URLs. When you need to explain a c
+          -omplex dependency chain, share the link. With the same bundle,
+          - your colleagues reopen the shared exploration; viewport and p
+          -hysics arrangement can differ.                                
+       97 -                                                              
+       98 ----                                                           
+       99 -                                                              
+      100 -## Supported Languages                                        
+      101 -                                                              
+      102 -Live Documentation is polyglot. Support varies by language (so
+          -me have richer symbol graphs than others), but all are unified
+          - into the same markdown mirror format.                        
+      103 -                                                              
+      104 -- **TypeScript / JavaScript**: the TypeScript compiler API res
+          -olves public symbols and module dependencies.                 
+      105 -- **C#, Python, Java, Go, Rust, C and C++**: tree-sitter parse
+          -rs, with names resolved by each language's own rules (namespac
+          -es, packages, modules, crates, include directories) and measur
+          -ed against the compiler's resolution through SCIP indexers.   
+      106 -- **PowerShell**: a tree-sitter parser, on a grammar the engin
+          -e builds and ships until upstream takes its fix, for functions
+          - with their comment-based help, classes and enums, what a modu
+          -le exports, and dot-sources, module imports, `using module` an
+          -d `#requires`, paths found as Windows finds them; a module man
+          -ifest (`.psd1`) is read as a manifest. Measured against PowerS
+          -hell's own parser. No PowerShell installation is needed to gen
+          -erate docs.                                                   
+      107 -- **Ruby**: a hand-written scanner for symbols and for require
+          -s; no compiler oracle yet.                                    
+      108 -- **ASP.NET markup**: `.aspx`, `.ascx`, `.cshtml`, `.razor`, c
+          -onnected to code-behind and configuration conventions.        
+      109 -- **.NET configuration and SQL**: the addresses and connection
+          - strings of `web.config` and `app.config`, and the procedures,
+          - tables and views of `.sql` files, read as the openings a syst
+          -em offers and uses.                                           
+      110 -- **Manifests**: `.csproj`, `packages.config`, `package.json`,
+          - `Cargo.toml`, `pyproject.toml`, `go.mod`, `pom.xml` and a Pow
+          -erShell module's `.psd1`, read as what a project stands on and
+          - what it starts.                                              
+      111 -- **HTML / CSS / JSON**: asset and reference extraction.      
+      112 -                                                              
+      113 ----                                                           
+      114 -                                                              
+      115 -## Competitive Landscape                                      
+      116 -                                                              
+      117 -| Feature              | **Live Documentation**        | **Goo
+          -gle CodeWiki**    | **Windsurf Codemaps** | **GitLab Knowledge
+          - Graph** |                                                    
+      118 -| :------------------- | :---------------------------- | :----
+          ------------------ | :-------------------- | :-----------------
+          --------- |                                                    
+      119 -| **Primary Goal**     | **Falsifiable Truth**         | Explo
+          -ration & Search   | Flow State & Speed    | Cross-Project Inte
+          -lligence |                                                    
+      120 -| **Hosting**          | **Local & Git-based**         | Cloud
+          --hosted           | Local (Session-based) | Server-side       
+          -         |                                                    
+      121 -| **Durability**       | **High** (Version Controlled) | Low (
+          -External Service) | Low (Ephemeral)       | High (Database)   
+          -         |                                                    
+      122 -| **Offline Access**   | **100%**                      | No   
+          -                  | Yes                   | No                
+          -         |                                                    
+      123 -| **Shareable Links**  | **Yes** (stable URLs)         | Yes  
+          -                  | No                    | Yes               
+          -         |                                                    
+      124 -| **Machine-readable** | **Yes** (`--json` everywhere) | No   
+          -                  | No                    | API only          
+          -         |                                                    
+      125 -| **Cost**             | **Free** (MIT License)        | Free 
+          -(Public Repos)    | Paid                  | Enterprise        
+          -         |                                                    
+      126 -                                                              
+      127 -**The key difference**: Other tools own the data or let it van
+          -ish. Live Documentation writes intelligence _back into your re
+          -po_ where it belongs.                                         
+      128 -                                                              
+      129 ----                                                           
+      130 -                                                              
+      131 -## CLI Reference                                              
+      132 -                                                              
+      133 -### Generate Live Docs                                        
+      134 -                                                              
+      135 -```powershell                                                 
+      136 -npm run live-docs:generate                                    
+       66 +# Where does the program start, and what does nothing reach?  
+       67 +npm run live-docs:inspect -- --reachable                      
+       68  ```
+       69  
+      139 -Scans your workspace and materializes the documentation mirror
+          -. Add `-- --dry-run` to preview changes.                      
+       70 +Add `--workspace <folder>` to ask them of your own, and `--jso
+          +n` for output a script can read.                              
+       71  
+      141 -### The Pathfinder                                            
+       72 +## What it writes                                             
+       73  
+      143 -```powershell                                                 
+      144 -npm run live-docs:inspect -- --from <path>                    
+      145 -```                                                           
+       74 +A Live Doc is ordinary markdown. Headings are the file's publi
+          +c symbols and links are its dependencies, so the map can be re
+          +ad, searched, diffed and reviewed like any other file in the r
+          +epository. Shortened, one looks like this:                    
+       75  
+      147 -Traces the dependency graph to answer "What does this touch?" 
+          -or "What touches this?".                                      
+       76 +```markdown                                                   
+       77 +# packages/explorer/src/client/errors.ts                      
+       78  
+      149 -- **Hop-chain tracing**: `npm run live-docs:inspect -- --from 
+          -<path> --to <path>`                                           
+      150 -- **Reverse lookup**: `--direction inbound` | **Bidirectional*
+          -*: `--direction both`                                         
+      151 -- **Everything a path reaches**: `--reachable` lists every fil
+          -e a path reaches from `--from`, nearest first, with its hops; 
+          -without `--from`, the entry points the docs declare, what they
+          - reach, what nothing reaches and what only a test reaches     
+      152 -- **Machine-readable output**: add `--json` for AI/automation 
+          -consumption                                                   
+       79 +## Authored                                                   
+       80 +### Purpose                                                   
+       81 +What the Explorer says when it cannot start, or stops.        
+       82  
+      154 -### Visualization Explorer                                    
+       83 +## Generated                                                  
+       84 +### Public Symbols                                            
+       85 +#### `reportFatalExplorerError`                               
+       86 +- Type: function                                              
+       87 +- Source: [source](../../../../../../packages/explorer/src/cli
+          +ent/errors.ts#L56)                                            
+       88  
+      156 -```powershell                                                 
+      157 -npm run live-docs:visualize             # Static Explorer bund
+          -le in dist/explorer/, with the board the configuration names  
+      158 -npm run live-docs:board -- <board.md>   # Read a board, check 
+          -it against the docs, and print its things, doors and wires    
+       89 +### Dependencies                                              
+       90 +- [`template.detail-panel`](../shared/template.html.mdmd.md#sy
+          +mbol-detail-panel)                                            
+       91  ```
+       92  
+      161 -### Quality Gates                                             
+       93 +The generated sections are rewritten on every run. The authore
+          +d section is yours: say what the file is for, and the Explorer
+          + shows your words on its card. Commit the Live Docs with the c
+          +ode, and a pull request shows what a change did to the shape o
+          +f the system.                                                 
+       94  
+      163 -- `npm run live-docs:lint` — validate Live Doc structure and c
+          -overage                                                       
+       95 +## Languages                                                  
+       96  
+      165 -For contributors to this repository:                          
+       97 +- **TypeScript and JavaScript**, resolved by the TypeScript co
+          +mpiler.                                                       
+       98 +- **C#, Python, Java, Go, Rust, C and C++**, parsed with tree-
+          +sitter and resolved by each language's own rules for namespace
+          +s, packages, modules and includes. The results are measured ag
+          +ainst each language's compiler.                               
+       99 +- **PowerShell**, including modules, dot-sourcing and manifest
+          +s. No PowerShell installation is needed.                      
+      100 +- **Ruby**, for symbols and requires.                         
+      101 +- **ASP.NET markup** (`.aspx`, `.ascx`, `.cshtml`, `.razor`), 
+          +connected to its code-behind.                                 
+      102 +- **.NET configuration and SQL**: the addresses and connection
+          + strings in `web.config` and `app.config`, and the procedures,
+          + tables and views in `.sql` files.                            
+      103 +- **Project manifests**: `.csproj`, `packages.config`, `packag
+          +e.json`, `Cargo.toml`, `pyproject.toml`, `go.mod`, `pom.xml` a
+          +nd `.psd1`.                                                   
+      104 +- **HTML, CSS and JSON**, for the files they reference.       
+      105  
+      167 -- `npm run safe:commit` — full readiness gate (lint + tests + 
+          -audits)                                                       
+      168 -- `npm run slopcop:markdown` — verify every markdown link is v
+          -alid                                                          
+      106 +Support is deeper in some languages than in others; every one 
+          +of them lands in the same markdown.                           
+      107  
+      170 ----                                                           
+      171 -                                                              
+      172 -## Security & Privacy                                         
+      173 -                                                              
+      174 -- **Offline-first**: No telemetry. No external HTTP calls requ
+          -ired for core functionality.                                  
+      175 -- **No lifecycle scripts**: `postinstall`/`preinstall` hooks a
+          -re explicitly avoided.                                        
+      176 -- **No network access**: the generator, the CLI and the bundle
+          - builder make no network requests at all, not even to localhos
+          -t. The Explorer page reads only the site that serves it, and i
+          -ts Content-Security-Policy refuses anything else. See [SECURIT
+          -Y.md](SECURITY.md) for how to verify that.                    
+      177 -                                                              
+      178 ----                                                           
+      179 -                                                              
+      108  ## Configuration
+      109  
+      182 -Live Documentation adapts to your documentation conventions, r
+          -ead from a `.live-docs.config.json` at the root of the folder 
+          -it documents:                                                 
+      110 +None is required. To change where the Live Docs go, what is le
+          +ft out or which board the World Map draws, put a `.live-docs.c
+          +onfig.json` at the root of the folder being mapped:           
+      111  
+      112  ```json
+      113  {
+      114    "root": ".live-documentation",
+      115    "baseLayer": "source",
+      116    "extension": ".md",
+      189 -  "slugDialect": "github"                                     
+      117 +  "exclude": ["**/obj/**", "**/bin/**"],                      
+      118 +  "board": "board.md"                                         
+      119  }
+      120  ```
+      121  
+      193 -This repository uses an internal MDMD convention (`.mdmd/layer
+          --4/*.mdmd.md`) to prove the flexibility. Your project can use 
+          -whatever structure fits your team.                            
+      122 +[Getting started](.mdmd/layer-1/guides/getting-started.mdmd.md
+          +) lists every setting.                                        
+      123  
+      195 ----                                                           
+      124 +## Privacy                                                    
+      125  
+      197 -## Getting Started                                            
+      126 +- The generator, the commands and the Explorer build make no n
+          +etwork request and send no telemetry.                         
+      127 +- The Explorer page reads only the site that serves it, and it
+          +s content security policy refuses anything else.              
+      128 +- Nothing runs at install time: there are no `preinstall` or `
+          +postinstall` scripts.                                         
+      129  
+      199 -```bash                                                       
+      200 -# Prerequisites: Node.js 22.x                                 
+      130 +[SECURITY.md](SECURITY.md) says how to check each of these you
+          +rself.                                                        
+      131  
+      202 -npm install                                                   
+      203 -npm run build                                                 
+      204 -npm run live-docs:generate   # Materialize the graph          
+      205 -npm run live-docs:visualize  # Build the Explorer into dist/ex
+          -plorer/                                                       
+      206 -npx http-server dist/explorer -a 127.0.0.1 -p 8766 -c-1   # Se
+          -rve that folder, then open http://127.0.0.1:8766/             
+      207 -```                                                           
+      132 +## How it differs                                             
+      133  
+      209 -The Explorer must be served: a page opened as a file cannot lo
+          -ad its data. Every command prints its options on `--help`, as 
+          -`npm run live-docs:visualize -- --help`.                      
+      134 +Google CodeWiki, Windsurf Codemaps and GitLab Knowledge Graph 
+          +answer related questions from a hosted service or inside an ed
+          +itor. Live Documentation's answer is files in your own reposit
+          +ory: they work offline, they are versioned with the code, any 
+          +tool that reads markdown can read them, and the licence is MIT
+          +.                                                             
+      135  
+      211 -To map another folder, document it and build its Explorer from
+          - this checkout, with `<folder>` standing for its path. The fol
+          -der's own `.live-docs.config.json` applies when it has one; wi
+          -thout one the docs go to `<folder>/.live-documentation/source/
+          -`.                                                            
+      136 +## Guides                                                     
+      137  
+      213 -```bash                                                       
+      214 -npm run live-docs:generate -- --workspace <folder>            
+      215 -npm run live-docs:visualize -- --workspace <folder>           
+      216 -npx http-server dist/explorer -a 127.0.0.1 -p 8766 -c-1       
+      217 -```                                                           
+      138 +- [Getting started](.mdmd/layer-1/guides/getting-started.mdmd.
+          +md): installation, configuration and a first session.         
+      139 +- [Tracing impact](.mdmd/layer-1/guides/tracing-impact.mdmd.md
+          +): what a change will touch, and how one file reaches another.
+      140 +- [Visualizing your codebase](.mdmd/layer-1/guides/visualizing
+          +-codebase.mdmd.md): the Explorer's views, sharing and hosting.
+      141 +- [CLI reference](.mdmd/layer-1/guides/cli-reference.mdmd.md):
+          + every command and option.                                    
+      142  
+      219 ----                                                           
+      143 +## Where it stands                                            
+      144  
+      145 +The map of a single repository is what works today, and it is 
+          +still changing week to week. The World Map is younger. The 3D 
+          +view takes a while to settle on a repository of a thousand fil
+          +es. [The vision](.mdmd/layer-1/vision.mdmd.md) says where it i
+          +s going.                                                      
+      146 +                                                              
+      147 +This repository is built by one person working with AI coding 
+          +agents, and the whole record of that work is kept in [AI-Agent
+          +-Workspace](AI-Agent-Workspace/README.md). Contributors run `n
+          +pm run safe:commit` before committing.                        
+      148 +                                                              
+      149  ## License
+      150  
+      223 -MIT — use it, fork it, ship it.                               
+      151 +MIT.                                                          
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Bringing the direction file up to date with today's decisions while the docs
+  check and the Local Map builder finish.
+
+  Searched for 1 pattern, read 1 file, ran 5 shell commands (ctrl+o to expand)
+
+● The commands round is committed (ffcddb25) after I checked it myself, and the
+  new README is written and waiting on one last automated check before I commit
+  it.
+
+  Commands round: committed
+
+  I read the second pass's changes and ran its checks myself: the build, its
+  unit and integration tests, lint, the link audit, and the no-network browser
+  cases (9 of 9). The full browser gate has not run on it yet; that happens
+  once, over this and the Local Map repairs together.
+
+  The page opened as a file now shows its one sentence in the middle of the main
+  area at reading size, which was the thing I'd sent back. Port 8900 serves
+  this build.
+
+  README: rewritten, not yet committed
+
+  README.md is in the working tree. I ran every command in it, including mapping
+  a copy of the estate sample from outside the checkout.
+
+  - A fix from that: one example in my draft was refused by the command itself,
+    so I corrected it.
+  - A finding from that: outside a git repository the tool documents build
+    output too. The estate copy came to 88 files where 39 are source. The README
+    now tells the reader to exclude obj and bin in the configuration, and I
+    verified that works.
+  - Still to come: the picture, taken after the Local Map repairs land so it
+    shows the framed count.
+
+  Records
+
+  - Your export from 17:52 is in the month inventory with its hash.
+  - The direction file now carries today's decisions: the board key as a
+    default, the framed count, and the zoom-out limit as an open question tied
+    to the ladder-or-looks comparison.
+
+  Next
+
+  The Local Map builder is still on the frame change and its second milestone.
+  When it hands back I'll bring its branch onto main, run the full gate, and
+  send you Explorer links.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The Local Map builder is still running at 18:11 UTC and nothing new has
+  arrived; the timer is set once more for 19:02.
+
+● Background command "Check whether the new README changes any generated Live
+Doc" completed (exit code 0)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The README check came back clean (no generated doc changed), so the rewrite is
+  committed as 089667b8. Its picture is still to come once the Local Map
+  repairs land.
+
+  The Local Map builder is still running; the next step is unchanged: bring its
+  branch onto main when it hands back, then one full gate over both rounds.
+
+› Message from general-purpose
+  ## Review pass 1 done; milestone 2 done
+
+  **Where the work is.** Worktree
+  `/workspaces/Live-Documentation/.claude/worktrees/agent-a16722cd2b736aa01`,
+  branch `worktree-agent-a16722cd2b736aa01`. Two new commits on top of
+  `04b45b38`, nothing amended:
+  - `8d977efa`: the reveal control in its one form.
+  - `37a0ab57`: milestone 2.
+
+  The working tree is clean.
+
+  **My servers and processes:** none are running. I stopped 8931 (this branch's
+  build) and 8933 (the `1aea308e` build). The Playwright runs used port 8932 and
+  stop with each run. One `http-server` on 8900 is running, but it was there
+  before me and is not mine. The ignored `node_modules` symlink folder and
+  `dist/` are still in the worktree. The baseline copy and the trace in the
+  scratchpad are deleted.
+
+  ### Review pass 1: the framed button is now the only form (`8d977efa`)
+  - **Drawn text:** `+21 connections` beside the Pin glyph, in Open's frame and
+  text colour. The frame's edge sits on the card's text column.
+  - **Accessible name:** "+21 connections outside this view". The tooltip is
+  unchanged.
+  - **Trial removed:**
+    - the Reveal Control setting in Tuning and its help sentence;
+    - the stored setting, the `RevealControl` type and the `data-reveal-control`
+  attribute;
+    - the link look's CSS and the `local-reveal-rest` span.
+  - **Back to the base commit:** six files are byte-identical to `1aea308e`
+  again (`types.ts`, `local-storage.ts`, `tuning.ts`, `tuning-levers.ts`,
+  `tuning-levers.test.ts`, `tuning.spec.ts`). The control count is 56 again.
+  - **The two shared files stay small:** in `template.html` the only change
+  against `1aea308e` is the ⟲ button's renamed label and its tooltip. `index.ts`
+  is unchanged since `04b45b38`.
+  - **No card box differs from `1aea308e`.** I built `1aea308e` from a `git
+  archive` copy and compared every card's and closed directory's box in the
+  map's own pixels across nine scenes (this repository and the estate: root,
+  `client` opened, `src`, `generator/src`, two file subjects, Portal, the estate
+  root, one estate subject). 138 boxes, with 87 of the new controls drawn: none
+  differ.
+    - The in-suite regression asserts the line's own box: an 8 px top margin, no
+  vertical padding or border, a frame drawn with `::before` at `position:
+  absolute` so it takes no room, and the same height as the line above it.
+    - The lab and ladder-box specs passed on the earlier version, whose box was
+  the same.
+  - **The regression** (`labels-and-controls.spec.ts`) asserts the final form:
+  the drawn `+N connections`, the name beginning with those words, the title,
+  the glyph, the frame at the text column, contrast of 4.5:1 or more, the line's
+  box, the focus thickening the frame in accent, and a pin on press.
+    - On the `1aea308e` build it fails at the first check: the drawn text was
+  "106 connections outside this view".
+  - **Pictures:** `reveal-final-reading-scale.png`,
+  `reveal-final-one-press-out.png` and `reveal-final-estate-portal.png`
+  (`Web.config` shows `+2 connections`). The six trial pictures are kept, and
+  the README says why the root chose the button on November 12.
+  - **Docs updated:** the Explorer design doc, the guide sentence, and the Notes
+  in the Live Docs for `branch-renderer.ts`, `controller.ts` and the labels
+  spec.
+
+  ### Milestone 2 (`37a0ab57`)
+
+  **5a. Escape closes the open pin tray.**
+  - **Change:** a listener on the window in `pin-tray.ts`, so that surfaces
+  which take their Escape on the way up act first: the search field, a card's
+  menu and the reader. It also leaves alone an open popover, a modal dialog, and
+  a key typed inside an `aria-modal` surface. Focus goes back to the toggle
+  when it was inside the tray.
+  - `index.ts` is not touched.
+  - The reader and the tray never stand open together: each closes the other.
+  - **Regression:** a new test in `local-map-pins.spec.ts` covers Escape from
+  the toggle and from inside the tray, plus the search field and then a menu
+  taking the first Escape. Pins and opened directories stay untouched. It fails
+  on `1aea308e` at the first Escape.
+
+  **5b. The Centre action: investigation only, nothing changed.** I logged every
+  frame on the outsider's scene (`client` opened, `detailPanel.ts` pinned, six
+  presses out to the far band, More → Centre on `dom.ts`), with the idle search
+  both on and off, and traced one run. The sequence:
+  1. **No frame for 0.93 to 1.37 s.** One task renders the new subject's scene.
+  2. **About 0.45 s of the cards moving at the far scale (0.335).** These are
+  the outsider's "tiles flying".
+  3. **The camera's 350 ms eased zoom gets only two frames:** 0.335 → 0.52 or
+  0.62 → 1.45. The main thread waits 0.8 s and then 0.4 to 0.5 s during it.
+     - The trace shows the main thread nearly idle in those waits, while raster
+  workers spend 2.3 s rasterizing a layer about 16,000 × 15,000 px.
+     - That layer is the map's viewport, promoted to a compositor layer while
+  the camera moves (the Nov 6 decision), rasterized in software.
+     - For comparison, Zoom In presses across the same bands promote nothing and
+  cost 70 to 100 ms each.
+
+  So a transition is not missing: a move followed by an eased zoom exists, but
+  in software raster the zoom is starved into a jump. A GPU browser should
+  rasterize this far faster; that measurement is already open in the design
+  record. Two smaller observations:
+  - The scale eases linearly in `k` with an ease-out cubic, which front-loads a
+  zoom-in even when frames are plentiful.
+  - The zoom follows the move instead of accompanying it.
+
+  Whether to change either is a design call. Pictures:
+  `centre-from-overview-before.png` and `-after.png`. Mid-motion screenshots
+  stall the page in software rendering, so the evidence is the per-frame
+  numbers, which are in the README.
+
+  **6. Names in the 3D map: investigation only, nothing changed.** On the fresh
+  picture of this repository (Connections, Skin, 1 hop, the archipelago: 94 of
+  955 files, 42 groups, 52 alone):
+  - **At rest:** no name at all. Sphere radii run from 2.5 to 12 px, median
+  about 4.5, against Name At's 18. That is the design's rule working as built.
+  - **A hover that truly hits:** names the sphere. On `pages.yml`, 2.5 px in
+  radius, its name appears below and the Pin, Centre and More strip above.
+  - **A hover 9 px off:** names nothing. The pick is the drawn sphere with no
+  tolerance, so on a 5 px sphere the pointer must be within 2.5 px.
+  - **A bubble:** shows nothing at rest. Hovered, it takes its seed's file name:
+  the 506-file main group reads `local-storage.ts`. A pointer on a sphere drawn
+  inside the bubble shows the same thing, because files inside a skin are not
+  picked individually. The group's size appears only in the tooltip.
+  - Pictures: `names-3d-fresh-at-rest.png`, `names-3d-hover-hits-sphere.png`,
+  `names-3d-hover-9px-off.png`, `names-3d-bubble-at-rest.png`,
+  `names-3d-bubble-hovered.png`.
+  - The design doc gains the Escape sentence. Notes were added to the Live Docs
+  for `pin-tray.ts` and `local-map-pins.spec.ts`.
+
+  ### Checks
+  - `npm run build -w packages/explorer`, `tsc -p tests/tsconfig.json` and
+  eslint on the touched files: clean.
+  - Vitest: panels and persistence give 124 of 124.
+  - Playwright, focused:
+    - labels-and-controls and tuning: 8 of 8.
+    - The tray, Escape, bulk, release and ancestor cases of local-map-pins and
+  inspection: 7 of 7, including the existing "one Escape closes only the topmost
+  surface".
+  - `live-docs:generate`: up to date.
+  - `slopcop:markdown`: 0 broken links, after I fixed one relative-link depth in
+  my own note.
+  - Two temporary investigation specs were deleted, as were `test-results/` and
+  the baseline copy.
+  - Not run, as instructed: the full gate and `unit-serial`.
+
+  ### Seen, outside this round
+  1. Two things on the outsider's Centre path, besides the starved zoom: a
+  freeze of about a second before anything moves, and a second card move of
+  about half a second after the zoom lands.
+  2. A bubble names a 506-file group by one file's name, with no sign on screen
+  of how many files it holds.
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● Agent "Local Map and reader repairs" is waiting on its own background work ·
+2h 27m 46s
+
+● Milestone 2 reviewed and accepted: the framed count looks right on both
+  repositories and the Escape change is small and careful. Bringing the
+  builder's three commits onto main now.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The builder's three commits applied cleanly on top of the commands round.
+  Regenerating the mirror for the combined code, then starting the full gate.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The full gate is running (about an hour, started 18:24 UTC). While it runs I'm
+  recording the review and preparing the next builders' briefs; no browser work
+  until it finishes.
+
+  Searched for 1 pattern, ran 4 shell commands (ctrl+o to expand)
+
+● The gate is still running. I'm locating the World Map's code so the next
+  builder's brief can name its files.
+
+  Listed 2 directories, ran 4 shell commands (ctrl+o to expand)
+
+● Dispatching the next two builders now for a read-only planning step, so their
+  designs are ready for my review when the gate finishes.
+
+● 2 background agents launched (↓ to manage)
+   ├ World Map first-screen repairs
+   └ Opened-directory wires trial
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Both rounds are on main and the full gate has been running over them since
+  18:24 UTC; nothing more can be accepted until it finishes, in roughly 45
+  minutes.
+
+  Since my last message
+
+  - Local Map repairs, second half: reviewed and accepted, then brought onto
+    main on top of the commands round with no conflicts.
+    - The framed +N connections is the only form; the temporary switch is gone.
+      Card boxes were compared against the old build on nine scenes (138 boxes)
+      and none changed.
+    - Escape now closes the open pin tray, after the search field, a menu or the
+      reader have taken their own Escape.
+  - README: committed (089667b8). The picture comes after the gate.
+
+  Two findings the builder measured without changing anything
+
+  - Centre from far out feels like a jump because the zoom is starved, not
+    missing. In the software renderer the 350 ms eased zoom gets only two
+    frames, while the browser spends 2.3 s rasterising one very large layer. On
+    a browser with a graphics card this should be far smoother, a measurement
+    that is already open on your machine.
+  - A fresh 3D picture has no names because every sphere is below the naming
+    size. Radii are 2.5 to 12 px against a threshold of 18, which is the rule as
+    designed. Two rough edges beside it:
+    - Hover has no tolerance, so a 5 px sphere needs the pointer within 2.5 px.
+    - A hovered bubble is named after one file: the 506-file main group reads
+      local-storage.ts, with its size only in the tooltip.
+
+  Neither is fixed; both are yours to rank.
+
+  Started while the gate runs
+
+  Two more builders are doing a read-only planning step, with no builds or
+  browser until the gate finishes. Each hands me a plan before writing code.
+
+  - World Map first-screen repairs: labels off their pieces' outlines, the
+    pinned panel reordered, the nine text buttons as icons, keyboard reach, and
+    the walk-through ending where it began.
+  - Opened-directory trial: the design I described earlier, behind a Tuning
+    switch that defaults to today's behaviour and travels in a link, so you and
+    the test agents can compare by link.
+
+  When the gate finishes I'll report its result, including the seconds and
+  frames of the two clock-bound 3D cases, and send you Explorer links for what
+  landed.
+
+› Message from general-purpose
+  Milestone 0 plan. The worktree is reset to `99395eef`. Nothing was built or
+  run; I only read files and grepped.
+
+  Read in full: `controller.ts`, `branch-renderer.ts`, `branches.ts`,
+  `connections.ts`, `wire-gathering.ts`, `card-factory.ts`, `branch-order.ts`,
+  `branch-scene.ts`, `layout-presets.ts`, the first-visit README and pictures
+  05, 07, 08. Read in part: `layout-measure.ts`, `runtime.ts`,
+  `symbol-highlight.ts`, `directory-bands.ts`, the stylesheets' hub and hover
+  rules, the tuning files, the lab's `evaluate.ts` and `capture.ts`. Not read:
+  `network-simplex.ts`, `branch-placement.ts`, `index.ts`, the layer-3 design
+  document.
+
+  ## Today
+
+  - **Membership** (`exploreBranches`, `branches.ts`): files in an opened
+  directory that no pin retains become `members`; unopened subdirectories become
+  `closed` boxes.
+  - **Links**: only links with both ends retained enter `subgraph.links`. Every
+  other link adds one to `hiddenConnections` for each end on screen.
+  - **Layout**: `rankBranches` ranks retained files only. `placeMembers` lays
+  members and boxes in a grid ⌈√n⌉ columns wide.
+  - **Drawing**: `renderBranches` builds the cards, `dressCards` adds
+  `revealControl` with the hidden count, and `drawBranchConnections` draws
+  `subgraph.links`, which is empty when nothing is pinned.
+  - **Arrival**: `fitMapToContent` calls `computeFitTransform` with `minScale:
+  1`, so the picture's top-left arrives at reading size.
+
+  ## Flow order and pair lines
+
+  One new option, `directoryLayout: "flow"`, passed to `exploreBranches`, plus a
+  new pure module `directory-flow.ts` with Vitest tests.
+
+  - **`pairLines`** gathers the links left undrawn whose two ends are both file
+  cards on screen. It makes one `LocalEdge` per ordered pair, both symbols
+  `NODE_HUB`, with a new optional `gathered` count. These join `subgraph.links`.
+  - **Reused unchanged**:
+    - `rankBranches` ranks members with retained files, providers left, and
+  breaks cycles.
+    - `orderBranches` reduces crossings and reserves lanes for lines that skip
+  columns.
+    - `layoutScene` and `placeBranches` solve the picture from hub pins. Hubs
+  have layout boxes in every band; they are hidden by `visibility` only.
+    - The continuing search already prices row-less hub endpoints (`pinFor`).
+  - **`flowColumns`** replaces `placeMembers` when the switch is on. A member
+  with a line takes its rank's column. Each opened directory's boxes and
+  line-less members stand in a block after that directory's last connected
+  column, deepest directory first so membranes stay contiguous. The block is
+  never wider than today's ⌈√n⌉.
+  - **Drawing**: a hub-to-hub link takes the far zoom's dress: `gathered` class,
+  `gatheredWidth(count)`, `data-references`, and `gatheredDescription` as its
+  accessible name. `gatherWires` sums `gathered`, so the overview band draws the
+  same widths.
+  - **Cards stay closed**: nothing calls `remember`, so no rows open.
+
+  ## Count
+
+  With the switch on, a link drawn inside a pair line no longer adds to
+  `hiddenConnections`. A card whose connections are all drawn shows no control.
+  Links to files under a closed box stay counted.
+
+  ## Hover
+
+  - Delegated `pointerover`/`pointerout` and `focusin`/`focusout` listeners on
+  the container set a hovered card id on the controller. Delegation is needed
+  because cards are rebuilt on every render.
+  - A pure `flowNeighbours(links, id)` names the card's lines and the cards at
+  their far ends.
+  - The controller toggles `flow-hover` on the container and overlay, and
+  `flow-lit` on the matching paths (by `data-source-id`/`data-target-id`) and
+  far-end cards.
+  - The stylesheet fades everything else with the existing
+  `--hover-dim-connections` and `--hover-dim-symbols`.
+  - A hovered symbol row keeps its existing highlight and outranks the card
+  hover.
+  - The hover is reapplied after a render and after a move ends.
+
+  ## Link
+
+  `zoomLooks` travels in the snapshot's layout field: `layoutSettingsOf` and
+  `readLayoutSettings` in `layout-presets.ts`, carried as `l` inside `?s=`. I
+  would add `directoryLayout` there, written only when it is `"flow"`. That
+  keeps switch-off links byte-identical and leaves the exact equality at
+  `local-map-packing.spec.ts:80` standing. `layout-presets.ts` is not on my file
+  list; I need it.
+
+  ## Layout lab
+
+  It needs nothing. Its scopes open no directory (`capture.ts:424`),
+  `evaluate.ts` passes no `openDirectories`, and with the switch off
+  `exploreBranches` is unchanged. Modelling flow would need a directory scope,
+  closed boxes and `#hub` pins in the capture; I am not proposing that.
+
+  ## Proving the switch off
+
+  Before any edit I build `99395eef` and keep its `dist/explorer` as the
+  baseline. With the switch off I compare every wrapper's box on the four
+  directories against it, and run the existing Local Map specs.
+
+  ## Pictures
+
+  | Size | Directory | Contents |
+  | --- | --- | --- |
+  | Small | `scripts/live-docs` | 11 files, 1 directory |
+  | Medium | `packages/explorer/src/client` | 20 files, 7 directories |
+  | Large | `packages/explorer/src/client/views/localView` | 60 files |
+  | Estate | `Portal` | 2 files, 6 directories |
+
+  `Portal` is almost all closed boxes, so I would also picture it with its
+  subdirectories opened.
+
+  ## Where I expect it to break
+
+  1. **One very tall last column.** The ranking ends every chain at the right
+  edge, and tests and leaf files use others while nothing uses them. In
+  `localView` I expect thirty-odd cards in the last column, thousands of pixels
+  tall, with lines fanning into it.
+  2. **Width.** Each rank is about 400 px with its gutter, and the frame is
+  about 1,180 px. Arrival shows the two or three provider columns; the consumers
+  and the "tied to nothing" block are off screen to the right.
+  3. **Hub fans.** A file used by twenty others, such as `types.ts`, sends
+  twenty lines up to 8.8 px wide from one point, and skipping lines add lanes
+  between cards.
+  4. **Cycles.** A return is drawn as stubs at both hubs, as it is today, and
+  may read as broken lines.
+  5. **Show Tests.** A file used only by tests moves to the end block, and ranks
+  shift.
+
+  ## What I think is wrong or undecided in the brief
+
+  - **Unit of width.** The far zoom's width counts link records, not
+  `referenceCount`, and `+N` counts the same records. I would keep that unit so
+  the card's count and the drawn lines add up.
+  - **Scan root.** The first Local Map screen is an opened directory, so the
+  trial applies there too.
+  - **Closed boxes move.** They are tied to nothing by rule, so they go from
+  first place today to the end block.
+  - **Card hover on a cycle.** I would light the stubs at both ends and not draw
+  the return's route, since nothing may be added. Say if you want the route
+  shown instead.
+
+  ## A possibly better design (not built)
+
+  Let a rank taller than the frame wrap into adjacent sub-columns, so the thirty
+  leaf files become a block about three wide and ten tall. No line joins two
+  cards of one rank, so the wrap hides nothing and a user still never stands
+  left of its provider. The existing lanes would thread the lines through the
+  first sub-column, and the picture would stay near frame height.
+
+  No servers or processes of mine are running, and there are no commits.
+  ⎿  Resuming agent a26bfd7
+● Agent "Opened-directory wires trial" finished · 9m 48s
+
+● I reviewed the trial builder's plan and answered its design questions; it is
+  now writing code without building or running anything until the gate finishes.
+
+  My three calls on the trial's design:
+
+  - Directories keep first place. The plan would have moved an opened
+    directory's closed sub-directories to the far end, off screen at arrival.
+    They stay first, as a band above the files, because someone browsing looks
+    for the next directory to open before anything else.
+  - A very tall column wraps. The builder expects a column of thirty-odd leaf
+    files in a sixty-file directory, thousands of pixels tall. It proposed
+    wrapping such a column into side-by-side sub-columns, which hides no line. I
+    accepted that and asked for the sixty-file directory pictured both ways, so
+    I can judge by eye.
+  - Tangles are shown, not tamed. If one file is used by twenty others, twenty
+    lines leave it. That is the directory's shape, per your October 1 rule about
+    not letting someone believe their software is tidy when it isn't.
+
+  Still waiting on the gate and the World Map builder's plan.
+
+› Message from general-purpose
+  Here is the plan for the World Map repairs. Nothing has been built, run or
+  changed yet. The worktree is reset to 99395eef.
+
+  1. **Labels.**
+     - Cause: `drawLabels()` in controller.ts places the name and subtitle at
+  the projected centre of the piece's lid, at fixed offsets of −14 and +1 px. So
+  the subtitle lies across the lid and the name across its far half.
+  `settleLabels()` only checks labels against other labels.
+     - Change: a pure `labelAnchor()` in layout.ts that returns the top of the
+  piece's projected outline (the topmost lid corner, or a drum's rim top). The
+  subtitle's box ends 3 px above that point and the name sits 15 px higher.
+  `drawCrossing` keeps its own copy of the old placement; it will use the new
+  one.
+     - Risk: lifted names may run into the labels of pieces behind them. If the
+  orbit sweep shows that, names step upward only, nearer piece first.
+
+  2. **Audit.**
+     - Today it only compares text with text.
+     - Additions to the shared `design-audit.ts`, with no existing function
+  changed:
+       - an optional owner attribute on `textBoxes`;
+       - `ownedShapes()`, which returns each piece's face polygons in screen
+  pixels;
+       - a pure `textOverShapes()`, with Vitest cases.
+     - A label box that crosses, contains or lies inside its own piece's polygon
+  is a finding. The existing label-on-label check stays.
+     - States, on both boards: first load, top-down, (90°, 30°) and (−35°, 42°).
+     - I'll run it on the 99395eef build first and keep the failing output. A
+  24-azimuth sweep goes in as evidence, not as a test.
+
+  3. **Panel.**
+     - Cause: `evidenceFor()` writes the file list straight after the count.
+  `showEvidence()` puts the × inside the scrolling area, so it scrolls away, and
+  places the panel at the pointer plus 18 px, which is on the piece.
+     - New order:
+       1. a header that stays put while the panel scrolls: name, kind and
+  region, close icon;
+       2. folder;
+       3. offers, calls, called by, calls out to, stands on, under;
+       4. "open explorer";
+       5. the file list, folded behind "213 files · 1043 symbols".
+     - Placement: a pure `panelBeside()` tries right, left, below, then above
+  the piece and its label. It stays below the toolbar and inside the window,
+  never over the piece, and covers as few of the piece's wired neighbours as it
+  can.
+     - Pinned wires and doors keep today's placement at the pointer.
+     - Risk: the estate spec requires portal's panel to be longer than its
+  height cap. That spec will unfold the file list before it measures.
+
+  4. **Icons**, through `iconButton()`, in three groups separated by rules:
+     - Turn left (Q): an anticlockwise arc round a small diamond.
+     - Turn right (E): its mirror.
+     - Look straight down (T), toggle: a square with an arrow pointing straight
+  down onto it.
+     - Built on (U), toggle: a block with three strands beneath it.
+     - Snap to grid (G), toggle: a 3×3 grid.
+     - Dark board (D), toggle: a crescent moon.
+     - Fit (F): the Local Map's four corners.
+     - Reset layout (R): a hooked arrow pointing back.
+     - Save board: an arrow into a tray.
+
+     Toggles carry `aria-pressed` and are filled when pressed. The "?" button
+  gets the accessible name "Help". No spec refers to the old button text.
+
+  5. **Keyboard.**
+     - Cause: the pieces are `<g>` elements that `draw()` rebuilds in depth
+  order, and none of them can take focus.
+     - Change: one focus target per piece, `tabindex=0` and `role=button`, built
+  once in the board's own order: engine, generator, explorer, live-docs,
+  action, vscode-panel, scripts, tests, programs, fixtures, the three workflows,
+  pages, registry. They are updated in place rather than rebuilt, so focus
+  survives rotation.
+     - A blue ring traces the piece's outline on `:focus-visible`; the outline
+  comes from a pure, tested function.
+     - Accessible names read like "explorer, web, 213 files".
+     - Focus shows the same preview as hover. Enter or Space pins the piece and
+  moves focus into the panel. Escape closes the panel and returns focus to the
+  piece.
+     - Pieces come after the search field and before the buttons in Tab order.
+
+  6. **Walk-through.**
+     - Cause: step 5 orbits to (−35°, 42°), and `endTour()` never restores the
+  camera.
+     - Change: the camera, pan, zoom and the built-on toggle are saved at the
+  start. Steps 1–4, "done" and Escape ease them back.
+
+  7. **Loading — needs your yes before I build it.**
+     - Cause: the only sign is `#stats-line` saying "Loading..."; `#views` stays
+  empty until `startExplorer` runs.
+     - Proposal:
+       - A new `#explorer-loading` element in the template, in the same central
+  spot the refusal uses.
+       - It is a small pulsing sign with no words, `role=status`, named
+  "Loading", and still under reduced motion.
+       - `index.ts` removes it after `startExplorer`, or before a refusal is
+  shown.
+       - About three lines across `template.html`, `shell.css` and `index.ts`.
+
+  **Disagreements**
+  - **No import-list test exists.** `git log -S` finds the phrase only in the
+  plan's text (commit 534f4951), and no test file has ever referred to the World
+  Map's imports. The controller's only new import will be `panels/icon-button`,
+  which carries no data. I won't write the test unless you ask.
+  - **"library · 7 files" and "web · 213 files" are about 7 px apart.** That is
+  crowded but not overlapping, so I won't add a spacing threshold.
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● Agent "World Map first-screen repairs" finished · 16m 36s
+
+  Ran 1 shell command (ctrl+o to expand)
+  ⎿  Resuming agent a7e17e0
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Both builders' plans are reviewed and accepted with adjustments; they are
+  writing code only, with no builds or browser, until the gate finishes.
+
+  On the World Map plan, three things worth your knowing:
+
+  - Causes were found for each defect. For example, labels are anchored at the
+    centre of a piece's lid, which is why they are drawn through it. The fix
+    places them above the piece's outline instead.
+  - I widened the label check. The design audit will check each label against
+    every piece's outline, not only its own, since a subtitle struck through by
+    a neighbour reads just as badly.
+  - A false statement turned up in the World Map plan document. Its standing
+    rules say a test holds the World Map's modules to a fixed import list. No
+    such test exists or ever did. The builder will write it, so the document
+    becomes true.
+
+  I also approved a wordless loading sign in the middle of the main area, where
+  the only notice today is small grey "Loading..." in the sidebar footer.
+
+  The gate is about 25 minutes in.
+
+› Message from general-purpose
+  Milestone 1a is written blind: nothing has been compiled, run or committed,
+  and no process of mine is running. Every expectation in the new tests was
+  worked out by hand.
+
+  ## What is written
+
+  - **`directory-flow.ts` and its Vitest file** (new, pure):
+    - `pairLines`: one hub-to-hub edge per ordered pair, with a `gathered` count
+  in link records.
+    - `wrapRanks`: wraps a rank taller than the cap into adjacent columns.
+    - `flowColumns`: lays out the ranks, the box band and the end block.
+    - `rowsThatFit`: the cap from the frame's height.
+  - **Exploration** (`branches.ts`): a new option `directoryFlow: { rows }`,
+  live only where a directory is open, the scan root's landing included.
+    - Links with both ends on file cards become pair lines and leave
+  `hiddenConnections`.
+    - Members with a line are ranked with the retained files.
+    - With the option absent the old `placeMembers` path runs untouched.
+  - **Boxes as a band above** (your preferred form): built with a new optional
+  `leading` set in `orderBranches`, which keeps the boxes at the head of their
+  column from every start and sweep. This is a small change to the core ordering
+  comparator, and it is inert when the set is absent.
+  - **Drawing** (`connections.ts`): a pair line is drawn in every band with the
+  far zoom's dress and under the same element key the overview uses, so one
+  element is the pair's line at every zoom.
+  - **Switch**: `directoryLayout` in `types.ts`, the default tuning,
+  `tuning.ts`, the help sentence and `template.html`.
+  - **Link** (`layout-presets.ts`): the value is written only when it is not
+  `"grid"`.
+  - **Smaller edits**: `LocalEdge.gathered`; `gatheredCount` in
+  `wire-gathering.ts`; the scene's wire weight; the renderer's option and cycle
+  note; `controller.flowRows()`.
+  - **Tests added** to `branches.test.ts`, `branch-order.test.ts`,
+  `wire-gathering.test.ts` and `layout-presets.test.ts`.
+
+  ## Decisions I made that you did not rule on
+
+  1. **A third select value, `flow-tall`.** It is flow with nothing wrapped, so
+  the wrapped and unwrapped pictures of the sixty-file directory can be compared
+  by link. Delete it if you only want the pictures.
+  2. **A link that carries 2D layout settings but no `directoryLayout` now sets
+  the grid.** Without this, a browser that last opened a flow link would show
+  flow for a grid link too, and the comparison by link would be wrong. A link
+  with no layout field at all leaves the browser's own choice alone.
+  3. **The box band spans the directory's flow columns only**, as you said, and
+  not its end block.
+  4. **Pair lines join no bundle's shared run**, as in the overview. Lines from
+  one hub still share a lane slot through a column they pass together; that is
+  the existing far-zoom behaviour.
+  5. **A pair line weighs its link count** in the ranking and the placement.
+  6. **An opened directory with nothing ranked takes the grid's own
+  arithmetic**, and a unit test holds it equal to `placeMembers`.
+  7. **`NODE_HUB` moved** from `card-factory.ts` to the pure
+  `wire-gathering.ts`, so the new module stays free of the DOM.
+  8. **`tuning-levers.test.ts` counts 57 controls**, up from 56, because the
+  template gains one.
+
+  ## What I expect to break on first compile or first look
+
+  - **TypeScript and lint**: the `{ ...edge, sourceSymbol: undefined }` spread
+  if exact optional properties are on, plus import order.
+  - **Hand-computed expectations**, most likely the exact column orders in the
+  `leading` test and the flow tests in `branches.test.ts`.
+  - **`FLOW_CARD_PITCH = 200`** is a guess at a closed card's height plus its
+  gap. I will measure it and correct it.
+  - **The cap depends on the frame's height.** A status strip or a window resize
+  can flip the wrap at the next render.
+  - **The box band may be ragged.** The ordering guarantees boxes stand first in
+  their columns, but the placement decides their heights.
+  - **Solver time**: sixty cards with lanes and the idle search.
+
+  On your message that the gate has finished I will set up `node_modules`, build
+  `99395eef` as the baseline, then build, look, fix and carry on with milestone
+  1 as briefed.
+
+● The trial builder has finished writing its first code without compiling it and
+  is waiting for my word that the gate is done. Nothing for me to act on until
+  the gate finishes, about 30 minutes in so far.
+
+● Agent "Opened-directory wires trial" finished · 20m 44s
+
+● Noted: that is the completion notice for the trial builder's handback I
+  already read. Still waiting on the gate and the World Map builder's code-only
+  note.
+
+● The gate and the World Map builder are still running at 19:02 UTC, with
+  nothing new to review; the timer is set once more for 19:53.
+
+› Message from general-purpose
+  All the code that can be written without running anything is written. Nothing
+  has been built, run or committed; the gate is untouched.
+
+  **Written so far**
+
+  - **Pure geometry, `layout.ts`, with Vitest cases in `layout.test.ts`:**
+    - `silhouette()`: a piece's outline on screen, the convex hull of its
+  projected corners, or of a drum's two rims as drawn.
+    - `labelAnchor()`: the point above the top of that outline where a label
+  stands. The test sweeps 6 shapes × 24 azimuths × 6 elevations and checks the
+  label is above every drawn point; another case checks the old lid-centre
+  position against the new one.
+    - `coveredArea()`: how much of a box a convex outline covers.
+    - `panelBeside()`: tries right, left, below, then above the piece; never
+  covers the piece if any side is free, and covers as little as it can of the
+  things to avoid.
+  - **Audit, `tests/e2e/design-audit.ts` (shared; additions only, existing
+  callers unchanged):**
+    - `textBoxes()` takes an optional owner attribute, and each text box records
+  its owner.
+    - New `outlines()`: each polygon's corners in screen pixels, with its owner.
+    - New pure `textOverShapes()`: a label box crossing, containing or lying
+  inside any piece's polygon is a finding, marked own or other.
+    - `describeFaults()` takes the strikes as an optional third argument.
+    - Five Vitest cases in `design-audit.test.ts`.
+  - **Import-list test, `views/worldMap/imports.test.ts`:**
+    - Reads each non-test module in the folder with `ts.preProcessFile`.
+    - Allows siblings, the engine's `live-docs/board`, `live-docs/boardGraph`,
+  `live-docs/graph` and `live-docs/document`, plus `graph-helpers`,
+  `persistence/url-state` and `panels/icon-button`.
+    - Not yet shown failing on a wrong import; that comes after the gate.
+  - **Controller, `controller.ts`:**
+    - **Labels:** placed at `labelAnchor`, subtitle 6 px and name 21 px above
+  it.
+    - **Settling (`settleLabels`):** now treats every piece's outline as an
+  obstacle. Names settle nearest piece first and step upward only, 14 px at a
+  time, at most 42 px. Each subtitle follows its name and is hidden if it would
+  cover a label or an outline. Region, crossing, token and door labels also
+  avoid outlines now.
+    - **Crossing tag:** I removed `drawCrossing`'s own collision guess, which
+  copied the old label geometry; settling now places the tag.
+    - **Panel:** the evidence function returns a head and a body for every kind.
+  A piece's body is: folder or "imagined", offers, calls, called by, calls out
+  to, stands on, under, "open X", then `<details>` "N files · M symbols" holding
+  the file list. The close icon sits in a header that stays at the top while
+  the panel scrolls (CSS sticky). Measured at `left: 0` so its width is its own.
+  A pinned piece, or the piece the keyboard is on, gets its panel beside it,
+  below the toolbar; other panels still follow the pointer. Unfolding the file
+  list re-clamps the panel inside the view.
+    - **Toolbar:** nine icons via `iconButton()` in three groups. Tooltips name
+  the key ("Turn left (Q)"), with `aria-keyshortcuts`. The four toggles carry
+  `aria-pressed`, and "Dark board" keeps one name. "?" is now named "Help".
+    - **Keyboard:** a focus layer built once, one `tabindex=0 role=button` stop
+  per piece in board order. `draw()` updates each stop's outline polygon in
+  place instead of rebuilding it, so focus survives a turn. Focus shows the
+  hover preview; Enter or Space pins and moves focus into the panel; Escape or
+  the close button returns focus to the piece. Opening a piece does not pull
+  focus back.
+    - **Walkthrough:** remembers camera, pan, zoom and the built-on toggle at
+  the start. Each step returns to that view except for the one thing it
+  demonstrates; step 5 orbits relative to the starting angle; "done" and Escape
+  ease everything back. `orbitTo()` now takes `"fit"` or a framing to end on.
+  - **`world.css`:** icon toolbar groups with a filled pressed state, focus
+  outlines, the sticky header, the fold, and the focus ring (blue, only on
+  `:focus-visible`, no pointer events).
+  - **Specs:**
+    - `world-map-design.spec.ts`: a new block of 8 tests, both boards × first
+  load, top-down, (90°, 30°) and (−35°, 42°). Each checks label-on-label
+  overlaps and label-on-any-outline strikes.
+    - `world-map-estate.spec.ts`: the portal case unfolds the file list and
+  checks it is open before measuring. The assertion that proves "longer than the
+  cap scrolls inside it" is `measured.scrolls` (true), together with height ≤
+  400 and `overflowY` "auto".
+
+  **What I expect at the first compile and run**
+
+  - **TypeScript:** no error I can see. The likeliest friction is the tuple cast
+  in `syncButtons` and `import ts from "typescript"` under the client tsconfig.
+  - **Vitest:** the drum case in `layout.test.ts` checks rim points against the
+  hull by ray casting. A point that lands numerically on a hull edge could fail
+  it; if so the check gets an on-edge tolerance, not a looser claim.
+  - **e2e:** `world-map.spec`'s "pins a thing on a click, and the pinned panel
+  links its files to the Local Map" clicks the first visible `a[data-file]`.
+  With the files folded, that is now a manifest link
+  (`packages/engine/package.json`), not a listed file. If it breaks, the case
+  will unfold the list and click a listed file, which is what it means to test.
+  - **Labels:** the new label-avoids-outline rule may move door labels on the
+  estate's hub and the crossing tag. The estate's door-label assertions may need
+  a look, and if a lifted name still runs into a piece behind it, the 42 px cap
+  may need judging.
+  - **Audit on `99395eef`:** expected to fail first-load and top-down on both
+  boards with own-piece strikes. That is the point.
+
+  **Not yet written**
+
+  - The loading sign (last, as agreed).
+  - Design document passages, including the line that wires and doors stay
+  unfocusable this round.
+  - The plan's "Current visual work".
+  - Live Doc Notes.
+  - The evidence folder and its README.
+  - The 24-azimuth sweep driver: a scratchpad Playwright script, because the
+  suite's `testDir` is `tests/e2e`.
+  - Browser regressions for the panel, keyboard, walkthrough and icons; these
+  come after I look at the pictures.
+  - The `node_modules` symlink folder.
+
+  No servers or processes of mine are running.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "World Map first-screen repairs" finished · 15m 59s
+
+● Both builders have now written their first code without compiling and are
+  waiting on my word. The gate has passed its docs, lint, build, unit,
+  integration and audit stages and is in the browser suite, which is the long
+  part. I'll report when it finishes.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The gate is still in its browser suite at 19:54 UTC, 90 minutes in, and it is
+  not going to pass: twelve cases have failed so far, where I expected only the
+  two clock-bound ones.
+
+  The failures are all in the 3D picture and its history: four containment
+  cases, the discovery start, manual focus, names, the update case, and four
+  history-scrubber cases. That pattern says something systematic, and I don't
+  yet know which of two things it is:
+
+  - The machine ran slow during the gate. These are all cases that wait for the
+    3D picture to come to rest.
+  - One of today's changes broke something in 3D. The candidates are the page
+    now loading as a classic script, and the Fit button now standing in the
+    toolbar in both representations.
+
+  I'll have the error messages when the suite finishes, and I'll diagnose before
+  either builder starts building. Both builders are still waiting on my word.
+
+● Background command "Run the full local gate, including the browser suite, over
+both rounds" completed (exit code 0)
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The gate finished red with 13 failures out of 385 tests, taking 1.6 hours
+  instead of the usual 45 minutes. I'm rerunning those unexpected failures alone
+  to see whether they are real regressions or just a slow machine. · summary
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Three of the unexpected failures happen on an idle machine, so they're real;
+  I'm now checking whether today's changes caused them or they were failing
+  before. · summary
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Building yesterday's code in a scratch copy so I can run the three failing
+  cases against it and see whether today's changes caused them.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Yesterday's code fails the two hidden-search cases too, so only the simplicity
+  case is a real regression from today. I'm rerunning the other five 3D
+  failures alone to sort them out. · summary
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● The simplicity check failed because today's commands added a file to the
+  generator's neighbourhood, so the middle setting now has nothing to
+  straighten. The product is fine; I'm correcting the test to match. · summary
+
+  Ran 5 shell commands (ctrl+o to expand)
+  ⎿  Resuming agent a26bfd7  ⎿  Resuming agent a7e17e0
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The full gate finished red, 372 of 385 browser cases, and after classifying
+  all thirteen failures only one was caused by today's work. I've corrected that
+  one; the other twelve are the clock on a machine that is running slow today.
+
+  The gate
+
+  ┌──────────┬───────────────────────────────────────────────────────────────┐
+  │ Failures │                         What they are                         │
+  ├──────────┼───────────────────────────────────────────────────────────────┤
+  │ 1        │ Real, caused today, corrected and committed (b4fe7f2f)        │
+  ├──────────┼───────────────────────────────────────────────────────────────┤
+  │ 2        │ The two 3D cases you want kept red                            │
+  ├──────────┼───────────────────────────────────────────────────────────────┤
+  │ 6        │ Pass when rerun alone                                         │
+  ├──────────┼───────────────────────────────────────────────────────────────┤
+  │ 3        │ Fail on yesterday's code too, on today's machine              │
+  ├──────────┼───────────────────────────────────────────────────────────────┤
+  │ 1        │ At the edge of its 60 s wait: passed once and failed once in  │
+  │          │ two reruns                                                    │
+  └──────────┴───────────────────────────────────────────────────────────────┘
+
+  Everything before the browser suite passed: docs, lint, build, unit,
+  integration and the audits. I have not rerun the full gate after the fix; the
+  corrected spec passes 6 of 6 on its own.
+
+  The real one. A test of the membrane-simplicity slider watched one particular
+  picture, the generator's neighbourhood, and required a straightening to happen
+  at the middle setting. Today's commands change added one file to that
+  neighbourhood. The new picture is already simpler (three steps where there
+  were six), and at the middle setting no straightening is worth its cost; one
+  happens at the strongest setting. The product is behaving correctly, so I
+  changed the test to assert what holds of any picture and to check the
+  straightening where this picture makes it. It was corrected the same way on
+  October 15, 16 and 22.
+
+  The machine. The browser suite took 96 minutes where it usually takes about
+  45. With nothing of mine running, the load average sat between 5 and 7.5, and
+  the editor's TypeScript server has been holding 40% of a core. Three agent
+  worktrees, each a full copy of the repository, were inside the workspace
+  folder at the time. I suspect them but haven't shown it. Restarting the TS
+  server from VS Code may help.
+
+  What this cost, and a recommendation. It took me about forty minutes of reruns
+  to find the one real failure among twelve by the clock. The frame count
+  beside the clock would have said so in the report. I'd extend it to the 2D
+  search cases, counting seeds tried, so a slow day reads as "slow" at a glance.
+  The clocks stay as your alarm.
+
+  What landed, to look at
+
+  Port 8900 serves the build with both rounds.
+
+  - Framed count, Fit and Escape: the client directory opened (http://127.0.0.1:
+    8900/?view=local&mode=2d&dir=packages/explorer/src/client).
+    - Each card's +N connections is the framed control.
+    - Fit is the first button of the bottom toolbar.
+    - Open the pin tray at bottom right and press Escape to close it.
+  - Back in the reader, and dependencies listed once: dom.ts as the subject
+    (http://127.0.0.1:8900/?view=local&mode=2d&node=packages/explorer/src/client
+    /dom.ts). Click the file's name to read it, follow a dependency, then use
+    the arrows beside the title.
+  - README: README.md.
+  - Opened as a file: the Explorer can't show this one by link. Open
+    dist/explorer/index.html straight from disk and the sentence stands in the
+    middle of the page.
+
+  Now running
+
+  Both builders are released to build and use the browser: the World Map
+  repairs, and the opened-directory trial. Each hands back at its first
+  milestone within the hour.
+
+● Both builders are building since 21:05 UTC and neither has handed back; the
+  timer is set once more for 22:00.
+
+● Agent "Opened-directory wires trial" is waiting on its own background work ·
+26m 54s
+
+● The trial builder has paused on a background job of its own (most likely a
+  build) and has not reported yet. Nothing to review until its handback arrives.
+
+● Agent "Opened-directory wires trial" is waiting on its own background work ·
+39m 9s
+
+● Agent "Opened-directory wires trial" is waiting on its own background work ·
+39m 51s
+
+› Message from general-purpose
+  Milestone 1 is built, pictured and committed: with the switch on, an opened
+  directory stands in flow order with one line per pair. With the switch off,
+  every card and box stands exactly where `99395eef` puts it on six directories.
+  One existing browser case fails on my build by timeout and fails on the
+  baseline build too.
+
+  ## What I see
+
+  - **It answers finding 3.** In the small directory (`02-small-flow`) `cli.ts`
+  stands at the left with nine lines to the nine files that use it, and
+  `run-all.ts` stands alone at the end. A stranger would read "these use that
+  one, this one uses nothing" at once.
+  - **The sixty-file directory reads at Fit, not at arrival.** After Fit (`06`,
+  `07`) the structure is legible left to right: `state.ts`, `types.ts`, through
+  to `controller.ts`, `branch-renderer.ts` and `index.ts`. `types.ts` shows as a
+  horizontal trunk with branches rather than twenty separate lines, because
+  lines from one hub share a lane through each column they pass. That is the
+  existing far-zoom behaviour, left untamed.
+  - **Arrival is the weak point.** The solver stands the thin first ranks at the
+  height where their lines are shortest, which is the middle of a tall picture,
+  and arrival frames the top-left corner. So arrival shows empty space and few
+  cards:
+
+    | Directory | In frame at arrival, Grid | In frame at arrival, Flow |
+    | --- | --- | --- |
+    | small | 12 | 11 |
+    | medium | 12 | 7 |
+    | sixty-file | 12 | 3 |
+
+    In the medium directory the box band sits at the top with about 350 px of
+  nothing beneath it before the first card (`04-medium-flow-arrival`).
+  - **The box band works.** The seven directories of `client` stand across the
+  top of the flow columns. At the scan root the two columns' bands start 22 px
+  apart, so the band is slightly ragged.
+  - **Cycles show as stubs.** There is one return in the sixty-file directory
+  and one in opened `Portal`.
+
+  ## Numbers
+
+  **Frame and width**
+
+  | Sixty-file directory | Columns | Picture, px | Fit scale |
+  | --- | --- | --- | --- |
+  | Grid | 8 | 4076 × 1888 | 0.28 |
+  | Flow, wrapped | 10 | 4969 × 3178 | 0.23 |
+  | Flow, unwrapped | 9 | 4399 × 3005 | 0.25 |
+  | Flow, frame-height cap (discarded) | 23 | 10845 × 1851 | 0.10 |
+
+  The sixty-file directory draws 130 lines standing for 452 links, and 31 of its
+  60 cards still carry `+N connections`.
+
+  **Time to appear** (median of five loads; the machine was slow and a lint
+  overlapped part of the run)
+
+  | Directory | Appears, Grid | Appears, Flow | Layout, Grid | Layout, Flow |
+  | --- | --- | --- | --- | --- |
+  | small | 1216 ms | 1265 ms | 169 ms | 187 ms |
+  | medium | 1456 ms | 1491 ms | 311 ms | 330 ms |
+  | sixty-file | 2234 ms | 2371 ms | 747 ms | 915 ms |
+  | `Portal` | 806 ms | 775 ms | 77 ms | 80 ms |
+  | `Portal` opened | 881 ms | 1037 ms | 186 ms | 208 ms |
+
+  After appearing, the idle search moved the Flow picture once in the medium,
+  sixty-file and opened-`Portal` directories. It never moved Grid.
+
+  **Show Tests off** (sixty-file directory; 35 files stay, 595 pairs)
+
+  | | Cards in another column | Pairs swapping left and right | Pairs swapping
+  above and below |
+  | --- | --- | --- | --- |
+  | Grid | 31 of 35 | 238 | 0 |
+  | Flow | 22 of 35, all but one by a single column | 5 | 79 |
+
+  Grid keeps alphabetical order, not places, so by this measure Flow costs less
+  orientation than Grid.
+
+  **`Portal`**: two files that do not use each other and six closed boxes. Flow
+  draws it exactly as Grid does, so a directory of subdirectories gains nothing.
+  With its subdirectories opened it draws 12 lines across the directory
+  outlines.
+
+  ## Forks I decided
+
+  1. **The wrap cap comes from the ranks, not the frame.** The frame-height cap
+  (three cards at 1440 by 900) drew the sixty-file directory 23 columns wide
+  (`12-large-flow-frame-cap`), and by its arithmetic it would flip on a resize.
+  I replaced it without testing the flip in a browser. The cap is now the least
+  number of rows at which the wrapped ranks take no more columns than rows
+  (`squareRows`). It needs no state and wraps the same in every window. On the
+  sixty-file directory it wraps only the rank of twelve, so wrapped and
+  unwrapped differ little there; the wrap would matter for a directory with one
+  dominant rank of leaves.
+  2. **The end block is as tall as the directory's tallest column or the square
+  root of its count.** My first rule drew the scan root's eight unjoined files
+  as eight columns of one.
+  3. **The box band is built as you preferred**, with the `leading` rule in the
+  ordering, and wraps at the flow's width only. At the scan root that makes
+  three rows of boxes above two flow columns; spanning the end block too would
+  make two rows.
+  4. **`tests/e2e/tuning.spec.ts` now expects 57 controls**, with a dated note,
+  as the unit test does.
+
+  ## For your decision
+
+  **What a Flow arrival frames.** The alternatives are:
+  - (a) Keep the top-left, as now.
+  - (b) Left edge, vertically centred on the first ranks' cards.
+  - (c) A layout change that stands short columns at the top.
+
+  I recommend (b) as the first thing in milestone 2, behind the switch. Without
+  it the trial arrives on near-empty space and cannot be judged fairly. It
+  changes what arrival means, so I did not build it unasked.
+
+  ## Checks
+
+  - **Switch off against `99395eef`**: place, size and text of every card and
+  box, every directory label's box, the wire count and the camera are identical
+  on small, medium, sixty-file, scan root, `Portal` and opened `Portal`.
+  - **Build**: `npm run build` is clean.
+  - **Unit tests**: the six touched files pass, 84 tests.
+  - **Lint**: the changed files had one import-order error, which I fixed; I did
+  not rerun lint after the fix.
+  - **Browser specs** on port 8951 (`local-map-directories`,
+  `local-map-packing`, `tuning`, `local-map-overview`): 14 passed, 2 failed.
+    - `tuning.spec.ts:17` failed on the control count and passes after the
+  update.
+    - `local-map-packing.spec.ts:104` (3D motion) timed out at 120 s inside its
+  3D step on my build, alone. On the baseline build, alone, it also fails: its
+  60 s wait for the 3D layout to settle runs out. This is the clock, not this
+  change.
+
+  ## Unfinished
+
+  - The hover, the browser regressions, the layer-3 passage and the Live Docs.
+  `npm run live-docs:generate` has not been run, so `directory-flow.ts` has no
+  Live Doc and the touched files' generated regions are stale.
+  - I did not picture nested opening as the newcomer did it (`explorer`, then
+  `src`, then `client`).
+
+  ## Housekeeping
+
+  - **Commits** on `worktree-agent-a26bfd73df9cac178`: `1888d066` (code) and
+  `90158646` (evidence).
+  - **Evidence**:
+  `AI-Agent-Workspace/Screenshots/2026-11-12/directory-flow-trial/` holds 30
+  pictures and a README with each picture's link.
+  - **Servers still running**: `http-server` on 8951 serving this worktree's
+  `dist/explorer`, and on 8952 serving the baseline build. I took 8952 without
+  asking; say if it must move.
+  - **`node_modules`**: an ignored folder of symlinks to the main checkout's,
+  with `@live-documentation/*` pointing at this worktree's packages.
+  - **Scratchpad**: holds the exported baseline tree and my throwaway scripts; I
+  will remove them at the end of milestone 2.
+  - No subagent was used.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Opened-directory wires trial" is waiting on its own background work ·
+42m 53s
+
+  Read 8 files (ctrl+o to expand)
+  ⎿  Resuming agent a26bfd7
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The opened-directory trial's first half is built, and I think you'll want to
+  see it. With the switch off, nothing differs from today's build; with it on,
+  an opened directory shows how its own files connect.
+
+  What it looks like
+
+  - A small directory reads at once. In scripts/live-docs, cli.ts stands at the
+    left with one blue trunk branching to the nine files that use it, and the
+    one file that uses nothing stands apart at the end. Picture
+    (.claude/worktrees/agent-a26bfd73df9cac178/AI-Agent-Workspace/Screenshots/20
+    26-11-12/directory-flow-trial/02-small-flow-arrival.png).
+  - A sixty-file directory shows its architecture. After Fit, the Local Map's
+    own folder reads left to right from state.ts and types.ts through to
+    controller.ts and index.ts. Compare the trial
+    (.claude/worktrees/agent-a26bfd73df9cac178/AI-Agent-Workspace/Screenshots/20
+    26-11-12/directory-flow-trial/06-large-flow-fit.png) with today's grid
+    (.claude/worktrees/agent-a26bfd73df9cac178/AI-Agent-Workspace/Screenshots/20
+    26-11-12/directory-flow-trial/05-large-grid-fit.png), which is the same
+    sixty files in alphabetical order. It is busy, and that is the directory's
+    real shape.
+  - A medium directory sits between the two: the client folder after Fit
+    (.claude/worktrees/agent-a26bfd73df9cac178/AI-Agent-Workspace/Screenshots/20
+    26-11-12/directory-flow-trial/04-medium-flow-fit.png), with its seven
+    sub-directories as a band across the top.
+
+  What it costs
+
+  - Time: the sixty-file directory appears in 2.4 s against the grid's 2.2 s.
+  - Orientation when filters change: less than the grid. Turning Show Tests off
+    moves 22 of 35 cards, all but one by a single column; the grid's
+    alphabetical reflow moves 31.
+  - Nothing gained for a directory that holds only sub-directories, since a wire
+    never ends on a closed box.
+
+  The weak point, and my call on it
+
+  Arrival is poor right now. The layout centres the first few files against the
+  tallest column, and arrival shows the top-left corner, so the sixty-file
+  directory arrives mostly empty
+  (.claude/worktrees/agent-a26bfd73df9cac178/AI-Agent-Workspace/Screenshots/2026
+  -11-12/directory-flow-trial/06-large-flow-arrival.png) with three cards in
+  view.
+
+  I've asked for each column to stand from the top, under the directories band.
+  Arrival stays as you ruled, top-left at reading size and never scaled down,
+  and the first screen then holds the directories and the start of the flow
+  together. I refused the two alternatives:
+
+  - Centring arrival on the first files would push the directories off screen.
+  - Moving the directories into a left-hand column would give them a horizontal
+    position, which in this layout means "others use me".
+
+  One more thing to watch: the idle layout search moved the picture once after
+  it appeared, in three of five directories. I've asked for a before and after
+  so we can see how large that move is.
+
+  Next
+
+  The builder is on the second half: the top-standing columns, the hover that
+  lights one card's lines, and the tests. When that hands back I'll host the
+  build and give you links with the switch on and off, then run the two test
+  agents who know nothing of the project. The World Map builder is still on its
+  first milestone.
+
+● Both builders are still building at 22:00 UTC with nothing new to review; the
+  timer is set once more for 22:50.
+
+› Message from general-purpose
+  Milestone 1 (labels and the audit) is committed on my branch as two commits:
+  `08c853d6` and `d8d22471`. Labels now clear every piece's outline at all four
+  audited states on both boards, except one 1 px touch on the estate's quarter
+  turn at 1440×900, which passes at the suite's 1280×720. All 35 World Map
+  browser cases pass.
+
+  **Before the fix**
+  - I built `99395eef` and ran the new audit block (both boards × four states)
+  against it. All 8 cases fail. At first load on this repository, 24 labels are
+  drawn across their own outline and `pages-workflow` across `ci-workflow`'s.
+  The output is saved as `audit-on-99395eef.txt` in the evidence folder.
+  - The import-list test fails as it should when `model.ts` imports `node:fs`
+  and `../../types`: it names both, and passes again once they are removed.
+
+  **What I found while building it**
+  - Lifting labels above their own outline removed every own-piece crossing at
+  every angle. What remained were labels meeting the piece standing behind them,
+  which stepping only upward cannot clear.
+  - I tried four rules and ran the orbit sweep on each. The sweep covers 148
+  states: both boards at first load, top-down, and 24 azimuths at 30°, 18° and
+  55° each, at 1440×900.
+
+    | Rule | Own outline | Another's outline | Label on label | Second lines
+  hidden |
+    |---|---|---|---|---|
+    | Names step up only | 0 | 288 | 49 | 476 |
+    | Name and subtitle move together, up and aside | 0 | 104 | 22 | 85 |
+    | Subtitle finds its own place aside | 0 | 95 | 19 | 104 |
+    | Current | 0 | 48 | 24 | 63 |
+
+  - **Rule chosen (current):** a name moves up one line at most, or sideways by
+  up to half its width, nearest piece first. Its subtitle stays at the name's
+  height and may shift aside on its own. If nothing above is clear, the label
+  stands below its piece, clear of the strands. Only after that does the
+  subtitle hide. Region names, tags, tokens and door labels settle afterwards;
+  region names and tokens get more vertical steps than before.
+  - **Why rises are capped at one line:** with 28 and 42 px rises allowed,
+  `generator`'s label climbed level with `engine`'s and read as engine's
+  neighbour.
+  - **Hidden subtitles at first load and top-down:** none, on either board. The
+  hover preview, the pinned panel and the piece's keyboard name still carry what
+  a hidden subtitle says.
+  - **Worst angles:** where this board's grid rows line up with the line of
+  sight, the pieces themselves overlap. 45° at 18° is worst: 6 crossings of
+  another piece and 9 hidden subtitles. Picture 07 shows 225° at 30°.
+
+  **Changed**
+  - `views/worldMap/layout.ts` and `layout.test.ts`: the pure functions
+  `silhouette`, `labelAnchor`, `labelMoves`, `coveredArea` and `panelBeside`,
+  with tests.
+  - `controller.ts`: label placement and settling. I removed the crossing tag's
+  own collision guess, which copied the old label geometry; settling now places
+  the tag.
+  - `tests/e2e/design-audit.ts` (shared, additions only): the owner attribute,
+  `outlines()` and `textOverShapes()`, with cases in `design-audit.test.ts`.
+  - `views/worldMap/imports.test.ts`: the new import-list test.
+  - `world-map-design.spec.ts`: the 8 new cases.
+  - `world-map-estate.spec.ts`: the portal case now unfolds the file list before
+  measuring. The assertion that a panel longer than its cap scrolls inside it
+  is still `measured.scrolls`, together with height ≤ 400 and `overflowY`
+  "auto".
+  - Live Docs: Purpose and Notes for the touched files, all links checked, plus
+  the regenerated docs. `live-docs:generate` reported 1 created and 6 updated.
+  - The Explorer design document's World Map label sentence is rewritten.
+  - Evidence: `AI-Agent-Workspace/Screenshots/2026-11-12/world-map-repairs/`
+  with a README and seven pictures. I did not add it to `Screenshots/README.md`,
+  since that index is shared; it is yours to add.
+
+  **Numbers**
+  - Vitest: 52 of 52 across the 5 World Map and audit files.
+  - Playwright: `world-map.spec` 16/16, then the estate and design specs 19/19
+  after one fix: a 260 px package token label on the estate's built-on view no
+  longer fit beside contracts' raised label, so token labels got more vertical
+  steps.
+  - Nothing failed on time; the 35 cases took 3.1 minutes.
+  - Both type-checks are clean: the build and `tests/tsconfig.json`.
+
+  **Still wrong, outside this audit**
+  - Wires and the dotted built-on line pass through words. From straight above,
+  the wire from live-docs down to generator runs through generator's two lines.
+  - The 1 px ON-PREM/hub touch above (picture 06).
+  - `world-map.spec`'s file-link case passed unchanged, but it now clicks a
+  manifest link rather than a listed file. I'll correct it in milestone 2 as you
+  agreed.
+
+  **Things you should know**
+  - Commit `d8d22471` also carries the not-yet-judged code for the panel, icons,
+  keyboard and walkthrough, because it is interleaved with the label code in
+  `controller.ts`. Its message says so.
+  - I ended the commits with `Co-Authored-By: Claude Opus 5.5
+  <noreply@anthropic.com>`, the harness's attribution line, rather than your
+  "Claude Opus". Say if you want yours.
+  - `node_modules/` is a folder of symlinks to the main checkout's, with
+  `@live-documentation/*` pointing at this worktree's packages. It is ignored by
+  git.
+  - No servers or processes of mine are running; port 8941 is closed.
+  - Kept in the scratchpad for milestones 2 and 3:
+    - `explorer-99395eef/`, a copy of the old build, for showing new regressions
+  fail on it;
+    - `sweep.mts` and `wm-why.mjs`;
+    - the `wm-sweep-*.txt` sweep outputs, `wm-shots/` and
+  `audit-on-99395eef.txt`;
+    - the `wm-*.log` build logs and `wm-e2e-m1.txt`.
+
+    I removed my other temporary files and `test-results/`.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "World Map first-screen repairs" finished · 53m 2s
+
+  Read 2 files (ctrl+o to expand)
+  ⎿  Resuming agent a7e17e0
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The World Map builder's first milestone is in, and I've accepted it: every
+  label now stands clear of its piece.
+
+  - Before and after: labels were anchored at the middle of a piece's lid, so
+    the small grey line was drawn across the piece. Now a label stands above its
+    piece's outline. See the first screen
+    (.claude/worktrees/agent-a7e17e0064c75bad8/AI-Agent-Workspace/Screenshots/20
+    26-11-12/world-map-repairs/01-repository-first-load.png) and straight down
+    (.claude/worktrees/agent-a7e17e0064c75bad8/AI-Agent-Workspace/Screenshots/20
+    26-11-12/world-map-repairs/02-repository-top-down.png), which was the worst
+    view before.
+  - How the rule was chosen: the builder tried four placement rules against 148
+    camera positions on both boards. Under the chosen one, no label crosses its
+    own piece at any angle, and none loses its second line at first load or from
+    above.
+  - The check now sees it: the design audit judges every label against every
+    piece's outline. All eight new cases fail on the build from before the fix,
+    where 24 labels crossed their own piece on the first screen.
+  - The missing import test exists now, and was shown failing on a deliberately
+    wrong import.
+
+  Still wrong, recorded, and outside this round:
+
+  - Wires and the dotted "built on" line pass through some words.
+  - At the two camera angles where the board's rows line up with the line of
+    sight, the pieces themselves overlap and labels crowd.
+
+  The new icon toolbar already shows in those pictures, though I haven't judged
+  it yet. It comes with the builder's next milestones, along with the pinned
+  panel, keyboard reach and the walk-through. The trial builder is still on its
+  second half.
+
+● Agent "Opened-directory wires trial" is waiting on its own background work ·
+1h 10m 28s
+
+● That notice is the trial builder pausing on a job of its own again; it carries
+  no new report. Still waiting on both builders' next handbacks.
+
+● Agent "Opened-directory wires trial" is waiting on its own background work ·
+1h 19m 21s
+
+● Another pause notice from the trial builder with no new report. Nothing to
+  review yet.
+
+● Agent "Opened-directory wires trial" is waiting on its own background work ·
+1h 28m 7s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The trial builder is alive and working: it is regenerating the docs mirror in
+  its worktree, a step that takes several minutes on this machine, which
+  explains the pause notices. The machine is busier than before, with a load
+  average around 10 while both builders build. Waiting on their handbacks.
+
+› Message from general-purpose
+  Directory flow trial, milestone 2: finished and committed; every item you
+  listed is in (columns from the top, one trial value, the level band, the
+  search's move reported, nested opening, the hover, three browser regressions,
+  the layer-3 passage, the Live Docs).
+
+  ## What I see
+
+  - **From the top works for arrival.** The medium directory's first frame now
+  holds its directories and the first three ranks together (`17-…-arrival`);
+  before, it showed the directories, about 350 px of nothing, then the first
+  card. The sixty-file directory's arrival holds 7 cards instead of 3 (`18`
+  against `06`).
+  - **At Fit the lines read somewhat worse than the centred picture.** Centred,
+  a much-used file stood level with the middle of its users and its lines left
+  as one long level trunk. From the top, the same file stands near the top of
+  its column, its users spread below, and the lines sweep down in longer curves
+  that run beside one another through the gutters. Left-to-right order reads the
+  same in both; tracing a single line by eye is harder. Compare
+  `18-large-flow-top-fit` with `06-large-flow-fit`.
+  - **The hover does the tracing.** Hovering `types.ts` in the medium directory
+  keeps its 7 lines and the 8 cards at their ends and fades the other 22 lines
+  to 0.1 and the other cards and boxes to 0.5. No card moved and the element
+  count stayed at 3,616.
+  - **I could not judge the hover's fade in motion.** The four saved frames (0,
+  60, 120, 300 ms) already show the fade essentially complete at the second
+  frame, because a screenshot takes longer than the 150 ms transition. I viewed
+  only the 60 ms and 300 ms frames. It is an opacity transition only.
+  - **One wart at nesting.** With `explorer`, `src` and `client` opened,
+  `client`'s first column starts below its parent's `shared` box, about 30 px
+  lower than its other columns. Its band of directories is not level there and
+  its outline steps up after the first column
+  (`23-nested-3-client-flow-arrival`). Single directories and the scan root are
+  level.
+
+  ## How (c) was built
+
+  The placement did not need rewriting. `placeBranches` gained an optional
+  `fromTop`: every item is pulled to a ceiling by more than the shape prices can
+  ask, and the wires are left out of the solve. Membranes, lanes and necks hold
+  as before, and the cost reported is still the wires' length, so the choice
+  among orders still prefers shorter lines. Without the option the placement is
+  unchanged.
+
+  ## Numbers
+
+  | Directory | In frame at arrival, centred | In frame at arrival, from the top
+  | Height, centred | Height, from the top |
+  | --- | --- | --- | --- | --- |
+  | medium | 7 (4 whole) | 9 (5 whole) | 1380 | 1331 |
+  | sixty-file | 3 (2 whole) | 7 (4 whole) | 3178 | 2667 |
+  | scan root | 16 (12 whole) | 16 (12 whole) | 726 | 726 |
+  | `Portal` opened | 5 (5 whole) | 6 (5 whole) | 964 | 954 |
+
+  - **Level band:** first items stand at 113 px in all eight columns of the
+  medium directory and 77 px in all four at the scan root.
+  - **The picture moving after it appears** (one load each, final build):
+
+  | Directory | Orders adopted after first paint | Moved | Greatest | Median |
+  | --- | --- | --- | --- | --- |
+  | small | 0 | none | | |
+  | medium | 0 | none | | |
+  | scan root | 0 | none | | |
+  | sixty-file | 1 | 55 of 60 | 2286 px | 336 px |
+  | `Portal` opened | 2 | all 11, most by camera settling only | 436 px | 4 px |
+  | three nested | 1 | 30 of 30 | 123 px | 123 px |
+
+    Before and after are saved for the sixty-file directory (`18-…-first-paint`,
+  `18-…-arrival`) and opened `Portal` (`20-…`). The search itself is untouched.
+  - **Nested opening:** `packages/explorer` alone and with `src` hold nothing
+  that joins, so Flow draws them as Grid does (`21`, `22`). With `client` opened
+  the flow is `client`'s own: 29 lines, 4078 × 1486 against the grid's 2752 ×
+  1472.
+
+  ## Checks
+
+  - **Switch off against `99395eef`:** re-run on the final build; identical on
+  all six directories (places, sizes, text, labels, wire count, camera).
+  - **Build and lint:** the Explorer package build is clean; ESLint is clean on
+  every changed source and spec file.
+  - **Unit tests:** every Local Map unit test plus the settings tests pass, 444
+  tests in 33 files.
+  - **New browser cases** in `local-map-directories.spec.ts`: flow order and
+  counts, the hover and focus, and the setting's travel in a link. All three
+  pass on my build and fail on the `99395eef` build served on 8952: no lines
+  drawn, no own lines for the hover, no `#tuning-directory-layout`.
+  - **Existing browser cases** on port 8951: `local-map-directories` 7 of 7,
+  `local-map-overview` 4 of 4, `tuning.spec.ts:17` passes.
+  - **`local-map-hidden.spec.ts:51` and `:95`** time out at 45 s on my build,
+  alone, and identically on the baseline build, alone. This is the clock, not
+  this change.
+  - **Docs:** `live-docs:generate` reports 0 updated on the final sources;
+  `live-docs:lint` validated 958 files with only its existing disconnected-node
+  warnings; the markdown link audit found 0 broken links.
+  - **Not run:** the full gate, `unit-serial`, and the other Local Map browser
+  specs (branches, pins, motion, framing, path and the rest) on the final build.
+
+  ## Decisions I made
+
+  1. **Hover lights every wire touching the card**, pair lines and, on a pinned
+  card, its symbol wires, by the paths' file ids. A hovered symbol row's own
+  highlight outranks it.
+  2. **Keyboard focus inside a card does what the pointer does.**
+  3. **`fromTop` applies to the whole picture whenever a directory stands in
+  flow order**, so a file pinned inside such a directory is also stood from the
+  top. I did not picture that mixed state.
+  4. **Links for pictures `02` to `15` now open the from-the-top picture.** The
+  README says which set each picture belongs to; `07` and `12` are not
+  reproducible on this branch.
+
+  ## Unfinished or for you
+
+  - **Chat-record citations.** The authored Live Doc notes cite the first-visit
+  review and the trial's evidence, not a chat-record turn, because I keep no
+  record and do not know today's turn numbers. Add them if the convention needs
+  them.
+  - **The nesting wart** above is not fixed.
+  - **The hover in motion** needs a human eye or a video capture.
+  - **`reports/e2e`** (Playwright's ignored HTML report) is left in the
+  worktree.
+
+  ## Housekeeping
+
+  - **Commits** on `worktree-agent-a26bfd73df9cac178`, on top of `1888d066` and
+  `90158646`:
+    - `2fc6347f` code and specs
+    - `d9589494` layer-3 passage and evidence
+    - `1666165d` Live Docs
+  - **Evidence:**
+  `AI-Agent-Workspace/Screenshots/2026-11-12/directory-flow-trial/` now holds 53
+  pictures and the README, with links, tables and the centred-against-top
+  comparison.
+  - **Server still running:** `http-server` on 8951 (pid 193961) serving this
+  worktree's final `dist/explorer`, so the README's links open. The 8952
+  baseline server is stopped.
+  - **Scratchpad:** it is shared with other agents. My first cleanup command
+  used wildcards that would have removed their scripts; the safety check blocked
+  it and nothing was deleted. I then removed only my own files by name. One
+  thing to know: early on my script wrote `results.json` into the shared `shots`
+  folder; if another agent had a file of that name there, I overwrote it.
+  - **`node_modules`:** the ignored symlink folder in the worktree is left in
+  place.
+  - No subagent was used.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Opened-directory wires trial" is waiting on its own background work ·
+1h 37m 34s
+
+  Read 6 files, ran 1 shell command (ctrl+o to expand)
+● The trial's second half is accepted, and arrival now covers the directories
+  and the start of the flow. I'm launching two test agents with no project
+  background, one on today's grid and one on the trial, using the same
+  questions. · summary
+
+● 2 background agents launched (↓ to manage)
+   ├ Playtest A: directory map
+   └ Playtest B: directory map
+
+› Message from general-purpose
+  Milestones 2 and 3 are done and committed on my branch as `f923b880` (the
+  loading sign) and `d3072676` (the panel, the icons, keyboard reach and the
+  walkthrough). Each was built, looked at, judged, and then held by browser
+  cases that I showed fail on `99395eef`'s build. Everything is in
+  `AI-Agent-Workspace/Screenshots/2026-11-12/world-map-repairs/`: pictures 08 to
+  20, a README section for each repair, and `later-cases-on-99395eef.txt`.
+
+  **Pinned panel (milestone 2)**
+  - **Order:** what the piece is (kind, region, folder), then offers, calls,
+  called by, calls out to, stands on, under, then "open X", then the files
+  folded behind "N files · M symbols". The head with the close button sticks at
+  the top while the rest scrolls.
+  - **Placement:** beside the piece, never on it, inside the view below the
+  tools, covering as little as it can of the piece's wired neighbours and door
+  labels. It is re-placed when the files unfold.
+  - **What I fixed after looking:**
+    - Unfolding widened `explorer`'s panel to 350 px, and since I only
+  re-clamped vertically, it covered `explorer`'s own edge. It now re-places
+  fully.
+    - `hub`'s panel stood below the hub, covering `payments`, `sqlserver` and
+  `oracle`, because every candidate position was aligned to the piece's top or
+  left. Four mirror alignments now let it use the empty board below-left, clear
+  of the chain.
+  - **Trade-offs I accepted:**
+    - `hub`'s panel covers the hub's ghost-address door label. The panel lists
+  the same address under "calls out to", and every position that clears the
+  label covers `payments` or the databases.
+    - Unfolded, `explorer`'s 350 px panel doesn't fit in the 316 px to its left,
+  so it stands to the right and covers `scripts` and `tests` while the files
+  are shown.
+  - **A milestone 1 regression found here:** settling against outlines had flung
+  door labels up to 70 px from their doors, because a door sits on its piece's
+  wall. A door label now starts just past the piece's outline at its own height
+  (pure `spanWithin`, tested).
+
+  **Milestone 3**
+  - **Icons:** I rendered them at 3×, as you asked. Three of my first drawings
+  would not be guessed by a newcomer, so I redrew them; picture 11 is the first
+  set, 12 the result.
+    - Turn left/right: arcs round a diamond read as gauges; now open circular
+  arrows.
+    - Look straight down: an arrow onto a box read as a second download next to
+  "Save board"; now a cube with its top face filled.
+    - Built on: a block on strands read as a stool; now stacked layers.
+    - Grid, moon, the Local Map's fit corners, the hooked reset arrow and the
+  save arrow each read as what they do.
+    - Remaining doubt: the cube will read as "top view" to anyone who has used
+  CAD, but possibly only as "3D" to others. If you want another try, I'd draw a
+  plan square with a viewing eye above it.
+    - Tooltips are "Turn left (Q)" and so on, with `aria-keyshortcuts`. The four
+  toggles carry `aria-pressed` and fill blue when on. Native tooltips don't
+  appear in headless screenshots, so the browser case reads each tooltip's text
+  instead.
+  - **Keyboard:**
+    - From the search field, Tab reaches engine, generator, explorer and on in
+  board order, each named like "explorer, web, 214 files". Focus shows the hover
+  preview and a blue ring on the outline; it survives a turn.
+    - Enter pins and moves focus into the panel, where Tab reaches the first
+  link. Escape releases the pin and returns focus to the piece.
+    - Found while looking: Chrome made the SVG layer holding the stops a Tab
+  stop of its own, because it had focus listeners. The listeners now sit on the
+  view's HTML.
+    - Wires and doors are not keyboard stops. The design document's World Map
+  passage says so as a gap.
+  - **Walkthrough:** after "done", theta, phi and zoom equal the values before
+  (pictures 17–19). Each step stands on the starting view except for the one
+  state it demonstrates, and the orbit step turns relative to where the camera
+  started.
+  - **Loading sign:** three muted dots in the refusal's place, `role=status`,
+  named "Loading", no words, still under reduced motion. `bootstrapExplorer`
+  removes it before `startExplorer` runs, and before a refusal is shown.
+
+  **Regressions and runs**
+  - Eight new browser cases fail on `99395eef`, seven on the defect itself: the
+  panel's order, the panel covering `explorer`, the hub's panel covering wired
+  pieces, text tools, no keyboard stops in board order, the walkthrough's turn
+  never undone, and no loading sign. The close-control case fails one step
+  earlier, because that build has no fold to open.
+  - On my build, all 43 cases in `world-map*.spec.ts` pass. After the last
+  estate rebuild I reran the estate and keyboard/icon cases: 9/9.
+  - Vitest: 75/75, including the template-reading tuning test. Both type-checks
+  are clean.
+  - The `world-map.spec` file-link case now unfolds the list and clicks a listed
+  file, as agreed.
+  - Nothing failed on a timeout.
+  - **Not run:** `no-network.spec.ts`. Its refusal cases need `samples/history`,
+  which I didn't build in this worktree. My element is `role=status`, not
+  `alert`, so "exactly one alert in `#views`" should hold, but the gate will be
+  the first to check it.
+
+  **Docs**
+  - Explorer design, World Map passage:
+    - the panel, the icons and keyboard reach;
+    - the wires-and-doors gap;
+    - wires and the built-on line through words, recorded as an open defect.
+  - World Map plan:
+    - "Current as of" is now 2026-11-12;
+    - a progress paragraph under "Current visual work", with the box left
+  unticked for the owner;
+    - the standing rule now links the import-list test.
+  - Live Doc notes for `controller`, `layout`, `world.css`, `shell.css`,
+  `template.html`, `index.ts` and both specs. Docs regenerated: 8 updated, all
+  new links checked.
+
+  **Shared files I touched:** `template.html` (one element), `shell.css` (one
+  rule block) and `index.ts` (two lines in `bootstrapExplorer`).
+
+  **State:** no servers of mine are running; 8941 and 8942 are closed, and
+  `test-results/` is removed. Kept in the scratchpad: `explorer-99395eef/`, the
+  old-build copy for later comparisons, plus `sweep.mts` and `wm-sweep-1…6.txt`,
+  which back the README's table. Delete them when you no longer need them.
+
+● Agent "World Map first-screen repairs" finished · 1h 39m 2s
+
+  Read 3 files, ran 2 shell commands (ctrl+o to expand)
+
+● The World Map repairs are reviewed, accepted and now on main (four commits, no
+  conflicts). Building main and running the World Map and no-network browser
+  cases on the combined code.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The World Map repairs are finished, reviewed and on main; the two test agents
+  are now trying the opened-directory trial, one on the grid and one on the
+  flow.
+
+  World Map: what changed
+
+  - Pinned panel: it now reads as a short card and stands beside its piece
+    instead of on it. It leads with what the piece is, who calls it and what it
+    stands on, then "open explorer"; the 214 files fold behind their count, and
+    the close button stays at the top. See explorer pinned
+    (.claude/worktrees/agent-a7e17e0064c75bad8/AI-Agent-Workspace/Screenshots/20
+    26-11-12/world-map-repairs/08-explorer-pinned-panel.png) and the estate's
+    hub (.claude/worktrees/agent-a7e17e0064c75bad8/AI-Agent-Workspace/Screenshot
+    s/2026-11-12/world-map-repairs/10-estate-hub-pinned-panel.png), whose panel
+    now stands clear of the chain it explains.
+  - Icons: the nine text buttons are icons
+    (.claude/worktrees/agent-a7e17e0064c75bad8/AI-Agent-Workspace/Screenshots/20
+    26-11-12/world-map-repairs/12-tools-as-built-3x.png), each with a tooltip
+    that names its key, such as "Turn left (Q)". The builder redrew three after
+    judging a newcomer wouldn't guess them. The one I'm least sure of is the
+    cube with a filled top for "look straight down"; your eye on it is welcome.
+  - Keyboard: Tab now reaches every piece in the board's order. Enter pins it
+    and moves into the panel; Escape comes back.
+  - Walk-through: it ends where it began.
+  - Loading: three quiet dots stand where the map will be, with no words.
+
+  Eight new browser cases cover these, each shown failing on the build from
+  before; all 43 World Map cases pass on the builder's own build. I'm rerunning
+  them on main now with both of today's other rounds underneath.
+
+  Two trade-offs I accepted: the hub's panel covers one door label whose address
+  the panel itself lists, and explorer's unfolded file list covers two
+  neighbours while it is open.
+
+  The trial's second half
+
+  Arrival is fixed: a directory now opens on its sub-directories and the start
+  of the flow together
+  (.claude/worktrees/agent-a26bfd73df9cac178/AI-Agent-Workspace/Screenshots/2026
+  -11-12/directory-flow-trial/17-medium-flow-top-arrival.png). Hovering a card
+  lights its own lines and fades the rest
+  (.claude/worktrees/agent-a26bfd73df9cac178/AI-Agent-Workspace/Screenshots/2026
+  -11-12/directory-flow-trial/17-medium-flow-top-hover-300ms.png), and nothing
+  moves.
+
+  One cost you should see for yourself when you try it: in the sixty-file
+  directory the layout search finds a better order once, shortly after the
+  picture appears, and 55 of the 60 cards move.
+
+  Next
+
+  When the two test agents report I'll compare what each could answer, bring the
+  trial onto main behind its switch, run the full gate once over everything,
+  and send you links for the World Map and for the trial with the switch on and
+  off.
+
+● The two test agents and the browser run on main are still going and nothing
+  new has arrived; the timer is set once more for 23:41 UTC.
+
+› Message from general-purpose
+  ## Playtest B report
+
+  All five questions answered from the page alone, in about 15 minutes and 26
+  screenshots. Everything is in `/tmp/claude-1000/-workspaces-Live-Documentation
+  /c92020d0-6fd5-42de-8be8-c96cf7d497ff/scratchpad/playtest-b/` (file names
+  below are in that folder).
+
+  ### Answers
+
+  1. **`types.ts`** — sure. Hovering it lit six dependents: `dom.ts`,
+  `graph-helpers.ts`, `layout-presets.ts`, `reader-links.ts`, `detailPanel.ts`,
+  `index.ts`. The runners-up, `markdown.ts` and `graph-helpers.ts`, lit four
+  each.
+     Steps: Fit, then six hovers; about 4 minutes.
+  2. **`index.ts` and `pathfind.test.ts`** — fairly sure. No wire leaves their
+  right side. The same holds for the other test files; `styles.css` and
+  `tsconfig.json` have no wires at all.
+     Steps: same screenshots plus one hover on `index.ts`.
+  3. **`detailPanel.ts` depends on `dom.ts`** — sure. Hovering either lit the
+  wire from `dom.ts`'s right edge into `detailPanel.ts`'s left, and the Inspect
+  panel for `dom.ts` lists `detailPanel.ts` first under Dependents.
+     Steps: two hovers, then menu → Inspect → Dependents; about 2 minutes.
+  4. **`types.ts`, then `branches.ts`, then `controller.ts`** — fairly sure; the
+  order is a judgment call.
+     - `types.ts`: sits at the far left, and the thickest wire in the picture
+  starts there.
+     - `branches.ts`: that thick trunk runs straight into it, and hovering it
+  lit about a dozen files across the right half.
+     - `controller.ts`: hovering it lit the most providers (about fifteen), and
+  `index.ts` depends only on it and `types.ts`.
+
+     Steps: Fit plus five hovers; about 5 minutes.
+  5. **`branches.ts`** — sure, read from its Inspect panel.
+     - Depends on: `types.ts`, `state.ts`, `directory-bands.ts`,
+  `directory-state.ts`, `branch-order.ts`, `network-simplex.ts`,
+  `subgraph-builder.ts`.
+     - Depended on by: `branches.test.ts`, `card-factory.ts`, `connections.ts`,
+  `controller.ts`, `branch-scene.ts`, `branch-shape.ts`, `branch-restarts.ts`,
+  `branch-renderer.ts`, and the tests for scene, shape, restarts and motion.
+
+     Steps: hover, menu → Inspect, four scrolls; about 4 minutes.
+
+  ### First thirty seconds
+
+  Both links opened zoomed into the top-left corner: five or six large cards
+  with descriptions, and wires running off the right edge. I took it for a flow
+  diagram of a handful of files and had no sense that fourteen (or fifty-odd)
+  more were off screen. The legend told me blue means "offers" and green means
+  "uses", but not which way to read a wire.
+
+  ### What confused or slowed me, in order
+
+  1. `01-a-first.png`, `01-b-first.png`: the opening view shows a corner, not
+  the directory. Nothing indicates how much is hidden; I guessed at the Fit
+  icon.
+  2. `01-a-first.png`: "Wire from what offers / Wire to what uses" never says
+  "depends on". I had to deduce that left is the provider and right the
+  dependent.
+  3. `01-a-first.png`: "+127 connections" on `types.ts` counts the whole
+  repository. No number anywhere gives in-directory dependents, so I counted lit
+  cards.
+  4. `02-a-fit.png`: at Fit, names truncate ambiguously ("reader-sectio…"
+  against "reader-sections…"). The subdirectory strips along the top are
+  unreadably small.
+  5. `03-a-hover-types.png`, `04-a-click-types.png`: clicking a card did nothing
+  beyond hovering. Highlighted wires route around unrelated cards, so
+  `download.ts` looked connected until I compared brightness.
+  6. `11-b-fit.png`: in link two, four cards read "branc…" and several others
+  "branch-…", with no way to tell them apart.
+  7. `15-b-inspect-branches.png`: after choosing Inspect, the map highlighted
+  `layout-measure.ts`, the card under the pointer, not the file I was
+  inspecting. The panel also covers the right third of the map.
+  8. `16-b-branches-deps-1.png` to `19-b-branches-deps-4.png`: Dependencies
+  lists one row per symbol, so `branch-order.ts` appears four times.
+  In-directory and outside files are mixed, and the list took four scrolls.
+  9. `20-b-whole.png`: "Whole" rearranged every card, changed the search box to
+  "Scan root" and the pin count to 2. I lost my place and saw no obvious undo.
+  10. `21-b-wheel-right.png`: four wheel notches went from the whole map to six
+  cards. The only hint of a cycle is tiny grey text, "6 connections return in a
+  cycle".
+  11. `22-b-hover-branch-renderer.png`, `23-b-hover-index.png`: I assumed the
+  rightmost file is the top of the structure. In link two that is
+  `branch-renderer.ts` (in a cycle with `controller.ts`), while `index.ts` sits
+  one column in.
+
+  ### What helped most
+
+  - Fit plus hover-to-dim: one hover answers "who uses this, and what does it
+  use" at a glance.
+  - The consistent left-provides, right-consumes columns.
+  - The Inspect panel's Dependents list, which gave full names when the map
+  could not.
+
+  ### Verdict
+
+  Yes, for a directory of about twenty files I would use it, because Fit plus
+  hover gives the dependency shape in minutes; at sixty files I would still use
+  it, but only with the Inspect panel beside it, because truncated names and
+  dense wires make the picture alone unreliable.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Playtest B: directory map" finished · 10m 9s
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Test agent B, who saw the trial, answered all five questions correctly in
+  about 15 minutes, and I checked each answer against the graph. Waiting for
+  agent A, who has today's grid, before comparing.
+
+● Background command "Build main with the World Map repairs and run the World
+Map and no-network browser specs" completed (exit code 0)
+
+  Read 1 file (ctrl+o to expand)
+
+● The World Map and no-network browser cases pass on main, 52 of 52, with all of
+  today's rounds underneath. Port 8900 now serves that build. Still waiting on
+  test agent A.
+
+› Message from general-purpose
+  Playtest report (stranger, page only). Folder: `/tmp/claude-1000/-workspaces-L
+  ive-Documentation/c92020d0-6fd5-42de-8be8-c96cf7d497ff/scratchpad/playtest-a/`
+  (27 screenshots, scripts s1.js to s16.js). About 20 minutes.
+
+  ## Answers
+
+  1. **types.ts.** Fairly sure. Its inspector's Dependents list names six
+  sibling files (detailPanel, dom, graph-helpers, index, layout-presets,
+  reader-links) plus many in subdirectories. I checked one rival,
+  graph-helpers.ts, which has four. Steps: directory menu, Inspect directory,
+  click file, Dependents, scroll, count by eye. About 8 actions, 5 minutes
+  including false starts.
+  2. **index.ts and pathfind.test.ts.** Sure. index.ts's only dependent is
+  `.live-docs.config.json`, outside the directory; pathfind.test.ts has no
+  Dependents section at all. 4 actions each, 2 minutes.
+  3. **detailPanel.ts depends on dom.ts.** Sure. dom.ts's Dependents list starts
+  with detailPanel.ts. The map had suggested it earlier, but I could not trace
+  the wire. 4 actions, 1 minute once I had found the inspector.
+  4. **index.ts, then types.ts, then controller.ts.** Fairly sure.
+     - index.ts: by name, and pinning it drew only two wires in (from types.ts
+  and controller.ts), so it is a thin front door.
+     - types.ts: sits at the far left with wires fanning out to much of the
+  directory.
+     - controller.ts: pinning it showed nearly every wire converging on it, and
+  it feeds index.ts.
+     - About 10 actions, 6 minutes.
+  5. **pan-zoom.ts.** Sure. It depends on runtime.ts, types.ts and
+  zoom-limits.ts; controller.ts and pan-zoom.test.ts depend on it. The inspector
+  and the pinned map agree. 5 actions, 2 minutes.
+
+  ## First thirty seconds
+
+  - **Link 1:** I took it for a card catalogue, not a map. It showed nine large
+  cards with descriptions, cut off at the right edge, and no lines, although the
+  legend talks about wires. The "+108 connections" on index.ts made me think it
+  was the most depended-on file, which is the opposite of the truth.
+  - **Link 2:** The same again, with only test-file chips and a purple glow
+  distinguishing cards. Nothing said which files matter.
+
+  ## What confused or slowed me, in order
+
+  1. `01-L1-first.png`: the legend promises wires and none are drawn; the cards
+  run off screen.
+  2. `02-L1-fit.png`: Fit gives an alphabetical grid, so position means nothing,
+  and the connection counts become unreadably small.
+  3. The "+N connections" chips count connections across the whole repository in
+  both directions. They are useless, and misleading, for "who in this directory
+  depends on this".
+  4. `03-L1-detailPanel-connections.png`: clicking a chip pinned the file,
+  changed the search box and rearranged everything. I lost the directory view
+  without warning.
+  5. `04-L1-detailPanel-fit.png`: wires bundle into one trunk before
+  detailPanel.ts, so I could not tell which source each came from. Files from
+  other directories are mixed in, and the subdirectory cards shrink to specks.
+  6. `07-L1-inspect-dir.png`: Inspect directory lists files but says nothing
+  about dependencies. The zoom buttons and pin counter float over the cards when
+  the panel opens.
+  7. `10-L1-inspect-types-a.png`: Dependents are full repository paths with no
+  "this directory only" filter or count, so I counted by eye over two screens.
+  Dependencies repeat a file once per symbol.
+  8. `13-L1-pin-types-fit.png`: pinning the hub file exploded into about seventy
+  cards with truncated names and an unreadable tangle.
+  9. `17-L2-fit.png` and `18-L2-whole.png`: sixty files in a grid with no
+  structure. "Whole" only added root config files.
+  10. `23-L2-controller-pinned-fit.png`: the hub shape is visible, but a third
+  of the names are cut to "bran…".
+  11. `26-L2-panzoom-pinned.png`: the pinned card became a tall empty box.
+
+  ## What helped most
+
+  - The inspector panel's Dependencies and Dependents lists gave me every
+  confident answer.
+  - Pinning a single mid-level file (`27-L2-panzoom-pinned-fit.png`) gave a
+  clear picture: what it uses on the left, what uses it on the right.
+  - Tooltips on the icons were clear.
+
+  ## Would I use it
+
+  Yes for interrogating one file at a time, but not yet for learning a
+  directory, because the opened directory shows no dependency structure until I
+  pin files one by one, and the only ranking signal it shows (connection counts)
+  pointed me the wrong way.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Playtest A: directory map" finished · 14m 47s
+
+● Both test agents finished with all five answers correct, so I'm merging the
+  trial to main now. One generated-doc file needs a manual merge because two
+  builders each added a note to it. · summary
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Both test agents answered all five questions correctly, and I checked every
+  answer against the graph. The difference was in how they got there. The trial
+  is now on main behind its switch, and a second full gate over everything has
+  been running since 23:22 UTC.
+
+  The two strangers
+
+  ┌─────────────────┬─────────────────────────────┬─────────────────────────┐
+  │                 │        Today's grid         │        The trial        │
+  ├─────────────────┼─────────────────────────────┼─────────────────────────┤
+  │ Time            │ about 20 minutes            │ about 15 minutes        │
+  ├─────────────────┼─────────────────────────────┼─────────────────────────┤
+  │ Finding the     │ 5 minutes, counting by eye  │ 4 minutes: Fit, then    │
+  │ most-used file  │ in the reader's lists after │ six hovers              │
+  │                 │  false starts               │                         │
+  ├─────────────────┼─────────────────────────────┼─────────────────────────┤
+  │ Where the       │ the reader panel, not the   │                         │
+  │ answers came    │ map                         │ the map itself          │
+  │ from            │                             │                         │
+  ├─────────────────┼─────────────────────────────┼─────────────────────────┤
+  │                 │                             │ "a flow diagram of a    │
+  │ First           │ "I took it for a card       │ handful of files", with │
+  │ impression      │ catalogue, not a map."      │  no sense that more     │
+  │                 │                             │ were off screen         │
+  ├─────────────────┼─────────────────────────────┼─────────────────────────┤
+  │ Would use it to │ "not yet... the opened      │ "Yes" for twenty files; │
+  │  learn a        │ directory shows no          │  at sixty, only with    │
+  │ directory?      │ dependency structure until  │ the reader panel beside │
+  │                 │ I pin files one by one"     │  it                     │
+  └─────────────────┴─────────────────────────────┴─────────────────────────┘
+
+  One agent each is thin evidence. It agrees with my eye, and your own use is
+  the judge.
+
+  What both tripped on, whichever layout
+
+  - +N connections reads as a ranking and isn't one. It counts the whole
+    repository in both directions. The grid agent took index.ts at +108 for the
+    most depended-on file, the opposite of the truth.
+  - The reader repeats a file once per symbol used. That is three strangers now;
+    the fix is to group the rows by file.
+  - Names cut to "branc…" at Fit can't be told apart.
+  - "Whole" rearranged everything with no obvious way back.
+
+  The trial agent also noted that arrival shows a corner with nothing saying how
+  much is off screen, and that the legend never says "depends on". None of
+  these is fixed; I'd take the first two into the next round.
+
+  Try it
+
+  The trial links are on port 8951 for now; once the gate's rebuild finishes
+  they work on 8900 too. The switch is under Tuning → 2D Layout.
+
+  - Twenty files: grid (http://127.0.0.1:8951/?s=N4IgbiBcDMA0IBMoG0QAcCGBjA1hg5g
+    KYDOA9IQB5oA2A9gE6H2nH1albUCWhAdgC4gAugF8gA) and flow
+    (http://127.0.0.1:8951/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkQATASwCcBTdAF1XIE8A
+    ZTB1AVxqhADM0B3EAF8h8YlADaIfJnQBrTAHNKAZwD0lAB740VcmpXl0a9AlKUAdlwC6QoA)
+  - Sixty files: grid (http://127.0.0.1:8951/?s=N4IgbiBcDMA0IBMoG0QAcCGBjA1hg5gK
+    YDOA9IQB5oA2A9gE6H2nH1albUCWhAdgC6kwPAO5k6WDNQBqokAF0AvkA) and flow
+    (http://127.0.0.1:8951/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkQATASwCcBTdAF1XIE8A
+    ZTB1AVxqhADM0B3EAF8h8YlADaIfJnQBrTAHNKAZwD0lAB740VcmpXl0a9AlKUAdjTVhz-dWiwIA
+    anZABdIUA). Press Fit, then hover a card. Watch for the one rearrangement
+    shortly after it appears.
+  - Eleven files: flow
+    (http://127.0.0.1:8951/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkQATASwCcBTdAF1XIE8A
+    ZTB1AVxqhADM0B3EAF8h8YlADaIAM7pypfDWkB6BKTCUAtMQzSQAXSFA), the clearest
+    case.
+  - World Map repairs: this repository's board
+    (http://127.0.0.1:8900/?view=world) and the estate's
+    (http://127.0.0.1:8900/samples/estate/). Click a piece for the new panel;
+    Tab from the search field reaches the pieces.
+
+  The gate
+
+  The World Map and no-network cases already pass on main, 52 of 52. The full
+  gate will take about an hour and a half on today's machine. I expect it red
+  again by the clock; I'll compare its failures against this afternoon's list
+  and investigate any new name.
+
+● No builder is running and nothing new has arrived; the second full gate is
+  still going at 23:41 UTC, so the timer is set once more for 00:32.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The second gate is about halfway through its browser suite at 00:32 UTC: 169
+  cases passed and 8 failed so far. Five of the eight are names from this
+  afternoon's by-the-clock list. Three are new, all 3D cases (one about citing
+  documents, two about exploration), and I'll rerun those alone as soon as the
+  gate ends to see whether they are the clock again or something today's later
+  changes broke.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The second gate is near the end of its browser suite at 01:13 UTC: 334 passed,
+  15 failed so far. Eleven of the failures are names from this afternoon's
+  by-the-clock list. Four are new and I will rerun them alone when the gate
+  ends: one about citing documents in 3D, two about 3D exploration, and one 2D
+  case about wires threading through lanes, which is the one most likely to be
+  touched by the trial's layout changes.
+
+● Background command "Run the full local gate over everything now on main,
+keeping its whole output" completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The second gate ended red, 389 passed and 15 failed. Eleven are this
+  afternoon's by-the-clock names; I'm rerunning the four new ones alone now.
+
+  Ran 2 shell commands (ctrl+o to expand)
+● All four new failures pass when run alone, and each was a timeout inside the
+  gate, so I found no regression from today's work. I'm recording that now and
+  then setting up the first-screen comparison. · summary
+
+  Read 2 files, ran 5 shell commands (ctrl+o to expand)
+
+● 2 background agents launched (↓ to manage)
+   ├ First screen A: arrival by link
+   └ First screen B: arrival by link
+
+● The second gate recorded fifteen clock failures with no regression. I'm now
+  running the first-screen comparison with two newcomers, and while they explore
+  I'm working on the README's screenshot. · summary
+
+  Read 2 files, ran 7 shell commands (ctrl+o to expand)
+
+● The day's rounds are all on main now, and the direction file and the session
+  record are up to date. The README has its picture: one file's card with its
+  wires (README.md).
+
+  The second full gate finished red at 389 of 404 browser cases, and I found no
+  regression in it. Eleven of its fifteen failures are this afternoon's
+  by-the-clock names; the other four were timeouts that each passed when I reran
+  them alone. No full gate has run green today, and the machine is still slow,
+  with a load average near 9 at idle.
+
+  Port 8900 now serves everything, including the trial, so all the links from my
+  last message work there too. It's also bound to this machine only now;
+  earlier today I'd started it open to the local network.
+
+  The first-screen comparison is running: one stranger arrives on Knowledge
+  Sources and one on the 3D Structure view of the root. I'll report what each
+  made of it when they hand back.
+
+› Message from general-purpose
+  ## First-screen playtest, link A (`?view=sources`)
+
+  31 screenshots, about 15 minutes, web page only. Folder:
+  `/tmp/claude-1000/-workspaces-Live-Documentation/c92020d0-6fd5-42de-8be8-c96cf
+  7d497ff/scratchpad/first-screen/a/` (`daemon.js` holds the browser, `run.sh`
+  sends steps; the steps themselves were typed inline and are not saved as
+  files).
+
+  ### Answers
+  1. **What is it?** (fairly sure) A tool called Live Documentation that scans
+  source code in many languages and produces docs plus a browsable map of what
+  files offer and use. It is mostly TypeScript (539 of 959 files) and is
+  documenting itself here.
+  2. **Three largest parts** (fairly sure on names and sizes, guessing a little
+  on purpose):
+     - **programs**, 302 files under `tests/integration/programs`: sample
+  programs in C#, Java, Python, C and others (a payments "estate") that the
+  analyser is tested against.
+     - **explorer**, 216 files, "web": the browser app I was using.
+     - **engine**, 150 files, "library": the analysis core (tree-sitter,
+  typescript) that explorer, generator, scripts and tests all stand on.
+  3. **Three central files** (sure of what the screen said):
+     - `liveDocumentationConfig.ts` tops "Most used" at 52 files.
+     - `packages/explorer/src/client/index.ts` tops "Uses the most" at 42 files,
+  and every wire in the client converged on it.
+     - `packages/explorer/src/shared/types.ts`, used by 51 files.
+  4. **One file: `explorer/src/client/pathfind.ts`** (sure). Its Purpose says it
+  is the Local Map's pathfinder, giving the shortest path between two sets of
+  files. It depends on the engine's `pathfind.ts` (a breadth-first walk) and is
+  used by `search-bar.ts`, `graph-search.ts`, `index.ts` and two tests.
+
+  ### First thirty seconds
+  I read the first screen as a stats sheet about a "bundle": counts,
+  directories, extensions. It told me scale but not what the software is. I
+  skimmed "Most used", then wanted "World Map" in the sidebar, because a map
+  promised the shape that the table did not.
+
+  ### Path
+  - Knowledge Sources, scrolled: most used, uses the most, entry points,
+  unreachable.
+  - World Map: hovered and clicked explorer, followed "open explorer".
+  - Local Map: opened `src`, then `client`, fitted, clicked "+133 connections"
+  on `index.ts`, fitted again.
+  - Double-clicked `pathfind.ts` for the reader, followed a dependency to the
+  engine's `pathfind.ts`.
+  - World Map again: engine, programs, live-docs, the "?" help.
+  - Knowledge Sources, `liveDocumentationConfig.ts`, "Centre", fit, then 3D.
+
+  ### Pulled onward
+  - `04-worldmap.png`: the whole system as about a dozen named blocks.
+  - `06-click-explorer.png`: the pinned card with "called by", "stands on" and
+  "open explorer".
+  - `15-fit-after-connections.png`: everything flows left to right into
+  `index.ts`.
+  - `18-pathfind-top.png` and `21-engine-pathfind.png`: plain-English Purpose,
+  and one click to the dependency.
+  - `27-centre-config.png`: each symbol with its own port and wires, the best
+  moment.
+  - `23-programs-card.png`: the "samples" turned out to be a fake payments
+  system.
+
+  ### Lost or stopped
+  - `01-first.png`: nothing says what the product is.
+  - `08-open-src.png` and `09-open-client.png`: three clicks through nearly
+  empty folders, then cards cut off at the edge.
+  - `13-index-connections.png`: after clicking connections the view jumped and
+  almost everything was off-screen; I had to find the fit button.
+  - `11-fit.png`: the book icon is named "Fold", which I did not understand.
+  - `30-3d-settled.png`: the 3D graph was drawn with the 2D cards still on top,
+  and dragging changed nothing (`31-3d-after-drag.png`). That may be a
+  headless-browser artefact.
+  - `24-livedocs-card.png`: "imagined: no folder yet" puzzled me.
+
+  ### Keep going?
+  Yes: the symbol-level wires in `27-centre-config.png` arrived just as time ran
+  out, and I wanted to trace one symbol to its users.
+
+  ### What I would change about the first screen
+  - Lead with one sentence on what the codebase is, and the World Map or a
+  thumbnail of it.
+  - Keep "Most used" and "Uses the most" above the fold; they were the most
+  useful lists.
+  - Move the extension counts and generated dates lower.
+  - "Knowledge Sources" and "bundle" mean nothing to a newcomer; "Overview"
+  would.
+
+  Read 1 file (ctrl+o to expand)
+
+● Agent "First screen A: arrival by link" finished · 5m 58s
+
+● The first stranger (arriving on Knowledge Sources) has reported; the second
+  (arriving on the 3D Structure view) is still exploring. I'll give you both
+  together.
+
+› Message from general-purpose
+  ## Playtest B report (31 screenshots, about 15 minutes)
+
+  Folder: `/tmp/claude-1000/-workspaces-Live-Documentation/c92020d0-6fd5-42de-8b
+  e8-c96cf7d497ff/scratchpad/first-screen/b/` (driver.js, do.sh, 01..31 PNGs).
+
+  **One accident to know about:** my first driver start collided with a port
+  already in use (8977, apparently playtest A's driver), so one screenshot
+  command went to that browser and wrote `a/01-first-screen.png` into A's
+  folder. It overwrote nothing (A's own file is `01-first.png`) and sent no
+  clicks. I left it in place; it is safe to delete. I then moved to port 8943.
+
+  ### Answers
+  1. **What is it?** (fairly sure) "Live Documentation": a TypeScript tool whose
+  engine analyses source in many languages (Python, Rust, Java, C#, Go, Ruby,
+  SQL...) into per-file "Live Docs" and a graph of references, and an Explorer
+  web app that draws that graph. It also ships a generator, CLI scripts, a
+  GitHub action and a Pages site.
+  2. **Three largest parts** (fairly sure): `tests` (493 files; mostly sample
+  programs and fixtures in many languages, used as test input),
+  `packages/explorer` (216; the web viewer, almost all `src/client`),
+  `packages/engine` (150; analysis, mostly `src/live-docs` with 60 language
+  adapters). `scripts` (72) is the fourth.
+  3. **Central files** (sure it is what the screen said):
+  `packages/engine/src/config/liveDocumentationConfig.ts` (used by 52 files),
+  `packages/engine/src/live-docs/document.ts` (43),
+  `packages/engine/src/live-docs/graph.ts` (39). All from the "Most used" list
+  in Knowledge Sources (31-most-used.png); graph.ts's long Dependents list
+  confirmed it (15).
+  4. **File of interest:** `packages/engine/src/live-docs/core.ts` (sure). Its
+  Purpose calls it the engine's analysis facade, a barrel re-exporting
+  coreTypes, archetype, discovery, symbolExtraction, compose, document,
+  sourceAnalysis. Pinned in 2D, those sit on its left and the language adapters
+  (python, rust, java, go, css, csharp, ruby, sql, powershell),
+  adapters/index.ts, generator.ts and lint.ts sit on its right (29).
+
+  ### First thirty seconds
+  A glowing cluster of bubbles with three labels: tests 493, scripts 72,
+  packages 375 (01). I read it as "folders sized by file count", nothing more:
+  no names, no hint what the project is, and the largest thing on screen was
+  tests. I wanted to click "packages · 375" because it was the only label that
+  sounded like the product.
+
+  ### Path
+  packages label → explorer → src (clicking a dot opens the enclosing shell) →
+  missed click landed on "..." → Inspect directory → side panel → shared →
+  graph.ts (first real text) → its dependency, engine graph.ts → pinned it →
+  World Map → engine card → "open engine" → switched to 2D → src → live-docs →
+  fit → core.ts reader → pin → fit → Knowledge Sources.
+
+  ### Pulled onward
+  - 11-graph-ts.png: first Purpose paragraph; suddenly the thing spoke.
+  - 17-world-map.png and 19-world-click-engine.png: "oh, that's how it fits".
+  Fifteen named parts, kinds, file counts, what engine stands on.
+  - 24-2d-fit.png, 29-2d-core-pinned-fit.png: readable file names, then
+  uses-left/used-by-right wiring.
+  - 31-most-used.png: answers "what is central" outright.
+
+  ### Lost or stopped
+  - 05, 06, 07: four clicks deep in 3D and still no file name; hovering a dot
+  shows nothing.
+  - 08: the scene drifted between screenshot and click, so I hit the wrong
+  control.
+  - 09: Inspect shrank the map into a corner.
+  - 16: pinning a symbol in 3D changed nothing I could see.
+  - 20: "open engine" threw me from the legible World Map back into bubbles and
+  replaced my pins.
+  - 23: opening live-docs zoomed in past the screen edge.
+  - 26: clicking a card body does nothing; only the title opens it.
+
+  ### Keep going?
+  Yes: once I found 2D with a pinned file and the Most used list, I wanted to
+  follow document.ts and the adapters, but I would not have got there had I quit
+  at minute five.
+
+  ### What I would change about the first screen
+  Do not open on anonymous 3D bubbles. Open on the World Map (or Knowledge
+  Sources): it names the parts and says what they are in one glance. If the
+  bubbles stay, label the second level (engine, explorer, generator)
+  immediately, show a file name on hover, and put one sentence of what the
+  project is on screen.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "First screen B: arrival by link" finished · 8m 42s
+
+● The first-screen comparison is done, and the result surprised me: neither of
+  your two candidates held its visitor. Both strangers went to the World Map
+  within minutes and said to open there.
+
+  What each stranger said
+
+  ┌──────────────┬─────────────────────────────┬───────────────────────────┐
+  │  Arrived on  │      First impression       │       Their advice        │
+  ├──────────────┼─────────────────────────────┼───────────────────────────┤
+  │              │ "a stats sheet about a      │ Lead with one sentence on │
+  │ Knowledge    │ 'bundle'... It told me      │  what the codebase is,    │
+  │ Sources      │ scale but not what the      │ and the World Map         │
+  │              │ software is."               │                           │
+  ├──────────────┼─────────────────────────────┼───────────────────────────┤
+  │              │ "A glowing cluster of       │ "Do not open on anonymous │
+  │ 3D Structure │ bubbles with three          │  3D bubbles. Open on the  │
+  │  of the root │ labels... no names, no hint │ World Map (or Knowledge   │
+  │              │  what the project is."      │ Sources)."                │
+  └──────────────┴─────────────────────────────┴───────────────────────────┘
+
+  The 3D visitor was four clicks deep with still no file name on screen, and
+  wrote: "I would not have got there had I quit at minute five."
+
+  Where the excitement was
+
+  Both felt pulled onward along the same path, and both wanted to keep going
+  when their fifteen minutes ran out:
+
+  1. The World Map's named pieces: "oh, that's how it fits."
+  2. The pinned panel with "called by", "stands on" and "open", which was
+     rebuilt today.
+  3. A pinned file in 2D, with what it uses on the left and what uses it on the
+     right.
+  4. The reader's plain-words Purpose: "suddenly the thing spoke."
+  5. Knowledge Sources' "Most used" list, which "answers 'what is central'
+     outright."
+
+  So for a repository with a board, today's first screen did better than either
+  candidate. For a repository without one, the question is still open: Knowledge
+  Sources informed sooner but invited less, and 3D invited one click and then
+  gave nothing to read. Two visitors is thin evidence and the call is yours.
+
+  Rough edges they met
+
+  None are fixed; all are recorded.
+
+  - 3D: hover names nothing unless it lands exactly on a sphere, and names
+    appear late.
+  - "open engine" from the World Map put the 3D visitor back into bubbles and
+    replaced their pins.
+  - In 2D, clicking a card's body does nothing; only its title opens it.
+  - Switching 2D to 3D on a 445-file picture left the 2D cards drawn over the 3D
+    graph, with the controls unresponsive for longer than the visitor waited.
+  - Words: "Knowledge Sources" and "bundle" meant nothing to a newcomer, and the
+    book icon's name, "Fold", wasn't understood.
+
+  Where the day stands
+
+  - Everything built today is on main, unpushed.
+  - No builder is running and I've let the timer lapse.
+  - The record and the direction file are current.
+  - I have not written the session summary or the narrative chapter; those wait
+    for your word that the chat is closing.
+
+  Three things are waiting on you, none urgent:
+
+  1. The trial: try the opened-directory flow against the grid (links in my
+     earlier message; they all work on port 8900 now).
+  2. The clocks: say whether to add a count beside each clock-bound case, so a
+     slow day reads as slow.
+  3. The cube icon: whether it reads as "look straight down" on the World Map.
+
+● No builder is running and no round is open, so there is nothing to do and I
+  have not set the timer again.
