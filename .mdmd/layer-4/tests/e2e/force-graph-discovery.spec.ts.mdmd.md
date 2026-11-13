@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/force-graph-discovery.spec.ts
-- Generated At: 2026-11-08T17:39:30.933Z
+- Generated At: 2026-11-13T15:57:48.190Z
 
 ## Authored
 ### Purpose
@@ -14,6 +14,10 @@ Shows in the browser that the 3D Local Map under discovery holds exactly what th
 Written on 2026-10-31 with the discovery pass ([Turns 4 to 8 of the October 31 record](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-4)). The expected picture is computed from the bundle by the same pure `spatialScope` and `startOf` the page uses, over the graph the page projects, so that each test says which spheres must be on screen and at what alpha (full spheres at .75, the frontier at .3, the batches' base alpha times the view's), not merely that some are; the frames and counts are read from the rendered scene through the observation instrument. The inspected file's growth is driven by the address, which carries the inspection, and its receding by the reader's Close, since a click on a sphere is held by `inspection.spec.ts` already.
 
 Since November 8, 2026, these bare-file scope and ring checks explicitly carry Off and two hops in their shared state. This preserves the exact spheres, frontier alpha and ring promises while fresh arrivals adopt Skin and one hop. The narrowing journey carries its one-hop override in the same shared state.
+
+**Two bounds on coming to rest in the archipelago case, since 2026-11-13.** The case's two settles, the archipelago's entry and the largest group's growth from its seed, wait through `cameToRest` in [the observation instrument](force-graph-observation.ts.mdmd.md) under two bounds, as in [the update spec's motion case](force-graph-update.spec.ts.mdmd.md). The bound in drawn frames is hard: past it the picture is not coming to rest, whatever the machine. The clock is soft and keeps its figures, 120 s for each settle and 300 s for the case: on a slow machine the case still ends red, by the clock alone, after it has checked the picture at rest. The owner chose that the clock stay red on a slow day: "I personally like that this keeps going red because it literally makes the perf a red-hot sticking point"; "A is a good idea though. I just don't want to see that urgency of bad perf going away" ([Turn 3 of the November 12 record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-12.1.record.md#turn-3)). The hard timeout is only a net for a page that stops drawing: both frame bounds at a pessimistic two frames a second, and a minute more (1,560 s). The other cases keep their 120 s waits unchanged.
+
+Measured on 2026-11-13, 15:41 to 15:45 UTC, while a recomputation of the repository's history ran three processes beside it (load average about 15 on twenty hardware threads): the archipelago entered in 44 frames and 3.0 s (14.5 frames a second); the largest group grew and came to rest in 1,319 frames and 139.2 s (9.5 frames a second), past the 120 s clock, and the case went on and held every other expectation, failing by the clock alone, in 146.6 s. Run again as built from 15:47, under a heavier load (about 21), the growth took the same 1,319 frames in 177.7 s (7.4 frames a second), and the case again failed by the clock alone, in 185.9 s. An earlier run that day, with a trial bound of 600 frames on the growth, stopped it still moving after 601 frames and 66.6 s. The bounds are 300 frames for the entry, which costs some twenty seconds at its frame rate, and 2,700 for the growth, twice the most measured, which catches a growth that never rests in about five minutes at nine frames a second.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -32,6 +36,8 @@ _No public symbols detected_
 - [`forceGraphScope.spatialScope`](../../packages/explorer/src/client/views/forceGraphScope.ts.mdmd.md#symbol-spatialscope-function)
 - [`forceGraphScope.startHops`](../../packages/explorer/src/client/views/forceGraphScope.ts.mdmd.md#symbol-starthops)
 - [`forceGraphScope.startOf`](../../packages/explorer/src/client/views/forceGraphScope.ts.mdmd.md#symbol-startof)
+- [`force-graph-observation.cameToRest`](./force-graph-observation.ts.mdmd.md#symbol-cametorest)
+- [`force-graph-observation.caseClock`](./force-graph-observation.ts.mdmd.md#symbol-caseclock)
 - [`force-graph-observation.observeGraph`](./force-graph-observation.ts.mdmd.md#symbol-observegraph)
 - [`force-graph-observation.renderedLinks`](./force-graph-observation.ts.mdmd.md#symbol-renderedlinks)
 - [`force-graph-observation.renderedNodes`](./force-graph-observation.ts.mdmd.md#symbol-renderednodes)

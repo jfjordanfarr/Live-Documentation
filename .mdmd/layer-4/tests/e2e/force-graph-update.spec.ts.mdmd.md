@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/force-graph-update.spec.ts
-- Generated At: 2026-10-22T16:47:58.264Z
+- Generated At: 2026-11-13T15:57:49.242Z
 
 ## Authored
 ### Purpose
@@ -32,6 +32,20 @@ Since 2026-10-31 (discovery, [Turn 4 of the October 31 record](../../../../AI-Ag
 
 The night before, the same code and data as the second row settled in 111.5 s over 494 frames at 4.4 frames a second. So on this day the case fails on the commit it passed its neighbours on: the machine draws about a tenth fewer frames a second, and the settle takes a quarter more frames, which shows that the frames a settle takes are not fixed by the code and the data. The round's code draws at the old code's rate, and over the same data takes the same frames (641 against 646): the round did not slow this picture, which has no wrapper in it. No wait or budget was changed. What should bound this case is still the owner's question of October 30.
 
+**Two bounds on coming to rest, since 2026-11-13.** The owner answered the question on November 12 ([Turn 3 of the November 12 record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-12.1.record.md#turn-3)): bound the wait in drawn frames, and keep the clock red: "I personally like that this keeps going red because it literally makes the perf a red-hot sticking point"; "A is a good idea though. I just don't want to see that urgency of bad perf going away." So the second test's five settles wait through `cameToRest` in [the observation instrument](force-graph-observation.ts.mdmd.md) under two bounds. The bound in drawn frames is hard: past it the picture is not coming to rest, whatever the machine. The clock is soft and keeps its figures, 150 s for each settle and 240 s for the case: on a slow machine the case still ends red, by the clock alone, after it has checked every reading at rest, so nobody has to rerun it to learn whether the picture was right. The hard timeout is only a net for a page that stops drawing: every frame bound at a pessimistic two frames a second, and a minute more (1,735 s). The first test keeps its own 150 s wait unchanged.
+
+Measured on 2026-11-13, 15:25 to 15:35 UTC, in a run of the case as built but for the return's bound (then 600), while a recomputation of the repository's history ran three processes beside it (load average about 18 on twenty hardware threads); frames are counted from each wait's start, which for the tether is after the slider's change was seen in the layout settings:
+
+| Settle | Frames | Seconds | Frames a second | Frames, November 11, idle | Bound |
+| --- | --- | --- | --- | --- | --- |
+| The whole repository enters | 556 | 232.6 | 2.39 | 494 to 646 | 1,300 |
+| The tests hidden at full energy | 146 | 41.0 | 3.56 | 146 | 450 |
+| The tests shown again | 372 | 162.4 | 2.29 | 220 | 800 |
+| The tests hidden at half energy | 163 | 47.6 | 3.42 | 166 | 450 |
+| A new tether | 110 | 29.4 | 3.74 | 107 | 350 |
+
+The case took 552.8 s, and failed by the clock alone: the entry's 232.6 s and the return's 162.4 s against 150 s, and the case's 552.8 s against 240 s; every other expectation held. A loaded machine takes more frames to the same rest where spheres enter (the return took 372 frames against 220 idle), so each bound is at least twice the most frames measured idle or loaded: the repository's growth by a few dozen files adds a few percent (the entry went from 472 to 592 ticks as the repository grew toward 900 spheres in October), and a picture that never rests is caught within about six minutes at four frames a second, the longest bound being the entry's.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -45,6 +59,8 @@ _No public symbols detected_
 - [`compressed-url-state.compressSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-compresssnapshot)
 - [`local-storage.getDefaultTuning`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-getdefaulttuning)
 - [`forceGraphLayout.QUIET_TICKS`](../../packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md#symbol-quiet_ticks)
+- [`force-graph-observation.cameToRest`](./force-graph-observation.ts.mdmd.md#symbol-cametorest)
+- [`force-graph-observation.caseClock`](./force-graph-observation.ts.mdmd.md#symbol-caseclock)
 - [`force-graph-observation.engineActivity`](./force-graph-observation.ts.mdmd.md#symbol-engineactivity)
 - [`force-graph-observation.markRenderedLinks`](./force-graph-observation.ts.mdmd.md#symbol-markrenderedlinks)
 - [`force-graph-observation.markedRenderedLinks`](./force-graph-observation.ts.mdmd.md#symbol-markedrenderedlinks)

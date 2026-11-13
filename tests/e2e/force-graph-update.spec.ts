@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { engineActivity, markedRenderedLinks, markRenderedLinks, observeGraph, renderedLinks, renderedNodes } from "./force-graph-observation";
+import { cameToRest, caseClock, engineActivity, markedRenderedLinks, markRenderedLinks, observeGraph, renderedLinks, renderedNodes } from "./force-graph-observation";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { getDefaultTuning } from "../../packages/explorer/src/client/persistence/local-storage";
 import { QUIET_TICKS } from "../../packages/explorer/src/client/views/forceGraphLayout";
@@ -125,11 +125,27 @@ async function stillPicture(page: Page): Promise<Map<string, Point>> {
   return second;
 }
 
+/**
+ * This case's bounds on coming to rest (2026-11-13). Each settle is bounded in drawn frames, which says whether the
+ * picture came to rest at all, and by the clock's 150 seconds, as before, softly: on a slow machine the case still
+ * ends red, after checking the picture at rest. The frames are at least twice the most measured, on an idle machine
+ * and a loaded one (a loaded machine takes more frames to the same rest), so that the repository's growth does not
+ * trip them and a picture that never rests is caught within minutes; the measurements are in this file's Live Doc.
+ */
+const REST_FRAMES = { enters: 1300, hidden: 450, shown: 800, gentle: 450, tether: 350 };
+const REST_SECONDS = 150, CASE_SECONDS = 240;
+/** The hard timeout, a safety net only: every frame bound reached at a pessimistic two frames a second, and a minute more. */
+const CASE_NET_SECONDS = Math.ceil(Object.values(REST_FRAMES).reduce((sum, frames) => sum + frames, 0) / 2) + 60;
+
 test("a change at full energy and a gentler one each come to rest and stay still, both keep the lines' objects, and the levers ride the address", async ({ page }) => {
-  test.setTimeout(240_000);
+  // The alarm is the clock: 240 s for the case, checked softly at its end, and 150 s for each settle. The hard timeout
+  // is only the net, for a page that stops drawing; the frame bounds catch a picture that never rests.
+  test.setTimeout(CASE_NET_SECONDS * 1000);
+  const clock = caseClock(CASE_SECONDS);
+  const rest = (label: string, frames: number) => cameToRest(page, { label, frames, seconds: REST_SECONDS });
   await observeGraph(page);
   await page.goto(entry(1, true));
-  await settled(page);
+  await rest("the whole repository enters", REST_FRAMES.enters);
   const start = await stillPicture(page);
   const kept = await markRenderedLinks(page, "before the first toggle");
   expect(kept).toBeGreaterThan(0);
@@ -137,7 +153,7 @@ test("a change at full energy and a gentler one each come to rest and stay still
   // Full energy: the motion eases the change until the spheres are still, and the engine stops then and not before.
   await page.locator("#filter-toggle-tests").uncheck();
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "true");
-  await settled(page);
+  await rest("the tests hidden at full energy", REST_FRAMES.hidden);
   expect(await ticksOfLastChange(page)).toBeGreaterThan(QUIET_TICKS);
   const reduced = await stillPicture(page);
   const tests = new Set([...start.keys()].filter(id => !reduced.has(id)));
@@ -154,7 +170,7 @@ test("a change at full energy and a gentler one each come to rest and stay still
   // In again, so that the gentler change below starts from a still picture of the same membership.
   await page.locator("#filter-toggle-tests").check();
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "true");
-  await settled(page);
+  await rest("the tests shown again", REST_FRAMES.shown);
   expect((await stillPicture(page)).size).toBe(start.size);
 
   // Half the energy, set by the slider as a person would; moving it changes no force, so the still picture does not stir.
@@ -168,7 +184,7 @@ test("a change at full energy and a gentler one each come to rest and stay still
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false");
   await page.locator("#filter-toggle-tests").uncheck();
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "true");
-  await settled(page);
+  await rest("the tests hidden at half energy", REST_FRAMES.gentle);
   expect(await ticksOfLastChange(page)).toBeGreaterThan(QUIET_TICKS);
   await stillPicture(page);
   // The settings ride the address and the container's layout settings, as every layout setting does; the tether is
@@ -183,6 +199,7 @@ test("a change at full energy and a gentler one each come to rest and stay still
   await page.keyboard.press("ArrowRight");
   await expect.poll(async () => (await settings()).tether).toBe(nextTether);
   // A new tether is a change of the forces: the picture unfolds again at full strength and comes to rest.
-  await settled(page);
+  await rest("a new tether", REST_FRAMES.tether);
   await stillPicture(page);
+  clock();
 });

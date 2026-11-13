@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/force-graph-observation.ts
-- Generated At: 2026-11-08T18:31:08.008Z
+- Generated At: 2026-11-13T15:57:48.708Z
 
 ## Authored
 ### Purpose
@@ -18,6 +18,8 @@ For the [October 29 direct renderer](../../../../AI-Agent-Workspace/ChatHistory/
 Actual draws and aria-busy transitions are recorded separately. A draw is not assumed to be a complete physics tick: large evaluations span animation frames. Stable wire-to-buffer bindings and their mesh identities can be marked through a WeakMap and checked across membership changes and historical renames. The idle-picture spec separately checks compositor pixels so an unpainted canvas cannot pass as a correctly idle renderer.
 
 The [projected-wire regressions](force-graph-wires.spec.ts.mdmd.md) isolate one actual uploaded wire, preserve its width/colour/alpha, place its endpoints at controlled camera-relative depths and read GPU pixels before restoring every changed buffer value and visibility. This checks resistance, clipping and caps at multiple pixel densities without predicting shader output from application state. Sphere sizing likewise comes from geometry and uploaded matrices. The renderedPieces observation records each membership as it is submitted, including a piece visible for only one frame, for [the reveal spec](force-graph-reveal.spec.ts.mdmd.md).
+
+Since November 13, 2026, `cameToRest` waits for the picture to come to rest under two bounds, for the two cases that wait for this repository's own whole 3D picture: [the update spec's motion case](force-graph-update.spec.ts.mdmd.md) and [the discovery spec's archipelago case](force-graph-discovery.spec.ts.mdmd.md). The engine takes one physics step per drawn frame and the gate's software renderer draws about four frames a second, so a settle's seconds measure the machine as much as the picture: the same commit settled in 111 s one night and 154 to 158 s the next. The wait ends when `aria-busy` says still or when the frames drawn since it began reach the case's bound, whichever comes first. The bound in frames is a hard expectation and answers whether the picture came to rest at all ("the picture did not come to rest within N drawn frames; after F frames and T s it was still moving"). The clock, the seconds each wait allowed before, is a soft expectation ("… the clock allows S s. Slow, not broken"), so a slow machine still turns the case red, by the clock alone, after the case has gone on to check the picture at rest. `caseClock` keeps a case's own former timeout as the same kind of soft expectation at its end, leaving the hard timeout as a net for a page that stops drawing. The clock stays red on a slow day on purpose: the owner, offered the frame bound in place of the clock, kept both: "I personally like that this keeps going red because it literally makes the perf a red-hot sticking point", and "A is a good idea though. I just don't want to see that urgency of bad perf going away" ([Turn 3 of the November 12 record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-12.1.record.md#turn-3)). Each settle writes one line beginning `came to rest?` to the test's output, and each case one beginning `case clock:`; the `list` reporter prints a test's output as it comes, so the gate's log carries the frames, seconds and frame rate of every settle (annotations would reach only the HTML report).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -46,9 +48,33 @@ Memberships actually submitted, including pieces painted for a single frame.
 ##### `engineActivity` — Summary
 Actual draws and the container's busy/settled transitions, not animation-callback counts.
 
+#### `cameToRest` {#symbol-cametorest}
+- Type: function
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L117)
+- Parameters: `page`: `Page`
+
+##### `cameToRest` — Summary
+Wait for the picture to come to rest, bounded twice. The engine takes one physics step per drawn frame and the
+gate's software renderer draws this repository's whole picture at about four frames a second, so the seconds a
+settle takes measure the machine as much as the picture. The bound in drawn frames, counted from the wait's start, says whether the picture came to rest at
+all: past it, it is not coming to rest, however fast the machine. The clock, the case's seconds as they stood before
+the frame bound, is a soft expectation: a slow settle fails the case, as the owner wants performance kept a red-hot
+sticking point (2026-11-12), and the case goes on to check the picture at rest, so a red result says by itself
+whether the picture was wrong or the machine was slow. Each settle writes one line to the test's output, which the
+gate's `list` reporter prints.
+
+#### `caseClock` {#symbol-caseclock}
+- Type: function
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L138)
+
+##### `caseClock` — Summary
+A case's own clock, kept as a soft expectation at its end: the case's alarm on performance, apart from its hard
+timeout, which is only a safety net for a page that stops drawing. Call it at the case's start; call what it returns
+at the case's end.
+
 #### `markRenderedLinks` {#symbol-markrenderedlinks}
 - Type: function
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L108)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L148)
 - Parameters: `page`: `Page`
 
 ##### `markRenderedLinks` — Summary
@@ -56,7 +82,7 @@ Mark stable wire-to-buffer bindings so updates can prove they retained surviving
 
 #### `markedRenderedLinks` {#symbol-markedrenderedlinks}
 - Type: function
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L121)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L161)
 - Parameters: `page`: `Page`
 
 ##### `markedRenderedLinks` — Summary
@@ -64,7 +90,7 @@ Surviving wires retain both their binding and GPU batch, including across histor
 
 #### `renderedNodes` {#symbol-renderednodes}
 - Type: function
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L138)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L178)
 - Parameters: `page`: `Page`
 
 ##### `renderedNodes` — Summary
@@ -72,7 +98,7 @@ Read identity from the picking index and geometry/alpha/positions from the actua
 
 #### `renderedLinks` {#symbol-renderedlinks}
 - Type: function
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L171)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L211)
 - Parameters: `page`: `Page`
 
 ##### `renderedLinks` — Summary
@@ -83,14 +109,14 @@ was withdrawn with the gradient, 2026-10-31).
 
 #### `referenceWire` {#symbol-referencewire}
 - Type: const
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L207)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L247)
 
 ##### `referenceWire` — Summary
 Whether a wire is a documented reference between two files, rather than containment or a document's citation.
 
 #### `clearStroke` {#symbol-clearstroke}
 - Type: function
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L214)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L254)
 - Parameters: `page`: `Page`
 
 ##### `clearStroke` — Summary
@@ -100,7 +126,7 @@ control, since a sphere or a label under the pointer takes the hover instead.
 
 #### `renderedBodyCarriers` {#symbol-renderedbodycarriers}
 - Type: function
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L228)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L268)
 - Parameters: `page`: `Page`
 
 ##### `renderedBodyCarriers` — Summary
@@ -109,7 +135,7 @@ Read skin vertices and interior marks from uploaded geometry, independently of t
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@playwright/test` - `Page` (type-only)
+- `@playwright/test` - `Page`, `expect`
 - [`forceGraphBatches.SpatialDrawEntry`](../../packages/explorer/src/client/views/forceGraphBatches.ts.mdmd.md#symbol-spatialdrawentry) (type-only)
 - `three` - `BufferGeometry`, `Camera`, `InstancedMesh`, `Mesh`, `Scene`, `Vector3`, `WebGLRenderer` (type-only)
 <!-- LIVE-DOC:END Dependencies -->

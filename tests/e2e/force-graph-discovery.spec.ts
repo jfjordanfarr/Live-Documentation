@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { observeGraph, renderedLinks, renderedNodes } from "./force-graph-observation";
+import { cameToRest, caseClock, observeGraph, renderedLinks, renderedNodes } from "./force-graph-observation";
 import { loadGraph } from "./still-picture";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import type { SpatialLayout } from "../../packages/explorer/src/client/types";
@@ -55,12 +55,28 @@ async function shown(page: Page): Promise<{ ids: Set<string>; alpha: Map<string,
     counts: { shown: number(1), total: number(2), groups: number(3), alone: number(4) } };
 }
 
+/**
+ * The archipelago case's bounds on coming to rest (2026-11-13). Each settle is bounded in drawn frames, which says
+ * whether the picture came to rest at all, and by the clock's 120 seconds, as before, softly: on a slow machine the
+ * case still ends red, after checking the picture at rest. The frames are at least twice the most measured, on a loaded
+ * machine (which takes more frames to the same rest), so that the repository's growth does not trip them and a picture
+ * that never rests is caught within minutes; the measurements are in this file's Live Doc.
+ */
+const REST_FRAMES = { start: 300, grown: 2700 };
+const REST_SECONDS = 120, CASE_SECONDS = 300;
+/** The hard timeout, a safety net only: every frame bound reached at a pessimistic two frames a second, and a minute more. */
+const CASE_NET_SECONDS = Math.ceil(Object.values(REST_FRAMES).reduce((sum, frames) => sum + frames, 0) / 2) + 60;
+
 test("with nothing asked about, the connections layout starts at the archipelago, every group's seed and nothing grown; a click on a seed pins it and grows its group, the other seeds dimmed", async ({ page }) => {
   // Each picture enters over the tuning's frames and settles on screen: the start takes some forty seconds of the software renderer.
-  test.setTimeout(300_000);
+  // The alarm is the clock: 300 s for the case, checked softly at its end, and 120 s for each settle. The hard timeout
+  // is only the net, for a page that stops drawing; the frame bounds catch a picture that never rests.
+  test.setTimeout(CASE_NET_SECONDS * 1000);
+  const clock = caseClock(CASE_SECONDS);
+  const rest = (label: string, frames: number) => cameToRest(page, { label, frames, seconds: REST_SECONDS });
   await observeGraph(page);
   await page.goto(entry());
-  await settled(page);
+  await rest("the archipelago enters", REST_FRAMES.start);
   const { asked, scope, files } = await expected(page, "connections", new Set());
   // This repository's references fall into many groups: one large structure, islands and lone files, each with a seed.
   expect(asked.size, "every group has a seed").toBeGreaterThan(10);
@@ -90,7 +106,7 @@ test("with nothing asked about, the connections layout starts at the archipelago
   await expect(label, "the seed's hover says how large its group is").toHaveAttribute("title", new RegExp(`${largest[1].toLocaleString("en-US")} files in this group`));
   // A click pins the seed: its hops are shown in full with the last hop dimmed, and every other group stands by its seed, dimmed past the frontier.
   await label.click();
-  await settled(page);
+  await rest("the largest group grows from its seed", REST_FRAMES.grown);
   // The grown picture is read at rest, with the pointer off it. The pointer was left where the seed's name stood while
   // the group grew around it, and a hover fades everything but the hovered file's connections. Measured on 2026-11-11,
   // when this repository's picture first settled so: the actions of scripts/layout-lab/verify.ts stood under the
@@ -123,6 +139,7 @@ test("with nothing asked about, the connections layout starts at the archipelago
   await page.locator(".tuning-export").scrollIntoViewIfNeeded();
   await expect(page.locator("#stats-line")).toBeInViewport({ ratio: 1 });
   await page.locator(".tuning-export").click({ trial: true });
+  clock();
 });
 
 test("a pin is asked about: its hops are the picture, the hops lever narrows it, and the structure layout starts at the root", async ({ page }) => {

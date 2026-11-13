@@ -1,4 +1,4 @@
-import type { Page } from "@playwright/test";
+import { expect, type Page } from "@playwright/test";
 import type { BufferGeometry, Camera, InstancedMesh, Mesh, Scene, Vector3, WebGLRenderer } from "three";
 
 import type { SpatialDrawEntry } from "../../packages/explorer/src/client/views/forceGraphBatches";
@@ -102,6 +102,46 @@ export async function engineActivity(page: Page): Promise<{ frames: number; chan
     const inspected = window as unknown as ObservedWindow;
     return { frames: inspected.renderedFrames ?? 0, changes: [...(inspected.busyChanges ?? [])] };
   });
+}
+
+/**
+ * Wait for the picture to come to rest, bounded twice. The engine takes one physics step per drawn frame and the
+ * gate's software renderer draws this repository's whole picture at about four frames a second, so the seconds a
+ * settle takes measure the machine as much as the picture. The bound in drawn frames, counted from the wait's start, says whether the picture came to rest at
+ * all: past it, it is not coming to rest, however fast the machine. The clock, the case's seconds as they stood before
+ * the frame bound, is a soft expectation: a slow settle fails the case, as the owner wants performance kept a red-hot
+ * sticking point (2026-11-12), and the case goes on to check the picture at rest, so a red result says by itself
+ * whether the picture was wrong or the machine was slow. Each settle writes one line to the test's output, which the
+ * gate's `list` reporter prints.
+ */
+export async function cameToRest(page: Page, bounds: { label: string; frames: number; seconds: number }): Promise<void> {
+  const began = Date.now(), from = (await engineActivity(page)).frames;
+  // Polled four times a second in the page, with no time limit of its own: the frame bound ends it.
+  const reading = await page.waitForFunction(({ from, bound }) => {
+    const frames = ((window as unknown as ObservedWindow).renderedFrames ?? 0) - from;
+    const still = document.getElementById("graph-svg")?.getAttribute("aria-busy") === "false";
+    return still || frames >= bound ? { still, frames } : null;
+  }, { from, bound: bounds.frames }, { polling: 250, timeout: 0 });
+  const { still, frames } = (await reading.jsonValue())!;
+  const seconds = (Date.now() - began) / 1000, rate = (frames / seconds).toFixed(2), took = seconds.toFixed(1);
+  console.log(`came to rest? ${bounds.label}: ${still ? "yes" : "no"}, ${frames} frames in ${took} s at ${rate} frames a second; bounds ${bounds.frames} frames, ${bounds.seconds} s`);
+  expect(still, `the picture did not come to rest within ${bounds.frames} drawn frames; after ${frames} frames and ${took} s it was still moving`).toBe(true);
+  expect.soft(seconds, `the picture came to rest in ${frames} frames, which took ${took} s on this machine at ${rate} frames a second; the clock allows ${bounds.seconds} s. Slow, not broken`)
+    .toBeLessThanOrEqual(bounds.seconds);
+}
+
+/**
+ * A case's own clock, kept as a soft expectation at its end: the case's alarm on performance, apart from its hard
+ * timeout, which is only a safety net for a page that stops drawing. Call it at the case's start; call what it returns
+ * at the case's end.
+ */
+export function caseClock(seconds: number): () => void {
+  const began = Date.now();
+  return () => {
+    const took = (Date.now() - began) / 1000;
+    console.log(`case clock: ${took.toFixed(1)} s; the clock allows ${seconds} s`);
+    expect.soft(took, `the case took ${took.toFixed(1)} s on this machine; its clock allows ${seconds} s. Slow, not broken`).toBeLessThanOrEqual(seconds);
+  };
 }
 
 /** Mark stable wire-to-buffer bindings so updates can prove they retained surviving identities. */
