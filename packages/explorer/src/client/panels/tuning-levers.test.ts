@@ -15,8 +15,8 @@ const templateControlIds = (): string[] =>
 describe("tuning help", () => {
   it("covers every tuning control in the template, and names no control the template lacks", () => {
     const ids = templateControlIds();
-    // Width Cost joined the 2D layout group on 2026-11-13, beside Height Cost; Closed Directory the same day.
-    expect(ids.length).toBe(59);
+    // Width Cost joined the 2D layout group on 2026-11-13, beside Height Cost; Closed Directory and Zoomed Out Fully the same day.
+    expect(ids.length).toBe(60);
     expect(Object.keys(TUNING_HELP).sort()).toEqual([...ids].sort());
   });
 
@@ -71,7 +71,7 @@ describe("the template's initial tuning values", () => {
   it("equal the defaults in getDefaultTuning for every control", () => {
     const defaults = getDefaultTuning();
     const ids = templateControlIds();
-    expect(ids.length).toBe(59);
+    expect(ids.length).toBe(60);
     for (const id of ids) {
       const { group, key } = settingOf(id, defaults);
       const expected = (defaults[group] as unknown as Record<string, unknown>)[key];

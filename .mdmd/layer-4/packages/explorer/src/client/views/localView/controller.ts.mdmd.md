@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/controller.ts
-- Generated At: 2026-11-12T22:02:41.188Z
+- Generated At: 2026-11-13T23:28:43.622Z
 
 ## Authored
 ### Purpose
@@ -62,12 +62,14 @@ The directory flow trial's hover (2026-11-12): while opened directories stand in
 
 Since 2026-11-13 ([Turn 3 of that day's record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-3), the three looks made the default) `morphLook` draws the wires again when a change of look's animations end: drawn the frame after the change, they had ended where a travelling anchor dot stood at its first frame and stayed there at rest, a pinned symbol's wire 1.47 px off its dot at the overview look, which `local-map-overview.spec.ts` found once it ran in the default.
 
+Since 2026-11-13 ([Turn 8](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-8)) the controller also draws files only at the overview look when Tuning → 2D Layout → Zoomed Out Fully says so, a trial for the owner's eye: at the change of look it writes `data-overview-files` on the container and has the branch renderer lay the same branches out again for the compact cards, holding the element under the pointer still (or the card nearest the frame's centre), and Fit frames the picture with its rows from either layout (`overview-files.ts`).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LocalViewController` {#symbol-localviewcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L77)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L78)
 - Implements: [`LocalViewApi`](./types.ts.mdmd.md#symbol-localviewapi)
 
 ##### `LocalViewController` — Summary
@@ -116,6 +118,10 @@ Coordinates the native Local Map, independent exploration pins and explicit FROM
 - [`layout-measure.settleTransform`](./layout-measure.ts.mdmd.md#symbol-settletransform)
 - [`layout-measure.wholeTransform`](./layout-measure.ts.mdmd.md#symbol-wholetransform)
 - [`layout-measure.withTransformReset`](./layout-measure.ts.mdmd.md#symbol-withtransformreset)
+- [`overview-files.OVERVIEW_FILES_ATTRIBUTE`](./overview-files.ts.mdmd.md#symbol-overview_files_attribute)
+- [`overview-files.heldIndex`](./overview-files.ts.mdmd.md#symbol-heldindex)
+- [`overview-files.overviewFilesShown`](./overview-files.ts.mdmd.md#symbol-overviewfilesshown)
+- [`overview-files.rowsFrame`](./overview-files.ts.mdmd.md#symbol-rowsframe)
 - [`pan-zoom.animateMapTransform`](./pan-zoom.ts.mdmd.md#symbol-animatemaptransform)
 - [`pan-zoom.cancelInertia`](./pan-zoom.ts.mdmd.md#symbol-cancelinertia)
 - [`pan-zoom.handleDragEnd`](./pan-zoom.ts.mdmd.md#symbol-handledragend)

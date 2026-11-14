@@ -56,6 +56,7 @@ import {
 import { clearConnections, drawConnections } from "./connections";
 import { createEdgeSigns, type EdgeSigns, type FramePlace } from "./edge-signs";
 import { ladderBand, ladderScales, ladderStep, LOOK_BANDS, LOOK_SCALES, zoomLook, type LadderBand, type ZoomLook } from "./ladder-steps";
+import { heldIndex, OVERVIEW_FILES_ATTRIBUTE, overviewFilesShown, rowsFrame } from "./overview-files";
 import {
   computeSymbolHighlight,
   applySymbolHighlight,
@@ -117,6 +118,10 @@ export class LocalViewController implements LocalViewApi {
   readonly expandedCards = new Set<string>();
   /** The card under the pointer or holding the keyboard's focus while opened directories stand in flow order; null otherwise. */
   private flowHover: string | null = null;
+  /** Whether the camera moves to Fit's frame, which already holds the picture with its rows: files only then holds nothing. */
+  private fitFraming = false;
+  /** Where the pointer last stood over the map, in the page's pixels; null once it has left. */
+  private pointerAt: { x: number; y: number } | null = null;
   /** Stable card text and temporary attention, with deliberate choices owned by the application. */
   readonly reading: CardReading | null;
   /** A reading change holds the card's name through its move; under hover anchoring the pointer re-anchors only once that move has ended. */
@@ -285,6 +290,7 @@ export class LocalViewController implements LocalViewApi {
   };
 
   private readonly handleWheel = (event: WheelEvent): void => {
+    this.fitFraming = false;
     this.readingCalibrationPending = false;
     this.readingFrameTarget = null;
     this.directoryArrivalPending = false;
@@ -590,6 +596,8 @@ export class LocalViewController implements LocalViewApi {
     this.contentRoot = root;
     this.container.style.setProperty("--slot-lines", String(Math.max(1, Math.round(this.options.state.tuning.localMap.slotLines))));
     this.applyLevelOfDetail(this.mapTransform.k / this.readingReferenceScale);
+    // A render lays the picture out for what the look draws: files only at the overview needs no move of its own.
+    this.container.toggleAttribute(OVERVIEW_FILES_ATTRIBUTE, overviewFilesShown(this.options.state.tuning.localMap, this.look));
     this.reading?.updatePresentation(this.readingVisible);
     const stage = this.stage ?? (this.stage = createStage(root, this.overlay));
     renderBranches(this, stage);
@@ -608,7 +616,7 @@ export class LocalViewController implements LocalViewApi {
     const leaving = event.type === "pointerleave" || event.type === "focusout";
     const target = leaving ? (event as FocusEvent).relatedTarget : event.target;
     const card = target instanceof Element && this.container.contains(target) ? target.closest<HTMLElement>(".node-card") : null;
-    const id = this.branches?.flow ? card?.dataset.id ?? null : null;
+    const id = this.branches?.flow || this.container.hasAttribute(OVERVIEW_FILES_ATTRIBUTE) ? card?.dataset.id ?? null : null;
     if (id === this.flowHover) return;
     this.flowHover = id;
     this.applyFlowHover();
@@ -623,7 +631,9 @@ export class LocalViewController implements LocalViewApi {
    */
   private applyFlowHover(): void {
     const branches = this.branches, id = this.flowHover;
-    const lit = id && branches?.flow ? flowNeighbours(branches.subgraph.links, new Set(branches.subgraph.nodes.map(node => node.id)), id) : null;
+    // Files only at the overview (2026-11-13) draws Flow's lines, and takes Flow's hover with them.
+    const flowing = !!branches?.flow || this.container.hasAttribute(OVERVIEW_FILES_ATTRIBUTE);
+    const lit = id && branches && flowing ? flowNeighbours(branches.subgraph.links, new Set(branches.subgraph.nodes.map(node => node.id)), id) : null;
     const on = lit !== null;
     if (!on && !this.container.classList.contains("flow-hover")) return;
     this.container.classList.toggle("flow-hover", on);
@@ -971,6 +981,7 @@ export class LocalViewController implements LocalViewApi {
 
   /** Zooms the map in by 20%. */
   zoomIn(): void {
+    this.fitFraming = false;
     this.readingCalibrationPending = false;
     this.readingFrameTarget = null;
     this.focusRequest = null;
@@ -979,6 +990,7 @@ export class LocalViewController implements LocalViewApi {
 
   /** Zooms the map out by ~17%. */
   zoomOut(): void {
+    this.fitFraming = false;
     this.readingCalibrationPending = false;
     this.readingFrameTarget = null;
     this.focusRequest = null;
@@ -1008,7 +1020,12 @@ export class LocalViewController implements LocalViewApi {
   fitWhole(): void {
     if (!this.runtime.contentRoot) return;
     this.beginCameraGesture();
-    this.fitMap((extents, frame) => wholeTransform(extents.content, frame, this.readingReferenceScale));
+    this.fitFraming = true;
+    // With files only shown at the overview, Fit frames the picture its rows would draw (overview-files.ts's rowsFrame,
+    // 2026-11-13), so that it frames the same thing from either layout and a second press changes nothing.
+    const pose = this.stage?.pose, rows = this.container.hasAttribute(OVERVIEW_FILES_ATTRIBUTE) ? this.stage?.rowsPicture ?? null : null;
+    this.fitMap((extents, frame) => wholeTransform(pose ? rowsFrame(extents.content, { width: pose.pictureWidth, height: pose.pictureHeight }, rows) : extents.content,
+      frame, this.readingReferenceScale));
     this.mapUserAdjusted = true;
   }
 
@@ -1279,6 +1296,7 @@ export class LocalViewController implements LocalViewApi {
     // the viewport has actually reached its terminal zoom destination" (2026-11-06, Turn 12).
     const ratio = this.mapTransform.k / this.readingReferenceScale;
     this.applyLevelOfDetail(ratio);
+    this.applyOverviewFiles();
     this.reportZoomLimits();
     this.watchCamera();
     if (this.reading && this.stage?.search && !this.readingFrame && !this.readingCalibrationPending) {
@@ -1418,6 +1436,43 @@ export class LocalViewController implements LocalViewApi {
     }, 200);
   }
 
+
+  /**
+   * Files only at the overview look (Tuning → 2D Layout → Zoomed Out Fully, a trial for the owner's eye, 2026-11-13;
+   * the record's Turn 8): when the look shown enters or leaves the overview with the choice made, every file card takes or
+   * leaves the compact form an opened directory's member has, and the same branches are laid out again for those sizes
+   * and moved to as a fold moves them (`refreshReadingGeometry`, the search kept where it stood), over the tuning's Move
+   * Length beside the look's own 160 ms text morph, nothing travelling where the person prefers reduced motion. The
+   * element under the pointer is held still on screen, else the one nearest the frame's centre. The move changes no
+   * zoom, so the look it was made for stays.
+   */
+  private applyOverviewFiles(): void {
+    const tuning = this.options.state.tuning.localMap, container = this.container;
+    const on = overviewFilesShown(tuning, this.look);
+    if (on === container.hasAttribute(OVERVIEW_FILES_ATTRIBUTE)) return;
+    const change = (): void => { container.toggleAttribute(OVERVIEW_FILES_ATTRIBUTE, on); };
+    const stage = this.stage;
+    if (!stage?.pose || !stage.search) { change(); return; }
+    // Fit's camera already moves to the frame of the picture with its rows (fitWhole): nothing is held against it.
+    if (this.fitFraming && this.runtime.mapAnimationTarget) {
+      delete container.dataset.overviewHeld;
+      refreshReadingGeometry(this, stage, change, false, { held: null, moveMs: this.overviewMoveMs(), keepWidths: true });
+      return;
+    }
+    const wrappers = [...stage.wrappers];
+    const view = this.viewport.getBoundingClientRect();
+    const held = heldIndex(wrappers.map(([, wrapper]) => wrapper.getBoundingClientRect()), this.pointerAt,
+      { x: view.left + view.width / 2, y: view.top + view.height / 2 });
+    // Which element was held, by its file or directory, for whoever reads the page.
+    container.dataset.overviewHeld = wrappers[held]?.[0] ?? "";
+    refreshReadingGeometry(this, stage, change, false, { held: wrappers[held]?.[1], moveMs: this.overviewMoveMs(), keepWidths: true });
+  }
+
+  /** The move between the two layouts: the tuning's Move Length, none where the person prefers reduced motion. */
+  private overviewMoveMs(): number {
+    const reduced = typeof matchMedia === "function" && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    return reduced ? 0 : Math.max(0, this.options.state.tuning.localMap.moveMs);
+  }
 
   /** Pan only as far as the focused command needs, including while its native row is moving. */
   private revealKeyboardFocus(): boolean {
@@ -1648,6 +1703,9 @@ export class LocalViewController implements LocalViewApi {
    * keeps the browser's own scrolling and zooming off it.
    */
   private bindPointerEvents(): void {
+    // Where the pointer stands, for the element files only at the overview holds still (2026-11-13).
+    this.viewport.addEventListener("pointermove", event => { this.pointerAt = { x: event.clientX, y: event.clientY }; });
+    this.viewport.addEventListener("pointerleave", () => { this.pointerAt = null; });
     this.viewport.addEventListener("pointerdown", event => {
       // Mouse presses on cards preserve text selection. Touch can pan from prose after movement, while commands
       // keep their native activation; neither a command nor a mouse's other button starts a drag.
@@ -1685,6 +1743,7 @@ export class LocalViewController implements LocalViewApi {
 
   /** A movement, rather than a tap on readable prose, takes ownership of the camera. */
   private beginCameraGesture(): void {
+    this.fitFraming = false;
     this.directoryArrivalPending = false;
     this.focusRequest = null;
     this.readingCalibrationPending = false;

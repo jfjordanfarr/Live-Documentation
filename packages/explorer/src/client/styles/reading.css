@@ -272,6 +272,17 @@
    pinned by its own highlight. Every row's box stays where it is. */
 [data-lod="overview"] .local-slot-card .symbol-row:not(.symbol-pinned-named) > :is(.symbol-label-wrapper, .symbol-anchor) { visibility: hidden; }
 [data-lod="overview"] .local-slot-card.file-pinned { box-shadow: 0 0 0 1px var(--accent), 0 0 8px var(--color-outbound-glow); }
+/* Files only at the overview look (Tuning → 2D Layout → Zoomed Out Fully, a trial of 2026-11-13; the owner: "the "Flow"
+   look is much closer to what the full zoom-out in the 2D Local Map might reasonably be"): the controller writes
+   data-overview-files and every file card takes the compact form an opened directory's member has in Flow, no row laid
+   out, its width and column kept, the scene laid out again for those heights (overview-files.ts). A card with a symbol
+   pinned by name says so as a pinned file does, since its row is not drawn. */
+[data-overview-files] .node-card.local-slot-card .symbol-row { display: none; }
+/* The compact card is as tall as its name needs whole at the look's size (the card reading's --files-card-h). */
+[data-overview-files] .node-card.local-slot-card { min-height: calc(var(--files-card-h, 0) * 1px); }
+/* Its name is held at the card reading's scale for it, the look's own unless a segment of the name would not fit across. */
+[data-overview-files][data-lod="overview"] .local-slot-card { --title-scale: max(1, min(var(--files-name-scale, var(--text-scale, 1)), var(--title-room-h) / var(--title-line))); }
+[data-overview-files] .local-slot-card:has(.symbol-pinned-named) { box-shadow: 0 0 0 1px var(--accent), 0 0 8px var(--color-outbound-glow); }
 
 /* The card's header from the middle band out, ordered under six principles (the header round of 2026-11-08, the
    November 7 record's Turns 3 and 4; held-lines.ts states them): the file's name leads on the header's first line, held

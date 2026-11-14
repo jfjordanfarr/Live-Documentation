@@ -42,6 +42,7 @@ export const TUNING_HELP: Readonly<Record<string, string>> = {
   "tuning-zoom-looks":                "With fixed slots, how cards change as the map zooms out: at every press, or only twice, between three looks.",
   "tuning-directory-layout":          "How an opened directory stands: a grid with no lines, or in order of use with a line for each pair of files.",
   "tuning-closed-directory":          "How a closed directory is drawn: a box, a skin of cells, a stack of cards, or a folded membrane; its size stays.",
+  "tuning-overview-files":            "What the farthest zoom draws: every card at its size, or files only with one line for each pair, as in Flow.",
   "tuning-slot-lines":                "With fixed slots, how many lines of text each symbol's slot holds, filled or not.",
   "tuning-text-resistance":           "With fixed slots, how much names resist the zoom below reading scale: 0 follows it, 1 holds their screen size.",
   "tuning-name-growth":               "With fixed slots, how much symbol names grow into the room descriptions leave below reading scale: 1 keeps one size.",

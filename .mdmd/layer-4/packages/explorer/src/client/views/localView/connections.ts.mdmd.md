@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/connections.ts
-- Generated At: 2026-11-12T22:02:40.908Z
+- Generated At: 2026-11-14T00:14:41.958Z
 
 ## Authored
 ### Purpose
@@ -29,12 +29,16 @@ In the root's fourth review of the round (2026-11-07) a second reader found that
 
 Since 2026-11-12 a pair line of the directory flow trial is drawn at every band as the overview band draws a gathered wire: hub to hub, as wide as the links it stands for, described by its two files, and under the same element key, so that zooming out to the overview keeps the element. It joins no bundle's shared run, as the overview's gathered wires do not; lines of one hub still share a lane's slot through a column they pass together. `NODE_HUB` moved to `wire-gathering.ts`, which has no DOM, so that `directory-flow.ts` could name the hubs.
 
+Since 2026-11-13 ([Turn 8](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-8)), with files only at the overview look, a reference counts toward its pair's gathered line where its rows are disclosed, though no row is laid out, and no symbol's own wire is drawn.
+
+In the trial's second round (2026-11-14) the pairs' lines also stand while `data-overview-lines` says the move back in from files only runs, and the overview's drawing measures every card's hubs before it writes a wire: a look change on the crowded client picture had spent most of its 1.9 s in style recalculations forced by hubs first measured after a wire was written.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ConnectionsContext` {#symbol-connectionscontext}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L15)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L16)
 
 ##### `ConnectionsContext` — Summary
 Ambient context required by {@link drawConnections} to measure DOM
@@ -42,7 +46,7 @@ anchors, read explorer state, and emit SVG paths.
 
 #### `drawConnections` {#symbol-drawconnections}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L73)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L74)
 - Parameters: `context`: [`ConnectionsContext`](#symbol-connectionscontext)
 
 ##### `drawConnections` — Summary
@@ -56,7 +60,7 @@ cost more than the measuring and the routing together).
 
 #### `clearConnections` {#symbol-clearconnections}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L105)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L106)
 - Parameters: `runtime`: [`LocalViewRuntime`](./runtime.ts.mdmd.md#symbol-localviewruntime)
 
 ##### `clearConnections` — Summary
@@ -83,6 +87,8 @@ Takes every wire off the overlay and forgets the layer; the next drawing makes a
 - [`branches.edgeKey`](./branches.ts.mdmd.md#symbol-edgekey)
 - [`directory-flow.isPairLine`](./directory-flow.ts.mdmd.md#symbol-ispairline)
 - [`directory-flow.linksOf`](./directory-flow.ts.mdmd.md#symbol-linksof)
+- [`overview-files.OVERVIEW_FILES_ATTRIBUTE`](./overview-files.ts.mdmd.md#symbol-overview_files_attribute)
+- [`overview-files.OVERVIEW_LINES_ATTRIBUTE`](./overview-files.ts.mdmd.md#symbol-overview_lines_attribute)
 - [`runtime.LocalViewRuntime`](./runtime.ts.mdmd.md#symbol-localviewruntime) (type-only)
 - [`runtime.WireLayer`](./runtime.ts.mdmd.md#symbol-wirelayer) (type-only)
 - [`types.ColumnRole`](./types.ts.mdmd.md#symbol-columnrole) (type-only)

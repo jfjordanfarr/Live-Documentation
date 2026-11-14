@@ -7,6 +7,7 @@ import { CELLS } from "./closed-looks";
 import { chooseHeldHeader, chooseNameHeader, CONTROLS_GAP, HELD_BANDS, heldLineCount, heldSegments, heldTitle, rowSegments, type HeldBand, type HeldRoom, type TitleRooms } from "./held-lines";
 import { dotRoom, evenRows, fitLines, footHold, HEAD_SPACE, headHeight, HIGHLIGHT_BELOW, layoutTopOf, linesOf, nameFill, nameLinesHeld, nameWraps, pinDepth, type FootCount } from "./ladder-rooms";
 import { FIRST_STEP, LAST_STEP, ladderScales, LOOK_BANDS, LOOK_SCALES, type LadderResistances, type ZoomLook } from "./ladder-steps";
+import { COMPACT_AIR, filesNameScale, OVERVIEW_FILES_ATTRIBUTE } from "./overview-files";
 import type { LocalEdge, ReadingControl } from "./types";
 import { seamsOf } from "./word-seams";
 import type { ExplorerNodePayload } from "../../../shared/types";
@@ -558,16 +559,33 @@ function measureRooms(card: HTMLElement, resistances: LadderResistances, looks: 
     controlCeiling: (32 + (parseFloat(cardStyle.getPropertyValue("--slot-lines")) || 2) * 17) / 20,
     line: parseFloat(cardStyle.getPropertyValue("--title-line")) || 15
   };
+  const held = title.querySelector<HTMLElement>(".local-file-name-held");
+  // With files only at the overview (2026-11-13) a compact card's name is held whole and broken only at its seams, as
+  // Flow's are: at the look's size, or smaller where its widest segment would not fit across (filesNameScale); and the
+  // card is as tall as the name needs, its More beside or below it, with air below its last line. The member's form had
+  // held two lines and cut names that the tall card held whole.
+  let overviewScale: number | undefined;
+  if (looks && held && card.closest(`[${OVERVIEW_FILES_ATTRIBUTE}]`)) {
+    const measure = textMeasure(getComputedStyle(held)), text = held.dataset.name ?? "";
+    overviewScale = filesNameScale(rooms.roomW, Math.max(0, ...heldSegments(text).map(segment => measure(segment.trim()))));
+    const tall = heldTitle({ ...rooms, cardH: Number.MAX_SAFE_INTEGER }, "overview", { text: overviewScale, control: overviewScale }, null);
+    const named = chooseNameHeader(text, tall.room, measure);
+    const needed = fixed((Math.max(named.lines.length * rooms.line, named.controls.top + tall.room.controlsHeight) + COMPACT_AIR * rooms.line) * tall.scale);
+    rooms.cardH = Math.max(rooms.cardH, needed);
+    // The card's min-height in its own box model: a border box counts its padding and border below the content too.
+    const below = cardStyle.boxSizing === "border-box" ? parseFloat(cardStyle.paddingBottom) + parseFloat(cardStyle.borderBottomWidth) : 0;
+    const top = cardStyle.boxSizing === "border-box" ? cardRect.top : cardRect.top + (parseFloat(cardStyle.borderTopWidth) + parseFloat(cardStyle.paddingTop)) * k;
+    writes.push([card, "--files-card-h", ((titleRect.top - top) / k + needed + below).toFixed(1)], [card, "--files-name-scale", overviewScale.toFixed(3)]);
+  } else writes.push([card, "--files-name-scale", ""]);
   writes.push(
     [card, "--title-room-w", String(rooms.roomW)],
     [card, "--title-head-h", String(rooms.headH)],
     [card, "--title-card-h", String(rooms.cardH)],
     [card, "--title-more-h", String(rooms.moreH)]
   );
-  const held = title.querySelector<HTMLElement>(".local-file-name-held");
   if (held) {
     const name: HeldName = { held, actions, nameY: fixed((titleRect.top - headerRect.top) / k), text: held.dataset.name ?? "",
-      measure: textMeasure(getComputedStyle(held)), rooms, resistances, looks };
+      measure: textMeasure(getComputedStyle(held)), rooms, resistances, looks, overviewScale };
     heldNames.set(card, name);
     writes.push(...heldLineWrites(name, HELD_BANDS, pinDepths(card, heights, rowsGap)));
     if (looks) writes.push(...footWrites(card, { k, cardRect, contentBottom, grid, titleTop: titleRect.top, header: connectionsHeaderHeight(name) }));
@@ -740,6 +758,8 @@ interface HeldName {
   resistances: LadderResistances;
   /** Whether the trial's zoom looks draw the card, whose lines are chosen for each look's one scale as well. */
   looks: boolean;
+  /** The overview look's scale for this card's name with files only (filesNameScale); absent, the look's own. */
+  overviewScale?: number;
 }
 const heldNames = new WeakMap<HTMLElement, HeldName>();
 
@@ -772,7 +792,8 @@ function heldLineWrites(name: HeldName, bands: readonly HeldBand[], depths: PinD
   }
   if (name.looks) for (const look of HELD_LOOKS) {
     const band = LOOK_BANDS[look] as HeldBand;
-    if (bands.includes(band)) write(band, `look-${look}`, { text: LOOK_SCALES[look], control: LOOK_SCALES[look] }, depths.even, true);
+    const scale = look === "overview" ? name.overviewScale ?? LOOK_SCALES[look] : LOOK_SCALES[look];
+    if (bands.includes(band)) write(band, `look-${look}`, { text: scale, control: scale }, depths.even, true);
   }
   return writes;
 }
@@ -821,8 +842,10 @@ interface PinDepths {
  */
 function pinDepths(card: HTMLElement, heights?: ReadonlyMap<HTMLElement, number>, gap?: number): PinDepths {
   const rowGap = gap ?? (parseFloat(card.dataset.rowsGap ?? "") || 0);
+  // With files only at the overview (2026-11-13) no row is drawn, and the name's room is the whole compact card.
+  const filesOnly = card.closest(`[${OVERVIEW_FILES_ATTRIBUTE}]`) !== null;
   const rows = [...card.querySelectorAll<HTMLElement>(".symbol-row")].map(row => ({
-    shown: !row.classList.contains("branch-symbol-hidden") && !row.classList.contains("symbol-collapsed"),
+    shown: !filesOnly && !row.classList.contains("branch-symbol-hidden") && !row.classList.contains("symbol-collapsed"),
     pinned: row.classList.contains("symbol-pinned-named"),
     height: heights?.get(row) ?? (parseFloat(row.dataset.layoutHeight ?? "") || 0),
     head: parseFloat(row.dataset.headH ?? "") || undefined,

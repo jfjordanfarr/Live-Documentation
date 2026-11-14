@@ -100,6 +100,13 @@ export interface LocalMapTuning {
    * label, folded. Looks only: the box's size and what its controls do are the same in each.
    */
   closedDirectory: ClosedDirectoryLook;
+  /**
+   * With the three looks, what the overview look draws (a trial for the owner's eye, 2026-11-13): "keep", the default,
+   * every card at the size its rows give it, as at the closer looks; "files", every file card in the compact form an
+   * opened directory's member has in Flow, one line for each pair of cards where one uses the other, laid out again for
+   * those sizes and moved to.
+   */
+  overviewFiles: OverviewFiles;
   /** With fixed slots, how many lines of text each symbol's slot holds, filled or not; the default is to be found by eye (2026-11-05). */
   slotLines: number;
   /** With fixed slots, how much names resist the zoom below reading scale: 0 follows the map, 1 holds screen size (2026-11-05). */
@@ -257,6 +264,12 @@ export type ClosedDirectoryLook = "box" | "cells" | "stack" | "folded";
 
 /** Every Closed Directory choice, in the order the control offers them; the first, today's box, is the default. */
 export const CLOSED_DIRECTORY_LOOKS: readonly ClosedDirectoryLook[] = ["box", "cells", "stack", "folded"];
+
+/** What the 2D map's overview look draws: cards at their size, or files only, as in Flow (the trial of 2026-11-13). */
+export type OverviewFiles = "keep" | "files";
+
+/** Every Zoomed Out Fully choice, in the order the control offers them, the default first. */
+export const OVERVIEW_FILES: readonly OverviewFiles[] = ["keep", "files"];
 
 /** The 3D Local Map's packing and stable visual encodings, shared with the headless layout lab. */
 export interface ForceGraphTuning {

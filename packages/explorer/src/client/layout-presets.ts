@@ -1,4 +1,4 @@
-import { CLOSED_DIRECTORY_LOOKS, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, ZOOM_LOOKS, type ForceGraphTuning, type LocalMapTuning, type TuningConfig } from "./types";
+import { CLOSED_DIRECTORY_LOOKS, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, OVERVIEW_FILES, ZOOM_LOOKS, type ForceGraphTuning, type LocalMapTuning, type TuningConfig } from "./types";
 
 /** One packing preference interpreted by both Local Map representations. */
 export type LayoutPreset = "compact" | "relaxed";
@@ -8,7 +8,7 @@ type SpatialPacking = Pick<ForceGraphTuning, "linkGap" | "charge" | "collisionGa
 
 /** Portable numeric settings behind the presets and spatial encodings; older URLs may omit them. */
 export interface LayoutSettings {
-  localMap?: Partial<FlatPacking & Pick<LocalMapTuning, "zoomLooks" | "directoryLayout" | "closedDirectory">>;
+  localMap?: Partial<FlatPacking & Pick<LocalMapTuning, "zoomLooks" | "directoryLayout" | "closedDirectory" | "overviewFiles">>;
   forceGraph?: Partial<ForceGraphTuning>;
 }
 
@@ -76,9 +76,10 @@ export function readLayoutSettings(value: unknown): LayoutSettings | undefined {
       const zoomLooks = ZOOM_LOOKS.slice(1).find(choice => choice === (input as Record<string, unknown>).zoomLooks);
       const directoryLayout = DIRECTORY_LAYOUTS.slice(1).find(choice => choice === (input as Record<string, unknown>).directoryLayout);
       const closedDirectory = CLOSED_DIRECTORY_LOOKS.slice(1).find(choice => choice === (input as Record<string, unknown>).closedDirectory);
-      if (Object.keys(numbers).length || zoomLooks || directoryLayout || closedDirectory) {
+      const overviewFiles = OVERVIEW_FILES.slice(1).find(choice => choice === (input as Record<string, unknown>).overviewFiles);
+      if (Object.keys(numbers).length || zoomLooks || directoryLayout || closedDirectory || overviewFiles) {
         result.localMap = { ...numbers, ...(zoomLooks ? { zoomLooks } : null), ...(directoryLayout ? { directoryLayout } : null),
-          ...(closedDirectory ? { closedDirectory } : null) };
+          ...(closedDirectory ? { closedDirectory } : null), ...(overviewFiles ? { overviewFiles } : null) };
       }
       continue;
     }
@@ -97,12 +98,13 @@ export function layoutSettingsOf(tuning: TuningConfig): LayoutSettings {
  * Merge a validated partial snapshot over the current values, leaving unrelated preferences intact. A snapshot that
  * carries the 2D map's settings without saying how an opened directory stands says Flow, the default, since only the
  * grid is written (2026-11-13); one that does not say its Zoom Looks says the three looks, since only the ladder is
- * written (2026-11-13); one that does not say its Closed Directory says the box (2026-11-13). So a link made with the
- * defaults shows them in a browser whose own tuning holds the other choices.
+ * written (2026-11-13); one that does not say its Closed Directory says the box (2026-11-13); and one that does not say
+ * what the overview look draws says cards at their size, since only files only is written (the trial of 2026-11-13). So
+ * a link made with the defaults shows them in a browser whose own tuning holds the other choices.
  */
 export function applyLayoutSettings(tuning: TuningConfig, settings: LayoutSettings | undefined): TuningConfig {
   const directory = settings?.localMap ? { directoryLayout: DIRECTORY_LAYOUTS[0] } : null;
-  const looks = settings?.localMap ? { zoomLooks: ZOOM_LOOKS[0] } : null;
+  const looks = settings?.localMap ? { zoomLooks: ZOOM_LOOKS[0], overviewFiles: OVERVIEW_FILES[0] } : null;
   const closed = settings?.localMap ? { closedDirectory: CLOSED_DIRECTORY_LOOKS[0] } : null;
   return { ...tuning, localMap: { ...tuning.localMap, ...directory, ...looks, ...closed, ...settings?.localMap }, forceGraph: { ...tuning.forceGraph, ...settings?.forceGraph } };
 }

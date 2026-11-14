@@ -5,6 +5,7 @@ import type { ColumnRole, LayoutExtents, LocalEdge } from "./types";
 import type { BezierTuning, ExplorerState, LocalMapTuning } from "../../types";
 import { computeSelfLoopStubs, DEFAULT_SELF_LOOP_PARAMS, type LaceEdges, type SelfLoopParams } from "../connection-geometry";
 import { isPairLine, linksOf } from "./directory-flow";
+import { OVERVIEW_FILES_ATTRIBUTE, OVERVIEW_LINES_ATTRIBUTE } from "./overview-files";
 import { gatheredCount, gatheredDescription, gatheredWidth, gatherWires, NODE_HUB, ownWires, type GatheredWire } from "./wire-gathering";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
 
@@ -404,7 +405,8 @@ function drawBranchConnections(context: ConnectionsContext, layer: WireLayer, se
   // A forward wire's route: through its lanes, or the one curve across the gutter; leaving and entering its columns straight either way.
   const routeFor = (key: string, a: number, b: number, from: Point, to: Point): { d: string; pieces: RoutePiece[]; slots: string[] } =>
     threadFor(key, a, b, from, to) ?? { ...threadedRoute(from, to, [], state.tuning.bezier, clearance(a, b)), slots: [] };
-  if (runtime.container.dataset.lod === "overview") {
+  // The pairs' lines stand for the length of the move back in from files only (2026-11-13), as at the overview.
+  if (runtime.container.dataset.lod === "overview" || runtime.container.hasAttribute(OVERVIEW_LINES_ATTRIBUTE)) {
     const overview = drawOverviewWires(context, layer, seen, measure, bounds, columnOf, wireEnds, threadFor, routeFor, laceRanks, shape);
     markHubs(runtime.container, hubsEnding);
     return overview;
@@ -493,8 +495,14 @@ function drawOverviewWires(
   if (!branches) return { drawn: 0, backward: 0 };
   // The references the closer bands draw, whose ends are laid out (a row the branch picture hides has none): a pair is
   // joined here exactly when a wire of the closer bands joins it, and its count is theirs.
-  const links = branches.subgraph.links.filter(edge => measure(context.getAnchor(edge.targetId, "center", "outbound", edge.targetSymbol))
-    && measure(context.getAnchor(edge.sourceId, "center", "inbound", edge.sourceSymbol)));
+  // With files only (2026-11-13) no row is laid out: a reference counts where its rows are disclosed, as the closer looks
+  // would draw it, and is gathered into its pair's line; no symbol's own wire is drawn.
+  const filesOnly = context.runtime.container.hasAttribute(OVERVIEW_FILES_ATTRIBUTE) || context.runtime.container.hasAttribute(OVERVIEW_LINES_ATTRIBUTE);
+  const disclosed = (anchor: HTMLElement | null): boolean => !!anchor && !anchor.closest(".symbol-row.branch-symbol-hidden, .symbol-row.symbol-collapsed");
+  const links = branches.subgraph.links.filter(edge => filesOnly
+    ? disclosed(context.getAnchor(edge.targetId, "center", "outbound", edge.targetSymbol)) && disclosed(context.getAnchor(edge.sourceId, "center", "inbound", edge.sourceSymbol))
+    : measure(context.getAnchor(edge.targetId, "center", "outbound", edge.targetSymbol))
+      && measure(context.getAnchor(edge.sourceId, "center", "inbound", edge.sourceSymbol)));
   const isBack = (edge: LocalEdge): boolean => branches.back.has(edgeKey(edge));
   // A row stays drawn at the overview band only when its symbol is pinned by name (a whole-file pin is the file's):
   // a wire's end is its dot only there.
@@ -506,6 +514,10 @@ function drawOverviewWires(
     return { from: { x: p.x - bounds.left, y: p.y - bounds.top }, to: { x: q.x - bounds.left, y: q.y - bounds.top } };
   };
   let drawn = 0, backward = 0;
+  // Every card's two hubs measured before any wire is written, so that the page lays itself out once for the drawing
+  // rather than once a wire (a look change on the crowded client picture spent 2.3 s in 184 style recalculations, each
+  // a hub first measured after a wire was written; profiled 2026-11-14).
+  for (const node of branches.subgraph.nodes) for (const direction of ["inbound", "outbound"] as const) measure(context.getAnchor(node.id, "center", direction, NODE_HUB));
   for (const wire of gatherWires(links, isBack)) {
     const measured = wireEnds(wire.providerId, NODE_HUB, wire.consumerId, NODE_HUB);
     if (!measured) continue;
@@ -531,8 +543,8 @@ function drawOverviewWires(
     }
     dressGathered(path, gatheredCount(wire), gatheredDescription(wire, nameOf));
   }
-  // A pinned symbol's own wires, drawn after the gathered ones and so above them.
-  for (const edge of ownWires(links, (nodeId, symbol, direction) => pinnedDot(nodeId, direction, symbol))) {
+  // A pinned symbol's own wires, drawn after the gathered ones and so above them; none with files only.
+  for (const edge of filesOnly ? [] : ownWires(links, (nodeId, symbol, direction) => pinnedDot(nodeId, direction, symbol))) {
     const offers = pinnedDot(edge.targetId, "outbound", edge.targetSymbol), uses = pinnedDot(edge.sourceId, "inbound", edge.sourceSymbol);
     const measured = wireEnds(edge.targetId, offers ? edge.targetSymbol : NODE_HUB, edge.sourceId, uses ? edge.sourceSymbol : NODE_HUB);
     if (!measured) continue;

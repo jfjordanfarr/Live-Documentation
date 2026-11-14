@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-reading.ts
-- Generated At: 2026-11-14T00:01:14.899Z
+- Generated At: 2026-11-14T00:57:51.445Z
 
 ## Authored
 ### Purpose
@@ -42,26 +42,30 @@ Later on 2026-11-13 (the milestone after [Turn 3 of that day's record](../../../
 
 Since the Closed Directory trial (2026-11-13), `closedBoxWrites` also writes, for a skin with cells, the room under each far look's held name and controls, which `drawHeldCells` fills with cells held at the look's scale, or leaves empty where not a row fits ([Turn 7 of the November 13 record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-7)).
 
+Since 2026-11-13 ([Turn 8](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-8)), with files only at the overview look, no row counts as drawn for the file's name's room, and a compact card is given the height its name needs whole at the look's size (`--files-card-h`), since the member's form had cut names that the tall card held.
+
+In the trial's second round (2026-11-14) a compact card's name is held at `filesNameScale`'s size, the overview's unless its widest segment would not fit across, so that it breaks only at its seams, and the card leaves air below the name's last line.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ReadingTarget` {#symbol-readingtarget}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L28)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L29)
 
 ##### `ReadingTarget` — Summary
 A file's Purpose or one exact symbol's description, named by the card it is read on.
 
 #### `CardReadingOptions` {#symbol-cardreadingoptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L31)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L32)
 
 ##### `CardReadingOptions` — Summary
 Canonical text, application-owned choices and the actions a card's text can lead to.
 
 #### `CardReading` {#symbol-cardreading}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L79)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L80)
 
 ##### `CardReading` — Summary
 Builds on-card explanations from the same bundled docs as the full reader. A description opens and folds only
@@ -76,7 +80,7 @@ while names open full descriptions in the reader.
 
 #### `markFirstPin` {#symbol-markfirstpin}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L848)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L871)
 
 ##### `markFirstPin` — Summary
 Write the pin depths for a card whose rows were just ordered, and its held name's lines at the overview band, whose
@@ -132,6 +136,9 @@ room they bound, from the card's last reading: no layout is read.
 - [`ladder-steps.LadderResistances`](./ladder-steps.ts.mdmd.md#symbol-ladderresistances)
 - [`ladder-steps.ZoomLook`](./ladder-steps.ts.mdmd.md#symbol-zoomlook-type)
 - [`ladder-steps.ladderScales`](./ladder-steps.ts.mdmd.md#symbol-ladderscales-function)
+- [`overview-files.COMPACT_AIR`](./overview-files.ts.mdmd.md#symbol-compact_air)
+- [`overview-files.OVERVIEW_FILES_ATTRIBUTE`](./overview-files.ts.mdmd.md#symbol-overview_files_attribute)
+- [`overview-files.filesNameScale`](./overview-files.ts.mdmd.md#symbol-filesnamescale)
 - [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)
 - [`types.ReadingControl`](./types.ts.mdmd.md#symbol-readingcontrol) (type-only)
 - [`word-seams.seamsOf`](./word-seams.ts.mdmd.md#symbol-seamsof)

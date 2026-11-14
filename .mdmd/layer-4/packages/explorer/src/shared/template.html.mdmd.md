@@ -438,6 +438,9 @@ Since November 8, 2026, the literal initial controls agree with `getDefaultTunin
 #### `tuning-order-starts-value` {#symbol-tuning-order-starts-value}
 - Type: variable
 
+#### `tuning-overview-files` {#symbol-tuning-overview-files}
+- Type: variable
+
 #### `tuning-row-levelness` {#symbol-tuning-row-levelness}
 - Type: variable
 

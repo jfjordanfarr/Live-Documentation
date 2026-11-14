@@ -12,11 +12,13 @@ import { ancestryButton } from "./directory-ancestry";
 import { isPairLine, linksOf, NARROW_SHAPE, nominalMeasurer, searchFlowShape, shapeRecord, type FlowShape, type ShapeSearch } from "./directory-flow";
 import { layoutTopOf } from "./ladder-rooms";
 import { membranePath } from "./membrane-outline";
+import { OVERVIEW_FILES_ATTRIBUTE, OVERVIEW_LINES_ATTRIBUTE, type PictureSize } from "./overview-files";
 import type { LocalEdge } from "./types";
 import type { ExplorerNodePayload } from "../../../shared/types";
 import { setSeamedText } from "../../dom";
 import { EMPTY_PIN_SET } from "../pin-state";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
+import { NODE_HUB } from "./wire-gathering";
 import { countOf } from "./word-seams";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
@@ -46,6 +48,11 @@ export interface BranchStage {
   search: Search | null;
   /** The flow shape chosen for each set of opened directories under its filters and tuning, kept while the page lives. */
   flowShapes: Map<string, ShapeSearch>;
+  /**
+   * The size of the picture with its rows while files only is shown at the overview (2026-11-13), for Fit; null when the
+   * rows are drawn, or when the picture was drawn files only from the start and the rows' size was never laid out.
+   */
+  rowsPicture: PictureSize | null;
 }
 
 /** One move of the picture from one pose to the next, running. */
@@ -59,8 +66,16 @@ interface Move {
   entering: HTMLElement[];
   /** Boxed rows (or children of legacy display:contents rows), with their displacement from the new place. */
   rows: RowMotion[];
-  heights?: Array<{ element: HTMLElement; from: number; to: number }>;
+  /** Boxes whose height travels, clipped below; `across` keeps what stands out at their sides, as a card's rows' dots do. */
+  heights?: Array<{ element: HTMLElement; from: number; to: number; across?: boolean }>;
   anchor?: DOMRect;
+  /** The container that draws the pairs' lines in place of the symbols' wires until the move ends (the way back in from files only). */
+  lines?: HTMLElement;
+  /**
+   * The element held still, when the caller chose it (the overview's files only, 2026-11-13), or null to hold nothing,
+   * where the camera already moves to a frame of its own; else, when absent, the card acted on.
+   */
+  held?: HTMLElement | null;
 }
 
 /** What the page answered the scene's measurer that no start changes, kept so that the search can price a start without the page. */
@@ -96,7 +111,7 @@ interface Search {
 
 /** A stage for a root that holds nothing yet. */
 export function createStage(root: HTMLElement, overlay: HTMLElement): BranchStage {
-  return { root, overlay, wrappers: new Map(), boxes: new Map(), shapes: new Map(), labels: new Map(), disclosures: new Map(), pose: null, move: null, search: null, flowShapes: new Map() };
+  return { root, overlay, wrappers: new Map(), boxes: new Map(), shapes: new Map(), labels: new Map(), disclosures: new Map(), pose: null, move: null, search: null, flowShapes: new Map(), rowsPicture: null };
 }
 
 /** Ends whatever move the stage runs, where it stands, and its search; the stage's elements are the caller's to remove. */
@@ -331,6 +346,8 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
   }, costs, controller.previousTops);
   const { branches, scene } = chosen;
   if (outcomes[outcomes.length - 1] !== chosen) orderRows(cardsOf(stage), branches.rows);
+  // Drawn files only, the picture with its rows is laid out once more for its size, which Fit frames (2026-11-13).
+  const rowsPicture = controller.getContainer().hasAttribute(OVERVIEW_FILES_ATTRIBUTE) ? rowsPictureOf(controller, stage, branches, sceneTuning, scale, answers.natural) : null;
   controller.branches = branches;
   controller.currentSubgraph = branches.subgraph;
   controller.previousTops = scene.tops;
@@ -346,6 +363,7 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
   const moveMs = reduced ? 0 : Math.max(0, tuning.moveMs);
   const measuredRows = rowsOf(controller, stage, scale, branches);
   showScene(controller, stage, scene, sceneTuning, previous ? moveMs : 0, leaving, entering, oldRows);
+  stage.rowsPicture = rowsPicture;
 
   // The search over the seeds the first paint did not try, priced from the page's answers and each card's rows as they
   // now stand; a forced seed, the lab's lever, searches nothing.
@@ -403,23 +421,31 @@ function shapeOfDirectories(controller: LocalViewController, sceneTuning: SceneT
  * same branches are laid out again and moved to with the acted-on element held still, and a fresh measured
  * competition begins from the new picture.
  */
-export function refreshReadingGeometry(controller: LocalViewController, stage: BranchStage, change: () => void, restart = true): void {
+export function refreshReadingGeometry(controller: LocalViewController, stage: BranchStage, change: () => void, restart = true,
+  options: { held?: HTMLElement | null; moveMs?: number; keepWidths?: boolean } = {}): void {
   const search = stage.search;
   const previous = stage.pose;
   if (!search || !previous) { change(); return; }
   pauseSearch(search);
+  const filesBefore = controller.getContainer().hasAttribute(OVERVIEW_FILES_ATTRIBUTE), shownBefore = stage.move?.to ?? previous;
   const scale = controller.mapTransform.k || 1;
   const rows = rowOffsets(stage, scale);
   const fileCards = cardsOf(stage).filter(card => card.classList.contains("node-card"));
   const beforeHeights = new Map(fileCards.map(card => [card.dataset.id!, card.getBoundingClientRect().height / scale]));
-  const anchor = elementHeld(controller, stage, previous, previous)?.getBoundingClientRect();
+  const gridOf = (card: HTMLElement): HTMLElement | null => card.querySelector<HTMLElement>(".symbol-grid");
+  const held = options.held === null ? null : options.held?.isConnected ? options.held : undefined;
+  const anchor = held === null ? undefined : (held ?? elementHeld(controller, stage, previous, previous))?.getBoundingClientRect();
   endMove(stage, false);
   change();
   controller.reading?.measure();
   const branches = search.incumbent.branches;
   const plan = planBranches(branches, search.sceneTuning.bandPadding);
   const answers: PageAnswers = { natural: new Map(), heights: new Map(), labelHeights: new Map() };
-  const scene = layoutScene(plan, branches, pageMeasurer(controller, stage, plan, scale, answers), search.sceneTuning);
+  // A change between the overview's two layouts keeps every card's width (2026-11-13): the widths measured before stand,
+  // without laying the page out twice more to measure them again.
+  const measurer = pageMeasurer(controller, stage, plan, scale, answers);
+  if (options.keepWidths) { const natural = search.answers.natural; measurer.widths = () => (answers.natural = natural); }
+  const scene = layoutScene(plan, branches, measurer, search.sceneTuning);
   stage.root.dataset.placementCost = String(scene.placement.cost);
   stage.root.dataset.placementOptimal = String(scene.placement.optimal);
   search.incumbent = { branches, scene };
@@ -437,12 +463,43 @@ export function refreshReadingGeometry(controller: LocalViewController, stage: B
     search.alignmentIndex = 0;
   } else search.state = { ...search.state, shown, best: shown };
   controller.previousTops = scene.tops;
-  const heights = fileCards.flatMap(card => {
-    const from = beforeHeights.get(card.dataset.id!), to = card.offsetHeight;
-    return from !== undefined && Math.abs(from - to) > 0.5 ? [{ element: card, from, to }] : [];
+  const filesAfter = controller.getContainer().hasAttribute(OVERVIEW_FILES_ATTRIBUTE), back = filesBefore && !filesAfter;
+  // Back in from files only (2026-11-13) a card grows by its rows: its rows' grid grows from what keeps the card's height
+  // where it stood, clipped below, and its foot follows the grid in the card's own flow, as in a fold its foot follows
+  // its rows; elsewhere the card's box travels between its two heights.
+  const heights: NonNullable<Move["heights"]> = fileCards.flatMap(card => {
+    const from = beforeHeights.get(card.dataset.id!), to = card.offsetHeight, grid = back ? gridOf(card) : null;
+    if (from === undefined || Math.abs(from - to) <= 0.5) return [];
+    if (!grid) return [{ element: card, from, to }];
+    const rowsTo = grid.offsetHeight;
+    return [{ element: grid, from: Math.max(0, Math.min(rowsTo, from - (to - rowsTo))), to: rowsTo, across: true }];
   });
-  showScene(controller, stage, scene, search.sceneTuning, Math.min(180, search.moveMs), [], [], rows, { heights, anchor });
+  const growing = new Set(heights.filter(entry => entry.across).map(entry => entry.element.closest<HTMLElement>(".node-card")));
+  // The picture with its rows keeps its size for Fit while files only stands in for it.
+  if (!filesAfter) stage.rowsPicture = null;
+  else if (!filesBefore) stage.rowsPicture = { width: shownBefore.pictureWidth, height: shownBefore.pictureHeight };
+  else stage.rowsPicture = rowsPictureOf(controller, stage, branches, search.sceneTuning, scale, search.answers.natural);
+  const moveMs = options.moveMs ?? Math.min(180, search.moveMs);
+  showScene(controller, stage, scene, search.sceneTuning, moveMs, [], [], rows, { heights, anchor, held,
+    ...(back && moveMs > 0 ? { lines: controller.getContainer() } : null) }, growing);
   if (!stage.move) scheduleSearch(controller, stage);
+}
+
+/**
+ * The size of the picture with its rows, for Fit while files only is shown (2026-11-13): the same branches laid out once
+ * with the rows, at the widths measured before, and files only drawn again after.
+ */
+function rowsPictureOf(controller: LocalViewController, stage: BranchStage, branches: BranchGraph, sceneTuning: SceneTuning, scale: number, natural: ReadonlyMap<string, number>): PictureSize {
+  const container = controller.getContainer();
+  container.removeAttribute(OVERVIEW_FILES_ATTRIBUTE);
+  controller.reading?.measure();
+  const plan = planBranches(branches, sceneTuning.bandPadding);
+  const measurer = pageMeasurer(controller, stage, plan, scale, { natural: new Map(), heights: new Map(), labelHeights: new Map() });
+  measurer.widths = () => natural;
+  const scene = layoutScene(plan, branches, measurer, sceneTuning);
+  container.setAttribute(OVERVIEW_FILES_ATTRIBUTE, "");
+  controller.reading?.measure();
+  return { width: scene.pictureWidth, height: scene.pictureHeight };
 }
 
 /** The outline's stroke, which the scene counts in a membrane's inset. */
@@ -635,9 +692,14 @@ function naturalWidthOf(wrapper: HTMLElement, scale: number): number {
 function pageMeasurer(controller: LocalViewController, stage: BranchStage, plan: ScenePlan, scale: number, answers: PageAnswers): SceneMeasurer {
   return {
     widths(cardMaxWidth) {
+      // A card's width is its rows' at every look: files only at the overview (2026-11-13) keeps each card's width and its
+      // column, so its rows are laid out for the measure and silenced again after it.
+      const container = controller.getContainer(), files = container.getAttribute(OVERVIEW_FILES_ATTRIBUTE);
+      if (files !== null) container.removeAttribute(OVERVIEW_FILES_ATTRIBUTE);
       for (const wrapper of stage.wrappers.values()) Object.assign(wrapper.style, { width: "max-content", maxWidth: cardMaxWidth === null ? "" : `${cardMaxWidth}px` });
       const widths = new Map<string, number>();
       for (const [id, wrapper] of stage.wrappers) widths.set(id, naturalWidthOf(wrapper, scale));
+      if (files !== null) container.setAttribute(OVERVIEW_FILES_ATTRIBUTE, files);
       answers.natural = widths;
       return widths;
     },
@@ -660,8 +722,10 @@ function pageMeasurer(controller: LocalViewController, stage: BranchStage, plan:
       }
       for (const [label, rooms] of labelRooms) for (const [name, value] of rooms) label.style.setProperty(name, value);
       answers.heights = heights;
+      // With files only at the overview every wire is laid out between the two cards' node-level hubs, as Flow's lines are.
+      const filesOnly = controller.getContainer().hasAttribute(OVERVIEW_FILES_ATTRIBUTE);
       const pin = (id: string, direction: "inbound" | "outbound", symbol: string | undefined): number | null => {
-        const anchor = controller.getAnchor(id, "center", direction, symbol);
+        const anchor = controller.getAnchor(id, "center", direction, filesOnly ? NODE_HUB : symbol);
         const card = stage.wrappers.get(id);
         if (!anchor || !card) return null;
         const rect = anchor.getBoundingClientRect();
@@ -702,11 +766,11 @@ function answersMeasurer(search: Search, plan: ScenePlan, branches: BranchGraph)
  * and a lane's slots, and shows the scene: at once when `moveMs` is zero or
  * no picture was shown, else moved to from the pose the page shows.
  */
-function showScene(controller: LocalViewController, stage: BranchStage, scene: Scene, sceneTuning: SceneTuning, moveMs: number, leavingCards: HTMLElement[], enteringCards: HTMLElement[], oldRows: Map<string, Map<string, number>> | null, reading: Pick<Move, "heights" | "anchor"> = {}): void {
+function showScene(controller: LocalViewController, stage: BranchStage, scene: Scene, sceneTuning: SceneTuning, moveMs: number, leavingCards: HTMLElement[], enteringCards: HTMLElement[], oldRows: Map<string, Map<string, number>> | null, reading: Pick<Move, "heights" | "anchor" | "held" | "lines"> = {}, footFlows: ReadonlySet<HTMLElement | null> = new Set()): void {
   const { root } = stage;
   const previous = stage.pose;
   const pose = scenePose(scene);
-  const instantHeld = previous && moveMs <= 0 ? elementHeld(controller, stage, previous, pose) : null;
+  const instantHeld = previous && moveMs <= 0 && reading.held !== null ? reading.held ?? elementHeld(controller, stage, previous, pose) : null;
   const instantAnchor = reading.anchor ?? instantHeld?.getBoundingClientRect();
   const scale = controller.runtime.mapTransform.k || 1;
   const leaving = [...leavingCards];
@@ -788,7 +852,8 @@ function showScene(controller: LocalViewController, stage: BranchStage, scene: S
     controller.drawConnections();
     return;
   }
-  const rows = oldRows ? rowMotions(stage, oldRows, scale) : [];
+  // A foot that follows its growing rows in the card's own flow needs no motion of its own.
+  const rows = (oldRows ? rowMotions(stage, oldRows, scale) : []).filter(motion => !(motion.foot && footFlows.has(motion.element.parentElement)));
   startMove(controller, stage, previous, pose, moveMs, { to: pose, bandPadding: sceneTuning.bandPadding, leaving, entering, rows, frame: 0, ...reading });
 }
 
@@ -845,15 +910,17 @@ function startMove(controller: LocalViewController, stage: BranchStage, from: Po
   for (const motion of move.rows) shiftRow(motion, motion.delta);
   let heldId = controller.lastInteracted;
   let heldSymbol = controller.lastInteractedSymbol;
-  let heldElement = elementHeld(controller, stage, from, to);
+  const heldOf = (): HTMLElement | null => (move.held === null ? null : move.held ?? elementHeld(controller, stage, from, to));
+  let heldElement = heldOf();
   let heldRect = move.anchor ?? heldElement?.getBoundingClientRect() ?? null;
   const cameraAtStart = { ...controller.mapTransform };
   const layerTop = (): number => controller.getViewport().getBoundingClientRect().top + (controller.getContainer().parentElement?.offsetTop ?? 0);
   let layerTopAtStart = layerTop();
-  for (const { element, from } of move.heights ?? []) {
+  for (const { element, from, across } of move.heights ?? []) {
     element.style.height = `${from}px`;
-    element.style.overflow = "clip";
+    element.style.overflow = across ? "visible clip" : "clip";
   }
+  move.lines?.setAttribute(OVERVIEW_LINES_ATTRIBUTE, "");
   /** Keep camera gestures and header compensation; the latter also changes the frame's screen origin. */
   const hold = (): void => {
     if (!heldElement || !heldRect) return;
@@ -878,7 +945,7 @@ function startMove(controller: LocalViewController, stage: BranchStage, from: Po
       if (changedIdentity) {
         heldId = controller.lastInteracted;
         heldSymbol = controller.lastInteractedSymbol;
-        heldElement = elementHeld(controller, stage, from, to);
+        heldElement = heldOf();
       }
       heldRect = heldElement?.getBoundingClientRect() ?? null;
       Object.assign(cameraAtStart, controller.mapTransform);
@@ -929,6 +996,7 @@ function endMove(stage: BranchStage, finished: boolean): void {
     motion.element.classList.remove("local-row-moving");
   }
   for (const { element } of move.heights ?? []) { element.style.height = ""; element.style.overflow = ""; }
+  move.lines?.removeAttribute(OVERVIEW_LINES_ATTRIBUTE);
   if (finished) {
     applyPose(stage, move.to, move.bandPadding);
     stage.pose = move.to;
@@ -989,6 +1057,8 @@ function scheduleSearch(controller: LocalViewController, stage: BranchStage): vo
 
 /** Whether a search may step now: the map is the view shown and the page is visible. */
 const searchAllowed = (controller: LocalViewController): boolean => controller.isShown()
+  // Files only at the overview is the same branches drawn compact: the search waits for the rows' picture to return.
+  && !controller.getContainer().hasAttribute(OVERVIEW_FILES_ATTRIBUTE)
   && !controller.runtime.mapAnimationTarget && controller.options.state.inspection?.presentation !== "reading"
   && document.visibilityState !== "hidden";
 

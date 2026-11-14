@@ -24,8 +24,9 @@ test("every tuning control explains what changing it does, as its tooltip and it
   // same day. Zoom Looks joined the 2D layout group on 2026-11-10 (the trial of three looks beside the card ladder), and
   // Opened Directory on 2026-11-12 (the trial of an opened directory in flow order beside the grid), and Width Cost on
   // 2026-11-13 (beside Height Cost, so that the price can choose how an opened directory stands), and Closed Directory
-  // the same day (the trial of three looks for a closed directory beside the box).
-  await expect(controls).toHaveCount(59);
+  // the same day (the trial of three looks for a closed directory beside the box), and Zoomed Out Fully the same day
+  // (the trial of the overview look drawn as files only).
+  await expect(controls).toHaveCount(60);
   const facts = await controls.evaluateAll(elements => elements.map(element => {
     const describedBy = element.getAttribute("aria-describedby") ?? "";
     const description = document.getElementById(describedBy);

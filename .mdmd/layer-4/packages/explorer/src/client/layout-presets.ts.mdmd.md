@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/layout-presets.ts
-- Generated At: 2026-11-13T23:23:38.697Z
+- Generated At: 2026-11-14T00:57:48.428Z
 
 ## Authored
 ### Purpose
@@ -97,7 +97,7 @@ from now on. Closed Directory (2026-11-13): only a trial's look is carried, and 
 
 #### `layoutSettingsOf` {#symbol-layoutsettingsof}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L92)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L93)
 - Returns: [`LayoutSettings`](#symbol-layoutsettings)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 
@@ -106,7 +106,7 @@ Snapshot the controls that affect packing and spatial encodings, independent of 
 
 #### `applyLayoutSettings` {#symbol-applylayoutsettings}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L103)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L105)
 - Returns: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig); `settings`: [`LayoutSettings`](#symbol-layoutsettings)
 
@@ -114,8 +114,9 @@ Snapshot the controls that affect packing and spatial encodings, independent of 
 Merge a validated partial snapshot over the current values, leaving unrelated preferences intact. A snapshot that
 carries the 2D map's settings without saying how an opened directory stands says Flow, the default, since only the
 grid is written (2026-11-13); one that does not say its Zoom Looks says the three looks, since only the ladder is
-written (2026-11-13); one that does not say its Closed Directory says the box (2026-11-13). So a link made with the
-defaults shows them in a browser whose own tuning holds the other choices.
+written (2026-11-13); one that does not say its Closed Directory says the box (2026-11-13); and one that does not say
+what the overview look draws says cards at their size, since only files only is written (the trial of 2026-11-13). So
+a link made with the defaults shows them in a browser whose own tuning holds the other choices.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -125,6 +126,7 @@ defaults shows them in a browser whose own tuning holds the other choices.
 - [`types.ForceGraphTuning`](./types.ts.mdmd.md#symbol-forcegraphtuning)
 - [`types.GROUP_WRAPPERS`](./types.ts.mdmd.md#symbol-group_wrappers)
 - [`types.LocalMapTuning`](./types.ts.mdmd.md#symbol-localmaptuning)
+- [`types.OVERVIEW_FILES`](./types.ts.mdmd.md#symbol-overview_files)
 - [`types.TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 - [`types.ZOOM_LOOKS`](./types.ts.mdmd.md#symbol-zoom_looks)
 <!-- LIVE-DOC:END Dependencies -->

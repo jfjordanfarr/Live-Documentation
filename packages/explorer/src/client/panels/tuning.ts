@@ -6,7 +6,7 @@
  */
 
 import { layoutSettingsOf } from "../layout-presets";
-import { CHANGE_EMPHASES, CLOSED_DIRECTORY_LOOKS, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, type ExplorerState } from "../types";
+import { CHANGE_EMPHASES, CLOSED_DIRECTORY_LOOKS, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, OVERVIEW_FILES, type ExplorerState } from "../types";
 import { TUNING_HELP, tuningHelpId } from "./tuning-levers";
 
 /** Callback for when tuning values change */
@@ -64,6 +64,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   const zoomLooksSelect = document.getElementById("tuning-zoom-looks") as HTMLSelectElement | null;
   const directoryLayoutSelect = document.getElementById("tuning-directory-layout") as HTMLSelectElement | null;
   const closedDirectorySelect = document.getElementById("tuning-closed-directory") as HTMLSelectElement | null;
+  const overviewFilesSelect = document.getElementById("tuning-overview-files") as HTMLSelectElement | null;
   const slotLinesInput = document.getElementById("tuning-slot-lines") as HTMLInputElement | null;
   const textResistanceInput = document.getElementById("tuning-text-resistance") as HTMLInputElement | null;
   const controlResistanceInput = document.getElementById("tuning-control-resistance") as HTMLInputElement | null;
@@ -168,6 +169,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     if (zoomLooksSelect) zoomLooksSelect.value = state.tuning.localMap.zoomLooks;
     if (directoryLayoutSelect) directoryLayoutSelect.value = state.tuning.localMap.directoryLayout;
     if (closedDirectorySelect) closedDirectorySelect.value = state.tuning.localMap.closedDirectory;
+    if (overviewFilesSelect) overviewFilesSelect.value = state.tuning.localMap.overviewFiles;
     state.tuning.localMap.slotLines = setSlider(slotLinesInput, "tuning-slot-lines-value", state.tuning.localMap.slotLines, v => String(v));
     state.tuning.localMap.textResistance = setSlider(textResistanceInput, "tuning-text-resistance-value", state.tuning.localMap.textResistance, v => String(v));
     state.tuning.localMap.controlResistance = setSlider(controlResistanceInput, "tuning-control-resistance-value", state.tuning.localMap.controlResistance, v => String(v));
@@ -263,6 +265,14 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   if (closedDirectorySelect) {
     closedDirectorySelect.addEventListener("change", () => {
       state.tuning.localMap.closedDirectory = CLOSED_DIRECTORY_LOOKS.find(choice => choice === closedDirectorySelect.value) ?? CLOSED_DIRECTORY_LOOKS[0];
+      onTuningChange();
+      if (state.view === "map" && state.perspective === "2d") onRender();
+    });
+  }
+  // What the overview look draws changes the cards' heights there and the wires: the view re-renders.
+  if (overviewFilesSelect) {
+    overviewFilesSelect.addEventListener("change", () => {
+      state.tuning.localMap.overviewFiles = OVERVIEW_FILES.find(choice => choice === overviewFilesSelect.value) ?? OVERVIEW_FILES[0];
       onTuningChange();
       if (state.view === "map" && state.perspective === "2d") onRender();
     });
