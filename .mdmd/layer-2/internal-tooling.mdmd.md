@@ -24,6 +24,8 @@ Runs, in order:
 
 Flags: `--e2e` appends an Explorer build and the Playwright suite; `--skip-git-status` skips the clean-tree check, which is what CI does as `npm run ci-check`.
 
+The gate stops at its first red stage, so the stages after it have not run. When that stage is red for a reason apart from the change (a deadline on a slow machine), run the rest one by one (`npm run livedocs`, `lint`, `test:unit`, `test:integration`, `test:e2e`) before landing further work on top; a handful of browser files chosen by hand is not the suite. On 2026-11-13 rounds were landed on browser files chosen by hand, the gate then stopped at a unit deadline before its browser stage, and two more rounds landed on top; the suite, run that night, showed that an afternoon's round had broken the Local Map's layout search. A command started in the background reports its own end; a wait written as `until ! pgrep -f "<its command>"` finds its own shell and never ends (fourteen of them ran for ten hours that day).
+
 ### `npm run verify`
 
 Lint, build, type-check, both Vitest projects, and link enforcement, without the rest of the chain.

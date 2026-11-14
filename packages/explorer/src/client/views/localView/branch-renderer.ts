@@ -1215,15 +1215,19 @@ function rowsOf(controller: LocalViewController, stage: BranchStage, scale: numb
     let internals: string | null = null;
     let header = 0;
     for (const [row, key] of rowKeys(card)) {
-      // A row is read through its children as laid out, a held dot's shift and scale taken back, and a slot card's slot
-      // only hidden below reading scale, never taken out, so that the search reads the same rows in every band (2026-11-06).
-      const bounds = rowBounds([...row.children].flatMap(child => {
+      // A row with a box of its own is read by that box, which is its allotment whatever stands in it: a slot row is as
+      // tall as its slot lines and a short row as its head (2026-11-13), while their children may be hidden, taken out
+      // or drawn smaller. Read through its children, a short row, whose slot is taken out, was found shorter than it
+      // stands, every row below it was predicted too high, and the search priced its trials against pins the page does
+      // not have (found 2026-11-14). A legacy `display: contents` row has no box and is read through its children as
+      // laid out, a held dot's shift and scale taken back.
+      const bounds = getComputedStyle(row).display === "contents" ? rowBounds([...row.children].flatMap(child => {
         const rect = child.getBoundingClientRect();
         if (!rect.width && !rect.height) return [];
         const style = getComputedStyle(child), box = laidOutBox(child, scale);
         return [{ top: onLayoutGrid((box.top - cardTop) / scale), bottom: onLayoutGrid((box.bottom - cardTop) / scale),
           marginTop: Number.parseFloat(style.marginTop) || 0, marginBottom: Number.parseFloat(style.marginBottom) || 0 }];
-      }));
+      })) : ownBounds(row, cardTop, scale);
       if (!bounds) continue;
       if (!rows.length) header = bounds.top;
       rowPositions.set(row, { key, top: bounds.top });
@@ -1244,6 +1248,13 @@ function rowsOf(controller: LocalViewController, stage: BranchStage, scale: numb
     measured.set(id, { header, gap, rows, internals, endpoints });
   }
   return measured;
+}
+
+/** A boxed row's own extent from its card's top, in the picture's pixels on the layout's grid; null when it is not laid out. */
+function ownBounds(row: HTMLElement, cardTop: number, scale: number): { top: number; bottom: number } | null {
+  const rect = row.getBoundingClientRect();
+  if (!rect.width && !rect.height) return null;
+  return { top: onLayoutGrid((rect.top - cardTop) / scale), bottom: onLayoutGrid((rect.bottom - cardTop) / scale) };
 }
 
 /**

@@ -62,6 +62,8 @@ Since 2026-11-13 ([Turn 8](../../../../../../../../AI-Agent-Workspace/ChatHistor
 
 In the trial's second round (2026-11-14), the way back in from files only grows each card by its rows' grid, clipped below, its foot following in the card's own flow, and keeps the pairs' lines until the move ends; a picture drawn afresh, or laid out again, while files only shows also lays out the picture with its rows once for its size (`rowsPictureOf`), which Fit frames.
 
+Since 2026-11-14 ([Turn 9](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-9)) `rowsOf`, which caches each card's rows for the search's predictions, reads a row that has a box of its own by that box and only a legacy `display: contents` row through its children. The short row of 2026-11-13 takes its slot out of the layout, so its children no longer filled its 44 px; read through them the row was cached shorter than it stands, every row below it was predicted too high, and the continuing search priced its seeds and alignment trials against pins the page does not have. On the generator's picture no alignment was adopted where the headless command adopts one, which three cases of `local-map-simplicity.spec.ts` showed once the whole browser suite ran. The row's own box is its allotment whatever its children do, so the cache no longer depends on how a row's contents are hidden.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
