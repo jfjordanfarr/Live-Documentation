@@ -439,6 +439,47 @@ body:has(#map-container[data-lod="overview"]) #local-legend .legend-row--gathere
 .local-directory-closed__count { margin-top: 4px; font-size: 11px; }
 .local-directory-closed .local-directory-open { margin-top: 8px; }
 .local-directory-closed .local-directory-actions { margin-left: 4px; margin-top: 8px; }
+/* The Closed Directory trial (2026-11-13): three looks drawn over the box's own layout, which none of them changes, so
+   that every box and card stands where it stands with the box. Neutral hues only: blue and green keep their meanings.
+   Stack: the box is the top card of a stack, a file card's corners and fill, with one to three cards under it by how
+   much it holds (closed-looks.ts's stackEdges), each a filled layer a shade darker than the one above it, with an edge as much fainter,
+   edge, 4 px apart, so that the deepest stands 12 px out, inside the 16 px between items. */
+.local-directory-closed.local-closed--stack { border-radius: 6px; border-color: var(--node-border); background: var(--node-bg);
+    --layer-1: color-mix(in srgb, var(--node-bg) 82%, #000); --layer-2: color-mix(in srgb, var(--node-bg) 66%, #000); --layer-3: color-mix(in srgb, var(--node-bg) 52%, #000);
+    --edge-1: color-mix(in srgb, var(--node-border) 80%, var(--node-bg)); --edge-2: color-mix(in srgb, var(--node-border) 60%, var(--node-bg)); --edge-3: color-mix(in srgb, var(--node-border) 42%, var(--node-bg));
+    box-shadow: 4px 4px 0 -1px var(--layer-1), 4px 4px 0 0 var(--edge-1); }
+.local-directory-closed.local-closed--stack[data-edges="2"] { box-shadow: 4px 4px 0 -1px var(--layer-1), 4px 4px 0 0 var(--edge-1), 8px 8px 0 -1px var(--layer-2), 8px 8px 0 0 var(--edge-2); }
+.local-directory-closed.local-closed--stack[data-edges="3"] { box-shadow: 4px 4px 0 -1px var(--layer-1), 4px 4px 0 0 var(--edge-1), 8px 8px 0 -1px var(--layer-2), 8px 8px 0 0 var(--edge-2), 12px 12px 0 -1px var(--layer-3), 12px 12px 0 0 var(--edge-3); }
+/* Skin with cells, the 3D bag of cells in 2D: a rounder translucent skin lit from its top left, and below the name a
+   field of round cells packed staggered, one for each file directly inside, and a small skin for each subdirectory
+   holding its own files' cells and a rim for each one deeper, ending in a veil where it holds more than the room shows.
+   The count's words stay for assistive technology. In the far looks the cells are held at the look's scale under the
+   held name (reading.css). */
+.local-directory-closed.local-closed--cells { border-radius: 24px; border-color: #ffffff30; box-shadow: inset 0 1px 0 #ffffff12;
+    background: radial-gradient(ellipse 90% 120% at 28% 12%, #ffffff14, #ffffff06 55%, #ffffff0c 100%); }
+.local-closed--cells .local-directory-closed__count { color: transparent; }
+.local-closed-cells { position: absolute; overflow: visible; pointer-events: none; }
+.local-closed-cells-held { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.local-closed-cells-held .local-cells-look { display: none; }
+:is(.local-closed-cells, .local-closed-cells-held) .local-cell { fill: #b9c1cc; fill-opacity: .42; stroke: #e4e9ef; stroke-opacity: .6; stroke-width: 0.8px; }
+:is(.local-closed-cells, .local-closed-cells-held) .local-cell--inner { fill-opacity: .38; stroke-width: 0.6px; }
+:is(.local-closed-cells, .local-closed-cells-held) .local-cell-skin { fill: #ffffff10; stroke: #ffffff55; stroke-width: 0.8px; }
+:is(.local-closed-cells, .local-closed-cells-held) .local-cell-rim { fill: none; stroke: #ffffff66; stroke-width: 0.8px; }
+.local-directory-closed.local-closed--cells:hover { border-color: #ffffff60; }
+/* Folded membrane: the opened directory's outline, at the membrane's own stroke, and its label folded shut: Open a
+   disclosure mark pointing right before the directory's glyph, as a tree marks a collapsed folder, the name in the
+   label's type, More at the right, each control moved there from its place in the layout (--fold-x, --fold-y); the
+   name's button keeps its place and its focus, its own words drawn by the label; a crease at the foot. */
+.local-directory-closed.local-closed--folded { border-radius: 8px; border-color: var(--border); background: #ffffff03; box-shadow: none; }
+.local-closed--folded .local-directory-closed__name { color: transparent; }
+.local-closed-label { display: none; }
+.local-closed--folded .local-closed-label { display: flex; position: absolute; left: var(--fold-left, 32px); top: 10px; gap: 4px; align-items: flex-start; width: var(--fold-room, 100px);
+    font-size: 12px; line-height: 15px; color: var(--text-panel-muted); overflow-wrap: break-word; pointer-events: none; }
+.local-closed--folded .local-closed-label > svg { flex: none; margin-top: 0.5px; }
+.local-closed--folded:hover .local-closed-label { color: var(--text); }
+.local-closed--folded .local-directory-open { display: inline-flex; align-items: center; justify-content: center; padding: 2px; line-height: 0; border-color: transparent; }
+.local-closed--folded :is(.local-directory-open, .local-directory-actions) { transform: translate(var(--fold-x, 0), var(--fold-y, 0)); }
+.local-closed--folded::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: 5px; border-top: 1px solid var(--border); pointer-events: none; }
 /* The placed layout: every membrane, card and lane stands where the placement put it, inside the element it belongs to. */
 .local-layout.local-placed { display: block; position: relative; }
 .local-placed .local-directory-band .local-column, .local-placed .local-directory-band .local-pass-through { position: absolute; display: block; margin: 0; }

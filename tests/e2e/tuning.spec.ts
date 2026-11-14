@@ -23,8 +23,9 @@ test("every tuning control explains what changing it does, as its tooltip and it
   // (the card composition comparison and its ladder); Group Wrappers and then Shell Depth joined the 3D layout group the
   // same day. Zoom Looks joined the 2D layout group on 2026-11-10 (the trial of three looks beside the card ladder), and
   // Opened Directory on 2026-11-12 (the trial of an opened directory in flow order beside the grid), and Width Cost on
-  // 2026-11-13 (beside Height Cost, so that the price can choose how an opened directory stands).
-  await expect(controls).toHaveCount(58);
+  // 2026-11-13 (beside Height Cost, so that the price can choose how an opened directory stands), and Closed Directory
+  // the same day (the trial of three looks for a closed directory beside the box).
+  await expect(controls).toHaveCount(59);
   const facts = await controls.evaluateAll(elements => elements.map(element => {
     const describedBy = element.getAttribute("aria-describedby") ?? "";
     const description = document.getElementById(describedBy);

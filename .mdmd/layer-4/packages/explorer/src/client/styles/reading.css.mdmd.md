@@ -38,6 +38,8 @@ Later on 2026-11-13 the owner's own screen showed the connections look's long na
 
 Later the same day ([the milestone after Turn 3](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-3)): a short row (`local-row-short`, 44 px, no slot); the far looks' row variables (`--row-held-h`, `--row-held-fill`, `--row-held-y`, from the card reading's `--row-even-*`), which the formulas of a row's More, dots, name and highlight read in place of the row's own height and fill, and the shift every part of a row's head is drawn with; the overview room of the file's name to the first pinned row's depth; and a closed directory's box in the far looks, its name drawn held by its own element, its count not drawn, its Open and More moved beside the name where the box holds them, its line the stylesheet's.
 
+The Closed Directory trial's far looks (2026-11-13): the folded label's words held in its own weight and colour, and the skin's cells held at the look's scale in place of the reading size's field ([Turn 7 of the November 13 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-7)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

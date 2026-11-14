@@ -321,7 +321,10 @@ describe("directories opening in the Local Map (2026-10-08)", () => {
     const opened = exploreBranches(byId.get("b/z.ts")!, graph, pins, () => true, { openDirectories: new Set(["a"]) });
     expect(opened.subgraph.nodes.map(file => file.id).sort()).toEqual(["a/sub", "a/x.ts", "a/y.ts", "b/z.ts"]);
     expect([...opened.members]).toEqual(["a/y.ts"]);
-    expect(opened.closed.get("a/sub")).toEqual({ path: "a/sub", name: "sub", files: 2, directories: 1 });
+    // The box counts the files under it at any depth; the skin with cells (2026-11-13) draws its own file and its
+    // subdirectory's, whose deeper subdirectories would be rims.
+    expect(opened.closed.get("a/sub")).toEqual({ path: "a/sub", name: "sub", files: 2, directories: 1,
+      contents: { files: 1, subdirectories: [{ files: 1, directories: 0 }] } });
     const box = opened.subgraph.nodes.find(file => file.id === "a/sub")!;
     expect(isClosedDirectory(box)).toBe(true);
     expect(opened.order.rows.get("a/sub")).toEqual([]);

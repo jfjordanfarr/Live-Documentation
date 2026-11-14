@@ -93,6 +93,13 @@ export interface LocalMapTuning {
    * line until a file is pinned, the design from 2026-10-07 to 2026-11-13, one choice away.
    */
   directoryLayout: DirectoryLayout;
+  /**
+   * How a closed directory's box is drawn, a trial for comparison (2026-11-13): "box", the default, today's box;
+   * "cells", a skin holding a cell for each file and a smaller skin for each subdirectory, as the 3D bag of cells does;
+   * "stack", the top card of a stack whose edges show how much it holds; "folded", the opened directory's membrane and
+   * label, folded. Looks only: the box's size and what its controls do are the same in each.
+   */
+  closedDirectory: ClosedDirectoryLook;
   /** With fixed slots, how many lines of text each symbol's slot holds, filled or not; the default is to be found by eye (2026-11-05). */
   slotLines: number;
   /** With fixed slots, how much names resist the zoom below reading scale: 0 follows the map, 1 holds screen size (2026-11-05). */
@@ -244,6 +251,12 @@ export type DirectoryLayout = "grid" | "flow";
  * shows without a switch; the grid one choice away.
  */
 export const DIRECTORY_LAYOUTS: readonly DirectoryLayout[] = ["flow", "grid"];
+
+/** How a closed directory's box is drawn in the 2D map: today's box, or one of the three looks of the 2026-11-13 trial. */
+export type ClosedDirectoryLook = "box" | "cells" | "stack" | "folded";
+
+/** Every Closed Directory choice, in the order the control offers them; the first, today's box, is the default. */
+export const CLOSED_DIRECTORY_LOOKS: readonly ClosedDirectoryLook[] = ["box", "cells", "stack", "folded"];
 
 /** The 3D Local Map's packing and stable visual encodings, shared with the headless layout lab. */
 export interface ForceGraphTuning {

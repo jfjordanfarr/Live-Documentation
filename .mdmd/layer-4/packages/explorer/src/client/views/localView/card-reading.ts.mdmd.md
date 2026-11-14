@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-reading.ts
-- Generated At: 2026-11-13T21:12:10.201Z
+- Generated At: 2026-11-14T00:01:14.899Z
 
 ## Authored
 ### Purpose
@@ -40,26 +40,28 @@ Later the same day a name's lines at render are counted by `linesOf` (`ladder-ro
 
 Later on 2026-11-13 (the milestone after [Turn 3 of that day's record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-3)) a fixed-slot symbol whose description is not shown, none written or folded, has a short row: `updateCard` marks it `local-row-short`, and `rowsChange` tells the branch renderer when the reading choices shorten or restore a row, so that the card is laid out again around the acted-on card held still rather than only redrawn. With the zoom looks `measureRooms` reads each row's head (`LookHead`) and `lookHeadWrites` places them for the far looks: each name takes the lines it needs at the connections look up to what a slot row holds there (`fitLines` when the rows cannot hold them all), the heads are spaced evenly over the rows' room (`evenRows`), and each row gets its shift (`--row-even-y`), its height (`--row-even-h`), its fill (`--row-fill-even`) and its head's height (`data-head-h`), from which `markFirstPin` finds the shifts again when the rows are reordered. A row's More is read with its shift taken back. The file's name's room at the overview is now a depth to the first pinned row (`--title-pin-depth`, and `--title-pin-depth-even` as the looks draw its head; `pinDepth`), since rows have two heights. In the looks its header is chosen by `chooseNameHeader`, which keeps a short extension from a line of its own; the ladder's headers keep their filled first line. `closedBoxWrites` gives a closed directory's box its far-look drawing: the name's lines and scale for each look, and Open and the box's More moved beside the name where the box holds them.
 
+Since the Closed Directory trial (2026-11-13), `closedBoxWrites` also writes, for a skin with cells, the room under each far look's held name and controls, which `drawHeldCells` fills with cells held at the look's scale, or leaves empty where not a row fits ([Turn 7 of the November 13 record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-7)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ReadingTarget` {#symbol-readingtarget}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L26)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L28)
 
 ##### `ReadingTarget` — Summary
 A file's Purpose or one exact symbol's description, named by the card it is read on.
 
 #### `CardReadingOptions` {#symbol-cardreadingoptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L29)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L31)
 
 ##### `CardReadingOptions` — Summary
 Canonical text, application-owned choices and the actions a card's text can lead to.
 
 #### `CardReading` {#symbol-cardreading}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L77)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L79)
 
 ##### `CardReading` — Summary
 Builds on-card explanations from the same bundled docs as the full reader. A description opens and folds only
@@ -74,7 +76,7 @@ while names open full descriptions in the reader.
 
 #### `markFirstPin` {#symbol-markfirstpin}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L837)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L848)
 
 ##### `markFirstPin` — Summary
 Write the pin depths for a card whose rows were just ordered, and its held name's lines at the overview band, whose
@@ -96,6 +98,8 @@ room they bound, from the card's last reading: no layout is read.
 - [`reading-state.ReadingChoice`](../../reading-state.ts.mdmd.md#symbol-readingchoice)
 - [`reading-state.descriptionIsOpen`](../../reading-state.ts.mdmd.md#symbol-descriptionisopen)
 - [`types.InspectionTarget`](../../types.ts.mdmd.md#symbol-inspectiontarget) (type-only)
+- [`card-factory.drawHeldCells`](./card-factory.ts.mdmd.md#symbol-drawheldcells)
+- [`closed-looks.CELLS`](./closed-looks.ts.mdmd.md#symbol-cells)
 - [`held-lines.CONTROLS_GAP`](./held-lines.ts.mdmd.md#symbol-controls_gap)
 - [`held-lines.HELD_BANDS`](./held-lines.ts.mdmd.md#symbol-held_bands)
 - [`held-lines.HeldBand`](./held-lines.ts.mdmd.md#symbol-heldband)

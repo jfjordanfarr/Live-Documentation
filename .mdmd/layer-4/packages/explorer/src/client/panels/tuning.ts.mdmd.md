@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/tuning.ts
-- Generated At: 2026-11-13T19:56:24.853Z
+- Generated At: 2026-11-13T23:23:39.341Z
 
 ## Authored
 ### Purpose
@@ -87,12 +87,14 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`tuning-levers.TUNING_HELP`](./tuning-levers.ts.mdmd.md#symbol-tuning_help)
 - [`tuning-levers.tuningHelpId`](./tuning-levers.ts.mdmd.md#symbol-tuninghelpid)
 - [`types.CHANGE_EMPHASES`](../types.ts.mdmd.md#symbol-change_emphases)
+- [`types.CLOSED_DIRECTORY_LOOKS`](../types.ts.mdmd.md#symbol-closed_directory_looks)
 - [`types.DIRECTORY_LAYOUTS`](../types.ts.mdmd.md#symbol-directory_layouts)
 - [`types.ExplorerState`](../types.ts.mdmd.md#symbol-explorerstate)
 - [`types.GROUP_WRAPPERS`](../types.ts.mdmd.md#symbol-group_wrappers)
 - [`template.export-layout-settings`](../../shared/template.html.mdmd.md#symbol-export-layout-settings)
 - [`template.tuning-card-text`](../../shared/template.html.mdmd.md#symbol-tuning-card-text)
 - [`template.tuning-churn-cost`](../../shared/template.html.mdmd.md#symbol-tuning-churn-cost)
+- [`template.tuning-closed-directory`](../../shared/template.html.mdmd.md#symbol-tuning-closed-directory)
 - [`template.tuning-column-gap`](../../shared/template.html.mdmd.md#symbol-tuning-column-gap)
 - [`template.tuning-control-resistance`](../../shared/template.html.mdmd.md#symbol-tuning-control-resistance)
 - [`template.tuning-directory-layout`](../../shared/template.html.mdmd.md#symbol-tuning-directory-layout)

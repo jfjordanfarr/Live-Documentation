@@ -231,6 +231,15 @@
             </select>
           </label>
           <label class="tuning-slider">
+            <span>Closed Directory</span>
+            <select id="tuning-closed-directory">
+              <option value="box" selected>Box: name, count and Open</option>
+              <option value="cells">Skin with cells: a cell for each file</option>
+              <option value="stack">Stack: cards waiting underneath</option>
+              <option value="folded">Folded: the opened label, folded</option>
+            </select>
+          </label>
+          <label class="tuning-slider">
             <span>Slot Lines</span>
             <input type="range" id="tuning-slot-lines" min="1" max="4" step="1" value="2" />
             <output id="tuning-slot-lines-value">2</output>

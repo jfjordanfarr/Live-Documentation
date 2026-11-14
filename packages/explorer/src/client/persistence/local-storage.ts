@@ -67,6 +67,7 @@ export const getDefaultTuning = (): TuningConfig => ({
     cardText: "slot",
     zoomLooks: "three",
     directoryLayout: "flow",
+    closedDirectory: "box",
     slotLines: 2,
     textResistance: 1,
     controlResistance: 1,

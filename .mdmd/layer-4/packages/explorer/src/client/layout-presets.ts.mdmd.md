@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/layout-presets.ts
-- Generated At: 2026-11-13T22:10:28.523Z
+- Generated At: 2026-11-13T23:23:38.697Z
 
 ## Authored
 ### Purpose
@@ -34,6 +34,8 @@ Since November 6 (the directory shells merged, experiment 2 of [Turn 11](../../.
 Since 2026-11-12 the settings carry how an opened directory stands, so that the directory flow trial is compared by link, but only when it is not the grid: a link made with the trial off is the link it was before the trial. Because the grid is never written, `applyLayoutSettings` reads a snapshot that carries the 2D map's settings without it as the grid, so that such a link shows the grid in a browser whose own tuning last held the trial; an address that carries no layout leaves the browser's choice alone.
 
 Since 2026-11-13 ([Turn 3 of that day's record](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-3): the owner judges what the build shows without a switch) the three looks are Zoom Looks' default, first in `ZOOM_LOOKS`, and the settings carry Zoom Looks only when it is the stepped ladder, as they carry the opened directory only when it is not the grid. `applyLayoutSettings` reads a snapshot that carries the 2D map's settings without it as the three looks, so that a link made before the trial, or since with the default, opens in them even in a browser whose own tuning holds the ladder, while a link that says the ladder opens in it. A link of November 10 to 13 always says one or the other, the default of its day included, since the value was written then whatever it was.
+
+A link carries Closed Directory (2026-11-13) only when it is one of the trial's looks; its absence reads as the box ([Turn 7 of the November 13 record](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-7)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -91,11 +93,11 @@ opens in it. Zoom Looks: only the stepped ladder is carried since the three look
 link made between November 10 and 13 says either, since the default was written. Opened Directory: only the grid is
 carried since Flow became the default (2026-11-13); a link made on November 12 or 13 says "flow" when Flow was chosen
 and nothing when the grid was, so such a link now opens in Flow either way, and a link that says "grid" exists only
-from now on.
+from now on. Closed Directory (2026-11-13): only a trial's look is carried, and its absence reads as today's box.
 
 #### `layoutSettingsOf` {#symbol-layoutsettingsof}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L90)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L92)
 - Returns: [`LayoutSettings`](#symbol-layoutsettings)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 
@@ -104,7 +106,7 @@ Snapshot the controls that affect packing and spatial encodings, independent of 
 
 #### `applyLayoutSettings` {#symbol-applylayoutsettings}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L100)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L103)
 - Returns: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig); `settings`: [`LayoutSettings`](#symbol-layoutsettings)
 
@@ -112,11 +114,13 @@ Snapshot the controls that affect packing and spatial encodings, independent of 
 Merge a validated partial snapshot over the current values, leaving unrelated preferences intact. A snapshot that
 carries the 2D map's settings without saying how an opened directory stands says Flow, the default, since only the
 grid is written (2026-11-13); one that does not say its Zoom Looks says the three looks, since only the ladder is
-written (2026-11-13). So a link made with the defaults shows them in a browser whose own tuning holds the other choices.
+written (2026-11-13); one that does not say its Closed Directory says the box (2026-11-13). So a link made with the
+defaults shows them in a browser whose own tuning holds the other choices.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`types.CLOSED_DIRECTORY_LOOKS`](./types.ts.mdmd.md#symbol-closed_directory_looks)
 - [`types.DIRECTORY_LAYOUTS`](./types.ts.mdmd.md#symbol-directory_layouts)
 - [`types.ForceGraphTuning`](./types.ts.mdmd.md#symbol-forcegraphtuning)
 - [`types.GROUP_WRAPPERS`](./types.ts.mdmd.md#symbol-group_wrappers)

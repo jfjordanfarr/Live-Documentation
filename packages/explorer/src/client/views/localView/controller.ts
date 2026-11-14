@@ -174,6 +174,7 @@ export class LocalViewController implements LocalViewApi {
     readNode: (node, symbol) => this.readNode(node, symbol),
     showNodeActions: (node, symbol, anchor) => this.showNodeActions(node, symbol, anchor),
     showDirectoryActions: (directory, anchor) => this.showDirectoryActions(directory, anchor),
+    closedLook: () => this.options.state.tuning.localMap.closedDirectory,
     highlightSymbolConnections: (nodeId, symbol) => this.highlightSymbolConnections(nodeId, symbol),
     clearSymbolHighlight: () => this.clearSymbolHighlight(),
     focusTypeTarget: targetId => {

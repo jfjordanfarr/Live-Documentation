@@ -83,6 +83,26 @@ describe("shared packing preferences", () => {
     expect(applyLayoutSettings(grid, undefined).localMap.directoryLayout).toBe("grid");
   });
 
+  it("carries a closed directory's look only when it is one of the trial's, and reads its absence as the box (2026-11-13)", () => {
+    const box = getDefaultTuning();
+    expect(box.localMap.closedDirectory).toBe("box");
+    expect(layoutSettingsOf(box).localMap).not.toHaveProperty("closedDirectory");
+    expect(readLayoutSettings({ localMap: { closedDirectory: "box" } })).toBeUndefined();
+    expect(readLayoutSettings({ localMap: { closedDirectory: "balloon" } })).toBeUndefined();
+    for (const look of ["cells", "stack", "folded"] as const) {
+      const tuning = getDefaultTuning();
+      tuning.localMap.closedDirectory = look;
+      expect(readLayoutSettings({ localMap: { closedDirectory: look } })).toEqual({ localMap: { closedDirectory: look } });
+      const restored = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(tuning) }));
+      expect(applyLayoutSettings(getDefaultTuning(), restored.layout).localMap.closedDirectory).toBe(look);
+      // A link made with the box shows the box in a browser whose own tuning last held a trial's look.
+      const plain = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(box) }));
+      expect(applyLayoutSettings(tuning, plain.layout).localMap.closedDirectory).toBe("box");
+      // An address that carries no layout at all leaves the browser's own choice alone.
+      expect(applyLayoutSettings(tuning, undefined).localMap.closedDirectory).toBe(look);
+    }
+  });
+
   it("opens a link in the three looks unless it says the ladder, which it carries only when chosen (2026-11-13)", () => {
     // The default is the three looks, and a link made with it does not write it.
     const three = getDefaultTuning();

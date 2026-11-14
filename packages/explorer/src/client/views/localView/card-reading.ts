@@ -2,6 +2,8 @@ import type { TypeRef } from "@live-documentation/engine/live-docs/document";
 import type { GraphFile } from "@live-documentation/engine/live-docs/graph";
 import { pathTo, walk } from "@live-documentation/engine/live-docs/pathfind";
 
+import { drawHeldCells } from "./card-factory";
+import { CELLS } from "./closed-looks";
 import { chooseHeldHeader, chooseNameHeader, CONTROLS_GAP, HELD_BANDS, heldLineCount, heldSegments, heldTitle, rowSegments, type HeldBand, type HeldRoom, type TitleRooms } from "./held-lines";
 import { dotRoom, evenRows, fitLines, footHold, HEAD_SPACE, headHeight, HIGHLIGHT_BELOW, layoutTopOf, linesOf, nameFill, nameLinesHeld, nameWraps, pinDepth, type FootCount } from "./ladder-rooms";
 import { FIRST_STEP, LAST_STEP, ladderScales, LOOK_BANDS, LOOK_SCALES, type LadderResistances, type ZoomLook } from "./ladder-steps";
@@ -300,6 +302,7 @@ export class CardReading {
     const rooms = [...this.cards.values()].flatMap(({ card }) => measureRooms(card, resistances, looks));
     if (looks) for (const box of this.container.querySelectorAll<HTMLElement>(".local-directory-closed")) rooms.push(...closedBoxWrites(box));
     for (const write of rooms) applyRoomWrite(write);
+    if (looks) for (const box of this.container.querySelectorAll<HTMLElement>(".local-closed--cells")) drawHeldCells(box);
   }
 
   /** Every kept-visible description shows; the books and the names say what each one would do next. */
@@ -641,6 +644,7 @@ function lookHeadWrites(heads: readonly LookHead[], slotLines: number, gap: numb
 function closedBoxWrites(box: HTMLElement): RoomWrite[] {
   const name = box.querySelector<HTMLElement>(".local-directory-closed__name"), held = box.querySelector<HTMLElement>(".local-directory-closed__held");
   const open = box.querySelector<HTMLElement>(".local-directory-open"), more = box.querySelector<HTMLElement>(".local-directory-actions");
+  const cells = box.classList.contains("local-closed--cells");
   if (!name || !held || !box.offsetHeight) return [];
   const style = getComputedStyle(box), nameStyle = getComputedStyle(name);
   const left = parseFloat(style.paddingLeft), top = parseFloat(style.paddingTop);
@@ -664,6 +668,13 @@ function closedBoxWrites(box: HTMLElement): RoomWrite[] {
     const lines = fits ? header.lines : chooseHeldHeader(segments, { ...room, controlsWidth: 0, controlsHeight: 0 }, measure).lines;
     writes.push([held, `data-lines-look-${look}`, lines.join("\n")], [box, `--closed-scale-${look}`, scale.toFixed(3)],
       [box, `--closed-control-${look}`, control.toFixed(3)], [box, `local-closed-controls-${look}`, fits]);
+    // The skin with cells (2026-11-13) holds its cells at the look's scale in the room below the held name and the
+    // controls held beside it; drawHeldCells draws them from this room, or none where not a row fits.
+    if (cells) {
+      const below = Math.max(lines.length * line, fits ? header.controls.top + room.controlsHeight : 0) * scale + CELLS.bandGap * scale;
+      const fitsRow = height - below >= CELLS.cell * scale - 1e-6;
+      writes.push([box, `data-cells-${look}`, fitsRow ? `${left.toFixed(2)} ${(top + below).toFixed(2)} ${(width / scale).toFixed(2)} ${((height - below) / scale).toFixed(2)} ${scale.toFixed(3)}` : ""]);
+    }
     if (!fits) continue;
     // Each control's move, from its layout box to its place: More at the content's right edge, Open before it, both at
     // the controls' top, held about their top right.

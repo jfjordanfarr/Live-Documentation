@@ -656,3 +656,11 @@
     #detail-panel.reading-dialog { inset: 8px; max-height: calc(100dvh - 16px); }
     #detail-panel.reading-dialog .detail-scroll { padding: 16px; }
 }
+/* The Closed Directory trial's looks in the far looks (2026-11-13): the held name draws the folded label's words in the
+   label's weight and colour, and the skin's cells are held at the look's scale below the held name and its controls,
+   drawn per look from the room the card reading wrote (card-factory.ts's drawHeldCells); the reading size's field leaves. */
+[data-looks="three"]:is([data-lod="far"], [data-lod="overview"]) .local-closed--folded .local-closed-label { visibility: hidden; }
+[data-looks="three"]:is([data-lod="far"], [data-lod="overview"]) .local-closed--folded .local-directory-closed__held { color: var(--text-panel-muted); font-weight: 400; }
+[data-looks="three"]:is([data-lod="far"], [data-lod="overview"]) .local-closed--cells .local-closed-cells { visibility: hidden; }
+[data-looks="three"][data-lod="far"] .local-closed-cells-held .local-cells-look[data-look="connections"],
+[data-looks="three"][data-lod="overview"] .local-closed-cells-held .local-cells-look[data-look="overview"] { display: inline; }

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-factory.ts
-- Generated At: 2026-11-13T21:12:10.088Z
+- Generated At: 2026-11-14T00:01:14.780Z
 
 ## Authored
 ### Purpose
@@ -38,40 +38,42 @@ Since 2026-11-08 (the header round, [November 7 record, Turn 3](../../../../../.
 
 Since 2026-11-13 ([the milestone after Turn 3](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-3)) a closed directory's box carries an aria-hidden element of its own, `.local-directory-closed__held`, which the far looks draw the box's name with, held at the look's size on the lines the card reading chooses.
 
+The Closed Directory trial (2026-11-13) draws its three looks over the closed box's own layout, never changing its size, its controls or what they do: the stack's cards under the box, the skin with cells' field at reading size and, from `drawHeldCells`, its cells held in the far looks, and the folded membrane's label and moved controls. The owner had found the box underwhelming beside the 3D bags of cells ([Turn 7 of the November 13 record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-7)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `CardPresentation` {#symbol-cardpresentation}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L21)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L22)
 
 ##### `CardPresentation` — Summary
 The values a fresh card reads while it is built. The wrapper may survive a render, but its card is rebuilt.
 
 #### `hasCloseAction` {#symbol-hascloseaction}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L35)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L36)
 
 ##### `hasCloseAction` — Summary
 A card can close its own retention, subject or locally expanded symbol list.
 
 #### `CardContext` {#symbol-cardcontext}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L40)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L41)
 
 ##### `CardContext` — Summary
 Only the facts and actions a card needs; navigation targets are looked up when their event occurs.
 
 #### `PIN_GLYPH` {#symbol-pin_glyph}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L63)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L66)
 
 ##### `PIN_GLYPH` — Summary
 The Pin glyph, a pushpin, in a 24-unit box: the card's Pin, a row's Pin and the card's reveal of its connections outside the view.
 
 #### `createNodeCard` {#symbol-createnodecard}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L78)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L81)
 - Parameters: `context`: [`CardContext`](#symbol-cardcontext); `node`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload); `columnRole`: [`ColumnRole`](./types.ts.mdmd.md#symbol-columnrole)
 
 ##### `createNodeCard` — Summary
@@ -87,7 +89,7 @@ The created card element
 
 #### `createClosedDirectory` {#symbol-createcloseddirectory}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L282)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L285)
 - Parameters: `context`: [`CardContext`](#symbol-cardcontext); `closed`: [`ClosedDirectory`](./branches.ts.mdmd.md#symbol-closeddirectory)
 
 ##### `createClosedDirectory` — Summary
@@ -96,9 +98,19 @@ style, named and counted, that can be inspected or explicitly opened.
 It carries no pin: a directory with a party file
 under it is at least encasing, so no wire ever reaches a closed box.
 
+#### `drawHeldCells` {#symbol-drawheldcells}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L412)
+
+##### `drawHeldCells` — Summary
+The far looks' held cells (2026-11-13): the cells are the look's other content beside the name, so they are held at
+the look's scale as the name is, in the room the held name and its controls leave below them, at least a row of them,
+veiled where they end; where not a row fits, the skin alone carries the look. The card reading writes each look's room
+as data-cells-<look>, "left top width height scale", the width and height in held units.
+
 #### `countsOf` {#symbol-countsof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L324)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L449)
 
 ##### `countsOf` — Summary
 "3 files, 2 directories", either part left out at zero; "empty" when both are.
@@ -107,9 +119,15 @@ under it is at least encasing, so no wire ever reaches a closed box.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`dom.setSeamedText`](../../dom.ts.mdmd.md#symbol-setseamedtext)
+- [`types.ClosedDirectoryLook`](../../types.ts.mdmd.md#symbol-closeddirectorylook) (type-only)
 - [`types.SymbolOrder`](../../types.ts.mdmd.md#symbol-symbolorder) (type-only)
 - [`branches.ClosedDirectory`](./branches.ts.mdmd.md#symbol-closeddirectory)
 - [`branches.compareSymbolNames`](./branches.ts.mdmd.md#symbol-comparesymbolnames)
+- [`closed-looks.CellField`](./closed-looks.ts.mdmd.md#symbol-cellfield-interface)
+- [`closed-looks.ClosedContents`](./closed-looks.ts.mdmd.md#symbol-closedcontents)
+- [`closed-looks.cellField`](./closed-looks.ts.mdmd.md#symbol-cellfield-function)
+- [`closed-looks.fieldBands`](./closed-looks.ts.mdmd.md#symbol-fieldbands)
+- [`closed-looks.stackEdges`](./closed-looks.ts.mdmd.md#symbol-stackedges)
 - [`directory-bands.parentDirectory`](./directory-bands.ts.mdmd.md#symbol-parentdirectory)
 - [`types.ColumnRole`](./types.ts.mdmd.md#symbol-columnrole) (type-only)
 - [`wire-gathering.NODE_HUB`](./wire-gathering.ts.mdmd.md#symbol-node_hub)

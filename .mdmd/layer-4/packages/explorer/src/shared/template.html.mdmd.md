@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-11-13T19:56:31.184Z
+- Generated At: 2026-11-13T23:23:49.388Z
 
 ## Authored
 ### Purpose
@@ -199,6 +199,9 @@ Since November 8, 2026, the literal initial controls agree with `getDefaultTunin
 - Type: variable
 
 #### `tuning-churn-cost-value` {#symbol-tuning-churn-cost-value}
+- Type: variable
+
+#### `tuning-closed-directory` {#symbol-tuning-closed-directory}
 - Type: variable
 
 #### `tuning-column-gap` {#symbol-tuning-column-gap}

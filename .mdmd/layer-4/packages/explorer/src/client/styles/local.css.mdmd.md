@@ -37,6 +37,8 @@ Since the far bands' round (2026-11-06, [Turn 3](../../../../../../../AI-Agent-W
 
 Since the far bands' second milestone (2026-11-06) a node-level hub is drawn only where a wire of the band shown ends on it, which the wires' drawing marks (`hub-ends-wire`), and the legend's row "Width: references" is shown only while the map shows the overview band, by the map's `data-lod`.
 
+The Closed Directory trial's three looks (2026-11-13) are drawn here, beside the box's own rules, in neutral hues only ([Turn 7 of the November 13 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-7)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

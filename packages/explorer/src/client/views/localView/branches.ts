@@ -98,6 +98,11 @@ export interface ClosedDirectory {
   files: number;
   /** Its immediate subdirectories. */
   directories: number;
+  /**
+   * What the skin with cells draws (2026-11-13): the files directly in it, and for each immediate subdirectory the files
+   * directly in that one and its own immediate subdirectories, counted over the files the picture shows.
+   */
+  contents?: { files: number; subdirectories: Array<{ files: number; directories: number }> };
 }
 
 /** A drawn directory's state and what it does not draw: its own files, and its immediate subdirectories, not in the picture. */
@@ -444,7 +449,10 @@ export function orderExploration(exploration: Exploration, options: OrderOptions
 function closedDirectory(path: string, index: ReadonlyMap<string, { files: string[]; subdirectories: string[] }>): ClosedDirectory {
   let files = 0;
   for (const [directory, contents] of index) if (under(directory, path)) files += contents.files.length;
-  return { path, name: path.slice(path.lastIndexOf("/") + 1), files, directories: index.get(path)?.subdirectories.length ?? 0 };
+  const own = index.get(path);
+  const contents = { files: own?.files.length ?? 0, subdirectories: (own?.subdirectories ?? []).map(subdirectory => ({
+    files: index.get(subdirectory)?.files.length ?? 0, directories: index.get(subdirectory)?.subdirectories.length ?? 0 })) };
+  return { path, name: path.slice(path.lastIndexOf("/") + 1), files, directories: own?.subdirectories.length ?? 0, contents };
 }
 
 /** The deepest directory every given directory is in or under; "" when they share none. */

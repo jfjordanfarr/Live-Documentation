@@ -1,4 +1,4 @@
-import { DIRECTORY_LAYOUTS, GROUP_WRAPPERS, ZOOM_LOOKS, type ForceGraphTuning, type LocalMapTuning, type TuningConfig } from "./types";
+import { CLOSED_DIRECTORY_LOOKS, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, ZOOM_LOOKS, type ForceGraphTuning, type LocalMapTuning, type TuningConfig } from "./types";
 
 /** One packing preference interpreted by both Local Map representations. */
 export type LayoutPreset = "compact" | "relaxed";
@@ -8,7 +8,7 @@ type SpatialPacking = Pick<ForceGraphTuning, "linkGap" | "charge" | "collisionGa
 
 /** Portable numeric settings behind the presets and spatial encodings; older URLs may omit them. */
 export interface LayoutSettings {
-  localMap?: Partial<FlatPacking & Pick<LocalMapTuning, "zoomLooks" | "directoryLayout">>;
+  localMap?: Partial<FlatPacking & Pick<LocalMapTuning, "zoomLooks" | "directoryLayout" | "closedDirectory">>;
   forceGraph?: Partial<ForceGraphTuning>;
 }
 
@@ -55,7 +55,7 @@ export function applyLayoutPreset(tuning: TuningConfig, preset: LayoutPreset): T
  * link made between November 10 and 13 says either, since the default was written. Opened Directory: only the grid is
  * carried since Flow became the default (2026-11-13); a link made on November 12 or 13 says "flow" when Flow was chosen
  * and nothing when the grid was, so such a link now opens in Flow either way, and a link that says "grid" exists only
- * from now on.
+ * from now on. Closed Directory (2026-11-13): only a trial's look is carried, and its absence reads as today's box.
  */
 export function readLayoutSettings(value: unknown): LayoutSettings | undefined {
   if (!value || typeof value !== "object" || Array.isArray(value)) return undefined;
@@ -75,8 +75,10 @@ export function readLayoutSettings(value: unknown): LayoutSettings | undefined {
     if (group === "localMap") {
       const zoomLooks = ZOOM_LOOKS.slice(1).find(choice => choice === (input as Record<string, unknown>).zoomLooks);
       const directoryLayout = DIRECTORY_LAYOUTS.slice(1).find(choice => choice === (input as Record<string, unknown>).directoryLayout);
-      if (Object.keys(numbers).length || zoomLooks || directoryLayout) {
-        result.localMap = { ...numbers, ...(zoomLooks ? { zoomLooks } : null), ...(directoryLayout ? { directoryLayout } : null) };
+      const closedDirectory = CLOSED_DIRECTORY_LOOKS.slice(1).find(choice => choice === (input as Record<string, unknown>).closedDirectory);
+      if (Object.keys(numbers).length || zoomLooks || directoryLayout || closedDirectory) {
+        result.localMap = { ...numbers, ...(zoomLooks ? { zoomLooks } : null), ...(directoryLayout ? { directoryLayout } : null),
+          ...(closedDirectory ? { closedDirectory } : null) };
       }
       continue;
     }
@@ -95,10 +97,12 @@ export function layoutSettingsOf(tuning: TuningConfig): LayoutSettings {
  * Merge a validated partial snapshot over the current values, leaving unrelated preferences intact. A snapshot that
  * carries the 2D map's settings without saying how an opened directory stands says Flow, the default, since only the
  * grid is written (2026-11-13); one that does not say its Zoom Looks says the three looks, since only the ladder is
- * written (2026-11-13). So a link made with the defaults shows them in a browser whose own tuning holds the other choices.
+ * written (2026-11-13); one that does not say its Closed Directory says the box (2026-11-13). So a link made with the
+ * defaults shows them in a browser whose own tuning holds the other choices.
  */
 export function applyLayoutSettings(tuning: TuningConfig, settings: LayoutSettings | undefined): TuningConfig {
   const directory = settings?.localMap ? { directoryLayout: DIRECTORY_LAYOUTS[0] } : null;
   const looks = settings?.localMap ? { zoomLooks: ZOOM_LOOKS[0] } : null;
-  return { ...tuning, localMap: { ...tuning.localMap, ...directory, ...looks, ...settings?.localMap }, forceGraph: { ...tuning.forceGraph, ...settings?.forceGraph } };
+  const closed = settings?.localMap ? { closedDirectory: CLOSED_DIRECTORY_LOOKS[0] } : null;
+  return { ...tuning, localMap: { ...tuning.localMap, ...directory, ...looks, ...closed, ...settings?.localMap }, forceGraph: { ...tuning.forceGraph, ...settings?.forceGraph } };
 }
