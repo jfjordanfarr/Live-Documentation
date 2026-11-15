@@ -1,0 +1,35 @@
+Running 3 tests using 1 worker
+  ✘  1 [chromium] › tests/e2e/local-map-overview-bars.spec.ts:93:5 › in the overview look each silent row is a faint bar where its name stood, painted, and none stands under the file's name or its More (4.9s)
+  ✘  2 [chromium] › tests/e2e/local-map-overview-bars.spec.ts:133:5 › a row pinned by name keeps its drawing among the bars, and files only draws none (4.7s)
+  ✘  3 [chromium] › tests/e2e/local-map-overview-bars.spec.ts:179:5 › in the overview look a file's name is not broken inside a word while a smaller size, down to the connections look's, keeps its pieces whole (11.5s)
+  1) [chromium] › tests/e2e/local-map-overview-bars.spec.ts:93:5 › in the overview look each silent row is a faint bar where its name stood, painted, and none stands under the file's name or its More 
+    Error: every silent row has a bar
+    - Expected  -  1
+    + Received  + 14
+    - Array []
+    + Array [
+    +   "Contracts/PaymentRequest.cs PaymentRequest",
+    +   "Contracts/PaymentResult.cs PaymentResult",
+    +   "Contracts/PaymentQuery.cs PaymentQuery",
+    +   "Contracts/IPaymentService.cs IPaymentService",
+    +   "PaymentService/Data/Payment.cs Payment",
+    +   "PaymentService/Data/PostPaymentRow.cs PostPaymentRow",
+    +   "PaymentService/Data/PaymentsContext.cs PaymentsContext (class)",
+    +   "PaymentService/App.config __internals__",
+    +   "PaymentService/PaymentService.cs PaymentService",
+    +   "PaymentService/PaymentService.cs Post",
+    +   "PaymentService/PaymentService.cs Get",
+    +   "PaymentService/PaymentService.cs __internals__",
+    + ]
+  2) [chromium] › tests/e2e/local-map-overview-bars.spec.ts:133:5 › a row pinned by name keeps its drawing among the bars, and files only draws none 
+    Error: its card's other rows are bars
+    Expected: true
+    Received: false
+  3) [chromium] › tests/e2e/local-map-overview-bars.spec.ts:179:5 › in the overview look a file's name is not broken inside a word while a smaller size, down to the connections look's, keeps its pieces whole 
+    Error: approximation.ts: "approxim" ends inside a word while a smaller size would keep it whole
+    Expected: <= 2.21
+    Received:    3.6
+    Error: this picture has names whose widest word needs a smaller size than the look's
+    Expected: > 0
+    Received:   0
+  3 failed
