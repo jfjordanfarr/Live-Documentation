@@ -8,6 +8,10 @@ _The owner's standing request (2026-09-29): after changing the Explorer, build i
 
 [The 3D button's cue for connections drawn against the left-to-right order](2026-11-15/backward-cue/README.md): the toolbar with no cue, some, many and with keyboard focus; the one slow pulse held at its start, peak and return; the whole page of `branch-renderer.ts` with the cue lit. By the builder of the round that made the cue count a cycle's returning connections.
 
+[A hierarchy of tone on the 2D map's cards, wires without a glow, and the legend redrawn](2026-11-15/tone-and-greeking/README.md): before and after in pairs under both font metrics, the failing run of the round's spec on the build before, and two passes of a frame-cost measurement of what removing the wires' glow saves. By the builder of the tone round.
+
+[The history's Changed Files modes on one step](2026-11-15/changed-files-modes/README.md): Glow, Dim and Both side by side, taken by the root when the owner asked whether a changed file could keep its colour.
+
 ## 2026-11-13
 
 Added to this index on November 15; the folders were written on their day.
