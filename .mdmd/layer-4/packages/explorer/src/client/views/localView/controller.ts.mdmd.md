@@ -64,6 +64,8 @@ Since 2026-11-13 ([Turn 3 of that day's record](../../../../../../../../AI-Agent
 
 Since 2026-11-13 ([Turn 8](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-8)) the controller also draws files only at the overview look when Tuning → 2D Layout → Zoomed Out Fully says so, a trial for the owner's eye: at the change of look it writes `data-overview-files` on the container and has the branch renderer lay the same branches out again for the compact cards, holding the element under the pointer still (or the card nearest the frame's centre), and Fit frames the picture with its rows from either layout (`overview-files.ts`).
 
+Since 2026-11-15 ([Turn 1](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) the frames of a move report nothing to `onBackwardConnections`, where they reported zero, and the move's final frame reports the picture it arrived at: the zero had turned the 3D button's cue off and on again at every move, which with the cue's pulse would have pulsed at every pin.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

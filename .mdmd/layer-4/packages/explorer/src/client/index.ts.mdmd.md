@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/index.ts
 - Entry: declared
-- Generated At: 2026-11-12T22:44:00.468Z
+- Generated At: 2026-11-15T20:53:41.787Z
 
 ## Authored
 ### Purpose
@@ -46,6 +46,8 @@ Since the far bands' second milestone (2026-11-06) the Local Map's `onZoomLimits
 The [November 8 reading feedback](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-08.1.record.md#turn-3-additional-reading-feedback-during-the-review), addressed November 9 UTC, restores books to fixed-slot cards while their names continue to open the evidence reader. `changeReading` first asks the Local Map to refresh an unchanged fixed-slot scene in place. Text-only choices preserve the existing cards, keyboard focus and continuing layout search; a change in retained files, visible rows or card controls falls back to the normal render and anchor-restoration transaction. Either path persists the same canonical reading choices for sharing.
 Since 2026-11-12 what stops the page that a reader can act on is an `ExplorerRefusal` from [errors.ts](errors.ts.mdmd.md), said in one sentence where the map would be: a page opened as a file, refused before it asks for anything, data or a history named off the page's own site, data or a history missing or not of a form this Explorer reads.
 Since 2026-11-12 `bootstrapExplorer` removes the loading sign, `#explorer-loading`, before the first view draws, and before a refusal is shown when loading fails ([the round's evidence](../../../../../../AI-Agent-Workspace/Screenshots/2026-11-12/world-map-repairs/README.md)).
+
+Since 2026-11-15 ([Turn 1](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) the 3D button's cue has two strengths from `backwardStrength` of [returning-connections.ts](views/localView/returning-connections.ts.mdmd.md), some and many, written as `data-backward` beside the `has-backward-wires` class, and a pulse, the `backward-rising` class, begun again only when the strength rises above the one shown and taken off at its end. The count now includes a cycle's returning connections, the ordinary case, beside the rare wire that doubles back. The button's name stays its label, 3D, as the toolbar's text buttons are named; the tooltip, which carries the count, is its accessible description. It never switches by itself.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -133,6 +135,9 @@ _No public symbols detected_
 - [`directory-state.openDirectory`](./views/localView/directory-state.ts.mdmd.md#symbol-opendirectory)
 - [`directory-state.under`](./views/localView/directory-state.ts.mdmd.md#symbol-under)
 - [`index.createLocalView`](./views/localView/index.ts.mdmd.md#symbol-createlocalview)
+- [`returning-connections.BACKWARD_STRENGTHS`](./views/localView/returning-connections.ts.mdmd.md#symbol-backward_strengths)
+- [`returning-connections.BackwardStrength`](./views/localView/returning-connections.ts.mdmd.md#symbol-backwardstrength-type)
+- [`returning-connections.backwardStrength`](./views/localView/returning-connections.ts.mdmd.md#symbol-backwardstrength-function)
 - [`types.ReadingControl`](./views/localView/types.ts.mdmd.md#symbol-readingcontrol) (type-only)
 - [`perspectiveTransition.animatePerspective`](./views/perspectiveTransition.ts.mdmd.md#symbol-animateperspective)
 - [`perspectiveTransition.captureLocalScene`](./views/perspectiveTransition.ts.mdmd.md#symbol-capturelocalscene)

@@ -8,6 +8,7 @@ import { isPairLine, linksOf } from "./directory-flow";
 import { OVERVIEW_FILES_ATTRIBUTE, OVERVIEW_LINES_ATTRIBUTE } from "./overview-files";
 import { gatheredCount, gatheredDescription, gatheredWidth, gatherWires, NODE_HUB, ownWires, type GatheredWire } from "./wire-gathering";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
+import { returningConnections, type ReturningConnections } from "./returning-connections";
 
 /**
  * Ambient context required by {@link drawConnections} to measure DOM
@@ -70,11 +71,16 @@ function cardEdgesOf(provider: AnchorMeasurement, consumer: AnchorMeasurement, b
  * no longer has leaves with its gradient (2026-10-16; the drawing of
  * 2026-10-07 built the SVG anew each frame and reconciled it by key, which
  * cost more than the measuring and the routing together).
+ *
+ * Returns, and writes on the overlay as `data-backward-connections`, how many connections the picture draws against
+ * its left-to-right order: the returning references, as the cards' feet count them, each once, and the forward wires
+ * whose route doubles back. The 3D button lights for that number (2026-11-15; until then only the doubling wires
+ * counted, and the cycles' returns, the ordinary case, never lit it).
  */
 export function drawConnections(context: ConnectionsContext): number {
   const layer = layerOf(context.runtime, context.svgNamespace);
   const seen = new Set<string>();
-  const { drawn, backward } = context.branches ? drawBranchConnections(context, layer, seen) : { drawn: 0, backward: 0 };
+  const { drawn, doubling } = context.branches ? drawBranchConnections(context, layer, seen) : { drawn: 0, doubling: 0 };
   for (const [key, element] of layer.elements) {
     if (seen.has(key)) continue;
     element.remove();
@@ -82,9 +88,40 @@ export function drawConnections(context: ConnectionsContext): number {
     layer.gradients.get(key)?.remove();
     layer.gradients.delete(key);
   }
+  const backward = (context.branches ? settledReturning(context, context.branches).total : 0) + doubling;
   context.runtime.overlay.dataset.active = String(drawn > 0);
   context.runtime.overlay.dataset.backwardConnections = String(backward);
   return backward;
+}
+
+/**
+ * Whether the picture draws a reference: both of its rows disclosed, neither hidden by the picture's disclosure. A row
+ * keeps its disclosure at every look, laid out or not, so the answer is the same at reading, connections and overview,
+ * and with files only (2026-11-15). The card's foot asks it before the picture is placed, the drawing at every frame.
+ */
+export function drawsReference(getAnchor: ConnectionsContext["getAnchor"], edge: LocalEdge): boolean {
+  const disclosed = (anchor: HTMLElement | null): boolean => !!anchor && !anchor.closest(".symbol-row.branch-symbol-hidden");
+  return disclosed(getAnchor(edge.targetId, "center", "outbound", edge.targetSymbol)) && disclosed(getAnchor(edge.sourceId, "center", "inbound", edge.sourceSymbol));
+}
+
+/**
+ * The returning references the picture draws at full presence, as the cards' feet count them: one still fading in or
+ * out of a move does not count, as a forward wire that doubles back while it moves does not.
+ */
+function settledReturning(context: ConnectionsContext, branches: BranchGraph): ReturningConnections {
+  const container = context.runtime.container;
+  const settled = (anchor: HTMLElement | null): boolean => presenceOf(anchor, container) >= 1;
+  return returningConnections(branches.subgraph.links, edge => branches.back.has(edgeKey(edge)), edge => drawsReference(context.getAnchor, edge)
+    && settled(context.getAnchor(edge.targetId, "center", "outbound", edge.targetSymbol)) && settled(context.getAnchor(edge.sourceId, "center", "inbound", edge.sourceSymbol)));
+}
+
+/** How present an element is in a move's fade: the product of the opacities its ancestors were given, up to the container. */
+function presenceOf(element: HTMLElement | null, container: HTMLElement): number {
+  let presence = 1;
+  for (let at: HTMLElement | null = element; at && at !== container; at = at.parentElement) {
+    if (at.style.opacity !== "") presence *= Number(at.style.opacity);
+  }
+  return presence;
 }
 
 /** The overlay's one SVG, with the wires' elements by key, made at the first drawing and kept until the overlay is cleared. */
@@ -156,10 +193,7 @@ function createAnchorMeasurer(container: HTMLElement, scale: number): (anchor: H
     if (position === "left" || position === "right" || position === "center") {
       columnPosition = position;
     }
-    let presence = 1;
-    for (let element: HTMLElement | null = anchor; element && element !== container; element = element.parentElement) {
-      if (element.style.opacity !== "") presence *= Number(element.style.opacity);
-    }
+    const presence = presenceOf(anchor, container);
     const measurement: AnchorMeasurement = {
       centerX: (rect.left - rootRect.left + rect.width / 2) / scale,
       centerY: (rect.top - rootRect.top + rect.height / 2) / scale,
@@ -331,13 +365,15 @@ function drawLaces(
  * their shared run is drawn once more beneath them, as wide as their number,
  * so a bundle says how many it carries before they part. A pair line of an opened directory (the directory flow trial,
  * 2026-11-12) is drawn in every band as the overview band draws a gathered wire, hub to hub and as wide as its count,
- * under the same key, so that one element is the pair's line at every zoom; it joins no bundle's shared run.
+ * under the same key, so that one element is the pair's line at every zoom; it joins no bundle's shared run. Returns how
+ * many wires it drew and, as `doubling`, the references of the forward wires whose drawn route still reads backward,
+ * the rare stray the 3D button counts beside the returning references (2026-11-02).
  */
-function drawBranchConnections(context: ConnectionsContext, layer: WireLayer, seen: Set<string>): { drawn: number; backward: number } {
+function drawBranchConnections(context: ConnectionsContext, layer: WireLayer, seen: Set<string>): { drawn: number; doubling: number } {
   const { runtime, branches, state } = context;
-  if (!branches) return { drawn: 0, backward: 0 };
+  if (!branches) return { drawn: 0, doubling: 0 };
   const extents = context.measureLayoutExtents();
-  if (!extents) return { drawn: 0, backward: 0 };
+  if (!extents) return { drawn: 0, doubling: 0 };
   const columnOf = new Map(branches.columns.flatMap((nodes, column) => nodes.map(node => [node.id, column] as const)));
   const measure = createAnchorMeasurer(runtime.container, runtime.mapTransform.k || 1);
   const bounds = extents.content;
@@ -361,7 +397,7 @@ function drawBranchConnections(context: ConnectionsContext, layer: WireLayer, se
     measure(context.getAnchor(edge.targetId, "center", "outbound", edge.targetSymbol));
     measure(context.getAnchor(edge.sourceId, "center", "inbound", edge.sourceSymbol));
   }
-  let drawn = 0, backward = 0;
+  let drawn = 0, doubling = 0;
   const laceRanks = new Map<string, number>();
   const shape = laceShape(state.tuning.localMap);
   // The node-level hubs a wire of the band shown ends on, the only hubs drawn (2026-11-06): a hub counts only once both
@@ -445,7 +481,7 @@ function drawBranchConnections(context: ConnectionsContext, layer: WireLayer, se
     }
     const a = columnOf.get(edge.targetId)!, b = columnOf.get(edge.sourceId)!;
     const routed = routeFor(key, a, b, from, to);
-    if (presence >= 1 && routeBacktracks(routed.pieces, state.tuning.bezier)) backward += linksOf(edge);
+    if (presence >= 1 && routeBacktracks(routed.pieces, state.tuning.bezier)) doubling += linksOf(edge);
     const gradientId = drawWire(layer, seen, from, to, "outbound", edge, context.svgNamespace, state.tuning.bezier, routed.d, line ? "gathered" : undefined, presence);
     if (line) {
       dressLine(edge, "gathered");
@@ -465,7 +501,7 @@ function drawBranchConnections(context: ConnectionsContext, layer: WireLayer, se
     drawBundleRun(layer, seen, run.curve, run.lane, run.gradient, run.members, context.svgNamespace, state.tuning.bezier, key, run.presence);
   }
   markHubs(runtime.container, hubsEnding);
-  return { drawn, backward };
+  return { drawn, doubling };
 }
 
 /**
@@ -474,9 +510,10 @@ function drawBranchConnections(context: ConnectionsContext, layer: WireLayer, se
  * says, carrying its two files and its count; and above them a pinned symbol's own wires, from its row's dots to the hubs
  * of the files at their far ends, or to a dot there when that symbol is pinned too. A pair whose references read against
  * the columns is drawn as the laces of a return at its hubs, its route shown on hover, as each of its references is at
- * the closer bands. The bundles' shared runs are not drawn: a gathered wire already says how many it carries. A gathered
- * wire whose route reads backward counts the references it carries, so that the 3D button's word about backward wires in
- * 2D stays at this band; a pinned symbol's own wire is counted among its gathered wire's.
+ * the closer bands. The bundles' shared runs are not drawn: a gathered wire already says how many it carries. A forward
+ * gathered wire whose route reads backward counts the references it carries as `doubling`, so that the 3D button's word
+ * about backward wires in 2D stays at this band; a pinned symbol's own wire is counted among its gathered wire's. The
+ * returning pairs are not counted here: {@link drawConnections} counts their references, the same at every look.
  */
 function drawOverviewWires(
   context: ConnectionsContext,
@@ -490,9 +527,9 @@ function drawOverviewWires(
   routeFor: (key: string, a: number, b: number, from: Point, to: Point) => { d: string; pieces: RoutePiece[] },
   laceRanks: Map<string, number>,
   shape: SelfLoopParams
-): { drawn: number; backward: number } {
+): { drawn: number; doubling: number } {
   const { branches, state, svgNamespace } = context;
-  if (!branches) return { drawn: 0, backward: 0 };
+  if (!branches) return { drawn: 0, doubling: 0 };
   // The references the closer bands draw, whose ends are laid out (a row the branch picture hides has none): a pair is
   // joined here exactly when a wire of the closer bands joins it, and its count is theirs.
   // With files only (2026-11-13) no row is laid out: a reference counts where its rows are disclosed, as the closer looks
@@ -513,7 +550,7 @@ function drawOverviewWires(
     const p = offsetToEdge(from, "outbound"), q = offsetToEdge(to, "inbound");
     return { from: { x: p.x - bounds.left, y: p.y - bounds.top }, to: { x: q.x - bounds.left, y: q.y - bounds.top } };
   };
-  let drawn = 0, backward = 0;
+  let drawn = 0, doubling = 0;
   // Every card's two hubs measured before any wire is written, so that the page lays itself out once for the drawing
   // rather than once a wire (a look change on the crowded client picture spent 2.3 s in 184 style recalculations, each
   // a hub first measured after a wire was written; profiled 2026-11-14).
@@ -537,7 +574,7 @@ function drawOverviewWires(
       const a = columnOf.get(wire.providerId)!, b = columnOf.get(wire.consumerId)!;
       // Through the lanes one of its references was given, where all of that reference's passages stand; else the one curve.
       const routed = wire.members.map(member => threadFor(edgeKey(member), a, b, from, to)).find(Boolean) ?? routeFor(edgeKey(wire.members[0]), a, b, from, to);
-      if (presence >= 1 && routeBacktracks(routed.pieces, state.tuning.bezier)) backward += gatheredCount(wire);
+      if (presence >= 1 && routeBacktracks(routed.pieces, state.tuning.bezier)) doubling += gatheredCount(wire);
       drawWire(layer, seen, from, to, "outbound", gathered, svgNamespace, state.tuning.bezier, routed.d, "gathered", presence);
       path = layer.elements.get(JSON.stringify([edgeKey(gathered), "gathered"])) as SVGPathElement | undefined;
     }
@@ -560,7 +597,7 @@ function drawOverviewWires(
     const a = columnOf.get(edge.targetId)!, b = columnOf.get(edge.sourceId)!;
     drawWire(layer, seen, from, to, "outbound", edge, svgNamespace, state.tuning.bezier, routeFor(edgeKey(edge), a, b, from, to).d, "own", presence);
   }
-  return { drawn, backward };
+  return { drawn, doubling };
 }
 
 /**

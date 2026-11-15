@@ -44,6 +44,7 @@ import { explorerGraphOf } from "../shared/graph";
 import type { StaticExplorerData } from "../shared/staticExplorerData";
 import type { ExplorerNodePayload } from "../shared/types";
 import { closeDirectory as closeOpenedDirectory, openDirectory as addOpenedDirectory, under, type OpenDirectories } from "./views/localView/directory-state";
+import { BACKWARD_STRENGTHS, backwardStrength, type BackwardStrength } from "./views/localView/returning-connections";
 import type { ReadingControl } from "./views/localView/types";
 import { animatePerspective, captureLocalScene, holdPerspective } from "./views/perspectiveTransition";
 import { addPin, EMPTY_PIN_SET, INTERNAL_SYMBOL, isSymbolPinned, pressSymbol, removePinsForNode, retainFile, type PinSet } from "./views/pin-state";
@@ -294,6 +295,8 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   // was a text link here until 2026-11-02, which the owner never found; it is the Whole toggle of the toolbar now.
   let shownFiles: { shown: number; total: number; groups: number; alone: number } | null = null;
   let backwardConnections = 0;
+  // The strength the 3D button shows, so that its pulse plays only as the cue lights or rises.
+  let shownStrength: BackwardStrength = "none";
   const syncStatsLine = (): void => {
     const counts = statsLineOf((shownMoment?.graph ?? graphData).stats);
     const n = (count: number): string => count.toLocaleString("en-US");
@@ -538,6 +541,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   graphButton.textContent = "3D";
   graphButton.title = "Local Map in 3D";
   graphButton.addEventListener("click", () => changePerspective("3d"));
+  graphButton.addEventListener("animationend", () => graphButton.classList.remove("backward-rising"));
   // The 3D layout: the emergent network of the analyzed references, or the emergent tree of the declared directories
   // (the owner's distinction, 2026-10-14). A choice inside 3D, shown only there.
   const connectionsButton = iconButton("Connections", '<circle cx="12" cy="6" r="2.5"/><circle cx="6" cy="17" r="2.5"/><circle cx="18" cy="17" r="2.5"/><path d="m10.8 8.3-3.6 6.4M13.2 8.3l3.6 6.4M8.5 17h7"/>');
@@ -999,9 +1003,21 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
       : state.perspective === "3d" ? "Show the whole picture: every file, the other groups and the lone files included" : "Show the whole picture: the scan root around what you asked about";
     mapButton.setAttribute("aria-pressed", String(state.perspective === "2d"));
     graphButton.setAttribute("aria-pressed", String(state.perspective === "3d"));
-    const suggest3d = state.perspective === "2d" && backwardConnections > 0;
-    graphButton.classList.toggle("has-backward-wires", suggest3d);
-    graphButton.title = suggest3d ? `${backwardConnections} ${backwardConnections === 1 ? "connection runs" : "connections run"} backward in 2D. Explore this scope in 3D.` : "Local Map in 3D";
+    // The 3D button calls when the 2D picture draws connections against its left-to-right order (2026-11-02, counting the
+    // cycles' returns since 2026-11-15): amber, in two strengths by their number, with one slow pulse as it lights or
+    // rises a strength. Its name stays "3D"; the count is its description, by the tooltip. Never a switch of its own.
+    const strength = state.perspective === "2d" ? backwardStrength(backwardConnections) : "none";
+    const rises = BACKWARD_STRENGTHS.indexOf(strength) > BACKWARD_STRENGTHS.indexOf(shownStrength);
+    shownStrength = strength;
+    graphButton.classList.toggle("has-backward-wires", strength !== "none");
+    if (strength === "none") delete graphButton.dataset.backward;
+    else graphButton.dataset.backward = strength;
+    if (rises) {
+      graphButton.classList.remove("backward-rising");
+      void graphButton.offsetWidth; // the pulse begins again when the cue rises while the last is still running
+      graphButton.classList.add("backward-rising");
+    }
+    graphButton.title = strength !== "none" ? `${backwardConnections} ${backwardConnections === 1 ? "connection runs" : "connections run"} backward in 2D. Explore this scope in 3D.` : "Local Map in 3D";
     state.retentionOrder = reconcileRetained(retentionState()).retentionOrder;
     historyControl.sync({
       visible: state.view === "map" && state.perspective === "3d",

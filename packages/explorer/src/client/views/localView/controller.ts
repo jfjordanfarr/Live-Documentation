@@ -654,8 +654,9 @@ export class LocalViewController implements LocalViewApi {
       measureLayoutExtents: () => this.measureLayoutExtents(),
       branches: this.branches ?? undefined
     });
-    // A transient crossing during rearrangement is not a reason to leave 2D. The final frame reports again.
-    this.options.onBackwardConnections?.(this.stage?.move ? 0 : backward);
+    // A transient crossing during rearrangement is not a reason to leave 2D, nor a move a reason to let the cue go out and
+    // light again: the frames of a move report nothing, and its final frame reports the picture it arrived at (2026-11-15).
+    if (!this.stage?.move) this.options.onBackwardConnections?.(backward);
     if (this.flowHover) this.applyFlowHover();
   }
 

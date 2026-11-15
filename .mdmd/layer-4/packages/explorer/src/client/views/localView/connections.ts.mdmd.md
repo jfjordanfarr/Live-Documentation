@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/connections.ts
-- Generated At: 2026-11-14T00:14:41.958Z
+- Generated At: 2026-11-15T20:53:45.560Z
 
 ## Authored
 ### Purpose
@@ -33,12 +33,14 @@ Since 2026-11-13 ([Turn 8](../../../../../../../../AI-Agent-Workspace/ChatHistor
 
 In the trial's second round (2026-11-14) the pairs' lines also stand while `data-overview-lines` says the move back in from files only runs, and the overview's drawing measures every card's hubs before it writes a wire: a look change on the crowded client picture had spent most of its 1.9 s in style recalculations forced by hubs first measured after a wire was written.
 
+Since 2026-11-15 ([Turn 1](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) `drawConnections` counts for the 3D button every connection the picture draws against its left-to-right order: the returning references, once each, through `returningConnections` of [returning-connections.ts](returning-connections.ts.mdmd.md), the function the cards' feet count with, and the forward wires whose drawn route doubles back, which both bands now return as `doubling` (the case of 2026-11-02). A returning reference counts where `drawsReference` finds both of its rows disclosed, as a row is at every look whether laid out or not, so the number is the same at reading, connections and overview and with files only; and where neither end is still fading in or out of a move (`presenceOf`, which the anchor measurer shares). Until then a returning reference returned from the branch drawer before the count, and a gathered return at the overview did too, so the cue counted the rare stray and never a cycle's returns: the owner opened branch-renderer.ts, saw eight returning routes travel leftward and the button stayed dark.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ConnectionsContext` {#symbol-connectionscontext}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L16)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L17)
 
 ##### `ConnectionsContext` — Summary
 Ambient context required by {@link drawConnections} to measure DOM
@@ -46,7 +48,7 @@ anchors, read explorer state, and emit SVG paths.
 
 #### `drawConnections` {#symbol-drawconnections}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L74)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L80)
 - Parameters: `context`: [`ConnectionsContext`](#symbol-connectionscontext)
 
 ##### `drawConnections` — Summary
@@ -58,9 +60,24 @@ no longer has leaves with its gradient (2026-10-16; the drawing of
 2026-10-07 built the SVG anew each frame and reconciled it by key, which
 cost more than the measuring and the routing together).
 
+Returns, and writes on the overlay as `data-backward-connections`, how many connections the picture draws against
+its left-to-right order: the returning references, as the cards' feet count them, each once, and the forward wires
+whose route doubles back. The 3D button lights for that number (2026-11-15; until then only the doubling wires
+counted, and the cycles' returns, the ordinary case, never lit it).
+
+#### `drawsReference` {#symbol-drawsreference}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L102)
+- Parameters: `_unnamed_`: [`ConnectionsContext`](#symbol-connectionscontext); `edge`: [`LocalEdge`](./types.ts.mdmd.md#symbol-localedge)
+
+##### `drawsReference` — Summary
+Whether the picture draws a reference: both of its rows disclosed, neither hidden by the picture's disclosure. A row
+keeps its disclosure at every look, laid out or not, so the answer is the same at reading, connections and overview,
+and with files only (2026-11-15). The card's foot asks it before the picture is placed, the drawing at every frame.
+
 #### `clearConnections` {#symbol-clearconnections}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L106)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L143)
 - Parameters: `runtime`: [`LocalViewRuntime`](./runtime.ts.mdmd.md#symbol-localviewruntime)
 
 ##### `clearConnections` — Summary
@@ -89,6 +106,8 @@ Takes every wire off the overlay and forgets the layer; the next drawing makes a
 - [`directory-flow.linksOf`](./directory-flow.ts.mdmd.md#symbol-linksof)
 - [`overview-files.OVERVIEW_FILES_ATTRIBUTE`](./overview-files.ts.mdmd.md#symbol-overview_files_attribute)
 - [`overview-files.OVERVIEW_LINES_ATTRIBUTE`](./overview-files.ts.mdmd.md#symbol-overview_lines_attribute)
+- [`returning-connections.ReturningConnections`](./returning-connections.ts.mdmd.md#symbol-returningconnections-interface)
+- [`returning-connections.returningConnections`](./returning-connections.ts.mdmd.md#symbol-returningconnections-function)
 - [`runtime.LocalViewRuntime`](./runtime.ts.mdmd.md#symbol-localviewruntime) (type-only)
 - [`runtime.WireLayer`](./runtime.ts.mdmd.md#symbol-wirelayer) (type-only)
 - [`types.ColumnRole`](./types.ts.mdmd.md#symbol-columnrole) (type-only)

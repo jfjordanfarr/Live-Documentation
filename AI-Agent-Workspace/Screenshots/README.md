@@ -6,6 +6,8 @@ _The owner's standing request (2026-09-29): after changing the Explorer, build i
 
 [A designer's reading of the 2D Local Map](2026-11-15/designer-eye/README.md): ten pictures by the root, at the owner's ask that the map's style be judged by the root's own eye and the designer's terms taught with it. Seven of the build as it stood (a card in one tone, a returning connection with the 3D button dark, an opened directory three presses out and after Fit, the overview's blank cards, a crowded directory, a path said twice) and three probes with injected styles, not product code (tone on a card and on a crowded directory, rows drawn as bars at the overview). Each finding is named in a designer's term with where it shows.
 
+[The 3D button's cue for connections drawn against the left-to-right order](2026-11-15/backward-cue/README.md): the toolbar with no cue, some, many and with keyboard focus; the one slow pulse held at its start, peak and return; the whole page of `branch-renderer.ts` with the cue lit. By the builder of the round that made the cue count a cycle's returning connections.
+
 ## 2026-11-13
 
 Added to this index on November 15; the folders were written on their day.

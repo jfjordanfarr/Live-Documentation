@@ -39,6 +39,8 @@ Since the far bands' second milestone (2026-11-06) a node-level hub is drawn onl
 
 The Closed Directory trial's three looks (2026-11-13) are drawn here, beside the box's own rules, in neutral hues only ([Turn 7 of the November 13 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-7)).
 
+The 3D button's cue (2026-11-15, [Turn 1](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)): `has-backward-wires` gives the button an amber border, an amber label and a soft glow through `--backward-glow`; `[data-backward="many"]` deepens the glow and tints the face; `.backward-rising` plays one 1.8 s swell of the glow, none under `prefers-reduced-motion`. Amber is neither the pressed blue nor the focus ring's. The rule of 2026-11-02, an amber border and a 2 px ring at a fifth of its strength, was too faint to be called a glow.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

@@ -7,12 +7,14 @@ import { beginSearch, endpointKey, judgeAlignment, judgeStart, nextTrialKind, pi
 import { arrangeExploration, edgeKey, exploreBranches, isClosedDirectory, orderExploration, type BranchGraph, type DirectoryDisclosure, type Exploration } from "./branches";
 import { countsOf, createClosedDirectory, createNodeCard, hasCloseAction, PIN_GLYPH } from "./card-factory";
 import { markFirstPin } from "./card-reading";
+import { drawsReference } from "./connections";
 import type { LocalViewController } from "./controller";
 import { ancestryButton } from "./directory-ancestry";
-import { isPairLine, linksOf, NARROW_SHAPE, nominalMeasurer, searchFlowShape, shapeRecord, type FlowShape, type ShapeSearch } from "./directory-flow";
+import { isPairLine, NARROW_SHAPE, nominalMeasurer, searchFlowShape, shapeRecord, type FlowShape, type ShapeSearch } from "./directory-flow";
 import { layoutTopOf } from "./ladder-rooms";
 import { membranePath } from "./membrane-outline";
 import { OVERVIEW_FILES_ATTRIBUTE, OVERVIEW_LINES_ATTRIBUTE, type PictureSize } from "./overview-files";
+import { connectionCount, returningConnections } from "./returning-connections";
 import type { LocalEdge } from "./types";
 import type { ExplorerNodePayload } from "../../../shared/types";
 import { setSeamedText } from "../../dom";
@@ -1366,15 +1368,16 @@ function orderRows(cards: readonly HTMLElement[], rows: ReadonlyMap<string, read
 /**
  * The cards' hidden rows counted and their notes on references read back and
  * connections outside the view, which every start shares: they stand before
- * any start is measured, since they take room on the card.
+ * any start is measured, since they take room on the card. A card's note on
+ * references read back counts the returning references the picture draws at
+ * it, from the rows disclosed, by the same function the 3D button's number
+ * comes from (2026-11-15): a returning reference whose rows the disclosure
+ * hides draws no lace, and is told by the card's "+N symbols" until shown.
  */
 function dressCards(controller: LocalViewController, cards: readonly HTMLElement[], exploration: Exploration): void {
   const presentRow = rowPresentation(controller, exploration);
-  const backReferences = new Map<string, LocalEdge[]>();
-  for (const edge of exploration.subgraph.links) {
-    if (!exploration.ranking.back.has(edgeKey(edge))) continue;
-    for (const id of new Set([edge.sourceId, edge.targetId])) backReferences.set(id, [...(backReferences.get(id) ?? []), edge]);
-  }
+  // Every card's rows are disclosed or hidden before any card counts its returns, since a return has a row on two cards.
+  const hiddenRows = new Map<HTMLElement, number>();
   for (const card of cards) {
     // A closed directory's box has no rows and no notes.
     if (!card.classList.contains("node-card")) continue;
@@ -1387,6 +1390,14 @@ function dressCards(controller: LocalViewController, cards: readonly HTMLElement
       // The Internals row stands for the file's private contents, not for a symbol: it is not counted on the reveal.
       if (state.hidden && !row.classList.contains("internals-row")) hidden++;
     });
+    hiddenRows.set(card, hidden);
+  }
+  const returning = returningConnections(exploration.subgraph.links, edge => exploration.ranking.back.has(edgeKey(edge)),
+    edge => drawsReference((nodeId, role, direction, symbol) => controller.getAnchor(nodeId, role, direction, symbol), edge));
+  for (const card of cards) {
+    if (!card.classList.contains("node-card")) continue;
+    const id = card.dataset.id!;
+    const hidden = hiddenRows.get(card) ?? 0;
     if (hidden) {
       const reveal = document.createElement("button");
       reveal.className = "local-disclosure";
@@ -1397,13 +1408,13 @@ function dressCards(controller: LocalViewController, cards: readonly HTMLElement
       });
       card.append(reveal);
     }
-    const back = backReferences.get(id) ?? [];
+    const back = returning.byFile.get(id) ?? [];
     // A pair line names no symbol: its return is told by its two files, and counted by the links it stands for.
     controller.reading?.setBackReferences(id, back.map(edge => (isPairLine(edge) ? { ...edge, sourceSymbol: undefined, targetSymbol: undefined } : edge)));
     if (back.length) {
       const note = document.createElement(controller.reading ? "button" : "span");
       note.className = "local-disclosure local-back-references";
-      note.textContent = `${countOf(back.reduce((sum, edge) => sum + linksOf(edge), 0), "connection returns", "connections return")} in a cycle`;
+      note.textContent = `${countOf(connectionCount(back), "connection returns", "connections return")} in a cycle`;
       note.title = "Show the files joined by connections that return against the layout's reading direction";
       if (controller.reading) {
         note.setAttribute("aria-haspopup", "menu");

@@ -318,7 +318,14 @@ span.local-disclosure { cursor: default; }
 .perspective-group:has(button:not([hidden])) ~ .perspective-group { margin-left: 4px; padding-left: 8px; border-left: 1px solid var(--border); }
 .perspective-group:not(:has(button:not([hidden]))) { display: none; }
 .perspective-controls :is(button, select):focus-visible { outline: 2px solid var(--accent); }
-.perspective-controls button.has-backward-wires { border-color: #e9b86d; box-shadow: 0 0 0 2px #e9b86d33; }
+/* The 3D button's cue, while the 2D picture draws connections against its left-to-right order (2026-11-15): amber, never
+   the pressed blue or the focus ring; the label takes the amber, a soft glow stands around it, and many such connections
+   deepen the glow and tint the face. One slow pulse as it lights or rises a strength, none under reduced motion. */
+.perspective-controls button.has-backward-wires { --backward-glow: 0 0 7px 1px #e9b86d5c; border-color: #e9b86d; color: #f2c98a; box-shadow: var(--backward-glow); }
+.perspective-controls button.has-backward-wires[data-backward="many"] { --backward-glow: 0 0 12px 3px #e9b86d8f; background: #e9b86d24; }
+.perspective-controls button.has-backward-wires.backward-rising { animation: backward-rise 1.8s ease-in-out 1; }
+@keyframes backward-rise { 0%, 100% { box-shadow: var(--backward-glow); } 40% { box-shadow: 0 0 20px 7px #e9b86daa; } }
+@media (prefers-reduced-motion: reduce) { .perspective-controls button.has-backward-wires.backward-rising { animation: none; } }
 .perspective-controls button:disabled { cursor: default; opacity: .55; }
 
 .pin-tray { position: absolute; right: 18px; bottom: calc(18px + var(--history-room)); z-index: 106; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; font-size: 13px; pointer-events: none; }

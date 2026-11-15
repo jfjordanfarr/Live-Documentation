@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-renderer.ts
-- Generated At: 2026-11-14T00:14:40.996Z
+- Generated At: 2026-11-15T20:53:45.032Z
 
 ## Authored
 ### Purpose
@@ -64,12 +64,14 @@ In the trial's second round (2026-11-14), the way back in from files only grows 
 
 Since 2026-11-14 ([Turn 9](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-9)) `rowsOf`, which caches each card's rows for the search's predictions, reads a row that has a box of its own by that box and only a legacy `display: contents` row through its children. The short row of 2026-11-13 takes its slot out of the layout, so its children no longer filled its 44 px; read through them the row was cached shorter than it stands, every row below it was predicted too high, and the continuing search priced its seeds and alignment trials against pins the page does not have. On the generator's picture no alignment was adopted where the headless command adopts one, which three cases of `local-map-simplicity.spec.ts` showed once the whole browser suite ran. The row's own box is its allotment whatever its children do, so the cache no longer depends on how a row's contents are hidden.
 
+Since 2026-11-15 ([Turn 1](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) a card's note on references read back, "N connections return in a cycle", counts the returning references the picture draws at the card, from `returningConnections` with `drawsReference` of [connections.ts](connections.ts.mdmd.md): the same function and the same test the 3D button's number comes from, so the two cannot disagree; the card counts the returns at either of its ends, the button each once. `dressCards` now discloses or hides every card's rows before any card counts, since a return has a row on two cards. A return whose rows the disclosure hides draws no lace and is no longer counted on the card, nor listed in its menu: on branch-renderer.ts opened alone, branch-scene.ts and branches.ts had said 4 where two laces stood, and say 2; the card's "+N symbols" tells the rest until it is shown.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BranchStage` {#symbol-branchstage}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L35)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L37)
 
 ##### `BranchStage` — Summary
 The branch picture's elements, kept across renders by what each one is: a
@@ -82,7 +84,7 @@ also carries the continuing search that runs after each picture.
 
 #### `createStage` {#symbol-createstage}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L113)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L115)
 - Returns: [`BranchStage`](#symbol-branchstage)
 
 ##### `createStage` — Summary
@@ -90,7 +92,7 @@ A stage for a root that holds nothing yet.
 
 #### `dropStage` {#symbol-dropstage}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L118)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L120)
 - Parameters: `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `dropStage` — Summary
@@ -98,7 +100,7 @@ Ends whatever move the stage runs, where it stands, and its search; the stage's 
 
 #### `refreshReadingPresentation` {#symbol-refreshreadingpresentation}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L139)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L141)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `refreshReadingPresentation` — Summary
@@ -106,7 +108,7 @@ Update fixed-slot text and its controls without rebuilding an unchanged scene or
 
 #### `renderBranches` {#symbol-renderbranches}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L234)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L236)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `renderBranches` — Summary
@@ -134,7 +136,7 @@ The layout's dials come from the Local Map's tuning.
 
 #### `refreshReadingGeometry` {#symbol-refreshreadinggeometry}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L424)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L426)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `refreshReadingGeometry` — Summary
@@ -145,7 +147,7 @@ competition begins from the new picture.
 
 #### `BAND_BORDER` {#symbol-band_border}
 - Type: unknown
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L506)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L508)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -199,13 +201,13 @@ competition begins from the new picture.
 - [`card-factory.createNodeCard`](./card-factory.ts.mdmd.md#symbol-createnodecard)
 - [`card-factory.hasCloseAction`](./card-factory.ts.mdmd.md#symbol-hascloseaction)
 - [`card-reading.markFirstPin`](./card-reading.ts.mdmd.md#symbol-markfirstpin)
+- [`connections.drawsReference`](./connections.ts.mdmd.md#symbol-drawsreference)
 - [`controller.LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller) (type-only)
 - [`directory-ancestry.ancestryButton`](./directory-ancestry.ts.mdmd.md#symbol-ancestrybutton)
 - [`directory-flow.FlowShape`](./directory-flow.ts.mdmd.md#symbol-flowshape)
 - [`directory-flow.NARROW_SHAPE`](./directory-flow.ts.mdmd.md#symbol-narrow_shape)
 - [`directory-flow.ShapeSearch`](./directory-flow.ts.mdmd.md#symbol-shapesearch)
 - [`directory-flow.isPairLine`](./directory-flow.ts.mdmd.md#symbol-ispairline)
-- [`directory-flow.linksOf`](./directory-flow.ts.mdmd.md#symbol-linksof)
 - [`directory-flow.nominalMeasurer`](./directory-flow.ts.mdmd.md#symbol-nominalmeasurer)
 - [`directory-flow.searchFlowShape`](./directory-flow.ts.mdmd.md#symbol-searchflowshape)
 - [`directory-flow.shapeRecord`](./directory-flow.ts.mdmd.md#symbol-shaperecord)
@@ -214,6 +216,8 @@ competition begins from the new picture.
 - [`overview-files.OVERVIEW_FILES_ATTRIBUTE`](./overview-files.ts.mdmd.md#symbol-overview_files_attribute)
 - [`overview-files.OVERVIEW_LINES_ATTRIBUTE`](./overview-files.ts.mdmd.md#symbol-overview_lines_attribute)
 - [`overview-files.PictureSize`](./overview-files.ts.mdmd.md#symbol-picturesize)
+- [`returning-connections.connectionCount`](./returning-connections.ts.mdmd.md#symbol-connectioncount)
+- [`returning-connections.returningConnections`](./returning-connections.ts.mdmd.md#symbol-returningconnections-function)
 - [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)
 - [`wire-gathering.NODE_HUB`](./wire-gathering.ts.mdmd.md#symbol-node_hub)
 - [`word-seams.countOf`](./word-seams.ts.mdmd.md#symbol-countof)
