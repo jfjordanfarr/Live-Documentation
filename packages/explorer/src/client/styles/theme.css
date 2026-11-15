@@ -15,6 +15,12 @@
     --color-inbound: rgba(0, 211, 170, 0.85);
     --color-inbound-glow: rgba(0, 211, 170, 0.4);
     --connection-stroke: rgba(0, 189, 255, 0.45);
+    /* The 2D map's wires (2026-11-15). Their two ends' colours as the map's script draws them, a gradient from the
+       offering end's blue to the using end's green, and a wire's opacity, for the wires and for the legend, which
+       draws what the picture draws. No wire glows, and none is drawn above this: a hover fades the others. */
+    --wire-offers: #38bdf8;
+    --wire-uses: #34d399;
+    --wire-opacity: 0.7;
     
     /* Test-backed purple family */
     --color-test: rgba(138, 92, 255, 1);
@@ -67,6 +73,7 @@
     --border-interactive: #3f3f46;   /* Interactive element borders */
     --border-hover: #777;            /* Border on hover */
     --node-border: var(--border-interactive);
+    --membrane-outline: #3d3d45;     /* An opened directory's outline on the 2D map: seen, a step under a card's border */
     
     /* ══════════════════════════════════════════════════════════════════════════
        TEXT - Hierarchy from primary to disabled
@@ -79,6 +86,12 @@
     --text-disabled: #666;           /* Disabled state */
     --text-subtle: #777;             /* Very subtle text */
     
+    /* A 2D map card's text, in three tones (2026-11-15). The sizes are fixed by the fits, so the hierarchy is one of
+       value: names lead and the prose that describes them recedes. The path, counts and small type keep theirs. */
+    --card-file-name: #f2f2f2;       /* The file's name */
+    --card-symbol-name: #ededed;     /* A symbol's name */
+    --card-prose: #b0b0b0;           /* The Purpose and every description */
+
     /* Panel-specific text (legend, sidebars) */
     --text-panel: #dee3f7;           /* Panel body text */
     --text-panel-muted: #9ca3bc;     /* Panel labels, titles */

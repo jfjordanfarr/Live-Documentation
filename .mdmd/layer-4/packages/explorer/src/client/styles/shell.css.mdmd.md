@@ -25,6 +25,8 @@ Since 2026-11-05 the key draws a Shell sample: the wrapped group's skin with no 
 `.explorer-refusal` (2026-11-12) sets a refusal's one sentence where the map would be, centred in `#views`, at the reader's 15 px and in the page's text colour, after the sentence for a page opened as a file was first put in the sidebar's 11 px grey status line, where the first visitor had not seen "Loading...".
 `.explorer-loading` (2026-11-12) sets the sign shown while the bundle loads, in the refusal's place: three dots that brighten in turn, in the muted text colour, still under reduced motion; before, the main area stood empty and the only sign was the sidebar footer's 11 px "Loading..." ([the first visit's finding 6](../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-12/first-visit/README.md)).
 
+The sidebar's own sizes and colours for the 2D legend's samples went on 2026-11-15 ([Turn 1 of that day's record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)): they made a test-backed card's sample a gold glow and a dot's smaller than a dot, and the samples are now drawn once, in `view-shared.css`, beside the marks they copy. The unused `.legend-swatch--related-doc` went with them.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

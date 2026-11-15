@@ -17,6 +17,8 @@ Shared visual primitives consumed by multiple Explorer views: viewport layers (p
 - Z-index stacking was refined iteratively in Turns 21–22 of that session after the user reported connectors drawing behind nodes and test-backed glow drawing above nodes.
 - The card is sized as a border box since 2026-10-05: at `width: 100%` with its padding and border counted outside, every card was 26 px wider than the room its content had asked the grid for, which the owner saw as cards overflowing their directory boxes in the Local Map's many-file layout ([Turn 8](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-05.1.record.md#turn-8)). The Circuit Board shares the card and was pictured after the change.
 
+- The tone round of 2026-11-15 ([Turn 1 of that day's record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)): the file's name and a symbol's name take their tones from the theme, which until then were the one grey of the prose beside them. No wire glows: every wire had a 6 px glow of its own, so a bundle was the brightest thing on a crowded picture; the root's comparison of resting strengths found the bloom was the glow and not the opacity, which stays 0.7. The 2D legend's samples are drawn here as the picture draws their marks: a wire's two ends in the wire's colours at its opacity, a dot by the very declarations a row's dot has, a test-backed card as a small card in its purple border inside its halo (the sample had been a gold glow, from a sidebar override in `shell.css` that went with this round). The floating `#legend-panel` and `.legend-title`, which the page has not had since the legend moved to the sidebar, went too.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

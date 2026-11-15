@@ -1,0 +1,206 @@
+{
+ "8953 press": {
+  "wires": 373,
+  "glowing": 0,
+  "runs": [
+   {
+    "step": 0,
+    "look": "reading",
+    "frames": 66,
+    "meanFrameMs": 18.4,
+    "maxFrameMs": 133.3,
+    "framesOver20": 2,
+    "framesOver50": 1,
+    "LayoutCount": 7,
+    "RecalcStyleCount": 22,
+    "LayoutDuration": 0.001,
+    "RecalcStyleDuration": 0.008,
+    "ScriptDuration": 0.028,
+    "TaskDuration": 0.25
+   },
+   {
+    "step": 1,
+    "look": "reading",
+    "frames": 71,
+    "meanFrameMs": 16.9,
+    "maxFrameMs": 33.4,
+    "framesOver20": 2,
+    "framesOver50": 0,
+    "LayoutCount": 4,
+    "RecalcStyleCount": 8,
+    "LayoutDuration": 0.001,
+    "RecalcStyleDuration": 0.007,
+    "ScriptDuration": 0.031,
+    "TaskDuration": 0.146
+   },
+   {
+    "step": 2,
+    "look": "connections",
+    "frames": 12,
+    "meanFrameMs": 128.4,
+    "maxFrameMs": 800,
+    "framesOver20": 4,
+    "framesOver50": 3,
+    "LayoutCount": 13,
+    "RecalcStyleCount": 17,
+    "LayoutDuration": 0.057,
+    "RecalcStyleDuration": 0.944,
+    "ScriptDuration": 0.132,
+    "TaskDuration": 1.543
+   }
+  ]
+ },
+ "8953 wheel": {
+  "wires": 373,
+  "glowing": 0,
+  "runs": [
+   {
+    "step": 0,
+    "look": "reading",
+    "frames": 54,
+    "meanFrameMs": 22.2,
+    "maxFrameMs": 66.7,
+    "framesOver20": 17,
+    "framesOver50": 1,
+    "LayoutCount": 0,
+    "RecalcStyleCount": 33,
+    "LayoutDuration": 0,
+    "RecalcStyleDuration": 0.003,
+    "ScriptDuration": 0.13,
+    "TaskDuration": 0.657
+   },
+   {
+    "step": 1,
+    "look": "reading",
+    "frames": 12,
+    "meanFrameMs": 120.8,
+    "maxFrameMs": 500,
+    "framesOver20": 5,
+    "framesOver50": 4,
+    "LayoutCount": 1,
+    "RecalcStyleCount": 23,
+    "LayoutDuration": 0.01,
+    "RecalcStyleDuration": 0.148,
+    "ScriptDuration": 0.08,
+    "TaskDuration": 1.179
+   },
+   {
+    "step": 2,
+    "look": "connections",
+    "frames": 47,
+    "meanFrameMs": 25.6,
+    "maxFrameMs": 116.7,
+    "framesOver20": 18,
+    "framesOver50": 2,
+    "LayoutCount": 5,
+    "RecalcStyleCount": 47,
+    "LayoutDuration": 0.005,
+    "RecalcStyleDuration": 0.332,
+    "ScriptDuration": 0.144,
+    "TaskDuration": 1.091
+   }
+  ]
+ },
+ "8963 press": {
+  "wires": 373,
+  "glowing": 263,
+  "runs": [
+   {
+    "step": 0,
+    "look": "reading",
+    "frames": 51,
+    "meanFrameMs": 23.7,
+    "maxFrameMs": 249.9,
+    "framesOver20": 3,
+    "framesOver50": 2,
+    "LayoutCount": 7,
+    "RecalcStyleCount": 22,
+    "LayoutDuration": 0.001,
+    "RecalcStyleDuration": 0.01,
+    "ScriptDuration": 0.028,
+    "TaskDuration": 0.504
+   },
+   {
+    "step": 1,
+    "look": "reading",
+    "frames": 70,
+    "meanFrameMs": 17.2,
+    "maxFrameMs": 50,
+    "framesOver20": 2,
+    "framesOver50": 0,
+    "LayoutCount": 4,
+    "RecalcStyleCount": 8,
+    "LayoutDuration": 0.001,
+    "RecalcStyleDuration": 0.008,
+    "ScriptDuration": 0.03,
+    "TaskDuration": 0.148
+   },
+   {
+    "step": 2,
+    "look": "connections",
+    "frames": 11,
+    "meanFrameMs": 154.8,
+    "maxFrameMs": 866.7,
+    "framesOver20": 4,
+    "framesOver50": 3,
+    "LayoutCount": 13,
+    "RecalcStyleCount": 17,
+    "LayoutDuration": 0.044,
+    "RecalcStyleDuration": 0.811,
+    "ScriptDuration": 0.102,
+    "TaskDuration": 1.7
+   }
+  ]
+ },
+ "8963 wheel": {
+  "wires": 373,
+  "glowing": 263,
+  "runs": [
+   {
+    "step": 0,
+    "look": "reading",
+    "frames": 41,
+    "meanFrameMs": 42.5,
+    "maxFrameMs": 550,
+    "framesOver20": 4,
+    "framesOver50": 2,
+    "LayoutCount": 0,
+    "RecalcStyleCount": 23,
+    "LayoutDuration": 0,
+    "RecalcStyleDuration": 0.002,
+    "ScriptDuration": 0.055,
+    "TaskDuration": 3.81
+   },
+   {
+    "step": 1,
+    "look": "connections",
+    "frames": 9,
+    "meanFrameMs": 184.1,
+    "maxFrameMs": 1216.6,
+    "framesOver20": 3,
+    "framesOver50": 2,
+    "LayoutCount": 9,
+    "RecalcStyleCount": 36,
+    "LayoutDuration": 0.076,
+    "RecalcStyleDuration": 1.313,
+    "ScriptDuration": 0.175,
+    "TaskDuration": 8.995
+   },
+   {
+    "step": 2,
+    "look": "connections",
+    "frames": 21,
+    "meanFrameMs": 69.9,
+    "maxFrameMs": 1149.9,
+    "framesOver20": 1,
+    "framesOver50": 1,
+    "LayoutCount": 0,
+    "RecalcStyleCount": 22,
+    "LayoutDuration": 0,
+    "RecalcStyleDuration": 0.002,
+    "ScriptDuration": 0.05,
+    "TaskDuration": 7.394
+   }
+  ]
+ }
+}

@@ -1,0 +1,78 @@
+Running 5 tests using 1 worker
+  ✘  1 [chromium] › tests/e2e/local-map-tone.spec.ts:54:5 › a card's text stands in three tones, names leading the prose, each legible against the card (1.9s)
+  ✘  2 [chromium] › tests/e2e/local-map-tone.spec.ts:81:5 › no wire glows, and a hovered row's wires are drawn as a wire at rest while the others fade (2.6s)
+  ✘  3 [chromium] › tests/e2e/local-map-tone.spec.ts:104:5 › at the overview a pinned symbol's own wires are drawn as the gathered lines are, without a glow (3.9s)
+  ✘  4 [chromium] › tests/e2e/local-map-tone.spec.ts:117:5 › an opened directory's outline can be seen against the map, is no stronger than a card's border, and is no filled box (1.8s)
+  ✘  5 [chromium] › tests/e2e/local-map-tone.spec.ts:136:5 › each sample of the 2D legend is drawn as the mark it names (2.4s)
+  1) [chromium] › tests/e2e/local-map-tone.spec.ts:54:5 › a card's text stands in three tones, names leading the prose, each legible against the card 
+    Error: a symbol's name leads the prose that describes it
+    Expected: >= 1.5
+    Received:    1
+  2) [chromium] › tests/e2e/local-map-tone.spec.ts:81:5 › no wire glows, and a hovered row's wires are drawn as a wire at rest while the others fade 
+    Error: no wire at rest glows
+    Expected: 0
+    Received: 13
+    Error: a wire the hover keeps is drawn as a wire at rest, not above it
+    - Expected  - 1
+    + Received  + 1
+    -   0.7,
+    +   1,
+    Error: no kept wire glows
+    Expected: 0
+    Received: 2
+    Error: no dimmed wire glows
+    Expected: 0
+    Received: 12
+  3) [chromium] › tests/e2e/local-map-tone.spec.ts:104:5 › at the overview a pinned symbol's own wires are drawn as the gathered lines are, without a glow 
+    Error: no wire glows at the overview
+    Expected: 0
+    Received: 9
+  4) [chromium] › tests/e2e/local-map-tone.spec.ts:117:5 › an opened directory's outline can be seen against the map, is no stronger than a card's border, and is no filled box 
+    Error: the outline can be seen against the map's surface
+    Expected: >= 1.5
+    Received:    1.2519723260607292
+  5) [chromium] › tests/e2e/local-map-tone.spec.ts:136:5 › each sample of the 2D legend is drawn as the mark it names 
+    Error: the wire's offers end
+    Expected: "rgb(56, 189, 248)"
+    Received: "rgba(0, 145, 255, 0.85)"
+    Error: the wire's offers end, at a wire's own opacity
+    Expected: "0.7"
+    Received: "1"
+    Error: the wire's offers end is as thick as a wire, to half a pixel
+    Expected: <= 0.5
+    Received:    0.7999999999999998
+    Error: the offers dot
+    - Expected  - 2
+    + Received  + 2
+    -   "height": "12px",
+    +   "height": "10px",
+    -   "width": "12px",
+    +   "width": "10px",
+    Error: the wire's uses end
+    Expected: "rgb(52, 211, 153)"
+    Received: "rgba(0, 211, 170, 0.85)"
+    Error: the wire's uses end, at a wire's own opacity
+    Expected: "0.7"
+    Received: "1"
+    Error: the wire's uses end is as thick as a wire, to half a pixel
+    Expected: <= 0.5
+    Received:    0.7999999999999998
+    Error: the uses dot
+    - Expected  - 2
+    + Received  + 2
+    -   "height": "12px",
+    +   "height": "10px",
+    -   "width": "12px",
+    +   "width": "10px",
+    Error: a test-backed card: the card in its border, inside its halo
+    - Expected  - 4
+    + Received  + 4
+    -   "background": "rgb(35, 35, 38)",
+    -   "border": "rgba(138, 92, 255, 0.45)",
+    -   "haloBackground": "rgba(138, 92, 255, 0.18)",
+    -   "haloBorder": "rgba(138, 92, 255, 0.45)",
+    +   "background": "rgba(0, 0, 0, 0)",
+    +   "border": "rgb(228, 228, 228)",
+    +   "haloBackground": "rgba(255, 215, 0, 0.15)",
+    +   "haloBorder": "rgba(138, 92, 255, 0.5)",
+  5 failed

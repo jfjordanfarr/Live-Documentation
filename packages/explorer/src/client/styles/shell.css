@@ -845,7 +845,7 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   NOTE: #controls, #legend-panel, .legend-*, .control-btn, and button.action-btn
+   NOTE: #controls, .legend-*, .control-btn, and button.action-btn
    rules live in view-shared.css to avoid duplication
    ═══════════════════════════════════════════════════════════════════════════ */
 
@@ -1146,30 +1146,6 @@ body.force-graph-active #spatial-legend { display: block; }
     color: var(--text);
 }
 
-.sidebar-section .legend-swatch {
-    width: 20px;
-    height: 3px;
-    border-radius: 2px;
-    flex-shrink: 0;
-}
-
-.sidebar-section .legend-symbol {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    flex-shrink: 0;
-    margin-left: 5px;
-}
-
-.sidebar-section .legend-shadow {
-    width: 20px;
-    height: 14px;
-    border-radius: 3px;
-    background: rgba(255, 215, 0, 0.15);
-    box-shadow: 0 0 6px rgba(255, 215, 0, 0.4);
-    flex-shrink: 0;
-}
-
 /* Force Graph Only Filter (Show Related Docs checkbox) */
 /* Hidden by default, shown when Force Graph view is active */
 .sidebar-checkbox.force-graph-only {
@@ -1181,7 +1157,3 @@ body.force-graph-active .sidebar-checkbox.force-graph-only {
     display: flex;
 }
 
-/* Related Documentation node styling in legend */
-.legend-row .legend-swatch--related-doc {
-    background: #9966cc;
-}

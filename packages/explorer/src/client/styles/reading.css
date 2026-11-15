@@ -29,7 +29,7 @@
     contain: inline-size;
     padding: 6px 2px 7px;
     cursor: text;
-    color: var(--text-secondary);
+    color: var(--card-prose);
     font-size: 14px;
     line-height: 1.55;
 }
@@ -630,9 +630,6 @@
 @keyframes local-look-foot { from { transform: translateY(calc(var(--foot-y, 0) * (1 - var(--foot-from, 1)) * 1px)) scale(var(--foot-from, 1)); } }
 @keyframes local-look-leave { to { opacity: 0; } }
 @keyframes local-look-appear { from { opacity: 0; } }
-
-/* Text leads at reading scale; highlighted relationships retain their usual emphasis. */
-#map-viewport:has(.local-reading-card) .connection-path:not(.connection-highlighted) { filter: none; }
 
 .reading-dialog-backdrop { position: fixed; inset: 0; background: #0008; z-index: 999; }
 .reading-dialog-backdrop[hidden] { display: none; }

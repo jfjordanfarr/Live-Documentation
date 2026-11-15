@@ -327,9 +327,10 @@ test("a hovered row dims every wire it does not touch, the bundles' shared runs 
     run: element.classList.contains("bundle-run"),
     opacity: Number(getComputedStyle(element).opacity)
   })));
-  expect(wires.filter(wire => wire.highlighted).length, "the hovered row's wires stay bright").toBeGreaterThan(0);
+  expect(wires.filter(wire => wire.highlighted).length, "the hovered row's wires stay as they were").toBeGreaterThan(0);
   for (const wire of wires) {
-    if (wire.highlighted) expect(wire.opacity).toBe(1);
+    // A kept wire is drawn as a wire at rest, 0.7: the hover fades the others and boosts none (2026-11-15; it had been 1).
+    if (wire.highlighted) expect(wire.opacity, "a wire the row keeps is drawn as at rest").toBeCloseTo(0.7, 2);
     else expect(wire.opacity, wire.run ? "a bundle's shared run dims with the wires it carries" : "a wire the row does not touch dims").toBeLessThanOrEqual(0.1);
   }
   await page.mouse.move(5, 5);

@@ -117,7 +117,7 @@
 .node-title {
     font-weight: bold;
     font-size: 13px;
-    color: var(--text-secondary);
+    color: var(--card-file-name);
     margin-bottom: 6px;
     white-space: normal;
     overflow-wrap: break-word;
@@ -144,7 +144,7 @@
 
 .symbol-label {
     font-size: 11px;
-    color: var(--text-secondary);
+    color: var(--card-symbol-name);
     font-family: "Segoe UI", sans-serif;
     white-space: normal;
     overflow-wrap: break-word;
@@ -187,13 +187,16 @@
     right: -6px;
 }
 
-.symbol-anchor.inbound {
+/* A row's dots, and the legend's samples of them, which are drawn by these same declarations. */
+.symbol-anchor.inbound,
+.legend-symbol--inbound {
     background: rgba(0, 211, 170, 0.4);
     border: 1px solid rgba(0, 211, 170, 0.55);
     box-shadow: 0 0 6px var(--color-inbound-glow);
 }
 
-.symbol-anchor.outbound {
+.symbol-anchor.outbound,
+.legend-symbol--outbound {
     background: rgba(0, 145, 255, 0.4);
     border: 1px solid rgba(0, 145, 255, 0.6);
     box-shadow: 0 0 6px var(--color-outbound-glow);
@@ -272,32 +275,12 @@ body.zoom-controls-active #controls {
     display: flex;
 }
 
-#legend-panel {
-    position: absolute;
-    bottom: 100px;
-    left: 20px;
-    width: 240px;
-    background: var(--glass-panel);
-    border: 1px solid var(--border-subtle);
-    border-radius: 10px;
-    padding: 14px 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.42);
-    color: var(--text-panel);
-    backdrop-filter: blur(12px);
-    z-index: 95;
-}
-
-.legend-title {
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--text-panel-muted);
-}
-
+/* The 2D legend's samples draw the marks of the picture as the picture draws them (2026-11-15; until then a wire's
+   sample was another blue and green than a wire's and glowed, a dot's was smaller than a dot, and a test-backed card's
+   was a gold glow where the card has a purple border and halo). A wire's two ends in the wire's own colours, at a
+   wire's own opacity and without a glow, as thick as a wire; a row's dots by the dots' own declarations (above);
+   a test-backed card as a small card inside its halo, both in the card's own colours. Each sample takes the 20 px
+   column the 3D legend's samples take. */
 .legend-row {
     display: flex;
     align-items: center;
@@ -311,50 +294,48 @@ body.zoom-controls-active #controls {
 .legend-shadow {
     flex-shrink: 0;
     display: inline-block;
+    box-sizing: border-box;
 }
 
 .legend-swatch {
-    width: 22px;
-    height: 6px;
+    width: 20px;
+    height: 2px;
     border-radius: 999px;
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.25);
+    opacity: var(--wire-opacity);
 }
 
 .legend-swatch--outbound {
-    background: var(--color-outbound);
-    box-shadow: 0 0 8px var(--color-outbound-glow);
+    background: var(--wire-offers);
 }
 
 .legend-swatch--inbound {
-    background: var(--color-inbound);
-    box-shadow: 0 0 8px var(--color-inbound-glow);
+    background: var(--wire-uses);
 }
 
 .legend-symbol {
     width: 12px;
     height: 12px;
+    margin: 0 4px;
     border-radius: 50%;
 }
 
-.legend-symbol--outbound {
-    background: rgba(0, 145, 255, 0.4);
-    border: 1px solid rgba(0, 145, 255, 0.6);
-    box-shadow: 0 0 6px var(--color-outbound-glow);
-}
-
-.legend-symbol--inbound {
-    background: rgba(0, 211, 170, 0.4);
-    border: 1px solid rgba(0, 211, 170, 0.55);
-    box-shadow: 0 0 6px var(--color-inbound-glow);
-}
-
 .legend-shadow {
-    width: 22px;
+    position: relative;
+    width: 20px;
     height: 14px;
-    border-radius: 6px;
-    background: rgba(138, 92, 255, 0.25);
-    border: 1px solid rgba(138, 92, 255, 0.5);
-    box-shadow: 0 10px 18px var(--color-test-glow);
+    border-radius: 4px;
+    background: var(--color-test-bg);
+    border: 1px solid var(--color-test-border);
+    box-shadow: 0 3px 6px var(--color-test-glow);
+}
+
+.legend-shadow::after {
+    content: "";
+    position: absolute;
+    inset: 2px;
+    border-radius: 2px;
+    background: var(--node-bg);
+    border: 1px solid var(--color-test-border);
 }
 
 .control-btn {
@@ -450,23 +431,16 @@ button.action-btn.ghost:hover {
     z-index: inherit;
 }
 
+/* No wire glows (2026-11-15): each had a 6 px glow of its own, so a bundle was the brightest thing on a crowded
+   picture, and the bloom was the glow, not the opacity. A wire is drawn one way, at rest or under a hover that keeps
+   it: a hover fades the others and boosts nothing (local.css). */
 .connection-path {
     fill: none;
     /* stroke is set inline via gradient url() */
     stroke-width: 2.2px;
     stroke-linecap: round;
     stroke-linejoin: round;
-    opacity: 0.7;
-}
-
-.connection-path.outbound {
-    /* Gradient goes blue→green; use blue-tinted glow */
-    filter: drop-shadow(0 0 6px rgba(0, 145, 255, 0.35));
-}
-
-.connection-path.inbound {
-    /* Gradient goes blue→green; use green-tinted glow */
-    filter: drop-shadow(0 0 6px rgba(0, 211, 170, 0.35));
+    opacity: var(--wire-opacity);
 }
 
 /* Semantic connection-path coloring removed per design direction (12/8.1):

@@ -41,6 +41,8 @@ The Closed Directory trial's three looks (2026-11-13) are drawn here, beside the
 
 The 3D button's cue (2026-11-15, [Turn 1](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)): `has-backward-wires` gives the button an amber border, an amber label and a soft glow through `--backward-glow`; `[data-backward="many"]` deepens the glow and tints the face; `.backward-rising` plays one 1.8 s swell of the glow, none under `prefers-reduced-motion`. Amber is neither the pressed blue nor the focus ring's. The rule of 2026-11-02, an amber border and a 2 px ring at a fifth of its strength, was too faint to be called a glow.
 
+The tone round of 2026-11-15 ([Turn 1 of that day's record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)): a hover boosts nothing. A hovered symbol's wires had been drawn whole, at 1 where a wire at rest is 0.7; the dimming rule now leaves them alone, as Flow's hover always left a hovered card's lines, and only fades the others (the owner's rule since December 2025, to fade the irrelevant rather than boost the relevant). With no wire glowing, the rule that took the glow from the wires while the picture moves went; `branch-renderer.ts` still sets `moving` on the wires' layer, which nothing reads now. A symbol's name takes the theme's `--card-symbol-name`, and an opened directory's outline its `--membrane-outline`, where the page's default border on the map's surface could hardly be seen.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

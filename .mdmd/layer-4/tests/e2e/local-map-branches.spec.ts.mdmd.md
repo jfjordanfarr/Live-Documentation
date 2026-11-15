@@ -27,6 +27,8 @@ On [Turn 12](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.rec
 
 Since Flow became Opened Directory's default on 2026-11-13 the unpinned scan root a cleared tray returns to stands in Flow, so the case that clears the pins expects no wire between symbols and only the pair lines of files directly at the scan root.
 
+Since the tone round of 2026-11-15 ([Turn 1 of that day's record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) the case of a hovered row expects the wires the row keeps at 0.7, a wire's opacity at rest, where it had expected 1: the hover had boosted them, against the owner's rule to fade the irrelevant rather than boost the relevant, and the root's correction of that day has a hover fade the others only.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

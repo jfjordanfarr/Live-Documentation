@@ -188,14 +188,11 @@
     display: none;
 }
 
-/* Dim all connection paths by default in hover mode */
-.symbol-hover-active .connection-path {
+/* In hover mode every connection path the hover does not keep is dimmed. The hovered symbol's own wires keep the look
+   of a wire at rest (2026-11-15; until then they were drawn whole, above it): the hover fades the irrelevant and boosts
+   nothing. */
+.symbol-hover-active .connection-path:not(.connection-highlighted) {
     opacity: var(--hover-dim-connections, 0.1);
-}
-
-/* Keep highlighted connections at full opacity */
-.symbol-hover-active .connection-path.connection-highlighted {
-    opacity: 1;
 }
 
 /* Also target center column directly in case local-focus isn't applied */
@@ -240,7 +237,7 @@
 .symbol-row .symbol-label-wrapper:hover {
     background: var(--accent-muted);
 }
-.local-column .symbol-label { display: block; flex: 1; min-width: 0; padding: 0; border: 0; background: transparent; font: inherit; font-size: 11px; color: var(--text-secondary); text-align: left; cursor: pointer; }
+.local-column .symbol-label { display: block; flex: 1; min-width: 0; padding: 0; border: 0; background: transparent; font: inherit; font-size: 11px; color: var(--card-symbol-name); text-align: left; cursor: pointer; }
 .local-column .symbol-label:hover { color: var(--accent); }
 .local-column .type-badge:is(button) { border: 0; cursor: pointer; }
 .local-symbol-pin, .local-symbol-more { display: inline-flex; flex: 0 0 17px; align-items: center; justify-content: center; width: 17px; height: 17px; padding: 1px; line-height: 0; color: var(--text-panel-subtle); border: 1px solid transparent; border-radius: 3px; background: transparent; cursor: pointer; }
@@ -376,7 +373,7 @@ span.local-disclosure { cursor: default; }
 /* The bounds reach beyond the shape, over a sibling's cards where the membranes step past one another, so the element lets the pointer through and its cards and label take it back. */
 .local-directory-band > .local-column, .local-directory-band > .local-directory-label { pointer-events: auto; }
 .local-membrane { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
-.local-membrane-shape { fill: #ffffff03; stroke: var(--border); stroke-width: 1px; stroke-linejoin: round; }
+.local-membrane-shape { fill: #ffffff03; stroke: var(--membrane-outline); stroke-width: 1px; stroke-linejoin: round; }
 .local-directory-label { position: absolute; display: flex; gap: 4px; align-items: flex-start; font-size: 12px; color: var(--text-panel-muted); padding-bottom: 14px; overflow-wrap: break-word; }
 /* The label inspects. Its caption is one text flow, the name and what an encasing directory hides; Open or Close and More
    stand beside it in a column of their own, 18 px tall and raised 2 px as the ancestry control is, so a one-line label
@@ -400,7 +397,7 @@ span.local-disclosure { cursor: default; }
 /* The legend's width row says what a gathered wire's width means, while the overview band draws them, and not otherwise. */
 #local-legend .legend-row--gathered { display: none; }
 body:has(#map-container[data-lod="overview"]) #local-legend .legend-row--gathered { display: flex; }
-#local-legend .legend-row--gathered .spatial-legend-sample { --legend-color: #38bdf8; }
+#local-legend .legend-row--gathered .spatial-legend-sample { --legend-color: var(--wire-offers); opacity: var(--wire-opacity); }
 /* The card ladder's directory label (the far-zoom review, 2026-11-06): from the middle band out the caption holds its
    reading size on screen, on one line, while the label's own box has the room, its line and the padding beneath it above
    the first card and its width across the membrane; where the height runs out it follows the map, and where the width
@@ -510,9 +507,6 @@ body:has(#map-container[data-lod="overview"]) #local-legend .legend-row--gathere
 /* Under a hover the run dims with every wire it carries; without this rule its own opacity above outranked the hover's
    dimming, and the runs stood out as the thick bright lines of a picture otherwise dimmed (the owner's report, 2026-10-07). */
 .symbol-hover-active .connection-path.bundle-run { opacity: var(--hover-dim-connections, 0.1); }
-/* While the picture moves, the wires are redrawn every frame and go without their glow, whose filters cost more than the
-   rest of the frame together; the glow returns at rest (2026-10-07). */
-.connections-layer.moving .connection-path { filter: none; }
 
 /* The signs that the picture continues past the frame's edges: a shadow deepening into the edge the picture crosses,
    none at one it does not (the map's own background is only six levels lighter than the page's, so a fade to it was
