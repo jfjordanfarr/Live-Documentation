@@ -1560,3 +1560,410 @@ completed (exit code 0)
   - No subagent used.
 
 ● Agent "Tone, wires and overview bars" finished · 42m 31s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Recording your two messages and screenshots now. The tone builder returned
+  corrections with one question, which I'm answering so it can keep going before
+  I commit the 3D-cue round. · summary
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+  ⎿  Resuming agent a45305e
+
+  Read 1 file, ran 5 shell commands (ctrl+o to expand)
+
+● Both of your messages and the four screenshots are in hand, and I'm now
+  checking the zoom threshold, the still-pointer trial, the World Map link, the
+  white recolouring's history, and Node 26 so I can answer each point
+  accurately. · summary
+
+  Searched for 4 patterns, listed 1 directory, ran 5 shell commands (ctrl+o to expand)
+
+● Background command "Run the cue's browser cases again, keeping the whole
+output" completed (exit code 0)
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/11/2026-11
+  -15-215104-welcome-back-it-is-now-11152026-and-were-read.txt in the IDE. This
+  may or may not be related to the current task.</ide_opened_file>
+  OHHHH and I bet I now understand what the "still pointer" question was about!
+  It's about whether or not the 3D local map nodes should accept hover and
+  click interactions during the build-out of the full map. I am personally very
+  amenable to giving the user some indication that the map is building and not
+  allowing hover or click interactions on the nodes as the map gets built. I
+  think that will be simple and save us some programmatic headaches, and should
+  be replaced only when it's not good enough.
+
+● Your third message is recorded (no hover or click on 3D nodes while the map is
+  still building). I'm checking the cue's browser run now, since it just
+  finished. · summary
+
+  Searched for 2 patterns, ran 9 shell commands (ctrl+o to expand)
+
+● Your fourth message is recorded too. While my pictures of the three Changed
+  Files modes render, I'm reading the tone round's corrected diff so it can land
+  next.
+
+  Searched for 3 patterns, read 1 file, ran 8 shell commands (ctrl+o to expand)
+
+● Background command "Make links for the three Changed Files modes on the
+owner's step and take a picture of each" completed (exit code 0)
+
+  Searched for 3 patterns, ran 5 shell commands (ctrl+o to expand)
+
+● Recording decisions from your answers in Memory, then refreshing the record's
+  resumption notes and committing before I reply.
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● Background command "Audit links and commit the records of the owner's answers"
+completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+› Message from general-purpose
+  Milestone 1 (the handle) is built, committed and pictured on branch
+  `worktree-agent-a88027f74c8cb2dc8`, with one layout fault I am handing back as
+  a fork (a nested open directory, below). It took about 115 minutes, not 50:
+  most of the overrun was the shared browser lock and two bugs the first test
+  run showed. The full gate (`safe:commit --e2e`) was not run.
+
+  ## Commits (on top of `cb53d7c7`)
+  - `d57ec977` Give a directory in the 2D map a handle that opens and closes it
+  at every zoom
+  - `9c552428` Hold the directory handle's browser cases to what the page draws,
+  and bring the Live Docs up to the last edits
+
+  ## What changed, and where
+  - **New pure module**
+  `packages/explorer/src/client/views/localView/directory-handle.ts` (+
+  `.test.ts`, 9 cases): the strip's constant (`HANDLE_STRIP` = 60), the chevron,
+  `handleParts` (parent path / own name), `handleRun` (how far across the strip
+  the handle may reach), `fitHandle` (a closed box's name brought down in size
+  before it breaks inside a word).
+  - **Closed box** (`card-factory.ts`, `card-reading.ts`, `reading.css`,
+  `local.css`): a click anywhere on the box opens it, as do Enter and Space. The
+  name is the handle: a button led by a chevron pointing right, labelled `Open
+  <path>`, `aria-expanded="false"`, with a tooltip. The "Open" text button is
+  gone. Inspect is in More (it was already there as "Inspect directory"). In the
+  far looks the chevron is held with the name and the name is fitted.
+  - **Opened or pinned-membrane label** (`branch-renderer.ts`, `local.css`): one
+  line — chevron (down when opened, right when only encasing), parent path
+  muted, own name in the primary tone at weight 600, the "+N files" count, More,
+  then the ancestry control. A click on the chevron or the name closes or
+  opens; the close cross is gone. Only the line's parts take the pointer, so a
+  click on the empty strip does nothing and still pans.
+  - **Size**: from the middle band out the whole line is held at `--text-scale`,
+  capped at 3.6, by CSS alone. `roomsOfLabel` and the separate held drawing are
+  deleted.
+  - **Room**: the label is a strip of constant height, so the layout no longer
+  measures label text. In Flow, `branch-placement.ts` now keeps the label's room
+  above the first member of every column (it was the leftmost only), and the
+  label's width is set at each pose to the run of leading columns whose tops are
+  level. Outside Flow it keeps the leftmost column, as before.
+  - **Same number elsewhere**: `directory-flow.ts` `NOMINAL_LABEL` and the
+  layout lab's `labelHeight` (`scripts/layout-lab/card-model.ts`, `measurer.ts`)
+  now read `HANDLE_STRIP`.
+  - **Keyboard focus** (`controller.ts`, `branch-renderer.ts`): after opening
+  from the keyboard the focus now lands on the opened handle, and after closing
+  on the box's handle. On `cb53d7c7` it stayed on the fading box and dropped to
+  `body`; I traced both builds.
+  - **Dead code removed**: `inspectDirectory` in the controller and
+  `CardContext`, and the `onInspectDirectory` option — one line in
+  `client/index.ts`, not the perspective controls.
+  - **Specs touched**: `local-map-directories` (new case), `zoom-looks`
+  (closed-box case rewritten), `card-ladder-boxes`, `closed-directory-looks`,
+  `labels-and-controls`, `inspection`, `local-map-framing`, `still-picture.ts`.
+  Unit: `branch-placement.test.ts` (new case).
+  - **Docs**: a paragraph in
+  `.mdmd/layer-3/live-documentation-explorer.mdmd.md`; Live Docs regenerated,
+  Purpose and Notes written for the new module and its test, dated notes added
+  to nine changed files, all citing Turn 1 of the November 15 record.
+
+  ## Numbers
+  - **Strip against the held handle**: the old strip was 30 units. The handle at
+  the file names' size needs 54 at the overview (15-unit line × 3.6) and 33 at
+  connections, so the old strip held neither. It is now 60 (54 + 6 of air). The
+  brief's second alternative (largest size the old strip holds) gives 2.0, below
+  the file names at both looks, so it was not buildable.
+  - **On screen at seven presses out**: label line 15.1 px (before 8.4 px line
+  box, about 6 px of glyph); file names 13 px in both. Strip 17 px, `history`'s
+  handle 225 × 15 px, its closed box 126 × 23 px.
+  - **Picture heights at reading size, before → after**:
+
+    | Picture | Before | After |
+    | --- | --- | --- |
+    | `client` | 3703 × 922 | 3703 × 952 |
+    | `scripts` | 605 × 784 | 605 × 814 |
+    | `packages/engine/src` | 472 × 260 | 472 × 274 |
+    | scan root | 1256 × 734 | 1256 × 734 |
+    | `branch-renderer.ts` pinned | 5667 × 3396 | 5696 × 3355 |
+
+    The scan root has no membrane. The `branch-renderer.ts` picture also gained
+  the new module's card, so it is not a clean comparison.
+  - **Names cut on `client` at the overview**: before, 2 of 7 closed boxes
+  ("bootst…", "persiste…") and the label cut to "…plorer/src/client" three
+  presses out. After, 0 of 7: `bootstrap` held at 2.70 (2.65 under fallback
+  lines), `persistence` at 3.00 (2.85), the rest at 3.6; the label is whole at
+  every press.
+  - **Presses at the overview, `history` in `client`**:
+    - Pointer: 1 click on the box opens, 1 click on the name closes. I could
+  tell where: the whole box lights and shows a pointer cursor; the opened
+  chevron and name light together.
+    - Keyboard: Enter on the handle opens, Space closes — 1 press each, and
+  focus stays on the handle. Reaching the handle took 23 Tabs from Zoom Out
+  (toolbar, sidebar, then three map stops). The ring is drawn around the whole
+  closed box; on the opened label it is around the 12 × 15 px chevron only,
+  which is small.
+
+  ## Red runs on `cb53d7c7`
+  - `branch-placement.test.ts`, "from the top, keeps the label's room above the
+  first card of every column": `expected 12 to be greater than or equal to 30`.
+  - `local-map-directories.spec.ts`, "at the overview a closed directory opens
+  by a click anywhere on its box…": failed against the baseline bundle.
+  `bootstrap` and `persistence` "its name drawn whole" (received "bootst…",
+  "persiste…"); every box "its chevron drawn" 0 and "no text button" (found
+  "Open"). My output filter cut the log after four boxes.
+  - `zoom-looks.spec.ts`, rewritten closed-box case: 12 soft failures across
+  both line metrics and both looks (no text button, chevron held, handle says
+  the act).
+  - `directory-handle.test.ts` has no baseline; it is a new module.
+
+  ## Green on the final build
+  - Vitest, `localView` and `layout-lab`: 420 of 420.
+  - Playwright: 41 cases pass — `closed-directory-looks` (5), `design-audit`
+  (11), `labels-and-controls` (6), `local-map-keyboard` (1), 15 of the
+  directory, inspection, framing and zoom-looks cases, and the 3 I corrected and
+  re-ran.
+  - Not run on the final build: `card-ladder-boxes` (its first 4 cases passed on
+  an earlier build of this round before I stopped the run for time), the rest
+  of `zoom-looks`, `local-map-path`, `local-map-branches`, the perspective
+  transition specs, and the layout lab's page-against-headless agreement.
+
+  ## Forks I decided
+  1. A one-line label in a constant strip, rather than a wrapping label.
+  2. The pressable handle is the chevron and the name, not the whole strip, so
+  the strip cannot close a directory by accident.
+  3. The strip runs across columns in Flow only; outside Flow that would be a
+  wider layout change.
+  4. A closed box's held name may use the box down to 2 units above its foot (66
+  units, two lines at 2.2).
+  5. In the closed box at reading size the count is indented under the name, and
+  More keeps its own row so no box changes size.
+  6. The parent path's cut is left out of the audit's cut-text list
+  (`still-picture.ts`), because it is the design; the own name and the count are
+  audited.
+  7. More may stand on the line under a fitted name in a narrow box (`scripts`
+  three presses out), as on a file card.
+
+  ## Forks handed back
+  - **A. Nested open directory (the fault).** On `packages/engine/src` with
+  `live-docs` opened, the row `config / languages / tooling` stands 79 units
+  lower than the strip needs, 139 below the handle. Cause: "from the top" pulls
+  every item to one floating ceiling, which levels the first item of every
+  column, and the columns where `live-docs` rises to the top now begin under two
+  strips. Options:
+    - (i) keep it;
+    - (ii) return to a strip in the leftmost column only — the handle is then
+  one column wide and `adapters` stands 60 lower than its neighbours (30 today);
+    - (iii) give a membrane its strip only in its level run — about 19 units of
+  gap would remain by my arithmetic;
+    - (iv) change what "from the top" levels.
+
+    I would take (iii) or (iv); both are layout decisions beyond "the strip's
+  height".
+  - **B. More in the closed box at reading size** sits alone on a row under the
+  count. I would move it to the name's line at the right, as on a file card,
+  together with milestone 2's rework of the cells' field.
+  - **C. At reading size** there are 45 empty units between the handle and the
+  first row.
+  - **D. Handles off screen.** With a file as subject the camera stands inside
+  large membranes, and their handles are off screen at three, five and seven
+  presses out, as before. A handle that stays in view was not in the brief and
+  is not built.
+
+  ## Still wrong to my eye, or unfinished
+  - A, B and C above.
+  - The count is cut mid-word in narrow strips ("+46 fil…").
+  - The ancestry glyph after More reads as a stray icon.
+  - At the overview a fitted name ("bootstrap" at 9.8 px) stands beside 13 px
+  siblings.
+  - The layout lab's capture still records label text and controls that the
+  model no longer reads.
+  - Before pictures are under Segoe lines only.
+  - I did not look at the stepped ladder, the grid, or the cells, stack and
+  folded looks by eye; their spec passes.
+
+  ## Pictures
+  `AI-Agent-Workspace/Screenshots/2026-11-15/directory-handles/` with
+  `README.md`, 60 pictures at 1440 × 900:
+  - before and after for `client` (arrive, out3, out5, out7, fit), `scripts`,
+  `engine-src`, `root` and `branch-renderer` (before lacks `out5`);
+  - after under both metrics;
+  - five stills of opening by a click on the box and closing by the handle;
+  - two keyboard stills;
+  - the nested fault, before and after.
+
+  ## Explorer links
+  - `/?view=local&dir=packages/explorer/src/client` — seven presses of Zoom Out,
+  click the `history` box, then its name.
+  - `/?view=local&dir=packages/engine/src` — click `live-docs` to see fork A.
+  - `/?view=local&dir=scripts`
+  - `/?view=local`
+  - `/?view=local&node=packages/explorer/src/client/views/localView/branch-rende
+  rer.ts` — then Fit, for the membranes around pinned files.
+  - `/?view=local&node=packages/explorer/src/client/views/localView/directory-ha
+  ndle.ts` — the new module.
+
+  No subagent was used. Both my servers (8952, 8962) are stopped, and my scratch
+  folder and baseline checkout are removed. I did not touch Memory,
+  ChatHistory, the main checkout, the 3D cue rule or `connections.ts`.
+
+● Agent "Directory handles at every zoom" finished · 1h 57m 12s
+
+● The 3D button now lights on your file. Open branch-renderer.ts
+  (http://127.0.0.1:8999/?view=local&node=packages/explorer/src/client/views/loc
+  alView/branch-renderer.ts): the button glows amber, and its tooltip says "8
+  connections run backward in 2D. Explore this scope in 3D." Compare one
+  returning connection (http://127.0.0.1:8999/samples/estate/?view=local&node=Pa
+  ymentService/PaymentService.cs) (softer) and none (http://127.0.0.1:8999/sampl
+  es/estate/?view=local&node=Portal/Services/GatewayClient.cs) (dark).
+
+  - What it counts: every connection the picture draws against left-to-right.
+    The old cue missed a cycle's returning connections, which is nearly all of
+    them.
+  - Signal versus noise is the designer's concern here: a cue that is always on
+    stops meaning anything. The builder opened 161 files one at a time; 89% draw
+    no backward connection, 9% draw one to four, 2% draw five or more (yours is
+    one). So it has two strengths, and amber is used for nothing else on the
+    map.
+  - One side effect: a card's "N connections return in a cycle" now counts only
+    the returns actually drawn. Ones behind "+N symbols" join the count when
+    shown.
+  - Not yet verified by me: the browser tests on main. The builder's run was
+    green and my own readings of the page agree (8 at every zoom, 1, 0), but my
+    run is queued behind the other builders. My first two attempts used the
+    wrong command and proved nothing.
+
+  Your answers
+
+  Files only at full zoom-out. It is a configured value, not a reading of your
+  screen. The far look starts between the sixth and seventh Zoom Out press,
+  where the map is about 30% of reading size, chosen by eye on 11/6. Designers
+  call that a breakpoint: a fixed threshold where the layout switches. I'd keep
+  it fixed, because the same press then always gives the same look. No pushback
+  on your Flow remark either. My alternative (rows drawn as faint bars, nothing
+  moves) is nearly built; you'll get both side by side, pick one, and I'll
+  delete the other.
+
+  Cells. It becomes the default. The mark you couldn't read is folders in
+  folders: a sub-directory drawn as a tiny skin with micro-dots. It fails
+  because it is drawn at a second, smaller size, and size means nothing there.
+  I'll have a nested directory drawn as a small skin around same-sized cells.
+  For "more directory-shaped" you'll get three matched shapes to choose from:
+  today's round skin, a squarer one, and a folder tab with the name on it.
+
+  Kept description line. I withdraw my call to drop it. Your diagnosis is right:
+  a row has room for two lines at that zoom, and a long name takes both. You'll
+  get alternatives to look at: the name held to one line and cut at its end, or
+  cut in its middle so the distinguishing ending survives
+  ("Documentation…Result"), each with a description line on every row, plus the
+  file's own line under its name.
+
+  Changed Files. The switch is in Tuning → History → Changed Files, on the same
+  step (http://127.0.0.1:8999/?s=N4IgbiBcDMA0IEcomgExPAnsgzgFwCcBXAYzyIIFMMQALZS
+  gTkdQFZGAmVRgQwDMAHABYA7ACMAjD1QA2PhKGMRPRtDGtWlPqhHRoABgHRGIAL5A). Dim
+  already does what you describe: changed files keep their colour and everything
+  else fades to a fifth. My link showed you only Glow because a link doesn't
+  carry that setting.
+
+  Still pointer. Your reading is right, and your rule is simpler than the three
+  modes, so I'll build it and retire the trial. Two details I'm adding:
+  - Turning and zooming stay live while the map builds.
+  - A pointer that hasn't moved starts nothing when building ends, or the
+    surprise just arrives a second later.
+
+  I'll measure how long "building" lasts on big pictures first, and bring the
+  number back to you if it is long rather than freeze the map.
+
+  Node 26. Trying it needs no restart and touches no running agent: Node 26 gets
+  installed beside 22 inside the container and the full gate runs under it.
+  Making it the default needs a container rebuild, which is yours to press
+  between sessions. One thing to know first: this harness keeps its chat files
+  inside the container (/home/node/.claude), so a rebuild discards them. I'll
+  run it after today's design rounds, since its gate needs the machine to
+  itself.
+
+  World Map. It stays the first screen. My link was the bare address, which
+  reopens whatever view you used last; the right one is ?view=world
+  (http://127.0.0.1:8999/?view=world).
+
+  The slowdown. That fits, though the processor is the likelier cause than the
+  video card. Under WSL2 the container's cores are a ceiling, not a reservation,
+  and our 3D tests draw in software on the processor. I'll treat a slow evening
+  run as "rerun first".
+
+  The export. Corrected in the record: the ... was your seam, not the harness's.
+
+  The other two rounds
+
+  - Tone: accepted after one correction and merging next. Two things you'd
+    otherwise find by surprise:
+    - A hovered symbol's wires no longer brighten; they stay as they are while
+      the others fade. Say so if you miss the old look.
+    - Removing the glow made a wheel zoom on a crowded picture (types.ts (http:/
+      /127.0.0.1:8999/?view=local&node=packages/explorer/src/client/types.ts),
+      373 wires) cost a sixth to a ninth of the main-thread time, by the
+      builder's measurement.
+  - Directory handles: handed back a minute ago; I'm reviewing it now. It
+    reports one layout fault with a directory opened inside another, which I
+    need to decide before it lands.
+
+  Nothing is pushed. Five commits today, one of them product code (the cue).
+
+  Searched for 1 pattern, read 9 files, ran 3 shell commands (ctrl+o to expand)
+
+● Background command "Run the cue's browser cases with the suite's own
+configuration" completed (exit code 0)
+
+● Background command "Take pictures of the Dim and Both modes on the owner's
+history step" completed (exit code 0)
+
+● The cue's browser cases pass on main (17 of 17). Landing the tone round now,
+  then sending the directory builder its corrections.
+
+  Searched for 1 pattern, ran 3 shell commands (ctrl+o to expand)
+● The tone round is merged and rebuilt on main: no wire glows, names lead.
+  Looking at my own pictures of it before committing.
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+  ⎿  Resuming agent a88027f
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Both builders are back at work (directory corrections; overview bars). The
+  tone round is on main as 1c5565d8 with its browser cases running. Now looking
+  at my pictures of the Changed Files modes.
+
+  Read 3 files, ran 3 shell commands (ctrl+o to expand)
+
+● Writing the brief for the 3D round you decided (no hover or click on nodes
+  while the map builds), to dispatch as soon as one of the two running builders
+  is back.
+
+  Made 1 scratchpad edit +41, ran 1 shell command (ctrl+o to expand)
+
+● Agent(3D map: no hover while building) Opus 5.5
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+● Three builders are now running (directory corrections, overview bars, and the
+  3D round). Bringing the day's record up to date with the reply I sent and the
+  reviews.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Tending the three builders. Meanwhile I'm looking at the cells look with my
+  own eye so the directory builder's next brief (the shape, and a nested
+  directory you can read) is concrete.
+
+  Ran 1 shell command (ctrl+o to expand)
