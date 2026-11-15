@@ -1,0 +1,1562 @@
+
+[Image #1]
+  ⎿  [Image #2]
+  ⎿  [Image #3]
+  ⎿  [Image #4]
+  ⎿  [Image #5]
+
+❯ Welcome back! It is now 11/15/2026 and we're ready to start us a new dev day.
+  The prior dev day chat record still needs closing out and summarizing before
+  dev begins, and I'd also ask that you include in your new dev day bootstrap
+  anything which should be brought to my attention which I clearly missed in
+  the prior chat despite it being asked for a response from me. These modern
+  code harnesses can sometimes make it tricky to scroll to the proper place to
+  locate all the "your eyes needed on this" sections in a long chat. Not the
+  end of the world if we try to recollect and bring back those items so I can
+  take a look again.
+
+  Based on the items I did see in need of my attention, I've noticed that the
+  directory membranes in the 2D Local Map still aren't exceptionally _useful_
+  (interaction-wise) at high zoom-outs because there are no buttons to interact
+  with at that distance.
+
+  In addition, I saw that the branch-renderer.ts node you linked me to contains
+  a tremendous number of backwards-reaching connector wires. In spite of this,
+  the 3D button does not glow to indicate that the 2D local map is hitting its
+  upper limit in what it can draw strictly along a left-to-right dependency
+  direction.
+
+  Stylistically, there remain more little nits than we can count -- things that
+  a formal designer would know the terminology to call out immediately (like
+  "font hierarchy") but I presently lack (and still feel like I'm not really
+  being taught all that much? I remember the root agent was also supposed to be
+  the pedagogical bridge between what Live Documentation could teach me and
+  what the system actually saliently contained/was-composed-of? I feel like
+  that effort has possibly fallen by the wayside?)
+
+  Fable 5.2 (you) has solid training data which has substantially improved
+  human-like vision capabilities that were previously restricted to just GPT-6
+  Astra. Put another way: you currently have a tad bit more of a designer's eye
+  than I now do. So long as your preferences aren't in tremendous direct
+  conflict with my own and aren't something we've already tried and thrown
+  away, I want you to exercise a little more design freedom to ensure that the
+  layout results are maximally understandable and aesthetically pleasing.
+
+  Let's start.
+
+● I'll start with the new-chat read the guide requires: the four Memory
+  documents, the handoff routine, and the recent session summaries, then close
+  out the 11/13 record.
+
+  Read 3 files, listed 1 directory, ran 3 shell commands (ctrl+o to expand)
+
+● I'm recording your opening message and the five screenshots into a new 11/15
+  record, then doing the full startup read of memory, recent summaries, and the
+  11/13 record before writing its summary. · summary
+
+● Write(AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md)
+  ⎿  Wrote 42 lines to
+     AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md
+      1 # November 15, 2026 — the November 13 session closed out, what th
+        e owner's eye was still owed, and a freer hand in design
+      2
+      3 ## Coverage
+      4
+      5 Agent-maintained record by Claude Code in the VS Code extension,
+        model Fable 5.2 (`claude-fable-5-2`) as stated by the harness, re
+        corded November 15, 2026. This is the root conversation, not a ha
+        rness export. Verbatim visible messages are fenced; work notes ar
+        e authored interpretation. Tool payloads, private reasoning and d
+     … +38 lines (~4 KB) (ctrl+o to expand)
+
+  Read 4 files (ctrl+o to expand)
+
+● Memory is read in full (owner, direction, ideas, narrative). Now the five
+  latest summaries, oldest first, then the whole 11/13 record and export.
+
+  Read 6 files, ran 2 shell commands (ctrl+o to expand)
+
+● Recovering the last two delivered replies of the 11/13 session (visible text
+  only) so its record can be closed, then reading the owner's export in full.
+
+  Read 2 files, ran 4 shell commands (ctrl+o to expand)
+
+● Still reading the last stretch of the 11/13 export (the owner's messages and
+  the root's replies; the builders' hand-backs left out), then writing its
+  summary.
+
+  Searched for 1 pattern, read 2 files, ran 2 shell commands (ctrl+o to expand)
+
+● The 3D button stays dark on branch-renderer.ts because its cue only counts
+  stray forward wires and ignores the cycle connections you pointed at. I'm
+  checking your original words on that cue in the record before changing it.
+  · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Writing the 11/13 summary now (all sources read); then the inventory,
+  narrative and Memory updates, and a commit before dev work starts.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Write(AI-Agent-Workspace/ChatHistory/2026/11/Summarized/2026-11-13.1.SUMMARIZE
+       D.md)
+  ⎿  Wrote 136 lines to AI-Agent-Workspace/ChatHistory/2026/11/Summarized/2
+     026-11-13.1.SUMMARIZED.md
+      1 # November 13–14, 2026 — two sessions' work shown through the pro
+        duct, the cards composed for each zoom look, Flow by the layout's
+         price, and three trials left for the owner's eye
+      2
+      3 Historical session summary. Harness: Claude Code in the VS Code e
+        xtension; the root was Fable 5.2 by the harness's label. Delegate
+        s, as the record names them: six builders, each Opus at extra-hig
+        h effort in a worktree of its own (the frame bound beside the clo
+        ck; the World Map's camera; the 2D cards composed for each zoom l
+        ook; the opened directory through the layout's price, then Flow a
+     … +134 lines (~27 KB) (ctrl+o to expand)
+
+● Summary written. Now the inventory, the narrative's chapter and the Memory
+  files, then one close-out commit.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Update(AI-Agent-Workspace/ChatHistory/2026/11/README.md)
+  ⎿  Added 9 lines, removed 1 line
+      33  
+      34  ## November 13, session 1 — Claude Code, Fable 5.2
+      35  
+      36 -- [Maintained root record](2026-11-13.1.record.md): opened Nove
+         -mber 13. The owner asks to be taught the previous day's changes
+         - through the product, with the hosted build brought back after 
+         -a restart of the machine, and expects that questions are waitin
+         -g on their opinion. Its startup reading was complete and is sta
+         -ted in its Coverage section.                                   
+      36 +- [Maintained root record](2026-11-13.1.record.md): opened Nove
+         +mber 13. The owner asks to be taught the previous day's changes
+         + through the product, with the hosted build brought back after 
+         +a restart of the machine, and expects that questions are waitin
+         +g on their opinion. Its startup reading was complete and is sta
+         +ted in its Coverage section. Nine owner turns over November 13 
+         +and 14 (Turn 5 is five messages, Turn 6 two screenshots without
+         + words); the root's substantial replies were recovered by its o
+         +wn root from the harness's root-session log as the day went.   
+      37 +- [Harness export](2026-11-13-203504-today-is-11132026-and-this
+         +-message-starts-a-ne.txt): exported by the owner from the Claud
+         +e Code extension's UI, first written at 20:35 UTC on November 1
+         +3 and written again under the same name at 03:31 UTC on Novembe
+         +r 14; left untracked by its own session and committed as receiv
+         +ed at the November 15 close-out. **229,280 bytes**, SHA-256 **`
+         +45042969880f0dd413d0adcb02d9f691ec1baea51c3c19936bf4c3a9ada845b
+         +b`**, 4,213 lines of terminal text hard-wrapped at about eighty
+         + columns. Prompts are marked `❯` (twelve, of which two are the 
+         +owner's `/compact`), root's messages `●`, builders' hand-backs 
+         +`›`, tool calls as counts or as printed diffs.                 
+      38  
+      39 +**November 15 close-out:** the session ended after Turn 9 with 
+         +no close-out request, and the next chat closed it. The export h
+         +olds the opening through root's reply of 20:15 UTC on November 
+         +13 (lines 1 to 3,934) and root's check of 21:01; then a literal
+         + `...` at line 3,972 in place of everything up to root's reply 
+         +of 01:19 UTC on November 14, that reply, a notice of a compacti
+         +on made while the owner was away, and root's progress lines to 
+         +about 03:32 UTC. So it holds Turns 1 to 5 as prompts, Turn 6 as
+         + two image markers, and nothing of Turns 7, 8 and 9, which rest
+         + on the maintained record alone: an export made after an automa
+         +tic compaction does not hold the whole chat (the owner's findin
+         +g of November 6, in [the archive convention](../../README.md#so
+         +urce-captures)). Reading coverage: lines 1 to 900 raw and whole
+         +; lines 901 to 2,207 in a view that keeps every prompt and root
+         + message and leaves out tool-call bodies, in which two builders
+         +' hand-backs were printed; lines 2,208 to 4,213 in a view that 
+         +also leaves out seven hand-backs. Its prompts agree with the re
+         +cord's Turns 1 to 5. The hand-backs and tool payloads it shows 
+         +are preserved only as supplied bytes. The record gained the two
+         + replies delivered after Turn 9, recovered from the harness's r
+         +oot-session log, user-facing text only ([delivered replies](202
+         +6-11-13.1.record.md#roots-replies-in-turn-9-as-delivered)). The
+         + [linked summary](Summarized/2026-11-13.1.SUMMARIZED.md) covers
+         + the nine turns and forty-two verified commits, and keeps the g
+         +ate as it was: no full run green.                              
+      40 +                                                               
+      41 +## November 15, session 1 — Claude Code, Fable 5.2             
+      42 +                                                               
+      43 +- [Maintained root record](2026-11-15.1.record.md): opened Nove
+         +mber 15. The owner asks for the November 13 session to be close
+         +d and summarized before development, for whatever needed their 
+         +answer and went unseen to be brought back to them, and gives th
+         +e root a freer hand in design; they report closed and opened di
+         +rectories hard to act on when zoomed out and the 3D button not 
+         +lit on a pinned file with many returning connections. Its start
+         +up reading is stated in its Coverage section.                  
+      44 +- [The owner's five screenshots of Turn 1](2026-11-15.1.images/
+         +), kept as received and named by root for what each shows: `bra
+         +nch-renderer.ts` pinned in the 2D map with the pointer on five 
+         +of its rows in turn. SHA-256, in the order the record lists the
+         +m: `88f5866694f0326949e70145f570b8471361ca8aba519738839c38c0d65
+         +15fcc`, `2c0728e9696514984bea62bc9cd4d4c59121b5a9f37f65af092f67
+         +4012ab67fa`, `e56f15876fc05373fe672c41832751cf078af3a53917df56f
+         +72af54fce1be41a`, `ad9a84f901f0e1648ac22b4f65cf2d9f40986cf90c11
+         +95393c94af05b98f071e`, `7e16e285b65c2a0dd83272fcc4bdb64eecb989b
+         +a158d1627e47f59ed4e8252d7`.                                    
+      45 +                                                               
+      46  ## November 1, session 1 — Codex/Astra, completed by 6.1 Sol, N
+          ovember 1–2
+      47  
+      48  - [Maintained root record](2026-11-01.1.record.md): ten owner t
+          urns, delivered replies, selected intervening commentary, autho
+          red reading/work checkpoints and verification outcomes. Begins 
+          with the requested full October-record bootstrap and closes wit
+          h the owner's November 2 close-out request, visible capacity er
+          ror and reported switch to 6.1 Sol. The implementation and prev
+          iew work were complete before close-out. The reply delivering t
+          he summary is not a captured source until a later turn records 
+          it.
+
+● Update(AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md)
+  ⎿  Added 2 lines
+      20  - **Noted and not started:** the World Map's labels hop above a
+          nd below during a turn; wires after an interrupted pin transiti
+          on in the three looks; narrow cards cut to an ellipsis alone an
+          d names broken inside words at the overview, where ".cs" can al
+          so still stand alone; a file with no Purpose shown keeps its sl
+          ot's blank at reading size (the room its title takes two looks 
+          out); the design audit's self-overlap check flags every two-lin
+          e held name under Segoe's metrics though the glyphs do not touc
+          h; the layout lab's "repository, chain" case times out at 30 s 
+          under load and passes alone; what `+N connections` should say; 
+          the reader's Dependencies grouped by file; the 3D frame cost pr
+          ofile.
+      21  - **Constraints restated by the record, not new:** a trial behi
+          nd a switch is not a decision; in a disagreement about a pictur
+          e the owner's eye decides; a card's box does not change with th
+          e zoom, except by the person's own fold or restore (the owner, 
+          November 5 and Turn 3 of this record); the layout is improved t
+          hrough its price, not by rules beside it; the owner is shown bu
+          ilds, not asked to picture a design from words.
+      22  
+      23 +**Closed, November 15, 2026, by the next session** ([its record
+         +](2026-11-15.1.record.md#turn-1)); the notes above stand as the
+         + session left them. No owner turn followed Turn 9 and no close-
+         +out was asked, so the next chat's startup closed the session by
+         + the handoff routine: the two replies delivered after Turn 9 ar
+         +e [appended below](#roots-replies-in-turn-9-as-delivered) from 
+         +the harness's root-session log, user-facing text only; [the sum
+         +mary](Summarized/2026-11-13.1.SUMMARIZED.md) is written, with w
+         +hat was read of the owner's export, which holds nothing of Turn
+         +s 7 to 9; the narrative has its chapter. The owner pushed the s
+         +ession's forty-two commits at 19:46 UTC on November 15. The kep
+         +t-description trial's worktree, branch and build copy were stil
+         +l in place at the close, as were the servers' ports named above
+         +, none of them listening.                                      
+      24 +                                                               
+      25  ## Turn 1
+      26  
+      27  **Owner:**
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Closing out: fixing two counts, then the narrative chapter and Memory entries.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Update(AI-Agent-Workspace/Memory/narrative.md)
+  ⎿  Added 10 lines
+      513  
+      514  Two full gates ran red. Of their twenty-eight failures one was
+            real, a case tied to a picture the day's own change had redra
+           wn, and the rest were the clock on a machine that ran slow all
+            day; by the owner's word of that afternoon a case that is red
+            because the product is slow is pressure to keep, so no wait w
+           as loosened. The session ended without a close-out, on three t
+           hings waiting for the owner's eye, and the next morning's chat
+            wrote [its summary](../ChatHistory/2026/11/Summarized/2026-11
+           -12.1.SUMMARIZED.md) and this chapter. What the day added to t
+           he pattern was the stranger: a builder holds the edits, the ro
+           ot holds the record and the eye, and an agent who knows nothin
+           g tells both where the door is.
+      515  
+      516 +### November 13–14: shown, not asked                          
+      517 +                                                              
+      518 +The owner opened the next chat asking to be taught two session
+          +s' work through the product itself: "Can you use our software 
+          +to teach me about the changes and get my eyes on them?" ([Turn
+          + 1](../ChatHistory/2026/11/2026-11-13.1.record.md#turn-1)). Th
+          +e root looked at every link before it wrote, sent a tour in th
+          +e order a newcomer meets things, and closed the session before
+          + it. The owner's review came back within the hour and set the 
+          +day ([Turn 2](../ChatHistory/2026/11/2026-11-13.1.record.md#tu
+          +rn-2)): the World Map "is looking really great", but a turn by
+          + drag was "EXTREMELY slow" and the view from above landed croo
+          +ked; Flow was "superior in basically every place I look"; and 
+          +of the two zoom modes, "I can't tell a big difference between 
+          +them", with a Reading button kept "at zoom levels where you ca
+          +nnot read the description" and blank room under symbols that h
+          +ad nothing to say. The root answered with three yes-or-no ques
+          +tions, and the owner's reply changed how questions are put her
+          +e: "I am borderline aphantasic, so the 3 questions you need fr
+          +om me on the latest round are surprisingly hard to answer _wel
+          +l_" ([Turn 3](../ChatHistory/2026/11/2026-11-13.1.record.md#tu
+          +rn-3)). They would bend their own rule on seeing the case, cou
+          +ld not picture Flow made tidy, and named the method the layout
+          + had been improved by all along: "a systematic mechanism that 
+          +tries to maximize many often-competing signals." The questions
+          + were withdrawn. From that hour a visual fork goes to the owne
+          +r as things to open, the root decides what a designer would de
+          +cide and keeps the way back, and the layout is improved throug
+          +h its price. When the root found that the price could not choo
+          +se how unlinked things stand, since it charges for height and 
+          +not for width, the owner gave the leave in a sentence: "If a u
+          +ser can understand software at a glance better by adding that 
+          +extra term to the "price", go ahead and add it" ([Turn 4](../C
+          +hatHistory/2026/11/2026-11-13.1.record.md#turn-4)).           
+      519 +                                                              
+      520 +Then the owner's screen disagreed with the root's pictures. To
+          +ld that long names now stood whole on two lines, they sent a s
+          +creenshot of names still cut and wondered whether they were on
+          + an old build: "I can't access your port 8900 builds most of t
+          +he time", so they had been serving the folder themselves on an
+          +other port and "changing the port number" in every link by han
+          +d ([Turn 5](../ChatHistory/2026/11/2026-11-13.1.record.md#turn
+          +-5)). They were on the current build. Their browser draws Sego
+          +e UI and the container's headless browser a fallback font with
+          + a shorter line, so a row that held two lines of a name here h
+          +eld one there; every text fit judged headlessly in this worksp
+          +ace had had that blind spot. The cards got a line height state
+          +d by the stylesheet and a browser case drawn under the owner's
+          + metrics, and the practice changed: the owner's own server is 
+          +the preview, and a fit is judged under their font before they 
+          +are told what they will see.                                  
+      521 +                                                              
+      522 +Six builders carried the day's rounds, at most three at once, 
+          +and each was sent back at least once. The World Map's turn was
+          + mended only when no label of eleven thousand rested different
+          +ly. The cards were composed for each look under one rule of th
+          +e root's, that a card's box is set by what the person shows at
+          + reading size, the room a text leaves goes to the name it belo
+          +nged to, and a control leaves with what it acts on; the three 
+          +looks became the default, and a symbol with nothing to say got
+          + a short row. The width term took three handbacks. The root's 
+          +own remedy for the first, a charge for how far the cards alrea
+          +dy shown would travel, was withdrawn by the root when it saw t
+          +hat the term made a picture depend on the path taken to it, ag
+          +ainst the owner's hope that a link shows "the same thing on tw
+          +o different screens"; as landed, an opened directory's shape i
+          +s chosen by the price on the directory alone. Flow became the 
+          +default, and the owner, seeing three directories in it: "The F
+          +low on those 3 was amazing", and "much closer to what the full
+          + zoom-out in the 2D Local Map might reasonably be" ([Turn 8](.
+          +./ChatHistory/2026/11/2026-11-13.1.record.md#turn-8)). Their l
+          +ook at the day's cards had also found what a card cannot say, 
+          +a symbol's kind and why a wire turns back, and that a closed d
+          +irectory's box "doesn't indicate to me "this thing can pop ope
+          +n and let out a lot of stuff into the screen" in the same way 
+          +that we enjoy with our bags of cells in the 3D local map view"
+          + ([Turn 7](../ChatHistory/2026/11/2026-11-13.1.record.md#turn-
+          +7)). Three trials answered that night, behind Tuning choices: 
+          +the closed directory as a skin with cells, a stack or a folded
+          + membrane; the farthest zoom as files only; and a description'
+          +s first line kept when zoomed out, which the root had built, j
+          +udged "slightly busier, not clearer" and kept off `main`.     
+      523 +                                                              
+      524 +The gate told the day's other story. A full run stopped at a p
+          +hysics case 184 ms over a deadline that no change of the day t
+          +ouched, on a machine running half again slower than a week bef
+          +ore. The root ran the remaining stages one by one overnight, a
+          +nd the browser suite's first run on the day's code found a rea
+          +l break in the root's own landing: since the short rows, the l
+          +ayout search had priced its trials against rows it measured wr
+          +ong. It was mended without changing an expectation. The owner'
+          +s last message asked whether fourteen background tasks ten hou
+          +rs old were real ([Turn 9](../ChatHistory/2026/11/2026-11-13.1
+          +.record.md#turn-9)). They were the root's own waits, each sear
+          +ching the process list for a name its own command line contain
+          +ed, the fault that had cost two hours on October 21. No full g
+          +ate was green, the three trials waited on the owner's eye, and
+          + the session ended without a close-out; the next chat wrote [i
+          +ts summary](../ChatHistory/2026/11/Summarized/2026-11-13.1.SUM
+          +MARIZED.md) and this chapter, and gathered for the owner every
+          + question the day had put to them that had gone unanswered, wh
+          +ich they had asked for: "These modern code harnesses can somet
+          +imes make it tricky to scroll to the proper place to locate al
+          +l the "your eyes needed on this" sections in a long chat" ([No
+          +vember 15, Turn 1](../ChatHistory/2026/11/2026-11-15.1.record.
+          +md#turn-1)).                                                  
+      525 +                                                              
+      526  ## Harnesses and models
+      527  
+      528  Most transcripts name no model; this table gives only what the
+           y say. A model's name in a transcript records what the owner e
+           nabled or said, not proof of which model wrote every reply.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Update(AI-Agent-Workspace/Memory/owner.md)
+  ⎿  Added 6 lines
+      20  
+      21  ## How they work with an agent
+      22  
+      23 +- **A freer hand in design, inside their preferences and the re
+         +cord** (2026-11-15, [Turn 1](../ChatHistory/2026/11/2026-11-15.
+         +1.record.md#turn-1)). "Fable 5.2 (you) has solid training data 
+         +which has substantially improved human-like vision capabilities
+         + that were previously restricted to just GPT-6 Astra. Put anoth
+         +er way: you currently have a tad bit more of a designer's eye t
+         +han I now do. So long as your preferences aren't in tremendous 
+         +direct conflict with my own and aren't something we've already 
+         +tried and thrown away, I want you to exercise a little more des
+         +ign freedom to ensure that the layout results are maximally und
+         +erstandable and aesthetically pleasing." Said after "more littl
+         +e nits than we can count" in the 2D map's style. **How to apply
+         +** (the root's reading): the two conditions are the owner's and
+         + both are checked against the record before a design is built, 
+         +their standing preferences and what was tried and rejected; ins
+         +ide them the root designs as a designer would, builds it as wha
+         +t the preview shows, says what changed and why, and no longer h
+         +olds an ordinary visual call for their yes. A change to what th
+         +e product means or does is still a fork for them, and in a disa
+         +greement about a picture their eye still decides.              
+      24 +                                                               
+      25 +- **Teach the designer's words as the work goes; the root is th
+         +e bridge, and that had lapsed** (2026-11-15, same turn). Of the
+         + style nits, "things that a formal designer would know the term
+         +inology to call out immediately (like "font hierarchy") but I p
+         +resently lack (and still feel like I'm not really being taught 
+         +all that much? I remember the root agent was also supposed to b
+         +e the pedagogical bridge between what Live Documentation could 
+         +teach me and what the system actually saliently contained/was-c
+         +omposed-of? I feel like that effort has possibly fallen by the 
+         +wayside?)". They remember rightly: "the Root Agent is also the 
+         +pedagogical bridge for the user -- between what we wish our sof
+         +tware could do and what it really does" is their sentence of 20
+         +26-11-06 ([Turn 26](../ChatHistory/2026/11/2026-11-05.1.record.
+         +md#turn-26--november-6)), it went into AGENTS.md that day (`e10
+         +4f9fa`), and the cut of 2026-11-12 took the phrase out (`06f94c
+         +84`) and the day's restoration did not bring it back; it is res
+         +tored on 2026-11-15. It joins "Teach the concepts at the decisi
+         +on point" (2026-11-03) below. **How to apply:** a reply that la
+         +nds or proposes visual work names the principle it rests on in 
+         +the designer's own term, says in a sentence what the term means
+         +, and points at where it shows on our own screen, before and af
+         +ter; an accepted round is walked through the Explorer with the 
+         +code that carries it pinned, saying what the product could not 
+         +yet show. Not a lecture and not a glossary dumped at the end: t
+         +he term arrives with the decision it explains.                 
+      26 +                                                               
+      27 +- **A new chat brings back what waited on them** (2026-11-15, s
+         +ame turn). "I'd also ask that you include in your new dev day b
+         +ootstrap anything which should be brought to my attention which
+         + I clearly missed in the prior chat despite it being asked for 
+         +a response from me. These modern code harnesses can sometimes m
+         +ake it tricky to scroll to the proper place to locate all the "
+         +your eyes needed on this" sections in a long chat. Not the end 
+         +of the world if we try to recollect and bring back those items 
+         +so I can take a look again." So the first reply of a new chat g
+         +athers, in one list, every question the previous session put to
+         + them that went unanswered, each with the link that shows it; a
+         + session's summary keeps that list under its open ends so that 
+         +the next root can.                                             
+      28 +                                                               
+      29  - **What their screen draws is not what a headless browser here
+           draws, and they reach a preview only through a port VS Code fo
+          rwards** (2026-11-13, [Turn 5](../ChatHistory/2026/11/2026-11-1
+          3.1.record.md#turn-5)). Two facts about the owner's machine tha
+          t cost a morning. *Fonts:* the Explorer asks for Segoe UI, whic
+          h their Windows browser has and this container lacks, so headle
+          ss pictures are drawn in a fallback font with a shorter line; a
+           fit that held in the agent's pictures (a symbol's name on two 
+          lines in its row) did not hold on their screen, and they saw na
+          mes still cut after being told they stood whole. Judge any fit 
+          of text under Segoe UI's metrics as well, emulated if need be, 
+          before telling them what they will see. *Reaching a preview:* "
+          I can't access your port 8900 builds most of the time ... excep
+          t in some rare cases when you've hosted it"; they served `dist/
+          explorer` themselves on another port from a VS Code terminal an
+          d changed the port in every link by hand, without saying so unt
+          il asked by the mismatch. The earlier agent hosted through a VS
+           Code task, which the editor forwards. An attempt the same day 
+          to have VS Code forward an agent's ports by a workspace setting
+           did not work when the owner tried it (connection refused) and 
+          was taken out. **How to apply:** the owner's own server, from a
+           VS Code terminal or the task `Explore Live Documentation`, is 
+          the preview; the agent rebuilds `dist/explorer` and serves only
+           a private port for its own headless checks, never 8900; ask wh
+          ich address opens for them and write every link on it (8999 on 
+          that day).
+      30  
+      31  - **They cannot picture a design from words: show it, do not as
+          k them to imagine it** (2026-11-13, [Turn 3](../ChatHistory/202
+          6/11/2026-11-13.1.record.md#turn-3)). Put three yes-or-no quest
+          ions about the 2D map in words, the owner answered: "I will unf
+          ortunately come up with many many bad visual design ideas. I am
+           borderline aphantasic, so the 3 questions you need from me on 
+          the latest round are surprisingly hard to answer _well_", and o
+          f a layout proposal, "surprisingly hard for me to imagine what 
+          that would actually look like." Their own earlier rule about a 
+          picture may be one they would bend on seeing the case: "I did i
+          ndeed ask that zooming never changes a card's box, but as you s
+          ay, this case of adding or removing text is somewhere that this
+           rule should be bent." **How to apply** (the root's reading): a
+           visual fork goes to them as two real things to open on port 89
+          00, never as a description to agree to; what a designer would d
+          ecide, the root decides, builds and shows without a switch, wit
+          h the way back kept until they have looked; a visual proposal o
+          f theirs is a hypothesis to try, and a past sentence of theirs 
+          about a picture is evidence, weighed against what they say on s
+          eeing it.
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Restoring the guide's "pedagogical bridge" sentence (it was cut on 11/12),
+  then updating today's record and committing the close-out.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Audits pass. Double-checking my link checker's count on the 11/13 record, then
+  committing the close-out.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Close-out committed (cb53d7c7). Now looking at the built 2D map myself before
+  designing anything.
+
+  Searched for 3 patterns, listed 1 directory, ran 6 shell commands (ctrl+o to expand)
+
+● Starting a private preview server so I can look at the current build
+  headlessly.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Confirmed in the running page: 8 returning connections drawn on
+  branch-renderer.ts, cue count 0. Now looking at the pictures at each zoom.
+
+  Read 9 files (ctrl+o to expand)
+
+● Looking at the three trials' pictures from 11/13 next, to make the design
+  calls you left to me.
+
+  Read 8 files, ran 1 shell command (ctrl+o to expand)
+
+● I've looked at 16 pictures of the current build; the directory, hierarchy and
+  overview problems are clear. Gathering file names for the builders' briefs
+  now.
+
+  Listed 1 directory, ran 1 shell command (ctrl+o to expand)
+
+● Writing the two builders' briefs (the 3D cue fix, and directories you can act
+  on when zoomed out) and dispatching them.
+
+  Made 3 scratchpad edits +138 (ctrl+o to expand)
+
+● 2 background agents launched (↓ to manage)
+   ├ 3D cue counts returning wires
+   └ Directory handles at every zoom
+
+● Both builders are running. While they work, I'm measuring the card typography
+  and colours for the third round (the style pass).
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Probing the tone changes myself with injected styles (no source edits) so the
+  third builder gets exact values instead of adjectives.
+
+  Read 4 files, ran 2 shell commands (ctrl+o to expand)
+
+● The greeking probe works: tall overview cards read as documents with rows
+  instead of blank boxes, and nothing moves. Briefing a third builder for the
+  tone and overview round.
+
+  Made 1 scratchpad edit +54 (ctrl+o to expand)
+
+● Agent(Tone, wires and overview bars)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Saving ten pictures and writing the design critique beside them, so each term
+  I use points at a place on our own screen.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Write(AI-Agent-Workspace/Screenshots/2026-11-15/designer-eye/README.md)
+  ⎿  Wrote 37 lines to
+     AI-Agent-Workspace/Screenshots/2026-11-15/designer-eye/README.md
+      1 # A designer's reading of the 2D Local Map, November 15, 2026
+      2
+      3 _Historical evidence. Taken by the root agent at the opening of [
+        the November 15 session](../../../ChatHistory/2026/11/2026-11-15.
+        1.record.md#turn-1), after the owner asked for the 2D map's style
+         to be judged by the root's own eye and for the designer's words
+        to be taught as the work goes. The build is `cb53d7c7` (product c
+        ode as `ef7ce597`), opened headlessly at 1,440 by 900 with nothin
+        g remembered, in the default looks, with Segoe UI's line metrics
+        over Liberation Sans, which is closer to the owner's screen in wi
+     … +35 lines (~5 KB) (ctrl+o to expand)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Recording the decisions and dispatches, then I'll send you the bootstrap reply
+  while the builders work.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The 11/13 session is closed and summarized, dev has started, and three
+  builders are now working on your three reports. Your preview server is down
+  (nothing answers on 8999), so before any link below works, run this in a VS
+  Code terminal:
+
+  npx --offline http-server dist/explorer -p 8999 -c-1
+
+  Bootstrap
+
+  - Read in full: the guide, all four Memory documents, the handoff routine, the
+    five latest summaries, and the whole 11/13 record. Of your 11/13 export I
+    read the first 900 lines raw and the rest as your prompts plus my replies.
+  - Your export is missing the end of that chat. It has a literal ... where
+    everything from 21:01 to 01:19 UTC should be, and stops before your last
+    message. Turns 7 to 9 survive only in the record I kept; I recovered my last
+    two replies from the session log and added them.
+  - Written: the 11/13 summary (AI-Agent-Workspace/ChatHistory/2026/11/Summarize
+    d/2026-11-13.1.SUMMARIZED.md), a narrative chapter, the inventory, and
+    today's record
+    (AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md) with your
+    five screenshots saved.
+  - Commits: cb53d7c7 and 479b8cd4, not pushed. No product code has changed yet.
+
+  What waited on you from 11/13
+
+  Needs your eye:
+
+  What: Full zoom-out as files only
+  Link: trial
+    (http://127.0.0.1:8999/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkRUwBTAJzAEtSB3AMSoV
+  IGcoQAzJ1kAX1-gA7di3Tkq+AC4sA9ABMMAWkmpUCWQvQBXALalBkzJKqpBAGSqCA1iwB00vkA):
+     Zoom Out seven times, then Zoom In once
+  The question: Does the far picture read as you meant, and can you follow the
+    rearrangement?
+  ────────────────────────────────────────
+  What: Closed directory looks
+  Link: cells
+    (http://127.0.0.1:8999/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR00BnAUwBMARASwCdz0
+  AXVegTymPIQVJAC+A+JSgBtEKXT1a+ZvwC6AoA),
+     stack
+    (http://127.0.0.1:8999/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR00BnAUwBMARASwCdz0
+  AXVegTyhFOc3QGsQAXyHxKUANrd09WvmakQAXSFA),
+     folded
+    (http://127.0.0.1:8999/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR00BnAUwBMARASwCdz0
+  AXVegTyhADNUFKqIAL5D4lKAG0QpdPVr5mpEAF0hQA)
+  The question: Which look, if any?
+  ────────────────────────────────────────
+  What: Kept description line
+  Link: trial
+    (http://127.0.0.1:8999/trials/descriptions/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAd
+  kQATAUwGd0AnAS3wBcbUA7cgLVVQFtTiB5AK70oIAGY0q5egFoENZqRABfJfGYjKtBuQD0xDNPqcEu
+  -egE9m9TIxYAZeQGtyAOnrllQA):
+     Zoom Out three times
+  The question: I recommended dropping it.
+  ────────────────────────────────────────
+  What: World Map turning
+  Link: the board (http://127.0.0.1:8999/): right-drag, then the cube
+  The question: Does a turn feel right since the fix?
+  ────────────────────────────────────────
+  What: Changed Files mode in history
+  Link: a step with 45 files
+    (http://127.0.0.1:8999/?s=N4IgbiBcDMA0IEcomgExPAnsgzgFwCcBXAYzyIIFMMQALZSgTk
+  dQFZGAmVRgQwDMAHABYA7ACMAjD1QA2PhKGMRPRtDGtWlPqhHRoABgHRGIAL5A)
+  The question: Glow, Dim, Both or None as the default?
+  ────────────────────────────────────────
+  What: Still pointer
+  Link: Serve dist/still-pointer-trial on another port to try it
+  The question: What should a resting pointer do while the 3D picture grows?
+
+  Needs a word:
+
+  - Node 22 to 26: say go and a builder takes it with a full gate.
+  - First screen where a board exists: I recommended keeping the World Map; two
+    strangers who landed elsewhere both went there.
+  - Is the Windows side in a power-saving mode? The machine ran about 1.5 times
+    slower on 11/13 than a week earlier.
+  - My reading of your "Flow look at full zoom-out" remark was never confirmed:
+    I took it to mean any 2D picture, pinned files included.
+
+  Your three reports
+
+  1. The 3D button on branch-renderer.ts: a defect, being fixed. The 2D map puts
+  what a file uses to its left. When files use each other in a ring, one
+  connection has to run against that order, and the map draws it as a small loop
+  that shows its full route on hover. That route is the wire in your
+  screenshots (AI-Agent-Workspace/Screenshots/2026-11-15/designer-eye/02-returni
+  ng-connection-on-hover.png). The cue built on 11/2 only counts a forward
+  connection whose path happens to double back, and skips these returning ones.
+  On that file the page draws eight returning routes and counts zero. Your words
+  on 11/2 described this exact wire, with "Next case I find I'll point out".
+  The builder is making the count include them and giving the cue a real glow in
+  two strengths, with no text.
+
+  2. Directories when zoomed out: confirmed, and worse than "no buttons". Three
+  presses out (AI-Agent-Workspace/Screenshots/2026-11-15/designer-eye/03-opened-
+  directory-three-presses-out.png) and after Fit (AI-Agent-Workspace/Screenshots
+  /2026-11-15/designer-eye/04-opened-directory-after-fit.png):
+
+  - "Open" is a text button that shrinks to 7 px and vanishes on narrow boxes;
+    five of seven closed directories have nothing to press.
+  - An opened directory loses its close control entirely.
+  - Its name shrinks to about 6 px beside file names held at 13, and is cut to
+    "…plorer/src/client" with 900 px of free room beside it.
+
+  What I'm having built:
+
+  - A closed directory opens when you click anywhere on its box.
+  - A chevron (the small arrow a file tree uses) replaces both the "Open" text
+    and the close cross.
+  - An opened directory's name is a handle that closes it.
+  - A directory's name is never smaller than the file names inside it, and its
+    parent path is cut before the name is.
+
+  3. Style. I looked at sixteen pictures of the current build and wrote up what
+  a designer would call out, each term next to the place it shows: the reading,
+  with ten pictures
+  (AI-Agent-Workspace/Screenshots/2026-11-15/designer-eye/README.md). The three
+  that matter most:
+
+  - Hierarchy is the order your eye meets things, set by size, weight and
+    brightness. On a card today (AI-Agent-Workspace/Screenshots/2026-11-15/desig
+    ner-eye/01-reading-card-one-tone.png) every text is the same grey and a
+    symbol's description is larger than its name, so you read prose before
+    names. The fix is brightness alone, since yesterday's work fixed the sizes:
+    names bright, prose a step down (AI-Agent-Workspace/Screenshots/2026-11-15/d
+    esigner-eye/08-probe-tone-reading-card.png).
+  - Figure and ground is what stands out against what recedes. Every wire glows
+    at rest, so on localView (AI-Agent-Workspace/Screenshots/2026-11-15/designer
+    -eye/06-crowded-directory-as-built.png) the lines outshine the names.
+    Without the resting glow (AI-Agent-Workspace/Screenshots/2026-11-15/designer
+    -eye/09-probe-tone-crowded-directory.png), names lead and a hovered card's
+    lines still light up.
+  - Greeking is drawing text too small to read as grey bars, so a page keeps its
+    shape. At full zoom-out a card is a name over a tall blank box (AI-Agent-Wo
+    rkspace/Screenshots/2026-11-15/designer-eye/05-overview-blank-cards.png).
+    With each row drawn as a faint bar (AI-Agent-Workspace/Screenshots/2026-11-1
+    5/designer-eye/10-probe-rows-as-bars.png), a tall card reads as a file with
+    many symbols, and nothing moves. I think this beats the files-only trial,
+    which has to rearrange the picture; you'll get both to compare.
+
+  The last three pictures are probes I made by injecting styles into the current
+  build. A builder is now making them real.
+
+  On not being taught
+
+  You remembered correctly. "The Root Agent is also the pedagogical bridge" is
+  your sentence from 11/6. It went into the guide that day, and the 11/12 cut
+  removed it; that day's restoration did not bring it back. I've restored it,
+  with what it asks of a reply: name the principle in the designer's term at the
+  decision, say what it means, and point at where it shows on our screen.
+
+  Calls I'm making under the freer hand
+
+  Say no to any of these:
+
+  - The closed directory's default look becomes the skin with cells, once the
+    handle work is in. This follows your 11/6 preference for "a bundle of nodes
+    engulfed". The folded look gets deleted.
+  - I'll drop the kept-description trial and keep the cube icon.
+  - I'll delete the stepped ladder and the Grid layout this session. You've now
+    used both replacements as defaults.
+  - I'll add a count beside the clock on the two 2D search tests, with their
+    deadlines untouched.
+
+  A full green gate is still owed from 11/13; I'll run it after the builders'
+  work is merged. I'll send links on 8999 as each round lands.
+
+› Message from general-purpose
+  Milestone 1 (tone only, no geometry) is built, committed and handed back. The
+  new spec is red on `cb53d7c7` and green on the branch. The full gate was not
+  run: only the focused runs listed below. Milestone 2 is not started.
+
+  Worktree:
+  `/workspaces/Live-Documentation/.claude/worktrees/agent-a45305e67bd0b6870`,
+  branch `worktree-agent-a45305e67bd0b6870`, reset to `cb53d7c7` first.
+
+  ## Commits
+  - `cced0be7` Give the 2D map's cards a hierarchy of tone, quieten wires at
+  rest, and make the legend draw what the picture draws
+  - `724b7715` Keep the tone spec's failing run on the build before beside the
+  round's pictures
+
+  ## What changed and where
+  All under `packages/explorer/src/client/styles/` unless a path says otherwise.
+
+  - **`theme.css`**: new variables.
+    - Text: `--card-file-name: #f2f2f2`, `--card-symbol-name: #ededed`,
+  `--card-prose: #b0b0b0`.
+    - Wires: `--wire-offers: #38bdf8`, `--wire-uses: #34d399` (the colours
+  `connections.ts` already draws), `--wire-rest-opacity: 0.5`, `--wire-glow`.
+    - Outline: `--membrane-outline: #45454e`.
+  - **`view-shared.css`**:
+    - `.node-title` and `.symbol-label` take their tones.
+    - `.connection-path` at rest is `--wire-rest-opacity`; the per-wire
+  `drop-shadow` rules are gone.
+    - The legend's samples are redrawn here, once. The dot samples share the
+  declarations of `.symbol-anchor.inbound/.outbound`.
+    - Dead `#legend-panel` and `.legend-title` removed (the template has
+  neither).
+  - **`local.css`** (wires' rules, `.local-membrane-shape` and the legend's
+  width sample only):
+    - One lit rule: `.connection-path:is(.connection-highlighted, .flow-lit,
+  .own) { opacity: 1; filter: var(--wire-glow) }`.
+    - The two hover-dim rules also take the glow off what they dim.
+    - `.bundle-run` is `calc(var(--wire-rest-opacity) * 0.64)`, the old .45/.7
+  ratio, so 0.32.
+    - `.local-membrane-shape` strokes `--membrane-outline`; its fill is
+  unchanged.
+    - The gathered-width legend sample uses `--wire-offers` at rest opacity.
+  - **`reading.css`**:
+    - `.local-reading-block` is `--card-prose`.
+    - `.local-column .symbol-label { color: var(--card-symbol-name) }` is stated
+  here (see forks).
+    - The `:has(.local-reading-card)` rule that removed the glow at rest is
+  deleted as redundant.
+  - **`shell.css`**: the sidebar overrides of the legend samples are removed
+  (they made the test-backed sample gold and the dots 10 px), as is the unused
+  `.legend-swatch--related-doc`.
+  - **`tests/e2e/local-map-tone.spec.ts`** (new, 5 cases).
+  - **`tests/e2e/local-map-branches.spec.ts`**: the bundle run at rest is read
+  against a wire at rest (ratio .45/.7, wire 0.5) instead of the literal 0.45.
+  - **`tests/e2e/local-map-directories.spec.ts`**: the Flow hover case expects
+  the card's own lines at 1, and at most 0.5 at rest, instead of "same as rest".
+  - **Docs**: a paragraph "Tone on the 2D map (November 15…)" in
+  `.mdmd/layer-3/live-documentation-explorer.mdmd.md`; authored notes in the
+  Live Docs of the five stylesheets and two changed specs; a new Live Doc for
+  the new spec. All cite `2026-11-15.1.record.md#turn-1`.
+
+  No font size, line height, weight or box changed. `connections.ts`,
+  `overview-files.ts`, `held-lines.ts`, `client/index.ts`, the directory labels,
+  the closed boxes, Memory and ChatHistory are untouched.
+
+  ## Contrast ratios (by `tests/e2e/contrast.ts`)
+  | Text | On a card `#232326` | On a hovered card `#2f2f33` |
+  | --- | --- | --- |
+  | File's name `#f2f2f2` | 14.00 | 11.91 |
+  | Symbol's name `#ededed` | 13.39 | 11.39 |
+  | Prose `#b0b0b0` | 7.23 | 6.15 |
+  | Before, all three `#cccccc` | 9.76 | 8.30 |
+
+  - **Membrane outline** against the map's `#1e1e1e`: 1.76 to 1 now, 1.25
+  before; a card's border is 1.60.
+  - **Path** `#888888` at 10 px is 4.42 on the card, just under AA's 4.5. It was
+  so before and the brief left it as it is.
+
+  ## Red run on `cb53d7c7`
+  The new spec was run against a build of `cb53d7c7` served on 8963: 5 of 5
+  failed. The stripped output is in the pictures folder as
+  `red-run-cb53d7c7.txt`.
+
+  1. **Three tones**: "a symbol's name leads the prose": expected ≥ 1.5,
+  received 1.
+  2. **Wire at rest and hovered**:
+     - "no wire at rest glows": expected 0, received 13.
+     - "half opaque at most": received 0.7.
+     - "every lit wire glows": received 2 (the lit laces had no glow).
+     - "no dimmed wire glows": received 12.
+  3. **Pinned symbol's own wires at the overview**:
+     - "drawn whole": expected 1, received 0.7.
+     - Gathered line at rest: received 0.7.
+     - "no gathered line at rest glows": received 8.
+  4. **Outline**: expected ≥ 1.596 (the card border), received 1.252.
+  5. **Legend**:
+     - Wire samples were `rgba(0,145,255,.85)` and `rgba(0,211,170,.85)` against
+  the wire's `rgb(56,189,248)` and `rgb(52,211,153)`, at opacity 1 against 0.7,
+  and 0.8 px thicker than a wire.
+     - Dots were 10 px against 12 px.
+     - The test-backed sample had a gold `rgba(255,215,0,.15)` background and no
+  inner card.
+
+  Assertions that did not fail on the base, so are not shown red:
+  - each tone ≥ 4.5;
+  - the file's name ≥ the symbol's name;
+  - the Purpose and a description are one tone;
+  - "a lit wire is drawn whole" for a hovered row (it was already 1);
+  - "a wire the row does not touch dims";
+  - the membrane's fill alpha < 0.05;
+  - "glows only if a wire at rest does" (both glowed before).
+
+  ## Green run on the branch
+  9 passed in 1.1 min under the lock on 8963: the 5 new cases, the two changed
+  cases, and the two `local-map-overview` wire cases.
+
+  Also run:
+  - `npm run build`, visualize and visualize:estate;
+  - 46 unit cases in the four test files that read the stylesheets;
+  - `tsc -p tests/tsconfig.json` and eslint on the three specs;
+  - `slopcop:markdown` (0 broken links) and `live-docs:lint` (966 validated);
+  - `live-docs:generate` (1 created, then unchanged).
+
+  ## Forks I decided
+  - **Symbol name's colour is stated twice.** `local.css:243` still says `color:
+  var(--text-secondary)` for `.local-column .symbol-label`, a line the brief
+  put outside what I may touch. I override it from `reading.css` (later in the
+  import order, same specificity; the hover rule still wins). The clean form is
+  a one-token change on `local.css:243` and deleting my `reading.css` line. Say
+  so and it is done.
+  - **Lit laces glow too.** The filled polygons at a pin never had the glow; the
+  single lit rule now gives it to every lit `.connection-path`.
+  - **Two existing expectations changed** to follow your decision that a lit
+  wire is at full strength: Flow's hovered-card lines were asserted "same
+  opacity as rest", and the bundle run was a literal 0.45. The Flow rule's
+  comment and the design paragraph say "lit" where they said "keep their look".
+  - **Legend geometry.** Wire samples are 20 × 2 px (were 3 px; a wire is 2.2),
+  dots 12 px as a row's dot (were 10), and the test-backed sample is a 20 × 14
+  halo with a card inset 2 px, both in the card's own variables.
+  - **0.5 stands on the sparse picture.** The estate chain reads at once at
+  arrival and three presses out, so I took no second-value pictures.
+  - **Pictures use a fresh visitor's real defaults**, continuing search on and
+  waited for, not the suite's `searchStarts: 0`.
+
+  ## Forks handed back
+  - **A path's wires cannot be lit in 2D.** They carry no class of their own
+  (only the columns get `path-node`), so the stylesheet has nothing to select.
+  Marking them needs `connections.ts`, which is not mine. They are at rest tone
+  now.
+  - **The folded closed-directory look** (`.local-closed--folded`, the other
+  builder's) uses `var(--border)` and its comment says "at the membrane's own
+  stroke". It no longer matches the membrane; it should take
+  `--membrane-outline` if the look is to keep that meaning.
+
+  ## What still looks wrong to my eye
+  - A membrane around a single card (the estate's directory around
+  `PaymentsContext.cs`, in `estate-out3`) is now about as strong as the card's
+  own border and reads as a box in a box. Only the card's slightly lighter fill
+  and the label tell them apart.
+  - Where many wires at rest overlap (the fan into Internals, `wires-out3`), the
+  bundle is still bright because their strengths add. It no longer glows and
+  the names beat it, but it is not quiet.
+  - A single wire at rest three presses out on the sparse picture
+  (`estate-out3`, the blue wire from `PaymentsContext`) is meek. It reads, but
+  it is the first place a lower value would fail.
+  - The legend's wire samples, true to a wire at rest, are now the faintest
+  things in the sidebar.
+  - At seven presses out a card is still a name over a blank box; that is
+  milestone 2.
+
+  ## Pictures
+  Folder: `/workspaces/Live-Documentation/.claude/worktrees/agent-a45305e67bd0b6
+  870/AI-Agent-Workspace/Screenshots/2026-11-15/tone-and-greeking/`, with
+  `README.md` naming each picture. I did not touch the root's
+  `Screenshots/README.md` index.
+
+  - `pairs/`: before and after crops at 1:1 with a magenta rule between, each in
+  `-fallback` and `-segoe`: `card-arrival`, `wires-out3`, `row-hovered`,
+  `localView-fit`, `client-fit`, `client-card-hovered`, `estate-out3`, plus
+  `legend-3x.png`.
+  - `before/` and `after/`, each with `fallback/` and `segoe/`: ten whole frames
+  at 1440 × 900 each, plus `legend-3x.png`. The scenes are `branch-renderer` at
+  arrival, with a row hovered, three and seven presses out; `localView` and
+  `client` opened after Fit; `client` with a card hovered; the estate at arrival
+  and three presses out; the legend.
+  - The two metrics differ at the reading look and by only 8 pixels in the far
+  looks, whose lines the stylesheet states.
+
+  ## Explorer links
+  - `/?view=local&node=packages/explorer/src/client/views/localView/branch-rende
+  rer.ts` — arrival; hover `renderBranches`; three and seven presses of Zoom
+  Out.
+  - `/?s=N4IgbiBcDMA0IBMoG0QAcCGBjA1hg5gKYDOA9IQB5oA2A9gE6H2nH1albUCWhAdgC6kwPAO
+  5k6WDNQBqokAF0AvkA` — `localView` opened, then Fit.
+  - `/?s=N4IgbiBcDMA0IBMoG0QAcCGBjA1hg5gKYDOA9IQB5oA2A9gE6H2nH1albUCWhAdgC4gAugF
+  8gA` — `client` opened, then Fit; hover `types.ts` for the lit lines.
+  - `/samples/estate/?view=local&node=PaymentService/PaymentService.cs` — the
+  sparse picture and the visible membranes.
+  - `/samples/estate/?s=N4IgbiBcDMA0IDsogAoEMCeBbApggLgMo4BOYAlgMY4D062eRpF1AdJQ
+  M4jwAOUA2qCSRUmXAWJkqteuKZS2nbiC4jZjSSxwgAvgF0dQA` — `PaymentService` pinned;
+  seven presses out shows its own wires lit among the gathered lines.
+  - `/?s=N4IgbiBcDMA0IDsogA4EMDGBrNBzApgM4D0+AHigDYD2ATvrcYbRsRpQJb4IAuxYXAO4kaG
+  NJQBqQ4oLoATALSF8aALaEAdD0IgAvkA` — `word-seams.ts`, a test-backed card beside
+  the legend's sample.
+
+  ## Housekeeping
+  - No subagent used.
+  - Both servers stopped by pid (8953 and 8963 are free).
+  - Scratch removed by name: `AI-Agent-Workspace/tmp/tone-and-greeking`,
+  `test-results`, `reports/e2e`, `coverage`, and vitest's `node_modules/.vite`.
+  - `dist/` is left, as this branch's build with the estate sample.
+  - The working tree is clean.
+
+● The tone builder handed back its first milestone. Reviewing its diff and
+  pictures before anything lands.
+
+  Ran 1 shell command (ctrl+o to expand)
+● Agent "Tone, wires and overview bars" finished · 40m 10s
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Looking at the tone builder's before/after pictures to judge the values with
+  my own eye.
+
+  Read 3 files, ran 2 shell commands (ctrl+o to expand)
+
+● Comparing three wire strengths side by side (0.5, 0.6, 0.7) before I settle
+  the tone round's values.
+
+  Searched for 1 pattern, read 3 files, ran 2 shell commands (ctrl+o to expand)
+  ⎿  Resuming agent a45305e
+
+  Ran 6 shell commands (ctrl+o to expand)
+
+● The tone round's first handback is reviewed and sent back once; the other two
+  builders are still working. One correction to what I told you earlier:
+
+  Lit wires will not get brighter than resting ones. My brief to the builder had
+  a hovered wire drawn stronger than a wire at rest. That breaks your oldest
+  rule for this map: fade the irrelevant, never boost the relevant. I caught it
+  on review, compared three strengths side by side, and found the glow was the
+  whole problem. So the wires keep their old strength, the glow goes entirely,
+  and a hover still only fades the others. Two test expectations the builder had
+  changed to fit my mistake go back to what they were.
+
+  What the tone builder got right and found:
+
+  - Names now lead on a card. File name and symbol names bright, descriptions a
+    step down. Contrast is 14 and 13 to 1 for names and 7 to 1 for prose, where
+    everything was 9.8.
+  - The legend was wrong in three places. The "Test-backed" sample was a gold
+    glow, but the card it describes has a purple border. The wire samples were a
+    different blue and green from the real wires, and the dot samples were
+    smaller than real dots. All three now match what the picture draws.
+
+  I also asked it to measure what removing the glow does to the 2D map's speed
+  with a lot pinned, since those filters were already known to be the most
+  expensive part of a moving frame.
+
+  Nothing is merged yet and nothing is pushed (three commits today, all records
+  and evidence). I'll send links on 8999 as each round lands.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● No handback is waiting at 21:22 UTC. All three builders are still working,
+  each with uncommitted changes in its own worktree, so I renewed the timer and
+  did nothing else.
+
+● No handback is waiting at 21:22 UTC. All three builders are still working,
+  each with uncommitted changes in its own worktree, so I renewed the timer and
+  did nothing else.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Read AI-Agent-Workspace/Screenshots/2026-11-15/designer-eye/README.md (38
+     lines)
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/2addad42-36c6-4e7
+     5-b721-fe777a5348f2/scratchpad/brief-tone.md (54 lines)
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/2addad42-36c6-4e7
+     5-b721-fe777a5348f2/scratchpad/brief-directories.md (68 lines)
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/2addad42-36c6-4e7
+     5-b721-fe777a5348f2/scratchpad/brief-3d-cue.md (35 lines)
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/2addad42-36c6-4e7
+     5-b721-fe777a5348f2/scratchpad/brief-common.md (35 lines)
+
+● Task "Directory handles at every zoom" still running in background
+
+● Task "3D cue counts returning wires" completed in background
+
+● Task "Tone, wires and overview bars" still running in background
+
+› Message from general-purpose
+  ## The 3D cue round (`backward-cue`): handback
+
+  The 3D button now lights for a cycle's returning connections. On
+  `branch-renderer.ts` opened alone it lights with 8 at the stronger strength: 8
+  is the number of `.back-route` paths drawn, and the cards' feet add up to 16,
+  since each return is told at both of its ends. The number stays 8 at the
+  reading, connections and overview looks and with files only. In 3D the cue is
+  off.
+
+  Branch `worktree-agent-a843e390ed894c27f`, built on `cb53d7c7`. Nothing is
+  pushed.
+  - `1b344a77` Light the 3D button for a cycle's returning connections, not only
+  a stray wire
+  - `4c0a3cd4` Set the 3D cue's stronger strength from how often pictures light
+  it, and document the cue
+
+  The regenerated Live Docs went into the second commit, not the first.
+
+  ### What changed
+  - **`packages/explorer/src/client/views/localView/returning-connections.ts`**
+  (new, pure) and its `.test.ts`:
+    - `returningConnections(links, isBack, drawn)` returns `{ edges, total,
+  byFile }`. It skips a file's references to itself and counts a pair line by
+  its links.
+    - `connectionCount`, `backwardStrength`, `BACKWARD_STRENGTHS` and
+  `MANY_BACKWARD = 5`.
+  - **`connections.ts`**:
+    - `drawConnections` now counts the returning references (once each) plus the
+  forward wires that double back. The latter are renamed `doubling` in both
+  bands.
+    - `drawsReference(getAnchor, edge)` (exported) is true when neither of the
+  reference's rows is `.branch-symbol-hidden`.
+    - A reference whose end is still fading does not count. That check is
+  `presenceOf`, now shared with the anchor measurer.
+  - **`branch-renderer.ts` `dressCards`**:
+    - It first discloses or hides every card's rows, then makes the foot and its
+  menu from the same `returningConnections` + `drawsReference` the button uses.
+    - The foot is per card and counts returns at either end; the button counts
+  each return once for the picture.
+  - **`controller.ts`**: a move's frames no longer report 0, and the final frame
+  reports. Before, the cue went out and lit again at every move, which would
+  also have pulsed it every time.
+  - **`index.ts` cue block**:
+    - Adds `data-backward="some|many"` beside the `has-backward-wires` class.
+    - Adds a `backward-rising` class only when the strength rises, removed at
+  `animationend`.
+    - The name stays "3D". The tooltip is the accessible description; this is
+  how the toolbar's text buttons are named.
+  - **`styles/local.css`**: I touched only the cue's rules, about line 321; that
+  one rule became a short block.
+    - Amber border, amber label and a soft glow.
+    - Many: a deeper glow and an amber-tinted face.
+    - One 1.8 s swell, with no animation under `prefers-reduced-motion`.
+  - **`tests/e2e/backward-cue.spec.ts`** (new, 6 cases). The existing cases in
+  `local-map-branches.spec.ts` are untouched and all 11 pass. That includes line
+  314 (the five-file picture keeps title "Local Map in 3D"); it draws no
+  returns.
+  - **Docs**:
+    - A paragraph dated November 15 in
+  `.mdmd/layer-3/live-documentation-explorer.mdmd.md`, after the 2D/3D controls
+  sentence in "Independent exploration", with the measurement.
+    - Authored notes appended to the Live Docs of `connections.ts`,
+  `branch-renderer.ts`, `controller.ts`, `index.ts` and `local.css`, plus the
+  three new Live Docs.
+    - All cite `2026-11-15.1.record.md#turn-1`.
+
+  ### How often it lights
+  I opened 161 files, each alone at `?view=local&node=<path>`, in a fresh
+  browser context with no localStorage (default tuning, continuing search on),
+  at 1440×900. After the picture settled I read the overlay's
+  `data-backward-connections`, the drawn `.back-route` paths and the feet. The
+  161 are all 66 files of `localView`, 59 spread over engine, explorer,
+  generator, cli, scripts and tests/e2e, and all 36 estate files.
+
+  | Count | Pictures | Share |
+  |---|---|---|
+  | 0 | 143 | 89% |
+  | 1 to 4 | 14 | 9% |
+  | 5 to 9 | 4 | 2% |
+  | 10 and more | 0 | 0% |
+
+  - The four at 5 to 9 are `branch-renderer.ts` 8, `forceGraphScope.ts` 8,
+  `engine/src/live-docs/core.ts` 7 and `controller.ts` 6. The estate's maximum
+  is 1 (`PaymentService.cs`, `Default.aspx`, `portal.js`).
+  - In every picture the button's count equalled the routes drawn and the feet
+  added up to twice that. No picture had a forward wire that doubles back.
+  - Two retained pictures, as extra data: the five-file engine/explorer picture
+  draws 0; `branch-renderer.ts` and `controller.ts` pinned whole draw 8.
+  - The cue is far from always on. I set the stronger strength at 5, which puts
+  the owner's picture in it.
+
+  ### Red runs on `cb53d7c7`
+  I built a bundle from `cb53d7c7`'s sources and ran the new spec against it:
+  all 6 failed.
+  1. "branch-renderer.ts alone lights…": the picture's number should equal the
+  returning references drawn; expected 8, received 0.
+  2. The estate ring, then GatewayClient: `toMatchObject` failed because the
+  button's count was 0, not 1.
+  3. "The number is the same at the three looks": expected greater than 0,
+  received 0.
+  4. Files only: expected greater than 0, received 0.
+  5. Reduced motion: `toHaveClass(/has-backward-wires/)` received "".
+  6. 3D off and back in 2D: `toHaveClass(/has-backward-wires/)` received "".
+
+  On the fix: 6 passed. The Vitest case passes; on `cb53d7c7` the module does
+  not exist, so its red is only a failed import. The Explorer's unit tests
+  passed: 983 tests in 82 files.
+
+  ### Forks I decided (please confirm the first)
+  1. **The foot now counts only the returns the picture draws** (both rows
+  disclosed). On `branch-renderer.ts`, the `branch-scene.ts` and `branches.ts`
+  feet said 4 where only 2 laces stood; they now say 2, and the foot's menu
+  lists 2. The other two wait behind "+N symbols". The alternative is to count
+  every return in the ranking, for both the foot and the button: the button
+  would then say 10 while 8 are drawn, against the brief's "number of returning
+  references drawn". Switching is a one-predicate change.
+  2. The disclosure test ignores hover-collapse (`symbol-collapsed`), so
+  hovering never moves the number.
+  3. Two strengths with the boundary at 5, from the measurement above.
+  4. The new cases went in a spec file of their own, in default settings.
+  `local-map-branches.spec.ts` runs everything under the growing card text.
+
+  ### Still open or wrong to my eye
+  - **Some vs many** reads clearly side by side. Alone, "many" mostly reads as
+  "lit": the face tint (`#e9b86d24`) is subtle. It is a single value to raise if
+  you want more contrast.
+  - **The pulse on first open** plays while the page is still busy drawing, so
+  its first ~400 ms barely move (I sampled the glow). On later rises it plays
+  fully.
+  - **No pointer-on-button picture.** The toolbar has no hover style, so the
+  hovered button looks exactly like the "many" picture; only the browser's
+  tooltip differs, and a screenshot cannot hold it. The README says so.
+  - **Is it visible in the corner of the eye, and quiet enough?** On the whole
+  page it is the only warm colour, small, at the bottom centre: visible while
+  reading the card and calm when it is not pulsing.
+  - **Not run:** the full `npm run safe:commit -- --e2e`. I ran the two cue
+  specs, the Explorer's unit tests, eslint on the changed files, the markdown
+  link check (0 broken) and the Live Docs lint.
+  - **Left for you:**
+    - the Screenshots index;
+    - the design doc's "Current as of 2026-11-13" header;
+    - the merge of `local.css` and `local.css.mdmd.md` with the directory
+  builder (my note is appended at the end of the authored notes).
+
+  ### Pictures and links
+  Pictures are in `/workspaces/Live-Documentation/.claude/worktrees/agent-a843e3
+  90ed894c27f/AI-Agent-Workspace/Screenshots/2026-11-15/backward-cue/`, with a
+  README naming each:
+  - toolbar: `toolbar-1-none.png`, `toolbar-2-some.png`, `toolbar-3-many.png`,
+  `toolbar-5-many-focus.png`
+  - the pulse held at its start, its peak and its return:
+  `pulse-some-0000ms.png`, `pulse-some-0720ms.png`, `pulse-some-1300ms.png`
+  - the whole page: `page-branch-renderer-cue-lit.png`
+
+  Explorer links:
+  - `/?view=local&node=packages/explorer/src/client/views/localView/branch-rende
+  rer.ts`: many, 8.
+  - `/samples/estate/?view=local&node=PaymentService/PaymentService.cs`: some,
+  1.
+  - `/samples/estate/?view=local&node=Portal/Services/GatewayClient.cs`: no cue.
+  - `/?view=local&node=packages/explorer/src/client/views/localView/branch-scene
+  .ts`: lit at 4.
+
+  Both servers on 8951 and 8961 are stopped and my scratch folder is deleted. I
+  used no subagent.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "3D cue counts returning wires" finished · 1h 10m 30s
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The 3D-cue builder has handed back; I'm reading its diff and pictures now. The
+  other two builders are still working.
+
+  Searched for 2 patterns, read 6 files, ran 1 shell command (ctrl+o to expand)
+
+● The 3D-cue round reads sound in code and pictures; I'm bringing it onto main
+  to build and check it in the running page myself.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Bringing the 3D-cue round onto main: built, docs regenerated, Explorer
+  rebuilt. Now taking my own pictures of it and running its browser cases.
+
+  Read 2 files, ran 4 shell commands (ctrl+o to expand)
+
+● Page counts match across zoom levels and the directory view, and I'm running
+  the unit and browser tests on main next. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+● Unit tests pass (368 in the Local Map's folder). Running the cue's browser
+  cases on main next, queued behind the builders' browser runs.
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/11/2026-11
+  -15-215104-welcome-back-it-is-now-11152026-and-were-read.txt in the IDE. This
+  may or may not be related to the current task.</ide_opened_file>
+  >Your preview server is down (nothing answers on 8999)
+
+  Thank you for notifying me. I'll re-raise it.... okay back online.
+
+  (I used `npx http-server dist/explorer -p 8999 -c-1`)
+
+  >Your export is missing the end of that chat. It has a literal ... where
+  everything from 21:01 to 01:19 UTC should be, and stops before your last
+  message. Turns 7 to 9 survive only in the record I kept; I recovered my last
+  two replies from the session log and added them.
+
+  Blame the UI exports. If any automatic compaction happens, the harness chat
+  export stops having everything before the automatic compaction. If manual
+  compaction happens, the chat export gets contents from before. Just some
+  claude code VSCode extension silliness. The "..." was me gluing the final
+  export it would give to a CTRL+Z version of what stood before.
+
+  >Full zoom-out as files only
+
+  Oooooh okay I see what you did there. Thaaaat's actually not so bad. I'm
+  seeing the utility of that shift and it doesn't engage too frequently, so I'm
+  able to stay relatively oriented. I think this is pretty solid. Is the point
+  at which this node collapse occurs some configured value or does it happen
+  in accordance with some function of what the reader plausibly can and cannot
+  see? Genuinely curious.
+
+  >Closed directory looks
+
+  "Cells" is fun! I see that there's a bit in the visuals here that I struggle
+  to understand the meaning of (likely folders in folders). These are certainly
+  really really distinct.... okay so I've looked at all 3 and Cells is
+  definitely my favorite. That tells me by far the most about what is
+  interesting about each directory while also clearly indicating that these
+  nodes are unique in some way. They still don't visually "read" quite like a
+  directory, but I think the choice to throw bags of cells in there is going to
+  be really pedagogically useful for transitioning between 2D and 3D. I wonder
+  if some combination of Cells internals plus a slight variation on the node
+  corner rounding (more square-ish? something to look slightly more directory
+  shaped?) would do well there?
+
+  >Kept description line
+
+  I actually think the "Kept description line" is fine, and the only reason it
+  doesn't look quite as good in these screenshots is because the symbol name
+  itself is willing to wrap onto a new line (I'm not confident this is
+  preferable), causing only symbols with short enough names to have their
+  description one-liner drawing beneath. I can even see blank space between
+  `documentationLinks.ts` and the first symbol row which makes me think "If we
+  are trying to preserve descriptions, why are we not having a line there as
+  well for the node-level description if the reader icon is active at the node
+  level?"
+
+  >World Map turning
+
+  Hyperlink didn't take me to the board. Let me switch to the world map
+  manually.... perfect. Nice and smooth. Much better.
+
+  >Changed Files mode in history
+
+  Looks pretty kickass. I know we chose to recolor nodes white so as to
+  indicate the highlight, but if there is some way to preserve color
+  information about what kind of node has changed while also attracting the eye
+  to the changed file, all the better.
+
+  >Still pointer
+
+  I truthfully don't feel like I understand the trial. I hosted, went to the
+  port, saw that I started on the local map view, switched to 3D and saw that
+  it... works the same as usual I think? I'm not sure what difference I'm
+  supposed to perceive just yet. Need more clarification to give you a good
+  answer here.
+
+  >Node 22 to 26: say go and a builder takes it with a full gate.
+
+  We can move up, that's fine. Will it cause a restart of the devcontainer or
+  mess with the subagents or anything like that? If it's straightforward, go
+  ahead.
+
+  >First screen where a board exists: I recommended keeping the World Map; two
+  strangers who landed elsewhere both went there.
+
+  World Map default is fine. Most persons interacting with the software will
+  hopefully arrive their via a shared link, and therefore land wherever they're
+  supposed to relative to the person trying to share the information. World
+  map is a fine default.
+
+  >Is the Windows side in a power-saving mode? The machine ran about 1.5 times
+  slower on 11/13 than a week earlier.
+
+  Not to my knowledge. Interesting that a slowdown exists. I haven't changed
+  any specs on the devcontainer or anything like that.
+
+  >My reading of your "Flow look at full zoom-out" remark was never confirmed:
+  I took it to mean any 2D picture, pinned files included.
+
+  I meant it in the way you took it, but I'm also a very very poor designer. If
+  you disagree with my take there, go ahead and push back.
+
+● Background command "Run the cue's new and existing browser cases on main"
+completed (exit code 0)
+
+● The owner's new message is in; I'm recording it first, then finishing the
+  3D-cue round's commit and working through each of their answers.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+❯ Ohhh I think I know what the perf slowdown was. This bioinformatics rig was
+  also maybe streaming a videogame to a steam deck at that time? The rig gets
+  used for more than one thing at once from time to time, mostly in the evening
+  hours. Since the docker container already had its resources allocated, I
+  thought it wouldn't be disruptive. But I suspect it's plausibly video card
+  competition which could reasonably be causative for the slowdown.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+› Message from general-purpose
+  Milestone 1's corrections are committed and ready to merge through `b956e179`.
+  The tone spec is red on `cb53d7c7` (5 of 5) and green on the branch (9 of 9
+  with the affected existing cases). The full gate was not run. Milestone 2 is
+  started but not built or looked at; it sits uncommitted in the worktree and is
+  not part of this handback.
+
+  One thing differs from your instruction and needs your eye first:
+  `local-map-branches.spec.ts` is not exactly as on `cb53d7c7`. On the base a
+  hovered symbol's wires were already boosted (`.symbol-hover-active
+  .connection-path.connection-highlighted { opacity: 1 }` against 0.7 at rest),
+  and that case asserted `toBe(1)`. Under "a lit wire must be drawn exactly as a
+  wire at rest" I removed that boost, so the case now expects 0.7 for a kept
+  wire. Its bundle-run line (0.45) is exactly as on the base. If you want the
+  old boost kept for symbol hover, it is one rule and one assertion to put back.
+
+  ## Commits since the last handback
+  - `c8c9ee6e` Draw no wire above rest: remove the glow entirely, restore a
+  wire's opacity, and set a directory's outline under a card's border
+  - `b956e179` Retake the tone round's pictures on the corrected build and
+  measure what removing the wires' glow buys
+
+  ## What changed
+  - **Wires** (`theme.css`, `view-shared.css`, `local.css`):
+    - No `drop-shadow` on any wire; `--wire-glow` and `--wire-rest-opacity` are
+  gone.
+    - `--wire-opacity: 0.7` stays as a variable because the legend's samples use
+  it; `--wire-offers` and `--wire-uses` are kept.
+    - My lit rule and the `filter` lines on the dimming rules are deleted.
+  `.bundle-run` is the literal `.45` again.
+    - The symbol-hover dim rule is now `.symbol-hover-active
+  .connection-path:not(.connection-highlighted)`, the same form as Flow's rule,
+  and the separate "keep highlighted at 1" rule is gone.
+    - Flow's rule and its comment ("Nothing is boosted, moved or added") are as
+  on `cb53d7c7`.
+  - **Dead rule deleted**: `.connections-layer.moving .connection-path { filter:
+  none; }` with its comment. Nothing else gives a wire a filter (checked the
+  three stylesheets and the localView scripts for `filter` and `drop-shadow`).
+  - **Left behind, not mine to edit**: `branch-renderer.ts:907` and `:1005`
+  still add and remove `moving` on the wires' layer, which nothing reads now.
+  - **Legend**: wire samples at `--wire-opacity`, no glow, otherwise as before.
+  - **Outline**: `--membrane-outline: #3d3d45`.
+  - **Symbol name's colour**: the one token changed at `local.css:243`; my
+  override in `reading.css` is deleted.
+  - **Specs**:
+    - `local-map-directories.spec.ts` and its Live Doc are byte-identical to
+  `cb53d7c7`.
+    - `local-map-tone.spec.ts` wire cases now hold: no wire glows at rest, kept
+  or dimmed; every wire at rest is 0.7; a kept wire is 0.7; at the overview a
+  pinned symbol's own wires and the gathered lines are one opacity with no glow.
+    - The outline case is two-sided: at least 1.5 to 1 against the map, and no
+  stronger than a card's border.
+  - **Docs**: the design paragraph and the Live Doc notes are rewritten to say
+  nothing is lit above rest, and why the first form was corrected.
+
+  ## Numbers
+  - **Outline** `#3d3d45` on the map's `#1e1e1e`: 1.55 to 1 (card border 1.60,
+  before 1.25), by `tests/e2e/contrast.ts`.
+  - **Text tones** unchanged: 14.00, 13.39, 7.23 on the card.
+
+  ## Red run on `cb53d7c7`
+  5 of 5 failed; the output is in `red-run-cb53d7c7.txt` beside the pictures.
+  - **Tones**: name-to-prose contrast ratio received 1, expected ≥ 1.5.
+  - **Wires at rest and hovered**: 13 wires glow at rest; a kept wire is 1,
+  expected 0.7; 2 kept wires glow; 12 dimmed wires glow.
+  - **Overview**: 9 wires glow.
+  - **Outline**: 1.25, expected ≥ 1.5.
+  - **Legend**: as before (colours, opacity 1 against 0.7, thickness, 10 px
+  dots, gold test-backed sample).
+
+  Not red on the base because they already held there: every wire at rest is
+  0.7; own and gathered wires share one opacity; the outline is no stronger than
+  a card's border; the membrane's fill is a trace.
+
+  ## Green run on the branch
+  9 passed in 1.3 min: the 5 tone cases, the hovered-row case, the Flow hover
+  case, and the two `local-map-overview` wire cases. Also clean: `tsc` on the
+  tests, eslint on the changed specs.
+
+  ## What removing the glow buys
+  Measured on `/?view=local&node=packages/explorer/src/client/types.ts`: 373
+  wires drawn, 263 glowing before, 0 after.
+
+  Method: the November 6 probe's (`zoom-perf.cjs` and `zoom-perf-wheel.cjs`):
+  CDP performance metrics and animation-frame intervals over 1.2 s after each of
+  three moves, default tuning, search off, headless 1440 × 960. Those scripts
+  require `node_modules` under the working directory, which a worktree lacks, so
+  I ran the same method from a scratch copy with ordinary imports and one
+  variant; the probe itself is untouched.
+
+  Two passes with the builds in opposite order. One-minute load was 6.3 then 3.9
+  across pass 1, and 5.1 then 9.2 across pass 2. Each cell is pass 1, then pass
+  2.
+
+  | Move | Build | Frames in 1.2 s | Longest frame (ms) | Main-thread task time
+  (s) |
+  | --- | --- | --- | --- | --- |
+  | Wheel out, 1st | before | 36, 41 | 450, 550 | 2.56, 3.81 |
+  | | after | 74, 54 | 17, 67 | 0.43, 0.66 |
+  | Wheel out, 2nd | before | 12, 9 | 617, 1217 | 6.85, 9.00 |
+  | | after | 16, 12 | 333, 500 | 0.77, 1.18 |
+  | Wheel out, 3rd | before | 20, 21 | 967, 1150 | 6.03, 7.39 |
+  | | after | 67, 47 | 83, 117 | 0.77, 1.09 |
+  | Press, 1st | before | 54, 51 | 233, 250 | 0.46, 0.50 |
+  | | after | 69, 66 | 100, 133 | 0.24, 0.25 |
+  | Press, 2nd | before | 72, 70 | 33, 50 | 0.11, 0.15 |
+  | | after | 73, 71 | 33, 33 | 0.12, 0.15 |
+  | Press, 3rd (change to connections) | before | 14, 11 | 483, 867 | 1.19, 1.70
+  |
+  | | after | 32, 12 | 433, 800 | 0.84, 1.54 |
+
+  - **Wheel zoom**: main-thread task time falls to a sixth to a ninth, and the
+  longest frame from 0.45–1.2 s to 17–120 ms, except the second wheel zoom on
+  the new build (333 and 500 ms).
+  - **Press**: a press that changes no look gains only on its first frame. The
+  press that changes the look is dominated by restyling every card, and the glow
+  was a small part of it.
+  - **Caveat**: the two builds report the change to the connections look one
+  wheel move apart under the same input (before by the end of the 2nd, after by
+  the end of the 3rd). I did not chase that, so the 2nd and 3rd wheel rows
+  compare slightly different moves.
+  - **Caveat**: this is a software renderer on a loaded machine; the ratios are
+  the finding, not the milliseconds.
+
+  The two passes' output is kept as `frame-cost-pass1.json` and
+  `frame-cost-pass2.json`.
+
+  ## Outline: does my eye disagree?
+  No. At `#3d3d45` in `estate-out3` the two directories read as ground and the
+  cards as figure; the box-in-a-box I reported at `#45454e` is gone. In
+  `nested-out5` (new, at 2×) the nested outlines beside `branch-renderer.ts` are
+  three faint rules a few pixels apart, clearly under the card's border. They
+  read as a ruled margin rather than three regions, but that is their geometry,
+  not their tone.
+
+  ## What still looks wrong to my eye
+  - The fan into Internals (`wires-out3`) is still the densest thing on the
+  picture because overlapping strengths add; without the glow it is lines, and
+  the names beat it.
+  - Nested outlines a few pixels apart read as a ruled margin, as above.
+  - The legend's wire samples are thin beside the dots and the test-backed card.
+  - The path under a file's name (`#888888`, 10 px) is 4.42 on the card, under
+  4.5; left as it is.
+
+  ## Pictures
+  Folder: `/workspaces/Live-Documentation/.claude/worktrees/agent-a45305e67bd0b6
+  870/AI-Agent-Workspace/Screenshots/2026-11-15/tone-and-greeking/`; `README.md`
+  is rewritten for the corrected build.
+  - All `after/` frames are retaken, since every one has wires in it; `before/`
+  is kept, with `branch-renderer-out5.png` added.
+  - Pairs are recomposed; `nested-out5-fallback.png` and `nested-out5-segoe.png`
+  are new.
+  - Start with `pairs/wires-out3-fallback.png`,
+  `pairs/row-hovered-fallback.png`, `pairs/estate-out3-fallback.png`,
+  `pairs/nested-out5-fallback.png` and `pairs/legend-3x.png`.
+
+  ## Explorer links
+  - `/?view=local&node=packages/explorer/src/client/views/localView/branch-rende
+  rer.ts` — hover `renderBranches`: kept wires as at rest, the others faded;
+  five presses out for the nested outlines.
+  - `/samples/estate/?view=local&node=PaymentService/PaymentService.cs` — the
+  sparse picture and the outlines.
+  - `/?view=local&node=packages/explorer/src/client/types.ts` — the crowded
+  picture that was measured; wheel-zoom it.
+  - `/?s=N4IgbiBcDMA0IBMoG0QAcCGBjA1hg5gKYDOA9IQB5oA2A9gE6H2nH1albUCWhAdgC4gAugF
+  8gA` — `client` opened, then Fit; hover `types.ts` for Flow's hover.
+
+  ## State of the worktree
+  - **Uncommitted milestone 2 work in progress**: `reading.css`, `theme.css`,
+  `card-reading.ts`, `ladder-rooms.ts`, `ladder-rooms.test.ts`. The 23 unit
+  cases in `ladder-rooms.test.ts` pass, the four new among them. Merge the
+  commits, not the tree.
+  - **Milestone 2's approach so far**:
+    - Each silent row draws a bar as generated content at the name's place, as
+  long as the measured name.
+    - A bar that would stand under the held file name or its More is not drawn,
+  so the name comes first.
+    - The overview name scale uses `filesNameScale` for every card.
+    - `card-factory.ts`, `held-lines.ts` and `overview-files.ts` are untouched:
+  the card reading already writes each row's name width, so no length property
+  was needed.
+  - **Servers** stopped by pid; ports 8953 and 8963 are free.
+  - **Scratch kept** for milestone 2, ignored by git, under
+  `AI-Agent-Workspace/tmp/tone-and-greeking/`: the picture and measurement
+  scripts and a baseline copy of the build. `dist/` is the milestone 1 build.
+  - No subagent used.
+
+● Agent "Tone, wires and overview bars" finished · 42m 31s
