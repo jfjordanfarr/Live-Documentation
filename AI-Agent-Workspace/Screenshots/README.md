@@ -2,6 +2,26 @@
 
 _The owner's standing request (2026-09-29): after changing the Explorer, build it, look at it, and keep the pictures here, so that a sense of the UI accrues in the workspace and a change can be judged against what came before. Each dated folder is listed below with what each picture shows and how it was taken. The probe records under `../Probes/` keep their own pictures; the World Map's first pictures, from 2026-09-28, are there._
 
+## 2026-11-15
+
+[A designer's reading of the 2D Local Map](2026-11-15/designer-eye/README.md): ten pictures by the root, at the owner's ask that the map's style be judged by the root's own eye and the designer's terms taught with it. Seven of the build as it stood (a card in one tone, a returning connection with the 3D button dark, an opened directory three presses out and after Fit, the overview's blank cards, a crowded directory, a path said twice) and three probes with injected styles, not product code (tone on a card and on a crowded directory, rows drawn as bars at the overview). Each finding is named in a designer's term with where it shows.
+
+## 2026-11-13
+
+Added to this index on November 15; the folders were written on their day.
+
+[The cards composed for each zoom look](2026-11-13/zoom-looks-composed/README.md): no book where no description can be read, names in the room their descriptions left, counts readable or not drawn, then short rows and even names; with the pictures under Segoe UI's line metrics that showed why the owner's screen differed.
+
+[The World Map's camera](2026-11-13/world-map-camera/README.md): the view from above squared after any turn, and a turn's cost before and after the labels were read in one batch.
+
+[The opened directory through the layout's price](2026-11-13/directory-flow-price/README.md): the width term, the two attempts withdrawn and the shape chosen on the directory alone; a pin's rearrangement on three directories.
+
+[Flow as the default of an opened directory](2026-11-13/directory-flow-default/README.md).
+
+[Three trial looks for a closed directory](2026-11-13/closed-directory-looks/README.md): a skin with cells, a stack, a folded membrane, beside the box, at three looks and under both fonts' metrics.
+
+[The full zoom-out as files only](2026-11-13/overview-files/README.md): the trial behind its Tuning choice, with the move out and back and the crowded picture where the move cannot be followed.
+
 ## 2026-11-12
 
 [A first visit, by an outsider](2026-11-12/first-visit/README.md): an evaluation by a subagent with no project background, from the README through the commands to the running Explorer on this repository and the estate sample, at desktop, tablet and phone sizes and by keyboard; twenty ranked findings with reproductions and measured sizes, what worked and should be protected, and what it could not work out. An outsider's observations, not decisions; root's reading of them against the record is in [the session record](../ChatHistory/2026/11/2026-11-12.1.record.md).
