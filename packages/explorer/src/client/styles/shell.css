@@ -851,6 +851,8 @@
 
 /* Tuning controls, in the sidebar's Tuning block */
 
+.tuning-slider[hidden] { display: none; }
+
 .tuning-slider {
     display: grid;
     grid-template-columns: 1fr auto;

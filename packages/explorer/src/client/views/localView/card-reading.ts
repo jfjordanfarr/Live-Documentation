@@ -2,7 +2,7 @@ import type { TypeRef } from "@live-documentation/engine/live-docs/document";
 import type { GraphFile } from "@live-documentation/engine/live-docs/graph";
 import { pathTo, walk } from "@live-documentation/engine/live-docs/pathfind";
 
-import { drawHeldCells } from "./card-factory";
+import { drawHeldLooks } from "./card-factory";
 import { CELLS } from "./closed-looks";
 import { CLOSED_FOOT, fitHandle, HANDLE_INDENT, wholeAtSeams } from "./directory-handle";
 import { chooseHeldHeader, chooseNameHeader, CONTROLS_GAP, HELD_BANDS, heldLineCount, heldSegments, heldTitle, rowSegments, type HeldBand, type HeldRoom, type TitleRooms } from "./held-lines";
@@ -304,7 +304,7 @@ export class CardReading {
     const rooms = [...this.cards.values()].flatMap(({ card }) => measureRooms(card, resistances, looks));
     if (looks) for (const box of this.container.querySelectorAll<HTMLElement>(".local-directory-closed")) rooms.push(...closedBoxWrites(box));
     for (const write of rooms) applyRoomWrite(write);
-    if (looks) for (const box of this.container.querySelectorAll<HTMLElement>(".local-closed--cells")) drawHeldCells(box);
+    if (looks) for (const box of this.container.querySelectorAll<HTMLElement>(".local-closed--cells")) drawHeldLooks(box);
   }
 
   /** Every kept-visible description shows; the books and the names say what each one would do next. */
@@ -682,6 +682,9 @@ function lookHeadWrites(heads: readonly LookHead[], slotLines: number, gap: numb
   return writes;
 }
 
+/** The air between a held name and the row of cells held under it, in the name's own units. */
+const HELD_CELLS_GAP = 2;
+
 /**
  * A closed directory's box in the far looks (2026-11-13), by the rule of a file's card: its name held at the look's
  * size after its chevron, on the lines its box holds at the name's seams, brought down in size before it is broken inside
@@ -689,7 +692,10 @@ function lookHeadWrites(heads: readonly LookHead[], slotLines: number, gap: numb
  * room), and the box's More following the name at the box's right edge, held no taller than a line of it, where the box
  * holds it too; otherwise More is not drawn, nor is the count of what the box holds, which no look can hold beside the
  * name. Read from the box as laid out, in the map's own units: its content's place and size, the name's line and font,
- * and More's layout box, from which its move to its place is written for each look.
+ * and More's layout box, from which its move to its place is written for each look. A skin with cells holds a row of
+ * its cells under the held name, down to the air above the box's foot (2026-11-15: a row as tall as a skin around
+ * cells where that fits, so that a directory inside is still a skin around cells of the one size). The folder's
+ * shape is drawn plain in the far looks, so nothing here differs by shape.
  */
 function closedBoxWrites(box: HTMLElement): RoomWrite[] {
   const name = box.querySelector<HTMLElement>(".local-directory-closed__name"), held = box.querySelector<HTMLElement>(".local-directory-closed__held");
@@ -698,7 +704,7 @@ function closedBoxWrites(box: HTMLElement): RoomWrite[] {
   if (!name || !held || !box.offsetHeight) return [];
   const style = getComputedStyle(box), nameStyle = getComputedStyle(name);
   const left = parseFloat(style.paddingLeft), top = parseFloat(style.paddingTop);
-  const width = box.clientWidth - left - parseFloat(style.paddingRight), height = box.clientHeight - top - parseFloat(style.paddingBottom);
+  const width = box.clientWidth - left - parseFloat(style.paddingRight);
   // The held name's own room down: to the air above the box's foot, where two lines stand at the connections look's size.
   const nameHeight = box.clientHeight - top - CLOSED_FOOT;
   const line = parseFloat(nameStyle.lineHeight) || name.offsetHeight;
@@ -723,11 +729,12 @@ function closedBoxWrites(box: HTMLElement): RoomWrite[] {
     writes.push([held, `data-lines-look-${look}`, lines.join("\n")], [box, `--closed-scale-${look}`, scale.toFixed(3)],
       [box, `--closed-control-${look}`, control.toFixed(3)], [box, `local-closed-controls-${look}`, fits]);
     // The skin with cells (2026-11-13) holds its cells at the look's scale in the room below the held name and the
-    // controls held beside it; drawHeldCells draws them from this room, or none where not a row fits.
+    // controls held beside it, down to the air above the box's foot; drawHeldLooks draws them from this room, or none
+    // where not a row of cells fits.
     if (cells) {
-      const below = Math.max(lines.length * line, fits ? header.controls.top + room.controlsHeight : 0) * scale + CELLS.bandGap * scale;
-      const fitsRow = height - below >= CELLS.cell * scale - 1e-6;
-      writes.push([box, `data-cells-${look}`, fitsRow ? `${left.toFixed(2)} ${(top + below).toFixed(2)} ${(width / scale).toFixed(2)} ${((height - below) / scale).toFixed(2)} ${scale.toFixed(3)}` : ""]);
+      const below = Math.max(lines.length * line, fits ? header.controls.top + room.controlsHeight : 0) * scale + HELD_CELLS_GAP * scale;
+      const under = nameHeight - below;
+      writes.push([box, `data-cells-${look}`, under >= CELLS.cell * scale - 1e-6 ? `${left.toFixed(2)} ${(top + below).toFixed(2)} ${(width / scale).toFixed(2)} ${(under / scale).toFixed(2)} ${scale.toFixed(3)}` : ""]);
     }
     if (!fits || !more) continue;
     // More's move, from its layout box to its place at the content's right edge, at the controls' top, held about its top right.

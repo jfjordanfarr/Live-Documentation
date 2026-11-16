@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/tuning.ts
-- Generated At: 2026-11-13T23:23:39.341Z
+- Generated At: 2026-11-16T00:48:31.665Z
 
 ## Authored
 ### Purpose
@@ -48,6 +48,8 @@ Since 2026-11-05 the panel wires the Shell Depth slider to `forceGraph.shellDept
 
 Opened Directory joined the 2D layout group on 2026-11-12, the switch of the directory flow trial; changing it re-renders the 2D map, since it changes which cards are ranked and which lines are drawn.
 
+Since 2026-11-15 ([November 15, Turn 1](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) Skin's Shape and Cells' Colour stand under Closed Directory and are shown only while the skin with cells is chosen.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -87,7 +89,9 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`tuning-levers.TUNING_HELP`](./tuning-levers.ts.mdmd.md#symbol-tuning_help)
 - [`tuning-levers.tuningHelpId`](./tuning-levers.ts.mdmd.md#symbol-tuninghelpid)
 - [`types.CHANGE_EMPHASES`](../types.ts.mdmd.md#symbol-change_emphases)
+- [`types.CLOSED_CELL_COLOURS`](../types.ts.mdmd.md#symbol-closed_cell_colours)
 - [`types.CLOSED_DIRECTORY_LOOKS`](../types.ts.mdmd.md#symbol-closed_directory_looks)
+- [`types.CLOSED_DIRECTORY_SHAPES`](../types.ts.mdmd.md#symbol-closed_directory_shapes)
 - [`types.DIRECTORY_LAYOUTS`](../types.ts.mdmd.md#symbol-directory_layouts)
 - [`types.ExplorerState`](../types.ts.mdmd.md#symbol-explorerstate)
 - [`types.GROUP_WRAPPERS`](../types.ts.mdmd.md#symbol-group_wrappers)
@@ -95,7 +99,9 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`template.export-layout-settings`](../../shared/template.html.mdmd.md#symbol-export-layout-settings)
 - [`template.tuning-card-text`](../../shared/template.html.mdmd.md#symbol-tuning-card-text)
 - [`template.tuning-churn-cost`](../../shared/template.html.mdmd.md#symbol-tuning-churn-cost)
+- [`template.tuning-closed-cells`](../../shared/template.html.mdmd.md#symbol-tuning-closed-cells)
 - [`template.tuning-closed-directory`](../../shared/template.html.mdmd.md#symbol-tuning-closed-directory)
+- [`template.tuning-closed-shape`](../../shared/template.html.mdmd.md#symbol-tuning-closed-shape)
 - [`template.tuning-column-gap`](../../shared/template.html.mdmd.md#symbol-tuning-column-gap)
 - [`template.tuning-control-resistance`](../../shared/template.html.mdmd.md#symbol-tuning-control-resistance)
 - [`template.tuning-directory-layout`](../../shared/template.html.mdmd.md#symbol-tuning-directory-layout)

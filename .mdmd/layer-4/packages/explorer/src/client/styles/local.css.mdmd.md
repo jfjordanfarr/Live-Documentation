@@ -45,6 +45,8 @@ The 3D button's cue (2026-11-15, [Turn 1](../../../../../../../AI-Agent-Workspac
 
 The tone round of 2026-11-15 ([Turn 1 of that day's record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)): a hover boosts nothing. A hovered symbol's wires had been drawn whole, at 1 where a wire at rest is 0.7; the dimming rule now leaves them alone, as Flow's hover always left a hovered card's lines, and only fades the others (the owner's rule since December 2025, to fade the irrelevant rather than boost the relevant). With no wire glowing, the rule that took the glow from the wires while the picture moves went; `branch-renderer.ts` still sets `moving` on the wires' layer, which nothing reads now. A symbol's name takes the theme's `--card-symbol-name`, and an opened directory's outline its `--membrane-outline`, where the page's default border on the map's surface could hardly be seen.
 
+Since 2026-11-15's second milestone ([November 15, Turn 1](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) the skin with cells is drawn in three shapes, the folder's tab by an outline of its own with the skin's light clipped to it, a cell takes the fill written on it for its file's kind unless one grey is chosen, and the folded membrane's rules are deleted.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

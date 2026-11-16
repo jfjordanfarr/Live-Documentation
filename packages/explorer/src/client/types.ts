@@ -94,12 +94,25 @@ export interface LocalMapTuning {
    */
   directoryLayout: DirectoryLayout;
   /**
-   * How a closed directory's box is drawn, a trial for comparison (2026-11-13): "box", the default, today's box;
-   * "cells", a skin holding a cell for each file and a smaller skin for each subdirectory, as the 3D bag of cells does;
-   * "stack", the top card of a stack whose edges show how much it holds; "folded", the opened directory's membrane and
-   * label, folded. Looks only: the box's size and what its controls do are the same in each.
+   * How a closed directory's box is drawn: "cells", the default since 2026-11-15 (the owner: "Cells is definitely my
+   * favorite"), a skin holding a cell for each file and a small skin for each directory inside, as the 3D bag of cells
+   * does; "box", the plain box; "stack", the top card of a stack whose edges show how much it holds. Looks only: the
+   * box's size and what its controls do are the same in each.
    */
   closedDirectory: ClosedDirectoryLook;
+  /**
+   * The shape of the skin with cells, three matched variants for the owner's eye (2026-11-15, after "more square-ish?
+   * something to look slightly more directory shaped?"): "tab", a folder's silhouette with the name on its tab; "round",
+   * the capsule; "square", the same skin with a card's corners.
+   */
+  closedShape: ClosedDirectoryShape;
+  /**
+   * What colours the skin's cells: "kind", the default, the colour the 3D map gives a file of that kind (the owner's
+   * choice of 2026-11-16, on seeing both: "I _love_ the splash of color those directories provide ... Yeah color for
+   * sure!"); or "grey", one grey for all. The colour comes from one place, the 3D map's `spatialNodeStyle`, so that
+   * the cells and the spheres change together; each cell says its file's name on hover.
+   */
+  closedCells: ClosedCellColour;
   /**
    * With the three looks, what the overview look draws (a trial for the owner's eye, 2026-11-13): "keep", the default,
    * every card at the size its rows give it, as at the closer looks; "files", every file card in the compact form an
@@ -259,11 +272,23 @@ export type DirectoryLayout = "grid" | "flow";
  */
 export const DIRECTORY_LAYOUTS: readonly DirectoryLayout[] = ["flow", "grid"];
 
-/** How a closed directory's box is drawn in the 2D map: today's box, or one of the three looks of the 2026-11-13 trial. */
-export type ClosedDirectoryLook = "box" | "cells" | "stack" | "folded";
+/** How a closed directory's box is drawn in the 2D map: a skin with cells, the plain box, or a stack. */
+export type ClosedDirectoryLook = "cells" | "box" | "stack";
 
-/** Every Closed Directory choice, in the order the control offers them; the first, today's box, is the default. */
-export const CLOSED_DIRECTORY_LOOKS: readonly ClosedDirectoryLook[] = ["box", "cells", "stack", "folded"];
+/** Every Closed Directory choice, in the order the control offers them; the first, the skin with cells, is the default. */
+export const CLOSED_DIRECTORY_LOOKS: readonly ClosedDirectoryLook[] = ["cells", "box", "stack"];
+
+/** The shape of a closed directory's skin with cells: a folder's silhouette, the capsule, or a card's corners. */
+export type ClosedDirectoryShape = "tab" | "round" | "square";
+
+/** Every shape, in the order the control offers them; the first is the default until the owner chooses. */
+export const CLOSED_DIRECTORY_SHAPES: readonly ClosedDirectoryShape[] = ["tab", "round", "square"];
+
+/** What colours a skin's cells: each file's kind, as in the 3D map, or one grey. */
+export type ClosedCellColour = "kind" | "grey";
+
+/** Every cell colouring, in the order the control offers them; the first is the default. */
+export const CLOSED_CELL_COLOURS: readonly ClosedCellColour[] = ["kind", "grey"];
 
 /**
  * What the 2D map's overview look draws: files only, as in Flow, or cards at their size. Files only was a trial of

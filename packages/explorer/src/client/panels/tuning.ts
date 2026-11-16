@@ -6,7 +6,7 @@
  */
 
 import { layoutSettingsOf } from "../layout-presets";
-import { CHANGE_EMPHASES, CLOSED_DIRECTORY_LOOKS, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, OVERVIEW_FILES, type ExplorerState } from "../types";
+import { CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, OVERVIEW_FILES, type ExplorerState } from "../types";
 import { TUNING_HELP, tuningHelpId } from "./tuning-levers";
 
 /** Callback for when tuning values change */
@@ -64,6 +64,12 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   const zoomLooksSelect = document.getElementById("tuning-zoom-looks") as HTMLSelectElement | null;
   const directoryLayoutSelect = document.getElementById("tuning-directory-layout") as HTMLSelectElement | null;
   const closedDirectorySelect = document.getElementById("tuning-closed-directory") as HTMLSelectElement | null;
+  const closedShapeSelect = document.getElementById("tuning-closed-shape") as HTMLSelectElement | null;
+  const closedCellsSelect = document.getElementById("tuning-closed-cells") as HTMLSelectElement | null;
+  /** The skin's shape and its cells' colour are choices of the skin with cells alone: shown only while it is chosen. */
+  const syncClosedChoices = (): void => {
+    for (const row of document.querySelectorAll<HTMLElement>("[data-closed-cells-only]")) row.hidden = state.tuning.localMap.closedDirectory !== "cells";
+  };
   const overviewFilesSelect = document.getElementById("tuning-overview-files") as HTMLSelectElement | null;
   const slotLinesInput = document.getElementById("tuning-slot-lines") as HTMLInputElement | null;
   const textResistanceInput = document.getElementById("tuning-text-resistance") as HTMLInputElement | null;
@@ -169,6 +175,9 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     if (zoomLooksSelect) zoomLooksSelect.value = state.tuning.localMap.zoomLooks;
     if (directoryLayoutSelect) directoryLayoutSelect.value = state.tuning.localMap.directoryLayout;
     if (closedDirectorySelect) closedDirectorySelect.value = state.tuning.localMap.closedDirectory;
+    if (closedShapeSelect) closedShapeSelect.value = state.tuning.localMap.closedShape;
+    if (closedCellsSelect) closedCellsSelect.value = state.tuning.localMap.closedCells;
+    syncClosedChoices();
     if (overviewFilesSelect) overviewFilesSelect.value = state.tuning.localMap.overviewFiles;
     state.tuning.localMap.slotLines = setSlider(slotLinesInput, "tuning-slot-lines-value", state.tuning.localMap.slotLines, v => String(v));
     state.tuning.localMap.textResistance = setSlider(textResistanceInput, "tuning-text-resistance-value", state.tuning.localMap.textResistance, v => String(v));
@@ -265,6 +274,21 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   if (closedDirectorySelect) {
     closedDirectorySelect.addEventListener("change", () => {
       state.tuning.localMap.closedDirectory = CLOSED_DIRECTORY_LOOKS.find(choice => choice === closedDirectorySelect.value) ?? CLOSED_DIRECTORY_LOOKS[0];
+      syncClosedChoices();
+      onTuningChange();
+      if (state.view === "map" && state.perspective === "2d") onRender();
+    });
+  }
+  if (closedShapeSelect) {
+    closedShapeSelect.addEventListener("change", () => {
+      state.tuning.localMap.closedShape = CLOSED_DIRECTORY_SHAPES.find(choice => choice === closedShapeSelect.value) ?? CLOSED_DIRECTORY_SHAPES[0];
+      onTuningChange();
+      if (state.view === "map" && state.perspective === "2d") onRender();
+    });
+  }
+  if (closedCellsSelect) {
+    closedCellsSelect.addEventListener("change", () => {
+      state.tuning.localMap.closedCells = CLOSED_CELL_COLOURS.find(choice => choice === closedCellsSelect.value) ?? CLOSED_CELL_COLOURS[0];
       onTuningChange();
       if (state.view === "map" && state.perspective === "2d") onRender();
     });

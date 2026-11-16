@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/types.ts
-- Generated At: 2026-11-15T23:13:48.670Z
+- Generated At: 2026-11-16T03:32:02.312Z
 
 ## Authored
 ### Purpose
@@ -51,6 +51,8 @@ Since 2026-11-05 `ForceGraphTuning` carries `shellDepth`, the directory shells' 
 `directoryLayout` (2026-11-12) is the switch of the directory flow trial: the grid of 2026-10-07, the default, or an opened directory in flow order with a line for each pair of files. It is a trial for comparison, not a decision; [its evidence](../../../../../../AI-Agent-Workspace/Screenshots/2026-11-12/directory-flow-trial/README.md) has the pictures.
 
 `closedDirectory` and `CLOSED_DIRECTORY_LOOKS` hold the Closed Directory trial's choice (2026-11-13), the box first as the default ([Turn 7 of the November 13 record](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-7)).
+
+Since 2026-11-15 ([November 15, Turn 1](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) Closed Directory defaults to the skin with cells and has no folded look, and two choices beside it, the skin's shape (`ClosedDirectoryShape`: tab, round, square) and its cells' colour (`ClosedCellColour`: kind, grey), are in the 2D map's tuning.
 
 Files only is the default of Zoomed Out Fully since 2026-11-15, by the owner's eye and a comparison with the cards' rows drawn as bars ([Turn 1 of that day's record](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)): `OVERVIEW_FILES` lists it first, and the first is what a link that says nothing means.
 
@@ -105,7 +107,7 @@ added 2025-12-07 (commit `a99ac04`) and 2025-12-17 (commit `f373c45`).
 
 #### `SymbolOrder` {#symbol-symbolorder}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L190)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L203)
 
 ##### `SymbolOrder` — Summary
 How a card's symbol rows stand: where their wires lead, which the many-file
@@ -114,14 +116,14 @@ Live Doc lists them, the order of appearance in the file.
 
 #### `TuningConfig` {#symbol-tuningconfig}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L193)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L206)
 
 ##### `TuningConfig` — Summary
 Aggregate tuning configuration threading through into every Explorer view.
 
 #### `HistoryGranularity` {#symbol-historygranularity}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L205)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L218)
 
 ##### `HistoryGranularity` — Summary
 Which ticks the history's scrubber draws and the step key moves between: every step; one per day, week or month
@@ -130,21 +132,21 @@ five-commit repository shows five ticks and a long history shows months (the vie
 
 #### `HISTORY_GRANULARITIES` {#symbol-history_granularities}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L208)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L221)
 
 ##### `HISTORY_GRANULARITIES` — Summary
 Every granularity, in the order the control offers them.
 
 #### `HistoryAxis` {#symbol-historyaxis}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L211)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L224)
 
 ##### `HistoryAxis` — Summary
 How the scrubber lays its steps out: evenly by step, or by date, where a quiet stretch reads as a gap (scenario 14).
 
 #### `ChangeEmphasis` {#symbol-changeemphasis}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L218)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L231)
 
 ##### `ChangeEmphasis` — Summary
 How the files a step of the history changed are told apart in the 3D picture while the history is shown (the owner's
@@ -153,21 +155,21 @@ emphasis holds for the whole displayed commit, in playback and at rest; the next
 
 #### `CHANGE_EMPHASES` {#symbol-change_emphases}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L221)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L234)
 
 ##### `CHANGE_EMPHASES` — Summary
 Every emphasis, in the order the control offers them.
 
 #### `HistoryTuning` {#symbol-historytuning}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L224)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L237)
 
 ##### `HistoryTuning` — Summary
 The levers of the history's scrubber, the view's half of the granularity seam (2026-10-18), and the picture's emphasis on a step's changes (2026-10-31).
 
 #### `GroupWrappers` {#symbol-groupwrappers}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L238)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L251)
 
 ##### `GroupWrappers` — Summary
 How the 3D Local Map wraps the files it does not show (an experiment, 2026-11-05): not at all, the default; or, in a
@@ -176,21 +178,21 @@ only by its seed and, inside a group it shows in part, the hidden files of each 
 
 #### `GROUP_WRAPPERS` {#symbol-group_wrappers}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L241)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L254)
 
 ##### `GROUP_WRAPPERS` — Summary
 Every wrapper choice, in the order the control offers them.
 
 #### `ZoomLooks` {#symbol-zoomlooks}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L244)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L257)
 
 ##### `ZoomLooks` — Summary
 How a slot card changes as the 2D map zooms out: the card ladder's steps, or the three looks of the 2026-11-10 trial.
 
 #### `ZOOM_LOOKS` {#symbol-zoom_looks}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L250)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L263)
 
 ##### `ZOOM_LOOKS` — Summary
 Every Zoom Looks choice, in the order the control offers them, the default first: the three looks since 2026-11-13,
@@ -198,14 +200,14 @@ when the owner asked that what they judge be what the build shows without a swit
 
 #### `DirectoryLayout` {#symbol-directorylayout}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L253)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L266)
 
 ##### `DirectoryLayout` — Summary
 How an opened directory stands in the 2D map: the flow order and pair lines first tried on 2026-11-12, or the grid.
 
 #### `DIRECTORY_LAYOUTS` {#symbol-directory_layouts}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L260)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L273)
 
 ##### `DIRECTORY_LAYOUTS` — Summary
 Every Opened Directory choice, in the order the control offers them, the default first: Flow since 2026-11-13, when
@@ -214,21 +216,49 @@ shows without a switch; the grid one choice away.
 
 #### `ClosedDirectoryLook` {#symbol-closeddirectorylook}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L263)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L276)
 
 ##### `ClosedDirectoryLook` — Summary
-How a closed directory's box is drawn in the 2D map: today's box, or one of the three looks of the 2026-11-13 trial.
+How a closed directory's box is drawn in the 2D map: a skin with cells, the plain box, or a stack.
 
 #### `CLOSED_DIRECTORY_LOOKS` {#symbol-closed_directory_looks}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L266)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L279)
 
 ##### `CLOSED_DIRECTORY_LOOKS` — Summary
-Every Closed Directory choice, in the order the control offers them; the first, today's box, is the default.
+Every Closed Directory choice, in the order the control offers them; the first, the skin with cells, is the default.
+
+#### `ClosedDirectoryShape` {#symbol-closeddirectoryshape}
+- Type: type
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L282)
+
+##### `ClosedDirectoryShape` — Summary
+The shape of a closed directory's skin with cells: a folder's silhouette, the capsule, or a card's corners.
+
+#### `CLOSED_DIRECTORY_SHAPES` {#symbol-closed_directory_shapes}
+- Type: const
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L285)
+
+##### `CLOSED_DIRECTORY_SHAPES` — Summary
+Every shape, in the order the control offers them; the first is the default until the owner chooses.
+
+#### `ClosedCellColour` {#symbol-closedcellcolour}
+- Type: type
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L288)
+
+##### `ClosedCellColour` — Summary
+What colours a skin's cells: each file's kind, as in the 3D map, or one grey.
+
+#### `CLOSED_CELL_COLOURS` {#symbol-closed_cell_colours}
+- Type: const
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L291)
+
+##### `CLOSED_CELL_COLOURS` — Summary
+Every cell colouring, in the order the control offers them; the first is the default.
 
 #### `OverviewFiles` {#symbol-overviewfiles}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L272)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L297)
 
 ##### `OverviewFiles` — Summary
 What the 2D map's overview look draws: files only, as in Flow, or cards at their size. Files only was a trial of
@@ -236,42 +266,42 @@ What the 2D map's overview look draws: files only, as in Flow, or cards at their
 
 #### `OVERVIEW_FILES` {#symbol-overview_files}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L275)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L300)
 
 ##### `OVERVIEW_FILES` — Summary
 Every Zoomed Out Fully choice, in the order the control offers them, the default first.
 
 #### `ForceGraphTuning` {#symbol-forcegraphtuning}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L278)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L303)
 
 ##### `ForceGraphTuning` — Summary
 The 3D Local Map's packing and stable visual encodings, shared with the headless layout lab.
 
 #### `PathDestination` {#symbol-pathdestination}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L382)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L407)
 
 ##### `PathDestination` — Summary
 The end of a path a person asked for: a file, perhaps one symbol of it, or a directory. The path starts at the newest pin (2026-10-14).
 
 #### `InspectionTarget` {#symbol-inspectiontarget}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L387)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L412)
 
 ##### `InspectionTarget` — Summary
 The evidence explicitly open in the reader, independent of the Local Map subject and its pins.
 
 #### `DiscoveryTarget` {#symbol-discoverytarget}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L394)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L419)
 
 ##### `DiscoveryTarget` — Summary
 The latest discovery remains in the map after its evidence closes; a new discovery replaces it and Pin keeps it.
 
 #### `ExplorerState` {#symbol-explorerstate}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L400)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L425)
 
 ##### `ExplorerState` — Summary
 Root state object for the Explorer client, managed by
@@ -279,7 +309,7 @@ Root state object for the Explorer client, managed by
 
 #### `TestCoverageMap` {#symbol-testcoveragemap}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L429)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L454)
 
 ##### `TestCoverageMap` — Summary
 Map from implementation file path → covering test node(s).

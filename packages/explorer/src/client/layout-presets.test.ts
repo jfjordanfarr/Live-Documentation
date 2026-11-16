@@ -83,23 +83,46 @@ describe("shared packing preferences", () => {
     expect(applyLayoutSettings(grid, undefined).localMap.directoryLayout).toBe("grid");
   });
 
-  it("carries a closed directory's look only when it is one of the trial's, and reads its absence as the box (2026-11-13)", () => {
-    const box = getDefaultTuning();
-    expect(box.localMap.closedDirectory).toBe("box");
-    expect(layoutSettingsOf(box).localMap).not.toHaveProperty("closedDirectory");
-    expect(readLayoutSettings({ localMap: { closedDirectory: "box" } })).toBeUndefined();
+  it("carries a closed directory's look only when it is not the skin with cells, and reads its absence as the skin (2026-11-15)", () => {
+    const cells = getDefaultTuning();
+    expect(cells.localMap.closedDirectory).toBe("cells");
+    expect(layoutSettingsOf(cells).localMap).not.toHaveProperty("closedDirectory");
+    expect(readLayoutSettings({ localMap: { closedDirectory: "cells" } })).toBeUndefined();
     expect(readLayoutSettings({ localMap: { closedDirectory: "balloon" } })).toBeUndefined();
-    for (const look of ["cells", "stack", "folded"] as const) {
+    // The folded membrane was deleted on 2026-11-15: a link or a stored choice that names it shows the default.
+    expect(readLayoutSettings({ localMap: { closedDirectory: "folded" } })).toBeUndefined();
+    for (const look of ["box", "stack"] as const) {
       const tuning = getDefaultTuning();
       tuning.localMap.closedDirectory = look;
       expect(readLayoutSettings({ localMap: { closedDirectory: look } })).toEqual({ localMap: { closedDirectory: look } });
       const restored = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(tuning) }));
       expect(applyLayoutSettings(getDefaultTuning(), restored.layout).localMap.closedDirectory).toBe(look);
-      // A link made with the box shows the box in a browser whose own tuning last held a trial's look.
-      const plain = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(box) }));
-      expect(applyLayoutSettings(tuning, plain.layout).localMap.closedDirectory).toBe("box");
+      // A link made with the skin shows the skin in a browser whose own tuning last held another look.
+      const plain = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(cells) }));
+      expect(applyLayoutSettings(tuning, plain.layout).localMap.closedDirectory).toBe("cells");
       // An address that carries no layout at all leaves the browser's own choice alone.
       expect(applyLayoutSettings(tuning, undefined).localMap.closedDirectory).toBe(look);
+    }
+  });
+
+  it("carries the skin's shape and its cells' colour only when they are not the defaults: the tab, and the kinds' colours, the owner's choice of 2026-11-16", () => {
+    const plain = getDefaultTuning();
+    expect([plain.localMap.closedShape, plain.localMap.closedCells]).toEqual(["tab", "kind"]);
+    expect(layoutSettingsOf(plain).localMap).not.toHaveProperty("closedShape");
+    expect(layoutSettingsOf(plain).localMap).not.toHaveProperty("closedCells");
+    expect(readLayoutSettings({ localMap: { closedShape: "tab", closedCells: "kind" } })).toBeUndefined();
+    expect(readLayoutSettings({ localMap: { closedShape: "triangle", closedCells: "rainbow" } })).toBeUndefined();
+    for (const shape of ["round", "square"] as const) {
+      const tuning = getDefaultTuning();
+      tuning.localMap.closedShape = shape;
+      tuning.localMap.closedCells = "grey";
+      const restored = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(tuning) }));
+      expect(restored.layout?.localMap).toMatchObject({ closedShape: shape, closedCells: "grey" });
+      expect(applyLayoutSettings(getDefaultTuning(), restored.layout).localMap).toMatchObject({ closedShape: shape, closedCells: "grey" });
+      // A link made with the defaults shows them in a browser whose own tuning holds the other choices.
+      const unsaid = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(plain) }));
+      expect(applyLayoutSettings(tuning, unsaid.layout).localMap).toMatchObject({ closedShape: "tab", closedCells: "kind" });
+      expect(applyLayoutSettings(tuning, undefined).localMap).toMatchObject({ closedShape: shape, closedCells: "grey" });
     }
   });
 

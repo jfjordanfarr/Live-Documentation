@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branches.ts
-- Generated At: 2026-11-13T23:23:45.600Z
+- Generated At: 2026-11-16T03:19:19.600Z
 
 ## Authored
 ### Purpose
@@ -28,61 +28,63 @@ The directory flow trial (2026-11-12, Tuning's Opened Directory; a trial beside 
 
 A closed box carries `contents` since the Closed Directory trial (2026-11-13): the files directly in it, and each immediate subdirectory's own files and subdirectories, from the same index as its counts, so that the skin with cells draws from the graph the page holds ([Turn 7 of the November 13 record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-7)).
 
+Since 2026-11-15 ([November 15, Turn 1](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) a closed directory's `contents` carry the name and the kind of each file directly in it and, for each directory inside and each inside that, its name, its own files and the count of files under it, which the skin with cells draws (the files' names since 2026-11-16, [Turn 10](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-10): a cell says its file's name on hover).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BranchGraph` {#symbol-branchgraph}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L16)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L17)
 
 ##### `BranchGraph` — Summary
 A disclosed exploration, with every connection between its retained files.
 
 #### `BranchRanking` {#symbol-branchranking}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L33)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L34)
 
 ##### `BranchRanking` — Summary
 The ranking of retained files into columns, and the references the ranking reads backward.
 
 #### `RankingOptions` {#symbol-rankingoptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L39)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L40)
 
 ##### `RankingOptions` — Summary
 The ranking's dials.
 
 #### `OrderOptions` {#symbol-orderoptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L51)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L52)
 
 ##### `OrderOptions` — Summary
 Where the order step begins and how long it looks.
 
 #### `BranchOptions` {#symbol-branchoptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L61)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L62)
 
 ##### `BranchOptions` — Summary
 The dials of the layout's first two steps.
 
 #### `ClosedDirectory` {#symbol-closeddirectory}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L94)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L95)
 
 ##### `ClosedDirectory` — Summary
 A closed directory drawn as a box: a pseudo-node with no symbols, standing in for everything under it.
 
 #### `DirectoryDisclosure` {#symbol-directorydisclosure}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L109)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L112)
 
 ##### `DirectoryDisclosure` — Summary
 A drawn directory's state and what it does not draw: its own files, and its immediate subdirectories, not in the picture.
 
 #### `Exploration` {#symbol-exploration}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L119)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L122)
 
 ##### `Exploration` — Summary
 A disclosed exploration before its order: the retained files and the references between them, ranked into columns,
@@ -90,7 +92,7 @@ with everything the order step takes but its start, so that the order step can b
 
 #### `closedDirectoryNode` {#symbol-closeddirectorynode}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L148)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L151)
 - Returns: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload)
 - Parameters: `closed`: [`ClosedDirectory`](#symbol-closeddirectory)
 
@@ -99,21 +101,21 @@ A closed directory as a node of the picture: its path for an id, no symbols, no 
 
 #### `isClosedDirectory` {#symbol-iscloseddirectory}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L154)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L157)
 
 ##### `isClosedDirectory` — Summary
 Whether a node of the picture is a closed directory's box rather than a file's card.
 
 #### `directoryIndex` {#symbol-directoryindex}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L157)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L160)
 
 ##### `directoryIndex` — Summary
 What every directory holds, from the graph's files: the files directly in it and its immediate subdirectories, each by path.
 
 #### `placeMembers` {#symbol-placemembers}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L183)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L186)
 - Parameters: `opened`: [`OpenDirectories`](./directory-state.ts.mdmd.md#symbol-opendirectories)
 
 ##### `placeMembers` — Summary
@@ -126,7 +128,7 @@ files fills the room its own files already take.
 
 #### `edgeKey` {#symbol-edgekey}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L216)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L219)
 - Parameters: `edge`: [`LocalEdge`](./types.ts.mdmd.md#symbol-localedge)
 
 ##### `edgeKey` — Summary
@@ -134,7 +136,7 @@ One reference's identity: its two files, its two symbols and its kind.
 
 #### `buildBranches` {#symbol-buildbranches}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L232)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L235)
 - Returns: [`BranchGraph`](#symbol-branchgraph)
 - Parameters: `center`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload); `graph`: [`ExplorerGraphPayload`](../../../shared/types.ts.mdmd.md#symbol-explorergraphpayload); `pins`: [`PinSet`](../pin-state.ts.mdmd.md#symbol-pinset); `node`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload); `options`: [`BranchOptions`](#symbol-branchoptions)
 
@@ -152,7 +154,7 @@ one exploration; this runs both once.
 
 #### `exploreBranches` {#symbol-explorebranches}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L248)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L251)
 - Returns: [`Exploration`](#symbol-exploration)
 - Parameters: `center`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload); `graph`: [`ExplorerGraphPayload`](../../../shared/types.ts.mdmd.md#symbol-explorergraphpayload); `pins`: [`PinSet`](../pin-state.ts.mdmd.md#symbol-pinset); `node`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload)
 
@@ -164,7 +166,7 @@ it (2026-10-15); a picture entered by directory has no center.
 
 #### `arrangeExploration` {#symbol-arrangeexploration}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L421)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L426)
 - Returns: [`Exploration`](#symbol-exploration)
 - Parameters: `exploration`: [`Exploration`](#symbol-exploration); `shape`: [`FlowShape`](./directory-flow.ts.mdmd.md#symbol-flowshape)
 
@@ -173,7 +175,7 @@ The same exploration with its opened directories laid out in another flow shape;
 
 #### `orderExploration` {#symbol-orderexploration}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L433)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L438)
 - Returns: [`BranchGraph`](#symbol-branchgraph)
 - Parameters: `exploration`: [`Exploration`](#symbol-exploration); `options`: [`OrderOptions`](#symbol-orderoptions)
 
@@ -182,14 +184,14 @@ The exploration's third step: its columns ordered from the given start, with the
 
 #### `commonDirectory` {#symbol-commondirectory}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L459)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L474)
 
 ##### `commonDirectory` — Summary
 The deepest directory every given directory is in or under; "" when they share none.
 
 #### `membraneDirectory` {#symbol-membranedirectory}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L476)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L491)
 
 ##### `membraneDirectory` — Summary
 The membrane a file's directory belongs to when only `depth` levels below the common directory are membranes: the
@@ -197,14 +199,14 @@ directory cut to that many levels below the root, the root itself at zero, the d
 
 #### `compareSymbolNames` {#symbol-comparesymbolnames}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L504)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L519)
 
 ##### `compareSymbolNames` — Summary
 Alphabetical order of symbol names, case first set aside, then as the names compare.
 
 #### `rankBranches` {#symbol-rankbranches}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L520)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L535)
 - Returns: [`BranchRanking`](#symbol-branchranking)
 - Parameters: `nodes`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload)[]; `links`: [`LocalEdge`](./types.ts.mdmd.md#symbol-localedge)[]; `options`: [`RankingOptions`](#symbol-rankingoptions)
 
@@ -230,6 +232,9 @@ the broken ones are returned as `back`.
 - [`branch-order.ForwardReference`](./branch-order.ts.mdmd.md#symbol-forwardreference)
 - [`branch-order.OrderInput`](./branch-order.ts.mdmd.md#symbol-orderinput)
 - [`branch-order.orderBranches`](./branch-order.ts.mdmd.md#symbol-orderbranches)
+- [`closed-looks.ClosedContents`](./closed-looks.ts.mdmd.md#symbol-closedcontents) (type-only)
+- [`closed-looks.ClosedFile`](./closed-looks.ts.mdmd.md#symbol-closedfile) (type-only)
+- [`closed-looks.NestedContents`](./closed-looks.ts.mdmd.md#symbol-nestedcontents) (type-only)
 - [`directory-bands.parentDirectory`](./directory-bands.ts.mdmd.md#symbol-parentdirectory)
 - [`directory-flow.FlowInput`](./directory-flow.ts.mdmd.md#symbol-flowinput)
 - [`directory-flow.FlowShape`](./directory-flow.ts.mdmd.md#symbol-flowshape)

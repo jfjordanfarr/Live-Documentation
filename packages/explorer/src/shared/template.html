@@ -233,10 +233,24 @@
           <label class="tuning-slider">
             <span>Closed Directory</span>
             <select id="tuning-closed-directory">
-              <option value="box" selected>Box: name, count and Open</option>
-              <option value="cells">Skin with cells: a cell for each file</option>
+              <option value="cells" selected>Skin with cells: a cell for each file</option>
+              <option value="box">Box: name and count</option>
               <option value="stack">Stack: cards waiting underneath</option>
-              <option value="folded">Folded: the opened label, folded</option>
+            </select>
+          </label>
+          <label class="tuning-slider" data-closed-cells-only>
+            <span>Skin's Shape</span>
+            <select id="tuning-closed-shape">
+              <option value="tab" selected>Tab: a folder, its name on its tab</option>
+              <option value="round">Round: a capsule</option>
+              <option value="square">Square: a card's corners</option>
+            </select>
+          </label>
+          <label class="tuning-slider" data-closed-cells-only>
+            <span>Cells' Colour</span>
+            <select id="tuning-closed-cells">
+              <option value="kind" selected>By kind, as in 3D</option>
+              <option value="grey">One grey</option>
             </select>
           </label>
           <label class="tuning-slider">

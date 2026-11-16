@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/tuning-levers.ts
-- Generated At: 2026-11-14T00:57:48.744Z
+- Generated At: 2026-11-16T00:48:31.599Z
 
 ## Authored
 ### Purpose
@@ -37,7 +37,7 @@ One short sentence per tuning control, keyed by the control's element id.
 
 #### `tuningHelpId` {#symbol-tuninghelpid}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning-levers.ts#L94)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning-levers.ts#L96)
 
 ##### `tuningHelpId` — Summary
 The id of the visually hidden element that carries a control's sentence.

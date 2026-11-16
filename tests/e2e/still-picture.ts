@@ -253,9 +253,7 @@ export const LOCAL_MAP: ViewReading = {
     "#view-map .local-directory-leaf",
     "#view-map .local-directory-more",
     "#view-map .local-directory-closed__name",
-    "#view-map .local-directory-closed__count",
-    // The folded look's label, drawn over the closed box's name in the Closed Directory trial (2026-11-13).
-    "#view-map .local-closed-label"
+    "#view-map .local-directory-closed__count"
   ],
   folderText: [".node-path", ".node-directory"],
   folderContainer: { container: ".local-stack-group", label: ".local-stack-group__label" },

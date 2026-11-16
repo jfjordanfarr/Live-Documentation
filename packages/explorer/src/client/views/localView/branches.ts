@@ -5,6 +5,7 @@ import type { SymbolOrder } from "../../types";
 import { getVisibleConnections, retainFile, type PinSet } from "../pin-state";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
 import { orderBranches, type BranchOrder, type ForwardReference, type OrderInput } from "./branch-order";
+import type { ClosedContents, ClosedFile, NestedContents } from "./closed-looks";
 import { flowColumns, linksOf, pairLines, type FlowInput, type FlowShape, type UndrawnLink } from "./directory-flow";
 import { directoryState, NO_OPEN_DIRECTORIES, under, type OpenDirectories } from "./directory-state";
 import { rankByNetworkSimplex, type Constraint } from "./network-simplex";
@@ -99,10 +100,12 @@ export interface ClosedDirectory {
   /** Its immediate subdirectories. */
   directories: number;
   /**
-   * What the skin with cells draws (2026-11-13): the files directly in it, and for each immediate subdirectory the files
-   * directly in that one and its own immediate subdirectories, counted over the files the picture shows.
+   * What the skin with cells draws (2026-11-13; by kind and one level deeper since 2026-11-15, with each file's name
+   * since 2026-11-16): the name and kind of each file directly in it, and each directory inside it the same, and each
+   * directory inside those, over the files the picture shows. A file's kind is its archetype, which the 3D map colours
+   * its sphere by; its name is what its cell says on hover.
    */
-  contents?: { files: number; subdirectories: Array<{ files: number; directories: number }> };
+  contents?: ClosedContents;
 }
 
 /** A drawn directory's state and what it does not draw: its own files, and its immediate subdirectories, not in the picture. */
@@ -286,6 +289,8 @@ export function exploreBranches(
   // The opened directories' contents: each file directly in one, compact and unwired unless it is retained; each
   // immediate subdirectory neither opened nor encasing, a closed box.
   const index = directoryIndex(graph.nodes);
+  const kinds = new Map(graph.nodes.map(node => [node.id, (node.archetype ?? "").toLowerCase()]));
+  const kindOf = (file: string): string => kinds.get(file) ?? "";
   const members = new Set<string>();
   const closed = new Map<string, ClosedDirectory>();
   for (const directory of [...opened].sort()) {
@@ -296,7 +301,7 @@ export function exploreBranches(
       if (node && !retained.has(file) && include(node)) members.add(file);
     }
     for (const subdirectory of contents.subdirectories) {
-      if (directoryState(subdirectory, opened, retained) === "closed") closed.set(subdirectory, closedDirectory(subdirectory, index));
+      if (directoryState(subdirectory, opened, retained) === "closed") closed.set(subdirectory, closedDirectory(subdirectory, index, kindOf));
     }
   }
   const files = [...retained, ...members].flatMap(key => byId.get(key) ?? []);
@@ -445,14 +450,24 @@ export function orderExploration(exploration: Exploration, options: OrderOptions
   };
 }
 
-/** A closed directory's box as the picture counts it: the files under it at any depth, and its immediate subdirectories. */
-function closedDirectory(path: string, index: ReadonlyMap<string, { files: string[]; subdirectories: string[] }>): ClosedDirectory {
-  let files = 0;
-  for (const [directory, contents] of index) if (under(directory, path)) files += contents.files.length;
+/** A closed directory's box as the picture counts it: the files under it at any depth, its immediate subdirectories, and what its skin draws. */
+function closedDirectory(path: string, index: ReadonlyMap<string, { files: string[]; subdirectories: string[] }>, kindOf: (file: string) => string): ClosedDirectory {
+  const filesUnder = (directory: string): number => {
+    let files = 0;
+    for (const [other, contents] of index) if (under(other, directory)) files += contents.files.length;
+    return files;
+  };
+  // A file as its cell stands for it: its own name, which the cell says on hover, and its kind.
+  const cellOf = (file: string): ClosedFile => ({ name: file.slice(file.lastIndexOf("/") + 1), kind: kindOf(file) });
+  // The skin draws a directory inside and one inside that; what stands deeper is told by the count under it.
+  const nested = (directory: string, depth: number): NestedContents => {
+    const own = index.get(directory);
+    return { name: directory.slice(directory.lastIndexOf("/") + 1), total: filesUnder(directory), files: (own?.files ?? []).map(cellOf),
+      subdirectories: depth > 0 ? (own?.subdirectories ?? []).map(deeper => nested(deeper, depth - 1)) : [] };
+  };
   const own = index.get(path);
-  const contents = { files: own?.files.length ?? 0, subdirectories: (own?.subdirectories ?? []).map(subdirectory => ({
-    files: index.get(subdirectory)?.files.length ?? 0, directories: index.get(subdirectory)?.subdirectories.length ?? 0 })) };
-  return { path, name: path.slice(path.lastIndexOf("/") + 1), files, directories: own?.subdirectories.length ?? 0, contents };
+  const contents: ClosedContents = { files: (own?.files ?? []).map(cellOf), subdirectories: (own?.subdirectories ?? []).map(subdirectory => nested(subdirectory, 1)) };
+  return { path, name: path.slice(path.lastIndexOf("/") + 1), files: filesUnder(path), directories: own?.subdirectories.length ?? 0, contents };
 }
 
 /** The deepest directory every given directory is in or under; "" when they share none. */

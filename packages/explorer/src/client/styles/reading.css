@@ -441,6 +441,8 @@
 [data-looks="three"][data-lod="overview"] .local-directory-closed { --closed-scale: var(--closed-scale-overview, 1); --closed-control: var(--closed-control-overview, 1); }
 [data-looks="three"]:is([data-lod="far"], [data-lod="overview"]) .local-directory-closed :is(.local-directory-closed__count, .local-directory-actions) { visibility: hidden; }
 [data-looks="three"]:is([data-lod="far"], [data-lod="overview"]) .local-directory-closed .local-directory-closed__name { color: transparent; }
+/* The name's own chevron has a colour of its own, so it is hidden by name: it stood, at reading size, in the held chevron's corner. */
+[data-looks="three"]:is([data-lod="far"], [data-lod="overview"]) .local-directory-closed .local-directory-closed__name > .local-directory-chevron { visibility: hidden; }
 [data-looks="three"]:is([data-lod="far"], [data-lod="overview"]) .local-directory-closed__held {
     display: block;
     position: absolute;
@@ -688,11 +690,14 @@
     #detail-panel.reading-dialog { inset: 8px; max-height: calc(100dvh - 16px); }
     #detail-panel.reading-dialog .detail-scroll { padding: 16px; }
 }
-/* The Closed Directory trial's looks in the far looks (2026-11-13): the held name draws the folded label's words in the
-   label's weight and colour, and the skin's cells are held at the look's scale below the held name and its controls,
-   drawn per look from the room the card reading wrote (card-factory.ts's drawHeldCells); the reading size's field leaves. */
-[data-looks="three"]:is([data-lod="far"], [data-lod="overview"]) .local-closed--folded .local-closed-label { visibility: hidden; }
-[data-looks="three"]:is([data-lod="far"], [data-lod="overview"]) .local-closed--folded .local-directory-closed__held { color: var(--text-panel-muted); font-weight: 400; }
+/* The skin with cells in the far looks (2026-11-13): the skin's cells are held at the look's scale below the held name,
+   drawn per look from the room the card reading wrote (card-factory.ts's drawHeldLooks), and the reading size's field
+   leaves. A folder's tab is the reading look's (2026-11-15): in the far looks its outline and its light's clip are the
+   plain ones, the same for every box, and its handle and More stand as in every shape. */
+[data-looks="three"]:is([data-lod="far"], [data-lod="overview"]) .local-closed-outline__look[data-look="reading"] { display: none; }
+[data-looks="three"]:is([data-lod="far"], [data-lod="overview"]) .local-closed-outline__look[data-look="plain"] { display: inline; }
+[data-looks="three"]:is([data-lod="far"], [data-lod="overview"]) .local-closed-shape--tab::before { clip-path: var(--tab-clip-plain, none); }
+[data-looks="three"]:is([data-lod="far"], [data-lod="overview"]) .local-closed-shape--tab .local-directory-closed__name { transform: none; }
 [data-looks="three"]:is([data-lod="far"], [data-lod="overview"]) .local-closed--cells .local-closed-cells { visibility: hidden; }
 [data-looks="three"][data-lod="far"] .local-closed-cells-held .local-cells-look[data-look="connections"],
 [data-looks="three"][data-lod="overview"] .local-closed-cells-held .local-cells-look[data-look="overview"] { display: inline; }

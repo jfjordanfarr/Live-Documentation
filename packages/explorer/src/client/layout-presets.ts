@@ -1,4 +1,4 @@
-import { CLOSED_DIRECTORY_LOOKS, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, OVERVIEW_FILES, ZOOM_LOOKS, type ForceGraphTuning, type LocalMapTuning, type TuningConfig } from "./types";
+import { CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, OVERVIEW_FILES, ZOOM_LOOKS, type ForceGraphTuning, type LocalMapTuning, type TuningConfig } from "./types";
 
 /** One packing preference interpreted by both Local Map representations. */
 export type LayoutPreset = "compact" | "relaxed";
@@ -8,7 +8,7 @@ type SpatialPacking = Pick<ForceGraphTuning, "linkGap" | "charge" | "collisionGa
 
 /** Portable numeric settings behind the presets and spatial encodings; older URLs may omit them. */
 export interface LayoutSettings {
-  localMap?: Partial<FlatPacking & Pick<LocalMapTuning, "zoomLooks" | "directoryLayout" | "closedDirectory" | "overviewFiles">>;
+  localMap?: Partial<FlatPacking & Pick<LocalMapTuning, "zoomLooks" | "directoryLayout" | "closedDirectory" | "closedShape" | "closedCells" | "overviewFiles">>;
   forceGraph?: Partial<ForceGraphTuning>;
 }
 
@@ -76,10 +76,13 @@ export function readLayoutSettings(value: unknown): LayoutSettings | undefined {
       const zoomLooks = ZOOM_LOOKS.slice(1).find(choice => choice === (input as Record<string, unknown>).zoomLooks);
       const directoryLayout = DIRECTORY_LAYOUTS.slice(1).find(choice => choice === (input as Record<string, unknown>).directoryLayout);
       const closedDirectory = CLOSED_DIRECTORY_LOOKS.slice(1).find(choice => choice === (input as Record<string, unknown>).closedDirectory);
+      const closedShape = CLOSED_DIRECTORY_SHAPES.slice(1).find(choice => choice === (input as Record<string, unknown>).closedShape);
+      const closedCells = CLOSED_CELL_COLOURS.slice(1).find(choice => choice === (input as Record<string, unknown>).closedCells);
       const overviewFiles = OVERVIEW_FILES.slice(1).find(choice => choice === (input as Record<string, unknown>).overviewFiles);
-      if (Object.keys(numbers).length || zoomLooks || directoryLayout || closedDirectory || overviewFiles) {
+      if (Object.keys(numbers).length || zoomLooks || directoryLayout || closedDirectory || closedShape || closedCells || overviewFiles) {
         result.localMap = { ...numbers, ...(zoomLooks ? { zoomLooks } : null), ...(directoryLayout ? { directoryLayout } : null),
-          ...(closedDirectory ? { closedDirectory } : null), ...(overviewFiles ? { overviewFiles } : null) };
+          ...(closedDirectory ? { closedDirectory } : null), ...(closedShape ? { closedShape } : null), ...(closedCells ? { closedCells } : null),
+          ...(overviewFiles ? { overviewFiles } : null) };
       }
       continue;
     }
@@ -98,15 +101,16 @@ export function layoutSettingsOf(tuning: TuningConfig): LayoutSettings {
  * Merge a validated partial snapshot over the current values, leaving unrelated preferences intact. A snapshot that
  * carries the 2D map's settings without saying how an opened directory stands says Flow, the default, since only the
  * grid is written (2026-11-13); one that does not say its Zoom Looks says the three looks, since only the ladder is
- * written (2026-11-13); one that does not say its Closed Directory says the box (2026-11-13); and one that does not say
- * what the overview look draws says files only, since only cards at their size is written (files only is the default
- * since 2026-11-15; until then the link wrote files only and said nothing for the cards' size, so a link of the trial's
- * two days that says files only is read as saying nothing, which is the same picture). So a link made with the defaults
- * shows them in a browser whose own tuning holds the other choices.
+ * written (2026-11-13); one that does not say its Closed Directory, its shape or its cells' colour says the skin with
+ * cells, the folder's tab and the kinds' colours, the defaults since 2026-11-15 and 16, since only the other choices
+ * are written; and one that does not say what the overview look draws says files only, since only cards at their size
+ * is written (files only is the default since 2026-11-15; until then the link wrote files only and said nothing for
+ * the cards' size, so a link of the trial's two days that says files only is read as saying nothing, which is the same
+ * picture). So a link made with the defaults shows them in a browser whose own tuning holds the other choices.
  */
 export function applyLayoutSettings(tuning: TuningConfig, settings: LayoutSettings | undefined): TuningConfig {
   const directory = settings?.localMap ? { directoryLayout: DIRECTORY_LAYOUTS[0] } : null;
   const looks = settings?.localMap ? { zoomLooks: ZOOM_LOOKS[0], overviewFiles: OVERVIEW_FILES[0] } : null;
-  const closed = settings?.localMap ? { closedDirectory: CLOSED_DIRECTORY_LOOKS[0] } : null;
+  const closed = settings?.localMap ? { closedDirectory: CLOSED_DIRECTORY_LOOKS[0], closedShape: CLOSED_DIRECTORY_SHAPES[0], closedCells: CLOSED_CELL_COLOURS[0] } : null;
   return { ...tuning, localMap: { ...tuning.localMap, ...directory, ...looks, ...closed, ...settings?.localMap }, forceGraph: { ...tuning.forceGraph, ...settings?.forceGraph } };
 }

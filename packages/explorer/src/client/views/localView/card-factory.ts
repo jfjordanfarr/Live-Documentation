@@ -9,15 +9,16 @@
  */
 
 import { compareSymbolNames, type ClosedDirectory } from "./branches";
-import { cellField, fieldBands, stackEdges, type CellField, type ClosedContents } from "./closed-looks";
+import { cellField, fieldBands, SHAPE_CORNER, stackEdges, tabOutline, type Cell, type CellField, type ClosedContents, type Rect, type Skin } from "./closed-looks";
 import { parentDirectory } from "./directory-bands";
-import { chevronMarkup, HANDLE_INDENT } from "./directory-handle";
+import { chevronMarkup } from "./directory-handle";
 import type { ColumnRole } from "./types";
 import { NODE_HUB } from "./wire-gathering";
 import { countOf } from "./word-seams";
 import type { ExplorerNodePayload, ExplorerPublicSymbol, ExplorerTypeReference } from "../../../shared/types";
 import { setSeamedText } from "../../dom";
-import type { ClosedDirectoryLook, SymbolOrder } from "../../types";
+import type { ClosedCellColour, ClosedDirectoryLook, ClosedDirectoryShape, SymbolOrder } from "../../types";
+import { spatialNodeStyle } from "../forceGraphAppearance";
 
 /** The values a fresh card reads while it is built. The wrapper may survive a render, but its card is rebuilt. */
 export interface CardPresentation {
@@ -53,13 +54,20 @@ export interface CardContext {
   readNode(node: ExplorerNodePayload, symbol?: string): void | Promise<void>;
   showNodeActions(node: ExplorerNodePayload, symbol: string | undefined, anchor: { x: number; y: number }): void | Promise<void>;
   showDirectoryActions(directory: string, anchor: { x: number; y: number }): void | Promise<void>;
-  /** How a closed directory's box is drawn (the Closed Directory trial, 2026-11-13); today's box when not given. */
-  closedLook?(): ClosedDirectoryLook;
+  /** How a closed directory's box is drawn: its look and, for the skin with cells, its shape and its cells' colour; the defaults when not given. */
+  closedStyle?(): ClosedStyle;
   highlightSymbolConnections(nodeId: string, symbol: string): void;
   clearSymbolHighlight(): void;
   focusTypeTarget(targetId: string): void | Promise<void>;
   /** The reading surface receives canonical documentation separately from the graph's render projection. */
   attachReading?(card: HTMLElement, node: ExplorerNodePayload): void;
+}
+
+/** How a closed directory's box is drawn: Tuning's three choices for it. */
+export interface ClosedStyle {
+  look: ClosedDirectoryLook;
+  shape: ClosedDirectoryShape;
+  cells: ClosedCellColour;
 }
 
 /** The Pin glyph, a pushpin, in a 24-unit box: the card's Pin, a row's Pin and the card's reveal of its connections outside the view. */
@@ -304,6 +312,8 @@ export function createClosedDirectory(context: CardContext, closed: ClosedDirect
   name.setAttribute("aria-label", `Open ${closed.path}`);
   name.setAttribute("aria-expanded", "false");
   name.title = `Open ${closed.path}: show the files and subdirectories inside`;
+  // What it holds is drawn, not written, in the skin with cells: the button's description says it.
+  name.setAttribute("aria-description", countsOf(closed.files, closed.directories));
   const count = document.createElement("div");
   count.className = "local-directory-closed__count";
   count.textContent = countsOf(closed.files, closed.directories);
@@ -337,64 +347,56 @@ export function createClosedDirectory(context: CardContext, closed: ClosedDirect
     event.preventDefault();
     context.openDirectory(closed.path);
   });
-  drawClosedLook(box, closed, context.closedLook?.() ?? "box");
+  drawClosedLook(box, closed, context.closedStyle?.() ?? { look: "cells", shape: "tab", cells: "kind" });
   return box;
 }
 
 const SVG = "http://www.w3.org/2000/svg";
 
-/** What each skin with cells holds, kept beside its box so that the card reading can draw the far looks' held cells. */
-const CELL_CONTENTS = new WeakMap<HTMLElement, ClosedContents>();
+/** What each skin with cells holds and its shape, kept beside its box so that the far looks' drawing can be made from the card reading's rooms. */
+const SKINS = new WeakMap<HTMLElement, { contents: ClosedContents; shape: ClosedDirectoryShape }>();
+
+/** How far the folder's tab lifts its handle above the box's own padding, so that the name stands in the tab's middle and the body's top edge clear of the cells. */
+export const TAB_LIFT = 4;
 
 /**
- * The Closed Directory trial's looks (2026-11-13, the owner wanting the 2D closed directory to say "this thing can pop
- * open and let out a lot of stuff", as the 3D bag of cells does): each draws over the box's own layout and never changes
- * its size, its controls or what they do. "stack" shows one to three cards under the box by the files under it;
- * "cells" draws a skin holding a cell for each file directly in it and a small skin for each subdirectory, the count's
- * words kept for assistive technology and the hover text; "folded" draws the opened directory's outline and, after the
- * handle's chevron, the directory's glyph and its name in the label's type, and More at the right. The cells and the
- * folded look's More are placed from the box's measured layout whenever the box's size changes.
+ * A closed directory's looks: each draws over the box's own layout and never changes its size, its controls or what
+ * they do. "stack" shows one to three cards under the box by the files under it. "cells", the default (the owner,
+ * 2026-11-15: "Cells is definitely my favorite"), draws a skin holding a cell for each file directly in it and a small
+ * skin for each directory inside, around cells of the same size, the count's words kept for assistive technology and
+ * the hover text; its shape is the capsule, a card's corners, or a folder's silhouette whose tab rises around the handle
+ * at the reading look, and its cells take the colour the 3D map gives a file of their kind, or one grey. The cells and
+ * the folder's outline are drawn from the box's measured layout whenever the box's size changes.
  */
-function drawClosedLook(box: HTMLElement, closed: ClosedDirectory, look: ClosedDirectoryLook): void {
-  if (look === "box") return;
-  box.classList.add(`local-closed--${look}`);
-  if (look === "stack") { box.dataset.edges = String(stackEdges(closed.files)); return; }
-  const more = box.querySelector<HTMLElement>(".local-directory-actions")!;
-  if (look === "cells") {
-    box.title = `Open ${closed.path}: ${countsOf(closed.files, closed.directories)}`;
-    const reading = document.createElementNS(SVG, "svg"), held = document.createElementNS(SVG, "svg");
-    reading.classList.add("local-closed-cells");
-    held.classList.add("local-closed-cells-held");
-    for (const svg of [reading, held]) svg.setAttribute("aria-hidden", "true");
-    box.append(reading, held);
-    const contents: ClosedContents = closed.contents ?? { files: closed.files, subdirectories: [] };
-    CELL_CONTENTS.set(box, contents);
-    observeLayout(box, () => drawCells(box, reading, contents));
-    return;
+function drawClosedLook(box: HTMLElement, closed: ClosedDirectory, style: ClosedStyle): void {
+  if (style.look === "box") return;
+  box.classList.add(`local-closed--${style.look}`);
+  if (style.look === "stack") { box.dataset.edges = String(stackEdges(closed.files)); return; }
+  box.classList.add(`local-closed-shape--${style.shape}`, `local-closed-cells--${style.cells}`);
+  box.title = `Open ${closed.path}: ${countsOf(closed.files, closed.directories)}`;
+  const reading = document.createElementNS(SVG, "svg"), held = document.createElementNS(SVG, "svg");
+  reading.classList.add("local-closed-cells");
+  held.classList.add("local-closed-cells-held");
+  for (const svg of [reading, held]) svg.setAttribute("aria-hidden", "true");
+  box.append(reading, held);
+  if (style.shape === "tab") {
+    // The folder's outline: with its tab for the reading look, and plain for the far looks.
+    const outline = document.createElementNS(SVG, "svg");
+    outline.classList.add("local-closed-outline");
+    outline.setAttribute("aria-hidden", "true");
+    outline.innerHTML = TAB_LOOKS.map(look => `<path class="local-closed-outline__look" data-look="${look}"/>`).join("");
+    box.prepend(outline);
   }
-  // Folded: after the handle's chevron, the glyph and the name at the top left in the label's type, More at the right.
-  const label = document.createElement("span");
-  label.className = "local-closed-label";
-  label.setAttribute("aria-hidden", "true");
-  label.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 17V7h10M8 21V11h10M2 3h20"/></svg>';
-  const text = document.createElement("span");
-  setSeamedText(text, closed.name);
-  label.append(text);
-  box.append(label);
+  const contents: ClosedContents = closed.contents ?? { files: [], subdirectories: [] };
+  SKINS.set(box, { contents, shape: style.shape });
   observeLayout(box, () => {
-    const style = getComputedStyle(box);
-    const left = parseFloat(style.paddingLeft), right = box.clientWidth - parseFloat(style.paddingRight), top = parseFloat(style.paddingTop);
-    const nameLine = parseFloat(getComputedStyle(box.querySelector(".local-directory-closed__name")!).lineHeight) || 15;
-    const place = (control: HTMLElement, x: number): void => {
-      control.style.setProperty("--fold-x", `${(x - control.offsetLeft).toFixed(2)}px`);
-      control.style.setProperty("--fold-y", `${(top + (nameLine - control.offsetHeight) / 2 - control.offsetTop).toFixed(2)}px`);
-    };
-    place(more, right - more.offsetWidth);
-    const labelLeft = left + HANDLE_INDENT;
-    box.style.setProperty("--fold-left", `${labelLeft.toFixed(2)}px`);
-    box.style.setProperty("--fold-room", `${Math.max(0, right - more.offsetWidth - 4 - labelLeft).toFixed(2)}px`);
+    if (style.shape === "tab") { placeTab(box); drawTabs(box); }
+    drawCells(box, reading, contents, style.shape);
   });
 }
+
+/** A folder's two outlines: with its tab, as laid out at the reading look, and plain, for the far looks. */
+const TAB_LOOKS = ["reading", "plain"] as const;
 
 /** Call draw once the box is laid out and again whenever its size changes. */
 function observeLayout(box: HTMLElement, draw: () => void): void {
@@ -402,8 +404,48 @@ function observeLayout(box: HTMLElement, draw: () => void): void {
   new ResizeObserver(() => { if (box.isConnected && box.offsetWidth) draw(); }).observe(box);
 }
 
+/**
+ * The folder's tab at reading size, from the box as laid out: More stands right after the name on the tab, and the tab
+ * reaches from the box's left to past More, down to under the name (lifted by {@link TAB_LIFT}). More keeps its place in
+ * the layout, at the box's right as in every shape, and is drawn moved to the name (--tab-more-shift), so that the far
+ * looks, which move it from its layout box, read the same box whatever the shape. Written on the box in its border
+ * box's units: the tab's width and rise.
+ */
+function placeTab(box: HTMLElement): void {
+  const name = box.querySelector<HTMLElement>(".local-directory-closed__name"), text = box.querySelector<HTMLElement>(".local-directory-closed__text");
+  const more = box.querySelector<HTMLElement>(".local-directory-actions");
+  if (!name || !text || !more) return;
+  const style = getComputedStyle(box), border = parseFloat(style.borderLeftWidth) || 0;
+  const right = box.clientWidth - parseFloat(style.paddingRight) + 3;
+  const moreLeft = Math.min(right - more.offsetWidth, name.offsetLeft + text.offsetLeft + text.offsetWidth + 4);
+  box.style.setProperty("--tab-more-shift", `${(moreLeft - more.offsetLeft).toFixed(2)}px`);
+  box.dataset.tabReading = (border + moreLeft + more.offsetWidth + 6).toFixed(2);
+  box.dataset.tabRise = (border + name.offsetTop - TAB_LIFT + name.offsetHeight + 4).toFixed(2);
+}
+
+/**
+ * The folder's outlines (2026-11-15). The tab is the reading look's: it rises around the handle as laid out. From the
+ * connections look out the held name fills a box by its own measure, so that one box had room for a step beside it
+ * and its neighbour had none, a difference of form that meant nothing; there every folder is drawn plain, the same
+ * rounded outline without a step (the root's decision). The same outlines clip the skin's light (--tab-clip-<look>).
+ */
+export function drawTabs(box: HTMLElement): void {
+  const outline = box.querySelector<SVGSVGElement>(":scope > .local-closed-outline");
+  if (!outline || !box.offsetWidth) return;
+  const width = box.offsetWidth, height = box.offsetHeight, rise = Number(box.dataset.tabRise), tab = Number(box.dataset.tabReading);
+  if (!Number.isFinite(rise) || !Number.isFinite(tab)) return;
+  outline.setAttribute("width", String(width));
+  outline.setAttribute("height", String(height));
+  outline.setAttribute("viewBox", `0 0 ${width} ${height}`);
+  for (const look of TAB_LOOKS) {
+    const path = tabOutline(width, height, look === "reading" ? { width: tab, rise } : { width, rise: 0 }, SHAPE_CORNER.tab, 0.5);
+    outline.querySelector(`[data-look="${look}"]`)?.setAttribute("d", path);
+    box.style.setProperty(`--tab-clip-${look}`, `path("${path}")`);
+  }
+}
+
 /** The skin's field at reading size: below the name, as wide as the count line, down to the foot of the box's content. */
-function drawCells(box: HTMLElement, svg: SVGSVGElement, contents: ClosedContents): void {
+function drawCells(box: HTMLElement, svg: SVGSVGElement, contents: ClosedContents, shape: ClosedDirectoryShape): void {
   const count = box.querySelector<HTMLElement>(".local-directory-closed__count");
   if (!count) return;
   const left = count.offsetLeft, top = count.offsetTop, width = count.offsetWidth;
@@ -413,49 +455,80 @@ function drawCells(box: HTMLElement, svg: SVGSVGElement, contents: ClosedContent
   svg.setAttribute("viewBox", `0 0 ${width.toFixed(2)} ${height.toFixed(2)}`);
   svg.style.left = `${left}px`;
   svg.style.top = `${top}px`;
-  svg.innerHTML = fieldMarkup(cellField(contents, fieldBands({ width, height })), width, height);
+  svg.innerHTML = fieldMarkup(cellField(contents, fieldBands({ width, height })), width, height, shape);
 }
 
 /**
- * The far looks' held cells (2026-11-13): the cells are the look's other content beside the name, so they are held at
- * the look's scale as the name is, in the room the held name and its controls leave below them, at least a row of them,
- * veiled where they end; where not a row fits, the skin alone carries the look. The card reading writes each look's room
- * as data-cells-<look>, "left top width height scale", the width and height in held units.
+ * The far looks' drawing of a skin with cells (2026-11-13): the cells are the look's other content beside the name, so
+ * they are held at the look's scale as the name is, in the room the held name leaves below it, a row of them, veiled
+ * where they end; where not a row fits, the skin alone carries the look. The card reading writes each look's room as
+ * data-cells-<look>, "left top width height scale", the width and height in held units.
  */
-export function drawHeldCells(box: HTMLElement): void {
-  const contents = CELL_CONTENTS.get(box), svg = box.querySelector<SVGSVGElement>(".local-closed-cells-held");
-  if (!contents || !svg) return;
+export function drawHeldLooks(box: HTMLElement): void {
+  const skin = SKINS.get(box), svg = box.querySelector<SVGSVGElement>(".local-closed-cells-held");
+  if (!skin || !svg) return;
   const groups: string[] = [];
   for (const look of ["connections", "overview"]) {
     const [x, y, width, height, scale] = (box.getAttribute(`data-cells-${look}`) ?? "").split(" ").map(Number);
     if (![x, y, width, height, scale].every(value => Number.isFinite(value))) continue;
-    const field = cellField(contents, fieldBands({ width: width, height: height }));
-    if (!field.cells.length && !field.skins.length && !field.rims.length) continue;
-    groups.push(`<g class="local-cells-look" data-look="${look}" transform="translate(${x.toFixed(2)} ${y.toFixed(2)}) scale(${scale.toFixed(3)})">${fieldMarkup(field, width, height)}</g>`);
+    const field = cellField(skin.contents, fieldBands({ width: width, height: height }));
+    if (!field.cells.length && !field.skins.length) continue;
+    groups.push(`<g class="local-cells-look" data-look="${look}" transform="translate(${x.toFixed(2)} ${y.toFixed(2)}) scale(${scale.toFixed(3)})">${fieldMarkup(field, width, height, skin.shape)}</g>`);
   }
   svg.innerHTML = groups.join("");
 }
 
 let veils = 0;
 
-/** A field's drawing: its skins and their cells and rims, its cells, and the veil that fades its end where it holds more. */
-function fieldMarkup(field: CellField, width: number, height: number): string {
-  const parts: string[] = [];
-  const circle = (c: { x: number; y: number; r: number }, kind: string): string => `<circle class="${kind}" cx="${c.x.toFixed(2)}" cy="${c.y.toFixed(2)}" r="${c.r}"/>`;
-  for (const skin of field.skins) {
-    parts.push(`<rect class="local-cell-skin" x="${skin.x.toFixed(2)}" y="${skin.y.toFixed(2)}" width="${skin.w.toFixed(2)}" height="${skin.h.toFixed(2)}" rx="${(skin.h / 2).toFixed(2)}"/>`);
-    for (const c of skin.cells) parts.push(circle(c, "local-cell local-cell--inner"));
-    for (const c of skin.rims) parts.push(circle(c, "local-cell-rim"));
-  }
-  for (const c of field.rims) parts.push(circle(c, "local-cell-rim"));
-  for (const c of field.cells) parts.push(circle(c, "local-cell"));
-  const veil = field.veil;
-  if (!veil) return `<g>${parts.join("")}</g>`;
+const escapeText = (text: string): string => text.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+
+/** A small folder's tab among the cells: how far it rises above the body's top edge, and how far its contents stand lower for it. */
+const NEST_TAB = { rise: 2.5, drop: 1 } as const;
+
+/**
+ * A skin inside, in the outer skin's own shape: a pill, a card's corners in small, or a small folder with its tab. The
+ * mask, where the field's end fades it, is a group's around it: a mask is read in the user space of the element that
+ * names it, which the path's own move would shift.
+ */
+function skinPath(skin: Rect, shape: ClosedDirectoryShape, mask: string): string {
+  const tab = shape === "tab" ? { width: Math.max(5, Math.min(skin.w * 0.45, 14)), rise: NEST_TAB.rise } : { width: 0, rise: 0 };
+  const corner = shape === "round" ? skin.h / 2 : shape === "square" ? 1.5 : 3;
+  const path = `<path class="local-cell-skin" transform="translate(${skin.x.toFixed(2)} ${skin.y.toFixed(2)})" d="${tabOutline(skin.w, skin.h, tab, corner)}"/>`;
+  return mask ? `<g${mask}>${path}</g>` : path;
+}
+
+/**
+ * A field's drawing: each directory inside as a skin around its own cells and the skins inside it, which says its
+ * name and what it holds on hover; each file's cell, with the fill the 3D map gives its kind written on it (the
+ * stylesheet draws one grey over it where that is the choice), which says its file's name on hover, the reader's own
+ * word for it and the only words here (the owner, 2026-11-16: "A scan of one's software -- their own words, should do
+ * essentially all of the talking"); and the veils. A cell that fades under a veil, or stands for what the room left
+ * out, names no file. A skin that holds more than it shows keeps its outline and fades its last cell; the field's own
+ * end fades whatever stands there. In the folder's shape a skin's contents stand a unit lower, under its small tab.
+ */
+function fieldMarkup(field: CellField, width: number, height: number, shape: ClosedDirectoryShape): string {
   const id = `local-cells-veil-${veils += 1}`;
-  return `<defs><linearGradient id="${id}-g" x1="${veil.x.toFixed(2)}" x2="${(veil.x + veil.w).toFixed(2)}" y1="0" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#111"/></linearGradient>`
-    + `<mask id="${id}" maskUnits="userSpaceOnUse" x="-1" y="-1" width="${(width + 2).toFixed(2)}" height="${(height + 2).toFixed(2)}"><rect x="-1" y="-1" width="${(width + 2).toFixed(2)}" height="${(height + 2).toFixed(2)}" fill="#fff"/>`
-    + `<rect x="${veil.x.toFixed(2)}" y="${(veil.y - 1).toFixed(2)}" width="${(veil.w + 1).toFixed(2)}" height="${(veil.h + 2).toFixed(2)}" fill="url(#${id}-g)"/></mask></defs>`
-    + `<g mask="url(#${id})">${parts.join("")}</g>`;
+  const ends = field.veils.filter(veil => veil.of === "field");
+  // Two masks: the cells fade under every veil, the skins' outlines only under the field's own end.
+  const cellsMask = field.veils.length ? ` mask="url(#${id}-cells)"` : "", skinsMask = ends.length ? ` mask="url(#${id}-skins)"` : "";
+  const circle = (c: Cell): string => {
+    const colour = spatialNodeStyle(c.kind).color, at = `cx="${c.x.toFixed(2)}" cy="${c.y.toFixed(2)}" r="${c.r}" fill="${colour}" stroke="${colour}"`;
+    return c.name ? `<circle class="local-cell local-cell--named" ${at}><title>${escapeText(c.name)}</title></circle>` : `<circle class="local-cell" ${at}/>`;
+  };
+  const cells = (list: readonly Cell[]): string => (list.length ? `<g${cellsMask}>${list.map(circle).join("")}</g>` : "");
+  const drop = shape === "tab" ? ` transform="translate(0 ${NEST_TAB.drop})"` : "";
+  const nest = (skin: Skin): string => `<g class="local-cell-nest"><title>${escapeText(skin.name)}: ${countsOf(skin.total, skin.directories)}</title>`
+    + `${skinPath(skin, shape, skinsMask)}<g${drop}>${skin.skins.map(nest).join("")}${cells(skin.cells)}</g></g>`;
+  const parts = `${field.skins.map(nest).join("")}${cells(field.cells)}`;
+  if (!field.veils.length) return `<g>${parts}</g>`;
+  const frame = `maskUnits="userSpaceOnUse" x="-4" y="-4" width="${(width + 8).toFixed(2)}" height="${(height + 8).toFixed(2)}"><rect x="-4" y="-4" width="${(width + 8).toFixed(2)}" height="${(height + 8).toFixed(2)}" fill="#fff"/>`;
+  const gradient = (veil: Rect, index: number): string => `<linearGradient id="${id}-${index}" x1="${veil.x.toFixed(2)}" x2="${(veil.x + veil.w).toFixed(2)}" y1="0" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#111"/></linearGradient>`;
+  const fade = (veil: Rect, index: number): string => `<rect x="${veil.x.toFixed(2)}" y="${(veil.y - 3).toFixed(2)}" width="${(veil.w + 1).toFixed(2)}" height="${(veil.h + 6).toFixed(2)}" fill="url(#${id}-${index})"/>`;
+  const indexed = field.veils.map((veil, index) => ({ veil, index }));
+  return `<defs>${indexed.map(each => gradient(each.veil, each.index)).join("")}`
+    + `<mask id="${id}-cells" ${frame}${indexed.map(each => fade(each.veil, each.index)).join("")}</mask>`
+    + (ends.length ? `<mask id="${id}-skins" ${frame}${indexed.filter(each => each.veil.of === "field").map(each => fade(each.veil, each.index)).join("")}</mask>` : "")
+    + `</defs><g>${parts}</g>`;
 }
 
 /** "3 files, 2 directories", either part left out at zero; "empty" when both are. */

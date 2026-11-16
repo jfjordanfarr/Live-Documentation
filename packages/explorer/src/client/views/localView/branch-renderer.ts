@@ -36,8 +36,6 @@ const SVG_NS = "http://www.w3.org/2000/svg";
  */
 export interface BranchStage {
   root: HTMLElement;
-  /** The wires' layer, which says `moving` while a move runs so that the stylesheet can lighten the wires' drawing. */
-  overlay: HTMLElement;
   wrappers: Map<string, HTMLElement>;
   boxes: Map<string, HTMLElement>;
   shapes: Map<string, SVGPathElement>;
@@ -112,8 +110,8 @@ interface Search {
 }
 
 /** A stage for a root that holds nothing yet. */
-export function createStage(root: HTMLElement, overlay: HTMLElement): BranchStage {
-  return { root, overlay, wrappers: new Map(), boxes: new Map(), shapes: new Map(), labels: new Map(), disclosures: new Map(), pose: null, move: null, search: null, flowShapes: new Map(), rowsPicture: null };
+export function createStage(root: HTMLElement): BranchStage {
+  return { root, wrappers: new Map(), boxes: new Map(), shapes: new Map(), labels: new Map(), disclosures: new Map(), pose: null, move: null, search: null, flowShapes: new Map(), rowsPicture: null };
 }
 
 /** Ends whatever move the stage runs, where it stands, and its search; the stage's elements are the caller's to remove. */
@@ -890,9 +888,10 @@ function applyPose(stage: BranchStage, pose: Pose, bandPadding: number): void {
  * shifts to keep the held card where the eye left it on screen, measured
  * there each frame, so that the picture's own shift as its size changes is
  * held too while a drag of the person's own is left alone; and the wires are
- * redrawn to the frame, without their glow, whose filters cost more than
- * everything else in the frame (six frames a second with them, sixty
- * without, measured headless on 31 cards and 172 wires, 2026-10-07). The
+ * redrawn to the frame (their glow, whose filters had cost more than
+ * everything else in a frame, six frames a second with them and sixty
+ * without on 31 cards and 172 wires on 2026-10-07, was first left out while
+ * a move ran and then, on 2026-11-15, deleted from the wires altogether). The
  * stage's pose follows the frames, so a render that interrupts the move
  * starts from what the page shows. The root says `data-moving` throughout,
  * for whoever reads the page, and the search waits for the move to end.
@@ -900,7 +899,6 @@ function applyPose(stage: BranchStage, pose: Pose, bandPadding: number): void {
 function startMove(controller: LocalViewController, stage: BranchStage, from: Pose, to: Pose, duration: number, move: Move): void {
   const { root } = stage;
   root.dataset.moving = "true";
-  stage.overlay.classList.add("moving");
   applyPose(stage, tweenPose(from, to, 0), move.bandPadding);
   for (const element of move.entering) element.style.opacity = "0";
   for (const motion of move.rows) shiftRow(motion, motion.delta);
@@ -998,7 +996,6 @@ function endMove(stage: BranchStage, finished: boolean): void {
     stage.pose = move.to;
   }
   delete stage.root.dataset.moving;
-  stage.overlay.classList.remove("moving");
   stage.move = null;
 }
 

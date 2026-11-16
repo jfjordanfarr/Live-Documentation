@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-reading.ts
-- Generated At: 2026-11-16T01:26:23.963Z
+- Generated At: 2026-11-16T03:32:04.228Z
 
 ## Authored
 ### Purpose
@@ -52,6 +52,8 @@ Files only means files and what the person pinned by name (2026-11-15, the root'
 
 Since 2026-11-15 ([November 15, Turn 1](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) `closedBoxWrites` fits a closed box's name with `fitHandle`: after the chevron that leads every line, at the look's scale where the box holds the name whole, at a smaller one before the name would break inside a word, never below the connections look's, in the box's height down to 2 units above its foot, where two lines stand at the connections look's size. More joins the name where the same lines hold it too; the text button it used to place with More is gone. Before, "bootst…" stood cut in a box that held "bootstrap" at four fifths of the size.
 
+Since 2026-11-15's second milestone ([November 15, Turn 1](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) a skin's held row of cells may stand down to the air above the box's foot, where a row as tall as a skin around cells fits at the connections look. The folder's shape is drawn plain in the far looks, so `closedBoxWrites` holds every shape's name and More alike.
+
 The pinned rows of one card take one size at the overview look, the tightest's, as a card's file name takes one scale (`overview-files.ts`'s `pinnedRowScales`; 2026-11-15, [Turn 1 of that day's record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)): the reading finds each row's own scale first and then gives the rows pinned by name the least of theirs, counting each one's lines at that.
 
 ## Generated
@@ -88,7 +90,7 @@ while names open full descriptions in the reader.
 
 #### `markFirstPin` {#symbol-markfirstpin}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L900)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L907)
 
 ##### `markFirstPin` — Summary
 Write the pin depths for a card whose rows were just ordered, and its held name's lines at the overview band, whose
@@ -110,7 +112,7 @@ room they bound, from the card's last reading: no layout is read.
 - [`reading-state.ReadingChoice`](../../reading-state.ts.mdmd.md#symbol-readingchoice)
 - [`reading-state.descriptionIsOpen`](../../reading-state.ts.mdmd.md#symbol-descriptionisopen)
 - [`types.InspectionTarget`](../../types.ts.mdmd.md#symbol-inspectiontarget) (type-only)
-- [`card-factory.drawHeldCells`](./card-factory.ts.mdmd.md#symbol-drawheldcells)
+- [`card-factory.drawHeldLooks`](./card-factory.ts.mdmd.md#symbol-drawheldlooks)
 - [`closed-looks.CELLS`](./closed-looks.ts.mdmd.md#symbol-cells)
 - [`directory-handle.CLOSED_FOOT`](./directory-handle.ts.mdmd.md#symbol-closed_foot)
 - [`directory-handle.HANDLE_INDENT`](./directory-handle.ts.mdmd.md#symbol-handle_indent)

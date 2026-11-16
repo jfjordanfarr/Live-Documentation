@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-renderer.ts
-- Generated At: 2026-11-15T23:05:35.434Z
+- Generated At: 2026-11-16T02:12:43.340Z
 
 ## Authored
 ### Purpose
@@ -68,6 +68,8 @@ Since 2026-11-15 ([November 15, Turn 1](../../../../../../../../AI-Agent-Workspa
 
 Since 2026-11-15 ([Turn 1](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) a card's note on references read back, "N connections return in a cycle", counts the returning references the picture draws at the card, from `returningConnections` with `drawsReference` of [connections.ts](connections.ts.mdmd.md): the same function and the same test the 3D button's number comes from, so the two cannot disagree; the card counts the returns at either of its ends, the button each once. `dressCards` now discloses or hides every card's rows before any card counts, since a return has a row on two cards. A return whose rows the disclosure hides draws no lace and is no longer counted on the card, nor listed in its menu: on branch-renderer.ts opened alone, branch-scene.ts and branches.ts had said 4 where two laces stood, and say 2; the card's "+N symbols" tells the rest until it is shown.
 
+On 2026-11-15 ([November 15, Turn 1](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) the stage lost its `overlay`: its only use had been to add and remove `moving` on the wires' layer while a move ran, for a stylesheet rule that lightened the wires' drawing then, and the tone round of the same day deleted that rule with the wires' glow.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -86,7 +88,7 @@ also carries the continuing search that runs after each picture.
 
 #### `createStage` {#symbol-createstage}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L115)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L113)
 - Returns: [`BranchStage`](#symbol-branchstage)
 
 ##### `createStage` — Summary
@@ -94,7 +96,7 @@ A stage for a root that holds nothing yet.
 
 #### `dropStage` {#symbol-dropstage}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L120)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L118)
 - Parameters: `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `dropStage` — Summary
@@ -102,7 +104,7 @@ Ends whatever move the stage runs, where it stands, and its search; the stage's 
 
 #### `refreshReadingPresentation` {#symbol-refreshreadingpresentation}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L141)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L139)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `refreshReadingPresentation` — Summary
@@ -110,7 +112,7 @@ Update fixed-slot text and its controls without rebuilding an unchanged scene or
 
 #### `renderBranches` {#symbol-renderbranches}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L236)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L234)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `renderBranches` — Summary
@@ -138,7 +140,7 @@ The layout's dials come from the Local Map's tuning.
 
 #### `refreshReadingGeometry` {#symbol-refreshreadinggeometry}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L430)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L428)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `refreshReadingGeometry` — Summary
@@ -149,7 +151,7 @@ competition begins from the new picture.
 
 #### `BAND_BORDER` {#symbol-band_border}
 - Type: unknown
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L512)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L510)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

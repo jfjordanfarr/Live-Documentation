@@ -4,14 +4,14 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/closed-directory-looks.spec.ts
-- Generated At: 2026-11-14T00:01:20.482Z
+- Generated At: 2026-11-16T00:48:41.955Z
 
 ## Authored
 ### Purpose
-Current. Protects the Closed Directory trial in the browser, under this machine's font lines and Segoe UI's line metrics. Each look draws, and every box and card stands exactly where the box keeps them. Open works by pointer and by keyboard, and a link carries the choice only when it is not the box. A stack's cards never reach a neighbour. In the far looks the box's name is held, and the skin with cells holds its cells at the look's scale.
+Current. Protects a closed directory's looks in the browser, under this machine's font lines and Segoe UI's line metrics. Each look and each of the skin's shapes draws, and every box and card stands exactly where the plain box keeps them. Open works by pointer and by keyboard, More stands on the name's line, and a link carries a choice only when it is not the default (the skin with cells, the folder's tab, the kinds' colours). A directory inside is a skin around cells of the one size; a cell takes its file's kind's colour and says its file's name on hover, a veiled cell says nothing, and a press on a cell opens the box. A stack's cards never reach a neighbour. In the far looks the box's name is held, the skin holds its cells at the look's scale, and a folder is drawn plain.
 
 ### Notes
-Written on 2026-11-13 after the looks were judged by eye ([Turn 7 of the November 13 record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-7); [the pictures](../../../../AI-Agent-Workspace/Screenshots/2026-11-13/closed-directory-looks/README.md)). Layout is compared as each box's and card's place inside the picture, in the map's own units.
+Written on 2026-11-13 after the looks were judged by eye ([Turn 7 of the November 13 record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-7); [the pictures](../../../../AI-Agent-Workspace/Screenshots/2026-11-13/closed-directory-looks/README.md)). Layout is compared as each box's and card's place inside the picture, in the map's own units. Rewritten on 2026-11-15 for the cells as the default and the three shapes ([Turn 1](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)), and on 2026-11-16 for the owner's choice of the kinds' colours ([Turn 8](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-8)), the tab as the reading look's alone, and a cell's own file's name as its hover text ([Turn 10](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-10)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -26,6 +26,14 @@ _No public symbols detected_
 - [`local-storage.PERSISTED_UI_KEY`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_key)
 - [`local-storage.PERSISTED_UI_VERSION`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_version)
 - [`types.CLOSED_DIRECTORY_LOOKS`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-closed_directory_looks)
+- [`types.CLOSED_DIRECTORY_SHAPES`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-closed_directory_shapes)
+- [`types.ClosedCellColour`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-closedcellcolour)
 - [`types.ClosedDirectoryLook`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-closeddirectorylook)
+- [`types.ClosedDirectoryShape`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-closeddirectoryshape)
+- [`design-audit.describeFaults`](./design-audit.ts.mdmd.md#symbol-describefaults)
+- [`design-audit.overlapsAmong`](./design-audit.ts.mdmd.md#symbol-overlapsamong)
+- [`design-audit.textBoxes`](./design-audit.ts.mdmd.md#symbol-textboxes)
+- [`design-audit.truncations`](./design-audit.ts.mdmd.md#symbol-truncations)
+- [`still-picture.LOCAL_MAP`](./still-picture.ts.mdmd.md#symbol-local_map)
 - [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)
 <!-- LIVE-DOC:END Dependencies -->

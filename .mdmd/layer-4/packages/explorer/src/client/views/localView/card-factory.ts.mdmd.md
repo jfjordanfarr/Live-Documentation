@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-factory.ts
-- Generated At: 2026-11-15T22:47:40.783Z
+- Generated At: 2026-11-16T02:26:07.229Z
 
 ## Authored
 ### Purpose
@@ -42,40 +42,49 @@ The Closed Directory trial (2026-11-13) draws its three looks over the closed bo
 
 Since 2026-11-15 ([November 15, Turn 1](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) a closed directory's whole box opens it, by a click or tap anywhere on it and by Enter or Space, and its name is the handle: a button led by a disclosure chevron pointing right, which says "Open" and the directory's path, carries `aria-expanded` and keeps the keyboard. The text button "Open" is gone, and the evidence reader, which the name and the box used to open, is reached from More as Inspect directory, where a file's is; `CardContext` lost `inspectDirectory` with it. The held drawing of the far looks carries a chevron of its own before the name's lines. The owner had found directories not useful when zoomed out "because there are no buttons to interact with at that distance", and the text button was 7 px tall there or not drawn. The chevron and the strip's arithmetic are in `directory-handle.ts`. More stands on the name's line at the box's right, as on a file card (the owner's rule of November 7, that a row is never given to a lone control); an empty element keeps the row it had under the count at its size, so that the box keeps its height, and the Cells look's field now runs down through that row to the foot of the box's content.
 
+Since 2026-11-15's second milestone ([November 15, Turn 1](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) the skin with cells is the default look and the folded membrane is deleted. The skin has three shapes (`ClosedStyle`): the capsule and a card's corners are the box's own border; the folder's tab is an outline of its own, `drawTabs`, with the skin's light clipped to it, its handle lifted into the tab and More drawn moved beside the name (`placeTab`). The tab is the reading look's alone: a second, plain outline is drawn for the far looks, because a held name left room for a step in one box and none in its neighbour, a difference of form that meant nothing. `fieldMarkup` draws a directory inside as a skin, in the outer skin's shape, around cells of the one size, with its name and count as its hover text, and gives each cell the fill the 3D map gives its file's kind, the default by the owner's choice of 2026-11-16 ([Turn 8](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-8): "I _love_ the splash of color those directories provide"); the stylesheet draws one grey over it where that is the choice. A cell says its file's name on hover, the name alone, and adds no word of ours ([Turn 10](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-10): "A scan of one's software -- their own words, should do essentially all of the talking if possible"); a cell that fades under a veil names none. A veiled skin keeps its outline and fades its cells (two masks), and a small folder's tab rises 2.5 units over contents set a unit lower, so that it is seen at reading size. `drawHeldLooks` (before, `drawHeldCells`) draws the far looks' cells from the card reading's rooms.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `CardPresentation` {#symbol-cardpresentation}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L23)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L24)
 
 ##### `CardPresentation` — Summary
 The values a fresh card reads while it is built. The wrapper may survive a render, but its card is rebuilt.
 
 #### `hasCloseAction` {#symbol-hascloseaction}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L37)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L38)
 
 ##### `hasCloseAction` — Summary
 A card can close its own retention, subject or locally expanded symbol list.
 
 #### `CardContext` {#symbol-cardcontext}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L42)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L43)
 
 ##### `CardContext` — Summary
 Only the facts and actions a card needs; navigation targets are looked up when their event occurs.
 
+#### `ClosedStyle` {#symbol-closedstyle}
+- Type: interface
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L67)
+
+##### `ClosedStyle` — Summary
+How a closed directory's box is drawn: Tuning's three choices for it.
+
 #### `PIN_GLYPH` {#symbol-pin_glyph}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L66)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L74)
 
 ##### `PIN_GLYPH` — Summary
 The Pin glyph, a pushpin, in a 24-unit box: the card's Pin, a row's Pin and the card's reveal of its connections outside the view.
 
 #### `createNodeCard` {#symbol-createnodecard}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L81)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L89)
 - Parameters: `context`: [`CardContext`](#symbol-cardcontext); `node`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload); `columnRole`: [`ColumnRole`](./types.ts.mdmd.md#symbol-columnrole)
 
 ##### `createNodeCard` — Summary
@@ -91,7 +100,7 @@ The created card element
 
 #### `createClosedDirectory` {#symbol-createcloseddirectory}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L291)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L299)
 - Parameters: `context`: [`CardContext`](#symbol-cardcontext); `closed`: [`ClosedDirectory`](./branches.ts.mdmd.md#symbol-closeddirectory)
 
 ##### `createClosedDirectory` — Summary
@@ -106,19 +115,36 @@ says the act and the directory and takes the keyboard; the evidence reader
 is behind More, as a file's is. It carries no pin: a directory with a party
 file under it is at least encasing, so no wire ever reaches a closed box.
 
-#### `drawHeldCells` {#symbol-drawheldcells}
-- Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L425)
+#### `TAB_LIFT` {#symbol-tab_lift}
+- Type: const
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L360)
 
-##### `drawHeldCells` — Summary
-The far looks' held cells (2026-11-13): the cells are the look's other content beside the name, so they are held at
-the look's scale as the name is, in the room the held name and its controls leave below them, at least a row of them,
-veiled where they end; where not a row fits, the skin alone carries the look. The card reading writes each look's room
-as data-cells-<look>, "left top width height scale", the width and height in held units.
+##### `TAB_LIFT` — Summary
+How far the folder's tab lifts its handle above the box's own padding, so that the name stands in the tab's middle and the body's top edge clear of the cells.
+
+#### `drawTabs` {#symbol-drawtabs}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L432)
+
+##### `drawTabs` — Summary
+The folder's outlines (2026-11-15). The tab is the reading look's: it rises around the handle as laid out. From the
+connections look out the held name fills a box by its own measure, so that one box had room for a step beside it
+and its neighbour had none, a difference of form that meant nothing; there every folder is drawn plain, the same
+rounded outline without a step (the root's decision). The same outlines clip the skin's light (--tab-clip-<look>).
+
+#### `drawHeldLooks` {#symbol-drawheldlooks}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L467)
+
+##### `drawHeldLooks` — Summary
+The far looks' drawing of a skin with cells (2026-11-13): the cells are the look's other content beside the name, so
+they are held at the look's scale as the name is, in the room the held name leaves below it, a row of them, veiled
+where they end; where not a row fits, the skin alone carries the look. The card reading writes each look's room as
+data-cells-<look>, "left top width height scale", the width and height in held units.
 
 #### `countsOf` {#symbol-countsof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L462)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L535)
 
 ##### `countsOf` — Summary
 "3 files, 2 directories", either part left out at zero; "empty" when both are.
@@ -127,17 +153,24 @@ as data-cells-<look>, "left top width height scale", the width and height in hel
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`dom.setSeamedText`](../../dom.ts.mdmd.md#symbol-setseamedtext)
+- [`types.ClosedCellColour`](../../types.ts.mdmd.md#symbol-closedcellcolour) (type-only)
 - [`types.ClosedDirectoryLook`](../../types.ts.mdmd.md#symbol-closeddirectorylook) (type-only)
+- [`types.ClosedDirectoryShape`](../../types.ts.mdmd.md#symbol-closeddirectoryshape) (type-only)
 - [`types.SymbolOrder`](../../types.ts.mdmd.md#symbol-symbolorder) (type-only)
+- [`forceGraphAppearance.spatialNodeStyle`](../forceGraphAppearance.ts.mdmd.md#symbol-spatialnodestyle)
 - [`branches.ClosedDirectory`](./branches.ts.mdmd.md#symbol-closeddirectory)
 - [`branches.compareSymbolNames`](./branches.ts.mdmd.md#symbol-comparesymbolnames)
+- [`closed-looks.Cell`](./closed-looks.ts.mdmd.md#symbol-cell)
 - [`closed-looks.CellField`](./closed-looks.ts.mdmd.md#symbol-cellfield-interface)
 - [`closed-looks.ClosedContents`](./closed-looks.ts.mdmd.md#symbol-closedcontents)
+- [`closed-looks.Rect`](./closed-looks.ts.mdmd.md#symbol-rect)
+- [`closed-looks.SHAPE_CORNER`](./closed-looks.ts.mdmd.md#symbol-shape_corner)
+- [`closed-looks.Skin`](./closed-looks.ts.mdmd.md#symbol-skin)
 - [`closed-looks.cellField`](./closed-looks.ts.mdmd.md#symbol-cellfield-function)
 - [`closed-looks.fieldBands`](./closed-looks.ts.mdmd.md#symbol-fieldbands)
 - [`closed-looks.stackEdges`](./closed-looks.ts.mdmd.md#symbol-stackedges)
+- [`closed-looks.tabOutline`](./closed-looks.ts.mdmd.md#symbol-taboutline)
 - [`directory-bands.parentDirectory`](./directory-bands.ts.mdmd.md#symbol-parentdirectory)
-- [`directory-handle.HANDLE_INDENT`](./directory-handle.ts.mdmd.md#symbol-handle_indent)
 - [`directory-handle.chevronMarkup`](./directory-handle.ts.mdmd.md#symbol-chevronmarkup)
 - [`types.ColumnRole`](./types.ts.mdmd.md#symbol-columnrole) (type-only)
 - [`wire-gathering.NODE_HUB`](./wire-gathering.ts.mdmd.md#symbol-node_hub)

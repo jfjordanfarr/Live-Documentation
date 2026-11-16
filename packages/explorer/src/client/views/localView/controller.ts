@@ -178,7 +178,7 @@ export class LocalViewController implements LocalViewApi {
     readNode: (node, symbol) => this.readNode(node, symbol),
     showNodeActions: (node, symbol, anchor) => this.showNodeActions(node, symbol, anchor),
     showDirectoryActions: (directory, anchor) => this.showDirectoryActions(directory, anchor),
-    closedLook: () => this.options.state.tuning.localMap.closedDirectory,
+    closedStyle: () => { const { closedDirectory, closedShape, closedCells } = this.options.state.tuning.localMap; return { look: closedDirectory, shape: closedShape, cells: closedCells }; },
     highlightSymbolConnections: (nodeId, symbol) => this.highlightSymbolConnections(nodeId, symbol),
     clearSymbolHighlight: () => this.clearSymbolHighlight(),
     focusTypeTarget: targetId => {
@@ -598,7 +598,7 @@ export class LocalViewController implements LocalViewApi {
     // A render lays the picture out for what the look draws: files only at the overview needs no move of its own.
     this.container.toggleAttribute(OVERVIEW_FILES_ATTRIBUTE, overviewFilesShown(this.options.state.tuning.localMap, this.look));
     this.reading?.updatePresentation(this.readingVisible);
-    const stage = this.stage ?? (this.stage = createStage(root, this.overlay));
+    const stage = this.stage ?? (this.stage = createStage(root));
     renderBranches(this, stage);
     if (path) this.fitMapToPath();
     else if (!this.mapHasInitialFit) this.fitMapToContent();

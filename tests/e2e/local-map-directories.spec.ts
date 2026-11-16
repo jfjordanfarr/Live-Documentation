@@ -116,15 +116,16 @@ test("at the overview a closed directory opens by a click anywhere on its box an
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto(`/?view=local&dir=${CLIENT}`);
   await settled(page);
-  // At reading size a closed box's More stands on its name's line, after the name and at the box's right: no row is
-  // given to a lone control (the owner's rule of 2026-11-07).
+  // At reading size a closed box's More stands on its name's line, after the name and inside the box: no row is given
+  // to a lone control (the owner's rule of 2026-11-07). Where it stands on that line is the look's: at the box's right
+  // in the plain box, beside the name on a folder's tab (closed-directory-looks.spec.ts).
   const arrival = await box(page, HISTORY).evaluate(element => {
     const name = element.querySelector(".local-directory-closed__name")!.getBoundingClientRect(), more = element.querySelector(".local-directory-actions")!.getBoundingClientRect();
     return { apart: Math.abs((more.top + more.bottom) / 2 - (name.top + name.bottom) / 2), after: more.left - name.right, toEdge: element.getBoundingClientRect().right - more.right };
   });
   expect(arrival.apart, "More's centre against the name line's").toBeLessThan(3);
   expect(arrival.after, "More after the name").toBeGreaterThanOrEqual(0);
-  expect(arrival.toEdge, "More at the box's right").toBeLessThan(16);
+  expect(arrival.toEdge, "More inside the box").toBeGreaterThanOrEqual(0);
   for (let press = 0; press < 7; press += 1) {
     await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
     await localMapSettled(page);
