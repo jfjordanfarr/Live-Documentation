@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The pool and everything living in it: the level it was stocked from, the creatures, the tide, feeding at a cell and stepping a minute.
 
 ### Notes
-_Pending notes_
+- Part of the tidepool sample, written on 2026-11-16 for the colour pass ([the sample's README](../../../../../../../../tests/integration/programs/typescript/tidepool/README.md), [the record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-16.1.record.md#turn-1)), at the owner's request to see "what a directory with many different types of files looks like (documentation, assets, tests, implementations)" ([2026-11-15](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-11)). The sample's chosen file to pin: it has uses on one side (the levels, the creatures, the tide, the random source) and offerings on the other (the game, the score, the canvas, the test helper), and two test files import it, so its card carries the 'has tests' mark.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

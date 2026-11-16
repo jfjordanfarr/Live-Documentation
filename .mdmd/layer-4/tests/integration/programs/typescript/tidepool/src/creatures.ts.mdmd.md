@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The four species, crab, anemone, shrimp and starfish, and a creature's life minute by minute: where it spawns, how far it wanders with the tide, and how feeding settles its hunger.
 
 ### Notes
-_Pending notes_
+- Part of the tidepool sample, written on 2026-11-16 for the colour pass ([the sample's README](../../../../../../../../tests/integration/programs/typescript/tidepool/README.md), [the record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-16.1.record.md#turn-1)), at the owner's request to see "what a directory with many different types of files looks like (documentation, assets, tests, implementations)" ([2026-11-15](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-11)). Uses the random source and the tide and is used by the pool and the sprites; its authored words in the sample's own mirror link to `docs/creatures.md`, for Show Related Docs.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Paints an empty pool beside the saved picture `snapshot.png`; since the sample is never run, it checks only that the picture is there.
 
 ### Notes
-_Pending notes_
+- Part of the tidepool sample, written on 2026-11-16 for the colour pass ([the sample's README](../../../../../../../../tests/integration/programs/typescript/tidepool/README.md), [the record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-16.1.record.md#turn-1)), at the owner's request to see "what a directory with many different types of files looks like (documentation, assets, tests, implementations)" ([2026-11-15](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-11)). Reads the snapshot with `readFileSync` and `import.meta.url`, which the generator does not record as a use of the asset: the TypeScript reader follows only imports of code and JSON. That gap is kept on purpose, so the sample shows an asset a real project uses that the map cannot connect.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

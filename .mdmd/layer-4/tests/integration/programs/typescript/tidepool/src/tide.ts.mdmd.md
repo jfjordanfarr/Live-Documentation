@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The tide: the water's level over the pool at each minute, rising and falling on a cosine, and whether it is low enough to feed.
 
 ### Notes
-_Pending notes_
+- Part of the tidepool sample, written on 2026-11-16 for the colour pass ([the sample's README](../../../../../../../../tests/integration/programs/typescript/tidepool/README.md), [the record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-16.1.record.md#turn-1)), at the owner's request to see "what a directory with many different types of files looks like (documentation, assets, tests, implementations)" ([2026-11-15](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-11)). Imported by most of the game; its authored words in the sample's own mirror link to `docs/tides.md`, which is where Show Related Docs finds a document, and the documents link back to it for Show Citing Docs.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

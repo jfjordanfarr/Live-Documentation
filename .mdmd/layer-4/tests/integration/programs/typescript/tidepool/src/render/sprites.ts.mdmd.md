@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Where each species sits on the sprite sheet, and the sheet itself, found on the page by its id.
 
 ### Notes
-_Pending notes_
+- Part of the tidepool sample, written on 2026-11-16 for the colour pass ([the sample's README](../../../../../../../../../tests/integration/programs/typescript/tidepool/README.md), [the record](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-16.1.record.md#turn-1)), at the owner's request to see "what a directory with many different types of files looks like (documentation, assets, tests, implementations)" ([2026-11-15](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-11)). Names `sheet.png` only through the page: the DOM heuristic links it to `index.html`, and the page's `src` attribute connects the sheet. Code that named the image directly would not be recorded.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

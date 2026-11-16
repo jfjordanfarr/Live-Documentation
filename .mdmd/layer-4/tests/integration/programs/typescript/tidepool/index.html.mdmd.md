@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The game's page: the canvas the pool is painted on, the score, the help list, the hidden sprite sheet, the four audio elements and the script that starts the game.
 
 ### Notes
-_Pending notes_
+- Part of the tidepool sample, written on 2026-11-16 for the colour pass ([the sample's README](../../../../../../../tests/integration/programs/typescript/tidepool/README.md), [the record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-16.1.record.md#turn-1)), at the owner's request to see "what a directory with many different types of files looks like (documentation, assets, tests, implementations)" ([2026-11-15](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-11)). One of the two ways an asset becomes connected in this sample: the generator records an HTML attribute (`src`, `href`) as a use, so the logo, the crab, the sprite sheet, the favicon and all four sounds are reached from here; the stylesheet connects the rest. `sounds.ts` and `sprites.ts` find their elements by id, which the DOM heuristic links back to this page. One of three implementation files at the sample's root.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
