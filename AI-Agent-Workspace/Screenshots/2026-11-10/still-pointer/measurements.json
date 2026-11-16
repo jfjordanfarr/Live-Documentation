@@ -1,0 +1,159 @@
+{
+  "estate-follows": {
+    "sphere": "Gateway/GatewaySettings.cs",
+    "pointer": {
+      "x": 741,
+      "y": 145
+    },
+    "atArrival": {
+      "state": {
+        "hovered": "true",
+        "actions": "Gateway/GatewaySettings.cs",
+        "named": [
+          "GatewayClient.cs",
+          "GatewaySettings.cs"
+        ]
+      },
+      "faded": 12,
+      "spheres": 14
+    },
+    "afterMove": {
+      "state": {
+        "hovered": "true",
+        "actions": "Gateway/GatewaySettings.cs",
+        "named": [
+          "GatewayClient.cs",
+          "GatewaySettings.cs"
+        ]
+      },
+      "faded": 12
+    }
+  },
+  "estate-waits": {
+    "sphere": "Gateway/GatewaySettings.cs",
+    "pointer": {
+      "x": 741,
+      "y": 145
+    },
+    "atArrival": {
+      "state": {
+        "hovered": "false",
+        "actions": null,
+        "named": [
+          "GatewayClient.cs"
+        ]
+      },
+      "faded": 0,
+      "spheres": 14
+    },
+    "afterMove": {
+      "state": {
+        "hovered": "true",
+        "actions": "Gateway/GatewaySettings.cs",
+        "named": [
+          "GatewayClient.cs",
+          "GatewaySettings.cs"
+        ]
+      },
+      "faded": 12
+    }
+  },
+  "estate-names": {
+    "sphere": "Gateway/GatewaySettings.cs",
+    "pointer": {
+      "x": 741,
+      "y": 145
+    },
+    "atArrival": {
+      "state": {
+        "hovered": "true",
+        "actions": "Gateway/GatewaySettings.cs",
+        "named": [
+          "GatewayClient.cs",
+          "GatewaySettings.cs"
+        ]
+      },
+      "faded": 0,
+      "spheres": 14
+    },
+    "afterMove": {
+      "state": {
+        "hovered": "true",
+        "actions": "Gateway/GatewaySettings.cs",
+        "named": [
+          "GatewayClient.cs",
+          "GatewaySettings.cs"
+        ]
+      },
+      "faded": 12
+    }
+  },
+  "repository-follows": {
+    "seed": "packages/explorer/src/client/types.ts",
+    "files": 511,
+    "atRest": {
+      "state": {
+        "hovered": "true",
+        "actions": "packages/explorer/src/client/views/localView/network-simplex.ts",
+        "named": [
+          "client/types.ts",
+          "network-simplex.ts"
+        ]
+      },
+      "spheres": 321
+    },
+    "faded": 318,
+    "pointerAwayState": {
+      "hovered": "false",
+      "actions": null,
+      "named": [
+        "client/types.ts"
+      ]
+    }
+  },
+  "repository-waits": {
+    "seed": "packages/explorer/src/client/types.ts",
+    "files": 511,
+    "atRest": {
+      "state": {
+        "hovered": "false",
+        "actions": null,
+        "named": [
+          "client/types.ts"
+        ]
+      },
+      "spheres": 321
+    },
+    "faded": 0,
+    "pointerAwayState": {
+      "hovered": "false",
+      "actions": null,
+      "named": [
+        "client/types.ts"
+      ]
+    }
+  },
+  "repository-names": {
+    "seed": "packages/explorer/src/client/types.ts",
+    "files": 511,
+    "atRest": {
+      "state": {
+        "hovered": "true",
+        "actions": "packages/explorer/src/client/views/localView/network-simplex.ts",
+        "named": [
+          "client/types.ts",
+          "network-simplex.ts"
+        ]
+      },
+      "spheres": 321
+    },
+    "faded": 0,
+    "pointerAwayState": {
+      "hovered": "false",
+      "actions": null,
+      "named": [
+        "client/types.ts"
+      ]
+    }
+  }
+}
