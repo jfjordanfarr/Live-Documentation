@@ -1147,3 +1147,302 @@ links still resolve" completed (exit code 0)
   pausing on a long run of its own; it will report when that finishes. The other
   builder is still working, main is clean at f0896d35, and the timer set
   earlier still stands.
+
+› Message from general-purpose
+  Both parts are done and committed: a new sample program, tidepool, and a
+  contact-sheet tool. The sheet has been drawn for all three subjects. There is
+  one finding for you: code that names an asset from TypeScript is not recorded
+  as a connection.
+
+  **Branch and commit:** `worktree-agent-a327551a7e93a9ed6`, one commit
+  `42383a18` on top of `5d98d3a6`. Nothing pushed. The `node_modules` symlink in
+  the worktree is untracked and not committed.
+
+  ## Part 1: the tidepool sample
+  It lives at `tests/integration/programs/typescript/tidepool`: a small invented
+  browser game where you feed rock-pool creatures as the tide rises and falls.
+  The files really connect: imports, JSON levels, an `index.html` naming every
+  asset, a stylesheet naming the font and two images, and tests importing what
+  they test. `npm run live-docs:visualize:tidepool` builds it to
+  `dist/explorer/samples/tidepool` (43 files, 59 edges); it is not added to the
+  gate.
+
+  Kinds per directory, as the built bundle reports them (19 implementation, 11
+  test, 13 asset):
+
+  | Directory | Make-up |
+  | --- | --- |
+  | `.` | 3 implementation (`index.html`, `package.json`, `tsconfig.json`) |
+  | `src` | 8 implementation, 1 test |
+  | `src/render` | 3 implementation, 2 test, 1 asset |
+  | `src/audio` | 2 implementation, 2 asset, plus the document `SOUNDS.md` |
+  | `tests` | 8 test, 1 asset |
+  | `assets/images` | 5 asset |
+  | `assets/fonts` | 2 asset |
+  | `assets/sounds` | 2 asset |
+  | `styles` | 1 implementation (the single-file directory) |
+  | `levels` | 2 implementation |
+  | `docs` | 3 documents, plus the root `README.md` |
+
+  - **Documents:** 27 Cited By links and 7 authored links reach the documents,
+  so Show Citing Docs and Show Related Docs both have something to show.
+  - **2D:** with `src/pool.ts` pinned, the card has uses on its left, offerings
+  on its right and the violet "has tests" frame.
+  - **3D:** Structure shows `src`, `tests` and `assets` as bags of mixed cells.
+  - **Guard:** `tests/integration/live-docs/tidepool.test.ts` checks the make-up
+  above, which assets are connected, and both kinds of document link.
+
+  **How each binary was made.** All were computed from nothing by two throwaway
+  scratch scripts that are not committed; the sample's README describes each
+  one.
+  - **PNGs** (`logo`, `shell`, `wave`, the sprite sheet, the test snapshot):
+  pixels from small geometric rules, written as PNG chunks with Node's zlib.
+  - **ICO:** a 16-pixel PNG of the same kind inside a one-image ICO header.
+  - **GIF:** a two-frame crab, its compressed image stream written by hand.
+  - **Sounds:** 8 kHz 8-bit WAVs: chime from two decaying sines, splash from a
+  noise burst, surf from filtered noise, gulls from a falling sine sweep.
+  - **Fonts:** `tide.ttf` and `tide.woff`, seven block letters on a 5×7 grid,
+  built with fontTools (installed into scratch only).
+
+  **What the docs cannot see:**
+  - **TypeScript asset references.** `import x from "./a.png"` and `new URL(...,
+  import.meta.url)` are not recorded: the generator's import resolver only
+  follows code and JSON files. Assets connect only through HTML attributes and
+  CSS `url()`, so `tests/snapshot.png`, which the canvas test reads with
+  `readFileSync`, stands unconnected. I left that as it is rather than papering
+  over it.
+  - **Related Docs needed committed authored words.** The forward link exists
+  only in a file's authored text. I committed the authored sections of five Live
+  Docs under the sample's `.live-documentation/source/`, and the generator
+  carries them into the temporary copy. The estate commits no docs, so this goes
+  beyond what it does.
+
+  ## Part 2: the contact sheet
+  The tool is `scripts/contact-sheet/contact-sheet.ts`, run with `npm run
+  contact:sheet`. I documented it in `.mdmd/layer-2/internal-tooling.mdmd.md`,
+  beside the layout lab, which is the precedent for its home.
+
+  ```
+  npm run contact:sheet -- --bundle dist/explorer --preset repository --hook
+  ./palette.mjs --label Night --out <dir>
+  ```
+
+  - **Hook:** a module whose default export is `async (context, view) => void`.
+  It runs on every fresh browser context before the page loads, so it can write
+  local storage. I checked it with
+  `AI-Agent-Workspace/tmp/contact-sheets/example-hook.mjs`, which forced the
+  dark World Map board.
+  - **Flags:** `--preset repository|estate|tidepool` (or `--dir`/`--pin`),
+  `--label`, and `--only` to redraw named views. With `--only`, the sheet takes
+  the other views' pictures from the folder.
+  - **Waiting and settings:** each view waits for the 2D map to settle or for
+  the 3D map's `aria-busy` to clear. The tool's history settings are merged into
+  the saved interface settings rather than replacing them, so a palette written
+  by the hook survives.
+  - **Controls:** zoom, the three document check boxes and "Dark board" are
+  driven by their accessible names.
+
+  **Sheets** (`sheet.png` plus each picture, 1,440 by 900, in the worktree under
+  `AI-Agent-Workspace/tmp/`, which git ignores):
+  - `.../contact-sheets/tidepool/`: 11 pictures.
+  - `.../contact-sheets/estate/`: 13 pictures.
+  - `.../contact-sheets/repository/`: 15 pictures; the history step is "Preserve
+  grouped Explorer views across navigation", 29 files changed.
+  - `README.md` there notes that the container draws text in a fallback font,
+  not Segoe UI.
+
+  ## Choices I made
+  - **Show Assets is on in every Local Map view.** Assets are hidden by default,
+  and the point is to see each directory's make-up.
+  - **Directories opened:** the root for tidepool, `scripts` for the repository,
+  `Portal` for the estate. The estate has no tests, so its pinned card carries
+  no "has tests" mark.
+  - **History view does not open the root.** With the root open over the
+  repository's 984 files, it did not settle within 90 seconds, so it uses the
+  default 3D start instead.
+  - **History cache copied in.** My build had no history, so I copied the main
+  checkout's ignored history cache (`.mdmd/history/history.json`) into the
+  worktree and rebuilt `dist/explorer`.
+  - **Slower stills of the World Map and panels.** The first World Map picture
+  was caught mid fade-in, so the tool now waits for the network to go idle plus
+  1.5 s; I redrew both repository World Map pictures. The estate and tidepool
+  sheets were drawn before this change; the estate's World Map pictures look
+  fully drawn.
+
+  ## Checks run
+  - Unit tests for `archetype`, `discovery`, `relatedDocs` and the HTML and CSS
+  adapters: 75 passed.
+  - Integration tests `tidepool`, `sample-metadata` and `estate`: 5 passed.
+  - ESLint on the new script and test: clean.
+  - `tsc` over the root tsconfig, filtered to the new files: no errors in them.
+  The root config reports about 3,700 errors elsewhere, so this check alone
+  proves little.
+  - Builds: `live-docs:visualize`, `live-docs:visualize:estate` and
+  `live-docs:visualize:tidepool`.
+  - `npm run live-docs:generate`: regenerated docs committed (45 created, one
+  updated).
+  - The full gate was not run, since it does not run from a worktree.
+
+  No helper agent was used. Nothing is unfinished.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Sample holding every kind" finished · 37m 38s
+
+  Read 3 files, ran 5 shell commands (ctrl+o to expand)
+
+● I'm reviewing the first builder's handback, the "tidepool" sample project and
+  contact-sheet tool, and merging it onto main for focused checks while the
+  second builder finishes the colour table. · summary
+
+  Listed 1 directory, ran 3 shell commands (ctrl+o to expand)
+
+● Still merging the sample builder's work. Your 20:09 export of today's chat
+  overwrote the November 15 export's file, but that one is safe in git, and I'll
+  keep both. · summary
+
+  Searched for 1 pattern, ran 3 shell commands (ctrl+o to expand)
+
+● Update(.mdmd/layer-4/tests/integration/live-docs/tidepool.test.ts.mdmd.md)
+  ⎿  Added 1 line, removed 1 line
+      11  Holds [the tidepool sample](../../../../../tests/integration/pr
+          ograms/typescript/tidepool/README.md) to the make-up it exists 
+          for: each directory's mix of implementation, tests and assets a
+          s the generator reads them, every asset but one connected to th
+          e page or stylesheet that uses it, and both kinds of link betwe
+          en source files and documents.
+      12  
+      13  ### Notes
+      14 -- Written on 2026-11-16 with the sample ([Turn 1 of the Novembe
+         -r 16 session](../../../../../AI-Agent-Workspace/ChatHistory/202
+         -6/11/2026-11-16.1.record.md#turn-1)). The sample was made becau
+         -se neither this repository nor the estate shows every kind of f
+         -ile in one directory, and the owner asked to judge colour by ki
+         -nd on "a directory with many different types of files (document
+         -ation, assets, tests, implementations)" ([Turn 11 of the Novemb
+         -er 15 session](../../../../../AI-Agent-Workspace/ChatHistory/20
+         -26/11/2026-11-15.1.record.md#turn-11)). If the sample's files o
+         -r the generator's reading of kinds change, the pictures drawn f
+         -rom it change meaning, and this test says so first.            
+      14 +- Written on 2026-11-16 with the sample ([Turn 1 of the Novembe
+         +r 16 session](../../../../../AI-Agent-Workspace/ChatHistory/202
+         +6/11/2026-11-16.1.record.md#turn-1)). The sample was made becau
+         +se neither this repository nor the estate shows every kind of f
+         +ile in one directory, and the owner asked to see "what a direct
+         +ory with many different types of files looks like (documentatio
+         +n, assets, tests, implementations)" before judging colour by ki
+         +nd ([Turn 11 of the November 15 session](../../../../../AI-Agen
+         +t-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-11)
+         +). If the sample's files or the generator's reading of kinds ch
+         +ange, the pictures drawn from it change meaning, and this test 
+         +says so first.                                                 
+      15  - `tests/snapshot.png` is expected to stand unconnected: its te
+          st reads it with `readFileSync`, and the generator records a us
+          e of an asset only from an HTML attribute or a CSS `url()`. Tha
+          t is a gap of the adapters stated here, not hidden: when code t
+          hat names an asset is recorded, this expectation changes with i
+          t.
+      16  - The sample commits the authored blocks of five Live Docs so t
+          hat their links to documents exist; the estate commits none.
+      17  
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Focused tests and lint pass on the merged sample. Regenerating the Live Docs
+  to confirm they match, then I'll commit it and sort out the export file.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+❯ >Still merging the sample builder's work. Your 20:09 export of today's chat
+  overwrote the November 15 export's file, but that one is safe in git, and
+  I'll keep both.
+
+  Aw crap!! Sorry totally my mistake!
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Thanks, no harm done: nothing was lost. Putting each export under its own name
+  now, then committing the sample.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Background command "A one-time timer that wakes the root in 49 minutes to keep
+its context warm while builders run" completed (exit code 0)
+
+● Sample committed (dece9c0f); both export files are intact under their own
+  names. Recording your message and the export in today's record now. The
+  colour-table builder is still running.
+
+  Searched for 1 pattern, read 1 file, ran 5 shell commands (ctrl+o to expand)
+
+● Record and export are committed (9b5c0f2d). While the colour-table builder
+  works, I'm looking over the other two baseline sheets (this repository and the
+  estate) myself.
+
+  Searched for 1 pattern, read 3 files, ran 6 shell commands (ctrl+o to expand)
+
+● The sample with every kind of file is on main and you can open it on your port
+  now. Both exports are safe under their own names.
+
+  Your exports
+
+  - The November 15 export is back to its committed bytes; I checked its hash
+    against the month inventory.
+  - Today's 20:09 export is filed as
+    2026-11-16.1.claude-code.export-2026-11-16-200904.txt (AI-Agent-Workspace/Ch
+    atHistory/2026/11/2026-11-16.1.claude-code.export-2026-11-16-200904.txt).
+
+  The sample, "tidepool"
+
+  It is a small invented browser game whose directories hold different mixes of
+  implementation, tests, real binary assets and documents. These are today's
+  colours, not the candidates:
+
+  - 2D, the root open (http://127.0.0.1:8999/samples/tidepool/?s=N4IgbiBcDMA0IBM
+    oG0QgLrwGYoIy13QF8g): each closed directory's cells show its make-up. assets
+    is all rose, tests is green with one rose, src is mostly blue.
+  - 2D, pool.ts pinned (http://127.0.0.1:8999/samples/tidepool/?s=N4IgbiBcDMA0ID
+    sogM4CcDGB6ADgezwBsA6AFxRHgDMoBtARlnoF0BfIA): a card with uses on the left,
+    offerings on the right and the violet "has tests" frame.
+  - 3D Structure with documents shown (http://127.0.0.1:8999/samples/tidepool/?s
+    =N4IgbiBcDMA0ICcoBcEFcCm8BWL1ZAEcoRoATEeATxIGdU0BjZNBDSkAMygG0BGWHwC6AXyA):
+    all five kinds in one picture, which neither this repository nor the estate
+    can give.
+
+  I opened the third link headlessly on your port and it drew as described. I
+  only confirmed that the other two open with the right boxes ticked.
+
+  The contact-sheet tool
+
+  npm run contact:sheet draws one build in a fixed list of views and tiles them
+  into one sheet, with a hook that sets a palette before each page loads. I
+  looked at the baseline sheets for tidepool, this repository and the estate.
+  They are whole, and I'm keeping them as the "before" for the palette sheets.
+
+  Two things the sample exposed
+
+  - The 3D key leaves out kinds that sit inside directory bags. In the Structure
+    link above, green tests and rose assets fill the bags, but the key has no
+    row for either. I'll fix it in the palette round, where the keys are
+    reworked anyway.
+  - Assets named from TypeScript are not recorded as connections. Only an HTML
+    attribute or a CSS url() counts today, so the sample's test snapshot image
+    stands unconnected. The sample and its test state this openly. It is a gap
+    in the adapters, not a colour matter, and I have not acted on it.
+
+  Not done yet
+
+  - The full gate with the browser suite has not run for this merge. The
+    colour-table builder is still running browsers, and the two must not
+    overlap. The merge touches no product code. The sample's own tests, lint and
+    a Live Docs regeneration pass. The full gate runs when that builder's work
+    merges.
+  - The colour-table builder is still working. Nothing has been handed back.
+
+  Still open from my first reply
+
+  1. Should a shared link carry the sender's palette? I recommend no.
+  2. Should the World Map and the Local Map keep separate palette choices? I
+     recommend yes.
+
+  Neither blocks the current work.
