@@ -2,6 +2,10 @@
 
 _The owner's standing request (2026-09-29): after changing the Explorer, build it, look at it, and keep the pictures here, so that a sense of the UI accrues in the workspace and a change can be judged against what came before. Each dated folder is listed below with what each picture shows and how it was taken. The probe records under `../Probes/` keep their own pictures; the World Map's first pictures, from 2026-09-28, are there._
 
+## 2026-11-16
+
+[What moves in the 3D map's settle tail](2026-11-16/motion-rest/README.md): a builder's measurement of the long wait before the 3D picture says it is at rest, on four actions, with an exact replay of the page's motion; which bodies glide and why; candidate rules of rest and levers on the forces tried on the replays; a watch of 600 frames after rest; four pictures at rest. Nothing was built from it but two comments.
+
 ## 2026-11-15
 
 [A designer's reading of the 2D Local Map](2026-11-15/designer-eye/README.md): ten pictures by the root, at the owner's ask that the map's style be judged by the root's own eye and the designer's terms taught with it. Seven of the build as it stood (a card in one tone, a returning connection with the 3D button dark, an opened directory three presses out and after Fit, the overview's blank cards, a crowded directory, a path said twice) and three probes with injected styles, not product code (tone on a card and on a crowded directory, rows drawn as bars at the overview). Each finding is named in a designer's term with where it shows.
@@ -11,6 +15,16 @@ _The owner's standing request (2026-09-29): after changing the Explorer, build i
 [A hierarchy of tone on the 2D map's cards, wires without a glow, and the legend redrawn](2026-11-15/tone-and-greeking/README.md): before and after in pairs under both font metrics, the failing run of the round's spec on the build before, and two passes of a frame-cost measurement of what removing the wires' glow saves. By the builder of the tone round.
 
 [The history's Changed Files modes on one step](2026-11-15/changed-files-modes/README.md): Glow, Dim and Both side by side, taken by the root when the owner asked whether a changed file could keep its colour.
+
+[The 3D Local Map while it builds](2026-11-15/building-map/README.md): the sign and the waiting cursor, a press refused while the map builds, and the first measurement of how long the map stays busy, whose reading of "the last visible move" the November 16 measurement corrects. By the builder of that round.
+
+[A directory's handle at every zoom](2026-11-15/directory-handles/README.md): the closed box as one button with a chevron, a directory's name never smaller than its files', the closed directory as a folder of cells in three shapes and two colourings, and sibling closed boxes drawn by one recipe three presses out. By the directory rounds' builder, over several legs.
+
+[A line of description kept three presses out, four values](2026-11-15/descriptions-kept/README.md): Hidden, first line where the name leaves room, and first line always with the name cut at its end or in its middle, on the owner's card and others. By the far view's builder.
+
+The cycle round's pictures, in its three legs, by its builder: [fewest returns as a rule, before and after](2026-11-15/fewest-returns/README.md); [a return as one term of a price at the ranking](2026-11-15/fewest-returns-2/README.md); [a cycle's order as a trial of the continuing search](2026-11-15/fewest-returns-3/README.md), which is what landed.
+
+[A palette for a file's kind that stays off the role colours: a probe](2026-11-15/kind-palette/README.md): `scripts` in the 2D map with the closed directories' cells in three palettes, by the root with injected styles, and what the owner said of them. Nothing was built from it.
 
 ## 2026-11-13
 

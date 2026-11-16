@@ -7635,3 +7635,109 @@ completed (exit code 0)
   commit it when it finishes. · summary
 
   Ran 2 shell commands (ctrl+o to expand)
+
+● Background command "Build main with the mended round, regenerate, rebuild the
+three Explorer bundles, run the unit cases, then the round's browser cases and
+the directory families' on main" completed (exit code 0)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Backward connections is committed as 01b4cd2f: 69 of 69 browser cases passed
+  on main. I am recording it now and will send its links with a plain account of
+  what changed.
+
+  Read 2 files, ran 3 shell commands (ctrl+o to expand)
+
+● Recorded and committed. Now tidying the finished builder's worktree and
+  merging the 3D-rest round.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The 3D-rest round merged cleanly; building and checking it now, then I send
+  you the backward-connections links.
+
+  Searched for 1 pattern, ran 2 shell commands (ctrl+o to expand)
+
+● Backward connections is committed (01b4cd2f) and on your port 8999. On main:
+  69 of 69 browser cases, including the four the first gate found red.
+
+  What it does
+
+  Where files use each other in a ring, some connection has to run right to left
+  whatever the order. Graph-drawing people call those the feedback arcs; on our
+  screen they are the amber feet on the cards and the count on the 3D button.
+
+  - The first picture is drawn exactly as before.
+  - Then the background search tries the ring's other orders, the same search
+    that already tries other arrangements once a picture is up. It moves to one
+    only if the whole picture comes out cheaper.
+  - A backward connection is one cost among the others (width, height, wire
+    length, crossings). That is your "competing concerns, emergently", and it
+    has a lever: Tuning → 2D Layout → Return Cost.
+
+  The one thing you will notice
+
+  A picture with a ring may rearrange once, a second or more after it arrives,
+  and the 3D button's count follows. On the builder's run that was about 1 s on
+  go.ts and manifest.ts, and about 5 s on branch-renderer.ts.
+
+  See it
+
+  Open each and wait for the rearrangement:
+
+  - manifest.ts (http://127.0.0.1:8999/?view=local&node=packages/engine/src/live
+    -docs/adapters/manifest.ts): 1 backward connection becomes 0, six columns
+    become four, and the 3D button's amber goes out. The clearest win.
+  - go.ts (http://127.0.0.1:8999/?view=local&node=packages/engine/src/live-docs/
+    adapters/go.ts): 3 become 1, and the picture stays readable when you press
+    Fit.
+  - branch-renderer.ts (http://127.0.0.1:8999/?view=local&node=packages/explorer
+    /src/client/views/localView/branch-renderer.ts): 8 become 7. Slight.
+  - adapters/index.ts (http://127.0.0.1:8999/?view=local&node=packages/engine/sr
+    c/live-docs/adapters/index.ts): 34 become 22, but in one tall column. Mixed:
+    it scores better and is no easier to read at Fit.
+  - branch-scene.ts (http://127.0.0.1:8999/?view=local&node=packages/explorer/sr
+    c/client/views/localView/branch-scene.ts): 4 become 6. More run backward
+    here because the picture gets narrower with shorter wires, which shows the
+    cost is a weight and not a ban.
+
+  Across the 33 pictures that change: backward connections 258 to 197, wire down
+  a tenth, crossings down a quarter.
+
+  Your last message
+
+  Thank you for it. I can only see the result from inside, not the cause, so
+  trying extra-high reasoning next session is a fair experiment. My reply to you
+  at 14:23 was one more that only reached you as a summary line.
+
+  Next
+
+  - The 3D-rest round (comments and documents only) is merged and building; I
+    commit it when its checks pass.
+  - The legend builder is still in its browser sittings.
+
+❯ >Open each and wait for the rearrangement:
+
+  I see the quick initial rearrangement and... no problem! Totally worth it for
+  a better layout!
+
+  Searched for 1 pattern, ran 5 shell commands (ctrl+o to expand)
+
+● Good to hear. Writing your verdict on the rearrangement into Memory and the
+  record, then committing the 3D-rest round once its checks finish.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Your verdict is recorded: the one rearrangement after arrival is accepted, and
+  Return Cost stays at its default.
+
+  Where things stand:
+
+  - 3D rest: merged on main and in its checks (build passed; regeneration, the
+    three previews, the motion's unit cases and the link check are running). I
+    commit it when they pass. It changes no behaviour.
+  - Legend wording: its builder is still in its browser sittings.
+  - After those two: the full gate again on a quiet machine, then drawn options
+    for the closed directory at the farthest zoom.
+
+  Nothing needs you right now.
