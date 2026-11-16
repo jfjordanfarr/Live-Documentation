@@ -229,7 +229,7 @@
     right: 0;
     top: calc(var(--row-held-y, 0) * 1px);
     z-index: -1;
-    height: clamp(100%, calc((max((var(--row-name-y, 0) + var(--row-name-h, 0) + (var(--row-lines, 1) - 1) * var(--row-line, 0)) * var(--name-scale, 1), var(--row-more-y, 0) + var(--row-more-h, 17) * var(--row-control-scale, 1)) - var(--row-wrapper-y, -2) + 2) * 1px), calc((var(--row-held-h, var(--row-h, 0)) - var(--row-wrapper-y, -2)) * 1px));
+    height: clamp(100%, calc((max((var(--row-name-y, 0) + var(--row-name-h, 0) + (var(--row-lines, 1) - 1 + var(--row-kept, 0)) * var(--row-line, 0)) * var(--name-scale, 1), var(--row-more-y, 0) + var(--row-more-h, 17) * var(--row-control-scale, 1)) - var(--row-wrapper-y, -2) + 2) * 1px), calc((var(--row-held-h, var(--row-h, 0)) - var(--row-wrapper-y, -2)) * 1px));
     border-radius: 4px;
     background: var(--accent-subtle);
     box-shadow: 0 0 0 1px var(--accent), 0 0 8px var(--color-outbound-glow);
@@ -537,6 +537,78 @@
 }
 [data-looks="three"][data-lod="far"] .local-slot-card .symbol-row.local-name-lines-connections .symbol-label .symbol-label-text wbr,
 [data-looks="three"][data-lod="overview"] .local-slot-card .symbol-row.local-name-lines-overview .symbol-label .symbol-label-text wbr { display: inline; }
+/* Descriptions Zoomed Out (a trial of 2026-11-13; the owner: "I wouldn't be totally averse to trying to preserve more
+   description at higher zoom-outs given that descriptions are always affirmatively asked for"; three forms beside
+   hidden since 2026-11-15, for the owner to choose among): in the connections look only, a row whose description is
+   shown at reading size keeps the description's first line under its name, as plain text, held at the name's size and
+   cut with an ellipsis at the name's room across, so that it never runs under More. With "first line, where the name
+   leaves room" it does so where its name takes one line there; with the two "always" forms every described row does,
+   and its name holds to one line, cut at its end or in its middle where it does not fit (below). A kept line is prose
+   and takes the prose's tone, so that the names still lead. It is part of the row's head, and the heads are spaced
+   evenly with it (the card reading's --row-even-y-connections and its kin, written where a row of the card keeps
+   one); the overview look keeps its own places. No box changes. */
+.local-row-kept { display: none; }
+[data-looks="three"][data-lod="far"] .local-slot-card .symbol-row {
+    --row-held-h: var(--row-even-h-connections, var(--row-even-h, var(--row-h, 17)));
+    --row-held-fill: var(--row-fill-even-connections, var(--row-fill-even, var(--row-fill-h, 1)));
+    --row-held-y: var(--row-even-y-connections, var(--row-even-y, 0));
+}
+[data-looks="three"][data-lod="far"] .local-slot-card .symbol-row.local-row-kept-on { --row-kept: 1; }
+[data-looks="three"][data-lod="far"] .local-slot-card .symbol-row.local-row-kept-on .symbol-label-wrapper { position: relative; }
+[data-looks="three"][data-lod="far"] .local-slot-card .symbol-row.local-row-kept-on .local-row-kept {
+    display: block;
+    position: absolute;
+    left: calc(var(--row-label-x, 6) * 1px);
+    top: calc((var(--row-name-y, 0) - var(--row-wrapper-y, -2) + var(--row-line, 12.65)) * 1px);
+    max-width: calc(var(--name-room) / var(--name-scale, 1) * 1px);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 11px;
+    line-height: calc(var(--row-line, 12.65) * 1px);
+    color: var(--card-prose);
+    transform: translateY(calc(var(--row-held-y, 0) * 1px)) scale(var(--name-scale, 1));
+    transform-origin: left calc((var(--row-name-y, 0) + var(--row-line, 12.65)) * -1px);
+    pointer-events: none;
+}
+/* A name held to one line above its kept description and cut (2026-11-15): the card reading writes what is drawn of it
+   beside its text (data-name-cut: its start and the ellipsis, or its first and last pieces with the ellipsis between,
+   name-cut.ts), and this draws that over the text, whose own characters stay the whole name for the page's find and for
+   assistive technology, with the button's label and tooltip. The text is laid out as it is and not painted. */
+[data-looks="three"][data-lod="far"] .local-slot-card .symbol-row.local-name-cut .symbol-label-text { -webkit-text-fill-color: transparent; }
+[data-looks="three"][data-lod="far"] .local-slot-card .symbol-row.local-name-cut .symbol-label-text::after {
+    content: attr(data-name-cut);
+    position: absolute;
+    left: 0;
+    top: 0;
+    white-space: nowrap;
+    -webkit-text-fill-color: currentcolor;
+}
+/* The file's own kept line (2026-11-15; the owner: "why are we not having a line there as well for the node-level
+   description if the reader icon is active at the node level?"): where the choice keeps lines and the file's Purpose is
+   shown at reading size, its first line stands under the held name and its controls in the connections look, in the
+   kept lines' type and tone at the look's size, across the header's room, cut with an ellipsis. It is a child of the
+   card beside the header, so that the header's text stays the file's name. The card reading marks the card where the
+   header's room down to the first row holds it (local-file-kept-on) and writes its place inside the card
+   (--file-kept-x, --file-kept-y); where the room does not hold it, it is not drawn. */
+.local-file-kept { display: none; }
+[data-looks="three"][data-lod="far"] .local-slot-card.local-file-kept-on .local-file-kept {
+    display: block;
+    position: absolute;
+    left: calc(var(--file-kept-x, 0) * 1px);
+    top: calc(var(--file-kept-y, 0) * 1px);
+    width: calc(var(--title-room-w, 0) / var(--text-scale, 1) * 1px);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 12.65px;
+    color: var(--card-prose);
+    transform: scale(var(--text-scale, 1));
+    transform-origin: left top;
+    pointer-events: none;
+}
 /* The counts at a card's foot in the connections look, "+N symbols" and the framed "+N connections" (2026-11-13): in a
    look made for connections they are what a card without drawn rows has to say, and the second reveals them. Where the
    card's room below what it draws holds them at the look's scale they stand there, held together about the last one's

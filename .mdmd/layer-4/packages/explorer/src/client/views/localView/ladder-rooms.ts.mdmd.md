@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/ladder-rooms.ts
-- Generated At: 2026-11-15T23:13:51.432Z
+- Generated At: 2026-11-16T04:49:21.024Z
 
 ## Authored
 ### Purpose
@@ -20,6 +20,10 @@ Written in the far bands' round (2026-11-06), after the owner reported "things e
 `linesOf`, of the same day, counts a text's lines from its fragments for the card reading: the empty boxes of the name's word breaks are left out and fragments whose centres lie within half a line of each other share a line. Counting rounded tops had read one line as two under Segoe UI's line metrics, where a word break's box stood a pixel off its text's, and a wrapped name was then drawn with half its line.
 
 Later the same day, with short rows ([the milestone after Turn 3](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-3)): `shortRowHeight` (44 at the connections look's 2.2, which the stylesheet states and a unit test holds it to), `headHeight`, `fitLines` and `evenRows`, which space the far looks' heads evenly over the rows' room with one more gap shared so that rows of one height move nothing, and `pinDepth`, the room to the first pinned row as laid out or as the looks draw its head, which replaced a count of rows times one pitch.
+
+`fitKept` (2026-11-13) serves the Descriptions Zoomed Out trial. It decides which rows keep their description's first line in the connections look, and gives kept lines up before any name gives up a line, so that no name is cut to make way for a description ([Turn 7 of the November 13 record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-7)).
+
+Since 2026-11-15 ([Turn 1 of the November 15 record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) `fitKept` serves only the "first-line" value of Descriptions Zoomed Out; in the two values where every described row keeps its line the card reading keeps them all and lets `fitLines` take lines from the names instead. `fileLineRoom` says whether a file's header holds a line of its Purpose under the held name at the look's scale, with `FILE_KEPT_AIR` between them, and by how much it falls short where it does not, so that the shortfall is reported and no line is drawn smaller.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -204,13 +208,41 @@ move.
 How many lines each drawn row's name takes in the far looks: as many as it wants, until the heads they make are taller
 than the rows' room; then one fewer at a time, from the name that takes the most (the later of equals), down to one.
 
+#### `fitKept` {#symbol-fitkept}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L241)
+
+##### `fitKept` — Summary
+The Descriptions Zoomed Out trial's heads in the connections look (2026-11-13): which rows keep their description's
+first line under the name, and each name's lines. A row may keep it when its description is shown at reading size and
+its name takes one line; the kept line is part of its head (`head(index, lines, kept)`). Kept lines give way before
+any name does: while the heads are taller than the rows' room, the last row's kept line goes first, and only when none
+is left do the names give up lines, as {@link fitLines} has them do. So no name is cut to make way for a description.
+
 #### `headHeight` {#symbol-headheight}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L238)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L256)
 
 ##### `headHeight` — Summary
 A row's head's height in the far looks at a held scale: the taller of its More, held at the scale from its top, and
 its name's lines, held about the row's top, with the highlight's air.
+
+#### `FILE_KEPT_AIR` {#symbol-file_kept_air}
+- Type: const
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L261)
+
+##### `FILE_KEPT_AIR` — Summary
+The air a file's kept line keeps below the held name and its controls, in the map's own units.
+
+#### `fileLineRoom` {#symbol-filelineroom}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-rooms.ts#L269)
+
+##### `fileLineRoom` — Summary
+Whether the header holds the file's own kept line in the connections look (Descriptions Zoomed Out, 2026-11-15), and
+by how much it falls short where it does not: the line is a name's line (`NAME_LINE`) at the held scale, with its air
+above it, and its room is what the header keeps down to the first row (`headRoom`) below the held name and its
+controls (`below`). The line is never drawn smaller to fit.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

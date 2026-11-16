@@ -52,6 +52,8 @@ Since November 8, 2026, the literal initial controls agree with `getDefaultTunin
 - Since 2026-11-12 the page loads `static/index.js` as a classic deferred script (`<script defer>`) instead of a module, so that a page opened as a file still runs it and can say that it must be served; a module script is refused to such a page. The policy is unchanged.
 - Since 2026-11-12 `#views` begins with `#explorer-loading`, the wordless loading sign (`role="status"`, named "Loading", an inline drawing of three dots), which the client removes before the first view draws or a refusal shows ([the round's evidence](../../../../../../AI-Agent-Workspace/Screenshots/2026-11-12/world-map-repairs/README.md)).
 
+- Since 2026-11-15 ([Turn 1 of the November 15 record](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) the 2D layout group has `#tuning-descriptions-zoomed-out`, a select of four values: Hidden, the first line where the name leaves room, and the first line always with the name cut at its end or in its middle.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -221,6 +223,9 @@ Since November 8, 2026, the literal initial controls agree with `getDefaultTunin
 - Type: variable
 
 #### `tuning-control-resistance-value` {#symbol-tuning-control-resistance-value}
+- Type: variable
+
+#### `tuning-descriptions-zoomed-out` {#symbol-tuning-descriptions-zoomed-out}
 - Type: variable
 
 #### `tuning-directory-layout` {#symbol-tuning-directory-layout}

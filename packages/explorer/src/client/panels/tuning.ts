@@ -6,7 +6,7 @@
  */
 
 import { layoutSettingsOf } from "../layout-presets";
-import { CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, OVERVIEW_FILES, type ExplorerState } from "../types";
+import { CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, OVERVIEW_FILES, type ExplorerState } from "../types";
 import { TUNING_HELP, tuningHelpId } from "./tuning-levers";
 
 /** Callback for when tuning values change */
@@ -71,6 +71,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     for (const row of document.querySelectorAll<HTMLElement>("[data-closed-cells-only]")) row.hidden = state.tuning.localMap.closedDirectory !== "cells";
   };
   const overviewFilesSelect = document.getElementById("tuning-overview-files") as HTMLSelectElement | null;
+  const descriptionsZoomedOutSelect = document.getElementById("tuning-descriptions-zoomed-out") as HTMLSelectElement | null;
   const slotLinesInput = document.getElementById("tuning-slot-lines") as HTMLInputElement | null;
   const textResistanceInput = document.getElementById("tuning-text-resistance") as HTMLInputElement | null;
   const controlResistanceInput = document.getElementById("tuning-control-resistance") as HTMLInputElement | null;
@@ -179,6 +180,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     if (closedCellsSelect) closedCellsSelect.value = state.tuning.localMap.closedCells;
     syncClosedChoices();
     if (overviewFilesSelect) overviewFilesSelect.value = state.tuning.localMap.overviewFiles;
+    if (descriptionsZoomedOutSelect) descriptionsZoomedOutSelect.value = state.tuning.localMap.descriptionsZoomedOut;
     state.tuning.localMap.slotLines = setSlider(slotLinesInput, "tuning-slot-lines-value", state.tuning.localMap.slotLines, v => String(v));
     state.tuning.localMap.textResistance = setSlider(textResistanceInput, "tuning-text-resistance-value", state.tuning.localMap.textResistance, v => String(v));
     state.tuning.localMap.controlResistance = setSlider(controlResistanceInput, "tuning-control-resistance-value", state.tuning.localMap.controlResistance, v => String(v));
@@ -289,6 +291,14 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   if (closedCellsSelect) {
     closedCellsSelect.addEventListener("change", () => {
       state.tuning.localMap.closedCells = CLOSED_CELL_COLOURS.find(choice => choice === closedCellsSelect.value) ?? CLOSED_CELL_COLOURS[0];
+      onTuningChange();
+      if (state.view === "map" && state.perspective === "2d") onRender();
+    });
+  }
+  // What a row keeps of its description in the connections look changes its head's height there: the view re-renders.
+  if (descriptionsZoomedOutSelect) {
+    descriptionsZoomedOutSelect.addEventListener("change", () => {
+      state.tuning.localMap.descriptionsZoomedOut = DESCRIPTIONS_ZOOMED_OUT.find(choice => choice === descriptionsZoomedOutSelect.value) ?? DESCRIPTIONS_ZOOMED_OUT[0];
       onTuningChange();
       if (state.view === "map" && state.perspective === "2d") onRender();
     });

@@ -71,6 +71,7 @@ export const getDefaultTuning = (): TuningConfig => ({
     closedShape: "tab",
     closedCells: "kind",
     overviewFiles: "files",
+    descriptionsZoomedOut: "hidden",
     slotLines: 2,
     textResistance: 1,
     controlResistance: 1,

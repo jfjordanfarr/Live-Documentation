@@ -45,6 +45,7 @@ export const TUNING_HELP: Readonly<Record<string, string>> = {
   "tuning-closed-shape":              "The shape of a closed directory's skin: a folder with its name on its tab, a capsule, or a card's corners.",
   "tuning-closed-cells":              "What colours a closed directory's cells: each file's kind, as the 3D map colours it, or one grey.",
   "tuning-overview-files":            "What the farthest zoom draws: every card at its size, or files only with one line for each pair, as in Flow.",
+  "tuning-descriptions-zoomed-out":   "With fixed slots, what a described symbol keeps of its description three presses out, and how its name is cut.",
   "tuning-slot-lines":                "With fixed slots, how many lines of text each symbol's slot holds, filled or not.",
   "tuning-text-resistance":           "With fixed slots, how much names resist the zoom below reading scale: 0 follows it, 1 holds their screen size.",
   "tuning-name-growth":               "With fixed slots, how much symbol names grow into the room descriptions leave below reading scale: 1 keeps one size.",

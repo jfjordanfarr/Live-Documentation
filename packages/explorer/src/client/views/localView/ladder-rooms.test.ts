@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { dotRoom, evenRows, fitLines, footHold, HEAD_SPACE, headHeight, HIGHLIGHT_BELOW, layoutTopOf, linesOf, NAME_LINE, nameFill, nameLinesHeld, nameWraps, pinDepth, ROW_MORE, rowsBeforeFirstPin, shortRowHeight } from "./ladder-rooms";
+import { dotRoom, evenRows, FILE_KEPT_AIR, fileLineRoom, fitKept, fitLines, footHold, HEAD_SPACE, headHeight, HIGHLIGHT_BELOW, layoutTopOf, linesOf, NAME_LINE, nameFill, nameLinesHeld, nameWraps, pinDepth, ROW_MORE, rowsBeforeFirstPin, shortRowHeight } from "./ladder-rooms";
 import { LOOK_SCALES } from "./ladder-steps";
 
 describe("nameFill", () => {
@@ -127,6 +127,29 @@ describe("fitLines", () => {
   });
 });
 
+describe("fitKept, the Descriptions Zoomed Out trial (2026-11-13)", () => {
+  // Each line of a head is 30 units, as a name's line held at the connections look nearly is.
+  const head = (_: number, lines: number, kept: boolean): number => 30 * (lines + (kept ? 1 : 0));
+
+  it("keeps a first line only under a described name that takes one line, as part of its head", () => {
+    const fit = fitKept([1, 2, 1, 1], [true, true, false, true], head, 1000);
+    expect(fit.kept).toEqual([true, false, false, true]);
+    expect(fit.lines).toEqual([1, 2, 1, 1]);
+  });
+
+  it("gives kept lines up, the last first, before any name gives up a line", () => {
+    // Without kept lines the heads are 150; each kept line adds 30.
+    expect(fitKept([1, 2, 1, 1], [true, true, true, true], head, 200)).toEqual({ lines: [1, 2, 1, 1], kept: [true, false, false, false] });
+    expect(fitKept([1, 2, 1, 1], [true, true, true, true], head, 150)).toEqual({ lines: [1, 2, 1, 1], kept: [false, false, false, false] });
+    // Only when none is left does a name lose a line, as fitLines has it.
+    expect(fitKept([1, 2, 1, 1], [true, true, true, true], head, 120)).toEqual({ lines: [1, 1, 1, 1], kept: [false, false, false, false] });
+  });
+
+  it("keeps nothing where nothing is described", () => {
+    expect(fitKept([1, 1], [false, false], head, 1000)).toEqual({ lines: [1, 1], kept: [false, false] });
+  });
+});
+
 describe("pinDepth", () => {
   const rows = [
     { shown: true, pinned: false, height: 66, head: 62.5 },
@@ -197,5 +220,23 @@ describe("rowsBeforeFirstPin", () => {
   it("says nothing when no shown row is pinned", () => {
     expect(rowsBeforeFirstPin([])).toBeNull();
     expect(rowsBeforeFirstPin([{ shown: true, pinned: false }, { shown: false, pinned: true }])).toBeNull();
+  });
+});
+
+describe("the file's own kept line in the connections look", () => {
+  const scale = LOOK_SCALES.connections;
+  it("stands where the header's room holds a name's line at the held size below the held name, with its air", () => {
+    // A header 91 deep and a name on one line of 15 at 2.2, More beside it: 33 below the name's top, 58 left for 29.83.
+    expect(fileLineRoom(91, 33, scale)).toEqual({ fits: true, short: 0 });
+    // Just enough.
+    expect(fileLineRoom(33 + FILE_KEPT_AIR + NAME_LINE * scale, 33, scale).fits).toBe(true);
+  });
+
+  it("is not drawn where the room does not hold it, and says by how much, rather than shrink", () => {
+    // A name on two lines takes 66 of the 91: 25 left, 4.83 short.
+    const two = fileLineRoom(91, 66, scale);
+    expect(two.fits).toBe(false);
+    expect(two.short).toBeCloseTo(66 + FILE_KEPT_AIR + NAME_LINE * scale - 91, 6);
+    expect(two.short).toBeCloseTo(4.83, 2);
   });
 });

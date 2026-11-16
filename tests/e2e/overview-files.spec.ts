@@ -1,5 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
+import { choose } from "./search-bar";
 import { localMapStill } from "./still-picture";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
@@ -314,3 +315,79 @@ test("files only is the default, a link carries the cards' size only when chosen
   expect((await picture(page)).files).toBe(true);
   await context.close();
 });
+
+/**
+ * The picture as the layout made it, in the map's own units, as the box audit reads it (card-ladder-boxes.spec.ts's
+ * laidOut): each card's box, its rows' places, its pins' heights, and with them every wire drawn, by its two ends and
+ * its path to the half unit.
+ */
+const laidOut = (page: Page) => page.evaluate(() => {
+  const root = document.querySelector("#map-container .local-placed")!;
+  const offsetIn = (element: HTMLElement, stop: Element): { x: number; y: number } => {
+    let x = 0, y = 0;
+    for (let at: HTMLElement | null = element; at && at !== stop; at = at.offsetParent as HTMLElement | null) { x += at.offsetLeft; y += at.offsetTop; }
+    return { x, y };
+  };
+  const cards = Object.fromEntries([...document.querySelectorAll<HTMLElement>("#map-container .node-card")].map(card => {
+    const at = offsetIn(card, root);
+    const rows = [...card.querySelectorAll<HTMLElement>(".symbol-row")].filter(row => row.offsetParent).map(row => `${row.dataset.symbol} ${row.offsetTop} ${row.offsetHeight}${row.classList.contains("symbol-pinned-named") ? " pinned by name" : ""}`);
+    const pins = [...card.querySelectorAll<HTMLElement>(".symbol-anchor")].filter(anchor => anchor.offsetParent)
+      .map(anchor => `${anchor.classList.contains("inbound") ? "uses" : "offers"} ${anchor.dataset.symbol ?? "*"} ${offsetIn(anchor, card).y + anchor.offsetHeight / 2}`);
+    return [card.dataset.id!, { box: `${at.x},${at.y} ${card.offsetWidth}x${card.offsetHeight}`, rows, pins, pinned: card.classList.contains("file-pinned") }];
+  }));
+  const wires = [...document.querySelectorAll<SVGElement>("#map-connections .connection-path")].filter(path => getComputedStyle(path).display !== "none").map(path =>
+    `${[...path.classList].sort().join(".")} ${path.dataset.targetId ?? ""}#${path.dataset.targetSymbol ?? ""} -> ${path.dataset.sourceId ?? ""}#${path.dataset.sourceSymbol ?? ""} `
+    + (path.getAttribute("d") ?? path.getAttribute("points") ?? "").replace(/-?\d+(\.\d+)?/gu, number => String(Math.round(Number(number) * 2) / 2))).sort();
+  return { look: document.querySelector<HTMLElement>("#map-container")!.dataset.look, files: document.querySelector("#map-container")!.hasAttribute("data-overview-files"), cards, wires };
+});
+
+const stillPicture = "tests/e2e/still-picture.ts";
+for (const [what, pin] of [
+  ["a whole-file pin, from the card's More", async (page: Page): Promise<void> => {
+    await page.locator(`.node-card[data-id="${stillPicture}"] .local-file-more`).click();
+    await page.getByRole("menu").getByRole("menuitem", { name: "Pin file", exact: true }).click();
+  }],
+  ["a symbol pinned by name, from the search", async (page: Page): Promise<void> => choose(page, "subject", "localMapStill", { file: stillPicture, symbol: "localMapStill" })]
+] as const) {
+  test(`a pin made while files only is showing gives, back at reading size, the picture the same pin gives made at reading size: ${what}`, async ({ page }) => {
+    // Files only is the default, and a pin there is made on a picture whose rows are not laid out (2026-11-15): what it
+    // draws once the cards have their rows again must not depend on where the person stood when they made it.
+    test.setTimeout(240_000);
+    await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+      key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0 } } })
+    });
+    const address = `/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, view: "map", perspective: "2d", selectedNodeId: stillPicture })}`;
+    const arrive = async (): Promise<void> => {
+      await page.goto(address);
+      await page.locator(`.node-card[data-id="${stillPicture}"]`).waitFor({ timeout: 60_000 });
+      await still(page);
+    };
+    // The pin made at reading size.
+    await arrive();
+    await pin(page);
+    await still(page);
+    const near = await laidOut(page);
+    expect(near.look).toBe("reading");
+    expect(Object.values(near.cards).some(card => card.pinned) || near.cards[stillPicture].rows.some(row => row.endsWith("pinned by name")), "the pin was made").toBe(true);
+    // The same pin made seven presses out, where files only is showing, then back at reading size.
+    await arrive();
+    await presses(page, 7);
+    expect((await laidOut(page)).files, "files only is showing").toBe(true);
+    // The picture was laid out again around whatever stood under the pointer, and the subject's card may have left the
+    // frame: Fit brings every card back into it, still in the overview look, before the pin is made on the card.
+    await page.getByRole("button", { name: "Fit current scope", exact: true }).click();
+    await still(page);
+    expect((await laidOut(page)).files, "files only is still showing after Fit").toBe(true);
+    await pin(page);
+    await still(page);
+    // Back to reading size by the control for it, however far out Fit stood.
+    await page.getByRole("button", { name: "Return to reading size", exact: true }).click();
+    await still(page);
+    const far = await laidOut(page);
+    expect(far.look).toBe("reading");
+    expect(far.files).toBe(false);
+    expect(Object.keys(far.cards).sort(), "the same cards").toEqual(Object.keys(near.cards).sort());
+    for (const [id, card] of Object.entries(near.cards)) expect.soft(far.cards[id], id).toEqual(card);
+    expect.soft(far.wires, "the same wires, end to end").toEqual(near.wires);
+  });
+}

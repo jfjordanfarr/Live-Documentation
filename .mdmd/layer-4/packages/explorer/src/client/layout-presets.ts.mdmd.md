@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/layout-presets.ts
-- Generated At: 2026-11-16T03:32:01.286Z
+- Generated At: 2026-11-16T05:14:27.825Z
 
 ## Authored
 ### Purpose
@@ -40,6 +40,8 @@ A link carries Closed Directory (2026-11-13) only when it is one of the trial's 
 Since 2026-11-15 ([November 15, Turn 1](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) a link carries Closed Directory only when it is not the skin with cells, and the skin's shape and its cells' colour only when they are not the folder's tab and the kinds' colours.
 
 Files only is the default of Zoomed Out Fully since 2026-11-15, by the owner's eye and a comparison with the cards' rows drawn as bars ([Turn 1 of that day's record](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)): a link now writes the cards' size when it is chosen and says nothing for files only, where for the trial's two days it was the other way about; a link of those days that says files only is read as saying nothing, which is the same picture.
+
+Since 2026-11-15 ([Turn 1 of the November 15 record](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) a link carries Descriptions Zoomed Out when it is not Hidden, and a link that carries the 2D map's settings without it opens Hidden, as with the other choices whose default is not written.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -83,7 +85,7 @@ Return a fresh tuning record with both representations' packing set together.
 
 #### `readLayoutSettings` {#symbol-readlayoutsettings}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L60)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L61)
 - Returns: [`LayoutSettings`](#symbol-layoutsettings)
 
 ##### `readLayoutSettings` — Summary
@@ -97,11 +99,12 @@ opens in it. Zoom Looks: only the stepped ladder is carried since the three look
 link made between November 10 and 13 says either, since the default was written. Opened Directory: only the grid is
 carried since Flow became the default (2026-11-13); a link made on November 12 or 13 says "flow" when Flow was chosen
 and nothing when the grid was, so such a link now opens in Flow either way, and a link that says "grid" exists only
-from now on. Closed Directory (2026-11-13): only a trial's look is carried, and its absence reads as today's box.
+from now on. Closed Directory (2026-11-13): only a trial's look is carried, and its absence reads as today's box;
+Descriptions Zoomed Out (2026-11-13) likewise: only the first line is carried, and its absence reads as hidden.
 
 #### `layoutSettingsOf` {#symbol-layoutsettingsof}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L96)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L98)
 - Returns: [`LayoutSettings`](#symbol-layoutsettings)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 
@@ -110,7 +113,7 @@ Snapshot the controls that affect packing and spatial encodings, independent of 
 
 #### `applyLayoutSettings` {#symbol-applylayoutsettings}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L111)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L113)
 - Returns: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig); `settings`: [`LayoutSettings`](#symbol-layoutsettings)
 
@@ -131,6 +134,7 @@ picture). So a link made with the defaults shows them in a browser whose own tun
 - [`types.CLOSED_CELL_COLOURS`](./types.ts.mdmd.md#symbol-closed_cell_colours)
 - [`types.CLOSED_DIRECTORY_LOOKS`](./types.ts.mdmd.md#symbol-closed_directory_looks)
 - [`types.CLOSED_DIRECTORY_SHAPES`](./types.ts.mdmd.md#symbol-closed_directory_shapes)
+- [`types.DESCRIPTIONS_ZOOMED_OUT`](./types.ts.mdmd.md#symbol-descriptions_zoomed_out)
 - [`types.DIRECTORY_LAYOUTS`](./types.ts.mdmd.md#symbol-directory_layouts)
 - [`types.ForceGraphTuning`](./types.ts.mdmd.md#symbol-forcegraphtuning)
 - [`types.GROUP_WRAPPERS`](./types.ts.mdmd.md#symbol-group_wrappers)

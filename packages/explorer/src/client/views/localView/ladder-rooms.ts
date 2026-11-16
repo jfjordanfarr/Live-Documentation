@@ -232,9 +232,41 @@ export function fitLines(want: readonly number[], head: (index: number, lines: n
 }
 
 /**
+ * The Descriptions Zoomed Out trial's heads in the connections look (2026-11-13): which rows keep their description's
+ * first line under the name, and each name's lines. A row may keep it when its description is shown at reading size and
+ * its name takes one line; the kept line is part of its head (`head(index, lines, kept)`). Kept lines give way before
+ * any name does: while the heads are taller than the rows' room, the last row's kept line goes first, and only when none
+ * is left do the names give up lines, as {@link fitLines} has them do. So no name is cut to make way for a description.
+ */
+export function fitKept(want: readonly number[], eligible: readonly boolean[], head: (index: number, lines: number, kept: boolean) => number, room: number): { lines: number[]; kept: boolean[] } {
+  const kept = want.map((count, index) => !!eligible[index] && Math.max(1, count) === 1);
+  const total = (): number => want.reduce((sum, count, index) => sum + head(index, Math.max(1, count), kept[index]), 0);
+  while (total() > room + 1e-6) {
+    const last = kept.lastIndexOf(true);
+    if (last < 0) break;
+    kept[last] = false;
+  }
+  return { lines: fitLines(want, (index, lines) => head(index, lines, kept[index]), room), kept };
+}
+
+/**
  * A row's head's height in the far looks at a held scale: the taller of its More, held at the scale from its top, and
  * its name's lines, held about the row's top, with the highlight's air.
  */
 export function headHeight(at: { nameTop: number; line: number; moreTop: number; moreHeight: number }, lines: number, scale: number): number {
   return Math.max(at.moreTop + at.moreHeight * scale, (at.nameTop + lines * at.line) * scale) + HIGHLIGHT_BELOW;
+}
+
+/** The air a file's kept line keeps below the held name and its controls, in the map's own units. */
+export const FILE_KEPT_AIR = 2;
+
+/**
+ * Whether the header holds the file's own kept line in the connections look (Descriptions Zoomed Out, 2026-11-15), and
+ * by how much it falls short where it does not: the line is a name's line (`NAME_LINE`) at the held scale, with its air
+ * above it, and its room is what the header keeps down to the first row (`headRoom`) below the held name and its
+ * controls (`below`). The line is never drawn smaller to fit.
+ */
+export function fileLineRoom(headRoom: number, below: number, scale: number): { fits: boolean; short: number } {
+  const short = below + FILE_KEPT_AIR + NAME_LINE * scale - headRoom;
+  return { fits: short <= 1e-6, short: Math.max(0, short) };
 }

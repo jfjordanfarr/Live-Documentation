@@ -6,8 +6,9 @@ import { drawHeldLooks } from "./card-factory";
 import { CELLS } from "./closed-looks";
 import { CLOSED_FOOT, fitHandle, HANDLE_INDENT, wholeAtSeams } from "./directory-handle";
 import { chooseHeldHeader, chooseNameHeader, CONTROLS_GAP, HELD_BANDS, heldLineCount, heldSegments, heldTitle, rowSegments, type HeldBand, type HeldRoom, type TitleRooms } from "./held-lines";
-import { dotRoom, evenRows, fitLines, footHold, HEAD_SPACE, headHeight, HIGHLIGHT_BELOW, layoutTopOf, linesOf, nameFill, nameLinesHeld, nameWraps, pinDepth, type FootCount } from "./ladder-rooms";
+import { dotRoom, evenRows, FILE_KEPT_AIR, fileLineRoom, fitKept, fitLines, footHold, HEAD_SPACE, headHeight, HIGHLIGHT_BELOW, layoutTopOf, linesOf, nameFill, nameLinesHeld, nameWraps, pinDepth, type FootCount } from "./ladder-rooms";
 import { FIRST_STEP, LAST_STEP, ladderScales, LOOK_BANDS, LOOK_SCALES, type LadderResistances, type ZoomLook } from "./ladder-steps";
+import { oneLineName } from "./name-cut";
 import { COMPACT_AIR, filesNameScale, OVERVIEW_FILES_ATTRIBUTE, pinnedRowScales, wholeNameScale } from "./overview-files";
 import type { LocalEdge, ReadingControl } from "./types";
 import { seamsOf } from "./word-seams";
@@ -18,7 +19,7 @@ import { createItemMenu } from "../../panels/item-menu";
 import { createReaderLinkHandler, type ReaderLinkContext } from "../../reader-links";
 import { authoredSections } from "../../reader-sections";
 import { descriptionIsOpen, type ReadingChoice } from "../../reading-state";
-import type { InspectionTarget } from "../../types";
+import type { DescriptionsZoomedOut, InspectionTarget } from "../../types";
 
 /**
  * What the card ladder's stylesheet reads, measured for one element and written after every reading: a custom property
@@ -40,6 +41,8 @@ export interface CardReadingOptions {
   resistances(): LadderResistances;
   /** Tuning's Zoom Looks: with the trial's three looks, the held name's lines are chosen for each look's scale too. */
   zoomLooks(): "stepped" | "three";
+  /** Tuning's Descriptions Zoomed Out: whether a described row keeps its description's first line in the connections look. */
+  descriptionsZoomedOut?(): DescriptionsZoomedOut;
   change(nodeId: string, symbol: string | undefined, open: boolean, control: ReadingControl): void;
   inspect(target: InspectionTarget, fragment?: string): void;
   navigate(node: ExplorerNodePayload): void;
@@ -131,6 +134,17 @@ export class CardReading {
     const purpose = summary || this.slots ? this.block(node, undefined, summary, false) : null;
     purpose?.element.classList.add("local-reading-purpose");
     if (purpose) card.querySelector(".node-path")?.after(purpose.element);
+    // Descriptions Zoomed Out (2026-11-15): the Purpose's first line as plain text, which the connections look may draw
+    // under the file's held name, at the held size, where the card reading keeps it (the owner: "why are we not having a
+    // line there as well for the node-level description if the reader icon is active at the node level?").
+    if (purpose && this.slots && summary) {
+      const kept = document.createElement("span");
+      kept.className = "local-file-kept";
+      kept.setAttribute("aria-hidden", "true");
+      kept.textContent = (purpose.prose.textContent ?? "").replace(/\s+/gu, " ").trim();
+      // Beside the header, not inside it: the header's text is the file's name wherever it is read.
+      card.querySelector(".node-title")?.after(kept);
+    }
     const symbols = new Map<string, ReadingBlock>();
     const controls = new Map<string | undefined, HTMLButtonElement>();
     const names = new Map<string | undefined, HTMLElement>();
@@ -184,6 +198,15 @@ export class CardReading {
       }
       block.element.dataset.symbol = name;
       row.append(block.element);
+      // The Descriptions Zoomed Out trial (2026-11-13): the description's first line as plain text, which the
+      // connections look may draw under the name, held at its size, where the card reading keeps it.
+      if (this.slots && text) {
+        const kept = document.createElement("span");
+        kept.className = "local-row-kept";
+        kept.setAttribute("aria-hidden", "true");
+        kept.textContent = (block.prose.textContent ?? "").replace(/\s+/gu, " ").trim();
+        row.querySelector(".symbol-label-wrapper")?.append(kept);
+      }
       row.classList.add("local-row-readable");
       symbols.set(name, block);
       if (!this.slots || text) {
@@ -295,13 +318,15 @@ export class CardReading {
     // The rooms of every slot card are read before any is written, so that the page lays out once for them all rather
     // than once a row (direction.md's November 6 cost finding).
     const resistances = this.options.resistances(), looks = this.options.zoomLooks() === "three";
+    const keep: DescriptionsZoomedOut = looks ? this.options.descriptionsZoomedOut?.() ?? "hidden" : "hidden";
     // What the zoom looks drew from the last reading, a name wrapped below its line and the foot's counts held, is taken
     // back first, all at once, so that every box is read as the layout put it (a reading may come between renders).
     for (const { card } of this.cards.values()) {
       card.classList.remove("local-foot-held");
-      for (const row of card.querySelectorAll(".symbol-row")) row.classList.remove(...HELD_LOOKS.map(look => `local-name-lines-${look}`));
+      card.classList.remove("local-file-kept-on");
+      for (const row of card.querySelectorAll(".symbol-row")) row.classList.remove(...HELD_LOOKS.map(look => `local-name-lines-${look}`), "local-row-kept-on", "local-name-cut");
     }
-    const rooms = [...this.cards.values()].flatMap(({ card }) => measureRooms(card, resistances, looks));
+    const rooms = [...this.cards.values()].flatMap(({ card }) => measureRooms(card, resistances, looks, keep));
     if (looks) for (const box of this.container.querySelectorAll<HTMLElement>(".local-directory-closed")) rooms.push(...closedBoxWrites(box));
     for (const write of rooms) applyRoomWrite(write);
     if (looks) for (const box of this.container.querySelectorAll<HTMLElement>(".local-closed--cells")) drawHeldLooks(box);
@@ -443,7 +468,7 @@ export class CardReading {
  * header's right edge and down to the first row, to the card's bottom and the row pitch for the overview band, and the
  * card's buttons' widths and overhang, which intrude on its first lines at their held size.
  */
-function measureRooms(card: HTMLElement, resistances: LadderResistances, looks: boolean): RoomWrite[] {
+function measureRooms(card: HTMLElement, resistances: LadderResistances, looks: boolean, keep: DescriptionsZoomedOut = "hidden"): RoomWrite[] {
   const writes: RoomWrite[] = [];
   const k = card.offsetHeight ? card.getBoundingClientRect().height / card.offsetHeight : 0;
   if (!(k > 0)) return writes;
@@ -512,8 +537,10 @@ function measureRooms(card: HTMLElement, resistances: LadderResistances, looks: 
       const segments = rowSegments(row.dataset.symbol === "__internals__" ? "Internals" : row.dataset.symbol ?? "");
       // One line of the name as the layout draws it, its box over its lines, with its own scale undone.
       const line = inner.getBoundingClientRect().height / (k * (new DOMMatrix(getComputedStyle(inner).transform).d || 1)) / Math.max(1, text.lines);
-      writes.push([row, "--row-line", line.toFixed(3)]);
-      heads.push({ row, top: (rowRect.top - cardRect.top) / k, height: row.clientHeight, room: rowHeight, internals: row.classList.contains("internals-row"),
+      writes.push([row, "--row-line", line.toFixed(3)], [row, "--row-label-x", ((labelRect.left - wrapperRect.left) / k).toFixed(2)]);
+      // A description shown at reading size, written and not folded, whose first line the connections look may keep.
+      const described = !row.classList.contains("local-row-short") && !!row.querySelector(".local-row-kept")?.textContent;
+      heads.push({ row, label, text: inner, name: row.dataset.symbol ?? "", top: (rowRect.top - cardRect.top) / k, height: row.clientHeight, room: rowHeight, internals: row.classList.contains("internals-row"), described,
         nameTop, nameHeight, line, moreTop, moreHeight: moreButton?.offsetHeight || 17, segments, measure: measureName,
         across: (control: number) => roomWidth - (more ? gap + more : 0) * control });
     }
@@ -537,7 +564,7 @@ function measureRooms(card: HTMLElement, resistances: LadderResistances, looks: 
       [row, "local-name-wraps", nameWraps(text.lines, text.width, label.clientWidth)]
     );
   }
-  if (looks) writes.push(...lookHeadWrites(heads, parseFloat(cardStyle.getPropertyValue("--slot-lines")) || 2, rowsGap));
+  if (looks) writes.push(...lookHeadWrites(heads, parseFloat(cardStyle.getPropertyValue("--slot-lines")) || 2, rowsGap, keep));
   writes.push(...pinDepthWrites(card, heights, rowsGap));
   const title = card.querySelector<HTMLElement>(".local-file-name"), header = card.querySelector<HTMLElement>(".node-title");
   const grid = card.querySelector<HTMLElement>(".symbol-grid"), actions = card.querySelector<HTMLElement>(".local-card-actions");
@@ -599,6 +626,8 @@ function measureRooms(card: HTMLElement, resistances: LadderResistances, looks: 
       measure: textMeasure(getComputedStyle(held)), rooms, resistances, looks, overviewScale };
     heldNames.set(card, name);
     writes.push(...heldLineWrites(name, HELD_BANDS, pinDepths(card, heights, rowsGap)));
+    // The name's top left inside the card's border, where the file's kept line is placed from.
+    if (looks) writes.push(...fileKeptWrites(card, name, keep, { x: (titleRect.left - cardRect.left) / k - card.clientLeft, y: (titleRect.top - cardRect.top) / k - card.clientTop }));
     if (looks) writes.push(...footWrites(card, { k, cardRect, contentBottom, grid, titleTop: titleRect.top, header: connectionsHeaderHeight(name) }));
   }
   return writes;
@@ -607,11 +636,17 @@ function measureRooms(card: HTMLElement, resistances: LadderResistances, looks: 
 /** What a row's head needs in the far looks, read at render: its box, its name's top, line and text, and its More. */
 interface LookHead {
   row: HTMLElement;
+  /** The name's button, which carries the whole name as its tooltip where the drawing is cut, and the text it draws. */
+  label: HTMLElement;
+  text: HTMLElement;
+  name: string;
   /** Its top below the card's and its height as laid out, and the room its head has on its own (Internals: to the foot). */
   top: number;
   height: number;
   room: number;
   internals: boolean;
+  /** Its description is shown at reading size, so that the connections look may keep its first line (2026-11-13). */
+  described: boolean;
   nameTop: number;
   /** The name's button's height, one line or the lines it wraps on at the reading width. */
   nameHeight: number;
@@ -629,9 +664,12 @@ interface LookHead {
  * look, up to what a slot row holds there, fewer where the card's rows cannot hold them all ({@link fitLines}); the drawn
  * rows' heads, as tall as that, are spaced evenly over the rows' room ({@link evenRows}), each shifted from its row's top
  * and held in its own height and the space after it. The overview look draws its names in the same places, on the
- * lines that share holds at its scale. The Internals row keeps its own place and room, as before.
+ * lines that share holds at its scale. The Internals row keeps its own place and room, as before. With the Descriptions
+ * Zoomed Out trial (`keep`, 2026-11-13) the connections look has places of its own: a described row whose name takes one
+ * line keeps its description's first line under the name as part of its head ({@link fitKept}), and the heads are spaced
+ * evenly with it (--row-even-y-connections and its kin); the overview's places are the ones without it.
  */
-function lookHeadWrites(heads: readonly LookHead[], slotLines: number, gap: number): RoomWrite[] {
+function lookHeadWrites(heads: readonly LookHead[], slotLines: number, gap: number, keep: DescriptionsZoomedOut = "hidden"): RoomWrite[] {
   const writes: RoomWrite[] = [];
   const connections = LOOK_SCALES.connections;
   const slotRow = 32 + slotLines * 17;
@@ -664,19 +702,57 @@ function lookHeadWrites(heads: readonly LookHead[], slotLines: number, gap: numb
       && heldLineCount(head.segments, across(scale) / scale, Number.MAX_SAFE_INTEGER, head.measure) <= linesAt(scale);
     return { scale: wholeNameScale(whole), pinned: head.row.classList.contains("symbol-pinned-named") };
   }));
+  // Descriptions Zoomed Out (the trial of 2026-11-13, and the two values of 2026-11-15): which rows keep their
+  // description's first line under the name in the connections look, as part of the head. With "first-line" a described
+  // row keeps it where its name takes one line, and no name loses a line for it. With "line-end" and "line-middle"
+  // every described row keeps it and its name holds to one line, cut where it does not fit; a row whose description is
+  // folded or absent keeps its name's lines where the card has the room, and gives one up before a described row
+  // gives up its line (a card half folded is some ten units short of holding both). With "first-line" the kept lines
+  // give way before any name is cut further (fitKept).
+  const always = keep === "line-end" || keep === "line-middle";
+  const wanted = drawn.map((head, index) => always && head.described ? 1 : want[index]);
+  const headWith = (index: number, count: number, kept: boolean): number => headOf(index, count + (kept ? 1 : 0));
+  const headsRoom = room + gap - drawn.length * HEAD_SPACE;
+  const kept = keep === "hidden" ? drawn.map(() => false)
+    : always ? drawn.map(head => head.described)
+    : fitKept(wanted, drawn.map(head => head.described), headWith, headsRoom).kept;
+  // The names' lines in the connections look: with a line always kept, what the room leaves them; otherwise as without it.
+  const keptLines = always ? fitLines(wanted, (index, count) => headWith(index, count, kept[index]), headsRoom) : lines;
+  const keptHead = (index: number): number => headOf(index, keptLines[index] + (kept[index] ? 1 : 0));
+  // The connections look's own places where rows keep a line, the heads spaced evenly with it; none where none is kept.
+  const keptPlaced = kept.some(Boolean) ? evenRows(drawn.map((head, index) => ({ top: head.top, height: head.height, head: keptHead(index) })), gap) : null;
+  const connectionsAt = new Map(drawn.map((head, index) => [head, { lines: keptLines[index], height: keptPlaced?.[index].height ?? placed[index].height, kept: kept[index] }]));
+  drawn.forEach((head, index) => {
+    const place = keptPlaced?.[index];
+    writes.push([head.row, "local-row-kept-on", kept[index]],
+      [head.row, "--row-even-y-connections", place ? place.shift.toFixed(2) : ""],
+      [head.row, "--row-even-h-connections", place ? place.height.toFixed(2) : ""],
+      [head.row, "--row-fill-even-connections", place ? nameFill(place.height, head.nameTop, head.nameHeight).toFixed(3) : ""],
+      [head.row, "data-head-connections", place ? keptHead(index).toFixed(2) : ""]);
+  });
   heads.forEach((head, index) => {
     const even = evenOf(head);
     writes.push([head.row, "--row-even-y", even.shift.toFixed(2)], [head.row, "--row-even-h", even.height.toFixed(2)],
       [head.row, "--row-fill-even", nameFill(even.height, head.nameTop, head.nameHeight).toFixed(3)],
       [head.row, "data-head-h", even.lines ? headOf(drawn.indexOf(head), even.lines).toFixed(2) : ""]);
     for (const look of HELD_LOOKS) {
-      const { room, across, linesAt } = roomsOf(head, look);
-      const wanted = look === "overview" ? overviewScales[index] : LOOK_SCALES[look];
+      const kept = look === "connections" ? connectionsAt.get(head) : undefined;
+      const { across, linesAt } = roomsOf(head, look);
+      // The connections look's room is the row's share as that look places it, with the kept lines where there are any.
+      const room = kept?.height ?? roomsOf(head, look).room;
+      const wantedScale = look === "overview" ? overviewScales[index] : LOOK_SCALES[look];
       // The stylesheet's held scales at the look for a name its room cannot hold on one line, and its room across.
-      const scale = Math.max(1, Math.min(nameFill(room, head.nameTop, head.nameHeight), wanted));
-      const count = look === "connections" && even.lines ? even.lines : heldLineCount(head.segments, across(wanted) / scale, linesAt(scale), head.measure);
+      const scale = Math.max(1, Math.min(nameFill(room, head.nameTop, head.nameHeight), wantedScale));
+      const count = kept?.lines || (look === "connections" && even.lines ? even.lines : heldLineCount(head.segments, across(wantedScale) / scale, linesAt(scale), head.measure));
       writes.push([head.row, `--row-lines-${look}`, String(count)], [head.row, `local-name-lines-${look}`, count > 1]);
-      if (look === "overview") writes.push([head.row, "--row-scale-overview", wanted.toFixed(3)]);
+      if (look === "overview") writes.push([head.row, "--row-scale-overview", wantedScale.toFixed(3)]);
+      // A name held to one line above its kept description is cut where its room across does not hold it (name-cut.ts):
+      // the drawing only, written beside the text, whose own characters stay the name; the button's tooltip says it whole.
+      if (look === "connections") {
+        const shown = always && kept?.kept ? oneLineName(head.name, head.segments, across(wantedScale) / scale, head.measure, keep === "line-middle" ? "middle" : "end") : head.name;
+        const cut = shown !== head.name;
+        writes.push([head.row, "local-name-cut", cut], [head.text, "data-name-cut", cut ? shown : ""], [head.label, "title", cut ? head.name : ""]);
+      }
     }
   });
   return writes;
@@ -745,6 +821,25 @@ function closedBoxWrites(box: HTMLElement): RoomWrite[] {
 }
 
 /** The connections look's held header's height below the name's top, in the map's own units: its lines and its More. */
+/**
+ * The file's own kept line in the connections look (Descriptions Zoomed Out, 2026-11-15): where the choice keeps lines
+ * and the file's Purpose is shown at reading size, its first line stands under the held name and its controls, at the
+ * held size, in the room the Purpose left down to the first row, cut with an ellipsis across; its place is written from
+ * the card's inner top left, since it stands beside the header and not in it. Where that room does not
+ * hold a line at the held size the line is not drawn, and how much it lacks is written for whoever reads the page
+ * (`data-file-kept-short`): nothing is drawn smaller to fit.
+ */
+function fileKeptWrites(card: HTMLElement, name: HeldName, keep: DescriptionsZoomedOut, at: { x: number; y: number }): RoomWrite[] {
+  const line = card.querySelector<HTMLElement>(":scope > .local-file-kept");
+  if (!line) return [];
+  const purpose = card.querySelector<HTMLElement>(":scope > .local-reading-purpose");
+  const asked = keep !== "hidden" && !!line.textContent && purpose?.dataset.readingOpen !== "false";
+  const below = connectionsHeaderHeight(name);
+  const { fits, short } = fileLineRoom(name.rooms.headH, below, LOOK_SCALES.connections);
+  return [[card, "local-file-kept-on", asked && fits], [card, "--file-kept-x", at.x.toFixed(2)], [card, "--file-kept-y", (at.y + below + FILE_KEPT_AIR).toFixed(2)],
+    [card, "data-file-kept-short", asked && !fits ? short.toFixed(1) : ""]];
+}
+
 function connectionsHeaderHeight(name: HeldName): number {
   const { scale, room } = heldTitle(name.rooms, "far", { text: LOOK_SCALES.connections, control: LOOK_SCALES.connections }, null);
   const header = chooseNameHeader(name.text, room, name.measure);
@@ -922,11 +1017,16 @@ export function markFirstPin(card: HTMLElement): void {
     return band;
   });
   evenRows(bands, gap).forEach(({ shift }, index) => applyRoomWrite([drawn[index], "--row-even-y", shift.toFixed(2)]));
+  // The connections look's own places, where rows keep a description's first line (2026-11-13), likewise.
+  if (!drawn.some(row => row.dataset.headConnections)) return;
+  const kept = bands.map((band, index) => ({ ...band, head: parseFloat(drawn[index].dataset.headConnections ?? "") || band.head }));
+  evenRows(kept, gap).forEach(({ shift }, index) => applyRoomWrite([drawn[index], "--row-even-y-connections", shift.toFixed(2)]));
 }
 
 /** A write's name says what it sets: a `data-` attribute, a custom property, or else a class. */
 function applyRoomWrite([element, name, value]: RoomWrite): void {
   if (typeof value === "boolean") element.classList.toggle(name, value);
+  else if (name === "title" || name === "data-name-cut") { if (value) element.setAttribute(name, value); else element.removeAttribute(name); }
   else if (name.startsWith("data-")) element.setAttribute(name, value);
   else if (value === "") element.style.removeProperty(name);
   else element.style.setProperty(name, value);

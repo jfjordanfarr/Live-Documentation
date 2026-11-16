@@ -120,6 +120,13 @@ export interface LocalMapTuning {
    * those sizes and moved to.
    */
   overviewFiles: OverviewFiles;
+  /**
+   * With fixed slots and the three looks, what a described row keeps of its description in the connections look,
+   * alternatives for the owner's eye (2026-11-13 and 2026-11-15): "hidden", the default, nothing; "first-line", its
+   * first line under a name that takes one line there; "line-end" and "line-middle", its first line on every described
+   * row, the name held to one line and cut at its end or in its middle, at a seam.
+   */
+  descriptionsZoomedOut: DescriptionsZoomedOut;
   /** With fixed slots, how many lines of text each symbol's slot holds, filled or not; the default is to be found by eye (2026-11-05). */
   slotLines: number;
   /** With fixed slots, how much names resist the zoom below reading scale: 0 follows the map, 1 holds screen size (2026-11-05). */
@@ -298,6 +305,18 @@ export type OverviewFiles = "keep" | "files";
 
 /** Every Zoomed Out Fully choice, in the order the control offers them, the default first. */
 export const OVERVIEW_FILES: readonly OverviewFiles[] = ["files", "keep"];
+
+/**
+ * What a described row keeps of its description in the connections look: nothing; its first line where its name leaves
+ * room, taking one line (the 2026-11-13 trial); or its first line on every described row, the name held to one line
+ * and cut with an ellipsis at its end, or in its middle at a seam, where it does not fit (2026-11-15, after the owner's
+ * "the only reason it doesn't look quite as good ... is because the symbol name itself is willing to wrap onto a new
+ * line").
+ */
+export type DescriptionsZoomedOut = "hidden" | "first-line" | "line-end" | "line-middle";
+
+/** Every Descriptions Zoomed Out choice, in the order the control offers them; the first, nothing kept, is the default. */
+export const DESCRIPTIONS_ZOOMED_OUT: readonly DescriptionsZoomedOut[] = ["hidden", "first-line", "line-end", "line-middle"];
 
 /** The 3D Local Map's packing and stable visual encodings, shared with the headless layout lab. */
 export interface ForceGraphTuning {

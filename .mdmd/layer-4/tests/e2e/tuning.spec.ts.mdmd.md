@@ -29,6 +29,8 @@ Name Growth brought the count to 54 on [Turn 11](../../../../AI-Agent-Workspace/
 
 The directory shells, merged on November 6 (experiment 2 of [Turn 11](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-11)), add Shell Depth between Hops Shown and Reveal Frames in Discovery, and the inventory counts 55.
 
+Descriptions Zoomed Out, on 2026-11-15 ([Turn 1 of the November 15 record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)), adds one to the inventory: 63, with the closed directory's Skin's Shape and Cells' Colour of the same day.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

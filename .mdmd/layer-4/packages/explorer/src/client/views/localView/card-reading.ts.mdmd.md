@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-reading.ts
-- Generated At: 2026-11-16T03:32:04.228Z
+- Generated At: 2026-11-16T05:14:32.452Z
 
 ## Authored
 ### Purpose
@@ -56,26 +56,30 @@ Since 2026-11-15's second milestone ([November 15, Turn 1](../../../../../../../
 
 The pinned rows of one card take one size at the overview look, the tightest's, as a card's file name takes one scale (`overview-files.ts`'s `pinnedRowScales`; 2026-11-15, [Turn 1 of that day's record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)): the reading finds each row's own scale first and then gives the rows pinned by name the least of theirs, counting each one's lines at that.
 
+Descriptions Zoomed Out has four values since 2026-11-15 ([Turn 1 of the November 15 record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1); [the pictures](../../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-15/descriptions-kept/README.md)): Hidden, the trial's "first-line" of November 13, and "line-end" and "line-middle", in which every row whose description is shown at reading size keeps its first line in the connections look and its name holds to one line. The reading puts a plain `span.local-row-kept` in each described row's label and decides in `lookHeadWrites` which rows keep it: none with Hidden; with "first-line" what `fitKept` gives, kept lines giving way before a name loses a line; with the two new values every described row, and then the names' lines from `fitLines` over what is left, so that a folded row's name gives up its second line before a described row gives up its description (the owner's card half folded is some ten units short of holding both, and one folded name gives a line up). A kept line counts in its row's head, so `evenRows` spaces the heads with it. For a kept row whose name does not fit its one line the reading writes the cut name (`name-cut.ts`) as `data-name-cut` on the name's text, which the stylesheet draws over the name's own text, and the whole name as the label's `title`; the text in the page and the row's accessible name stay whole. Both are removed when the look or the value no longer cuts.
+
+The file's own line follows the same choice (any value but Hidden): where the Purpose is shown at reading size, a `span.local-file-kept` holding its flattened text, a child of the card and not of the header, whose text other code reads as the file's name, is placed under the held name (`--file-kept-x`, `--file-kept-y`) when the header's room holds a line of the kept lines' type there (`ladder-rooms.ts`'s `fileLineRoom`). Where it does not, nothing is drawn and the card carries by how much in `data-file-kept-short`, since a line is never shrunk to fit.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ReadingTarget` {#symbol-readingtarget}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L30)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L31)
 
 ##### `ReadingTarget` — Summary
 A file's Purpose or one exact symbol's description, named by the card it is read on.
 
 #### `CardReadingOptions` {#symbol-cardreadingoptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L33)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L34)
 
 ##### `CardReadingOptions` — Summary
 Canonical text, application-owned choices and the actions a card's text can lead to.
 
 #### `CardReading` {#symbol-cardreading}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L81)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L84)
 
 ##### `CardReading` — Summary
 Builds on-card explanations from the same bundled docs as the full reader. A description opens and folds only
@@ -90,7 +94,7 @@ while names open full descriptions in the reader.
 
 #### `markFirstPin` {#symbol-markfirstpin}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L907)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L1002)
 
 ##### `markFirstPin` — Summary
 Write the pin depths for a card whose rows were just ordered, and its held name's lines at the overview band, whose
@@ -111,6 +115,7 @@ room they bound, from the card's last reading: no layout is read.
 - [`reader-sections.authoredSections`](../../reader-sections.ts.mdmd.md#symbol-authoredsections)
 - [`reading-state.ReadingChoice`](../../reading-state.ts.mdmd.md#symbol-readingchoice)
 - [`reading-state.descriptionIsOpen`](../../reading-state.ts.mdmd.md#symbol-descriptionisopen)
+- [`types.DescriptionsZoomedOut`](../../types.ts.mdmd.md#symbol-descriptionszoomedout) (type-only)
 - [`types.InspectionTarget`](../../types.ts.mdmd.md#symbol-inspectiontarget) (type-only)
 - [`card-factory.drawHeldLooks`](./card-factory.ts.mdmd.md#symbol-drawheldlooks)
 - [`closed-looks.CELLS`](./closed-looks.ts.mdmd.md#symbol-cells)
@@ -129,11 +134,14 @@ room they bound, from the card's last reading: no layout is read.
 - [`held-lines.heldSegments`](./held-lines.ts.mdmd.md#symbol-heldsegments)
 - [`held-lines.heldTitle`](./held-lines.ts.mdmd.md#symbol-heldtitle)
 - [`held-lines.rowSegments`](./held-lines.ts.mdmd.md#symbol-rowsegments)
+- [`ladder-rooms.FILE_KEPT_AIR`](./ladder-rooms.ts.mdmd.md#symbol-file_kept_air)
 - [`ladder-rooms.FootCount`](./ladder-rooms.ts.mdmd.md#symbol-footcount)
 - [`ladder-rooms.HEAD_SPACE`](./ladder-rooms.ts.mdmd.md#symbol-head_space)
 - [`ladder-rooms.HIGHLIGHT_BELOW`](./ladder-rooms.ts.mdmd.md#symbol-highlight_below)
 - [`ladder-rooms.dotRoom`](./ladder-rooms.ts.mdmd.md#symbol-dotroom)
 - [`ladder-rooms.evenRows`](./ladder-rooms.ts.mdmd.md#symbol-evenrows)
+- [`ladder-rooms.fileLineRoom`](./ladder-rooms.ts.mdmd.md#symbol-filelineroom)
+- [`ladder-rooms.fitKept`](./ladder-rooms.ts.mdmd.md#symbol-fitkept)
 - [`ladder-rooms.fitLines`](./ladder-rooms.ts.mdmd.md#symbol-fitlines)
 - [`ladder-rooms.footHold`](./ladder-rooms.ts.mdmd.md#symbol-foothold)
 - [`ladder-rooms.headHeight`](./ladder-rooms.ts.mdmd.md#symbol-headheight)
@@ -150,6 +158,7 @@ room they bound, from the card's last reading: no layout is read.
 - [`ladder-steps.LadderResistances`](./ladder-steps.ts.mdmd.md#symbol-ladderresistances)
 - [`ladder-steps.ZoomLook`](./ladder-steps.ts.mdmd.md#symbol-zoomlook-type)
 - [`ladder-steps.ladderScales`](./ladder-steps.ts.mdmd.md#symbol-ladderscales-function)
+- [`name-cut.oneLineName`](./name-cut.ts.mdmd.md#symbol-onelinename)
 - [`overview-files.COMPACT_AIR`](./overview-files.ts.mdmd.md#symbol-compact_air)
 - [`overview-files.OVERVIEW_FILES_ATTRIBUTE`](./overview-files.ts.mdmd.md#symbol-overview_files_attribute)
 - [`overview-files.filesNameScale`](./overview-files.ts.mdmd.md#symbol-filesnamescale)

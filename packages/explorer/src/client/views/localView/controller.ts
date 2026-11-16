@@ -331,6 +331,7 @@ export class LocalViewController implements LocalViewApi {
       mode: () => options.state.tuning.localMap.cardText,
       resistances: () => options.state.tuning.localMap,
       zoomLooks: () => options.state.tuning.localMap.zoomLooks,
+      descriptionsZoomedOut: () => options.state.tuning.localMap.descriptionsZoomedOut,
       change: (nodeId, symbol, open, control) => options.onReadingChange?.(nodeId, symbol, open, control),
       inspect: (target, fragment) => options.onReadTarget?.(target, fragment),
       navigate: node => { void this.recenterNode(node); }

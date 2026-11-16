@@ -105,6 +105,22 @@ describe("shared packing preferences", () => {
     }
   });
 
+  it("carries Descriptions Zoomed Out only when it keeps the first line, and reads its absence as hidden (2026-11-13)", () => {
+    const hidden = getDefaultTuning();
+    expect(hidden.localMap.descriptionsZoomedOut).toBe("hidden");
+    expect(layoutSettingsOf(hidden).localMap).not.toHaveProperty("descriptionsZoomedOut");
+    expect(readLayoutSettings({ localMap: { descriptionsZoomedOut: "hidden" } })).toBeUndefined();
+    expect(readLayoutSettings({ localMap: { descriptionsZoomedOut: "all" } })).toBeUndefined();
+    const kept = getDefaultTuning();
+    kept.localMap.descriptionsZoomedOut = "first-line";
+    const restored = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(kept) }));
+    expect(applyLayoutSettings(getDefaultTuning(), restored.layout).localMap.descriptionsZoomedOut).toBe("first-line");
+    // A link made with it hidden shows it hidden in a browser whose own tuning keeps the first line.
+    const plain = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(hidden) }));
+    expect(applyLayoutSettings(kept, plain.layout).localMap.descriptionsZoomedOut).toBe("hidden");
+    expect(applyLayoutSettings(kept, undefined).localMap.descriptionsZoomedOut).toBe("first-line");
+  });
+
   it("carries the skin's shape and its cells' colour only when they are not the defaults: the tab, and the kinds' colours, the owner's choice of 2026-11-16", () => {
     const plain = getDefaultTuning();
     expect([plain.localMap.closedShape, plain.localMap.closedCells]).toEqual(["tab", "kind"]);

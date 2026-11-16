@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/tuning-levers.ts
-- Generated At: 2026-11-16T00:48:31.599Z
+- Generated At: 2026-11-16T05:14:28.339Z
 
 ## Authored
 ### Purpose
@@ -25,6 +25,8 @@ Name Growth's sentence joined on [Turn 11](../../../../../../../AI-Agent-Workspa
 
 Since 2026-11-05 Shell Depth has its sentence, and Group Wrappers' sentence names the directory shells it now also draws.
 
+Since 2026-11-15 ([Turn 1 of the November 15 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) Descriptions Zoomed Out has its sentence, in the 2D layout group.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -37,7 +39,7 @@ One short sentence per tuning control, keyed by the control's element id.
 
 #### `tuningHelpId` {#symbol-tuninghelpid}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning-levers.ts#L96)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning-levers.ts#L97)
 
 ##### `tuningHelpId` — Summary
 The id of the visually hidden element that carries a control's sentence.

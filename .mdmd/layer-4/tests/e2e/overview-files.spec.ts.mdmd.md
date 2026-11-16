@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/overview-files.spec.ts
-- Generated At: 2026-11-13T23:28:50.405Z
+- Generated At: 2026-11-16T04:49:33.176Z
 
 ## Authored
 ### Purpose
@@ -19,6 +19,8 @@ Three cases of 2026-11-15 hold what files only draws of a person's pins by name 
 
 The two cases of a person's pins by name also hold, since the same day, that the pinned rows of one card are drawn at one scale ([Turn 1 of that day's record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)).
 
+Two cases since 2026-11-15 ([Turn 1 of the November 15 record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) answer a question the pinned-by-name round left: whether a pin made while files only is showing gives, back at reading size, the picture the same pin gives when it is made at reading size. A whole-file pin made from a card's More, and a symbol pinned by name through the search, each give the same cards, rows, pins and wire ends either way. Both passed as first written on the code before; they are kept as protection, and neither has had a red run.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -32,5 +34,6 @@ _No public symbols detected_
 - [`compressed-url-state.compressSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-compresssnapshot)
 - [`local-storage.PERSISTED_UI_KEY`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_key)
 - [`local-storage.PERSISTED_UI_VERSION`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_version)
+- [`search-bar.choose`](./search-bar.ts.mdmd.md#symbol-choose)
 - [`still-picture.localMapStill`](./still-picture.ts.mdmd.md#symbol-localmapstill)
 <!-- LIVE-DOC:END Dependencies -->

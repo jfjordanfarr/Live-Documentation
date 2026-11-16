@@ -66,6 +66,8 @@ Since 2026-11-13 ([Turn 8](../../../../../../../../AI-Agent-Workspace/ChatHistor
 
 Since 2026-11-15 ([Turn 1](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) the frames of a move report nothing to `onBackwardConnections`, where they reported zero, and the move's final frame reports the picture it arrived at: the zero had turned the 3D button's cue off and on again at every move, which with the cue's pulse would have pulsed at every pin.
 
+Since 2026-11-15 ([Turn 1 of the November 15 record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) the controller gives the card reading the tuning's Descriptions Zoomed Out, read at each measure.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
