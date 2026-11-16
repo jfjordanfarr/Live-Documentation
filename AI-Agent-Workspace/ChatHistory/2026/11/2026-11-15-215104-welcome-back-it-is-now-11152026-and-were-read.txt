@@ -4354,3 +4354,38 @@ completed (exit code 0)
 ● Waiting for the far-view round's browser run. Once it's green I'll commit it,
   give you a link to see files-only with a pinned symbol at full zoom-out, and
   send that builder on to the description-line alternatives.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Nothing new has arrived: the directory builder's final test run has held the
+  browser for 24 minutes, and the far-view round's cases are next in line behind
+  it. Timer renewed while the two builders run.
+
+● Background command "Run the far-view round's browser cases on main, the layout
+lab's among them, under the shared lock" completed (exit code 0)
+
+  Searched for 1 pattern, ran 3 shell commands (ctrl+o to expand)
+
+● Background command "Look at the far view on main myself: seven presses out and
+back on this repository, and the estate sample" completed (exit code 0)
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● The far-view round passed its browser cases on main (56 of 56, the layout
+  lab's included) and is committed. Checking my own pictures of it before I give
+  you the link.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Files-only is now the default far view, committed and running on port 8999
+  with all 56 browser tests passing. I'm checking next whether the opened
+  PaymentService directory's name being cut to "Pay…" at full zoom-out is new or
+  was already there. · summary
+  ⎿  Resuming agent a45305e
+
+  Searched for 2 patterns, read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● Records are up to date and committed. Still waiting on three things: my
+  comparison of the cut directory name ("Pay…") under the two far-view choices,
+  the directory builder's handback, and the two builders now on their next
+  milestones (description lines; priced backward connections).
