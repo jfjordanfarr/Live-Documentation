@@ -56,6 +56,9 @@
     "packages/generator/tsconfig.json": [
       "tooling"
     ],
+    "scripts/contact-sheet/contact-sheet.ts": [
+      "command contact:sheet of package.json"
+    ],
     "scripts/doc-tools/enforce-documentation-links.ts": [
       "command docs:links:enforce of package.json"
     ],
@@ -87,7 +90,8 @@
       "command live-docs:visualize:history-sample of package.json"
     ],
     "scripts/live-docs/visualize-sample.ts": [
-      "command live-docs:visualize:estate of package.json"
+      "command live-docs:visualize:estate of package.json",
+      "command live-docs:visualize:tidepool of package.json"
     ],
     "scripts/live-docs/visualize-static.ts": [
       "command live-docs:visualize of package.json"
