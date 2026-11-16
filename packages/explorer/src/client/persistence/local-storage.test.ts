@@ -57,20 +57,23 @@ describe("persisted membrane tuning", () => {
 });
 
 describe("persisted history tuning (2026-10-18)", () => {
-  it("starts from steps laid out by date, linear time, since 2026-10-22, the ticks chosen automatically and two steps a second", () => {
-    expect(getDefaultTuning().history).toEqual({ axis: "time", granularity: "auto", playRate: 2, changeEmphasis: "glow" });
+  // Changed Files defaults to Dim since 2026-11-15, a design change: the owner wished a changed file to keep its kind's
+  // colour while drawing the eye, which dimming the rest does. It was Glow, the changed drawn white.
+  it("starts from steps laid out by date, linear time, since 2026-10-22, the ticks chosen automatically, two steps a second and the unchanged dimmed", () => {
+    expect(getDefaultTuning().history).toEqual({ axis: "time", granularity: "auto", playRate: 2, changeEmphasis: "dim" });
   });
 
   it("restores a saved axis, granularity and play rate, and keeps the defaults for what is missing", () => {
-    expect(restoreTuning("history", '{"axis":"steps","granularity":"month"}').history).toEqual({ axis: "steps", granularity: "month", playRate: 2, changeEmphasis: "glow" });
-    expect(restoreTuning("history", '{"playRate":0.5}').history).toEqual({ axis: "time", granularity: "auto", playRate: 0.5, changeEmphasis: "glow" });
-    expect(restoreTuning("history", '{"changeEmphasis":"dim"}').history).toEqual({ axis: "time", granularity: "auto", playRate: 2, changeEmphasis: "dim" });
+    expect(restoreTuning("history", '{"axis":"steps","granularity":"month"}').history).toEqual({ axis: "steps", granularity: "month", playRate: 2, changeEmphasis: "dim" });
+    expect(restoreTuning("history", '{"playRate":0.5}').history).toEqual({ axis: "time", granularity: "auto", playRate: 0.5, changeEmphasis: "dim" });
+    // A saved Glow, the default until 2026-11-15, is kept.
+    expect(restoreTuning("history", '{"changeEmphasis":"glow"}').history).toEqual({ axis: "time", granularity: "auto", playRate: 2, changeEmphasis: "glow" });
   });
 
   it.each(['{"axis":"sideways"}', '{"granularity":"fortnight"}', '{"playRate":0}', '{"playRate":"fast"}', '{"playRate":-2}', '{"changeEmphasis":"sparkle"}'])(
     "falls back from an invalid history setting of %s to the default",
     saved => {
-      expect(restoreTuning("history", saved).history).toEqual({ axis: "time", granularity: "auto", playRate: 2, changeEmphasis: "glow" });
+      expect(restoreTuning("history", saved).history).toEqual({ axis: "time", granularity: "auto", playRate: 2, changeEmphasis: "dim" });
     }
   );
 });

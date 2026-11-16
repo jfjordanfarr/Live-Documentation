@@ -51,6 +51,8 @@ async function hittablePoint(page: Page, id: string): Promise<{ x: number; y: nu
 
 /** Orbit the camera a little, as a person would, until the file's sphere shows past whatever stands in front of it. */
 async function uncover(page: Page, id: string): Promise<{ x: number; y: number }> {
+  // A sphere is pressed or hovered once the map has built: while it builds, a press is dropped and nothing hovers (2026-11-15).
+  await expect(page.locator("#graph-svg")).not.toHaveAttribute("data-building", /.*/, { timeout: 30_000 });
   for (let turn = 0; turn < 8; turn++) {
     const point = await hittablePoint(page, id);
     if (point) return point;

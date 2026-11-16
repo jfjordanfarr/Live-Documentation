@@ -21,6 +21,13 @@
  * inside the wrappers too, each change at the innermost thing drawn for it: a
  * dot, or the veiled bubble or skin that holds it (`emphasizeBodies`).
  *
+ * While the map builds (2026-11-15, the owner's decision), a body packing, the
+ * reveal bringing spheres in, a perspective change or the camera's framing
+ * flight that goes with them, its nodes take no hover and no click, a press is
+ * dropped, and the container's `data-building` says so to the stylesheet; a
+ * pointer that has not moved since building began starts nothing until its
+ * first move (`forceGraphBuilding.ts`). `aria-busy` still says the settle.
+ *
  * Two layouts share the renderer (2026-10-14): in the connections layout the
  * documented references pull and are drawn; in the structure layout every file
  * hangs from its directory's hub and the references pull nothing, drawn only
@@ -40,6 +47,7 @@ import { Matrix4, PerspectiveCamera, Vector3 } from "three";
 
 import { spatialNodeStyle } from "./forceGraphAppearance";
 import { SPATIAL_RING_OUTER_RADIUS, type SpatialWrapperUnit } from "./forceGraphBatches";
+import { buildingPhase, nextBuilding, nodePointer, NOT_BUILDING, type Building } from "./forceGraphBuilding";
 import { cornerPanelInsets, focusedCameraPosition, frameCameraSpheres, screenAnchorTranslation, wheelZoomCamera, type CameraPoint } from "./forceGraphCamera";
 import { directoryNodeId, labelNamesOf, spatialGraphOf, type SpatialGraphData, type SpatialGraphNode, type SpatialLinkKind } from "./forceGraphData";
 import { bodyChanges, deletionHomes, emphasizedSkin, emphasizedSphere, emphasizedUnits, emphasizedWireAlpha, pairKey } from "./forceGraphEmphasis";
@@ -406,6 +414,16 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   let inspectedActionId: string | null = null;
   let seenInspectionKey = "";
   let pointerHoverId: string | null = null;
+  /**
+   * The building (2026-11-15, `forceGraphBuilding.ts`): when it began and when its work last stopped, the phase the
+   * container shows, whether a perspective change into this view is playing, and whether the pointer has moved since
+   * building last began, from where its events last stood.
+   */
+  let building: Building = NOT_BUILDING;
+  let shownBuilding: "idle" | "begun" | "shown" = "idle";
+  let transitioning = false;
+  let movedSinceBuilding = false;
+  let lastPointer: { x: number; y: number } | null = null;
   let pointerPosition: { x: number; y: number } | null = null;
   let pointerPickNeeded = false;
   let pickedCamera: number[] = [];
@@ -451,9 +469,55 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     return forceGraphInstance?.nodeAt(clientX, clientY)?.id;
   }
 
+  /** Whether the map is building now, as the container shows it. */
+  const isBuilding = (): boolean => shownBuilding !== "idle";
+  /** What the pointer may begin on a node now (`forceGraphBuilding.ts`). */
+  const pointerMay = (): { hover: boolean; press: boolean } => nodePointer({ building: isBuilding(), movedSinceBuilding });
+
+  /**
+   * Look at the map's work and show the building it makes: `beginning` when a change of what is shown has just been
+   * asked, which begins a building even when its picture is in at once. As building begins, a hover the pointer held
+   * ends at once and the pointer counts as still; the wires' hover tooltip is a hover too.
+   */
+  function updateBuilding(beginning = false): void {
+    const now = performance.now(), reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const work = beginning || transitioning || packing.size > 0 || reveal.shown < reveal.order.length;
+    // The flight is the 650 ms from its start; a camera that follows without one, as when the picture has no room to be
+    // framed in, is no flight (a history step built for ever so, measured on the scripted sample).
+    const flight = following && !!focusMotion && !reduced && now - focusMotion.started < 650;
+    building = nextBuilding(building, { work, flight }, now);
+    const phase = buildingPhase(building, now);
+    if (phase === shownBuilding) return;
+    const began = shownBuilding === "idle";
+    shownBuilding = phase;
+    const container = requireElement("graph-svg");
+    if (phase === "idle") delete container.dataset.building;
+    else container.dataset.building = phase;
+    if (!began) return;
+    movedSinceBuilding = false;
+    window.clearTimeout(hideActionsTimer);
+    overFocusLabel = false;
+    pointerOverActions = false;
+    releasePointerHover();
+  }
+
+  /**
+   * Whether the pointer itself moved: a move to a new place, or the first move the page sees. An element moving under a
+   * still pointer is given a `pointerover` at the same place, and no move (seen in Chromium on 2026-11-11), so it is none;
+   * nor does a `pointerover` stand for the first place, which only a move gives.
+   */
+  function notePointer(event: PointerEvent): void {
+    const at = { x: event.clientX, y: event.clientY };
+    if (event.type !== "pointermove" && !lastPointer) return;
+    if (!lastPointer || lastPointer.x !== at.x || lastPointer.y !== at.y) movedSinceBuilding = true;
+    lastPointer = at;
+  }
+
   /** One application-owned pointer target, coalesced with the existing frame loop as the picture changes. */
   function updatePointerHover(): void {
     if (!forceGraphInstance || !pointerPosition || draggingNode || draggingCamera) return;
+    // While the map builds, and after it until the pointer moves, nothing under the pointer begins a hover.
+    if (!pointerMay().hover) { forceGraphInstance.hideWire(); return; }
     const canvas = forceGraphInstance.renderer().domElement;
     const frame = canvas.getBoundingClientRect();
     const camera = forceGraphInstance.camera();
@@ -555,6 +619,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
 
   function setActive(value: boolean): void {
     if (value && !active && focusMotion && pausedAt) focusMotion.started += performance.now() - pausedAt;
+    // Shown again after a perspective change has played: its spheres enter now, and the building goes on with them.
+    if (value && !active) transitioning = false;
     if (!value && active) {
       pausedAt = performance.now();
       zoomMotion = null;
@@ -589,6 +655,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     advanceBursts();
     instance.updateControls();
     updateFocus(performance.now());
+    updateBuilding();
     instance.draw(pictureRevision);
     updatePointerHover();
     spheresOnScreen = instance.graphData().nodes.length;
@@ -719,7 +786,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         label.className = "force-graph-label";
         label.dataset.nodeId = node.id;
         bindNodeActivation(label);
-        label.addEventListener("pointerenter", () => { overFocusLabel = true; window.clearTimeout(hideActionsTimer); });
+        label.addEventListener("pointerenter", () => { if (!pointerMay().hover) return; overFocusLabel = true; window.clearTimeout(hideActionsTimer); });
         label.addEventListener("pointerleave", () => { overFocusLabel = false; deferHoverExit(); });
         label.addEventListener("focus", focusActions);
         label.addEventListener("blur", () => { requestAnimationFrame(refreshActionStrip); deferHoverExit(); });
@@ -786,7 +853,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         const whole = directory || "Scan root";
         chip.title = `${whole} · opened · Wrap its files again`;
         chip.setAttribute("aria-label", `Wrap ${whole} again`);
-        chip.addEventListener("click", () => wrapShell(directory));
+        chip.addEventListener("click", event => { if (event.detail === 0 || !isBuilding()) wrapShell(directory); });
         container.append(chip);
         poppedChips.set(directory, chip);
       }
@@ -939,7 +1006,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     });
     button.addEventListener("pointercancel", () => { down = null; });
     button.addEventListener("click", event => {
-      const id = event.detail === 0 ? button.dataset.nodeId : down && !down.moved ? down.id : null;
+      // The keyboard's activation stays live while the map builds; the pointer's is dropped (2026-11-15).
+      const id = event.detail === 0 ? button.dataset.nodeId : down && !down.moved && !isBuilding() ? down.id : null;
       down = null;
       if (id) activateNode(id);
     });
@@ -1330,6 +1398,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       if (!packBodies()) {
         pendingEnergy = energy;
         container.setAttribute("aria-busy", "true");
+        updateBuilding(true);
         if (!packingFrame) packingFrame = requestAnimationFrame(packOn);
         return;
       }
@@ -1797,7 +1866,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       updateAttention();
       refreshActionStrip();
       updateForces(!membershipChanged);
-      if (membershipChanged) feed();
+      if (membershipChanged) { feed(); updateBuilding(true); }
       else if (roomChanged && motion) {
         // A change of room alone rearranges the whole: held from where the spheres stood, their tethers fought the
         // wrappers' room, so that switching Off to Skin at rest took a minute to fall still against some 25 s unfolding (2026-11-05).
@@ -1810,7 +1879,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       return;
     }
 
-    let press: { x: number; y: number; id: string | undefined; pointerId: number; button: number; held: boolean } | null = null;
+    let press: { x: number; y: number; id: string | undefined; pointerId: number; button: number; held: boolean; dropped: boolean } | null = null;
     let holdTimer = 0;
     const activePointers = new Set<number>();
     const cancelPress = (): void => { window.clearTimeout(holdTimer); press = null; };
@@ -1852,7 +1921,9 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         draggingNode = true;
         if (actionStrip) actionStrip.hidden = true;
       },
-      onDragEnd: () => { draggingNode = false; pointerPickNeeded = true; refreshActionStrip(); move(1, "hold"); }
+      onDragEnd: () => { draggingNode = false; pointerPickNeeded = true; refreshActionStrip(); move(1, "hold"); },
+      // A sphere is not grabbed while the map builds: the press turns the camera instead (2026-11-15).
+      grabs: () => !isBuilding()
     });
     updateAttention();
     updateForces(true);
@@ -1866,7 +1937,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     focusLabel.className = "force-graph-focus";
     focusLabel.hidden = true;
     bindNodeActivation(focusLabel);
-    focusLabel.addEventListener("pointerenter", () => { overFocusLabel = true; window.clearTimeout(hideActionsTimer); refreshActionStrip(); });
+    focusLabel.addEventListener("pointerenter", () => { if (!pointerMay().hover) return; overFocusLabel = true; window.clearTimeout(hideActionsTimer); refreshActionStrip(); });
     focusLabel.addEventListener("pointerleave", () => { overFocusLabel = false; deferHoverExit(); });
     focusLabel.addEventListener("focus", focusActions);
     focusLabel.addEventListener("blur", () => { requestAnimationFrame(refreshActionStrip); deferHoverExit(); });
@@ -1880,8 +1951,11 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     centreAction = iconButton("Centre", CENTRE_ICON);
     moreAction = iconButton("More actions for this file", MORE_ICON);
     moreAction.setAttribute("aria-haspopup", "menu");
+    // A node's actions act on the pointer's press only while the map is not building; on the keyboard's, always.
+    const refused = (event: MouseEvent): boolean => event.detail !== 0 && isBuilding();
     primaryAction.addEventListener("click", event => {
       event.stopPropagation();
+      if (refused(event)) return;
       const action = actionTargetId ? currentAction(actionTargetId) : null;
       if (action?.kind === "shell") popShell(action.directory);
       else if (action?.kind === "directory") {
@@ -1895,6 +1969,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     });
     centreAction.addEventListener("click", event => {
       event.stopPropagation();
+      if (refused(event)) return;
       const action = actionTargetId ? currentAction(actionTargetId) : null;
       if (action?.kind === "directory") options.onCentreDirectory(action.directory);
       else if (action?.kind === "file") options.onRecenterNode(action.node);
@@ -1902,18 +1977,21 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     });
     moreAction.addEventListener("click", event => {
       event.stopPropagation();
-      if (!actionTargetId) return;
+      if (!actionTargetId || refused(event)) return;
       const rect = moreAction!.getBoundingClientRect();
       showActions(actionTargetId, { x: rect.left + rect.width / 2, y: rect.bottom });
     });
     actionStrip.append(primaryAction, centreAction, moreAction);
-    actionStrip.addEventListener("pointerenter", () => { pointerOverActions = true; window.clearTimeout(hideActionsTimer); refreshActionStrip(); });
+    actionStrip.addEventListener("pointerenter", () => { if (!pointerMay().hover) return; pointerOverActions = true; window.clearTimeout(hideActionsTimer); refreshActionStrip(); });
     actionStrip.addEventListener("pointerleave", () => { pointerOverActions = false; deferHoverExit(); });
     actionStrip.addEventListener("focusin", focusActions);
     actionStrip.addEventListener("focusout", () => { requestAnimationFrame(refreshActionStrip); deferHoverExit(); });
     container.append(actionStrip);
 
     container.addEventListener("pointerleave", releasePointerHover);
+    // Seen before any name's or the actions' own pointer events, whatever the target.
+    container.addEventListener("pointermove", notePointer, true);
+    container.addEventListener("pointerover", notePointer, true);
     container.addEventListener("pointerenter", event => {
       pointerPosition = { x: event.clientX, y: event.clientY };
       pointerPickNeeded = true;
@@ -1928,12 +2006,16 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         refreshActionStrip();
         return;
       }
-      press = { x: event.clientX, y: event.clientY, id: nodeAt(event.clientX, event.clientY),
-        pointerId: event.pointerId, button: event.button, held: false };
+      // A press while the map builds is dropped, never kept for later: it acts on no node and may still turn the camera.
+      // Once built, a press is the pointer's own act, as a move is.
+      const may = pointerMay().press;
+      if (may) movedSinceBuilding = true;
+      press = { x: event.clientX, y: event.clientY, id: may ? nodeAt(event.clientX, event.clientY) : undefined,
+        pointerId: event.pointerId, button: event.button, held: false, dropped: !may };
       const started = press;
       if (started.button === 0 && started.id && currentAction(started.id)) {
         holdTimer = window.setTimeout(() => {
-          if (press !== started || activePointers.size !== 1) return;
+          if (press !== started || activePointers.size !== 1 || isBuilding()) return;
           started.held = true;
           showActions(started.id!, { x: started.x, y: started.y });
         }, 550);
@@ -1958,6 +2040,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       window.clearTimeout(holdTimer);
       if (!press || press.held || activePointers.size !== 1 || event.pointerId !== press.pointerId
         || event.button !== press.button || event.target !== forceGraphInstance?.renderer().domElement) return;
+      // A press that the map began building under, or that was made while it built, does nothing.
+      if (press.dropped || !pointerMay().press) return;
       // The sphere pressed is the one acted on: a settling layout can carry it a little way under a still pointer.
       const id = press.id;
       if (press.button === 2) {
@@ -2023,6 +2107,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     syncInspectionAction();
     refreshActionStrip();
     setActive(true);
+    updateBuilding(true);
   }
 
   function captureScene(): ForceScene {
@@ -2331,6 +2416,9 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
 
   function revealForTransition(nodeIds: readonly string[]): void {
     if (!forceGraphInstance || !motion) return;
+    // A perspective change into this view is playing: the map builds until it has and its spheres have entered.
+    transitioning = true;
+    updateBuilding(true);
     // A picture waiting for its bodies is not the one these files belong to; they are revealed once it is built.
     if (packing.size) { pendingReveal = nodeIds; return; }
     const next = revealCorresponding(reveal.order, reveal.shown, new Set(nodeIds.map(id => directoryRepresentatives.get(id) ?? id)));

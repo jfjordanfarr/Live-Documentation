@@ -13,6 +13,8 @@ Protects saved layout and history preferences, and remembered navigation that ke
 
 ### Notes
 
+The history cases expect Dim as the default Changed Files since November 15, 2026, a design change, and that a saved Glow, the default before, is kept ([Turn 4 of that day's record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-4)).
+
 An older saved configuration receives the current simplicity default without losing its independent evenness and row-alignment settings. Explicit zero and endpoint values survive restoration; nonnumeric and nonfinite JSON values fall back to defaults. The tests exercise the storage reader and application of persisted state together, without a DOM simulation.
 
 History tuning cases preserve valid axis, granularity and play-rate choices while supplying defaults only for absent or invalid fields. Navigation cases exercise the real debounce scheduler with controlled storage and timers: inspecting B preserves subject A, closing stores null, old entries leave the reader closed, and a bundled section or scan-root target survives restoration. Membership checks use the production snapshot scrubber so a removed target cannot displace a surviving subject.

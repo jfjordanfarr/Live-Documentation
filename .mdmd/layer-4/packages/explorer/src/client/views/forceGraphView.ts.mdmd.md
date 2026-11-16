@@ -4,13 +4,14 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphView.ts
-- Generated At: 2026-11-11T08:52:45.127Z
+- Generated At: 2026-11-15T23:30:01.957Z
 
 ## Authored
 ### Purpose
 Renders the force-directed 3D Local Map in either of its layouts, the analyzed connections or the declared structure, with shared retained selections, historical snapshots and the Related Documentation overlay. Owns displayed graph state, motion pacing, framing and projected controls; delegates direct GPU drawing and camera/input mechanics to the renderer, and inspection, retention and navigation to the application.
 
 ### Notes
+- While the map builds, its nodes take no hover and no click (November 15, 2026, the owner's decision in [Turn 4 of that day's record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-4)). Building is a body packing, the reveal bringing spheres in, a perspective change into this view (from `revealForTransition` until the view is shown again) or a change of what is shown, continued by the camera's framing flight; the rule is [`forceGraphBuilding.ts`](forceGraphBuilding.ts.mdmd.md), looked at every frame by `updateBuilding` and shown on the container's `data-building` ("begun", then "shown" after 300 ms). As building begins the pointer's hover ends at once. While it lasts, a press is dropped (`press.dropped`), a press on a sphere turns the camera because the renderer's `grabs` refuses the grab, and a pointer click on a name, an action or a popped directory's name does nothing; keyboard activation (`detail === 0`) stays live. Afterwards, a pointer that has not moved since building began starts nothing until it moves (`notePointer`): an element moving under a still pointer gets a `pointerover` at the same place and no move, so the names' and the actions' `pointerenter` are gated too. `aria-busy` still means the settle, which 26 browser spec files wait for as "came to rest"; building ends long before it.
 - Names clear the complete visible body, including a file's outer ring, even when the foreign body's own name is not eligible ([November 10, Turn 3](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-10.1.record.md#turn-3)). The ring extent comes from the renderer's shared outer-radius constant and the same ring predicate used for drawing. The underlying sphere's perspective radius still controls name disclosure; geometry clearance does not reveal distant names earlier. Popped directory chips keep their former-skin offset and reserve no body.
 - Whole/root-open asks about every filtered file and hub in Structure even with Skin (November 8, 2026). The bag-of-cells branch had reduced the opened scan root to its hub, contradicting the established Whole action; only ordinary directory openings use one-level bubble discovery. Removing the root opening returns to the independent pins and other opened directories.
 - A request absent at the displayed moment keeps only the scope's dim root marker in Structure. Cell construction is suppressed for that fallback, so it cannot expose unrelated historical contents or pop a cached cell into the absent question (November 8, 2026).
@@ -90,14 +91,14 @@ Since 2026-11-11 ([Turn 6 of the November 10 record](../../../../../../../AI-Age
 ### Public Symbols
 #### `ForceGraphLink` {#symbol-forcegraphlink}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L100)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L108)
 
 ##### `ForceGraphLink` — Summary
 A link in the Force Graph between two nodes.
 
 #### `ForceGraphNode` {#symbol-forcegraphnode}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L113)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L121)
 - Returns: [`SpatialGraphNode`](./forceGraphData.ts.mdmd.md#symbol-spatialgraphnode)
 
 ##### `ForceGraphNode` — Summary
@@ -105,28 +106,28 @@ A node in the Force Graph, extending the payload with optional archetype.
 
 #### `ForceGraphData` {#symbol-forcegraphdata}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L122)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L130)
 
 ##### `ForceGraphData` — Summary
 Complete data structure for the Force Graph view.
 
 #### `ForceGraphViewOptions` {#symbol-forcegraphviewoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L133)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L141)
 
 ##### `ForceGraphViewOptions` — Summary
 Options passed to the Force Graph view factory.
 
 #### `ForceGraphViewApi` {#symbol-forcegraphviewapi}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L162)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L170)
 
 ##### `ForceGraphViewApi` — Summary
 Public API surface of the Force Graph view.
 
 #### `createForceGraphView` {#symbol-createforcegraphview}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L191)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L199)
 - Returns: [`ForceGraphViewApi`](#symbol-forcegraphviewapi)
 - Parameters: `options`: [`ForceGraphViewOptions`](#symbol-forcegraphviewoptions)
 
@@ -157,6 +158,11 @@ Creates the Force Graph (3D) view for the Live Docs Explorer.
 - [`forceGraphAppearance.spatialNodeStyle`](./forceGraphAppearance.ts.mdmd.md#symbol-spatialnodestyle)
 - [`forceGraphBatches.SPATIAL_RING_OUTER_RADIUS`](./forceGraphBatches.ts.mdmd.md#symbol-spatial_ring_outer_radius)
 - [`forceGraphBatches.SpatialWrapperUnit`](./forceGraphBatches.ts.mdmd.md#symbol-spatialwrapperunit)
+- [`forceGraphBuilding.Building`](./forceGraphBuilding.ts.mdmd.md#symbol-building)
+- [`forceGraphBuilding.NOT_BUILDING`](./forceGraphBuilding.ts.mdmd.md#symbol-not_building)
+- [`forceGraphBuilding.buildingPhase`](./forceGraphBuilding.ts.mdmd.md#symbol-buildingphase)
+- [`forceGraphBuilding.nextBuilding`](./forceGraphBuilding.ts.mdmd.md#symbol-nextbuilding)
+- [`forceGraphBuilding.nodePointer`](./forceGraphBuilding.ts.mdmd.md#symbol-nodepointer)
 - [`forceGraphCamera.CameraPoint`](./forceGraphCamera.ts.mdmd.md#symbol-camerapoint)
 - [`forceGraphCamera.cornerPanelInsets`](./forceGraphCamera.ts.mdmd.md#symbol-cornerpanelinsets)
 - [`forceGraphCamera.focusedCameraPosition`](./forceGraphCamera.ts.mdmd.md#symbol-focusedcameraposition)

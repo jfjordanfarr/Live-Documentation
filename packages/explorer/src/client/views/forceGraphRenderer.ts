@@ -17,6 +17,8 @@ export interface SpatialRendererOptions<N, L> {
   linkLabel(link: L): string;
   onDrag(node: N): void;
   onDragEnd(node: N): void;
+  /** Whether a press may grab a sphere to drag it; while the 3D map builds it may not, and the press turns the camera. */
+  grabs?(): boolean;
 }
 
 /** A direct Three renderer with a bounded number of scene objects, irrespective of graph size. */
@@ -68,7 +70,7 @@ export class SpatialRenderer<N extends SpatialNode, L extends SpatialDrawLink<N>
     this.gpu.domElement.addEventListener("pointerdown", event => {
       if (this.drag) { this.endDrag(); return; }
       const node = this.nodeAt(event.clientX, event.clientY);
-      if (!node) return;
+      if (!node || this.options.grabs?.() === false) return;
       const plane = new Plane().setFromNormalAndCoplanarPoint(this.eye.getWorldDirection(new Vector3()), new Vector3(node.x, node.y, node.z));
       this.setRay(event.clientX, event.clientY);
       if (!this.raycaster.ray.intersectPlane(plane, this.point)) return;

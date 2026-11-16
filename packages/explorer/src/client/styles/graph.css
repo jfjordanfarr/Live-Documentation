@@ -89,6 +89,39 @@
 
 #graph-svg[data-hovered-node="true"] canvas { cursor: pointer; }
 
+/*
+ * While the map builds (2026-11-15), its names and actions take no pointer, so that a press on them turns the camera;
+ * once it has built for 300 ms the cursor waits and a thin line runs along the map's top edge, still under reduced
+ * motion. The line says nothing in words: the container's aria-busy speaks for the settle.
+ */
+#graph-svg[data-building] :is(.force-graph-label, .force-graph-focus, .force-graph-actions) { pointer-events: none; }
+#graph-svg[data-building="shown"],
+#graph-svg[data-building="shown"] canvas { cursor: progress; }
+#graph-svg::before {
+    content: "";
+    position: absolute;
+    z-index: 4;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    pointer-events: none;
+    opacity: 0;
+    background: linear-gradient(90deg, transparent, var(--text-secondary, #aab) 50%, transparent) no-repeat;
+    background-size: 30% 100%;
+}
+#graph-svg[data-building="shown"]::before {
+    opacity: .7;
+    animation: graph-building 1.6s linear infinite;
+}
+@keyframes graph-building {
+    from { background-position: -50% 0; }
+    to { background-position: 150% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+    #graph-svg[data-building="shown"]::before { animation: none; background: var(--text-secondary, #aab); opacity: .45; }
+}
+
 .force-graph-label { left: 0; top: 0; font-size: 13px; padding: 3px 6px; background: #080c16e8; border-color: #485164; }
 .force-graph-label[data-kind="directory"] { color: #f4c18d; border-color: #6f5237; }
 .force-graph-label[data-context="true"] { opacity: .45; }

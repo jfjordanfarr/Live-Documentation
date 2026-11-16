@@ -1,0 +1,47 @@
+[
+  {
+    "attempt": 0,
+    "label": "history sample: a history step",
+    "busySeconds": 0.93,
+    "neverBusy": false,
+    "frames": 45,
+    "fps": 48.48,
+    "drawn": 42,
+    "spheres": 7,
+    "allEnteredSeconds": 0.07,
+    "allEnteredFrames": 4,
+    "visiblyMovingDrawnShare": 0,
+    "lastVisibleMoveSeconds": null,
+    "lastVisibleMoveFrames": null
+  },
+  {
+    "attempt": 1,
+    "label": "history sample: a history step",
+    "busySeconds": 0.92,
+    "neverBusy": false,
+    "frames": 51,
+    "fps": 55.36,
+    "drawn": 49,
+    "spheres": 7,
+    "allEnteredSeconds": 0.05,
+    "allEnteredFrames": 3,
+    "visiblyMovingDrawnShare": 0,
+    "lastVisibleMoveSeconds": null,
+    "lastVisibleMoveFrames": null
+  },
+  {
+    "attempt": 2,
+    "label": "history sample: a history step",
+    "busySeconds": 0.92,
+    "neverBusy": false,
+    "frames": 55,
+    "fps": 59.91,
+    "drawn": 52,
+    "spheres": 7,
+    "allEnteredSeconds": 0.05,
+    "allEnteredFrames": 3,
+    "visiblyMovingDrawnShare": 0,
+    "lastVisibleMoveSeconds": null,
+    "lastVisibleMoveFrames": null
+  }
+]

@@ -4,13 +4,15 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphRenderer.ts
-- Generated At: 2026-11-08T18:31:06.099Z
+- Generated At: 2026-11-15T23:30:01.505Z
 
 ## Authored
 ### Purpose
 Owns the 3D Local Map's Three.js scene, GPU drawing, camera controls and instance picking. Receives graph data and appearance from the view while leaving physical motion, attention, labels and application actions with their existing owners.
 
 ### Notes
+Since November 15, 2026, the view's optional `grabs` says whether a press may grab a sphere to drag it: while the 3D map builds it may not, and the press goes on to the camera's controls and turns the camera ([Turn 4 of that day's record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-4)).
+
 Introduced for the owner's [October 29 direct-renderer trial](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-10-29.1.SUMMARIZED.md#turn-10). The earlier 3d-force-graph integration generated a scene object for every node and wire and then reassembled those objects into GPU batches. [T3 profiling](../../../../../../../AI-Agent-Workspace/Probes/2026-10-29/t3-freeze/README.md#the-first-repair-did-not-resolve-usability) showed substantial CPU preparation and repeated idle work despite fast GPU draws. This layer replaces that object round trip with [direct buffers](forceGraphBatches.ts.mdmd.md); Three and its trackball controls remain.
 
 The scene owns shared geometry batches and two lights. Membership and appearance changes are queued for the next actual draw, so the uploaded instance index remains coherent for picking until that draw. The shared redraw guard handles camera changes, explicit revisions, resize and context restoration. The view drives both motion and the render loop; this renderer has no cooling schedule, simulation timer or authority to discard graph elements.
@@ -46,7 +48,7 @@ The view owns motion and attention; this layer owns only their picture, camera a
 
 #### `SpatialRenderer` {#symbol-spatialrenderer}
 - Type: class
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphRenderer.ts#L23)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphRenderer.ts#L25)
 - Constraints: [`SpatialNode`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnode), [`SpatialDrawLink`](./forceGraphBatches.ts.mdmd.md#symbol-spatialdrawlink)
 
 ##### `SpatialRenderer` — Summary

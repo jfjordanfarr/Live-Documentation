@@ -90,9 +90,10 @@ export const getDefaultTuning = (): TuningConfig => ({
   },
   forceGraph: { ...LAYOUT_PRESETS.relaxed.forceGraph, coupling: 1, nodeSize: 4, symbolScale: 1, linkWidth: 1, nodeZoomResistance: 0.3, wireZoomResistance: 0.9, gravity: 0.025, componentSeparation: 0.2, chargeRange: 0, approximation: 0.3, linkStrength: 0.5, updateEnergy: 1, tether: 0.02, citedByPull: 1, hops: 1, revealFrames: 60, nameAt: 18, groupWrappers: "skin", shellDepth: 2 },
   // The history's scrubber: steps laid out by date, linear time in which no month counts for more than another (the
-  // owner, 2026-10-22), the ticks chosen by the number of steps, two steps a second when played, and a step's changed
-  // files glowing while the history is shown (2026-10-31).
-  history: { axis: "time", granularity: "auto", playRate: 2, changeEmphasis: "glow" }
+  // owner, 2026-10-22), the ticks chosen by the number of steps, two steps a second when played, and, while the history
+  // is shown, the files a step did not change dimmed so that the changed keep their own colour (Dim since 2026-11-15,
+  // after the owner asked whether a changed file could keep its kind's colour; Glow, white, from 2026-10-31).
+  history: { axis: "time", granularity: "auto", playRate: 2, changeEmphasis: "dim" }
 });
 
 const isRecord = (value: unknown): value is Record<string, unknown> => {
