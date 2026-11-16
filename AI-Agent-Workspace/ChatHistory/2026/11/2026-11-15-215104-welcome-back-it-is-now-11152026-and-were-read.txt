@@ -7741,3 +7741,366 @@ the directory families' on main" completed (exit code 0)
     for the closed directory at the farthest zoom.
 
   Nothing needs you right now.
+
+● Background command "Build main with the 3D-rest round, regenerate the docs,
+rebuild the three Explorer bundles, run the motion's unit files and the link
+check" completed (exit code 0)
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Checking one unit case that timed out by 60 ms under load before I commit the
+  3D-rest round; the round itself only changed comments.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+› Message from general-purpose
+  ## Legend in the fewest words: handback
+
+  The round is built, looked at and committed on
+  `worktree-agent-a56e15b0b36603288`; the specs it moves pass except two slow
+  cases of `force-graph-discovery.spec.ts`, which fail the same way on the base
+  commit's own bundle. It took about 3 h 20 min, most of it waiting on the
+  browser lock. No subagent was used.
+
+  ### Commits (base `d54755f1`)
+  - `64a58143` Say each legend row in a sample and at most two words
+  - `15b0fa8a` Audit the legend on a narrow screen with the sidebar opened
+  - `d644a6c8` Add the legend's before-and-after sheets
+
+  ### What changed and where
+  - **`packages/explorer/src/client/panels/spatial-legend.ts`**: a row is now `{
+  shape, marks: [{label, color}], description }`. The kinds are one row with a
+  mark per kind drawn. `renderSpatialLegend` writes the description as the row's
+  `title` and `aria-description`. The Faded row and `SpatialLegendDrawn.faded`
+  are deleted. New `watchLocalKinds()` fills the 2D kinds row.
+  - **`packages/explorer/src/shared/template.html`**: only the `#local-legend`
+  rows. Roles row, Test-backed, References, and the single line `<div
+  id="local-legend-kinds" …>`. I also gave `#local-legend` `role="list"` and an
+  `aria-label`, as the 3D key has.
+  - **Styles**: `view-shared.css` (the roles drawing: dot, gradient wire, dot),
+  `shell.css` (`.legend-mark`, `.legend-word`, `.legend-row--kinds`; the faded
+  sample removed), `local.css` (`#local-legend-kinds:empty` hidden; its samples
+  drawn as cells). No colour value changed.
+  - **`views/forceGraphView.ts`**: two lines. It no longer hands `faded` to the
+  legend, and a wrapped group's seed says `Open this group and pin this file` in
+  its own tooltip.
+  - **`client/index.ts`**: outside your list, two lines (the import and one
+  `watchLocalKinds()` call in `startExplorer`). The 2D map itself is untouched.
+  - **Docs**: the active-legend paragraph of
+  `.mdmd/layer-3/live-documentation-explorer.mdmd.md` (owner's sentence, the
+  rule, both keys' rows) and two other sentences there that quoted old rows.
+  Authored notes in 16 Live Docs, each citing `#turn-10`. Live Docs regenerated;
+  link and SlopCop audits clean.
+
+  ### Every old row beside what replaced it
+
+  **2D**
+
+  | Old row | Now | Its sentence (tooltip and `aria-description`) |
+  | --- | --- | --- |
+  | "Wire from what offers", "Wire to what uses", "Offers", "Uses" (four rows) |
+  one row: `Offers ●──● Uses`, blue dot, gradient wire, green dot | "A wire
+  runs from what one file offers, in blue, to the file that uses it, in green.
+  On a card, what the file uses enters on the left and what it offers leaves on
+  the right." |
+  | "Test-backed" | "Test-backed" | new: "A card in this border and halo: tests
+  use the file, and the card names them." |
+  | "Width: references" (overview look) | "References" | "Width: the number of
+  references between two files." |
+  | none | kinds row, e.g. `● Implementation ● Test`, only while coloured cells
+  are drawn | "Colour: the kind of file a cell stands for. A cell says its
+  file's name on hover." |
+
+  **3D**
+
+  | Old row | Now | Its sentence |
+  | --- | --- | --- |
+  | a row per kind | one kinds row, wrapping when the panel is too narrow |
+  "Colour: the kind of file, directory or document a sphere stands for." |
+  | "Size: public symbols" / "Size: file symbols; folders uniform" | "Symbols" |
+  "Size: the number of public symbols a file offers." plus " Folders are all
+  one size." while a folder is drawn |
+  | "Width: references" | "References" | "Width: the number of references
+  between two files." |
+  | "Path" | "Path" | "The path asked for, wide and bright. What is not on it is
+  faded." |
+  | "Dimmed: a hop beyond, or another group; click to see more" | "Beyond" |
+  "Dimmed: a hop beyond, or another group. Press one to see more." |
+  | "Ring: more connected, not shown; click to see it" | "More connected" | "A
+  ring: more is connected to this file than the picture shows. Press the file to
+  see it." |
+  | "Wrapped group: its files, not shown; click to open it" | "Wrapped group" |
+  "A wrapped group: its files are not shown. Press it to open it." |
+  | "Shell: N files of a directory; click to open it" | "Directory shell" | "A
+  shell: the files of a directory, drawn as one body. Press it to open it." |
+  | "Faded: not on the path or hovered" | **deleted** | the path's sentence says
+  what a path fades |
+  | "Contains" | "Contains" | "A directory holds the file or the directory at
+  the line's other end." |
+  | "Cites document" | "Cites" | "From a file to a document that the file's own
+  words cite." |
+  | "Cited by document" | "Cited by" | "From a document to a file that the
+  document's links name." |
+
+  - **Deleted: Faded.** A faded thing says by itself that it is out of
+  attention, and the row came and went with every hover.
+  - **Kept against first instinct: Symbols and Contains.** Size is a real
+  encoding nothing else on screen explains, and Contains is the only key to the
+  orange lines.
+  - **Order**: 3D is as before, with the kinds merged where they stood. In 2D
+  the roles come first and the kinds row last, so its coming and going moves no
+  other row.
+
+  ### What each mark says when pressed
+  Read from the code, since a headless browser paints no native tooltip.
+  - A dimmed file's name ends "· Pin this file".
+  - A ringed one says "· N more connected, not shown · Pin this file".
+  - A shell says "· Open this shell".
+  - **A wrapped group's seed did not say it**: only "N files in this group · Pin
+  this file". It now ends "· Open this group and pin this file", which is what
+  a press does. `force-graph-wrappers.spec.ts` asserts it.
+
+  ### Tests
+  - **Unit rule** (`spatial-legend.test.ts`, 5 cases pass): over every row the
+  3D key can build, at most two words beside a sample, one per kind, no colon or
+  punctuation, and a sentence of its own per row.
+    - Red: the same rule over the module as it stood at `d54755f1` gave 27
+  assertion failures (nine kind rows instead of one, seven labels of 3 to 11
+  words, no sentence anywhere).
+  - **Browser cases, new** in `spatial-legend.spec.ts`:
+    - the rule over the 2D rows at the reading, connections and overview looks,
+  with the kinds row compared against the colours of the cells actually drawn at
+  that look;
+    - no kinds row where cells are grey or the closed directory is a plain box;
+    - the design audit over both keys.
+  - **Red on the base bundle**: 5 of 5 in `spatial-legend.spec.ts`, plus the
+  wrappers hover case, the overview case and the tone case.
+    - The first legend case was red there for want of the history sample in my
+  copy of the base site, not for its words; it is a wording-only case.
+  - **Audit width**: the sidebar has one width, 260 px. A window under 760 px
+  starts with it collapsed, so the audit opens it there and reads the overview's
+  rows. The case ends by squeezing the panel to show the audit sees these
+  words.
+  - **Moved to the new words, wording and selector only**:
+  `force-graph-discovery`, `force-graph-shells`, `force-graph-wires`,
+  `force-graph-wrappers`, and the two older cases of `spatial-legend` (rows are
+  now read by `.legend-word`).
+  - **More than wording, in two places**:
+    - `local-map-tone` reads the wire's two ends from the one sample's gradient
+  where it read a sample per end; what it compares is unchanged.
+    - `local-map-overview` gained an assertion of the row's tooltip.
+
+  ### Runs' totals
+  - **2D set** (spatial-legend, tone, overview, tuning, closed-directory-looks,
+  no-network, labels-and-controls): 39 of 40 passed. The one failure was my own
+  audit case's narrow-window step, fixed in `15b0fa8a`; `spatial-legend.spec.ts`
+  then passed 5 of 5.
+  - **3D set** (discovery, shells, wires, wrappers): 22 of 24 passed.
+  - **The two failures**, both in `force-graph-discovery.spec.ts`, twice:
+    - "with nothing asked about…": came to rest in 1544 frames in 167 s and 171
+  s against a 120 s clock ("Slow, not broken").
+    - "discovery survives closing…": `aria-busy` still true after 120 s.
+    - The base commit's own spec against the base bundle failed the same two
+  cases the same way (1353 frames in 186 s; `aria-busy` true), with load average
+  between 10 and 20.
+    - The legend assertions inside the first case passed in every run.
+  - **Unit projects**: 1919 of 1925 passed.
+    - One was a 5 s timeout in `forceGraphPhysics.test.ts` under load; it passes
+  alone, 41 of 41.
+    - Five are SlopCop fixture cases in `tests/integration/slopcop` that got
+  exit 1. I did not check them on the base; I take them for the worktree package
+  lookup the common brief describes.
+  - `npm run build`, eslint on the changed files, `docs:links:enforce` and the
+  three SlopCop audits pass.
+  - **Not run: the full gate.** Please run it on `main`.
+
+  ### Pictures
+  `AI-Agent-Workspace/Screenshots/2026-11-16/legend-words/`, with a README;
+  sheets at device scale 2, pages at 1440 by 900.
+  - `2d-reading.png`: before, 5 rows; after with the kinds row, 3; after without
+  it, 2.
+  - `2d-overview.png`: 6, 4, 3.
+  - `3d-ordinary.png`: 8 rows, three wrapped, against 7.
+  - `3d-longest.png`: a path with tests and both kinds of document. Before, 13
+  rows, four wrapped, and the sidebar's content 972 px tall in a 900 px window;
+  after, 10 rows and it fits.
+  - `3d-estate-path.png`: 9 against 8.
+  - `3d-structure.png`: the Directory kind and Contains.
+  - `tooltips.png`: each new row beside its sentence as read from its `title`.
+  It is not a picture of the tooltip itself.
+
+  The legend crops come from a taller window so the long before key is whole.
+
+  ### Could a newcomer learn each mark?
+  By my eye, yes for these: the roles row (it mirrors the picture, blue dot on a
+  card's right, wire, green dot on the next card's left), Test-backed, Path,
+  More connected, Wrapped group, Contains and the kinds.
+
+  Still unclear to me:
+  - **"Beyond"** is the weakest. A dim dot and that word do not say "the edge of
+  what was asked" until the hover.
+  - **"Symbols" and "References"** lean entirely on their samples (small and
+  large dot, thin and thick line) to say size and width.
+  - **"Cites" and "Cited by"** are two near-identical purple arrows told apart
+  only by the word. That is a colour question, not this round's.
+  - **"Directory shell"** keeps the product's own word "shell", which the map's
+  tooltip also uses.
+
+  ### Forks decided
+  - **Capitalisation**: the two role words stay capitalised, "Offers" and
+  "Uses", as the other rows are.
+  - **Kinds row committed present**: the 2D kinds row is in the template, so its
+  tests can run. If the owner prefers the hover alone, delete:
+    - the template's one line;
+    - `watchLocalKinds` and its call;
+    - `#local-legend-kinds`'s two rules in `local.css`;
+    - the kinds assertions in the two browser cases.
+  - **How the kinds row knows what is drawn**: it reads the kinds from the
+  cells' own `fill`, through a `MutationObserver` on `#map-container`, so the 2D
+  map's files are untouched. The alternative was a call from the 2D controller,
+  which is map code.
+  - **Kinds row alignment**: its dots sit tight to their words (6 px), with the
+  first dot centred in the sample column, so its words stand 9 px left of the
+  other rows' word column. I chose grouping over that alignment; your eye may
+  differ.
+
+  ### Unfinished or still wrong
+  - **No keyboard path to a row's sentence.** The sentences are native `title`
+  tooltips; a sighted keyboard-only reader cannot open one, since rows are not
+  focusable. Tuning's labels have the same limit.
+  - **Test-backed is always shown**, including on the estate sample, which has
+  no tests. That breaks "only what is on screen" and predates this round. One
+  CSS `:has()` line would fix it; I left it under "nothing else moves".
+  - **At the overview look of a small picture** the kinds row is shown for cells
+  drawn only a few pixels across.
+  - **Tooltips were not seen as tooltips**: headless only.
+
+  ### Housekeeping
+  - Both servers are stopped (8956 was pid 564326; the temporary base-bundle
+  server on 8966 was killed by its script).
+  - Scratch scripts, site copies and raw shots are deleted. Run logs are kept in
+  the worktree's `AI-Agent-Workspace/tmp/legend-words/` (git-ignored).
+  - `test-results/` and `reports/e2e` are removed. The worktree is clean.
+
+  ### Links
+  - `/?view=local&dir=scripts`: the 2D key with the kinds row; seven presses of
+  Zoom Out add References.
+  - `/?view=local&mode=3d&node=packages/explorer/src/client/pathfind.ts`: the 3D
+  key, ordinary.
+  - `/samples/estate/?view=local&mode=3d&node=Portal/Services/GatewayClient.cs`:
+  frontier, rings, wrapped groups and shells.
+  - For Cites and Cited by, tick Show Related Docs and Show Citing Docs on the
+  3D link.
+
+● Agent "Legend in fewest words" finished · 3h 4m 51s
+
+● The legend builder has handed back; I am finishing the 3D-rest commit first
+  (rerunning one clocked unit case now that the machine is quiet), then
+  reviewing the legend's before-and-after sheets.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The 3D-rest round is committed as 77e12fd7 (the motion's unit cases 74 of 74
+  on a quiet machine). Now recording it and turning to the legend's sheets.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Looking at the legend's before-and-after sheets with my own eye now.
+
+  Searched for 2 patterns, read 4 files, ran 1 shell command (ctrl+o to expand)
+
+● Reviewing the legend's code now; its sheets read well (2D goes from five wordy
+  rows to three short ones, 3D from thirteen to ten).
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The legend round is reviewed and accepted; it merged cleanly, and I am
+  building it on main now.
+
+  Searched for 1 pattern, ran 4 shell commands (ctrl+o to expand)
+
+● The legend round is building on main (build passed; regenerating documents and
+  previews now). I will take my own look, send you its links, then run its
+  browser cases and commit.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Waiting on the legend round's build; I will look at it, send you links, then
+  run its browser cases and commit.
+
+● Background command "Build main with the legend round, regenerate the docs,
+rebuild the three Explorer bundles and run the panels' unit cases" completed
+(exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+● The legend build passed on main; I have taken my own pictures of both legends
+  and am looking at them now.
+
+  Searched for 1 pattern, read 2 files, ran 3 shell commands (ctrl+o to expand)
+
+● Aligning one detail in the legend before it lands (the file-kind words sat 9
+  px off the other rows' column); rebuilding the previews to check it.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The file-kind words now line up with the other rows in both legends (every
+  word's left edge measures 46 px). One look at the picture, then the browser
+  cases.
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● The legend is rewritten and on your port 8999: each row is a sample and at
+  most two words. Its browser cases are running on main now, and I commit when
+  they pass.
+
+  Before and after
+
+  - 2D legend: five rows of phrases become three. See the before-and-after sheet
+    (AI-Agent-Workspace/Screenshots/2026-11-16/legend-words/2d-reading.png), or
+    live on scripts (http://127.0.0.1:8999/?view=local&dir=scripts).
+  - 3D legend at its longest: thirteen rows, four of them wrapped, become ten,
+    and the sidebar fits the window again. See the sheet
+    (AI-Agent-Workspace/Screenshots/2026-11-16/legend-words/3d-longest.png), or
+    live on pathfind.ts in 3D (http://127.0.0.1:8999/?view=local&mode=3d&node=pa
+    ckages/explorer/src/client/pathfind.ts) and the estate sample in 3D
+    (http://127.0.0.1:8999/samples/estate/?view=local&mode=3d&node=Portal/Servic
+    es/GatewayClient.cs).
+
+  The sheets were taken before one small alignment fix of mine, so the live page
+  is 9 px tidier than the sheets in the file-kind row.
+
+  What changed
+
+  - The four rows about blue and green are now one small drawing: Offers ●──●
+    Uses, in the order the picture runs. The two words stay because they are
+    your choice from September 29.
+  - Every sentence moved into the row's hover. Designers call this progressive
+    disclosure: show the least that works and reveal the rest on demand. Hover
+    "More connected" in the 3D legend to see it.
+  - The "click to…" sentences became two words each: "Beyond", "More connected",
+    "Wrapped group", "Directory shell".
+  - The "Faded" row is gone. A faded sphere already says it is out of attention.
+  - A file-kind row appears in 2D only while coloured cells are on screen: ●
+    Implementation ● Test.
+
+  Two things for your eye
+
+  1. The file-kind row makes your colour conflict readable in the legend itself:
+     a blue dot for Implementation sits right under the blue dot for Offers,
+     and green likewise. It is the truth of the picture today. If you would
+     rather the cells' hover did all the talking, the row is one line to remove.
+  2. "Beyond" (the dim spheres one hop past what you asked for) is the weakest
+     word. If it reads oddly to you, tell me the word you would use.
+
+  Left as it was
+
+  - "Test-backed" still shows on pictures that have no tests.
+  - A row's sentence cannot be reached by keyboard alone.
+
+  Next: commit this when its cases pass, then the full gate on a quiet machine.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The legend message reached you (the log shows it), and its browser cases are
+  12 in with no failures. Nothing else has arrived, so I am waiting on that run;
+  no builder is running, and the timer is not renewed.
