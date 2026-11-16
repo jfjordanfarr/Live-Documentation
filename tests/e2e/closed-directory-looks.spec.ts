@@ -320,7 +320,9 @@ for (const lines of ["fallback", "segoe"] as const) {
         // The name's own chevron and the held one: only the held one may be drawn, and the name's stands unmoved under it.
         const own = element.querySelector<SVGElement>(".local-directory-closed__name > .local-directory-chevron")!;
         const lifted = new DOMMatrix(getComputedStyle(element.querySelector(".local-directory-closed__name")!).transform).f;
-        return { display: style.display, content: getComputedStyle(held, "::after").content, line, cells, readingShown: reading ? getComputedStyle(reading).visibility === "visible" : false, tab,
+        // The cells' row is the family's (2026-11-16): drawn in every closed box of the parent or in none.
+        const rows = [...document.querySelectorAll<HTMLElement>("#map-container .local-directory-closed")].map(sibling => (sibling.getAttribute("data-cells-connections") ?? "") !== "");
+        return { display: style.display, content: getComputedStyle(held, "::after").content, line, cells, rows, readingShown: reading ? getComputedStyle(reading).visibility === "visible" : false, tab,
           ownChevron: getComputedStyle(own).visibility, heldChevron: getComputedStyle(held.querySelector(".local-directory-chevron")!).visibility, lifted };
       });
       // The name is held at the look's size: at least the reading size's line on screen, drawn by the held element.
@@ -331,9 +333,16 @@ for (const lines of ["fallback", "segoe"] as const) {
       expect([seen.ownChevron, seen.heldChevron], look).toEqual(["hidden", "visible"]);
       expect(seen.lifted, `${look}: the name's button where every shape has it`).toBe(0);
       if (look === "cells") {
-        // At least a row of cells, each held about as large on screen as at reading size, not the map's sliver.
-        expect(seen.cells.length).toBeGreaterThan(2);
-        expect(Math.min(...seen.cells)).toBeGreaterThanOrEqual(7);
+        // The row of cells is in every sibling or in none (closed-directory-families.spec.ts). Under this machine's
+        // lines every name of `scripts` holds one line and the row is drawn: at least a row of cells, each held about
+        // as large on screen as at reading size, not the map's sliver. Under Segoe UI's lines this machine's bold face
+        // is the wider, "doc-" / "tools" takes two lines, and that one sibling leaves the whole family without the row.
+        expect(new Set(seen.rows).size, "the cells' row in every sibling or in none").toBe(1);
+        if (lines === "fallback") expect(seen.rows[0], "the row drawn where every name holds one line").toBe(true);
+        if (seen.rows[0]) {
+          expect(seen.cells.length).toBeGreaterThan(2);
+          expect(Math.min(...seen.cells)).toBeGreaterThanOrEqual(7);
+        } else expect(seen.cells).toEqual([]);
         expect(seen.readingShown).toBe(false);
         // The tab is the reading look's: here the folder is drawn plain, the box's whole outline without a step (no
         // corner turns the other way), the same for every box whatever its held name leaves beside it.

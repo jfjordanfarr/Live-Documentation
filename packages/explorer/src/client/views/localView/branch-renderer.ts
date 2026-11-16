@@ -11,7 +11,7 @@ import { drawsReference } from "./connections";
 import type { LocalViewController } from "./controller";
 import { ancestryButton } from "./directory-ancestry";
 import { isPairLine, NARROW_SHAPE, nominalMeasurer, searchFlowShape, shapeRecord, type FlowShape, type ShapeSearch } from "./directory-flow";
-import { chevronMarkup, handleParts, handleRun, HANDLE_HOLD, HANDLE_INDENT, HANDLE_LINE, HANDLE_STRIP } from "./directory-handle";
+import { chevronMarkup, handleParts, handleReach, HANDLE_FLOOR, HANDLE_HOLD, HANDLE_INDENT, HANDLE_LINE, HANDLE_STRIP, type Standing } from "./directory-handle";
 import { layoutTopOf } from "./ladder-rooms";
 import { membranePath } from "./membrane-outline";
 import { OVERVIEW_FILES_ATTRIBUTE, OVERVIEW_LINES_ATTRIBUTE, type PictureSize } from "./overview-files";
@@ -523,6 +523,7 @@ function labelFor(controller: LocalViewController, stage: BranchStage, directory
     label.style.height = `${HANDLE_STRIP}px`;
     label.style.setProperty("--dir-line", String(HANDLE_LINE));
     label.style.setProperty("--dir-hold", String(HANDLE_HOLD));
+    label.style.setProperty("--dir-floor", String(HANDLE_FLOOR));
     label.style.setProperty("--dir-strip", String(HANDLE_STRIP));
     fillLabel(controller, label, directory, stage.disclosures.get(directory));
     stage.root.append(label);
@@ -598,20 +599,24 @@ function fillLabel(controller: LocalViewController, label: HTMLElement, director
   const focused = label.contains(document.activeElement) ? document.activeElement : null;
   label.replaceChildren(row);
   label.style.removeProperty("--dir-need");
+  label.style.removeProperty("--dir-name");
   if (focused) (focused.classList.contains("local-directory-actions") ? more : handle).focus({ preventScroll: true });
 }
 
 /**
- * What a handle's line needs across to draw the count of what its directory hides, in the line's own units: the chevron,
- * the directory's own name whole, and the count with the air before it. Read once from the label as laid out, after it is
- * filled, and written for the stylesheet, which draws the count only where the line's room holds this beside More: a
- * count is drawn whole or not at all (the owner's rule for counts of 2026-11-13), and one that the line's wrapping has
- * sent out of sight is then not drawn in fact, not merely clipped.
+ * What a handle's line needs across, in the line's own units, read once from the label as laid out, after it is filled,
+ * and written for the stylesheet. `--dir-name`: the chevron and the directory's own name whole, from which the
+ * stylesheet brings the held line down in size before the name is cut, as a closed box's name is (2026-11-16, when
+ * "Pay…" stood cut at the overview look's full size). `--dir-need`: the same and the count of what the directory hides
+ * with the air before it; the stylesheet draws the count only where the line's room holds this beside More: a count is
+ * drawn whole or not at all (the owner's rule for counts of 2026-11-13), and one that the line's wrapping has sent out
+ * of sight is then not drawn in fact, not merely clipped.
  */
-function writeCountNeed(label: HTMLElement): void {
-  if (label.style.getPropertyValue("--dir-need")) return;
+function writeHandleNeeds(label: HTMLElement): void {
   const count = label.querySelector<HTMLElement>(".local-directory-more"), leaf = label.querySelector<HTMLElement>(".local-directory-leaf");
-  if (!count || !leaf || !count.offsetWidth) return;
+  if (!leaf || !leaf.scrollWidth) return;
+  if (!label.style.getPropertyValue("--dir-name")) label.style.setProperty("--dir-name", String(HANDLE_INDENT + leaf.scrollWidth));
+  if (label.style.getPropertyValue("--dir-need") || !count || !count.offsetWidth) return;
   label.style.setProperty("--dir-need", String(Math.ceil(HANDLE_INDENT + leaf.scrollWidth + count.offsetWidth + (parseFloat(getComputedStyle(count).marginLeft) || 0))));
 }
 
@@ -865,11 +870,14 @@ function applyPose(stage: BranchStage, pose: Pose, bandPadding: number): void {
     const label = stage.labels.get(box.directory);
     if (label && box.segments.length) {
       label.style.top = `${box.segments[0].top - box.top + box.inset}px`;
-      const width = Math.max(0, handleRun(box.segments.slice(0, box.stripColumns)) - 2 * box.inset);
+      // What stands in the membrane, as placed: the handle reaches over its strip's columns and on over level columns that are clear under it.
+      const standing: Standing[] = [...pose.items.values()].filter(item => item.host === box.key).map(item => ({ left: item.left, right: item.left + item.width, top: item.top }));
+      for (const other of pose.boxes.values()) if (other.host === box.key) standing.push(...other.segments);
+      const width = Math.max(0, handleReach(box.segments, box.stripColumns, box.inset + HANDLE_STRIP, standing) - 2 * box.inset);
       label.style.width = `${width}px`;
       label.style.setProperty("--dir-inset", String(box.inset));
       label.style.setProperty("--dir-room", String(width));
-      writeCountNeed(label);
+      writeHandleNeeds(label);
     }
   }
   for (const item of pose.items.values()) {

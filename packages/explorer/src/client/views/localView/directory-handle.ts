@@ -23,6 +23,13 @@ export const HANDLE_AIR = 6;
 export const HANDLE_HOLD = LOOK_SCALES.overview;
 
 /**
+ * The least scale a directory's name is brought down to before it is cut, a closed box's and an opened directory's
+ * handle's alike: the connections look's, so that no directory's name stands smaller at the farthest look than every
+ * name stands a look closer.
+ */
+export const HANDLE_FLOOR = LOOK_SCALES.connections;
+
+/**
  * The height of the strip a drawn directory keeps above its cards, a constant of the layout: a line of the handle at the
  * largest scale a look holds a file's name at, and the air below it. A directory's name is then never drawn smaller
  * than the names of the files inside it, and the held handle never lies over the first card (the overlap of 2026-11-06,
@@ -91,17 +98,32 @@ export function stripColumns(box: StripBox): number {
   return run;
 }
 
+/** Something standing in a membrane, as placed: a card, a closed box, or a column of a membrane or a lane inside it. */
+export interface Standing { left: number; right: number; top: number }
+
 /**
- * The handle's room across, from the segments of its membrane that keep the strip, as placed, left to right: the run
- * of leading segments whose tops are level with the leftmost's, from its left edge to the run's right. A segment whose
- * top steps away ends the run, whatever the strip it keeps: the strip there is at another height.
+ * The handle's room across, from its membrane's segments as placed, left to right: from the leftmost's left edge to
+ * the right of the last of the leading segments it reaches. It reaches a segment whose top is level with the
+ * leftmost's and that either keeps the strip (one of the first `stripColumns`) or holds nothing of the membrane
+ * within `clear` units of its top, the strip's height below the membrane's edge. A segment whose top steps away ends
+ * the run, whatever it keeps: the strip there is at another height.
+ *
+ * The second way is of 2026-11-16. A picture placed by its wires keeps the strip over a membrane's first column alone,
+ * since its columns stand at the heights the wires give them and not in rows (`stripColumns` counts rows); there the
+ * handle was one column wide whatever stood beside it, and "Pay…" was cut beside a row of the membrane that held
+ * nothing. That reach is read from the picture as it stands and changes no number of the layout: a card that the
+ * wires place higher takes the room back.
  */
-export function handleRun(segments: readonly { left: number; right: number; top: number }[]): number {
+export function handleReach(segments: readonly { left: number; right: number; top: number }[], stripColumns: number, clear: number, standing: readonly Standing[]): number {
   const first = segments[0];
   if (!first) return 0;
   let right = first.right;
-  for (const segment of segments.slice(1)) {
+  for (const [index, segment] of segments.entries()) {
+    if (index === 0) continue;
     if (Math.abs(segment.top - first.top) > 0.5) break;
+    const free = index < stripColumns
+      || standing.every(thing => thing.right <= segment.left + 0.5 || thing.left >= segment.right - 0.5 || thing.top - segment.top >= clear - 0.5);
+    if (!free) break;
     right = segment.right;
   }
   return right - first.left;
@@ -140,4 +162,66 @@ export function fitHandle(segments: readonly string[], roomAt: (scale: number) =
     if (wholeAtSeams(fit.header, segments)) return fit;
   }
   return at(least);
+}
+
+/** The air between a held name and the row of cells held under it, in the name's own units. */
+export const HELD_CELLS_GAP = 2;
+
+/** A closed box's room for its held name, in the map's own units, as the box is laid out. */
+export interface ClosedRoom {
+  /** The content's width: the chevron and the name share it. */
+  width: number;
+  /** From the name's top down to the air above the box's foot. */
+  height: number;
+  /** A line of the name at reading size. */
+  line: number;
+}
+
+/** A closed box among its siblings: its name's segments, its room, and the measure of its name's type. */
+export interface ClosedSibling {
+  segments: readonly string[];
+  room: ClosedRoom;
+  measure: (text: string) => number;
+}
+
+/** A closed box as a far look holds it: its name's own scale and lines, and the room left under the name, in the map's units. */
+export interface ClosedHeld {
+  scale: number;
+  lines: string[];
+  under: number;
+}
+
+/** A family of closed boxes at a far look: each box's own name, and whether the cells' row is drawn in them. */
+export interface ClosedFamily {
+  cells: boolean;
+  boxes: ClosedHeld[];
+}
+
+/** In every sibling or in none: what one box of a family draws only where each of them has the room for it. */
+export function inEverySibling(rooms: readonly boolean[]): boolean {
+  return rooms.length > 0 && rooms.every(Boolean);
+}
+
+/**
+ * The closed boxes of one parent at a far look (2026-11-16). Each box's name is fitted on its own, as a file's is
+ * ({@link fitHandle}): at the look's size where the box holds it whole, else at the largest smaller size that does,
+ * never below the floor. More is not drawn in a closed box at these looks: the box is the control there, and More
+ * returns at reading size (before, it took a line of its own wherever a name left it none, a row given to a lone
+ * control). The cells' row is the family's, decided after the names are fitted: drawn in every sibling where each has
+ * a whole row's height (`cellRow`, at its own name's scale) under its name, and otherwise in none, since a row in
+ * some siblings and not in others said nothing but how each one's name happened to fit.
+ *
+ * A first form of the same day also held every sibling's name at the tightest sibling's scale and kept More beside
+ * the name where every sibling could hold it. It was withdrawn on the pictures: the names of a family then stood at
+ * the floor in most families, the smallest names in the picture, and uniform at 8 px was worse than uneven at 13 where
+ * a directory is the thing to act on; and More could be held in a quarter of the families only.
+ */
+export function closedFamily(siblings: readonly ClosedSibling[], look: number, floor: number, cellRow: number): ClosedFamily {
+  const boxes = siblings.map(({ segments, room, measure }): ClosedHeld => {
+    // The box's room in its name's own units at a scale, after the chevron that leads every line.
+    const roomAt = (scale: number): HeldRoom => ({ width: room.width / scale - HANDLE_INDENT, height: room.height / scale, line: room.line, controlsWidth: 0, controlsHeight: 0, gap: 0 });
+    const fit = fitHandle(segments, roomAt, measure, Math.max(1, Math.min(look, room.height / room.line)), floor);
+    return { scale: fit.scale, lines: fit.header.lines, under: room.height - (fit.header.lines.length * room.line + HELD_CELLS_GAP) * fit.scale };
+  });
+  return { boxes, cells: inEverySibling(boxes.map(box => box.under >= cellRow * box.scale - 1e-6)) };
 }

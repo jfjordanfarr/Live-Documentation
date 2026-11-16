@@ -484,11 +484,12 @@ test("in the connections look a card's names stand at even gaps whatever their r
 /**
  * A closed directory's box inside an opened directory follows a file's card in the far looks (2026-11-13): its name held
  * after its chevron at the look's size, or smaller where that keeps it whole and never below the connections look's
- * (2026-11-15), its count of what it holds not drawn, and its More kept beside the name where the box holds it. The
- * handle that opens it is the name's button, which keeps the keyboard, and no text button is drawn. Read on this
- * repository's scripts/doc-tools opened, whose __fixtures__ is closed, under both lines.
+ * (2026-11-15), and its count of what it holds and its More not drawn: the box is the control at these looks, and More
+ * returns at reading size (2026-11-16; until then More was kept where the box held it, beside the name or on a line of
+ * its own). The handle that opens it is the name's button, which keeps the keyboard, and no text button is drawn. Read
+ * on this repository's scripts/doc-tools opened, whose __fixtures__ is closed, under both lines.
  */
-test("in the far looks a closed directory's name is held after its chevron, fitted whole, its count not drawn and its More kept where it fits", async ({ browser }) => {
+test("in the far looks a closed directory's name is held after its chevron, fitted whole, and its count and its More are not drawn", async ({ browser }) => {
   test.setTimeout(240_000);
   for (const lines of ["fallback", "segoe"] as const) {
     for (const [presses, look, scale] of [[3, "connections", 2.2], [8, "overview", 3.6]] as const) {
@@ -499,7 +500,7 @@ test("in the far looks a closed directory's name is held after its chevron, fitt
         const held = element.querySelector<HTMLElement>(".local-directory-closed__held")!, more = element.querySelector<HTMLElement>(".local-directory-actions")!;
         const handle = element.querySelector<HTMLElement>(".local-directory-handle"), chevron = held.querySelector(".local-directory-chevron");
         const visible = (part: Element): boolean => getComputedStyle(part).visibility === "visible" && getComputedStyle(part).display !== "none";
-        const boxRect = element.getBoundingClientRect(), moreRect = more.getBoundingClientRect(), heldRect = held.getBoundingClientRect();
+        const boxRect = element.getBoundingClientRect(), heldRect = held.getBoundingClientRect();
         const inside = (rect: DOMRect): boolean => rect.left >= boxRect.left - 0.5 && rect.right <= boxRect.right + 0.5 && rect.top >= boxRect.top - 0.5 && rect.bottom <= boxRect.bottom + 0.5;
         const content = getComputedStyle(held, "::after").content;
         return {
@@ -511,7 +512,7 @@ test("in the far looks a closed directory's name is held after its chevron, fitt
           chevron: chevron ? chevron.getBoundingClientRect().height / k : 0,
           handle: handle ? { label: handle.getAttribute("aria-label"), expanded: handle.getAttribute("aria-expanded"), focusable: handle.tabIndex >= 0 && visible(handle) } : null,
           words: [...element.querySelectorAll("button")].map(button => button.textContent?.trim() ?? ""),
-          more: visible(more) ? { inside: inside(moreRect), scale: moreRect.height / more.offsetHeight / k } : null
+          more: visible(more)
         };
       });
       const where = `${lines}, ${look}`;
@@ -524,11 +525,7 @@ test("in the far looks a closed directory's name is held after its chevron, fitt
       expect.soft(seen.chevron, `${where}: the chevron held with the name`).toBeGreaterThan(12 * 2.2 - 0.5);
       expect.soft(seen.handle, `${where}: the handle says the act and takes the keyboard`).toEqual({ label: "Open scripts/doc-tools/__fixtures__", expanded: "false", focusable: true });
       expect.soft(seen.words, `${where}: no text button`).not.toContain("Open");
-      if (seen.more) {
-        expect.soft(seen.more.inside, `${where}: More inside the box`).toBe(true);
-        expect.soft(seen.more.scale, `${where}: More held, not at the map's size`).toBeGreaterThan(1.4);
-      }
-      if (look === "connections") expect.soft(seen.more, `${where}: More kept, the box holding it beside the name`).not.toBeNull();
+      expect.soft(seen.more, `${where}: More not drawn, the box being the control`).toBe(false);
       await context.close();
     }
   }

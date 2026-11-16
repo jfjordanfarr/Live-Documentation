@@ -430,15 +430,15 @@
 /* A closed directory's box inside an opened directory follows a file's card in the far looks (2026-11-13): its name is
    held at the look's size on the lines the card reading chose (data-lines-look-<look>), drawn by an element of its own
    from the box's content's top left, after the handle's chevron, which is held with it and which every line is indented
-   by (--closed-indent); the box's More follows it at the box's right edge, held no taller than a line of it, where the
-   box holds it (local-closed-controls-<look>, moved by --closed-x/y-<look>); the count of what it holds, and More where
-   the box cannot hold it, are not drawn. The name's button keeps its place, its label and its focus, its own text and
+   by (--closed-indent); the count of what it holds and its More are not drawn (2026-11-16: the box is the control at
+   these looks, More returns at reading size, and it had stood on a line of its own wherever the name left it none).
+   The name's button keeps its place, its label and its focus, its own text and
    chevron transparent. Its line is the stylesheet's, as a slot card's is, so that the box shows the
    same on every machine. */
 .local-directory-closed { line-height: 1.15; }
 .local-directory-closed__held { display: none; }
-[data-looks="three"][data-lod="far"] .local-directory-closed { --closed-scale: var(--closed-scale-connections, 1); --closed-control: var(--closed-control-connections, 1); }
-[data-looks="three"][data-lod="overview"] .local-directory-closed { --closed-scale: var(--closed-scale-overview, 1); --closed-control: var(--closed-control-overview, 1); }
+[data-looks="three"][data-lod="far"] .local-directory-closed { --closed-scale: var(--closed-scale-connections, 1); }
+[data-looks="three"][data-lod="overview"] .local-directory-closed { --closed-scale: var(--closed-scale-overview, 1); }
 [data-looks="three"]:is([data-lod="far"], [data-lod="overview"]) .local-directory-closed :is(.local-directory-closed__count, .local-directory-actions) { visibility: hidden; }
 [data-looks="three"]:is([data-lod="far"], [data-lod="overview"]) .local-directory-closed .local-directory-closed__name { color: transparent; }
 /* The name's own chevron has a colour of its own, so it is hidden by name: it stood, at reading size, in the held chevron's corner. */
@@ -465,16 +465,6 @@
 .local-directory-closed:hover .local-directory-closed__held > .local-directory-chevron { color: var(--accent); }
 [data-looks="three"][data-lod="far"] .local-directory-closed__held::after { content: attr(data-lines-look-connections); }
 [data-looks="three"][data-lod="overview"] .local-directory-closed__held::after { content: attr(data-lines-look-overview); }
-[data-looks="three"][data-lod="far"] .local-directory-closed.local-closed-controls-connections .local-directory-actions {
-    visibility: visible;
-    transform: translate(calc(var(--closed-x-connections, 0) * 1px), calc(var(--closed-y-connections, 0) * 1px)) scale(var(--closed-control));
-    transform-origin: right top;
-}
-[data-looks="three"][data-lod="overview"] .local-directory-closed.local-closed-controls-overview .local-directory-actions {
-    visibility: visible;
-    transform: translate(calc(var(--closed-x-overview, 0) * 1px), calc(var(--closed-y-overview, 0) * 1px)) scale(var(--closed-control));
-    transform-origin: right top;
-}
 /* In the far looks a card's drawn rows share its row room evenly (2026-11-13): with short rows beside slot rows the names
    would otherwise stand at uneven gaps with nothing visible to explain them. The card reading shares the rows' heights
    and gaps out (ladder-rooms.ts's evenRows) and writes each row's shift to its even place and its share's height; the

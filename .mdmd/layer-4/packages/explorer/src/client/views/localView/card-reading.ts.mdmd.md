@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-reading.ts
-- Generated At: 2026-11-16T05:14:32.452Z
+- Generated At: 2026-11-16T08:03:37.782Z
 
 ## Authored
 ### Purpose
@@ -56,6 +56,8 @@ Since 2026-11-15's second milestone ([November 15, Turn 1](../../../../../../../
 
 The pinned rows of one card take one size at the overview look, the tightest's, as a card's file name takes one scale (`overview-files.ts`'s `pinnedRowScales`; 2026-11-15, [Turn 1 of that day's record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)): the reading finds each row's own scale first and then gives the rows pinned by name the least of theirs, counting each one's lines at that.
 
+Since 2026-11-16 ([the corrections decided that day](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#work-notes-the-closed-directorys-cells-and-shapes-come-back)) `closedBoxWrites` reads every closed box of the picture at once (`directory-handle.ts`'s `closedFamily`): it measures each box as laid out, groups the boxes by their parent's path, and writes for each far look each box's own scale and lines and the cells' room in every box of a family or in none. More is not drawn in a closed box at the far looks, so nothing is written for it ([the review of that day](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#work-notes-the-seventh-hour-of-november-16-utc)).
+
 Descriptions Zoomed Out has four values since 2026-11-15 ([Turn 1 of the November 15 record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1); [the pictures](../../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-15/descriptions-kept/README.md)): Hidden, the trial's "first-line" of November 13, and "line-end" and "line-middle", in which every row whose description is shown at reading size keeps its first line in the connections look and its name holds to one line. The reading puts a plain `span.local-row-kept` in each described row's label and decides in `lookHeadWrites` which rows keep it: none with Hidden; with "first-line" what `fitKept` gives, kept lines giving way before a name loses a line; with the two new values every described row, and then the names' lines from `fitLines` over what is left, so that a folded row's name gives up its second line before a described row gives up its description (the owner's card half folded is some ten units short of holding both, and one folded name gives a line up). A kept line counts in its row's head, so `evenRows` spaces the heads with it. For a kept row whose name does not fit its one line the reading writes the cut name (`name-cut.ts`) as `data-name-cut` on the name's text, which the stylesheet draws over the name's own text, and the whole name as the label's `title`; the text in the page and the row's accessible name stay whole. Both are removed when the look or the value no longer cuts.
 
 The file's own line follows the same choice (any value but Hidden): where the Purpose is shown at reading size, a `span.local-file-kept` holding its flattened text, a child of the card and not of the header, whose text other code reads as the file's name, is placed under the held name (`--file-kept-x`, `--file-kept-y`) when the header's room holds a line of the kept lines' type there (`ladder-rooms.ts`'s `fileLineRoom`). Where it does not, nothing is drawn and the card carries by how much in `data-file-kept-short`, since a line is never shrunk to fit.
@@ -94,7 +96,7 @@ while names open full descriptions in the reader.
 
 #### `markFirstPin` {#symbol-markfirstpin}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L1002)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L993)
 
 ##### `markFirstPin` — Summary
 Write the pin depths for a card whose rows were just ordered, and its held name's lines at the overview band, whose
@@ -120,13 +122,14 @@ room they bound, from the card's last reading: no layout is read.
 - [`card-factory.drawHeldLooks`](./card-factory.ts.mdmd.md#symbol-drawheldlooks)
 - [`closed-looks.CELLS`](./closed-looks.ts.mdmd.md#symbol-cells)
 - [`directory-handle.CLOSED_FOOT`](./directory-handle.ts.mdmd.md#symbol-closed_foot)
+- [`directory-handle.ClosedSibling`](./directory-handle.ts.mdmd.md#symbol-closedsibling)
+- [`directory-handle.HANDLE_FLOOR`](./directory-handle.ts.mdmd.md#symbol-handle_floor)
 - [`directory-handle.HANDLE_INDENT`](./directory-handle.ts.mdmd.md#symbol-handle_indent)
-- [`directory-handle.fitHandle`](./directory-handle.ts.mdmd.md#symbol-fithandle)
-- [`directory-handle.wholeAtSeams`](./directory-handle.ts.mdmd.md#symbol-wholeatseams)
+- [`directory-handle.closedFamily`](./directory-handle.ts.mdmd.md#symbol-closedfamily-function)
+- [`directory-handle.handleParts`](./directory-handle.ts.mdmd.md#symbol-handleparts)
 - [`held-lines.CONTROLS_GAP`](./held-lines.ts.mdmd.md#symbol-controls_gap)
 - [`held-lines.HELD_BANDS`](./held-lines.ts.mdmd.md#symbol-held_bands)
 - [`held-lines.HeldBand`](./held-lines.ts.mdmd.md#symbol-heldband)
-- [`held-lines.HeldRoom`](./held-lines.ts.mdmd.md#symbol-heldroom)
 - [`held-lines.TitleRooms`](./held-lines.ts.mdmd.md#symbol-titlerooms)
 - [`held-lines.chooseHeldHeader`](./held-lines.ts.mdmd.md#symbol-chooseheldheader)
 - [`held-lines.chooseNameHeader`](./held-lines.ts.mdmd.md#symbol-choosenameheader)

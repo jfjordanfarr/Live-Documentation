@@ -387,10 +387,16 @@ span.local-disclosure { cursor: default; }
 .local-directory-row > .local-directory-handle { position: relative; flex: 0 1 auto; min-width: 0; height: 100%; justify-content: flex-start; text-align: left; line-height: inherit; }
 .local-directory-row > .local-directory-handle::before { content: ""; position: absolute; left: calc(var(--dir-inset, 0) * -0.5px / var(--dir-scale)); right: -2px; top: calc(var(--dir-inset, 0) * -1px / var(--dir-scale)); height: calc((var(--dir-inset, 0) + var(--dir-strip, 0)) * 1px / var(--dir-scale)); }
 .local-directory-chevron { flex: none; }
-.local-directory-caption { display: flex; flex-wrap: wrap; align-items: center; align-content: flex-start; flex: 0 1 auto; min-width: 0; height: calc(var(--dir-line, 15) * 1px); overflow: hidden; }
+/* Nothing of the line is clipped at the line's own height: under Segoe UI's metrics a 13 px name's content area is
+   17.3 px, more than the 15 px line, and boxes that clipped at the line cut the name's descenders by a pixel on screen
+   at the far looks. The path and the name clip across only, where their ellipsis is; the caption, which must hide the
+   row its wrapping sends the count to, clips two units past the line above and below it, inside the same room
+   (--dir-clip: padding taken back by a negative margin). The name's own box stays one line tall. */
+.local-directory-label { --dir-clip: 2px; }
+.local-directory-caption { display: flex; flex-wrap: wrap; align-items: center; align-content: flex-start; flex: 0 1 auto; min-width: 0; height: calc(var(--dir-line, 15) * 1px); padding-block: var(--dir-clip); margin-block: calc(-1 * var(--dir-clip)); overflow: hidden; }
 .local-directory-caption > .local-directory-chevron { height: calc(var(--dir-line, 15) * 1px); margin-right: 4px; }
-.local-directory-parent { flex: 1 1 0; min-width: 0; max-width: max-content; overflow: hidden; text-overflow: ellipsis; direction: rtl; text-align: left; }
-.local-directory-leaf { flex: none; max-width: calc(100% - 16px); overflow: hidden; text-overflow: ellipsis; color: var(--card-file-name); font-weight: 600; }
+.local-directory-parent { flex: 1 1 0; min-width: 0; max-width: max-content; overflow-x: clip; overflow-y: visible; text-overflow: ellipsis; direction: rtl; text-align: left; }
+.local-directory-leaf { flex: none; max-width: calc(100% - 16px); overflow-x: clip; overflow-y: visible; text-overflow: ellipsis; color: var(--card-file-name); font-weight: 600; }
 /* The count is drawn where the line's room (--dir-room, in the map's units, over the held scale) holds what the name and
    the count need (--dir-need) beside the controls after them (--dir-controls: More and the ancestry control with their
    gaps, More alone from the far band out), with a unit to spare; otherwise it is not drawn, and the wrapping has already
@@ -421,7 +427,14 @@ body:has(#map-container[data-lod="overview"]) #local-legend .legend-row--gathere
    ladder's last steps, it follows the map). The line is laid out at its own size in the label's width divided by that
    scale and drawn scaled from its top left, so its buttons are held with the name and nothing is measured for it. The
    ancestry control leaves from the far band out, as a card's secondary buttons do. */
-:is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-directory-label { --dir-scale: max(1, min(var(--text-scale, 1), var(--dir-hold, 1))); }
+:is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-directory-label { --dir-held: max(1, min(var(--text-scale, 1), var(--dir-hold, 1))); }
+/* The name fits before it is cut (2026-11-16): where the label's room does not hold the chevron, the directory's own
+   name (--dir-name, in the line's own units) and the controls after it at the held size, the line comes down in size
+   until it does, never below the floor a closed box's name has (--dir-floor, the connections look's size) nor above
+   the held size; at the floor the name is cut as before, the parent's path having given way first. */
+:is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-directory-label {
+    --dir-scale: max(min(var(--dir-held), var(--dir-floor, 1)), min(var(--dir-held), calc(var(--dir-room, 100000) / (var(--dir-name, 1) + var(--dir-controls) + 2))));
+}
 :is([data-lod="far"], [data-lod="overview"]) .local-directory-ancestors { display: none; }
 /* A closed directory's whole box opens it; its name, after a disclosure chevron pointing right, is the handle that says so. */
 .local-directory-closed { box-sizing: border-box; width: 100%; min-width: 160px; position: relative; padding: 10px 12px; border: 1px solid var(--border); border-radius: 12px; background: #ffffff05; color: var(--text-panel-muted); cursor: pointer; box-shadow: 4px 4px 0 -1px var(--bg-deep, #15191f), 4px 4px 0 0 var(--border); }

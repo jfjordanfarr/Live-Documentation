@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-renderer.ts
-- Generated At: 2026-11-16T02:12:43.340Z
+- Generated At: 2026-11-16T05:48:25.043Z
 
 ## Authored
 ### Purpose
@@ -69,6 +69,8 @@ Since 2026-11-15 ([November 15, Turn 1](../../../../../../../../AI-Agent-Workspa
 Since 2026-11-15 ([Turn 1](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) a card's note on references read back, "N connections return in a cycle", counts the returning references the picture draws at the card, from `returningConnections` with `drawsReference` of [connections.ts](connections.ts.mdmd.md): the same function and the same test the 3D button's number comes from, so the two cannot disagree; the card counts the returns at either of its ends, the button each once. `dressCards` now discloses or hides every card's rows before any card counts, since a return has a row on two cards. A return whose rows the disclosure hides draws no lace and is no longer counted on the card, nor listed in its menu: on branch-renderer.ts opened alone, branch-scene.ts and branches.ts had said 4 where two laces stood, and say 2; the card's "+N symbols" tells the rest until it is shown.
 
 On 2026-11-15 ([November 15, Turn 1](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) the stage lost its `overlay`: its only use had been to add and remove `moving` on the wires' layer while a move ran, for a stylesheet rule that lightened the wires' drawing then, and the tone round of the same day deleted that rule with the wires' glow.
+
+Since 2026-11-16 ([the corrections decided that day](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#work-notes-the-closed-directorys-cells-and-shapes-come-back)) a drawn directory's label is as wide as its handle reaches (`directory-handle.ts`'s `handleReach`): the strip's own columns and, beyond them, the level columns of the membrane in which no card, closed box or inner membrane stands within the strip's height, read from the pose each time it is applied. `writeHandleNeeds` (before, `writeCountNeed`) also writes what the chevron and the directory's own name need across, `--dir-name`, from which the stylesheet brings the held line down in size before the name is cut.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -214,13 +216,15 @@ competition begins from the new picture.
 - [`directory-flow.nominalMeasurer`](./directory-flow.ts.mdmd.md#symbol-nominalmeasurer)
 - [`directory-flow.searchFlowShape`](./directory-flow.ts.mdmd.md#symbol-searchflowshape)
 - [`directory-flow.shapeRecord`](./directory-flow.ts.mdmd.md#symbol-shaperecord)
+- [`directory-handle.HANDLE_FLOOR`](./directory-handle.ts.mdmd.md#symbol-handle_floor)
 - [`directory-handle.HANDLE_HOLD`](./directory-handle.ts.mdmd.md#symbol-handle_hold)
 - [`directory-handle.HANDLE_INDENT`](./directory-handle.ts.mdmd.md#symbol-handle_indent)
 - [`directory-handle.HANDLE_LINE`](./directory-handle.ts.mdmd.md#symbol-handle_line)
 - [`directory-handle.HANDLE_STRIP`](./directory-handle.ts.mdmd.md#symbol-handle_strip)
+- [`directory-handle.Standing`](./directory-handle.ts.mdmd.md#symbol-standing)
 - [`directory-handle.chevronMarkup`](./directory-handle.ts.mdmd.md#symbol-chevronmarkup)
 - [`directory-handle.handleParts`](./directory-handle.ts.mdmd.md#symbol-handleparts)
-- [`directory-handle.handleRun`](./directory-handle.ts.mdmd.md#symbol-handlerun)
+- [`directory-handle.handleReach`](./directory-handle.ts.mdmd.md#symbol-handlereach)
 - [`ladder-rooms.layoutTopOf`](./ladder-rooms.ts.mdmd.md#symbol-layouttopof)
 - [`membrane-outline.membranePath`](./membrane-outline.ts.mdmd.md#symbol-membranepath)
 - [`overview-files.OVERVIEW_FILES_ATTRIBUTE`](./overview-files.ts.mdmd.md#symbol-overview_files_attribute)
