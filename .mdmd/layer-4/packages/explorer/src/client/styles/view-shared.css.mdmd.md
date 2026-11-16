@@ -19,6 +19,8 @@ Shared visual primitives consumed by multiple Explorer views: viewport layers (p
 
 - The tone round of 2026-11-15 ([Turn 1 of that day's record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)): the file's name and a symbol's name take their tones from the theme, which until then were the one grey of the prose beside them. No wire glows: every wire had a 6 px glow of its own, so a bundle was the brightest thing on a crowded picture; the root's comparison of resting strengths found the bloom was the glow and not the opacity, which stays 0.7. The 2D legend's samples are drawn here as the picture draws their marks: a wire's two ends in the wire's colours at its opacity, a dot by the very declarations a row's dot has, a test-backed card as a small card in its purple border inside its halo (the sample had been a gold glow, from a sidebar override in `shell.css` that went with this round). The floating `#legend-panel` and `.legend-title`, which the page has not had since the legend moved to the sidebar, went too.
 
+Since 2026-11-16 ([Turn 10 of the November 15 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-10)) the 2D legend's two roles are one drawing, `.legend-roles`: an offering dot, a wire whose gradient runs from the offering end's colour to the using end's as a wire's does, and a using dot, where there were a sample for each end of a wire and one for each dot. The colours are the ones the samples had; `local-map-tone.spec.ts` compares them with the marks.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

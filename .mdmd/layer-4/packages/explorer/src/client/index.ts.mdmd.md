@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/index.ts
 - Entry: declared
-- Generated At: 2026-11-15T20:53:41.787Z
+- Generated At: 2026-11-16T12:13:47.301Z
 
 ## Authored
 ### Purpose
@@ -49,6 +49,8 @@ Since 2026-11-12 `bootstrapExplorer` removes the loading sign, `#explorer-loadin
 
 Since 2026-11-15 ([Turn 1](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) the 3D button's cue has two strengths from `backwardStrength` of [returning-connections.ts](views/localView/returning-connections.ts.mdmd.md), some and many, written as `data-backward` beside the `has-backward-wires` class, and a pulse, the `backward-rising` class, begun again only when the strength rises above the one shown and taken off at its end. The count now includes a cycle's returning connections, the ordinary case, beside the rare wire that doubles back. The button's name stays its label, 3D, as the toolbar's text buttons are named; the tooltip, which carries the count, is its accessible description. It never switches by itself.
 
+Since 2026-11-16 ([Turn 10 of the November 15 record](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-10)) `startExplorer` starts `watchLocalKinds` of [spatial-legend.ts](panels/spatial-legend.ts.mdmd.md) before the first view draws, which keeps the 2D legend's kinds row to the colours the closed directories' cells are drawn in.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -91,6 +93,7 @@ _No public symbols detected_
 - [`pin-tray.createPinTray`](./panels/pin-tray.ts.mdmd.md#symbol-createpintray)
 - [`sources-facts.sourcesFacts`](./panels/sources-facts.ts.mdmd.md#symbol-sourcesfacts-function)
 - [`sources-view.renderSourcesView`](./panels/sources-view.ts.mdmd.md#symbol-rendersourcesview)
+- [`spatial-legend.watchLocalKinds`](./panels/spatial-legend.ts.mdmd.md#symbol-watchlocalkinds)
 - [`stats-line.statsLineOf`](./panels/stats-line.ts.mdmd.md#symbol-statslineof)
 - [`tuning.initTuningPanel`](./panels/tuning.ts.mdmd.md#symbol-inittuningpanel)
 - [`pathfind.PathfindResult`](./pathfind.ts.mdmd.md#symbol-pathfindresult)

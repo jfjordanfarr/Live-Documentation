@@ -17,6 +17,8 @@ Since 2026-11-05 the pinned group holds its hidden files in directory shells, wh
 
 Since the second round of 2026-11-06 a case counts the spheres within each wrapped group's skin, its seed among them, against the group's size, each within the skin ([the evidence](../../../../AI-Agent-Workspace/Screenshots/2026-11-06/shell-leaves/README.md)).
 
+Since 2026-11-16 ([Turn 10 of the November 15 record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-10)) the key's rows read *Wrapped group* and *More connected*, and the hover case reads from the seed's name what a press does, "Open this group and pin this file", which the key's row said until that day.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

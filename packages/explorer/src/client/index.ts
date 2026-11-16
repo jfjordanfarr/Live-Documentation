@@ -17,6 +17,7 @@ import { createItemMenu } from "./panels/item-menu";
 import { createPinTray } from "./panels/pin-tray";
 import { sourcesFacts } from "./panels/sources-facts";
 import { renderSourcesView } from "./panels/sources-view";
+import { watchLocalKinds } from "./panels/spatial-legend";
 import { statsLineOf } from "./panels/stats-line";
 import { initTuningPanel } from "./panels/tuning";
 import { findPath, reachOf, referencesAgainstPath, type PathfindResult, type Reach } from "./pathfind";
@@ -1361,6 +1362,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   }
   // An address that names a commit opens the 3D picture on that moment, before the first drawing.
   if (state.historyCommit && state.view === "map" && state.perspective === "3d") void historyControl.showCommit(state.historyCommit);
+  watchLocalKinds();
   renderCurrentView();
   renderInspection();
 

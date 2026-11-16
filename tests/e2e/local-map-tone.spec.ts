@@ -155,10 +155,11 @@ test("each sample of the 2D legend is drawn as the mark it names", async ({ page
     const box = (declared: CSSStyleDeclaration) => ({ background: declared.backgroundColor, border: declared.borderTopColor, width: declared.width, height: declared.height, shadow: declared.boxShadow });
     const stops = [...document.querySelectorAll("#map-connections linearGradient")[0].querySelectorAll("stop")].map(stop => getComputedStyle(stop).stopColor);
     const wire = style("#map-connections path.connection-path:not(.bundle-run):not(.back-route)");
-    const sample = (selector: string) => { const declared = style(selector); return { colour: declared.backgroundColor, opacity: declared.opacity, glow: declared.boxShadow, height: parseFloat(declared.height) }; };
+    // The sample is one wire (2026-11-16; until then a row for each end): its two ends are its gradient's first and last colours.
+    const sample = (selector: string) => { const declared = style(selector); return { ends: declared.backgroundImage.match(/rgba?\([^)]+\)/gu) ?? [], opacity: declared.opacity, glow: declared.boxShadow, height: parseFloat(declared.height) }; };
     return {
       wire: { offers: stops[0], uses: stops[stops.length - 1], opacity: wire.opacity, glows: wire.filter !== "none", width: parseFloat(wire.strokeWidth) },
-      samples: { offers: sample("#local-legend .legend-swatch--outbound"), uses: sample("#local-legend .legend-swatch--inbound") },
+      sample: sample("#local-legend .legend-swatch"),
       dots: { offers: box(style("#map-container .symbol-anchor.dot.outbound:not(.internals-anchor)")), uses: box(style("#map-container .symbol-anchor.dot.inbound:not(.internals-anchor)")) },
       dotSamples: { offers: box(style("#local-legend .legend-symbol--outbound")), uses: box(style("#local-legend .legend-symbol--inbound")) },
       card: { background: style("#map-container .node-card.test-backed").backgroundColor, border: style("#map-container .node-card.test-backed").borderTopColor,
@@ -169,12 +170,10 @@ test("each sample of the 2D legend is drawn as the mark it names", async ({ page
   });
   // A wire's two ends: the gradient's first and last colours, at a wire's own opacity, glowing only if a wire does.
   // Every sample is judged and all that differ are reported.
-  for (const end of ["offers", "uses"] as const) {
-    expect.soft(read.samples[end].colour, `the wire's ${end} end`).toBe(read.wire[end]);
-    expect.soft(read.samples[end].opacity, `the wire's ${end} end, at a wire's own opacity`).toBe(read.wire.opacity);
-    expect.soft(read.samples[end].glow !== "none", `the wire's ${end} end glows only if a wire does`).toBe(read.wire.glows);
-    expect.soft(Math.abs(read.samples[end].height - read.wire.width), `the wire's ${end} end is as thick as a wire, to half a pixel`).toBeLessThanOrEqual(0.5);
-    expect.soft(read.dotSamples[end], `the ${end} dot`).toEqual(read.dots[end]);
-  }
+  expect.soft(read.sample.ends, "the wire runs from its offering end's colour to its using end's").toEqual([read.wire.offers, read.wire.uses]);
+  expect.soft(read.sample.opacity, "the wire, at a wire's own opacity").toBe(read.wire.opacity);
+  expect.soft(read.sample.glow !== "none", "the wire glows only if a wire does").toBe(read.wire.glows);
+  expect.soft(Math.abs(read.sample.height - read.wire.width), "the wire is as thick as a wire, to half a pixel").toBeLessThanOrEqual(0.5);
+  for (const end of ["offers", "uses"] as const) expect.soft(read.dotSamples[end], `the ${end} dot`).toEqual(read.dots[end]);
   expect.soft(read.cardSample, "a test-backed card: the card in its border, inside its halo").toEqual(read.card);
 });

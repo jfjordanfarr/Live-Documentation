@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/spatial-legend.spec.ts
-- Generated At: 2026-10-29T18:09:51.851Z
+- Generated At: 2026-11-16T12:14:03.738Z
 
 ## Authored
 ### Purpose
@@ -19,6 +19,8 @@ Since 2026-10-31 (discovery, [Turn 4 of the October 31 record](../../../../AI-Ag
 
 Since the far bands' round (2026-11-07, the root's fourth review) the 2D legend holds a sixth row, "Width: references", which it displays only at the overview band, whose gathered wires it explains; the case reads the rows shown at the 2D map's arrival, the five as before, and that the sixth is hidden there. `local-map-overview.spec.ts` holds the row at the overview band.
 
+Since 2026-11-16 ([Turn 10 of the November 15 record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-10)) the rows are read by their words, `.legend-word`, and the cases above read the new ones, a change of wording and nothing else: the 2D arrival shows *Offers*, *Uses*, *Test-backed*; the 3D rows are the kinds, *Symbols*, *References*, *Beyond*, *More connected*, *Wrapped group*, *Directory shell*, and *Cites* and *Cited by* for the documents. Three cases are new. The rule, read from the page at each of the 2D map's three looks and over the 3D rows: every word a row draws stands beside a sample, they are two at most (one for each kind in the kinds' row), and the row's `title` is a sentence that is also its description; the 2D kinds' row is compared with the colours of the cells the picture draws at that look. That row's absence where the cells are one grey or a closed directory is a plain box. And the design audit over the key's words in both maps, at the sidebar's one width in a wide and a narrow window, which ends by squeezing the panel to show that the audit sees those words. On the bundle of `d54755f1` all five cases fail.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -30,9 +32,17 @@ _No public symbols detected_
 - `@playwright/test` - `Page`, `expect`, `test`
 - [`compressed-url-state.DEFAULT_SNAPSHOT`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-default_snapshot)
 - [`compressed-url-state.compressSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-compresssnapshot)
+- [`local-storage.PERSISTED_UI_KEY`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_key)
+- [`local-storage.PERSISTED_UI_VERSION`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_version)
+- [`forceGraphAppearance.SPATIAL_NODE_STYLES`](../../packages/explorer/src/client/views/forceGraphAppearance.ts.mdmd.md#symbol-spatial_node_styles)
 - [`forceGraphBatches.SpatialDrawEntry`](../../packages/explorer/src/client/views/forceGraphBatches.ts.mdmd.md#symbol-spatialdrawentry) (type-only)
+- [`design-audit.describeFaults`](./design-audit.ts.mdmd.md#symbol-describefaults)
+- [`design-audit.overlapsAmong`](./design-audit.ts.mdmd.md#symbol-overlapsamong)
+- [`design-audit.textBoxes`](./design-audit.ts.mdmd.md#symbol-textboxes)
+- [`design-audit.truncations`](./design-audit.ts.mdmd.md#symbol-truncations)
 - [`force-graph-observation.observeGraph`](./force-graph-observation.ts.mdmd.md#symbol-observegraph)
 - [`force-graph-observation.renderedLinks`](./force-graph-observation.ts.mdmd.md#symbol-renderedlinks)
 - [`force-graph-observation.renderedNodes`](./force-graph-observation.ts.mdmd.md#symbol-renderednodes)
+- [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)
 - `three` - `InstancedMesh`, `MeshLambertMaterial`, `Scene` (type-only)
 <!-- LIVE-DOC:END Dependencies -->

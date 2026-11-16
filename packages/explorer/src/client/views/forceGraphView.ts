@@ -807,7 +807,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         : `${node.codeRelativePath} · ${count} public ${count === 1 ? "symbol" : "symbols"}`)
         + (scopeGroups.has(node.id) && scopeGroups.get(node.id)! > 1 ? ` · ${scopeGroups.get(node.id)!.toLocaleString("en-US")} files in this group` : "")
         + (more ? ` · ${more} more connected, not shown` : "")
-        + (action?.kind === "file" ? ` · ${retained ? "Unpin this file" : discovered ? "Release this discovery" : "Pin this file"}`
+        + (action?.kind === "file" ? ` · ${retained ? "Unpin this file" : discovered ? "Release this discovery" : isWrapped(node.id) ? "Open this group and pin this file" : "Pin this file"}`
           : action?.kind === "directory" ? ` · ${cells.has(node.id) ? "Open this directory" : discovered ? "Release this discovery" : "Explore this directory"}`
           : action?.kind === "shell" ? " · Open this shell" : "");
       if (label.title !== title) label.title = title;
@@ -1740,7 +1740,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     let legendAttention = false;
     const keyed: SpatialGraphData = { nodes: picture.nodes.filter(node => node.shellFiles === undefined), links: picture.links };
     drawLegend = (): void => renderSpatialLegend(keyed, state.tuning.forceGraph.symbolScale, { references: state.spatialLayout === "connections" || hasAttention || legendAttention,
-      path: !!path?.length, faded: legendAttention || !!path?.length, frontier: hasFrontier, rings: [...scopeBeyond.keys()].some(id => !isWrapped(id)),
+      path: !!path?.length, frontier: hasFrontier, rings: [...scopeBeyond.keys()].some(id => !isWrapped(id)),
       wrapped: [...wrapped.keys()].some(id => !shells.has(id) && !cells.has(id) && isWrapped(id)), shells: [...shells.keys(), ...cells.keys()].some(isWrapped) });
     drawLegend();
     frameDirectory = (): void => {

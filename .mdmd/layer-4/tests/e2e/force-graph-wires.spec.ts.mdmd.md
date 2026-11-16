@@ -17,6 +17,8 @@ The initial draft's 25-second wait was not a performance contract and failed bef
 
 Two checks joined on 2026-10-30 with the remediation's wires pass ([Turn 3 of the October 30 record](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md#turn-3)): one reads each reference wire's forward and backward counts against its total, its ends on the two spheres' drawn surfaces at node resistance 0, and hovers a stroke clear of every sphere to read the words that say which file uses which; the other reads a path's wires at full strength and double width and the key's Path row. The colour that ran along a wire by its directions was withdrawn on 2026-10-31 at the owner's eye ([Turn 1 of the October 31 record](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-1)), so the first check now reads every reference wire's uploaded colour as white and the key without a direction row, where before it read the shader's flow number.
 
+Since 2026-11-16 ([Turn 10 of the November 15 record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-10)) the key's rows are a sample and at most two words, and the cases here read *References* and *Path* where they read the rows' sentences: a change of wording and nothing else.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

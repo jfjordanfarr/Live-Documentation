@@ -1124,10 +1124,10 @@ body.force-graph-active #spatial-legend { display: block; }
     top: 3px;
     clip-path: polygon(0 0, 100% 50%, 0 100%);
 }
-/* A path's wire, wide and bright, and a faded sphere, as the picture fades what stands outside the pins, the path or
-   the hover (2026-10-30). The blue-to-green stroke that sampled the wires' colour went with that colour (2026-10-31). */
+/* A path's wire, wide and bright (2026-10-30). The blue-to-green stroke that sampled the wires' colour went with that
+   colour (2026-10-31), and the faded sphere with its row (2026-11-16): a faded thing says by itself that it is out of
+   attention. */
 .spatial-legend-sample--path::before { width: 20px; height: 4px; top: 5px; box-shadow: 0 0 5px var(--legend-color); }
-.spatial-legend-sample--faded::before { width: 10px; height: 10px; top: 2px; left: 5px; border-radius: 50%; opacity: .2; }
 /* The frontier: the last hop of connections shown, dimmed, a click on which shows more (2026-10-31). */
 .spatial-legend-sample--frontier::before { width: 10px; height: 10px; top: 2px; left: 5px; border-radius: 50%; opacity: .4; }
 /* A ring: the sphere has connections the picture does not show, and a click on it shows them (2026-11-02). */
@@ -1147,6 +1147,15 @@ body.force-graph-active #spatial-legend { display: block; }
     font-size: 12px;
     color: var(--text);
 }
+
+/* A row is a sample and its words, two at most (2026-11-16); its sentence is its tooltip. A word is never broken. */
+.legend-mark { display: inline-flex; align-items: center; gap: 10px; }
+.legend-word { white-space: nowrap; }
+/* The kinds' key is one row: each kind's dot and its one word, side by side, wrapping only where the panel is too
+   narrow for them. Every mark keeps the other rows' own measure, a dot centred in the samples' column and its word
+   at the words' column, so that the first word of each line stands under the words above and below it; the marks
+   stand further apart than a dot stands from its word, so that each dot reads with the word after it. */
+.sidebar-section .legend-row--kinds { flex-wrap: wrap; gap: 4px 20px; }
 
 /* Force Graph Only Filter (Show Related Docs checkbox) */
 /* Hidden by default, shown when Force Graph view is active */

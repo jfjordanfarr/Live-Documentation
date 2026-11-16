@@ -155,7 +155,7 @@ async function shownUnits(page: Page): Promise<Array<{ seed: string; id: string;
 }
 
 const legendRow = (page: Page, label: RegExp) => page.locator("#spatial-legend .legend-row").filter({ hasText: label });
-const SHELL_ROW = /^Shell: N files of a directory; click to open it$/;
+const SHELL_ROW = /^Directory shell$/;
 
 test("explicit Off draws no shell: the pinned picture is its hops alone", async ({ page }) => {
   await observeGraph(page);

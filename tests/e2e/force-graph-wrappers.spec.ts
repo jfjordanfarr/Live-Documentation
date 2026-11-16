@@ -53,8 +53,8 @@ async function expectedGroups(page: Page): Promise<{ wrapped: string[]; sizes: M
 }
 
 const legendRow = (page: Page, label: RegExp) => page.locator("#spatial-legend .legend-row").filter({ hasText: label });
-const WRAPPED_ROW = /^Wrapped group: its files, not shown; click to open it$/;
-const RING_ROW = /^Ring: more connected, not shown; click to see it$/;
+const WRAPPED_ROW = /^Wrapped group$/;
+const RING_ROW = /^More connected$/;
 
 test("explicit Off draws no wrapper, and the groups' seeds keep their rings", async ({ page }) => {
   await observeGraph(page);
@@ -135,6 +135,8 @@ test("hovering a wrapper names its group; a click pops it open into its files, a
   const chosen = (await named.getAttribute("data-node-id"))!;
   expect(wrapped, "the group named is a wrapped one").toContain(chosen);
   await expect(named).toHaveAttribute("title", new RegExp(` · ${sizes.get(chosen)} files in this group`));
+  // The name says what a press does, which the key's row said until 2026-11-16 ("click to open it").
+  await expect(named).toHaveAttribute("title", / · Open this group and pin this file$/u);
   // A click on the wrapper pins its seed, as a click on the seed does: the group grows and its wrapper bursts and is gone.
   await page.mouse.click(seed.x, seed.y);
   await expect(page.locator(".pin-tray-toggle")).toHaveText("1 pin");

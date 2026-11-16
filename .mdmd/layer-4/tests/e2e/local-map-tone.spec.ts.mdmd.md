@@ -17,6 +17,8 @@ Written in the tone round of 2026-11-15 ([Turn 1 of that day's record](../../../
 
 Files only is the default of Zoomed Out Fully since 2026-11-15, by the owner's eye and a comparison with the cards' rows drawn as bars ([Turn 1 of that day's record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)): the case of a pinned symbol's own wires at the overview chooses "Cards keep their size", since files only draws no row and so no wire of a symbol's own.
 
+Since 2026-11-16 ([Turn 10 of the November 15 record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-10)) the legend's wire is one sample between the two roles' dots, so the last case reads the wire's two ends from the sample's gradient where it read a sample for each end; what it compares, the ends' colours, the opacity, the absence of a glow, the thickness and the dots, is unchanged.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

@@ -422,6 +422,10 @@ span.local-disclosure { cursor: default; }
 #local-legend .legend-row--gathered { display: none; }
 body:has(#map-container[data-lod="overview"]) #local-legend .legend-row--gathered { display: flex; }
 #local-legend .legend-row--gathered .spatial-legend-sample { --legend-color: var(--wire-offers); opacity: var(--wire-opacity); }
+/* The legend's kinds row holds a mark for each colour a closed directory's cells are drawn in, and nothing, and so is
+   not drawn, while no coloured cell is on screen (2026-11-16). Its samples are cells as the map draws them. */
+#local-legend-kinds:empty { display: none; }
+#local-legend-kinds .spatial-legend-sample--node::before { box-sizing: border-box; background: color-mix(in srgb, var(--legend-color) 42%, transparent); border: 0.8px solid color-mix(in srgb, var(--legend-color) 75%, transparent); }
 /* The handle from the middle band out (2026-11-15): the whole line is held at the size the file names are held at, the
    controller's --text-scale, which the strip is tall enough for at every look (--dir-hold; past it, in the stepped
    ladder's last steps, it follows the map). The line is laid out at its own size in the label's width divided by that

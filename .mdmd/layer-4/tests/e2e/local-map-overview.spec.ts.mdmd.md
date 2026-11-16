@@ -19,6 +19,8 @@ Since the three looks became Zoom Looks' default on 2026-11-13 ([Turn 3 of that 
 
 Files only is the default of Zoomed Out Fully since 2026-11-15, by the owner's eye and a comparison with the cards' rows drawn as bars ([Turn 1 of that day's record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)): this spec holds the overview of cards that keep their size (one gathered wire a pair, a pinned symbol's own wires, the far limit), so every case of it now chooses "Cards keep their size" in the remembered tuning rather than rely on the default.
 
+Since 2026-11-16 ([Turn 10 of the November 15 record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-10)) the legend's row at the overview band reads *References*, and the case reads its sentence, "Width: the number of references between two files.", from the row's tooltip.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

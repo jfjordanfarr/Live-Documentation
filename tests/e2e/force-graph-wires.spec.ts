@@ -363,8 +363,8 @@ test("reference wires count each direction, are one colour, end at the spheres' 
   // The counts say which way a one-way pair runs, where the colour no longer does.
   expect(references.some(link => (link.forward > 0) !== (link.backward > 0))).toBe(true);
   const legend = page.locator("#spatial-legend");
-  await expect(legend).toContainText("Width: references");
-  await expect(legend).not.toContainText("From what offers");
+  await expect(legend).toContainText("References");
+  await expect(legend).not.toContainText("Offers");
   await expect(legend).not.toContainText("Path");
   // Hovering a wire names which file uses which; the stroke hovered is one a hover reaches and nothing else.
   const hovered = await clearStroke(page, [...nodes.values()], links);

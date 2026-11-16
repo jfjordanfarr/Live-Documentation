@@ -280,7 +280,10 @@ body.zoom-controls-active #controls {
    was a gold glow where the card has a purple border and halo). A wire's two ends in the wire's own colours, at a
    wire's own opacity and without a glow, as thick as a wire; a row's dots by the dots' own declarations (above);
    a test-backed card as a small card inside its halo, both in the card's own colours. Each sample takes the 20 px
-   column the 3D legend's samples take. */
+   column the 3D legend's samples take.
+   Since 2026-11-16 the two roles are one drawing, where they were four rows: a wire as the picture draws one, from
+   the offering end's colour to the using end's, between an offering dot and a using dot, with the roles' two words at
+   its ends, in the order the picture runs: what offers stands on the left of what uses it. */
 .legend-row {
     display: flex;
     align-items: center;
@@ -297,25 +300,22 @@ body.zoom-controls-active #controls {
     box-sizing: border-box;
 }
 
+.legend-roles {
+    display: inline-flex;
+    align-items: center;
+    flex: none;
+}
+
 .legend-swatch {
-    width: 20px;
+    width: 28px;
     height: 2px;
-    border-radius: 999px;
+    background: linear-gradient(to right, var(--wire-offers), var(--wire-uses));
     opacity: var(--wire-opacity);
-}
-
-.legend-swatch--outbound {
-    background: var(--wire-offers);
-}
-
-.legend-swatch--inbound {
-    background: var(--wire-uses);
 }
 
 .legend-symbol {
     width: 12px;
     height: 12px;
-    margin: 0 4px;
     border-radius: 50%;
 }
 

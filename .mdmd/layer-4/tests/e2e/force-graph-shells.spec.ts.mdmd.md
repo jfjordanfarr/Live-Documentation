@@ -17,6 +17,8 @@ Written on 2026-11-05 with the experiment ([the design](../../../../.mdmd/layer-
 
 Since the second round of 2026-11-06 the cases count the spheres within a shell against its name's count, check its bubbles inside it and apart, its pop's bubbles born as shells of their size, and, in this repository pinned on the rosetta manifest at one hop, a shell over a chain whose pop leaves the pom and the chain's bubble, never one shell named `src` ([the evidence](../../../../AI-Agent-Workspace/Screenshots/2026-11-06/shell-leaves/README.md)).
 
+Since 2026-11-16 ([Turn 10 of the November 15 record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-10)) the key's rows are a sample and at most two words, and the cases here read *Directory shell* where they read the rows' sentences: a change of wording and nothing else.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

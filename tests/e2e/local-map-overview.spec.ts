@@ -89,7 +89,8 @@ test("the overview band joins each pair of files by one wire each way, hub to hu
   expect(gathered.map(wire => `${wire.targetId} -> ${wire.sourceId}`).sort()).toEqual(pairsOf(before));
   expect(overview.every(wire => wire.classes.includes("gathered"))).toBe(true);
   await expect(legend).toBeVisible();
-  await expect(legend).toHaveText("Width: references");
+  await expect(legend).toHaveText("References");
+  await expect(legend).toHaveAttribute("title", "Width: the number of references between two files.");
 
   // Each ends on two node-level hubs, drawn, inside their cards but for the hubs' designed overhang; its width grows with
   // its count between the bounds, and it names its two files and its count.

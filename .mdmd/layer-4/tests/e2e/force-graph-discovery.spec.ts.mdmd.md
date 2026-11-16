@@ -19,6 +19,8 @@ Since November 8, 2026, these bare-file scope and ring checks explicitly carry O
 
 Measured on 2026-11-13, 15:41 to 15:45 UTC, while a recomputation of the repository's history ran three processes beside it (load average about 15 on twenty hardware threads): the archipelago entered in 44 frames and 3.0 s (14.5 frames a second); the largest group grew and came to rest in 1,319 frames and 139.2 s (9.5 frames a second), past the 120 s clock, and the case went on and held every other expectation, failing by the clock alone, in 146.6 s. Run again as built from 15:47, under a heavier load (about 21), the growth took the same 1,319 frames in 177.7 s (7.4 frames a second), and the case again failed by the clock alone, in 185.9 s. An earlier run that day, with a trial bound of 600 frames on the growth, stopped it still moving after 601 frames and 66.6 s. The bounds are 300 frames for the entry, which costs some twenty seconds at its frame rate, and 2,700 for the growth, twice the most measured, which catches a growth that never rests in about five minutes at nine frames a second.
 
+Since 2026-11-16 ([Turn 10 of the November 15 record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-10)) the key's rows are a sample and at most two words, and the cases here read *Beyond* and *More connected* where they read the rows' sentences: a change of wording and nothing else.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

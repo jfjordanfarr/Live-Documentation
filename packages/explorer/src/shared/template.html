@@ -61,31 +61,28 @@
     <!-- Legend -->
     <section id="map-legend" class="sidebar-section" aria-labelledby="map-legend-title">
       <div id="map-legend-title" class="section-label">Legend</div>
-      <div id="local-legend">
-        <div class="legend-row">
-          <span class="legend-swatch legend-swatch--outbound"></span>
-          <span>Wire from what offers</span>
+      <div id="local-legend" role="list" aria-label="2D map encodings">
+        <div class="legend-row legend-row--roles" role="listitem"
+          title="A wire runs from what one file offers, in blue, to the file that uses it, in green. On a card, what the file uses enters on the left and what it offers leaves on the right."
+          aria-description="A wire runs from what one file offers, in blue, to the file that uses it, in green. On a card, what the file uses enters on the left and what it offers leaves on the right.">
+          <span class="legend-word">Offers</span>
+          <span class="legend-roles" aria-hidden="true"><span class="legend-symbol legend-symbol--outbound"></span><span class="legend-swatch"></span><span class="legend-symbol legend-symbol--inbound"></span></span>
+          <span class="legend-word">Uses</span>
         </div>
-        <div class="legend-row">
-          <span class="legend-swatch legend-swatch--inbound"></span>
-          <span>Wire to what uses</span>
+        <div class="legend-row" role="listitem"
+          title="A card in this border and halo: tests use the file, and the card names them."
+          aria-description="A card in this border and halo: tests use the file, and the card names them.">
+          <span class="legend-shadow" aria-hidden="true"></span>
+          <span class="legend-word">Test-backed</span>
         </div>
-        <div class="legend-row">
-          <span class="legend-symbol legend-symbol--outbound"></span>
-          <span>Offers</span>
-        </div>
-        <div class="legend-row">
-          <span class="legend-symbol legend-symbol--inbound"></span>
-          <span>Uses</span>
-        </div>
-        <div class="legend-row">
-          <span class="legend-shadow"></span>
-          <span>Test-backed</span>
-        </div>
-        <div class="legend-row legend-row--gathered">
+        <div class="legend-row legend-row--gathered" role="listitem"
+          title="Width: the number of references between two files."
+          aria-description="Width: the number of references between two files.">
           <span class="spatial-legend-sample spatial-legend-sample--width" aria-hidden="true"></span>
-          <span>Width: references</span>
+          <span class="legend-word">References</span>
         </div>
+        <!-- The kinds' key, drawn while a closed directory's coloured cells are on screen. Without this one line the 2D legend has no such row, and a cell's hover, which says its file's name, is the colours' only key. -->
+        <div id="local-legend-kinds" class="legend-row legend-row--kinds" role="listitem" title="Colour: the kind of file a cell stands for. A cell says its file's name on hover." aria-description="Colour: the kind of file a cell stands for. A cell says its file's name on hover."></div>
       </div>
       <div id="spatial-legend" role="list" aria-label="3D map encodings"></div>
     </section>

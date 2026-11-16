@@ -27,6 +27,8 @@ Since 2026-11-05 the key draws a Shell sample: the wrapped group's skin with no 
 
 The sidebar's own sizes and colours for the 2D legend's samples went on 2026-11-15 ([Turn 1 of that day's record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)): they made a test-backed card's sample a gold glow and a dot's smaller than a dot, and the samples are now drawn once, in `view-shared.css`, beside the marks they copy. The unused `.legend-swatch--related-doc` went with them.
 
+Since 2026-11-16 ([Turn 10 of the November 15 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-10)) a legend row is a sample and at most two words: `.legend-mark` is a sample with its words, `.legend-word` is never broken, and `.legend-row--kinds` lays the kinds' marks side by side, wrapping only where the panel is too narrow, each mark in the other rows' own measure, so that the first word of every line stands at the words' column (the root's change as the round landed; the builder had set each dot tight to its word, which left the kinds' words 9 px to the left of that column). The faded sphere's sample went with its row.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
