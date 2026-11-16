@@ -3949,4 +3949,408 @@ palettes, under the shared browser lock" completed (exit code 0)
 ● Records are committed. Checking whether the 3D round's rerun has had its turn
   at the browser yet.
 
-  Searched for 1 pattern, ran 2 shell commands (ctrl+o to expand)
+  Searched for 1 pattern, read 1 file, ran 3 shell commands (ctrl+o to expand)
+
+● Reading the code behind the 38-second "settling" tail in the 3D builder, since
+  it likely explains tonight's failed test and much of the suite's waiting;
+  I'll size it as its own task after the browser queue finishes. · summary
+
+  Made 1 scratchpad edit +41, searched for 2 patterns, ran 1 shell command (ctrl+o to expand)
+
+● The rerun of the failed 3D case is running now (it reached the front of the
+  queue). While it runs I'm pre-reading the far-view builder's branch, which is
+  next to land.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The rerun is on its first of four cases, and I'm pausing until it or a builder
+  reports. Cells have landed in today's colours, the 3D building round is
+  waiting on that one failed case, and three builders are running while the
+  legend wording and 3D settling tail are queued. · summary
+
+● Paused until the rerun or a builder reports. The next thing you'll hear from
+  me is either the 3D round committed with a link to try it, or the three
+  directory shapes on your port to choose from.
+
+● Background command "Rerun the one failing 3D case twice, alone, under the
+shared browser lock" completed (exit code 0)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Background command "Look at this repository's 3D arrival on main myself, under
+the shared browser lock" completed (exit code 0)
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● The 3D build is committed and running on port 8999, with the estate's groups
+  and the forceGraphView sign both linked for you to try. History's Changed
+  Files now defaults to Dim, and the tests ran 41 of 42, with the one failure a
+  timeout under load that passed four of four when run alone; I'm tidying the
+  leftover branches next. · summary
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● Removing the finished 3D builder's worktree and the superseded trial branch
+  (its written findings are now kept on main).
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● Bringing Memory level with what just landed (the still-pointer question is now
+  built, Dim is the default), then committing the tidy-up.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● The last commit carried only the trial's note; its message also promised the
+  record and Memory updates, which were left unstaged. Committing those now as a
+  follow-up (no amending).
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The 3D round is fully landed and tidied: committed, its builder's worktree
+  removed, and the old three-mode trial's findings kept on main as history
+  before its branch went.
+
+  Waiting now on the three running builders. Next from me, as each reports:
+  - Directory shapes and coloured cells: three links on your port to choose a
+    shape from.
+  - Far view: files-only becomes the default, with pinned symbols drawn.
+  - Fewest backward connections: a before-and-after table and the pictures that
+    change.
+
+› Message from general-purpose
+  `main` is merged in and the pinned rows of one card now take one size; both
+  are committed, the tree is clean, and the branch tip is `b7b7ab70`. Two things
+  from the fifteen-spec run need your attention before landing: `layout-lab`
+  could not run in my worktree, and `card-ladder-boxes` had a case my default
+  flip broke two legs ago and I missed until now.
+
+  ## Commits
+  - `b8ed7e2c` Merge main (the directory handle's round and the layout lab's
+  card model) into the tone round's branch
+  - `b7b7ab70` Give the pinned rows of one card one size when zoomed out fully,
+  and let the box audit choose cards that keep their size
+
+  ## The merge
+  `git merge 3f734433` had one conflict, in `card-reading.ts`'s Live Doc, in
+  three hunks:
+  - **Authored notes**: both rounds' notes are kept, mine first, then the handle
+  round's `closedBoxWrites` note.
+  - **Generated-at line and a source line number**: not merged; I regenerated
+  the Live Docs.
+
+  `reading.css`, `card-reading.ts` and `zoom-looks.spec.ts` merged without
+  conflict. `tsc` is clean on the merged Explorer and tests, and my four
+  `overviewFiles: "keep"` seeds in `zoom-looks.spec.ts` survived.
+
+  ## Directory handle on my build
+  Checked on `client` opened, seven presses out, Segoe's lines; the two modes
+  read identically.
+
+  | | Files only (default) | Cards keep their size |
+  | --- | --- | --- |
+  | A press on the closed `history` box (lower right, away from the name) opens
+  it | yes | yes |
+  | Look after the press | overview | overview |
+  | File names' scales in the picture | 3.16 to 3.6 | 3.16 to 3.6 |
+  | Closed handles `history`, `panels`, `search`, `styles`, `views` | 3.6 | 3.6
+  |
+  | Closed handles `bootstrap`, `persistence` (brought down to keep a word
+  whole) | 2.65, 2.85 | 2.65, 2.85 |
+
+  So a closed directory's handle is held at the file names' size, the look's 3.6
+  unless fitted.
+
+  The opened directory's own handle I confirmed by eye only:
+  "packages/explorer/src/**client**" with its chevron reads at about the file
+  names' size in the frame. My script's selector for its held element found
+  nothing after the handle round, so I have no number for it.
+
+  ## One size for the pinned rows of one card
+  - `overview-files.ts`: new pure `pinnedRowScales`. Rows pinned by name take
+  the least of their scales; an unpinned row keeps its own and sets nothing.
+  - `card-reading.ts`: finds each row's own scale first, gives the pinned rows
+  the shared one, then counts each row's lines at that.
+  - **Unit case, red before**: against each row keeping its own scale it fails
+  with `expected [ 2.3, 2.7 ] to deeply equal [ 2.3, 2.3 ]`; with the rule, 6 of
+  6 pass in that file.
+  - **Browser cases**: the two pinned-symbol cases in `overview-files.spec.ts`
+  now also assert one scale per card.
+  - **On the page**: `renderBranches` 2.3 and `BranchStage` 2.3 on
+  `branch-renderer.ts`; `startOrder` 3.2 on `branch-restarts.ts`; none cut.
+
+  ## Final run: 91 passed, 9 failed, in 23.4 min
+  Your fifteen specs on port 8953.
+
+  - **`layout-lab`: 8 of 12 failed, and it is not a verdict on the code.** Every
+  failure is `ENOENT … node_modules/@chenglou/pretext/dist/layout.js`: the spec
+  loads that package from the working directory's own `node_modules`, which a
+  worktree does not have. I did not link the main checkout's copy in. It needs
+  running on `main` after landing.
+  - **`card-ladder-boxes.spec.ts:461` failed, and it was mine.** "In the three
+  looks too, a picture drawn at any zoom lays out every card, row and pin as the
+  picture drawn at reading scale" read a card 19 units shorter with no row at
+  the overview. That is Files only doing what it does, so the case broke when I
+  flipped the default two legs ago. I had assumed that spec was stepped-only and
+  did not run it then. `drawnAfter` now chooses "Cards keep their size", with
+  the dated design-change comment.
+  - **Rerun** of that case with the three pinned-symbol cases: **4 of 4 passed**
+  in 2.1 min.
+  - **All other specs passed**: `overview-files`, `zoom-looks`,
+  `local-map-overview`, `backward-cue`, `local-map-tone`,
+  `local-map-overview-names`, `tuning`, `local-map-pins`, `pin-clicks`,
+  `local-map-motion`, `local-map-directories`, `closed-directory-looks`,
+  `labels-and-controls`, the other 5 `card-ladder-boxes` cases, and the 4
+  `layout-lab` cases that reached no capture. `pin-clicks:175`, which timed out
+  once last leg, passed.
+
+  The full gate was not run. Also clean: `live-docs:lint` (972 validated), 0
+  broken links, eslint on the changed files.
+
+  ## Open question I did not test
+  The corrected box-audit case now holds its promise only for cards that keep
+  their size. Under the default I have not checked whether a pin made at the
+  overview gives, once zoomed back in, the same picture as the same pin made at
+  reading scale. The out-and-back case in `overview-files.spec.ts` covers pins
+  made before zooming out, not pins made while Files only is showing.
+
+  ## Frame
+  `/workspaces/Live-Documentation/.claude/worktrees/agent-a45305e67bd0b6870/AI-A
+  gent-Workspace/Screenshots/2026-11-15/tone-and-greeking/overview/pinned-symbol
+  /`
+  - `detail-three-symbols-one-size-3x.png` — the two pinned cards at 3×: one
+  size on `branch-renderer.ts`, `startOrder` larger on the other card.
+  - `after/three-symbols-out7-files.png` — the whole frame, retaken after the
+  merge, so directories carry their handles.
+  - `three-symbols-files-before-then-after.png` is recomposed with it.
+
+  The earlier detail crop that showed 2.3 beside 2.7 is removed; the README row
+  is updated.
+
+  ## Housekeeping
+  - Server stopped by pid; ports 8953 and 8963 are free.
+  - Scratch removed by name; `dist/` is the final build with the estate and
+  history samples.
+  - No subagent used. The milestone 3 brief is unopened.
+  - This leg ran well past twenty-five minutes; most of it was waiting on the
+  shared browser lock.
+
+  Read 2 files (ctrl+o to expand)
+
+● Agent "Tone, wires and overview bars" finished · 1h 24m 55s
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The far-view round merged onto main cleanly. Building it and regenerating the
+  docs now; then its browser cases, including the layout lab's, which the
+  builder couldn't run in its worktree.
+
+  Ran 2 shell commands (ctrl+o to expand)
+› Message from general-purpose
+  ## Handback: the fewest returns (base 3f734433, branch
+  worktree-agent-a0e2d2f2ceebf9110)
+
+  **Commits** (none amended, nothing pushed):
+  - 49873586 Stand a cycle's files in the order that returns the fewest
+  references (code, tests, Live Docs, Explorer design sentence, the lab's
+  Pretext path)
+  - 9e7d480a Record why … (the decisions log entry)
+  - 4d317e29 Wrap the cycle order's long comment lines
+  - aa76fcf1 Keep the evidence … (pictures and measurements)
+
+  **What changed**
+  - New `packages/explorer/src/client/views/localView/cycle-order.ts`, with its
+  test file. It holds:
+    - `comparePrices`, the one price: fewest references backward (pair lines
+  count by `linksOf`), then fewest pairs with a return, then fewest
+  *reference-joined* pairs turned from the old greedy order.
+      - Pairs that no reference joins are not counted, so the price depends only
+  on which references return.
+      - I call the old order "the greedy order" in code and docs, not "today's",
+  so a later reader knows what it means.
+    - `exactOrder`: a search over subsets, exact because every part of the price
+  is additive over pairs.
+    - `greedyOrder`: Eades–Lin–Smyth, either unweighted (the old rule, kept as
+  the tie-break) or weighted by references.
+    - `improvedOrder`: best single-file move until no move lowers the price.
+    - `cycleOrder`: exact search up to `EXACT_LIMIT = 12`, otherwise the
+  weighted greedy order improved by moves.
+  - `branches.ts` / `rankBranches`:
+    - Builds a reference-weight matrix once and calls `cycleOrder` per
+  component.
+    - `back` and the simplex constraints now come from one `returns()` test.
+    - I removed a dead `forward` map that was built but never read.
+  - `scripts/layout-lab/capture.ts`: Pretext is found where Node resolves
+  `@chenglou/pretext/package.json` (a one-line change), so the lab captures from
+  a worktree.
+  - Docs:
+    - Decisions log entry "A Cycle's Files Stand in the Order That Returns the
+  Fewest References", with the measurement and the costs.
+    - One sentence where the Explorer design describes how cycles are broken.
+    - Authored Purpose/Notes for `cycle-order.ts` and its test, plus notes in
+  the Live Docs of `branches.ts`, `branches.test.ts` and `capture.ts` (all cite
+  #turn-5).
+    - Live Docs regenerated.
+
+  **Numbers** (same bundle, base ranking vs new, every file opened alone, no
+  pins, assets out — the root's script, extended):
+
+  | | before | after |
+  |---|---|---|
+  | backward refs where the minimum is computable | 421 | 353 (= minimum 353) |
+  | pictures with slack | 31 | 0 |
+  | all backward refs, including the two 25-file-cycle pictures | 488 | 393
+  (core.ts 30→18, adapters/index.ts 37→22) |
+  | pairs with a return | 254 | 253 |
+  | `localView` directory under Flow | 10 backward, 2 pairs | 7 backward, 3
+  pairs |
+  | other three directories | 0 | 0 |
+
+  - My base had 970 pictures, not 968; the root's 425/357 are the same measure
+  on its tree.
+  - 33 file pictures change, plus the `localView` directory. None of the 857
+  dark pictures change, no picture returns more, and the estate is unchanged.
+  - **Large-cycle path vs exact:** on all 45 distinct cycles in this repository
+  (2–8 files), the weighted greedy order plus moves lands on the exact price.
+  - **Time of the exact search, worst case (every file uses every other):** 12
+  files 1.95 ms, 13 4.2, 14 8.7, 16 43 ms. The large path takes 1.1 ms at 25
+  files and 9.6 ms at 50.
+  - **`rankBranches` time:** the largest picture (`client/types.ts`, 53 files,
+  719 refs) went from 3.9 to 1.9 ms. The 25-file-cycle picture went from 1.89 to
+  1.86 ms.
+  - **The ranking's own signals on the 34 changed pictures:** forward column
+  spans 9033→8368, but they grow in 18 pictures and shrink in 16. Columns grow
+  in 9 and shrink in 10; the tallest column grows in 7 and shrinks in 6.
+  - **The lab on the 33 changed pictures** (captured from the base page):
+
+  | signal | before | after |
+  |---|---|---|
+  | returning references | 258 | 163 |
+  | wire length (px) | 2.69M | 2.47M |
+  | crossings | 11,542 | 8,791 |
+  | heights | | +4% |
+  | widths | | −1% |
+
+  **Clearly worse in another signal** (also stated in the decisions log):
+  - `adapters/index.ts`: wire +58%, crossings 151→302.
+  - `manifest.ts`: 51% taller.
+  - `powershell.ts`: 44% wider, 4→6 columns, spans 52→87, for one return fewer.
+  - `dotnetConfig.ts`: wire +37%, crossings 1→10.
+  - `csharp.ts`: wire +28%, crossings +40%.
+
+  **Flip on tipping** (real picture, rosetta `Processor.cs`: `ModelFactory` uses
+  `Record` twice, `Record` uses `ModelFactory` once):
+  - Adding one use of `ModelFactory` by `Record` makes a tie, and the tie goes
+  to the greedy order. So the returning direction flips, the two files swap
+  columns, and 7 downstream cards shift one column right.
+  - If the greedy order already pointed the other way, the flip happens one
+  reference later. A reference added to the heavier side moves nothing.
+  - A reference outside a cycle never changes it (unit case).
+
+  **Red runs**
+  - 4 new `rankBranches` cases failed on the base ranking:
+    - unequal pair, symbols and pair lines;
+    - ring of three;
+    - tie then tip — the tip half;
+    - order independence with outside references.
+  - The "tie keeps the earlier order" half and the `cycle-order` tests cannot be
+  red on base: the tie half is base behaviour, and the module did not exist. I
+  showed them red by disabling the turned tie-break: 5 cases fail, including the
+  existing "breaks a cycle at one reference" case. The file was then restored.
+
+  **Browser and lab**
+  - `layout-lab.spec.ts` on my base build: 12/12. I ran it with the one-line
+  Pretext fix, before any ranking change.
+  - After the change: `layout-lab`, `backward-cue`, `local-map-directories`,
+  `pin-clicks` — 40/40 passed. No expectation needed changing.
+  - The lab's drift from the new page is 0 on the 4 deck scopes and on 26 of the
+  33 changed pictures.
+  - 5 pictures already drifted at base and still do (`Processor.cs` 6, `go.ts`
+  3, `csharp.ts` 2, `forceGraphView.ts` 8, `force-graph-reveal.spec.ts` 8).
+  - **Unfinished, new drift:** `powershell.ts` (2) and `json.ts` (4). In both,
+  the lab makes `core.ts`'s card 20 px taller and its hub pin 11 px lower than
+  the page does. This is likely a returning-connections foot line the lab counts
+  but the page does not draw — a mismatch in the measurer's drawn-return rule.
+  I did not chase it.
+
+  **Unit suite:** 1893 passed, 5 failed: the
+  `tests/integration/slopcop/{symbolsAudit,assetsAudit}` cases. That is a
+  worktree environment fault, not this change — they spawn
+  `node_modules/tsx/dist/cli.mjs` under the worktree's own root, which has no
+  `node_modules`. The same one-line `require.resolve` fix would cure it; it is
+  not my file. Build and lint are clean.
+
+  **Pictures:** `AI-Agent-Workspace/Screenshots/2026-11-15/fewest-returns/`
+  (README names each one). Probes:
+  `AI-Agent-Workspace/Probes/2026-11-15/fewest-returns/`.
+  - `branch-renderer.ts`: reads better. `controller.ts`, its main consumer, now
+  stands right of it; the fan is tidier and the wire shorter. The page draws 8→6
+  returns. The two small cards past the subject look a little stranded.
+  - `manifest.ts`: reads better. 4 columns, all adapters in one column, 0 drawn
+  returns, and the 3D cue goes out. It is taller.
+  - `core.ts`: mixed. Far fewer crossings, but a tall adapter column shrinks the
+  fitted picture.
+  - `powershell.ts`: worse to my eye — it only scores better. Wider, and Fit
+  drops into the connections look.
+
+  **Links** (served build):
+  - `/?view=local&node=packages/explorer/src/client/views/localView/branch-rende
+  rer.ts`
+  - `/?view=local&node=packages/engine/src/live-docs/adapters/manifest.ts`
+  - `/?view=local&node=packages/engine/src/live-docs/adapters/powershell.ts`
+  - `/?view=local&node=packages/engine/src/live-docs/core.ts`
+  - The `localView` directory: `/?s=N4IgbiBcDMA0IBMoG0QAcCGBjA1hg5gKYDOA9IQB5oA2
+  A9gE6H2nH1albUCWhAdgC6kwPAO5k6WDNQBqokAF0AvkA`
+
+  **Forks I decided:**
+  - The third tie-break counts only reference-joined pairs.
+  - I picked `EXACT_LIMIT` = 12, at about 2 ms worst case.
+  - Large cycles start from the weighted greedy order, as the brief says. The
+  weighted start never priced worse than the unweighted one here.
+
+  **Open question for the owner:** whether returns should be traded against
+  spans and width in one sum. That would undo `powershell.ts` and
+  `adapters/index.ts`; I left it for the owner's levers.
+
+  **Cost:** about 85 minutes against the 50 aimed for. Roughly 35 minutes went
+  to waiting on the shared browser lock (10 minutes before the base lab spec,
+  then about 25 minutes behind another builder's long Playwright run). No server
+  started, no subagent used, scratch folder deleted.
+
+  Read 1 file (ctrl+o to expand)
+
+● Agent "2D layout: fewest backward references" finished · 1h 29m 42s
+
+● Both builders have reported: the far-view round is merged and building on
+  main, while the fewest-backward-connections round cut backward references from
+  488 to 393 and crossings by a quarter but made five pictures worse in another
+  way, so I'm checking those before deciding. · summary
+
+  Read 4 files, ran 2 shell commands (ctrl+o to expand)
+
+● Two of the four before-and-after pictures improved, powershell.ts got worse
+  (44% wider for one fewer backward connection, no longer readable at size), and
+  I'm sending the builder back to treat backward connections as a priced
+  trade-off rather than an absolute rule. · summary
+  ⎿  Resuming agent a0e2d2f
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Waiting on the far-view build to finish before running its browser cases. Both
+  builder reports are recorded; the fewest-backward-connections builder is
+  already working on the priced version.
+
+● Background command "Build main with the far-view round, regenerate the Live
+Docs, rebuild the Explorer and its sample, and run the touched unit cases"
+completed (exit code 0)
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● The far-view round is built on main and its browser cases are queued. While
+  they run I'm refreshing the record's resumption notes so the session's state
+  survives a compaction.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Waiting for the far-view round's browser run. Once it's green I'll commit it,
+  give you a link to see files-only with a pinned symbol at full zoom-out, and
+  send that builder on to the description-line alternatives.
