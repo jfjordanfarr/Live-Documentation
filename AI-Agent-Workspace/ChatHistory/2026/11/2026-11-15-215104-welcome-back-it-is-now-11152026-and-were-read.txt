@@ -8104,3 +8104,109 @@ rebuild the three Explorer bundles and run the panels' unit cases" completed
 ● The legend message reached you (the log shows it), and its browser cases are
   12 in with no failures. Nothing else has arrived, so I am waiting on that run;
   no builder is running, and the timer is not renewed.
+
+● Background command "Run the legend round's browser cases on main under the
+shared lock" completed (exit code 0)
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● The legend round is committed as e2ecaf52: 61 of 61 browser cases on main.
+  Recording it, then starting the full gate on the quiet machine.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+  Listed 1 directory (ctrl+o to expand)
+
+● The full gate is running on the committed tree (about an hour and three
+  quarters). Meanwhile I am studying how closed directories look at the farthest
+  zoom, to draw you options.
+
+  Made 1 scratchpad edit +60, read 2 files, listed 2 directories (ctrl+o to expand)
+
+● The gate is running. While it runs I have written the brief for the next round
+  (closed directories at the farthest zoom) and am checking its facts.
+
+  Made 1 scratchpad edit +1 -1, ran 4 shell commands (ctrl+o to expand)
+
+● One correction to my legend message while the gate runs: I said the file-kind
+  row appears "only while coloured cells are on screen". At the farthest zoom it
+  still shows although the cells there are too small to see. That goes into the
+  next round, which is about that zoom.
+
+  State now
+
+  - Full gate: running on the committed tree since 15:28 UTC; it takes about an
+    hour and three quarters, and I am leaving the machine alone for it.
+  - Next round, brief written: a closed directory at the farthest zoom. Today it
+    is a name alone there, smaller than the file names beside it, and sibling
+    names differ in size. The round builds three versions for you to compare
+    live: today's, the name at full size with its cells, and the name with one
+    thin bar split by file kind.
+  - Waiting on you, no rush: the closed directory's shape, the description
+    line's value, how the 3D "building" state feels, and whether to trial a
+    handle that stays in view.
+
+[Image #6]
+
+❯ >2D legend: five rows of phrases become three. See the before-and-after
+  sheet, or live on scripts.
+
+  Soooo much better! I see that the legend doesn't include color coding for the
+  other file archetypes, but it's at least thinner and easier to understand.
+
+  >3D legend at its longest: thirteen rows, four of them wrapped, become ten,
+  and the sidebar fits the window again. See the sheet, or live on pathfind.ts
+  in 3D and the estate sample in 3D.
+
+  Better, but I still see ringed nodes in the pathfind.ts link, which is
+  strange to me. A ringed node is an old indicator for "this node contains more
+  on click" -- but we had swapped for membranes. How the ringed rendering
+  still occurs is unkown to me. A defect we should leave for the next dev day
+  but mark as known.
+
+  >"Beyond" (the dim spheres one hop past what you asked for) is the weakest
+  word. If it reads oddly to you, tell me the word you would use.
+
+  I still feel some ambivalence about how best to show/hide neighbors. Crowding
+  the pinned item is indeed an ongoing struggle, and will likely be one for
+  quite some time. Another long effort to keep tabs on, but I would say that
+  the current state is an improvement over the prior day state.
+
+  Let's aim to wrap up this chat since we're on the next day, and I can start
+  up a new dev day chat after. That said, if you've got stuff in flight that
+  you are juggling and you feel it would be more responsible to let it complete
+  (it is), that is A-okay. Let's make sure we only close out when the dev
+  day's work is sufficiently solid to do so.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● I'm closing this chat once the full gate finishes around 17:15 UTC and
+  starting nothing else before then. Next I'll write the session summary,
+  chapter, memory updates and open questions, with the ringed-node defect and
+  the neighbour-crowding concern recorded for the next dev day. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agreed: I close this chat when the full gate finishes, at about 17:15 UTC, and
+  I start nothing new before then. The gate is the only thing in flight.
+
+  Your three remarks, as I am recording them:
+
+  - 2D legend and the other file kinds. The row lists only the kinds drawn at
+    that moment. scripts holds only implementations and tests, so only those two
+    appear; an asset or a document on screen would add its dot. If you would
+    rather it always list every kind, that is a one-line change for the next
+    day.
+  - Ringed nodes: marked as a known defect, not touched today. What the code
+    does now: a sphere gets a ring whenever it has connections the picture does
+    not show and no membrane wraps it. Your reading is that membranes were meant
+    to replace the ring. I will write that up with its history from the record
+    so the next dev day starts from it.
+  - Showing and hiding neighbours. Recorded as a long-running concern to keep
+    tabs on: crowding around the pinned item is not solved, and today's state is
+    a step better than yesterday's.
+
+  For the close I will write the session summary, the narrative's chapter, the
+  Memory updates and the list of questions still waiting on you, then clean up.
+  The round on closed directories at the farthest zoom is written up for the
+  next day and not started.
