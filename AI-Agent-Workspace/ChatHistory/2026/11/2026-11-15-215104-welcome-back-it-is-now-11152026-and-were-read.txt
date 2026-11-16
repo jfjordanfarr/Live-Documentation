@@ -1967,3 +1967,1836 @@ history step" completed (exit code 0)
   directory you can read) is concrete.
 
   Ran 1 shell command (ctrl+o to expand)
+
+❯ >Designers call that a breakpoint: a fixed threshold where the layout
+  switches.
+
+  Yep, I know about breakpoints. I had instructed that the semantic zoom system
+  in the 2D local map be breakpoint-driven after the first iteration that I
+  had suggested attempt to keep text size totally constant was a perf
+  nightmare. But I don't want to wholly rule out the possibility that the
+  "breakpoint" may be a concept we may wish to expand to include "style
+  triggerable by _something_", so that we can continue in the vein of
+  maximizing competing concerns to produce a good layout _emergently_. That is
+  what I believe is genuinely unique and interesting about our layout strategy
+  throughtout the software, and I don't want to lose sight of it overall.
+  Indeed, perhaps the amber indicator that 2D isn't cutting it anymore could
+  also be an indicator to _us_ that we could tweak the layout preferences to
+  avoid backwards-facing connections more strongly. We have many levers to
+  permute in the 2D and 3D local maps.
+
+● Background command "Run the tone round's browser cases and the specs nearest
+to it on main" completed (exit code 0)
+
+● Your message on breakpoints and emergent layout is logged. Next I'll check
+  whether the layout's current cycle-breaking yields the fewest backward
+  connections possible. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Background command "Take pictures of the cells look on three directories at
+device scale 2" completed (exit code 0)
+
+  Searched for 1 pattern, ran 5 shell commands (ctrl+o to expand)
+
+● I'm measuring how many backward connections the current cycle-breaking rule
+  leaves in each file's picture, compared with the true minimum, to test your
+  idea. · summary
+
+  Ran 6 shell commands (ctrl+o to expand)
+
+● You're right, and I should have known: breakpoints here were your instruction
+  on 11/5 and your "very few breakpoints" hypothesis on 11/8 is what the three
+  looks were built from. I explained your own term back to you. I'll check the
+  record for your vocabulary before teaching a word.
+
+  Your idea about the amber cue holds up, with numbers. I asked whether the 2D
+  layout already reads backward as few connections as any left-to-right order
+  could. It doesn't.
+
+  - What I measured: every one of this repository's 968 files opened alone,
+    using the layout's own functions (no browser), against the true minimum for
+    each picture.
+  - Result: 114 pictures read something backward. In 31 of them the layout
+    leaves more backward connections than necessary: 425 in total where 357
+    would do, about a sixth fewer.
+  - Your file: branch-renderer.ts reads 10 backward where 7 is the minimum. (The
+    page shows 8 because two are behind "+N symbols".)
+  - The limit: no picture goes fully dark. A real cycle always needs at least
+    one return.
+
+  Why it happens. When files form a cycle, the layout must pick which
+  connections read backward. Today's rule counts files, not connections, so with
+  A and B using each other it can send the heavier direction backward. Graph
+  drawing calls this choice the minimum feedback arc set. It is hard in general
+  but our cycles are tiny (two to four files in 105 of the 114 pictures), so the
+  exact answer is cheap.
+
+  What I'm doing: a builder round will make the layout read backward the fewest
+  connections, exactly, and keep today's order wherever it is already minimal so
+  no picture moves without a gain. It starts when one of the three running
+  builders is back.
+
+  On triggers that respond to something. Of the 2D map's four layout steps,
+  three already work the emergent way you describe: column assignment, ordering
+  within columns, and placement are each found by weighing costs. The one that
+  was a fixed rule is this cycle-breaking step, which is why your instinct
+  landed on it. The zoom looks are the other fixed thing. The natural candidate
+  there is the far view switching when a picture's names stop fitting rather
+  than at a fixed press. The cost is that the same press would then give
+  different looks on different pictures. I'd hold that until you've chosen
+  between files-only and bars.
+
+  Since my last message: the tone round is on main and its browser tests pass
+  (64 of 64), so your file (http://127.0.0.1:8999/?view=local&node=packages/expl
+  orer/src/client/views/localView/branch-renderer.ts) now shows bright names,
+  wires without glow, and the lit 3D button together. For Changed Files I
+  compared the three modes on your step: side by side (AI-Agent-Workspace/Screen
+  shots/2026-11-15/changed-files-modes/glow-dim-both-side-by-side.png). Dim
+  (middle) keeps each changed file's colour and is the only one where nothing
+  unchanged competes with the change, so I'm making it the default. The 3D round
+  you decided (no hover or click while the map builds) is with a builder now.
+
+  Made 1 scratchpad edit +46, read 2 files (ctrl+o to expand)
+
+● Briefs for the next two rounds are written, and the 3D building state is
+  already with a builder. I'm recording your steer on emergent layout in Memory
+  while the three builders work. · summary
+
+  Made 1 scratchpad edit +47, searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● Next rounds' briefs are being written while the three builders work: the
+  directory look (cells, shape variants, nested directories) is done; now the
+  kept description line.
+
+  Made 1 scratchpad edit +42, ran 2 shell commands (ctrl+o to expand)
+
+● Waiting on the three builders. Using the time to remove the finished cue
+  builder's worktree, now that everything of its round is on main.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Three builders are running and none has handed back yet, so I'm stopping here
+  until one does; the next round's briefs are already written.
+
+  - Directory handles: the builder is on five corrections I sent back at 22:31
+    (the blank gap when a directory is opened inside another, More on the name's
+    line, counts drawn whole or not at all, a larger press target, and the
+    specs it had not run). Nothing of this round is on main yet.
+  - Overview bars: the tone builder is finishing the alternative to files-only,
+    with three matched frames for your choice of the far view.
+  - 3D building state: the builder measures first how long the map stays busy
+    and comes back with the numbers if that is long.
+
+  Written and waiting for a free builder:
+  - the closed directory as cells in three shapes (round, square, folder tab),
+    with a nested directory you can read;
+  - the kept description line with names held to one line and the file's own
+    line;
+  - the layout reading backward the fewest connections.
+
+  On main and on your port 8999 now: the 3D cue and the tone round. Nothing is
+  pushed; ten commits today, two of them product code. A full green gate is
+  still owed from 11/13 and has to wait until no builder is using the browser.
+
+› Message from general-purpose
+  Milestone 2 is built and committed as `eae500da` on top of `b956e179`: bars
+  for silent rows at the overview, and the overview file name fitted before it
+  breaks inside a word. The new spec is red on `b956e179` (3 of 3) and green on
+  the branch (23 of 23 with the looks' specs). The full gate was not run.
+
+  My eye prefers Files only on all three subjects; details below.
+
+  ## Commit
+  - `eae500da` Draw each undrawn row as a faint bar when zoomed out fully, and
+  fit a file's name there before it breaks inside a word
+
+  Branch `worktree-agent-a45305e67bd0b6870`, not rebased.
+
+  ## What changed and where
+  - **`styles/reading.css`**:
+    - In the overview look, on a card that keeps its size, each
+  `.symbol-row:not(.symbol-pinned-named)` draws a bar as `::after`: 12 map px
+  tall, rounded, `--card-row-bar`, as long as `min(--row-name-w, --row-room-w)`.
+  The Internals row's bar is dashed.
+    - The bar is out of the row's flow at the row's own top left and moved by
+  margins, so the row is not positioned and the held name and More keep the
+  pointer.
+    - Its opacity is a clamp on its distance below what the name and More reach,
+  so a bar that would stand under them, or within a bar's height, is not drawn.
+    - The overview's `--title-scale` now reads `--overview-name-scale` for every
+  looks card; this replaces the files-only rule and its `--files-name-scale`.
+  - **`styles/theme.css`**: `--card-row-bar: rgba(255,255,255,0.08)`, 1.27 to 1
+  against the card.
+  - **`localView/card-reading.ts`** writes:
+    - per row, `--row-y` (top below the rows' top) and `--row-name-x`;
+    - on the card, `--name-reach-overview`;
+    - `--overview-name-scale` by `filesNameScale` for every card the looks draw,
+  not only files only.
+    - `markFirstPin` also re-finds `--row-y` when rows are reordered without a
+  reading.
+  - **`localView/ladder-rooms.ts`**: `ROW_BAR`, `nameReach`, `barShown`, with
+  three unit cases; one holds the stylesheet's stated height and clamp to the
+  module's.
+  - **`tests/e2e/local-map-overview-bars.spec.ts`**: new, 3 cases.
+  - **Docs**: a design paragraph marked as a trial for comparison, Live Doc
+  notes, and a README section.
+  - **Untouched**: `card-factory.ts`, `held-lines.ts`, `overview-files.ts`.
+
+  ## Forks I decided
+  - **No name-length property in `card-factory.ts`.** The card reading already
+  writes each row's measured name width (`--row-name-w`), which is truer than a
+  character count and keeps me out of the other builder's file.
+  - **The name comes first; a covered bar is omitted, not moved.** Bars stay at
+  their rows' own places, where names reappear on zooming in. The cost is that a
+  card with a long name and one or two rows is still a name over an empty box.
+  - **Bars appear at once at the change of look**, as silent rows already leave
+  at once; no fade was added.
+  - **The fitted name also applies to Flow's compact member cards** in an opened
+  directory, since they are slot cards drawn by the same rule. That is the only
+  thing "bars" changes on `client`.
+
+  ## Red run on `b956e179`
+  3 of 3 failed; the output is `overview/red-run-b956e179.txt`.
+  1. **Bars**: "every silent row has a bar": 14 rows without one.
+  2. **Pinned row**: "its card's other rows are bars": false.
+  3. **Names**: `approximation.ts`: "approxim" ends inside a word at 3.6
+  (expected only at ≤ 2.21); and no name in the picture is fitted below the
+  look's size (0).
+
+  Not shown red: the per-bar assertions (size, pointer, clear of the name,
+  painted pixels), since the first case stops at "every silent row has a bar" on
+  the base; and "the connections look draws no bar" and "files only draws no
+  bar", which hold on the base trivially.
+
+  ## Green run
+  23 passed in 3.9 min: the 3 new cases, all of `zoom-looks` (including the 8 px
+  legibility and box-stability cases), `overview-files` and
+  `local-map-overview`. Also: 23 unit cases in `ladder-rooms.test.ts`, `tsc` on
+  the Explorer and the tests, eslint on the changed files, `live-docs:lint` (967
+  validated), 0 broken links.
+
+  The first case reads a screenshot's pixels in the page at 2 device pixels to
+  1, as `force-graph-identity.spec.ts` does: the middle of each drawn bar is
+  6–40 levels lighter than the card just below it.
+
+  ## The three, matched
+  Folder: `/workspaces/Live-Documentation/.claude/worktrees/agent-a45305e67bd0b6
+  870/AI-Agent-Workspace/Screenshots/2026-11-15/tone-and-greeking/overview/`,
+  with a "Milestone 2" section added to the round's `README.md`.
+  - `keep/`, `bars/` and `files/` each hold `fallback/` and `segoe/` frames for
+  `pinned-branch-renderer-out7`, `pinned-types-out7` and `client-opened-out7`.
+  "Keep" is the `b956e179` build.
+  - `matched/<subject>-<metrics>.png` is the three side by side (keep, bars,
+  files only), three frames wide.
+  - `matched/detail-<subject>-<metrics>.png` is a 1:1 crop of the same three;
+  start with these.
+  - `bars/*/symbol-pinned-out7.png` and `matched/symbol-pinned-<metrics>-3x.png`
+  show `renderBranches` pinned by name, drawn in full among the bars.
+
+  ## Which my eye prefers
+  - **`branch-renderer.ts` pinned: Files only.** Bars cure the blank and say at
+  a glance which file is long. But the picture stays as tall as its rows, so
+  three cards run off the frame, where Files only has the whole neighbourhood
+  and both ends of every wire in half the frame.
+  - **`types.ts` pinned: Files only, more clearly.** With bars, `types.ts` is a
+  ladder of twenty-odd bars running off the bottom with its hub halfway down.
+  Files only shows the hub and its whole fan at once. The one thing only the
+  bars say is that `types.ts` is far larger than its neighbours.
+  - **`client` opened: Files only; bars change nothing here.** Flow's compact
+  member cards lay out no rows, so there is nothing to draw a bar for. The bars
+  frame differs from today's only in names: `markdown.test.ts` and `download.ts`
+  are whole at a smaller size where today breaks "markdow/n.tes…" and
+  "downloa/d.ts". Files only gives names the lines they need ("detail/Panel.ts"
+  whole) where the other two cut them.
+
+  ## What still looks wrong with the bars
+  - A long name over one or two rows is still a blank card
+  (`membrane-outline.ts`, `card-reading.ts` in the `branch-renderer.ts` frames).
+  - The bar directly under a row pinned by name sits a pixel or two from the
+  pinned row's frame (`symbol-pinned-*-3x.png`).
+  - Per-card name fitting puts names of different sizes side by side
+  (`detail-client`: `markdown.test.ts` and `download.ts` beside `errors.ts`).
+  - A bar is 2–3 px tall at the seventh press and under 2 at the tenth; it reads
+  as texture only.
+  - The fade formulas for a change of look still use the look's 3.6 for the
+  leaving name, so a fitted name's 160 ms crossing starts from a slightly wrong
+  size. Files only already had this.
+
+  ## The wheel check
+  The same wheel input ends at the same scale regardless of frame rate, so there
+  is no defect here.
+
+  Three wheel zooms out (five 40 px notches, 40 ms apart) on `types.ts`, scale
+  read from `#map-viewport`'s transform after each move settled, on the
+  `cb53d7c7`-styles build and on a no-glow build, each at machine speed and with
+  Chromium's CPU throttled 6×:
+
+  | After move | Scale `k` | Look |
+  | --- | --- | --- |
+  | start | 1 | reading |
+  | 1st | 0.7408 | reading |
+  | 2nd | 0.5488 | connections |
+  | 3rd | 0.4066 | connections |
+
+  All four runs are identical. Load was 7.0 at the start and 10.5 at the end.
+  The one-move difference in my frame-cost table was the look read at the end of
+  the 1.2 s window, which the slow build overruns. The README's frame-cost
+  paragraph now says so; the output is `wheel-scale.json`.
+
+  ## Explorer links
+  Press Zoom Out seven times on each.
+  - `/?s=N4IgbiBcDMA0IDsogA4EMDGBrNBzApgM4D0+AHigDYD2ATvrcYbRsRpQJb4IAuxYXAO4kaG
+  NJQBqQ4gCNaaBBgAWAWnoIAJgwYA6HoRDwUUANqgkkVJhwES5KnQZMWbTtz4D8w4qPFSvsvKKqupa9
+  LR6BvAGlgBUIAC+ALoJQA` — `branch-renderer.ts` pinned, bars.
+  - `/?s=N4IgbiBcDMA0IDsogA4EMDGBrNBzApgM4D0+AHigDYD2ATvrcYbRsRpQJb4IAuxPATxREAd
+  D0Ih4KKAG1QSSKkw4CJclToMmLNp259BwwmInwJigFQgAvgF1rQA` — `types.ts` pinned,
+  bars.
+  - `/?s=N4IgbiBcDMA0IDsogA4EMDGBrNBzApgM4D0+AHigDYD2ATvrcYbRsRpQJb4IAuxYXAO4kaG
+  NJQBqQ4gCNaaBBgAWAWnoIAJgwYA6HoRDwUUANqgkkVJhwES5KnQZMWbTtz4D8w4qPFSvsvKKqupa9
+  LR6BvAGlqEMAEJBykQgAL4AuqlAA` — `renderBranches` pinned by name, among bars.
+  - `/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkRUwBTAJzAEtSB3AMSoVIGcoQAzJ1kAX1-gA7dvkz
+  oA1pgDmrAPSkAHvjTkKsluXSz0CGoIAus6nRay0WBADUatWQCNymQegAWAWlWCAJhQoA6fTZ4QkgAb
+  VBhSBBRCWk5RWVUVXJ1TW1dUgMjG1NzbGs6e0dnd08fZICgkDYogCo+AF1eIA` —
+  `branch-renderer.ts`, Files only.
+  - `/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkRUwBTAJzAEtSB3AMSoVIGcoQAzJ1kAX1-gA7dvkz
+  oA1pgDmrAPSkAHvjTkKsluXSz0CGoIAus-QE98rAHT628QpADaoYZBCiJ0uYuWpV5dZu26pAZGphZW
+  IPBszgBUfAC6vEA` — `types.ts`, Files only.
+  - `/?s=N4IgbiBcDMA0IBsoG0QAcCGBjA1hg5gKYDOA9IQB5oA2A9gE6H2nH1albUCWhAdgC4gAugF
+  8gA` — `client` opened; bars and Files only differ only via Tuning → 2D Layout
+  → Zoomed Out Fully.
+
+  ## If one of the two is deleted
+  - **Bars go**: remove the `::after` rules in `reading.css`, `--card-row-bar`,
+  `--row-y`, `--row-name-x` and `--name-reach-overview` in `card-reading.ts`,
+  the three exports in `ladder-rooms.ts` with their cases, and the spec's first
+  two cases. The third (names) and `--overview-name-scale` stand on their own.
+  - **Files only goes**: nothing here depends on it except that `filesNameScale`
+  lives in `overview-files.ts`.
+
+  ## Housekeeping
+  - Servers stopped by pid; ports 8953 and 8963 are free.
+  - Scratch removed by name: `AI-Agent-Workspace/tmp/`, `test-results`,
+  `reports/e2e`, `coverage`, `node_modules/.vite`.
+  - `dist/` is the milestone 2 build with the estate sample.
+  - The working tree is clean. No subagent used.
+
+● The tone builder is back with the overview bars, and its own eye prefers
+  files-only on all three pictures. Looking at the matched frames myself.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Tone, wires and overview bars" finished · 1h 4m 25s
+
+  Read 3 files (ctrl+o to expand)
+  ⎿  Resuming agent a45305e
+
+❯ A wishlist item from me: lerping in 3d local map history viewing mode to make
+  history viewing look smoother, especially when attempting to scrub through
+  commits. (Plus scrubbing through commits has really really poor performance
+  right now). Just something for the backlog.
+● Your wishlist item (smoother 3D history with interpolation, and scrubbing
+  performance) is noted. Recording it and checking what the record already holds
+  on it.
+
+  Searched for 1 pattern, ran 6 shell commands (ctrl+o to expand)
+
+● Your wishlist item is in the backlog (ideas and direction), next to your 10/18
+  remark that a scrub that feels good matters more to you than play. My note
+  for whoever takes it: profile a scrub step first, because smoothness and cost
+  may be the same repair.
+
+  The far view is decided: files-only becomes the default. The alternative I had
+  argued for (rows as faint bars, nothing moves) got built and lost on all
+  three test pictures. The builder's eye, mine, and your reaction this evening
+  all agree.
+
+  Three matched frames each, left to right: cards as today, with bars,
+  files-only.
+  - branch-renderer.ts pinned (AI-Agent-Workspace/Screenshots/2026-11-15/tone-an
+    d-greeking/overview/matched/detail-branch-renderer-segoe.png)
+  - types.ts pinned (AI-Agent-Workspace/Screenshots/2026-11-15/tone-and-greeking
+    /overview/matched/detail-types-segoe.png)
+
+  Bars do cure the blank card and show which file is long. But the picture stays
+  as tall as its rows, so cards run off the frame. Files-only shows the whole
+  neighbourhood and both ends of every wire. So the bars will not land, and I
+  was wrong to lean toward them this morning; I was weighing your earlier words
+  about cards not resizing over what the built thing shows.
+
+  The builder is making the change now. Before I call the default safe, it will
+  show me what a symbol pinned by name looks like at the far zoom under
+  files-only. "Cards keep their size" stays one Tuning choice away for now.
+
+  One thing from the same builder you'll like: for an opened directory at the
+  far zoom, a file name is now fitted before it breaks inside a word, so
+  markdown.test.ts stays whole instead of "markdow/n.tes…".
+
+  Still running: the directory corrections and the 3D building state. Both have
+  yet to report.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● No handback is waiting at 23:10 UTC. All three builders are mid-work, so I
+  renewed the timer and changed nothing else.
+
+› Message from general-purpose
+  ## Handback: building-map, first milestone. I stopped at the measurement, as
+  the brief says to.
+
+  **Nothing was built.** The brief's rule was to stop if "busy" lasts more than
+  about three seconds on the common actions, and it lasts far longer. No product
+  code, test, stylesheet or doc changed. Item 5 (making Dim the default for
+  Changed Files) is a one-line change that doesn't depend on this, and it isn't
+  done either.
+
+  **Commit on branch `worktree-agent-a93801741430a667b`:** `9d1b9a24` "Measure
+  how long the 3D Local Map stays busy after the common actions". It adds only
+  `AI-Agent-Workspace/Screenshots/2026-11-15/building-map/README.md` (method,
+  table, candidates) and `busy-measurements.json` (all 30 raw runs). Base
+  `7038efd6`, never amended, not pushed.
+
+  ### How it was measured
+  - Headless Chromium on this machine's software renderer, 1440×900, Explorer
+  defaults (one hop, Skin, Reveal Frames 60), the 2D continuing search off as in
+  the suite.
+  - Three fresh-page runs of each action, capped at 60 s.
+  - "Busy" is the existing `aria-busy`, timed from the action (for an arrival,
+  from page load) until it turns false.
+  - I also recorded:
+    - the animation frames in that span;
+    - the frame by which every sphere had entered;
+    - the last frame in which any sphere moved at least 1 px on screen since the
+  frame before (camera motion counts).
+  - "≈60 fps" is frames ÷ 60, assuming one physics step per frame. It is an
+  estimate, not a measurement.
+
+  | Action | Busy, s here (median / worst) | Frames | ≈ s at 60 fps | All
+  entered (frame) | Last visible move (frame) |
+  |---|---|---|---|---|---|
+  | Estate: arrival on GatewayClient.cs by link | 6.9 / 7.4 | 201 | 3.4 | 13 |
+  136 |
+  | Estate: click a seed of the archipelago (PaymentService.cs) | 38.2 / 40.7 |
+  1,309 | 21.8 | 1 | 186 |
+  | Estate: Pin from a sphere's actions | 5.3 / 6.0 | 225 | 3.8 | 6 | 145 |
+  | Estate: open a directory (Structure, click the Portal bubble) | 12.6 / 14.1
+  | 479 | 8.0 | 1 | 132 |
+  | Estate: 2D→3D with a file selected | 7.1 / 7.1 | 298 | 5.0 | 110 | 161 |
+  | History sample (7 files): one step | 1.4 / 1.4 | 82 | 1.4 | 3 | none |
+  | Repository: arrival on forceGraphView.ts at one hop (133 spheres) | 30.7 /
+  32.0 | 207 | 3.5 | 50 | 207 |
+  | Repository: click a sphere of that hop (154 spheres) | over 60 (all three
+  capped) | over 370 | over 6.2 | 8 | 264 |
+  | Repository: 2D→3D on that file | 23.2 / 23.4 | 275 | 4.6 | 118 | 210 |
+  | Repository whole in Structure: arrival (1,256 spheres) | over 60 (all
+  capped) | over 215 | over 3.6 | 65 | still moving at the cap |
+
+  What the numbers say:
+  - **Busy is long everywhere except the tiny sample**, here and in the 60 fps
+  estimate. The estate seed click, which is the original fault's journey, is
+  about 38 s here and about 22 s at 60 fps.
+  - **Busy lasts well past the last visible motion.** On the seed click the
+  picture looks still for six sevenths of the busy time (last 1 px move at frame
+  186, busy until 1,309). On opening a directory it looks still for nearly
+  three quarters. The tail of the motion's stillness test looks worth its own
+  investigation, separate from this round.
+  - **Every sphere is in early**: by frame 1–50 after a click, pin or arrival,
+  and by frame about 110 after a perspective change, whose own animation runs
+  first.
+  - **Not measured: a history step on this repository.** My worktree's bundle
+  has no history (`History: none`), so the 7-file history sample stands in for
+  it.
+  - **Arrivals are timed from page load**, so those rows overstate busy by the
+  load time.
+
+  ### Two definitions of "building", for you to choose
+  - **A. Placed and framed (my recommendation).** Building lasts while a body is
+  packing, the reveal is still bringing spheres in, or the camera's 650 ms
+  framing flight runs. From the table that is about 0.7–2.6 s at 60 fps on every
+  action measured. The picture keeps drifting for a few seconds afterwards.
+    - Why A: rule 3 (a pointer that hasn't moved since building began starts
+  nothing until its first move) is what removes the fault of clicking a seed and
+  keeping still. So a short build period is enough, and the map never refuses a
+  click for long.
+  - **B. Cooled.** This is today's `aria-busy`, the busy column above.
+  - **A middle option, also measured: visibly still.** Building lasts until no
+  sphere moves 1 px a frame on screen, about 2.2–4.4 s at 60 fps where the
+  picture came to rest within the cap. The motion computes nothing on screen
+  today, so this needs a new measure inside it.
+
+  ### Decisions for you
+  1. **Which definition**, A or B (or the middle).
+  2. **If A, what `aria-busy` means.** 26 spec files (74 references) wait for
+  `aria-busy="false"` to mean "the picture came to rest".
+     - My recommendation: keep `aria-busy` meaning the settle. A new state, for
+  example `data-building`, would drive the click and hover block, the `cursor:
+  progress` and the sign.
+     - The other way, `aria-busy` follows building and the specs move to a new
+  rest signal. That touches many files outside my set.
+  3. **Blocking sphere drag needs one line in `forceGraphRenderer.ts`, which
+  isn't in my file list.** That file grabs a sphere for dragging on its own
+  pointerdown. Without that line, "a press on a sphere during building does
+  nothing, and it turns the camera instead" can't be done. Approve or refuse.
+
+  ### Groundwork for the build milestone
+  - Names and the actions strip can take `pointer-events: none` while building,
+  so a press on them during building turns the camera.
+  - Keyboard activation (a click with `detail === 0`) stays live.
+  - After building ends, the name and strip `pointerenter` handlers must be
+  gated as well. The trial found that Chromium sends `pointerenter`, and no
+  `pointermove`, to an element that moves under a still pointer.
+  - The sign can't go on the toolbar: its rules are in `styles/local.css`, which
+  is off limits. A thin line along the top edge of `#graph-svg` in `graph.css`
+  fits. This is not yet judged by eye.
+
+  ### Housekeeping
+  - **The shared browser lock cost about 10 minutes of waiting.** About 4
+  minutes went on a first try that recorded nothing, because of my own bug: the
+  tsx runner wraps the page script's function names in a helper the page doesn't
+  have. About 5 minutes went on a check I cancelled. The full set of runs then
+  waited 38 s and held the lock from 22:52 to 23:08.
+  - **No pictures or recording, since nothing was built.** Links to retrace the
+  journeys:
+    - `/samples/estate/?s=N4IgbiBcDMA0IEcomgExAXyA` (estate archipelago, 3D)
+    - `/?s=N4IgbiBcDMA0IEcomgExPAdsgDgQwGMBrPAcwFMBnAenIA8cAbAewCdzXrLWDqDGAluUw
+  AXamCEB3GgDM2BcgHFWeHAAsAalIB0IyiAC+QA` (this repository, forceGraphView.ts
+  selected, 3D)
+  - **Server stopped** by its process id (97721).
+  - **No subagent used.**
+  - **Kept for the next milestone**, git-ignored and to be deleted when the
+  round ends: `AI-Agent-Workspace/tmp/building-map/measure.ts` and
+  `summarize.mjs`. The build in my worktree's `dist/explorer` is also kept.
+  - I didn't touch the main checkout, Memory or the ChatHistory files.
+
+● The 3D builder stopped at its measurement, as briefed: the map stays "busy"
+  far too long to block clicks for all of it (about 38 s after a seed click on
+  the estate sample here). I'm giving it the shorter definition to build on.
+  ⎿  Resuming agent a938017
+
+● Agent "3D map: no hover while building" finished · 37m 34s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● One thing you should know about the 3D rule you chose, because the measurement
+  changed what "building" can mean.
+
+  The map's internal "busy" state lasts far longer than the map looks busy.
+  After a click on a seed in the estate sample it stays busy about 38 seconds on
+  this machine (about 22 at full speed, by the builder's estimate). Nothing
+  visibly moves after the first sixth of that. Blocking clicks for all of it
+  would be worse than the fault.
+
+  So "building" will mean the part you can see: spheres still arriving and the
+  camera still flying to frame them, about one to three seconds. During that,
+  nodes take no hover or click and the sign shows. Afterwards the map is live
+  again, with one rule that removes the original fault: a pointer that hasn't
+  moved since the build began starts nothing until you move it. Turning and
+  zooming stay live throughout.
+
+  The builder is building that now. It also found something worth its own look
+  later: the motion keeps computing for a long time after the picture has
+  stopped moving. Our 3D tests wait on that tail, so shortening it could make
+  them much faster.
+
+› Message from general-purpose
+  The leg is done and committed: `main` is merged in, the bars are removed, the
+  fitted name is kept, and Files only is the default. The seven named specs pass
+  on the final build (35 of 35); the full gate was not run.
+
+  The pinned-symbol check went the way you feared: under Files only a symbol
+  pinned by name is **not** drawn at the overview, and its own wire is not drawn
+  either. I did not patch it; details and what it would take are below.
+
+  ## Commits
+  - `3d650a73` Merge main (the 3D button's cue and the tone round's first
+  milestone) into the tone round's branch
+  - `9991c102` Make files only the default when zoomed out fully, remove the
+  rows-as-bars alternative, and keep the fitted file name
+
+  ## The merge
+  `git merge 85d30743` conflicted in six files, all authored text or the theme:
+  - **From main**: the 3D cue's note in `local.css`'s Live Doc.
+  - **Mine kept**: my later notes in `reading.css`'s Live Doc, the design
+  paragraph, and the pictures' README.
+  - **Theme**: `--card-row-bar` survived the merge commit and went in the next
+  commit with the bars.
+  - Generated regions were regenerated, not merged.
+
+  ## Bars removed, fitted name kept
+  - **Removed**: the `::after` rules in `reading.css`; `--card-row-bar`;
+  `--row-y`, `--row-name-x` and `--name-reach-overview` in `card-reading.ts`;
+  `ROW_BAR`, `nameReach` and `barShown` in `ladder-rooms.ts` with their three
+  unit cases; the spec's two bar cases.
+  - **Kept**: `--overview-name-scale` and its rule.
+  - **Renamed**: the spec is now `tests/e2e/local-map-overview-names.spec.ts`,
+  one case. Its old Live Doc is deleted and its history carried into the new
+  one.
+  - **Design paragraph**: rewritten in the past tense, "Zoomed out fully draws
+  files only, chosen over rows as bars": what was compared, on what, what each
+  showed, what was chosen. The pictures and README section stay as history, with
+  a short closing section on the choice and the pinned-symbol frames.
+
+  ## Files only as the default
+  - `types.ts`: `OVERVIEW_FILES = ["files", "keep"]`; the first is the default
+  and what a link that says nothing means.
+  - `persistence/local-storage.ts`: `overviewFiles: "files"`.
+  - `shared/template.html`: Files only is listed first and selected.
+  - `layout-presets.ts`: comment only. By the existing convention a link now
+  writes `keep` when chosen and nothing for Files only. A link from the trial's
+  two days that says `files` reads as saying nothing, which is the same picture.
+  - The stepped ladder is untouched.
+
+  Two things to know:
+  - A browser that already has a saved tuning keeps whatever it saved, so the
+  owner's own browser may still show the old value until they change it.
+  - `overview-files.ts`'s header still calls itself "a trial". I left that file
+  alone under the earlier instruction; it wants one sentence.
+
+  ## Changed expectations
+  Each says in a comment that it is a design change of November 15, 2026, by the
+  owner's eye and the comparison.
+
+  **State the default:**
+  - `layout-presets.test.ts`: the link case is flipped. The default is `files`
+  and is not written; `keep` is carried when chosen; an unsaid link opens Files
+  only even in a browser holding `keep`; `{ overviewFiles: "files" }` now reads
+  as undefined.
+  - `overview-files.spec.ts`:
+    - "with the default…" is retitled "with cards keeping their size chosen…"
+  (it already chose `keep` explicitly).
+    - The link case now opens a link that says `keep` and expects `keep`, then a
+  link that says nothing and expects `files`. It used to open a link that said
+  `files`.
+  - `backward-cue.spec.ts`: the Files only case no longer sets the tuning and
+  reads the default; retitled "…the default…".
+
+  **Now choose "Cards keep their size" explicitly** (they exercise the keep-size
+  overview on purpose):
+  - `local-map-overview.spec.ts`: every three-looks case, via `beforeEach` and
+  its one other seeded tuning.
+  - `zoom-looks.spec.ts`: all four seeded tunings. The spec holds a card whose
+  box no zoom changes.
+  - `local-map-tone.spec.ts`: the pinned-symbol-wires case only, retitled "at
+  the overview of cards that keep their size…".
+  - `backward-cue.spec.ts`: "the number is the same at the reading, connections
+  and overview looks", which counts the gathered returning pairs.
+  - `local-map-overview-names.spec.ts`: its one case, which also asserts
+  `data-overview-files` is absent.
+
+  `tuning.spec.ts` needed no change.
+
+  ## Final run
+  `LIVE_DOCS_E2E_PORT=8963 flock … npx --offline playwright test --config
+  tests/e2e/playwright.config.ts overview-files zoom-looks local-map-overview
+  backward-cue local-map-tone local-map-overview-names tuning`: **35 passed in
+  4.3 min.**
+
+  Also run:
+  - 37 unit cases in `layout-presets`, `ladder-rooms`, `overview-files` and
+  `tuning-levers`.
+  - 135 unit cases across `client/persistence`, `client/panels` and `shared`.
+  - `tsc` on the Explorer and the tests; eslint on the changed specs.
+  - `live-docs:lint` (970 validated); 0 broken links.
+
+  Not run: every other browser spec. I searched the specs for the overview look
+  and for seven or more presses; the only other hits were `card-ladder`,
+  `card-ladder-boxes` (both stepped, where Files only never shows) and
+  `force-graph-focus` (3D). I did not search for specs that reach it by wheel or
+  by Fit on a large picture, so one of those could still meet the new default.
+
+  ## A symbol pinned by name under Files only
+  `renderBranches` pinned by name on `branch-renderer.ts`, seven presses out,
+  Segoe's lines, final build. Frames are in `/workspaces/Live-Documentation/.cla
+  ude/worktrees/agent-a45305e67bd0b6870/AI-Agent-Workspace/Screenshots/2026-11-1
+  5/tone-and-greeking/overview/pinned-symbol/`:
+  - `symbol-pinned-out7-files.png` (the default)
+  - `symbol-pinned-out7-keep.png`
+  - `symbol-pinned-out7-files-then-keep.png` (side by side, Files only first)
+
+  Read from the page:
+
+  | | Files only | Cards keep their size |
+  | --- | --- | --- |
+  | Pinned row | not laid out (`display: none`) | drawn in full, name visible |
+  | Symbol's own wires | 0 | 1 |
+  | Gathered lines | 45 | 45 |
+  | Card's sign of the pin | 1 px accent frame with a glow | the row's own
+  highlight |
+  | Pin tray and search field | name `renderBranches` | name `renderBranches` |
+
+  **What my eye says.** In the keep frame the pin is plain: a highlighted
+  "render…" row inside the card with its dots and a wire leaving them. In the
+  Files only frame nothing on the map says a symbol is pinned. The pinned frame
+  sits on the subject's card, which already has a blue selection border, and I
+  cannot tell the two apart at this size. Only the search field and "1 pin"
+  still name it.
+
+  **What a person loses:**
+  - which symbol they pinned, on the map;
+  - where it sits in its file;
+  - its own wire, so "what uses this symbol" turns back into "what uses this
+  file" at this look.
+
+  One press in brings it all back.
+
+  **What it would take** (not done, and it reaches into `connections.ts` and
+  `overview-files.ts`, which are not mine):
+  - `reading.css`: let a `symbol-pinned-named` row stay laid out under
+  `[data-overview-files]`.
+  - `card-reading.ts`: count that row in `--files-card-h`, and bound the name's
+  room by it as the keep-size card does (`pinDepths` currently returns none
+  under Files only).
+  - `connections.ts`: draw `ownWires` under Files only; today it is `filesOnly ?
+  [] : …`.
+  - Then check the compact layout's move and Fit with the taller card, with a
+  case in `overview-files.spec.ts`.
+
+  A cheaper partial is a pinned frame that reads differently from the subject's
+  border. That mends the "is anything pinned" half and not the "which symbol"
+  half.
+
+  ## Housekeeping
+  - Servers stopped by pid; ports 8953 and 8963 are free.
+  - Scratch removed by name (`AI-Agent-Workspace/tmp`, `test-results`,
+  `reports/e2e`, `coverage`, `node_modules/.vite`).
+  - `dist/` is the final build with the estate and history samples.
+  - The working tree is clean. No subagent used.
+  - I have not opened the milestone 3 brief.
+
+  Read 1 file (ctrl+o to expand)
+
+● Agent "Tone, wires and overview bars" finished · 1h 44m 22s
+  ⎿  Resuming agent a45305e
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The check I mentioned found a real gap: with files-only as the default, a
+  symbol you pinned by name disappears from the map at the far zoom, along with
+  its own wire. So the default is not landing yet. The builder is drawing the
+  pinned symbol into the compact card first; files-only will mean files plus
+  whatever you pinned.
+
+  Still running: that repair, the directory corrections, and the 3D building
+  state.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● No handback is waiting at 00:00 UTC. All three builders have new commits and
+  are still working, so I renewed the timer and changed nothing.
+
+› Message from general-purpose
+  All five corrections are built and committed on
+  `worktree-agent-a88027f74c8cb2dc8` with `main` merged in, except two things I
+  could not close: the opened handle is under 24 px tall at the overview, and
+  the lab's agreement check was run on only two of four scopes before another
+  builder's run held the browser lock for over 25 minutes. This leg took about
+  90 minutes, not 40.
+
+  ## Commits (after `9c552428`)
+  - `3273b0c9` Merge main's 3D cue and tone rounds into the directory handle's
+  branch
+  - `c14f90b9` Keep a directory's strip over its handle's run, make the opened
+  handle one button, and move a closed box's More to its name's line
+  - `05ced743` Draw a hidden-count on a directory's handle whole or not at all
+  in fact, and hold the corrections in the browser cases (the message's first
+  words are clumsy; not amended)
+  - `20b3bedb` Probe the opened handle's pressable area above its name, where
+  the overview leaves it room
+  - `1c721a3c` Stop the layout lab capturing a directory label's text, controls
+  and padding
+
+  ## The merge
+  - Conflicts were in `local.css`, `branch-renderer.ts` (one import line) and
+  three Live Docs. My handle rules stand; the membrane strokes
+  `var(--membrane-outline)` and the legend's gathered sample takes the tone
+  round's wire colour. Both rounds' authored notes are kept, and the generated
+  regions were regenerated.
+  - The cue still lights on the `branch-renderer.ts` link: the 3D button carries
+  `has-backward-wires` with "8 connections run backward in 2D. Explore this
+  scope in 3D.", amber in `after-branch-renderer-*`.
+  - A directory's own name, in the handle and in the closed box, is now
+  `var(--card-file-name)`. `local-map-framing`'s colour expectation for a closed
+  name moved from `rgb(228, 228, 228)` to `rgb(242, 242, 242)` with it.
+
+  ## The corrections
+  1. **Strip over the handle's run (your option iii).** A membrane standing from
+  the top keeps the strip only over its leading columns that are in the same
+  situation as its leftmost (below the same earlier-row siblings, or at the
+  parent's top under strip or padding); the rest keep padding. The rule is
+  `stripColumns` in `directory-handle.ts`, set by the scene and read by the
+  placement. The placement's own `fromTop` special case is gone.
+     - On `packages/engine/src` + `live-docs`, the `config / languages /
+  tooling` row is now 19 units under its strip (was 79).
+     - The 19 that remain are the nested membrane's inset (13) and a lane's
+  padding (6): the right columns' first items cannot stand higher, and standing
+  from the top levels every column's first item.
+     - `live-docs` keeps its strip over its three leading columns, and its own
+  first row is level.
+  2. **More on the name's line in a closed box**, at the right. The box keeps
+  its height (81.58 px before and after) because an empty element keeps the old
+  row. In Box and Stack that row holds nothing; in Cells the cell field now runs
+  down through it to the box's foot. I did not look at that Cells change by
+  eye; the look's spec passes.
+  3. **A count is whole or not drawn.** The handle's line gives way parent path
+  first, then the count whole, then the own name; More never. A count without
+  room gets opacity 0, so the audit does not read it as clipped text. On
+  `branch-renderer.ts`: at reading size "+11 files", "+46 files, 1 directory"
+  and "+48 files" are drawn whole; after Fit all three are not drawn.
+  4. **One target.** The chevron, path and own name are one button and the focus
+  ring surrounds them (`after-keyboard-2-…`). The pressable area is the strip's
+  height plus the membrane's padding over the button. Measured on `client`'s
+  handle, on screen:
+
+     | Presses out | Look | Ring | Pressable |
+     | --- | --- | --- | --- |
+     | 0 | reading | 181 × 15 | 190 × 73 |
+     | 2 | reading | 126 × 10 | 132 × 51 |
+     | 3 | connections | 230 × 19 | 237 × 43 |
+     | 6 | connections | 133 × 11 | 138 × 24 |
+     | 7 | overview | 182 × 15 | 186 × 21 |
+     | 10 | overview | 105 × 9 | 109 × 12 |
+
+     The overview misses 24 px. The strip and padding are 72 units, the first
+  row of cards starts right under them, and 24 px at press 7 would need 86
+  units. A taller target there means a taller strip or a hit area over the
+  cards; I did neither.
+  5. **Specs on the final build.**
+     - `backward-cue`, `card-ladder-boxes`, `local-map-branches`,
+  `local-map-path`, `local-map-tone`, `perspective-zoom`, `zoom-looks`: 56 of 56
+  pass.
+     - `local-map-directories`, `closed-directory-looks`, `local-map-framing`,
+  `labels-and-controls`, `design-audit`, `local-map-keyboard`, `inspection`,
+  `local-map-pins`: 64 of 65. The one failure was my own new probe point (2 px
+  under the name, where the overview leaves only 1.7 px); I moved it above the
+  name and that case then passed alone.
+     - Vitest, `localView` and `layout-lab`: 426 of 426 before the lab cleanup;
+  the lab's 45 pass after it.
+     - The full gate was not run.
+
+  ## Picture heights at reading size
+  Unchanged by this leg except the nested picture.
+
+  | Picture | `cb53d7c7` | First handback | Now |
+  | --- | --- | --- | --- |
+  | `client` | 922 | 952 | 952 |
+  | `scripts` | 784 | 814 | 814 |
+  | `packages/engine/src` | 260 | 274 | 274 |
+  | scan root | 734 | 734 | 734 |
+  | `engine/src` + `live-docs` | 2315 | 2424 | 2364 |
+
+  `branch-renderer.ts` pinned is 5432 × 3945 under Segoe lines, but the merge
+  changed its graph, so it is not comparable with the earlier 5696 × 3355.
+
+  ## Red runs
+  - New unit case for the `engine/src` + `live-docs` geometry, run against the
+  previous placement: `expected [ 60, 60, 60 ] to deeply equal [ 42, 42, 42 ]`.
+  Green now.
+  - The three new browser assertions (More on the name's line, the handle as one
+  target, counts whole or not drawn) have no red run on the previous commit.
+
+  ## Layout lab, page against headless
+  - `repository/five files`: "The model reproduces the page to the pixel", 26
+  labels.
+  - `repository/chain`: no label drifts. It drifts in 5 lines on two cards:
+  `branch-renderer.ts` and `controller.ts` are 225 tall in the model and 204 on
+  the page, with their `outbound:*` pins and the placement measure following.
+  Both are the cycle pair, and the cue round changed when a card's foot ("N
+  connections return in a cycle") is drawn; the lab was not touched by that
+  round. I believe this is that round's and did not adjust it.
+  - The same run warned that a label's text was 2 lines in Pretext and 1 on the
+  page. That was my leftover: the capture still laid a one-line label out as
+  wrapping text. `1c721a3c` removes the label's text, controls and padding from
+  the capture and model.
+  - Not run: both estate scopes, and any scope after `1c721a3c`.
+  - The lab cannot run in a worktree as it stands: it opens
+  `node_modules/@chenglou/pretext/dist/layout.js` under the worktree root. I
+  linked that one package for the run and removed the link.
+
+  ## Still wrong to my eye
+  - The 19 units above a parent's row beside a nested directory.
+  - The overview's pressable height (21 px down to 12).
+  - From the connections look out, a handle in a single column rarely has room
+  for its count, so there it is usually not drawn.
+  - A closed box whose name is the widest thing in its column is now 24 units
+  wider, since the name leaves More its room. None of the five pictures' widths
+  moved.
+  - In the connections look, a narrow closed box still draws More on the line
+  under its name (`scripts`, three presses out); I did not change that.
+
+  ## Pictures
+  `AI-Agent-Workspace/Screenshots/2026-11-15/directory-handles/`, README
+  updated. Every `after-*` picture was retaken on the final build under both
+  metrics, including the nested pair, the open/close stills and the two keyboard
+  stills. The first-form nested picture (79 units) is replaced.
+
+  ## Explorer links
+  - `/?view=local&dir=packages/engine/src` — click `live-docs` for the nested
+  row.
+  - `/?view=local&dir=packages/explorer/src/client` — More on the name's line;
+  seven presses out for the handle.
+  - `/?view=local&node=packages/explorer/src/client/views/localView/branch-rende
+  rer.ts` — the cue; counts at reading size, and none after Fit.
+  - `/?view=local&node=packages/explorer/src/client/views/localView/directory-ha
+  ndle.ts` — the module.
+
+  No subagent was used. My server is stopped by process id, the queued lab runs
+  are cancelled, and my scratch files and the lab's captures are removed. The
+  tree is clean.
+
+● The directory builder is back with the five corrections. Looking at its
+  retaken pictures, starting with the nested case that was wrong before.
+
+  Read 3 files (ctrl+o to expand)
+
+● Agent "Directory handles at every zoom" finished · 1h 30m 42s
+
+  Searched for 1 pattern, ran 2 shell commands (ctrl+o to expand)
+
+● The directory handle now reads right in the nested case (the blank gap is
+  gone). Landing it on main and rebuilding so you can try it.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Directory handles are merged and rebuilt on main. Checking it in the running
+  page with my own pictures and starting its browser cases.
+
+  Ran 1 shell command (ctrl+o to expand)
+  ⎿  Resuming agent a88027f
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The directory handle is merged on main and rebuilt; nothing is committed yet.
+  I'm holding the commit until its browser cases finish and I've driven it
+  myself (open a directory by a click on its box at the far zoom, close it by
+  its handle); both are queued behind the builders' browser runs.
+
+  All three builders are busy:
+  - Directory look: started on the cells milestone (cells as default, three
+    shape variants, a nested directory you can read).
+  - Far view: drawing a pinned symbol into the compact card, so files-only can
+    become the default without hiding a pin.
+  - 3D: building the short "building" state.
+
+  One fault of mine turned up on review: this afternoon's 3D-cue change put the
+  layout lab's model out of step with the page on one of its four scopes. It is
+  the first item of the next round's brief (fewest backward connections), which
+  starts when a builder frees up.
+
+› Message from general-purpose
+  ## Handback: building-map, second milestone (built on definition A)
+
+  The 3D map is built as decided, and its new browser spec passes on the build.
+  On the base its three cases fail for the right reasons. Dim is now the default
+  for Changed Files. The two 3D specs I re-ran (`force-graph-focus` and
+  `force-graph-exploration`) all pass, 22 of 22, after one wait added to the
+  focus spec. The whole browser suite was not run, and one physics unit test
+  failed on a 5 s timeout I did not touch (below). The round ran past the 50
+  minutes. About 12 minutes of that was waiting for the shared lock, and two
+  bugs of mine forced a second hold.
+
+  ### Commits on `worktree-agent-a93801741430a667b`
+  All since `7038efd6`; none amended, none pushed.
+  - `9d1b9a24`: the measurements from the first milestone.
+  - `88f20d26`: while the map builds, its nodes take no hover or click, and the
+  map says so.
+  - `8b90855b`: Dim becomes the default Changed Files mode.
+  - `228f3679`: the design paragraph and the Live Docs.
+  - `62d2670e`: fix — the page's first pointer move now counts as a move. The
+  spec now checks the refusals before it checks that the map was building.
+  - `c6992b0f`: fix — the camera's framing flight counts only for 650 ms from
+  its start.
+  - `937f48a2`: the evidence (building durations, stills, recordings).
+  - `3f4933d4`: `force-graph-focus.spec.ts` now waits for the build to end
+  before pressing a sphere.
+
+  ### What changed, by file
+  - **`views/forceGraphBuilding.ts` (new) and its unit test.** Three pure
+  functions:
+    - `nextBuilding`: building starts with "work" (packing, the reveal, a
+  perspective change, a change of what is shown). The camera flight continues a
+  building but never starts one, so a Fit isn't building. Building ends only
+  after the work has been quiet for 200 ms, so one action stays one continuous
+  building.
+    - `buildingPhase`: `begun` at once, `shown` after 300 ms.
+    - `nodePointer`: the permission. Hover is allowed only when the map is not
+  building and the pointer has moved since building began. A press is allowed
+  whenever the map is not building.
+  - **`views/forceGraphView.ts`.**
+    - `updateBuilding` runs every frame. It is also called at a membership
+  change, a packing wait, the first picture, and `revealForTransition`.
+  `transitioning` stays on from `revealForTransition` until the view is shown
+  again, which covers the 2D→3D animation.
+    - When building begins, any hover ends at once (`releasePointerHover`).
+    - During building, presses on the canvas are dropped (`press.dropped`), the
+  long-press is refused, and pointer clicks on names, actions and popped
+  directory names do nothing.
+    - Keyboard activation (`detail === 0`) stays live.
+    - `notePointer`: capture-phase `pointermove`/`pointerover` listeners on the
+  container. A `pointerover` at the same place is not a move, which is the
+  trial's Chromium finding.
+    - The `pointerenter` handlers on names and the actions strip are gated.
+    - The wire tooltip is a hover too, so it is suppressed by the same rule.
+  That was my call.
+  - **`views/forceGraphRenderer.ts`.** The approved change. It is two lines
+  rather than one: the optional `grabs?(): boolean` in the options interface,
+  and its check in `pointerdown`. A press on a sphere while building turns the
+  camera.
+  - **`styles/graph.css`.**
+    - While building, names and actions take no pointer.
+    - At `data-building="shown"`: `cursor: progress`, plus a 2 px stroke of
+  `--text-secondary` sweeping along `#graph-svg`'s top edge.
+    - Under reduced motion the line is still and fainter.
+    - I kept it grey, not the accent colour, because blue already means
+  "offers".
+  - **`persistence/local-storage.ts`, its test, and `shared/template.html`.**
+    - The default is `dim`, and the select marks Dim as selected.
+    - Changed expectations, each commented as a design change: the default case,
+  the two "missing settings" cases, and the invalid-setting fallback.
+    - A saved Glow is still kept, now asserted.
+    - `tuning.ts` still has an unreachable `?? "glow"` fallback, left untouched.
+  - **`tests/e2e/force-graph-building.spec.ts` (new).** Runs on this
+  repository's archipelago and clicks the largest group's seed
+  (`local-storage.ts`, 522 files). To make the build long enough to act inside,
+  it uses existing settings only: two hops, Reveal Frames 240, wrappers off. No
+  test hook.
+  - **`tests/e2e/force-graph-focus.spec.ts`.** `uncover` now waits for
+  `data-building` to be absent. Its first case had clicked the focused sphere
+  during the arrival's build.
+  - **Docs.**
+    - The design paragraph in `live-documentation-explorer.mdmd.md` is dated
+  November 15 and quotes the owner. It says why `data-building` is not
+  `aria-busy`.
+    - The History paragraph's "changed nodes white (the default)" now names Dim
+  as the default.
+    - The authored notes are updated for every file changed, citing `#turn-4`.
+    - The Live Docs are regenerated and current.
+
+  ### Red runs on the base (base bundle served on port 8974)
+  - Case 1 fails because, right after the click, the hover is still on and 94
+  spheres are faded.
+  - Case 2 fails because a press during building pinned another file and
+  unpinned the seed.
+  - Case 3 fails because the base has no sign.
+  - My first spec had failed on the base only for the missing attribute. I
+  reordered it so each refusal is asserted first.
+
+  ### Green and regressions
+  - The new spec: 3/3 on the final build.
+  - `force-graph-focus` + `force-graph-exploration`: 22/22. Before the `uncover`
+  wait, the one failure was the intended dropped press.
+  - The two 3D cases that are red by the owner's choice were not run or touched.
+  - `forceGraphPhysics.test.ts` "walks the tree … opens every cell" timed out
+  (6.3 s against 5 s) twice while the machine was loaded with browser runs. I
+  didn't touch that file, and I didn't raise the deadline. It should be re-run
+  on a quiet machine.
+  - I did not run the full gate, the 120 s `force-graph-discovery` case, or the
+  history specs.
+
+  ### How long building lasts, beside the busy column
+  Headless, three runs each. Busy figures are from before the change. The 60 fps
+  estimate is frames ÷ 60 plus the 0.2 s hold.
+
+  | Action | Busy before, s here / ≈60 fps | Building, s here | Frames | ≈60 fps
+  |
+  |---|---|---|---|---|
+  | Estate arrival (from page load) | 6.9 / 3.4 | 1.7 | 20 | 0.5 |
+  | Estate seed click | 38.2 / 21.8 | 0.3 | 2 | 0.2–0.3 |
+  | Estate Pin | 5.3 / 3.8 | 0.6 | 20 | 0.6 |
+  | Estate open a directory | 12.6 / 8.0 | 0.9 | 24 | 0.6–0.9 |
+  | Estate 2D→3D | 7.1 / 5.0 | 3.3 | 122 | 2.2 |
+  | History sample step | 1.4 / 1.4 | 0.9 | 51 | 0.9 |
+  | Repository arrival at one hop | 30.7 / 3.5 | 8.5 | 46 | 1.0 |
+  | Repository 2D→3D | 23.2 / 4.6 | 5.6 | 121 | 2.2 |
+  | Repository whole in Structure | over 60 / over 3.6 | 10.8 | 66 | 1.3 |
+
+  - **Repository click on a sphere of the hop: not measured.** My setup only
+  waited for building to end, so the target sphere drifted from under the
+  pointer and the press landed on bare canvas. The map was not building at the
+  press. This is drift after the build, as before the change.
+  - **Most rows came from the build before `c6992b0f`.** That fix can only
+  shorten them.
+
+  ### Pictures, in `AI-Agent-Workspace/Screenshots/2026-11-15/building-map/`
+  The `README.md` there names each file.
+  - `estate-*` and `estate.webm`: the estate at defaults.
+  - `repository-*` and `repository.webm`: this repository at defaults.
+  - `repository-long-build-*` and `.webm`: the spec's settings. The sign shows
+  in `-1-building.png`.
+  - `edge-top.png` and `edge-top-later.png`: the top edge at device scale 2, 550
+  ms apart. `edge-reduced-motion-top.png`, `edge-toolbar.png`,
+  `edge-whole.png`.
+
+  ### What my own eye and hand find
+  - **On the estate at defaults a seed click builds for only about 0.3 s.** The
+  picture is in at once and no framing flight follows a pin, so the sign never
+  appears there. The still-pointer guarantee still holds: arrived with nothing
+  hovered and 0 faded. On this repository at defaults it builds for 1.0 s.
+  - **The sweep is quiet.** It reads as a soft brightening travelling along the
+  header's bottom border, where the map begins, and is easy to miss while
+  looking at the picture. Whether that is right or too quiet is the owner's
+  call.
+  - **Under reduced motion the still line reads as a slightly thicker border**,
+  so it says less than the sweep does.
+  - **The wait cursor can't be pictured headless.** The spec reads it as
+  `progress` over the canvas.
+  - **The spec never pressed during a short build.** In the build it uses, which
+  lasts 6–20 s, presses were refused and the map never looked broken. Because
+  building is about 0.2–1 s on most real actions, I expect a refused click to
+  read as "too early" rather than "broken". That is a guess: no hand has tried
+  it.
+  - **One behaviour change to weigh.** After a build, a pointer that hasn't
+  moved no longer re-hovers when the camera wheels or Fits beneath it until it
+  moves. That is the rule as decided.
+
+  ### The stillness tail (reported, not changed)
+  - **Where it lives.**
+  `packages/explorer/src/client/views/forceGraphLayout.ts`:
+    - `STILL_FRACTION = 3e-5` and `QUIET_TICKS = 10` at lines 347–351;
+    - the test itself at lines 535–544.
+
+    The view turns `onStill` into `simulationRunning = false` once the reveal is
+  whole, in `forceGraphView.ts` near line 1604.
+  - **What it waits for.** The tether is holding, no sphere is held by a hand,
+  and the largest move in a tick has stayed at or under 3×10⁻⁵ of the picture's
+  diagonal for ten ticks in a row. On the estate that is a few hundredths of a
+  unit, far below a pixel.
+  - **What I think keeps it running (not measured).** Either:
+    - a slow creep of a loosely held body, such as another group's seed held
+  only by weakened gravity and the 0.02 tether; or
+    - a sub-pixel limit cycle from the approximated repulsion (Approximation
+  0.3) as spheres cross octree opening thresholds, which keeps restarting the
+  ten quiet ticks.
+  - **How to tell them apart.** Log each tick's largest move against the
+  diagonal, with which sphere made it, and repeat the click at Approximation 0.
+
+  ### Lock, servers, subagents
+  - **Lock wait:** about 6 min, then a few seconds.
+  - **Two bugs of mine cost a second hold:** the first-move bug, and the flight
+  counting a camera that follows without a flight.
+  - **Servers stopped by process id:** 8954, 8964 and 8974 are free.
+  - **No subagent used.**
+  - **Left in the worktree for any further pass:**
+  `AI-Agent-Workspace/tmp/building-map/` keeps `measure.ts`, `capture.ts` and
+  `summarize.mjs` (git-ignored). `dist/explorer` holds the final build.
+  Everything else I made there is deleted.
+
+  ### Links
+  - `/?s=N4IgbiBcDMA0IEcomgExAXyA` is not right for this repository; use the
+  estate archipelago at `/samples/estate/?s=N4IgbiBcDMA0IEcomgExAXyA` and click
+  a seed while keeping the pointer still.
+  - `/?s=N4IgbiBcDMA0IEcomgExPAdsgDgQwGMBrPAcwFMBnAenIA8cAbAewCdzXrLWDqDGAluUwAX
+  amCEB3GgDM2BcgHFWeHAAsAalIB0IyiAC+QA` opens this repository on
+  `forceGraphView.ts` in 3D.
+
+● The 3D builder is back: nodes take no hover or click during the short build,
+  the map shows a sign, and Dim is the default for Changed Files. Reviewing its
+  diff and pictures while the directory round's browser cases finish.
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "3D map: no hover while building" finished · 1h 46m 21s
+
+  Read 2 files, ran 4 shell commands (ctrl+o to expand)
+
+● The 3D round reviews clean: the rule is one small pure function, the sign is a
+  quiet sweep along the map's top edge plus the wait cursor, and the build
+  lasts about 0.3 to 1 second on most actions at full speed. It lands after the
+  directory round, whose browser cases are still running on main.
+
+  One thing the 3D builder flagged that I'll re-check on a quiet machine before
+  the gate: a physics unit test timed out twice (6.3 s against its 5 s limit)
+  while the machine was loaded with browser runs. Nobody touched that file or
+  its deadline.
+
+❯ >One thing the 3D builder flagged that I'll re-check on a quiet machine
+  before the gate: a physics unit test timed out twice (6.3 s against its 5 s
+  limit) while the machine was loaded with browser runs. Nobody touched that
+  file or its deadline.
+
+  Interesting. Nothing going on outside the docker container. Agreed, sounds
+  like concurrent browser runs.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The unit test with the 5-second wall-clock limit can lose the processor to a
+  builder's 3D browser run, since the shared lock doesn't cover unit tests, so
+  I'll re-run it once the machine is quiet and add a count-based bound. The
+  directory handle is merged on main and uncommitted while its browser cases run
+  (7 passed so far), and the 3D round lands right after. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Notes are written up. I'm waiting on the directory round's browser run before
+  committing it; the 3D round and the next builder (fewest backward connections)
+  follow directly after.
+
+● Background command "Run the directory round's browser cases and their
+neighbours on main" completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Background command "Wait for the directory round's browser run to finish and
+read its totals" completed (exit code 0)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Background command "Drive the directory handle on main myself: open a
+directory by a click on its box at the far zoom and close it by its handle"
+completed (exit code 0)
+
+  Searched for 2 patterns, ran 3 shell commands (ctrl+o to expand)
+
+● Fixing a fault I introduced this afternoon: the 3D-cue change put the layout
+  lab's model out of step with the page on one scope, and that test is now red
+  on main. Teaching the lab the page's rule.
+
+  Listed 1 directory, ran 3 shell commands (ctrl+o to expand)
+
+● The lab fix is written; type-check and unit tests are running. Starting the
+  lab's own browser check against the page.
+
+  Read 2 files, ran 2 shell commands (ctrl+o to expand)
+
+● Directory handles are on your port 8999 now. Try the client directory
+  (http://127.0.0.1:8999/?view=local&dir=packages/explorer/src/client): press
+  Zoom Out seven times, click anywhere on the history box to open it, then click
+  its name to close it.
+
+  What changed, with the designer's reason for each:
+
+  - The whole closed box is the button. At the zoom where a directory is the
+    thing to act on, the target should be as large as possible; that is Fitts's
+    law (the smaller a target, the longer it takes to hit).
+  - A chevron replaces the word "Open" and the close cross. The chevron is the
+    sign that tells you the box opens, the same one a file tree uses. One sign
+    for one act, and no words of ours.
+  - A directory's name is never smaller than its files' names. It was about 6 px
+    tall beside 13 px file names at the far zoom. The parent path is drawn
+    muted and gives way first; the directory's own name is bright and is cut
+    last.
+  - Names are whole. "bootst…" and "persiste…" now fit, by coming down a little
+    in size before breaking inside a word.
+
+  Two things that are not right yet:
+
+  - Inside a large membrane the handle is off screen. It sits at the membrane's
+    top-left corner, so with a file as the subject and the camera in the middle
+    of its directory (the picture you reported from) there is still nothing to
+    press until you pan or press Fit. My proposal is a handle that stays in view
+    for each directory you are inside, the way VS Code's sticky scroll keeps
+    the enclosing scopes at the top of the editor. You have said breadcrumbs
+    were "never good enough", and this is close kin, so I'd build it as a trial
+    for you to accept or reject. Not started.
+  - A closed box has an empty row at reading size where "Open" used to be. The
+    cells take that row in the next milestone, which the builder has started.
+
+  The directory round is committed (e4415dba). One test is red on main, and it
+  is my doing from this afternoon, not this round's: the 3D-cue change put the
+  layout lab's model out of step with the page on one scope. The fix is written
+  and its check is running.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Background command "Type-check, lint and unit-test the lab after the change"
+completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The lab fix passes its unit tests; one import-order lint error to tidy, and
+  the lab's browser check is mid-run (two of its cases green so far).
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Background command "Run the layout lab's page-agreement spec on main with the
+fix" completed (exit code 0)
+
+● Background command "Wait for the lab's browser run and read it with the
+type-check's result" completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Background command "Regenerate the Live Docs and read the measurer's authored
+notes" completed (exit code 0)
+
+● The lab agrees with the page again on all four scopes (12 of 12). Adding the
+  note to the file's Live Doc and committing the fix.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The lab fix is committed (3f734433), so main has no known red test. Now
+  landing the 3D round.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Agent(2D layout: fewest backward references) Opus 5.5
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+› Message from general-purpose
+  The pinned symbol is built and committed as `98c93886`: under Files only a
+  symbol pinned by name is now drawn beneath its file's name, with its dots and
+  its own wires, and its name whole.
+
+  The ten-spec run was 54 passed, 3 failed. Two failures were a wrong assertion
+  of my own in the new cases; I corrected it and they pass. The third,
+  `pin-clicks.spec.ts:175`, timed out at its first step and passed on a rerun.
+  The full gate was not run.
+
+  ## Commit
+  - `98c93886` Draw what the person pinned by name when zoomed out fully shows
+  files only
+
+  It sits on `9991c102`; branch `worktree-agent-a45305e67bd0b6870`.
+
+  ## What changed
+  - **`styles/reading.css`**
+    - Under Files only, only rows that are *not* pinned by name are hidden.
+    - The rows are pushed below what the file's name needs (`--files-rows-push`,
+  as padding on the grid so the header's measured room does not move).
+    - The frame that had stood for a named pin is removed; a whole-file pin's
+  sign is untouched.
+    - In the overview look a pinned row's head takes the lesser of its even
+  share and its own row, and its name is held at `--row-scale-overview`.
+    - Its More and dots are held at that same scale through a new
+  `--row-control-held`, which a row's controls read before the look's.
+  - **`card-reading.ts`**
+    - With Files only and a named pin, the file name's room ends at the first
+  pinned row.
+    - For every row it writes the overview scale for the row's name.
+  - **`connections.ts`**: a pinned symbol's own wires are drawn under Files only
+  too. They are still not drawn while the picture moves back in from Files
+  only, when the pairs' lines are still up.
+  - **`overview-files.ts`**: the header no longer says "trial" and states the
+  date, the comparison and the pin rule. New pure function `wholeNameScale`,
+  with a unit case.
+  - **Docs**: the design paragraph, Live Doc notes for the six files, and the
+  README's pinned-symbol section.
+
+  ## The pinned row's name
+  The name comes down a tenth at a time from the look's 3.6, never below the
+  connections look's 2.2, to the largest scale at which every segment fits a
+  line and its lines fit the row. Only at the floor is it cut.
+
+  It is the same code path for "Cards keep their size", so that frame is mended
+  too: "render…" is now `renderBranches` whole.
+
+  One thing went beyond your wording. With More held at the look's 3.6, More
+  alone took over a third of a narrow row and `renderBranches` was still cut at
+  the floor. So the row's More and dots now follow the name's scale, as a file's
+  More follows its name.
+
+  Read from the frames at the seventh press (identical under Files only and
+  keep):
+
+  | Symbol | Scale | On screen | Cut |
+  | --- | --- | --- | --- |
+  | `renderBranches` | 2.3 | about 8 px | no |
+  | `BranchStage` | 2.7 | about 9 px | no |
+  | `startOrder` | 3.2 | about 11 px | no |
+
+  Own wires drawn: 1 with one symbol pinned, 4 with three; gathered lines 45 and
+  55, the same in both modes.
+
+  ## Whole-file pin against the subject's card
+  My eye cannot tell them apart at seven presses out.
+  `detail-whole-file-pin-and-subject-2x.png` shows `branch-restarts.ts` (pinned
+  whole) beside `branch-renderer.ts` (subject): both are a card in a blue frame.
+  The pinned one's frame is a thinner, brighter line and the subject's is 2 px
+  with a soft shadow, a difference of degree I would not trust a person to read.
+
+  Smallest difference in form I would propose (not built): keep the card's own
+  Pin button, in its pressed state, beside More on a pinned card at the far
+  looks. It is the glyph the pin tray and the card already use, the subject's
+  card would not carry it, and it follows "a control leaves with the thing it
+  acts on", since the pin is still there.
+
+  ## Move, Fit and the count
+  - **Change of look**: with three symbols on two cards, one press out to Files
+  only and one back returns every card, row and wire (the third new case).
+  - **Fit**: pressed twice at the overview, the camera and every card are
+  identical, with one symbol and with three.
+  - **Returning-connections count**: the 3D button's title at the overview
+  equals the one at the connections look with the pins in place, in both cases.
+  `backward-cue` passes unchanged.
+
+  ## New cases in `overview-files.spec.ts`, red on `9991c102`
+  The red run's output is `overview/pinned-symbol/red-run-9991c102.txt`.
+  1. **One symbol pinned**: failed, "the rows laid out are the symbols pinned by
+  name": expected `renderBranches`, received none.
+  2. **Three symbols on two cards**: failed the same way, expected three rows,
+  received none.
+  3. **Out and back with three pinned**: passed on `9991c102` too. It guards the
+  move and was never broken.
+
+  Cases 1 and 2 stop at their first assertion on the old build, so the
+  name-whole, own-wire, count and Fit assertions were not individually shown
+  red.
+
+  ## Final run
+  `overview-files zoom-looks local-map-overview backward-cue local-map-tone
+  local-map-overview-names tuning local-map-pins pin-clicks local-map-motion`,
+  on port 8953 where the final build was served: **54 passed, 3 failed** in 8.4
+  min.
+
+  - **Two were my new cases**, on "every other wire is a pair's line". The
+  assertion was wrong, not the product: a pinned symbol's own returning
+  references are drawn as laces at its card, as at the closer looks, and carry
+  neither class. The assertion now allows them only at a pinned symbol's card
+  and never as a forward route.
+  - **`pin-clicks.spec.ts:175`** ("from Knowledge Sources, one symbol of a far
+  file is one pin in five clicks") hit the 30 s test timeout while waiting for
+  `branches.ts` in the Knowledge Sources list.
+  - **Rerun** of `overview-files` and `pin-clicks` on the same build with the
+  corrected spec: **16 passed, 0 failed**, including both new cases and `:175`.
+  I take `:175` as a timeout on a loaded machine, but that is one pass against
+  one failure, not a diagnosis.
+
+  Also clean: the `wholeNameScale` unit case (5 in its file), `tsc` on the
+  Explorer and tests, eslint on the changed files, `live-docs:lint` (970
+  validated), 0 broken links.
+
+  The other eight specs were not rerun after the spec correction; the product
+  build was the same.
+
+  ## Frames
+  Folder: `/workspaces/Live-Documentation/.claude/worktrees/agent-a45305e67bd0b6
+  870/AI-Agent-Workspace/Screenshots/2026-11-15/tone-and-greeking/overview/pinne
+  d-symbol/`. Segoe's lines, seven presses out; `before/` is `9991c102`,
+  `after/` is this commit.
+  - `one-symbol-files-before-then-after.png`
+  - `three-symbols-files-before-then-after.png`
+  - `one-symbol-keep-before-then-after.png`
+  - `three-symbols-keep-before-then-after.png`
+  - `detail-files-after-3x.png` — the three pinned cards at 3×
+  - `detail-whole-file-pin-and-subject-2x.png`
+
+  The three frames from the last leg are replaced by this before/after set.
+
+  ## What my eye says
+  - **Right**: the pin is plain on the map again. The row sits under the file's
+  name in the pin's highlight, with its dots and a wire leaving them, and the
+  card is only as much taller as its pins.
+  - **Small names**: a pinned row's name brought down to stay whole is about 8
+  px for `renderBranches`, beside a file name of about 15 px. It is whole, as
+  asked, but it is the smallest text on the picture.
+  - **Whole-file pin's sign**: as above, not distinguishable from the subject.
+  - **Not looked at in motion**: I judged the change of look with pinned rows by
+  the spec's out-and-back and by stills, not by watching frames of the move.
+
+  ## Housekeeping
+  - Servers stopped by pid; ports 8953 and 8963 are free.
+  - I killed one queued rerun of my own that was pointed at a scratch build
+  without the estate sample and was holding the lock on 30 s timeouts.
+  - Scratch removed by name; `dist/` is the final build with the estate and
+  history samples.
+  - The working tree is clean. No subagent used. The milestone 3 brief is
+  unopened.
+
+● Agent "Tone, wires and overview bars" finished · 3h 10m 26s
+
+● The far-view builder is back: a pinned symbol is now drawn under files-only
+  with its own wire. Looking at its frames while the 3D round finishes building
+  on main.
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)  ⎿  Resuming agent a45305e
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Four builders' worth of work is in motion; here is where each thing stands at
+  01:10 UTC.
+
+  - On main and on your port 8999: the 3D cue, the tone round, and the directory
+    handles. The layout lab fix is committed too, so there is no known red test
+    among those I've run today.
+  - 3D building state: reviewed and merged on main, not committed. It is still
+    building; I'll run its browser cases and try it myself before committing.
+  - Far view: the pinned symbol now shows under files-only with its own wire,
+    and its name is whole. I sent back one thing: two pinned rows on the same
+    card were drawn at two different sizes. The builder is also merging main
+    into its branch so I can land it cleanly.
+  - Directory look: the cells milestone is under way (three shapes, readable
+    nested directories).
+  - Fewest backward connections: a new builder started on it at 01:07.
+
+  The full gate is still owed and still has to wait for a moment when no builder
+  is using the browser.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● No handback is waiting at 01:10 UTC. Three builders are working, and the 3D
+  round's merge is still building on main (the machine is loaded, so the build
+  is slow). I renewed the timer; the build's completion will bring me back to
+  verify and commit it.
+
+● Background command "Build, regenerate and rebuild the Explorer with the 3D
+round merged" completed (exit code 0)
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● The 3D round's unit cases pass on main (131). Its browser cases are queued
+  behind a builder's run; I'm also queuing my own look at it.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The 3D round is merged and built on main; I'm waiting on its browser cases and
+  my own check of it, both queued behind the builders' browser runs, before I
+  commit it.
+
+› Message from general-purpose
+  The shapes are ready to judge under Segoe UI's lines; the lock then went slow,
+  so this is the "shapes first" handback. Not done: the fallback-metric sheets,
+  and a rerun of three browser cases whose expectations I corrected after they
+  failed.
+
+  ## Commits (after `1c721a3c`)
+  - `2a3de3fa` Draw a closed directory as a skin of cells by default, in three
+  shapes, with a directory inside as a skin around cells of one size
+  - `2d968483` Add the closed directory's comparison sheets under Segoe UI's
+  lines and their README
+  - `d6af3b94` Count a closed directory's skins inside by level in the looks'
+  browser cases
+
+  ## What was built
+  - **Default and deletion.** Cells is the default of Closed Directory; Box and
+  Stack remain. The folded membrane is gone with its code, rules, Tuning option
+  and cases; a stored or linked "folded" falls to the default.
+  - **Nested directories.** A directory inside is a skin, in the outer skin's
+  shape, around its own files' cells in a row; in a two-row band it may hold the
+  skins of the directories inside it. Every cell is 8 units. Micro-dots and
+  rims are deleted. A skin inside carries its name and count as hover text.
+  - **Colour.** A cell's fill comes from the 3D map's own table
+  (`spatialNodeStyle` in `forceGraphAppearance.ts`), by the file's archetype.
+  The closed box had every fact it needed.
+  - **Shapes.** Tuning → Skin's Shape (Tab, Round, Square) and Cells' Colour (By
+  kind, One grey) are shown only while Cells is chosen. Both are stored and
+  carried by a link only when not the default.
+    - Tab is an outline drawn inside the box's bounds with the skin's light
+  clipped to it; the handle is lifted 4 units into the tab and More stands after
+  the name.
+    - Round and Square are the box's own border (24 and 6 units).
+  - **More's old row.** The cell field now runs to the foot of the box (40.6
+  units, two bands of 18). No cell stands under More.
+  - **The two small things.**
+    - The dead `moving` toggles are removed. Nothing read the class: no
+  stylesheet rule, and the tests read `data-moving` on the root, which stays.
+  The stage's `overlay` field had no other use, so it went too.
+    - The Cells change I made unseen is in every sheet: the cells take both
+  bands.
+  - **Files.** `closed-looks.ts` (rewritten, with `tabOutline`),
+  `card-factory.ts`, `card-reading.ts`, `branches.ts`, `types.ts`,
+  `layout-presets.ts`, `tuning.ts`, `tuning-levers.ts`, `template.html`,
+  `local.css`, `reading.css`, `shell.css` (one rule so a hidden Tuning row
+  hides), their tests, the design paragraph and the Live Docs.
+
+  ## Numbers
+  - **Cells:** 8 units at every depth (before: 8 loose, 4 inside a pill). A skin
+  around cells is 13 units tall; a skin holding skins is 18.
+  - **Boxes:** no box or card moved. The placements case passed for Box, Stack
+  and Cells in Tab before the case stopped; Round and Square were not reached.
+  - **Tab:** rise 26 units at every look; width follows the handle as the look
+  holds it. On `scripts` at reading size the tabs are 97 to 120 units wide on
+  boxes 200 and 253 wide.
+
+  ## Tests
+  - Vitest, client and layout lab: 1077 of 1077.
+  - Playwright on my build (`closed-directory-looks`, `local-map-directories`,
+  `zoom-looks`, `labels-and-controls`, `local-map-framing`, `local-map-pins`,
+  `card-ladder-boxes`, `local-map-keyboard`): 54 of 57 pass.
+  - The 3 failures are all in `closed-directory-looks` and were my expectation:
+  `scripts/doc-tools` holds its one fixture two directories down, so its box
+  draws a skin inside a skin (2 nests where I expected 1, and the outer skin has
+  no cell of its own). Corrected in `d6af3b94`; **not rerun**.
+  - The far-look cases of that spec passed under both metrics, including the Tab
+  outline three presses out.
+  - Red runs, against the build on `main` served read-only:
+    - the nested case fails (no skin with a title where one is expected);
+    - the looks case fails at its first style, on the link carrying "box"
+  (`Expected "box", Received undefined`), so it never reached the shape
+  assertions on the old build.
+  - Not run: the full gate, the lab's agreement check, any spec outside the
+  eight above.
+
+  ## Forks I decided
+  1. Tab rise is constant across looks; only the width follows the held name.
+  Where the held name leaves no room for a step, the folder is drawn as a plain
+  rounded box.
+  2. A skin's own cells stand in one row (two staggered rows do not fit inside a
+  13-unit skin). Caps: 6 cells in a skin, 3 in a skin inside it, 3 skins inside
+  a skin.
+  3. A directory with no file directly in it is an empty skin, not a skin with
+  an invented cell.
+  4. A far-look row no taller than a cell draws no skin; it shows cells and a
+  veil.
+  5. Three presses out, the held row of cells may use the box down to 2 units
+  above its foot, so that a 13-unit row fits.
+
+  ## Forks handed back
+  - **Colour.** By kind, a source file's cell is the 3D map's blue and a test's
+  is green — the same hues the 2D legend beside them uses for Offers and Uses.
+  The trial kept the cells grey for that reason. By kind tells more, but as the
+  2D map stands my eye prefers grey; `sheet-colours-segoe.png` shows both. There
+  is also no 2D legend entry for kinds.
+  - **Tab in the far looks.** Three presses out, narrow boxes get a short step
+  or none; seven presses out, few boxes have one, so siblings differ. A tab as
+  tall as the held name is the alternative; I did not build it.
+  - **Round with small contents.** A skin around one cell is a ring around a
+  dot, and an empty skin is a hollow ring: close to the marks the owner could
+  not read. In Tab the same things read as a small folder.
+
+  ## Still wrong to my eye
+  - A nested Tab skin's own tab is 1.5 units high, barely visible at reading
+  size.
+  - A veiled skin fades its outline with its cells.
+  - The opening frames do not show cells becoming cards: the box fades as the
+  membrane grows, and a neighbour crosses the new label mid-move, as on November
+  13.
+  - `languages` still breaks inside the word three presses out in a 160-unit
+  box, in every shape; unchanged from before.
+
+  ## Pictures
+  `AI-Agent-Workspace/Screenshots/2026-11-15/directory-handles/cells/`, with
+  README, 12 sheets, Segoe lines only:
+  - `sheet-{scripts|engine-src|root}-{arrive|out3|out7}-segoe.png` — the three
+  shapes side by side;
+  - `sheet-nested-segoe.png` — before and each shape, at device scale 2;
+  - `sheet-colours-segoe.png`;
+  - `sheet-opening-segoe.png`.
+
+  ## Links that open each shape on `scripts`
+  Generated with the page's own snapshot functions; I did not open them in a
+  browser. Each also names the column gap at its default, so that it overrides a
+  browser's stored shape.
+  - Tab: `/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIAT
+  ABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeAHc2kjou17D8Cj1EAnCVwCiYLlSpcdO2bftOXg
+  DKbBT4CGzonACesizwDqjGADJc7ghePrIAvvAAZqgO6Fw0TviKRBFUANYykABsrMSKmA6qXFCN8CQI
+  ETpsqLT0kEbEqGThbFSqjPBUqJJcIQBeHZAiIDrRFKKkQVgIawzwqk5gMVBMAHRMAqMkYYMeHEFc+K
+  2YHANUl1cC3S02lwAEoSdqXeAEfCJAAeoU+31+cEQU2qQQ4Dg8qgsv1GE0kn1cXjasUgxxA3AsXAcv
+  1u3U4XEkACFogAFMi9WYomoAdTMOLJcwWXAAWqhUBRgd42HoJMUkSY2JixRKpf1ZVR5ZBrgBOOaYOw
+  AQX0ZIUIEUqHwvkFIEx7mwADEnHZrV1NspegARN4C-4gU7jfA8sr4anWzbVKYgbK5ECSKAAbU26Acb
+  HwHF8AF1skA`
+  - Round: `/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DI
+  ATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeAHc2kjou17D8Cj1EAnCVwCiYLlSpcdO2bftO
+  XgDKbBT4CGzonACesizwDqjGADJc7ghePn7EaDpckkGKBFxQIIlkUiAAvvAAZqgO6Fw0TviKRBFUAN
+  YykABsrMRFDqol-YMkCBE6bKi09JBGxKhk4WxUqozwVKiSXCEAXmMiIDrRFKKkQVgIYwzwqk5gMVBM
+  AHRMAkskYXMeHEEuPhME4OLMqK83gJ4OhhqMAEoSUaveAEfCJAAeoUwYLmkLgiHWXSCHAcHlUFkhS1
+  Wkhxri8I1ikHuIG4Fi4DkhnxhnHyACFogAFMhTLaE7oAdTMlOZ212XAAWqhUBR4d42HoJE18SY2GSl
+  Sq1TNNVRtZB3gBObaYOwAQX0zIUIEUqHwvllZTSXGwADEnHZ3QN4DplFMACJAmXQkCPFb4CWtfAc92
+  nLrrao1ECSKAAbVO6AcbHwHF8AF0qkA`
+  - Square: `/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7D
+  IATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeAHc2kjou17D8Cj1EAnCVwCiYLlSpcdO2bft
+  OXgDKbBT4CGzonACesizwDqjGADJc7ghePn7EaDpckkGKBFxQIDoAjmSYDiUAvvAAZqgO6Fw0TviKR
+  BFUANYykABsrMRFDqolQyMkCBE6bKi09JBGxKhk4WxUqozwVKiSXCEAXpMiZdEUoqRBWAiTDPCqTmA
+  xUEwAdEwCqyRhix4OEEuPhqpgOAsqO8PgJ4OgxhMAEoSCbveAEfCJAAeoXBkOhcEQW16QQ4NW2Fmhq
+  w2knBri841ikEeIG4Fi4Dmh3zhnHyACFogAFMizXZEvoAdTMlOZewOXAAWqhUBREd42HoJK0CSY2DU
+  lSq1fNNVRtZBPgBOPaYOwAQX0zIUIEUqHwvllIBq7mwADEnHZ3cN4DplLMACIgmWwkDPdb4CUdfAc9
+  1lXpbEC1eogSRQADaZXQDjY+A4vgAurUgA`
+
+  Grey cells, the plain box and `packages/engine/src` are in the README's Links
+  section.
+
+  ## State of the worktree
+  The tree is clean and both my servers are stopped by process id. I kept my
+  scratch tools in `AI-Agent-Workspace/tmp/directory-handles/` (git-ignored) for
+  the rest. No subagent was used.
+
+  Say whether to run the fallback sheets and the looks rerun now, or wait for
+  the owner's choice of shape first.
+
+● The directory builder is back with the three shapes for a closed directory.
+  Looking at the comparison sheets.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Directory handles at every zoom" finished · 1h 23m 26s
+
+  Read 6 files, ran 1 shell command (ctrl+o to expand)
+  ⎿  Resuming agent a88027f
+
+● The three directory shapes are built, and you can look before it lands. Left
+  to right: folder tab, round capsule, square (your suggestion).
+
+  - scripts, at reading size
+    (.claude/worktrees/agent-a88027f74c8cb2dc8/AI-Agent-Workspace/Screenshots/20
+    26-11-15/directory-handles/cells/sheet-scripts-arrive-segoe.png)
+  - A directory inside a directory, close up
+    (.claude/worktrees/agent-a88027f74c8cb2dc8/AI-Agent-Workspace/Screenshots/20
+    26-11-15/directory-handles/cells/sheet-nested-segoe.png): the first column
+    is the look you couldn't read; the other three are the new drawing in each
+    shape.
+
+  My pick for the default is the tab. It is the one shape that reads as
+  "directory" before you read the name, and a small folder inside a folder needs
+  no explaining. The square reads as a file card with dots in it. The round one
+  puts a ring around a single cell, which is close to the mark that confused
+  you.
+
+  Two decisions I made, both reversible:
+
+  - Cells stay grey by default. The builder also drew them in the 3D map's
+    colours (blue for implementation, green for tests): colours beside grey
+    (.claude/worktrees/agent-a88027f74c8cb2dc8/AI-Agent-Workspace/Screenshots/20
+    26-11-15/directory-handles/cells/sheet-colours-segoe.png). It tells more and
+    would link 2D to 3D, but in the 2D map a blue circle and a green circle
+    already mean Offers and Uses, and the legend says so beside the picture.
+    Colour by kind stays one Tuning choice away if you prefer it.
+  - The tab shows at reading size only. Zoomed out, a narrow box has no room for
+    the step, so some siblings got a tab and others didn't. From three presses
+    out every closed box is drawn plain.
+
+  The builder is finishing the remaining pictures and tests; then it lands on
+  your port with a link for each shape so you can choose live.
+
+  Meanwhile the 3D round is merged and built on main, waiting on its browser
+  cases before I commit it.
+
+● The three directory shapes are built, and you can look before it lands. Left
+  to right: folder tab, round capsule, square (your suggestion).
+
+  - scripts, at reading size
+    (.claude/worktrees/agent-a88027f74c8cb2dc8/AI-Agent-Workspace/Screenshots/20
+    26-11-15/directory-handles/cells/sheet-scripts-arrive-segoe.png)
+  - A directory inside a directory, close up
+    (.claude/worktrees/agent-a88027f74c8cb2dc8/AI-Agent-Workspace/Screenshots/20
+    26-11-15/directory-handles/cells/sheet-nested-segoe.png): the first column
+    is the look you couldn't read; the other three are the new drawing in each
+    shape.
+
+  My pick for the default is the tab. It is the one shape that reads as
+  "directory" before you read the name, and a small folder inside a folder needs
+  no explaining. The square reads as a file card with dots in it. The round one
+  puts a ring around a single cell, which is close to the mark that confused
+  you.
+
+  Two decisions I made, both reversible:
+
+  - Cells stay grey by default. The builder also drew them in the 3D map's
+    colours (blue for implementation, green for tests): colours beside grey
+    (.claude/worktrees/agent-a88027f74c8cb2dc8/AI-Agent-Workspace/Screenshots/20
+    26-11-15/directory-handles/cells/sheet-colours-segoe.png). It tells more and
+    would link 2D to 3D, but in the 2D map a blue circle and a green circle
+    already mean Offers and Uses, and the legend says so beside the picture.
+    Colour by kind stays one Tuning choice away if you prefer it.
+  - The tab shows at reading size only. Zoomed out, a narrow box has no room for
+    the step, so some siblings got a tab and others didn't. From three presses
+    out every closed box is drawn plain.
+
+  The builder is finishing the remaining pictures and tests; then it lands on
+  your port with a link for each shape so you can choose live.
+
+  Meanwhile the 3D round is merged and built on main, waiting on its browser
+  cases before I commit it.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/2addad42-36c6-4e7
+     5-b721-fe777a5348f2/scratchpad/brief-fewest-returns.md (47 lines)
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/2addad42-36c6-4e7
+     5-b721-fe777a5348f2/scratchpad/brief-descriptions-m3.md (42 lines)
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/2addad42-36c6-4e7
+     5-b721-fe777a5348f2/scratchpad/brief-directories-m2.md (47 lines)
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/2addad42-36c6-4e7
+     5-b721-fe777a5348f2/scratchpad/brief-building-map.md (41 lines)
+  ⎿  Read AI-Agent-Workspace/Screenshots/2026-11-15/designer-eye/README.md (38
+     lines)
+
+● Task "2D layout: fewest backward references" still running in background
+
+● Task "Tone, wires and overview bars" still running in background
+
+● Task "Directory handles at every zoom" still running in background
+
+● 2 background commands completed
+
+  Searched for 2 patterns, read 1 file, ran 5 shell commands (ctrl+o to expand)
+
+● The 3D browser run came back 41 of 42, with the estate sample's "Whole in
+  Structure with off" case timing out while the machine was loaded. I'm
+  rerunning that case alone to see whether the round or the load is to blame,
+  and updating the record meanwhile. · summary
+
+  Read 1 file, ran 7 shell commands (ctrl+o to expand)
+
+❯ WOW! I _love_ the splash of color those directories provide in your "scripts,
+  at reading size" screenshot link. The same with these "A directory inside a
+  directory, close up."
+
+  Yeah color for sure!
+
+● Grey has been set aside in favour of colour-by-kind cells, since the eye picks
+  those out faster. I'm logging your message with the directory builder now,
+  and the one failed case in the 3D round is being rerun. · summary
+  Searched for 1 pattern, read 1 file, ran 4 shell commands (ctrl+o to expand)
+  ⎿  Message queued for delivery to a88027f74c8cb2dc8 at its next tool
+     round. If it finishes first, it is resumed with the message and
+     notifies again, so wait for that notification before resending.
+
+● The directory builder now uses your colour-by-kind default, and the 2D legend
+  has a row per cell kind so blue cells don't read as "Offers". I'm holding the
+  3D round until the rerun of its one failed case finishes. · summary
+
+  Searched for 2 patterns, ran 7 shell commands (ctrl+o to expand)
+
+● Writing your colour decision into Memory while the browser queue works through
+  the builders' runs; my rerun of the 3D case is fourth in line.
+
+  Read 1 file, ran 3 shell commands (ctrl+o to expand)
+
+❯ I think the only conflict we need to resolve with the color version is the
+  overlap between the left-right "input-output" color coding and the colors
+  chosen for different file types. But I love that we can see at a glance that
+  a directory is more tests than implementations, or more assets than tests, or
+  more docs than assets, and any permutation.
+
+● I'm resolving the blue/green clash between 2D offers/uses and the 3D palette's
+  kind colours, after checking the 3D palette and what the record says about
+  kind colours. · summary
+
+  Searched for 4 patterns, ran 1 shell command (ctrl+o to expand)
+
+● The role colours (blue for offers, green for uses) appear in the 2D and World
+  maps, while the file-kind colours come from the 3D map, where blue is
+  implementation and green is tests. I'm checking where else the kind colours
+  show up before proposing a fix. · summary
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● Counting which file kinds actually occur in this repository and the sample, so
+  the colour proposal covers the real cases (tests, implementations, assets,
+  docs) rather than a theoretical palette.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Skill(dataviz)
+  ⎿  Successfully loaded skill
+
+● The 2D map draws tests in violet while the 3D map draws them green, so I'm
+  giving every file kind one palette that avoids blue and green, and I'm
+  checking those colours with a colour-blindness validator before showing them
+  to you. · summary
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● The validator puts implementation blue against "offers" blue at 12.7, below
+  the 15 needed to tell two colours apart at a glance, so I'm testing
+  replacement palettes next. · summary
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Two candidate palettes pass against the role colours, each with one weak pair
+  I'm adjusting. Green tests and orange directory hubs in today's 3D map are
+  nearly indistinguishable for the most common red-green colour blindness (score
+  2.5, target 8). · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● I'm preparing a side-by-side probe of the scripts cells in current and two
+  alternative palettes without blue or green, so you can compare options before
+  anything gets built. · summary
+
+  Ran 6 shell commands (ctrl+o to expand)
+
+● Background command "Serve the directory builder's built Explorer read-only on
+port 8903" failed with exit code 1
+
+● Recording your two colour messages and my notes in a commit while the probe
+  pictures wait their turn for the browser.
+
+  Ran 1 shell command (ctrl+o to expand)
