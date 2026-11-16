@@ -3800,3 +3800,153 @@ port 8903" failed with exit code 1
   pictures wait their turn for the browser.
 
   Ran 1 shell command (ctrl+o to expand)
+
+❯ >"offers" blue
+
+  Oh my gosh I know, the language on the legend is so cringe hahahahaha!
+  Seriously, I don't remember which model thought it was a good idea, but one
+  of 'em was like "let's just go make the legend have way more words and read
+  very dramatically".
+
+  I still strongly strongly strongly continue to urge to minimize visibile
+  words that come from _us_ (Live Documentation/the developer). A scan of one's
+  software -- their own words, should do essentially all of the talking if
+  possible. The software should be intuitive enough that layout and iconography
+  and all the good design bits add up to something extremely intuitive.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'm correcting my earlier instruction to the directory builder, since asking
+  for more legend rows went the wrong way, and checking the record for how the
+  legend's wording came about. · summary
+
+  Searched for 1 pattern (ctrl+o to expand)
+  ⎿  Message queued for delivery to a88027f74c8cb2dc8 at its next tool
+     round. If it finishes first, it is resumed with the message and
+     notifies again, so wait for that notification before resending.
+
+  Searched for 2 patterns, ran 4 shell commands (ctrl+o to expand)
+
+● Background command "Take the same 2D picture of scripts in three cell
+palettes, under the shared browser lock" completed (exit code 0)
+
+● The three probe pictures are taken (today's colours, gold with violet, neutral
+  with violet). Looking at them now before I show you.
+
+  Read 2 files, ran 3 shell commands (ctrl+o to expand)
+
+● Comparing a few warm tones for the implementation colour (the first gold came
+  out a little mustard at the cells' reduced strength); then I'll send you the
+  side-by-side.
+
+  Read 2 files, ran 2 shell commands (ctrl+o to expand)
+
+● Writing a short note beside the probe pictures, then sending you the
+  side-by-side with my pick.
+● Write(AI-Agent-Workspace/Screenshots/2026-11-15/kind-palette/README.md)
+  ⎿  Wrote 30 lines to
+     AI-Agent-Workspace/Screenshots/2026-11-15/kind-palette/README.md
+      1 # A palette for a file's kind that stays off the role colours: a
+        probe, November 16, 2026 (UTC)
+      2
+      3 _Historical evidence. Taken by the root agent in [the November 15
+         session](../../../ChatHistory/2026/11/2026-11-15.1.record.md#tur
+        n-9), after the owner chose the closed directory's cells in the c
+        olours of a file's kind and then asked that their clash with the
+        colours of a connection's role be resolved. These pictures are pr
+        obes: the directory builder's build of that hour (its branch at `
+        eabe3ddb` with work in progress), served read-only, with the cell
+     … +28 lines (~2 KB) (ctrl+o to expand)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Here is your colour clash and two ways out of it, side by side: three palettes
+  on scripts (AI-Agent-Workspace/Screenshots/2026-11-15/kind-palette/probe-thre
+  e-palettes.png). Left is what you saw tonight; the wires are the same in all
+  three. It is a probe: I recoloured the cells in the builder's build by hand.
+  Nothing is built yet, and the 3D map isn't shown.
+
+  Why they clash. Designers call hue a visual variable: like size or position,
+  it can carry one code per picture. The 2D map already spends blue and green on
+  a connection's role, so a second code needs hues of its own. Measured,
+  implementation's blue sits 12.7 from the "offers" blue and the test's green
+  14.3 from the "uses" green, on a scale where 15 is the floor for telling two
+  colours apart at a glance.
+
+  What I found while looking:
+  - Only three file kinds exist (implementation, test, asset), plus documents.
+  - The product colours them three different ways that nobody designed together:
+    the 3D map (implementation blue, tests green), the 2D cards (tests violet:
+    the halo around steps.mjs and its TEST chip in the picture), and the details
+    panel, where two of the three colours were never defined.
+  - In today's 3D map, green tests and orange directory hubs look nearly the
+    same to a red-green colour-blind reader (2.5, where 8 is the target).
+
+  My proposal: one palette for file kinds, defined once, used by both maps, and
+  never blue or green. Tests become violet everywhere, as the 2D cards already
+  have them. For implementation there are two candidates:
+  - A, amber (my pick). The cells read as a second code at once, amber and
+    violet sit far apart on the colour wheel so a directory's mix is plain at a
+    glance, and every colour stays clear of the wires.
+  - B, neutral. The calmest; tests are the only colour. It gives up most of the
+    splash you liked, and at the cells' strength a grey dot and a faded green
+    wire come close.
+
+  Either one changes the 3D map's main colour from blue to amber or pale grey.
+  That is too big to settle from a probe, so nothing changes yet: after the
+  directory round lands, a builder makes the palettes switchable live in both
+  maps and you choose there. If one of the two is already a clear no from the
+  picture, say so and only the other gets built.
+
+  The legend. You're right, and I was about to make it worse: minutes before
+  your message I had asked the builder to add rows to it to explain the cell
+  colours. That is withdrawn. Instead, hovering a cell shows that file's name,
+  so the reader's own files explain the colours (steps.test.ts under a violet
+  dot). Cutting the legend's wording goes in the same round as the palette, and
+  I'll show you a before and after.
+
+  Still waiting: the 3D "building" round's one failed test is queued for a rerun
+  behind the builders' browser runs, and the three directory shapes arrive on
+  your port when the builder hands back.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Writing the brief for the palette-and-legend round so a builder can start the
+  moment one is free; the browser queue is still working through the builders'
+  runs.
+
+  Made 1 scratchpad edit +61, searched for 1 pattern (ctrl+o to expand)
+
+❯ I'm looking at probe-three-palettes and what occurs to me is that these
+  probes do not attempt to make consistent the coloring of these nodes inside
+  the directories in 2D and 3D. Indeed, that was half my point: there is a
+  preexisting color meaning conflict that is sitting in the 3D local map today.
+
+
+  On top of the above, none of the screenshots help me see what a directory
+  with many different types of files looks like (documentation, assets, tests,
+  implementations). We need substantially more to even remotely confidently say
+  that these colors work together. We'd need to see that across a ton of
+  views.
+
+  I think that if we wanted to avoid going down the rabbit hole of color
+  systems today, the "B: implementation neutral, tests violet" is the best with
+  respect to understandability of what's inside the directories, and "Today:
+  implementation blue, tests green" is the most aesthetically pleasing based on
+  the surrounding screen area (consistency with onscreen colors despite
+  conflict of color meaning).
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The colour change for cells stays out for now, since the 3D map and the proof
+  of four kinds are both still untested, so cells keep today's colours and the
+  clash with connection blue and green stays an open item. The legend's wording
+  gets its own small fix, a sample plus at most two words with the longer text
+  moved into hover, queued behind the current rounds. · summary
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Records are committed. Checking whether the 3D round's rerun has had its turn
+  at the browser yet.
+
+  Searched for 1 pattern, ran 2 shell commands (ctrl+o to expand)

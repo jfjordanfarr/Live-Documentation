@@ -38,6 +38,8 @@ Added to this index on November 15; the folders were written on their day.
 
 ## 2026-11-10
 
+[Still Pointer, a trial not merged](2026-11-10/still-pointer/README.md): three behaviours for a sphere that arrives under a resting pointer in the 3D map (follows, waits, names), with a builder's measurements and its reading of what is wrong with each; superseded on 2026-11-15 by the owner's decision that a node takes no hover or click while the map builds. The note and its numbers only; the pictures stayed on the removed branch.
+
 [History inside the bubbles](2026-11-10/history-bubbles/README.md): a step of the history shown within the wrappers' skins, each change at the innermost thing drawn for it, on this repository at steps 695 and 697 before and after under Glow, Dim and Both, on the scripted sample, and on a temporary sample large enough to veil; with playback frames and per-step costs measured before and after. Implementation evidence for the root's review and the owner's eye (2026-11-11).
 
 [The compact step panel](2026-11-10/step-panel/README.md): the history's step panel cut to a subject of two lines, the hash, date and step, and one line of counts, with the whole step in a modal dialog behind its "…" button; this repository at steps 691 and 695 before and after, the dialog at 1440, 900 and 480 px wide, the base and a short step of the scripted sample, the design audit's findings, and the camera's room beside the compact panel with the rule the root rejected.
