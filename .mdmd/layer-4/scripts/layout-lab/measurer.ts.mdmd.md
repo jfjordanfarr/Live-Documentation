@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/measurer.ts
-- Generated At: 2026-11-15T23:44:01.239Z
+- Generated At: 2026-11-16T01:01:48.687Z
 
 ## Authored
 ### Purpose
@@ -27,19 +27,21 @@ The [November 4 learning-journey pass](../../../../AI-Agent-Workspace/ChatHistor
 
 Since 2026-11-15 ([November 15, Turn 1](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) a directory's label height is the strip's constant, `HANDLE_STRIP` of the page's `directory-handle.ts`, whatever its width or text.
 
+A card's note on returning connections counts what the page counts since 2026-11-16: the returns drawn at the card, both rows shown, by the page's own `returningConnections`. The round that lit the 3D button for a cycle's returns ([Turn 1 of the November 15 record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1), `cb6cec56`) changed `dressCards` so and left this measurer counting every return in the ranking; on the scope "repository, chain" the model then stood two cards 21 px taller than the page, a note the page no longer drew, and the lab's agreement with the page was red until this was mended ([the work notes after Turn 7](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-7)). Every card's rows are therefore shown or hidden before any card counts its returns, as on the page; a reference's end with no row of its own stands on the card's hub, which no disclosure hides.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `MeasurerOptions` {#symbol-measureroptions}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/measurer.ts#L22)
+- Source: [source](../../../../scripts/layout-lab/measurer.ts#L24)
 
 ##### `MeasurerOptions` — Summary
 What the measurer needs to know of the page's state beyond the exploration: the pins, the subject and the collapse tuning.
 
 #### `cardViews` {#symbol-cardviews}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/measurer.ts#L31)
+- Source: [source](../../../../scripts/layout-lab/measurer.ts#L33)
 - Parameters: `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture); `branches`: [`BranchGraph`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-branchgraph); `options`: [`MeasurerOptions`](#symbol-measureroptions)
 
 ##### `cardViews` — Summary
@@ -47,7 +49,7 @@ Every card's view under an exploration, as `dressCards` would dress it.
 
 #### `capturedMeasurer` {#symbol-capturedmeasurer}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/measurer.ts#L92)
+- Source: [source](../../../../scripts/layout-lab/measurer.ts#L102)
 - Returns: [`SceneMeasurer`](../../packages/explorer/src/client/views/localView/branch-scene.ts.mdmd.md#symbol-scenemeasurer)
 - Parameters: `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture); `branches`: [`BranchGraph`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-branchgraph); `options`: [`MeasurerOptions`](#symbol-measureroptions)
 
@@ -63,6 +65,9 @@ A measurer over the capture for one exploration.
 - [`branches.compareSymbolNames`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-comparesymbolnames)
 - [`branches.edgeKey`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-edgekey)
 - [`directory-handle.HANDLE_STRIP`](../../packages/explorer/src/client/views/localView/directory-handle.ts.mdmd.md#symbol-handle_strip)
+- [`returning-connections.connectionCount`](../../packages/explorer/src/client/views/localView/returning-connections.ts.mdmd.md#symbol-connectioncount)
+- [`returning-connections.returningConnections`](../../packages/explorer/src/client/views/localView/returning-connections.ts.mdmd.md#symbol-returningconnections-function)
+- [`types.LocalEdge`](../../packages/explorer/src/client/views/localView/types.ts.mdmd.md#symbol-localedge) (type-only)
 - [`word-seams.countOf`](../../packages/explorer/src/client/views/localView/word-seams.ts.mdmd.md#symbol-countof)
 - [`pin-state.PinSet`](../../packages/explorer/src/client/views/pin-state.ts.mdmd.md#symbol-pinset) (type-only)
 - [`symbolAnchors.normalizeSymbolIdentifier`](../../packages/explorer/src/client/views/symbolAnchors.ts.mdmd.md#symbol-normalizesymbolidentifier)

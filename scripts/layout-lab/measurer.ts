@@ -14,6 +14,8 @@ import type { SymbolOrder } from "../../packages/explorer/src/client/types";
 import type { SceneMeasurer } from "../../packages/explorer/src/client/views/localView/branch-scene";
 import { compareSymbolNames, edgeKey, type BranchGraph } from "../../packages/explorer/src/client/views/localView/branches";
 import { HANDLE_STRIP } from "../../packages/explorer/src/client/views/localView/directory-handle";
+import { connectionCount, returningConnections } from "../../packages/explorer/src/client/views/localView/returning-connections";
+import type { LocalEdge } from "../../packages/explorer/src/client/views/localView/types";
 import { countOf } from "../../packages/explorer/src/client/views/localView/word-seams";
 import type { PinSet } from "../../packages/explorer/src/client/views/pin-state";
 import { normalizeSymbolIdentifier } from "../../packages/explorer/src/client/views/symbolAnchors";
@@ -34,11 +36,11 @@ export function cardViews(capture: Capture, branches: BranchGraph, options: Meas
   for (const [id, rows] of branches.relevantSymbols) for (const row of rows) connected.add(key(id, row));
   for (const pin of options.pins.entries) connected.add(key(pin.nodeId, pin.symbol));
   const pinnedWhole = new Set(options.pins.entries.filter(pin => pin.symbol === "*").map(pin => pin.nodeId));
-  const backReferences = new Map<string, number>();
-  for (const edge of branches.subgraph.links) {
-    if (!branches.back.has(edgeKey(edge))) continue;
-    for (const id of new Set([edge.sourceId, edge.targetId])) backReferences.set(id, (backReferences.get(id) ?? 0) + 1);
-  }
+  // Every card's rows are disclosed or hidden before any card counts its returns, as `dressCards` does since 2026-11-15:
+  // a card's foot counts the returning references the picture draws at it, both rows shown, by the page's own function.
+  const dressed: Array<{ card: CardCapture; registration: RowCapture[]; shown: RowCapture[]; hidden: number }> = [];
+  /** Each card's rows by name, with whether the page would show them: a reference's end is drawn at a row shown. */
+  const rowShown = new Map<string, Map<string, boolean>>();
   const views = new Map<string, CardView>();
   const nodes = new Map(branches.subgraph.nodes.map(node => [node.id, node]));
   for (const card of Object.values(capture.cards)) {
@@ -71,12 +73,20 @@ export function cardViews(capture: Capture, branches: BranchGraph, options: Meas
     const collapsed = rows.filter(row => !visible(row));
     // The page's reveal counts the public symbols it folded, never the Internals row (2026-10-16).
     const hidden = collapsed.filter(row => row.symbol !== "__internals__").length;
+    dressed.push({ card, registration, shown, hidden });
+    rowShown.set(card.id, new Map(rows.map(row => [normalizeSymbolIdentifier(row.symbol) ?? "__internals__", visible(row)] as const)));
+  }
+  // A reference's end with no row of its own stands on the card's hub, which no disclosure hides, as the page's anchors fall back.
+  const endShown = (id: string, symbol: string | undefined): boolean => symbol === undefined || (rowShown.get(id)?.get(normalizeSymbolIdentifier(symbol) ?? "__internals__") ?? true);
+  const returning = returningConnections(branches.subgraph.links, edge => branches.back.has(edgeKey(edge)),
+    (edge: LocalEdge) => endShown(edge.targetId, edge.targetSymbol) && endShown(edge.sourceId, edge.sourceSymbol));
+  for (const { card, registration, shown, hidden } of dressed) {
     const noteFont = card.notes[0]?.font ?? card.directory.font;
     const notes: Array<(width: number) => number> = [];
     // The notes are worded as the page words them (`countOf`, a count and its unit joined by a no-break space since
     // 2026-10-30), so that the regenerated note wraps as the page's does and the captured one is known for what it is.
     if (hidden) notes.push(synthesizedHeight(capture, noteFont, `+${countOf(hidden, "symbol")}`));
-    const back = backReferences.get(card.id) ?? 0;
+    const back = connectionCount(returning.byFile.get(card.id) ?? []);
     if (back) notes.push(synthesizedHeight(capture, noteFont, `${countOf(back, "connection returns", "connections return")} in a cycle`));
     // The connections outside the view are the graph's, the same under every configuration: the captured line serves.
     for (const note of card.notes) {
