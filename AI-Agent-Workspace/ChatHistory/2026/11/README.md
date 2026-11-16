@@ -52,7 +52,8 @@ Source inventory, maintained by the root agent. The October 31 session that ende
 
 ## November 16, session 1 — Claude Code, Fable 5.2, November 16
 
-- [Maintained root record](2026-11-16.1.record.md): the owner's request for a comprehensive pass on colour. In progress; no export received yet.
+- [Maintained root record](2026-11-16.1.record.md): the owner's request for a comprehensive pass on colour. In progress.
+- [Partial visible export](2026-11-16.1.claude-code.export-2026-11-16-200904.txt): **64,235 bytes**, SHA-256 **`78a82fbe7a6f249fdfb46ca1d6a5da982eb6842daaa274a1a18c433a7353d935`**, 1,148 lines. The interface's collapsed view of the chat from Turn 1 to root's status line of 20:06 UTC, taken by the owner at 20:09:04 UTC after a compaction they made by hand. It was not received under this name: it was saved over the November 15 export's file by mistake (the owner's word, [Turn 2](2026-11-16.1.record.md#turn-2)); root moved its bytes here, named by the convention for a harness export, and wrote the November 15 export's committed bytes back, checked by hash. Not read in full by root; its first 30 and last 25 lines were. A session still running, so a later export supersedes its coverage, not its bytes.
 
 ## November 1, session 1 — Codex/Astra, completed by 6.1 Sol, November 1–2
 

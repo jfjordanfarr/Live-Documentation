@@ -1,0 +1,1149 @@
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/11/2026-11
+  -15-215104-welcome-back-it-is-now-11152026-and-were-read.txt in the IDE. This
+  may or may not be related to the current task.</ide_opened_file>
+
+❯ Let us now begin the 11/16/2026 dev day.
+
+  Today I want to do a comprehensive color design pass. What are the cumulative
+  set of colors we use in the app? What are their semantic meanings? What
+  alternative color pallettes can we provide the user which are also valid and
+  distinct and capable of conveying the same information? What have we
+  discussed about color in the past?
+
+● I'll start with the new-chat read the guide asks for: the four Memory
+  documents, then the handoff routine and the recent session summaries.
+
+  Read 5 files, ran 3 shell commands (ctrl+o to expand)
+
+● I'm finishing the startup reads: owner.md and ideas.md are done, and
+  direction.md, the narrative and the latest summaries come next, then I'll open
+  today's record. · summary
+
+● Write(AI-Agent-Workspace/ChatHistory/2026/11/2026-11-16.1.record.md)
+  ⎿  Wrote 24 lines to
+     AI-Agent-Workspace/ChatHistory/2026/11/2026-11-16.1.record.md
+      1 # November 16, 2026 — a comprehensive pass on colour
+      2
+      3 ## Coverage
+      4
+      5 Agent-maintained record by Claude Code in the VS Code extension,
+        model Fable 5.2 (`claude-fable-5-2`) as stated by the harness, re
+        corded November 16, 2026. This is the root conversation, not a ha
+        rness export. Verbatim visible messages are fenced; work notes ar
+        e authored interpretation. Tool payloads, private reasoning and d
+        elegated conversations are excluded. Final replies are captured o
+     … +20 lines (~2 KB) (ctrl+o to expand)
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● I'm reading in ranges to keep context manageable, and I'm handing the two
+  evidence-gathering parts (every colour in the code, and past discussion of
+  colour in the record) to two Opus researchers while I keep the palette design
+  myself. · summary
+
+● 2 background agents launched (↓ to manage)
+   ├ Inventory every colour in product
+   └ Mine the record for colour
+
+  Read 8 files (ctrl+o to expand)
+
+● The startup read is complete (every file to its last line). Now the one thing
+  owed from yesterday's close: its closing message is not in its record, and
+  your re-export of that chat sits uncommitted.
+
+  Made 1 scratchpad edit +36, ran 6 shell commands (ctrl+o to expand)
+
+● Now the three dated notes (the record's resumption line, the inventory, the
+  summary's sources), and today's record brought level with what was read.
+
+● Update(AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md)
+  ⎿  Added 1 line, removed 1 line
+      10  
+      11  **Closed on November 16, 2026, at the owner's request** ([Turn 
+          15](#turn-15)); this section is the handoff and no work is in f
+          light. [The summary](Summarized/2026-11-15.1.SUMMARIZED.md) is 
+          the browsing surface; [direction](../../../Memory/direction.md#
+          next) has what the session leaves, in order.
+      12  
+      13 -- **Not captured in this record:** root's closing message, sent
+         - after the record's last commit. The next chat copies it from t
+         -he session's log (`node AI-Agent-Workspace/scripts/visible-mess
+         -ages.mjs <log> 2026-11-16T17:40:00Z 9999 full`), as it does any
+         - reply after it.                                               
+      13 +- **Not captured in this record:** root's closing message, sent
+         + after the record's last commit. The next chat copies it from t
+         +he session's log (`node AI-Agent-Workspace/scripts/visible-mess
+         +ages.mjs <log> 2026-11-16T17:40:00Z 9999 full`), as it does any
+         + reply after it. **Done on November 16 by the next session:** b
+         +oth closing messages are [at the record's end](#roots-closing-m
+         +essages-as-delivered).                                         
+      14  - **Git:** `main` is the only branch and the only worktree; fif
+          ty-three commits of this session stand unpushed on `origin/main
+          `'s `e668f9f9`, the owner's to push. Product commits in order: 
+          `cb6cec56`, `1c5565d8`, `e4415dba`, `3f734433`, `7f3e4160`, `85
+          421b74`, `90bcd106`, `b6edde08`, `a8729ece`, `695ee0f4`, `01b4c
+          d2f`, `77e12fd7`, `e2ecaf52`.
+      15  - **The gate at the close** ([the notes](#work-notes-the-close)
+          ): every stage before the browser green; 476 browser cases of 4
+          80, the four being the two 3D cases the owner keeps red and two
+           more resting on their clocks (`force-graph-discovery.spec.ts:1
+          81`, `history-scrubber.spec.ts:569`) on a machine running 15 to
+           20 % slower in that hour than in the morning.
+      16  - **Waiting on the owner,** each with its link in the summary's
+           [open ends](Summarized/2026-11-15.1.SUMMARIZED.md#open-ends-an
+          d-handoff): the closed directory's shape; the kept description 
+          line's value; how the 3D map's building state feels; a handle t
+          hat stays in view, as a trial or not; the 2D key's row for the 
+          kinds of file; a round on the 3D forces.
+
+● Update(AI-Agent-Workspace/ChatHistory/2026/11/README.md)
+  ⎿  Added 6 lines
+      48  
+      49  **November 16 close-out:** the owner asked for the chat's close
+           in Turn 15, and the session's own root wrote [its summary](Sum
+          marized/2026-11-15.1.SUMMARIZED.md) and the narrative's chapter
+           behind a full gate. Fifteen owner turns, from 19:53 UTC on Nov
+          ember 15 to 15:33 UTC on November 16. The export as found at th
+          e close, last written by the owner at 15:35 UTC on November 16:
+           **431,098 bytes**, SHA-256 **`039db1b47bc538e2b6ed3e2f0ff0d0f0
+          74d5377bf4c6dc4fb2bb4305445f2130`**, 8,211 lines. Its eighteen 
+          prompt markers are the record's fifteen turns and three `/compa
+          ct` commands of the owner's own (lines 1,040, 3,687 and 6,903),
+           so it holds the whole chat through root's reply to Turn 15, th
+          e compactions having been made by hand; what followed that repl
+          y, the closing gate's result and the close itself, is in the re
+          cord alone. It shows, at eight moments, a paragraph the harness
+           marks "· summary" where root had written a reply that was neve
+          r shown as a message; the record says which ([the notes after T
+          urn 12](2026-11-15.1.record.md#work-notes-turn-12-what-the-owne
+          r-was-shown-overnight)). Reading coverage: not read as prose fr
+          om end to end; searched for the passages the session log lacked
+           and for those summary lines, its prompt markers counted. It pr
+          ints builders' hand-backs as the terminal showed them, preserve
+          d as supplied bytes only and not copied into the record.
+      50  
+      51 +**Dated follow-up, November 16, by the next session:** the owne
+         +r exported the chat once more after its close, under the same n
+         +ame, and the next session found it uncommitted and commits it a
+         +s received: **441,419 bytes**, SHA-256 **`35bc5b027c974684917f7
+         +acfcbf26398b885c349511d9e3384152c4bd0e3a069`**, 8,437 lines, th
+         +e 431,098 bytes above its exact prefix (compared byte for byte)
+         +. The added 226 lines run from the closing gate's result throug
+         +h root's closing message of 17:45 UTC and its last line of 17:4
+         +7, so this state holds the whole chat to its end. Reading cover
+         +age of the addition: its last 40 lines, read to confirm that it
+         + ends with the two closing messages, which were copied into [th
+         +e record](2026-11-15.1.record.md#roots-closing-messages-as-deli
+         +vered) from the session's log and not from this file.          
+      52 +                                                               
+      53 +## November 16, session 1 — Claude Code, Fable 5.2, November 16
+      54 +                                                               
+      55 +- [Maintained root record](2026-11-16.1.record.md): the owner's
+         + request for a comprehensive pass on colour. In progress; no ex
+         +port received yet.                                             
+      56 +                                                               
+      57  ## November 1, session 1 — Codex/Astra, completed by 6.1 Sol, N
+          ovember 1–2
+      58  
+      59  - [Maintained root record](2026-11-01.1.record.md): ten owner t
+          urns, delivered replies, selected intervening commentary, autho
+          red reading/work checkpoints and verification outcomes. Begins 
+          with the requested full October-record bootstrap and closes wit
+          h the owner's November 2 close-out request, visible capacity er
+          ror and reported switch to 6.1 Sol. The implementation and prev
+          iew work were complete before close-out. The reply delivering t
+          he summary is not a captured source until a later turn records 
+          it.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Write(AI-Agent-Workspace/ChatHistory/2026/11/2026-11-16.1.record.md)
+  ⎿  Added 15 lines, removed 5 lines
+       4  
+       5  Agent-maintained record by Claude Code in the VS Code extension
+          , model Fable 5.2 (`claude-fable-5-2`) as stated by the harness
+          , recorded November 16, 2026. This is the root conversation, no
+          t a harness export. Verbatim visible messages are fenced; work 
+          notes are authored interpretation. Tool payloads, private reaso
+          ning and delegated conversations are excluded. Final replies ar
+          e captured only once delivered, normally at the following turn.
+       6  
+       7 -**Startup coverage, as it stands** (brought up to date as the r
+         -ead proceeds; see Resumption): `AGENTS.md`; `Memory/owner.md` (
+         -307 lines, in three ranges, to its last line); `Memory/ideas.md
+         -` (175 lines, in two ranges, to its last line); `ChatHistory/RE
+         -ADME.md`.                                                      
+       7 +**Startup coverage, as it was.** Read in full before any work o
+         +n the turn's subject, each to its last line: `AGENTS.md`; `Memo
+         +ry/owner.md` (307 lines, in three ranges); `Memory/ideas.md` (1
+         +75 lines, in two ranges); `Memory/direction.md` (549 lines, in 
+         +seven ranges); `Memory/narrative.md` (605 lines, in six ranges)
+         +; `ChatHistory/README.md` and the workspace's `README.md`; and 
+         +the five latest summaries, oldest to newest (November 8, 10, 12
+         +, 13 and 15). The file tool returns a large file in ranges and 
+         +refused a larger single read as more than "the context you have
+         + left this turn"; before building anything on that sentence roo
+         +t read this session's own log for its token counts (about 190,0
+         +00 at that moment and growing with no compaction) and continued
+         + in ranges until each file ended. Of [the November 15 record](2
+         +026-11-15.1.record.md): its header, its resumption notes, its l
+         +ist of headings and its closing work notes, not the whole; its 
+         +summary was read whole. Of the owner's later export of that cha
+         +t: its last forty lines.                                       
+       8  
+       9  ## Resumption
+      10  
+      11 -- **Current task:** the new chat's startup read, then the owner
+         -'s Turn 1: a comprehensive colour design pass. Four questions: 
+         -every colour the app uses; what each means; which alternative p
+         -alettes are valid, distinct and carry the same information; wha
+         -t has been said about colour before.                           
+      12 -- **Still to read at startup:** `Memory/direction.md` (549 line
+         -s), `Memory/narrative.md` (605 lines), the five latest summarie
+         -s oldest to newest (November 8, 10, 12, 13, 15), the workspace 
+         -`README.md`.                                                   
+      13 -- **Owed from the November 15 session:** its closing message is
+         - not in its record; copy it from the session's log with `node A
+         -I-Agent-Workspace/scripts/visible-messages.mjs <log> 2026-11-16
+         -T17:40:00Z 9999 full`. The owner's export of that chat is modif
+         -ied in the working tree (re-exported, 227 lines longer) and unc
+         -ommitted.                                                      
+      14 -- **Bring back in the first reply:** every question the Novembe
+         -r 15 session put to the owner that went unanswered, from [its s
+         -ummary's open ends](Summarized/2026-11-15.1.SUMMARIZED.md#open-
+         -ends-and-handoff).                                             
+      11 +- **Current task:** the owner's Turn 1, a comprehensive colour 
+         +design pass. Four questions: every colour the app uses; what ea
+         +ch means; which alternative palettes are valid, distinct and ca
+         +rry the same information; what has been said about colour befor
+         +e.                                                             
+      12 +- **In flight:** two Opus researchers dispatched at about 19:05
+         + UTC, read-only, each writing only to the session's scratchpad:
+         + one inventories every colour the product draws (`colour-invent
+         +ory.md` and `.json` there), one mines the record for every exch
+         +ange about colour (`colour-history.md` there). Neither has hand
+         +ed back as this is written. The palettes are root's own design 
+         +work and wait on the inventory.                                
+      13 +- **What the record already fixes for this task** (root's readi
+         +ng at startup, each to be confirmed against the researchers' so
+         +urces): blue offers and green uses at every scale (the owner, 2
+         +026-09-29, "Offers!! I Like that!"), inputs on the left and out
+         +puts on the right (2025-12-03); fade the irrelevant, never boos
+         +t the relevant (2025-12-03 and 12-07); colour on 3D wires as th
+         +e carrier of direction tried and withdrawn at the owner's eye (
+         +2026-10-31); the World Map's districts light blue for cloud and
+         + light orange for on-premises, the owner's convention at work (
+         +2026-09-28); a bright board and a dark interior as the default 
+         +pairing, a person free to flip them, the two scales' themes set
+         + apart and not by one switch (2026-09-29); the closed directory
+         +'s cells coloured by a file's kind, "Yeah color for sure!" (202
+         +6-11-16 UTC); the clash the owner named between the colours of 
+         +a connection's role and the colours of a file's kind, with thei
+         +r bar for deciding it: "a directory with many different types o
+         +f files (documentation, assets, tests, implementations)", "acro
+         +ss a ton of views", 2D and 3D consistent; their reading of the 
+         +three probes of that night (neutral with violet best for unders
+         +tanding, today's blue and green most pleasing); words of ours o
+         +n the screen kept to the least, the legend included.           
+      14 +- **Brought back in the first reply:** the six questions the No
+         +vember 15 session put to the owner that went unanswered, from [
+         +its summary's open ends](Summarized/2026-11-15.1.SUMMARIZED.md#
+         +open-ends-and-handoff).                                        
+      15 +- **Git:** `main` only. This session's commits so far are recor
+         +ds alone.                                                      
+      16  
+      17  ## Turn 1
+      18  
+     ...
+      23  
+      24  Today I want to do a comprehensive color design pass. What are 
+          the cumulative set of colors we use in the app? What are their 
+          semantic meanings? What alternative color pallettes can we prov
+          ide the user which are also valid and distinct and capable of c
+          onveying the same information? What have we discussed about col
+          or in the past?
+      25  `````
+      26 +                                                               
+      27 +### Work notes, Turn 1                                         
+      28 +                                                               
+      29 +Times UTC on November 16, read from the session's log.         
+      30 +                                                               
+      31 +- **The startup read**, as the coverage note says, from 19:02. 
+      32 +- **A limit measured before it was believed.** The file tool re
+         +fused one large read with the words "more than fits in the cont
+         +ext you have left this turn". The root of November 12 took the 
+         +same kind of refusal for the edge of its context and cut Memory
+         + on that belief ([that session's summary, Turns 1 and 2](Summar
+         +ized/2026-11-12.1.SUMMARIZED.md#turn-1)). This root read the se
+         +ssion log's own token counts instead, found no compaction, and 
+         +went on in ranges. Nothing was cut or skipped.                 
+      33 +- **The November 15 session's close completed.** Its two closin
+         +g messages (17:45 and 17:47 UTC) were not in its record, being 
+         +sent after its last commit; they are copied from that session's
+         + log with `visible-messages.mjs` to [the end of that record](20
+         +26-11-15.1.record.md#roots-closing-messages-as-delivered). The 
+         +owner's export of that chat stood modified and uncommitted: a l
+         +ater export under the same name, 441,419 bytes, the committed 4
+         +31,098 its exact prefix; it is committed as received, with its 
+         +size and hash in [the month inventory](README.md) and a dated f
+         +ollow-up in [the summary's sources](Summarized/2026-11-15.1.SUM
+         +MARIZED.md#sources-and-coverage). The summary and the narrative
+         +'s chapter were already written by that session's own root at t
+         +he owner's request, so neither is rewritten.                   
+      34 +- **Two researchers dispatched (19:05)**, both Opus, one at ext
+         +ra-high effort and one at high, read-only: the colour inventory
+         + of the product's code, and the history of colour in the record
+         + from 2025-10-16 on. Each brief carries what root knew from the
+         + startup read and asks the researcher to confirm or correct it 
+         +against primary sources. Root keeps the palette design, by the 
+         +owner's rule that a design is the work of the agent that holds 
+         +their words (2026-09-28).                                      
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Startup is read and yesterday's close is committed as 0a632129. While the two
+  researchers work, I'm reviewing last night's palette probe and its
+  measurements so the palette design builds on them. · summary
+
+  Listed 1 directory (ctrl+o to expand)
+
+● Skill(dataviz)
+  ⎿  Successfully loaded skill
+
+  Made 1 scratchpad edit +117, ran 5 shell commands (ctrl+o to expand)
+
+● Both researchers are still reading, so I've built a small measuring bench that
+  reproduces last night's published numbers, and I'm using it to draft
+  candidate palettes for when the inventory arrives. · summary
+
+  Read 1 file, ran 3 shell commands (ctrl+o to expand)
+
+● Still waiting on the two researchers, about ten minutes so far. Meanwhile I'm
+  searching for palette values that pass the measurements, so the candidates I
+  show you will be checked. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Still waiting on the researchers. I'm preparing the page that will show each
+  candidate palette as swatches with its measured separations, so it's ready to
+  fill the moment the inventory arrives.
+
+  Made 1 scratchpad edit +99, searched for 1 pattern, listed 2 directories, ran 3 shell commands (ctrl+o to expand)
+
+● Background command "Serve the built Explorer on root's private port for
+headless checks" failed with exit code 1
+
+● Six pictures of the current build are taken for my own look at its colours;
+  checking which server is holding my private port, then looking at them.
+
+  Read 6 files, ran 2 shell commands (ctrl+o to expand)
+
+● Candidate values are holding up: a dark palette with two role colours, five
+  kind colours and white kept for "changed" passes every pair with room to
+  spare. Checking on the researchers.
+
+  Read 1 file, ran 3 shell commands (ctrl+o to expand)
+› Message from general-purpose
+  The full account is in /tmp/claude-1000/-workspaces-Live-Documentation/2e2c378
+  1-e754-4215-b736-f96cb3ac7ab8/scratchpad/colour-history.md. I changed no
+  repository file. I deleted my working files; the other files in the scratchpad
+  are yours. Paths below are under `AI-Agent-Workspace/ChatHistory/` unless
+  marked otherwise.
+
+  ## 1. Colour decisions in force
+  1. **Sides and colour.** Inputs come in on the left and outputs leave on the
+  right, colour-coded, and the coding must stay consistent
+  (2025/12/2025-12-03.md lines 742 and 794).
+  2. **Blue offers, green uses, at every scale**, World Map doors included:
+  "Offers!! I Like that!" (2026/09/2026-09-29.2.md line 1274; built as
+  `5db91c78`). The earlier rule that a wire runs from blue to green is at
+  2025/12/2025-12-04.md line 1416.
+  3. **2D wires.** Each wire is a blue-to-green gradient: 10% solid at each end
+  and 80% blend between (2025-12-06.1 line 1040; 2025-12-07.2 line 1569). A
+  self-loop stub takes the solid colour of its own pin (2025-12-07.3 line 134).
+  4. **One colour for every kind of relationship on wires.** The relationship
+  kinds are shown by badges instead (2025-12-07.3 line 336; 2025-12-08.1 line
+  862; `ddc280ba`).
+  5. **Fade the irrelevant rather than boost the relevant**, and keep the
+  dimming moderate (2025-12-07.2 lines 1567 and 1881). A symbol that takes part
+  in a connection is shown by not dimming it, not by a new colour (2026-03-28.1
+  line 1965).
+  6. **Colours live in semantic theme variables** (2025-12-06.3 line 282;
+  2025-12-04 line 1561).
+  7. **3D wires are one colour, white.** Colour by direction was withdrawn
+  (2026/10/2026-10-31.1.record.md#turn-1) and the owner reaffirmed it on
+  2026-11-02 (record line 115).
+  8. **History.** A changed file stands out for its whole step, with no
+  brightness ramp (2026-11-01 record #turn-3 and #turn-5). The owner also wants
+  the file's kind colour kept if possible (2026-11-15 #turn-2).
+  9. **World Map.** The board is white by default with a dark one on offer.
+  Districts are light blue for cloud and light orange for on-prem. The light
+  mode must not look hazy (2026/09/2026-09-27.1.md lines 1183, 1187 and 1258).
+  10. **Bright outside, dark inside** is the default pairing, and variations are
+  welcome (same file, line 2455).
+  11. **Closed-directory cells are coloured by file kind** (2026-11-15 #turn-8;
+  `90bcd106`).
+  12. **No emoji in the UI.** Marks are made with glows, borders and icons
+  (2025-12-09.1 line 932; 2026-01-03.1 line 133; 2026-03-27.1 line 1857).
+  13. **The legend uses a sample and at most two words per row**, with as few
+  words of our own as possible (2026-11-15 #turn-10; `e2ecaf52`).
+  14. **Pinned symbols are highlighted the same way in every view**
+  (2026-03-28.1 lines 265 and 1965).
+  15. **The 3D button calls attention when 2D can't read left to right.** The
+  owner asked for it (2026-10-12 record line 169; 2026-11-01 record line 532).
+  The amber is the agent's choice.
+
+  ## 2. Tried and thrown away
+  - **Coloured 3D wires by direction** (built 2026-10-30): "too many connectors…
+  to confer any ability for the end user to understand what color means on any
+  one connector". The root saw the web as "one cyan haze".
+  - **Wire colours per relationship** (pink extends, amber or gold implements,
+  cyan type references): "too much visual noise".
+  - **Grey-blue self-loop stubs**: "more color difference to the eye than I'd
+  like".
+  - **Wires on the Circuit Board**: "so noisy that we cut it in favor of…
+  dependency-relationship-colored highlighting" (2025-12-06.1 line 824).
+  - **Green and blue lines from a pin to its symbol's name**: "a little messy",
+  "Big regression".
+  - **A test-backed glow drawn in front of the card.** The owner wanted it "much
+  more subtle and **actually drew behind**".
+  - **A green inset border on participating symbols** (the owner's "agarose
+  gel"), replaced by undimming.
+  - **History emphasis that brightens through a step**: "THe sudden
+  dim-and-undim is awful in practice."
+  - **Recolouring only the selected node in the force graph**: "unuseful for
+  categorizing".
+  - **The first light World Map's haze**, cured by darker sides, strokes and
+  text.
+  - **The World Map's first door colours** (green served, blue called), swapped
+  on 2026-09-29.
+  - **Wordy legends and on-screen tutorial text.**
+  - **Gold for test-backed** in the Membrane Map and in the 2D legend sample,
+  replaced by purple on 2026-11-15.
+  - **Opaque amber disks** in transitions, rejected by the root on 2026-11-08.
+  - **Agent proposals the owner did not take:**
+    - fading 3D wires by distance and crowding (2026-10-31 #turn-3);
+    - amber for implementation with violet for tests (2026-11-16), named on
+  neither of the owner's two counts;
+    - Copilot's teal/amber for in and out (2025-11-24), never built.
+
+  ## 3. Open questions and unanswered proposals
+  - **File-kind colours clash with role colours.** Implementation blue sits on
+  offers blue and test green on uses green. The owner's bar for settling it: a
+  directory holding "documentation, assets, tests, implementations", seen
+  "across a ton of views", consistent in 2D and 3D.
+  - **Three kind palettes were never designed together:** the 3D map and cells
+  (Bootstrap colours), the 2D cards' violet for tests, and the details panel's
+  badge borders.
+  - **The 2D key's kinds row**: whether to keep it, and whether it should list
+  every kind.
+  - **How 3D shows direction** now that wire colour is gone.
+  - **The Dim default for Changed Files** was the root's call (`7f3e4160`), and
+  the owner hasn't reacted to it.
+  - **A "text that isn't code" group with its own colour** (2026-10-20).
+  - **Colouring the force graph by cluster** (2026-01-28 line 944; 2026-02-17
+  line 446).
+  - **Styling for "clones"** (2025-12-18 line 1573).
+  - **Themes and direction:** a light theme for the Local Map, flipping light
+  and dark per scale, and RTL flipping of the flow (2026-03-23 line 6932).
+  - **The word for what blue means:** Offers or Exposes (2026-09-29.2 line
+  1372).
+  - **Semantic colours "as a special glow"** on a wire (2025-12-08.1 line 862).
+  - **One colour per symbol chain for multiple paths**: in the agent's Notes
+  design, never selected.
+  - **Rings still drawn on 3D nodes** that membranes replaced (a known defect,
+  2026-11-15 #turn-15).
+  - **Low-contrast small text on 2D cards**: 3.3:1 in the first-visit review,
+  finding 14.
+
+  ## 4. The owner's taste, in their words
+  - "colored by salient information that their eyes can learn and adjust to"
+  - "we definitely have an overall color excess problem… I struggle to imagine
+  what the visualization would look like any more glowing or vibrant than it is
+  now!"
+  - "Should hopefully reduce the number of simultaneous colors we're looking at
+  too."
+  - On attention: "(a preferred amount would be _equal_!)"
+  - "the dimming effect… is a bit extreme"
+  - "The color scheme is killer too… the light mode feels low-contrast… a
+  "haze""
+  - "the feeling of inside-versus-outside… the safety of the warm well-lit
+  indoors"
+  - "pure-snow-white with connector lines"
+  - "a network of occasionally firing fireflies. Try to maximize surprise."
+  - "eye-catching" (the rings)
+  - "WOW! I _love_ the splash of color…"
+  - Today's blue and green is "the most aesthetically pleasing… (consistency
+  with onscreen colors despite conflict of color meaning)"; implementation
+  neutral with tests violet is the most understandable.
+  - "From color theory to layout best practices… I am nearly clueless to."
+
+  ## The most consequential owner quotes
+  1. "However you want to color code that (which is green versus which is blue)
+  is A-okay by me, but stick to it" (2025/12/2025-12-03.md line 794)
+  2. "fade the irrelevant instead of boosting the relevant… (don't boost what
+  you like, cut what you don't)" (2025-12-07.2 line 1567)
+  3. "Why do our lines not always _begin_ blue and _end_ green via some
+  gradient?" (2025-12-06.1 line 1040)
+  4. "rethink the choice of having different line colors for different
+  connection types" (2025-12-07.3 line 336)
+  5. "Cool if the user can configure, but I suspect we'll want to have color
+  coding for input/output connection points" (2026/09/2026-09-26.1.md line 489)
+  6. The district colours and haze message (2026/09/2026-09-27.1.md line 1258)
+  7. The light outside, dark inside message (same file, line 2455)
+  8. "Offers!! I Like that!" (2026-09-29.2 line 1274)
+  9. "the choice to use color in the connectors has unfortunately lessened the
+  readability" (2026-10-31 #turn-1)
+  10. "simply glows white for a turn" / "fireflies" (2026-11-01 #turn-3 and
+  #turn-5)
+  11. The clash, and "preexisting color meaning conflict… in the 3D local map
+  today" (2026-11-15 #turn-9 and #turn-11)
+
+  ## Where what you knew was wrong, undated or unsupported
+  - **Who chose blue and green.** It wasn't the owner. On 2025-11-24 (line 465)
+  the owner asked only for "different line colors". Copilot proposed teal and
+  amber, then built blue `rgba(0,145,255)` and teal-green `rgba(0,211,170)` in
+  `2e41d7b6` on 2025-11-25. The owner was already speaking of "green dots… blue
+  dots" on 2025-12-03 (line 528) before the "A-okay" line at 794, which ratified
+  the agent's colours.
+  - **WCAG.** It never appears in the Antigravity transcripts. The owner first
+  raises it to Copilot on 2025-11-21 (2025-11-21.md line 142, a message that
+  opens "Based on those antigravity conversations"). It applied to the main view
+  only, with the force graph exempt. ideas.md line 103 is unsupported on this
+  point.
+  - **The "master audio producer" quote** in owner.md was said on 2026-09-27
+  about deleting obsolete files (2026/09/2026-09-26.1.md line 610), not about
+  colour. The colour forms are 2025-12-03 line 984 (cutting directories) and
+  2025-12-07.2 line 1567. "Never highlight the relevant" is stronger than
+  anything the owner said: they also asked for glows (the pinned row, pinned
+  items "just glowing", history).
+  - **"Configurable is fine"** paraphrases "Cool if the user can configure".
+  "Don't be scared to let folks customize/configure easily" (2026-10-01 record
+  line 500) was about bundling, layouts and curves, not colour.
+  - **The light theme "set apart, not by one switch"** (ideas.md line 82) is the
+  agent's inference, not the owner's words.
+  - **Dim as the Changed Files default** was the root's decision. On 2026-11-01
+  the owner had set white Glow and called the dim-and-undim ramp "awful". On
+  2026-11-15 they asked only to keep colour "if there is some way".
+  - **The amber cue** was the agent's colour: Codex/Astra, `c91c019d`,
+  2026-11-02. The owner first asked for "a little highlight" on 2026-10-12, and
+  first said "amber" on 2026-11-15 (record line 355).
+  - **Related documents.** On 2026-01-08 (line 550) the owner chose "Muted gray
+  color and thinner lines"; Copilot built purple `#9966cc` without asking. The
+  owner later used "purple" approvingly, so it's accepted de facto.
+  - **The Membrane Map's gold for test-backed** was Copilot's choice; the
+  summary misattributes it to the owner.
+  - **The kind/role clash was already written down** in the 2026-10-23
+  remediation item (explorer doc line 57: "distinguish this from file archetype
+  colours").
+  - **Colour-blindness** has never been raised by the owner. The only measure is
+  the root's probe of 2026-11-16.
+
+  ## Coverage
+  - **Owner messages, every month:** I pulled every owner message from every
+  transcript, record, export and Antigravity file from 2025-10 to 2026-11-16 by
+  speaker markers (3,947 messages) and grepped them for about 50 colour terms
+  (524 hit). I read the hits and the surrounding owner text for every message
+  cited above.
+  - **Read in full around the hits:**
+    - transcripts: 2025-11-21, 2025-11-24, 2025-12-03, 2025-12-04, 2025-12-06.1,
+  2025-12-07.2, 2025-12-07.3, 2025-12-08.1, 2025-12-09.1, 2026-09-27.1 (lines
+  1160–1300 and 2455–2479), 2026-09-29.2 (746–1446);
+    - records, Turns 1–3/8 of 2026-10-31 and Turns 3–5 of 2026-11-01, and Turns
+  2 and 8–15 of the 2026-11-15 record;
+    - the kind-palette and changed-files READMEs;
+    - Explorer doc lines 24, 46, 57, 72, 128, 140 and 206;
+    - the colour lines of Memory, the vision, the decisions log, the membrane
+  and boards docs, and theme.css.
+  - **Grep only:**
+    - every SUMMARIZED file;
+    - Screenshots, Probes and Research READMEs, of which I opened the
+  first-visit, designer-eye, tone, 2026-10-23, 2026-10-31 and structure-sizing
+  READMEs and the bearings reader;
+    - the October–November 2026 records outside the turns named;
+    - git log messages, plus `-S` dating for the palette, the cue and the pin
+  colours.
+  - **Not done:**
+    - agent-side text of 2025 transcripts beyond the cited spots;
+    - the Gallery and Notes folders, apart from the multi-path design;
+    - the Probes/2026-09-28 files, beyond knowing they mention colour;
+    - any image.
+
+● Agent "Mine the record for colour" is waiting on its own background work · 18m
+5s
+
+● The history researcher has returned a full account of colour exchanges since
+  October 2025, with corrections to Memory; the inventory researcher is still
+  running, so I'm checking its status next. · summary
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● A dark candidate now passes every check with the tests' violet and
+  directories' orange kept. I'm finishing the colour inventory, working out the
+  light counterpart meanwhile. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+› Message from general-purpose
+  I've finished the audit and written both files. The two biggest results: one
+  hex, `#0091ff`, is used for three meanings, and some of the root's prior
+  numbers were measured against the wrong blue. Nothing in the repository was
+  changed.
+
+  **Counts.** The table has 177 rows: 91 fact (8 of them dead), 30 state (2
+  dead), 46 surface (2 dead) and 10 decoration (1 dead). 14 of the rows carry
+  meaning by opacity alone. The source has 186 distinct literal colours on 122
+  distinct RGB bases. On top of those come 4 colours in the 3D shaders and some
+  values computed at run time.
+
+  ## Fact colours (complete, terse)
+  - **Offers/uses in 2D (keyed in the legend):**
+    - Wires go from `#38bdf8` to `#34d399` at 0.7 opacity. The self-reference
+  laces use the same two colours.
+    - The offering pin is `#0091ff` at 0.4 (rim 0.6) and the using pin is
+  `#00d3aa` at 0.4 (rim 0.55). The base pin is `#0091ff` at 0.35, file-level
+  pins draw at 0.55, and both pin glows are at 0.4.
+  - **Offers/uses on the World Map:**
+    - Doors and stubs: offers `#0284c7` (light theme) / `#38bdf8` (dark); uses
+  `#059669` / `#34d399`.
+    - Wires are hard-coded `#38bdf8`→`#34d399` in both themes. The flow dashes
+  are white at 0.5. The help text explains them.
+  - **2D↔3D transition:** the same role gradient, plus `#9baec5` for 3D wires
+  that had no 2D counterpart.
+  - **Type badges in 2D (tooltip only, no legend row):** return `#0091ff`@.25
+  with text `#64c8ff`; parameter `#00d3aa`@.25 / `#64ffc8`; extends
+  `#ff6890`@.25 / `#ff96b4`; implements `#ffbc57`@.25 / `#ffd28c`.
+  - **Test-backed card in 2D (keyed):** violet `#8a5cff` as the halo (0.18),
+  border (0.45) and glow (0.32). Chip text is `#e7e5ff`, the tests line
+  `#cbc8f8`, the label `#a59fe0`.
+  - **Kind of file (`SPATIAL_NODE_STYLES`):** implementation `#0091ff`, test
+  `#28a745`, asset `#e83e8c`, document `#9966cc`, directory hub `#e9984d`, other
+  `#888888`.
+    - Interface, configuration and script have colours but nothing produces
+  those kinds.
+    - The same table draws 3D spheres (at 0.75), rings and shell dots, the 2D
+  cells (fill 0.42, rim 0.75) and both legends' kind rows.
+    - The 2D "one grey" choice is `#b9c1cc` fill with a `#e4e9ef` rim.
+    - The details panel's kind label: implementation and asset have undefined
+  colour variables and show only a tint (`#64c864`@.1 and `#c89664`@.1). Test is
+  violet on a blue tint (`#6496ff`@.1).
+  - **3D wires (keyed):**
+    - References are white at 0.3 (0.16 for the whole root, 0.5 when hovered,
+  0.12 to the frontier). A path is white 0.9 at double width; the Structure
+  layout's on-demand references are white 0.5.
+    - Containment is `#e9984d`@.35, cites `#9966cc`@.4 (arrowheads ×3), cited-by
+  `#d6b2f0`@.55.
+  - **Other 3D marks:**
+    - Rings are drawn in the sphere's own kind colour at 0.85, but the legend
+  samples them in grey.
+    - Skins are `#83b9d4` (highlight `#52708a`) and the cloud look is `#8bacc7`.
+    - A directory's name label is `#f4c18d` on a `#6f5237` border; it has no
+  legend row.
+  - **History, 3D only, no legend row:**
+    - Glow turns changed files white.
+    - Dim (the default) keeps unchanged files at 20% of their opacity.
+    - A changed wire goes white at 0.85, and a lit skin turns white.
+  - **2D structure:**
+    - Open directory outline `#3d3d45`. Closed box `#ffffff05`. Cells skin
+  `#ffffff30` plus white light. Nested skin `#ffffff10`/`#ffffff55`. Stack
+  layers `#1d1d1f`…`#2f2f33`.
+    - Edge shadows `#000000a0`. Bundle run at 0.45. Internals row in dashed
+  greys.
+    - The amber backward-wires cue is `#e9b86d` (text `#f2c98a`); its tooltip
+  explains it.
+  - **World Map:**
+    - Region tints, light|dark, with no legend: blue `#ddeaf8`|`#17202c` (cloud
+  by default), orange `#f9e8d8`|`#25211d` (on-prem by default), green, grey (the
+  fallback), violet and rose.
+    - Warm `#c17f16`|`#e2b45f` marks declared crossings and missing folders.
+    - Muted `#4b5563`|`#94a1b3` draws stands, strands and ghost ends. Package
+  and reference spokes use the text and faint tones.
+    - Imagined things draw their faces at 0.08.
+  - **History scrubber:** major tick is the accent; minor `#9ca3bc`@.85; faint
+  `#6c7484`@.45; truncated-history hatch `#9ca3bc`.
+  - **Errors and search:** error `#ff8888`; path found `#8bd49a`; search rows
+  with no path fade to 0.6.
+
+  ## State colours (complete, terse)
+  - **Accent `#0091ff`** (90 reads), with hover `#0070d4`, subtle (0.12) and
+  muted (0.08). It is also written out as a literal 16 times.
+  - **Focus rings** are 2px accent. In 3D the ring is a hard-coded `#0091ff`; on
+  the World Map it is the `--w-blue` token.
+  - **Pinned row or file:** accent ring plus the offering glow token. **Subject
+  card:** accent border plus a VS Code blue `#007acc` ring.
+  - **Hover and fading:**
+    - Card hover is `#2f2f33` with a `#777` border.
+    - 2D hover dims to 0.5 / 0.1 (Tuning) and muted rows to 0.5; prose fades to
+  0.35 below reading size.
+    - In 3D, "Beyond" is 0.4 (its label 0.45) and the attention fade is 0.2. The
+  wrapper hover rim is `#dbedff`.
+    - World fades are 0.12, 0.35 and 0.15. A pressed World tool is `#e0f2fe` /
+  `#38bdf8`@.16.
+  - **Links:** `#7dd3fc` (hover `#a5f3fc`) and `#9ed2fa`.
+  - **Other:**
+    - The 3D building sweep is `#ccc`@.7. Knowledge Sources' tree hover is a
+  teal wash.
+    - Disabled controls use five different opacities: 0.3, 0.35, 0.45, 0.55 and
+  0.65.
+
+  ## Surfaces and text, in short
+  - **Dark shell:** `#18181a`, `#111`, `#1e1e1e`, `#1f1f22`, card `#232326`,
+  `#333`, glass `#222225`@.95. Borders `#2f2f34`, `#3f3f46`, white at 0.06,
+  `#777`.
+  - **Eleven text tiers:** `#fff`, `#f2f2f2`, `#ededed`, `#e4e4e4`, `#ccc`,
+  `#b0b0b0`, `#9ca3bc`, `#888`, `#777`, `#6c7484`, `#666`.
+  - **3D:** scene `#000011`, lights `#ccc`/`#fff`, labels `#080c16e8` on a
+  `#485164` border.
+  - **World Map:** light page `#e3e6eb`, board `#fff`, lines `#c3cad4`. Dark
+  `#0b0d11`, `#14171d`, `#161b23`. Faces are shaded between `#98a2b1`→`#fff`
+  (light) and `#1f2530`→`#4a5468` (dark).
+
+  ## Findings
+  - **One hex, three meanings.** `#0091ff` is the accent, the 2D offering pin
+  and the implementation kind. Offering pin vs implementation is 0.0 apart; as
+  drawn (pin on a card vs a cell on a closed box) it is 1.9. The pinned state's
+  glow reuses the offers token.
+  - **One meaning, several values.**
+    - Offers in 2D: wire vs pin are 12.7 apart. Uses in 2D: wire vs pin are 2.4
+  apart.
+    - The World light theme's doors sit 16.7 and 17.9 from its own hard-coded
+  wires.
+    - Test has three colours: green (the file), violet (a card backed by tests,
+  and the details panel), and the details panel's tints, which are the 3D hues
+  swapped.
+    - Violet means test-backed in 2D and document in 3D (8.7 apart).
+    - The warm family carries five meanings: hub, backward cue (7.5 from the
+  hub), World warm (6.6), on-prem tint, and the implements badge.
+    - The return and parameter badges reuse the pins' exact RGB.
+  - **Colour-blind collisions (OKLab ×100, Machado 2009):**
+    - **3D:** test vs hub, protan 2.5 (2.0 as drawn). Asset vs other, deutan 2.2
+  (1.5 as drawn). Test vs asset, deutan 7.8. Implementation vs test, tritan
+  6.2.
+    - **2D as drawn:** asset cell vs other cell, deutan 0.6. Test-backed border
+  vs offering pin, deutan 1.9. Offering wire vs using wire is only 12.4 even
+  with full colour vision (tritan 2.3).
+    - **World tints:** any two are 1.8–5.4 apart, far below the floor of 15.
+  - **Undefined colour variables:**
+    - `--color-implementation` and `--color-asset` have no fallback.
+    - `--text-primary`, `--border-color`, `--accent-text` and `--text-success`
+  are each saved by a fallback.
+  - **Dead colour:**
+    - 7 `theme.css` tokens, plus `--w-shadow`, are never read.
+    - Rules nothing triggers: `.connection-line`, `.badge`,
+  `.test-backed-shadow`, `.pulse-highlight`, `.workspace-link`.
+    - Three kind colours nothing produces, and the unused gradient helper
+  `createConnectionGradient`.
+    - A stale comment in `connections.ts:278` names variables that don't exist.
+  - **Where colour lives:**
+    - 34 of the 83 live fact rows live in TypeScript or GLSL, where a stylesheet
+  can't reach them. That includes all of the 3D map, the 2D wires and cell
+  hues, and the World's wires and tints.
+    - The 2D legend reads `--wire-*` tokens that the 2D wires themselves don't
+  use.
+    - `SPATIAL_NODE_STYLES` is the only shared colour table.
+    - Only the World Map has a theme switch (light by default, saved in
+  localStorage). There is no `prefers-color-scheme`, and no colour setting
+  travels in the share link.
+  - **Contrast:**
+    - **Text failing AA (4.5:1):** `#888` on a card 4.42. `#777` 3.5–4.2.
+  `#6c7484` 3.3–4.0 (19 uses). `#666` 2.7–3.3, which also draws the sidebar's
+  section headings.
+    - **World Map text failing AA:** light theme's `--w-faint` 3.0, `--w-blue`
+  4.1, `--w-warm` 3.3.
+    - **Marks below 3:1:**
+      - 2D: pins 1.8 / 2.4, test-backed border 1.8, cells 1.7–1.9.
+      - 3D: reference wire 2.5, whole-root wire 1.5, containment 1.9.
+      - World light wires: 2.1 / 1.9.
+  - **Fact hues at once:**
+    - 2D: up to 12 meanings in 11 values from 6 hue families (about 8 on this
+  repository).
+    - 3D: about 11 values in 8 families.
+    - World: about 7 values in 5 families (up to 11 with all six tints).
+
+  ## Where the brief was wrong or incomplete
+  1. Blue/green roles are not drawn in 3D at all: its wires are white (since
+  2026-10-31).
+  2. The 12.7 was measured against the wire. Against the offering pin,
+  implementation is 0.0 apart.
+  3. Violet in 2D means a card backed by tests; a test file itself is green
+  there.
+  4. The details panel is exactly two of three kind colours undefined. Four more
+  colour variables are undefined elsewhere.
+  5. The metric is OKLab ×100 from the dataviz validator, with Machado 2009 at
+  full severity. 15 is its full-vision floor, and 2.5 is the protanopia figure
+  (deuteranopia is 12.1).
+  6. The history default is now Dim, not Glow, and all four modes act in 3D
+  only.
+  7. The multi-path design (merged, dashed near-misses, colour-coded
+  divergences) is not built.
+  8. Cloud→blue and on-prem→orange are the engine's default legend
+  (`board.ts:104-105`), not only the owner's convention. Four more tints exist.
+  The Local Map has no light theme.
+
+  ## What I couldn't determine
+  - 3D lighting and the shader terms aren't modelled; the 3D numbers use flat
+  colours at their base opacity.
+  - No browser was run, so nothing is pixel-sampled.
+  - Whether the `stub` badge ever renders, and whether the transition's captured
+  `#0091ff`/`#e9984d` is drawn anywhere.
+  - The undefined details-panel labels are assumed to inherit `#e4e4e4`; not
+  observed.
+
+  ## What I read
+  - **In full:**
+    - Stylesheets: `theme.css`, `graph.css`, `history.css`, `world.css`.
+    - 3D and legend: `forceGraphAppearance.ts`, `forceGraphEmphasis.ts`,
+  `forceGraphRenderer.ts`, `spatial-legend.ts`.
+    - Background: the earlier probe's README and the validator.
+  - **In part:** `view-shared.css`, `local.css`, `search.css`,
+  `forceGraphBatches.ts`, `forceGraphView.ts`, `perspectiveTransition.ts`,
+  `worldMap/controller.ts`, `card-factory.ts`, `connections.ts`, `model.ts`,
+  `board.ts`, `template.html`, and the Turn 9 record.
+  - **By script, not read:** every colour declaration in all ten stylesheets,
+  and every custom property's declarations and reads.
+  - **Searched only:** all non-test TypeScript, CLI colour output, the shell
+  template, and persistence/URL state.
+
+  Files are in /tmp/claude-1000/-workspaces-Live-Documentation/2e2c3781-e754-421
+  5-b736-f96cb3ac7ab8/scratchpad:
+  - colour-inventory.md
+  - colour-inventory.json
+  - colour-measure.mjs
+  - build-inventory.mjs
+  - css-colour-decls.mjs
+  - css-vars.mjs
+  - count-literals.mjs
+
+  The other files in that folder aren't mine and I left them alone.
+
+● Agent "Inventory every colour in product" finished · 22m 41s
+
+● Both researchers are back. Before I rely on the inventory I'm spot-checking
+  its main claims in the code myself.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Both reports check out against the code and transcripts. I'm drawing a sheet
+  comparing today's colours with the dark and light candidate palettes, and then
+  I'll write up answers to your four questions. · summary
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● The sheet is drawn; looking at it with my own eye before it goes to you.
+
+  Read 1 file, ran 3 shell commands (ctrl+o to expand)
+
+● Checking three corrections to Memory that the history research proposed; one
+  of them looks wrong on my own check, so I'm verifying before touching
+  anything.
+
+  Searched for 1 pattern, read 1 file, ran 4 shell commands (ctrl+o to expand)
+
+● Write(AI-Agent-Workspace/Probes/2026-11-16/colour-pass/README.md)
+  ⎿  Wrote 65 lines to
+     AI-Agent-Workspace/Probes/2026-11-16/colour-pass/README.md
+      1 # The colour pass: what the Explorer's colours are, what they mea
+        n, and two candidate palettes
+      2
+      3 _Historical evidence, November 16, 2026. Written by the root agen
+        t in [the November 16 session](../../../ChatHistory/2026/11/2026-
+        11-16.1.record.md#turn-1), in answer to the owner's four question
+        s: which colours the app uses, what each means, which alternative
+         palettes could carry the same information, and what has been sai
+        d about colour before. Nothing in this folder is product code, an
+        d no palette here is a decision: the two candidates are the root'
+     … +63 lines (~9 KB) (ctrl+o to expand)
+
+● Filing the findings and the palette sheet in the repository, then dispatching
+  the first build work and writing your answer.
+
+  Searched for 1 pattern, ran 2 shell commands (ctrl+o to expand)
+
+● Recording what was found and committing it, so the builders start from a known
+  commit.
+
+  Listed 1 directory, ran 1 shell command (ctrl+o to expand)
+
+● 2 background agents launched (↓ to manage)
+   ├ One table of colour
+   └ Sample holding every kind
+
+● Both builders are dispatched. Recording that, then writing your answer.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The Explorer draws 177 distinct colours, and its one "signature blue"
+  (#0091ff) currently means three different things. I've designed and measured
+  two candidate palettes that fix this. Two builders are now doing the
+  groundwork to show them in the real app.
+
+  Everything below is filed in the colour pass folder
+  (AI-Agent-Workspace/Probes/2026-11-16/colour-pass/README.md). Open the palette
+  sheet (AI-Agent-Workspace/Probes/2026-11-16/colour-pass/palettes.png) first:
+  it shows today's colours beside the two candidates, each as drawn and as three
+  kinds of colour blindness see it.
+
+  Bootstrap
+
+  - Read in full: AGENTS.md, the four Memory documents, both READMEs, and the
+    five latest summaries (November 8 to 15).
+  - Yesterday's close is complete (0a632129): the closing message is copied into
+    yesterday's record and your later re-export is committed as received.
+
+  What waited on you from 11/15
+
+  You wrote "I'll get to these" for the first four; here they are again. Each
+  has its links in the summary's last section (AI-Agent-Workspace/ChatHistory/20
+  26/11/Summarized/2026-11-15.1.SUMMARIZED.md#open-ends-and-handoff).
+
+  1. The closed directory's shape: tab, round or square (Tuning → 2D Layout →
+     Closed Directory).
+  2. The description line when zoomed out: one of four values.
+  3. Whether the 3D "building" state feels right.
+  4. A handle that stays in view inside a large directory: trial it or not.
+  5. The 2D key's row for file kinds: today's work will change that row, so I
+     suggest we settle it as part of the colour pass.
+  6. A round on the 3D forces: a shorter settle traded for a resting place that
+     moves.
+
+  Also still marked from yesterday:
+
+  - Known defects: rings beside membranes, and the closed directory at the
+    farthest zoom.
+  - Promised and not done: deleting the ladder and the Grid, trying Node 26, and
+    adding counts beside the clocks.
+
+  1. Which colours we use
+
+  The inventory (AI-Agent-Workspace/Probes/2026-11-16/colour-pass/inventory.md)
+  lists every one with its value, where it lives and what it tells the reader.
+
+  ┌──────────────────────────────────┬───────┐
+  │       What the colour does       │ Count │
+  ├──────────────────────────────────┼───────┤
+  │ States a fact about the software │ 91    │
+  ├──────────────────────────────────┼───────┤
+  │ Shows a state of the interface   │ 30    │
+  ├──────────────────────────────────┼───────┤
+  │ Surfaces and text                │ 46    │
+  ├──────────────────────────────────┼───────┤
+  │ Decoration                       │ 10    │
+  └──────────────────────────────────┴───────┘
+
+  2. What they mean
+
+  There are five jobs.
+
+  - A connection's role. Blue offers, green uses. This is drawn in the 2D map
+    and on the World Map, and not in 3D since the wire colours were withdrawn.
+  - A file's kind. Implementation is blue, test is green, asset is pink,
+    document is purple and directory is orange. These colour the 3D spheres and
+    the 2D cells.
+  - Has tests. The violet halo on a 2D card.
+  - Attention and events. Fading shows what is beyond; white shows a file
+    changed in a commit.
+  - The interface itself. One accent blue marks whatever is selected, active,
+    focused or a link. Amber marks the 3D button's cue.
+
+  What is wrong with them
+
+  - One colour, several meanings. The offering pin, the implementation file and
+    "selected" are the same hex. Green is both "uses" and "test file". Violet is
+    "has tests" in 2D and "document" in 3D. Designers call the fix semantic
+    colour: one hue answers one question. You can see the problem in this 2D
+    picture (AI-Agent-Workspace/Probes/2026-11-16/colour-pass/today-2d-scripts-d
+    irectory.png), where the key's blue dot says "Implementation" directly under
+    a row whose blue says "Offers".
+  - One meaning, several colours. "Offers" is drawn in three different blues
+    (wire, pin, World Map door), and "uses" in three greens.
+  - The interface wears a data colour. The usual rule is that the chrome
+    (buttons, borders, focus rings) stays neutral, so every hue on screen is
+    information. In the pinned-card picture (AI-Agent-Workspace/Probes/2026-11-1
+    6/colour-pass/today-2d-branch-renderer-pinned.png), blue is the card's
+    border, the active button and the reading icons, as well as the offering
+    pins.
+  - Some colours collapse for colour-blind readers. In 3D, a test and a
+    directory are 2.5 apart for a red-blind reader, where 8 is the floor.
+  - Some marks and text are too faint. The 2D pins stand at about 2 to 1 against
+    their card, where 3 to 1 is the floor for a mark. Four of the eleven tones
+    of text are under the 4.5 to 1 reading floor.
+  - Colour is scattered. 34 of the 83 live fact colours sit in TypeScript or
+    shader code, where a stylesheet can't reach them. Only the World Map has a
+    theme switch.
+
+  4. What we have said about colour before
+
+  The full history (AI-Agent-Workspace/Probes/2026-11-16/colour-pass/history.md)
+  has every exchange with its source.
+
+  Decisions in force:
+  - Inputs enter on the left and outputs leave on the right.
+  - Blue offers and green uses, at every scale.
+  - A wire begins blue and ends green, with one colour for every kind of
+    relationship.
+  - Fade the irrelevant before boosting the relevant.
+  - 3D wires are one colour.
+  - A changed file stands out for its whole step.
+  - The World Map is bright by default, with light blue for cloud and light
+    orange for on-prem.
+  - Bright outside, dark inside.
+  - Closed-directory cells are coloured by kind.
+
+  Tried and thrown away:
+  - Coloured 3D wires by direction.
+  - A colour per relationship type ("too much visual noise").
+  - Gold for test-backed.
+  - Amber for implementation (last night).
+
+  Your taste, in your words:
+  - "an overall color excess problem"
+  - "reduce the number of simultaneous colors"
+  - "colored by salient information that their eyes can learn and adjust to"
+
+  Things the record corrected for me:
+  - Blue and green were Copilot's pick (November 25, 2025). You ratified them
+    with "stick to it".
+  - Documents were meant to be grey. You said "Muted gray color and thinner
+    lines is fine" on January 8; Copilot built purple.
+  - You asked for semantic colour tokens a year ago (December 6, 2025): "CSS
+    styles declare colors without relying on a common set of theme colors with
+    specific color semantic meanings".
+  - Colour blindness has never come up from you. The measurements are mine.
+  - Last night's 12.7 was measured against the wire's blue. Against the pin,
+    implementation is 0.0 apart.
+  - Two Memory entries overstated you. I corrected both in place, with their
+    sources.
+
+  3. Alternative palettes
+
+  My proposal for what makes a palette valid:
+  - It fills every meaning.
+  - "Offers" is its blue and "uses" is its green, so the words stay true in
+    every palette.
+  - Every pair of identity colours clears 15 for full colour vision and 8 for
+    red-green colour blindness.
+  - A mark stands at 3 to 1 on its ground, and text at 4.5 to 1.
+  - White (or the darkest ink on a light ground) is kept for "changed".
+  - The chrome wears no hue except the amber warning.
+
+  Two candidates. The hues are the same in both, so what the eye learns in one
+  carries over to the other.
+
+  ┌────────────────────┬───────────────────────────────┬────────────────────┐
+  │      Meaning       │         Night (dark)          │    Day (light)     │
+  ├────────────────────┼───────────────────────────────┼────────────────────┤
+  │ Offers / uses      │ blue / green, one value each  │ the same, stepped  │
+  │                    │ everywhere                    │ darker             │
+  ├────────────────────┼───────────────────────────────┼────────────────────┤
+  │ Implementation     │ cool grey                     │ cool grey          │
+  ├────────────────────┼───────────────────────────────┼────────────────────┤
+  │ Test, and "has     │ the violet the 2D cards       │ deeper violet      │
+  │ tests"             │ already use                   │                    │
+  ├────────────────────┼───────────────────────────────┼────────────────────┤
+  │ Asset              │ rose                          │ rose               │
+  ├────────────────────┼───────────────────────────────┼────────────────────┤
+  │ Document           │ paper yellow                  │ ochre              │
+  ├────────────────────┼───────────────────────────────┼────────────────────┤
+  │ Directory          │ the orange it has             │ deeper orange      │
+  ├────────────────────┼───────────────────────────────┼────────────────────┤
+  │ Selected / active  │ white                         │ dark ink           │
+  └────────────────────┴───────────────────────────────┴────────────────────┘
+
+  - Closest pair of identity colours: Night 15.2 (full vision) and 8.5
+    (red-green blind); Day 15.3 and 8.2. Today's palette scores 0.0 and 2.5.
+  - Why implementation goes grey: it is the common case (667 of 984 files), so
+    it becomes the quiet ground and the exceptions carry the colour. You read
+    "implementation neutral, tests violet" as the most understandable last
+    night.
+  - Why documents are yellow, not grey: I measured a grey sand first, after your
+    "Muted gray". It stood too close to white and to the implementation grey.
+  - Why no separate colour-blind palette: both candidates already clear the
+    colour-blind floor, so it would buy little.
+
+  What I have not done: I have only seen these as swatches. The 3D numbers are
+  flat colours without lighting. Your bar from last night (every kind in one
+  directory, across many views, 2D and 3D alike) is not met yet.
+
+  What is being built now
+
+  Two Opus builders, each in its own worktree:
+
+  - One table of colour. Every colour moves into one module keyed by its
+    meaning, which the stylesheets, the 3D code and the World Map all read.
+    Today's picture must not change; the builder has to prove that.
+  - A sample with every kind of file, in directories of different make-up, plus
+    a tool that draws one sheet of pictures across many views for any palette.
+
+  After those land, I apply Night and Day through the table and show you sheets
+  in both maps, and live on your port behind one Tuning choice.
+
+  Questions for you
+
+  1. Should a shared link carry the sender's palette? I recommend no: the
+     palette is the viewer's own setting, like dark mode, so a link never forces
+     a light or dark screen on someone. The hues mean the same in every
+     palette, so "the blue pin" still points at the same thing. The catch is
+     that two people on one link may see different grounds.
+  2. Should the World Map and the Local Map keep separate palette choices? I
+     recommend yes. "Bright outside, dark inside" then becomes the default
+     pairing (Day on the board, Night inside), and flipping it is two settings.
+
+  Two calls I've made that you can reverse on seeing them: the kinds move off
+  blue and green rather than the roles, and "selected" is drawn in white rather
+  than blue.
+
+● Agent "Mine the record for colour" finished · 41m 9s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The first reply was delivered (the session log shows it at 19:47 UTC). Copying
+  it into today's record while the builders work.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Your answer went out at 19:47 UTC and is now copied into today's record
+  (AI-Agent-Workspace/ChatHistory/2026/11/2026-11-16.1.record.md) (f0896d35).
+  Nothing else has changed: the two builders are still working, and I'll review
+  each handback when it arrives. A link check I started on the record is still
+  running in the background.
+
+● Background command "Check the recorded note's wording and that the record's
+links still resolve" completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The link check passed (1,428 files, no broken links). Still waiting on the two
+  builders; nothing new to report until one hands back.
+
+● The link check passed (1,428 files, no broken links). Still waiting on the two
+  builders; nothing new to report until one hands back.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Referenced file
+     AI-Agent-Workspace/ChatHistory/2026/11/2026-11-16.1.record.md
+  ⎿  Read AI-Agent-Workspace/Probes/2026-11-16/colour-pass/README.md (66 lines)  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/2e2c3781-e754-421
+     5-b736-f96cb3ac7ab8/scratchpad/specimen.mjs (102 lines)
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/2e2c3781-e754-421
+     5-b736-f96cb3ac7ab8/scratchpad/colour-lab.mjs (117 lines)
+  ⎿  Referenced file AI-Agent-Workspace/ChatHistory/2026/11/README.md
+
+● Task "Sample holding every kind" still running in background
+
+● Task "One table of colour" still running in background
+
+● Task "A one-time timer that wakes the root in 49 minutes to keep its context
+  warm while builders run" still running in background
+  ⎿  Skills restored (dataviz)
+
+● Agent "Sample holding every kind" is waiting on its own background work · 20m
+23s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Nothing has been handed back yet. The notice was only the sample builder
+  pausing on a long run of its own; it will report when that finishes. The other
+  builder is still working, main is clean at f0896d35, and the timer set
+  earlier still stands.
