@@ -14,7 +14,8 @@ import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/
  * And the two forms the owner asked to see (2026-11-15: "the only reason it doesn't look quite as good in these
  * screenshots is because the symbol name itself is willing to wrap onto a new line"): with "First line always", every
  * described row keeps its line and its name holds to one, cut at its end or in its middle at a seam where it does not
- * fit, the whole name still the row's text, label and tooltip; a row whose description is folded keeps its lines; the
+ * fit (since 2026-11-16 its end kept behind a leading ellipsis where its first and last pieces do not fit together), the
+ * whole name still the row's text, label and tooltip; a row whose description is folded keeps its lines; the
  * file's own line stands under its name where its Purpose is on and the header holds it; and no box and no row's place
  * moves between Hidden and any value.
  */
@@ -177,7 +178,9 @@ const picture = (page: Page) => page.evaluate(subject => {
       seams: (() => {
         const name = text.textContent ?? "", seams: number[] = [];
         for (let at = 1; at < name.length; at += 1) if ((/[A-Z]/u.test(name[at]) && /[a-z0-9]/u.test(name[at - 1])) || /[._-]/u.test(name[at - 1])) seams.push(at);
-        return { at: seams, leastMiddle: seams.length > 1 ? canvas.measureText(`${name.slice(0, seams[0])}…${name.slice(seams[seams.length - 1])}`).width : null };
+        // And what the name's end alone would draw behind a leading ellipsis, from each seam on.
+        return { at: seams, leastMiddle: seams.length > 1 ? canvas.measureText(`${name.slice(0, seams[0])}…${name.slice(seams[seams.length - 1])}`).width : null,
+          tails: seams.map(at => canvas.measureText(`…${name.slice(at)}`).width) };
       })(),
       painted: style.webkitTextFillColor, lines: Number(getComputedStyle(row).getPropertyValue("--row-lines-connections")) || 1,
       clipped: text.scrollWidth > text.clientWidth + 1 || text.scrollHeight > text.clientHeight + 1,
@@ -249,18 +252,36 @@ for (const lines of ["fallback", "segoe"] as const) for (const choice of ["line-
       const [start, end] = row.drawn.split("…");
       expect.soft(row.symbol.startsWith(start), `${where}: its start is the name's`).toBe(true);
       if (choice === "line-end") expect.soft(end, `${where}: cut at its end`).toBe("");
-      else if (end) {
+      else if (start && end) {
         // Cut in its middle: its end is the name's, and both pieces end at a seam of the name.
         expect.soft(row.symbol.endsWith(end), `${where}: its end is the name's`).toBe(true);
         expect.soft(row.seams.at, `${where}: its start ends at a seam`).toContain(start.length);
         expect.soft(row.seams.at, `${where}: its end starts at a seam`).toContain(row.symbol.length - end.length);
+      } else if (end) {
+        // Its end behind a leading ellipsis (the design change of 2026-11-16, where an end cut stood): only where its
+        // first and last pieces do not fit together, from a seam, and with as many last pieces as its room holds.
+        expect.soft(row.seams.leastMiddle === null || row.seams.leastMiddle > row.room + 0.5, `${where}: its first and last pieces do not fit its room together`).toBe(true);
+        expect.soft(row.symbol.endsWith(end), `${where}: its end is the name's`).toBe(true);
+        const from = row.seams.at.indexOf(row.symbol.length - end.length);
+        expect.soft(from, `${where}: its end starts at a seam`).toBeGreaterThanOrEqual(0);
+        if (from > 0) expect.soft(row.seams.tails[from - 1], `${where}: one more piece would not fit`).toBeGreaterThan(row.room + 0.5);
       } else {
-        // Cut at its end though the middle was asked: only where its first and last pieces do not fit together at a seam.
-        expect.soft(row.seams.leastMiddle === null || row.seams.leastMiddle > row.room + 0.5, `${where}: no cut at its seams fits its room`).toBe(true);
+        // Cut at its end though the middle was asked: only where not even its last piece fits behind the ellipsis.
+        expect.soft(row.seams.tails.length === 0 || row.seams.tails[row.seams.tails.length - 1] > row.room + 0.5, `${where}: not even its last piece fits its room`).toBe(true);
       }
     }
     expect(after.rows.filter(row => row.drawn !== null).length, "some names of this card are cut").toBeGreaterThan(3);
-    if (choice === "line-middle") expect(after.rows.filter(row => row.drawn?.split("…")[1]).length, "most are cut in their middle").toBeGreaterThan(5);
+    if (choice === "line-middle") {
+      // What this card's twelve cut names draw since the design change of 2026-11-16: nine keep their first and last
+      // pieces about the ellipsis, and the three whose first and last pieces do not fit together (DocumentationLinkViolation,
+      // DocumentationDocumentAnchors, DocumentationAnchorSummary), cut at their end until then, keep their end behind a
+      // leading ellipsis. None is cut at its end.
+      const cuts = after.rows.filter(row => row.drawn !== null).map(row => row.drawn!.split("…"));
+      expect(cuts.filter(([start, end]) => start && end).length, "cut in their middle, both ends kept").toBe(9);
+      expect(after.rows.filter(row => row.drawn?.startsWith("…")).map(row => row.symbol), "their end kept behind a leading ellipsis")
+        .toEqual(["DocumentationLinkViolation", "DocumentationDocumentAnchors", "DocumentationAnchorSummary"]);
+      expect(cuts.filter(([, end]) => !end).length, "cut at their end").toBe(0);
+    }
     // Nothing collides: the kept lines and the file's line are read with the map's text.
     const boxes = await textBoxes(on.page, [...LOCAL_MAP.text, "#view-map .local-row-kept", "#view-map .local-file-kept"]);
     expect(overlapsAmong(boxes)).toEqual([]);

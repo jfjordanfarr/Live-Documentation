@@ -43,14 +43,32 @@ describe("a symbol's name held to one line", () => {
     expect(cutInMiddle("aaBbbCcDddd", ["aa", "Bbb", "Cc", "Dddd"], 8 * 6, measure)).toBe("aa" + ELLIPSIS + "Dddd");
   });
 
-  it("breaks only at the seams: where the first and the last pieces do not fit together, the name is cut at its end", () => {
-    // Fourteen characters: "Documentation…Result" needs twenty, and no piece is broken to make it fit.
-    expect(cut("DocumentationLinkEnforcementResult", 14, "middle")).toBe("Documentation" + ELLIPSIS);
-    expect(cut("DocumentationLinkEnforcementResult", 14, "middle")).toBe(cut("DocumentationLinkEnforcementResult", 14, "end"));
+  it("where the first and the last pieces do not fit together, keeps as many last pieces as fit, whole, behind a leading ellipsis", () => {
+    // Two names of one card that share their start, in fourteen characters: "refresh…Presentation" needs twenty. An end
+    // cut draws both "refreshReadin…"; the last pieces tell them apart.
+    expect(cut("refreshReadingPresentation", 14, "end")).toBe(cut("refreshReadingGeometry", 14, "end"));
+    expect(cut("refreshReadingPresentation", 14, "middle")).toBe(ELLIPSIS + "Presentation");
+    expect(cut("refreshReadingGeometry", 14, "middle")).toBe(ELLIPSIS + "Geometry");
+    // As many last pieces as fit: nineteen characters do not hold "Documentation…Result", twenty, and hold the last two
+    // pieces behind the ellipsis, not the last three.
+    expect(cut("DocumentationLinkEnforcementResult", 19, "middle")).toBe(ELLIPSIS + "EnforcementResult");
     // Twenty-one characters hold "Documentation…Result" and not "Documentation…Violation", which needs twenty-three.
-    expect(cut("DocumentationLinkViolation", 21, "middle")).toBe("DocumentationLinkVio" + ELLIPSIS);
-    // A name of two pieces has none to leave out between them, and a name of one has no seam.
-    expect(cutInMiddle("PaymentService", ["Payment", "Service"], 11 * 6, measure)).toBe("PaymentSer" + ELLIPSIS);
+    expect(cut("DocumentationLinkViolation", 21, "middle")).toBe(ELLIPSIS + "LinkViolation");
+    // The first and the last piece together are still preferred where they fit.
+    expect(cut("DocumentationLinkViolation", 23, "middle")).toBe("Documentation" + ELLIPSIS + "Violation");
+  });
+
+  it("gives a name with one seam its last piece behind the ellipsis, since it has no piece to leave out between two", () => {
+    expect(cutInMiddle("PaymentService", ["Payment", "Service"], 11 * 6, measure)).toBe(ELLIPSIS + "Service");
+    expect(cutInMiddle("PaymentService", ["Payment", "Service"], 8 * 6, measure)).toBe(ELLIPSIS + "Service");
+  });
+
+  it("cuts at the end only where not even the last piece fits behind the ellipsis, or the name has no seam", () => {
+    // Ten characters do not hold "…Presentation", thirteen: no piece is broken to keep an end.
+    expect(cut("refreshReadingPresentation", 10, "middle")).toBe("refreshRe" + ELLIPSIS);
+    expect(cut("refreshReadingPresentation", 10, "middle")).toBe(cut("refreshReadingPresentation", 10, "end"));
+    expect(cutInMiddle("PaymentService", ["Payment", "Service"], 7 * 6, measure)).toBe("Paymen" + ELLIPSIS);
+    // A name of one piece has no seam.
     expect(cutInMiddle("enforcement", ["enforcement"], 6 * 6, measure)).toBe("enfor" + ELLIPSIS);
   });
 
