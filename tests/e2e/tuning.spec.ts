@@ -27,8 +27,9 @@ test("every tuning control explains what changing it does, as its tooltip and it
   // the same day (the trial of three looks for a closed directory beside the box), and Zoomed Out Fully the same day
   // (the trial of the overview look drawn as files only). Skin's Shape and Cells' Colour joined it on 2026-11-15 (the
   // skin with cells as a closed directory's default look, in three shapes and two colourings), and Descriptions Zoomed
-  // Out the same day (a description's first line kept in the connections look, in three forms beside hidden).
-  await expect(controls).toHaveCount(63);
+  // Out the same day (a description's first line kept in the connections look, in three forms beside hidden). Return
+  // Cost joined it on 2026-11-16 (the continuing search's price of a reference read backward through a cycle).
+  await expect(controls).toHaveCount(64);
   const facts = await controls.evaluateAll(elements => elements.map(element => {
     const describedBy = element.getAttribute("aria-describedby") ?? "";
     const description = document.getElementById(describedBy);

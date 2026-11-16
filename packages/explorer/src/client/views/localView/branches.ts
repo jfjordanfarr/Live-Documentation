@@ -6,6 +6,7 @@ import { getVisibleConnections, retainFile, type PinSet } from "../pin-state";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
 import { orderBranches, type BranchOrder, type ForwardReference, type OrderInput } from "./branch-order";
 import type { ClosedContents, ClosedFile, NestedContents } from "./closed-looks";
+import { cycleCandidates } from "./cycle-order";
 import { flowColumns, linksOf, pairLines, type FlowInput, type FlowShape, type UndrawnLink } from "./directory-flow";
 import { directoryState, NO_OPEN_DIRECTORIES, under, type OpenDirectories } from "./directory-state";
 import { rankByNetworkSimplex, type Constraint } from "./network-simplex";
@@ -34,6 +35,17 @@ export interface BranchGraph {
 export interface BranchRanking {
   columns: ExplorerNodePayload[][];
   back: Set<string>;
+  /** Each cycle of the picture and the orders its files may stand in, the greedy order first (`cycleCandidates`). */
+  cycles: CycleOffer[];
+}
+
+/** A cycle of files and the orders the ranking offers for it, each a list of its files, left to right. */
+export interface CycleOffer {
+  /** The cycle's files and the references among them, which names the cycle wherever it appears. */
+  key: string;
+  candidates: string[][];
+  /** The order the cycle stands in: the one given for it, else the greedy order. */
+  order: string[];
 }
 
 /** The ranking's dials. */
@@ -46,6 +58,12 @@ export interface RankingOptions {
   pull?: number;
   /** Which column a file takes when several cost the same: the one with the fewest other cards (the rightmost among equals), the rightmost, or the leftmost. */
   tie?: "fewest" | "right" | "left";
+  /**
+   * The order each cycle's files stand in, by the cycle's key, one of its offered candidates; a cycle not named, or named
+   * with an order of other files, stands in the greedy order. The continuing search tries the others (`cycle-trials`,
+   * 2026-11-16).
+   */
+  orders?: ReadonlyMap<string, readonly string[]>;
 }
 
 /** Where the order step begins and how long it looks. */
@@ -362,7 +380,7 @@ export function exploreBranches(
     ? { ranked: rankedIds, opened, boxesOf, looseOf: directory => membersOf(directory).filter(file => !joined.has(file)), directoryOf: directoryOfNode }
     : null;
   const columns = arrangement ? flowColumns(arrangement) : placeMembers(rankedIds, opened, directory => [...boxesOf(directory), ...membersOf(directory)], directoryOfNode);
-  const ranking: BranchRanking = { columns: columns.map(column => column.flatMap(nodeId => byId.get(nodeId) ?? [])), back: ranked.back };
+  const ranking: BranchRanking = { columns: columns.map(column => column.flatMap(nodeId => byId.get(nodeId) ?? [])), back: ranked.back, cycles: ranked.cycles };
   if (path?.fromSymbol && pathGraph) remember(pathGraph.nodes[0].id, path.fromSymbol);
   if (path?.toSymbol && pathGraph) remember(pathGraph.nodes[pathGraph.nodes.length - 1].id, path.toSymbol);
   // Reading adds rows to the order, without describing them as a pinned connection or extending their neighborhood.
@@ -530,7 +548,11 @@ export function compareSymbolNames(a: string, b: string): number {
  * stands in the last column, and so does every file no reference reaches. A
  * cycle is broken at the references that read backward in a provider-first
  * order of its members, so that every other reference flows left to right;
- * the broken ones are returned as `back`.
+ * the broken ones are returned as `back`. Each cycle stands in the order
+ * `options.orders` gives it, else the greedy order, and its candidate orders
+ * are returned in `cycles`: whether another stands is for the continuing
+ * search to judge on the page's own measurements (`cycle-trials`,
+ * 2026-11-16), not for the ranking.
  */
 export function rankBranches(nodes: ExplorerNodePayload[], links: LocalEdge[], options: RankingOptions = {}): BranchRanking {
   const pull = Math.max(0, options.pull ?? 0);
@@ -558,67 +580,66 @@ export function rankBranches(nodes: ExplorerNodePayload[], links: LocalEdge[], o
   };
   for (const id of [...ids].sort()) if (!index.has(id)) visit(id);
   const componentOf = new Map(components.flatMap((members, i) => members.map(id => [id, i] as const)));
-  // Within a cycle, members stand provider-first, by Eades, Lin and Smyth's order: a file nothing in the cycle
-  // serves goes to the front, one that serves nothing in it goes to the back, and otherwise the one that
-  // serves the most more than it uses; what is left after each choice is looked at again.
-  const rank = new Map<string, number>();
-  for (const members of components) {
-    const remaining = new Set(members);
-    const serves = (id: string): number => [...successors.get(id)!].filter(consumer => remaining.has(consumer)).length;
-    const uses = (id: string): number => [...remaining].filter(other => successors.get(other)!.has(id)).length;
-    const front: string[] = [], back: string[] = [];
-    while (remaining.size) {
-      const sorted = [...remaining].sort();
-      const sink = sorted.find(id => serves(id) === 0);
-      if (sink) { back.unshift(sink); remaining.delete(sink); continue; }
-      const source = sorted.find(id => uses(id) === 0);
-      if (source) { front.push(source); remaining.delete(source); continue; }
-      const choice = sorted.reduce((best, id) => serves(id) - uses(id) > serves(best) - uses(best) ? id : best);
-      front.push(choice);
-      remaining.delete(choice);
-    }
-    [...front, ...back].forEach((id, i) => rank.set(id, i));
-  }
-  const back = new Set<string>();
-  const forward = new Map(ids.map(id => [id, new Set<string>()]));
+  // Every pair of files and the references between them, a pair line counting the links it stands for.
+  const referencesOf = new Map<string, number>();
   for (const edge of edges) {
-    const provider = edge.targetId, consumer = edge.sourceId;
-    if (componentOf.get(provider) === componentOf.get(consumer) && rank.get(provider)! > rank.get(consumer)!) back.add(edgeKey(edge));
-    else forward.get(provider)!.add(consumer);
-  }
-  // The columns: each forward reference, weighted by the references between its two files, costs the columns it
-  // spans, and the solver finds the least total. Every file is a node; a reference is a constraint of at least one column.
-  const at = new Map(ids.map((id, i) => [id, i]));
-  const weights = new Map<string, number>();
-  for (const edge of edges) {
-    if (back.has(edgeKey(edge))) continue;
     const pair = `${edge.targetId}\0${edge.sourceId}`;
-    weights.set(pair, (weights.get(pair) ?? 0) + linksOf(edge));
+    referencesOf.set(pair, (referencesOf.get(pair) ?? 0) + linksOf(edge));
   }
-  const pairs: Constraint[] = [...weights].sort(([x], [y]) => x.localeCompare(y)).map(([pair, weight]) => {
+  const pairList = [...referencesOf].sort(([x], [y]) => x.localeCompare(y)).map(([pair, weight]) => {
     const [provider, consumer] = pair.split("\0");
-    return { tail: at.get(provider)!, head: at.get(consumer)!, delta: 1, weight };
+    return { provider, consumer, weight };
   });
+  // Each cycle's files stand provider-first in the order given for it, else the first of its candidates, the greedy order.
+  const rank = new Map<string, number>();
+  const cycles: CycleOffer[] = components.filter(members => members.length > 1).map(members => {
+    const files = [...members].sort();
+    const weight = files.map(provider => files.map(consumer => referencesOf.get(`${provider}\0${consumer}`) ?? 0));
+    const key = JSON.stringify([files, weight]);
+    const candidates = cycleCandidates(weight).map(order => order.map(member => files[member]));
+    const given = options.orders?.get(key);
+    const order = given && given.length === files.length && given.every(id => members.includes(id)) ? given : candidates[0];
+    order.forEach((id, i) => rank.set(id, i));
+    return { key, candidates, order: [...order] };
+  });
+  const returns = (provider: string, consumer: string): boolean => componentOf.get(provider) === componentOf.get(consumer) && rank.get(provider)! > rank.get(consumer)!;
+  const at = new Map(ids.map((id, i) => [id, i]));
+  const pairs: Constraint[] = pairList.flatMap(({ provider, consumer, weight }) =>
+    returns(provider, consumer) ? [] : [{ tail: at.get(provider)!, head: at.get(consumer)!, delta: 1, weight }]);
+  const column = rankColumns(ids.length, pairs, pull, tie);
+  const back = new Set(edges.filter(edge => returns(edge.targetId, edge.sourceId)).map(edgeKey));
+  const columns: ExplorerNodePayload[][] = [];
+  nodes.forEach((node, i) => (columns[column[i]] ??= []).push(node));
+  for (const list of columns) list.sort((a, b) => a.codeRelativePath.localeCompare(b.codeRelativePath));
+  return { columns, back, cycles };
+}
+
+/**
+ * The ranking's columns for the forward references given, numbered from nought with none empty: the network simplex's
+ * least total span, each connected group ended at the last column, and a file that costs the same in several columns
+ * placed by the tie rule.
+ */
+function rankColumns(count: number, pairs: readonly Constraint[], pull: number, tie: "fewest" | "right" | "left"): number[] {
   // The pull: a column past every file, toward which each file is drawn by the pull's weight, so that a file stands
   // further right than the spans alone would have it wherever the pull outweighs the spans it lengthens.
-  const sink = ids.length;
-  const pulls: Constraint[] = pull > 0 ? ids.map((_, v) => ({ tail: v, head: sink, delta: 0, weight: pull })) : [];
-  const column = rankByNetworkSimplex(ids.length + (pull > 0 ? 1 : 0), [...pairs, ...pulls]).position.slice(0, ids.length);
+  const sink = count;
+  const pulls: Constraint[] = pull > 0 ? Array.from({ length: count }, (_, v) => ({ tail: v, head: sink, delta: 0, weight: pull })) : [];
+  const column = rankByNetworkSimplex(count + (pull > 0 ? 1 : 0), [...pairs, ...pulls]).position.slice(0, count);
   // Files no reference joins stand apart from one another, so each connected group ends at the last column, as a
   // file nothing uses does: the picture's right edge is where the chains end.
-  const group = ids.map((_, i) => i);
+  const group = Array.from({ length: count }, (_, i) => i);
   const find = (v: number): number => (group[v] === v ? v : (group[v] = find(group[v])));
   for (const edge of pairs) group[find(edge.tail)] = find(edge.head);
   const last = Math.max(0, ...column);
   const groupLast = new Map<number, number>();
-  for (let v = 0; v < ids.length; v++) groupLast.set(find(v), Math.max(groupLast.get(find(v)) ?? 0, column[v]));
-  for (let v = 0; v < ids.length; v++) column[v] += last - groupLast.get(find(v))!;
+  for (let v = 0; v < count; v++) groupLast.set(find(v), Math.max(groupLast.get(find(v)) ?? 0, column[v]));
+  for (let v = 0; v < count; v++) column[v] += last - groupLast.get(find(v))!;
   // A file whose references weigh the same on both sides costs the same in any column between its providers and its
   // consumers (the pull counted on the consumers' side); by the tie rule it takes the column with the fewest other
   // cards, the rightmost among equals, so no stack grows for nothing, or the rightmost or leftmost outright.
   const cards = new Map<number, number>();
   for (const value of column) cards.set(value, (cards.get(value) ?? 0) + 1);
-  for (let v = 0; v < ids.length; v++) {
+  for (let v = 0; v < count; v++) {
     let inbound = 0, outbound = pull, low = 0, high = last;
     for (const edge of pairs) {
       if (edge.head === v) { inbound += edge.weight; low = Math.max(low, column[edge.tail] + 1); }
@@ -635,8 +656,5 @@ export function rankBranches(nodes: ExplorerNodePayload[], links: LocalEdge[], o
     column[v] = best;
   }
   const used = [...new Set(column)].sort((a, b) => a - b);
-  const columns: ExplorerNodePayload[][] = used.map(() => []);
-  nodes.forEach((node, i) => columns[used.indexOf(column[i])].push(node));
-  for (const list of columns) list.sort((a, b) => a.codeRelativePath.localeCompare(b.codeRelativePath));
-  return { columns, back };
+  return column.map(value => used.indexOf(value));
 }

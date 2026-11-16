@@ -1,0 +1,7 @@
+packages/explorer/src/client/views/localView/branch-renderer.ts: 25 files, 319 references, largest cycle 3, 3 candidates beyond the greedy orders: before 1.11 ms, now 1.32 ms
+packages/engine/src/live-docs/adapters/index.ts: 27 files, 206 references, largest cycle 25, 2 candidates beyond the greedy orders: before 1.40 ms, now 2.60 ms
+packages/engine/src/live-docs/core.ts: 37 files, 281 references, largest cycle 25, 2 candidates beyond the greedy orders: before 1.55 ms, now 2.84 ms
+packages/explorer/src/client/views/localView/branch-scene.ts: 23 files, 254 references, largest cycle 3, 2 candidates beyond the greedy orders: before 0.87 ms, now 0.97 ms
+packages/explorer/src/client/types.ts: 53 files, 719 references, largest cycle 2, 0 candidates beyond the greedy orders: before 3.37 ms, now 2.56 ms
+packages/explorer/src/shared/types.ts: 54 files, 660 references, largest cycle 2, 0 candidates beyond the greedy orders: before 2.82 ms, now 1.53 ms
+pictures by candidates beyond the greedy orders: [[0,942],[1,27],[2,5],[3,1]]

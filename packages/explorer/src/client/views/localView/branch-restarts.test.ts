@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import { candidateStarts, churnOf, layoutStarts, previousStart, scoreOf, signalsOf, startName, startOrder } from "./branch-restarts";
+import { candidateStarts, churnOf, layoutStarts, pictureScore, previousStart, scoreOf, signalsOf, startName, startOrder } from "./branch-restarts";
 import type { Scene, SceneBox } from "./branch-scene";
-import type { BranchGraph } from "./branches";
+import { edgeKey, type BranchGraph } from "./branches";
+import type { LocalEdge } from "./types";
 
 const noShape = { evenness: 0, levelness: 0, steps: 0, width: 0 };
 
@@ -10,10 +11,14 @@ const ranked = [["a", "b", "c"], ["d", "e"]];
 /** A previous picture: c above a above b in the first column, e above d in the second. */
 const tops = new Map([["c", 0], ["a", 100], ["b", 200], ["e", 0], ["d", 300]]);
 
-/** A start laid out: what `layoutStarts` reads of a branch graph and a scene, and nothing else. */
-const laid = (vertical: number, crossings: number, height: number, columns: string[][], width = 0): { branches: BranchGraph; scene: Scene } => ({
-  branches: { columns: columns.map(column => column.map(id => ({ id }))), order: { crossings } } as unknown as BranchGraph,
-  scene: { placement: { cost: vertical }, pictureHeight: height, pictureWidth: width, boxes: [], tops: new Map() } as unknown as Scene
+/**
+ * A start laid out: what `layoutStarts` reads of a branch graph and a scene, and nothing else. Its references, none
+ * unless given, and its columns' places are what the ranking's two terms read.
+ */
+const laid = (vertical: number, crossings: number, height: number, columns: string[][], width = 0, links: LocalEdge[] = [], back: LocalEdge[] = []): { branches: BranchGraph; scene: Scene } => ({
+  branches: { columns: columns.map(column => column.map(id => ({ id }))), order: { crossings }, subgraph: { links }, back: new Set(back.map(edgeKey)) } as unknown as BranchGraph,
+  scene: { placement: { cost: vertical }, pictureHeight: height, pictureWidth: width, boxes: [], tops: new Map(),
+    lefts: columns.map((_, column) => column * 340), widths: columns.map(() => 240) } as unknown as Scene
 });
 
 describe("the order step's starts", () => {
@@ -52,6 +57,17 @@ describe("the order step's starts", () => {
     expect(scoreOf({ vertical: 1000, crossings: 10, height: 500, width: 800, churn: 2, unevenness: 90, unlevel: 40, steps: 3 }, { ...noShape, crossing: 0, height: 0, churn: 0, width: 0.25 })).toBe(1200);
   });
 
+  it("adds to a picture's price what its ranking adds, the wires' horizontal length and the Return Cost of each return", () => {
+    // b in column 1 uses a in column 0, one gap of 100 px; a's use of b returns.
+    const uses = (user: string, provider: string): LocalEdge => ({ sourceId: user, targetId: provider, targetSymbol: "value", direction: "outbound", kind: "dependency" });
+    const picture = laid(300, 0, 100, [["a"], ["b"]], 0, [uses("b", "a"), uses("a", "b")], [uses("a", "b")]);
+    const signals = signalsOf(picture.branches, picture.scene, null), costs = { ...noShape, crossing: 0, height: 0, churn: 0 };
+    expect(pictureScore(signals, costs, 1500, picture.scene, picture.branches)).toBe(300 + 100 + 1500);
+    // The order step prices its starts by the same function, so that the page reports the price its search compares.
+    const chosen = layoutStarts(candidateStarts(0, null, null, [["a"], ["b"]]), () => picture, costs, 1500, null).chosen;
+    expect(chosen.score).toBe(1900);
+  });
+
   it("keeps the cheapest start, the earlier of two at one price, and lays out every start once", () => {
     const table: Record<string, ReturnType<typeof laid>> = {
       ranked: laid(300, 4, 100, [["a", "b"]]),
@@ -61,13 +77,13 @@ describe("the order step's starts", () => {
     const asked: string[] = [];
     const layout = (start: { kind: string; seed?: number }): ReturnType<typeof laid> => { asked.push(startName(start as never)); return table[startName(start as never)]; };
     const starts = candidateStarts(2, null, null, [["a", "b"]]);
-    const free = layoutStarts(starts, layout, { ...noShape, crossing: 0, height: 0, churn: 0 }, null);
+    const free = layoutStarts(starts, layout, { ...noShape, crossing: 0, height: 0, churn: 0 }, 0, null);
     expect(asked).toEqual(["ranked", "seed 1", "seed 2"]);
     expect(startName(free.chosen.start)).toBe("seed 1");
     expect(free.outcomes.map(outcome => outcome.score)).toEqual([300, 200, 200]);
     // A crossing priced at twenty pixels turns the choice: 300 + 80 against 200 + 200.
-    expect(startName(layoutStarts(starts, layout, { ...noShape, crossing: 20, height: 0, churn: 0 }, null).chosen.start)).toBe("ranked");
-    expect(() => layoutStarts([], layout, { ...noShape, crossing: 0, height: 0, churn: 0 }, null)).toThrow(/at least one start/u);
+    expect(startName(layoutStarts(starts, layout, { ...noShape, crossing: 20, height: 0, churn: 0 }, 0, null).chosen.start)).toBe("ranked");
+    expect(() => layoutStarts([], layout, { ...noShape, crossing: 0, height: 0, churn: 0 }, 0, null)).toThrow(/at least one start/u);
   });
 
   it("prices the churn against the previous picture, so a start that swaps cards must earn it", () => {
@@ -79,11 +95,11 @@ describe("the order step's starts", () => {
       "seed 2": laid(220, 10, 100, [["a", "b"]])
     };
     const starts = candidateStarts(2, null, previous, [["a", "b"]]);
-    const priced = layoutStarts(starts, start => table[startName(start)], { ...noShape, crossing: 0, height: 0, churn: 150 }, previous);
+    const priced = layoutStarts(starts, start => table[startName(start)], { ...noShape, crossing: 0, height: 0, churn: 150 }, 0, previous);
     expect(priced.outcomes.map(outcome => `${startName(outcome.start)} ${outcome.signals.churn} ${outcome.score}`)).toEqual(["ranked 0 300", "previous 0 250", "seed 1 1 350", "seed 2 0 220"]);
     expect(startName(priced.chosen.start)).toBe("seed 2");
     // Without the churn's price, the swap is the cheapest.
-    expect(startName(layoutStarts(starts, start => table[startName(start)], { ...noShape, crossing: 0, height: 0, churn: 0 }, previous).chosen.start)).toBe("seed 1");
+    expect(startName(layoutStarts(starts, start => table[startName(start)], { ...noShape, crossing: 0, height: 0, churn: 0 }, 0, previous).chosen.start)).toBe("seed 1");
   });
 
   it("switches to a longer-wire start when membrane steps, unevenness or row levelness pay for it", () => {
@@ -101,15 +117,15 @@ describe("the order step's starts", () => {
     const layout = (start: { kind: string }): ReturnType<typeof laid> => start.kind === "ranked" ? short : smooth;
     const costs = { ...noShape, crossing: 0, height: 0, churn: 0 };
     expect(signalsOf(short.branches, short.scene, null)).toEqual({ vertical: 200, crossings: 0, height: 200, width: 0, churn: 0, unevenness: 40, steps: 2, unlevel: 30 });
-    expect(startName(layoutStarts(starts, layout, costs, null).chosen.start)).toBe("ranked");
+    expect(startName(layoutStarts(starts, layout, costs, 0, null).chosen.start)).toBe("ranked");
     // Two steps at 60, forty uneven pixels at 3, or thirty row pixels at 4 each pay 120 to save 100.
     for (const weight of [{ steps: 60 }, { evenness: 3 }, { levelness: 4 }]) {
-      const chosen = layoutStarts(starts, layout, { ...costs, ...weight }, null).chosen;
+      const chosen = layoutStarts(starts, layout, { ...costs, ...weight }, 0, null).chosen;
       expect(startName(chosen.start)).toBe("seed 1");
       expect(chosen.score).toBe(300);
     }
     // At precisely the wire difference the earlier start still wins.
-    expect(startName(layoutStarts(starts, layout, { ...costs, steps: 50 }, null).chosen.start)).toBe("ranked");
+    expect(startName(layoutStarts(starts, layout, { ...costs, steps: 50 }, 0, null).chosen.start)).toBe("ranked");
   });
 
 });

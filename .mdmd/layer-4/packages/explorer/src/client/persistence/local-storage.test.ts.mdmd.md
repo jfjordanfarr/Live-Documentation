@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/persistence/local-storage.test.ts
-- Generated At: 2026-10-22T02:20:01.918Z
+- Generated At: 2026-11-16T03:53:00.976Z
 
 ## Authored
 ### Purpose
@@ -49,5 +49,6 @@ _No public symbols detected_
 - [`local-storage.readPersistedNav`](./local-storage.ts.mdmd.md#symbol-readpersistednav)
 - [`local-storage.readPersistedUi`](./local-storage.ts.mdmd.md#symbol-readpersistedui)
 - [`types.InspectionTarget`](../types.ts.mdmd.md#symbol-inspectiontarget) (type-only)
+- [`cycle-order.DEFAULT_RETURN_COST`](../views/localView/cycle-order.ts.mdmd.md#symbol-default_return_cost)
 - `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`, `vi`
 <!-- LIVE-DOC:END Dependencies -->

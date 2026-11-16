@@ -7,6 +7,7 @@ import { refine, refinementJson } from "./refine";
 import type { ScopeRun } from "./scopes";
 import { alignmentCandidates } from "../../packages/explorer/src/client/views/localView/branch-alignments";
 import type { SceneMeasurer } from "../../packages/explorer/src/client/views/localView/branch-scene";
+import { horizontalWire, returningLinks } from "../../packages/explorer/src/client/views/localView/cycle-trials";
 import { addPin, EMPTY_PIN_SET } from "../../packages/explorer/src/client/views/pin-state";
 import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../packages/explorer/src/shared/types";
 
@@ -44,7 +45,10 @@ describe("the lab's alignment evaluation", () => {
     const config = { ...baselineConfig(), orderStarts: 0, membraneEvenness: 0, membraneSimplicity: 50, rowLevelness: 0, crossingCost: 0, heightCost: 0, widthCost: 0 };
     const initial = evaluate(capture, graph, run, config);
     expect(initial.signals.steps).toBeGreaterThan(0);
-    expect(initial.starts[0].score).toBe(initial.signals.placementCost + 50 * initial.signals.steps);
+    // The page's price: the placement, the shape's costs, and the ranking's two terms, here y's wire to x across the gap.
+    const ranking = horizontalWire(initial.scene, initial.branches) + config.returnCost * returningLinks(initial.branches);
+    expect(ranking).toBeGreaterThan(0);
+    expect(initial.starts[0].score).toBe(initial.signals.placementCost + 50 * initial.signals.steps + ranking);
     expect(initial.alignments).toEqual([]);
     const before = initial.scene.boxes.map(box => box.segments.map(segment => ({ ...segment })));
     const candidates = alignmentCandidates(initial.scene);
@@ -56,10 +60,10 @@ describe("the lab's alignment evaluation", () => {
     expect(trial.signals.steps).toBeLessThan(initial.signals.steps);
     expect(trial.scene.placement.optimal).toBe(true);
     expect(trial.starts[0].signals).toMatchObject({ churn: 0, unevenness: trial.signals.unevenness, steps: trial.signals.steps, unlevel: trial.signals.unlevel });
-    expect(trial.starts[0].score).toBe(trial.signals.placementCost + 50 * trial.signals.steps);
+    expect(trial.starts[0].score).toBe(trial.signals.placementCost + 50 * trial.signals.steps + ranking);
     const priced = { ...initial, config: { ...config, membraneEvenness: 2, rowLevelness: 3 } };
     const repriced = evaluateAlignment(priced, capture, run, candidates[0]);
-    expect(repriced.starts[0].score).toBe(repriced.signals.placementCost + 50 * repriced.signals.steps + 2 * repriced.signals.unevenness + 3 * repriced.signals.unlevel);
+    expect(repriced.starts[0].score).toBe(repriced.signals.placementCost + 50 * repriced.signals.steps + 2 * repriced.signals.unevenness + 3 * repriced.signals.unlevel + ranking);
   });
 
   it("interleaves seed and alignment trials and exports the final geometry and every decision", () => {
@@ -77,6 +81,9 @@ describe("the lab's alignment evaluation", () => {
     expect(result.final.signals.steps).toBe(0);
     expect(result.final.scene.placement.optimal).toBe(true);
     expect(result.final.branches.columns.map(column => column.map(file => file.id))).toEqual([["a/x.ts"], ["a/y.ts"]]);
+    // The command reports the price the page reports of the picture it leaves, the ranking's two terms included
+    // (2026-11-16): no steps are left, so it is the vertical placement and y's wire to x across the gap.
+    expect(result.state.shown).toBe(result.final.signals.placementCost + horizontalWire(result.final.scene, result.final.branches));
     expect(JSON.parse(refinementJson(result, run, capture))).toMatchObject({
       settings, trials: result.trials, state: result.state,
       final: { start: result.final.start, signals: { steps: 0 }, tops: Object.fromEntries(result.final.scene.tops) }

@@ -6,6 +6,7 @@ import { DECK_SCOPES } from "./scopes";
 import { keepGrowingComposition, localMapSettled, localRetainUrl } from "./still-picture";
 import { LAYOUT_PRESETS } from "../../packages/explorer/src/client/layout-presets";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
+import { DEFAULT_RETURN_COST } from "../../packages/explorer/src/client/views/localView/cycle-order";
 
 const generator = "packages/generator/src/generator.ts";
 test.use({ viewport: { width: 1600, height: 1000 } });
@@ -75,10 +76,11 @@ for (const [base, subject] of [["/", generator], ["/samples/estate/", "Contracts
     await page.getByRole("button", { name: "Export layout settings", exact: true }).click();
     const download = await downloadPromise;
     const settings = JSON.parse(await fs.readFile((await download.path())!, "utf8")) as { localMap: object; forceGraph: object };
-    // The 2D settings an export carries are the packing and, since 2026-11-10, the named settings a link must also carry
+    // The 2D settings an export carries are the packing, the ranking's return cost since 2026-11-16, which changes the
+    // picture, and, since 2026-11-10, the named settings a link must also carry
     // to show the same cards, each only when it is not its default (Zoom Looks since its default became the three
     // looks, 2026-11-13): here none.
-    expect(settings.localMap).toEqual({ ...LAYOUT_PRESETS.relaxed.localMap });
+    expect(settings.localMap).toEqual({ ...LAYOUT_PRESETS.relaxed.localMap, returnCost: DEFAULT_RETURN_COST });
     expect(settings.forceGraph).toMatchObject({ ...LAYOUT_PRESETS.relaxed.forceGraph, coupling: 1.1, nodeSize: 4.25, symbolScale: 1, linkWidth: 1.1, nodeZoomResistance: 0.35, wireZoomResistance: 0.95 });
     const shared = page.url();
     // A share must stand on its own. Close the publisher before starting the

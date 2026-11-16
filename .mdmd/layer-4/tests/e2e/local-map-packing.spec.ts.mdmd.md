@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/local-map-packing.spec.ts
-- Generated At: 2026-11-06T03:23:54.460Z
+- Generated At: 2026-11-16T03:53:17.098Z
 
 ## Authored
 ### Purpose
@@ -40,6 +40,7 @@ _No public symbols detected_
 - [`layout-presets.LAYOUT_PRESETS`](../../packages/explorer/src/client/layout-presets.ts.mdmd.md#symbol-layout_presets)
 - [`local-storage.PERSISTED_UI_KEY`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_key)
 - [`local-storage.PERSISTED_UI_VERSION`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_version)
+- [`cycle-order.DEFAULT_RETURN_COST`](../../packages/explorer/src/client/views/localView/cycle-order.ts.mdmd.md#symbol-default_return_cost)
 - [`design-audit.describeFaults`](./design-audit.ts.mdmd.md#symbol-describefaults)
 - [`design-audit.overlapsAmong`](./design-audit.ts.mdmd.md#symbol-overlapsamong)
 - [`design-audit.textBoxes`](./design-audit.ts.mdmd.md#symbol-textboxes)

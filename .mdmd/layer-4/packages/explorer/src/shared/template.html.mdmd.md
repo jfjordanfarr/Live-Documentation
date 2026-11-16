@@ -453,6 +453,12 @@ Since November 8, 2026, the literal initial controls agree with `getDefaultTunin
 #### `tuning-overview-files` {#symbol-tuning-overview-files}
 - Type: variable
 
+#### `tuning-return-cost` {#symbol-tuning-return-cost}
+- Type: variable
+
+#### `tuning-return-cost-value` {#symbol-tuning-return-cost-value}
+- Type: variable
+
 #### `tuning-row-levelness` {#symbol-tuning-row-levelness}
 - Type: variable
 

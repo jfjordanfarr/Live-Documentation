@@ -76,10 +76,15 @@ export function cardViews(capture: Capture, branches: BranchGraph, options: Meas
     dressed.push({ card, registration, shown, hidden });
     rowShown.set(card.id, new Map(rows.map(row => [normalizeSymbolIdentifier(row.symbol) ?? "__internals__", visible(row)] as const)));
   }
-  // A reference's end with no row of its own stands on the card's hub, which no disclosure hides, as the page's anchors fall back.
-  const endShown = (id: string, symbol: string | undefined): boolean => symbol === undefined || (rowShown.get(id)?.get(normalizeSymbolIdentifier(symbol) ?? "__internals__") ?? true);
+  // A reference's end stands on its own row. One with no row of its own, no symbol or one the card does not list, stands
+  // where the page's anchors fall back (`getAnchor` of runtime.ts): the offering end on the card's outbound hub, which no
+  // disclosure hides, the using end on the Internals row's dot, which the disclosure hides with the row (2026-11-16).
+  const endShown = (id: string, symbol: string | undefined, side: "offers" | "uses"): boolean => {
+    const own = symbol === undefined ? undefined : rowShown.get(id)?.get(normalizeSymbolIdentifier(symbol) ?? "__internals__");
+    return own ?? (side === "offers" || (rowShown.get(id)?.get("__internals__") ?? true));
+  };
   const returning = returningConnections(branches.subgraph.links, edge => branches.back.has(edgeKey(edge)),
-    (edge: LocalEdge) => endShown(edge.targetId, edge.targetSymbol) && endShown(edge.sourceId, edge.sourceSymbol));
+    (edge: LocalEdge) => endShown(edge.targetId, edge.targetSymbol, "offers") && endShown(edge.sourceId, edge.sourceSymbol, "uses"));
   for (const { card, registration, shown, hidden } of dressed) {
     const noteFont = card.notes[0]?.font ?? card.directory.font;
     const notes: Array<(width: number) => number> = [];

@@ -11,7 +11,7 @@ interface SlopcopRun {
 }
 
 const repoRoot = path.resolve(__dirname, "../../..");
-const tsxCli = path.join(repoRoot, "node_modules", "tsx", "dist", "cli.mjs");
+const tsxCli = require.resolve("tsx/cli");
 const tsconfigPath = path.join(repoRoot, "tsconfig.base.json");
 const slopcopScript = path.join(repoRoot, "scripts", "slopcop", "check-asset-paths.ts");
 const sourceFixture = path.join(

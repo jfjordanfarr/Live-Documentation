@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: scripts/layout-lab/evaluate.test.ts
-- Generated At: 2026-10-19T17:05:04.184Z
+- Generated At: 2026-11-16T11:46:40.196Z
 
 ## Authored
 ### Purpose
@@ -27,6 +27,8 @@ _No public symbols detected_
 ### Dependencies
 - [`branch-alignments.alignmentCandidates`](../../packages/explorer/src/client/views/localView/branch-alignments.ts.mdmd.md#symbol-alignmentcandidates)
 - [`branch-scene.SceneMeasurer`](../../packages/explorer/src/client/views/localView/branch-scene.ts.mdmd.md#symbol-scenemeasurer) (type-only)
+- [`cycle-trials.horizontalWire`](../../packages/explorer/src/client/views/localView/cycle-trials.ts.mdmd.md#symbol-horizontalwire)
+- [`cycle-trials.returningLinks`](../../packages/explorer/src/client/views/localView/cycle-trials.ts.mdmd.md#symbol-returninglinks)
 - [`pin-state.EMPTY_PIN_SET`](../../packages/explorer/src/client/views/pin-state.ts.mdmd.md#symbol-empty_pin_set)
 - [`pin-state.addPin`](../../packages/explorer/src/client/views/pin-state.ts.mdmd.md#symbol-addpin)
 - [`types.ExplorerGraphPayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)

@@ -43,6 +43,8 @@ Files only is the default of Zoomed Out Fully since 2026-11-15, by the owner's e
 
 Since 2026-11-15 ([Turn 1 of the November 15 record](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) a link carries Descriptions Zoomed Out when it is not Hidden, and a link that carries the 2D map's settings without it opens Hidden, as with the other choices whose default is not written.
 
+`returnCost` (0 to 5000 px of wire by 25) joined the 2D ranges on 2026-11-16, the continuing search's price of a reference read backward through a cycle, so that a shared link reopens the picture it was made from and a saved tuning keeps it; it belongs to no packing profile, and a link written before it keeps the viewer's own setting ([Turn 5 of the November 15 record](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-5)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

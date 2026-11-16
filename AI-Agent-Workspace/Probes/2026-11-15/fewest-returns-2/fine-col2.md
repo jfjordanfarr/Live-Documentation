@@ -1,0 +1,37 @@
+| picture | 0 | 0.25 | 0.5 | 0.75 | 1 | 1.25 | 1.5 | 2 | 2.5 | 3 | 4 | 5 | 6 | 8 | 10 | 12 | 16 | 20 |
+| ModelFactory.cs | G | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F |
+| ProcessorConfig.cs | G | G | G | G | G | G | G | G | F | F | F | F | F | F | F | F | F | F |
+| Processor.cs | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F |
+| Record.cs | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F |
+| compiler-edges.json | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F |
+| css.ts | G | G | G | G | G | F | F | F | F | F | F | F | F | F | F | F | F | F |
+| c.ts | G | G | G | G | G | G | G | G | G | G | G | G | G | G | F | F | F | F |
+| powershell.ts | G | G | G | G | G | G | G | G | G | G | G | G | G | G | G | G | G | G |
+| helpers.rs | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F |
+| json.ts | G | G | G | G | G | G | G | G | G | G | G | G | G | G | F | F | F | F |
+| sourceAnalysis.ts | G | G | G | G | G | G | G | G | G | G | G | G | G | G | G | G | G | F |
+| branch-scene.ts | +2 | +2 | +2 | +2 | +2 | +2 | +2 | +2 | +2 | +2 | +2 | +2 | +2 | +2 | +2 | +2 | F | F |
+| go.ts | G | G | G | G | G | G | G | G | G | F | F | F | F | F | F | F | F | F |
+| quantity.rs | G | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F |
+| html.ts | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F |
+| aspnet.ts | G | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F |
+| directory-ancestry.ts | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F |
+| controller.ts | G | G | G | G | G | G | G | G | G | G | G | G | G | G | G | G | F | F |
+| dotnetConfig.ts | G | G | G | G | F | F | F | F | F | F | F | F | F | F | F | F | F | F |
+| csharp.ts | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F |
+| item.rs | G | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F |
+| memory.rs | G | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F |
+| branches.ts | +2 | +2 | +2 | +2 | +2 | +2 | +2 | +2 | +2 | +2 | +2 | +2 | +2 | +2 | +2 | +2 | +2 | +2 |
+| directory-flow.ts | +2 | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F |
+| manifest.ts | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F |
+| branch-renderer.ts | +1 | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F |
+| forceGraphView.ts | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F |
+| forceGraphReveal.ts | G | G | G | G | G | G | G | G | G | G | F | F | F | F | F | F | F | F |
+| force-graph-reveal.spec.ts | G | G | G | G | G | G | G | G | F | F | F | F | F | F | F | F | F | F |
+| forceGraphScope.ts | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F |
+| forceGraphLayout.ts | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F |
+| core.ts | o | o | o | o | o | o | o | o | o | o | o | o | o | o | o | o | o | o |
+| index.ts | o | o | o | o | o | o | o | o | o | o | o | o | o | o | o | o | o | o |
+| localView/ | +1 | +1 | +1 | +1 | +1 | +1 | +1 | +1 | +1 | +1 | +1 | +1 | +1 | +1 | +1 | +1 | +1 | +1 |
+| more returns than greedy | 5 | 3 | 3 | 3 | 3 | 3 | 3 | 3 | 3 | 3 | 3 | 3 | 3 | 3 | 3 | 3 | 2 | 2 |
+| greedy kept | 16 | 11 | 11 | 11 | 10 | 9 | 9 | 9 | 7 | 6 | 5 | 5 | 5 | 5 | 3 | 3 | 2 | 1 |

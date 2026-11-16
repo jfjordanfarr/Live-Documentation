@@ -1,0 +1,7 @@
+returns at the card by the lab's ranking:
+  core.ts#undefined uses index.ts#WorkspaceFileIndex
+relevant rows: ["DependencyEntry","PublicSymbolEntry","SourceAnalysisResult","SymbolDocumentation","SymbolDocumentationParameter"]
+relevant rows of index.ts: ["__internals__","LanguageAdapter","WorkspaceFileIndex"]
+{"id":"packages/engine/src/live-docs/core.ts","rows":["PublicSymbolEntry","DependencyEntry","SourceAnalysisResult","SymbolDocumentation","SymbolDocumentationParameter","WorkspaceEntryIndex (hidden)","WorkspaceSymbolIndex (hidden)","TypeReference (hidden)","SymbolDocumentationException (hidden)","SymbolDocumentationExample (hidden)","SymbolDocumentationLinkKind (hidden)","SymbolDocumentationLink (hidden)","WorkspaceFileIndex (hidden)","BINARY_SNIFF_BYTES (hidden)","hasMeaningfulAuthoredContent (hidden)","isBinaryContent (hidden)","resolveArchetype (hidden)","discoverDocuments (hidden)","discoverTargetFiles (hidden)","buildWorkspaceIndexes (hidden)","collectExportedSymbols (hidden)","computePublicSymbolHeadingInfo (hidden)","composeCitedBy (hidden)","composeEntries (hidden)","composeSymbolBlocks (hidden)","composeDependencies (hidden)","composeReExports (hidden)","analyzeSourceFile (hidden)","__internals__ (hidden)"],"note":null}
+{"id":"packages/engine/src/live-docs/adapters/index.ts","rows":["LanguageAdapter","WorkspaceFileIndex","LANGUAGE_ADAPTERS (hidden)","analyzeWithLanguageAdapters (hidden)","__internals__"],"note":"1 connection returns in a cycle"}
+exit 0

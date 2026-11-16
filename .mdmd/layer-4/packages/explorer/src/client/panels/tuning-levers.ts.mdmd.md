@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/tuning-levers.ts
-- Generated At: 2026-11-16T05:14:28.339Z
+- Generated At: 2026-11-16T07:41:34.619Z
 
 ## Authored
 ### Purpose
@@ -27,6 +27,8 @@ Since 2026-11-05 Shell Depth has its sentence, and Group Wrappers' sentence name
 
 Since 2026-11-15 ([Turn 1 of the November 15 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) Descriptions Zoomed Out has its sentence, in the 2D layout group.
 
+Return Cost (2026-11-16, [Turn 5 of the November 15 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-5)) reads the continuing search in `branch-renderer.ts`: how many pixels of wire a connection read backward through a cycle is worth when the search tries a cycle's other orders.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -39,7 +41,7 @@ One short sentence per tuning control, keyed by the control's element id.
 
 #### `tuningHelpId` {#symbol-tuninghelpid}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning-levers.ts#L97)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning-levers.ts#L98)
 
 ##### `tuningHelpId` — Summary
 The id of the visually hidden element that carries a control's sentence.

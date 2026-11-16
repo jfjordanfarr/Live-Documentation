@@ -1,0 +1,11 @@
+packages/engine/src/live-docs/adapters/powershell.ts [] [
+  'packages/engine/src/live-docs/core.ts: height 475, page 455',
+  'packages/engine/src/live-docs/core.ts outbound:*: 238, page 227'
+]
+packages/engine/src/live-docs/adapters/json.ts [] [
+  'packages/engine/src/live-docs/core.ts: height 375, page 355',
+  'packages/engine/src/live-docs/core.ts outbound:*: 188, page 177',
+  'placement measure 6029, page 5989',
+  'picture height 1487, page 1467'
+]
+exit 0

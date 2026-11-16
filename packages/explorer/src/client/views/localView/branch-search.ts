@@ -97,8 +97,12 @@ export function judgeAlignment(state: SearchState, priced: number, base: number)
   return { adopt, state: { ...state, priced, shown: adopt ? base : state.shown, best: Math.min(state.best, base), adopted: state.adopted + (adopt ? 1 : 0) } };
 }
 
-/** Alternate available trial kinds; exhausted seed patience cannot hide pending alignment choices. */
-export function nextTrialKind(state: SearchState, alignmentPending: boolean, preferAlignment: boolean): "seed" | "alignment" | null {
+/**
+ * The next trial's kind: a cycle's other order while one is pending (2026-11-16), since it changes the ranking every other
+ * trial orders within; then seeds and joins in turn, exhausted seed patience not hiding pending alignment choices.
+ */
+export function nextTrialKind(state: SearchState, alignmentPending: boolean, preferAlignment: boolean, cyclePending = false): "cycle" | "seed" | "alignment" | null {
+  if (cyclePending) return "cycle";
   if (alignmentPending && (preferAlignment || state.status !== "running")) return "alignment";
   if (state.status === "running") return "seed";
   return null;

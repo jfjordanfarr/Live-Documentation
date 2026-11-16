@@ -128,6 +128,7 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`template.tuning-name-growth`](../../shared/template.html.mdmd.md#symbol-tuning-name-growth)
 - [`template.tuning-order-starts`](../../shared/template.html.mdmd.md#symbol-tuning-order-starts)
 - [`template.tuning-overview-files`](../../shared/template.html.mdmd.md#symbol-tuning-overview-files)
+- [`template.tuning-return-cost`](../../shared/template.html.mdmd.md#symbol-tuning-return-cost)
 - [`template.tuning-row-levelness`](../../shared/template.html.mdmd.md#symbol-tuning-row-levelness)
 - [`template.tuning-search-patience`](../../shared/template.html.mdmd.md#symbol-tuning-search-patience)
 - [`template.tuning-search-starts`](../../shared/template.html.mdmd.md#symbol-tuning-search-starts)

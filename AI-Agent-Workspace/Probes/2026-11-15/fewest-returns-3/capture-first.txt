@@ -1,0 +1,36 @@
+04:59:36
+tests/integration/programs/csharp/rosetta/src/Models/ModelFactory.cs warnings 0 drift 0 
+tests/integration/programs/csharp/rosetta/src/Types/ProcessorConfig.cs warnings 0 drift 0 
+tests/integration/programs/csharp/rosetta/src/Processor/Processor.cs warnings 0 drift 0 
+tests/integration/programs/csharp/rosetta/src/Models/Record.cs warnings 0 drift 0 
+tests/integration/programs/csharp/rosetta/expected/compiler-edges.json warnings 0 drift 0 
+packages/engine/src/live-docs/adapters/css.ts warnings 0 drift 0 
+packages/engine/src/live-docs/adapters/c.ts warnings 0 drift 0 
+packages/engine/src/live-docs/adapters/powershell.ts warnings 0 drift 0 
+tests/integration/programs/rust/rosetta/src/helpers.rs warnings 0 drift 0 
+packages/engine/src/live-docs/adapters/json.ts warnings 0 drift 0 
+packages/engine/src/live-docs/sourceAnalysis.ts warnings 0 drift 0 
+packages/explorer/src/client/views/localView/branch-scene.ts warnings 0 drift 0 
+packages/engine/src/live-docs/adapters/go.ts warnings 0 drift 0 
+tests/integration/programs/rust/stockroom/src/stock/quantity.rs warnings 0 drift 0 
+packages/engine/src/live-docs/adapters/html.ts warnings 0 drift 0 
+packages/engine/src/live-docs/adapters/aspnet.ts warnings 0 drift 0 
+packages/explorer/src/client/views/localView/directory-ancestry.ts warnings 0 drift 0 
+packages/explorer/src/client/views/localView/controller.ts warnings 0 drift 0 
+packages/engine/src/live-docs/adapters/dotnetConfig.ts warnings 0 drift 0 
+packages/engine/src/live-docs/adapters/csharp.ts warnings 0 drift 0 
+tests/integration/programs/rust/stockroom/src/stock/item.rs warnings 0 drift 0 
+tests/integration/programs/rust/stockroom/src/store/memory.rs warnings 0 drift 0 
+packages/explorer/src/client/views/localView/branches.ts warnings 0 drift 0 
+packages/explorer/src/client/views/localView/directory-flow.ts warnings 0 drift 0 
+packages/engine/src/live-docs/adapters/manifest.ts warnings 0 drift 0 
+packages/explorer/src/client/views/localView/branch-renderer.ts warnings 0 drift 0 
+packages/explorer/src/client/views/forceGraphView.ts warnings 0 drift 0 
+packages/explorer/src/client/views/forceGraphReveal.ts warnings 0 drift 0 
+tests/e2e/force-graph-reveal.spec.ts warnings 0 drift 0 
+packages/explorer/src/client/views/forceGraphScope.ts warnings 0 drift 0 
+packages/explorer/src/client/views/forceGraphLayout.ts warnings 0 drift 0 
+packages/engine/src/live-docs/core.ts warnings 0 drift 0 
+packages/engine/src/live-docs/adapters/index.ts warnings 0 drift 0 
+exit 0
+05:13:48

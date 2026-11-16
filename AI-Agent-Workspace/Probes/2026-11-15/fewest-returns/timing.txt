@@ -1,0 +1,15 @@
+large path against exact: 45 distinct cycles of 2 to 16 files, 45 at the exact backward and pairs; 0 backward references more in all, 0 pairs more
+rankBranches packages/explorer/src/client/types.ts: 53 files, 719 references, largest cycle 2: before 3.88 ms, after 1.89 ms
+rankBranches packages/explorer/src/shared/types.ts: 54 files, 660 references, largest cycle 2: before 3.31 ms, after 1.92 ms
+rankBranches packages/engine/src/live-docs/adapters/index.ts: 27 files, 206 references, largest cycle 25: before 1.89 ms, after 1.86 ms
+rankBranches packages/engine/src/live-docs/adapters/manifest.ts: 11 files, 114 references, largest cycle 8: before 0.57 ms, after 0.42 ms
+worst case 6 files: exact 0.01 ms, large path 0.04 ms
+worst case 8 files: exact 0.06 ms, large path 0.08 ms
+worst case 10 files: exact 0.39 ms, large path 0.09 ms
+worst case 11 files: exact 0.84 ms, large path 0.11 ms
+worst case 12 files: exact 1.95 ms, large path 0.13 ms
+worst case 13 files: exact 4.19 ms, large path 0.15 ms
+worst case 14 files: exact 8.72 ms, large path 0.18 ms
+worst case 16 files: exact 42.62 ms, large path 0.28 ms
+worst case 25 files: large path 1.06 ms
+worst case 50 files: large path 9.58 ms

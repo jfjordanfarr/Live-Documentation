@@ -1,0 +1,14 @@
+# The fewest returns: pictures before and after
+
+_Historical evidence, taken 2026-11-16 for the round of [Turn 5 of the November 15 record](../../../ChatHistory/2026/11/2026-11-15.1.record.md#turn-5): a cycle's files stand in the order that returns the fewest references ([the decision](../../../../.mdmd/layer-3/architectural-decisions.mdmd.md))._
+
+Each file was opened alone in the 2D Local Map (`/?view=local&node=<file>`) at 1440 by 900, with the page's default tuning, from the bundle built at commit `3f734433` (before) and at the round's change (after). "Arrival" is the picture the page first settles on; "whole" is the same picture after the Fit control. The page's own count of the returns it draws is in brackets.
+
+| Picture | Before | After | What I see |
+| --- | --- | --- | --- |
+| `branch-renderer.ts`, arrival | `before-arrival-branch-renderer.png` (8 drawn) | `after-arrival-branch-renderer.png` (6 drawn) | The subject no longer stands at the right edge: `controller.ts`, which uses it six times, now stands to its right, and the subject's four uses of the controller return instead, as laces on its rows' left. |
+| `branch-renderer.ts`, whole | `before-whole-branch-renderer.png` | `after-whole-branch-renderer.png` | Reads better: the fan into the subject is gathered, fewer wires run the picture's length (the lab: 279,350 px of wire to 200,271, crossings 118 to 74), and the controller and `directory-ancestry.ts` stand where a consumer belongs. The two small cards past the subject look a little stranded. |
+| `adapters/manifest.ts`, whole | `before-whole-manifest.png` (1 drawn) | `after-whole-manifest.png` (0 drawn) | Reads better: four columns instead of six, every adapter that uses the manifest in one column right of it, no wire over `cargo.ts` or `gomod.ts`, and the 3D button no longer lights. It is taller (the lab: 1,388 px to 2,096). |
+| `live-docs/core.ts`, whole | `before-whole-core.png` (7 drawn) | `after-whole-core.png` (3 drawn) | Mixed: `adapters/index.ts` now stands left of `core.ts`, which re-exports it, and the adapters fall into one tall column after `core.ts`; the long wires to `index.ts` at the far right are gone (crossings 3,304 to 1,292), but the tall column shrinks the fitted picture. |
+| `adapters/powershell.ts`, whole | `before-whole-powershell.png` (2 drawn) | `after-whole-powershell.png` (1 drawn) | Worse to my eye: one return fewer bought two more columns (`core.ts` and `adapters/index.ts` now stand one after the other), the picture is 44% wider and Fit falls into the connections look, where the rows are gone. Only scores better. |
+| `adapters/powershell.ts`, `core.ts`, `manifest.ts`, arrival | `before-arrival-*.png` | `after-arrival-*.png` | At arrival the subject's own neighbourhood barely changes; the change is in the rest of the picture. |

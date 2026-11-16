@@ -162,7 +162,7 @@ export interface Capture {
   filters?: Pick<ExplorerFilters, "showTests" | "showAssets">;
 }
 
-const PRETEXT_DIST = path.resolve(__dirname, "../../node_modules/@chenglou/pretext/dist");
+const PRETEXT_DIST = path.join(path.dirname(require.resolve("@chenglou/pretext/package.json")), "dist");
 /** The lab's own module that loads Pretext into the page; no file of Pretext's has the name. */
 const PRETEXT_ENTRY = "lab-entry.js";
 

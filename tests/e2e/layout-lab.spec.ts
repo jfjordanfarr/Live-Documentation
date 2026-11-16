@@ -1,12 +1,12 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 
 import { DECK_SCOPES } from "./scopes";
-import { localRetainUrl } from "./still-picture";
+import { localMapSettled, localRetainUrl } from "./still-picture";
 import { getDefaultTuning, PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import type { StaticExplorerData } from "../../packages/explorer/src/shared/staticExplorerData";
 import { captureFromPage } from "../../scripts/layout-lab/capture";
-import { baselineConfig, driftOf, evaluate } from "../../scripts/layout-lab/evaluate";
-import { loadBundleGraph } from "../../scripts/layout-lab/scopes";
+import { baselineConfig, driftOf, evaluate, type CycleSearch, type CycleTerms } from "../../scripts/layout-lab/evaluate";
+import { loadBundleGraph, type ScopeRun } from "../../scripts/layout-lab/scopes";
 
 /**
  * The layout lab's model of the page, held to the page: a capture of each deck
@@ -76,6 +76,58 @@ for (const run of [DECK_SCOPES[0], DECK_SCOPES[3]]) {
     expect(driftOf(narrower, predicted), "the original text measurements predict the actual narrower page").toEqual([]);
   });
 }
+
+/**
+ * A picture's cycle trials twice over (2026-11-16): the lab's walk of a capture of its first draw, at the page's own
+ * tuning, and the page's own record of its search with one seed and a patience of one, which tries every cycle trial
+ * before it settles.
+ */
+async function cycleTrials(page: Page, file: string): Promise<{ walked: CycleSearch["tried"]; trials: Array<{ predicted: CycleTerms; adopted: boolean }> }> {
+  const run: ScopeRun = { bundle: "repository", base: "/", scopeName: file, scope: [file], subject: file };
+  await page.setViewportSize({ width: 1600, height: 1000 });
+  await page.goto(localRetainUrl(run.base, run.scope));
+  const capture = await captureFromPage(page, run);
+  const lab = evaluate(capture, await loadBundleGraph(run), run, baselineConfig());
+  expect(driftOf(capture, lab), "the lab's first draw is the page's").toEqual([]);
+  await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); }, { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 1, searchPatience: 1 } } }) });
+  await page.goto(localRetainUrl(run.base, run.scope));
+  await localMapSettled(page, 120_000);
+  const trials = await page.evaluate(() => JSON.parse(document.querySelector<HTMLElement>("#map-container .local-placed")!.dataset.searchCycleTrials ?? "[]") as Array<{ predicted: CycleTerms; adopted: boolean }>);
+  return { walked: lab.cycleSearch?.tried ?? [], trials };
+}
+
+/** A trial's terms by name, in whole pixels; without the vertical placement when `vertical` is false. */
+function named({ signals, horizontal, returns }: CycleTerms, vertical = true): Record<string, number> {
+  return Object.fromEntries(Object.entries({ ...signals, horizontal, returns }).filter(([name]) => vertical || name !== "vertical").map(([name, value]) => [name, Math.round(value)]));
+}
+
+/**
+ * A cycle's trial returns other references than the picture shown, so some cards gain or lose their line on returning
+ * connections. The page predicts a trial on the shown picture's card heights; before it stood each card as the trial
+ * dresses it, `core.ts`'s two trials were predicted a foot taller than they stand (5,156 px where 5,136), and their
+ * prices 1,020 and 1,200 px from the walk's. Every term is now the walk's.
+ */
+test("a cycle trial's prediction stands each card's foot as the trial dresses it: core.ts, term by term", async ({ page }) => {
+  test.setTimeout(180_000);
+  const { walked, trials } = await cycleTrials(page, "packages/engine/src/live-docs/core.ts");
+  expect(walked.length, "the walk tries both other orders").toBe(2);
+  expect(trials.map(trial => named(trial.predicted)), "the page's predicted terms are the walk's").toEqual(walked.map(trial => named(trial.terms)));
+  expect(trials.map(trial => trial.adopted)).toEqual(walked.map(trial => trial.adopted));
+});
+
+/**
+ * `branches.ts` opened whole was the one picture where the page seemed to refuse a trial the lab's walk adopted; the two
+ * had been read from different graphs, and on one graph they agree. Its verdicts and every term but the vertical
+ * placement are the walk's: the page predicts that term from endpoints cached on the shown picture's cards and the lab
+ * places them afresh, 22 px apart in 213,847 on the second trial, where no verdict's margin is that narrow.
+ */
+test("the page's search judges a cycle's trials as the lab's walk does: branches.ts", async ({ page }) => {
+  test.setTimeout(180_000);
+  const { walked, trials } = await cycleTrials(page, "packages/explorer/src/client/views/localView/branches.ts");
+  expect(walked.length, "the walk tries both other orders").toBe(2);
+  expect(trials.map(trial => named(trial.predicted, false)), "the page's predicted terms are the walk's").toEqual(walked.map(trial => named(trial.terms, false)));
+  expect(trials.map(trial => trial.adopted), "and so are its verdicts").toEqual(walked.map(trial => trial.adopted));
+});
 
 test.describe("phone coarse-pointer reading geometry", () => {
   test.use({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });

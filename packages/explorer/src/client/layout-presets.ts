@@ -8,7 +8,7 @@ type SpatialPacking = Pick<ForceGraphTuning, "linkGap" | "charge" | "collisionGa
 
 /** Portable numeric settings behind the presets and spatial encodings; older URLs may omit them. */
 export interface LayoutSettings {
-  localMap?: Partial<FlatPacking & Pick<LocalMapTuning, "zoomLooks" | "directoryLayout" | "closedDirectory" | "closedShape" | "closedCells" | "overviewFiles" | "descriptionsZoomedOut">>;
+  localMap?: Partial<FlatPacking & Pick<LocalMapTuning, "returnCost" | "zoomLooks" | "directoryLayout" | "closedDirectory" | "closedShape" | "closedCells" | "overviewFiles" | "descriptionsZoomedOut">>;
   forceGraph?: Partial<ForceGraphTuning>;
 }
 
@@ -16,7 +16,7 @@ export interface LayoutSettings {
 export const LAYOUT_RANGES = {
   localMap: {
     columnGap: [24, 160, 4], itemGap: [8, 80, 2], bandGap: [8, 80, 2], heightCost: [0, 40, 1], widthCost: [0, 40, 1],
-    membraneEvenness: [0, 5, 0.25], membraneSimplicity: [0, 1000, 10], rowLevelness: [0, 5, 0.25]
+    membraneEvenness: [0, 5, 0.25], membraneSimplicity: [0, 1000, 10], rowLevelness: [0, 5, 0.25], returnCost: [0, 5000, 25]
   },
   forceGraph: {
     linkGap: [8, 200, 2], charge: [0, 300, 5], collisionGap: [0, 20, 0.5], coupling: [0, 3, 0.1], nodeSize: [1, 10, 0.25], symbolScale: [0, 2, 0.1],

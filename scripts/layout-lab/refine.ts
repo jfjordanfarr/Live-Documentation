@@ -11,7 +11,7 @@ import type { ScopeRun } from "./scopes";
 import type { LocalMapTuning } from "../../packages/explorer/src/client/types";
 import { alignmentCandidates } from "../../packages/explorer/src/client/views/localView/branch-alignments";
 import type { BoundaryAlignment } from "../../packages/explorer/src/client/views/localView/branch-placement";
-import { scoreOf, signalsOf, type StartCosts, type StartSignals } from "../../packages/explorer/src/client/views/localView/branch-restarts";
+import { pictureScore, signalsOf, type StartCosts, type StartSignals } from "../../packages/explorer/src/client/views/localView/branch-restarts";
 import { beginSearch, judgeAlignment, judgeStart, nextTrialKind, type SearchState } from "../../packages/explorer/src/client/views/localView/branch-search";
 import type { ExplorerGraphPayload } from "../../packages/explorer/src/shared/types";
 
@@ -53,14 +53,17 @@ export function refine(capture: Capture, graph: ExplorerGraphPayload, run: Scope
   const to = config.orderSeed !== null ? 0 : from - 1 + Math.max(0, Math.floor(settings.searchStarts));
   const alignmentEnabled = to >= from && settings.searchPatience > 0 && costs.steps > 0;
   let shown = initial;
-  let state = beginSearch({ from, to, patience: Math.floor(settings.searchPatience) }, scoreOf(signalsOf(initial.branches, initial.scene, null), { ...costs, churn: 0 }));
+  // Every picture is priced as the page prices it, by `pictureScore`: its ranking's two terms belong to the price the
+  // command reports (`state.shown`) whether or not a cycle offers another order.
+  let state = beginSearch({ from, to, patience: Math.floor(settings.searchPatience) }, pictureScore(signalsOf(initial.branches, initial.scene, null), { ...costs, churn: 0 }, config.returnCost, initial.scene, initial.branches));
   let alignments = alignmentEnabled ? alignmentCandidates(shown.scene) : [];
   let alignmentIndex = 0, alignmentTried = 0, alignmentAdopted = 0;
   let preferAlignment = true;
   const trials: RefinementTrial[] = [];
   for (;;) {
+    // The page's cycle trials are `evaluate`'s cycle search; the refinement walks the seeds and joins of one ranking.
     const kind = nextTrialKind(state, alignmentIndex < alignments.length, preferAlignment);
-    if (!kind) break;
+    if (!kind || kind === "cycle") break;
     preferAlignment = kind === "seed";
     const seed = state.next;
     const candidate = kind === "alignment"
@@ -68,8 +71,8 @@ export function refine(capture: Capture, graph: ExplorerGraphPayload, run: Scope
       : { ...evaluate(capture, graph, run, { ...config, orderSeed: seed, orderStarts: 0 }), config };
     if (kind === "alignment") alignmentTried++;
     const signals = signalsOf(candidate.branches, candidate.scene, shown.scene.tops);
-    const score = scoreOf(signals, costs);
-    const base = scoreOf(signals, { ...costs, churn: 0 });
+    const score = pictureScore(signals, costs, config.returnCost, candidate.scene, candidate.branches);
+    const base = pictureScore(signals, { ...costs, churn: 0 }, config.returnCost, candidate.scene, candidate.branches);
     const gain = state.shown - score;
     const judged = (kind === "alignment" ? judgeAlignment : judgeStart)(state, score, base);
     state = judged.state;

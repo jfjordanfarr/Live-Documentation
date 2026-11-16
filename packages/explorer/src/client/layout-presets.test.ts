@@ -36,6 +36,17 @@ describe("shared packing preferences", () => {
     expect(decompressSnapshot(compressSnapshot(DEFAULT_SNAPSHOT)).filters.showRelatedDocs).toBeUndefined();
   });
 
+  it("carries the Return Cost in a link, in pixels of wire bounded to its control, since the search's choice depends on it (2026-11-16)", () => {
+    const tuning = getDefaultTuning();
+    tuning.localMap.returnCost = 350;
+    const layout = layoutSettingsOf(tuning);
+    expect(layout.localMap?.returnCost).toBe(350);
+    const restored = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout }));
+    expect(applyLayoutSettings(getDefaultTuning(), restored.layout).localMap.returnCost).toBe(350);
+    expect(readLayoutSettings({ localMap: { returnCost: 99999 } })).toEqual({ localMap: { returnCost: 5000 } });
+    expect(readLayoutSettings({ localMap: { returnCost: 330 } })).toEqual({ localMap: { returnCost: 325 } });
+  });
+
   it("rejects malformed groups and nonnumeric values and bounds public controls", () => {
     expect(readLayoutSettings(null)).toBeUndefined();
     expect(readLayoutSettings({ localMap: [], forceGraph: { charge: Infinity, coupling: "2", nodeSize: null } })).toBeUndefined();

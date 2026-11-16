@@ -261,6 +261,83 @@ describe("independent Local Map branches", () => {
       expect(columnOf.get(edge.targetId)!, `${edge.targetId} offers to ${edge.sourceId}`).toBeLessThan(columnOf.get(edge.sourceId)!);
     }
   });
+
+  // The references that return, as "user uses provider", sorted.
+  const returns = (ranking: { back: Set<string> }, edges: readonly LocalEdge[]): string[] =>
+    edges.filter(edge => ranking.back.has(edgeKey(edge))).map(edge => `${edge.sourceId} uses ${edge.targetId}#${edge.targetSymbol}`).sort();
+  const uses = (user: string, provider: string, symbols: string[]): LocalEdge[] => symbols.map(symbol => reference(user, provider, symbol));
+
+  /** The ranking with every cycle standing in the last order it offers, the fewest-returns order. */
+  const fewest = (files: ExplorerNodePayload[], edges: LocalEdge[]): ReturnType<typeof rankBranches> => {
+    const offered = rankBranches(files, edges);
+    return rankBranches(files, edges, { orders: new Map(offered.cycles.map(cycle => [cycle.key, cycle.candidates[cycle.candidates.length - 1]])) });
+  };
+
+  it("stands two files that use each other in the greedy order, and offers the order that returns the lighter direction", () => {
+    // a uses three of b's symbols, b one of a's: the greedy order counts files, stands a first and returns all three.
+    const files = ["a", "b"].map(id => node(id));
+    const edges = [...uses("a", "b", ["x", "y", "z"]), ...uses("b", "a", ["w"])];
+    const ranking = rankBranches(files, edges);
+    expect(returns(ranking, edges)).toEqual(["a uses b#x", "a uses b#y", "a uses b#z"]);
+    expect(ranking.cycles.map(cycle => cycle.candidates)).toEqual([[["a", "b"], ["b", "a"]]]);
+    expect(ranking.cycles[0].order).toEqual(["a", "b"]);
+    // Given the other order, the lighter direction returns; the offer is the same whichever order stands.
+    const turned = fewest(files, edges);
+    expect(returns(turned, edges)).toEqual(["b uses a#w"]);
+    expect(turned.cycles[0]).toEqual({ ...ranking.cycles[0], order: ["b", "a"] });
+    // A pair line counts the links it stands for.
+    const lines: LocalEdge[] = [{ ...reference("a", "b"), gathered: 4 }, { ...reference("b", "a"), gathered: 3 }];
+    expect(returns(fewest(files, lines), lines)).toEqual(["b uses a#undefined"]);
+  });
+
+  it("offers a ring of three the orders between the greedy one and the one returning its lightest reference", () => {
+    // a uses b three times, b uses c twice, c uses a once: the greedy order stands a, c, b and returns a's three uses of b;
+    // the fewest-returns order stands c, b, a and returns c's one use of a; one order lies between.
+    const files = ["a", "b", "c"].map(id => node(id));
+    const edges = [...uses("a", "b", ["x", "y", "z"]), ...uses("b", "c", ["x", "y"]), ...uses("c", "a", ["x"])];
+    const ranking = rankBranches(files, edges);
+    expect(ranking.cycles[0].candidates).toEqual([["a", "c", "b"], ["c", "a", "b"], ["c", "b", "a"]]);
+    expect(returns(ranking, edges)).toEqual(["a uses b#x", "a uses b#y", "a uses b#z"]);
+    const turned = fewest(files, edges);
+    expect(returns(turned, edges)).toEqual(["c uses a#x"]);
+    expect(columnsOf(turned)).toEqual([["c"], ["b"], ["a"]]);
+  });
+
+  it("stands a cycle in the greedy order when the order given is not one of its files'", () => {
+    const files = ["a", "b"].map(id => node(id));
+    const edges = [...uses("a", "b", ["x", "y", "z"]), ...uses("b", "a", ["w"])];
+    const key = rankBranches(files, edges).cycles[0].key;
+    expect(rankBranches(files, edges, { orders: new Map([[key, ["a", "q"]]]) }).cycles[0].order).toEqual(["a", "b"]);
+    expect(rankBranches(files, edges, { orders: new Map([["another cycle", ["b", "a"]]]) }).cycles[0].order).toEqual(["a", "b"]);
+  });
+
+  it("keeps the greedy order in a tie, and a reference that tips a pair's balance changes its fewest-returns order", () => {
+    // a and b use two of each other's symbols: either order returns two, and the greedy order is the only one offered.
+    const files = ["a", "b"].map(id => node(id));
+    const tied = [...uses("a", "b", ["x", "y"]), ...uses("b", "a", ["x", "y"])];
+    expect(rankBranches(files, tied).cycles[0].candidates).toEqual([["a", "b"]]);
+    // One more of a's uses of b makes that direction the heavier: the order returning b's two uses of a is offered.
+    const tipped = [...tied, reference("a", "b", "z")];
+    expect(returns(fewest(files, tipped), tipped)).toEqual(["b uses a#x", "b uses a#y"]);
+  });
+
+  it("offers and stands the same whatever order the files and references arrive in, and a reference elsewhere leaves a cycle as it was", () => {
+    const files = ["a", "b", "c", "d", "e"].map(id => node(id));
+    const edges = [...uses("a", "b", ["x", "y"]), ...uses("b", "c", ["x"]), ...uses("c", "a", ["x", "y", "z"]), ...uses("d", "a", ["x"]), ...uses("e", "d", ["x"]), ...uses("d", "e", ["y", "z"])];
+    const ranking = fewest(files, edges);
+    expect(returns(ranking, edges)).toEqual(["b uses c#x", "e uses d#x"]);
+    const next = (() => { let state = 5; return () => (state = (state * 48271) % 2147483647) / 2147483647; })();
+    const shuffle = <T,>(list: readonly T[]): T[] => list.map(item => [next(), item] as const).sort(([x], [y]) => x - y).map(([, item]) => item);
+    for (let trial = 0; trial < 6; trial++) {
+      const again = fewest(shuffle(files), shuffle(edges));
+      expect(returns(again, edges)).toEqual(returns(ranking, edges));
+      expect(columnsOf(again)).toEqual(columnsOf(ranking));
+      expect(again.cycles).toEqual(ranking.cycles);
+    }
+    // Two more files and references inside no cycle, one of them between the two new files: both cycles keep their keys and offers.
+    const more = [...edges, ...uses("f", "a", ["x", "y"]), reference("g", "f", "value"), reference("g", "e", "x")];
+    expect(rankBranches([...files, node("f"), node("g")], more).cycles).toEqual(rankBranches(files, edges).cycles);
+  });
 });
 
 describe("the membrane depth", () => {

@@ -18,9 +18,10 @@ import { payloadToSnapshot } from "../../packages/explorer/src/client/persistenc
 import { getDefaultTuning } from "../../packages/explorer/src/client/persistence/local-storage";
 import type { LocalMapTuning, SymbolOrder } from "../../packages/explorer/src/client/types";
 import type { BoundaryAlignment } from "../../packages/explorer/src/client/views/localView/branch-placement";
-import { candidateStarts, layoutStarts, scoreOf, signalsOf, startName, startOrder, type StartSignals } from "../../packages/explorer/src/client/views/localView/branch-restarts";
+import { candidateStarts, layoutStarts, pictureScore, signalsOf, startName, startOrder, type StartSignals } from "../../packages/explorer/src/client/views/localView/branch-restarts";
 import { layoutScene, planBranches, type Scene } from "../../packages/explorer/src/client/views/localView/branch-scene";
-import { exploreBranches, orderExploration, type BranchGraph } from "../../packages/explorer/src/client/views/localView/branches";
+import { exploreBranches, orderExploration, type BranchGraph, type Exploration } from "../../packages/explorer/src/client/views/localView/branches";
+import { horizontalWire, returningLinks, standingOrders, walkCycleTrials } from "../../packages/explorer/src/client/views/localView/cycle-trials";
 import { addPin, EMPTY_PIN_SET, type PinSet } from "../../packages/explorer/src/client/views/pin-state";
 import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../packages/explorer/src/shared/types";
 
@@ -28,6 +29,7 @@ import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../packages/e
 export interface LabConfig {
   rankingPull: number;
   rankingTie: "fewest" | "right" | "left";
+  returnCost: number;
   orderSweeps: number;
   orderSeed: number | null;
   orderStarts: number;
@@ -48,7 +50,7 @@ export interface LabConfig {
 }
 
 /** The levers in the order the reports name them. */
-export const LEVERS: ReadonlyArray<keyof LabConfig> = ["rankingPull", "rankingTie", "orderSweeps", "orderSeed", "orderStarts", "crossingCost", "heightCost", "widthCost", "symbolOrder", "columnGap", "itemGap", "bandGap", "membraneNeck", "membranePadding", "cardMaxWidth", "membraneDepth", "membraneEvenness", "membraneSimplicity", "rowLevelness"];
+export const LEVERS: ReadonlyArray<keyof LabConfig> = ["rankingPull", "rankingTie", "returnCost", "orderSweeps", "orderSeed", "orderStarts", "crossingCost", "heightCost", "widthCost", "symbolOrder", "columnGap", "itemGap", "bandGap", "membraneNeck", "membranePadding", "cardMaxWidth", "membraneDepth", "membraneEvenness", "membraneSimplicity", "rowLevelness"];
 
 /** The page's own tuning: the configuration the picture was designed at. */
 export function baselineConfig(preset: LayoutPreset = "relaxed"): LabConfig {
@@ -71,6 +73,31 @@ export interface Evaluation {
   starts: Array<{ name: string; signals: StartSignals; score: number }>;
   /** Explicit boundary equalities used for this picture; first paint has none. */
   alignments: readonly BoundaryAlignment[];
+  /**
+   * What the page's continuing search would make of the picture's cycles after its first paint (2026-11-16): each other
+   * order tried as the search tries it, on the capture's card model, and the picture it would leave standing; null for a
+   * picture with no cycle to try.
+   */
+  cycleSearch: CycleSearch | null;
+}
+
+/** A cycle trial's terms: the page's signals against the standing picture, the wires' horizontal length, the returning links. */
+export interface CycleTerms {
+  signals: StartSignals;
+  horizontal: number;
+  returns: number;
+}
+
+/** The search's cycle trials on a picture: every trial with its prices, and what stands after them. */
+export interface CycleSearch {
+  /** Each trial with its prices, and its terms as the page's search records them: the signals with the move's churn, the ranking's two. */
+  tried: Array<{ key: string; order: string[]; withChurn: number; price: number; adopted: boolean; terms: CycleTerms }>;
+  /** The first-drawn picture's price as the search compares it: churn aside, its ranking's two terms added. */
+  firstPrice: number;
+  orders: ReadonlyMap<string, readonly string[]>;
+  branches: BranchGraph;
+  scene: Scene;
+  price: number;
 }
 
 /** The scope's pins, every file retained whole, and its subject. */
@@ -102,18 +129,22 @@ function placeConfiguration(capture: Capture, run: ScopeRun, config: LabConfig, 
   return { scene, metrics: measurer.metrics };
 }
 
-/** Lays out and scores one configuration of the levers over a capture. */
-export function evaluate(capture: Capture, graph: ExplorerGraphPayload, run: ScopeRun, config: LabConfig): Evaluation {
+/**
+ * Lays out and scores one configuration of the levers over a capture, as the page draws it first, its cycles in the greedy
+ * order or the orders given (the page's session memory), and beside it what the search's cycle trials would leave.
+ */
+export function evaluate(capture: Capture, graph: ExplorerGraphPayload, run: ScopeRun, config: LabConfig, orders?: ReadonlyMap<string, readonly string[]>): Evaluation {
   const started = performance.now();
   const byId = new Map(graph.nodes.map(node => [node.id, node]));
   const center = byId.get(retainedSubject(run));
   if (!center) throw new Error(`The bundle has no file ${JSON.stringify(retainedSubject(run))}.`);
   const pins = scopePins(run);
-  const exploration = exploreBranches(center, graph, pins, includeNode(pins, retainedSubject(run), capture.filters), {
+  const explore = (orders?: ReadonlyMap<string, readonly string[]>): Exploration => exploreBranches(center, graph, pins, includeNode(pins, retainedSubject(run), capture.filters), {
     symbolOrder: config.symbolOrder,
-    ranking: { pull: config.rankingPull, tie: config.rankingTie },
+    ranking: { pull: config.rankingPull, tie: config.rankingTie, orders },
     membraneDepth: config.membraneDepth
   });
+  const exploration = explore(orders);
   // The page's own starts and choice, with the capture's card model as the measurer; the lab has no previous picture.
   const ranked = exploration.ranking.columns.map(column => column.map(node => node.id));
   const starts = candidateStarts(config.orderStarts, config.orderSeed, null, ranked);
@@ -123,16 +154,47 @@ export function evaluate(capture: Capture, graph: ExplorerGraphPayload, run: Sco
     const { scene, metrics } = placeConfiguration(capture, run, config, branches);
     metricsOf.set(scene, metrics);
     return { branches, scene };
-  }, { crossing: config.crossingCost, height: config.heightCost, width: config.widthCost, churn: 0, evenness: config.membraneEvenness, levelness: config.rowLevelness, steps: config.membraneSimplicity }, null);
+  }, { crossing: config.crossingCost, height: config.heightCost, width: config.widthCost, churn: 0, evenness: config.membraneEvenness, levelness: config.rowLevelness, steps: config.membraneSimplicity }, config.returnCost, null);
   const { branches, scene } = chosen;
   const metrics = metricsOf.get(scene)!;
   const routes = routeScene(scene, branches, capture, metrics, getDefaultTuning().bezier);
   const signals = measureScene(scene, branches, routes);
+  const cycleSearch = exploration.ranking.cycles.some(cycle => cycle.candidates.length > 1)
+    ? searchCycles(capture, run, config, explore, exploration, branches, scene, chosen.score) : null;
   return {
     config, signals, ms: performance.now() - started, branches, scene, routes, metrics, alignments: [],
     start: startName(chosen.start),
-    starts: outcomes.map(outcome => ({ name: startName(outcome.start), signals: outcome.signals, score: outcome.score }))
+    starts: outcomes.map(outcome => ({ name: startName(outcome.start), signals: outcome.signals, score: outcome.score })),
+    cycleSearch
   };
+}
+
+/**
+ * The search's cycle trials as the page runs them after its first paint, by the same walk (`walkCycleTrials`): each
+ * trial ranked, ordered from the standing picture's own order where its files allow, laid out on the capture's card model
+ * and priced by the page's price with its churn against the standing picture, the ranking's two terms added.
+ */
+function searchCycles(capture: Capture, run: ScopeRun, config: LabConfig, explore: (orders?: ReadonlyMap<string, readonly string[]>) => Exploration,
+  exploration: Exploration, branches: BranchGraph, scene: Scene, score: number): CycleSearch {
+  const costs = { crossing: config.crossingCost, height: config.heightCost, width: config.widthCost, churn: getDefaultTuning().localMap.churnCost,
+    evenness: config.membraneEvenness, levelness: config.rowLevelness, steps: config.membraneSimplicity };
+  // The first draw's price is already the search's: `layoutStarts` priced it by `pictureScore`, churn aside.
+  const firstPrice = score;
+  type Walked = { orders: ReadonlyMap<string, readonly string[]>; price: number; branches: BranchGraph; scene: Scene };
+  const terms: CycleTerms[] = [];
+  const walk = walkCycleTrials<Walked>({ orders: standingOrders(exploration.ranking.cycles), price: firstPrice, branches, scene }, exploration.ranking.cycles, (orders, standing) => {
+    const trial = explore(orders);
+    const starts = candidateStarts(0, null, standing.scene.tops, trial.ranking.columns.map(column => column.map(node => node.id)));
+    const trialBranches = orderExploration(trial, { sweeps: config.orderSweeps, ...startOrder(starts[starts.length - 1]) });
+    const { scene: trialScene } = placeConfiguration(capture, run, config, trialBranches);
+    const signals = signalsOf(trialBranches, trialScene, standing.scene.tops);
+    terms.push({ signals, horizontal: horizontalWire(trialScene, trialBranches), returns: returningLinks(trialBranches) });
+    return {
+      picture: { orders, price: pictureScore(signalsOf(trialBranches, trialScene, null), { ...costs, churn: 0 }, config.returnCost, trialScene, trialBranches), branches: trialBranches, scene: trialScene },
+      withChurn: pictureScore(signals, costs, config.returnCost, trialScene, trialBranches)
+    };
+  });
+  return { tried: walk.tried.map((trial, index) => ({ ...trial, terms: terms[index] })), firstPrice, orders: walk.picture.orders, branches: walk.picture.branches, scene: walk.picture.scene, price: walk.picture.price };
 }
 
 /** Re-solves a shown order with explicit alignment constraints, preserving its source scene and reporting the same shape price as the page. */
@@ -142,10 +204,10 @@ export function evaluateAlignment(previous: Evaluation, capture: Capture, run: S
   const { scene, metrics } = placeConfiguration(capture, run, config, branches, alignments);
   const routes = routeScene(scene, branches, capture, metrics, getDefaultTuning().bezier);
   const signals = signalsOf(branches, scene, previous.scene.tops);
-  const score = scoreOf(signals, { crossing: config.crossingCost, height: config.heightCost, width: config.widthCost, churn: 0, evenness: config.membraneEvenness, levelness: config.rowLevelness, steps: config.membraneSimplicity });
+  const score = pictureScore(signals, { crossing: config.crossingCost, height: config.heightCost, width: config.widthCost, churn: 0, evenness: config.membraneEvenness, levelness: config.rowLevelness, steps: config.membraneSimplicity }, config.returnCost, scene, branches);
   return {
     config, signals: measureScene(scene, branches, routes), ms: performance.now() - started, branches, scene, routes, metrics,
-    start: previous.start, starts: [{ name: previous.start, signals, score }], alignments: [...alignments]
+    start: previous.start, starts: [{ name: previous.start, signals, score }], alignments: [...alignments], cycleSearch: previous.cycleSearch
   };
 }
 

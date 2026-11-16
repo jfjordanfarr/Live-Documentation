@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/refine.ts
-- Generated At: 2026-10-13T16:52:35.813Z
+- Generated At: 2026-11-16T11:46:40.675Z
 
 ## Authored
 ### Purpose
@@ -18,6 +18,8 @@ The page and lab share candidate generation, trial scheduling, signals and judge
 The capture's card model supplies measurements. `evaluateAlignment` preserves the shown branch order while making a fresh scene, and seed trials use the same configuration with one forced seed. The result retains unsuccessful trials as well as adoptions. Its JSON companion serializes costs, settings, signals, columns, card tops and membrane segments without the scene's cyclic ownership links; the markdown report makes the score tradeoffs readable.
 
 Added during the [October 13 weighted competition work](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply) to keep the new alignment search available through the headless lab. The older [restarts report](./restarts.ts.mdmd.md) deliberately remains an ordering-only simulation; this module performs the interleaved refinement.
+
+The refinement walks the seeds and joins of one ranking; the page's cycle trials, which the search tries first since 2026-11-16, are `evaluate`'s `cycleSearch` ([Turn 5 of the November 15 record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-5)). Every picture it compares is priced by the page's own `pictureScore`, the ranking's two terms included, so that the price it reports (`state.shown`) is the page's `data-search-shown` whether or not a cycle offers another order; the browser suite's `local-map-simplicity` holds the two equal.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -54,7 +56,7 @@ Runs the same finite seed budget and alignment neighborhoods as the page, using 
 
 #### `refinementJson` {#symbol-refinementjson}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/refine.ts#L97)
+- Source: [source](../../../../scripts/layout-lab/refine.ts#L100)
 - Parameters: `result`: [`Refinement`](#symbol-refinement); `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun); `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture)
 
 ##### `refinementJson` — Summary
@@ -62,7 +64,7 @@ A complete command result without the internal maps and cyclic scene ownership l
 
 #### `renderRefinement` {#symbol-renderrefinement}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/refine.ts#L106)
+- Source: [source](../../../../scripts/layout-lab/refine.ts#L109)
 - Parameters: `result`: [`Refinement`](#symbol-refinement); `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun); `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture)
 
 ##### `renderRefinement` — Summary
@@ -76,7 +78,7 @@ A readable companion to the complete trial and geometry JSON.
 - [`branch-placement.BoundaryAlignment`](../../packages/explorer/src/client/views/localView/branch-placement.ts.mdmd.md#symbol-boundaryalignment) (type-only)
 - [`branch-restarts.StartCosts`](../../packages/explorer/src/client/views/localView/branch-restarts.ts.mdmd.md#symbol-startcosts)
 - [`branch-restarts.StartSignals`](../../packages/explorer/src/client/views/localView/branch-restarts.ts.mdmd.md#symbol-startsignals)
-- [`branch-restarts.scoreOf`](../../packages/explorer/src/client/views/localView/branch-restarts.ts.mdmd.md#symbol-scoreof)
+- [`branch-restarts.pictureScore`](../../packages/explorer/src/client/views/localView/branch-restarts.ts.mdmd.md#symbol-picturescore)
 - [`branch-restarts.signalsOf`](../../packages/explorer/src/client/views/localView/branch-restarts.ts.mdmd.md#symbol-signalsof)
 - [`branch-search.SearchState`](../../packages/explorer/src/client/views/localView/branch-search.ts.mdmd.md#symbol-searchstate)
 - [`branch-search.beginSearch`](../../packages/explorer/src/client/views/localView/branch-search.ts.mdmd.md#symbol-beginsearch)

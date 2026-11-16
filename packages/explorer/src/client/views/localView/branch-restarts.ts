@@ -1,6 +1,7 @@
 import type { Scene } from "./branch-scene";
 import { shapeSignalsOf, type ShapeSignals } from "./branch-shape";
 import type { BranchGraph, OrderOptions } from "./branches";
+import { rankingTerms } from "./cycle-trials";
 
 /**
  * The order step's restarts. Ranking and placement are exact, so running them
@@ -64,7 +65,7 @@ export interface StartOutcome {
   branches: BranchGraph;
   scene: Scene;
   signals: StartSignals;
-  /** The vertical length plus the costs of the crossings, height, width, churn and shape, in pixels of wire. */
+  /** The picture's price (`pictureScore`): its vertical length, what its other signals cost, and its ranking's two terms. */
   score: number;
 }
 
@@ -128,6 +129,17 @@ export function scoreOf(signals: StartSignals, costs: StartCosts): number {
 }
 
 /**
+ * A picture's price as the order step chooses among its starts, the continuing search compares it and the page reports
+ * it (`data-order-score`, `data-search-shown`): its signals at their costs, and what its ranking adds, the wires'
+ * horizontal length and the Return Cost of every returning link (`rankingTerms`, 2026-11-16). The page, its search and
+ * the layout lab's headless search all price by this one function, so that each names the price the others name. Within
+ * one ranking the two terms are the same for every start; they part pictures of different rankings, a cycle's trials.
+ */
+export function pictureScore(signals: StartSignals, costs: StartCosts, returnCost: number, scene: Scene, branches: BranchGraph): number {
+  return scoreOf(signals, costs) + rankingTerms(scene, branches, returnCost);
+}
+
+/**
  * Lays out every start and keeps the cheapest. Of two at one price the earlier wins, so the ranking's own order stands
  * unless another start is cheaper, and the previous picture's stands before any shuffle.
  */
@@ -135,13 +147,14 @@ export function layoutStarts(
   starts: readonly Start[],
   layout: (start: Start) => { branches: BranchGraph; scene: Scene },
   costs: StartCosts,
+  returnCost: number,
   previous: ReadonlyMap<string, number> | null
 ): { chosen: StartOutcome; outcomes: StartOutcome[] } {
   if (starts.length === 0) throw new Error("The order step needs at least one start.");
   const outcomes: StartOutcome[] = starts.map(start => {
     const { branches, scene } = layout(start);
     const signals = signalsOf(branches, scene, previous);
-    return { start, branches, scene, signals, score: scoreOf(signals, costs) };
+    return { start, branches, scene, signals, score: pictureScore(signals, costs, returnCost, scene, branches) };
   });
   const chosen = outcomes.reduce((best, outcome) => (outcome.score < best.score ? outcome : best));
   return { chosen, outcomes };

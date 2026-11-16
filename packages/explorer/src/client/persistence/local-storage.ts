@@ -9,6 +9,7 @@ import { readPerspective, readSpatialLayout, readView } from "./navigation";
 import { LAYOUT_PRESETS, readLayoutSettings } from "../layout-presets";
 import { readReadingChoices, type ReadingChoice } from "../reading-state";
 import { CHANGE_EMPHASES, HISTORY_GRANULARITIES, type ChangeEmphasis, type DiscoveryTarget, type HistoryAxis, type HistoryGranularity, type InspectionTarget, type LocalMapPerspective, type ExplorerFilters, type SpatialLayout, type SymbolOrder, type TuningConfig, type ViewName } from "../types";
+import { DEFAULT_RETURN_COST } from "../views/localView/cycle-order";
 
 // ─────────────────────────────────────────────────────────────────────────
 // Persisted UI State (tuning + filters)
@@ -80,6 +81,7 @@ export const getDefaultTuning = (): TuningConfig => ({
     searchPatience: 8,
     rankingPull: 0,
     rankingTie: "fewest",
+    returnCost: DEFAULT_RETURN_COST,
     orderSweeps: 4,
     orderSeed: null,
     orderStarts: 2,
@@ -230,6 +232,7 @@ export const readPersistedUi = (): PersistedUi | null => {
         const searchPatience = readFiniteNumber(localMapRaw.searchPatience);
         const rankingPull = readFiniteNumber(localMapRaw.rankingPull);
         const rankingTie = readRankingTie(localMapRaw.rankingTie);
+        const returnCost = readFiniteNumber(localMapRaw.returnCost);
         const orderSweeps = readFiniteNumber(localMapRaw.orderSweeps);
         const orderSeed = readNullableNumber(localMapRaw.orderSeed);
         const orderStarts = readFiniteNumber(localMapRaw.orderStarts);
@@ -267,6 +270,7 @@ export const readPersistedUi = (): PersistedUi | null => {
           ...(searchPatience !== undefined ? { searchPatience } : null),
           ...(rankingPull !== undefined ? { rankingPull } : null),
           ...(rankingTie !== undefined ? { rankingTie } : null),
+          ...(returnCost !== undefined ? { returnCost } : null),
           ...(orderSweeps !== undefined ? { orderSweeps } : null),
           ...(orderSeed !== undefined ? { orderSeed } : null),
           ...(orderStarts !== undefined ? { orderStarts } : null),

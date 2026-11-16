@@ -1,0 +1,36 @@
+files opened alone: 970 pictures; returns changed in 33, columns changed in 33, dark pictures changed 0, pictures with more returns 0
+    2 ->   1 backward, pairs 1 -> 1, columns 6 -> 6  scc 2  tests/integration/programs/csharp/rosetta/src/Models/ModelFactory.cs
+    2 ->   1 backward, pairs 1 -> 1, columns 6 -> 6  scc 2  tests/integration/programs/csharp/rosetta/src/Types/ProcessorConfig.cs
+    2 ->   1 backward, pairs 1 -> 1, columns 7 -> 6  scc 2  tests/integration/programs/csharp/rosetta/src/Processor/Processor.cs
+    2 ->   1 backward, pairs 1 -> 1, columns 7 -> 7  scc 2  tests/integration/programs/csharp/rosetta/src/Models/Record.cs
+    2 ->   1 backward, pairs 1 -> 1, columns 8 -> 8  scc 2  tests/integration/programs/csharp/rosetta/expected/compiler-edges.json
+    3 ->   2 backward, pairs 2 -> 2, columns 3 -> 4  scc 3  packages/engine/src/live-docs/adapters/css.ts
+    3 ->   2 backward, pairs 2 -> 2, columns 4 -> 5  scc 3  packages/engine/src/live-docs/adapters/c.ts
+    3 ->   2 backward, pairs 2 -> 2, columns 4 -> 6  scc 4  packages/engine/src/live-docs/adapters/powershell.ts
+    3 ->   2 backward, pairs 2 -> 2, columns 5 -> 4  scc 3  tests/integration/programs/rust/rosetta/src/helpers.rs
+    3 ->   2 backward, pairs 2 -> 2, columns 5 -> 6  scc 4  packages/engine/src/live-docs/adapters/json.ts
+    3 ->   2 backward, pairs 2 -> 2, columns 6 -> 7  scc 5  packages/engine/src/live-docs/sourceAnalysis.ts
+    4 ->   2 backward, pairs 1 -> 1, columns 9 -> 8  scc 3  packages/explorer/src/client/views/localView/branch-scene.ts
+    4 ->   2 backward, pairs 2 -> 2, columns 4 -> 5  scc 3  packages/engine/src/live-docs/adapters/go.ts
+    5 ->   2 backward, pairs 2 -> 2, columns 7 -> 7  scc 2  tests/integration/programs/rust/stockroom/src/stock/quantity.rs
+    5 ->   3 backward, pairs 3 -> 3, columns 4 -> 4  scc 4  packages/engine/src/live-docs/adapters/html.ts
+    5 ->   3 backward, pairs 3 -> 3, columns 4 -> 5  scc 4  packages/engine/src/live-docs/adapters/aspnet.ts
+    6 ->   5 backward, pairs 1 -> 2, columns 4 -> 3  scc 3  packages/explorer/src/client/views/localView/directory-ancestry.ts
+    6 ->   5 backward, pairs 1 -> 2, columns 9 -> 9  scc 3  packages/explorer/src/client/views/localView/controller.ts
+    7 ->   3 backward, pairs 3 -> 3, columns 4 -> 5  scc 4  packages/engine/src/live-docs/adapters/dotnetConfig.ts
+    7 ->   3 backward, pairs 3 -> 3, columns 6 -> 5  scc 6  packages/engine/src/live-docs/adapters/csharp.ts
+    7 ->   4 backward, pairs 4 -> 4, columns 8 -> 8  scc 3  tests/integration/programs/rust/stockroom/src/stock/item.rs
+    7 ->   4 backward, pairs 4 -> 4, columns 8 -> 8  scc 3  tests/integration/programs/rust/stockroom/src/store/memory.rs
+    8 ->   6 backward, pairs 2 -> 2, columns 10 -> 11  scc 3  packages/explorer/src/client/views/localView/branches.ts
+    8 ->   6 backward, pairs 2 -> 2, columns 8 -> 8  scc 3  packages/explorer/src/client/views/localView/directory-flow.ts
+    9 ->   6 backward, pairs 7 -> 6, columns 6 -> 4  scc 8  packages/engine/src/live-docs/adapters/manifest.ts
+   10 ->   7 backward, pairs 2 -> 3, columns 10 -> 10  scc 3  packages/explorer/src/client/views/localView/branch-renderer.ts
+   13 ->   9 backward, pairs 2 -> 2, columns 10 -> 9  scc 3  packages/explorer/src/client/views/forceGraphView.ts
+   13 ->   9 backward, pairs 2 -> 2, columns 4 -> 4  scc 3  packages/explorer/src/client/views/forceGraphReveal.ts
+   13 ->   9 backward, pairs 2 -> 2, columns 4 -> 4  scc 3  tests/e2e/force-graph-reveal.spec.ts
+   13 ->   9 backward, pairs 2 -> 2, columns 6 -> 6  scc 3  packages/explorer/src/client/views/forceGraphScope.ts
+   13 ->   9 backward, pairs 2 -> 2, columns 7 -> 6  scc 3  packages/explorer/src/client/views/forceGraphLayout.ts
+   30 ->  18 backward, pairs 18 -> 17, columns 9 -> 7  scc 25  packages/engine/src/live-docs/core.ts
+   37 ->  22 backward, pairs 23 -> 21, columns 6 -> 5  scc 25  packages/engine/src/live-docs/adapters/index.ts
+opened directories: 4 pictures; returns changed in 1, columns changed in 1, dark pictures changed 0, pictures with more returns 0
+   10 ->   7 backward, pairs 2 -> 3, columns 11 -> 11  scc 3  packages/explorer/src/client/views/localView/

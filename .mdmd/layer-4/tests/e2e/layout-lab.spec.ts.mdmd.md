@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/layout-lab.spec.ts
-- Generated At: 2026-11-04T18:23:41.964Z
+- Generated At: 2026-11-16T08:48:08.615Z
 
 ## Authored
 ### Purpose
@@ -24,6 +24,8 @@ Since [Turn 12](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.
 
 Since [Turn 12](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-12--november-6) the narrow-cap, phone and indented-code cases keep the growing composition on both of their loads, since Card Text defaults to fixed slots and a capture of slot cards cannot predict a page of growing ones; that mismatch was the whole of their drift.
 
+Since 2026-11-16 ([Turn 5 of the November 15 record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-5)) two cases hold the continuing search's cycle trials to the lab's walk of them (`cycleTrials`: the walk of a capture of the first draw, and the page's own record of its search with one seed). On `core.ts` every term of the page's prediction is the walk's: before the prediction stood each card's foot on returning connections as the trial dresses it, both trials were predicted a foot taller than they stand and 1,020 and 1,200 px from the walk's price (the case failed so on a build without it). On `branches.ts`, the picture on which the page once seemed to refuse a trial the walk adopted, the verdicts and every term but the vertical placement are the walk's; the two had been read from different graphs, and on one graph they agree, the vertical placement 22 px apart in 213,847 since the page predicts it from endpoints cached on the shown cards.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -32,16 +34,20 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@playwright/test` - `expect`, `test`
+- `@playwright/test` - `Page`, `expect`, `test`
 - [`local-storage.PERSISTED_UI_KEY`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_key)
 - [`local-storage.PERSISTED_UI_VERSION`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_version)
 - [`local-storage.getDefaultTuning`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-getdefaulttuning)
 - [`StaticExplorerData`](../../packages/explorer/src/shared/staticExplorerData.ts.mdmd.md#symbol-staticexplorerdata) (type-only)
 - [`capture.captureFromPage`](../../scripts/layout-lab/capture.ts.mdmd.md#symbol-capturefrompage)
+- [`evaluate.CycleSearch`](../../scripts/layout-lab/evaluate.ts.mdmd.md#symbol-cyclesearch)
+- [`evaluate.CycleTerms`](../../scripts/layout-lab/evaluate.ts.mdmd.md#symbol-cycleterms)
 - [`evaluate.baselineConfig`](../../scripts/layout-lab/evaluate.ts.mdmd.md#symbol-baselineconfig)
 - [`evaluate.driftOf`](../../scripts/layout-lab/evaluate.ts.mdmd.md#symbol-driftof)
 - [`evaluate`](../../scripts/layout-lab/evaluate.ts.mdmd.md#symbol-evaluate)
+- [`scopes.ScopeRun`](../../scripts/layout-lab/scopes.ts.mdmd.md#symbol-scoperun)
 - [`scopes.loadBundleGraph`](../../scripts/layout-lab/scopes.ts.mdmd.md#symbol-loadbundlegraph)
 - [`scopes.DECK_SCOPES`](./scopes.ts.mdmd.md#symbol-deck_scopes)
+- [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)
 - [`still-picture.localRetainUrl`](./still-picture.ts.mdmd.md#symbol-localretainurl)
 <!-- LIVE-DOC:END Dependencies -->

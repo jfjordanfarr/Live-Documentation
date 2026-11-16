@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-search.ts
-- Generated At: 2026-10-13T16:52:34.886Z
+- Generated At: 2026-11-16T05:26:02.664Z
 
 ## Authored
 ### Purpose
@@ -14,6 +14,8 @@ Provides deterministic continuing-search decisions and a card-row model that rel
 - Pure, no DOM, no clock. `beginSearch` and `judgeStart` are the search's state and its judge: a start is adopted when its price with its churn is strictly below the shown picture's own price, churn aside, and the shown price becomes the start's own; a run of starts as long as the patience none of which betters the best price found, churn aside, settles the search, and the last seed caps it; when both fall on one start the search is settled. Until later on 2026-10-07 the run counted starts not adopted, so a better start refused for its churn cut the search short; the four scopes' tables showed one such run on the estate's five files, and the owner's suspicion that the search approaches the best picture whatever the churn cost holds once the patience follows the best found ([Turn 18](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-18)). The seeds are a fixed sequence from the one after the last the first paint tried, so the picture after any number of starts is the same on every machine; only the moments they arrive differ. `CardRows` is a card's rows as the renderer measured them once at the chosen widths (the header, CSS grid gap, each visible track’s height, the Internals row, and the resolved endpoint-to-row or fixed-card offsets); `orderedRows` stands them as the renderer's `orderRows` would (a named row per mention, the rest grouped by name in the order the names first stood, Internals last, or as they stand when no order is named) and `pinFor` sums the rows above a pin, rounding half pixels up as the page's measurement does; endpoint resolution is captured from the runtime, including exact names, duplicate normalized names, hidden anchors and file/asset hubs; the cache never guesses a fallback. An uncaptured endpoint is an error rather than a silently omitted wire. The lab's restarts tabulation runs the page's own judge over its tabulated starts (`simulateSearch`). Built for the plan's step 5 after the owner's go ([Turn 17](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-17)), to their stopping rule ([Turn 16](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-16)).
 
 Alignment trials share the complete shown/best price but do not consume ordering seeds or their patience. The next-trial helper alternates available kinds, so a settled ordering search cannot hide pending joins. This supports [the owner’s weighted geometry preference](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply). Negative label margins are removed when measuring grid tracks; actual resolved anchor identity and fixed hub offsets survive row reordering.
+
+`nextTrialKind` gives a cycle's other order first while one is pending (2026-11-16, [Turn 5 of the November 15 record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-5)): an order of a cycle changes the ranking every other trial orders within, so the seeds and joins then refine what stands. The renderer judges a cycle trial with `judgeAlignment`, which spends no seed and no patience.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -68,57 +70,58 @@ own finite neighborhood of joins.
 
 #### `nextTrialKind` {#symbol-nexttrialkind}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-search.ts#L101)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-search.ts#L104)
 - Parameters: `state`: [`SearchState`](#symbol-searchstate)
 
 ##### `nextTrialKind` — Summary
-Alternate available trial kinds; exhausted seed patience cannot hide pending alignment choices.
+The next trial's kind: a cycle's other order while one is pending (2026-11-16), since it changes the ranking every other
+trial orders within; then seeds and joins in turn, exhausted seed patience not hiding pending alignment choices.
 
 #### `RowMeasure` {#symbol-rowmeasure}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-search.ts#L108)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-search.ts#L112)
 
 ##### `RowMeasure` — Summary
 One row of a card as measured once: its identity and the height of its grid track.
 
 #### `ResolvedPin` {#symbol-resolvedpin}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-search.ts#L114)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-search.ts#L118)
 
 ##### `ResolvedPin` — Summary
 A resolved endpoint moves with its named row, or stays at a card offset for a hub or card-level fallback.
 
 #### `endpointKey` {#symbol-endpointkey}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-search.ts#L120)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-search.ts#L124)
 
 ##### `endpointKey` — Summary
 The exact request the runtime resolved; an absent and an empty symbol both ask for its default anchor.
 
 #### `RowChildBox` {#symbol-rowchildbox}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-search.ts#L123)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-search.ts#L127)
 
 ##### `RowChildBox` — Summary
 A visible grid child's border box and vertical margins, in unscaled coordinates.
 
 #### `rowBounds` {#symbol-rowbounds}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-search.ts#L131)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-search.ts#L135)
 
 ##### `rowBounds` — Summary
 The row's layout extent: negative label margins protrude beyond a track and must not make the track taller.
 
 #### `CardRows` {#symbol-cardrows}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-search.ts#L140)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-search.ts#L144)
 
 ##### `CardRows` — Summary
 A card's rows as measured once, in the order they stood; a pin's place for any order follows from them.
 
 #### `orderedRows` {#symbol-orderedrows}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-search.ts#L158)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-search.ts#L162)
 - Returns: [`RowMeasure`](#symbol-rowmeasure)[]
 - Parameters: `card`: [`CardRows`](#symbol-cardrows)
 
@@ -130,7 +133,7 @@ with no order named, the rows as they stand.
 
 #### `pinFor` {#symbol-pinfor}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-search.ts#L187)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-search.ts#L191)
 - Parameters: `card`: [`CardRows`](#symbol-cardrows)
 
 ##### `pinFor` — Summary

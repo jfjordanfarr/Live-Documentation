@@ -15,6 +15,7 @@ import {
   readPersistedUi
 } from "./local-storage";
 import type { InspectionTarget } from "../types";
+import { DEFAULT_RETURN_COST } from "../views/localView/cycle-order";
 
 const restoreTuning = (group: string, saved: string) => {
   vi.stubGlobal("window", {
@@ -54,6 +55,14 @@ describe("persisted membrane tuning", () => {
         .toMatchObject({ membraneSimplicity: 200, membraneEvenness: 3, rowLevelness: 0.5 });
     }
   );
+});
+
+describe("persisted return cost (2026-11-16)", () => {
+  it("starts at the ranking's default and restores a saved cost without losing other saved tuning", () => {
+    expect(getDefaultTuning().localMap.returnCost).toBe(DEFAULT_RETURN_COST);
+    expect(restoreLocalMap('{"returnCost":350,"rowLevelness":0.5}')).toMatchObject({ returnCost: 350, rowLevelness: 0.5 });
+    expect(restoreLocalMap('{"returnCost":"3","rowLevelness":0.5}')).toMatchObject({ returnCost: DEFAULT_RETURN_COST, rowLevelness: 0.5 });
+  });
 });
 
 describe("persisted history tuning (2026-10-18)", () => {

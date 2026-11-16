@@ -146,6 +146,12 @@ export interface LocalMapTuning {
   rankingPull: number;
   /** Which column a file takes when several cost the same: the one with the fewest other cards, the rightmost, or the leftmost. */
   rankingTie: "fewest" | "right" | "left";
+  /**
+   * What a reference read backward through a cycle costs a picture, in pixels of wire, a term of the placed price that
+   * chooses each cycle's order: zero weighs only the wire, and the higher, the more wire the picture spends to return
+   * fewer references (Tuning → 2D Layout → Return Cost, 2026-11-16). Carried by a link.
+   */
+  returnCost: number;
   /** How many left-and-right sweeps the ordering tries. */
   orderSweeps: number;
   /**

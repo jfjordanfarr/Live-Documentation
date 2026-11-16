@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/measurer.ts
-- Generated At: 2026-11-16T01:01:48.687Z
+- Generated At: 2026-11-16T03:53:09.652Z
 
 ## Authored
 ### Purpose
@@ -29,6 +29,8 @@ Since 2026-11-15 ([November 15, Turn 1](../../../../AI-Agent-Workspace/ChatHisto
 
 A card's note on returning connections counts what the page counts since 2026-11-16: the returns drawn at the card, both rows shown, by the page's own `returningConnections`. The round that lit the 3D button for a cycle's returns ([Turn 1 of the November 15 record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1), `cb6cec56`) changed `dressCards` so and left this measurer counting every return in the ranking; on the scope "repository, chain" the model then stood two cards 21 px taller than the page, a note the page no longer drew, and the lab's agreement with the page was red until this was mended ([the work notes after Turn 7](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-7)). Every card's rows are therefore shown or hidden before any card counts its returns, as on the page; a reference's end with no row of its own stands on the card's hub, which no disclosure hides.
 
+A reference end with no row of its own, no symbol or one the card does not list, stands where the page's `getAnchor` falls back: the offering end on the card's outbound hub, which no disclosure hides, and the using end on the Internals row's dot, which the disclosure hides with the row. Until 2026-11-16 the measurer took both for the hub, so it counted a return at a card whose Internals the page hides and drew a returning-connections line the page did not: `core.ts` stood 20 px taller in the lab than on the page in two pictures of the first fewest-returns round ([Turn 5 of the November 15 record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-5)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -49,7 +51,7 @@ Every card's view under an exploration, as `dressCards` would dress it.
 
 #### `capturedMeasurer` {#symbol-capturedmeasurer}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/measurer.ts#L102)
+- Source: [source](../../../../scripts/layout-lab/measurer.ts#L107)
 - Returns: [`SceneMeasurer`](../../packages/explorer/src/client/views/localView/branch-scene.ts.mdmd.md#symbol-scenemeasurer)
 - Parameters: `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture); `branches`: [`BranchGraph`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-branchgraph); `options`: [`MeasurerOptions`](#symbol-measureroptions)
 

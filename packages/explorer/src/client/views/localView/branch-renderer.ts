@@ -1,7 +1,7 @@
 import { alignmentCandidates } from "./branch-alignments";
 import { boxKeyOf, easeInOutCubic, scenePose, tweenPose, type Pose } from "./branch-motion";
 import type { BoundaryAlignment } from "./branch-placement";
-import { candidateStarts, layoutStarts, scoreOf, signalsOf, startName, startOrder, type StartCosts } from "./branch-restarts";
+import { candidateStarts, layoutStarts, pictureScore, scoreOf, signalsOf, startName, startOrder, type StartCosts, type StartSignals } from "./branch-restarts";
 import { BAND_BORDER, hostOf, layoutScene, planBranches, type Scene, type SceneBox, type SceneMeasurer, type ScenePlan, type SceneTuning } from "./branch-scene";
 import { beginSearch, endpointKey, judgeAlignment, judgeStart, nextTrialKind, pinFor, rowBounds, type CardRows, type ResolvedPin, type RowMeasure, type SearchState } from "./branch-search";
 import { arrangeExploration, edgeKey, exploreBranches, isClosedDirectory, orderExploration, type BranchGraph, type DirectoryDisclosure, type Exploration } from "./branches";
@@ -9,6 +9,7 @@ import { countsOf, createClosedDirectory, createNodeCard, hasCloseAction, PIN_GL
 import { markFirstPin } from "./card-reading";
 import { drawsReference } from "./connections";
 import type { LocalViewController } from "./controller";
+import { cycleOrdersOf, horizontalWire, nextCycleTrial, returningLinks, standingOrders, type CycleTrial } from "./cycle-trials";
 import { ancestryButton } from "./directory-ancestry";
 import { isPairLine, NARROW_SHAPE, nominalMeasurer, searchFlowShape, shapeRecord, type FlowShape, type ShapeSearch } from "./directory-flow";
 import { chevronMarkup, handleParts, handleReach, HANDLE_FLOOR, HANDLE_HOLD, HANDLE_INDENT, HANDLE_LINE, HANDLE_STRIP, type Standing } from "./directory-handle";
@@ -20,6 +21,7 @@ import type { LocalEdge } from "./types";
 import { NODE_HUB } from "./wire-gathering";
 import { countOf } from "./word-seams";
 import type { ExplorerNodePayload } from "../../../shared/types";
+import type { LocalMapTuning } from "../../types";
 import { EMPTY_PIN_SET } from "../pin-state";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
 
@@ -86,6 +88,23 @@ interface PageAnswers {
   labelHeights: Map<string, number>;
 }
 
+/** A picture's price as the search reads it, term by term: the page's signals, its ranking's two terms, and the totals. */
+interface PricedRecord {
+  signals: StartSignals;
+  horizontal: number;
+  returns: number;
+  base: number;
+  withChurn: number;
+}
+
+/** One cycle trial: its prices against the shown picture's, and whether it was adopted. */
+interface CycleRecord {
+  shown: number;
+  predicted: PricedRecord;
+  measured: PricedRecord | null;
+  adopted: boolean;
+}
+
 /** The continuing competition over ordering starts and boundary joins, priced from the page's measured cards and endpoints. */
 interface Search {
   state: SearchState;
@@ -103,6 +122,30 @@ interface Search {
   moveMs: number;
   answers: PageAnswers;
   rows: Map<string, CardRows>;
+  /**
+   * The orders the picture's cycles offer, tried first (2026-11-16), and where the next trial is looked for; tried only
+   * while the search searches at all. A cycle trial ranks the picture anew, so it is priced with what a ranking changes:
+   * the wires' horizontal length and the Return Cost of every returning link, which `pictureScore` adds to every price
+   * the order step, the search and the page's report name, so that all of them stand on one price.
+   */
+  cycleOrders: CycleTrial[];
+  cycleNext: number;
+  cyclesEnabled: boolean;
+  cycleTried: number;
+  cycleAdopted: number;
+  returnCost: number;
+  /** The opened directories' shape the picture stands in, which a cycle trial's ranking is laid out in too; none outside flow order. */
+  shape: FlowShape | null;
+  /**
+   * Whether the cached rows hold the endpoints of every reference between two files, a returning one's too, which only
+   * a cycle's trial needs: measured when the first is tried, in idle time, so that the first draw reads no endpoint
+   * the search alone needs.
+   */
+  everyEndpoint: boolean;
+  /** Each cycle trial's prices, predicted on the cached measurements and, when it went so far, measured on the page. */
+  cycleRecords: CycleRecord[];
+  /** The room one foot on returning connections takes on a card, once measured; a cycle trial's prediction adds or removes it. */
+  footRoom?: number;
   /** The idle callback or timer waiting to run the next start; zero when none. */
   handle: number;
   /** Takes the next step when the page is idle; a move that ends calls it. */
@@ -120,13 +163,20 @@ export function dropStage(stage: BranchStage): void {
   endMove(stage, false);
 }
 
-/** The same canonical disclosure is used to build a scene and to recognize a text-only reading change. */
-function explorationOf(controller: LocalViewController): Exploration {
+/**
+ * The order the continuing search last adopted for each cycle this session, by the cycle's files and references
+ * (2026-11-16): where the next picture holding that cycle starts, so that a person who pins on does not watch a cycle
+ * turn back and forth. It is a start, not a verdict: the search judges it in the new picture like any other.
+ */
+const cycleMemory = new WeakMap<LocalViewController, Map<string, string[]>>();
+
+/** The disclosure as the controller holds it, ranked with the cycles' orders given; the greedy order for any not given. */
+function exploreWith(controller: LocalViewController, orders?: ReadonlyMap<string, readonly string[]>): Exploration {
   const { state, graphData } = controller.options;
   const tuning = state.tuning.localMap;
   return exploreBranches(state.selectedNode, graphData, controller.pins, node => controller.shouldIncludeNode(node), {
     symbolOrder: tuning.symbolOrder,
-    ranking: { pull: tuning.rankingPull, tie: tuning.rankingTie },
+    ranking: { pull: tuning.rankingPull, tie: tuning.rankingTie, orders },
     membraneDepth: tuning.membraneDepth,
     openDirectories: controller.openDirectories,
     reading: state.reading,
@@ -134,6 +184,31 @@ function explorationOf(controller: LocalViewController): Exploration {
     directoryFlow: tuning.directoryLayout === "flow"
   });
 }
+
+/**
+ * The same canonical disclosure is used to build a scene and to recognize a text-only reading change. Its cycles stand in
+ * the greedy order, or in the order this session last adopted for them; nothing is priced before the picture is drawn.
+ */
+function explorationOf(controller: LocalViewController): Exploration {
+  const explored = exploreWith(controller);
+  const memory = cycleMemory.get(controller);
+  const remembered = explored.ranking.cycles.flatMap(cycle => {
+    const order = memory?.get(cycle.key);
+    return order && order.join("\0") !== cycle.order.join("\0") ? [[cycle.key, order] as const] : [];
+  });
+  return remembered.length ? exploreWith(controller, new Map(remembered)) : explored;
+}
+
+/** The scene's dials from the tuning; an opened directory in flow order stands its columns from the top (2026-11-12). */
+const sceneTuningOf = (tuning: LocalMapTuning, flow: boolean): SceneTuning => ({
+  columnGap: tuning.columnGap, itemGap: tuning.itemGap, bandGap: tuning.bandGap, neck: tuning.membraneNeck, bandPadding: tuning.membranePadding, cardMaxWidth: tuning.cardMaxWidth,
+  evenness: tuning.membraneEvenness, levelness: tuning.rowLevelness, ...(flow ? { fromTop: true } : null)
+});
+
+/** What a picture's crossings, size, churn and shape cost, from the tuning. */
+const startCostsOf = (tuning: LocalMapTuning): StartCosts => ({ crossing: tuning.crossingCost, height: tuning.heightCost, width: tuning.widthCost, churn: tuning.churnCost,
+  evenness: tuning.membraneEvenness, levelness: tuning.rowLevelness, steps: tuning.membraneSimplicity });
+
 
 /** Update fixed-slot text and its controls without rebuilding an unchanged scene or restarting its search. */
 export function refreshReadingPresentation(controller: LocalViewController, stage: BranchStage): boolean {
@@ -254,12 +329,7 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
   root.classList.toggle("path-mode", !!path);
   root.style.gridTemplateColumns = "";
   root.style.alignItems = "";
-  const sceneTuning: SceneTuning = {
-    columnGap: tuning.columnGap, itemGap: tuning.itemGap, bandGap: tuning.bandGap, neck: tuning.membraneNeck, bandPadding: tuning.membranePadding, cardMaxWidth: tuning.cardMaxWidth,
-    evenness: tuning.membraneEvenness, levelness: tuning.rowLevelness,
-    // An opened directory in flow order stands its columns from the top (the directory flow trial, 2026-11-12).
-    ...(explored.flow ? { fromTop: true } : null)
-  };
+  const sceneTuning = sceneTuningOf(tuning, explored.flow);
 
   // The cards, once per render, each built afresh for this render's state inside the wrapper that stood for its file
   // before, or a new one; in the root to be measured, hosted by the chosen scene's boxes after. Each card keeps its
@@ -316,14 +386,14 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
   // The starts, each ordered, its rows stood on the cards, planned, measured on the page and placed; the cheapest
   // picture is kept. The page's answers that no start changes are kept for the search.
   const answers: PageAnswers = { natural: new Map(), heights: new Map(), labelHeights: new Map() };
-  const costs: StartCosts = { crossing: tuning.crossingCost, height: tuning.heightCost, width: tuning.widthCost, churn: tuning.churnCost,
-    evenness: tuning.membraneEvenness, levelness: tuning.rowLevelness, steps: tuning.membraneSimplicity };
+  const costs = startCostsOf(tuning);
   // In flow order the opened directories stand in the shape the price chooses (2026-11-13), on the directories alone:
   // their own files unpinned under the filters, the lines among them and the tuning, every card at the nominal model's
   // size (`nominalMeasurer`), churn aside since no picture came before. No pin, no path the person took and no font
   // enters it, so the same link shows the same shape on every screen. It is chosen once for those directories, filters
   // and tuning, and reused while the page lives: a pin prices no shape, and the picture is then drawn and measured as ever.
   let exploration = explored;
+  let shape: FlowShape | null = null;
   delete root.dataset.flowShape;
   delete root.dataset.flowShapes;
   delete root.dataset.flowShapeMs;
@@ -336,7 +406,8 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
       stage.flowShapes.set(key, chosenShape);
       root.dataset.flowShapeMs = String(Math.round(performance.now() - shaping));
     }
-    exploration = arrangeExploration(explored, chosenShape.shape);
+    shape = chosenShape.shape;
+    exploration = arrangeExploration(explored, shape);
     root.dataset.flowShape = JSON.stringify(shapeRecord(chosenShape.shape));
     root.dataset.flowShapes = JSON.stringify(chosenShape.priced.map(({ shape, price }) => ({ ...shapeRecord(shape), price: Math.round(price) })));
   }
@@ -347,7 +418,7 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
     orderRows(cardsOf(stage), branches.rows);
     const plan = planBranches(branches, sceneTuning.bandPadding);
     return { branches, scene: layoutScene(plan, branches, pageMeasurer(controller, stage, plan, scale, answers), sceneTuning) };
-  }, costs, controller.previousTops);
+  }, costs, tuning.returnCost, controller.previousTops);
   const { branches, scene } = chosen;
   if (outcomes[outcomes.length - 1] !== chosen) orderRows(cardsOf(stage), branches.rows);
   // Drawn files only, the picture with its rows is laid out once more for its size, which Fit frames (2026-11-13).
@@ -375,7 +446,9 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
   const to = tuning.orderSeed !== null ? 0 : from - 1 + Math.max(0, Math.floor(tuning.searchStarts));
   const alignmentEnabled = to >= from && tuning.searchPatience > 0 && costs.steps > 0;
   const search: Search = {
-    state: beginSearch({ from, to, patience: Math.floor(tuning.searchPatience) }, scoreOf(chosen.signals, { ...costs, churn: 0 })),
+    state: beginSearch({ from, to, patience: Math.floor(tuning.searchPatience) }, pictureScore(chosen.signals, { ...costs, churn: 0 }, tuning.returnCost, scene, branches)),
+    cycleOrders: cycleOrdersOf(exploration.ranking.cycles), cycleNext: 0, cyclesEnabled: to >= from, cycleTried: 0, cycleAdopted: 0, returnCost: tuning.returnCost,
+    shape, everyEndpoint: false, cycleRecords: [],
     incumbent: { branches, scene }, alignmentEnabled, alignments: alignmentEnabled ? alignmentCandidates(scene) : [],
     alignmentIndex: 0, alignmentTried: 0, alignmentAdopted: 0, preferAlignment: true,
     exploration, sceneTuning, sweeps: tuning.orderSweeps, costs, moveMs, answers, rows: measuredRows, handle: 0,
@@ -390,7 +463,9 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
  * The shape the price chooses for the opened directories alone (2026-11-13): their files under the filters, with no
  * pin, no selected file and no reading, laid out on the nominal model at the cheapest of the starts the page tries from
  * nothing before, churn aside. A filter is the filters alone, with no exception for a pinned file, so that the shape
- * does not depend on what is pinned.
+ * does not depend on what is pinned. It is priced by the signals alone (`scoreOf`), as it was chosen before cycles were
+ * priced: the ranking's two terms of `pictureScore` are not part of this choice, which reports its prices only as the
+ * shapes' own (`data-flow-shapes`).
  */
 function shapeOfDirectories(controller: LocalViewController, sceneTuning: SceneTuning, costs: StartCosts): ShapeSearch {
   const { state, graphData } = controller.options;
@@ -454,17 +529,18 @@ export function refreshReadingGeometry(controller: LocalViewController, stage: B
   stage.root.dataset.placementOptimal = String(scene.placement.optimal);
   search.incumbent = { branches, scene };
   search.answers = answers;
-  search.rows = rowsOf(controller, stage, scale, branches);
+  search.rows = rowsOf(controller, stage, scale, branches, search.everyEndpoint);
   // A fold or a restore of a slot row (2026-11-13) keeps the search where it stood, so that nothing but the acted-on card
   // and what it pushes moves after the person's own act; a resize or an arrival begins a fresh competition. Either way
   // the shown picture is priced again, its cards' heights having changed: a search still running would otherwise judge
   // its next starts against the price of a picture no longer shown, and a shortened card could let a worse one in.
-  const shown = scoreOf(signalsOf(branches, scene, scene.tops), { ...search.costs, churn: 0 });
+  const shown = pictureScore(signalsOf(branches, scene, scene.tops), { ...search.costs, churn: 0 }, search.returnCost, scene, branches);
   if (restart) {
     const options = controller.options.state.tuning.localMap;
     search.state = beginSearch({ from: 1, to: Math.max(0, Math.floor(options.searchStarts)), patience: Math.floor(options.searchPatience) }, shown);
     search.alignments = search.alignmentEnabled ? alignmentCandidates(scene) : [];
     search.alignmentIndex = 0;
+    search.cycleNext = 0;
   } else search.state = { ...search.state, shown, best: shown };
   controller.previousTops = scene.tops;
   const filesAfter = controller.getContainer().hasAttribute(OVERVIEW_FILES_ATTRIBUTE), back = filesBefore && !filesAfter;
@@ -736,12 +812,12 @@ function pageMeasurer(controller: LocalViewController, stage: BranchStage, plan:
  * the card's rows as measured once, so that the search prices a start
  * without the page's layout.
  */
-function answersMeasurer(search: Search, plan: ScenePlan, branches: BranchGraph): SceneMeasurer {
+function answersMeasurer(search: Search, plan: ScenePlan, branches: BranchGraph, heights: ReadonlyMap<string, number> = search.answers.heights): SceneMeasurer {
   const boxes = new Map(plan.boxes.map(box => [box.key, box]));
   return {
     widths: () => search.answers.natural,
     measure: (_cardWidths, labelWidths) => ({
-      heights: search.answers.heights,
+      heights,
       labelHeights: new Map([...labelWidths.keys()].map(key => [key, search.answers.labelHeights.get(boxes.get(key)!.directory) ?? 0])),
       pin: (id, direction, symbol) => {
         const card = search.rows.get(id);
@@ -1044,7 +1120,7 @@ function elementHeld(controller: LocalViewController, stage: BranchStage, from: 
  */
 function scheduleSearch(controller: LocalViewController, stage: BranchStage): void {
   const search = stage.search;
-  if (!search || !nextTrialKind(search.state, search.alignmentIndex < search.alignments.length, search.preferAlignment) || stage.move || search.handle) return;
+  if (!search || !nextTrialKind(search.state, search.alignmentIndex < search.alignments.length, search.preferAlignment, cyclePending(search)) || stage.move || search.handle) return;
   if (!searchAllowed(controller)) return;
   const run = (): void => {
     search.handle = 0;
@@ -1080,14 +1156,24 @@ function pauseSearch(search: Search): void {
   }
 }
 
+/** Whether a cycle's order is left to try: the search searches, and some order is not the one its cycle stands in. */
+const cyclePending = (search: Search): boolean =>
+  search.cyclesEnabled && nextCycleTrial(search.cycleOrders, standingOrders(search.exploration.ranking.cycles), search.cycleNext) !== null;
+
+/** A picture's price as the search compares it: the page's own, churn counted or aside, and what its ranking adds. */
+const searchPrice = (search: Search, branches: BranchGraph, scene: Scene, previousTops: ReadonlyMap<string, number> | null, churn: boolean): number =>
+  pictureScore(signalsOf(branches, scene, previousTops), churn ? search.costs : { ...search.costs, churn: 0 }, search.returnCost, scene, branches);
+
 /**
- * One idle trial: the next ordering seed or a join of the incumbent's flat
- * boundary runs. Cached measurements price it against the shown picture;
- * a predicted improvement is measured again before the final decision.
+ * One idle trial: a cycle's other order first, then the next ordering seed or a join of the incumbent's flat boundary
+ * runs. A cycle's order comes first because it changes the ranking, the columns every other trial orders within, and
+ * the seeds and joins then refine what stands (2026-11-16). Cached measurements price the trial against the shown
+ * picture; a predicted improvement is measured again before the final decision.
  */
 function searchStep(controller: LocalViewController, stage: BranchStage, search: Search): void {
-  const kind = nextTrialKind(search.state, search.alignmentIndex < search.alignments.length, search.preferAlignment);
+  const kind = nextTrialKind(search.state, search.alignmentIndex < search.alignments.length, search.preferAlignment, cyclePending(search));
   if (!kind) return;
+  if (kind === "cycle") { cycleStep(controller, stage, search); writeSearch(stage); return; }
   search.preferAlignment = kind === "seed";
   const seed = search.state.next;
   const alignments = kind === "alignment" ? search.alignments[search.alignmentIndex++] : [];
@@ -1095,10 +1181,9 @@ function searchStep(controller: LocalViewController, stage: BranchStage, search:
   if (kind === "alignment") search.alignmentTried++;
   const plan = planBranches(branches, search.sceneTuning.bandPadding);
   const scene = layoutScene(plan, branches, answersMeasurer(search, plan, branches), search.sceneTuning, alignments);
-  const signals = signalsOf(branches, scene, controller.previousTops);
-  const priced = scoreOf(signals, search.costs);
+  const priced = searchPrice(search, branches, scene, controller.previousTops, true);
   const judge = kind === "alignment" ? judgeAlignment : judgeStart;
-  const { state, adopt } = judge(search.state, priced, scoreOf(signals, { ...search.costs, churn: 0 }));
+  const { state, adopt } = judge(search.state, priced, searchPrice(search, branches, scene, controller.previousTops, false));
   if (adopt) {
     const adopted = tryAdoptPicture(controller, stage, search, branches, kind === "seed" ? `seed ${seed}` : stage.root.dataset.orderStart ?? "ranked", priced, alignments, kind);
     if (adopted && kind === "alignment") search.alignmentAdopted++;
@@ -1106,19 +1191,109 @@ function searchStep(controller: LocalViewController, stage: BranchStage, search:
   writeSearch(stage);
 }
 
+/**
+ * A cycle's trial: the picture ranked with one cycle standing in another of its orders, in the shape the picture stands
+ * in, ordered from the shown picture's own order where its files allow (so that the move's churn is what the ranking
+ * makes it), laid out on the cached measurements and judged as a join is: adopted when its price with its churn is below
+ * the shown picture's, without spending the seeds' patience.
+ */
+function cycleStep(controller: LocalViewController, stage: BranchStage, search: Search): void {
+  if (!search.everyEndpoint) {
+    search.rows = rowsOf(controller, stage, controller.runtime.mapTransform.k || 1, search.incumbent.branches, true);
+    search.everyEndpoint = true;
+  }
+  const step = nextCycleTrial(search.cycleOrders, standingOrders(search.exploration.ranking.cycles), search.cycleNext)!;
+  search.cycleNext = step.next;
+  search.cycleTried++;
+  const orders = standingOrders(search.exploration.ranking.cycles);
+  orders.set(step.trial.key, step.trial.order);
+  const explored = exploreWith(controller, orders);
+  const exploration = search.shape ? arrangeExploration(explored, search.shape) : explored;
+  const ranked = exploration.ranking.columns.map(column => column.map(node => node.id));
+  const starts = candidateStarts(0, null, controller.previousTops, ranked);
+  const branches = orderExploration(exploration, { sweeps: search.sweeps, ...startOrder(starts[starts.length - 1]) });
+  const plan = planBranches(branches, search.sceneTuning.bandPadding);
+  const scene = layoutScene(plan, branches, answersMeasurer(search, plan, branches, footedHeights(controller, stage, search, exploration)), search.sceneTuning);
+  const predicted = pricedRecord(search, branches, scene, controller.previousTops);
+  const record: CycleRecord = { shown: search.state.shown, predicted, measured: null, adopted: false };
+  search.cycleRecords.push(record);
+  const { state, adopt } = judgeAlignment(search.state, predicted.withChurn, predicted.base);
+  if (!adopt) { search.state = state; return; }
+  record.adopted = tryAdoptPicture(controller, stage, search, branches, `cycle ${search.cycleTried}`, predicted.withChurn, [], "cycle", { exploration, orders, record });
+  if (record.adopted) search.cycleAdopted++;
+}
+
+/**
+ * The cached card heights as a cycle's trial would stand them: a card whose foot on returning connections the trial
+ * adds or removes is taller or shorter by that line, so that the prediction prices the trial's own cards. The line's
+ * room on a card is measured once per search, in idle time, as the difference one foot makes to a card's height.
+ */
+function footedHeights(controller: LocalViewController, stage: BranchStage, search: Search, trial: Exploration): ReadonlyMap<string, number> {
+  const drawn = (edge: LocalEdge): boolean => drawsReference((nodeId, role, direction, symbol) => controller.getAnchor(nodeId, role, direction, symbol), edge);
+  const footed = (exploration: Exploration): Set<string> =>
+    new Set(returningConnections(exploration.subgraph.links, edge => exploration.ranking.back.has(edgeKey(edge)), drawn).byFile.keys());
+  const before = footed(search.exploration), after = footed(trial);
+  const changed = [...new Set([...before, ...after])].filter(id => before.has(id) !== after.has(id));
+  if (!changed.length) return search.answers.heights;
+  search.footRoom ??= footRoom(controller, stage);
+  const heights = new Map(search.answers.heights);
+  for (const id of changed) {
+    const height = heights.get(id);
+    if (height !== undefined) heights.set(id, height + (after.has(id) ? search.footRoom : -search.footRoom));
+  }
+  return heights;
+}
+
+/**
+ * How much taller a card stands with a foot on returning connections than without: a probe foot, the element the page
+ * dresses, set on a card without one and taken away. A picture whose every card has a foot has none to probe; its
+ * trial can only take feet away, which the same room measures.
+ */
+function footRoom(controller: LocalViewController, stage: BranchStage): number {
+  const cards = cardsOf(stage).filter(card => card.classList.contains("node-card"));
+  const bare = cards.find(card => !card.querySelector(":scope > .local-back-references"));
+  if (!bare) {
+    const note = cards[0]?.querySelector<HTMLElement>(":scope > .local-back-references");
+    if (!note) return 0;
+    const withFoot = cards[0].offsetHeight, next = note.nextSibling;
+    note.remove();
+    const room = withFoot - cards[0].offsetHeight;
+    cards[0].insertBefore(note, next);
+    return room;
+  }
+  const before = bare.offsetHeight;
+  const probe = document.createElement(controller.reading ? "button" : "span");
+  probe.className = "local-disclosure local-back-references";
+  probe.textContent = "1 connection returns in a cycle";
+  bare.insertBefore(probe, bare.querySelector(":scope > [data-outside]"));
+  const room = bare.offsetHeight - before;
+  probe.remove();
+  return room;
+}
+
+/** A picture's price as the search compares it, term by term. */
+function pricedRecord(search: Search, branches: BranchGraph, scene: Scene, previousTops: ReadonlyMap<string, number> | null): PricedRecord {
+  return { signals: signalsOf(branches, scene, previousTops), horizontal: horizontalWire(scene, branches), returns: returningLinks(branches),
+    base: searchPrice(search, branches, scene, previousTops, false), withChurn: searchPrice(search, branches, scene, previousTops, true) };
+}
+
 /** Measures a promising candidate on the page and accepts it only if its actual complete price improves the picture. */
-function tryAdoptPicture(controller: LocalViewController, stage: BranchStage, search: Search, branches: BranchGraph, name: string, priced: number, alignments: readonly BoundaryAlignment[], kind: "seed" | "alignment"): boolean {
+function tryAdoptPicture(controller: LocalViewController, stage: BranchStage, search: Search, branches: BranchGraph, name: string, priced: number,
+  alignments: readonly BoundaryAlignment[], kind: "seed" | "alignment" | "cycle", cycle?: { exploration: Exploration; orders: ReadonlyMap<string, readonly string[]>; record: CycleRecord }): boolean {
   const { root } = stage;
   const scale = controller.runtime.mapTransform.k || 1;
   const oldRows = rowOffsets(stage, scale);
   orderRows(cardsOf(stage), branches.rows);
+  // A cycle's order returns other references: each card's foot is the trial's before the cards are measured.
+  if (cycle) dressReturns(controller, cardsOf(stage), cycle.exploration);
   const plan = planBranches(branches, search.sceneTuning.bandPadding);
   const answers: PageAnswers = { natural: new Map(), heights: new Map(), labelHeights: new Map() };
   const scene = layoutScene(plan, branches, pageMeasurer(controller, stage, plan, scale, answers), search.sceneTuning, alignments);
   const signals = signalsOf(branches, scene, controller.previousTops);
-  const measured = scoreOf(signals, { ...search.costs, churn: 0 });
-  const actual = scoreOf(signals, search.costs);
-  const judge = kind === "alignment" ? judgeAlignment : judgeStart;
+  const measured = searchPrice(search, branches, scene, controller.previousTops, false);
+  const actual = searchPrice(search, branches, scene, controller.previousTops, true);
+  const judge = kind === "seed" ? judgeStart : judgeAlignment;
+  if (cycle) cycle.record.measured = pricedRecord(search, branches, scene, controller.previousTops);
   const decision = judge(search.state, actual, measured);
   search.state = decision.state;
   root.dataset.searchPredicted = String(priced);
@@ -1129,6 +1304,7 @@ function tryAdoptPicture(controller: LocalViewController, stage: BranchStage, se
     // while leaving its measurement cache uncontaminated by the rejected one.
     const incumbent = search.incumbent;
     orderRows(cardsOf(stage), incumbent.branches.rows);
+    if (cycle) dressReturns(controller, cardsOf(stage), search.exploration);
     const drawn = new Set<string>();
     for (const box of incumbent.scene.boxes) {
       if (box.kind !== "directory") continue;
@@ -1142,16 +1318,22 @@ function tryAdoptPicture(controller: LocalViewController, stage: BranchStage, se
   }
   search.answers = answers;
   search.incumbent = { branches, scene };
+  if (cycle) {
+    search.exploration = cycle.exploration;
+    const memory = cycleMemory.get(controller) ?? cycleMemory.set(controller, new Map()).get(controller)!;
+    for (const [key, order] of cycle.orders) memory.set(key, [...order]);
+  }
   search.alignments = search.alignmentEnabled ? alignmentCandidates(scene) : [];
   search.alignmentIndex = 0;
-  search.rows = rowsOf(controller, stage, scale, branches);
+  search.rows = rowsOf(controller, stage, scale, branches, search.everyEndpoint);
   controller.branches = branches;
   controller.currentSubgraph = branches.subgraph;
   controller.previousTops = scene.tops;
   root.dataset.placementCost = String(scene.placement.cost);
   root.dataset.placementOptimal = String(scene.placement.optimal);
   root.dataset.orderStart = name;
-  root.dataset.orderScore = String(scoreOf(signals, search.costs));
+  // The adopted picture's price as the search measured it, its ranking's two terms included, as its prediction is.
+  root.dataset.orderScore = String(actual);
   root.dataset.orderSignals = JSON.stringify(signals);
   root.dataset.searchPriced = String(priced);
   showScene(controller, stage, scene, search.sceneTuning, search.moveMs, [], [], oldRows);
@@ -1163,7 +1345,11 @@ function writeSearch(stage: BranchStage): void {
   const search = stage.search;
   if (!search) return;
   const { state } = search;
-  stage.root.dataset.searchStatus = search.alignmentIndex < search.alignments.length ? "running" : state.status;
+  stage.root.dataset.searchStatus = search.alignmentIndex < search.alignments.length || cyclePending(search) ? "running" : state.status;
+  stage.root.dataset.searchCycleTried = String(search.cycleTried);
+  stage.root.dataset.searchCycleAdopted = String(search.cycleAdopted);
+  stage.root.dataset.searchEndpoints = search.everyEndpoint ? "every" : "drawn";
+  stage.root.dataset.searchCycleTrials = JSON.stringify(search.cycleRecords);
   stage.root.dataset.searchAlignmentTried = String(search.alignmentTried);
   stage.root.dataset.searchAlignmentAdopted = String(search.alignmentAdopted);
   stage.root.dataset.searchTried = String(state.tried);
@@ -1192,7 +1378,7 @@ function rowKeys(card: HTMLElement): Array<[HTMLElement, string]> {
  * track's height. Endpoints use the runtime's exact anchor resolution, so
  * duplicate names, file hubs and hidden rows agree with the page measurer.
  */
-function rowsOf(controller: LocalViewController, stage: BranchStage, scale: number, branches: BranchGraph): Map<string, CardRows> {
+function rowsOf(controller: LocalViewController, stage: BranchStage, scale: number, branches: BranchGraph, everyEndpoint = false): Map<string, CardRows> {
   const measured = new Map<string, CardRows>();
   const requests = new Map<string, Map<string, { direction: "inbound" | "outbound"; symbol: string | undefined }>>();
   const request = (id: string, direction: "inbound" | "outbound", symbol: string | undefined): void => {
@@ -1200,8 +1386,10 @@ function rowsOf(controller: LocalViewController, stage: BranchStage, scale: numb
     endpoints.set(endpointKey(direction, symbol), { direction, symbol });
     requests.set(id, endpoints);
   };
+  // The drawn wires' endpoints; with `everyEndpoint`, a returning reference's too, which a cycle's trial may rank forward
+  // and draw (2026-11-16): the search asks for them when it first tries a cycle's order, not the first draw.
   for (const edge of branches.subgraph.links) {
-    if (edge.sourceId === edge.targetId || branches.back.has(edgeKey(edge))) continue;
+    if (edge.sourceId === edge.targetId || (!everyEndpoint && branches.back.has(edgeKey(edge)))) continue;
     request(edge.targetId, "outbound", edge.targetSymbol);
     request(edge.sourceId, "inbound", edge.sourceSymbol);
   }
@@ -1391,8 +1579,6 @@ function dressCards(controller: LocalViewController, cards: readonly HTMLElement
     });
     hiddenRows.set(card, hidden);
   }
-  const returning = returningConnections(exploration.subgraph.links, edge => exploration.ranking.back.has(edgeKey(edge)),
-    edge => drawsReference((nodeId, role, direction, symbol) => controller.getAnchor(nodeId, role, direction, symbol), edge));
   for (const card of cards) {
     if (!card.classList.contains("node-card")) continue;
     const id = card.dataset.id!;
@@ -1407,26 +1593,44 @@ function dressCards(controller: LocalViewController, cards: readonly HTMLElement
       });
       card.append(reveal);
     }
+    const outside = exploration.hiddenConnections.get(id) ?? 0;
+    if (outside) {
+      const control = controller.isPinned(id, "*") ? hiddenByFilters(outside) : revealControl(controller, id, outside);
+      control.dataset.outside = "";
+      card.append(control);
+    }
+  }
+  dressReturns(controller, cards, exploration);
+}
+
+/**
+ * Each card's foot on the references it returns in a cycle, from the rows disclosed, before its count of connections
+ * outside the view: the first paint's, and a cycle's trial's again, since another order returns other references.
+ */
+function dressReturns(controller: LocalViewController, cards: readonly HTMLElement[], exploration: Exploration): void {
+  const returning = returningConnections(exploration.subgraph.links, edge => exploration.ranking.back.has(edgeKey(edge)),
+    edge => drawsReference((nodeId, role, direction, symbol) => controller.getAnchor(nodeId, role, direction, symbol), edge));
+  for (const card of cards) {
+    if (!card.classList.contains("node-card")) continue;
+    const id = card.dataset.id!;
+    card.querySelectorAll(":scope > .local-back-references").forEach(note => note.remove());
     const back = returning.byFile.get(id) ?? [];
     // A pair line names no symbol: its return is told by its two files, and counted by the links it stands for.
     controller.reading?.setBackReferences(id, back.map(edge => (isPairLine(edge) ? { ...edge, sourceSymbol: undefined, targetSymbol: undefined } : edge)));
-    if (back.length) {
-      const note = document.createElement(controller.reading ? "button" : "span");
-      note.className = "local-disclosure local-back-references";
-      note.textContent = `${countOf(connectionCount(back), "connection returns", "connections return")} in a cycle`;
-      note.title = "Show the files joined by connections that return against the layout's reading direction";
-      if (controller.reading) {
-        note.setAttribute("aria-haspopup", "menu");
-        note.addEventListener("click", event => {
-          event.stopPropagation();
-          const rect = note.getBoundingClientRect();
-          controller.reading!.showBackReferences(id, { x: rect.left, y: rect.bottom + 4 });
-        });
-      }
-      card.append(note);
+    if (!back.length) continue;
+    const note = document.createElement(controller.reading ? "button" : "span");
+    note.className = "local-disclosure local-back-references";
+    note.textContent = `${countOf(connectionCount(back), "connection returns", "connections return")} in a cycle`;
+    note.title = "Show the files joined by connections that return against the layout's reading direction";
+    if (controller.reading) {
+      note.setAttribute("aria-haspopup", "menu");
+      note.addEventListener("click", event => {
+        event.stopPropagation();
+        const rect = note.getBoundingClientRect();
+        controller.reading!.showBackReferences(id, { x: rect.left, y: rect.bottom + 4 });
+      });
     }
-    const outside = exploration.hiddenConnections.get(id) ?? 0;
-    if (outside) card.append(controller.isPinned(id, "*") ? hiddenByFilters(outside) : revealControl(controller, id, outside));
+    card.insertBefore(note, card.querySelector(":scope > [data-outside]"));
   }
 }
 
