@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sketch: one theme for the whole app</title>
+<!--
+  Historical evidence, November 16, 2026. A sketch by the root agent for the owner's question of that day's Turn 3:
+  "a way that one could have styles that are easily swapped and customized without adding a bunch of complexity to the
+  user experience". It is not the Explorer and reads nothing from it: two schematic miniatures stand for the World Map
+  (outside) and the Local Map (inside), and a mock sidebar carries the two controls being proposed.
+    1. One theme for the whole app: a row of swatches, each a miniature of what the outside and the inside wear.
+    2. The key is the editor: a colour sample in the legend opens the browser's own colour picker for that meaning;
+       the other ground's step of the same hue follows, and pairs that can no longer be told apart are marked.
+  Colours are the two candidates of the colour pass (Night and Day); the district tints are stand-ins.
+-->
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 20px 24px 28px; background: #0c0c0d; color: #d8d8dc; font: 13px/1.45 "Segoe UI", system-ui, sans-serif; }
+  .note { max-width: 118ch; margin: 0 0 6px; color: #a8a8ae; }
+  .note b { color: #e8e8ea; font-weight: 600; }
+  h1 { font-size: 17px; font-weight: 600; margin: 0 0 6px; color: #f0f0f2; }
+  .app { display: grid; grid-template-columns: 270px 1fr 1fr; margin-top: 16px; border: 1px solid #2a2a2e; border-radius: 10px; overflow: hidden; min-height: 560px; }
+  .scope { background: var(--ground); color: var(--ink); transition: background-color 180ms, color 180ms; }
+  .scope svg * { transition: fill 180ms, stroke 180ms, stop-color 180ms; }
+
+  /* The mock sidebar, in the inside's chrome. */
+  .side { border-right: 1px solid var(--border); display: flex; flex-direction: column; background: var(--card); }
+  .brand { font-size: 16px; font-weight: 700; padding: 18px 18px 14px; border-bottom: 1px solid var(--border); }
+  .nav { padding: 10px 14px; border-bottom: 1px solid var(--border); }
+  .nav div { padding: 7px 10px; border-radius: 4px; color: var(--muted); }
+  .nav div.on { color: var(--ink); background: var(--ground); box-shadow: inset 3px 0 0 var(--selected); }
+  .sect { padding: 12px 16px 12px; border-bottom: 1px solid var(--border); }
+  .sect h2 { margin: 0 0 9px; font-size: 10.5px; letter-spacing: 0.09em; font-weight: 600; color: var(--muted); }
+  .key { display: grid; grid-template-columns: 1.5fr 1fr; gap: 7px 10px; }
+  .key .wide { grid-column: 1 / -1; display: flex; align-items: center; gap: 6px; }
+  .mark { display: flex; align-items: center; gap: 8px; font-size: 12px; position: relative; }
+  .dot { width: 14px; height: 14px; border-radius: 50%; flex: none; position: relative; outline: 2px solid transparent; outline-offset: 2px; }
+  .dot input, .pin input { position: absolute; inset: -5px; width: 24px; height: 24px; opacity: 0; cursor: pointer; padding: 0; border: 0; }
+  .mark:hover .dot, .pin:hover { outline-color: var(--muted); }
+  .mark.clash .dot, .pin.clash { outline-color: var(--cue); }
+  .pin { width: 13px; height: 13px; border-radius: 50%; position: relative; outline: 2px solid transparent; outline-offset: 2px; flex: none; }
+  .wire { height: 2px; width: 34px; margin: 0 -2px; }
+  .warn { margin: 9px 0 0; font-size: 11.5px; color: var(--cue); min-height: 16px; }
+  .themes { display: flex; align-items: center; gap: 9px; }
+  .swatch { width: 34px; height: 34px; border-radius: 8px; padding: 0; cursor: pointer; border: 1px solid var(--border); display: grid; place-items: center; outline: 2px solid transparent; outline-offset: 3px; }
+  .swatch[aria-pressed="true"] { outline-color: var(--selected); }
+  .swatch:focus-visible { outline-color: var(--cue); }
+  .swatch i { width: 18px; height: 18px; border-radius: 4px; display: flex; align-items: center; justify-content: center; gap: 3px; }
+  .swatch b { width: 5px; height: 5px; border-radius: 50%; display: block; }
+  .reset { margin-left: auto; width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--border); background: transparent; color: var(--ink); cursor: pointer; display: grid; place-items: center; }
+  .reset[hidden] { display: none; }
+  .said { padding: 10px 16px; font-size: 11.5px; color: var(--muted); margin-top: auto; }
+
+  .pane { padding: 14px 16px 10px; position: relative; }
+  .pane + .pane { border-left: 1px solid #2a2a2e; }
+  .pane h3 { margin: 0 0 8px; font-size: 11px; letter-spacing: 0.08em; font-weight: 600; color: var(--muted); }
+  .pane svg { width: 100%; height: auto; display: block; }
+  .pane text { font: 11px "Segoe UI", system-ui, sans-serif; fill: var(--ink); }
+  .pane text.q { fill: var(--muted); font-size: 9.5px; letter-spacing: 0.08em; }
+</style>
+</head>
+<body>
+<h1>Sketch: one theme for the whole app</h1>
+<p class="note">Not the Explorer: a mock for trying two controls. <b>Press the four swatches under THEME</b> to dress the outside (World Map) and the inside (Local Map) together. <b>Press any colour dot in the key</b> to change what that meaning wears everywhere; the amber rings show when two meanings have come too close to tell apart.</p>
+
+<div class="app">
+  <aside class="scope side" data-scope="inside">
+    <div class="brand">Live Docs Explorer</div>
+    <div class="nav"><div>Knowledge Sources</div><div>World Map</div><div class="on">Local Map</div></div>
+    <div class="sect">
+      <h2>LEGEND</h2>
+      <div class="key" id="key">
+        <div class="wide">
+          <span>Offers</span>
+          <span class="pin" data-slot="offers" style="background:var(--offers)"><input type="color" aria-label="Colour for Offers"></span>
+          <span class="wire" style="background:linear-gradient(90deg,var(--offers),var(--uses))"></span>
+          <span class="pin" data-slot="uses" style="background:var(--uses)"><input type="color" aria-label="Colour for Uses"></span>
+          <span>Uses</span>
+        </div>
+        <div class="mark" data-slot="impl"><span class="dot" style="background:var(--impl)"><input type="color" aria-label="Colour for Implementation"></span>Implementation</div>
+        <div class="mark" data-slot="test"><span class="dot" style="background:var(--test)"><input type="color" aria-label="Colour for Test"></span>Test</div>
+        <div class="mark" data-slot="asset"><span class="dot" style="background:var(--asset)"><input type="color" aria-label="Colour for Asset"></span>Asset</div>
+        <div class="mark" data-slot="doc"><span class="dot" style="background:var(--doc)"><input type="color" aria-label="Colour for Document"></span>Document</div>
+        <div class="mark" data-slot="dir"><span class="dot" style="background:var(--dir)"><input type="color" aria-label="Colour for Directory"></span>Directory</div>
+      </div>
+      <p class="warn" id="warn" role="status"></p>
+    </div>
+    <div class="sect">
+      <h2>THEME</h2>
+      <div class="themes" id="themes">
+        <button class="reset" id="reset" type="button" hidden aria-label="Restore the theme's own colours" title="Restore the theme's own colours">
+          <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8a5 5 0 1 0 1.6-3.7M3 2.5v3h3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="said" id="said"></div>
+  </aside>
+
+  <section class="scope pane" data-scope="outside">
+    <h3>OUTSIDE: THE WORLD MAP</h3>
+    <svg viewBox="0 0 520 400" role="img" aria-label="A schematic board of four systems in two districts">
+      <rect x="10" y="10" width="500" height="380" rx="12" style="fill:var(--card);stroke:var(--border)"/>
+      <rect x="30" y="44" width="220" height="320" rx="10" style="fill:var(--cloud)"/>
+      <rect x="270" y="44" width="220" height="320" rx="10" style="fill:var(--onprem)"/>
+      <text class="q" x="42" y="64">CLOUD</text><text class="q" x="282" y="64">ON-PREM</text>
+      <g style="fill:var(--thing);stroke:var(--border)">
+        <rect x="62" y="92" width="120" height="58" rx="8"/><rect x="62" y="252" width="120" height="58" rx="8"/>
+        <rect x="318" y="118" width="120" height="58" rx="8"/><rect x="318" y="262" width="120" height="58" rx="8"/>
+      </g>
+      <text x="78" y="126">portal</text><text x="78" y="286">gateway</text><text x="334" y="152">payments</text><text x="334" y="296">sqlserver</text>
+      <!-- A wire begins blue at what offers and ends green at what uses. -->
+      <path id="w1" d="M318 147 C 262 147, 242 121, 182 121" fill="none" stroke-width="2.5" stroke-dasharray="5 4" style="stroke:url(#gr)"/>
+      <path id="w2" d="M318 291 C 262 291, 242 281, 182 281" fill="none" stroke-width="2.5" stroke-dasharray="5 4" style="stroke:url(#gr)"/>
+      <path id="w3" d="M378 262 L 378 176" fill="none" stroke-width="2.5" stroke-dasharray="5 4" style="stroke:url(#gv)"/>
+      <defs>
+        <linearGradient id="gr" x1="1" x2="0"><stop offset="0" style="stop-color:var(--offers)"/><stop offset="1" style="stop-color:var(--uses)"/></linearGradient>
+        <linearGradient id="gv" gradientUnits="userSpaceOnUse" x1="378" y1="262" x2="378" y2="176"><stop offset="0" style="stop-color:var(--offers)"/><stop offset="1" style="stop-color:var(--uses)"/></linearGradient>
+      </defs>
+      <g style="fill:var(--offers)"><circle cx="318" cy="147" r="6"/><circle cx="318" cy="291" r="6"/><circle cx="378" cy="262" r="6"/></g>
+      <g style="fill:var(--uses)"><circle cx="182" cy="121" r="6"/><circle cx="182" cy="281" r="6"/><circle cx="378" cy="176" r="6"/></g>
+    </svg>
+  </section>
+
+  <section class="scope pane" data-scope="inside">
+    <h3>INSIDE: THE LOCAL MAP</h3>
+    <svg viewBox="0 0 520 400" role="img" aria-label="A schematic map: a closed directory of cells, two file cards joined by a wire, and a bag of spheres">
+      <defs><linearGradient id="gw" x1="0" x2="1"><stop offset="0" style="stop-color:var(--offers)"/><stop offset="1" style="stop-color:var(--uses)"/></linearGradient></defs>
+      <!-- A closed directory: its cells show its make-up. -->
+      <path d="M22 40 h70 a6 6 0 0 1 6 6 v8 h112 a8 8 0 0 1 8 8 v38 a8 8 0 0 1 -8 8 h-188 a8 8 0 0 1 -8 -8 v-52 a8 8 0 0 1 8 -8 z" style="fill:var(--card);stroke:var(--border)"/>
+      <text x="32" y="56" font-weight="600">tests</text>
+      <g><circle cx="36" cy="80" r="6" style="fill:var(--test)"/><circle cx="52" cy="80" r="6" style="fill:var(--test)"/><circle cx="68" cy="80" r="6" style="fill:var(--test)"/><circle cx="84" cy="80" r="6" style="fill:var(--test)"/><circle cx="100" cy="80" r="6" style="fill:var(--test)"/><circle cx="116" cy="80" r="6" style="fill:var(--test)"/><circle cx="132" cy="80" r="6" style="fill:var(--asset)"/><circle cx="148" cy="80" r="6" style="fill:var(--impl)"/></g>
+      <!-- Two cards: offerings leave on the right, uses enter on the left. -->
+      <rect x="22" y="150" width="150" height="92" rx="8" style="fill:var(--card);stroke:var(--test)" stroke-width="2"/>
+      <text x="34" y="174" font-weight="600">pool.ts</text><text class="q" x="34" y="228">TESTS</text>
+      <rect x="76" y="217" width="54" height="14" rx="7" style="fill:none;stroke:var(--test)"/>
+      <rect x="260" y="170" width="150" height="92" rx="8" style="fill:var(--card);stroke:var(--border)"/>
+      <text x="272" y="194" font-weight="600">canvas.ts</text>
+      <path d="M172 196 C 216 196, 216 216, 260 216" fill="none" stroke="url(#gw)" stroke-width="2.5"/>
+      <circle cx="172" cy="196" r="6" style="fill:var(--offers)"/><circle cx="260" cy="216" r="6" style="fill:var(--uses)"/>
+      <!-- The 3D map: a bag of spheres by kind, a directory, a document, and one file changed in a commit. -->
+      <ellipse cx="150" cy="322" rx="120" ry="58" style="fill:var(--bag);stroke:var(--border)"/>
+      <g>
+        <circle cx="78" cy="318" r="13" style="fill:var(--impl)"/><circle cx="112" cy="300" r="15" style="fill:var(--impl)"/><circle cx="150" cy="330" r="12" style="fill:var(--impl)"/><circle cx="118" cy="344" r="10" style="fill:var(--impl)"/><circle cx="186" cy="304" r="12" style="fill:var(--impl)"/>
+        <circle cx="216" cy="330" r="11" style="fill:var(--test)"/><circle cx="182" cy="346" r="10" style="fill:var(--test)"/><circle cx="240" cy="310" r="9" style="fill:var(--test)"/>
+        <circle cx="88" cy="346" r="9" style="fill:var(--asset)"/><circle cx="152" cy="292" r="9" style="fill:var(--asset)"/>
+      </g>
+      <path d="M270 322 L 352 322 M352 322 L 420 290 M352 322 L 430 356" style="stroke:var(--dir)" stroke-width="1.5" fill="none" opacity="0.7"/>
+      <circle cx="352" cy="322" r="12" style="fill:var(--dir)"/><circle cx="424" cy="288" r="11" style="fill:var(--doc)"/><circle cx="434" cy="358" r="12" style="fill:var(--changed)"/>
+      <text class="q" x="444" y="292">DOC</text><text class="q" x="452" y="362">CHANGED</text>
+    </svg>
+  </section>
+</div>
+
+<script>
+// The two candidates of the colour pass, by meaning. District tints, the thing's fill and the bag are stand-ins.
+const DEFAULTS = {
+  night: { ground: '#18181a', card: '#232326', border: '#2f2f34', ink: '#f2f2f2', muted: '#a6a6ad', selected: '#f2f2f2', cue: '#e9b86d', changed: '#ffffff',
+    offers: '#23a1ef', uses: '#5ee7b5', impl: '#a8b2c3', test: '#8a5cff', asset: '#db547e', doc: '#f1d96e', dir: '#e9984d',
+    cloud: '#1b2838', onprem: '#33281c', thing: '#2c2c31', bag: '#20222a' },
+  day: { ground: '#f4f5f7', card: '#ffffff', border: '#d5d9e0', ink: '#111318', muted: '#555d6b', selected: '#111318', cue: '#a96800', changed: '#111318',
+    offers: '#046aac', uses: '#008e60', impl: '#848ea1', test: '#682fdd', asset: '#a52971', doc: '#a28e09', dir: '#bb4e11',
+    cloud: '#dcebfb', onprem: '#fdebd6', thing: '#ffffff', bag: '#e9ecf1' },
+};
+const IDENTITY = ['offers', 'uses', 'impl', 'test', 'asset', 'doc', 'dir'];
+const WORDS = { offers: 'Offers', uses: 'Uses', impl: 'Implementation', test: 'Test', asset: 'Asset', doc: 'Document', dir: 'Directory', changed: 'Changed' };
+const THEMES = [
+  { name: 'Day outside, night inside', outside: 'day', inside: 'night' },
+  { name: 'Night everywhere', outside: 'night', inside: 'night' },
+  { name: 'Day everywhere', outside: 'day', inside: 'day' },
+  { name: 'Night outside, day inside', outside: 'night', inside: 'day' },
+];
+let palettes = structuredClone(DEFAULTS);
+let theme = THEMES[0];
+
+// Colour arithmetic: OKLab, and colour blindness simulated after Machado, Oliveira and Fernandes (2009).
+const hexToLin = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16) / 255).map((c) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4));
+const linToHex = (rgb) => '#' + rgb.map((c) => { c = Math.max(0, Math.min(1, c)); c = c <= 0.0031308 ? 12.92 * c : 1.055 * c ** (1 / 2.4) - 0.055; return Math.round(c * 255).toString(16).padStart(2, '0'); }).join('');
+const labOf = ([r, g, b]) => { const l = Math.cbrt(0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b), m = Math.cbrt(0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b), s = Math.cbrt(0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b); return [0.2104542553 * l + 0.793617785 * m - 0.0040720468 * s, 1.9779984951 * l - 2.428592205 * m + 0.4505937099 * s, 0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s]; };
+const linOf = ([L, a, b]) => { const l = (L + 0.3963377774 * a + 0.2158037573 * b) ** 3, m = (L - 0.1055613458 * a - 0.0638541728 * b) ** 3, s = (L - 0.0894841775 * a - 1.291485548 * b) ** 3; return [4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s, -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s, -0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s]; };
+const SIM = { protan: [[0.152286, 1.052583, -0.204868], [0.114503, 0.786281, 0.099216], [-0.003882, -0.048116, 1.051998]], deutan: [[0.367322, 0.860646, -0.227968], [0.280085, 0.672501, 0.047413], [-0.01182, 0.04294, 0.968881]] };
+const seen = (hex, kind) => { const rgb = hexToLin(hex); return labOf(kind ? SIM[kind].map((row) => Math.max(0, Math.min(1, row[0] * rgb[0] + row[1] * rgb[1] + row[2] * rgb[2]))) : rgb); };
+const apart = (a, b, kind) => { const p = seen(a, kind), q = seen(b, kind); return 100 * Math.hypot(p[0] - q[0], p[1] - q[1], p[2] - q[2]); };
+/** The same hue and strength at another lightness, pulled into what a screen can show. */
+const stepTo = (hex, lightness) => { const [, a, b] = labOf(hexToLin(hex)); for (let k = 1; k > 0.02; k *= 0.95) { const rgb = linOf([lightness, a * k, b * k]); if (rgb.every((c) => c >= -0.001 && c <= 1.001)) return linToHex(rgb); } return linToHex(linOf([lightness, 0, 0])); };
+
+function draw() {
+  for (const el of document.querySelectorAll('[data-scope]')) {
+    for (const [slot, value] of Object.entries(palettes[theme[el.dataset.scope]])) el.style.setProperty('--' + slot, value);
+  }
+  const inside = palettes[theme.inside];
+  for (const el of document.querySelectorAll('#key [data-slot]')) el.querySelector('input').value = inside[el.dataset.slot];
+  for (const button of document.querySelectorAll('.swatch')) button.setAttribute('aria-pressed', String(THEMES[button.dataset.i] === theme));
+  document.getElementById('said').textContent = theme.name;
+  document.getElementById('reset').hidden = JSON.stringify(palettes) === JSON.stringify(DEFAULTS);
+  // Which meanings can no longer be told apart, on either ground in use: 15 with full colour vision, 8 with red-green colour blindness.
+  const clashing = new Set(); const lines = [];
+  for (const name of new Set([theme.outside, theme.inside])) {
+    const p = palettes[name]; const slots = [...IDENTITY, 'changed'];
+    for (let i = 0; i < slots.length; i += 1) for (let j = i + 1; j < slots.length; j += 1) {
+      const a = p[slots[i]], b = p[slots[j]];
+      const full = apart(a, b), redGreen = Math.min(apart(a, b, 'protan'), apart(a, b, 'deutan'));
+      if (full >= 15 && redGreen >= 8) continue;
+      clashing.add(slots[i]); clashing.add(slots[j]);
+      const line = `${WORDS[slots[i]]} and ${WORDS[slots[j]]} are hard to tell apart${full >= 15 ? ' with red-green colour blindness' : ''}.`;
+      if (!lines.includes(line)) lines.push(line);
+    }
+  }
+  for (const el of document.querySelectorAll('#key [data-slot]')) el.classList.toggle('clash', clashing.has(el.dataset.slot));
+  document.getElementById('warn').textContent = lines.slice(0, 2).join(' ');
+}
+
+const row = document.getElementById('themes');
+THEMES.forEach((t, i) => {
+  const button = document.createElement('button');
+  button.type = 'button'; button.className = 'swatch'; button.dataset.i = i; button.title = t.name; button.setAttribute('aria-label', t.name);
+  const o = DEFAULTS[t.outside], n = DEFAULTS[t.inside];
+  button.style.background = o.ground;
+  button.innerHTML = `<i style="background:${n.ground};box-shadow:0 0 0 1px ${n.border}"><b style="background:${n.offers}"></b><b style="background:${n.uses}"></b></i>`;
+  button.addEventListener('click', () => { theme = t; draw(); });
+  row.insertBefore(button, document.getElementById('reset'));
+});
+document.getElementById('reset').addEventListener('click', () => { palettes = structuredClone(DEFAULTS); draw(); });
+document.getElementById('key').addEventListener('input', (event) => {
+  const slot = event.target.closest('[data-slot]').dataset.slot;
+  const here = theme.inside, there = here === 'night' ? 'day' : 'night';
+  palettes[here][slot] = event.target.value;
+  // The other ground keeps its own lightness for this meaning and takes the chosen hue.
+  palettes[there][slot] = stepTo(event.target.value, labOf(hexToLin(DEFAULTS[there][slot]))[0]);
+  draw();
+});
+draw();
+</script>
+</body>
+</html>
