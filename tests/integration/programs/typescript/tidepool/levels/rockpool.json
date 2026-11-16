@@ -1,0 +1,6 @@
+{
+  "name": "Rock pool",
+  "width": 12,
+  "height": 8,
+  "creatures": { "crab": 3, "anemone": 4, "starfish": 2 }
+}

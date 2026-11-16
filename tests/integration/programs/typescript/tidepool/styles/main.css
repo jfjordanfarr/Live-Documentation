@@ -1,0 +1,31 @@
+@font-face {
+  font-family: "Tide";
+  src: url("../assets/fonts/tide.woff") format("woff"), url("../assets/fonts/tide.ttf") format("truetype");
+}
+
+:root {
+  --sand: #e8d8a8;
+  --ink: #1d2a33;
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--sand) url("../assets/images/wave.png") repeat-x bottom;
+  font-family: "Tide", sans-serif;
+}
+
+.logo {
+  width: 64px;
+  image-rendering: pixelated;
+}
+
+.help li::before {
+  content: url("../assets/images/shell.png");
+  margin-right: 6px;
+}
+
+#pool {
+  border: 4px solid #6f6a61;
+  image-rendering: pixelated;
+}

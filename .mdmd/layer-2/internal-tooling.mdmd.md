@@ -1,6 +1,6 @@
 # Internal Tooling Reference
 
-_Current as of 2026-11-03._
+_Current as of 2026-11-16._
 
 ## Metadata
 
@@ -89,11 +89,16 @@ Fixture workspaces live under `tests/integration/fixtures/` (hand-authored scena
 | `npm run build`                           | `tsc` for the engine, the Explorer and the generator; the CLI package is not included                                                             |
 | `npm run lint`                            | Type-aware ESLint over the configured source and tests. |
 | `npm run live-docs:visualize:estate`      | Build the estate sample's Explorer, from a copy of it, into `dist/explorer/samples/estate/`; `test:e2e` runs it before the suite                  |
+| `npm run live-docs:visualize:tidepool`    | Build the tidepool sample's Explorer, a small TypeScript game whose directories mix implementation, tests, binary assets and documents, into `dist/explorer/samples/tidepool/`. Not part of the gate |
 | `npm run live-docs:visualize:history-sample` | Build the scripted repository's Explorer with its complete history, a last-four-commit window and a symbol-identity collision sample under `dist/explorer/samples/history/`, `history-window/` and `history-collision/`. |
 
 ### Local Map layout lab
 
 `npm run layout:lab -- <capture|sweep|restarts|verify> <bundle/scope>` captures a deck scope's cards from the built page, sweeps the pure layout's levers headlessly, compares ordering starts with the page's costs, or verifies a configuration in the page with the deck's instrument. Run reports belong under the day's `AI-Agent-Workspace/Probes/` folder. Page captures are disposable and rebuilt on demand, not committed.
+
+### Contact sheet
+
+`npm run contact:sheet -- --bundle <built bundle> --preset <repository|estate|tidepool> --out <dir>` draws one built Explorer at 1,440 by 900 in a fixed list of views (the 2D map with a directory open at three zooms, a pinned file, both keys, the 3D map at its start, pinned and in Structure with assets and documents, the history's Dim and Glow, the World Map light and dark, the reader and Knowledge Sources; those the bundle cannot show are left out) and writes each picture and `sheet.png`, one image of labelled tiles. `--hook <module>` names a module whose default export runs on each fresh browser context before its page loads, for a saved setting such as a palette; `--label` names the sheet; `--dir` and `--pin` replace a preset's directory and file; `--only` draws named views. Written for the colour pass of 2026-11-16, so that palettes are compared over the same views; its pictures go to scratch or the day's probe folder.
 
 ---
 

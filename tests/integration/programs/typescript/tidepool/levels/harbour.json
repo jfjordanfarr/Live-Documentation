@@ -1,0 +1,6 @@
+{
+  "name": "Harbour wall",
+  "width": 20,
+  "height": 6,
+  "creatures": { "crab": 5, "shrimp": 6, "anemone": 2 }
+}

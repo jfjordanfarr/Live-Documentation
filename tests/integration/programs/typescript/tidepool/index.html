@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Tidepool</title>
+  <link rel="icon" href="assets/images/favicon.ico">
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+  <header>
+    <img class="logo" src="assets/images/logo.png" alt="Tidepool">
+    <span>Score <output id="score">0</output></span>
+  </header>
+  <canvas id="pool" width="320" height="128"></canvas>
+  <ul class="help">
+    <li>Arrow keys move your hand over the pool.</li>
+    <li>Space feeds the creatures within reach, but only at low water. <img src="assets/images/crab.gif" alt=""></li>
+    <li>P pauses the tide.</li>
+  </ul>
+  <img id="sprite-sheet" src="src/render/sheet.png" alt="" hidden>
+  <audio id="cue-chime" src="src/audio/chime.wav" preload="auto"></audio>
+  <audio id="cue-splash" src="src/audio/splash.wav" preload="auto"></audio>
+  <audio id="ambient-surf" src="assets/sounds/surf.wav" loop autoplay></audio>
+  <audio id="ambient-gulls" src="assets/sounds/gulls.wav" loop autoplay></audio>
+  <script type="module" src="src/main.ts"></script>
+</body>
+</html>
