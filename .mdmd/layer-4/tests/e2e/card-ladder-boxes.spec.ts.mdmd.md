@@ -23,6 +23,8 @@ Since 2026-11-08 the audit holds the header round's six principles ([November 7 
 
 Since the three looks became Zoom Looks' default on 2026-11-13 ([Turn 3 of that day's record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-3)) the spec chooses the stepped ladder it audits in every page's saved tuning. The promise that a picture drawn at any zoom lays out every card, row and pin as the picture drawn at reading scale is held for the three looks too, by a case of its own at the reading look's last press, the connections look's first and last, the overview and the farthest zoom, since the looks draw a symbol's name wrapped below its line and hold the counts at a card's foot, neither of which may reach the layout; its pins in the connections look are made from a row's More.
 
+Since 2026-11-15 ([Turn 1 of that day's record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) the cases that draw a picture at a zoom and compare its layout with the one drawn at reading scale choose "Cards keep their size" for Zoomed Out Fully: files only became its default that day, a design change by the owner's eye and a comparison with the cards' rows drawn as bars, and under it the overview look lays the picture out again for compact cards by design, which the three looks' case met as a card 19 units shorter with no row.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

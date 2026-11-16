@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-reading.ts
-- Generated At: 2026-11-15T20:57:37.583Z
+- Generated At: 2026-11-16T01:26:23.963Z
 
 ## Authored
 ### Purpose
@@ -46,7 +46,13 @@ Since 2026-11-13 ([Turn 8](../../../../../../../../AI-Agent-Workspace/ChatHistor
 
 In the trial's second round (2026-11-14) a compact card's name is held at `filesNameScale`'s size, the overview's unless its widest segment would not fit across, so that it breaks only at its seams, and the card leaves air below the name's last line.
 
+Since 2026-11-15 ([Turn 1 of that day's record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) the reading writes the overview look's name scale for every card the looks draw (`--overview-name-scale`, `overview-files.ts`'s `filesNameScale`), not only with files only, so that a name is not broken inside a word while a smaller size keeps its pieces whole. For a day it also wrote each row's place and how far the held name reaches below the rows, for bars drawn in place of the overview's silent rows: an alternative compared with files only and not chosen ([the pictures](../../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-15/tone-and-greeking/README.md)), removed with the bars.
+
+Files only means files and what the person pinned by name (2026-11-15, the root's decision on the owner's standing word of October 1, 2026, "I'm not open to having the user open the shape of their software and believe it's all fine and dandy when it's not"; [Turn 1 of that day's record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)): with files only the reading gives the file's name the room down to the first row pinned by name and writes how far the rows are pushed below the header for it (`--files-rows-push`); and for every row it writes the overview look's scale for the row's name (`--row-scale-overview`, `overview-files.ts`'s `wholeNameScale`), the largest from the look's own down to the connections look's at which the name stands whole on the lines its row holds.
+
 Since 2026-11-15 ([November 15, Turn 1](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) `closedBoxWrites` fits a closed box's name with `fitHandle`: after the chevron that leads every line, at the look's scale where the box holds the name whole, at a smaller one before the name would break inside a word, never below the connections look's, in the box's height down to 2 units above its foot, where two lines stand at the connections look's size. More joins the name where the same lines hold it too; the text button it used to place with More is gone. Before, "bootst…" stood cut in a box that held "bootstrap" at four fifths of the size.
+
+The pinned rows of one card take one size at the overview look, the tightest's, as a card's file name takes one scale (`overview-files.ts`'s `pinnedRowScales`; 2026-11-15, [Turn 1 of that day's record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)): the reading finds each row's own scale first and then gives the rows pinned by name the least of theirs, counting each one's lines at that.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -82,7 +88,7 @@ while names open full descriptions in the reader.
 
 #### `markFirstPin` {#symbol-markfirstpin}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L870)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L900)
 
 ##### `markFirstPin` — Summary
 Write the pin depths for a card whose rows were just ordered, and its held name's lines at the overview band, whose
@@ -145,6 +151,8 @@ room they bound, from the card's last reading: no layout is read.
 - [`overview-files.COMPACT_AIR`](./overview-files.ts.mdmd.md#symbol-compact_air)
 - [`overview-files.OVERVIEW_FILES_ATTRIBUTE`](./overview-files.ts.mdmd.md#symbol-overview_files_attribute)
 - [`overview-files.filesNameScale`](./overview-files.ts.mdmd.md#symbol-filesnamescale)
+- [`overview-files.pinnedRowScales`](./overview-files.ts.mdmd.md#symbol-pinnedrowscales)
+- [`overview-files.wholeNameScale`](./overview-files.ts.mdmd.md#symbol-wholenamescale)
 - [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)
 - [`types.ReadingControl`](./types.ts.mdmd.md#symbol-readingcontrol) (type-only)
 - [`word-seams.seamsOf`](./word-seams.ts.mdmd.md#symbol-seamsof)

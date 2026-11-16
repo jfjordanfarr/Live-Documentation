@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/localView/ladder-rooms.test.ts
-- Generated At: 2026-11-13T21:12:10.865Z
+- Generated At: 2026-11-15T23:13:51.389Z
 
 ## Authored
 ### Purpose

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/ladder-rooms.ts
-- Generated At: 2026-11-13T21:12:10.911Z
+- Generated At: 2026-11-15T23:13:51.432Z
 
 ## Authored
 ### Purpose

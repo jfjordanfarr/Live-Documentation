@@ -68,7 +68,7 @@ export const getDefaultTuning = (): TuningConfig => ({
     zoomLooks: "three",
     directoryLayout: "flow",
     closedDirectory: "box",
-    overviewFiles: "keep",
+    overviewFiles: "files",
     slotLines: 2,
     textResistance: 1,
     controlResistance: 1,

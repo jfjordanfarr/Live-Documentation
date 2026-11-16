@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/layout-presets.ts
-- Generated At: 2026-11-14T00:57:48.428Z
+- Generated At: 2026-11-15T23:13:47.335Z
 
 ## Authored
 ### Purpose
@@ -36,6 +36,8 @@ Since 2026-11-12 the settings carry how an opened directory stands, so that the 
 Since 2026-11-13 ([Turn 3 of that day's record](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-3): the owner judges what the build shows without a switch) the three looks are Zoom Looks' default, first in `ZOOM_LOOKS`, and the settings carry Zoom Looks only when it is the stepped ladder, as they carry the opened directory only when it is not the grid. `applyLayoutSettings` reads a snapshot that carries the 2D map's settings without it as the three looks, so that a link made before the trial, or since with the default, opens in them even in a browser whose own tuning holds the ladder, while a link that says the ladder opens in it. A link of November 10 to 13 always says one or the other, the default of its day included, since the value was written then whatever it was.
 
 A link carries Closed Directory (2026-11-13) only when it is one of the trial's looks; its absence reads as the box ([Turn 7 of the November 13 record](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-7)).
+
+Files only is the default of Zoomed Out Fully since 2026-11-15, by the owner's eye and a comparison with the cards' rows drawn as bars ([Turn 1 of that day's record](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)): a link now writes the cards' size when it is chosen and says nothing for files only, where for the trial's two days it was the other way about; a link of those days that says files only is read as saying nothing, which is the same picture.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -106,7 +108,7 @@ Snapshot the controls that affect packing and spatial encodings, independent of 
 
 #### `applyLayoutSettings` {#symbol-applylayoutsettings}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L105)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L107)
 - Returns: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig); `settings`: [`LayoutSettings`](#symbol-layoutsettings)
 
@@ -115,8 +117,10 @@ Merge a validated partial snapshot over the current values, leaving unrelated pr
 carries the 2D map's settings without saying how an opened directory stands says Flow, the default, since only the
 grid is written (2026-11-13); one that does not say its Zoom Looks says the three looks, since only the ladder is
 written (2026-11-13); one that does not say its Closed Directory says the box (2026-11-13); and one that does not say
-what the overview look draws says cards at their size, since only files only is written (the trial of 2026-11-13). So
-a link made with the defaults shows them in a browser whose own tuning holds the other choices.
+what the overview look draws says files only, since only cards at their size is written (files only is the default
+since 2026-11-15; until then the link wrote files only and said nothing for the cards' size, so a link of the trial's
+two days that says files only is read as saying nothing, which is the same picture). So a link made with the defaults
+shows them in a browser whose own tuning holds the other choices.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

@@ -22,9 +22,12 @@ const url = (subject: string): string => `/?s=${compressSnapshot({ ...DEFAULT_SN
 test.use({ viewport: { width: 1440, height: 960 } });
 
 test.beforeEach(async ({ page }) => {
+  // Files only is Zoomed Out Fully's default since 2026-11-15, a design change by the owner's eye and a comparison with the cards' rows drawn as bars.
+  // This spec holds the overview of cards that keep their size, one gathered wire a pair and a pinned symbol's own wires,
+  // so it chooses that value rather than rely on the default.
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
     key: PERSISTED_UI_KEY,
-    value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0 } } })
+    value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, overviewFiles: "keep" } } })
   });
 });
 
@@ -229,7 +232,7 @@ test("in the three looks too, zooming out a small map stops at the ladder's last
   // The default since 2026-11-13: the far limit is the same, and the look there is the overview, whose drawing a further
   // press could not change.
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, zoomLooks: "three" } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, zoomLooks: "three", overviewFiles: "keep" } } })
   });
   await open(page, payment);
   const scales = await walkToFarthest(page);

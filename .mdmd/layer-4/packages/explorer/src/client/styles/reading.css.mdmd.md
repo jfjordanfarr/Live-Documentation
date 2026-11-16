@@ -44,6 +44,10 @@ Since 2026-11-15 ([November 15, Turn 1](../../../../../../../AI-Agent-Workspace/
 
 The tone round of 2026-11-15 ([Turn 1 of that day's record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)): the prose of a card, its Purpose and every description, is the theme's `--card-prose`. The rule that took the glow from a reading card's wires at rest went: no wire glows now.
 
+In the overview look the held name's scale is `--overview-name-scale` for every card the looks draw (2026-11-15, [Turn 1 of that day's record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)), where it had been `--files-name-scale` for files only: a name is held at the look's size or, where its widest word would not fit across, at the largest size at which it does, never below the connections look's. The same day this stylesheet drew each silent row of a card that keeps its size as a faint bar, a second answer to the blank overview card built to be compared with files only; the owner's eye chose files only, which became the default, and the bars' rules were removed.
+
+Files only means files and what the person pinned by name (2026-11-15, the root's decision on the owner's standing word of October 1, 2026, "I'm not open to having the user open the shape of their software and believe it's all fine and dandy when it's not"; [Turn 1 of that day's record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)): under files only a row whose symbol is pinned by name stays laid out beneath the file's name, pushed down by what the name needs beyond the header's room (`--files-rows-push`), and the frame that had stood for it on the card is gone. In the overview look such a row's head has the lesser of its even share and its own row, and its name is held at the card reading's `--row-scale-overview`, brought down in size before it is cut; it had been held at the look's size and cut ("render…").
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

@@ -532,8 +532,8 @@ function drawOverviewWires(
   if (!branches) return { drawn: 0, doubling: 0 };
   // The references the closer bands draw, whose ends are laid out (a row the branch picture hides has none): a pair is
   // joined here exactly when a wire of the closer bands joins it, and its count is theirs.
-  // With files only (2026-11-13) no row is laid out: a reference counts where its rows are disclosed, as the closer looks
-  // would draw it, and is gathered into its pair's line; no symbol's own wire is drawn.
+  // With files only (2026-11-13) no row is laid out but one pinned by name: a reference counts where its rows are
+  // disclosed, as the closer looks would draw it, and is gathered into its pair's line.
   const filesOnly = context.runtime.container.hasAttribute(OVERVIEW_FILES_ATTRIBUTE) || context.runtime.container.hasAttribute(OVERVIEW_LINES_ATTRIBUTE);
   const disclosed = (anchor: HTMLElement | null): boolean => !!anchor && !anchor.closest(".symbol-row.branch-symbol-hidden, .symbol-row.symbol-collapsed");
   const links = branches.subgraph.links.filter(edge => filesOnly
@@ -580,8 +580,11 @@ function drawOverviewWires(
     }
     dressGathered(path, gatheredCount(wire), gatheredDescription(wire, nameOf));
   }
-  // A pinned symbol's own wires, drawn after the gathered ones and so above them; none with files only.
-  for (const edge of filesOnly ? [] : ownWires(links, (nodeId, symbol, direction) => pinnedDot(nodeId, direction, symbol))) {
+  // A pinned symbol's own wires, drawn after the gathered ones and so above them: with files only too (2026-11-15),
+  // where a row pinned by name is the one row a card draws, since a pin is the person's own question. None while the
+  // picture moves back in from files only, when the pairs' lines are still drawn and the growing cards' rows have none.
+  const movingIn = context.runtime.container.hasAttribute(OVERVIEW_LINES_ATTRIBUTE);
+  for (const edge of movingIn ? [] : ownWires(links, (nodeId, symbol, direction) => pinnedDot(nodeId, direction, symbol))) {
     const offers = pinnedDot(edge.targetId, "outbound", edge.targetSymbol), uses = pinnedDot(edge.sourceId, "inbound", edge.sourceSymbol);
     const measured = wireEnds(edge.targetId, offers ? edge.targetSymbol : NODE_HUB, edge.sourceId, uses ? edge.sourceSymbol : NODE_HUB);
     if (!measured) continue;

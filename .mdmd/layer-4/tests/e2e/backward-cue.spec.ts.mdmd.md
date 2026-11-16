@@ -13,6 +13,8 @@ Browser cases for the 3D button's cue: branch-renderer.ts opened alone lights it
 ### Notes
 Written on 2026-11-15 ([Turn 1](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)), after the owner found branch-renderer.ts full of connections running leftward with the button dark. Every case failed on the code before the change (commit cb53d7c7), where the overlay counted 0 on both pictures. The forward wire that doubles back keeps its own case in [local-map-branches.spec.ts](local-map-branches.spec.ts.mdmd.md). The pulses are counted by their `animationstart` and `animationiteration` events from the page's first script, so that a change of look keeping the number is seen not to pulse again.
 
+Files only is the default of Zoomed Out Fully since 2026-11-15, by the owner's eye and a comparison with the cards' rows drawn as bars ([Turn 1 of that day's record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)): the case that reads the number at the three looks counts the gathered returning pairs of cards that keep their size, so it chooses that, and the case for files only reads the default.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

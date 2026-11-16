@@ -17,6 +17,8 @@ Written in the far bands' second milestone (2026-11-06), from the root's brief a
 
 Since the three looks became Zoom Looks' default on 2026-11-13 ([Turn 3 of that day's record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-3)) the spec reads the default, whose overview look draws the overview band's drawing, except the case of a small map stopping at the ladder's last step, which chooses the ladder whose step it reads; a case of its own holds the same far limit in the three looks, in the overview look. Run in the three looks, the pinned symbol's case found its wire starting 1.47 px from its dot at rest, past its 1 px bound: the wires were drawn the frame after the change of look, where the travelling dot stood at its first frame, and not again. The controller now draws them again when the change's animations end, and the case is unchanged.
 
+Files only is the default of Zoomed Out Fully since 2026-11-15, by the owner's eye and a comparison with the cards' rows drawn as bars ([Turn 1 of that day's record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)): this spec holds the overview of cards that keep their size (one gathered wire a pair, a pinned symbol's own wires, the far limit), so every case of it now chooses "Cards keep their size" in the remembered tuning rather than rely on the default.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

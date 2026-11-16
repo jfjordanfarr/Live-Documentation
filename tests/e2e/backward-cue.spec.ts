@@ -114,6 +114,10 @@ test("the estate's ring of three files lights the cue, and a picture with no ret
 
 test("the number is the same at the reading, connections and overview looks", async ({ page }) => {
   test.setTimeout(90_000);
+  // Files only is Zoomed Out Fully's default since 2026-11-15, a design change by the owner's eye and a comparison with the cards' rows drawn as bars; this case reads
+  // the overview of cards that keep their size, whose gathered returning pairs it counts, so it chooses that; the default
+  // has the next case.
+  await tuning(page, { overviewFiles: "keep" });
   await countPulses(page);
   await page.goto(local(renderer));
   await still(page);
@@ -133,9 +137,8 @@ test("the number is the same at the reading, connections and overview looks", as
   expect(await pulses(page), "a change of look that keeps the number does not pulse again").toEqual({ started: 1, repeated: 0 });
 });
 
-test("with files only at the farthest zoom the cue keeps its number", async ({ page }) => {
+test("with files only at the farthest zoom, the default, the cue keeps its number", async ({ page }) => {
   test.setTimeout(90_000);
-  await tuning(page, { overviewFiles: "files" });
   await page.goto(local(renderer));
   await still(page);
   const reading = await drawnAgainst(page);

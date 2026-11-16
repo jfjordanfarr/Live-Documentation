@@ -102,6 +102,110 @@ test("with files only, the overview draws each file compact with one line a pair
   expect(back.wires.length).toBe(six.wires.length);
 });
 
+/** The rows a card draws under files only, each pinned by name: whether its name is drawn whole and clear of the file's name, in its card. */
+const pinnedRows = (page: Page) => page.evaluate(() => [...document.querySelectorAll<HTMLElement>("#map-container .node-card .symbol-row")].filter(row => row.offsetHeight > 0).map(row => {
+  const card = row.closest<HTMLElement>(".node-card")!, text = row.querySelector<HTMLElement>(".symbol-label-text")!, wrapper = row.querySelector<HTMLElement>(".symbol-label-wrapper")!;
+  const held = card.querySelector<HTMLElement>(".local-file-name-held")!.getBoundingClientRect(), box = card.getBoundingClientRect();
+  // The name's own drawing: every fragment of its text, as the browser laid its lines out.
+  const range = document.createRange();
+  range.selectNodeContents(text);
+  const drawn = [...range.getClientRects()].filter(rect => rect.width > 0), name = text.getBoundingClientRect();
+  return {
+    card: card.dataset.id ?? "", symbol: row.dataset.symbol ?? "", named: row.classList.contains("symbol-pinned-named"),
+    shown: getComputedStyle(wrapper).visibility === "visible",
+    // Whole: nothing of the text is clipped by its box, across or down, and no line of it ends in an ellipsis' cut.
+    whole: text.scrollWidth <= text.clientWidth + 1 && text.scrollHeight <= text.clientHeight + 1 && drawn.every(rect => rect.right <= name.right + 1 && rect.bottom <= name.bottom + 1),
+    belowFileName: name.top >= held.bottom - 0.5,
+    inCard: name.left >= box.left - 0.5 && name.right <= box.right + 0.5 && name.bottom <= box.bottom + 0.5,
+    dots: [...row.querySelectorAll<HTMLElement>(".symbol-anchor.dot")].filter(dot => getComputedStyle(dot).visibility === "visible").length,
+    // The scale the name is drawn at, in the map's own units.
+    scale: new DOMMatrix(getComputedStyle(text).transform).a
+  };
+}));
+
+const branchRenderer = "packages/explorer/src/client/views/localView/branch-renderer.ts", branchRestarts = "packages/explorer/src/client/views/localView/branch-restarts.ts";
+for (const [what, pins] of [
+  ["one symbol", [{ nodeId: branchRenderer, symbol: "renderBranches" }]],
+  ["three symbols on two cards", [{ nodeId: branchRenderer, symbol: "renderBranches" }, { nodeId: branchRenderer, symbol: "BranchStage" }, { nodeId: branchRestarts, symbol: "startOrder" }]]
+] as const) {
+  test(`files only draws what the person pinned by name, ${what}: each row beneath its file's name, its name whole, with its own wires, and Fit pressed twice frames the same picture`, async ({ page }) => {
+    // Files only means files and what the person pinned by name (2026-11-15): until then a symbol pinned by name drew no
+    // row and no wire of its own at this look, and nothing on the map said which symbol was pinned.
+    test.setTimeout(240_000);
+    await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+      key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0 } } })
+    });
+    await page.goto(`/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, view: "map", perspective: "2d", selectedNodeId: branchRenderer, pinSet: { entries: [...pins] } })}`);
+    await page.locator(`.node-card[data-id="${branchRenderer}"]`).waitFor({ timeout: 60_000 });
+    await still(page);
+    await presses(page, 6);
+    const six = await picture(page);
+    expect(six.look).toBe("connections");
+    const cue = await page.getByRole("button", { name: "3D", exact: true }).getAttribute("title");
+    await presses(page, 1);
+    const seven = await picture(page);
+    expect(seven.look).toBe("overview");
+    expect(seven.files).toBe(true);
+    // Only the rows pinned by name are laid out, each drawn with its dots, its name whole, beneath its file's name.
+    const rows = await pinnedRows(page);
+    expect(rows.map(row => `${row.card} ${row.symbol}`).sort(), "the rows laid out are the symbols pinned by name").toEqual(pins.map(pin => `${pin.nodeId} ${pin.symbol}`).sort());
+    for (const row of rows) {
+      expect.soft(row.named && row.shown, `${row.symbol} is drawn`).toBe(true);
+      expect.soft(row.whole, `${row.symbol}'s name is whole`).toBe(true);
+      expect.soft(row.belowFileName, `${row.symbol} stands below its file's name`).toBe(true);
+      expect.soft(row.inCard, `${row.symbol}'s name is inside its card`).toBe(true);
+      expect.soft(row.dots, `${row.symbol} has its dots`).toBeGreaterThan(0);
+    }
+    // The pinned rows of one card are one size, the tightest's, as its file's name is one size; across cards they may differ.
+    for (const card of new Set(rows.map(row => row.card))) {
+      expect.soft(new Set(rows.filter(row => row.card === card).map(row => row.scale.toFixed(3))).size, `${card}'s pinned rows are one size`).toBe(1);
+    }
+    // Its own wires are drawn, each touching a pinned symbol's card, above the pairs' lines, which are all still there.
+    const own = seven.wires.filter(wire => wire.own);
+    expect(own.length, "a pinned symbol's own wires are drawn").toBeGreaterThan(0);
+    const pinnedCards = new Set<string>(pins.map(pin => pin.nodeId));
+    expect(own.every(wire => pinnedCards.has(wire.source) || pinnedCards.has(wire.target))).toBe(true);
+    // Every other wire is a pair's line, but for the laces and the hidden route of a pinned symbol's own returning
+    // reference, which are drawn at its card as the closer looks draw them and are no forward route.
+    expect(seven.wires.filter(wire => !wire.gathered && !wire.own && (wire.route || !(pinnedCards.has(wire.source) || pinnedCards.has(wire.target)))),
+      "every other wire is a pair's line or a pinned symbol's own return").toEqual([]);
+    // The returning connections are counted as at the connections look: the pin's own wires change no number.
+    await expect(page.getByRole("button", { name: "3D", exact: true })).toHaveAttribute("title", cue!);
+    // Fit pressed twice frames the same picture.
+    await page.getByRole("button", { name: "Fit current scope", exact: true }).click();
+    await still(page);
+    const once = await picture(page);
+    await page.getByRole("button", { name: "Fit current scope", exact: true }).click();
+    await still(page);
+    const twice = await picture(page);
+    expect(twice.camera).toBe(once.camera);
+    expect(twice.cards).toEqual(once.cards);
+  });
+}
+
+test("with a symbol pinned by name, files only and back in returns every card, row and wire to where it stood", async ({ page }) => {
+  test.setTimeout(180_000);
+  await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0 } } })
+  });
+  await page.goto(`/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, view: "map", perspective: "2d", selectedNodeId: branchRenderer,
+    pinSet: { entries: [{ nodeId: branchRenderer, symbol: "renderBranches" }, { nodeId: branchRenderer, symbol: "BranchStage" }, { nodeId: branchRestarts, symbol: "startOrder" }] } })}`);
+  await page.locator(`.node-card[data-id="${branchRenderer}"]`).waitFor({ timeout: 60_000 });
+  await still(page);
+  await presses(page, 6);
+  const six = await picture(page);
+  await presses(page, 1);
+  expect((await picture(page)).files).toBe(true);
+  await press(page, "Zoom In");
+  await still(page);
+  const back = await picture(page);
+  expect(back.look).toBe("connections");
+  expect(back.files).toBe(false);
+  expect(back.cards).toEqual(six.cards);
+  expect(back.rows).toBe(six.rows);
+  expect(back.wires).toEqual(six.wires);
+});
+
 test("the element under the pointer is held still on screen while the picture changes layout, and Fit pressed twice changes nothing", async ({ page }) => {
   test.setTimeout(180_000);
   await open(page, "files");
@@ -160,7 +264,7 @@ test("a render while files only shows leaves Fit framing the new picture with it
   expect(twice.cards).toEqual(once.cards);
 });
 
-test("with the default, and at every look but the overview, the picture is the cards as they stand", async ({ page, browser }) => {
+test("with cards keeping their size chosen, and at every look but the overview, the picture is the cards as they stand", async ({ page, browser }) => {
   test.setTimeout(180_000);
   await open(page, "keep");
   await presses(page, 6);
@@ -181,14 +285,21 @@ test("with the default, and at every look but the overview, the picture is the c
   await other.close();
 });
 
-test("a link carries files only only when chosen, and with reduced motion the new picture stands at once", async ({ browser }) => {
+test("files only is the default, a link carries the cards' size only when chosen, and with reduced motion the new picture stands at once", async ({ browser }) => {
   test.setTimeout(180_000);
   const context = await browser.newContext({ reducedMotion: "reduce", viewport: { width: 1440, height: 900 } });
   const page = await context.newPage();
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
     key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0 } } })
   });
-  await page.goto(pinned({ localMap: { overviewFiles: "files" } }));
+  // Files only is Zoomed Out Fully's default since 2026-11-15, a design change by the owner's eye and a comparison with the cards' rows drawn as bars: until then
+  // this case opened a link that said files only and expected the default to keep the cards' size.
+  await page.goto(pinned({ localMap: { overviewFiles: "keep" } }));
+  await page.locator(`.node-card[data-id="${links}"]`).waitFor();
+  await still(page);
+  await expect(page.locator("#tuning-overview-files"), "a link that says so opens with the cards' size").toHaveValue("keep");
+  // A link that says nothing of it, in a browser that remembers nothing of it, opens with files only.
+  await page.goto(pinned());
   await page.locator(`.node-card[data-id="${links}"]`).waitFor();
   await still(page);
   await expect(page.locator("#tuning-overview-files")).toHaveValue("files");

@@ -156,9 +156,9 @@
 .local-slot-card .symbol-row {
     /* A row's buttons grow downward from their top, which is the row's, and stop 2 px above the row's bottom, so that a
        pinned row's highlight still holds them with air beneath. */
-    --row-control-scale: clamp(1, var(--control-scale, 1), calc((var(--row-held-h, var(--row-h, 17)) - var(--row-more-y, 0) - 2) / var(--row-more-h, 17)));
+    --row-control-scale: clamp(1, var(--row-control-held, var(--control-scale, 1)), calc((var(--row-held-h, var(--row-h, 17)) - var(--row-more-y, 0) - 2) / var(--row-more-h, 17)));
     /* A dot holds its size only as far as its card's edge and its row's height allow. */
-    --dot-scale: clamp(1, var(--control-scale, 1), min(var(--row-dot-room, 1), var(--row-held-h, var(--row-h, 14)) / var(--row-dot-h, 14)));
+    --dot-scale: clamp(1, var(--row-control-held, var(--control-scale, 1)), min(var(--row-dot-room, 1), var(--row-held-h, var(--row-h, 14)) / var(--row-dot-h, 14)));
     /* A dot stays on its name's line: it moves down as far as the name's centre does, held about the row's top, as far
        as its row lets it. The placement reads the dot where the layout put it, this shift taken back. */
     --dot-y: calc((clamp(var(--row-dot-h, 14) / 2 * var(--dot-scale), var(--row-dot-mid, 7) + (var(--row-name-y, 0) + var(--row-name-h, 0) / 2) * (var(--name-scale, 1) - 1), var(--row-held-h, var(--row-h, 14)) - var(--row-dot-h, 14) / 2 * var(--dot-scale)) - var(--row-dot-mid, 7) + var(--row-held-y, 0)) * 1px);
@@ -275,14 +275,17 @@
 /* Files only at the overview look (Tuning → 2D Layout → Zoomed Out Fully, a trial of 2026-11-13; the owner: "the "Flow"
    look is much closer to what the full zoom-out in the 2D Local Map might reasonably be"): the controller writes
    data-overview-files and every file card takes the compact form an opened directory's member has in Flow, no row laid
-   out, its width and column kept, the scene laid out again for those heights (overview-files.ts). A card with a symbol
-   pinned by name says so as a pinned file does, since its row is not drawn. */
-[data-overview-files] .node-card.local-slot-card .symbol-row { display: none; }
-/* The compact card is as tall as its name needs whole at the look's size (the card reading's --files-card-h). */
+   out, its width and column kept, the scene laid out again for those heights (overview-files.ts). Files only means
+   files and what the person pinned by name (2026-11-15): a row whose symbol is pinned by name is laid out beneath the
+   file's name and drawn as the overview look draws it, in its own row, the rows pushed down by what the name needs
+   beyond the header's room (the card reading's --files-rows-push), so that the card grows by its pins and by nothing
+   else. Until then such a card said it was pinned by a frame alone, and the symbol and its own wires were not drawn. */
+[data-overview-files] .node-card.local-slot-card .symbol-row:not(.symbol-pinned-named) { display: none; }
+[data-overview-files] .node-card.local-slot-card .symbol-grid { padding-top: calc(var(--files-rows-push, 0) * 1px); }
+[data-overview-files][data-looks="three"][data-lod="overview"] .local-slot-card .symbol-row.symbol-pinned-named { --row-held-y: 0; }
+/* The compact card is as tall as its name needs whole at the look's size (the card reading's --files-card-h); its name
+   is held at the card reading's scale for it, as every card's is in the overview look (below). */
 [data-overview-files] .node-card.local-slot-card { min-height: calc(var(--files-card-h, 0) * 1px); }
-/* Its name is held at the card reading's scale for it, the look's own unless a segment of the name would not fit across. */
-[data-overview-files][data-lod="overview"] .local-slot-card { --title-scale: max(1, min(var(--files-name-scale, var(--text-scale, 1)), var(--title-room-h) / var(--title-line))); }
-[data-overview-files] .local-slot-card:has(.symbol-pinned-named) { box-shadow: 0 0 0 1px var(--accent), 0 0 8px var(--color-outbound-glow); }
 
 /* The card's header from the middle band out, ordered under six principles (the header round of 2026-11-08, the
    November 7 record's Turns 3 and 4; held-lines.ts states them): the file's name leads on the header's first line, held
@@ -314,9 +317,14 @@
 [data-lod="overview"] .local-slot-card {
     --title-room-h: min(var(--title-card-h, 0), max(var(--title-head-h, 0), var(--title-head-h, 0) + var(--title-pin-depth, 100000)));
 }
-/* The looks draw a pinned row's head at its even place (below), so the file's name reaches down to that. */
+/* The looks draw a pinned row's head at its even place (below), so the file's name reaches down to that. In the
+   overview look the name is held at the card reading's scale for it (--overview-name-scale): the look's own unless a
+   segment of the name would not fit across at it, then the largest at which every segment does, never below the
+   connections look's, so that a name is not broken inside a word while a smaller size keeps its pieces whole
+   (2026-11-15; with files only since 2026-11-13). */
 [data-looks="three"][data-lod="overview"] .local-slot-card {
     --title-room-h: min(var(--title-card-h, 0), max(var(--title-head-h, 0), var(--title-head-h, 0) + var(--title-pin-depth-even, 100000)));
+    --title-scale: max(1, min(var(--overview-name-scale, var(--text-scale, 1)), var(--title-room-h) / var(--title-line)));
 }
 :is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card .local-file-name { position: relative; }
 :is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card .local-file-name-text { visibility: hidden; }
@@ -474,6 +482,17 @@
     --row-held-h: var(--row-even-h, var(--row-h, 17));
     --row-held-fill: var(--row-fill-even, var(--row-fill-h, 1));
     --row-held-y: var(--row-even-y, 0);
+}
+/* A row pinned by name is the one row the overview look draws (2026-11-15): its head has the lesser of its even share
+   and its own row, which is where files only lays it out, and its name is held at the card reading's scale for it
+   there (--row-scale-overview): the look's own, or smaller, down to the connections look's, where that keeps the name
+   whole on the lines its row holds; it had been held at the look's size and cut ("render…"). Its More and its dots are
+   held at that scale too (--row-control-held, which a row's controls read before the look's), as a file's More follows
+   its name: held at the look's size, More alone took more than a third of a narrow card's row. */
+[data-looks="three"][data-lod="overview"] .local-slot-card .symbol-row.symbol-pinned-named {
+    --row-held-h: min(var(--row-even-h, var(--row-h, 17)), var(--row-h, 17));
+    --row-control-held: var(--row-scale-overview);
+    --name-scale: max(1, min(var(--row-held-fill, var(--row-fill-h, 1)), var(--row-scale-overview, var(--text-scale, 1))));
 }
 [data-looks="three"]:is([data-lod="far"], [data-lod="overview"]) .local-slot-card .internals-row .internals-label { position: relative; isolation: isolate; border-color: transparent; background: none; }
 /* The box's change of place at a change of look is no hover: its colour does not fade (a fade is motion the person may

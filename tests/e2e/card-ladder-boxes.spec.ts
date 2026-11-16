@@ -415,8 +415,11 @@ const pinBy = {
  * three looks are asked for.
  */
 async function drawnAfter(page: Page, presses: number, pin: (page: Page) => Promise<unknown>, searchStarts = 0, zoomLooks: "stepped" | "three" = "stepped") {
+  // Zoomed Out Fully is chosen as "Cards keep their size": files only is its default since 2026-11-15, a design change by
+  // the owner's eye and a comparison with the cards' rows drawn as bars, and under it the overview look lays the picture
+  // out again for compact cards by design. The promise held here is the card's whose box no zoom changes.
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts, zoomLooks } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts, zoomLooks, overviewFiles: "keep" } } })
   });
   await page.goto(url(stillPicture));
   await page.locator(`.node-card[data-id="${stillPicture}"]`).waitFor();

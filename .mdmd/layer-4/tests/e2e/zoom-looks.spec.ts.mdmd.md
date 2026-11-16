@@ -21,6 +21,8 @@ Every picture until the evening of 2026-11-13 was drawn with this container's fa
 
 Two more cases of the same day ([the milestone after Turn 3](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-3)), each under the fallback's lines and Segoe UI's: the drawn rows' heads of the estate's subject pinned whole and of this repository's documentationLinks.ts with two descriptions folded stand at even gaps in the connections look (within 2 px on screen), pinned highlights clear of each other; and a closed directory's box in scripts/doc-tools draws its name held at the look's size, whole, its count not drawn and its Open, kept at the connections look, inside the box. On the code before the milestone the first failed on uneven gaps and the second on a name with no held drawing.
 
+Files only is the default of Zoomed Out Fully since 2026-11-15, by the owner's eye and a comparison with the cards' rows drawn as bars ([Turn 1 of that day's record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)): this spec holds the composition of a card whose box no zoom changes, the overview look's included, so every case of it now chooses "Cards keep their size" in the remembered tuning rather than rely on the default.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

@@ -3,6 +3,7 @@ import { expect, test, type Page } from "@playwright/test";
 import { AA_SMALL_TEXT, backdrop, contrastRatio, parseColour } from "./contrast";
 import { localMapStill } from "./still-picture";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
+import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 
 /**
  * Tone on the 2D Local Map (2026-11-15; the owner's "font hierarchy" and "more little nits than we can count"). Read
@@ -101,8 +102,13 @@ test("no wire glows, and a hovered row's wires are drawn as a wire at rest while
   expect.soft(dimmed.filter(wire => wire.filter !== "none").length, "no dimmed wire glows").toBe(0);
 });
 
-test("at the overview a pinned symbol's own wires are drawn as the gathered lines are, without a glow", async ({ page }) => {
+test("at the overview of cards that keep their size a pinned symbol's own wires are drawn as the gathered lines are, without a glow", async ({ page }) => {
   test.setTimeout(60_000);
+  // Files only is Zoomed Out Fully's default since 2026-11-15, a design change by the owner's eye and a comparison with the cards' rows drawn as bars; files only draws
+  // no row and so no wire of a symbol's own, so this case chooses the cards' size.
+  await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, overviewFiles: "keep" } } })
+  });
   await open(page, estate({ pinSet: { entries: [{ nodeId: payment, symbol: "PaymentService" }] } }), payment);
   await zoomOut(page, 7);
   await expect(page.locator("#map-container")).toHaveAttribute("data-look", "overview");

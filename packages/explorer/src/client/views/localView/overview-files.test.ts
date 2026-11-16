@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { filesNameScale, heldIndex, overviewFilesShown, rowsFrame } from "./overview-files";
+import { filesNameScale, heldIndex, overviewFilesShown, pinnedRowScales, rowsFrame, wholeNameScale } from "./overview-files";
 
 describe("files only at the overview look (the trial of 2026-11-13)", () => {
   const files = { zoomLooks: "three", cardText: "slot", overviewFiles: "files" } as const;
@@ -29,6 +29,29 @@ describe("files only at the overview look (the trial of 2026-11-13)", () => {
     expect(heldIndex(boxes, null, centre)).toBe(1);
     expect(heldIndex(boxes, null, { x: 0, y: 0 })).toBe(0);
     expect(heldIndex([], null, centre)).toBe(-1);
+  });
+
+  it("brings a name down in size, a tenth at a time, to the largest scale at which it stands whole, and no lower than the connections look's", () => {
+    // Whole at the look's own size: held there.
+    expect(wholeNameScale(() => true)).toBe(3.6);
+    // Whole from 2.9 down: the largest tenth that does it.
+    const asked: number[] = [];
+    expect(wholeNameScale(scale => { asked.push(scale); return scale <= 2.95; })).toBe(2.9);
+    expect(asked).toEqual([3.6, 3.5, 3.4, 3.3, 3.2, 3.1, 3, 2.9]);
+    // Whole nowhere above the connections look's size: held at that, where it is cut as it must be.
+    expect(wholeNameScale(() => false)).toBe(2.2);
+    expect(wholeNameScale(scale => scale <= 2.2)).toBe(2.2);
+  });
+
+  it("gives the pinned rows of one card one size, the tightest's, and leaves the others their own", () => {
+    // renderBranches needs 2.3 and BranchStage could have 2.7: on one card both are drawn at 2.3.
+    expect(pinnedRowScales([{ scale: 2.3, pinned: true }, { scale: 2.7, pinned: true }])).toEqual([2.3, 2.3]);
+    // A row that is not pinned is not drawn at the overview and does not set the size, however tight it is.
+    expect(pinnedRowScales([{ scale: 2.2, pinned: false }, { scale: 3.6, pinned: true }, { scale: 3.1, pinned: true }, { scale: 2.5, pinned: false }])).toEqual([2.2, 3.1, 3.1, 2.5]);
+    // One pinned row keeps its own size; no pinned row changes nothing.
+    expect(pinnedRowScales([{ scale: 3.2, pinned: true }, { scale: 2.4, pinned: false }])).toEqual([3.2, 2.4]);
+    expect(pinnedRowScales([{ scale: 3.2, pinned: false }])).toEqual([3.2]);
+    expect(pinnedRowScales([])).toEqual([]);
   });
 
   it("holds a compact card's name at the overview's size unless a segment would not fit across, never below the connections look's", () => {

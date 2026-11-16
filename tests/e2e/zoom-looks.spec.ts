@@ -30,10 +30,12 @@ const LEGIBLE_PX = 8;
 test.use({ viewport: { width: 1440, height: 960 }, deviceScaleFactor: 1 });
 
 test.beforeEach(async ({ page }) => {
-  // A fresh visitor's settings but the continuing search, which the suite keeps off so that a picture stays as drawn.
+  // A fresh visitor's settings but the continuing search, which the suite keeps off so that a picture stays as drawn,
+  // and Zoomed Out Fully, chosen as "Cards keep their size" in every case of this spec: Files only is Zoomed Out Fully's default since 2026-11-15, a design change by the owner's eye and a comparison with the cards' rows drawn as bars;
+  // this spec holds the composition of a card whose box no zoom changes, the overview look's included.
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
     key: PERSISTED_UI_KEY,
-    value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0 } } })
+    value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, overviewFiles: "keep" } } })
   });
 });
 
@@ -377,7 +379,7 @@ const SEGOE_LINES = ["400", "700"].map(weight => `@font-face { font-family: "Seg
 async function openUnder(browser: Browser, path: string, subject: string, lines: "fallback" | "segoe", presses: number) {
   const context = await browser.newContext({ viewport: { width: 1440, height: 960 }, deviceScaleFactor: 1 });
   await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, zoomLooks: "three" } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, zoomLooks: "three", overviewFiles: "keep" } } })
   });
   if (lines === "segoe") await context.addInitScript(css => {
     const add = (): void => { const style = document.createElement("style"); style.textContent = css; document.documentElement.appendChild(style); };
@@ -535,7 +537,7 @@ test("in the far looks a closed directory's name is held after its chevron, fitt
 test("in the connections look a card's counts stand at the look's held size or not at all, and +N connections still reveals", async ({ page }) => {
   test.setTimeout(120_000);
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, zoomLooks: "three" } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, zoomLooks: "three", overviewFiles: "keep" } } })
   });
   const links = "scripts/doc-tools/documentationLinks.ts";
   await page.goto("/?view=local&dir=scripts/doc-tools");
@@ -638,7 +640,7 @@ test("a change of look moves the held parts where motion is welcome, and nothing
   for (const reducedMotion of ["no-preference", "reduce"] as const) {
     const context = await browser.newContext({ viewport: { width: 1440, height: 960 }, deviceScaleFactor: 1, reducedMotion });
     await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-      key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0 } } })
+      key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, overviewFiles: "keep" } } })
     });
     const page = await context.newPage();
     await page.goto(estate("three"));

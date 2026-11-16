@@ -126,24 +126,27 @@ describe("shared packing preferences", () => {
     expect(applyLayoutSettings(stepped, undefined).localMap.zoomLooks).toBe("stepped");
   });
 
-  it("opens a link with cards at their size when zoomed out fully unless it says files only, carried only when chosen (2026-11-13)", () => {
-    // The default keeps the cards' size, and a link made with it does not write it.
-    const keep = getDefaultTuning();
-    expect(keep.localMap.overviewFiles).toBe("keep");
-    expect(layoutSettingsOf(keep).localMap).not.toHaveProperty("overviewFiles");
-    // A link with files only chosen carries it through the address and opens in it, whatever the browser last held.
+  it("opens a link with files only when zoomed out fully unless it says the cards keep their size, carried only when chosen", () => {
+    // Files only is the default since 2026-11-15, a design change by the owner's eye and a comparison with the cards'
+    // rows drawn as bars; until then the default kept the cards' size and a link wrote files only. A link made with the
+    // default does not write it.
     const files = getDefaultTuning();
-    files.localMap.overviewFiles = "files";
-    const restored = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(files) }));
-    expect(restored.layout?.localMap?.overviewFiles).toBe("files");
-    expect(applyLayoutSettings(getDefaultTuning(), restored.layout).localMap.overviewFiles).toBe("files");
-    // A link with the 2D map's settings and no choice, made before the trial or since with the default, keeps the cards'
-    // size even in a browser whose own tuning holds files only; a value the control does not offer carries nothing.
+    expect(files.localMap.overviewFiles).toBe("files");
+    expect(layoutSettingsOf(files).localMap).not.toHaveProperty("overviewFiles");
+    // A link with the cards' size chosen carries it through the address and opens in it, whatever the browser last held.
+    const keep = getDefaultTuning();
+    keep.localMap.overviewFiles = "keep";
+    const restored = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(keep) }));
+    expect(restored.layout?.localMap?.overviewFiles).toBe("keep");
+    expect(applyLayoutSettings(getDefaultTuning(), restored.layout).localMap.overviewFiles).toBe("keep");
+    // A link with the 2D map's settings and no choice opens with files only even in a browser whose own tuning holds the
+    // cards' size; a link of the trial's days that says files only says nothing now, and a value the control does not
+    // offer carries nothing.
     const unsaid = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: { localMap: { columnGap: 72 } } }));
-    expect(applyLayoutSettings(files, unsaid.layout).localMap.overviewFiles).toBe("keep");
-    expect(readLayoutSettings({ localMap: { overviewFiles: "keep" } })).toBeUndefined();
+    expect(applyLayoutSettings(keep, unsaid.layout).localMap.overviewFiles).toBe("files");
+    expect(readLayoutSettings({ localMap: { overviewFiles: "files" } })).toBeUndefined();
     expect(readLayoutSettings({ localMap: { overviewFiles: "flow" } })).toBeUndefined();
     // An address that carries no layout at all leaves the browser's own choice alone.
-    expect(applyLayoutSettings(files, undefined).localMap.overviewFiles).toBe("files");
+    expect(applyLayoutSettings(keep, undefined).localMap.overviewFiles).toBe("keep");
   });
 });

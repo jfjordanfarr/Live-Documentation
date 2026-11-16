@@ -99,8 +99,10 @@ export function layoutSettingsOf(tuning: TuningConfig): LayoutSettings {
  * carries the 2D map's settings without saying how an opened directory stands says Flow, the default, since only the
  * grid is written (2026-11-13); one that does not say its Zoom Looks says the three looks, since only the ladder is
  * written (2026-11-13); one that does not say its Closed Directory says the box (2026-11-13); and one that does not say
- * what the overview look draws says cards at their size, since only files only is written (the trial of 2026-11-13). So
- * a link made with the defaults shows them in a browser whose own tuning holds the other choices.
+ * what the overview look draws says files only, since only cards at their size is written (files only is the default
+ * since 2026-11-15; until then the link wrote files only and said nothing for the cards' size, so a link of the trial's
+ * two days that says files only is read as saying nothing, which is the same picture). So a link made with the defaults
+ * shows them in a browser whose own tuning holds the other choices.
  */
 export function applyLayoutSettings(tuning: TuningConfig, settings: LayoutSettings | undefined): TuningConfig {
   const directory = settings?.localMap ? { directoryLayout: DIRECTORY_LAYOUTS[0] } : null;

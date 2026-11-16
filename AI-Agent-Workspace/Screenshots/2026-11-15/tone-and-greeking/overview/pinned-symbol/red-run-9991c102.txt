@@ -1,0 +1,22 @@
+Running 3 tests using 1 worker
+  ✘  1 [chromium] › tests/e2e/overview-files.spec.ts:129:7 › files only draws what the person pinned by name, one symbol: each row beneath its file's name, its name whole, with its own wires, and the way back in returns every card (8.4s)
+  ✘  2 [chromium] › tests/e2e/overview-files.spec.ts:129:7 › files only draws what the person pinned by name, three symbols on two cards: each row beneath its file's name, its name whole, with its own wires, and the way back in returns every card (9.5s)
+  ✓  3 [chromium] › tests/e2e/overview-files.spec.ts:177:5 › with a symbol pinned by name, files only and back in returns every card, row and wire to where it stood (8.2s)
+    Error: the rows laid out are the symbols pinned by name
+    - Expected  - 3
+    + Received  + 1
+    - Array [
+    -   "packages/explorer/src/client/views/localView/branch-renderer.ts renderBranches",
+    - ]
+    + Array []
+    Error: the rows laid out are the symbols pinned by name
+    - Expected  - 5
+    + Received  + 1
+    - Array [
+    -   "packages/explorer/src/client/views/localView/branch-renderer.ts BranchStage",
+    -   "packages/explorer/src/client/views/localView/branch-renderer.ts renderBranches",
+    -   "packages/explorer/src/client/views/localView/branch-restarts.ts startOrder",
+    - ]
+    + Array []
+  2 failed
+  1 passed (1.9m)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/types.ts
-- Generated At: 2026-11-14T00:57:49.569Z
+- Generated At: 2026-11-15T23:13:48.670Z
 
 ## Authored
 ### Purpose
@@ -51,6 +51,8 @@ Since 2026-11-05 `ForceGraphTuning` carries `shellDepth`, the directory shells' 
 `directoryLayout` (2026-11-12) is the switch of the directory flow trial: the grid of 2026-10-07, the default, or an opened directory in flow order with a line for each pair of files. It is a trial for comparison, not a decision; [its evidence](../../../../../../AI-Agent-Workspace/Screenshots/2026-11-12/directory-flow-trial/README.md) has the pictures.
 
 `closedDirectory` and `CLOSED_DIRECTORY_LOOKS` hold the Closed Directory trial's choice (2026-11-13), the box first as the default ([Turn 7 of the November 13 record](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-7)).
+
+Files only is the default of Zoomed Out Fully since 2026-11-15, by the owner's eye and a comparison with the cards' rows drawn as bars ([Turn 1 of that day's record](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)): `OVERVIEW_FILES` lists it first, and the first is what a link that says nothing means.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -226,49 +228,50 @@ Every Closed Directory choice, in the order the control offers them; the first, 
 
 #### `OverviewFiles` {#symbol-overviewfiles}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L269)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L272)
 
 ##### `OverviewFiles` — Summary
-What the 2D map's overview look draws: cards at their size, or files only, as in Flow (the trial of 2026-11-13).
+What the 2D map's overview look draws: files only, as in Flow, or cards at their size. Files only was a trial of
+2026-11-13 and is the default since 2026-11-15, by the owner's eye and a comparison with the cards' rows drawn as bars.
 
 #### `OVERVIEW_FILES` {#symbol-overview_files}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L272)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L275)
 
 ##### `OVERVIEW_FILES` — Summary
 Every Zoomed Out Fully choice, in the order the control offers them, the default first.
 
 #### `ForceGraphTuning` {#symbol-forcegraphtuning}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L275)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L278)
 
 ##### `ForceGraphTuning` — Summary
 The 3D Local Map's packing and stable visual encodings, shared with the headless layout lab.
 
 #### `PathDestination` {#symbol-pathdestination}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L379)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L382)
 
 ##### `PathDestination` — Summary
 The end of a path a person asked for: a file, perhaps one symbol of it, or a directory. The path starts at the newest pin (2026-10-14).
 
 #### `InspectionTarget` {#symbol-inspectiontarget}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L384)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L387)
 
 ##### `InspectionTarget` — Summary
 The evidence explicitly open in the reader, independent of the Local Map subject and its pins.
 
 #### `DiscoveryTarget` {#symbol-discoverytarget}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L391)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L394)
 
 ##### `DiscoveryTarget` — Summary
 The latest discovery remains in the map after its evidence closes; a new discovery replaces it and Pin keeps it.
 
 #### `ExplorerState` {#symbol-explorerstate}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L397)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L400)
 
 ##### `ExplorerState` — Summary
 Root state object for the Explorer client, managed by
@@ -276,7 +279,7 @@ Root state object for the Explorer client, managed by
 
 #### `TestCoverageMap` {#symbol-testcoveragemap}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L426)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L429)
 
 ##### `TestCoverageMap` — Summary
 Map from implementation file path → covering test node(s).

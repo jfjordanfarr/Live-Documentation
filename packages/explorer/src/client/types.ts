@@ -265,11 +265,14 @@ export type ClosedDirectoryLook = "box" | "cells" | "stack" | "folded";
 /** Every Closed Directory choice, in the order the control offers them; the first, today's box, is the default. */
 export const CLOSED_DIRECTORY_LOOKS: readonly ClosedDirectoryLook[] = ["box", "cells", "stack", "folded"];
 
-/** What the 2D map's overview look draws: cards at their size, or files only, as in Flow (the trial of 2026-11-13). */
+/**
+ * What the 2D map's overview look draws: files only, as in Flow, or cards at their size. Files only was a trial of
+ * 2026-11-13 and is the default since 2026-11-15, by the owner's eye and a comparison with the cards' rows drawn as bars.
+ */
 export type OverviewFiles = "keep" | "files";
 
 /** Every Zoomed Out Fully choice, in the order the control offers them, the default first. */
-export const OVERVIEW_FILES: readonly OverviewFiles[] = ["keep", "files"];
+export const OVERVIEW_FILES: readonly OverviewFiles[] = ["files", "keep"];
 
 /** The 3D Local Map's packing and stable visual encodings, shared with the headless layout lab. */
 export interface ForceGraphTuning {
