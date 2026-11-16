@@ -3,6 +3,7 @@ import { placeBranches, type BoundaryAlignment, type Placement, type PlacementBa
 import { LANE_PADDING, LANE_PITCH } from "./branch-routing";
 import { edgeKey, type BranchGraph } from "./branches";
 import type { DirectoryBand } from "./directory-bands";
+import { stripColumns } from "./directory-handle";
 
 /**
  * The Local Map's many-file scene as geometry: from the ranked and ordered
@@ -80,6 +81,8 @@ export interface SceneBox {
   inset: number;
   /** The room between the leftmost segment's top and the first member: the inset and the label; set by the layout. */
   insetTop: number;
+  /** How many leading columns keep that room, the strip the label's handle may reach across; set by the layout, one unless every column stands from the top. */
+  stripColumns: number;
   insetBottom: number;
   minColumn: number;
   maxColumn: number;
@@ -171,9 +174,9 @@ export function planBranches(branches: BranchGraph, bandPadding: number = DEFAUL
   const items = new Map<string, SceneItem>();
   const columns: StackEntry[][] = Array.from({ length: columnCount }, () => []);
   let boxCount = 0;
-  const make = (partial: Omit<SceneBox, "anchor" | "insetTop" | "insetBottom" | "segments" | "left" | "top" | "right" | "bottom"> & { insetTop?: number; insetBottom?: number }): SceneBox => {
+  const make = (partial: Omit<SceneBox, "anchor" | "insetTop" | "stripColumns" | "insetBottom" | "segments" | "left" | "top" | "right" | "bottom"> & { insetTop?: number; insetBottom?: number }): SceneBox => {
     const box: SceneBox = {
-      ...partial, anchor: partial.parent ? hostOf(partial.parent) : null, insetTop: partial.insetTop ?? 0, insetBottom: partial.insetBottom ?? partial.inset,
+      ...partial, anchor: partial.parent ? hostOf(partial.parent) : null, insetTop: partial.insetTop ?? 0, stripColumns: 1, insetBottom: partial.insetBottom ?? partial.inset,
       segments: [], left: 0, top: 0, right: 0, bottom: 0
     };
     boxes.push(box);
@@ -278,6 +281,9 @@ export function layoutScene(plan: ScenePlan, branches: BranchGraph, measurer: Sc
   for (const box of plan.boxes) {
     if (box.kind !== "lane") box.insetTop = box.inset + (measured.labelHeights.get(box.key) ?? 0);
   }
+  // Where every column stands from the top, a drawn directory keeps its label's strip over the handle's run, its leading
+  // columns in one situation (`stripColumns`), and its padding over the rest; a box's parent is always made before it.
+  for (const box of plan.boxes) box.stripColumns = tuning.fromTop && box.kind === "directory" ? stripColumns(box) : 1;
 
   // A wire per reference, through the slot of each lane it passes; wires between the same pins add up. A pair line of
   // an opened directory (the directory flow trial, 2026-11-12) weighs as many links as it stands for.
@@ -310,7 +316,7 @@ export function layoutScene(plan: ScenePlan, branches: BranchGraph, measurer: Sc
 
   const toPlacementBand = (box: SceneBox): PlacementBand => ({
     key: box.key, insetTop: box.insetTop, insetBottom: box.insetBottom, minColumn: box.minColumn, maxColumn: box.maxColumn, row: box.row,
-    shaped: box.kind === "directory", items: box.items, rowItems: rowItemsOf(box), children: box.children.map(toPlacementBand)
+    stripColumns: box.stripColumns, shaped: box.kind === "directory", items: box.items, rowItems: rowItemsOf(box), children: box.children.map(toPlacementBand)
   });
   const placement = placeBranches({
     columns, heights, wires: [...wires.values()], bands: [toPlacementBand(root)], alignments,

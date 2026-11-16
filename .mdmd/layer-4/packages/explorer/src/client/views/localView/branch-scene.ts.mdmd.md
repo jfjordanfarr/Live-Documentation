@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-scene.ts
-- Generated At: 2026-11-12T22:02:39.930Z
+- Generated At: 2026-11-15T22:47:40.369Z
 
 ## Authored
 ### Purpose
@@ -25,14 +25,14 @@ Since 2026-11-12 a pair line of the directory flow trial weighs as many links as
 ### Public Symbols
 #### `SceneTuning` {#symbol-scenetuning}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L25)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L26)
 
 ##### `SceneTuning` — Summary
 The dials of the scene's geometry, each with the value the picture was designed at.
 
 #### `DEFAULT_SCENE_TUNING` {#symbol-default_scene_tuning}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L47)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L48)
 - Returns: [`SceneTuning`](#symbol-scenetuning)
 
 ##### `DEFAULT_SCENE_TUNING` — Summary
@@ -40,28 +40,28 @@ The values the picture was designed at.
 
 #### `BAND_BORDER` {#symbol-band_border}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L50)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L51)
 
 ##### `BAND_BORDER` — Summary
 The outline's stroke, outside the padding.
 
 #### `SLOT_LINE` {#symbol-slot_line}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L53)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L54)
 
 ##### `SLOT_LINE` — Summary
 Where a wire runs through a slot of a lane: the slot's middle pixel, from its top.
 
 #### `SceneSegment` {#symbol-scenesegment}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L56)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L57)
 
 ##### `SceneSegment` — Summary
 One column's part of a box: its edges there.
 
 #### `SceneBoxKind` {#symbol-sceneboxkind}
 - Type: type
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L69)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L70)
 
 ##### `SceneBoxKind` — Summary
 What a box is: the root is the picture itself, drawn as nothing; a directory
@@ -70,42 +70,42 @@ its parent's element; a lane is the room a column's threaded wires pass.
 
 #### `SceneBox` {#symbol-scenebox}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L72)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L73)
 
 ##### `SceneBox` — Summary
 A box of the picture, with its place once laid out.
 
 #### `SceneItem` {#symbol-sceneitem}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L102)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L105)
 
 ##### `SceneItem` — Summary
 A card: an item the placement stands in a column.
 
 #### `ScenePlan` {#symbol-sceneplan}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L111)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L114)
 
 ##### `ScenePlan` — Summary
 The tree of boxes and the stacks of each column, before any measuring.
 
 #### `SceneMeasurer` {#symbol-scenemeasurer}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L124)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L127)
 
 ##### `SceneMeasurer` — Summary
 What the layout asks of the page, or of a capture of it.
 
 #### `SceneMeasurement` {#symbol-scenemeasurement}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L132)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L135)
 
 ##### `SceneMeasurement` — Summary
 What the measurer found: each card's height, where each pin sits, and each drawn directory's label height.
 
 #### `Scene` {#symbol-scene}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L140)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L143)
 - Extends: [`ScenePlan`](#symbol-sceneplan)
 
 ##### `Scene` — Summary
@@ -113,7 +113,7 @@ The laid-out scene.
 
 #### `planBranches` {#symbol-planbranches}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L160)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L163)
 - Returns: [`ScenePlan`](#symbol-sceneplan)
 - Parameters: `branches`: [`BranchGraph`](./branches.ts.mdmd.md#symbol-branchgraph)
 
@@ -124,14 +124,14 @@ among them by row; then its own files, with the lanes that follow them.
 
 #### `hostOf` {#symbol-hostof}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L221)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L224)
 
 ##### `hostOf` — Summary
 The box whose element holds a box's elements: itself, unless it is a directory's loose files, which share their parent's.
 
 #### `rowItemsOf` {#symbol-rowitemsof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L224)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L227)
 - Parameters: `box`: [`SceneBox`](#symbol-scenebox)
 
 ##### `rowItemsOf` — Summary
@@ -139,7 +139,7 @@ A drawn directory's own cards, including its invisible file buckets, but no nest
 
 #### `layoutScene` {#symbol-layoutscene}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L248)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L251)
 - Returns: [`Scene`](#symbol-scene)
 - Parameters: `plan`: [`ScenePlan`](#symbol-sceneplan); `branches`: [`BranchGraph`](./branches.ts.mdmd.md#symbol-branchgraph); `measurer`: [`SceneMeasurer`](#symbol-scenemeasurer); `tuning`: [`SceneTuning`](#symbol-scenetuning)
 
@@ -168,4 +168,5 @@ containing box is re-solved under the original placement constraints.
 - [`branches.BranchGraph`](./branches.ts.mdmd.md#symbol-branchgraph)
 - [`branches.edgeKey`](./branches.ts.mdmd.md#symbol-edgekey)
 - [`directory-bands.DirectoryBand`](./directory-bands.ts.mdmd.md#symbol-directoryband) (type-only)
+- [`directory-handle.stripColumns`](./directory-handle.ts.mdmd.md#symbol-stripcolumns)
 <!-- LIVE-DOC:END Dependencies -->

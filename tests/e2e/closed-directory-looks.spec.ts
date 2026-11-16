@@ -83,8 +83,8 @@ for (const lines of ["fallback", "segoe"] as const) {
       }
       if (look === "folded") {
         await expect(target.locator(".local-closed-label")).toBeVisible();
-        // The disclosure mark stands before the name, More at the right, both on the label's line.
-        const [open, label, more] = await Promise.all([".local-directory-open", ".local-closed-label", ".local-directory-actions"].map(async selector => (await target.locator(selector).boundingBox())!));
+        // The handle's chevron stands before the name, More at the right, both on the label's line.
+        const [open, label, more] = await Promise.all([".local-directory-open .local-directory-chevron", ".local-closed-label", ".local-directory-actions"].map(async selector => (await target.locator(selector).boundingBox())!));
         expect(open.x + open.width).toBeLessThanOrEqual(label.x + 1);
         expect(more.x).toBeGreaterThan(label.x);
         expect(Math.abs(open.y + open.height / 2 - (more.y + more.height / 2))).toBeLessThan(1);

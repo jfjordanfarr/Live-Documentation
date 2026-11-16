@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-renderer.ts
-- Generated At: 2026-11-15T20:53:45.032Z
+- Generated At: 2026-11-15T23:05:35.434Z
 
 ## Authored
 ### Purpose
@@ -63,6 +63,8 @@ Since 2026-11-13 ([Turn 8](../../../../../../../../AI-Agent-Workspace/ChatHistor
 In the trial's second round (2026-11-14), the way back in from files only grows each card by its rows' grid, clipped below, its foot following in the card's own flow, and keeps the pairs' lines until the move ends; a picture drawn afresh, or laid out again, while files only shows also lays out the picture with its rows once for its size (`rowsPictureOf`), which Fit frames.
 
 Since 2026-11-14 ([Turn 9](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-9)) `rowsOf`, which caches each card's rows for the search's predictions, reads a row that has a box of its own by that box and only a legacy `display: contents` row through its children. The short row of 2026-11-13 takes its slot out of the layout, so its children no longer filled its 44 px; read through them the row was cached shorter than it stands, every row below it was predicted too high, and the continuing search priced its seeds and alignment trials against pins the page does not have. On the generator's picture no alignment was adopted where the headless command adopts one, which three cases of `local-map-simplicity.spec.ts` showed once the whole browser suite ran. The row's own box is its allotment whatever its children do, so the cache no longer depends on how a row's contents are hidden.
+
+Since 2026-11-15 ([November 15, Turn 1](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) a drawn directory's label is its handle: one line, a disclosure chevron (down on an opened directory, right on one drawn around what the pins need), the parent's path muted and the directory's own name, then what an encasing directory hides, More and the ancestry control. The chevron and the name are one button, whose press closes or opens the directory and whose focus ring surrounds both; what an encasing directory hides is drawn whole or not at all (`writeCountNeed` reads once what the name and the count need across, and the stylesheet draws the count only where the line's room, written with each pose, holds it); the close cross and the text button "Open" are gone, and the evidence reader is behind More. The label's box is a strip of constant height (`HANDLE_STRIP`), so the page no longer measures a label's text for the layout, and `roomsOfLabel`, which wrote the rooms of a separately held drawing, is deleted: from the middle band out the stylesheet holds the whole line at the file names' size. `applyPose` gives the label its width with each pose: the run of the columns that keep its strip (`stripColumns` of the posed box) whose tops are level (`handleRun`), which outside Flow is the leftmost column.
 
 Since 2026-11-15 ([Turn 1](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) a card's note on references read back, "N connections return in a cycle", counts the returning references the picture draws at the card, from `returningConnections` with `drawsReference` of [connections.ts](connections.ts.mdmd.md): the same function and the same test the 3D button's number comes from, so the two cannot disagree; the card counts the returns at either of its ends, the button each once. `dressCards` now discloses or hides every card's rows before any card counts, since a return has a row on two cards. A return whose rows the disclosure hides draws no lace and is no longer counted on the card, nor listed in its menu: on branch-renderer.ts opened alone, branch-scene.ts and branches.ts had said 4 where two laces stood, and say 2; the card's "+N symbols" tells the rest until it is shown.
 
@@ -136,7 +138,7 @@ The layout's dials come from the Local Map's tuning.
 
 #### `refreshReadingGeometry` {#symbol-refreshreadinggeometry}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L426)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L430)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `refreshReadingGeometry` — Summary
@@ -147,12 +149,11 @@ competition begins from the new picture.
 
 #### `BAND_BORDER` {#symbol-band_border}
 - Type: unknown
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L508)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L512)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`dom.setSeamedText`](../../dom.ts.mdmd.md#symbol-setseamedtext)
 - [`branch-alignments.alignmentCandidates`](./branch-alignments.ts.mdmd.md#symbol-alignmentcandidates)
 - [`branch-motion.Pose`](./branch-motion.ts.mdmd.md#symbol-pose)
 - [`branch-motion.boxKeyOf`](./branch-motion.ts.mdmd.md#symbol-boxkeyof)
@@ -211,6 +212,13 @@ competition begins from the new picture.
 - [`directory-flow.nominalMeasurer`](./directory-flow.ts.mdmd.md#symbol-nominalmeasurer)
 - [`directory-flow.searchFlowShape`](./directory-flow.ts.mdmd.md#symbol-searchflowshape)
 - [`directory-flow.shapeRecord`](./directory-flow.ts.mdmd.md#symbol-shaperecord)
+- [`directory-handle.HANDLE_HOLD`](./directory-handle.ts.mdmd.md#symbol-handle_hold)
+- [`directory-handle.HANDLE_INDENT`](./directory-handle.ts.mdmd.md#symbol-handle_indent)
+- [`directory-handle.HANDLE_LINE`](./directory-handle.ts.mdmd.md#symbol-handle_line)
+- [`directory-handle.HANDLE_STRIP`](./directory-handle.ts.mdmd.md#symbol-handle_strip)
+- [`directory-handle.chevronMarkup`](./directory-handle.ts.mdmd.md#symbol-chevronmarkup)
+- [`directory-handle.handleParts`](./directory-handle.ts.mdmd.md#symbol-handleparts)
+- [`directory-handle.handleRun`](./directory-handle.ts.mdmd.md#symbol-handlerun)
 - [`ladder-rooms.layoutTopOf`](./ladder-rooms.ts.mdmd.md#symbol-layouttopof)
 - [`membrane-outline.membranePath`](./membrane-outline.ts.mdmd.md#symbol-membranepath)
 - [`overview-files.OVERVIEW_FILES_ATTRIBUTE`](./overview-files.ts.mdmd.md#symbol-overview_files_attribute)

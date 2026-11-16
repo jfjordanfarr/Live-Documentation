@@ -62,8 +62,8 @@ describe("the picture's pose", () => {
       ["gone", { id: "gone", host: "root", left: 0, top: 300, width: 200, height: 60 }]
     ]),
     boxes: new Map([
-      ["root", { key: "root", kind: "root", directory: "", host: null, inset: 0, left: 0, top: 0, right: 500, bottom: 400, segments: [{ column: 0, left: 0, right: 500, top: 0, bottom: 400 }] }],
-      ["directory\0a", { key: "directory\0a", kind: "directory", directory: "a", host: "root", inset: 13, left: 0, top: 80, right: 220, bottom: 220, segments: [{ column: 0, left: 0, right: 220, top: 80, bottom: 220 }] }]
+      ["root", { key: "root", kind: "root", directory: "", host: null, inset: 0, stripColumns: 1, left: 0, top: 0, right: 500, bottom: 400, segments: [{ column: 0, left: 0, right: 500, top: 0, bottom: 400 }] }],
+      ["directory\0a", { key: "directory\0a", kind: "directory", directory: "a", host: "root", inset: 13, stripColumns: 1, left: 0, top: 80, right: 220, bottom: 220, segments: [{ column: 0, left: 0, right: 220, top: 80, bottom: 220 }] }]
     ]),
     pictureWidth: 500, pictureHeight: 400
   };
@@ -73,9 +73,9 @@ describe("the picture's pose", () => {
       ["new", { id: "new", host: "root", left: 300, top: 50, width: 200, height: 60 }]
     ]),
     boxes: new Map([
-      ["root", { key: "root", kind: "root", directory: "", host: null, inset: 0, left: 0, top: 0, right: 700, bottom: 600, segments: [{ column: 0, left: 0, right: 700, top: 0, bottom: 600 }] }],
-      ["directory\0a", { key: "directory\0a", kind: "directory", directory: "a", host: "root", inset: 13, left: 0, top: 180, right: 280, bottom: 340, segments: [{ column: 0, left: 0, right: 280, top: 180, bottom: 340 }] }],
-      ["directory\0b", { key: "directory\0b", kind: "directory", directory: "b", host: "root", inset: 13, left: 300, top: 0, right: 520, bottom: 120, segments: [{ column: 1, left: 300, right: 520, top: 0, bottom: 120 }] }]
+      ["root", { key: "root", kind: "root", directory: "", host: null, inset: 0, stripColumns: 1, left: 0, top: 0, right: 700, bottom: 600, segments: [{ column: 0, left: 0, right: 700, top: 0, bottom: 600 }] }],
+      ["directory\0a", { key: "directory\0a", kind: "directory", directory: "a", host: "root", inset: 13, stripColumns: 1, left: 0, top: 180, right: 280, bottom: 340, segments: [{ column: 0, left: 0, right: 280, top: 180, bottom: 340 }] }],
+      ["directory\0b", { key: "directory\0b", kind: "directory", directory: "b", host: "root", inset: 13, stripColumns: 1, left: 300, top: 0, right: 520, bottom: 120, segments: [{ column: 1, left: 300, right: 520, top: 0, bottom: 120 }] }]
     ]),
     pictureWidth: 700, pictureHeight: 600
   };
@@ -126,8 +126,8 @@ describe("a directory opening and closing in place", () => {
   const box: Pose = {
     items: new Map([["a/b", { id: "a/b", host: "directory\0a", left: 40, top: 100, width: 160, height: 50 }]]),
     boxes: new Map([
-      ["root", { key: "root", kind: "root", directory: "", host: null, inset: 0, left: 0, top: 0, right: 500, bottom: 400, segments: [{ column: 0, left: 0, right: 500, top: 0, bottom: 400 }] }],
-      ["directory\0a", { key: "directory\0a", kind: "directory", directory: "a", host: "root", inset: 13, left: 0, top: 80, right: 220, bottom: 220, segments: [{ column: 0, left: 0, right: 220, top: 80, bottom: 220 }] }]
+      ["root", { key: "root", kind: "root", directory: "", host: null, inset: 0, stripColumns: 1, left: 0, top: 0, right: 500, bottom: 400, segments: [{ column: 0, left: 0, right: 500, top: 0, bottom: 400 }] }],
+      ["directory\0a", { key: "directory\0a", kind: "directory", directory: "a", host: "root", inset: 13, stripColumns: 1, left: 0, top: 80, right: 220, bottom: 220, segments: [{ column: 0, left: 0, right: 220, top: 80, bottom: 220 }] }]
     ]),
     pictureWidth: 500, pictureHeight: 400
   };
@@ -135,7 +135,7 @@ describe("a directory opening and closing in place", () => {
     items: new Map([["a/b/x.ts", { id: "a/b/x.ts", host: "directory\0a/b", left: 60, top: 140, width: 300, height: 80 }]]),
     boxes: new Map([
       ...box.boxes,
-      ["directory\0a/b", { key: "directory\0a/b", kind: "directory", directory: "a/b", host: "directory\0a", inset: 13, left: 40, top: 100, right: 400, bottom: 300, segments: [{ column: 0, left: 40, right: 200, top: 100, bottom: 300 }, { column: 1, left: 240, right: 400, top: 120, bottom: 280 }] }]
+      ["directory\0a/b", { key: "directory\0a/b", kind: "directory", directory: "a/b", host: "directory\0a", inset: 13, stripColumns: 1, left: 40, top: 100, right: 400, bottom: 300, segments: [{ column: 0, left: 40, right: 200, top: 100, bottom: 300 }, { column: 1, left: 240, right: 400, top: 120, bottom: 280 }] }]
     ]),
     pictureWidth: 500, pictureHeight: 400
   };

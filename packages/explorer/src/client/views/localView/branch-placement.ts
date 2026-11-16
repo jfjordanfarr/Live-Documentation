@@ -77,6 +77,11 @@ export interface PlacementBand {
   maxColumn: number;
   /** The membrane's row among its siblings; where a sibling in a lower row shares a column, its segment there stands below. */
   row: number;
+  /**
+   * How many of the membrane's leading columns keep the label's room above their first member, the strip its handle may
+   * reach across; one, the leftmost, when absent. The other columns keep the padding.
+   */
+  stripColumns?: number;
   /** Whether the box has a drawn outline whose shape is priced: a membrane, not the picture's root nor a lane. */
   shaped: boolean;
   /** The items directly in this membrane, each in one of its columns. */
@@ -262,8 +267,10 @@ export function placeBranches(input: PlacementInput): Placement {
     for (const band of bands) {
       spans.set(band.key, band);
       const insetTop = Math.round(band.insetTop), insetBottom = Math.round(band.insetBottom);
-      // The room above a segment's members: the label's in the leftmost column, the padding's elsewhere.
-      const above = (column: number): number => (column === band.minColumn ? insetTop : insetBottom);
+      // The room above a segment's members: the label's over the strip's run, the leading columns its handle may reach
+      // across (the leftmost alone unless the band says more, 2026-11-15), and the padding's elsewhere.
+      const strip = band.minColumn + Math.max(1, band.stripColumns ?? 1);
+      const above = (column: number): number => (column < strip ? insetTop : insetBottom);
       for (const item of band.items) {
         const column = columnOf.get(item);
         if (column === undefined || column < band.minColumn || column > band.maxColumn) {

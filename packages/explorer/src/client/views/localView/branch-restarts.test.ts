@@ -90,7 +90,7 @@ describe("the order step's starts", () => {
     const short = laid(200, 0, 200, [["a"], ["b"]]);
     const smooth = laid(300, 0, 200, [["a"], ["b"]]);
     const membrane = (tops: number[]): SceneBox => ({ key: "directory", kind: "directory", directory: "directory", parent: null, anchor: null,
-      inset: 0, insetTop: 0, insetBottom: 0, row: 0, minColumn: 0, maxColumn: 1, items: ["b", "a"], children: [], slots: null, lane: null,
+      inset: 0, insetTop: 0, stripColumns: 1, insetBottom: 0, row: 0, minColumn: 0, maxColumn: 1, items: ["b", "a"], children: [], slots: null, lane: null,
       left: 0, right: 300, top: Math.min(...tops), bottom: Math.max(...tops) + 150,
       segments: tops.map((top, column) => ({ column, left: column * 200, right: column * 200 + 100, top, bottom: top + 150 })) });
     short.scene.boxes = [membrane([0, 20])];

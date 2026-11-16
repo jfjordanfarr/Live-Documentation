@@ -248,7 +248,9 @@ export const LOCAL_MAP: ViewReading = {
     "#view-map .node-tests__label",
     "#view-map .node-tests__item",
     "#view-map .local-column-empty",
-    "#view-map .local-directory-name",
+    // A drawn directory's own name and what it hides; its parent's path before them is cut from its start by design
+    // where the strip is short (2026-11-15), the whole path in the label's hover text.
+    "#view-map .local-directory-leaf",
     "#view-map .local-directory-more",
     "#view-map .local-directory-closed__name",
     "#view-map .local-directory-closed__count",

@@ -349,10 +349,6 @@ span.local-disclosure { cursor: default; }
 .pin-tray-absent { color: var(--text-panel-subtle); font-style: italic; }
 .pin-tray-empty { padding: 0 12px 12px; margin: 0; color: var(--text-panel-subtle); }
 
-.local-directory-ancestors { display: inline-flex; flex: 0 0 auto; align-self: flex-start; vertical-align: middle; margin-top: -2px; padding: 1px; border: 1px solid transparent; border-radius: 3px; background: transparent; color: inherit; cursor: pointer; }
-.local-directory-caption { flex: 1; min-width: 0; }
-.local-directory-ancestors svg { width: 14px; height: 14px; }
-.local-directory-ancestors:hover, .local-directory-ancestors:focus-visible { border-color: var(--accent); color: var(--accent); }
 .directory-ancestry { position: fixed; inset: auto; margin: 0; width: min(290px, calc(100vw - 32px)); max-height: min(60vh, 460px); overflow: auto; padding: 12px; color: var(--text); border: 1px solid var(--border); border-radius: 9px; background: var(--bg-deep); box-shadow: 0 8px 24px #0008; font-size: 13px; }
 .directory-ancestry strong { display: block; margin-bottom: 10px; overflow-wrap: anywhere; }
 .directory-ancestry-stack { display: flex; flex-direction: column; gap: 4px; }
@@ -370,27 +366,49 @@ span.local-disclosure { cursor: default; }
    the shape, one segment per column joined through the gutters, beneath the cards; the label sits at the leftmost segment's top.
    The root band is the picture itself: present for the perspective transition's outermost shell, with no outline. */
 .local-directory-band { display: block; position: absolute; box-sizing: border-box; min-width: 0; pointer-events: none; }
-/* The bounds reach beyond the shape, over a sibling's cards where the membranes step past one another, so the element lets the pointer through and its cards and label take it back. */
-.local-directory-band > .local-column, .local-directory-band > .local-directory-label { pointer-events: auto; }
+/* The bounds reach beyond the shape, over a sibling's cards where the membranes step past one another, so the element lets the pointer through and its cards and the parts of its label's line take it back (the label's own box is the strip across the membrane, which stays the map's). */
+.local-directory-band > .local-column { pointer-events: auto; }
 .local-membrane { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
 .local-membrane-shape { fill: #ffffff03; stroke: var(--membrane-outline); stroke-width: 1px; stroke-linejoin: round; }
-.local-directory-label { position: absolute; display: flex; gap: 4px; align-items: flex-start; font-size: 12px; color: var(--text-panel-muted); padding-bottom: 14px; overflow-wrap: break-word; }
-/* The label inspects. Its caption is one text flow, the name and what an encasing directory hides; Open or Close and More
-   stand beside it in a column of their own, 18 px tall and raised 2 px as the ancestry control is, so a one-line label
-   keeps its height and the layout lab lays the caption out as the page does (2026-10-20). */
-.local-directory-controls { display: flex; flex: none; align-self: flex-start; gap: 2px; margin-top: -2px; }
-.local-directory-controls > button { display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; height: 18px; margin: 0; padding: 1px; line-height: 14px; }
-.local-directory-controls > .local-directory-open { padding: 1px 5px; }
-.local-directory-name { display: inline; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: left; overflow-wrap: break-word; cursor: pointer; }
-.local-directory-name:hover { color: var(--accent); }
-.local-directory-more { opacity: .85; }
-.local-directory-open { display: inline-block; vertical-align: middle; margin-top: -2px; padding: 2px 5px; color: var(--text-panel-muted); background: none; border: 1px solid var(--border); border-radius: 4px; cursor: pointer; font: inherit; font-size: 11px; }
-.local-directory-open:hover { color: var(--accent); border-color: var(--accent); }
-.local-directory-close { display: inline-block; vertical-align: middle; margin-top: -2px; padding: 2px; line-height: 0; color: var(--text-panel-muted); background: none; border: 1px solid transparent; border-radius: 4px; cursor: pointer; }
-.local-directory-close:hover { color: var(--accent); border-color: var(--accent); }
-.local-directory-actions { display: inline-flex; vertical-align: middle; align-items: center; justify-content: center; margin-top: -2px; padding: 2px; color: var(--text-panel-muted); background: transparent; border: 1px solid transparent; border-radius: 4px; cursor: pointer; }
+/* A drawn directory's label is its handle (2026-11-15): one line, a button that is the disclosure chevron, the parent's
+   path muted and the directory's own name in a file name's tone and weight, with what an encasing directory hides, then
+   More and the ancestry control. The label's box is the strip the layout keeps above the cards (directory-handle.ts
+   writes its height, its line and the largest scale it holds); only the line's parts take the pointer, so the empty
+   strip beside them still pans the map. The button's line wraps and shows its first row only, so where the room across
+   runs out the parent's path gives way first, cut at its start (drawn right to left, growing from nothing into what the
+   name and the count leave); then the count, which goes whole to the hidden row, never cut; and the directory's own
+   name last. More and the ancestry control never give way. A press on the button closes or opens the directory: its
+   pressable area is the strip's whole height over its width, the membrane's padding above it included, laid over no
+   card, and the focus ring is drawn around the chevron and the name together. */
+.local-directory-label { position: absolute; box-sizing: border-box; font-size: 13px; color: var(--text-panel-muted); pointer-events: none; --dir-scale: 1; }
+.local-directory-row { display: flex; align-items: center; gap: 4px; box-sizing: border-box; width: calc(100% / var(--dir-scale)); height: calc(var(--dir-line, 15) * 1px); line-height: calc(var(--dir-line, 15) * 1px); white-space: nowrap; transform: scale(var(--dir-scale)); transform-origin: left top; }
+.local-directory-row > * { pointer-events: auto; }
+.local-directory-handle { display: inline-flex; flex: none; align-items: center; justify-content: center; margin: 0; padding: 0; border: 0; border-radius: 3px; background: transparent; color: inherit; font: inherit; cursor: pointer; }
+.local-directory-row > .local-directory-handle { position: relative; flex: 0 1 auto; min-width: 0; height: 100%; justify-content: flex-start; text-align: left; line-height: inherit; }
+.local-directory-row > .local-directory-handle::before { content: ""; position: absolute; left: calc(var(--dir-inset, 0) * -0.5px / var(--dir-scale)); right: -2px; top: calc(var(--dir-inset, 0) * -1px / var(--dir-scale)); height: calc((var(--dir-inset, 0) + var(--dir-strip, 0)) * 1px / var(--dir-scale)); }
+.local-directory-chevron { flex: none; }
+.local-directory-caption { display: flex; flex-wrap: wrap; align-items: center; align-content: flex-start; flex: 0 1 auto; min-width: 0; height: calc(var(--dir-line, 15) * 1px); overflow: hidden; }
+.local-directory-caption > .local-directory-chevron { height: calc(var(--dir-line, 15) * 1px); margin-right: 4px; }
+.local-directory-parent { flex: 1 1 0; min-width: 0; max-width: max-content; overflow: hidden; text-overflow: ellipsis; direction: rtl; text-align: left; }
+.local-directory-leaf { flex: none; max-width: calc(100% - 16px); overflow: hidden; text-overflow: ellipsis; color: var(--card-file-name); font-weight: 600; }
+/* The count is drawn where the line's room (--dir-room, in the map's units, over the held scale) holds what the name and
+   the count need (--dir-need) beside the controls after them (--dir-controls: More and the ancestry control with their
+   gaps, More alone from the far band out), with a unit to spare; otherwise it is not drawn, and the wrapping has already
+   taken it off the line. */
+.local-directory-label { --dir-controls: 40; }
+:is([data-lod="far"], [data-lod="overview"]) .local-directory-label { --dir-controls: 21; }
+.local-directory-more { flex: none; margin-left: .5em; opacity: calc(.85 * clamp(0, (var(--dir-room, 0) / var(--dir-scale) - var(--dir-controls) - var(--dir-need, 0) - 1) * 1000, 1)); }
+.local-directory-controls { display: flex; flex: none; align-items: center; gap: 2px; }
+.local-directory-controls > button { display: inline-flex; flex: none; align-items: center; justify-content: center; box-sizing: border-box; width: 17px; height: 15px; margin: 0; padding: 0; border: 1px solid transparent; border-radius: 3px; background: transparent; color: inherit; cursor: pointer; }
+.local-directory-controls > button svg { width: 13px; height: 13px; }
+.local-directory-row > .local-directory-handle:hover, .local-directory-row > .local-directory-handle:hover .local-directory-leaf { color: var(--accent); }
+.local-directory-controls > button:hover { color: var(--accent); border-color: var(--accent); }
+.local-directory-actions { display: inline-flex; vertical-align: middle; align-items: center; justify-content: center; padding: 2px; color: var(--text-panel-muted); background: transparent; border: 1px solid transparent; border-radius: 4px; cursor: pointer; }
 .local-directory-actions:hover { color: var(--accent); border-color: var(--accent); }
-.local-directory-name:focus-visible, .local-directory-close:focus-visible, .local-directory-open:focus-visible, .local-directory-actions:focus-visible, .local-directory-closed__name:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.local-directory-handle:focus-visible, .local-directory-controls > button:focus-visible, .local-directory-actions:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+/* A closed box's handle is its name: the ring of the keyboard's focus is drawn around the whole box, which is what a press opens. */
+.local-directory-closed__name:focus-visible { outline: none; }
+.local-directory-closed:has(.local-directory-closed__name:focus-visible) { outline: 2px solid var(--accent); outline-offset: 3px; }
 /* A card's node-level hub is drawn only where a wire of the band shown ends on it (2026-11-06): a file-level reference
    at the closer bands, a gathered wire at the overview band; the wires' drawing marks them. */
 #map-container .symbol-anchor.hub:not(.hub-ends-wire) { visibility: hidden; }
@@ -398,51 +416,26 @@ span.local-disclosure { cursor: default; }
 #local-legend .legend-row--gathered { display: none; }
 body:has(#map-container[data-lod="overview"]) #local-legend .legend-row--gathered { display: flex; }
 #local-legend .legend-row--gathered .spatial-legend-sample { --legend-color: var(--wire-offers); opacity: var(--wire-opacity); }
-/* The card ladder's directory label (the far-zoom review, 2026-11-06): from the middle band out the caption holds its
-   reading size on screen, on one line, while the label's own box has the room, its line and the padding beneath it above
-   the first card and its width across the membrane; where the height runs out it follows the map, and where the width
-   does it is cut at its start, so that its last segments and the count of what is not drawn stay. The caption in the
-   layout keeps the label's height in every band and is not drawn, though its name still takes the keyboard; the drawing
-   is the generated content of an aria-hidden child, whose words are the caption's (the label's title carries the full
-   path on hover): generated content, so that the page's find meets the caption once, and in a hidden child rather than
-   on the label with an alternative text of "" (content: … / ""), which browsers before Firefox 128 and Safari 17.4
-   reject as a whole declaration, drawing nothing. The label's other controls leave from the far band out, as a card's
-   secondary buttons do, and the caption takes their room. The controller's held scale for names, --text-scale, is the
-   label's too. */
-.local-directory-label { --dir-line: 14; }
-:is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-directory-label {
-    --dir-room: var(--dir-room-mid, 0);
-    --dir-scale: max(1, min(var(--text-scale, 1), var(--dir-room-h, 0) / var(--dir-line)));
-}
-:is([data-lod="far"], [data-lod="overview"]) .local-directory-label { --dir-room: var(--dir-room-far, 0); }
-:is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-directory-caption,
-:is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-directory-caption * { color: transparent; }
-:is([data-lod="far"], [data-lod="overview"]) .local-directory-label > :is(.local-directory-ancestors, .local-directory-controls) { visibility: hidden; }
-.local-directory-held { display: none; }
-:is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-directory-held::after { content: attr(data-held); }
-:is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-directory-held {
-    display: block;
-    position: absolute;
-    left: calc(var(--dir-x, 0) * 1px);
-    top: calc(var(--dir-y, 0) * 1px);
-    width: calc(var(--dir-room) / var(--dir-scale) * 1px);
-    line-height: calc(var(--dir-line) * 1px);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    direction: rtl;
-    text-align: left;
-    transform: scale(var(--dir-scale));
-    transform-origin: left top;
-    pointer-events: none;
-}
-/* A closed directory keeps its box and count while the separate Open control expands it. */
+/* The handle from the middle band out (2026-11-15): the whole line is held at the size the file names are held at, the
+   controller's --text-scale, which the strip is tall enough for at every look (--dir-hold; past it, in the stepped
+   ladder's last steps, it follows the map). The line is laid out at its own size in the label's width divided by that
+   scale and drawn scaled from its top left, so its buttons are held with the name and nothing is measured for it. The
+   ancestry control leaves from the far band out, as a card's secondary buttons do. */
+:is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-directory-label { --dir-scale: max(1, min(var(--text-scale, 1), var(--dir-hold, 1))); }
+:is([data-lod="far"], [data-lod="overview"]) .local-directory-ancestors { display: none; }
+/* A closed directory's whole box opens it; its name, after a disclosure chevron pointing right, is the handle that says so. */
 .local-directory-closed { box-sizing: border-box; width: 100%; min-width: 160px; position: relative; padding: 10px 12px; border: 1px solid var(--border); border-radius: 12px; background: #ffffff05; color: var(--text-panel-muted); cursor: pointer; box-shadow: 4px 4px 0 -1px var(--bg-deep, #15191f), 4px 4px 0 0 var(--border); }
 .local-directory-closed:hover { border-color: var(--accent); color: var(--text); }
-.local-directory-closed__name { display: block; padding: 0; border: 0; background: transparent; font: inherit; font-size: 13px; font-weight: 600; text-align: left; color: var(--text); overflow-wrap: break-word; cursor: pointer; }
-.local-directory-closed__count { margin-top: 4px; font-size: 11px; }
-.local-directory-closed .local-directory-open { margin-top: 8px; }
-.local-directory-closed .local-directory-actions { margin-left: 4px; margin-top: 8px; }
+.local-directory-closed__name { display: flex; gap: 4px; align-items: flex-start; justify-content: flex-start; margin-right: 24px; font-size: 13px; font-weight: 600; text-align: left; color: var(--card-file-name); }
+.local-directory-closed__name > .local-directory-chevron { margin-top: 1.5px; color: var(--text-panel-muted); }
+.local-directory-closed:hover .local-directory-closed__name > .local-directory-chevron { color: var(--accent); }
+.local-directory-closed__text { min-width: 0; overflow-wrap: break-word; }
+.local-directory-closed__count { margin-top: 4px; padding-left: 16px; font-size: 11px; }
+/* More stands on the name's line at the box's right, as on a file card (the owner's rule of 2026-11-07: a row is never
+   given to a lone control); the name leaves it its room. The row it had under the count keeps its height, so the box
+   keeps its size: it holds nothing in the Box and Stack looks, and the skin's cells in the Cells look. */
+.local-directory-closed .local-directory-actions { position: absolute; top: 7px; right: 9px; margin: 0; }
+.local-directory-closed__room { display: inline-flex; box-sizing: border-box; width: 20px; height: 20px; margin-top: 8px; vertical-align: middle; visibility: hidden; }
 /* The Closed Directory trial (2026-11-13): three looks drawn over the box's own layout, which none of them changes, so
    that every box and card stands where it stands with the box. Neutral hues only: blue and green keep their meanings.
    Stack: the box is the top card of a stack, a file card's corners and fill, with one to three cards under it by how
@@ -470,19 +463,18 @@ body:has(#map-container[data-lod="overview"]) #local-legend .legend-row--gathere
 :is(.local-closed-cells, .local-closed-cells-held) .local-cell-skin { fill: #ffffff10; stroke: #ffffff55; stroke-width: 0.8px; }
 :is(.local-closed-cells, .local-closed-cells-held) .local-cell-rim { fill: none; stroke: #ffffff66; stroke-width: 0.8px; }
 .local-directory-closed.local-closed--cells:hover { border-color: #ffffff60; }
-/* Folded membrane: the opened directory's outline, at the membrane's own stroke, and its label folded shut: Open a
-   disclosure mark pointing right before the directory's glyph, as a tree marks a collapsed folder, the name in the
-   label's type, More at the right, each control moved there from its place in the layout (--fold-x, --fold-y); the
-   name's button keeps its place and its focus, its own words drawn by the label; a crease at the foot. */
+/* Folded membrane: the opened directory's outline, at the membrane's own stroke, and after the handle's chevron the
+   directory's glyph and its name in the label's type, More at the right, moved there from its place in the layout
+   (--fold-x, --fold-y); the name's button keeps its place, its chevron and its focus, its own words drawn by the label;
+   a crease at the foot. */
 .local-directory-closed.local-closed--folded { border-radius: 8px; border-color: var(--border); background: #ffffff03; box-shadow: none; }
-.local-closed--folded .local-directory-closed__name { color: transparent; }
+.local-closed--folded .local-directory-closed__text { color: transparent; }
 .local-closed-label { display: none; }
 .local-closed--folded .local-closed-label { display: flex; position: absolute; left: var(--fold-left, 32px); top: 10px; gap: 4px; align-items: flex-start; width: var(--fold-room, 100px);
     font-size: 12px; line-height: 15px; color: var(--text-panel-muted); overflow-wrap: break-word; pointer-events: none; }
 .local-closed--folded .local-closed-label > svg { flex: none; margin-top: 0.5px; }
 .local-closed--folded:hover .local-closed-label { color: var(--text); }
-.local-closed--folded .local-directory-open { display: inline-flex; align-items: center; justify-content: center; padding: 2px; line-height: 0; border-color: transparent; }
-.local-closed--folded :is(.local-directory-open, .local-directory-actions) { transform: translate(var(--fold-x, 0), var(--fold-y, 0)); }
+.local-closed--folded .local-directory-actions { transform: translate(var(--fold-x, 0), var(--fold-y, 0)); }
 .local-closed--folded::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: 5px; border-top: 1px solid var(--border); pointer-events: none; }
 /* The placed layout: every membrane, card and lane stands where the placement put it, inside the element it belongs to. */
 .local-layout.local-placed { display: block; position: relative; }

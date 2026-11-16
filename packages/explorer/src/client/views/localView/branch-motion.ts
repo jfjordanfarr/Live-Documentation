@@ -27,6 +27,8 @@ export interface PosedBox {
   host: string | null;
   /** Padding plus border on each side, which also places a directory's label below its top. */
   inset: number;
+  /** How many leading columns keep the label's strip, across which its handle may reach where their tops are level. */
+  stripColumns: number;
   left: number;
   top: number;
   right: number;
@@ -69,7 +71,7 @@ export function scenePose(scene: Scene): Pose {
     if (box.kind === "files") continue;
     const key = boxKeyOf(box);
     boxes.set(key, {
-      key, kind: box.kind, directory: box.directory, host: box.anchor ? boxKeyOf(box.anchor) : null, inset: box.inset,
+      key, kind: box.kind, directory: box.directory, host: box.anchor ? boxKeyOf(box.anchor) : null, inset: box.inset, stripColumns: box.stripColumns,
       left: box.left, top: box.top, right: box.right, bottom: box.bottom, segments: box.segments.map(segment => ({ ...segment }))
     });
   }

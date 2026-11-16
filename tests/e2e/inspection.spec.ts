@@ -110,7 +110,9 @@ test("Internals inspection pins its own endpoint; centring an already open direc
   await localMapSettled(page);
   const directory = page.locator('.local-directory-label[data-directory="Portal/Services"]');
   await panIntoView(page, directory);
-  await directory.getByRole("button", { name: "Inspect Portal/Services", exact: true }).click();
+  // A directory's evidence is behind its More, as a file's is: its label is the handle that opens and closes it (2026-11-15).
+  await directory.getByRole("button", { name: "More actions for Portal/Services", exact: true }).click();
+  await page.getByRole("menuitem", { name: "Inspect directory", exact: true }).click();
   expect(snapshot(page)).toMatchObject({ selectedNodeId: A, inspection: { kind: "directory", directory: "Portal/Services" } });
   await page.locator("#detail-panel").getByRole("button", { name: "Centre on directory", exact: true }).click();
   await localMapSettled(page);

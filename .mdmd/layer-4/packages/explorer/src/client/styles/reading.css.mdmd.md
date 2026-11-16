@@ -40,6 +40,8 @@ Later the same day ([the milestone after Turn 3](../../../../../../../AI-Agent-W
 
 The Closed Directory trial's far looks (2026-11-13): the folded label's words held in its own weight and colour, and the skin's cells held at the look's scale in place of the reading size's field ([Turn 7 of the November 13 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-7)).
 
+Since 2026-11-15 ([November 15, Turn 1](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) a closed directory's held name in the far looks is drawn after its chevron, every line indented by it, and only More is placed beside it: the text button "Open" is gone, the whole box opening the directory.
+
 The tone round of 2026-11-15 ([Turn 1 of that day's record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)): the prose of a card, its Purpose and every description, is the theme's `--card-prose`. The rule that took the glow from a reading card's wires at rest went: no wire glows now.
 
 ## Generated

@@ -11,6 +11,7 @@
 import { compareSymbolNames, type ClosedDirectory } from "./branches";
 import { cellField, fieldBands, stackEdges, type CellField, type ClosedContents } from "./closed-looks";
 import { parentDirectory } from "./directory-bands";
+import { chevronMarkup, HANDLE_INDENT } from "./directory-handle";
 import type { ColumnRole } from "./types";
 import { NODE_HUB } from "./wire-gathering";
 import { countOf } from "./word-seams";
@@ -45,7 +46,6 @@ export interface CardContext {
   /** The pressed file Pin pressed again: its pins go, the subject and the card stay. */
   unpinNode(nodeId: string): void;
   openDirectory(directory: string): void;
-  inspectDirectory(directory: string): void | Promise<void>;
   recenterNode(node: ExplorerNodePayload): void | Promise<void>;
   togglePinnedSymbol(nodeId: string, symbol: string): void;
   inspectNode(node: ExplorerNodePayload, symbol?: string): void | Promise<void>;
@@ -278,31 +278,35 @@ export function createNodeCard(
 
 /**
  * A closed directory's box: a pseudo-node with no symbols in the membrane's
- * style, named and counted, that can be inspected or explicitly opened.
- * It carries no pin: a directory with a party file
- * under it is at least encasing, so no wire ever reaches a closed box.
+ * style, named and counted. The whole box opens the directory (the owner,
+ * 2026-11-15: the far zoom is "the primary place in which a user would
+ * _want_ to open a directory node", and a text button drawn at the map's
+ * scale was 7 px tall there or not drawn): a click or tap anywhere on it, or
+ * Enter or Space. Its name is the handle, a button led by a disclosure
+ * chevron pointing right, as a file tree draws a folded directory, which
+ * says the act and the directory and takes the keyboard; the evidence reader
+ * is behind More, as a file's is. It carries no pin: a directory with a party
+ * file under it is at least encasing, so no wire ever reaches a closed box.
  */
 export function createClosedDirectory(context: CardContext, closed: ClosedDirectory): HTMLElement {
   const box = document.createElement("div");
   box.className = "local-directory-closed";
   box.dataset.directory = closed.path;
-  box.title = closed.path;
+  box.title = `Open ${closed.path}`;
   const name = document.createElement("button");
   name.type = "button";
-  name.className = "local-directory-closed__name";
-  setSeamedText(name, closed.name);
-  name.setAttribute("aria-label", `Inspect ${closed.path}`);
-  name.addEventListener("click", event => { event.stopPropagation(); void context.inspectDirectory(closed.path); });
+  name.className = "local-directory-closed__name local-directory-handle local-directory-open";
+  name.innerHTML = chevronMarkup(false);
+  const text = document.createElement("span");
+  text.className = "local-directory-closed__text";
+  setSeamedText(text, closed.name);
+  name.append(text);
+  name.setAttribute("aria-label", `Open ${closed.path}`);
+  name.setAttribute("aria-expanded", "false");
+  name.title = `Open ${closed.path}: show the files and subdirectories inside`;
   const count = document.createElement("div");
   count.className = "local-directory-closed__count";
   count.textContent = countsOf(closed.files, closed.directories);
-  const open = document.createElement("button");
-  open.type = "button";
-  open.className = "local-directory-open";
-  open.textContent = "Open";
-  open.setAttribute("aria-label", `Open ${closed.path}`);
-  open.title = "Show the files and subdirectories inside";
-  open.addEventListener("click", event => { event.stopPropagation(); context.openDirectory(closed.path); });
   const more = document.createElement("button");
   more.type = "button";
   more.className = "local-directory-actions";
@@ -313,13 +317,26 @@ export function createClosedDirectory(context: CardContext, closed: ClosedDirect
   more.addEventListener("click", event => { event.stopPropagation(); void context.showDirectoryActions(closed.path, actionAnchor(more)); });
   // In the far zoom looks the box's name is drawn held at the look's size, on the lines the card reading chooses for it
   // (2026-11-13), as a file card's name is: generated content of an element of its own, hidden from assistive
-  // technology, the name's button keeping its label and its place in the focus order.
+  // technology, the name's button keeping its label and its place in the focus order. The chevron is held with it, a
+  // drawing of its own before the lines, which are indented by it.
   const held = document.createElement("span");
   held.className = "local-directory-closed__held";
   held.setAttribute("aria-hidden", "true");
   held.dataset.name = closed.name;
-  box.append(name, count, open, more, held);
-  box.addEventListener("click", event => { event.stopPropagation(); void context.inspectDirectory(closed.path); });
+  held.innerHTML = chevronMarkup(false);
+  // The row More had under the count before it joined the name's line (2026-11-15), kept at More's own size so that the
+  // box keeps its height: nothing is drawn in it but the Cells look's field.
+  const room = document.createElement("span");
+  room.className = "local-directory-closed__room";
+  room.setAttribute("aria-hidden", "true");
+  box.append(name, count, room, more, held);
+  // One listener for the box and its handle: the handle's own click, a pointer's or the keyboard's, arrives here too.
+  box.addEventListener("click", event => { event.stopPropagation(); context.openDirectory(closed.path); });
+  box.addEventListener("keydown", event => {
+    if (event.target !== box || (event.key !== "Enter" && event.key !== " ")) return;
+    event.preventDefault();
+    context.openDirectory(closed.path);
+  });
   drawClosedLook(box, closed, context.closedLook?.() ?? "box");
   return box;
 }
@@ -334,17 +351,17 @@ const CELL_CONTENTS = new WeakMap<HTMLElement, ClosedContents>();
  * open and let out a lot of stuff", as the 3D bag of cells does): each draws over the box's own layout and never changes
  * its size, its controls or what they do. "stack" shows one to three cards under the box by the files under it;
  * "cells" draws a skin holding a cell for each file directly in it and a small skin for each subdirectory, the count's
- * words kept for assistive technology and the hover text; "folded" draws the opened directory's outline and label, its
- * Open a disclosure mark before the glyph, as a tree marks a collapsed folder, and More at the right. The cells and the
- * folded label's controls are placed from the box's measured layout whenever the box's size changes.
+ * words kept for assistive technology and the hover text; "folded" draws the opened directory's outline and, after the
+ * handle's chevron, the directory's glyph and its name in the label's type, and More at the right. The cells and the
+ * folded look's More are placed from the box's measured layout whenever the box's size changes.
  */
 function drawClosedLook(box: HTMLElement, closed: ClosedDirectory, look: ClosedDirectoryLook): void {
   if (look === "box") return;
   box.classList.add(`local-closed--${look}`);
   if (look === "stack") { box.dataset.edges = String(stackEdges(closed.files)); return; }
-  const open = box.querySelector<HTMLElement>(".local-directory-open")!, more = box.querySelector<HTMLElement>(".local-directory-actions")!;
+  const more = box.querySelector<HTMLElement>(".local-directory-actions")!;
   if (look === "cells") {
-    box.title = `${closed.path}: ${countsOf(closed.files, closed.directories)}`;
+    box.title = `Open ${closed.path}: ${countsOf(closed.files, closed.directories)}`;
     const reading = document.createElementNS(SVG, "svg"), held = document.createElementNS(SVG, "svg");
     reading.classList.add("local-closed-cells");
     held.classList.add("local-closed-cells-held");
@@ -352,10 +369,10 @@ function drawClosedLook(box: HTMLElement, closed: ClosedDirectory, look: ClosedD
     box.append(reading, held);
     const contents: ClosedContents = closed.contents ?? { files: closed.files, subdirectories: [] };
     CELL_CONTENTS.set(box, contents);
-    observeLayout(box, () => drawCells(box, reading, contents, open, more));
+    observeLayout(box, () => drawCells(box, reading, contents));
     return;
   }
-  // Folded: the disclosure mark, the glyph and the name at the top left as an opened label draws them, More at the right.
+  // Folded: after the handle's chevron, the glyph and the name at the top left in the label's type, More at the right.
   const label = document.createElement("span");
   label.className = "local-closed-label";
   label.setAttribute("aria-hidden", "true");
@@ -364,7 +381,6 @@ function drawClosedLook(box: HTMLElement, closed: ClosedDirectory, look: ClosedD
   setSeamedText(text, closed.name);
   label.append(text);
   box.append(label);
-  open.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>';
   observeLayout(box, () => {
     const style = getComputedStyle(box);
     const left = parseFloat(style.paddingLeft), right = box.clientWidth - parseFloat(style.paddingRight), top = parseFloat(style.paddingTop);
@@ -373,9 +389,8 @@ function drawClosedLook(box: HTMLElement, closed: ClosedDirectory, look: ClosedD
       control.style.setProperty("--fold-x", `${(x - control.offsetLeft).toFixed(2)}px`);
       control.style.setProperty("--fold-y", `${(top + (nameLine - control.offsetHeight) / 2 - control.offsetTop).toFixed(2)}px`);
     };
-    place(open, left);
     place(more, right - more.offsetWidth);
-    const labelLeft = left + open.offsetWidth + 2;
+    const labelLeft = left + HANDLE_INDENT;
     box.style.setProperty("--fold-left", `${labelLeft.toFixed(2)}px`);
     box.style.setProperty("--fold-room", `${Math.max(0, right - more.offsetWidth - 4 - labelLeft).toFixed(2)}px`);
   });
@@ -387,20 +402,18 @@ function observeLayout(box: HTMLElement, draw: () => void): void {
   new ResizeObserver(() => { if (box.isConnected && box.offsetWidth) draw(); }).observe(box);
 }
 
-/** The skin's field at reading size: below the name, as wide as the count line, down to the controls' foot and past them. */
-function drawCells(box: HTMLElement, svg: SVGSVGElement, contents: ClosedContents, open: HTMLElement, more: HTMLElement): void {
+/** The skin's field at reading size: below the name, as wide as the count line, down to the foot of the box's content. */
+function drawCells(box: HTMLElement, svg: SVGSVGElement, contents: ClosedContents): void {
   const count = box.querySelector<HTMLElement>(".local-directory-closed__count");
   if (!count) return;
   const left = count.offsetLeft, top = count.offsetTop, width = count.offsetWidth;
-  const bottom = Math.max(open.offsetTop + open.offsetHeight, more.offsetTop + more.offsetHeight);
-  const height = bottom - top;
-  const controls = { width: more.offsetLeft + more.offsetWidth - left + 6, top: Math.min(open.offsetTop, more.offsetTop) - top };
+  const height = box.clientHeight - parseFloat(getComputedStyle(box).paddingBottom) - top;
   svg.setAttribute("width", width.toFixed(2));
   svg.setAttribute("height", height.toFixed(2));
   svg.setAttribute("viewBox", `0 0 ${width.toFixed(2)} ${height.toFixed(2)}`);
   svg.style.left = `${left}px`;
   svg.style.top = `${top}px`;
-  svg.innerHTML = fieldMarkup(cellField(contents, fieldBands({ width, height, controls })), width, height);
+  svg.innerHTML = fieldMarkup(cellField(contents, fieldBands({ width, height })), width, height);
 }
 
 /**

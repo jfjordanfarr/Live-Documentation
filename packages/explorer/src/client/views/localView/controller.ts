@@ -172,7 +172,6 @@ export class LocalViewController implements LocalViewApi {
     closeNode: nodeId => this.options.onCloseNode(nodeId),
     unpinNode: nodeId => this.options.onUnpinNode(nodeId),
     openDirectory: directory => this.options.onOpenDirectory(directory),
-    inspectDirectory: directory => this.inspectDirectory(directory),
     recenterNode: node => this.recenterNode(node),
     togglePinnedSymbol: (nodeId, symbol) => this.options.onPressPin(nodeId, symbol),
     inspectNode: (node, symbol) => this.focusSidebar(node, symbol),
@@ -774,7 +773,11 @@ export class LocalViewController implements LocalViewApi {
     this.lastInteractedSymbol = null;
     const selector = `.local-directory-label[data-directory="${CSS.escape(directory)}"], .local-directory-closed[data-directory="${CSS.escape(directory)}"]`;
     const label = `.local-directory-label[data-directory="${CSS.escape(directory)}"]`;
-    const focusSelector = `${label} .local-directory-open, ${label} .local-directory-close, .local-directory-closed[data-directory="${CSS.escape(directory)}"] .local-directory-open`;
+    // What the directory is after the change takes the focus: its label's handle where it is drawn as a membrane, else its
+    // box's (a closed directory's label is gone by then). In that order, since on opening the box it was stays in the page
+    // while it fades, before the label in the document, and
+    // the focus had stayed on it and been dropped with it (found 2026-11-15, on the keyboard's way to close what it opened).
+    const focusSelector = [`${label} .local-directory-handle`, `.local-directory-closed[data-directory="${CSS.escape(directory)}"] .local-directory-handle`];
     const frame = this.captureExplorationFrame(selector, focusSelector, ".local-file-name, .local-directory-closed__name, .empty-hint");
     return { ...frame, afterRender: () => {
       frame.afterRender();
@@ -840,7 +843,7 @@ export class LocalViewController implements LocalViewApi {
   }
 
   /** The view's visual half of an application-owned exploration transaction. */
-  private captureExplorationFrame(selector: string, focusSelector: string, fallbackSelector: string): LocalExplorationFrame {
+  private captureExplorationFrame(selector: string, focusSelector: string | readonly string[], fallbackSelector: string): LocalExplorationFrame {
     this.readingFrameTarget = null;
     const leavingPath = !!this.localMapState.getState().activePath;
     const before = this.isShown() ? this.container.querySelector<HTMLElement>(selector)?.getBoundingClientRect() : undefined;
@@ -866,7 +869,8 @@ export class LocalViewController implements LocalViewApi {
           this.drawConnections();
         }
         if (keyboardFocus) {
-          const element = this.container.querySelector<HTMLElement>(focusSelector)
+          // Several selectors are tried in the order given; one selector takes its first match in the document.
+          const element = [focusSelector].flat().map(each => this.container.querySelector<HTMLElement>(each)).find(found => found)
             ?? this.container.querySelector<HTMLElement>(fallbackSelector);
           element?.focus({ preventScroll: true });
         }
@@ -1218,13 +1222,6 @@ export class LocalViewController implements LocalViewApi {
     this.lastInteracted = node.id;
     this.lastInteractedSymbol = symbol ?? null;
     await this.options.onFocusSidebar(node, symbol);
-  }
-
-  /** Inspect a directory without opening it. */
-  async inspectDirectory(directory: string): Promise<void> {
-    this.lastInteracted = directory;
-    this.lastInteractedSymbol = null;
-    await this.options.onInspectDirectory(directory);
   }
 
   /** Open the application-owned actions beside the node element that named them. */
@@ -1603,7 +1600,7 @@ export class LocalViewController implements LocalViewApi {
       if (!target.closest(entitySelector)) return;
       press = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, target, cancelled: false, held: false };
       // The primary action of a visible command remains that command; only entity surfaces have a held gesture.
-      if (target.closest("button:not(.local-file-name):not(.symbol-label):not(.local-directory-name):not(.local-directory-closed__name), a, input, select")) return;
+      if (target.closest("button:not(.local-file-name):not(.symbol-label):not(.local-directory-handle), a, input, select")) return;
       const pending = press;
       timer = window.setTimeout(() => {
         timer = 0;

@@ -137,7 +137,6 @@ export interface CardConstants {
   testsGap: number;
   directoryMarginTop: number;
   disclosureMarginTop: number;
-  labelPaddingBottom: number;
   /** The Internals row's dot stands this far below the row's top edge of its box, and its placeholder on the other side is this tall with its margin. */
   internalsDotMarginTop: number;
   placeholderHeight: number;
@@ -155,10 +154,6 @@ export interface Capture {
   fonts: Record<string, FontMetrics>;
   constants: CardConstants;
   cards: Record<string, CardCapture>;
-  /** Each drawn directory's label text, prepared. */
-  labels: Record<string, PreparedText>;
-  /** Space reserved beside each label's text for its independently laid-out controls. Absent in older captures. */
-  labelControls?: Record<string, { width: number; height: number }>;
   /** What the page showed at capture: its placement measure, size and each drawn directory's label height. */
   truth: { placementCost: number; pictureWidth: number; pictureHeight: number; labelHeights: Record<string, number> };
   /** Where Pretext's layout of a text at the page's width disagreed with the page by more than half a pixel. */
@@ -215,7 +210,7 @@ export async function captureFromPage(page: Page, run: ScopeRun): Promise<Captur
   return { bundle: run.bundle, base: run.base, scopeName: run.scopeName, subject: run.subject, files: [...run.scope], capturedAt: new Date().toISOString(), ...read };
 }
 
-type PageCapture = Pick<Capture, "userAgent" | "fonts" | "constants" | "cards" | "labels" | "truth" | "warnings" | "filters">;
+type PageCapture = Pick<Capture, "userAgent" | "fonts" | "constants" | "cards" | "truth" | "warnings" | "filters">;
 
 /** A card's title as the page laid it out, for the drift check in node by the card model's own rule (`titleHeight`). */
 interface TitleCheck { text: string; width: number; own: number; lineWidths: number[]; lineHeight: number; room: TitleRoom | null }
@@ -375,7 +370,7 @@ function readCapture(page: Page): Promise<PageCapture & { titleChecks: TitleChec
     // the ordinary card/text measurements: per-card append/read/remove cycles invalidate the whole scene's styles.
     const probeReadings = new Map<HTMLElement, {
       dotHeight: number; testsStyle: CSSStyleDeclaration; badgeStyle: CSSStyleDeclaration;
-      disclosureStyle: CSSStyleDeclaration; labelStyle: CSSStyleDeclaration;
+      disclosureStyle: CSSStyleDeclaration;
       internalsDot: CSSStyleDeclaration; placeholder: CSSStyleDeclaration;
     }>();
     const probes: HTMLElement[] = [];
@@ -400,12 +395,12 @@ function readCapture(page: Page): Promise<PageCapture & { titleChecks: TitleChec
         const grid = card.querySelector<HTMLElement>(":scope > .node-symbols > .symbol-grid")!;
         return [{ card, dot: probeOf("symbol-anchor dot inbound", grid), tests: probeOf("node-tests", card),
           badge: probeOf("type-badge", card), disclosure: probeOf("local-disclosure", card),
-          label: probeOf("local-directory-label", root), internals: probeOf("symbol-anchor dot inbound internals-anchor", grid),
+          internals: probeOf("symbol-anchor dot inbound internals-anchor", grid),
           placeholder: probeOf("symbol-anchor-placeholder", grid) }];
       });
       for (const probe of staged) probeReadings.set(probe.card, {
         dotHeight: unit(probe.dot.getBoundingClientRect().height / scale), testsStyle: styleOf(probe.tests),
-        badgeStyle: styleOf(probe.badge), disclosureStyle: styleOf(probe.disclosure), labelStyle: styleOf(probe.label),
+        badgeStyle: styleOf(probe.badge), disclosureStyle: styleOf(probe.disclosure),
         internalsDot: styleOf(probe.internals), placeholder: styleOf(probe.placeholder)
       });
     } finally {
@@ -462,7 +457,7 @@ function readCapture(page: Page): Promise<PageCapture & { titleChecks: TitleChec
       });
       {
         // A dot of the stylesheet's size, from a probe rather than this card's first dot, which may be collapsed to nothing.
-        const { dotHeight, testsStyle, badgeStyle, disclosureStyle, labelStyle, internalsDot, placeholder } = probeReadings.get(card)!;
+        const { dotHeight, testsStyle, badgeStyle, disclosureStyle, internalsDot, placeholder } = probeReadings.get(card)!;
         const gridStyle = getComputedStyle(grid);
         const titleStyle = getComputedStyle(title);
         constants = {
@@ -482,8 +477,7 @@ function readCapture(page: Page): Promise<PageCapture & { titleChecks: TitleChec
           testsMarginBottom: px(testsStyle.marginBottom),
           testsGap: px(testsStyle.gap || testsStyle.columnGap),
           directoryMarginTop: px(getComputedStyle(directory).marginTop),
-          disclosureMarginTop: px(disclosureStyle.marginTop),
-          labelPaddingBottom: px(labelStyle.paddingBottom)
+          disclosureMarginTop: px(disclosureStyle.marginTop)
         };
       }
       const chip = (element: Element): ChipCapture => {
@@ -577,24 +571,11 @@ function readCapture(page: Page): Promise<PageCapture & { titleChecks: TitleChec
       };
     });
     for (const row of unmeasuredControls) if (shownControls) row.controls = shownControls;
-    const labels: Record<string, PreparedText> = {};
-    const labelControls: Record<string, { width: number; height: number }> = {};
+    // A drawn directory's label is a strip of constant height (2026-11-15): the page's height is read for the drift
+    // check, and nothing of its text enters the model.
     const labelHeights: Record<string, number> = {};
     for (const label of root.querySelectorAll<HTMLElement>(".local-directory-label")) {
-      // The caption remains one text flow. Ancestry controls occupy a separate
-      // flex column, whose actual width and height also belong to the model.
       const directory = label.dataset.directory ?? label.textContent ?? "";
-      const caption = label.querySelector<HTMLElement>(".local-directory-caption");
-      labels[directory] = prepared(caption ?? label);
-      if (caption) {
-        labelControls[directory] = {
-          width: label.offsetWidth - caption.offsetWidth,
-          height: Math.max(0, ...[...label.children].filter(child => child !== caption).map(child => {
-            const style = getComputedStyle(child);
-            return (child as HTMLElement).offsetHeight + px(style.marginTop) + px(style.marginBottom);
-          }))
-        };
-      }
       labelHeights[directory] = label.offsetHeight;
     }
     return {
@@ -602,8 +583,6 @@ function readCapture(page: Page): Promise<PageCapture & { titleChecks: TitleChec
       fonts,
       constants: constants!,
       cards,
-      labels,
-      labelControls,
       truth: { placementCost: Number(root.dataset.placementCost), pictureWidth: px(root.style.width), pictureHeight: px(root.style.height), labelHeights },
       warnings,
       titleChecks,

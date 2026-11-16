@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/measurer.ts
-- Generated At: 2026-10-31T16:40:18.327Z
+- Generated At: 2026-11-15T23:44:01.239Z
 
 ## Authored
 ### Purpose
@@ -25,19 +25,21 @@ November 4 recomputes a reading card’s width from the captured available frame
 
 The [November 4 learning-journey pass](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-8) composes the relationship controls above prose when the capture identifies that placement, retaining older bottom-count captures. Narrow phone predictions include wrapped controls and actual name break opportunities. Cycle notes use the current return-connection wording once, so a captured note is not counted again after regenerating it from the graph.
 
+Since 2026-11-15 ([November 15, Turn 1](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) a directory's label height is the strip's constant, `HANDLE_STRIP` of the page's `directory-handle.ts`, whatever its width or text.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `MeasurerOptions` {#symbol-measureroptions}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/measurer.ts#L21)
+- Source: [source](../../../../scripts/layout-lab/measurer.ts#L22)
 
 ##### `MeasurerOptions` — Summary
 What the measurer needs to know of the page's state beyond the exploration: the pins, the subject and the collapse tuning.
 
 #### `cardViews` {#symbol-cardviews}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/measurer.ts#L30)
+- Source: [source](../../../../scripts/layout-lab/measurer.ts#L31)
 - Parameters: `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture); `branches`: [`BranchGraph`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-branchgraph); `options`: [`MeasurerOptions`](#symbol-measureroptions)
 
 ##### `cardViews` — Summary
@@ -45,7 +47,7 @@ Every card's view under an exploration, as `dressCards` would dress it.
 
 #### `capturedMeasurer` {#symbol-capturedmeasurer}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/measurer.ts#L91)
+- Source: [source](../../../../scripts/layout-lab/measurer.ts#L92)
 - Returns: [`SceneMeasurer`](../../packages/explorer/src/client/views/localView/branch-scene.ts.mdmd.md#symbol-scenemeasurer)
 - Parameters: `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture); `branches`: [`BranchGraph`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-branchgraph); `options`: [`MeasurerOptions`](#symbol-measureroptions)
 
@@ -60,6 +62,7 @@ A measurer over the capture for one exploration.
 - [`branches.BranchGraph`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-branchgraph)
 - [`branches.compareSymbolNames`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-comparesymbolnames)
 - [`branches.edgeKey`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-edgekey)
+- [`directory-handle.HANDLE_STRIP`](../../packages/explorer/src/client/views/localView/directory-handle.ts.mdmd.md#symbol-handle_strip)
 - [`word-seams.countOf`](../../packages/explorer/src/client/views/localView/word-seams.ts.mdmd.md#symbol-countof)
 - [`pin-state.PinSet`](../../packages/explorer/src/client/views/pin-state.ts.mdmd.md#symbol-pinset) (type-only)
 - [`symbolAnchors.normalizeSymbolIdentifier`](../../packages/explorer/src/client/views/symbolAnchors.ts.mdmd.md#symbol-normalizesymbolidentifier)
@@ -69,7 +72,6 @@ A measurer over the capture for one exploration.
 - [`card-model.CardMetrics`](./card-model.ts.mdmd.md#symbol-cardmetrics-interface)
 - [`card-model.CardView`](./card-model.ts.mdmd.md#symbol-cardview)
 - [`card-model.cardMetrics`](./card-model.ts.mdmd.md#symbol-cardmetrics-function)
-- [`card-model.labelHeight`](./card-model.ts.mdmd.md#symbol-labelheight)
 - [`card-model.pinOffset`](./card-model.ts.mdmd.md#symbol-pinoffset)
 - [`card-model.synthesizedHeight`](./card-model.ts.mdmd.md#symbol-synthesizedheight)
 - [`card-model.textHeight`](./card-model.ts.mdmd.md#symbol-textheight)

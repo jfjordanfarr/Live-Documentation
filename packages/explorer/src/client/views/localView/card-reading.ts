@@ -4,6 +4,7 @@ import { pathTo, walk } from "@live-documentation/engine/live-docs/pathfind";
 
 import { drawHeldCells } from "./card-factory";
 import { CELLS } from "./closed-looks";
+import { CLOSED_FOOT, fitHandle, HANDLE_INDENT, wholeAtSeams } from "./directory-handle";
 import { chooseHeldHeader, chooseNameHeader, CONTROLS_GAP, HELD_BANDS, heldLineCount, heldSegments, heldTitle, rowSegments, type HeldBand, type HeldRoom, type TitleRooms } from "./held-lines";
 import { dotRoom, evenRows, fitLines, footHold, HEAD_SPACE, headHeight, HIGHLIGHT_BELOW, layoutTopOf, linesOf, nameFill, nameLinesHeld, nameWraps, pinDepth, type FootCount } from "./ladder-rooms";
 import { FIRST_STEP, LAST_STEP, ladderScales, LOOK_BANDS, LOOK_SCALES, type LadderResistances, type ZoomLook } from "./ladder-steps";
@@ -653,37 +654,42 @@ function lookHeadWrites(heads: readonly LookHead[], slotLines: number, gap: numb
 
 /**
  * A closed directory's box in the far looks (2026-11-13), by the rule of a file's card: its name held at the look's
- * size, on the lines its box holds ({@link chooseHeldHeader}, at the name's seams), and Open with the box's More following
- * the name at the box's right edge, held no taller than a line of it, where the box holds them too; otherwise they are not
- * drawn, nor is the count of what it holds, which no look can hold beside the name. Read from the box as laid out, in the
- * map's own units: its content's place and size, the name's line and font, and the controls' layout boxes, from which
- * each control's move to its place is written for each look.
+ * size after its chevron, on the lines its box holds at the name's seams, brought down in size before it is broken inside
+ * a word and never below the connections look's size (`fitHandle`, 2026-11-15, when "bootst…" stood cut beside free
+ * room), and the box's More following the name at the box's right edge, held no taller than a line of it, where the box
+ * holds it too; otherwise More is not drawn, nor is the count of what the box holds, which no look can hold beside the
+ * name. Read from the box as laid out, in the map's own units: its content's place and size, the name's line and font,
+ * and More's layout box, from which its move to its place is written for each look.
  */
 function closedBoxWrites(box: HTMLElement): RoomWrite[] {
   const name = box.querySelector<HTMLElement>(".local-directory-closed__name"), held = box.querySelector<HTMLElement>(".local-directory-closed__held");
-  const open = box.querySelector<HTMLElement>(".local-directory-open"), more = box.querySelector<HTMLElement>(".local-directory-actions");
+  const more = box.querySelector<HTMLElement>(".local-directory-actions");
   const cells = box.classList.contains("local-closed--cells");
   if (!name || !held || !box.offsetHeight) return [];
   const style = getComputedStyle(box), nameStyle = getComputedStyle(name);
   const left = parseFloat(style.paddingLeft), top = parseFloat(style.paddingTop);
   const width = box.clientWidth - left - parseFloat(style.paddingRight), height = box.clientHeight - top - parseFloat(style.paddingBottom);
+  // The held name's own room down: to the air above the box's foot, where two lines stand at the connections look's size.
+  const nameHeight = box.clientHeight - top - CLOSED_FOOT;
   const line = parseFloat(nameStyle.lineHeight) || name.offsetHeight;
   const measure = textMeasure(nameStyle);
   const segments = seamsOf(held.dataset.name ?? "");
-  const controls = [open, more].filter((control): control is HTMLElement => !!control);
-  const gap = more ? parseFloat(getComputedStyle(more).marginLeft) || 0 : 0;
-  const controlsWidth = controls.reduce((sum, control) => sum + control.offsetWidth, 0) + (controls.length > 1 ? gap : 0);
-  const controlsHeight = Math.max(1, ...controls.map(control => control.offsetHeight));
+  const moreWidth = more?.offsetWidth ?? 0, moreHeight = Math.max(1, more?.offsetHeight ?? 1);
   const writes: RoomWrite[] = [[box, "--closed-left", left.toFixed(2)], [box, "--closed-top", top.toFixed(2)], [box, "--closed-width", width.toFixed(2)],
-    [box, "--closed-line", line.toFixed(3)]];
+    [box, "--closed-line", line.toFixed(3)], [box, "--closed-indent", String(HANDLE_INDENT)]];
   for (const look of HELD_LOOKS) {
-    const scale = Math.max(1, Math.min(LOOK_SCALES[look], height / line));
-    const control = Math.max(1, Math.min(LOOK_SCALES[look], line * scale / controlsHeight));
-    const room: HeldRoom = { width: width / scale, height: height / scale, line, controlsWidth: controlsWidth * control / scale,
-      controlsHeight: controlsHeight * control / scale, gap: CONTROLS_GAP / scale };
+    const most = Math.max(1, Math.min(LOOK_SCALES[look], nameHeight / line));
+    const controlAt = (scale: number): number => Math.max(1, Math.min(LOOK_SCALES[look], line * scale / moreHeight));
+    // The room in the name's own units at a scale, after the chevron that leads every line, with More held beside or not.
+    const roomAt = (scale: number, beside: boolean): HeldRoom => ({ width: width / scale - HANDLE_INDENT, height: nameHeight / scale, line,
+      controlsWidth: beside ? moreWidth * controlAt(scale) / scale : 0, controlsHeight: beside ? moreHeight * controlAt(scale) / scale : 0, gap: CONTROLS_GAP / scale });
+    // The name is fitted first, as a file's is (item by item in `fitHandle`); More joins it where the same lines hold it too.
+    const alone = fitHandle(segments, at => roomAt(at, false), measure, most, LOOK_SCALES.connections);
+    const scale = alone.scale, control = controlAt(scale), room = roomAt(scale, true);
     const header = chooseHeldHeader(segments, room, measure);
-    const fits = controls.length > 0 && header.controls.top + room.controlsHeight <= room.height + 1e-6 && !header.lines.some(text => text.endsWith("…"));
-    const lines = fits ? header.lines : chooseHeldHeader(segments, { ...room, controlsWidth: 0, controlsHeight: 0 }, measure).lines;
+    const fits = !!more && header.controls.top + room.controlsHeight <= room.height + 1e-6 && header.lines.length <= alone.header.lines.length
+      && wholeAtSeams(header, segments) === wholeAtSeams(alone.header, segments) && !header.lines.some(text => text.endsWith("…"));
+    const lines = fits ? header.lines : alone.header.lines;
     writes.push([held, `data-lines-look-${look}`, lines.join("\n")], [box, `--closed-scale-${look}`, scale.toFixed(3)],
       [box, `--closed-control-${look}`, control.toFixed(3)], [box, `local-closed-controls-${look}`, fits]);
     // The skin with cells (2026-11-13) holds its cells at the look's scale in the room below the held name and the
@@ -693,17 +699,10 @@ function closedBoxWrites(box: HTMLElement): RoomWrite[] {
       const fitsRow = height - below >= CELLS.cell * scale - 1e-6;
       writes.push([box, `data-cells-${look}`, fitsRow ? `${left.toFixed(2)} ${(top + below).toFixed(2)} ${(width / scale).toFixed(2)} ${((height - below) / scale).toFixed(2)} ${scale.toFixed(3)}` : ""]);
     }
-    if (!fits) continue;
-    // Each control's move, from its layout box to its place: More at the content's right edge, Open before it, both at
-    // the controls' top, held about their top right.
-    const targetTop = top + header.controls.top * scale;
-    let right = left + width;
-    for (const element of [more, open]) {
-      if (!element) continue;
-      writes.push([element, `--closed-x-${look}`, (right - (element.offsetLeft + element.offsetWidth)).toFixed(2)],
-        [element, `--closed-y-${look}`, (targetTop - element.offsetTop).toFixed(2)]);
-      right -= (element.offsetWidth + gap) * control;
-    }
+    if (!fits || !more) continue;
+    // More's move, from its layout box to its place at the content's right edge, at the controls' top, held about its top right.
+    writes.push([more, `--closed-x-${look}`, (left + width - (more.offsetLeft + more.offsetWidth)).toFixed(2)],
+      [more, `--closed-y-${look}`, (top + header.controls.top * scale - more.offsetTop).toFixed(2)]);
   }
   return writes;
 }

@@ -11,17 +11,17 @@ import { drawsReference } from "./connections";
 import type { LocalViewController } from "./controller";
 import { ancestryButton } from "./directory-ancestry";
 import { isPairLine, NARROW_SHAPE, nominalMeasurer, searchFlowShape, shapeRecord, type FlowShape, type ShapeSearch } from "./directory-flow";
+import { chevronMarkup, handleParts, handleRun, HANDLE_HOLD, HANDLE_INDENT, HANDLE_LINE, HANDLE_STRIP } from "./directory-handle";
 import { layoutTopOf } from "./ladder-rooms";
 import { membranePath } from "./membrane-outline";
 import { OVERVIEW_FILES_ATTRIBUTE, OVERVIEW_LINES_ATTRIBUTE, type PictureSize } from "./overview-files";
 import { connectionCount, returningConnections } from "./returning-connections";
 import type { LocalEdge } from "./types";
-import type { ExplorerNodePayload } from "../../../shared/types";
-import { setSeamedText } from "../../dom";
-import { EMPTY_PIN_SET } from "../pin-state";
-import { normalizeSymbolIdentifier } from "../symbolAnchors";
 import { NODE_HUB } from "./wire-gathering";
 import { countOf } from "./word-seams";
+import type { ExplorerNodePayload } from "../../../shared/types";
+import { EMPTY_PIN_SET } from "../pin-state";
+import { normalizeSymbolIdentifier } from "../symbolAnchors";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 
@@ -281,7 +281,11 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
       if (previous) entering.push(wrapper);
     }
     if (isClosedDirectory(node)) {
+      // A render builds the box anew; the keyboard's focus on its handle or its More passes to the new one, so that a
+      // render the person did not ask for (the continuing search's, a look's) does not take the handle from under them.
+      const focused = wrapper.contains(document.activeElement) ? document.activeElement : null;
       wrapper.replaceChildren(createClosedDirectory(controller.cardContext, explored.closed.get(node.id)!));
+      if (focused) wrapper.querySelector<HTMLElement>(focused.classList.contains("local-directory-actions") ? ".local-directory-actions" : ".local-directory-handle")?.focus({ preventScroll: true });
     } else {
       const card = createNodeCard(controller.cardContext, node, "center");
       card.classList.add("focus-node");
@@ -517,6 +521,11 @@ function labelFor(controller: LocalViewController, stage: BranchStage, directory
     label = document.createElement("div");
     label.className = "local-directory-label";
     label.dataset.directory = directory;
+    // The strip's height is the layout's constant, and what it holds the handle's line and largest held scale.
+    label.style.height = `${HANDLE_STRIP}px`;
+    label.style.setProperty("--dir-line", String(HANDLE_LINE));
+    label.style.setProperty("--dir-hold", String(HANDLE_HOLD));
+    label.style.setProperty("--dir-strip", String(HANDLE_STRIP));
     fillLabel(controller, label, directory, stage.disclosures.get(directory));
     stage.root.append(label);
     stage.labels.set(directory, label);
@@ -525,66 +534,50 @@ function labelFor(controller: LocalViewController, stage: BranchStage, directory
 }
 
 /**
- * A directory label inspects its directory. Its caption is the name and, while the directory is encasing, what it
- * hides, "+3 files, 1 directory": one text flow, which the layout lab lays out as the page does. Open or Close and
- * More stand beside the caption in a column of their own, as the ancestry control does, so that no button's box
- * enters the text; the lab measures that column like the ancestry control's (2026-10-20, when the buttons first
- * stood in the caption and the lab's text no longer matched the page).
+ * A drawn directory's label is its handle (2026-11-15): one button, a disclosure chevron, pointing down on an opened
+ * directory and right on one drawn only around what the pins need, then its name; a press closes or opens it, and the
+ * button says the act and is the keyboard's stop, its focus ring around the chevron and the name together. The name
+ * is the parent's path, muted, which gives way first and from its start, and the directory's own name, which is cut
+ * last; while the directory is encasing, what it hides follows, "+3 files, 1 directory", drawn whole or not at all.
+ * More and the ancestry control stand after it and never give way; the evidence reader is behind More. It is one line
+ * in a strip of constant height (`directory-handle.ts`), so the layout never waits on its text, and from the middle
+ * band out the whole line is held at the file names' size, which the strip is tall enough for (local.css).
  */
 function fillLabel(controller: LocalViewController, label: HTMLElement, directory: string, disclosure: DirectoryDisclosure | undefined): void {
   const open = disclosure?.state === "open";
-  // A span in the button role, not a button: a button is one box that cannot break across lines with the count after
-  // it, and the caption must wrap as the one text flow it is. The label's click inspects; the name takes the keyboard.
-  const name = document.createElement("span");
-  name.className = "local-directory-name";
-  setSeamedText(name, directory);
-  name.tabIndex = 0;
-  name.setAttribute("role", "button");
-  name.title = `Inspect ${directory}`;
-  name.setAttribute("aria-label", `Inspect ${directory}`);
-  name.addEventListener("keydown", event => {
-    if (event.key !== "Enter" && event.key !== " ") return;
-    event.preventDefault();
-    event.stopPropagation();
-    void controller.inspectDirectory(directory);
-  });
+  const act = open ? "Close" : "Open";
+  const toggle = (): void => { if (open) controller.options.onCloseDirectory(directory); else controller.options.onOpenDirectory(directory); };
+  const handle = document.createElement("button");
+  handle.type = "button";
+  handle.className = `local-directory-handle ${open ? "local-directory-close" : "local-directory-open"}`;
+  handle.setAttribute("aria-label", `${act} ${directory}`);
+  handle.setAttribute("aria-expanded", String(open));
+  handle.title = open ? `Close ${directory}; what other pins need stays` : `Open ${directory}: show the files and subdirectories inside`;
+  handle.addEventListener("click", event => { event.stopPropagation(); toggle(); });
+  // The button's one line, which clips what does not fit: the chevron, the parent's path, the directory's own name, and
+  // what an encasing directory hides. The parent's path is drawn right to left so that its cut falls at its start, with
+  // a left-to-right mark at each end so that a leading dot and the closing slash keep their places (2026-11-06).
   const caption = document.createElement("span");
   caption.className = "local-directory-caption";
-  caption.append(name);
-  let held = directory;
+  caption.innerHTML = chevronMarkup(open);
+  const { parent, leaf } = handleParts(directory);
+  if (parent) {
+    const path = document.createElement("span");
+    path.className = "local-directory-parent";
+    path.textContent = `\u200e${parent}\u200e`;
+    caption.append(path);
+  }
+  const own = document.createElement("span");
+  own.className = "local-directory-leaf";
+  own.textContent = leaf;
+  caption.append(own);
   if (!open && disclosure && (disclosure.hiddenFiles || disclosure.hiddenDirectories)) {
     const hidden = document.createElement("span");
     hidden.className = "local-directory-more";
     hidden.textContent = `+${countsOf(disclosure.hiddenFiles, disclosure.hiddenDirectories)}`;
-    hidden.title = "Not drawn; open the directory to see them";
-    caption.append(" ", hidden);
-    held += ` ${hidden.textContent}`;
+    caption.append(hidden);
   }
-  // From the middle band out the card ladder draws the caption held at its reading size on one line, cut at its start
-  // so that the last segments and the count stay (the far-zoom review, 2026-11-06): the generated content of an
-  // aria-hidden child, from its attribute, drawn right to left so that the cut falls at the start, with a left-to-right
-  // mark at each end so that a leading dot or a trailing slash keeps its place. The caption in the layout keeps the
-  // label's height in every band.
-  const drawing = document.createElement("span");
-  drawing.className = "local-directory-held";
-  drawing.setAttribute("aria-hidden", "true");
-  drawing.dataset.held = `\u200e${held}\u200e`;
-  label.title = directory;
-  const disclose = document.createElement("button");
-  disclose.type = "button";
-  if (open) {
-    disclose.className = "local-directory-close";
-    disclose.title = "Close this directory; what other pins need stays";
-    disclose.setAttribute("aria-label", `Close ${directory}`);
-    disclose.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>';
-    disclose.addEventListener("click", event => { event.stopPropagation(); controller.options.onCloseDirectory(directory); });
-  } else {
-    disclose.className = "local-directory-open";
-    disclose.textContent = "Open";
-    disclose.setAttribute("aria-label", `Open ${directory}`);
-    disclose.title = "Show the files and subdirectories inside";
-    disclose.addEventListener("click", event => { event.stopPropagation(); controller.options.onOpenDirectory(directory); });
-  }
+  handle.append(caption);
   const more = document.createElement("button");
   more.type = "button";
   more.className = "local-directory-actions";
@@ -599,31 +592,29 @@ function fillLabel(controller: LocalViewController, label: HTMLElement, director
   });
   const controls = document.createElement("span");
   controls.className = "local-directory-controls";
-  controls.append(disclose, more);
-  label.replaceChildren(ancestryButton(controller, directory), caption, controls, drawing);
-  // Labels survive renders. Replace their one body action instead of accumulating a listener on every refill.
-  label.onclick = event => { event.stopPropagation(); void controller.inspectDirectory(directory); };
+  controls.append(more, ancestryButton(controller, directory));
+  const row = document.createElement("span");
+  row.className = "local-directory-row";
+  row.append(handle, controls);
+  // A label survives renders but its buttons are made anew: the keyboard's focus passes to the new handle or More.
+  const focused = label.contains(document.activeElement) ? document.activeElement : null;
+  label.replaceChildren(row);
+  label.style.removeProperty("--dir-need");
+  if (focused) (focused.classList.contains("local-directory-actions") ? more : handle).focus({ preventScroll: true });
 }
 
 /**
- * What the card ladder needs to know of a directory label's room, in the map's own units, read at render (2026-11-06):
- * where its caption begins, the caption's width beside the label's buttons, which stand through the middle band, the
- * label's width from there, which the caption takes once they leave, and the label's height below the caption's top,
- * its line and the padding beneath it above the first card. The label's layout is the same in every band, so the
- * readings are too.
+ * What a handle's line needs across to draw the count of what its directory hides, in the line's own units: the chevron,
+ * the directory's own name whole, and the count with the air before it. Read once from the label as laid out, after it is
+ * filled, and written for the stylesheet, which draws the count only where the line's room holds this beside More: a
+ * count is drawn whole or not at all (the owner's rule for counts of 2026-11-13), and one that the line's wrapping has
+ * sent out of sight is then not drawn in fact, not merely clipped.
  */
-function roomsOfLabel(label: HTMLElement, scale: number): readonly (readonly [string, string])[] {
-  const caption = label.querySelector<HTMLElement>(".local-directory-caption");
-  if (!caption || !(scale > 0)) return [];
-  const box = label.getBoundingClientRect(), text = caption.getBoundingClientRect();
-  const x = (text.left - box.left) / scale, y = (text.top - box.top) / scale;
-  return [
-    ["--dir-x", x.toFixed(1)],
-    ["--dir-y", y.toFixed(1)],
-    ["--dir-room-mid", (text.width / scale).toFixed(1)],
-    ["--dir-room-far", Math.max(0, label.clientWidth - x).toFixed(1)],
-    ["--dir-room-h", Math.max(0, label.offsetHeight - y).toFixed(1)]
-  ];
+function writeCountNeed(label: HTMLElement): void {
+  if (label.style.getPropertyValue("--dir-need")) return;
+  const count = label.querySelector<HTMLElement>(".local-directory-more"), leaf = label.querySelector<HTMLElement>(".local-directory-leaf");
+  if (!count || !leaf || !count.offsetWidth) return;
+  label.style.setProperty("--dir-need", String(Math.ceil(HANDLE_INDENT + leaf.scrollWidth + count.offsetWidth + (parseFloat(getComputedStyle(count).marginLeft) || 0))));
 }
 
 /**
@@ -713,16 +704,12 @@ function pageMeasurer(controller: LocalViewController, stage: BranchStage, plan:
       const heights = new Map<string, number>();
       for (const [id, wrapper] of stage.wrappers) heights.set(id, wrapper.offsetHeight);
       const labelHeights = new Map<string, number>();
-      const labelRooms: (readonly [HTMLElement, readonly (readonly [string, string])[]])[] = [];
       for (const key of labelWidths.keys()) {
         const directory = boxes.get(key)!.directory;
-        const label = labelFor(controller, stage, directory);
-        const height = label.offsetHeight;
+        const height = labelFor(controller, stage, directory).offsetHeight;
         labelHeights.set(key, height);
         answers.labelHeights.set(directory, height);
-        labelRooms.push([label, roomsOfLabel(label, scale)]);
       }
-      for (const [label, rooms] of labelRooms) for (const [name, value] of rooms) label.style.setProperty(name, value);
       answers.heights = heights;
       // With files only at the overview every wire is laid out between the two cards' node-level hubs, as Flow's lines are.
       const filesOnly = controller.getContainer().hasAttribute(OVERVIEW_FILES_ATTRIBUTE);
@@ -878,7 +865,14 @@ function applyPose(stage: BranchStage, pose: Pose, bandPadding: number): void {
     if (box.kind !== "directory") continue;
     stage.shapes.get(box.key)?.setAttribute("d", membranePath(box.segments.map(segment => ({ left: segment.left - box.left, right: segment.right - box.left, top: segment.top - box.top, bottom: segment.bottom - box.top })), bandPadding));
     const label = stage.labels.get(box.directory);
-    if (label && box.segments.length) label.style.top = `${box.segments[0].top - box.top + box.inset}px`;
+    if (label && box.segments.length) {
+      label.style.top = `${box.segments[0].top - box.top + box.inset}px`;
+      const width = Math.max(0, handleRun(box.segments.slice(0, box.stripColumns)) - 2 * box.inset);
+      label.style.width = `${width}px`;
+      label.style.setProperty("--dir-inset", String(box.inset));
+      label.style.setProperty("--dir-room", String(width));
+      writeCountNeed(label);
+    }
   }
   for (const item of pose.items.values()) {
     const wrapper = stage.wrappers.get(item.id);

@@ -75,7 +75,7 @@ test("opening a directory from the root recovers its contents after preserving t
   expect(picture.right).toBeLessThanOrEqual(frame.right);
   expect(picture.top).toBeGreaterThanOrEqual(frame.top);
   expect(picture.bottom).toBeLessThanOrEqual(frame.bottom);
-  await expect(page.getByRole("button", { name: "Inspect Portal/Services", exact: true })).toBeInViewport();
+  await expect(page.getByRole("button", { name: "Open Portal/Services", exact: true })).toBeInViewport();
   const controls = await boxOf(page, ".perspective-controls");
   expect(picture.bottom, "the lower cards stand above the floating map controls").toBeLessThanOrEqual(controls.top);
   expect(await signsOf(page)).toEqual({ above: "false", below: "false", left: "false", right: "false" });
@@ -116,8 +116,9 @@ test("independent root columns align and their directory names read as available
   const frame = await frameOf(page), picture = await pictureOf(page);
   expect(picture.height).toBeLessThan(frame.height);
   expectFramedWhole(picture.top, picture.bottom, frame.top, frame.bottom, framePadding(frame).vertical);
-  const name = page.getByRole("button", { name: "Inspect Portal", exact: true });
-  expect(await name.evaluate(element => getComputedStyle(element).color)).toBe("rgb(228, 228, 228)");
+  // A closed directory's name is its handle (2026-11-15): the button that opens it, in the primary text tone.
+  const name = page.getByRole("button", { name: "Open Portal", exact: true });
+  expect(await name.evaluate(element => getComputedStyle(element).color)).toBe("rgb(242, 242, 242)");
   await expect(page.getByRole("button", { name: "Open Portal", exact: true })).toBeEnabled();
 });
 

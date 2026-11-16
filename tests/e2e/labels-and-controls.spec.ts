@@ -14,7 +14,7 @@ import { seamBefore } from "../../packages/explorer/src/client/views/localView/w
 test.use({ viewport: { width: 1280, height: 800 } });
 
 const generator = "packages/generator/src/generator.ts";
-const NAMES = ".node-title, .node-path, .symbol-label, .local-directory-name, .local-directory-closed__name";
+const NAMES = ".node-title, .node-path, .symbol-label, .local-directory-leaf, .local-directory-closed__name";
 
 /** Cap the cards at 150 px so that long names must wrap, and the picture shows where they do. */
 async function narrowCards(page: Page): Promise<void> {

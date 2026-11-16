@@ -34,10 +34,9 @@ export interface LocalViewOptions {
   onSelectNode: (node: ExplorerNodePayload) => void | Promise<void>;
   onRecenterNode: (node: ExplorerNodePayload) => void | Promise<void>;
   onFocusSidebar: (node: ExplorerNodePayload, symbol?: string) => void | Promise<void>;
-  onInspectDirectory: (directory: string) => void | Promise<void>;
   onShowNodeActions: (node: ExplorerNodePayload, symbol: string | undefined, anchor: { x: number; y: number }) => void | Promise<void>;
   onShowDirectoryActions: (directory: string, anchor: { x: number; y: number }) => void | Promise<void>;
-  /** Ordinary visible connections that travel against the layout's left-to-right grammar; excludes self loops and feedback stubs. */
+  /** How many connections the 2D picture draws against its left-to-right order: a cycle's returning references, once each, and a forward wire whose route doubles back; never a file's own (2026-11-15). */
   onBackwardConnections?: (count: number) => void;
   /** Whether the camera stands at its farthest or its closest zoom, said when either changes, for the Zoom buttons. */
   onZoomLimits?: (limits: { farthest: boolean; closest: boolean }) => void;

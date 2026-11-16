@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/directory-flow.ts
-- Generated At: 2026-11-13T22:10:31.690Z
+- Generated At: 2026-11-15T21:17:46.919Z
 
 ## Authored
 ### Purpose
@@ -19,19 +19,21 @@ On 2026-11-13 the first two rules and the boxes' dealing gave way to the price (
 
 The same day a pin on the sixty-file directory re-wrapped its tallest rank and moved every card, and a cost for how far the cards on screen would travel, tried next, kept a wrap chosen for twenty files over a pinned picture of sixty-four. So the shape is chosen on the opened directories alone, their files unpinned, on a nominal card model (`NOMINAL_CARD`, `NOMINAL_BOX`, `NOMINAL_LABEL`, `nominalMeasurer`), once for the directories, filters and tuning, and reused at every pin; and it governs only the opened directories' own files (`wrapOwn`). The model also keeps fonts out of the choice: the root found the owner's screen drew taller lines than this container's, so a shape chosen from measured cards could have differed between two people opening one link. A browser case holds the nominal card to the page's median unpinned card.
 
+Since 2026-11-15 ([November 15, Turn 1](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) `NOMINAL_LABEL` is the strip's own constant, `HANDLE_STRIP` of `directory-handle.ts`, 60 units where the measured one-line label had been 30: a label's height no longer depends on its text or the screen, so on this point the nominal model is the page.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `UndrawnLink` {#symbol-undrawnlink}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L26)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L27)
 
 ##### `UndrawnLink` — Summary
 A link of the graph between two file cards on screen that the picture draws no wire for.
 
 #### `pairLines` {#symbol-pairlines}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L39)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L40)
 - Returns: [`LocalEdge`](./types.ts.mdmd.md#symbol-localedge)[]
 
 ##### `pairLines` — Summary
@@ -41,7 +43,7 @@ cards and make no line.
 
 #### `flowNeighbours` {#symbol-flowneighbours}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L56)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L57)
 - Parameters: `cards`: `ReadonlySet`
 
 ##### `flowNeighbours` — Summary
@@ -51,21 +53,21 @@ nothing is faded.
 
 #### `isPairLine` {#symbol-ispairline}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L67)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L68)
 
 ##### `isPairLine` — Summary
 Whether an edge is a pair line of an opened directory rather than a reference between two symbols.
 
 #### `linksOf` {#symbol-linksof}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L70)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L71)
 
 ##### `linksOf` — Summary
 How many of the graph's links an edge stands for: a pair line's count, one for a reference.
 
 #### `wrapRanks` {#symbol-wrapranks}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L77)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L78)
 
 ##### `wrapRanks` — Summary
 The ranking's columns with every rank that holds more than `rows` cards wrapped into neighbouring columns, as few as
@@ -74,14 +76,14 @@ drops nothing; the ranks keep their order, so a file still never stands left of 
 
 #### `FlowInput` {#symbol-flowinput}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L87)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L88)
 
 ##### `FlowInput` — Summary
 What {@link flowColumns} lays out.
 
 #### `FlowShape` {#symbol-flowshape}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L106)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L107)
 
 ##### `FlowShape` — Summary
 How the things no line places stand in a picture in flow order: how a tall rank wraps, how many rows each opened
@@ -92,7 +94,7 @@ the "price", go ahead and add it", 2026-11-13).
 
 #### `NARROW_SHAPE` {#symbol-narrow_shape}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L116)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L117)
 - Returns: [`FlowShape`](#symbol-flowshape)
 
 ##### `NARROW_SHAPE` — Summary
@@ -100,14 +102,14 @@ The narrowest shape, where the search begins: no rank wrapped, every box within 
 
 #### `shapeRecord` {#symbol-shaperecord}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L119)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L120)
 
 ##### `shapeRecord` — Summary
 A shape as plain data, for the page to say which it drew.
 
 #### `flowColumns` {#symbol-flowcolumns}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L215)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L216)
 - Parameters: `input`: [`FlowInput`](#symbol-flowinput); `shape`: [`FlowShape`](#symbol-flowshape)
 
 ##### `flowColumns` — Summary
@@ -131,7 +133,7 @@ Every id given stands in exactly one column, and the ranks' cards keep their ord
 
 #### `NOMINAL_CARD` {#symbol-nominal_card}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L230)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L231)
 
 ##### `NOMINAL_CARD` — Summary
 The nominal sizes the shape is chosen on, in the picture's own pixels (2026-11-13). A directory's shape is a coarse
@@ -146,21 +148,21 @@ case holds the file card to the page's median unpinned card, so that a change to
 
 #### `NOMINAL_BOX` {#symbol-nominal_box}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L232)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L233)
 
 ##### `NOMINAL_BOX` — Summary
 A closed directory's box on the nominal model: every box the page drew on 2026-11-13.
 
 #### `NOMINAL_LABEL` {#symbol-nominal_label}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L234)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L235)
 
 ##### `NOMINAL_LABEL` — Summary
-A directory's label on the nominal model: one line.
+A directory's label on the nominal model: the strip the layout keeps for its handle, the page's own constant since 2026-11-15 (one line, 30, before).
 
 #### `nominalMeasurer` {#symbol-nominalmeasurer}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L241)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L242)
 - Returns: [`SceneMeasurer`](./branch-scene.ts.mdmd.md#symbol-scenemeasurer)
 - Parameters: `ids`: `Iterable`
 
@@ -171,14 +173,14 @@ card's node-level hub, half way down it as the stylesheet stands it. A closed bo
 
 #### `ShapeSearch` {#symbol-shapesearch}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L255)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L256)
 
 ##### `ShapeSearch` — Summary
 What {@link searchFlowShape} found: the cheapest shape it met and its price, and every shape it priced, in order.
 
 #### `searchFlowShape` {#symbol-searchflowshape}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L272)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L273)
 - Returns: [`ShapeSearch`](#symbol-shapesearch)
 - Parameters: `input`: [`FlowInput`](#symbol-flowinput); `shape`: [`FlowShape`](#symbol-flowshape)
 
@@ -195,7 +197,7 @@ filters takes the same shape on every screen, after any pins and from any link.
 
 #### `wrapChoices` {#symbol-wrapchoices}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L329)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L330)
 
 ##### `wrapChoices` — Summary
 The rows at which the ranks wrap differently, from the tallest rank's down: each wraps them into more columns than the last.
@@ -204,6 +206,7 @@ The rows at which the ranks wrap differently, from the tallest rank's down: each
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`branch-scene.SceneMeasurer`](./branch-scene.ts.mdmd.md#symbol-scenemeasurer) (type-only)
+- [`directory-handle.HANDLE_STRIP`](./directory-handle.ts.mdmd.md#symbol-handle_strip)
 - [`directory-state.OpenDirectories`](./directory-state.ts.mdmd.md#symbol-opendirectories)
 - [`directory-state.under`](./directory-state.ts.mdmd.md#symbol-under)
 - [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)

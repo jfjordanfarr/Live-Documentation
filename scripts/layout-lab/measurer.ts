@@ -9,10 +9,11 @@
  * @module layout-lab/measurer
  */
 import type { Capture, CardCapture, RowCapture } from "./capture";
-import { cardMetrics, labelHeight, pinOffset, synthesizedHeight, textHeight, type CardMetrics, type CardView } from "./card-model";
+import { cardMetrics, pinOffset, synthesizedHeight, textHeight, type CardMetrics, type CardView } from "./card-model";
 import type { SymbolOrder } from "../../packages/explorer/src/client/types";
 import type { SceneMeasurer } from "../../packages/explorer/src/client/views/localView/branch-scene";
 import { compareSymbolNames, edgeKey, type BranchGraph } from "../../packages/explorer/src/client/views/localView/branches";
+import { HANDLE_STRIP } from "../../packages/explorer/src/client/views/localView/directory-handle";
 import { countOf } from "../../packages/explorer/src/client/views/localView/word-seams";
 import type { PinSet } from "../../packages/explorer/src/client/views/pin-state";
 import { normalizeSymbolIdentifier } from "../../packages/explorer/src/client/views/symbolAnchors";
@@ -124,12 +125,9 @@ export function capturedMeasurer(capture: Capture, branches: BranchGraph, option
         heights.set(id, Math.round(found.height));
       }
       const labelHeights = new Map<string, number>();
-      for (const [key, width] of labelWidths) {
-        // A box's key is its directory and a count; the label is the directory's.
-        const directory = key.slice(0, key.indexOf("\0"));
-        labelHeights.set(key, Math.round(labelHeight(capture, directory, width)));
-      }
-      return {
+      // A drawn directory's label is the strip the layout keeps for its handle, the page's own constant (2026-11-15).
+      for (const key of labelWidths.keys()) labelHeights.set(key, HANDLE_STRIP);
+            return {
         heights,
         pin: (id, direction, symbol) => {
           const found = metrics.get(id);

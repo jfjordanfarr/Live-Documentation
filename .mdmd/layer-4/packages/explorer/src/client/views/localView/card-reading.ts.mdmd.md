@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-reading.ts
-- Generated At: 2026-11-14T00:57:51.445Z
+- Generated At: 2026-11-15T20:57:37.583Z
 
 ## Authored
 ### Purpose
@@ -46,26 +46,28 @@ Since 2026-11-13 ([Turn 8](../../../../../../../../AI-Agent-Workspace/ChatHistor
 
 In the trial's second round (2026-11-14) a compact card's name is held at `filesNameScale`'s size, the overview's unless its widest segment would not fit across, so that it breaks only at its seams, and the card leaves air below the name's last line.
 
+Since 2026-11-15 ([November 15, Turn 1](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) `closedBoxWrites` fits a closed box's name with `fitHandle`: after the chevron that leads every line, at the look's scale where the box holds the name whole, at a smaller one before the name would break inside a word, never below the connections look's, in the box's height down to 2 units above its foot, where two lines stand at the connections look's size. More joins the name where the same lines hold it too; the text button it used to place with More is gone. Before, "bootst…" stood cut in a box that held "bootstrap" at four fifths of the size.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ReadingTarget` {#symbol-readingtarget}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L29)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L30)
 
 ##### `ReadingTarget` — Summary
 A file's Purpose or one exact symbol's description, named by the card it is read on.
 
 #### `CardReadingOptions` {#symbol-cardreadingoptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L32)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L33)
 
 ##### `CardReadingOptions` — Summary
 Canonical text, application-owned choices and the actions a card's text can lead to.
 
 #### `CardReading` {#symbol-cardreading}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L80)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L81)
 
 ##### `CardReading` — Summary
 Builds on-card explanations from the same bundled docs as the full reader. A description opens and folds only
@@ -80,7 +82,7 @@ while names open full descriptions in the reader.
 
 #### `markFirstPin` {#symbol-markfirstpin}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L871)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L870)
 
 ##### `markFirstPin` — Summary
 Write the pin depths for a card whose rows were just ordered, and its held name's lines at the overview band, whose
@@ -104,6 +106,10 @@ room they bound, from the card's last reading: no layout is read.
 - [`types.InspectionTarget`](../../types.ts.mdmd.md#symbol-inspectiontarget) (type-only)
 - [`card-factory.drawHeldCells`](./card-factory.ts.mdmd.md#symbol-drawheldcells)
 - [`closed-looks.CELLS`](./closed-looks.ts.mdmd.md#symbol-cells)
+- [`directory-handle.CLOSED_FOOT`](./directory-handle.ts.mdmd.md#symbol-closed_foot)
+- [`directory-handle.HANDLE_INDENT`](./directory-handle.ts.mdmd.md#symbol-handle_indent)
+- [`directory-handle.fitHandle`](./directory-handle.ts.mdmd.md#symbol-fithandle)
+- [`directory-handle.wholeAtSeams`](./directory-handle.ts.mdmd.md#symbol-wholeatseams)
 - [`held-lines.CONTROLS_GAP`](./held-lines.ts.mdmd.md#symbol-controls_gap)
 - [`held-lines.HELD_BANDS`](./held-lines.ts.mdmd.md#symbol-held_bands)
 - [`held-lines.HeldBand`](./held-lines.ts.mdmd.md#symbol-heldband)

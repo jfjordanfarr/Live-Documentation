@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-factory.ts
-- Generated At: 2026-11-14T00:01:14.780Z
+- Generated At: 2026-11-15T22:47:40.783Z
 
 ## Authored
 ### Purpose
@@ -40,26 +40,28 @@ Since 2026-11-13 ([the milestone after Turn 3](../../../../../../../../AI-Agent-
 
 The Closed Directory trial (2026-11-13) draws its three looks over the closed box's own layout, never changing its size, its controls or what they do: the stack's cards under the box, the skin with cells' field at reading size and, from `drawHeldCells`, its cells held in the far looks, and the folded membrane's label and moved controls. The owner had found the box underwhelming beside the 3D bags of cells ([Turn 7 of the November 13 record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-7)).
 
+Since 2026-11-15 ([November 15, Turn 1](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) a closed directory's whole box opens it, by a click or tap anywhere on it and by Enter or Space, and its name is the handle: a button led by a disclosure chevron pointing right, which says "Open" and the directory's path, carries `aria-expanded` and keeps the keyboard. The text button "Open" is gone, and the evidence reader, which the name and the box used to open, is reached from More as Inspect directory, where a file's is; `CardContext` lost `inspectDirectory` with it. The held drawing of the far looks carries a chevron of its own before the name's lines. The owner had found directories not useful when zoomed out "because there are no buttons to interact with at that distance", and the text button was 7 px tall there or not drawn. The chevron and the strip's arithmetic are in `directory-handle.ts`. More stands on the name's line at the box's right, as on a file card (the owner's rule of November 7, that a row is never given to a lone control); an empty element keeps the row it had under the count at its size, so that the box keeps its height, and the Cells look's field now runs down through that row to the foot of the box's content.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `CardPresentation` {#symbol-cardpresentation}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L22)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L23)
 
 ##### `CardPresentation` — Summary
 The values a fresh card reads while it is built. The wrapper may survive a render, but its card is rebuilt.
 
 #### `hasCloseAction` {#symbol-hascloseaction}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L36)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L37)
 
 ##### `hasCloseAction` — Summary
 A card can close its own retention, subject or locally expanded symbol list.
 
 #### `CardContext` {#symbol-cardcontext}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L41)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L42)
 
 ##### `CardContext` — Summary
 Only the facts and actions a card needs; navigation targets are looked up when their event occurs.
@@ -89,18 +91,24 @@ The created card element
 
 #### `createClosedDirectory` {#symbol-createcloseddirectory}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L285)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L291)
 - Parameters: `context`: [`CardContext`](#symbol-cardcontext); `closed`: [`ClosedDirectory`](./branches.ts.mdmd.md#symbol-closeddirectory)
 
 ##### `createClosedDirectory` — Summary
 A closed directory's box: a pseudo-node with no symbols in the membrane's
-style, named and counted, that can be inspected or explicitly opened.
-It carries no pin: a directory with a party file
-under it is at least encasing, so no wire ever reaches a closed box.
+style, named and counted. The whole box opens the directory (the owner,
+2026-11-15: the far zoom is "the primary place in which a user would
+_want_ to open a directory node", and a text button drawn at the map's
+scale was 7 px tall there or not drawn): a click or tap anywhere on it, or
+Enter or Space. Its name is the handle, a button led by a disclosure
+chevron pointing right, as a file tree draws a folded directory, which
+says the act and the directory and takes the keyboard; the evidence reader
+is behind More, as a file's is. It carries no pin: a directory with a party
+file under it is at least encasing, so no wire ever reaches a closed box.
 
 #### `drawHeldCells` {#symbol-drawheldcells}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L412)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L425)
 
 ##### `drawHeldCells` — Summary
 The far looks' held cells (2026-11-13): the cells are the look's other content beside the name, so they are held at
@@ -110,7 +118,7 @@ as data-cells-<look>, "left top width height scale", the width and height in hel
 
 #### `countsOf` {#symbol-countsof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L449)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L462)
 
 ##### `countsOf` — Summary
 "3 files, 2 directories", either part left out at zero; "empty" when both are.
@@ -129,6 +137,8 @@ as data-cells-<look>, "left top width height scale", the width and height in hel
 - [`closed-looks.fieldBands`](./closed-looks.ts.mdmd.md#symbol-fieldbands)
 - [`closed-looks.stackEdges`](./closed-looks.ts.mdmd.md#symbol-stackedges)
 - [`directory-bands.parentDirectory`](./directory-bands.ts.mdmd.md#symbol-parentdirectory)
+- [`directory-handle.HANDLE_INDENT`](./directory-handle.ts.mdmd.md#symbol-handle_indent)
+- [`directory-handle.chevronMarkup`](./directory-handle.ts.mdmd.md#symbol-chevronmarkup)
 - [`types.ColumnRole`](./types.ts.mdmd.md#symbol-columnrole) (type-only)
 - [`wire-gathering.NODE_HUB`](./wire-gathering.ts.mdmd.md#symbol-node_hub)
 - [`word-seams.countOf`](./word-seams.ts.mdmd.md#symbol-countof)

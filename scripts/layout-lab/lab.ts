@@ -227,7 +227,7 @@ async function main(): Promise<void> {
     const capture = await captureScope(run, preset);
     const file = path.join(out, `capture-${scopeSlug(run)}.json`);
     await writeCapture(capture, file);
-    console.log(`Captured ${Object.keys(capture.cards).length} cards and ${Object.keys(capture.labels).length} labels of ${run.bundle}/${run.scopeName} into ${path.relative(process.cwd(), file)} (${(await fs.stat(file)).size.toLocaleString("en-US")} bytes).`);
+    console.log(`Captured ${Object.keys(capture.cards).length} cards and ${Object.keys(capture.truth.labelHeights).length} labels of ${run.bundle}/${run.scopeName} into ${path.relative(process.cwd(), file)} (${(await fs.stat(file)).size.toLocaleString("en-US")} bytes).`);
     if (capture.warnings.length) {
       console.log(`Pretext disagreed with the page on ${capture.warnings.length} text(s):`);
       for (const warning of capture.warnings.slice(0, 10)) console.log(`  ${warning}`);

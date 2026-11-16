@@ -19,7 +19,7 @@ describe("the lab's card model, the parts that need no page", () => {
     const constants = Object.fromEntries([
       "titleMarginBottom", "titlePaddingRight", "symbolsMarginTop", "gridRowGap", "gridColumnGap", "gridSideColumn",
       "badgeHeight", "badgeGap", "testsMarginTop", "testsMarginBottom", "testsGap", "directoryMarginTop",
-      "disclosureMarginTop", "labelPaddingBottom", "internalsDotMarginTop", "placeholderHeight"
+      "disclosureMarginTop", "internalsDotMarginTop", "placeholderHeight"
     ].map(key => [key, 0])) as unknown as Capture["constants"];
     constants.dotHeight = 10;
     const capture = { fonts: { text: { lineHeight: 10 } }, constants } as unknown as Capture;
@@ -61,7 +61,7 @@ describe("the lab's card model, the parts that need no page", () => {
     const constants = Object.fromEntries([
       "titleMarginBottom", "titlePaddingRight", "symbolsMarginTop", "gridRowGap", "gridColumnGap", "gridSideColumn",
       "badgeHeight", "badgeGap", "testsMarginTop", "testsMarginBottom", "testsGap", "directoryMarginTop",
-      "disclosureMarginTop", "labelPaddingBottom", "internalsDotMarginTop", "placeholderHeight"
+      "disclosureMarginTop", "internalsDotMarginTop", "placeholderHeight"
     ].map(key => [key, 0])) as unknown as Capture["constants"];
     constants.dotHeight = 10;
     const capture = { fonts: { text: { lineHeight: 10 } }, constants } as unknown as Capture;

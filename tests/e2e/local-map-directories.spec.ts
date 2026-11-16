@@ -12,8 +12,10 @@ import { NOMINAL_CARD } from "../../packages/explorer/src/client/views/localView
  * without symbols standing in for everything under it; encasing, the
  * membrane around the files party to the wires, the rest counted on its
  * label; open, every file inside as a compact card and every subdirectory as
- * a closed box. Names inspect; explicit Open controls disclose contents,
- * the X closes as far as pins allow, and no wire reaches a closed box.
+ * a closed box. A closed box opens by a press anywhere on it, and a drawn
+ * directory's label is the handle that opens it or closes it as far as pins
+ * allow (2026-11-15); the evidence reader is behind More, and no wire
+ * reaches a closed box.
  */
 
 const ENGINE = "packages/engine/src";
@@ -101,7 +103,103 @@ test("a directory entered with nothing pinned is a grid of compact cards and clo
   await expect(page.locator("#map-container .local-directory-closed")).toHaveCount(3);
 });
 
-for (const layout of ["flow", "grid"] as const) test(`a closed box opens in place, the membrane growing from the box while the picture moves, and its X closes it back to a box (${layout})`, async ({ page }) => {
+/**
+ * The handle at the farthest look (the owner, 2026-11-15: directories "aren't exceptionally _useful_ (interaction-wise)
+ * at high zoom-outs because there are no buttons to interact with at that distance"). Seven presses out, where the
+ * overview look begins: every closed box draws its name whole after a chevron; a click on a box's body, away from its
+ * name, opens the directory; the opened directory's name is drawn no smaller than the file names inside it, inside its
+ * membrane and above its first card; a click on that name closes it; and the keyboard does both from the handle.
+ */
+test("at the overview a closed directory opens by a click anywhere on its box and closes by its handle, by pointer and by keyboard", async ({ page }) => {
+  test.setTimeout(90_000);
+  const HISTORY = `${CLIENT}/history`;
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto(`/?view=local&dir=${CLIENT}`);
+  await settled(page);
+  // At reading size a closed box's More stands on its name's line, after the name and at the box's right: no row is
+  // given to a lone control (the owner's rule of 2026-11-07).
+  const arrival = await box(page, HISTORY).evaluate(element => {
+    const name = element.querySelector(".local-directory-closed__name")!.getBoundingClientRect(), more = element.querySelector(".local-directory-actions")!.getBoundingClientRect();
+    return { apart: Math.abs((more.top + more.bottom) / 2 - (name.top + name.bottom) / 2), after: more.left - name.right, toEdge: element.getBoundingClientRect().right - more.right };
+  });
+  expect(arrival.apart, "More's centre against the name line's").toBeLessThan(3);
+  expect(arrival.after, "More after the name").toBeGreaterThanOrEqual(0);
+  expect(arrival.toEdge, "More at the box's right").toBeLessThan(16);
+  for (let press = 0; press < 7; press += 1) {
+    await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
+    await localMapSettled(page);
+  }
+  await expect(page.locator("#map-container")).toHaveAttribute("data-look", "overview");
+  // Every closed box: its name whole on the lines the look draws, after a chevron, with no text button.
+  const boxes = await page.locator("#map-container .local-directory-closed").evaluateAll(elements => elements.map(element => {
+    const held = element.querySelector<HTMLElement>(".local-directory-closed__held");
+    const content = held ? getComputedStyle(held, "::after").content : "";
+    const chevron = held?.querySelector(".local-directory-chevron")?.getBoundingClientRect();
+    return { directory: (element as HTMLElement).dataset.directory!, lines: content.startsWith("\"") ? content.slice(1, -1).replaceAll("\\a ", "").replaceAll("\\a", "") : "",
+      chevron: chevron ? chevron.height : 0, words: [...element.querySelectorAll("button")].map(button => button.textContent?.trim() ?? "") };
+  }));
+  expect(boxes.length).toBeGreaterThan(4);
+  for (const seen of boxes) {
+    expect.soft(seen.lines, `${seen.directory}: its name drawn whole`).toBe(seen.directory.split("/").pop());
+    expect.soft(seen.chevron, `${seen.directory}: its chevron drawn at a size to see`).toBeGreaterThan(6);
+    expect.soft(seen.words, `${seen.directory}: no text button`).not.toContain("Open");
+  }
+  const handle = box(page, HISTORY).getByRole("button", { name: `Open ${HISTORY}`, exact: true });
+  await expect(handle).toHaveAttribute("aria-expanded", "false");
+  // The box's body, in its lower right, away from the name and from More.
+  const closed = (await box(page, HISTORY).boundingBox())!;
+  await page.mouse.click(closed.x + closed.width * 0.6, closed.y + closed.height * 0.8);
+  await settled(page);
+  await expect(box(page, HISTORY)).toHaveCount(0);
+  const close = label(page, HISTORY).getByRole("button", { name: `Close ${HISTORY}`, exact: true });
+  await expect(close).toHaveAttribute("aria-expanded", "true");
+  // The opened handle is one target: the button holds the chevron and the directory's own name, and a press in the
+  // membrane's padding just above the name still lands on it, the pressable area being the strip's height and that
+  // padding over the handle (at the overview the strip leaves under the line only its 6 units of air, under 2 px).
+  const target = await close.evaluate(element => {
+    const box = element.getBoundingClientRect(), above = document.elementFromPoint(box.left + box.width / 2, box.top - 2);
+    return { chevron: !!element.querySelector(".local-directory-chevron"), name: element.querySelector(".local-directory-leaf")?.textContent, above: !!above && element.contains(above) };
+  });
+  expect(target).toEqual({ chevron: true, name: "history", above: true });
+  // Hierarchy and room: each drawn directory's own name on screen against the file names held inside it, its line
+  // inside its membrane's strip, above the first card of the membrane.
+  const drawn = await page.evaluate(() => {
+    const px = (element: HTMLElement): number => parseFloat(getComputedStyle(element).fontSize) * element.getBoundingClientRect().height / element.offsetHeight;
+    const files = [...document.querySelectorAll<HTMLElement>("#map-container .local-file-name-held")].filter(name => name.offsetHeight > 0).map(px);
+    return [...document.querySelectorAll<HTMLElement>("#map-container .local-directory-label")].map(element => {
+      const leaf = element.querySelector<HTMLElement>(".local-directory-leaf"), row = element.querySelector<HTMLElement>(".local-directory-row");
+      // The label's box is the strip: the run of the membrane's leading columns whose tops are level. The cards of
+      // those columns stand below the handle; a column whose top steps away has its cards beside the strip, not under it.
+      const band = element.parentElement!, strip = element.getBoundingClientRect();
+      const cardTops = [...band.querySelectorAll(":scope > .local-column")].map(card => card.getBoundingClientRect())
+        .filter(card => card.left < strip.right && card.right > strip.left).map(card => card.top);
+      return { directory: element.dataset.directory!, name: leaf ? px(leaf) : 0, whole: !!leaf && leaf.scrollWidth <= leaf.clientWidth, files: Math.max(...files),
+        foot: row ? row.getBoundingClientRect().bottom : Infinity, firstCard: Math.min(...cardTops) };
+    });
+  });
+  expect(drawn.map(each => each.directory).sort()).toEqual([CLIENT, HISTORY]);
+  for (const each of drawn) {
+    expect.soft(each.name, `${each.directory}: its name against file names of ${each.files.toFixed(1)} px`).toBeGreaterThanOrEqual(each.files - 0.2);
+    expect.soft(each.whole, `${each.directory}: its own name whole`).toBe(true);
+    expect.soft(each.foot, `${each.directory}: its handle above the first card of the columns its strip spans`).toBeLessThanOrEqual(each.firstCard + 0.5);
+  }
+  // The handle closes: a click on the directory's own name.
+  await label(page, HISTORY).locator(".local-directory-leaf").click();
+  await settled(page);
+  await expect(label(page, HISTORY)).toHaveCount(0);
+  await expect(box(page, HISTORY)).toHaveCount(1);
+  // The keyboard: Enter on the closed box's handle opens, Space on the opened label's handle closes, and the focus stays on the handle.
+  await box(page, HISTORY).getByRole("button", { name: `Open ${HISTORY}`, exact: true }).focus();
+  await page.keyboard.press("Enter");
+  await settled(page);
+  await expect(close).toBeFocused();
+  await page.keyboard.press("Space");
+  await settled(page);
+  await expect(label(page, HISTORY)).toHaveCount(0);
+  await expect(box(page, HISTORY).getByRole("button", { name: `Open ${HISTORY}`, exact: true })).toBeFocused();
+});
+
+for (const layout of ["flow", "grid"] as const) test(`a closed box opens in place, the membrane growing from the box while the picture moves, and its handle closes it back to a box (${layout})`, async ({ page }) => {
   await page.goto(opened(ENGINE, layout));
   await settled(page);
   const before = (await box(page, LIVE_DOCS).boundingBox())!;
@@ -151,7 +249,8 @@ for (const layout of ["flow", "grid"] as const) test(`a closed box opens in plac
   await expect(testCard.getByRole("button", { name: /^\+\d+\ssymbols$/ })).toHaveCount(0);
   // The unfolding began at the clicked box (asserted above). The final camera may recover the expanded picture's
   // frame; its directory identity and Close remain inside that frame instead of being held offscreen indefinitely.
-  const unfolded = (await label(page, LIVE_DOCS).boundingBox())!;
+  // The label's own box is the strip across the membrane (2026-11-15); what must be in the frame is what it draws, its name.
+  const unfolded = (await label(page, LIVE_DOCS).locator(".local-directory-caption").boundingBox())!;
   const frame = (await page.locator("#view-map").boundingBox())!;
   expect(unfolded.x).toBeGreaterThanOrEqual(frame.x);
   expect(unfolded.y).toBeGreaterThanOrEqual(frame.y);
@@ -177,6 +276,13 @@ for (const layout of ["flow", "grid"] as const) test(`an encasing membrane count
   // The live-docs membrane encases graph.ts and whatever its pins reach; the rest of its files and its two subdirectories are counted, and no X shows.
   const more = label(page, LIVE_DOCS).locator(".local-directory-more");
   await expect(more).toHaveText(/^\+\d+\sfiles, 2\sdirectories$/);
+  // Every count on a handle's line is drawn whole, on the line, or not drawn at all (2026-11-15): never cut.
+  const counts = await page.locator("#map-container .local-directory-more").evaluateAll(elements => elements.map(element => {
+    const line = element.closest(".local-directory-caption")!.getBoundingClientRect(), own = element.getBoundingClientRect();
+    return { text: element.textContent, opacity: Number(getComputedStyle(element).opacity), onLine: own.top < line.bottom - 1 && own.right <= line.right + 0.5, whole: element.scrollWidth <= element.clientWidth + 1 };
+  }));
+  expect(counts.length).toBeGreaterThan(0);
+  for (const count of counts) expect(count.opacity === 0 || (count.opacity > 0.5 && count.onLine && count.whole), JSON.stringify(count)).toBe(true);
   await expect(label(page, LIVE_DOCS).locator(".local-directory-close")).toHaveCount(0);
   const partyCards = await cards(page).count();
   // The map does not scroll and the encased picture may be wider than the frame, with its label under the sidebar, so

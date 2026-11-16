@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-motion.ts
-- Generated At: 2026-10-08T01:58:13.855Z
+- Generated At: 2026-11-15T22:47:39.758Z
 
 ## Authored
 ### Purpose
@@ -26,21 +26,21 @@ A membrane's section or a lane's spacer, where it stands.
 
 #### `PosedItem` {#symbol-poseditem}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-motion.ts#L39)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-motion.ts#L41)
 
 ##### `PosedItem` — Summary
 A card, or a closed directory's box, where it stands.
 
 #### `Pose` {#symbol-pose}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-motion.ts#L50)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-motion.ts#L52)
 
 ##### `Pose` — Summary
 Every element of the picture at its place.
 
 #### `boxKeyOf` {#symbol-boxkeyof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-motion.ts#L58)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-motion.ts#L60)
 - Parameters: `box`: [`SceneBox`](./branch-scene.ts.mdmd.md#symbol-scenebox)
 
 ##### `boxKeyOf` — Summary
@@ -48,7 +48,7 @@ A box's identity across renders: the root, a directory by its path, a lane by it
 
 #### `scenePose` {#symbol-scenepose}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-motion.ts#L66)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-motion.ts#L68)
 - Returns: [`Pose`](#symbol-pose)
 - Parameters: `scene`: [`Scene`](./branch-scene.ts.mdmd.md#symbol-scene)
 
@@ -57,7 +57,7 @@ The scene's places, flattened by element.
 
 #### `tweenPose` {#symbol-tweenpose}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-motion.ts#L116)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-motion.ts#L118)
 - Returns: [`Pose`](#symbol-pose)
 - Parameters: `from`: [`Pose`](#symbol-pose); `to`: [`Pose`](#symbol-pose)
 
@@ -76,7 +76,7 @@ more, the next pose itself.
 
 #### `easeInOutCubic` {#symbol-easeinoutcubic}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-motion.ts#L143)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-motion.ts#L145)
 
 ##### `easeInOutCubic` — Summary
 Slow out of the old place and slow into the new, so that nothing jerks at either end.

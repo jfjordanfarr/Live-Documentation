@@ -242,13 +242,3 @@ export function resolvePin(metrics: CardMetrics, direction: "inbound" | "outboun
 /** A pin's offset, or null where the page would place no wire. */
 export const pinOffset = (metrics: CardMetrics, direction: "inbound" | "outbound", symbol: string | undefined): number | null => resolvePin(metrics, direction, symbol).offset;
 
-/** The height of a drawn directory's label at a width: its lines and the padding under them. */
-export function labelHeight(capture: Capture, directory: string, width: number): number {
-  const text = capture.labels[directory];
-  if (!text) return 0;
-  const controls = capture.labelControls?.[directory];
-  return Math.max(
-    textHeight(capture, text, width - (controls?.width ?? 0)),
-    controls?.height ?? 0
-  ) + capture.constants.labelPaddingBottom;
-}

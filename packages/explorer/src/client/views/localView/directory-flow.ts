@@ -17,6 +17,7 @@
  */
 
 import type { SceneMeasurer } from "./branch-scene";
+import { HANDLE_STRIP } from "./directory-handle";
 import { under, type OpenDirectories } from "./directory-state";
 import type { LocalEdge } from "./types";
 import { NODE_HUB } from "./wire-gathering";
@@ -230,8 +231,8 @@ export function flowColumns(input: FlowInput, shape: FlowShape = NARROW_SHAPE): 
 export const NOMINAL_CARD = { width: 240, height: 180 } as const;
 /** A closed directory's box on the nominal model: every box the page drew on 2026-11-13. */
 export const NOMINAL_BOX = { width: 160, height: 81 } as const;
-/** A directory's label on the nominal model: one line. */
-export const NOMINAL_LABEL = 30;
+/** A directory's label on the nominal model: the strip the layout keeps for its handle, the page's own constant since 2026-11-15 (one line, 30, before). */
+export const NOMINAL_LABEL = HANDLE_STRIP;
 
 /**
  * The scene's measurer on the nominal model: every file card {@link NOMINAL_CARD}, every closed box {@link NOMINAL_BOX},

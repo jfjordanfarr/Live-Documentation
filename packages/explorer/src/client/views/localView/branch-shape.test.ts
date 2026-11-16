@@ -6,7 +6,7 @@ import type { BranchGraph } from "./branches";
 
 /** A box with the geometry and ownership the shape measurement reads. */
 const box = (kind: SceneBox["kind"], columns: [number, number], items: string[], edges: Array<[number, number]>): SceneBox =>
-  ({ key: kind, kind, directory: "", parent: null, anchor: null, inset: 0, insetTop: 0, insetBottom: 0, row: 0,
+  ({ key: kind, kind, directory: "", parent: null, anchor: null, inset: 0, insetTop: 0, stripColumns: 1, insetBottom: 0, row: 0,
     children: [], minColumn: columns[0], maxColumn: columns[1], items, slots: null, lane: null,
     left: 0, right: 0, top: Math.min(...edges.map(([top]) => top)), bottom: Math.max(...edges.map(([, bottom]) => bottom)),
     segments: edges.map(([top, bottom], i) => ({ column: columns[0] + i, left: 0, right: 0, top, bottom })) });

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-placement.ts
-- Generated At: 2026-11-12T22:02:38.696Z
+- Generated At: 2026-11-15T22:47:39.921Z
 
 ## Authored
 ### Purpose
@@ -25,6 +25,8 @@ Boundary-alignment candidates use validated inclusive column intervals whose top
 The November 1 root-framing repair applies neck overlap only to drawn membranes. After the linear solve, disconnected constraint components align at their own content origins. Translating a complete component preserves all inequalities and the objective, while an actual wire or membrane still couples its columns. This prevents an invisible root from producing an arbitrary staircase. See the [accepted review](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-01.1.record.md#turn-2).
 
 `fromTop` (2026-11-12) stands every column from the top instead of where the wires are shortest, for an opened directory in flow order: the root's answer when the trial's first pictures arrived on empty space, the thin first ranks standing at the middle of a tall picture where their lines were shortest. Every item is drawn to a ceiling by more than the shapes' prices can ask and the wires are left out of the solve; the membranes, lanes and necks hold as before, and the cost reported is still the wires' length. The two placements are pictured side by side in [the trial's evidence](../../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-12/directory-flow-trial/README.md).
+
+Since 2026-11-15 ([November 15, Turn 1](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) a band may say how many of its leading columns keep the label's room above their first member (`stripColumns`), the strip its directory's handle may reach across; without it the leftmost alone does, as before. The scene sets it for a picture standing from the top (`stripColumns` of `directory-handle.ts`). A first form kept the room in every column of every membrane standing from the top; it left a parent's own first row 79 units lower than its strip asked on `packages/engine/src` with `live-docs` opened, because standing from the top levels the first item of every column of the picture at the lowest of their highest possible places, and the columns where the nested membrane rose to the top began under two strips. With the strip over the run alone that row stands 19 units low, the nested membrane's padding and a lane's.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -53,21 +55,21 @@ among its siblings. It has one segment per column from `minColumn` to `maxColumn
 
 #### `Segment` {#symbol-segment}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-placement.ts#L90)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-placement.ts#L95)
 
 ##### `Segment` — Summary
 One column's part of a membrane: its edges there.
 
 #### `PlacementLane` {#symbol-placementlane}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-placement.ts#L97)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-placement.ts#L102)
 
 ##### `PlacementLane` — Summary
 A lane in a column's stack: a box of `bands`, whose items are the lane's slots and whose insets are its padding.
 
 #### `StackEntry` {#symbol-stackentry}
 - Type: type
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-placement.ts#L105)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-placement.ts#L110)
 - Returns: [`PlacementLane`](#symbol-placementlane)
 
 ##### `StackEntry` — Summary
@@ -75,28 +77,28 @@ One thing in a column's stack: a card by its item id, or a lane.
 
 #### `BoundaryAlignment` {#symbol-boundaryalignment}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-placement.ts#L108)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-placement.ts#L113)
 
 ##### `BoundaryAlignment` — Summary
 One membrane edge held level across an inclusive, contiguous interval of columns.
 
 #### `PlacementInput` {#symbol-placementinput}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-placement.ts#L116)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-placement.ts#L121)
 
 ##### `PlacementInput` — Summary
 What the placement takes.
 
 #### `Placement` {#symbol-placement}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-placement.ts#L147)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-placement.ts#L152)
 
 ##### `Placement` — Summary
 The placement: every item's top, every membrane's segments, and the objective.
 
 #### `placementCost` {#symbol-placementcost}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-placement.ts#L205)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-placement.ts#L210)
 - Parameters: `top`: `ReadonlyMap`
 
 ##### `placementCost` — Summary
@@ -104,7 +106,7 @@ The weighted sum of the wires' vertical distances at given tops; a wire whose pi
 
 #### `placeBranches` {#symbol-placebranches}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-placement.ts#L216)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-placement.ts#L221)
 - Returns: [`Placement`](#symbol-placement)
 - Parameters: `input`: [`PlacementInput`](#symbol-placementinput)
 

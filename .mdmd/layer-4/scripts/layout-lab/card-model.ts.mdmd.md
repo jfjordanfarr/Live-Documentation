@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/card-model.ts
-- Generated At: 2026-11-08T10:06:47.709Z
+- Generated At: 2026-11-15T23:44:00.896Z
 
 ## Authored
 ### Purpose
@@ -28,6 +28,8 @@ Since [Turn 12](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.
 Since 2026-11-08 a card's title is sized by `titleTextHeight`, by the header's layout of the header round: the node's controls follow the file's name in the header, and the name's button ends with a room for them (`.local-file-name-room` in `local.css`), whose box `titleRoomBox` mirrors from the stylesheet's rule: as wide as the controls side by side with their 2 px gaps, counted one to five by the header's own children, times the hold (`--actions-hold`, 1.2 on a slot card), and 4 px of air; as tall as one control (`--action-size`) times the hold. `titleHeight` sets that room, the last inline box, on the name's last line where the line leaves it its width, that line then as tall as the taller of the two, and otherwise on a line of its own after the name. Pretext's own layout of the name had held the title to its lines alone, so that the gate over the merged round found the model short of the page by the room ("PaymentsController.cs" 15 against 24, a reading card's "document.ts" 28.59 against 60.59), and the lab, the headless command and the drift check disagreeing with the page. A capture from before the round has no room, and its titles are their lines, as before.
 
 Since 2026-11-13 ([the milestone after Turn 3](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-3)) a fixed-slot row whose description is not shown is short: the capture records it (`short`) and the slot's short height, and the card model gives such a row that height.
+
+Since 2026-11-15 ([November 15, Turn 1](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) a drawn directory's label is one line in a strip of fixed height, the page's own constant `HANDLE_STRIP`, which the measurer gives every label directly: `labelHeight`, which laid a label's wrapped text out beside its controls' column, is deleted, and the capture no longer records a label's text, its controls or its padding (a one-line label's text, laid out as wrapping text, had the capture warn of a disagreement that concerned nothing the model reads).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -158,14 +160,6 @@ card's middle. A row the page collapses resolves to no offset at all.
 
 ##### `pinOffset` — Summary
 A pin's offset, or null where the page would place no wire.
-
-#### `labelHeight` {#symbol-labelheight}
-- Type: function
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L246)
-- Parameters: `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture)
-
-##### `labelHeight` — Summary
-The height of a drawn directory's label at a width: its lines and the padding under them.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

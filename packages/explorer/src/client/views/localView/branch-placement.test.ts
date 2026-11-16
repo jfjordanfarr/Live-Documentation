@@ -216,6 +216,52 @@ describe("placing the retained files", () => {
     expect(wired.cost).toBeLessThan(placement.cost);
   });
 
+  it("keeps the label's room above the first card of every column of the strip's run, whatever the shape prices", () => {
+    // The label's handle may reach across the strip's run (2026-11-15), so no column of it may have its first card in
+    // the strip: with no price on the outline's steps or the cards' levels, the second column's first card still stands
+    // below the label's room, level with the first column's.
+    const input: PlacementInput = {
+      columns: [["a", "b"], ["c", "d"]],
+      heights: heights([["a", 100], ["b", 50], ["c", 80], ["d", 60]]),
+      wires: [],
+      bands: [band("root", [], [0, 1], 0, [{ ...band("dir", ["a", "b", "c", "d"], [0, 1], 0, []), stripColumns: 2 }], [0, 0])],
+      gap: 24, bandGap: 28, neck: 60, evenness: 0, levelness: 0, fromTop: true
+    };
+    const placement = placeBranches(input);
+    expectWellFormed(input, placement);
+    const segments = placement.boxes.get("dir")!;
+    expect(placement.top.get("a")! - segments[0].top).toBe(30);
+    expect(placement.top.get("c")! - segments[1].top).toBeGreaterThanOrEqual(30);
+    expect(placement.top.get("c")).toBe(placement.top.get("a"));
+  });
+
+  it("from the top, a parent's own first row stands under its strip while a nested membrane rises beside it", () => {
+    // packages/engine/src with live-docs opened (2026-11-15): the parent's boxes p0 to p2 stand in a row over the first
+    // three of four columns, in a bucket drawn as nothing; the nested membrane stands below them there, its own boxes
+    // n0 to n2 under its strip, and rises to the parent's top in the fourth column, where its card x stands under its
+    // padding, not a second strip. Standing from the top levels the first item of every column, so the parent's row
+    // stands as low as x must: the parent's strip (30) and the nested membrane's padding (12), not two strips (60).
+    const row = band("parent boxes", ["p0", "p1", "p2"], [0, 2], 0, [], [0, 0], false);
+    const nested = { ...band("nested", ["n0", "n1", "n2", "x"], [0, 3], 1, []), stripColumns: 3 };
+    const input: PlacementInput = {
+      columns: [["p0", "n0"], ["p1", "n1"], ["p2", "n2"], ["x"]],
+      heights: heights([["p0", 82], ["p1", 82], ["p2", 82], ["n0", 82], ["n1", 82], ["n2", 82], ["x", 200]]),
+      wires: [],
+      bands: [band("root", [], [0, 3], 0, [{ ...band("parent", [], [0, 3], 0, [row, nested]), stripColumns: 4 }], [0, 0])],
+      gap: 24, bandGap: 28, neck: 60, evenness: 2, levelness: 2, fromTop: true
+    };
+    const placement = placeBranches(input);
+    expectWellFormed(input, placement);
+    const top = (id: string): number => placement.top.get(id)!;
+    const parent = placement.boxes.get("parent")!, inner = placement.boxes.get("nested")!;
+    expect(parent.map(segment => segment.top)).toEqual([0, 0, 0, 0]);
+    expect([top("p0"), top("p1"), top("p2")]).toEqual([42, 42, 42]);
+    expect(top("x")).toBe(42);
+    // The nested membrane's strip is over its run alone: its boxes stand a strip below its top there, level.
+    expect([top("n0"), top("n1"), top("n2")].map((at, column) => at - inner[column].top)).toEqual([30, 30, 30]);
+    expect(top("x") - inner[3].top).toBe(12);
+  });
+
   it("stands a lane in its column's stack like a card: the gap to its neighbours, and its slots at their pitch inside its padding", () => {
     const l = lane("lane", 0, 2);
     const input: PlacementInput = {

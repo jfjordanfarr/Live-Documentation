@@ -26,7 +26,7 @@ const url = (subject: string, pinnedWhole = false): string => `/?s=${compressSna
  * The reading sizes in the map's own units of a symbol's name line, a file's name line and a directory's name line: on screen
  * they are these times the reading scale the arrival frames the card at, which is calibrated and need not be 1.
  */
-const SYMBOL_NAME = 12, FILE_NAME = 15, DIRECTORY_NAME = 14;
+const SYMBOL_NAME = 12, FILE_NAME = 15, DIRECTORY_NAME = 15;
 /**
  * The band's last step that holds every symbol's name, the far band's: the sixth since the root's review of the far bands
  * (2026-11-06), where a row's room had run out at the seventh.
@@ -271,17 +271,11 @@ const auditInPage = ({ half, segmentsOf }: { half: number; segmentsOf: Record<st
   for (const label of document.querySelectorAll<HTMLElement>("#map-container .local-directory-label")) {
     const shape = label.parentElement?.querySelector<SVGPathElement>(":scope > .local-membrane .local-membrane-shape");
     const drawn: Box[] = [];
-    const held = label.querySelector<HTMLElement>(":scope > .local-directory-held"), heldBox = held && shown(held);
-    if (heldBox) {
-      const style = getComputedStyle(held!), scale = new DOMMatrix(style.transform).a;
-      drawn.push(heldBox);
-      directoryNames.push({ name: label.dataset.directory!, px: parseFloat(style.lineHeight) * scale * k });
-      for (const control of label.querySelectorAll(":scope > .local-directory-ancestors, :scope > .local-directory-controls button")) { const rect = shown(control); if (rect) drawn.push(rect); }
-    } else {
-      for (const part of label.querySelectorAll("*")) { const rect = shown(part); if (rect) drawn.push(rect); }
-      const name = label.querySelector(".local-directory-name");
-      if (name) directoryNames.push({ name: label.dataset.directory!, px: name.getBoundingClientRect().height });
-    }
+    // The handle is one line, held as a whole from the middle band out (2026-11-15): every part of it drawn, and the
+    // directory's own name's line as drawn.
+    for (const part of label.querySelectorAll("*")) { const rect = shown(part); if (rect) drawn.push(rect); }
+    const name = label.querySelector(".local-directory-leaf");
+    if (name) directoryNames.push({ name: label.dataset.directory!, px: name.getBoundingClientRect().height });
     for (const part of drawn) {
       if (shape) {
         const inverse = shape.getScreenCTM()!.inverse();

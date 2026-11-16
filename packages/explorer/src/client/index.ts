@@ -335,7 +335,6 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     onSelectNode: node => handleNodeClick(node),
     onRecenterNode: node => recentreOn(node),
     onFocusSidebar: (node, symbol) => focusSidebar(node, symbol),
-    onInspectDirectory: directory => openInspection({ kind: "directory", directory }),
     onShowNodeActions: showNodeActions,
     onShowDirectoryActions: showDirectoryActions,
     onBackwardConnections: count => {
