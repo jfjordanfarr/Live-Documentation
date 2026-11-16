@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphLayout.ts
-- Generated At: 2026-11-08T04:02:24.667Z
+- Generated At: 2026-11-16T13:03:09.423Z
 
 ## Authored
 ### Purpose
@@ -39,6 +39,8 @@ Since 2026-11-05 a node may carry `shellFiles`, a directory shell's count of the
 The third round of 2026-11-07 changed two things here. A shell is weighed (`shellMass`, through the field's `mass`): the cube root of the files it holds, a file one, so that a large shell's contacts and wires, counted per unit of its weight, no longer shorten every tick's step; weighed in proportion to the files it holds, as first tried, a shell crept under a drag that takes the same share of every sphere's speed, and the picture rested later. And `placeNewSpheres` bears a shell outside the files alone, clear of every shell placed, at the place nearest what it is wired to of those found along 65 directions: measured from and beyond every sphere placed, the shells of one piece had each been born beyond the last, and the T3 sample's 43 shells stood in a line some 8,000 units long whose wires drew one white blade through its picture. The numbers are in [the evidence of November 7](../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-07/shell-faults/README.md).
 
 On 2026-11-08, for the structure layout's bag of cells, a link may carry its own rest length (`rest`), which `spatialLinkDistance` and so the field's spring keep: a containment spoke's length from the packing of its hub with its children about it (`structureSpokes` in `forceGraphShells.ts`), so that bubbles of hundreds of files no longer hang on spokes far shorter than themselves and stand through each other. `placeNewSpheres` takes the same packing (`spokeOf`) and bears such a child where it holds it about its placed hub. A link without `rest`, every link with Group Wrappers Off, is measured as before ([the evidence](../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-07/structure-cells/README.md)).
+
+What the motion's rest means (2026-11-16). The owner keeps the browser cases that wait for this repository's 3D picture red by their clocks, "it literally makes the perf a red-hot sticking point" ([Turn 3 of the November 12 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-12.1.record.md#turn-3)), and the [November 15 measurement](../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-15/building-map/README.md) found the estate's seed click busy for 1,309 frames while no sphere stepped a pixel between two frames after frame 186, which read as a tail no one could see. [Measured again](../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-16/motion-rest/README.md) by logging every tick in the page and replaying the motion headless to the last digit, the tail is the directory shells gliding below a pixel a frame, plainly visible (one travels 117 px after frame 186), some gathering speed off shallow balances. So `STILL_FRACTION` and `QUIET_TICKS` stand and their comment says what they are: a speed under what the eye follows, held for ten ticks, which does not know a lull from a balance. A rule waiting for what is left to move to be under a pixel rested 1.4 to 6 times later on every picture measured, and a looser speed froze pictures still visibly gliding; how long a shell glides is the forces' matter, and the measurement sets out what a round on them would have to decide.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -242,21 +244,32 @@ How hard two spheres closer than their clearance push apart, per unit of overlap
 
 #### `STILL_FRACTION` {#symbol-still_fraction}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L348)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L361)
 
 ##### `STILL_FRACTION` — Summary
-The largest move of a tick, as a share of the picture's diagonal, below which the spheres count as still.
+The largest move of a tick, as a share of the picture's diagonal, at or under which the spheres count as still: a
+speed under what the eye follows. A picture framed whole at 1,440 by 900 draws a pixel at about a thousandth of its
+diagonal, so this is some 0.02 to 0.03 px a tick, under 2 px a second at sixty frames (measured November 16, 2026, on
+the estate's seed click and directory opening and this repository at one hop). Held for `QUIET_TICKS`, it has fired
+within 4 to 20 frames of the picture coming within a pixel of where it rests.
+
+It judges a speed, not what is left to travel, and so it does not know a lull from a balance. On the estate's seed
+click the directory shells glide off shallow balances one after another, some gathering speed, and the rule fires in a
+lull from which a shell would glide 87 px further over some six thousand ticks if the motion ran on; that slowness is
+the forces' matter, not the rule's. A rule that waited until what is left to move were under a pixel rested 1.4 to 6
+times later on the pictures measured, and a looser speed froze pictures still visibly gliding, 88 px from where they
+rest on the seed click at 10⁻⁴ (`AI-Agent-Workspace/Screenshots/2026-11-16/motion-rest/README.md`).
 
 #### `QUIET_TICKS` {#symbol-quiet_ticks}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L351)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L364)
 
 ##### `QUIET_TICKS` — Summary
-How many still ticks in a row end the easing.
+How many ticks in a row the largest move must stay at or under `STILL_FRACTION` before the easing ends.
 
 #### `UNFOLDED_FRACTION` {#symbol-unfolded_fraction}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L360)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L373)
 
 ##### `UNFOLDED_FRACTION` — Summary
 The largest move of a tick, as a share of the picture's diagonal, under which a picture unfolding from nothing has
@@ -267,7 +280,7 @@ hundredth of the picture's size, they would stay far too small (measured 2026-10
 
 #### `spatialFieldOf` {#symbol-spatialfieldof}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L369)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L382)
 - Returns: [`SpatialField`](./forceGraphPhysics.ts.mdmd.md#symbol-spatialfield)
 - Parameters: `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning); `layout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout); `node`: `N`
 - Constraints: [`SpatialNode`](#symbol-spatialnode)
@@ -281,7 +294,7 @@ A directory shell's contacts are soft (`SHELL_SOFTNESS`, 2026-11-06); a picture 
 
 #### `shellMass` {#symbol-shellmass}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L402)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L415)
 
 ##### `shellMass` — Summary
 A sphere's mass in the field (2026-11-07, third round): a file's is one, a directory shell's the cube root of the files
@@ -292,7 +305,7 @@ back by a drag that takes the same share of every sphere's speed: 650 evaluation
 
 #### `MotionStart` {#symbol-motionstart}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L411)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L424)
 
 ##### `MotionStart` — Summary
 How a motion begins: held from where the spheres stand, for a change of what is shown or a hand, so that the picture
@@ -301,7 +314,7 @@ forces, which rearrange the whole and leave the old places no reference.
 
 #### `MotionForce (interface)` {#symbol-motionforce-interface}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L414)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L427)
 - Extends: `Force`
 - Constraints: [`SpatialNode`](#symbol-spatialnode)
 
@@ -310,7 +323,7 @@ The one force that moves the 3D picture, with what the page asks of it.
 
 #### `MotionSource` {#symbol-motionsource}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L428)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L441)
 - Constraints: [`SpatialNode`](#symbol-spatialnode)
 
 ##### `MotionSource` — Summary
@@ -318,7 +331,7 @@ What the motion force reads at every tick.
 
 #### `motionForce (function)` {#symbol-motionforce-function}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L465)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L478)
 - Returns: [`MotionForce`](#symbol-motionforce-interface)
 - Parameters: `source`: [`MotionSource`](#symbol-motionsource)
 - Constraints: [`SpatialNode`](#symbol-spatialnode)
@@ -336,14 +349,14 @@ its last part (2026-10-28); the spheres are written back after every part, so th
 
 #### `EaseOptions` {#symbol-easeoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L558)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L571)
 
 ##### `EaseOptions` — Summary
 How a headless easing runs: its constant strength, how it begins, and the most ticks it may take.
 
 #### `easeSpatialLayout` {#symbol-easespatiallayout}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L583)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L596)
 - Parameters: `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning); `layout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout); `_unnamed_`: [`EaseOptions`](#symbol-easeoptions)
 
 ##### `easeSpatialLayout` — Summary

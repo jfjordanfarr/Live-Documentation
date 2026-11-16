@@ -344,10 +344,23 @@ export const MOTION: MotionSettings = { step: 0.5, drag: 0.2 };
 /** How hard two spheres closer than their clearance push apart, per unit of overlap. */
 export const COLLISION_STIFFNESS = 3;
 
-/** The largest move of a tick, as a share of the picture's diagonal, below which the spheres count as still. */
+/**
+ * The largest move of a tick, as a share of the picture's diagonal, at or under which the spheres count as still: a
+ * speed under what the eye follows. A picture framed whole at 1,440 by 900 draws a pixel at about a thousandth of its
+ * diagonal, so this is some 0.02 to 0.03 px a tick, under 2 px a second at sixty frames (measured November 16, 2026, on
+ * the estate's seed click and directory opening and this repository at one hop). Held for `QUIET_TICKS`, it has fired
+ * within 4 to 20 frames of the picture coming within a pixel of where it rests.
+ *
+ * It judges a speed, not what is left to travel, and so it does not know a lull from a balance. On the estate's seed
+ * click the directory shells glide off shallow balances one after another, some gathering speed, and the rule fires in a
+ * lull from which a shell would glide 87 px further over some six thousand ticks if the motion ran on; that slowness is
+ * the forces' matter, not the rule's. A rule that waited until what is left to move were under a pixel rested 1.4 to 6
+ * times later on the pictures measured, and a looser speed froze pictures still visibly gliding, 88 px from where they
+ * rest on the seed click at 10⁻⁴ (`AI-Agent-Workspace/Screenshots/2026-11-16/motion-rest/README.md`).
+ */
 export const STILL_FRACTION = 3e-5;
 
-/** How many still ticks in a row end the easing. */
+/** How many ticks in a row the largest move must stay at or under `STILL_FRACTION` before the easing ends. */
 export const QUIET_TICKS = 10;
 
 /**

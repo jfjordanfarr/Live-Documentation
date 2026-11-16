@@ -1,0 +1,32 @@
+[
+  {
+    "label": "estate: click on a seed (PaymentService/PaymentService.cs)",
+    "restedInTicks": 1306,
+    "seconds": 39.516,
+    "afterRest": {
+      "frames": 600,
+      "drawn": 0,
+      "ticksAfterRest": 0,
+      "stillTicks": 0,
+      "worldMost": 0,
+      "screenMost": 0,
+      "busyAgain": false,
+      "spheres": 17
+    }
+  },
+  {
+    "label": "estate: open a directory (Structure, Portal)",
+    "restedInTicks": 477,
+    "seconds": 14.244,
+    "afterRest": {
+      "frames": 600,
+      "drawn": 0,
+      "ticksAfterRest": 0,
+      "stillTicks": 0,
+      "worldMost": 0,
+      "screenMost": 0,
+      "busyAgain": false,
+      "spheres": 16
+    }
+  }
+]
