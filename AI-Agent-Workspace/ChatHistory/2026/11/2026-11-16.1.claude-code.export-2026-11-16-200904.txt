@@ -2868,3 +2868,1258 @@ code 0)
     from now, so it may be there when you next sit down.
 
   Nothing is needed from you in the meantime.
+
+  ...
+
+  
+
+● The marbles are still on your port and still uncommitted. The gate found two
+  real problems, both now fixed, and the gate is running again.
+
+  One thing to know first
+
+  Between 09:31 and 09:56 UTC a build I made drew no balls at all in the 3D map
+  of this repository and the estate. That was my mistake in the first fix below.
+  If you looked in that window, reload. Tidepool was not affected.
+
+  What the gate found (470 of 480)
+
+  - Marbles cost speed even when switched off. This repository's 3D picture drew
+    at 4.4 frames a second with the round and 5.3 without. The ball's drawing
+    program carried the marble's instructions all the time, with an "is this a
+    marble?" check in front. A real graphics card skips them almost for free;
+    the test machine has none and imitates one on the processor, which pays for
+    much of what is skipped. There are now two versions of the program, and the
+    one without marbles is used while Marbles is off. Measured again, four runs
+    each: 63.4 s to settle with the round, 64.0 s without.
+  - A 2D layout error, exposed by the round and older than it. When the 2D map
+    tries another order for files that use each other in a circle, it predicts
+    each card's height. It measured the "returns in a cycle" line once, on one
+    card, and assumed that height for every card. The line is 20 px on some
+    cards and 21 on others. It now measures the card in question.
+  - Four 3D tests fail with or without the marbles. This repository's 3D picture
+    needs 320 frames to settle, which takes 62 to 66 seconds on the test
+    machine, and those tests wait 60. They passed yesterday by a hair. I have
+    left their limits alone; the graphics card idea you set for "tomorrow,
+    perhaps" would lift all four.
+
+  Held against a repeat
+
+  - A unit test that fails if any piece of the marble's drawing code is left
+    unguarded; I confirmed it fails on my exact mistake.
+  - A browser test that switches Marbles on and off and requires the picture to
+    change and no drawing error.
+  - I looked at the live switch myself afterwards: on, off and on again, in this
+    repository and tidepool, with no errors.
+
+  Status
+
+  - The full gate started again at 10:23 UTC and takes about two hours.
+  - When it ends I commit the layout fix, then the marble round, and report how
+    the gate stood.
+  - Nothing has changed in how the marbles look. What I need is still your eye
+    on them, from the links I sent at 06:16 (http://127.0.0.1:8999/?s=N4IgbiBcDM
+    A0IEcomgExPAdsgDgQwGMBrPAcwFMBnAenM1IEtNzrKAnA6gGwbHIFpUAewI08HABbkALgE8c5AH
+    TTKGEDigBtUNkjrCJCjTqNmrDt14Dho6uIJS5C5aviq9AKhABfALregA): Tuning, Colour,
+    Palette Proposed, Marbles On.
+
+● Background command "Run the full gate with the browser suite on main with the
+marble round and both fixes, recording its own exit code" completed (exit code
+0)
+  ⎿  Referenced file packages/explorer/src/client/views/forceGraphAppearance.ts
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/2e2c3781-e754-421
+     5-b736-f96cb3ac7ab8/scratchpad/split-marbles.sh (35 lines)
+  ⎿  Referenced file ../../tmp/claude-1000/-workspaces-Live-Documentation/2e2c37
+     81-e754-4215-b736-f96cb3ac7ab8/scratchpad/gate-marbles.log
+  ⎿  Referenced file
+     AI-Agent-Workspace/ChatHistory/2026/11/2026-11-16.1.record.md
+  ⎿  Skills restored (dataviz)
+
+● Compacted using a summary written while you were away · turn off with
+  "idleCompaction": false in settings.json
+
+  Ran 7 shell commands (ctrl+o to expand)
+
+● The second gate finished with 474 of 481 passing and 7 failing. One failure is
+  new, a timeout in history-scrubber.spec.ts, so I'm running it alone against
+  the build before committing anything. · summary
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● The new red case fails on its own with or without the round, so it's a fifth
+  case hitting its time limit rather than a problem with the round. I'm checking
+  whether the machine has slowed since this morning while the second pass
+  finishes. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Waiting on the second pass of the alone run (about three more minutes); then I
+  commit the layout fix and the marble round.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Background command "Run the two history cases alone, main and control
+alternately, four times each" completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The new red case fails on both builds in all eight runs, so nothing in this
+  gate is the round's doing. Now checking the layout fix builds on its own
+  before I commit it ahead of the marbles.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Committing now: the layout fix first, then the marble round.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Both commits are in: 595127f3 (the layout fix) and b8169ad3 (the marble
+  round). Now filing the evidence pictures, removing the three scratch
+  worktrees, and writing the result into the record.
+
+  Read 2 files, listed 1 directory, ran 4 shell commands (ctrl+o to expand)
+
+● The crop came out blank (the page couldn't load a local file). Fixing that so
+  I can look closely at two dimmed balls that look off-colour with marbles on.
+
+  Read 5 files, ran 2 shell commands (ctrl+o to expand)
+
+● Pictures chosen and filed; writing their caption into the colour pass's
+  folder, then removing the scratch worktrees.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Verifying the builder's branch holds nothing that isn't on main before I
+  delete it and the three scratch worktrees.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Worktrees and scratch branches are gone. Now writing the gate's result and the
+  commits into the record.
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● Record written; correcting one count in it against the log, then running the
+  link checks and committing the records.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Updating Memory's two lines on the marble (now committed, and a fifth test on
+  its time limit), then committing the records.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Records are committed. Last step before the full report: generating Explorer
+  links that pin the files this round changed.
+
+  Listed 1 directory, ran 3 shell commands (ctrl+o to expand)
+● Reading what the owner asked for in Turn 6 (the cells trial), to decide
+  whether that owed work can start now without their answer on the marbles.
+
+  Searched for 1 pattern, read 1 file (ctrl+o to expand)
+
+● The marbles are committed. The gate came back at 474 of 481, and none of the
+  seven red tests is the marbles' doing.
+
+  What is on main now
+
+  - 595127f3: the 2D layout fix. The "returns in a cycle" line is now measured
+    on each card instead of once for all.
+  - b8169ad3: the marble round. Marbles On/Off in Tuning, the third palette
+    "Vivid kinds", and the change that stops marbles costing speed while they
+    are off.
+  - Neither is pushed by me. Your port serves exactly this code.
+
+  The gate
+
+  - Everything before the browser tests passes: lint, build, 1,964 unit tests,
+    138 integration tests, the link checks.
+  - Browser tests: 474 of 481. Six of the seven red ones were already known and
+    fail without the marbles too.
+  - The seventh is new: a history test with a 30-second limit that now runs a
+    second or two over. I ran it alone four times with the marbles and four
+    times without, and it failed all eight. It is a fifth test sitting on its
+    time limit, and I left the limit alone.
+  - One thing I could not explain: that same test took 26 to 29 seconds in three
+    earlier gates today, on unchanged code. Nothing else was running inside the
+    container. If something heavy ran on your machine around 12:00 to 12:45
+    UTC, that is probably it; otherwise I will measure it with the graphics-card
+    work.
+
+  Where to look
+
+  Marbles are off until you turn them on: Tuning, Colour, Palette Proposed,
+  Marbles On. The setting is saved in your browser, not in a link.
+
+  - This repository in 3D, archetype.ts pinned (http://127.0.0.1:8999/?s=N4IgbiB
+    cDMA0IEcomgExPAdsgDgQwGMBrPAcwFMBnAenM1IEtNzrKAnA6gGwbHIFpUAewI08HABbkALgE8c
+    5AHTTKGEDigBtUNkjrCJCjTqNmrDt14Dho6uIJS5C5aviq9AKhABfALregA): zoom in on any
+    ball.
+  - Tidepool in 3D, Structure (http://127.0.0.1:8999/samples/tidepool/?s=N4IgbiB
+    cDMA0IEcomgExPAnsgzgFwCcBXAYzyIIFMQBfIA): every kind of file in one picture.
+  - Tidepool in 2D (http://127.0.0.1:8999/samples/tidepool/?s=N4IgbiBcDMC+Q): a
+    closed directory's cells take each marble's blended colour.
+  - Where the change lives: how a marble is made (http://127.0.0.1:8999/?view=lo
+    cal&node=packages/explorer/src/client/views/forceGraphAppearance.ts), the
+    palettes and the on/off choice (http://127.0.0.1:8999/?view=local&node=packa
+    ges/explorer/src/client/palette.ts), the 2D layout fix
+    (http://127.0.0.1:8999/?view=local&node=packages/explorer/src/client/views/l
+    ocalView/branch-renderer.ts).
+
+  What my eye sees
+
+  I filed a matched pair from one camera: marbles off (AI-Agent-Workspace/Probes
+  /2026-11-16/colour-pass/marbles-off-3d-archetype-pinned.png) and marbles on
+  (AI-Agent-Workspace/Probes/2026-11-16/colour-pass/marbles-on-3d-archetype-pinn
+  ed.png).
+
+  - The 3D map is no longer grey, and the kinds still read: tests stay violet
+    with thin bands, assets rose, documents yellow.
+  - At middle distance most well-connected balls wear similar stripes, so "which
+    one is the bluest" does not leap out.
+  - A faded marble is louder than a faded plain ball. Designers call this visual
+    hierarchy: the pinned file and its neighbours should be the figure, and
+    everything faded should sink into the ground. In the first link, look at
+    document.ts, upper middle, just right of the layout-lab shell. It is faded,
+    but its dark blue bands still catch the eye. I would make a faded marble go
+    plain. I have not changed it, because you have not seen the marbles yet.
+
+  What I need from you
+
+  1. What you see, view by view: a marble up close, the 3D map from far, and the
+     2D cells.
+  2. Whether a faded marble should keep its bands or go plain.
+
+  Next
+
+  I am starting the trial you raised in Turn 6: cells in place of "+2 files",
+  behind a Tuning choice and off by default. It does not depend on your answers
+  above.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The full report above is delivered (the session log shows it). Now preparing
+  the brief for the cells trial: reading where the "+2 files" line is drawn and
+  how a closed directory's cells are made.
+
+  Read 2 files, ran 4 shell commands (ctrl+o to expand)
+
+● I have what the brief needs. Dispatching one builder for the cells trial's
+  first milestone (cells in the directory's handle line, behind a Tuning choice,
+  off by default).
+
+● Agent(Cells trial, first milestone) Opus 5.5
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The builder is running on the cells trial. Fixing a time I wrote from memory
+  in the record, then committing it and setting the fifty-minute timer.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The full report on the marbles is above, sent at 13:01 UTC and confirmed in
+  the session log. Since then:
+
+  - The cells trial is under way. One builder has been working since 13:05 UTC
+    on the first milestone, in its own copy of the repository. It should hand
+    back within about fifty minutes. I then review it and look at it myself
+    before any gate runs.
+  - One change from what I told you in Turn 6. I said the cells would sit in a
+    row under the directory's name and make each directory one row taller. The
+    first milestone puts them in the name's line, exactly where "+2 files"
+    stands today, so no card or directory moves. A row under the name is held as
+    a second variant, so you can compare the two in the app.
+  - Housekeeping. The record and Memory are committed through 098b0bd4, and the
+    three scratch worktrees and two scratch branches from the marble round are
+    removed.
+
+  Your port still serves the committed marbles; the two questions in the report
+  are the only things waiting on you.
+
+› Message from general-purpose
+  ## Handback: Hidden Files trial, milestone 1 (cells in place of "+2 files")
+
+  Branch `worktree-agent-aa374cfab9b0e1e48`, reset to 6840c328 first. Two
+  commits:
+  - **baf72885** Try cells in place of an encasing directory's "+2 files",
+  behind a Tuning choice. This has the product, unit tests and regenerated docs.
+  - **dd559c80** Adds the browser spec, plus a focus fix: when a pressed cell's
+  file becomes a card, focus moves to the mark now in its place, not to the
+  handle. Before the fix it went to the handle, and a second Enter opened the
+  directory; the spec caught this.
+
+  ### Files changed
+  - **Tuning plumbing, same pattern as Closed Directory:**
+    - `types.ts`: `HiddenFilesLook`, `HIDDEN_FILES_LOOKS` = count, cells;
+  `LocalMapTuning.hiddenFiles`.
+    - `persistence/local-storage.ts`: default "count".
+    - `layout-presets.ts`: a link carries the choice only when it is cells; no
+  value in a link reads as count.
+    - `panels/tuning.ts`, `panels/tuning-levers.ts`: help sentence of 115
+  characters.
+    - `shared/template.html`: label "Hidden Files", options "Count: "+2 files""
+  and "Cells: a cell for each, a press pins it".
+    - Skin's Shape and Cells' Colour now also show when Hidden Files is Cells.
+  - **`branches.ts`:** `DirectoryDisclosure.hidden` carries `{ files,
+  directories, contents }`. These are the paths, plus the cells and small skins
+  built by the same `cellOf` and `nestedContents` (moved out of
+  `closedDirectory`) from the same filter as the count.
+  `hiddenFiles`/`hiddenDirectories` are the lengths of these lists.
+  - **`closed-looks.ts`:** new pure `lineMarks(contents, room)`.
+    - It uses the closed field's own `planSkin`/`placeSkin`, sizes and one-row
+  spacing.
+    - Order is skins first, then cells, as in a closed box.
+    - It shows only whole marks. When more are held than fit, the last mark
+  shown fades under a field veil and names nothing.
+    - Each mark's press area runs from mid-gap to mid-gap.
+  - **`card-factory.ts`:**
+    - `createHiddenCells`: a `role="toolbar"` span with one aria-hidden SVG
+  drawn by the existing `fieldMarkup` (gained an optional `marked` flag), plus
+  one transparent button per mark over its whole pitch at the line's height.
+    - Buttons are named "Pin <path>" or "Open <path>". A cell's `title` is the
+  file name alone; a skin's is "name: N files, M directories".
+    - Roving tabindex: arrows, Home and End. Hover or focus lights the mark.
+    - A ResizeObserver redraws at every change of room, including down to zero.
+  - **`branch-renderer.ts` `fillLabel`:**
+    - With Cells, the marks sit beside the handle, never inside the button, so a
+  press never toggles the handle.
+    - The count's words go to the handle's `title` (after a newline) and its
+  `aria-description`.
+    - Focus is restored to the same mark across re-renders.
+  - **`styles/local.css`:** the handle's flex-basis is name + 1px; the marks get
+  a grow factor of 1,000,000 up to their natural width; the row's 4px gap is
+  taken back with a negative margin; quiet, lit and ring rules. The cells'
+  colour, grey and marble rules are extended to `.local-handle-cells`.
+  - **Tests:**
+    - Unit: `closed-looks.test.ts` (4 new cases), `branches.test.ts` (the
+  disclosure's hidden lists), `layout-presets.test.ts` (1 case),
+  `tuning-levers.test.ts` (count 66 → 67).
+    - Browser: new `tests/e2e/hidden-file-cells.spec.ts` (3 cases), with its
+  Live Doc's Purpose and Notes, citing Turn 6 of the 2026-11-16 record.
+
+  ### Numbers
+  All from the `pathfind.ts` picture, default tuning, 1440×900.
+
+  **Marks shown per handle at reading size:** shown + veiled / all marks (the
+  count's words).
+
+  | Directory | Shown | Count's words |
+  |---|---|---|
+  | scripts/live-docs | 9 / 9 | +9 files |
+  | tests/integration/live-docs | 19 + 1 / 21 | +20 files, 1 directory |
+  | packages | 2 / 2 | +2 directories |
+  | packages/engine/src | 2 / 2 | +2 directories |
+  | config | 1 / 1 | +1 file |
+  | live-docs | 23 + 1 / 32 | +30 files, 2 directories |
+  | history | 13 + 1 / 23 | +23 files |
+  | client | 6 + 1 / 26 | +21 files, 5 directories |
+  | panels | 12 / 12 | +12 files |
+  | localView | 14 + 1 / 75 | +75 files |
+
+  - **Connections look:** most handles shrink to 1–3 marks plus a veil (history
+  2 + 1, localView 1 + 1). `client` shows only one veiled skin.
+  - **Overview look:** several handles show none (history, panels, localView,
+  tests/integration/live-docs, client). `live-docs` shows 24 + 1.
+
+  **On-screen press area of one cell:**
+
+  | Look | Size |
+  |---|---|
+  | Reading (this camera) | 11 × 15 px |
+  | Connections | 14.0 × 19.1 px |
+  | Overview | 11.1 × 15.1 px |
+  | Estate, reading | 15.9 × 21.8 px |
+  | Estate, connections | 20.3 × 27.7 px |
+
+  A skin's press area is 28–50 px wide. Below 24 px tall at every look on this
+  repository.
+
+  **Quiet values, chosen by eye:** each mark at `opacity: .5` (`--cells-quiet`)
+  over the closed-cell strength (fill .42, stroke .75). Lit is opacity 1, plus a
+  1px selection-colour ring on hover (.85) and a 1.5px ring on focus. 120ms
+  ease.
+
+  **Test counts:**
+  - Unit: the full suite ran 1969 tests; the only failures were 3 in
+  `tuning-levers.test.ts`, all from the new control. Fixed, and the 4 affected
+  files rerun: 70/70.
+  - Browser:
+    - `hidden-file-cells.spec.ts` 3/3 (the press case passed on its final
+  rerun).
+    - `closed-directory-families.spec.ts` 4/4.
+
+  ### Proof that Count is unchanged and Cells moves nothing
+  - **Observed:** comparing 39 rectangles (every card, closed box, membrane band
+  and handle label) between Count and Cells gave zero differences at reading,
+  connections and overview on pathfind, and on 15 on the estate. The browser
+  spec asserts the same at all three looks.
+  - **Observed:** the regenerated docs touched no layout module.
+  - **Inferred from the code:** with Count, `fillLabel` builds exactly the old
+  caption; the only changed CSS rules are new selectors, or old ones extended
+  with `.local-handle-cells`. The layout reads only the label's fixed height and
+  the strip's width, never its contents. I did not diff Count's pixels against
+  6840c328.
+
+  ### Forks I decided
+  1. **Order: skins before cells,** as a closed box draws them, so the same
+  reading order holds everywhere.
+  2. **The veiled last mark is not a button.** It "names nothing", so there is
+  nothing to pin; the handle next to it opens the directory.
+  3. **Where only one mark fits and more are held, that single mark is drawn
+  veiled** (for example `client` at the connections look). The rule "none where
+  not one fits" still holds.
+  4. **The ring uses the selection colour**, not a lift.
+  5. **The order of giving way is done in CSS** (the handle's basis is the name,
+  the marks have a huge grow factor up to their natural width), not measured in
+  JS. The +1px on the name and the negative gap margin fix two faults I saw in
+  pictures: "hist…" cut by 0.3px, and names cut at the overview by the extra 4px
+  gap even when no mark fitted.
+
+  ### Unfinished or doubtful
+  - **Not run:** `closed-directory-looks.spec.ts` and `layout-lab.spec.ts`, out
+  of time. Run them before accepting; the full gate was not run either.
+  - **Keyboard: done.** One stop, arrow keys, Enter or Space, focus kept across
+  re-renders. Not tested with a real screen reader.
+  - **After pressing a cell, the new card may land off screen.** In the
+  after-press picture the camera holds `pathfind.ts` still and `codec.ts` is not
+  visible. That is the existing pin act's hold-still behaviour; the trial may
+  want the camera to show the new card.
+  - **The press area is 11–20 px tall on screen,** under the 24 px target the
+  handle keeps.
+  - **Kind colours, observed:** blue and green cells sit beside blue and green
+  wire anchors, the conflict already named for the kinds' palette.
+  - **Possibly existing, not mine (not investigated):** in the after-press
+  picture, "Internals" overlaps "+8 symbols" on the right-hand `pathfind.ts`
+  card. It may be mid-move.
+  - **Design forks for the owner's eye:** the cells vanish at the overview in
+  tight handles (history, panels, localView), which is where the owner noticed
+  they were missing. And a lone veiled skin, as in `client` at the connections
+  look, reads as a faint smudge.
+
+  ### Pictures
+  All 1440×900, in `AI-Agent-Workspace/tmp/cells-trial/` in the worktree
+  (git-ignored):
+  - `pathfind-{count,cells}-{reading,connections,overview}.png`
+  - `pathfind-cells-hover.png` and the crop `pathfind-cells-hover-close.png`
+  - `pathfind-cells-after-press.png`
+  - `estate-{count,cells}-{reading,connections,overview}.png`
+
+  What I see in them:
+  - **Reading:** history shows a row of small quiet cells, blue and green by
+  kind, where "+23 files" stood, and the name is whole. The parent path
+  ("…ine/src/live-docs/") gives way first, as specified.
+  - **Overview:** `live-docs` carries a long row of cells across its strip, plus
+  two veiled skins. Names stay whole.
+  - **Hover:** one cell lit with a blue ring; the others stay dim.
+  - **Estate, connections look:** reads well, "Contracts ●●", "PaymentService
+  [skin of 3 cells] ●", "Hub ●●".
+
+  ### Proposed paragraph for the layer-3 design document
+  **What an encasing directory hides, as cells (a trial of November 17; [Turn 6
+  of November 16](../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-16.1.reco
+  rd.md#turn-6)).** The owner asked whether the "+2 files" of a directory drawn
+  only around the pinned picture could be "cute little cells that could be
+  clicked on to expand them into fuller-sized nodes", since "once we're looking
+  at wiring, we don't really see the delightful cells anymore". Tuning → 2D
+  Layout → Hidden Files offers it beside the count, which stays the default and
+  today's picture. With Cells, the handle's line draws, after the directory's
+  own name, a closed directory's own small skin for each directory it does not
+  draw, then its own cell for each such file: one kind of mark at one size,
+  coloured as the closed cells are, from the same disclosure as the count. The
+  line stays one line: the parent's path gives way first, then the marks, as
+  many whole ones as fit, the last fading under a veil and naming nothing where
+  more are held; the name is cut last. The count's words move to the handle's
+  hover text. A press on a cell pins its file, the existing pin act, so that it
+  becomes a card with its wires, and unpinning it returns the cell. A press on a
+  skin opens its directory, and neither press opens or closes the handle. Each
+  mark is a button over its whole pitch at the line's height, "Pin <path>" or
+  "Open <path>" to assistive technology; a cell's hover says its file's name
+  alone, a skin's its name and what it holds. A handle's marks are one stop in
+  the tab order, between the handle and More, moved among by the arrow keys.
+  They are the ground under the wires, drawn at half a closed cell's strength
+  and at full strength with a ring under the pointer or focus. From the
+  connections look out they are held with the whole line at the file names'
+  size. Like every closed look they draw over the layout: no box or card moves
+  for them.
+
+● The builder has handed back the first milestone. Reviewing it now: the diff
+  first, then its pictures with my own eye, then the two specs it did not run.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Cells trial, first milestone" finished · 47m 36s
+
+  Read 6 files (ctrl+o to expand)
+
+● With Cells selected, the cells cut the directory's parent path down to just
+  the last segment, which loses orientation. I'm checking the remaining
+  screenshots before sending this back. · summary
+
+  Read 3 files, ran 1 shell command (ctrl+o to expand)
+
+● Back in the main checkout after stepping into the builder's worktree, and the
+  diff looks clean. I'm sending the builder a second round covering the parent
+  path, the pinned cell, two skipped specs, and the overlap question. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+  ⎿  Resuming agent aa374cf
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The cells trial has had its first review and is back with the builder for a
+  second round, sent at 13:55 UTC. Nothing is on main or on your port from it
+  yet.
+
+  What the first round built
+
+  Tuning, 2D Layout, Hidden Files: Count / Cells, with Count the default and
+  unchanged. With Cells, a directory drawn only around your pinned picture shows
+  a cell for each file it does not draw, in its name's line where "+2 files"
+  stood. Pressing a cell pins that file. No card or directory moves between
+  Count and Cells.
+
+  What my eye found in its pictures
+
+  - The cells read well. They are the closed directory's own cells, drawn
+    quieter than the cards so the wires stay the subject.
+  - One fault: the cells push out the directory's path.
+    "packages/engine/src/live-docs +30 files, 2 directories" became just
+    "live-docs" and a long row of cells, in a picture with three directories
+    called live-docs. This came from my brief, not the builder. The rule is now
+    that the cells get the room the count's words had, plus any room the line
+    leaves free.
+  - After a press, the new card landed off screen. The map kept the previously
+    focused card still. It should keep the pressed spot still instead.
+  - An overlap of "Internals" and "+8 symbols" shows on two cards in one
+    picture. The builder is finding out whether it is a mid-transition frame or
+    a standing fault that also exists with Count.
+
+  The builder is also running the two test files it skipped: the
+  closed-directory looks and the layout lab.
+
+  Held for a third round
+
+  Cells in a row under the name at reading size, as a second variant to compare
+  in the app.
+
+  One thing to know before you try it
+
+  A cell is a small target: about 11 by 15 px on screen at reading size on this
+  repository. The directory's own handle, which opens the whole directory, stays
+  the full-size way to reach the same files.
+
+  The two marble questions from the 13:01 report still stand. The record is
+  committed through 85b9603b, and I will be notified when the builder hands
+  back.
+
+● Background command "Fifty-minute timer beside the running builder" completed
+(exit code 0)
+
+● The first fifty-minute timer has fired with nothing to act on. The builder is
+  still on its second round of the cells trial, and no message from you has
+  arrived. A second timer is already running beside it, so I am waiting for the
+  handback.
+
+[Image #2]
+  ⎿  [Image #3]
+
+❯ I see the marbles view, and they're pretty cool so far but I don't understand
+  why we still have ringed nodes anywhere ever? Didn't we replace ringed nodes
+  with membranes? Where do ringed nodes come from?
+
+  Searched for 1 pattern, ran 5 shell commands (ctrl+o to expand)
+
+● You already raised these rings on November 16, and they were set aside today.
+  I'm reading the exact rule in the code now to trace where each ring in your
+  screenshots comes from. · summary
+
+  Searched for 1 pattern, read 1 file, ran 4 shell commands (ctrl+o to expand)
+
+● Computing from the built graph, with the Explorer's own functions, exactly
+  which balls get a ring around archetype.ts and why, so the answer names the
+  cause for each ring you circled.
+
+  Searched for 1 pattern, ran 3 shell commands (ctrl+o to expand)
+
+● Nearly every ring in your screenshots is a file with a hidden document inside,
+  which shells never hold because documents were left out of them. I'm checking
+  the record for why that happened before recommending a fix. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The rings were narrowed, not replaced. Almost every ring in your two
+  screenshots marks a file with a hidden document behind it.
+
+  Where a ring comes from
+
+  - It still means what you chose on November 2: more is connected to this file
+    than the picture shows, so a press will show more.
+  - The membranes took over that job for code files only. Hidden files of one
+    directory are gathered into a membrane, and a file whose hidden neighbours
+    all sit inside membranes loses its ring (forceGraphShells.ts:181-186
+    (packages/explorer/src/client/views/forceGraphShells.ts#L181-L186)).
+  - Two cases were left wearing the ring:
+    a. Hidden documents. A membrane never holds a document. Any file cited by a
+       document outside the picture keeps its ring. You have documents switched
+       on (your key shows Document, Cites and Cited by), and in this repository
+       the chat summaries and READMEs cite nearly everything.
+    b. A lone hidden file. One hidden file in a directory makes no membrane, so
+       the file next to it keeps a ring.
+  - With Group Wrappers set to Off, every file with anything hidden wears a
+    ring. That is not your case; you are on Skin.
+
+  I computed this from the built graph with the Explorer's own functions, at one
+  hop with tests shown:
+
+  ┌──────────────────────────┬───────────┬───────┬─────────────┬────────────┐
+  │          Pinned          │ Documents │ Rings │    From     │  From a    │
+  │                          │           │       │  documents  │ lone file  │
+  ├──────────────────────────┼───────────┼───────┼─────────────┼────────────┤
+  │ archetype.ts             │ shown     │ 10    │ 9           │ 1          │
+  ├──────────────────────────┼───────────┼───────┼─────────────┼────────────┤
+  │ archetype.ts             │ off       │ 0     │ 0           │ 0          │
+  ├──────────────────────────┼───────────┼───────┼─────────────┼────────────┤
+  │ still-picture.ts (a test │ shown     │ 35    │ 35          │ 0          │
+  │  helper)                 │           │       │             │            │
+  └──────────────────────────┴───────────┴───────┴─────────────┴────────────┘
+
+  The third row is the fan of ringed tests on the right of your pictures: each
+  spec is cited by a README. The second row is why the pictures I filed this
+  morning showed no rings and I did not catch it.
+
+  You had already flagged this
+
+  On November 16 you called it "a defect we should leave for the next dev day
+  but mark as known". It was in the notes I read at the start of this session,
+  and I did not schedule it. That is my miss.
+
+  The mend
+
+  Designers call a mark that says "you can act here" a signifier. The ring and
+  the membrane are two signifiers for one meaning, which makes a reader wonder
+  how they differ. Your own rule from the directory handle applies: "one sign
+  for one act".
+
+  - Lone hidden file: draw the file itself, dimmed, where its membrane would
+    stand. The Structure layout already does this for a directory of one file.
+  - Hidden documents: no ring and no other sign. Pinning a file shows its
+    documents, as it does now. The cost is that nothing tells you which files
+    have documents; here almost all do, so the ring was saying little.
+  - The alternative for documents, which I am not building unless you ask:
+    gather hidden documents into membranes of their own, by directory, wired to
+    the files they cite. It is the consistent form, but in this repository a few
+    document membranes would be wired to most of the picture.
+  - Group Wrappers Off keeps its rings. It is the picture from before membranes,
+    and the ring is its only sign.
+
+  With Skin on, no ring will be drawn anywhere, and the key's "More connected"
+  row goes with it.
+
+  Order of work
+
+  The cells builder is mid-round and due back around 14:45 UTC. The ring mend is
+  3D code; I will brief it as soon as the cells round is back, so the two do
+  not run browser tests on the machine at once.
+
+  Your "pretty cool so far" on the marbles is recorded. Whether a faded marble
+  should keep its bands is still open.
+
+  Ran 2 shell commands (ctrl+o to expand)
+› Message from general-purpose
+  ## Handback: Hidden Files trial, round 2
+
+  All four points are handled:
+  1. The marks no longer cost the parent path more than the count's words did.
+  2. A cell's press now holds the handle still, as a press on the handle would;
+  the handle and the new card stand in view.
+  3. Both specs pass: `closed-directory-looks.spec.ts` 7/7 and
+  `layout-lab.spec.ts` 14/14.
+  4. The "Internals" / "+8 symbols" overlap stays after the picture rests, and
+  also with Count. I did not fix it.
+
+  ### Commits (branch `worktree-agent-aa374cfab9b0e1e48`, on top of dd559c80)
+  - **9110002f** Keep the hidden files' cells in the count's room, and hold the
+  handle still when a cell is pressed.
+  - **10724b6c** Read the estate's path rule on a picture whose encasing handle
+  has a parent path.
+
+  ### Files changed
+  - **`packages/explorer/src/client/views/localView/branch-renderer.ts`**
+    - `fillLabel` puts the count's words in the Cells line as an unseen span,
+  `.local-directory-cells-words`.
+    - The pin action now goes through `controller.pinFromHandle(file,
+  directory)`.
+    - `writeHandleNeeds` measures `--cells-words` in the line's own units: the
+  words' drawn width divided by the drawn scale, plus their `.5em` margin, not
+  rounded.
+  - **`packages/explorer/src/client/styles/local.css`**
+    - Handle: `flex: 1000000 1 (name + 1px)`.
+    - Marks: `flex: 1 1000000 var(--cells-words)`.
+    - The rule's comment is rewritten.
+  - **`packages/explorer/src/client/views/localView/controller.ts`**
+    - New `pinFromHandle(file, directory)`, which sets a private
+  `pinHeldDirectory` and calls the existing `onPressPin(file, "*")`.
+    - `capturePinChange` reads that field. When it is set, it returns the
+  existing `captureDirectoryChange(directory)` frame instead of the card frame,
+  then puts keyboard focus back on the mark that holds it.
+    - No new camera mechanism.
+  - **`tests/e2e/hidden-file-cells.spec.ts`** and its Live Doc: two new path
+  cases (pathfind and estate), an in-view check after a press, and the
+  history-at-reading expectation loosened to "more than 0" now that history
+  keeps its path. The regenerated docs show no other change.
+
+  ### 1. The path rule
+  **How it works.** The marks ask for exactly the count's measured width as
+  their flex basis. The handle asks for the chevron and name plus 1px.
+  - **Where the line holds both:** the handle grows first, up to its whole path.
+  The path is then cut exactly as beside the count, and the marks get only what
+  the whole path leaves free before More.
+  - **Where it doesn't:** the marks shrink first, down to none, and the name is
+  cut last.
+
+  The row's 4px gap is still taken back, so the marks' box lines up with where
+  the count's `.5em` margin begins.
+
+  **Observed numbers.** Handles on the `pathfind.ts` picture, default tuning,
+  after the fix. Path width is in screen px, Count / Cells. Marks are shown +
+  veiled / total.
+
+  | Handle | Reading | Connections | Overview |
+  |---|---|---|---|
+  | scripts/live-docs | 41.2/41.2, 9+0/9 | 52.4/52.4, 9+0/9 | 41.4/41.4, 9+0/9 |
+  | tests/integration/live-docs | 95.4/95.4, 10+1/21 | words not drawn:
+  80.8/0.8, 3+1/21 | not drawn: 2.5/0.6, 0/21 |
+  | packages (no path) | 2+0/2 | 2+0/2 | not drawn, 0+1/2 |
+  | packages/engine/src | 101.9/101.9, 2+0/2 | 90.8/94.5, 2+0/2 | not drawn:
+  73.8/1.5, 0+1/2 |
+  | config | 122.9/122.9, 1+0/1 | 103.2/137.0, 1+0/1 | 3.8/30.5, 1+0/1 |
+  | engine live-docs | 122.9/122.9, 12+1/32 | not drawn: 136.9/0.8, 3+1/32 |
+  **123.4/123.4, 13+1/32** (the faulty handle) |
+  | history | **112.4/112.4, 3+1/23** | not drawn: 52.2/0.8, 2+1/23 | not drawn:
+  1.5/0.6, 0/23 |
+  | explorer client | 95.7/95.7, 2+1/26 | not drawn: 94.3/1.3, 0+1/26 | not
+  drawn: 17.7/1.0, 0/26 |
+  | panels | 140.5/140.5, 3+1/12 | not drawn: 70.0/1.0, 3+1/12 | not drawn:
+  3.2/0.8, 0/12 |
+  | localView | 122.7/122.7, 3+1/75 | not drawn: 47.3/1.3, 1+1/75 | not drawn:
+  1.7/0.8, 0/75 |
+
+  - Wherever Count draws its words, the path with Cells is equal, or wider where
+  all the marks need less room than the words.
+  - At the connections look most counts are not drawn, so there the marks still
+  take the path, as your rule allows. Six handles drop to a 1px path there:
+  tests/integration/live-docs, engine live-docs, history, explorer client,
+  panels and localView. You may want to judge that by eye.
+  - Estate (`PaymentsContext.cs` picture): `Database/SqlServer` at reading is
+  85.9/85.9 with 1 mark.
+  - Cells still moves no rectangle: 0 differences across 39 rectangles at three
+  looks on pathfind, and 0 on both estate pictures.
+
+  **The case.**
+  - `the marks cost the parent's path no more than the count's words do` runs at
+  three looks, comparing only handles whose count is drawn with Count, with 1px
+  tolerance. It passes on pathfind and on the estate.
+  - On the estate I read the `PaymentsContext.cs` picture, because the
+  `IPaymentService.cs` picture encases only top-level directories, which have no
+  path.
+  - I did not run the case against the old build. I infer it would fail there
+  from round 1's numbers, where history at reading drew "history" with no path.
+
+  ### 2. What stays still after a cell's press
+  - **What a handle press uses (observed in code):**
+  `captureDirectoryChange(directory)` sets `lastInteracted` to the directory. It
+  holds `.local-directory-label[data-directory=…]` through the pin's frame, and
+  `elementHeld` holds the label through the move. It also settles the arrival
+  afterwards (`settleArrival` → `settleIntoFrame`).
+  - **The cell press now uses that same frame, settle included.**
+  - **After a press at the connections look (observed,
+  `pathfind-cells-after-press.png`):** the history handle and the new `codec.ts`
+  card both stand in view, and the browser case asserts both. The handle stays
+  at the same height but moved left by about 450px, because the settle re-frames
+  the camera. I infer it is the same settle a handle press gets.
+  - **Fork I decided:** keyboard focus stays among the handle's marks after a
+  press, rather than moving to the new card's Pin.
+
+  ### 3. Test runs
+  One run of 26 browser tests on port 8913, all passed:
+  - `closed-directory-looks.spec.ts`: 7/7.
+  - `hidden-file-cells.spec.ts`: 5/5. The estate path case passed again (1/1)
+  after the address change.
+  - `layout-lab.spec.ts`: 14/14.
+
+  The build type-checks. No pure module changed this round, so I did not rerun
+  the unit tests.
+
+  ### 4. The "Internals" overlap, for you to take
+  - **It stays at rest with Count (observed):** `sequence.ts`'s "Internals"
+  overlaps "+8 symbols" by 60.6 × 2.9 px.
+    - Address: `/?view=local&node=packages/engine/src/live-docs/pathfind.ts`.
+    - Pin `packages/engine/src/live-docs/history/codec.ts`, then go to the
+  connections look (`data-lod="far"`, camera scale 0.617). Measured after the
+  picture had stood still for 600ms plus 4s more.
+  - **With Cells at scale 0.579:** the same overlap shows on three cards:
+  `history/sequence.ts` ("+8 symbols", 56.8 × 2.8),
+  `explorer/src/client/panels/sources-facts.ts` ("+12 symbols", 57.2 × 2.8) and
+  `explorer/src/client/pathfind.ts` ("+8 symbols", 56.8 × 2.7).
+  - **Caveat on the Count picture:** I pinned through the search box, which
+  reaches the same pin act. But search also made `codec.ts` the subject and
+  re-fit the camera, so I zoomed back out to the connections look. The subject
+  and camera differ from the Cells picture.
+
+  ### Free room in the strip at reading (inferred from the constants, not
+  measured)
+  - The strip is 60 units and the line is 15 at scale 1, so 45 units lie under
+  the line. The last 6 of those are the air above the first card, leaving 39
+  units.
+  - That fits two of the closed field's two-row bands (18 + 3 + 18 = 39), or one
+  13-unit skin row with room to spare.
+  - Note that the handle's press area (`::before`) covers the strip's whole
+  height across the handle's width. A row under the name would sit inside it.
+
+  ### Unfinished or doubtful
+  - At the connections look, where Count draws no words, the marks still take
+  the path down to a 1px sliver. That is your rule as written, but it is where
+  the "which live-docs?" confusion could return.
+  - Neither path case has been shown to fail on the old build.
+  - The held-handle behaviour carries the directory settle's horizontal
+  re-frame.
+
+  ### Pictures
+  All in `AI-Agent-Workspace/tmp/cells-trial/` in the worktree, 1440×900. Round
+  1's pictures moved to `round1/`.
+  - **Retaken:** `pathfind-{count,cells}-{reading,connections,overview}.png`,
+  `pathfind-cells-hover.png`, `pathfind-cells-hover-close.png`,
+  `pathfind-cells-after-press.png`.
+  - **At rest after the pin:**
+  `pathfind-{count,cells}-after-pin-at-rest-connections.png`.
+  - **Estate:** `estate-{count,cells}-*.png` (IPaymentService) and
+  `estate-data-{count,cells}-*.png` (PaymentsContext).
+
+  What I see in them:
+  - Reading: "…ine/src/live-docs/history" and three cells plus one veiled, the
+  same path as Count.
+  - Overview: "packages/engine/src/live-docs" then a row of marks.
+  - After the press: "…cs/history" with its marks, and `format.ts` and
+  `codec.ts` below it, all in view.
+
+● Agent "Cells trial, first milestone" finished · 26m 32s
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/11/2026-11
+  -16.1.claude-code.export-2026-11-16-200904.txt in the IDE. This may or may
+  not be related to the current task.</ide_opened_file>
+  >I will brief it as soon as the cells round is back, so the two do not run
+  browser tests on the machine at once.
+
+  It's okay. Let's put a pin in that and work towards closing out this dev day
+  chat. It's a new day and it would be wise to wrap up when convenient and
+  appropriate, without starting any major new efforts until the new chat.
+
+● Ring mend is pinned for the new chat, so I'm wrapping up this one: saving your
+  message, parking the cells trial on a branch, and writing the handoff.
+  · summary
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+❯ Nono let the cells trial finish
+
+❯ Like I said, clean up when convenient.
+
+● Understood: the cells trial runs to its finish and lands, and the close-out
+  waits until that is convenient. Recording your two messages, then reviewing
+  the builder's second round with my own eye.
+
+  Read 3 files, ran 2 shell commands (ctrl+o to expand)
+  ⎿  Resuming agent aa374cf
+
+● The builder is on the trial's final round, so the cells under the directory
+  name will show more at reading size. I'm logging the review and drafting the
+  session summary while it runs. · summary
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Write(AI-Agent-Workspace/ChatHistory/2026/11/Summarized/2026-11-16.1.SUMMARIZE
+       D.md)
+  ⎿  Wrote 50 lines to AI-Agent-Workspace/ChatHistory/2026/11/Summarized/20
+     26-11-16.1.SUMMARIZED.md
+      1 # November 16–17, 2026 — a colour pass: one table of what each co
+        lour means, a second and a third palette, files as marbles, and c
+        ells for what a directory does not draw
+      2
+      3 Historical session summary. Harness: Claude Code in the VS Code e
+        xtension; the root was Fable 5.2 (`claude-fable-5-2`) by the harn
+        ess's statement. Summary by the same root, written November 17, 2
+        026, at the owner's request for the chat's close ([Turn 13](../20
+        26-11-16.1.record.md#turn-13)).
+      4
+     … +46 lines (ctrl+o to expand)
+
+● The session summary is under way: Turns 1 to 5 are written from a full read of
+  the record. Continuing with the record's next stretch while the builder
+  finishes the trial's last round.
+
+  Read 1 file, ran 3 shell commands (ctrl+o to expand)
+
+● The summary now covers Turns 1 to 11. Writing the stretch from the marble's
+  gate through your turns of today, which I know first-hand; the cells trial's
+  outcome goes in when it lands.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● The narrative has this session's chapter. Committing it, then bringing
+  Memory's "next" list up to date for the new chat while the builder finishes.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Close-out is well under way while the cells trial finishes:
+
+  - Cells trial: the builder is on its last round, a third choice that draws the
+    cells in a row under the directory's name at reading size. It is due back
+    around 15:15 UTC. I then review it, look at it myself, run the full gate
+    (about two hours) and land it on main so it is on your port.
+  - Summary: the session summary (AI-Agent-Workspace/ChatHistory/2026/11/Summari
+    zed/2026-11-16.1.SUMMARIZED.md) is written through your Turn 15, from a full
+    read of the record. Its commits list and open ends go in once the trial
+    lands.
+  - Narrative and Memory: the narrative has this session's chapter. Memory now
+    holds two lessons from today in your words: a close lets work in flight
+    finish and land, and a defect you mark for a day goes into that day's ranked
+    work.
+  - Pinned for the new chat: the ring mend, as you said.
+
+  Everything so far is committed through 35fc1869. Your latest export of this
+  chat is still uncommitted; I will file it as received at the very end so it
+  captures the whole chat.
+
+● Background command "Fifty-minute timer beside the builder's second round"
+completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The second timer fired with nothing to act on: the builder is still on the
+  cells trial's last round and no message from you has arrived. I have set one
+  more timer beside it and am waiting for the handback, due around 15:15 UTC.
+
+› Message from general-purpose
+  ## Round 3: Cells under name is built and passes; the path cases fail on the
+  old rule, pathfind's only
+
+  Hidden Files now has three values: Count, Cells beside name and Cells under
+  name. With "under", at the reading look, every encasing handle of the
+  `pathfind.ts` picture shows all of its hidden files and directories under the
+  line; history shows 23 of 23 where "beside" shows 3 plus a veil. No rectangle
+  moves, and the path is never narrower than with Count. All four browser specs
+  pass (32/32). The pathfind path case fails on the round 1 rule, but the estate
+  path case cannot fail on its picture.
+
+  ### Commit
+  **c00dcabd** "Try the hidden files' cells under the handle's name, as a third
+  Hidden Files value", on top of 10724b6c. The tree is clean. I stopped my 8921
+  server and removed `test-results`.
+
+  ### Files
+  - **`types.ts`:** `HiddenFilesLook` is now `"count" | "cells" | "under"`.
+  "cells" keeps its name so links made in rounds 1 and 2 still read as beside.
+  The doc comments are updated.
+  - **`template.html`:** the options read "Count", "Cells beside name" and
+  "Cells under name".
+  - **`tuning-levers.ts`:** the help sentence is shortened.
+  - **`tuning.ts`:** Skin's Shape and Cells' Colour now show for either cells
+  value.
+  - **`layout-presets.ts`:** no change. It already carries any value other than
+  the default.
+  - **`card-factory.ts`:**
+    - One shared `markToolbar` now builds the buttons, names, hover text, light,
+  roving tab stop and redraw-on-resize.
+    - `createHiddenCells` (the line) uses it with `lineMarks`.
+    - New `createHiddenField` uses it with `fieldBands` and `cellField` on the
+  field's room, unchanged. Skins come first, with the field's own veils.
+    - Buttons go to named cells and to small skins that are not faded at the
+  field's end. Each cell or skin in the drawing is matched to its button by
+  name, which is unique within a directory.
+  - **`branch-renderer.ts`:**
+    - With "under", `fillLabel` builds the line's marks and the field, and marks
+  the label `data-hidden-look="under"`.
+    - The count's unseen words span moved into the row, so it is measured even
+  while the line's marks are hidden.
+    - Focus is restored to the same mark in the toolbar it was in.
+    - The label carries a new `--dir-air` property.
+  - **`local.css`:** the field starts at the line's foot, spans the label's
+  width, and is `--dir-strip − --dir-line − --dir-air` tall (60 − 15 − 6 = 39
+  units). Only the marks take the pointer. The field shows at the reading look;
+  from the middle band out it is hidden and the line's marks show.
+  - **Tests and docs:** `layout-presets.test.ts` now covers "under",
+  `hidden-file-cells.spec.ts` gains 2 cases, and the Live Docs are regenerated,
+  with the spec's Purpose updated.
+
+  ### The numbers, observed
+  All on the `pathfind.ts` picture at the reading look, one camera for all three
+  values.
+
+  | Handle (Count's words) | Beside: shown (+veiled) / held | Under: pressable /
+  held |
+  |---|---|---|
+  | scripts/live-docs (+9 files) | 9 / 9 | 9 / 9 |
+  | tests/integration/live-docs (+20 files, 1 directory) | 10 (+1) / 21 | 21 /
+  21 |
+  | packages (+2 directories) | 2 / 2 | 2 / 2 |
+  | packages/engine/src (+2 directories) | 2 / 2 | 2 / 2 |
+  | config (+1 file) | 1 / 1 | 1 / 1 |
+  | engine live-docs (+30 files, 2 directories) | 12 (+1) / 32 | 32 / 32 |
+  | history (+23 files) | 3 (+1) / 23 | 23 / 23 |
+  | explorer client (+21 files, 5 directories) | 2 (+1) / 26 | 26 / 26 |
+  | panels (+12 files) | 3 (+1) / 12 | 12 / 12 |
+  | localView (+75 files) | 3 (+1) / 75 | 75 / 75 |
+
+  - **Field end:** no handle's field ends in a veil at this camera. The only
+  veils are inside small skins that hold more than three files.
+  - **Free height:** measured from the line's foot to the first card or closed
+  box under the label, it is 45.0 units in the tightest handles. Elsewhere it is
+  63, 118, 131, or 467 where nothing stands under the label. The field is 39.0
+  units, which holds two pair bands (18 + 3 + 18).
+  - **Press area of one cell under the name:** 11.0 × 9.5 px on screen at the
+  pathfind camera (11 × 9.53 units: one pitch wide, one staggered row tall, so
+  neighbouring cells' presses do not overlap). On the estate at reading it is
+  16.0 × 13.8 px. A skin's press area is the skin plus 2 units on each side.
+  - **Path width, under against Count:** never narrower; history 167.7 against
+  112.4 px, localView 178.0 against 122.7 px.
+
+  ### Tests
+  - **Unit:** 70/70 in the four touched test files. I added no pure function.
+  The name-to-button mapping lives in DOM code and is covered by the browser
+  cases, not by unit tests.
+  - **Browser, one run of 32 on port 8913, all passed:**
+    - `hidden-file-cells.spec.ts` 7/7, including the two new "under" cases.
+    - `closed-directory-looks.spec.ts` 7/7.
+    - `closed-directory-families.spec.ts` 4/4.
+    - `layout-lab.spec.ts` 14/14.
+  - **What the two new cases hold:**
+    - Rectangles equal to Count's at all three looks.
+    - A mark for each thing the count counts.
+    - At reading, the field draws inside the strip and the line holds no mark.
+    - Farther out, the line's marks equal beside's exactly.
+    - The path is no narrower than Count's wherever Count draws its words.
+    - History shows more than twice as many marks under the name as beside it.
+    - A real pointer press on a cell under the name pins the file without
+  opening history and keeps the handle in view.
+    - The arrow keys move through the field's marks in reading order.
+    - A real press on the field's air under the handle opens history.
+
+  ### Can the path cases fail? (observed)
+  I put the round 1 flex rule back, rebuilt, ran both path cases, and restored
+  the rule; the restored rule is what is committed.
+  - **pathfind fails:** "pathfind reading tests/integration/live-docs: the path
+  with Cells against Count's 95.4 px — Expected: >= 94.390625, Received:
+  0.640625".
+  - **estate passes, and cannot fail on its picture.** Its one handle with a
+  path and a drawn count, `Database/SqlServer` (+1 file), has a single mark
+  narrower than the words, so the old rule also left the path whole. Making it
+  able to fail would need an estate picture with a handle that has a path and
+  several hidden files; I did not find one in the time.
+
+  ### Forks decided
+  1. The field starts right at the line's foot, with no air of its own. The
+  6-unit air above the first card is kept.
+  2. A cell's press area is one pitch wide by one staggered row tall, so
+  pair-band neighbours do not cross.
+  3. Unnamed cells (veiled, or standing for files left out) and skins faded at
+  the field's end get no button.
+  4. The stepped ladder's "middle" band counts as a held look, so it shows the
+  marks beside the name.
+  5. The stored value stays "cells" for beside, so existing links keep working.
+  6. Tab order is directories then files, in the directory's own order, which is
+  the order `cellField` draws them in.
+
+  ### Doubtful or unfinished
+  - **The top row sits tight under the line's descenders** (observed in
+  `pathfind-under-reading.png`).
+  - **Few cells read oddly in a pair band** (observed on the estate). Two loose
+  cells stand on a diagonal (Hub), and a loose cell beside a skin stands in the
+  top row, higher than the skin's middle (PaymentService). This is `cellField`'s
+  own layout, the same as in closed boxes.
+  - **The field's press area is about 9.5 px tall on screen** at the pathfind
+  camera.
+  - **Not covered:** the estate path case cannot fail; the name-to-button
+  mapping has no unit test.
+
+  ### Pictures
+  In `AI-Agent-Workspace/tmp/cells-trial/round3/`, 1440×900:
+  - `pathfind-count-reading.png`, `pathfind-cells-reading.png` and
+  `pathfind-under-reading.png`, one camera panned so history's handle stands at
+  (520, 200).
+  - `pathfind-under-hover.png`, with a cell in the row under the pointer.
+  - `estate-under-reading.png`, the `IPaymentService.cs` picture panned to
+  PaymentService.
+
+  What I see:
+  - **Count:** "…ine/src/live-docs/history +23 files".
+  - **Beside:** "…ine/src/live-docs/history" and four marks.
+  - **Under:** "…ages/engine/src/live-docs/history" with two staggered rows of
+  23 quiet cells under it, inside the membrane above `queries.test.ts`. The
+  hovered cell is lit with its ring.
+  - **Estate:** PaymentService shows its Data skin and one cell; Hub shows two
+  cells on a diagonal.
+
+  ### Proposed design paragraph, revised for the three values
+  **What an encasing directory hides, as cells (a trial of November 17; [Turn 6
+  of November 16](../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-16.1.reco
+  rd.md#turn-6)).** The owner asked whether the "+2 files" of a directory drawn
+  only around the pinned picture could be "cute little cells that could be
+  clicked on to expand them into fuller-sized nodes", since "once we're looking
+  at wiring, we don't really see the delightful cells anymore". Tuning → 2D
+  Layout → Hidden Files offers three values. Count, the default, is today's
+  words. Cells beside name draws, after the directory's own name in the handle's
+  line, a closed directory's own small skin for each directory it does not draw
+  and its own cell for each such file: one kind of mark at one size, coloured
+  as the closed cells are, from the same disclosure as the count. The marks
+  stand in the count's room, claiming against the parent's path only the width
+  the count's words would take there and running on only into room the whole
+  path leaves free; where the line cannot hold the words, the marks take what
+  follows the name, as many whole ones as fit, the last veiled where more are
+  held. The path is the reader's orientation, and three directories of one
+  picture can share a name. Cells under name draws the same marks at the reading
+  look as a closed directory's own field, in the 39 units the handle's strip
+  already keeps free between the line and the air above the first card. The line
+  then holds the chevron, the path, the name and More, with the count's room
+  given back to the path. From the connections look out, where the held line
+  fills the strip, it is Cells beside name. With either cells value the count's
+  words move to the handle's hover text. A press on a cell pins its file, the
+  existing pin act, keeping still what a press on the directory's own handle
+  keeps still, so the handle and the new card stand in view; unpinning returns
+  the cell. A press on a skin opens its directory. Neither press opens or closes
+  the handle, and a press on the field's air still does. Each mark is a button,
+  "Pin <path>" or "Open <path>" to assistive technology; a cell's hover says
+  its file's name alone, a skin's its name and what it holds. A directory's
+  marks are one stop in the tab order, moved among by the arrow keys in reading
+  order. They are the ground under the wires, at half a closed cell's strength,
+  and at full strength with a ring under the pointer or focus. Like every closed
+  look they draw over the layout: no box or card moves for them.
+
+● The builder has handed back the trial's last round. Looking at its pictures
+  with my own eye before I bring it onto main and start the gate.
+
+  Read 3 files (ctrl+o to expand)
+
+● Agent "Cells trial, first milestone" finished · 30m 17s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The trial's five commits are staged on main. Building and running the unit
+  tests now, then I look at the real control myself before the gate.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● The first cells of the new row sit too close to the directory name, so I'm
+  adding three units of spacing under the name and rebuilding to check the real
+  control. · summary
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● The look script tripped on a collapsed panel. Fixing how it opens Tuning, then
+  rerunning.
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● I confirmed the layout myself: the control offers Count, Cells beside name and
+  Cells under name, and under the name history shows all 23 cells in two rows.
+  I'm running the trial's specs and the Tuning spec once before the two-hour
+  gate. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The pre-run is at 31 of 36 with no failures. While it finishes I am writing
+  the last round and my look into the record.
+
+  Searched for 1 pattern, ran 5 shell commands (ctrl+o to expand)
+● Background command "Run the trial's browser specs and the Tuning spec on the
+staged build" completed (exit code 0)
+
+● Pre-run: 35 of 36 passed. The one failure was the test that counts Tuning's
+  controls, now one more; I updated it. Confirming that case passes, then
+  starting the full gate.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The full gate is running (started 15:22 UTC, about two hours). No browser work
+  until it ends. Meanwhile I am writing the trial into the Explorer design
+  document and preparing its evidence folder.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Filing the cells trial's evidence: six pictures are in place and I am writing
+  the folder's README while the gate runs.
+
+● Write(AI-Agent-Workspace/Probes/2026-11-17/cells-trial/README.md)
+  ⎿  Wrote 31 lines to
+     AI-Agent-Workspace/Probes/2026-11-17/cells-trial/README.md
+      1 # The cells trial: what a drawn directory hides, as cells in plac
+        e of "+2 files"
+      2
+      3 Historical record of a design probe, November 17, 2026, by the ro
+        ot of [the November 16 session](../../../ChatHistory/2026/11/Summ
+        arized/2026-11-16.1.SUMMARIZED.md). The trial itself is in the pr
+        oduct behind Tuning → 2D Layout → Hidden Files, and its current b
+        ehaviour is in [the Explorer design](../../../../.mdmd/layer-3/li
+        ve-documentation-explorer.mdmd.md). Nothing here is decided: the
+        owner has not yet looked.
+     … +28 lines (ctrl+o to expand)
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● The handoff for the new chat is drafted in Memory. I'm writing the summary's
+  closing sections now, and the gate result and trial commit will be filled in
+  once the gate finishes. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Background command "Run the full gate with the browser suite on main with the
+cells trial staged, recording its own exit code" completed (exit code 0)
+
+● The gate ended early, so it stopped before the browser stage. Reading its log.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Lint stopped the gate: two type errors in the builder's new code that its own
+  checks did not cover. Fixing them now.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Lint and the type check pass now. Restarting the full gate.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The cells trial is staged on main and its full gate is running again (started
+  15:33 UTC, about two hours).
+
+  - The trial as it now stands: Tuning, 2D Layout, Hidden Files has three
+    values. Count is today's "+2 files", unchanged. Cells beside name puts cells
+    in the name's line and keeps the directory's path as Count has it. Cells
+    under name draws them in a row under the name at reading size, so one
+    directory shows all 23 of its hidden files where the line shows three.
+  - What I checked myself: I pressed the real control on the staged build.
+    Pressing a cell pins that file and keeps the directory's handle and the new
+    card in view. I also moved the row three units down, because a cell was
+    touching a letter of the name.
+  - Why the gate restarted: the first run stopped at lint after nine minutes on
+    two type errors in the builder's new code. My brief had not asked the
+    builder to run lint. Both are fixed, and lint and the type check pass.
+  - Your port already serves the staged build. You can try the three values now,
+    though it is not committed until the gate is back.
+
+  The close-out is otherwise ready: the summary, the narrative chapter, Memory's
+  ordered list for the new chat (rings first, by name) and the trial's evidence
+  folder are written and committed through 00cc02be. When the gate ends I
+  commit the trial, fill in its result, file your latest export, clear my
+  scratch files and send the closing message.
+
+● Background command "Fifty-minute timer beside the builder's last round"
+completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The last timer fired with nothing to act on, and I am not renewing it because
+  no builder is running. The gate is six minutes in and still in its lint stage;
+  lint passed when I ran it on the changed code just before. I will be notified
+  when the gate ends, around 17:35 UTC, and will then commit the trial and send
+  the closing message.
