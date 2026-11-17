@@ -1446,3 +1446,651 @@ its context warm while builders run" completed (exit code 0)
      recommend yes.
 
   Neither blocks the current work.
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/11/2026-11
+  -16.1.claude-code.export-2026-11-16-200904.txt in the IDE. This may or may
+  not be related to the current task.</ide_opened_file>
+
+❯ I LOVE the tidepool sample!!!!! It is absolutely fantastic!!!
+
+  >Should a shared link carry the sender's palette? I recommend no.
+
+  A-ha! Now I see you've thought through this implication. I've waited for this
+  question, hahaha! So: by default, no. Opening a sent link shouldn't cause
+  your local settings to change. I'm slightly amenable to the idea of
+  "presentation mode"-like links which actually do enforce their style locally
+  so everyone can be truly guaranteed to see the same exact thing. A wishlist
+  item, but one I'm uncertain on whether its tradeoffs will merit its
+  inclusion.
+
+  >Should the World Map and the Local Map keep separate palette choices? I
+  recommend yes.
+
+  I'm fine with that, but I also note that a typical piece of software tries to
+  present you with a "theme" for the whole app. I understand the programmatic
+  need to separate the two in case they have unique stylings, but an
+  application-wide style should be applicationwide, I think? If you can show me
+  a way that one could have styles that are easily swapped and customized
+  without adding a bunch of complexity to the user experience, I'd be
+  interested!
+
+  Searched for 1 pattern, ran 3 shell commands (ctrl+o to expand)
+
+● Recording your answers in today's record first; then I'll sketch a one-control
+  theme for the whole app so you can see the idea rather than read it.
+
+  Ran 4 shell commands (ctrl+o to expand)
+● Now the Memory updates, in the owner's words.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Write(AI-Agent-Workspace/Probes/2026-11-16/colour-pass/theme-sketch/index.html
+       )
+  ⎿  Wrote 241 lines to AI-Agent-Workspace/Probes/2026-11-16/colour-pass/th
+     eme-sketch/index.html
+       1 <!doctype html>
+       2 <html lang="en">
+       3 <head>
+       4 <meta charset="utf-8">
+       5 <meta name="viewport" content="width=device-width, initial-scale
+         =1">
+       6 <title>Sketch: one theme for the whole app</title>
+       7 <!--
+       8   Historical evidence, November 16, 2026. A sketch by the root a
+         gent for the owner's question of that day's Turn 3:
+     … +233 lines (ctrl+o to expand)
+
+● Your answers are saved, and I'm now building a small clickable sketch with one
+  theme control for the whole app, where the key doubles as the colour editor.
+  I'll check it visually before handing it over. · summary
+
+  Searched for 1 pattern, read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● The sketch works; I mended four small faults I saw in its first picture and am
+  checking the redraw.
+
+  Read 2 files, ran 2 shell commands (ctrl+o to expand)
+
+● Both answers are recorded, and here is the "show me a way": a small page you
+  can open and press.
+
+  http://127.0.0.1:8999/trials/theme-sketch/
+
+  It is a mock, not the Explorer: a sidebar and two schematic miniatures, one
+  for the World Map and one for the Local Map. It exists so you can try the two
+  controls before I build them into the app.
+
+  1. One theme for the whole app
+
+  Press the four swatches under THEME.
+
+  - A palette is the set of colours for one ground: Night is the dark one, Day
+    the light one.
+  - A theme is the single app-wide choice that says which palette the outside
+    and the inside each wear.
+
+  Two palettes give four themes. The first is the pairing you liked on
+  2026-09-29 ("the world map is bright and the local map is dark"), and the
+  fourth is its reverse, your "dark outside and light inside". So your instinct
+  today and your liking then are the same control: one choice, application-wide,
+  with no second switch. Each swatch is a miniature of its theme, so it needs
+  no words.
+
+  2. The key is the editor
+
+  Press any colour dot in the legend.
+
+  - The browser's own colour picker opens for that meaning, and the change shows
+    everywhere that meaning is drawn. Designers call this direct manipulation:
+    you change the thing where you see it, not in a settings page.
+  - You pick once. The other ground takes the same hue at its own lightness.
+  - If two meanings come too close to tell apart, their dots get an amber ring
+    and one sentence names the pair. This is the "valid" from your first
+    question, drawn as a guard rail. To see it, change Test to a pink near
+    Asset.
+  - A restore button appears once anything has been changed.
+
+  Nothing new shows until you press a dot, so customising costs nothing for
+  people who never want it.
+
+  Choices in the sketch you can reverse
+
+  - The sidebar wears the inside's palette.
+  - There are four pairings and no others.
+  - An edit changes both grounds at once.
+
+  What the sketch does not show
+
+  The candidates in the real views. That still waits on the one table of colour,
+  whose builder is still working. In the real trial, today's colours stay one
+  choice away.
+
+  On links
+
+  - Decided and in Memory, in your words: a link does not carry its sender's
+    palette.
+  - "Presentation mode" links are filed as a wish you are unsure of. I added one
+    constraint: such a link would change the look for that visit only, never
+    the saved setting.
+
+  Questions for you
+
+  1. Is one row of swatches the app-wide theme you meant, or did you picture
+     something closer to a plain light/dark switch?
+  2. Is the key as the editor simple enough to build now, or should customising
+     wait until the themes themselves are settled?
+
+  The sketch and three stills are filed in the colour pass folder
+  (AI-Agent-Workspace/Probes/2026-11-16/colour-pass/theme-sketch/index.html).
+  The full gate with the browser suite is still owed for the tidepool merge; it
+  runs when the colour-table builder's work comes in.
+
+❯ Hmmm so I played around in your theme sketch and I didn't enjoy the
+  experience much. I think that the user needs to be able to see their theme
+  preferences reflected in the UI around them, and therefore must necessarily
+  be making those changes with viewport room to spare to see the results
+  reflected back to them quickly and in such a way as to allow a rapid change
+  back or to another choice without re-opening whatever control presented
+  theming.
+
+  ...and if that's the case, then I'll be damned -- I must clearly be wrong
+  about the desire to unify theme selection across every view. We must
+  necessarily need some amount of individualization for each view (albeit if an
+  applicationwide color pallette (with known values in dark modes and light
+  modes) is available, that could be useful). I guess what I'm thinking is that
+  some customizations are local to one view, and some customizations are
+  likely global. But the user needs to see what their changes did in the
+  application itself, immediately.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Thank you, that is a clear and useful verdict. Recording your words first,
+  then I'll answer.
+
+  Searched for 1 pattern, ran 3 shell commands (ctrl+o to expand)
+
+● You found the reason my first recommendation lacked, and I think you are only
+  half wrong about unifying. Light or dark belongs to each view; what the
+  colours mean belongs to the whole app.
+
+  What went wrong with the sketch
+
+  Measured against your sentence, it failed three ways:
+
+  - It was not the application. A mock page cannot show you your own screen
+    changing.
+  - The colour picker took over. It is a window of the browser's that covers the
+    picture and closes, so every second thought means opening it again.
+    Designers call that a modal control. What you described is a modeless one:
+    it stays open beside the picture, and each press shows at once (a live
+    preview).
+  - One press changed a map you were not looking at. Standing in the Local Map,
+    you cannot see what a whole-app theme did to the World Map.
+
+  The third one is what overturns the single theme, and it gives a rule for
+  sorting any setting: a control should change what you can see while you use
+  it.
+
+  Where that leaves the design
+
+  - Local to a view: its ground, light or dark. You change it in the view, you
+    see it, you press again to go back. The World Map already works this way
+    with its Dark board button. The Local Map gets the same button.
+  - Global: the palette of meanings. Blue offers, green uses, and the colour of
+    each kind of file appear in every view, so changing them anywhere shows on
+    the screen in front of you. Each meaning has one value for dark grounds and
+    one for light, which is your "known values in dark modes and light modes".
+    This is where your application-wide instinct holds.
+  - Choosing among whole palettes sits in Tuning. It is in the sidebar and stays
+    open beside the map, and its existing choices already apply as you press
+    them.
+
+  So the round uses two patterns the product already has and adds no third.
+
+  What I am dropping
+
+  - The row of four pairings.
+  - The colour picker on the key.
+  - Any further page that stands in for the Explorer. The sketch stays filed as
+    evidence of what was tried, and I have taken its copy off your port.
+
+  What you get next
+
+  It will be in the real Explorer on your port, on tidepool, this repository and
+  the estate:
+
+  1. A ground button in the Local Map.
+  2. A palette choice in Tuning, with today's colours and the new set one press
+     apart.
+
+  This waits on the one table of colour. Its builder has two commits and has not
+  handed back yet.
+
+  One call of mine you can reverse
+
+  The Local Map's 2D and 3D share one ground. Switching between them keeps the
+  same subject in view, and a flip from light to dark there would feel like
+  going somewhere else.
+
+  One question, not blocking
+
+  Was anything else about the sketch unpleasant beyond those three? If the
+  swatches themselves or the amber warning rings bothered you, I would rather
+  know before they reappear in the app.
+
+● Background command "A one-time timer that wakes the root in 49 minutes to keep
+its context warm while a builder runs" completed (exit code 0)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+› Message from general-purpose
+  ## Milestone 1 handback: all of the Explorer's colours now come from one
+  palette table, and the picture is unchanged
+
+  **Branch:** `worktree-agent-ac3ff4ac324b4a182`, on `5d98d3a6`. Not pushed, not
+  on main.
+  - `953c9440`: the refactor.
+  - `e9e1dd2b`: a correction to it (explained below).
+
+  This took well over the 50 minutes.
+
+  **The module: `packages/explorer/src/client/palette.ts`** (no DOM; tests
+  beside it)
+  - A `Palette` maps meanings to opaque `#rrggbb` values. The groups are:
+    - `ground`: page, deep, surface, raised, card, cardHover, control, glass,
+  shade, sheen
+    - `line`: border, interactive, hover, membrane
+    - `text`: the eleven existing tones plus `onSelected`
+    - `state`: selected, selectedHover
+    - `role`: offers, uses
+    - `kind`: implementation, test, asset, document, directory, other, oneGrey,
+  oneGreyRim
+    - `hasTests`: mark, text, textMuted, label
+    - `history.changed`
+    - `signal`: cue, cueText, error, pathFound
+    - `link`: file, fileHover, prose, symbol, code
+    - `typeRef`: the four badges plus the plain one
+    - `internals`
+    - `scene`: ground, lights, wire, citedBy, unmatchedWire, skin, skinShine,
+  cloud, hoverRim, keySample, labels and chips
+    - `world.light` and `world.dark`: page, board, panel, line, text, muted,
+  faint, offers, uses, warm, flow, shade, the face colours, and the six tints
+    - `secondValues`: the marked group for the second milestone to delete. It
+  holds the offers pin, uses pin, subject card's ring, Knowledge Sources hover,
+  the details panel's test label and three label tints, the error and path-found
+  washes, and the light World's pressed tool.
+  - `TODAY` is the only palette, in `PALETTES`.
+  - Helpers: `rgba`, `mix`, `unitChannels`, `customProperties` and
+  `paletteStylesheet`.
+  - The build writes `styles/palette.css` (as `--ground-card-hover` and so on,
+  plus a `-rgb` channel triplet beside each) and imports it first.
+  - `theme.css` now holds only derived colours, written as `rgba(var(--x-rgb),
+  a)`.
+  - `applyPalette(name)` in `dom.ts` sets the properties on the page root and
+  puts the palette in force. It is called at startup.
+  - The palette name is saved as `tuning.appearance.palette`, only when it
+  differs from the default. There is no control on screen and it is not in the
+  share link.
+  - What reads the module: the 3D materials and renderer (the shader takes
+  uniforms; three's materials default to white), the 2D wires and laces, the
+  World Map's wires, faces and tints, the transition, and both legends.
+  `SPATIAL_NODE_STYLES` is now `spatialNodeStyles()`.
+
+  **Files changed:** 15 TypeScript files in the client, all 10 stylesheets,
+  `buildAssets.ts`, the explorer `tsconfig` (it lists `palette.ts`), and 4
+  tests, including the World Map imports test, which now allows the palette as a
+  helper with no facts in it. Also `tests/e2e/spatial-legend.spec.ts` and 24
+  Live Docs. I wrote the Purpose and Notes for both new files and corrected
+  stale notes in the docs for `theme.css`, `connection-geometry`,
+  `forceGraphAppearance` and `spatial-legend`.
+
+  **Merges, with distances:** only one merge changed a value: the transition's
+  background now ends on `#000011`, the 3D ground, instead of `#00000c` (1.28).
+  The rest were 0.0, literals pointed at their existing meaning:
+  - `#1e1e1e` in `sources.css`
+  - the 3D focus outline `#0091ff`
+  - `#f88` in `errors.ts`
+  - `#9ed2fa`
+  - the 3D legend's white and `#d6b2f0`
+  - the containment, cites and skin colours, now derived from their kind or skin
+
+  The shader's constants now come from the palette's hex values, each within
+  half an 8-bit step of the old literal (worst case 0.0016).
+
+  **Deleted.** For each I searched the code for readers and the record (Memory
+  and the November records) for an intended use; there were none.
+  - Theme tokens nothing read: `--color-outbound`, `--color-inbound`,
+  `--connection-stroke`, `--bg-overlay`, `--glass-panel`, `--cluster-bg`,
+  `--cluster-border`, `--text-panel`, `--color-workspace`, and the World's
+  `--w-shadow`.
+  - Four aliases.
+  - Rules nothing triggers: `.connection-line`, `.badge`, `.test-backed-shadow`,
+  `.pulse-highlight` with its keyframes, and `.workspace-link`.
+  - The kinds interface, configuration and script. The engine produces only
+  implementation, test and asset.
+  - `createConnectionGradient`, `GradientDef` and their 5 tests.
+  - The transition's undrawn `CardSnapshot` colour.
+  - The stale `--outbound-color` comment.
+  - 17 fallbacks that could never apply.
+
+  Variables read but never declared:
+  - `--text-primary`, `--border-color`, `--accent-text` and `--text-success` now
+  read a palette meaning that holds the value they used to fall back to.
+  - `--color-implementation` and `--color-asset` became `border-color:
+  currentColor`, which is exactly what they computed to.
+
+  **Checks run:**
+  - `npm run build`: passes.
+  - Explorer unit tests: 89 files, 1,097 tests pass.
+  - The literal test failed on a planted hex in a script and a planted `red` in
+  a stylesheet, and passed once they were removed.
+  - eslint on every touched file: clean.
+  - `live-docs:generate`: runs clean.
+  - Browser specs, one at a time on port 8791, all passing: backward-cue 6,
+  spatial-legend 5, labels-and-controls 6, closed-directory-looks 7, world-map
+  29, force-graph-wires 10, design-audit 11, no-network 9.
+
+  **How I proved the picture unchanged.** I built bundles at `5d98d3a6` and
+  after, and ran Playwright over every element and its `::before`/`::after`,
+  comparing about 20 colour properties plus fill, stroke and stop-color
+  attributes, with a tolerance of half an 8-bit step. The views:
+  - this repository: a file shown, a file pinned at four zoom steps, a directory
+  opened (twice zoomed), the reader, the details panel, Knowledge Sources, and
+  the World Map in both themes
+  - the estate sample: pinned at four zoom steps, the 3D legend, and the World
+  Map in both themes
+  - the history sample: a step in 3D and in 2D
+
+  About 2.4 million values were compared with zero colour differences once views
+  had settled. For this repository I compared on the same data. Every remaining
+  difference was not a colour change:
+  - the World tints' `hsl()` attribute strings, which compute to the same colour
+  - renamed `var()` names inside inline styles
+  - the cue's pulse caught at a different phase
+  - a swapped 3D label opacity
+  - `--row-line` layout values differing in the third decimal
+
+  For the 3D map, unit tests pin the exact strings that reach the buffers, the
+  shader constants, and the World tints computed from their old `hsl()` values.
+
+  **What I could not prove:** 3D pixels and the lit appearance, because the
+  layout moves. I also only compared settled frames, so mid-animation frames
+  were not checked directly.
+
+  **The correction in the second commit.** My first cut derived translucent
+  colours with `color-mix`. Chrome then reports those colours as `color(srgb …)`
+  and animates them in OKLab. The backward-cue spec reads `rgba()` only, so it
+  failed. The `-rgb` channel triplets keep every colour computed and animated in
+  the legacy `rgba()` form, as before.
+
+  **Forks I decided:**
+  - The palette stylesheet is generated at build time rather than written only
+  at startup, so the page never shows a flash of uncoloured shell.
+  - The World's light and dark switch stays in `world.css`, which picks between
+  the `--world-light-*` and `--world-dark-*` properties.
+  - The World's wires read the role colours they draw today (the 2D blue and
+  green), not the World's door colours.
+  - The cell mask's two luminances are `MASK_KEEP` and `MASK_FADE` constants in
+  the palette module, not palette entries.
+
+  **Unfinished:**
+  - Choosing a palette after startup reaches the stylesheets at once, but only
+  reaches the 3D materials and shader when they are next built.
+  - I did not run the full `safe:commit` gate.
+
+● Agent "One table of colour" is waiting on its own background work · 1h 41m 17s
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Reviewing the colour-table builder's handback now: I've read the palette
+  module and its plumbing, and I'm merging it onto main to run the full gate.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+❯ >Local to a view: its ground, light or dark. You change it in the view, you
+  see it, you press again to go back. The World Map already works this way with
+  its Dark board button. The Local Map gets the same button.
+
+  Yeah I figure we could just have a light/dark mode toggle somewhere if
+  necessary. Might not need to be overthought? I'm not sure.
+
+  >Global: the palette of meanings.
+
+  I really like this idea.
+
+  >Choosing among whole palettes sits in Tuning
+
+  Fair-ish? The Tuning Panel is definitely not a fun user experience. It's an
+  area where the game dev tries to change things in realtime and tune a value
+  to eye. But then again, I've already got plenty of past gripes about both the
+  left sidebar and the right Detail Panel sidebar. It's fine to live in there
+  for now so long as we recognize that there needs to be a UX pass for visual
+  customization that isn't agonizing, and it needs to be done in light of a UI
+  that could feasibly be removing one or both sidebars.
+
+  >Was anything else about the sketch unpleasant beyond those three? If the
+  swatches themselves or the amber warning rings bothered you, I would rather
+  know before they reappear in the app.
+
+  Honestly, I'd have to see what it looks like in our software. The mocks are
+  fine, but I just won't know until I can see it in person. (The borderline
+  aphantasia strikes _heavily_ on me with imagining color alternatives or
+  applying a new color pallette to an existing scene -- this is nearly
+  impossible for me)
+
+● Thanks, I've noted your feedback: the meaning palette is moving ahead, the
+  light/dark toggle stays simple, Tuning stays temporary, and you'll judge
+  everything in the real app. I'm running the full gate on the merged colour
+  table now. · summary
+
+  Searched for 1 pattern, ran 5 shell commands (ctrl+o to expand)
+
+● The full gate is still running on the merged colour table, and I'm measuring
+  the complete value list for the new palette so the next build round can use
+  it. · summary
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Working out the last values of the new palette (all measured), and waiting on
+  the gate. Checking the gate's progress now.
+
+  Made 1 scratchpad edit +57, ran 3 shell commands (ctrl+o to expand)
+
+● The new palette's full value list is settled and measured, and the next
+  round's brief is written. The full gate on the merged colour table is still
+  running (it's in lint, about six minutes in); I'll commit the merge and send
+  the next brief to the builder as soon as it passes.
+
+› Message from general-purpose
+  ## Milestone 1 handback: every Explorer colour now comes from one palette
+  table, and the picture is unchanged
+
+  **Branch:** `worktree-agent-ac3ff4ac324b4a182`, two commits on `5d98d3a6`, not
+  pushed, not on main:
+  - `953c9440`: the refactor.
+  - `e9e1dd2b`: a correction (explained below).
+
+  This took well over the 50-minute aim.
+
+  ### The module: `packages/explorer/src/client/palette.ts`
+  It has no DOM, with `palette.test.ts` beside it. A `Palette` is one typed
+  table from meanings to opaque `#rrggbb` values:
+  - `ground`: page, deep, surface, raised, card, cardHover, control, glass,
+  shade, sheen.
+  - `line`: border, interactive, hover, membrane.
+  - `text`: the eleven existing tones plus `onSelected`.
+  - `state`: selected, selectedHover.
+  - `role`: offers, uses.
+  - `kind`: implementation, test, asset, document, directory, other, oneGrey,
+  oneGreyRim.
+  - `hasTests`: mark, text, textMuted, label.
+  - `history.changed`.
+  - `signal`: cue, cueText, error, pathFound.
+  - `link`: file, fileHover, prose, symbol, code.
+  - `typeRef`: the four badges plus the plain one.
+  - `internals`.
+  - `scene`: ground, lights, wire, citedBy, unmatchedWire, skin, skinShine,
+  cloud, hoverRim, keySample, labels and chips.
+  - `world.light` and `world.dark`: page, board, panel, line, text, muted,
+  faint, offers, uses, warm, flow, shade, the face colours and the six tints.
+  - `secondValues`: the clearly marked group for the second milestone to delete.
+  It holds the offers pin, the uses pin, the subject card's ring, the Knowledge
+  Sources hover, the details panel's test label and three label tints, the
+  error and path-found washes, and the light World's pressed tool.
+
+  `TODAY` is the only palette, registered in `PALETTES`. Helpers: `rgba`, `mix`,
+  `unitChannels`, `customProperties`, `paletteStylesheet`.
+
+  How the page reads it:
+  - **Stylesheets:** the build writes `styles/palette.css` (for example
+  `--ground-card-hover`, with a `-rgb` channel triplet beside each colour) and
+  the built entry imports it first. `theme.css` now holds only derived colours,
+  written as `rgba(var(--x-rgb), a)`.
+  - **Choosing a palette:** `applyPalette(name)` in `dom.ts` writes the
+  properties onto the page root and puts the palette in force; it is called at
+  startup. The name is a viewer's saved setting, `tuning.appearance.palette`,
+  saved only when it differs from the default. No control on screen, nothing in
+  the share link.
+  - **Scripts:** the module is read by the 3D materials and renderer (the
+  wrapper shader takes uniforms; three.js materials default to white), the 2D
+  wires and laces, the World Map's wires, faces and tints, the transition, and
+  both legends. `SPATIAL_NODE_STYLES` became `spatialNodeStyles()`, with the
+  kinds' colours in the palette and only their labels left in
+  `forceGraphAppearance.ts`.
+
+  ### Files changed
+  - 15 client TypeScript files and all 10 stylesheets.
+  - `buildAssets.ts`, and the explorer `tsconfig` (which now lists
+  `palette.ts`).
+  - 4 unit tests and `tests/e2e/spatial-legend.spec.ts`.
+  - 24 Live Docs. Purpose and Notes are drafted for the two new files, citing
+  the November 16 record's turn 1. I corrected stale authored notes for
+  `theme.css`, `connection-geometry`, `forceGraphAppearance` and
+  `spatial-legend`.
+
+  I amended one existing check: the World Map imports test now allows
+  `../../palette`, as a helper that carries no facts.
+
+  ### Merges
+  - **The one value that changed:** the transition's background now ends on the
+  3D ground `#000011` instead of `#00000c`. OKLab ×100 distance 1.28.
+  - **The rest are 0.0 apart:** literals pointed at their existing meaning, or
+  derived from their base:
+    - `#1e1e1e` in `sources.css`
+    - the 3D focus outline `#0091ff`
+    - `#f88` in `errors.ts`
+    - `#9ed2fa`
+    - the 3D legend's white and `#d6b2f0`
+    - the containment and cites wires, derived from their kinds
+    - the skin's legend sample, derived from the skin colour
+  - **Shader constants:** now come from the palette's hex values, each within
+  half an 8-bit step of the old GLSL literal (worst case 0.0016).
+
+  ### Deleted
+  For each I checked for readers in the code, and searched Memory and the
+  November records for an intended use. None had one.
+  - Theme tokens nothing read: `--color-outbound`, `--color-inbound`,
+  `--connection-stroke`, `--bg-overlay`, `--glass-panel`, `--cluster-bg`,
+  `--cluster-border`, `--text-panel`, `--color-workspace`, and the World's
+  `--w-shadow`. Also four aliases.
+  - Rules nothing triggers: `.connection-line`, `.badge`, `.test-backed-shadow`,
+  `.pulse-highlight` and its keyframes, `.workspace-link`.
+  - The kinds interface, config and script. The engine produces only
+  implementation, test and asset.
+  - `createConnectionGradient`, `GradientDef` and their 5 tests.
+  - The transition card snapshot's colour, which was never drawn.
+  - The stale `--outbound-color` comment.
+  - 17 fallbacks that could never apply.
+
+  Variables that were read and never declared:
+  - `--text-primary`, `--border-color`, `--accent-text` and `--text-success` now
+  read a palette meaning holding their old fallback value.
+  - `--color-implementation` and `--color-asset` became `border-color:
+  currentColor`, which is exactly what they computed to.
+
+  ### Checks run
+  - `npm run build`: passes.
+  - Explorer unit tests: 89 files, 1,097 tests pass.
+  - The literal test: it failed on a planted hex in a script and a planted `red`
+  in a stylesheet, then passed once both were removed.
+  - eslint on every touched file: clean.
+  - `live-docs:generate`: clean.
+  - Browser specs, one at a time on port 8791, all passing: backward-cue 6,
+  spatial-legend 5, labels-and-controls 6, closed-directory-looks 7, world-map
+  29, force-graph-wires 10, design-audit 11, no-network 9.
+
+  ### How I proved the picture unchanged
+  I built bundles at `5d98d3a6` and after, then used Playwright to read every
+  element and its `::before`/`::after`: about 20 computed colour properties plus
+  the fill, stroke and stop-color attributes, compared within half an 8-bit
+  step. The views:
+  - **This repository:** a file shown; pinned at four zooms; a directory opened,
+  at two zooms; the reader; the details panel; Knowledge Sources; the World Map
+  in both themes. Compared on the same data.
+  - **The estate sample:** pinned at four zooms; the 3D legend; the World Map in
+  both themes.
+  - **The history sample:** a step in 3D and in 2D.
+
+  About 2.4 million values were compared, with zero colour differences once
+  views had settled. The differences that remained are not colour changes:
+  - the World tints' `hsl()` attribute strings, which compute to the same
+  colour;
+  - renamed `var()` names inside inline styles;
+  - the cue's pulse caught at a different phase;
+  - a swapped 3D label opacity;
+  - layout numbers differing in the third decimal.
+
+  For the 3D map, unit tests pin the exact strings that reach its buffers, the
+  shader constants, and the World tints computed from their `hsl()` values.
+
+  **Not proven:**
+  - 3D pixels and the lit look, because the layout moves.
+  - Mid-animation frames: I compared settled frames only.
+
+  ### The correction (`e9e1dd2b`)
+  The first commit derived translucent colours with `color-mix`. Chrome then
+  reports those colours as `color(srgb …)` and animates them in OKLab. The
+  backward-cue spec's colour reader accepts only `rgba()`, so it failed. Drawing
+  translucent colours as `rgba()` of `-rgb` channel triplets keeps every colour
+  computed and animated as legacy `rgba()`, as it was before.
+
+  ### Forks I decided
+  - **Generated stylesheet at build** rather than written only at startup, so
+  the shell never shows a flash without colours.
+  - **The World's light/dark switch stays in `world.css`,** choosing between the
+  `--world-light-*` and `--world-dark-*` properties.
+  - **The World's wires read `role` offers and uses:** the colours they draw
+  today, the 2D blue and green, not the World's own door colours.
+  - **The cell mask's luminances are constants in the palette module,**
+  `MASK_KEEP` and `MASK_FADE`, not palette entries.
+
+  ### Unfinished
+  - A palette chosen after startup reaches the stylesheets at once, but the 3D
+  materials and shader only pick it up when they are next built.
+  - I did not run the full `safe:commit` gate; it does not run from a worktree.
+
+  No helper agent was used.
+
+● That was the colour-table builder's final copy of the same handback I'm
+  already reviewing; nothing new in it. The gate is still running on the merge,
+  and nothing else moves until it reports.
+
+● Agent "One table of colour" finished · 1h 54m 32s
+
+● The colour-table builder has finished; its work is merged in my working tree
+  and the full gate is still running on it. I'll act when the gate reports.
+
+● Background command "Run the full gate with the browser suite on main with the
+merged colour table" completed (exit code 0)
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● The gate caught one failure from my earlier merge: the hand-kept entry-point
+  list was missing the contact sheet and tidepool build commands. I'm fixing
+  that, then rerunning the full gate. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The gate is rerunning with the browser suite included; that takes a while. The
+  next round's brief is ready to send the moment it passes.
