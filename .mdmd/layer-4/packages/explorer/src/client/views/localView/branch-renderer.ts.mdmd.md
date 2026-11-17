@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-renderer.ts
-- Generated At: 2026-11-16T11:46:35.024Z
+- Generated At: 2026-11-17T10:20:43.640Z
 
 ## Authored
 ### Purpose
@@ -70,7 +70,7 @@ Since 2026-11-15 ([Turn 1](../../../../../../../../AI-Agent-Workspace/ChatHistor
 
 On 2026-11-15 ([November 15, Turn 1](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) the stage lost its `overlay`: its only use had been to add and remove `moving` on the wires' layer while a move ran, for a stylesheet rule that lightened the wires' drawing then, and the tone round of the same day deleted that rule with the wires' glow.
 
-Since 2026-11-16 ([Turn 5 of the November 15 record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-5)) a cycle's order is a trial of the continuing search. `explorationOf` stands each cycle in the greedy order or in the order this session's search last adopted for it (`cycleMemory`, by the cycle's files and references: a start, not a verdict), and prices nothing before the first draw. The search's `cycleStep` ranks the picture with a cycle in another offered order (`exploreWith`), lays it out in the picture's flow shape from the shown picture's own order, on the cached measurements, and prices it with the two terms a ranking changes (`rankingTerms`), which `searchPrice` adds to every price the search compares; an adopted trial dresses the cards' feet for its returns (`dressReturns`, the feet's part of `dressCards`) before it is measured on the page, and undresses them when the measurement refuses it. With the search off nothing is tried. The cached rows hold the endpoints of the wires the first draw draws; when the search first tries a cycle's order it measures every reference's between two files (`rowsOf` with `everyEndpoint`), a returning one's too, since another order may draw it, so that the first draw reads no endpoint only the search needs (`data-search-endpoints` says which). A trial's prediction stands each card as the trial would dress it (`footedHeights`): a card that gains or loses its line on returning connections is that line taller or shorter, the room one foot takes on a card, measured once per search (`footRoom`). Each trial's prices, predicted and, when it went so far, measured, are kept term by term on the root's `data-search-cycle-trials`, which the layout lab's walk is held to. `sceneTuningOf` and `startCostsOf` are the scene's dials and the price's costs from the tuning, shared by the first draw and the search. The adopted picture's `orderScore` is the search's own price, its ranking's terms included, as its prediction `searchPriced` is.
+Since 2026-11-16 ([Turn 5 of the November 15 record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-5)) a cycle's order is a trial of the continuing search. `explorationOf` stands each cycle in the greedy order or in the order this session's search last adopted for it (`cycleMemory`, by the cycle's files and references: a start, not a verdict), and prices nothing before the first draw. The search's `cycleStep` ranks the picture with a cycle in another offered order (`exploreWith`), lays it out in the picture's flow shape from the shown picture's own order, on the cached measurements, and prices it with the two terms a ranking changes (`rankingTerms`), which `searchPrice` adds to every price the search compares; an adopted trial dresses the cards' feet for its returns (`dressReturns`, the feet's part of `dressCards`) before it is measured on the page, and undresses them when the measurement refuses it. With the search off nothing is tried. The cached rows hold the endpoints of the wires the first draw draws; when the search first tries a cycle's order it measures every reference's between two files (`rowsOf` with `everyEndpoint`), a returning one's too, since another order may draw it, so that the first draw reads no endpoint only the search needs (`data-search-endpoints` says which). A trial's prediction stands each card as the trial would dress it (`footedHeights`): a card whose line on returning connections the trial adds, takes away or words anew is as much taller or shorter as that card itself measures, with the page's own element set on it and taken away again (`footChange`). Until 2026-11-17 one foot's room was measured once per search, on the first card without a foot, and used for every card. A foot takes 20 px on some cards and 21 on others; when a new import changed which card came first in `branches.ts`'s own picture, the prediction of its second trial stood 7 px from the layout lab's walk ([the record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-16.1.record.md#the-direct-measurement-the-round-costs-a-frames-time-with-marbles-off-and-the-four-cases-stood-on-their-limits-already)). Each trial's prices, predicted and, when it went so far, measured, are kept term by term on the root's `data-search-cycle-trials`, which the layout lab's walk is held to. `sceneTuningOf` and `startCostsOf` are the scene's dials and the price's costs from the tuning, shared by the first draw and the search. The adopted picture's `orderScore` is the search's own price, its ranking's terms included, as its prediction `searchPriced` is.
 
 Since 2026-11-16 ([the corrections decided that day](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#work-notes-the-closed-directorys-cells-and-shapes-come-back)) a drawn directory's label is as wide as its handle reaches (`directory-handle.ts`'s `handleReach`): the strip's own columns and, beyond them, the level columns of the membrane in which no card, closed box or inner membrane stands within the strip's height, read from the pose each time it is applied. `writeHandleNeeds` (before, `writeCountNeed`) also writes what the chevron and the directory's own name need across, `--dir-name`, from which the stylesheet brings the held line down in size before the name is cut.
 
@@ -92,7 +92,7 @@ also carries the continuing search that runs after each picture.
 
 #### `createStage` {#symbol-createstage}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L156)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L154)
 - Returns: [`BranchStage`](#symbol-branchstage)
 
 ##### `createStage` — Summary
@@ -100,7 +100,7 @@ A stage for a root that holds nothing yet.
 
 #### `dropStage` {#symbol-dropstage}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L161)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L159)
 - Parameters: `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `dropStage` — Summary
@@ -108,7 +108,7 @@ Ends whatever move the stage runs, where it stands, and its search; the stage's 
 
 #### `refreshReadingPresentation` {#symbol-refreshreadingpresentation}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L214)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L212)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `refreshReadingPresentation` — Summary
@@ -116,7 +116,7 @@ Update fixed-slot text and its controls without rebuilding an unchanged scene or
 
 #### `renderBranches` {#symbol-renderbranches}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L309)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L307)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `renderBranches` — Summary
@@ -144,7 +144,7 @@ The layout's dials come from the Local Map's tuning.
 
 #### `refreshReadingGeometry` {#symbol-refreshreadinggeometry}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L503)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L501)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `refreshReadingGeometry` — Summary
@@ -155,7 +155,7 @@ competition begins from the new picture.
 
 #### `BAND_BORDER` {#symbol-band_border}
 - Type: unknown
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L586)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L584)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

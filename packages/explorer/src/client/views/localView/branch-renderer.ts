@@ -144,8 +144,6 @@ interface Search {
   everyEndpoint: boolean;
   /** Each cycle trial's prices, predicted on the cached measurements and, when it went so far, measured on the page. */
   cycleRecords: CycleRecord[];
-  /** The room one foot on returning connections takes on a card, once measured; a cycle trial's prediction adds or removes it. */
-  footRoom?: number;
   /** The idle callback or timer waiting to run the next start; zero when none. */
   handle: number;
   /** Takes the next step when the page is idle; a move that ends calls it. */
@@ -1225,50 +1223,51 @@ function cycleStep(controller: LocalViewController, stage: BranchStage, search: 
 
 /**
  * The cached card heights as a cycle's trial would stand them: a card whose foot on returning connections the trial
- * adds or removes is taller or shorter by that line, so that the prediction prices the trial's own cards. The line's
- * room on a card is measured once per search, in idle time, as the difference one foot makes to a card's height.
+ * adds, takes away or words anew is as much taller or shorter as that card itself measures (`footChange`), in idle
+ * time, so that the prediction prices the trial's own cards.
  */
 function footedHeights(controller: LocalViewController, stage: BranchStage, search: Search, trial: Exploration): ReadonlyMap<string, number> {
   const drawn = (edge: LocalEdge): boolean => drawsReference((nodeId, role, direction, symbol) => controller.getAnchor(nodeId, role, direction, symbol), edge);
-  const footed = (exploration: Exploration): Set<string> =>
-    new Set(returningConnections(exploration.subgraph.links, edge => exploration.ranking.back.has(edgeKey(edge)), drawn).byFile.keys());
-  const before = footed(search.exploration), after = footed(trial);
-  const changed = [...new Set([...before, ...after])].filter(id => before.has(id) !== after.has(id));
+  const feet = (exploration: Exploration): Map<string, string> =>
+    new Map([...returningConnections(exploration.subgraph.links, edge => exploration.ranking.back.has(edgeKey(edge)), drawn).byFile]
+      .filter(([, back]) => back.length).map(([id, back]) => [id, returnsWording(back)]));
+  const before = feet(search.exploration), after = feet(trial);
+  const changed = [...new Set([...before.keys(), ...after.keys()])].filter(id => before.get(id) !== after.get(id));
   if (!changed.length) return search.answers.heights;
-  search.footRoom ??= footRoom(controller, stage);
+  const cards = new Map(cardsOf(stage).map(card => [card.dataset.id, card]));
   const heights = new Map(search.answers.heights);
   for (const id of changed) {
-    const height = heights.get(id);
-    if (height !== undefined) heights.set(id, height + (after.has(id) ? search.footRoom : -search.footRoom));
+    const height = heights.get(id), card = cards.get(id);
+    if (height !== undefined && card) heights.set(id, height + footChange(controller, card, after.get(id) ?? null));
   }
   return heights;
 }
 
 /**
- * How much taller a card stands with a foot on returning connections than without: a probe foot, the element the page
- * dresses, set on a card without one and taken away. A picture whose every card has a foot has none to probe; its
- * trial can only take feet away, which the same room measures.
+ * How much taller, or shorter, a card would stand with the foot a trial gives it, its words or none, than it stands
+ * now: the element the page dresses, set on that card and taken away again. A foot's room is the card's own. On
+ * `branches.ts` opened whole it is 20 px on twenty-seven cards and 21 on eleven; until 2026-11-17 it was measured once
+ * per search, on the first card without a foot, and used for every card, and when a new reference changed which card
+ * came first the search's prediction of a trial stood 7 px from the layout lab's walk in its unevenness.
  */
-function footRoom(controller: LocalViewController, stage: BranchStage): number {
-  const cards = cardsOf(stage).filter(card => card.classList.contains("node-card"));
-  const bare = cards.find(card => !card.querySelector(":scope > .local-back-references"));
-  if (!bare) {
-    const note = cards[0]?.querySelector<HTMLElement>(":scope > .local-back-references");
-    if (!note) return 0;
-    const withFoot = cards[0].offsetHeight, next = note.nextSibling;
-    note.remove();
-    const room = withFoot - cards[0].offsetHeight;
-    cards[0].insertBefore(note, next);
-    return room;
+function footChange(controller: LocalViewController, card: HTMLElement, wording: string | null): number {
+  const standing = card.offsetHeight;
+  const note = card.querySelector<HTMLElement>(":scope > .local-back-references");
+  if (note) {
+    const worded = note.textContent, next = note.nextSibling;
+    if (wording === null) note.remove(); else note.textContent = wording;
+    const change = card.offsetHeight - standing;
+    if (wording === null) card.insertBefore(note, next); else note.textContent = worded;
+    return change;
   }
-  const before = bare.offsetHeight;
+  if (wording === null) return 0;
   const probe = document.createElement(controller.reading ? "button" : "span");
   probe.className = "local-disclosure local-back-references";
-  probe.textContent = "1 connection returns in a cycle";
-  bare.insertBefore(probe, bare.querySelector(":scope > [data-outside]"));
-  const room = bare.offsetHeight - before;
+  probe.textContent = wording;
+  card.insertBefore(probe, card.querySelector(":scope > [data-outside]"));
+  const change = card.offsetHeight - standing;
   probe.remove();
-  return room;
+  return change;
 }
 
 /** A picture's price as the search compares it, term by term. */
@@ -1603,6 +1602,9 @@ function dressCards(controller: LocalViewController, cards: readonly HTMLElement
   dressReturns(controller, cards, exploration);
 }
 
+/** A foot's words on the references a card returns in a cycle. */
+const returnsWording = (back: readonly LocalEdge[]): string => `${countOf(connectionCount(back), "connection returns", "connections return")} in a cycle`;
+
 /**
  * Each card's foot on the references it returns in a cycle, from the rows disclosed, before its count of connections
  * outside the view: the first paint's, and a cycle's trial's again, since another order returns other references.
@@ -1620,7 +1622,7 @@ function dressReturns(controller: LocalViewController, cards: readonly HTMLEleme
     if (!back.length) continue;
     const note = document.createElement(controller.reading ? "button" : "span");
     note.className = "local-disclosure local-back-references";
-    note.textContent = `${countOf(connectionCount(back), "connection returns", "connections return")} in a cycle`;
+    note.textContent = returnsWording(back);
     note.title = "Show the files joined by connections that return against the layout's reading direction";
     if (controller.reading) {
       note.setAttribute("aria-haspopup", "menu");
