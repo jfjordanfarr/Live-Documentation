@@ -1,4 +1,4 @@
-import { CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, OVERVIEW_FILES, ZOOM_LOOKS, type ForceGraphTuning, type LocalMapTuning, type TuningConfig } from "./types";
+import { CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, HIDDEN_FILES_LOOKS, OVERVIEW_FILES, ZOOM_LOOKS, type ForceGraphTuning, type LocalMapTuning, type TuningConfig } from "./types";
 
 /** One packing preference interpreted by both Local Map representations. */
 export type LayoutPreset = "compact" | "relaxed";
@@ -8,7 +8,7 @@ type SpatialPacking = Pick<ForceGraphTuning, "linkGap" | "charge" | "collisionGa
 
 /** Portable numeric settings behind the presets and spatial encodings; older URLs may omit them. */
 export interface LayoutSettings {
-  localMap?: Partial<FlatPacking & Pick<LocalMapTuning, "returnCost" | "zoomLooks" | "directoryLayout" | "closedDirectory" | "closedShape" | "closedCells" | "overviewFiles" | "descriptionsZoomedOut">>;
+  localMap?: Partial<FlatPacking & Pick<LocalMapTuning, "returnCost" | "zoomLooks" | "directoryLayout" | "closedDirectory" | "closedShape" | "closedCells" | "hiddenFiles" | "overviewFiles" | "descriptionsZoomedOut">>;
   forceGraph?: Partial<ForceGraphTuning>;
 }
 
@@ -56,7 +56,8 @@ export function applyLayoutPreset(tuning: TuningConfig, preset: LayoutPreset): T
  * carried since Flow became the default (2026-11-13); a link made on November 12 or 13 says "flow" when Flow was chosen
  * and nothing when the grid was, so such a link now opens in Flow either way, and a link that says "grid" exists only
  * from now on. Closed Directory (2026-11-13): only a trial's look is carried, and its absence reads as today's box;
- * Descriptions Zoomed Out (2026-11-13) likewise: only the first line is carried, and its absence reads as hidden.
+ * Descriptions Zoomed Out (2026-11-13) likewise: only the first line is carried, and its absence reads as hidden; and Hidden
+ * Files (2026-11-17): only the cells are carried, and their absence reads as the count.
  */
 export function readLayoutSettings(value: unknown): LayoutSettings | undefined {
   if (!value || typeof value !== "object" || Array.isArray(value)) return undefined;
@@ -79,11 +80,13 @@ export function readLayoutSettings(value: unknown): LayoutSettings | undefined {
       const closedDirectory = CLOSED_DIRECTORY_LOOKS.slice(1).find(choice => choice === (input as Record<string, unknown>).closedDirectory);
       const closedShape = CLOSED_DIRECTORY_SHAPES.slice(1).find(choice => choice === (input as Record<string, unknown>).closedShape);
       const closedCells = CLOSED_CELL_COLOURS.slice(1).find(choice => choice === (input as Record<string, unknown>).closedCells);
+      const hiddenFiles = HIDDEN_FILES_LOOKS.slice(1).find(choice => choice === (input as Record<string, unknown>).hiddenFiles);
       const overviewFiles = OVERVIEW_FILES.slice(1).find(choice => choice === (input as Record<string, unknown>).overviewFiles);
       const descriptionsZoomedOut = DESCRIPTIONS_ZOOMED_OUT.slice(1).find(choice => choice === (input as Record<string, unknown>).descriptionsZoomedOut);
-      if (Object.keys(numbers).length || zoomLooks || directoryLayout || closedDirectory || closedShape || closedCells || overviewFiles || descriptionsZoomedOut) {
+      if (Object.keys(numbers).length || zoomLooks || directoryLayout || closedDirectory || closedShape || closedCells || hiddenFiles || overviewFiles || descriptionsZoomedOut) {
         result.localMap = { ...numbers, ...(zoomLooks ? { zoomLooks } : null), ...(directoryLayout ? { directoryLayout } : null),
           ...(closedDirectory ? { closedDirectory } : null), ...(closedShape ? { closedShape } : null), ...(closedCells ? { closedCells } : null),
+          ...(hiddenFiles ? { hiddenFiles } : null),
           ...(overviewFiles ? { overviewFiles } : null), ...(descriptionsZoomedOut ? { descriptionsZoomedOut } : null) };
       }
       continue;
@@ -113,7 +116,7 @@ export function layoutSettingsOf(tuning: TuningConfig): LayoutSettings {
 export function applyLayoutSettings(tuning: TuningConfig, settings: LayoutSettings | undefined): TuningConfig {
   const directory = settings?.localMap ? { directoryLayout: DIRECTORY_LAYOUTS[0] } : null;
   const looks = settings?.localMap ? { zoomLooks: ZOOM_LOOKS[0], overviewFiles: OVERVIEW_FILES[0] } : null;
-  const closed = settings?.localMap ? { closedDirectory: CLOSED_DIRECTORY_LOOKS[0], closedShape: CLOSED_DIRECTORY_SHAPES[0], closedCells: CLOSED_CELL_COLOURS[0] } : null;
+  const closed = settings?.localMap ? { closedDirectory: CLOSED_DIRECTORY_LOOKS[0], closedShape: CLOSED_DIRECTORY_SHAPES[0], closedCells: CLOSED_CELL_COLOURS[0], hiddenFiles: HIDDEN_FILES_LOOKS[0] } : null;
   // Descriptions Zoomed Out likewise (2026-11-13): only a value that keeps a line is written, and its absence reads as hidden.
   const descriptions = settings?.localMap ? { descriptionsZoomedOut: DESCRIPTIONS_ZOOMED_OUT[0] } : null;
   return { ...tuning, localMap: { ...tuning.localMap, ...directory, ...looks, ...closed, ...descriptions, ...settings?.localMap }, forceGraph: { ...tuning.forceGraph, ...settings?.forceGraph } };

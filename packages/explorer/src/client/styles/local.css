@@ -404,6 +404,44 @@ span.local-disclosure { cursor: default; }
 .local-directory-label { --dir-controls: 40; }
 :is([data-lod="far"], [data-lod="overview"]) .local-directory-label { --dir-controls: 21; }
 .local-directory-more { flex: none; margin-left: .5em; opacity: calc(.85 * clamp(0, (var(--dir-room, 0) / var(--dir-scale) - var(--dir-controls) - var(--dir-need, 0) - 1) * 1000, 1)); }
+/* Hidden Files' cells (a trial, 2026-11-17): in place of the count, a mark for each file and directory the handle's
+   directory does not draw, beside the handle and before More (card-factory.ts's createHiddenCells). The marks stand in
+   the count's room (the root's rule of 2026-11-17): the handle asks first for the chevron and the directory's own name
+   (--dir-name), the marks for the width the count's words would take in this line (--cells-words, measured, never
+   guessed); where the line holds both, the parent's path takes what is left before the marks take any more (the
+   handle's grow factor dwarfs theirs), so that the path and the name are cut exactly as beside the count, and the marks
+   run on into what the whole path leaves free before More. Where the line cannot hold both, as where the count's words
+   would not be drawn, the marks give way first (their shrink factor dwarfs the handle's) down to none, and the name is
+   cut last, by its own max-width. The marks draw only whole ones in the room they are given. They are the ground under
+   the wires: each is drawn at --cells-quiet of a closed directory's strength, and at its full strength under the
+   pointer or the keyboard's focus, where a ring in the selection's colour shows that it can be pressed. A press reaches
+   over the mark's whole pitch at the line's full height; the air past the last mark pans. */
+.local-directory-row--cells > .local-directory-handle { flex: 1000000 1 calc(var(--dir-name, 0) * 1px + 1px); max-width: max-content; }
+.local-directory-row > .local-directory-cells { position: relative; display: block; flex: 1 1000000 calc(var(--cells-words, 0) * 1px); min-width: 0; height: 100%; margin-left: -4px; pointer-events: none; --cells-quiet: .5; }
+.local-directory-cells-words { position: absolute; left: 0; top: 0; margin-left: .5em; white-space: nowrap; visibility: hidden; pointer-events: none; }
+/* Cells under name (2026-11-17): at the reading look the marks stand under the line, as a closed directory's field, in
+   the height the strip keeps free there: from the line's foot down to the air above the first card (--dir-air), across
+   the label's width, which is the strip's inside the membrane's padding. The line then holds no marks and no count, and
+   its path has the count's room back. From the middle band out, where the held line fills the strip, the field is not
+   drawn and the marks stand beside the name. Only the marks take the pointer: a press on the field's air reaches the
+   handle's own press area under it, as before. The field stands 3 units under the line's foot, so that its first row
+   clears the name's descenders (root's look at the first build, where a cell touched a "g"); its height is unchanged,
+   so 3 of the 6 units of air above the first card remain where every row of the field is in use. */
+.local-directory-field { position: absolute; left: 0; right: 0; top: calc((var(--dir-line, 15) + 3) * 1px); height: calc((var(--dir-strip, 60) - var(--dir-line, 15) - var(--dir-air, 6)) * 1px); pointer-events: none; --cells-quiet: .5; }
+.local-directory-label[data-hidden-look="under"] .local-directory-row > .local-directory-cells { display: none; }
+:is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-directory-label[data-hidden-look="under"] .local-directory-row > .local-directory-cells { display: block; }
+:is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-directory-field { display: none; }
+.local-handle-cells { position: absolute; left: 4px; top: 0; overflow: visible; pointer-events: none; }
+.local-handle-cells [data-mark] { opacity: var(--cells-quiet); transition: opacity 120ms ease-out; }
+.local-handle-cells [data-mark].is-lit { opacity: 1; }
+.local-directory-cell { position: absolute; top: 0; height: 100%; margin: 0; padding: 0; border: 0; border-radius: 0; background: transparent; cursor: pointer; pointer-events: auto; }
+.local-directory-cell[hidden] { display: none; }
+.local-directory-cell::before { content: ""; position: absolute; box-sizing: border-box; left: calc(var(--mark-x, 0) * 1px - 2px); width: calc(var(--mark-w, 8) * 1px + 4px);
+    top: calc(50% - var(--mark-h, 8) * .5px - 2px); height: calc(var(--mark-h, 8) * 1px + 4px); border-radius: 999px; box-shadow: 0 0 0 1px var(--state-selected); opacity: 0; transition: opacity 120ms ease-out; }
+.local-directory-cell--directory::before { border-radius: 5px; }
+.local-directory-cell:hover::before { opacity: .85; }
+.local-directory-cell:focus-visible { outline: none; }
+.local-directory-cell:focus-visible::before { opacity: 1; box-shadow: 0 0 0 1.5px var(--state-selected); }
 .local-directory-controls { display: flex; flex: none; align-items: center; gap: 2px; }
 .local-directory-controls > button { display: inline-flex; flex: none; align-items: center; justify-content: center; box-sizing: border-box; width: 17px; height: 15px; margin: 0; padding: 0; border: 1px solid transparent; border-radius: 3px; background: transparent; color: inherit; cursor: pointer; }
 .local-directory-controls > button svg { width: 13px; height: 13px; }
@@ -489,7 +527,7 @@ body:has(#map-container[data-lod="overview"]) #local-legend .legend-row--gathere
 .local-closed-cells { position: absolute; overflow: visible; pointer-events: none; }
 .local-closed-cells-held { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
 .local-closed-cells-held .local-cells-look { display: none; }
-:is(.local-closed-cells, .local-closed-cells-held) .local-cell { fill-opacity: .42; stroke-opacity: .75; stroke-width: 0.8px; }
+:is(.local-closed-cells, .local-closed-cells-held, .local-handle-cells) .local-cell { fill-opacity: .42; stroke-opacity: .75; stroke-width: 0.8px; }
 /* A cell wears its kind's colour, the palette's; the one grey below, chosen in Tuning, stands over it. */
 .local-cell[data-kind="implementation"] { --cell-glass: var(--kind-implementation); fill: var(--cell-glass); stroke: var(--cell-glass); }
 .local-cell[data-kind="test"] { --cell-glass: var(--kind-test); fill: var(--cell-glass); stroke: var(--cell-glass); }
@@ -500,13 +538,13 @@ body:has(#map-container[data-lod="overview"]) #local-legend .legend-row--gathere
 /* With the marbles on (2026-11-17), a cell whose file has veins wears its marble's far tint, as its ball does in 3D: its
    kind's glass and the two roles mixed in linear light by the shares it carries, the green over the mix of the other two
    (`marbleTint` in views/forceGraphAppearance.ts mixes the same three at once). */
-:root[data-marbles="on"] .local-closed-cells--kind :is(.local-closed-cells, .local-closed-cells-held) .local-cell[style] {
+:root[data-marbles="on"] .local-closed-cells--kind :is(.local-closed-cells, .local-closed-cells-held, .local-handle-cells) .local-cell[style] {
   --cell-tint: color-mix(in srgb-linear, var(--role-uses) calc(var(--uses-share) * 100%),
     color-mix(in srgb-linear, var(--role-offers) calc(var(--offers-share) / (1 - var(--uses-share)) * 100%), var(--cell-glass)));
   fill: var(--cell-tint); stroke: var(--cell-tint);
 }
-.local-closed-cells--grey :is(.local-closed-cells, .local-closed-cells-held) .local-cell { fill: var(--kind-one-grey); fill-opacity: .42; stroke: var(--kind-one-grey-rim); stroke-opacity: .6; }
-:is(.local-closed-cells, .local-closed-cells-held) .local-cell-skin { fill: rgba(var(--ground-sheen-rgb), 0.062745); stroke: rgba(var(--ground-sheen-rgb), 0.333333); stroke-width: 0.8px; }
+.local-closed-cells--grey :is(.local-closed-cells, .local-closed-cells-held, .local-handle-cells) .local-cell { fill: var(--kind-one-grey); fill-opacity: .42; stroke: var(--kind-one-grey-rim); stroke-opacity: .6; }
+:is(.local-closed-cells, .local-closed-cells-held, .local-handle-cells) .local-cell-skin { fill: rgba(var(--ground-sheen-rgb), 0.062745); stroke: rgba(var(--ground-sheen-rgb), 0.333333); stroke-width: 0.8px; }
 /* A skin inside says its directory's name and what it holds on hover, and a cell its file's name: the reader's own
    words say what each is. A press on either is a press on the box. */
 :is(.local-closed-cells, .local-closed-cells-held) :is(.local-cell-nest, .local-cell--named) { pointer-events: auto; }

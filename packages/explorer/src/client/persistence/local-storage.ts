@@ -72,6 +72,7 @@ export const getDefaultTuning = (): TuningConfig => ({
     closedDirectory: "cells",
     closedShape: "tab",
     closedCells: "kind",
+    hiddenFiles: "count",
     overviewFiles: "files",
     descriptionsZoomedOut: "hidden",
     slotLines: 2,

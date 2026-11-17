@@ -47,6 +47,7 @@ export const TUNING_HELP: Readonly<Record<string, string>> = {
   "tuning-palette":                   "The colours the page is drawn in: today's, or a proposed palette, where each colour means one thing in every view.",
   "tuning-marbles":                   "Draws each file as glass of its kind, veined blue by the files that use it and green by the files it uses.",
   "tuning-closed-cells":              "What colours a closed directory's cells: each file's kind, as the 3D map colours it, or one grey.",
+  "tuning-hidden-files":              "What a directory drawn around pins shows of the files it leaves out: a count, or cells that a press pins.",
   "tuning-overview-files":            "What the farthest zoom draws: every card at its size, or files only with one line for each pair, as in Flow.",
   "tuning-descriptions-zoomed-out":   "With fixed slots, what a described symbol keeps of its description three presses out, and how its name is cut.",
   "tuning-slot-lines":                "With fixed slots, how many lines of text each symbol's slot holds, filled or not.",

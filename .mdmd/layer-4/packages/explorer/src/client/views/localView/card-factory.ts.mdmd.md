@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-factory.ts
-- Generated At: 2026-11-17T04:51:10.951Z
+- Generated At: 2026-11-17T14:46:12.225Z
 
 ## Authored
 ### Purpose
@@ -142,9 +142,45 @@ they are held at the look's scale as the name is, in the room the held name leav
 where they end; where not a row fits, the skin alone carries the look. The card reading writes each look's room as
 data-cells-<look>, "left top width height scale", the width and height in held units.
 
+#### `HiddenCellActions` {#symbol-hiddencellactions}
+- Type: interface
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L542)
+
+##### `HiddenCellActions` — Summary
+What a handle's marks do when pressed: a file's cell pins the file, a directory's skin opens the directory.
+
+#### `createHiddenCells` {#symbol-createhiddencells}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L556)
+- Parameters: `hidden`: [`HiddenContents`](./branches.ts.mdmd.md#symbol-hiddencontents); `style`: [`ClosedStyle`](#symbol-closedstyle); `actions`: [`HiddenCellActions`](#symbol-hiddencellactions)
+
+##### `createHiddenCells` — Summary
+What a directory drawn only around the pinned picture does not draw, as marks in its handle's line in place of the
+count's words (the Hidden Files trial, 2026-11-17; the owner: "Could those be represented as cute little cells that
+could be clicked on to expand them into fuller-sized nodes?"): a closed directory's own cell for each file and its
+small skin for each directory, drawn by the closed look's own arithmetic and markup, as many whole marks as the line
+leaves room for after the directory's name, the last fading under a veil where more are held (`lineMarks`). The line
+is drawn again whenever the room the line leaves it changes, at every look, since from the connections look out the
+whole line is held at the file names' size. What the marks are and do is {@link markToolbar}'s.
+
+#### `createHiddenField` {#symbol-createhiddenfield}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L580)
+- Parameters: `hidden`: [`HiddenContents`](./branches.ts.mdmd.md#symbol-hiddencontents); `style`: [`ClosedStyle`](#symbol-closedstyle); `actions`: [`HiddenCellActions`](#symbol-hiddencellactions)
+
+##### `createHiddenField` — Summary
+The same marks under the handle's line (Hidden Files' "Cells under name", 2026-11-17, on the root's review: with the
+path kept, the line at reading size held three marks of history's twenty-three), at the reading look, in the height
+the handle's strip already keeps free under the line, as a closed directory's own field: `fieldBands` and `cellField`
+on that room, skins first, the field's own veils. A cell that names its file and a small skin that is not faded at the
+field's end are the marks pressed; a cell standing for what the room leaves out, or fading under a veil, is drawn and
+names nothing. Its press reaches over the cell and half the air on each side, as wide as a pitch and as tall as a row
+of the staggered pair, so that the presses of neighbouring cells do not cross. The stylesheet shows the field at the
+reading look and the line's marks from the connections look out.
+
 #### `countsOf` {#symbol-countsof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L539)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L703)
 
 ##### `countsOf` — Summary
 "3 files, 2 directories", either part left out at zero; "empty" when both are.
@@ -161,7 +197,9 @@ data-cells-<look>, "left top width height scale", the width and height in held u
 - [`types.SymbolOrder`](../../types.ts.mdmd.md#symbol-symbolorder) (type-only)
 - [`forceGraphAppearance.spatialKindOf`](../forceGraphAppearance.ts.mdmd.md#symbol-spatialkindof)
 - [`branches.ClosedDirectory`](./branches.ts.mdmd.md#symbol-closeddirectory)
+- [`branches.HiddenContents`](./branches.ts.mdmd.md#symbol-hiddencontents)
 - [`branches.compareSymbolNames`](./branches.ts.mdmd.md#symbol-comparesymbolnames)
+- [`closed-looks.CELLS`](./closed-looks.ts.mdmd.md#symbol-cells)
 - [`closed-looks.Cell`](./closed-looks.ts.mdmd.md#symbol-cell)
 - [`closed-looks.CellField`](./closed-looks.ts.mdmd.md#symbol-cellfield-interface)
 - [`closed-looks.ClosedContents`](./closed-looks.ts.mdmd.md#symbol-closedcontents)
@@ -170,9 +208,11 @@ data-cells-<look>, "left top width height scale", the width and height in held u
 - [`closed-looks.Skin`](./closed-looks.ts.mdmd.md#symbol-skin)
 - [`closed-looks.cellField`](./closed-looks.ts.mdmd.md#symbol-cellfield-function)
 - [`closed-looks.fieldBands`](./closed-looks.ts.mdmd.md#symbol-fieldbands)
+- [`closed-looks.lineMarks`](./closed-looks.ts.mdmd.md#symbol-linemarks)
 - [`closed-looks.stackEdges`](./closed-looks.ts.mdmd.md#symbol-stackedges)
 - [`closed-looks.tabOutline`](./closed-looks.ts.mdmd.md#symbol-taboutline)
 - [`directory-bands.parentDirectory`](./directory-bands.ts.mdmd.md#symbol-parentdirectory)
+- [`directory-handle.HANDLE_LINE`](./directory-handle.ts.mdmd.md#symbol-handle_line)
 - [`directory-handle.chevronMarkup`](./directory-handle.ts.mdmd.md#symbol-chevronmarkup)
 - [`types.ColumnRole`](./types.ts.mdmd.md#symbol-columnrole) (type-only)
 - [`wire-gathering.NODE_HUB`](./wire-gathering.ts.mdmd.md#symbol-node_hub)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-renderer.ts
-- Generated At: 2026-11-17T10:20:43.640Z
+- Generated At: 2026-11-17T14:46:11.556Z
 
 ## Authored
 ### Purpose
@@ -208,6 +208,8 @@ competition begins from the new picture.
 - [`card-factory.PIN_GLYPH`](./card-factory.ts.mdmd.md#symbol-pin_glyph)
 - [`card-factory.countsOf`](./card-factory.ts.mdmd.md#symbol-countsof)
 - [`card-factory.createClosedDirectory`](./card-factory.ts.mdmd.md#symbol-createcloseddirectory)
+- [`card-factory.createHiddenCells`](./card-factory.ts.mdmd.md#symbol-createhiddencells)
+- [`card-factory.createHiddenField`](./card-factory.ts.mdmd.md#symbol-createhiddenfield)
 - [`card-factory.createNodeCard`](./card-factory.ts.mdmd.md#symbol-createnodecard)
 - [`card-factory.hasCloseAction`](./card-factory.ts.mdmd.md#symbol-hascloseaction)
 - [`card-reading.markFirstPin`](./card-reading.ts.mdmd.md#symbol-markfirstpin)
@@ -227,6 +229,7 @@ competition begins from the new picture.
 - [`directory-flow.nominalMeasurer`](./directory-flow.ts.mdmd.md#symbol-nominalmeasurer)
 - [`directory-flow.searchFlowShape`](./directory-flow.ts.mdmd.md#symbol-searchflowshape)
 - [`directory-flow.shapeRecord`](./directory-flow.ts.mdmd.md#symbol-shaperecord)
+- [`directory-handle.HANDLE_AIR`](./directory-handle.ts.mdmd.md#symbol-handle_air)
 - [`directory-handle.HANDLE_FLOOR`](./directory-handle.ts.mdmd.md#symbol-handle_floor)
 - [`directory-handle.HANDLE_HOLD`](./directory-handle.ts.mdmd.md#symbol-handle_hold)
 - [`directory-handle.HANDLE_INDENT`](./directory-handle.ts.mdmd.md#symbol-handle_indent)

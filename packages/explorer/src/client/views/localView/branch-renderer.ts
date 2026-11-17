@@ -5,14 +5,14 @@ import { candidateStarts, layoutStarts, pictureScore, scoreOf, signalsOf, startN
 import { BAND_BORDER, hostOf, layoutScene, planBranches, type Scene, type SceneBox, type SceneMeasurer, type ScenePlan, type SceneTuning } from "./branch-scene";
 import { beginSearch, endpointKey, judgeAlignment, judgeStart, nextTrialKind, pinFor, rowBounds, type CardRows, type ResolvedPin, type RowMeasure, type SearchState } from "./branch-search";
 import { arrangeExploration, edgeKey, exploreBranches, isClosedDirectory, orderExploration, type BranchGraph, type DirectoryDisclosure, type Exploration } from "./branches";
-import { countsOf, createClosedDirectory, createNodeCard, hasCloseAction, PIN_GLYPH } from "./card-factory";
+import { countsOf, createClosedDirectory, createHiddenCells, createHiddenField, createNodeCard, hasCloseAction, PIN_GLYPH } from "./card-factory";
 import { markFirstPin } from "./card-reading";
 import { drawsReference } from "./connections";
 import type { LocalViewController } from "./controller";
 import { cycleOrdersOf, horizontalWire, nextCycleTrial, returningLinks, standingOrders, type CycleTrial } from "./cycle-trials";
 import { ancestryButton } from "./directory-ancestry";
 import { isPairLine, NARROW_SHAPE, nominalMeasurer, searchFlowShape, shapeRecord, type FlowShape, type ShapeSearch } from "./directory-flow";
-import { chevronMarkup, handleParts, handleReach, HANDLE_FLOOR, HANDLE_HOLD, HANDLE_INDENT, HANDLE_LINE, HANDLE_STRIP, type Standing } from "./directory-handle";
+import { chevronMarkup, handleParts, handleReach, HANDLE_AIR, HANDLE_FLOOR, HANDLE_HOLD, HANDLE_INDENT, HANDLE_LINE, HANDLE_STRIP, type Standing } from "./directory-handle";
 import { layoutTopOf } from "./ladder-rooms";
 import { membranePath } from "./membrane-outline";
 import { OVERVIEW_FILES_ATTRIBUTE, OVERVIEW_LINES_ATTRIBUTE, type PictureSize } from "./overview-files";
@@ -599,6 +599,7 @@ function labelFor(controller: LocalViewController, stage: BranchStage, directory
     label.style.setProperty("--dir-hold", String(HANDLE_HOLD));
     label.style.setProperty("--dir-floor", String(HANDLE_FLOOR));
     label.style.setProperty("--dir-strip", String(HANDLE_STRIP));
+    label.style.setProperty("--dir-air", String(HANDLE_AIR));
     fillLabel(controller, label, directory, stage.disclosures.get(directory));
     stage.root.append(label);
     stage.labels.set(directory, label);
@@ -611,7 +612,10 @@ function labelFor(controller: LocalViewController, stage: BranchStage, directory
  * directory and right on one drawn only around what the pins need, then its name; a press closes or opens it, and the
  * button says the act and is the keyboard's stop, its focus ring around the chevron and the name together. The name
  * is the parent's path, muted, which gives way first and from its start, and the directory's own name, which is cut
- * last; while the directory is encasing, what it hides follows, "+3 files, 1 directory", drawn whole or not at all.
+ * last; while the directory is encasing, what it hides follows, "+3 files, 1 directory", drawn whole or not at all,
+ * or, with Tuning's Hidden Files at Cells (a trial of 2026-11-17), a closed directory's cell or small skin for each
+ * thing hidden, beside the handle and before More, which give way after the parent's path and before the name
+ * (`createHiddenCells` in card-factory.ts; the count's words then stand in the handle's hover text and description).
  * More and the ancestry control stand after it and never give way; the evidence reader is behind More. It is one line
  * in a strip of constant height (`directory-handle.ts`), so the layout never waits on its text, and from the middle
  * band out the whole line is held at the file names' size, which the strip is tall enough for (local.css).
@@ -644,11 +648,34 @@ function fillLabel(controller: LocalViewController, label: HTMLElement, director
   own.className = "local-directory-leaf";
   own.textContent = leaf;
   caption.append(own);
+  // What an encasing directory hides: the count's words in the caption, or, with Hidden Files' cells (2026-11-17), a
+  // mark for each beside the handle, never inside it, so that a press on a mark does not also open or close the
+  // directory, the count's words moving to the handle's hover text and description; with the cells under the name, the
+  // same marks in the strip's free height under the line at the reading look, and beside the name from the connections
+  // look out (local.css shows the one or the other).
+  let cells: HTMLElement | null = null, field: HTMLElement | null = null, words: HTMLElement | null = null;
+  const look = controller.options.state.tuning.localMap.hiddenFiles;
   if (!open && disclosure && (disclosure.hiddenFiles || disclosure.hiddenDirectories)) {
-    const hidden = document.createElement("span");
-    hidden.className = "local-directory-more";
-    hidden.textContent = `+${countsOf(disclosure.hiddenFiles, disclosure.hiddenDirectories)}`;
-    caption.append(hidden);
+    const counted = `+${countsOf(disclosure.hiddenFiles, disclosure.hiddenDirectories)}`;
+    if (look !== "count") {
+      handle.title = `${handle.title}\n${counted}`;
+      handle.setAttribute("aria-description", counted);
+      const style = controller.cardContext.closedStyle?.() ?? { look: "cells", shape: "tab", cells: "kind" } as const;
+      const actions = { pin: (file: string) => controller.pinFromHandle(file, directory), open: (path: string) => controller.options.onOpenDirectory(path) };
+      cells = createHiddenCells(directory, disclosure.hidden, style, actions);
+      if (look === "under") field = createHiddenField(directory, disclosure.hidden, style, actions);
+      // The count's words, laid out unseen in the line's own type, for the room the marks may claim against the parent's
+      // path (writeHandleNeeds): the marks stand in the count's room, and cost the path no more than its words did.
+      words = document.createElement("span");
+      words.className = "local-directory-cells-words";
+      words.setAttribute("aria-hidden", "true");
+      words.textContent = counted;
+    } else {
+      const hidden = document.createElement("span");
+      hidden.className = "local-directory-more";
+      hidden.textContent = counted;
+      caption.append(hidden);
+    }
   }
   handle.append(caption);
   const more = document.createElement("button");
@@ -668,13 +695,24 @@ function fillLabel(controller: LocalViewController, label: HTMLElement, director
   controls.append(more, ancestryButton(controller, directory));
   const row = document.createElement("span");
   row.className = "local-directory-row";
-  row.append(handle, controls);
-  // A label survives renders but its buttons are made anew: the keyboard's focus passes to the new handle or More.
-  const focused = label.contains(document.activeElement) ? document.activeElement : null;
-  label.replaceChildren(row);
+  row.classList.toggle("local-directory-row--cells", !!cells);
+  row.append(handle, ...(cells ? [cells] : []), controls, ...(words ? [words] : []));
+  if (field) label.dataset.hiddenLook = "under"; else delete label.dataset.hiddenLook;
+  // A label survives renders but its buttons are made anew: the keyboard's focus passes to the new handle, More, or the
+  // mark for the same file or directory in the line or the field it was in, which then keeps that toolbar's stop.
+  const focused = label.contains(document.activeElement) ? document.activeElement as HTMLElement : null;
+  const toolbar = focused?.closest(".local-directory-field") ? field : cells;
+  label.replaceChildren(row, ...(field ? [field] : []));
   label.style.removeProperty("--dir-need");
   label.style.removeProperty("--dir-name");
-  if (focused) (focused.classList.contains("local-directory-actions") ? more : handle).focus({ preventScroll: true });
+  label.style.removeProperty("--cells-words");
+  if (!focused) return;
+  // A mark pressed and gone, its file now a card, passes the focus to the mark that stands in its place, else the last.
+  const marks = [...(toolbar?.querySelectorAll<HTMLButtonElement>(".local-directory-cell") ?? [])];
+  const mark = focused.dataset.path === undefined ? null
+    : marks.find(each => each.dataset.path === focused.dataset.path) ?? marks[Math.min(Number(focused.dataset.mark ?? 0), marks.length - 1)] ?? null;
+  if (mark) { for (const other of marks) other.tabIndex = other === mark ? 0 : -1; }
+  (mark ?? (focused.classList.contains("local-directory-actions") ? more : handle)).focus({ preventScroll: true });
 }
 
 /**
@@ -684,12 +722,21 @@ function fillLabel(controller: LocalViewController, label: HTMLElement, director
  * "Pay…" stood cut at the overview look's full size). `--dir-need`: the same and the count of what the directory hides
  * with the air before it; the stylesheet draws the count only where the line's room holds this beside More: a count is
  * drawn whole or not at all (the owner's rule for counts of 2026-11-13), and one that the line's wrapping has sent out
- * of sight is then not drawn in fact, not merely clipped.
+ * of sight is then not drawn in fact, not merely clipped. `--cells-words`, with Hidden Files' cells: the count's words
+ * and the air before them as the count would stand in this line, unrounded, the room the marks claim against the
+ * parent's path (the root's rule of 2026-11-17: the marks stand in the count's room, and cost the path no more than its
+ * words did; local.css).
  */
 function writeHandleNeeds(label: HTMLElement): void {
   const count = label.querySelector<HTMLElement>(".local-directory-more"), leaf = label.querySelector<HTMLElement>(".local-directory-leaf");
   if (!leaf || !leaf.scrollWidth) return;
   if (!label.style.getPropertyValue("--dir-name")) label.style.setProperty("--dir-name", String(HANDLE_INDENT + leaf.scrollWidth));
+  const words = label.querySelector<HTMLElement>(".local-directory-cells-words"), row = label.querySelector<HTMLElement>(".local-directory-row");
+  if (words && row && !label.style.getPropertyValue("--cells-words")) {
+    // Read in the line's own units: the drawn width over the scale the row and the camera draw it at.
+    const drawn = row.getBoundingClientRect().width, own = parseFloat(getComputedStyle(row).width);
+    if (drawn > 0 && own > 0) label.style.setProperty("--cells-words", (words.getBoundingClientRect().width * own / drawn + (parseFloat(getComputedStyle(words).marginLeft) || 0)).toFixed(3));
+  }
   if (label.style.getPropertyValue("--dir-need") || !count || !count.offsetWidth) return;
   label.style.setProperty("--dir-need", String(Math.ceil(HANDLE_INDENT + leaf.scrollWidth + count.offsetWidth + (parseFloat(getComputedStyle(count).marginLeft) || 0))));
 }

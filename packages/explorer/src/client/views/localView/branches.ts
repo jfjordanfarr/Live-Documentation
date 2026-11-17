@@ -132,6 +132,19 @@ export interface DirectoryDisclosure {
   state: "encasing" | "open";
   hiddenFiles: number;
   hiddenDirectories: number;
+  /**
+   * The same files and directories, which the handle's cells draw in place of the count (the Hidden Files trial,
+   * 2026-11-17): each by its path, in the count's own order, and as a closed directory's skin draws it, a file as its
+   * cell and a directory as a small skin around its own files' cells. The count is the length of these lists.
+   */
+  hidden: HiddenContents;
+}
+
+/** What a drawn directory does not draw: each file's and each directory's path, and the cells and skins that stand for them, index for index. */
+export interface HiddenContents {
+  files: string[];
+  directories: string[];
+  contents: ClosedContents;
 }
 
 /**
@@ -404,10 +417,14 @@ export function exploreBranches(
     for (let directory = parentDirectory(node.codeRelativePath); directory !== ""; directory = parentDirectory(directory)) {
       if (directories.has(directory)) continue;
       const contents = index.get(directory);
+      const files = (contents?.files ?? []).filter(file => !shown.has(file));
+      const subdirectories = (contents?.subdirectories ?? []).filter(subdirectory => ![...shown].some(path => under(path, subdirectory)));
       directories.set(directory, {
         state: opened.has(directory) ? "open" : "encasing",
-        hiddenFiles: (contents?.files ?? []).filter(file => !shown.has(file)).length,
-        hiddenDirectories: (contents?.subdirectories ?? []).filter(subdirectory => ![...shown].some(path => under(path, subdirectory))).length
+        hiddenFiles: files.length,
+        hiddenDirectories: subdirectories.length,
+        hidden: { files, directories: subdirectories,
+          contents: { files: files.map(cellOf), subdirectories: subdirectories.map(subdirectory => nestedContents(subdirectory, 1, index, cellOf)) } }
       });
     }
   }
@@ -475,21 +492,30 @@ export function orderExploration(exploration: Exploration, options: OrderOptions
 }
 
 /** A closed directory's box as the picture counts it: the files under it at any depth, its immediate subdirectories, and what its skin draws. */
-function closedDirectory(path: string, index: ReadonlyMap<string, { files: string[]; subdirectories: string[] }>, cellOf: (file: string) => ClosedFile): ClosedDirectory {
-  const filesUnder = (directory: string): number => {
-    let files = 0;
-    for (const [other, contents] of index) if (under(other, directory)) files += contents.files.length;
-    return files;
-  };
-  // The skin draws a directory inside and one inside that; what stands deeper is told by the count under it.
-  const nested = (directory: string, depth: number): NestedContents => {
-    const own = index.get(directory);
-    return { name: directory.slice(directory.lastIndexOf("/") + 1), total: filesUnder(directory), files: (own?.files ?? []).map(cellOf),
-      subdirectories: depth > 0 ? (own?.subdirectories ?? []).map(deeper => nested(deeper, depth - 1)) : [] };
-  };
+function closedDirectory(path: string, index: DirectoryIndex, cellOf: (file: string) => ClosedFile): ClosedDirectory {
   const own = index.get(path);
-  const contents: ClosedContents = { files: (own?.files ?? []).map(cellOf), subdirectories: (own?.subdirectories ?? []).map(subdirectory => nested(subdirectory, 1)) };
-  return { path, name: path.slice(path.lastIndexOf("/") + 1), files: filesUnder(path), directories: own?.subdirectories.length ?? 0, contents };
+  const contents: ClosedContents = { files: (own?.files ?? []).map(cellOf), subdirectories: (own?.subdirectories ?? []).map(subdirectory => nestedContents(subdirectory, 1, index, cellOf)) };
+  return { path, name: path.slice(path.lastIndexOf("/") + 1), files: filesUnder(path, index), directories: own?.subdirectories.length ?? 0, contents };
+}
+
+/** What every directory holds, as {@link directoryIndex} gives it. */
+type DirectoryIndex = ReadonlyMap<string, { files: string[]; subdirectories: string[] }>;
+
+/** How many files stand under a directory at any depth. */
+function filesUnder(directory: string, index: DirectoryIndex): number {
+  let files = 0;
+  for (const [other, contents] of index) if (under(other, directory)) files += contents.files.length;
+  return files;
+}
+
+/**
+ * A directory inside, as a skin draws it: its name, the files under it, its own files' cells, and the directories inside
+ * it to `depth` more levels; what stands deeper is told by the count under it.
+ */
+function nestedContents(directory: string, depth: number, index: DirectoryIndex, cellOf: (file: string) => ClosedFile): NestedContents {
+  const own = index.get(directory);
+  return { name: directory.slice(directory.lastIndexOf("/") + 1), total: filesUnder(directory, index), files: (own?.files ?? []).map(cellOf),
+    subdirectories: depth > 0 ? (own?.subdirectories ?? []).map(deeper => nestedContents(deeper, depth - 1, index, cellOf)) : [] };
 }
 
 /** The deepest directory every given directory is in or under; "" when they share none. */

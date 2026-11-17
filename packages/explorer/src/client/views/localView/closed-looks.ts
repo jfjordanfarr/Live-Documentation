@@ -1,8 +1,9 @@
 /**
  * The arithmetic of a closed directory's looks: where the skin with cells draws a cell for each file and a small skin
- * for each directory inside, the outline of the skin's shapes, and how many cards a stack shows under its top card.
- * Pure, so that the page draws and the tests check the same numbers; the box's size is never an output, only the room
- * it already has.
+ * for each directory inside, the outline of the skin's shapes, and how many cards a stack shows under its top card; and
+ * the same marks in one line where a drawn directory's handle shows what it does not draw (the Hidden Files trial of
+ * 2026-11-17, `lineMarks`). Pure, so that the page draws and the tests check the same numbers; the box's size is never
+ * an output, only the room it already has.
  *
  * The owner, on the closed directory: it "doesn't indicate to me "this thing can pop open and let out a lot of stuff
  * into the screen" in the same way that we enjoy with our bags of cells in the 3D local map view"
@@ -237,6 +238,72 @@ export function cellField(contents: ClosedContents, bands: readonly Band[]): Cel
   return result;
 }
 
+/**
+ * One mark of a handle's line: what it stands for, a directory not drawn or a file not drawn, by its place in the
+ * contents; where its press reaches across, the mark and half the air on each side; and whether it fades under the
+ * line's veil, where it names nothing.
+ */
+export interface LineMark {
+  of: "directory" | "file";
+  index: number;
+  left: number;
+  right: number;
+  /** The mark's own box: its left edge, width and height, in the middle of the line. */
+  x: number;
+  width: number;
+  height: number;
+  veiled: boolean;
+}
+
+/** A handle's line of marks: the field drawn, each mark shown, the width every mark would take, and how many it holds. */
+export interface MarkLine { field: CellField; marks: LineMark[]; natural: number; held: number }
+
+/**
+ * The marks in a handle's line (2026-11-17, a trial in place of the words "+2 files"): what a directory drawn only around
+ * the pinned picture does not draw, as a closed directory's skin draws what it holds, one kind of mark at one size: a
+ * small skin for each directory not drawn first, around its own files' cells, then a cell for each file not drawn, in
+ * one row in the middle of the line, at the air the closed field's one-row band keeps between them. As many whole marks
+ * as fit across are shown, each with its press's reach, the mark and half the air on each side; where more are held than
+ * fit, the last mark shown fades under a veil and names nothing, as a closed field's end does; where not one fits, none
+ * is. So the marks shown, the one veiled among them and those left out are always as many as the count says. Pure: the
+ * line's room is an input, never an output.
+ */
+export function lineMarks(contents: ClosedContents, room: CellRoom): MarkLine {
+  const { cell, gap, itemGap } = CELLS;
+  const items = [
+    ...contents.subdirectories.map((sub, index) => ({ of: "directory" as const, index, plan: planSkin(sub, 1, Infinity), after: itemGap })),
+    ...contents.files.map((file, index) => ({ of: "file" as const, index, plan: null, after: gap }))
+  ];
+  const widthOf = (item: (typeof items)[number]): number => item.plan?.width ?? cell;
+  // Each mark stands at the closed field's spacing; its press reaches to the middle of the air on each side of it.
+  let at = items.length ? items[0].after / 2 : 0, previous = items.length ? items[0].after : 0;
+  const laid = items.map(item => {
+    const x = at, left = x - previous / 2, right = x + widthOf(item) + item.after / 2;
+    at = x + widthOf(item) + item.after;
+    previous = item.after;
+    return { item, x, left, right };
+  });
+  const natural = laid.length ? laid[laid.length - 1].right : 0;
+  const field: CellField = { cells: [], skins: [], veils: [] };
+  const result: MarkLine = { field, marks: [], natural, held: items.length };
+  if (room.height < SKIN_HEIGHT - 1e-6) return result;
+  const shown = laid.filter(each => each.right <= room.width + 1e-6).length;
+  const middle = room.height / 2;
+  for (const [order, { item, x, left, right }] of laid.slice(0, shown).entries()) {
+    const last = shown < laid.length && order === shown - 1;
+    if (item.plan) {
+      const skin = placeSkin(contents.subdirectories[item.index], item.plan, x, middle);
+      field.skins.push(skin);
+      if (skin.veiled) field.veils.push({ of: "skin", x: skin.x + skin.w - (cell + CELLS.pad), y: skin.y, w: cell + CELLS.pad, h: skin.h });
+    } else {
+      const file = contents.files[item.index];
+      field.cells.push({ x: x + cell / 2, y: middle, r: cell / 2, kind: file.kind, ...(last ? null : { name: file.name }), ...marbleOf(file) });
+    }
+    if (last) field.veils.push({ of: "field", x, y: middle - SKIN_HEIGHT / 2, w: right - x, h: SKIN_HEIGHT });
+    result.marks.push({ of: item.of, index: item.index, left, right, x, width: widthOf(item), height: item.plan?.height ?? cell, veiled: last });
+  }
+  return result;
+}
 
 
 

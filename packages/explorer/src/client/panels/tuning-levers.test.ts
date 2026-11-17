@@ -17,8 +17,9 @@ describe("tuning help", () => {
     const ids = templateControlIds();
     // Width Cost joined the 2D layout group on 2026-11-13, beside Height Cost; Closed Directory and Zoomed Out Fully the same day;
     // Descriptions Zoomed Out on 2026-11-15, with the closed directory's two choices that made it 62; Return Cost on
-    // 2026-11-16; the Palette, the colour pass's, on 2026-11-17, and Marbles beside it the same day (the marble trial).
-    expect(ids.length).toBe(66);
+    // 2026-11-16; the Palette, the colour pass's, on 2026-11-17, and Marbles beside it the same day (the marble trial);
+    // Hidden Files the same day, the trial of cells in place of an encasing directory's count.
+    expect(ids.length).toBe(67);
     expect(Object.keys(TUNING_HELP).sort()).toEqual([...ids].sort());
   });
 
@@ -74,7 +75,7 @@ describe("the template's initial tuning values", () => {
   it("equal the defaults in getDefaultTuning for every control", () => {
     const defaults = getDefaultTuning();
     const ids = templateControlIds();
-    expect(ids.length).toBe(66);
+    expect(ids.length).toBe(67);
     for (const id of ids) {
       const { group, key } = settingOf(id, defaults);
       const expected = (defaults[group] as unknown as Record<string, unknown>)[key];

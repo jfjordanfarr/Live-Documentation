@@ -153,6 +153,28 @@ describe("shared packing preferences", () => {
     }
   });
 
+  it("carries Hidden Files only when it is the cells, the trial of 2026-11-17, and reads its absence as the count", () => {
+    const plain = getDefaultTuning();
+    expect(plain.localMap.hiddenFiles).toBe("count");
+    expect(layoutSettingsOf(plain).localMap).not.toHaveProperty("hiddenFiles");
+    expect(readLayoutSettings({ localMap: { hiddenFiles: "count" } })).toBeUndefined();
+    expect(readLayoutSettings({ localMap: { hiddenFiles: "sparkles" } })).toBeUndefined();
+    // Cells under name, the third value (2026-11-17), is carried as Cells beside name is.
+    for (const value of ["cells", "under"] as const) {
+      const chosen = getDefaultTuning();
+      chosen.localMap.hiddenFiles = value;
+      const carried = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(chosen) }));
+      expect(carried.layout?.localMap?.hiddenFiles).toBe(value);
+      expect(applyLayoutSettings(getDefaultTuning(), carried.layout).localMap.hiddenFiles).toBe(value);
+    }
+    const cells = getDefaultTuning();
+    cells.localMap.hiddenFiles = "cells";
+    // A link made with the count shows the count in a browser whose own tuning holds the cells; no link keeps the browser's own.
+    const unsaid = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(plain) }));
+    expect(applyLayoutSettings(cells, unsaid.layout).localMap.hiddenFiles).toBe("count");
+    expect(applyLayoutSettings(cells, undefined).localMap.hiddenFiles).toBe("cells");
+  });
+
   it("opens a link in the three looks unless it says the ladder, which it carries only when chosen (2026-11-13)", () => {
     // The default is the three looks, and a link made with it does not write it.
     const three = getDefaultTuning();

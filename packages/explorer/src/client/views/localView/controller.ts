@@ -114,6 +114,8 @@ export class LocalViewController implements LocalViewApi {
   lastInteracted: string | null = null;
   /** When the action named a symbol, keep that row under the eye as rows reorder within its card. */
   lastInteractedSymbol: string | null = null;
+  /** The directory whose handle's cell a pin is being pressed from, until the pin is captured ({@link pinFromHandle}). */
+  private pinHeldDirectory: string | null = null;
   /** Cards whose complete symbol list the person has explicitly opened. */
   readonly expandedCards = new Set<string>();
   /** The card under the pointer or holding the keyboard's focus while opened directories stand in flow order; null otherwise. */
@@ -755,6 +757,20 @@ export class LocalViewController implements LocalViewApi {
   /** Capture a 2D pin action's screen anchor and keyboard focus; shared pin policy belongs to the application. */
   capturePinChange(nodeId: string, symbol: string, nextSubjectId: string | null, closeExpansion = false): LocalExplorationFrame {
     if (closeExpansion) this.expandedCards.delete(nodeId);
+    const directory = this.pinHeldDirectory;
+    this.pinHeldDirectory = null;
+    if (directory !== null) {
+      // A pin pressed on a handle's cell: the eye is on the handle, so the change is captured as a press on that handle
+      // is, its label held still and its arrival settled; the keyboard's focus then stays among the handle's marks.
+      this.lastCenteredNodeId = nextSubjectId;
+      const label = `.local-directory-label[data-directory="${CSS.escape(directory)}"]`;
+      const frame = this.captureDirectoryChange(directory);
+      return { ...frame, afterRender: () => {
+        const marked = document.activeElement?.closest(`${label} .local-directory-cells`) ? document.activeElement as HTMLElement : null;
+        frame.afterRender();
+        marked?.focus({ preventScroll: true });
+      } };
+    }
     this.lastInteracted = nodeId;
     this.lastInteractedSymbol = symbol === "*" ? null : symbol;
     // A subject changed by a pin must not be mistaken for a direct choice that re-fits the camera.
@@ -766,6 +782,15 @@ export class LocalViewController implements LocalViewApi {
       ? `.node-card[data-id="${CSS.escape(nodeId)}"] .local-file-pin`
       : `${selector} .local-symbol-pin`;
     return this.captureExplorationFrame(selector, focusSelector, ".local-file-name, .local-directory-closed__name, .empty-hint");
+  }
+
+  /**
+   * Pin a file from a cell in its directory's handle (the Hidden Files trial, 2026-11-17): the existing pin act, with
+   * what stays still chosen as a press on that handle chooses it.
+   */
+  pinFromHandle(file: string, directory: string): void {
+    this.pinHeldDirectory = directory;
+    try { this.options.onPressPin(file, "*"); } finally { this.pinHeldDirectory = null; }
   }
 
   /** Capture an opened directory's label or closed box before the application changes the opened set. */

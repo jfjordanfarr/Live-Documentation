@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/tuning.ts
-- Generated At: 2026-11-17T04:51:07.102Z
+- Generated At: 2026-11-17T13:35:09.417Z
 
 ## Authored
 ### Purpose
@@ -102,6 +102,7 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`types.DIRECTORY_LAYOUTS`](../types.ts.mdmd.md#symbol-directory_layouts)
 - [`types.ExplorerState`](../types.ts.mdmd.md#symbol-explorerstate)
 - [`types.GROUP_WRAPPERS`](../types.ts.mdmd.md#symbol-group_wrappers)
+- [`types.HIDDEN_FILES_LOOKS`](../types.ts.mdmd.md#symbol-hidden_files_looks)
 - [`types.MARBLE_CHOICES`](../types.ts.mdmd.md#symbol-marble_choices)
 - [`types.OVERVIEW_FILES`](../types.ts.mdmd.md#symbol-overview_files)
 - [`template.export-layout-settings`](../../shared/template.html.mdmd.md#symbol-export-layout-settings)
@@ -115,6 +116,7 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`template.tuning-descriptions-zoomed-out`](../../shared/template.html.mdmd.md#symbol-tuning-descriptions-zoomed-out)
 - [`template.tuning-directory-layout`](../../shared/template.html.mdmd.md#symbol-tuning-directory-layout)
 - [`template.tuning-force-group-wrappers`](../../shared/template.html.mdmd.md#symbol-tuning-force-group-wrappers)
+- [`template.tuning-hidden-files`](../../shared/template.html.mdmd.md#symbol-tuning-hidden-files)
 - [`template.tuning-history-axis`](../../shared/template.html.mdmd.md#symbol-tuning-history-axis)
 - [`template.tuning-history-change-emphasis`](../../shared/template.html.mdmd.md#symbol-tuning-history-change-emphasis)
 - [`template.tuning-history-granularity`](../../shared/template.html.mdmd.md#symbol-tuning-history-granularity)

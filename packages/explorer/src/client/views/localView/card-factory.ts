@@ -8,10 +8,10 @@
  * @module card-factory
  */
 
-import { compareSymbolNames, type ClosedDirectory } from "./branches";
-import { cellField, fieldBands, SHAPE_CORNER, stackEdges, tabOutline, type Cell, type CellField, type ClosedContents, type Rect, type Skin } from "./closed-looks";
+import { compareSymbolNames, type ClosedDirectory, type HiddenContents } from "./branches";
+import { cellField, CELLS, fieldBands, lineMarks, SHAPE_CORNER, stackEdges, tabOutline, type Cell, type CellField, type ClosedContents, type Rect, type Skin } from "./closed-looks";
 import { parentDirectory } from "./directory-bands";
-import { chevronMarkup } from "./directory-handle";
+import { chevronMarkup, HANDLE_LINE } from "./directory-handle";
 import type { ColumnRole } from "./types";
 import { NODE_HUB } from "./wire-gathering";
 import { countOf } from "./word-seams";
@@ -507,23 +507,26 @@ function skinPath(skin: Rect, shape: ClosedDirectoryShape, mask: string): string
  * out, names no file. A skin that holds more than it shows keeps its outline and fades its last cell; the field's own
  * end fades whatever stands there. In the folder's shape a skin's contents stand a unit lower, under its small tab.
  */
-function fieldMarkup(field: CellField, width: number, height: number, shape: ClosedDirectoryShape): string {
+function fieldMarkup(field: CellField, width: number, height: number, shape: ClosedDirectoryShape, marked = false): string {
   const id = `local-cells-veil-${veils += 1}`;
   const ends = field.veils.filter(veil => veil.of === "field");
   // Two masks: the cells fade under every veil, the skins' outlines only under the field's own end.
   const cellsMask = field.veils.length ? ` mask="url(#${id}-cells)"` : "", skinsMask = ends.length ? ` mask="url(#${id}-skins)"` : "";
-  const circle = (c: Cell): string => {
+  // A handle's line marks each of its own marks by its place among them, the skins first, so that its press can light it.
+  const mark = (order: number | undefined): string => (order === undefined ? "" : ` data-mark="${order}"`);
+  const circle = (c: Cell, order?: number): string => {
     // The kind's colour is the stylesheet's (local.css), from the palette, so that a palette chosen later re-colours the
     // cell; so is the marble's far tint, mixed there from the two shares the cell carries (2026-11-17).
     const shares = c.marble ? ` style="--offers-share: ${c.marble.offers.toFixed(4)}; --uses-share: ${c.marble.uses.toFixed(4)}"` : "";
-    const at = `cx="${c.x.toFixed(2)}" cy="${c.y.toFixed(2)}" r="${c.r}" data-kind="${spatialKindOf(c.kind)}"${shares}`;
+    const at = `cx="${c.x.toFixed(2)}" cy="${c.y.toFixed(2)}" r="${c.r}" data-kind="${spatialKindOf(c.kind)}"${shares}${mark(order)}`;
     return c.name ? `<circle class="local-cell local-cell--named" ${at}><title>${escapeText(c.name)}</title></circle>` : `<circle class="local-cell" ${at}/>`;
   };
-  const cells = (list: readonly Cell[]): string => (list.length ? `<g${cellsMask}>${list.map(circle).join("")}</g>` : "");
+  const cells = (list: readonly Cell[], from?: number): string =>
+    (list.length ? `<g${cellsMask}>${list.map((c, index) => circle(c, from === undefined ? undefined : from + index)).join("")}</g>` : "");
   const drop = shape === "tab" ? ` transform="translate(0 ${NEST_TAB.drop})"` : "";
-  const nest = (skin: Skin): string => `<g class="local-cell-nest"><title>${escapeText(skin.name)}: ${countsOf(skin.total, skin.directories)}</title>`
-    + `${skinPath(skin, shape, skinsMask)}<g${drop}>${skin.skins.map(nest).join("")}${cells(skin.cells)}</g></g>`;
-  const parts = `${field.skins.map(nest).join("")}${cells(field.cells)}`;
+  const nest = (skin: Skin, order?: number): string => `<g class="local-cell-nest"${mark(order)}><title>${escapeText(skin.name)}: ${countsOf(skin.total, skin.directories)}</title>`
+    + `${skinPath(skin, shape, skinsMask)}<g${drop}>${skin.skins.map(inner => nest(inner)).join("")}${cells(skin.cells)}</g></g>`;
+  const parts = `${field.skins.map((skin, index) => nest(skin, marked ? index : undefined)).join("")}${cells(field.cells, marked ? field.skins.length : undefined)}`;
   if (!field.veils.length) return `<g>${parts}</g>`;
   const frame = `maskUnits="userSpaceOnUse" x="-4" y="-4" width="${(width + 8).toFixed(2)}" height="${(height + 8).toFixed(2)}"><rect x="-4" y="-4" width="${(width + 8).toFixed(2)}" height="${(height + 8).toFixed(2)}" fill="${MASK_KEEP}"/>`;
   const gradient = (veil: Rect, index: number): string => `<linearGradient id="${id}-${index}" x1="${veil.x.toFixed(2)}" x2="${(veil.x + veil.w).toFixed(2)}" y1="0" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="${MASK_KEEP}"/><stop offset="1" stop-color="${MASK_FADE}"/></linearGradient>`;
@@ -534,6 +537,167 @@ function fieldMarkup(field: CellField, width: number, height: number, shape: Clo
     + (ends.length ? `<mask id="${id}-skins" ${frame}${indexed.filter(each => each.veil.of === "field").map(each => fade(each.veil, each.index)).join("")}</mask>` : "")
     + `</defs><g>${parts}</g>`;
 }
+
+/** What a handle's marks do when pressed: a file's cell pins the file, a directory's skin opens the directory. */
+export interface HiddenCellActions {
+  pin(file: string): void;
+  open(directory: string): void;
+}
+
+/**
+ * What a directory drawn only around the pinned picture does not draw, as marks in its handle's line in place of the
+ * count's words (the Hidden Files trial, 2026-11-17; the owner: "Could those be represented as cute little cells that
+ * could be clicked on to expand them into fuller-sized nodes?"): a closed directory's own cell for each file and its
+ * small skin for each directory, drawn by the closed look's own arithmetic and markup, as many whole marks as the line
+ * leaves room for after the directory's name, the last fading under a veil where more are held (`lineMarks`). The line
+ * is drawn again whenever the room the line leaves it changes, at every look, since from the connections look out the
+ * whole line is held at the file names' size. What the marks are and do is {@link markToolbar}'s.
+ */
+export function createHiddenCells(directory: string, hidden: HiddenContents, style: ClosedStyle, actions: HiddenCellActions): HTMLElement {
+  const { contents } = hidden;
+  const line = markToolbar("span", "local-directory-cells", directory, hidden, style, actions, CELLS_LEAD, (width, height) => {
+    const drawn = lineMarks(contents, { width: Math.max(0, width - CELLS_LEAD), height: height || HANDLE_LINE });
+    const places = new Array<MarkPlace | null>(drawn.held).fill(null);
+    for (const [order, mark] of drawn.marks.entries()) {
+      if (!mark.veiled) places[order] = { left: CELLS_LEAD + mark.left, top: 0, width: mark.right - mark.left, height: height || HANDLE_LINE, x: mark.x - mark.left, w: mark.width, h: mark.height, drawn: order };
+    }
+    return { field: drawn.field, places, width: Math.max(0, width - CELLS_LEAD), height: height || HANDLE_LINE };
+  });
+  line.style.maxWidth = `${(CELLS_LEAD + lineMarks(contents, { width: Infinity, height: HANDLE_LINE }).natural).toFixed(2)}px`;
+  return line;
+}
+
+/**
+ * The same marks under the handle's line (Hidden Files' "Cells under name", 2026-11-17, on the root's review: with the
+ * path kept, the line at reading size held three marks of history's twenty-three), at the reading look, in the height
+ * the handle's strip already keeps free under the line, as a closed directory's own field: `fieldBands` and `cellField`
+ * on that room, skins first, the field's own veils. A cell that names its file and a small skin that is not faded at the
+ * field's end are the marks pressed; a cell standing for what the room leaves out, or fading under a veil, is drawn and
+ * names nothing. Its press reaches over the cell and half the air on each side, as wide as a pitch and as tall as a row
+ * of the staggered pair, so that the presses of neighbouring cells do not cross. The stylesheet shows the field at the
+ * reading look and the line's marks from the connections look out.
+ */
+export function createHiddenField(directory: string, hidden: HiddenContents, style: ClosedStyle, actions: HiddenCellActions): HTMLElement {
+  const { contents } = hidden;
+  const { cell, gap, itemGap } = CELLS;
+  const pitch = cell + gap, row = pitch * Math.sqrt(3) / 2, directories = contents.subdirectories.length;
+  return markToolbar("div", "local-directory-field", directory, hidden, style, actions, 0, (width, height) => {
+    const field = cellField(contents, fieldBands({ width, height }));
+    const ends = field.veils.filter(veil => veil.of === "field");
+    const faded = (x: number, y: number): boolean => ends.some(veil => x >= veil.x - 1e-6 && x <= veil.x + veil.w + 1e-6 && y >= veil.y && y <= veil.y + veil.h);
+    const places = new Array<MarkPlace | null>(directories + contents.files.length).fill(null);
+    for (const [drawn, skin] of field.skins.entries()) {
+      const index = contents.subdirectories.findIndex(sub => sub.name === skin.name);
+      if (index >= 0 && !faded(skin.x + skin.w / 2, skin.y + skin.h / 2)) places[index] = { left: skin.x - itemGap / 2, top: skin.y, width: skin.w + itemGap, height: skin.h, x: itemGap / 2, w: skin.w, h: skin.h, drawn };
+    }
+    for (const [at, c] of field.cells.entries()) {
+      const index = c.name === undefined ? -1 : contents.files.findIndex(file => file.name === c.name);
+      if (index >= 0) places[directories + index] = { left: c.x - pitch / 2, top: c.y - row / 2, width: pitch, height: row, x: pitch / 2 - c.r, w: 2 * c.r, h: 2 * c.r, drawn: field.skins.length + at };
+    }
+    return { field, places, width, height };
+  });
+}
+
+/** Where a mark is pressed and drawn: its button's box, and the mark's own box within it for its ring, in the drawing's units; and its place in the drawing. */
+interface MarkPlace { left: number; top: number; width: number; height: number; x: number; w: number; h: number; drawn: number }
+
+/** A drawing of a directory's marks in a room: what to draw, and where each mark stands, in the toolbar's order, or null where it is not pressed. */
+type MarkDrawing = (width: number, height: number) => { field: CellField; places: ReadonlyArray<MarkPlace | null>; width: number; height: number };
+
+/**
+ * A directory's marks as the reader meets them, in the line or under it: a button for each directory and each file it
+ * does not draw, in that order, with no words of its own on the map. A cell's hover says its file's name alone and its
+ * press pins the file, the existing pin act, so that it becomes a card with its wires; a skin's says its directory's name
+ * and what it holds, and its press opens the directory. For assistive technology a cell is "Pin <path>" and a skin "Open
+ * <path>". The marks of one directory are one stop in the tab order, a toolbar whose arrow keys move among the marks
+ * pressed, in reading order. They are drawn quieter than the cards, the ground under the wires, and lit under the
+ * pointer or the focus (local.css). The drawing is made again whenever the room changes, down to none, so that a room
+ * left no width keeps no mark of before; a mark the room does not show is not pressed.
+ */
+function markToolbar(tag: "span" | "div", className: string, directory: string, hidden: HiddenContents, style: ClosedStyle, actions: HiddenCellActions, svgLeft: number, draw: MarkDrawing): HTMLElement {
+  const { contents } = hidden;
+  const element: HTMLElement = document.createElement(tag);
+  element.className = `${className} local-closed-cells--${style.cells}`;
+  element.dataset.directory = directory;
+  element.setAttribute("role", "toolbar");
+  element.setAttribute("aria-label", `${directory}: +${countsOf(hidden.files.length, hidden.directories.length)}`);
+  const svg = document.createElementNS(SVG, "svg");
+  svg.classList.add("local-handle-cells");
+  svg.setAttribute("aria-hidden", "true");
+  svg.style.left = `${svgLeft}px`;
+  element.append(svg);
+  const directories = hidden.directories.length;
+  const buttons = [...hidden.directories, ...hidden.files].map((path, order) => {
+    const of = order < directories ? "directory" : "file";
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = `local-directory-cell local-directory-cell--${of}`;
+    button.tabIndex = order === 0 ? 0 : -1;
+    button.dataset.mark = String(order);
+    button.dataset.path = path;
+    if (of === "file") {
+      button.setAttribute("aria-label", `Pin ${path}`);
+      button.title = contents.files[order - directories].name;
+      button.addEventListener("click", event => { event.stopPropagation(); actions.pin(path); });
+    } else {
+      const sub = contents.subdirectories[order];
+      button.setAttribute("aria-label", `Open ${path}`);
+      button.title = `${sub.name}: ${countsOf(sub.total, sub.subdirectories.length)}`;
+      button.addEventListener("click", event => { event.stopPropagation(); actions.open(path); });
+    }
+    const light = (on: boolean): void => { if (button.dataset.drawn) svg.querySelector(`[data-mark="${button.dataset.drawn}"]`)?.classList.toggle("is-lit", on); };
+    button.addEventListener("pointerenter", () => light(true));
+    button.addEventListener("pointerleave", () => light(button === document.activeElement));
+    button.addEventListener("focus", () => light(true));
+    button.addEventListener("blur", () => light(button.matches(":hover")));
+    return button;
+  });
+  element.append(...buttons);
+  const shown = (): HTMLButtonElement[] => buttons.filter(button => !button.hidden);
+  // One stop in the tab order: the arrow keys move the stop among the marks shown, Home and End to their ends.
+  element.addEventListener("keydown", event => {
+    const list = shown(), at = list.indexOf(event.target as HTMLButtonElement);
+    if (at < 0) return;
+    const to = event.key === "ArrowRight" || event.key === "ArrowDown" ? Math.min(list.length - 1, at + 1)
+      : event.key === "ArrowLeft" || event.key === "ArrowUp" ? Math.max(0, at - 1)
+        : event.key === "Home" ? 0 : event.key === "End" ? list.length - 1 : -1;
+    if (to < 0) return;
+    event.preventDefault();
+    event.stopPropagation();
+    for (const button of buttons) button.tabIndex = -1;
+    list[to].tabIndex = 0;
+    list[to].focus({ preventScroll: true });
+  });
+  const redraw = (): void => {
+    const { field, places, width, height } = draw(element.clientWidth, element.clientHeight);
+    svg.setAttribute("width", width.toFixed(2));
+    svg.setAttribute("height", height.toFixed(2));
+    svg.setAttribute("viewBox", `0 0 ${width.toFixed(2)} ${height.toFixed(2)}`);
+    svg.innerHTML = field.cells.length || field.skins.length ? fieldMarkup(field, width, height, style.shape, true) : "";
+    for (const [order, button] of buttons.entries()) {
+      const place = places[order];
+      button.hidden = !place;
+      if (!place) { delete button.dataset.drawn; continue; }
+      button.dataset.drawn = String(place.drawn);
+      Object.assign(button.style, { left: `${place.left}px`, top: `${place.top}px`, width: `${place.width}px`, height: `${place.height}px` });
+      button.style.setProperty("--mark-x", place.x.toFixed(2));
+      button.style.setProperty("--mark-w", place.w.toFixed(2));
+      button.style.setProperty("--mark-h", place.h.toFixed(2));
+      if (button === document.activeElement || button.matches(":hover")) svg.querySelector(`[data-mark="${place.drawn}"]`)?.classList.add("is-lit");
+    }
+    // The stop stays on a mark that is shown.
+    const list = shown();
+    if (list.length && !list.some(button => button.tabIndex === 0)) { for (const button of buttons) button.tabIndex = -1; list[0].tabIndex = 0; }
+  };
+  if (typeof ResizeObserver !== "undefined") new ResizeObserver(() => { if (element.isConnected) redraw(); }).observe(element);
+  return element;
+}
+
+/**
+ * The air between the handle and its first mark, in the line's own units: the row's gap, which the line's box takes back
+ * with a margin of its own (local.css), so that a line the room leaves no mark takes no room from the name either.
+ */
+const CELLS_LEAD = 4;
 
 /** "3 files, 2 directories", either part left out at zero; "empty" when both are. */
 export function countsOf(files: number, directories: number): string {

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/localView/closed-looks.test.ts
-- Generated At: 2026-11-16T02:12:44.229Z
+- Generated At: 2026-11-17T13:35:12.395Z
 
 ## Authored
 ### Purpose
@@ -34,6 +34,7 @@ _No public symbols detected_
 - [`closed-looks.Skin`](./closed-looks.ts.mdmd.md#symbol-skin)
 - [`closed-looks.cellField`](./closed-looks.ts.mdmd.md#symbol-cellfield-function)
 - [`closed-looks.fieldBands`](./closed-looks.ts.mdmd.md#symbol-fieldbands)
+- [`closed-looks.lineMarks`](./closed-looks.ts.mdmd.md#symbol-linemarks)
 - [`closed-looks.stackEdges`](./closed-looks.ts.mdmd.md#symbol-stackedges)
 - [`closed-looks.tabOutline`](./closed-looks.ts.mdmd.md#symbol-taboutline)
 - `vitest` - `describe`, `expect`, `it`

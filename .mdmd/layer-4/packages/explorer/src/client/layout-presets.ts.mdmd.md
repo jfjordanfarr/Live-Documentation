@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/layout-presets.ts
-- Generated At: 2026-11-16T05:14:27.825Z
+- Generated At: 2026-11-17T13:35:08.917Z
 
 ## Authored
 ### Purpose
@@ -87,7 +87,7 @@ Return a fresh tuning record with both representations' packing set together.
 
 #### `readLayoutSettings` {#symbol-readlayoutsettings}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L61)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L62)
 - Returns: [`LayoutSettings`](#symbol-layoutsettings)
 
 ##### `readLayoutSettings` — Summary
@@ -102,11 +102,12 @@ link made between November 10 and 13 says either, since the default was written.
 carried since Flow became the default (2026-11-13); a link made on November 12 or 13 says "flow" when Flow was chosen
 and nothing when the grid was, so such a link now opens in Flow either way, and a link that says "grid" exists only
 from now on. Closed Directory (2026-11-13): only a trial's look is carried, and its absence reads as today's box;
-Descriptions Zoomed Out (2026-11-13) likewise: only the first line is carried, and its absence reads as hidden.
+Descriptions Zoomed Out (2026-11-13) likewise: only the first line is carried, and its absence reads as hidden; and Hidden
+Files (2026-11-17): only the cells are carried, and their absence reads as the count.
 
 #### `layoutSettingsOf` {#symbol-layoutsettingsof}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L98)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L101)
 - Returns: [`LayoutSettings`](#symbol-layoutsettings)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 
@@ -115,7 +116,7 @@ Snapshot the controls that affect packing and spatial encodings, independent of 
 
 #### `applyLayoutSettings` {#symbol-applylayoutsettings}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L113)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L116)
 - Returns: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig); `settings`: [`LayoutSettings`](#symbol-layoutsettings)
 
@@ -140,6 +141,7 @@ picture). So a link made with the defaults shows them in a browser whose own tun
 - [`types.DIRECTORY_LAYOUTS`](./types.ts.mdmd.md#symbol-directory_layouts)
 - [`types.ForceGraphTuning`](./types.ts.mdmd.md#symbol-forcegraphtuning)
 - [`types.GROUP_WRAPPERS`](./types.ts.mdmd.md#symbol-group_wrappers)
+- [`types.HIDDEN_FILES_LOOKS`](./types.ts.mdmd.md#symbol-hidden_files_looks)
 - [`types.LocalMapTuning`](./types.ts.mdmd.md#symbol-localmaptuning)
 - [`types.OVERVIEW_FILES`](./types.ts.mdmd.md#symbol-overview_files)
 - [`types.TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)

@@ -115,6 +115,16 @@ export interface LocalMapTuning {
    */
   closedCells: ClosedCellColour;
   /**
+   * What a directory drawn only around what the pins need says of the files and directories it does not draw (a trial
+   * for the owner's eye, 2026-11-17, after "Could those be represented as cute little cells that could be clicked on to
+   * expand them into fuller-sized nodes?"): "count", the default, the words "+2 files" in its handle's line; "cells", a
+   * closed directory's own cell for each such file and its small skin for each such directory, which a press pins or
+   * opens, beside the name in the handle's line; "under", the same marks as a closed directory's field under the line
+   * in the strip's free height at the reading look, the line keeping the count's room for the path, and beside the name
+   * from the connections look out, where the held line fills the strip. Looks only: no box or card moves for it.
+   */
+  hiddenFiles: HiddenFilesLook;
+  /**
    * With the three looks, what the overview look draws (a trial for the owner's eye, 2026-11-13): "keep", the default,
    * every card at the size its rows give it, as at the closer looks; "files", every file card in the compact form an
    * opened directory's member has in Flow, one line for each pair of cards where one uses the other, laid out again for
@@ -323,6 +333,15 @@ export type ClosedCellColour = "kind" | "grey";
 
 /** Every cell colouring, in the order the control offers them; the first is the default. */
 export const CLOSED_CELL_COLOURS: readonly ClosedCellColour[] = ["kind", "grey"];
+
+/**
+ * What a drawn directory's handle says of what it does not draw: the count's words; a cell for each beside its name; or, at the
+ * reading look, a cell for each under its name, in the strip's free height, and beside it from the connections look out.
+ */
+export type HiddenFilesLook = "count" | "cells" | "under";
+
+/** Every Hidden Files choice, in the order the control offers them; the first, the count, is the default. */
+export const HIDDEN_FILES_LOOKS: readonly HiddenFilesLook[] = ["count", "cells", "under"];
 
 /**
  * What the 2D map's overview look draws: files only, as in Flow, or cards at their size. Files only was a trial of

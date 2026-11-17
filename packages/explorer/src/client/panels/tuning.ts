@@ -8,7 +8,7 @@
 import { applyMarbles, applyPalette } from "../dom";
 import { layoutSettingsOf } from "../layout-presets";
 import { DEFAULT_PALETTE, isPaletteName } from "../palette";
-import { CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, MARBLE_CHOICES, OVERVIEW_FILES, type ExplorerState } from "../types";
+import { CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, HIDDEN_FILES_LOOKS, MARBLE_CHOICES, OVERVIEW_FILES, type ExplorerState } from "../types";
 import { TUNING_HELP, tuningHelpId } from "./tuning-levers";
 
 /** Callback for when tuning values change */
@@ -68,11 +68,16 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   const closedDirectorySelect = document.getElementById("tuning-closed-directory") as HTMLSelectElement | null;
   const closedShapeSelect = document.getElementById("tuning-closed-shape") as HTMLSelectElement | null;
   const closedCellsSelect = document.getElementById("tuning-closed-cells") as HTMLSelectElement | null;
+  const hiddenFilesSelect = document.getElementById("tuning-hidden-files") as HTMLSelectElement | null;
   const paletteSelect = document.getElementById("tuning-palette") as HTMLSelectElement | null;
   const marblesSelect = document.getElementById("tuning-marbles") as HTMLSelectElement | null;
-  /** The skin's shape and its cells' colour are choices of the skin with cells alone: shown only while it is chosen. */
+  /**
+   * The skin's shape and its cells' colour are choices of the cells alone: shown only while a closed directory's skin or
+   * a handle's hidden files draw them.
+   */
   const syncClosedChoices = (): void => {
-    for (const row of document.querySelectorAll<HTMLElement>("[data-closed-cells-only]")) row.hidden = state.tuning.localMap.closedDirectory !== "cells";
+    const { closedDirectory, hiddenFiles } = state.tuning.localMap;
+    for (const row of document.querySelectorAll<HTMLElement>("[data-closed-cells-only]")) row.hidden = closedDirectory !== "cells" && hiddenFiles === "count";
   };
   const overviewFilesSelect = document.getElementById("tuning-overview-files") as HTMLSelectElement | null;
   const descriptionsZoomedOutSelect = document.getElementById("tuning-descriptions-zoomed-out") as HTMLSelectElement | null;
@@ -183,6 +188,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     if (closedDirectorySelect) closedDirectorySelect.value = state.tuning.localMap.closedDirectory;
     if (closedShapeSelect) closedShapeSelect.value = state.tuning.localMap.closedShape;
     if (closedCellsSelect) closedCellsSelect.value = state.tuning.localMap.closedCells;
+    if (hiddenFilesSelect) hiddenFilesSelect.value = state.tuning.localMap.hiddenFiles;
     if (paletteSelect) paletteSelect.value = state.tuning.appearance.palette;
     if (marblesSelect) marblesSelect.value = state.tuning.appearance.marbles;
     syncClosedChoices();
@@ -284,6 +290,15 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   if (closedDirectorySelect) {
     closedDirectorySelect.addEventListener("change", () => {
       state.tuning.localMap.closedDirectory = CLOSED_DIRECTORY_LOOKS.find(choice => choice === closedDirectorySelect.value) ?? CLOSED_DIRECTORY_LOOKS[0];
+      syncClosedChoices();
+      onTuningChange();
+      if (state.view === "map" && state.perspective === "2d") onRender();
+    });
+  }
+  // What an encasing directory's handle says of what it does not draw changes the handle's drawing, never a size.
+  if (hiddenFilesSelect) {
+    hiddenFilesSelect.addEventListener("change", () => {
+      state.tuning.localMap.hiddenFiles = HIDDEN_FILES_LOOKS.find(choice => choice === hiddenFilesSelect.value) ?? HIDDEN_FILES_LOOKS[0];
       syncClosedChoices();
       onTuningChange();
       if (state.view === "map" && state.perspective === "2d") onRender();

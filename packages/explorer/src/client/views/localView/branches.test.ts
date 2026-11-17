@@ -392,8 +392,12 @@ describe("directories opening in the Local Map (2026-10-08)", () => {
     const pins = addPin(EMPTY_PIN_SET, "b/z.ts", "*");
     const plain = exploreBranches(byId.get("b/z.ts")!, graph, pins, () => true);
     expect(plain.subgraph.nodes.map(file => file.id).sort()).toEqual(["a/x.ts", "b/z.ts"]);
-    expect(plain.directories.get("a")).toEqual({ state: "encasing", hiddenFiles: 1, hiddenDirectories: 1 });
-    expect(plain.directories.get("b")).toEqual({ state: "encasing", hiddenFiles: 1, hiddenDirectories: 0 });
+    expect(plain.directories.get("a")).toMatchObject({ state: "encasing", hiddenFiles: 1, hiddenDirectories: 1 });
+    // What the handle's cells draw in place of the count (2026-11-17): the same files and directories, by path, and as a
+    // closed skin draws them, so that the count is their number.
+    expect(plain.directories.get("a")!.hidden).toEqual({ files: ["a/y.ts"], directories: ["a/sub"], contents: { files: [{ name: "y.ts", kind: "implementation", marble: { offers: 0, uses: expect.closeTo(0.2, 6) } }],
+      subdirectories: [{ name: "sub", total: 2, files: [{ name: "s.ts", kind: "implementation" }], subdirectories: [{ name: "deep", total: 1, files: [{ name: "d.ts", kind: "implementation" }], subdirectories: [] }] }] } });
+    expect(plain.directories.get("b")).toMatchObject({ state: "encasing", hiddenFiles: 1, hiddenDirectories: 0, hidden: { files: ["b/w.ts"], directories: [] } });
 
     const opened = exploreBranches(byId.get("b/z.ts")!, graph, pins, () => true, { openDirectories: new Set(["a"]) });
     expect(opened.subgraph.nodes.map(file => file.id).sort()).toEqual(["a/sub", "a/x.ts", "a/y.ts", "b/z.ts"]);
@@ -409,7 +413,7 @@ describe("directories opening in the Local Map (2026-10-08)", () => {
     expect(opened.subgraph.links.filter(edge => edge.sourceId === "a/y.ts")).toEqual([]);
     expect(opened.hiddenConnections.get("a/y.ts")).toBe(1);
     expect(opened.order.rows.get("a/y.ts")).toEqual([]);
-    expect(opened.directories.get("a")).toEqual({ state: "open", hiddenFiles: 0, hiddenDirectories: 0 });
+    expect(opened.directories.get("a")).toMatchObject({ state: "open", hiddenFiles: 0, hiddenDirectories: 0, hidden: { files: [], directories: [] } });
     // The party's columns stand as ranked, x before z; a's two unwired items fill two columns from x's.
     expect(opened.ranking.columns.map(column => column.map(file => file.id))).toEqual([["a/x.ts", "a/sub"], ["b/z.ts", "a/y.ts"]]);
     expect(opened.order.directoryOf("a/sub")).toBe("a");
@@ -420,8 +424,8 @@ describe("directories opening in the Local Map (2026-10-08)", () => {
     const twice = exploreBranches(byId.get("b/z.ts")!, graph, pins, () => true, { openDirectories: new Set(["a", "a/sub"]) });
     expect(twice.subgraph.nodes.map(file => file.id).sort()).toEqual(["a/sub/deep", "a/sub/s.ts", "a/x.ts", "a/y.ts", "b/z.ts"]);
     expect(twice.closed.has("a/sub")).toBe(false);
-    expect(twice.directories.get("a/sub")).toEqual({ state: "open", hiddenFiles: 0, hiddenDirectories: 0 });
-    expect(twice.directories.get("a")).toEqual({ state: "open", hiddenFiles: 0, hiddenDirectories: 0 });
+    expect(twice.directories.get("a/sub")).toMatchObject({ state: "open", hiddenFiles: 0, hiddenDirectories: 0, hidden: { files: [], directories: [] } });
+    expect(twice.directories.get("a")).toMatchObject({ state: "open", hiddenFiles: 0, hiddenDirectories: 0, hidden: { files: [], directories: [] } });
   });
 
   it("enters a directory with nothing pinned and no file in focus: a grid about as wide as tall, no wire", () => {
