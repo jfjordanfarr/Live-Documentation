@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/tuning.ts
-- Generated At: 2026-11-16T05:14:28.442Z
+- Generated At: 2026-11-17T01:03:03.233Z
 
 ## Authored
 ### Purpose
@@ -57,28 +57,28 @@ Descriptions Zoomed Out joined the 2D layout group on 2026-11-15 ([Turn 1 of the
 ### Public Symbols
 #### `TuningChangeCallback` {#symbol-tuningchangecallback}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L13)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L15)
 
 ##### `TuningChangeCallback` — Summary
 Callback for when tuning values change
 
 #### `RenderCallback` {#symbol-rendercallback}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L16)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L18)
 
 ##### `RenderCallback` — Summary
 Callback for when the current view needs to re-render
 
 #### `TuningPanelConfig` {#symbol-tuningpanelconfig}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L19)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L21)
 
 ##### `TuningPanelConfig` — Summary
 Tuning panel configuration
 
 #### `initTuningPanel` {#symbol-inittuningpanel}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L29)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L31)
 - Parameters: `config`: [`TuningPanelConfig`](#symbol-tuningpanelconfig)
 
 ##### `initTuningPanel` — Summary
@@ -87,7 +87,10 @@ Initialize the tuning panel with all slider and checkbox controls.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`dom.applyPalette`](../dom.ts.mdmd.md#symbol-applypalette)
 - [`layout-presets.layoutSettingsOf`](../layout-presets.ts.mdmd.md#symbol-layoutsettingsof)
+- [`palette.DEFAULT_PALETTE`](../palette.ts.mdmd.md#symbol-default_palette)
+- [`palette.isPaletteName`](../palette.ts.mdmd.md#symbol-ispalettename)
 - [`tuning-levers.TUNING_HELP`](./tuning-levers.ts.mdmd.md#symbol-tuning_help)
 - [`tuning-levers.tuningHelpId`](./tuning-levers.ts.mdmd.md#symbol-tuninghelpid)
 - [`types.CHANGE_EMPHASES`](../types.ts.mdmd.md#symbol-change_emphases)
@@ -128,6 +131,7 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`template.tuning-name-growth`](../../shared/template.html.mdmd.md#symbol-tuning-name-growth)
 - [`template.tuning-order-starts`](../../shared/template.html.mdmd.md#symbol-tuning-order-starts)
 - [`template.tuning-overview-files`](../../shared/template.html.mdmd.md#symbol-tuning-overview-files)
+- [`template.tuning-palette`](../../shared/template.html.mdmd.md#symbol-tuning-palette)
 - [`template.tuning-return-cost`](../../shared/template.html.mdmd.md#symbol-tuning-return-cost)
 - [`template.tuning-row-levelness`](../../shared/template.html.mdmd.md#symbol-tuning-row-levelness)
 - [`template.tuning-search-patience`](../../shared/template.html.mdmd.md#symbol-tuning-search-patience)

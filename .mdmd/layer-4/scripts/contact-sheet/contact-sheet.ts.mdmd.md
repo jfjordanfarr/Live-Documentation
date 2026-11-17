@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/contact-sheet/contact-sheet.ts
 - Entry: command `contact:sheet` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-16T20:22:08.357Z
+- Generated At: 2026-11-17T01:03:10.869Z
 
 ## Authored
 ### Purpose
@@ -17,12 +17,14 @@ Draws one built Explorer in a fixed list of views and writes each picture and on
 - `--hook <module>` names a module whose default export runs on each fresh browser context before its page loads; that is where a saved setting such as a palette is put in place, and the tool merges its own settings into what the hook saved instead of replacing it. `--only` redraws named views and keeps the folder's other pictures in the sheet.
 - The bundle is answered from disk under an origin of the tool's own, so nothing is served on a port. Pictures are scratch or go to the day's probe folder; they are not committed with the tool. This container has no Segoe UI, so text is drawn in a fallback face: colours and shapes are the owner's, line breaks are not.
 
+`--palette <name>` (the colour pass, [Turns 4 and 5 of the November 16 record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-16.1.record.md#turn-4)) writes the viewer's saved palette before each page loads and names the sheet for it, so that Today's sheet and the proposed palette's are drawn from one bundle. The same day showed that no setting had ever reached a page: the storage script, passed as a function, was compiled by tsx with a naming helper the page lacks and failed before writing, so the history views' emphasis settings were never applied either; it is now given as text.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ContactSheetHook` {#symbol-contactsheethook}
 - Type: type
-- Source: [source](../../../../scripts/contact-sheet/contact-sheet.ts#L48)
+- Source: [source](../../../../scripts/contact-sheet/contact-sheet.ts#L53)
 - Parameters: `context`: `BrowserContext`
 
 ##### `ContactSheetHook` — Summary
@@ -35,6 +37,8 @@ The hook a caller passes, run on every fresh context before the view's page load
 - `node:fs/promises`
 - `node:path` - `path`
 - `node:url` - `pathToFileURL`
+- [`palette.PALETTES`](../../packages/explorer/src/client/palette.ts.mdmd.md#symbol-palettes)
+- [`palette.isPaletteName`](../../packages/explorer/src/client/palette.ts.mdmd.md#symbol-ispalettename)
 - [`compressed-url-state.DEFAULT_SNAPSHOT`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-default_snapshot)
 - [`compressed-url-state.UrlStateSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-urlstatesnapshot)
 - [`compressed-url-state.compressSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-compresssnapshot)

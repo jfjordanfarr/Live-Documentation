@@ -143,7 +143,7 @@
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    background: rgba(var(--state-selected-rgb), 0.35);
+    background: rgba(var(--second-values-offers-pin-rgb), 0.35);
     position: relative;
     z-index: 30;
     box-shadow: 0 0 6px var(--offers-pin-glow);
@@ -152,7 +152,7 @@
 }
 
 .symbol-anchor.dot {
-    border: 1px solid rgba(var(--state-selected-rgb), 0.45);
+    border: 1px solid rgba(var(--second-values-offers-pin-rgb), 0.45);
     /* Center the dot within its grid cell to ensure equal gaps on both sides */
     justify-self: center;
 }
@@ -186,8 +186,8 @@
 
 .symbol-anchor.outbound,
 .legend-symbol--outbound {
-    background: rgba(var(--state-selected-rgb), 0.4);
-    border: 1px solid rgba(var(--state-selected-rgb), 0.6);
+    background: rgba(var(--second-values-offers-pin-rgb), 0.4);
+    border: 1px solid rgba(var(--second-values-offers-pin-rgb), 0.6);
     box-shadow: 0 0 6px var(--offers-pin-glow);
 }
 
@@ -479,7 +479,7 @@ button.action-btn:focus-visible,
 }
 
 .type-badge-return {
-    background: rgba(var(--state-selected-rgb), 0.25);
+    background: rgba(var(--second-values-offers-pin-rgb), 0.25);
     color: rgba(var(--type-ref-returns-text-rgb), 0.9);
 }
 
@@ -517,7 +517,7 @@ button.action-btn:focus-visible,
     border-radius: 4px;
     padding: 4px 6px;
     margin-top: 4px;
-    border: 1px dashed rgba(var(--type-ref-plain-rgb), 0.5);
+    border: 1px dashed rgba(var(--internals-line-rgb), 0.5);
 }
 
 .internals-text {

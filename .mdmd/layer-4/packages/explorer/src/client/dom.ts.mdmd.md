@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/dom.ts
-- Generated At: 2026-11-16T20:45:26.677Z
+- Generated At: 2026-11-17T01:03:00.665Z
 
 ## Authored
 ### Purpose
@@ -33,12 +33,12 @@ Looks up an element by `id` and throws if not found.
 
 ##### `applyPalette` — Summary
 Draws the page in a palette, by name (the default for a name no palette has): its colours become the custom properties
-every stylesheet reads, set on the page's root over the build's, and the palette the maps' scripts read. Called before
-any view draws; a palette chosen later reaches the scripts' colours as each view next draws.
+every stylesheet reads, set on the page's root over the build's, and then the palette the maps' scripts read, whose
+views draw again in it at once where they drew a colour themselves (`whenPaletteChanges`), with nothing moving.
 
 #### `setActiveView` {#symbol-setactiveview}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/dom.ts#L25)
+- Source: [source](../../../../../../packages/explorer/src/client/dom.ts#L26)
 - Parameters: `view`: [`ViewName`](./types.ts.mdmd.md#symbol-viewname); `perspective`: [`LocalMapPerspective`](./types.ts.mdmd.md#symbol-localmapperspective)
 
 ##### `setActiveView` — Summary
@@ -46,7 +46,7 @@ Activates the given view tab and its container while deactivating siblings.
 
 #### `setSeamedText` {#symbol-setseamedtext}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/dom.ts#L73)
+- Source: [source](../../../../../../packages/explorer/src/client/dom.ts#L74)
 
 ##### `setSeamedText` — Summary
 Write a name into an element with a soft break at each of its seams (`seamsOf`), so that a name wider than its box
@@ -57,6 +57,7 @@ wraps at a seam rather than at whatever letter the box ran out at; the element's
 ### Dependencies
 - [`palette.choosePalette`](./palette.ts.mdmd.md#symbol-choosepalette)
 - [`palette.customProperties`](./palette.ts.mdmd.md#symbol-customproperties)
+- [`palette.paletteNamed`](./palette.ts.mdmd.md#symbol-palettenamed)
 - [`types.LocalMapPerspective`](./types.ts.mdmd.md#symbol-localmapperspective) (type-only)
 - [`types.ViewName`](./types.ts.mdmd.md#symbol-viewname) (type-only)
 - [`word-seams.seamsOf`](./views/localView/word-seams.ts.mdmd.md#symbol-seamsof)

@@ -34,8 +34,13 @@ export function spatialNodeStyles(): Readonly<Record<SpatialKind, SpatialNodeSty
   return styles;
 }
 
+/** The kind an archetype is drawn as; an unknown or absent one is `other`. */
+export function spatialKindOf(archetype?: string): SpatialKind {
+  const kind = (archetype ?? "").toLowerCase();
+  return Object.hasOwn(KIND_OF_ARCHETYPE, kind) ? KIND_OF_ARCHETYPE[kind] : "other";
+}
+
 /** Unknown or absent file kinds receive the same neutral colour in the picture and key. */
 export function spatialNodeStyle(archetype?: string): SpatialNodeStyle {
-  const kind = (archetype ?? "").toLowerCase();
-  return spatialNodeStyles()[Object.hasOwn(KIND_OF_ARCHETYPE, kind) ? KIND_OF_ARCHETYPE[kind] : "other"];
+  return spatialNodeStyles()[spatialKindOf(archetype)];
 }

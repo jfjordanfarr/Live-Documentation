@@ -220,6 +220,11 @@ export interface Palette {
     pathFoundWash: Colour;
     /** The light World's pressed tool, where the dark World derives its own from `offers`. */
     worldLightPressed: Colour;
+    /** The World Map's wires in each form, beside that form's `offers` and `uses`: today the 2D map's role colours in both. */
+    worldLightWireOffers: Colour;
+    worldLightWireUses: Colour;
+    worldDarkWireOffers: Colour;
+    worldDarkWireUses: Colour;
   };
 }
 
@@ -273,12 +278,41 @@ export const TODAY: Palette = {
   secondValues: {
     offersPin: "#0091ff", usesPin: "#00d3aa", selectedRing: "#007acc", sourcesHover: "#00c896", testLabel: "#8a5cff",
     implementationLabelTint: "#64c864", testLabelTint: "#6496ff", assetLabelTint: "#c89664", errorWash: "#f44336",
-    pathFoundWash: "#4caf50", worldLightPressed: "#e0f2fe"
+    pathFoundWash: "#4caf50", worldLightPressed: "#e0f2fe", worldLightWireOffers: "#38bdf8", worldLightWireUses: "#34d399",
+    worldDarkWireOffers: "#38bdf8", worldDarkWireUses: "#34d399"
+  }
+};
+
+/**
+ * The palette proposed in the colour pass (2026-11-16, root's design, measured): one hue for one meaning in every view.
+ * Blue and green stay with the two roles and nothing else wears them; the kinds move off them (implementation, the
+ * common case, goes quiet; a test file takes the violet the 2D cards already use for having tests; a document leaves
+ * violet for a paper yellow); what is selected is neutral, so the interface wears no data colour; three quiet tones of
+ * text are lifted to 4.5:1 on a card; the type badges keep only the plain badge's look, since each tells its role by
+ * its icon and rose and amber now belong to the asset and the directory. Every second value equals its meaning, and
+ * each World form draws its doors and its wires in its own blue and green.
+ */
+export const PROPOSED: Palette = {
+  ...TODAY,
+  role: { offers: "#23a1ef", uses: "#5ee7b5" },
+  kind: { ...TODAY.kind, implementation: "#a8b2c3", test: "#8a5cff", asset: "#db547e", document: "#f1d96e" },
+  state: { selected: "#f2f2f2", selectedHover: "#d0d0d4" },
+  text: { ...TODAY.text, muted: "#939393", subtle: "#8a8a8a", panelSubtle: "#828a9a", onSelected: "#111318" },
+  typeRef: { ...TODAY.typeRef, extends: "#646478", extendsText: "#b4b4c8", implements: "#646478", implementsText: "#b4b4c8" },
+  scene: { ...TODAY.scene, citedBy: "#f9f0ba" },
+  world: {
+    light: { ...TODAY.world.light, offers: "#046aac", uses: "#008e60", warm: "#a86003" },
+    dark: { ...TODAY.world.dark, offers: "#23a1ef", uses: "#5ee7b5" }
+  },
+  secondValues: {
+    ...TODAY.secondValues, offersPin: "#23a1ef", usesPin: "#5ee7b5", selectedRing: "#f2f2f2", sourcesHover: "#d0d0d4",
+    implementationLabelTint: "#a8b2c3", testLabelTint: "#8a5cff", assetLabelTint: "#db547e",
+    worldLightWireOffers: "#046aac", worldLightWireUses: "#008e60", worldDarkWireOffers: "#23a1ef", worldDarkWireUses: "#5ee7b5"
   }
 };
 
 /** The palettes a viewer may choose, by name. */
-export const PALETTES = { today: TODAY } as const satisfies Record<string, Palette>;
+export const PALETTES = { today: TODAY, proposed: PROPOSED } as const satisfies Record<string, Palette>;
 
 /** A palette's name. */
 export type PaletteName = keyof typeof PALETTES;
@@ -299,9 +333,23 @@ let active: Palette = TODAY;
 /** The palette in force. */
 export const activePalette = (): Palette => active;
 
-/** Puts a palette in force by name, the default for a name no palette has, and returns it. */
+/** A palette by name, the default for a name no palette has. */
+export const paletteNamed = (name: unknown): Palette => PALETTES[isPaletteName(name) ? name : DEFAULT_PALETTE];
+
+const listeners = new Set<(palette: Palette) => void>();
+
+/** Calls `listener` each time another palette is put in force, so that what a script drew is drawn again in it; returns the unsubscription. */
+export function whenPaletteChanges(listener: (palette: Palette) => void): () => void {
+  listeners.add(listener);
+  return () => { listeners.delete(listener); };
+}
+
+/** Puts a palette in force by name, the default for a name no palette has, tells whoever listens if it changed, and returns it. */
 export function choosePalette(name: unknown): Palette {
-  active = PALETTES[isPaletteName(name) ? name : DEFAULT_PALETTE];
+  const chosen = paletteNamed(name);
+  if (chosen === active) return active;
+  active = chosen;
+  for (const listener of listeners) listener(active);
   return active;
 }
 

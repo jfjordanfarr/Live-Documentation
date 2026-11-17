@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/connections.ts
-- Generated At: 2026-11-16T20:45:33.138Z
+- Generated At: 2026-11-17T01:03:07.458Z
 
 ## Authored
 ### Purpose
@@ -42,7 +42,7 @@ Files only means files and what the person pinned by name (2026-11-15, the root'
 ### Public Symbols
 #### `ConnectionsContext` {#symbol-connectionscontext}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L18)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L17)
 
 ##### `ConnectionsContext` — Summary
 Ambient context required by {@link drawConnections} to measure DOM
@@ -50,7 +50,7 @@ anchors, read explorer state, and emit SVG paths.
 
 #### `drawConnections` {#symbol-drawconnections}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L81)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L80)
 - Parameters: `context`: [`ConnectionsContext`](#symbol-connectionscontext)
 
 ##### `drawConnections` — Summary
@@ -69,7 +69,7 @@ counted, and the cycles' returns, the ordinary case, never lit it).
 
 #### `drawsReference` {#symbol-drawsreference}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L103)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L102)
 - Parameters: `_unnamed_`: [`ConnectionsContext`](#symbol-connectionscontext); `edge`: [`LocalEdge`](./types.ts.mdmd.md#symbol-localedge)
 
 ##### `drawsReference` — Summary
@@ -79,7 +79,7 @@ and with files only (2026-11-15). The card's foot asks it before the picture is 
 
 #### `clearConnections` {#symbol-clearconnections}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L144)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L143)
 - Parameters: `runtime`: [`LocalViewRuntime`](./runtime.ts.mdmd.md#symbol-localviewruntime)
 
 ##### `clearConnections` — Summary
@@ -88,7 +88,6 @@ Takes every wire off the overlay and forgets the layer; the next drawing makes a
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`palette.activePalette`](../../palette.ts.mdmd.md#symbol-activepalette)
 - [`types.BezierTuning`](../../types.ts.mdmd.md#symbol-beziertuning) (type-only)
 - [`types.ExplorerState`](../../types.ts.mdmd.md#symbol-explorerstate) (type-only)
 - [`types.LocalMapTuning`](../../types.ts.mdmd.md#symbol-localmaptuning) (type-only)

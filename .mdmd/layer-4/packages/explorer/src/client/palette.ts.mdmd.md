@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/palette.ts
-- Generated At: 2026-11-16T21:07:00.198Z
+- Generated At: 2026-11-17T01:03:02.516Z
 
 ## Authored
 ### Purpose
@@ -12,6 +12,8 @@ Holds every colour the Explorer draws in one typed table, keyed by what each col
 
 ### Notes
 Made in the [November 16 colour pass](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-16.1.record.md#turn-1), after the owner asked which colours the app uses and what they mean, and from their words of 2025-12-06: "CSS styles declare colors without relying on a common set of theme colors with specific color semantic _meanings_, even though we actually do have a robust system of meaning based on color!". The [colour pass's inventory](../../../../../../AI-Agent-Workspace/Probes/2026-11-16/colour-pass/inventory.md) maps every value here to where it was drawn before; the table replaced the theme stylesheet's literals, the 3D map's `SPATIAL_NODE_STYLES`, the shader's constants and the hard-coded wire colours of the 2D map and the World Map, with today's picture unchanged. `secondValues` holds the places where today draws one meaning in a second colour a person can tell apart (the offering pin's blue beside the offering wire's, among others); a palette that draws each meaning once deletes it. Every value is opaque; opacity is derived where a colour is drawn (`rgba` here; in a stylesheet `rgba(var(--meaning-rgb), alpha)`, from the channels the build writes beside each colour, so that the browser computes, serialises and animates every colour as the legacy `rgba` it was: `color-mix` was tried first and changed how a colour is serialised and interpolated, which the browser specs' colour reader and an animation's mid-frames showed). The palette's name is a viewer's saved setting (`appearance.palette`), not carried in a shared link; whether a link should carry it is a question put to the owner.
+
+Since [Turns 4 and 5 of the November 16 record](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-16.1.record.md#turn-4) a second palette, `proposed`, stands beside Today: root's measured design, in which blue and green belong to the two roles alone, the kinds move off them, what is selected is neutral and every second value equals its meaning, and each World form draws its doors and wires in its own blue and green (`secondValues.world…Wire…`). The owner chose to see it in the software itself, switchable in place: "the user needs to see what their changes did in the application itself, immediately." `choosePalette` tells the views that drew a colour themselves (`whenPaletteChanges`), so that a choice in Tuning re-colours the page at once with nothing moving. What makes a palette valid is a unit test beside it, which Today fails as a stated fact.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -46,29 +48,43 @@ One palette: every meaning the Explorer draws in colour.
 
 #### `TODAY` {#symbol-today}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L227)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L232)
 - Returns: [`Palette`](#symbol-palette)
 
 ##### `TODAY` — Summary
 The palette drawn until the colour pass: every value as the Explorer drew it on 2026-11-16.
 
+#### `PROPOSED` {#symbol-proposed}
+- Type: const
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L295)
+- Returns: [`Palette`](#symbol-palette)
+
+##### `PROPOSED` — Summary
+The palette proposed in the colour pass (2026-11-16, root's design, measured): one hue for one meaning in every view.
+Blue and green stay with the two roles and nothing else wears them; the kinds move off them (implementation, the
+common case, goes quiet; a test file takes the violet the 2D cards already use for having tests; a document leaves
+violet for a paper yellow); what is selected is neutral, so the interface wears no data colour; three quiet tones of
+text are lifted to 4.5:1 on a card; the type badges keep only the plain badge's look, since each tells its role by
+its icon and rose and amber now belong to the asset and the directory. Every second value equals its meaning, and
+each World form draws its doors and its wires in its own blue and green.
+
 #### `PALETTES` {#symbol-palettes}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L281)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L315)
 
 ##### `PALETTES` — Summary
 The palettes a viewer may choose, by name.
 
 #### `PaletteName` {#symbol-palettename}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L284)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L318)
 
 ##### `PaletteName` — Summary
 A palette's name.
 
 #### `DEFAULT_PALETTE` {#symbol-default_palette}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L287)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L321)
 - Returns: [`PaletteName`](#symbol-palettename)
 
 ##### `DEFAULT_PALETTE` — Summary
@@ -76,14 +92,14 @@ The palette drawn when none is chosen.
 
 #### `isPaletteName` {#symbol-ispalettename}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L290)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L324)
 
 ##### `isPaletteName` — Summary
 Whether a saved name is a palette's.
 
 #### `MASK_KEEP` {#symbol-mask_keep}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L293)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L327)
 - Returns: [`Colour`](#symbol-colour)
 
 ##### `MASK_KEEP` — Summary
@@ -91,7 +107,7 @@ A cell mask's luminance where the cells stay drawn: not a colour a person sees, 
 
 #### `MASK_FADE` {#symbol-mask_fade}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L295)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L329)
 - Returns: [`Colour`](#symbol-colour)
 
 ##### `MASK_FADE` — Summary
@@ -99,50 +115,65 @@ A cell mask's luminance where the cells fade, at a field's end.
 
 #### `activePalette` {#symbol-activepalette}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L300)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L334)
 
 ##### `activePalette` — Summary
 The palette in force.
 
+#### `paletteNamed` {#symbol-palettenamed}
+- Type: const
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L337)
+
+##### `paletteNamed` — Summary
+A palette by name, the default for a name no palette has.
+
+#### `whenPaletteChanges` {#symbol-whenpalettechanges}
+- Type: function
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L342)
+- Parameters: `palette`: [`Palette`](#symbol-palette)
+
+##### `whenPaletteChanges` — Summary
+Calls `listener` each time another palette is put in force, so that what a script drew is drawn again in it; returns the unsubscription.
+
 #### `choosePalette` {#symbol-choosepalette}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L303)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L348)
 - Returns: [`Palette`](#symbol-palette)
 
 ##### `choosePalette` — Summary
-Puts a palette in force by name, the default for a name no palette has, and returns it.
+Puts a palette in force by name, the default for a name no palette has, tells whoever listens if it changed, and returns it.
 
 #### `channels` {#symbol-channels}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L309)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L357)
 
 ##### `channels` — Summary
 A colour's channels, 0 to 255.
 
 #### `rgba` {#symbol-rgba}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L316)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L364)
 
 ##### `rgba` — Summary
 A colour at an opacity, as `rgba(r, g, b, alpha)`, the alpha written as given.
 
 #### `unitChannels` {#symbol-unitchannels}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L322)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L370)
 
 ##### `unitChannels` — Summary
 A colour's channels, 0 to 1, for a shader.
 
 #### `mix` {#symbol-mix}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L325)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L373)
 
 ##### `mix` — Summary
 A colour between two, `t` of the way from `a` to `b`, each channel rounded, as `rgb(r,g,b)`.
 
 #### `customProperties` {#symbol-customproperties}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L338)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L386)
 - Parameters: `palette`: [`Palette`](#symbol-palette)
 
 ##### `customProperties` — Summary
@@ -153,7 +184,7 @@ its channels (`--ground-card-hover-rgb: 47, 47, 51`), from which a stylesheet dr
 
 #### `paletteStylesheet` {#symbol-palettestylesheet}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L352)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L400)
 - Parameters: `palette`: [`Palette`](#symbol-palette)
 
 ##### `paletteStylesheet` — Summary

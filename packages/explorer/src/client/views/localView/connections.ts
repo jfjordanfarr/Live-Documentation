@@ -9,7 +9,6 @@ import { OVERVIEW_FILES_ATTRIBUTE, OVERVIEW_LINES_ATTRIBUTE } from "./overview-f
 import { gatheredCount, gatheredDescription, gatheredWidth, gatherWires, NODE_HUB, ownWires, type GatheredWire } from "./wire-gathering";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
 import { returningConnections, type ReturningConnections } from "./returning-connections";
-import { activePalette } from "../../palette";
 
 /**
  * Ambient context required by {@link drawConnections} to measure DOM
@@ -284,11 +283,11 @@ function gradientFor(layer: WireLayer, key: string, source: Point, target: Point
     gradient = document.createElementNS(svgNamespace, "linearGradient") as SVGLinearGradientElement;
     gradient.id = `wire-gradient-${layer.gradientsMade++}`;
     gradient.setAttribute("gradientUnits", "userSpaceOnUse");
-    const { offers, uses } = activePalette().role;
-    for (const [offset, color] of [["0%", offers], ["10%", offers], ["90%", uses], ["100%", uses]] as const) {
-      const stop = document.createElementNS(svgNamespace, "stop");
+    // The roles' colours by their custom properties, so that a palette chosen later re-colours a kept gradient at once.
+    for (const [offset, role] of [["0%", "offers"], ["10%", "offers"], ["90%", "uses"], ["100%", "uses"]] as const) {
+      const stop = document.createElementNS(svgNamespace, "stop") as SVGStopElement;
       stop.setAttribute("offset", offset);
-      stop.setAttribute("stop-color", color);
+      stop.style.stopColor = `var(--role-${role})`;
       gradient.appendChild(stop);
     }
     layer.defs.appendChild(gradient);
@@ -336,8 +335,7 @@ function drawLaces(
     provider: rank(`${edge.targetId}\0out\0${targetSymbol}\0${down ? "down" : "up"}`),
     consumer: rank(`${edge.sourceId}\0in\0${sourceSymbol}\0${down ? "up" : "down"}`)
   });
-  const { offers, uses } = activePalette().role;
-  for (const [points, color, role] of [[laces.providerPoints, offers, "provider"], [laces.consumerPoints, uses, "consumer"]] as const) {
+  for (const [points, color, role] of [[laces.providerPoints, "var(--role-offers)", "provider"], [laces.consumerPoints, "var(--role-uses)", "consumer"]] as const) {
     const polygon = elementFor(layer, seen, JSON.stringify([edgeKey(edge), role]), () => {
       const made = document.createElementNS(svgNamespace, "polygon") as SVGPolygonElement;
       // Inline, since the stylesheet's base rule gives every connection path no fill.

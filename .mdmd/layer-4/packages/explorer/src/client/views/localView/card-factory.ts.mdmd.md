@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-factory.ts
-- Generated At: 2026-11-16T20:45:32.834Z
+- Generated At: 2026-11-17T01:03:07.168Z
 
 ## Authored
 ### Purpose
@@ -144,7 +144,7 @@ data-cells-<look>, "left top width height scale", the width and height in held u
 
 #### `countsOf` {#symbol-countsof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L536)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L537)
 
 ##### `countsOf` — Summary
 "3 files, 2 directories", either part left out at zero; "empty" when both are.
@@ -159,7 +159,7 @@ data-cells-<look>, "left top width height scale", the width and height in held u
 - [`types.ClosedDirectoryLook`](../../types.ts.mdmd.md#symbol-closeddirectorylook) (type-only)
 - [`types.ClosedDirectoryShape`](../../types.ts.mdmd.md#symbol-closeddirectoryshape) (type-only)
 - [`types.SymbolOrder`](../../types.ts.mdmd.md#symbol-symbolorder) (type-only)
-- [`forceGraphAppearance.spatialNodeStyle`](../forceGraphAppearance.ts.mdmd.md#symbol-spatialnodestyle-function)
+- [`forceGraphAppearance.spatialKindOf`](../forceGraphAppearance.ts.mdmd.md#symbol-spatialkindof)
 - [`branches.ClosedDirectory`](./branches.ts.mdmd.md#symbol-closeddirectory)
 - [`branches.compareSymbolNames`](./branches.ts.mdmd.md#symbol-comparesymbolnames)
 - [`closed-looks.Cell`](./closed-looks.ts.mdmd.md#symbol-cell)

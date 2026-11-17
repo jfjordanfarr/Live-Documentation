@@ -1,4 +1,4 @@
-import { choosePalette, customProperties } from "./palette";
+import { choosePalette, customProperties, paletteNamed } from "./palette";
 import type { LocalMapPerspective, ViewName } from "./types";
 import { seamsOf } from "./views/localView/word-seams";
 
@@ -13,12 +13,13 @@ export function requireElement<T extends HTMLElement>(id: string): T {
 
 /**
  * Draws the page in a palette, by name (the default for a name no palette has): its colours become the custom properties
- * every stylesheet reads, set on the page's root over the build's, and the palette the maps' scripts read. Called before
- * any view draws; a palette chosen later reaches the scripts' colours as each view next draws.
+ * every stylesheet reads, set on the page's root over the build's, and then the palette the maps' scripts read, whose
+ * views draw again in it at once where they drew a colour themselves (`whenPaletteChanges`), with nothing moving.
  */
 export function applyPalette(name: unknown): void {
   const root = document.documentElement.style;
-  for (const [property, value] of customProperties(choosePalette(name))) root.setProperty(property, value);
+  for (const [property, value] of customProperties(paletteNamed(name))) root.setProperty(property, value);
+  choosePalette(name);
 }
 
 /** Activates the given view tab and its container while deactivating siblings. */

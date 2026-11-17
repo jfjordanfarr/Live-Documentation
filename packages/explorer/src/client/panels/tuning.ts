@@ -5,7 +5,9 @@
  * for bezier curves, click behavior, visual options, and Local Map settings.
  */
 
+import { applyPalette } from "../dom";
 import { layoutSettingsOf } from "../layout-presets";
+import { DEFAULT_PALETTE, isPaletteName } from "../palette";
 import { CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, OVERVIEW_FILES, type ExplorerState } from "../types";
 import { TUNING_HELP, tuningHelpId } from "./tuning-levers";
 
@@ -66,6 +68,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   const closedDirectorySelect = document.getElementById("tuning-closed-directory") as HTMLSelectElement | null;
   const closedShapeSelect = document.getElementById("tuning-closed-shape") as HTMLSelectElement | null;
   const closedCellsSelect = document.getElementById("tuning-closed-cells") as HTMLSelectElement | null;
+  const paletteSelect = document.getElementById("tuning-palette") as HTMLSelectElement | null;
   /** The skin's shape and its cells' colour are choices of the skin with cells alone: shown only while it is chosen. */
   const syncClosedChoices = (): void => {
     for (const row of document.querySelectorAll<HTMLElement>("[data-closed-cells-only]")) row.hidden = state.tuning.localMap.closedDirectory !== "cells";
@@ -179,6 +182,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     if (closedDirectorySelect) closedDirectorySelect.value = state.tuning.localMap.closedDirectory;
     if (closedShapeSelect) closedShapeSelect.value = state.tuning.localMap.closedShape;
     if (closedCellsSelect) closedCellsSelect.value = state.tuning.localMap.closedCells;
+    if (paletteSelect) paletteSelect.value = state.tuning.appearance.palette;
     syncClosedChoices();
     if (overviewFilesSelect) overviewFilesSelect.value = state.tuning.localMap.overviewFiles;
     if (descriptionsZoomedOutSelect) descriptionsZoomedOutSelect.value = state.tuning.localMap.descriptionsZoomedOut;
@@ -288,6 +292,15 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
       state.tuning.localMap.closedShape = CLOSED_DIRECTORY_SHAPES.find(choice => choice === closedShapeSelect.value) ?? CLOSED_DIRECTORY_SHAPES[0];
       onTuningChange();
       if (state.view === "map" && state.perspective === "2d") onRender();
+    });
+  }
+  // The palette the page is drawn in (the colour pass, 2026-11-16): everything on screen takes it at once, nothing
+  // moving, so that the choice can be judged and changed back in place; the viewer's own, saved and never in a link.
+  if (paletteSelect) {
+    paletteSelect.addEventListener("change", () => {
+      state.tuning.appearance.palette = isPaletteName(paletteSelect.value) ? paletteSelect.value : DEFAULT_PALETTE;
+      applyPalette(state.tuning.appearance.palette);
+      onTuningChange();
     });
   }
   if (closedCellsSelect) {

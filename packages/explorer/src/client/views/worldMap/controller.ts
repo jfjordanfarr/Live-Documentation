@@ -70,7 +70,7 @@ import {
   type Screen
 } from "./projection";
 import { escapeHtml } from "../../graph-helpers";
-import { activePalette, mix, type WorldForm } from "../../palette";
+import { activePalette, mix, whenPaletteChanges, type WorldForm } from "../../palette";
 import { CLOSE_ICON, iconButton } from "../../panels/icon-button";
 import { parseInitialState } from "../../persistence/url-state";
 
@@ -305,6 +305,8 @@ export class WorldMapController {
     this.bench = this.benchAround();
     this.pivot = { x: this.bench.x + this.bench.w / 2, y: this.bench.y + this.bench.d / 2 };
     this.restoreTheme();
+    // A palette chosen later draws the board again in its colours: its faces and tints are written when drawn.
+    this.disposers.push(whenPaletteChanges(() => this.draw()));
     this.writeHelp();
     this.buildFocusTargets();
     this.attachInput();
@@ -633,9 +635,9 @@ export class WorldMapController {
 
   private gradient(id: string, from: Point2, to: Point2): string {
     const gradient = svgElement("linearGradient", { id, gradientUnits: "userSpaceOnUse", x1: from[0], y1: from[1], x2: to[0], y2: to[1] }, this.defs);
-    const { offers, uses } = activePalette().role;
-    for (const [offset, colour] of [[0, offers], [0.1, offers], [0.9, uses], [1, uses]] as Array<[number, string]>) {
-      svgElement("stop", { offset, "stop-color": colour }, gradient);
+    // The form's wire colours by their custom properties (world.css), so that the board's form or a palette chosen later re-colours them at once.
+    for (const [offset, role] of [[0, "offers"], [0.1, "offers"], [0.9, "uses"], [1, "uses"]] as Array<[number, string]>) {
+      svgElement("stop", { offset, style: `stop-color: var(--w-wire-${role})` }, gradient);
     }
     return `url(#${id})`;
   }

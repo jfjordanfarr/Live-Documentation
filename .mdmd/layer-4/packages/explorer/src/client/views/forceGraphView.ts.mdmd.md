@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphView.ts
-- Generated At: 2026-11-16T20:45:31.793Z
+- Generated At: 2026-11-17T01:03:05.910Z
 
 ## Authored
 ### Purpose
@@ -152,6 +152,7 @@ Creates the Force Graph (3D) view for the Live Docs Explorer.
 - [`layout-presets.layoutSettingsOf`](../layout-presets.ts.mdmd.md#symbol-layoutsettingsof)
 - [`palette.activePalette`](../palette.ts.mdmd.md#symbol-activepalette)
 - [`palette.rgba`](../palette.ts.mdmd.md#symbol-rgba)
+- [`palette.whenPaletteChanges`](../palette.ts.mdmd.md#symbol-whenpalettechanges)
 - [`icon-button.CENTRE_ICON`](../panels/icon-button.ts.mdmd.md#symbol-centre_icon)
 - [`icon-button.DIRECTORY_ICON`](../panels/icon-button.ts.mdmd.md#symbol-directory_icon)
 - [`icon-button.MORE_ICON`](../panels/icon-button.ts.mdmd.md#symbol-more_icon)

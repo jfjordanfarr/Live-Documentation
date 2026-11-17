@@ -588,7 +588,14 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
     wrapperSeeds = seeds; wrapperHullOf = hullOf; wrapperLook = look; wrapperPlaceOf = placeOf; wrapperUnitsOf = unitsOf;
   };
   const styleWrappers = (style: SpatialWrapperStyle): void => { wrapperStyle = style; };
-  return { nodes, lines, arrows, rings, wrappers, captureBodies, setData, update, pickNode, pickNodeHit, pickLink, pickWrapper, setWrappers, styleWrappers, invalidateAppearance: (): void => { appearanceDirty = true; }, dispose(): void {
+  return { nodes, lines, arrows, rings, wrappers, captureBodies, setData, update, pickNode, pickNodeHit, pickLink, pickWrapper, setWrappers, styleWrappers, invalidateAppearance: (): void => { appearanceDirty = true; },
+    /** The skins' colours again from the palette in force, and every accessor read again. */
+    recolour: (): void => {
+      const colours = sceneColours();
+      for (const material of [wrapperMaterial, balloonMaterial]) for (const [name, uniform] of Object.entries(colours)) (material.uniforms[name].value as Vector3).copy(uniform.value);
+      appearanceDirty = true;
+    },
+    dispose(): void {
     for (const batch of [nodes, lines, arrows, rings]) { batch.mesh.removeFromParent(); batch.mesh.dispose(); batch.mesh.geometry.dispose(); batch.mesh.material.dispose(); }
     wrappers.removeFromParent(); wrappers.geometry.dispose(); wrapperMaterial.dispose();
     for (const mesh of [unitFiles, unitBalloons]) { mesh.removeFromParent(); mesh.dispose(); mesh.geometry.dispose(); (mesh.material as Material).dispose(); }

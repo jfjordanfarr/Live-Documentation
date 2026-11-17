@@ -1,5 +1,5 @@
 import { requireElement } from "../dom";
-import { activePalette } from "../palette";
+import { activePalette, whenPaletteChanges } from "../palette";
 import { spatialNodeStyle, spatialNodeStyles } from "../views/forceGraphAppearance";
 import type { SpatialGraphData } from "../views/forceGraphData";
 
@@ -17,6 +17,12 @@ export interface SpatialLegendDrawn {
   wrapped?: boolean;
   /** Whether any directory shell is drawn, the same experiment's second rule: a directory's hidden files as one body (2026-11-05). */
   shells?: boolean;
+  /**
+   * The archetypes of the files drawn as cells within wrapped groups and directory shells, which are no spheres of the
+   * graph: the kinds' row names theirs too (2026-11-16; on the tidepool sample's Structure the bags held the tests and
+   * assets, and the key named neither).
+   */
+  inside?: readonly string[];
 }
 
 /** A sample of the key and the words beside it, two at most. */
@@ -42,7 +48,7 @@ const kindMarks = (drawn: ReadonlySet<SpatialLegendMark>): SpatialLegendMark[] =
 
 /** The rows of the key for a filtered graph at the moment shown, in reading order; pure, so that a test can read them. */
 export function spatialLegendRows(graph: SpatialGraphData, symbolScale: number, drawn: SpatialLegendDrawn): SpatialLegendRow[] {
-  const styles = new Set(graph.nodes.map(node => spatialNodeStyle(node.archetype)));
+  const styles = new Set([...graph.nodes.map(node => spatialNodeStyle(node.archetype)), ...(drawn.inside ?? []).map(archetype => spatialNodeStyle(archetype))]);
   const kinds = new Set(graph.links.map(link => link.kind));
   const { scene, kind } = activePalette(), grey = scene.keySample;
   const rows: SpatialLegendRow[] = styles.size ? [{ shape: "node", marks: kindMarks(styles), description: "Colour: the kind of file, directory or document a sphere stands for." }] : [];
@@ -103,22 +109,22 @@ export function renderSpatialLegend(graph: SpatialGraphData, symbolScale: number
 /**
  * The 2D map's kinds (2026-11-16): the template's `local-legend-kinds` row, where the template has one, holds a mark
  * for each kind whose colour a closed directory's cells are drawn in, and stands empty, which the stylesheet hides,
- * while no coloured cell is drawn. The kinds are read from the cells themselves, whose fills the 2D map writes from the
- * table this key shares with it: a cell hidden at the look shown, or drawn in the one grey, counts for nothing.
+ * while no coloured cell is drawn. The kinds are read from the cells themselves, whose kinds the 2D map writes and whose
+ * colours this key shares with it: a cell hidden at the look shown, or drawn in the one grey, counts for nothing. A
+ * palette chosen later draws the row again in its colours.
  */
 export function watchLocalKinds(): void {
   const row = document.getElementById("local-legend-kinds"), map = document.getElementById("map-container");
   if (!row || !map) return;
-  const kindOf = new Map<string, SpatialLegendMark>(Object.values(spatialNodeStyles()).map(style => [style.color, style]));
   let pending = 0, shown = "";
   const draw = (): void => {
     pending = 0;
-    const drawn = new Set<SpatialLegendMark>();
+    const styles: Readonly<Record<string, SpatialLegendMark>> = spatialNodeStyles(), drawn = new Set<SpatialLegendMark>();
     for (const cell of map.querySelectorAll<SVGElement>(".local-cell")) {
-      const kind = kindOf.get(cell.getAttribute("fill") ?? "");
+      const kind = styles[cell.dataset.kind ?? ""];
       if (kind && !drawn.has(kind) && !cell.closest(".local-closed-cells--grey") && cell.checkVisibility({ visibilityProperty: true })) drawn.add(kind);
     }
-    const marks = kindMarks(drawn), signature = marks.map(mark => mark.label).join();
+    const marks = kindMarks(drawn), signature = marks.map(mark => `${mark.label}${mark.color}`).join();
     if (signature === shown) return;
     shown = signature;
     row.replaceChildren(...marksOf("node", marks));
@@ -128,5 +134,6 @@ export function watchLocalKinds(): void {
   new MutationObserver(changes => {
     if (!pending && changes.some(change => change.type === "attributes" || concerns(change.target) || [...change.addedNodes, ...change.removedNodes].some(concerns))) pending = requestAnimationFrame(draw);
   }).observe(map, { childList: true, subtree: true, attributes: true, attributeFilter: ["data-lod", "data-looks"] });
+  whenPaletteChanges(() => { if (!pending) pending = requestAnimationFrame(draw); });
   draw();
 }

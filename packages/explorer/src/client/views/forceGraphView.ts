@@ -46,7 +46,7 @@ import { forceSimulation } from "d3-force-3d";
 import { Matrix4, PerspectiveCamera, Vector3 } from "three";
 
 import { spatialNodeStyle } from "./forceGraphAppearance";
-import { activePalette, rgba } from "../palette";
+import { activePalette, rgba, whenPaletteChanges } from "../palette";
 import { SPATIAL_RING_OUTER_RADIUS, type SpatialWrapperUnit } from "./forceGraphBatches";
 import { buildingPhase, nextBuilding, nodePointer, NOT_BUILDING, type Building } from "./forceGraphBuilding";
 import { cornerPanelInsets, focusedCameraPosition, frameCameraSpheres, screenAnchorTranslation, wheelZoomCamera, type CameraPoint } from "./forceGraphCamera";
@@ -333,7 +333,20 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   /** The structure layout's spokes with Group Wrappers on (2026-11-08): each child's rest length and place about its hub. */
   let spokesOf: Map<string, Spoke> | null = null;
   /** What each shell's skin shows within it, with its files' colours, by its packing. */
-  const shownUnits = new WeakMap<GroupShape, SpatialWrapperUnit[]>();
+  let shownUnits = new WeakMap<GroupShape, SpatialWrapperUnit[]>();
+  // A palette chosen later (the colour pass, 2026-11-16): the files within a skin take their kinds' new colours, the
+  // ground, lights and skins theirs, and every sphere, wire, ring and the key are read again. Nothing is laid out
+  // again, and the camera and what is pinned stay as they are.
+  whenPaletteChanges(() => {
+    shownUnits = new WeakMap();
+    const instance = forceGraphInstance;
+    if (!instance) return;
+    emphasizeBodies(instance.graphData().nodes);
+    instance.repaint();
+    refreshWrappers();
+    drawLegend();
+    pictureChanged();
+  });
   /**
    * The step of the history inside the wrappers (2026-11-11, the owner's "Is it possible to still get the illumination of
    * the changed node even if it's buried deep in the bubbles?"): each wrapped body's units as the step colours them and how
@@ -1742,7 +1755,10 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     const keyed: SpatialGraphData = { nodes: picture.nodes.filter(node => node.shellFiles === undefined), links: picture.links };
     drawLegend = (): void => renderSpatialLegend(keyed, state.tuning.forceGraph.symbolScale, { references: state.spatialLayout === "connections" || hasAttention || legendAttention,
       path: !!path?.length, frontier: hasFrontier, rings: [...scopeBeyond.keys()].some(id => !isWrapped(id)),
-      wrapped: [...wrapped.keys()].some(id => !shells.has(id) && !cells.has(id) && isWrapped(id)), shells: [...shells.keys(), ...cells.keys()].some(isWrapped) });
+      wrapped: [...wrapped.keys()].some(id => !shells.has(id) && !cells.has(id) && isWrapped(id)), shells: [...shells.keys(), ...cells.keys()].some(isWrapped),
+      // The files a skin draws within it, as cells, are files of the picture too, and their kinds are keyed with the spheres'.
+      inside: state.tuning.forceGraph.groupWrappers === "skin" ? [...new Set([...wrapped.keys()].filter(isWrapped)
+        .flatMap(id => (pictureVeiled.has(id) ? [] : shapeOf(id)?.units ?? []).filter(unit => unit.kind === "file").map(unit => unit.archetype ?? "")))] : [] });
     drawLegend();
     frameDirectory = (): void => {
       if (directoryScope && directoryScope !== framedDirectoryScope) {

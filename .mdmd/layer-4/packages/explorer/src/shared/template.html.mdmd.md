@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-11-16T12:13:55.173Z
+- Generated At: 2026-11-17T01:03:10.290Z
 
 ## Authored
 ### Purpose
@@ -454,6 +454,9 @@ Since November 8, 2026, the literal initial controls agree with `getDefaultTunin
 - Type: variable
 
 #### `tuning-overview-files` {#symbol-tuning-overview-files}
+- Type: variable
+
+#### `tuning-palette` {#symbol-tuning-palette}
 - Type: variable
 
 #### `tuning-return-cost` {#symbol-tuning-return-cost}

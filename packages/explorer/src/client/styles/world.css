@@ -28,6 +28,8 @@
   --w-flow: var(--world-light-flow);
   --w-shade: var(--world-light-shade);
   --w-shade-rgb: var(--world-light-shade-rgb);
+  --w-wire-offers: var(--second-values-world-light-wire-offers);
+  --w-wire-uses: var(--second-values-world-light-wire-uses);
   background: var(--w-bg);
   color: var(--w-text);
   font: 13px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -49,6 +51,8 @@
   --w-flow: var(--world-dark-flow);
   --w-shade: var(--world-dark-shade);
   --w-shade-rgb: var(--world-dark-shade-rgb);
+  --w-wire-offers: var(--second-values-world-dark-wire-offers);
+  --w-wire-uses: var(--second-values-world-dark-wire-uses);
 }
 
 .world-svg {

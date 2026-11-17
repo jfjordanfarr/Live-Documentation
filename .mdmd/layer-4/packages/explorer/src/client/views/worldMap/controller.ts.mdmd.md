@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/worldMap/controller.ts
-- Generated At: 2026-11-16T20:45:34.903Z
+- Generated At: 2026-11-17T01:03:09.673Z
 
 ## Authored
 ### Purpose
@@ -57,7 +57,7 @@ Draws a board and answers the pointer.
 
 #### `WorldMapApi` {#symbol-worldmapapi}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L2157)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L2159)
 
 ##### `WorldMapApi` — Summary
 The handle a test or a screenshot script drives, at `window.__worldMap`.
@@ -74,6 +74,7 @@ The handle a test or a screenshot script drives, at `window.__worldMap`.
 - [`palette.WorldForm`](../../palette.ts.mdmd.md#symbol-worldform)
 - [`palette.activePalette`](../../palette.ts.mdmd.md#symbol-activepalette)
 - [`palette.mix`](../../palette.ts.mdmd.md#symbol-mix)
+- [`palette.whenPaletteChanges`](../../palette.ts.mdmd.md#symbol-whenpalettechanges)
 - [`icon-button.CLOSE_ICON`](../../panels/icon-button.ts.mdmd.md#symbol-close_icon)
 - [`icon-button.iconButton`](../../panels/icon-button.ts.mdmd.md#symbol-iconbutton)
 - [`url-state.parseInitialState`](../../persistence/url-state.ts.mdmd.md#symbol-parseinitialstate)

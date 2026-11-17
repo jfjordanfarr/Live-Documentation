@@ -19,7 +19,7 @@ import type { ExplorerNodePayload, ExplorerPublicSymbol, ExplorerTypeReference }
 import { setSeamedText } from "../../dom";
 import { MASK_FADE, MASK_KEEP } from "../../palette";
 import type { ClosedCellColour, ClosedDirectoryLook, ClosedDirectoryShape, SymbolOrder } from "../../types";
-import { spatialNodeStyle } from "../forceGraphAppearance";
+import { spatialKindOf } from "../forceGraphAppearance";
 
 /** The values a fresh card reads while it is built. The wrapper may survive a render, but its card is rebuilt. */
 export interface CardPresentation {
@@ -513,7 +513,8 @@ function fieldMarkup(field: CellField, width: number, height: number, shape: Clo
   // Two masks: the cells fade under every veil, the skins' outlines only under the field's own end.
   const cellsMask = field.veils.length ? ` mask="url(#${id}-cells)"` : "", skinsMask = ends.length ? ` mask="url(#${id}-skins)"` : "";
   const circle = (c: Cell): string => {
-    const colour = spatialNodeStyle(c.kind).color, at = `cx="${c.x.toFixed(2)}" cy="${c.y.toFixed(2)}" r="${c.r}" fill="${colour}" stroke="${colour}"`;
+    // The kind's colour is the stylesheet's (local.css), from the palette, so that a palette chosen later re-colours the cell.
+    const at = `cx="${c.x.toFixed(2)}" cy="${c.y.toFixed(2)}" r="${c.r}" data-kind="${spatialKindOf(c.kind)}"`;
     return c.name ? `<circle class="local-cell local-cell--named" ${at}><title>${escapeText(c.name)}</title></circle>` : `<circle class="local-cell" ${at}/>`;
   };
   const cells = (list: readonly Cell[]): string => (list.length ? `<g${cellsMask}>${list.map(circle).join("")}</g>` : "");

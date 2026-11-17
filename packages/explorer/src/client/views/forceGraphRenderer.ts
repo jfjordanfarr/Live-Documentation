@@ -39,6 +39,8 @@ export class SpatialRenderer<N extends SpatialNode, L extends SpatialDrawLink<N>
   private revision = 0;
   private readonly paint: { render(): void };
   private appearance = 0;
+  private readonly ambient = new AmbientLight(undefined, Math.PI);
+  private readonly directional = new DirectionalLight(undefined, .6 * Math.PI);
   private pendingData = false;
   private viewWidth = 1;
   private viewHeight = 1;
@@ -49,10 +51,10 @@ export class SpatialRenderer<N extends SpatialNode, L extends SpatialDrawLink<N>
     this.wrapper.style.position = "relative";
     container.replaceChildren(this.wrapper);
     this.gpu.setPixelRatio(Math.min(2, window.devicePixelRatio));
-    const { scene } = activePalette();
-    this.gpu.setClearColor(scene.ground, 1); this.wrapper.append(this.gpu.domElement);
+    this.wrapper.append(this.gpu.domElement);
     this.eye.position.z = 1000;
-    this.world.add(new AmbientLight(scene.ambientLight, Math.PI), new DirectionalLight(scene.directionalLight, .6 * Math.PI));
+    this.world.add(this.ambient, this.directional);
+    this.paintGround();
     this.buffers = createSpatialBuffers(this.world, options.style, this.gpu);
     this.paint = { render: (): void => {
       const resistance = this.options.resistance();
@@ -137,6 +139,13 @@ export class SpatialRenderer<N extends SpatialNode, L extends SpatialDrawLink<N>
 
   /** Re-read visual accessors on the next draw without advancing layout. */
   invalidateAppearance(): void { this.buffers.invalidateAppearance(); this.appearance++; }
+  /** Draws the scene again in the palette in force: its ground, its lights, the skins' colours and every accessor, nothing moved. */
+  repaint(): void { this.paintGround(); this.buffers.recolour(); this.invalidateAppearance(); }
+  /** The palette's ground and lights. */
+  private paintGround(): void {
+    const { scene } = activePalette();
+    this.gpu.setClearColor(scene.ground, 1); this.ambient.color.set(scene.ambientLight); this.directional.color.set(scene.directionalLight);
+  }
   /** Read or replace the node colour accessor without changing layout. */
   nodeColor(): (node: N) => string;
   /** Read or replace the node colour accessor without changing layout. */

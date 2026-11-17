@@ -2,7 +2,7 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { activePalette, channels, choosePalette, customProperties, DEFAULT_PALETTE, isPaletteName, mix, PALETTES, paletteStylesheet, rgba, TODAY, unitChannels } from "./palette";
+import { activePalette, channels, choosePalette, customProperties, DEFAULT_PALETTE, isPaletteName, mix, PALETTES, paletteStylesheet, PROPOSED, rgba, TODAY, unitChannels, whenPaletteChanges, type Palette } from "./palette";
 
 describe("the palette", () => {
   it("holds every meaning as one opaque #rrggbb colour, each named once as a custom property with its channels beside it", () => {
@@ -87,6 +87,119 @@ describe("today's palette draws what was drawn before", () => {
     expect(mix(TODAY.ground.surface, scene.ground, 0)).toBe("rgb(30,30,30)");
     expect(mix(TODAY.ground.surface, scene.ground, 1)).toBe("rgb(0,0,17)");
     expect(mix(TODAY.ground.surface, scene.ground, 0.5)).toBe("rgb(15,15,24)");
+  });
+});
+
+/**
+ * What makes a palette valid (the colour pass, 2026-11-16, root's proposal): the colours that tell a fact apart stand
+ * apart, for full colour vision and under simulated red-green colour blindness; a mark stands out from its ground, and
+ * words from a card. Distances are OKLab x100; protanopia and deuteranopia are simulated after Machado, Oliveira and
+ * Fernandes (2009) at full severity, the matrices and arithmetic of the colour pass's theme sketch; contrast is WCAG's.
+ */
+const linear = (hex: string): number[] => channels(hex).map(value => value / 255).map(c => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4));
+const labOf = ([r, g, b]: number[]): number[] => {
+  const l = Math.cbrt(0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b), m = Math.cbrt(0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b), s = Math.cbrt(0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b);
+  return [0.2104542553 * l + 0.793617785 * m - 0.0040720468 * s, 1.9779984951 * l - 2.428592205 * m + 0.4505937099 * s, 0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s];
+};
+const SIMULATED = {
+  protanopia: [[0.152286, 1.052583, -0.204868], [0.114503, 0.786281, 0.099216], [-0.003882, -0.048116, 1.051998]],
+  deuteranopia: [[0.367322, 0.860646, -0.227968], [0.280085, 0.672501, 0.047413], [-0.01182, 0.04294, 0.968881]]
+} as const;
+type Vision = keyof typeof SIMULATED | "full";
+const seen = (hex: string, vision: Vision): number[] => {
+  const rgb = linear(hex);
+  return labOf(vision === "full" ? rgb : SIMULATED[vision].map(row => Math.max(0, Math.min(1, row[0] * rgb[0] + row[1] * rgb[1] + row[2] * rgb[2]))));
+};
+/** Two colours' distance in OKLab x100, as a person of that vision sees them. */
+const apart = (a: string, b: string, vision: Vision): number => { const p = seen(a, vision), q = seen(b, vision); return 100 * Math.hypot(p[0] - q[0], p[1] - q[1], p[2] - q[2]); };
+const luminance = (hex: string): number => { const [r, g, b] = linear(hex); return 0.2126 * r + 0.7152 * g + 0.0722 * b; };
+/** WCAG contrast. */
+const contrast = (a: string, b: string): number => { const [x, y] = [luminance(a), luminance(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
+
+/** Every way a palette falls short, one sentence each; none for a valid palette. */
+function shortfalls(palette: Palette): string[] {
+  const found: string[] = [];
+  const pairs = (named: Record<string, string>): void => {
+    const entries = Object.entries(named);
+    for (let i = 0; i < entries.length; i++) for (let j = i + 1; j < entries.length; j++) {
+      const [[a, x], [b, y]] = [entries[i], entries[j]];
+      if (apart(x, y, "full") < 15) found.push(`${a} and ${b} are ${apart(x, y, "full").toFixed(1)} apart`);
+      for (const vision of ["protanopia", "deuteranopia"] as const) if (apart(x, y, vision) < 8) found.push(`${a} and ${b} are ${apart(x, y, vision).toFixed(1)} apart under ${vision}`);
+    }
+  };
+  const stands = (named: Record<string, string>, grounds: Record<string, string>, floor: number): void => {
+    for (const [mark, colour] of Object.entries(named)) for (const [ground, under] of Object.entries(grounds)) {
+      if (contrast(colour, under) < floor) found.push(`${mark} stands at ${contrast(colour, under).toFixed(2)}:1 on ${ground}`);
+    }
+  };
+  // The colours that identify. `kind.other` is left out on purpose: nothing produces it today. The offering pin is
+  // the offering role as the 2D cards draw it, so it is held to the same distances.
+  const { role, kind, history, ground, scene, text, world, secondValues } = palette;
+  const identities = { offers: role.offers, uses: role.uses, implementation: kind.implementation, test: kind.test, asset: kind.asset, document: kind.document, directory: kind.directory, changed: history.changed };
+  pairs(identities);
+  if (secondValues.offersPin !== role.offers) pairs({ "offering pin": secondValues.offersPin, implementation: kind.implementation });
+  stands(identities, { "the page": ground.page, "a card": ground.card, "the 3D ground": scene.ground }, 3);
+  for (const form of ["light", "dark"] as const) {
+    const marks = { [`${form} offers`]: world[form].offers, [`${form} uses`]: world[form].uses, [`${form} warm`]: world[form].warm };
+    pairs(marks);
+    stands(marks, { [`the ${form} board`]: world[form].board }, 3);
+  }
+  const words = { strong: text.strong, normal: text.normal, secondary: text.secondary, muted: text.muted, subtle: text.subtle, panelMuted: text.panelMuted, panelSubtle: text.panelSubtle, cardFileName: text.cardFileName, cardSymbolName: text.cardSymbolName, cardProse: text.cardProse };
+  stands(words, { "a card": ground.card }, 4.5);
+  return found;
+}
+
+describe("a valid palette", () => {
+  it("measures as the colour pass's bench did", () => {
+    expect(apart("#38bdf8", "#0091ff", "full")).toBeCloseTo(12.7, 1);
+    expect(apart("#28a745", "#e9984d", "protanopia")).toBeCloseTo(2.5, 1);
+    expect(contrast("#ffffff", "#000000")).toBeCloseTo(21, 5);
+  });
+
+  it("is what the proposed palette is: every identity apart, every mark and word standing out", () => {
+    expect(shortfalls(PROPOSED)).toEqual([]);
+    // Its closest pairs, as root's bench measured them.
+    expect(apart(PROPOSED.role.offers, PROPOSED.kind.implementation, "full")).toBeCloseTo(15.2, 1);
+    expect(Math.min(apart(PROPOSED.role.uses, PROPOSED.kind.document, "protanopia"), apart(PROPOSED.role.uses, PROPOSED.kind.document, "deuteranopia"))).toBeCloseTo(8.5, 1);
+  });
+
+  it("is not what today's palette is, as a stated fact: its offering pin is its implementation, and a test and a directory are 2.5 apart under protanopia", () => {
+    const today = shortfalls(TODAY);
+    expect(TODAY.secondValues.offersPin).toBe(TODAY.kind.implementation);
+    expect(today).toContain("offering pin and implementation are 0.0 apart");
+    expect(today).toContain("test and directory are 2.5 apart under protanopia");
+  });
+});
+
+describe("changing the palette", () => {
+  it("tells whoever listens when another palette comes into force, and only then", () => {
+    const heard: Palette[] = [];
+    const stop = whenPaletteChanges(palette => heard.push(palette));
+    choosePalette("today");
+    choosePalette("proposed");
+    choosePalette("proposed");
+    choosePalette("today");
+    stop();
+    choosePalette("proposed");
+    choosePalette("today");
+    expect(heard).toEqual([PROPOSED, TODAY]);
+  });
+
+  it("changes under the proposed palette exactly the values named for it, and every second value to its meaning", () => {
+    const today = new Map(customProperties(TODAY)), changed = customProperties(PROPOSED).filter(([name, value]) => !name.endsWith("-rgb") && today.get(name) !== value).map(([name]) => name);
+    expect(changed.sort()).toEqual([
+      "--kind-asset", "--kind-document", "--kind-implementation", "--kind-test", "--role-offers", "--role-uses", "--scene-cited-by",
+      "--second-values-asset-label-tint", "--second-values-implementation-label-tint", "--second-values-offers-pin", "--second-values-selected-ring",
+      "--second-values-sources-hover", "--second-values-test-label-tint", "--second-values-uses-pin", "--second-values-world-dark-wire-offers",
+      "--second-values-world-dark-wire-uses", "--second-values-world-light-wire-offers", "--second-values-world-light-wire-uses",
+      "--state-selected", "--state-selected-hover", "--text-muted", "--text-on-selected", "--text-panel-subtle", "--text-subtle",
+      "--type-ref-extends", "--type-ref-extends-text", "--type-ref-implements", "--type-ref-implements-text",
+      "--world-dark-offers", "--world-dark-uses", "--world-light-offers", "--world-light-uses", "--world-light-warm"
+    ].sort());
+    const { secondValues: second, role, state, kind, world } = PROPOSED;
+    expect([second.offersPin, second.usesPin, second.selectedRing, second.implementationLabelTint, second.testLabelTint, second.testLabel, second.assetLabelTint])
+      .toEqual([role.offers, role.uses, state.selected, kind.implementation, kind.test, kind.test, kind.asset]);
+    expect([second.worldLightWireOffers, second.worldLightWireUses, second.worldDarkWireOffers, second.worldDarkWireUses]).toEqual([world.light.offers, world.light.uses, world.dark.offers, world.dark.uses]);
   });
 });
 

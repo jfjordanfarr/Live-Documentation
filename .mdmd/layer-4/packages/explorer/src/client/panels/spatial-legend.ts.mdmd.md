@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/spatial-legend.ts
-- Generated At: 2026-11-16T20:45:29.201Z
+- Generated At: 2026-11-17T01:03:02.945Z
 
 ## Authored
 ### Purpose
@@ -23,6 +23,8 @@ Since 2026-11-16 ([Turn 10 of the November 15 record](../../../../../../../AI-Ag
 
 `watchLocalKinds`, of the same day, fills the 2D key's `local-legend-kinds` row where the template has one, which is one line there, kept or left out by the owner's choice between a row of our words and a cell's hover alone. It reads the kinds from the cells the 2D map has drawn (their `fill`, which the map writes from the palette's kinds through `spatialNodeStyles`), counting only a cell that is rendered at the look shown and not drawn in the one grey, so the row holds what is on screen and is empty, which the stylesheet hides, otherwise. It watches the map's element for a closed directory drawn or removed and for a change of look, and draws once a frame at most; the 2D map knows nothing of it. If the owner chooses the hover alone, delete the function, its call in `index.ts`, the template's line, `#local-legend-kinds`'s two rules in `local.css` and the two browser cases that read the row.
 
+Since [the November 16 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-16.1.record.md#turn-4) the 3D key's row of kinds also names the kinds of the files drawn as cells within wrapped groups and directory shells (`inside`), which are no spheres: on the tidepool sample's Structure the bags held the tests and assets and the key named neither. The 2D key's row reads each cell's `data-kind` and draws again when the palette changes.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -35,14 +37,14 @@ What the 3D picture draws beyond its data: the key says only what is on screen (
 
 #### `SpatialLegendMark` {#symbol-spatiallegendmark}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L23)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L29)
 
 ##### `SpatialLegendMark` — Summary
 A sample of the key and the words beside it, two at most.
 
 #### `SpatialLegendRow` {#symbol-spatiallegendrow}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L34)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L40)
 
 ##### `SpatialLegendRow` — Summary
 One row of the key (2026-11-16): the sample the stylesheet draws from its shape, the mark's words, and the sentence
@@ -52,7 +54,7 @@ with its one word.
 
 #### `spatialLegendRows` {#symbol-spatiallegendrows}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L44)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L50)
 - Returns: [`SpatialLegendRow`](#symbol-spatiallegendrow)[]
 - Parameters: `graph`: [`SpatialGraphData`](../views/forceGraphData.ts.mdmd.md#symbol-spatialgraphdata); `drawn`: [`SpatialLegendDrawn`](#symbol-spatiallegenddrawn)
 
@@ -61,7 +63,7 @@ The rows of the key for a filtered graph at the moment shown, in reading order; 
 
 #### `renderSpatialLegend` {#symbol-renderspatiallegend}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L86)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L92)
 - Parameters: `graph`: [`SpatialGraphData`](../views/forceGraphData.ts.mdmd.md#symbol-spatialgraphdata); `drawn`: [`SpatialLegendDrawn`](#symbol-spatiallegenddrawn)
 
 ##### `renderSpatialLegend` — Summary
@@ -69,19 +71,21 @@ Describe the spatial map's filtered, current-moment encodings without changing i
 
 #### `watchLocalKinds` {#symbol-watchlocalkinds}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L109)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L116)
 
 ##### `watchLocalKinds` — Summary
 The 2D map's kinds (2026-11-16): the template's `local-legend-kinds` row, where the template has one, holds a mark
 for each kind whose colour a closed directory's cells are drawn in, and stands empty, which the stylesheet hides,
-while no coloured cell is drawn. The kinds are read from the cells themselves, whose fills the 2D map writes from the
-table this key shares with it: a cell hidden at the look shown, or drawn in the one grey, counts for nothing.
+while no coloured cell is drawn. The kinds are read from the cells themselves, whose kinds the 2D map writes and whose
+colours this key shares with it: a cell hidden at the look shown, or drawn in the one grey, counts for nothing. A
+palette chosen later draws the row again in its colours.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`dom.requireElement`](../dom.ts.mdmd.md#symbol-requireelement)
 - [`palette.activePalette`](../palette.ts.mdmd.md#symbol-activepalette)
+- [`palette.whenPaletteChanges`](../palette.ts.mdmd.md#symbol-whenpalettechanges)
 - [`forceGraphAppearance.spatialNodeStyle`](../views/forceGraphAppearance.ts.mdmd.md#symbol-spatialnodestyle-function)
 - [`forceGraphAppearance.spatialNodeStyles`](../views/forceGraphAppearance.ts.mdmd.md#symbol-spatialnodestyles)
 - [`forceGraphData.SpatialGraphData`](../views/forceGraphData.ts.mdmd.md#symbol-spatialgraphdata) (type-only)

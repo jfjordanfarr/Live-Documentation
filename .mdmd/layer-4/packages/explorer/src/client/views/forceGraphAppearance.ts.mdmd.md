@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphAppearance.ts
-- Generated At: 2026-11-16T20:45:30.670Z
+- Generated At: 2026-11-17T01:03:04.635Z
 
 ## Authored
 ### Purpose
@@ -37,9 +37,17 @@ A kind's colour and its word.
 ##### `spatialNodeStyles` — Summary
 The file kinds the spatial maps colour, in the keys' order, one object each for as long as a palette is in force.
 
-#### `spatialNodeStyle (function)` {#symbol-spatialnodestyle-function}
+#### `spatialKindOf` {#symbol-spatialkindof}
 - Type: function
 - Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphAppearance.ts#L38)
+- Returns: [`SpatialKind`](#symbol-spatialkind)
+
+##### `spatialKindOf` — Summary
+The kind an archetype is drawn as; an unknown or absent one is `other`.
+
+#### `spatialNodeStyle (function)` {#symbol-spatialnodestyle-function}
+- Type: function
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphAppearance.ts#L44)
 - Returns: [`SpatialNodeStyle`](#symbol-spatialnodestyle-interface)
 
 ##### `spatialNodeStyle (function)` — Summary

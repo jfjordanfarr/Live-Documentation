@@ -12,7 +12,11 @@
  * ```bash
  * npm run contact:sheet -- --bundle dist/explorer/samples/tidepool --preset tidepool --out AI-Agent-Workspace/tmp/contact-sheets/tidepool
  * npm run contact:sheet -- --bundle dist/explorer --preset repository --hook ./night-palette.mjs --label Night --out <dir>
+ * npm run contact:sheet -- --bundle dist/explorer/samples/tidepool --preset tidepool --palette proposed --out <dir>
  * ```
+ *
+ * `--palette <name>` draws every view in one of the Explorer's palettes (`today`, `proposed`), the viewer's saved
+ * setting written before each page loads, and names the sheet for it.
  *
  * A hook is a module whose default export is `async (context, view) => void`, given the Playwright browser context
  * and the view about to load (`{ name, title }`); it usually calls `context.addInitScript` to write local storage.
@@ -23,6 +27,7 @@ import * as fs from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
+import { isPaletteName, PALETTES } from "../../packages/explorer/src/client/palette";
 import { compressSnapshot, DEFAULT_SNAPSHOT, type UrlStateSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { localMapStill } from "../../tests/e2e/still-picture";
@@ -161,19 +166,22 @@ async function serve(context: BrowserContext, bundleDir: string): Promise<void> 
   });
 }
 
-/** Merges this view's settings into the persisted UI the caller's hook may already have written. */
+/**
+ * Merges this view's settings into the persisted UI the caller's hook may already have written. The script is given as
+ * text: a function passed from here is compiled by tsx, which names its inner functions with a helper the page does not
+ * have, and the script then failed in the page before writing anything (found 2026-11-17, when no setting reached a page).
+ */
 async function mergeStorage(context: BrowserContext, settings: Record<string, unknown>): Promise<void> {
-  await context.addInitScript(([key, version, value]) => {
-    const merge = (into: Record<string, unknown>, from: Record<string, unknown>): Record<string, unknown> => {
-      for (const [k, v] of Object.entries(from)) {
-        into[k] = v && typeof v === "object" && !Array.isArray(v) ? merge((into[k] as Record<string, unknown>) ?? {}, v as Record<string, unknown>) : v;
-      }
+  await context.addInitScript(`(() => {
+    const key = ${JSON.stringify(PERSISTED_UI_KEY)};
+    const merge = function (into, from) {
+      for (const [k, v] of Object.entries(from)) into[k] = v && typeof v === "object" && !Array.isArray(v) ? merge(into[k] ?? {}, v) : v;
       return into;
     };
-    let stored: Record<string, unknown>;
-    try { stored = JSON.parse(window.localStorage.getItem(key) ?? "{}") as Record<string, unknown>; } catch { stored = {}; }
-    window.localStorage.setItem(key, JSON.stringify(merge({ version, ...stored }, value)));
-  }, [PERSISTED_UI_KEY, PERSISTED_UI_VERSION, settings] as const);
+    let stored;
+    try { stored = JSON.parse(window.localStorage.getItem(key) ?? "{}"); } catch { stored = {}; }
+    window.localStorage.setItem(key, JSON.stringify(merge({ version: ${JSON.stringify(PERSISTED_UI_VERSION)}, ...stored }, ${JSON.stringify(settings)})));
+  })();`);
 }
 
 async function rest(page: Page, kind: View["rest"]): Promise<void> {
@@ -214,10 +222,10 @@ async function drawSheet(context: BrowserContext, pictures: Picture[], heading: 
 
 const escape = (text: string): string => text.replace(/[&<>"]/gu, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;" })[ch]!);
 
-interface Options { bundle: string; out: string; preset?: string; directory?: string; pinned?: string; hook?: string; label: string; only?: string[] }
+interface Options { bundle: string; out: string; preset?: string; directory?: string; pinned?: string; hook?: string; label: string; only?: string[]; palette?: string }
 
 function parseArgs(args: string[]): Options {
-  const options: Partial<Options> = { label: "Today's palette" };
+  const options: Partial<Options> = {};
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
     if (arg === "--bundle") options.bundle = optionValue(args, ++i, arg);
@@ -228,8 +236,11 @@ function parseArgs(args: string[]): Options {
     else if (arg === "--hook") options.hook = optionValue(args, ++i, arg);
     else if (arg === "--label") options.label = optionValue(args, ++i, arg);
     else if (arg === "--only") options.only = optionValue(args, ++i, arg).split(",");
-    else throw new UsageError(`${arg} is not an option. Options: --bundle --out --preset (${Object.keys(PRESETS).join(", ")}) --dir --pin --hook --label --only`);
+    else if (arg === "--palette") options.palette = optionValue(args, ++i, arg);
+    else throw new UsageError(`${arg} is not an option. Options: --bundle --out --preset (${Object.keys(PRESETS).join(", ")}) --dir --pin --hook --label --only --palette (${Object.keys(PALETTES).join(", ")})`);
   }
+  if (options.palette !== undefined && !isPaletteName(options.palette)) throw new UsageError(`No palette ${options.palette}; the palettes are ${Object.keys(PALETTES).join(", ")}.`);
+  options.label ??= options.palette ? `the ${options.palette} palette` : "Today's palette";
   if (!options.bundle || !options.out) throw new UsageError("Name the built bundle with --bundle and where to write with --out.");
   return options as Options;
 }
@@ -256,6 +267,7 @@ async function main(): Promise<void> {
       try {
         await serve(context, bundleDir);
         if (hook) await hook(context, { name: view.name, title: view.title });
+        if (options.palette) await mergeStorage(context, { tuning: { appearance: { palette: options.palette } } });
         if (view.storage) await mergeStorage(context, view.storage);
         const page = await context.newPage();
         await page.goto(`${ORIGIN}/${view.address}`);

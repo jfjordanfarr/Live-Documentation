@@ -76,3 +76,13 @@ it("draws at most two words beside a sample and keeps every row's sentence for i
   expect(fullest[0].marks.map(mark => mark.label)).toEqual(Object.values(spatialNodeStyles()).map(style => style.label));
   expect(new Set(rows.map(row => row.description)).size, "each row has its own sentence").toBe(fullest.length + 1);
 });
+
+it("names the kinds of the files a skin draws within it, as cells, beside the spheres' (2026-11-16)", () => {
+  // On the tidepool sample's Structure the bags were full of tests and assets, and the kinds' row named neither.
+  const graph: SpatialGraphData = { nodes: [node("src/pool.ts", "implementation")], links: [] };
+  const drawn = { references: false, path: false, frontier: false, rings: false, shells: true };
+  expect(words(spatialLegendRows(graph, 1, { ...drawn, inside: ["test", "asset", "test"] }))[0]).toEqual(["node", "Implementation", "Test", "Asset"]);
+  expect(words(spatialLegendRows(graph, 1, drawn))[0]).toEqual(["node", "Implementation"]);
+  // A picture of skins alone still keys its files' kinds.
+  expect(words(spatialLegendRows({ nodes: [], links: [] }, 1, { ...drawn, inside: ["asset"] }))[0]).toEqual(["node", "Asset"]);
+});
