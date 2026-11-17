@@ -4117,9 +4117,200 @@ cells trial staged, recording its own exit code" completed (exit code 0)
 completed (exit code 0)
 
   Ran 1 shell command (ctrl+o to expand)
-
+ 
 ● The last timer fired with nothing to act on, and I am not renewing it because
   no builder is running. The gate is six minutes in and still in its lint stage;
   lint passed when I ran it on the changed code just before. I will be notified
   when the gate ends, around 17:35 UTC, and will then commit the trial and send
   the closing message.
+
+● Background command "Run the full gate again with the browser suite on main
+with the cells trial staged, recording its own exit code" completed (exit code
+0)
+  ⎿  Read AI-Agent-Workspace/Probes/2026-11-17/cells-trial/README.md (32 lines)
+  ⎿  Referenced file AI-Agent-Workspace/ChatHistory/2026/11/Summarized/2026-11-1
+     6.1.SUMMARIZED.md
+  ⎿  Referenced file
+     AI-Agent-Workspace/ChatHistory/2026/11/2026-11-16.1.record.md
+  ⎿  Referenced file packages/explorer/src/client/views/forceGraphAppearance.ts
+  ⎿  Referenced file
+     packages/explorer/src/client/views/localView/branch-renderer.ts
+  ⎿  Skills restored (dataviz)
+
+● Compacted using a summary written while you were away · turn off with
+  "idleCompaction": false in settings.json
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● The trial's gate ended and the trial is committed (7062d323); I am now
+  checking one failed case more closely, then rebuilding the bundles and
+  finishing the close.
+
+  Searched for 1 pattern, read 2 files, ran 5 shell commands (ctrl+o to expand)
+
+● Retaking the trial's three comparison pictures at one camera on the committed
+  build; looking at them now before filing.
+
+  Read 4 files, ran 6 shell commands (ctrl+o to expand)
+
+● Writing the gate's result into the record and summary now; first removing the
+  builder's finished worktree after comparing it with main.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Resumption notes are refreshed; appending the gate's result and the close to
+  the record, then the summary's last placeholders.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Update(AI-Agent-Workspace/ChatHistory/2026/11/2026-11-16.1.record.md)
+  ⎿  Added 1 line, removed 1 line
+      1611  Times UTC on November 17.
+      1612  
+      1613  - **The gate ran from 15:33:36 to 17:43:33 and ended red in i
+            ts browser stage only.** The Live Docs pipeline, lint, the bu
+            ild, 1,969 unit tests in 176 files, 138 integration tests in 
+            21 files and the documentation checks pass. Of 488 browser ca
+            ses 478 pass, the trial's seven and Tuning's four among them.
+      1614 -- **The ten red, every one on the list this record already ke
+           -pt, every one failing in the 3D map.** Kept red on their cloc
+           -ks: `force-graph-discovery.spec.ts:70` ("came to rest in 1625
+           - frames, which took 200.0 s on this machine at 8.13 frames a 
+           -second; the clock allows 120 s") and `force-graph-update.spec
+           -.ts:140` ("1071 frames, which took 438.9 s on this machine at
+           - 2.44 frames a second; the clock allows 150 s"). Failing with
+           - no change of root's: `force-graph-defaults.spec.ts:101` and 
+           -`force-graph-focus.spec.ts:297`. On their time limits, each w
+           -aiting for the 3D picture to come to rest: `force-graph-disco
+           -very.spec.ts:181`, `force-graph-identity.spec.ts:62` for this
+           - repository, `local-map-packing.spec.ts:107` (at its wait of 
+           -60 s after 3D is pressed), `history-scrubber.spec.ts:391`, `h
+           -istory-scrubber.spec.ts:569`. Unsteady: `force-graph-focus.sp
+           -ec.ts:71`. None was run alone this time: no case is red that 
+           -was not red or on its limit before the trial, and none reache
+           -s the trial's code before it fails.                          
+      1614 +- **The ten red, every one on the list this record already ke
+           +pt, every one failing in the 3D map.** Kept red on their cloc
+           +ks: `force-graph-discovery.spec.ts:70` ("came to rest in 1625
+           + frames, which took 200.0 s on this machine at 8.13 frames a 
+           +second; the clock allows 120 s") and `force-graph-update.spec
+           +.ts:140` ("1071 frames, which took 438.9 s on this machine at
+           + 2.44 frames a second; the clock allows 150 s"). Failing with
+           + no change of root's: `force-graph-defaults.spec.ts:101` and 
+           +`force-graph-focus.spec.ts:297`. On their time limits, each w
+           +aiting for the 3D picture to come to rest: `force-graph-disco
+           +very.spec.ts:181`, `force-graph-identity.spec.ts:62` for this
+           + repository, `local-map-packing.spec.ts:107` (at its wait of 
+           +60 s after 3D is pressed), `history-scrubber.spec.ts:391`, `h
+           +istory-scrubber.spec.ts:569`. Unsteady: `force-graph-focus.sp
+           +ec.ts:71`. None was run alone this time: no case is red that 
+           +was not red or on its limit before the trial, and none fails 
+           +at a step in the 2D map, where the trial's code runs.        
+      1615  - **The trial committed at 17:44 as `7062d323`,** 32 files, i
+            ts message stating the gate as it stood. One sentence of that
+             message is loose and cannot be amended: it says of the ten t
+            hat "none touches the 2D map". `local-map-packing.spec.ts:107
+            ` begins in the 2D map; it fails at its wait for the 3D pictu
+            re, as the others do.
+      1616  - **The tidepool sample rebuilt** at 17:45 (the gate rebuilds
+             this repository's bundle, the estate and the history samples
+            , not tidepool), so that the owner's port serves the trial in
+             every subject.
+      1617  - **Three pictures retaken by root on the committed build,** 
+            one camera, read through the owner's port without touching it
+            : `history`'s handle 267 px wide each time; "+23 files" with 
+            Count; three marks beside the name; twenty-three under it, th
+            e field's top 3 px under the line's foot. No page error and n
+            o selection in the picture (the pan by a sideways wheel, not 
+            a drag). They replace the three reading-size pictures in [the
+             probe](../../../Probes/2026-11-17/cells-trial/README.md). Se
+            en in them and not looked for: the key's row for a cell's kin
+            ds stands only while cells are drawn.
+
+  Ran 6 shell commands (ctrl+o to expand)
+
+● Filing your latest export in the month inventory with its size and hash, then
+  committing the close and clearing my scratch files.
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● Links check clean. Committing the close (records, summary, Memory, retaken
+  pictures and your export as received), then clearing scratch files.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● The cells trial is finished and on main, and this chat is closed out. Nothing
+  new was started; the ring mend is pinned for the new chat as you said.
+
+  The cells trial
+
+  It is committed as 7062d323 and your port serves it in every subject. Open
+  pathfind.ts in the 2D map (http://127.0.0.1:8999/?view=local&node=packages/eng
+  ine/src/live-docs/pathfind.ts), then Tuning → 2D Layout → Hidden Files:
+
+  - Count is today's "+23 files", unchanged, and still the default.
+  - Cells beside name puts cells in the name's line, in the room the count's
+    words took. The history directory shows three cells and a faded one of
+    its 23.
+  - Cells under name draws them in two rows under the name at reading size, so
+    history shows all 23. Zoomed out, it falls back to the cells beside the
+    name.
+
+  Pressing a cell pins that file; pressing a small folder opens that directory.
+  No card or directory moves between the three values. My lean is Cells under
+  name, but you have not seen any of them yet and nothing is decided.
+
+  Three things I would look at: whether a cell is too small to press comfortably
+  (about 11 by 10 px), two cells sitting on a diagonal, and the path giving way
+  to cells when zoomed out.
+
+  The gate
+
+  The full gate is not green: 478 of 488 browser cases pass, and everything
+  before the browser stage passes. The seven new cases for the trial pass. The
+  ten failures are all 3D-map cases that were already failing or on their time
+  limits before the trial, so I did not rerun them alone.
+
+  For the new chat, in order
+
+  1. Rings beside membranes, named in the first reply.
+  2. Your eye on the marble and the cells.
+  3. The graphics card for the browser tests, which is the first thing to try
+     for the slow 3D cases.
+  4. A defect found beside the trial: a card's "Internals" row overlaps its "+8
+     symbols" line when zoomed out after a second pin. Also the three 3D cases
+     that fail with no change of mine.
+
+  Questions still waiting on you
+
+  - What you see of the marble view by view, and whether a faded marble should
+    go plain.
+  - Whether the curve for a marble's veins should be a lever in Tuning.
+  - Whether something heavy ran on your machine around 12:00 to 12:45 UTC today,
+    when unchanged code ran slower.
+  - Whether a picture should be chosen as it stands, whatever rows are showing.
+  - The six from November 15.
+
+  Each has its link in the summary's open ends (AI-Agent-Workspace/ChatHistory/2
+  026/11/Summarized/2026-11-16.1.SUMMARIZED.md#open-ends-and-handoff).
+
+  Where things are
+
+  - Summary: 2026-11-16.1.SUMMARIZED.md (AI-Agent-Workspace/ChatHistory/2026/11/
+    Summarized/2026-11-16.1.SUMMARIZED.md) is complete.
+  - Evidence: the cells trial's folder
+    (AI-Agent-Workspace/Probes/2026-11-17/cells-trial/README.md) has the three
+    values pictured at one camera.
+  - Memory: direction.md (AI-Agent-Workspace/Memory/direction.md) holds the
+    ordered list above; the narrative has this session's chapter.
+  - Your export: filed as you saved it at 17:04 UTC. It stops at 15:39, so it
+    does not hold the gate's end or this message; if you export again, the next
+    chat files it.
+  - Cleanup: the builder's worktree and branch are removed, my scratch files are
+    cleared, and your server on 8999 was not touched. The tree is clean.
+  - Not pushed: main is 108 commits ahead of origin/main.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The closing message above is in the session log as delivered (17:55 UTC), so
+  the chat is closed. The new chat starts with the rings.
