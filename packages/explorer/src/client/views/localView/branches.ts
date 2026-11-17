@@ -2,6 +2,7 @@ import { parentDirectory } from "./directory-bands";
 import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../../shared/types";
 import { readingFiles, type ReadingChoice } from "../../reading-state";
 import type { SymbolOrder } from "../../types";
+import { fileShares, marbleCounts } from "../forceGraphAppearance";
 import { getVisibleConnections, retainFile, type PinSet } from "../pin-state";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
 import { orderBranches, type BranchOrder, type ForwardReference, type OrderInput } from "./branch-order";
@@ -308,7 +309,12 @@ export function exploreBranches(
   // immediate subdirectory neither opened nor encasing, a closed box.
   const index = directoryIndex(graph.nodes);
   const kinds = new Map(graph.nodes.map(node => [node.id, (node.archetype ?? "").toLowerCase()]));
-  const kindOf = (file: string): string => kinds.get(file) ?? "";
+  const counts = marbleCounts(graph);
+  // A file as its cell stands for it: its own name, which the cell says on hover, its kind, and its marble's shares.
+  const cellOf = (file: string): ClosedFile => {
+    const kind = kinds.get(file) ?? "", marble = fileShares(file, kind, counts);
+    return { name: file.slice(file.lastIndexOf("/") + 1), kind, ...(marble.offers || marble.uses ? { marble } : null) };
+  };
   const members = new Set<string>();
   const closed = new Map<string, ClosedDirectory>();
   for (const directory of [...opened].sort()) {
@@ -319,7 +325,7 @@ export function exploreBranches(
       if (node && !retained.has(file) && include(node)) members.add(file);
     }
     for (const subdirectory of contents.subdirectories) {
-      if (directoryState(subdirectory, opened, retained) === "closed") closed.set(subdirectory, closedDirectory(subdirectory, index, kindOf));
+      if (directoryState(subdirectory, opened, retained) === "closed") closed.set(subdirectory, closedDirectory(subdirectory, index, cellOf));
     }
   }
   const files = [...retained, ...members].flatMap(key => byId.get(key) ?? []);
@@ -469,14 +475,12 @@ export function orderExploration(exploration: Exploration, options: OrderOptions
 }
 
 /** A closed directory's box as the picture counts it: the files under it at any depth, its immediate subdirectories, and what its skin draws. */
-function closedDirectory(path: string, index: ReadonlyMap<string, { files: string[]; subdirectories: string[] }>, kindOf: (file: string) => string): ClosedDirectory {
+function closedDirectory(path: string, index: ReadonlyMap<string, { files: string[]; subdirectories: string[] }>, cellOf: (file: string) => ClosedFile): ClosedDirectory {
   const filesUnder = (directory: string): number => {
     let files = 0;
     for (const [other, contents] of index) if (under(other, directory)) files += contents.files.length;
     return files;
   };
-  // A file as its cell stands for it: its own name, which the cell says on hover, and its kind.
-  const cellOf = (file: string): ClosedFile => ({ name: file.slice(file.lastIndexOf("/") + 1), kind: kindOf(file) });
   // The skin draws a directory inside and one inside that; what stands deeper is told by the count under it.
   const nested = (directory: string, depth: number): NestedContents => {
     const own = index.get(directory);

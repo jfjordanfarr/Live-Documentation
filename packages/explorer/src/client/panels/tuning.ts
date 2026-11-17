@@ -5,10 +5,10 @@
  * for bezier curves, click behavior, visual options, and Local Map settings.
  */
 
-import { applyPalette } from "../dom";
+import { applyMarbles, applyPalette } from "../dom";
 import { layoutSettingsOf } from "../layout-presets";
 import { DEFAULT_PALETTE, isPaletteName } from "../palette";
-import { CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, OVERVIEW_FILES, type ExplorerState } from "../types";
+import { CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, MARBLE_CHOICES, OVERVIEW_FILES, type ExplorerState } from "../types";
 import { TUNING_HELP, tuningHelpId } from "./tuning-levers";
 
 /** Callback for when tuning values change */
@@ -69,6 +69,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   const closedShapeSelect = document.getElementById("tuning-closed-shape") as HTMLSelectElement | null;
   const closedCellsSelect = document.getElementById("tuning-closed-cells") as HTMLSelectElement | null;
   const paletteSelect = document.getElementById("tuning-palette") as HTMLSelectElement | null;
+  const marblesSelect = document.getElementById("tuning-marbles") as HTMLSelectElement | null;
   /** The skin's shape and its cells' colour are choices of the skin with cells alone: shown only while it is chosen. */
   const syncClosedChoices = (): void => {
     for (const row of document.querySelectorAll<HTMLElement>("[data-closed-cells-only]")) row.hidden = state.tuning.localMap.closedDirectory !== "cells";
@@ -183,6 +184,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     if (closedShapeSelect) closedShapeSelect.value = state.tuning.localMap.closedShape;
     if (closedCellsSelect) closedCellsSelect.value = state.tuning.localMap.closedCells;
     if (paletteSelect) paletteSelect.value = state.tuning.appearance.palette;
+    if (marblesSelect) marblesSelect.value = state.tuning.appearance.marbles;
     syncClosedChoices();
     if (overviewFilesSelect) overviewFilesSelect.value = state.tuning.localMap.overviewFiles;
     if (descriptionsZoomedOutSelect) descriptionsZoomedOutSelect.value = state.tuning.localMap.descriptionsZoomedOut;
@@ -300,6 +302,14 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     paletteSelect.addEventListener("change", () => {
       state.tuning.appearance.palette = isPaletteName(paletteSelect.value) ? paletteSelect.value : DEFAULT_PALETTE;
       applyPalette(state.tuning.appearance.palette);
+      onTuningChange();
+    });
+  }
+  // Whether files are drawn as marbles (the marble trial, 2026-11-17): taken at once as a palette is, nothing moving.
+  if (marblesSelect) {
+    marblesSelect.addEventListener("change", () => {
+      state.tuning.appearance.marbles = MARBLE_CHOICES.find(choice => choice === marblesSelect.value) ?? MARBLE_CHOICES[0];
+      applyMarbles(state.tuning.appearance.marbles);
       onTuningChange();
     });
   }

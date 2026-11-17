@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-11-17T01:03:10.290Z
+- Generated At: 2026-11-17T04:51:14.128Z
 
 ## Authored
 ### Purpose
@@ -421,6 +421,9 @@ Since November 8, 2026, the literal initial controls agree with `getDefaultTunin
 - Type: variable
 
 #### `tuning-lace-width-value` {#symbol-tuning-lace-width-value}
+- Type: variable
+
+#### `tuning-marbles` {#symbol-tuning-marbles}
 - Type: variable
 
 #### `tuning-membrane-evenness` {#symbol-tuning-membrane-evenness}

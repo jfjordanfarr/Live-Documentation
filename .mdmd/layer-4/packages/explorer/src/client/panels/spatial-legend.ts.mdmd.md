@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/spatial-legend.ts
-- Generated At: 2026-11-17T01:03:02.945Z
+- Generated At: 2026-11-17T04:51:06.868Z
 
 ## Authored
 ### Purpose
@@ -63,7 +63,7 @@ The rows of the key for a filtered graph at the moment shown, in reading order; 
 
 #### `renderSpatialLegend` {#symbol-renderspatiallegend}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L92)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L97)
 - Parameters: `graph`: [`SpatialGraphData`](../views/forceGraphData.ts.mdmd.md#symbol-spatialgraphdata); `drawn`: [`SpatialLegendDrawn`](#symbol-spatiallegenddrawn)
 
 ##### `renderSpatialLegend` — Summary
@@ -71,7 +71,7 @@ Describe the spatial map's filtered, current-moment encodings without changing i
 
 #### `watchLocalKinds` {#symbol-watchlocalkinds}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L116)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L121)
 
 ##### `watchLocalKinds` — Summary
 The 2D map's kinds (2026-11-16): the template's `local-legend-kinds` row, where the template has one, holds a mark
@@ -85,6 +85,7 @@ palette chosen later draws the row again in its colours.
 ### Dependencies
 - [`dom.requireElement`](../dom.ts.mdmd.md#symbol-requireelement)
 - [`palette.activePalette`](../palette.ts.mdmd.md#symbol-activepalette)
+- [`palette.marblesDrawn`](../palette.ts.mdmd.md#symbol-marblesdrawn)
 - [`palette.whenPaletteChanges`](../palette.ts.mdmd.md#symbol-whenpalettechanges)
 - [`forceGraphAppearance.spatialNodeStyle`](../views/forceGraphAppearance.ts.mdmd.md#symbol-spatialnodestyle-function)
 - [`forceGraphAppearance.spatialNodeStyles`](../views/forceGraphAppearance.ts.mdmd.md#symbol-spatialnodestyles)

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/index.ts
 - Entry: declared
-- Generated At: 2026-11-16T20:45:28.654Z
+- Generated At: 2026-11-17T04:51:06.313Z
 
 ## Authored
 ### Purpose
@@ -64,6 +64,7 @@ _No public symbols detected_
 - [`landing.landingOf`](./bootstrap/landing.ts.mdmd.md#symbol-landingof)
 - [`detailPanel.DetailPanelAction`](./detailPanel.ts.mdmd.md#symbol-detailpanelaction)
 - [`detailPanel.createDetailPanel`](./detailPanel.ts.mdmd.md#symbol-createdetailpanel)
+- [`dom.applyMarbles`](./dom.ts.mdmd.md#symbol-applymarbles)
 - [`dom.applyPalette`](./dom.ts.mdmd.md#symbol-applypalette)
 - [`dom.requireElement`](./dom.ts.mdmd.md#symbol-requireelement)
 - [`dom.setActiveView`](./dom.ts.mdmd.md#symbol-setactiveview)

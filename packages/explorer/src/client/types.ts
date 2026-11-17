@@ -226,12 +226,23 @@ export interface TuningConfig {
 }
 
 /**
- * How the page is drawn, the viewer's own (2026-11-16): the palette, by name. Saved, as every setting is, only when it
- * differs from the default; not carried in a shared link.
+ * How the page is drawn, the viewer's own (2026-11-16): the palette, by name, and since 2026-11-17 whether files are
+ * drawn as marbles. Saved, as every setting is, only when it differs from the default; not carried in a shared link.
  */
 export interface AppearanceTuning {
   palette: PaletteName;
+  marbles: MarbleChoice;
 }
+
+/**
+ * Whether a file is drawn as a marble (a trial, 2026-11-17, the owner's "Do it do it do it do it!!!!" of the November 16
+ * record, Turn 9): its kind's colour as glass with veins of the offering blue and the using green, as many as the files
+ * that use it and that it uses, in the 3D map's spheres and the 2D map's closed directories' cells; or not.
+ */
+export type MarbleChoice = "off" | "on";
+
+/** Every marble choice, in the order the control offers them. */
+export const MARBLE_CHOICES: readonly MarbleChoice[] = ["off", "on"];
 
 /**
  * Which ticks the history's scrubber draws and the step key moves between: every step; one per day, week or month

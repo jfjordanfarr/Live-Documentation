@@ -513,8 +513,10 @@ function fieldMarkup(field: CellField, width: number, height: number, shape: Clo
   // Two masks: the cells fade under every veil, the skins' outlines only under the field's own end.
   const cellsMask = field.veils.length ? ` mask="url(#${id}-cells)"` : "", skinsMask = ends.length ? ` mask="url(#${id}-skins)"` : "";
   const circle = (c: Cell): string => {
-    // The kind's colour is the stylesheet's (local.css), from the palette, so that a palette chosen later re-colours the cell.
-    const at = `cx="${c.x.toFixed(2)}" cy="${c.y.toFixed(2)}" r="${c.r}" data-kind="${spatialKindOf(c.kind)}"`;
+    // The kind's colour is the stylesheet's (local.css), from the palette, so that a palette chosen later re-colours the
+    // cell; so is the marble's far tint, mixed there from the two shares the cell carries (2026-11-17).
+    const shares = c.marble ? ` style="--offers-share: ${c.marble.offers.toFixed(4)}; --uses-share: ${c.marble.uses.toFixed(4)}"` : "";
+    const at = `cx="${c.x.toFixed(2)}" cy="${c.y.toFixed(2)}" r="${c.r}" data-kind="${spatialKindOf(c.kind)}"${shares}`;
     return c.name ? `<circle class="local-cell local-cell--named" ${at}><title>${escapeText(c.name)}</title></circle>` : `<circle class="local-cell" ${at}/>`;
   };
   const cells = (list: readonly Cell[]): string => (list.length ? `<g${cellsMask}>${list.map(circle).join("")}</g>` : "");

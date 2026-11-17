@@ -2,7 +2,8 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { activePalette, channels, choosePalette, customProperties, DEFAULT_PALETTE, isPaletteName, mix, PALETTES, paletteStylesheet, PROPOSED, rgba, TODAY, unitChannels, whenPaletteChanges, type Palette } from "./palette";
+import { activePalette, channels, chooseMarbles, choosePalette, customProperties, DEFAULT_PALETTE, isPaletteName, marblesDrawn, mix, PALETTES, paletteStylesheet, PROPOSED, rgba, TODAY, unitChannels, VIVID_KINDS, whenPaletteChanges, type Palette } from "./palette";
+import { fileShares, MARBLE_COLOUR, MARBLE_FRAGMENT_PARS, MARBLE_SHINE, MARBLE_VEINS, MARBLE_VERTEX, MARBLE_VERTEX_PARS, marbleAmount, marbleCounts, marbleOf, marbleSeed, marbleShares, marbleTint, type SpatialKind } from "./views/forceGraphAppearance";
 
 describe("the palette", () => {
   it("holds every meaning as one opaque #rrggbb colour, each named once as a custom property with its channels beside it", () => {
@@ -163,6 +164,19 @@ describe("a valid palette", () => {
     expect(Math.min(apart(PROPOSED.role.uses, PROPOSED.kind.document, "protanopia"), apart(PROPOSED.role.uses, PROPOSED.kind.document, "deuteranopia"))).toBeCloseTo(8.5, 1);
   });
 
+  it("is what the vivid kinds' palette is, every value as root measured it, none adjusted", () => {
+    expect(shortfalls(VIVID_KINDS)).toEqual([]);
+    const { role, kind } = VIVID_KINDS;
+    expect(apart(kind.document, kind.directory, "full")).toBeCloseTo(15.9, 1);
+    expect(Math.min(apart(role.uses, kind.document, "protanopia"), apart(role.uses, kind.document, "deuteranopia"))).toBeCloseTo(9.3, 1);
+    expect(apart(kind.implementation, role.offers, "full")).toBeCloseTo(17.5, 1);
+    // Every second value is its meaning; a test file's kind label is the test kind's green, the has-tests mark violet.
+    const second = VIVID_KINDS.secondValues;
+    expect([second.offersPin, second.usesPin, second.testLabel, second.testLabelTint, second.implementationLabelTint, second.worldDarkWireOffers, second.worldDarkWireUses])
+      .toEqual([role.offers, role.uses, kind.test, kind.test, kind.implementation, VIVID_KINDS.world.dark.offers, VIVID_KINDS.world.dark.uses]);
+    expect(VIVID_KINDS.hasTests.mark).toBe(PROPOSED.hasTests.mark);
+  });
+
   it("is not what today's palette is, as a stated fact: its offering pin is its implementation, and a test and a directory are 2.5 apart under protanopia", () => {
     const today = shortfalls(TODAY);
     expect(TODAY.secondValues.offersPin).toBe(TODAY.kind.implementation);
@@ -200,6 +214,110 @@ describe("changing the palette", () => {
     expect([second.offersPin, second.usesPin, second.selectedRing, second.implementationLabelTint, second.testLabelTint, second.testLabel, second.assetLabelTint])
       .toEqual([role.offers, role.uses, state.selected, kind.implementation, kind.test, kind.test, kind.asset]);
     expect([second.worldLightWireOffers, second.worldLightWireUses, second.worldDarkWireOffers, second.worldDarkWireUses]).toEqual([world.light.offers, world.light.uses, world.dark.offers, world.dark.uses]);
+  });
+});
+
+/**
+ * The marble (the trial of 2026-11-17, the owner's ask of the November 16 record, Turns 7 to 9): a file's ball is its
+ * kind's glass with a blue vein for the files that use it and a green one for the files it uses, and from far away the
+ * three mixed in linear light. What must hold is measured here, as facts.
+ */
+describe("the marble", () => {
+  const linearMix = (parts: Array<[string, number]>): number[] => parts.reduce((sum, [colour, weight]) => sum.map((value, i) => value + linear(colour)[i] * weight), [0, 0, 0]);
+
+  it("gives a count of files its share of the veins: 1 a third, 3 two thirds, 7 and more all", () => {
+    [0, 1 / 3, 2 / 3, 1, 1, 1].forEach((amount, i) => expect(marbleAmount([0, 1, 3, 7, 15, 200][i])).toBeCloseTo(amount, 12));
+    for (let n = 0; n < 100; n++) expect(marbleAmount(n + 1), String(n)).toBeGreaterThanOrEqual(marbleAmount(n));
+  });
+
+  it("is its glass exactly where a file has no connections, and its veins never take the whole ball", () => {
+    for (const glass of Object.values(PROPOSED.kind)) expect(marbleTint(glass, { offers: 0, uses: 0 }, PROPOSED)).toBe(glass);
+    for (const kind of ["implementation", "test", "asset", "document", "other"] as SpatialKind[]) for (const usedBy of [0, 1, 5, 40]) for (const uses of [0, 2, 9, 99]) {
+      const shares = marbleShares(kind, { usedBy, uses });
+      expect(shares.offers + shares.uses, `${kind} ${usedBy} ${uses}`).toBeLessThanOrEqual(MARBLE_VEINS.together + 1e-12);
+    }
+    expect(MARBLE_VEINS.together).toBeLessThan(1);
+    // One vein alone takes its whole share; both full are held to what the two may take together, in proportion.
+    expect(marbleShares("implementation", { usedBy: 15, uses: 0 })).toEqual({ offers: MARBLE_VEINS.quiet, uses: 0 });
+    const both = marbleShares("implementation", { usedBy: 15, uses: 15 });
+    expect([both.offers, both.uses].map(share => +share.toFixed(12))).toEqual([MARBLE_VEINS.together / 2, MARBLE_VEINS.together / 2]);
+    expect(marbleShares("test", { usedBy: 40, uses: 40 })).toEqual({ offers: MARBLE_VEINS.tinted, uses: MARBLE_VEINS.tinted });
+  });
+
+  it("reads from far away as its glass and veins mixed in linear light, as the eye averages them", () => {
+    const shares = { offers: 0.3, uses: 0.2 }, far = marbleTint(PROPOSED.kind.implementation, shares, PROPOSED);
+    const expected = linearMix([[PROPOSED.kind.implementation, 0.5], [PROPOSED.role.offers, 0.3], [PROPOSED.role.uses, 0.2]]);
+    linear(far).forEach((value, i) => expect(Math.abs(value - expected[i]), far).toBeLessThan(0.004));
+    // The 2D map's cells mix the same three in two steps (local.css): the green over the mix of the blue and the glass.
+    const offersFirst = shares.offers / (1 - shares.uses);
+    const inTwo = linear(PROPOSED.role.uses).map((value, i) => value * shares.uses + (linear(PROPOSED.role.offers)[i] * offersFirst + linear(PROPOSED.kind.implementation)[i] * (1 - offersFirst)) * (1 - shares.uses));
+    inTwo.forEach((value, i) => expect(value).toBeCloseTo(expected[i], 10));
+  });
+
+  it("counts each file's users and what it uses once each, from the links, leaving out a file's references to itself", () => {
+    const counts = marbleCounts({ links: [
+      { source: "a.ts", target: "b.ts" }, { source: "a.ts", target: "b.ts" }, { source: "c.ts", target: "b.ts" }, { source: "a.ts", target: "a.ts" }, { source: { id: "b.ts" }, target: { id: "d.ts" } }
+    ] });
+    expect(Object.fromEntries(counts)).toEqual({ "a.ts": { usedBy: 0, uses: 1 }, "b.ts": { usedBy: 2, uses: 1 }, "c.ts": { usedBy: 0, uses: 1 }, "d.ts": { usedBy: 1, uses: 0 } });
+    // A directory's hub is no marble, and a document's citations give it no veins.
+    expect(marbleOf("directory:src", "directory", counts)).toBeNull();
+    expect(fileShares("related:notes.md", "related-doc", new Map([["related:notes.md", { usedBy: 4, uses: 4 }]]))).toEqual({ offers: 0, uses: 0 });
+    expect(marbleOf("b.ts", "implementation", counts, PROPOSED)).toEqual({ glass: PROPOSED.kind.implementation, offers: marbleAmount(2) * MARBLE_VEINS.quiet, uses: marbleAmount(1) * MARBLE_VEINS.quiet, seed: marbleSeed("b.ts") });
+    expect(marbleSeed("b.ts")).toBe(marbleSeed("b.ts"));
+    expect(new Set(["a.ts", "b.ts", "c.ts", "src/index.ts"].map(marbleSeed)).size).toBe(4);
+    for (const id of ["", "a", "packages/engine/src/live-docs/archetype.ts"]) { expect(marbleSeed(id)).toBeGreaterThanOrEqual(0); expect(marbleSeed(id)).toBeLessThan(1); }
+  });
+
+  // The grid of counts both measured facts walk: none to more than fifteen of each.
+  const COUNTS = [0, 1, 2, 3, 4, 5, 7, 10, 15, 30];
+  const OTHERS = (kind: SpatialKind): SpatialKind[] => (["implementation", "test", "asset", "document", "directory"] as SpatialKind[]).filter(other => other !== kind);
+
+  it("keeps an implementation ball's far tint under Proposed apart from every other kind's glass, at the palette's floors", () => {
+    const short: string[] = [];
+    for (const usedBy of COUNTS) for (const uses of COUNTS) {
+      const far = marbleTint(PROPOSED.kind.implementation, marbleShares("implementation", { usedBy, uses }), PROPOSED);
+      for (const other of OTHERS("implementation")) for (const vision of ["full", "protanopia", "deuteranopia"] as const) {
+        const distance = apart(far, PROPOSED.kind[other], vision), floor = vision === "full" ? 15 : 8;
+        if (distance < floor) short.push(`used by ${usedBy}, using ${uses}: ${far} is ${distance.toFixed(1)} from ${other} under ${vision}`);
+      }
+    }
+    expect(short).toEqual([]);
+  });
+
+  it("keeps a tinted kind's ball nearer its own glass than any other kind's from far away, its veins held to the tinted share", () => {
+    const astray = (most: number): string[] => {
+      const found: string[] = [];
+      for (const kind of ["test", "asset", "document"] as SpatialKind[]) for (let b = 0; b <= 10; b++) for (let g = 0; g <= 10; g++) {
+        const shares = { offers: most * b / 10, uses: most * g / 10 }, far = marbleTint(PROPOSED.kind[kind], shares, PROPOSED), own = apart(far, PROPOSED.kind[kind], "full");
+        for (const other of OTHERS(kind)) if (apart(far, PROPOSED.kind[other], "full") <= own) found.push(`${kind} at ${shares.offers.toFixed(2)} and ${shares.uses.toFixed(2)} reads as ${other}`);
+      }
+      return found;
+    };
+    expect(astray(MARBLE_VEINS.tinted)).toEqual([]);
+    // Why the tinted share is lower, as measured: held as quiet glass is, a test full of both veins reads as implementation.
+    expect(astray(MARBLE_VEINS.together / 2)).toContain("test at 0.45 and 0.45 reads as implementation");
+  });
+
+  it("is compiled into a shader only while marbles are drawn: every chunk stands whole inside one guard", () => {
+    // Skipped by a test inside the shader alone, the pattern cost this repository's picture a sixth of its frames with
+    // no marble drawn (2026-11-17). A chunk outside the guard is that cost again, or a shader that does not compile.
+    for (const [name, chunk] of Object.entries({ MARBLE_VERTEX_PARS, MARBLE_VERTEX, MARBLE_FRAGMENT_PARS, MARBLE_COLOUR, MARBLE_SHINE })) {
+      const lines = chunk.split("\n");
+      expect(lines.slice(0, 2), name).toEqual(["", "#ifdef MARBLES"]);
+      expect(lines[lines.length - 1], name).toBe("#endif");
+      expect(lines.filter(line => /^\s*#\s*(?:if|ifdef|ifndef|endif|else|elif)\b/.test(line)), name).toEqual(["#ifdef MARBLES", "#endif"]);
+    }
+  });
+
+  it("is drawn or not as the viewer chooses, and tells whoever listens to the palette when that changes", () => {
+    const heard: boolean[] = [];
+    const stop = whenPaletteChanges(() => heard.push(marblesDrawn()));
+    chooseMarbles(true);
+    chooseMarbles(true);
+    chooseMarbles(false);
+    stop();
+    expect(heard).toEqual([true, false]);
+    expect(marblesDrawn()).toBe(false);
   });
 });
 

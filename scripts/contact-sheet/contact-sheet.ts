@@ -15,8 +15,9 @@
  * npm run contact:sheet -- --bundle dist/explorer/samples/tidepool --preset tidepool --palette proposed --out <dir>
  * ```
  *
- * `--palette <name>` draws every view in one of the Explorer's palettes (`today`, `proposed`), the viewer's saved
- * setting written before each page loads, and names the sheet for it.
+ * `--palette <name>` draws every view in one of the Explorer's palettes (`today`, `proposed`, `vividKinds`), the
+ * viewer's saved setting written before each page loads, and names the sheet for it; `--marbles` draws every file as a
+ * marble (the trial of 2026-11-17), the same way.
  *
  * A hook is a module whose default export is `async (context, view) => void`, given the Playwright browser context
  * and the view about to load (`{ name, title }`); it usually calls `context.addInitScript` to write local storage.
@@ -222,7 +223,7 @@ async function drawSheet(context: BrowserContext, pictures: Picture[], heading: 
 
 const escape = (text: string): string => text.replace(/[&<>"]/gu, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;" })[ch]!);
 
-interface Options { bundle: string; out: string; preset?: string; directory?: string; pinned?: string; hook?: string; label: string; only?: string[]; palette?: string }
+interface Options { bundle: string; out: string; preset?: string; directory?: string; pinned?: string; hook?: string; label: string; only?: string[]; palette?: string; marbles?: boolean }
 
 function parseArgs(args: string[]): Options {
   const options: Partial<Options> = {};
@@ -237,10 +238,11 @@ function parseArgs(args: string[]): Options {
     else if (arg === "--label") options.label = optionValue(args, ++i, arg);
     else if (arg === "--only") options.only = optionValue(args, ++i, arg).split(",");
     else if (arg === "--palette") options.palette = optionValue(args, ++i, arg);
-    else throw new UsageError(`${arg} is not an option. Options: --bundle --out --preset (${Object.keys(PRESETS).join(", ")}) --dir --pin --hook --label --only --palette (${Object.keys(PALETTES).join(", ")})`);
+    else if (arg === "--marbles") options.marbles = true;
+    else throw new UsageError(`${arg} is not an option. Options: --bundle --out --preset (${Object.keys(PRESETS).join(", ")}) --dir --pin --hook --label --only --palette (${Object.keys(PALETTES).join(", ")}) --marbles`);
   }
   if (options.palette !== undefined && !isPaletteName(options.palette)) throw new UsageError(`No palette ${options.palette}; the palettes are ${Object.keys(PALETTES).join(", ")}.`);
-  options.label ??= options.palette ? `the ${options.palette} palette` : "Today's palette";
+  options.label ??= `${options.palette ? `the ${options.palette} palette` : "Today's palette"}${options.marbles ? ", marbles on" : ""}`;
   if (!options.bundle || !options.out) throw new UsageError("Name the built bundle with --bundle and where to write with --out.");
   return options as Options;
 }
@@ -267,7 +269,9 @@ async function main(): Promise<void> {
       try {
         await serve(context, bundleDir);
         if (hook) await hook(context, { name: view.name, title: view.title });
-        if (options.palette) await mergeStorage(context, { tuning: { appearance: { palette: options.palette } } });
+        if (options.palette || options.marbles) {
+          await mergeStorage(context, { tuning: { appearance: { ...(options.palette ? { palette: options.palette } : null), ...(options.marbles ? { marbles: "on" } : null) } } });
+        }
         if (view.storage) await mergeStorage(context, view.storage);
         const page = await context.newPage();
         await page.goto(`${ORIGIN}/${view.address}`);

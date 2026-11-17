@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/closed-looks.ts
-- Generated At: 2026-11-16T02:12:44.287Z
+- Generated At: 2026-11-17T04:51:11.158Z
 
 ## Authored
 ### Purpose
@@ -20,21 +20,29 @@ On 2026-11-15 ([November 15, Turn 1](../../../../../../../../AI-Agent-Workspace/
 ### Public Symbols
 #### `ClosedFile` {#symbol-closedfile}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L20)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L23)
 
 ##### `ClosedFile` — Summary
-A file as a cell stands for it: its own name, which the cell says on hover, and its kind (its archetype, as the 3D map colours a file).
+A file as a cell stands for it: its own name, which the cell says on hover, its kind (its archetype, as the 3D map
+colours a file), and its marble's two shares (2026-11-17), which tint the cell where the marbles are drawn.
+
+#### `CellMarble` {#symbol-cellmarble}
+- Type: interface
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L26)
+
+##### `CellMarble` — Summary
+A marble's two shares as a cell carries them: the offering blue's and the using green's.
 
 #### `ClosedContents` {#symbol-closedcontents}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L23)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L29)
 
 ##### `ClosedContents` — Summary
 What a directory holds, as the skin with cells draws it: each file directly in it, and each directory inside.
 
 #### `NestedContents` {#symbol-nestedcontents}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L30)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L36)
 - Extends: [`ClosedContents`](#symbol-closedcontents)
 
 ##### `NestedContents` — Summary
@@ -42,14 +50,14 @@ A directory inside a closed one: its name, what it holds directly, and how many 
 
 #### `CellRoom` {#symbol-cellroom}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L36)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L42)
 
 ##### `CellRoom` — Summary
 The room a field has, in its own units.
 
 #### `Band` {#symbol-band}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L45)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L51)
 
 ##### `Band` — Summary
 A strip of the field: "pair", as tall as a skin that holds skins, where loose cells stand in two staggered rows;
@@ -57,7 +65,7 @@ or "single", one row, as tall as a skin around cells where the room holds that, 
 
 #### `Cell` {#symbol-cell}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L51)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L57)
 
 ##### `Cell` — Summary
 A round cell's centre and radius, in the field's units, the kind of the file it stands for, and that file's name
@@ -65,14 +73,14 @@ where it stands for one file wholly shown: a cell under a veil, or one that stan
 
 #### `Rect` {#symbol-rect}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L53)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L59)
 
 ##### `Rect` — Summary
 A rectangle in the field's units.
 
 #### `Skin` {#symbol-skin}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L56)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L62)
 - Extends: [`Rect`](#symbol-rect)
 
 ##### `Skin` — Summary
@@ -80,7 +88,7 @@ A directory inside, drawn: its skin, its own files' cells, the skins of the dire
 
 #### `Veil` {#symbol-veil}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L69)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L75)
 - Extends: [`Rect`](#symbol-rect)
 
 ##### `Veil` — Summary
@@ -88,14 +96,14 @@ A veil: where more is held than shown, at the right end of a skin that holds mor
 
 #### `CellField (interface)` {#symbol-cellfield-interface}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L72)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L78)
 
 ##### `CellField (interface)` — Summary
 What a field draws: a cell for each file shown, a skin for each directory inside shown, and a veil wherever more is held than shown.
 
 #### `CELLS` {#symbol-cells}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L84)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L90)
 
 ##### `CELLS` — Summary
 A file's cell and the air between cells; a skin's padding around what it holds; the most cells a skin inside shows,
@@ -105,28 +113,28 @@ bag of round things rather than a grid of dots; a skin's own cells stand in one 
 
 #### `PAIR_HEIGHT` {#symbol-pair_height}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L89)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L95)
 
 ##### `PAIR_HEIGHT` — Summary
 The height of two staggered rows of cells.
 
 #### `SKIN_HEIGHT` {#symbol-skin_height}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L91)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L97)
 
 ##### `SKIN_HEIGHT` — Summary
 The height of a skin around a row of cells.
 
 #### `BAND_HEIGHT` {#symbol-band_height}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L93)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L99)
 
 ##### `BAND_HEIGHT` — Summary
 The height of a skin that holds skins, and so of a band of two rows.
 
 #### `fieldBands` {#symbol-fieldbands}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L99)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L105)
 - Returns: [`Band`](#symbol-band)[]
 - Parameters: `room`: [`CellRoom`](#symbol-cellroom)
 
@@ -136,7 +144,7 @@ around cells if the room holds that, else as tall as a cell, in the room's middl
 
 #### `cellField (function)` {#symbol-cellfield-function}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L165)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L174)
 - Returns: [`CellField`](#symbol-cellfield-interface)
 - Parameters: `contents`: [`ClosedContents`](#symbol-closedcontents)
 
@@ -150,14 +158,14 @@ names its file; one that fades under a veil, or stands for what was left out, na
 
 #### `SHAPE_CORNER` {#symbol-shape_corner}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L235)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L244)
 
 ##### `SHAPE_CORNER` — Summary
 Each shape's corner, in the map's units: the capsule's, a file card's, and between the two for the folder.
 
 #### `tabOutline` {#symbol-taboutline}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L244)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L253)
 
 ##### `tabOutline` — Summary
 A folder's outline as path data, in a box `width` by `height` from its top left: a tab over the first `tab.width`
@@ -168,7 +176,7 @@ corners, there is no step to draw and the outline is the box's rounded rectangle
 
 #### `stackEdges` {#symbol-stackedges}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L258)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/closed-looks.ts#L267)
 
 ##### `stackEdges` — Summary
 How many cards a stack shows under its top card, by the files under it at any depth: one, two or three.

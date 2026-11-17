@@ -1,4 +1,6 @@
-import { GLSL3, LinearSRGBColorSpace, Matrix4, NoToneMapping, PlaneGeometry, RawShaderMaterial, ShaderChunk, ShaderLib, Sphere, SphereGeometry, SRGBColorSpace, UniformsUtils, Vector3, type Camera, type WebGLRenderer } from "three";
+import { Color, GLSL3, LinearSRGBColorSpace, Matrix4, NoToneMapping, PlaneGeometry, RawShaderMaterial, ShaderChunk, ShaderLib, Sphere, SphereGeometry, SRGBColorSpace, UniformsUtils, Vector3, type Camera, type WebGLRenderer } from "three";
+
+import { MARBLE_COLOUR, MARBLE_FRAGMENT_PARS, MARBLE_SHINE, MARBLE_VERTEX, MARBLE_VERTEX_PARS } from "./forceGraphAppearance";
 
 /** Four submitted corners bound a sphere; its material draws the actual curved surface, never the rectangle. */
 export function containedSphereGeometry(): PlaneGeometry {
@@ -111,7 +113,11 @@ export function containedSpherePrimitive(renderer?: WebGLRenderer): { geometry: 
     : { geometry: new SphereGeometry(1, 12, 12) };
 }
 
-/** Lambert-lit analytic unit sphere, scaled uniformly by its uploaded instance matrix. */
+/**
+ * Lambert-lit analytic unit sphere, scaled uniformly by its uploaded instance matrix; one whose instance is a marble
+ * (2026-11-17) draws its glass and veins as a 3D map's sphere does, read from the same chunks. Its owner gives it the
+ * marbles' two role colours as the uniforms `uMarbleOffers` and `uMarbleUses`.
+ */
 export class ContainedSphereMaterial extends RawShaderMaterial {
   readonly sphereRadius = 1;
 
@@ -120,7 +126,7 @@ export class ContainedSphereMaterial extends RawShaderMaterial {
 
     shader.vertexShader = shader.vertexShader.replace("#include <common>", `#include <common>
 attribute float spatialOpacity;
-varying float vSpatialOpacity;
+varying float vSpatialOpacity;${MARBLE_VERTEX_PARS}
 varying vec3 vSphereCenter;
 varying float vSphereRadius;
 varying vec3 vSphereRay;
@@ -139,7 +145,7 @@ bool containedSphereOutside(vec3 center, float radius) {
   }
   return false;
 }`)
-      .replace("#include <begin_vertex>", "#include <begin_vertex>\nvSpatialOpacity = spatialOpacity;")
+      .replace("#include <begin_vertex>", `#include <begin_vertex>\nvSpatialOpacity = spatialOpacity;${MARBLE_VERTEX}`)
       .replace("#include <project_vertex>", `
 mat4 sphereModelView = modelViewMatrix * instanceMatrix;
 vec3 sphereCenter = sphereModelView[3].xyz;
@@ -174,7 +180,10 @@ varying vec3 vSphereCenter;
 varying float vSphereRadius;
 varying vec3 vSphereRay;
 vec3 containedViewPosition;
-#define vViewPosition containedViewPosition`)
+#define vViewPosition containedViewPosition
+${MARBLE_FRAGMENT_PARS}
+// A marble's pattern stands in the sphere's own directions: the hit's, turned from the camera's axes to the scene's.
+#define MARBLE_LOCAL (normalize(containedHit - vSphereCenter) * mat3(viewMatrix))`)
       .replace("#include <lights_lambert_pars_fragment>", ShaderChunk.lights_lambert_pars_fragment.replace("varying vec3 vViewPosition;", ""))
       .replace("void main() {", `void main() {
 vec3 sphereRay = normalize(interpolateAtSample(vSphereRay, gl_SampleID));
@@ -191,12 +200,15 @@ if (containedClip.w <= 0.0 || containedClip.z < -containedClip.w || containedCli
 gl_FragDepth = (containedClip.z / containedClip.w + 1.0) * 0.5;
 containedViewPosition = -containedHit;
 `)
-      .replace("#include <color_fragment>", "#include <color_fragment>\ndiffuseColor.a *= vSpatialOpacity;")
+      .replace("#include <color_fragment>", `#include <color_fragment>\ndiffuseColor.a *= vSpatialOpacity;${MARBLE_COLOUR}`)
       .replace("#include <normal_fragment_begin>", `float faceDirection = 1.0;
 vec3 normal = normalize(containedHit - vSphereCenter);
-vec3 nonPerturbedNormal = normal;`);
+vec3 nonPerturbedNormal = normal;`)
+      .replace("#include <opaque_fragment>", `${MARBLE_SHINE}\n#include <opaque_fragment>`);
     const uniforms = UniformsUtils.clone(ShaderLib.lambert.uniforms);
     uniforms.containedOutputSRGB = { value: true };
+    uniforms.uMarbleOffers = { value: new Color() };
+    uniforms.uMarbleUses = { value: new Color() };
     super({
       glslVersion: GLSL3, lights: true, transparent: true, uniforms,
       defines: { USE_INSTANCING: 1, USE_INSTANCING_COLOR: 1 },

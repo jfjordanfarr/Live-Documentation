@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphEmphasis.ts
-- Generated At: 2026-11-16T20:45:31.027Z
+- Generated At: 2026-11-17T04:51:08.829Z
 
 ## Authored
 ### Purpose
@@ -104,7 +104,7 @@ file. A file no directory drawn holds is shown in none. By body, each body's fil
 
 #### `emphasizedUnits` {#symbol-emphasizedunits}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L154)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L155)
 - Returns: `U`[]
 - Parameters: `changes`: [`BodyChanges`](#symbol-bodychanges-interface); `mode`: [`ChangeEmphasis`](../types.ts.mdmd.md#symbol-changeemphasis)
 - Constraints: [`ShownUnit`](#symbol-shownunit)
@@ -113,10 +113,11 @@ file. A file no directory drawn holds is shown in none. By body, each body's fil
 A body's units as the step colours them: a file's dot as `emphasizedSphere` colours a sphere at full strength, from
 its kind's `#rrggbb` colour; a bubble lit where the mode glows and it is lit, and, where the mode dims, at the dimmed
 share of its alpha unless it holds a change. Nothing is enlarged: the irrelevant fades rather than the relevant grows.
+A dot drawn as a marble (2026-11-17) loses its marble where the step glows it white, as a sphere does.
 
 #### `emphasizedSkin` {#symbol-emphasizedskin}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L161)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L164)
 - Parameters: `changes`: [`BodyChanges`](#symbol-bodychanges-interface); `mode`: [`ChangeEmphasis`](../types.ts.mdmd.md#symbol-changeemphasis)
 
 ##### `emphasizedSkin` — Summary

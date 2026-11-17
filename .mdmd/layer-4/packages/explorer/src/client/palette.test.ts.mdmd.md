@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/palette.test.ts
-- Generated At: 2026-11-17T01:03:02.471Z
+- Generated At: 2026-11-17T10:20:40.709Z
 
 ## Authored
 ### Purpose
@@ -30,15 +30,32 @@ _No public symbols detected_
 - [`palette.PROPOSED`](./palette.ts.mdmd.md#symbol-proposed)
 - [`Palette`](./palette.ts.mdmd.md#symbol-palette)
 - [`palette.TODAY`](./palette.ts.mdmd.md#symbol-today)
+- [`palette.VIVID_KINDS`](./palette.ts.mdmd.md#symbol-vivid_kinds)
 - [`palette.activePalette`](./palette.ts.mdmd.md#symbol-activepalette)
 - [`palette.channels`](./palette.ts.mdmd.md#symbol-channels)
+- [`palette.chooseMarbles`](./palette.ts.mdmd.md#symbol-choosemarbles)
 - [`palette.choosePalette`](./palette.ts.mdmd.md#symbol-choosepalette)
 - [`palette.customProperties`](./palette.ts.mdmd.md#symbol-customproperties)
 - [`palette.isPaletteName`](./palette.ts.mdmd.md#symbol-ispalettename)
+- [`palette.marblesDrawn`](./palette.ts.mdmd.md#symbol-marblesdrawn)
 - [`palette.mix`](./palette.ts.mdmd.md#symbol-mix)
 - [`palette.paletteStylesheet`](./palette.ts.mdmd.md#symbol-palettestylesheet)
 - [`palette.rgba`](./palette.ts.mdmd.md#symbol-rgba)
 - [`palette.unitChannels`](./palette.ts.mdmd.md#symbol-unitchannels)
 - [`palette.whenPaletteChanges`](./palette.ts.mdmd.md#symbol-whenpalettechanges)
+- [`forceGraphAppearance.MARBLE_COLOUR`](./views/forceGraphAppearance.ts.mdmd.md#symbol-marble_colour)
+- [`forceGraphAppearance.MARBLE_FRAGMENT_PARS`](./views/forceGraphAppearance.ts.mdmd.md#symbol-marble_fragment_pars)
+- [`forceGraphAppearance.MARBLE_SHINE`](./views/forceGraphAppearance.ts.mdmd.md#symbol-marble_shine)
+- [`forceGraphAppearance.MARBLE_VEINS`](./views/forceGraphAppearance.ts.mdmd.md#symbol-marble_veins)
+- [`forceGraphAppearance.MARBLE_VERTEX`](./views/forceGraphAppearance.ts.mdmd.md#symbol-marble_vertex)
+- [`forceGraphAppearance.MARBLE_VERTEX_PARS`](./views/forceGraphAppearance.ts.mdmd.md#symbol-marble_vertex_pars)
+- [`forceGraphAppearance.SpatialKind`](./views/forceGraphAppearance.ts.mdmd.md#symbol-spatialkind)
+- [`forceGraphAppearance.fileShares`](./views/forceGraphAppearance.ts.mdmd.md#symbol-fileshares)
+- [`forceGraphAppearance.marbleAmount`](./views/forceGraphAppearance.ts.mdmd.md#symbol-marbleamount)
+- [`forceGraphAppearance.marbleCounts`](./views/forceGraphAppearance.ts.mdmd.md#symbol-marblecounts-function)
+- [`forceGraphAppearance.marbleOf`](./views/forceGraphAppearance.ts.mdmd.md#symbol-marbleof)
+- [`forceGraphAppearance.marbleSeed`](./views/forceGraphAppearance.ts.mdmd.md#symbol-marbleseed)
+- [`forceGraphAppearance.marbleShares`](./views/forceGraphAppearance.ts.mdmd.md#symbol-marbleshares-function)
+- [`forceGraphAppearance.marbleTint`](./views/forceGraphAppearance.ts.mdmd.md#symbol-marbletint)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

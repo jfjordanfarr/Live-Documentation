@@ -45,13 +45,13 @@
 import { forceSimulation } from "d3-force-3d";
 import { Matrix4, PerspectiveCamera, Vector3 } from "three";
 
-import { spatialNodeStyle } from "./forceGraphAppearance";
-import { activePalette, rgba, whenPaletteChanges } from "../palette";
+import { marbleCounts, marbleOf, marbleTint, spatialNodeStyle, type Marble, type MarbleCounts } from "./forceGraphAppearance";
+import { activePalette, marblesDrawn, rgba, whenPaletteChanges, type Colour } from "../palette";
 import { SPATIAL_RING_OUTER_RADIUS, type SpatialWrapperUnit } from "./forceGraphBatches";
 import { buildingPhase, nextBuilding, nodePointer, NOT_BUILDING, type Building } from "./forceGraphBuilding";
 import { cornerPanelInsets, focusedCameraPosition, frameCameraSpheres, screenAnchorTranslation, wheelZoomCamera, type CameraPoint } from "./forceGraphCamera";
 import { directoryNodeId, labelNamesOf, spatialGraphOf, type SpatialGraphData, type SpatialGraphNode, type SpatialLinkKind } from "./forceGraphData";
-import { bodyChanges, deletionHomes, emphasizedSkin, emphasizedSphere, emphasizedUnits, emphasizedWireAlpha, pairKey } from "./forceGraphEmphasis";
+import { bodyChanges, deletionHomes, emphasizedSkin, emphasizedSphere, emphasizedUnits, emphasizedWireAlpha, glows, pairKey } from "./forceGraphEmphasis";
 import { placeSpatialLabels, type SpatialLabel, type SpatialLabelBody, type LabelBox } from "./forceGraphLabels";
 import { linkPulls, motionForce, placeNewSpheres, spatialNodeRadius, symbolCountOf, type MotionForce, type MotionStart, type Placed } from "./forceGraphLayout";
 import { SPATIAL_DRAG_SLOP, SpatialRenderer } from "./forceGraphRenderer";
@@ -339,6 +339,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   // again, and the camera and what is pinned stay as they are.
   whenPaletteChanges(() => {
     shownUnits = new WeakMap();
+    fileLooks = new Map();
     const instance = forceGraphInstance;
     if (!instance) return;
     emphasizeBodies(instance.graphData().nodes);
@@ -386,6 +387,25 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
    * group's skin, like a directory shell's, is drawn at its body's true size.
    */
   const fitOf = (id: string): number => bursts.get(id)?.fit ?? 1;
+  /**
+   * The scan's two counts of every file, for the marbles (2026-11-17): today's, or the moment's of the history shown,
+   * never what the picture happens to show, so that a filter such as Show Tests repaints no ball.
+   */
+  let scanCounts: ReadonlyMap<string, MarbleCounts> = new Map();
+  /** Each file's colour and marble under the palette in force and the scan's counts, by id, drawn afresh when either changes. */
+  let fileLooks = new Map<string, { color: Colour; marble: Marble | null }>();
+  /**
+   * How a file or hub is coloured: its kind's colour; or, with the marbles on, a file's far tint, its glass and veins
+   * mixed as from far away, with the marble drawn on it at close range. A hub is its kind's colour in both.
+   */
+  const fileLook = (id: string, archetype: string | undefined): { color: Colour; marble: Marble | null } => {
+    let look = fileLooks.get(id);
+    if (!look) {
+      const marble = marblesDrawn() ? marbleOf(id, archetype, scanCounts) : null;
+      fileLooks.set(id, look = { color: marble ? marbleTint(marble.glass, marble) : spatialNodeStyle(archetype).color, marble });
+    }
+    return look;
+  };
   /** What a wrapped body's skin shows within it: every file, in its kind's colour, and every inner bubble. */
   const plainUnitsOf = (id: string): readonly SpatialWrapperUnit[] | undefined => {
     const shape = wrapped.has(id) ? shapeOf(id) : undefined;
@@ -396,7 +416,11 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       return veiled;
     }
     let units = shownUnits.get(shape);
-    if (!units) shownUnits.set(shape, units = shape.units.map(unit => ({ ...unit, color: unit.kind === "file" ? spatialNodeStyle(unit.archetype).color : undefined })));
+    if (!units) shownUnits.set(shape, units = shape.units.map(unit => {
+      if (unit.kind !== "file") return { ...unit, color: undefined };
+      const look = fileLook(unit.id, unit.archetype);
+      return { ...unit, color: look.color, ...(look.marble ? { marble: look.marble } : null) };
+    }));
     return units;
   };
   /** What a wrapped body's skin shows within it, as the step of the history shown colours it (`emphasizeBodies`). */
@@ -1278,6 +1302,9 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     // The data: the moment's snapshot, or today's docs; today's pins, subject and open directories are read where they
     // stand at the moment, and a pin that does not stand there retains nothing. The path is already the moment's.
     const source = moment?.graph ?? graphData;
+    // The marbles' counts are the scan's: a moment of the history has its own, and the files within the skins take them.
+    const counts = marbleCounts(source);
+    if (counts !== scanCounts) { scanCounts = counts; fileLooks = new Map(); shownUnits = new WeakMap(); }
     const todayPins = state.pins ?? EMPTY_PIN_SET;
     const pins: PinSet = moment
       ? { entries: todayPins.entries.flatMap(pin => { const at = fileAt(pin.nodeId); return at ? [{ ...pin, nodeId: at }] : []; }) }
@@ -1816,12 +1843,18 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       attentionAlpha = id => attention ? (attention.has(id) ? 1 : 0.2) : frontier(id) ? 0.6 : 1;
       styleWrappers();
       forceGraphInstance?.nodeColor((node: ForceGraphNode) => {
-        const color = spatialNodeStyle(node.archetype).color;
+        const color = fileLook(node.id, node.archetype).color;
         // Faded for the hover, with the hovered file and its connections whole even at the frontier; dimmed as the
         // frontier otherwise; and under the history's emphasis glowing or dimmed by the step.
         const alpha = attention ? (attention.has(node.id) ? 1 : 0.2) : frontier(node.id) ? 0.4 : 1;
         if (emphasis === "none") return alpha === 1 ? color : emphasizedSphere(color, alpha, false, "none");
         return emphasizedSphere(color, alpha, changedNodes.has(node.id), emphasis);
+      });
+      // A marble is drawn on every file it colours, faded and dimmed with it, save where the step glows a changed file
+      // white, which replaces it (the marble trial, 2026-11-17).
+      forceGraphInstance?.nodeMarble((node: ForceGraphNode) => {
+        const { marble } = fileLook(node.id, node.archetype);
+        return marble && !(glows(emphasis) && changedNodes.has(node.id)) ? marble : null;
       });
       // A ring around every sphere with connections the picture does not show, a click on which shows them: the owner's
       // choice of 2026-11-02, B over A, the frontier's dimming kept and the ring saying where there is more. The ring
@@ -1913,7 +1946,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     forceGraphInstance = new SpatialRenderer(container, {
       style: {
         radius: node => spatialNodeRadius(node, state.tuning.forceGraph),
-        nodeColor: node => spatialNodeStyle(node.archetype).color,
+        nodeColor: node => fileLook(node.id, node.archetype).color,
+        marble: node => fileLook(node.id, node.archetype).marble,
         linkColor: () => rgba(activePalette().scene.wire, 0.16),
         linkWidth: () => state.tuning.forceGraph.linkWidth,
         linkVisible: () => true,

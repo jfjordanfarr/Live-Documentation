@@ -16,8 +16,14 @@
 
 import type { ClosedDirectoryShape } from "../../types";
 
-/** A file as a cell stands for it: its own name, which the cell says on hover, and its kind (its archetype, as the 3D map colours a file). */
-export interface ClosedFile { name: string; kind: string }
+/**
+ * A file as a cell stands for it: its own name, which the cell says on hover, its kind (its archetype, as the 3D map
+ * colours a file), and its marble's two shares (2026-11-17), which tint the cell where the marbles are drawn.
+ */
+export interface ClosedFile { name: string; kind: string; marble?: CellMarble }
+
+/** A marble's two shares as a cell carries them: the offering blue's and the using green's. */
+export interface CellMarble { offers: number; uses: number }
 
 /** What a directory holds, as the skin with cells draws it: each file directly in it, and each directory inside. */
 export interface ClosedContents {
@@ -48,7 +54,7 @@ export interface Band { x: number; y: number; end: number; height: number; kind:
  * A round cell's centre and radius, in the field's units, the kind of the file it stands for, and that file's name
  * where it stands for one file wholly shown: a cell under a veil, or one that stands for what the room left out, has none.
  */
-export interface Cell { x: number; y: number; r: number; kind?: string; name?: string }
+export interface Cell { x: number; y: number; r: number; kind?: string; name?: string; marble?: CellMarble }
 /** A rectangle in the field's units. */
 export interface Rect { x: number; y: number; w: number; h: number }
 
@@ -145,14 +151,17 @@ function placeSkin(sub: NestedContents, plan: Plan, x: number, middle: number): 
     at += each.plan.width + gap;
   }
   for (const file of plan.cells) {
-    skin.cells.push({ x: at + cell / 2, y: middle, r: cell / 2, kind: file.kind, name: file.name });
+    skin.cells.push({ x: at + cell / 2, y: middle, r: cell / 2, kind: file.kind, name: file.name, ...marbleOf(file) });
     at += cell + gap;
   }
   return skin;
 }
 
-/** Every file under a directory inside, by kind, for the cells that stand for what the room cannot show. */
-const kindsUnder = (sub: NestedContents): string[] => [...sub.files.map(file => file.kind), ...sub.subdirectories.flatMap(kindsUnder)];
+/** A cell's marble, where its file has one. */
+const marbleOf = (file: ClosedFile | undefined): { marble?: CellMarble } => (file?.marble ? { marble: file.marble } : {});
+
+/** Every file under a directory inside, for the cells that stand for what the room cannot show. */
+const filesUnder = (sub: NestedContents): ClosedFile[] => [...sub.files, ...sub.subdirectories.flatMap(filesUnder)];
 
 /**
  * Lay a closed directory's contents into its bands, left to right and band after band: a skin for each directory
@@ -177,20 +186,20 @@ export function cellField(contents: ClosedContents, bands: readonly Band[]): Cel
     }
     return false;
   };
-  const fileCell = (kind: string | undefined, name?: string): boolean => {
+  const fileCell = (file: ClosedFile, name?: string): boolean => {
     if (band >= bands.length || !fit(cell)) return false;
-    const b = current(), middle = b.y + b.height / 2;
+    const b = current(), middle = b.y + b.height / 2, { kind } = file;
     if (b.kind === "single") {
-      result.cells.push({ x: x + cell / 2, y: middle, r: cell / 2, kind, name });
+      result.cells.push({ x: x + cell / 2, y: middle, r: cell / 2, kind, name, ...marbleOf(file) });
       x += PITCH;
       return true;
     }
-    result.cells.push({ x: x + cell / 2, y: middle - PAIR_HEIGHT / 2 + cell / 2 + (parity ? ROW : 0), r: cell / 2, kind, name });
+    result.cells.push({ x: x + cell / 2, y: middle - PAIR_HEIGHT / 2 + cell / 2 + (parity ? ROW : 0), r: cell / 2, kind, name, ...marbleOf(file) });
     x += PITCH / 2; parity = 1 - parity;
     return true;
   };
-  // What the room does not show, by kind: the cells that fill the last band stand for these.
-  const left: string[] = [];
+  // What the room does not show: the cells that fill the last band stand for these.
+  const left: ClosedFile[] = [];
   let shown = 0;
   for (const sub of contents.subdirectories) {
     if (band >= bands.length) break;
@@ -205,10 +214,10 @@ export function cellField(contents: ClosedContents, bands: readonly Band[]): Cel
     x += plan.width + itemGap; parity = 0;
     shown += 1;
   }
-  for (const sub of contents.subdirectories.slice(shown)) left.push(...kindsUnder(sub));
+  for (const sub of contents.subdirectories.slice(shown)) left.push(...filesUnder(sub));
   let files = 0;
-  if (shown === contents.subdirectories.length) while (files < contents.files.length && fileCell(contents.files[files].kind, contents.files[files].name)) files += 1;
-  left.push(...contents.files.slice(files).map(file => file.kind));
+  if (shown === contents.subdirectories.length) while (files < contents.files.length && fileCell(contents.files[files], contents.files[files].name)) files += 1;
+  left.push(...contents.files.slice(files));
   if (left.length || shown < contents.subdirectories.length) {
     // Fill the rest of the last band with the cells of what was left out and veil its end: more is held than the room shows.
     band = bands.length - 1;

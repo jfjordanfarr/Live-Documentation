@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/containedSphere.ts
-- Generated At: 2026-11-09T00:01:54.723Z
+- Generated At: 2026-11-17T04:51:08.356Z
 
 ## Authored
 ### Purpose
@@ -19,12 +19,14 @@ Frozen perspective carriers use the submitted sphere parameters rather than boun
 
 Before expanding a projected quad, the vertex shader rejects a sphere wholly outside any of the six projection planes, using the transformed full radius and a conservative float32 roundoff allowance. This matters for an off-axis sphere crossing the eye plane: an uncensored fallback rectangle covered the whole viewport even when every sample missed the sphere. Matched uploaded data at motion revision 250 found three such empty full-canvas covers. This rejection changes GPU work alone; the submitted instances and frozen carriers remain intact, and carrier projection still keeps offscreen sides so translation can bring them into view.
 
+Since the marble trial ([November 16 record, Turns 7 to 9](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-16.1.record.md#turn-7)), a file inside a shell may be drawn as a marble, as a 3D map's sphere is. The material reads the same shader chunks from `forceGraphAppearance.ts`. The pattern stands in the sphere's own directions: the hit's normal, turned from the camera's axes to the scene's, so that it holds still as the camera moves. The two role colours come in as uniforms that the material's owner shares.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `containedSphereGeometry` {#symbol-containedspheregeometry}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/containedSphere.ts#L4)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/containedSphere.ts#L6)
 - Returns: `PlaneGeometry`
 
 ##### `containedSphereGeometry` — Summary
@@ -32,7 +34,7 @@ Four submitted corners bound a sphere; its material draws the actual curved surf
 
 #### `projectSphereBoundary` {#symbol-projectsphereboundary}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/containedSphere.ts#L12)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/containedSphere.ts#L14)
 - Parameters: `camera`: `Camera`
 
 ##### `projectSphereBoundary` — Summary
@@ -40,7 +42,7 @@ Actual front-surface silhouette candidates, clipped only in depth; moving carrie
 
 #### `projectSphereSurface` {#symbol-projectspheresurface}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/containedSphere.ts#L62)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/containedSphere.ts#L64)
 - Parameters: `camera`: `Camera`
 
 ##### `projectSphereSurface` — Summary
@@ -48,7 +50,7 @@ A depth-cut sphere needs its front-surface polygons as well as its outer silhoue
 
 #### `supportsContainedSphereSamples` {#symbol-supportscontainedspheresamples}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/containedSphere.ts#L100)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/containedSphere.ts#L102)
 - Parameters: `renderer`: `WebGLRenderer`
 
 ##### `supportsContainedSphereSamples` — Summary
@@ -56,7 +58,7 @@ Enable the actual per-sample interpolation needed to preserve native MSAA covera
 
 #### `containedSpherePrimitive` {#symbol-containedsphereprimitive}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/containedSphere.ts#L108)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/containedSphere.ts#L110)
 - Parameters: `renderer`: `WebGLRenderer`
 
 ##### `containedSpherePrimitive` — Summary
@@ -64,14 +66,21 @@ Choose the compatible native primitive before any shader compilation on unsuppor
 
 #### `ContainedSphereMaterial` {#symbol-containedspherematerial}
 - Type: class
-- Source: [source](../../../../../../../packages/explorer/src/client/views/containedSphere.ts#L115)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/containedSphere.ts#L121)
 - Extends: `RawShaderMaterial`
 
 ##### `ContainedSphereMaterial` — Summary
-Lambert-lit analytic unit sphere, scaled uniformly by its uploaded instance matrix.
+Lambert-lit analytic unit sphere, scaled uniformly by its uploaded instance matrix; one whose instance is a marble
+(2026-11-17) draws its glass and veins as a 3D map's sphere does, read from the same chunks. Its owner gives it the
+marbles' two role colours as the uniforms `uMarbleOffers` and `uMarbleUses`.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `three` - `Camera`, `GLSL3`, `LinearSRGBColorSpace`, `Matrix4`, `NoToneMapping`, `PlaneGeometry`, `RawShaderMaterial`, `SRGBColorSpace`, `ShaderChunk`, `ShaderLib`, `Sphere`, `SphereGeometry`, `UniformsUtils`, `Vector3`, `WebGLRenderer`
+- [`forceGraphAppearance.MARBLE_COLOUR`](./forceGraphAppearance.ts.mdmd.md#symbol-marble_colour)
+- [`forceGraphAppearance.MARBLE_FRAGMENT_PARS`](./forceGraphAppearance.ts.mdmd.md#symbol-marble_fragment_pars)
+- [`forceGraphAppearance.MARBLE_SHINE`](./forceGraphAppearance.ts.mdmd.md#symbol-marble_shine)
+- [`forceGraphAppearance.MARBLE_VERTEX`](./forceGraphAppearance.ts.mdmd.md#symbol-marble_vertex)
+- [`forceGraphAppearance.MARBLE_VERTEX_PARS`](./forceGraphAppearance.ts.mdmd.md#symbol-marble_vertex_pars)
+- `three` - `Camera`, `Color`, `GLSL3`, `LinearSRGBColorSpace`, `Matrix4`, `NoToneMapping`, `PlaneGeometry`, `RawShaderMaterial`, `SRGBColorSpace`, `ShaderChunk`, `ShaderLib`, `Sphere`, `SphereGeometry`, `UniformsUtils`, `Vector3`, `WebGLRenderer`
 <!-- LIVE-DOC:END Dependencies -->

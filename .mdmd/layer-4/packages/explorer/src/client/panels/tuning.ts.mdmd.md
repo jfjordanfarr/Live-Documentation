@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/tuning.ts
-- Generated At: 2026-11-17T01:03:03.233Z
+- Generated At: 2026-11-17T04:51:07.102Z
 
 ## Authored
 ### Purpose
@@ -87,6 +87,7 @@ Initialize the tuning panel with all slider and checkbox controls.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`dom.applyMarbles`](../dom.ts.mdmd.md#symbol-applymarbles)
 - [`dom.applyPalette`](../dom.ts.mdmd.md#symbol-applypalette)
 - [`layout-presets.layoutSettingsOf`](../layout-presets.ts.mdmd.md#symbol-layoutsettingsof)
 - [`palette.DEFAULT_PALETTE`](../palette.ts.mdmd.md#symbol-default_palette)
@@ -101,6 +102,7 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`types.DIRECTORY_LAYOUTS`](../types.ts.mdmd.md#symbol-directory_layouts)
 - [`types.ExplorerState`](../types.ts.mdmd.md#symbol-explorerstate)
 - [`types.GROUP_WRAPPERS`](../types.ts.mdmd.md#symbol-group_wrappers)
+- [`types.MARBLE_CHOICES`](../types.ts.mdmd.md#symbol-marble_choices)
 - [`types.OVERVIEW_FILES`](../types.ts.mdmd.md#symbol-overview_files)
 - [`template.export-layout-settings`](../../shared/template.html.mdmd.md#symbol-export-layout-settings)
 - [`template.tuning-card-text`](../../shared/template.html.mdmd.md#symbol-tuning-card-text)
@@ -124,6 +126,7 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`template.tuning-lace-curl`](../../shared/template.html.mdmd.md#symbol-tuning-lace-curl)
 - [`template.tuning-lace-reach`](../../shared/template.html.mdmd.md#symbol-tuning-lace-reach)
 - [`template.tuning-lace-width`](../../shared/template.html.mdmd.md#symbol-tuning-lace-width)
+- [`template.tuning-marbles`](../../shared/template.html.mdmd.md#symbol-tuning-marbles)
 - [`template.tuning-membrane-evenness`](../../shared/template.html.mdmd.md#symbol-tuning-membrane-evenness)
 - [`template.tuning-membrane-simplicity`](../../shared/template.html.mdmd.md#symbol-tuning-membrane-simplicity)
 - [`template.tuning-move-ms`](../../shared/template.html.mdmd.md#symbol-tuning-move-ms)

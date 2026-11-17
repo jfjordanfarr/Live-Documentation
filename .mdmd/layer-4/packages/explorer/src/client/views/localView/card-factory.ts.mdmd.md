@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-factory.ts
-- Generated At: 2026-11-17T01:03:07.168Z
+- Generated At: 2026-11-17T04:51:10.951Z
 
 ## Authored
 ### Purpose
@@ -144,7 +144,7 @@ data-cells-<look>, "left top width height scale", the width and height in held u
 
 #### `countsOf` {#symbol-countsof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L537)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L539)
 
 ##### `countsOf` — Summary
 "3 files, 2 directories", either part left out at zero; "empty" when both are.

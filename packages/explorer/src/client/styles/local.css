@@ -491,12 +491,20 @@ body:has(#map-container[data-lod="overview"]) #local-legend .legend-row--gathere
 .local-closed-cells-held .local-cells-look { display: none; }
 :is(.local-closed-cells, .local-closed-cells-held) .local-cell { fill-opacity: .42; stroke-opacity: .75; stroke-width: 0.8px; }
 /* A cell wears its kind's colour, the palette's; the one grey below, chosen in Tuning, stands over it. */
-.local-cell[data-kind="implementation"] { fill: var(--kind-implementation); stroke: var(--kind-implementation); }
-.local-cell[data-kind="test"] { fill: var(--kind-test); stroke: var(--kind-test); }
-.local-cell[data-kind="asset"] { fill: var(--kind-asset); stroke: var(--kind-asset); }
-.local-cell[data-kind="document"] { fill: var(--kind-document); stroke: var(--kind-document); }
-.local-cell[data-kind="directory"] { fill: var(--kind-directory); stroke: var(--kind-directory); }
-.local-cell[data-kind="other"] { fill: var(--kind-other); stroke: var(--kind-other); }
+.local-cell[data-kind="implementation"] { --cell-glass: var(--kind-implementation); fill: var(--cell-glass); stroke: var(--cell-glass); }
+.local-cell[data-kind="test"] { --cell-glass: var(--kind-test); fill: var(--cell-glass); stroke: var(--cell-glass); }
+.local-cell[data-kind="asset"] { --cell-glass: var(--kind-asset); fill: var(--cell-glass); stroke: var(--cell-glass); }
+.local-cell[data-kind="document"] { --cell-glass: var(--kind-document); fill: var(--cell-glass); stroke: var(--cell-glass); }
+.local-cell[data-kind="directory"] { --cell-glass: var(--kind-directory); fill: var(--cell-glass); stroke: var(--cell-glass); }
+.local-cell[data-kind="other"] { --cell-glass: var(--kind-other); fill: var(--cell-glass); stroke: var(--cell-glass); }
+/* With the marbles on (2026-11-17), a cell whose file has veins wears its marble's far tint, as its ball does in 3D: its
+   kind's glass and the two roles mixed in linear light by the shares it carries, the green over the mix of the other two
+   (`marbleTint` in views/forceGraphAppearance.ts mixes the same three at once). */
+:root[data-marbles="on"] .local-closed-cells--kind :is(.local-closed-cells, .local-closed-cells-held) .local-cell[style] {
+  --cell-tint: color-mix(in srgb-linear, var(--role-uses) calc(var(--uses-share) * 100%),
+    color-mix(in srgb-linear, var(--role-offers) calc(var(--offers-share) / (1 - var(--uses-share)) * 100%), var(--cell-glass)));
+  fill: var(--cell-tint); stroke: var(--cell-tint);
+}
 .local-closed-cells--grey :is(.local-closed-cells, .local-closed-cells-held) .local-cell { fill: var(--kind-one-grey); fill-opacity: .42; stroke: var(--kind-one-grey-rim); stroke-opacity: .6; }
 :is(.local-closed-cells, .local-closed-cells-held) .local-cell-skin { fill: rgba(var(--ground-sheen-rgb), 0.062745); stroke: rgba(var(--ground-sheen-rgb), 0.333333); stroke-width: 0.8px; }
 /* A skin inside says its directory's name and what it holds on hover, and a cell its file's name: the reader's own

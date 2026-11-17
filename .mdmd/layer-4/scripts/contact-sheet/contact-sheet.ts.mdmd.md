@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/contact-sheet/contact-sheet.ts
 - Entry: command `contact:sheet` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-17T01:03:10.869Z
+- Generated At: 2026-11-17T04:51:14.669Z
 
 ## Authored
 ### Purpose
@@ -24,7 +24,7 @@ Draws one built Explorer in a fixed list of views and writes each picture and on
 ### Public Symbols
 #### `ContactSheetHook` {#symbol-contactsheethook}
 - Type: type
-- Source: [source](../../../../scripts/contact-sheet/contact-sheet.ts#L53)
+- Source: [source](../../../../scripts/contact-sheet/contact-sheet.ts#L54)
 - Parameters: `context`: `BrowserContext`
 
 ##### `ContactSheetHook` — Summary

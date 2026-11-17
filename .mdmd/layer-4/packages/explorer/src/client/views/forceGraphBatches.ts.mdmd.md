@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphBatches.ts
-- Generated At: 2026-11-17T01:03:04.772Z
+- Generated At: 2026-11-17T10:20:42.296Z
 
 ## Authored
 ### Purpose
@@ -41,47 +41,49 @@ Since the correction in [November 10, Turn 3](../../../../../../../AI-Agent-Work
 
 Since 2026-11-11 ([Turn 6 of the November 10 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-10.1.record.md#turn-6)) what a skin shows within it carries the step of the history shown, as the view colours it (`forceGraphEmphasis.ts`). A file's dot carries the step in its colour, alpha included, parsed as a sphere's colour is. A bubble carries two values of its own: `lit`, written to a per-instance `spatialLit` attribute beside `spatialVeil`, and `alpha`, its own share of its opacity before its node's. The skin itself takes the style's `skin` accessor, its light written to a per-vertex `wrapperLit` attribute and its share multiplied into `wrapperAlpha`; the balloon a pending skin stands as carries the same. `wrapperShader` draws anything lit white, as a changed sphere is white, with a bright edge about two and a half pixels wide on screen whatever its size, read from the facing's change across a pixel (`fwidth`), and its face as faint as before, so that a small open bubble, a rim alone, and a veiled one, already milky, both read as lit, a large one stays calm, and an open one's dots read through it. The root refused the first edge, a share of the radius, which made a body of a thousand files a glaring halo. `captureBodies` records the light of each skin and unit it freezes. The attention's fade still multiplies everything a skin shows, and the step's dimming is applied once to each thing, never again through its skin.
 
+Since the marble trial of 2026-11-17 ([November 16 record, Turns 7 to 9](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-16.1.record.md#turn-7)) the spheres' batch and the shell files' mesh carry two more instance attributes, a marble's glass and its veins (`spatialMarbleGlass`, `spatialMarbleVeins`), written where each sphere's colour is, and their two materials share the marbles' two role colours as uniforms, set again from the palette in force. `compileMarbles` defines `MARBLES` on those two materials only while marbles are drawn, at creation and at every `recolour`, so that with marbles off their programs are what they were before marbles; a change of the choice builds each program again once. The pattern compiled in and skipped inside the shader had cost this repository's picture a sixth of its frames on the software renderer ([the measurement](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-16.1.record.md#the-direct-measurement-the-round-costs-a-frames-time-with-marbles-off-and-the-four-cases-stood-on-their-limits-already)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SPATIAL_RING_OUTER_RADIUS` {#symbol-spatial_ring_outer_radius}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L13)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L14)
 
 ##### `SPATIAL_RING_OUTER_RADIUS` — Summary
 The outer edge of a frontier ring, in its sphere's drawn-radius units.
 
 #### `SpatialDrawLink` {#symbol-spatialdrawlink}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L16)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L17)
 
 ##### `SpatialDrawLink` — Summary
 The endpoints already resolved by the graph feed.
 
 #### `SpatialDrawEntry` {#symbol-spatialdrawentry}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L19)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L20)
 
 ##### `SpatialDrawEntry` — Summary
 A stable datum-to-buffer binding for picking; its slot follows the uploaded depth order.
 
 #### `SpatialDrawBatch` {#symbol-spatialdrawbatch}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L27)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L28)
 
 ##### `SpatialDrawBatch` — Summary
 Geometry shares a GPU batch; numeric working arrays keep preparation independent of graph-object shapes.
 
 #### `SpatialDrawStyle` {#symbol-spatialdrawstyle}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L42)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L54)
 
 ##### `SpatialDrawStyle` — Summary
 Values with visual meaning, supplied by the view without involving the force model.
 
 #### `SpatialWrapperStyle` {#symbol-spatialwrapperstyle}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L63)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L80)
 
 ##### `SpatialWrapperStyle` — Summary
 How the wrapped groups are drawn this frame (2026-11-05): each wrapper's opacity, as its seed's, and the growth of one
@@ -90,7 +92,7 @@ seeds bursting open, drawn but no longer picked.
 
 #### `SpatialWrapperUnit` {#symbol-spatialwrapperunit}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L83)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L100)
 
 ##### `SpatialWrapperUnit` — Summary
 One unit a wrapper shows within its skin (2026-11-06), relative to its centre: a file, drawn as a sphere in its colour
@@ -99,7 +101,7 @@ skin's look.
 
 #### `createSpatialBuffers` {#symbol-createspatialbuffers}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L107)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L126)
 - Parameters: `scene`: `Scene`; `style`: [`SpatialDrawStyle`](#symbol-spatialdrawstyle); `renderer`: `WebGLRenderer`
 - Constraints: [`SpatialNode`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnode), [`SpatialDrawLink`](#symbol-spatialdrawlink)
 
@@ -108,7 +110,7 @@ Pack documented nodes and wires straight into three instance buffers; camera cha
 
 #### `drawSpatialGraphOnChange` {#symbol-drawspatialgraphonchange}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L606)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L692)
 - Parameters: `camera`: `Camera`; `renderer`: `WebGLRenderer`
 
 ##### `drawSpatialGraphOnChange` — Summary
@@ -116,7 +118,7 @@ Draw when the camera or the caller's picture revision changes, leaving stationar
 
 #### `screenWireIntersectsFrustum` {#symbol-screenwireintersectsfrustum}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L636)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L722)
 - Parameters: `clipMatrix`: `Matrix4`; `viewport`: `Vector2`
 
 ##### `screenWireIntersectsFrustum` — Summary
@@ -126,9 +128,16 @@ Clip a unit wire's axis in homogeneous coordinates, projecting its compensated w
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`palette.activePalette`](../palette.ts.mdmd.md#symbol-activepalette)
+- [`palette.marblesDrawn`](../palette.ts.mdmd.md#symbol-marblesdrawn)
 - [`palette.unitChannels`](../palette.ts.mdmd.md#symbol-unitchannels)
 - [`containedSphere.ContainedSphereMaterial`](./containedSphere.ts.mdmd.md#symbol-containedspherematerial)
 - [`containedSphere.containedSpherePrimitive`](./containedSphere.ts.mdmd.md#symbol-containedsphereprimitive)
+- [`forceGraphAppearance.MARBLE_COLOUR`](./forceGraphAppearance.ts.mdmd.md#symbol-marble_colour)
+- [`forceGraphAppearance.MARBLE_FRAGMENT_PARS`](./forceGraphAppearance.ts.mdmd.md#symbol-marble_fragment_pars)
+- [`forceGraphAppearance.MARBLE_SHINE`](./forceGraphAppearance.ts.mdmd.md#symbol-marble_shine)
+- [`forceGraphAppearance.MARBLE_VERTEX`](./forceGraphAppearance.ts.mdmd.md#symbol-marble_vertex)
+- [`forceGraphAppearance.MARBLE_VERTEX_PARS`](./forceGraphAppearance.ts.mdmd.md#symbol-marble_vertex_pars)
+- [`forceGraphAppearance.Marble`](./forceGraphAppearance.ts.mdmd.md#symbol-marble)
 - [`forceGraphLayout.Placed`](./forceGraphLayout.ts.mdmd.md#symbol-placed) (type-only)
 - [`forceGraphLayout.SpatialNode`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnode) (type-only)
 - [`forceGraphSizing.clipSpatialWireDepth`](./forceGraphSizing.ts.mdmd.md#symbol-clipspatialwiredepth)

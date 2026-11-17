@@ -9,7 +9,7 @@ import { readPerspective, readSpatialLayout, readView } from "./navigation";
 import { LAYOUT_PRESETS, readLayoutSettings } from "../layout-presets";
 import { DEFAULT_PALETTE, isPaletteName } from "../palette";
 import { readReadingChoices, type ReadingChoice } from "../reading-state";
-import { CHANGE_EMPHASES, HISTORY_GRANULARITIES, type ChangeEmphasis, type DiscoveryTarget, type HistoryAxis, type HistoryGranularity, type InspectionTarget, type LocalMapPerspective, type ExplorerFilters, type SpatialLayout, type SymbolOrder, type TuningConfig, type ViewName } from "../types";
+import { CHANGE_EMPHASES, HISTORY_GRANULARITIES, MARBLE_CHOICES, type ChangeEmphasis, type DiscoveryTarget, type HistoryAxis, type HistoryGranularity, type InspectionTarget, type LocalMapPerspective, type ExplorerFilters, type SpatialLayout, type SymbolOrder, type TuningConfig, type ViewName } from "../types";
 import { DEFAULT_RETURN_COST } from "../views/localView/cycle-order";
 
 // ─────────────────────────────────────────────────────────────────────────
@@ -100,8 +100,9 @@ export const getDefaultTuning = (): TuningConfig => ({
   // is shown, the files a step did not change dimmed so that the changed keep their own colour (Dim since 2026-11-15,
   // after the owner asked whether a changed file could keep its kind's colour; Glow, white, from 2026-10-31).
   history: { axis: "time", granularity: "auto", playRate: 2, changeEmphasis: "dim" },
-  // Today's colours until a viewer chooses others (the colour pass, 2026-11-16).
-  appearance: { palette: DEFAULT_PALETTE }
+  // Today's colours until a viewer chooses others (the colour pass, 2026-11-16), and no marbles until a viewer turns them
+  // on (the marble trial, 2026-11-17).
+  appearance: { palette: DEFAULT_PALETTE, marbles: "off" }
 });
 
 const isRecord = (value: unknown): value is Record<string, unknown> => {
@@ -308,7 +309,13 @@ export const readPersistedUi = (): PersistedUi | null => {
       }
 
       const appearanceRaw = getRecord(parsedTuning, "appearance");
-      if (appearanceRaw && isPaletteName(appearanceRaw.palette)) tuning.appearance = { palette: appearanceRaw.palette };
+      if (appearanceRaw) {
+        const marbles = MARBLE_CHOICES.find(choice => choice === appearanceRaw.marbles);
+        tuning.appearance = {
+          ...(isPaletteName(appearanceRaw.palette) ? { palette: appearanceRaw.palette } : null),
+          ...(marbles ? { marbles } : null)
+        };
+      }
 
       result.tuning = tuning;
     }

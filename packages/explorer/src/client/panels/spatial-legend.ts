@@ -1,5 +1,5 @@
 import { requireElement } from "../dom";
-import { activePalette, whenPaletteChanges } from "../palette";
+import { activePalette, marblesDrawn, whenPaletteChanges } from "../palette";
 import { spatialNodeStyle, spatialNodeStyles } from "../views/forceGraphAppearance";
 import type { SpatialGraphData } from "../views/forceGraphData";
 
@@ -38,7 +38,7 @@ export interface SpatialLegendMark {
  * with its one word.
  */
 export interface SpatialLegendRow {
-  shape: "node" | "size" | "width" | "wire" | "arrow" | "path" | "frontier" | "ring" | "wrapped" | "shell";
+  shape: "node" | "veins" | "size" | "width" | "wire" | "arrow" | "path" | "frontier" | "ring" | "wrapped" | "shell";
   marks: SpatialLegendMark[];
   description: string;
 }
@@ -50,8 +50,13 @@ const kindMarks = (drawn: ReadonlySet<SpatialLegendMark>): SpatialLegendMark[] =
 export function spatialLegendRows(graph: SpatialGraphData, symbolScale: number, drawn: SpatialLegendDrawn): SpatialLegendRow[] {
   const styles = new Set([...graph.nodes.map(node => spatialNodeStyle(node.archetype)), ...(drawn.inside ?? []).map(archetype => spatialNodeStyle(archetype))]);
   const kinds = new Set(graph.links.map(link => link.kind));
-  const { scene, kind } = activePalette(), grey = scene.keySample;
+  const { scene, kind, role } = activePalette(), grey = scene.keySample;
   const rows: SpatialLegendRow[] = styles.size ? [{ shape: "node", marks: kindMarks(styles), description: "Colour: the kind of file, directory or document a sphere stands for." }] : [];
+  // With the marbles on (2026-11-17), what a ball's veins mean, in the two words the 2D key gives the roles.
+  if (marblesDrawn() && [...styles].some(style => style !== spatialNodeStyles().directory)) {
+    rows.push({ shape: "veins", marks: [{ label: "Offers", color: role.offers }, { label: "Uses", color: role.uses }],
+      description: "A file's veins: blue as many as the files that use it, green as many as the files it uses; its glass is its kind." });
+  }
   const row = (shape: SpatialLegendRow["shape"], label: string, color: string, description: string): void => { rows.push({ shape, marks: [{ label, color }], description }); };
   if (graph.nodes.length && symbolScale > 0) {
     row("size", "Symbols", grey, `Size: the number of public symbols a file offers.${styles.has(spatialNodeStyles().directory) ? " Folders are all one size." : ""}`);
@@ -97,7 +102,7 @@ export function renderSpatialLegend(graph: SpatialGraphData, symbolScale: number
   previous.set(legend, signature);
   legend.replaceChildren(...rows.map(({ shape, marks, description }) => {
     const row = document.createElement("div");
-    row.className = shape === "node" ? "legend-row legend-row--kinds" : "legend-row";
+    row.className = shape === "node" || shape === "veins" ? "legend-row legend-row--kinds" : "legend-row";
     row.setAttribute("role", "listitem");
     row.title = description;
     row.setAttribute("aria-description", description);

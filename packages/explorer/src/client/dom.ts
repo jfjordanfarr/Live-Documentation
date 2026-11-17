@@ -1,5 +1,5 @@
-import { choosePalette, customProperties, paletteNamed } from "./palette";
-import type { LocalMapPerspective, ViewName } from "./types";
+import { chooseMarbles, choosePalette, customProperties, paletteNamed } from "./palette";
+import type { LocalMapPerspective, MarbleChoice, ViewName } from "./types";
 import { seamsOf } from "./views/localView/word-seams";
 
 /** Looks up an element by `id` and throws if not found. */
@@ -20,6 +20,15 @@ export function applyPalette(name: unknown): void {
   const root = document.documentElement.style;
   for (const [property, value] of customProperties(paletteNamed(name))) root.setProperty(property, value);
   choosePalette(name);
+}
+
+/**
+ * Draws files as marbles or not (the marble trial, 2026-11-17): the page's root says which, for the stylesheets that
+ * tint the 2D map's cells, and the maps' scripts draw again as for a palette chosen, with nothing moving.
+ */
+export function applyMarbles(choice: MarbleChoice): void {
+  document.documentElement.dataset.marbles = choice;
+  chooseMarbles(choice === "on");
 }
 
 /** Activates the given view tab and its container while deactivating siblings. */

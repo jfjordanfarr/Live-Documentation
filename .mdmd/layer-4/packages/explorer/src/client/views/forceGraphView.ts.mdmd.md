@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphView.ts
-- Generated At: 2026-11-17T01:03:05.910Z
+- Generated At: 2026-11-17T04:51:09.712Z
 
 ## Authored
 ### Purpose
@@ -150,7 +150,9 @@ Creates the Force Graph (3D) view for the Live Docs Explorer.
 - [`rekey.rekeyedCaches`](../history/rekey.ts.mdmd.md#symbol-rekeyedcaches)
 - [`rekey.renamedId`](../history/rekey.ts.mdmd.md#symbol-renamedid)
 - [`layout-presets.layoutSettingsOf`](../layout-presets.ts.mdmd.md#symbol-layoutsettingsof)
+- [`palette.Colour`](../palette.ts.mdmd.md#symbol-colour)
 - [`palette.activePalette`](../palette.ts.mdmd.md#symbol-activepalette)
+- [`palette.marblesDrawn`](../palette.ts.mdmd.md#symbol-marblesdrawn)
 - [`palette.rgba`](../palette.ts.mdmd.md#symbol-rgba)
 - [`palette.whenPaletteChanges`](../palette.ts.mdmd.md#symbol-whenpalettechanges)
 - [`icon-button.CENTRE_ICON`](../panels/icon-button.ts.mdmd.md#symbol-centre_icon)
@@ -160,6 +162,11 @@ Creates the Force Graph (3D) view for the Live Docs Explorer.
 - [`icon-button.iconButton`](../panels/icon-button.ts.mdmd.md#symbol-iconbutton)
 - [`spatial-legend.renderSpatialLegend`](../panels/spatial-legend.ts.mdmd.md#symbol-renderspatiallegend)
 - [`types.ExplorerState`](../types.ts.mdmd.md#symbol-explorerstate) (type-only)
+- [`forceGraphAppearance.Marble`](./forceGraphAppearance.ts.mdmd.md#symbol-marble)
+- [`forceGraphAppearance.MarbleCounts`](./forceGraphAppearance.ts.mdmd.md#symbol-marblecounts-interface)
+- [`forceGraphAppearance.marbleCounts`](./forceGraphAppearance.ts.mdmd.md#symbol-marblecounts-function)
+- [`forceGraphAppearance.marbleOf`](./forceGraphAppearance.ts.mdmd.md#symbol-marbleof)
+- [`forceGraphAppearance.marbleTint`](./forceGraphAppearance.ts.mdmd.md#symbol-marbletint)
 - [`forceGraphAppearance.spatialNodeStyle`](./forceGraphAppearance.ts.mdmd.md#symbol-spatialnodestyle-function)
 - [`forceGraphBatches.SPATIAL_RING_OUTER_RADIUS`](./forceGraphBatches.ts.mdmd.md#symbol-spatial_ring_outer_radius)
 - [`forceGraphBatches.SpatialWrapperUnit`](./forceGraphBatches.ts.mdmd.md#symbol-spatialwrapperunit)
@@ -186,6 +193,7 @@ Creates the Force Graph (3D) view for the Live Docs Explorer.
 - [`forceGraphEmphasis.emphasizedSphere`](./forceGraphEmphasis.ts.mdmd.md#symbol-emphasizedsphere)
 - [`forceGraphEmphasis.emphasizedUnits`](./forceGraphEmphasis.ts.mdmd.md#symbol-emphasizedunits)
 - [`forceGraphEmphasis.emphasizedWireAlpha`](./forceGraphEmphasis.ts.mdmd.md#symbol-emphasizedwirealpha)
+- [`forceGraphEmphasis.glows`](./forceGraphEmphasis.ts.mdmd.md#symbol-glows)
 - [`forceGraphEmphasis.pairKey`](./forceGraphEmphasis.ts.mdmd.md#symbol-pairkey)
 - [`forceGraphLabels.LabelBox`](./forceGraphLabels.ts.mdmd.md#symbol-labelbox)
 - [`forceGraphLabels.SpatialLabel`](./forceGraphLabels.ts.mdmd.md#symbol-spatiallabel)

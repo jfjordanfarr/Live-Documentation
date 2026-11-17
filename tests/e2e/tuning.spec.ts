@@ -29,8 +29,9 @@ test("every tuning control explains what changing it does, as its tooltip and it
   // skin with cells as a closed directory's default look, in three shapes and two colourings), and Descriptions Zoomed
   // Out the same day (a description's first line kept in the connections look, in three forms beside hidden). Return
   // Cost joined it on 2026-11-16 (the continuing search's price of a reference read backward through a cycle). Palette
-  // joined on 2026-11-17 in a group of its own, Colour (the proposed palette of meanings beside today's).
-  await expect(controls).toHaveCount(65);
+  // joined on 2026-11-17 in a group of its own, Colour (the proposed palette of meanings beside today's), and Marbles
+  // beside it the same day (the trial of a file drawn as glass of its kind, veined by what it offers and uses).
+  await expect(controls).toHaveCount(66);
   const facts = await controls.evaluateAll(elements => elements.map(element => {
     const describedBy = element.getAttribute("aria-describedby") ?? "";
     const description = document.getElementById(describedBy);
@@ -93,6 +94,33 @@ test("the 3D levers stand in discovery, forces, spacing and appearance, and a le
   await page.keyboard.press("ArrowRight");
   await expect(gravity).toHaveValue("0.03");
   await expect(page.locator("#tuning-force-gravity-value")).toHaveText("0.03");
+});
+
+/**
+ * The marble's code is compiled into the 3D map's shaders only while marbles are drawn (2026-11-17), so that the choice
+ * off costs a frame nothing; each choice then builds the spheres' programs again. Both must compile, and the picture
+ * must change with the choice: a program that does not compile is said on the page's console and draws nothing.
+ */
+test("marbles on and off each compile, and the 3D picture changes with the choice", async ({ page }) => {
+  const said: string[] = [];
+  page.on("pageerror", error => said.push(String(error)));
+  page.on("console", message => { if (message.type() === "error" || /shader|program/i.test(message.text())) said.push(message.text().slice(0, 300)); });
+  await page.goto("/samples/estate/?view=local&mode=3d&node=Portal/Services/GatewayClient.cs");
+  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25000 });
+  await openTuning(page);
+  await page.locator(".sidebar-details summary", { hasText: /^Colour$/ }).click();
+  const marbles = page.locator("#tuning-marbles");
+  await expect(marbles).toHaveValue("off");
+  // The pointer parked off the picture, and a moment for the frame the choice asks for.
+  const drawn = async (): Promise<Buffer> => { await page.mouse.move(640, 30); await page.waitForTimeout(800); return page.locator("#graph-svg canvas").first().screenshot(); };
+  const plain = await drawn();
+  await marbles.selectOption("on");
+  const marbled = await drawn();
+  expect(marbled.equals(plain), "the spheres are drawn as marbles").toBe(false);
+  await marbles.selectOption("off");
+  const plainAgain = await drawn();
+  expect(plainAgain.equals(marbled), "and as plain spheres again").toBe(false);
+  expect(said, "neither choice's programs fail to compile").toEqual([]);
 });
 
 test("the legend stands before Tuning, and Export reads at the panel's type size", async ({ page }) => {

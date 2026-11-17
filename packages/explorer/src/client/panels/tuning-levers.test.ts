@@ -17,8 +17,8 @@ describe("tuning help", () => {
     const ids = templateControlIds();
     // Width Cost joined the 2D layout group on 2026-11-13, beside Height Cost; Closed Directory and Zoomed Out Fully the same day;
     // Descriptions Zoomed Out on 2026-11-15, with the closed directory's two choices that made it 62; Return Cost on
-    // 2026-11-16; the Palette, the colour pass's, on 2026-11-17.
-    expect(ids.length).toBe(65);
+    // 2026-11-16; the Palette, the colour pass's, on 2026-11-17, and Marbles beside it the same day (the marble trial).
+    expect(ids.length).toBe(66);
     expect(Object.keys(TUNING_HELP).sort()).toEqual([...ids].sort());
   });
 
@@ -48,7 +48,7 @@ function settingOf(id: string, defaults: TuningConfig): { group: keyof TuningCon
   const camel = (name: string): string => name.replace(/-([a-z])/g, (_match, letter: string) => letter.toUpperCase());
   if (rest.startsWith("force-")) return { group: "forceGraph", key: camel(rest.slice("force-".length)) };
   if (rest.startsWith("history-")) return { group: "history", key: camel(rest.slice("history-".length)) };
-  if (rest === "palette") return { group: "appearance", key: "palette" };
+  if (rest === "palette" || rest === "marbles") return { group: "appearance", key: rest };
   const key = camel(rest);
   const groups = (["bezier", "localMap"] as const).filter(group => key in defaults[group]);
   if (groups.length !== 1) throw new Error(`${id}: ${key} names ${groups.length} settings`);
@@ -74,7 +74,7 @@ describe("the template's initial tuning values", () => {
   it("equal the defaults in getDefaultTuning for every control", () => {
     const defaults = getDefaultTuning();
     const ids = templateControlIds();
-    expect(ids.length).toBe(65);
+    expect(ids.length).toBe(66);
     for (const id of ids) {
       const { group, key } = settingOf(id, defaults);
       const expected = (defaults[group] as unknown as Record<string, unknown>)[key];

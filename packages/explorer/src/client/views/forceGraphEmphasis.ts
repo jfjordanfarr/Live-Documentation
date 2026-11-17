@@ -150,11 +150,14 @@ export function deletionHomes(deleted: Iterable<string>, homes: ReadonlyMap<stri
  * A body's units as the step colours them: a file's dot as `emphasizedSphere` colours a sphere at full strength, from
  * its kind's `#rrggbb` colour; a bubble lit where the mode glows and it is lit, and, where the mode dims, at the dimmed
  * share of its alpha unless it holds a change. Nothing is enlarged: the irrelevant fades rather than the relevant grows.
+ * A dot drawn as a marble (2026-11-17) loses its marble where the step glows it white, as a sphere does.
  */
-export function emphasizedUnits<U extends ShownUnit & { color?: string; lit?: boolean; alpha?: number }>(units: readonly U[], changes: BodyChanges, mode: ChangeEmphasis): U[] {
-  return units.map(unit => unit.kind === "file"
-    ? { ...unit, color: emphasizedSphere(unit.color ?? activePalette().history.changed, 1, changes.lit.has(unit.id), mode) }
-    : { ...unit, lit: glows(mode) && changes.lit.has(unit.id), alpha: dims(mode) && !changes.holding.has(unit.id) ? 1 - DIM_LOSS : 1 });
+export function emphasizedUnits<U extends ShownUnit & { color?: string; lit?: boolean; alpha?: number; marble?: object }>(units: readonly U[], changes: BodyChanges, mode: ChangeEmphasis): U[] {
+  return units.map(unit => {
+    if (unit.kind !== "file") return { ...unit, lit: glows(mode) && changes.lit.has(unit.id), alpha: dims(mode) && !changes.holding.has(unit.id) ? 1 - DIM_LOSS : 1 };
+    const changed = changes.lit.has(unit.id), color = emphasizedSphere(unit.color ?? activePalette().history.changed, 1, changed, mode);
+    return changed && glows(mode) && unit.marble ? { ...unit, color, marble: undefined } : { ...unit, color };
+  });
 }
 
 /** How a body's own skin carries the step: lit where the mode glows and the skin shows a change; dimmed where the mode dims and it holds none. */

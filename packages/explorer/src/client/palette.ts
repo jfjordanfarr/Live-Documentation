@@ -8,7 +8,8 @@
  * drawn from the meaning it shows (`rgba` here, and in a stylesheet `rgba(var(--meaning-rgb), alpha)`), never stored as a
  * second literal.
  *
- * Pure: no DOM. The one mutable thing is which palette is in force (`activePalette`), chosen once at startup.
+ * Pure: no DOM. The mutable things are which palette is in force (`activePalette`) and whether files are drawn as
+ * marbles (`marblesDrawn`), each chosen at startup and again from Tuning.
  */
 
 /** A colour, `#rrggbb`. */
@@ -311,8 +312,25 @@ export const PROPOSED: Palette = {
   }
 };
 
+/**
+ * The proposed palette with the kinds kept near today's blue and green (the owner's earlier lean, made valid by root's
+ * measurement, 2026-11-17): implementation and test near today's colours, the two roles a step lighter so that every
+ * identity still stands apart, and every second value equal to its meaning. A test file's kind label in the details
+ * panel is the test kind's green, as the test sphere is; a 2D card that tests use keeps the has-tests violet.
+ */
+export const VIVID_KINDS: Palette = {
+  ...PROPOSED,
+  role: { offers: "#1bc3f3", uses: "#24fcba" },
+  kind: { ...PROPOSED.kind, implementation: "#0c84fa", test: "#0a8e00" },
+  world: { light: PROPOSED.world.light, dark: { ...PROPOSED.world.dark, offers: "#1bc3f3", uses: "#24fcba" } },
+  secondValues: {
+    ...PROPOSED.secondValues, offersPin: "#1bc3f3", usesPin: "#24fcba", testLabel: "#0a8e00", implementationLabelTint: "#0c84fa", testLabelTint: "#0a8e00",
+    worldDarkWireOffers: "#1bc3f3", worldDarkWireUses: "#24fcba"
+  }
+};
+
 /** The palettes a viewer may choose, by name. */
-export const PALETTES = { today: TODAY, proposed: PROPOSED } as const satisfies Record<string, Palette>;
+export const PALETTES = { today: TODAY, proposed: PROPOSED, vividKinds: VIVID_KINDS } as const satisfies Record<string, Palette>;
 
 /** A palette's name. */
 export type PaletteName = keyof typeof PALETTES;
@@ -329,16 +347,26 @@ export const MASK_KEEP: Colour = "#ffffff";
 export const MASK_FADE: Colour = "#111111";
 
 let active: Palette = TODAY;
+let marbles = false;
 
 /** The palette in force. */
 export const activePalette = (): Palette => active;
+
+/**
+ * Whether files are drawn as marbles (the marble trial, 2026-11-17): each file's colour its kind's glass with veins of
+ * what it offers and what it uses (`marbleOf` in views/forceGraphAppearance.ts). Off until a viewer turns it on.
+ */
+export const marblesDrawn = (): boolean => marbles;
 
 /** A palette by name, the default for a name no palette has. */
 export const paletteNamed = (name: unknown): Palette => PALETTES[isPaletteName(name) ? name : DEFAULT_PALETTE];
 
 const listeners = new Set<(palette: Palette) => void>();
 
-/** Calls `listener` each time another palette is put in force, so that what a script drew is drawn again in it; returns the unsubscription. */
+/**
+ * Calls `listener` each time another palette is put in force or the marbles are turned on or off, so that what a script
+ * drew is drawn again as it now should be; returns the unsubscription.
+ */
 export function whenPaletteChanges(listener: (palette: Palette) => void): () => void {
   listeners.add(listener);
   return () => { listeners.delete(listener); };
@@ -351,6 +379,13 @@ export function choosePalette(name: unknown): Palette {
   active = chosen;
   for (const listener of listeners) listener(active);
   return active;
+}
+
+/** Turns the marbles on or off, and tells whoever listens to the palette if that changed: the same redraw, nothing moving. */
+export function chooseMarbles(on: boolean): void {
+  if (on === marbles) return;
+  marbles = on;
+  for (const listener of listeners) listener(active);
 }
 
 /** A colour's channels, 0 to 255. */

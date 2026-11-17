@@ -1091,6 +1091,15 @@ body.force-graph-active #spatial-legend { display: block; }
     left: 5px;
     border-radius: 50%;
 }
+/* A marble's vein (2026-11-17): a ball of the quiet glass with one band of the role's colour across it. */
+.spatial-legend-sample--veins::before {
+    width: 10px;
+    height: 10px;
+    top: 2px;
+    left: 5px;
+    border-radius: 50%;
+    background: linear-gradient(125deg, var(--kind-implementation) 0 34%, var(--legend-color) 34% 68%, var(--kind-implementation) 68%);
+}
 
 .spatial-legend-sample--size::before,
 .spatial-legend-sample--size::after { border-radius: 50%; }

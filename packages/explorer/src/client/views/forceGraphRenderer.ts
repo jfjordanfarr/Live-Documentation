@@ -2,6 +2,7 @@ import { AmbientLight, DirectionalLight, PerspectiveCamera, Plane, Raycaster, Sc
 import { TrackballControls } from "three/addons/controls/TrackballControls.js";
 
 import { activePalette } from "../palette";
+import type { Marble } from "./forceGraphAppearance";
 import { createSpatialBuffers, drawSpatialGraphOnChange, type SpatialDrawLink, type SpatialDrawStyle, type SpatialWrapperStyle, type SpatialWrapperUnit } from "./forceGraphBatches";
 import type { CameraPoint } from "./forceGraphCamera";
 import type { Placed, SpatialNode } from "./forceGraphLayout";
@@ -165,6 +166,8 @@ export class SpatialRenderer<N extends SpatialNode, L extends SpatialDrawLink<N>
   nodeRadius(read: (node: N) => number): this { this.options.style.radius = read; this.invalidateAppearance(); return this; }
   /** Replace the rule for the ring around a sphere that has more behind it: its colour, or null for none (2026-11-02). */
   nodeRing(read: (node: N) => string | null): this { this.options.style.ring = read; this.invalidateAppearance(); return this; }
+  /** Replace the rule for the marble a sphere is drawn as, or null for a plain sphere (2026-11-17). */
+  nodeMarble(read: (node: N) => Marble | null): this { this.options.style.marble = read; this.invalidateAppearance(); return this; }
   /**
    * Wrap these nodes in their hulls, drawn in the look given, none when off (2026-11-05): a wrapped group's seed or a
    * directory shell, each at its node's place, or at the place given for one bursting after its node left the picture;

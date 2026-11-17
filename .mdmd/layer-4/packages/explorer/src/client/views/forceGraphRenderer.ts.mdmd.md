@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphRenderer.ts
-- Generated At: 2026-11-16T20:45:31.345Z
+- Generated At: 2026-11-17T04:51:09.186Z
 
 ## Authored
 ### Purpose
@@ -34,21 +34,21 @@ Since November 8, 2026 initialization supplies the actual renderer to the buffer
 ### Public Symbols
 #### `SPATIAL_DRAG_SLOP` {#symbol-spatial_drag_slop}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphRenderer.ts#L12)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphRenderer.ts#L13)
 
 ##### `SPATIAL_DRAG_SLOP` — Summary
 Mouse/touch motion within this CSS-pixel distance is still a click, shared with the view's press/hold handling.
 
 #### `SpatialRendererOptions` {#symbol-spatialrendereroptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphRenderer.ts#L15)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphRenderer.ts#L16)
 
 ##### `SpatialRendererOptions` — Summary
 The view owns motion and attention; this layer owns only their picture, camera and direct instance picking.
 
 #### `SpatialRenderer` {#symbol-spatialrenderer}
 - Type: class
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphRenderer.ts#L26)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphRenderer.ts#L27)
 - Constraints: [`SpatialNode`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnode), [`SpatialDrawLink`](./forceGraphBatches.ts.mdmd.md#symbol-spatialdrawlink)
 
 ##### `SpatialRenderer` — Summary
@@ -58,6 +58,7 @@ A direct Three renderer with a bounded number of scene objects, irrespective of 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`palette.activePalette`](../palette.ts.mdmd.md#symbol-activepalette)
+- [`forceGraphAppearance.Marble`](./forceGraphAppearance.ts.mdmd.md#symbol-marble) (type-only)
 - [`forceGraphBatches.SpatialDrawLink`](./forceGraphBatches.ts.mdmd.md#symbol-spatialdrawlink)
 - [`forceGraphBatches.SpatialDrawStyle`](./forceGraphBatches.ts.mdmd.md#symbol-spatialdrawstyle)
 - [`forceGraphBatches.SpatialWrapperStyle`](./forceGraphBatches.ts.mdmd.md#symbol-spatialwrapperstyle)
