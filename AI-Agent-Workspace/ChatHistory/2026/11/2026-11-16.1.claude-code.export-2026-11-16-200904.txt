@@ -2450,6 +2450,7 @@ code 0)
   ...
 
   
+
 ● The new palette is in the real Explorer on your port now. Open any link below,
   then in the left sidebar open Tuning → Colour → Palette and switch between
   Today and Proposed. Everything re-colours in place and nothing moves. The
@@ -2576,4 +2577,135 @@ code 0)
   white since October, so grey dominates. I'm checking whether the
   implementation can use a real colour without breaking the palette. · summary
 
-  Searched for 1 pattern, ran 2 shell commands (ctrl+o to expand)
+  Searched for 2 patterns, ran 2 shell commands (ctrl+o to expand)
+
+● Measurement shows blue and green are taken by Offers and Uses, leaving almost
+  no room for a vivid implementation colour. I'm checking whether colouring
+  files by offers or uses was ever discussed before I reply. · summary
+
+  Listed 1 directory, ran 5 shell commands (ctrl+o to expand)
+
+● Measurements are done and the picture is clear. Checking the gate, then
+  writing up what I found and what I'll build for you to look at.
+
+  Searched for 1 pattern, ran 4 shell commands (ctrl+o to expand)
+
+● Notes and Memory are committed. One more quick thing before the reply: you
+  exported the chat again, so I'm keeping that export as received.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● You're right, and I found the cause: under Proposed the 3D map has no blue or
+  green in it at all, and its commonest ball is grey. Once the gate finishes
+  I'll put two real alternatives into the same Palette control for you to flip
+  between. Nothing needs deciding now.
+
+  Why the same palette is sleek in 2D and drab in 3D
+
+  - In 2D, grey is the background. Cards and cells stay quiet, and the blue and
+    green pins and wires sit on them as accents. Designers call this figure and
+    ground: strong colour reads best when used sparingly on a quiet ground. You
+    can see it in archetype.ts pinned in 2D (http://127.0.0.1:8999/?s=N4IgbiBcDM
+    A0IDsogA4EMDGBrNBzApgM4D0+CuAlgvsYQE4bEA2FY+AtACYD2GJaDABb4ALgE8U+AHQjCIeCig
+    BtUEkipMOAiTKVqtBs1YcefYgIzDxkmXPhz1AKhABfALougA).
+  - In 3D, grey is the picture itself. The balls are the biggest marks, and 691
+    of this repository's 1,031 files are implementation, which I turned grey.
+    Its colour strength fell to about a seventh of today's blue.
+  - Blue and green are not drawn in 3D. Wires there have been white since
+    October 31, when you withdrew wires coloured by direction. I told you blue
+    and green "appear on wires, pins and doors"; that holds in 2D and on the
+    World Map and was wrong for 3D. So Proposed took the two strongest colours
+    out of the 3D map (http://127.0.0.1:8999/?s=N4IgbiBcDMA0IEcomgExPAdsgDgQwGMB
+    rPAcwFMBnAenM1IEtNzrKAnA6gGwbHIFpUAewI08HABbkALgE8c5AHTTKGEDigBtUNkjrCJCjTqN
+    mrDt14Dho6uIJS5C5aviq9AKhABfALregA) and put nothing in their place.
+  - The World Map barely changed because it already worked this way: neutral
+    pieces with blue and green doors. Only the exact shades moved.
+
+  Why implementation can't simply take a vivid colour
+
+  I searched every colour for one that stays distinguishable from the other
+  seven meanings, including for red-green colour-blind readers. With blue,
+  green, violet, rose, yellow, orange and white taken, what remains is a pale
+  lilac, or dark greens, browns and one dark blue. A set of colours that must
+  each be told apart tops out at about seven hues and one neutral, and some
+  meaning has to take the neutral.
+
+  What I think colour should teach in 3D
+
+  Let blue and green into the 3D map with the meaning they already have. A
+  ball's colour would say what that file does in the system:
+
+  - Blue if other files use it and it uses none. In tidepool, rng.ts and
+    tide.ts: seven files use each, and they use nothing.
+  - Green if it uses others and nothing uses it. main.ts is close: one file uses
+    it, and it uses five.
+  - Quiet grey when the two balance, like pool.ts (five and five), with shades
+    between. Designers call a two-ended scale with a neutral middle a diverging
+    scale.
+  - Tests stay violet, assets rose, documents yellow.
+
+  Why I think it is right:
+
+  - Blue would mean "offers" on a ball exactly as it does on a pin.
+  - You would see at a glance which files everything leans on and which sit at
+    the top.
+  - Files with a clear role are loud and mixed ones stay quiet, so each level of
+    loudness has a reason.
+  - Every shade passes the colour-blind checks.
+  - In this repository about 196 implementation files would be near full blue,
+    78 near full green, 374 in shades between, and 43 unconnected and grey.
+
+  What it costs:
+
+  - Implementation's colour would stop meaning "implementation" and start
+    meaning its role. That is a real change of meaning, and yours to decide
+    after seeing it.
+  - A file used only by its own test counts as blue.
+  - The 2D cells would change too. On November 15 you asked that a directory say
+    the same thing in 2D and 3D, so the cells take the same colours. You can
+    flip back and compare.
+
+  What you will get
+
+  Two more choices under Tuning, Colour, Palette, in the real app on your port:
+
+  1. Proposed, with implementation coloured by role, as above.
+  2. Proposed, with implementation in pale lilac. This is the plain alternative:
+     code is the violet family, and tests are the strong violet.
+
+  Status
+
+  - The palette round is still uncommitted. The gate is at 192 of about 480
+    browser tests with 6 red, all 3D cases. Two are the known slow ones; I'll
+    run down the other four when it ends, in about three quarters of an hour.
+  - The two new choices get built after that, because browser work can't overlap
+    the gate.
+
+  If colouring a ball by its role strikes you as wrong in principle, say so and
+  I'll build only the lilac.
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/11/2026-11
+  -16.1.claude-code.export-2026-11-16-200904.txt in the IDE. This may or may
+  not be related to the current task.</ide_opened_file>
+
+❯ >Let blue and green into the 3D map with the meaning they already have. A
+  ball's colour would say what that file does in the system:
+
+  The naive approach proposed is too naive though. If you want to take this
+  route, you need to go all the way. Admixtures of green and blue; marbles in a
+  galaxy, zoomable-into to see their gorgeous complexity, all computed
+  elegantly and cheaply with simple color lerping functions. Something that
+  sends more is more blue. Something that receives more is more green.
+
+  But even then, if you take this green/blue input/output route, you find
+  yourself back being unable to differentiate different file archetypes by
+  color. And I think that's a big loss of information along a categorical
+  dimension. Of course, a reasonable counterargument to my idea to color files
+  by archetype could become hard to hold up if archetypes expand (they
+  shouldn't, but y'never know).
+
+  Between "drab", "loss of category information via color", and "mild color
+  meaning collision", I still aesthetically lean towards "mild color meaning
+  collision" as the better of the 3 options. (But hold that some better fourth
+  or fifth likely exists)
