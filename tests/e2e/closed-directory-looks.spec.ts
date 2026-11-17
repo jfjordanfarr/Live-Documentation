@@ -25,6 +25,15 @@ const SEGOE_LINES = ["400", "700"].map(weight => `@font-face { font-family: "Seg
 
 const SCRIPTS = "scripts";
 const DOC_TOOLS = "scripts/doc-tools";
+const CLIENT = "packages/explorer/src/client";
+/**
+ * The two families read at the far looks, each by one of its boxes. In `scripts` one name on two lines ("contact-" /
+ * "sheet", a directory added on 2026-11-16) leaves the whole family without the cells' row, under both lines; before
+ * it every name held one line under this machine's lines and the row was drawn. The client's directories each hold a
+ * line under both, and draw it. Both are this repository's, and a directory added to either can change which is which:
+ * the case says so by name when it does, and closed-directory-families.spec.ts holds the rule itself on every family.
+ */
+const FAR_FAMILIES = [{ directory: SCRIPTS, read: "scripts/layout-lab", row: false }, { directory: CLIENT, read: `${CLIENT}/panels`, row: true }] as const;
 
 async function still(page: Page): Promise<void> {
   await page.waitForSelector("#map-container .branch-mode", { timeout: 20_000 });
@@ -298,14 +307,15 @@ test("a stack's cards under its top card never reach a neighbouring card or box"
 for (const lines of ["fallback", "segoe"] as const) {
   test(`in the far looks each look keeps the box's name held, and the skin holds its cells at the look's scale (${lines})`, async ({ browser }) => {
     test.setTimeout(240_000);
-    for (const look of CLOSED_DIRECTORY_LOOKS) {
-      const { context, page } = await visit(browser, look, lines);
+    for (const look of CLOSED_DIRECTORY_LOOKS) for (const family of FAR_FAMILIES) {
+      const { context, page } = await visit(browser, look, lines, family.directory);
       for (let press = 0; press < 3; press += 1) {
         await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
         await still(page);
       }
       await expect(page.locator("#map-container")).toHaveAttribute("data-lod", "far");
-      const seen = await box(page, "scripts/layout-lab").evaluate(element => {
+      const where = `${look}, ${family.read}`;
+      const seen = await box(page, family.read).evaluate(element => {
         const scale = new DOMMatrix(getComputedStyle(document.querySelector("#map-viewport")!).transform).a || 1;
         const held = element.querySelector<HTMLElement>(".local-directory-closed__held")!;
         const style = getComputedStyle(held);
@@ -325,20 +335,20 @@ for (const lines of ["fallback", "segoe"] as const) {
         return { display: style.display, content: getComputedStyle(held, "::after").content, line, cells, rows, readingShown: reading ? getComputedStyle(reading).visibility === "visible" : false, tab,
           ownChevron: getComputedStyle(own).visibility, heldChevron: getComputedStyle(held.querySelector(".local-directory-chevron")!).visibility, lifted };
       });
-      // The name is held at the look's size: at least the reading size's line on screen, drawn by the held element.
-      expect(seen.display, look).toBe("block");
-      expect(seen.content, look).toContain("layout-lab");
-      expect(seen.line, look).toBeGreaterThanOrEqual(14);
+      // The name is held at the look's size: at least the reading size's line on screen, drawn by the held element,
+      // whole on one line or broken at its seams onto more (a break is written "\a " in the content).
+      expect(seen.display, where).toBe("block");
+      expect(seen.content.replace(/\\a /gu, ""), where).toContain(family.read.split("/").pop());
+      expect(seen.line, where).toBeGreaterThanOrEqual(14);
       // One chevron: the name's own, which has a colour of its own, is not drawn at reading size in the held one's corner.
-      expect([seen.ownChevron, seen.heldChevron], look).toEqual(["hidden", "visible"]);
-      expect(seen.lifted, `${look}: the name's button where every shape has it`).toBe(0);
+      expect([seen.ownChevron, seen.heldChevron], where).toEqual(["hidden", "visible"]);
+      expect(seen.lifted, `${where}: the name's button where every shape has it`).toBe(0);
       if (look === "cells") {
-        // The row of cells is in every sibling or in none (closed-directory-families.spec.ts). Under this machine's
-        // lines every name of `scripts` holds one line and the row is drawn: at least a row of cells, each held about
-        // as large on screen as at reading size, not the map's sliver. Under Segoe UI's lines this machine's bold face
-        // is the wider, "doc-" / "tools" takes two lines, and that one sibling leaves the whole family without the row.
-        expect(new Set(seen.rows).size, "the cells' row in every sibling or in none").toBe(1);
-        if (lines === "fallback") expect(seen.rows[0], "the row drawn where every name holds one line").toBe(true);
+        // The row of cells is in every sibling or in none (closed-directory-families.spec.ts). Where every name of the
+        // family holds one line the row is drawn: at least a row of cells, each held about as large on screen as at
+        // reading size, not the map's sliver. Where one sibling's name takes two, the whole family is without it.
+        expect(new Set(seen.rows).size, `${where}: the cells' row in every sibling or in none`).toBe(1);
+        expect(seen.rows[0], `${where}: this family ${family.row ? "draws" : "is without"} the cells' row; if a directory added to it changed that, read another family here`).toBe(family.row);
         if (seen.rows[0]) {
           expect(seen.cells.length).toBeGreaterThan(2);
           expect(Math.min(...seen.cells)).toBeGreaterThanOrEqual(7);

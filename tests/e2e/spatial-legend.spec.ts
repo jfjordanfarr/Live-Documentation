@@ -147,6 +147,8 @@ test("the Local Map shows the matching legend and lends neither key to another v
 
 /** This repository's scripts directory, opened in 2D: the directories inside it are closed, their cells of several kinds. */
 const CLOSED = "/?view=local&dir=scripts";
+/** A directory whose closed boxes still draw their cells at the overview look, for the key's audit at its most rows. */
+const KINDS_ZOOMED_OUT = "/?view=local&dir=packages/explorer/src/client";
 
 async function still(page: Page): Promise<void> {
   await page.waitForSelector("#map-container .branch-mode", { timeout: 20_000 });
@@ -233,9 +235,12 @@ test("the key's words are whole and apart in both maps, in the sidebar's one wid
   };
   // The sidebar has one width, 260 px, at every size of window. A narrow window starts with it collapsed, and a reader
   // who opens it has it laid over the page at that width: there the audit reads the overview look's rows, the 2D key's most.
+  // Read on the client's directories, whose closed boxes keep their cells zoomed out and so the key its row of kinds:
+  // `scripts` lost them on 2026-11-16, when a directory whose name takes two lines joined it (the row of cells is drawn
+  // in every sibling or in none). The floor of five words says so if this family loses them too.
   for (const width of [1280, 640]) {
     await page.setViewportSize({ width, height: 800 });
-    await page.goto(CLOSED);
+    await page.goto(KINDS_ZOOMED_OUT);
     await still(page);
     if (width === 1280) await audit("2D at 1280 px", 4);
     for (let press = 0; press < 7; press += 1) {

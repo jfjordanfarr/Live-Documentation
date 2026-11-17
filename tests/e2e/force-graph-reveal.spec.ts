@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { engineActivity, observeGraph, renderedNodes, renderedPieces } from "./force-graph-observation";
+import { cameToRest, caseClock, engineActivity, observeGraph, renderedNodes, renderedPieces } from "./force-graph-observation";
 import { loadGraph } from "./still-picture";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { getDefaultTuning } from "../../packages/explorer/src/client/persistence/local-storage";
@@ -43,6 +43,18 @@ async function settled(page: Page): Promise<void> {
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 90_000 });
 }
 
+/**
+ * The membership case's two settles wait under two bounds, as the archipelago case of force-graph-discovery.spec.ts
+ * does: drawn frames, hard, past which the picture is not coming to rest whatever the machine; and the clock as it
+ * stood, 90 s a settle, soft, so that a slow settle still ends the case red after its picture has been checked (the
+ * owner keeps performance "a red-hot sticking point", 2026-11-12). The frames are twice the most measured; the
+ * measurements are in this file's Live Doc.
+ */
+const REST_FRAMES = { entry: 700, change: 2500 };
+const REST_SECONDS = 90, CASE_SECONDS = 150;
+/** The hard timeout, a safety net only: every frame bound reached at a pessimistic two frames a second, and a minute more. */
+const CASE_NET_SECONDS = Math.ceil(Object.values(REST_FRAMES).reduce((sum, frames) => sum + frames, 0) / 2) + 60;
+
 test("the first picture enters from the subject with its first hop, a share of the whole a frame, and rests only when every file is in", async ({ page }) => {
   test.setTimeout(150_000);
   const subject = "packages/explorer/src/client/views/forceGraphView.ts";
@@ -66,12 +78,13 @@ test("the first picture enters from the subject with its first hop, a share of t
 });
 
 test("a membership change keeps what is shown and brings the newcomers in pieces of the rule's sizes", async ({ page }) => {
-  test.setTimeout(150_000);
+  test.setTimeout(CASE_NET_SECONDS * 1000);
+  const clock = caseClock(CASE_SECONDS);
   // Around a subject: the start's seeds are what is asked about there, and what is asked about enters at once (2026-11-02).
   const subject = "packages/explorer/src/client/views/forceGraphView.ts";
   await observeGraph(page);
   await page.goto(entry(false, subject));
-  await settled(page);
+  await cameToRest(page, { label: "the subject's two hops enter, tests hidden", frames: REST_FRAMES.entry, seconds: REST_SECONDS });
   const before = await renderedPieces(page);
   const shown = before[before.length - 1];
   const { changes: untilNow } = await engineActivity(page);
@@ -86,7 +99,7 @@ test("a membership change keeps what is shown and brings the newcomers in pieces
   const kept = [...was].filter(id => is.has(id));
   expect(shown, "the picture before the change is the subject's scope").toBe(was.size);
   await page.getByLabel("Show Tests").check();
-  await settled(page);
+  await cameToRest(page, { label: "tests shown, the newcomers enter", frames: REST_FRAMES.change, seconds: REST_SECONDS });
   const sizes = (await renderedPieces(page)).slice(before.length - 1);
   const whole = sizes[sizes.length - 1];
   expect(whole, "the tests shown make the subject's picture bigger").toBe(is.size);
@@ -95,4 +108,5 @@ test("a membership change keeps what is shown and brings the newcomers in pieces
   expect(after.map(node => node.id).filter(id => was.has(id)).sort(), "every sphere shown before the change and still in the picture is shown").toEqual(kept.sort());
   const { changes } = await engineActivity(page);
   expect(changes.slice(untilNow.length).map(change => change.busy), "one run of the engine from the change to its stillness").toEqual([true, false]);
+  clock();
 });
