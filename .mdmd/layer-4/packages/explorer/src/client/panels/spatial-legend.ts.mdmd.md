@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/spatial-legend.ts
-- Generated At: 2026-11-16T12:13:47.817Z
+- Generated At: 2026-11-16T20:45:29.201Z
 
 ## Authored
 ### Purpose
@@ -21,28 +21,28 @@ Since 2026-11-05 the key has a row for a directory shell (then "Shell: N files o
 
 Since 2026-11-16 ([Turn 10 of the November 15 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-10)) a row is a sample and at most two words. The owner, of the rows above: "the language on the legend is so cringe ... I still strongly strongly strongly continue to urge to minimize visibile words that come from _us_". A row is now `marks` (each a colour and its words), a `shape` and a `description`: the sentence the row used to draw, which `renderSpatialLegend` writes as the row's `title` and `aria-description`. The kinds are one row with a mark for each kind drawn, in the table's order, each with its one word; every other row has one mark. The words: *Symbols* (was "Size: public symbols" and "Size: file symbols; folders uniform"; the folders' rule is its sentence's second half, said while a folder is drawn), *References* ("Width: references"), *Path*, *Beyond* ("Dimmed: a hop beyond, or another group; click to see more"), *More connected* ("Ring: more connected, not shown; click to see it"), *Wrapped group*, *Directory shell*, *Contains*, *Cites* ("Cites document") and *Cited by* ("Cited by document"). The Faded row and `SpatialLegendDrawn.faded` are deleted: a faded thing says by itself that it is out of attention, the row came and went with every hover, and the path's sentence now says what a path fades. What a press does left the rows for the marks' own tooltips, which the 3D map's names already carried ("Pin this file", "Open this shell", "N more connected, not shown") but for a wrapped group's seed, whose name gained "Open this group and pin this file" that day.
 
-`watchLocalKinds`, of the same day, fills the 2D key's `local-legend-kinds` row where the template has one, which is one line there, kept or left out by the owner's choice between a row of our words and a cell's hover alone. It reads the kinds from the cells the 2D map has drawn (their `fill`, which the map writes from `SPATIAL_NODE_STYLES`), counting only a cell that is rendered at the look shown and not drawn in the one grey, so the row holds what is on screen and is empty, which the stylesheet hides, otherwise. It watches the map's element for a closed directory drawn or removed and for a change of look, and draws once a frame at most; the 2D map knows nothing of it. If the owner chooses the hover alone, delete the function, its call in `index.ts`, the template's line, `#local-legend-kinds`'s two rules in `local.css` and the two browser cases that read the row.
+`watchLocalKinds`, of the same day, fills the 2D key's `local-legend-kinds` row where the template has one, which is one line there, kept or left out by the owner's choice between a row of our words and a cell's hover alone. It reads the kinds from the cells the 2D map has drawn (their `fill`, which the map writes from the palette's kinds through `spatialNodeStyles`), counting only a cell that is rendered at the look shown and not drawn in the one grey, so the row holds what is on screen and is empty, which the stylesheet hides, otherwise. It watches the map's element for a closed directory drawn or removed and for a change of look, and draws once a frame at most; the 2D map knows nothing of it. If the owner chooses the hover alone, delete the function, its call in `index.ts`, the template's line, `#local-legend-kinds`'s two rules in `local.css` and the two browser cases that read the row.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SpatialLegendDrawn` {#symbol-spatiallegenddrawn}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L6)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L7)
 
 ##### `SpatialLegendDrawn` — Summary
 What the 3D picture draws beyond its data: the key says only what is on screen (2026-10-30).
 
 #### `SpatialLegendMark` {#symbol-spatiallegendmark}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L22)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L23)
 
 ##### `SpatialLegendMark` — Summary
 A sample of the key and the words beside it, two at most.
 
 #### `SpatialLegendRow` {#symbol-spatiallegendrow}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L33)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L34)
 
 ##### `SpatialLegendRow` — Summary
 One row of the key (2026-11-16): the sample the stylesheet draws from its shape, the mark's words, and the sentence
@@ -52,7 +52,7 @@ with its one word.
 
 #### `spatialLegendRows` {#symbol-spatiallegendrows}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L45)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L44)
 - Returns: [`SpatialLegendRow`](#symbol-spatiallegendrow)[]
 - Parameters: `graph`: [`SpatialGraphData`](../views/forceGraphData.ts.mdmd.md#symbol-spatialgraphdata); `drawn`: [`SpatialLegendDrawn`](#symbol-spatiallegenddrawn)
 
@@ -81,8 +81,9 @@ table this key shares with it: a cell hidden at the look shown, or drawn in the 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`dom.requireElement`](../dom.ts.mdmd.md#symbol-requireelement)
-- [`forceGraphAppearance.SPATIAL_NODE_STYLES`](../views/forceGraphAppearance.ts.mdmd.md#symbol-spatial_node_styles)
-- [`forceGraphAppearance.spatialNodeStyle`](../views/forceGraphAppearance.ts.mdmd.md#symbol-spatialnodestyle)
+- [`palette.activePalette`](../palette.ts.mdmd.md#symbol-activepalette)
+- [`forceGraphAppearance.spatialNodeStyle`](../views/forceGraphAppearance.ts.mdmd.md#symbol-spatialnodestyle-function)
+- [`forceGraphAppearance.spatialNodeStyles`](../views/forceGraphAppearance.ts.mdmd.md#symbol-spatialnodestyles)
 - [`forceGraphData.SpatialGraphData`](../views/forceGraphData.ts.mdmd.md#symbol-spatialgraphdata) (type-only)
 - [`template.local-legend-kinds`](../../shared/template.html.mdmd.md#symbol-local-legend-kinds)
 - [`template.map-container`](../../shared/template.html.mdmd.md#symbol-map-container)

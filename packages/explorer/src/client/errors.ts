@@ -81,7 +81,7 @@ export function reportFatalExplorerError(error: unknown): void {
   } else {
     const detailBody = document.getElementById("detail-body");
     if (detailBody) {
-      detailBody.innerHTML = `<pre style="white-space:pre-wrap;color:#f88;">${encodeHtml(stack)}</pre>`;
+      detailBody.innerHTML = `<pre style="white-space:pre-wrap;color:var(--signal-error);">${encodeHtml(stack)}</pre>`;
     }
 
     const overlay = document.getElementById("detail-panel");

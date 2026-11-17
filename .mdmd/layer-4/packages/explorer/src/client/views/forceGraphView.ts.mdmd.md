@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphView.ts
-- Generated At: 2026-11-15T23:30:01.957Z
+- Generated At: 2026-11-16T20:45:31.793Z
 
 ## Authored
 ### Purpose
@@ -93,14 +93,14 @@ Since 2026-11-16 ([Turn 10 of the November 15 record](../../../../../../../AI-Ag
 ### Public Symbols
 #### `ForceGraphLink` {#symbol-forcegraphlink}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L108)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L109)
 
 ##### `ForceGraphLink` — Summary
 A link in the Force Graph between two nodes.
 
 #### `ForceGraphNode` {#symbol-forcegraphnode}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L121)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L122)
 - Returns: [`SpatialGraphNode`](./forceGraphData.ts.mdmd.md#symbol-spatialgraphnode)
 
 ##### `ForceGraphNode` — Summary
@@ -108,28 +108,28 @@ A node in the Force Graph, extending the payload with optional archetype.
 
 #### `ForceGraphData` {#symbol-forcegraphdata}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L130)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L131)
 
 ##### `ForceGraphData` — Summary
 Complete data structure for the Force Graph view.
 
 #### `ForceGraphViewOptions` {#symbol-forcegraphviewoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L141)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L142)
 
 ##### `ForceGraphViewOptions` — Summary
 Options passed to the Force Graph view factory.
 
 #### `ForceGraphViewApi` {#symbol-forcegraphviewapi}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L170)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L171)
 
 ##### `ForceGraphViewApi` — Summary
 Public API surface of the Force Graph view.
 
 #### `createForceGraphView` {#symbol-createforcegraphview}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L199)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L200)
 - Returns: [`ForceGraphViewApi`](#symbol-forcegraphviewapi)
 - Parameters: `options`: [`ForceGraphViewOptions`](#symbol-forcegraphviewoptions)
 
@@ -150,6 +150,8 @@ Creates the Force Graph (3D) view for the Live Docs Explorer.
 - [`rekey.rekeyedCaches`](../history/rekey.ts.mdmd.md#symbol-rekeyedcaches)
 - [`rekey.renamedId`](../history/rekey.ts.mdmd.md#symbol-renamedid)
 - [`layout-presets.layoutSettingsOf`](../layout-presets.ts.mdmd.md#symbol-layoutsettingsof)
+- [`palette.activePalette`](../palette.ts.mdmd.md#symbol-activepalette)
+- [`palette.rgba`](../palette.ts.mdmd.md#symbol-rgba)
 - [`icon-button.CENTRE_ICON`](../panels/icon-button.ts.mdmd.md#symbol-centre_icon)
 - [`icon-button.DIRECTORY_ICON`](../panels/icon-button.ts.mdmd.md#symbol-directory_icon)
 - [`icon-button.MORE_ICON`](../panels/icon-button.ts.mdmd.md#symbol-more_icon)
@@ -157,7 +159,7 @@ Creates the Force Graph (3D) view for the Live Docs Explorer.
 - [`icon-button.iconButton`](../panels/icon-button.ts.mdmd.md#symbol-iconbutton)
 - [`spatial-legend.renderSpatialLegend`](../panels/spatial-legend.ts.mdmd.md#symbol-renderspatiallegend)
 - [`types.ExplorerState`](../types.ts.mdmd.md#symbol-explorerstate) (type-only)
-- [`forceGraphAppearance.spatialNodeStyle`](./forceGraphAppearance.ts.mdmd.md#symbol-spatialnodestyle)
+- [`forceGraphAppearance.spatialNodeStyle`](./forceGraphAppearance.ts.mdmd.md#symbol-spatialnodestyle-function)
 - [`forceGraphBatches.SPATIAL_RING_OUTER_RADIUS`](./forceGraphBatches.ts.mdmd.md#symbol-spatial_ring_outer_radius)
 - [`forceGraphBatches.SpatialWrapperUnit`](./forceGraphBatches.ts.mdmd.md#symbol-spatialwrapperunit)
 - [`forceGraphBuilding.Building`](./forceGraphBuilding.ts.mdmd.md#symbol-building)

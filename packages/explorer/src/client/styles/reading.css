@@ -20,32 +20,32 @@
     inset: 0;
     grid-column: 2 / 3;
     z-index: -1;
-    background: var(--node-bg);
+    background: var(--ground-card);
 }
-.local-placed .node-card:hover .symbol-row.local-row-moving::before { background: var(--node-hover); }
+.local-placed .node-card:hover .symbol-row.local-row-moving::before { background: var(--ground-card-hover); }
 .local-reading-block {
     grid-column: 2;
     min-width: 0;
     contain: inline-size;
     padding: 6px 2px 7px;
     cursor: text;
-    color: var(--card-prose);
+    color: var(--text-card-prose);
     font-size: 14px;
     line-height: 1.55;
 }
 
 .local-reading-block[hidden] { display: none; }
-.local-reading-purpose { padding: 10px 0; border-bottom: 1px solid var(--border-interactive); }
+.local-reading-purpose { padding: 10px 0; border-bottom: 1px solid var(--line-interactive); }
 .local-reading-prose { overflow: hidden; overflow-wrap: anywhere; max-height: var(--reading-prose-height, 280px); }
 .local-reading-prose:empty { display: none; }
 .local-reading-prose p { margin: 0 0 8px; }
 .local-reading-prose p:last-child { margin-bottom: 0; }
 .local-reading-prose ul, .local-reading-prose ol { margin: 8px 0; padding-left: 22px; }
 .local-reading-prose code, .local-reading-prose pre { font-size: 0.9em; }
-.local-reading-prose pre { white-space: pre-wrap; overflow-wrap: anywhere; padding: 10px; background: var(--bg-deep); }
-.local-reading-block a { color: var(--accent-text, #9ed2fa); }
+.local-reading-prose pre { white-space: pre-wrap; overflow-wrap: anywhere; padding: 10px; background: var(--ground-deep); }
+.local-reading-block a { color: var(--link-prose); }
 .local-reading-prose h1, .local-reading-prose h2, .local-reading-prose h3 { font-size: 1em; margin: 12px 0 6px; }
-.local-reading-full { display: block; margin: 7px 0 0; padding: 0; border: 0; background: none; color: #9ed2fa; font: inherit; text-decoration: underline; cursor: pointer; }
+.local-reading-full { display: block; margin: 7px 0 0; padding: 0; border: 0; background: none; color: var(--link-prose); font: inherit; text-decoration: underline; cursor: pointer; }
 .local-reading-full[hidden] { display: none; }
 .local-reading-file-full { font-size: 14px; line-height: 1.5; margin-top: 12px; }
 .local-reading-types { font-size: 12px; line-height: 1.55; margin: 0 0 6px; overflow-wrap: anywhere; }
@@ -76,20 +76,20 @@
 
 .local-reading-counts { display: none; }
 .local-reading-card .local-reading-counts { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 8px; margin: 12px 0 0; padding: 0; border: 0; }
-.local-reading-counts button { flex: 0 0 auto; box-sizing: border-box; white-space: nowrap; min-height: 32px; padding: 6px 8px; border: 1px solid var(--border-interactive); border-radius: 5px; background: var(--bg-deep); color: var(--text-secondary); font: inherit; font-size: 13px; line-height: 18px; cursor: pointer; }
-.local-reading-counts button:hover { border-color: var(--accent); color: var(--text); }
+.local-reading-counts button { flex: 0 0 auto; box-sizing: border-box; white-space: nowrap; min-height: 32px; padding: 6px 8px; border: 1px solid var(--line-interactive); border-radius: 5px; background: var(--ground-deep); color: var(--text-secondary); font: inherit; font-size: 13px; line-height: 18px; cursor: pointer; }
+.local-reading-counts button:hover { border-color: var(--state-selected); color: var(--text-normal); }
 .local-reading-counts button:disabled { cursor: default; opacity: .65; }
-.local-reading-counts button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.local-reading-counts button:focus-visible { outline: 2px solid var(--state-selected); outline-offset: 3px; }
 .local-reading-card .local-back-references { font-size: 13px; line-height: 1.5; text-decoration: underline; }
 .local-reading-card .type-refs-indicator { display: none; }
 .local-symbol-read { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 17px; width: 17px; height: 17px; padding: 1px; border: 1px solid transparent; border-radius: 3px; background: transparent; color: var(--text-panel-muted); cursor: pointer; }
 .local-symbol-read svg { width: 12px; height: 12px; }
 .local-reading-card :is(.local-symbol-read, .local-symbol-pin, .local-symbol-more) { flex-basis: 24px; width: 24px; height: 24px; padding: 3px; color: var(--text-panel-muted); }
 .local-reading-card .local-symbol-read svg { width: 14px; height: 14px; }
-.local-symbol-read:hover, .local-symbol-read[aria-pressed=true], .local-file-read[aria-pressed=true] { color: var(--accent); }
-.local-reading-card :is(.local-symbol-read, .local-file-read, .local-symbol-pin, .local-file-pin)[aria-pressed=true] { color: var(--accent); background: var(--accent-subtle); border-color: var(--border-interactive); }
-.local-symbol-read:focus-visible, .local-file-read:focus-visible, .local-reading-full:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-.local-column .local-reading-card .symbol-pinned .symbol-label-wrapper { background: var(--accent-muted); }
+.local-symbol-read:hover, .local-symbol-read[aria-pressed=true], .local-file-read[aria-pressed=true] { color: var(--state-selected); }
+.local-reading-card :is(.local-symbol-read, .local-file-read, .local-symbol-pin, .local-file-pin)[aria-pressed=true] { color: var(--state-selected); background: var(--selected-subtle); border-color: var(--line-interactive); }
+.local-symbol-read:focus-visible, .local-file-read:focus-visible, .local-reading-full:focus-visible { outline: 2px solid var(--state-selected); outline-offset: 3px; }
+.local-column .local-reading-card .symbol-pinned .symbol-label-wrapper { background: var(--selected-muted); }
 
 @media (max-width: 600px) {
     .local-reading-card { padding: 16px 14px; }
@@ -231,8 +231,8 @@
     z-index: -1;
     height: clamp(100%, calc((max((var(--row-name-y, 0) + var(--row-name-h, 0) + (var(--row-lines, 1) - 1 + var(--row-kept, 0)) * var(--row-line, 0)) * var(--name-scale, 1), var(--row-more-y, 0) + var(--row-more-h, 17) * var(--row-control-scale, 1)) - var(--row-wrapper-y, -2) + 2) * 1px), calc((var(--row-held-h, var(--row-h, 0)) - var(--row-wrapper-y, -2)) * 1px));
     border-radius: 4px;
-    background: var(--accent-subtle);
-    box-shadow: 0 0 0 1px var(--accent), 0 0 8px var(--color-outbound-glow);
+    background: var(--selected-subtle);
+    box-shadow: 0 0 0 1px var(--state-selected), 0 0 8px var(--offers-pin-glow);
     pointer-events: none;
 }
 /* A symbol row keeps its allotment in every band; when the slot leaves, its track stays and takes the room below, so the
@@ -271,7 +271,7 @@
    its wires its own. A whole-file pin is a pin of the file: its rows go silent like any card's, and the card says it is
    pinned by its own highlight. Every row's box stays where it is. */
 [data-lod="overview"] .local-slot-card .symbol-row:not(.symbol-pinned-named) > :is(.symbol-label-wrapper, .symbol-anchor) { visibility: hidden; }
-[data-lod="overview"] .local-slot-card.file-pinned { box-shadow: 0 0 0 1px var(--accent), 0 0 8px var(--color-outbound-glow); }
+[data-lod="overview"] .local-slot-card.file-pinned { box-shadow: 0 0 0 1px var(--state-selected), 0 0 8px var(--offers-pin-glow); }
 /* Files only at the overview look (Tuning → 2D Layout → Zoomed Out Fully, a trial of 2026-11-13; the owner: "the "Flow"
    look is much closer to what the full zoom-out in the 2D Local Map might reasonably be"): the controller writes
    data-overview-files and every file card takes the compact form an opened directory's member has in Flow, no row laid
@@ -456,13 +456,13 @@
     font-weight: 600;
     line-height: calc(var(--closed-line, 15) * 1px);
     white-space: pre;
-    color: var(--text);
+    color: var(--text-normal);
     transform: scale(var(--closed-scale));
     transform-origin: left top;
     pointer-events: none;
 }
 .local-directory-closed__held > .local-directory-chevron { position: absolute; left: 0; top: calc((var(--closed-line, 15) - 12) / 2 * 1px); color: var(--text-panel-muted); }
-.local-directory-closed:hover .local-directory-closed__held > .local-directory-chevron { color: var(--accent); }
+.local-directory-closed:hover .local-directory-closed__held > .local-directory-chevron { color: var(--state-selected); }
 [data-looks="three"][data-lod="far"] .local-directory-closed__held::after { content: attr(data-lines-look-connections); }
 [data-looks="three"][data-lod="overview"] .local-directory-closed__held::after { content: attr(data-lines-look-overview); }
 /* In the far looks a card's drawn rows share its row room evenly (2026-11-13): with short rows beside slot rows the names
@@ -499,9 +499,9 @@
     z-index: -1;
     box-sizing: border-box;
     height: clamp(calc(100% + 2px), calc((max((var(--row-name-y, 0) + var(--row-name-h, 0) + (var(--row-lines, 1) - 1) * var(--row-line, 0)) * var(--name-scale, 1), var(--row-more-y, 0) + var(--row-more-h, 17) * var(--row-control-scale, 1)) - var(--row-wrapper-y, -2) + 2) * 1px), calc((var(--row-held-h, var(--row-h, 0)) - var(--row-wrapper-y, -2)) * 1px));
-    border: 1px dashed rgba(100, 100, 120, 0.5);
+    border: 1px dashed rgba(var(--internals-line-rgb), 0.5);
     border-radius: 4px;
-    background: rgba(40, 40, 50, 0.6);
+    background: rgba(var(--internals-ground-rgb), 0.6);
     pointer-events: none;
 }
 /* When a text leaves a card in a look, its room goes to the name it belonged to (2026-11-13; the owner's "That text space
@@ -556,7 +556,7 @@
     text-overflow: ellipsis;
     font-size: 11px;
     line-height: calc(var(--row-line, 12.65) * 1px);
-    color: var(--card-prose);
+    color: var(--text-card-prose);
     transform: translateY(calc(var(--row-held-y, 0) * 1px)) scale(var(--name-scale, 1));
     transform-origin: left calc((var(--row-name-y, 0) + var(--row-line, 12.65)) * -1px);
     pointer-events: none;
@@ -594,7 +594,7 @@
     font-size: 11px;
     font-weight: 400;
     line-height: 12.65px;
-    color: var(--card-prose);
+    color: var(--text-card-prose);
     transform: scale(var(--text-scale, 1));
     transform-origin: left top;
     pointer-events: none;
@@ -719,16 +719,16 @@
 @keyframes local-look-leave { to { opacity: 0; } }
 @keyframes local-look-appear { from { opacity: 0; } }
 
-.reading-dialog-backdrop { position: fixed; inset: 0; background: #0008; z-index: 999; }
+.reading-dialog-backdrop { position: fixed; inset: 0; background: rgba(var(--ground-shade-rgb), 0.533333); z-index: 999; }
 .reading-dialog-backdrop[hidden] { display: none; }
 #detail-panel.reading-dialog {
     position: fixed;
     inset: 24px max(18px, calc((100vw - 760px) / 2));
     width: auto;
     max-height: calc(100dvh - 48px);
-    border: 1px solid var(--border-interactive);
+    border: 1px solid var(--line-interactive);
     border-radius: 10px;
-    background: var(--bg-card);
+    background: var(--ground-card);
     backdrop-filter: none;
     z-index: 1000;
     transform: none;

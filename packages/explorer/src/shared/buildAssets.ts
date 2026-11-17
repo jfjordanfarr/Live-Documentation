@@ -3,6 +3,8 @@ import * as fs from "fs/promises";
 import * as os from "node:os";
 import * as path from "path";
 
+import { DEFAULT_PALETTE, PALETTES, paletteStylesheet } from "../client/palette";
+
 /** Paths and HTML template produced by the Explorer asset build step. */
 export interface ExplorerAssets {
     outDir: string;
@@ -39,8 +41,10 @@ export async function withExplorerAssets(consume: (assets: ExplorerAssets) => Pr
             loader: { ".ts": "ts" }
         });
 
+        // The palette's colours come first, as the custom properties every stylesheet reads, written from the one table
+        // that the client's scripts read too (client/palette.ts); a palette chosen by name is written over them at startup.
         const cssSource = await fs.readFile(path.join(clientRoot, "styles.css"), "utf8");
-        await fs.writeFile(path.join(outDir, "styles.css"), cssSource, "utf8");
+        await fs.writeFile(path.join(outDir, "styles.css"), `@import url("./styles/palette.css");\n${cssSource}`, "utf8");
 
         const stylesDir = path.join(clientRoot, "styles");
         await fs.mkdir(path.join(outDir, "styles"), { recursive: true });
@@ -50,6 +54,8 @@ export async function withExplorerAssets(consume: (assets: ExplorerAssets) => Pr
                 await fs.copyFile(path.join(stylesDir, entry), path.join(outDir, "styles", entry));
             }
         }
+
+        await fs.writeFile(path.join(outDir, "styles", "palette.css"), paletteStylesheet(PALETTES[DEFAULT_PALETTE]), "utf8");
 
         const template = await fs.readFile(path.join(moduleDirectory, "template.html"), "utf8");
         await consume({ outDir, htmlTemplate: template });

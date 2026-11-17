@@ -1,7 +1,7 @@
 import { expect, it } from "vitest";
 
 import { spatialLegendRows, type SpatialLegendRow } from "./spatial-legend";
-import { SPATIAL_NODE_STYLES } from "../views/forceGraphAppearance";
+import { spatialNodeStyles } from "../views/forceGraphAppearance";
 import type { SpatialGraphData } from "../views/forceGraphData";
 
 const node = (id: string, archetype: string): SpatialGraphData["nodes"][number] => ({ id, name: id, codePath: id, codeRelativePath: id, docPath: "", docRelativePath: "",
@@ -57,7 +57,7 @@ it("names a directory shell, after the wrapped group, only while a shell is draw
 
 it("draws at most two words beside a sample and keeps every row's sentence for its tooltip (2026-11-16)", () => {
   // Every row the key can build: every kind the map colours and one it does not know, every kind of link, everything drawn.
-  const kinds = [...Object.keys(SPATIAL_NODE_STYLES), "unheard-of"];
+  const kinds = ["implementation", "test", "asset", "related-doc", "directory", "other", "unheard-of"];
   const nodes = kinds.map(kind => node(`${kind}.x`, kind));
   const links = (["dependency", "containment", "related-doc", "cited-by"] as const).map(kind => link(nodes[0].id, nodes[1].id, kind));
   const everything = { references: true, path: true, frontier: true, rings: true, wrapped: true, shells: true };
@@ -73,6 +73,6 @@ it("draws at most two words beside a sample and keeps every row's sentence for i
     for (const mark of row.marks) expect(mark.label, "no colon-led explanation, no instruction, no sentence").toMatch(/^[\p{L}-]+( [\p{L}-]+)?$/u);
     expect(row.description, `the ${row.shape} row's sentence`).toMatch(/^\p{Lu}.{20,}\.$/u);
   }
-  expect(fullest[0].marks.map(mark => mark.label)).toEqual(Object.values(SPATIAL_NODE_STYLES).map(style => style.label));
+  expect(fullest[0].marks.map(mark => mark.label)).toEqual(Object.values(spatialNodeStyles()).map(style => style.label));
   expect(new Set(rows.map(row => row.description)).size, "each row has its own sentence").toBe(fullest.length + 1);
 });

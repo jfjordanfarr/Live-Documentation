@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/connection-geometry.test.ts
-- Generated At: 2026-10-07T00:20:35.981Z
+- Generated At: 2026-11-16T20:45:30.504Z
 
 ## Authored
 ### Purpose
@@ -39,7 +39,6 @@ _No public symbols detected_
 - [`connection-geometry.computeBezierPath`](./connection-geometry.ts.mdmd.md#symbol-computebezierpath)
 - [`connection-geometry.computeSelfLoopStubs`](./connection-geometry.ts.mdmd.md#symbol-computeselfloopstubs)
 - [`connection-geometry.computeStubLength`](./connection-geometry.ts.mdmd.md#symbol-computestublength)
-- [`connection-geometry.createConnectionGradient`](./connection-geometry.ts.mdmd.md#symbol-createconnectiongradient)
 - [`connection-geometry.distance`](./connection-geometry.ts.mdmd.md#symbol-distance)
 - [`connection-geometry.expandRect`](./connection-geometry.ts.mdmd.md#symbol-expandrect)
 - [`connection-geometry.mergeRects`](./connection-geometry.ts.mdmd.md#symbol-mergerects)

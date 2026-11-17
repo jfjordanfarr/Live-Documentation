@@ -6,7 +6,7 @@ import { observeGraph, renderedLinks, renderedNodes } from "./force-graph-observ
 import { localMapSettled } from "./still-picture";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
-import { SPATIAL_NODE_STYLES } from "../../packages/explorer/src/client/views/forceGraphAppearance";
+import { spatialNodeStyles } from "../../packages/explorer/src/client/views/forceGraphAppearance";
 import type { SpatialDrawEntry } from "../../packages/explorer/src/client/views/forceGraphBatches";
 
 test.use({ viewport: { width: 1280, height: 800 } });
@@ -164,7 +164,7 @@ const kindsDrawn = async (page: Page): Promise<string[]> => {
   const fills = await page.evaluate(() => [...new Set([...document.querySelectorAll<SVGElement>("#map-container .local-cell")]
     .filter(cell => cell.checkVisibility({ visibilityProperty: true })).map(cell => getComputedStyle(cell).fill))]);
   const rgb = (hex: string): string => `rgb(${[1, 3, 5].map(at => parseInt(hex.slice(at, at + 2), 16)).join(", ")})`;
-  return Object.values(SPATIAL_NODE_STYLES).filter(style => fills.includes(rgb(style.color))).map(style => style.label);
+  return Object.values(spatialNodeStyles()).filter(style => fills.includes(rgb(style.color))).map(style => style.label);
 };
 
 test("each row of the 2D key is a sample and two words at most at every look, its sentence kept for its tooltip", async ({ page }) => {

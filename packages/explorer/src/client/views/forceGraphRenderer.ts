@@ -1,6 +1,7 @@
 import { AmbientLight, DirectionalLight, PerspectiveCamera, Plane, Raycaster, Scene, Vector2, Vector3, WebGLRenderer } from "three";
 import { TrackballControls } from "three/addons/controls/TrackballControls.js";
 
+import { activePalette } from "../palette";
 import { createSpatialBuffers, drawSpatialGraphOnChange, type SpatialDrawLink, type SpatialDrawStyle, type SpatialWrapperStyle, type SpatialWrapperUnit } from "./forceGraphBatches";
 import type { CameraPoint } from "./forceGraphCamera";
 import type { Placed, SpatialNode } from "./forceGraphLayout";
@@ -48,9 +49,10 @@ export class SpatialRenderer<N extends SpatialNode, L extends SpatialDrawLink<N>
     this.wrapper.style.position = "relative";
     container.replaceChildren(this.wrapper);
     this.gpu.setPixelRatio(Math.min(2, window.devicePixelRatio));
-    this.gpu.setClearColor(0x000011, 1); this.wrapper.append(this.gpu.domElement);
+    const { scene } = activePalette();
+    this.gpu.setClearColor(scene.ground, 1); this.wrapper.append(this.gpu.domElement);
     this.eye.position.z = 1000;
-    this.world.add(new AmbientLight(0xcccccc, Math.PI), new DirectionalLight(0xffffff, .6 * Math.PI));
+    this.world.add(new AmbientLight(scene.ambientLight, Math.PI), new DirectionalLight(scene.directionalLight, .6 * Math.PI));
     this.buffers = createSpatialBuffers(this.world, options.style, this.gpu);
     this.paint = { render: (): void => {
       const resistance = this.options.resistance();

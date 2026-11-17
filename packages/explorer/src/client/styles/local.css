@@ -235,20 +235,20 @@
 }
 
 .symbol-row .symbol-label-wrapper:hover {
-    background: var(--accent-muted);
+    background: var(--selected-muted);
 }
-.local-column .symbol-label { display: block; flex: 1; min-width: 0; padding: 0; border: 0; background: transparent; font: inherit; font-size: 11px; color: var(--card-symbol-name); text-align: left; cursor: pointer; }
-.local-column .symbol-label:hover { color: var(--accent); }
+.local-column .symbol-label { display: block; flex: 1; min-width: 0; padding: 0; border: 0; background: transparent; font: inherit; font-size: 11px; color: var(--text-card-symbol-name); text-align: left; cursor: pointer; }
+.local-column .symbol-label:hover { color: var(--state-selected); }
 .local-column .type-badge:is(button) { border: 0; cursor: pointer; }
 .local-symbol-pin, .local-symbol-more { display: inline-flex; flex: 0 0 17px; align-items: center; justify-content: center; width: 17px; height: 17px; padding: 1px; line-height: 0; color: var(--text-panel-subtle); border: 1px solid transparent; border-radius: 3px; background: transparent; cursor: pointer; }
-.local-symbol-pin:hover, .local-symbol-more:hover { color: var(--accent); border-color: var(--accent); }
-.local-symbol-pin[aria-pressed="true"], .local-file-pin[aria-pressed="true"] { color: var(--accent); }
+.local-symbol-pin:hover, .local-symbol-more:hover { color: var(--state-selected); border-color: var(--state-selected); }
+.local-symbol-pin[aria-pressed="true"], .local-file-pin[aria-pressed="true"] { color: var(--state-selected); }
 
 /* Visual indicator that a symbol is "pinned" (sticky highlight) */
 /* Target the label wrapper since .symbol-row has display:contents and can't be styled directly */
 .symbol-row.symbol-pinned .symbol-label-wrapper {
-    background: var(--accent-subtle);
-    box-shadow: 0 0 0 1px var(--accent), 0 0 8px var(--color-outbound-glow);
+    background: var(--selected-subtle);
+    box-shadow: 0 0 0 1px var(--state-selected), 0 0 8px var(--offers-pin-glow);
 }
 
 /* The node's controls follow the file's name in its header (the header round of 2026-11-08, the November 7 record's
@@ -269,12 +269,12 @@
     padding: 2px;
     line-height: 0;
     color: var(--text-panel-subtle);
-    background: var(--bg-surface, #202020);
+    background: var(--ground-surface);
     border: 1px solid transparent;
     border-radius: 4px;
     cursor: pointer;
 }
-.local-card-actions button:hover { color: var(--accent); border-color: var(--accent); }
+.local-card-actions button:hover { color: var(--state-selected); border-color: var(--state-selected); }
 .local-column .node-title { position: relative; --action-size: 20px; --actions-count: 1; }
 .local-column .node-title:has(> .local-card-actions > :nth-child(2)) { --actions-count: 2; }
 .local-column .node-title:has(> .local-card-actions > :nth-child(3)) { --actions-count: 3; }
@@ -282,9 +282,9 @@
 .local-column .node-title:has(> .local-card-actions > :nth-child(5)) { --actions-count: 5; }
 .local-file-name-room { display: inline-block; vertical-align: bottom; width: calc((var(--actions-count) * (var(--action-size) + 2px) - 2px) * var(--actions-hold, 1) + 4px); height: calc(var(--action-size) * var(--actions-hold, 1)); }
 .local-file-name { display: block; width: 100%; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: inherit; overflow-wrap: inherit; cursor: pointer; }
-.local-file-name:hover { color: var(--accent); }
+.local-file-name:hover { color: var(--state-selected); }
 .local-disclosure { display: block; margin-top: 8px; padding: 0; border: 0; background: none; color: var(--text-panel-subtle); cursor: pointer; text-align: left; font: inherit; font-size: 11px; }
-button.local-disclosure:hover { color: var(--accent); }
+button.local-disclosure:hover { color: var(--state-selected); }
 span.local-disclosure { cursor: default; }
 /* The connections outside the view, a control that pins the file to reveal them (2026-11-12): drawn as the directory's
    Open is, the card's own frame for "press me", in the colour of its text rather than the faint grey of the facts beside
@@ -293,35 +293,35 @@ span.local-disclosure { cursor: default; }
    padding is only across, and the frame is drawn beside the box, taking no room; the keyboard's focus thickens it. */
 .local-disclosure.local-reveal-connections { position: relative; display: flex; align-items: center; gap: 4px; width: fit-content; max-width: 100%; padding-inline: 6px; color: var(--text-panel-muted); }
 .local-reveal-connections > svg { flex: 0 0 auto; }
-.local-reveal-connections::before { content: ""; position: absolute; inset: -3px 0; border: 1px solid var(--border); border-radius: 4px; pointer-events: none; }
-.local-disclosure.local-reveal-connections:hover { color: var(--accent); }
-.local-reveal-connections:hover::before { border-color: var(--accent); }
+.local-reveal-connections::before { content: ""; position: absolute; inset: -3px 0; border: 1px solid var(--line-border); border-radius: 4px; pointer-events: none; }
+.local-disclosure.local-reveal-connections:hover { color: var(--state-selected); }
+.local-reveal-connections:hover::before { border-color: var(--state-selected); }
 .local-reveal-connections:focus-visible { outline: none; }
-.local-reveal-connections:focus-visible::before { inset: -4px -1px; border: 2px solid var(--accent); border-radius: 5px; }
+.local-reveal-connections:focus-visible::before { inset: -4px -1px; border: 2px solid var(--state-selected); border-radius: 5px; }
 .branch-symbol-hidden > * { display: none; }
 .branch-mode .local-column-label:empty { min-height: 13px; }
-.local-file-name:focus-visible, .local-column .symbol-label:focus-visible, .local-column .type-badge:focus-visible, .local-card-actions button:focus-visible, .local-symbol-pin:focus-visible, .local-symbol-more:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.local-file-name:focus-visible, .local-column .symbol-label:focus-visible, .local-column .type-badge:focus-visible, .local-card-actions button:focus-visible, .local-symbol-pin:focus-visible, .local-symbol-more:focus-visible { outline: 2px solid var(--state-selected); outline-offset: 3px; }
 
 /* The open history scrubber takes the bottom of the map; the controls and the tray stand above it by the room it asks for. */
 #main { --history-room: 0px; }
-.perspective-controls { position: absolute; bottom: calc(18px + var(--history-room)); left: 50%; transform: translateX(-50%); z-index: 105; display: flex; gap: 4px; padding: 5px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-deep); }
+.perspective-controls { position: absolute; bottom: calc(18px + var(--history-room)); left: 50%; transform: translateX(-50%); z-index: 105; display: flex; gap: 4px; padding: 5px; border: 1px solid var(--line-border); border-radius: 6px; background: var(--ground-deep); }
 .perspective-controls[hidden], .perspective-controls :is(button, select)[hidden] { display: none; }
-.perspective-controls select { font: inherit; font-size: 13px; color: var(--text); background: var(--bg-deep); border: 1px solid var(--border); border-radius: 4px; padding: 5px; }
-.perspective-controls button { display: inline-flex; align-items: center; justify-content: center; min-width: 34px; padding: 7px 8px; border: 1px solid transparent; border-radius: 4px; background: transparent; color: var(--text); cursor: pointer; font: inherit; font-size: 13px; }
-.perspective-controls button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); background: var(--accent-subtle); }
+.perspective-controls select { font: inherit; font-size: 13px; color: var(--text-normal); background: var(--ground-deep); border: 1px solid var(--line-border); border-radius: 4px; padding: 5px; }
+.perspective-controls button { display: inline-flex; align-items: center; justify-content: center; min-width: 34px; padding: 7px 8px; border: 1px solid transparent; border-radius: 4px; background: transparent; color: var(--text-normal); cursor: pointer; font: inherit; font-size: 13px; }
+.perspective-controls button[aria-pressed="true"] { border-color: var(--state-selected); color: var(--state-selected); background: var(--selected-subtle); }
 /* The buttons stand in groups, one choice each, parted by a rule, so that which of a pair is on can be read (2026-10-30). */
 .perspective-group { display: inline-flex; gap: 4px; }
 /* A rule before a group only when a shown group stands before it: a group with nothing shown goes, and no rule stands alone. */
-.perspective-group:has(button:not([hidden])) ~ .perspective-group { margin-left: 4px; padding-left: 8px; border-left: 1px solid var(--border); }
+.perspective-group:has(button:not([hidden])) ~ .perspective-group { margin-left: 4px; padding-left: 8px; border-left: 1px solid var(--line-border); }
 .perspective-group:not(:has(button:not([hidden]))) { display: none; }
-.perspective-controls :is(button, select):focus-visible { outline: 2px solid var(--accent); }
+.perspective-controls :is(button, select):focus-visible { outline: 2px solid var(--state-selected); }
 /* The 3D button's cue, while the 2D picture draws connections against its left-to-right order (2026-11-15): amber, never
    the pressed blue or the focus ring; the label takes the amber, a soft glow stands around it, and many such connections
    deepen the glow and tint the face. One slow pulse as it lights or rises a strength, none under reduced motion. */
-.perspective-controls button.has-backward-wires { --backward-glow: 0 0 7px 1px #e9b86d5c; border-color: #e9b86d; color: #f2c98a; box-shadow: var(--backward-glow); }
-.perspective-controls button.has-backward-wires[data-backward="many"] { --backward-glow: 0 0 12px 3px #e9b86d8f; background: #e9b86d24; }
+.perspective-controls button.has-backward-wires { --backward-glow: 0 0 7px 1px rgba(var(--signal-cue-rgb), 0.360784); border-color: var(--signal-cue); color: var(--signal-cue-text); box-shadow: var(--backward-glow); }
+.perspective-controls button.has-backward-wires[data-backward="many"] { --backward-glow: 0 0 12px 3px rgba(var(--signal-cue-rgb), 0.560784); background: rgba(var(--signal-cue-rgb), 0.141176); }
 .perspective-controls button.has-backward-wires.backward-rising { animation: backward-rise 1.8s ease-in-out 1; }
-@keyframes backward-rise { 0%, 100% { box-shadow: var(--backward-glow); } 40% { box-shadow: 0 0 20px 7px #e9b86daa; } }
+@keyframes backward-rise { 0%, 100% { box-shadow: var(--backward-glow); } 40% { box-shadow: 0 0 20px 7px rgba(var(--signal-cue-rgb), 0.666667); } }
 @media (prefers-reduced-motion: reduce) { .perspective-controls button.has-backward-wires.backward-rising { animation: none; } }
 .perspective-controls button:disabled { cursor: default; opacity: .55; }
 
@@ -329,16 +329,16 @@ span.local-disclosure { cursor: default; }
 /* Only the panel and toggle are surfaces; the empty space beside the narrower toggle must not swallow map controls. */
 .pin-tray > * { pointer-events: auto; }
 .pin-tray[hidden], .pin-tray [hidden] { display: none; }
-.pin-tray button { color: var(--text); font: inherit; background: transparent; border: 1px solid transparent; border-radius: 4px; cursor: pointer; }
-.pin-tray button:hover { background: var(--accent-subtle); }
-.pin-tray button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.pin-tray button { color: var(--text-normal); font: inherit; background: transparent; border: 1px solid transparent; border-radius: 4px; cursor: pointer; }
+.pin-tray button:hover { background: var(--selected-subtle); }
+.pin-tray button:focus-visible { outline: 2px solid var(--state-selected); outline-offset: 1px; }
 .pin-tray button:disabled { cursor: default; opacity: .45; }
-.pin-tray .pin-tray-toggle { display: flex; gap: 7px; align-items: center; padding: 10px; border-color: var(--border); background: var(--bg-deep); }
-.pin-tray-panel { width: min(340px, calc(100vw - 40px)); max-height: min(60vh, 560px); overflow: auto; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-deep); box-shadow: 0 8px 24px #0006; }
-.pin-tray-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; position: sticky; top: 0; z-index: 1; background: var(--bg-deep); border-bottom: 1px solid var(--border); }
+.pin-tray .pin-tray-toggle { display: flex; gap: 7px; align-items: center; padding: 10px; border-color: var(--line-border); background: var(--ground-deep); }
+.pin-tray-panel { width: min(340px, calc(100vw - 40px)); max-height: min(60vh, 560px); overflow: auto; border: 1px solid var(--line-border); border-radius: 8px; background: var(--ground-deep); box-shadow: 0 8px 24px rgba(var(--ground-shade-rgb), 0.4); }
+.pin-tray-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; position: sticky; top: 0; z-index: 1; background: var(--ground-deep); border-bottom: 1px solid var(--line-border); }
 .pin-tray-header button { padding: 4px 6px; }
 .pin-tray-list { margin: 0; padding: 4px; list-style: none; }
-.pin-tray-row { display: flex; align-items: center; gap: 2px; padding: 3px; border-bottom: 1px solid var(--border); }
+.pin-tray-row { display: flex; align-items: center; gap: 2px; padding: 3px; border-bottom: 1px solid var(--line-border); }
 .pin-tray-row:last-child { border-bottom: 0; }
 .pin-tray-row button { padding: 6px; display: flex; align-items: center; justify-content: center; }
 .pin-tray-row svg { flex: 0 0 18px; }
@@ -349,12 +349,12 @@ span.local-disclosure { cursor: default; }
 .pin-tray-absent { color: var(--text-panel-subtle); font-style: italic; }
 .pin-tray-empty { padding: 0 12px 12px; margin: 0; color: var(--text-panel-subtle); }
 
-.directory-ancestry { position: fixed; inset: auto; margin: 0; width: min(290px, calc(100vw - 32px)); max-height: min(60vh, 460px); overflow: auto; padding: 12px; color: var(--text); border: 1px solid var(--border); border-radius: 9px; background: var(--bg-deep); box-shadow: 0 8px 24px #0008; font-size: 13px; }
+.directory-ancestry { position: fixed; inset: auto; margin: 0; width: min(290px, calc(100vw - 32px)); max-height: min(60vh, 460px); overflow: auto; padding: 12px; color: var(--text-normal); border: 1px solid var(--line-border); border-radius: 9px; background: var(--ground-deep); box-shadow: 0 8px 24px rgba(var(--ground-shade-rgb), 0.533333); font-size: 13px; }
 .directory-ancestry strong { display: block; margin-bottom: 10px; overflow-wrap: anywhere; }
 .directory-ancestry-stack { display: flex; flex-direction: column; gap: 4px; }
-.directory-ancestor { margin-left: calc(var(--ancestor-depth) * 8px); padding: 9px 12px; color: inherit; text-align: left; font: inherit; overflow-wrap: anywhere; border: 1px solid var(--border); border-radius: 7px 7px 3px 7px; background: transparent; cursor: pointer; }
-.directory-ancestor:hover, .directory-ancestor:focus-visible { border-color: var(--accent); outline: none; background: var(--accent-subtle); }
-.directory-ancestor-preview { position: absolute; pointer-events: none; z-index: 100; border: 1px solid var(--accent); border-radius: 12px; opacity: .5; }
+.directory-ancestor { margin-left: calc(var(--ancestor-depth) * 8px); padding: 9px 12px; color: inherit; text-align: left; font: inherit; overflow-wrap: anywhere; border: 1px solid var(--line-border); border-radius: 7px 7px 3px 7px; background: transparent; cursor: pointer; }
+.directory-ancestor:hover, .directory-ancestor:focus-visible { border-color: var(--state-selected); outline: none; background: var(--selected-subtle); }
+.directory-ancestor-preview { position: absolute; pointer-events: none; z-index: 100; border: 1px solid var(--state-selected); border-radius: 12px; opacity: .5; }
 .directory-ancestor-preview[hidden] { display: none; }
 @media (max-width: 850px) {
   .perspective-controls { bottom: 72px; }
@@ -369,7 +369,7 @@ span.local-disclosure { cursor: default; }
 /* The bounds reach beyond the shape, over a sibling's cards where the membranes step past one another, so the element lets the pointer through and its cards and the parts of its label's line take it back (the label's own box is the strip across the membrane, which stays the map's). */
 .local-directory-band > .local-column { pointer-events: auto; }
 .local-membrane { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
-.local-membrane-shape { fill: #ffffff03; stroke: var(--membrane-outline); stroke-width: 1px; stroke-linejoin: round; }
+.local-membrane-shape { fill: rgba(var(--ground-sheen-rgb), 0.011765); stroke: var(--line-membrane); stroke-width: 1px; stroke-linejoin: round; }
 /* A drawn directory's label is its handle (2026-11-15): one line, a button that is the disclosure chevron, the parent's
    path muted and the directory's own name in a file name's tone and weight, with what an encasing directory hides, then
    More and the ancestry control. The label's box is the strip the layout keeps above the cards (directory-handle.ts
@@ -396,7 +396,7 @@ span.local-disclosure { cursor: default; }
 .local-directory-caption { display: flex; flex-wrap: wrap; align-items: center; align-content: flex-start; flex: 0 1 auto; min-width: 0; height: calc(var(--dir-line, 15) * 1px); padding-block: var(--dir-clip); margin-block: calc(-1 * var(--dir-clip)); overflow: hidden; }
 .local-directory-caption > .local-directory-chevron { height: calc(var(--dir-line, 15) * 1px); margin-right: 4px; }
 .local-directory-parent { flex: 1 1 0; min-width: 0; max-width: max-content; overflow-x: clip; overflow-y: visible; text-overflow: ellipsis; direction: rtl; text-align: left; }
-.local-directory-leaf { flex: none; max-width: calc(100% - 16px); overflow-x: clip; overflow-y: visible; text-overflow: ellipsis; color: var(--card-file-name); font-weight: 600; }
+.local-directory-leaf { flex: none; max-width: calc(100% - 16px); overflow-x: clip; overflow-y: visible; text-overflow: ellipsis; color: var(--text-card-file-name); font-weight: 600; }
 /* The count is drawn where the line's room (--dir-room, in the map's units, over the held scale) holds what the name and
    the count need (--dir-need) beside the controls after them (--dir-controls: More and the ancestry control with their
    gaps, More alone from the far band out), with a unit to spare; otherwise it is not drawn, and the wrapping has already
@@ -407,21 +407,21 @@ span.local-disclosure { cursor: default; }
 .local-directory-controls { display: flex; flex: none; align-items: center; gap: 2px; }
 .local-directory-controls > button { display: inline-flex; flex: none; align-items: center; justify-content: center; box-sizing: border-box; width: 17px; height: 15px; margin: 0; padding: 0; border: 1px solid transparent; border-radius: 3px; background: transparent; color: inherit; cursor: pointer; }
 .local-directory-controls > button svg { width: 13px; height: 13px; }
-.local-directory-row > .local-directory-handle:hover, .local-directory-row > .local-directory-handle:hover .local-directory-leaf { color: var(--accent); }
-.local-directory-controls > button:hover { color: var(--accent); border-color: var(--accent); }
+.local-directory-row > .local-directory-handle:hover, .local-directory-row > .local-directory-handle:hover .local-directory-leaf { color: var(--state-selected); }
+.local-directory-controls > button:hover { color: var(--state-selected); border-color: var(--state-selected); }
 .local-directory-actions { display: inline-flex; vertical-align: middle; align-items: center; justify-content: center; padding: 2px; color: var(--text-panel-muted); background: transparent; border: 1px solid transparent; border-radius: 4px; cursor: pointer; }
-.local-directory-actions:hover { color: var(--accent); border-color: var(--accent); }
-.local-directory-handle:focus-visible, .local-directory-controls > button:focus-visible, .local-directory-actions:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.local-directory-actions:hover { color: var(--state-selected); border-color: var(--state-selected); }
+.local-directory-handle:focus-visible, .local-directory-controls > button:focus-visible, .local-directory-actions:focus-visible { outline: 2px solid var(--state-selected); outline-offset: 2px; }
 /* A closed box's handle is its name: the ring of the keyboard's focus is drawn around the whole box, which is what a press opens. */
 .local-directory-closed__name:focus-visible { outline: none; }
-.local-directory-closed:has(.local-directory-closed__name:focus-visible) { outline: 2px solid var(--accent); outline-offset: 3px; }
+.local-directory-closed:has(.local-directory-closed__name:focus-visible) { outline: 2px solid var(--state-selected); outline-offset: 3px; }
 /* A card's node-level hub is drawn only where a wire of the band shown ends on it (2026-11-06): a file-level reference
    at the closer bands, a gathered wire at the overview band; the wires' drawing marks them. */
 #map-container .symbol-anchor.hub:not(.hub-ends-wire) { visibility: hidden; }
 /* The legend's width row says what a gathered wire's width means, while the overview band draws them, and not otherwise. */
 #local-legend .legend-row--gathered { display: none; }
 body:has(#map-container[data-lod="overview"]) #local-legend .legend-row--gathered { display: flex; }
-#local-legend .legend-row--gathered .spatial-legend-sample { --legend-color: var(--wire-offers); opacity: var(--wire-opacity); }
+#local-legend .legend-row--gathered .spatial-legend-sample { --legend-color: var(--role-offers); opacity: var(--wire-opacity); }
 /* The legend's kinds row holds a mark for each colour a closed directory's cells are drawn in, and nothing, and so is
    not drawn, while no coloured cell is on screen (2026-11-16). Its samples are cells as the map draws them. */
 #local-legend-kinds:empty { display: none; }
@@ -441,11 +441,11 @@ body:has(#map-container[data-lod="overview"]) #local-legend .legend-row--gathere
 }
 :is([data-lod="far"], [data-lod="overview"]) .local-directory-ancestors { display: none; }
 /* A closed directory's whole box opens it; its name, after a disclosure chevron pointing right, is the handle that says so. */
-.local-directory-closed { box-sizing: border-box; width: 100%; min-width: 160px; position: relative; padding: 10px 12px; border: 1px solid var(--border); border-radius: 12px; background: #ffffff05; color: var(--text-panel-muted); cursor: pointer; box-shadow: 4px 4px 0 -1px var(--bg-deep, #15191f), 4px 4px 0 0 var(--border); }
-.local-directory-closed:hover { border-color: var(--accent); color: var(--text); }
-.local-directory-closed__name { display: flex; gap: 4px; align-items: flex-start; justify-content: flex-start; margin-right: 24px; font-size: 13px; font-weight: 600; text-align: left; color: var(--card-file-name); }
+.local-directory-closed { box-sizing: border-box; width: 100%; min-width: 160px; position: relative; padding: 10px 12px; border: 1px solid var(--line-border); border-radius: 12px; background: rgba(var(--ground-sheen-rgb), 0.019608); color: var(--text-panel-muted); cursor: pointer; box-shadow: 4px 4px 0 -1px var(--ground-deep), 4px 4px 0 0 var(--line-border); }
+.local-directory-closed:hover { border-color: var(--state-selected); color: var(--text-normal); }
+.local-directory-closed__name { display: flex; gap: 4px; align-items: flex-start; justify-content: flex-start; margin-right: 24px; font-size: 13px; font-weight: 600; text-align: left; color: var(--text-card-file-name); }
 .local-directory-closed__name > .local-directory-chevron { margin-top: 1.5px; color: var(--text-panel-muted); }
-.local-directory-closed:hover .local-directory-closed__name > .local-directory-chevron { color: var(--accent); }
+.local-directory-closed:hover .local-directory-closed__name > .local-directory-chevron { color: var(--state-selected); }
 .local-directory-closed__text { min-width: 0; overflow-wrap: break-word; }
 .local-directory-closed__count { margin-top: 4px; padding-left: 16px; font-size: 11px; }
 /* More stands on the name's line at the box's right, as on a file card (the owner's rule of 2026-11-07: a row is never
@@ -458,9 +458,9 @@ body:has(#map-container[data-lod="overview"]) #local-legend .legend-row--gathere
    Stack: the box is the top card of a stack, a file card's corners and fill, with one to three cards under it by how
    much it holds (closed-looks.ts's stackEdges), each a filled layer a shade darker than the one above it, with an edge as much fainter,
    edge, 4 px apart, so that the deepest stands 12 px out, inside the 16 px between items. */
-.local-directory-closed.local-closed--stack { border-radius: 6px; border-color: var(--node-border); background: var(--node-bg);
-    --layer-1: color-mix(in srgb, var(--node-bg) 82%, #000); --layer-2: color-mix(in srgb, var(--node-bg) 66%, #000); --layer-3: color-mix(in srgb, var(--node-bg) 52%, #000);
-    --edge-1: color-mix(in srgb, var(--node-border) 80%, var(--node-bg)); --edge-2: color-mix(in srgb, var(--node-border) 60%, var(--node-bg)); --edge-3: color-mix(in srgb, var(--node-border) 42%, var(--node-bg));
+.local-directory-closed.local-closed--stack { border-radius: 6px; border-color: var(--line-interactive); background: var(--ground-card);
+    --layer-1: color-mix(in srgb, var(--ground-card) 82%, var(--ground-shade)); --layer-2: color-mix(in srgb, var(--ground-card) 66%, var(--ground-shade)); --layer-3: color-mix(in srgb, var(--ground-card) 52%, var(--ground-shade));
+    --edge-1: color-mix(in srgb, var(--line-interactive) 80%, var(--ground-card)); --edge-2: color-mix(in srgb, var(--line-interactive) 60%, var(--ground-card)); --edge-3: color-mix(in srgb, var(--line-interactive) 42%, var(--ground-card));
     box-shadow: 4px 4px 0 -1px var(--layer-1), 4px 4px 0 0 var(--edge-1); }
 .local-directory-closed.local-closed--stack[data-edges="2"] { box-shadow: 4px 4px 0 -1px var(--layer-1), 4px 4px 0 0 var(--edge-1), 8px 8px 0 -1px var(--layer-2), 8px 8px 0 0 var(--edge-2); }
 .local-directory-closed.local-closed--stack[data-edges="3"] { box-shadow: 4px 4px 0 -1px var(--layer-1), 4px 4px 0 0 var(--edge-1), 8px 8px 0 -1px var(--layer-2), 8px 8px 0 0 var(--edge-2), 12px 12px 0 -1px var(--layer-3), 12px 12px 0 0 var(--edge-3); }
@@ -474,15 +474,15 @@ body:has(#map-container[data-lod="overview"]) #local-legend .legend-row--gathere
    by an outline of its own (card-factory.ts's drawTabs) with the skin's light clipped to it, the box's own border and
    background left out, its handle lifted into the tab and More standing after the name on it. The tab is the reading
    look's: in the far looks the folder's outline is plain (reading.css). */
-.local-directory-closed.local-closed--cells { border-color: #ffffff30; box-shadow: inset 0 1px 0 #ffffff12; background: radial-gradient(ellipse 90% 120% at 28% 12%, #ffffff14, #ffffff06 55%, #ffffff0c 100%); }
+.local-directory-closed.local-closed--cells { border-color: rgba(var(--ground-sheen-rgb), 0.188235); box-shadow: inset 0 1px 0 rgba(var(--ground-sheen-rgb), 0.070588); background: radial-gradient(ellipse 90% 120% at 28% 12%, rgba(var(--ground-sheen-rgb), 0.078431), rgba(var(--ground-sheen-rgb), 0.023529) 55%, rgba(var(--ground-sheen-rgb), 0.047059) 100%); }
 .local-directory-closed.local-closed-shape--round { border-radius: 24px; }
 .local-directory-closed.local-closed-shape--square { border-radius: 6px; }
 .local-directory-closed.local-closed-shape--tab, .local-directory-closed.local-closed-shape--tab:hover { border-color: transparent; border-radius: 10px; background: none; box-shadow: none; }
-.local-closed-shape--tab::before { content: ""; position: absolute; inset: -1px; pointer-events: none; background: radial-gradient(ellipse 90% 120% at 28% 12%, #ffffff14, #ffffff06 55%, #ffffff0c 100%); clip-path: var(--tab-clip-reading, none); }
+.local-closed-shape--tab::before { content: ""; position: absolute; inset: -1px; pointer-events: none; background: radial-gradient(ellipse 90% 120% at 28% 12%, rgba(var(--ground-sheen-rgb), 0.078431), rgba(var(--ground-sheen-rgb), 0.023529) 55%, rgba(var(--ground-sheen-rgb), 0.047059) 100%); clip-path: var(--tab-clip-reading, none); }
 .local-closed-outline { position: absolute; left: -1px; top: -1px; overflow: visible; pointer-events: none; }
-.local-closed-outline__look { display: none; fill: none; stroke: #ffffff30; stroke-width: 1px; }
+.local-closed-outline__look { display: none; fill: none; stroke: rgba(var(--ground-sheen-rgb), 0.188235); stroke-width: 1px; }
 .local-closed-outline__look[data-look="reading"] { display: inline; }
-.local-directory-closed:hover .local-closed-outline__look { stroke: #ffffff60; }
+.local-directory-closed:hover .local-closed-outline__look { stroke: rgba(var(--ground-sheen-rgb), 0.376471); }
 .local-closed-shape--tab .local-directory-closed__name { transform: translateY(-4px); }
 .local-closed-shape--tab .local-directory-actions { transform: translate(var(--tab-more-shift, 0px), -4px); }
 .local-closed--cells .local-directory-closed__count { color: transparent; }
@@ -490,12 +490,12 @@ body:has(#map-container[data-lod="overview"]) #local-legend .legend-row--gathere
 .local-closed-cells-held { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
 .local-closed-cells-held .local-cells-look { display: none; }
 :is(.local-closed-cells, .local-closed-cells-held) .local-cell { fill-opacity: .42; stroke-opacity: .75; stroke-width: 0.8px; }
-.local-closed-cells--grey :is(.local-closed-cells, .local-closed-cells-held) .local-cell { fill: #b9c1cc; fill-opacity: .42; stroke: #e4e9ef; stroke-opacity: .6; }
-:is(.local-closed-cells, .local-closed-cells-held) .local-cell-skin { fill: #ffffff10; stroke: #ffffff55; stroke-width: 0.8px; }
+.local-closed-cells--grey :is(.local-closed-cells, .local-closed-cells-held) .local-cell { fill: var(--kind-one-grey); fill-opacity: .42; stroke: var(--kind-one-grey-rim); stroke-opacity: .6; }
+:is(.local-closed-cells, .local-closed-cells-held) .local-cell-skin { fill: rgba(var(--ground-sheen-rgb), 0.062745); stroke: rgba(var(--ground-sheen-rgb), 0.333333); stroke-width: 0.8px; }
 /* A skin inside says its directory's name and what it holds on hover, and a cell its file's name: the reader's own
    words say what each is. A press on either is a press on the box. */
 :is(.local-closed-cells, .local-closed-cells-held) :is(.local-cell-nest, .local-cell--named) { pointer-events: auto; }
-.local-directory-closed.local-closed--cells:hover { border-color: #ffffff60; }
+.local-directory-closed.local-closed--cells:hover { border-color: rgba(var(--ground-sheen-rgb), 0.376471); }
 .local-directory-closed.local-closed-shape--tab:hover { border-color: transparent; }
 /* The placed layout: every membrane, card and lane stands where the placement put it, inside the element it belongs to. */
 .local-layout.local-placed { display: block; position: relative; }
@@ -528,15 +528,15 @@ body:has(#map-container[data-lod="overview"]) #local-legend .legend-row--gathere
    untransformed, and takes no pointer events. */
 .map-edges { position: absolute; z-index: 30; pointer-events: none; overflow: hidden; }
 /* The map ends above its persistent controls, so tall cards can be panned clear of the toolbar. */
-body.zoom-controls-active #view-map { height: calc(100% - 70px - var(--history-room)); border-bottom: 1px solid var(--border); }
+body.zoom-controls-active #view-map { height: calc(100% - 70px - var(--history-room)); border-bottom: 1px solid var(--line-border); }
 @media (max-width: 600px) {
   body.zoom-controls-active #view-map { height: calc(100% - 128px - var(--history-room)); }
 }
 .map-edge { position: absolute; opacity: 0; transition: opacity .25s ease; }
-.map-edge-above { left: 0; right: 0; top: 0; height: 56px; background: linear-gradient(to bottom, #000000a0, #00000000); }
-.map-edge-below { left: 0; right: 0; bottom: 0; height: 56px; background: linear-gradient(to top, #000000a0, #00000000); }
-.map-edge-left { top: 0; bottom: 0; left: 0; width: 48px; background: linear-gradient(to right, #000000a0, #00000000); }
-.map-edge-right { top: 0; bottom: 0; right: 0; width: 48px; background: linear-gradient(to left, #000000a0, #00000000); }
+.map-edge-above { left: 0; right: 0; top: 0; height: 56px; background: linear-gradient(to bottom, rgba(var(--ground-shade-rgb), 0.627451), transparent); }
+.map-edge-below { left: 0; right: 0; bottom: 0; height: 56px; background: linear-gradient(to top, rgba(var(--ground-shade-rgb), 0.627451), transparent); }
+.map-edge-left { top: 0; bottom: 0; left: 0; width: 48px; background: linear-gradient(to right, rgba(var(--ground-shade-rgb), 0.627451), transparent); }
+.map-edge-right { top: 0; bottom: 0; right: 0; width: 48px; background: linear-gradient(to left, rgba(var(--ground-shade-rgb), 0.627451), transparent); }
 .map-edges[data-above="true"] .map-edge-above, .map-edges[data-below="true"] .map-edge-below,
 .map-edges[data-left="true"] .map-edge-left, .map-edges[data-right="true"] .map-edge-right { opacity: 1; }
 
@@ -547,7 +547,7 @@ body.zoom-controls-active #view-map { height: calc(100% - 70px - var(--history-r
 .view-container.perspective-held { opacity: 1; transition: none; z-index: 104; }
 /* A transparent cover over the held source that takes the pointer while it is held. */
 .perspective-hold-cover { position: fixed; z-index: 104; pointer-events: auto; }
-.perspective-file-name { position: absolute; transform: translateX(-50%); color: var(--text); font-size: 13px; font-weight: 600; white-space: nowrap; padding: 4px 7px; border-radius: 4px; background: #15191fe8; }
+.perspective-file-name { position: absolute; transform: translateX(-50%); color: var(--text-normal); font-size: 13px; font-weight: 600; white-space: nowrap; padding: 4px 7px; border-radius: 4px; background: rgba(var(--scene-travelling-name-rgb), 0.909804); }
 
 /* The map's viewport is a compositor layer only while the camera moves: a pan or a zoom in motion is one transform of a
    rastered layer rather than a repaint of every card and wire on the main thread (2026-11-06, Turn 12), and at rest the

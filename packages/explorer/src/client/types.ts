@@ -1,3 +1,4 @@
+import type { PaletteName } from "./palette";
 import type { ReadingChoice } from "./reading-state";
 import type { PinSet } from "./views/pin-state";
 import type { ExplorerNodePayload } from "../shared/types";
@@ -221,6 +222,15 @@ export interface TuningConfig {
   localMap: LocalMapTuning;
   forceGraph: ForceGraphTuning;
   history: HistoryTuning;
+  appearance: AppearanceTuning;
+}
+
+/**
+ * How the page is drawn, the viewer's own (2026-11-16): the palette, by name. Saved, as every setting is, only when it
+ * differs from the default; not carried in a shared link.
+ */
+export interface AppearanceTuning {
+  palette: PaletteName;
 }
 
 /**

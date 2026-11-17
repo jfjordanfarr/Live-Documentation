@@ -7,41 +7,48 @@
   overflow: clip;
 }
 
+/* The World Map in its two forms, the white board and the dark one, each the palette's (client/palette.ts). A pressed
+   tool wears the light form's own wash, and the dark form's offering blue thinly; a board's words stand on a halo of the
+   light board, or of the dark page. */
 .world {
   position: absolute;
   inset: 0;
-  --w-bg: #e3e6eb;
-  --w-board: #ffffff;
-  --w-text: #0f141b;
-  --w-muted: #4b5563;
-  --w-faint: #8b95a5;
-  --w-green: #059669;
-  --w-blue: #0284c7;
-  --w-blue-subtle: #e0f2fe;
-  --w-warm: #c17f16;
-  --w-panel: #ffffff;
-  --w-line: #c3cad4;
-  --w-halo: rgba(255, 255, 255, 0.9);
-  --w-shadow: 0.26;
+  --w-bg: var(--world-light-page);
+  --w-board: var(--world-light-board);
+  --w-text: var(--world-light-text);
+  --w-muted: var(--world-light-muted);
+  --w-faint: var(--world-light-faint);
+  --w-uses: var(--world-light-uses);
+  --w-offers: var(--world-light-offers);
+  --w-pressed: var(--second-values-world-light-pressed);
+  --w-halo: rgba(var(--world-light-board-rgb), 0.9);
+  --w-warm: var(--world-light-warm);
+  --w-panel: var(--world-light-panel);
+  --w-line: var(--world-light-line);
+  --w-flow: var(--world-light-flow);
+  --w-shade: var(--world-light-shade);
+  --w-shade-rgb: var(--world-light-shade-rgb);
   background: var(--w-bg);
   color: var(--w-text);
   font: 13px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
 .world[data-theme="dark"] {
-  --w-bg: #0b0d11;
-  --w-board: #14171d;
-  --w-text: #e6ebf2;
-  --w-muted: #94a1b3;
-  --w-faint: #5f6d80;
-  --w-green: #34d399;
-  --w-blue: #38bdf8;
-  --w-blue-subtle: rgba(56, 189, 248, 0.16);
-  --w-warm: #e2b45f;
-  --w-panel: #161b23;
-  --w-line: #283040;
-  --w-halo: rgba(11, 13, 17, 0.8);
-  --w-shadow: 0.55;
+  --w-bg: var(--world-dark-page);
+  --w-board: var(--world-dark-board);
+  --w-text: var(--world-dark-text);
+  --w-muted: var(--world-dark-muted);
+  --w-faint: var(--world-dark-faint);
+  --w-uses: var(--world-dark-uses);
+  --w-offers: var(--world-dark-offers);
+  --w-pressed: rgba(var(--world-dark-offers-rgb), 0.16);
+  --w-halo: rgba(var(--world-dark-page-rgb), 0.8);
+  --w-warm: var(--world-dark-warm);
+  --w-panel: var(--world-dark-panel);
+  --w-line: var(--world-dark-line);
+  --w-flow: var(--world-dark-flow);
+  --w-shade: var(--world-dark-shade);
+  --w-shade-rgb: var(--world-dark-shade-rgb);
 }
 
 .world-svg {
@@ -93,7 +100,7 @@
 }
 
 .world .w-shadow {
-  fill: #000;
+  fill: var(--w-shade);
 }
 
 .world .w-road {
@@ -123,7 +130,7 @@
 
 .world .w-flow {
   fill: none;
-  stroke: #ffffff;
+  stroke: var(--w-flow);
   stroke-opacity: 0.5;
   stroke-width: 3;
   stroke-linecap: round;
@@ -187,11 +194,11 @@
 }
 
 .world .w-door.offers {
-  stroke: var(--w-blue);
+  stroke: var(--w-offers);
 }
 
 .world .w-door.uses {
-  stroke: var(--w-green);
+  stroke: var(--w-uses);
 }
 
 .world .w-door.ghost,
@@ -201,7 +208,7 @@
 
 .world .w-stub {
   fill: none;
-  stroke: var(--w-green);
+  stroke: var(--w-uses);
   stroke-opacity: 0.7;
   stroke-width: 1.5;
   stroke-dasharray: 4 4;
@@ -211,7 +218,7 @@
 
 /* A declared door nothing uses: its stub is blue, the side that offers. */
 .world .w-stub.offers {
-  stroke: var(--w-blue);
+  stroke: var(--w-offers);
 }
 
 .world .w-ghost-end {
@@ -264,7 +271,7 @@
 }
 
 .world .w-focus:focus-visible .w-focus-ring {
-  stroke: var(--w-blue);
+  stroke: var(--w-offers);
   stroke-width: 3;
   stroke-linejoin: round;
   vector-effect: non-scaling-stroke;
@@ -433,15 +440,15 @@
 }
 
 .world-tools button[aria-pressed="true"] {
-  border-color: var(--w-blue);
-  color: var(--w-blue);
-  background: var(--w-blue-subtle);
+  border-color: var(--w-offers);
+  color: var(--w-offers);
+  background: var(--w-pressed);
 }
 
 .world-tools button:focus-visible,
 .world-help-btn:focus-visible,
 .world-evidence:focus-visible {
-  outline: 2px solid var(--w-blue);
+  outline: 2px solid var(--w-offers);
   outline-offset: 1px;
 }
 
@@ -458,13 +465,13 @@
   font: 600 15px system-ui, sans-serif;
   cursor: pointer;
   z-index: 4;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 10px rgba(var(--w-shade-rgb), 0.12);
 }
 
 .world-help-btn:hover,
 .world-help-btn.on {
-  border-color: var(--w-blue);
-  color: var(--w-blue);
+  border-color: var(--w-offers);
+  color: var(--w-offers);
 }
 
 .world-help {
@@ -479,7 +486,7 @@
   background: var(--w-panel);
   border: 1px solid var(--w-line);
   border-radius: 8px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.22);
+  box-shadow: 0 12px 40px rgba(var(--w-shade-rgb), 0.22);
   font-size: 12px;
   line-height: 1.55;
   color: var(--w-muted);
@@ -534,8 +541,8 @@
 
 .world-help button {
   margin-top: 10px;
-  color: var(--w-blue);
-  border-color: var(--w-blue);
+  color: var(--w-offers);
+  border-color: var(--w-offers);
 }
 
 .world-tour {
@@ -550,7 +557,7 @@
   background: var(--w-panel);
   border: 1px solid var(--w-line);
   border-radius: 8px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.22);
+  box-shadow: 0 12px 40px rgba(var(--w-shade-rgb), 0.22);
   font-size: 13px;
   line-height: 1.5;
   color: var(--w-text);
@@ -575,8 +582,8 @@
 }
 
 .world-tour button.primary {
-  color: var(--w-blue);
-  border-color: var(--w-blue);
+  color: var(--w-offers);
+  border-color: var(--w-offers);
 }
 
 /* Its size includes its padding and border, so that a cap on its height is a cap on the whole panel */
@@ -587,7 +594,7 @@
   max-width: 466px;
   padding: 10px 12px;
   background: var(--w-panel);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 8px 30px rgba(var(--w-shade-rgb), 0.18);
   border: 1px solid var(--w-line);
   border-radius: 6px;
   font-size: 12px;
@@ -600,7 +607,7 @@
 /* Pinned, the panel stands in at most half the view's height and scrolls inside, so the map stays in sight beside it */
 .world-evidence.pinned {
   pointer-events: auto;
-  border-color: var(--w-blue);
+  border-color: var(--w-offers);
   border-left-width: 3px;
   max-height: 50%;
   overflow: auto;
@@ -638,7 +645,7 @@
 }
 
 .world-evidence details.files summary:hover {
-  color: var(--w-blue);
+  color: var(--w-offers);
 }
 
 .world-evidence a {
@@ -649,8 +656,8 @@
 }
 
 .world-evidence a:hover {
-  color: var(--w-blue);
-  text-decoration-color: var(--w-blue);
+  color: var(--w-offers);
+  text-decoration-color: var(--w-offers);
 }
 
 .world-evidence .list {
@@ -665,7 +672,7 @@
   display: inline-block;
   margin-top: 8px;
   font-weight: 600;
-  color: var(--w-blue);
+  color: var(--w-offers);
 }
 
 .world-evidence .close {
@@ -682,11 +689,11 @@
 
 .world-evidence .close:hover,
 .world-evidence .close:focus-visible {
-  color: var(--w-blue);
+  color: var(--w-offers);
 }
 
 .world-evidence .close:focus-visible {
-  outline: 2px solid var(--w-blue);
+  outline: 2px solid var(--w-offers);
 }
 
 .world-evidence .h {

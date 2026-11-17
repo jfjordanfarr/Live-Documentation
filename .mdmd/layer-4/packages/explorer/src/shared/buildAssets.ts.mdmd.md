@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/buildAssets.ts
-- Generated At: 2026-10-22T16:47:56.674Z
+- Generated At: 2026-11-16T20:45:35.218Z
 
 ## Authored
 ### Purpose
@@ -23,14 +23,14 @@ Build-time asset pipeline for the Live Docs Explorer. Bundles the client TypeScr
 ### Public Symbols
 #### `ExplorerAssets` {#symbol-explorerassets}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/shared/buildAssets.ts#L7)
+- Source: [source](../../../../../../packages/explorer/src/shared/buildAssets.ts#L9)
 
 ##### `ExplorerAssets` — Summary
 Paths and HTML template produced by the Explorer asset build step.
 
 #### `withExplorerAssets` {#symbol-withexplorerassets}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/shared/buildAssets.ts#L21)
+- Source: [source](../../../../../../packages/explorer/src/shared/buildAssets.ts#L23)
 - Parameters: `assets`: [`ExplorerAssets`](#symbol-explorerassets)
 
 ##### `withExplorerAssets` — Summary
@@ -44,6 +44,9 @@ building or consuming the assets succeeds or fails.
 - `esbuild` - `build`
 - `fs/promises`
 - `node:os`
+- [`palette.DEFAULT_PALETTE`](../client/palette.ts.mdmd.md#symbol-default_palette)
+- [`palette.PALETTES`](../client/palette.ts.mdmd.md#symbol-palettes)
+- [`palette.paletteStylesheet`](../client/palette.ts.mdmd.md#symbol-palettestylesheet)
 - `path`
 <!-- LIVE-DOC:END Dependencies -->
 

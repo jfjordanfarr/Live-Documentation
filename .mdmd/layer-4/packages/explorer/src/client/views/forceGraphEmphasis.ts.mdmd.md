@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphEmphasis.ts
-- Generated At: 2026-11-11T05:50:56.278Z
+- Generated At: 2026-11-16T20:45:31.027Z
 
 ## Authored
 ### Purpose
@@ -22,21 +22,21 @@ Since 2026-11-11 ([Turn 6 of the November 10 record](../../../../../../../AI-Age
 ### Public Symbols
 #### `glows` {#symbol-glows}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L30)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L31)
 
 ##### `glows` — Summary
 Whether the mode glows the changed.
 
 #### `dims` {#symbol-dims}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L32)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L33)
 
 ##### `dims` — Summary
 Whether the mode dims the unchanged.
 
 #### `emphasizedSphere` {#symbol-emphasizedsphere}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L45)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L39)
 - Parameters: `mode`: [`ChangeEmphasis`](../types.ts.mdmd.md#symbol-changeemphasis)
 
 ##### `emphasizedSphere` — Summary
@@ -45,7 +45,7 @@ dimmed where the mode dims. The result remains constant until the changed set, m
 
 #### `emphasizedWireAlpha` {#symbol-emphasizedwirealpha}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L53)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L45)
 - Parameters: `mode`: [`ChangeEmphasis`](../types.ts.mdmd.md#symbol-changeemphasis)
 
 ##### `emphasizedWireAlpha` — Summary
@@ -53,14 +53,14 @@ A white reference wire's alpha under the emphasis: a changed wire's raised towar
 
 #### `pairKey` {#symbol-pairkey}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L60)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L52)
 
 ##### `pairKey` — Summary
 The key of an undirected pair of files, the same whichever end is named first.
 
 #### `ShownUnit` {#symbol-shownunit}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L67)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L59)
 
 ##### `ShownUnit` — Summary
 A unit a body's skin shows within it, as the emphasis reads it: a file's dot or an inner bubble, by its id (a file's
@@ -69,14 +69,14 @@ whose files are drawn (`veiledUnits`).
 
 #### `BodyChanges (interface)` {#symbol-bodychanges-interface}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L75)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L67)
 
 ##### `BodyChanges (interface)` — Summary
 Where a body shows the step of the history displayed.
 
 #### `bodyChanges (function)` {#symbol-bodychanges-function}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L97)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L89)
 - Returns: [`BodyChanges`](#symbol-bodychanges-interface)
 - Parameters: `members`: `ReadonlySet`; `changed`: `Iterable`; `deleted`: `Iterable`
 
@@ -93,7 +93,7 @@ is bounded by the units and the changes, never by the files a veiled body holds.
 
 #### `deletionHomes` {#symbol-deletionhomes}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L142)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L134)
 - Parameters: `deleted`: `Iterable`; `homes`: `ReadonlyMap`
 
 ##### `deletionHomes` — Summary
@@ -104,7 +104,7 @@ file. A file no directory drawn holds is shown in none. By body, each body's fil
 
 #### `emphasizedUnits` {#symbol-emphasizedunits}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L162)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L154)
 - Returns: `U`[]
 - Parameters: `changes`: [`BodyChanges`](#symbol-bodychanges-interface); `mode`: [`ChangeEmphasis`](../types.ts.mdmd.md#symbol-changeemphasis)
 - Constraints: [`ShownUnit`](#symbol-shownunit)
@@ -116,7 +116,7 @@ share of its alpha unless it holds a change. Nothing is enlarged: the irrelevant
 
 #### `emphasizedSkin` {#symbol-emphasizedskin}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L169)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L161)
 - Parameters: `changes`: [`BodyChanges`](#symbol-bodychanges-interface); `mode`: [`ChangeEmphasis`](../types.ts.mdmd.md#symbol-changeemphasis)
 
 ##### `emphasizedSkin` — Summary
@@ -125,6 +125,8 @@ How a body's own skin carries the step: lit where the mode glows and the skin sh
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`palette.activePalette`](../palette.ts.mdmd.md#symbol-activepalette)
+- [`palette.rgba`](../palette.ts.mdmd.md#symbol-rgba)
 - [`types.ChangeEmphasis`](../types.ts.mdmd.md#symbol-changeemphasis) (type-only)
 - [`directory-bands.parentDirectory`](./localView/directory-bands.ts.mdmd.md#symbol-parentdirectory)
 <!-- LIVE-DOC:END Dependencies -->

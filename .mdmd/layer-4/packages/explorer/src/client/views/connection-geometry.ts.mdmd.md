@@ -4,12 +4,12 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/connection-geometry.ts
-- Generated At: 2026-11-04T18:23:37.867Z
+- Generated At: 2026-11-16T20:45:30.544Z
 
 ## Authored
 ### Purpose
 
-Pure-function SVG geometry for the Local Map: Bézier path computation, the French Corset's laces for a self-reference, gradient definitions, and rect/point primitives.
+Pure-function SVG geometry for the Local Map: Bézier path computation, the French Corset's laces for a self-reference, and rect/point primitives.
 
 ### Notes
 
@@ -17,7 +17,7 @@ Pure-function SVG geometry for the Local Map: Bézier path computation, the Fren
 - `computeBezierPath()` generates cubic Bézier SVG `d` strings with tunable control point distances.
 - `computeSelfLoopStubs()` draws a self-reference, a symbol referring to another on the same card, as two laces: at each pin a tapered polygon that leaves the pin outward, turns toward the partner's row and returns to be cut flush at the card's edge, so that it reads as one wire passing behind the card. Until 2026-10-06 each end was a straight tapered stub curling toward the partner; two such stubs leaving one pin toward partners above and below met as a chevron that read as an arrowhead, which the owner saw at graph.ts's DocLocation pin ([Turn 14](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-05.1.record.md#turn-14)) and answered with the loop-around shape ([Turn 15](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-05.1.record.md#turn-15)). The laces of one pin that turn the same way nest outward by `LACE_PITCH`, sharing their return, so a row referred to from several rows shows as many laces. The tests hold the geometry: the lace starts at the pin's edge at its full width, ends on the card's edge toward the partner, never reaches inside the card past the pin, nests by rank, and thins by the taper.
 - The laces' shape is three numbers and the taper (`reach`, how far beyond the card's edge the lace sweeps; `curlAmount`, how far along the edge it comes back; `baseWidth`; `taper`), the Local Map tuning's dials since 2026-10-06, so the owner can tune the shape by eye in the page ([Turn 13](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-13)). Since 2026-10-07 the lace is a hairpin of two quarter ellipses whose return is cut flush where the card's edge begins, the edges given by the caller as `LaceEdges`, after the owner's marked-up picture showed what "going behind" the card must look like ([Turn 14](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-14)); the return inset of the night before went with it, having nothing left to show. The hidden middle between the two laces, one cubic across the card shown through it on hover, was tried the same night and set aside by the owner's eye: it gave no impression of "behind" and its dashed strokes fought the rows' text. The pictures stay under `AI-Agent-Workspace/Screenshots/2026-10-06/`, the cut's under `AI-Agent-Workspace/Screenshots/2026-10-07/`.
-- `createConnectionGradient()` returns `GradientDef` for directional color transitions.
+- `createConnectionGradient()`, a third copy of the wire gradient that nothing called, was deleted in the [November 16 colour pass](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-16.1.record.md#turn-1); the wires' gradient is drawn in `localView/connections.ts` from the palette.
 - Geometric primitives (`Point`, `Rect`, `distance`, `rectCenter`, `mergeRects`) enable unit-testable arc fitting.
 - Geometry remains pure and unit-testable without DOM.
 - Promoted from `localView/connection-geometry.ts` to `views/connection-geometry.ts` during Step 0 of the Membrane Map implementation (Dev Day 81).
@@ -248,35 +248,6 @@ Computes the bounding box that contains all given points.
 
 ##### `mergeRects` — Summary
 Merges multiple rectangles into their bounding box.
-
-#### `GradientDef` {#symbol-gradientdef}
-- Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L440)
-
-##### `GradientDef` — Summary
-Linear gradient definition for path coloring.
-
-#### `createConnectionGradient` {#symbol-createconnectiongradient}
-- Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L462)
-- Returns: [`GradientDef`](#symbol-gradientdef)
-- Parameters: `source`: [`Point`](#symbol-point); `target`: [`Point`](#symbol-point)
-
-##### `createConnectionGradient` — Summary
-Creates a gradient definition for connection path coloring.
-
-The gradient flows from source (outbound/blue) to target (inbound/green),
-with breathing room at the endpoints.
-
-##### `createConnectionGradient` — Parameters
-- `id`: Unique ID for the gradient
-- `source`: Start point of the path
-- `sourceColor`: Color at the source end (default: sky-400 blue)
-- `target`: End point of the path
-- `targetColor`: Color at the target end (default: emerald-400 green)
-
-##### `createConnectionGradient` — Returns
-GradientDef ready for SVG rendering
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/dom.ts
-- Generated At: 2026-10-30T19:08:31.104Z
+- Generated At: 2026-11-16T20:45:26.677Z
 
 ## Authored
 ### Purpose
@@ -21,15 +21,24 @@ Provides required element lookups and coordinates the Explorer's active view, na
 ### Public Symbols
 #### `requireElement` {#symbol-requireelement}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/dom.ts#L5)
+- Source: [source](../../../../../../packages/explorer/src/client/dom.ts#L6)
 - Returns: `T`
 
 ##### `requireElement` — Summary
 Looks up an element by `id` and throws if not found.
 
+#### `applyPalette` {#symbol-applypalette}
+- Type: function
+- Source: [source](../../../../../../packages/explorer/src/client/dom.ts#L19)
+
+##### `applyPalette` — Summary
+Draws the page in a palette, by name (the default for a name no palette has): its colours become the custom properties
+every stylesheet reads, set on the page's root over the build's, and the palette the maps' scripts read. Called before
+any view draws; a palette chosen later reaches the scripts' colours as each view next draws.
+
 #### `setActiveView` {#symbol-setactiveview}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/dom.ts#L14)
+- Source: [source](../../../../../../packages/explorer/src/client/dom.ts#L25)
 - Parameters: `view`: [`ViewName`](./types.ts.mdmd.md#symbol-viewname); `perspective`: [`LocalMapPerspective`](./types.ts.mdmd.md#symbol-localmapperspective)
 
 ##### `setActiveView` — Summary
@@ -37,7 +46,7 @@ Activates the given view tab and its container while deactivating siblings.
 
 #### `setSeamedText` {#symbol-setseamedtext}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/dom.ts#L62)
+- Source: [source](../../../../../../packages/explorer/src/client/dom.ts#L73)
 
 ##### `setSeamedText` — Summary
 Write a name into an element with a soft break at each of its seams (`seamsOf`), so that a name wider than its box
@@ -46,6 +55,8 @@ wraps at a seam rather than at whatever letter the box ran out at; the element's
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`palette.choosePalette`](./palette.ts.mdmd.md#symbol-choosepalette)
+- [`palette.customProperties`](./palette.ts.mdmd.md#symbol-customproperties)
 - [`types.LocalMapPerspective`](./types.ts.mdmd.md#symbol-localmapperspective) (type-only)
 - [`types.ViewName`](./types.ts.mdmd.md#symbol-viewname) (type-only)
 - [`word-seams.seamsOf`](./views/localView/word-seams.ts.mdmd.md#symbol-seamsof)

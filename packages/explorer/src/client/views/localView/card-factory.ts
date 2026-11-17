@@ -17,6 +17,7 @@ import { NODE_HUB } from "./wire-gathering";
 import { countOf } from "./word-seams";
 import type { ExplorerNodePayload, ExplorerPublicSymbol, ExplorerTypeReference } from "../../../shared/types";
 import { setSeamedText } from "../../dom";
+import { MASK_FADE, MASK_KEEP } from "../../palette";
 import type { ClosedCellColour, ClosedDirectoryLook, ClosedDirectoryShape, SymbolOrder } from "../../types";
 import { spatialNodeStyle } from "../forceGraphAppearance";
 
@@ -521,8 +522,8 @@ function fieldMarkup(field: CellField, width: number, height: number, shape: Clo
     + `${skinPath(skin, shape, skinsMask)}<g${drop}>${skin.skins.map(nest).join("")}${cells(skin.cells)}</g></g>`;
   const parts = `${field.skins.map(nest).join("")}${cells(field.cells)}`;
   if (!field.veils.length) return `<g>${parts}</g>`;
-  const frame = `maskUnits="userSpaceOnUse" x="-4" y="-4" width="${(width + 8).toFixed(2)}" height="${(height + 8).toFixed(2)}"><rect x="-4" y="-4" width="${(width + 8).toFixed(2)}" height="${(height + 8).toFixed(2)}" fill="#fff"/>`;
-  const gradient = (veil: Rect, index: number): string => `<linearGradient id="${id}-${index}" x1="${veil.x.toFixed(2)}" x2="${(veil.x + veil.w).toFixed(2)}" y1="0" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#111"/></linearGradient>`;
+  const frame = `maskUnits="userSpaceOnUse" x="-4" y="-4" width="${(width + 8).toFixed(2)}" height="${(height + 8).toFixed(2)}"><rect x="-4" y="-4" width="${(width + 8).toFixed(2)}" height="${(height + 8).toFixed(2)}" fill="${MASK_KEEP}"/>`;
+  const gradient = (veil: Rect, index: number): string => `<linearGradient id="${id}-${index}" x1="${veil.x.toFixed(2)}" x2="${(veil.x + veil.w).toFixed(2)}" y1="0" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="${MASK_KEEP}"/><stop offset="1" stop-color="${MASK_FADE}"/></linearGradient>`;
   const fade = (veil: Rect, index: number): string => `<rect x="${veil.x.toFixed(2)}" y="${(veil.y - 3).toFixed(2)}" width="${(veil.w + 1).toFixed(2)}" height="${(veil.h + 6).toFixed(2)}" fill="url(#${id}-${index})"/>`;
   const indexed = field.veils.map((veil, index) => ({ veil, index }));
   return `<defs>${indexed.map(each => gradient(each.veil, each.index)).join("")}`

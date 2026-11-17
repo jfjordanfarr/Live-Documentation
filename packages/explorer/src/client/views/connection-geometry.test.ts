@@ -16,7 +16,6 @@ import {
   expandRect,
   boundingBoxFromPoints,
   mergeRects,
-  createConnectionGradient,
   DEFAULT_BEZIER_TUNING,
   DEFAULT_SELF_LOOP_PARAMS
 } from "./connection-geometry";
@@ -402,70 +401,6 @@ describe("connection-geometry", () => {
       const result = mergeRects([rect]);
 
       expect(result).toEqual(rect);
-    });
-  });
-
-  describe("createConnectionGradient", () => {
-    it("creates gradient with specified ID", () => {
-      const gradient = createConnectionGradient(
-        "test-gradient",
-        { x: 0, y: 0 },
-        { x: 100, y: 50 }
-      );
-
-      expect(gradient.id).toBe("test-gradient");
-    });
-
-    it("uses source and target as gradient endpoints", () => {
-      const source: Point = { x: 10, y: 20 };
-      const target: Point = { x: 100, y: 80 };
-
-      const gradient = createConnectionGradient("g", source, target);
-
-      expect(gradient.x1).toBe(10);
-      expect(gradient.y1).toBe(20);
-      expect(gradient.x2).toBe(100);
-      expect(gradient.y2).toBe(80);
-    });
-
-    it("creates four stops with breathing room", () => {
-      const gradient = createConnectionGradient(
-        "g",
-        { x: 0, y: 0 },
-        { x: 100, y: 0 }
-      );
-
-      expect(gradient.stops).toHaveLength(4);
-      expect(gradient.stops[0].offset).toBe("0%");
-      expect(gradient.stops[1].offset).toBe("10%");
-      expect(gradient.stops[2].offset).toBe("90%");
-      expect(gradient.stops[3].offset).toBe("100%");
-    });
-
-    it("uses default colors (blue to green)", () => {
-      const gradient = createConnectionGradient(
-        "g",
-        { x: 0, y: 0 },
-        { x: 100, y: 0 }
-      );
-
-      // Default source is sky-400 blue
-      expect(gradient.stops[0].color).toBe("#38bdf8");
-      // Default target is emerald-400 green
-      expect(gradient.stops[3].color).toBe("#34d399");
-    });
-
-    it("allows custom colors", () => {
-      const gradient = createConnectionGradient(
-        "g",
-        { x: 0, y: 0 },
-        { x: 100, y: 0 },
-        "#ff0000",
-        "#00ff00"
-      );
-
-      expect(gradient.stops[0].color).toBe("#ff0000");
-      expect(gradient.stops[3].color).toBe("#00ff00");
     });
   });
 

@@ -9,9 +9,9 @@ import { describe, expect, it } from "vitest";
  * a test held the World Map's modules to that import list; on 2026-11-12 no such test was found, and this is it.
  *
  * Each of the folder's modules may import its siblings, the engine's board, the board's join, the graph and the doc
- * reader, and three of the client's helpers that carry no facts of their own: HTML escaping, the address the page was
- * opened at, and the icon button. Anything else is a new way for the World Map to learn something, and is asked about
- * here first.
+ * reader, and four of the client's helpers that carry no facts of their own: HTML escaping, the address the page was
+ * opened at, the icon button, and the palette its colours are drawn in (2026-11-16). Anything else is a new way for
+ * the World Map to learn something, and is asked about here first.
  */
 const ALLOWED = new Set([
   "@live-documentation/engine/live-docs/board",
@@ -20,7 +20,8 @@ const ALLOWED = new Set([
   "@live-documentation/engine/live-docs/document",
   "../../graph-helpers",
   "../../persistence/url-state",
-  "../../panels/icon-button"
+  "../../panels/icon-button",
+  "../../palette"
 ]);
 
 const folder = __dirname;
@@ -41,7 +42,7 @@ describe("the World Map's imports", () => {
     expect(modules).toEqual(expect.arrayContaining(["controller.ts", "index.ts", "layout.ts", "model.ts", "projection.ts"]));
   });
 
-  it.each(modules)("%s imports only its siblings, the board, its join, the graph, the doc reader and three fact-free helpers", (file) => {
+  it.each(modules)("%s imports only its siblings, the board, its join, the graph, the doc reader and four fact-free helpers", (file) => {
     const strangers = importsOf(file).filter((name) => !isSibling(name) && !ALLOWED.has(name));
     expect(strangers, `${file} imports what the World Map may not read`).toEqual([]);
   });

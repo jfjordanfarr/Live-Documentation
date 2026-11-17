@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/perspectiveTransition.ts
-- Generated At: 2026-11-11T06:51:22.084Z
+- Generated At: 2026-11-16T20:45:34.629Z
 
 ## Authored
 ### Purpose
@@ -32,35 +32,35 @@ Since 2026-11-11 ([Turn 6 of the November 10 record](../../../../../../../AI-Age
 ### Public Symbols
 #### `SceneFile` {#symbol-scenefile}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L6)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L7)
 
 ##### `SceneFile` — Summary
 Screen-space correspondence between native cards and native force positions.
 
 #### `ForceScene` {#symbol-forcescene}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L18)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L19)
 
 ##### `ForceScene` — Summary
 A frozen projection of the native force scene, without introducing another layout.
 
 #### `LocalScene` {#symbol-localscene}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L54)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L56)
 
 ##### `LocalScene` — Summary
 Native reading geometry, captured before the view is hidden or its camera changes.
 
 #### `LocalCapture` {#symbol-localcapture}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L61)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L63)
 
 ##### `LocalCapture` — Summary
 A capture of the 2D map: its scene, complete once `copied` resolves, the cards' copies made a slice at a time.
 
 #### `captureLocalScene` {#symbol-capturelocalscene}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L85)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L87)
 - Returns: [`LocalCapture`](#symbol-localcapture)
 - Parameters: `frame`: `DOMRect`
 
@@ -73,7 +73,7 @@ the page for seconds).
 
 #### `animatePerspective` {#symbol-animateperspective}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L181)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L183)
 - Parameters: `scene`: [`LocalScene`](#symbol-localscene); `graph`: [`ForceScene`](#symbol-forcescene); `viewport`: `DOMRect`
 
 ##### `animatePerspective` — Summary
@@ -83,7 +83,7 @@ are not changed by this temporary, non-interactive drawing.
 
 #### `holdPerspective` {#symbol-holdperspective}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L372)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L377)
 
 ##### `holdPerspective` — Summary
 Hold the source picture while the destination renderer produces its first frame: the source surface itself stays
@@ -101,6 +101,8 @@ zoom controls kept below it, which would otherwise grow the held map into that r
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`palette.activePalette`](../palette.ts.mdmd.md#symbol-activepalette)
+- [`palette.mix`](../palette.ts.mdmd.md#symbol-mix)
 - [`forceGraphData.directoryNodeId`](./forceGraphData.ts.mdmd.md#symbol-directorynodeid)
 - [`perspectiveBodies.SceneBody`](./perspectiveBodies.ts.mdmd.md#symbol-scenebody) (type-only)
 - [`perspectiveGeometry.TransitionPoint`](./perspectiveGeometry.ts.mdmd.md#symbol-transitionpoint)

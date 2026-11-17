@@ -46,6 +46,7 @@ import { forceSimulation } from "d3-force-3d";
 import { Matrix4, PerspectiveCamera, Vector3 } from "three";
 
 import { spatialNodeStyle } from "./forceGraphAppearance";
+import { activePalette, rgba } from "../palette";
 import { SPATIAL_RING_OUTER_RADIUS, type SpatialWrapperUnit } from "./forceGraphBatches";
 import { buildingPhase, nextBuilding, nodePointer, NOT_BUILDING, type Building } from "./forceGraphBuilding";
 import { cornerPanelInsets, focusedCameraPosition, frameCameraSpheres, screenAnchorTranslation, wheelZoomCamera, type CameraPoint } from "./forceGraphCamera";
@@ -1822,22 +1823,22 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         return { visible, onPath: onPath && visible, dimmed: frontier(a) || frontier(b), changed: !!historyChanges?.changedPairs.has(pairKey(a, b)) };
       };
       forceGraphInstance?.linkColor((link: ForceGraphLink) => {
-        const { visible, onPath, dimmed, changed } = regard(link);
+        const { visible, onPath, dimmed, changed } = regard(link), { kind, scene } = activePalette();
         // Containment is the structure itself, drawn as a line; a reference revealed in the structure layout reads
         // against the tree rather than as the faint web of the connections layout. A path's wires are drawn at full
         // strength (2026-10-30), so that the route reads over the web around it. A wire to the frontier is dimmed with it.
-        if (link.kind === "containment") return `rgba(233, 152, 77, ${!visible ? 0.08 : dimmed ? 0.15 : 0.35})`;
-        if (link.kind === "related-doc") return `rgba(153, 102, 204, ${!visible ? 0.04 : dimmed ? 0.15 : 0.4})`;
+        if (link.kind === "containment") return rgba(kind.directory, !visible ? 0.08 : dimmed ? 0.15 : 0.35);
+        if (link.kind === "related-doc") return rgba(kind.document, !visible ? 0.04 : dimmed ? 0.15 : 0.4);
         // A document's citation of a file, in the documents' violet lightened toward white, drawn from the document.
-        if (link.kind === "cited-by") return `rgba(214, 178, 240, ${!visible ? 0.06 : dimmed ? 0.2 : 0.55})`;
-        if (onPath) return "rgba(255, 255, 255, 0.9)";
-        if (state.spatialLayout === "structure") return `rgba(255, 255, 255, ${visible ? 0.5 : 0})`;
+        if (link.kind === "cited-by") return rgba(scene.citedBy, !visible ? 0.06 : dimmed ? 0.2 : 0.55);
+        if (onPath) return rgba(scene.wire, 0.9);
+        if (state.spatialLayout === "structure") return rgba(scene.wire, visible ? 0.5 : 0);
         // Local wires at .3, the whole-root web at .16, the hovered file's at .5, a wire to the frontier at .12, so the few
         // wires a person is reading stand out. Every reference wire is white: the colour that ran along it from the file
         // that uses to the file that offers (2026-10-30) was withdrawn on 2026-10-31 at the owner's eye, and the hover's
         // words carry the direction. Under the history's emphasis a wire the step added or changed glows with its files.
         const alpha = !visible ? 0.025 : hovered ? 0.5 : dimmed ? 0.12 : rootOverview ? 0.16 : 0.3;
-        return `rgba(255, 255, 255, ${emphasis === "none" ? alpha : emphasizedWireAlpha(alpha, changed, emphasis).toFixed(3)})`;
+        return rgba(scene.wire, emphasis === "none" ? alpha : emphasizedWireAlpha(alpha, changed, emphasis).toFixed(3));
       });
       // A common scale for every wire; reference counts retain their relative weight while camera motion and spring
       // stretch change no base width, and a path's wires are twice as wide. Zoom resistance controls the projection.
@@ -1897,7 +1898,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       style: {
         radius: node => spatialNodeRadius(node, state.tuning.forceGraph),
         nodeColor: node => spatialNodeStyle(node.archetype).color,
-        linkColor: () => "rgba(255, 255, 255, 0.16)",
+        linkColor: () => rgba(activePalette().scene.wire, 0.16),
         linkWidth: () => state.tuning.forceGraph.linkWidth,
         linkVisible: () => true,
         arrowLength: link => link.kind === "related-doc" || link.kind === "cited-by" ? 4 : 0,
@@ -2125,7 +2126,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       if (!Number.isFinite(node.x) || shells.has(node.id)) return [];
       const body = bodyCarriers?.get(node.id);
       if (body) return [{ id: node.id, name: node.name, x: rect.left + body.x, y: rect.top + body.y,
-        radius: Math.max(0, ...body.boundary.map(point => point.y)), color: "#83b9d4", body }];
+        radius: Math.max(0, ...body.boundary.map(point => point.y)), color: activePalette().scene.skin, body }];
       if (cells.has(node.id)) return [];
       const point = new Vector3(node.x, node.y, node.z);
       const depth = point.clone().project(camera).z;
@@ -2135,7 +2136,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       const edge = point.clone().add(new Vector3(radius, 0, 0).applyQuaternion(camera.quaternion));
       const screenEdge = instance.graph2ScreenCoords(edge.x, edge.y, edge.z);
       return [{ id: node.id, name: node.name, x: rect.left + center.x, y: rect.top + center.y,
-        radius: Math.abs(screenEdge.x - center.x), color: typeof colorForNode === "function" ? colorForNode(node) : "#888888" }];
+        radius: Math.abs(screenEdge.x - center.x), color: typeof colorForNode === "function" ? colorForNode(node) : activePalette().kind.other }];
     });
     return { files, directoryRepresentatives: new Map(directoryRepresentatives), links: instance.captureLinks().map(link => ({ source: resolveLinkEndpoint(link.source as string | { id: string }), target: resolveLinkEndpoint(link.target as string | { id: string }) }))
       .filter(link => !shells.has(link.source) && !shells.has(link.target)) };

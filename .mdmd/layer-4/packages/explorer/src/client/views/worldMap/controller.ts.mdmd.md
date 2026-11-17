@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/worldMap/controller.ts
-- Generated At: 2026-11-13T18:08:55.111Z
+- Generated At: 2026-11-16T20:45:34.903Z
 
 ## Authored
 ### Purpose
@@ -36,28 +36,28 @@ The World Map, drawn. Everything that touches the DOM is here: the SVG the board
 ### Public Symbols
 #### `Hover` {#symbol-hover}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L122)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L123)
 
 ##### `Hover` — Summary
 What the pointer is on.
 
 #### `WorldMapOptions` {#symbol-worldmapoptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L128)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L129)
 
 ##### `WorldMapOptions` — Summary
 What the controller is given: where to draw, the board and its join, the graph, and the doors out of the view.
 
 #### `WorldMapController` {#symbol-worldmapcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L207)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L197)
 
 ##### `WorldMapController` — Summary
 Draws a board and answers the pointer.
 
 #### `WorldMapApi` {#symbol-worldmapapi}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L2165)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L2157)
 
 ##### `WorldMapApi` — Summary
 The handle a test or a screenshot script drives, at `window.__worldMap`.
@@ -71,6 +71,9 @@ The handle a test or a screenshot script drives, at `window.__worldMap`.
 - [`boardGraph.ServedDoor`](../../../../../engine/src/live-docs/boardGraph.ts.mdmd.md#symbol-serveddoor) (type-only)
 - [`graph.LiveDocGraph`](../../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`graph-helpers.escapeHtml`](../../graph-helpers.ts.mdmd.md#symbol-escapehtml)
+- [`palette.WorldForm`](../../palette.ts.mdmd.md#symbol-worldform)
+- [`palette.activePalette`](../../palette.ts.mdmd.md#symbol-activepalette)
+- [`palette.mix`](../../palette.ts.mdmd.md#symbol-mix)
 - [`icon-button.CLOSE_ICON`](../../panels/icon-button.ts.mdmd.md#symbol-close_icon)
 - [`icon-button.iconButton`](../../panels/icon-button.ts.mdmd.md#symbol-iconbutton)
 - [`url-state.parseInitialState`](../../persistence/url-state.ts.mdmd.md#symbol-parseinitialstate)
@@ -102,7 +105,6 @@ The handle a test or a screenshot script drives, at `window.__worldMap`.
 - [`layout.unitsToPixels`](./layout.ts.mdmd.md#symbol-unitstopixels)
 - [`layout.wallOf`](./layout.ts.mdmd.md#symbol-wallof)
 - [`layout.wallPoint`](./layout.ts.mdmd.md#symbol-wallpoint)
-- [`model.Tint`](./model.ts.mdmd.md#symbol-tint)
 - [`model.WorldModel`](./model.ts.mdmd.md#symbol-worldmodel)
 - [`model.WorldRoad`](./model.ts.mdmd.md#symbol-worldroad)
 - [`model.regionsOf`](./model.ts.mdmd.md#symbol-regionsof)

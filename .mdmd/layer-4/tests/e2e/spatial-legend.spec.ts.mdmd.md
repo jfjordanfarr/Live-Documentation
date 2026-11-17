@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/spatial-legend.spec.ts
-- Generated At: 2026-11-16T12:14:03.738Z
+- Generated At: 2026-11-16T20:47:29.221Z
 
 ## Authored
 ### Purpose
@@ -34,7 +34,7 @@ _No public symbols detected_
 - [`compressed-url-state.compressSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-compresssnapshot)
 - [`local-storage.PERSISTED_UI_KEY`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_key)
 - [`local-storage.PERSISTED_UI_VERSION`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_version)
-- [`forceGraphAppearance.SPATIAL_NODE_STYLES`](../../packages/explorer/src/client/views/forceGraphAppearance.ts.mdmd.md#symbol-spatial_node_styles)
+- [`forceGraphAppearance.spatialNodeStyles`](../../packages/explorer/src/client/views/forceGraphAppearance.ts.mdmd.md#symbol-spatialnodestyles)
 - [`forceGraphBatches.SpatialDrawEntry`](../../packages/explorer/src/client/views/forceGraphBatches.ts.mdmd.md#symbol-spatialdrawentry) (type-only)
 - [`design-audit.describeFaults`](./design-audit.ts.mdmd.md#symbol-describefaults)
 - [`design-audit.overlapsAmong`](./design-audit.ts.mdmd.md#symbol-overlapsamong)

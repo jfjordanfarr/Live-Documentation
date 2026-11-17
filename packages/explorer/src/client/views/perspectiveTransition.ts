@@ -1,3 +1,4 @@
+import { activePalette, mix } from "../palette";
 import { directoryNodeId } from "./forceGraphData";
 import type { SceneBody } from "./perspectiveBodies";
 import { directoryOpacity, gatherWire, outlineLength, pathOutline, perspectiveCorrespondences, perspectivePhases, polygonOutline, sampleOutline, type TransitionPoint } from "./perspectiveGeometry";
@@ -23,7 +24,8 @@ export interface ForceScene {
 }
 
 interface CardSnapshot {
-  file: SceneFile;
+  /** Where the card's title stands and its name: its token travels as the 3D file does, in the 3D file's colour. */
+  file: Omit<SceneFile, "color">;
   /** The card's drawing, for a card whose box meets the transition's frame; none for one outside it, never seen. */
   clone: HTMLElement | null;
   width: number;
@@ -97,7 +99,7 @@ export function captureLocalScene(root: HTMLElement, frame: DOMRect): LocalCaptu
     // moves), so a card outside the transition's frame is never seen and is not copied: its token travels all the same.
     const x = t.left + t.width / 2, y = t.top + t.height / 2;
     const snapshot: CardSnapshot = { file: { id: directory ? directoryNodeId(card.dataset.directory!) : card.dataset.id!,
-      name: title.textContent ?? "", x, y, radius: 5, color: directory ? "#e9984d" : "#0091ff" },
+      name: title.textContent ?? "", x, y, radius: 5 },
       clone: null, width: card.offsetWidth, height: card.offsetHeight, scale: rect.width / card.offsetWidth,
       offsetX: x - rect.left, offsetY: y - rect.top };
     // Under reduced motion there is no transition to draw a copy in: none is made, and the switch does not wait for any.
@@ -224,6 +226,9 @@ export function animatePerspective(
   layer.append(canvas);
   const context = canvas.getContext("2d")!;
   context.scale(devicePixelRatio, devicePixelRatio);
+  // The layer goes from the 2D map's ground to the 3D map's as the background phase runs; the wires fold in the roles'
+  // colours, and the files and skins in the 3D map's own.
+  const palette = activePalette();
   const projected = new Map(graph.files.map(file => [file.id, file]));
   const local = new Map(cards.map(card => [card.file.id, card]));
   const correspondences = perspectiveCorrespondences([...local.keys()], new Set(projected.keys()), graph.directoryRepresentatives);
@@ -261,7 +266,7 @@ export function animatePerspective(
     const progress = toGraph ? elapsed : 1 - elapsed;
     const { fold, move, background } = perspectivePhases(progress);
     for (const directory of directories) directory.clone.style.opacity = String(directoryOpacity(progress, directory.depth, levels));
-    layer.style.backgroundColor = `rgb(${Math.round(30 * (1 - background))}, ${Math.round(30 * (1 - background))}, ${Math.round(30 * (1 - background) + 12 * background)})`;
+    layer.style.backgroundColor = mix(palette.ground.surface, palette.scene.ground, background);
     const positions = new Map<string, SceneFile>();
     for (const file of graph.files) {
       const card = localForFile.get(file.id);
@@ -280,7 +285,7 @@ export function animatePerspective(
         context.lineWidth = wire.width * (1 - fold) + fold;
         const a = points[0], b = points[points.length - 1];
         const gradient = context.createLinearGradient(a.x - viewport.left, a.y - viewport.top, b.x - viewport.left, b.y - viewport.top);
-        gradient.addColorStop(0, "#38bdf8"); gradient.addColorStop(1, "#34d399");
+        gradient.addColorStop(0, palette.role.offers); gradient.addColorStop(1, palette.role.uses);
         context.strokeStyle = gradient;
         context.beginPath();
         points.forEach((point, i) => {
@@ -298,7 +303,7 @@ export function animatePerspective(
       const inside = !!localA && !!localB && pairs.has(pairKey(localA.file.id, localB.file.id));
       if (fold < 1 && inside) continue;
       context.globalAlpha = inside ? .32 : background * .16;
-      context.strokeStyle = inside ? "#38bdf8" : "#9baec5";
+      context.strokeStyle = inside ? palette.role.offers : palette.scene.unmatchedWire;
       context.beginPath(); context.moveTo(a.x - viewport.left, a.y - viewport.top); context.lineTo(b.x - viewport.left, b.y - viewport.top); context.stroke();
     }
     for (const file of positions.values()) {
@@ -322,7 +327,7 @@ export function animatePerspective(
         const cloud = body.look !== "skin";
         // A bubble or skin the step of the history lights folds white, as it was drawn (2026-11-11).
         const lit = primitive.unit ? !!primitive.unit.lit : !!body.lit;
-        context.fillStyle = context.strokeStyle = lit ? "#ffffff" : cloud ? "#8bacc7" : "#83b9d4";
+        context.fillStyle = context.strokeStyle = lit ? palette.history.changed : cloud ? palette.scene.cloud : palette.scene.skin;
         context.globalAlpha = presence * alpha * (cloud ? 0.27 : veiled ? 0.42 : inner ? 0.015 : 0.05);
         context.fill(primitive.path);
         context.globalAlpha = presence * alpha * (cloud ? body.hovered ? 0.6 : 0 : veiled ? 0.62 : inner ? 0.315 : 0.27);

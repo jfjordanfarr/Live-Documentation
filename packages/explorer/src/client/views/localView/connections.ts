@@ -9,6 +9,7 @@ import { OVERVIEW_FILES_ATTRIBUTE, OVERVIEW_LINES_ATTRIBUTE } from "./overview-f
 import { gatheredCount, gatheredDescription, gatheredWidth, gatherWires, NODE_HUB, ownWires, type GatheredWire } from "./wire-gathering";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
 import { returningConnections, type ReturningConnections } from "./returning-connections";
+import { activePalette } from "../../palette";
 
 /**
  * Ambient context required by {@link drawConnections} to measure DOM
@@ -274,8 +275,8 @@ function drawWire(
 
 /**
  * A wire's gradient, from the offering side's blue at `source` to the using side's green at `target`, in the overlay's
- * own coordinates: the first and last tenth pure, the transition between. The colours match the stylesheet's
- * `--outbound-color` and `--inbound-color`. Kept with the wire by its key; each drawing moves it to the wire's ends.
+ * own coordinates: the first and last tenth pure, the transition between. The colours are the palette's two roles, which
+ * the legend's sample reads too. Kept with the wire by its key; each drawing moves it to the wire's ends.
  */
 function gradientFor(layer: WireLayer, key: string, source: Point, target: Point, svgNamespace: string): string {
   let gradient = layer.gradients.get(key);
@@ -283,7 +284,8 @@ function gradientFor(layer: WireLayer, key: string, source: Point, target: Point
     gradient = document.createElementNS(svgNamespace, "linearGradient") as SVGLinearGradientElement;
     gradient.id = `wire-gradient-${layer.gradientsMade++}`;
     gradient.setAttribute("gradientUnits", "userSpaceOnUse");
-    for (const [offset, color] of [["0%", "#38bdf8"], ["10%", "#38bdf8"], ["90%", "#34d399"], ["100%", "#34d399"]] as const) {
+    const { offers, uses } = activePalette().role;
+    for (const [offset, color] of [["0%", offers], ["10%", offers], ["90%", uses], ["100%", uses]] as const) {
       const stop = document.createElementNS(svgNamespace, "stop");
       stop.setAttribute("offset", offset);
       stop.setAttribute("stop-color", color);
@@ -334,9 +336,8 @@ function drawLaces(
     provider: rank(`${edge.targetId}\0out\0${targetSymbol}\0${down ? "down" : "up"}`),
     consumer: rank(`${edge.sourceId}\0in\0${sourceSymbol}\0${down ? "up" : "down"}`)
   });
-  const PROVIDER_COLOR = "#38bdf8"; // sky-400, the offering side
-  const CONSUMER_COLOR = "#34d399"; // emerald-400, the using side
-  for (const [points, color, role] of [[laces.providerPoints, PROVIDER_COLOR, "provider"], [laces.consumerPoints, CONSUMER_COLOR, "consumer"]] as const) {
+  const { offers, uses } = activePalette().role;
+  for (const [points, color, role] of [[laces.providerPoints, offers, "provider"], [laces.consumerPoints, uses, "consumer"]] as const) {
     const polygon = elementFor(layer, seen, JSON.stringify([edgeKey(edge), role]), () => {
       const made = document.createElementNS(svgNamespace, "polygon") as SVGPolygonElement;
       // Inline, since the stylesheet's base rule gives every connection path no fill.

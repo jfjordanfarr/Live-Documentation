@@ -1,5 +1,6 @@
 import { requireElement } from "../dom";
-import { SPATIAL_NODE_STYLES, spatialNodeStyle } from "../views/forceGraphAppearance";
+import { activePalette } from "../palette";
+import { spatialNodeStyle, spatialNodeStyles } from "../views/forceGraphAppearance";
 import type { SpatialGraphData } from "../views/forceGraphData";
 
 /** What the 3D picture draws beyond its data: the key says only what is on screen (2026-10-30). */
@@ -36,30 +37,29 @@ export interface SpatialLegendRow {
   description: string;
 }
 
-const GREY = "#aeb8c6";
-
 /** The kinds whose colours are drawn, in the table's order. */
-const kindMarks = (drawn: ReadonlySet<SpatialLegendMark>): SpatialLegendMark[] => Object.values(SPATIAL_NODE_STYLES).filter(style => drawn.has(style));
+const kindMarks = (drawn: ReadonlySet<SpatialLegendMark>): SpatialLegendMark[] => Object.values(spatialNodeStyles()).filter(style => drawn.has(style));
 
 /** The rows of the key for a filtered graph at the moment shown, in reading order; pure, so that a test can read them. */
 export function spatialLegendRows(graph: SpatialGraphData, symbolScale: number, drawn: SpatialLegendDrawn): SpatialLegendRow[] {
   const styles = new Set(graph.nodes.map(node => spatialNodeStyle(node.archetype)));
   const kinds = new Set(graph.links.map(link => link.kind));
+  const { scene, kind } = activePalette(), grey = scene.keySample;
   const rows: SpatialLegendRow[] = styles.size ? [{ shape: "node", marks: kindMarks(styles), description: "Colour: the kind of file, directory or document a sphere stands for." }] : [];
   const row = (shape: SpatialLegendRow["shape"], label: string, color: string, description: string): void => { rows.push({ shape, marks: [{ label, color }], description }); };
   if (graph.nodes.length && symbolScale > 0) {
-    row("size", "Symbols", GREY, `Size: the number of public symbols a file offers.${styles.has(SPATIAL_NODE_STYLES.directory) ? " Folders are all one size." : ""}`);
+    row("size", "Symbols", grey, `Size: the number of public symbols a file offers.${styles.has(spatialNodeStyles().directory) ? " Folders are all one size." : ""}`);
   }
   const references = [...kinds].some(kind => kind !== "containment" && kind !== "related-doc" && kind !== "cited-by");
-  if (references && drawn.references) row("width", "References", "#ffffff", "Width: the number of references between two files.");
-  if (drawn.path) row("path", "Path", "#ffffff", "The path asked for, wide and bright. What is not on it is faded.");
-  if (drawn.frontier) row("frontier", "Beyond", GREY, "Dimmed: a hop beyond, or another group. Press one to see more.");
-  if (drawn.rings) row("ring", "More connected", GREY, "A ring: more is connected to this file than the picture shows. Press the file to see it.");
-  if (drawn.wrapped) row("wrapped", "Wrapped group", GREY, "A wrapped group: its files are not shown. Press it to open it.");
-  if (drawn.shells) row("shell", "Directory shell", GREY, "A shell: the files of a directory, drawn as one body. Press it to open it.");
-  if (kinds.has("containment")) row("wire", "Contains", SPATIAL_NODE_STYLES.directory.color, "A directory holds the file or the directory at the line's other end.");
-  if (kinds.has("related-doc")) row("arrow", "Cites", SPATIAL_NODE_STYLES["related-doc"].color, "From a file to a document that the file's own words cite.");
-  if (kinds.has("cited-by")) row("arrow", "Cited by", "#d6b2f0", "From a document to a file that the document's links name.");
+  if (references && drawn.references) row("width", "References", scene.wire, "Width: the number of references between two files.");
+  if (drawn.path) row("path", "Path", scene.wire, "The path asked for, wide and bright. What is not on it is faded.");
+  if (drawn.frontier) row("frontier", "Beyond", grey, "Dimmed: a hop beyond, or another group. Press one to see more.");
+  if (drawn.rings) row("ring", "More connected", grey, "A ring: more is connected to this file than the picture shows. Press the file to see it.");
+  if (drawn.wrapped) row("wrapped", "Wrapped group", grey, "A wrapped group: its files are not shown. Press it to open it.");
+  if (drawn.shells) row("shell", "Directory shell", grey, "A shell: the files of a directory, drawn as one body. Press it to open it.");
+  if (kinds.has("containment")) row("wire", "Contains", kind.directory, "A directory holds the file or the directory at the line's other end.");
+  if (kinds.has("related-doc")) row("arrow", "Cites", kind.document, "From a file to a document that the file's own words cite.");
+  if (kinds.has("cited-by")) row("arrow", "Cited by", scene.citedBy, "From a document to a file that the document's links name.");
   return rows;
 }
 
@@ -109,7 +109,7 @@ export function renderSpatialLegend(graph: SpatialGraphData, symbolScale: number
 export function watchLocalKinds(): void {
   const row = document.getElementById("local-legend-kinds"), map = document.getElementById("map-container");
   if (!row || !map) return;
-  const kindOf = new Map(Object.values(SPATIAL_NODE_STYLES).map(style => [style.color, style]));
+  const kindOf = new Map<string, SpatialLegendMark>(Object.values(spatialNodeStyles()).map(style => [style.color, style]));
   let pending = 0, shown = "";
   const draw = (): void => {
     pending = 0;

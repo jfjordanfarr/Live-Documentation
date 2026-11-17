@@ -2,6 +2,7 @@ import { BufferAttribute, BufferGeometry, Color, ConeGeometry, DoubleSide, Dynam
 import { LineMaterial } from "three/addons/lines/LineMaterial.js";
 import { LineSegmentsGeometry } from "three/addons/lines/LineSegmentsGeometry.js";
 
+import { activePalette, unitChannels } from "../palette";
 import { containedSpherePrimitive, ContainedSphereMaterial } from "./containedSphere";
 import type { Placed, SpatialNode } from "./forceGraphLayout";
 import { clipSpatialWireDepth, pickSpatialWire, spatialSizeScale } from "./forceGraphSizing";
@@ -105,7 +106,7 @@ export interface SpatialWrapperUnit {
 /** Pack documented nodes and wires straight into three instance buffers; camera changes never build scene proxies. */
 export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDrawLink<N>>(scene: Scene, style: SpatialDrawStyle<N, L>, renderer?: WebGLRenderer) {
   const alphaMaterial = (lit = true): MeshLambertMaterial | MeshBasicMaterial => {
-    const material = lit ? new MeshLambertMaterial({ color: 0xffffff, transparent: true }) : new MeshBasicMaterial({ color: 0xffffff, transparent: true, depthWrite: false });
+    const material = lit ? new MeshLambertMaterial({ transparent: true }) : new MeshBasicMaterial({ transparent: true, depthWrite: false });
     material.onBeforeCompile = shader => {
       shader.vertexShader = shader.vertexShader.replace("#include <common>", "#include <common>\nattribute float spatialOpacity;\nvarying float vSpatialOpacity;")
         .replace("#include <begin_vertex>", "#include <begin_vertex>\nvSpatialOpacity = spatialOpacity;");
@@ -148,7 +149,7 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
   // in it, and a sphere behind a wire stays behind it (2026-10-30; before, the spheres were drawn first and every
   // sphere, faded or not, cut the wires behind it).
   const nodes = make<N>("nodes", new SphereGeometry(1, 12, 12), alphaMaterial(), 10);
-  const lineSource = new MeshLambertMaterial({ color: 0xffffff, transparent: true, depthWrite: true });
+  const lineSource = new MeshLambertMaterial({ transparent: true, depthWrite: true });
   const lines = make<L>("links", new BufferGeometry().copy(new LineSegmentsGeometry()), screenWireMaterial(lineSource), 0);
   lineSource.dispose();
   const arrows = make<L>("arrows", new ConeGeometry(.25, 1, 8).translate(0, .5, 0).rotateX(Math.PI / 2), alphaMaterial(), 10);
@@ -438,7 +439,7 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
   const updateUnits = (): void => {
     type Drawn = { seed: string; id: string; kind: FrozenBodyUnit["kind"]; x: number; y: number; z: number; radius: number; color: Color; alpha: number; veil: number; lit: number; depth: number; parent?: string; level?: number };
     const files: Drawn[] = [], balloons: Drawn[] = [];
-    const white = colorOf("#ffffff").color;
+    const white = colorOf(activePalette().history.changed).color;
     const ranges = new Map(wrapperDrawn.ranges.map(range => [range.seed, range]));
     if (wrapperLook !== "off") for (const seed of wrapperSeeds) {
       // A body stands where its skin is drawn, or, before its hull is built, where its node stands.
@@ -458,7 +459,7 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
       for (const unit of units) {
         const x = centre.x + unit.x * scale, y = centre.y + unit.y * scale, z = centre.z + unit.z * scale;
         // A file draws as a sphere does under the zoom's resistance, never past the room it keeps inside its bubble.
-        const file = unit.kind === "file", tint = file ? colorOf(unit.color ?? "#ffffff") : null;
+        const file = unit.kind === "file", tint = file ? colorOf(unit.color ?? activePalette().history.changed) : null;
         (file ? files : balloons).push({ seed, id: unit.id, kind: unit.kind, x, y, z,
           radius: (file ? Math.min(unit.radius * sphereScale, unit.reach) : unit.radius) * scale, color: tint?.color ?? white,
           alpha: (file ? .75 * (tint?.alpha ?? 1) : unit.alpha ?? 1) * alpha, veil: unit.veiled ? 1 : 0, lit: !file && unit.lit ? 1 : 0,
@@ -660,6 +661,12 @@ function screenWireEndpointsInFrustum(start: Vector4, end: Vector4, width: numbe
   return true;
 }
 
+/** The palette's skin, its highlight, the cloud, a lit body's white and the hover's rim, as the wrappers' shader reads them. */
+function sceneColours(): Record<"uSkin" | "uSkinShine" | "uCloud" | "uChanged" | "uHoverRim", { value: Vector3 }> {
+  const { scene, history } = activePalette(), of = (colour: string): { value: Vector3 } => ({ value: new Vector3(...unitChannels(colour)) });
+  return { uSkin: of(scene.skin), uSkinShine: of(scene.skinShine), uCloud: of(scene.cloud), uChanged: of(history.changed), uHoverRim: of(scene.hoverRim) };
+}
+
 /**
  * The wrappers' one material (2026-11-05), its look chosen by uniforms. The skin is a translucent, lit surface, faint
  * face-on and denser toward its edges with a soft highlight, so that it reads as a balloon to pop; the cloud is the
@@ -672,7 +679,7 @@ function screenWireEndpointsInFrustum(start: Vector4, end: Vector4, width: numbe
 function wrapperShader(instanced: boolean): ShaderMaterial {
   return new ShaderMaterial({
     transparent: true, depthWrite: false, side: DoubleSide,
-    uniforms: { uLook: { value: 0 }, uRim: { value: 0 }, uHover: { value: -1 } },
+    uniforms: { uLook: { value: 0 }, uRim: { value: 0 }, uHover: { value: -1 }, ...sceneColours() },
     vertexShader: instanced ? `
       attribute float spatialOpacity;
       attribute float spatialVeil;
@@ -725,6 +732,11 @@ function wrapperShader(instanced: boolean): ShaderMaterial {
     fragmentShader: `
       uniform float uLook;
       uniform float uRim;
+      uniform vec3 uSkin;
+      uniform vec3 uSkinShine;
+      uniform vec3 uCloud;
+      uniform vec3 uChanged;
+      uniform vec3 uHoverRim;
       varying vec3 vNormal;
       varying vec3 vView;
       varying vec3 vLocal;
@@ -744,7 +756,7 @@ function wrapperShader(instanced: boolean): ShaderMaterial {
           vec3 light = normalize(vec3(-0.45, 0.75, 0.5));
           float diffuse = 0.55 + 0.45 * max(dot(n, light), 0.0);
           float shine = pow(max(dot(reflect(-light, n), v), 0.0), 40.0);
-          color = vec3(0.514, 0.725, 0.831) * diffuse + vec3(0.32, 0.44, 0.54) * shine;
+          color = uSkin * diffuse + uSkinShine * shine;
           // Faint face-on, so that the spheres within read through two and three skins (2026-11-06, second round); an
           // inner bubble is a rim alone, and a veiled one, whose files are not drawn, a milky fill that never reads as few.
           alpha = vInner > 0.5
@@ -754,7 +766,7 @@ function wrapperShader(instanced: boolean): ShaderMaterial {
           // The probe's mist over a group drawn 1.8 units across: the same two or so swells span every wrapper.
           vec3 p = vLocal * 0.9;
           float noise = sin(p.x * 7.0) * sin(p.y * 6.0) * sin(p.z * 5.0);
-          color = vec3(0.545, 0.675, 0.78);
+          color = uCloud;
           alpha = (0.62 + 0.38 * noise) * smoothstep(0.0, 0.45, facing) * 0.27;
         }
         // A bubble or skin the step of the history lights (2026-11-11) is white, as a changed sphere is, with a bright
@@ -764,11 +776,11 @@ function wrapperShader(instanced: boolean): ShaderMaterial {
         // an open one holds read through it. The edge's width is read from the facing's change across a pixel.
         float edge = 1.0 - smoothstep(0.0, 2.5 * fwidth(facing), facing);
         if (vLit > 0.0) {
-          color = mix(color, vec3(1.0), vLit);
+          color = mix(color, uChanged, vLit);
           alpha += 0.7 * vLit * edge;
         }
         float rim = uRim * vHover * pow(1.0 - facing, 3.0);
-        color = mix(color, vec3(0.86, 0.93, 1.0), rim);
+        color = mix(color, uHoverRim, rim);
         gl_FragColor = vec4(color, (alpha + 0.6 * rim) * vAlpha);
       }`
   });

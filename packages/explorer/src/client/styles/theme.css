@@ -1,108 +1,35 @@
+/* Every colour is the palette's (client/palette.ts), which the build writes as custom properties named for what each
+   colour means (palette.css, read first) and the page rewrites for a palette chosen by name. What is here is derived
+   from those meanings: a colour at the opacity it is drawn at, in one place. */
 :root {
-    /* ══════════════════════════════════════════════════════════════════════════
-       CORE PALETTE - Base colors that define the visual identity
-       ══════════════════════════════════════════════════════════════════════════ */
-    
-    /* Primary accent - the signature blue */
-    --accent: #0091ff;
-    --accent-hover: #0070d4;
-    --accent-subtle: rgba(0, 145, 255, 0.12);
-    --accent-muted: rgba(0, 145, 255, 0.08);
-    
-    /* Connection colors - outbound (blue) and inbound (green/teal) */
-    --color-outbound: rgba(0, 145, 255, 0.85);
-    --color-outbound-glow: rgba(0, 145, 255, 0.4);
-    --color-inbound: rgba(0, 211, 170, 0.85);
-    --color-inbound-glow: rgba(0, 211, 170, 0.4);
-    --connection-stroke: rgba(0, 189, 255, 0.45);
-    /* The 2D map's wires (2026-11-15). Their two ends' colours as the map's script draws them, a gradient from the
-       offering end's blue to the using end's green, and a wire's opacity, for the wires and for the legend, which
-       draws what the picture draws. No wire glows, and none is drawn above this: a hover fades the others. */
-    --wire-offers: #38bdf8;
-    --wire-uses: #34d399;
-    --wire-opacity: 0.7;
-    
-    /* Test-backed purple family */
-    --color-test: rgba(138, 92, 255, 1);
-    --color-test-bg: rgba(138, 92, 255, 0.18);
-    --color-test-border: rgba(138, 92, 255, 0.45);
-    --color-test-glow: rgba(138, 92, 255, 0.32);
-    --color-test-text: #e7e5ff;
-    --color-test-text-muted: #cbc8f8;
-    --color-test-label: #a59fe0;
-    
-    /* Semantic code colors - for syntax-like highlighting */
-    --color-path: #7dd3fc;           /* Cyan - file paths, links */
-    --color-path-hover: #a5f3fc;     /* Lighter cyan on hover */
-    --color-symbol: #f0abfc;         /* Pink - symbols, code references */
-    --color-symbol-muted: #e8a0ff;   /* Slightly muted pink for inline code */
-    --color-workspace: #c4b5fd;      /* Purple - workspace file links */
-    --color-error: #f88;             /* Red - errors */
-    
-    /* ══════════════════════════════════════════════════════════════════════════
-       BACKGROUNDS - Surface hierarchy from deepest to most elevated
-       ══════════════════════════════════════════════════════════════════════════ */
-    
-    --bg: #18181a;                   /* App background */
-    --bg-deep: #111;                 /* Deepest surfaces (header, footer) */
-    --bg-surface: #1e1e1e;           /* Main content area */
-    --bg-elevated: #1f1f22;          /* Sidebars, panels */
-    --bg-card: #232326;              /* Cards, nodes */
-    --bg-input: #333;                /* Input fields, buttons on hover */
-    --bg-overlay: rgba(0, 0, 0, 0.5); /* Modal backdrops */
-    
-    /* Glass/frosted surfaces */
-    --glass: rgba(34, 34, 37, 0.95);
-    --glass-panel: rgba(22, 22, 27, 0.92);
-    
-    /* Cluster backgrounds */
-    --cluster-bg: rgba(0, 145, 255, 0.035);
-    --cluster-border: rgba(0, 145, 255, 0.1);
-    
-    /* Aliases for compatibility */
-    --sidebar-bg: var(--bg-elevated);
-    --node-bg: var(--bg-card);
-    --node-hover: #2f2f33;
-    
-    /* ══════════════════════════════════════════════════════════════════════════
-       BORDERS - Subtle separators and interactive states
-       ══════════════════════════════════════════════════════════════════════════ */
-    
-    --border: #2f2f34;               /* Default borders */
-    --border-subtle: rgba(255, 255, 255, 0.06);  /* Very subtle separators */
-    --border-interactive: #3f3f46;   /* Interactive element borders */
-    --border-hover: #777;            /* Border on hover */
-    --node-border: var(--border-interactive);
-    --membrane-outline: #3d3d45;     /* An opened directory's outline on the 2D map: seen, a step under a card's border */
-    
-    /* ══════════════════════════════════════════════════════════════════════════
-       TEXT - Hierarchy from primary to disabled
-       ══════════════════════════════════════════════════════════════════════════ */
-    
-    --text: #e4e4e4;                 /* Primary text */
-    --text-active: #fff;             /* Emphasized/active text */
-    --text-secondary: #ccc;          /* Secondary text, paragraphs */
-    --text-muted: #888;              /* Muted labels, placeholders */
-    --text-disabled: #666;           /* Disabled state */
-    --text-subtle: #777;             /* Very subtle text */
-    
-    /* A 2D map card's text, in three tones (2026-11-15). The sizes are fixed by the fits, so the hierarchy is one of
-       value: names lead and the prose that describes them recedes. The path, counts and small type keep theirs. */
-    --card-file-name: #f2f2f2;       /* The file's name */
-    --card-symbol-name: #ededed;     /* A symbol's name */
-    --card-prose: #b0b0b0;           /* The Purpose and every description */
+    /* What is selected or pressed, as a fill under it. */
+    --selected-subtle: rgba(var(--state-selected-rgb), 0.12);
+    --selected-muted: rgba(var(--state-selected-rgb), 0.08);
 
-    /* Panel-specific text (legend, sidebars) */
-    --text-panel: #dee3f7;           /* Panel body text */
-    --text-panel-muted: #9ca3bc;     /* Panel labels, titles */
-    --text-panel-subtle: #6c7484;    /* Column labels, hints */
+    /* The 2D pins' glows; the offering one also glows round a pinned row or file. */
+    --offers-pin-glow: rgba(var(--second-values-offers-pin-rgb), 0.4);
+    --uses-pin-glow: rgba(var(--second-values-uses-pin-rgb), 0.4);
+
+    /* The 2D map's wires (2026-11-15) run from the offering end's blue to the using end's green at one opacity, for the
+       wires and for the legend, which draws what the picture draws. No wire glows, and none is drawn above this: a
+       hover fades the others. */
+    --wire-opacity: 0.7;
+
+    /* A 2D card whose file tests use: a violet halo, border and glow. */
+    --has-tests-wash: rgba(var(--has-tests-mark-rgb), 0.18);
+    --has-tests-border: rgba(var(--has-tests-mark-rgb), 0.45);
+    --has-tests-glow: rgba(var(--has-tests-mark-rgb), 0.32);
+
+    /* A very quiet separator, and the frosted panels. */
+    --line-subtle: rgba(var(--ground-sheen-rgb), 0.06);
+    --glass: rgba(var(--ground-glass-rgb), 0.95);
 }
 
 body {
     margin: 0;
     overflow: hidden;
-    background: var(--bg);
-    color: var(--text);
+    background: var(--ground-page);
+    color: var(--text-normal);
     font-family: "Segoe UI", sans-serif;
     display: flex;
     height: 100vh;

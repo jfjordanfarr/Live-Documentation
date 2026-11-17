@@ -18,6 +18,7 @@
  * Pure-function module: no DOM.
  */
 
+import { activePalette, rgba } from "../palette";
 import type { ChangeEmphasis } from "../types";
 import { parentDirectory } from "./localView/directory-bands";
 
@@ -31,22 +32,13 @@ export const glows = (mode: ChangeEmphasis): boolean => mode === "glow" || mode 
 /** Whether the mode dims the unchanged. */
 export const dims = (mode: ChangeEmphasis): boolean => mode === "dim" || mode === "both";
 
-/** A `#rrggbb` colour's channels. */
-function channelsOf(hex: string): [number, number, number] {
-  const match = /^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(hex);
-  if (!match) throw new Error(`A sphere's colour is #rrggbb, not ${JSON.stringify(hex)}.`);
-  return [parseInt(match[1], 16), parseInt(match[2], 16), parseInt(match[3], 16)];
-}
-
 /**
  * A sphere's colour for the displayed commit: changed spheres white and whole where the mode glows; unchanged ones
  * dimmed where the mode dims. The result remains constant until the changed set, mode or deliberate attention changes.
  */
 export function emphasizedSphere(hex: string, alpha: number, changed: boolean, mode: ChangeEmphasis): string {
-  const [r, g, b] = channelsOf(hex);
-  if (changed && glows(mode)) return "rgba(255, 255, 255, 1.000)";
-  if (!changed && dims(mode)) return `rgba(${r}, ${g}, ${b}, ${(alpha * (1 - DIM_LOSS)).toFixed(3)})`;
-  return `rgba(${r}, ${g}, ${b}, ${alpha.toFixed(3)})`;
+  const own = rgba(hex, (!changed && dims(mode) ? alpha * (1 - DIM_LOSS) : alpha).toFixed(3));
+  return changed && glows(mode) ? rgba(activePalette().history.changed, "1.000") : own;
 }
 
 /** A white reference wire's alpha under the emphasis: a changed wire's raised toward the glow, an unchanged one's reduced, where the mode says so. */
@@ -161,7 +153,7 @@ export function deletionHomes(deleted: Iterable<string>, homes: ReadonlyMap<stri
  */
 export function emphasizedUnits<U extends ShownUnit & { color?: string; lit?: boolean; alpha?: number }>(units: readonly U[], changes: BodyChanges, mode: ChangeEmphasis): U[] {
   return units.map(unit => unit.kind === "file"
-    ? { ...unit, color: emphasizedSphere(unit.color ?? "#ffffff", 1, changes.lit.has(unit.id), mode) }
+    ? { ...unit, color: emphasizedSphere(unit.color ?? activePalette().history.changed, 1, changes.lit.has(unit.id), mode) }
     : { ...unit, lit: glows(mode) && changes.lit.has(unit.id), alpha: dims(mode) && !changes.holding.has(unit.id) ? 1 - DIM_LOSS : 1 });
 }
 

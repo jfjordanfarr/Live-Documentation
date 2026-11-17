@@ -30,13 +30,13 @@
 .sources-header h1 {
   font-size: 28px;
   font-weight: 600;
-  color: var(--text-active);
+  color: var(--text-strong);
   margin: 0;
 }
 
 .sources-panel {
   background: var(--glass);
-  border: 1px solid var(--border);
+  border: 1px solid var(--line-border);
   border-radius: 12px;
   padding: 24px;
   margin-bottom: 24px;
@@ -48,7 +48,7 @@
   display: flex;
   align-items: baseline;
   gap: 10px;
-  color: var(--text-active);
+  color: var(--text-strong);
   margin: 0 0 12px 0;
 }
 
@@ -74,7 +74,7 @@
   align-items: baseline;
   gap: 16px;
   padding: 8px 0;
-  border-bottom: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.05));
+  border-bottom: 1px solid var(--line-subtle);
   font-size: 13px;
 }
 
@@ -83,12 +83,12 @@
 }
 
 .sources-row-label {
-  color: var(--text);
+  color: var(--text-normal);
   flex: none;
 }
 
 .sources-row-value {
-  color: var(--text-active);
+  color: var(--text-strong);
   font-weight: 500;
   text-align: right;
 }
@@ -110,8 +110,8 @@
   gap: 10px;
   padding: 5px 0;
   font-size: 13px;
-  color: var(--text);
-  border-bottom: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.04));
+  color: var(--text-normal);
+  border-bottom: 1px solid var(--line-subtle);
 }
 
 .sources-list li:last-child,
@@ -130,7 +130,7 @@
   margin: 0;
   font: inherit;
   font-weight: 500;
-  color: var(--accent);
+  color: var(--state-selected);
   cursor: pointer;
   text-decoration: none;
 }
@@ -176,7 +176,7 @@
 
 .sources-inline {
   font-size: 13px;
-  color: var(--text);
+  color: var(--text-normal);
   margin: 0;
   line-height: 1.6;
 }
@@ -189,12 +189,12 @@
 .sources-symbols code {
   font-family: "Fira Code", "Consolas", monospace;
   font-size: 12px;
-  color: var(--text-active);
+  color: var(--text-strong);
 }
 
 /* Groups that open and close */
 .sources-group {
-  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.06));
+  border: 1px solid var(--line-subtle);
   border-radius: 8px;
   margin-bottom: 8px;
   padding: 0 12px;
@@ -207,7 +207,7 @@
   padding: 8px 0;
   cursor: pointer;
   font-size: 13px;
-  color: var(--text);
+  color: var(--text-normal);
   list-style: none;
 }
 
@@ -228,7 +228,7 @@
 }
 
 .sources-group[open] > summary {
-  border-bottom: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.06));
+  border-bottom: 1px solid var(--line-subtle);
   margin-bottom: 4px;
 }
 
@@ -247,7 +247,7 @@
 
 .sources-directory-name {
   font-weight: 500;
-  color: var(--text-active);
+  color: var(--text-strong);
 }
 
 .sources-empty {
@@ -284,7 +284,7 @@
 .export-label {
   font-size: 13px;
   font-weight: 500;
-  color: var(--text);
+  color: var(--text-normal);
   min-width: 80px;
 }
 
@@ -293,27 +293,27 @@
   max-width: 300px;
   padding: 8px 12px;
   font-size: 13px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.1));
+  background: rgba(var(--ground-sheen-rgb), 0.05);
+  border: 1px solid var(--line-subtle);
   border-radius: 6px;
-  color: var(--text);
+  color: var(--text-normal);
   cursor: pointer;
   transition: border-color 0.15s ease, background 0.15s ease;
 }
 
 .export-select:hover {
-  border-color: var(--accent);
-  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--state-selected);
+  background: rgba(var(--ground-sheen-rgb), 0.08);
 }
 
 .export-select:focus {
   outline: none;
-  border-color: var(--accent);
+  border-color: var(--state-selected);
 }
 
 .export-select option {
-  background: #1e1e1e;
-  color: var(--text);
+  background: var(--ground-surface);
+  color: var(--text-normal);
 }
 
 .export-select option:disabled {
@@ -331,15 +331,15 @@
   gap: 6px;
   cursor: pointer;
   font-size: 13px;
-  color: var(--text);
+  color: var(--text-normal);
 }
 
 .export-format-option:hover {
-  color: var(--accent);
+  color: var(--state-selected);
 }
 
 .export-format-option input[type="radio"] {
-  accent-color: var(--accent);
+  accent-color: var(--state-selected);
   cursor: pointer;
 }
 
@@ -358,9 +358,9 @@
 .bundled-tree-container {
   max-height: 400px;
   overflow-y: auto;
-  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--line-subtle);
   border-radius: 8px;
-  background: rgba(0, 0, 0, 0.15);
+  background: rgba(var(--ground-shade-rgb), 0.15);
   padding: 8px 0;
 }
 
@@ -374,13 +374,13 @@
   gap: 6px;
   padding: 6px 12px;
   cursor: pointer;
-  color: var(--text);
+  color: var(--text-normal);
   font-size: 13px;
   transition: background 0.15s ease;
 }
 
 .bundled-tree-folder-header:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(var(--ground-sheen-rgb), 0.05);
 }
 
 .bundled-tree-toggle {
@@ -404,14 +404,14 @@
   padding: 6px 12px;
   padding-left: calc(12px + 20px);
   cursor: pointer;
-  color: var(--text);
+  color: var(--text-normal);
   font-size: 13px;
   transition: background 0.15s ease, color 0.15s ease;
 }
 
 .bundled-tree-file:hover {
-  background: rgba(0, 200, 150, 0.1);
-  color: var(--accent);
+  background: rgba(var(--second-values-sources-hover-rgb), 0.1);
+  color: var(--state-selected);
 }
 
 /* Bundled Doc Path Indicator (in detail panel) */
@@ -421,9 +421,9 @@
   gap: 12px;
   margin-bottom: 16px;
   padding: 12px;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(var(--ground-shade-rgb), 0.2);
   border-radius: 8px;
-  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--line-subtle);
 }
 
 .bundled-doc-path {
@@ -447,7 +447,7 @@
 .sources-reach-label {
   font-size: 13px;
   font-weight: 500;
-  color: var(--text);
+  color: var(--text-normal);
   flex: none;
 }
 
@@ -464,7 +464,7 @@
 .sources-reach-status,
 .sources-status {
   font-size: 13px;
-  color: var(--text);
+  color: var(--text-normal);
   margin: 0 0 12px 0;
 }
 
@@ -497,9 +497,9 @@
 .sources-declare-line {
   font-family: "Fira Code", "Consolas", monospace;
   font-size: 12px;
-  color: var(--text-active);
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.06));
+  color: var(--text-strong);
+  background: rgba(var(--ground-shade-rgb), 0.2);
+  border: 1px solid var(--line-subtle);
   border-radius: 6px;
   padding: 6px 10px;
   user-select: all;
@@ -521,9 +521,9 @@
 .sources-command {
   font-family: "Fira Code", "Consolas", monospace;
   font-size: 12px;
-  color: var(--text-active);
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.06));
+  color: var(--text-strong);
+  background: rgba(var(--ground-shade-rgb), 0.2);
+  border: 1px solid var(--line-subtle);
   border-radius: 6px;
   padding: 2px 8px;
   user-select: all;

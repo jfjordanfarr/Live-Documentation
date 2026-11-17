@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/explorer/tsconfig.json
 - Entry: tooling
-- Generated At: 2026-10-16T00:58:45.423Z
+- Generated At: 2026-11-16T20:45:35.469Z
 
 ## Authored
 ### Purpose
@@ -29,6 +29,9 @@ The TypeScript project of the Explorer's builder and server-side code (the brows
 #### `compilerOptions:outDir` {#symbol-compileroptionsoutdir}
 - Type: key
 
+#### `files` {#symbol-files}
+- Type: key
+
 #### `include` {#symbol-include}
 - Type: key
 
@@ -41,5 +44,6 @@ The TypeScript project of the Explorer's builder and server-side code (the brows
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`palette`](./src/client/palette.ts.mdmd.md)
 - [`tsconfig.base`](../../tsconfig.base.json.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

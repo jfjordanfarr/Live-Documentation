@@ -42,7 +42,7 @@ import {
   type ScreenBox,
   type Wall
 } from "./layout";
-import { regionsOf, type Tint, type WorldModel, type WorldRoad } from "./model";
+import { regionsOf, type WorldModel, type WorldRoad } from "./model";
 import {
   MIN_ELEVATION,
   REST_ELEVATION,
@@ -70,6 +70,7 @@ import {
   type Screen
 } from "./projection";
 import { escapeHtml } from "../../graph-helpers";
+import { activePalette, mix, type WorldForm } from "../../palette";
 import { CLOSE_ICON, iconButton } from "../../panels/icon-button";
 import { parseInitialState } from "../../persistence/url-state";
 
@@ -179,19 +180,8 @@ interface Drag {
   origin: Point2;
 }
 
-const TINT_COLOURS: Record<Tint, { light: string; dark: string }> = {
-  blue:   { light: "hsl(212 68% 92%)", dark: "hsl(214 32% 13%)" },
-  orange: { light: "hsl(30 72% 91%)",  dark: "hsl(30 12% 13%)" },
-  green:  { light: "hsl(150 45% 90%)", dark: "hsl(150 18% 12%)" },
-  grey:   { light: "hsl(215 12% 91%)", dark: "hsl(215 8% 14%)" },
-  violet: { light: "hsl(262 55% 93%)", dark: "hsl(262 20% 14%)" },
-  rose:   { light: "hsl(345 60% 93%)", dark: "hsl(345 18% 14%)" }
-};
-
-const THEMES = {
-  light: { faceLight: "#ffffff", faceDark: "#98a2b1", faceStroke: "#505c6b", tankStroke: "#505c6b", shadow: 0.26 },
-  dark:  { faceLight: "#4a5468", faceDark: "#1f2530", faceStroke: "#0b0d11", tankStroke: "#6b7a90", shadow: 0.55 }
-};
+/** How dark a piece's footprint is on each board: its colour is the palette's, its strength the board's. */
+const SHADOW_STRENGTH = { light: 0.26, dark: 0.55 } as const;
 
 /** How much of a face an imagined thing keeps: enough to catch the pointer, too little to read as a solid. */
 const HOLLOW = 0.08;
@@ -494,8 +484,9 @@ export class WorldMapController {
     }
   }
 
-  private themeColours(): (typeof THEMES)["light"] {
-    return THEMES[this.theme];
+  /** The board's form of the palette, light or dark. */
+  private themeColours(): WorldForm {
+    return activePalette().world[this.theme];
   }
 
   private drawGround(regionRects: Map<string, Rect>): void {
@@ -507,7 +498,7 @@ export class WorldMapController {
       if (!rect) {
         continue;
       }
-      const colour = TINT_COLOURS[region.tint][this.theme];
+      const colour = this.themeColours().tints[region.tint];
       const polygon = svgElement("polygon", { class: "w-region", "data-region": region.name, points: corners(rect).map(([x, y]) => this.P(x, y)).join(" "), fill: colour }, ground);
       if (region.depth > 0) {
         polygon.setAttribute("fill-opacity", "0.85");
@@ -535,14 +526,14 @@ export class WorldMapController {
     // An imagined thing is hollow: its edges dashed, its faces all but unfilled, its shadow faint. A promise and a fact are not the same solid.
     const imagined = this.model.pieces.find((piece) => piece.name === placed.name)?.imagined === true;
     const footprint = placed.form === "tank" ? ring(placed.cx, placed.cy, placed.r, 0, 24).map((p) => [p[0], p[1]] as Point2) : corners({ x: placed.x, y: placed.y, w: placed.w, d: placed.d });
-    svgElement("polygon", { class: "w-shadow", filter: "url(#world-blur)", "fill-opacity": colours.shadow * (placed.z0 > FLOAT ? 0.6 : 1) * (imagined ? 0.35 : 1), points: footprint.map(([x, y]) => this.P(x + 6, y + 6, 0)).join(" ") }, this.layers.shadows);
+    svgElement("polygon", { class: "w-shadow", filter: "url(#world-blur)", "fill-opacity": SHADOW_STRENGTH[this.theme] * (placed.z0 > FLOAT ? 0.6 : 1) * (imagined ? 0.35 : 1), points: footprint.map(([x, y]) => this.P(x + 6, y + 6, 0)).join(" ") }, this.layers.shadows);
     const group = svgElement("g", { class: `w-piece${imagined ? " imagined" : ""}`, "data-piece": placed.name }, this.layers.blocks);
     if (placed.form === "tank") {
       this.drawTank(group, placed, imagined);
       return;
     }
     for (const face of cuboidFaces(this.camera, this.pivot, placed)) {
-      svgElement("polygon", { class: `w-face${imagined ? " imagined" : ""}`, points: face.points.map((p) => this.P(p[0], p[1], p[2])).join(" "), fill: this.faceFill(shade(this.camera, face.normal)), "fill-opacity": imagined ? HOLLOW : 1, stroke: colours.faceStroke, "stroke-dasharray": imagined ? "5 4" : "" }, group);
+      svgElement("polygon", { class: `w-face${imagined ? " imagined" : ""}`, points: face.points.map((p) => this.P(p[0], p[1], p[2])).join(" "), fill: this.faceFill(shade(this.camera, face.normal)), "fill-opacity": imagined ? HOLLOW : 1, stroke: colours.faceEdge, "stroke-dasharray": imagined ? "5 4" : "" }, group);
     }
   }
 
@@ -559,8 +550,8 @@ export class WorldMapController {
     }
     const side = [...ordered.map((i) => bottom[i]), ...ordered.slice().reverse().map((i) => top[i])];
     const colours = this.themeColours();
-    svgElement("polygon", { class: `w-face${imagined ? " imagined" : ""}`, points: side.map((p) => this.P(p[0], p[1], p[2])).join(" "), fill: this.faceFill(0.55), "fill-opacity": imagined ? HOLLOW : 1, "stroke-dasharray": "4 3", stroke: colours.tankStroke }, group);
-    svgElement("polygon", { class: `w-face${imagined ? " imagined" : ""}`, points: top.map((p) => this.P(p[0], p[1], p[2])).join(" "), fill: this.faceFill(0.9), "fill-opacity": imagined ? HOLLOW : 1, "stroke-dasharray": "4 3", stroke: colours.tankStroke }, group);
+    svgElement("polygon", { class: `w-face${imagined ? " imagined" : ""}`, points: side.map((p) => this.P(p[0], p[1], p[2])).join(" "), fill: this.faceFill(0.55), "fill-opacity": imagined ? HOLLOW : 1, "stroke-dasharray": "4 3", stroke: colours.drumEdge }, group);
+    svgElement("polygon", { class: `w-face${imagined ? " imagined" : ""}`, points: top.map((p) => this.P(p[0], p[1], p[2])).join(" "), fill: this.faceFill(0.9), "fill-opacity": imagined ? HOLLOW : 1, "stroke-dasharray": "4 3", stroke: colours.drumEdge }, group);
   }
 
   private faceFill(value: number): string {
@@ -642,7 +633,8 @@ export class WorldMapController {
 
   private gradient(id: string, from: Point2, to: Point2): string {
     const gradient = svgElement("linearGradient", { id, gradientUnits: "userSpaceOnUse", x1: from[0], y1: from[1], x2: to[0], y2: to[1] }, this.defs);
-    for (const [offset, colour] of [[0, "#38bdf8"], [0.1, "#38bdf8"], [0.9, "#34d399"], [1, "#34d399"]] as Array<[number, string]>) {
+    const { offers, uses } = activePalette().role;
+    for (const [offset, colour] of [[0, offers], [0.1, offers], [0.9, uses], [1, uses]] as Array<[number, string]>) {
       svgElement("stop", { offset, "stop-color": colour }, gradient);
     }
     return `url(#${id})`;
@@ -2016,7 +2008,7 @@ export class WorldMapController {
   private writeHelp(): void {
     const wanting = this.model.issues.length ? `<h4>Wanting</h4><p>What the join found wanting on this board, as <b>live-docs:board</b> prints it.</p><ul class="w-wanting-list">${this.model.issues.map((issue) => `<li>${escapeHtml(issue)}</li>`).join("")}</ul>` : "";
     this.help.innerHTML = `<h3>World Map</h3><p>Each thing on the board is a system, a database, a site, or something imagined, which is drawn hollow until its folder arrives. Click one for its facts. A tinted region holds the things inside it.</p>${wanting}
-<h4>Doors and wires</h4><p><i style="border-color:var(--w-blue)"></i><b>blue</b> offers, <i style="border-color:var(--w-green)"></i><b>green</b> uses, as inside a system. A wire in the air is one call, flowing from what is offered to where it is used; hover it for how it is known. The warm sleeve is a declared crossing. A dashed door with a stub into the air is a ghost: a call that nothing on the board serves, named on hover; point at the folder that serves it and it becomes a wire.</p>
+<h4>Doors and wires</h4><p><i style="border-color:var(--w-offers)"></i><b>blue</b> offers, <i style="border-color:var(--w-uses)"></i><b>green</b> uses, as inside a system. A wire in the air is one call, flowing from what is offered to where it is used; hover it for how it is known. The warm sleeve is a declared crossing. A dashed door with a stub into the air is a ghost: a call that nothing on the board serves, named on hover; point at the folder that serves it and it becomes a wire.</p>
 <h4>What a thing stands on</h4><p>The strands under a thing are what it is built with: another thing's code, drawn as a dotted line on the board to that thing, and the packages its manifests name. No call crosses these while the things run. <b>built on</b> lays out what two or more things share.</p>
 <h4>Pinned</h4><p>A hover peeks; a click pins. In a pinned panel every name is a link: a thing pins it, a file opens it in the Local Map.</p>
 <h4>Inside a thing</h4><p>Wheel into a thing, double-click it, or follow <b>open</b> in its pinned panel: it opens in the Local Map, its folders as membranes. World Map in the sidebar leads back to the board.</p>
@@ -2236,10 +2228,3 @@ function localMapHref(file: string): string {
   return `${url.pathname}?${url.searchParams.toString()}`;
 }
 
-/** A colour between two hex colours. */
-function mix(a: string, b: string, t: number): string {
-  const channels = (colour: string): number[] => [1, 3, 5].map((i) => parseInt(colour.slice(i, i + 2), 16));
-  const A = channels(a);
-  const B = channels(b);
-  return `rgb(${A.map((value, i) => Math.round(value + (B[i] - value) * t)).join(",")})`;
-}
