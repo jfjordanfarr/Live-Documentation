@@ -144,10 +144,12 @@ describe("isToolingFile", () => {
   });
 
   it("knows an editor's and a development container's configuration by its place", () => {
-    for (const file of [".vscode/settings.json", ".vscode/tasks.json", "tools/.vscode/launch.json", ".devcontainer/devcontainer.json", ".devcontainer.json"]) {
+    // A second development container stands one folder down, the specification's third place (this repository's own
+    // `.devcontainer/wsl2-graphics-card/devcontainer.json`, 2026-11-17); two folders down is no documented place.
+    for (const file of [".vscode/settings.json", ".vscode/tasks.json", "tools/.vscode/launch.json", ".devcontainer/devcontainer.json", ".devcontainer.json", ".devcontainer/wsl2-graphics-card/devcontainer.json"]) {
       expect(isToolingFile(file), file).toBe(true);
     }
-    for (const file of ["settings.json", "devcontainer.json", "src/vscode/settings.json", ".vscode/README.md", "config.json"]) {
+    for (const file of ["settings.json", "devcontainer.json", "src/vscode/settings.json", ".vscode/README.md", "config.json", ".devcontainer/a/b/devcontainer.json", ".devcontainer/wsl2-graphics-card/settings.json"]) {
       expect(isToolingFile(file), file).toBe(false);
     }
   });

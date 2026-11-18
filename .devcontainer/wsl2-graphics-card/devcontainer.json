@@ -1,0 +1,99 @@
+// Live Documentation Development Container, with the host's graphics card (Windows, WSL2)
+// ======================================================================================
+// The same container as ../devcontainer.json, which explains every entry below, plus the two run arguments under
+// "runArgs" that pass the host's graphics card in. Choose this configuration when reopening the folder in a
+// container on Windows with Docker Desktop's WSL2 engine; everywhere else (GitHub Codespaces, macOS, Linux) use the
+// one above, since Docker refuses to create a container whose device does not exist.
+//
+// What the card is for: the browser tests' headless Chromium draws this repository's 3D pictures on it at about
+// fifty frames a second, against about four in software. tests/e2e/browser-launch.ts finds the card by itself.
+//
+// Keep this file and its lock in step with ../devcontainer.json: scripts/devcontainer.test.ts fails when they differ
+// in anything but the name and the run arguments.
+{
+  "name": "Live Documentation Dev (WSL2 graphics card)",
+
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:22",
+
+  "features": {
+    "ghcr.io/devcontainers/features/dotnet:2": {
+      "version": "10.0"
+    },
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "21",
+      "installMaven": true,
+      "installGradle": true
+    },
+    "ghcr.io/devcontainers/features/go:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.12"
+    },
+    "ghcr.io/devcontainers/features/rust:1": {
+      "version": "stable"
+    },
+    "ghcr.io/devcontainers/features/powershell:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+
+  // Under WSL2 a Linux process reaches the Windows graphics driver through the device /dev/dxg and Microsoft's
+  // Direct3D 12 libraries in /usr/lib/wsl, whatever the card's maker. Docker Desktop's "--gpus all" passes the device
+  // and NVIDIA's compute libraries only, without Direct3D, so the two are named here (measured 2026-11-17).
+  "runArgs": [
+    "--device=/dev/dxg",
+    "--volume=/usr/lib/wsl:/usr/lib/wsl:ro"
+  ],
+
+  "mounts": [
+    "source=live-documentation-claude,target=/home/node/.claude,type=volume",
+    "source=live-documentation-codex,target=/home/node/.codex,type=volume",
+    "source=live-documentation-node-modules-${devcontainerId},target=${containerWorkspaceFolder}/node_modules,type=volume"
+  ],
+  "containerEnv": {
+    "CLAUDE_CONFIG_DIR": "/home/node/.claude"
+  },
+  "onCreateCommand": "sudo chown node:node /home/node/.claude /home/node/.codex ${containerWorkspaceFolder}/node_modules",
+
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "ms-vscode.vscode-typescript-next",
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+        "ms-dotnettools.csharp",
+        "golang.go",
+        "ms-python.python",
+        "rust-lang.rust-analyzer",
+        "redhat.java"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "editor.formatOnSave": false,
+        "typescript.tsdk": "node_modules/typescript/lib"
+      }
+    },
+    "codespaces": {
+      "openFiles": [
+        "README.md",
+        ".devcontainer/README.md"
+      ]
+    }
+  },
+
+  "hostRequirements": {
+    "cpus": 8,
+    "memory": "32gb",
+    "storage": "32gb"
+  },
+
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/${localWorkspaceFolderBasename},type=bind,consistency=cached",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+
+  "remoteUser": "node"
+}

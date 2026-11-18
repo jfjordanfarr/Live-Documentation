@@ -1,5 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
 
+import { browserLaunchOptions } from "./browser-launch";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 
 /**
@@ -24,15 +25,22 @@ export default defineConfig({
   testMatch: "**/*.spec.ts",
   fullyParallel: false,
   retries: 0,
-  // One worker, the owner's rule (2026-10-19): a 3D test's software renderer keeps most of the machine busy alone (about
-  // fourteen of this box's twenty hardware threads, ten cores, 2026-11-02), so tests run beside each other overrun their
-  // budgets; the measurements are in this file's Live Doc.
+  // One worker, for now. It was the owner's rule (2026-10-19): a 3D test's software renderer keeps most of the machine
+  // busy alone (about fourteen of this box's twenty hardware threads, ten cores, 2026-11-02), so tests run beside each
+  // other overrun their budgets. On 2026-11-17 the owner lifted it for "whatever the system reliably tolerates"; measured
+  // that day with the graphics card, four workers stretch every case by half and a few in a hundred then fail on waits
+  // that ran out, so the count stays here until one is found that passes what one worker passes. The measurements are in
+  // this file's Live Doc.
   workers: 1,
   reporter: [["list"], ["html", { open: "never", outputFolder: "../../reports/e2e" }]],
   timeout: 30_000,
+  // Prints which renderer draws the run's WebGL, and stops a run whose graphics card was asked for and did not answer.
+  globalSetup: "./renderer-report",
 
   use: {
     baseURL: site,
+    // On the host's graphics card where the container was given one, and Playwright's own launch everywhere else.
+    launchOptions: browserLaunchOptions(),
     screenshot: "only-on-failure",
     // A trace is kept only for a failure, without DOM snapshots: recording them for every test cost about a sixth of the
     // suite's time (measured 2026-11-05, a 36-test subset: 5.7 min with them, 5.2 without them, 4.8 with the trace off), and one failing

@@ -4,6 +4,9 @@
     ".devcontainer/devcontainer.json": [
       "tooling"
     ],
+    ".devcontainer/wsl2-graphics-card/devcontainer.json": [
+      "tooling"
+    ],
     ".live-docs.config.json": [
       "tooling"
     ],

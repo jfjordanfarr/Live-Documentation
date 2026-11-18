@@ -31,6 +31,7 @@ import { pathToFileURL } from "node:url";
 import { isPaletteName, PALETTES } from "../../packages/explorer/src/client/palette";
 import { compressSnapshot, DEFAULT_SNAPSHOT, type UrlStateSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
+import { browserLaunchOptions } from "../../tests/e2e/browser-launch";
 import { localMapStill } from "../../tests/e2e/still-picture";
 import { optionValue, runCommand, UsageError } from "../live-docs/cli";
 
@@ -261,7 +262,8 @@ async function main(): Promise<void> {
   const allViews = viewsOf(subject, bundle);
   const views = allViews.filter(view => !options.only || options.only.includes(view.name));
 
-  const browser = await chromium.launch();
+  // On the host's graphics card where the container has one, which is also nearer to what a person's browser draws.
+  const browser = await chromium.launch(browserLaunchOptions());
   const pictures: Picture[] = [];
   try {
     for (const view of views) {

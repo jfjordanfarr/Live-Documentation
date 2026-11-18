@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/expected/repository-entries.json
-- Generated At: 2026-11-16T21:49:20.091Z
+- Generated At: 2026-11-18T00:39:38.902Z
 
 ## Authored
 ### Purpose
@@ -23,6 +23,9 @@ The hand's reading of this repository's own entry points, with the reasons as th
 - Type: key
 
 #### `entries:.devcontainer/devcontainer.json` {#symbol-entriesdevcontainerdevcontainerjson}
+- Type: key
+
+#### `entries:.devcontainer/wsl2-graphics-card/devcontainer.json` {#symbol-entriesdevcontainerwsl2-graphics-carddevcontainerjson}
 - Type: key
 
 #### `entries:.live-docs.config.json` {#symbol-entrieslive-docsconfigjson}

@@ -62,6 +62,29 @@
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },
 
+  // The coding agents' own folders on named volumes, so that rebuilding the container keeps their sign-ins, settings
+  // and past chats, which otherwise live in the container's own layer and go with it (2026-11-17). A named volume is
+  // plain Docker: it is created empty on first use on any host, GitHub Codespaces included, and someone who uses
+  // neither agent never notices the two. CLAUDE_CONFIG_DIR is Claude Code's own setting for keeping the one file it
+  // writes beside its folder (~/.claude.json) inside the folder, and so on the volume. A fresh volume is mounted as
+  // root's, so the first command hands the folders to the container's user before an editor attaches.
+  //
+  // The third volume holds node_modules on the container's own disk. Where the workspace is a Windows folder, every
+  // file a tool opens there costs a round trip to Windows, 4 to 6 ms each against 0.01 ms on the container's disk
+  // (measured 2026-11-17), and a tool's start is thousands of them in node_modules: the browser tests took 54 s to
+  // find their cases and 5 s with the dependencies on the container's disk. Its name carries the container's
+  // identity, since its content belongs to one checkout; post-create.sh fills it with "npm install". The folder of
+  // the same name on the host stays as it was and is not used.
+  "mounts": [
+    "source=live-documentation-claude,target=/home/node/.claude,type=volume",
+    "source=live-documentation-codex,target=/home/node/.codex,type=volume",
+    "source=live-documentation-node-modules-${devcontainerId},target=${containerWorkspaceFolder}/node_modules,type=volume"
+  ],
+  "containerEnv": {
+    "CLAUDE_CONFIG_DIR": "/home/node/.claude"
+  },
+  "onCreateCommand": "sudo chown node:node /home/node/.claude /home/node/.codex ${containerWorkspaceFolder}/node_modules",
+
   // Post-creation setup: install npm dependencies and SCIP indexers
   "postCreateCommand": "bash .devcontainer/post-create.sh",
 

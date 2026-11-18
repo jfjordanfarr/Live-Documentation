@@ -83,6 +83,60 @@ The indexers above are the compiler-backed oracle for measuring the analyzers: t
 
 `packages/engine/grammars/powershell/build.sh` rebuilds the committed `tree-sitter-powershell.wasm` from the pinned upstream grammar and this project's patch, after running both their corpus tests. It needs what the container already has: `git`, Node, the base image's C compiler (for the native parser the tests build), and the `tree-sitter-cli` that `npm install` puts in `node_modules`. The CLI compiles the wasm with wasi-sdk 34 and binaryen 132, which it downloads into `~/.cache/tree-sitter` on the first build; it needs no Emscripten, so `post-create.sh` installs nothing for it.
 
+## The Host's Graphics Card (Windows, WSL2)
+
+A headless Chromium draws WebGL in software unless it is given a graphics card, and the Explorer's 3D pictures are WebGL. In software this repository's own 3D picture draws at about four frames a second and keeps most of the machine's threads busy; on a card it draws at about fifty. The browser tests wait for such pictures to come to rest, so the card is most of the difference between a short run and a long one.
+
+On Windows with Docker Desktop's WSL2 engine, reopen the folder with the second configuration, **Live Documentation Dev (WSL2 graphics card)**, which is [wsl2-graphics-card/devcontainer.json](wsl2-graphics-card/devcontainer.json). VS Code asks which configuration to use when a folder has more than one ("Dev Containers: Rebuild and Reopen in Container"). It is the same container plus two run arguments:
+
+| Argument | What it passes in |
+| --- | --- |
+| `--device=/dev/dxg` | WSL2's door to the Windows graphics driver |
+| `--volume=/usr/lib/wsl:/usr/lib/wsl:ro` | Microsoft's Direct3D 12 libraries for Linux and the card's own driver files |
+
+It works for any card Windows drives, since the path is Direct3D and not a maker's own Linux driver. Docker's `--gpus all` is not enough: on Docker Desktop it passes the device and NVIDIA's compute libraries, without Direct3D.
+
+Nothing else is configured by hand. `post-create.sh` installs Mesa's EGL when it finds the device, and `tests/e2e/browser-launch.ts` launches the browser on the card when it finds the device and the libraries. The card draws WebGL and nothing else: the rest of the page, the 2D map among it, is still put together on the processor, which is quicker for it and is how the tests' timings were set. To check, from inside the container:
+
+```bash
+ls -la /dev/dxg /usr/lib/wsl/lib/libd3d12.so
+npx playwright test --config tests/e2e/playwright.config.ts force-graph-identity
+```
+
+The run's first line names the renderer: `D3D12 (...)` with the card's name, or `SwiftShader` in software. A run stops at once when the card is there and the browser is not drawing on it. To run on the processor although a card is there, as GitHub Codespaces and CI do, set `LIVE_DOCS_BROWSER_RENDERER=software`.
+
+The ordinary configuration stays the default because Docker refuses to create a container whose device does not exist, which would break it everywhere but Windows.
+
+## What a Rebuild Keeps
+
+Rebuilding the container discards everything in it but the workspace. Two named Docker volumes keep the coding agents' own folders across rebuilds, in both configurations:
+
+| Volume | Mounted at | What it keeps |
+| --- | --- | --- |
+| `live-documentation-claude` | `~/.claude` | Claude Code's sign-in, settings and past chats |
+| `live-documentation-codex` | `~/.codex` | Codex's sign-in, settings and past chats |
+
+`CLAUDE_CONFIG_DIR` points Claude Code at its folder, so that the one file it otherwise writes beside the folder (`~/.claude.json`) is kept as well. Nothing is set up by hand: Docker creates a named volume empty on first use, on any host and in GitHub Codespaces, and someone who uses neither agent never notices the two. They hold sign-in tokens and stay on your own Docker host. To start clean, remove them while no container uses them:
+
+```bash
+docker volume rm live-documentation-claude live-documentation-codex
+```
+
+## Dependencies on the Container's Own Disk
+
+`node_modules` is a third volume, named for the container, mounted over the workspace's folder of that name and filled by `post-create.sh`. It is there for speed. Where the workspace is a folder on a Windows drive, each file a tool opens in it is a round trip to Windows: 4 to 6 ms each, against 0.01 ms on the container's own disk (measured on this repository, 2026-11-17). A tool's start is thousands of such files in `node_modules`:
+
+| | Workspace's `node_modules` on a Windows drive | On the container's disk |
+| --- | --- | --- |
+| The browser tests finding their cases (`npx playwright test --list`) | 54 to 64 s | 5 s |
+| One spec file | 44 s | 3 s |
+| `npm run lint` | 239 s | 68 s |
+| `npm run test:unit` | 203 s | 88 s |
+
+The second column was measured with the whole checkout on the container's disk, so the volume alone gives somewhat less. The `node_modules` folder that an earlier container left on the host is no longer read and can be deleted from there. After changing `package-lock.json`, run `npm install` in the container as before.
+
+The rest of the workspace is still reached through the host. If that becomes the bottleneck, the cure is to keep the whole working copy on the Linux side (VS Code's "Clone Repository in Container Volume", or a folder inside a WSL distribution).
+
 ## Troubleshooting
 
 ### scip-java fails on first run

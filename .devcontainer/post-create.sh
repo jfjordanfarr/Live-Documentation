@@ -39,6 +39,18 @@ echo "=== Installing Playwright Chromium and system dependencies ==="
 npx --no-install playwright install --with-deps chromium
 
 echo ""
+echo "=== Graphics card for the browser tests ==="
+# Only where the host passed its card in: Windows with WSL2, through the "wsl2-graphics-card" configuration beside
+# this script. Chromium reaches the card through Mesa's EGL and Mesa's Direct3D 12 driver; Playwright's own
+# dependencies bring the driver and leave out EGL. tests/e2e/browser-launch.ts tells the browser to use them.
+if [ -e /dev/dxg ] && [ -e /usr/lib/wsl/lib/libd3d12.so ]; then
+  sudo apt-get install -y --no-install-recommends libegl1 libegl-mesa0 libgl1-mesa-dri
+  echo "  The host's graphics card is available to the browser tests."
+else
+  echo "  None was passed in: the browser tests draw in software."
+fi
+
+echo ""
 echo "=== Installing SCIP indexers ==="
 
 # scip-python: npm global package (uses pyright under the hood)

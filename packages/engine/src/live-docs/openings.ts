@@ -52,8 +52,12 @@ function isManifestFile(sourcePath: string): boolean {
 
 const TOOLING_FILE = /^(?:packages\.config|tsconfig(?:\.[^/]+)?\.json|web\.config|app\.config|[^/]+\.config\.(?:[cm]?[jt]s|json))$/iu;
 
-/** The files an editor or a development container reads, by the documented places they live: `.vscode/settings.json`, `.vscode/tasks.json`, `.devcontainer/devcontainer.json`, `.devcontainer.json`. */
-const TOOLING_PATH = /(?:^|\/)(?:\.vscode\/[^/]+\.json|\.devcontainer\/devcontainer\.json|\.devcontainer\.json)$/iu;
+/**
+ * The files an editor or a development container reads, by the documented places they live: `.vscode/settings.json`,
+ * `.vscode/tasks.json`, `.devcontainer/devcontainer.json`, `.devcontainer.json`, and a second configuration one folder
+ * down, `.devcontainer/<name>/devcontainer.json`, which is the Dev Containers specification's third place and no deeper.
+ */
+const TOOLING_PATH = /(?:^|\/)(?:\.vscode\/[^/]+\.json|\.devcontainer\/(?:[^/]+\/)?devcontainer\.json|\.devcontainer\.json)$/iu;
 
 /**
  * True when a file is one a tool reads and no file imports: by its name, a
@@ -63,7 +67,8 @@ const TOOLING_PATH = /(?:^|\/)(?:\.vscode\/[^/]+\.json|\.devcontainer\/devcontai
  * `vitest.config.ts`, `playwright.config.ts`), a .NET configuration
  * (`Web.config`, `App.config`) or package list (`packages.config`); by its
  * place, an editor's or a development container's configuration
- * (`.vscode/*.json`, `.devcontainer/devcontainer.json`), which discovery reads
+ * (`.vscode/*.json`, `.devcontainer/devcontainer.json`, and since 2026-11-17 a
+ * second configuration in a folder beside it), which discovery reads
  * since 2026-10-16 and nothing else names. Such a file is an entry by the
  * `tooling` reason, and a command that names one names an input, not the file
  * it runs.
