@@ -78,7 +78,7 @@ async function skinArchipelago(page: Page): Promise<{ wrapped: string[]; sizes: 
   return groups;
 }
 
-test("the skin wraps every group of two files or more, in place of its seed's ring", async ({ page }) => {
+test("the skin wraps every group of two files or more, in place of its seed's ring, and no sphere wears one", async ({ page }) => {
   const { wrapped } = await skinArchipelago(page);
   const drawn = await drawnWrappers(page);
   expect(drawn.look).toBe("skin");
@@ -90,6 +90,40 @@ test("the skin wraps every group of two files or more, in place of its seed's ri
   const seeds = await renderedNodes(page);
   expect(seeds.filter(node => wrapped.includes(node.id)).map(node => node.id).sort(), "every wrapped seed is drawn").toEqual(wrapped);
   for (const node of seeds.filter(node => wrapped.includes(node.id))) expect(node.ring, `${node.id} is wrapped, not ringed`).toBe(false);
+  // Since 2026-11-18 no sphere wears a ring while a wrapper is on, a seed or not.
+  expect(seeds.filter(node => node.ring).map(node => node.id), "no ring with the wrappers on").toEqual([]);
+});
+
+/**
+ * The owner's picture of November 17 (Turn 12 of the November 16 record): this repository pinned on `archetype.ts` at one
+ * hop, with both kinds of document shown. Rings stood there beside the membranes, on files with documents beyond the hops
+ * and beside the one file of a directory beyond them; the owner: "Didn't we replace ringed nodes with membranes?" Since
+ * 2026-11-18 none is drawn while a wrapper is on, and with the wrappers Off the ring stays, that picture's only sign.
+ */
+const OWNER_PIN = "packages/engine/src/live-docs/archetype.ts";
+const ownerPicture = (groupWrappers: GroupWrappers): string => `/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, perspective: "3d", spatialLayout: "connections",
+  pinSet: { entries: [{ nodeId: OWNER_PIN, symbol: "*" }] }, filters: { showTests: true, showAssets: false, showRelatedDocs: true, showCitingDocs: true },
+  layout: { forceGraph: { groupWrappers, hops: 1 } } })}`;
+
+test("with any wrapper on, the owner's picture with documents shown wears no ring; with the wrappers Off it keeps them", async ({ page }) => {
+  test.setTimeout(120_000);
+  await observeGraph(page);
+  await page.goto(ownerPicture("off"));
+  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 60_000 });
+  const off = await renderedNodes(page);
+  // The same spheres the skin will show wear rings here: the picture leaves connections of theirs out.
+  const ringedOff = off.filter(node => node.ring).map(node => node.id);
+  expect(ringedOff.length, "with the wrappers Off the frontier wears rings").toBeGreaterThan(0);
+  await expect(legendRow(page, RING_ROW)).toBeVisible();
+  for (const look of ["skin", "cloud"] as const) {
+    await page.goto(ownerPicture(look));
+    await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 60_000 });
+    await expect.poll(async () => (await drawnWrappers(page)).seeds.length, { timeout: 10_000 }).toBeGreaterThan(0);
+    const nodes = await renderedNodes(page);
+    expect(nodes.filter(node => ringedOff.includes(node.id)).length, `${look}: spheres ringed when Off stand here too`).toBeGreaterThan(0);
+    expect(nodes.filter(node => node.ring).map(node => node.id), `${look}: no ring`).toEqual([]);
+    await expect(legendRow(page, RING_ROW)).toHaveCount(0);
+  }
 });
 
 test("the skin shows within each wrapped group every file it holds about its seed, and is drawn at their size", async ({ page }) => {

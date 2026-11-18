@@ -7,7 +7,7 @@ import { spatialGraphOf } from "../../packages/explorer/src/client/views/forceGr
 import { linkPulls, spatialNodeRadius } from "../../packages/explorer/src/client/views/forceGraphLayout";
 import { connectedNeighbours, spatialScope } from "../../packages/explorer/src/client/views/forceGraphScope";
 import { shellPicture, type ShellPicture } from "../../packages/explorer/src/client/views/forceGraphShells";
-import { observeGraph } from "./force-graph-observation";
+import { observeGraph, renderedNodes } from "./force-graph-observation";
 import { choose as chooseSubject } from "./search-bar";
 import { loadGraph, localMapSettled } from "./still-picture";
 
@@ -176,7 +176,7 @@ test("the skin holds this repository's hidden files in a shell per directory two
   await choose(page, "skin");
   await page.goto(entry("/", REPO_PIN));
   const expected = await expectedShells(page, "/", REPO_PIN, 2);
-  // Measured on November 5: 328 hidden files in 10 shells, 134 bundled wires, no file loose.
+  // Measured on November 5: 328 hidden files in 10 shells, 134 bundled wires, no file left alone.
   expect(expected.shells.length, "this repository's pinned picture has several shells").toBeGreaterThan(4);
   const ids = expected.shells.map(shell => shell.id).sort();
   // The shells enter with their hop of the reveal and are wrapped as their hulls are built, a few a frame.
@@ -229,6 +229,55 @@ test("a click pops a shell into its own files and a shell of a subdirectory, and
   const wrapped = await drawnShells(page);
   for (const id of after.released) expect(wrapped.nodes, id).not.toContain(id);
   await expect(chip).toHaveCount(0);
+});
+
+/**
+ * The one file of a directory beyond the hops, which makes no shell, stands as itself (2026-11-18): one past the hops,
+ * dimmed as the frontier is, wired to what it references, and a press on it pins it as a press on any dimmed sphere asks
+ * about it. Until then it was not drawn and its shown neighbour wore a ring for it beside the shells (the owner, Turn 12
+ * of the November 16 record). This repository pinned on `archetype.ts` at one hop has three such files.
+ */
+test("the one file of a directory beyond the hops stands as itself, dimmed like the frontier, and a press pins it", async ({ page }) => {
+  test.setTimeout(120_000);
+  const pin = "packages/engine/src/live-docs/archetype.ts";
+  await observeGraph(page);
+  await choose(page, "skin");
+  await page.goto(entry("/", pin));
+  const expected = await expectedShells(page, "/", pin, 2);
+  expect(expected.lone.length, "this picture has lone files").toBeGreaterThan(0);
+  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 60_000 });
+  await expect.poll(async () => (await drawnShells(page)).wrapped.filter(id => id.startsWith("shell:")).sort(), { timeout: 10_000 })
+    .toEqual(expected.shells.map(shell => shell.id).sort());
+  await page.mouse.move(2, 2);
+  const nodes = await renderedNodes(page);
+  for (const id of expected.lone) expect(nodes.some(node => node.id === id), `${id} is drawn`).toBe(true);
+  // As dim as a sphere of the last hop shown, and dimmer than the pin.
+  const pinned = nodes.find(node => node.id === pin)!;
+  const graph = await loadGraph(page, "/");
+  const data = spatialGraphOf(graph, node => (node.archetype || "").toLowerCase() !== "asset", [], "connections");
+  const scope = spatialScope(data.nodes, data.links, new Set([pin]), getDefaultTuning().forceGraph.hops, link => linkPulls(link, "connections"));
+  const frontier = nodes.find(node => scope.hops.get(node.id) === getDefaultTuning().forceGraph.hops && node.id !== pin && !node.id.startsWith("shell:"))!;
+  for (const id of expected.lone) {
+    const lone = nodes.find(node => node.id === id)!;
+    expect(lone.opacity, `${id} is dimmed`).toBeLessThan(pinned.opacity);
+    expect(lone.opacity, `${id} is as dim as the frontier`).toBeCloseTo(frontier.opacity, 3);
+    expect(lone.ring, `${id} wears no ring`).toBe(false);
+  }
+  // A press on one, aimed where the pointer names it, pins it.
+  let pressed: string | null = null;
+  for (const id of expected.lone) {
+    const lone = (await renderedNodes(page)).find(node => node.id === id)!;
+    await page.mouse.move(lone.x, lone.y);
+    const named = page.locator(`.force-graph-label[data-node-id="${id}"]:not([hidden])`);
+    if (await named.isVisible().catch(() => false)) {
+      await expect(named).toHaveAttribute("title", / · Pin this file$/u);
+      await page.mouse.click(lone.x, lone.y);
+      pressed = id;
+      break;
+    }
+  }
+  expect(pressed, "the pointer names a lone file where it stands").not.toBeNull();
+  await expect(page.locator(".pin-tray-toggle")).toHaveText("2 pins");
 });
 
 /**

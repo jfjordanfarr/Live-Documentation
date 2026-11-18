@@ -165,7 +165,10 @@ test.describe("names beside visible rings", () => {
   // This is the owner's ordinary journey: the 2D search and all motion retain their product defaults.
   test.use({ storageState: { cookies: [], origins: [] }, viewport: { width: 1440, height: 960 }, deviceScaleFactor: 1 });
 
-  test("directory names clear visible rings through the perspective journey and a rewrap", async ({ page }, testInfo) => {
+  // Since 2026-11-18 no ring is drawn while Group Wrappers are on, the product's default (the owner's "Didn't we replace
+  // ringed nodes with membranes?", Turn 12 of the November 16 record): the journey's pictures under Skin hold none, and
+  // the names are held clear of the rings where the rings are, with the wrappers Off at the journey's end.
+  test("directory names clear visible rings through the perspective journey and a rewrap, and the wrappers draw none", async ({ page }, testInfo) => {
     test.setTimeout(90_000);
     await observeGraph(page);
     const settled = (): Promise<void> => expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
@@ -177,7 +180,7 @@ test.describe("names beside visible rings", () => {
       if (name === "2D") await localMapSettled(page);
       else await settled();
     };
-    const checkRings = async (name: string): Promise<void> => {
+    const checkRings = async (name: string, wrappers: "skin" | "off"): Promise<void> => {
       await page.mouse.move(300, 900);
       // Wait for the pointer's temporary attention to leave before reading the ordinary names and uploaded picture.
       await expect(page.locator("#graph-svg")).toHaveAttribute("data-hovered-node", "false");
@@ -209,15 +212,15 @@ test.describe("names beside visible rings", () => {
         return { labels, rings, clearances };
       });
       await testInfo.attach(`${name}-geometry`, { body: JSON.stringify(picture, null, 2), contentType: "application/json" });
-      expect(picture.labels.map(label => label.id).sort(), `${name} retains every independently observed ordinary name`).toEqual([
-        "Contracts/PaymentQuery.cs", "Contracts/PaymentRequest.cs", "PaymentService/Data/Payment.cs",
-        "PaymentService/Data/PaymentsContext.cs", "PaymentService/Data/PostPaymentRow.cs", "shell:Gateway", "shell:Hub",
-        "shell:Portal/Models", "shell:Portal/Pages"
-      ]);
-      expect(picture.rings.map(ring => ring.id).sort()).toEqual([
-        "Contracts/PaymentQuery.cs", "Contracts/PaymentRequest.cs", "Contracts/PaymentResult.cs",
-        "Database/SqlServer/dbo.usp_PostPayment.sql", "Hub/App.config"
-      ]);
+      if (wrappers === "skin") {
+        // The shells' names stand, and no sphere wears a ring: until 2026-11-18 five did here, beside the shells.
+        expect(picture.labels.map(label => label.id), `${name} names its shells`)
+          .toEqual(expect.arrayContaining(["shell:Gateway", "shell:Hub", "shell:Portal/Models", "shell:Portal/Pages"]));
+        expect(picture.rings.map(ring => ring.id), `${name} draws no ring with the wrappers on`).toEqual([]);
+      } else {
+        expect(picture.rings.length, `${name}: with the wrappers Off the frontier wears its rings`).toBeGreaterThan(0);
+        expect(picture.labels.length, `${name}: names stand beside them`).toBeGreaterThan(0);
+      }
       // Allow 0.1 CSS pixels for rounding between uploaded geometry and the browser's measured label rectangles.
       expect(picture.clearances.filter(pair => pair.clearance < 1.9), `${name}: every name clears the uploaded outer rings by two CSS pixels, within rounding`).toEqual([]);
       expect(currentSnapshot(page).openDirectories).toEqual(new Set(["PaymentService"]));
@@ -232,13 +235,29 @@ test.describe("names beside visible rings", () => {
     await switchTo("3D");
     await page.getByRole("button", { name: "Connections", exact: true }).click();
     await settled();
-    await checkRings("connections-ending");
+    await checkRings("connections-ending", "skin");
 
     // Repacking changes the projected obstacles; a remembered name side must be checked against the new picture.
     await page.locator('.force-graph-label[data-node-id="shell:Gateway"]').click();
     await settled();
     await page.getByRole("button", { name: "Wrap Gateway again", exact: true }).click();
     await settled();
-    await checkRings("gateway-rewrapped");
+    await checkRings("gateway-rewrapped", "skin");
+
+    // The wrappers Off, chosen in Tuning: the picture of before the membranes, whose only sign of more is the ring.
+    await page.evaluate(() => {
+      const select = document.getElementById("tuning-force-group-wrappers") as HTMLSelectElement;
+      select.value = "off";
+      select.dispatchEvent(new Event("change", { bubbles: true }));
+    });
+    await settled();
+    // Named on approach, as everywhere: the wheel draws the camera toward the ringed spheres until their names are drawn.
+    const ringed = (await renderedNodes(page)).filter(node => node.ring);
+    expect(ringed.length, "with the wrappers Off the frontier wears its rings").toBeGreaterThan(0);
+    const centre = { x: ringed.reduce((sum, node) => sum + node.x, 0) / ringed.length, y: ringed.reduce((sum, node) => sum + node.y, 0) / ringed.length };
+    await page.mouse.move(centre.x, centre.y);
+    for (let step = 0; step < 4; step++) await page.mouse.wheel(0, -200);
+    await settled();
+    await checkRings("wrappers-off", "off");
   });
 });
