@@ -245,8 +245,8 @@ export function overlapsAmong(boxes: TextBox[], tolerance = 1): Overlap[] {
 }
 
 /**
- * Visible elements the selectors name whose text overruns its own content box, a non-scrollable clipping ancestor,
- * or a sibling's text on the same line. Text is measured in line fragments rather than by its containing element:
+ * Visible elements the selectors name whose text overruns its own content box, a non-scrollable clipping ancestor, a
+ * non-scrollable clip on an element between it and the text, or a sibling's text on the same line. Text is measured in line fragments rather than by its containing element:
  * a wrapped line is valid, while one hidden below a fixed-height box is not. Scrollports and the view boundary are
  * navigation frames, so panning or scrolling content out of them does not turn that content into a design fault.
  */
@@ -306,12 +306,18 @@ export async function truncations(page: Page, selectors: string[]): Promise<Trun
         const own = contentBox(node);
         const ownOverflowX = getComputedStyle(node).overflowX;
         const ownScrollsX = ownOverflowX === "auto" || ownOverflowX === "scroll";
-        const rects: DOMRect[] = [];
+        // Each text fragment with the clips that stand between it and the screen, from the text outward: those of the
+        // elements between the audited element and the text, then the audited element's own and its ancestors'. A
+        // name clipped by its own inner span (`overflow: hidden` on the text's wrapper inside a label) is cut as surely
+        // as one clipped by the label; until 2026-11-18 only the label and its ancestors were read, and the scenario
+        // suite's break-and-see check found a name clipped to a sliver that the audit passed.
+        const rects: Array<{ rect: DOMRect; clips: Clip[] }> = [];
         const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
         for (let textNode = walker.nextNode(); textNode; textNode = walker.nextNode()) {
           if (!(textNode.textContent ?? "").trim()) continue;
           let textHidden = false, textOpacity = opacity;
           let child: Element | null = null;
+          const innerClips: Clip[] = [];
           for (let parent: Element | null = textNode.parentElement; parent; child = parent, parent = parent.parentElement) {
             // A selected container can hold a closed details body. Chromium still gives that body's text a range box.
             if (parent instanceof HTMLDetailsElement && !parent.open && child?.tagName !== "SUMMARY") {
@@ -326,23 +332,27 @@ export async function truncations(page: Page, selectors: string[]): Promise<Trun
             }
             textOpacity *= Number(style.opacity || "1");
             if (textOpacity < 0.2) { textHidden = true; break; }
+            if (parent instanceof HTMLElement) {
+              const x = overflowMode(style.overflowX), y = overflowMode(style.overflowY);
+              if (x !== "none" || y !== "none") innerClips.push({ ...paddingBox(parent), x, y });
+            }
           }
           if (textHidden) continue;
           const range = document.createRange();
           range.selectNodeContents(textNode);
-          for (const rect of range.getClientRects()) if (rect.width > 0 && rect.height > 0) rects.push(rect);
+          for (const rect of range.getClientRects()) if (rect.width > 0 && rect.height > 0) rects.push({ rect, clips: [...innerClips, ...ancestorClips] });
         }
         if (!rects.length) continue;
-        // Read ancestors from the text outward. A scrollport exposes only the portion of a fragment inside its
+        // Read the clips from the text outward. A scrollport exposes only the portion of a fragment inside its
         // padding box on the scrolling axis: outer fixed clips judge that exposed portion, not off-scroll content.
         // An inner non-scrollable clip still reports the lost text, including a fragment hidden altogether.
         let overrun = 0;
-        for (const rect of rects) {
+        for (const { rect, clips } of rects) {
           // Retain the existing own-width check, including text in padding, except where the element itself provides
           // horizontal scrolling to reach its contents.
           if (!ownScrollsX) overrun = Math.max(overrun, rect.right - own.right, own.left - rect.left);
           const visible = { left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom };
-          for (const clip of ancestorClips) {
+          for (const clip of clips) {
             if (clip.x === "cut") overrun = Math.max(overrun, visible.right - clip.right, clip.left - visible.left);
             if (clip.y === "cut") overrun = Math.max(overrun, visible.bottom - clip.bottom, clip.top - visible.top);
             if (clip.x !== "none") {
@@ -358,8 +368,8 @@ export async function truncations(page: Page, selectors: string[]): Promise<Trun
         }
         for (let i = 0; i < rects.length; i += 1) {
           for (let j = i + 1; j < rects.length; j += 1) {
-            const a = rects[i];
-            const b = rects[j];
+            const a = rects[i].rect;
+            const b = rects[j].rect;
             if (Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) > 4) {
               overrun = Math.max(overrun, Math.min(a.right, b.right) - Math.max(a.left, b.left));
             }

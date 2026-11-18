@@ -37,7 +37,13 @@ const HTML = `
     #cut-x-outer { width: 28px; height: 28px; overflow: hidden; }
     #nested-x-scroll, #cut-x-scroll { width: 48px; height: 28px; overflow-x: auto; overflow-y: hidden; white-space: nowrap; }
     .x-entry { display: inline-block; width: 48px; height: 24px; }
+    #inner-span-clip, #inner-span-scroll { width: 640px; }
+    #inner-span-clip .sliver, #inner-span-scroll .sliver { display: inline-block; max-width: 40px; white-space: nowrap; vertical-align: top; }
+    #inner-span-clip .sliver { overflow: hidden; }
+    #inner-span-scroll .sliver { overflow-x: auto; }
   </style>
+  <div class="case"><div id="inner-span-clip"><span class="sliver">A name clipped to a sliver by its own span</span></div></div>
+  <div class="case"><div id="inner-span-scroll"><span class="sliver">A name a reader can scroll inside its own span</span></div></div>
   <div class="case"><div id="own-width">A long line clipped by its own width</div></div>
   <div class="case"><div id="parent-width"><div class="child">A line fitting the child but clipped by its parent</div></div></div>
   <div class="case"><div id="fully-clipped-parent"><div class="child">Outside</div></div></div>
@@ -200,6 +206,19 @@ test("a horizontal scrollport limits outer clipping checks to its exposed column
   const cut = await truncations(page, ["#cut-x-scroll .exposed"]);
   expect(cut).toHaveLength(1);
   expect(cut[0].hidden).toBeGreaterThan(5);
+});
+
+test("finds text clipped by an element between the audited element and the text, and spares one that scrolls", async ({ page }) => {
+  // The scenario suite's break-and-see check (2026-11-18): a symbol's name clipped by its inner span passed the audit,
+  // which read clips only on the audited label and outward.
+  const clipped = await geometry(page, "#inner-span-clip");
+  expect(clipped.rects[0].right).toBeLessThan(clipped.own.right);
+  const sliver = await page.locator("#inner-span-clip .sliver").evaluate(node => node.getBoundingClientRect().right);
+  expect(clipped.rects[0].right).toBeGreaterThan(sliver + 100);
+  const faults = await truncations(page, ["#inner-span-clip"]);
+  expect(faults).toHaveLength(1);
+  expect(faults[0].hidden).toBeGreaterThan(100);
+  expect(await truncations(page, ["#inner-span-scroll"])).toEqual([]);
 });
 
 test("inner and orthogonal clipping remain faults inside a scroll frame", async ({ page }) => {
