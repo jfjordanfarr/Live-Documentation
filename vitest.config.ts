@@ -6,7 +6,7 @@ const explorerSrc = path.resolve(__dirname, "packages/explorer/src");
 const generatorSrc = path.resolve(__dirname, "packages/generator/src");
 
 // Suites measured to miss the unchanged five-second deadline under parallel load: numerical oracle comparisons and
-// full-history replay work. They run in `unit-serial`, alone after every other file; all cases and coverage remain.
+// full-history replay work. They run in `unit-serial`, alone after every other file; all cases remain.
 const serialUnitFiles = [
   "packages/explorer/src/client/views/forceGraphPhysics.test.ts",
   "packages/engine/src/live-docs/history/sequence.test.ts",
@@ -82,8 +82,12 @@ export default defineConfig({
         }
       }
     ],
+    // Off unless asked for (`npx vitest run --coverage`). It was on from the scaffolding commit and nothing read its
+    // report: no threshold, no CI artifact, and each run empties the folder the last one wrote. Its instrumentation
+    // made the physics suite's exact-loop comparisons five times as slow: one case takes 0.9 to 1.1 s without it and
+    // 4.9 to 6.1 s with it, against the five-second deadline (measured 2026-11-18, when the gate stopped on that case).
     coverage: {
-      enabled: true,
+      enabled: false,
       reporter: ["text-summary", "html"],
       reportsDirectory: "coverage",
       include: ["packages/**/src/**/*.{ts,tsx}"],
