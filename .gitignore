@@ -57,6 +57,7 @@ AI-Agent-Workspace/ollama-traces/
 
 # Playwright E2E test artifacts and the still-picture scoreboard it writes
 test-results/
+test-results-alone/
 reports/
 
 # Live Documentation staging outputs

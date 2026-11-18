@@ -388,7 +388,7 @@ test("a requested overview follows historical growth, and a manual camera gestur
   expect(await camera(), "the next moment respects the camera the person chose").toEqual(held);
 });
 
-test("a deleted file can be found, read and shared in its own lifetime, and remains absent on return to today", async ({ page, browser }) => {
+test("a deleted file can be found, read and shared in its own lifetime, and remains absent on return to today", { tag: "@alone" }, async ({ page, browser }) => {
   const commits = await commitsOf(page, "/samples/history/");
   await page.goto(entry("/samples/history/"));
   await settled(page);
@@ -566,7 +566,7 @@ test("an absent historical request shows only the tree's root, dimmed, and resum
   expect(decompressSnapshot(new URL(page.url()).searchParams.get("s")!).pinSet.entries).toEqual([{ nodeId: "lib/huge.ts", symbol: "*" }]);
 });
 
-test("the address carries the commit and the authors toggle, a link to a moment opens on it, and leaving 3D returns the picture to today", async ({ page }) => {
+test("the address carries the commit and the authors toggle, a link to a moment opens on it, and leaving 3D returns the picture to today", { tag: "@alone" }, async ({ page }) => {
   const commits = await commitsOf(page, "/samples/history/");
   await observeGraph(page);
   await page.goto(entry("/samples/history/"));

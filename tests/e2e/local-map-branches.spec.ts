@@ -273,7 +273,7 @@ test("closing a retained file keeps only symbols needed elsewhere and removes it
   await expect(file("symbolReferences.ts").locator('.symbol-row[data-symbol="SymbolIssueKind"]')).toHaveClass(/symbol-pinned/);
 });
 
-test("a retained exploration threads skipped references through lanes: nothing over the top, nothing across a card, every wire forward", async ({ page }) => {
+test("a retained exploration threads skipped references through lanes: nothing over the top, nothing across a card, every wire forward", { tag: "@alone" }, async ({ page }) => {
   // A retained picture of more than a hundred wires, every wire and lane read whole: 24 to 26 seconds on one worker
   // (2026-10-19); the half minute is not its measure.
   test.setTimeout(60_000);

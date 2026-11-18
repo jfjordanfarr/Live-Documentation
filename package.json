@@ -38,7 +38,7 @@
     "lint": "eslint .",
     "test:unit": "vitest run --project unit --project unit-serial",
     "test:integration": "vitest run --project integration",
-    "test:e2e": "npm run live-docs:visualize && npm run live-docs:visualize:estate && npm run live-docs:visualize:history-sample && npx playwright test --config tests/e2e/playwright.config.ts",
+    "test:e2e": "npm run live-docs:visualize && npm run live-docs:visualize:estate && npm run live-docs:visualize:history-sample && node ./scripts/e2e-passes.mjs",
     "verify": "node ./scripts/verify.mjs",
     "safe:commit": "node ./scripts/safe-to-commit.mjs",
     "docs:links:enforce": "tsx --tsconfig ./tsconfig.base.json scripts/doc-tools/enforce-documentation-links.ts",

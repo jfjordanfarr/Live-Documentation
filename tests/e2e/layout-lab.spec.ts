@@ -17,7 +17,7 @@ import { loadBundleGraph, type ScopeRun } from "../../scripts/layout-lab/scopes"
  * Pretext has disagreed with the browser on a text.
  */
 for (const run of DECK_SCOPES) {
-  test(`the layout lab reproduces the page to the pixel: ${run.bundle}, ${run.scopeName}`, async ({ page }) => {
+  test(`the layout lab reproduces the page to the pixel: ${run.bundle}, ${run.scopeName}`, { tag: run.bundle === "repository" && run.scopeName === "chain" ? "@alone" : [] }, async ({ page }) => {
     await page.setViewportSize({ width: 1600, height: 1000 });
     await page.goto(localRetainUrl(run.base, run.scope));
     const capture = await captureFromPage(page, run);
