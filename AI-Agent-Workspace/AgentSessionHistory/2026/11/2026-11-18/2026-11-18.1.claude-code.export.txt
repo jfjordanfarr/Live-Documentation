@@ -2129,3 +2129,1321 @@
     browser only when I say so.
   - Your export: the save you made at the new path (16:36 UTC) is committed as
     received.
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/AgentSessionHistory/2026/11
+  /2026-11-18/2026-11-18.1.claude-code.export.txt in the IDE. This may or may
+  not be related to the current task.</ide_opened_file>
+
+❯ >Whether to raise the container's npm is a separate question I'll bring you
+  with that result.
+
+  Any reason not to raise it? Raising it sounds fine.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Recording your question, then answering it.
+
+  Made 1 scratchpad edit +61, ran 1 shell command (ctrl+o to expand)
+
+● No reason not to, so I'm raising it to npm 11 as part of the dependency round.
+  There is one caution about how, and it is covered.
+
+  - The caution: two npm versions that both write the lockfile undo each other's
+    work; npm 10 strips fields that npm 11 writes. Only the container writes
+    the lock. The four GitHub workflows run npm ci, which only reads it, so they
+    can stay on Node 22's own npm 10 for now.
+  - What still has to be proven: that npm 10's npm ci installs from a lock
+    written by npm 11. I've added that to the dependency builder's next
+    milestone.
+  - How: one pinned line in .devcontainer/post-create.sh, which both container
+    configurations run. It takes effect at your next rebuild, and I'll run the
+    same command here so this container needs no rebuild today.
+  - Related, already granted: on November 15 you said of moving Node from 22 to
+    26 "If it's straightforward, go ahead". A newer Node ships npm 11, which
+    would put the container and the workflows back on one npm. That is a bigger
+    change with its own gate, so I'm keeping it out of today's round.
+
+  One consequence on GitHub: npm-audit.yml runs every Monday at 04:00 UTC and
+  fails on any high finding. Until npm's data picks up the withdrawal of the
+  picomatch advisory, it will go red on those 14 findings. That is npm's stale
+  data, not something this round can close.
+
+  Two-worker run so far: 368 of 488 passed after 35 minutes, six red. One is the
+  known race. The other five passed at one worker this morning:
+
+  - history-scrubber.spec.ts:180, :391 and :569
+  - layout-lab.spec.ts:20 (repository chain)
+  - local-map-branches.spec.ts:276
+
+  Four of those five are the cases that sat on their time limits yesterday. So
+  two workers is on course to be much faster, but it does not yet pass what one
+  worker passes. When the run ends I'll rerun each alone at one worker and then
+  say what would have to change before the worker count can go up.
+
+● Background command "Wait for the two-worker browser run to finish and show the
+  end of its log" completed (exit code 0)
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+› Message from general-purpose
+  ## Milestone 1: the ledger, the design and the pure code (committed, not yet
+  run)
+
+  The worktree is reset to 55dd6620. One commit is on top of it, **02969172**.
+  Nothing has been compiled, linted or run: I ran no npm, vitest, Playwright,
+  build or browser. The only thing executed was one plain `node
+  --experimental-strip-types` run of the token resolver over the real Rosetta
+  folders, from the scratchpad, to get its tables right. That is the "Python"
+  result below.
+
+  ### The headline for the owner
+
+  - **163 of the 488 cases are still-picture promises.** They take 1,453 s of
+  the run's 4,159 s.
+    - 93 are promises read from one picture (464 s).
+    - 70 are relations between two pictures of one run (989 s).
+    - In the 2D Local Map, which is what the slice's instrument reads, there are
+  93 such cases taking 1,204 s, 29% of the run.
+  - **The rest of the 488:**
+
+  | Kind | Cases | Seconds |
+  |---|---|---|
+  | Journey | 213 | 1,664 |
+  | Motion | 64 | 738 |
+  | Other | 46 | 290 |
+  | Where this repository's size is the point | 2 | 13 |
+
+  - **Almost no case can be deleted as it stands.** Nearly every still-picture
+  case also asserts a number written into the spec (lane slot at 9 px, a 28 px
+  sibling gap, `rgb(242, 242, 242)`) or one gesture (a hover, six pans).
+  Converting means splitting a case: its still half goes to the table, and its
+  gesture half stays as a shorter case. The measurement in milestone 2 has to
+  count promises carried, not cases deleted.
+
+  ### 1. The ledger
+
+  **Source of the case list.** It comes from the newest full report,
+  `reports/e2e/index.html` in the main checkout, written today at 16:14. It has
+  488 cases in 66 files, 69.3 minutes of case time, and three failures:
+  `force-graph-building:66`, `force-graph-defaults:101` and
+  `local-map-hidden:95`.
+
+  **How the cases were classified.**
+  - The full code reading was done by my one helper of my own tier: a
+  general-purpose agent, briefed only with the categories and not with my view.
+    - It read every test body in all 66 spec files.
+    - Three files it read from partway down: `card-ladder-boxes` from line 330,
+  `history-scrubber` from 100, `still-picture.spec` from 280.
+    - Where a case mixes promises, it took the most demanding: motion over
+  journey over relation over still. Zoom presses and seeded tuning count as
+  reaching a state, not as a journey.
+  - I read in full `local-map-tone`, `local-map-corset`, `local-map-framing`,
+  `still-picture.spec`, `local-map-branches` lines 1–80 and 270–450, and the
+  instruments. I agree with every one of its rows for those files.
+  - I classified everything else by title only. I did not read the remaining 61
+  spec files myself.
+
+  **Files.**
+  - The ledger, one row per case with seconds, kind, view, the reason, and for
+  the slice's cases the judgments that carry each promise and what is not
+  carried: `/tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e5-9
+  5a5-166121c231a3/scratchpad/ledger.tsv`
+  - The helper's raw classification:
+  `/tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e5-95a5-16612
+  1c231a3/scratchpad/review-classification.tsv`
+  - The decoded report: `/tmp/claude-1000/-workspaces-Live-Documentation/6450141
+  c-9e11-40e5-95a5-166121c231a3/scratchpad/report/report.json`
+
+  **Counts by kind and view:**
+
+  | Kind | 2D | 3D | World Map | Panels | None |
+  |---|---|---|---|---|---|
+  | Still picture | 35 | 20 | 22 | 16 | – |
+  | Relation | 58 | 5 | 2 | 5 | – |
+  | Journey | 82 | 43 | 19 | 67 | 2 |
+  | Motion | 30 | 30 | 4 | – | – |
+  | Other | 18 | 6 | – | 4 | 18 |
+  | Size is the point | – | 2 | – | – | – |
+
+  - "Other" holds the design audit's own checks, the network policy, the
+  layout-lab agreements, WebGL pixel probes and bundles rewritten by route.
+  - "Size is the point" is `force-graph-focus:189` and `force-graph-shells:174`.
+
+  ### 2. The design
+
+  **Reading** (`tests/e2e/scenarios/reading.ts`). It holds:
+  - the scenario, the map, the settled address and the viewport;
+  - the frame (`#view-map .map-edges`) and the picture (`.local-layout`);
+  - the edge signs (`data-above`, `data-below`, `data-left`, `data-right`), the
+  scale and the look (`data-look`);
+  - the cards: id, box, whether subject, whether pinned, and the directory band
+  they stand in;
+  - the dots (`.symbol-anchor.dot`, inbound or outbound);
+  - the wires: key, consumer, provider, kind (route, stub, run, back), sampled
+  points, which end is the provider's, cards crossed, samples in a stranger's
+  lane, opacity and filter;
+  - the directories (`data-segments` on `.local-directory-band`, with parent and
+  whether drawn) and the lanes (`.local-pass-through`, box and slots);
+  - text faults, and the count of text boxes read;
+  - the tone, reduced to contrast ratios;
+  - console errors, off-site requests, and the screenshot's name.
+
+  **Instrument** (`instrument.ts`). It reuses `readPicture` for the wires and
+  card boxes, the design audit for collisions and cut text, and `contrast.ts`.
+  One extra evaluate reads only what those do not. It reads the wires in
+  `readPicture`'s order and refuses to report if the two lists disagree.
+  `watchPage` collects console errors and off-site requests. The screenshot is
+  saved beside the JSON under `reports/scenarios/<language>/`.
+
+  **Judgments** (`judgments.ts`). Each is a pure function returning kept, broken
+  or not applicable, with every finding listed.
+
+  - **Floor:** the subject is drawn, named files are drawn or pinned, at least N
+  cards and N wires, lanes reserved, a picture drawn, and some text read.
+  - **Laws (sixteen):**
+    1. no error and no request to another site;
+    2. no text collides or is cut;
+    3. every card stands inside its directory;
+    4. each directory is one connected shape;
+    5. sibling directories never overlap;
+    6. uses enter on the left and offerings leave on the right (wire ends and
+  dots);
+    7. every route reads forward;
+    8. no route crosses a card it does not end at;
+    9. no lane lies in a stranger's directory;
+    10. no route rises above the picture;
+    11. a picture with no subject is framed whole, by the map's own padding
+  rule;
+    12. the edge signs are honest;
+    13. the subject stands inside the frame;
+    14. no wire glows, and every route is drawn at one strength;
+    15. a card's names lead its prose, each legible;
+    16. a directory's outline is ground, not figure.
+  - **Relation:** a reload gives the same picture.
+  - **Oracle:** the subject's wires, file to file, equal the compiler's edges at
+  that file (`expected/compiler-edges.json`, read with the existing
+  `readOracleEdges`). Ruby has no compiler edges, so it is reported not
+  applicable.
+  - **Baselines:** none.
+
+  `judgments.test.ts` builds a hand-made good picture that keeps every law. Each
+  judgment then gets a picture that breaks it, and the test checks the exact
+  findings.
+
+  **Token resolver** (`tokens.ts`, with `tokens.test.ts`).
+  - The token table is the Rosetta manifest's part patterns, matched
+  case-insensitively against the map's own file ids.
+  - `{part}` is the part's subject file. It prefers a file named for the part,
+  then an implementation over its header, then the declared entry for `main`.
+  - `{part/}` is the part's own directory, only where nothing of another part
+  shares it: Java, C# and Go.
+  - `{part*}` is every file of the part.
+  - An optional root prefix lets the same table resolve on the repository's own
+  map, which holds the TypeScript Rosetta.
+  - A token it cannot resolve raises an error, and the spec reports the scenario
+  skipped as not applicable rather than passed.
+  - Over the real folders, every source file of every program is placed except
+  Python's `src/core_types.py`. That is fork 1.
+
+  **Scenario table** (`table.ts`), with frame size in brackets:
+
+  | Scenario | Frame | Floor | Also judged by |
+  |---|---|---|---|
+  | `{processor}` in focus | 1600×1000 | the subject, main and helpers drawn, at
+  least 2 wires | the reload relation and the compiler oracle |
+  | The whole program retained (`{main}`, `{processor}`, `{models*}`,
+  `{types*}`, `{helpers}`) | 1600×1000 | all five pinned, at least 5 wires,
+  lanes reserved | |
+  | `{models/}` opened with nothing chosen | 1440×900 | – | Java, C# and Go only
+  |
+  | The root with nothing chosen | 1280×800 | – | |
+
+  `still-pictures.spec.ts` runs the four scenarios over the nine samples at
+  `/samples/rosetta/<language>/`. Every verdict is a soft expectation, and every
+  verdict is also written as an annotation and to JSON.
+
+  **Rosetta samples.**
+  - `scripts/live-docs/visualize-rosetta.ts` reads the manifest's variants and
+  builds each one into `dist/explorer/samples/rosetta/<language>/`.
+  - The build body of `visualize-sample.ts` moved into a new shared
+  `sample-build.ts`, so the estate and Rosetta builds use one function. That is
+  a small edit to an existing script.
+  - There is a new npm script, `live-docs:visualize:rosetta`, and `test:e2e` now
+  runs it before Playwright.
+
+  ### 3. Which spec files the table covers, and why
+
+  I chose these because their promises are laws or relations over one settled 2D
+  picture reached by an address, and the Rosetta programs can show the same
+  shapes. Java, C# and Go have directories; the others are flat.
+
+  | Case | Seconds | What the table does not carry |
+  |---|---|---|
+  | `local-map-branches:276` | 45.0 | the lane literals, the detour regex, the
+  3D button title, the "more than 100 wires" density |
+  | `local-map-branches:362` | 4.4 | carried with weaker thresholds |
+  | `still-picture:334` and `:378` (8 runs, 273 s) | | the six pans and the
+  scoreboard measurements, so these stay |
+  | `local-map-framing:46` and `:101` | 1.6 and 1.7 | `:101`'s column alignment
+  and its colour literal |
+  | `local-map-tone:55`, `:82` (its at-rest half) and `:123` | | `:55`'s held
+  tones three presses out, `:82`'s hover half |
+
+  The ledger has each case's details. Together these are 15 runs taking 318 s.
+  Outright retirable without loss, if you accept the weaker thresholds and the
+  missing UI checks: `branches:362`, `framing:46` and `tone:123`, about 7.5 s.
+  That is the honest scale of the first slice.
+
+  ### 4. Forks for you
+
+  1. **Token table gap.** The manifest's types patterns miss Python's
+  `core_types.py`. Subjects of parts with several files are inferred: Java
+  models picks `ModelFactory.java`, C's processor picks `processor.c`.
+     - (a) Add `core_types.*` to the manifest and keep the inference.
+     - (b) An explicit part-to-files map per variant in the manifest.
+     - (c) Leave it, and Python scenarios that need `{types}` stay not
+  applicable.
+     - I recommend (a): one word in a fixture I don't own. The resolver test
+  currently asserts today's truth, Python unplaced.
+  2. **The oracle.** File-level compiler edges will likely go red where an
+  adapter's meaning differs from the compiler's. C's compiler records
+  `processor.c` to `helpers.c`, definition to definition, where the docs record
+  includes of the header.
+     - (a) Two-sided against the compiler, red until the adapters match.
+     - (b) The compiler, with the gaps `oracle:compare` already reports kept as
+  a recorded, re-approved baseline per language, one-sided.
+     - (c) Also judge the drawn wires against the bundle's own graph, which
+  checks the drawing against its data (not independent).
+     - I recommend (c) plus (b), decided once milestone 2 shows the real gaps.
+  3. **Zoom is not in the address.** Scenarios at a look need Zoom Out presses.
+     - (a) Allow a short list of presses before reading, in the scenario.
+     - (b) Carry the look in the address, which is a product change.
+     - I recommend (a). The first table needs neither.
+  4. **The membrane's inset is not published.** The law holds a card inside its
+  segment, weaker than today's 12 px literal.
+     - (a) Publish `data-inset` beside `data-segments` in `branch-renderer.ts`,
+  a one-line product change.
+     - (b) Accept the weaker law.
+     - I recommend (a).
+  5. **Wire kind and style** are read by a second pass aligned with
+  `readPicture`.
+     - (a) Keep it that way.
+     - (b) Add three fields to `readPicture`'s wire reading, an additive change
+  to today's instrument file.
+     - I recommend (b), if touching `still-picture.ts` is acceptable.
+  6. **Our own map's seat.** The same table can run on `/` against the
+  TypeScript Rosetta inside the repository, through the root prefix. That costs
+  the repository's slower load. I recommend adding it in milestone 2 as a tenth
+  map.
+  7. **Where the ledger lives.** It is a dated measurement. I recommend you keep
+  it in the session's Probes rather than in `tests/`.
+  8. **The new spec joins the full suite.** Playwright's file match picks it up,
+  and `test:e2e` now builds nine more samples. I recommend that, since the
+  table is meant to replace cases. The alternative is its own npm script.
+
+  ### Changed files (commit 02969172)
+
+  - New, under `tests/e2e/scenarios/`: `reading.ts`, `judgments.ts`,
+  `judgments.test.ts`, `tokens.ts`, `tokens.test.ts`, `table.ts`,
+  `instrument.ts`, `still-pictures.spec.ts`
+  - New: `scripts/live-docs/sample-build.ts`,
+  `scripts/live-docs/visualize-rosetta.ts`
+  - Changed: `scripts/live-docs/visualize-sample.ts` (now calls the shared
+  build), `package.json` (the Rosetta script, and `test:e2e` builds it)
+
+  ### Not done, for milestone 2
+
+  - Install, typecheck, lint, the unit tests, and the sample builds.
+  - Confirm the samples' file ids are program-relative (`src/processor.ts`), as
+  the resolver assumes.
+  - Bring up the instrument and look at its screenshots.
+  - Run the table, measure it, and do the break-and-see check.
+  - Regenerate the Live Docs with authored Purpose and Notes citing `#turn-8`
+  and `#roots-reply-to-turn-11-as-delivered`.
+  - Open risks: the root scenario's floor, whether the selected-file drawing
+  keeps routes below the top of the picture, and whether every program reserves
+  a lane when retained.
+
+● Agent "Scenario suite first slice builder" finished · 26m 18s
+
+● The two-worker run is done: 482 of 488 in 42 minutes, and the five cases that
+  failed only at two workers all pass alone at one worker. Sending the two
+  waiting builders their next steps now.
+  ⎿  Resuming agent a88f770
+  ⎿  Resuming agent a5c4a67
+
+  Made 2 scratchpad edits +110, ran 2 shell commands (ctrl+o to expand)
+
+● Two workers ran the whole suite in 42 minutes against 72, but they do not yet
+  pass everything one worker passes. The session-history landing is gated all
+  the same. And I have the count I owed you on the scenario suite.
+
+  The suite at two workers
+
+  482 of 488 passed. One red is the known race. Five are red only when the
+  machine is shared, and all five passed when I reran them alone at one worker:
+
+  ┌──────────────────────────────────┬────────────────────────┬────────────┐
+  │               Case               │ How it failed at two   │ Alone at   │
+  │                                  │        workers         │ one worker │
+  ├──────────────────────────────────┼────────────────────────┼────────────┤
+  │                                  │ ran past the           │            │
+  │ history-scrubber.spec.ts:391     │ framework's 30 s (31.0 │ passed     │
+  │                                  │  s)                    │            │
+  ├──────────────────────────────────┼────────────────────────┼────────────┤
+  │ history-scrubber.spec.ts:569     │ same limit (31.4 s)    │ passed,    │
+  │                                  │                        │ 27.3 s     │
+  ├──────────────────────────────────┼────────────────────────┼────────────┤
+  │ layout-lab.spec.ts:20            │ same limit (43.9 s)    │ passed,    │
+  │ (repository chain)               │                        │ 32.3 s     │
+  ├──────────────────────────────────┼────────────────────────┼────────────┤
+  │ local-map-branches.spec.ts:276   │ ran past its own 60 s  │ passed,    │
+  │                                  │                        │ 47.6 s     │
+  ├──────────────────────────────────┼────────────────────────┼────────────┤
+  │                                  │ compared against a     │ passed,    │
+  │ history-scrubber.spec.ts:180     │ position that had not  │ 11.2 s     │
+  │                                  │ been read yet          │            │
+  └──────────────────────────────────┴────────────────────────┴────────────┘
+
+  The first four are slow cases whose own work nearly fills their time limit, so
+  sharing the machine pushes them over. The fifth is a race, which I'll run
+  down at its cause.
+
+  My plan changes no time limit. I mark the few cases that need the machine to
+  themselves and run them in a second pass at one worker, inside the same gate.
+  That should cost a few minutes on top of the 42. Three workers get measured
+  after that holds.
+
+  Your scenario suite: the count
+
+  163 of the 488 cases are still-picture promises, and they take 35% of the
+  run's time.
+
+  ┌───────────────────────────────────────────────────────┬───────┬─────────┐
+  │                         Kind                          │ Cases │ Seconds │
+  ├───────────────────────────────────────────────────────┼───────┼─────────┤
+  │ Still picture (93 from one picture, 70 comparing two) │ 163   │ 1,453   │
+  ├───────────────────────────────────────────────────────┼───────┼─────────┤
+  │ Journey                                               │ 213   │ 1,664   │
+  ├───────────────────────────────────────────────────────┼───────┼─────────┤
+  │ Motion                                                │ 64    │ 738     │
+  ├───────────────────────────────────────────────────────┼───────┼─────────┤
+  │ Other (design audit, network policy, layout lab)      │ 46    │ 290     │
+  ├───────────────────────────────────────────────────────┼───────┼─────────┤
+  │ Where this repository's size is the point             │ 2     │ 13      │
+  └───────────────────────────────────────────────────────┴───────┴─────────┘
+
+  The finding that matters: almost no case can be deleted as it stands. Nearly
+  every still-picture case also checks a number written into the test (a 9 px
+  lane slot, a 28 px gap, a colour) or one gesture such as a hover. Converting a
+  case therefore means splitting it: the still half goes to the scenario table
+  and the gesture half stays as a shorter case.
+
+  So the first slice will show your pattern working and measure it, but it will
+  not shorten the gate by itself. Its table covers 15 of today's runs (318 s),
+  of which only three cases (about 7.5 s) could be retired outright. For now the
+  gate's time comes down through workers; conversions follow case by case once
+  you've seen the measurement.
+
+  - How it was counted: a helper read every test body in all 66 spec files, and
+    the builder checked five files in full and agreed with every row. Treat the
+    count as a careful first pass.
+  - What is designed so far (written, not yet run): sixteen laws, one reload
+    relation and one oracle against the compiler's edges, with no recorded
+    baselines, over four scenarios on the nine Rosetta programs.
+  - One product line I allowed: the page will publish the membrane's inset as a
+    data attribute, so the law reads it from the page and the test holds no
+    pixel literal.
+
+  Running now
+
+  - Dependency builder: installing and testing, with npm 11 pinned as you
+    agreed.
+  - Scenario builder: has the browser to bring up its instrument and run the
+    table. I'll take the browser back before the next gate.
+
+● Background command "Short timer so the work continues after the reply"
+  completed (exit code 0)
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● Building the second pass now (the four slow cases marked to run alone at one
+  worker after the rest runs at two), so the next gate can prove it.
+
+● Write(scripts/e2e-passes.mjs)
+  ⎿  Wrote 23 lines to scripts/e2e-passes.mjs
+      1 #!/usr/bin/env node
+      2 // Runs the browser suite in two passes over bundles already buil
+        t: the cases that can share the machine at two
+      3 // workers, then the few tagged `@alone` at one worker. A case is
+         tagged when its own work nearly fills its time limit
+      4 // with the machine to itself, so that a second worker beside it
+        pushes it over; running it alone keeps every limit as
+      5 // it was written. Arguments are handed to both passes (a spec fi
+        le, `--list`, `--repeat-each`). The exit code is 1 if
+      6 // either pass failed. Each pass keeps its own report and its own
+     … +18 lines (ctrl+o to expand)
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Second pass is built and lists correctly (484 cases at two workers, 4 alone,
+  488 in all). Writing its documentation, then committing.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Two-pass runner is documented and the docs checks pass. Committing it; both
+  builders are still working.
+
+  Made 1 scratchpad edit +55, ran 2 shell commands (ctrl+o to expand)
+
+● The second pass is built and committed (8380146c): npm run test:e2e now runs
+  484 cases at two workers and then the four slow ones alone at one worker, with
+  no time limit changed. I confirmed by listing, without a browser, that the
+  two passes hold all 488 cases between them. It has not yet been proven by a
+  whole run; the next gate, for the dependency round, is that proof.
+
+  - The race in history-scrubber.spec.ts:180 is not mended. At two workers the
+    case took its first reading after the page said it had settled, and one of
+    the eight files was not yet in the picture. I left it out of the alone pass
+    on purpose, because marking it would hide the fault. It may go red at two
+    workers until I run it down, which needs the browser.
+  - Cleanup: the session-history builder's worktree and branch are removed, now
+    that its landing is gated.
+
+  Both builders are still working: the dependency round is installing and
+  testing with npm 11, and the scenario slice has the browser.
+
+● Agent "Dependency audit remediation builder" is waiting on its own background
+  work · 7m 27s
+● The dependency builder has paused on a background step of its own (its install
+  and test runs) and has not reported yet, so there is nothing to act on. I'm
+  waiting for its handback and the scenario builder's.
+
+› Message from general-purpose
+  ## Milestone 2: done. All checks pass, `npm audit` reports 0 vulnerabilities
+
+  **`npm audit` now reports 0 vulnerabilities** (17:31 UTC, same answer from npm
+  10.9.9 and npm 11.21.1). npm's audit data has now registered GitHub's
+  withdrawal of the picomatch advisory, so ruling (a) resolved itself. Nothing
+  is overridden or ignored.
+
+  The worktree is clean at `cc8d57e5`. There are four commits on top of
+  `0be65840`, in this order:
+  1. `1dcecb01` Raise dependencies past this month's security advisories
+  (milestone 1: the two manifests and the lock)
+  2. `2b6c8cca` Give the container npm 11, and let it write the lock
+  3. `310a2f7b` Order relative imports as eslint-plugin-import-x 4.18 sorts them
+  4. `cc8d57e5` Regenerate the Live Docs of the two manifests for the raised
+  versions
+
+  ### Pinned npm: 11.21.1
+  - **Why this version:** it was released 2026-10-15T15:45Z, about five weeks
+  ago. The two later releases are too young: 11.21.2 came out 2026-11-04T22:39Z,
+  which was 13 days 18 hours old when I chose, and 11.21.3 came out today.
+  - **Supports our Node:** its engines field is `^20.17.0 || >=22.9.0`.
+  - **It resolves the tree:** I re-resolved the lock from scratch with `npx -y
+  npm@11.21.1 install --package-lock-only` starting from `0be65840`'s lock. It
+  produced the same versions as milestone 1's lock. The only difference is where
+  one copy of es-module-lexer sits in the tree.
+  - **`.devcontainer/post-create.sh`:** a new step, placed before `npm install`,
+  runs `npm install -g npm@11.21.1` and prints the version. The comment beside
+  it says that npm 10.9 cannot resolve the tree once vite is past 8.3.1 and
+  quotes the error it dies with.
+  - **`.devcontainer/README.md`:** one bullet added under "What's Included →
+  Base Environment" saying the container carries npm 11 and why, and that npm 10
+  still installs from the lock with `npm ci`. All headings are unchanged.
+  - **Not added:** no packageManager or engines.npm field. I did not touch the
+  container's global npm.
+
+  ### npm 11 now warns about install scripts
+  npm 11 prints a warning that esbuild, tree-sitter-cli and unrs-resolver "have
+  install scripts not yet covered by allowScripts".
+  - **In npm 11 this is only a warning; the scripts still run.** I confirmed it:
+  the `tree-sitter` binary that tree-sitter-cli's install script downloads is
+  present.
+  - **npm 12 blocks those scripts by default** (its 12.0.0 changelog says so).
+  If the container ever moves to 12, the project will need an `allowScripts`
+  field in package.json. That is a decision for later; I added nothing for it.
+
+  ### The two npm proofs
+  The lock's sha256 was `e92d60ef…cdd00d3` throughout, and after every step
+  `cmp` found it unchanged byte for byte.
+  - **(i) npm 10.9.9, as the workflows use it:** `npm --version` printed 10.9.9;
+  `npm ci` exited 0 ("found 0 vulnerabilities"). The lock was unchanged.
+  - **(ii) the pinned npm 11:** `npx -y npm@11.21.1 ci` exited 0, then `npx -y
+  npm@11.21.1 install` exited 0. The lock was unchanged after each.
+  - **Installed tree:** `npm ls --all` exits 0 under npm 10 and under npm
+  11.21.1.
+
+  ### Checks and their numbers
+  - **`npm run verify`:** exit 0.
+    - Lint: clean. The eslint-import-resolver-typescript notice "Multiple
+  projects found…" still prints; it comes from that resolver, whose version did
+  not change.
+    - Build (engine, explorer and client typecheck, generator): passed.
+    - Test type-check: passed.
+    - Unit tests: 178 files, 1977 tests, all passed.
+    - Integration tests: 21 files, 138 tests, all passed.
+    - Documentation link enforcement: 1024 documents, all satisfied.
+  - **SlopCop audits:** markdown 1486 files with 0 broken links; assets 21 files
+  with 0 broken references; symbols 1483 files with 0 issues.
+  - **Proof script** (`history-move-proof.mjs bbce1d4c`, run from the worktree):
+  bundleExclude 216/216; markdown 1487/1486; assets 21/21; symbols 1484/1483.
+  "glob on disk agrees" is yes for all three audits, and it ends with "proof:
+  every set is the same", exit 0.
+    - **One number differs from your list:** the .gitignore line printed 4507
+  paths checked, 10 ignored before and 10 after, 0 differences, not your 63/63.
+    - That is because I did not pass the main checkout as the script's second
+  argument. Doing so runs `git ls-files` inside /workspaces/Live-Documentation,
+  which your brief rules out.
+    - That part of the proof uses git's own check-ignore, not glob or minimatch,
+  so the upgrade cannot affect it. If you want 63/63 shown, run it with
+  `/workspaces/Live-Documentation` as the second argument.
+  - **glob 13.0.6 against 14.0.6 on disk:** I walked the worktree with both
+  versions at 35 call-site pattern and option sets. Every set was identical (0
+  paths differ). They covered:
+    - both discovery walks (6736 and 5699 files)
+    - the four language adapters (38, 59, 27 and 23 files)
+    - the generator's scans and prune, graphFiles and lint (1037 files)
+    - every include and default pattern of the three audits with their ignore
+  lists (for example 1486, 21 and 1483)
+    - the five documentationLinks globs
+    - the PowerShell oracle test
+  - **minimatch on our patterns** (from milestone 1): 0 differences across about
+  1.56 million comparisons.
+  - **`npm run live-docs:generate`:** 1037 files, 2 updated, the two manifests'
+  docs, committed in `cc8d57e5`.
+    - No other doc changed. post-create.sh's doc has empty generated sections,
+  and the README is not mirrored.
+    - `live-docs:lint` passes with 1037 files validated; the
+  59-disconnected-nodes warning was already there.
+
+  ### What the newer tools flagged, and the fix
+  - **Only `import-x/order`, 274 errors in 153 files.** eslint,
+  typescript-eslint and the rest of import-x reported nothing new.
+  - **Cause:** import-x 4.18.0 changed how its order rule alphabetizes (#517).
+  Within one group, a parent import (`../x`) now always sorts before a sibling
+  (`./y`), as eslint-plugin-import does. Our files followed the old order, which
+  put siblings first.
+  - **Fix:** I applied eslint's own fixer for that rule, nothing else.
+    - Every changed file only moves import lines. In each of the 153 files the
+  lines added equal the lines removed, no blank line changed, and no line other
+  than an import changed.
+    - Files by folder: packages/engine 16, packages/explorer 57,
+  scripts/layout-lab 17, scripts/live-docs 4, tests/e2e 58, tests/integration 1.
+  `git show --stat 310a2f7b` lists them all.
+  - These files under packages/ changed only because the upgrade required it.
+
+  ### Left to you
+  - The authored note on minimatch 11 in the engine manifest's Live Doc, which
+  you reserved.
+  - The authored Notes of `.mdmd/layer-4/.devcontainer/post-create.sh.mdmd.md`
+  list what the script installs and do not yet mention the npm 11 step. I left
+  that note alone because it cites the turn in the session record that explains
+  each step, and that is yours.
+  - At landing: the container's global npm and the browser gate.
+  - The worktree holds `node_modules` (installed by npm 11.21.1) and build
+  output. Both are ignored by git.
+
+  I used no helper agent. I removed all of my temporary files from the
+  scratchpad, including the two comparison scripts, because the scratch module
+  trees they needed are gone. `history-move-proof.mjs` and the other files there
+  are not mine and I left them.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Dependency audit remediation builder" finished · 12m 52s
+
+● The dependency round is back with every check passing, and npm audit now
+  reports 0 findings (npm picked up the withdrawal). Landing it on main now.
+
+  Ran 1 shell command (ctrl+o to expand)
+  ⎿  Message queued for delivery to a5c4a67b4603d712f at its next tool
+     round. If it finishes first, it is resumed with the message and
+     notifies again, so wait for that notification before resending.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Landed and installed (npm audit: 0 findings; npm 11.21.1 in this container).
+  Committing the notes and starting the dependency round's gate, which is also
+  the first proof of the two-pass run.
+
+  Made 1 scratchpad edit +60, ran 4 shell commands (ctrl+o to expand)
+
+● The dependency round is landed and npm audit now reports 0 findings. Its gate
+  is running and should end near 18:25 UTC. That gate is also the first whole
+  run of the two-pass browser suite.
+
+  - Why zero and not 14: npm's data picked up GitHub's withdrawal of the
+    picomatch advisory while the builder worked. Nothing was overridden or
+    ignored. So the Monday npm-audit.yml workflow will not go red after all; I
+    was wrong to warn you about that.
+  - What changed:
+    - glob and minimatch each went up a major version; both are engine
+      dependencies.
+    - The linting and test tooling took minor bumps.
+  - Same files selected: before installing, both libraries were run beside their
+    old versions over every tracked path with every pattern we use, and no path
+    was selected differently. I repeated the bundle and audit enumeration on
+    main afterwards with the same result.
+  - 153 files have reordered imports: the newer import-order lint rule sorts
+    ../x before ./y. The builder applied the linter's own fixer and nothing
+    else, so only import lines moved.
+  - npm 11.21.1 is pinned in .devcontainer/post-create.sh. I ran the same
+    command here, so this container is already on it and needs no rebuild.
+  - GitHub workflows stay on npm 10: the builder showed that npm 10's npm ci
+    installs from the new lock and leaves it byte for byte unchanged.
+  - One new warning you will see: npm 11 says three packages' install scripts
+    are not yet listed under allowScripts. It still runs them. npm 12 would not,
+    so a later move to 12 needs that list first.
+
+  Before the browser stage, lint, the build, 1,977 unit tests, 138 integration
+  tests and the three audits all passed in the builder's worktree. The gate is
+  repeating them on main now.
+
+  I also brought the devcontainer README level with the move off D:\, with the
+  gate's times before and after.
+
+  main is 10 commits ahead of origin/main, so your push went through from this
+  container. The scenario builder is paused off the browser until the gate ends.
+
+› Message from general-purpose
+  ## Milestone 2, up to your stop
+
+  **The short of it.** The table runs over the ten maps. 41 cases pass, 7 are
+  not applicable, and 2 fail: C and C++ in the processor-in-focus scenario.
+  Those two failures are real findings, not instrument errors. In the
+  break-and-see check, eight deliberate breaks of the product turned the
+  matching laws red. Two did not, and each "no" taught something. What is still
+  owed: the timing in a quiet window, lint, build, the latest unit-test rerun,
+  and the Live Docs.
+
+  ### Commits in the worktree (on 55dd6620)
+
+  - **02969172** is milestone 1.
+  - **c1523a52** is this round:
+    - **Product:**
+  `packages/explorer/src/client/views/localView/branch-renderer.ts`. A
+  directory's band now publishes its inset as `data-inset` beside
+  `data-segments`.
+    - **Today's instrument:** `tests/e2e/still-picture.ts`. `readPicture`'s wire
+  reading gains `kind` (route, stub, run, back), `opacity` and `filter`. The
+  change is additive: no other user constructs a wire reading, and the six
+  unit-test files under `tests/e2e` passed, 68 cases.
+    - **Fixture:** `tests/integration/programs/rosetta-manifest.json`. The types
+  pattern gains `core_types.*`.
+    - **Scenario suite:** `tests/e2e/scenarios/*`.
+  - Milestone 1's `scripts/live-docs/sample-build.ts`, `visualize-rosetta.ts`
+  and `visualize-sample.ts` and the `package.json` scripts are unchanged this
+  round.
+
+  ### Forks as you decided them
+
+  1. **Python's types.**
+     - The manifest names `core_types.py`, and the resolver's test now asserts
+  that every source file of every language is placed, including Python's types.
+     - Nothing in the repository parses the manifest except the new code. The
+  integration test `rosettaParity` only cites it in comments, and two browser
+  specs pin the file by name; adding a pattern changes neither.
+     - I did not run the integration tests: the gate began first.
+  2. **The oracle.** Both comparisons are built.
+     - The drawn wires are checked against the bundle's own references. This is
+  named and ranked as a relation between the picture and the data it was drawn
+  from. It held on all ten maps.
+     - The compiler's edges are checked both ways, per language. A drawn wire to
+  a file the compiler does not index (a JSON file on our map,
+  `compile_commands.json` in C) is neither confirmed nor denied, by the same
+  rule the existing oracle comparison uses.
+     - The real gaps are below.
+  3. **Zoom presses.** A scenario can carry a count of Zoom Out presses, each
+  awaited at rest. One scenario uses it: the processor in focus, three presses
+  out.
+     - As a product idea, not work: carrying the look in the address would make
+  a shared link reproduce what the sender saw at the overview, and let scenarios
+  and defect reproductions be pure addresses.
+     - The cost is a decision about whether a link with a look in it should take
+  the receiver's camera, as a link with a commit already takes their moment.
+  4. **Inset.** It is published as above. The law reads it from the page, and
+  the instrument refuses to report if any band lacks it, so a missing inset
+  cannot let every card pass.
+     - The "unit test" is the browser reading plus the judgment's unit tests. A
+  renderer test needs a DOM, which this repository verifies only with
+  Playwright, never with jsdom.
+     - Its Live Doc is not regenerated yet.
+  5. **One wire reader.** Done, as described under the commits.
+  6. **This repository's map** is the tenth map.
+     - Its four scenarios took 18.0 s, against 127.6 s for the nine samples' 36
+  cases.
+     - These are case times from a run that was not quiet; they are indicative
+  only.
+  7. **Ledger.**
+     - Confirmed: no test body lies in the ranges the helper skipped.
+     - `card-ladder-boxes` lines 1–329 hold `test.use`, a setup-only
+  `beforeEach` (I read it) and the walk helpers. Their assertions, lines
+  314–325, belong to cases already classed as relations.
+     - `history-scrubber` lines 1–99 hold `test.use` and opening helpers with
+  setup assertions.
+     - No row changes.
+     - The literals of the covered cases, each sorted as carried by a law,
+  needing a recorded baseline, or belonging to a gesture:
+  `/tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e5-95a5-16612
+  1c231a3/scratchpad/ledger-literals.tsv`
+     - That sorting shows four promises no judgment carries yet, but which a
+  short law could carry:
+       - every directory but the root draws an outline;
+       - root columns are top-aligned;
+       - a description and the Purpose are one tone;
+       - held names keep their tones three presses out (a relation between two
+  readings).
+  8. **The spec joins the suite.**
+     - The nine sample builds took 7.1 s, in a busy window.
+     - The spec shares no state between cases. Each case writes only
+  `reports/scenarios/<map>/<scenario-slug>.{json,png}`, so two workers cannot
+  collide.
+
+  ### What the table reported
+
+  Final run, after my fixes and after the product was restored, on the real
+  build:
+
+  | Map | Focus | Focus, 3 presses out | Retained | Part's directory | Root |
+  |---|---|---|---|---|---|
+  | typescript | pass | pass | pass | n/a, flat | pass |
+  | java | pass | pass | pass | pass | pass |
+  | csharp | pass | pass | pass | pass | pass |
+  | rust | pass | pass | pass | n/a, flat | pass |
+  | c | **FAIL** (floor, oracle) | pass | pass | n/a, flat | pass |
+  | cpp | **FAIL** (floor, oracle) | pass | pass | n/a, flat | pass |
+  | go | pass | pass | pass | pass | pass |
+  | python | pass | pass | pass | n/a, flat | pass |
+  | ruby | pass (no compiler oracle, said so) | pass | pass | n/a, flat | pass |
+  | this repository | pass | pass | pass | n/a, flat | pass |
+
+  - **Every law held on every map**, and every reload relation and data relation
+  held. Two laws were wrong as first written, and I corrected them after
+  looking at the screenshots:
+    - **The left-and-right law said "at the edge".** The dots stand at their
+  row's end, inside the card's padding, about 21 px in at scale 1. The law is
+  now the side: uses enter in the left half, offerings leave from the right
+  half.
+    - **The text law judged cut names at every look.** Farther out than reading
+  size, names are held and cut at their end by design ("Intern…"). There only
+  collisions are judged now.
+  - **C and C++ in focus.** The floor fails because `{processor}` resolves to
+  `processor.c` (implementation before header), and in C `main.c` includes
+  `processor.h`. So with the `.c` file in focus, neither main nor the helpers is
+  drawn. In C the processor is two files.
+    - (a) The token takes the file the other parts reference, the header, and
+  the floor asks only for main. My recommendation.
+    - (b) Floors at the level of the part: any file of the part is drawn.
+    - (c) Leave it red as a true statement about C.
+  - **Seen by eye, possibly a product defect.** At the connections look in
+  TypeScript, `ProcessorConfig` on the types card wraps as "Process / orConfig",
+  breaking inside the word. That card stood partly behind the left edge of the
+  frame, so I am not sure. Look at
+  `reports/scenarios/typescript/the-processor-in-focus-three-presses-out.png` in
+  the worktree. No law caught it, because no law yet judges where a name
+  breaks.
+
+  ### The oracle's real gaps (compiler edges, two-sided, at the processor)
+
+  - **Agree exactly:** TypeScript, Java, C#, Rust, Go, Python, and the
+  TypeScript program on this repository's map.
+  - **Ruby:** has no compiler edges, so the judgment is reported not applicable.
+  - **C, with `processor.c` in focus:** 8 edges missing. Each one is the
+  compiler recording a use of a definition or a symbol where the Live Docs
+  record the `#include` of a header:
+    - `main.c` uses `processor.c`
+    - `processor.c` uses `helpers.c`
+    - `processor.c` uses `models.c`
+    - `processor.c` uses `models.h`
+    - `processor.c` uses `types.h`
+    - `processor.h` uses `processor.c`
+    - `test_pipeline.c` uses `processor.c`
+    - `test_processor.c` uses `processor.c`
+    - `processor.c` uses `models.h` and `types.h` are worth a look. The compiler
+  sees `processor.c` using symbols of those headers, which reach it through
+  `processor.h`, and the docs record only direct includes.
+  - **C++:** the same 8, with the `.cpp`/`.hpp` names.
+  - **Gaps against what the compiler denies:** none on any map.
+
+  This should match what `npm run oracle:compare` already reports for those two
+  fixtures. I have not run it, because of the gate. If you want an allowance, it
+  would be those lists, one-sided. I recommend deciding together with the C
+  token fork, since the header as subject changes which edges are judged.
+
+  ### Break-and-see
+
+  I broke the product in my worktree, rebuilt the samples, ran the table on Java
+  and TypeScript, then restored. `git diff` shows only the intended
+  `data-inset` lines left in `packages/`.
+
+  **Round 1:**
+
+  | Break | Guards against today's case | Table |
+  |---|---|---|
+  | A glow on every wire | `local-map-tone:82` and `:105` | Red on every
+  scenario, every wire listed |
+  | Membrane fill at alpha 0.3 | `local-map-tone:123` | Red wherever an outline
+  is drawn |
+  | Edge signs inverted below | `local-map-framing:46`, `:101`, `:125` | Red on
+  every scenario, both directions named |
+  | Framing off centre by 40 px | `local-map-framing:46`, `:101` | Red on the
+  two scenarios with no subject, "40 px off centre across" and "down" |
+  | Letter-spacing 6 px on names | still-picture text faults | **Stayed green.**
+  Correct: the map measures the names and widens the cards, so nothing was cut.
+  The screenshot confirms it. |
+
+  **Round 2:**
+
+  | Break | Guards against today's case | Table |
+  |---|---|---|
+  | Cards in directories lifted 60 px | `local-map-branches:362` | Red three
+  ways: cards above the inside of their directory, text collisions with the
+  directory names, and routes crossing cards |
+  | Names clipped to a 24 px sliver (`overflow: hidden` on the name's inner
+  span) | still-picture text faults | **Mostly missed.** Only "main (method
+  overload 1/2)" were reported cut. |
+
+  The second "no" is an **instrument blind spot in today's design audit**.
+  `truncations()` collects clipping ancestors from the audited element outward,
+  so a clip on an element *between* the audited element and its text goes
+  unseen. Today's still-picture and zoom specs share that blind spot. It is a
+  fork for you, since `design-audit.ts` is today's suite: count clips on
+  descendants within the text walk, with its own bad-case unit test.
+
+  **Not broken, for lack of a cheap faithful break:** routing that runs
+  backward, and the left-and-right sides. The lifted-cards break did turn the
+  route-crossing law red.
+
+  ### Measurement (indicative only; not the quiet-window timing)
+
+  - The table: 50 cases, 41 run, 7 skipped, 2 failed; 145.6 s of case time; 2
+  min 40 s wall at one worker.
+    - Each case checks a floor, 16 laws, and on the focus scenario a reload
+  relation, a data relation and the oracle.
+    - That is about 18 to 20 promises per load at 2 to 6 s a load on a sample.
+  - Today's 93 two-dimensional still-picture cases average 13 s for one to three
+  promises each.
+  - The cases whose promises the table carries total 318 s in today's suite.
+  They stay until their gesture halves and literals are split off, so the slice
+  saves nothing yet.
+  - I will give the per-promise comparison you asked for, carried promises
+  against seconds beside the seconds of the cases they live in, from the
+  quiet-window timing.
+
+  ### Files your landing will meet
+
+  - **`package.json`, the `test:e2e` line.** Mine inserts `npm run
+  live-docs:visualize:rosetta` before Playwright. Main's now ends in `node
+  ./scripts/e2e-passes.mjs`. The Rosetta build belongs before that.
+  - **Import order** (parent before sibling): all my new files already import
+  parent paths (`../…`) before siblings (`./…`).
+    - `tests/e2e/scenarios/{instrument,judgments,judgments.test,still-pictures.s
+  pec,tokens.test}.ts`
+    - `scripts/live-docs/{sample-build,visualize-rosetta,visualize-sample}.ts`
+    - I could not lint against eslint-plugin-import-x 4.18, so treat that as
+  unverified.
+  - **Dependencies:** none of my files import glob or minimatch.
+  - **`@alone` tag:** the new spec needs none.
+
+  ### What remains
+
+  - The timing measurement in your quiet window.
+  - Lint, typecheck/build, and a rerun of the unit tests. My last three edits to
+  `judgments.ts` and `judgments.test.ts` (the halves law, the look-aware text
+  law, the oracle's documents) have not been run.
+  - The integration tests after the manifest change.
+  - `npm run live-docs:generate`, with authored Purpose and Notes for the new
+  files and the renderer's Live Doc, citing `#turn-8` and
+  `#roots-reply-to-turn-11-as-delivered`.
+  - The C/C++ token fork and the design-audit blind-spot fork.
+  - `oracle:compare` on C and C++, to confirm the gaps match its record.
+
+  **Helper named:** one general-purpose agent of my tier, in milestone 1, for
+  the independent full-code classification of the 488 cases.
+
+  Scratch outputs, kept for you to file:
+  - `/tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e5-95a5-166
+  121c231a3/scratchpad/ledger.tsv`
+  - `/tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e5-95a5-166
+  121c231a3/scratchpad/ledger-literals.tsv`
+  - `/tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e5-95a5-166
+  121c231a3/scratchpad/review-classification.tsv`
+  - `/tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e5-95a5-166
+  121c231a3/scratchpad/final.log`
+
+  The readings and screenshots of the final run are in the worktree's
+  `reports/scenarios/`, which git ignores.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Scenario suite first slice builder" finished · 17m 14s
+
+● The scenario builder has handed back up to my stop. Looking at its pictures
+  with my own eye while the dependency gate runs (unit stage passed, browser
+  stage about to start).
+
+  Read 3 files (ctrl+o to expand)
+  ⎿  Resuming agent a5c4a67
+
+● Background command "Wait for the dependency round's gate to finish and show
+  its stages and results" completed (exit code 0)
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The dependency gate stopped at integration because the hand-kept entry point
+  list didn't include the new two-pass runner. I've added it and am rerunning
+  that test before restarting the gate. · summary
+
+  Made 1 scratchpad edit +69, ran 4 shell commands (ctrl+o to expand)
+
+● The dependency gate stopped at its integration stage on a gap in my own
+  change, and I've mended it and restarted the gate. It now ends near 18:30 UTC,
+  not 18:25.
+
+  - The gap: an integration test keeps a hand-written list of every file that
+    starts something in this repository. My new two-pass runner was not on it,
+    because I had checked that commit by lint and by listing the suite but not
+    by the integration tests. I added the entry (1bbdfce5), the test passes
+    alone, and the gate is running again from the start.
+
+  The scenario table has run for the first time
+
+  It ran four scenarios, plus one at three zoom-out presses, over the nine
+  Rosetta programs and this repository's own map. Of 50 cases, 41 passed, 7 were
+  not applicable, and 2 failed.
+
+  - Every law held on every map, as did the reload relation.
+  - The two failures (C and C++, processor in focus) are the table's own
+    mistake. Its {processor} token picked processor.c, but in C the other parts
+    include processor.h, so the neighbours it expected were not drawn. I ruled
+    that the token should name whichever file of a part the other parts
+    reference most, read from the map itself.
+  - The compiler oracle agrees exactly for TypeScript, Java, C#, Rust, Go and
+    Python. C and C++ each differ by eight edges, all of one kind: the compiler
+    records the use of a definition where our docs record the include of a
+    header. Ruby has no compiler edges to compare. I'm not writing an allowance
+    to make C and C++ pass; the builder will check them against our existing
+    oracle comparison and use its rule.
+
+  Breaking the product on purpose turned the table red in 8 of 10 tries. The two
+  misses:
+
+  - Letter-spacing on names: the map measures its names and widens the cards, so
+    nothing was actually cut. The table was right to stay green.
+  - Names clipped by a style on an inner element: this exposed a blind spot in
+    today's design audit, which only looks for clipping on an element's
+    ancestors. I've told the builder to mend it and then report every existing
+    case that turns red as a finding.
+
+  I looked at three of its pictures myself. They are real Local Maps of the
+  small programs. One shows a defect already on our list: at three presses out,
+  ProcessorConfig on a narrow card breaks mid-word as "Process / orConfig".
+
+  Timing is not measured yet. On a busy machine the 50 cases took about 2
+  minutes 40 seconds, each load checking 18 to 20 promises. The proper
+  measurement waits for a quiet machine after the gate.
+
+› Message from general-purpose
+  ## Interim: your six decisions are done in code, nothing has been run, and I
+  am waiting for the gate to end
+
+  Per your instruction there were no builds, tests, browser or lint. Three new
+  commits sit on top of c1523a52 in my worktree:
+
+  1. **2f962956, the design audit's blind spot** (its own commit).
+     - `truncations()` in `tests/e2e/design-audit.ts` now reads, for each piece
+  of text, the clips of every element between the audited element and the text,
+  from the text outward, before the audited element's own clip and its
+  ancestors'.
+     - A clip that scrolls still only narrows what is visible, so it reports
+  nothing.
+     - The bad case is a new browser fixture in `design-audit.spec.ts`. A name
+  clipped to 40 px by its own span must be reported, more than 100 px hidden.
+  Beside it, the same span set to scroll must not be.
+     - It is not run yet. In your window I will run every spec that uses the
+  audit and list each case that turns red, without quieting any.
+  2. **215819ee, the token rule, the floors and the new judgments.**
+     - **The token rule.** A part's subject is the file of the part that the
+  most files of other parts use, read from the map's own references
+  (`graph.links`). A tie goes to the file named for the part, then to the
+  implementation. Without references, the C family's header goes before its
+  implementation.
+       - Unit test: in C, the processor resolves to `processor.h`. Its own
+  `processor.c` counts for nothing, and a tie between `helpers.h` and
+  `helpers.c` goes to `helpers.c`.
+       - Unit test: in Java, models resolves to the most-used `Record.java`.
+       - The test over the real folders, with no references, gives C
+  `processor.h`.
+     - **Floors.** Focus scenarios ask only for the subject, at least 2 cards
+  and at least 1 wire. The retained scenario keeps every file of each part
+  pinned (`{main*}` … `{helpers*}`), at least 2 cards, at least 1 wire, and
+  lanes. The directory scenario asks for `{models*}` drawn.
+     - **The four uncarried promises.** Each has a bad reading it must reject:
+       - three laws: every directory but the root draws an outline (and the root
+  none); a picture with no subject stands its root's columns at one top; a
+  description and the Purpose are one tone;
+       - one relation: held names keep their tones three presses out. The far
+  scenario now reads the picture at reading size before its presses, in the same
+  run, and judges the pair.
+     - **The law that no name breaks inside a word** is written with its unit
+  test. "Process / orConfig" is rejected; "Processor / Config" and "rosetta- /
+  manifest.json" are kept. It sits in `PENDING_LAWS`, outside the table, and the
+  test asserts that it stays out. It is ready for when the defect is mended.
+       - Its seam rule is written independently of the product's
+  `word-seams.ts`, so the judgment does not grade the map by the map's own rule.
+       - The instrument now reads the lines each name is drawn on, letter by
+  letter, so the law needs no further work to join the table.
+     - **The corrected laws' comments** now say what the screenshots showed:
+       - each dot stands at the end of its row, about 21 px inside the card's
+  edge at scale 1;
+       - farther out, "Intern…" and "Inter…" end in an ellipsis by design.
+     - **New reading fields:** `rootColumns`, `names`, and the tone's raw
+  colours (`fileName` as drawn at that look, held or whole, plus `symbolName`,
+  `purpose` and `description`).
+
+  **The oracle for C and C++ is waiting.** `scripts/oracle/compare.ts` matches
+  `from|to` exactly and has no rule pairing a header with its implementation; I
+  read the whole file. So unless `oracle:compare` shows otherwise, the judgment
+  will report the C and C++ gaps one-sided, as that comparison's own record by
+  name, and I will bring you the two lists side by side.
+
+  Now that the processor resolves to `processor.h` in C, the judged edges
+  change. Includes do appear in the compiler's records, so most may agree. I
+  expect at least "`processor.h` uses `processor.c`" to remain.
+
+  **The authored Purpose and Notes** are drafted for all the new files at
+  `/tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e5-95a5-16612
+  1c231a3/scratchpad/authored-notes.md`. Their links are computed relative to
+  each Live Doc's place. They go in after `npm run live-docs:generate` has
+  created the files.
+
+  **What I do on your message after the gate**, in this order:
+  1. Reset my branch to the commit you name and cherry-pick my five commits:
+  02969172, c1523a52, 2f962956, 215819ee, plus the Live Docs commit to come.
+  2. Resolve where they meet: the Rosetta build goes before `node
+  ./scripts/e2e-passes.mjs` in `test:e2e`, and import order follows
+  eslint-plugin-import-x 4.18.
+  3. `npm ci` with npm 11.21.1.
+  4. Unit tests, lint, build, the integration tests after the manifest change.
+  5. `oracle:compare` on the C and C++ programs.
+  6. The table, the audit specs, and the timing measurement as promises carried
+  against seconds, beside the seconds of the cases those promises live in today,
+  with the nine sample builds' time.
+  7. Live Docs generated and authored.
+  8. Hand back.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Scenario suite first slice builder" finished · 6m 2s
+
+● The gate has cleared every non-browser stage and started its first pass on two
+  workers, while the scenario builder waits on it. Meanwhile I'm preparing the
+  next two briefs: the new defaults and the rings beside the membranes.
+  · summary
+
+  Read 1 file, ran 3 shell commands (ctrl+o to expand)
+
+● Agent(Rings beside membranes mend builder) Opus 5.5
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+● Started a builder on your rings defect (reading, design and unit tests only
+  until the gate frees the browser). Recording that, then waiting on the gate.
+
+  Made 1 scratchpad edit +47, ran 1 shell command (ctrl+o to expand)
+
+● A builder is now on your rings defect ("I don't understand why we still have
+  ringed nodes anywhere ever?"). It is building the mend I described to you on
+  November 17:
+
+  - Wrappers on: no ring anywhere, and the key loses its "More connected" row.
+  - A lone hidden file: drawn as itself, dimmed, where its membrane would stand.
+  - Hidden documents: no sign at all; pinning a file still shows its documents.
+  - Group Wrappers Off: the ring stays, as that picture's only sign.
+
+  You put a pin in this before answering the proposal, so I'm treating it as a
+  design to show you, with before-and-after pictures at your screenshot's state.
+  Its first milestone is reading, design and unit tests only. It gets the
+  browser after the gate and after the scenario builder's timing run.
+
+  The gate is in its first pass at two workers, with every earlier stage passed.
+  The scenario builder has coded my rulings and is waiting for the gate to end.
+  The defaults round (marbles on, cells under the name) waits until the
+  scenario slice has landed, because changing the Hidden Files default changes
+  the 2D pictures the scenario table reads.
+
+› Message from general-purpose
+  MILESTONE 1: the design is settled and committed in my worktree as 87f14e2c,
+  on top of 4f9b3442. Nothing has been built or run: no npm, vitest, tsc or
+  browser, as the brief asked. The browser specs are not edited yet; they come
+  after I've looked at the pictures in milestone 2.
+
+  ## The design
+  - **The ring rule is a pure function now:** `ringedSpheres(beyond,
+  groupWrappers)` in forceGraphWrappers.ts. With Off, every sphere with a count
+  above zero wears a ring, exactly as today (the old `!isWrapped` test was
+  always true under Off). With skin, cloud or cloud-rim, nothing does. In
+  forceGraphView.ts, `hasRing` reads a `ringed` set computed once per render,
+  and the key's `rings:` flag is `ringed.size > 0`, so the "More connected" row
+  disappears whenever any wrapper is on.
+  - **A lone hidden file is drawn as itself.**
+    - In forceGraphShells.ts the partition's `loose` field is renamed `lone`.
+  `shellPicture` now treats a lone file as its own wire end, the same way it
+  treats a released file. Its wire to a shown file becomes the picture's
+  ordinary wire, and its references to files inside a shell are bundled into a
+  wire to that shell.
+    - `beyond` now counts lone files too, so with wrappers on the only thing it
+  counts is hidden documents. That count still feeds the name's tooltip ("N more
+  connected, not shown").
+    - The view places each lone file one hop past the hops shown, as it does
+  released files. `atFrontier` already dims it, because it isn't in `shells`,
+  `released`, `cells` or `loneNames`.
+    - A press on it goes the ordinary file route (`onToggleNode`), which pins
+  it.
+  - **Hidden documents:** no ring and no mark of any kind. The tooltip count
+  stays.
+  - **Group Wrappers Off:** unchanged.
+  - **Documents and notes:** the design document's passages (Directory shells,
+  the Structure open items, the key paragraph, Discovery) and the authored notes
+  of five Live Docs now match the mend. Each cites the 2026-11-16 record's Turn
+  12 with a relative link. Regenerating the Live Docs waits for milestone 2.
+
+  **Files changed:** forceGraphWrappers.ts and its test, forceGraphShells.ts and
+  its test, forceGraphView.ts,
+  .mdmd/layer-3/live-documentation-explorer.mdmd.md, and the Live Docs for those
+  five source files.
+
+  **New unit cases:**
+  - forceGraphWrappers.test.ts, "which spheres wear a ring": the Off case, and
+  an "any wrapper on" case.
+  - forceGraphShells.test.ts: a new "stand a lone file for itself" case.
+  - forceGraphShells.test.ts, "bundle each pair's references…": changed from
+  `beyond = [[s1,1]]` to `[]`. This one and the lone-file case fail on today's
+  code.
+
+  ## What I checked against the brief
+  - `hasRing` (line 437), the two ways a hidden neighbour escapes the shells,
+  and documents being left out of the partition: all as the brief says.
+  - **Every ring sits on a frontier sphere, or one hop past it.** A sphere
+  inside the hops has all its neighbours shown. So nothing loses its "press to
+  grow" sign: the frontier's dimming already carries it.
+  - **A third source of rings the brief does not name, in the Structure
+  layout.** With wrappers on, a frontier directory hub that has some of its
+  files shown (for example the pinned file's own folder at one hop) wore a ring
+  for its hidden files. The design document already lists this as open. Under
+  the rule "no ring with wrappers on", that ring goes too.
+  - **The Structure layout's lone file is not dimmed**: `atFrontier` excludes
+  `loneNames`. The brief and the owner were told the Connections lone file would
+  be "dimmed", so the two layouts now differ on this one point.
+
+  ## Forks
+  1. **What a press on a lone file does.** "What a press on a file held in a
+  shell does" is ambiguous in the code: you can't press a file inside a shell,
+  because the press lands on the shell and pops it.
+     - **Built:** a press pins the file. That is what the Structure layout's
+  lone file does, what a released file does, and what a press on any dimmed
+  frontier sphere does. So dimming keeps one meaning: press to ask about it.
+     - **Alternative:** the first press "pops" it (makes it bright, nothing
+  more) and the second pins it. That gives dimming two meanings, so I recommend
+  the built version.
+  2. **Dimmed in Connections, bright in Structure.**
+     - **Built:** dimmed, as the owner was told.
+     - **Alternatives:** dim Structure's lone file too, or draw the Connections
+  one bright.
+     - **Recommendation:** keep it as built, and show the owner the two pictures
+  side by side in milestone 2.
+  3. **The Structure frontier hub with some files hidden** now has no sign
+  except the frontier's dimming.
+     - **Alternatives:** keep a ring there only (two signs again), or bubble its
+  hidden remainder (consistent, not built).
+     - **Recommendation:** accept no sign for now.
+  4. **The tooltip's "N more connected, not shown"** is kept for hidden
+  documents. It is hover text, not a mark. Alternative: drop it while wrappers
+  are on. I recommend keeping it.
+
+  ## Browser cases to change in milestone 2
+  1. **spatial-legend.spec.ts**, "the Local Map shows the matching legend and
+  lends neither key to another view": the Skin rows lose "More connected". The
+  row's accessible description is checked after switching Group Wrappers to Off
+  in the same case.
+  2. **force-graph-identity.spec.ts**, "names beside visible rings › directory
+  names clear visible rings through the perspective journey and a rewrap":
+  defaults are Skin, and the estate's five rings become none. The list of names
+  must be re-read, since lone files may now be drawn and named. I'll add a final
+  step with Group Wrappers Off so the clearance check still meets real rings.
+  3. **force-graph-wrappers.spec.ts**, "the skin wraps every group of two files
+  or more, in place of its seed's ring": widened from "wrapped seeds wear no
+  ring" to "no drawn sphere wears a ring".
+  4. **New case:** this repository with archetype.ts pinned, documents shown,
+  one hop. Under Skin it has no rings and no "More connected" row (fails today:
+  10 rings). Under Off on the same picture, the rings and the row are there.
+  5. **New case in force-graph-shells.spec.ts:** a lone file (from
+  `shellPicture`'s `lone`) is drawn one past the hops, dimmed (`data-context`
+  true, alpha 0.4), wired to its neighbour; a press pins it. The "no file loose"
+  comment there gets reworded.
+
+  These stay as they are:
+  - force-graph-discovery.spec.ts ring cases: they run with Off.
+  - force-graph-structure-cells.spec.ts:94: still true.
+
+  **Possible knock-on in files that aren't mine:** lone files now count as shown
+  and appear in Skin pictures. That could shift node or name counts in
+  tests/e2e/still-picture.ts, the scenarios or the design audit.
+
+  ## What I expect each picture to show
+  - **The owner's state** (archetype.ts pinned, documents shown, marbles on,
+  Skin, one hop):
+    - Before: about 10 rings, and the "More connected" row in the key.
+    - After: no rings and no row; the nine spheres that were ringed for
+  documents look like any other frontier sphere; one extra dimmed sphere, the
+  lone file, stands near its neighbour with a dimmed wire to it.
+  - **The lone file up close:** dimmed like a frontier sphere, with its marble
+  bands dimmed along with it, which is what frontier marbles do today. That runs
+  into the open question of whether a faded marble keeps its bands, so I'll
+  photograph it and say so. Its tooltip will end "Pin this file".
+  - **Group Wrappers Off:** the same picture with rings and the row, unchanged.
+  - **Also expected:** tests/e2e/still-picture.ts pinned with documents goes
+  from 35 rings to none. On the estate at shell depth 2, a shell that used to
+  float unconnected behind a lone file should now be wired through it.
+
+  ## Other notes
+  - **One for you (the decisions log isn't mine):**
+  .mdmd/layer-3/architectural-decisions.mdmd.md around line 568 records the ring
+  decision without the November 18 narrowing.
+  - The spatial-legend.ts code needs no change. Its Live Doc note is still
+  accurate.
+  - I used no helper agent.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Rings beside membranes mend builder" finished · 8m 44s
+
+  Made 1 scratchpad edit +39, ran 1 shell command (ctrl+o to expand)
+
+● The rings builder has its design written (not yet built or run), and I've
+  ruled on its four forks. It waits for the browser with the other two.
+
+  - One rule decides rings now: with any wrapper on, no sphere wears one; with
+    Group Wrappers Off, every sphere with something beyond the picture does, as
+    today.
+  - A lone hidden file is drawn one hop past the hops shown, dimmed like the
+    rest of the frontier, and a press pins it.
+  - It found a third source of rings I had not named. In the Structure layout
+    with wrappers on, a directory's hub at the frontier wore a ring when some of
+    its files were hidden. Under "no ring with wrappers on" that ring goes too,
+    leaving only the frontier's dimming as its sign. I accepted that for now
+    and will show you a before-and-after picture, with the consistent
+    alternative named: a membrane for the directory's hidden remainder.
+  - One difference between the two layouts: the lone file is dimmed in
+    Connections and bright in Structure. I kept that. In Connections it stands
+    past the hops you asked for, and the last hop is always dimmed; in Structure
+    it stands in for its own directory, which is shown. You'll get the two
+    pictures side by side.
+  - Hidden documents get no mark, but the name's tooltip keeps its count ("N
+    more connected, not shown").
+
+  The gate is at 111 cases into its first pass with two red, both known unsteady
+  ones (force-graph-building.spec.ts:66 and force-graph-defaults.spec.ts:101).
+  At this pace it ends near 18:37 UTC.
