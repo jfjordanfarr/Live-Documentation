@@ -4,13 +4,41 @@ This archive is the system of record for the project's development. The owner re
 
 Development follows one chronological story across harnesses. A session keeps the date it started and its sequence number on that date, even when it spans several days. Record the full date range in its title. Allocate the next unused number across harnesses; never renumber an existing session or break its citation paths.
 
+## Where things are
+
+_Current, since 2026-11-18, when the owner asked that this folder, then `ChatHistory/`, become `AgentSessionHistory/`, and that everything a day makes live in a directory named for that day ([the convention they confirmed](2026/11/2026-11-17/2026-11-17.1.record.md#work-notes-turn-14))._
+
+```text
+AgentSessionHistory/
+  README.md                     this convention
+  old-paths.md                  every entry the move of 2026-11-18 renamed, old path against new
+  <year>/<month>/
+    README.md                   the month's inventory: sessions, captures, hashes, and its days' pictures
+    Summarized/                 <start-date>.<session>.SUMMARIZED.md
+    <day>/                      one directory per dev day: 2026-11-17
+      <day>.<session>.record.md
+      exports, transcripts and <day>.<session>.images/, under the names they came with
+      Probes/<topic>/           design probes: brief, findings, a few pictures
+      Research/<topic>          surveys of formats and prior art
+      Screenshots/<topic>/      pictures of the built Explorer, each named in a README
+      Antigravity/              (November 2025 only) the Antigravity captures of that day
+```
+
+- **A directory belongs to a dev day**, named for the date the owner opened it, which also names its record and its summary. Everything that dev day makes goes there, also after midnight and across a new chat; the clock does not choose. For example, work done at 03:00 UTC on November 18 in the session opened on November 17 belongs in `2026/11/2026-11-17/`.
+- **The owner's exports** go into the dev day's directory of the session they belong to, under the name they were received with. A file is never renamed or edited once received.
+- **Tools that write dated evidence** write into the open dev day: the newest day directory that holds a `*.record.md`, or today's date when none does. The layout lab writes its reports to that day's `Probes/layout-lab/`; [claude-code-transcript.mjs](../scripts/claude-code-transcript.mjs) writes a transcript into the day of its session's first message.
+- **Pictures of the built Explorer**: after changing the Explorer, build it, look at it and keep the pictures in the day's `Screenshots/`, named in a README there, so that a sense of the UI accrues and a change can be judged against what came before (the owner's standing request of 2026-09-29). The month's inventory lists the days' picture folders. The probe records keep their own pictures; the World Map's first pictures, from 2026-09-28, are in that day's `Probes/`.
+- **Dates with artifacts and no session** keep a directory of their own: September 28, October 10, October 18 and November 9 of 2026, whose folders were dated by the calendar when they were made.
+- **Before 2026-11-18** these lived elsewhere: `ChatHistory/<year>/<month>/` held captures and records at month level, and `Probes/<date>/`, `Research/<date>-<topic>` and `Screenshots/<date>/` sat beside it under `AI-Agent-Workspace/`. A path written before then, in a capture, in what was said or in an older note, is found through [old-paths.md](old-paths.md). Links in records, summaries and current documents were re-pointed by [move-session-history.mjs](../scripts/move-session-history.mjs); captures and fenced blocks keep the paths of their day.
+- **What the Explorer and the audits read.** The bundle leaves out this README, the table, the month inventories and every record, transcript and export (`bundleExclude` in `.live-docs.config.json`); summaries and the days' `Probes/`, `Research/` and `Screenshots/` documents a Live Doc links are bundled. The SlopCop audits leave out the same archive files and read the days' evidence.
+
 ## Source captures
 
 The owner's GitHub Copilot transcripts came from **Right Click → Copy-All** in the chat window. The September Claude Code text files came from the harness's export operation. Existing September Markdown was reconstructed separately by [claude-code-transcript.mjs](../scripts/claude-code-transcript.mjs), with timestamps and image links but without terminal output and some visible activity. The [September inventory](2026/09/README.md) joins these captures by session and records their different coverage.
 
-- Existing transcript: `<year>/<month>/<start-date>.<session>.md`.
-- Harness export: `<year>/<month>/<start-date>.<session>.<harness>.export-<capture-date>-<capture-time>.<extension>`.
-- Existing images: `<year>/<month>/<start-date>.<session>.images/`.
+- Existing transcript: `<year>/<month>/<start-date>/<start-date>.<session>.md`.
+- Harness export: `<year>/<month>/<start-date>/<start-date>.<session>.<harness>.export-<capture-date>-<capture-time>.<extension>`, or the name the owner saved it under.
+- Existing images: `<year>/<month>/<start-date>/<start-date>.<session>.images/`.
 
 Preserve source bytes. The September inventory records received filenames and SHA-256 hashes for the renamed exports. A file may contain only a later portion of a session; a filename and an overlapping passage do not establish completeness. If captures disagree about ordering or coverage, record the disagreement rather than silently splice them into an invented authoritative transcript. Keep existing source links stable. Do not delete a capture because it has been summarized.
 
@@ -22,7 +50,7 @@ The Claude converter describes a historical reconstruction method, not a univers
 
 The owner adopted this routine on 2026-09-30, adding: “Keep only the chat history of the *root* agent if any subagents are involved; do not persist subagent history as it has no conversation turns with the User”. The record contains the user's conversation with the root agent. Subagents must not create or append conversation records or summaries of their delegated threads. Do not copy subagent prompts, replies or agent-to-agent messages into the archive. The root agent may record findings it adopts and link resulting artifacts in its own work notes.
 
-Location: `<year>/<month>/<start-date>.<session>.record.md`, using the same session identity as its summary. This is an **agent-maintained record**, not a harness export. Label the author, harness, recording date and actual coverage. Do not invent message timestamps or fill earlier gaps from compaction summaries. Native captures remain separate sources with their own coverage.
+Location: `<year>/<month>/<start-date>/<start-date>.<session>.record.md`, using the same session identity as its summary. This is an **agent-maintained record**, not a harness export. Label the author, harness, recording date and actual coverage. Do not invent message timestamps or fill earlier gaps from compaction summaries. Native captures remain separate sources with their own coverage.
 
 1. **At the beginning of each user turn**, append any preceding visible root-agent responses not already recorded, then the newly received user messages. Include questions, commentary, steering and answers to questions in their observed order. Give each user message a stable `Turn N` heading, aligned with the session summary; identify the turn a response belongs to rather than assuming every message answers the latest prompt. Record ordering uncertainty explicitly.
 2. **Separate messages from interpretation.** Preserve available message text verbatim in labelled fenced blocks, choosing fences long enough to contain the original text. Put work notes outside those blocks. Keep recorded text and cited headings stable; append dated corrections. Mark unavailable wording as a gap, or label a reconstruction as authored. Do not copy private reasoning or tool transcripts; link relevant evidence from work notes.

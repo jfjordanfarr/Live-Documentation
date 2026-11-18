@@ -50,3 +50,95 @@ The Markdown citation paths remain stable. Each renamed export starts with the s
 - [September 27, session 1](Summarized/2026-09-27.1.SUMMARIZED.md): complete for both available captures, with each owner turn and verified commit references.
 - [September 29, session 2](Summarized/2026-09-29.2.SUMMARIZED.md): complete for both available captures, with each owner turn and verified commit references.
 - [September 30, session 1](Summarized/2026-09-30.1.SUMMARIZED.md): complete for both available captures, with each owner turn and verified commit references.
+
+## Pictures of the Explorer
+
+Each day's pictures of the built Explorer, as the index `Screenshots/README.md` listed them until 2026-11-18, when it was carried into the month inventories. The convention, and the owner's standing request behind it, are in [the archive's README](../../README.md#where-things-are). Newest first.
+
+### 2026-09-30
+
+
+The later provenance-restoration pictures are described in [the day's record](2026-09-30/Screenshots/README.md): summary nodes in the Force Graph and a linked summary opened in the reader.
+
+Taken from `dist/explorer` after Back and Forward landed, by a Playwright script clicking the sidebar, at 1600 by 900.
+
+- `2026-09-30/Screenshots/explorer-history-01-fresh.png`: the sidebar just after the page opens on the World Map: Back and Forward faint, with nowhere to go yet.
+- `2026-09-30/Screenshots/explorer-history-02-after-back.png`: after the Local Map, then the Membrane Map, then Back: the Local Map again, and both buttons live.
+
+### 2026-09-29
+
+
+Taken from `dist/explorer` (this repository's board) and the estate bundle at `dist/estate` (the board at `tests/integration/programs/csharp/estate/board.md` over generated docs), by a Playwright script driving `window.__worldMap`, at 1600 by 900, after the pinned-panel work.
+
+- `2026-09-29/Screenshots/world-map-estate-01-at-rest.png`: the estate at rest. New: the four dotted lines on the board from `contracts` to the things that stand on it, a station at each, and one strand more beneath each of them.
+- `2026-09-29/Screenshots/world-map-estate-02-hover-stands.png`: the line from `hub` to `contracts` hovered: hub stands on contracts, from source, its code built in and no call crossing; six of the thirteen file-level lines behind it and the count.
+- `2026-09-29/Screenshots/world-map-estate-03-click-pins.png`: `hub` pinned by a click: its four files, the address it serves and the file that publishes it, what it calls, what calls it, what it stands on and the manifest that names it. Every name is a link.
+- `2026-09-29/Screenshots/world-map-estate-04-follow-file-link.png`: after clicking `App.config` in that panel: the Local Map at `Hub/App.config`.
+- `2026-09-29/Screenshots/world-map-estate-05-built-on.png`: the built-on layer, the lines to `contracts` kept while the calls fade. The token labels still collide near `hub`.
+- `2026-09-29/Screenshots/world-map-repo-03-click-pins.png`: this repository's `engine` pinned: ninety-nine files as links, the panel scrolling.
+
+Taken later the same night, after the zoom into a thing landed, the same way.
+
+- `2026-09-29/Screenshots/world-map-estate-06-lid-unfolding.png`: `gateway` opening, the lid caught halfway through unfolding into the panel while the board dims.
+- `2026-09-29/Screenshots/world-map-estate-07-inside-gateway.png`: inside `gateway`: five cards in dependency order, provision left to right; `contracts · 13` and `hub · 1` as pins on the left wall, what it calls; `portal · 2` on the right wall, wired to the two routes it serves.
+- `2026-09-29/Screenshots/world-map-estate-08-inside-hover.png`: the project file's card hovered; what it is not wired to fades.
+- `2026-09-29/Screenshots/world-map-repo-04-inside-engine.png`: inside this repository's `engine`: the files of `src/config` and `src/tooling` flat, `src/languages` and `src/live-docs` as boxes whose rows are their neighbours with counts, and the five things that stand on the engine as pins on the right wall.
+- `2026-09-29/Screenshots/world-map-repo-05-inside-live-docs.png`: one level deeper, `src/live-docs` with eighty files and `boardGraph.ts` hovered: dense at rest, legible on hover.
+
+Taken after the owner's second look, the same day, when the design audit landed.
+
+- `2026-09-29/Screenshots/world-map-repo-06-built-on-settled.png`: the built-on layer with the labels settled: the token labels clear of the things' lines, `PRODUCT` clear of `tests`.
+- `2026-09-29/Screenshots/world-map-estate-09-built-on-settled.png`: the estate's built-on layer, its two token labels no longer on `hub`.
+- `2026-09-29/Screenshots/world-map-repo-07-inside-engine-measured.png`: inside `engine` with cards as wide as their words; nothing cut off.
+- `2026-09-29/Screenshots/membrane-map-estate-gateway.png`: the Membrane Map as it stands, for the conversation about the inside: the estate's `Gateway` folder focused, its two subfolders as tiles filling the space and its files in a strip at the foot, no wires until a symbol is pinned.
+- `2026-09-29/Screenshots/membrane-map-repo-live-docs.png`: the same over this repository's `src/live-docs`: the `adapters` tile fills the folder, the files sit below the fold.
+
+Taken after the owner chose the Membrane Map as the inside, the same afternoon, by a Playwright script driving `window.__worldMap` and the page.
+
+- `2026-09-29/Screenshots/world-map-repo-08-open-engine-membrane.png`: `engine` pinned and opened: the Membrane Map focused on `packages/engine`, the World Map as the crumb above it, `src` as one tile with its counts and the package's own files as cards at the foot, the whole folder fitted above the zoom controls.
+- `2026-09-29/Screenshots/world-map-repo-09-back-from-membrane.png`: the board after the crumb leads back: nothing pinned, the camera where it was.
+- `2026-09-29/Screenshots/world-map-estate-10-open-gateway-membrane.png`: the estate's `gateway` opened by the wheel: `Controllers` and `Wcf` as tiles, and the project file, the settings and `Web.config` as cards.
+
+Taken in the evening after the emoji left the interface, from `dist/explorer`, by a Playwright script clicking the sidebar and the search button, at 1600 by 900.
+
+- `2026-09-29/Screenshots/explorer-no-emoji-01-knowledge-sources.png`: the Knowledge Sources panel, its headings and health warnings in words alone, and the sidebar's older views as plain names beside the World Map's drawn mark.
+- `2026-09-29/Screenshots/explorer-no-emoji-02-search.png`: search for `connection-geometry`: each result is a name, a path and its archetype on a badge, the badge having always carried what the emoji repeated.
+- `2026-09-29/Screenshots/explorer-no-emoji-03-local-map.png`: the Local Map on `connection-geometry.ts`: `Internals` without the box that drew empty, the detail panel's generated date without its stopwatch, and "No dependencies" on the left where the pictures of 2026-09-28 drew the wrong wire from `state.ts`.
+
+Taken later that night, after the force graph's library moved from `unpkg.com` into the bundle, the same way; the script also logged every host the page contacted while it opened the World Map, the Local Map, the Membrane Map and the Force Graph, and the only one was the page's own.
+
+- `2026-09-29/Screenshots/explorer-bundled-force-graph.png`: the Force Graph drawn from the bundled library, as it was drawn from the CDN in the pictures of 2026-09-28.
+
+Taken after the owner chose what a wire's colours mean ("Offers!! I Like that!"), from the estate bundle at `dist/explorer/samples/estate`, the same way: blue is now the side that offers and green the side that uses, on the World Map as on the Local Map, and a wire runs from blue to green.
+
+- `2026-09-29/Screenshots/world-map-offers-01-estate-at-rest.png`: the estate at rest. `gateway`'s doors toward `portal` are blue, the routes it offers; its door toward `hub` is green, what it uses; the two databases show only blue doors, the tables and procedures they offer.
+- `2026-09-29/Screenshots/world-map-offers-02-wire-hovered.png`: the wire from `gateway`'s route to `portal` hovered, the rest faded: "portal calls gateway", with the route and the two files that carry it.
+- `2026-09-29/Screenshots/world-map-offers-03-help.png`: the help: "blue offers, green uses, as inside a system", a wire flowing "from what is offered to where it is used". Compare `explorer-no-emoji-03-local-map.png` above, where each wire leaves a blue pin on the file that offers a name and enters a green pin on the file that uses it.
+
+### 2026-09-28
+
+
+Taken by the agent at 02:31 UTC from `dist/explorer`, this repository's bundle (549 files, 2,608 links), at 1600 by 900, while it looked at every view over the graph index that had landed that night. They lay in the ignored `tmp/` folder until 2026-09-29 and are the workspace's only pictures of the Local Map, the view the Membrane Map is to match. Two things in them are wrong and were found this way or later. The wire from `state.ts`'s `PathResult` into `connection-geometry.ts` is the one no code justified: `connection-geometry.ts` declares its own `PathResult`, and the fix, `fe08c9d8`, landed fifteen minutes later. The empty boxes beside the sidebar's names and before `Internals` are emoji the headless browser had no font for.
+
+- `2026-09-28/Screenshots/01-membrane-browse-cold.png`: the Membrane Map opened on `packages/cli/src`: one card, `index.ts`, in an otherwise empty membrane, with the crumbs `~ / packages / cli / src` above.
+- `2026-09-28/Screenshots/02-membrane-focused-views-dir.png`: the Membrane Map on `packages/explorer/src/client/views`: its three subfolders as large, nearly empty tiles carrying counts of files, symbols, wires out and wires in and an `Explore` button, and the folder's own files in a strip along the foot.
+- `2026-09-28/Screenshots/03-membrane-pin-all-connection-geometry.png`: every symbol of `connection-geometry.ts` pinned in the Membrane Map: the treemap gives way to three columns, dependencies, pinned and dependents, inside the folder bands, with the unrelated symbols of the other cards faded.
+- `2026-09-28/Screenshots/04-local-map-connection-geometry.png`: the Local Map on `connection-geometry.ts`: the files it uses on the left, the files that use it on the right grouped by folder, its tests as tags on the cards. Each wire leaves the blue pin on the right of the file that provides a symbol and enters the green pin on the left of the file that uses it.
+- `2026-09-28/Screenshots/05-local-map-core-hub.png`: the Local Map on `packages/engine/src/live-docs/core.ts`, the most connected file: a tall centre card with dozens of files on each side, the wires gathered into trunks between the columns.
+- `2026-09-28/Screenshots/06-circuit-board.png`: the Circuit Board on `packages/cli/src`: one small card alone in the middle of the canvas.
+- `2026-09-28/Screenshots/07-force-graph.png`: the force graph of the whole repository, files as green and blue spheres in loose clusters.
+- `2026-09-28/Screenshots/08-force-graph-core-selected.png`: the same after `core.ts` became the context: nothing in the picture marks it.
+- `2026-09-28/Screenshots/09-crop-local-map-corset-card.png`: the centre card of the fourth picture at twice the scale: a green pin before and a blue pin after every symbol, and small arrow badges beside some of them.
+- `2026-09-28/Screenshots/10-crop-membrane-back-connection-stubs.png`: the third picture at the same scale: `state.ts`'s `PathResult` wired to `connection-geometry.ts`, its other symbols faded, and a short stub in place of a full curve on `setActivePath`'s green pin.
+- `../10/2026-10-16/Screenshots/suffix-anywhere-and-cpp/01-knowledge-sources-shape.png`: Knowledge Sources after the suffix-anywhere defaults: 722 files, the root's tooling files and the C++ sample among them, the agent workspace excluded.
+- `../10/2026-10-16/Screenshots/suffix-anywhere-and-cpp/02-tooling-inputs-with-the-root-files.png`: the entry points' Tooling inputs opened, the root's and the packages' configuration files listed.
+- `../10/2026-10-16/Screenshots/suffix-anywhere-and-cpp/03-directory-with-test-cards.png`: `packages/engine/src/live-docs` opened with tests shown; test cards read "No public symbols" with no reveal.
+- `../10/2026-10-16/Screenshots/suffix-anywhere-and-cpp/04-test-card-without-a-reveal.png`: the `graph.test.ts` card at reading size, no "+1 symbols".
+- `../10/2026-10-16/Screenshots/suffix-anywhere-and-cpp/05-cpp-rosetta-main-pinned.png`: the C++ rosetta `main.cpp` pinned, its two includes resolved and their used symbols wired.
+- `../10/2026-10-16/Screenshots/retained-wires/01-chain-scope-at-rest.png`: the retained chain scope (four of the Explorer's client files pinned whole) at rest, before a directory is opened.
+- `../10/2026-10-16/Screenshots/retained-wires/02-move-frame-at-150ms.png`: 150 ms into opening the biggest directory, the move slowed to 1.2 s: the cards sliding, every wire on its pin.
+- `../10/2026-10-16/Screenshots/retained-wires/03-move-frame-at-500ms.png`: 500 ms in: the subject's card half way to the right, the wires stretched between moving cards.
+- `../10/2026-10-16/Screenshots/retained-wires/04-move-frame-at-900ms.png`: 900 ms in: near the new arrangement, nothing detached.
+- `../10/2026-10-16/Screenshots/retained-wires/05-after-the-move.png`: the new arrangement at rest.
+- `../10/2026-10-16/Screenshots/retained-wires/06-knowledge-sources-meanwhile.png`: Knowledge Sources shown while the map's search is paused behind it.
+- `../10/2026-10-16/Screenshots/retained-wires/07-back-on-the-map.png`: the map after the return, the picture kept rather than drawn again; its pixels byte-identical to those after a second return.

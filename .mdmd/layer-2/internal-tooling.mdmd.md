@@ -100,7 +100,7 @@ Fixture workspaces live under `tests/integration/fixtures/` (hand-authored scena
 
 ### Local Map layout lab
 
-`npm run layout:lab -- <capture|sweep|restarts|verify> <bundle/scope>` captures a deck scope's cards from the built page, sweeps the pure layout's levers headlessly, compares ordering starts with the page's costs, or verifies a configuration in the page with the deck's instrument. Run reports belong under the day's `AI-Agent-Workspace/Probes/` folder. Page captures are disposable and rebuilt on demand, not committed.
+`npm run layout:lab -- <capture|sweep|restarts|verify> <bundle/scope>` captures a deck scope's cards from the built page, sweeps the pure layout's levers headlessly, compares ordering starts with the page's costs, or verifies a configuration in the page with the deck's instrument. Run reports go to the open dev day's `Probes/layout-lab/` under `AI-Agent-Workspace/AgentSessionHistory/<year>/<month>/<day>/`, the newest day directory that holds a session's record. Page captures are disposable and rebuilt on demand, not committed.
 
 ### Contact sheet
 

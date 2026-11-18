@@ -152,3 +152,67 @@ October 14 receipt, by the following session: the owner refreshed [the export](2
 October 19 Turn 18 receipt: the owner attached a read-only snapshot named file_2026-10-19.1.export.md, byte-identical to the expanded [repository capture](2026-10-19/2026-10-19.1.export.md): 391,937 bytes, 3,569 newline characters, SHA-256 `2660472c80c3902a90edaf4b8560fd1276662750bc0a5242c326d19879e712f5`. The prior 235,428-byte copy at `c426b3bd` shares its first 235,427 bytes, so it is not an exact append-only extension. This receipt checked byte equality and metadata, not the entire expanded conversation. Neither source was edited. The [maintained record](2026-10-19/2026-10-19.1.record.md#turn-18) preserves the new user request separately.
 
 October 19 Turns 19–21 receipt: the read-only attachment named file_2026-10-19.1.export.md is 452,007 bytes / 4,168 newline characters, SHA-256 `6d1bff4a8e12a2e1a4d36e60912a97e469acf110e9c3efccc0408e4b1bfd63b5`. It is an exact prefix of the independently expanded [repository export](2026-10-19/2026-10-19.1.export.md), now 482,847 bytes / 4,448 newlines, SHA-256 `d9968774ef8086ea64e771bf9c6d216804297a437ed66583d74b3f78923bae4c`; the previously committed 391,937-byte copy is also an exact prefix. Root verified metadata and prefix relations, not full conversational coverage. No capture bytes were edited or spliced. [Turns 19–21](2026-10-19/2026-10-19.1.record.md#turn-19) separately preserve the newly received messages.
+
+## Pictures of the Explorer
+
+Each day's pictures of the built Explorer, as the index `Screenshots/README.md` listed them until 2026-11-18, when it was carried into the month inventories. The convention, and the owner's standing request behind it, are in [the archive's README](../../README.md#where-things-are). Newest first.
+
+### 2026-10-18
+
+
+Named in [the day's record](2026-10-18/Screenshots/README.md): the 3D Local Map before and after one toggle of Show Tests on this repository's bundle, in both layouts, under update energy 1 (the full reheat), 0.3, 0.1 (the shipped default) and 0 (placement alone), with the ticks to settle, the unchanged spheres' move and the extent read from the scene; a strip of frames of the toggle under each energy; a directory opened after each; and the switch into the structure layout under each, with how far the tree formed; taken for ticket C2 of the change-over-time plan, for the owner's choice of the energy by eye. Later that day, in [the history folder](2026-10-18/Screenshots/history/README.md): the 3D Local Map's history scrubbed for ticket C4, over this repository's own history at every eighth commit: the control open at today, the step of the package renames with the directories renamed whole, a step of 163 deaths, a file pinned with its major and minor ticks and said "not yet born" before its birth, the axis by date, a strip of frames of a drag across the renames, the scripted sample's window with its truncated beginning, and the Knowledge Sources line of a bundle without a history.
+
+### 2026-10-17
+
+
+Named in [the day's record](2026-10-17/Screenshots/README.md): the 3D Local Map before and after ten toggles of Show Tests on this repository's bundle, in the connections and the structure layout, under the forces as they were and under gravity 0.02, 0.05 and 0.1, with the rendered spheres' extent measured before and after; sixteen pictures for the owner's choice of the restoring force's strength, taken for ticket C5 of the change-over-time plan.
+
+### 2026-10-15
+
+
+Named in [the day's record](2026-10-15/Screenshots/README.md): the Local Map's pin rules after the owner's challenge, on this repository's bundle: the recentre control on every card but the subject's, one symbol on a neighbour as one pin with the subject still drawn whole, a card pinned whole and narrowed to a symbol, a second symbol added, the last released leaving the file whole, the subject moved by the control, and one symbol of `branches.ts` reached through the Knowledge Sources panel. Then, from the `reachable` build: the Knowledge Sources panel's entry points by reason on this repository and the estate, the walk's status line, the groups opened with each file's reasons, what nothing reaches, the "Reachable from" field typed into and holding a chosen file with the configuration line to copy, and the root landing the entries decide.
+
+### 2026-10-14
+
+
+Named in [the day's record](2026-10-14/Screenshots/README.md): the search bar at the top of every view, its grouped results of directories, files and symbols, a chosen one pinned, and the path asked from the newest pin, over both bundles; the pin tray with directories, files and symbols retained together and released one at a time, Compact and Relaxed from their icon buttons, the ancestor disclosure unfolded from a membrane, the root landing after everything is released, the tray over the five-file scopes of this repository and the estate, and the optional directory hubs in 3D with membership lines on hover and at rest, in overview and close up, recursive membership on a parent hub, and a hub retained from a click; all from the build that passed the full gate. Then, in the afternoon, the 3D Local Map's two layouts: the connections layout and the new structure layout on both bundles, the switch between them caught frame by frame as the network folds into the tree and unfolds again, a file and a parent hub hovered with their references drawn, a hub retained, and the control that chooses. Later the same evening, the search bar's second field offering only what a path from the newest pin reaches, each row with its distance and its way, the fold of the files no path connects opened, a directory by its nearest file, and a pin that nothing connects to, on both bundles.
+
+### 2026-10-13
+
+
+Named in [the day's record](2026-10-13/Screenshots/README.md): Membrane Simplicity off against its default on four scopes, close up and in overview, with the motion of the change; then, in [its presets folder](2026-10-13/Screenshots/presets/README.md), Compact and Relaxed in both representations with their controls and motion captures, and in [its feedback folder](2026-10-13/Screenshots/feedback/README.md), the comparisons of alignment and wire motion made after the owner's review.
+
+### 2026-10-12
+
+
+Named in [the day's record](2026-10-12/Screenshots/README.md): from the owner's walkthrough, the browser entry file opened directly in the directory-aware layout and the two-file and four-file paths inside their membranes; then, after the Membrane Map and Circuit Board were retired, the three-view navigation in 2D and 3D, the step from the World Map into the Local Map, and the 2D/3D controls beside the open drawer.
+
+### 2026-10-10
+
+
+Named in [the day's record](2026-10-10/Screenshots/README.md): the first ghost on the estate's World Map, a call that nothing on the board serves, at rest and pinned, with the hub's panel naming it; then this repository's own board re-authored as the delivery shape, its imagined parts hollow, pinned in turn, and a copy with two faults counted as wanting.
+
+### 2026-10-06
+
+
+Named in [the day's record](2026-10-06/Screenshots/README.md): the owner's nudge measured on the repository's five-file scope, `graph.ts` forced lower than the exact placement puts it, with the deck's drawn total rising at every step, and the whole placed picture zoomed out to show the consumers that hold the live-docs box where it stands; then, at twice the device scale, three cards with the French Corset's laces in place of the straight stubs.
+
+### 2026-10-05
+
+
+Named in [the day's record](2026-10-05/Screenshots/README.md): the shipped Local Map with five files retained whole beside the Membrane Map with the same files' symbols all pinned, on this repository's five-file and chain scopes and the estate's five files, with the still-picture deck's measures for all six pictures, taken to check where the many-file layout stands; then the same states after the two passes of the day, the layered layout in the afternoon and, after the owner's review, bundles by offering pin and lanes hosted by directories in the evening, with the bundles parting at their consumers, a bundle on hover, and the shared card seen in the classic Local Map and the Circuit Board after its sizing changed; and, later that evening, the rows of every card ordered by where their wires lead, with the alphabetical order from Tuning beside it; and, last that night, every card and lane placed by the exact placement step under the owner's reward, the total drawn wire length, measured before and after.
+
+### 2026-10-03
+
+
+Named in [the day's record](2026-10-03/Screenshots/README.md): the native Local Map with directory bands and retained files, the deliberate zoom boundary, the Force Graph with one counted line per file pair, the thirteen-file estate path in both perspectives, and two recordings of the zoom in motion with their frame sheets.
+
+### 2026-10-02
+
+
+Named in [the day's record](2026-10-02/Screenshots/README.md): the Force Graph centring a file from a URL and from search, with a recording of the approach; the restored Rosetta hub; the native Local Map before and after pins, a retained branch, the same file in the Force Graph at the same screen anchor and the return, with a recording and its frames.
+
+### 2026-10-01
+
+
+Named in [the day's record](2026-10-01/Screenshots/README.md): the still-picture deck's states of the Local Map and the Membrane Map on this repository and the estate; the path mode drawn, reversed and cleared; the subject staying put when a symbol is pinned; wrapped symbol names; and a saved Membrane camera before and after its fix.

@@ -141,3 +141,137 @@ The evidence collections are [tap reading](2026-11-05/Screenshots/tap-reading/RE
 - [Summary](Summarized/2026-11-06.1.SUMMARIZED.md): written November 7 at the close-out, complete for the maintained record, read in full.
 - [Harness export](2026-11-06/2026-11-06-154620-welcome-back-it-is-now-1162026-i-have-done-a.txt): exported by the owner from the Claude Code extension's UI after compacting the conversation by hand, received under this filename and preserved as supplied; the owner calls it a keeper. First seen at Turn 3 at **43,824 bytes**, SHA-256 **`ba992911c80dc29a2cc6090685abd7576d3b5f682914271ea12bde4bea05dd5f`**, 755 lines of terminal text hard-wrapped at about eighty columns. It begins at the opening request and ends after the owner's `/compact`; it shows the root's messages, tool calls as counts or short previews, and the final reply of Turn 2 twice, identically. Reading coverage: its message boundaries were listed by a script and its first sixty and last sixteen lines read; not read in full. Against the record it shows one status line the record lacks and four in other words, noted in the record's Turn 3. The agent did not edit this source.
 - The owner's screenshots, preserved byte for byte under [`2026-11-06.1.images/`](2026-11-06/2026-11-06.1.images/island-wrappers-one-sphere-each.png): three of [Turn 4](2026-11-06/2026-11-06.1.record.md#turn-4) from the harness's files (wrapped groups each showing one sphere; [one under the pointer](2026-11-06/2026-11-06.1.images/island-wrapper-hovered-rosetta-manifest.png); [the pin on `rosetta-manifest.json` at one hop with its shells](2026-11-06/2026-11-06.1.images/rosetta-manifest-pinned-one-hop-shells.png)), and three of [Turn 5](2026-11-06/2026-11-06.1.record.md#turn-5), a message sent mid-turn of which the harness kept no files, so they were taken from the message as the session transcript holds it ([buttons on the highlight's border](2026-11-06/2026-11-06.1.images/rosetta-manifest-pinned-buttons-on-highlight-border.png); [the card far out](2026-11-06/2026-11-06.1.images/rosetta-manifest-card-far-zoom-dots-merged.png); [the Internals row tiny](2026-11-06/2026-11-06.1.images/rosetta-manifest-pinned-internals-row-tiny.png)); and four of [Turn 8](2026-11-06/2026-11-06.1.record.md#turn-8) from the harness's files, of port 8900 serving the build of `1ddc475a`'s tree ([the repository on `forceGraphView.ts` with skins at depth 2 backed down to one hop](2026-11-06/2026-11-06.1.images/forceGraphView-pinned-one-hop-skins-depth-2.png); [the Structure layout with nothing pinned](2026-11-06/2026-11-06.1.images/structure-layout-scan-root-no-pins.png); [`symbolAnchors.ts` at a far step, two-line names and a tiny Internals row](2026-11-06/2026-11-06.1.images/symbolAnchors-far-step-two-line-titles-internals-tiny.png); [a closer step, the Internals row small](2026-11-06/2026-11-06.1.images/symbolAnchors-closer-step-internals-small.png)).
+
+## Pictures of the Explorer
+
+Each day's pictures of the built Explorer, as the index `Screenshots/README.md` listed them until 2026-11-18, when it was carried into the month inventories. The convention, and the owner's standing request behind it, are in [the archive's README](../../README.md#where-things-are). Newest first.
+
+### 2026-11-16
+
+
+[What moves in the 3D map's settle tail](2026-11-16/Screenshots/motion-rest/README.md): a builder's measurement of the long wait before the 3D picture says it is at rest, on four actions, with an exact replay of the page's motion; which bodies glide and why; candidate rules of rest and levers on the forces tried on the replays; a watch of 600 frames after rest; four pictures at rest. Nothing was built from it but two comments.
+
+### 2026-11-15
+
+
+[A designer's reading of the 2D Local Map](2026-11-15/Screenshots/designer-eye/README.md): ten pictures by the root, at the owner's ask that the map's style be judged by the root's own eye and the designer's terms taught with it. Seven of the build as it stood (a card in one tone, a returning connection with the 3D button dark, an opened directory three presses out and after Fit, the overview's blank cards, a crowded directory, a path said twice) and three probes with injected styles, not product code (tone on a card and on a crowded directory, rows drawn as bars at the overview). Each finding is named in a designer's term with where it shows.
+
+[The 3D button's cue for connections drawn against the left-to-right order](2026-11-15/Screenshots/backward-cue/README.md): the toolbar with no cue, some, many and with keyboard focus; the one slow pulse held at its start, peak and return; the whole page of `branch-renderer.ts` with the cue lit. By the builder of the round that made the cue count a cycle's returning connections.
+
+[A hierarchy of tone on the 2D map's cards, wires without a glow, and the legend redrawn](2026-11-15/Screenshots/tone-and-greeking/README.md): before and after in pairs under both font metrics, the failing run of the round's spec on the build before, and two passes of a frame-cost measurement of what removing the wires' glow saves. By the builder of the tone round.
+
+[The history's Changed Files modes on one step](2026-11-15/Screenshots/changed-files-modes/README.md): Glow, Dim and Both side by side, taken by the root when the owner asked whether a changed file could keep its colour.
+
+[The 3D Local Map while it builds](2026-11-15/Screenshots/building-map/README.md): the sign and the waiting cursor, a press refused while the map builds, and the first measurement of how long the map stays busy, whose reading of "the last visible move" the November 16 measurement corrects. By the builder of that round.
+
+[A directory's handle at every zoom](2026-11-15/Screenshots/directory-handles/README.md): the closed box as one button with a chevron, a directory's name never smaller than its files', the closed directory as a folder of cells in three shapes and two colourings, and sibling closed boxes drawn by one recipe three presses out. By the directory rounds' builder, over several legs.
+
+[A line of description kept three presses out, four values](2026-11-15/Screenshots/descriptions-kept/README.md): Hidden, first line where the name leaves room, and first line always with the name cut at its end or in its middle, on the owner's card and others. By the far view's builder.
+
+The cycle round's pictures, in its three legs, by its builder: [fewest returns as a rule, before and after](2026-11-15/Screenshots/fewest-returns/README.md); [a return as one term of a price at the ranking](2026-11-15/Screenshots/fewest-returns-2/README.md); [a cycle's order as a trial of the continuing search](2026-11-15/Screenshots/fewest-returns-3/README.md), which is what landed.
+
+[A palette for a file's kind that stays off the role colours: a probe](2026-11-15/Screenshots/kind-palette/README.md): `scripts` in the 2D map with the closed directories' cells in three palettes, by the root with injected styles, and what the owner said of them. Nothing was built from it.
+
+### 2026-11-13
+
+
+Added to this index on November 15; the folders were written on their day.
+
+[The cards composed for each zoom look](2026-11-13/Screenshots/zoom-looks-composed/README.md): no book where no description can be read, names in the room their descriptions left, counts readable or not drawn, then short rows and even names; with the pictures under Segoe UI's line metrics that showed why the owner's screen differed.
+
+[The World Map's camera](2026-11-13/Screenshots/world-map-camera/README.md): the view from above squared after any turn, and a turn's cost before and after the labels were read in one batch.
+
+[The opened directory through the layout's price](2026-11-13/Screenshots/directory-flow-price/README.md): the width term, the two attempts withdrawn and the shape chosen on the directory alone; a pin's rearrangement on three directories.
+
+[Flow as the default of an opened directory](2026-11-13/Screenshots/directory-flow-default/README.md).
+
+[Three trial looks for a closed directory](2026-11-13/Screenshots/closed-directory-looks/README.md): a skin with cells, a stack, a folded membrane, beside the box, at three looks and under both fonts' metrics.
+
+[The full zoom-out as files only](2026-11-13/Screenshots/overview-files/README.md): the trial behind its Tuning choice, with the move out and back and the crowded picture where the move cannot be followed.
+
+### 2026-11-12
+
+
+[A first visit, by an outsider](2026-11-12/Screenshots/first-visit/README.md): an evaluation by a subagent with no project background, from the README through the commands to the running Explorer on this repository and the estate sample, at desktop, tablet and phone sizes and by keyboard; twenty ranked findings with reproductions and measured sizes, what worked and should be protected, and what it could not work out. An outsider's observations, not decisions; root's reading of them against the record is in [the session record](2026-11-12/2026-11-12.1.record.md).
+
+[The Local Map repairs](2026-11-12/Screenshots/local-map-repairs/README.md): a builder's evidence for the first repairs after that visit: the count of a card's undrawn connections as a framed control (two trial looks and the one chosen), Fit in 2D, the reading dialog's own Back and Forward, and two investigations with nothing changed, the Centre motion from far out and names in a fresh 3D picture.
+
+[The World Map repairs](2026-11-12/Screenshots/world-map-repairs/README.md): labels standing clear of every piece's outline, with the audit's failing output on the build before and the sweep of 148 camera states behind the rule chosen; the pinned panel beside its piece; the nine tools as icons, first drawn and as built; keyboard reach; the walk-through ending where it began; the loading sign.
+
+### 2026-11-10
+
+
+[Still Pointer, a trial not merged](2026-11-10/Screenshots/still-pointer/README.md): three behaviours for a sphere that arrives under a resting pointer in the 3D map (follows, waits, names), with a builder's measurements and its reading of what is wrong with each; superseded on 2026-11-15 by the owner's decision that a node takes no hover or click while the map builds. The note and its numbers only; the pictures stayed on the removed branch.
+
+[History inside the bubbles](2026-11-10/Screenshots/history-bubbles/README.md): a step of the history shown within the wrappers' skins, each change at the innermost thing drawn for it, on this repository at steps 695 and 697 before and after under Glow, Dim and Both, on the scripted sample, and on a temporary sample large enough to veil; with playback frames and per-step costs measured before and after. Implementation evidence for the root's review and the owner's eye (2026-11-11).
+
+[The compact step panel](2026-11-10/Screenshots/step-panel/README.md): the history's step panel cut to a subject of two lines, the hash, date and step, and one line of counts, with the whole step in a modal dialog behind its "…" button; this repository at steps 691 and 695 before and after, the dialog at 1440, 900 and 480 px wide, the base and a short step of the scripted sample, the design audit's findings, and the camera's room beside the compact panel with the rule the root rejected.
+
+[Current-build aesthetic review](2026-11-10/Screenshots/review/README.md): fresh main/estate reading and zoom journeys, the estate Structure opening, and a corrected full perspective round trip. Root judges the middle 2D composition the first design target, keeps the closed Structure cells as a strong reference, and records the remaining count/key and emphasis problems. No product redesign was adopted; the first early transition capture is explicitly qualified.
+
+### 2026-11-09
+
+
+[Zoom composition and directory opening](2026-11-09/Screenshots/zoom-review/README.md): root-driven repository/estate zoom round trips, actual wheel state crossings, a normal Structure opening and independent reading-choice/reader checks in the candidate. Current behavior and design hypotheses are distinguished; the original button-run font estimate is explicitly disqualified.
+
+[Reading controls and exact symbol arrivals](2026-11-09/Screenshots/reading-controls/README.md): restored all/none/subset books, empty-slot boundaries, compact-neighbor disclosure, same-file reader targeting and normal-default text refresh. The evidence retains the failed scroll and focus baselines alongside the corrected checks; 41 distinct focused cases pass across the recorded runs.
+
+### 2026-11-08
+
+
+[Astra's baseline review](2026-11-08/Screenshots/astra-review/README.md): the current card across four zoom levels, Structure skins and Whole's contradictory claim, directory opening/inspection, and a two-pin estate journey through 2D and 3D. Firsthand findings before this session's product edits; the moving and intermediate captures are explicitly qualified.
+
+[Skin defaults and perspective handoff](2026-11-08/Screenshots/skin-defaults/README.md): fresh Skin/one-hop arrivals on the estate and repository, Whole's complete estate graph, and the directory correspondence defect exposed by the defaults round. Includes the rejected amber disks, two root normal-clock round trips, the accepted vector carrier and wire-visibility correction, and measured capture costs. The third checkpoint passed 1,718 unit and 115 integration cases, then failed 17 of 345 browser cases. The final round passed 1,740 unit and 115 integration cases, then 345/350 browsers; that full gate still failed. Its five remaining waits are retained in the verification probe.
+
+[Header order](2026-11-08/Screenshots/header-order/README.md): the 2D card's header under the six principles of the November 7 record's Turns 3 and 4, the name leading on the first line, whole on the fewest filled lines, the node's controls after it at the right edge; `symbolAnchors.ts` where the middle band's three controls move and the owner's band at the far steps, and the box audit's three subjects at the far and overview bands, before (milestone 1's one-line header) and after, with the counts of names whole on one line, on two or more, and cut, and where the controls stand; implementation evidence for the owner's eye (2026-11-08).
+
+[Switch motion](2026-11-08/Screenshots/switch-motion/README.md): the 2D/3D transition on the focus case's picture (`graph.ts`), five frames each way at fixed times from its start, before (`476ea2c8`) and after the switch-cost fix, composed as four strips; the same picture at the same times, and the measured delay of the transition's first frame, which hid its opening before and after (2026-11-08).
+
+[Internals held](2026-11-08/Screenshots/internals-held/README.md): the 2D Internals row in five forms by injected styles after the owner's "internals is still always small" and "'As Built' is by far the most aesthetically pleasing": as built; H, its name, buttons and dot held from the middle band out as a public row's are; C1, H with a black square the size of the dot that the wires run into; C2, the square half again as large; C3, the square with the outline dropped; `card-factory.ts` at reading scale and three, six and eight presses out, and the owner's `symbolAnchors.ts` picture at four and five presses as built, H and C1, each row's name height on screen beside a public row's and the held head's overflow of its row; sketches for the owner's eye, no form chosen and no product change (2026-11-08).
+
+### 2026-11-07
+
+
+[One-line names](2026-11-07/Screenshots/one-line-names/README.md): a file's held name in the 2D card ladder drawn on one line at every band and step after the owner's "silly clunky" two-line titles (November 6 record, Turn 8): `symbolAnchors.ts` pinned alone at every press and the box audit's three subjects at the far and overview bands' first and last steps, before and after, with the counts of names whole beside the node's buttons, whole below them and cut; the owner's `localView` band before and after; and, pictured by an injected style and not built, the alternative of a held More no taller than one line of the name; implementation evidence for the owner's eye (2026-11-07).
+[Structure cells](2026-11-07/Screenshots/structure-cells/README.md): the 3D Structure layout drawn as a bag of cells with Group Wrappers on, every hub at the frontier a bubble built from the leaves, opened by the directory's Open and wrapped again by Close: this repository's start at one and two hops and with `packages` and `packages/explorer` opened, Off against Skin, the Off pictures byte for byte the same as before the change; the estate's start; the pops of `packages` and `packages/explorer` as three frames each; the rest, packing and drawing-budget numbers, the check that no bubble shows one cell in either layout, and one playback of the history; implementation evidence for review (2026-11-07).
+
+[Column clearance](2026-11-07/Screenshots/column-clearance/README.md): the 2D Local Map's wires from `compressed-url-state.ts` diving while still over their column, through the layout lab's membrane and across a lane's end, the gate's foreign-lane failure on the repository chain's retained picture (the same wires as 2026-11-06's); the spot before and after a wire runs straight to the gutter before it curves, and the whole picture after (2026-11-07).
+
+[Shell faults](2026-11-07/Screenshots/shell-faults/README.md): the 3D shells' third round, the second round's faults that are not the nesting fork: the T3 sample's blade shown to be its wires along the line its shells were born in, and the same view after the new birth; the packing's stall and its spreading over frames, with the bodies byte for byte the same; a shell's weight tried four ways with the rest counts, and the Off pictures byte for byte unchanged; the picture-wide drawing budget on the T3 sample (the builder's order, changed by the root at the review); the popped directories' names before and after, nested pops level by level; every force-graph spec on both bundles; implementation evidence for the owner's eye, Group Wrappers still Off by default (2026-11-07).
+
+### 2026-11-06
+
+
+[Far bands](2026-11-06/Screenshots/far-bands/README.md): both milestones of the card ladder's far and overview bands after the far-zoom review and the owner's go-ahead (November 6, Turn 3), with the root's four reviews: `still-picture.ts`, the estate's payment service and `rosetta-manifest.json` pinned whole from reading scale to the farthest zoom, every held part inside its box, file names held in lines that never break a word that fits, the overview's silent rows and gathered wires, the zoom's limit, a render at any zoom laying out what a render at reading scale does; the review's two tables before and after; implementation evidence for the owner's eye, not a verdict (2026-11-06).
+
+[Internals slot](2026-11-06/Screenshots/internals-slot/README.md): three sketched forms of a dedicated slot for the Internals pseudo-symbol beside the row as built, after the owner's Turn 7 call for "a dedicated design slot with special styling": a sealed black box with one square opening, a box open through the card's left wall, and the old black square grown into the thing the wires run into; `card-factory.ts` as the subject at reading scale and three, six and eight presses out, the whole frame as built and with the sealed box, and the injected styles of each; sketches for a design discussion, no form chosen and no product change (2026-11-06).
+
+[Shell leaves](2026-11-06/Screenshots/shell-leaves/README.md): the 3D shells' second round after the owner's Turn 4, bodies built from the leaves of their directory trees so that every bubble shows every file it holds, bubbles in bubbles apart, islands drawn full, a chain collapsed and popped, a bubble in a bubble in a bubble popped level by level, the T3 sample's largest shell veiled past the limit; the owner's round-one pictures beside the new ones, the sizes, rest, frame-cost and building tables, and the fork handed back: nesting makes the largest shells half again as large and more (2026-11-06).
+
+[Rosetta pin review](2026-11-06/Screenshots/rosetta-pin-review/README.md): the owner's own picture of Turn 5, `rosetta-manifest.json` pinned whole, on port 8900's 2D drawing and on the 2D round's first handback at three, five and nine presses out (what the round already mends, and the two faults it showed that went back: file names broken inside a word, and the subject's name cut when a file is pinned whole), with a sketch of the Internals row three ways for the owner's decision: as built, with one line of room, with a symbol's full slot; the root's review pictures, one of them a sketch, not a change (2026-11-06).
+
+[Shell mesh](2026-11-06/Screenshots/shell-mesh/README.md): the 3D directory shells made stand-ins for what they hold, after the owner's Turn 3: drawn at their true size, showing their own files and their subdirectories' balloons within the skin, as bright as a shown file, and leaving what they held standing where the skin showed it at the frame of a pop; this repository's and the estate's pinned pictures Off, Skin and Cloud, two pops in a row on each, the rest times against the picture without shells and how far the released units moved; implementation evidence for the owner's eye, Group Wrappers still Off by default (2026-11-06).
+
+[Far-zoom review](2026-11-06/Screenshots/far-zoom-review/README.md): the root's look at the November 5–6 work on the freshly built bundle, at the owner's request: `still-picture.ts` walked out one zoom step at a time with every held part measured against its card and its row (the anchor dots past the card's edge from the far band outward), the screen size of symbol, file and directory names at each step, the same step with Name Growth at 1, two sketches of a far view led by file and directory names, and the 3D picture with the directory shells on and off; a review and a proposal, no product change (2026-11-06).
+
+[Card culling](2026-11-06/Screenshots/card-culling/README.md): containment and off-screen skipping for the 2D cards, the experiment of the owner's Turns 13 to 16, measured on four pages and left out of the product, with the trial kept as a patch, the pictures skipping on and off, the journey tables and a trace of where a wheel zoom's time goes; numbers for the owner, not a verdict (2026-11-06).
+
+[Card breakpoints](2026-11-06/Screenshots/card-breakpoints/README.md): the card ladder as breakpoints after the owner's Turns 17 to 19, the payment service, pathfind.ts and still-picture.ts at every step out to the camera's least scale and in to its greatest, the blur close up and the aliasing far out before and after, a pinned row's highlight, a phone width, and the frame cost of a zoom before and after; implementation evidence for the owner's eye, not a verdict (2026-11-06).
+
+### 2026-11-05
+
+
+[Reading access and hover stability](2026-11-05/Screenshots/reading-access/README.md): owner-reported blocked descriptions at useful zoom, cumulative displacement during uninterrupted symbol hovering, and interrupted-return/zoom cases. Baseline failures, repaired pictures, a supplemental estate 3D motion look and the passing full gate remain explicit.
+
+[Tap reading](2026-11-05/Screenshots/tap-reading/README.md): descriptions opened by a tap on a name or on the book beside it rather than on hover, with hover drawing nothing, the card's name held still through the growth, the file's name opening everything, the phone tap and the keyboard, and the first candidate's 103 px leap corrected. Verification is in the session record; no owner acceptance is implied.
+
+[Card composition](2026-11-05/Screenshots/card-composition/README.md): the two card compositions side by side on the same bundle behind the Card Text switch, descriptions that open and grow against fixed slots of a chosen number of lines, the same for every symbol, cut with an ellipsis, on the payment service and on pathfind.ts at reading scale and two steps out, with each card's box measured in the map's own pixels and no box changing with zoom; evidence for the owner's judgement, not a decision (2026-11-05).
+
+[Card ladder](2026-11-05/Screenshots/card-ladder/README.md): the priority ladder's first pass on the slot composition, the same card at the reading, middle and far bands and one step closer, with names, the node's controls and the anchor dots holding their screen size and every box unchanged; evidence for the owner's eye (2026-11-05).
+
+### 2026-11-04
+
+
+[Native portrait reading](2026-11-04/Screenshots/reading/README.md): the real 2D map's file and symbol descriptions, centered desktop/phone composition, reversible hover and zoom journeys, and the explicit full-text reader. Includes the rejected first symbol grid and narrow framing, with the resulting corrections and verification kept distinct from owner acceptance.
+
+[Learning-journey comparison](2026-11-04/Screenshots/learning/README.md): matched original/refined cards, named relationship navigation and complete cycle explanation, phone touch access, keyboard and return-motion findings, and the rejected first control-spacing and row-occlusion treatments. Separate Sol reviews and verification are recorded in the linked experiment; the pictures do not imply owner acceptance.

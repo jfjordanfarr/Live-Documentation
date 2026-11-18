@@ -17,7 +17,7 @@ Record the key architectural decisions made during Live Documentation developmen
 ### Notes
 
 - Decisions are listed chronologically by when they became relevant.
-- Descoped decisions are retained as brief audit trail entries; the full context lives in the chat record under `AI-Agent-Workspace/ChatHistory/`.
+- Descoped decisions are retained as brief audit trail entries; the full context lives in the chat record under `AI-Agent-Workspace/AgentSessionHistory/`.
 - This document was originally `specs/001-link-aware-diagnostics/research.md`.
 
 ## Decisions
@@ -155,7 +155,7 @@ Record the key architectural decisions made during Live Documentation developmen
 - **Decision**: the faults a screenshot shows and geometry can name are tested. `tests/e2e/design-audit.ts` collects the screen boxes of a view's visible text and reports every two that intersect, and every element whose text, measured through a range over its text nodes, runs past the box that clips it or under a sibling's on the same line. Specs put a view in one state and expect no faults, and expect some boxes, since a view still fading in has none. The World Map is audited at rest, with the built-on layer, after a turn and a zoom, and, since the same afternoon, with a thing opened into the Membrane Map, over this repository's board and the estate sample, which `live-docs:visualize:estate` builds into the bundle's `samples/estate/` from a copy of the sample so that the same server serves it; `test:e2e` builds both first.
 - **What it found, and what changed**: token labels on each other and on things' second lines; a region's label under a thing's name; two things' second lines on each other once the world is zoomed out, since labels keep their size; card paths and names cut off at a fixed card width; and, in the first run, nothing at all, because the audit ran while the view container was still fading in, so a spec now waits for the fade and asserts that it saw words. The World Map settles its labels after every camera move: a thing's name stays where it is, its second line goes when it would cover another label, and a region's label, a crossing's tag and a token's label step up or down from where they rest until they cover nothing, in that order. Inside a thing, a card was as wide as its longest line, measured by the panel with a canvas in the card's fonts, until the panel went the same afternoon. The Membrane Map's first audit caught the audit once more: it subtracted CSS padding unscaled from boxes drawn under a transform and reported two pixels that were not cut; the padding now scales with the element.
 - **Why**: the owner: "Any way for us to have playwright test for/detect text overflows or other immediate design fails?" And the record's rule that a green Playwright run says only that the client still draws what it drew; this audit says a little more, that the words are legible.
-- **Not**: taste. Density, colour and whether a picture reads are still judged by eye, in the gallery under `AI-Agent-Workspace/Screenshots/`.
+- **Not**: taste. Density, colour and whether a picture reads are still judged by eye, in the pictures in each day's `Screenshots/` under `AI-Agent-Workspace/AgentSessionHistory/`.
 
 ### One Search at the Top, and a Path Starts at the Newest Pin _(Recorded 2026-10-14)_
 
