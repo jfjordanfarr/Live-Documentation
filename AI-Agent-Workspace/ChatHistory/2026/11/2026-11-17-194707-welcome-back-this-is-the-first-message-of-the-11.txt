@@ -3556,3 +3556,183 @@
 
   The convention I proposed still stands until you correct it. The record's
   resumption section holds this whole plan, so a new chat can pick it up too.
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/11/2026-11
+  -17-194707-welcome-back-this-is-the-first-message-of-the-11.txt in the IDE.
+  This may or may not be related to the current task.</ide_opened_file>
+
+❯ (base) PS C:\Users\User> wsl -l -v
+    NAME              STATE           VERSION
+  * docker-desktop    Running         2
+
+  >You need a line besides docker-desktop, for example Ubuntu, with VERSION 2.
+  If there is none, run wsl --install -d Ubuntu, which asks you to create a
+  Linux username and password.
+
+  This gets hairy very very quickly. Why don't we just copy that
+  D:\Projects\Live-Documentation\ over to somewhere else and mount from there?
+  I don't have an additional distro installed and it sounds like if I do, I'm
+  going to need to be maintaining it. There is no other simpler way for you to
+  get quicker disk access?
+  ⎿  Read AI-Agent-Workspace/tmp/move-to-wsl.sh (82 lines)
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/00c8e0dd-64fe-446
+     8-8f70-7acfa6affb58/scratchpad/notes-turn-15.md (28 lines)
+  ⎿  Referenced file
+     AI-Agent-Workspace/ChatHistory/2026/11/2026-11-17.1.record.md
+  ⎿  Referenced file AI-Agent-Workspace/ChatHistory/README.md
+  ⎿  Referenced file AI-Agent-Workspace/ChatHistory/2026/11/README.md
+
+● Compacted using a summary written while you were away · turn off with
+  "idleCompaction": false in settings.json
+
+● Bash(node AI-Agent-Workspace/scripts/visible-messages.mjs ~/.claude/projects/-
+      workspaces-Live-Documentation/00c8e0dd-64fe-4468-8f70-7acfa6affb58.jsonl
+      2026-11-18T03:…)
+  ⎿  (No output)
+
+❯ I mean I'm fine to follow these steps but I think I need a bit more
+  instruction on what it implies in terms of my responsibilities for the
+  longer-term.
+
+● Checking the documentation for a route without a new distribution, and for
+  what a distribution would ask of you over time; then I'll answer both messages
+  together.
+
+● Fetch(https://code.visualstudio.com/remote/advancedcontainers/improve-performa
+       nce)
+  ⎿  Received 51.4KB (200 OK)
+
+● Fetch(https://docs.docker.com/desktop/features/wsl/best-practices/)
+  ⎿  Received 2.2KB (200 OK)
+
+● Fetch(https://docs.docker.com/desktop/features/synchronized-file-sharing/)
+  ⎿  Received 5.9KB (200 OK)
+
+● Bash(node AI-Agent-Workspace/scripts/visible-messages.mjs ~/.claude/projects/-
+      workspaces-Live-Documentation/00c8e0dd-64fe-4468-8f70-7acfa6affb58.jsonl
+      2026-11-18T03:…)
+  ⎿  (No output)
+
+● Fetch(https://code.visualstudio.com/docs/devcontainers/containers)
+  ⎿  Received 141.5KB (200 OK)
+
+● Web Search(""Clone Repository in Container Volume" workspaceMount
+            devcontainer.json ignored OR overridden localWorkspaceFolder
+            vscode-remote-release")
+  ⎿  Did 1 search in 8s
+
+● Bash(f="AI-Agent-Workspace/ChatHistory/2026/11/2026-11-17-194707-welcome-back-
+      this-is-the-first-message-of-the-11.txt" && stat -c '%s bytes, modified
+      %y' "$f" && sha…)
+  ⎿  (No output)
+
+● Documentation checked; now recording your two messages and the reply you were
+  sent overnight, then I'll answer.
+
+● Bash(R=AI-Agent-Workspace/ChatHistory/2026/11/2026-11-17.1.record.md &&
+      S=/tmp/claude-1000/-workspaces-Live-Documentation/00c8e0dd-64fe-4468-8f70-
+      7acfa6affb58/scratc…)
+  ⎿  (No output)
+
+● Bash(f="AI-Agent-Workspace/ChatHistory/2026/11/2026-11-17-194707-welcome-back-
+      this-is-the-first-message-of-the-11.txt" && git diff -U1 -- "$f" | head
+      -40 | cut -c1-2…)
+  ⎿  (No output)
+
+● Bash(R=AI-Agent-Workspace/ChatHistory/2026/11/2026-11-17.1.record.md && sed -n
+      '1521,1529p;1590,1606p' $R | cut -c1-420 && echo ---TAIL && tail -3 $R |
+      cut -c1-300 &…)
+  ⎿  (No output)
+
+● Bash(R=AI-Agent-Workspace/ChatHistory/2026/11/2026-11-17.1.record.md && awk
+      'NR>=13 && NR<=60' $R | cut -c1-700 | awk '/^## / && NR>1 {exit} {print
+      NR+12": "$0}')  ⎿  (No output)
+
+● Bash(S=/tmp/claude-1000/-workspaces-Live-Documentation/00c8e0dd-64fe-4468-8f70
+      -7acfa6affb58/scratchpad && cat > $S/record16.py <<'PY'
+      import re, sys, pathlib…)
+  ⎿  (No output)
+  ⎿  (timeout 5m)
+
+● Record is written and links pass; committing it, then your answer.
+
+● Bash(git commit -q -F - <<'MSG'
+      Record November 18: the owner's questions on the move, and the export as
+      saved that morning…)
+  ⎿  (No output)
+
+● Ubuntu would ask almost nothing of you once it is installed. The one lasting
+  thing to know is that it would hold the only working copy, so pushing to
+  GitHub is its backup.
+
+  Why another Windows folder won't help
+
+  The slowness is not the D: drive. The container runs in Linux, and every file
+  it opens on any Windows drive is a request sent across to Windows and back, 4
+  to 6 ms each. A folder on C: is reached through the same crossing. Docker's
+  guidance (https://docs.docker.com/desktop/features/wsl/best-practices/) says
+  the same: "Performance is much higher when files are bind-mounted from the
+  Linux filesystem."
+
+  So "somewhere else" has to be on the Linux side, and there are only two such
+  places: a Linux install's disk (Ubuntu), or Docker's own disk.
+
+  What Ubuntu asks of you over time
+
+  - Nothing to run or keep up. It is a disk with our folder on it. The tools,
+    dependencies and tests stay in the container, as now. Updating Ubuntu is
+    optional, because nothing we do depends on it.
+  - No second virtual machine. It runs inside the one Docker already uses, so
+    installing it needs no restart.
+  - A username and password, chosen once at install. The password is only for
+    administrator commands, which our steps rarely need. If you forget it, it
+    can be reset from PowerShell.
+  - A new place to open the project from. VS Code's recent list will hold it,
+    and the D:\ entry retires.
+  - About 6 GB on C:, in one disk file that Windows keeps for Ubuntu.
+  - Know what deletes it. Removing Ubuntu (uninstalling it, or wsl --unregister
+    Ubuntu) deletes the working copy with it. Push as you do now, and always
+    before removing Ubuntu.
+
+  You can still browse the files from Windows: File Explorer → Linux → Ubuntu →
+  home → your name → src.
+
+  The way without Ubuntu
+
+  The working copy can go into a Docker volume, which is Docker's own disk,
+  where your chats and the dependencies already live. VS Code documents this
+  (https://code.visualstudio.com/remote/advancedcontainers/improve-performance)
+  too.
+
+  - Nothing to install. Your part would be one "Rebuild Container".
+  - More exposed to deletion. Docker Desktop's "Clean / Purge data", a factory
+    reset or an uninstall deletes it, and those are the usual advice when Docker
+    misbehaves. One such loss would take the chats and the working copy
+    together.
+  - File Explorer cannot open it.
+  - Not prepared yet. I would add set-up steps to the container's configuration
+    first. The Ubuntu copy script is already written and tried.
+
+  Neither way's container start can be tried from inside this container, so each
+  has one untested step on your side.
+
+  My recommendation
+
+  Ubuntu. It costs you about ten minutes once and nothing after, and the working
+  copy stays yours, not Docker's. I put the case against the volume too
+  strongly last night, though: either place is one disk file that Windows backup
+  does not look inside, so both depend on pushing.
+
+  If you would still rather install nothing, say "volume" and I'll prepare that
+  way.
+
+  If you go ahead with Ubuntu
+
+  The five steps from last night stand, starting with wsl --install -d Ubuntu.
+  Two things will differ:
+
+  - The password prompt shows nothing as you type. That is normal.
+  - The script will report a newer commit than 4a83bab0 and 6 or more commits
+    ahead. I have since committed your two messages and the export as you saved
+    it this morning (e2b29244).
