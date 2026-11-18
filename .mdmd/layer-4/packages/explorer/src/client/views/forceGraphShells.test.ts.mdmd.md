@@ -15,6 +15,8 @@ Written on 2026-11-05 with the experiment ([the design](../../../../../../../.md
 
 Since the second round of 2026-11-06 the packing cases are properties: a ball's spheres apart by the gap within a hundredth of it, held by its extent and the same in any order; a body's every file once, every unit inside its bubble and siblings apart, a chain collapsed, a lone subdirectory file that file, a bubble the body its shell has after a pop, a veiled bubble past the limit, and a group packed about its seed ([the evidence](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-06/Screenshots/shell-leaves/README.md)).
 
+Since 2026-11-18 the horizon's cases, over a chain of directories one step apart: a ring forms beside what is shown, a pop breaks a shell and forms the ring beyond it, a second pop likewise with a lone file where one file is reached, nothing two steps away is held, and Everything gives today's partition exactly ([Turn 10 of the November 18 record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-10)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

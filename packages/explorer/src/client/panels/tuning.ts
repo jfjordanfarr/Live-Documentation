@@ -8,7 +8,7 @@
 import { applyMarbles, applyPalette } from "../dom";
 import { layoutSettingsOf } from "../layout-presets";
 import { DEFAULT_PALETTE, isPaletteName } from "../palette";
-import { CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, HIDDEN_FILES_LOOKS, MARBLE_CHOICES, OVERVIEW_FILES, type ExplorerState } from "../types";
+import { CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, BEYOND_HOPS, HIDDEN_FILES_LOOKS, MARBLE_CHOICES, OVERVIEW_FILES, type ExplorerState } from "../types";
 import { TUNING_HELP, tuningHelpId } from "./tuning-levers";
 
 /** Callback for when tuning values change */
@@ -98,6 +98,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   const historyPlayRateInput = document.getElementById("tuning-history-play-rate") as HTMLInputElement | null;
   const historyChangeEmphasisSelect = document.getElementById("tuning-history-change-emphasis") as HTMLSelectElement | null;
   const groupWrappersSelect = document.getElementById("tuning-force-group-wrappers") as HTMLSelectElement | null;
+  const beyondHopsSelect = document.getElementById("tuning-force-beyond-hops") as HTMLSelectElement | null;
 
   const wireSlider = (input: HTMLInputElement | null, outputId: string, setter: (v: number) => void): void => {
     if (!input) return;
@@ -211,6 +212,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     state.tuning.history.playRate = setSlider(historyPlayRateInput, "tuning-history-play-rate-value", state.tuning.history.playRate, v => String(v));
     if (historyChangeEmphasisSelect) historyChangeEmphasisSelect.value = state.tuning.history.changeEmphasis;
     if (groupWrappersSelect) groupWrappersSelect.value = state.tuning.forceGraph.groupWrappers;
+    if (beyondHopsSelect) beyondHopsSelect.value = state.tuning.forceGraph.beyondHops;
 
     // Set CSS custom properties on document root so they cascade to both views
     document.documentElement.style.setProperty("--local-column-gap", `${state.tuning.localMap.columnGap}px`);
@@ -415,6 +417,15 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     groupWrappersSelect.addEventListener("change", () => {
       const value = groupWrappersSelect.value;
       state.tuning.forceGraph.groupWrappers = GROUP_WRAPPERS.find(wrappers => wrappers === value) ?? "off";
+      onTuningChange();
+      if (state.view === "map" && state.perspective === "3d") onRender();
+    });
+  }
+
+  // What stands beyond the hops, a trial (2026-11-18): the 3D view draws again at once.
+  if (beyondHopsSelect) {
+    beyondHopsSelect.addEventListener("change", () => {
+      state.tuning.forceGraph.beyondHops = BEYOND_HOPS.find(choice => choice === beyondHopsSelect.value) ?? BEYOND_HOPS[0];
       onTuningChange();
       if (state.view === "map" && state.perspective === "3d") onRender();
     });

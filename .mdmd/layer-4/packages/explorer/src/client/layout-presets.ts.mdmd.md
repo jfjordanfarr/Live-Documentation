@@ -45,6 +45,8 @@ Since 2026-11-15 ([Turn 1 of the November 15 record](../../../../../../AI-Agent-
 
 `returnCost` (0 to 5000 px of wire by 25) joined the 2D ranges on 2026-11-16, the continuing search's price of a reference read backward through a cycle, so that a shared link reopens the picture it was made from and a saved tuning keeps it; it belongs to no packing profile, and a link written before it keeps the viewer's own setting ([Turn 5 of the November 15 record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-5)).
 
+`beyondHops`, the 3D trial of what stands beyond the hops (2026-11-18, [Turn 10 of the November 18 record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-10)), is carried only at the next step, and a link that carries the 3D settings without it opens at everything, as the 2D trials' choices are.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { getDefaultTuning } from "../persistence/local-storage";
 import { linkPulls, type SpatialLink } from "./forceGraphLayout";
-import { componentLandmarks, componentMembers, connectedNeighbours, defaultSpatialLayout, directoryHubOf, directoryMembersWithinHops, spatialScope, startHops, startOf, type StartableNode } from "./forceGraphScope";
+import { componentLandmarks, componentMembers, connectedNeighbours, defaultSpatialLayout, directoryHubOf, directoryMembersWithinHops, spatialScope, startHops, startOf, withoutUnreachedSeeds, type StartableNode } from "./forceGraphScope";
 
 const node = (id: string, more: Partial<StartableNode> = {}): StartableNode => ({ id, publicSymbols: [], ...more });
 const link = (source: string, target: string, kind = "dependency"): SpatialLink<StartableNode> => ({ source, target, count: 1, kind });
@@ -13,6 +13,25 @@ const structure = (edge: SpatialLink<StartableNode>): boolean => linkPulls(edge,
 // a - b - c - d - e, with f hanging off c and g an island.
 const chain = ["a", "b", "c", "d", "e", "f", "g"].map(id => node(id));
 const chainLinks = [link("a", "b"), link("b", "c"), link("c", "d"), link("d", "e"), link("c", "f")];
+
+describe("the horizon's scope (a trial, 2026-11-18)", () => {
+  it("leaves out the seeds of the groups the hops do not reach, and keeps everything else", () => {
+    // Asked about a, one hop: b shown, the island g and the pair x-y stand by their seeds one past the hops.
+    const graph = [...chain, node("x"), node("y")], links = [...chainLinks, link("x", "y")];
+    const scope = spatialScope(graph, links, new Set(["a"]), 1, connections);
+    expect([...scope.hops].filter(([, hop]) => hop > 1).map(([id]) => id).sort()).toEqual(["g", "x"]);
+    const horizon = withoutUnreachedSeeds(scope, 1);
+    expect([...horizon.hops.keys()].sort()).toEqual(["a", "b"]);
+    expect([...horizon.groups.keys()]).toEqual([]);
+    expect([...horizon.groupFiles.keys()]).toEqual([]);
+    expect(horizon.hidden).toEqual(scope.hidden);
+    expect(horizon.beside).toBe(scope.beside);
+    expect(horizon.beyond.get("b")).toBe(scope.beyond.get("b"));
+    // A group shown by its seed alone because it was asked about stays, as its wrapper does.
+    const asked = spatialScope(graph, links, new Set(["x"]), 0, connections);
+    expect(withoutUnreachedSeeds(asked, 0).groups.get("x")).toBe(2);
+  });
+});
 
 describe("what the picture shows around what was asked about", () => {
   it("carries a directory's bounded file neighborhood into Connections and resolves collapsed chains", () => {

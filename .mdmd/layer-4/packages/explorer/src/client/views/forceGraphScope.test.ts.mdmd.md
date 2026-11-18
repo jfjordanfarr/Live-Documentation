@@ -13,6 +13,8 @@ Holds the scope and the start to their rules over small hand-made graphs: the ho
 ### Notes
 Written with the module on 2026-10-31. The structure cases are the start the owner proposed, the root with its children in full and their children one hop further ([Turn 6 of the October 31 record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-31/2026-10-31.1.record.md#turn-6)); the start cases include a document cited by more files than any file connects to, which must not be the start. Since 2026-11-02 ([Turn 3 of the November 2 record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-02/2026-11-02.1.record.md#turn-3)) the Connections start is the archipelago, every group's seed and nothing grown; the seeds of the groups the hops do not reach stand one past the last hop; and a containment tree whose members the hops reach nothing of stands by its top hub, named by its files, where a group stands by its seed.
 
+Since 2026-11-18 a case holds `withoutUnreachedSeeds`: the unreached seeds go, a seed asked about stays, and `hidden`, the neighbours and the counts of what remains are untouched ([Turn 10 of the November 18 record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-10)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

@@ -25,7 +25,7 @@
  * Pure-function module: no DOM, no GPU. The page draws, picks and pops what these functions describe.
  */
 
-import type { ForceGraphTuning } from "../types";
+import type { BeyondHops, ForceGraphTuning } from "../types";
 import type { FileConnection } from "./fileConnections";
 import { seededDirection, spatialNodeRadius, type Placed, type SpatialNode } from "./forceGraphLayout";
 import type { BodyUnit, GroupMember, GroupShape } from "./forceGraphWrappers";
@@ -188,6 +188,41 @@ export interface ShellSource<N extends ShellCandidate, T extends string = string
   beside: ReadonlyMap<string, ReadonlySet<string>>;
   /** Whether a link is a reference a shell's wire bundles: never containment nor a document's citation. */
   bundles: (link: FileConnection<T>) => boolean;
+  /**
+   * What stands beyond the hops (a trial, 2026-11-18): everything, the default, every file of `hidden` held or lone; or
+   * the next step, only those `nextStepFiles` brings to the edge of what stands.
+   */
+  reach?: BeyondHops;
+}
+
+/**
+ * The files of `hidden` one step past what stands in the picture, the horizon (a trial, 2026-11-18): those with a
+ * connected neighbour among the files shown or released. A pop releases a shell's files, which then stand, and the files
+ * one step past them join the edge, and so on over every directory popped, until nothing more is brought to it; nothing
+ * two steps past what stands is held. Documents are never held, as a shell never holds one. In the order of `hidden`.
+ *
+ * Once a step has brought a file to the edge it stays there for that picture, even if a later step folds the released
+ * file that reached it back into a shell (a directory's lone file, released by its parent's pop, becomes a shell when a
+ * second file of it reaches the edge), so that the reckoning only grows and always ends; such a file stands beside the
+ * shell that holds its neighbour.
+ */
+export function nextStepFiles(hidden: readonly string[], shown: ReadonlySet<string>, beside: ReadonlyMap<string, ReadonlySet<string>>,
+  pathOf: (id: string) => string | undefined, depth: number, popped: ReadonlySet<string>): string[] {
+  const pool = new Set(hidden.filter(id => pathOf(id) !== undefined)), held = new Set<string>();
+  let standing: Iterable<string> = shown;
+  const reached = new Set<string>();
+  for (;;) {
+    let grew = false;
+    for (const id of standing) {
+      if (reached.has(id)) continue;
+      reached.add(id);
+      for (const neighbour of beside.get(id) ?? []) if (pool.has(neighbour) && !held.has(neighbour)) { held.add(neighbour); grew = true; }
+    }
+    if (!grew) break;
+    // What the pops release of what is held now stands, and reaches a step further.
+    standing = partitionBy([...held], pathOf, depth, popped).released;
+  }
+  return hidden.filter(id => held.has(id));
 }
 
 /**
@@ -198,10 +233,12 @@ export interface ShellSource<N extends ShellCandidate, T extends string = string
  */
 export function shellPicture<N extends ShellCandidate, T extends string>(source: ShellSource<N, T>): ShellPicture<T> {
   const byId: ReadonlyMap<string, N> = source.nodes instanceof Map ? source.nodes : new Map((source.nodes as readonly N[]).map(node => [node.id, node]));
-  const partition = partitionBy(source.hidden, id => {
+  const pathOf = (id: string): string | undefined => {
     const node = byId.get(id);
     return node && node.archetype !== "related-doc" ? node.codeRelativePath : undefined;
-  }, source.depth, source.popped);
+  };
+  const held = source.reach === "next-step" ? nextStepFiles(source.hidden, source.shown, source.beside, pathOf, source.depth, source.popped) : source.hidden;
+  const partition = partitionBy(held, pathOf, source.depth, source.popped);
   // Each end a link can have: a held file its shell's, a standing file its own. Read once a link, the T3 sample's 80,108.
   const ends = new Map<string, string>();
   for (const shell of partition.shells) for (const file of shell.files) ends.set(file, shell.id);

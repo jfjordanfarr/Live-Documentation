@@ -19,6 +19,8 @@ Since 2026-11-05 the scope also names each group's files (`groupFiles`), what `g
 
 Since 2026-11-05 the scope also returns `hidden`, the files of each group shown in part, but not only by its seed, that the picture leaves out, which the directory shells hold, and `beside`, the neighbours it walked, so that the shells need not walk them again.
 
+Since 2026-11-18 `withoutUnreachedSeeds` leaves the seeds of the groups the hops do not reach out of a scope, for the horizon of Beyond the Hops, a trial ([the design](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md), [Turn 10 of the November 18 record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-10)); a group shown by its seed alone because it was reached or asked about stays.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

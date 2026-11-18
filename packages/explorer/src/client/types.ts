@@ -297,6 +297,18 @@ export type GroupWrappers = "off" | "skin" | "cloud" | "cloud-rim";
 /** Every wrapper choice, in the order the control offers them. */
 export const GROUP_WRAPPERS: readonly GroupWrappers[] = ["off", "skin", "cloud", "cloud-rim"];
 
+/**
+ * What the 3D Local Map draws of the files beyond the hops shown, with Group Wrappers on in the Connections layout while
+ * something is asked about (a trial, 2026-11-18): everything, today's picture and the default, every other file of a
+ * group shown in part held in a shell and every unreached group's seed standing past the hops; or the next step, the
+ * horizon, only the files one step past what stands in the picture, in shells or alone, and nothing farther until a step
+ * brings it to the edge (`forceGraphShells.ts`).
+ */
+export type BeyondHops = "everything" | "next-step";
+
+/** Every choice of what stands beyond the hops, the default first, in the order the control offers them. */
+export const BEYOND_HOPS: readonly BeyondHops[] = ["everything", "next-step"];
+
 /** How a slot card changes as the 2D map zooms out: the card ladder's steps, or the three looks of the 2026-11-10 trial. */
 export type ZoomLooks = "stepped" | "three";
 
@@ -466,6 +478,11 @@ export interface ForceGraphTuning {
    * shells.
    */
   shellDepth: number;
+  /**
+   * What stands beyond the hops shown, with Group Wrappers on in the Connections layout while something is asked about (a
+   * trial, 2026-11-18): everything, today's picture, or the next step alone (`BeyondHops`).
+   */
+  beyondHops: BeyondHops;
 }
 
 /** The end of a path a person asked for: a file, perhaps one symbol of it, or a directory. The path starts at the newest pin (2026-10-14). */

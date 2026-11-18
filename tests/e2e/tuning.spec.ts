@@ -31,8 +31,9 @@ test("every tuning control explains what changing it does, as its tooltip and it
   // Cost joined it on 2026-11-16 (the continuing search's price of a reference read backward through a cycle). Palette
   // joined on 2026-11-17 in a group of its own, Colour (the proposed palette of meanings beside today's), and Marbles
   // beside it the same day (the trial of a file drawn as glass of its kind, veined by what it offers and uses). Hidden
-  // Files joined the 2D layout group the same day (the trial of cells in place of a drawn directory's "+2 files").
-  await expect(controls).toHaveCount(67);
+  // Files joined the 2D layout group the same day (the trial of cells in place of a drawn directory's "+2 files"), and Beyond
+  // the Hops the 3D layout group on 2026-11-18 (the trial of the next step past the hops beside everything).
+  await expect(controls).toHaveCount(68);
   const facts = await controls.evaluateAll(elements => elements.map(element => {
     const describedBy = element.getAttribute("aria-describedby") ?? "";
     const description = document.getElementById(describedBy);

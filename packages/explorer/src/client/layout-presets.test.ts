@@ -68,6 +68,20 @@ describe("shared packing preferences", () => {
     expect(applyLayoutSettings(getDefaultTuning(), restored.layout).forceGraph.groupWrappers).toBe("skin");
   });
 
+  it("carries Beyond the Hops only at the next step, and opens a link that does not say it at everything (2026-11-18)", () => {
+    const everything = getDefaultTuning();
+    expect(everything.forceGraph.beyondHops).toBe("everything");
+    expect(layoutSettingsOf(everything).forceGraph).not.toHaveProperty("beyondHops");
+    expect(readLayoutSettings({ forceGraph: { beyondHops: "far" } })).toBeUndefined();
+    const horizon = getDefaultTuning();
+    horizon.forceGraph.beyondHops = "next-step";
+    expect(layoutSettingsOf(horizon).forceGraph?.beyondHops).toBe("next-step");
+    const restored = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, perspective: "3d", layout: layoutSettingsOf(horizon) }));
+    expect(applyLayoutSettings(getDefaultTuning(), restored.layout).forceGraph.beyondHops).toBe("next-step");
+    // A link made at everything opens at everything in a browser whose own tuning holds the next step.
+    expect(applyLayoutSettings(horizon, layoutSettingsOf(everything)).forceGraph.beyondHops).toBe("everything");
+  });
+
   it("opens a link in Flow unless it says the grid, which it carries only when chosen (2026-11-13)", () => {
     // The default is Flow, and a link made with it does not write it.
     const flow = getDefaultTuning();

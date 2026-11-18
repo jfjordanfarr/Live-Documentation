@@ -149,6 +149,19 @@ export function spatialScope<N extends SpatialNode>(nodes: readonly N[], links: 
   return { hops: result, beyond, groups, groupFiles, hidden, beside };
 }
 
+/**
+ * A scope without the seeds of the groups its hops do not reach, which stand one past the hops (a trial, 2026-11-18, the
+ * horizon of Beyond the Hops): with something asked about, what is not one step from the picture is not drawn, and a
+ * group no hop reaches is no step from it. A group shown by its seed alone that the hops reached or that was asked about
+ * stays. Everything else is as given.
+ */
+export function withoutUnreachedSeeds(scope: SpatialScope, hops: number): SpatialScope {
+  const unreached = new Set([...scope.hops].filter(([, hop]) => hop > hops).map(([id]) => id));
+  if (!unreached.size) return scope;
+  const kept = <V>(map: ReadonlyMap<string, V>): Map<string, V> => new Map([...map].filter(([id]) => !unreached.has(id)));
+  return { ...scope, hops: kept(scope.hops), beyond: kept(scope.beyond), groups: kept(scope.groups), groupFiles: kept(scope.groupFiles) };
+}
+
 /** Most connected first, then by id, so that a choice is the same on every machine. */
 export function mostConnectedFirst(beside: ReadonlyMap<string, ReadonlySet<string>>): (a: string, b: string) => number {
   return (a, b) => (beside.get(b)?.size ?? 0) - (beside.get(a)?.size ?? 0) || (a < b ? -1 : a > b ? 1 : 0);

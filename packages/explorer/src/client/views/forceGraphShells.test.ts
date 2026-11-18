@@ -6,7 +6,7 @@ import type { FileConnection } from "./fileConnections";
 import { directoryNodeId, spatialGraphOf } from "./forceGraphData";
 import { linkPulls, shellRadiusOf, spatialNodeRadius, type SpatialLink } from "./forceGraphLayout";
 import { connectedNeighbours, spatialScope, type StartableNode } from "./forceGraphScope";
-import { bodyGaps, bodyShape, bodySteps, directoryAt, DRAWN_FILES, innerShape, packBall, partitionHidden, pictureVeils, poppedAfter, releaseOf, shellDirectory, shellId, shellPicture,
+import { bodyGaps, bodyShape, bodySteps, directoryAt, DRAWN_FILES, innerShape, nextStepFiles, packBall, partitionHidden, pictureVeils, poppedAfter, releaseOf, shellDirectory, shellId, shellPicture,
   structureCells, structureSpokes, type ShellPartition } from "./forceGraphShells";
 import { wrapperHull, type WrapperHull } from "./forceGraphWrappers";
 
@@ -212,6 +212,62 @@ function farthestBeyond(hull: WrapperHull, x: number, y: number, z: number): num
   }
   return worst;
 }
+
+/**
+ * Beyond the Hops at the next step, the horizon (a trial, 2026-11-18): a shown file `app/s.ts` beside a directory of two
+ * files (`x`) and the only such file of another (`w`); past `x`, a directory of two (`y`), and past `y` one file (`z`).
+ * One directory deep, so that each directory is its own shell.
+ */
+describe("the horizon", () => {
+  const ids = ["app/s.ts", "x/a1.ts", "x/a2.ts", "y/b1.ts", "y/b2.ts", "z/c1.ts", "w/d1.ts"];
+  const nodes = ids.map(id => ({ ...file(id), codeRelativePath: id }));
+  const doc = { ...file("related:notes.md"), codeRelativePath: "notes.md", archetype: "related-doc" };
+  const pair = (source: string, target: string, kind = "dependency"): FileConnection => ({ source, target, kind, count: 1, forward: 1, backward: 0 });
+  const links = [pair("app/s.ts", "x/a1.ts"), pair("app/s.ts", "x/a2.ts"), pair("x/a1.ts", "y/b1.ts"), pair("x/a2.ts", "y/b2.ts"),
+    pair("y/b1.ts", "z/c1.ts"), pair("app/s.ts", "w/d1.ts"), pair("app/s.ts", "related:notes.md", "cited-by")];
+  const all = [...nodes, doc];
+  const pulls = (link: { kind?: string }): boolean => linkPulls(link, "connections");
+  const beside = connectedNeighbours(all, links, pulls);
+  const hidden = [...ids.slice(1), doc.id];
+  const shown = new Set(["app/s.ts"]);
+  const pathOf = (id: string): string | undefined => (id === doc.id ? undefined : id);
+  const picture = (reach: "everything" | "next-step", popped: readonly string[] = []) => shellPicture({ nodes: all, links, shown, hidden, depth: 1,
+    popped: new Set(popped), beside, reach, bundles: link => link.kind !== "cited-by" });
+
+  it("holds only the files one step past what is shown: a ring forms, and nothing two steps away is held", () => {
+    expect(nextStepFiles(hidden, shown, beside, pathOf, 1, new Set())).toEqual(["x/a1.ts", "x/a2.ts", "w/d1.ts"]);
+    const ring = picture("next-step");
+    expect(shellsOf(ring)).toEqual({ x: ["x/a1.ts", "x/a2.ts"] });
+    expect(ring.lone).toEqual(["w/d1.ts"]);
+    // y and z are not held, and no wire leads to them: the shell of x is wired to s alone.
+    expect(ring.wires).toEqual([{ source: "app/s.ts", target: "shell:x", kind: "dependency", count: 2, forward: 2, backward: 0 }]);
+  });
+
+  it("breaks a shell at its pop and forms the ring beyond it", () => {
+    const after = picture("next-step", ["x"]);
+    expect(after.released).toEqual(["x/a1.ts", "x/a2.ts"]);
+    expect(shellsOf(after)).toEqual({ y: ["y/b1.ts", "y/b2.ts"] });
+    expect(after.lone).toEqual(["w/d1.ts"]);
+    expect(after.wires.map(wire => [wire.source, wire.target])).toEqual([["shell:y", "x/a1.ts"], ["shell:y", "x/a2.ts"]]);
+  });
+
+  it("forms the next ring again at a second pop, a lone file where one file is reached", () => {
+    const after = picture("next-step", ["x", "y"]);
+    expect(after.released).toEqual(["x/a1.ts", "x/a2.ts", "y/b1.ts", "y/b2.ts"]);
+    expect(after.shells).toEqual([]);
+    expect(after.lone).toEqual(["w/d1.ts", "z/c1.ts"]);
+  });
+
+  it("is today's partition exactly with everything beyond the hops", () => {
+    const everything = picture("everything");
+    const today = shellPicture({ nodes: all, links, shown, hidden, depth: 1, popped: new Set(), beside, bundles: link => link.kind !== "cited-by" });
+    expect(everything).toEqual(today);
+    expect(shellsOf(everything)).toEqual({ x: ["x/a1.ts", "x/a2.ts"], y: ["y/b1.ts", "y/b2.ts"] });
+    expect(everything.lone).toEqual(["w/d1.ts", "z/c1.ts"]);
+    // A directory popped beyond the horizon opens nothing under it: what is not at the edge is not held, popped or not.
+    expect(shellsOf(picture("next-step", ["y"]))).toEqual({ x: ["x/a1.ts", "x/a2.ts"] });
+  });
+});
 
 describe("a ball of spheres packed apart (2026-11-06, second round)", () => {
   const spheres = (count: number, big = 0): Array<{ id: string; radius: number }> =>

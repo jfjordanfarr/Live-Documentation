@@ -69,7 +69,7 @@ import { placeSpatialLabels, type SpatialLabel, type SpatialLabelBody, type Labe
 import { linkPulls, motionForce, placeNewSpheres, spatialNodeRadius, symbolCountOf, type MotionForce, type MotionStart, type Placed } from "./forceGraphLayout";
 import { SPATIAL_DRAG_SLOP, SpatialRenderer } from "./forceGraphRenderer";
 import { nextRevealCount, REVEAL, revealCorresponding, revealLayers } from "./forceGraphReveal";
-import { componentLandmarks, connectedNeighbours, directoryHubOf, directoryMembersWithinHops, spatialScope, startHops, startOf } from "./forceGraphScope";
+import { componentLandmarks, connectedNeighbours, directoryHubOf, directoryMembersWithinHops, spatialScope, startHops, startOf, withoutUnreachedSeeds } from "./forceGraphScope";
 import { bodySteps, pictureVeils, poppedAfter, releaseOf, shellId, shellPicture, structureCells, structureSpokes, veiledUnits, type BodyBuilding, type DirectoryShell, type Spoke,
   type StructureCell } from "./forceGraphShells";
 import { spatialSizeScale } from "./forceGraphSizing";
@@ -1383,7 +1383,12 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     // The hops shown: around a question the tuning's; around a start what the start shows, the archipelago's seeds
     // alone and the root with its children (2026-11-02).
     const hopsShown = hasQuestion ? state.tuning.forceGraph.hops : startHops(state.spatialLayout, state.tuning.forceGraph.hops);
-    const scope = spatialScope(data.nodes, data.links, new Set([...asked, ...members]), hopsShown, pulls);
+    // Beyond the Hops at the next step, a trial (2026-11-18, the horizon): with wrappers on in the connections layout while
+    // something is asked about, the unreached groups' seeds are not drawn and the shells hold only the files one step
+    // past what stands (`nextStepFiles`). The start, the structure layout and Group Wrappers Off are as before.
+    const horizon = hasQuestion && wrapping() && state.spatialLayout === "connections" && state.tuning.forceGraph.beyondHops === "next-step";
+    const reached = spatialScope(data.nodes, data.links, new Set([...asked, ...members]), hopsShown, pulls);
+    const scope = horizon ? withoutUnreachedSeeds(reached, hopsShown) : reached;
     // The wrappers (2026-11-05): in the connections layout, by the tuning's choice, every group the picture shows only by
     // its seed, of two files or more, and, inside the groups it shows in part, the directory shells of the files it leaves
     // out, each one body of the picture with its members' references bundled into its wires; the files a pop releases
@@ -1418,7 +1423,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
           named.push({ id: seed, key: `group\0${seed}\0${keyOf(files)}`, files, centre: seed });
         }
         held = shellPicture({ nodes: byId, links: data.links, shown: new Set(scope.hops.keys()), hidden: scope.hidden,
-          depth: tuning.shellDepth, popped, beside: scope.beside,
+          depth: tuning.shellDepth, popped, beside: scope.beside, reach: horizon ? "next-step" : "everything",
           bundles: link => pulls(link) && link.kind !== "related-doc" && link.kind !== "cited-by" });
         for (const shell of held.shells) named.push({ id: shell.id, key: `shell\0${shell.directory}\0${keyOf(shell.files)}`, files: shell.files, directory: shell.directory });
       }

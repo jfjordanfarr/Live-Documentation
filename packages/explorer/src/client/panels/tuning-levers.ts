@@ -63,6 +63,7 @@ export const TUNING_HELP: Readonly<Record<string, string>> = {
   // and the wrappers' experiments (forceGraphWrappers.ts, forceGraphShells.ts, 2026-11-05).
   "tuning-force-hops":                "How many hops of connections show around what you asked about; the last hop is dimmed and a click on it shows more.",
   "tuning-force-group-wrappers":      "Wraps the files not shown in shapes a click pops open: a group shown by its seed, and each directory's hidden files.",
+  "tuning-force-beyond-hops":         "With wrappers on, what stands past the hops: every file of the groups shown, or only what is one step away.",
   "tuning-force-shell-depth":         "With wrappers on, how many directories deep the shells of hidden files stand; deeper makes more, smaller shells.",
   "tuning-force-reveal-frames":       "How many frames the picture takes to enter, hop by hop; fewer is quicker.",
 

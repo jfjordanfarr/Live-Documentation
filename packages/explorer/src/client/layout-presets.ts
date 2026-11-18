@@ -1,4 +1,4 @@
-import { CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, HIDDEN_FILES_LOOKS, OVERVIEW_FILES, ZOOM_LOOKS, type ForceGraphTuning, type LocalMapTuning, type TuningConfig } from "./types";
+import { BEYOND_HOPS, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, HIDDEN_FILES_LOOKS, OVERVIEW_FILES, ZOOM_LOOKS, type ForceGraphTuning, type LocalMapTuning, type TuningConfig } from "./types";
 
 /** One packing preference interpreted by both Local Map representations. */
 export type LayoutPreset = "compact" | "relaxed";
@@ -57,7 +57,8 @@ export function applyLayoutPreset(tuning: TuningConfig, preset: LayoutPreset): T
  * and nothing when the grid was, so such a link now opens in Flow either way, and a link that says "grid" exists only
  * from now on. Closed Directory (2026-11-13): only a trial's look is carried, and its absence reads as today's box;
  * Descriptions Zoomed Out (2026-11-13) likewise: only the first line is carried, and its absence reads as hidden; and Hidden
- * Files (2026-11-17): only the cells are carried, and their absence reads as the count.
+ * Files (2026-11-17): only the cells are carried, and their absence reads as the count. Beyond the Hops (2026-11-18, a
+ * trial of the 3D map): only the next step is carried, and its absence reads as everything.
  */
 export function readLayoutSettings(value: unknown): LayoutSettings | undefined {
   if (!value || typeof value !== "object" || Array.isArray(value)) return undefined;
@@ -92,7 +93,10 @@ export function readLayoutSettings(value: unknown): LayoutSettings | undefined {
       continue;
     }
     const groupWrappers = GROUP_WRAPPERS.find(choice => choice === (input as Record<string, unknown>).groupWrappers);
-    if (Object.keys(numbers).length || groupWrappers) result.forceGraph = { ...numbers, ...(groupWrappers ? { groupWrappers } : null) };
+    const beyondHops = BEYOND_HOPS.slice(1).find(choice => choice === (input as Record<string, unknown>).beyondHops);
+    if (Object.keys(numbers).length || groupWrappers || beyondHops) {
+      result.forceGraph = { ...numbers, ...(groupWrappers ? { groupWrappers } : null), ...(beyondHops ? { beyondHops } : null) };
+    }
   }
   return Object.keys(result).length ? result : undefined;
 }
@@ -119,5 +123,8 @@ export function applyLayoutSettings(tuning: TuningConfig, settings: LayoutSettin
   const closed = settings?.localMap ? { closedDirectory: CLOSED_DIRECTORY_LOOKS[0], closedShape: CLOSED_DIRECTORY_SHAPES[0], closedCells: CLOSED_CELL_COLOURS[0], hiddenFiles: HIDDEN_FILES_LOOKS[0] } : null;
   // Descriptions Zoomed Out likewise (2026-11-13): only a value that keeps a line is written, and its absence reads as hidden.
   const descriptions = settings?.localMap ? { descriptionsZoomedOut: DESCRIPTIONS_ZOOMED_OUT[0] } : null;
-  return { ...tuning, localMap: { ...tuning.localMap, ...directory, ...looks, ...closed, ...descriptions, ...settings?.localMap }, forceGraph: { ...tuning.forceGraph, ...settings?.forceGraph } };
+  // Beyond the Hops likewise (2026-11-18): only the next step is written, and its absence reads as everything.
+  const beyond = settings?.forceGraph ? { beyondHops: BEYOND_HOPS[0] } : null;
+  return { ...tuning, localMap: { ...tuning.localMap, ...directory, ...looks, ...closed, ...descriptions, ...settings?.localMap },
+    forceGraph: { ...tuning.forceGraph, ...beyond, ...settings?.forceGraph } };
 }
