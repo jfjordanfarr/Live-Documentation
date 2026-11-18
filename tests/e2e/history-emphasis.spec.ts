@@ -1,4 +1,4 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test, type Browser, type Page } from "@playwright/test";
 import type { InstancedMesh, MeshLambertMaterial, Scene } from "three";
 
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
@@ -16,16 +16,25 @@ test.use({ viewport: { width: 1400, height: 900 } });
 
 interface Sequence { base: { commit: { id: string; subject: string } }; steps: Array<{ commit: { id: string; subject: string } }> }
 
-/** The commit of the step with this subject, read from the bundle's history file. */
-async function commitWith(page: Page, subject: string, sample = "history"): Promise<string> {
+/** The commit of the step with this subject, or of the step `after` steps on from it, read from the bundle's history file. */
+async function commitWith(page: Page, subject: string, sample = "history", after = 0): Promise<string> {
   const data = await (await page.request.get(`/samples/${sample}/explorer-data.json`)).json() as { history: { file: string } };
   const sequence = await (await page.request.get(`/samples/${sample}/${data.history.file}`)).json() as Sequence;
-  const step = sequence.steps.find(entry => entry.commit.subject === subject);
-  expect(step, `the sample has a step "${subject}"`).toBeDefined();
-  return step!.commit.id;
+  const at = sequence.steps.findIndex(entry => entry.commit.subject === subject);
+  expect(at, `the sample has a step "${subject}"`).toBeGreaterThanOrEqual(0);
+  expect(sequence.steps[at + after], `the sample has a step ${after} on from "${subject}"`).toBeDefined();
+  return sequence.steps[at + after].commit.id;
 }
 
-const entry = (commit: string): string => `/samples/history/?s=${compressSnapshot({
+/** The commit of the sample's last step. */
+async function lastCommit(page: Page): Promise<string> {
+  const data = await (await page.request.get("/samples/history/explorer-data.json")).json() as { history: { file: string } };
+  const sequence = await (await page.request.get(`/samples/history/${data.history.file}`)).json() as Sequence;
+  return sequence.steps[sequence.steps.length - 1].commit.id;
+}
+
+/** The sample in 3D at a step, or today with no commit. */
+const entry = (commit: string | null): string => `/samples/history/?s=${compressSnapshot({
   ...DEFAULT_SNAPSHOT, perspective: "3d", spatialLayout: "connections", filters: { showTests: true, showAssets: false },
   openDirectories: new Set([""]), commit, layout: { forceGraph: { updateEnergy: 0 } }
 })}`;
@@ -39,11 +48,16 @@ async function settled(page: Page): Promise<void> {
   }, { timeout: 60_000, message: "the settled sample's measured spheres have actually been drawn" }).toBe(true);
 }
 
-/** The colour the sphere is drawn in, read from the instance buffer. */
-async function drawnColour(page: Page, id: string): Promise<[number, number, number]> {
+type Colour = [number, number, number];
+
+/**
+ * The colour a sphere is drawn in, read from the instance buffer, and whether a marble is drawn on it: its veins'
+ * fourth value, one for a marble and zero for none (`writeMarble` in forceGraphBatches.ts).
+ */
+async function drawnSphere(page: Page, id: string): Promise<{ colour: Colour; marble: boolean }> {
   return page.evaluate(id => {
     const { scene } = (window as unknown as { renderedGraph: { scene: Scene } }).renderedGraph;
-    let found: [number, number, number] = [NaN, NaN, NaN];
+    let found: { colour: [number, number, number]; marble: boolean } = { colour: [NaN, NaN, NaN], marble: false };
     scene.traverse(object => {
       const mesh = object as InstancedMesh;
       const batch = mesh.userData.spatialBatch as { kind: string; entries: SpatialDrawEntry<{ id: string }>[] } | undefined;
@@ -51,56 +65,98 @@ async function drawnColour(page: Page, id: string): Promise<[number, number, num
       const entry = batch.entries.find(item => item.data.id === id);
       if (!entry) return;
       const colour = (mesh.material as MeshLambertMaterial).color.clone(); mesh.getColorAt(entry.slot, colour);
-      found = [colour.r, colour.g, colour.b];
+      const veins = mesh.geometry.getAttribute("spatialMarbleVeins");
+      found = { colour: [colour.r, colour.g, colour.b], marble: veins ? veins.getW(entry.slot) === 1 : false };
     });
     return found;
   }, id);
 }
 
+/** The colour the sphere is drawn in. */
+const drawnColour = async (page: Page, id: string): Promise<Colour> => (await drawnSphere(page, id)).colour;
+
 /**
- * A visitor with the given Changed Files choice. These cases read a file's base colour as its kind's, the same for every
- * file of a kind (an unchanged util.ts stands for main.ts's own colour), which holds only for plain spheres: a marble's
- * colour is its kind's glass tinted by its own veins, different from file to file. So they draw the files plain, the
- * default until 2026-11-18, when marbles became the default.
+ * Each file's own colour at a moment, read by a second visitor at the same address with Changed Files at None, where
+ * nothing stands out. A file's own colour is its own: a marble's is its kind's glass tinted by its own veins at that
+ * moment (marbles are the default since 2026-11-18), so another file of its kind cannot stand for it.
+ */
+async function ownColours<T>(browser: Browser, address: string, ready: (page: Page) => Promise<void>, read: (page: Page) => Promise<T>): Promise<T> {
+  const context = await browser.newContext({ viewport: { width: 1400, height: 900 } });
+  try {
+    await emphasis("none")({ context });
+    const page = await context.newPage();
+    await observeGraph(page);
+    await page.goto(address);
+    await ready(page);
+    return await read(page);
+  } finally { await context.close(); }
+}
+
+/** Each named sphere's own colour at a moment of the plain sample. */
+const ownSpheres = (browser: Browser, address: string, ids: readonly string[]): Promise<Record<string, Colour>> =>
+  ownColours(browser, address, settled, async page => Object.fromEntries(await Promise.all(ids.map(async id => [id, await drawnColour(page, id)] as const))));
+
+/**
+ * A visitor with the given Changed Files choice, on the default look: the files drawn as marbles since 2026-11-18. Each
+ * case reads a file's base colour as that file's own at the moment shown ({@link ownColours}); until then an unchanged
+ * file of the same kind stood for it, which only plain spheres allow.
  */
 const emphasis = (mode: string) => async ({ context }: { context: import("@playwright/test").BrowserContext }): Promise<void> => {
   await context.addInitScript(value => {
-    window.localStorage.setItem("live-docs-explorer:ui:v2", JSON.stringify({ version: 2, tuning: { localMap: { searchStarts: 0 }, history: { changeEmphasis: value }, appearance: { marbles: "off" } } }));
+    window.localStorage.setItem("live-docs-explorer:ui:v2", JSON.stringify({ version: 2, tuning: { localMap: { searchStarts: 0 }, history: { changeEmphasis: value } } }));
   }, mode);
 };
 
-test("a commit's changed file is white immediately while the rest keep their base colour", async ({ page, context }) => {
+const WHITE: Colour = [1, 1, 1];
+
+test("a commit's changed file is white immediately while the rest keep their base colour", async ({ page, context, browser }) => {
   await emphasis("glow")({ context });
   await observeGraph(page);
-  await page.goto(entry(await commitWith(page, "Retire the legacy helper")));
+  const address = entry(await commitWith(page, "Retire the legacy helper"));
+  const own = await ownSpheres(browser, address, ["src/engine/util.ts"]);
+  await page.goto(address);
   await settled(page);
-  const changed = await drawnColour(page, "src/app/main.ts"), unchanged = await drawnColour(page, "src/engine/util.ts");
-  expect(unchanged.every(Number.isFinite) && changed.every(Number.isFinite)).toBe(true);
-  expect(changed).toEqual([1, 1, 1]);
-  expect(unchanged).not.toEqual([1, 1, 1]);
+  const changed = await drawnSphere(page, "src/app/main.ts"), unchanged = await drawnSphere(page, "src/engine/util.ts");
+  expect(unchanged.colour.every(Number.isFinite) && changed.colour.every(Number.isFinite)).toBe(true);
+  expect(changed.colour).toEqual(WHITE);
+  expect(unchanged.colour).not.toEqual(WHITE);
+  expect(unchanged.colour, "the unchanged file keeps its own colour").toEqual(own["src/engine/util.ts"]);
+  // White replaces the changed file's marble, as it replaces a plain sphere's colour; the rest keep theirs.
+  expect(changed.marble, "the glowing file carries no marble").toBe(false);
+  expect(unchanged.marble, "the unchanged file is a marble").toBe(true);
   const nodes = await renderedNodes(page);
   expect(nodes.find(node => node.id === "src/engine/util.ts")!.opacity, "under glow the rest are not dimmed").toBeCloseTo(0.75, 2);
   await expect(page.locator("#tuning-history-change-emphasis")).toHaveValue("glow");
 });
 
 for (const mode of ["glow", "dim"] as const) for (const rate of [1, 0.5]) {
-  test(`${mode} holds colours and alpha through a commit at ${rate} step/s and changes them only at the next event`, async ({ page, context }) => {
+  test(`${mode} holds colours and alpha through a commit at ${rate} step/s and changes them only at the next event`, async ({ page, context, browser }) => {
+    test.setTimeout(90_000);
     await emphasis(mode)({ context });
     await observeGraph(page);
-    await page.goto(entry(await commitWith(page, "Retire the legacy helper")));
-    await settled(page);
     const main = "src/app/main.ts", util = "src/engine/util.ts", model = "src/engine/model.ts";
-    const base = await drawnColour(page, util);
-    expect(base.every(Number.isFinite)).toBe(true);
-    expect(base).not.toEqual([1, 1, 1]);
-    const eventColour = mode === "glow" ? [1, 1, 1] : base;
+    // Each file's own colour at the step shown, at the next, at the last and today: the colours to return to.
+    const [at, next, last] = await Promise.all([commitWith(page, "Retire the legacy helper"), commitWith(page, "Retire the legacy helper", "history", 1), lastCommit(page)]);
+    const own = {
+      at: await ownSpheres(browser, entry(at), [main, util]), next: await ownSpheres(browser, entry(next), [main, util]),
+      last: await ownSpheres(browser, entry(last), [model]), today: await ownSpheres(browser, entry(null), [model])
+    };
+    await page.goto(entry(at));
+    await settled(page);
+    const changedColour = (id: string, step: keyof typeof own): Colour => mode === "glow" ? WHITE : own[step][id];
     const backgroundAlpha = mode === "glow" ? 0.75 : 0.15;
     const appearance = async () => {
-      const [mainColour, utilColour, nodes] = await Promise.all([drawnColour(page, main), drawnColour(page, util), renderedNodes(page)]);
-      return { mainColour, utilColour, mainAlpha: nodes.find(node => node.id === main)!.opacity, utilAlpha: nodes.find(node => node.id === util)!.opacity };
+      const [mainSphere, utilSphere, nodes] = await Promise.all([drawnSphere(page, main), drawnSphere(page, util), renderedNodes(page)]);
+      return { mainColour: mainSphere.colour, mainMarble: mainSphere.marble, utilColour: utilSphere.colour, utilMarble: utilSphere.marble,
+        mainAlpha: nodes.find(node => node.id === main)!.opacity, utilAlpha: nodes.find(node => node.id === util)!.opacity };
     };
     const first = await appearance();
-    expect(first.mainColour).toEqual(eventColour);
+    expect(first.utilColour.every(Number.isFinite)).toBe(true);
+    expect(first.utilColour).not.toEqual(WHITE);
+    expect(first.mainColour).toEqual(changedColour(main, "at"));
+    expect(first.utilColour, "the unchanged file keeps its own colour").toEqual(own.at[util]);
+    // Glow's white replaces the changed file's marble; Dim keeps every marble.
+    expect([first.mainMarble, first.utilMarble]).toEqual([mode !== "glow", true]);
     expect(first.mainAlpha).toBeCloseTo(0.75, 5);
     expect(first.utilAlpha).toBeCloseTo(backgroundAlpha, 5);
     await page.getByLabel("Playback speed").selectOption(String(rate));
@@ -114,32 +170,39 @@ for (const mode of ["glow", "dim"] as const) for (const rate of [1, 0.5]) {
     }
     await expect(page.locator(".history-track")).toHaveAttribute("aria-valuenow", "5");
     await page.getByRole("button", { name: "Pause", exact: true }).click();
-    await expect.poll(() => drawnColour(page, main)).toEqual(base);
-    await expect.poll(() => drawnColour(page, util)).toEqual(eventColour);
-    const next = await appearance();
-    expect(next.mainAlpha).toBeCloseTo(backgroundAlpha, 5);
-    expect(next.utilAlpha).toBeCloseTo(0.75, 5);
+    await expect.poll(() => drawnColour(page, main)).toEqual(own.next[main]);
+    await expect.poll(() => drawnColour(page, util)).toEqual(changedColour(util, "next"));
+    const stepped = await appearance();
+    // The light moves with the step: main.ts has its marble again, and util.ts loses its own where it glows.
+    expect([stepped.mainMarble, stepped.utilMarble]).toEqual([true, mode !== "glow"]);
+    expect(stepped.mainAlpha).toBeCloseTo(backgroundAlpha, 5);
+    expect(stepped.utilAlpha).toBeCloseTo(0.75, 5);
     // The final commit still has an event, although it uses today's graph. Closing history ends the emphasis.
     await page.locator(".history-track").press("End");
-    await expect.poll(() => drawnColour(page, model)).toEqual(eventColour);
+    await expect.poll(() => drawnColour(page, model)).toEqual(changedColour(model, "last"));
     await expect.poll(async () => (await renderedNodes(page)).find(node => node.id === model)!.opacity).toBeCloseTo(0.75, 5);
     await page.getByRole("button", { name: "History", exact: true }).click();
-    await expect.poll(() => drawnColour(page, model)).toEqual(base);
+    await expect.poll(() => drawnColour(page, model)).toEqual(own.today[model]);
+    expect((await drawnSphere(page, model)).marble, "today the file is a marble again").toBe(true);
     await expect.poll(async () => (await renderedNodes(page)).find(node => node.id === util)!.opacity).toBeCloseTo(0.75, 5);
   });
 }
 
-test("with the rest dimmed, the changed file keeps its alpha; closing history restores normal appearance", async ({ page, context }) => {
+test("with the rest dimmed, the changed file keeps its alpha; closing history restores normal appearance", async ({ page, context, browser }) => {
   await emphasis("dim")({ context });
   await observeGraph(page);
-  await page.goto(entry(await commitWith(page, "Retire the legacy helper")));
+  const address = entry(await commitWith(page, "Retire the legacy helper"));
+  const own = await ownSpheres(browser, address, ["src/app/main.ts", "src/engine/util.ts"]);
+  await page.goto(address);
   await settled(page);
   const nodes = await renderedNodes(page);
   const alpha = (id: string): number => nodes.find(node => node.id === id)!.opacity;
   expect(alpha("src/app/main.ts")).toBeCloseTo(0.75, 2);
   expect(alpha("src/engine/util.ts")).toBeCloseTo(0.15, 2);
-  const changed = await drawnColour(page, "src/app/main.ts"), unchanged = await drawnColour(page, "src/engine/util.ts");
-  expect(changed, "under dim the changed file keeps its own colour").toEqual(unchanged);
+  const changed = await drawnSphere(page, "src/app/main.ts"), unchanged = await drawnSphere(page, "src/engine/util.ts");
+  expect(changed.colour, "under dim the changed file keeps its own colour").toEqual(own["src/app/main.ts"]);
+  expect(unchanged.colour, "and the dimmed file its own").toEqual(own["src/engine/util.ts"]);
+  expect([changed.marble, unchanged.marble], "under dim both keep their marbles").toEqual([true, true]);
   // Today, with the history closed, nothing is a step's change.
   await page.getByRole("button", { name: "History" }).click();
   await settled(page);
@@ -155,12 +218,12 @@ test("with the rest dimmed, the changed file keeps its alpha; closing history re
  * and the deleted file, which has no dot, lights the innermost thing drawn for its directory, `lib`'s own skin. In the
  * Connections layout the sample is one island wrapped about its seed, main.ts. Read from the uploaded unit and skin buffers.
  */
-const wrapped = (commit: string, spatialLayout: "structure" | "connections" = "structure"): string => `/samples/history/?s=${compressSnapshot({
+const wrapped = (commit: string | null, spatialLayout: "structure" | "connections" = "structure"): string => `/samples/history/?s=${compressSnapshot({
   ...DEFAULT_SNAPSHOT, perspective: "3d", spatialLayout, filters: { showTests: true, showAssets: false },
   commit, layout: { forceGraph: { updateEnergy: 0 } }
 } as Parameters<typeof compressSnapshot>[0])}`;
 
-interface DrawnUnit { seed: string; id: string; color: [number, number, number]; alpha: number; lit: number; veiled: boolean }
+interface DrawnUnit { seed: string; id: string; color: [number, number, number]; alpha: number; lit: number; veiled: boolean; marble: boolean }
 interface DrawnSkin { seed: string; lit: number; alpha: number }
 
 /** What the skins show within them and the skins themselves, as uploaded: each unit's colour, opacity and light, each skin's light and opacity. */
@@ -172,9 +235,11 @@ async function drawnBubbles(page: Page): Promise<{ files: DrawnUnit[]; balloons:
       if (!mesh?.visible) return [];
       const records = mesh.userData.spatialUnits as Array<{ seed: string; id: string; veiled: boolean }>;
       const opacity = mesh.geometry.getAttribute("spatialOpacity"), lit = mesh.geometry.getAttribute("spatialLit");
+      // The dots carry a marble's veins, their fourth value one for a marble and zero for none; the balloons carry none.
+      const veins = mesh.geometry.getAttribute("spatialMarbleVeins");
       return Array.from({ length: mesh.count }, (_, slot) => ({ seed: records[slot].seed, id: records[slot].id, veiled: records[slot].veiled,
         color: [mesh.instanceColor!.getX(slot), mesh.instanceColor!.getY(slot), mesh.instanceColor!.getZ(slot)] as [number, number, number],
-        alpha: opacity.getX(slot), lit: lit ? lit.getX(slot) : NaN }));
+        alpha: opacity.getX(slot), lit: lit ? lit.getX(slot) : NaN, marble: veins ? veins.getW(slot) === 1 : false }));
     };
     const wrappers = scene.getObjectByName("Spatial wrappers") as InstancedMesh;
     const ranges = (wrappers.userData.spatialWrappers as { ranges: Array<{ seed: string }> }).ranges;
@@ -211,16 +276,26 @@ async function bubblesDrawn(page: Page, files: readonly string[], skins: readonl
 const white = (drawn: DrawnUnit): boolean => drawn.color.every(channel => channel === 1);
 
 test.describe("inside the wrappers", () => {
-  test("a changed file's dot is white while the rest keep their kind's colour, and the next step moves the light", async ({ page, context }) => {
+  test("a changed file's dot is white while the rest keep their own colour, and the next step moves the light", async ({ page, context, browser }) => {
+    test.setTimeout(90_000);
     await emphasis("glow")({ context });
     await observeGraph(page);
-    await page.goto(wrapped(await commitWith(page, "Retire the legacy helper")));
-    await bubblesDrawn(page, ["src/app/main.ts", "src/engine/util.ts"], ["directory:src"]);
+    const dots = ["src/app/main.ts", "src/engine/util.ts"];
+    const [at, next] = await Promise.all([commitWith(page, "Retire the legacy helper"), commitWith(page, "Retire the legacy helper", "history", 1)]);
+    // Each dot's own colour at the step, at the next and today, read where nothing stands out.
+    const ownDots = (address: string) => ownColours(browser, address, plain => bubblesDrawn(plain, dots, ["directory:src"]),
+      async plain => { const drawn = await drawnBubbles(plain); return Object.fromEntries(dots.map(id => [id, unit(drawn.files, id).color])); });
+    const own = { at: await ownDots(wrapped(at)), next: await ownDots(wrapped(next)), today: await ownDots(wrapped(null)) };
+    await page.goto(wrapped(at));
+    await bubblesDrawn(page, dots, ["directory:src"]);
     const first = await drawnBubbles(page);
     const main = unit(first.files, "src/app/main.ts"), util = unit(first.files, "src/engine/util.ts");
     expect(main.color).toEqual([1, 1, 1]);
     expect(util.color.every(Number.isFinite)).toBe(true);
     expect(white(util)).toBe(false);
+    expect(util.color, "the unchanged dot keeps its own colour").toEqual(own.at["src/engine/util.ts"]);
+    // White replaces the glowing dot's marble, as it does a sphere's; the rest keep theirs.
+    expect([main.marble, util.marble]).toEqual([false, true]);
     // White and whole as a changed sphere is, at the spheres' alpha; under glow the rest are not dimmed.
     expect(main.alpha).toBeCloseTo(0.75, 5);
     expect(util.alpha).toBeCloseTo(0.75, 5);
@@ -228,16 +303,19 @@ test.describe("inside the wrappers", () => {
     expect(unit(first.balloons, "src/app").lit).toBe(0);
     expect(unit(first.balloons, "src/engine").lit).toBe(0);
     expect(skin(first.skins, "directory:src")).toEqual({ seed: "directory:src", lit: 0, alpha: 1 });
-    const base = util.color;
-    // Stepping on: util.ts changed and main.ts did not; main.ts returns to its kind's colour, the same blue util.ts had.
+    // Stepping on: util.ts changed and main.ts did not; main.ts returns to its own colour and its marble.
     await page.locator(".history-track").press("ArrowRight");
     await expect.poll(async () => unit((await drawnBubbles(page)).files, "src/engine/util.ts").color).toEqual([1, 1, 1]);
-    expect(unit((await drawnBubbles(page)).files, "src/app/main.ts").color).toEqual(base);
+    const stepped = await drawnBubbles(page);
+    expect(unit(stepped.files, "src/app/main.ts").color).toEqual(own.next["src/app/main.ts"]);
+    expect([unit(stepped.files, "src/app/main.ts").marble, unit(stepped.files, "src/engine/util.ts").marble]).toEqual([true, false]);
     // Leaving the history restores every unit's own colour.
     await page.getByRole("button", { name: "History", exact: true }).click();
-    await expect.poll(async () => unit((await drawnBubbles(page)).files, "src/engine/util.ts").color).toEqual(base);
+    await expect.poll(async () => unit((await drawnBubbles(page)).files, "src/engine/util.ts").color).toEqual(own.today["src/engine/util.ts"]);
     const today = await drawnBubbles(page);
+    expect(unit(today.files, "src/app/main.ts").color).toEqual(own.today["src/app/main.ts"]);
     expect(today.files.some(white)).toBe(false);
+    expect(today.files.every(file => file.marble), "today every dot is a marble").toBe(true);
     expect([...today.balloons, ...today.skins].every(item => item.lit === 0)).toBe(true);
   });
 
@@ -258,16 +336,21 @@ test.describe("inside the wrappers", () => {
     await expect.poll(async () => skin((await drawnBubbles(page)).skins, "directory:lib").lit).toBe(0);
   });
 
-  test("with the rest dimmed, an unchanged dot and a bubble holding nothing lose alpha, while the change and what holds it keep theirs", async ({ page, context }) => {
+  test("with the rest dimmed, an unchanged dot and a bubble holding nothing lose alpha, while the change and what holds it keep theirs", async ({ page, context, browser }) => {
     await emphasis("dim")({ context });
     await observeGraph(page);
-    await page.goto(wrapped(await commitWith(page, "Retire the legacy helper")));
-    await bubblesDrawn(page, ["src/app/main.ts", "src/engine/util.ts"], ["directory:src"]);
+    const dots = ["src/app/main.ts", "src/engine/util.ts"], address = wrapped(await commitWith(page, "Retire the legacy helper"));
+    const own = await ownColours(browser, address, plain => bubblesDrawn(plain, dots, ["directory:src"]),
+      async plain => { const shown = await drawnBubbles(plain); return Object.fromEntries(dots.map(id => [id, unit(shown.files, id).color])); });
+    await page.goto(address);
+    await bubblesDrawn(page, dots, ["directory:src"]);
     const drawn = await drawnBubbles(page);
     const main = unit(drawn.files, "src/app/main.ts"), util = unit(drawn.files, "src/engine/util.ts");
     expect(main.alpha).toBeCloseTo(0.75, 5);
     expect(util.alpha).toBeCloseTo(0.15, 5);
-    expect(main.color, "under dim the changed file keeps its own colour").toEqual(util.color);
+    expect(main.color, "under dim the changed file keeps its own colour").toEqual(own["src/app/main.ts"]);
+    expect(util.color, "and the dimmed file its own").toEqual(own["src/engine/util.ts"]);
+    expect([main.marble, util.marble], "under dim every dot keeps its marble").toEqual([true, true]);
     expect(unit(drawn.balloons, "src/app").alpha).toBeCloseTo(1, 5);
     expect(unit(drawn.balloons, "src/engine").alpha).toBeCloseTo(0.2, 5);
     expect(skin(drawn.skins, "directory:src").alpha).toBeCloseTo(1, 5);

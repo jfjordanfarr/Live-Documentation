@@ -15,6 +15,8 @@ The [November 1 live correction](../../../../../../../AI-Agent-Workspace/AgentSe
 
 Since 2026-11-11 ([Turn 6 of the November 10 record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-10/2026-11-10.1.record.md#turn-6)) the cases include a body's units: a changed dot white and whole while the open bubble around it is not lit; unchanged dots, and bubbles and skins holding nothing, dimmed under Dim while what holds a change keeps its alpha; a veiled bubble, a veiled bubble inside an open one and a veiled body lit for a change they hide; a deleted file shown in the innermost drawn bubble of its directory or in the skin; the skin lit under a look that draws nothing within it; a file the body does not hold and a wrapped group's seed lighting nothing; None changing nothing; and the deepest drawn directory taking each deleted file, none where it is a hub's sphere.
 
+Since 2026-11-18, when marbles became the default ([Turn 13 of the November 17 record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-17/2026-11-17.1.record.md#turn-13)), a case holds that `emphasizedUnits` drops the marble of a dot the step glows white (Glow and Both) and keeps it on the rest, and that Dim and None keep every dot's marble; no case had named that rule before.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

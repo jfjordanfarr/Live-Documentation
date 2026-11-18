@@ -38,7 +38,7 @@ describe("how a commit's changed files stand out", () => {
 describe("how a commit's changes show inside a wrapper's skin", () => {
   // The bubble of `a`: a file of its own; an open bubble `a/b` of two dots; a veiled bubble `a/c` whose files are not drawn;
   // and an open bubble `a/e` with a dot and a veiled bubble `a/e/f` inside it.
-  type Unit = ShownUnit & { color?: string; lit?: boolean; alpha?: number };
+  type Unit = ShownUnit & { color?: string; lit?: boolean; alpha?: number; marble?: object };
   const blue = "#0091ff";
   const units: Unit[] = [
     { id: "a/x.ts", kind: "file", depth: 0, color: blue },
@@ -90,6 +90,22 @@ describe("how a commit's changes show inside a wrapper's skin", () => {
     expect(emphasizedSkin(untouched, "dim").alpha).toBeCloseTo(0.2);
     expect(emphasizedSkin(untouched, "both")).toEqual({ lit: false, alpha: emphasizedSkin(untouched, "dim").alpha });
     expect(emphasizedUnits(units, untouched, "dim").filter(unit => unit.kind === "directory").every(unit => Math.abs(unit.alpha! - 0.2) < 1e-9)).toBe(true);
+  });
+
+  it("drops the marble of a dot the step glows white and keeps it on the rest; where the mode dims, every dot keeps its marble", () => {
+    // Marbles are the default since 2026-11-18: a glowing dot is white and whole, as a changed sphere is, with no veins.
+    const marble = { glass: blue, offers: 0.2, uses: 0.1, seed: 0.5 };
+    const marbled = units.map(unit => unit.kind === "file" ? { ...unit, marble } : unit);
+    const changes = bodyChanges(marbled, members, seed, ["a/b/y.ts"], []);
+    for (const mode of ["glow", "both"] as const) {
+      const shown = emphasizedUnits(marbled, changes, mode);
+      expect(of(shown, "a/b/y.ts").marble, mode).toBeUndefined();
+      for (const id of ["a/x.ts", "a/b/z.ts", "a/e/u.ts"]) expect(of(shown, id).marble, `${mode} ${id}`).toBe(marble);
+    }
+    for (const mode of ["dim", "none"] as const) {
+      const shown = emphasizedUnits(marbled, changes, mode);
+      for (const id of ["a/x.ts", "a/b/y.ts", "a/b/z.ts", "a/e/u.ts"]) expect(of(shown, id).marble, `${mode} ${id}`).toBe(marble);
+    }
   });
 
   it("lights the innermost drawn bubble of a change not drawn as a dot: a veiled bubble, one inside an open bubble, a veiled body", () => {
