@@ -1,0 +1,427 @@
+
+❯ Let us now begin a new dev day chat. It is 11/18/2026.
+
+  The single git diff in this workspace is the explanation for why the first
+  attempt failed in the following log:
+  (base) PS C:\Users\User> wsl -l -v
+    NAME              STATE           VERSION
+  * docker-desktop    Running         2
+  (base) PS C:\Users\User> wsl --install -d Ubuntu
+  Downloading: Ubuntu
+  Installing: Ubuntu
+  Distribution successfully installed. It can be launched via 'wsl.exe -d
+  Ubuntu'
+  Launching Ubuntu...
+  Provisioning the new WSL instance Ubuntu
+  This might take a while...
+  Create a default Unix user account: user
+  New password:
+  Retype new password:
+  passwd: password updated successfully
+  usermod: no changes
+  Help improve Ubuntu!
+
+  Help us improve Ubuntu features and compatibility by sharing system reports
+  with Canonical.
+  Reports are sent anonymously and do not contain any personal data.
+  For legal details, please visit:
+  https://ubuntu.com/legal/systems-information-notice
+
+  We will save your answer to Windows and will only ask you once.
+
+  Would you like to opt-in to platform metrics collection (Y/n)? To see an
+  example of the data collected, enter 'e'.
+  [Y/n/e]: n
+  user@DESKTOP-N3J4RG0:/mnt/c/Users/User$ bash
+  /mnt/d/Projects/Live-Documentation/AI-Agent-Workspace/tmp/move-to-wsl.sh
+
+  STOPPED: the old copy has uncommitted changes; they would be left behind.
+  Nothing in /mnt/d/Projects/Live-Documentation was changed.
+  user@DESKTOP-N3J4RG0:/mnt/c/Users/User$ bash
+  /mnt/d/Projects/Live-Documentation/AI-Agent-Workspace/tmp/move-to-wsl.sh
+  From: /mnt/d/Projects/Live-Documentation
+  To:   /home/user/src/Live-Documentation
+
+  1/4  Cloning the history and the tracked files (about 850 MB of history; a
+  few minutes)...
+  2/4  Pointing origin at
+  https://github.com/jfjordanfarr/Live-Documentation.git ...
+  3/4  Bringing the ignored files git does not carry (about 2 GB; a few
+  minutes)...
+  4/4  Checking...
+
+  DONE in 5 min 0 s.
+    Commit:  e2b29244 Record November 18: the owner's questions on the move,
+  and the export as saved that morning
+    Branch:  main, 0 commits ahead of origin/main as last known
+    Origin:  https://github.com/jfjordanfarr/Live-Documentation.git
+    Size:    3.9G
+
+  Next:  cd /home/user/src/Live-Documentation && code .
+  user@DESKTOP-N3J4RG0:/mnt/c/Users/User$ cd ~/src/Live-Documentation && code .
+  Installing VS Code Server for Linux x64
+  (8a14f0cc1b08d531eb83255ea3764ae22aa932b5)
+  Downloading: 100%
+  Unpacking: 100%
+  Unpacked 4575 files and folders to
+  /home/user/.vscode-server/bin/8a14f0cc1b08d531eb83255ea3764ae22aa932b5.
+  Looking for compatibility check script at /home/user/.vscode-server/bin/8a14f
+  0cc1b08d531eb83255ea3764ae22aa932b5/bin/helpers/check-requirements.sh
+  Running compatibility check script
+  Compatibility check successful (0)
+  user@DESKTOP-N3J4RG0:~/src/Live-Documentation$
+
+  I reverted the difference in the harness export, re-ran, and re-applied that
+  difference after VS Code had launched here in the WSL itself.
+
+  A few things I noticed:
+  - VSCode still notes a devcontainer and asks me if I wish to open this
+  workspace in a container. Should I?
+  - How do I now normally open this workspace in a way which is fast? What
+  changes about my startup to ensure that you have access to the full set of
+  resources you need?
+  - How do we check the configurations in WSL to ensure you have access to all
+  the compute resources you need on this rig?
+
+● I'll start with the new-chat read (guide, Memory, recent summaries) and look
+  at the machine in parallel.
+
+  Read 6 files, listed 1 directory, ran 6 shell commands · 3 failed (ctrl+o to expand)
+
+● Reopening in the container is the right move, but hold off until my final
+  message this turn, since this chat's log lives on Ubuntu and would be left
+  behind; I'll give you one command to carry it over. The container has
+  everything needed, and WSL already provides the 20 threads, 62 GB of RAM and
+  RTX 3090, so I'm finishing the startup read and yesterday's close next.
+  · summary
+
+  Read 8 files, ran 3 shell commands · 4 failed (ctrl+o to expand)
+
+● Startup reads are done and the Docker GPU and mount checks both work; I'm now
+  closing out yesterday's session. · summary
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Writing today's record and committing it now, so nothing depends on this chat
+  surviving a reopen; then yesterday's summary.
+
+● Write(AI-Agent-Workspace/ChatHistory/2026/11/2026-11-18.1.record.md)
+  ⎿  Wrote 73 lines to
+     AI-Agent-Workspace/ChatHistory/2026/11/2026-11-18.1.record.md
+      1 # November 18, 2026 — the working copy on the Linux side
+      2
+      3 ## Coverage
+      4
+      5 Agent-maintained record by Claude Code in the VS Code extension,
+        model Fable 5.2 (`claude-fable-5-2`) as stated by the harness, re
+        corded November 18, 2026. This is the root conversation, not a ha
+        rness export. Verbatim visible messages are fenced; work notes ar
+        e authored interpretation. Tool payloads, private reasoning and d
+        elegated conversations are excluded. Final replies are captured o
+     … +69 lines (~13 KB) (ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Write(AI-Agent-Workspace/ChatHistory/2026/11/Summarized/2026-11-17.1.SUMMARIZE
+       D.md)
+  ⎿  Wrote 167 lines to AI-Agent-Workspace/ChatHistory/2026/11/Summarized/2
+     026-11-17.1.SUMMARIZED.md
+      1 # November 17–18, 2026 — the graphics card for the browser tests,
+         what the gate's time is made of, the owner's pattern for a scena
+        rio suite, and the working copy's way off the Windows drive
+      2
+      3 Historical session summary. Harness: Claude Code in the VS Code e
+        xtension; the root was Fable 5.2 (`claude-fable-5-2`) by the harn
+        ess's statement. Two roots kept one record: the first through Tur
+        n 11, whose chat ended with the owner's rebuild of the container,
+         and the second from Turn 12, in the rebuilt container. No builde
+        r or other delegate ran; the measuring was root's own, in two pro
+     … +165 lines (~30 KB) (ctrl+o to expand)
+
+● Yesterday's summary is written. Now the narrative's chapter, the inventory and
+  Memory, then a link check and the commit.
+
+● Update(AI-Agent-Workspace/Memory/narrative.md)
+  ⎿  Added 12 lines
+      547 
+      548  The session's own miss was older than the day. The chapter abo
+           ve ends with the owner marking rings beside membranes as "a de
+           fect for the next day"; the root read that at startup, listed
+           it in one line of its first reply and never ranked it into the
+            work. The owner had to ask again: "I don't understand why we
+           still have ringed nodes anywhere ever? Didn't we replace ringe
+           d nodes with membranes?" ([Turn 12](../ChatHistory/2026/11/202
+           6-11-16.1.record.md#turn-12)). The answer was exact (a ring is
+            left where a hidden neighbour is a document or the one hidden
+            file of its directory, neither of which a membrane holds), an
+           d the mend was pinned for the next chat at the owner's word, w
+           ith the close asked for "when convenient and appropriate, with
+           out starting any major new efforts" ([Turn 13](../ChatHistory/
+           2026/11/2026-11-16.1.record.md#turn-13)). When the root then m
+           oved to park the trial of cells in place of "+2 files", which
+           the owner had raised that evening ([Turn 6](../ChatHistory/202
+           6/11/2026-11-16.1.record.md#turn-6)) and which was two rounds
+           built, they stopped it in five words: "Nono let the cells tria
+           l finish" ([Turn 14](../ChatHistory/2026/11/2026-11-16.1.recor
+           d.md#turn-14)). It finished there: a third round drew the cell
+           s under a directory's name where the line beside it had room f
+           or three, and the trial went onto `main` behind one choice in
+           Tuning with the count still the default, for an eye that had n
+           ot yet seen it ([the probe](../Probes/2026-11-17/cells-trial/R
+           EADME.md)). What the day added to the pattern: a principle the
+            owner states as taste ("dynamics") is a brief, a refusal of t
+           heirs is as much a design as an approval, and an owed defect r
+           ead at startup is not yet scheduled until it is written into t
+           he day.
+      549 
+      550 +### November 17–18: where a gate's time goes, and a working co
+          +py that moved                                                 
+      551 +                                                              
+      552 +The owner opened the next day on the effort they had called wo
+          +rthy the night before: "the first order of business is to ensu
+          +re that the video card is available to you in this container s
+          +o that you can tremendously speed up our e2e tests" ([Turn 1](
+          +../ChatHistory/2026/11/2026-11-17.1.record.md#turn-1)). A rebu
+          +ild would end the chat and delete its log, so the root proved 
+          +the recipe first in two throwaway containers the owner started
+          + from PowerShell. Docker's own switch for a graphics card pass
+          +ed no Direct3D; the WSL2 device and the host's library folder 
+          +did, and with one launch flag and two settings, "all three or 
+          +none", this repository's 3D picture came to rest in 8.7 second
+          +s where software took 78. The two cases the owner had kept red
+          + on their clocks since November 12 passed. And the whole suite
+          + went from two hours to 98 minutes.                           
+      553 +                                                              
+      554 +That was the day's real finding, and the owner drew it out. Th
+          +ree hours in they had named the matter, "our testing has becom
+          +e a multi-hour extravaganza. It's a blocker now" ([Turn 3](../
+          +ChatHistory/2026/11/2026-11-17.1.record.md#turn-3)), and lifte
+          +d their own rule of October 19 for it: as many workers as "the
+          + system reliably tolerates" ([Turn 4](../ChatHistory/2026/11/2
+          +026-11-17.1.record.md#turn-4)). The root measured the Windows 
+          +drive (a minute before a run's first case, through a mount tha
+          +t costs 4 to 6 ms for every file opened), the workers (about f
+          +our on ten cores, each case then half as slow again), and proj
+          +ected thirty minutes from three modest gains. The owner: "no l
+          +arge \"A-ha! That's the lever!\" mechanism has yet shown itsel
+          +f ...? I am surprised and wonder what I'm missing if this is t
+          +he case" ([Turn 7](../ChatHistory/2026/11/2026-11-17.1.record.
+          +md#turn-7)). The root answered, "You're reading it right, and 
+          +you're not missing anything. I was", then named a lever after 
+          +all, two threads of kernel time round every browser, and half 
+          +an hour later took it back: its profile had sampled too slowly
+          + to see a page that lives three seconds, and the kernel time b
+          +elonged to the editor, not the tests. What stood was plainer. 
+          +A case is the page doing its own work, a thousand loads and pi
+          +ctures one after another, most of them on this repository's ow
+          +n growing map, where the same case takes 4.3 times as long as 
+          +on the small frozen sample.                                   
+      555 +                                                              
+      556 +The owner's answer came from their day job, and it reframed th
+          +e question the root had been asking since November 5, which pr
+          +omises may hold on a frozen sample: "a series of _joint assert
+          +ions_ run across numerous common scenarios of data, sampled di
+          +rectly from memory ... supplied with replacement tokens wherev
+          +er the data should be updated to something else ... remarkably
+          + cheap, remarkably accurate, and remarkably fast", with "anyth
+          +ing which hurts us sufficiently badly becomes another test cas
+          +e", and "we have something frozen -- a known shape -- that sha
+          +pe is Rosetta" ([Turn 8](../ChatHistory/2026/11/2026-11-17.1.r
+          +ecord.md#turn-8)). Asked to ponder how such a suite stays robu
+          +st, the root gave a frame: a scenario, a reading of the settle
+          +d page captured as data, and judgments over readings, each pus
+          +hed as far as it will go from a recorded baseline toward a law
+          + that needs nothing, since "the fragility comes from where the
+          + expected values live, not from asserting many things at once"
+          + ([Turn 11](../ChatHistory/2026/11/2026-11-17.1.record.md#turn
+          +-11)). The owner, the next day: "Oh yeah! I loved that!" The c
+          +ard landed for WebGL only, after the root found that drawing t
+          +he whole page through it starved the 2D map's search of the br
+          +owser's idle moments ("Smart."), with the agents' folders and 
+          +the dependencies on volumes so that a rebuild no longer ends a
+          + chat.                                                        
+      557 +                                                              
+      558 +The rebuild came up at the first try, and a second root contin
+          +ued the same record in a new chat. Its first gate stopped on a
+          + physics case slowed fivefold by a coverage report nobody read
+          +, which it turned off. The owner answered everything that had 
+          +waited in one message ([Turn 13](../ChatHistory/2026/11/2026-1
+          +1-17.1.record.md#turn-13)): marbles "a worthy new default", th
+          +e cells' pictures "still fabulous", and, of six small design q
+          +uestions a week old, not answers but a method, "increasingly _
+          +small_ Claude models to blind UX test our software, forced to 
+          +use only keyboard/mouse inputs and screenshots", because what 
+          +stops them will "reveal deeper underlying design decisions we 
+          +need to resolve, which often take the nits and turn them into 
+          +\"those don't matter anymore\". Answering design holistically 
+          +is, as always, wise." Then they commissioned the archive's own
+          + reorganization, `ChatHistory/` to become `AgentSessionHistory
+          +/` with each day's probes, research and screenshots beside its
+          + record ([Turn 14](../ChatHistory/2026/11/2026-11-17.1.record.
+          +md#turn-14)), saw that the slow drive stood in its way, and ch
+          +ose to move first ([Turn 15](../ChatHistory/2026/11/2026-11-17
+          +.1.record.md#turn-15)).                                       
+      559 +                                                              
+      560 +The move nearly stopped at its first step. The root's instruct
+          +ions began with installing a Linux distribution, and nine hour
+          +s later the owner wrote: "This gets hairy very very quickly ..
+          +. it sounds like if I do, I'm going to need to be maintaining 
+          +it", and then, "I think I need a bit more instruction on what 
+          +it implies in terms of my responsibilities for the longer-term
+          +" ([Turn 16](../ChatHistory/2026/11/2026-11-17.1.record.md#tur
+          +n-16)). The steps had said what to type and not what it would 
+          +cost them to own. The root said it then: a distribution here i
+          +s a disk with a folder on it, nothing to run or keep up, and o
+          +ne thing to know, that removing it removes the working copy. T
+          +he owner installed it, ran the copy script in five minutes, an
+          +d opened the next chat from `~/src/Live-Documentation`, on a L
+          +inux disk for the first time since the project left Windows fo
+          +r a container in February. [The session's summary](../ChatHist
+          +ory/2026/11/Summarized/2026-11-17.1.SUMMARIZED.md) keeps the e
+          +leven commits and the measurements. What the two days added to
+          + the pattern: a surprise of the owner's is a finding to take a
+          +t its word; a debt of test time is paid as they pay it at work
+          +, by scenarios and joint assertions; and a step asked of them 
+          +on their own machine comes with what it asks of them afterward
+          +s.                                                            
+      561 +                                                              
+      562  ## Harnesses and models
+      563 
+      564  Most transcripts name no model; this table gives only what the
+           y say. A model's name in a transcript records what the owner e
+           nabled or said, not proof of which model wrote every reply.
+
+  Ran 6 shell commands (ctrl+o to expand)
+
+● Yes, open it in the container, and choose "Live Documentation Dev (WSL2
+  graphics card)". Do one paste first, so this chat comes with you.
+
+  Ubuntu has no Node, on purpose: it is the disk, and the container is the
+  workshop. Nothing of ours can be built or tested from this window.
+
+  Before you click: one paste
+
+  This chat's log lives in Ubuntu's home folder, and the container keeps its
+  chats on a Docker volume. Reopening now would leave this chat behind. In this
+  window's terminal:
+
+  docker run --rm -u 1000:1000 -v live-documentation-claude:/to -v
+  ~/.claude/projects/-home-user-src-Live-Documentation:/from:ro
+  mcr.microsoft.com/devcontainers/typescript-node:22 cp
+  /from/b4286088-8e81-4c34-abcf-7d5a8ca14c0d.jsonl
+  /to/projects/-workspaces-Live-Documentation/
+
+  It prints nothing when it works. I checked that it can read the log and write
+  that folder. I could not test whether the extension then resumes a chat begun
+  under another folder's path. If this chat is not in Claude Code's history
+  inside the container, start a new one and say "continue 11/18"; today's record
+  (AI-Agent-Workspace/ChatHistory/2026/11/2026-11-18.1.record.md) has
+  everything.
+
+  Then
+
+  1. F1 → "Dev Containers: Reopen in Container" → Live Documentation Dev (WSL2
+     graphics card). Use F1 if the pop-up does not ask which configuration.
+  2. Wait for the set-up. Dependencies install into a fresh volume, as on your
+     last rebuild. The log should end with "The host's graphics card is
+     available to the browser tests." and "Devcontainer setup complete!".
+  3. If the Claude Code panel is missing, install the extension into the
+     container from the Extensions view. Your sign-in is already on the volume.
+  4. Open this chat from its history and say you're in.
+
+  1. Why the container
+
+  Windows ── the VS Code window you see
+     │
+     └─ one WSL2 virtual machine: 20 threads, 62 GB, the RTX 3090
+          ├─ Ubuntu: a disk. ~/src/Live-Documentation lives here.
+          └─ Docker: the dev container. Node, the indexers, the browser
+             tests and Claude Code. It mounts the folder above directly.
+
+  - What I tried from here: a throwaway container with the two graphics-card
+    arguments and this folder mounted. The folder shows as Linux's own disk, not
+    the slow crossing to Windows, and the card's device and libraries are
+    there.
+  - What only your reopen can show: the dev container itself, and a browser run
+    on the card inside it.
+  - A first measure of the new disk: the markdown link audit took 104 s on D:\
+    yesterday and 2.2 s here.
+
+  2. Opening it normally
+
+  - Docker Desktop running first, as before.
+  - File → Open Recent → the entry for this folder marked [Dev Container: Live
+    Documentation Dev (WSL2 graphics card) …]. I expect that one click to start
+    Ubuntu and the container and attach; I have not seen the entry myself.
+  - If it is not there: in an Ubuntu terminal, cd ~/src/Live-Documentation &&
+    code ., then accept the reopen.
+  - Retire the D:\ entry, and don't open that copy in a container again. Don't
+    delete it yet either: it is the way back until the gate has passed here.
+  - Unchanged: your preview (npx http-server dist/explorer -p 8999 -c-1 in a VS
+    Code terminal) and pushing. Pushing is now the working copy's backup.
+
+  Nothing else changes on your side. That configuration gives me everything, and
+  I check the card at the start of each chat.
+
+  3. Compute
+
+  ┌───────────────────┬─────────────────┬────────────────────────────────┐
+  │       What        │  WSL gives us   │        Of the machine's        │
+  ├───────────────────┼─────────────────┼────────────────────────────────┤
+  │ Processor threads │ 20              │ 20 (10 cores)                  │
+  ├───────────────────┼─────────────────┼────────────────────────────────┤
+  │ Memory            │ 62 GB           │ 128 GB (WSL's default is half) │
+  ├───────────────────┼─────────────────┼────────────────────────────────┤
+  │ Graphics card     │ RTX 3090, 24 GB │ the same card                  │
+  ├───────────────────┼─────────────────┼────────────────────────────────┤
+  │ Disk              │ 949 GB free     │ bounded by C:'s 745 GB free    │
+  └───────────────────┴─────────────────┴────────────────────────────────┘
+
+  - Nothing needs changing. There is no .wslconfig, so these are WSL's defaults.
+    Ubuntu and Docker's containers share the one virtual machine, so a
+    container gets all of it. The most memory I saw the container use was 9.4
+    GB; the real limit on parallel tests is the ten cores.
+  - Windows is not capping the processor: the power plan is Balanced with the
+    maximum state at 100%.
+  - To check yourself: nproc, free -g and /usr/lib/wsl/lib/nvidia-smi in any
+    terminal here or in the container. The knob, if ever needed, is
+    C:\Users\User\.wslconfig; I recommend not creating one.
+
+  What I did this turn
+
+  - Startup read, in full: the guide, the four Memory files, the summaries of
+    November 10, 12, 13, 15 and 16, and yesterday's record.
+  - Closed yesterday's session: its summary (AI-Agent-Workspace/ChatHistory/2026
+    /11/Summarized/2026-11-17.1.SUMMARIZED.md), the narrative's chapter, and
+    your re-saved export filed as received.
+  - Set your commit name and email in this clone, from your last commit. Ubuntu
+    has no git settings of its own, so commits would otherwise have had none.
+  - Removed the move script from this copy; its work is done.
+  - Three commits, documents only (24412675, 1d6271a7, 493c70de). Both link
+    checks pass. Nothing was built or tested, and nothing is pushed.
+
+  Waiting on you from yesterday
+
+  1. The session-history convention: a directory per dev day, Summarized/ at the
+     month, the move done by one script (my proposal (AI-Agent-Workspace/ChatHi
+     story/2026/11/2026-11-17.1.record.md#roots-reply-to-turn-14-as-delivered)).
+     Correct or confirm it; I'll brief the builder on it as proposed unless you
+     say otherwise.
+  2. How I'd build the blind playtests (the plan (AI-Agent-Workspace/ChatHistory
+     /2026/11/2026-11-17.1.record.md#roots-reply-to-turn-13-as-delivered)):
+     correct anything.
+
+  Order once the container is up
+
+  1. Check the disk and the card, then run the whole gate. It will be the first
+     to finish on the committed browser settings. Expected red: two
+     history-scrubber cases a few seconds over their limit, perhaps two 2D cases
+     on theirs, one case with a race, and force-graph-building.spec.ts:66, a
+     real fault I owe a diagnosis.
+  2. Tell you what can go: the D:\ folder, the old container and its
+     dependencies volume.
+  3. The session-history builder.
+  4. The 19 dependency findings, the scenario suite's first slice, the new
+     defaults (marbles on, cells under the name), and the playtest instrument.
+  5. After test speed: the rings beside the membranes, your defect, first in
+     that list.
