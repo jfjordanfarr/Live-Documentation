@@ -11,7 +11,7 @@
 Integration tests for the Go Rosetta data processing pipeline.
 
 ### Notes
-Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Exercises NON-name-matched test detection through imports of `rosetta/src/processor` and `rosetta/src/models` packages.
+Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-16/2026-01-16.1.md). Exercises NON-name-matched test detection through imports of `rosetta/src/processor` and `rosetta/src/models` packages.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

@@ -12,7 +12,7 @@ Tests of the step summary: a rename step with its files under their new names an
 
 ### Notes
 - Written 2026-10-18 with the module, for the plan's C4, over a sequence built with the engine's `SequenceBuilder` so that the summary is read from a real sequence rather than a hand-made change.
-- The counts' cases came on 2026-11-11 with the compact panel ([Turn 6 of the November 10 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-10.1.record.md#turn-6)). A trial case for a file renamed onto a deleted path in the same step was dropped: `SequenceBuilder` does not produce that step (it calls the moved file dead), so the count reads every path from one set.
+- The counts' cases came on 2026-11-11 with the compact panel ([Turn 6 of the November 10 record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-10/2026-11-10.1.record.md#turn-6)). A trial case for a file renamed onto a deleted path in the same step was dropped: `SequenceBuilder` does not produce that step (it calls the moved file dead), so the count reads every path from one set.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

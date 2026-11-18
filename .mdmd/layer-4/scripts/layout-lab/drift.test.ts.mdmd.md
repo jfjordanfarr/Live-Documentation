@@ -8,7 +8,7 @@
 
 ## Authored
 ### Purpose
-Holds the drift measure to what it claims: the spread measures, the carry rules across a membership change, and the two halves of the finding that led to gravity, over a toy graph of two clusters that never reference each other ([the October 17 session](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-5)).
+Holds the drift measure to what it claims: the spread measures, the carry rules across a membership change, and the two halves of the finding that led to gravity, over a toy graph of two clusters that never reference each other ([the October 17 session](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-17/2026-10-17.1.record.md#turn-5)).
 
 ### Notes
 The third test is the measure's reason to exist and can fail either way: with the forces as they were (no gravity, unbounded reach) the extent must grow by more than a fifth over five cycles, and with gravity it must stay within a tenth. The thresholds are a fifth and a tenth of the start, chosen apart from each other so that a simulation that neither drifts nor returns fails both; they are not tuned to pass. The simulation is deterministic through D3's own random source, so the numbers repeat. Since 2026-10-18 that test names the update energy as one, the full reheat the page made of every change when the drift was measured, since the measure now feeds each change by the tuning's energy.

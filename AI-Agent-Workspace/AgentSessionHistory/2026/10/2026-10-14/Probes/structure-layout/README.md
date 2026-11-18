@@ -1,6 +1,6 @@
 # The 3D Local Map's two layouts: the measurements of the structure layout's first build
 
-_Historical record, October 14, 2026, by the root Claude Code agent (Fable 5.1), of the structure layout as first built, before its gate; [the October 14 record](../../../ChatHistory/2026/10/2026-10-14.1.record.md#turn-4) names the commit. The design is the owner's of that afternoon, recorded in [the Explorer design](../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md) and [the decisions log](../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#the-3d-local-map-has-two-layouts-analyzed-connections-and-declared-structure-recorded-2026-10-14); [the screenshot record](../../../Screenshots/2026-10-14/README.md#the-3d-local-maps-two-layouts-the-afternoon-of-october-14) names the pictures._
+_Historical record, October 14, 2026, by the root Claude Code agent (Fable 5.1), of the structure layout as first built, before its gate; [the October 14 record](../../2026-10-14.1.record.md#turn-4) names the commit. The design is the owner's of that afternoon, recorded in [the Explorer design](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md) and [the decisions log](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#the-3d-local-map-has-two-layouts-analyzed-connections-and-declared-structure-recorded-2026-10-14); [the screenshot record](../../Screenshots/README.md#the-3d-local-maps-two-layouts-the-afternoon-of-october-14) names the pictures._
 
 ## What the page measured
 

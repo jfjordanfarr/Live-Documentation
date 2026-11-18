@@ -1,6 +1,6 @@
 # October 12, 2026 — Local Map entry, paths and view consolidation
 
-Evidence from the owner's hands-on walkthrough in [Turn 3](../../ChatHistory/2026/10/2026-10-12.1.record.md#turn-3). These pictures show the Explorer built from the current working tree. They are visual evidence, not a test verdict.
+Evidence from the owner's hands-on walkthrough in [Turn 3](../2026-10-12.1.record.md#turn-3). These pictures show the Explorer built from the current working tree. They are visual evidence, not a test verdict.
 
 - [startup-direct-membranes.png](startup-direct-membranes.png): the browser entry file opened directly, with its neighborhood in the common directory-aware layout before any pinning. Captured at 1600×1000 after the layout search settled.
 - [startup-path-membranes.png](startup-path-membranes.png): the two-file path from the graph projection to browser startup, with shared and client directory membranes and the short 2D/3D controls, at 1600×1000.
@@ -8,7 +8,7 @@ Evidence from the owner's hands-on walkthrough in [Turn 3](../../ChatHistory/202
 
 At Turn 3, no replacement was made for the Force Graph or Membrane Map. The Local Map’s old no-pin and path renderers are replaced by its existing optimized scene. The complete local gate passed, including all 126 browser tests; the session record preserves the intermediate failures and their resolutions.
 
-The owner retired the Membrane Map and Circuit Board in [Turn 4](../../ChatHistory/2026/10/2026-10-12.1.record.md#turn-4). The following 1600×1000 captures show the resulting three-view navigation over the regenerated bundle (624 files). The 3D force renderer now belongs to Local Map.
+The owner retired the Membrane Map and Circuit Board in [Turn 4](../2026-10-12.1.record.md#turn-4). The following 1600×1000 captures show the resulting three-view navigation over the regenerated bundle (624 files). The 3D force renderer now belongs to Local Map.
 
 - [three-view-navigation-2d.png](three-view-navigation-2d.png): the same startup path in 2D, with Knowledge Sources, World Map and Local Map as the only sidebar choices.
 - [three-view-navigation-3d.png](three-view-navigation-3d.png): that path in 3D, with Local Map still selected and the same path controls. Its mode survives refresh and sharing with a fresh browser session.

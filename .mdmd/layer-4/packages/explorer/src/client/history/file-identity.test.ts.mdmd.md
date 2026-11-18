@@ -11,7 +11,7 @@
 Keep historical selections distinct across renames, deletion and reuse of the same path, and reject shared identities whose file or commit never existed in the bundle's history.
 
 ### Notes
-Added with the [November 1 historical-discovery repair](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-01.1.record.md#turn-2). The synthetic sequence independently names a renamed-and-deleted file, a transient file, a surviving rename and an unrelated later file at the deleted path. Assertions cover their identity and absence on both sides of their lifetimes, rather than comparing one encoding routine with itself.
+Added with the [November 1 historical-discovery repair](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-01/2026-11-01.1.record.md#turn-2). The synthetic sequence independently names a renamed-and-deleted file, a transient file, a surviving rename and an unrelated later file at the deleted path. Assertions cover their identity and absence on both sides of their lifetimes, rather than comparing one encoding routine with itself.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

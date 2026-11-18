@@ -1,6 +1,6 @@
 # Reading controls and exact symbol arrivals — November 9, 2026 UTC
 
-Current bounded builder evidence. The root visually accepted this bounded repair before its formal regressions; the full gate remains a root decision. The owner’s report is preserved in [the session record](../../../ChatHistory/2026/11/2026-11-08.1.record.md#turn-3-additional-reading-feedback-during-the-review).
+Current bounded builder evidence. The root visually accepted this bounded repair before its formal regressions; the full gate remains a root decision. The owner’s report is preserved in [the session record](../../../2026-11-08/2026-11-08.1.record.md#turn-3-additional-reading-feedback-during-the-review).
 
 Fixed-slot cards again have books for their actual prose, and descriptions can be all visible, all folded, or an exact subset. Their empty slots remain allotted. Names retain the reader action. Whole-card open retains the existing contract of disclosing that file’s otherwise hidden rows; this is a change of shown scope, separate from hiding text in already shown rows.
 

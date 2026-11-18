@@ -15,7 +15,7 @@ Keeps boundary-alignment proposals faithful to complete flat runs, including the
 
 The fixtures distinguish joining both plateaus from aligning only the two segments at a step, require ancestor plateaus to remain intact, and exclude invisible roots and lanes from aesthetic proposals. Empty and already-flat scenes produce no proposals; tie ordering and input geometry remain stable.
 
-Created for the owner’s October 13, 2026 request to tune aesthetic preferences within the existing competition: [the originating discussion](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply).
+Created for the owner’s October 13, 2026 request to tune aesthetic preferences within the existing competition: [the originating discussion](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-13/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

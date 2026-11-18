@@ -12,7 +12,7 @@ Proves that `bundleRelatedDocs` bundles each linked document once while keeping 
 
 ### Notes
 - Builds a real temporary workspace on disk (a Live Doc, a README, and a file inside a chat archive) rather than mocking the filesystem, because the scanner's relative-path resolution is the part most likely to break
-- The exclusion case, the guard of the `bundleExclude` field introduced on 2026-09-27 to keep this repository's chat archive out of the public bundle, moved on 2026-10-20 to the engine's `relatedDocs.test.ts` with the rule ([Turn 9](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-9)).
+- The exclusion case, the guard of the `bundleExclude` field introduced on 2026-09-27 to keep this repository's chat archive out of the public bundle, moved on 2026-10-20 to the engine's `relatedDocs.test.ts` with the rule ([Turn 9](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-20/2026-10-20.1.record.md#turn-9)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

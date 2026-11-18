@@ -15,7 +15,7 @@ The one place the Explorer writes its address: it decides whether a change is a 
 - A move to another place is an entry; pins, expanded cards, pan and zoom rewrite the place's entry, so Back never walks through pin toggles (the owner: "we can split out the pinning history from the navigation history"). Which a write is comes from `place.ts`, from the parsed address.
 - Writes before the first pointer, key or wheel input never add an entry, and every write in the same task as a new entry joins it, so one click that writes twice is one step back. Joining is by task rather than by time so that two quick clicks stay two steps.
 
-Back and Forward can require an asynchronously loaded historical selection. Restoration waits for that sequence before validating retained identities, stays a replacement of the existing browser-history entry while it waits, and yields to a newer navigation. This fixes the [November 1 reload-and-Back journey](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-01.1.record.md#turn-2), where a cleared present-day page otherwise dropped its past-only pin before loading the evidence needed to recognize it.
+Back and Forward can require an asynchronously loaded historical selection. Restoration waits for that sequence before validating retained identities, stays a replacement of the existing browser-history entry while it waits, and yields to a newer navigation. This fixes the [November 1 reload-and-Back journey](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-01/2026-11-01.1.record.md#turn-2), where a cleared present-day page otherwise dropped its past-only pin before loading the evidence needed to recognize it.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

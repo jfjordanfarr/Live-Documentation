@@ -1,6 +1,6 @@
 # A directory's handle at every zoom, 2026-11-15
 
-Historical evidence for the first milestone of the directory handle ([November 15, Turn 1](../../../ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)): the owner found directories in the 2D map not useful when zoomed out, "because there are no buttons to interact with at that distance". The pictures are 1,440 by 900, of the 2D Local Map in its defaults (the three zoom looks, Flow for an opened directory, the Box look of a closed directory).
+Historical evidence for the first milestone of the directory handle ([November 15, Turn 1](../../2026-11-15.1.record.md#turn-1)): the owner found directories in the 2D map not useful when zoomed out, "because there are no buttons to interact with at that distance". The pictures are 1,440 by 900, of the 2D Local Map in its defaults (the three zoom looks, Flow for an opened directory, the Box look of a closed directory).
 
 ## Names
 

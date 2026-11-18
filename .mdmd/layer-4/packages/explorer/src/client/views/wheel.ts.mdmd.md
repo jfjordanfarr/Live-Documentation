@@ -11,7 +11,7 @@
 Normalizes mouse-wheel and trackpad deltas into CSS pixels for camera zoom.
 
 ### Notes
-The normalization first accompanied the October 3, 2026 perspective-boundary experiment. The [October 12 walkthrough](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-12.1.record.md#turn-3) retired the boundary while retaining device-independent wheel arithmetic. This module requests no view change.
+The normalization first accompanied the October 3, 2026 perspective-boundary experiment. The [October 12 walkthrough](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-12/2026-10-12.1.record.md#turn-3) retired the boundary while retaining device-independent wheel arithmetic. This module requests no view change.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

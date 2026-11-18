@@ -13,9 +13,9 @@ Vitest cases for the card ladder's room sums: a name's fill of its row about the
 
 ### Notes
 
-Written with the module in the far bands' round (2026-11-06, [Turn 3](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-06.1.record.md#turn-3)). The numbers are the review's cards: a 66 px two-line slot row whose name begins 2.5 px down and is 12 px tall, and a 284 px card whose 14 px dots stand 14 px in from each border, which may therefore grow to twice their size. The cases also hold the edges: a row that cannot hold a larger name, sub-pixel noise in a name that just fits, a dot with no room, boxes that cannot be measured, rows hidden by the branch picture, and a card with no pin.
+Written with the module in the far bands' round (2026-11-06, [Turn 3](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-06/2026-11-06.1.record.md#turn-3)). The numbers are the review's cards: a 66 px two-line slot row whose name begins 2.5 px down and is 12 px tall, and a 284 px card whose 14 px dots stand 14 px in from each border, which may therefore grow to twice their size. The cases also hold the edges: a row that cannot hold a larger name, sub-pixel noise in a name that just fits, a dot with no room, boxes that cannot be measured, rows hidden by the branch picture, and a card with no pin.
 
-Since 2026-11-15 ([Turn 1 of the November 15 record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) it also holds `fileLineRoom`: a header that holds the file's line under its name, one that holds it exactly, and one that is short and by how much (a name on two lines in a header of 91 units is 4.83 short).
+Since 2026-11-15 ([Turn 1 of the November 15 record](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-1)) it also holds `fileLineRoom`: a header that holds the file's line under its name, one that holds it exactly, and one that is short and by how much (a name on two lines in a header of 91 units is 4.83 short).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

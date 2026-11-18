@@ -1,6 +1,6 @@
 # Explorer inspection: October 1, 2026
 
-_Historical visual record from [Turn 43](../../ChatHistory/2026/09/2026-09-30.2.record.md#turn-43). The root agent found and corrected a Membrane saved-camera defect while comparing the [analytical-surface experiment](../../Probes/2026-10-01/analysis-surface.md) against multi-file symbol pinning._
+_Historical visual record from [Turn 43](../../../09/2026-09-30/2026-09-30.2.record.md#turn-43). The root agent found and corrected a Membrane saved-camera defect while comparing the [analytical-surface experiment](../Probes/analysis-surface.md) against multi-file symbol pinning._
 
 Both images use the same five-file pin set (`graph.ts`, `document.ts`, `graphFiles.ts`, `staticExplorerData.ts`, `staticBuilder.ts`) and the same saved URL followed by real wheel pan/zoom to the lower branch. Viewport: 1600 × 1000. Pointer moved to the header before capture to remove transient hover dimming.
 
@@ -11,7 +11,7 @@ The new `membrane-url-state.spec.ts` regression failed with `transform: none` be
 
 ## The still-picture instrument, the same afternoon
 
-_From [Turn 4](../../ChatHistory/2026/10/2026-10-01.1.record.md#turn-4): the first run of the instrument defined in [the still-picture deck](../../Probes/2026-10-01/still-picture-deck.md), and the two defects it found and the session fixed. Root agent: Claude Fable 5.1. Viewport 1600 by 1000; the pictures are the instrument's own, taken by `tests/e2e/still-picture.spec.ts`._
+_From [Turn 4](../2026-10-01.1.record.md#turn-4): the first run of the instrument defined in [the still-picture deck](../Probes/still-picture-deck.md), and the two defects it found and the session fixed. Root agent: Claude Fable 5.1. Viewport 1600 by 1000; the pictures are the instrument's own, taken by `tests/e2e/still-picture.spec.ts`._
 
 - [The Local Map at `graph.ts`](still-picture-local-map-graph.png): the measured state of the repository run. Scale 1, not the 0.6 floor the deck predicted; the fit centers on the subject and lets the dependents column run off the frame. 4 of the 15 facts in scope are legible, 6 are drawn but off frame, 5 are not drawn because they do not touch the selected file.
 - [The Membrane Map with every symbol of five files pinned](still-picture-membrane-five-files.png): 42 cards, 7 in frame at the default camera, 2 of 15 facts legible, 13 drawn but off frame, 3 of 207 wires crossing a card they do not end at. The column labels call `graph.ts`, a pinned file, a dependent, because pinned files at depth one share the dependents' column.
@@ -21,7 +21,7 @@ _From [Turn 4](../../ChatHistory/2026/10/2026-10-01.1.record.md#turn-4): the fir
 
 ## The expanded deck, that evening
 
-_From [Turn 8](../../ChatHistory/2026/10/2026-10-01.1.record.md#turn-8): the nine measures the owner's reading of the first scoreboard added, the chain scope, and what the second scoreboard found. Root agent: Claude Fable 5.1. Viewport 1600 by 1000; the instrument's own pictures, except the first, which a disposable overlay took._
+_From [Turn 8](../2026-10-01.1.record.md#turn-8): the nine measures the owner's reading of the first scoreboard added, the chain scope, and what the second scoreboard found. Root agent: Claude Fable 5.1. Viewport 1600 by 1000; the instrument's own pictures, except the first, which a disposable overlay took._
 
 - [What the crossings measure counts](still-picture-crossings-local-map.png): the Local Map at `graph.ts` with every counted crossing point drawn in red. All 162 sit in the fan where twenty wires leave the subject's ten pins; 3 are more than 80 px from a pin. The overlay was how the measure was checked by eye before its numbers were trusted; the probe record holds the same picture for the ring.
 - [The Membrane's columns are hops, not direction](still-picture-membrane-dependents-columns.png): the repository's five files pinned, columns labelled Pinned, Dependents, 2-hop, 3-hop. A file one hop away may provide or consume, so 110 of 208 wires run leftward against the view's own grammar.
@@ -31,7 +31,7 @@ _From [Turn 8](../../ChatHistory/2026/10/2026-10-01.1.record.md#turn-8): the nin
 
 ## The path mode set right, that night
 
-_From [Turn 10](../../ChatHistory/2026/10/2026-10-01.1.record.md#turn-10): the pathfinder's path mode fixed in the shipped Local Map by the owner's rule of 2025-12-18, "show no results and offer the reverse (via hyperlink)" rather than draw a path against the direction. Root agent: Claude Fable 5.1. Viewport 1600 by 1000; taken by a disposable script over the rebuilt bundles, the states that `tests/e2e/local-map-path.spec.ts` now keeps._
+_From [Turn 10](../2026-10-01.1.record.md#turn-10): the pathfinder's path mode fixed in the shipped Local Map by the owner's rule of 2025-12-18, "show no results and offer the reverse (via hyperlink)" rather than draw a path against the direction. Root agent: Claude Fable 5.1. Viewport 1600 by 1000; taken by a disposable script over the rebuilt bundles, the states that `tests/e2e/local-map-path.spec.ts` now keeps._
 
 - [The reverse offered](local-map-path-reverse-offered.png): the estate, asked how `GatewayClient.cs` reaches `IPaymentHub.cs`. `GatewayClient.cs` depends on `IPaymentHub.cs`, so the question runs against the map's reading direction and nothing is drawn; the status says so and offers "show IPaymentHub.cs to GatewayClient.cs" as a link. The picture behind it has not moved: the status takes its own line and the map stays put under it.
 - [The reverse drawn](local-map-path-estate-drawn.png): one click on the offer. `IPaymentHub.cs` offers at the left, `GatewayClient.cs` uses at the right, and every wire leaves a blue pin and enters a green one, left to right; the instrument reads 4 of 4 flowing and 0 backward, where the morning's picture had 0 of 4. The selected file keeps its highlight at the right end.

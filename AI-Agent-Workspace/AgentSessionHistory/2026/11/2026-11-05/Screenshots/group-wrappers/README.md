@@ -1,6 +1,6 @@
 # Group Wrappers in the 3D Local Map: skin, cloud and cloud with a rim
 
-Matched pictures of the experiment the owner asked to push forward on [November 5](../../../ChatHistory/2026/11/2026-11-05.1.record.md#turn-10), from their proposal of a clickable mesh around a hidden group on [November 4](../../../ChatHistory/2026/11/2026-11-03.1.record.md#turn-16--november-4) and their reading of the [throwaway probe](../../../Probes/2026-11-04/cluster-wrap/README.md): the cloud for reducing line density, the skin for the itch to pop it ([Turn 17](../../../ChatHistory/2026/11/2026-11-03.1.record.md#turn-17--november-4)). The experiment sits behind one choice, Group Wrappers, in Tuning → 3D Layout → Discovery, which defaults to Off; Skin, Cloud and "Cloud, rim on hover" can be flipped on port 8900 with the same picture and camera. Taken by a builder in a private headless Chromium (software rendering) at 1280 × 800, with the layout's background search off (`searchStarts: 0`). This is evidence for a judgement the owner has not yet made; no look is chosen.
+Matched pictures of the experiment the owner asked to push forward on [November 5](../../2026-11-05.1.record.md#turn-10), from their proposal of a clickable mesh around a hidden group on [November 4](../../../2026-11-03/2026-11-03.1.record.md#turn-16--november-4) and their reading of the [throwaway probe](../../../2026-11-04/Probes/cluster-wrap/README.md): the cloud for reducing line density, the skin for the itch to pop it ([Turn 17](../../../2026-11-03/2026-11-03.1.record.md#turn-17--november-4)). The experiment sits behind one choice, Group Wrappers, in Tuning → 3D Layout → Discovery, which defaults to Off; Skin, Cloud and "Cloud, rim on hover" can be flipped on port 8900 with the same picture and camera. Taken by a builder in a private headless Chromium (software rendering) at 1280 × 800, with the layout's background search off (`searchStarts: 0`). This is evidence for a judgement the owner has not yet made; no look is chosen.
 
 ## What is wrapped, and what a wrapper does
 
@@ -23,7 +23,7 @@ The pop in Skin, the page's clock paused at the click and stepped, so the times 
 
 ## What was measured
 
-Hulls, in Node on the same bundles, with the functions the page runs ([`forceGraphWrappers.ts`](../../../../packages/explorer/src/client/views/forceGraphWrappers.ts)):
+Hulls, in Node on the same bundles, with the functions the page runs ([`forceGraphWrappers.ts`](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts)):
 
 | Picture | Wrapped groups | Hidden layout | Hull build | Merge | Vertices | Triangles |
 | --- | --- | --- | --- | --- | --- | --- |

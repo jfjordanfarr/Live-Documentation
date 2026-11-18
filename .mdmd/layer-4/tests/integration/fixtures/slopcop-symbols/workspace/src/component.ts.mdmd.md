@@ -8,7 +8,7 @@
 
 ## Authored
 ### Purpose
-Provides the minimal implementation required for the SlopCop symbol-audit fixture so tooling has a concrete TypeScript export to index, matching the verification passes captured in [2025-11-03 chat](../../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-03.md).
+Provides the minimal implementation required for the SlopCop symbol-audit fixture so tooling has a concrete TypeScript export to index, matching the verification passes captured in [2025-11-03 chat](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/2025-11-03/2025-11-03.md).
 
 ### Notes
 - Intentionally trivial; any extra dependencies here would dilute the fixture’s goal of isolating symbol-link validation during SlopCop runs.

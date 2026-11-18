@@ -1,6 +1,6 @@
 # Connections layout candidates
 
-_Historical headless probe, October 24, 2026, for the owner's [Connections-only visual tuning request](../../../ChatHistory/2026/10/2026-10-24.1.record.md#turn-12). These are candidates for the root agent's visual review, not a claim that a metric measures beauty. The initial comparison changed no product source; a subsequent integration repair is recorded below._
+_Historical headless probe, October 24, 2026, for the owner's [Connections-only visual tuning request](../../2026-10-24.1.record.md#turn-12). These are candidates for the root agent's visual review, not a claim that a metric measures beauty. The initial comparison changed no product source; a subsequent integration repair is recorded below._
 
 ## What was measured
 
@@ -32,7 +32,7 @@ Use the shared settings above, with these three force sets. Keep wire width and 
 
 1. **Middle, moderate spring:** `linkGap 60, coupling 1, gravity .025, linkStrength .5, tether .02`. The first candidate to inspect: a larger, more discernible node footprint than current forces, moderate projected contact, and the least movement over the tested filter journeys after accounting for the graph's size.
 2. **Middle, wider gap:** `linkGap 100, coupling 1, gravity .025, linkStrength .75, tether .02`. A comparison for opening crowded local stars without enlarging the whole field substantially. Its weaker nearest-edge alignment is the tradeoff to inspect by following actual wires. Filter journeys were not measured for this set.
-3. **Dense, stronger spring:** `linkGap 60, coupling 1, gravity .05, linkStrength 1, tether .03`. A useful upper comparison for pronounced constellations. The [October 22 visual probe](../../2026-10-22/3d-tuning/README.md) preferred the stronger-spring texture; these new measurements show why node size needs to come down, or resistance remain low, if the denser arrangement is chosen.
+3. **Dense, stronger spring:** `linkGap 60, coupling 1, gravity .05, linkStrength 1, tether .03`. A useful upper comparison for pronounced constellations. The [October 22 visual probe](../../../2026-10-22/Probes/3d-tuning/README.md) preferred the stronger-spring texture; these new measurements show why node size needs to come down, or resistance remain low, if the denser arrangement is chosen.
 
 The wider `.01/.75/.02` arrangement is still worth a quick picture if the root finds the middle candidates too compressed. Its node contacts are already higher than the middle moderate-spring set despite the smaller apparent nodes, so it is not the most promising quantitative starting point.
 

@@ -1,6 +1,6 @@
 # November 1 repairs
 
-Historical implementation evidence following the [accepted end-user review](../README.md) and [Turn 2 authorization](../../../ChatHistory/2026/11/2026-11-01.1.record.md#turn-2). The earlier pictures remain the before evidence. The session record preserves earlier failures and their repairs.
+Historical implementation evidence following the [accepted end-user review](../README.md) and [Turn 2 authorization](../../2026-11-01.1.record.md#turn-2). The earlier pictures remain the before evidence. The session record preserves earlier failures and their repairs.
 
 **Verified November 2:** the complete `npm run safe:commit -- --e2e` gate passed: **1,529 unit tests, 113 integration tests and all 254 browser checks**, plus build, lint and documentation audits. Playwright used one worker and completed in 33.2 minutes. No test limit or correctness threshold was reduced. The final run includes the immediate startup motion-status correction, directory arrival checks and scope-footer visibility/reachability.
 
@@ -33,4 +33,4 @@ The owner's live playback correction is part of this pass: changed nodes turn wh
 | [20-large-directory-arrival.png](./20-large-directory-arrival.png) | Opening the engine's live-docs directory at 1800×1100: the initial box anchor gives way to a useful final frame with its label and Close visible. This large picture continues below the viewport with the existing edge cue; the smaller Portal picture fits whole. |
 | [history-frame-samples.json](./history-frame-samples.json) | Uploaded RGB and alpha measured at 10%, 50% and 85% of a commit, then the next event, final commit and history close, for Glow and Dim at 1 and 0.5 step/s. All within-commit samples are identical and no page errors occurred. |
 
-The owner's [live playback correction](../../../ChatHistory/2026/11/2026-11-01.1.record.md#turn-3) supersedes the earlier Dim preference. Glow now makes changed nodes white immediately for the displayed commit; optional Dim supplies a steady background. The old reduction of darkening actually brightened unaffected nodes across each interval. That temporal calculation and its per-frame renderer updates have been removed. The final commit is also emphasized while history is open; closing history clears the emphasis.
+The owner's [live playback correction](../../2026-11-01.1.record.md#turn-3) supersedes the earlier Dim preference. Glow now makes changed nodes white immediately for the displayed commit; optional Dim supplies a steady background. The old reduction of darkening actually brightened unaffected nodes across each interval. That temporal calculation and its per-frame renderer updates have been removed. The final commit is also emphasized while history is open; closing history clears the emphasis.

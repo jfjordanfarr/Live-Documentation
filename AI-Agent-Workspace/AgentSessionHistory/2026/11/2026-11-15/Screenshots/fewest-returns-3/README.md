@@ -1,8 +1,8 @@
 # A cycle's order as a trial of the continuing search: pictures
 
-_Historical evidence, taken 2026-11-16 for the fourth leg of the round of [Turn 5 of the November 15 record](../../../ChatHistory/2026/11/2026-11-15.1.record.md#turn-5) ([the decision](../../../../.mdmd/layer-3/architectural-decisions.mdmd.md); [the measurements](../../../Probes/2026-11-15/fewest-returns-3/README.md))._
+_Historical evidence, taken 2026-11-16 for the fourth leg of the round of [Turn 5 of the November 15 record](../../2026-11-15.1.record.md#turn-5) ([the decision](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md); [the measurements](../../Probes/fewest-returns-3/README.md))._
 
-Each file opened alone in the 2D Local Map (`/?view=local&node=<file>`) at 1440 by 900 on this branch's build after the merge with `main` at `dd3eec62`, twice: `first-*.png` as first drawn (the search off), `searched-*.png` as the search leaves it with four seeds and the default Return Cost of 1500 px. Both after Fit, cropped to the map; each sheet stands the two side by side. The page's own count of the returning connections it draws, and what the search did with the cycle, are in [`final-shots.md`](../../../Probes/2026-11-15/fewest-returns-3/final-shots.md).
+Each file opened alone in the 2D Local Map (`/?view=local&node=<file>`) at 1440 by 900 on this branch's build after the merge with `main` at `dd3eec62`, twice: `first-*.png` as first drawn (the search off), `searched-*.png` as the search leaves it with four seeds and the default Return Cost of 1500 px. Both after Fit, cropped to the map; each sheet stands the two side by side. The page's own count of the returning connections it draws, and what the search did with the cycle, are in [`final-shots.md`](../../Probes/fewest-returns-3/final-shots.md).
 
 | Sheet | Pictures | What I see |
 | --- | --- | --- |

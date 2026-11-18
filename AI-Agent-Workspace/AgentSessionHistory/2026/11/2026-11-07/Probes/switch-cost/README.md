@@ -56,7 +56,7 @@ The regression is the case "the 2D and 3D presses return at once, and the transi
 
 ## Corrections with the header round (November 8)
 
-The frames of the transition, before and after, are in [switch motion](../../../Screenshots/2026-11-08/switch-motion/README.md), taken by [`motion-frames.cjs`](motion-frames.cjs) with the page's animation time frozen at each frame. At the same times they show the same picture.
+The frames of the transition, before and after, are in [switch motion](../../../2026-11-08/Screenshots/switch-motion/README.md), taken by [`motion-frames.cjs`](motion-frames.cjs) with the page's animation time frozen at each frame. At the same times they show the same picture.
 
 The header round's specs and a review of its diff brought these corrections to the switch:
 

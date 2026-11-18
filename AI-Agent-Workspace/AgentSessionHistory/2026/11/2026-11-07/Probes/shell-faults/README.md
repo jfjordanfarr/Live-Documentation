@@ -1,6 +1,6 @@
 # The instruments of the shells' third round, November 7
 
-_Status: the instruments a builder used on 2026-11-07 to find and fix the faults of the 3D shells' second round, kept so that the measurements can be run again. The numbers and pictures they produced are in [the shell-faults pictures](../../../Screenshots/2026-11-07/shell-faults/README.md)._
+_Status: the instruments a builder used on 2026-11-07 to find and fix the faults of the 3D shells' second round, kept so that the measurements can be run again. The numbers and pictures they produced are in [the shell-faults pictures](../../Screenshots/shell-faults/README.md)._
 
 Each script runs from the repository root with `npx tsx`. The browser scripts drive a private headless Chromium (Playwright's) against a served bundle on `PORT` (8912 by default): build it (`npm run build`, `npm run live-docs:visualize`, the samples' `visualize` scripts) and serve it (`npx http-server dist/explorer -p 8912 -c-1 --silent`). The T3 sample's bundle is a rebuildable output kept outside the repository; to look at it, put its `explorer-data.json` beside a copy of the estate sample's `index.html` and `static` under `dist/explorer/samples/t3-code/`. To compare two commits' code on the same data, the third round served the base commit's bundle and a copy of it with the newer build's `index.html` and `static` in each folder.
 

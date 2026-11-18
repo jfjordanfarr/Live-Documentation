@@ -8,7 +8,7 @@
 
 ## Authored
 ### Purpose
-Provides the intermediate service layer for the `ts-layered` benchmark so dependency analysis must traverse repository classes before returning metrics, aligning with the TypeScript remediation captured in [2025-11-03 summary](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-03.SUMMARIZED.md).
+Provides the intermediate service layer for the `ts-layered` benchmark so dependency analysis must traverse repository classes before returning metrics, aligning with the TypeScript remediation captured in [2025-11-03 summary](../../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/Summarized/2025-11-03.SUMMARIZED.md).
 
 ### Notes
 - Instantiates `StorageClient` at module scope to highlight runtime evaluation and ensure static analyzers respect constructor side effects.

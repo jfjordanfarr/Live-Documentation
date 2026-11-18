@@ -13,7 +13,7 @@ Creates named SVG action buttons for the Local Map’s compact controls.
 ### Notes
 The caller supplies application-owned SVG drawing markup and a human-readable name; the helper supplies the button type, tooltip and accessible label. Action state and behavior remain with the caller. Shared glyphs cover release, directories, Pin, Centre and More, keeping the tray, membrane and projected 3D controls recognizable. A caller that changes an action's label or pressed state keeps the button itself, preserving keyboard focus.
 
-Introduced for the owner’s [October 14 pin-management request](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-11--pin-management-approved-ancestor-disclosure-and-directory-hubs).
+Introduced for the owner’s [October 14 pin-management request](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-13/2026-10-13.1.record.md#turn-11--pin-management-approved-ancestor-disclosure-and-directory-hubs).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

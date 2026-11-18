@@ -1,8 +1,8 @@
 # The card's header ordered: the name leads, the controls follow
 
-_Status: implementation evidence for the root's review and the owner's eye, not a verdict. A builder built the header round (its milestone 3) from the root's brief under the six principles the owner accepted ([the November 7 record, Turn 3](../../../ChatHistory/2026/11/2026-11-07.1.record.md#turn-3), cleared in [Turn 4](../../../ChatHistory/2026/11/2026-11-07.1.record.md#turn-4--november-8)), on top of its milestones 1 (one-line names) and 2 (the switch's cost), uncommitted in its worktree._
+_Status: implementation evidence for the root's review and the owner's eye, not a verdict. A builder built the header round (its milestone 3) from the root's brief under the six principles the owner accepted ([the November 7 record, Turn 3](../../../2026-11-07/2026-11-07.1.record.md#turn-3), cleared in [Turn 4](../../../2026-11-07/2026-11-07.1.record.md#turn-4--november-8)), on top of its milestones 1 (one-line names) and 2 (the switch's cost), uncommitted in its worktree._
 
-The pictures and counts were taken by [`held-names.cjs`](../../../Probes/2026-11-07/one-line-names/held-names.cjs) with `ORDER=1`. "After" is the builder's bundle (port 8911). "Before" is the bundle of milestones 1 and 2 (port 8914), whose header is milestone 1's: the controls in the card's top right corner, the name on one line beside or below them. Both were taken in a private headless Chromium at 1440 × 960, with a fresh profile and the background search off. The camera moved by the Zoom Out button, one step a press.
+The pictures and counts were taken by [`held-names.cjs`](../../../2026-11-07/Probes/one-line-names/held-names.cjs) with `ORDER=1`. "After" is the builder's bundle (port 8911). "Before" is the bundle of milestones 1 and 2 (port 8914), whose header is milestone 1's: the controls in the card's top right corner, the name on one line beside or below them. Both were taken in a private headless Chromium at 1440 × 960, with a fresh profile and the background search off. The camera moved by the Zoom Out button, one step a press.
 
 ## What was built
 

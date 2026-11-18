@@ -24,7 +24,7 @@ Your prompt describes the repository as it stood at about 17:30 UTC on 2026-09-2
 - **Code nothing ran was deleted** (`8c19c892`), among it the Membrane Map's arc renderer, whose design doc now records the owner's rejection of the arcs, `symbol-coverage.ignore.json`, `enableDocstringBridge` and the Rosetta manifest's dead paths.
 - **The Local Map's only pictures** are in `AI-Agent-Workspace/Screenshots/2026-09-28/`.
 - **`AGENTS.md`** no longer says "commit only when asked", and its counts were corrected.
-- **Back and Forward** between places landed (`31a98e3f`). The crumb root is the World Map. The owner wants the From and To boxes to drive the Membrane Map, and wonders about paths across scales. Their thoughts on "offers" against "exposes" are in [direction.md](../../Memory/direction.md).
+- **Back and Forward** between places landed (`31a98e3f`). The crumb root is the World Map. The owner wants the From and To boxes to drive the Membrane Map, and wonders about paths across scales. Their thoughts on "offers" against "exposes" are in [direction.md](../../../../../../Memory/direction.md).
 - **Scores may fall:** "I'm willing to renege on that if only for the slightly-longer-time-horizons that the new frontier models can work at." (2026-09-29)
 - **The September chat record** is rebuilt with both sides; `2026-09-29.2.md` now runs to 2026-09-30 13:09.
 - **A separate design exploration** of how the Explorer is navigated is running now in `AI-Agent-Workspace/tmp/probes/2026-09-30/`. Leave it and its ports (8800 to 8909) alone.

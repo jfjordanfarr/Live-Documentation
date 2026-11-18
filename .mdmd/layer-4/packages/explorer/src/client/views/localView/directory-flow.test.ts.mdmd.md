@@ -13,7 +13,7 @@ Unit tests of the directory flow trial's pure functions: that every undrawn link
 
 ### Notes
 
-Written with the module on 2026-11-12; the shape and walk cases on 2026-11-13, when the price began choosing the shape, among them the root's `scripts` example of one file used by three under five boxes. The case that holds `flowColumns` equal to `placeMembers` is what makes a directory of subdirectories gain nothing from the trial, a finding of [the trial's evidence](../../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-12/directory-flow-trial/README.md).
+Written with the module on 2026-11-12; the shape and walk cases on 2026-11-13, when the price began choosing the shape, among them the root's `scripts` example of one file used by three under five boxes. The case that holds `flowColumns` equal to `placeMembers` is what makes a directory of subdirectories gain nothing from the trial, a finding of [the trial's evidence](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-12/Screenshots/directory-flow-trial/README.md).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

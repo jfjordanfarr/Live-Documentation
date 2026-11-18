@@ -11,7 +11,7 @@
 Core processing logic for the Python Rosetta Stone fixture. Exercises various import patterns.
 
 ### Notes
-See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests Python's from-import and import-as patterns.
+See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-14/2026-01-14.1.md). Tests Python's from-import and import-as patterns.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

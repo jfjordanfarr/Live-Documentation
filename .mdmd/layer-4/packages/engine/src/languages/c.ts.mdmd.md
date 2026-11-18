@@ -11,7 +11,7 @@
 Provides the C and C++ syntax configuration implementing `LanguageSyntax`: comment and string delimiters, a small blocklist of ubiquitous identifiers, and the one list of extensions the adapter registers (`.c .h .cpp .cc .cxx .hpp .hh .hxx .inl`).
 
 ### Notes
-Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-29.1.md) — extracted from the C adapter's local `stripCommentsAndStrings()` function. Enables the adapter to use the shared async interface while maintaining identical stripping behavior.
+Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-29/2026-01-29.1.md) — extracted from the C adapter's local `stripCommentsAndStrings()` function. Enables the adapter to use the shared async interface while maintaining identical stripping behavior.
 - The extensions grew to C++'s on 2026-10-16 when the adapter was rewritten over the C++ grammar; the adapter reads its registration from here, so the registry and the adapter cannot disagree again.
 
 ## Generated

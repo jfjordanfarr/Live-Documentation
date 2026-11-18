@@ -8,7 +8,7 @@
 
 ## Authored
 ### Purpose
-Ground-truths the runtime entrypoint for the `ts-basic` benchmark so the analyzer must capture the `models` and `util` imports validated during the oracle remediation in [2025-11-03 summary](../../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-03.SUMMARIZED.md).
+Ground-truths the runtime entrypoint for the `ts-basic` benchmark so the analyzer must capture the `models` and `util` imports validated during the oracle remediation in [2025-11-03 summary](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/Summarized/2025-11-03.SUMMARIZED.md).
 
 ### Notes
 - Keeps the fixture focused on executable dependencies; type-only exports live in `types.ts` so false-positive edges are immediately visible in benchmark diffs.

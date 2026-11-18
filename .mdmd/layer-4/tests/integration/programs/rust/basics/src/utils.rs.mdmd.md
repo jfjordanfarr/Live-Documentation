@@ -11,7 +11,7 @@
 Utility functions module for the `rust-basics` polyglot benchmark fixture. Provides `is_even` and `clamp` helpers with no external dependencies, serving as a leaf node in the dependency graph.
 
 ### Notes
-- Created on [2025-10-31](../../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-31.md) as the foundational leaf module for the `rust-basics` fixture's dependency chain.
+- Created on [2025-10-31](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/10/2025-10-31/2025-10-31.md) as the foundational leaf module for the `rust-basics` fixture's dependency chain.
 - Being a leaf node (no dependencies), this module is critical for testing that the Live Documentation system correctly identifies terminal nodes in the graph.
 - The `is_even` function is consumed by both `main.rs` and `math.rs`, making it a high-fan-in artifact useful for change impact analysis testing.
 

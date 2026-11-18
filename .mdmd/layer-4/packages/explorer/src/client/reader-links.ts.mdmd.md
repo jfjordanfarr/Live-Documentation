@@ -13,7 +13,7 @@ Current shared resolver for links in canonical documentation, used by on-map tex
 ### Notes
 Extracted from the existing reader during native card integration to keep document-relative resolution, exact symbol anchors, re-export origins and unavailable-link behavior identical on both surfaces. It resolves only against the bundled graph and Markdown inventory; it does not read source files or fetch missing content.
 
-Introduced during the [November 4 portrait integration](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-2).
+Introduced during the [November 4 portrait integration](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-04/2026-11-04.1.record.md#turn-2).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

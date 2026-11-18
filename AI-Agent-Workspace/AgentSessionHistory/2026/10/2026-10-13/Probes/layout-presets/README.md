@@ -1,6 +1,6 @@
 # Shared Compact / Relaxed: tuning and verification
 
-_Historical implementation report, October 13, 2026. The [owner’s approved grammar and advanced-control request](../../../ChatHistory/2026/10/2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation) is the scope; [the final pictures](../../../Screenshots/2026-10-13/presets/README.md) are the visual evidence._
+_Historical implementation report, October 13, 2026. The [owner’s approved grammar and advanced-control request](../../2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation) is the scope; [the final pictures](../../Screenshots/presets/README.md) are the visual evidence._
 
 One packing preference follows between 2D and 3D. Coupling and interface size retain their meaning across presets. The chosen values are starting defaults tested on the repository, Java warehouse and C# estate, including live changes; they are not universal optima.
 
@@ -57,7 +57,7 @@ Two older browser journeys assumed the previous on-screen geometry or a single T
 
 ## Verification and reproducibility
 
-`npm run safe:commit -- --e2e` passed 988 unit tests, 52 integration tests and all 104 browser tests, plus lint, builds, test type-checking, complete regeneration/lint and all documentation, asset and symbol audits. The final generator pass found all 643 mirrors unchanged. No product source changed after the successful gate. The [root session record](../../../ChatHistory/2026/10/2026-10-13.1.record.md) retains intermediate failures and the final closeout.
+`npm run safe:commit -- --e2e` passed 988 unit tests, 52 integration tests and all 104 browser tests, plus lint, builds, test type-checking, complete regeneration/lint and all documentation, asset and symbol audits. The final generator pass found all 643 mirrors unchanged. No product source changed after the successful gate. The [root session record](../../2026-10-13.1.record.md) retains intermediate failures and the final closeout.
 
 Example commands:
 

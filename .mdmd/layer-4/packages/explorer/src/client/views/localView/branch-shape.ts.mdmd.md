@@ -15,7 +15,7 @@ Measures boundary distance, nonzero step count and directly owned card-row misal
 
 Step distance and step count express different preferences: redistributing the same vertical distance across fewer turns leaves the former unchanged. Only drawn directories contribute boundaries. Row alignment includes a directory’s directly owned files even when a loose-file bucket holds them, while nested-directory descendants belong to their own row term. Shared measurements keep candidate selection and command reports from disagreeing about the active preferences.
 
-Created for the owner’s October 13, 2026 request to tune aesthetic preferences within the existing competition: [the originating discussion](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply).
+Created for the owner’s October 13, 2026 request to tune aesthetic preferences within the existing competition: [the originating discussion](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-13/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

@@ -13,7 +13,7 @@ Protects the shared spatial graph from count duplication, mutation and incorrect
 ### Notes
 Fixtures include weighted reciprocal relationships, object endpoints, repeated documentation citations, live-doc aliases with both path separators, filtered source files and absent source IDs.
 
-Created for [the October 13 shared-preset implementation](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation).
+Created for [the October 13 shared-preset implementation](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-13/2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

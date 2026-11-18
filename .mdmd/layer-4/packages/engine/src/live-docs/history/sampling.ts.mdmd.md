@@ -11,7 +11,7 @@
 Which commits of the mainline the history command regenerates: every commit, every n-th, the last of each UTC day or week, every tagged commit, and only those since a date; the first and the last of the window always.
 
 ### Notes
-- Written 2026-10-17 for the generation half of C14 of [the plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md), the owner's "there is no one right granularity, depending on the size of the history. You try to run this over the VS Code repo and it probably explodes. You try to run this over a 5-commit throwaway project repo and every commit is precious" ([Turn 3 of October 17](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-3)). The rule is written into the sequence's head.
+- Written 2026-10-17 for the generation half of C14 of [the plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md), the owner's "there is no one right granularity, depending on the size of the history. You try to run this over the VS Code repo and it probably explodes. You try to run this over a 5-commit throwaway project repo and every commit is precious" ([Turn 3 of October 17](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-17/2026-10-17.1.record.md#turn-3)). The rule is written into the sequence's head.
 - The deltas between two sampled commits are exact whatever is skipped; what sampling loses is the states between them, until a finer run regenerates them.
 - A day's last commit is the last of a run of one UTC day along the mainline, which is the day's last while the mainline's dates rise, as they do.
 

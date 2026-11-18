@@ -11,7 +11,7 @@
 The entry points the docs declare, over the entry-points fixture: a manifest's scripts, binary and main module written on the files they start, a tsconfig a tool reads, a stylesheet the configuration declares, a test by its archetype, a dynamic import recorded as an edge, and what the walk from the entries then says.
 
 ### Notes
-- Written 2026-10-15 ([Turn 4](../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-15.1.record.md#turn-4)). The expectations are a reading of the fixture's eleven files, not a run of the generator; the fixture is copied to a temporary workspace before generating.
+- Written 2026-10-15 ([Turn 4](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-15/2026-10-15.1.record.md#turn-4)). The expectations are a reading of the fixture's eleven files, not a run of the generator; the fixture is copied to a temporary workspace before generating.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

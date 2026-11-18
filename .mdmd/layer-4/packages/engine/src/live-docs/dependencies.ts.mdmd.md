@@ -17,7 +17,7 @@ Dependency collection and resolution for Live Documentation. Extracts import/exp
 - `mergeDependencyEntries()` combines symbol lists when multiple imports reference the same module
 - `augmentWithReExportedSymbols()` handles bare star exports (`export * from`) by parsing target modules. `collectDependencies()` marks that exact syntax so a namespace export (`export * as Name from`) retains its file dependency without flattening the provider's members; merging dependencies preserves the distinction when both forms name one module.
 - 561 lines — largest extraction from core.ts, reflecting the complexity of module resolution
-- A dynamic `import("literal")`, wherever it stands in the file, is an import of the whole module since 2026-10-15 ([Turn 4](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-15.1.record.md#turn-4)), as the compiler oracle records it; one whose argument is computed names nothing the docs can carry. The dead code sweep of 2026-10-08 had found `staticBuilder.ts`'s lazy import of `buildAssets.ts` missing from the docs.
+- A dynamic `import("literal")`, wherever it stands in the file, is an import of the whole module since 2026-10-15 ([Turn 4](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-15/2026-10-15.1.record.md#turn-4)), as the compiler oracle records it; one whose argument is computed names nothing the docs can carry. The dead code sweep of 2026-10-08 had found `staticBuilder.ts`'s lazy import of `buildAssets.ts` missing from the docs.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

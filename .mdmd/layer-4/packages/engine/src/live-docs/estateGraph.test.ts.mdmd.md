@@ -11,7 +11,7 @@
 The estate graph on seven hand-built scans of the estate's shape: a single root scan returned as it is; files keyed from the estate's root with their doc paths kept inside their scans; a route call linked at home gaining the server another scan publishes while the home link and the scan's own graph stay; a browser script's call kept at home; a name no scan serves left alone; an address linked to its listener; a database object linked by schema and name and a linked-server name by its last two parts; a project reference kept by name linked by the target file's stem when its assembly is named otherwise, packages left alone; and scans that nest or repeat refused.
 
 ### Notes
-- Written on 2026-10-09 with the module ([Turn 10 of the October 9 session](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-09.1.record.md#turn-10)). The docs are rendered through the Live Doc grammar and parsed back, as `boardGraph.test.ts` does, so the edges are what a generator would have written, not hand-made objects.
+- Written on 2026-10-09 with the module ([Turn 10 of the October 9 session](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-09/2026-10-09.1.record.md#turn-10)). The docs are rendered through the Live Doc grammar and parsed back, as `boardGraph.test.ts` does, so the edges are what a generator would have written, not hand-made objects.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

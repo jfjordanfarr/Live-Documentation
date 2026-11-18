@@ -13,7 +13,7 @@ Vitest cases for the farthest zoom: a map that fits the frame stops at the last 
 
 ### Notes
 
-Written with the module in the far bands' second milestone (2026-11-06, [Turn 3](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-06.1.record.md#turn-3)). A case that first expected the closest zoom for a tiny map at an extreme reading scale was wrong about the fit, which caps itself at 1; it now holds the bound that is true.
+Written with the module in the far bands' second milestone (2026-11-06, [Turn 3](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-06/2026-11-06.1.record.md#turn-3)). A case that first expected the closest zoom for a tiny map at an extreme reading scale was wrong about the fit, which caps itself at 1; it now holds the bound that is true.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

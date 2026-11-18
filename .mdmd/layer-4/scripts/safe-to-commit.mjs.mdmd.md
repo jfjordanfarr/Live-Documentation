@@ -15,7 +15,7 @@ Runs the Live Docs pipeline before verification, so tests and audits read the in
 ### Notes
 - Debuted 2025-10-21 as the runner behind `npm run safe:commit`, pairing the verification pipeline with a human-readable Git status summary.
 - The benchmark flags (`--benchmarks`, `--mode`, `--report`) and their fixture regeneration were removed on 2026-09-27 with the AST accuracy benchmark. `--e2e` appends `npm run test:e2e`; `--skip-git-status` (alias `--ci`) omits only the status summary.
-- After the [October 19 audit](../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-19.1.record.md#turn-16), `--check-live-docs` selects non-writing source-to-doc freshness validation. The `ci-check` npm script passes that flag explicitly alongside `--skip-git-status`; status reporting never determines whether generation writes.
+- After the [October 19 audit](../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-19/2026-10-19.1.record.md#turn-16), `--check-live-docs` selects non-writing source-to-doc freshness validation. The `ci-check` npm script passes that flag explicitly alongside `--skip-git-status`; status reporting never determines whether generation writes.
 - Documentation link enforcement runs inside `verify`; it is not repeated here.
 - Since 2026-10-18 the step runners come from `steps.mjs`, shared with `verify.mjs`; this script keeps only the gate's order and the git status verdict.
 

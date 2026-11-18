@@ -1,6 +1,6 @@
 Evidence for Flow becoming the default of the 2D Local Map's Opened Directory, 2026-11-13: a builder's pictures of the default, written up by the root at the landing. Historical: it describes that commit, not the product after it.
 
-The owner had found Flow "superior in basically every place I look" ([Turn 2 of the November 13 record](../../../ChatHistory/2026/11/2026-11-13.1.record.md#turn-2)) and could not answer in words whether the grid should go ([Turn 3](../../../ChatHistory/2026/11/2026-11-13.1.record.md#turn-3)), so the default was changed for their eye, the grid one choice away in Tuning. The width term that lets the layout's price choose how an opened directory stands landed first ([its evidence](../directory-flow-price/README.md)).
+The owner had found Flow "superior in basically every place I look" ([Turn 2 of the November 13 record](../../2026-11-13.1.record.md#turn-2)) and could not answer in words whether the grid should go ([Turn 3](../../2026-11-13.1.record.md#turn-3)), so the default was changed for their eye, the grid one choice away in Tuning. The width term that lets the layout's price choose how an opened directory stands landed first ([its evidence](../directory-flow-price/README.md)).
 
 ## The pictures
 

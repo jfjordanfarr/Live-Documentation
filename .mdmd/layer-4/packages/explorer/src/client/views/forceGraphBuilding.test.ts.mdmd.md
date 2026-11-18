@@ -11,7 +11,7 @@
 Unit cases for [`forceGraphBuilding.ts`](forceGraphBuilding.ts.mdmd.md): a building begins with the work and keeps its start, survives a lull shorter than the hold, is continued but never begun by the camera's framing flight, waits its delay before it is shown, and lets a pointer hover only once the map has built and the pointer has moved since building began.
 
 ### Notes
-- Written with the module on November 15, 2026 ([Turn 4 of that day's record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-4)). The cases follow the map frame by frame, as the view feeds it, and check that an unchanged building is returned as the very object, so that the view sees nothing to apply.
+- Written with the module on November 15, 2026 ([Turn 4 of that day's record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-4)). The cases follow the map frame by frame, as the view feeds it, and check that an unchanged building is returned as the very object, so that the view sees nothing to apply.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

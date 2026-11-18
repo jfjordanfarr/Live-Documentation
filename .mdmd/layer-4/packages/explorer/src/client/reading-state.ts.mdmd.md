@@ -13,7 +13,7 @@ Current implementation. Keeps deliberate description choices separate from retai
 ### Notes
 An exact symbol override wins over the whole-card choice, then the pin-derived default. Whole-card actions replace symbol overrides. Temporary hover is absent from this state. Missing symbols are dropped rather than rebound to similarly named declarations.
 
-Introduced during the [November 4 portrait integration](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-2).
+Introduced during the [November 4 portrait integration](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-04/2026-11-04.1.record.md#turn-2).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

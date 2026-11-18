@@ -1,6 +1,6 @@
 Evidence for a trial, 2026-11-13 and 14: the 2D Local Map's farthest zoom look drawn as files only, in the look an opened directory has in Flow, behind Tuning → 2D Layout → Zoomed Out Fully. A builder's pictures and numbers for the root's review, taken again for the trial's second round (the root's review of the first: the way back in, names broken inside a word, a picture drawn afresh while files only shows, and the crowded picture's press). Historical: it describes the trial as built in that round, not the product after it.
 
-The owner, after opening three directories in Flow: "I feel like the "Flow" look is much closer to what the full zoom-out in the 2D Local Map might reasonably be" ([Turn 8 of the November 13 record](../../../ChatHistory/2026/11/2026-11-13.1.record.md#turn-8)). Their own rule had been that cards do not resize as the map zooms out, so this is a trial, the default unchanged, and the motion into it and out of it is half of what is to be judged.
+The owner, after opening three directories in Flow: "I feel like the "Flow" look is much closer to what the full zoom-out in the 2D Local Map might reasonably be" ([Turn 8 of the November 13 record](../../2026-11-13.1.record.md#turn-8)). Their own rule had been that cards do not resize as the map zooms out, so this is a trial, the default unchanged, and the motion into it and out of it is half of what is to be judged.
 
 ## The pictures
 

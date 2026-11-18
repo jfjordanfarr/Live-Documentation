@@ -11,7 +11,7 @@
 Provides Go-specific syntax configuration implementing `LanguageSyntax`. Defines comment delimiters (`//`, `/* */`), string delimiters (`` " ``, `` ` ``), and a blocklist of common Go variable names (`err`, `ctx`, `req`, etc.) to reduce false-positive symbol matches.
 
 ### Notes
-Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-29.1.md) — consolidates the `GO_COMMON_VARIABLE_NAMES` blocklist that was originally local to the Go heuristic. The ignored identifiers list merges knowledge from heuristic tuning (Dev Day 64-65) and planned tree-sitter integration.
+Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-29/2026-01-29.1.md) — consolidates the `GO_COMMON_VARIABLE_NAMES` blocklist that was originally local to the Go heuristic. The ignored identifiers list merges knowledge from heuristic tuning (Dev Day 64-65) and planned tree-sitter integration.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

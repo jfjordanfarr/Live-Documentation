@@ -12,7 +12,7 @@ The two real boards. The estate sample's board is joined to docs generated over 
 
 ### Notes
 - The estate's half generates its docs under the product's default configuration (the oracle's fixture globs until 2026-10-22, which equalled it) into a temporary copy, so the sample is never written to; the repository's half reads the committed mirror, so it holds only after `live-docs:generate`, which the gate runs first.
-- Written on 2026-09-28 with the grammar ([Turn 45](../../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md#turn-45)). The repository's board was questioned by the owner on 2026-10-02 as an estate that is "basically just its major directories", and stands until that fork is decided; the question is kept on [the board itself](../../../../layer-3/board.mdmd.md).
+- Written on 2026-09-28 with the grammar ([Turn 45](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md#turn-45)). The repository's board was questioned by the owner on 2026-10-02 as an estate that is "basically just its major directories", and stands until that fork is decided; the question is kept on [the board itself](../../../../layer-3/board.mdmd.md).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

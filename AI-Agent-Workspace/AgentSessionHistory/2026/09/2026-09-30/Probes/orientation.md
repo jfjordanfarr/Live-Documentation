@@ -1,6 +1,6 @@
 # Keeping your bearings between files
 
-_Design experiment, 2026-09-30. Built by the root Codex agent from the owner's [orientation requirement](../../ChatHistory/2026/09/2026-09-30.2.record.md#turn-16). This is a bounded file-scale probe, not a replacement for a shipped view or a settled design._
+_Design experiment, 2026-09-30. Built by the root Codex agent from the owner's [orientation requirement](../2026-09-30.2.record.md#turn-16). This is a bounded file-scale probe, not a replacement for a shipped view or a settled design._
 
 ## Intention
 
@@ -47,11 +47,11 @@ The first neighborhood places up to three providers and three consumers. It rank
 
 ## Owner's verdict
 
-The [first review](../../ChatHistory/2026/09/2026-09-30.2.record.md#turn-18) confirms that the movement and Neighborhood minimap help: “Yeah the movement around is very nice.” The owner connected the minimap to a familiar node-and-folder overview in BMC Control-M.
+The [first review](../2026-09-30.2.record.md#turn-18) confirms that the movement and Neighborhood minimap help: “Yeah the movement around is very nice.” The owner connected the minimap to a familiar node-and-folder overview in BMC Control-M.
 
 They also identified the limitation: “What the totality of the Local Map and Membrane Map try to convey are more detailed than that.” At this level of information, the force graph supplies the same facts and may be superior when this probe's wires cross over nodes. This is acceptance of a navigation mechanism, not approval to replace a richer view with the simplified cards. The next comparison must carry symbol-level wiring and folder structure through the same continuity and address crossings over cards. Those remain outstanding design work.
 
-In a [later design discussion](../../ChatHistory/2026/09/2026-09-30.2.record.md#turn-20), the owner identified unnecessary small callouts and subheadings in this probe. The root agent's template review found a slogan, repeated file identification and explanatory subheadings competing with the data. This is an outstanding criticism of the preserved prototype, and the minimal-text guidance now applies to subsequent designs; this discussion did not change the page or its captures.
+In a [later design discussion](../2026-09-30.2.record.md#turn-20), the owner identified unnecessary small callouts and subheadings in this probe. The root agent's template review found a slogan, repeated file identification and explanatory subheadings competing with the data. This is an outstanding criticism of the preserved prototype, and the minimal-text guidance now applies to subsequent designs; this discussion did not change the page or its captures.
 
 ## Verification and pictures
 

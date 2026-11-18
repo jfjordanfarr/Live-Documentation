@@ -11,7 +11,7 @@
 Ruby Rosetta Stone fixture module. Part of the cross-language benchmark suite.
 
 ### Notes
-See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests Ruby module dependency graph inference.
+See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-14/2026-01-14.1.md). Tests Ruby module dependency graph inference.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

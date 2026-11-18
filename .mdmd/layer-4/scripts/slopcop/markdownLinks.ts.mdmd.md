@@ -8,11 +8,11 @@
 
 ## Authored
 ### Purpose
-Detects broken local markdown links for the SlopCop markdown audit by walking inline/reference syntax, resolving targets relative to the workspace, and surfacing line/column diagnostics ([SlopCop rollout](../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-25.SUMMARIZED.md#turn-33-symbol-audit-implementation-lines-5161-5900)).
+Detects broken local markdown links for the SlopCop markdown audit by walking inline/reference syntax, resolving targets relative to the workspace, and surfacing line/column diagnostics ([SlopCop rollout](../../../../AI-Agent-Workspace/AgentSessionHistory/2025/10/Summarized/2025-10-25.SUMMARIZED.md#turn-33-symbol-audit-implementation-lines-5161-5900)).
 
 ### Notes
-- The `slopcop:markdown` CLI and safe-to-commit gate call this helper so human runs, CI, and fixture tests all share the same ignore-glob and severity behaviour ([follow-up configuration pass](../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-25.SUMMARIZED.md#turn-34-slopcop-configuration--doc-refresh-lines-5901-6500)).
-- Feeds MDMD relationship analysis too—relationship resolvers reuse the detected targets to wire documentation ↔ code edges without reimplementing link parsing ([shared helper extraction](../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-26.md#L23-L33)).
+- The `slopcop:markdown` CLI and safe-to-commit gate call this helper so human runs, CI, and fixture tests all share the same ignore-glob and severity behaviour ([follow-up configuration pass](../../../../AI-Agent-Workspace/AgentSessionHistory/2025/10/Summarized/2025-10-25.SUMMARIZED.md#turn-34-slopcop-configuration--doc-refresh-lines-5901-6500)).
+- Feeds MDMD relationship analysis too—relationship resolvers reuse the detected targets to wire documentation ↔ code edges without reimplementing link parsing ([shared helper extraction](../../../../AI-Agent-Workspace/AgentSessionHistory/2025/10/2025-10-26/2025-10-26.md#L23-L33)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

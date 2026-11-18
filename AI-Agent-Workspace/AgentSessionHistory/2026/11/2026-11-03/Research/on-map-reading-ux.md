@@ -1,6 +1,6 @@
 # Guidance for reading on a software map
 
-Historical research notes, November 3, 2026, prompted by the owner's [request for UI/UX guidance](../ChatHistory/2026/11/2026-11-03.1.record.md#turn-11). These sources inform the [zoom comparison](../Probes/2026-11-03/reading-zoom/README.md); they do not select its gestures or numerical thresholds.
+Historical research notes, November 3, 2026, prompted by the owner's [request for UI/UX guidance](../2026-11-03.1.record.md#turn-11). These sources inform the [zoom comparison](../Probes/reading-zoom/README.md); they do not select its gestures or numerical thresholds.
 
 ## Established guidance and its application here
 
@@ -18,7 +18,7 @@ W3C's [modal-dialog pattern](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-mod
 
 **Progressive disclosure** means presenting additional information when it becomes useful. For this map, names and connections support exploration, inline descriptions support an immediate question, and an explicit full reader can hold a long explanation. The hidden content needs a discoverable route; silently cutting text or making it mouse-only is not a complete solution.
 
-**Spatial continuity** means being able to recognize where the subject and its neighbors went after an action. It is a standing [workspace requirement](../../AGENTS.md), not established by an attractive still image. The fixed-scope prototype keeps card origins, but does not establish that a native layout with directory membranes and continuing optimization will remain intelligible while reading changes its geometry.
+**Spatial continuity** means being able to recognize where the subject and its neighbors went after an action. It is a standing [workspace requirement](../../../../../../AGENTS.md), not established by an attractive still image. The fixed-scope prototype keeps card origins, but does not establish that a native layout with directory membranes and continuing optimization will remain intelligible while reading changes its geometry.
 
 ## The recommendation and its limits
 
@@ -30,8 +30,8 @@ Evaluate journeys: find a symbol, follow a reference, read its explanation, comp
 
 ## November 4: the subject determines the starting view
 
-The owner [grounds the next step in sharing one C# class](../ChatHistory/2026/11/2026-11-03.1.record.md#turn-15--november-4): compose and frame its card to teach the subject before zooming outward to its neighbors. That changes the calibration target. A raw zoom percentage is arbitrary until a useful reading view exists, and overview-first should not be treated as a universal entry requirement for a link whose subject is already known.
+The owner [grounds the next step in sharing one C# class](../2026-11-03.1.record.md#turn-15--november-4): compose and frame its card to teach the subject before zooming outward to its neighbors. That changes the calibration target. A raw zoom percentage is arbitrary until a useful reading view exists, and overview-first should not be treated as a universal entry requirement for a link whose subject is already known.
 
 [Cockburn, Karlson and Bederson's review](https://doi.org/10.1145/1456650.1456652) distinguishes approaches that separate focused and contextual views spatially, approaches that move between them through zoom, and approaches that blend them in one view. It supports discussing these as different ways to serve a task; it does not select this card design or a numerical threshold. The root's application is a dependable card reference for 2D outward learning, complementary to the owner's 3D inward-discovery journey.
 
-The [card comparison](../Probes/2026-11-04/card-reference/README.md) preserves readable type and tests its actual frame, including repeated returns and recipient viewports. The [3D wrapper comparison](../Probes/2026-11-04/cluster-wrap/README.md) separately tests an enclosure and its reveal over real frozen positions. A visual wrapper does not by itself establish cheaper graph simulation or a meaningful recursive hierarchy.
+The [card comparison](../../2026-11-04/Probes/card-reference/README.md) preserves readable type and tests its actual frame, including repeated returns and recipient viewports. The [3D wrapper comparison](../../2026-11-04/Probes/cluster-wrap/README.md) separately tests an enclosure and its reveal over real frozen positions. A visual wrapper does not by itself establish cheaper graph simulation or a meaningful recursive hierarchy.

@@ -1,6 +1,6 @@
 # The fewest returns: measurements
 
-_Historical evidence, measured 2026-11-16 for the round of [Turn 5 of the November 15 record](../../../ChatHistory/2026/11/2026-11-15.1.record.md#turn-5); the decision and its summary are in [the decisions log](../../../../.mdmd/layer-3/architectural-decisions.mdmd.md). Pictures are in [the round's pictures](../../../Screenshots/2026-11-15/fewest-returns/README.md)._
+_Historical evidence, measured 2026-11-16 for the round of [Turn 5 of the November 15 record](../../2026-11-15.1.record.md#turn-5); the decision and its summary are in [the decisions log](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md). Pictures are in [the round's pictures](../../Screenshots/fewest-returns/README.md)._
 
 The scripts ran from a scratch folder in the builder's worktree with `npx --offline tsx --tsconfig <repository>/tsconfig.base.json <script> ...`; their imports have been adjusted to this folder. The "before" runs import `branches-base.ts` and `evaluate-base.ts`, copies of `packages/explorer/src/client/views/localView/branches.ts` and `scripts/layout-lab/evaluate.ts` at commit `3f734433` with their relative imports made absolute (and the evaluate copy importing the branches copy); they are not kept here.
 

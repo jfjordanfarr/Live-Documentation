@@ -8,7 +8,7 @@
 
 ## Authored
 ### Purpose
-Supplies the shared model definitions for the `ts-layered` benchmark so downstream services share structural types while runtime edges stay traceable, mirroring the evidence cleanup in [2025-11-03 summary](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-03.SUMMARIZED.md).
+Supplies the shared model definitions for the `ts-layered` benchmark so downstream services share structural types while runtime edges stay traceable, mirroring the evidence cleanup in [2025-11-03 summary](../../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/Summarized/2025-11-03.SUMMARIZED.md).
 
 ### Notes
 - Remains intentionally dependency-free; any analyzer emitting extra edges here indicates leakage from runtime-bound modules.

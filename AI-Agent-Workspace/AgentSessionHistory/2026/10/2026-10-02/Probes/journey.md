@@ -1,6 +1,6 @@
 # Overview, interfaces and return
 
-_Design experiment begun October 2, 2026, under [Turn 2's approval](../../ChatHistory/2026/10/2026-10-02.1.record.md#turn-2). This is not an adopted Explorer architecture._
+_Design experiment begun October 2, 2026, under [Turn 2's approval](../2026-10-02.1.record.md#turn-2). This is not an adopted Explorer architecture._
 
 ## Question and predictions, before the comparison
 
@@ -12,11 +12,11 @@ The matched repository case retains `document.ts`, `graph.ts`, `graphFiles.ts`, 
 
 Routing alternatives preserve that same reference set: fixed outer lanes and behind-card paths with foreground pin ends. Bundling alternatives share a lane by file pair or directory pair, with member counts and evidence. A shared segment must not invent connections between its different members. These controls are experimental variables; no default selected here is a product decision.
 
-Truthfulness, reachability, effort/orientation and preference are separate observations. The [research note](../../Research/2026-10-02-graph-readability-and-aesthetic-measures.md) explains why geometry alone cannot settle them. Inspect the actual moving transition, retained identity and camera, rapid reversal, reduced motion and the return journey. Only then write regressions for observed correct behavior.
+Truthfulness, reachability, effort/orientation and preference are separate observations. The [research note](../Research/graph-readability-and-aesthetic-measures.md) explains why geometry alone cannot settle them. Inspect the actual moving transition, retained identity and camera, rapid reversal, reduced motion and the return journey. Only then write regressions for observed correct behavior.
 
 ## What was built and inspected
 
-The disposable page is `AI-Agent-Workspace/tmp/probes/2026-10-02/journey/`, built by `build.cjs` and hosted by `serve.cjs 8884`. It reuses the [October 1 handoff](../2026-10-01/handoff.md)'s native file cards, symbol pins, evidence, history and World Map context. Its new force overview holds one live scene while the enclosing surface docks beside the cards. Selecting a file in the overview first approaches it, then reveals its interfaces. Overview and Read switch presentation without rebuilding that scene. The file browser, named retained-card tabs and explicit Locate/Fit controls provide other ways to reach a subject.
+The disposable page is `AI-Agent-Workspace/tmp/probes/2026-10-02/journey/`, built by `build.cjs` and hosted by `serve.cjs 8884`. It reuses the [October 1 handoff](../../2026-10-01/Probes/handoff.md)'s native file cards, symbol pins, evidence, history and World Map context. Its new force overview holds one live scene while the enclosing surface docks beside the cards. Selecting a file in the overview first approaches it, then reveals its interfaces. Overview and Read switch presentation without rebuilding that scene. The file browser, named retained-card tabs and explicit Locate/Fit controls provide other ways to reach a subject.
 
 The Folders control aggregates child directories in the overview. Folder spheres stand at the mean position of their members; their names show file counts and their hover text states internal-reference counts. The underlying member lists are retained. Collapsing fits the aggregate view; unfolding restores the prior camera and original file coordinates. Opening a folder changes scope, and Back recovers the prior exploration. This is an aggregation experiment in the overview, not a folder-card replacement for Membrane.
 
@@ -52,7 +52,7 @@ Final captures use the repository's 602-file bundle and the 35-file estate. Repo
 | [Cross-system configuration](journey/estate-cross-system.png) | The gateway configuration using the hub endpoint, alongside retained branches. |
 | [Its evidence](journey/estate-cross-system-evidence.png) | The documented configuration basis, rather than an invented runtime call. |
 
-The [gallery sheet](../../Gallery/sheets/graph-ts-journey-routes.png) compares the four route alternatives at the same state. The [production screenshots](../../Screenshots/2026-10-02/README.md) separately document the Force Graph focus repair.
+The [gallery sheet](../../../../../Gallery/sheets/graph-ts-journey-routes.png) compares the four route alternatives at the same state. The [production screenshots](../Screenshots/README.md) separately document the Force Graph focus repair.
 
 ## Verification and limits
 
@@ -73,12 +73,12 @@ The experiment remains disposable. No existing renderer was replaced, no composi
 
 ## Owner’s first reading
 
-In [October 2, Turn 3](../../ChatHistory/2026/10/2026-10-02.1.record.md#turn-3), the owner reported that the server was unavailable. From the comparison sheet they judged “3 of the four are totally unusable and the fourth is aesthetically acceptable,” and wanted to operate it before judging further. The sheet’s fourth tile is the behind-card alternative. They also welcomed the working Force Graph camera focus seen in the recording. This is a verdict on the pictured alternatives, not adoption of the probe or approval of its interaction.
+In [October 2, Turn 3](../2026-10-02.1.record.md#turn-3), the owner reported that the server was unavailable. From the comparison sheet they judged “3 of the four are totally unusable and the fourth is aesthetically acceptable,” and wanted to operate it before judging further. The sheet’s fourth tile is the behind-card alternative. They also welcomed the working Force Graph camera focus seen in the recording. This is a verdict on the pictured alternatives, not adoption of the probe or approval of its interaction.
 
 
 ## Owner’s live review
 
-The owner hosted the probe at port 8899 and reviewed it in [October 2, Turn 7](../../ChatHistory/2026/10/2026-10-02.1.record.md#turn-7), supplying [four screenshots](../../ChatHistory/2026/10/2026-10-02.1.images/README.md). Back/Forward had become essential because entry into the views was not reciprocally obvious. The two context thumbnails did not communicate a coherent rule. The owner questioned whether a minimap is the right orientation device and clarified that the selected subject should remain relatively in place during a change of perspective while its surroundings change. Literal sphere-to-card morphing is optional; switching file-level 2D/3D views is distinct from moving to another scale.
+The owner hosted the probe at port 8899 and reviewed it in [October 2, Turn 7](../2026-10-02.1.record.md#turn-7), supplying [four screenshots](../2026-10-02.1.images/README.md). Back/Forward had become essential because entry into the views was not reciprocally obvious. The two context thumbnails did not communicate a coherent rule. The owner questioned whether a minimap is the right orientation device and clarified that the selected subject should remain relatively in place during a change of perspective while its surroundings change. Literal sphere-to-card morphing is optional; switching file-level 2D/3D views is distinct from moving to another scale.
 
 They challenged the repository’s packages-as-estate example and asked why the experimental reading strip was being preferred over improving the existing Local Map and Force Graph. The useful finding is a requirement on continuity and shared exploration state, not adoption of this composition. Directory containment, connectivity, authored arrangements and computed layouts still need to be distinguished at the relevant scopes.
 

@@ -11,7 +11,7 @@
 Central registry for language syntax configurations: the lookups `getSyntaxById()`, `getSyntaxByExtension()`, `getSyntaxByPath()`, `isLanguageSupported()` and `isExtensionSupported()`, and the re-export of the seven syntaxes that other modules import through here. The syntax types and the comment-stripping helpers come from `./syntax`.
 
 ### Notes
-Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-29.1.md) — designed as the single entry point for language-aware utilities. Adapters and heuristics import from here rather than individual language files to ensure consistent resolution. On 2026-10-08 [the dead code sweep](../../../../../../AI-Agent-Workspace/Probes/2026-10-08/dead-code-sweep.md) removed three functions nothing called (`getAllSyntaxes`, `stripCommentsForPath`, `isFrameworkTypeForPath`) and nine re-exports nobody imported through here.
+Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-29/2026-01-29.1.md) — designed as the single entry point for language-aware utilities. Adapters and heuristics import from here rather than individual language files to ensure consistent resolution. On 2026-10-08 [the dead code sweep](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-08/Probes/dead-code-sweep.md) removed three functions nothing called (`getAllSyntaxes`, `stripCommentsForPath`, `isFrameworkTypeForPath`) and nine re-exports nobody imported through here.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

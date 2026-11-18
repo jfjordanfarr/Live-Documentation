@@ -11,7 +11,7 @@
 The manifests of Rust, Python, Maven and Go as Live Docs, over the manifests fixture, discovered by the shipped default globs: the package each publishes, what each stands on linked or kept external, every manifest a tooling entry, and the Entry lines the manifests write on the files they start.
 
 ### Notes
-- Written 2026-10-16 with the manifest adapters ([Turn 3 of the October 16 record](../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-16.1.record.md#turn-3)). The expectations are a reading of the fixture's files, not a run of the generator; the fixture is copied to a temporary workspace before generating.
+- Written 2026-10-16 with the manifest adapters ([Turn 3 of the October 16 record](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-16/2026-10-16.1.record.md#turn-3)). The expectations are a reading of the fixture's files, not a run of the generator; the fixture is copied to a temporary workspace before generating.
 - The Rust binary lives at `src/main.rs` so that the Rust adapter, which knows crate roots only at their conventional paths, marks its `main`; the Go module's import of the replaced module stays external on `main.go`, since the Go adapter does not follow a `replace`.
 
 ## Generated

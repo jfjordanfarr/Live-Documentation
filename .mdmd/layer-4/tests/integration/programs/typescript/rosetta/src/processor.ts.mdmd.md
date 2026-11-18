@@ -11,7 +11,7 @@
 Core processing logic for the TypeScript Rosetta Stone fixture. Exercises namespace imports, type-only imports, and selective imports.
 
 ### Notes
-Demonstrates multiple import patterns for heuristic testing; see [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). The type-only import from types.ts specifically tests edge detection for "import type" statements.
+Demonstrates multiple import patterns for heuristic testing; see [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-14/2026-01-14.1.md). The type-only import from types.ts specifically tests edge detection for "import type" statements.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

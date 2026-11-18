@@ -11,7 +11,7 @@
 Tests of the opened directories: opening once, closing with everything under, the path test, and the three states.
 
 ### Notes
-Each case names a state the owner described ([Turn 6 of the October 7 session](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-07.1.record.md#turn-6)): a directory with a party file under it never reads closed; the scan root reads encasing whenever anything is opened.
+Each case names a state the owner described ([Turn 6 of the October 7 session](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-07/2026-10-07.1.record.md#turn-6)): a directory with a party file under it never reads closed; the scan root reads encasing whenever anything is opened.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

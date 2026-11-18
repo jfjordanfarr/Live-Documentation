@@ -8,7 +8,7 @@
 
 ## Authored
 ### Purpose
-Coordinates the service layer for the `ts-layered` benchmark so the analyzer proves it can follow chained runtime calls through data access and formatting, a requirement reinforced in [2025-11-03 summary](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-03.SUMMARIZED.md).
+Coordinates the service layer for the `ts-layered` benchmark so the analyzer proves it can follow chained runtime calls through data access and formatting, a requirement reinforced in [2025-11-03 summary](../../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/Summarized/2025-11-03.SUMMARIZED.md).
 
 ### Notes
 - Keeps dependencies explicit (`loadWidgetMetrics`, `formatReport`) to highlight transitive edges the oracle compares against analyzer output.

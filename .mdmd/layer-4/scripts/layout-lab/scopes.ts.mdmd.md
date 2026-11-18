@@ -15,7 +15,7 @@ Defines retained scopes for the layout lab and serves their built Explorer bundl
 
 The CLI finds named deck scopes by `bundle/scope`; callers can also supply another retained file set with its own descriptive scope name. The retained picture's subject is its first file. `serveBundle` answers every request under `http://lab.local` from the built bundle on disk through a Playwright route, so no server process is needed, with Pretext's modules passed through to the capture's own route; `loadBundleGraph` reads the bundle's data and projects it as the client does. `admitCompiledFunctions` defines the `__name` helper esbuild's kept names expect, so a function compiled by tsx can run inside the page.
 
-The disk-serving helpers came from the [October 6 lab](../../../../AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-10-06.1.SUMMARIZED.md#turn-10). Custom scope names support browser/lab checks of concrete regressions, such as the warehouse Report scene used during the [October 13 competition work](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply), without relabeling them as one of the deck's fixed examples.
+The disk-serving helpers came from the [October 6 lab](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/Summarized/2026-10-06.1.SUMMARIZED.md#turn-10). Custom scope names support browser/lab checks of concrete regressions, such as the warehouse Report scene used during the [October 13 competition work](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-13/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply), without relabeling them as one of the deck's fixed examples.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

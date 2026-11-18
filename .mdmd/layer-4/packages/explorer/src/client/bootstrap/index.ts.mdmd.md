@@ -12,7 +12,7 @@ Barrel for the entry heuristics that choose which file to focus when neither the
 
 ### Notes
 - Extracted from client/index.ts on 2025-12-19. Only the entry heuristics live here; the client's initialization is in `index.ts`.
-- Since 2026-10-08 only `inferDefaultEntryNodeId` is re-exported; `scoreNode`, `buildDegreeMap` and the resolver type are imported from `entry-heuristics.ts` by the one file that names them, its test ([the dead code sweep](../../../../../../../AI-Agent-Workspace/Probes/2026-10-08/dead-code-sweep.md)).
+- Since 2026-10-08 only `inferDefaultEntryNodeId` is re-exported; `scoreNode`, `buildDegreeMap` and the resolver type are imported from `entry-heuristics.ts` by the one file that names them, its test ([the dead code sweep](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-08/Probes/dead-code-sweep.md)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

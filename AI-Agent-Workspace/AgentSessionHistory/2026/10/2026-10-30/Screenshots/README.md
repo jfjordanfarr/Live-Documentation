@@ -1,6 +1,6 @@
 # October 30, 2026 — the remediation passes
 
-Pictures of the Explorer built from the day's commits, taken by the root agent while playtesting the seven open items of the [Explorer remediation checklist](../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#remediation-work), in the order the owner chose at [Turn 2](../../ChatHistory/2026/10/2026-10-30.1.record.md#turn-2) and with the choices they made at [Turn 3](../../ChatHistory/2026/10/2026-10-30.1.record.md#turn-3). Each pair shows the same address at 1440×900 in a fresh Chromium context, before from the bundle of `f61fbf16` and after from the pass's build. The builders' own pictures for the history panel and for search and the reader stand in their subfolders.
+Pictures of the Explorer built from the day's commits, taken by the root agent while playtesting the seven open items of the [Explorer remediation checklist](../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#remediation-work), in the order the owner chose at [Turn 2](../2026-10-30.1.record.md#turn-2) and with the choices they made at [Turn 3](../2026-10-30.1.record.md#turn-3). Each pair shows the same address at 1440×900 in a fresh Chromium context, before from the bundle of `f61fbf16` and after from the pass's build. The builders' own pictures for the history panel and for search and the reader stand in their subfolders.
 
 ## The 2D arrival framing
 
@@ -29,7 +29,7 @@ Built by an Opus 5.5 builder under the root's brief and reviewed by the root in 
 
 ## The 3D map's wires, depth and key
 
-For the checklist item "Wires, depth and the legend tell the same story", the owner's choice of colour before any more geometry at [Turn 3](../../ChatHistory/2026/10/2026-10-30.1.record.md#turn-3); the pictures and their README are in [3d-wires/](3d-wires/README.md): generator.ts hovered before and after, the two-file path before and after, the estate's web before and after, the Portal hub close up for the silhouette question, and four frames of an orbit.
+For the checklist item "Wires, depth and the legend tell the same story", the owner's choice of colour before any more geometry at [Turn 3](../2026-10-30.1.record.md#turn-3); the pictures and their README are in [3d-wires/](3d-wires/README.md): generator.ts hovered before and after, the two-file path before and after, the estate's web before and after, the Portal hub close up for the silhouette question, and four frames of an orbit.
 
 ## The tuning block
 
@@ -37,4 +37,4 @@ For the checklist item "Tuning is usable at the available size", built by an Opu
 
 ## Labels and controls
 
-For the checklist item "Labels and controls have room to work", pass C, built by the root after the owner struck the help control from the plan at [Turn 3](../../ChatHistory/2026/10/2026-10-30.1.record.md#turn-3); the pictures and their README are in [labels-and-controls/](labels-and-controls/README.md): names wrapping at their seams in narrowed cards, the counts with their units, the sidebar's whole name and the navigation's icons, the toolbar's groups in 3D and 2D with the hint gone, and the wire tooltip beside the names.
+For the checklist item "Labels and controls have room to work", pass C, built by the root after the owner struck the help control from the plan at [Turn 3](../2026-10-30.1.record.md#turn-3); the pictures and their README are in [labels-and-controls/](labels-and-controls/README.md): names wrapping at their seams in narrowed cards, the counts with their units, the sidebar's whole name and the navigation's icons, the toolbar's groups in 3D and 2D with the hint gone, and the wire tooltip beside the names.

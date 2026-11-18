@@ -1,6 +1,6 @@
 # A wire clears its column before it dives (2D Local Map)
 
-_Status: implementation evidence of 2026-11-07, for review. The root diagnosed and fixed the fault; the pictures were taken in a private headless Chromium at the browser suite's own viewport (1280 × 720, the background search off) against the repository chain's retained picture, the scope of `still-picture.spec.ts` "Local Map, retained", panned by the suite's own drag helper to the spot. "Before" is the bundle built with the 3D shells' third round staged over `343c3ef6`; "after" is the same bundle with the routing change. The instruments are in [the probe folder](../../../Probes/2026-11-07/column-clearance/README.md)._
+_Status: implementation evidence of 2026-11-07, for review. The root diagnosed and fixed the fault; the pictures were taken in a private headless Chromium at the browser suite's own viewport (1280 × 720, the background search off) against the repository chain's retained picture, the scope of `still-picture.spec.ts` "Local Map, retained", panned by the suite's own drag helper to the spot. "Before" is the bundle built with the 3D shells' third round staged over `343c3ef6`; "after" is the same bundle with the routing change. The instruments are in [the probe folder](../../Probes/column-clearance/README.md)._
 
 ## What the gate found
 

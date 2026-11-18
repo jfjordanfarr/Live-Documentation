@@ -11,7 +11,7 @@
 Unit tests for the Go Rosetta helpers package (Format, Sum, Average utilities).
 
 ### Notes
-Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Uses Go's same-package test pattern which doesn't require explicit imports for internal symbols.
+Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-16/2026-01-16.1.md). Uses Go's same-package test pattern which doesn't require explicit imports for internal symbols.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

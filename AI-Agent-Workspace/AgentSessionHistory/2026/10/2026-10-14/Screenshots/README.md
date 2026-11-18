@@ -1,6 +1,6 @@
 # October 14, 2026 — Pin management in the morning, the 3D Local Map's two layouts in the afternoon, and one search bar in the evening
 
-_The first section: pictures by the root Claude Code agent (Fable 5.1) of the build that passed the full gate on 2026-10-14: 997 unit, 52 integration and all 117 browser tests. The work is Turn 11 of the October 13–14 Codex session, approved by the owner in [the October 14 implementation request](../../ChatHistory/2026/10/2026-10-13.1.record.md#turn-11--pin-management-approved-ancestor-disclosure-and-directory-hubs) and finished by [the October 14 session](../../ChatHistory/2026/10/2026-10-14.1.record.md) after the Codex harness stopped at its usage limit. The capture scripts that session left in scratch were rerun unchanged against the gated build; the close-up pair was added by this session. [The probe record](../../Probes/2026-10-14/pin-management/README.md) keeps the measurements and the gates._
+_The first section: pictures by the root Claude Code agent (Fable 5.1) of the build that passed the full gate on 2026-10-14: 997 unit, 52 integration and all 117 browser tests. The work is Turn 11 of the October 13–14 Codex session, approved by the owner in [the October 14 implementation request](../../2026-10-13/2026-10-13.1.record.md#turn-11--pin-management-approved-ancestor-disclosure-and-directory-hubs) and finished by [the October 14 session](../2026-10-14.1.record.md) after the Codex harness stopped at its usage limit. The capture scripts that session left in scratch were rerun unchanged against the gated build; the close-up pair was added by this session. [The probe record](../Probes/pin-management/README.md) keeps the measurements and the gates._
 
 Every picture is 1600×1000 unless stated, taken in headless Chromium from the repository bundle (651 files) or the estate sample (35 files), with tests shown and assets hidden except where the deck scopes show them. Each was opened and inspected. No page errors were observed in any capture.
 
@@ -43,7 +43,7 @@ What the eye finds, for the owner's choice between the two membership-line varia
 
 ## The 3D Local Map's two layouts, the afternoon of October 14
 
-_Pictures of the structure layout's first build, taken by the root Claude Code agent (Fable 5.1) with a script of its own against both bundles served from `dist/explorer`, before the full gate; the gate's browser spec reads the same meshes. The design is the owner's of this afternoon ([Turns 3 and 4 of the record](../../ChatHistory/2026/10/2026-10-14.1.record.md#turn-3)): the directory hubs out of the connectivity layout and into a layout of their own, the emergent tree of what the file system declares beside the emergent network of what the code does. [The probe record](../../Probes/2026-10-14/structure-layout/README.md) keeps the measurements._
+_Pictures of the structure layout's first build, taken by the root Claude Code agent (Fable 5.1) with a script of its own against both bundles served from `dist/explorer`, before the full gate; the gate's browser spec reads the same meshes. The design is the owner's of this afternoon ([Turns 3 and 4 of the record](../2026-10-14.1.record.md#turn-3)): the directory hubs out of the connectivity layout and into a layout of their own, the emergent tree of what the file system declares beside the emergent network of what the code does. [The probe record](../Probes/structure-layout/README.md) keeps the measurements._
 
 Every picture is 1600×1000, tests shown, assets hidden, no pins. Amber spheres are directory hubs, blue files, green tests. "Framed" means wheel gestures until every sphere is in view, the pointer then moved off the map.
 
@@ -65,7 +65,7 @@ What the eye finds: the fold is fast, most of the motion over within 300 ms, and
 
 ## One search bar for the whole Explorer, the evening of October 14
 
-_Pictures of the search bar's first build, taken by the root Claude Code agent (Fable 5.1) with a script of its own against both bundles served from `dist/explorer`, before the full gate. The design is the owner's of this evening ([Turns 5 and 6 of the day's record](../../ChatHistory/2026/10/2026-10-14.1.record.md#turn-5); [the decision](../../../.mdmd/layer-3/architectural-decisions.mdmd.md#one-search-at-the-top-and-a-path-starts-at-the-newest-pin-recorded-2026-10-14)): one search at the top in place of the Ctrl+P dialog and the FROM/TO toolbar, grouped directory, file, symbol; a chosen row pinned and newest; once anything is pinned, a map marker and a second field for the end of a path, asked at once from the newest pin._
+_Pictures of the search bar's first build, taken by the root Claude Code agent (Fable 5.1) with a script of its own against both bundles served from `dist/explorer`, before the full gate. The design is the owner's of this evening ([Turns 5 and 6 of the day's record](../2026-10-14.1.record.md#turn-5); [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#one-search-at-the-top-and-a-path-starts-at-the-newest-pin-recorded-2026-10-14)): one search at the top in place of the Ctrl+P dialog and the FROM/TO toolbar, grouped directory, file, symbol; a chosen row pinned and newest; once anything is pinned, a map marker and a second field for the end of a path, asked at once from the newest pin._
 
 Every picture is 1600×1000, tests shown, assets hidden.
 
@@ -89,7 +89,7 @@ Every picture is 1600×1000, tests shown, assets hidden.
 
 ### The destination field offers only what connects, later the same evening
 
-The owner's ask of [Turn 7](../../ChatHistory/2026/10/2026-10-14.1.record.md#turn-7): the second field lists only what a path from the newest pin can reach, each row saying how far and which way, the files the words match but no path connects folded under a count. The pictures are from a scripted look on the built bundles, 1600 by 1000; the words on every row were read off the page into the record, and `inspect --reachable` over the estate's docs lists the same files at the same distances.
+The owner's ask of [Turn 7](../2026-10-14.1.record.md#turn-7): the second field lists only what a path from the newest pin can reach, each row saying how far and which way, the files the words match but no path connects folded under a count. The pictures are from a scripted look on the built bundles, 1600 by 1000; the words on every row were read off the page into the record, and `inspect --reachable` over the estate's docs lists the same files at the same distances.
 
 | What is shown | Picture |
 | --- | --- |

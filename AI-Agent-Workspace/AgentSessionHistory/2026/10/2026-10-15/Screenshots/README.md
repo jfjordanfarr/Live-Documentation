@@ -1,6 +1,6 @@
 # October 15, 2026: clicks pin what they name
 
-Pictures of the built Explorer after the Local Map's pin rules changed on the owner's answers of [Turns 8 to 10 of the October 14 session](../../ChatHistory/2026/10/2026-10-14.1.record.md#turn-8) (the night's challenge and its findings are in [the probe record](../../Probes/2026-10-14/pin-clicks/README.md)). This repository's bundle, the rosetta sample's `main.ts` as the landing subject, 1600 by 1000, each picture taken after the picture's move had ended; the pins were read from the address after every click and agree with the tray.
+Pictures of the built Explorer after the Local Map's pin rules changed on the owner's answers of [Turns 8 to 10 of the October 14 session](../../2026-10-14/2026-10-14.1.record.md#turn-8) (the night's challenge and its findings are in [the probe record](../../2026-10-14/Probes/pin-clicks/README.md)). This repository's bundle, the rosetta sample's `main.ts` as the landing subject, 1600 by 1000, each picture taken after the picture's move had ended; the pins were read from the address after every click and agree with the tray.
 
 ## The pin rules and the recentre control
 
@@ -17,7 +17,7 @@ Pictures of the built Explorer after the Local Map's pin rules changed on the ow
 
 ## The entry points in the Knowledge Sources panel, and the landing they decide
 
-_Pictures by the root Claude Code agent (Fable 5.1) of the build of `reachable`, the vision's step 4, after the owner's "We are aligned. You're clear to build." ([Turn 4 of the day's record](../../ChatHistory/2026/10/2026-10-15.1.record.md#turn-4)). This repository's bundle (674 files) and the estate sample (35 files), 1600 by 1000, taken in headless Chromium from the bundles the gate builds; no page errors in any capture. The panel's counts are the engine's walk from the docs' `Entry` lines, the same `inspect --reachable` prints._
+_Pictures by the root Claude Code agent (Fable 5.1) of the build of `reachable`, the vision's step 4, after the owner's "We are aligned. You're clear to build." ([Turn 4 of the day's record](../2026-10-15.1.record.md#turn-4)). This repository's bundle (674 files) and the estate sample (35 files), 1600 by 1000, taken in headless Chromium from the bundles the gate builds; no page errors in any capture. The panel's counts are the engine's walk from the docs' `Entry` lines, the same `inspect --reachable` prints._
 
 | What is shown | Picture |
 | --- | --- |

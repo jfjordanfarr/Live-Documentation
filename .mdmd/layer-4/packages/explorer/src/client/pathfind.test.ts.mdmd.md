@@ -13,8 +13,8 @@ Unit tests of the pathfinder's search over a four-file graph: the path is found 
 
 ### Notes
 
-- The set cases were added on 2026-10-14 when the search took sets for a directory at either end ([Turn 6](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-6)).
-- Written on [2026-10-01](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-01.1.record.md#turn-10) with the direction rule; the graph is three files in a line plus one alone, which is enough to tell the two directions apart.
+- The set cases were added on 2026-10-14 when the search took sets for a directory at either end ([Turn 6](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-14/2026-10-14.1.record.md#turn-6)).
+- Written on [2026-10-01](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-01/2026-10-01.1.record.md#turn-10) with the direction rule; the graph is three files in a line plus one alone, which is enough to tell the two directions apart.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

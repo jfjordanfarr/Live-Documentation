@@ -1,6 +1,6 @@
 # Name action comparison
 
-Historical prototype evidence during the November 4 learning-journey pass. Fresh contexts started from the same subject at 1440×960. Only name actions and their accessible labels/tooltips were changed by temporary browser bindings; no product policy was saved. The [experiment](../../../../Probes/2026-11-04/learning/README.md#name-action-comparison) records the root's interpretation.
+Historical prototype evidence during the November 4 learning-journey pass. Fresh contexts started from the same subject at 1440×960. Only name actions and their accessible labels/tooltips were changed by temporary browser bindings; no product policy was saved. The [experiment](../../../Probes/learning/README.md#name-action-comparison) records the root's interpretation.
 
 - [Inspection](name-one-symbol.png): a symbol name opens its complete evidence.
 - [Pinning](name-two-symbol.png): a symbol name retains it and establishes a path start.

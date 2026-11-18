@@ -13,7 +13,7 @@ Verifies the spatial report’s graph facts, filtering and geometric semantics a
 ### Notes
 Checks summed reciprocal reference counts, known symbol-derived radii and spacing, immutable graph input, explicitly retained test/asset exceptions, documentation overlays and a missing retained file. The November 2 chain cases also prevent silently adding a hop through already-retained neighbors and verify whole-root member reveal including an isolated file.
 
-Created for [the October 13 shared-preset implementation](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation).
+Created for [the October 13 shared-preset implementation](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-13/2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation).
 
 Since November 8, 2026, the overlay fixture explicitly asks for two hops to reach the retained files' provider and its documentation; the uniform-junction fixture explicitly uses Off and two containment hops so both files and their non-pulling reference are present. Other default-based and explicit hop-scope checks retain their subjects.
 

@@ -13,17 +13,17 @@ Protects saved layout and history preferences, and remembered navigation that ke
 
 ### Notes
 
-The history cases expect Dim as the default Changed Files since November 15, 2026, a design change, and that a saved Glow, the default before, is kept ([Turn 4 of that day's record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-4)).
+The history cases expect Dim as the default Changed Files since November 15, 2026, a design change, and that a saved Glow, the default before, is kept ([Turn 4 of that day's record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-4)).
 
 An older saved configuration receives the current simplicity default without losing its independent evenness and row-alignment settings. Explicit zero and endpoint values survive restoration; nonnumeric and nonfinite JSON values fall back to defaults. The tests exercise the storage reader and application of persisted state together, without a DOM simulation.
 
 History tuning cases preserve valid axis, granularity and play-rate choices while supplying defaults only for absent or invalid fields. Navigation cases exercise the real debounce scheduler with controlled storage and timers: inspecting B preserves subject A, closing stores null, old entries leave the reader closed, and a bundled section or scan-root target survives restoration. Membership checks use the production snapshot scrubber so a removed target cannot displace a surviving subject.
 
-Created for the owner’s October 13, 2026 request to tune aesthetic preferences within the existing competition: [the originating discussion](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply).
+Created for the owner’s October 13, 2026 request to tune aesthetic preferences within the existing competition: [the originating discussion](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-13/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply).
 
-The navigation cases support the [October 20 inspection-state implementation](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-2). They complement the original tuning suites; browser motion and focus are verified separately.
+The navigation cases support the [October 20 inspection-state implementation](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-20/2026-10-20.1.record.md#turn-2). They complement the original tuning suites; browser motion and focus are verified separately.
 
-Since 2026-10-22 ([Turn 10 of the October 21 session](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-10)) the history's default axis is by date, and three cases hold the saving rule: nothing to save at the defaults and only the differing settings otherwise; the scheduler writing only the changes, so that a later default reaches what was never touched; and a version 1 entry removed unread.
+Since 2026-10-22 ([Turn 10 of the October 21 session](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-21/2026-10-21.1.record.md#turn-10)) the history's default axis is by date, and three cases hold the saving rule: nothing to save at the defaults and only the differing settings otherwise; the scheduler writing only the changes, so that a later default reaches what was never touched; and a version 1 entry removed unread.
 
 The Group Wrappers cases introduced November 5 now protect the November 8 delivery of Skin and one hop: fresh and sparse settings inherit both, invalid values fall back individually, and an explicit Off/two-hop preference survives the unchanged version 2 reader and a scheduler save/reload. Other named and numeric preferences retain their values ([the experiment](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#competing-layout-preferences)).
 

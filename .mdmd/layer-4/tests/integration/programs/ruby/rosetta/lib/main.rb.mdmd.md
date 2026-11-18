@@ -12,7 +12,7 @@
 Entry point for the Ruby Rosetta Stone fixture. Demonstrates require_relative patterns.
 
 ### Notes
-See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests Ruby require and require_relative detection.
+See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-14/2026-01-14.1.md). Tests Ruby require and require_relative detection.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

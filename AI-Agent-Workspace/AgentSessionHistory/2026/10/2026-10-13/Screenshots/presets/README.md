@@ -1,6 +1,6 @@
 # Compact / Relaxed in both Local Map representations
 
-_Historical implementation evidence, October 13, 2026. Captured from the verified 643-file repository and 35-file estate bundles after the full required check passed. The [owner approved this grammar](../../../ChatHistory/2026/10/2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation)._
+_Historical implementation evidence, October 13, 2026. Captured from the verified 643-file repository and 35-file estate bundles after the full required check passed. The [owner approved this grammar](../../2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation)._
 
 The shared selector is beside 2D/3D. Compact favors packing; Relaxed favors clearance and regularity. Tuning exposes the underlying controls, with the active representation’s group open. Changed packing values read Custom; coupling and symbol-size values survive preset selection.
 
@@ -24,7 +24,7 @@ Every picture is 1600×1000. The 2D overviews use public zoom and pan gestures a
 
 The generator is a fresh direct link with the default asset filter; the warehouse and four named deck scopes retain their files and show assets. Tests are shown throughout. No page errors were observed. Each 2D pair preserves exactly the same file/symbol and rendered semantic-reference identities. The 3D renderer and command share the same counted graph and force parameters; presets leave coupling and symbol scaling unchanged.
 
-The generator subject is [generator.ts](../../../../packages/generator/src/generator.ts). The warehouse retains [Report.java](../../../../tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/report/Report.java). The other sets are the repository/estate five-file and chain lists in [the shared deck scopes](../../../../tests/e2e/scopes.ts).
+The generator subject is [generator.ts](../../../../../../../packages/generator/src/generator.ts). The warehouse retains [Report.java](../../../../../../../tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/report/Report.java). The other sets are the repository/estate five-file and chain lists in [the shared deck scopes](../../../../../../../tests/e2e/scopes.ts).
 
 | Scope | 2D Compact | 2D Relaxed | 3D Compact | 3D Relaxed |
 | --- | --- | --- | --- | --- |
@@ -44,7 +44,7 @@ The generator subject is [generator.ts](../../../../packages/generator/src/gener
 | Estate: five files | 20 / 58 | 2936×1203 / 5 | 3160×1448 / 3 |
 | Estate: chain | 14 / 40 | 2816×777 / 2 | 3040×909 / 1 |
 
-The bounds are unscaled layout pixels. This is a preference comparison on one implementation, not a claim that one preset dominates every measure. The [tuning and headless reports](../../../Probes/2026-10-13/layout-presets/README.md) preserve the candidates, selected settings and space/routing tradeoffs.
+The bounds are unscaled layout pixels. This is a preference comparison on one implementation, not a claim that one preset dominates every measure. The [tuning and headless reports](../../Probes/layout-presets/README.md) preserve the candidates, selected settings and space/routing tradeoffs.
 
 ## Motion and state
 
@@ -57,4 +57,4 @@ These use the normal 450 ms 2D move duration and live 3D reheating. The same exe
 
 ## Verification
 
-`npm run safe:commit -- --e2e` passed: 988 unit tests, 52 integration tests, all 104 browser tests, lint, builds, test type-checking, all 643 mirrors unchanged on regeneration, and documentation/asset/symbol audits. No product source changed between that pass and these captures. The [session record](../../../ChatHistory/2026/10/2026-10-13.1.record.md) preserves the failed attempts and corrections.
+`npm run safe:commit -- --e2e` passed: 988 unit tests, 52 integration tests, all 104 browser tests, lint, builds, test type-checking, all 643 mirrors unchanged on regeneration, and documentation/asset/symbol audits. No product source changed between that pass and these captures. The [session record](../../2026-10-13.1.record.md) preserves the failed attempts and corrections.

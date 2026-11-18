@@ -12,8 +12,8 @@ Provides the character-removal pattern for GitHub-compatible heading anchors, sh
 
 ### Notes
 - Vendored from github-slugger 2.0.0; its upstream source is linked in the provenance account below. Keep the pattern identical to that source: `:-@` is an ASCII range, not three literal characters. Escaping its hyphen removes hyphens from dates and names while incorrectly retaining punctuation such as semicolons and question marks.
-- The correction was discovered while restoring dated provenance links; [the September 30 account, turn 5](../../../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-30.2.SUMMARIZED.md#turn-5) records the verification and its conversation-capture limitation.
-- The vendoring originated in the [October 25 summary, turn 32](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-25.SUMMARIZED.md#turn-32-vendored-github-slugger-lines-50015160). Historical claims of compatibility are not substitutes for checking upstream behavior; the date, mixed-script and punctuation regressions in `githubSlugger.test.ts` preserve that distinction.
+- The correction was discovered while restoring dated provenance links; [the September 30 account, turn 5](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/09/Summarized/2026-09-30.2.SUMMARIZED.md#turn-5) records the verification and its conversation-capture limitation.
+- The vendoring originated in the [October 25 summary, turn 32](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/10/Summarized/2025-10-25.SUMMARIZED.md#turn-32-vendored-github-slugger-lines-50015160). Historical claims of compatibility are not substitutes for checking upstream behavior; the date, mixed-script and punctuation regressions in `githubSlugger.test.ts` preserve that distinction.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

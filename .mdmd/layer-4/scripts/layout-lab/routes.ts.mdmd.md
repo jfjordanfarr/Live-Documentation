@@ -15,7 +15,7 @@ The wires of a laid-out scene as the router would draw them, sampled as the deck
 
 Every forward reference's route from the same `curveTo` and `threadedRoute` the page uses: a pin's point one pin radius outside its dot's centre, the dot's horizontal place from the capture, the hub's for a wire the registry sends to the hub; the lanes' passages from the column's cards' extent less and plus the lane margin at the slot's line; a self-reference and a reference read back are stubs, not routes. The path's commands (M, L, C, Q) are traced finely, the length taken from the fine trace, and the trace resampled every eight pixels from its start with its end kept, which is how the deck reads a drawn wire, so the horizontal and vertical parts summed over the samples are the deck's. On the five-file baseline the lab's length is within sixty pixels of the deck's 373,863 and the parts exact (2026-10-06).
 
-November 4 distinguishes the card’s rendered width from the space allocated to its column. A capped card can occupy less than its slot after membrane insets are accounted for; its outbound pins and the route must start at the actual card edge. See the [integration record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-2).
+November 4 distinguishes the card’s rendered width from the space allocated to its column. A capped card can occupy less than its slot after membrane insets are accounted for; its outbound pins and the route must start at the actual card edge. See the [integration record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-04/2026-11-04.1.record.md#turn-2).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

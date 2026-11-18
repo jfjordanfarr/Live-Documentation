@@ -1,6 +1,6 @@
 # The 2D/3D transition's frames, before and after the switch-cost fix
 
-_Status: evidence for the root's eye, since the switch-cost round (milestone 2 of the 2D builder) held the transition's look by browser checks alone. Taken on 2026-11-08 by [`motion-frames.cjs`](../../../Probes/2026-11-07/switch-cost/motion-frames.cjs) in a private headless Chromium at 1440 × 960, a fresh profile with the background search off, under the machine's browser lock. "After" is the bundle of milestones 1 and 2 as accepted (staged in the builder's worktree, served on 8911). "Before" is the bundle of `476ea2c8` (8914)._
+_Status: evidence for the root's eye, since the switch-cost round (milestone 2 of the 2D builder) held the transition's look by browser checks alone. Taken on 2026-11-08 by [`motion-frames.cjs`](../../../2026-11-07/Probes/switch-cost/motion-frames.cjs) in a private headless Chromium at 1440 × 960, a fresh profile with the background search off, under the machine's browser lock. "After" is the bundle of milestones 1 and 2 as accepted (staged in the builder's worktree, served on 8911). "Before" is the bundle of `476ea2c8` (8914)._
 
 ## How the frames were taken
 

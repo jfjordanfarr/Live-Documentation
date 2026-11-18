@@ -11,7 +11,7 @@
 Verify projection-based size resistance and the visible geometry of round-capped, tapered wire picking, including clipping and end-on depth ordering.
 
 ### Notes
-Introduced with the [October 24 resistance controls](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-24.1.record.md#turn-11). The cases distinguish perspective, intermediate and invariant sizing under camera and viewport changes, then probe actual hit boundaries and depths. They protect the geometry shared in meaning by the renderer and interaction proxies; browser pixel tests independently check the shader.
+Introduced with the [October 24 resistance controls](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-24/2026-10-24.1.record.md#turn-11). The cases distinguish perspective, intermediate and invariant sizing under camera and viewport changes, then probe actual hit boundaries and depths. They protect the geometry shared in meaning by the renderer and interaction proxies; browser pixel tests independently check the shader.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

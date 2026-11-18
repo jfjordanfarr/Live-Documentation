@@ -13,7 +13,7 @@ Bundles the documents the Live Docs link to (READMEs, design notes, specs, chat 
 ### Notes
 - Extracted from `staticBuilder.ts` in January 2026 so the static builder and the (since retired) server runtime could share it
 - Single hop only: bundles files linked directly from Live Docs and does not follow links inside them
-- Since 2026-10-20 ([Turn 9](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-9)) it no longer finds the links: `bundleRelatedDocs` takes them from `relatedDocsOf`, the rule the history also reads at every past commit, and the scan of each doc's rendered text, the path resolution and the `bundleExclude` patterns (added 2026-09-27 to keep the chat archive out of the public bundle) went to the engine with it. A link to a document that cannot be read is dropped with it, so the Related Docs name only what the bundle carries. The module keeps the name of its scanning days.
+- Since 2026-10-20 ([Turn 9](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-20/2026-10-20.1.record.md#turn-9)) it no longer finds the links: `bundleRelatedDocs` takes them from `relatedDocsOf`, the rule the history also reads at every past commit, and the scan of each doc's rendered text, the path resolution and the `bundleExclude` patterns (added 2026-09-27 to keep the chat archive out of the public bundle) went to the engine with it. A link to a document that cannot be read is dropped with it, so the Related Docs name only what the bundle carries. The module keeps the name of its scanning days.
 - `buildMarkdownTree()` creates a hierarchical directory structure for the collapsible tree UI in Knowledge Sources
 - File categorization simplified to generic "markdown" type — no workspace-specific icons
 

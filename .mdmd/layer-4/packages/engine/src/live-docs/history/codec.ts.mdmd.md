@@ -11,9 +11,9 @@
 Between the sequence's file and its meaning: an interner for paths and archetypes, each written once and named by its index, and the encoding of shapes and changes into the tuples of `history.json` and back.
 
 ### Notes
-- Written 2026-10-17 for C1 of [the plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md). Interning is what keeps a sequence small: in [the probe](../../../../../../../AI-Agent-Workspace/Probes/2026-10-16/change-over-time/README.md) the path table was 99.6 KB of 272,627 bytes, where full snapshots as JSON would have been about 250 MB.
+- Written 2026-10-17 for C1 of [the plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md). Interning is what keeps a sequence small: in [the probe](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-16/Probes/change-over-time/README.md) the path table was 99.6 KB of 272,627 bytes, where full snapshots as JSON would have been about 250 MB.
 - A shape's new paths are interned in path order, so a base's ids follow its paths; an empty list is left out of a delta, and decoding puts it back.
-- Since 2026-10-20 ([Turn 9](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-9)) the codec carries doc links in snapshots and steps; a document's path is interned in the same table as the files', where a step first names it.
+- Since 2026-10-20 ([Turn 9](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-20/2026-10-20.1.record.md#turn-9)) the codec carries doc links in snapshots and steps; a document's path is interned in the same table as the files', where a step first names it.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

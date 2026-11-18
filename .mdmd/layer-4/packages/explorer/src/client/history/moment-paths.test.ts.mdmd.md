@@ -11,7 +11,7 @@
 Holds `moment-paths.ts` over a moment before a rename and a deletion: an end of a path followed to the moment, a file not yet created having no files, a directory followed through its rename, a path over the moment's own wires naming its hops as the moment does, the references against a path counted among them, a reach said in today's names with a file deleted since dropped, and today's ground naming every file as itself.
 
 ### Notes
-- Written 2026-10-30 with the module, for the [remediation item](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#remediation-work) "History leaves the map intelligible" ([Turn 3 of the October 30 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md#turn-3)). The moment is built by `snapshotGraphOf` from a hand-written shape, as the history control builds it, and the two name maps stand in for the engine's following of renames, which `history-control.ts` supplies and its own tests hold.
+- Written 2026-10-30 with the module, for the [remediation item](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#remediation-work) "History leaves the map intelligible" ([Turn 3 of the October 30 record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-30/2026-10-30.1.record.md#turn-3)). The moment is built by `snapshotGraphOf` from a hand-written shape, as the history control builds it, and the two name maps stand in for the engine's following of renames, which `history-control.ts` supplies and its own tests hold.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

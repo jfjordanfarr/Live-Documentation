@@ -11,7 +11,7 @@
 Pytest tests for the Python Rosetta helpers module (format_value, sum_values, average utilities).
 
 ### Notes
-Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Exercises name-matched test detection with Python's `from helpers import` pattern.
+Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-16/2026-01-16.1.md). Exercises name-matched test detection with Python's `from helpers import` pattern.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

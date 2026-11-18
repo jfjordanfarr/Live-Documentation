@@ -11,7 +11,7 @@
 Unit tests for the TypeScript Rosetta processor module. Part of the polyglot Rosetta Stone fixture suite that validates cross-language parity in Live Documentation generation.
 
 ### Notes
-Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). These tests exercise name-matched test detection: `processor.test.ts` should automatically back `processor.ts`.
+Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-16/2026-01-16.1.md). These tests exercise name-matched test detection: `processor.test.ts` should automatically back `processor.ts`.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

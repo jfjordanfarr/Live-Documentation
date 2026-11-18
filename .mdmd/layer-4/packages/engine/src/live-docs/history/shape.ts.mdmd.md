@@ -14,7 +14,7 @@ A commit's shape by path, each file's archetype, symbol count and entry mark and
 - Written 2026-10-17 for C1 of [the plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md). The derivation and the readers think in paths and the file holds ids; [codec.ts](./codec.ts.mdmd.md) turns one into the other, so that the logic of a step is written once, in the form a reader checks by eye.
 - An edge's key joins its two paths with the NUL character, which no path holds.
 - `applyChange` never changes the shape it is given, and refuses a step that resizes, rekinds or re-marks a file the shape does not hold.
-- Since 2026-10-20 ([Turn 9](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-9)) a shape also holds `docLinks`, each link from a file's authored words to a document that stood at the change, keyed like an edge by the file and the document's path; a change names the links added and removed, a renamed file's links move with it and a dead file's leave in `docLinksRemoved`, as its edges do. A document is not a file of the shape.
+- Since 2026-10-20 ([Turn 9](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-20/2026-10-20.1.record.md#turn-9)) a shape also holds `docLinks`, each link from a file's authored words to a document that stood at the change, keyed like an edge by the file and the document's path; a change names the links added and removed, a renamed file's links move with it and a dead file's leave in `docLinksRemoved`, as its edges do. A document is not a file of the shape.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

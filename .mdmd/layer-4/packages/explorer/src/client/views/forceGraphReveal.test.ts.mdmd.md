@@ -11,7 +11,7 @@
 Holds the reveal's order and growth to their rule: the attention set first, then by reach, most connected first and ties by id; a share with a floor that never passes the total.
 
 ### Notes
-Written with the module on 2026-10-28. The first expectation for the star was wrong by the rule's own tie-breaking, and was corrected to what the rule says rather than the rule to the expectation ([the Turn 2 work notes](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-28.1.record.md#turn-2-work-notes)).
+Written with the module on 2026-10-28. The first expectation for the star was wrong by the rule's own tie-breaking, and was corrected to what the rule says rather than the rule to the expectation ([the Turn 2 work notes](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-28/2026-10-28.1.record.md#turn-2-work-notes)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

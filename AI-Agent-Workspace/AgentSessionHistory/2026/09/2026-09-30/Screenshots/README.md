@@ -1,6 +1,6 @@
 # Explorer, September 30, 2026
 
-Historical visual record. The earlier `explorer-history-01-fresh.png` and `explorer-history-02-after-back.png` captures and their context are described in [the gallery](../README.md#2026-09-30).
+Historical visual record. The earlier `explorer-history-01-fresh.png` and `explorer-history-02-after-back.png` captures and their context are described in [the gallery](../../../../../Screenshots/README.md#2026-09-30).
 
 The following pictures were taken by Codex from the rebuilt `dist/explorer`, served locally, at 1600 × 1000 with Playwright Chromium. Requests outside the local server were blocked during verification.
 

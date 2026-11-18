@@ -11,7 +11,7 @@
 Type definitions for the TypeScript Rosetta Stone fixture. Contains ProcessorConfig and Status types.
 
 ### Notes
-See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). This module is consumed via `import type` in processor.ts, testing type-only import edge detection.
+See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-14/2026-01-14.1.md). This module is consumed via `import type` in processor.ts, testing type-only import edge detection.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

@@ -13,7 +13,7 @@ Checks nested directory grouping independently of the DOM: shared rows for disjo
 
 ### Notes
 
-- Carries forward the directory-band cases from the March 26 pin-layout tests, when cross-column grouping was introduced. The [October 12 retirement](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-12.1.record.md#turn-4) removed the tests of the retired BFS ranking while retaining the grouping invariants used by the Local Map.
+- Carries forward the directory-band cases from the March 26 pin-layout tests, when cross-column grouping was introduced. The [October 12 retirement](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-12/2026-10-12.1.record.md#turn-4) removed the tests of the retired BFS ranking while retaining the grouping invariants used by the Local Map.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

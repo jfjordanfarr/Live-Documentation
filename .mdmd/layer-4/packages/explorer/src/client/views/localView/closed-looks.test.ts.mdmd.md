@@ -11,9 +11,9 @@
 Current. Checks the skin with cells' field and the stack's edges: a cell for each file and a skin for each subdirectory, nothing under the controls, a veil filled to its end where the room runs out, a subdirectory's own veil, and one to three edges by the files held.
 
 ### Notes
-Written with the Closed Directory trial on 2026-11-13 ([Turn 7 of the November 13 record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-7)). The room used is a 200 px box's as the page measures it.
+Written with the Closed Directory trial on 2026-11-13 ([Turn 7 of the November 13 record](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-13/2026-11-13.1.record.md#turn-7)). The room used is a 200 px box's as the page measures it.
 
-Rewritten on 2026-11-15 ([November 15, Turn 1](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) for cells of one size, skins inside skins, the veils and the folder's outline.
+Rewritten on 2026-11-15 ([November 15, Turn 1](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-1)) for cells of one size, skins inside skins, the veils and the folder's outline.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

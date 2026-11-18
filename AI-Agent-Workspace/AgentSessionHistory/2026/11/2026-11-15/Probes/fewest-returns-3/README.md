@@ -1,6 +1,6 @@
 # A cycle's order as a trial of the continuing search: measurements
 
-_Historical evidence, measured 2026-11-16 for the third, fourth and fifth legs of the round of [Turn 5 of the November 15 record](../../../ChatHistory/2026/11/2026-11-15.1.record.md#turn-5). The decision is in [the decisions log](../../../../.mdmd/layer-3/architectural-decisions.mdmd.md); the earlier legs' measurements are in [fewest-returns](../fewest-returns/README.md) and [fewest-returns-2](../fewest-returns-2/README.md); the pictures in [the leg's pictures](../../../Screenshots/2026-11-15/fewest-returns-3/README.md)._
+_Historical evidence, measured 2026-11-16 for the third, fourth and fifth legs of the round of [Turn 5 of the November 15 record](../../2026-11-15.1.record.md#turn-5). The decision is in [the decisions log](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md); the earlier legs' measurements are in [fewest-returns](../fewest-returns/README.md) and [fewest-returns-2](../fewest-returns-2/README.md); the pictures in [the leg's pictures](../../Screenshots/fewest-returns-3/README.md)._
 
 The scripts ran from a scratch folder three levels down with `npx --offline tsx --tsconfig <repository>/tsconfig.base.json`; their imports are adjusted to this folder. The captures they read (`captures/`, one per picture, from the page with the search off) are not kept: `capture-all.ts` makes them again from a built bundle.
 

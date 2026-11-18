@@ -1,6 +1,6 @@
 # A centered card as the reading reference
 
-Historical design probe, November 4, 2026. Requested by the owner's [class-sharing scenario](../../../ChatHistory/2026/11/2026-11-03.1.record.md#turn-15--november-4), following their rejection of the [earlier generic zoom threshold](../../2026-11-03/reading-zoom/README.md). The live page and editable source are disposable under ignored `dist/explorer/probes/card-reference/`. No production reading or layout behavior has changed.
+Historical design probe, November 4, 2026. Requested by the owner's [class-sharing scenario](../../../2026-11-03/2026-11-03.1.record.md#turn-15--november-4), following their rejection of the [earlier generic zoom threshold](../../../2026-11-03/Probes/reading-zoom/README.md). The live page and editable source are disposable under ignored `dist/explorer/probes/card-reference/`. No production reading or layout behavior has changed.
 
 ## The brief
 
@@ -37,7 +37,7 @@ Options retains both experimental name-click actions and summaries/full-comments
 | [Narrow payment card](payment-narrow.png) | The same portrait at 980×780, without shrinking text. |
 | [Two-class pressure](two-class-pressure.png) | A multi-class file that exceeds a single reading frame. |
 
-The [Gallery sheet](../../../Gallery/sheets/payment-card-reference.png) places the two compositions and two outward views together.
+The [Gallery sheet](../../../../../../Gallery/sheets/payment-card-reference.png) places the two compositions and two outward views together.
 
 ## Evaluation
 

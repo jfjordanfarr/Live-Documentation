@@ -13,7 +13,7 @@ Checks explicit navigation and representation in readable and compressed links, 
 
 ### Notes
 
-- Added for [three-view navigation and remembered representations](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-12.1.record.md#turn-4). Browser journeys separately verify that parsing is honored by the actual rendered view and by reloads.
+- Added for [three-view navigation and remembered representations](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-12/2026-10-12.1.record.md#turn-4). Browser journeys separately verify that parsing is honored by the actual rendered view and by reloads.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

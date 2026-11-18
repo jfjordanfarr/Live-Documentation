@@ -1,6 +1,6 @@
 # Shared Local Map path feedback — October 23, 2026
 
-Historical evidence for the first repair approved in [Turn 4](../../../ChatHistory/2026/10/2026-10-23.1.record.md#turn-4), following finding 1 of the [baseline review](../README.md). The root agent personally used the isolated implementation before browser regressions were written, then requested and checked a correction to the answer's size and contrast.
+Historical evidence for the first repair approved in [Turn 4](../../2026-10-23.1.record.md#turn-4), following finding 1 of the [baseline review](../README.md). The root agent personally used the isolated implementation before browser regressions were written, then requested and checked a correction to the answer's size and contrast.
 
 Built main and estate bundles, Chromium at DPR 1. Captures 01–04 and 08–10 are 1600×1000; 05–07 and 11–12 are 1280×800. Main bundle: 866 files, estate: 36. These review bundles omitted history. Search choices, keyboard, ordinary perspective and navigation controls, and copied addresses drove the journeys; no private application state was changed. No page or console errors were reported. These are still captures taken during interactive navigation, not a recorded motion trace or a physics benchmark.
 

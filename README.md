@@ -4,7 +4,7 @@
 
 It writes one markdown file for every source file, saying what that file offers to the rest of the code and what it uses. Those markdown files are the product. The Explorer, a static site you can host or hand to a colleague, and the command line both read them and nothing else. It runs offline, calls no model and makes no network request.
 
-![One file drawn as a card in the Local Map, its three public symbols listed with their descriptions, wires arriving on its left and leaving on its right to neighbouring files](AI-Agent-Workspace/Screenshots/2026-11-12/local-map-repairs/card-dom-ts-at-arrival.png)
+![One file drawn as a card in the Local Map, its three public symbols listed with their descriptions, wires arriving on its left and leaving on its right to neighbouring files](AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-12/Screenshots/local-map-repairs/card-dom-ts-at-arrival.png)
 
 A file as the Local Map draws it: what it uses arrives on the left in green, and what it offers leaves on the right in blue.
 

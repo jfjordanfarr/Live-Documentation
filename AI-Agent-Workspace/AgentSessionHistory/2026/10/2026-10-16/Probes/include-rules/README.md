@@ -1,6 +1,6 @@
 # The include rule, chosen by which candidate disagrees least with the compiler
 
-_A probe of October 16, 2026, by the root Claude Code agent (Fable 5.1), for the rule the C and C++ adapter uses to resolve a quoted `#include` without reading the build. The owner asked that the rule be "testable as to whether it's not better than an alternative" and, told that the oracle would judge it, "**Profound**. I quite like this." ([Turn 8 and Turn 9 of the October 15 session](../../../ChatHistory/2026/10/2026-10-15.1.record.md#turn-8)). The script is disposable and not committed; this record and the fixture it ran on are._
+_A probe of October 16, 2026, by the root Claude Code agent (Fable 5.1), for the rule the C and C++ adapter uses to resolve a quoted `#include` without reading the build. The owner asked that the rule be "testable as to whether it's not better than an alternative" and, told that the oracle would judge it, "**Profound**. I quite like this." ([Turn 8 and Turn 9 of the October 15 session](../../../2026-10-15/2026-10-15.1.record.md#turn-8)). The script is disposable and not committed; this record and the fixture it ran on are._
 
 ## Method
 

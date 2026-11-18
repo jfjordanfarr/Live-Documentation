@@ -11,7 +11,7 @@
 Type definitions for the Python Rosetta Stone fixture using TypedDict.
 
 ### Notes
-See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Named core_types.py (not types.py) to avoid Python stdlib collision.
+See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-14/2026-01-14.1.md). Named core_types.py (not types.py) to avoid Python stdlib collision.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

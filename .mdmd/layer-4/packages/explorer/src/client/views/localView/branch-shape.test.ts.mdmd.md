@@ -15,7 +15,7 @@ Verifies the distinct shape signals used to price competing Local Map layouts.
 
 Cases separate total step distance from the number of turns, include nested drawn boundaries while excluding undrawn containers, and pair the k-th directly owned cards only across neighboring columns. Mixed files/subdirectories exercise ownership so the same rows are neither omitted nor counted again through ancestors.
 
-Created for the owner’s October 13, 2026 request to tune aesthetic preferences within the existing competition: [the originating discussion](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply).
+Created for the owner’s October 13, 2026 request to tune aesthetic preferences within the existing competition: [the originating discussion](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-13/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

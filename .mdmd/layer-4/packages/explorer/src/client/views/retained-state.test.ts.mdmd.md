@@ -13,7 +13,7 @@ Guards independent container release, subtree clearing and portable ordering of 
 ### Notes
 The counterexamples include an independently opened child, similarly prefixed sibling directories, an outside pin that still needs a released file, repinning after release and stale shared-link entries. These assertions protect selection meaning rather than the tray’s DOM arrangement.
 
-Introduced for the owner’s [October 14 pin-management request](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-11--pin-management-approved-ancestor-disclosure-and-directory-hubs).
+Introduced for the owner’s [October 14 pin-management request](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-13/2026-10-13.1.record.md#turn-11--pin-management-approved-ancestor-disclosure-and-directory-hubs).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

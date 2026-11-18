@@ -11,7 +11,7 @@
 xUnit integration tests for the C# Rosetta data processing pipeline.
 
 ### Notes
-Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Exercises NON-name-matched test detection through `using Rosetta.Models` and `using Rosetta.Processor` namespace imports.
+Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-16/2026-01-16.1.md). Exercises NON-name-matched test detection through `using Rosetta.Models` and `using Rosetta.Processor` namespace imports.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

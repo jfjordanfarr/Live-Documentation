@@ -1,6 +1,6 @@
 # Current-build aesthetic review — November 10, 2026
 
-Historical review of product source at `291a6c0c` (last product change `add3a341`), requested in [today's root conversation](../../../ChatHistory/2026/11/2026-11-10.1.record.md#turn-1). Root judgment, not owner acceptance. The original review made no product changes; the follow-up below records the subsequent label-clearance correction.
+Historical review of product source at `291a6c0c` (last product change `add3a341`), requested in [today's root conversation](../../2026-11-10.1.record.md#turn-1). Root judgment, not owner acceptance. The original review made no product changes; the follow-up below records the subsequent label-clearance correction.
 
 The weakest part is the middle of the 2D zoom journey. Close reading and the file-level overview each have a recognizable job; the intervening picture spends too much room and attention on controls while losing names. The closed Structure overview is worth protecting. Opening a group needs a more coherent transition and clearer emphasis on the contents just revealed.
 
@@ -66,7 +66,7 @@ The three original scripts are preserved losslessly as [2D review](review.mjs.gz
 
 ## Follow-up: rings beside the bags
 
-The owner [noticed rings beside Hub, Gateway, PaymentQuery and PaymentRequest](../../../ChatHistory/2026/11/2026-11-10.1.record.md#turn-3) at the end of the transition recording, apparently after rewrapping. The recorded sequence actually ends by switching to **Connections**, with PaymentService still open; it does not issue Close. That distinction explains a change in grouping, but does not make the picture's ambiguity acceptable.
+The owner [noticed rings beside Hub, Gateway, PaymentQuery and PaymentRequest](../../2026-11-10.1.record.md#turn-3) at the end of the transition recording, apparently after rewrapping. The recorded sequence actually ends by switching to **Connections**, with PaymentService still open; it does not issue Close. That distinction explains a change in grouping, but does not make the picture's ambiguity acceptable.
 
 Root reproduced the exact ending, then separately opened and closed the groups through ordinary controls. [The uploaded identities and closure sequence](rings/replay.json) show:
 

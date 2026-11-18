@@ -1,6 +1,6 @@
 # Why the five browser waits failed
 
-_Historical audit during the November 8 dev-day chat, captured November 9 UTC. Requested in [Turn 2](../../../ChatHistory/2026/11/2026-11-08.1.record.md#turn-2). This distinguishes test intent, measured causes and open questions. The later full-gate result is recorded below; it does not erase these observations._
+_Historical audit during the November 8 dev-day chat, captured November 9 UTC. Requested in [Turn 2](../../../2026-11-08/2026-11-08.1.record.md#turn-2). This distinguishes test intent, measured causes and open questions. The later full-gate result is recorded below; it does not erase these observations._
 
 **Later verification:** the [final complete gate](../reading-verification/README.md) passes 1,740 unit, 115 integration and all 358 browser cases. All five cases below pass under their original limits, after the capture batching and scoped history preparation correction. A later offscreen Pin setup failure was separately reproduced and corrected with normal map panning, preserving its complete transition oracle. The final green run does not turn the measured long gentle Home into a product fix or prove the earlier Whole/address/visibility failures were harmless.
 
@@ -14,7 +14,7 @@ The previous complete run passed 345 of 350 browser cases. All five failures wer
 | Repository/chain capture, global 30 seconds | The independent layout model reproduces the actual page geometry. | No geometry assertion failed. Repeated probe mutations account for substantial cost. Batching every card's own probes preserves complete outputs in 12 contexts and reduces the chain callback from10.895 to8.090seconds, against a10.648-second restored-original control. The12unchanged layout-lab cases pass. The failed full run's callback entry was not recorded. |
 | Visibility completion, 45 seconds after resume | Hidden work pauses and resumes without losing progress. | Pause retention and renewed progress work. At the deadline, camera/cards are still and alignment search is continuing; it ends at 45.606 seconds in the focused observation. The completion bound is historical calibration, while dedicated search cases separately guard termination. No completion wait has been removed in this round. |
 
-The [prior complete-run evidence](../../2026-11-08/defaults-verification/README.md#generated-graph-verification) retains every failure and the earlier capture/visibility observations. Isolated passes do not replace that failed gate.
+The [prior complete-run evidence](../../../2026-11-08/Probes/defaults-verification/README.md#generated-graph-verification) retains every failure and the earlier capture/visibility observations. Isolated passes do not replace that failed gate.
 
 The [capture comparison](../capture-batching/README.md), [complete results](../capture-batching/comparison.json) and [timings](../capture-batching/summary.json) retain all 36 captures. Root independently verified the 52-file source manifest and deep equality of every old/candidate/restored triplet after excluding only the timestamp. This is one sequence per context, not a repeated benchmark mean. No measured field, fixture, geometry tolerance or test deadline changed. The combined final gate passes; its repository-chain case completes in 17.7 seconds.
 

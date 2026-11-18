@@ -8,7 +8,7 @@
 
 ## Authored
 ### Purpose
-Produces runtime widget instances that feed the `ts-basic` benchmark’s import graph, anchoring the oracle-aligned updates recorded in [2025-11-03 summary](../../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-03.SUMMARIZED.md).
+Produces runtime widget instances that feed the `ts-basic` benchmark’s import graph, anchoring the oracle-aligned updates recorded in [2025-11-03 summary](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/Summarized/2025-11-03.SUMMARIZED.md).
 
 ### Notes
 - Couples runtime creation with enum imports so regressions that demote these edges to “type-only” status are immediately caught by AST accuracy reports.

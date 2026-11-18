@@ -8,11 +8,11 @@
 
 ## Authored
 ### Purpose
-Exercises the `slopcop:symbols` CLI end to end so healthy workspaces exit cleanly and drifted headings surface duplicate/missing-anchor issues ([fixture harness](../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-25.md#L5400-L5480)).
+Exercises the `slopcop:symbols` CLI end to end so healthy workspaces exit cleanly and drifted headings surface duplicate/missing-anchor issues ([fixture harness](../../../../AI-Agent-Workspace/AgentSessionHistory/2025/10/2025-10-25/2025-10-25.md#L5400-L5480)).
 
 ### Notes
-- Copies the dedicated fixture, runs the CLI, corrupts headings/anchors, and expects exit code 3 with both issue kinds before restoring the workspace ([fail→repair validation](../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-25.md#L6048-L6073)).
-- Keeps the audit opt-in by proving the CLI works independently of the root config toggle, supporting the staged rollout we discussed for symbol lint ([rollout plan](../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-25.md#L6068-L6069)).
+- Copies the dedicated fixture, runs the CLI, corrupts headings/anchors, and expects exit code 3 with both issue kinds before restoring the workspace ([fail→repair validation](../../../../AI-Agent-Workspace/AgentSessionHistory/2025/10/2025-10-25/2025-10-25.md#L6048-L6073)).
+- Keeps the audit opt-in by proving the CLI works independently of the root config toggle, supporting the staged rollout we discussed for symbol lint ([rollout plan](../../../../AI-Agent-Workspace/AgentSessionHistory/2025/10/2025-10-25/2025-10-25.md#L6068-L6069)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

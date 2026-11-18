@@ -13,8 +13,8 @@ Groups ranked files into nested directory bands spanning their columns. The orde
 
 ### Notes
 
-- The cross-column grouping originated in the [March 26 Membrane Map work](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-26.1.md), verified in commit `c675a4eb`. It replaced a separate membrane per column and gained parent wrappers when the owner noticed missing common ancestors.
-- [The October 12 retirement](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-12.1.record.md#turn-4) moved the still-used grouping here without retaining the obsolete Membrane BFS layout. Column ranking belongs to the Local Map; these functions only build the hierarchy and assign non-overlapping initial band rows.
+- The cross-column grouping originated in the [March 26 Membrane Map work](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/03/2026-03-26/2026-03-26.1.md), verified in commit `c675a4eb`. It replaced a separate membrane per column and gained parent wrappers when the owner noticed missing common ancestors.
+- [The October 12 retirement](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-12/2026-10-12.1.record.md#turn-4) moved the still-used grouping here without retaining the obsolete Membrane BFS layout. Column ranking belongs to the Local Map; these functions only build the hierarchy and assign non-overlapping initial band rows.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

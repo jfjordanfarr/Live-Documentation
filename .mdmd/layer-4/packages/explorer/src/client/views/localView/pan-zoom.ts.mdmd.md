@@ -13,13 +13,13 @@ Pure functions for pan/zoom/inertia behavior in the Local Map. Handles mouse dra
 
 ### Notes
 
-Wheel, button and animated zoom share a 0.05–3 camera range. Zoom never requests a perspective change; this preserves the zoom-out the [owner wanted during exploration](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-12.1.record.md#turn-3).
+Wheel, button and animated zoom share a 0.05–3 camera range. Zoom never requests a perspective change; this preserves the zoom-out the [owner wanted during exploration](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-12/2026-10-12.1.record.md#turn-3).
 
 - Extracted from controller.ts during Dev Day 50 (12/19) as part of Phase 4 tech-debt reduction. All functions take runtime state as input and callback for state updates, enabling testability without DOM dependencies.
-- `animateMapTransform` keeps its target on the runtime (`mapAnimationTarget`) and reads it each frame, so that the controller can shift the camera while an animation runs, when the toolbar above the map grows, without the animation overwriting the shift ([Turn 10 of 2026-10-01](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-01.1.record.md#turn-10)).
-- `applyMapTransform`, which nothing called (the controller applies the transform itself), was deleted on 2026-10-08 in [the dead code sweep](../../../../../../../../AI-Agent-Workspace/Probes/2026-10-08/dead-code-sweep.md).
+- `animateMapTransform` keeps its target on the runtime (`mapAnimationTarget`) and reads it each frame, so that the controller can shift the camera while an animation runs, when the toolbar above the map grows, without the animation overwriting the shift ([Turn 10 of 2026-10-01](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-01/2026-10-01.1.record.md#turn-10)).
+- `applyMapTransform`, which nothing called (the controller applies the transform itself), was deleted on 2026-10-08 in [the dead code sweep](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-08/Probes/dead-code-sweep.md).
 
-Since 2026-11-06 (the breakpoint pass, [Turns 17 to 19](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-17--november-6)) `startDrag` clears the animation's destination with its frame: left standing after a drag took the camera, it said that the camera was still on its way, which held the layout's search, sent the next wheel zoom from that destination, and would have kept the camera's motion (`data-camera`) from ending.
+Since 2026-11-06 (the breakpoint pass, [Turns 17 to 19](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-05/2026-11-05.1.record.md#turn-17--november-6)) `startDrag` clears the animation's destination with its frame: left standing after a drag took the camera, it said that the camera was still on its way, which held the layout's search, sent the next wheel zoom from that destination, and would have kept the camera's motion (`data-camera`) from ending.
 
 Since the far bands' second milestone (2026-11-06) the farthest zoom is the runtime's `zoomFloor`, which the controller derives from the map (`zoom-limits.ts`): the ladder's last step, or four fifths of the scale that frames the whole map where that is farther. The fixed 0.05 is gone; until the map is measured only a guard keeps the scale positive. The closest zoom stays at three.
 

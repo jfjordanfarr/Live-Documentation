@@ -31,4 +31,4 @@ The selected candidates were subsequently rendered and inspected across six scop
 | repository/five | compact | steps100 | 3758 × 3238 | 33 | 7892 | 5243 | 182406 |
 | repository/five | compact | even1 | 3758 × 3238 | 33 | 7833 | 5229 | 182446 |
 
-Selected candidates: Compact `even1`; Relaxed `regular`. The full configurations in the JSON distinguish these from later changes to the named defaults. Source: [the implementation request and record](../../../ChatHistory/2026/10/2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation).
+Selected candidates: Compact `even1`; Relaxed `regular`. The full configurations in the JSON distinguish these from later changes to the named defaults. Source: [the implementation request and record](../../2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation).

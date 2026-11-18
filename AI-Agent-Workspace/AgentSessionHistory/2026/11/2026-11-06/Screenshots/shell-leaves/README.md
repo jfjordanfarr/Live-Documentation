@@ -1,6 +1,6 @@
 # Bubbles built from the leaves (3D Local Map, the shells' second round)
 
-_Status: implementation evidence of 2026-11-06, for the owner's judgement, with a fork the brief asked to hand back rather than choose silently: nesting makes the largest shells half again as large and more. A builder built bodies from the leaves on its worktree over round one's staged work on `a5a7047e` (tree `dc59e66c`), and took these pictures in a private headless Chromium with software rendering at 1440 × 960 from bundles built in that worktree, Group Wrappers chosen as a saved Tuning choice, the background search off. The "before" pictures are the owner's own three of round one, kept with the record of that turn and linked from there. The probes are in [the probe folder](../../../Probes/2026-11-06/shell-leaves/README.md)._
+_Status: implementation evidence of 2026-11-06, for the owner's judgement, with a fork the brief asked to hand back rather than choose silently: nesting makes the largest shells half again as large and more. A builder built bodies from the leaves on its worktree over round one's staged work on `a5a7047e` (tree `dc59e66c`), and took these pictures in a private headless Chromium with software rendering at 1440 × 960 from bundles built in that worktree, Group Wrappers chosen as a saved Tuning choice, the background search off. The "before" pictures are the owner's own three of round one, kept with the record of that turn and linked from there. The probes are in [the probe folder](../../Probes/shell-leaves/README.md)._
 
 The owner, on round one: "The 3D engulfing bubbles are getting better. I'd say that I strongly prefer when I can see a bundle of nodes engulfed rather than just one which suddenly appears to multiply into many. It would be preferable, I thiiiink(?) if the engulfing optimization started at the leaves, ensuring that no bubble appears to have fewer nodes than it really does, even when it's a bubble-in-a-bubble situation" (Turn 4 of the November 6 record).
 
@@ -17,9 +17,9 @@ The owner, on round one: "The 3D engulfing bubbles are getting better. I'd say t
 
 | View | Round one (the owner's) | Now |
 | --- | --- | --- |
-| Wrapped groups far from any pin | [before](../../../ChatHistory/2026/11/2026-11-06.1.images/island-wrappers-one-sphere-each.png) | [Skin](islands.png) · [Off](islands-off.png) |
-| One group under the pointer, `rosetta-manifest.json` | [before](../../../ChatHistory/2026/11/2026-11-06.1.images/island-wrapper-hovered-rosetta-manifest.png) | [hovered](island-hovered.png) |
-| This repository pinned on `rosetta-manifest.json`, one hop, Shell Depth 4 | [before](../../../ChatHistory/2026/11/2026-11-06.1.images/rosetta-manifest-pinned-one-hop-shells.png) | [Skin](rosetta-one-hop.png) · [Off](rosetta-one-hop-off.png) |
+| Wrapped groups far from any pin | [before](../../2026-11-06.1.images/island-wrappers-one-sphere-each.png) | [Skin](islands.png) · [Off](islands-off.png) |
+| One group under the pointer, `rosetta-manifest.json` | [before](../../2026-11-06.1.images/island-wrapper-hovered-rosetta-manifest.png) | [hovered](island-hovered.png) |
+| This repository pinned on `rosetta-manifest.json`, one hop, Shell Depth 4 | [before](../../2026-11-06.1.images/rosetta-manifest-pinned-one-hop-shells.png) | [Skin](rosetta-one-hop.png) · [Off](rosetta-one-hop-off.png) |
 
 The two references: this repository pinned on `forceGraphView.ts` (also the subject), two hops, Shell Depth 2: [Skin](repo-skin.png) · [Off](repo-off.png); the estate pinned on its payment service, Shell Depth 2: [Skin](estate-skin.png) · [Off](estate-off.png).
 

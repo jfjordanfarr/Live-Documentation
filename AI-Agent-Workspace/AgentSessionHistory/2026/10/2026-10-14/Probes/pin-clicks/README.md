@@ -4,7 +4,7 @@ _A probe of 2026-10-14, the night of the day. Current as a record of what the bu
 
 ## The brief
 
-The owner, in [Turn 8 of the day's record](../../../ChatHistory/2026/10/2026-10-14.1.record.md#turn-8): "with clicks alone, attempt to pin only one symbol in `branches.ts` without accidentally pinning any other symbol. If it is impossible, let's discuss UX." The file is `packages/explorer/src/client/views/localView/branches.ts`, twenty public symbols.
+The owner, in [Turn 8 of the day's record](../../2026-10-14.1.record.md#turn-8): "with clicks alone, attempt to pin only one symbol in `branches.ts` without accidentally pinning any other symbol. If it is impossible, let's discuss UX." The file is `packages/explorer/src/client/views/localView/branches.ts`, twenty public symbols.
 
 ## How it was tried
 
@@ -26,6 +26,6 @@ The landing subject of this repository's bundle is `tests/integration/programs/t
 
 Three rules of the Local Map, each the owner's or an agent's reading of the owner's, make the accidents:
 
-- A click on a card pins the file whole, and a click on a symbol of a file pinned whole toggles that symbol out and pins the others one by one. The owner's words of [2026-10-03](../../../ChatHistory/2026/10/2026-10-03.1.record.md#turn-1): "A click on any node causes all of its symbols to be pinned. A click on any symbol within that node causes just that symbol of that node to be pinned. Clicking additional symbols on that node causes them to be pinned in addition to the symbols already pinned on that node (adds, doesn't replace). Clicking the same already-pinned symbol on a node causes that symbol to un-pin." The agent of that day read a whole pin as every symbol already pinned, so a click on one is the un-pin of the last sentence, and the rest stay (`9641e5cd`, "effective symbol toggle expands a wildcard into the remaining explicit rows").
+- A click on a card pins the file whole, and a click on a symbol of a file pinned whole toggles that symbol out and pins the others one by one. The owner's words of [2026-10-03](../../../2026-10-03/2026-10-03.1.record.md#turn-1): "A click on any node causes all of its symbols to be pinned. A click on any symbol within that node causes just that symbol of that node to be pinned. Clicking additional symbols on that node causes them to be pinned in addition to the symbols already pinned on that node (adds, doesn't replace). Clicking the same already-pinned symbol on a node causes that symbol to un-pin." The agent of that day read a whole pin as every symbol already pinned, so a click on one is the un-pin of the last sentence, and the rest stay (`9641e5cd`, "effective symbol toggle expands a wildcard into the remaining explicit rows").
 - The first pin of an exploration retains the subject whole. From the same words: "Why make this set of changes? Because clicking a node in the Local Map suddenly makes the thing you were looking at disappear." The agent kept the thing being looked at by pinning it whole, silently, on the first pin elsewhere (`9641e5cd`).
 - A double-click recentres on a card. The card's click handler runs on each of its two clicks first; the agent of October 3 "preserved the existing recenter action" when the card click became a whole pin (`9969abe1`, `9641e5cd`).

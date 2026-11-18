@@ -1,6 +1,6 @@
 # Explorer pictures — October 19, 2026
 
-Historical visual evidence captured from the local build during the [stewardship work](../../ChatHistory/2026/10/2026-10-19.1.record.md#turn-17). The initial stewardship captures use Chromium at 1600 × 1000; later investigations name their viewport sizes below. These record the code and gestures on this date; the current product contract remains in the Explorer design.
+Historical visual evidence captured from the local build during the [stewardship work](../2026-10-19.1.record.md#turn-17). The initial stewardship captures use Chromium at 1600 × 1000; later investigations name their viewport sizes below. These record the code and gestures on this date; the current product contract remains in the Explorer design.
 
 ## Card ownership and type-reference gestures
 
@@ -56,7 +56,7 @@ The following are proposed geometry only, retaining the existing panel actions s
 - [Full reading surface at 390 × 844](inspection-prototype-sheet-390x844.png): the reader covers the viewport instead of being clipped by the map's narrow parent; the existing close action returns to the exploration. This makes the document readable but does not repair the underlying narrow-screen map/navigation layout.
 - [Full reading surface at 844 × 390](inspection-prototype-sheet-844x390.png): a smaller header/footer padding and one action row leave 273 pixels for document scrolling, without shrinking the text.
 
-In [Turn 21](../../ChatHistory/2026/10/2026-10-19.1.record.md#turn-21), the owner chose covering part of the unchanged canvas over reserving a column. The reserved-column study remains comparison evidence, not the selected design. A legible overlay at narrow dimensions still needs implementation; these pictures do not establish a responsive product.
+In [Turn 21](../2026-10-19.1.record.md#turn-21), the owner chose covering part of the unchanged canvas over reserving a column. The reserved-column study remains comparison evidence, not the selected design. A legible overlay at narrow dimensions still needs implementation; these pictures do not establish a responsive product.
 
 The final pair tests the old footer's meaning from a real 3D sphere click:
 

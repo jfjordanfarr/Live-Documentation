@@ -2,7 +2,7 @@
 
 _Written 2026-09-28, late evening, after the owner's verdict on [board-file.md](board-file.md) ("Everything else, to me, seems to rock!"), and revised the same evening after their answers to its four forks. A proposal, not a decision, and nothing is built. It is the fifth and last of the growths the vision's step 3 lists: what a person declares about an estate, in one small file._
 
-_Built the same night. The design as built is [boards.mdmd.md](../../../.mdmd/layer-3/boards.mdmd.md); this file stays as the record of the proposal and the owner's answers._
+_Built the same night. The design as built is [boards.mdmd.md](../../../../../../.mdmd/layer-3/boards.mdmd.md); this file stays as the record of the proposal and the owner's answers._
 
 ## The family resemblance
 

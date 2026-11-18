@@ -11,7 +11,7 @@
 Vitest cases for the count of connections drawn against the order: a ring of three files ranked by `rankBranches`, its one returning reference counted once for the picture and at both of its files, a file's own reference never counted; a returning pair line counted by its links and a return whose rows are hidden left out; and the two strengths at their boundary.
 
 ### Notes
-Written with the module on 2026-11-15 ([Turn 1](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)). The ring is the estate's shape in miniature, a uses b uses c uses a, with an outsider d and a self-reference beside it; provider-first it stands a, c, b, so a's use of b is the reference the ranking reads backward.
+Written with the module on 2026-11-15 ([Turn 1](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-1)). The ring is the estate's shape in miniature, a uses b uses c uses a, with an outsider d and a self-reference beside it; provider-first it stands a, c, b, so a's use of b is the reference the ranking reads backward.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

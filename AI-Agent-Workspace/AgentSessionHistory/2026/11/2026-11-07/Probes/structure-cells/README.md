@@ -1,6 +1,6 @@
 # The instruments of the bag of cells in Structure, November 7
 
-_Status: the instruments a builder used on 2026-11-07 and 8 to measure the 3D Local Map's Structure layout drawn as a bag of cells, kept so that the measurements can be run again. The numbers and pictures they produced are in [the structure-cells pictures](../../../Screenshots/2026-11-07/structure-cells/README.md)._
+_Status: the instruments a builder used on 2026-11-07 and 8 to measure the 3D Local Map's Structure layout drawn as a bag of cells, kept so that the measurements can be run again. The numbers and pictures they produced are in [the structure-cells pictures](../../Screenshots/structure-cells/README.md)._
 
 Each script runs from the repository root with `npx tsx`. The browser scripts drive a private headless Chromium (Playwright's) against a served bundle on `PORT` (8912 by default): build it (`npm run build`, `npm run live-docs:visualize`, the estate sample's `live-docs:visualize:estate`) and serve it (`npx http-server dist/explorer -p 8912 -c-1 --silent`). Group Wrappers and the hops are set as saved Tuning choices, the background search off. To compare two commits' pictures, serve the older commit's bundle on the same port, take the same pictures, and compare the files byte for byte (`cmp`).
 

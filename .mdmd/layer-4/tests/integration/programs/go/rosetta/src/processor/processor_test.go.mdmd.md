@@ -11,7 +11,7 @@
 Unit tests for the Go Rosetta processor package. Part of the polyglot Rosetta Stone fixture suite.
 
 ### Notes
-Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Uses Go's idiomatic `_test.go` suffix in the same package. Required fix to go.ts heuristic to not skip test files in `appliesTo`.
+Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-16/2026-01-16.1.md). Uses Go's idiomatic `_test.go` suffix in the same package. Required fix to go.ts heuristic to not skip test files in `appliesTo`.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-Runs the Live Docs generator across the curated polyglot fixture workspaces so we can diff the markdown produced for each language and guard the adapter registry against regressions ([C# adapter + polyglot integration](../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-12.SUMMARIZED.md#turn-11-build-the-c-adapter--polyglot-test-lines-2061-2300)).
+Runs the Live Docs generator across the curated polyglot fixture workspaces so we can diff the markdown produced for each language and guard the adapter registry against regressions ([C# adapter + polyglot integration](../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/Summarized/2025-11-12.SUMMARIZED.md#turn-11-build-the-c-adapter--polyglot-test-lines-2061-2300)).
 
 ### Notes
-- Expanded iteratively as new adapters landed—first adding Java coverage, then layering in the rest of the Roslyn-era fixtures—so the suite snapshots representative markdown for every supported language ([Java adapter expansion](../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-13.SUMMARIZED.md#turn-05-extend-polyglot-integration-test-lines-901-1020)).
+- Expanded iteratively as new adapters landed—first adding Java coverage, then layering in the rest of the Roslyn-era fixtures—so the suite snapshots representative markdown for every supported language ([Java adapter expansion](../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/Summarized/2025-11-13.SUMMARIZED.md#turn-05-extend-polyglot-integration-test-lines-901-1020)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

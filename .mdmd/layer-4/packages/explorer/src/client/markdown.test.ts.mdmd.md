@@ -11,7 +11,7 @@
 Protects the reader's heading-anchor contract and separation of fenced code from document structure. Literal expected HTML and IDs verify that bundled section links can reach the heading they name.
 
 ### Notes
-Originated in the [October 20 inspection work](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-2), when preserving a bundled-document fragment exposed the reader's incompatible slugging. The real configuration provenance link names `turn-19-config--schema-hardening-lines-3561-3760`; collapsing its two hyphens made the reader silently return to the document top.
+Originated in the [October 20 inspection work](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-20/2026-10-20.1.record.md#turn-2), when preserving a bundled-document fragment exposed the reader's incompatible slugging. The real configuration provenance link names `turn-19-config--schema-hardening-lines-3561-3760`; collapsing its two hyphens made the reader silently return to the document top.
 
 Cases cover punctuation, duplicate names colliding with numbered names, independent render calls, Unicode, inline markup, custom link handlers and display-level clamping. Expectations are literal strings rather than values computed by the slugger under test.
 

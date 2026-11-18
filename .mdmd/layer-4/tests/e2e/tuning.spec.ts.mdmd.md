@@ -11,11 +11,11 @@
 Checks the Explorer's Tuning block in the built page at 1280×800, the size the remediation checklist names: what a person can find, read and use there.
 
 ### Notes
-- Written on 2026-10-30 with the remediation of the Tuning block. Its first check is that every control's sentence reaches the page as the control's and its label's tooltip and as an `aria-describedby` description that is drawn nowhere and stands outside the label, so that the sentence never joins the control's accessible name ([the owner's rule of that day](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md#turn-3)).
+- Written on 2026-10-30 with the remediation of the Tuning block. Its first check is that every control's sentence reaches the page as the control's and its label's tooltip and as an `aria-describedby` description that is drawn nowhere and stands outside the label, so that the sentence never joins the control's accessible name ([the owner's rule of that day](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-30/2026-10-30.1.record.md#turn-3)).
 - Its second check is the 3D layout's grouping of 2026-10-30: three groups named Forces, Spacing and Appearance, each open, holding exactly the levers listed in `SPATIAL_GROUPS` in that order and no lever left outside them, and a lever that still moves its readout. It runs over the estate sample, whose 3D picture settles in seconds where this repository's takes about twenty.
 - Its third check is the rest of that day's remediation: the legend stands before Tuning in the sidebar, and the Export control, which read at 16 pixels beside the block's 11, now has the labels' and selects' type size, all three inheriting the one size the block sets.
 
-October 31 added a fourth 3D group, Discovery, with Hops Shown and Reveal Frames, and History a Changed Files select, bringing the inventory to 46 controls at that time ([Turn 4 of the October 31 record](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-4) and [Turn 8](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-8)).
+October 31 added a fourth 3D group, Discovery, with Hops Shown and Reveal Frames, and History a Changed Files select, bringing the inventory to 46 controls at that time ([Turn 4 of the October 31 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-31/2026-10-31.1.record.md#turn-4) and [Turn 8](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-31/2026-10-31.1.record.md#turn-8)).
 
 Group Separation joined Forces on November 2, bringing the complete Tuning inventory to 47; the browser checks cover its accessible description and grouping alongside the existing controls. The toolbar’s separate Hops shown selector shares the same setting and is covered by the exploration journey tests.
 
@@ -25,13 +25,13 @@ Text Resistance and Control Resistance brought the inventory to 52 on November 5
 
 Since 2026-11-05 the Tuning block holds one control more, the Group Wrappers select, so the count is one higher ([the experiment](../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#competing-layout-preferences)).
 
-Name Growth brought the count to 54 on [Turn 11](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-11), after Group Wrappers made it 53.
+Name Growth brought the count to 54 on [Turn 11](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-05/2026-11-05.1.record.md#turn-11), after Group Wrappers made it 53.
 
-The directory shells, merged on November 6 (experiment 2 of [Turn 11](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-11)), add Shell Depth between Hops Shown and Reveal Frames in Discovery, and the inventory counts 55.
+The directory shells, merged on November 6 (experiment 2 of [Turn 11](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-05/2026-11-05.1.record.md#turn-11)), add Shell Depth between Hops Shown and Reveal Frames in Discovery, and the inventory counts 55.
 
-Descriptions Zoomed Out, on 2026-11-15 ([Turn 1 of the November 15 record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)), adds one to the inventory: 63, with the closed directory's Skin's Shape and Cells' Colour of the same day.
+Descriptions Zoomed Out, on 2026-11-15 ([Turn 1 of the November 15 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-1)), adds one to the inventory: 63, with the closed directory's Skin's Shape and Cells' Colour of the same day.
 
-Return Cost on 2026-11-16, then Palette and Marbles in a group of their own, Colour, on 2026-11-17 ([Turns 5](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-16.1.record.md#turn-5) and [9 of the November 16 record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-16.1.record.md#turn-9)), and Hidden Files in the 2D layout group the same day (the trial of cells in place of a drawn directory's "+2 files", [Turn 6](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-16.1.record.md#turn-6)) bring the inventory to 67.
+Return Cost on 2026-11-16, then Palette and Marbles in a group of their own, Colour, on 2026-11-17 ([Turns 5](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-16/2026-11-16.1.record.md#turn-5) and [9 of the November 16 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-16/2026-11-16.1.record.md#turn-9)), and Hidden Files in the 2D layout group the same day (the trial of cells in place of a drawn directory's "+2 files", [Turn 6](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-16/2026-11-16.1.record.md#turn-6)) bring the inventory to 67.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

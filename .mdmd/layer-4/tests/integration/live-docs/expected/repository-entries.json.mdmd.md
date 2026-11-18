@@ -11,7 +11,7 @@
 The hand's reading of this repository's own entry points, with the reasons as the docs write them, and of what should be reached: the expectation `repository-entries.test.ts` compares the committed docs against.
 
 ### Notes
-- Written by hand on 2026-10-15 from the manifests' scripts, `bin` and `main`, the configuration's `entryPoints` and the kinds of file a tool reads ([Turn 4](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-15.1.record.md#turn-4)); tests are entries by their archetype and are not listed. A doc of this repository's own code with an `Entry` line this list does not name is a finding, in the tool or in the hand; when the code changes, this list changes by a reading, never by copying the tool's output.
+- Written by hand on 2026-10-15 from the manifests' scripts, `bin` and `main`, the configuration's `entryPoints` and the kinds of file a tool reads ([Turn 4](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-15/2026-10-15.1.record.md#turn-4)); tests are entries by their archetype and are not listed. A doc of this repository's own code with an `Entry` line this list does not name is a finding, in the tool or in the hand; when the code changes, this list changes by a reading, never by copying the tool's output.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

@@ -15,9 +15,9 @@ The disclosure opens in the browser’s top layer at viewport text size, so it s
 
 Hover or keyboard focus previews an enclosure around currently drawn cards and closed-directory boxes only; it makes no claim to show every file in that ancestor. Escape and outside clicks dismiss the disclosure and remove its preview. The panel positions itself beside its opener within the viewport, with focus on the nearest ancestor when opened.
 
-These ancestor buttons are explicit Open commands. Ordinary directory names and bodies elsewhere inspect evidence under the [October 19 accepted grammar](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-19.1.record.md#turn-24), resumed in [October 20, Turn 2](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-2). The controller captures an existing label or box for the opened directory when one is visible, so opening it can preserve its screen position without giving this popover its own navigation policy.
+These ancestor buttons are explicit Open commands. Ordinary directory names and bodies elsewhere inspect evidence under the [October 19 accepted grammar](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-19/2026-10-19.1.record.md#turn-24), resumed in [October 20, Turn 2](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-20/2026-10-20.1.record.md#turn-2). The controller captures an existing label or box for the opened directory when one is visible, so opening it can preserve its screen position without giving this popover its own navigation policy.
 
-Introduced for the owner’s [October 14 pin-management request](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-11--pin-management-approved-ancestor-disclosure-and-directory-hubs).
+Introduced for the owner’s [October 14 pin-management request](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-13/2026-10-13.1.record.md#turn-11--pin-management-approved-ancestor-disclosure-and-directory-hubs).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

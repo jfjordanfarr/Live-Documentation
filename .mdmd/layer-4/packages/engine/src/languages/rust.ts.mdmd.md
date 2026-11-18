@@ -11,7 +11,7 @@
 Provides Rust-specific syntax configuration implementing `LanguageSyntax`. Defines comment delimiters (`//`, `/* */`), string delimiters (`"`, `r#"..."#`), and a blocklist of common Rust identifiers (`self`, `result`, `err`, etc.).
 
 ### Notes
-Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-29.1.md) — raw string literal syntax (`r#"..."#`) is partially supported via regex; deep nesting of `#` delimiters requires tree-sitter for accuracy.
+Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-29/2026-01-29.1.md) — raw string literal syntax (`r#"..."#`) is partially supported via regex; deep nesting of `#` delimiters requires tree-sitter for accuracy.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

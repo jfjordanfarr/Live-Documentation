@@ -13,8 +13,8 @@ Checks immutable pin changes, wildcard file retention, symbol connection visibil
 
 ### Notes
 
-- Originated with the March 23 continuous pin model. Moved alongside the shared module during [view consolidation](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-12.1.record.md#turn-4); tests of the retired hop-label renderer and Membrane expansion helpers were removed with those consumers. Legacy hop indices still round-trip through serialization.
-- `pressSymbol` (2026-10-15, [Turn 10](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-10)): the whole file narrowed to the symbol pressed, the next added, a pressed one released, the last released leaving the file whole, a card click pinning the whole file again, and a symbol of an unpinned file pinned alone.
+- Originated with the March 23 continuous pin model. Moved alongside the shared module during [view consolidation](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-12/2026-10-12.1.record.md#turn-4); tests of the retired hop-label renderer and Membrane expansion helpers were removed with those consumers. Legacy hop indices still round-trip through serialization.
+- `pressSymbol` (2026-10-15, [Turn 10](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-14/2026-10-14.1.record.md#turn-10)): the whole file narrowed to the symbol pressed, the next added, a pressed one released, the last released leaving the file whole, a card click pinning the whole file again, and a symbol of an unpinned file pinned alone.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

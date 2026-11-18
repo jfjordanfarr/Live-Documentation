@@ -1,6 +1,6 @@
 # October 16, 2026: discovery reads every suffix anywhere, and C and C++ by the grammar
 
-Pictures of the built Explorer after the pass the owner gave the go on [Turn 10 of the October 15 session](../../ChatHistory/2026/10/2026-10-15.1.record.md#turn-10): the shipped discovery defaults became every file an adapter can read, anywhere, with an `exclude` option and this repository excluding its agent workspace; the C and C++ adapter was rewritten over the tree-sitter grammar with its include rule chosen by measurement against scip-clang; and the Local Map's card stopped counting its internals row among the hidden symbols. Taken over this repository's own bundle, served from `dist/explorer`.
+Pictures of the built Explorer after the pass the owner gave the go on [Turn 10 of the October 15 session](../../2026-10-15/2026-10-15.1.record.md#turn-10): the shipped discovery defaults became every file an adapter can read, anywhere, with an `exclude` option and this repository excluding its agent workspace; the C and C++ adapter was rewritten over the tree-sitter grammar with its include rule chosen by measurement against scip-clang; and the Local Map's card stopped counting its internals row among the hidden symbols. Taken over this repository's own bundle, served from `dist/explorer`.
 
 ## The suffix-anywhere defaults, the C++ sample, and the card's count
 
@@ -16,7 +16,7 @@ By eye: the tooling group holds the root's files; the test cards carry no reveal
 
 ## The wires keep their elements, and the search stays with the view
 
-Pictures of the built Explorer after the two changes the owner gave the go on at [Turn 15](../../ChatHistory/2026/10/2026-10-15.1.record.md#turn-15): the wires' elements kept by key and their geometry written in place every frame of a move, and the Local Map's render owed while another view is shown with the search paused meanwhile. Taken over this repository's bundle on the deck's retained chain scope (four files of the Explorer's client pinned whole, 65 cards, 418 wires), the move slowed from 450 ms to 1.2 s so that three frames of it could be taken; the continuing search off, so that the frames are the one move's.
+Pictures of the built Explorer after the two changes the owner gave the go on at [Turn 15](../../2026-10-15/2026-10-15.1.record.md#turn-15): the wires' elements kept by key and their geometry written in place every frame of a move, and the Local Map's render owed while another view is shown with the search paused meanwhile. Taken over this repository's bundle on the deck's retained chain scope (four files of the Explorer's client pinned whole, 65 cards, 418 wires), the move slowed from 450 ms to 1.2 s so that three frames of it could be taken; the continuing search off, so that the frames are the one move's.
 
 | What is shown | Picture |
 | --- | --- |
@@ -28,11 +28,11 @@ Pictures of the built Explorer after the two changes the owner gave the go on at
 | Knowledge Sources shown meanwhile: the search is paused behind it, not running | [06-knowledge-sources-meanwhile.png](retained-wires/06-knowledge-sources-meanwhile.png) |
 | Back on the map: the picture that stood, drawn by no one in between; the script compared the map's pixels after this return and after a second one byte for byte and found them identical | [07-back-on-the-map.png](retained-wires/07-back-on-the-map.png) |
 
-By eye: in every frame the wires meet their pins, the laces stay cut by their cards' edges, and the bundles' shared runs stay beneath their wires; the frames differ from the morning's only in how many of them there are (a frame's callback 41 to 11.5 ms on this scope, [the probe](../../Probes/2026-10-16/explorer-performance/README.md#after-the-two-changes)). The first frames taken had opened a directory that moved the picture by a pixel, which proved nothing, and were replaced.
+By eye: in every frame the wires meet their pins, the laces stay cut by their cards' edges, and the bundles' shared runs stay beneath their wires; the frames differ from the morning's only in how many of them there are (a frame's callback 41 to 11.5 ms on this scope, [the probe](../Probes/explorer-performance/README.md#after-the-two-changes)). The first frames taken had opened a directory that moved the picture by a pixel, which proved nothing, and were replaced.
 
 ## The manifests of four more ecosystems as Live Docs
 
-Pictures of the built Explorer after the manifest adapters landed ([Turn 3 of the October 16 session](../../ChatHistory/2026/10/2026-10-16.1.record.md#turn-3)): `Cargo.toml`, `pyproject.toml`, `go.mod` and `pom.xml` read as Live Docs with the package each names, what it stands on and the files its targets, scripts or main class start. Taken over this repository's own bundle, served from `dist/explorer` as the gate built it, at the addresses the session's report links.
+Pictures of the built Explorer after the manifest adapters landed ([Turn 3 of the October 16 session](../2026-10-16.1.record.md#turn-3)): `Cargo.toml`, `pyproject.toml`, `go.mod` and `pom.xml` read as Live Docs with the package each names, what it stands on and the files its targets, scripts or main class start. Taken over this repository's own bundle, served from `dist/explorer` as the gate built it, at the addresses the session's report links.
 
 | What is shown | Picture |
 | --- | --- |
@@ -60,7 +60,7 @@ By eye: the written alphas read as written now, and none looks too strong to me 
 
 ## An asset is a binary file: what the Local Map shows now
 
-Pictures after the asset rule of the evening ([Turn 4 of the October 16 session](../../ChatHistory/2026/10/2026-10-16.1.record.md#turn-4)), the owner's line "The dividing line is plaintext/near-plain-text versus binary." Under the fixtures-era rule every file without a code extension under a sample root was an asset and hidden by default; now a text file takes the role it would anywhere, and the pictures the samples give changed accordingly. Taken over this repository's own bundle at 1600 by 1000.
+Pictures after the asset rule of the evening ([Turn 4 of the October 16 session](../2026-10-16.1.record.md#turn-4)), the owner's line "The dividing line is plaintext/near-plain-text versus binary." Under the fixtures-era rule every file without a code extension under a sample root was an asset and hidden by default; now a text file takes the role it would anywhere, and the pictures the samples give changed accordingly. Taken over this repository's own bundle at 1600 by 1000.
 
 | What is shown | Picture |
 | --- | --- |
@@ -69,7 +69,7 @@ Pictures after the asset rule of the evening ([Turn 4 of the October 16 session]
 
 ## PowerShell read by a grammar of our own
 
-Pictures of the rollout sample program, the one the PowerShell adapter is measured on, after the adapter moved to the tree-sitter grammar the engine builds itself ([Turn 4 of the October 16 session](../../ChatHistory/2026/10/2026-10-16.1.record.md#turn-4)). Taken over this repository's own bundle at 1600 by 1000.
+Pictures of the rollout sample program, the one the PowerShell adapter is measured on, after the adapter moved to the tree-sitter grammar the engine builds itself ([Turn 4 of the October 16 session](../2026-10-16.1.record.md#turn-4)). Taken over this repository's own bundle at 1600 by 1000.
 
 | What is shown | Picture |
 | --- | --- |

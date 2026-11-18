@@ -1,6 +1,6 @@
 # The instruments of the shells' second round, November 6
 
-_Status: the instruments a builder used on 2026-11-06 to build the 3D shells' bodies from the leaves, kept so that the measurements can be run again. The numbers and pictures they produced are in [the shell-leaves pictures](../../../Screenshots/2026-11-06/shell-leaves/README.md)._
+_Status: the instruments a builder used on 2026-11-06 to build the 3D shells' bodies from the leaves, kept so that the measurements can be run again. The numbers and pictures they produced are in [the shell-leaves pictures](../../Screenshots/shell-leaves/README.md)._
 
 Each script runs from the repository root with `npx tsx`. The browser script drives a private headless Chromium (Playwright's) against a served bundle: build it (`npm run build`, `npm run live-docs:visualize`, the samples' `visualize` scripts) and serve it (`npx http-server dist/explorer -p 8912 -c-1 --silent`). The T3 sample's bundle is a rebuildable output kept outside the repository; to look at it, put its `explorer-data.json` beside a copy of the estate sample's `index.html` and `static` under `dist/explorer/samples/t3-code/`.
 

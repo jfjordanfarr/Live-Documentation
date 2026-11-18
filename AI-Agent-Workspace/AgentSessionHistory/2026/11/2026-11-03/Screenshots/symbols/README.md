@@ -1,6 +1,6 @@
 # Exact symbols and search arrival
 
-Historical Explorer review, November 3, 2026, following the repairs authorised in [Turn 2](../../../ChatHistory/2026/11/2026-11-03.1.record.md#turn-2). Captured in standalone Chromium at 1280×800 from the built Explorer on the owner's existing port 8900. The root inspected all three pictures. The layout used its normal continuing search, not a frozen test-only layout.
+Historical Explorer review, November 3, 2026, following the repairs authorised in [Turn 2](../../2026-11-03.1.record.md#turn-2). Captured in standalone Chromium at 1280×800 from the built Explorer on the owner's existing port 8900. The root inspected all three pictures. The layout used its normal continuing search, not a frozen test-only layout.
 
 | Picture | Journey and evidence |
 | --- | --- |

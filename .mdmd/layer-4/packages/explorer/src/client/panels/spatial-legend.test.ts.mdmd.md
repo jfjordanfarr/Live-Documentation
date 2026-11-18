@@ -8,7 +8,7 @@
 
 ## Authored
 ### Purpose
-The unit test of the 3D Local Map's key: that its rows name only what the picture draws. The key was found untruthful on October 23 (finding 7: no direction, no fading, "Width: references" in a structure layout drawing no references) and made to follow what is drawn on 2026-10-30, when the rows became a pure function the view and this test share; see [the day's record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md#turn-3).
+The unit test of the 3D Local Map's key: that its rows name only what the picture draws. The key was found untruthful on October 23 (finding 7: no direction, no fading, "Width: references" in a structure layout drawing no references) and made to follow what is drawn on 2026-10-30, when the rows became a pure function the view and this test share; see [the day's record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-30/2026-10-30.1.record.md#turn-3).
 
 ### Notes
 - Two cases: a plain connections picture, where the kinds, the size rule and the wires' width are named and nothing else (the direction row of 2026-10-30 went with the wires' colour on 2026-10-31); and a structure picture with a path and fading, where the folders' size rule, the path, the fading and containment join them. The references rows vanish when no reference is drawn, which the structure layout does until a hover, a pin or a path asks for them.
@@ -19,7 +19,7 @@ Since 2026-11-05 a case checks the Wrapped group row: after the Ring row, and on
 
 Since 2026-11-05 a case checks the Shell row stands after the wrapped group's, only while a shell is drawn.
 
-Since 2026-11-16 ([Turn 10 of the November 15 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-10)) a fifth case holds the legend's rule over every row the key can build, every kind the map colours and one it does not know, every kind of link and everything drawn: beside a sample stand at most two words (in the kinds' row, one for each kind), with no colon, digit or punctuation, and every row has a sentence of its own for its tooltip. Run over the rows as they stood at `d54755f1` it failed 27 times: nine rows of kinds, seven labels of three to eleven words, and no sentence anywhere. The four earlier cases read the new words and the kinds as one row; the size row's two sentences are read in the second.
+Since 2026-11-16 ([Turn 10 of the November 15 record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-10)) a fifth case holds the legend's rule over every row the key can build, every kind the map colours and one it does not know, every kind of link and everything drawn: beside a sample stand at most two words (in the kinds' row, one for each kind), with no colon, digit or punctuation, and every row has a sentence of its own for its tooltip. Run over the rows as they stood at `d54755f1` it failed 27 times: nine rows of kinds, seven labels of three to eleven words, and no sentence anywhere. The four earlier cases read the new words and the kinds as one row; the size row's two sentences are read in the second.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

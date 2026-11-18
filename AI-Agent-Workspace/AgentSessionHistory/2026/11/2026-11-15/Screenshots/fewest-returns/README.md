@@ -1,6 +1,6 @@
 # The fewest returns: pictures before and after
 
-_Historical evidence, taken 2026-11-16 for the round of [Turn 5 of the November 15 record](../../../ChatHistory/2026/11/2026-11-15.1.record.md#turn-5): a cycle's files stand in the order that returns the fewest references ([the decision](../../../../.mdmd/layer-3/architectural-decisions.mdmd.md))._
+_Historical evidence, taken 2026-11-16 for the round of [Turn 5 of the November 15 record](../../2026-11-15.1.record.md#turn-5): a cycle's files stand in the order that returns the fewest references ([the decision](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md))._
 
 Each file was opened alone in the 2D Local Map (`/?view=local&node=<file>`) at 1440 by 900, with the page's default tuning, from the bundle built at commit `3f734433` (before) and at the round's change (after). "Arrival" is the picture the page first settles on; "whole" is the same picture after the Fit control. The page's own count of the returns it draws is in brackets.
 

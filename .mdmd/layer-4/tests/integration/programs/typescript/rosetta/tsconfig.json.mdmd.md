@@ -12,7 +12,7 @@
 TypeScript compiler configuration for the `rosetta` benchmark fixture — a curated set of TypeScript patterns (classes, interfaces, type aliases, re-exports) designed to cover edge cases in symbol extraction.
 
 ### Notes
-Origin: [2026-01-26.1.SUMMARIZED.md](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/Summarized/2026-01-26.1.SUMMARIZED.md) — named for "Rosetta Stone" as it tests cross-referencing fidelity. Used to validate SCIP oracle accuracy before Go/C# expansion.
+Origin: [2026-01-26.1.SUMMARIZED.md](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/Summarized/2026-01-26.1.SUMMARIZED.md) — named for "Rosetta Stone" as it tests cross-referencing fidelity. Used to validate SCIP oracle accuracy before Go/C# expansion.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

@@ -13,7 +13,7 @@ Loads the tree-sitter grammars the adapters parse with: one `web-tree-sitter` pa
 ### Notes
 - The runtime is `web-tree-sitter`; the bundled grammar binaries come from `@vscode/tree-sitter-wasm`, whose own JavaScript entry point cannot be required from Node. The `SyntaxNode` alias exists because the runtime's `Node` collides with the DOM type.
 - The engine's own grammars arrived on 2026-10-16 with PowerShell's, built by `packages/engine/grammars/powershell/build.sh` from the upstream grammar at a pinned commit and a patch upstream has not yet taken ([the decision](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#powershell-read-by-a-grammar-of-our-own-measured-against-powershells-own-parser-recorded-2026-10-16)). The choice is by file: deleting a grammar's folder, once upstream ships the fix, returns it to the bundle. The folder is found from this module's place, three folders below the package root in `src` and in `dist` alike, and the package's `files` carry it.
-- A `SyntaxTree` alias that nothing used was deleted on 2026-10-08 in [the dead code sweep](../../../../../../../AI-Agent-Workspace/Probes/2026-10-08/dead-code-sweep.md); the runtime's `Tree` is the return type of `parseSource`.
+- A `SyntaxTree` alias that nothing used was deleted on 2026-10-08 in [the dead code sweep](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-08/Probes/dead-code-sweep.md); the runtime's `Tree` is the return type of `parseSource`.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

@@ -13,7 +13,7 @@ Core processing logic for the Go Rosetta Stone benchmark, transforming models us
 ### Notes
 - Imports from models, helpers, and types packages to exercise multi-package dependency detection.
 - Part of the canonical Rosetta Stone program structure for cross-language adapter comparison.
-- Created 2026-01-15; see [2026-01-15.1.md](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-15.1.md) for context.
+- Created 2026-01-15; see [2026-01-15.1.md](../../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-15/2026-01-15.1.md) for context.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

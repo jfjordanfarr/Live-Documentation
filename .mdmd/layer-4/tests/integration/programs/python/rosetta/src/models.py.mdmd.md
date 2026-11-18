@@ -11,7 +11,7 @@
 Data models for the Python Rosetta Stone fixture. Defines Record and Report dataclasses.
 
 ### Notes
-See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Multi-consumer module imported by main.py and processor.py.
+See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-14/2026-01-14.1.md). Multi-consumer module imported by main.py and processor.py.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

@@ -11,7 +11,7 @@
 Type definitions header for the C Rosetta Stone fixture.
 
 ### Notes
-See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Contains struct typedefs included by other modules.
+See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-14/2026-01-14.1.md). Contains struct typedefs included by other modules.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

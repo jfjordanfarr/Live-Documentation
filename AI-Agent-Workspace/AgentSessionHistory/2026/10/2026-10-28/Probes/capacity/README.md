@@ -1,6 +1,6 @@
 # How much memory the 3D Local Map asks for, per file and per link
 
-Historical measurement, 2026-10-28, taken by the root agent for the owner's question in [Turn 3 of the October 28 session](../../../ChatHistory/2026/10/2026-10-28.1.record.md#turn-3): at what size could no browser render the whole 3D graph, and can a regression line say where memory runs out. It records what the code of this date costs; it decides nothing. The structured numbers are in [capacity-measurements.json](capacity-measurements.json); the scripts live in the ignored folder `AI-Agent-Workspace/tmp/capacity-2026-10-28/` and read the built bundles only.
+Historical measurement, 2026-10-28, taken by the root agent for the owner's question in [Turn 3 of the October 28 session](../../2026-10-28.1.record.md#turn-3): at what size could no browser render the whole 3D graph, and can a regression line say where memory runs out. It records what the code of this date costs; it decides nothing. The structured numbers are in [capacity-measurements.json](capacity-measurements.json); the scripts live in the ignored folder `AI-Agent-Workspace/tmp/capacity-2026-10-28/` and read the built bundles only.
 
 ## What was measured
 
@@ -48,4 +48,4 @@ Before the resident picture, the load itself peaks: in Node the text and the par
 
 ## What this does not say
 
-Time is the nearer wall than memory. One exact evaluation of the field at 21,720 spheres took 2.2 s on this machine and an octree evaluation about a quarter of a second (the morning's measurement in [the session record](../../../ChatHistory/2026/10/2026-10-28.1.record.md#planning-checkpoint-what-the-3d-repair-would-be)); at 100,000 spheres an octree evaluation would take seconds, and a picture at that size would settle at well under a frame a second unless an evaluation were spread across frames. Where a machine's memory ends is a prediction from this line and the browser's reported limit; where its patience ends is a judgment. How the software should behave at either is the owner's question, open at the time of this record.
+Time is the nearer wall than memory. One exact evaluation of the field at 21,720 spheres took 2.2 s on this machine and an octree evaluation about a quarter of a second (the morning's measurement in [the session record](../../2026-10-28.1.record.md#planning-checkpoint-what-the-3d-repair-would-be)); at 100,000 spheres an octree evaluation would take seconds, and a picture at that size would settle at well under a frame a second unless an evaluation were spread across frames. Where a machine's memory ends is a prediction from this line and the browser's reported limit; where its patience ends is a judgment. How the software should behave at either is the owner's question, open at the time of this record.

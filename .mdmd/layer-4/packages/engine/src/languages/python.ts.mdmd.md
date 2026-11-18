@@ -11,7 +11,7 @@
 Provides Python-specific syntax configuration implementing `LanguageSyntax`. Defines comment delimiters (`#`), string delimiters (`"""`, `'''`, `"`, `'`), and a blocklist of common Python identifiers (`self`, `cls`, `args`, `kwargs`, etc.).
 
 ### Notes
-Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-29.1.md) — triple-quoted strings are stripped first to avoid false partial matches. The regex approach may mishandle raw strings (`r"..."`); tree-sitter integration will resolve edge cases.
+Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-29/2026-01-29.1.md) — triple-quoted strings are stripped first to avoid false partial matches. The regex approach may mishandle raw strings (`r"..."`); tree-sitter integration will resolve edge cases.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

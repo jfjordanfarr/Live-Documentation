@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-Exercises `normalizeLiveDocumentationConfig` so Live Docs tooling respects trimmed overrides, glob dedupe, and slug/archetype settings added during the configuration hardening in [AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md#turn-19-config--schema-hardening-lines-3561-3760](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md#turn-19-config--schema-hardening-lines-3561-3760).
+Exercises `normalizeLiveDocumentationConfig` so Live Docs tooling respects trimmed overrides, glob dedupe, and slug/archetype settings added during the configuration hardening in [AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md#turn-19-config--schema-hardening-lines-3561-3760](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md#turn-19-config--schema-hardening-lines-3561-3760).
 
 ### Notes
-- The default glob is held to every file, `**/*`, since 2026-10-22 ([Turn 8 of the October 21 session](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-8)), and the lists to what a reader handles: `hasReader` by extension in any case or by a manifest's exact name, `isMediaAsset` for images, fonts and recordings and nothing else. Until then it held the default globs to one pattern per readable extension and manifest name.
+- The default glob is held to every file, `**/*`, since 2026-10-22 ([Turn 8 of the October 21 session](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-21/2026-10-21.1.record.md#turn-8)), and the lists to what a reader handles: `hasReader` by extension in any case or by a manifest's exact name, `isMediaAsset` for images, fonts and recordings and nothing else. Until then it held the default globs to one pattern per readable extension and manifest name.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

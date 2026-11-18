@@ -8,7 +8,7 @@
 
 ## Authored
 ### Purpose
-The shadows at the 2D Local Map's frame edges that say the picture continues past them. The frame starts a picture taller than itself at the top like a page rather than cutting both ends, so something has to say that there is more below; this module draws that sign, a fade deepening into each edge the picture crosses and nothing at the edges it does not, from the pure `hiddenEdges` rule of `layout-measure.ts`. It exists so that hidden content is indicated honestly without a scrollbar or a word of instruction, the owner's choice of 2026-10-30 ([Turn 3](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md#turn-3)) for the October 23 review's finding 9.
+The shadows at the 2D Local Map's frame edges that say the picture continues past them. The frame starts a picture taller than itself at the top like a page rather than cutting both ends, so something has to say that there is more below; this module draws that sign, a fade deepening into each edge the picture crosses and nothing at the edges it does not, from the pure `hiddenEdges` rule of `layout-measure.ts`. It exists so that hidden content is indicated honestly without a scrollbar or a word of instruction, the owner's choice of 2026-10-30 ([Turn 3](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-30/2026-10-30.1.record.md#turn-3)) for the October 23 review's finding 9.
 
 ### Notes
 - The element stands inside the view after its layers, untransformed, sized by the controller to the map layer less what the open reader covers, and takes no pointer events; the stylesheet (`local.css`) draws the fades from its `data-above`, `data-below`, `data-left` and `data-right`.

@@ -13,7 +13,7 @@ What the three SlopCop audits check and leave alone: the markdown link audit, th
 
 ### Notes
 - The audits run in `safe:commit` and CI. The markdown audit reads every markdown file in the repository, the chat archive included, and ignores only the scratch folder; the asset audit reads HTML and CSS and knows the Explorer's hashed bundle names and its `static/` root; the symbol audit checks the symbol anchors the Live Docs link to. Each ignore names a fixture that deliberately carries broken links, so that the audit's own tests have something to find.
-- Began on 2025-10-25 when SlopCop was added to the commit chain; last changed on 2026-09-28 when the audit library moved beside its scripts. Gained a Live Doc on 2026-10-16 ([Turn 9 of the October 15 session](../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-15.1.record.md#turn-9)).
+- Began on 2025-10-25 when SlopCop was added to the commit chain; last changed on 2026-09-28 when the audit library moved beside its scripts. Gained a Live Doc on 2026-10-16 ([Turn 9 of the October 15 session](../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-15/2026-10-15.1.record.md#turn-9)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

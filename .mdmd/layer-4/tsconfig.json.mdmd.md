@@ -13,7 +13,7 @@ The root TypeScript project: the shared options, with the sample programs under 
 
 ### Notes
 - Arrived on 2025-11-01 with the first benchmark fixture, which had to be excluded from the root compilation; the exclusion moved with the samples to their present home on 2026-09-27. The packages' own `tsconfig.json` files extend `tsconfig.base.json` directly; this file is for the editor and for `tsc` run at the root.
-- Gained a Live Doc on 2026-10-16 with the suffix-anywhere defaults ([Turn 9 of the October 15 session](../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-15.1.record.md#turn-9)).
+- Gained a Live Doc on 2026-10-16 with the suffix-anywhere defaults ([Turn 9 of the October 15 session](../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-15/2026-10-15.1.record.md#turn-9)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

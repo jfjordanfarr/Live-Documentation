@@ -1,6 +1,6 @@
 # Where the Explorer's time goes: the Local Map's clicks, the continuing search, and the suite
 
-_A probe of October 16, 2026, by the root Claude Code agent (Fable 5.1), after the owner reported that "clicks in certain collapse elements (arrow or name) appears to cause a big delay, especially when chained together" and asked what performance tools the agent has, what other pain points exercising the site finds, and whether the Playwright suite would speed up with the site ([Turn 11 of the October 15 session](../../../ChatHistory/2026/10/2026-10-15.1.record.md#turn-11)). The scripts are disposable and not committed; this record is. Nothing was changed in the product._
+_A probe of October 16, 2026, by the root Claude Code agent (Fable 5.1), after the owner reported that "clicks in certain collapse elements (arrow or name) appears to cause a big delay, especially when chained together" and asked what performance tools the agent has, what other pain points exercising the site finds, and whether the Playwright suite would speed up with the site ([Turn 11 of the October 15 session](../../../2026-10-15/2026-10-15.1.record.md#turn-11)). The scripts are disposable and not committed; this record is. Nothing was changed in the product._
 
 ## Method
 
@@ -83,7 +83,7 @@ Nine tenths of the deck's time is the instrument reading and panning the page; t
 
 ## After the two changes
 
-Built the same evening, by the owner's go at Turn 15 after the judgment of Turn 14 ([the decision](../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#the-local-maps-work-stays-with-the-view-and-the-wires-keep-their-elements-recorded-2026-10-16)): the render owed while the map is not the view shown and the search gated to it, and the wires' elements kept by key and written in place. The same driver, the same bundle otherwise, the same machine:
+Built the same evening, by the owner's go at Turn 15 after the judgment of Turn 14 ([the decision](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#the-local-maps-work-stays-with-the-view-and-the-wires-keep-their-elements-recorded-2026-10-16)): the render owed while the map is not the view shown and the search gated to it, and the wires' elements kept by key and written in place. The same driver, the same bundle otherwise, the same machine:
 
 | | before | after |
 | --- | ---: | ---: |

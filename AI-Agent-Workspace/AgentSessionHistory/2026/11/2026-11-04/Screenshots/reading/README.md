@@ -1,6 +1,6 @@
 # Native portrait reading — November 4, 2026
 
-Current implementation evidence; the full local gate passed. This is root-agent visual judgment, not an owner acceptance record. The [request and implementation record](../../../ChatHistory/2026/11/2026-11-04.1.record.md#turn-2) preserve the portrait preference and the unanswered name-click comparison.
+Current implementation evidence; the full local gate passed. This is root-agent visual judgment, not an owner acceptance record. The [request and implementation record](../../2026-11-04.1.record.md#turn-2) preserve the portrait preference and the unanswered name-click comparison.
 
 The pictures are from the built native 2D map and its explicit reader, using actual repository documentation. The owner’s shared prototype tabs were preserved. Private Chromium sessions were closed after inspection.
 

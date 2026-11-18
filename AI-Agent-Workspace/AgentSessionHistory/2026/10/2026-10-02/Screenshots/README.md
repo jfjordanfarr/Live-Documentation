@@ -1,6 +1,6 @@
 # Explorer pictures, October 2, 2026
 
-_Historical evidence from the built Explorer after the Force Graph focus repair. Captured at 1600×1000 over the repository's 602-file graph. The [session record](../../ChatHistory/2026/10/2026-10-02.1.record.md#turn-2) separates the production repair from the disposable journey experiment._
+_Historical evidence from the built Explorer after the Force Graph focus repair. Captured at 1600×1000 over the repository's 602-file graph. The [session record](../2026-10-02.1.record.md#turn-2) separates the production repair from the disposable journey experiment._
 
 | Capture | What it shows |
 | --- | --- |
@@ -11,16 +11,16 @@ _Historical evidence from the built Explorer after the Force Graph focus repair.
 
 The camera approaches along the current viewing direction; it does not solve collision-free flight through the graph. The projected label identifies the selected file during the approach. Direct pointer/wheel navigation interrupts automatic tracking, and the settled manual camera survives a view round trip. Four Playwright regressions exercise URLs, the actual sphere's identity, search, filtering, resizing, manual return and reduced motion over the estate. A separate pure geometry suite tests the viewing-direction calculation.
 
-The full verification chain passed 998 unit, 49 integration and 73 Playwright tests. The [probe record](../../Probes/2026-10-02/journey.md) contains the experimental docking and routing evidence; those pictures are not changes to the shipped Explorer.
+The full verification chain passed 998 unit, 49 integration and 73 Playwright tests. The [probe record](../Probes/journey.md) contains the experimental docking and routing evidence; those pictures are not changes to the shipped Explorer.
 
 
 ## Native Force Graph check during the live review
 
-[Assets and related documents enabled](native-force-overlays-review.png) was captured read-only through the owner’s port-8899 server during [Turn 7](../../ChatHistory/2026/10/2026-10-02.1.record.md#turn-7). Purple documentation nodes are present in the shipped renderer; the probe omitted that overlay. This is a diagnostic view around `graph.ts`, not a matched recreation of the owner’s whole-graph picture of the older deployed build or proof that every historical reference survived. Browser status was 200 with no page errors. No product source changed for this capture.
+[Assets and related documents enabled](native-force-overlays-review.png) was captured read-only through the owner’s port-8899 server during [Turn 7](../2026-10-02.1.record.md#turn-7). Purple documentation nodes are present in the shipped renderer; the probe omitted that overlay. This is a diagnostic view around `graph.ts`, not a matched recreation of the owner’s whole-graph picture of the older deployed build or proof that every historical reference survived. Browser status was 200 with no page errors. No product source changed for this capture.
 
 ## Native branches and perspective continuity
 
-The [approved native-view pass](../../ChatHistory/2026/10/2026-10-02.1.record.md#turn-8) repairs sample roles and manifest references, extends the existing Local Map, and connects it to the existing Force Graph. These are production views, not the earlier disposable reading-strip probe. Final UI captures use the 609-file repository graph at 1600×1000; the earlier data-only capture uses 606 files.
+The [approved native-view pass](../2026-10-02.1.record.md#turn-8) repairs sample roles and manifest references, extends the existing Local Map, and connects it to the existing Force Graph. These are production views, not the earlier disposable reading-strip probe. Final UI captures use the 609-file repository graph at 1600×1000; the earlier data-only capture uses 606 files.
 
 | Capture | What it shows |
 | --- | --- |

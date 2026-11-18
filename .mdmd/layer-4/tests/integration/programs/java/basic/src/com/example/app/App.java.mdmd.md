@@ -11,8 +11,8 @@
 Entry point class for the `java-basic` polyglot benchmark fixture. Coordinates dataset loading via `Reader`, formatting via `ReportWriter`, and model classes like `Record`, demonstrating Java package-level imports and cross-package dependency resolution.
 
 ### Notes
-- Created on [2025-11-01](../../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-01.md) as part of T060 (curating AST benchmark fixtures), extending the polyglot suite with Java package structure patterns.
-- Java adapter dependency resolution was fixed on [2026-01-13](../../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-13.1.md) by adding `extractPackage()`, `computeSourceRoot()`, and `resolveJavaImport()` functions that convert package names like `com.example.data.Reader` to workspace-relative file paths.
+- Created on [2025-11-01](../../../../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/2025-11-01/2025-11-01.md) as part of T060 (curating AST benchmark fixtures), extending the polyglot suite with Java package structure patterns.
+- Java adapter dependency resolution was fixed on [2026-01-13](../../../../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-13/2026-01-13.1.md) by adding `extractPackage()`, `computeSourceRoot()`, and `resolveJavaImport()` functions that convert package names like `com.example.data.Reader` to workspace-relative file paths.
 - The fixture uses standard Java package conventions (`com.example.app`, `com.example.data`, etc.) to stress-test import path resolution across nested package hierarchies.
 
 ## Generated

@@ -11,7 +11,7 @@
 Data model for the Java Rosetta Stone fixture.
 
 ### Notes
-See [2026-01-14.1.md](../../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Part of the com.rosetta.models package.
+See [2026-01-14.1.md](../../../../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-14/2026-01-14.1.md). Part of the com.rosetta.models package.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

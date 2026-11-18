@@ -13,7 +13,7 @@ Provides a fully vendored GitHub-compatible slugger (function + stateful class) 
 ### Notes
 - Exposes both stateless `slug` helpers and duplicate-tracking `GitHubSlugger` instances, enabling utilities like `slug-heading.ts` and the Live Docs generator to reuse the same behaviour.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-03.md]
 - November 7 anchor-audit confirmed the maintainCase flag and unicode handling stay aligned with GitHub after targeting mis-slugged `COMP-003 – Heuristic Suite` references.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-07.md]
-- `slugText` (2026-10-05) reduces a heading's inline markdown to the text GitHub slugs: links to their words, images to their alt text, code without backticks, emphasis without its delimiters, underscores inside words kept. Both documentation audits slug through it, after the symbol audit rejected a correct link to a decisions-log heading whose `_(Recorded …)_` suffix had entered the raw slug ([the October 5 session](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-05.1.record.md#turn-4)).
+- `slugText` (2026-10-05) reduces a heading's inline markdown to the text GitHub slugs: links to their words, images to their alt text, code without backticks, emphasis without its delimiters, underscores inside words kept. Both documentation audits slug through it, after the symbol audit rejected a correct link to a decisions-log heading whose `_(Recorded …)_` suffix had entered the raw slug ([the October 5 session](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-05/2026-10-05.1.record.md#turn-4)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

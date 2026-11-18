@@ -1,6 +1,6 @@
 # 3D wire and node sizing — October 24, 2026
 
-Historical visual experiment requested in [Turn 9](../../ChatHistory/2026/10/2026-10-24.1.record.md#turn-9) and [Turn 10](../../ChatHistory/2026/10/2026-10-24.1.record.md#turn-10). Chromium, 1600×1000 CSS pixels, DPR 1. The candidate has count-weighted screen-space wires: a 1 CSS-pixel baseline, growing gently to at most three times that for code references. The cache supplied all 640 history commits; these captures show today's graph, 873 files before the default asset filter.
+Historical visual experiment requested in [Turn 9](../2026-10-24.1.record.md#turn-9) and [Turn 10](../2026-10-24.1.record.md#turn-10). Chromium, 1600×1000 CSS pixels, DPR 1. The candidate has count-weighted screen-space wires: a 1 CSS-pixel baseline, growing gently to at most three times that for code references. The cache supplied all 640 history commits; these captures show today's graph, 873 files before the default asset filter.
 
 ## Node comparison
 
@@ -13,7 +13,7 @@ Both treatments use the same settled node positions and the same camera at each 
 | Generator neighbourhood arrival | [Perspective](generator-arrival-perspective.png) | [Constant](generator-arrival-constant.png) |
 | Generator neighbourhood, closer | [Perspective](generator-near-perspective.png) | [Constant](generator-near-constant.png) |
 
-Root's observation: constant-size nodes reveal distant files and prevent near spheres from obscuring large areas of a neighbourhood. When pulled far back, they pile up into a dense cluster. The owner subsequently selected [independent continuous resistance](../../ChatHistory/2026/10/2026-10-24.1.record.md#turn-11) so both endpoints and intermediate treatments can be tried; the temporary comparison was superseded by those public controls.
+Root's observation: constant-size nodes reveal distant files and prevent near spheres from obscuring large areas of a neighbourhood. When pulled far back, they pile up into a dense cluster. The owner subsequently selected [independent continuous resistance](../2026-10-24.1.record.md#turn-11) so both endpoints and intermediate treatments can be tried; the temporary comparison was superseded by those public controls.
 
 ## Wires in motion
 
@@ -33,7 +33,7 @@ The first force comparison used the earlier 873-document bundle, 872 visible fil
 | .025 / .5 / .02 | [Selected balance](connections-forces-middle.png) | Readable groups with room to approach and orbit. |
 | .05 / 1 / .03 | [Strongest candidate](connections-forces-crisp.png) | Too much competition among enlarged spheres and names. |
 
-After comparing force, resistance and label settings, root selected gravity .025, spring .5, tether .02, node resistance .45, wire resistance .9 and thickness .9. The [probe](../../Probes/2026-10-24/connections-tuning/README.md) records alternatives and judgment. Ordinary wires use alpha .16; labels reserve 10px between rectangles and reveal ordinary context at perspective radii 6px/unscoped or 14px/scoped. Root re-viewed the main and estate after the numerical integration repair.
+After comparing force, resistance and label settings, root selected gravity .025, spring .5, tether .02, node resistance .45, wire resistance .9 and thickness .9. The [probe](../Probes/connections-tuning/README.md) records alternatives and judgment. Ordinary wires use alpha .16; labels reserve 10px between rectangles and reveal ordinary context at perspective radii 6px/unscoped or 14px/scoped. Root re-viewed the main and estate after the numerical integration repair.
 
 The same generator neighbourhood and zoom at 1600×1000, with temporary native sphere geometry replacements only:
 
@@ -43,7 +43,7 @@ The same generator neighbourhood and zoom at 1600×1000, with temporary native s
 | 12 segments | [Twelve](generator-detail-12.png) | Selected: smooth enough nearby, with lower completed drawing cost than sixteen. |
 | 16 segments | [Sixteen](generator-detail-16.png) | Small visual gain for substantial extra software-renderer cost. |
 
-These comparisons use the repaired physics and all selected display values; the production sphere setting was then changed to twelve. The [performance findings](../../Probes/2026-10-24/connections-tuning/performance-findings.md) explain why synchronous completed drawing, rather than the earlier `gl.finish` measurement, informed this choice. Adaptive detail was not implemented because separate transparent detail batches would lose global depth order.
+These comparisons use the repaired physics and all selected display values; the production sphere setting was then changed to twelve. The [performance findings](../Probes/connections-tuning/performance-findings.md) explain why synchronous completed drawing, rather than the earlier `gl.finish` measurement, informed this choice. Adaptive detail was not implemented because separate transparent detail batches would lose global depth order.
 
 ## Final production captures
 
@@ -62,15 +62,15 @@ The selected twelve-segment build, with its public defaults and repaired integra
 | Fit recovery, then evidence inspection | [Inspection](connections-estate-inspection.png) |
 | Independent resistance and width controls | [Tuning](connections-estate-tuning.png) |
 
-Root's judgment: the overview's groups remain distinct, middle-distance names are useful without shrinking their text, and the selected neighbourhood remains recognizable through approach, orbit and inspection. The graph still has projected crossings and crowded hubs; this pass does not claim to solve direction or occlusion. The [probe verification](../../Probes/2026-10-24/connections-tuning/README.md#verification-status) records the full gate separately from this visual evidence.
+Root's judgment: the overview's groups remain distinct, middle-distance names are useful without shrinking their text, and the selected neighbourhood remains recognizable through approach, orbit and inspection. The graph still has projected crossings and crowded hubs; this pass does not claim to solve direction or occlusion. The [probe verification](../Probes/connections-tuning/README.md#verification-status) records the full gate separately from this visual evidence.
 
 Final verification passed the complete `safe:commit -- --e2e` chain, including all 206 browser tests, 1,405 unit tests and 113 integration tests. The isolated tree's 58 changed product/source documentation files matched the main workspace exactly; the separate devcontainer changes were preserved outside that verification.
 
 ## Structure sizing reopened
 
-The [Structure probe](../../Probes/2026-10-24/structure-sizing/README.md) follows the owner's [Turns 13–14](../../ChatHistory/2026/10/2026-10-24.1.record.md#turn-13). The [current committed overview](structure-current-overview.png) was captured after switching from Connections to Structure and waiting until still, with fresh settings at 1600×1000, DPR 1. It shows the orange Directory key already present in the sidebar and the large recursive ancestor spheres. This is baseline evidence, not a candidate adopted by the owner. The first probe's subsequent numerical observation failed in its transpiled Playwright helper; the screenshot itself completed before that failure.
+The [Structure probe](../Probes/structure-sizing/README.md) follows the owner's [Turns 13–14](../2026-10-24.1.record.md#turn-13). The [current committed overview](structure-current-overview.png) was captured after switching from Connections to Structure and waiting until still, with fresh settings at 1600×1000, DPR 1. It shows the orange Directory key already present in the sidebar and the large recursive ancestor spheres. This is baseline evidence, not a candidate adopted by the owner. The first probe's subsequent numerical observation failed in its transpiled Playwright helper; the screenshot itself completed before that failure.
 
-All comparisons use fresh settings at 1600×1000 CSS pixels, DPR 1, with the same existing bundle data. “Display only” retains the recursive physics, framing and label placement. “Quieter names” gives deep directory names the file proximity gate while retaining root/top-level landmarks. The two flat sizes have physical radii 4 and 6.35, with the same zoom resistance as files. The [probe findings](../../Probes/2026-10-24/structure-sizing/README.md#findings-and-status) distinguish measured controls from root judgment. These are disposable candidates, not a shipped change.
+All comparisons use fresh settings at 1600×1000 CSS pixels, DPR 1, with the same existing bundle data. “Display only” retains the recursive physics, framing and label placement. “Quieter names” gives deep directory names the file proximity gate while retaining root/top-level landmarks. The two flat sizes have physical radii 4 and 6.35, with the same zoom resistance as files. The [probe findings](../Probes/structure-sizing/README.md#findings-and-status) distinguish measured controls from root judgment. These are disposable candidates, not a shipped change.
 
 ### Repository comparisons
 

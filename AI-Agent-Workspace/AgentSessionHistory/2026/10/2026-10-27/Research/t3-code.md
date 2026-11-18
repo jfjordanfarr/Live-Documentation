@@ -1,6 +1,6 @@
 # T3 Code as an unfamiliar mapping case
 
-Historical investigation dated 2026-10-27, prompted by the owner's [Turn 2](../ChatHistory/2026/10/2026-10-27.1.record.md#turn-2). This is a source review for discussion, not a migration decision, a runtime evaluation or evidence that Live Documentation has mapped T3 successfully.
+Historical investigation dated 2026-10-27, prompted by the owner's [Turn 2](../2026-10-27.1.record.md#turn-2). This is a source review for discussion, not a migration decision, a runtime evaluation or evidence that Live Documentation has mapped T3 successfully.
 
 ## Evidence boundary
 

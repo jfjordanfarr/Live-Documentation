@@ -11,7 +11,7 @@
 RSpec integration tests for the Ruby Rosetta data processing pipeline.
 
 ### Notes
-Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Exercises NON-name-matched test detection through `require_relative` imports of processor and models.
+Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-16/2026-01-16.1.md). Exercises NON-name-matched test detection through `require_relative` imports of processor and models.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

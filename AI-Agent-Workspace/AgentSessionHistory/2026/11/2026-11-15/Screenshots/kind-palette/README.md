@@ -1,6 +1,6 @@
 # A palette for a file's kind that stays off the role colours: a probe, November 16, 2026 (UTC)
 
-_Historical evidence. Taken by the root agent in [the November 15 session](../../../ChatHistory/2026/11/2026-11-15.1.record.md#turn-9), after the owner chose the closed directory's cells in the colours of a file's kind and then asked that their clash with the colours of a connection's role be resolved. These pictures are probes: the directory builder's build of that hour (its branch at `eabe3ddb` with work in progress), served read-only, with the cells' colours replaced by styles the root injected. Nothing here is product code, and the 3D map is not shown._
+_Historical evidence. Taken by the root agent in [the November 15 session](../../2026-11-15.1.record.md#turn-9), after the owner chose the closed directory's cells in the colours of a file's kind and then asked that their clash with the colours of a connection's role be resolved. These pictures are probes: the directory builder's build of that hour (its branch at `eabe3ddb` with work in progress), served read-only, with the cells' colours replaced by styles the root injected. Nothing here is product code, and the 3D map is not shown._
 
 ## What the pictures are
 
@@ -32,6 +32,6 @@ Today's cells are handsome and say two things with the two colours the wires use
 
 ## What the owner saw
 
-Shown the side-by-side picture ([Turn 11](../../../ChatHistory/2026/11/2026-11-15.1.record.md#turn-11)): the probes "do not attempt to make consistent the coloring of these nodes inside the directories in 2D and 3D", where the 3D map holds the older half of the conflict; none shows "a directory with many different types of files (documentation, assets, tests, implementations)", and "We'd need to see that across a ton of views". Of the three: neutral with violet "is the best with respect to understandability of what's inside the directories", and today's blue and green "is the most aesthetically pleasing based on the surrounding screen area". Amber with violet, the root's pick, was named on neither count.
+Shown the side-by-side picture ([Turn 11](../../2026-11-15.1.record.md#turn-11)): the probes "do not attempt to make consistent the coloring of these nodes inside the directories in 2D and 3D", where the 3D map holds the older half of the conflict; none shows "a directory with many different types of files (documentation, assets, tests, implementations)", and "We'd need to see that across a ton of views". Of the three: neutral with violet "is the best with respect to understandability of what's inside the directories", and today's blue and green "is the most aesthetically pleasing based on the surrounding screen area". Amber with violet, the root's pick, was named on neither count.
 
-No palette was built from this probe. The cells landed in the 3D map's colours, and the question is open in [direction](../../../Memory/direction.md#open-with-the-owner).
+No palette was built from this probe. The cells landed in the 3D map's colours, and the question is open in [direction](../../../../../../Memory/direction.md#open-with-the-owner).

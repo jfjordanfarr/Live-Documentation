@@ -1,6 +1,6 @@
 # The pause on switching from 2D to 3D: measured
 
-_Historical record, October 14, 2026, by the root Claude Code agent (Fable 5.1), of what holds the page when the Local Map changes from 2D to 3D, measured because the owner reported "big pauses switching from 2D to 3D but lower than 16 seconds. Closer to like... 2-6 seconds?" ([Turn 6 of the day's record](../../../ChatHistory/2026/10/2026-10-14.1.record.md#turn-6)) after the agent had named a sixteen-second busy flag. Nothing was changed for it; the numbers say what the two things are._
+_Historical record, October 14, 2026, by the root Claude Code agent (Fable 5.1), of what holds the page when the Local Map changes from 2D to 3D, measured because the owner reported "big pauses switching from 2D to 3D but lower than 16 seconds. Closer to like... 2-6 seconds?" ([Turn 6 of the day's record](../../2026-10-14.1.record.md#turn-6)) after the agent had named a sixteen-second busy flag. Nothing was changed for it; the numbers say what the two things are._
 
 ## Method
 

@@ -13,7 +13,7 @@ Runs generation to completion before lint reads the resulting Live Docs. It is t
 
 ### Notes
 - Created during the Windows CLI migration (Oct 2025) to replace ad-hoc shell chains. The script consumes its own stage-skip flags and forwards every other argument to `generate.ts`; lint receives only configuration flags.
-- The [October 19 audit](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-19.1.record.md#turn-16) found that importing the commands returned before their asynchronous work finished: lint could pass before the first doc existed. Each stage now runs as a child command whose exit is awaited, so a failed generation prevents lint and a lint failure stops the pipeline. `--check` is forwarded to generation; ordinary `--dry-run` remains a successful preview.
+- The [October 19 audit](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-19/2026-10-19.1.record.md#turn-16) found that importing the commands returned before their asynchronous work finished: lint could pass before the first doc existed. Each stage now runs as a child command whose exit is awaited, so a failed generation prevents lint and a lint failure stops the pipeline. `--check` is forwarded to generation; ordinary `--dry-run` remains a successful preview.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

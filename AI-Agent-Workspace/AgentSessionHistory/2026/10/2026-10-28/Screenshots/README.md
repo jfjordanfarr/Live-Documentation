@@ -1,6 +1,6 @@
 # October 28, 2026 — the 3D Local Map enters in pieces
 
-Historical pictures of the reveal built this day for [the October 28 session](../../ChatHistory/2026/10/2026-10-28.1.record.md#turn-2), taken by the root agent in headless Chromium (1280×800, the software renderer) from this repository's bundle rebuilt without its history (`npm run live-docs:visualize -- --history none`) and from the T3 bundle's saved two-file state served under the new page with its data of 2026-10-27 unchanged. The observations are the agent's; the owner's eye decides. The corresponding motion is held by `tests/e2e/force-graph-reveal.spec.ts`.
+Historical pictures of the reveal built this day for [the October 28 session](../2026-10-28.1.record.md#turn-2), taken by the root agent in headless Chromium (1280×800, the software renderer) from this repository's bundle rebuilt without its history (`npm run live-docs:visualize -- --history none`) and from the T3 bundle's saved two-file state served under the new page with its data of 2026-10-27 unchanged. The observations are the agent's; the owner's eye decides. The corresponding motion is held by `tests/e2e/force-graph-reveal.spec.ts`.
 
 ## Method and limits
 

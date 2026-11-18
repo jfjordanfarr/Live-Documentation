@@ -149,7 +149,7 @@ Choose a file, symbol or directory in the search bar; it becomes the newest pin.
 
 The Explorer's provider-to-consumer direction corresponds to the CLI's **inbound** walk. The CLI's default **outbound** direction follows a consumer to what it depends on. Both use the engine's walk; their default questions differ.
 
-The October 23 repair made results and reverse recovery visible in **both** 2D and 3D; see the [playtest](../../../AI-Agent-Workspace/Screenshots/2026-10-23/path-feedback/README.md). Reverse and Clear work by keyboard. Clearing returns focus to the destination and keeps the pins. Switching representation, inspecting evidence, reloading or opening a shared link preserves the question. Navigating to World Map or Knowledge Sources hides the report without discarding it; a new destination question opens Local Map even when no path exists. Showing every alternative shortest route or every symbol chain is a separate historical proposal, not a prerequisite for making the existing route usable.
+The October 23 repair made results and reverse recovery visible in **both** 2D and 3D; see the [playtest](../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-23/Screenshots/path-feedback/README.md). Reverse and Clear work by keyboard. Clearing returns focus to the destination and keeps the pins. Switching representation, inspecting evidence, reloading or opening a shared link preserves the question. Navigating to World Map or Knowledge Sources hides the report without discarding it; a new destination question opens Local Map even when no path exists. Showing every alternative shortest route or every symbol chain is a separate historical proposal, not a prerequisite for making the existing route usable.
 
 ---
 

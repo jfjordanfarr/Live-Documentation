@@ -1,6 +1,6 @@
 # Pin management: the gates, the first look and the measurements
 
-_Historical record, October 14, 2026, by the root Claude Code agent (Fable 5.1). It closes Turn 11 of the October 13–14 Codex session, whose implementation of [the owner's pin-management design](../../../ChatHistory/2026/10/2026-10-13.1.record.md#turn-11--pin-management-approved-ancestor-disclosure-and-directory-hubs) was left uncommitted when that harness stopped at its usage limit; [the October 14 record](../../../ChatHistory/2026/10/2026-10-14.1.record.md#turn-2) names the commit that carries the implementation together with this record. The behaviour itself is described in [the Explorer design](../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md); this report records what was verified and measured, not a universal verdict._
+_Historical record, October 14, 2026, by the root Claude Code agent (Fable 5.1). It closes Turn 11 of the October 13–14 Codex session, whose implementation of [the owner's pin-management design](../../../2026-10-13/2026-10-13.1.record.md#turn-11--pin-management-approved-ancestor-disclosure-and-directory-hubs) was left uncommitted when that harness stopped at its usage limit; [the October 14 record](../../2026-10-14.1.record.md#turn-2) names the commit that carries the implementation together with this record. The behaviour itself is described in [the Explorer design](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md); this report records what was verified and measured, not a universal verdict._
 
 ## What the Codex session built
 
@@ -8,7 +8,7 @@ A lower-right pin tray listing retained directories, files and symbols newest fi
 
 ## The first gate and its four corrections
 
-The Codex session's first full `safe:commit -- --e2e` on this work passed lint, builds, 997 unit and 52 integration tests, regeneration without drift and the three audits, and ended 113 of 117 browser tests in 19.6 minutes. The four, and what was done about each at its cause, from [the session's own notes](../../../ChatHistory/2026/10/2026-10-13.1.record.md#first-full-gate-outcome-and-corrections):
+The Codex session's first full `safe:commit -- --e2e` on this work passed lint, builds, 997 unit and 52 integration tests, regeneration without drift and the three audits, and ended 113 of 117 browser tests in 19.6 minutes. The four, and what was done about each at its cause, from [the session's own notes](../../../2026-10-13/2026-10-13.1.record.md#first-full-gate-outcome-and-corrections):
 
 | Failing test | Cause and correction |
 | --- | --- |
@@ -25,7 +25,7 @@ Run by the October 14 session on the unchanged working tree before any picture w
 
 ## The first look, from the gated build
 
-The scratch scripts of the Codex session were rerun unchanged against the gated build. Seven of its nine final 2D pictures from 05:18 UTC came out byte-identical; `04-root-landing.png` and `2d-repository-five-pins.png` differ in bytes but not in anything the eye finds. Its 3D pictures dated from 03:11 UTC, before the last source edits, so every 3D picture is from the rerun. [The screenshot record](../../../Screenshots/2026-10-14/README.md) names all 23.
+The scratch scripts of the Codex session were rerun unchanged against the gated build. Seven of its nine final 2D pictures from 05:18 UTC came out byte-identical; `04-root-landing.png` and `2d-repository-five-pins.png` differ in bytes but not in anything the eye finds. Its 3D pictures dated from 03:11 UTC, before the last source edits, so every 3D picture is from the rerun. [The screenshot record](../../Screenshots/README.md) names all 23.
 
 [first-look.json](first-look.json): after Clear all on the four-pin scene, the tray reads `0 pins` with no rows and the map shows three closed directories at the root; after reloading that URL, `0 pins` and three directories again; no page errors. The five-file deck scopes list 5 independently releasable entries each, on this repository and the estate.
 

@@ -14,7 +14,7 @@ TypeScript project configuration for the Explorer client bundle. Extends the wor
 
 ### Notes
 
-- Created [2025-12-02](../../../../../../AI-Agent-Workspace/ChatHistory/2025/12/Summarized/2025-12-02.SUMMARIZED.md) to give the client code its own compilation scope separate from the Node.js server code (`92eeb04a`).
+- Created [2025-12-02](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/12/Summarized/2025-12-02.SUMMARIZED.md) to give the client code its own compilation scope separate from the Node.js server code (`92eeb04a`).
 - Since 2026-10-22 it resolves modules as a bundler does (`Bundler`), the base project having moved to `NodeNext`, and names the ambient contract for `d3-force-3d` (`../shared/d3-force-3d.d.ts`) in its `include`, which the layout module used to pull in by importing it for its side effect.
 
 ## Generated

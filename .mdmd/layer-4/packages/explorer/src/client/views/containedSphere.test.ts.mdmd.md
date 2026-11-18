@@ -11,7 +11,7 @@
 Protects hollow clipped carriers and native compatibility selection with independent geometric cases.
 
 ### Notes
-Current tests, introduced with the November 8 [contained-file rendering investigation](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-08.1.record.md). Point-in-polygon checks distinguish a near-plane annulus from a far cap, and an offscreen carrier retains geometry needed while travelling.
+Current tests, introduced with the November 8 [contained-file rendering investigation](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-08/2026-11-08.1.record.md). Point-in-polygon checks distinguish a near-plane annulus from a far cap, and an offscreen carrier retains geometry needed while travelling.
 
 Compatibility cases retain the original native geometry when either sample extension, the output encoding or NoToneMapping contract is unavailable. Supported contexts select the unit-sphere primitive. Shader bounds and coverage are tested in the actual browser renderer rather than a copied TypeScript formula: independent browser pictures compare the actual shader with native high-resolution spheres, translucent overlaps and clipping under the same MSAA settings.
 

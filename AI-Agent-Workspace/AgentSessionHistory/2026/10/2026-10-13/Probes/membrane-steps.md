@@ -1,6 +1,6 @@
 # A small membrane step that the current price cannot distinguish
 
-_Historical visual probe, October 13, 2026. A proposed rule, not a product change or an owner-approved default. Source: [the opening request](../../ChatHistory/2026/10/2026-10-13.1.record.md#turn-1)._
+_Historical visual probe, October 13, 2026. A proposed rule, not a product change or an owner-approved default. Source: [the opening request](../2026-10-13.1.record.md#turn-1)._
 
 The owner defines the desired aesthetics as less work for the eye and brain while presenting identical information. Their example is the small step along the engine directory's top in a generator-focused Local Map. This probe asks whether unused space can remove such a step while keeping the content fixed.
 
@@ -8,7 +8,7 @@ The owner defines the desired aesthetics as less work for the eye and brain whil
 
 The current Explorer at commit `1e36b33e`, rebuilt from 624 Live Docs. Fresh browser context, 1600×1000 viewport, default filters, direct URL `?view=local&mode=2d&node=packages/generator/src/generator.ts`. Continuing search is disabled for repeatable captures. The owner's exact retained URL was requested; this is a comparable fresh neighborhood, not a claim of matching their screenshot state exactly.
 
-The existing placement rule in [branch-placement.ts](../../../packages/explorer/src/client/views/localView/branch-placement.ts) prices the sum of absolute differences between adjacent membrane tops and bottoms. Membrane Evenness multiplies that distance. A much smaller cost pulls each segment tight around its contents. Labels need room only in the leftmost segment.
+The existing placement rule in [branch-placement.ts](../../../../../../packages/explorer/src/client/views/localView/branch-placement.ts) prices the sum of absolute differences between adjacent membrane tops and bottoms. Membrane Evenness multiplies that distance. A much smaller cost pulls each segment tight around its contents. Labels need room only in the leftmost segment.
 
 At the default evenness of 1, the engine's top is at 96 in column 0 and 68 in column 1: a 28-pixel step. Its parent, packages, starts at 55 in both columns. Lifting the engine's left top to 68 requires lifting the parent's first two segments to 27 so both labels retain their room. The parent's already-existing step toward column 2 grows by the same 28 pixels that the inner step loses. All coordinates are unscaled layout pixels.
 
@@ -16,7 +16,7 @@ The result has fewer turns while keeping exactly the same total priced step dist
 
 ## Pictures
 
-Both crops come from the actual rendered page at the same camera position. The second is an illustration: two membrane paths are redrawn by the shipped [membranePath](../../../packages/explorer/src/client/views/localView/membrane-outline.ts) function with the proposed segment tops, and their labels move with them. No product source was changed. It is not an implemented general layout pass.
+Both crops come from the actual rendered page at the same camera position. The second is an illustration: two membrane paths are redrawn by the shipped [membranePath](../../../../../../packages/explorer/src/client/views/localView/membrane-outline.ts) function with the proposed segment tops, and their labels move with them. No product source was changed. It is not an implemented general layout pass.
 
 | Current outline | Illustrated alternative |
 | --- | --- |
@@ -39,7 +39,7 @@ The mathematical choice remains open: total step distance is a linear objective;
 
 ## Survey of seven additional views
 
-Later on October 13, the same built code was inspected in fresh 1600×1000 browser contexts. The four retained deck scopes come from [the shared scope definitions](../../../tests/e2e/scopes.ts); the warehouse scopes each retain the named Java file. Continuing search was disabled for repeatability. These are baseline observations, not results of a new layout rule. All seven pictures were inspected and produced no browser errors.
+Later on October 13, the same built code was inspected in fresh 1600×1000 browser contexts. The four retained deck scopes come from [the shared scope definitions](../../../../../../tests/e2e/scopes.ts); the warehouse scopes each retain the named Java file. Continuing search was disabled for repeatability. These are baseline observations, not results of a new layout rule. All seven pictures were inspected and produced no browser errors.
 
 | Scope | Cards | Rendered wire paths | Nonzero boundary steps | Steps of 40 px or less |
 | --- | ---: | ---: | ---: | ---: |
@@ -78,15 +78,15 @@ This changes the proposed acceptance cases: generator and warehouse are positive
 
 ## Constraints on a future implementation
 
-The authoritative hard constraints are in [the placement model](../../../packages/explorer/src/client/views/localView/branch-placement.ts): content and label padding, parent containment, sibling separation including undrawn lane boxes, and overlap between adjacent segments. Freeze routing-slot coordinates along with cards if the chosen scope promises unchanged wires. Any ancestor expansion must preserve all of these constraints, including the invisible root.
+The authoritative hard constraints are in [the placement model](../../../../../../packages/explorer/src/client/views/localView/branch-placement.ts): content and label padding, parent containment, sibling separation including undrawn lane boxes, and overlap between adjacent segments. Freeze routing-slot coordinates along with cards if the chosen scope promises unchanged wires. Any ancestor expansion must preserve all of these constraints, including the invisible root.
 
-Two integration details matter for that promise. [Candidate selection](../../../packages/explorer/src/client/views/localView/branch-restarts.ts) prices picture height, so changing every candidate's boundaries before choosing a winner can indirectly select different card positions. Placement also normalizes the picture to zero using all segment tops; re-normalizing after expansion can translate the supposedly fixed content. A production experiment needs an explicit treatment of both, a consistent scene model and inspection of transitions.
+Two integration details matter for that promise. [Candidate selection](../../../../../../packages/explorer/src/client/views/localView/branch-restarts.ts) prices picture height, so changing every candidate's boundaries before choosing a winner can indirectly select different card positions. Placement also normalizes the picture to zero using all segment tops; re-normalizing after expansion can translate the supposedly fixed content. A production experiment needs an explicit treatment of both, a consistent scene model and inspection of transitions.
 
 Counting steps is a different objective from their summed height. A feasible plateau search is one possible experiment, but the allowed expansion and its cost are still design choices; unrestricted preference for fewer steps could create excessive empty area. No algorithm, threshold, tradeoff or default was selected by the baseline survey.
 
 ## Owner steering and the subsequent implementation experiment
 
-The refreshed session export recovered [the owner's reply](../../ChatHistory/2026/10/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply), which had been missing from the resumed context. They prefer engaging the existing competition, tuning a weight, and potentially comparing Compact and Geometric settings. The fixed-content-only suggestion is therefore superseded. The estate examples above remain negative controls for that narrower illustration; the weighted competition may legitimately move their neighboring elements when the overall preference warrants it.
+The refreshed session export recovered [the owner's reply](../2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply), which had been missing from the resumed context. They prefer engaging the existing competition, tuning a weight, and potentially comparing Compact and Geometric settings. The fixed-content-only suggestion is therefore superseded. The estate examples above remain negative controls for that narrower illustration; the weighted competition may legitimately move their neighboring elements when the overall preference warrants it.
 
 An implementation experiment now joins neighboring flat boundary runs and re-solves their scene under the original constraints, pricing actual steps alongside wire distance, membrane evenness, row alignment, crossings, picture height and ordering churn. The competition previously omitted existing shape terms when choosing among starts; they now share a scorer across selection and continuing trials. The initial experiment used a provisional 50-wire-pixel price per step; subsequent comparison selected 100 as the starting default. This is local search, not a global optimum claim. Presets have not been selected.
 
@@ -94,6 +94,6 @@ Initial built generator comparisons improve 7→4 steps without changing picture
 
 ## Verified implementation outcome
 
-The [final built comparisons](../../Screenshots/2026-10-13/README.md) show the selected default 100 against simplicity 0 over the regenerated 632-file bundle: generator 7→4 steps, warehouse 2→1, estate 8→4, and dense repository 41→33. All four preserve their card/symbol and rendered reference identities. The pictures and record state the space/routing tradeoffs; fewer steps alone is not treated as proof of a better picture.
+The [final built comparisons](../Screenshots/README.md) show the selected default 100 against simplicity 0 over the regenerated 632-file bundle: generator 7→4 steps, warehouse 2→1, estate 8→4, and dense repository 41→33. All four preserve their card/symbol and rendered reference identities. The pictures and record state the space/routing tradeoffs; fewer steps alone is not treated as proof of a better picture.
 
 The full required command passed 973 unit, 52 integration and 100 browser tests, with all audits. Browser and headless refinement agree exactly on the estate and warehouse. The parameter remains tunable; Compact/Geometric presets are still a presentation suggestion, and the local alignment search makes no global-optimum claim.

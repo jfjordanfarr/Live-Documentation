@@ -11,7 +11,7 @@
 Unit tests of the C and C++ adapter: C file-scope symbols, C++ classes, namespaces, templates and aliases, Doxygen on a method, the four include strategies over a small tree with decoys, symbol-level uses, and the program entries.
 
 ### Notes
-- Written 2026-10-16 with the adapter's rewrite over the C++ grammar; the include cases mirror the include-directories fixture that the integration test and the probe measure against the compiler ([the probe](../../../../../../../AI-Agent-Workspace/Probes/2026-10-16/include-rules/README.md)).
+- Written 2026-10-16 with the adapter's rewrite over the C++ grammar; the include cases mirror the include-directories fixture that the integration test and the probe measure against the compiler ([the probe](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-16/Probes/include-rules/README.md)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

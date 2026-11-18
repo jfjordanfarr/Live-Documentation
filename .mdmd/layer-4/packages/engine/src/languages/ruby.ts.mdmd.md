@@ -11,7 +11,7 @@
 Provides Ruby-specific syntax configuration implementing `LanguageSyntax`. Defines comment delimiters (`#`, `=begin...=end`), string delimiters (`"`, `'`, `%q`, `%Q`), and a blocklist of common Ruby identifiers (`self`, `block`, `args`, etc.).
 
 ### Notes
-Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-29.1.md) — heredoc and percent-literal stripping is best-effort; complex Ruby string interpolation needs tree-sitter for correctness.
+Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-29/2026-01-29.1.md) — heredoc and percent-literal stripping is best-effort; complex Ruby string interpolation needs tree-sitter for correctness.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

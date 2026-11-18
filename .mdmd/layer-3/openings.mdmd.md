@@ -60,7 +60,7 @@ The shared vocabulary, the route grammar, the object-name rules and the home of 
 
 ### From the survey
 
-[The survey](../../AI-Agent-Workspace/Research/2026-09-28-system-scale-facts.md) found that every static tool matches an HTTP verb and a normalised path template and takes hosts from service names, that none reads .NET Framework configuration, and that none records how it knew. It recommends a small T-SQL scanner over the available parsers, whose support for `CREATE PROCEDURE` is undocumented, with SQL Server's ScriptDom as a possible oracle. Its vocabulary to borrow when the declared block is designed: CycloneDX's `component.type`, `services[].endpoints` and `dependencies[]`, Backstage's relation names, CALM's node types.
+[The survey](../../AI-Agent-Workspace/AgentSessionHistory/2026/09/2026-09-28/Research/system-scale-facts.md) found that every static tool matches an HTTP verb and a normalised path template and takes hosts from service names, that none reads .NET Framework configuration, and that none records how it knew. It recommends a small T-SQL scanner over the available parsers, whose support for `CREATE PROCEDURE` is undocumented, with SQL Server's ScriptDom as a possible oracle. Its vocabulary to borrow when the declared block is designed: CycloneDX's `component.type`, `services[].endpoints` and `dependencies[]`, Backstage's relation names, CALM's node types.
 
 ## System References
 

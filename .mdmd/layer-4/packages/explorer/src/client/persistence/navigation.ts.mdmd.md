@@ -13,7 +13,7 @@ Normalizes stored and linked view names at the application boundary, separating 
 
 ### Notes
 
-- Added for the owner’s [three-view decision](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-12.1.record.md#turn-4). Old graph/force addresses mean Local Map in 3D; old membrane/circuit addresses mean Local Map in 2D. Both URL snapshots and browser storage use these rules.
+- Added for the owner’s [three-view decision](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-12/2026-10-12.1.record.md#turn-4). Old graph/force addresses mean Local Map in 3D; old membrane/circuit addresses mean Local Map in 2D. Both URL snapshots and browser storage use these rules.
 - `readSpatialLayout` (2026-10-14): anything but `structure` is the connections layout.
 
 ## Generated

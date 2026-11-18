@@ -11,7 +11,7 @@
 The C and C++ adapter's include rule held to the compiler: over the include-directories fixture, every quoted include the generated docs resolve is the file scip-clang resolved under `-I include -I src -I .`, no other, the decoys nothing includes stay unreferenced, and a system include stays external.
 
 ### Notes
-- Written 2026-10-16 after the measurement that chose the rule ([the probe](../../../../../AI-Agent-Workspace/Probes/2026-10-16/include-rules/README.md); [Turn 10 of the October 15 session](../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-15.1.record.md#turn-10)). The compiler's resolutions are the edges of the fixture's `expected/compiler-edges.json` whose symbol is the included file's own; `npm run oracle:index` rewrites them after a change to the fixture. The fixture is copied to a temporary workspace with the shipped defaults and `expected/**` excluded, so the expectation file is never documented as part of the program.
+- Written 2026-10-16 after the measurement that chose the rule ([the probe](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-16/Probes/include-rules/README.md); [Turn 10 of the October 15 session](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-15/2026-10-15.1.record.md#turn-10)). The compiler's resolutions are the edges of the fixture's `expected/compiler-edges.json` whose symbol is the included file's own; `npm run oracle:index` rewrites them after a change to the fixture. The fixture is copied to a temporary workspace with the shipped defaults and `expected/**` excluded, so the expectation file is never documented as part of the program.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

@@ -1,6 +1,6 @@
 # A designer's reading of the 2D Local Map, November 15, 2026
 
-_Historical evidence. Taken by the root agent at the opening of [the November 15 session](../../../ChatHistory/2026/11/2026-11-15.1.record.md#turn-1), after the owner asked for the 2D map's style to be judged by the root's own eye and for the designer's words to be taught as the work goes. The build is `cb53d7c7` (product code as `ef7ce597`), opened headlessly at 1,440 by 900 with nothing remembered, in the default looks, with Segoe UI's line metrics over Liberation Sans, which is closer to the owner's screen in width than the container's default font. Pictures 08 to 10 are probes: the same build with styles injected by the root, not product code._
+_Historical evidence. Taken by the root agent at the opening of [the November 15 session](../../2026-11-15.1.record.md#turn-1), after the owner asked for the 2D map's style to be judged by the root's own eye and for the designer's words to be taught as the work goes. The build is `cb53d7c7` (product code as `ef7ce597`), opened headlessly at 1,440 by 900 with nothing remembered, in the default looks, with Segoe UI's line metrics over Liberation Sans, which is closer to the owner's screen in width than the container's default font. Pictures 08 to 10 are probes: the same build with styles injected by the root, not product code._
 
 Each finding is named in the term a designer would use, with what the term means and where it shows.
 

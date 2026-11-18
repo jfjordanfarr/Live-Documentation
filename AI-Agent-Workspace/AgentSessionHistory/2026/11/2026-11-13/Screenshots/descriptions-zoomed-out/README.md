@@ -1,6 +1,6 @@
 # Descriptions Zoomed Out, 2026-11-13
 
-Historical evidence for the Descriptions Zoomed Out trial in Tuning → 2D Layout. The choices are Hidden, the default, and "First line, where the name leaves room". The owner had said they were "not totally averse to trying to preserve more description at higher zoom-outs" ([Turn 7](../../../ChatHistory/2026/11/2026-11-13.1.record.md#turn-7)).
+Historical evidence for the Descriptions Zoomed Out trial in Tuning → 2D Layout. The choices are Hidden, the default, and "First line, where the name leaves room". The owner had said they were "not totally averse to trying to preserve more description at higher zoom-outs" ([Turn 7](../../2026-11-13.1.record.md#turn-7)).
 
 ## Pictures
 

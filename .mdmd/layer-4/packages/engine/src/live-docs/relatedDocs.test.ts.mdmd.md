@@ -11,7 +11,7 @@
 Holds the related-documents rule to resolved paths, each once and sorted, and to what it leaves out: Live Docs, the doc itself, external pages, paths out of the workspace, files that are not markdown, and the bundle's exclusions.
 
 ### Notes
-- Written 2026-10-20 with the rule ([Turn 9](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-9)). The links are written as this repository's docs write them, relative to a doc four folders deep; the exclusion case uses the repository's own pattern for its chat archive, which keeps raw captures out and lets summaries through.
+- Written 2026-10-20 with the rule ([Turn 9](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-20/2026-10-20.1.record.md#turn-9)). The links are written as this repository's docs write them, relative to a doc four folders deep; the exclusion case uses the repository's own pattern for its chat archive, which keeps raw captures out and lets summaries through.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

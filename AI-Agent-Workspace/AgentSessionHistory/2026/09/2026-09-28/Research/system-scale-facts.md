@@ -1,6 +1,6 @@
 # System-scale facts: what exists to parse, borrow, or write
 
-_A survey gathered on 2026-09-28 by a subagent with web access, for the design of openings and the basis of an edge (see [openings.mdmd.md](../../.mdmd/layer-3/openings.mdmd.md)). It records what existed on that date, with a source for every claim; it decides nothing. The judgements at the end of each section were read by the agent and match what was built that day: a small SQL scanner rather than a library, a hand-written project reader, contract files as a second source, and a declared block that no existing format carries._
+_A survey gathered on 2026-09-28 by a subagent with web access, for the design of openings and the basis of an edge (see [openings.mdmd.md](../../../../../../.mdmd/layer-3/openings.mdmd.md)). It records what existed on that date, with a source for every claim; it decides nothing. The judgements at the end of each section were read by the agent and match what was built that day: a small SQL scanner rather than a library, a hand-written project reader, contract files as a second source, and a declared block that no existing format carries._
 
 
 Package versions, publish dates and licences below were read from the npm registry API (`https://registry.npmjs.org/<name>`) on 2026-09-28; the linked `npmjs.com` page shows the same record. The tool already ships `web-tree-sitter`, `@vscode/tree-sitter-wasm` and the TypeScript compiler; anything else named here would be a new dependency.

@@ -1,6 +1,6 @@
 # Graph readability and aesthetic measures
 
-_Historical research note, October 2, 2026. Requested during [Turn 2](../ChatHistory/2026/10/2026-10-02.1.record.md#turn-2). This focused survey informs an experiment; it does not select a renderer or establish a universal quality score._
+_Historical research note, October 2, 2026. Requested during [Turn 2](../2026-10-02.1.record.md#turn-2). This focused survey informs an experiment; it does not select a renderer or establish a universal quality score._
 
 The owner asked whether research offers more reliable ways to quantify design and aesthetics, after the still-picture deck rewarded pictures they found harder to understand. The sources below offer empirical methods and bounded findings, rather than a formula that can replace human judgment. Publisher/author abstracts and relevant paper sections were consulted; this is not an exhaustive literature review.
 
@@ -23,6 +23,6 @@ Keep four kinds of evidence distinct:
 - **Effort and orientation:** observe wrong turns, repeated searches, lost selections and travel. Compare identical data and disclosure state. A recording and sampled positions can expose jumps but cannot establish the owner's subjective experience.
 - **Preference:** ask which version is clearer, calmer or more appealing, and why. Preserve disagreement between preference and performance as a finding. Do not blend those answers into a single winner by arbitrary weights.
 
-The current measures remain useful for concrete faults and comparisons within their definitions. Their names and denominators need to be interpreted precisely: readable endpoint labels are a narrower property than a legible relationship, and a collapsed folder is not an absent file. The October 1 deck's limitations are recorded in [the handoff review](../ChatHistory/2026/10/Summarized/2026-10-01.1.SUMMARIZED.md#review-notes-october-2).
+The current measures remain useful for concrete faults and comparisons within their definitions. Their names and denominators need to be interpreted precisely: readable endpoint labels are a narrower property than a legible relationship, and a collapsed folder is not an absent file. The October 1 deck's limitations are recorded in [the handoff review](../../Summarized/2026-10-01.1.SUMMARIZED.md#review-notes-october-2).
 
 The practical recommendation is a matched journey with the owner's live review and separate geometry diagnostics. None of these sources supplies evidence that our existing measures, or a weighted sum of them, predict the owner's aesthetic judgment across arbitrary styles.

@@ -1,6 +1,6 @@
 # Two uses of depth: failed layout experiments
 
-_Historical design record, 2026-09-30. Built by the root Codex agent during [Turns 25–33](../../ChatHistory/2026/09/2026-09-30.2.record.md#turn-25). The owner found the pictures substantially worse than the existing visualizations. Neither layout is a replacement candidate; the record preserves the constraints and failures, not a recommendation to finish either implementation._
+_Historical design record, 2026-09-30. Built by the root Codex agent during [Turns 25–33](../2026-09-30.2.record.md#turn-25). The owner found the pictures substantially worse than the existing visualizations. Neither layout is a replacement candidate; the record preserves the constraints and failures, not a recommendation to finish either implementation._
 
 ## The question and the owner's steering
 
@@ -22,7 +22,7 @@ The first version drew open entrances at successive depths. The owner found it d
 
 ## Verdict and what survives
 
-The owner's [latest reaction](../../ChatHistory/2026/09/2026-09-30.2.record.md#turn-33) was clear: “Looks like we've got a high bar to clear on beating the current visualizations!” The agent accepted both as failed layout experiments. The closed-boundary correction is not a new claim of design acceptance.
+The owner's [latest reaction](../2026-09-30.2.record.md#turn-33) was clear: “Looks like we've got a high bar to clear on beating the current visualizations!” The agent accepted both as failed layout experiments. The closed-boundary correction is not a new claim of design acceptance.
 
 The following remain useful constraints:
 

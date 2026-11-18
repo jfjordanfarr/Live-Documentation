@@ -13,9 +13,9 @@ Verifies that shared packing presets preserve independent visual encodings and s
 ### Notes
 Cases distinguish packing edits from coupling/size edits, verify both representations change together without mutating prior settings, and exercise malformed values, slider increments, legacy links and the related-documentation filter.
 
-Created for [the October 13 shared-preset implementation](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation).
+Created for [the October 13 shared-preset implementation](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-13/2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation).
 
-Since 2026-11-15 ([Turn 1 of the November 15 record](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-1)) a case holds that a link carries Descriptions Zoomed Out only when it is not Hidden, and that a link without it opens Hidden.
+Since 2026-11-15 ([Turn 1 of the November 15 record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-1)) a case holds that a link carries Descriptions Zoomed Out only when it is not Hidden, and that a link without it opens Hidden.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

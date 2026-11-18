@@ -1,6 +1,6 @@
 # The compact step panel and the whole step's dialog
 
-Status: implementation evidence, 2026-11-11. A builder captured these for the root's review and then the owner's eye. Not yet committed. Origin: the owner's message in [Turn 6 of the November 10 record](../../../ChatHistory/2026/11/2026-11-10.1.record.md#turn-6): "that rather large and annoying text blob that blocks nearly half the usable screen real estate by default during the history mode ... I think the big commit texts should be relegated to "..." as we've done with descriptions, with a click engaging some kind of modal to render the full text." The same message mused about quick actions on a commit's changed files. That is an idea the root is putting back to the owner, and nothing of it is built.
+Status: implementation evidence, 2026-11-11. A builder captured these for the root's review and then the owner's eye. Not yet committed. Origin: the owner's message in [Turn 6 of the November 10 record](../../2026-11-10.1.record.md#turn-6): "that rather large and annoying text blob that blocks nearly half the usable screen real estate by default during the history mode ... I think the big commit texts should be relegated to "..." as we've done with descriptions, with a click engaging some kind of modal to render the full text." The same message mused about quick actions on a commit's changed files. That is an idea the root is putting back to the owner, and nothing of it is built.
 
 ## What changed
 

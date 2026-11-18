@@ -8,7 +8,7 @@
 
 ## Authored
 ### Purpose
-Serves as the orchestration entrypoint for the `ts-layered` benchmark, exercising multi-hop runtime imports validated by the TypeScript oracle work in [2025-11-03 summary](../../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-03.SUMMARIZED.md).
+Serves as the orchestration entrypoint for the `ts-layered` benchmark, exercising multi-hop runtime imports validated by the TypeScript oracle work in [2025-11-03 summary](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/Summarized/2025-11-03.SUMMARIZED.md).
 
 ### Notes
 - Forces analyzer traces through services, repositories, and utils so transitive runtime edges surface in AST accuracy reports.

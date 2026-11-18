@@ -8,7 +8,7 @@
 
 ## Authored
 ### Purpose
-Finishes the `ts-layered` runtime chain by emitting the formatted report string, ensuring the oracle checks formatting utilities alongside service imports per [2025-11-03 summary](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-03.SUMMARIZED.md).
+Finishes the `ts-layered` runtime chain by emitting the formatted report string, ensuring the oracle checks formatting utilities alongside service imports per [2025-11-03 summary](../../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/Summarized/2025-11-03.SUMMARIZED.md).
 
 ### Notes
 - Uses simple aggregation to keep diffs stable while still demonstrating that value-level dependencies survive the analyzer pipeline.

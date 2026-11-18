@@ -1,6 +1,6 @@
 # Explorer firsthand review — October 23, 2026
 
-Historical observations of the locally built Explorer, requested in [the session's opening turn](../../ChatHistory/2026/10/2026-10-23.1.record.md#turn-1). Codex personally navigated and inspected these captures before reading the implementation. This is a visual and interaction review, not a source diagnosis or an approved redesign.
+Historical observations of the locally built Explorer, requested in [the session's opening turn](../2026-10-23.1.record.md#turn-1). Codex personally navigated and inspected these captures before reading the implementation. This is a visual and interaction review, not a source diagnosis or an approved redesign.
 
 Built with `npm run live-docs:visualize` and `npm run live-docs:visualize:estate`. Main graph: 867 files; estate: 36 files. Playwright Chromium, fresh browser contexts, 1600×1000 CSS pixels at DPR 1 except capture 26, at 1280×800. Ordinary mouse, keyboard and visible controls were used; DOM inspection supplied accessible names and distinguished hidden feedback from absent feedback. No private application state or layout hooks were used. The browser reported no page errors; this does not establish visual correctness. Still captures support the observations below; no video was recorded, so this is not a frame-by-frame motion audit or a performance benchmark.
 
@@ -75,7 +75,7 @@ My first priorities would be visible path feedback in both representations, read
 
 ## Subsequent repair evidence
 
-The [shared path-feedback playtest](path-feedback/README.md) records the first approved repair, with twelve new captures, after this baseline review. The numbered findings above retain what the original page showed; completion belongs to the [current remediation checklist](../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#remediation-work).
+The [shared path-feedback playtest](path-feedback/README.md) records the first approved repair, with twelve new captures, after this baseline review. The numbered findings above retain what the original page showed; completion belongs to the [current remediation checklist](../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#remediation-work).
 
 ## Identity and framing follow-up
 

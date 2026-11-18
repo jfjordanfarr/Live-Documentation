@@ -11,7 +11,7 @@
 Unit tests for the language syntax registry. Validates lookup functions (`getSyntaxById`, `getSyntaxByExtension`, `getSyntaxByPath`) and verifies comment/string stripping for each supported language.
 
 ### Notes
-Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-29.1.md) — 22 tests covering registry lookup and basic stripping correctness. Does not exhaustively test edge cases (heredocs, raw strings, template literals); those will be validated via benchmark fixtures when tree-sitter integration lands.
+Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-29/2026-01-29.1.md) — 22 tests covering registry lookup and basic stripping correctness. Does not exhaustively test edge cases (heredocs, raw strings, template literals); those will be validated via benchmark fixtures when tree-sitter integration lands.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

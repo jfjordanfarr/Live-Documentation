@@ -11,7 +11,7 @@
 Holds `statsLineOf` to its words: the documented references rather than the links, thousands separators, and the dependencies outside the scan left out where a moment of the history does not know them.
 
 ### Notes
-- Written on 2026-10-30 with the module ([Turn 3](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md#turn-3)). The expected separators come from `toLocaleString` itself, so the test holds in any locale the runner has.
+- Written on 2026-10-30 with the module ([Turn 3](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-30/2026-10-30.1.record.md#turn-3)). The expected separators come from `toLocaleString` itself, so the test holds in any locale the runner has.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

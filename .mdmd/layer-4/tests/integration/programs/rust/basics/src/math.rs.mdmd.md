@@ -11,8 +11,8 @@
 Mathematical operations module for the `rust-basics` polyglot benchmark fixture. Provides `sum` and `describe` functions that depend on `utils::is_even`, demonstrating cross-module Rust dependencies.
 
 ### Notes
-- Created on [2025-10-31](../../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-31.md) alongside the rest of the `rust-basics` fixture to test multi-hop dependency chains: `main.rs → math.rs → utils.rs`.
-- Uses `use crate::utils;` syntax to import the sibling module, which the Rust adapter now resolves via the `resolveUseStatement()` function added on [2026-01-13](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-13.1.md).
+- Created on [2025-10-31](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/10/2025-10-31/2025-10-31.md) alongside the rest of the `rust-basics` fixture to test multi-hop dependency chains: `main.rs → math.rs → utils.rs`.
+- Uses `use crate::utils;` syntax to import the sibling module, which the Rust adapter now resolves via the `resolveUseStatement()` function added on [2026-01-13](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-13/2026-01-13.1.md).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

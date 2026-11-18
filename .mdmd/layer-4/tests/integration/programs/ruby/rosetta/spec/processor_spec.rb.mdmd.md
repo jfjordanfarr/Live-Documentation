@@ -11,7 +11,7 @@
 RSpec tests for the Ruby Rosetta processor module. Part of the polyglot Rosetta Stone fixture suite.
 
 ### Notes
-Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Uses Ruby's idiomatic `spec/` directory structure. Exercises name-matched test detection.
+Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-16/2026-01-16.1.md). Uses Ruby's idiomatic `spec/` directory structure. Exercises name-matched test detection.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

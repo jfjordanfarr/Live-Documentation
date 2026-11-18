@@ -12,7 +12,7 @@
 Entry point for the Python Rosetta Stone fixture. Demonstrates runtime imports from processor and models modules.
 
 ### Notes
-Part of the cross-language Rosetta Stone benchmark suite; see [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Mirrors TypeScript's main.ts structure.
+Part of the cross-language Rosetta Stone benchmark suite; see [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-14/2026-01-14.1.md). Mirrors TypeScript's main.ts structure.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

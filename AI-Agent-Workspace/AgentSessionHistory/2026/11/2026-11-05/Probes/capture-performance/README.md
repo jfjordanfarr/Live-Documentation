@@ -1,12 +1,12 @@
 # Layout capture performance
 
-Current verification evidence from the [November 5 reading repair](../../../ChatHistory/2026/11/2026-11-04.1.record.md#turn-9). This is a measurement-tool repair, with no change to the rendered card or the independent layout model. The final full gate passes 1,570 unit, 115 integration and 303 browser tests, including every layout-lab comparison.
+Current verification evidence from the [November 5 reading repair](../../../2026-11-04/2026-11-04.1.record.md#turn-9). This is a measurement-tool repair, with no change to the rendered card or the independent layout model. The final full gate passes 1,570 unit, 115 integration and 303 browser tests, including every layout-lab comparison.
 
 ## Failure and cause
 
 The broader focused run passed 25 of 26 browser tests. The repository-chain layout comparison exceeded its unchanged 30-second deadline. The [failure trace](repository-chain-timeout.trace.zip) shows 5.90 seconds waiting for the initial scene, 21.17 seconds in the synchronous capture, and roughly 5.43 seconds in subsequent graph/model computation. The captured 93 cards and 15 labels had no text warnings. The geometry and placement-cost assertions eventually passed during teardown, after the deadline; the test still correctly failed.
 
-Profiling the same scope identified repeated stylesheet invalidation. Each card's independent constant probes were appended, read and removed one at a time, making Chromium recompute styles across the large scene. The repair in [capture.ts](../../../../scripts/layout-lab/capture.ts) adds the probes together, reads their computed values together, then removes them. A pre-existing node-meta probe was also removed because its measured result was immediately discarded.
+Profiling the same scope identified repeated stylesheet invalidation. Each card's independent constant probes were appended, read and removed one at a time, making Chromium recompute styles across the large scene. The repair in [capture.ts](../../../../../../../scripts/layout-lab/capture.ts) adds the probes together, reads their computed values together, then removes them. A pre-existing node-meta probe was also removed because its measured result was immediately discarded.
 
 ## Matched capture
 

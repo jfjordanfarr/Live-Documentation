@@ -8,7 +8,7 @@
 
 ## Authored
 ### Purpose
-Acts as the negative-control file for the `ts-basic` benchmark so the analyzer proves it no longer fabricates edges to unused helpers, a regression we addressed in [2025-11-03 summary](../../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-03.SUMMARIZED.md).
+Acts as the negative-control file for the `ts-basic` benchmark so the analyzer proves it no longer fabricates edges to unused helpers, a regression we addressed in [2025-11-03 summary](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/Summarized/2025-11-03.SUMMARIZED.md).
 
 ### Notes
 - Remains unreferenced by design; any dependency surfaced here signals fallback heuristics leaking type-only speculation back into runtime accuracy scores.

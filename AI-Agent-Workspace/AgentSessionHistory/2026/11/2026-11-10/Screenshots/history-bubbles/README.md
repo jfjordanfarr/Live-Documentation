@@ -1,6 +1,6 @@
 # History inside the bubbles
 
-Status: implementation evidence, 2026-11-11, captured by a builder for the root's review and then the owner's eye. Not yet committed. Origin: the owner's question in [Turn 6 of the November 10 record](../../../ChatHistory/2026/11/2026-11-10.1.record.md#turn-6), "Is it possible to still get the illumination of the changed node even if it's buried deep in the bubbles? (Without nuking performance?)", under the standing ask of October 31, "it should be obvious what is actually changing as a commit is walked by during history playback".
+Status: implementation evidence, 2026-11-11, captured by a builder for the root's review and then the owner's eye. Not yet committed. Origin: the owner's question in [Turn 6 of the November 10 record](../../2026-11-10.1.record.md#turn-6), "Is it possible to still get the illumination of the changed node even if it's buried deep in the bubbles? (Without nuking performance?)", under the standing ask of October 31, "it should be obvious what is actually changing as a commit is walked by during history playback".
 
 ## What changed
 

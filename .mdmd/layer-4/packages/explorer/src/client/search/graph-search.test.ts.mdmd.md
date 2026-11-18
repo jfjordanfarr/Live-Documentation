@@ -13,7 +13,7 @@ Vitest over the pure search: the directories derived from the files, the words s
 
 ### Notes
 
-- Written with the module on 2026-10-14 ([Turn 6](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-6)); the fixture is four files whose symbols are chosen so that one word matches seven of them, which is what the cap and the fold need to be told apart.
+- Written with the module on 2026-10-14 ([Turn 6](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-14/2026-10-14.1.record.md#turn-6)); the fixture is four files whose symbols are chosen so that one word matches seven of them, which is what the cap and the fold need to be told apart.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

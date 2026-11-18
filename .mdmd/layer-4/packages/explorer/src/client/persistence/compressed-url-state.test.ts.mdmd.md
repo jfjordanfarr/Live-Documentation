@@ -13,11 +13,11 @@ Protects portable Explorer state through explicit payload expectations, compress
 
 ### Notes
 
-- Created alongside `compressed-url-state.ts` during Step 9 of the Membrane Map implementation on [Dev Day 80](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-23.1.md).
+- Created alongside `compressed-url-state.ts` during Step 9 of the Membrane Map implementation on [Dev Day 80](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/03/2026-03-23/2026-03-23.1.md).
 - Tests exercise the pure-function boundary: literal expected payload fields and defaults complement round trips, corrupt-input checks and passage through a real query string. A round trip alone cannot establish that a field has the intended meaning.
 - The test file does not exercise `readUrlState`/`writeUrlState` (the DOM-touching boundary functions) because those require `window.location`, which is unavailable in vitest's Node environment. Browser-level testing is deferred to Playwright E2E.
 - `d`, the opened directories (2026-10-08): sorted in the payload, absent when none, scrubbed to those with a live file under them.
-- Evidence cases cover file symbols, the scan root, bundled-document sections, old and ambiguous payloads, explicit closure, and removed targets without disturbing valid exploration. The Internals endpoint must survive validation without becoming a public symbol or a whole-file pin. These protect the [October 20 inspection-state work](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-2).
+- Evidence cases cover file symbols, the scan root, bundled-document sections, old and ambiguous payloads, explicit closure, and removed targets without disturbing valid exploration. The Internals endpoint must survive validation without becoming a public symbol or a whole-file pin. These protect the [October 20 inspection-state work](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-20/2026-10-20.1.record.md#turn-2).
 
 The November 8 default cases apply decoded settings over current tuning: an explicit Off/two-hop link retains that meaning, while an older or partial link keeps the viewer's omitted preferences. These complement the real-browser precedence cases and the storage reader tests.
 

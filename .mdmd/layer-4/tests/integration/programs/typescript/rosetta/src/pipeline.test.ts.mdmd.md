@@ -11,7 +11,7 @@
 Integration tests for the TypeScript Rosetta data processing pipeline. Validates end-to-end processing through processor and models modules.
 
 ### Notes
-Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Exercises NON-name-matched test detection: `pipeline.test.ts` imports processor/models, so those files appear as "test-backed" without a directly name-matched test file.
+Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-16/2026-01-16.1.md). Exercises NON-name-matched test detection: `pipeline.test.ts` imports processor/models, so those files appear as "test-backed" without a directly name-matched test file.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

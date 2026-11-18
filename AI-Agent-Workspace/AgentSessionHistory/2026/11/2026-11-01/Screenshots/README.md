@@ -1,6 +1,6 @@
 # November 1 — Astra's end-user review
 
-Historical review of the Explorer rebuilt from `6e613339`, following the owner's [request](../../ChatHistory/2026/11/2026-11-01.1.record.md#turn-1). These are firsthand observations and recommendations, not accepted implementation decisions. No product code was changed.
+Historical review of the Explorer rebuilt from `6e613339`, following the owner's [request](../2026-11-01.1.record.md#turn-1). These are firsthand observations and recommendations, not accepted implementation decisions. No product code was changed.
 
 **My judgment:** discovery is a useful advance, but the Explorer still asks the person to manage too much of the view before it explains the software. The most consequential problems are keeping a discovered place, investigating the past, and getting an intelligible first picture. The renderer and controls have improved more than those journeys.
 

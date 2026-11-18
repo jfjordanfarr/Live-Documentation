@@ -15,9 +15,9 @@ The file/symbol pin set and opened-directory set remain the sources of retention
 
 Card actions and tray actions share the subject-release rule. An independent direct-file inspection survives releasing a directory or closing another card's optional symbol disclosure. A selected file whose own pin is released yields to a remaining pinned file; an explicit close or Clear all can also release the direct selection. This prevents an unpinned subject from silently retaining an unwanted branch or an unrelated close action from clearing the current inspection.
 
-`newestRetained` and `describeRetained` (2026-10-14, [Turn 6](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-6)): the newest item is where a path asked through the search bar starts, and the words for an item, its name, where it stands and a description, are shared by the pin tray and the bar's fields so that the two say the same thing.
+`newestRetained` and `describeRetained` (2026-10-14, [Turn 6](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-14/2026-10-14.1.record.md#turn-6)): the newest item is where a path asked through the search bar starts, and the words for an item, its name, where it stands and a description, are shared by the pin tray and the bar's fields so that the two say the same thing.
 
-Introduced for the owner’s [October 14 pin-management request](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-11--pin-management-approved-ancestor-disclosure-and-directory-hubs).
+Introduced for the owner’s [October 14 pin-management request](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-13/2026-10-13.1.record.md#turn-11--pin-management-approved-ancestor-disclosure-and-directory-hubs).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

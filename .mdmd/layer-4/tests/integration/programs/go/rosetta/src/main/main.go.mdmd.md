@@ -13,7 +13,7 @@ Entry point for the Go Rosetta Stone benchmark fixture, demonstrating Go's packa
 
 ### Notes
 - Part of the cross-language Rosetta Stone benchmark suite; implements the canonical `main → processor → models/helpers → types` pipeline.
-- Created 2026-01-15 as part of the Go adapter commit; see [2026-01-15.1.md](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-15.1.md) for implementation context and goFixtureOracle.ts for ground truth generation.
+- Created 2026-01-15 as part of the Go adapter commit; see [2026-01-15.1.md](../../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-15/2026-01-15.1.md) for implementation context and goFixtureOracle.ts for ground truth generation.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

@@ -1,6 +1,6 @@
 # On-map explanations: four layout proposals
 
-Historical design probe, November 3, 2026. Requested in [Turn 2](../../../ChatHistory/2026/11/2026-11-03.1.record.md#turn-2): several visual layout proposals across a wide variety of nodes and comment lengths, including absences. [Turn 3](../../../ChatHistory/2026/11/2026-11-03.1.record.md#turn-3) adds descriptions on hover/tap and expanding/contracting cards. No candidate is a selected product design. The preceding identity and framing repairs are separate implementation work.
+Historical design probe, November 3, 2026. Requested in [Turn 2](../../2026-11-03.1.record.md#turn-2): several visual layout proposals across a wide variety of nodes and comment lengths, including absences. [Turn 3](../../2026-11-03.1.record.md#turn-3) adds descriptions on hover/tap and expanding/contracting cards. No candidate is a selected product design. The preceding identity and framing repairs are separate implementation work.
 
 ## Brief
 
@@ -19,18 +19,18 @@ The Detail control compares compact and reading disclosure while keeping text at
 
 | Case | Source | Pressure |
 | --- | --- | --- |
-| Many rows, short definition | [pathfind.ts](../../../../packages/engine/src/live-docs/pathfind.ts) / Neighbours | A one-sentence description among 28 symbols. |
-| Many rows, longer explanation | [pathfind.ts](../../../../packages/engine/src/live-docs/pathfind.ts) / walk (function) | A paragraph and distinction from the same-name interface. |
-| Long structured comment | [discovery.ts](../../../../packages/engine/src/live-docs/discovery.ts) / discoverTargetFiles | Summary, remarks, parameters, returns, examples and links. |
-| Documented type | [coreTypes.ts](../../../../packages/engine/src/live-docs/coreTypes.ts) / WorkspaceSymbolIndex | A code example and remarks among other types. |
-| No selected comment | Estate [GatewayClient.cs](../../../../tests/integration/programs/csharp/estate/Portal/Services/GatewayClient.cs) / GetPaymentAsync | Neither authored Purpose nor selected method prose; retain a useful compact card. Other declarations in this file do have comments. |
-| Rich C# method | [WidgetRegistry.cs](../../../../tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/WidgetRegistry.cs) / TryRegister | Exceptions, parameters, examples and links. |
-| Mixed Python coverage | Rosetta [models.py](../../../../tests/integration/programs/python/rosetta/src/models.py) / Record | Documented and undocumented rows together. |
-| One public type | Local Map [controller.ts](../../../../packages/explorer/src/client/views/localView/controller.ts) / LocalViewController | A small public surface and long authored Notes. |
-| No public symbols | Client [index.ts](../../../../packages/explorer/src/client/index.ts) | File Purpose/Notes without a symbol list. |
-| Many undocumented IDs | Explorer [template.html](../../../../packages/explorer/src/shared/template.html) | 140 element IDs and sparse symbol prose. |
-| Very long Notes | [forceGraphView.ts](../../../../packages/explorer/src/client/views/forceGraphView.ts) | Roughly 25,000 authored characters. |
-| Configuration | [.live-docs.config.json](../../../../.live-docs.config.json) | Properties rather than functions, with sparse comments. |
+| Many rows, short definition | [pathfind.ts](../../../../../../../packages/engine/src/live-docs/pathfind.ts) / Neighbours | A one-sentence description among 28 symbols. |
+| Many rows, longer explanation | [pathfind.ts](../../../../../../../packages/engine/src/live-docs/pathfind.ts) / walk (function) | A paragraph and distinction from the same-name interface. |
+| Long structured comment | [discovery.ts](../../../../../../../packages/engine/src/live-docs/discovery.ts) / discoverTargetFiles | Summary, remarks, parameters, returns, examples and links. |
+| Documented type | [coreTypes.ts](../../../../../../../packages/engine/src/live-docs/coreTypes.ts) / WorkspaceSymbolIndex | A code example and remarks among other types. |
+| No selected comment | Estate [GatewayClient.cs](../../../../../../../tests/integration/programs/csharp/estate/Portal/Services/GatewayClient.cs) / GetPaymentAsync | Neither authored Purpose nor selected method prose; retain a useful compact card. Other declarations in this file do have comments. |
+| Rich C# method | [WidgetRegistry.cs](../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/WidgetRegistry.cs) / TryRegister | Exceptions, parameters, examples and links. |
+| Mixed Python coverage | Rosetta [models.py](../../../../../../../tests/integration/programs/python/rosetta/src/models.py) / Record | Documented and undocumented rows together. |
+| One public type | Local Map [controller.ts](../../../../../../../packages/explorer/src/client/views/localView/controller.ts) / LocalViewController | A small public surface and long authored Notes. |
+| No public symbols | Client [index.ts](../../../../../../../packages/explorer/src/client/index.ts) | File Purpose/Notes without a symbol list. |
+| Many undocumented IDs | Explorer [template.html](../../../../../../../packages/explorer/src/shared/template.html) | 140 element IDs and sparse symbol prose. |
+| Very long Notes | [forceGraphView.ts](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts) | Roughly 25,000 authored characters. |
+| Configuration | [.live-docs.config.json](../../../../../../../.live-docs.config.json) | Properties rather than functions, with sparse comments. |
 
 ## Root evaluation
 
@@ -62,6 +62,6 @@ Some existing comments contain paragraph breaks inherited from source extraction
 
 ## Owner feedback, later November 3
 
-In [Turn 4](../../../ChatHistory/2026/11/2026-11-03.1.record.md#turn-4), the owner reports that repeated hovering, particularly alternating Walk and walk while moving down the list, walks the card down the screen. The [supplied picture](../pinned-reading/owner-hover-drift.png) preserves that state. The prototype's row-holding offsets accumulate; the earlier zero-displacement checks covered individual switches, not a full interaction cycle returning to the same card geometry. That limited check did not establish freedom from drift.
+In [Turn 4](../../2026-11-03.1.record.md#turn-4), the owner reports that repeated hovering, particularly alternating Walk and walk while moving down the list, walks the card down the screen. The [supplied picture](../pinned-reading/owner-hover-drift.png) preserves that state. The prototype's row-holding offsets accumulate; the earlier zero-displacement checks covered individual switches, not a full interaction cycle returning to the same card geometry. That limited check did not establish freedom from drift.
 
 The owner is comfortable with hover expansion as an idea, but calls this implementation rough compared with the existing 2D Local Map. They request a further throwaway comparing what whole-file and symbol pins reveal. Hover/tap-only attention remains an open design direction; this prototype is not an accepted implementation. The next [pin-driven comparison](../pinned-reading/README.md) retains this feedback and tests the pin-policy permutations.

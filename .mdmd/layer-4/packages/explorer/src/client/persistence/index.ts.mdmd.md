@@ -11,7 +11,7 @@
 Barrel that re-exports the nine persistence functions the client imports through it: the URL state's parse and update, and the localStorage defaults, readers, applier and schedulers. The storage keys, versions and record types are imported from `url-state.ts` and `local-storage.ts` directly.
 
 ### Notes
-Created during Dev Day 50 (12/19) as part of Phase 2 tech-debt reduction. Groups the `url-state.ts` and `local-storage.ts` exports under a single import path. Trimmed on 2026-10-08 from 20 names to the 9 imported through it, in [the dead code sweep](../../../../../../../AI-Agent-Workspace/Probes/2026-10-08/dead-code-sweep.md).
+Created during Dev Day 50 (12/19) as part of Phase 2 tech-debt reduction. Groups the `url-state.ts` and `local-storage.ts` exports under a single import path. Trimmed on 2026-10-08 from 20 names to the 9 imported through it, in [the dead code sweep](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-08/Probes/dead-code-sweep.md).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

@@ -8,7 +8,7 @@
 
 ## Authored
 ### Purpose
-Defines the repository layer for the `ts-layered` benchmark so the analyzer must follow class-based imports into `models/widget.ts`, reflecting the stack decomposition described in [2025-11-03 summary](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-03.SUMMARIZED.md).
+Defines the repository layer for the `ts-layered` benchmark so the analyzer must follow class-based imports into `models/widget.ts`, reflecting the stack decomposition described in [2025-11-03 summary](../../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/Summarized/2025-11-03.SUMMARIZED.md).
 
 ### Notes
 - Returns hard-coded metric records to isolate dependency traversal from data variability while still proving constructor-level runtime edges.

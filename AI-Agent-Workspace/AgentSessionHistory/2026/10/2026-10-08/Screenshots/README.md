@@ -1,10 +1,10 @@
 # Screenshots, October 8, 2026
 
-Pictures of the built Explorer taken by the agent after changing it, as [AGENTS.md](../../../AGENTS.md) asks. This folder's pictures belong to [Turn 6 of the October 7 session](../../ChatHistory/2026/10/2026-10-07.1.record.md#turn-6), taken on October 8 UTC. Every picture is of this repository's own bundle at 1,800 by 1,100 CSS pixels, the continuing search off so that each is the first paint, by a disposable scratchpad script.
+Pictures of the built Explorer taken by the agent after changing it, as [AGENTS.md](../../../../../../AGENTS.md) asks. This folder's pictures belong to [Turn 6 of the October 7 session](../../2026-10-07/2026-10-07.1.record.md#turn-6), taken on October 8 UTC. Every picture is of this repository's own bundle at 1,800 by 1,100 CSS pixels, the continuing search off so that each is the first paint, by a disposable scratchpad script.
 
 ## Directories open and close inside the Local Map
 
-The owner's grammar of [Turn 5](../../ChatHistory/2026/10/2026-10-07.1.record.md#turn-5) and [Turn 6](../../ChatHistory/2026/10/2026-10-07.1.record.md#turn-6), built: a directory is closed (a box without symbols), encasing (the membrane around the files party to the wires, the rest counted on its label) or open (every file compact, every subdirectory a closed box). The name opens, the X closes as far as the pins allow, a box opens in place. The decision is [in the log](../../../.mdmd/layer-3/architectural-decisions.mdmd.md#directories-open-and-close-inside-the-local-map-three-states-on-one-scale-recorded-2026-10-08).
+The owner's grammar of [Turn 5](../../2026-10-07/2026-10-07.1.record.md#turn-5) and [Turn 6](../../2026-10-07/2026-10-07.1.record.md#turn-6), built: a directory is closed (a box without symbols), encasing (the membrane around the files party to the wires, the rest counted on its label) or open (every file compact, every subdirectory a closed box). The name opens, the X closes as far as the pins allow, a box opens in place. The decision is [in the log](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#directories-open-and-close-inside-the-local-map-three-states-on-one-scale-recorded-2026-10-08).
 
 | Capture | State |
 | --- | --- |
@@ -19,7 +19,7 @@ The owner's grammar of [Turn 5](../../ChatHistory/2026/10/2026-10-07.1.record.md
 
 ## The Knowledge Sources panel, rebuilt from the sweep
 
-The panel before and after its rewrite in [Turn 4 of the October 8 session](../../ChatHistory/2026/10/2026-10-08.1.record.md#turn-4), from [the dead code sweep](../../Probes/2026-10-08/dead-code-sweep.md)'s finding of what the software can say; the decision is [in the log](../../../.mdmd/layer-3/architectural-decisions.mdmd.md#the-knowledge-sources-panel-says-what-the-graph-says-and-no-more-recorded-2026-10-08). Every picture is 1,400 by 1,000 CSS pixels of the viewport, by a disposable scratchpad script.
+The panel before and after its rewrite in [Turn 4 of the October 8 session](../2026-10-08.1.record.md#turn-4), from [the dead code sweep](../Probes/dead-code-sweep.md)'s finding of what the software can say; the decision is [in the log](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#the-knowledge-sources-panel-says-what-the-graph-says-and-no-more-recorded-2026-10-08). Every picture is 1,400 by 1,000 CSS pixels of the viewport, by a disposable scratchpad script.
 
 | Capture | State |
 | --- | --- |

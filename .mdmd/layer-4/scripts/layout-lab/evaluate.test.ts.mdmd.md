@@ -15,7 +15,7 @@ Exercises the lab's shared scoring and continuing refinement through real rankin
 
 The two-card fixture supplies fixed text measurements and omits routed-wire diagnostics; the product's graph exploration, scene, placement, shape measurements and judges remain real. Cases verify captured filters and retained-file exceptions, fresh scenes for alignment trials, all three shape cost terms, interleaved trial kinds, reproducible adoption decisions, disabled and forced searches, and the complete JSON result. Browser tests establish that captured typography and the final rendered picture agree.
 
-Created for the [October 13 weighted shape competition](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply), so a command can exercise the same alternatives and report the same geometry as the Explorer.
+Created for the [October 13 weighted shape competition](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-13/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply), so a command can exercise the same alternatives and report the same geometry as the Explorer.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

@@ -13,9 +13,9 @@ Current standalone model of reading-block text flow from a browser capture.
 ### Notes
 Pretext prepares mixed-font inline runs in the browser and serializes their measurements; this module reflows them without a page. It composes block spacing, list insets, preserved code lines and bounded prose. The existing layout-lab browser checks hold total dimensions and pin positions to the actual page, without relaxing their pixel comparisons.
 
-Introduced during the [November 4 portrait integration](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-2).
+Introduced during the [November 4 portrait integration](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-04/2026-11-04.1.record.md#turn-2).
 
-The whitespace-preserving path uses Pretext’s prepared pre-wrap text; ordinary mixed-font prose uses rich-inline flow. Code indentation and blank lines are asserted against the supplied text, then its captured model is held to a separately rendered narrower page. See the [integration record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-2).
+The whitespace-preserving path uses Pretext’s prepared pre-wrap text; ordinary mixed-font prose uses rich-inline flow. Code indentation and blank lines are asserted against the supplied text, then its captured model is held to a separately rendered narrower page. See the [integration record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-04/2026-11-04.1.record.md#turn-2).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

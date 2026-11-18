@@ -13,7 +13,7 @@ Vitest cases for the overview band's gathering: pairs once each way with their m
 
 ### Notes
 
-Written with the module in the far bands' second milestone (2026-11-06, [Turn 3](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-06.1.record.md#turn-3)). The wires are a miniature of the still picture's: three references from one spec to the subject, two of them from named symbols and one from the file, a reference each way between the subject and the spec, and a self-reference.
+Written with the module in the far bands' second milestone (2026-11-06, [Turn 3](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-06/2026-11-06.1.record.md#turn-3)). The wires are a miniature of the still picture's: three references from one spec to the subject, two of them from named symbols and one from the file, a reference each way between the subject and the spec, and a self-reference.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

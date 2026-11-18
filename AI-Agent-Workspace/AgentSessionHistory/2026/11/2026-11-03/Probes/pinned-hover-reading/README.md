@@ -1,6 +1,6 @@
 # Pins, hover and two name-click actions
 
-Historical prototype record, November 3, 2026. Requested in [Turns 5–6](../../../ChatHistory/2026/11/2026-11-03.1.record.md#turn-5), following the [four pin-policy comparison](../pinned-reading/README.md). This updates the ignored preview at `dist/explorer/probes/pinned-reading/`; the runnable page and editable source remain disposable. No production reader or layout has changed.
+Historical prototype record, November 3, 2026. Requested in [Turns 5–6](../../2026-11-03.1.record.md#turn-5), following the [four pin-policy comparison](../pinned-reading/README.md). This updates the ignored preview at `dist/explorer/probes/pinned-reading/`; the runnable page and editable source remain disposable. No production reader or layout has changed.
 
 ## What the owner selected
 
@@ -38,16 +38,16 @@ The separate-reading mode keeps retention quiet while the person reads, at the c
 | [Full structured comment](structured-symbol.png) | The C# method pinned through its name, with summary, parameters, exceptions and examples. |
 | [Narrow hover visit](narrow-hover.png) | The same Walk/walk journey at 980×780; the map remains pannable. |
 
-The [Gallery sheet](../../../Gallery/sheets/pathfind-name-click.png) places the two file-name actions side by side. All captures are from the built prototype and personally inspected by the root.
+The [Gallery sheet](../../../../../../Gallery/sheets/pathfind-name-click.png) places the two file-name actions side by side. All captures are from the built prototype and personally inspected by the root.
 
 ## Verification
 
 The repeated-hover and interaction checks follow visual inspection. Eight actual Walk/walk hover visits returned to identical resting card rectangles, scroll position and scroll extent. Long-comment-to-following-row and stationary-pointer checks passed, as did file-versus-symbol hover targeting, independent reading and mode switching, native name-pin transitions, held descriptions surviving pointer exit, keyboard focus/Enter/Escape, sharing/reload, structured comments, the narrow view and actual touch taps in both modes. All 96 case/click/pin-policy combinations rendered and reversibly pinned without page or console errors.
 
-The first content-matrix run exposed a mistaken test assumption: the estate client's file Purpose and selected method are undocumented, but the class has a Summary. The corrected check distinguishes all three rather than hiding the class's description; the complete private check then passed. The [session record](../../../ChatHistory/2026/11/2026-11-03.1.record.md#turn-6) retains the failure and corrected results. No product code or test gate was changed for this prototype.
+The first content-matrix run exposed a mistaken test assumption: the estate client's file Purpose and selected method are undocumented, but the class has a Summary. The corrected check distinguishes all three rather than hiding the class's description; the complete private check then passed. The [session record](../../2026-11-03.1.record.md#turn-6) retains the failure and corrected results. No product code or test gate was changed for this prototype.
 
 ## Sharing question raised during the comparison
 
-In [Turn 7](../../../ChatHistory/2026/11/2026-11-03.1.record.md#turn-7), the owner asks whether a colleague might need a shared view with a fully expanded unpinned card, or with pins retained but descriptions hidden. The root's examples are a walkthrough reading an already-visible provider without retaining its whole neighborhood, and a dependency overview with pinned subjects but folded prose. The root recommends making explicit reading choices independently shareable, with pin-driven expansion as the default action and hover transient. This is a recommendation, not an owner-selected contract.
+In [Turn 7](../../2026-11-03.1.record.md#turn-7), the owner asks whether a colleague might need a shared view with a fully expanded unpinned card, or with pins retained but descriptions hidden. The root's examples are a walkthrough reading an already-visible provider without retaining its whole neighborhood, and a dependency overview with pinned subjects but folded prose. The root recommends making explicit reading choices independently shareable, with pin-driven expansion as the default action and hover transient. This is a recommendation, not an owner-selected contract.
 
 The prototype's per-item reading overrides already survive sharing independently of pins; a one-action whole-card expand/fold control is not present. The production design must also decide how an explicitly open unpinned card stays visible if it would otherwise fall outside the restored scope. Keeping that card available for reading must not silently imply a whole-neighborhood pin. Neither this visibility rule nor the final name-click action is settled here.

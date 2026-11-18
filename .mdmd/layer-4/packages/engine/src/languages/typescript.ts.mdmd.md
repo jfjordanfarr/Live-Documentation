@@ -11,7 +11,7 @@
 Provides TypeScript/JavaScript-specific syntax configuration implementing `LanguageSyntax`. Defines comment delimiters (`//`, `/* */`), string delimiters (`"`, `'`, `` ` ``), and a blocklist of common JS/TS identifiers (`data`, `result`, `item`, etc.).
 
 ### Notes
-Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-29.1.md) — covers `.ts`, `.tsx`, `.js`, `.jsx`, `.mjs`, `.cjs` extensions. Template literal (backtick) stripping uses a simplified regex that may miss nested expressions; tree-sitter will handle these accurately.
+Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-29/2026-01-29.1.md) — covers `.ts`, `.tsx`, `.js`, `.jsx`, `.mjs`, `.cjs` extensions. Template literal (backtick) stripping uses a simplified regex that may miss nested expressions; tree-sitter will handle these accurately.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

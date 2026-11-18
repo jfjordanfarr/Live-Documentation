@@ -12,7 +12,7 @@ The processor's interface: `run_processor`, `summarize_report` and `free_report`
 
 ### Notes
 - Declares the free functions the C variant has by the same names; the `Processor` class behind them is in `processor.cpp`.
-- Written 2026-10-16 as the ninth language of the rosetta parity test, mirroring the C variant file for file so that the canonical edges hold by the same symbols ([Turn 10 of the October 15 session](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-15.1.record.md#turn-10)).
+- Written 2026-10-16 as the ninth language of the rosetta parity test, mirroring the C variant file for file so that the canonical edges hold by the same symbols ([Turn 10 of the October 15 session](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-15/2026-10-15.1.record.md#turn-10)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

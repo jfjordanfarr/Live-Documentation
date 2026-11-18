@@ -1,6 +1,6 @@
 # Theo and UI hill climbing
 
-Historical research, November 4, 2026, requested in [Turn 6](../ChatHistory/2026/11/2026-11-04.1.record.md#turn-6). The proposed Explorer experiment below was the root agent's recommendation at research time. The owner subsequently authorized it in [Turn 8](../ChatHistory/2026/11/2026-11-04.1.record.md#turn-8); its actual implementation, reviews and verification are tracked in the [learning-journey experiment](../Probes/2026-11-04/learning/README.md).
+Historical research, November 4, 2026, requested in [Turn 6](../2026-11-04.1.record.md#turn-6). The proposed Explorer experiment below was the root agent's recommendation at research time. The owner subsequently authorized it in [Turn 8](../2026-11-04.1.record.md#turn-8); its actual implementation, reviews and verification are tracked in the [learning-journey experiment](../Probes/learning/README.md).
 
 Theo's [Agents Sucked At UI (Until Today)](https://www.youtube.com/watch?v=xq0eB8vxeqk), published November 3, describes repeatedly improving T3 Code using screenshot reviews from several models. Its useful contribution here is an explicit feedback loop with comparative visual evidence. Our experiment should optimize what a viewer can understand and do, while independently protecting the documented facts.
 
@@ -40,7 +40,7 @@ My assessment: the case supports trying repeated model critique as a design-impr
 
 ## A proposed Explorer experiment
 
-Start with one complete 2D learning journey. The [vision](../../.mdmd/layer-1/vision.mdmd.md) makes understanding software the purpose, and [current direction](../Memory/direction.md#next) asks for a portrait card that teaches its subject before outward exploration. The owner's [payment-cycle observation](../ChatHistory/2026/11/2026-11-04.1.record.md#turn-5) gives us a concrete test: a correct return wire should help a viewer recognize the three-file relationship.
+Start with one complete 2D learning journey. The [vision](../../../../../../.mdmd/layer-1/vision.mdmd.md) makes understanding software the purpose, and [current direction](../../../../../Memory/direction.md#next) asks for a portrait card that teaches its subject before outward exploration. The owner's [payment-cycle observation](../2026-11-04.1.record.md#turn-5) gives us a concrete test: a correct return wire should help a viewer recognize the three-file relationship.
 
 | Task for a reviewer using the interface | Evidence to collect |
 | --- | --- |
@@ -65,7 +65,7 @@ Read YouTube's own transcript through its final caption at 31:39, all four PR de
 
 ## November 4 follow up for this workspace
 
-In [Turn 7](../ChatHistory/2026/11/2026-11-04.1.record.md#turn-7), the owner specifies GPT-6.1 Sol as the subagent model for this experiment and asks the lead to select the next work from the preferences already supplied. The proposed adaptation uses fresh Sol review contexts and explicit criteria. Provider diversity is not a precondition for this local experiment; the historical description of Theo's protocol above remains accurate.
+In [Turn 7](../2026-11-04.1.record.md#turn-7), the owner specifies GPT-6.1 Sol as the subagent model for this experiment and asks the lead to select the next work from the preferences already supplied. The proposed adaptation uses fresh Sol review contexts and explicit criteria. Provider diversity is not a precondition for this local experiment; the historical description of Theo's protocol above remains accurate.
 
 The lead's chosen next task is the 2D portrait-card and outward-learning journey. Start by grading the existing build, then address its largest observed weakness and compare the resulting journey with the baseline. The first scope includes one ordinary estate subject, one dense repository subject, long descriptions, desktop and phone. It tests the remaining name-click alternatives in context without treating either as already selected.
 

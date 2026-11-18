@@ -1,6 +1,6 @@
 # A dedicated slot for Internals: three sketched forms beside the row as built
 
-_Status: the root's sketches of November 6, 2026, for a design discussion with the owner; not a change to the product, and no form here is chosen. The owner answered three ways of giving the Internals row room with a call for "a dedicated design slot with special styling", designed from what Internals is for ([Turn 7 of the November 6 record](../../../ChatHistory/2026/11/2026-11-06.1.record.md#turn-7); the history of the pseudo-symbol in the owner's words is in that turn's work notes). These pictures set three forms of such a slot beside the row as it is built today, on one subject, at four scales._
+_Status: the root's sketches of November 6, 2026, for a design discussion with the owner; not a change to the product, and no form here is chosen. The owner answered three ways of giving the Internals row room with a call for "a dedicated design slot with special styling", designed from what Internals is for ([Turn 7 of the November 6 record](../../2026-11-06.1.record.md#turn-7); the history of the pseudo-symbol in the owner's words is in that turn's work notes). These pictures set three forms of such a slot beside the row as it is built today, on one subject, at four scales._
 
 ## What is drawn
 

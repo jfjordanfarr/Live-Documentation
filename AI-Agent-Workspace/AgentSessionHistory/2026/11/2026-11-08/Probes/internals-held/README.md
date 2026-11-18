@@ -1,6 +1,6 @@
 # The instruments of the Internals row's held pictures, November 8
 
-_Status: the instruments a builder used on 2026-11-08 to picture the 2D Local Map's Internals row in five forms by injected styles, kept so that the pictures and the measurements can be taken again. The pictures, the readings and the forms' reasons are in [the internals-held pictures](../../../Screenshots/2026-11-08/internals-held/README.md). They change nothing in the product._
+_Status: the instruments a builder used on 2026-11-08 to picture the 2D Local Map's Internals row in five forms by injected styles, kept so that the pictures and the measurements can be taken again. The pictures, the readings and the forms' reasons are in [the internals-held pictures](../../Screenshots/internals-held/README.md). They change nothing in the product._
 
 Each script runs from the repository root with `npx tsx`, against a served bundle (`npm run build`, `npm run live-docs:visualize`, `npx http-server dist/explorer -p 8900 -c-1 --silent`; the pictures were taken on port 8900's bundle of `476ea2c8`), under the machine's browser lock when other browser runs share it (`flock <lock> npx tsx …`).
 

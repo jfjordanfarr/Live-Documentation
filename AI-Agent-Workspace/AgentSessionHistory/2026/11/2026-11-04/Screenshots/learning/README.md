@@ -1,6 +1,6 @@
 # Portrait learning journey comparison
 
-Implementation evidence, verified November 5, 2026. See [the experiment](../../../Probes/2026-11-04/learning/README.md) for methods, findings and the passing full gate. A is the original e433e484 baseline; C is the first reviewed candidate. The captures record observed states and reviews, without inferring owner acceptance. Seven byte-identical B captures were consolidated into C; B retains only its distinct exploratory frames.
+Implementation evidence, verified November 5, 2026. See [the experiment](../../Probes/learning/README.md) for methods, findings and the passing full gate. A is the original e433e484 baseline; C is the first reviewed candidate. The captures record observed states and reviews, without inferring owner acceptance. Seven byte-identical B captures were consolidated into C; B retains only its distinct exploratory frames.
 
 | State | Baseline A | Candidate C |
 | --- | --- | --- |

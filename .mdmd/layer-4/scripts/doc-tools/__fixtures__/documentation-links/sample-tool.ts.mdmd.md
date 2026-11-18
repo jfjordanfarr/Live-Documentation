@@ -8,7 +8,7 @@
 
 ## Authored
 ### Purpose
-Acts as the seeded export for the documentation-link enforcement fixture, letting the CLI assert both markdown backlinks and code references per [2025-11-02 summary](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-02.SUMMARIZED.md).
+Acts as the seeded export for the documentation-link enforcement fixture, letting the CLI assert both markdown backlinks and code references per [2025-11-02 summary](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/Summarized/2025-11-02.SUMMARIZED.md).
 
 ### Notes
 - The function intentionally returns a constant string; any behavioural changes would distract from the link-resolution checks this fixture guards.

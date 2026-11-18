@@ -16,7 +16,7 @@ Language adapter that extracts dependency relationships from HTML files by parsi
 - Handles srcset parsing with multiple URL entries for responsive images
 - Skips external URLs (http/https), data URIs, protocol-relative URLs, and anchor-only references
 - Strips query strings and fragments from URLs before resolution
-- Unresolved URL paths keep their leading slash, so `/` remains a root reference and `/missing` remains distinct from `missing`; query-only references retain their written identity. T3's static-site examples exposed the former empty-specifier failure ([the investigation](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-27.1.record.md#turn-3)).
+- Unresolved URL paths keep their leading slash, so `/` remains a root reference and `/missing` remains distinct from `missing`; query-only references retain their written identity. T3's static-site examples exposed the former empty-specifier failure ([the investigation](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-27/2026-10-27.1.record.md#turn-3)).
 - Element IDs are public symbols so a consumer's `getElementById` link can land on the declared element.
 
 ## Generated

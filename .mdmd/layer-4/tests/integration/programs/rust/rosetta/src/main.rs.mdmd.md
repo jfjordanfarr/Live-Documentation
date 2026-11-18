@@ -12,7 +12,7 @@
 Entry point for the Rust Rosetta Stone fixture. Demonstrates mod declarations and use statements.
 
 ### Notes
-See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests Rust's module system detection.
+See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-14/2026-01-14.1.md). Tests Rust's module system detection.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

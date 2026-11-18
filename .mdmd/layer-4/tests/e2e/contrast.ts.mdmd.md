@@ -11,7 +11,7 @@
 The contrast of text against what stands behind it, as WCAG 2 defines it, for browser specs: `parseColour` reads a colour as `getComputedStyle` writes it, `backdrop` lays an element's and its ancestors' backgrounds over one another and over the browser's white canvas, and `contrastRatio` gives the ratio of the text's colour to that backdrop from their relative luminances. A spec reads the colours in the page and judges them here; `AA_SMALL_TEXT` is the 4.5:1 that WCAG AA asks of small text.
 
 ### Notes
-- Written on 2026-10-30 for the search results' paths, which the [October 23 review](../../../../AI-Agent-Workspace/Screenshots/2026-10-23/README.md) found very faint, under the remediation plan the owner accepted ([Turn 3](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md#turn-3)). The path report's spec, `local-map-path.spec.ts`, carries its own in-page copy of the same arithmetic from before this module existed.
+- Written on 2026-10-30 for the search results' paths, which the [October 23 review](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-23/Screenshots/README.md) found very faint, under the remediation plan the owner accepted ([Turn 3](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-30/2026-10-30.1.record.md#turn-3)). The path report's spec, `local-map-path.spec.ts`, carries its own in-page copy of the same arithmetic from before this module existed.
 - A translucent background, such as a selected row's tint, is laid over what is beneath it, so a ratio is measured against the colour a person sees. An element's `opacity` is not read: a row faded on purpose is outside what this judges.
 
 ## Generated

@@ -1,6 +1,6 @@
 # The instruments of the shell-mesh round of November 6
 
-_Status: the instruments a builder used on 2026-11-06 to make a directory shell a true stand-in for the files beneath it, kept so that the measurements can be run again. The numbers they produced, and the pictures, are in [the shell-mesh pictures](../../../Screenshots/2026-11-06/shell-mesh/README.md)._
+_Status: the instruments a builder used on 2026-11-06 to make a directory shell a true stand-in for the files beneath it, kept so that the measurements can be run again. The numbers they produced, and the pictures, are in [the shell-mesh pictures](../../Screenshots/shell-mesh/README.md)._
 
 Each script runs from the repository root with `npx tsx`, since it requires the repository's TypeScript modules. The two browser scripts drive a private headless Chromium (Playwright's) against a served bundle: build it (`npm run build`, `npm run live-docs:visualize`, `npm run live-docs:visualize:estate`) and serve it (`npx http-server dist/explorer -p 8912 -c-1 --silent`).
 

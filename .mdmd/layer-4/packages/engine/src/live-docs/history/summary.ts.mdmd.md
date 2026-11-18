@@ -13,7 +13,7 @@ One commit's summary as the history command's cache keeps it, read from the grap
 ### Notes
 - Written 2026-10-17 for C1 of [the plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md). An edge counts the graph file's `edges` whose `to` is the other file, dependency lines and linked type references alike, a self-reference left out; the symbol count is the doc's `Public Symbols` headings, overloads included, as the structure layout sizes a sphere.
 - A doc without an archetype stops the summary: the generator writes one on every doc, so its absence is a generator bug, not a shape to record.
-- Since 2026-10-20 ([Turn 9](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-9)) a summary also records each file's related documents, which its caller reads with `relatedDocsOf` and checks against the commit's tree, since the graph alone cannot see whether a document stood; each is recorded once, sorted, and only for a file of the graph.
+- Since 2026-10-20 ([Turn 9](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-20/2026-10-20.1.record.md#turn-9)) a summary also records each file's related documents, which its caller reads with `relatedDocsOf` and checks against the commit's tree, since the graph alone cannot see whether a document stood; each is recorded once, sorted, and only for a file of the graph.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

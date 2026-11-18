@@ -11,7 +11,7 @@
 Data models for the TypeScript Rosetta Stone fixture. Defines Record and Report types with factory functions.
 
 ### Notes
-See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md) for Rosetta Stone design. This module is imported by both main.ts and processor.ts, testing multi-consumer dependency detection.
+See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-14/2026-01-14.1.md) for Rosetta Stone design. This module is imported by both main.ts and processor.ts, testing multi-consumer dependency detection.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

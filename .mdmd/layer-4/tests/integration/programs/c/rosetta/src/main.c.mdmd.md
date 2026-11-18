@@ -12,7 +12,7 @@
 Entry point for the C Rosetta Stone fixture. Demonstrates #include and function call patterns.
 
 ### Notes
-See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests C include directive and cross-file call detection.
+See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-14/2026-01-14.1.md). Tests C include directive and cross-file call detection.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

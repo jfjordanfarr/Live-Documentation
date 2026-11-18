@@ -1,6 +1,6 @@
 # T3 Code: from a fresh scan to a cross-provider explanation
 
-Historical probe begun 2026-10-27. Authorized in [Turn 3](../../../ChatHistory/2026/10/2026-10-27.1.record.md#turn-3). The 2D companion and portable bundle are complete and transfer-tested. The isolated 3D trials failed; no live T3 provider trial was run.
+Historical probe begun 2026-10-27. Authorized in [Turn 3](../../2026-10-27.1.record.md#turn-3). The 2D companion and portable bundle are complete and transfer-tested. The isolated 3D trials failed; no live T3 provider trial was run.
 
 ## Open the result
 
@@ -12,7 +12,7 @@ These local served artifacts are rebuildable outputs under `dist/explorer/sample
 
 ## Question and evidence boundary
 
-Can someone use Live Documentation to understand how T3 Code dispatches a task to another provider and returns the result? The initial computed Local Map is kept separate from later authored explanation. The root already read the [upstream evidence review](../../../Research/2026-10-27-t3-code.md); facts learned there are not credited to the generated map.
+Can someone use Live Documentation to understand how T3 Code dispatches a task to another provider and returns the result? The initial computed Local Map is kept separate from later authored explanation. The root already read the [upstream evidence review](../../Research/t3-code.md); facts learned there are not credited to the generated map.
 
 Target: upstream `pingdotgg/t3code` release `v0.1.3`, commit `d2c440312e5f39d59827ed466838a623516454d6`. No T3 dependencies or provider sessions are needed for the static scan. A live migration trial is a separate question.
 
@@ -145,7 +145,7 @@ This rehearsal produced an explorable source explanation and a verified portable
 
 ## Owner-run hosting
 
-At [Turn 5](../../../ChatHistory/2026/10/2026-10-27.1.record.md#turn-5), the owner’s browser showed [connection refused](28-owner-connection-refused.png). The bundle files remained present, but port 8080 had no listener. The earlier running preview did not persist through the handoff. To serve the existing URLs from the devcontainer, keep this command running in a terminal:
+At [Turn 5](../../2026-10-27.1.record.md#turn-5), the owner’s browser showed [connection refused](28-owner-connection-refused.png). The bundle files remained present, but port 8080 had no listener. The earlier running preview did not persist through the handoff. To serve the existing URLs from the devcontainer, keep this command running in a terminal:
 
 ```bash
 python3 -m http.server 8080 --bind 0.0.0.0 --directory /workspaces/Live-Documentation/dist/explorer

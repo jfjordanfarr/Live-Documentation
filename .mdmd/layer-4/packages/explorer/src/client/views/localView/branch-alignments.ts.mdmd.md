@@ -15,7 +15,7 @@ Proposes simpler directory outlines for the Local Map’s continuing layout comp
 
 Every proposal preserves all existing flat runs across drawn directories, including ancestors, so removing one step cannot merely move it into a formerly flat section. The placement solver re-solves cards, lanes and containing boxes under those equality groups; the shared complete score decides whether to adopt the result. Candidates are deterministic, with smaller steps offered first. This is a local neighborhood, not a globally optimal fixed-charge solver.
 
-Created for the owner’s October 13, 2026 request to tune aesthetic preferences within the existing competition: [the originating discussion](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply).
+Created for the owner’s October 13, 2026 request to tune aesthetic preferences within the existing competition: [the originating discussion](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-13/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

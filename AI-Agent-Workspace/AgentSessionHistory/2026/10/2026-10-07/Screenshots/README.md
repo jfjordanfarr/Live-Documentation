@@ -4,11 +4,11 @@
 
 | Capture | State |
 | --- | --- |
-| [The owner's edit of the "wide" shape](owner-laces-behind-the-card.png) | The owner's own picture, not the agent's: their edit of [the dials sheet's "wide" picture](../2026-10-06/repository-five-graph-card-laces-wide.png), attached to [Turn 14 of the October 6 session](../../ChatHistory/2026/10/2026-10-06.1.record.md#turn-14) with the words "just some boxes with the sampled color used to block off some of the places where looping back looks incorrect (fails to go 'behind' the card)". 878 × 635, SHA-256 `28c9a0270d816e039f22849dd750df411ac7e1fb59f11fd29c0f073c8e0c000c`. Enlarged, every box sits on a lace's return, from the card's border inward to the pin, on both sides of graph.ts's card, and nowhere else: the outbound stroke across the card's padding stays; the return vanishes where the card's border begins. It is kept as the brief the pictures below answer. |
+| [The owner's edit of the "wide" shape](owner-laces-behind-the-card.png) | The owner's own picture, not the agent's: their edit of [the dials sheet's "wide" picture](../../2026-10-06/Screenshots/repository-five-graph-card-laces-wide.png), attached to [Turn 14 of the October 6 session](../../2026-10-06/2026-10-06.1.record.md#turn-14) with the words "just some boxes with the sampled color used to block off some of the places where looping back looks incorrect (fails to go 'behind' the card)". 878 × 635, SHA-256 `28c9a0270d816e039f22849dd750df411ac7e1fb59f11fd29c0f073c8e0c000c`. Enlarged, every box sits on a lace's return, from the card's border inward to the pin, on both sides of graph.ts's card, and nowhere else: the outbound stroke across the card's padding stays; the return vanishes where the card's border begins. It is kept as the brief the pictures below answer. |
 
 ## The laces cut by the card's edge
 
-Taken by the root Claude Code agent (Fable 5.1) in Chromium at 1600 × 1000 and twice the device scale, clipped to the card with a margin, on the Explorer built with the change; the cards are at the view's own scale. A lace is now a hairpin: out from the pin, level, to a tip 18 px beyond the card's edge, turning toward its partner's row; back from the tip, level again, 12 px from the pin's row; and cut flush where the card's edge begins, so that over the card there is only its stem at the pin's row. The reach is measured from the card's edge, where before it was measured from the pin, so the 18 of the defaults now puts the tip where the "wide" shape's did; the inset dial of October 6 is gone, since the cut leaves it nothing to show. The three subjects are the ones of [the October 5 laces](../2026-10-06/README.md#the-french-corsets-laces-later-the-same-night).
+Taken by the root Claude Code agent (Fable 5.1) in Chromium at 1600 × 1000 and twice the device scale, clipped to the card with a margin, on the Explorer built with the change; the cards are at the view's own scale. A lace is now a hairpin: out from the pin, level, to a tip 18 px beyond the card's edge, turning toward its partner's row; back from the tip, level again, 12 px from the pin's row; and cut flush where the card's edge begins, so that over the card there is only its stem at the pin's row. The reach is measured from the card's edge, where before it was measured from the pin, so the 18 of the defaults now puts the tip where the "wide" shape's did; the inset dial of October 6 is gone, since the cut leaves it nothing to show. The three subjects are the ones of [the October 5 laces](../../2026-10-06/Screenshots/README.md#the-french-corsets-laces-later-the-same-night).
 
 | Capture | State |
 | --- | --- |
@@ -30,7 +30,7 @@ The agent's choice, pending the owner's: the defaults as they stand (reach 18, c
 
 ## The picture moves, later on October 7
 
-Evidence from [Turn 16 of the October 6 session](../../ChatHistory/2026/10/2026-10-06.1.record.md#turn-16), the owner's yes to the animated re-layout. Taken by the root Claude Code agent (Fable 5.1) in Chromium at 1600 × 1000 at the view's own scale, with the Move dial at its longest, 1,200 ms, so that three frames could be caught by a script; the default is 450 ms. The picture is graph.ts and document.ts retained whole, and the click pins document.ts's row `renderSymbolBlocks`, which turns the file's whole pin into pins on its other symbols (2 pins become 17), lets four adapter test cards go, and moves 24 of the 27 cards that remain by 59 to 80 px. document.ts is the card last acted on, so the camera holds it still: at rest it stands 1 px from where it stood. The frames are timed from the moment the picture's root says `data-moving`.
+Evidence from [Turn 16 of the October 6 session](../../2026-10-06/2026-10-06.1.record.md#turn-16), the owner's yes to the animated re-layout. Taken by the root Claude Code agent (Fable 5.1) in Chromium at 1600 × 1000 at the view's own scale, with the Move dial at its longest, 1,200 ms, so that three frames could be caught by a script; the default is 450 ms. The picture is graph.ts and document.ts retained whole, and the click pins document.ts's row `renderSymbolBlocks`, which turns the file's whole pin into pins on its other symbols (2 pins become 17), lets four adapter test cards go, and moves 24 of the 27 cards that remain by 59 to 80 px. document.ts is the card last acted on, so the camera holds it still: at rest it stands 1 px from where it stood. The frames are timed from the moment the picture's root says `data-moving`.
 
 | Capture | State |
 | --- | --- |
@@ -44,7 +44,7 @@ Measured on this move by the page's own frame clock and the browser's counters: 
 
 ## The search's dials, later on October 7
 
-Evidence from [Turn 18 of the October 6 session](../../ChatHistory/2026/10/2026-10-06.1.record.md#turn-18), the owner's go on fewer starts before paint and on the churn cost as a slider. Taken by the root Claude Code agent (Fable 5.1) in Chromium at 1600 × 1000 and twice the device scale, clipped to the Tuning panel's dials for the order step and the search.
+Evidence from [Turn 18 of the October 6 session](../../2026-10-06/2026-10-06.1.record.md#turn-18), the owner's go on fewer starts before paint and on the churn cost as a slider. Taken by the root Claude Code agent (Fable 5.1) in Chromium at 1600 × 1000 and twice the device scale, clipped to the Tuning panel's dials for the order step and the search.
 
 | Capture | State |
 | --- | --- |
@@ -52,7 +52,7 @@ Evidence from [Turn 18 of the October 6 session](../../ChatHistory/2026/10/2026-
 
 ## The membrane rule relaxed, later on October 7
 
-Evidence from [Turn 20 of the October 6 session](../../ChatHistory/2026/10/2026-10-06.1.record.md#turn-20), the owner's go on finding the wall: the layout's rules made levers of the lab. Taken by the lab's `verify` verb in Chromium at 1600 × 1000, the frame as the page opens on graph.ts with the deck's five files retained and the lever seeded; the page agreed with the lab to the pixel at every setting but depth 2 (0.6%). The pictures are the first paint from three starts, not the search's end.
+Evidence from [Turn 20 of the October 6 session](../../2026-10-06/2026-10-06.1.record.md#turn-20), the owner's go on finding the wall: the layout's rules made levers of the lab. Taken by the lab's `verify` verb in Chromium at 1600 × 1000, the frame as the page opens on graph.ts with the deck's five files retained and the lever seeded; the page agreed with the lab to the pixel at every setting but depth 2 (0.6%). The pictures are the first paint from three starts, not the search's end.
 
 | Capture | State |
 | --- | --- |
@@ -64,7 +64,7 @@ Evidence from [Turn 20 of the October 6 session](../../ChatHistory/2026/10/2026-
 
 ## The owner's pictures of the hosted build, later on October 7
 
-The owner's own screenshots of the build hosted at [Turn 2 of the October 7 session](../../ChatHistory/2026/10/2026-10-07.1.record.md#turn-2), sent with [Turn 4](../../ChatHistory/2026/10/2026-10-07.1.record.md#turn-4) and preserved as received. The scene is this repository's Java warehouse sample (`tests/integration/programs/java/warehouse`), App.java retained with three pins, the `model`, `report` and `store` directories as membranes.
+The owner's own screenshots of the build hosted at [Turn 2 of the October 7 session](../2026-10-07.1.record.md#turn-2), sent with [Turn 4](../2026-10-07.1.record.md#turn-4) and preserved as received. The scene is this repository's Java warehouse sample (`tests/integration/programs/java/warehouse`), App.java retained with three pins, the `model`, `report` and `store` directories as membranes.
 
 | Capture | State |
 | --- | --- |
@@ -73,7 +73,7 @@ The owner's own screenshots of the build hosted at [Turn 2 of the October 7 sess
 
 ## The membranes' shape priced, and the bundles' runs dimmed, later on October 7
 
-Taken by the agent after [Turn 4 of the October 7 session](../../ChatHistory/2026/10/2026-10-07.1.record.md#turn-4), on the owner's warehouse scene (App.java, Inventory.java and Item.java retained whole, the search off so that each is the first paint), at 3,400 by 1,500 CSS pixels so that the whole picture stands at reading scale. The levers are the new Membrane Evenness and Row Levelness dials; the numbers are the layout lab's for the four deck scopes, in [the probe record](../../Probes/2026-10-07/layout-lab.md#the-membranes-shape-priced-later-on-october-7).
+Taken by the agent after [Turn 4 of the October 7 session](../2026-10-07.1.record.md#turn-4), on the owner's warehouse scene (App.java, Inventory.java and Item.java retained whole, the search off so that each is the first paint), at 3,400 by 1,500 CSS pixels so that the whole picture stands at reading scale. The levers are the new Membrane Evenness and Row Levelness dials; the numbers are the layout lab's for the four deck scopes, in [the probe record](../Probes/layout-lab.md#the-membranes-shape-priced-later-on-october-7).
 
 | Capture | State |
 | --- | --- |
@@ -86,7 +86,7 @@ Taken by the agent after [Turn 4 of the October 7 session](../../ChatHistory/202
 
 ## The owner's second look at the hosted build, received at 00:37 UTC on October 8
 
-The owner's own pictures, not the agent's, attached before [Turn 5 of the October 7 session](../../ChatHistory/2026/10/2026-10-07.1.record.md#turn-5): the Java warehouse sample on the build the owner hosts themselves (port 8901), at the new defaults, Membrane Evenness 1 and Row Levelness 0. Kept as received, with their hashes.
+The owner's own pictures, not the agent's, attached before [Turn 5 of the October 7 session](../2026-10-07.1.record.md#turn-5): the Java warehouse sample on the build the owner hosts themselves (port 8901), at the new defaults, Membrane Evenness 1 and Row Levelness 0. Kept as received, with their hashes.
 
 | Capture | State |
 | --- | --- |

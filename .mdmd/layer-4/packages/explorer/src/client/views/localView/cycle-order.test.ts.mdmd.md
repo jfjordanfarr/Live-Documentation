@@ -11,7 +11,7 @@
 Holds the cycle order's price and searches to their claims: the exact search against every order on generated cycles, today's returns kept where today's order is already the cheapest, and the large cycle's path ending where no single move lowers the price.
 
 ### Notes
-Written with [cycle-order.ts](cycle-order.ts.mdmd.md) on 2026-11-16 ([Turn 5 of the November 15 record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-5)). The generated cycles are seeded rings with random chords, so every run draws the same ones; the cases of the ranking itself, two files that use each other unequally, a ring of three, a tie and its tipping, and order independence, are in [branches.test.ts](branches.test.ts.mdmd.md).
+Written with [cycle-order.ts](cycle-order.ts.mdmd.md) on 2026-11-16 ([Turn 5 of the November 15 record](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-5)). The generated cycles are seeded rings with random chords, so every run draws the same ones; the cases of the ranking itself, two files that use each other unequally, a ring of three, a tie and its tipping, and order independence, are in [branches.test.ts](branches.test.ts.mdmd.md).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

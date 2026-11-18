@@ -1,6 +1,6 @@
 # Astra's November 8 baseline review
 
-_Status: firsthand review of the build at `5b610371` before this session's product edits. The owner requested a fresh root assessment after the preceding session's archive was completed ([November 8, Turn 1](../../../ChatHistory/2026/11/2026-11-08.1.record.md#turn-1)). These are observations and root recommendations, not an owner acceptance or a passing test suite._
+_Status: firsthand review of the build at `5b610371` before this session's product edits. The owner requested a fresh root assessment after the preceding session's archive was completed ([November 8, Turn 1](../../2026-11-08.1.record.md#turn-1)). These are observations and root recommendations, not an owner acceptance or a passing test suite._
 
 The root used the rebuilt Explorer through the integrated browser, then repeated named journeys in the repository's installed Playwright Chromium at 1440×960, device scale 1. Main and estate client bundles had the same SHA-256, `4b2e3bba94dbe794e66d0ab89545e8bb9ebae53bd8830d0e79cb95505336c88f`. The main data had 947 files and 2,401 edges; the estate had 36 files. Fresh contexts were used, with the normal background layout search enabled. Skin and one hop were selected through visible controls where stated; the committed defaults were still Off and two hops.
 

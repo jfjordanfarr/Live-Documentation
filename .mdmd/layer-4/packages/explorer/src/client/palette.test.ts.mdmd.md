@@ -11,9 +11,9 @@
 Holds the palette to its shape (opaque colours, one custom property per meaning), proves that today's palette yields the strings, shader constants and tints the Explorer drew before, and keeps every colour inside the palette: no hex, colour function, named colour or `0x` colour anywhere else in the client's source but the tests.
 
 ### Notes
-Written with the palette in the [November 16 colour pass](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-16.1.record.md#turn-1). The scan of the client's source was seen to fail on a planted hex in a script and a planted named colour in a stylesheet before it was trusted; its own cases show what it finds and what it leaves (a `white-space` property, a variable named `white`, a `grey` setting).
+Written with the palette in the [November 16 colour pass](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-16/2026-11-16.1.record.md#turn-1). The scan of the client's source was seen to fail on a planted hex in a script and a planted named colour in a stylesheet before it was trusted; its own cases show what it finds and what it leaves (a `white-space` property, a variable named `white`, a `grey` setting).
 
-Since [Turns 4 and 5 of the November 16 record](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-16.1.record.md#turn-4) it also holds a palette to what makes one valid (identities 15 apart in OKLab x100 and 8 under simulated protanopia and deuteranopia, marks at 3:1 on their grounds, words at 4.5:1 on a card), which `proposed` passes and Today does not, said as a fact rather than skipped; and it hears the palette change only when another comes into force.
+Since [Turns 4 and 5 of the November 16 record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-16/2026-11-16.1.record.md#turn-4) it also holds a palette to what makes one valid (identities 15 apart in OKLab x100 and 8 under simulated protanopia and deuteranopia, marks at 3:1 on their grounds, words at 4.5:1 on a card), which `proposed` passes and Today does not, said as a fact rather than skipped; and it hears the palette change only when another comes into force.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

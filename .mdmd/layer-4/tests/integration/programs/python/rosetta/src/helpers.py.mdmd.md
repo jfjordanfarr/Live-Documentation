@@ -11,7 +11,7 @@
 Utility functions for the Python Rosetta Stone fixture.
 
 ### Notes
-See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests selective import detection.
+See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-14/2026-01-14.1.md). Tests selective import detection.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

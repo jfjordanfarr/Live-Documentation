@@ -1,6 +1,6 @@
 # Explorer review and documentation reconciliation — November 3, 2026
 
-Historical review evidence from [the opening request](../../ChatHistory/2026/11/2026-11-03.1.record.md#turn-1). Product implementation is the November 2–3 build at `e4f64a2f`; this pass corrects documentation and recommends work, without implementing a new interaction design. The main preview was rebuilt after the documentation corrections. The estate preview uses the same existing client. Every retained picture was opened and inspected by the root.
+Historical review evidence from [the opening request](../2026-11-03.1.record.md#turn-1). Product implementation is the November 2–3 build at `e4f64a2f`; this pass corrects documentation and recommends work, without implementing a new interaction design. The main preview was rebuilt after the documentation corrections. The estate preview uses the same existing client. Every retained picture was opened and inspected by the root.
 
 ## What was tried
 
@@ -49,4 +49,4 @@ This advances the vision's single-folder understanding journey and its first two
 
 ## Later November 3: repairs and reading proposals
 
-The identity and search-arrival findings above were repaired in the continuation of this session. The [three repair pictures](symbols/README.md) show the requested row in the usable map, distinct function/interface attention, and the function's own reader summary. The [four-layout reading comparison](../../Probes/2026-11-03/reading-layouts/README.md) then tries twelve real-content cases, including the owner's suggestion of descriptions on hover/tap. These later results leave this opening review intact as the evidence of what prompted the work.
+The identity and search-arrival findings above were repaired in the continuation of this session. The [three repair pictures](symbols/README.md) show the requested row in the usable map, distinct function/interface attention, and the function's own reader summary. The [four-layout reading comparison](../Probes/reading-layouts/README.md) then tries twelve real-content cases, including the owner's suggestion of descriptions on hover/tap. These later results leave this opening review intact as the evidence of what prompted the work.

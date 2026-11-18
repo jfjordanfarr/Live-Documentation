@@ -1,6 +1,6 @@
 # October 3, 2026 — native inspection and exploration
 
-Historical evidence of the experiment authorized in [October 2–3 Turn 13](../../ChatHistory/2026/10/2026-10-02.1.record.md#turn-13), captured in Chromium at 1600 × 1000. These are the actual Explorer views over the 615-file repository graph, with tests shown and assets normally hidden. Explicit path members remain visible in the Force Graph even if their category filter is off. In [the subsequent closing review](../../ChatHistory/2026/10/2026-10-02.1.record.md#turn-14), the owner strongly praised the videos and called node reorientation “perfect”. Wire splitting/gathering is a deferred next idea; the Local Map’s remaining right-angle routes still drew criticism.
+Historical evidence of the experiment authorized in [October 2–3 Turn 13](../../2026-10-02/2026-10-02.1.record.md#turn-13), captured in Chromium at 1600 × 1000. These are the actual Explorer views over the 615-file repository graph, with tests shown and assets normally hidden. Explicit path members remain visible in the Force Graph even if their category filter is off. In [the subsequent closing review](../../2026-10-02/2026-10-02.1.record.md#turn-14), the owner strongly praised the videos and called node reorientation “perfect”. Wire splitting/gathering is a deferred next idea; the Local Map’s remaining right-angle routes still drew criticism.
 
 | Capture | State |
 | --- | --- |
@@ -27,7 +27,7 @@ Verification: the complete `npm run safe:commit -- --e2e` chain passed **933 uni
 
 ## Later October 3 pass — retention, pruning and transition detail
 
-Historical evidence from [October 3 session 1](../../ChatHistory/2026/10/2026-10-03.1.record.md), captured in Chromium at 1600 × 1000 against the 617-file repository graph. Tests are shown and assets hidden. These captures reflect the new click-to-retain and X-to-prune rule, superseding the earlier layered file/row interaction for the Local Map. In [the October 5 closing review](../../ChatHistory/2026/10/2026-10-03.1.record.md#turn-5), the owner reports having checked the built work more than once and been “really impressed”. The positive verdict does not close the remaining layout and shape-morph questions.
+Historical evidence from [October 3 session 1](../2026-10-03.1.record.md), captured in Chromium at 1600 × 1000 against the 617-file repository graph. Tests are shown and assets hidden. These captures reflect the new click-to-retain and X-to-prune rule, superseding the earlier layered file/row interaction for the Local Map. In [the October 5 closing review](../2026-10-03.1.record.md#turn-5), the owner reports having checked the built work more than once and been “really impressed”. The positive verdict does not close the remaining layout and shape-morph questions.
 
 | Capture | State |
 | --- | --- |

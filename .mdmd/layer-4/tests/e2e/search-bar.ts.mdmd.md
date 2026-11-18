@@ -13,8 +13,8 @@ Helpers for the browser specs that drive the search bar: `choose` types into a f
 
 ### Notes
 
-- Written on 2026-10-14 ([Turn 6](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-6)) with the bar, for the path, navigation, zoom and focus specs that had driven the FROM/TO toolbar or opened a path by the four loose address parameters, which the compressed snapshot's destination replaced.
-- `choose` opens the fold when the row wanted is not offered (2026-10-14, [Turn 7](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-7)), since the destination field keeps the files no path connects under it; a spec that asks for such a file gets the honest answer.
+- Written on 2026-10-14 ([Turn 6](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-14/2026-10-14.1.record.md#turn-6)) with the bar, for the path, navigation, zoom and focus specs that had driven the FROM/TO toolbar or opened a path by the four loose address parameters, which the compressed snapshot's destination replaced.
+- `choose` opens the fold when the row wanted is not offered (2026-10-14, [Turn 7](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-14/2026-10-14.1.record.md#turn-7)), since the destination field keeps the files no path connects under it; a spec that asks for such a file gets the honest answer.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

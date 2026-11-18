@@ -1,6 +1,6 @@
 # The frame-cost instruments of November 6
 
-_Status: the instruments behind two measurements of 2026-11-06, kept so that the journeys can be run again, on this machine or on the owner's own browser with a GPU. The numbers they produced are in [the card-breakpoints pictures](../../../Screenshots/2026-11-06/card-breakpoints/README.md) and [the card-culling pictures](../../../Screenshots/2026-11-06/card-culling/README.md)._
+_Status: the instruments behind two measurements of 2026-11-06, kept so that the journeys can be run again, on this machine or on the owner's own browser with a GPU. The numbers they produced are in [the card-breakpoints pictures](../../Screenshots/card-breakpoints/README.md) and [the card-culling pictures](../../Screenshots/card-culling/README.md)._
 
 Each script drives a private headless Chromium (Playwright's) against a served Explorer bundle and reads Chromium's performance metrics (style, layout, script and task durations, the layout and style counts) and the requestAnimationFrame intervals over 1.2 s after a camera move, per tuning variant: the ladder (the default), constant properties (the resistances at 0, Name Growth at 1) and the growing composition. Build the bundle (`npm run build`), serve it (`npx http-server dist/explorer -p 8779 -c-1 --silent`), and run a script with `npx tsx` from the repository root, since each requires TypeScript modules of the repository (the URL state's compression, the persisted tuning key, the stillness helper of the browser specs).
 

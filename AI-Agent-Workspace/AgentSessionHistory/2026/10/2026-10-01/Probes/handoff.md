@@ -1,6 +1,6 @@
 # Board and scope handoff
 
-_Historical design probe, October 1, 2026. This records an experiment, not an adopted Explorer architecture. Root agent: Codex. The owner's request and the agent's checkpoints are preserved in [Turn 44](../../ChatHistory/2026/09/2026-09-30.2.record.md#turn-44)._
+_Historical design probe, October 1, 2026. This records an experiment, not an adopted Explorer architecture. Root agent: Codex. The owner's request and the agent's checkpoints are preserved in [Turn 44](../../../09/2026-09-30/2026-09-30.2.record.md#turn-44)._
 
 The owner liked the [analytical workspace](analysis-surface.md), particularly its readable cards and minimap, while identifying wires hidden beneath destination cards and excessive text on action buttons. They asked for another probe exploring its relationship with the World Map. Their competing possibilities remain variables: spatial outside/abstract inside, or representations usable at multiple scopes. They also confirmed that the Force Graph's absent file focus is a standing defect.
 
@@ -8,7 +8,7 @@ The owner liked the [analytical workspace](analysis-surface.md), particularly it
 
 A change of presentation need not be a change of scope. An authored board can stay spatial while an analytical workspace reads either systems' interfaces or files' symbols. They share identities and evidence without sharing a coordinate system. The owner accepted the authored-placement/computed-presentation boundary, not this particular implementation.
 
-The [paper comparison](../2026-09-30/interaction-game.md#boundaries-that-permit-independent-improvement) supplies the responsibility boundary and explicit costs. The [failed depth probes](../2026-09-30/depth.md) supply counterexamples: edge-on cards lose identity; directory corridors hide cross-branch relationships; camera continuity alone does not compose a useful scene. The September board already experimented with opening a lid into an interior panel. This probe instead moves the whole, still-live board into a persistent context surface. It does not turn a system into a literal room or assume exactly two levels of containment.
+The [paper comparison](../../../09/2026-09-30/Probes/interaction-game.md#boundaries-that-permit-independent-improvement) supplies the responsibility boundary and explicit costs. The [failed depth probes](../../../09/2026-09-30/Probes/depth.md) supply counterexamples: edge-on cards lose identity; directory corridors hide cross-branch relationships; camera continuity alone does not compose a useful scene. The September board already experimented with opening a lid into an interior panel. This probe instead moves the whole, still-live board into a persistent context surface. It does not turn a system into a literal room or assume exactly two levels of containment.
 
 ## What was built
 
@@ -66,4 +66,4 @@ The full `npm run safe:commit -- --e2e` chain passed: lint (35 warnings, zero er
 
 ## Owner review and session close
 
-On October 1, in [Turn 45](../../ChatHistory/2026/09/2026-09-30.2.record.md#turn-45), the owner called this “definitely more polished than the last pass” and found the transition between map types interesting, specifically the unexpected use of the upper-left minimap. They then asked to close the chat and finish its record and summary. This is a positive verdict on the experiment, not a production adoption decision or a settled judgment about the space consumed by two context maps. The experiment and icon guidance landed in `14cc74ec`; that commit was verified during closeout.
+On October 1, in [Turn 45](../../../09/2026-09-30/2026-09-30.2.record.md#turn-45), the owner called this “definitely more polished than the last pass” and found the transition between map types interesting, specifically the unexpected use of the upper-left minimap. They then asked to close the chat and finish its record and summary. This is a positive verdict on the experiment, not a production adoption decision or a settled judgment about the space consumed by two context maps. The experiment and icon guidance landed in `14cc74ec`; that commit was verified during closeout.

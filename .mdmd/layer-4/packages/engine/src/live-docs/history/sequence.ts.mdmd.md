@@ -11,7 +11,7 @@
 Writing a sequence step by step with a keyframe every 256 steps, and reading a step back: the commit and the change at a step, the shape at a step from the nearest keyframe and at most 255 deltas, and the head the bundle carries.
 
 ### Notes
-- Written 2026-10-17 for C1 of [the plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md). The builder derives each change, writes it, reads it back through the tables as a reader would, and stops at the first difference from the shape it came from: [the probe](../../../../../../../AI-Agent-Workspace/Probes/2026-10-16/change-over-time/README.md)'s replay of all 122 of its snapshots against their indexes is a property of every build here, not a script run once.
+- Written 2026-10-17 for C1 of [the plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md). The builder derives each change, writes it, reads it back through the tables as a reader would, and stops at the first difference from the shape it came from: [the probe](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-16/Probes/change-over-time/README.md)'s replay of all 122 of its snapshots against their indexes is a property of every build here, not a script run once.
 - Only the last shape is held while building, so a long history builds in the memory of one snapshot (scenarios 4 and 6).
 - Keyframes answer scenario 4 and C4: "a seek is the nearest keyframe plus its deltas, so a jump across the whole history costs what a step costs".
 

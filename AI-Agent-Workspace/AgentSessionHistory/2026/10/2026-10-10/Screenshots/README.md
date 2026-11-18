@@ -1,6 +1,6 @@
 # Screenshots, October 10, 2026
 
-Pictures of the built Explorer taken by the agent after changing it, as [AGENTS.md](../../../AGENTS.md) asks. This folder's pictures belong to [Turn 12 of the October 9 session](../../ChatHistory/2026/10/2026-10-09.1.record.md#turn-12), which continued into October 10: the first drawing of ghosts on the World Map, the owner's word for a call that nothing on the board serves. Every picture is of the estate sample's bundle, `samples/estate/`, built by `npm run live-docs:visualize:estate` from one scan of the sample, at 1,400 by 900 CSS pixels, zoomed in by 1.6 on the hub, whose `App.config` names a staging address of the payment service that no thing listens on.
+Pictures of the built Explorer taken by the agent after changing it, as [AGENTS.md](../../../../../../AGENTS.md) asks. This folder's pictures belong to [Turn 12 of the October 9 session](../../2026-10-09/2026-10-09.1.record.md#turn-12), which continued into October 10: the first drawing of ghosts on the World Map, the owner's word for a call that nothing on the board serves. Every picture is of the estate sample's bundle, `samples/estate/`, built by `npm run live-docs:visualize:estate` from one scan of the sample, at 1,400 by 900 CSS pixels, zoomed in by 1.6 on the hub, whose `App.config` names a staging address of the payment service that no thing listens on.
 
 ## A ghost on the World Map
 
@@ -14,7 +14,7 @@ Door labels had never shown on hover before these pictures: the stylesheet hid t
 
 ## This repository's board as its delivery shape
 
-Pictures of [Turn 14 of the same session](../../ChatHistory/2026/10/2026-10-09.1.record.md#turn-14): the repository's own bundle, `npm run live-docs:visualize`, over `.mdmd/layer-3/board.mdmd.md` re-authored as the delivery shape the owner chose from [the T2 probe](../../Probes/2026-10-10/delivery-shape.md), the package first, with its unbuilt parts imagined. At 1,600 by 1,000 CSS pixels, the board fitted to the viewport.
+Pictures of [Turn 14 of the same session](../../2026-10-09/2026-10-09.1.record.md#turn-14): the repository's own bundle, `npm run live-docs:visualize`, over `.mdmd/layer-3/board.mdmd.md` re-authored as the delivery shape the owner chose from [the T2 probe](../Probes/delivery-shape.md), the package first, with its unbuilt parts imagined. At 1,600 by 1,000 CSS pixels, the board fitted to the viewport.
 
 | Capture | State |
 | --- | --- |

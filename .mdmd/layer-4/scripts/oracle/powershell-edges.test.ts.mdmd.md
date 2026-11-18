@@ -11,7 +11,7 @@
 Keeps the PowerShell oracle's converter and persistence honest on a hand-built record: every reference that resolves to another file is an edge carried by its text, two references to one file merge, a self-reference, a dynamic one and a `using namespace` make none, and a manifest's root module is an edge; the record is written with every file key and resolved path relative to its own JSON file and read back unchanged, a data file's table left as written even where it holds a key named `resolved`.
 
 ### Notes
-- Written on 2026-10-16 with the oracle ([Turn 3 of the October 16 record](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-16.1.record.md#turn-3)); it runs without `pwsh`.
+- Written on 2026-10-16 with the oracle ([Turn 3 of the October 16 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-16/2026-10-16.1.record.md#turn-3)); it runs without `pwsh`.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

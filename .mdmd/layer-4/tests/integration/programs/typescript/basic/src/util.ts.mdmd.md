@@ -8,7 +8,7 @@
 
 ## Authored
 ### Purpose
-Formats runtime widget output for the `ts-basic` benchmark so the analyzer must follow value-bearing imports into `types.ts`, as exercised in [2025-11-03 summary](../../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-03.SUMMARIZED.md).
+Formats runtime widget output for the `ts-basic` benchmark so the analyzer must follow value-bearing imports into `types.ts`, as exercised in [2025-11-03 summary](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/Summarized/2025-11-03.SUMMARIZED.md).
 
 ### Notes
 - Imports `Widget` as a type to confirm the oracle distinguishes runtime usage (this function) from the helper-only module, exposing type-only edges if fallback heuristics regress.

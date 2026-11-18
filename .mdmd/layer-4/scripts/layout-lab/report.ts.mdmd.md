@@ -14,7 +14,7 @@ A run's report as markdown a person reads and as JSON the next analysis loads.
 ### Notes
 
 The capture's date and warnings, the drift check, the baseline's signals, each lever alone in its own table, the twelve best by the weighted score with only the levers they moved named, the trade between length and crossings, and what the numbers are.
-The shape columns separate membrane unevenness in pixels, the count of nonzero boundary steps, and card-row misalignment in pixels. Keeping the count apart from the distance makes the simplicity weight's effect visible: removing several small steps need not reduce total distance. Step counts were added for the [October 13 competition](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply); the reporting pipeline originated with the [October 6 lab](../../../../AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-10-06.1.SUMMARIZED.md#turn-10).
+The shape columns separate membrane unevenness in pixels, the count of nonzero boundary steps, and card-row misalignment in pixels. Keeping the count apart from the distance makes the simplicity weight's effect visible: removing several small steps need not reduce total distance. Step counts were added for the [October 13 competition](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-13/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply); the reporting pipeline originated with the [October 6 lab](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/Summarized/2026-10-06.1.SUMMARIZED.md#turn-10).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

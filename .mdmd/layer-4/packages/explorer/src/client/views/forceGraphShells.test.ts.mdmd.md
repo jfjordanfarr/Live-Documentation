@@ -13,7 +13,7 @@ Checks the directory shells' pure rules: the partition by depth and its chain na
 ### Notes
 Written on 2026-11-05 with the experiment ([the design](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#competing-layout-preferences)). The fixtures are small trees whose expected shells can be read by eye; the packing cases cover a body smaller than the outer layer, one just over it and one of 300 files, so that the hull's first take over the outer members alone is exercised against every member.
 
-Since the second round of 2026-11-06 the packing cases are properties: a ball's spheres apart by the gap within a hundredth of it, held by its extent and the same in any order; a body's every file once, every unit inside its bubble and siblings apart, a chain collapsed, a lone subdirectory file that file, a bubble the body its shell has after a pop, a veiled bubble past the limit, and a group packed about its seed ([the evidence](../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-06/shell-leaves/README.md)).
+Since the second round of 2026-11-06 the packing cases are properties: a ball's spheres apart by the gap within a hundredth of it, held by its extent and the same in any order; a body's every file once, every unit inside its bubble and siblings apart, a chain collapsed, a lone subdirectory file that file, a bubble the body its shell has after a pop, a veiled bubble past the limit, and a group packed about its seed ([the evidence](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-06/Screenshots/shell-leaves/README.md)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

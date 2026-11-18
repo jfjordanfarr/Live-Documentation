@@ -11,7 +11,7 @@
 Core processing logic for the Java Rosetta Stone fixture. Tests import and static usage patterns.
 
 ### Notes
-See [2026-01-14.1.md](../../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Exercises both direct imports and type-only references.
+See [2026-01-14.1.md](../../../../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-14/2026-01-14.1.md). Exercises both direct imports and type-only references.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

@@ -11,9 +11,9 @@
 Protects visible native keyboard focus while traversing the 2D map, without changing the selected subject, pins, reading choices or camera scale.
 
 ### Notes
-Introduced during the November 4 learning-journey review after real Tab input focused a neighbor more than two thousand pixels outside the frame. The test walks actual native controls and compares their rectangles with the unobstructed map. See [the authorization and findings](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-8).
+Introduced during the November 4 learning-journey review after real Tab input focused a neighbor more than two thousand pixels outside the frame. The test walks actual native controls and compares their rectangles with the unobstructed map. See [the authorization and findings](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-04/2026-11-04.1.record.md#turn-8).
 
-On November 6 ([Turn 11](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-11), the shells merge) the Tab case reads its initial scale after `localMapStill`, after a gate read 1.374 inside the fit's easing and 1.45, the fit itself, at the end; the Tabs had changed nothing.
+On November 6 ([Turn 11](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-05/2026-11-05.1.record.md#turn-11), the shells merge) the Tab case reads its initial scale after `localMapStill`, after a gate read 1.374 inside the fit's easing and 1.45, the fit itself, at the end; the Tabs had changed nothing.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

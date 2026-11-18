@@ -12,7 +12,7 @@ The type of a moment of the history the 3D Local Map shows in place of today: th
 
 ### Notes
 - Built 2026-10-18 for ticket C4 of [the change-over-time plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions) and its scenario 9. The view reads its pins, its subject, its path and its open directories through `fileAt` and `directoryAt`, so that a pinned file is found under its old name and one not yet born retains nothing; a click on a sphere of the past goes through `fileToday` and `directoryToday` to the thing as it stands today, and a thing gone since does nothing there, since the step panel says so. `history-control.ts` makes a moment per step shown; `forceGraphView.ts` draws it.
-- Since 2026-10-20 ([Turn 9](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-9)) a moment carries its related-doc links beside its graph, so that the 3D view draws the documents the step's files linked to then.
+- Since 2026-10-20 ([Turn 9](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-20/2026-10-20.1.record.md#turn-9)) a moment carries its related-doc links beside its graph, so that the 3D view draws the documents the step's files linked to then.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

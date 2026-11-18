@@ -8,11 +8,11 @@
 
 ## Authored
 ### Purpose
-Proves the documentation-link CLI flags violations and exits with the correct codes in both check and `--fix` modes, preventing regressions when `docs:links:enforce` runs inside safe-commit ([exit-code regression fix](../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-02.SUMMARIZED.md#L68-L86)).
+Proves the documentation-link CLI flags violations and exits with the correct codes in both check and `--fix` modes, preventing regressions when `docs:links:enforce` runs inside safe-commit ([exit-code regression fix](../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/Summarized/2025-11-02.SUMMARIZED.md#L68-L86)).
 
 ### Notes
-- Relocated from the old `__tests__` folder on 2025-11-08 while standardising co-located suites; the rewrite introduced temp workspaces to exercise the CLI end-to-end ([test migration](../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-08.md#L4720-L4880)).
-- Keeps the CLI contract honest whenever we tweak rule resolution or stream fixes, catching several follow-up adjustments (for example, exporting `runCli` and normalising exit codes on 2025-11-05) before they reached the pipeline ([API hardening](../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-05.SUMMARIZED.md#L70-L86)).
+- Relocated from the old `__tests__` folder on 2025-11-08 while standardising co-located suites; the rewrite introduced temp workspaces to exercise the CLI end-to-end ([test migration](../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/2025-11-08/2025-11-08.md#L4720-L4880)).
+- Keeps the CLI contract honest whenever we tweak rule resolution or stream fixes, catching several follow-up adjustments (for example, exporting `runCli` and normalising exit codes on 2025-11-05) before they reached the pipeline ([API hardening](../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/Summarized/2025-11-05.SUMMARIZED.md#L70-L86)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

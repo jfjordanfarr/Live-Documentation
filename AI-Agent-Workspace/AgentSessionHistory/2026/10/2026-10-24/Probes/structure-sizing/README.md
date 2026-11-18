@@ -1,6 +1,6 @@
 # Structure folder sizing — October 24, 2026
 
-Historical visual probe. The owner reopened recursive sizing in [Turn 13](../../../ChatHistory/2026/10/2026-10-24.1.record.md#turn-13) and selected the non-recursive candidate's meaning in [Turn 14](../../../ChatHistory/2026/10/2026-10-24.1.record.md#turn-14): “Immediate files + subfolders, each counted once”. [Turn 15](../../../ChatHistory/2026/10/2026-10-24.1.record.md#turn-15) adds equal-sized folders as a candidate, and [Turn 16](../../../ChatHistory/2026/10/2026-10-24.1.record.md#turn-16) identifies overwhelming Structure label density. No new product default has been adopted.
+Historical visual probe. The owner reopened recursive sizing in [Turn 13](../../2026-10-24.1.record.md#turn-13) and selected the non-recursive candidate's meaning in [Turn 14](../../2026-10-24.1.record.md#turn-14): “Immediate files + subfolders, each counted once”. [Turn 15](../../2026-10-24.1.record.md#turn-15) adds equal-sized folders as a candidate, and [Turn 16](../../2026-10-24.1.record.md#turn-16) identifies overwhelming Structure label density. No new product default has been adopted.
 
 ## Comparison
 
@@ -41,7 +41,7 @@ These come from the existing bundle's 877 visible files at default settings, bef
 
 ## Findings and status
 
-Root viewed the committed overview first: the new Directory colour key is present, while large orange ancestors crowd the centre. Root subsequently inspected every sizing candidate's overview, the principal close comparisons and sampled orbit frames on both datasets. The [screenshot index](../../../Screenshots/2026-10-24/README.md#structure-sizing-reopened) identifies the captures.
+Root viewed the committed overview first: the new Directory colour key is present, while large orange ancestors crowd the centre. Root subsequently inspected every sizing candidate's overview, the principal close comparisons and sampled orbit frames on both datasets. The [screenshot index](../../Screenshots/README.md#structure-sizing-reopened) identifies the captures.
 
 - **Recursive volume:** parent spheres take substantial screen area around the centre. The scan-root radius in the matched repository overview is 27.17px; the immediate-entry rendering at that same position and camera is 4.29px. `packages` changes from 21.17px to 2.86px. These are appearance-only measurements, not different fits.
 - **Immediate entries:** large ancestor bodies disappear; hubs with many direct files retain visual weight. It reads more clearly on both datasets, while still encoding local branching.

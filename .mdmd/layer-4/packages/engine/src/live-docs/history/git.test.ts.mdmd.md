@@ -11,7 +11,7 @@
 Vitest over the serialized worktree lifecycle and the parsers of git's output: the mainline's records after rev-list's commit lines, the renames and in-place changes of a NUL-separated name-status listing with paths holding a tab and a newline, and the tags' commits.
 
 ### Notes
-The lifecycle case holds a registry operation open while other creates and removes are requested. It checks that those mutations cannot overlap, that multiple trees remain available for concurrent analysis, that signal/worker removal requests join one operation and that a failed operation does not prevent queued cleanup. It was added for the [October 23 concurrent cleanup failure](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-23.1.record.md#history-failure-investigation).
+The lifecycle case holds a registry operation open while other creates and removes are requested. It checks that those mutations cannot overlap, that multiple trees remain available for concurrent analysis, that signal/worker removal requests join one operation and that a failed operation does not prevent queued cleanup. It was added for the [October 23 concurrent cleanup failure](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-23/2026-10-23.1.record.md#history-failure-investigation).
 
 - Written 2026-10-17 for C1. The git calls themselves are exercised over a real repository in [history.test.ts](../../../../../tests/integration/live-docs/history.test.ts.mdmd.md).
 

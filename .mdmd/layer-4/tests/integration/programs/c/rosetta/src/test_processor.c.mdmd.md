@@ -12,8 +12,8 @@
 Unit tests for the C Rosetta processor module. Part of the polyglot Rosetta Stone fixture suite.
 
 ### Notes
-Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Uses manual assertion macros (no standard C test framework). Required fix to cFunctions.ts heuristic to avoid matching function definitions as calls.
-- Rewritten against the sample's real API on 2026-10-16: the file had called functions no header declares (`format`, `sum`, `average`, `run`, `summarize`) and `create_record` with the wrong arity since 2026-01-16, which gcc 14 refuses, found when a compilation database was written for scip-clang ([Turn 10 of the October 15 session](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-15.1.record.md#turn-10)). It now compiles, links and passes.
+Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-16/2026-01-16.1.md). Uses manual assertion macros (no standard C test framework). Required fix to cFunctions.ts heuristic to avoid matching function definitions as calls.
+- Rewritten against the sample's real API on 2026-10-16: the file had called functions no header declares (`format`, `sum`, `average`, `run`, `summarize`) and `create_record` with the wrong arity since 2026-01-16, which gcc 14 refuses, found when a compilation database was written for scip-clang ([Turn 10 of the October 15 session](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-15/2026-10-15.1.record.md#turn-10)). It now compiles, links and passes.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

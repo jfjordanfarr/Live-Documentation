@@ -1,10 +1,10 @@
 # Local Map owner-review findings
 
-_Historical investigation, October 13, 2026. Follows [the owner's screenshots and interaction reports](../../../ChatHistory/2026/10/2026-10-13.1.record.md#turn-7--owner-review-of-alignment-and-motion) and [clarification of Relaxed](../../../ChatHistory/2026/10/2026-10-13.1.record.md#turn-8--relaxed-should-spend-wire-length-on-composition). The preceding implementation is commit `5fc95351`; this report records the follow-up investigation, not a universal layout optimum._
+_Historical investigation, October 13, 2026. Follows [the owner's screenshots and interaction reports](../../2026-10-13.1.record.md#turn-7--owner-review-of-alignment-and-motion) and [clarification of Relaxed](../../2026-10-13.1.record.md#turn-8--relaxed-should-spend-wire-length-on-composition). The preceding implementation is commit `5fc95351`; this report records the follow-up investigation, not a universal layout optimum._
 
 ## Alignment and the two bypasses
 
-The three-card scene focuses [main.ts](../../../../tests/integration/programs/typescript/rosetta/src/main.ts). Its middle card is [processor.ts](../../../../tests/integration/programs/typescript/rosetta/src/processor.ts); the right-hand destination is the focused file's Internals row. Tests are shown and assets hidden. The headless capture matched the page with zero geometry drift and zero text-model warnings before comparing alternatives. A discarded first capture showed assets and therefore had five files; those numbers are not used here.
+The three-card scene focuses [main.ts](../../../../../../../tests/integration/programs/typescript/rosetta/src/main.ts). Its middle card is [processor.ts](../../../../../../../tests/integration/programs/typescript/rosetta/src/processor.ts); the right-hand destination is the focused file's Internals row. Tests are shown and assets hidden. The headless capture matched the page with zero geometry drift and zero text-model warnings before comparing alternatives. A discarded first capture showed assets and therefore had five files; those numbers are not used here.
 
 | Relaxed candidate | Summed card-top misalignment | Drawn wire length | Picture height | Measured crossings |
 | --- | ---: | ---: | ---: | ---: |
@@ -22,7 +22,7 @@ The existing seeded ordering search shuffles real cards, then places virtual pas
 
 Fourteen browser pictures compared Relaxed row-levelness 0.25 and 2 over main, generator, warehouse, repository five files/chain and estate five files/chain. All were inspected. Six scene heights remain equal; repository chain grows 4,000→4,124. Eight further pictures compared Compact 0 and 0.25 on main, generator, repository five files and estate five files. Main grows 282→289 and repository five files 3,480→3,581; generator and estate heights are unchanged. Compact remains smaller than Relaxed in those comparisons. The retained defaults are 0.25 for Compact and 2 for Relaxed; the other profile values and 3D physics are unchanged.
 
-[The screenshot inventory](../../../Screenshots/2026-10-13/feedback/README.md) names every picture. [Relaxed browser measurements](alignment-views.json) and [Compact browser measurements](compact-alignment-views.json) preserve the page's dimensions, positions and search data. Scores under different weights are not directly comparable. Some candidate controls display Custom because a lower-level value differs from that bundle's stock profile; the estate bundle still carried the preceding profile labels during this exploratory comparison.
+[The screenshot inventory](../../Screenshots/feedback/README.md) names every picture. [Relaxed browser measurements](alignment-views.json) and [Compact browser measurements](compact-alignment-views.json) preserve the page's dimensions, positions and search data. Scores under different weights are not directly comparable. Some candidate controls display Custom because a lower-level value differs from that bundle's stock profile; the estate bundle still carried the preceding profile labels during this exploratory comparison.
 
 ## Motion and spatial interactions
 

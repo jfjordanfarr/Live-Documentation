@@ -11,7 +11,7 @@
 Words the sidebar's line of counts: the files, the documented references between them and the dependency lines whose target the scan does not hold, with thousands separators. The client writes it from today's stats, or from the stats of the moment of the history the 3D picture shows.
 
 ### Notes
-- Written on 2026-10-30 for the owner's decision of [Turn 3](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md#turn-3): one number of references in the sidebar and in Knowledge Sources, the third count named for what it counts, and the line following the history's moment. Before, the line was written once at startup and printed the deduplicated links as references.
+- Written on 2026-10-30 for the owner's decision of [Turn 3](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-30/2026-10-30.1.record.md#turn-3): one number of references in the sidebar and in Knowledge Sources, the third count named for what it counts, and the line following the history's moment. Before, the line was written once at startup and printed the deduplicated links as references.
 - A moment's stats carry no count of dependencies outside the scan, since the history's sequence keeps no dependency lines; the line then leaves that part out rather than print a zero it does not know.
 - Kept by `stats-line.test.ts`; the line in the page by `tests/e2e/inventory-counts.spec.ts`.
 

@@ -1,6 +1,6 @@
 # Folded description space — November 10, 2026
 
-Completed exploratory comparison, requested in [Turn 4](../../../ChatHistory/2026/11/2026-11-10.1.record.md#turn-4). Root judgment: compact folded rows improve close-reading focus, but this version is not suitable as the default because middle-scale names become too small and folding briefly crosses the footer. Main product behavior remains at `2a890e08`; no composition or default is adopted by this probe.
+Completed exploratory comparison, requested in [Turn 4](../../2026-11-10.1.record.md#turn-4). Root judgment: compact folded rows improve close-reading focus, but this version is not suitable as the default because middle-scale names become too small and folding briefly crosses the footer. Main product behavior remains at `2a890e08`; no composition or default is adopted by this probe.
 
 The owner welcomes the restored reading buttons and asks whether collapsing other symbols' description space would help identify the point being read. The present fixed-slot composition hides the prose but reserves its room. The existing growing composition reclaims that room, while also changing card width, typography and displayed facts. That is a useful whole-composition comparison, but cannot isolate the effect of spacing.
 
@@ -12,7 +12,7 @@ The owner welcomes the restored reading buttons and asks whether collapsing othe
 4. Can two descriptions remain open independently, while pins and the map subject keep their meanings?
 5. Does zoom preserve the card's underlying geometry and retain a useful outward-and-back journey?
 
-The first comparisons use the same subject and whole-file pin at 1440×960, DPR one, with ordinary search and motion. The repository subject is [symbolAnchors](../../../../packages/explorer/src/client/views/symbolAnchors.ts), beginning with `normalizeSymbolIdentifier` and then `buildNormalizedAnchorKey`. The estate subject is [PaymentService](../../../../tests/integration/programs/csharp/estate/PaymentService/PaymentService.cs), whose class has prose while its two methods have signature facts but no Summary. Its empty rows are therefore a useful separate case.
+The first comparisons use the same subject and whole-file pin at 1440×960, DPR one, with ordinary search and motion. The repository subject is [symbolAnchors](../../../../../../../packages/explorer/src/client/views/symbolAnchors.ts), beginning with `normalizeSymbolIdentifier` and then `buildNormalizedAnchorKey`. The estate subject is [PaymentService](../../../../../../../tests/integration/programs/csharp/estate/PaymentService/PaymentService.cs), whose class has prose while its two methods have signature facts but no Summary. Its empty rows are therefore a useful separate case.
 
 ## Scope of the isolated trial
 

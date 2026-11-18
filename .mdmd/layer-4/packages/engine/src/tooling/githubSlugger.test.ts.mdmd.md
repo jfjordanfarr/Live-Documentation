@@ -12,7 +12,7 @@ Checks the vendored slugger against GitHub-compatible casing, Unicode, punctuati
 
 ### Notes
 - Covers stateless `slug`, stateful `GitHubSlugger`, and `slugWithContext`. Dates and mixed-script names retain literal hyphens; punctuation from colon through at-sign is removed; `a-b` and `ab` remain distinct headings.
-- The punctuation expectations come from github-slugger 2.0.0, rather than copying the local implementation's output. The [September 30 account](../../../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-30.2.SUMMARIZED.md#turn-5) links the upstream source and records the regression. See the [original vendoring account](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-25.SUMMARIZED.md#turn-32-vendored-github-slugger-lines-50015160) for historical context.
+- The punctuation expectations come from github-slugger 2.0.0, rather than copying the local implementation's output. The [September 30 account](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/09/Summarized/2026-09-30.2.SUMMARIZED.md#turn-5) links the upstream source and records the regression. See the [original vendoring account](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/10/Summarized/2025-10-25.SUMMARIZED.md#turn-32-vendored-github-slugger-lines-50015160) for historical context.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

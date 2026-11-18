@@ -11,7 +11,7 @@
 Holds the cycle trials to their claims: the two terms' arithmetic, which orders are tried and in what order, the search's judgment keeping the greedy order on a tie and when a cheaper order's gain is below its move's churn, a remembered order overturned where another is cheaper, and a placed pair whose lighter direction returns once its returns cost more than the wire they save.
 
 ### Notes
-Written with [cycle-trials.ts](cycle-trials.ts.mdmd.md) on 2026-11-16 ([Turn 5 of the November 15 record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-5)). The placed pair is laid out on the nominal model for a test only: two cards in two columns 100 px apart, so the greedy order costs 100 + 3 × cost and the other 300 + cost, and the lighter direction returns between costs of 90 and 110.
+Written with [cycle-trials.ts](cycle-trials.ts.mdmd.md) on 2026-11-16 ([Turn 5 of the November 15 record](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-5)). The placed pair is laid out on the nominal model for a test only: two cards in two columns 100 px apart, so the greedy order costs 100 + 3 × cost and the other 300 + cost, and the lighter direction returns between costs of 90 and 110.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

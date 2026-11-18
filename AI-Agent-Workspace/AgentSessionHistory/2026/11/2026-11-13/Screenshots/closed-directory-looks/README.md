@@ -1,6 +1,6 @@
 # Closed Directory looks, 2026-11-13
 
-Historical evidence for the Closed Directory trial in Tuning → 2D Layout. The owner had said the closed box "doesn't indicate to me "this thing can pop open and let out a lot of stuff into the screen"" the way the 3D bags of cells do ([Turn 7](../../../ChatHistory/2026/11/2026-11-13.1.record.md#turn-7)). The choices are today's box (the default) and three trial looks. Each one draws over the box's own layout. The cards' and boxes' places at arrival are the same in every look, for all three subjects, under both font metrics.
+Historical evidence for the Closed Directory trial in Tuning → 2D Layout. The owner had said the closed box "doesn't indicate to me "this thing can pop open and let out a lot of stuff into the screen"" the way the 3D bags of cells do ([Turn 7](../../2026-11-13.1.record.md#turn-7)). The choices are today's box (the default) and three trial looks. Each one draws over the box's own layout. The cards' and boxes' places at arrival are the same in every look, for all three subjects, under both font metrics.
 
 ## Pictures
 

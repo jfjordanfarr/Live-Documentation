@@ -11,7 +11,7 @@
 xUnit tests for the C# Rosetta Processor class. Part of the polyglot Rosetta Stone fixture suite.
 
 ### Notes
-Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Uses C#'s idiomatic nested test class pattern with `[Fact]` attributes. Exercises name-matched test detection.
+Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-16/2026-01-16.1.md). Uses C#'s idiomatic nested test class pattern with `[Fact]` attributes. Exercises name-matched test detection.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

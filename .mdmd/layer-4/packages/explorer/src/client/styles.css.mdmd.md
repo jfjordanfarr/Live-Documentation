@@ -14,8 +14,8 @@ CSS entry point for the Explorer client. Contains only `@import` statements that
 
 ### Notes
 
-- Created [2025-11-22](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-24.SUMMARIZED.md) as a monolithic stylesheet (`f1e2dec0`).
-- Decomposed into `styles/` on [2025-12-04](../../../../../../AI-Agent-Workspace/ChatHistory/2025/12/Summarized/2025-12-04.SUMMARIZED.md) (Turn 19–20) after exceeding the 1000-line file-size threshold. The user identified it as "a big big big source of trouble" and the CSS was split into domain-specific files: theme, shell, view-shared, circuit, local, graph (`4504d36a`).
+- Created [2025-11-22](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/Summarized/2025-11-24.SUMMARIZED.md) as a monolithic stylesheet (`f1e2dec0`).
+- Decomposed into `styles/` on [2025-12-04](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/12/Summarized/2025-12-04.SUMMARIZED.md) (Turn 19–20) after exceeding the 1000-line file-size threshold. The user identified it as "a big big big source of trouble" and the CSS was split into domain-specific files: theme, shell, view-shared, circuit, local, graph (`4504d36a`).
 
 `history.css` joined the sheets on 2026-10-18 (the plan's C4).
 

@@ -11,7 +11,7 @@
 Utility functions for the TypeScript Rosetta Stone fixture. Provides formatting and mathematical helpers.
 
 ### Notes
-See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Imported selectively by processor.ts to test named import detection.
+See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-14/2026-01-14.1.md). Imported selectively by processor.ts to test named import detection.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

@@ -13,7 +13,7 @@ Foundational type definitions for the Go Rosetta Stone benchmark, establishing t
 ### Notes
 - Leaf node in the dependency graph (no imports from other Rosetta packages).
 - Types consumed by models, helpers, and processor packages to form the complete dependency chain.
-- Created 2026-01-15; see [2026-01-15.1.md](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-15.1.md) for context.
+- Created 2026-01-15; see [2026-01-15.1.md](../../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-15/2026-01-15.1.md) for context.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

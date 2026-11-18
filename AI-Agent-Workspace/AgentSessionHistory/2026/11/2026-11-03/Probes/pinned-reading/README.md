@@ -1,8 +1,8 @@
 # Pin-driven descriptions
 
-Historical design probe, November 3, 2026. Requested in [Turn 4](../../../ChatHistory/2026/11/2026-11-03.1.record.md#turn-4). This is a disposable comparison under the ignored Explorer output, not a selected product behavior.
+Historical design probe, November 3, 2026. Requested in [Turn 4](../../2026-11-03.1.record.md#turn-4). This is a disposable comparison under the ignored Explorer output, not a selected product behavior.
 
-Later that day, [Turns 5–6](../../../ChatHistory/2026/11/2026-11-03.1.record.md#turn-5) select file-plus-all-symbols as the initial file-pin default, retain both hover disclosures and request both name-click alternatives. The live page has advanced to that [combined comparison](../pinned-hover-reading/README.md). The pictures and behavior below preserve this earlier stage, including its modal name action and hover-only wire highlighting.
+Later that day, [Turns 5–6](../../2026-11-03.1.record.md#turn-5) select file-plus-all-symbols as the initial file-pin default, retain both hover disclosures and request both name-click alternatives. The live page has advanced to that [combined comparison](../pinned-hover-reading/README.md). The pictures and behavior below preserve this earlier stage, including its modal name action and hover-only wire highlighting.
 
 The owner reports cumulative downward drift in the previous attention proposal and finds its presentation rough beside the native 2D map. [Their supplied screenshot](owner-hover-drift.png) is copied unchanged from the attachment and is evidence of that report. They accept hover expansion as an idea and ask for another throwaway in which pins expand descriptions, with both rules left open.
 
@@ -19,7 +19,7 @@ The two controls change independently over the same case and pin set. A third co
 
 ## Implementation and scope
 
-The preview imports the real [card renderer](../../../../packages/explorer/src/client/views/localView/card-factory.ts), [pin state machine](../../../../packages/explorer/src/client/views/pin-state.ts), [connection geometry](../../../../packages/explorer/src/client/views/connection-geometry.ts), graph projection and Markdown renderer. It uses the current native theme/card/Local Map styles, with reading-slot layout and modest font/spacing adjustments. Existing pin semantics are preserved: a whole-file pin narrows to a symbol, and releasing the last symbol leaves a whole-file pin. The chip tray can release a pin completely. This distinction matters when a file pin is set to reveal every description.
+The preview imports the real [card renderer](../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts), [pin state machine](../../../../../../../packages/explorer/src/client/views/pin-state.ts), [connection geometry](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts), graph projection and Markdown renderer. It uses the current native theme/card/Local Map styles, with reading-slot layout and modest font/spacing adjustments. Existing pin semantics are preserved: a whole-file pin narrows to a symbol, and releasing the last symbol leaves a whole-file pin. The chip tray can release a pin completely. This distinction matters when a file pin is set to reveal every description.
 
 Cards have fixed origins, and reading slots grow downward. Hover highlights actual references and does not control geometry in this comparison. This isolates the requested pin-policy question; it does not repair or choose the earlier hover-only design. The fixed scope is the chosen file with one actual provider and consumer where available, de-duplicated. Wires follow actual symbol anchors and update during slot transitions; self references use the native lace geometry. The full directory-aware layout and router are not reproduced here.
 
@@ -48,4 +48,4 @@ Two tradeoffs are visible. Opening all symbol descriptions makes a whole-file se
 | [Full symbol documentation](full-symbol-documentation.png) | Parameters, remarks, returns, exceptions and examples on the pinned C# method. |
 | [Narrow viewport](narrow-viewport.png) | 980×780; the subject is readable and neighboring context can be reached by panning. |
 
-The [Gallery sheet](../../../Gallery/sheets/pathfind-pinned-reading.png) places the four policy states together. The owner's [supplied drift screenshot](owner-hover-drift.png) remains the evidence of the previous prototype's failure. The policy comparison is ready for the owner's hands-on judgment; it is not a shipped reading design.
+The [Gallery sheet](../../../../../../Gallery/sheets/pathfind-pinned-reading.png) places the four policy states together. The owner's [supplied drift screenshot](owner-hover-drift.png) remains the evidence of the previous prototype's failure. The policy comparison is ready for the owner's hands-on judgment; it is not a shipped reading design.

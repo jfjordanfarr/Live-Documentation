@@ -13,7 +13,7 @@ Catalog of the eight Rosetta sample programs: their common roles and relationshi
 ### Notes
 - Concrete filesystem paths are relative to this manifest. Canonical node globs and import examples describe the language-independent pattern; they are not literal file references.
 - Each variant links its existing compiler observations when its language has an indexer. C and Ruby have no such observations in this collection.
-- The cross-language program originated on January 14, 2026; see the [session summary](../../../../../AI-Agent-Workspace/ChatHistory/2026/01/Summarized/2026-01-14.1.SUMMARIZED.md) for its rationale.
+- The cross-language program originated on January 14, 2026; see the [session summary](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/Summarized/2026-01-14.1.SUMMARIZED.md) for its rationale.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

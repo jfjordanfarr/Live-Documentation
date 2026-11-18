@@ -11,7 +11,7 @@
 Defines the `LanguageSyntax` interface — the unified contract for language-specific syntax utilities across adapters, heuristics, and tree-sitter integration. Provides async-first `stripCommentsAndStrings()` for comment/string removal, plus metadata like identifiers to ignore (common variable names) and supported file extensions.
 
 ### Notes
-Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-29.1.md) — created as part of the LanguageSyntax module to unify duplicated comment-stripping logic across Go heuristics and C adapters. The async interface anticipates tree-sitter WASM integration; `createSyncStripper()` provides backward compatibility for sync callers.
+Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-29/2026-01-29.1.md) — created as part of the LanguageSyntax module to unify duplicated comment-stripping logic across Go heuristics and C adapters. The async interface anticipates tree-sitter WASM integration; `createSyncStripper()` provides backward compatibility for sync callers.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

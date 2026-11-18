@@ -11,7 +11,7 @@
 C Rosetta Stone fixture source/header file. Part of the cross-language benchmark suite.
 
 ### Notes
-See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests C #include and function call graph detection.
+See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/01/2026-01-14/2026-01-14.1.md). Tests C #include and function call graph detection.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

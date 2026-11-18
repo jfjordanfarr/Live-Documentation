@@ -15,7 +15,7 @@ Traces the outline of a directory's membrane in the Local Map's placed layout: o
 
 - The segments arrive left to right and each overlaps the next vertically, which the placement guarantees with its neck; the trace runs along the tops left to right, stepping at each gutter to the higher of the two tops, down the right edge of the last segment, back along the bottoms stepping to the lower of the two bottoms, and up the left edge of the first. Corners that repeat a point are dropped, so a level membrane has a rectangle's worth of corners and no more.
 - Drawn, every corner is rounded by the renderer's radius, the membrane's padding, convex and concave alike, as a quadratic curve with the corner as its control point; a corner between short edges is rounded by half the shorter edge so neighbouring curves never overlap. The owner asked for the rounding on seeing the first membranes, "to sell their squishiness" (2026-10-06).
-- Pure, with no DOM; the coordinates are the caller's. `branch-renderer.ts` passes segments relative to the directory's element and sets the result as the path's `d`. Written on 2026-10-06 when directories stopped being rectangles ([Turn 6](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-6) of the October 6 session).
+- Pure, with no DOM; the coordinates are the caller's. `branch-renderer.ts` passes segments relative to the directory's element and sets the result as the path's `d`. Written on 2026-10-06 when directories stopped being rectangles ([Turn 6](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-06/2026-10-06.1.record.md#turn-6) of the October 6 session).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
