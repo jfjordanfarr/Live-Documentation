@@ -55,6 +55,18 @@ async function looking(page: Page, at: { x: number; y: number }): Promise<{ hove
     under: under?.id ?? null, building: await map(page).getAttribute("data-building") };
 }
 
+/** The largest sphere near the picture's middle depth whose place on the screen holds, within a pixel, between two readings. */
+async function steadySphere(page: Page): Promise<Sphere> {
+  let found: Sphere | undefined;
+  await expect.poll(async () => {
+    const first = (await renderedNodes(page)).filter(sphere => sphere.screenRadius >= 6 && sphere.depth > -1 && sphere.depth < 1).sort((a, b) => b.screenRadius - a.screenRadius);
+    const again = new Map((await renderedNodes(page)).map(sphere => [sphere.id, sphere]));
+    found = first.map(sphere => again.get(sphere.id)).find((sphere, index) => !!sphere && Math.hypot(sphere.x - first[index].x, sphere.y - first[index].y) < 1);
+    return !!found;
+  }, { timeout: 90_000, intervals: [0], message: "a sphere of the grown picture holds its place on the screen" }).toBe(true);
+  return found!;
+}
+
 /** The line along the map's top edge as drawn, and the cursor over the picture. */
 const sign = (page: Page) => page.evaluate(() => {
   const line = getComputedStyle(document.getElementById("graph-svg")!, "::before");
@@ -92,8 +104,12 @@ test("a click on a seed with the pointer kept still: nothing hovers or fades whi
   await page.waitForTimeout(600);
   expect(await looking(page, at)).toMatchObject({ hovered: "false", faded: 0, building: null });
   expect(await sign(page), "the sign and the waiting cursor are gone").toMatchObject({ opacity: 0, cursor: "auto" });
-  // The pointer's first move hovers as before: onto a sphere of the grown picture, the rest fading around it.
-  const target = (await renderedNodes(page)).filter(sphere => sphere.screenRadius >= 6 && sphere.depth > -1 && sphere.depth < 1).sort((a, b) => b.screenRadius - a.screenRadius)[0];
+  // The pointer's first move hovers as before: onto a sphere of the grown picture, the rest fading around it. The
+  // picture is built and not yet at rest, and the camera still follows it, so a sphere's place on the screen is as old
+  // as its reading: the largest sphere whose place holds between two readings is taken, and the pointer moves once.
+  // (Until 2026-11-18 the largest sphere of one reading was taken; beside a second worker it had left the pointer's
+  // place by more than its own radius before the next frame picked, in 14 of 16 runs.)
+  const target = await steadySphere(page);
   await page.mouse.move(target.x, target.y);
   await expect.poll(async () => (await looking(page, target)).hovered).toBe("true");
   await expect.poll(async () => (await looking(page, target)).faded, { message: "the rest fades for the hover" }).toBeGreaterThan(0);

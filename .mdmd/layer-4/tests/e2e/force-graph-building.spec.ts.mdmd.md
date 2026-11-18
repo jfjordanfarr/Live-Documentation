@@ -15,6 +15,8 @@ Browser cases for the 3D Local Map while it builds, on this repository's archipe
 - The build is made long enough to act inside by settings that exist, two hops and Reveal Frames at its most (240), so that the second hop enters a sphere or two a frame; wrappers are off so the software renderer draws it quickly enough. There is no test-only hook.
 - A sphere faded by a hover is drawn at a fifth of its strength (0.15 for a full one), below the frontier's 0.3, which is how a fade is read from the drawn opacities.
 
+Since 2026-11-18 the first case aims the pointer's first move at a sphere whose place on the screen holds between two readings. The picture is built at that moment and not yet at rest, and the camera still follows it, so a place read once was stale by the time the pointer arrived: beside a second worker the largest sphere of one reading had left the pointer's place by more than its radius before the next frame picked, in 14 of 16 runs, and the case had been red in three of the day's five whole runs. The building's sign changed only as it should in every one of those runs (begun, shown, gone, and no second building), so the product's rule was never at fault. The pointer still moves once, which is the promise: its first move hovers ([the proof](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#work-notes-the-building-case-proven-and-mended)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
