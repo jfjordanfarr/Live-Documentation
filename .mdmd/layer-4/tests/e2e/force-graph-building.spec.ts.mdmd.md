@@ -17,6 +17,8 @@ Browser cases for the 3D Local Map while it builds, on this repository's archipe
 
 Since 2026-11-18 the first case aims the pointer's first move at a sphere whose place on the screen holds between two readings. The picture is built at that moment and not yet at rest, and the camera still follows it, so a place read once was stale by the time the pointer arrived: beside a second worker the largest sphere of one reading had left the pointer's place by more than its radius before the next frame picked, in 14 of 16 runs, and the case had been red in three of the day's five whole runs. The building's sign changed only as it should in every one of those runs (begun, shown, gone, and no second building), so the product's rule was never at fault. The pointer still moves once, which is the promise: its first move hovers ([the proof](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#work-notes-the-building-case-proven-and-mended)).
 
+A review the same evening found that the two readings could fall inside one frame, since the places are read from the scene and the camera as the last frame left them: two such readings agree whatever the motion, and do so more often the slower a loaded machine draws, so a sphere could be taken as still while it moved. Two frames are now awaited between the readings. Not yet proven in a browser.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

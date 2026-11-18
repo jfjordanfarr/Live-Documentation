@@ -55,11 +55,17 @@ async function looking(page: Page, at: { x: number; y: number }): Promise<{ hove
     under: under?.id ?? null, building: await map(page).getAttribute("data-building") };
 }
 
-/** The largest sphere near the picture's middle depth whose place on the screen holds, within a pixel, between two readings. */
+/**
+ * The largest sphere near the picture's middle depth whose place on the screen holds, within a pixel, between two
+ * readings with a frame between them. The places are read from the scene and the camera as the last frame left them,
+ * so two readings inside one frame agree whatever the motion, and the more often the slower a loaded machine draws:
+ * the two frames awaited between the readings are what make an agreement mean that the sphere holds still.
+ */
 async function steadySphere(page: Page): Promise<Sphere> {
   let found: Sphere | undefined;
   await expect.poll(async () => {
     const first = (await renderedNodes(page)).filter(sphere => sphere.screenRadius >= 6 && sphere.depth > -1 && sphere.depth < 1).sort((a, b) => b.screenRadius - a.screenRadius);
+    await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
     const again = new Map((await renderedNodes(page)).map(sphere => [sphere.id, sphere]));
     found = first.map(sphere => again.get(sphere.id)).find((sphere, index) => !!sphere && Math.hypot(sphere.x - first[index].x, sphere.y - first[index].y) < 1);
     return !!found;
