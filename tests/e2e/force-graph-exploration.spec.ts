@@ -1,11 +1,11 @@
 import { expect, test, type Page } from "@playwright/test";
 import type { Scene } from "three";
 
+import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
+import { spatialGraphOf } from "../../packages/explorer/src/client/views/forceGraphData";
 import { observeGraph, renderedNodes } from "./force-graph-observation";
 import { currentSnapshot } from "./search-bar";
 import { loadGraph, localMapSettled } from "./still-picture";
-import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
-import { spatialGraphOf } from "../../packages/explorer/src/client/views/forceGraphData";
 
 test.use({ viewport: { width: 1440, height: 960 } });
 

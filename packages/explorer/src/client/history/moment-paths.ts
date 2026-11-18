@@ -16,10 +16,10 @@
  * @module moment-paths
  */
 
-import type { HistoryMoment } from "./moment";
 import type { ExplorerLinkPayload, ExplorerNodePayload } from "../../shared/types";
 import { under } from "../views/localView/directory-state";
 import type { RetainedItem } from "../views/retained-state";
+import type { HistoryMoment } from "./moment";
 
 /** The files and wires a path is asked over, and the names of today's things on them. */
 export interface PathGround {

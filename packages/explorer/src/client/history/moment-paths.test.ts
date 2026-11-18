@@ -2,10 +2,10 @@ import { describe, expect, it } from "vitest";
 
 import { edgeKey, type Shape } from "@live-documentation/engine/live-docs/history/shape";
 
-import { endFiles, momentGround, todayGround } from "./moment-paths";
-import { snapshotGraphOf } from "./snapshot";
 import { findPath, reachOf, referencesAgainstPath } from "../pathfind";
 import { destinationScope, searchGraph, searchIndexOf } from "../search/graph-search";
+import { endFiles, momentGround, todayGround } from "./moment-paths";
+import { snapshotGraphOf } from "./snapshot";
 
 /**
  * A moment before two changes of today: the core is renamed to the engine since, and the legacy helper is deleted

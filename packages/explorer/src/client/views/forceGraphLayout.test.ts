@@ -2,10 +2,10 @@ import { forceLink, forceSimulation } from "d3-force-3d";
 import { describe, expect, it } from "vitest";
 
 import { applyLayoutPreset } from "../layout-presets";
-import { COLLISION_STIFFNESS, easeSpatialLayout, linkPulls, motionForce, placeNewSpheres, QUIET_TICKS, seededDirection, shellMass, SHELL_SOFTNESS, spatialFieldOf, spatialLinkDistance, spatialNodeRadius, spatialNodeValue, springStrength, symbolCountOf, type PlaceableNode, type SpatialLink, type SpatialNode } from "./forceGraphLayout";
-import { diagonalOf } from "./forceGraphPhysics";
 import { getDefaultTuning } from "../persistence/local-storage";
 import type { ForceGraphTuning } from "../types";
+import { COLLISION_STIFFNESS, easeSpatialLayout, linkPulls, motionForce, placeNewSpheres, QUIET_TICKS, seededDirection, shellMass, SHELL_SOFTNESS, spatialFieldOf, spatialLinkDistance, spatialNodeRadius, spatialNodeValue, springStrength, symbolCountOf, type PlaceableNode, type SpatialLink, type SpatialNode } from "./forceGraphLayout";
+import { diagonalOf } from "./forceGraphPhysics";
 
 const node = (id: string, symbols: number): SpatialNode => ({ id, publicSymbols: Array.from({ length: symbols }, (_, index) => `symbol${index}`) });
 const separation = (nodes: SpatialNode[]): number => Math.hypot(nodes[0].x! - nodes[1].x!, nodes[0].y! - nodes[1].y!, nodes[0].z! - nodes[1].z!);

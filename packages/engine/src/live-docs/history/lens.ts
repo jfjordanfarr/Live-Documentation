@@ -8,8 +8,8 @@
 
 import { createHash } from "node:crypto";
 
-import type { GeneratorIdentity, HistoryLens } from "./format";
 import type { LiveDocumentationConfig } from "../../config/liveDocumentationConfig";
+import type { GeneratorIdentity, HistoryLens } from "./format";
 
 /**
  * The lens of a generator and a normalized configuration, with its key. The key is made of the generator's version,

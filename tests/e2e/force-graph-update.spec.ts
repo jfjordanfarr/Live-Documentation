@@ -1,9 +1,9 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { cameToRest, caseClock, engineActivity, markedRenderedLinks, markRenderedLinks, observeGraph, renderedLinks, renderedNodes } from "./force-graph-observation";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { getDefaultTuning } from "../../packages/explorer/src/client/persistence/local-storage";
 import { QUIET_TICKS } from "../../packages/explorer/src/client/views/forceGraphLayout";
+import { cameToRest, caseClock, engineActivity, markedRenderedLinks, markRenderedLinks, observeGraph, renderedLinks, renderedNodes } from "./force-graph-observation";
 
 /**
  * The one update path of a membership change in the 3D Local Map, eased at the update energy (ticket C2 of the

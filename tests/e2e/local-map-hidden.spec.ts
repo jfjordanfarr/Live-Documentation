@@ -1,9 +1,9 @@
 import { expect, test, type Page } from "@playwright/test";
 
+import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { engineActivity, observeGraph, renderedNodes } from "./force-graph-observation";
 import { currentSnapshot } from "./search-bar";
 import { localMapSettled, localRetainUrl } from "./still-picture";
-import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 
 /**
  * The Local Map's work stays with the view (the owner's choice, 2026-10-16).

@@ -1,8 +1,8 @@
 import { expect, test } from "@playwright/test";
 
+import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { observeGraph, renderedLinks, renderedNodes } from "./force-graph-observation";
 import { currentSnapshot } from "./search-bar";
-import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 
 /**
  * The documents that cite a file, the `Cited By` section the generator writes

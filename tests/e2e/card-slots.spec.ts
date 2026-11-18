@@ -1,8 +1,8 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
 
-import { localMapSettled, panIntoView } from "./still-picture";
 import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT, type UrlStateSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
+import { localMapSettled, panIntoView } from "./still-picture";
 
 /**
  * The fixed-slot card composition of the November 5 comparison, behind the Card Text tuning switch: a card's box

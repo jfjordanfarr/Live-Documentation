@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
 
+import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../shared/types";
+import { getDefaultTuning } from "../persistence/local-storage";
 import type { FileConnection } from "./fileConnections";
 import { directoryNodeId, spatialGraphOf } from "./forceGraphData";
 import { linkPulls, shellRadiusOf, spatialNodeRadius, type SpatialLink } from "./forceGraphLayout";
@@ -7,8 +9,6 @@ import { connectedNeighbours, spatialScope, type StartableNode } from "./forceGr
 import { bodyGaps, bodyShape, bodySteps, directoryAt, DRAWN_FILES, innerShape, packBall, partitionHidden, pictureVeils, poppedAfter, releaseOf, shellDirectory, shellId, shellPicture,
   structureCells, structureSpokes, type ShellPartition } from "./forceGraphShells";
 import { wrapperHull, type WrapperHull } from "./forceGraphWrappers";
-import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../shared/types";
-import { getDefaultTuning } from "../persistence/local-storage";
 
 const tuning = getDefaultTuning().forceGraph;
 const file = (id: string, symbols = 0): StartableNode => ({ id, publicSymbols: Array.from({ length: symbols }, (_, i) => `s${i}`), codeRelativePath: id });

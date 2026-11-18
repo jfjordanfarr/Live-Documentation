@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { curveTo, routeBacktracks, threadedRoute, type RoutePoint } from "./branch-routing";
 import type { BezierTuning } from "../../types";
+import { curveTo, routeBacktracks, threadedRoute, type RoutePoint } from "./branch-routing";
 
 const tuning: BezierTuning = { stubFactor: 0.4, stubMin: 24, stubMaxOffset: 20, verticalOffset: 0.1 };
 

@@ -1,12 +1,12 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { DECK_SCOPES } from "./scopes";
-import { localMapSettled, localRetainUrl } from "./still-picture";
 import { getDefaultTuning, PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import type { StaticExplorerData } from "../../packages/explorer/src/shared/staticExplorerData";
 import { captureFromPage } from "../../scripts/layout-lab/capture";
 import { baselineConfig, driftOf, evaluate, type CycleSearch, type CycleTerms } from "../../scripts/layout-lab/evaluate";
 import { loadBundleGraph, type ScopeRun } from "../../scripts/layout-lab/scopes";
+import { DECK_SCOPES } from "./scopes";
+import { localMapSettled, localRetainUrl } from "./still-picture";
 
 /**
  * The layout lab's model of the page, held to the page: a capture of each deck

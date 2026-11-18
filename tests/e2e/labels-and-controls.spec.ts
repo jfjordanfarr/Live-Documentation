@@ -1,9 +1,9 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { AA_SMALL_TEXT, backdrop, contrastRatio, parseColour } from "./contrast";
-import { clearStroke, observeGraph, referenceWire, renderedLinks, renderedNodes } from "./force-graph-observation";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { seamBefore } from "../../packages/explorer/src/client/views/localView/word-seams";
+import { AA_SMALL_TEXT, backdrop, contrastRatio, parseColour } from "./contrast";
+import { clearStroke, observeGraph, referenceWire, renderedLinks, renderedNodes } from "./force-graph-observation";
 
 /**
  * Labels and controls (the October 23 review's findings 8, 11, 14 and 16; built 2026-10-30): a name wraps only at a

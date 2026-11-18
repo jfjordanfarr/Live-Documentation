@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { findPath, reachOf, referencesAgainstPath } from "./pathfind";
 import type { ExplorerLinkPayload, ExplorerNodePayload } from "../shared/types";
+import { findPath, reachOf, referencesAgainstPath } from "./pathfind";
 
 /** A link from the file that depends to the file it depends on, as the bundle stores them. */
 const link = (dependent: string, dependency: string): ExplorerLinkPayload =>

@@ -1,7 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { observeGraph, renderedNodes } from "./force-graph-observation";
-import { loadGraph } from "./still-picture";
 import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { getDefaultTuning, PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import type { GroupWrappers } from "../../packages/explorer/src/client/types";
@@ -9,6 +7,8 @@ import { directoryNodeId, spatialGraphOf } from "../../packages/explorer/src/cli
 import { linkPulls } from "../../packages/explorer/src/client/views/forceGraphLayout";
 import { spatialScope } from "../../packages/explorer/src/client/views/forceGraphScope";
 import { structureCells } from "../../packages/explorer/src/client/views/forceGraphShells";
+import { observeGraph, renderedNodes } from "./force-graph-observation";
+import { loadGraph } from "./still-picture";
 
 /**
  * The bag of cells in the Structure layout (2026-11-07; the owner, "can we also get the bag-of-cells look for the

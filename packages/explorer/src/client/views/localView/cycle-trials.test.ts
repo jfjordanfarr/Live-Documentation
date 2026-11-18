@@ -1,13 +1,13 @@
 import { describe, expect, it } from "vitest";
 
+import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../../shared/types";
+import { addPin, EMPTY_PIN_SET } from "../pin-state";
 import { scoreOf, signalsOf } from "./branch-restarts";
 import { DEFAULT_SCENE_TUNING, layoutScene, planBranches } from "./branch-scene";
 import { edgeKey, orderExploration, rankBranches, exploreBranches, type BranchGraph, type CycleOffer } from "./branches";
 import { cycleOrdersOf, horizontalWire, nextCycleTrial, rankingTerms, returningLinks, standingOrders, walkCycleTrials, type WalkedPicture } from "./cycle-trials";
 import { nominalMeasurer } from "./directory-flow";
 import type { LocalEdge } from "./types";
-import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../../shared/types";
-import { addPin, EMPTY_PIN_SET } from "../pin-state";
 
 function node(id: string): ExplorerNodePayload {
   return { id, name: id, codePath: id, codeRelativePath: id, docPath: `${id}.md`, docRelativePath: `${id}.md`,

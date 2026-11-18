@@ -12,6 +12,7 @@ import * as fs from "node:fs/promises";
 import path from "node:path";
 import ts from "typescript";
 
+import { normalizeWorkspacePath } from "../tooling/pathUtils";
 import { analyzeWithLanguageAdapters, type WorkspaceFileIndex } from "./adapters";
 import { SUPPORTED_SCRIPT_EXTENSIONS } from "./coreConstants";
 import type { SourceAnalysisResult, PublicSymbolEntry, WorkspaceSymbolIndex } from "./coreTypes";
@@ -24,7 +25,6 @@ import {
 import { inferDomDependencies } from "./heuristics/dom";
 import { inferRouteDependencies } from "./heuristics/routes";
 import { inferScriptKind, collectExportedSymbols } from "./symbolExtraction";
-import { normalizeWorkspacePath } from "../tooling/pathUtils";
 
 // ============================================================================
 // Constants

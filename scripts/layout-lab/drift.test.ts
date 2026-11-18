@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import { carryPositions, diagonalOf, extentOf, measureDrift, rangeOf, renderDriftReports, toggledArchetype } from "./drift";
 import { getDefaultTuning } from "../../packages/explorer/src/client/persistence/local-storage";
 import { spatialNodeRadius } from "../../packages/explorer/src/client/views/forceGraphLayout";
 import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../packages/explorer/src/shared/types";
+import { carryPositions, diagonalOf, extentOf, measureDrift, rangeOf, renderDriftReports, toggledArchetype } from "./drift";
 
 const node = (id: string, archetype = "implementation", symbols = 1): ExplorerNodePayload => ({ id, name: id.split("/").pop()!,
   codePath: id, codeRelativePath: id, docPath: `docs/${id}.md`, docRelativePath: `docs/${id}.md`, archetype,

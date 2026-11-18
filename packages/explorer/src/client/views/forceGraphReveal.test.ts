@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 
+import { getDefaultTuning } from "../persistence/local-storage";
 import { linkPulls, type SpatialLink, type SpatialNode } from "./forceGraphLayout";
 import { nextRevealCount, revealCorresponding, revealLayers, revealOrder } from "./forceGraphReveal";
-import { getDefaultTuning } from "../persistence/local-storage";
 
 const node = (id: string): SpatialNode => ({ id, publicSymbols: [] });
 const link = (source: string, target: string, kind?: string): SpatialLink => ({ source, target, count: 1, ...(kind ? { kind } : {}) });

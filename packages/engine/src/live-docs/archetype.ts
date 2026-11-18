@@ -12,11 +12,11 @@
 
 import path from "node:path";
 
-import { UNREAD_NOTE } from "./document";
 import type {
   LiveDocumentationConfig,
   LiveDocumentationArchetype
 } from "../config/liveDocumentationConfig";
+import { UNREAD_NOTE } from "./document";
 
 /** How much of a file's head {@link isBinaryContent} reads: git's own window for the same question. */
 export const BINARY_SNIFF_BYTES = 8000;

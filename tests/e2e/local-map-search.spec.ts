@@ -1,8 +1,8 @@
 import { expect, test, type Page } from "@playwright/test";
 
+import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { FIVE_ESTATE, FIVE_REPOSITORY } from "./scopes";
 import { localMapSettled, localRetainUrl, panIntoView } from "./still-picture";
-import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 
 /**
  * The continuing search: after the first picture is painted, the order step

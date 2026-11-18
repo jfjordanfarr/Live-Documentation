@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { destinationScope, directoriesOf, directoryOf, fileNameScore, reachWords, searchGraph, searchIndexOf, searchRows, stemOf, termsOf, type SearchIndex } from "./graph-search";
 import type { ExplorerNodePayload } from "../../shared/types";
+import { destinationScope, directoriesOf, directoryOf, fileNameScore, reachWords, searchGraph, searchIndexOf, searchRows, stemOf, termsOf, type SearchIndex } from "./graph-search";
 
 const file = (id: string, symbols: string[] = []): ExplorerNodePayload =>
   ({ id, name: id.split("/").pop()!, codeRelativePath: id, archetype: "code", publicSymbols: symbols }) as ExplorerNodePayload;

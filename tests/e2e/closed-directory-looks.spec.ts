@@ -1,10 +1,10 @@
 import { expect, test, type Browser, type Page } from "@playwright/test";
 
-import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
-import { LOCAL_MAP, localMapSettled } from "./still-picture";
 import { decompressSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, type ClosedCellColour, type ClosedDirectoryLook, type ClosedDirectoryShape } from "../../packages/explorer/src/client/types";
+import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
+import { LOCAL_MAP, localMapSettled } from "./still-picture";
 
 /**
  * A closed directory's looks. The skin with cells is the default since 2026-11-15 (the owner: "Cells is definitely my

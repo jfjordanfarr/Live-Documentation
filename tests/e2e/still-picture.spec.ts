@@ -2,6 +2,7 @@ import { test, expect, type Page } from "@playwright/test";
 import fs from "node:fs";
 import path from "node:path";
 
+import type { ExplorerGraphPayload } from "../../packages/explorer/src/shared/types";
 import { DECK_SCOPES, type DeckScope } from "./scopes";
 import {
   LOCAL_MAP,
@@ -42,7 +43,6 @@ import {
   type Scoreboard,
   type ViewReading
 } from "./still-picture";
-import type { ExplorerGraphPayload } from "../../packages/explorer/src/shared/types";
 
 /**
  * The still-picture deck, played over the shipped bundles.

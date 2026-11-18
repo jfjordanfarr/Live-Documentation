@@ -1,12 +1,12 @@
 import { expect, test, type Page } from "@playwright/test";
 import * as fs from "node:fs/promises";
 
-import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
-import { DECK_SCOPES } from "./scopes";
-import { keepGrowingComposition, localMapSettled, localRetainUrl } from "./still-picture";
 import { LAYOUT_PRESETS } from "../../packages/explorer/src/client/layout-presets";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { DEFAULT_RETURN_COST } from "../../packages/explorer/src/client/views/localView/cycle-order";
+import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
+import { DECK_SCOPES } from "./scopes";
+import { keepGrowingComposition, localMapSettled, localRetainUrl } from "./still-picture";
 
 const generator = "packages/generator/src/generator.ts";
 test.use({ viewport: { width: 1600, height: 1000 } });

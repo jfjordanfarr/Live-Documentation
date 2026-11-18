@@ -8,9 +8,9 @@ import type { HistorySequence } from "@live-documentation/engine/live-docs/histo
 import { changeAt, commitAt, seek } from "@live-documentation/engine/live-docs/history/sequence";
 import { followPath, type FollowedPath } from "@live-documentation/engine/live-docs/history/ticks";
 
-import { snapshotGraphOf } from "./snapshot";
 import type { ExplorerNodePayload } from "../../shared/types";
 import { directoriesOf } from "../search/graph-search";
+import { snapshotGraphOf } from "./snapshot";
 
 const PREFIX = "history:";
 

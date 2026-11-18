@@ -8,6 +8,11 @@
  * @module card-factory
  */
 
+import type { ExplorerNodePayload, ExplorerPublicSymbol, ExplorerTypeReference } from "../../../shared/types";
+import { setSeamedText } from "../../dom";
+import { MASK_FADE, MASK_KEEP } from "../../palette";
+import type { ClosedCellColour, ClosedDirectoryLook, ClosedDirectoryShape, SymbolOrder } from "../../types";
+import { spatialKindOf } from "../forceGraphAppearance";
 import { compareSymbolNames, type ClosedDirectory, type HiddenContents } from "./branches";
 import { cellField, CELLS, fieldBands, lineMarks, SHAPE_CORNER, stackEdges, tabOutline, type Cell, type CellField, type ClosedContents, type Rect, type Skin } from "./closed-looks";
 import { parentDirectory } from "./directory-bands";
@@ -15,11 +20,6 @@ import { chevronMarkup, HANDLE_LINE } from "./directory-handle";
 import type { ColumnRole } from "./types";
 import { NODE_HUB } from "./wire-gathering";
 import { countOf } from "./word-seams";
-import type { ExplorerNodePayload, ExplorerPublicSymbol, ExplorerTypeReference } from "../../../shared/types";
-import { setSeamedText } from "../../dom";
-import { MASK_FADE, MASK_KEEP } from "../../palette";
-import type { ClosedCellColour, ClosedDirectoryLook, ClosedDirectoryShape, SymbolOrder } from "../../types";
-import { spatialKindOf } from "../forceGraphAppearance";
 
 /** The values a fresh card reads while it is built. The wrapper may survive a render, but its card is rebuilt. */
 export interface CardPresentation {

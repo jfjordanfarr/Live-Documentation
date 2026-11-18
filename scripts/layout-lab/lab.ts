@@ -49,6 +49,9 @@ import * as fs from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
+import { applyLayoutPreset, applyLayoutSettings, readLayoutSettings } from "../../packages/explorer/src/client/layout-presets";
+import { getDefaultTuning } from "../../packages/explorer/src/client/persistence/local-storage";
+import type { StaticExplorerData } from "../../packages/explorer/src/shared/staticExplorerData";
 import { firstTick, forceErrors, renderApproximationReport, restPictures, restSubject, savedPicture, seatedPrefix, timeEvaluations, type ApproximationReport } from "./approximation";
 import { captureScope, readCaptureFile, writeCapture, type Capture } from "./capture";
 import { measureDrift, rangeOf, renderDriftReports, toggledArchetype, type DriftReport } from "./drift";
@@ -60,9 +63,6 @@ import { findScope, loadBundleData, loadBundleGraph, scopeSlug, type ScopeRun } 
 import { renderSpatialReport, spatialReport } from "./spatial";
 import { configurations, DEFAULT_GRID, oneAtATime, parseGrid, parseWeights } from "./sweep";
 import { compareTable, verifyConfig } from "./verify";
-import { applyLayoutPreset, applyLayoutSettings, readLayoutSettings } from "../../packages/explorer/src/client/layout-presets";
-import { getDefaultTuning } from "../../packages/explorer/src/client/persistence/local-storage";
-import type { StaticExplorerData } from "../../packages/explorer/src/shared/staticExplorerData";
 
 interface Args {
   verb: string;

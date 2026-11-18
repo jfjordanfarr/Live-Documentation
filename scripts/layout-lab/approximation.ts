@@ -14,9 +14,6 @@
 import { forceSimulation, type SimulationNodeDatum } from "d3-force-3d";
 import { performance } from "node:perf_hooks";
 
-import { includeNode, scopePins } from "./evaluate";
-import { retainedSubject, type ScopeRun } from "./scopes";
-import { spatialReport } from "./spatial";
 import { applyLayoutSettings } from "../../packages/explorer/src/client/layout-presets";
 import { decompressSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { getDefaultFilters, getDefaultTuning } from "../../packages/explorer/src/client/persistence/local-storage";
@@ -27,6 +24,9 @@ import { diagonalOf, SpatialField } from "../../packages/explorer/src/client/vie
 import { explorerGraphOf } from "../../packages/explorer/src/shared/graph";
 import type { StaticExplorerData } from "../../packages/explorer/src/shared/staticExplorerData";
 import type { ExplorerGraphPayload } from "../../packages/explorer/src/shared/types";
+import { includeNode, scopePins } from "./evaluate";
+import { retainedSubject, type ScopeRun } from "./scopes";
+import { spatialReport } from "./spatial";
 
 /** A picture of a large bundle as a saved address shows it in 3D: every sphere it simulates, the links, and the forces. */
 export interface SavedPicture {

@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 
+import { DEFAULT_LIVE_DOCUMENTATION_CONFIG } from "../../config/liveDocumentationConfig";
 import type { CommitInfo } from "./format";
 import { seek, SequenceBuilder } from "./sequence";
 import { edgeKey, shapeDifferences, type Shape } from "./shape";
 import { windowOf } from "./window";
-import { DEFAULT_LIVE_DOCUMENTATION_CONFIG } from "../../config/liveDocumentationConfig";
 
 const HEAD = {
   lens: { key: "k", generator: { version: "0.0.0", code: null, commit: null, modified: null }, configuration: DEFAULT_LIVE_DOCUMENTATION_CONFIG },

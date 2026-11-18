@@ -1,8 +1,8 @@
 import { expect, test, type Browser, type Page } from "@playwright/test";
 
-import { localMapStill } from "./still-picture";
 import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
+import { localMapStill } from "./still-picture";
 
 /**
  * The zoom looks (Tuning → 2D Layout → Zoom Looks; the owner's hypothesis of 2026-11-08, "very very FEW breakpoints (2-3)

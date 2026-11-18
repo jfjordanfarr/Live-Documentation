@@ -1,9 +1,9 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { observeGraph, renderedLinks, renderedNodes } from "./force-graph-observation";
-import { localMapSettled } from "./still-picture";
 import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import type { SpatialLayout } from "../../packages/explorer/src/client/types";
+import { observeGraph, renderedLinks, renderedNodes } from "./force-graph-observation";
+import { localMapSettled } from "./still-picture";
 
 test.use({ viewport: { width: 1600, height: 1000 } });
 

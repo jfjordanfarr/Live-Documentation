@@ -1,10 +1,10 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
-import { LOCAL_MAP, localMapSettled, localRetainUrl } from "./still-picture";
 import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { NOMINAL_CARD } from "../../packages/explorer/src/client/views/localView/directory-flow";
+import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
+import { LOCAL_MAP, localMapSettled, localRetainUrl } from "./still-picture";
 
 /**
  * Directories open and close inside the Local Map (the owner's grammar,

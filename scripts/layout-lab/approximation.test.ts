@@ -1,7 +1,5 @@
 import { describe, expect, it } from "vitest";
 
-import { firstTick, forceErrors, renderApproximationReport, restPictures, restSubject, savedPicture, seatedPrefix, timeEvaluations, type ApproximationReport } from "./approximation";
-import type { ScopeRun } from "./scopes";
 import { parseLiveDoc, renderLiveDoc } from "../../packages/engine/src/live-docs/document";
 import { deriveLiveDocGraph } from "../../packages/engine/src/live-docs/graph";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
@@ -10,6 +8,8 @@ import { SpatialField } from "../../packages/explorer/src/client/views/forceGrap
 import { addPin, EMPTY_PIN_SET } from "../../packages/explorer/src/client/views/pin-state";
 import type { StaticExplorerData } from "../../packages/explorer/src/shared/staticExplorerData";
 import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../packages/explorer/src/shared/types";
+import { firstTick, forceErrors, renderApproximationReport, restPictures, restSubject, savedPicture, seatedPrefix, timeEvaluations, type ApproximationReport } from "./approximation";
+import type { ScopeRun } from "./scopes";
 
 /** A bundle of files in two folders, each folder's files referencing the next, with a test of each folder. */
 function bundle(): StaticExplorerData {

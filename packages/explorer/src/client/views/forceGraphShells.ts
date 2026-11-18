@@ -24,10 +24,10 @@
  * Pure-function module: no DOM, no GPU. The page draws, picks and pops what these functions describe.
  */
 
+import type { ForceGraphTuning } from "../types";
 import type { FileConnection } from "./fileConnections";
 import { seededDirection, spatialNodeRadius, type Placed, type SpatialNode } from "./forceGraphLayout";
 import type { BodyUnit, GroupMember, GroupShape } from "./forceGraphWrappers";
-import type { ForceGraphTuning } from "../types";
 import { parentDirectory } from "./localView/directory-bands";
 
 /** The id of a directory's shell, outside the files' and the hubs' namespaces. */

@@ -1,7 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
 
-import { observeGraph, renderedNodes } from "./force-graph-observation";
-import { currentSnapshot } from "./search-bar";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { getDefaultTuning } from "../../packages/explorer/src/client/persistence/local-storage";
 import { spatialGraphOf } from "../../packages/explorer/src/client/views/forceGraphData";
@@ -9,6 +7,8 @@ import { linkPulls } from "../../packages/explorer/src/client/views/forceGraphLa
 import { spatialScope, startHops, startOf } from "../../packages/explorer/src/client/views/forceGraphScope";
 import { explorerGraphOf } from "../../packages/explorer/src/shared/graph";
 import type { StaticExplorerData } from "../../packages/explorer/src/shared/staticExplorerData";
+import { observeGraph, renderedNodes } from "./force-graph-observation";
+import { currentSnapshot } from "./search-bar";
 
 const GRAPH = "packages/engine/src/live-docs/graph.ts";
 const DOCUMENT = "packages/engine/src/live-docs/document.ts";

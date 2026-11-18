@@ -1,9 +1,9 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
-import { localMapSettled, panIntoView } from "./still-picture";
 import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT, type UrlStateSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { retainedKey } from "../../packages/explorer/src/client/views/retained-state";
+import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
+import { localMapSettled, panIntoView } from "./still-picture";
 
 const ROOT = "tests/integration/programs/typescript/rosetta";
 const SRC = `${ROOT}/src`;

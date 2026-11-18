@@ -1,9 +1,9 @@
 import { expect, test, type Page } from "@playwright/test";
 
+import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
 import { engineActivity, markedRenderedLinks, markRenderedLinks, observeGraph, renderedLinks, renderedNodes } from "./force-graph-observation";
 import { choose } from "./search-bar";
-import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 
 /**
  * The history of the 3D Local Map (ticket C4 of the change-over-time plan, 2026-10-18): the scrubber along the

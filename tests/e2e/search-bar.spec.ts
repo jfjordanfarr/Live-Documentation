@@ -1,11 +1,11 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
 
+import type { LiveDocGraph } from "../../packages/engine/src/live-docs/graph";
+import { retainedKey } from "../../packages/explorer/src/client/views/retained-state";
 import { AA_SMALL_TEXT, backdrop, contrastRatio, parseColour } from "./contrast";
 import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
 import { choose, currentSnapshot, newestKey } from "./search-bar";
 import { loadGraph, localMapSettled } from "./still-picture";
-import type { LiveDocGraph } from "../../packages/engine/src/live-docs/graph";
-import { retainedKey } from "../../packages/explorer/src/client/views/retained-state";
 
 /**
  * One search at the top of the Explorer, in every view, in place of the Ctrl+P dialog and the FROM/TO toolbar

@@ -15,13 +15,13 @@ import * as fs from "node:fs/promises";
 import path from "node:path";
 
 
-import { TEXT_TOLERANCE, titleHeight, type TitleRoom } from "./card-model";
-import type { ReadingFlow } from "./reading-model";
-import { admitCompiledFunctions, ORIGIN, serveBundle, type ScopeRun } from "./scopes";
 import { LAYOUT_PRESETS, type LayoutPreset } from "../../packages/explorer/src/client/layout-presets";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import type { ExplorerFilters } from "../../packages/explorer/src/client/types";
 import { localRetainUrl } from "../../tests/e2e/still-picture";
+import { TEXT_TOLERANCE, titleHeight, type TitleRoom } from "./card-model";
+import type { ReadingFlow } from "./reading-model";
+import { admitCompiledFunctions, ORIGIN, serveBundle, type ScopeRun } from "./scopes";
 
 /** A text as Pretext prepared it in the page: its segments and their measured widths, laid out again by arithmetic. */
 export interface PreparedText {

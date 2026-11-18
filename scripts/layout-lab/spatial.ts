@@ -1,12 +1,12 @@
 /** The 3D Local Map's documented file pairs, its declared structure and the shared motion, available as a headless report. */
-import { includeNode, scopePins } from "./evaluate";
-import { retainedSubject, type ScopeRun } from "./scopes";
 import type { ExplorerFilters, ForceGraphTuning, SpatialLayout } from "../../packages/explorer/src/client/types";
 import { spatialGraphOf } from "../../packages/explorer/src/client/views/forceGraphData";
 import { easeSpatialLayout, linkPulls, spatialLinkDistance, spatialNodeRadius } from "../../packages/explorer/src/client/views/forceGraphLayout";
 import { getVisibleConnections } from "../../packages/explorer/src/client/views/pin-state";
 import type { RelatedDocLink } from "../../packages/explorer/src/shared/staticExplorerData";
 import type { ExplorerGraphPayload } from "../../packages/explorer/src/shared/types";
+import { includeNode, scopePins } from "./evaluate";
+import { retainedSubject, type ScopeRun } from "./scopes";
 
 /**
  * Ease the picture the 3D view shows, in either layout, until still or `maxTicks`: since 2026-10-31 the retained files

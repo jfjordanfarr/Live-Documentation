@@ -1,3 +1,7 @@
+import type { ExplorerNodePayload } from "../../../shared/types";
+import type { LocalMapTuning } from "../../types";
+import { EMPTY_PIN_SET } from "../pin-state";
+import { normalizeSymbolIdentifier } from "../symbolAnchors";
 import { alignmentCandidates } from "./branch-alignments";
 import { boxKeyOf, easeInOutCubic, scenePose, tweenPose, type Pose } from "./branch-motion";
 import type { BoundaryAlignment } from "./branch-placement";
@@ -20,10 +24,6 @@ import { connectionCount, returningConnections } from "./returning-connections";
 import type { LocalEdge } from "./types";
 import { NODE_HUB } from "./wire-gathering";
 import { countOf } from "./word-seams";
-import type { ExplorerNodePayload } from "../../../shared/types";
-import type { LocalMapTuning } from "../../types";
-import { EMPTY_PIN_SET } from "../pin-state";
-import { normalizeSymbolIdentifier } from "../symbolAnchors";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 

@@ -1,9 +1,9 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { choose } from "./search-bar";
-import { localMapStill } from "./still-picture";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
+import { choose } from "./search-bar";
+import { localMapStill } from "./still-picture";
 
 /**
  * Files only at the farthest zoom (Tuning → 2D Layout → Zoomed Out Fully, a trial for the owner's eye of 2026-11-13; the

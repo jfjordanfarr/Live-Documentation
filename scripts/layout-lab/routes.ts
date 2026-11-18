@@ -6,13 +6,13 @@
  *
  * @module layout-lab/routes
  */
-import type { Capture } from "./capture";
-import type { CardMetrics } from "./card-model";
-import { resolvePin } from "./card-model";
 import type { BezierTuning } from "../../packages/explorer/src/client/types";
 import { curveTo, LANE_MARGIN, threadedRoute, type Passage, type RoutePoint } from "../../packages/explorer/src/client/views/localView/branch-routing";
 import type { Scene } from "../../packages/explorer/src/client/views/localView/branch-scene";
 import { edgeKey, type BranchGraph } from "../../packages/explorer/src/client/views/localView/branches";
+import type { Capture } from "./capture";
+import type { CardMetrics } from "./card-model";
+import { resolvePin } from "./card-model";
 
 /** The router's: a wire stops one pin radius shy of the pin's centre. */
 const PIN_RADIUS = 6;

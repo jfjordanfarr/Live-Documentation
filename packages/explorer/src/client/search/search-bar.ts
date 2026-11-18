@@ -8,11 +8,11 @@
  * beside its field, in the pin tray's words, and the report names the commit its path was asked at (2026-10-30).
  */
 
-import { destinationScope, type SearchHit, type SearchIndex, type SearchScope } from "./graph-search";
-import { createSearchField } from "./search-field";
 import type { ExplorerNodePayload } from "../../shared/types";
 import { requireElement } from "../dom";
 import type { PathHop, Reach } from "../pathfind";
+import { destinationScope, type SearchHit, type SearchIndex, type SearchScope } from "./graph-search";
+import { createSearchField } from "./search-field";
 
 /** The words a field shows for a pinned thing or a destination: its name, and where it stands for the tooltip. */
 export interface SearchWords {

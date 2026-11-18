@@ -1,9 +1,9 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { localMapStill } from "./still-picture";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { LAST_STEP, STEP_RATIO } from "../../packages/explorer/src/client/views/localView/ladder-steps";
+import { localMapStill } from "./still-picture";
 
 /**
  * The card ladder's boxes, audited at every Zoom Out press from reading scale to the farthest zoom (the far-zoom review

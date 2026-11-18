@@ -1,9 +1,9 @@
 import { expect, test, type Page } from "@playwright/test";
 import type { InstancedMesh, MeshLambertMaterial, Scene } from "three";
 
-import { observeGraph, renderedNodes } from "./force-graph-observation";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import type { SpatialDrawEntry } from "../../packages/explorer/src/client/views/forceGraphBatches";
+import { observeGraph, renderedNodes } from "./force-graph-observation";
 
 /**
  * While a moment of the history is shown, the files the step changed stand out in the 3D picture (the owner's ask of

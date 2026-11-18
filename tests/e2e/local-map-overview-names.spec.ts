@@ -1,8 +1,8 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { localMapStill } from "./still-picture";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
+import { localMapStill } from "./still-picture";
 
 /**
  * A file's name in the overview look of a card that keeps its size (2026-11-15): read from its drawn lines, it is not

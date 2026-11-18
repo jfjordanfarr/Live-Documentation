@@ -1,7 +1,7 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
 
-import { localMapStill, panIntoView } from "./still-picture";
 import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT, type UrlStateSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
+import { localMapStill, panIntoView } from "./still-picture";
 
 const readingState = "packages/explorer/src/client/reading-state.ts";
 const payment = "PaymentService/PaymentService.cs";

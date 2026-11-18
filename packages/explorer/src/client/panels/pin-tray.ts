@@ -1,6 +1,6 @@
-import { CLOSE_ICON, DIRECTORY_ICON, iconButton } from "./icon-button";
 import type { ExplorerNodePayload } from "../../shared/types";
 import { describeRetained, retainedItems, retainedKey, type RetainedItem, type RetainedState } from "../views/retained-state";
+import { CLOSE_ICON, DIRECTORY_ICON, iconButton } from "./icon-button";
 
 /** Actions operate on the shared selection; opening the tray or focusing a row does not retain anything. */
 export interface PinTrayOptions {

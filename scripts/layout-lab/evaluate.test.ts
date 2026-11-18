@@ -1,15 +1,15 @@
 import { describe, expect, it, vi } from "vitest";
 
-import type { Capture } from "./capture";
-import type { CardMetrics } from "./card-model";
-import { baselineConfig, evaluate, evaluateAlignment, includeNode } from "./evaluate";
-import { refine, refinementJson } from "./refine";
-import type { ScopeRun } from "./scopes";
 import { alignmentCandidates } from "../../packages/explorer/src/client/views/localView/branch-alignments";
 import type { SceneMeasurer } from "../../packages/explorer/src/client/views/localView/branch-scene";
 import { horizontalWire, returningLinks } from "../../packages/explorer/src/client/views/localView/cycle-trials";
 import { addPin, EMPTY_PIN_SET } from "../../packages/explorer/src/client/views/pin-state";
 import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../packages/explorer/src/shared/types";
+import type { Capture } from "./capture";
+import type { CardMetrics } from "./card-model";
+import { baselineConfig, evaluate, evaluateAlignment, includeNode } from "./evaluate";
+import { refine, refinementJson } from "./refine";
+import type { ScopeRun } from "./scopes";
 
 // Measurements stand in for a capture's text; ranking, ordering, placement and shape scoring remain the product's.
 vi.mock("./measurer", () => ({ capturedMeasurer: (): SceneMeasurer & { metrics: Map<string, CardMetrics> } => ({

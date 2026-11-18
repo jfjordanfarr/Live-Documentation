@@ -7,12 +7,12 @@
  */
 import { chromium } from "@playwright/test";
 
-import type { LabConfig } from "./evaluate";
-import { admitCompiledFunctions, ORIGIN, serveBundle, type ScopeRun } from "./scopes";
-import type { Signals } from "./signals";
 import { PERSISTED_UI_KEY } from "../../packages/explorer/src/client/persistence/local-storage";
 import type { ExplorerGraphPayload } from "../../packages/explorer/src/shared/types";
 import { displayNames, LOCAL_MAP, localRetainUrl, readPicture, scoreExpanded, scoreForeign, scoreLength, symbolCounts } from "../../tests/e2e/still-picture";
+import type { LabConfig } from "./evaluate";
+import { admitCompiledFunctions, ORIGIN, serveBundle, type ScopeRun } from "./scopes";
+import type { Signals } from "./signals";
 
 /** What the page showed for a configuration, read by the deck's instrument. */
 export interface Verification {

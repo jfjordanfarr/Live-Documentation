@@ -4,8 +4,8 @@ import * as os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
-import { discoverDocuments, discoverTargetFiles } from "./discovery";
 import { normalizeLiveDocumentationConfig, type LiveDocumentationConfigInput } from "../config/liveDocumentationConfig";
+import { discoverDocuments, discoverTargetFiles } from "./discovery";
 
 /**
  * A workspace with a file for every rule: hidden files and folders, files no

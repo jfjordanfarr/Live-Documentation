@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
-import { localMapStill } from "./still-picture";
 import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
+import { localMapStill } from "./still-picture";
 
 test("Tab keeps each native map command in the unobstructed frame without changing exploration", async ({ page }) => {
   test.setTimeout(60_000);

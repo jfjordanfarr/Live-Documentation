@@ -1,10 +1,10 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
 
+import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT, type UrlStateSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
+import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { overlapsAmong, textBoxes, truncations } from "./design-audit";
 import { choose } from "./search-bar";
 import { keepGrowingComposition, localMapStill, panIntoView } from "./still-picture";
-import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT, type UrlStateSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
-import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 
 const payment = "tests/integration/programs/csharp/estate/PaymentService/PaymentService.cs";
 const pathfind = "packages/engine/src/live-docs/pathfind.ts";

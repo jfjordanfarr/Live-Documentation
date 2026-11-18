@@ -25,9 +25,9 @@ import { normalizeLiveDocumentationConfig } from "@live-documentation/engine/con
 import { buildStaticExplorer } from "@live-documentation/explorer/shared/staticBuilder";
 import { generateLiveDocs } from "@live-documentation/generator/generator";
 
-import { optionValue, runCommand, UsageError } from "./cli";
 import { computeHistory } from "../../packages/generator/src/history/computeHistory";
 import { buildRepository, COLLISION_CONFIG, COLLISION_SCRIPT, GROWTH_CONFIG, GROWTH_SCRIPT, SCRIPT, SCRIPTED_CONFIG, VEIL_CONFIG, VEIL_SCRIPT, type ScriptedCommit } from "../../tests/integration/live-docs/scripted-repository";
+import { optionValue, runCommand, UsageError } from "./cli";
 
 interface CliOptions {
     help: boolean;

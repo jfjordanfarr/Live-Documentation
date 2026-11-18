@@ -1,12 +1,12 @@
 import { expect, test } from "@playwright/test";
 
-import { currentSnapshot, newestKey, pathAddress } from "./search-bar";
-import { loadGraph, localMapSettled, panIntoView } from "./still-picture";
 import { getDefaultTuning } from "../../packages/explorer/src/client/persistence/local-storage";
 import { spatialGraphOf } from "../../packages/explorer/src/client/views/forceGraphData";
 import { linkPulls } from "../../packages/explorer/src/client/views/forceGraphLayout";
 import { spatialScope } from "../../packages/explorer/src/client/views/forceGraphScope";
 import { retainedKey } from "../../packages/explorer/src/client/views/retained-state";
+import { currentSnapshot, newestKey, pathAddress } from "./search-bar";
+import { loadGraph, localMapSettled, panIntoView } from "./still-picture";
 
 const ROOT = "tests/integration/programs/typescript/rosetta/src/";
 const cardSelector = `#map-container .node-card[data-id="${ROOT}helpers.ts"]`;

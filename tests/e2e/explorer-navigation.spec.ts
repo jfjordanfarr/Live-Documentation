@@ -1,9 +1,9 @@
 import { test, expect, type Page } from "@playwright/test";
 import { compressToEncodedURIComponent } from "lz-string";
 
+import { PERSISTED_NAV_KEY } from "../../packages/explorer/src/client/persistence/local-storage";
 import { currentSnapshot, pathAddress } from "./search-bar";
 import { localMapStill } from "./still-picture";
-import { PERSISTED_NAV_KEY } from "../../packages/explorer/src/client/persistence/local-storage";
 
 const SUBJECT = "packages/explorer/src/client/index.ts";
 const PROVIDER = "packages/explorer/src/shared/graph.ts";

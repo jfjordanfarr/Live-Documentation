@@ -1,7 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { displayNames, gesture, keepGrowingComposition, loadGraph, LOCAL_MAP, localMapSettled, localRetainUrl, panIntoView, readPicture, scoreExpanded, scoreForeign, scoreOcclusion, symbolCounts } from "./still-picture";
 import { framePadding } from "../../packages/explorer/src/client/views/localView/layout-measure";
+import { displayNames, gesture, keepGrowingComposition, loadGraph, LOCAL_MAP, localMapSettled, localRetainUrl, panIntoView, readPicture, scoreExpanded, scoreForeign, scoreOcclusion, symbolCounts } from "./still-picture";
 
 /** These journeys read the growing composition's recorded facts and in-place descriptions, so they keep it (2026-11-05). */
 test.beforeEach(async ({ page }) => { await keepGrowingComposition(page); });

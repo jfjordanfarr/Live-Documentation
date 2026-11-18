@@ -1,14 +1,14 @@
-import { curveTo, LANE_MARGIN, routeBacktracks, threadedRoute, type Clearance, type Passage, type RoutePiece } from "./branch-routing";
-import { edgeKey, type BranchGraph } from "./branches";
-import type { LocalViewRuntime, WireLayer } from "./runtime";
-import type { ColumnRole, LayoutExtents, LocalEdge } from "./types";
 import type { BezierTuning, ExplorerState, LocalMapTuning } from "../../types";
 import { computeSelfLoopStubs, DEFAULT_SELF_LOOP_PARAMS, type LaceEdges, type SelfLoopParams } from "../connection-geometry";
+import { normalizeSymbolIdentifier } from "../symbolAnchors";
+import { curveTo, LANE_MARGIN, routeBacktracks, threadedRoute, type Clearance, type Passage, type RoutePiece } from "./branch-routing";
+import { edgeKey, type BranchGraph } from "./branches";
 import { isPairLine, linksOf } from "./directory-flow";
 import { OVERVIEW_FILES_ATTRIBUTE, OVERVIEW_LINES_ATTRIBUTE } from "./overview-files";
-import { gatheredCount, gatheredDescription, gatheredWidth, gatherWires, NODE_HUB, ownWires, type GatheredWire } from "./wire-gathering";
-import { normalizeSymbolIdentifier } from "../symbolAnchors";
 import { returningConnections, type ReturningConnections } from "./returning-connections";
+import type { LocalViewRuntime, WireLayer } from "./runtime";
+import type { ColumnRole, LayoutExtents, LocalEdge } from "./types";
+import { gatheredCount, gatheredDescription, gatheredWidth, gatherWires, NODE_HUB, ownWires, type GatheredWire } from "./wire-gathering";
 
 /**
  * Ambient context required by {@link drawConnections} to measure DOM

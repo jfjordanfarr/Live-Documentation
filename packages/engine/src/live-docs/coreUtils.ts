@@ -12,8 +12,8 @@
 import path from "node:path";
 import ts from "typescript";
 
-import type { DependencyEntry, LocationInfo } from "./coreTypes";
 import { slug } from "../tooling/githubSlugger";
+import type { DependencyEntry, LocationInfo } from "./coreTypes";
 
 // ============================================================================
 // Path & Link Formatting

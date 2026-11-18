@@ -8,8 +8,6 @@
  *
  * @module layout-lab/measurer
  */
-import type { Capture, CardCapture, RowCapture } from "./capture";
-import { cardMetrics, pinOffset, synthesizedHeight, textHeight, type CardMetrics, type CardView } from "./card-model";
 import type { SymbolOrder } from "../../packages/explorer/src/client/types";
 import type { SceneMeasurer } from "../../packages/explorer/src/client/views/localView/branch-scene";
 import { compareSymbolNames, edgeKey, type BranchGraph } from "../../packages/explorer/src/client/views/localView/branches";
@@ -19,6 +17,8 @@ import type { LocalEdge } from "../../packages/explorer/src/client/views/localVi
 import { countOf } from "../../packages/explorer/src/client/views/localView/word-seams";
 import type { PinSet } from "../../packages/explorer/src/client/views/pin-state";
 import { normalizeSymbolIdentifier } from "../../packages/explorer/src/client/views/symbolAnchors";
+import type { Capture, CardCapture, RowCapture } from "./capture";
+import { cardMetrics, pinOffset, synthesizedHeight, textHeight, type CardMetrics, type CardView } from "./card-model";
 
 /** What the measurer needs to know of the page's state beyond the exploration: the pins, the subject and the collapse tuning. */
 export interface MeasurerOptions {

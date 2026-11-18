@@ -1,10 +1,10 @@
 import { expect, test, type Browser, type Page } from "@playwright/test";
 
-import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
-import { LOCAL_MAP, localMapSettled } from "./still-picture";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { handleParts } from "../../packages/explorer/src/client/views/localView/directory-handle";
 import { LOOK_SCALES } from "../../packages/explorer/src/client/views/localView/ladder-steps";
+import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
+import { LOCAL_MAP, localMapSettled } from "./still-picture";
 
 /**
  * Closed directories at the two far looks, and an opened directory's handle (2026-11-16). A difference of form that

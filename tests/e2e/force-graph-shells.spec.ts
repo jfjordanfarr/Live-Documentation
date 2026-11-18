@@ -1,8 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { observeGraph } from "./force-graph-observation";
-import { choose as chooseSubject } from "./search-bar";
-import { loadGraph, localMapSettled } from "./still-picture";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { getDefaultTuning, PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import type { GroupWrappers } from "../../packages/explorer/src/client/types";
@@ -10,6 +7,9 @@ import { spatialGraphOf } from "../../packages/explorer/src/client/views/forceGr
 import { linkPulls, spatialNodeRadius } from "../../packages/explorer/src/client/views/forceGraphLayout";
 import { connectedNeighbours, spatialScope } from "../../packages/explorer/src/client/views/forceGraphScope";
 import { shellPicture, type ShellPicture } from "../../packages/explorer/src/client/views/forceGraphShells";
+import { observeGraph } from "./force-graph-observation";
+import { choose as chooseSubject } from "./search-bar";
+import { loadGraph, localMapSettled } from "./still-picture";
 
 /**
  * Directory shells, experiment 2 of the shrink-wrap work behind the Group Wrappers choice (2026-11-05; the owner's

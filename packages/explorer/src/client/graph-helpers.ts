@@ -5,12 +5,12 @@
  * including test coverage mapping and DOM helpers.
  */
 
-import type { TestCoverageMap } from "./types";
 import type {
   ExplorerGraphPayload,
   ExplorerLinkPayload,
   ExplorerNodePayload
 } from "../shared/types";
+import type { TestCoverageMap } from "./types";
 
 /**
  * Get an input element by ID, returning null if not found or not an input.

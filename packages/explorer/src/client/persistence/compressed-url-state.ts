@@ -18,15 +18,15 @@
 
 import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from "lz-string";
 
-import { getDefaultFilters } from "./local-storage";
-import { readPerspective, readSpatialLayout, readView } from "./navigation";
 import { readLayoutSettings, type LayoutSettings } from "../layout-presets";
-import type { DiscoveryTarget, InspectionTarget, LocalMapPerspective, PathDestination, SpatialLayout, ViewName } from "../types";
-import { commitUrl } from "./history";
 import { readReadingChoices, scrubReadingChoices, type ReadingChoice } from "../reading-state";
+import type { DiscoveryTarget, InspectionTarget, LocalMapPerspective, PathDestination, SpatialLayout, ViewName } from "../types";
 import type { PinSet } from "../views/pin-state";
 import { serializePins, deserializePins, EMPTY_PIN_SET, INTERNAL_SYMBOL } from "../views/pin-state";
 import { reconcileRetained } from "../views/retained-state";
+import { commitUrl } from "./history";
+import { getDefaultFilters } from "./local-storage";
+import { readPerspective, readSpatialLayout, readView } from "./navigation";
 
 // ─── Current Payload Version ───────────────────────────────────────
 

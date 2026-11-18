@@ -1,10 +1,22 @@
+import type {
+  ExplorerNodePayload
+} from "../../../shared/types";
+import { requireElement } from "../../dom";
+import { readingFiles } from "../../reading-state";
 import { EMPTY_PIN_SET, isSymbolPinned as isExplorationPin, type PinSet } from "../pin-state";
+import {
+  buildNormalizedAnchorKey,
+  tryBuildNormalizedKeyFromAnchorKey
+} from "../symbolAnchors";
 import { createStage, dropStage, refreshReadingGeometry, refreshReadingPresentation, renderBranches, type BranchStage } from "./branch-renderer";
 import type { BranchGraph } from "./branches";
 import type { CardContext } from "./card-factory";
 import { CardReading, type ReadingTarget } from "./card-reading";
+import { clearConnections, drawConnections } from "./connections";
 import { flowNeighbours } from "./directory-flow";
 import { NO_OPEN_DIRECTORIES, type OpenDirectories } from "./directory-state";
+import { createEdgeSigns, type EdgeSigns, type FramePlace } from "./edge-signs";
+import { ladderBand, ladderScales, ladderStep, LOOK_BANDS, LOOK_SCALES, zoomLook, type LadderBand, type ZoomLook } from "./ladder-steps";
 import {
   computeLayoutExtents,
   computeFitTransform,
@@ -19,6 +31,7 @@ import {
   type Frame,
   type LayoutExtents
 } from "./layout-measure";
+import { heldIndex, OVERVIEW_FILES_ATTRIBUTE, overviewFilesShown, rowsFrame } from "./overview-files";
 import {
   zoomByFactor as zoomByFactorFn,
   zoomAtPoint as zoomAtPointFn,
@@ -45,18 +58,6 @@ import {
   setHoveredSymbol,
   setActivePath as setActivePathAction
 } from "./state";
-import type {
-  ExplorerNodePayload
-} from "../../../shared/types";
-import { requireElement } from "../../dom";
-import {
-  buildNormalizedAnchorKey,
-  tryBuildNormalizedKeyFromAnchorKey
-} from "../symbolAnchors";
-import { clearConnections, drawConnections } from "./connections";
-import { createEdgeSigns, type EdgeSigns, type FramePlace } from "./edge-signs";
-import { ladderBand, ladderScales, ladderStep, LOOK_BANDS, LOOK_SCALES, zoomLook, type LadderBand, type ZoomLook } from "./ladder-steps";
-import { heldIndex, OVERVIEW_FILES_ATTRIBUTE, overviewFilesShown, rowsFrame } from "./overview-files";
 import {
   computeSymbolHighlight,
   applySymbolHighlight,
@@ -72,7 +73,6 @@ import type {
   ReadingControl
 } from "./types";
 import { atScale, CLOSEST_SCALE, farthestScale } from "./zoom-limits";
-import { readingFiles } from "../../reading-state";
 
 /** Coordinates the native Local Map, independent exploration pins and explicit FROM/TO paths. */
 export class LocalViewController implements LocalViewApi {

@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 
+import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../../shared/types";
+import { addPin, EMPTY_PIN_SET } from "../pin-state";
 import { boxKeyOf, easeInOutCubic, scenePose, tweenPose, type Pose } from "./branch-motion";
 import { DEFAULT_SCENE_TUNING, hostOf, layoutScene, planBranches, type SceneMeasurer } from "./branch-scene";
 import { buildBranches } from "./branches";
-import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../../shared/types";
-import { addPin, EMPTY_PIN_SET } from "../pin-state";
 
 function node(id: string, symbols: string[] = ["value"]): ExplorerNodePayload {
   return { id, name: id.slice(id.lastIndexOf("/") + 1), codePath: id, codeRelativePath: id, docPath: `${id}.md`, docRelativePath: `${id}.md`,

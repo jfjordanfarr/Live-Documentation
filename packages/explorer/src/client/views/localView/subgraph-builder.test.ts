@@ -7,13 +7,13 @@
 
 import { describe, expect, it } from "vitest";
 
+import type { ExplorerNodePayload, ExplorerLinkPayload, ExplorerGraphPayload, ExplorerPublicSymbol, ExplorerTypeReference } from "../../../shared/types";
 import {
   buildSelfLoopEdges,
   buildPathSubgraph,
   type LinkEndpointResolver,
   type NodeResolver
 } from "./subgraph-builder";
-import type { ExplorerNodePayload, ExplorerLinkPayload, ExplorerGraphPayload, ExplorerPublicSymbol, ExplorerTypeReference } from "../../../shared/types";
 
 describe("subgraph-builder", () => {
   /**

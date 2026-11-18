@@ -1,9 +1,9 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { AA_SMALL_TEXT, backdrop, contrastRatio, parseColour } from "./contrast";
-import { localMapStill } from "./still-picture";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
+import { AA_SMALL_TEXT, backdrop, contrastRatio, parseColour } from "./contrast";
+import { localMapStill } from "./still-picture";
 
 /**
  * Tone on the 2D Local Map (2026-11-15; the owner's "font hierarchy" and "more little nits than we can count"). Read

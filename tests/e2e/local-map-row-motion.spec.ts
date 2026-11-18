@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
-import { localMapSettled } from "./still-picture";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
+import { localMapSettled } from "./still-picture";
 
 const SUBJECT = "tests/integration/programs/csharp/estate/PaymentService/PaymentService.cs";
 

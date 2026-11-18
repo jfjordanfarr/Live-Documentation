@@ -1,10 +1,10 @@
 import { test, expect, type Page } from "@playwright/test";
 
+import { decompressSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
+import { describeRetained, retainedItems, retainedKey } from "../../packages/explorer/src/client/views/retained-state";
 import { AA_SMALL_TEXT, backdrop, contrastRatio, parseColour } from "./contrast";
 import { choose, currentSnapshot, newestKey, pathAddress } from "./search-bar";
 import { LOCAL_MAP, boxOf, centerDistance, displayNames, loadGraph, localMapSettled, panIntoView, readPicture, scoreExpanded, symbolCounts } from "./still-picture";
-import { decompressSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
-import { describeRetained, retainedItems, retainedKey } from "../../packages/explorer/src/client/views/retained-state";
 
 /**
  * The Local Map's path mode draws a path only in the map's reading direction:

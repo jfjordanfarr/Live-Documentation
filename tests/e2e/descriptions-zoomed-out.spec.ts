@@ -1,9 +1,9 @@
 import { expect, test, type Browser, type Page } from "@playwright/test";
 
-import { overlapsAmong, textBoxes } from "./design-audit";
-import { LOCAL_MAP, localMapSettled } from "./still-picture";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
+import { overlapsAmong, textBoxes } from "./design-audit";
+import { LOCAL_MAP, localMapSettled } from "./still-picture";
 
 /**
  * The Descriptions Zoomed Out trial (2026-11-13): with "First line, where the name leaves room", the connections look

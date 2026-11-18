@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 
+import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT, scrubSnapshot } from "../persistence/compressed-url-state";
 import { addPin, EMPTY_PIN_SET, getVisibleConnections } from "./pin-state";
 import { clearRetainedDirectory, reconcileRetained, releaseRetained, retainedItems, retainedKey, subjectAfterRelease, type RetainedState } from "./retained-state";
-import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT, scrubSnapshot } from "../persistence/compressed-url-state";
 
 describe("independent retained selections", () => {
   it("replaces a released subject without clearing an independent direct-file inspection", () => {

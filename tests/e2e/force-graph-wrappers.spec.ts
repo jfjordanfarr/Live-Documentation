@@ -1,7 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { observeGraph, renderedNodes } from "./force-graph-observation";
-import { loadGraph } from "./still-picture";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { getDefaultTuning, PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import type { GroupWrappers } from "../../packages/explorer/src/client/types";
@@ -9,6 +7,8 @@ import { spatialGraphOf } from "../../packages/explorer/src/client/views/forceGr
 import { linkPulls } from "../../packages/explorer/src/client/views/forceGraphLayout";
 import { spatialScope, startHops, startOf } from "../../packages/explorer/src/client/views/forceGraphScope";
 import { wrappedSeeds } from "../../packages/explorer/src/client/views/forceGraphWrappers";
+import { observeGraph, renderedNodes } from "./force-graph-observation";
+import { loadGraph } from "./still-picture";
 
 /**
  * Group Wrappers, an experiment behind one Tuning choice (2026-11-05; the owner's proposal of November 4, [Turn 16 of the

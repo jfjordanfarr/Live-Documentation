@@ -7,12 +7,6 @@
  *
  * @module layout-lab/evaluate
  */
-import type { Capture } from "./capture";
-import type { CardMetrics } from "./card-model";
-import { capturedMeasurer } from "./measurer";
-import { routeScene, type Route } from "./routes";
-import { retainedSubject, type ScopeRun } from "./scopes";
-import { measureScene, type Signals } from "./signals";
 import { applyLayoutPreset, type LayoutPreset } from "../../packages/explorer/src/client/layout-presets";
 import { payloadToSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { getDefaultTuning } from "../../packages/explorer/src/client/persistence/local-storage";
@@ -24,6 +18,12 @@ import { exploreBranches, orderExploration, type BranchGraph, type Exploration }
 import { horizontalWire, returningLinks, standingOrders, walkCycleTrials } from "../../packages/explorer/src/client/views/localView/cycle-trials";
 import { addPin, EMPTY_PIN_SET, type PinSet } from "../../packages/explorer/src/client/views/pin-state";
 import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../packages/explorer/src/shared/types";
+import type { Capture } from "./capture";
+import type { CardMetrics } from "./card-model";
+import { capturedMeasurer } from "./measurer";
+import { routeScene, type Route } from "./routes";
+import { retainedSubject, type ScopeRun } from "./scopes";
+import { measureScene, type Signals } from "./signals";
 
 /** The levers: the Local Map tuning the layout reads. */
 export interface LabConfig {

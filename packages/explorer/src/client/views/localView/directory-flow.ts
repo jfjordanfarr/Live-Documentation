@@ -16,12 +16,12 @@
  * @module directory-flow
  */
 
+import type { ExplorerLinkKind } from "../../../shared/types";
 import type { SceneMeasurer } from "./branch-scene";
 import { HANDLE_STRIP } from "./directory-handle";
 import { under, type OpenDirectories } from "./directory-state";
 import type { LocalEdge } from "./types";
 import { NODE_HUB } from "./wire-gathering";
-import type { ExplorerLinkKind } from "../../../shared/types";
 
 /** A link of the graph between two file cards on screen that the picture draws no wire for. */
 export interface UndrawnLink {

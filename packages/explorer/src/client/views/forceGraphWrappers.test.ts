@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 
+import { getDefaultTuning } from "../persistence/local-storage";
 import { linkPulls, spatialNodeRadius, type SpatialLink } from "./forceGraphLayout";
 import { spatialScope, startHops, startOf, type StartableNode } from "./forceGraphScope";
 import { bodyShape } from "./forceGraphShells";
 import { burstProgress, mergeWrappers, wrappedSeeds, wrapperAt, wrapperHull, wrapperPadding, type GroupShape, type WrapperHull } from "./forceGraphWrappers";
-import { getDefaultTuning } from "../persistence/local-storage";
 
 const tuning = getDefaultTuning().forceGraph;
 const file = (id: string, symbols = 0): StartableNode => ({ id, publicSymbols: Array.from({ length: symbols }, (_, i) => `s${i}`), codeRelativePath: id });

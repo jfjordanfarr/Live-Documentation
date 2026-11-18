@@ -1,9 +1,9 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { localMapSettled } from "./still-picture";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { DEFAULT_RETURN_COST } from "../../packages/explorer/src/client/views/localView/cycle-order";
+import { localMapSettled } from "./still-picture";
 
 /**
  * A cycle's other orders as trials of the continuing search (2026-11-16). The first draw stands every cycle in the greedy

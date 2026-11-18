@@ -8,8 +8,8 @@
  * @module subgraph-builder
  */
 
-import type { LocalSubgraph, LocalSubgraphLink } from "./types";
 import type { ExplorerNodePayload, ExplorerLinkPayload, ExplorerGraphPayload } from "../../../shared/types";
+import type { LocalSubgraph, LocalSubgraphLink } from "./types";
 
 /**
  * Function to resolve a link endpoint to a node ID.

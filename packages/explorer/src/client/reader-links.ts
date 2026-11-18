@@ -1,9 +1,9 @@
 import { symbolName } from "@live-documentation/engine/live-docs/document";
 import type { GraphFile } from "@live-documentation/engine/live-docs/graph";
 
+import type { ExplorerNodePayload } from "../shared/types";
 import { escapeHtml } from "./graph-helpers";
 import type { InspectionTarget } from "./types";
-import type { ExplorerNodePayload } from "../shared/types";
 
 /** The bundled facts against which every documentation surface resolves a link. */
 export interface ReaderLinkContext {

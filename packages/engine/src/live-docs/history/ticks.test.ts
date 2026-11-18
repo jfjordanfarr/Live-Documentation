@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
 
+import { DEFAULT_LIVE_DOCUMENTATION_CONFIG } from "../../config/liveDocumentationConfig";
 import type { CommitInfo, HistorySequence } from "./format";
 import { SequenceBuilder } from "./sequence";
 import { edgeKey, type Shape } from "./shape";
 import { followPath, followPins, ticksFor } from "./ticks";
 import type { VersionChanges } from "./versionControl";
-import { DEFAULT_LIVE_DOCUMENTATION_CONFIG } from "../../config/liveDocumentationConfig";
 
 function shape(files: Record<string, number>, edges: Array<[string, string]> = [], docLinks: Array<[string, string]> = []): Shape {
   return {

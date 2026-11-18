@@ -45,8 +45,21 @@
 import { forceSimulation } from "d3-force-3d";
 import { Matrix4, PerspectiveCamera, Vector3 } from "three";
 
-import { marbleCounts, marbleOf, marbleTint, spatialNodeStyle, type Marble, type MarbleCounts } from "./forceGraphAppearance";
+import type { RelatedDocLink } from "../../shared/staticExplorerData";
+import type {
+  ExplorerGraphPayload,
+  ExplorerLinkPayload,
+  ExplorerNodePayload
+} from "../../shared/types";
+import { requireElement } from "../dom";
+import type { HistoryChanges, HistoryMoment } from "../history/moment";
+import { composedRenames, hasRenames, NO_RENAMES, rekeyedCaches, renamedId, type Renames } from "../history/rekey";
+import { layoutSettingsOf } from "../layout-presets";
 import { activePalette, marblesDrawn, rgba, whenPaletteChanges, type Colour } from "../palette";
+import { CENTRE_ICON, DIRECTORY_ICON, iconButton, MORE_ICON, PIN_ICON } from "../panels/icon-button";
+import { renderSpatialLegend } from "../panels/spatial-legend";
+import type { ExplorerState } from "../types";
+import { marbleCounts, marbleOf, marbleTint, spatialNodeStyle, type Marble, type MarbleCounts } from "./forceGraphAppearance";
 import { SPATIAL_RING_OUTER_RADIUS, type SpatialWrapperUnit } from "./forceGraphBatches";
 import { buildingPhase, nextBuilding, nodePointer, NOT_BUILDING, type Building } from "./forceGraphBuilding";
 import { cornerPanelInsets, focusedCameraPosition, frameCameraSpheres, screenAnchorTranslation, wheelZoomCamera, type CameraPoint } from "./forceGraphCamera";
@@ -61,24 +74,11 @@ import { bodySteps, pictureVeils, poppedAfter, releaseOf, shellId, shellPicture,
   type StructureCell } from "./forceGraphShells";
 import { spatialSizeScale } from "./forceGraphSizing";
 import { BURST, burstProgress, wrappedSeeds, wrapperHull, type GroupShape, type WrapperHull } from "./forceGraphWrappers";
-import { layoutSettingsOf } from "../layout-presets";
-import type { ExplorerState } from "../types";
+import { parentDirectory } from "./localView/directory-bands";
 import { under } from "./localView/directory-state";
 import type { ForceScene } from "./perspectiveTransition";
 import { getVisibleConnections, EMPTY_PIN_SET, type PinSet } from "./pin-state";
 import { wheelPixels } from "./wheel";
-import type { RelatedDocLink } from "../../shared/staticExplorerData";
-import type {
-  ExplorerGraphPayload,
-  ExplorerLinkPayload,
-  ExplorerNodePayload
-} from "../../shared/types";
-import { requireElement } from "../dom";
-import type { HistoryChanges, HistoryMoment } from "../history/moment";
-import { parentDirectory } from "./localView/directory-bands";
-import { composedRenames, hasRenames, NO_RENAMES, rekeyedCaches, renamedId, type Renames } from "../history/rekey";
-import { CENTRE_ICON, DIRECTORY_ICON, iconButton, MORE_ICON, PIN_ICON } from "../panels/icon-button";
-import { renderSpatialLegend } from "../panels/spatial-legend";
 
 /**
  * Target milliseconds for the physics part of a frame once the first picture is on screen. A tick that needs more is

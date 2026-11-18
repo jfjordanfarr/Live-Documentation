@@ -5,15 +5,15 @@
  *
  * @module layout-lab/refine
  */
-import type { Capture } from "./capture";
-import { evaluate, evaluateAlignment, type Evaluation, type LabConfig } from "./evaluate";
-import type { ScopeRun } from "./scopes";
 import type { LocalMapTuning } from "../../packages/explorer/src/client/types";
 import { alignmentCandidates } from "../../packages/explorer/src/client/views/localView/branch-alignments";
 import type { BoundaryAlignment } from "../../packages/explorer/src/client/views/localView/branch-placement";
 import { pictureScore, signalsOf, type StartCosts, type StartSignals } from "../../packages/explorer/src/client/views/localView/branch-restarts";
 import { beginSearch, judgeAlignment, judgeStart, nextTrialKind, type SearchState } from "../../packages/explorer/src/client/views/localView/branch-search";
 import type { ExplorerGraphPayload } from "../../packages/explorer/src/shared/types";
+import type { Capture } from "./capture";
+import { evaluate, evaluateAlignment, type Evaluation, type LabConfig } from "./evaluate";
+import type { ScopeRun } from "./scopes";
 
 /** The continuing search's settings, with the same names and meanings as the page's tuning. */
 export type RefinementSettings = Pick<LocalMapTuning, "searchStarts" | "searchPatience" | "churnCost">;

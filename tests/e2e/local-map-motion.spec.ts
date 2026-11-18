@@ -1,7 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { localMapSettled, localRetainUrl, panIntoView } from "./still-picture";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
+import { localMapSettled, localRetainUrl, panIntoView } from "./still-picture";
 
 /**
  * The animated re-layout: a change of pins moves the branch picture from one

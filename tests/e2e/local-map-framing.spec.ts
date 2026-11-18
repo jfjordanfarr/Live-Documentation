@@ -1,7 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { dragBy, LOCAL_MAP, localMapSettled } from "./still-picture";
 import { framePadding } from "../../packages/explorer/src/client/views/localView/layout-measure";
+import { dragBy, LOCAL_MAP, localMapSettled } from "./still-picture";
 
 /**
  * How the 2D Local Map frames itself on arrival (the October 23 review's findings 2, 9 and 13; the owner's choices of

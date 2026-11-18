@@ -7,9 +7,9 @@
 
 import { describe, expect, it } from "vitest";
 
+import type { ExplorerNodePayload } from "../../../shared/types";
 import { computeSymbolHighlight } from "./symbol-highlight";
 import type { LocalSubgraph, LocalEdge, LocalViewOptions } from "./types";
-import type { ExplorerNodePayload } from "../../../shared/types";
 
 describe("symbol-highlight", () => {
   /**

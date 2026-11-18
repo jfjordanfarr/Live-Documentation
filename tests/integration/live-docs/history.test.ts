@@ -12,7 +12,6 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
-import { buildRepository, git, MODEL, SCRIPT, SCRIPTED_CONFIG as CONFIG } from "./scripted-repository";
 import { normalizeLiveDocumentationConfig } from "../../../packages/engine/src/config/liveDocumentationConfig";
 import { readLiveDocGraph } from "../../../packages/engine/src/live-docs/graphFiles";
 import type { HistorySequence } from "../../../packages/engine/src/live-docs/history/format";
@@ -22,6 +21,7 @@ import { edgeKey, type Shape } from "../../../packages/engine/src/live-docs/hist
 import { buildStaticExplorer } from "../../../packages/explorer/src/shared/staticBuilder";
 import type { StaticExplorerData } from "../../../packages/explorer/src/shared/staticExplorerData";
 import { generateLiveDocs } from "../../../packages/generator/src/generator";
+import { buildRepository, git, MODEL, SCRIPT, SCRIPTED_CONFIG as CONFIG } from "./scripted-repository";
 
 const repoRoot = path.resolve(__dirname, "..", "..", "..");
 const tsxCli = path.join(repoRoot, "node_modules", "tsx", "dist", "cli.mjs");

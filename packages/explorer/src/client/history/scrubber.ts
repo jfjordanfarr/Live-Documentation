@@ -23,10 +23,10 @@
 
 import type { CommitInfo } from "@live-documentation/engine/live-docs/history/format";
 
-import { findCommits, type HistoryRange } from "./navigation";
-import { nextStop, stepAtPosition, type TickModel } from "./tick-model";
 import { iconButton } from "../panels/icon-button";
 import type { HistoryAxis } from "../types";
+import { findCommits, type HistoryRange } from "./navigation";
+import { nextStop, stepAtPosition, type TickModel } from "./tick-model";
 
 /** How near the pointer, in pixels, a step must stand on the date axis to be the one a click or a drag means. */
 const POINTER_REACH_PX = 3;

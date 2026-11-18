@@ -10,8 +10,8 @@
  * @module pin-state
  */
 
-import { normalizeSymbolIdentifier } from "./symbolAnchors";
 import type { ExplorerLinkPayload } from "../../shared/types";
+import { normalizeSymbolIdentifier } from "./symbolAnchors";
 
 // ─── Types ─────────────────────────────────────────────────────────
 

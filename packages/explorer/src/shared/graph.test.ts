@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 
-import { documentedReferences, explorerGraphOf } from "./graph";
 import { parseLiveDoc, renderLiveDoc, type LiveDoc } from "../../../engine/src/live-docs/document";
 import { deriveLiveDocGraph } from "../../../engine/src/live-docs/graph";
+import { documentedReferences, explorerGraphOf } from "./graph";
 
 describe("documented reference multiplicity in the Explorer projection", () => {
   it("counts each documented fact once, including repeated parameters, and keeps inheritance and reciprocal imports", () => {

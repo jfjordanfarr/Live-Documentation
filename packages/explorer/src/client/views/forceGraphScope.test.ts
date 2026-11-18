@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 
+import { getDefaultTuning } from "../persistence/local-storage";
 import { linkPulls, type SpatialLink } from "./forceGraphLayout";
 import { componentLandmarks, componentMembers, connectedNeighbours, defaultSpatialLayout, directoryHubOf, directoryMembersWithinHops, spatialScope, startHops, startOf, type StartableNode } from "./forceGraphScope";
-import { getDefaultTuning } from "../persistence/local-storage";
 
 const node = (id: string, more: Partial<StartableNode> = {}): StartableNode => ({ id, publicSymbols: [], ...more });
 const link = (source: string, target: string, kind = "dependency"): SpatialLink<StartableNode> => ({ source, target, count: 1, kind });

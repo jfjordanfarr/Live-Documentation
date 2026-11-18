@@ -4,11 +4,11 @@ import { parseLiveDoc, renderLiveDoc, type LiveDoc } from "@live-documentation/e
 import { deriveLiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 
 
-import { buildBranches, commonDirectory, directoryIndex, edgeKey, exploreBranches, isClosedDirectory, membraneDirectory, orderExploration, placeMembers, rankBranches } from "./branches";
-import type { LocalEdge } from "./types";
 import { explorerGraphOf } from "../../../shared/graph";
 import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../../shared/types";
 import { addPin, EMPTY_PIN_SET, removePin, getVisibleConnections } from "../pin-state";
+import { buildBranches, commonDirectory, directoryIndex, edgeKey, exploreBranches, isClosedDirectory, membraneDirectory, orderExploration, placeMembers, rankBranches } from "./branches";
+import type { LocalEdge } from "./types";
 
 function node(id: string, archetype = "implementation"): ExplorerNodePayload {
   return { id, name: id, codePath: id, codeRelativePath: id, docPath: `${id}.md`, docRelativePath: `${id}.md`,

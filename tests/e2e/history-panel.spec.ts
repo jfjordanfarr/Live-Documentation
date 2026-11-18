@@ -1,8 +1,8 @@
 import { expect, test, type Page } from "@playwright/test";
 
+import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { observeGraph, renderedNodes } from "./force-graph-observation";
 import { choose, pathAddress } from "./search-bar";
-import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 
 /**
  * The history's step panel and what the map says at a moment: the panel compact (2026-11-11, the owner's "the big

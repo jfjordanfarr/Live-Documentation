@@ -2,6 +2,14 @@ import type { TypeRef } from "@live-documentation/engine/live-docs/document";
 import type { GraphFile } from "@live-documentation/engine/live-docs/graph";
 import { pathTo, walk } from "@live-documentation/engine/live-docs/pathfind";
 
+import type { ExplorerNodePayload } from "../../../shared/types";
+import { escapeHtml } from "../../graph-helpers";
+import { renderMarkdown } from "../../markdown";
+import { createItemMenu } from "../../panels/item-menu";
+import { createReaderLinkHandler, type ReaderLinkContext } from "../../reader-links";
+import { authoredSections } from "../../reader-sections";
+import { descriptionIsOpen, type ReadingChoice } from "../../reading-state";
+import type { DescriptionsZoomedOut, InspectionTarget } from "../../types";
 import { drawHeldLooks } from "./card-factory";
 import { CELLS } from "./closed-looks";
 import { CLOSED_FOOT, closedFamily, HANDLE_FLOOR, HANDLE_INDENT, handleParts, type ClosedSibling } from "./directory-handle";
@@ -12,14 +20,6 @@ import { oneLineName } from "./name-cut";
 import { COMPACT_AIR, filesNameScale, OVERVIEW_FILES_ATTRIBUTE, pinnedRowScales, wholeNameScale } from "./overview-files";
 import type { LocalEdge, ReadingControl } from "./types";
 import { seamsOf } from "./word-seams";
-import type { ExplorerNodePayload } from "../../../shared/types";
-import { escapeHtml } from "../../graph-helpers";
-import { renderMarkdown } from "../../markdown";
-import { createItemMenu } from "../../panels/item-menu";
-import { createReaderLinkHandler, type ReaderLinkContext } from "../../reader-links";
-import { authoredSections } from "../../reader-sections";
-import { descriptionIsOpen, type ReadingChoice } from "../../reading-state";
-import type { DescriptionsZoomedOut, InspectionTarget } from "../../types";
 
 /**
  * What the card ladder's stylesheet reads, measured for one element and written after every reading: a custom property

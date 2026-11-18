@@ -1,8 +1,8 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { dragBy, keepGrowingComposition, LOCAL_MAP, localMapSettled, panIntoView } from "./still-picture";
 import { decompressSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
+import { dragBy, keepGrowingComposition, LOCAL_MAP, localMapSettled, panIntoView } from "./still-picture";
 
 const payment = "tests/integration/programs/csharp/estate/PaymentService/PaymentService.cs";
 const config = "tests/integration/programs/csharp/estate/PaymentService/App.config";

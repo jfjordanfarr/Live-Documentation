@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
 
+import { applyLayoutSettings } from "../layout-presets";
+import { addPin, EMPTY_PIN_SET, INTERNAL_SYMBOL } from "../views/pin-state";
+import type { PinSet } from "../views/pin-state";
 import {
   snapshotToPayload,
   payloadToSnapshot,
@@ -9,10 +12,7 @@ import {
   DEFAULT_SNAPSHOT,
 } from "./compressed-url-state";
 import type { UrlStateSnapshot, CompressedPayload } from "./compressed-url-state";
-import { applyLayoutSettings } from "../layout-presets";
 import { getDefaultTuning } from "./local-storage";
-import { addPin, EMPTY_PIN_SET, INTERNAL_SYMBOL } from "../views/pin-state";
-import type { PinSet } from "../views/pin-state";
 
 // ─── snapshotToPayload ─────────────────────────────────────────────
 

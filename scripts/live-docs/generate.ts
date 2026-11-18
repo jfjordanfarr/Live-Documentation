@@ -9,8 +9,8 @@ import {
   normalizeLiveDocumentationConfig
 } from "@live-documentation/engine/config/liveDocumentationConfig";
 
-import { optionValue, packageVersion, readConfiguration, runCommand, UsageError } from "./cli";
 import { generateLiveDocs } from "../../packages/generator/src/generator";
+import { optionValue, packageVersion, readConfiguration, runCommand, UsageError } from "./cli";
 
 interface ParsedArgs {
   help: boolean;

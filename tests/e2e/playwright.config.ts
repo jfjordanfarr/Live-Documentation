@@ -1,7 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
-import { browserLaunchOptions } from "./browser-launch";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
+import { browserLaunchOptions } from "./browser-launch";
 
 /**
  * Playwright E2E configuration for the Live Docs Explorer.

@@ -1,7 +1,7 @@
+import type { ExplorerNodePayload } from "../shared/types";
 import type { PaletteName } from "./palette";
 import type { ReadingChoice } from "./reading-state";
 import type { PinSet } from "./views/pin-state";
-import type { ExplorerNodePayload } from "../shared/types";
 
 /** The three navigable Explorer views. Local Map has two representations. */
 export type ViewName = "map" | "sources" | "world";

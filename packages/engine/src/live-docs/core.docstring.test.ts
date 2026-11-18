@@ -2,13 +2,13 @@ import path from "node:path";
 import ts from "typescript";
 import { describe, expect, it } from "vitest";
 
+import { LIVE_DOCUMENTATION_FILE_EXTENSION } from "../config/liveDocumentationConfig";
 import {
   collectExportedSymbols,
   computePublicSymbolHeadingInfo,
   composeSymbolBlocks
 } from "./core";
 import { renderSymbolBlocks } from "./document";
-import { LIVE_DOCUMENTATION_FILE_EXTENSION } from "../config/liveDocumentationConfig";
 
 
 describe("TypeScript docstring bridging", () => {

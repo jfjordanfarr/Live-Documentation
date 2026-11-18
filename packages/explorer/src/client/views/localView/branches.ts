@@ -1,4 +1,3 @@
-import { parentDirectory } from "./directory-bands";
 import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../../shared/types";
 import { readingFiles, type ReadingChoice } from "../../reading-state";
 import type { SymbolOrder } from "../../types";
@@ -8,6 +7,7 @@ import { normalizeSymbolIdentifier } from "../symbolAnchors";
 import { orderBranches, type BranchOrder, type ForwardReference, type OrderInput } from "./branch-order";
 import type { ClosedContents, ClosedFile, NestedContents } from "./closed-looks";
 import { cycleCandidates } from "./cycle-order";
+import { parentDirectory } from "./directory-bands";
 import { flowColumns, linksOf, pairLines, type FlowInput, type FlowShape, type UndrawnLink } from "./directory-flow";
 import { directoryState, NO_OPEN_DIRECTORIES, under, type OpenDirectories } from "./directory-state";
 import { rankByNetworkSimplex, type Constraint } from "./network-simplex";

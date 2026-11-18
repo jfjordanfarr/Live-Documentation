@@ -1,9 +1,9 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { AA_SMALL_TEXT, backdrop, contrastRatio, parseColour } from "./contrast";
-import { localMapStill } from "./still-picture";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { backwardStrength } from "../../packages/explorer/src/client/views/localView/returning-connections";
+import { AA_SMALL_TEXT, backdrop, contrastRatio, parseColour } from "./contrast";
+import { localMapStill } from "./still-picture";
 
 /**
  * The 3D button's cue (2026-11-15): it lights while the 2D picture draws connections against its left-to-right order,

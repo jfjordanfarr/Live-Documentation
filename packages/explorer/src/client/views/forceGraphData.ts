@@ -1,8 +1,8 @@
-import { fileConnections, type FileConnection } from "./fileConnections";
-import { parentDirectory } from "./localView/directory-bands";
 import type { RelatedDocLink } from "../../shared/staticExplorerData";
 import type { ExplorerGraphPayload, ExplorerLinkKind, ExplorerNodePayload } from "../../shared/types";
 import type { SpatialLayout } from "../types";
+import { fileConnections, type FileConnection } from "./fileConnections";
+import { parentDirectory } from "./localView/directory-bands";
 
 /** A source file, a related document or, in the structure layout, a directory hub derived from their paths. */
 export interface SpatialGraphNode extends ExplorerNodePayload {

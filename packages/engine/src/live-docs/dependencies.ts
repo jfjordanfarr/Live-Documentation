@@ -12,6 +12,7 @@ import * as fs from "node:fs/promises";
 import path from "node:path";
 import ts from "typescript";
 
+import { normalizeWorkspacePath } from "../tooling/pathUtils";
 import { MODULE_RESOLUTION_EXTENSIONS, SUPPORTED_SCRIPT_EXTENSIONS } from "./coreConstants";
 import type {
   DependencyEntry,
@@ -20,7 +21,6 @@ import type {
 } from "./coreTypes";
 import { displayDependencyKey, getNodeLocation } from "./coreUtils";
 import { inferScriptKind, collectExportedSymbols } from "./symbolExtraction";
-import { normalizeWorkspacePath } from "../tooling/pathUtils";
 
 // ============================================================================
 // Dependency Collection

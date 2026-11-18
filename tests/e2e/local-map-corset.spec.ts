@@ -1,10 +1,10 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { localMapUrl, localRetainUrl } from "./still-picture";
 import { getDefaultTuning } from "../../packages/explorer/src/client/persistence/local-storage";
 import type { LocalMapTuning } from "../../packages/explorer/src/client/types";
 import { LACE_PITCH } from "../../packages/explorer/src/client/views/connection-geometry";
 import { normalizeSymbolIdentifier } from "../../packages/explorer/src/client/views/symbolAnchors";
+import { localMapUrl, localRetainUrl } from "./still-picture";
 
 /**
  * The French Corset: a file's own references are drawn as laces, one at each

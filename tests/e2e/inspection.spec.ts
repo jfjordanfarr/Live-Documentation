@@ -1,9 +1,9 @@
 import { test, expect, type Page } from "@playwright/test";
 import type { Camera } from "three";
 
+import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { observeGraph, renderedNodes } from "./force-graph-observation";
 import { keepGrowingComposition, localMapSettled, panIntoView } from "./still-picture";
-import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 
 const A = "Portal/Services/GatewayClient.cs";
 const B = "Portal/Models/PaymentResultModel.cs";

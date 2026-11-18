@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
 
+import { edgeKey, type BranchGraph } from "../../packages/explorer/src/client/views/localView/branches";
+import { EMPTY_PIN_SET } from "../../packages/explorer/src/client/views/pin-state";
 import type { Capture, CardCapture, PreparedText } from "./capture";
 import { cardMetrics, chipsHeight, registerPins, resolvePin, synthesizedHeight, titleHeight, titleRoomBox, type CardMetrics } from "./card-model";
 import { cardViews } from "./measurer";
 import { insidePolygon } from "./signals";
-import { edgeKey, type BranchGraph } from "../../packages/explorer/src/client/views/localView/branches";
-import { EMPTY_PIN_SET } from "../../packages/explorer/src/client/views/pin-state";
 
 describe("the lab's card model, the parts that need no page", () => {
   it("places relationship buttons before the prose and pins, wraps them at the available width, and includes them in the overflow decision", () => {

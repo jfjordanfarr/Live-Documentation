@@ -1,11 +1,11 @@
 import { expect, test, type Page } from "@playwright/test";
 import type { Scene } from "three";
 
+import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
+import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { observeGraph, renderedBodyCarriers, renderedNodes } from "./force-graph-observation";
 import { currentSnapshot } from "./search-bar";
 import { localMapSettled } from "./still-picture";
-import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
-import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 
 // These arrivals must have no saved UI entry, including the suite's usual partial search preference.
 test.use({ viewport: { width: 1280, height: 800 }, storageState: { cookies: [], origins: [] } });

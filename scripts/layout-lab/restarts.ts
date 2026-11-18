@@ -22,15 +22,15 @@
  *
  * @module layout-lab/restarts
  */
+import { churnOf, scoreOf, type StartCosts, type StartSignals } from "../../packages/explorer/src/client/views/localView/branch-restarts";
+import { beginSearch, judgeStart } from "../../packages/explorer/src/client/views/localView/branch-search";
+import type { ExplorerGraphPayload } from "../../packages/explorer/src/shared/types";
 import type { Capture } from "./capture";
 import { evaluate, type LabConfig } from "./evaluate";
 import { differences } from "./report";
 import type { ScopeRun } from "./scopes";
 import type { Signals } from "./signals";
 import { configurations, scoreOf as fullScoreOf, type LeverValues, type Weights } from "./sweep";
-import { churnOf, scoreOf, type StartCosts, type StartSignals } from "../../packages/explorer/src/client/views/localView/branch-restarts";
-import { beginSearch, judgeStart } from "../../packages/explorer/src/client/views/localView/branch-search";
-import type { ExplorerGraphPayload } from "../../packages/explorer/src/shared/types";
 
 /** One start laid out alone: what the page would price it at, and what the deck would read of its picture. */
 export interface StartRow {

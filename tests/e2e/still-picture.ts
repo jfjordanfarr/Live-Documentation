@@ -19,6 +19,11 @@
 import type { Locator, Page } from "@playwright/test";
 import { compressToEncodedURIComponent } from "lz-string";
 
+import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
+import { normalizeSymbolIdentifier } from "../../packages/explorer/src/client/views/symbolAnchors";
+import { explorerGraphOf } from "../../packages/explorer/src/shared/graph";
+import type { StaticExplorerData } from "../../packages/explorer/src/shared/staticExplorerData";
+import type { ExplorerGraphPayload } from "../../packages/explorer/src/shared/types";
 import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
 import {
   crossings,
@@ -33,11 +38,6 @@ import {
   type TourFact,
   type TourPan
 } from "./still-picture-geometry";
-import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
-import { normalizeSymbolIdentifier } from "../../packages/explorer/src/client/views/symbolAnchors";
-import { explorerGraphOf } from "../../packages/explorer/src/shared/graph";
-import type { StaticExplorerData } from "../../packages/explorer/src/shared/staticExplorerData";
-import type { ExplorerGraphPayload } from "../../packages/explorer/src/shared/types";
 
 /** The smallest rendered font that counts as readable, in CSS pixels. A parameter of the deck, the same for every view. */
 export const READING_PX = 9;

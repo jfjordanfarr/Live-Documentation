@@ -2,10 +2,10 @@ import { describe, expect, it } from "vitest";
 
 import { edgeKey, type Shape } from "@live-documentation/engine/live-docs/history/shape";
 
-import { relatedDocLinksOf, snapshotGraphOf } from "./snapshot";
 import { getDefaultTuning } from "../persistence/local-storage";
 import { spatialGraphOf } from "../views/forceGraphData";
 import { spatialNodeValue } from "../views/forceGraphLayout";
+import { relatedDocLinksOf, snapshotGraphOf } from "./snapshot";
 
 const shape: Shape = {
   files: new Map([

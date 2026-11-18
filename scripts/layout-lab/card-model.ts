@@ -10,9 +10,9 @@
  */
 import { layout, walkLineRanges } from "@chenglou/pretext";
 
+import { buildNormalizedAnchorKey } from "../../packages/explorer/src/client/views/symbolAnchors";
 import type { Capture, CardCapture, ChipCapture, PreparedText, RowCapture } from "./capture";
 import { readingHeight } from "./reading-model";
-import { buildNormalizedAnchorKey } from "../../packages/explorer/src/client/views/symbolAnchors";
 
 /** What a card shows under a configuration: its rows in order, and the lines under it. */
 export interface CardView {

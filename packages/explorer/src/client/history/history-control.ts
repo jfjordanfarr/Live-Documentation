@@ -27,6 +27,11 @@ import { stepsMatching } from "@live-documentation/engine/live-docs/history/quer
 import { changeAt, commitAt, seek } from "@live-documentation/engine/live-docs/history/sequence";
 import { followPath, followPins, ticksFor, type Pins, type Ticks } from "@live-documentation/engine/live-docs/history/ticks";
 
+import type { BundledHistory } from "../../shared/staticExplorerData";
+import type { ExplorerNodePayload } from "../../shared/types";
+import type { HistoryTuning } from "../types";
+import { pairKey } from "../views/forceGraphEmphasis";
+import type { RetainedItem } from "../views/retained-state";
 import { HistoryCursor } from "./cursor";
 import { historicalDirectories, historicalNode, historicalOrigin, referenceAt, referenceFor } from "./file-identity";
 import type { HistoryChanges, HistoryMoment } from "./moment";
@@ -36,11 +41,6 @@ import { createScrubber } from "./scrubber";
 import { relatedDocLinksOf, snapshotGraphOf } from "./snapshot";
 import { createStepPanel } from "./step-panel";
 import { stepSummary } from "./step-summary";
-import type { BundledHistory } from "../../shared/staticExplorerData";
-import type { ExplorerNodePayload } from "../../shared/types";
-import type { HistoryTuning } from "../types";
-import { pairKey } from "../views/forceGraphEmphasis";
-import type { RetainedItem } from "../views/retained-state";
 
 /** What the control is made with. */
 export interface HistoryControlOptions {

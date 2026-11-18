@@ -8,8 +8,8 @@
  * @module symbol-highlight
  */
 
-import type { LocalViewOptions, LocalSubgraph, LocalSubgraphLink } from "./types";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
+import type { LocalViewOptions, LocalSubgraph, LocalSubgraphLink } from "./types";
 
 /**
  * Describes the result of computing related symbols from a hover.

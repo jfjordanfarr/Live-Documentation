@@ -8,13 +8,13 @@
  *
  * @module layout-lab/signals
  */
-import type { Route } from "./routes";
 import type { Scene } from "../../packages/explorer/src/client/views/localView/branch-scene";
 import { shapeSignalsOf, type ShapeSignals } from "../../packages/explorer/src/client/views/localView/branch-shape";
 import type { BranchGraph } from "../../packages/explorer/src/client/views/localView/branches";
 import { parentDirectory } from "../../packages/explorer/src/client/views/localView/directory-bands";
 import { membraneOutline } from "../../packages/explorer/src/client/views/localView/membrane-outline";
 import { crossings, type CrossingScore, type Polyline } from "../../tests/e2e/still-picture-geometry";
+import type { Route } from "./routes";
 
 /** The signals of one layout. */
 export interface Signals extends ShapeSignals {

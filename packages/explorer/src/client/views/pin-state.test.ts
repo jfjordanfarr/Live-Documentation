@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 
+import type { ExplorerLinkPayload } from "../../shared/types";
 import {
   EMPTY_PIN_SET,
   addPin,
@@ -14,7 +15,6 @@ import {
   serializePins,
   deserializePins,
 } from "./pin-state";
-import type { ExplorerLinkPayload } from "../../shared/types";
 
 // ─── Helpers ───────────────────────────────────────────────────────
 

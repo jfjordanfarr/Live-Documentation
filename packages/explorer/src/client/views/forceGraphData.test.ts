@@ -1,7 +1,7 @@
 import { expect, it } from "vitest";
 
-import { directoryNodeId, labelNamesOf, spatialGraphOf, type LabelledNode } from "./forceGraphData";
 import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../shared/types";
+import { directoryNodeId, labelNamesOf, spatialGraphOf, type LabelledNode } from "./forceGraphData";
 
 const node = (id: string, symbols = 0): ExplorerNodePayload => ({ id, name: id, codePath: id, codeRelativePath: id, docPath: `docs/${id}.md`,
   docRelativePath: `docs/${id}.md`, archetype: "implementation", publicSymbols: Array.from({ length: symbols }, (_, index) => `s${index}`),

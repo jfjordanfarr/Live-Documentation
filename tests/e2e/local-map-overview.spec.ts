@@ -1,10 +1,10 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { localMapStill } from "./still-picture";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { LAST_STEP, STEP_RATIO } from "../../packages/explorer/src/client/views/localView/ladder-steps";
 import { GATHERED_WIDTH } from "../../packages/explorer/src/client/views/localView/wire-gathering";
+import { localMapStill } from "./still-picture";
 
 /**
  * The overview band's wires and the farthest zoom (2026-11-06, the far bands' second milestone, after the owner's

@@ -12,9 +12,9 @@
  * @module
  */
 
+import { noReaderHandles } from "../config/liveDocumentationConfig";
 import type { Entry } from "./document";
 import type { GraphFile, LiveDocGraph } from "./graph";
-import { noReaderHandles } from "../config/liveDocumentationConfig";
 
 /** Traversal direction for graph searches. */
 export type Direction = "outbound" | "inbound" | "both";

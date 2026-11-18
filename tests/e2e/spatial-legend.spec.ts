@@ -1,13 +1,13 @@
 import { expect, test, type Page } from "@playwright/test";
 import type { InstancedMesh, MeshLambertMaterial, Scene } from "three";
 
-import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
-import { observeGraph, renderedLinks, renderedNodes } from "./force-graph-observation";
-import { localMapSettled } from "./still-picture";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { spatialNodeStyles } from "../../packages/explorer/src/client/views/forceGraphAppearance";
 import type { SpatialDrawEntry } from "../../packages/explorer/src/client/views/forceGraphBatches";
+import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
+import { observeGraph, renderedLinks, renderedNodes } from "./force-graph-observation";
+import { localMapSettled } from "./still-picture";
 
 test.use({ viewport: { width: 1280, height: 800 } });
 

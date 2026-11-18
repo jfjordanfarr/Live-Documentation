@@ -1,8 +1,8 @@
 import { expect, test, type Page } from "@playwright/test";
 
+import { noReaderHandles } from "../../packages/engine/src/config/liveDocumentationConfig";
 import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
 import { currentSnapshot } from "./search-bar";
-import { noReaderHandles } from "../../packages/engine/src/config/liveDocumentationConfig";
 
 /**
  * The Knowledge Sources panel says what the graph index says, and no more

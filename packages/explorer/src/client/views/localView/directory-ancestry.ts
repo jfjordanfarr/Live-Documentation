@@ -1,7 +1,7 @@
+import { iconButton } from "../../panels/icon-button";
 import type { LocalViewController } from "./controller";
 import { parentDirectory } from "./directory-bands";
 import { under } from "./directory-state";
-import { iconButton } from "../../panels/icon-button";
 
 /** A compact entrance into a directory's ancestors; names unfold at viewport text size. */
 export function ancestryButton(controller: LocalViewController, directory: string): HTMLButtonElement {

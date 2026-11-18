@@ -3,8 +3,8 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { LANGUAGE_ADAPTERS, analyzeWithLanguageAdapters } from "./index";
 import { LIVE_DOCUMENTATION_SOURCE_EXTENSIONS, LIVE_DOCUMENTATION_SOURCE_FILE_NAMES } from "../../config/liveDocumentationConfig";
+import { LANGUAGE_ADAPTERS, analyzeWithLanguageAdapters } from "./index";
 
 describe("the adapter registry", () => {
   it("has a default glob for every extension an adapter reads, so that a cold run reaches every file the generator can describe", () => {

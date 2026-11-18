@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 
+import { addPin } from "../views/pin-state";
 import { compressSnapshot, DEFAULT_SNAPSHOT, type UrlStateSnapshot } from "./compressed-url-state";
 import { placeOf } from "./place";
-import { addPin } from "../views/pin-state";
 
 const exploration = (snapshot: Partial<UrlStateSnapshot>): string =>
   `?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, ...snapshot })}`;

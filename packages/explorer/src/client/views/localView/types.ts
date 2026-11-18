@@ -1,4 +1,3 @@
-import type { LocalMapState, PathResult, StateStore } from "./state";
 import type {
   ExplorerGraphPayload,
   ExplorerLinkKind,
@@ -8,6 +7,7 @@ import type {
 import type { ReaderLinkContext } from "../../reader-links";
 import type { ExplorerState, TestCoverageMap } from "../../types";
 import type { InspectionTarget } from "../../types";
+import type { LocalMapState, PathResult, StateStore } from "./state";
 
 /**
  * Dependency-injection options for constructing a Local Map view.

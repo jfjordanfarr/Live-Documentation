@@ -1,7 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { keepGrowingComposition, localMapSettled, panIntoView } from "./still-picture";
 import { decompressSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
+import { keepGrowingComposition, localMapSettled, panIntoView } from "./still-picture";
 
 /**
  * Direct Pin controls retain what they name while a name's click reads its description (2026-11-05; from 2026-10-19 to

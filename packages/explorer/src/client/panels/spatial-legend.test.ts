@@ -1,8 +1,8 @@
 import { expect, it } from "vitest";
 
-import { spatialLegendRows, type SpatialLegendRow } from "./spatial-legend";
 import { spatialNodeStyles } from "../views/forceGraphAppearance";
 import type { SpatialGraphData } from "../views/forceGraphData";
+import { spatialLegendRows, type SpatialLegendRow } from "./spatial-legend";
 
 const node = (id: string, archetype: string): SpatialGraphData["nodes"][number] => ({ id, name: id, codePath: id, codeRelativePath: id, docPath: "", docRelativePath: "",
   archetype, publicSymbols: [], dependencies: [], dependents: [], missingDependencies: [], ...(archetype === "directory" ? { directoryPath: id } : {}) });

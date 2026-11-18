@@ -9,6 +9,7 @@ import { renderLiveDoc, renderSymbolBlocks } from "@live-documentation/engine/li
 import type { GraphFile } from "@live-documentation/engine/live-docs/graph";
 import { GitHubSlugger } from "@live-documentation/engine/tooling/githubSlugger";
 
+import type { ExplorerNodePayload } from "../shared/types";
 import { requireElement } from "./dom";
 import { escapeHtml } from "./graph-helpers";
 import type { HistoryMoment } from "./history/moment";
@@ -17,7 +18,6 @@ import { createReaderLinkHandler, fileInspection, readerLink, resolveReaderTarge
 import { authoredSections, readerOrder, type AuthoredSection } from "./reader-sections";
 import type { InspectionTarget } from "./types";
 import { INTERNAL_SYMBOL } from "./views/pin-state";
-import type { ExplorerNodePayload } from "../shared/types";
 
 /** A reader control whose meaning and state belong to the application. */
 export interface DetailPanelAction {

@@ -13,8 +13,8 @@ import process from "node:process";
 import type { HistorySequence, Sampling } from "@live-documentation/engine/live-docs/history/format";
 import { changeAt, headOf } from "@live-documentation/engine/live-docs/history/sequence";
 
-import { endQuietlyWhenThePipeCloses, optionValue, runCommand, UsageError } from "./cli";
 import { computeHistory } from "../../packages/generator/src/history/computeHistory";
+import { endQuietlyWhenThePipeCloses, optionValue, runCommand, UsageError } from "./cli";
 
 interface ParsedArgs {
   help: boolean;

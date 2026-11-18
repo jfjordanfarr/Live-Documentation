@@ -1,13 +1,13 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { cameToRest, caseClock, engineActivity, observeGraph, renderedNodes, renderedPieces } from "./force-graph-observation";
-import { loadGraph } from "./still-picture";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { getDefaultTuning } from "../../packages/explorer/src/client/persistence/local-storage";
 import { spatialGraphOf } from "../../packages/explorer/src/client/views/forceGraphData";
 import { linkPulls } from "../../packages/explorer/src/client/views/forceGraphLayout";
 import { nextRevealCount } from "../../packages/explorer/src/client/views/forceGraphReveal";
 import { spatialScope } from "../../packages/explorer/src/client/views/forceGraphScope";
+import { cameToRest, caseClock, engineActivity, observeGraph, renderedNodes, renderedPieces } from "./force-graph-observation";
+import { loadGraph } from "./still-picture";
 
 /**
  * The 3D Local Map enters in pieces (2026-10-28; by hops at a pace in frames since 2026-10-31): the first piece, what was

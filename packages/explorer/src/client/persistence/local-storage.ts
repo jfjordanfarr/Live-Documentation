@@ -5,12 +5,12 @@
  * state (view, node selection) across browser sessions.
  */
 
-import { readPerspective, readSpatialLayout, readView } from "./navigation";
 import { LAYOUT_PRESETS, readLayoutSettings } from "../layout-presets";
 import { DEFAULT_PALETTE, isPaletteName } from "../palette";
 import { readReadingChoices, type ReadingChoice } from "../reading-state";
 import { CHANGE_EMPHASES, HISTORY_GRANULARITIES, MARBLE_CHOICES, type ChangeEmphasis, type DiscoveryTarget, type HistoryAxis, type HistoryGranularity, type InspectionTarget, type LocalMapPerspective, type ExplorerFilters, type SpatialLayout, type SymbolOrder, type TuningConfig, type ViewName } from "../types";
 import { DEFAULT_RETURN_COST } from "../views/localView/cycle-order";
+import { readPerspective, readSpatialLayout, readView } from "./navigation";
 
 // ─────────────────────────────────────────────────────────────────────────
 // Persisted UI State (tuning + filters)

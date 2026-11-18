@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 
+import { SUPPORTED_SCRIPT_EXTENSIONS } from "../live-docs/coreConstants";
 import {
   DEFAULT_LIVE_DOCUMENTATION_CONFIG,
   LIVE_DOCUMENTATION_ASSET_EXTENSIONS,
@@ -9,7 +10,6 @@ import {
   isMediaAsset,
   normalizeLiveDocumentationConfig
 } from "./liveDocumentationConfig";
-import { SUPPORTED_SCRIPT_EXTENSIONS } from "../live-docs/coreConstants";
 
 describe("the default globs", () => {
   it("are every file, anywhere in the workspace, so that discovery's own rules alone say what is never documented", () => {

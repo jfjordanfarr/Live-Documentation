@@ -15,6 +15,9 @@ import * as fs from "node:fs/promises";
 import path from "node:path";
 import ts from "typescript";
 
+import type { LiveDocumentationConfig } from "../config/liveDocumentationConfig";
+import { gitIgnored } from "../tooling/gitIgnored";
+import { normalizeWorkspacePath } from "../tooling/pathUtils";
 import { analyzeWithLanguageAdapters, type WorkspaceFileIndex } from "./adapters";
 import { matchesPathPattern } from "./archetype";
 import { computePublicSymbolHeadingInfo } from "./compose";
@@ -32,9 +35,6 @@ import { createSymbolSlug } from "./coreUtils";
 import { collectDependencies, augmentWithReExportedSymbols } from "./dependencies";
 import { detectChangedFiles } from "./gitUtils";
 import { inferScriptKind, collectExportedSymbols } from "./symbolExtraction";
-import type { LiveDocumentationConfig } from "../config/liveDocumentationConfig";
-import { gitIgnored } from "../tooling/gitIgnored";
-import { normalizeWorkspacePath } from "../tooling/pathUtils";
 
 // ============================================================================
 // Discovery Options

@@ -29,9 +29,9 @@
 
 import type { CommitInfo } from "@live-documentation/engine/live-docs/history/format";
 
-import { changeCount, countWords, stepCounts, type StepSummary, type SummaryDocLink, type SummaryEdge, type SummaryFile } from "./step-summary";
 import { escapeHtml } from "../graph-helpers";
 import { CLOSE_ICON, iconButton, MORE_ICON } from "../panels/icon-button";
+import { changeCount, countWords, stepCounts, type StepSummary, type SummaryDocLink, type SummaryEdge, type SummaryFile } from "./step-summary";
 
 /** The header, and the whole when the thumb rests. */
 export interface StepPanelView {

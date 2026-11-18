@@ -21,8 +21,8 @@
  * Pure-function module: no DOM. The page and the headless layout lab scope the same way.
  */
 
-import type { SpatialLink, SpatialNode } from "./forceGraphLayout";
 import type { SpatialLayout } from "../types";
+import type { SpatialLink, SpatialNode } from "./forceGraphLayout";
 import { under } from "./localView/directory-state";
 
 /** What the start reads of a node beyond its links: a hub's directory, a document's kind, a file's entry reasons. */

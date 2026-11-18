@@ -1,5 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import type { InspectionTarget } from "../types";
+import { DEFAULT_RETURN_COST } from "../views/localView/cycle-order";
 import { DEFAULT_SNAPSHOT, scrubSnapshot } from "./compressed-url-state";
 import {
   applyPersistedUi,
@@ -14,8 +16,6 @@ import {
   PERSISTED_UI_VERSION,
   readPersistedUi
 } from "./local-storage";
-import type { InspectionTarget } from "../types";
-import { DEFAULT_RETURN_COST } from "../views/localView/cycle-order";
 
 const restoreTuning = (group: string, saved: string) => {
   vi.stubGlobal("window", {

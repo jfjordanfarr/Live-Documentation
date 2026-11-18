@@ -12,6 +12,10 @@ import { renderBoard, type Board } from "@live-documentation/engine/live-docs/bo
 import type { Ghost, ServedDoor } from "@live-documentation/engine/live-docs/boardGraph";
 import type { LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 
+import { escapeHtml } from "../../graph-helpers";
+import { activePalette, mix, whenPaletteChanges, type WorldForm } from "../../palette";
+import { CLOSE_ICON, iconButton } from "../../panels/icon-button";
+import { parseInitialState } from "../../persistence/url-state";
 import {
   FLOAT,
   GRID,
@@ -69,10 +73,6 @@ import {
   type Point3,
   type Screen
 } from "./projection";
-import { escapeHtml } from "../../graph-helpers";
-import { activePalette, mix, whenPaletteChanges, type WorldForm } from "../../palette";
-import { CLOSE_ICON, iconButton } from "../../panels/icon-button";
-import { parseInitialState } from "../../persistence/url-state";
 
 const SVG = "http://www.w3.org/2000/svg";
 

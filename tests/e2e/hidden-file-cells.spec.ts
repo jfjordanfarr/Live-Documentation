@@ -1,9 +1,9 @@
 import { expect, test, type Browser, type Page } from "@playwright/test";
 
-import { localMapSettled } from "./still-picture";
 import { decompressSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import type { HiddenFilesLook } from "../../packages/explorer/src/client/types";
+import { localMapSettled } from "./still-picture";
 
 /**
  * Hidden Files, a trial of 2026-11-17 behind Tuning → 2D Layout (the owner: "Could those be represented as cute little

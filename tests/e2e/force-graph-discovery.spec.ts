@@ -1,12 +1,12 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { cameToRest, caseClock, observeGraph, renderedLinks, renderedNodes } from "./force-graph-observation";
-import { loadGraph } from "./still-picture";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import type { SpatialLayout } from "../../packages/explorer/src/client/types";
 import { spatialGraphOf } from "../../packages/explorer/src/client/views/forceGraphData";
 import { linkPulls } from "../../packages/explorer/src/client/views/forceGraphLayout";
 import { spatialScope, startHops, startOf } from "../../packages/explorer/src/client/views/forceGraphScope";
+import { cameToRest, caseClock, observeGraph, renderedLinks, renderedNodes } from "./force-graph-observation";
+import { loadGraph } from "./still-picture";
 
 /**
  * Discovery, the 3D Local Map's default since 2026-10-31 (the owner's direction, [Turn 4 of the October 31 record]

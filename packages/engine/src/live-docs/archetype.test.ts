@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { isBinaryContent, resolveArchetype } from "./archetype";
 import { normalizeLiveDocumentationConfig } from "../config/liveDocumentationConfig";
+import { isBinaryContent, resolveArchetype } from "./archetype";
 
 describe("sample archetypes", () => {
   const config = normalizeLiveDocumentationConfig({ sampleRoots: ["tests/scenarios"] });

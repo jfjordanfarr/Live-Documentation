@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { canonicalJson, lensOf } from "./lens";
 import { DEFAULT_LIVE_DOCUMENTATION_CONFIG, normalizeLiveDocumentationConfig } from "../../config/liveDocumentationConfig";
+import { canonicalJson, lensOf } from "./lens";
 
 const GENERATOR = { version: "0.0.0", code: "0a1b2c3d4e5f6a7b", commit: "dec184ec", modified: null };
 

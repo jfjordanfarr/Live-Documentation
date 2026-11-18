@@ -1,5 +1,8 @@
 import type { HistorySequence } from "@live-documentation/engine/live-docs/history/format";
 
+import { explorerGraphOf } from "../shared/graph";
+import type { StaticExplorerData } from "../shared/staticExplorerData";
+import type { ExplorerNodePayload } from "../shared/types";
 import { inferDefaultEntryNodeId } from "./bootstrap";
 import { landingOf } from "./bootstrap/landing";
 import { createDetailPanel, type DetailPanelAction } from "./detailPanel";
@@ -41,9 +44,6 @@ import type { ExplorerState, InspectionTarget, LocalMapPerspective, PathDestinat
 import { defaultSpatialLayout } from "./views/forceGraphScope";
 import { createForceGraphView } from "./views/forceGraphView";
 import { createLocalView } from "./views/localView";
-import { explorerGraphOf } from "../shared/graph";
-import type { StaticExplorerData } from "../shared/staticExplorerData";
-import type { ExplorerNodePayload } from "../shared/types";
 import { closeDirectory as closeOpenedDirectory, openDirectory as addOpenedDirectory, under, type OpenDirectories } from "./views/localView/directory-state";
 import { BACKWARD_STRENGTHS, backwardStrength, type BackwardStrength } from "./views/localView/returning-connections";
 import type { ReadingControl } from "./views/localView/types";

@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 
+import type { ExplorerNodePayload } from "../../../shared/types";
 import { edgeKey, rankBranches } from "./branches";
 import { BACKWARD_STRENGTHS, backwardStrength, connectionCount, MANY_BACKWARD, returningConnections } from "./returning-connections";
 import type { LocalEdge } from "./types";
-import type { ExplorerNodePayload } from "../../../shared/types";
 
 function node(id: string): ExplorerNodePayload {
   return { id, name: id, codePath: id, codeRelativePath: id, docPath: `${id}.md`, docRelativePath: `${id}.md`,

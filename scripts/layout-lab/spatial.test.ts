@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
 
-import type { ScopeRun } from "./scopes";
-import { spatialReport } from "./spatial";
 import { getDefaultTuning } from "../../packages/explorer/src/client/persistence/local-storage";
 import { spatialGraphOf } from "../../packages/explorer/src/client/views/forceGraphData";
 import { easeSpatialLayout } from "../../packages/explorer/src/client/views/forceGraphLayout";
 import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../packages/explorer/src/shared/types";
+import type { ScopeRun } from "./scopes";
+import { spatialReport } from "./spatial";
 
 const node = (id: string, archetype = "implementation", symbols = 0): ExplorerNodePayload => ({ id, name: id,
   codePath: id, codeRelativePath: id, docPath: `docs/${id}.md`, docRelativePath: `docs/${id}.md`, archetype,

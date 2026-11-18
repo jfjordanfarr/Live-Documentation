@@ -24,8 +24,8 @@ import { normalizeLiveDocumentationConfig } from "@live-documentation/engine/con
 import { buildStaticExplorer } from "@live-documentation/explorer/shared/staticBuilder";
 import { generateLiveDocs } from "@live-documentation/generator/generator";
 
-import { optionValue, runCommand, UsageError } from "./cli";
 import { copyFixture } from "../oracle/fixture";
+import { optionValue, runCommand, UsageError } from "./cli";
 
 interface CliOptions {
     help: boolean;

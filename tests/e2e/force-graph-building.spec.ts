@@ -1,11 +1,11 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { observeGraph, renderedNodes } from "./force-graph-observation";
-import { loadGraph } from "./still-picture";
 import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { spatialGraphOf } from "../../packages/explorer/src/client/views/forceGraphData";
 import { linkPulls } from "../../packages/explorer/src/client/views/forceGraphLayout";
 import { spatialScope, startHops, startOf } from "../../packages/explorer/src/client/views/forceGraphScope";
+import { observeGraph, renderedNodes } from "./force-graph-observation";
+import { loadGraph } from "./still-picture";
 
 /**
  * While the 3D Local Map builds, its nodes take no hover and no click, and the map says it is building (the owner's

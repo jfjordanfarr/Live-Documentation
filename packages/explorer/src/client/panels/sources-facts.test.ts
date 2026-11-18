@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { sourcesFacts as factsWithTotal, symbolCount, type SourcesFactsOptions } from "./sources-facts";
 import { explorerGraphOf } from "../../shared/graph";
+import { sourcesFacts as factsWithTotal, symbolCount, type SourcesFactsOptions } from "./sources-facts";
 
 type LiveDocGraph = Parameters<typeof factsWithTotal>[0];
 type GraphFile = LiveDocGraph["files"][string];
