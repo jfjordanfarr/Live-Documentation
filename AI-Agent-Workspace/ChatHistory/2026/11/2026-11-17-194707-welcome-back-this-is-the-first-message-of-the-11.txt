@@ -2460,7 +2460,6 @@
 
   ...
 
-  
 ✻ Conversation compacted (ctrl+o for history)
 
 
@@ -2560,3 +2559,1000 @@
 
 ● Task "Build the three bundles and run the whole browser suite, logging to the
   container's own disk" still running in background
+
+❯ <ide_selection>The user selected the lines 2445 to 2562 from
+  /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/11/2026-11
+  -17-194707-welcome-back-this-is-the-first-message-of-the-11.txt:
+    What the next chat does first
+
+    1. Checks the card, the volumes and how quickly a run starts.
+    2. Runs the whole gate, the first time on this launch. Expected red: two
+       history-scrubber cases a few seconds over their limit, perhaps two 2D
+  cases
+       that sit on theirs, and one case with a race.
+    3. Confirms the frame from my last reply with you (scenario, reading,
+       judgments), then briefs the first slice of the scenario suite.
+
+    The record and Memory are committed as 2ac31e34, including this message.
+  main
+    is 112 commits ahead of origin/main; I have pushed nothing.
+
+    ...
+
+    (a bunch of chat after rebuilding the container that I guess the harness
+  doesn't want to export after chat history compaction?)
+
+    ...
+
+
+  ✻ Conversation compacted (ctrl+o for history)
+
+
+  ● The gate stopped early on a test-tooling cost, not a product fault. That is
+    fixed and committed, and the browser stage is now running.
+
+    What stopped the gate
+
+    - One unit case ran 362 ms past a 5 s limit. It compares the 3D map's
+      approximated forces against an exact loop over 2,000 bodies.
+    - The cause was the coverage report, the tally of which source lines the
+  tests
+      ran. Alone, the case takes about 1 s with the report off and 5 to 6 s
+  with
+      it on.
+    - Nothing reads that report. It has no threshold and no CI use, and the
+      integration run wipes what the unit run wrote. I asked you about turning
+  it
+      off on November 5 and it went unanswered.
+    - I've turned it off by default (c07d87e0). No case, assertion or limit
+      changed, and npx vitest run --coverage still produces it. Say so if you
+  want
+      it back; it is one line.
+
+    With it off, the unit stage passes all 1,977 cases in 53 s (117 s with it,
+  203
+    s yesterday from D:\). The 138 integration cases, the document links and
+  the
+    three audits pass too.
+
+    The browser stage started at 03:05 UTC and names the card on its first
+  line.
+    Yesterday it took 98 minutes at one worker, so expect it around 04:45; I'll
+    rerun each red case alone before reporting. It rebuilt dist/explorer first,
+  so
+    your preview can serve it now.
+
+    What I'm doing with your answers
+
+    - Scenario suite: frame confirmed, so the first slice gets briefed on it.
+    - Audit findings: one round with its own gate, after this browser stage.
+    - Marbles and cells become defaults, in one round. Marbles go On. For the
+      cells I'm choosing "Cells under name", which shows everything a directory
+      hides at reading size; "Cells beside name" and "Count" stay one choice
+  away
+      in Tuning if you prefer either once you see it live.
+    - The slow midday of the 17th: closed as unknown.
+    - The six November 15 questions: I won't put them to you again one by one.
+      They wait for what the blind playtests show.
+
+    The blind playtests
+
+    Here is how I'd build it; correct anything.
+
+    - A tester gets exactly six actions: look (a screenshot), click, drag,
+  scroll,
+      type and press a key. No files, no shell, no page source.
+    - I want the harness to enforce that, not an instruction the tester could
+      ignore. I haven't yet checked that it can; if it can't, I'll tell you
+      plainly which kind of blind it is.
+    - Each tester is told nothing about the project. It gets a link and a task
+  a
+      real visitor would have, for example "what uses this file?", "open this
+      directory and say how its files connect", or "send me a link to what
+  you're
+      looking at".
+    - The ladder runs downward: Opus at medium effort first to shake out the
+      instrument, then Opus low, Sonnet and Haiku, on the same tasks.
+    - What comes back to you: where each one got stuck, with the screenshots,
+  and
+      the design question each stuck point reveals.
+
+    The working copy on D:\
+
+    Since nothing else reads it, I recommend moving it to the Linux side.
+    - What it buys: every file access gets about 400 times faster. Yesterday,
+      lint, build, unit tests and the bundle build took 8.5 minutes from D:\
+      against 3.3 from the container's disk. Today, regenerating the Live Docs
+      alone took 4 minutes on D:\.
+    - What it costs: one more reopen of the container, which is yours to do.
+  Chats
+      and sign-ins now survive it.
+    - When: I'd do it at the end of this dev day, not mid-flight, and I'll
+  write
+      the steps then.
+
+    Until then, builders will work in copies on the container's own disk.
+
+    Order from here
+
+    1. The browser stage finishes; I report it. The machine stays quiet until
+       then, and I draft the briefs meanwhile.
+    2. The audit round.
+    3. The scenario suite's first slice, by a builder.
+    4. The defaults round (marbles and cells), by a builder.
+    5. The playtest instrument, then the first testers.
+
+    These share one machine, so I'll run gates alone and at most two browser
+  users
+    at once otherwise.
+
+    The record has your answers under Turn 13, and Memory is level (01fa105d);
+    nothing is pushed.
+
+  ❯ /compact
+    ⎿  Compacted
+    ⎿  Referenced file
+       AI-Agent-Workspace/ChatHistory/2026/11/2026-11-17.1.record.md
+    ⎿  Referenced file AI-Agent-Workspace/Memory/ideas.md
+    ⎿  Referenced file AI-Agent-Workspace/Memory/direction.md
+    ⎿  Read tests/e2e/playwright.config.ts (71 lines)
+    ⎿  Referenced file AI-Agent-Workspace/Memory/owner.md
+
+  ● Task "Build the three bundles and run the whole browser suite, logging to
+  the
+    container's own disk" still running in background
+
+  This may or may not be related to the current task.</ide_selection>
+
+❯ There is one more effort I would like you to commission work on, and this one
+  you are entitled to use more agents on (or allow subagents to use more
+  agents on, with Opus 5.5 High as the favored choice for all subagents): I
+  want you to come up with a common convention for "ChatHistory/", and I want
+  to see the "ChatHistory/" directory become "AgentSessionHistory/" (even
+  though it will be a slight misnomer due to some dev days spanning several
+  agent sessions or even several calendar days). I want to see all of the
+  contents of "Probes/", "Research/" and "Screenshots/" to be relocated into
+  the "AgentSessionHistory" _directory_ for each calendar day. We can still
+  keep "Summarized/" at the month-level, but we would direct the artifacts that
+  get created in a day to actually live in a directory named after that day.
+
+  Why do the above effort? Because it's going to make the creation of the
+  summary files easier, it's going to clean up the workspace directories, and
+  it's going to empower us to do a future subagent-driven effort to actually
+  attempt to locate the screenshots that were discussed in the chat records and
+  _embed them_ into the chat records (with the common ![Image] markdown
+  syntax).
+
+  On to your remarks.
+
+  >Since nothing else reads it, I recommend moving it to the Linux side.
+
+  I'm fine with that. Just give me some instructions on what to do as we
+  approach that timepoint.
+
+  >2. The audit round.
+
+  This is the audit of the tests to try and make a more harmonious
+  multi-assertion suite?
+
+  >These share one machine, so I'll run gates alone and at most two browser
+  users at once otherwise.
+
+  Which is why I think the effort to organize the agent session records will be
+  safe to have extra agents on.
+
+● Bash(S=/tmp/claude-1000/-workspaces-Live-Documentation/00c8e0dd-64fe-4468-8f70
+      -7acfa6affb58/scratchpad; date -u +"now %Y-%m-%dT%H:%M:%SZ"; head -1
+      $S/e2e.log; grep -…)
+  ⎿  (No output)
+
+● Browser stage is at 62 of 488, none red. While it runs I'm recording your
+  message, then surveying the history folders from git's index (no load on the
+  slow mount) to design the convention.
+
+● Bash(S=/tmp/claude-1000/-workspaces-Live-Documentation/00c8e0dd-64fe-4468-8f70
+      -7acfa6affb58/scratchpad && git ls-files AI-Agent-Workspace >
+      $S/ws-files.txt && wc -l…)
+  ⎿  (No output)
+
+● Bash(node AI-Agent-Workspace/scripts/visible-messages.mjs ~/.claude/projects/-
+      workspaces-Live-Documentation/00c8e0dd-64fe-4468-8f70-7acfa6affb58.jsonl
+      2026-11-18T02:…)
+  ⎿  (No output)
+
+  Read 3 files (ctrl+o to expand)
+
+● Bash(S=/tmp/claude-1000/-workspaces-Live-Documentation/00c8e0dd-64fe-4468-8f70
+      -7acfa6affb58/scratchpad && for d in Probes Research Screenshots; do echo
+      "=== $d: seco…)
+  ⎿  (No output)
+
+● Bash(S=/tmp/claude-1000/-workspaces-Live-Documentation/00c8e0dd-64fe-4468-8f70
+      -7acfa6affb58/scratchpad && grep '^AI-Agent-Workspace/ChatHistory/20'
+      $S/ws-files.txt |…)
+  ⎿  (No output)
+
+● The dates already line up by day, so the move to the new convention is nearly
+  mechanical, with four artifacts lacking their own session. I'm recording your
+  message next, then setting up a builder in a checkout on the container's own
+  disk. · summary
+
+● Bash(S=/tmp/claude-1000/-workspaces-Live-Documentation/00c8e0dd-64fe-4468-8f70
+      -7acfa6affb58/scratchpad && node
+      AI-Agent-Workspace/scripts/visible-messages.mjs ~/.cla…)
+  ⎿  (No output)
+
+● Bash(R=AI-Agent-Workspace/ChatHistory/2026/11/2026-11-17.1.record.md && grep
+      -n -E "^### Root's reply to Turn 1[12]" $R && L=$(grep -n "^### Root's
+      reply to Turn 12"…)
+  ⎿  (No output)
+
+● Bash(R=AI-Agent-Workspace/ChatHistory/2026/11/2026-11-17.1.record.md && grep
+      -n -i -E "short line|between tool calls|progress line|lines
+      shown|02:50:50|02:35:" $R |…)
+  ⎿  (No output)
+
+● Bash(R=AI-Agent-Workspace/ChatHistory/2026/11/2026-11-17.1.record.md &&
+      S=/tmp/claude-1000/-workspaces-Live-Documentation/00c8e0dd-64fe-4468-8f70-
+      7acfa6affb58/scratc…)
+  ⎿  (No output)
+
+● Bash(F="AI-Agent-Workspace/ChatHistory/2026/11/2026-11-17-194707-welcome-back-
+      this-is-the-first-message-of-the-11.txt" && stat -c '%s bytes, modified
+      %y' "$F" && sha…)
+  ⎿  (No output)
+
+● Bash(sed -n '64p' AI-Agent-Workspace/ChatHistory/2026/11/README.md | rev | cut
+      -c1-900 | rev;
+      F="AI-Agent-Workspace/ChatHistory/2026/11/2026-11-17-194707-welcome-bac…)
+  ⎿  (No output)
+
+● Update(AI-Agent-Workspace/ChatHistory/2026/11/README.md)  ⎿  Added 1 line, removed 1 line
+      61 
+      62  - [Maintained root record](2026-11-17.1.record.md): eleven owne
+          r turns and several messages sent mid-turn, from 18:16 UTC on N
+          ovember 17 to about 01:00 UTC on November 18, with root's deliv
+          ered replies and work notes. Begins with the owner's request to
+           make the host's graphics card available to the container for t
+          he browser tests and becomes the gate's time as a whole: the ca
+          rd proven in a sibling container and landed for WebGL only (`e1
+          f8c21a`), what the Windows drive, a worker and a page load cost
+          , a lead of root's that was wrong and corrected, and the owner'
+          s pattern for a scenario suite of joint assertions. Ends at the
+           hand-over for the owner's rebuild of the container, which dele
+          tes the session's log; the record's Resumption is written for t
+          he root that starts after it. No summary yet. **Continued on No
+          vember 18 from [Turn 12](2026-11-17.1.record.md#turn-12)** by t
+          he root that started in the rebuilt container, in a new chat wh
+          ose log stands on a volume.
+      63  - [The owner's two screenshots](2026-11-17.1.images/) of Docker
+           Desktop's container list, kept as received and named by root;
+          the record lists them under Turns 5 and 6.
+      64 -- [Harness export](2026-11-17-194707-welcome-back-this-is-the-f
+         -irst-message-of-the-11.txt): exported by the owner from the Cla
+         -ude Code extension's UI at 19:47:07 UTC on November 17, after a
+         - compaction they made by hand (19:44 to 19:46 UTC); received un
+         -der this filename and preserved as supplied. **52,140 bytes**, 
+         -SHA-256 **`f301af3b1d603c2d98799a490ee89a3971aaadc8dbe75516652b
+         -398ce3a1b2b5`**, 924 lines of terminal text. It runs from the o
+         -pening request through root's reply of 19:36 UTC to the harness
+         -'s line that the whole browser suite was still running in the b
+         -ackground. Its first 30 and last 15 lines were read by root, no
+         -t the whole. The session went on after it, so a later export su
+         -persedes its coverage, not its bytes. That first state was neve
+         -r committed by itself; its bytes are the first 52,140 of the tw
+         -o later states. **Saved again by the owner between 00:36 and 01
+         -:00 UTC on November 18 and committed in that state with the day
+         -'s record** (`2ac31e34`): **127,879 bytes**, SHA-256 **`845f918
+         -ca05040829bfdfaa3a7f96fae5af15276b6c5808ddcb741667d103da3`**, 2
+         -,276 lines, the 52,140 bytes its exact prefix (the hash of its 
+         -first 52,140 bytes is the one above); it runs to root's reply o
+         -f 00:35 UTC about the probe containers. The inventory was not b
+         -rought level with it then; this sentence is the next root's, of
+         - November 18, from git. **Saved a third time at 01:29:11 UTC on
+         - November 18,** after the hand-over and before the rebuild, and
+         - found uncommitted by the root that started in the rebuilt cont
+         -ainer, which commits it as received: **136,844 bytes**, SHA-256
+         - **`3ef57b9417e15d671c34a09158c41963c38de9d0804c733bd50c1c0f28f
+         -0284b`**, 2,455 lines, the 127,879 bytes its exact prefix (comp
+         -ared byte for byte). It runs through the owner's Turn 11 and ro
+         -ot's reply to it to the hand-over, so this state holds the chat
+         - to its end; its twenty-two prompt markers are the eleven turns
+         -, the messages sent while root worked, one `/compact` and the e
+         -ditor's notices of an opened file, and no owner … [+199 chars] 
+      64 +- [Harness export](2026-11-17-194707-welcome-back-this-is-the-f
+         +irst-message-of-the-11.txt): exported by the owner from the Cla
+         +ude Code extension's UI at 19:47:07 UTC on November 17, after a
+         + compaction they made by hand (19:44 to 19:46 UTC); received un
+         +der this filename and preserved as supplied. **52,140 bytes**, 
+         +SHA-256 **`f301af3b1d603c2d98799a490ee89a3971aaadc8dbe75516652b
+         +398ce3a1b2b5`**, 924 lines of terminal text. It runs from the o
+         +pening request through root's reply of 19:36 UTC to the harness
+         +'s line that the whole browser suite was still running in the b
+         +ackground. Its first 30 and last 15 lines were read by root, no
+         +t the whole. The session went on after it, so a later export su
+         +persedes its coverage, not its bytes. That first state was neve
+         +r committed by itself; its bytes are the first 52,140 of the tw
+         +o later states. **Saved again by the owner between 00:36 and 01
+         +:00 UTC on November 18 and committed in that state with the day
+         +'s record** (`2ac31e34`): **127,879 bytes**, SHA-256 **`845f918
+         +ca05040829bfdfaa3a7f96fae5af15276b6c5808ddcb741667d103da3`**, 2
+         +,276 lines, the 52,140 bytes its exact prefix (the hash of its 
+         +first 52,140 bytes is the one above); it runs to root's reply o
+         +f 00:35 UTC about the probe containers. The inventory was not b
+         +rought level with it then; this sentence is the next root's, of
+         + November 18, from git. **Saved a third time at 01:29:11 UTC on
+         + November 18,** after the hand-over and before the rebuild, and
+         + found uncommitted by the root that started in the rebuilt cont
+         +ainer, which commits it as received: **136,844 bytes**, SHA-256
+         + **`3ef57b9417e15d671c34a09158c41963c38de9d0804c733bd50c1c0f28f
+         +0284b`**, 2,455 lines, the 127,879 bytes its exact prefix (comp
+         +ared byte for byte). It runs through the owner's Turn 11 and ro
+         +ot's reply to it to the hand-over, so this state holds the chat
+         + to its end; its twenty-two prompt markers are the eleven turns
+         +, the messages sent while root worked, one `/compact` and the e
+         +ditor's notices of an opened file, and no owner … [+1178 chars]
+      65 
+      66  ## November 1, session 1 — Codex/Astra, completed by 6.1 Sol, N
+          ovember 1–2
+      67 
+
+● Update(AI-Agent-Workspace/ChatHistory/README.md)
+  ⎿  Added 1 line, removed 1 line
+      14 
+      15  Preserve source bytes. The September inventory records received
+           filenames and SHA-256 hashes for the renamed exports. A file m
+          ay contain only a later portion of a session; a filename and an
+           overlapping passage do not establish completeness. If captures
+           disagree about ordering or coverage, record the disagreement r
+          ather than silently splice them into an invented authoritative
+          transcript. Keep existing source links stable. Do not delete a
+          capture because it has been summarized.
+      16 
+      17 -Claude Code's export from the VS Code extension's UI depends on
+         - how the conversation was last compacted (the owner's finding, 
+         -[November 6, 2026](2026/11/2026-11-06.1.record.md#turn-3)): aft
+         -er an automatic compaction the export holds only what follows i
+         -t; after a compaction the owner triggers by hand between respon
+         -ses it holds the whole chat. So an export that begins mid-sessi
+         -on may be all the harness could give, and the maintained record
+         - covers what lies before it.                                   
+      17 +Claude Code's export from the VS Code extension's UI depends on
+         + how the conversation was last compacted (the owner's finding, 
+         +[November 6, 2026](2026/11/2026-11-06.1.record.md#turn-3)): aft
+         +er an automatic compaction the export holds only what follows i
+         +t; after a compaction the owner triggers by hand between respon
+         +ses it holds the whole chat. So an export that begins mid-sessi
+         +on may be all the harness could give, and the maintained record
+         + covers what lies before it. The second half did not hold on [N
+         +ovember 18, 2026](2026/11/2026-11-17.1.record.md#turn-14): an e
+         +xport the owner took after a compaction made by hand between re
+         +sponses held only the reply before the compaction and what foll
+         +owed it, and the turns between the chat's start and that reply 
+         +were missing. Take neither kind of export as whole without comp
+         +aring it with the record.                                      
+      18 
+      19  The Claude converter describes a historical reconstruction meth
+          od, not a universal export interface. It reads the retained Cla
+          ude logs outside the repository and may overwrite the correspon
+          ding reconstructed Markdown when run. Do not run it as a generi
+          c session-closing action or use it for Codex. Never attempt to
+          extract reasoning or hidden analysis from any agent trace in an
+          y harness. The owner explicitly reaffirmed this in [Turn 47](20
+          26/09/2026-09-30.2.record.md#turn-47): the archive supports con
+          tinuity and an audit trail, not distillation. Recovery code mus
+          t admit only explicitly user-facing message types from the root
+           session; reasoning items, tool payloads and subagent threads a
+          re excluded before any text is emitted or saved. Do not copy a
+          mixed-content trace into the repository as a transcript. A harn
+          ess's visible error or notice belongs in the record as that not
+          ice, without attempting to recover the hidden content behind it
+          .
+      20 
+
+● Bash(git add "AI-Agent-Workspace/ChatHistory/2026/11/2026-11-17-194707-welcome
+      -back-this-is-the-first-message-of-the-11.txt"
+      AI-Agent-Workspace/ChatHistory/2026/11/R…)
+  ⎿  (No output)
+
+● Bash(S=/tmp/claude-1000/-workspaces-Live-Documentation/00c8e0dd-64fe-4468-8f70
+      -7acfa6affb58/scratchpad; grep -n '^\s*✘' $S/e2e.log | cut -c1-260; cat
+      /proc/loadavg)
+  ⎿  (No output)
+
+● Record b9ab69cf is committed. The browser stage shows 104 passing and one
+  unexpected failure, and machine load is higher than one worker explains, so
+  I'm checking what's consuming it. · summary
+
+● Bash(ps -eo pid,pcpu,pmem,etimes,args --sort=-pcpu | head -14 | cut -c1-200;
+      echo; nproc; cat /proc/loadavg)
+  ⎿  (No output)
+
+  Read 1 file (ctrl+o to expand)
+
+● I'm saving the plan and the convention to the record's work notes, then I'll
+  give you the full reply. No more git commands in the main tree until the
+  browser stage ends, because git's bookkeeping is slow on that mount. · summary
+
+● Update(AI-Agent-Workspace/ChatHistory/2026/11/2026-11-17.1.record.md)
+  ⎿  Added 1 line, removed 1 line
+      17  - **The task, in the owner's words** ([Turn 3](#turn-3)): "What
+          's important right now is making sure that we are able to test
+          briskly as our testing has become a multi-hour extravaganza. It
+          's a blocker now." The day began with the graphics card ([Turn 
+          1](#turn-1)) and became the gate's time as a whole.
+      18  - **What the day found, in one paragraph.** The card was not th
+          e large lever: the suite went from about two hours to 98 minute
+          s at one worker, because its time was never mostly 3D waiting.
+          The suite's time is the page's own work, about a thousand loads
+           and pictures one after another, most of them on this repositor
+          y's own growing map; the same case on the small frozen estate s
+          ample runs 4.3 times as fast. The machine (ten cores) carries a
+          bout four workers, each case then half as slow again and a few
+          in a hundred failing on waits. The workspace is on the Windows
+          drive `D:` through 9p, 4 to 6 ms for every file opened, which c
+          osts every run 50 to 110 s before its first case. The editor's
+          TypeScript server appears to check files through that mount abo
+          ut 1,200 times a second all day (root's reading, not confirmed)
+          . The measurements are under [what the mount costs and what a w
+          orker costs](#work-notes-after-turn-6-what-the-mount-costs-and-
+          what-a-worker-costs), [a lead that was wrong](#work-notes-after
+          -turn-7-a-lead-that-was-wrong-and-what-an-exact-count-shows) an
+          d [the late notes](#work-notes-late-on-november-17-the-other-st
+          ages-the-card-and-2d-and-a-pair-of-numbers-that-point-at-the-fi
+          xture).
+      19  - **Committed at the day's end as `e1f8c21a`**, the gate's stag
+          es before the browser passing on it (1,977 unit and 138 integra
+          tion cases): the launch on the card for WebGL only (`tests/e2e/
+          browser-launch.ts`, its unit test, `tests/e2e/renderer-report.t
+          s`, the suite's configuration and the contact sheet using them)
+          ; a second devcontainer configuration, `.devcontainer/wsl2-grap
+          hics-card/`, held to the first by `scripts/devcontainer.test.ts
+          `; in both configurations, volumes for `~/.claude`, `~/.codex`
+          and `node_modules`; `post-create.sh` installing Mesa's EGL wher
+          e the card is; the devcontainer's README; the Live Docs; Memory
+          .
+      20 -- **Where it stands, November 18, 02:50 UTC.** The owner rebuil
+         -t into the graphics-card configuration and it came up at the fi
+         -rst try ([Turn 12](#turn-12)): the card draws the tests' WebGL,
+         - the three volumes are mounted, a run finds its cases in 17 s. 
+         -**The whole gate is running** on `main` at `2ac31e34`, begun 02
+         -:38:50, its log in the session's scratchpad (`gate.log`); it is
+         - the first whole browser run on the launch as committed, and th
+         -e list of what is expected red is in item 3 below. Next after i
+         -t: the gate's result to the owner with each red case run down; 
+         -`npm audit`'s 19 findings; the probe scratch removed; then the 
+         -scenario suite's first slice briefed to a builder, on the frame
+         - of root's reply to Turn 11 unless the owner has corrected it. 
+      20 +- **Where it stands, November 18, 03:45 UTC** (this bullet repl
+         +aces the one of 02:50). The owner rebuilt into the graphics-car
+         +d configuration and it came up at the first try ([Turn 12](#tur
+         +n-12)): the card draws the tests' WebGL, the three volumes are 
+         +mounted, a run finds its cases in 17 s. The whole gate stopped 
+         +at one unit case that measured the coverage instrument; the cov
+         +erage report is off by default since `c07d87e0` and every stage
+         + before the browser passes ([work notes, Turn 13](#work-notes-t
+         +urn-13)). **The browser stage is running alone** since 03:04:52
+         + (`npm run test:e2e`, its log `e2e.log` in the session's scratc
+         +hpad, which ends with a line `e2e exit=`); it is the first whol
+         +e browser run on the launch as committed, expected to end near 
+         +04:45, and the list of what is expected red is in item 3 below.
+         + One case outside that list was red by 03:30, `force-graph-buil
+         +ding.spec.ts:66`, at a moment when root was running git in the 
+         +main tree; it is to be rerun alone. The owner answered root's o
+         +pen questions in [Turn 13](#turn-13) and commissioned the sessi
+         +on history's reorganization in [Turn 14](#turn-14); the convent
+         +ion root chose and the plan are in [the work notes of Turn 14](
+         +#work-notes-turn-14). **Next, in order:** the browser stage's r
+         +esult with each red case run down; the builder for the session 
+         +history started in a checkout on the container's own disk (`/ho
+         +me/node/wt/`); the 19 `npm audit` findings; the scenario suite'
+         +s first slice briefed on the confirmed frame; the defaults roun
+         +d (Marbles on, Hidden Files to Cells under name); the blind pla
+         +ytests' instrument; the probe scratch removed; the steps for mo
+         +ving the working copy off `D:` written for the owner when a qui
+         +et boundary nears.                                             
+      21  - **The owner's act, pending when this was first written and si
+          nce done:** "Dev Containers: Rebuild and Reopen in Container",
+          choosing **Live Documentation Dev (WSL2 graphics card)**. It en
+          ds this session: the volumes start empty, so the old chats and
+          sign-ins do not carry over this once (root offered to fill the
+          volumes first and the owner did not take it up). Afterwards the
+           owner removes the probe containers (`docker rm -f ld-gpu-a ld-
+          gpu-b`); until then `ld-gpu-b` still has the card and a job loo
+          p (`AI-Agent-Workspace/tmp/gpu-probe/`, ignored scratch; `run`
+          submits a job, `suite-job.sh` runs a cancellable browser run).
+      22  - **First, for a root in the rebuilt container:**
+      23    1. `ls -la /dev/dxg /usr/lib/wsl/lib/libd3d12.so`; `mount | g
+          rep node_modules` (a volume, not 9p); `ls ~/.claude` writable.
+          If the container did not come up, the cause is most likely one
+          of the three `mounts` lines or `onCreateCommand` in the two `de
+          vcontainer.json` files, none of which could be tried before the
+           rebuild.
+
+● Update(AI-Agent-Workspace/ChatHistory/2026/11/2026-11-17.1.record.md)
+  ⎿  Added 1 line, removed 1 line
+      27  - **Then, agreed with the owner** ([Turns 8 and 9](#turn-8)): t
+          he first slice of a scenario suite in their pattern (joint asse
+          rtions over sampled scenarios with replacement tokens; Rosetta
+          as the frozen shape), by a builder briefed with their words ver
+          batim from [owner.md](../../../Memory/owner.md): the Rosetta pr
+          ograms built as Explorer samples, a token resolver, one scenari
+          o table covering the still-picture promises of a few spec files
+          ; measured against the cases it replaces and shown to the owner
+           before more is converted.
+      28  - **Also owed, in root's order:** the worker count that passes
+          what one worker passes (two and three workers on the whole suit
+          e, in the rebuilt container; the owner: "Whatever the system re
+          liably tolerates"); the editor's TypeScript server confirmed by
+           its own log and given a smaller project (the root `tsconfig.js
+          on` has no `include`); the 2D map's own drawing cost (a picture
+           of one file is 2.2 to 3.5 s of the page's main thread; the sea
+          rch of eighty starts has doubled since October); the owner's un
+          answered question from root, what on Windows uses the copy on `
+          D:`, which decides whether the whole working copy can move to t
+          he Linux side.
+      29  - **After the gate's time, the order from November 16's close:*
+          * the rings beside the membranes; the owner's eye on the cells
+          live (their port was serving an old folder; "The cells are awes
+          ome!" from the screenshots) and which of the three values; vari
+          ety in the marbles; the "Internals" row over "+8 symbols"; `for
+          ce-graph-defaults.spec.ts:101`.
+      30 -- **A rule this session paid for:** while a browser run is unde
+         -r way anywhere on the machine, no search across the repository'
+         -s tree and no build, lint or unit run; the mount is shared and 
+         -slow.                                                          
+      30 +- **A rule this session paid for:** while a browser run is unde
+         +r way anywhere on the machine, no search across the repository'
+         +s tree and no build, lint or unit run; the mount is shared and 
+         +slow. Since November 18 it names git too: `git status`, `git di
+         +ff`, `git add` and `git commit` each check all 6,732 tracked fi
+         +les on the mount, so in the main tree they wait for the run's e
+         +nd as well (`git ls-files` and `git log` read the index and the
+         + packs and are fine).                                          
+      31  - **Git:** `main` only; nothing pushed by root, no commit amend
+          ed.
+      32 
+      33  ## Turn 1
+
+● Update(AI-Agent-Workspace/ChatHistory/2026/11/2026-11-17.1.record.md)
+  ⎿  Added 1 line, removed 1 line
+      12 
+      13  ## Resumption
+      14 
+      15 -Written at about 00:20 UTC on November 18, before the owner's r
+         -ebuild of the container, and brought level at about 02:50 UTC b
+         -y the root that started after it: the rebuild is done and the i
+         -tems it answers are marked. After a compaction, read this secti
+         -on first, then [Turn 12](#turn-12) on.                         
+      15 +Written at about 00:20 UTC on November 18, before the owner's r
+         +ebuild of the container, and brought level at about 02:50 and a
+         +gain at 03:45 UTC by the root that started after it: the rebuil
+         +d is done and the items it answers are marked. After a compacti
+         +on, read this section first, then [Turn 12](#turn-12) on.      
+      16 
+      17  - **The task, in the owner's words** ([Turn 3](#turn-3)): "What
+          's important right now is making sure that we are able to test
+          briskly as our testing has become a multi-hour extravaganza. It
+          's a blocker now." The day began with the graphics card ([Turn 
+          1](#turn-1)) and became the gate's time as a whole.
+      18  - **What the day found, in one paragraph.** The card was not th
+          e large lever: the suite went from about two hours to 98 minute
+          s at one worker, because its time was never mostly 3D waiting.
+          The suite's time is the page's own work, about a thousand loads
+           and pictures one after another, most of them on this repositor
+          y's own growing map; the same case on the small frozen estate s
+          ample runs 4.3 times as fast. The machine (ten cores) carries a
+          bout four workers, each case then half as slow again and a few
+          in a hundred failing on waits. The workspace is on the Windows
+          drive `D:` through 9p, 4 to 6 ms for every file opened, which c
+          osts every run 50 to 110 s before its first case. The editor's
+          TypeScript server appears to check files through that mount abo
+          ut 1,200 times a second all day (root's reading, not confirmed)
+          . The measurements are under [what the mount costs and what a w
+          orker costs](#work-notes-after-turn-6-what-the-mount-costs-and-
+          what-a-worker-costs), [a lead that was wrong](#work-notes-after
+          -turn-7-a-lead-that-was-wrong-and-what-an-exact-count-shows) an
+          d [the late notes](#work-notes-late-on-november-17-the-other-st
+          ages-the-card-and-2d-and-a-pair-of-numbers-that-point-at-the-fi
+          xture).
+
+● Bash(R=AI-Agent-Workspace/ChatHistory/2026/11/2026-11-17.1.record.md && cat >>
+      $R <<'EOF'…)
+  ⎿  (No output)
+
+● Bash(S=/tmp/claude-1000/-workspaces-Live-Documentation/00c8e0dd-64fe-4468-8f70
+      -7acfa6affb58/scratchpad; date -u +%H:%M:%SZ; grep -c '^\s*✓' $S/e2e.log;
+      grep '^\s*✘'…)
+  ⎿  (No output)
+
+● Bash(R=AI-Agent-Workspace/ChatHistory/2026/11/2026-11-17.1.record.md && sed -i
+      -e '15s/and again at 03:45 UTC/and again at 03:35 UTC/' -e '20s/^-
+      \*\*Where it stands…)
+  ⎿  (No output)
+
+● To your question first: no. "The audit round" is the 19 security findings in
+  our dependencies, the "19 vulnerabilities" line npm install printed in your
+  paste. It has nothing to do with tests. The more harmonious multi-assertion
+  suite is item 3 on that list, the scenario suite's first slice. I named item 2
+  badly.
+
+  The session history: the convention I propose
+
+  AI-Agent-Workspace/AgentSessionHistory/
+    README.md                        the convention (today's
+  ChatHistory/README.md)
+    2026/11/
+      README.md                      the month's inventory
+      Summarized/                    as today
+      2026-11-17/                    one directory per dev day
+        2026-11-17.1.record.md       file names inside do not change
+        (your exports, transcripts, pasted images, as received)
+        Probes/cells-trial/...
+        Research/...
+        Screenshots/...
+
+  - A directory belongs to a dev day, named for the date you opened it.
+    Everything that dev day makes goes there, also after midnight and across a
+    new chat. Tonight's work is already November 18 by UTC and goes in
+    2026-11-17/. No clock or timezone decides where a picture lands, and a
+    summary's sources sit in one directory.
+  - The move follows one rule. Probes/2026-11-17/cells-trial/ becomes
+    2026/11/2026-11-17/Probes/cells-trial/, and the same for Screenshots/ and
+    Research/. The folders are already dated, so nothing is filed by judgment.
+  - Four older dates get a directory with no record in it: September 28, October
+    10, October 18 and November 9. Their artifacts were made after midnight in
+    a dev day begun the day before. Folding them in would merge folders of the
+    same name, so they stay as dated.
+  - Anchors do not change, so a link to #turn-13 still lands once its path is
+    re-pointed.
+  - Two things are not altered: captures as received, and the verbatim blocks in
+    the records. Both keep the paths of their day. A committed table maps old
+    folders to new, so the later embedding effort can find a picture from the
+    old path a reply names.
+  - Memory/, Gallery/, Notes/ and scripts/ stay where they are.
+
+  Correct any of this; the move is a script, so changing a rule now costs
+  little.
+
+  How it gets done
+
+  - One script moves about 4,500 files and re-points every link, and the link
+    check proves the result.
+  - One builder owns it (Opus 5.5 at high effort), with helpers of the same tier
+    for two things: finding everything that names these folders (configuration,
+    audits, scripts, tests), and a review not anchored on its own reading.
+  - I'm not adding more agents than that. The bulk is exact mechanical work that
+    a script does better than agents editing links by hand. The embedding
+    effort is where more agents pay, since it needs judgment per picture.
+  - It lands as three commits you can check apart: the renames alone, the links,
+    and the rewritten convention. One whole gate follows.
+
+  One correction to "safe to have extra agents on"
+
+  It is safe for the processor and the graphics card, but not yet for the disk.
+  Everything lives on D:\, and even git's own bookkeeping checks all 6,732
+  tracked files through that slow path.
+
+  Tonight a browser case outside my expected list went red
+  (force-graph-building.spec.ts:66) at the moment I was committing your export.
+  That is not proof, and I'll rerun the case alone. Until the browser stage
+  ends, at about 04:45 UTC, I'm running no git in the main tree.
+
+  So the builder works in a copy on the container's own disk. I'll make that
+  copy when the stage ends, because making it reads 850 MB through the same
+  path. All of this goes away once the working copy leaves D:\.
+
+  Moving off D:\
+
+  Understood. It needs everything committed and nothing running, so the first
+  good moment is after this browser stage, or your next start if you're asleep
+  by then. I'll write the steps for you then.
+
+  Your export
+
+  The record already holds verbatim the turns your export is missing after the
+  compaction: your message after the rebuild, my reply, your answers and my
+  reply to those. Nothing is lost. I committed your file as you saved it
+  (b9ab69cf) and corrected our note on exports: neither kind can be assumed
+  whole.
+
+  Where things stand
+
+  The browser stage is at 109 of 488 with the one red case. While it runs I'm
+  writing the builders' briefs. After it:
+
+  1. The stage's result, each red case rerun alone.
+  2. The session-history builder starts and runs beside the rest, since it needs
+     no browser.
+  3. The 19 dependency findings.
+  4. The scenario suite's first slice.
+  5. The defaults (marbles and cells).
+  6. The playtest instrument.
+
+  Your message and this plan are in the record under Turn 14; those notes get
+  committed when the stage ends.
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/11/2026-11
+  -17-194707-welcome-back-this-is-the-first-message-of-the-11.txt in the IDE.
+  This may or may not be related to the current task.</ide_opened_file>
+
+❯ >Understood. It needs everything committed and nothing running, so the first
+  good moment is after this browser stage, or your next start
+
+  Hmmm, it occurs to me that the aim to consolidate chats is impeded by the
+  "Moving off D:\" bit. I'm happy to make that switch first.
+
+● Bash(S=/tmp/claude-1000/-workspaces-Live-Documentation/00c8e0dd-64fe-4468-8f70
+      -7acfa6affb58/scratchpad; date -u +%H:%M:%SZ; echo "passed $(grep -c
+      '^\s*✓' $S/e2e.log…)
+  ⎿  (No output)
+
+● Stopping the browser stage now, since the full gate must rerun on the new disk
+  and two containers can't share the dependencies volume. I'll commit
+  everything and then write up your steps. · summary
+
+● Bash(S=/tmp/claude-1000/-workspaces-Live-Documentation/00c8e0dd-64fe-4468-8f70
+      -7acfa6affb58/scratchpad; P=$(pgrep -f 'node .*/\.bin/playwright test' |
+      head -1); echo…)
+  ⎿  (No output)
+
+● Background command "Build the three bundles and run the whole browser suite,
+  logging to the container's own disk" completed (exit code 0)
+
+● Bash(S=/tmp/claude-1000/-workspaces-Live-Documentation/00c8e0dd-64fe-4468-8f70
+      -7acfa6affb58/scratchpad; ls test-results 2>/dev/null | head -8; D=$(ls -d
+      test-results…)
+  ⎿  (No output)
+  ⎿  (timeout 5m)
+
+  Read 2 files (ctrl+o to expand)
+● The red case also fails on its own (2 of 3 runs on a quiet machine), so my
+  commit didn't cause it and it's a real fault to chase after the move. I'm
+  listing untracked files next so nothing valuable gets left on D:\. · summary
+
+● Bash(date -u +%H:%M:%SZ && git status --short --ignored | grep -v '^!!
+      node_modules/$' | cut -c1-150 | head -60; echo "--- sizes"; du -sh
+      AI-Agent-Workspace/tmp 2>/d…)
+  ⎿  Error: Exit code 1
+     03:40:26Z
+      M AI-Agent-Workspace/ChatHistory/2026/11/2026-11-17.1.record.md
+     !! .claude/scheduled_tasks.lock
+     !! .mdmd/history/
+     !! .mdmd/index.json
+     !! .playwright-mcp/
+     !! .vscode/tasks.json
+     !!
+     AI-Agent-Workspace/Probes/2026-10-06/layout-lab/capture-estate-chain.json
+     !! AI-Agent-Workspace/Probes/2026-10-06/layout-lab/capture-estate-five-file
+     s.json
+     … +108 lines (ctrl+o to expand)
+
+● Bash(git status --short --ignored | grep '^!!' | cut -c4- | grep -v
+      '^AI-Agent-Workspace/Probes/' | head -40; echo "--- ignored files under
+      Probes: $(git status --sh…)
+  ⎿  (No output)
+  ⎿  (timeout 3m)
+
+● Nothing in the working copy is untracked, so the 3.8 GB of ignored scratch can
+  be cleared in one pass. I'm checking the copy step's last details before
+  writing your instructions. · summary
+
+● Bash(for d in AI-Agent-Workspace/tmp/probes
+      AI-Agent-Workspace/tmp/t3-code-2026-10-27 .mdmd/history .playwright-mcp;
+      do printf '%s: files %s, of which under node_mod…)
+  ⎿  Error: Exit code 1
+     AI-Agent-Workspace/tmp/probes: files 5420, of which under node_modules 0
+     AI-Agent-Workspace/tmp/t3-code-2026-10-27: files 56984, of which under
+     node_modules 9
+     .mdmd/history: files 4431, of which under node_modules 0
+     .playwright-mcp: files 112, of which under node_modules 0
+     AI-Agent-Workspace/tmp/gpu-probe/a:
+     inbox
+     outbox
+     stop
+
+     … +23 lines (ctrl+o to expand)
+
+● Bash(echo "tracked files naming the t3 scratch folder:"; git grep -l -F
+      "tmp/t3-code-2026-10-27" | head -8; echo "(end)"; echo "tracked files
+      naming .playwright-mcp…)
+  ⎿  (No output)
+  ⎿  (timeout 3m)
+
+● Writing the copy script now and trying it here against the real repository
+  before I hand it to you.
+
+● Write(AI-Agent-Workspace/tmp/move-to-wsl.sh)
+  ⎿  Wrote 77 lines to AI-Agent-Workspace/tmp/move-to-wsl.sh
+       1 #!/usr/bin/env bash
+       2 # Copies this working copy from the Windows drive to the Linux s
+         ide, without changing the copy it is run from.
+       3 #
+       4 #   bash /mnt/d/Projects/Live-Documentation/AI-Agent-Workspace/t
+         mp/move-to-wsl.sh
+       5 #
+       6 # Run it in the WSL distribution (Ubuntu), not in the container.
+          It makes ~/src/Live-Documentation:
+       7 #   1. a git clone of the old copy: all history, every tracked f
+     … +71 lines (~4 KB) (ctrl+o to expand)
+
+● Bash(cd /workspaces/Live-Documentation/AI-Agent-Workspace/tmp/gpu-probe && rm
+      loop.sh run suite-job.sh suite-at.sh profiled.sh make-local.sh && ls &&
+      bash -n ../move…)
+  ⎿  (No output)
+
+● Bash(cd /workspaces/Live-Documentation && S=/tmp/claude-1000/-workspaces-Live-
+      Documentation/00c8e0dd-64fe-4468-8f70-7acfa6affb58/scratchpad && node
+      AI-Agent-Workspac…)
+  ⎿  (No output)
+
+● Bash(S=/tmp/claude-1000/-workspaces-Live-Documentation/00c8e0dd-64fe-4468-8f70
+      -7acfa6affb58/scratchpad; sed -n '5,7p;66,78p' $S/visible4.txt | cut
+      -c1-150 | cat -n)
+  ⎿  (No output)
+
+● Bash(R=AI-Agent-Workspace/ChatHistory/2026/11/2026-11-17.1.record.md &&
+      S=/tmp/claude-1000/-workspaces-Live-Documentation/00c8e0dd-64fe-4468-8f70-
+      7acfa6affb58/scratc…)
+  ⎿  (No output)
+  ⎿  (timeout 3m)
+
+● Bash(S=/tmp/claude-1000/-workspaces-Live-Documentation/00c8e0dd-64fe-4468-8f70
+      -7acfa6affb58/scratchpad; rm -rf /home/node/move-test; (date -u +"trial
+      started %H:%M:%…)
+  ⎿  Running in the background (↓ to manage)
+
+● The trial copy is running against the real repository. Meanwhile I'm writing
+  the record's notes and the checklist for whoever picks up in the moved copy.
+
+  Read 1 file (ctrl+o to expand)
+
+● Fetch(https://code.visualstudio.com/docs/devcontainers/containers)
+  ⎿  Received 141.5KB (200 OK)
+
+● Fetch(https://docs.docker.com/desktop/features/wsl/)
+  ⎿  Received 9KB (200 OK)
+
+  Made 1 scratchpad edit +28 (ctrl+o to expand)
+
+● Still on the trial copy (clone done or nearly; then the ignored files). Your
+  instructions follow as soon as it finishes and its numbers are in.
+
+● Bash(S=/tmp/claude-1000/-workspaces-Live-Documentation/00c8e0dd-64fe-4468-8f70
+      -7acfa6affb58/scratchpad; date -u +%H:%M:%SZ; cat $S/move-trial.log | cut
+      -c1-200; du -…)
+  ⎿  No matches found
+
+● Bash(S=/tmp/claude-1000/-workspaces-Live-Documentation/00c8e0dd-64fe-4468-8f70
+      -7acfa6affb58/scratchpad; sed -i 's/Seven other lines root wrote between
+      tool calls fro…)
+  ⎿  (No output)
+
+  Searched for 1 pattern, read 1 file (ctrl+o to expand)
+
+● Bash(python3 - <<'PY'
+      import io…)
+  ⎿  (No output)
+● Bash(python3 - <<'PY'
+      import io…)
+  ⎿  (No output)
+
+● Bash(S=/tmp/claude-1000/-workspaces-Live-Documentation/00c8e0dd-64fe-4468-8f70
+      -7acfa6affb58/scratchpad; for i in $(seq 1 28); do grep -q '^trial exit='
+      $S/move-trial…)
+  ⎿  (No output)
+  ⎿  (timeout 5m)
+
+● Background command "Try the copy script here: clone the real repository to the
+  container's own disk and bring the ignored files" completed (exit code 0)
+
+● The trial finished in 7.5 minutes and flagged a chat-harness lock file that
+  shouldn't be shipped. I'm fixing the script, re-checking on the trial copy,
+  and then I'll commit and write up your steps. · summary
+
+● Bash(python3 - <<'PY'
+      import io…)
+  ⎿  (No output)
+
+● Bash(rm -rf /home/node/move-test && cd /workspaces/Live-Documentation &&
+      S=/tmp/claude-1000/-workspaces-Live-Documentation/00c8e0dd-64fe-4468-8f70-
+      7acfa6affb58/scrat…)
+  ⎿  (No output)
+  ⎿  (timeout 2m)
+
+● Bash((npm run -s docs:links:enforce 2>&1 | tail -4 | cut -c1-200; echo "links
+      exit=${PIPESTATUS[0]}"); (npm run -s slopcop:markdown 2>&1 | tail -5 | cut
+      -c1-200; ech…)
+  ⎿  (No output)
+  ⎿  (timeout 6m 40s)
+
+● Links and audit pass. Committing the last state now; your steps are in the
+  next message.
+
+● Bash(git add AI-Agent-Workspace/ChatHistory/2026/11/2026-11-17.1.record.md
+      AI-Agent-Workspace/Memory/direction.md && git commit -q -F - <<'EOF'
+      Record November 18: t…)
+  ⎿  (No output)
+  ⎿  (timeout 3m)
+
+● Everything is ready for the move, and the steps are below. Nothing on D:\ is
+  changed by any of them, so the old copy stays as the way back.
+
+  What I did since your message
+
+  My short lines between tool calls mostly did not reach you, so here is what
+  they said.
+
+  - I stopped the browser stage at 121 of 488 cases (120 passed, 1 red). The
+    whole gate has to run again on the new disk anyway.
+  - The red case is a real fault, not my doing. I had suspected my commit of
+    disturbing it. Rerun alone on a quiet machine it failed 2 times in 3, so I
+    withdraw that. It is force-graph-building.spec.ts:66: after the 3D map has
+    built, the pointer's first move does not hover the sphere under it. I'll run
+    it down in the new copy.
+  - Everything is committed (4a83bab0); links and the markdown audit pass.
+  - I wrote a copy script and tried it against the real repository. It took 7.5
+    minutes here, and the copy came out clean, at the same commit and pointed at
+    GitHub.
+
+  Your steps
+
+  1. Check for a Linux distribution. In PowerShell:
+  wsl -l -v
+     You need a line besides docker-desktop, for example Ubuntu, with VERSION 2.
+     If there is none, run wsl --install -d Ubuntu, which asks you to create a
+     Linux username and password.
+  2. Let Docker use it. Docker Desktop → Settings → Resources → WSL Integration
+     → switch on that distribution → Apply. In the Ubuntu terminal, docker ps
+     should then print a table and not "command not found". If Docker restarts
+     and this container stops, that is fine.
+  3. Copy. In the Ubuntu terminal:
+  bash /mnt/d/Projects/Live-Documentation/AI-Agent-Workspace/tmp/move-to-wsl.sh
+     It makes ~/src/Live-Documentation and should end with DONE, the commit
+     4a83bab0 and "5 commits ahead". If it prints STOPPED, nothing was changed;
+     paste me the line in this window.
+  4. Open it.
+  cd ~/src/Live-Documentation && code .
+     Accept the WSL extension if VS Code offers it; the bottom-left corner
+     should then read "WSL: Ubuntu". Press F1 and choose Dev Containers: Reopen
+     in Container, then Live Documentation Dev (WSL2 graphics card). Allow 10 to
+     15 minutes, because dependencies install into a fresh volume. The set-up
+     log should end as the one you pasted did: "The host's graphics card is
+     available to the browser tests." and "Devcontainer setup complete!".
+  5. Tell me. Open Claude Code in that window. This chat should be in its
+     history, since chats live in the Docker volume; resume it, or start a new
+     chat and say the move is done. Then close the old window and don't reopen
+     the D:\ folder in a container.
+
+  What the script does
+
+  - Clones the repository, so the new copy gets Linux's own settings for file
+    modes and letter case. A plain file copy would carry the Windows ones.
+  - Brings the ignored files git does not carry, about 2 GB of scratch and
+    caches.
+  - Leaves behind what gets rebuilt: dependencies, build output, test results,
+    and an 804 MB checkout of someone else's repository in scratch. They stay on
+    D:\.
+  - Checks itself: same commit, nothing differing, history whole.
+
+  What could go differently
+
+  - The graphics card is the one thing I could not try from inside a container.
+    If the log says it is not available, or the container does not come up,
+    reopen the D:\ folder as before and tell me here.
+  - The first push from the new place may ask you to sign in to GitHub once.
+  - Commit name and email: if the new container has none, I'll set them in the
+    repository from your last commit and tell you.
+
+  What I do first there
+
+  1. Confirm the disk, the card and that git matches.
+  2. Run the whole gate, about two hours, the first on the new disk.
+  3. Tell you what can be deleted: the D:\ folder, the old container and its
+     dependencies volume.
+  4. Start the session-history builder.
+
+  The convention I proposed still stands until you correct it. The record's
+  resumption section holds this whole plan, so a new chat can pick it up too.
