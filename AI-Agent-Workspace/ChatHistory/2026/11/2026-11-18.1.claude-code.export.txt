@@ -426,8 +426,7 @@
   5. After test speed: the rings beside the membranes, your defect, first in
      that list.
 
-
-❯ <ide_selection>The user selected the lines 1 to 427 from
+  ❯ <ide_selection>The user selected the lines 1 to 427 from
   /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/11/2026-11
   -18.1.claude-code.export.txt:
 
@@ -976,3 +975,676 @@
   One correction to what I said about the startup read: it is now finished. That
   covers all four Memory files, the narrative, the five summaries and the
   vision, each to its last line.
+
+● Understood: the record stays as it is, kept by the root, with no hook and no
+  scribe. I've written that into owner.md in your words.
+
+  Nothing needs you right now. I checked each piece of today's order against the
+  record for a decision that is still yours, and found none. Three things to
+  know, none urgent:
+
+  1. Pushing is now the working copy's only backup. Nine commits are unpushed.
+     Your first push from this container is the one thing I cannot test from
+     here; if it asks you to sign in to GitHub, that is the new environment, not
+     a fault.
+  2. Leave the D:\ copy and the old container alone for now. I'll say when they
+     can go, once the gate has finished here.
+  3. Your preview command is unchanged when you next want to look: npx
+     http-server dist/explorer -p 8999 -c-1 in a VS Code terminal in this
+     container.
+
+  What is running:
+
+  - The gate. Every stage before the browser passed in about four minutes. The
+    browser stage has passed 54 of 488 cases with none failed, at about 12.5 s a
+    case, so it should end near 16:45 UTC. That is the same pace as on the
+    Windows drive (98 minutes): the new disk speeds up a run's start and the
+    earlier stages, not the cases themselves, which matches Tuesday's
+    measurements.
+  - The session-history builder (Opus, high effort, in its own worktree), on the
+    convention you confirmed. It runs nothing heavy while the gate runs and
+    never a browser. Its first handback is a script that does the whole move by
+    rule, with its proof that every link still resolves and no capture's bytes
+    changed. I land it on main after the gate and run the gate again.
+
+  What will want your eye later today is pictures, not questions: the new
+  defaults (marbles on, cells under the name) and the mend for the rings beside
+  the membranes. When the session-history move lands, the folder you save
+  exports into will change; I'll give you the new path then.
+
+  One correction to what I said about the startup read: it is now finished. That
+  covers all four Memory files, the narrative, the five summaries and the
+  vision, each to its last line.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Referenced file AI-Agent-Workspace/Memory/direction.md
+  ⎿  Referenced file
+     AI-Agent-Workspace/ChatHistory/2026/11/2026-11-18.1.record.md
+  ⎿  Referenced file AI-Agent-Workspace/Memory/owner.md
+  ⎿  Referenced file AI-Agent-Workspace/Memory/narrative.md
+  ⎿  Referenced file AI-Agent-Workspace/ChatHistory/2026/11/Summarized/2026-11-1
+     7.1.SUMMARIZED.md
+
+● Task "Session history reorganization builder" still running in background
+
+● Task "Wait for the gate to finish and show the end of its log" still running
+  in background
+
+● Task "Fifty-minute timer to keep the prompt cache warm while the builder and
+  the gate run" still running in background
+
+› Message from general-purpose
+  ## Milestone 1: the history move. The script, the renames and the re-pointed
+  links are committed, and verify passes.
+
+  **Branch.** `worktree-agent-a2eec3bc105122a19`, in the worktree at
+  /workspaces/Live-Documentation/.claude/worktrees/agent-a2eec3bc105122a19,
+  starting from `2e229512`. Nothing is pushed and nothing in the main checkout
+  was touched. I ran nothing heavy: no build, vitest, npm or browser.
+
+  **Commits, oldest first.**
+  1. `193b13a8`: adds the script,
+  AI-Agent-Workspace/scripts/move-session-history.mjs.
+  2. `81df2c2e`: the renames alone. 4,505 R100 renames, every one with its
+  original mode and blob.
+  3. `1916277e`: the links re-pointed, plus the new table
+  `AI-Agent-Workspace/AgentSessionHistory/old-paths.md`. 1,075 files.
+  4. `30275688`: a small correction to the script, found by a trial run on a
+  later state (below). A fourth commit rather than an amend, as the rule says.
+
+  ### Sweep (from git's index)
+  - **Tracked files under the old folders:** 4,506. Screenshots 2,876, Probes
+  1,097, ChatHistory 434, Research 99.
+  - **Dated name shapes at month level.** Eleven shapes, which the script
+  prints:
+
+  | Shape | Count |
+  | --- | --- |
+  | `<date>.<session>.md` | 74 |
+  | `<date>.<session>.record.md` | 43 |
+  | `<date>.md` | 42 |
+  | `<date>-<time>-<first words>.txt` | 22 |
+  | `<date>.<session>.images/` | 15 |
+  | `<date>.<session>.claude-code.export-<date>-<time>.txt` | 7 |
+  | `<date>.export.md` | 5 |
+  | `<date>.<session>.export.md` | 4 |
+  | `<date>.<session>.snapshot-<date>.md` | 1 |
+  | `<date>.<session>.snapshot-<date>-<n>.md` | 1 |
+  | `<date>.<session>.claude-code.export.txt` | 1 |
+
+  - **Not named for a date.** These keep their place under the new name: 153
+  `Summarized/*`, 3 month READMEs, `README.md`, and `2025/11/Antigravity/` (5
+  files).
+  - **Day directories:** 142. That includes one per 2025 Copilot transcript
+  date. Four of them hold no record or capture: 2026-09-28, 2026-10-10,
+  2026-10-18 and 2026-11-09.
+  - **Disk renames:** 312.
+  - **Conflicts:** 0.
+  - **Untracked files travelling along in this worktree:** 0. On `main` the
+  ignored layout-lab captures and `MDMD-Signals/` will travel too.
+  - **Tracked files that fit no rule:** 1, `Screenshots/README.md`. It stays
+  where it is for milestone 2, which carries its index into the months'
+  inventories.
+
+  **Places outside markdown links that name the folders.** These are your list,
+  confirmed, plus what I found:
+  - `AI-Agent-Workspace/scripts/claude-code-transcript.mjs:548` defaults its
+  output to `ChatHistory` and writes at month level.
+  - `tests/e2e/inspection.spec.ts:196,268` uses the real bundled path
+  `ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md`. It is functional:
+  the browser test will fail until it changes.
+  - Link-shaped comments:
+    - `forceGraphShells.ts`, `forceGraphWrappers.ts`.
+    -
+  `tests/e2e/force-graph-{building,shells,structure-cells,wrappers}.spec.ts`.
+    - The scoreboard header string in `tests/e2e/still-picture.spec.ts:111`,
+  which is written into reports.
+  - `tests/integration/live-docs/expected/repository-entries.json` (a prose
+  field), `estate.test.ts`, `include-dirs.test.ts`.
+  - `local-map-search.spec.ts`, `pin-clicks.spec.ts`, `still-picture.ts`,
+  `still-picture-geometry.ts`, `world-map-design.spec.ts`.
+  - `.vscode` and workflows name none of these folders.
+  - The contact-sheet tool writes under `tmp/`; the only dated evidence writer
+  is `layout-lab/lab.ts`.
+
+  ### What verify printed (committed state; base `193b13a8`, found
+  automatically)
+  - **Every file is at its place:** all 6,736 files of the base. One file is
+  new: the table.
+  - **(b) Captures:** 227 of 227 keep their SHA-256.
+  - **Other files:** 5,028 of 5,028 that are not markdown documents keep their
+  mode and blob.
+  - **(a) Links:** 1,708 markdown documents compared, with 23,942 links to
+  repository paths.
+    - 23,924 resolved before and reach the same file or directory now, with the
+  same anchor. 9,653 of them were re-pointed.
+    - 18 did not resolve before and are byte for byte as they were.
+    - 0 broke.
+    - Text other than link destinations is unchanged in every document.
+  - **(c) Fences and headings:** 3,187 fenced blocks identical; 25,799 headings
+  identical; 0 generated LIVE-DOC regions touched.
+  - **(d) Left in the old folders:** 1 tracked file, `Screenshots/README.md`,
+  which fits no rule.
+  - **Independent check.** verify also reads link-shaped text with a cruder
+  pattern that ignores code, so it does not grade itself. It found 16 such texts
+  that resolved before and not now. All 16 are inside what CommonMark reads as
+  code. Two of those cases are real links trapped by fences that were closed
+  wrongly long ago:
+    - `2026/01/Summarized/2026-01-30.1.SUMMARIZED.md`: 8 links to
+  `../2026-01-30.1.md`. The fence opened at line 390 runs to the end of the
+  file.
+    - `2026-10-07.1.record.md` line 199: 2 screenshot links. A fence inside a
+  verbatim block closed the outer one.
+    - **Your call:** these stay stale unless someone edits the fences, which are
+  verbatim bytes. I recommend leaving them; the table covers them.
+
+  **Links re-pointed, by kind of file:**
+
+  | Kind of file | Links | Files |
+  | --- | --- | --- |
+  | probe, research and screenshot documents | 3,510 | 240 |
+  | Live Docs' authored notes | 1,737 | 612 |
+  | summaries | 1,696 | 150 |
+  | Memory | 1,325 | 4 |
+  | records | 564 | 43 |
+  | design documents (.mdmd layers 1–3) | 457 | 13 |
+  | archive READMEs | 206 | 4 |
+  | Gallery | 80 | 1 |
+  | Notes | 73 | 4 |
+  | other (the workspace README, the root README and one more) | 5 | 3 |
+
+  **Expected damage.** 156 links inside captures will no longer resolve. That
+  follows from never altering a capture, and the table is what recovers them.
+
+  **Re-run and partial runs.** I committed a later state as a temporary commit:
+  a new record in `ChatHistory/2026/11/`, a new folder under the existing
+  `Probes/2026-11-17/`, a new `Screenshots/2026-11-19/`, and a Memory link to
+  the new record. Running move, relink and verify on it:
+  - merged into the existing day directories;
+  - re-pointed the 4 links;
+  - added rows to the table without dropping any;
+  - passed verify.
+
+  The temporary commit was then reset away. A later run also stops with a clear
+  message on changes that are not this move. Relink run a second time reports
+  "1074 files already re-pointed" and writes nothing.
+
+  ### Helper
+  One reviewer (Opus, high effort, read-only), given the code and the
+  specification. What it found, and what I did:
+  - **Fixed before running:**
+    - **High:** relink would have skipped all 90 probe, research and screenshot
+  documents that need re-pointing, because after the move they looked like
+  captures.
+    - Re-runs would have dropped rows from the table.
+    - Records added later at month level of the new folder were not handled.
+    - An interrupted move could not be resumed.
+    - The conflict check missed collisions produced by the move's own first
+  stage.
+    - Dated files filed under the wrong month were handled wrongly.
+    - verify did not fail on old paths still tracked, and did not compare modes.
+  Staging is now through `update-index --index-info` with each file's original
+  mode and blob, then a refresh.
+    - verify could self-grade. It now has the crude independent check, a
+  raw-bytes UTF-8 guard, and heading comparison with link destinations masked.
+  - **Not fixed:** the parser's edge cases (a reference definition inside a
+  blockquote, footnotes, indented code, HTML comments). It found 0 instances of
+  any of them in real documents.
+  - **It confirmed sound:** case handling (every path matches the disk's case
+  exactly) and names with spaces.
+
+  ### Forks I decided
+  1. **`Antigravity/`** (Nov 2025, subfolders `11-19/` and `11-20/`) stays at
+  month level, as received, because its name carries no full date. The
+  alternative is `2025-11-19/Antigravity/<uuid>/...` and
+  `2025-11-20/Antigravity/...` beside that day's transcript, which drops the
+  received `11-19` level. I recommend leaving it.
+  2. **Two harness exports named for the day after their session began** go by
+  their name: `2026-10-08-035441-…txt` belongs to session 2026-10-07.1, and
+  `2026-11-08-003022-…txt` to 2026-11-07.1. Both land in the next day's
+  directory beside another session's record. The rule says this, and it matches
+  how the four calendar-dated directories are treated. The alternative is a
+  two-entry override justified by the month inventories, which is judgment per
+  file. I recommend the rule as it is; the inventory links them correctly.
+  3. **Links are read in markdown only** (`.md`, `.mdmd`). Link-shaped text in
+  source comments counts as a path mention for milestone 2, because changing it
+  means regenerating Live Docs.
+  4. **The table** sits at `AgentSessionHistory/old-paths.md`, one row per
+  renamed entry (312 rows), with paths in backticks rather than links. It is
+  committed with the links commit, so the renames commit stays pure.
+  5. **`Screenshots/README.md`** is left in place for milestone 2.
+
+  ### Path mentions outside links: counts at the base, and a proposed rule
+  **Counts.**
+  - **Current documents** (guide, READMEs, Memory, Gallery, .mdmd including Live
+  Docs' notes):
+    - 63 name an existing path.
+    - 34 name none: templates like `Probes/<date>/` and bare folders.
+    - 2 sit inside generated regions; these come from source comments.
+  - **Archive READMEs:** 1.
+  - **Source and configuration outside the workspace:** 28 existing and 21
+  templates or globs.
+  - **Historical documents** (records, summaries, Notes):
+    - 268 existing and 51 none, outside fences.
+    - 378 and 71 inside fences.
+  - **Probe, research and screenshot documents:** 117 existing and 8 none.
+  - **Evidence scripts inside Probes and Screenshots:** 215. These are relative
+  paths in `.ts`, `.mjs` and `.py` files; leave them as evidence.
+  - **Captures:** about 4,370. Never altered.
+
+  **Proposed rule:** re-point a mention mechanically only when all three hold:
+  - it is in a current document or a source or config file, and outside a fence
+  and a generated region;
+  - it names an existing file or directory under the old folders;
+  - it keeps its form: a path from the repository root stays from the root, a
+  relative path stays relative.
+
+  That changes about 92 mentions: 63 in documents, 28 in source, 1 in an archive
+  README. Templates, globs and bare folder names go to milestone 2's authored
+  edits, and historical documents keep their words.
+
+  ### Milestone 2, file by file
+  - **`.gitignore` 49, 77, 78.** Move `MDMD-Signals` and the layout-lab patterns
+  to `AgentSessionHistory/**/Probes/**/layout-lab/...`. Until this lands on
+  main, the moved layout-lab captures show as untracked.
+  - **`.live-docs.config.json` `bundleExclude`.** Exclude these levels of the
+  archive by depth, keeping `Summarized/` and the three evidence folders:
+    - the top-level `*.md`, which includes the table;
+    - month READMEs;
+    - day-level `*.md` and `*.txt`;
+    - image folders and `Antigravity/`.
+    - A plain `**/!(*.SUMMARIZED).md` would wrongly drop the probe documents,
+  and `**/*.txt` would drop probe `.txt` files.
+  - **`slopcop.config.json`** and the defaults in
+  **`check-markdown-links.ts:43`, `check-asset-paths.ts:44`,
+  `check-symbols.ts:52`.** The same split: the archive out, evidence in. Then
+  check the file count against 1,487.
+  - **`scripts/layout-lab/lab.ts:88`**: write to
+  `AgentSessionHistory/<y>/<m>/<today>/Probes/<folder>`.
+  - **`claude-code-transcript.mjs`**: default output and day placement.
+  - **Comments:** `visible-messages.mjs`, `eslint.config.js`,
+  `approximation.ts`.
+  - **Product packages, comments and test data only:**
+    - `relatedDocs.test.ts`; `reader-sections.test.ts`, whose data is fictional
+  and can probably stay.
+    - `forceGraphLayout`, `forceGraphPhysics` and its test, `forceGraphReveal`,
+  `forceGraphScope`, `forceGraphShells`, `forceGraphWrappers`,
+  `localView/closed-looks.ts`.
+  - **Tests:**
+    - `tests/e2e/inspection.spec.ts`, which is functional.
+    - The specs and helpers listed above, and the `still-picture.spec.ts` header
+  string.
+    - `estate.test.ts`, `include-dirs.test.ts`, `repository-entries.json`.
+  - **Then regenerate the Live Docs.** Their generated regions should differ by
+  those paths only.
+  - **Prose:**
+    - `AGENTS.md`: its one link was already re-pointed; the prose stays.
+    - `AI-Agent-Workspace/README.md` (folder list, the `bundleExclude` and audit
+  paragraph).
+    - `AgentSessionHistory/README.md`: the convention, the location templates,
+  and the routine's paths.
+    - The month inventories, which take in `Screenshots/README.md`; then delete
+  it and re-point its inbound links.
+    - `.mdmd/layer-2/internal-tooling.mdmd.md` and the layer-3 docs where they
+  state the folders.
+    - Memory and narrative mentions under the rule above.
+  - **Running it on `main`:** move, relink and verify in a row before any other
+  commit. Relink stops if a document changed since the base, so the live session
+  record must be committed first.
+
+  ### Questions for you
+  - Forks 1 and 2: do you accept the recommendations?
+  - The mentions rule: adopt the mechanical part, about 92 changes?
+  - The two stale-link cases trapped by old fences: leave them, as I recommend?
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Agent "Session history reorganization builder" finished · 27m 20s
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Reviewing the session-history builder's first handback (the move script and
+  its three commits) while the gate runs; it is at case 217 of 488 with only the
+  two known unsteady cases red so far.
+
+  Read 1 file, ran 3 shell commands (ctrl+o to expand)
+
+● Still on the review: the script reads soundly, and I'm now checking the
+  builder's three open forks against the convention you confirmed and running my
+  own independent link check.
+
+  Made 1 scratchpad edit +121, read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● I'm running my own link-and-anchor check on the commits before and after the
+  move; it already caught a broken ## Turn 4 heading in the October 7 record.
+  The gate stands at 259 of 488, with the same two failures still red. · summary
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The review found no new breakage: the move leaves the same 37 broken paths and
+  anchors as before, all of them old. I'm sending the builder my decisions and
+  the go for its second milestone now. · summary
+  ⎿  Resuming agent a2eec3b
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● I'm repairing three old defects in the archive, filing your re-saved export as
+  received, and logging the two replies and the review; the gate is at about
+  280 of 488. · summary
+
+  Read 1 file, ran 5 shell commands (ctrl+o to expand)
+
+● Recording the review and your re-saved export in the day's record, then
+  committing. Gate at 297 of 488, same two known red cases.
+
+  Made 1 scratchpad edit +44, ran 4 shell commands (ctrl+o to expand)
+
+● Both the gate and the builder are still running, so I'm checking how the gate
+  script sets its worker count for a two-worker whole-suite run. One new failing
+  case, local-map-hidden.spec.ts:95, will get a solo rerun once the gate
+  finishes. · summary
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Nothing needs you. The session-history builder's first handback is reviewed
+  and accepted, its second milestone is under way, and the gate is at 303 of
+  488.
+
+  One thing about your screen
+
+  Your re-saved export shows rows ending in "· summary" between my messages. I
+  don't write those rows and can't see them. The harness writes them in my voice
+  from the work it folds away, and they aren't in the session log.
+
+  One of them was wrong. At about 14:56 it said I was "briefing the
+  session-history builder", and no builder was briefed until 15:14. Treat only
+  my own messages as my word. I filed your export as received; it is the only
+  witness of those rows.
+
+  The session-history move
+
+  - What came back: one script that does the whole move by rule (4,505 files
+    renamed with content untouched), links re-pointed in 1,074 documents, and a
+    table of old paths against new.
+  - My own check: I wrote a separate link-and-anchor check that shares no code
+    with the builder's. Documents had 20 broken paths and 17 broken anchors
+    before the move and the same 37 after, so the move breaks nothing.
+  - Old defects that check found, mended in 6385b33d:
+    - The October 7 record had a ## Turn 4 heading trapped inside a code fence,
+      so eight links to it landed nowhere.
+    - The January 30 summary's corrections section was trapped the same way.
+    - The November 16 summary had a link one folder level short.
+
+  I overrode the builder on two points, both from the convention you confirmed:
+
+  - Antigravity/ (November 2025) goes into its days, rather than staying at
+    month level as an exception. This follows your sentence about artifacts
+    living "in a directory named after that day".
+  - Two exports the harness named for the day after their session began go to
+    their dev day (for example 2026-10-08-035441-… into 2026-10-07/), because a
+    directory belongs to the dev day, also after midnight.
+
+  Nothing touches main until the builder's second milestone is back and the gate
+  has ended. Then I land it all in one go.
+
+  The gate
+
+  It should end near 16:25 UTC. Three cases are red so far:
+
+  - force-graph-building.spec.ts:66 and force-graph-defaults.spec.ts:101, the
+    two known unsteady ones.
+  - local-map-hidden.spec.ts:95, which is new. I'll rerun it alone when the gate
+    ends, before calling it a fault.
+
+  The four other cases I expected red have all passed, including the two
+  history-scrubber cases that overran their 30 s yesterday.
+
+  Next
+
+  1. Read the gate's result, then tell you what can be deleted (the D:\ copy,
+     the old container and its volume).
+  2. Land the session-history round.
+  3. Run the whole suite at two workers. That checks the landing and gives the
+     two-worker measurement direction owes; any case red there gets rerun alone
+     at one worker.
+
+  The review and my decisions are in today's record
+  (AI-Agent-Workspace/ChatHistory/2026/11/2026-11-18.1.record.md).
+
+● Background command "Fifty-minute timer to keep the prompt cache warm while the
+  builder and the gate run" completed (exit code 0)
+  Ran 1 shell command (ctrl+o to expand)
+
+● The cache timer fired with nothing new from the builder, so there is nothing
+  to act on yet. The gate has sped up to about 6.5 s a case: 394 passed, the
+  same three red, and it should end near 16:15 UTC. My last reply (15:55 UTC)
+  shows in the session log as delivered.
+
+› Message from general-purpose
+  ## Milestone 2 is done: the script carries your rules, its runs and my hand
+  edits are committed, every proof passes, and a full landing rehearsal from
+  2e229512 reproduces my final tree exactly.
+
+  Worktree branch `worktree-agent-a2eec3bc105122a19`, last commit `1de66124`.
+  Nothing heavy was run, and no browser.
+
+  **One breach you should know about.** The first version of my proof script ran
+  a read-only `git ls-files` in the main checkout while the gate's browser
+  stage was running. I have since guarded that call so it only runs once the
+  main checkout has been moved. The same proof also lists main's four old
+  folders by reading them through the mount, to find the ignored files. It wrote
+  nothing there.
+
+  ### Your question on 156 against 166
+  Both counts are correct. The 10 extra links are in two captures,
+  `2026-09-26.1.md` and `2026-09-27.1.md`. They point at scratch files under
+  `AI-Agent-Workspace/tmp/`, such as `tmp/probes/estate-canvas/index.html` and
+  `tmp/next-work-map.html`. Those files exist only on main's disk, so `plan`
+  counts the links as resolving there, and the move then breaks them. I checked
+  all 10 against main's disk, reading files only.
+
+  ### Your decisions 1 and 2, as built
+  - **Antigravity:** `<y>/<m>/Antigravity/<mm>-<dd>/<rest>` goes to
+  `<y>/<m>/<y>-<mm>-<dd>/Antigravity/<rest>`, only when `<mm>` is the month
+  folder's own. This produced 2025-11-19 and 2025-11-20. Each has a row in the
+  table.
+  - **The two exports:** a named list `DEV_DAY_OF` holds exactly these two, each
+  commented with its inventory line. `2026-10-08-035441-…txt` goes to
+  `2026-10-07/`, and `2026-11-08-003022-…txt` to `2026-11-07/`.
+  - **The other 20 harness-named exports:** I checked each against its month
+  inventory, and each belongs to the session of the day its name carries.
+    - October (13): 10-01, 10-05, 10-06, 10-08-144430, 10-09, 10-14, 10-15,
+  10-16, 10-17, 10-20, 10-21, 10-22, 10-31.
+    - November (7): 11-02, 11-06, 11-10, 11-12, 11-13, 11-15, 11-17.
+  - **The seven `claude-code.export-<date>-<time>` files** each name their own
+  session: the five in September, 10-30.1 and 11-16.1.
+  - **The table** lists an entry that a later rule moved again under its first
+  old path, so a fresh run gives the same table as my two-step run.
+
+  ### Commits, in order
+  | Commit | What | Who makes it |
+  | --- | --- | --- |
+  | `193b13a8` | script | script |
+  | `81df2c2e` | renames | script |
+  | `1916277e` | links + table | script |
+  | `30275688` | script correction | script |
+  | `88e3d3b7` | rules for points 1 and 2 | script |
+  | `39d677a7` | renames | script |
+  | `90da757f` | table chaining | script |
+  | `11aaba37` | relink | script |
+  | `8e85dd50` | mentions phase | script |
+  | `dd8f679f` | mentions output | script |
+  | `682a3d5c` | **hand:** configuration and tools | by hand |
+  | `1de66124` | **hand:** prose, inventories, deleted index | by hand |
+
+  ### Runbook for main (rehearsed in my worktree from 2e229512; `git diff`
+  against my final tree was empty)
+  1. `git show 1de66124:AI-Agent-Workspace/scripts/move-session-history.mjs >
+  AI-Agent-Workspace/scripts/move-session-history.mjs`, then `git add` that file
+  and commit it.
+  2. `node AI-Agent-Workspace/scripts/move-session-history.mjs plan`. Expect 0
+  conflicts.
+  3. `node AI-Agent-Workspace/scripts/move-session-history.mjs move`, then `git
+  commit`. It stages exact renames itself.
+     - From here until step 7 lands, the 54 lab JSON files show as untracked.
+  4. `node … relink`, then `git add -u && git add
+  AI-Agent-Workspace/AgentSessionHistory/old-paths.md`, then commit. Use `-u` so
+  the lab files stay out.
+     - Commit the live record first: relink stops if any document has changed
+  since the script commit.
+  5. `node … verify`. In the rehearsal:
+     - 6,736 of 6,736 base files found at their place.
+     - 5,028 of 5,028 other files keep their mode and blob.
+     - 227 of 227 captures keep their SHA-256.
+     - 1,708 documents compared; 23,942 links checked. 23,924 reach the same
+  target with the same anchor (9,649 re-pointed), and 18 did not resolve before
+  and are unchanged.
+     - 3,187 fenced blocks and 25,799 headings identical; 0 generated regions
+  touched.
+     - Left in old folders: only `Screenshots/README.md`.
+     - Crude check: 16. That will be fewer once your fence mends free those
+  links.
+     - verify passed.
+  6. `node … mentions > mentions.txt`, read it, then `git add -u` and commit. In
+  the rehearsal it rewrote 105 paths in 61 files:
+     - 52 in Live Docs' authored notes, 10 in layers 1–3, 3 in Memory, 2 in
+  `visible-messages.mjs`, 1 in `eslint.config.js`;
+     - 15 in `packages/` comments and test data, 1 in
+  `scripts/layout-lab/approximation.ts`;
+     - 21 in `tests/`, including the functional path in
+  `tests/e2e/inspection.spec.ts`.
+  7. `git cherry-pick 682a3d5c 1de66124`.
+     - **Expect a possible conflict in `2026/11/README.md`.** My edit only
+  appends at the end of the file, but it touches the same file as your November
+  18 lines.
+     - `1de66124` also changes one link in a record, `2026-10-14.1.record.md`
+  line 154, which pointed at the deleted index. Main's copy of that record is
+  identical to mine, so it applies cleanly; I'm flagging it because you asked
+  for no record in the hand-made commits.
+  8. `node /tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e5-95
+  a5-166121c231a3/scratchpad/history-move-proof.mjs <script-commit>
+  /workspaces/Live-Documentation`. It briefly rewrites `.gitignore` to the base
+  version and puts it back.
+  9. Regenerate the Live Docs, then lint, build, unit tests, the audits and the
+  gate.
+
+  ### The proofs (my worktree against 193b13a8)
+  The proof script is `/tmp/claude-1000/-workspaces-Live-Documentation/6450141c-
+  9e11-40e5-95a5-166121c231a3/scratchpad/history-move-proof.mjs`. It maps paths
+  through the committed `old-paths.md`, independently of the move script, and
+  uses the repository's own `minimatch` and `glob`.
+  - **bundleExclude:** leaves out 216 files before and 216 after, with none lost
+  or gained. `old-paths.md` is left out of the bundle.
+  - **Markdown link audit:** 1,487 files before and 1,486 after. The one missing
+  is the deleted index, which the proof names apart.
+  - **Symbol audit:** 1,484 before, 1,483 after, for the same reason.
+  - **Asset audit:** 21 before and 21 after.
+  - **Real glob agrees:** for each audit, running `globSync` on disk selects the
+  same files as the reading above.
+  - **`.gitignore`:** 4,560 paths checked with `check-ignore --no-index`. These
+  are every base file under the old folders, main's 54 lab files and an
+  `MDMD-Signals` example. 63 are ignored before and 63 after, with 0
+  differences.
+  - **New globs:**
+    - bundleExclude has five depth-anchored patterns: top-level `*.{md,txt}`,
+  the month level, day-level files, non-evidence folders inside a day, and
+  non-summaries under `Summarized/`.
+    - The audits use four extglob patterns. They go into `slopcop.config.json`
+  and the three `DEFAULT_IGNORE` lists.
+
+  ### What else the hand commits do
+  - **`682a3d5c` (configuration and tools):**
+    - **`lab.ts`:** writes to the open dev day: the newest day directory that
+  holds a `*.record.md`, or today's date (UTC) when none does. I tested this
+  outside the build, and it picked `2026-11-18`.
+    - **`claude-code-transcript.mjs`:** writes into the day of the session's
+  first message (`<out>/<y>/<m>/<date>/`). Its `--out` default is now
+  `AgentSessionHistory`, and session numbering still works inside a day
+  directory.
+    - **`relatedDocs.test.ts`:** I changed the authored text and the glob on
+  lines 56–57. Otherwise the mentions phase's rewrite of line 58 would break the
+  test.
+  - **`1de66124` (prose, inventories, deleted index):**
+    - **`AgentSessionHistory/README.md`:** a new current section, "Where things
+  are". It has the layout, the dev-day rule, where exports go, the rule for
+  evidence writers, `old-paths.md` for paths written before 2026-11-18, and what
+  the bundle and audits read. The location templates now include the day. All
+  existing headings are byte-identical.
+    - **The screenshot index:** carried into the three month inventories under
+  `## Pictures of the Explorer`, with its links and backticked paths re-pointed,
+  then deleted. Its 9 inbound links now reach those sections.
+    - **Prose:** I updated the workspace README,
+  `.mdmd/layer-2/internal-tooling.mdmd.md`, and two lines in
+  `architectural-decisions.mdmd.md` and one in `membrane-map.mdmd.md`.
+    - **Link check:** the 1,101 links in the edited documents are all intact.
+
+  ### Expect from `npm run live-docs:generate`
+  Changes to generated regions from these source files:
+  - `eslint.config.js`
+  - `packages/engine/src/live-docs/relatedDocs.test.ts`
+  - `packages/explorer/src/client/views/`: `forceGraphLayout.ts`,
+  `forceGraphPhysics.ts`, `forceGraphPhysics.test.ts`, `forceGraphReveal.ts`,
+  `forceGraphScope.ts`, `forceGraphShells.ts`, `forceGraphWrappers.ts`,
+  `localView/closed-looks.ts`
+  - `scripts/layout-lab/approximation.ts`
+  - `scripts/layout-lab/lab.ts`: a new `node:fs` import, `openDevDay` and
+  `HISTORY`, and `today` removed.
+  - `scripts/slopcop/check-asset-paths.ts`, `check-markdown-links.ts`,
+  `check-symbols.ts`
+  - `tests/e2e/`: `force-graph-building`, `force-graph-discovery`,
+  `force-graph-shells`, `force-graph-structure-cells`, `force-graph-wrappers`,
+  `inspection`, `local-map-search`, `pin-clicks`, `still-picture` and
+  `world-map-design` specs, plus `still-picture.ts` and
+  `still-picture-geometry.ts`
+  - `tests/integration/live-docs/`: `estate.test.ts`, `include-dirs.test.ts`,
+  `expected/repository-entries.json`
+  - `.gitignore`, `.live-docs.config.json`
+
+  ### Not done, and yours
+  - Memory still names bare folders: `owner.md` lines 130–131
+  (`AI-Agent-Workspace/Research/`, `…/Screenshots/`), and there may be some in
+  `ideas.md` and `narrative.md`. Memory is off-limits to me, and the mentions
+  rule leaves bare folder names alone on purpose.
+  - Your three mends on main are untouched by me.
+  - No reviewer was used in this round.
+  - My scratch files are removed except the proof script.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Session history reorganization builder" finished · 16m 25s
+
+● The second handback is in. Reading its hand-made commits (configuration,
+  tools, prose) and the script's new rules while the gate finishes its last 76
+  cases.
+
+  Read 1 file, ran 6 shell commands (ctrl+o to expand)
+
+● Second handback reviewed: the hand-made commits and the proof script read
+  soundly. Waiting on the gate's last cases before I land anything.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The builder's second milestone is back and I've reviewed it. It is ready to
+  land once the gate ends.
+
+  - What it holds: the script with the two rules I set (Antigravity into its
+    days, the two late-named exports into their dev days), a new phase that
+    re-points 105 paths named outside links, and two hand-made commits for
+    configuration, tools and prose.
+  - Its proofs: by enumeration, the Explorer bundle leaves out the same 216
+    files as before, the link audit reads the same files apart from the one
+    deleted screenshot index (carried into the month inventories), and the
+    ignore file ignores the same 63 paths. A full rehearsal from the base commit
+    reproduced its final tree exactly.
+  - One breach it reported itself: it ran a read-only git ls-files in the main
+    checkout while the gate's browser stage was running. Nothing was written
+    there.
+
+  The gate is at 414 of 488 with the same three red cases, now in the slow
+  still-picture cases. When it exits I will:
+
+  1. Rerun local-map-hidden.spec.ts:95 alone.
+  2. Record the gate's result.
+  3. Land the session-history round on main by its script.
+  4. Run the whole suite at two workers.
