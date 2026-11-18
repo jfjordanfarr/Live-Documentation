@@ -146,6 +146,12 @@ The evidence collections are [tap reading](2026-11-05/Screenshots/tap-reading/RE
 
 Each day's pictures of the built Explorer, as the index `Screenshots/README.md` listed them until 2026-11-18, when it was carried into the month inventories. The convention, and the owner's standing request behind it, are in [the archive's README](../../README.md#where-things-are). Newest first.
 
+### 2026-11-18
+
+[The rings' mend, before and after](2026-11-18/Screenshots/rings-mend/README.md): the owner's state in the 3D map (`archetype.ts` pinned, one hop, documents shown, marbles on, Skin) on main before the mend and after it, whole and near the pin; the same with the two document switches off; Group Wrappers Off, unchanged; the Structure layout's hub at the frontier with and without its ring; a lone file beyond the hops drawn dimmed in Connections beside the same file bright in Structure. By the mend's builder, with the counts read from what the page draws.
+
+[Beyond the Hops, Everything and Next step](2026-11-18/Screenshots/beyond-the-hops/README.md): the trial the owner's thought of the same day asked for, the same pin at one, two and three hops under each value of the lever, with the counts of files drawn, held in membranes and not in the picture, the page's own measures of the partition and the packing, and a run of seven frames of the Hops menu taken from one to three under Next step. By the trial's builder.
+
 ### 2026-11-16
 
 
