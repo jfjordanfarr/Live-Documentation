@@ -3899,3 +3899,1190 @@
 ● The scenario builder has paused on a background run of its own (its test and
   browser steps) and has not reported yet, so there is nothing to review. I'm
   keeping the machine quiet for its timing and waiting for its handback.
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/AgentSessionHistory/2026/11
+  /2026-11-18/2026-11-18.1.claude-code.export.txt in the IDE. This may or may
+  not be related to the current task.</ide_opened_file>
+
+❯ >Beyond the hops. The kind is on, but the thing is farther from what you
+  asked about than the hops shown. Only this case has ever had a sign.
+
+  Ahhhhhhh okay. Great point: if it is no more visually efficient to create a
+  membrane for one further hop away, might as well just draw that terminal leaf
+  node, eh? Flipside of that coin: this could also be telling us that we
+  should be more serious about _completely hiding_ things which are more than a
+  configured set of hops away, and ensuring that the user has more ability to
+  "scrub through" the emergent topology of the scanned directory without
+  needing to see the remaining totality, even if encapsulated, all at once. I
+  love being able to see everything, but I also recognize that not being able
+  to see everything is plausibly quite important, and it would be interesting
+  to me if we saw membranes kind of form and break and re-form as new hops were
+  taken. I am trying to keep my mind open to the possibility that this design
+  nit is a signal of something wider or slightly different than just ensuring
+  the nit is resolved.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Reading what you decided earlier about what stands beyond the hops (November 2
+  and November 7) before I answer.
+
+  Made 1 scratchpad edit +72, ran 4 shell commands (ctrl+o to expand)
+
+● Your turn is recorded. Briefing the rings builder on a trial of your "form and
+  break and re-form" idea (code and unit tests only for now), then answering
+  you.
+  ⎿  Resuming agent a18775f
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I think the nit does point at something wider, and the two sides of your coin
+  are one rule. I've started a trial so you can judge it by eye; it changes no
+  default.
+
+  What a pinned picture holds today
+
+  With archetype.ts pinned at one hop and Skin on, the Connections picture holds
+  three things:
+
+  1. The hops you asked for.
+  2. Every other file of the same connected group, however far away, gathered
+     into membranes by directory, with wires between the membranes.
+  3. The seed of every group the hops cannot reach, dimmed.
+
+  So the picture we call Local is really the whole scan, most of it
+  encapsulated. A membrane today means "everything else in this directory", not
+  "what is one step from here".
+
+  Your thought as one rule
+
+  Call it the horizon: what is exactly one step past the last hop gets a sign;
+  what is farther gets nothing until a step brings it to the edge.
+
+  - Two or more files of a directory, one step away: a membrane.
+  - One file alone: the file itself, your "terminal leaf". It is the rule's
+    smallest case, not a special case.
+  - Take a hop, pin a file at the edge, or pop a membrane: the membranes at the
+    old edge break into files and new ones form at the new edge. That is your
+    "form and break and re-form".
+
+  Designers have names for the two stances:
+
+  - Shneiderman's "overview first, zoom and filter, then details on demand"
+    always shows everything. On our screen that is the archipelago with nothing
+    pinned.
+  - Van Ham and Perer's "search, show context, expand on demand" starts from
+    what you asked about and grows a step at a time. It rests on Furnas's
+    "degree of interest": a thing's claim to be drawn falls with its distance
+    from your focus. On our screen that is what a pin would give under the
+    horizon.
+
+  Today's pinned picture tries to be both at once.
+
+  What you said before that bears on it
+
+  - November 2: you found it "so hard to find the islands/orphans", which is why
+    the seeds of unreached groups stand beside every pinned picture. The same
+    day you proposed an "isolate" mode ("I can really see the use case for
+    both"), which became Local/Whole.
+  - November 7: this repository pinned at two hops was "still very noisy. I
+    backed that down to 1 hop and found myself having an easier time getting
+    around". The far membranes are part of that noise, since they say nothing
+    about your next step.
+  - November 7: you loved the embryo look most on the archipelago with nothing
+    pinned. The horizon leaves that picture alone.
+
+  Nothing like the horizon has been tried or refused before.
+
+  The trade
+
+  - Lost: the standing overview inside a pinned picture. It stays one step away:
+    the archipelago when nothing is pinned, the Whole toggle, and the World
+    Map.
+  - Gained: a membrane that means one thing, and a pinned picture whose size
+    follows your question, not the repository's. There is also less to build
+    before a pinned picture can show, because today every far membrane is packed
+    first.
+  - Risk: fewer embryos in a pinned picture, and you may miss them. That is for
+    your eye.
+
+  What I've started
+
+  A trial lever in the 3D Tuning beside Hops: today's picture stays the default,
+  and the horizon is the other value. It is Connections layout only. The rings
+  builder is writing it (same module), in separate commits so the ring mend can
+  land without it.
+
+  You'll get:
+
+  - The same pinned state both ways at one, two and three hops, from one camera.
+  - At each, the counts of files drawn, files in membranes, and files not in the
+    picture, plus the build time.
+  - If practical, a clip of Hops dragged from 1 to 3 under the horizon.
+
+  Three things I left out of the trial on purpose:
+
+  - Documents one step away. They keep no sign, as in the mend. They could come
+    under the horizon later.
+  - The Structure layout. Its bubbles hold a directory's whole subtree, which is
+    the same question in another form.
+  - Where the Hops control lives. If scrubbing turns out to be the point, it
+    deserves a place on the toolbar rather than inside Tuning.
+
+  The scenario builder still has the machine (37 minutes so far) and has not
+  handed back. Your turn and your sixth save of the export are recorded
+  (45069ead).
+
+› Message from general-purpose
+  ## Milestone 2: done on main (c306f2ca), every check passed, and all 43
+  scenario cases that apply are green
+
+  **What ran, at one worker on the quiet machine:**
+
+  | Check | Result |
+  |---|---|
+  | Unit tests | 2,015 of 2,015 passed (76 in the scenario files) |
+  | Integration tests | 138 of 138 passed, after the Rosetta manifest change |
+  | Build and lint | clean, including the tests' typecheck and
+  eslint-plugin-import-x 4.18 |
+  | Live Docs lint and the two link checks | clean |
+  | Scenario table | 43 cases passed, 7 skipped (not applicable), 713 promises
+  judged, none broken |
+  | Every older spec that calls the mended design audit | 141 cases, nothing red
+  from the mend |
+
+  **Nothing is red that means a broken product promise.**
+  - The C and C++ cells that failed last time are now green, for two reasons:
+    - The token now picks each program's header, `processor.h`, because the map
+  shows it is the file of the part most used by the other parts.
+    - The compiler oracle excuses only a gap the repository's own oracle
+  comparison already records, and it lists that gap by name.
+  - In the audit run, one case went red: `history-scrubber.spec.ts:180`, one of
+  the races you listed. It failed because a renamed file's place was compared
+  with no place, and it passed when rerun alone (10.1 s). It is not an audit
+  finding.
+
+  ### The timing (taken 18:40:24 to 18:42:45 UTC, one worker, nothing else
+  running)
+
+  - **The table:** 43 cases in 128.4 s of case time, 141 s wall. It judged 713
+  promises (floors, laws, relations, the oracle), all kept.
+    - The nine Rosetta samples: 39 cases, 113.2 s, 647 promises.
+    - This repository's own map, the tenth map: 4 cases, 15.2 s, 66 promises.
+  - **Per scenario, over the ten maps:**
+
+  | Scenario | Cases | Seconds |
+  |---|---|---|
+  | The processor in focus | 10 | 41.0 (includes running the oracle comparison)
+  |
+  | The processor in focus, three presses out | 10 | 40.2 |
+  | The whole program retained | 10 | 25.4 |
+  | The program's root, nothing chosen | 10 | 17.0 |
+  | A part's own directory opened | 3 | 4.8 |
+
+  - **The nine sample builds:** 5.7 s (5.70, 5.83, 5.63 over three runs). That
+  is what `test:e2e` gains.
+  - **Today's cases those promises live in:** 15 runs taking 317.7 s, from the
+  last full run at one worker.
+    - `still-picture.spec.ts:334` and `:378`, four runs each: 258.6 s
+    - `local-map-branches.spec.ts:276`: 45.0 s
+    - `local-map-branches.spec.ts:362`: 4.4 s
+    - `local-map-framing.spec.ts:46` and `:101`: 3.3 s
+    - `local-map-tone.spec.ts:55`, `:82` and `:123`: 6.4 s
+  - **What converting the 2D still-picture cases would likely save, plainly.**
+    - Per promise, the table is far cheaper: about 5.5 promises judged per
+  second, against one to three promises per 13 s case today (the 93 such cases
+  average 13 s).
+    - In wall time it saves only what is deleted. Almost every old case also
+  holds a gesture or a number written into the spec, so it is split, not
+  retired. The gesture half keeps paying its page load.
+    - The still-picture deck's four repository runs (204 s) are also the
+  scoreboard's measurement, and they stay.
+    - The savings would come from relation-heavy cases that today walk the zoom
+  on this repository's large map, such as `card-ladder-boxes` at 223 s, if each
+  became a relation between readings on the small maps.
+    - I cannot give one honest total before a few such splits are made and
+  timed.
+
+  ### The oracle, C and C++
+
+  - **The rule.** The repository's comparison (`npm run oracle:compare`) has no
+  rule pairing a header with its implementation, so the judgment reports the
+  gaps one-sided, as that comparison's own record. The spec calls the same
+  `compareFixture` the command runs. Nothing is written by hand.
+  - **What the comparison records for each of C and C++:** 15 edges found, 15
+  missing, 0 extra. The C list, in full:
+    - `helpers.h` uses `helpers.c`
+    - `main.c` uses `models.c`
+    - `main.c` uses `processor.c`
+    - `models.c` uses `types.h`
+    - `models.h` uses `models.c`
+    - `processor.c` uses `helpers.c`
+    - `processor.c` uses `models.c`
+    - `processor.c` uses `models.h`
+    - `processor.c` uses `types.h`
+    - `processor.h` uses `processor.c`
+    - `test_helpers.c` uses `helpers.c`
+    - `test_pipeline.c` uses `models.c`
+    - `test_pipeline.c` uses `processor.c`
+    - `test_processor.c` uses `models.c`
+    - `test_processor.c` uses `processor.c`
+    - C++ has the same fifteen with `.cpp`/`.hpp` names.
+  - **The two lists side by side:** at the processor's header, the table excuses
+  exactly one of these, "`processor.h` uses `processor.c`" (`.hpp`/`.cpp` in
+  C++), and finds no other disagreement.
+  - **The other maps.** TypeScript, Java, C#, Rust, Go, Python and this
+  repository's map agree exactly with the compiler. Ruby has no compiler record,
+  so the oracle is reported not applicable there.
+
+  ### Your decisions as built
+
+  1. **The C floor.**
+     - The token chooses, among a part's files, the one that the most files of
+  other parts use, read from the map's references. A tie goes to the file named
+  for the part, then to the implementation. The result is `processor.h` and
+  `processor.hpp`.
+     - The floor is now the subject, at least one other card and at least one
+  wire.
+     - The retained scenario keeps every file of each part, using `{part*}`.
+  2. **The oracle:** as above.
+  3. **The audit mend** is commit a5af2b36. Its bad case is in
+  `design-audit.spec.ts`, and it passed.
+     - Spec files run with the mend (every spec that calls `truncations` or
+  `scoreText`): `local-map-pins`, `local-map-directories`, `world-map-design`,
+  `card-reading`, `still-picture`, `world-map-estate`,
+  `closed-directory-families`, `design-audit`, `force-graph-identity`,
+  `history-scrubber`, `closed-directory-looks`, `knowledge-sources`,
+  `local-map-packing`, `search-bar`, `spatial-legend`.
+     - 141 cases, 140 passed. The one failure is the known race above.
+     - No case turned red after the mend, so there is no element or clip to show
+  you.
+  4. **"No name breaks inside a word"** is written and unit-tested. It sits in
+  `PENDING_LAWS`, outside the table, and its test asserts that it stays out. The
+  instrument already reads the lines each name stands on, so it is ready for
+  when the defect is mended.
+  5. **The four new promises** are added, and each has a bad reading it must
+  reject:
+     - every directory but the root draws an outline: kept on 43 cases;
+     - the root's columns stand at one top: kept on 4, not applicable elsewhere;
+     - a description and the Purpose are one tone: kept on 25;
+     - held names keep their tones three presses out: kept on 10.
+  6. **The two corrected laws** now say in their comments what the screenshots
+  showed:
+     - each dot sits at its row's end, about 21 px inside the card's edge at
+  scale 1;
+     - farther out, "Intern…" ends in an ellipsis by design.
+
+  ### Commits, in order on c306f2ca
+
+  1. b97ab826: starts the scenario suite.
+     - Merged with main: `test:e2e` now runs `… && npm run
+  live-docs:visualize:rosetta && node ./scripts/e2e-passes.mjs`.
+     - Merged with main: `visualize-sample.ts` keeps main's import order.
+  2. 2d1c9902: runs the table over the ten maps.
+     - The product's one line: the branch renderer publishes `data-inset`.
+     - Three additive wire fields in `readPicture`.
+     - `core_types.*` in the Rosetta manifest.
+  3. a5af2b36: the design audit mend, on its own.
+  4. 71f43e3a: the token rule, the floors, and the new and pending judgments.
+  5. cf5ce780: imports ordered as the linter now asks (ESLint's own fixer, then
+  two blank lines removed by hand), and `visualize-rosetta.ts` added to
+  `tests/integration/live-docs/expected/repository-entries.json`.
+  6. 01612277: the oracle excuses only the comparison's own recorded gaps, by
+  name.
+  7. c9eb03ef: the Live Docs.
+     - Ten new docs with authored Purpose and Notes.
+     - Dated notes added to the docs of `branch-renderer.ts`,
+  `still-picture.ts`, `design-audit.ts` and `visualize-sample.ts`.
+     - Links cite the November 17 record (`#turn-8`,
+  `#roots-reply-to-turn-11-as-delivered`) and today's record
+  (`#work-notes-the-scenario-suites-builder-dispatched`,
+  `#work-notes-the-scenario-builders-first-handback`). The link checks pass.
+
+  ### What remains
+
+  - I started no further conversions, as you asked.
+  - **Measurement scratch files.** These remain for you to file:
+    - `/tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e5-95a5-1
+  66121c231a3/scratchpad/table-quiet.log`
+    - `/tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e5-95a5-1
+  66121c231a3/scratchpad/audit-run.log`
+    - The ledger files listed before.
+  - **Worktree outputs.** The readings and screenshots of the quiet run are in
+  the worktree's `reports/scenarios/`, which git ignores.
+  - **Unreviewed.** I did not look again with my own eye at the new pictures of
+  the reading-size-before-presses step. The tone relation built on it held on
+  all ten maps.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Scenario suite first slice builder" finished · 37m 47s
+
+● The scenario builder has handed back with everything green. Reviewing its
+  changes myself before landing them, starting with what touches today's suite
+  and the product.
+
+  Searched for 1 pattern, ran 5 shell commands (ctrl+o to expand)
+
+● Looking at three of the scenario pictures with my own eye, then I'll send the
+  builder one correction on the compiler check.
+
+  Read 3 files (ctrl+o to expand)
+  ⎿  Resuming agent a5c4a67
+
+  Made 1 scratchpad edit +67, ran 2 shell commands (ctrl+o to expand)
+
+● The scenario table has run clean on a quiet machine: 43 cases over ten maps,
+  713 promises judged, none broken, in 128 seconds at one worker. I've accepted
+  most of it and sent one part back. That part was my own mistake.
+
+  The measurement I owed you
+
+  ┌────────────────┬───────────────────────┬───────────────────────────────┐
+  │                │    Scenario table     │  Today's cases holding the    │
+  │                │                       │         same promises         │
+  ├────────────────┼───────────────────────┼───────────────────────────────┤
+  │ Cases          │ 43 (7 more not        │ 15 runs                       │
+  │                │ applicable)           │                               │
+  ├────────────────┼───────────────────────┼───────────────────────────────┤
+  │ Time at one    │ 128 s                 │ 318 s                         │
+  │ worker         │                       │                               │
+  ├────────────────┼───────────────────────┼───────────────────────────────┤
+  │ Promises       │ 713                   │ one to three per case         │
+  │ judged         │                       │                               │
+  └────────────────┴───────────────────────┴───────────────────────────────┘
+
+  - Per promise the table is far cheaper: about 5.5 promises a second, against
+    one to three in a 13-second case today.
+  - In gate time it saves nothing yet. A case only stops costing time when it is
+    deleted, and almost every old case has to be split first because it also
+    holds a gesture or a hard-coded number.
+  - Where real savings would come from: cases that walk the zoom on this
+    repository's large map (one file of them takes 223 s). Each could become a
+    comparison between two readings on a small Rosetta map.
+  - No honest total yet. The builder won't name one before a few such splits are
+    made and timed, and I agree.
+
+  The table adds its 128 s and a 6-second build of the nine Rosetta samples to
+  the gate.
+
+  What I checked and accepted
+
+  - The one product line: a directory now publishes its inset, so the test reads
+    it from the page rather than hard-coding a pixel count.
+  - The design audit's blind spot is mended. All 141 existing cases that use the
+    audit were rerun and none turned red, so nothing was hiding behind it.
+  - Four more promises are laws now: every directory but the root draws an
+    outline; root columns align at the top; a description and the Purpose share
+    one tone; held names keep their tones three presses out.
+  - Three pictures, by my own eye: the C header in focus, the Java program
+    retained, and the TypeScript program's folder on this repository's map. All
+    are real Local Maps with uses entering on the left and offerings leaving on
+    the right.
+
+  What I sent back: the compiler check
+
+  I told you at 17:39 that I would not write an allowance to make C and C++
+  pass, and that the builder would use our existing oracle comparison's rule
+  instead. That ruling was wrong, and the builder implemented it faithfully.
+
+  - The flaw: the check excused any edge that the oracle comparison reports our
+    docs as lacking, computed live. Whatever the docs lack is exactly what that
+    comparison reports, so a lost edge in any language would have been excused
+    and stayed green.
+  - The correction: a short list of known gaps, written by name and dated, shown
+    as a recorded exception and not as agreement with the compiler. It has two
+    entries: the C header and the C++ header each lack the edge to their own
+    implementation file.
+  - What goes red now: any missing edge not on the list, and any listed entry
+    that is no longer a real gap.
+
+  So I am writing an allowance after all, a narrow and visible one. Behind it is
+  a real gap in the C-family maps: oracle:compare reports 15 compiler edges
+  missing on each of the C and C++ programs, because our adapters record the
+  include of a header where the compiler records the use of a definition. That
+  is yours to rank.
+
+  One finding by eye
+
+  In the C picture, the header's include guard (ROSETTA_PROCESSOR_H) is listed
+  among its symbols. A guard is not something a header offers. It belongs to the
+  C adapter, and I've noted it.
+
+  Next on the machine
+
+  1. The scenario builder's correction.
+  2. I land the slice, prove the history-race mend and try the search-pause
+     cases at half their seeds.
+  3. The rings builder's pictures, including the horizon trial.
+  4. One gate over all of it.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+› Message from general-purpose
+  **The "Beyond the Hops" trial is written and committed as dd3c2cbf, on top of
+  the ring mend (87f14e2c and 16150236), so the mend can land without it.
+  Nothing has been built or run yet; the browser is still the other builder's.**
+
+  ## What it is, for a reader not in the code
+  Pin a file in the 3D map with Skin on, and today you see three things:
+  - the file and its hops;
+  - every other file of the same connected group, however far away, gathered
+  into membranes by folder;
+  - one seed for every other group the hops don't reach.
+
+  The new choice sits in Tuning → 3D Layout → Discovery, under Group Wrappers.
+  - **"Everything"** is today's picture and stays the default.
+  - **"Next step"** draws only what is exactly one step past what stands in the
+  picture:
+    - two or more such files of one folder become a membrane;
+    - a single one is drawn as itself;
+    - nothing farther appears until a step brings it to the edge;
+    - popping a membrane releases its files, and the files one step past them
+  form the next membrane;
+    - the seeds of unreached groups are not drawn.
+
+  What does not change under "Next step":
+  - The start with nothing pinned (the archipelago the owner loves) is the same
+  under both.
+  - So are the Structure layout and Group Wrappers Off.
+
+  **Names I propose:** the lever "Beyond the Hops", with "Everything" and "Next
+  step", as you suggested. "Next step" matches the map's own words "hop" and
+  "step". Its tooltip: "With wrappers on, what stands past the hops: every file
+  of the groups shown, or only what is one step away."
+
+  Your reading of today's picture is right. Two nuances:
+  - The shells only see groups shown in part. A group seen by its seed alone is
+  wrapped whole.
+  - Today the unreached seeds were also passed to the shells as "shown". That
+  made no difference, since they belong to other groups.
+
+  ## What I built
+  - **The rule:** `nextStepFiles` in forceGraphShells.ts, used by `shellPicture`
+  through a new optional `reach` field. It starts from the shown files and
+  takes their neighbours. Whatever a pop releases then stands, and its
+  neighbours join, until nothing new arrives. Documents are never held.
+  - **The seeds:** `withoutUnreachedSeeds` in forceGraphScope.ts. It drops the
+  unreached seeds and keeps a seed that was asked about or reached.
+  - **The view** applies both only with something asked about, wrappers on, the
+  Connections layout and "Next step".
+  - **The setting:** a `beyondHops` type, default and markup, saved and carried
+  in a link only at "Next step". Following the 2D trials, a link that carries 3D
+  settings without it opens at "Everything".
+  - **The control-count tests** go from 67 to 68, in both tuning-levers.test.ts
+  and tests/e2e/tuning.spec.ts. That spec isn't in my named files; it was a
+  one-number change, and the gate would otherwise go red.
+  - **The design document** has a new paragraph after Directory shells, written
+  as a trial under way. It quotes the owner's words of Turn 10 of the November
+  18 record and their November 7 "still very noisy" (Turn 8 of the November 6
+  record). Short notes were added to five Live Docs.
+
+  **Unit cases:**
+  - In the shells tests:
+    - a ring forms beside what is shown, and nothing two steps away is held;
+    - a pop breaks a membrane and forms the ring beyond it;
+    - a second pop does the same, with a lone file where only one file is
+  reached;
+    - "Everything" gives today's result exactly, and a folder popped beyond the
+  edge holds nothing.
+  - One case for the seeds.
+  - One for the link and saved setting.
+
+  ## Forks I met
+  1. **The reckoning only grows. Built so it always ends.** In one corner case
+  the result runs against the rule:
+     - A pop releases a folder's single file.
+     - A later step brings a second file of that folder to the edge.
+     - That folder becomes a membrane again.
+     - A file the first one had brought in then stays, standing beside that
+  membrane: two steps out.
+
+     The alternative, recomputing from scratch each round, could flip back and
+  forth without ending. I recommend the built version.
+  2. **With Group Wrappers Off, "Next step" changes nothing,** and the unreached
+  seeds stay too. I read your "nothing else changes there" that way. Hiding the
+  seeds under Off as well would be a one-line change if you meant that.
+  3. **The weights of the picture budget are unchanged.** A membrane wired only
+  to released files still counts as farthest from the pin, as it does today.
+
+  ## What I expect each picture to show (milestone 2)
+  The owner's state: archetype.ts pinned, marbles on, Skin.
+  - **At one hop:**
+    - "Everything": about ten membranes around the hop and the unreached seeds.
+    - "Next step": fewer, smaller membranes, only the folders the frontier files
+  touch, and no seeds.
+  - **At two and three hops:** the gap between the two grows, because
+  "Everything" always holds the whole group whatever the hops, while "Next step"
+  holds only the rim.
+  - **In the counts:** the number of files of the scan not in the picture at all
+  rises sharply under "Next step". The number of membranes and files held in
+  them falls.
+  - **Timing:** the partition and the packing should be faster under "Next
+  step", since fewer bodies get packed.
+  - **A clip of dragging Hops from 1 to 3:** the membranes break open as their
+  files become hops, and new ones form one step further out. That is the "form
+  and break and re-form" the owner asked about. A run of frames at each step is
+  practical with the page clock; a smooth video clip is less certain.
+
+  I'm waiting for your message that the browser is free.
+
+● Agent "Rings beside membranes mend builder" finished · 5m 31s
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The horizon trial is written (not yet built or run), in its own commit on top
+  of the ring mend. The lever is "Beyond the Hops" in the 3D Tuning under Group
+  Wrappers, with "Everything" (today's picture, still the default) and "Next
+  step".
+
+  I read the rule's code and ruled on its builder's three forks:
+
+  - A known corner: after two pops in one directory, a file can end up standing
+    two steps out beside a re-formed membrane. I accepted that for a trial,
+    because the alternative could flip back and forth without settling.
+  - Group Wrappers Off is untouched by the lever, including the seeds of
+    unreached groups. The trial is about membranes.
+  - The limit on files drawn inside membranes keeps its current weighting.
+
+  The scenario builder has the machine for its correction to the compiler check.
+  When it hands back I land the slice, and the rings builder gets the browser
+  for its pictures, the horizon's included.
+
+› Message from general-purpose
+  ## The compiler oracle now holds to a frozen list of known gaps: one commit,
+  5205059e, on top of c9eb03ef
+
+  **What changed.** The oracle no longer excuses anything computed at run time.
+  I removed `compareFixture` and `recordedMissing` from the spec and the
+  judgment.
+
+  - **The list.** The table now carries a fixed list of known gaps, written by
+  name for each map, with the edge, a reason and a date:
+    - the C map: `src/processor.h uses src/processor.c`;
+    - the C++ map: the same pair as `.hpp`/`.cpp`.
+  - **Why the list exists.** The C-family adapters record a header's include
+  where the compiler records the use of a definition. `npm run oracle:compare`
+  reports this as 15 missing edges on each of those two programs.
+  - **How an excuse is reported.** An excused edge keeps the oracle's cell green
+  and appears under the verdict's `known` as "excused by a recorded gap, not
+  agreed by the compiler". It also gets its own verdict line of rank baseline.
+  Each case below has a unit test with a reading it must reject:
+    - an edge the compiler has, the picture lacks and the list does not name is
+  broken;
+    - a listed edge the picture now draws is broken as stale;
+    - a listed edge the compiler no longer has is broken as stale;
+    - a drawn wire the compiler denies is still broken;
+    - a map with no compiler record is still not applicable.
+  - **Where it is explained.** One paragraph in each of the table's head
+  comment, the judgments module's head comment and the Live Docs of `table.ts`
+  and `judgments.ts` says the list is a baseline, why it exists, and that it was
+  frozen after your correction of 2026-11-18.
+
+  ### The two verdict lines for C, as the JSON shows them
+
+  ```json
+  {
+    "judgment": "the subject's wires are the compiler's edges",
+    "rank": "oracle",
+    "outcome": "kept",
+    "findings": [],
+    "known": [
+      "excused by a recorded gap, not agreed by the compiler: src/processor.h
+  uses src/processor.c: the C-family adapters record a header's include, where
+  the compiler records the use of the definition in its implementation (listed
+  2026-11-18)"
+    ]
+  }
+  {
+    "judgment": "the compiler's edges the docs are known to lack at this file:
+  1",
+    "rank": "baseline",
+    "outcome": "kept",
+    "findings": [],
+    "known": [
+      "src/processor.h uses src/processor.c: the C-family adapters record a
+  header's include, where the compiler records the use of the definition in its
+  implementation (listed 2026-11-18)"
+    ]
+  }
+  ```
+
+  ### The numbers
+
+  | Check | Result |
+  |---|---|
+  | Unit tests | 2,018 of 2,018 passed (78 in the scenario files, 8 of them
+  oracle cases) |
+  | Tests typecheck and eslint | clean |
+  | `live-docs:generate` | 3 docs updated |
+  | `live-docs:lint` and the link check | clean |
+  | Scenario table, ten maps, one worker (19:14:35 UTC) | 43 passed, 7 not
+  applicable (skipped), 715 promises judged, none broken; 127.3 s case time, 136
+  s wall |
+
+  **Time per scenario:**
+
+  | Scenario | Cases | Time |
+  |---|---|---|
+  | Processor in focus | 10 | 40.1 s (41.0 s while the comparison ran in it, so
+  that comparison cost about 1 s) |
+  | Three presses out | 10 | 39.7 s |
+  | Whole program retained | 10 | 25.4 s |
+  | Program's root | 10 | 17.3 s |
+  | A part's own directory | 3 | 4.8 s |
+
+  ### Two notes
+
+  - The authored notes in the spec's Live Doc still quote the earlier run's
+  figures (128 s and 713 promises). They describe that run truthfully, so I left
+  them.
+  - I made nothing of your include-guard finding (`ROSETTA_PROCESSOR_H` listed
+  among the C header's symbols). As you said, it belongs to the C adapter, not
+  to this round.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Scenario suite first slice builder" finished · 6m 44s
+
+● The scenario slice is on main (eight commits, picked cleanly). Giving the
+  rings builder the browser now, and verifying the landing beside its install.
+  ⎿  Resuming agent a18775f
+
+  Searched for 1 pattern, read 1 file, ran 4 shell commands (ctrl+o to expand)
+● Write(AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/scenari
+       o-suite/README.md)
+  ⎿  Wrote 43 lines to AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-
+     11-18/Probes/scenario-suite/README.md
+      1 # The scenario suite's first slice: the count of today's cases, a
+        nd what the table measured
+      2
+      3 Historical record of a measurement, November 18, 2026, by the roo
+        t of [the day's session](../../2026-11-18.1.record.md) and one bu
+        ilder. What the suite is now is in the Live Docs of `tests/e2e/sc
+        enarios/` and in [the tooling guide](../../../../../../../.mdmd/l
+        ayer-2/internal-tooling.mdmd.md); nothing here is decided beyond
+        what that code does, and the numbers are of this date.
+      4
+     … +39 lines (ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Verifying the landing on main (lint, build, unit and integration tests) and
+  filing the scenario measurement where it will be kept; waiting on the
+  verification now.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Three new token-resolver tests fail on main but passed in the builder's
+  worktree, because main's Java sample still has stale .class files that the
+  test picks up. I'm checking whether the product's sample build has the same
+  problem before fixing it. · summary
+
+  Read 1 file, ran 4 shell commands (ctrl+o to expand)
+
+● Fixed the test (it now lists the files git tracks, as a map does). Adding the
+  note to its Live Doc and committing, with the measurement files.
+
+  Made 1 scratchpad edit +50, searched for 1 pattern, ran 6 shell commands (ctrl+o to expand)
+
+● The scenario suite's first slice is on main. One thing failed in my own
+  verification that the builder's clean worktree could not have shown, and it is
+  mended.
+
+  - Landed: eight commits, picked cleanly (6ffd40f0 to 686ab1af). After the
+    correction the table judges 715 promises over ten maps in 127 s, with none
+    broken.
+  - The compiler check now has teeth. C and C++ are green by a frozen exception
+    of one named edge each, shown on its own line as a baseline. An unlisted
+    missing edge goes red, and so does a listed entry that is no longer a real
+    gap.
+  - What failed on main: three unit tests of the new token resolver. The test
+    walked each Rosetta program's folder on disk, and this working copy's Java
+    sample still holds compiled .class files from an October build. Git ignores
+    those files.
+  - The product is untouched by it. The bundle built by this afternoon's gate
+    holds 1,038 files and none of them is compiled output.
+  - The mend (a2869e62): the test now lists the files git tracks, which is what
+    a map holds.
+  - Not yet run on main since the landing: the integration tests and the browser
+    suite. They passed in the builder's worktree. I'm leaving them to the gate
+    because the rings builder has the machine.
+  - Filed: the measurement is kept in Probes/scenario-suite (AI-Agent-Workspace/
+    AgentSessionHistory/2026/11/2026-11-18/Probes/scenario-suite/README.md),
+    with the ledger of all 488 cases, the run logs and the four pictures I
+    judged.
+
+  The two C-family findings (15 compiler edges missing per program, and the
+  include guard listed as a symbol) are written into direction under open
+  questions for you to rank.
+
+  Now: the rings builder has the browser for the ring mend's pictures and the
+  horizon trial's. After it hands back I prove the history-race mend, try the
+  search-pause cases at half their seeds, and run one gate over everything.
+
+● Background command "Fallback timer of fifty minutes while the scenario builder
+  works" completed (exit code 0)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Nothing new has arrived: the timer I set earlier fired, and I've renewed it.
+  The rings builder has moved its three commits onto the new main and is working
+  with the browser. I'm keeping the machine quiet until it hands back.
+
+● Agent "Rings beside membranes mend builder" is waiting on its own background
+  work · 33m 12s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The rings builder's pictures are made while its browser cases still run.
+  Looking at them with my own eye now, starting with its notes on each.
+
+  Read 7 files, ran 1 shell command (ctrl+o to expand)
+
+● Agent "Rings beside membranes mend builder" is waiting on its own background
+  work · 33m 50s
+
+● I've looked at the rings builder's pictures while its browser cases finish;
+  the full report follows its handback. Two things now:
+
+  - The horizon at one hop is a different kind of picture. Under "Everything",
+    archetype.ts and its seven connections are a small knot beside a 240-file
+    membrane and 33 islands (picture (.claude/worktrees/agent-a18775fdc2a739b25/
+    AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/beyond
+    -the-hops/hops-1-everything.png)). Under "Next step" the same pin fills the
+    frame with nine named membranes around it and no islands (picture
+    (.claude/worktrees/agent-a18775fdc2a739b25/AI-Agent-Workspace/AgentSessionHi
+    story/2026/11/2026-11-18/Screenshots/beyond-the-hops/hops-1-next-step.png)).
+    The counts are 9 spheres and 184 files in membranes, against 69 and 965. At
+    two and three hops the web of wires is the noise in both pictures, and the
+    lever mainly removes the islands and frames the web larger.
+  - A correction: I said the Hops control lives inside Tuning and might deserve
+    a place on the toolbar. It is already on the toolbar, as the "1 hop" menu
+    beside the layout buttons, so the scrub you described is that menu.
+
+  Those links point into the builder's worktree and will move when the work
+  lands; I'll give you stable ones then.
+
+› Message from general-purpose
+  ## What the pictures show
+  **The ring mend.** I pictured the owner's state: this repository,
+  `archetype.ts` pinned, one hop, documents shown, marbles on, Skin. Before, six
+  spheres wear a ring beside the membranes: five engine files next to the pin,
+  plus the citing document `architectural-decisions`. The key has a "More
+  connected" row. After, there is no ring anywhere and no such row. Six spheres
+  that were not drawn before now stand as themselves: each is the only file of
+  its folder beyond the hops. They are dimmed like the frontier and stand apart
+  from the membranes. Everything else is the same (14 directory membranes, 33
+  wrapped groups).
+  - **Documents off:** no ring either. The groups divide differently (109 file
+  spheres, 11 membranes, 3 lone files).
+  - **Group Wrappers Off:** identical before and after, 39 rings, and the "More
+  connected" row stays.
+  - **Structure layout:** the pinned file's folder hub at the frontier wore an
+  orange ring before. After, it has none, only the frontier's dimming. This is
+  the case you ruled open.
+  - **Lone file side by side:**
+    - In Connections, `.vscode/settings.json` is a small dimmed blue ball
+  standing alone outside the membranes.
+    - In Structure, the same file is bright beside the scan root, standing in
+  for its folder.
+    - Both are small on screen even zoomed in. The difference between them is
+  visible, but they are not dramatic pictures.
+  - **Marbles:** a faded marble keeps its bands, faintly. That is visible on the
+  Off picture's dimmed spheres; on the tiny lone spheres the bands don't show.
+  - **A count changed since November 17:** today's main shows 6 rings at the
+  owner's state, not 10, because the repository has grown. Two of the six lone
+  files sit beside the citing document; that was part of why it was ringed.
+
+  **The trial ("Beyond the Hops").** Under "Next step", every picture is tight
+  and fills the frame. At one hop it shows the pin, its 7 connections, 9
+  membranes and 2 lone files, and nothing else of the repository. Under
+  "Everything" the same pin sits small among 33 wrapped islands and a huge
+  `integration` membrane.
+
+  | Hops | Everything: spheres / membranes / files in them / files not in the
+  picture | Next step: spheres / membranes / files in them / not in the picture
+  |
+  | --- | --- | --- |
+  | 1 | 69 / 47 / 965 / 0 | 9 / 9 / 184 / 841 |
+  | 2 | 253 / 47 / 781 / 0 | 195 / 12 / 269 / 570 |
+  | 3 | 522 / 44 / 512 / 0 | 467 / 9 / 182 / 385 |
+
+  - **Counts are checked:** every count read from what the page draws matches
+  the same count reckoned by the page's own functions from the bundle.
+  - **Timings:** the membranes' partition takes 3 to 6 ms either way. Packing
+  and hulls take about a third to two thirds as long under "Next step". Time to
+  come to rest barely changes (7 s at one hop, 15 to 18 s at two and three).
+  - **The run of frames (Hops moved 1 to 2 to 3 under "Next step"):** membranes
+  break as their files become hops and new ones form one step further out. For
+  example, `explorer/src · 51` gives way to `explorer · 122` at two hops. It is
+  a run of still frames, not a clip.
+  - **One camera was not used.** The two choices hold pictures of very different
+  sizes, so each picture is the page's own fit. The README says so.
+
+  ## Order of work and commits
+  The branch is on `686ab1af` with nothing in conflict, and the links to today's
+  record resolve. These are the commits on top of `686ab1af`, oldest first, so
+  either piece can land without the other.
+  - **Mend:**
+    - 815cdfe9: code and unit tests.
+    - c02c2795: the wording change.
+    - d9f5322b: browser cases and the rings-mend pictures.
+    - 50e17460: a wait added to the lone-file case.
+    - 701e40a4: notes in the specs' Live Docs.
+  - **Trial:**
+    - ea74eb20: lever, rule and unit tests.
+    - 5acee362: browser case, pictures, and the corner case named in the design
+  document.
+  - **Both:** 29d9931e regenerates the Live Docs for both pieces. Landing either
+  alone wants a regeneration afterwards.
+
+  ## Checks
+  - **Install and build:** `npm ci`, build and lint are clean.
+  - **Unit tests:** 2027 pass in 180 files.
+  - **Browser, every 3D spec plus the key and tuning specs, one worker, port
+  8790:** 87 pass and 2 fail. The two are `force-graph-building.spec.ts:66` and
+  `force-graph-defaults.spec.ts:101`, both on your unsteady list. They also fail
+  alone, the same way, against main's own build of `686ab1af` that I served on
+  port 8791, so they are not this work's. `history-scrubber.spec.ts:180` was not
+  in my run.
+  - **The two new mend cases fail on main's build, as they should:** the owner's
+  picture under Skin shows 8 rings there, and the lone file is not drawn.
+  - **Live Docs:** generated; the lint passes 1048 files with only its standing
+  warning about disconnected files; the markdown link audit and the
+  documentation-link check pass.
+
+  ## Browser cases changed or added
+  - **Mend:**
+    - `spatial-legend.spec.ts`: the legend case expects no "More connected" row
+  under Skin, and checks the row and its description after switching Group
+  Wrappers to Off. The key's-words case audits 6 rows instead of 7.
+    - `force-graph-identity.spec.ts`: the journey under Skin expects no ring.
+  The check that names clear the rings now runs with Group Wrappers Off at the
+  end, after drawing the camera closer, since Off names nothing at rest.
+    - `force-graph-wrappers.spec.ts`:
+      - the archipelago case now asserts no ring on any sphere;
+      - new: the owner's picture has no ring under Skin or Cloud, and has its
+  rings and the row under Off.
+    - `force-graph-shells.spec.ts`, new: a lone file is drawn, as dim as the
+  frontier, with no ring, and a press pins it (it passed 3 times running).
+  - **Trial:**
+    - `force-graph-shells.spec.ts`, new: under "Next step" the shells drawn
+  match the rule, every held file is one step from the picture, and no unreached
+  seed or wrapper is drawn. Switched to "Everything", the picture is today's.
+    - `tests/e2e/tuning.spec.ts`: the control count is 68.
+
+  ## Where things are
+  - Pictures and READMEs:
+    - `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/rin
+  gs-mend/`
+    - `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/bey
+  ond-the-hops/` (pictures in pairs by hop, plus `frames/`)
+  - **The "before" pictures** come from a build of main's ten changed client
+  files at `686ab1af`, not from a lever. The tree was restored afterwards and is
+  clean.
+  - **Temporary files** are removed from the worktree: the picture script and
+  its stray Live Doc, `test-results`, and the two servers.
+
+  ## Unfinished or for you
+  - **The decisions log** (`architectural-decisions.mdmd.md`, about line 568)
+  still records the ring as drawn everywhere. I haven't changed it because it
+  isn't mine.
+  - **No helper subagent was used.**
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Rings beside membranes mend builder" finished · 51m 46s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The ring mend and the horizon trial are both on main now (eight commits,
+  picked cleanly). Applying my prepared mend for the history race and proving it
+  in the browser next.
+
+  Searched for 4 patterns, read 1 file, ran 7 shell commands (ctrl+o to expand)
+
+● Background command "Fallback timer of fifty minutes while the rings builder
+  works" completed (exit code 0)
+
+● The history-race fix is confirmed: the case failed 2 of 8 runs before and
+  passed 8 of 8 after, and the full file passes at one worker. I'm now measuring
+  the search-pause cases at half their seeds. · summary
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Halving the seeds won't help, since 121 of the search's trials are boundary
+  joins that ignore the seed count (42 s at 80 seeds, 35 s at 40). I'm now
+  making one case wait only for what it promises, and proving that change.
+  · summary
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● All three test mends are proven. Bringing the documents level (decisions log,
+  the test notes, the picture inventory), then starting one gate over everything
+  landed today.
+
+  Made 2 scratchpad edits +161, ran 4 shell commands (ctrl+o to expand)
+
+● Everything is committed and the documents check clean. Starting the evening's
+  gate now.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The ring mend and the horizon trial are both on main, with pictures you can
+  open now. One gate is running over everything landed today and should end near
+  21:20 UTC.
+
+  The ring mend, at your state
+
+  archetype.ts pinned, one hop, documents on, marbles on, Skin:
+
+  - Before: six spheres wear a ring beside the membranes, and the key has a
+    "More connected" row (near the pin
+    (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/rings
+    -mend/01-owner-state-before-near-archetype.png)).
+  - After: no ring and no row. Six more spheres are drawn, each the only file of
+    its directory beyond the hops, dimmed and standing apart from the membranes
+    (near the pin (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Sc
+    reenshots/rings-mend/02-owner-state-after-near-archetype.png)).
+  - Documents switched off: no ring either, and the groups divide differently
+    (picture (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screensh
+    ots/rings-mend/03-owner-state-after-documents-off.png)).
+  - Group Wrappers Off: unchanged, 39 rings and the row.
+
+  The count at your state is six rings today, not the ten I measured on November
+  17, because the repository has grown.
+
+  Two things I'd like your eye on, neither blocking:
+
+  - The lone file is dimmed in Connections and bright in Structure. The
+    difference shows, but both are small on screen (Connections
+    (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/rings
+    -mend/08-lone-file-connections.png), Structure
+    (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/rings
+    -mend/09-lone-file-structure.png)).
+  - The Structure hub at the edge lost its orange ring and keeps only its
+    dimming (before (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/S
+    creenshots/rings-mend/06-structure-hub-at-the-frontier-before.png), after
+    (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/rings
+    -mend/07-structure-hub-at-the-frontier-after.png)).
+
+  The horizon trial ("Beyond the Hops")
+
+  The same pin with the lever at each value:
+
+  ┌──────┬─────────────────────────────┬────────────────────────────────────┐
+  │ Hops │   Everything: spheres /     │ Next step: spheres / membranes /   │
+  │      │  membranes / files in them  │  files in them / files not drawn   │
+  ├──────┼─────────────────────────────┼────────────────────────────────────┤
+  │ 1    │ 69 / 47 / 965               │ 9 / 9 / 184 / 841                  │
+  ├──────┼─────────────────────────────┼────────────────────────────────────┤
+  │ 2    │ 253 / 47 / 781              │ 195 / 12 / 269 / 570               │
+  ├──────┼─────────────────────────────┼────────────────────────────────────┤
+  │ 3    │ 522 / 44 / 512              │ 467 / 9 / 182 / 385                │
+  └──────┴─────────────────────────────┴────────────────────────────────────┘
+
+  - At one hop it is a different kind of picture. Under Everything
+    (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/beyon
+    d-the-hops/hops-1-everything.png) the pin and its seven connections are a
+    small knot beside a 240-file membrane and 33 islands. Under Next step
+    (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/beyon
+    d-the-hops/hops-1-next-step.png) the pin fills the frame with nine named
+    membranes around it and nothing else.
+  - At two and three hops the web of wires is the noise either way. The lever
+    mainly removes the islands and frames the web larger (two hops, Next step
+    (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/beyon
+    d-the-hops/hops-2-next-step.png)).
+  - Form, break and re-form: a run of seven stills as Hops goes from 1 to 3 is
+    in frames/ (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screen
+    shots/beyond-the-hops/frames/). For example explorer/src · 51 gives way to
+    explorer · 122 one step farther out. It is stills, not a clip.
+  - Build cost: packing the membranes takes a third to two thirds as long under
+    Next step. Time to rest barely changes.
+  - Cameras differ between the two values. Each picture uses the page's own fit,
+    because one camera would leave one of the two a speck.
+
+  My read: at one hop, Next step is the better picture of a pin, and I'd make it
+  the default if you agree once you've used it. It stays a lever until then.
+
+  To try it yourself, serve the gate's build on your port (npx http-server
+  dist/explorer -p 8999), ideally after the gate ends so your browser doesn't
+  slow its timing-sensitive cases:
+
+  - Your state after the mend, one hop
+    (http://127.0.0.1:8999/?s=N4IgbiBcDMA0IBsqgGYHsBOBjApgcQwEMAHAC2RFLWIGcoBGeA
+    cwzQFdiB1I44nDOpBA0A1gEsAdiAC+0+BigAXDGxzwAVkpVqQARyghoAExDxiUANqgpQ4oSwjCTH
+    DQD0OCU0k5XNbK4QxMBwAWiM0LDdCbFIcRQBPPgA6RTp4QRAAKhkAXWkgA)
+  - Next step, one hop (http://127.0.0.1:8999/?s=N4IgbiBcDMA0IBsqgGYHsBOBjApgcQw
+    EMAHAC2RFLWIGcoBGeAcwzQFdiB1I44nDOpBA0A1gEsAdiHgAjHAE80EgCYAJaoJAScADwAuAWhp
+    6cxEAF9z8DFD0Y2OeACtb9xyACOUENGXSQZpAA2qBSQsSEWCKETDg0APQ4EkySOPE02PEIYmA4Bs
+    poWAmE2KQ4evJ8AHR6dPCaAFQWALrmQA)
+  - Next step, two hops (http://127.0.0.1:8999/?s=N4IgbiBcDMA0IBsqgGYHsBOBjApgcQ
+    wEMAHAC2RFLWIGcoAmeAcwzQFdiB1I44nDOpBA0A1gEsAdiHgAjHAE80EgCYAJaoJAScADwAuAWh
+    p6cxEAF9z8DFD0Y2OeACtb9xyACOUENGXSQZpAA2qBSQsSEWCKETDg0APQ4EkySOPE02PEIYmA4B
+    spoWAmE2KQ4evJ8AHR6dPCaAFQWALrmQA)
+  - Next step, three hops (http://127.0.0.1:8999/?s=N4IgbiBcDMA0IBsqgGYHsBOBjApg
+    cQwEMAHAC2RFLWIGco4QBzDNAV2IHUjjicM7IIGgGsAlgDsQ8AEY4AnmnEATABLUBIcTgAeAFwC0
+    NXTmIgAvmfgYoujKxzwAVjbsOQARyghoSqSFOQANqgkoLEhFjChIw4NAD0OOKMEjhxNNhxCKJgOP
+    pKaFjxhNikOLpyvAB0unTwGgBU5gC6ZkA)
+
+  From any of these, the hop menu on the toolbar is the scrub, and the lever is
+  in Tuning → 3D Layout → Discovery → Beyond the Hops.
+
+  Three test mends
+
+  - The history race is mended and proven. Under the same load, the old case
+    failed 2 of 8 times beside a second worker with the gate's own error; the
+    mended one passed 8 of 8, and the whole file passed at one worker.
+  - I was wrong about the slow layout search. I told you 80 seeds had become
+    about twice 80 trials. Measured: the search runs 121 boundary joins whatever
+    the seed count (80 seeds take 42 s, 40 seeds still take 35 s). So it is
+    still a cost we chose on November 4, but halving the seeds would not have
+    helped.
+  - The hidden-page case now waits only for what it promises (that the search
+    resumes), runs in about ten seconds, and no longer needs to run alone. Both
+    search-pause cases also count every kind of trial now; before, a pause that
+    let a boundary join run would have passed.
+
+  Five cases now run alone in the second pass; the suite is 542 cases.
+
+  The decisions log's entry on the ring records the narrowing and what stays
+  open (architectural-decisions.mdmd.md
+  (.mdmd/layer-3/architectural-decisions.mdmd.md)). Everything is committed
+  through fff1895b; I'll report the gate when it ends.
+
+● Background command "Wait for the evening's gate to finish and show its stages
+  and results" completed (exit code 0)
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● The gate returned one failure, the known flaky 3D-to-2D transition test, whose
+  cause is visible in the test itself. I'm fixing it now while the machine is
+  free. · summary
+
+  Made 1 scratchpad edit +83, ran 4 shell commands (ctrl+o to expand)
+
+● The evening gate finished in 47 minutes for 542 cases, with one red that I've
+  since fixed (a timing issue in force-graph-defaults.spec.ts). Still owed is
+  the other unsteady case, force-graph-building.spec.ts:66, which failed in two
+  of today's four runs; I'm briefing a builder for the defaults round next.
+  · summary
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Agent(Defaults round builder) Opus 5.5
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+  Ran 3 shell commands · 1 failed (ctrl+o to expand)
+
+● The evening's gate ended: 47 minutes 24 seconds for 542 cases, with one red,
+  which I have since mended. I wrote this to you about twenty minutes ago, but
+  the session log shows that message never reached you, so here it is again with
+  what has happened since.
+
+  ┌───────────────────────────────────────┬─────────────────────────────────┐
+  │                 Stage                 │             Result              │
+  ├───────────────────────────────────────┼─────────────────────────────────┤
+  │ Lint, build, 2,027 unit tests, 138    │ passed                          │
+  │ integration tests, three audits       │                                 │
+  ├───────────────────────────────────────┼─────────────────────────────────┤
+  │ First pass, two workers               │ 529 passed, 7 not applicable, 1 │
+  │                                       │  failed (40.7 minutes)          │
+  ├───────────────────────────────────────┼─────────────────────────────────┤
+  │ Second pass, five cases alone         │ 5 of 5 (2.8 minutes)            │
+  └───────────────────────────────────────┴─────────────────────────────────┘
+
+  - Passing inside the whole suite for the first time: the scenario table's 43
+    cases, the new ring and horizon cases, and the history case at two workers
+    after its mend.
+  - The one red was force-graph-defaults.spec.ts:101, one of the two
+    long-standing unsteady cases. It pressed 3D or 2D, waited to see the
+    transition, and only then stopped the page's clock to inspect it. On a
+    loaded machine the first 280 ms it meant to inspect had already passed.
+  - The mend (b1c570ba): the clock now stops before the press. Under the same
+    load the case failed 4 of 8 times before and 0 of 8 after. It has not yet
+    run inside a whole gate.
+  - Still owed: the other unsteady case, force-graph-building.spec.ts:66. It
+    passed tonight but failed in two of today's four whole runs.
+
+  So two workers hold. The gate is down from about 107 minutes on the Windows
+  drive yesterday to 47, with 54 more cases than this morning.
+
+  Running now: a builder on the defaults round you decided this morning.
+
+  - Marbles On in the 3D map ("I think they are a worthy new default").
+  - Cells under the name in place of "+2 files" in the 2D map. I chose that one
+    of the two cell variants; it is yours to reverse.
+  - Tests that assumed the old defaults will say what they depend on, and
+    nothing gets weakened. If one of the scenario table's laws breaks under the
+    cells, it comes to me as a finding.
+  - Pictures come first, judged by eye, before any test is changed.
+
+  The builder has the machine to itself. When it hands back I review its
+  pictures and its list of changed cases, land it if it holds, and run the gate.
+  That gate will also be the first whole run with tonight's last mend.
+
+  Both earlier builders' worktrees are removed. The record is committed through
+  f55a7f07.
+
+● Agent "Defaults round builder" is waiting on its own background work · 10m 32s
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The log confirms the gate's result reached you this time (21:24 UTC), and I've
+  copied it into the record as delivered.
+
+  The defaults builder has paused on a background run of its own and has not
+  reported yet, so there is nothing to review. I'm keeping the machine quiet for
+  it and waiting for its handback.
+
+● Agent "Defaults round builder" is waiting on its own background work · 16m 49s
+
+● Agent "Defaults round builder" is waiting on its own background work · 20m 23s
+
+● Agent "Defaults round builder" is waiting on its own background work · 20m 29s
+
+● Agent "Defaults round builder" is waiting on its own background work · 24m 47s
+
+● Agent "Defaults round builder" is waiting on its own background work · 27m 35s
+
+● Agent "Defaults round builder" is waiting on its own background work · 29m 33s
+
+● Agent "Defaults round builder" is waiting on its own background work · 36m 48s
+
+● Agent "Defaults round builder" is waiting on its own background work · 37m 0s
+
+● Agent "Defaults round builder" is waiting on its own background work · 40m 16s
+
+● Agent "Defaults round builder" is waiting on its own background work · 40m 30s
+
+● Agent "Defaults round builder" is waiting on its own background work · 42m 24s
+
+● Background command "Fallback timer of fifty minutes while the defaults builder
+  works" completed (exit code 0)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The defaults builder has its changes and pictures committed and is still
+  running browser cases. Looking at its pictures with my own eye while it
+  finishes.
+
+  Read 2 files (ctrl+o to expand)
+
+● The fallback timer fired and I renewed it; the defaults builder is still
+  running browser cases. Its pictures are done and I've looked at two of them.
+
+  - 2D, reading look: beside pathfind.ts, the …/live-docs/history directory now
+    shows its 23 undrawn files as two rows of small blue and green cells under
+    its name, where "+23 files" stood. It reads as cells in a directory, and the
+    path keeps its room on the line.
+  - 3D, pinned at one hop: every file is a marble with its kind's glass and blue
+    and green bands; the membranes and their names are as before.
+
+  The builder also measured each directory handle under both settings: none that
+  said something with the count says nothing with the cells, at any zoom look,
+  on this repository or the estate sample. One thing it flags for your eye: a
+  single cell under a name (one undrawn file) is a small dim dot that is easy to
+  miss, where "+1 file" used to be words.
+
+  Full review, landing and the gate follow its handback.
