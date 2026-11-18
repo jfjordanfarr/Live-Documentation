@@ -426,7 +426,7 @@
   5. After test speed: the rings beside the membranes, your defect, first in
      that list.
 
-  ❯ <ide_selection>The user selected the lines 1 to 427 from
+❯ <ide_selection>The user selected the lines 1 to 427 from
   /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/11/2026-11
   -18.1.claude-code.export.txt:
 
@@ -1648,3 +1648,246 @@
   2. Record the gate's result.
   3. Land the session-history round on main by its script.
   4. Run the whole suite at two workers.
+
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/ChatHistory/2026/11/2026-11-18.1.claude-code.export.txt in the
+  IDE. This may or may not be related to the current task.</ide_opened_file>
+
+❯ >Your re-saved export shows rows ending in "· summary" between my messages. I
+  don't write those rows and can't see them. The harness writes them in my
+  voice from the work it folds away, and they aren't in the session log.
+  >One of them was wrong. At about 14:56 it said I was "briefing the
+  session-history builder", and no builder was briefed until 15:14. Treat only
+  my own messages as my word. I filed your export as received; it is the only
+  witness of those rows.
+
+  Whaaaaat that is so crazy!!! Wow! Yeah I seriously am just copy-pasting in
+  bulk from what it gives me. That is seriously wild. I think what we're seeing
+  is what's in my UI: summary messages from subagents ticking by from time to
+  time (and only sometimes with subagents?). Sounds to me like there are some
+  rather hilarious divergences between:
+  - What you say
+  - What gets shown to me in the UI
+  - What gets exported from the UI
+
+  I am uh, very happy we have our record format owned by the root agent.
+  Whatever goofy business they're doing to make distillation hard is making
+  recordkeeping totally silly.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Background command "Wait for the gate to finish and show the end of its log"
+  completed (exit code 0)
+
+● The gate has just finished; reading its result now. I also found something
+  that corrects what I told you about the "summary" rows, and I'm confirming it
+  before I answer you properly.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Gate result is in (485 passed, 3 red) and the new red case passes alone 3 of
+  3. Recording your message and the result now, then I'll answer you and go on
+  to the landing.
+
+  Made 1 scratchpad edit +53, ran 4 shell commands (ctrl+o to expand)
+
+● Writing Turn 7 and the gate's result into the record; your answer follows
+  right after the commit.
+
+  Made 3 scratchpad edits +3 -3, ran 2 shell commands (ctrl+o to expand)
+
+● I told you wrong about those rows, and your newest export is what shows it.
+  They don't come from subagents, and the harness doesn't make them up. A "·
+  summary" row is the harness's summary of my own reasoning at that step, and
+  several stand where I meant a short line for you.
+
+  The evidence
+
+  Between 15:43 and 15:56 UTC I wrote seven short lines to you. Your export
+  shows three word for word, and a reworded "· summary" row in place of each of
+  the other four. One pair:
+
+  - What I wrote: "Review done: the move breaks nothing by my separate check (20
+    broken paths and 17 broken anchors in documents before, the same 37 after,
+    all old). Sending the builder my decisions and the go for its second
+    milestone now."
+  - What you saw: "The review found no new breakage: the move leaves the same 37
+    broken paths and anchors as before, all of them old. I'm sending the
+    builder my decisions and the go for its second milestone now. · summary"
+
+  I listed the log's entries for that stretch by kind only, without reading any
+  reasoning. At each of those four places it holds a reasoning entry and no
+  message. So the harness filed my line as reasoning and showed you its summary
+  of it. I don't know what decides which lines get that treatment.
+
+  Two more things follow:
+
+  - The 14:56 row ("briefing the session-history builder") was most likely my
+    own plan of that minute, which I then reordered. It was not a false report
+    by the harness, as I told you. I can't check it, because that would mean
+    reading my reasoning out of the log, which our rules forbid.
+  - How to read them: a "· summary" row is what I was thinking of doing, in
+    someone else's words. A message is what I said. Every closing reply today
+    was kept as a message.
+
+  Your three-way split is right:
+
+  ┌────────────────┬─────────────────┬────────────────┬───────────────────┐
+  │                │   Session log   │  Your window   │    Your export    │
+  ├────────────────┼─────────────────┼────────────────┼───────────────────┤
+  │ A message I    │ kept whole      │ shown as       │ shown, re-wrapped │
+  │ write          │                 │ written        │  as terminal text │
+  ├────────────────┼─────────────────┼────────────────┼───────────────────┤
+  │ My reasoning   │ kept, but stays │ sometimes a "· │                   │
+  │ between steps  │  out of our     │  summary" row  │ the same rows     │
+  │                │ record          │                │                   │
+  ├────────────────┼─────────────────┼────────────────┼───────────────────┤
+  │ Tool work      │ kept            │ one folded     │ one folded line   │
+  │                │                 │ line           │                   │
+  └────────────────┴─────────────────┴────────────────┴───────────────────┘
+
+  I have no evidence on the vendor's reasons. Your bulk copy-paste is fine: all
+  three saves of today's export are committed as you saved them.
+
+  The gate
+
+  485 of 488 browser cases passed, in 74 minutes for the whole gate. The same
+  gate took about 107 minutes on the Windows drive. That corrects something else
+  I told you: the new disk did shorten the browser stage, 72 minutes against
+  98. My earlier reading came from the slowest first cases.
+
+  Three cases are red:
+
+  - force-graph-building.spec.ts:66 and force-graph-defaults.spec.ts:101: the
+    two known unsteady ones.
+  - local-map-hidden.spec.ts:95: new, but it passed alone three times of three.
+    It takes 46 to 50 s against a 45 s wait, so the wait is too tight. It failed
+    while my own check scripts were running, which is the likelier cause.
+
+  What you can delete now
+
+  The new copy carries the whole gate, so these can go:
+
+  - the folder on D:\;
+  - the exited container kind_goldstine;
+  - that container's node_modules volume.
+
+  Keep the two agents' volumes and the images; this container uses them. I can't
+  see Docker from in here, so check the names in Docker Desktop.
+
+  Next
+
+  I'm landing the session-history round on main now. Then the whole suite runs
+  at two workers, which checks the landing and gives the two-worker measurement.
+
+● Background command "Short timer so the landing continues after the reply to
+  Turn 7" completed (exit code 0)
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Landing is under way on main: the 4,505 renames are committed and the links
+  are re-pointed in 1,075 documents; running the script's verify and my own
+  check next.
+
+  Ran 7 shell commands (ctrl+o to expand)
+
+● Seven commits have landed cleanly on main, and the script's verify and the
+  builder's proof both pass there. I'm now making my own hand edits to Memory
+  and the README, then regenerating the Live Docs and running lint, build, unit
+  tests and audits. · summary
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Making the few Memory and README edits that are mine, then the Live Docs
+  regeneration and the non-browser checks.
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● Finishing the authored notes for the four source files whose behaviour
+  changed, then running the non-browser gate.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Non-browser gate passes on the landed tree (1,977 unit, 138 integration,
+  audits reading exactly the expected file counts). Committing, then starting
+  the whole browser suite at two workers.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Agent(Dependency audit remediation builder) Opus 5.5
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+● The two-worker browser run is underway on the landed tree, with a second
+  builder analyzing the 19 dependency findings in parallel. I'm verifying the
+  rebuilt bundle still has the same documents, then recording the landing.
+  · summary
+
+  Made 1 scratchpad edit +46, ran 4 shell commands (ctrl+o to expand)
+
+● The session-history round is landed on main, and the whole browser suite is
+  now running on it at two workers.
+
+  What landed
+
+  Seven commits, bbce1d4c to 0be65840, none pushed (main is 20 commits ahead of
+  origin/main). One script moved 4,505 files and re-pointed the links in 1,075
+  documents. A day now looks like this:
+
+  AI-Agent-Workspace/AgentSessionHistory/2026/11/
+    README.md                the month's inventory
+    Summarized/              summaries, as before
+    2026-11-17/
+      2026-11-17.1.record.md
+      2026-11-17-194707-…txt   your export, under the name it came with
+      2026-11-17.1.images/
+      Probes/cells-trial/
+
+  Every check below was run on main after the landing:
+
+  - Captures: all 227 are byte for byte what they were.
+  - Links: 23,941 reach the same file and anchor as before. My separate check
+    counts the same 19 broken paths and 9 broken anchors before and after, all
+    old.
+  - Explorer bundle: rebuilt, it carries the same 103 workspace documents as
+    before the move.
+  - Audits: they read the same files as before, less one deleted screenshot
+    index whose contents went into the month inventories.
+  - Non-browser gate: passes (1,977 unit, 138 integration).
+
+  AgentSessionHistory/old-paths.md maps every old path to its new one, and the
+  layout is written up in AgentSessionHistory/README.md under "Where things
+  are".
+
+  Your export has moved
+
+  It is now at AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11
+  -18.1.claude-code.export.txt. The tab you have open still points at the old
+  place, so saving from it would create a new file there. Reopen it from the new
+  path before your next paste.
+
+  The "summary" rows were not a new discovery
+
+  Our archive README has described them since November 16: eight replies shown
+  to you as "· summary" lines, "the cause was not found". I read that README
+  this morning and failed to connect it. What today adds is part of the cause
+  (the log holds a reasoning entry where my line should be), and the README now
+  says so.
+
+  Two rulings for you to correct
+
+  Both go beyond the convention as you confirmed it:
+
+  - The Antigravity captures of November 2025 went into their days
+    (2025-11-19/Antigravity/, 2025-11-20/Antigravity/) rather than staying at
+    month level.
+  - Two exports the harness named for the day after their session began went
+    into the day the session began.
+
+  Running now
+
+  - The whole browser suite at two workers, started 16:31 UTC. It gates the
+    landing and gives the two-worker measurement against this morning's 72
+    minutes at one worker. Any case red there gets rerun alone at one worker.
+  - A builder on the 19 dependency findings. It is limited to analysis and the
+    lockfile while the run measures. It installs and tests only after the run
+    ends, and that round gets its own gate.
