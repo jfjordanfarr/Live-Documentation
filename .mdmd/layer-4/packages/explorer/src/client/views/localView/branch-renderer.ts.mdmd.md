@@ -74,6 +74,8 @@ Since 2026-11-16 ([Turn 5 of the November 15 record](../../../../../../../../AI-
 
 Since 2026-11-16 ([the corrections decided that day](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#work-notes-the-closed-directorys-cells-and-shapes-come-back)) a drawn directory's label is as wide as its handle reaches (`directory-handle.ts`'s `handleReach`): the strip's own columns and, beyond them, the level columns of the membrane in which no card, closed box or inner membrane stands within the strip's height, read from the pose each time it is applied. `writeHandleNeeds` (before, `writeCountNeed`) also writes what the chevron and the directory's own name need across, `--dir-name`, from which the stylesheet brings the held line down in size before the name is cut.
 
+Since 2026-11-18 a drawn directory publishes its inset (`data-inset`, the box's padding and border on each side, in the map's own pixels) beside its segments, so that the browser tests' scenario suite judges every card to stand inside its directory by the padding the map keeps, read from the page, where a test had written 12 px ([the root's ruling on the scenario builder's first handback](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#work-notes-the-scenario-builders-first-handback)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
