@@ -426,6 +426,7 @@
   5. After test speed: the rings beside the membranes, your defect, first in
      that list.
 
+
 ❯ <ide_selection>The user selected the lines 1 to 427 from
   /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/11/2026-11
   -18.1.claude-code.export.txt:
@@ -5753,3 +5754,1140 @@
   gate notes first. · summary
 
   Made 1 scratchpad edit +67, ran 4 shell commands (ctrl+o to expand)
+
+● The red case traces to the Cells under name setting, not the marbles: with
+  cells the 3D-to-2D press holds the page for 550–700 ms, versus 206–254 ms with
+  Count. I'm now tracking down where those extra ~350 ms go. · summary
+
+  Listed 1 directory, ran 4 shell commands (ctrl+o to expand)
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/AgentSessionHistory/2026/11
+  /2026-11-18/2026-11-18.1.claude-code.export.txt in the IDE. This may or may
+  not be related to the current task.</ide_opened_file>
+  In any case: a full reset of subscription "usage" will happen in 6 hours and
+  only 25% of "usage" has been taken up. You're free, if you feel it wise, to
+  send off many many builders on tasks that you wish done. You know the compute
+  resources, so you can manage how many get spun up and what they're allowed
+  to do. But in terms of token availability, you've got about 6 hours of "more
+  or less unlimited" usage.
+● Hours of usage came in at about six, which I'll note for my full reply.
+  Meanwhile I'm testing a fix for the one test the new defaults broke, by moving
+  the cell-copy step into the background slices. · summary
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+❯ If you've got wishlist items you want to hit, feel free to hit 'em.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● My first guess at the cause was wrong: the fix did not move the number, so
+  I've measured rather than guessed again. Reading the page's own timing marks
+  for that press now.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The red test still fails, and the page's own marks show its press handler
+  takes about 40 ms either way, so the extra half second comes after the handler
+  returns. I'm reading that part of the code now. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Running the proof for the unsteady test at force-graph-building.spec.ts:66 in
+  the background, and recording your two latest messages meanwhile. The full
+  reply with the gate result, your links and the six-hour plan comes next.
+  · summary
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Agent(Reconcile rearranged direction draft) Opus 5.5
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The unsteady test failed 6 of 8 runs beside a second worker, because its
+  target sphere had already moved; picking a still sphere first has passed every
+  run so far, so I'm applying that fix now. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Background command "Wait for the building case's proof run" completed (exit
+  code 0)
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+› Message from general-purpose
+  ## Handback: the interaction and accessibility half of the design system
+
+  ### Files
+  1. **Committed:**
+  `.mdmd/layer-2/design-system/interaction-and-accessibility.mdmd.md`, commit
+  `5eef46ff` in the worktree, on top of `4856acf3`. It opens by saying it is
+  current and authored, what it is for, and that `visual-foundations.mdmd.md`
+  beside it is the other half. Sections:
+     - 1 Principles: ten, each with its reason.
+     - 2 The interaction grammar: a table of each act on each surface, the
+  rules, and where one act means two things.
+     - 3 States: the one look of each state, and a matrix of which states each
+  component has.
+     - 4 The keyboard: tab order, shortcuts, the order Escape closes things in,
+  and where focus goes.
+     - 5 Assistive technology: landmarks, names, roles, toggles, live regions,
+  and `aria-busy` beside `data-building`.
+     - 6 Feedback and orientation.
+     - 7 The WCAG 2.2 A and AA table.
+     - 8 Targets.
+     - 9 Responsiveness.
+     - 10 Portability: the content security policy, browsers, fonts, browser
+  storage, what a link carries, exports.
+     - 11 Words on screen.
+     - 12 Glossary.
+
+     Each rule has its term defined at first use, the rule itself, why, the file
+  and line, what checks it, and a status.
+  2. **Not written: `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/P
+  robes/design-system/findings-interaction.md`.** The harness refused my Write:
+  "Subagents should return findings as text, not write report files." I did not
+  work around it. The standard already links to that path, so the root needs to
+  create the file. Everything that belongs in it is below: what was read, the
+  counts, all 31 ranked findings, the standards with no reason found, how each
+  table could be kept true, and what is unfinished. Its header should read:
+  historical record, dated 2026-11-18, written from code at `4856acf3` with no
+  browser, nothing in the product changed. Links from that folder reach the
+  repository root with `../../../../../../../`.
+
+  ### What was read
+  - **In full:** AGENTS.md; owner.md "Formatting and visual taste" (lines
+  199–282); `shared/template.html`; `panels/icon-button.ts`,
+  `panels/item-menu.ts`, `errors.ts`; the building-map README (2026-11-15); the
+  first-visit README (2026-11-12); SECURITY.md; the README's Privacy section.
+  - **In part:**
+    - owner.md "How they work", searched for UI entries.
+    - The Explorer design, lines 10–109.
+    - The decisions log, six decisions whole: One Search;
+  Inspection/Pins/Subject; Reads Only Its Own Site; Clicks Pin What They Name;
+  Descriptions Open on a Tap; Card's Box Never Depends on Zoom.
+    - direction.md "Decisions in force" (lines 106–143, each line to 700
+  characters), plus the touch, mobile, double-activation and one-grammar entries
+  found by search.
+    - The World Map plan's T8.
+    - In the client: the files and lines cited below, and every stylesheet for
+  states and media queries.
+    - The e2e suite, by search; `local-map-keyboard.spec.ts` and
+  `playwright.config.ts` read whole.
+  - **Not read:** the rest of the Explorer design, the rest of the decisions
+  log, the rest of direction.md, the change-over-time plan.
+  - No pictures opened.
+
+  ### Counts
+  Over the 142 non-test files under `packages/explorer/src`:
+
+  | What | Count |
+  | --- | --- |
+  | `aria-` attributes | 236, of 22 kinds (`aria-label` 83, `aria-hidden` 42,
+  `aria-pressed` 35, `aria-expanded` 17, `aria-haspopup` 9, `aria-busy` 8,
+  `aria-description` 7, `aria-describedby` 6) |
+  | Explicit roles | 31, of 21 kinds |
+  | Live regions | 2 `aria-live`, 3 `role="status"`, 1 `role="alert"` |
+  | Native `title` tooltips | 90 sites |
+  | Buttons made by script | 61 sites |
+  | Pointer listeners | 184 (`click` 106, `pointerdown` 12, `wheel` 6,
+  `contextmenu` 4, `dblclick` 1) |
+  | `keydown` sites | 23, in 12 files |
+  | Style rules | `:hover` 68, `:focus-visible` 54, `[aria-pressed]` 12,
+  `:disabled` 10 |
+  | `@media` queries | 15: widths 480, 600, 760, 768, 850; height 480; `pointer:
+  coarse` once; reduced motion 6 |
+  | Reduced motion checked in script | 11 places, none in the World Map |
+  | `localStorage` keys | 4 |
+  | Browser-suite viewports | 17 sizes (1600×1000 34 uses, 1280×800 27, 390×844
+  6); Chromium only |
+  | Keyboard in tests | `keyboard.press` 160 uses in 27 specs; `toBeFocused` 58
+  uses in 17 specs |
+
+  ### The ten most important findings
+  Paths are under `packages/explorer/src/client/` unless marked.
+
+  1. **World Map single-letter shortcuts act from any focus and R throws away
+  the arrangement.** `views/worldMap/controller.ts:1721-1770`. The letters act
+  whenever the World Map is the active view and focus is outside a text field,
+  including on a sidebar button. R calls `resetLayout`, which saves the board's
+  rest positions at once with no undo (`:1961-1965`). This fails WCAG 2.1.4
+  Character Key Shortcuts (level A). Recommend binding the letters only while
+  focus is inside the board, as the pieces' Enter and Space already are
+  (`:1842`).
+  2. **A fatal fault shows its stack in a panel left `inert` and
+  `aria-hidden`.** `errors.ts:84-88` only adds the `visible` class. The template
+  (`shared/template.html:564`) and `detailPanel.ts:99-100` make the panel
+  inert, and only `detailPanel.ts:142-143` undoes that. So the stack can be seen
+  but not focused, copied or read by a screen reader. Confirm in a browser.
+  3. **Some facts live only in a native `title`, which shows to a resting mouse
+  and never on keyboard focus or touch.**
+     - A card's test coverage is appended to the card's `title`
+  (`views/localView/card-factory.ts:265`), on a card that is not a tab stop.
+     - A 3D seed's group size and a shell's file count are only in the title of
+  its name (`views/forceGraphView.ts:844-853`).
+     - The World Map tools' keys are only in their titles (`controller.ts:283`).
+
+     This sits against "a tap, never hover, opens text". Proposed rule: a
+  `title` may only repeat an accessible name or description.
+  4. **Toggles state their state twice: a changing name plus `aria-pressed`.**
+  2D Pin (`card-factory.ts:191-192`, `:886-888`), 3D Pin and Open
+  (`forceGraphView.ts:1170-1171`, `:1179-1180`), Play and Authors
+  (`history/scrubber.ts:427-428`, `:434-435`). A screen reader says "Unpin
+  index.ts, toggle button, pressed". The pin tray and sidebar change their names
+  and also set `aria-expanded` (`panels/pin-tray.ts:66-67`,
+  `index.ts:1219-1221`). This goes against the ARIA Authoring Practices.
+  5. **`aria-busy` and `data-building` say different things, and only
+  `aria-busy` reaches assistive technology.**
+     - `data-building` means the map refuses input.
+     - `aria-busy` means the motion is not yet at rest. It outlasts building by
+  seconds: 1,309 frames against 2 on the estate's seed click.
+     - Nothing tells a screen reader that clicks are being refused.
+     - Five places write `aria-busy`, and `forceGraphView.ts:2504` leaves out
+  the packing that `:692` counts.
+  6. **Status messages are not told (WCAG 4.1.3).** "Nothing found" is
+  `role="presentation"` (`search/search-field.ts:116`); the walkthrough's next
+  step is not announced (`controller.ts:2056-2058`); nor is building.
+  7. **The keyboard cannot turn the 3D camera or pan either map; there is no
+  single-pointer way to turn the 3D camera or move a World Map piece.** This
+  fails WCAG 2.1.1 (A) and 2.5.7 (AA). The World Map's turn buttons show the
+  pattern. Adding controls is a design fork, not a fix.
+  8. **The focus ring has six forms, and its blue is the "offers" blue.**
+     - 1 px rings at `styles/shell.css:426` and `:1030`.
+     - An underline with no ring at `styles/history.css:106`.
+     - A 1.5 px shadow at `styles/local.css:444`.
+     - The World Map's ring in its offers colour at `styles/world.css:455`.
+     - The browser's default on the sidebar's small buttons.
+
+     In today's palette, `state.selected` equals `offersPin` (`#0091ff`,
+  `palette.ts:244` and `:280`), so the blue that means "offers" also means
+  focused and on. The colour is the visual half's to resolve.
+  9. **The same click means "read it" in 2D and "keep it" in 3D, and "pin" means
+  two things.** In the Local Maps a pin retains a file across exploration; on
+  the World Map it keeps a panel open. Each half has its own owner decision, but
+  nothing weighs them against each other, so a person who learned 2D will slip
+  in 3D. No change recommended; the blind playtests should watch for this slip.
+  10. **A shared link's layout settings and filters probably become the
+  receiver's own.** They are applied at `index.ts:188` and `:208`. The
+  receiver's next change to any filter or Tuning control writes the whole state,
+  sender's values included, into their saved settings
+  (`persistence/local-storage.ts:559-571`). The owner on 2026-11-16: "Opening a
+  sent link shouldn't cause your local settings to change." Confirm in a
+  browser, then put it to the owner.
+
+  ### The ranked findings, for the file
+  **Indefensible**
+  1. The World Map's letter shortcuts and R (as above).
+  2. The fault panel left inert (as above).
+  3. Facts only in `title` (as above).
+  4. Toggles stated twice (as above).
+  5. "Clear all" is named "Clear exploration pins", failing WCAG 2.5.3 Label in
+  Name (`panels/pin-tray.ts:43-44`). Rename it "Clear all pins".
+  6. The search's clear button is 18×18 (`styles/search.css:100-104`), a
+  screen-space control below 2.5.8's 24×24. The sidebar's toggle, Back and
+  Forward are probably about 22 px tall (`styles/shell.css:34-45`); confirm.
+  7. Disabled has five opacities with no reason found: 0.3 (`shell.css:59`),
+  0.35 (`history.css:16`), 0.45 (`local.css:335`), 0.55 (`local.css:326`), 0.65
+  (`reading.css:81`).
+  8. The reader's placeholder "Select a Node" / "Click on any node to view
+  details." (`shared/template.html:570-574`) is our words, says "node" and
+  "click", and may never be shown. Check whether any route shows it, then delete
+  it or say nothing.
+
+  **Inconsistent**
+
+  9. `aria-busy` and `data-building` (as above). Keep `aria-busy` as the tests'
+  "settled", written by one function; announce building once, after 300 ms,
+  through a status region.
+  10. Six focus rings, and focus blue equal to offers blue (as above).
+  11. Click inspects in 2D and pins in 3D; "pin" on the World Map
+  (`controller.ts:1739`, `:2015`) (as above).
+  12. The wheel changes view only on the World Map (`controller.ts:1703-1712`).
+  Leave it to ticket T8, and record for T8 how often an entry by wheel is
+  followed within seconds by a return.
+  13. Reduced motion is ignored by the World Map's camera tweens
+  (`controller.ts:1107-1124`).
+  14. Six breakpoints as literals in five files, 760 and 768 only 8 px apart,
+  with 760 and 480 repeated in script (`index.ts:267`, `:275`). No reason found
+  for any value; propose two named sizes.
+  15. The search hint shows "Ctrl+P" on a Mac (`template.html:507`), the field
+  has no `aria-keyshortcuts`, and the key takes the browser's Print. No reason
+  recorded; recommend keeping it (a developer's quick-open habit) and showing
+  the platform's key.
+  16. Two loading signs for one state: the three dots and "Loading..." in the
+  footer (`template.html:496`, `:533-536`).
+  17. The link leaking layout settings (as above).
+  18. On a 2D card's body, Enter opens the reader (`card-factory.ts:278-282`)
+  while a click does nothing (`:276`).
+  19. Three letter cases in our words (Title Case, sentence case, lower case
+  "back/next/done" at `controller.ts:301`), and "Loading..." beside "Path to…".
+  20. Back is named "Back to the last place" in the sidebar and "Back" in the
+  reader for the same act (WCAG 3.2.4).
+
+  **Missing**
+
+  21. No key to turn or pan and no button to turn the 3D camera (WCAG 2.1.1,
+  2.5.7). A design fork.
+  22. No `<main>`, no `<nav>`, no skip link (`template.html:17`, `:501`).
+  23. No polite status region for news a sighted person reads (4.1.3).
+  24. The World Map's flow along the wires never pauses unless the operating
+  system asks for reduced motion (WCAG 2.2.2, `styles/world.css:135`, `:153`).
+  25. No measurement that history playback, up to 10 steps a second
+  (`template.html:477`), stays under the flash threshold (WCAG 2.3.1).
+  26. The World Map's help button has no `aria-expanded` or `aria-controls`
+  (`controller.ts:2027-2031`), and its `role="toolbar"` has no arrow-key
+  movement (`:275-291`).
+  27. `aria-description`, an ARIA 1.3 draft attribute, is used at 7 places. Use
+  `aria-describedby`, as Tuning does.
+  28. Only Chromium is tested.
+  29. No axe-core run and no screen-reader pass. axe-core would be one new
+  development dependency, a choice for you and the owner.
+  30. No test at 320 px wide or at 200% text.
+  31. The README's Privacy section says there are no install scripts;
+  SECURITY.md says esbuild runs a `postinstall`.
+
+  **Standards with no reason found**
+
+  | Standard | Recommendation |
+  | --- | --- |
+  | 550 ms hold (two literals) | Keep; it is near the platforms' long press.
+  Make it one constant. |
+  | 6 px drag slop | Keep. |
+  | 300 ms and 200 ms building timings | Keep; the 2026-11-15 measurement is
+  their reason. Write it beside them. |
+  | Five disabled opacities | Drop to one. |
+  | Six breakpoints | Two named sizes. |
+  | Focus ring variants | Drop them. |
+  | `aria-pressed` plus a changing name | Drop one of the two. |
+  | Ctrl+P | Keep, showing the platform's key. |
+  | Title Case | Sentence case. |
+
+  **Keeping the tables true** (proposed, none built)
+  - **Grammar:** one Playwright spec that walks the grammar table's rows on the
+  estate sample.
+  - **States:** a Playwright pass reading each control's computed focus outline
+  and disabled opacity, expecting one value each.
+  - **Toggles:** a pass expecting every `aria-pressed` control's name to stay
+  the same when pressed.
+  - **Names and roles:** axe-core rules `label-content-name-mismatch`,
+  `button-name`, `aria-allowed-attr`, `landmark-one-main`, `target-size`.
+  - **Shortcuts:** a World Map spec pressing the letters with focus on a sidebar
+  button and expecting nothing to change.
+  - **Escape:** one spec that opens every surface and presses Escape until none
+  is open.
+  - **Breakpoints:** a unit test parsing every `@media` and `matchMedia` string,
+  expecting only the named sizes.
+  - **Storage and links:** a unit test listing `CompressedPayload`'s keys and
+  the persisted keys against the standard's table, or a generated region in the
+  standard.
+  - **Reduced motion:** a spec in each view, the World Map included, expecting
+  no transform to change between two frames after an act.
+  - **Words:** a review-time list of every string of ours drawn on screen (a
+  count, not a gate).
+
+  ### Forks decided, and why
+  - **No outside research subagent.** I cited WCAG 2.2, the ARIA Authoring
+  Practices, Nielsen and the platform guidelines from my own knowledge, to stay
+  inside the time and avoid an extra agent.
+  - **Findings first, not fixes.** Owner decisions that the product follows but
+  that clash with each other (the click in 2D against 3D, "pin" on the World
+  Map, the wheel's entry into a view) are written as recorded facts and
+  inconsistencies, not proposed for change.
+  - **Target sizes are split in two.** Controls outside the map get a proposed
+  24×24 floor now. Controls inside the map are left to the owner's deferred
+  touch pass.
+  - **"Fails" only where the code shows it.** Everything else in the WCAG table
+  is "not tested" or "partly", for the browser milestone.
+  - **The visual half owns colour.** The focus colour and the World Map's
+  colour-only wire direction are noted and pointed to Visual Foundations.
+
+  ### Unfinished
+  - The findings file itself (above).
+  - Everything marked "confirm": the fault panel's inertness, the sidebar
+  buttons' size, the link's settings leaking into saved settings, whether the
+  reader's placeholder is ever shown.
+  - The WCAG rows marked "not tested", the flash measurement, an axe-core run
+  and a screen-reader walk.
+  - No screenshots were looked at; the states matrix (3.2) should be checked
+  against pictures of each component in each state.
+
+  ### Subagents used
+  None.
+
+● Agent "Design system: interaction and accessibility" finished · 14m 33s
+
+● The proof for the last unsteady test is confirmed and its fix passes 8 of 8,
+  and the interaction-and-accessibility builder has handed back 31 findings. I'm
+  applying the test fix now and will write up the full report after. · summary
+
+  Ran 7 shell commands (ctrl+o to expand)
+
+● Background command "Wait for the mended case's proof" completed (exit code 0)
+
+› Message from general-purpose
+  ## What happened
+
+  The standard is written and committed. The findings file is not: the harness
+  refused to let me write `findings-visual.md`, because subagents may not write
+  report or findings files. Its full text is at the end of this report. Please
+  write it to `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/
+  design-system/findings-visual.md` yourself; its relative links were written
+  for that location. The standard links to that path, so the link stays broken
+  until you do.
+
+  - **The standard:** `/workspaces/Live-Documentation/.claude/worktrees/agent-ac
+  66e3b6a0bc02a92/.mdmd/layer-2/design-system/visual-foundations.mdmd.md`,
+  committed as `4221ce50` on top of `4856acf3`.
+  - **What it covers:** six principles, then colour, typography, shape, spacing
+  and sizing, layering and elevation, iconography, motion, the maps' data
+  encodings, and how the document is kept true. Each rule gives the designer's
+  term (defined in a clause), the rule, the reason with its source, where the
+  product holds it (file and line), what checks it, and its status.
+  - **Link to check:** it links to `interaction-and-accessibility.mdmd.md`
+  beside it, which the other builder is writing. Merge both before the docs link
+  check runs.
+  - **Nothing ran:** no browser, build or tests. Throwaway counting scripts
+  lived in my scratchpad, not the repository.
+
+  ## Inventory counts (distinct values, uses in brackets)
+
+  - **Colour:** one source, `palette.ts`, holding 3 palettes. No colour is
+  written as a literal in any stylesheet; all 119 colour expressions in the CSS
+  read the palette.
+  - **Text under 4.5:1 on a card in Today (the default):**
+    - `text.muted` 4.42 (27 places)
+    - `text.subtle` 3.50 (2)
+    - `text.panelSubtle` 3.34 (19)
+    - white on `#0091ff` 3.23 (3)
+  - **Type:** font size 16 (173), weight 4 (41), family 5 (14), line height 22
+  (46), letter spacing 10 (16), uppercase 15, italic 6.
+  - **Shape:** border radius 14 (107).
+  - **Spacing:** padding 82 (180), margin 50 (167), gap 24 (92). 69 of the 92
+  gaps already fall on the proposed scale.
+  - **Layering:** z-index 22 (44). Box shadow 36 (44), 16 of them elevation
+  shadows. Backdrop blur 3.
+  - **Motion:** 10 CSS durations, 7 easings, 2 units (s and ms), 4 loops, and 7
+  durations in the TypeScript (180 to 1,400 ms). Reduced motion is honoured in
+  10 places.
+  - **Icons:** 16 SVGs on the 24 grid, at 5 sizes and 4 stroke weights. 7 text
+  characters stand in for icons. There are 3 kinds of disclosure sign, and the
+  More glyph is drawn in 5 places.
+
+  ## Ten most important findings
+
+  1. **The default palette fails its own test.** `DEFAULT_PALETTE = "today"`
+  (`palette.ts:339`). The palette test states that Today fails the floors: the
+  offering pin and implementation are 0.0 apart, and test and directory are 2.5
+  apart under protanopia (`palette.test.ts:180–185`). Vivid kinds, the owner's
+  own lean, passes (`:167–178`). The owner should be asked which is the default.
+  2. **Words below 4.5:1 under Today.** These are the tones listed above, plus
+  `button.action-btn` (`view-shared.css:343–351`). Proposed and Vivid kinds
+  already fix them.
+  3. **The interface wears a data colour.** `state.selected` is `#0091ff`, the
+  same as implementation and the offering pin: it draws the focus ring, the
+  selected fills and the subject card's ring. This is fixed by the palette
+  decision.
+  4. **The contrast module's comment misstates large text.**
+  `tests/e2e/contrast.ts:11` says "under 18 px, or under 14 px bold". WCAG's
+  large text is 18pt (24 px) or 14pt bold (about 18.66 px). No case has passed
+  wrongly yet, because only the 4.5 threshold is exported.
+  5. **White means two things in 3D.** Every 3D reference wire is white, and so
+  is a changed file under Glow (`palette.ts:251, 260`;
+  `forceGraphView.ts:1895–1902`). Among marbles, Glow reads as "unpainted", as
+  the defaults round already found.
+  6. **Type sizes step by one pixel.** There are 16 sizes, and the reader's
+  headings run 16, 15, 14 and 13 over a 13 px body (`shell.css:578–605`). In the
+  reading dialog, h1 to h3 are `1em`. A file name is `bold` while a directory
+  name is 600. There are three monospace stacks. The findings propose roles
+  mapped to one size each.
+  7. **Fourteen corner radii.** File cards are 6 px but a directory box is 12 px
+  (`view-shared.css:66` against `local.css:482`), and I found no reason for the
+  difference. Proposed scale: 2, 4, 8, 12, and full (circle or pill).
+  8. **Shadows and layers are unruled.** There are 16 elevation shadows across 9
+  offsets. Four layers tie at z-index 100, and `#detail-panel` is given two
+  layers (`shell.css:301, 440`). The findings propose named layers and three
+  elevation levels.
+  9. **Two icon families.** Text characters (`← → ◀ ⟲ ×` in `template.html`; `▶
+  ▼` in `sources-view.ts`) sit beside the line icons. Card icons are 13 px at
+  stroke 1.7 next to 14 px at 1.5. More is drawn in five places, and there are
+  three disclosure signs for one act.
+  10. **Only colour has a guard.** No list or check exists for radius, type,
+  z-index, duration or icons. The fix proposed is to extend the existing "no
+  colour outside the palette" test (`palette.test.ts:359–`) to those lists,
+  defined once beside the palette, and to generate the standard's tables from
+  them.
+
+  ## Forks I decided
+
+  - **Which palette the standard describes.** It describes all three and states
+  each one's status rule by rule, because the default is open with the owner.
+  Proposed and Vivid kinds are not described as the product.
+  - **The blue–green collision between kinds and roles.** The standard records
+  it as the owner's accepted "mild color meaning collision", not as
+  indefensible. What is indefensible is the 0.0 and 2.5 distances, which a
+  palette that passes already removes.
+  - **Proposed rules are marked "proposed", never "holds".** These are the type
+  scale, radius scale, spacing scale (chrome only; the map's own geometry is
+  exempt), named layers, elevations, duration bands and one icon family.
+  - **"No reason found" items stay out of the settled rules.** These are Segoe
+  UI alone, the has-tests glow, the wire-width constants, uppercase tracked
+  labels, the hover lift with `transition: all`, and the 6 px against 12 px
+  corners. Italic is recorded as a proposed rule that unifies its six uses,
+  resting on the owner's praise of the Internals row.
+  - **Kind told by hue alone.** I proposed no change of channel, since the owner
+  refused a drab map. A passing palette is the first remedy, and any second
+  channel goes to the owner as a picture.
+  - **No primitive colour tier.** The standard explains this as deliberate:
+  primitives invite one hue to carry two meanings.
+
+  ## Unfinished
+
+  - No pictures of the proposed scales. A second milestone could draw the type,
+  radius and icon scales on the reading card and panels.
+  - Not traced: the World Map's SVG strokes, the 3D sphere's size curve, and
+  most of the marble's constants.
+  - Non-text contrast of the cells at rest is about 2.2:1 for Today's
+  implementation blue at half strength. Whether that matters is left for the
+  owner.
+  - I did not read the colour pass's `inventory.md` and `history.md` in full; I
+  relied on its README.
+
+  ## Subagent used
+
+  One general-purpose agent (Opus), for outside research only, with generic
+  queries. It covered how Carbon, Material 3, Polaris, Atlassian and Primer
+  structure their foundations; the W3C design tokens format; type, spacing and
+  radius scales; WCAG 2.2 contrast, focus and motion; colour-blindness practice;
+  Munzner, Bertin, Ware and Gestalt; and Material motion and dark-theme tokens.
+  It corrected two premises in my brief:
+  - 2.4.11 is Focus Not Obscured; Focus Appearance is 2.4.13, at level AAA.
+  - The design tokens format reached a stable version, 2025.10, in October 2025.
+
+  ## Full text of findings-visual.md (for the root to write)
+
+  # Visual foundations: what writing them down found
+
+  _Historical record, dated 2026-11-18. Written by a builder at the root's
+  request, after the owner asked for design-system documentation of a
+  professional standard, with an answer to "why?" for every standard ([Turns 14
+  to 16 of the November 18 record](../../2026-11-18.1.record.md#turn-14)). It
+  reads the product at `4856acf3` and changes nothing in it. The standard itself
+  is [Visual Foundations](../../../../../../../.mdmd/layer-2/design-system/visu
+  al-foundations.mdmd.md); this is the list of what it could not defend._
+
+  ## What was read
+
+  **In full:**
+  - `AGENTS.md`
+  - the section "Formatting and visual taste" of
+  [owner.md](../../../../../../Memory/owner.md#formatting-and-visual-taste)
+  - the sections "Open with the owner" (as far as each subject bore on colour,
+  type and motion) and "Decisions in force" of
+  [direction.md](../../../../../../Memory/direction.md#open-with-the-owner)
+  - the colour pass README
+  ([2026-11-16](../../../2026-11-16/Probes/colour-pass/README.md))
+  - the designer's reading
+  ([2026-11-15](../../../2026-11-15/Screenshots/designer-eye/README.md))
+  - the kind-palette probe
+  ([2026-11-15](../../../2026-11-15/Screenshots/kind-palette/README.md))
+  - the defaults round
+  ([2026-11-18](../../Screenshots/defaults-round/README.md))
+  - `palette.ts`, `styles/theme.css`, and `panels/icon-button.ts`
+  - `palette.test.ts`, lines 90–186
+  - the head of `tests/e2e/contrast.ts`
+
+  **In part:**
+  - the header-order README (its six principles)
+  - [the Explorer design](../../../../../../../.mdmd/layer-3/live-documentation-
+  explorer.mdmd.md): its paragraphs on 3D names, the card ladder, the far bands,
+  the closed directory, the directory handle and tone
+  - `views/forceGraphView.ts`, lines 1835–1914, and its camera motions
+  - the head of `views/forceGraphEmphasis.ts`
+  - `views/forceGraphAppearance.ts`, lines 1–80
+  - `tests/e2e/design-audit.ts` and `tests/e2e/scenarios/judgments.ts`, their
+  heads and exports
+
+  **Counted by script, not read line by line:**
+  - every declaration in the eleven stylesheets (about 214 KB)
+  - the numeric constants of `views/`, `views/localView/` and `panels/`
+  - every 24-grid SVG in the client and in `template.html`
+
+  These scripts were throwaway and are not kept.
+
+  **Not read:**
+  - the colour pass's `inventory.md` and `history.md`. Their conclusions are
+  taken from its README, which the root checked.
+  - the decisions log in full. Its headings carry no visual rule beyond those
+  cited.
+  - the World Map's TypeScript
+  - any picture. No browser was run.
+
+  **Outside research.** One subagent of the builder's tier ran generic web
+  queries on:
+  - how Carbon, Material 3, Polaris, Atlassian and Primer structure their
+  foundations
+  - the W3C design tokens format
+  - type, spacing and radius scales
+  - WCAG 2.2's contrast, focus and motion criteria
+  - colour-vision deficiency practice
+  - Munzner, Bertin, Ware and the Gestalt principles
+
+  It corrected two premises:
+  - WCAG 2.2's 2.4.11 is Focus Not Obscured (Minimum); Focus Appearance is
+  2.4.13, at level AAA.
+  - The W3C design tokens format reached a stable version, 2025.10, on
+  2025-10-28. It is a Community Group report, not a W3C standard.
+
+  ## The counts
+
+  Each entry gives distinct values, then the number of declarations or uses in
+  brackets.
+
+  **Colour**
+  - One source, `palette.ts`, with 3 palettes. A test fails if any other client
+  file writes a colour.
+  - No hex, rgb or hsl literal appears in any stylesheet. All 119 colour
+  expressions in the CSS are `rgba(var(--…-rgb), α)` taken from the palette.
+  - The colour pass inventoried 177 colours before that consolidation.
+
+  **Text tones under 4.5:1 on a card, in Today (the default):**
+  - `text.muted` 4.42 (27 places)
+  - `text.subtle` 3.50 (2)
+  - `text.panelSubtle` 3.34 (19)
+  - `text.onSelected` on `state.selected` 3.23 (3)
+
+  **Type:**
+  - font size 16 (173), of which 10, 11, 12 and 13 px carry 134
+  - weight 4 (41)
+  - family 5 (14), three of them monospace stacks
+  - line height 22 (46)
+  - letter spacing 10 (16)
+  - uppercase in 15 places, italic in 6
+
+  **Shape:** border radius 14 (107).
+
+  **Spacing:** padding 82 (180), margin 50 (167), gap 24 (92). 69 of the 92 gaps
+  fall on the proposed scale.
+
+  **Layering:**
+  - z-index 22 (44)
+  - box shadow 36 (44), of which 16 are elevation shadows: nine offsets, eight
+  strengths
+  - backdrop blur 3
+
+  **Opacities that carry meaning:**
+  - 2D: wires at rest 0.7; unrelated symbols 0.5, or 0.4 in a fallback;
+  unrelated wires 0.1; cells at rest 0.5.
+  - 3D spheres and wrappers: 1, 0.6, 0.4, 0.2.
+  - 3D wires: 0.9, 0.5, 0.3, 0.16, 0.12, 0.025; containment and document wires
+  0.04 to 0.4.
+  - History: Dim's loss of 0.8; Glow's 0.85.
+  - CSS `opacity`: 25 distinct values (60), most of them states.
+
+  **Motion:**
+  - CSS transitions: 10 durations, 7 easings, in two units (s and ms)
+  - 4 loops
+  - TypeScript motions: 7 durations, from 180 to 1,400 ms
+  - reduced motion honoured in 10 places
+
+  **Icons:**
+  - 16 SVG icons on the 24 grid, at 5 sizes (11, 13, 14, 18, and 20 by 16 px)
+  with 4 stroke weights
+  - 7 text characters standing in for icons
+  - 3 kinds of disclosure sign
+  - the More glyph drawn in 5 places, Pin in 2, Close in 2
+
+  ## Findings, ranked
+
+  Ranked by how much each costs a reader and how plainly no reason supports it.
+
+  ### Indefensible
+
+  **1. The default palette is the one the product's own test names invalid.**
+  - **Evidence.**
+    - `DEFAULT_PALETTE` is `"today"`
+  (`packages/explorer/src/client/palette.ts:339`).
+    - The palette's own test states as a fact that Today fails the floors
+  (`palette.test.ts:180–185`):
+      - the offering pin and implementation are 0.0 apart
+      - a test and a directory are 2.5 apart under protanopia, where 8 is the
+  floor
+  - **Background.** The owner's stated lean exists as **Vivid kinds** and passes
+  every floor (`palette.test.ts:167–178`). That lean is kinds near today's blue
+  and green, with the colour collision mild. They have seen Proposed in the app
+  ("very very drab" in 3D), but have not been asked to choose Vivid kinds as
+  the default.
+  - **Act.** The root asks the owner which palette is the default:
+    - Vivid kinds, their own lean made valid; or
+    - Today, kept knowingly, with its failures written down.
+
+    The builder does not decide it.
+
+  **2. Words below 4.5:1 under the default palette.**
+  - **Evidence.** Measured 2026-11-18 with WCAG's formula against `ground.card`
+  `#232326`:
+
+    | Token | Colour | Ratio | Places |
+    | --- | --- | --- | --- |
+    | `text.muted` | `#888888` | 4.42 | 27 |
+    | `text.subtle` | `#777777` | 3.50 | 2 |
+    | `text.panelSubtle` | `#6c7484` | 3.34 | 19 |
+
+    - The bold white words of `button.action-btn` on `#0091ff` stand at 3.23
+  (`styles/view-shared.css:343–351`), well under 4.5. At their size they are not
+  large text.
+    - On `ground.surface` `#1e1e1e`, muted is 4.70 and subtle 3.72.
+  - **Act.**
+    - Proposed already lifts the three tones (to `#939393`, `#8a8a8a`,
+  `#828a9a`) and puts dark words on a neutral selected fill. Vivid kinds
+  inherits both.
+    - So the decision in finding 1 fixes this, unless Today stays. If it stays,
+  lift the three tones in Today alone.
+
+  **3. The interface wears a data colour.**
+  - **Evidence.**
+    - `state.selected` is `#0091ff` in Today (`palette.ts:244`). That is the
+  same hex as `kind.implementation` (`palette.ts:247`) and the offering pin
+  (`secondValues.offersPin`, `palette.ts:280`).
+    - That one colour draws the focus ring (17 rules of `outline: 2px solid
+  var(--state-selected)`), the selected and active fills, the subject card's
+  ring and the history's major ticks.
+  - **Why it matters.** One blue is read as three things: this is selected, this
+  is an implementation file, this end offers. The designer's term is **neutral
+  chrome**: the interface's own controls carry no data colour.
+  - **Act.**
+    - It falls with finding 1: Proposed and Vivid make the selected state
+  `#f2f2f2`.
+    - When it goes neutral, check the focus ring's contrast. `#f2f2f2` on a card
+  is about 14:1, so it holds.
+
+  **4. The contrast checker misstates "large text".**
+  - **Evidence.** `tests/e2e/contrast.ts:11` reads "The smallest ratio WCAG AA
+  accepts for text under 18 px, or under 14 px bold". WCAG's large text is 18
+  *points* (24 CSS px), or 14 points bold (about 18.66 px).
+  - **Effect.**
+    - Today the module exports only the 4.5 threshold and every spec applies it,
+  so no case has passed wrongly.
+    - A spec that later adds a 3:1 tier from this comment would accept 18–23 px
+  text at 3:1.
+  - **Act.** Correct the comment, and name the large-text sizes beside the
+  constant.
+
+  **5. White is both the event and every 3D wire.**
+  - **Evidence.**
+    - `history.changed` and `scene.wire` are both `#ffffff` (`palette.ts:251,
+  260`).
+    - Every reference wire in the 3D map is drawn white
+  (`views/forceGraphView.ts:1895–1902`).
+    - Under Glow a changed file turns white. Among marbles, the defaults round
+  saw it read "as something of another make rather than as a lit file", "more as
+  'unpainted' than as 'glowing'", with no row for it in the key ([the defaults
+  round](../../Screenshots/defaults-round/README.md)).
+  - **Act.**
+    - No change while Dim is the default.
+    - If Glow keeps its place as a choice, consider a lit marble instead: its
+  own colours at full strength, with a halo. That would carry the owner's wish
+  to "preserve color information about what kind of node has changed while also
+  attracting the eye" (direction, Changed Files).
+    - Show it to the owner as a picture first.
+
+  ### Inconsistent
+
+  **6. Type: sixteen sizes in single-pixel steps, four weights, five families.**
+  - **Evidence.**
+    - Sizes: 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 22 and 28 px, plus 0.9em,
+  0.95em and 1em.
+    - The document reader steps its headings by one pixel each: h1 16, h2 15, h3
+  14, h4–h6 13 (`styles/shell.css:588–605`), over a 13 px body
+  (`shell.css:578`).
+    - In the reading dialog and on the reading card, h1–h3 are `1em`, the body's
+  own size (`styles/reading.css:47, 745`). Headings there are told apart by
+  weight 600 alone.
+    - Two weights for the same role. `bold` is used for `.node-title`
+  (`view-shared.css:107`), the sidebar header (`shell.css:70`), the context bar
+  (`shell.css:133`) and the action button (`view-shared.css:351`). Every other
+  name and heading is 600, including a directory's name (`local.css:484`). So a
+  file's name and its directory's name are drawn at two weights.
+    - Three monospace stacks:
+      - `"Fira Code", "Consolas", monospace` (`sources.css:156, 190, 432, 498,
+  522`)
+      - `'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace`
+  (`shell.css:802`)
+      - `monospace` (`search.css:79`, `shell.css:862`, `view-shared.css:477`)
+  - **Act.**
+    - Name the roles the sizes already serve, then collapse each role to one
+  size:
+      - caption 10 (badges, rulers, counts; today 9 and 10)
+      - label 11 (card symbol names, metadata)
+      - small body 12 (notes, rows, legend)
+      - body 13 (panels, prose, names)
+      - reader body 15
+      - title 18 (today 16 to 18)
+      - display 22 or 28, one of them
+    - Give the reader's headings a ratio: about 1.2 (13, 16, 19, 23), or weight
+  plus space if the size must stay.
+    - Two weights only, 400 and 600. `bold` becomes 600.
+    - One monospace stack.
+    - The 2D map's held sizes are not touched; they follow the ladder.
+
+  **7. Corner radius: fourteen values where five roles serve.**
+  - **Evidence.**
+    - Off a 2, 4, 8, 12 and full scale: 3 px (9 places), 5 px (3), 6 px (16), 10
+  px (3), and 9 px, 24 px and `7px 7px 3px 7px` once each.
+    - A 2D file card is 6 px (`view-shared.css:66`); the reading card is 12 px
+  (`reading.css:61`); a closed directory is 12 px (`local.css:482`). So a
+  directory is rounder than the file card beside it.
+  - **No reason found** in the record read for the 6 against 12. "Cells" and
+  "skins" argue for a softer directory, but no one said so.
+  - **Act.**
+    - Adopt the scale.
+    - 6 px card and toolbar corners go to 8 (they are surfaces) or 4 (they are
+  controls).
+    - 3 px goes to 2 or 4, by role.
+    - Ask the owner whether a directory's rounder corner is meant to say
+  "container". If not, align it with the file card.
+
+  **8. Shadows: sixteen elevation shadows in nine offsets and eight strengths.**
+  - **Evidence.**
+
+    | Offset and blur | Strengths | Where |
+    | --- | --- | --- |
+    | `0 8px 24px` | 0.4 | `history.css:21, 66`; `local.css:337` |
+    | `0 8px 24px` | 0.533 | `local.css:352` |
+    | `0 8px 28px` | 0.4 | `shell.css:407` |
+    | `0 10px 30px` | 0.35 | `shell.css:234` |
+    | `0 10px 40px` | 0.5 | `search.css:151` |
+    | `0 12px 40px` | 0.6 | `history.css:87` |
+    | `0 12px 40px` | 0.22 and 0.18 (World) | `world.css:493, 564, 601` |
+    | `0 4px 12px` | 0.6 | `graph.css:59` |
+    | `0 2px 5px` | 0.3 | `view-shared.css:333` |
+    | `0 2px 6px` | 0.28 | `view-shared.css:70` |
+    | `2px 0 5px` | 0.2 | `shell.css:9` |
+    | `-5px 0 20px` | 0.5 | `shell.css:302` |
+  - **Act.** Three named levels: raised, floating and modal. The World's light
+  form keeps lighter strengths of its own, since its ground is white.
+
+  **9. Layers: twenty-two z-index values, ties, and one panel at two layers.**
+  - **Evidence.**
+    - Four things tie at 100: `#sidebar` (`shell.css:8`), `#controls`
+  (`view-shared.css:250`), `.path-report` (`search.css:298`) and
+  `.directory-ancestor-preview` (`local.css:357`).
+    - `#detail-panel` is given 200 (`shell.css:301`) and 1000 (`shell.css:440`).
+    - 104, 105, 106 and 110 differ by one, so their order is a race of
+  increments.
+  - **Act.**
+    - Named layers, as custom properties.
+    - Before renaming, read which `#detail-panel` rule wins in which state.
+
+  **10. Icons: two families, five sizes, four strokes, one drawing in five
+  places.**
+  - **Evidence.**
+    - **Text characters as icons** render in the platform's font and weight,
+  unlike the line icons beside them:
+      - `←`, `→`, `◀`, `⟲` and `×` in `shared/template.html:20–22, 560, 567–568,
+  571`
+      - `▶` and `▼` in `panels/sources-view.ts:327, 453`
+    - **Sizes and strokes.** Sizes are 11, 13, 14 and 18 px, and 20 by 16 px for
+  the view icons, which are not square. Strokes are 1.5, 1.6, 1.7 and 2.5. The
+  directory card's controls are 13 px at stroke 1.7 (`card-factory.ts:890,
+  900`), beside the file card's 14 px at 1.5 (`card-factory.ts:194–227`).
+    - **The same drawing in several places:**
+      - More: `icon-button.ts:24`, `branch-renderer.ts:687`,
+  `card-factory.ts:208, 327, 900`
+      - Pin: `icon-button.ts:18`, `card-factory.ts:75`
+      - Close: `icon-button.ts:12`, `card-factory.ts:217`
+    - **Three disclosure signs:** the chevron SVG (`directory-handle.ts:53`),
+  `▶`/`▼` (Sources), and a CSS border chevron (`history.css:99`,
+  `shell.css:1004`).
+  - **Act.**
+    - One icon module and one family.
+    - Replace the text characters with line icons, keeping their accessible
+  names.
+    - One disclosure chevron.
+    - 14 px on cards and 18 px in the chrome, both at stroke 1.5. A size off the
+  scale states its reason.
+    - Note for the interaction half: `#sidebar-toggle` has a `title` but no
+  `aria-label` (`template.html:22`).
+
+  **11. Motion: seventeen durations, seven easings, two units.**
+  - **Evidence.**
+    - `cubic-bezier(0.25, 0.8, 0.25, 1)` appears once (`shell.css:295`), against
+  `ease` and `ease-out` everywhere else.
+    - The hover opacity fade has three durations: 0.15 s for symbols
+  (`local.css:173`), 120 ms for cells (`local.css:435`), and 0.18 s for the
+  wires layer (`view-shared.css:381`).
+  - **Act.**
+    - Four named bands: feedback, state, move, journey.
+    - One unit.
+    - Entering eases out and leaving eases in, as the three looks already do
+  (`reading.css:656–703`).
+
+  **12. Spacing: eighty-two paddings.**
+  - **Evidence.** Off a 0, 2, 4, 6, 8, 12, 16, 24, 32, 40 scale, the gaps alone
+  hold:
+    - 10 (10 places), 14 (3), 20 (2), 28 (2), 3 (2)
+    - 1, 5, 7 and 18, once each
+  - **Act.** Adopt the scale for the chrome only. The map's own geometry stays
+  its own, since the layout lab measures it: lane pitch 7, handle air 6, unit
+  64.
+
+  **13. Two ground tokens no eye can tell apart.**
+  - **Evidence.** `ground.surface` `#1e1e1e` and `ground.raised` `#1f1f22`
+  (`palette.ts:235`) stand 1.02:1 apart.
+  - **Act.** Either they are one step, so merge them; or they are two, so
+  separate them by a visible step. For scale, Carbon's one grey step on dark is
+  about 1.15:1.
+
+  **14. The card fade has two fallbacks.**
+  - **Evidence.**
+    - `var(--hover-dim-symbols, 0.5)` at `local.css:178, 200, 558, 565`, but
+  `var(--hover-dim-symbols, 0.4)` for side-column cards at `local.css:211`.
+    - The default is 0.5 (`persistence/local-storage.ts:58`), and the controller
+  always sets the variable (`views/localView/controller.ts:546`).
+    - So the 0.4 is dead code, but it suggests a second strength that does not
+  exist.
+  - **Act.**
+    - One fallback, 0.5.
+    - Check whether the `.local-column[data-position]` rules
+  (`local.css:209–212`) still match anything since the branch renderer replaced
+  the columns.
+
+  **15. Letter spacing in two units.**
+  - **Evidence.** In em: 0.08em (5 places), 0.04em (2), 0.02em, 0.06em, 0.14em.
+  In px: 0.5px (2), 1px, 1.2px, 0.2px, 0.3px (`shell.css:464, 545, 562, 727`;
+  `view-shared.css:211, 527`).
+  - **Act.** Tracking in em only, with one value for the uppercase labels.
+
+  ### No reason found
+
+  **16. "Segoe UI" as the only named face** (`theme.css:33`,
+  `view-shared.css:137`).
+  - **Evidence.** Off Windows it falls back to the system's generic sans. The
+  2026-11-15 pictures had to borrow Segoe UI's metrics over Liberation Sans to
+  judge widths.
+  - **Recommend: change** to a system stack, for example `system-ui, "Segoe UI",
+  -apple-system, Roboto, sans-serif`. Do this only after the layout lab
+  confirms the cards' fits hold under each platform's metrics. The fits measure
+  text, so the risk is real, but it can be measured.
+
+  **17. The has-tests glow** (`0 12px 24px var(--has-tests-glow)` at
+  `view-shared.css:102`, and `0 3px 6px` at `:309`).
+  - **Evidence.** The owner asked for glows on pinned things and on changed
+  files. No record read asks for one on tested cards, and the halo and border
+  already carry the fact.
+  - **Recommend:** show the owner a picture without the glow, under the "fade,
+  don't boost" principle.
+
+  **18. A wire's width by reference count:** `1 + 0.375 log2(count)`, capped at
+  3× (`views/forceGraphView.ts:1907`).
+  - **Evidence.** This is a reasonable sublinear encoding of magnitude (Munzner:
+  length and width carry magnitude). No owner word or measurement was found for
+  its constants.
+  - **Recommend: keep**, and record it in the Explorer design with its reason.
+
+  **19. Uppercase, tracked section labels** (15 places, including `local.css:48,
+  138`; `reading.css:53`; `search.css:165, 199`).
+  - **Evidence.** Common practice for small labels, but these labels are words
+  of ours, and the owner's rule is to cut such words before styling them.
+  - **Recommend:** hand them to the interaction half's audit of words. Any label
+  that survives gets one style.
+
+  **20. Hover lifts.**
+  - **Evidence.**
+    - `.control-btn:hover` moves 2 px (`view-shared.css:340`), with `transition:
+  all 0.2s` (`view-shared.css:334`, `shell.css:97`).
+    - The owner's rule (2026-11-05): "Hover may indicate, it should not
+  rearrange". A 2 px lift indicates, but `transition: all` animates any property
+  that changes, layout included.
+  - **Recommend:** change `all` to the properties actually meant.
+
+  ### Missing
+
+  **21. A token list and a check for every property but colour.** This is the
+  root of findings 6 to 15. `palette.test.ts:359–` already proves the pattern
+  for colour; extend it:
+  - Define the radius, type, z-index, duration and icon lists once, beside the
+  palette, and write them into the page as custom properties.
+  - Add a unit test that reads every stylesheet and client module and fails on
+  any value outside its list.
+  - Generate the standard's tables from the same lists, into a generated region.
+
+  This keeps the standard true by construction, as AGENTS.md's "One source of
+  facts" asks.
+
+  **22. The smallest word.**
+  - **Evidence.** No rule exists. Words are set at 9 px in the type badge
+  (`view-shared.css:470`) and the search row badge (`search.css:244`), and their
+  contents are the reader's own type names.
+  - **Propose:** 11 px in the chrome for any word a person must read. Material's
+  smallest role is 11 px and Carbon's is 12. The map's held sizes keep their
+  own rule.
+
+  **23. Nested corners.**
+  - **Evidence.** No rule exists.
+  - **Propose:** outer radius = inner radius + padding (practitioner
+  convention). Without it, the gaps between concentric edges are uneven, which
+  is visible work for the eye.
+
+  **24. Named layers and named elevations.** See findings 8 and 9.
+
+  **25. A second channel for a file's kind where no name is drawn.**
+  - **Evidence.**
+    - WCAG 1.4.1 asks that colour not be the only means of conveying
+  information.
+    - Wherever a file's name is drawn, the kind is already told twice:
+  `.test.ts`, `.spec.ts` and `.md` are the reader's own words.
+    - In a far 3D map and in a closed directory's cells, it is hue alone, with
+  the name on hover and the key beside it.
+    - For the commonest colour blindness, Today's test and directory are 2.5
+  apart; Vivid kinds' closest pair is 9.3.
+  - **Propose: no change of channel yet.**
+    - The owner refused a 3D map without strong colour.
+    - A palette that passes the floors (finding 1) is the first remedy.
+    - Any second channel, such as a shape or a texture on the marble's glass, is
+  a picture for the owner's eye, judged at the density of an ordinary scene. It
+  is not a rule this builder sets.
+
+  **26. A light form for the Local Maps.**
+  - **Evidence.** Only the World Map has one (`palette.ts`, `world.light`). The
+  owner's default is "bright outside, dark inside", and a person may set the two
+  apart, but the Local Maps have no light grounds to set.
+  - **Propose:** nothing here. The owner's pass on how a person customises the
+  look owns it.
+
+  ## What the standard holds that is sound
+
+  Listed so that the findings above are not read as the whole. Each of these
+  holds, each has a reason, and most have a check:
+  - one table of colours by meaning, and the test that forbids any other
+  - blue offers and green uses, at every scale
+  - kinds told by colour
+  - the distance floors, under Proposed and Vivid kinds
+  - hierarchy by value on a card
+  - figure and ground between a region and a card
+  - fade, don't boost, with its two exceptions the owner asked for
+  - held sizes in steps of 1.2, within four fifths
+  - a container's name no smaller than its contents' names
+  - 3D names at the last second
+  - boxes that never resize with zoom
+  - tonal elevation
+  - reduced motion
+  - the encoding contract of the maps
+
+  ## Unfinished
+
+  - **No pictures.** The proposed scales were not drawn. A second milestone
+  could show the type scale, radius scale and icon family on the reading card
+  and panels, beside today's, for the owner's eye.
+  - **Not traced:** the World Map's SVG geometry (strokes 1 to 16 in
+  `world.css`), the 3D sphere's size curve, and the marble's constants beyond
+  the head of `forceGraphAppearance.ts`.
+  - **Not fully measured:** non-text contrast (WCAG 1.4.11). It was measured
+  only for the 2D pins and cells, from the colour pass. A closed directory's
+  cell at its resting half strength over a card is about 2.2:1 for Today's
+  implementation blue. Whether a cell at rest is "required to understand" the
+  picture is a judgment for the owner, since it tells what a directory holds.
+
+● Agent "Design system: visual foundations" finished · 18m 4s
+
+● Both design-system reports are back, and the unstable test's fix passed 8 of 8
+  alongside a second worker. I'm committing that fix, then starting a builder
+  on the cells' drawing cost. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent(Cells' first-frame cost) Opus 5.5
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The defaults are on main and gated; the gate is at 40 minutes and one real
+  slowdown away from clean. Here is where everything stands, including your last
+  several messages, some of which I answered only in lines that may not have
+  reached you.
+
+  The gate
+
+  533 of 535 browser cases passed in 40 minutes 40 seconds. Both red cases are
+  run down:
+
+  - force-graph-building.spec.ts:66, the last unsteady one, is fixed (a91d7f89).
+    After the 3D map has built, its picture is still gliding, so the sphere the
+    test aimed at had moved away before the pointer arrived. Aiming at a sphere
+    that holds still: 14 of 16 runs failed before, 8 of 8 pass after.
+  - force-graph-focus.spec.ts:189 is new, and real. Cells under name make the 2D
+    map's first frame about a third of a second slower on this repository's
+    map. The cells add about 1,800 elements, because each directory builds its
+    marks twice, once beside its name and once under it. By your rule a case
+    that is red because the product is slow stays red, so the bound and the
+    default both stay. A builder has the browser now to take the cost down at
+    its cause.
+
+  Marbles are not the cause; with them off the number is the same.
+
+  Your links (port 8999, already serving the new build)
+
+  - 2D, pathfind.ts (http://127.0.0.1:8999/?view=local&node=packages/engine/src/
+    live-docs/pathfind.ts): cells under …/live-docs/history, at the right.
+  - 3D, pathfind.ts (http://127.0.0.1:8999/?view=local&mode=3d&node=packages/eng
+    ine/src/live-docs/pathfind.ts): marbles.
+  - Estate, PaymentsContext.cs (http://127.0.0.1:8999/samples/estate/?view=local
+    &node=PaymentService/Data/PaymentsContext.cs): drag down and right to see
+    the one cell under PaymentService.
+  - History sample at a changed step
+    (http://127.0.0.1:8999/samples/history/?s=N4IgbiBcDMA0IEcomgExPdkDaIQF14ALZA
+    YwFMAGcgQwE4B2ADgCMAmSgMzvOidVoAWToNKdSlBtEqC2UvixpsArAEYQAXyA): the changed
+    file among marbles.
+
+  For your eye:
+
+  - A single undrawn file is one small dim cell where "+1 file" was words.
+  - Under Glow a changed file is a flat grey ball among marbles and reads as a
+    different kind of thing. Dim, the default, reads well.
+  - An old link that says nothing about Hidden Files now opens with the cells.
+
+  The design bible
+
+  Yes, it is worth doing. Two builders wrote the first halves (visual
+  foundations; interaction and accessibility), each rule with its reason, and
+  both have handed back; their reports are on your screen. I have not reviewed
+  either yet, so nothing of theirs is on main and none of it is my finding.
+  Between them they report 57 findings, including:
+
+  - the default palette failing the product's own colour-distance test
+  - text below the contrast floor in 48 places
+  - World Map letter shortcuts that fire from any focus, one of which resets the
+    layout with no undo
+  - a shared link's settings probably leaking into the receiver's saved
+    settings, against your word of November 16
+
+  I'll check these against the code before ranking them for you.
+
+  The six hours
+
+  One builder at a time has the browser, since browser runs cannot share the
+  machine; beside it, as many as there are separate pieces of document or
+  unit-level work. Running now: the cells' cost, and a reconciliation of the
+  direction.md draft. Next in the browser lane: a whole gate, three workers
+  measured, then the first scenario-suite conversions and the playtest
+  instrument. In the document lane: my review of the design system, then fixes
+  for whatever in it is a plain defect.
+
+  direction.md
+
+  A draft regrouped by subject is 189 KB against 529 KB. The two-way check says
+  it is not yet lossless: 170 of your quotations are missing, 92 are held only
+  in part, and 89 quotations in the draft do not match the old text word for
+  word. A helper is restoring them. The file itself is untouched until the check
+  is clean and a fresh reader has compared the two.
+
+  Also done
+
+  - The repository's link audit now checks heading links into the archive. It
+    had skipped them all, which is how a broken link got through today; it found
+    eight old stale ones, now re-pointed (6d9a8a45).
+  - On AGENTS.md: I had only half your test. It carries what holds for the
+    foreseeable future and is useful anywhere in the workspace. When its turn
+    comes, each move of part-specific guidance, such as the Explorer's design
+    rules, comes to you as a small difference.
