@@ -301,7 +301,7 @@ describe("oracle facts", () => {
     { consumer: "src/main.ts", provider: "src/processor.ts" },
     { consumer: "src/models.ts", provider: "src/types.ts" }
   ];
-  const compiler = { edges: oracle, documents: ["src/main.ts", "src/processor.ts", "src/helpers.ts", "src/models.ts", "src/types.ts"] };
+  const compiler = { edges: oracle, documents: ["src/main.ts", "src/processor.ts", "src/helpers.ts", "src/models.ts", "src/types.ts"], recordedMissing: [] };
 
   it("keeps a picture whose wires at the subject are the oracle's edges there, and ignores edges elsewhere", () => {
     expect(outcome(wiresMatchOracle(good(), "src/processor.ts", compiler))).toBe("kept");
@@ -320,6 +320,19 @@ describe("oracle facts", () => {
       "missing: src/main.ts uses src/processor.ts",
       "not in the compiler: src/helpers.ts uses src/processor.ts"
     ]);
+  });
+
+  it("excuses only the missing edges the oracle comparison records, by name, and never an invented one", () => {
+    const reading = good();
+    reading.wires[1] = wire("src/processor.ts", "src/helpers.ts", [580, 340], [680, 340]);
+    const recorded = { ...compiler, recordedMissing: [{ consumer: "src/main.ts", provider: "src/processor.ts" }] };
+    const verdict = wiresMatchOracle(reading, "src/processor.ts", recorded);
+    expect(verdict.findings).toEqual(["not in the compiler: src/helpers.ts uses src/processor.ts"]);
+    expect(verdict.known).toEqual(["missing: src/main.ts uses src/processor.ts, as the oracle comparison records"]);
+    // A recorded gap the picture does not show excuses nothing else.
+    reading.wires[1] = wire("src/processor.ts", "src/main.ts", [580, 340], [680, 340]);
+    reading.wires.shift();
+    expect(wiresMatchOracle(reading, "src/processor.ts", recorded).findings).toEqual(["missing: src/processor.ts uses src/helpers.ts"]);
   });
 
   it("judges the picture against its own data by the same rule, ranked as a relation", () => {

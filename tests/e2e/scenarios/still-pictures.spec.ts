@@ -2,6 +2,7 @@ import { expect, test, type Page } from "@playwright/test";
 import fs from "node:fs";
 import path from "node:path";
 
+import { compareFixture } from "../../../scripts/oracle/compare";
 import { readOracleEdges } from "../../../scripts/oracle/files";
 import { displayNames, loadGraph, localMapStill, localRetainUrl } from "../still-picture";
 import { readSettled, watchPage } from "./instrument";
@@ -106,17 +107,23 @@ for (const map of MAPS) {
         }
         if (oracleAt !== undefined) {
           verdicts.push(wiresMatchData(reading, oracleAt, references));
-          const compiler = variant.compilerEdges ? readOracleEdges(path.join(PROGRAMS, variant.compilerEdges), path.join(PROGRAMS, variant.path)) : undefined;
+          const fixture = path.join(PROGRAMS, variant.path);
+          const compiler = variant.compilerEdges ? readOracleEdges(path.join(PROGRAMS, variant.compilerEdges), fixture) : undefined;
+          // What the repository's oracle comparison records the docs as lacking, computed now by that comparison,
+          // never written by hand: the only gaps the judgment may excuse, and each is listed by name.
+          const recorded = compiler ? (await compareFixture(fixture)).compiler.missing : [];
+          const rooted = (edge: { from: string; to: string }) => ({ consumer: `${map.root}${edge.from}`, provider: `${map.root}${edge.to}` });
           verdicts.push(wiresMatchOracle(reading, oracleAt, compiler ? {
-            edges: compiler.edges.map(edge => ({ consumer: `${map.root}${edge.from}`, provider: `${map.root}${edge.to}` })),
-            documents: compiler.documents.map(document => `${map.root}${document}`)
+            edges: compiler.edges.map(rooted),
+            documents: compiler.documents.map(document => `${map.root}${document}`),
+            recordedMissing: recorded.map(rooted)
           } : null));
         }
 
         fs.mkdirSync(folder, { recursive: true });
         fs.writeFileSync(path.join(folder, `${name}.json`), `${JSON.stringify({ scenario: scenario.name, map: map.name, address, verdicts, readings }, null, 2)}\n`, "utf8");
         for (const verdict of verdicts) {
-          test.info().annotations.push({ type: `${verdict.rank}: ${verdict.outcome}`, description: [verdict.judgment, ...verdict.findings].join("\n  ") });
+          test.info().annotations.push({ type: `${verdict.rank}: ${verdict.outcome}`, description: [verdict.judgment, ...verdict.findings, ...(verdict.known ?? [])].join("\n  ") });
         }
         // Every promise is judged and every broken one reported, so one scenario lists all it broke.
         for (const verdict of verdicts) expect.soft(verdict.outcome === "broken" ? verdict.findings : [], `${verdict.rank}: ${verdict.judgment}`).toEqual([]);

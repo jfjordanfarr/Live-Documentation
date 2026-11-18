@@ -29,6 +29,8 @@ export interface Verdict {
   outcome: "kept" | "broken" | "n/a";
   /** Every place the promise is broken, in words; for "n/a", why it does not apply. */
   findings: string[];
+  /** Disagreements a recorded measurement already names, listed rather than counted as broken. */
+  known?: string[];
 }
 
 const verdict = (judgment: string, rank: Rank, findings: string[], applicable = true, why = ""): Verdict =>
@@ -467,8 +469,24 @@ export interface OracleEdge {
  * one end at the subject is drawn as a route or a stub, and no wire at the subject joins a pair the oracle does not
  * know. Judged file to file, since an oracle's symbols are named in its own scheme.
  */
-export function wiresMatchOracle(reading: Reading, subject: string, oracle: { edges: readonly OracleEdge[]; documents: readonly string[] } | null): Verdict {
-  return wiresAgainst(reading, subject, oracle?.edges ?? null, "the subject's wires are the compiler's edges", "oracle", "the compiler", oracle ? new Set(oracle.documents) : null);
+export function wiresMatchOracle(reading: Reading, subject: string, oracle: CompilerRecord | null): Verdict {
+  const judged = wiresAgainst(reading, subject, oracle?.edges ?? null, "the subject's wires are the compiler's edges", "oracle", "the compiler", oracle ? new Set(oracle.documents) : null);
+  if (!oracle?.recordedMissing.length || judged.outcome !== "broken") return judged;
+  // One-sided: an edge the picture lacks is excused only when the oracle comparison (`npm run oracle:compare`) already
+  // records the docs as lacking it; anything else stays broken, and what was excused is listed by name.
+  const recorded = new Set(oracle.recordedMissing.map(edge => `missing: ${edge.consumer} uses ${edge.provider}`));
+  const findings = judged.findings.filter(finding => !recorded.has(finding));
+  const known = judged.findings.filter(finding => recorded.has(finding)).map(finding => `${finding}, as the oracle comparison records`);
+  return { ...verdict(judged.judgment, "oracle", findings), known };
+}
+
+/** What the compiler says of a program, and what the repository's oracle comparison already records the docs as lacking. */
+export interface CompilerRecord {
+  edges: readonly OracleEdge[];
+  /** The files the compiler indexes; a wire to any other file is neither confirmed nor denied. */
+  documents: readonly string[];
+  /** The compiler's edges the comparison of the generated docs against the compiler reports missing. */
+  recordedMissing: readonly OracleEdge[];
 }
 
 /**
