@@ -65,6 +65,9 @@
     "scripts/doc-tools/enforce-documentation-links.ts": [
       "command docs:links:enforce of package.json"
     ],
+    "scripts/e2e-passes.mjs": [
+      "command test:e2e of package.json"
+    ],
     "scripts/layout-lab/lab.ts": [
       "command layout:lab of package.json"
     ],
