@@ -17,6 +17,8 @@ Current browser regressions, introduced November 8, 2026 to deliver the owner's 
 
 The directory-only Portal round trip verifies all six travelling directory identities in both directions, mapping four to their canonical sole files and two to cell hubs. Its compositor reads the uploaded hull vertices, instance matrices and kind colors independently of the production projector: Models must carry its true contour and colored file marks. Once fold and the 3D background are gone, this fixture has no source 2D wire pairs and the transition canvas must be transparent; graph-only wires must not linger over the returning cards.
 
+Since 2026-11-18 the round trip stops the page's clock before it presses 3D or 2D and steps it a frame at a time until the transition's layer stands. Before, it stopped the clock only once the layer had been seen, and whatever real time the machine spent between the transition's start and that pause was already spent of the transition: the return's first phase is inspected at 0.2 of 1,400 ms, 280 ms, and the case's own guard ("the measured transition has not already passed the phase being inspected") refused at 0.20 to 0.31 in each of that day's three whole runs. Under one load, the case eight times at two workers: 4 failed before, none after ([the notes](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#work-notes-the-evenings-gate-and-the-transition-cases-mend)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

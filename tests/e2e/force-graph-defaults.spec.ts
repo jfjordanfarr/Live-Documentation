@@ -122,10 +122,15 @@ test("Skin directory cards visibly travel to their real cell or sole file in bot
   };
   for (const toGraph of [true, false]) {
     if (!toGraph) await nativeDestinations();
+    // The clock stops before the press and is then stepped a frame at a time until the transition's layer stands, so that
+    // no real time passes between the transition's start and the first phase inspected. Until 2026-11-18 it was stopped
+    // only once the layer had been seen, and beside another worker the return's first phase (0.2 of 1,400 ms, 280 ms)
+    // was already past by then: the guard below refused, in three whole runs that day and 4 of 8 times under two workers.
+    await page.clock.pauseAt((await page.evaluate(() => Date.now())) + 20);
     await page.getByRole("button", { name: toGraph ? "3D" : "2D", exact: true }).click();
     const layer = page.locator(".perspective-transition[data-graph-files]");
+    await expect(async () => { await page.clock.runFor(16); expect(await layer.count()).toBe(1); }).toPass({ timeout: 30_000, intervals: [0] });
     await expect(layer).toBeVisible();
-    await page.clock.pauseAt((await page.evaluate(() => Date.now())) + 20);
     const atElapsed = async (target: number): Promise<void> => {
       const elapsed = Number(await layer.getAttribute("data-progress"));
       expect(elapsed, "the measured transition has not already passed the phase being inspected").toBeLessThan(target);
