@@ -3447,3 +3447,455 @@
   The gate is at 111 cases into its first pass with two red, both known unsteady
   ones (force-graph-building.spec.ts:66 and force-graph-defaults.spec.ts:101).
   At this pace it ends near 18:37 UTC.
+● The rings builder has its design written (not yet built or run), and I've
+  ruled on its four forks. It waits for the browser with the other two.
+
+  - One rule decides rings now: with any wrapper on, no sphere wears one; with
+    Group Wrappers Off, every sphere with something beyond the picture does, as
+    today.
+  - A lone hidden file is drawn one hop past the hops shown, dimmed like the
+    rest of the frontier, and a press pins it.
+  - It found a third source of rings I had not named. In the Structure layout
+    with wrappers on, a directory's hub at the frontier wore a ring when some of
+    its files were hidden. Under "no ring with wrappers on" that ring goes too,
+    leaving only the frontier's dimming as its sign. I accepted that for now
+    and will show you a before-and-after picture, with the consistent
+    alternative named: a membrane for the directory's hidden remainder.
+  - One difference between the two layouts: the lone file is dimmed in
+    Connections and bright in Structure. I kept that. In Connections it stands
+    past the hops you asked for, and the last hop is always dimmed; in Structure
+    it stands in for its own directory, which is shown. You'll get the two
+    pictures side by side.
+  - Hidden documents get no mark, but the name's tooltip keeps its count ("N
+    more connected, not shown").
+
+  The gate is at 111 cases into its first pass with two red, both known unsteady
+  ones (force-graph-building.spec.ts:66 and force-graph-defaults.spec.ts:101).
+  At this pace it ends near 18:37 UTC.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e
+     5-95a5-166121c231a3/scratchpad/record-1757.mjs (39 lines)
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e
+     5-95a5-166121c231a3/scratchpad/record-1752.mjs (47 lines)
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e
+     5-95a5-166121c231a3/scratchpad/record-1745.mjs (69 lines)
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e
+     5-95a5-166121c231a3/scratchpad/record-1740.mjs (60 lines)
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e
+     5-95a5-166121c231a3/scratchpad/record-1728.mjs (55 lines)
+
+● Task "Wait for the restarted gate to finish and show its stages and results"
+  still running in background
+
+❯ <ide_selection>The user selected the lines 2132 to 3449 from
+  /workspaces/Live-Documentation/AI-Agent-Workspace/AgentSessionHistory/2026/11
+  /2026-11-18/2026-11-18.1.claude-code.export.txt:
+
+  ❯ <ide_opened_file>The user opened the file
+
+  /workspaces/Live-Documentation/AI-Agent-Workspace/AgentSessionHistory/2026/11
+    /2026-11-18/2026-11-18.1.claude-code.export.txt in the IDE. This may or may
+    not be related to the current task.</ide_opened_file>
+
+  ❯ >Whether to raise the container's npm is a separate question I'll bring you
+    with that result.
+
+    Any reason not to raise it? Raising it sounds fine.
+
+    Ran 2 shell commands (ctrl+o to expand)
+
+  ● Recording your question, then answering it.
+
+    Made 1 scratchpad edit +61, ran 1 shell command (ctrl+o to expand)
+
+  ● No reason not to, so I'm raising it to npm 11 as part of the dependency
+  round.
+    There is one caution about how, and it is covered.
+
+    - The caution: two npm versions that both write the lockfile undo each
+  other's
+      work; npm 10 strips fields that npm 11 writes. Only the container writes
+      the lock. The four GitHub workflows run npm ci, which only reads it, so
+  they
+      can stay on Node 22's own npm 10 for now.
+    - What still has to be proven: that npm 10's npm ci installs from a lock
+      written by npm 11. I've added that to the dependency builder's next
+      milestone.
+    - How: one pinned line in .devcontainer/post-create.sh, which both
+  container
+      configurations run. It takes effect at your next rebuild, and I'll run
+  the
+      same command here so this container needs no rebuild today.
+    - Related, already granted: on November 15 you said of moving Node from 22
+  to
+      26 "If it's straightforward, go ahead". A newer Node ships npm 11, which
+      would put the container and the workflows back on one npm. That is a
+  bigger
+      change with its own gate, so I'm keeping it out of today's round.
+
+    One consequence on GitHub: npm-audit.yml runs every Monday at 04:00 UTC and
+    fails on any high finding. Until npm's data picks up the withdrawal of the
+    picomatch advisory, it will go red on those 14 findings. That is npm's
+  stale
+    data, not something this round can close.
+
+    Two-worker run so far: 368 of 488 passed after 35 minutes, six red. One is
+  the
+    known race. The other five passed at one worker this morning:
+
+    - history-scrubber.spec.ts:180, :391 and :569
+    - layout-lab.spec.ts:20 (repository chain)
+    - local-map-branches.spec.ts:276
+
+    Four of those five are the cases that sat on their time limits yesterda
+  ──── (1225 lines hidden) ────────────────────────────────────────────────────
+   keeps its bands, so I'll
+    photograph it and say so. Its tooltip will end "Pin this file".
+    - **Group Wrappers Off:** the same picture with rings and the row,
+  unchanged.
+    - **Also expected:** tests/e2e/still-picture.ts pinned with documents goes
+    from 35 rings to none. On the estate at shell depth 2, a shell that used to
+    float unconnected behind a lone file should now be wired through it.
+
+    ## Other notes
+    - **One for you (the decisions log isn't mine):**
+    .mdmd/layer-3/architectural-decisions.mdmd.md around line 568 records the
+  ring
+    decision without the November 18 narrowing.
+    - The spatial-legend.ts code needs no change. Its Live Doc note is still
+    accurate.
+    - I used no helper agent.
+
+    Ran 1 shell command (ctrl+o to expand)
+
+  ● Agent "Rings beside membranes mend builder" finished · 8m 44s
+
+    Made 1 scratchpad edit +39, ran 1 shell command (ctrl+o to expand)
+
+  ● The rings builder has its design written (not yet built or run), and I've
+    ruled on its four forks. It waits for the browser with the other two.
+
+    - One rule decides rings now: with any wrapper on, no sphere wears one;
+  with
+      Group Wrappers Off, every sphere with something beyond the picture does,
+  as
+      today.
+    - A lone hidden file is drawn one hop past the hops shown, dimmed like the
+      rest of the frontier, and a press pins it.
+    - It found a third source of rings I had not named. In the Structure layout
+      with wrappers on, a directory's hub at the frontier wore a ring when some
+  of
+      its files were hidden. Under "no ring with wrappers on" that ring goes
+  too,
+      leaving only the frontier's dimming as its sign. I accepted that for now
+      and will show you a before-and-after picture, with the consistent
+      alternative named: a membrane for the directory's hidden remainder.
+    - One difference between the two layouts: the lone file is dimmed in
+      Connections and bright in Structure. I kept that. In Connections it
+  stands
+      past the hops you asked for, and the last hop is always dimmed; in
+  Structure
+      it stands in for its own directory, which is shown. You'll get the two
+      pictures side by side.
+    - Hidden documents get no mark, but the name's tooltip keeps its count ("N
+      more connected, not shown").
+
+    The gate is at 111 cases into its first pass with two red, both known
+  unsteady
+    ones (force-graph-building.spec.ts:66 and
+  force-graph-defaults.spec.ts:101).
+    At this pace it ends near 18:37 UTC.
+
+  This may or may not be related to the current task.</ide_selection>
+
+❯ >Hidden documents: no sign at all; pinning a file still shows its documents.
+
+  If 'Document' file types are hidden, why do we make the assertion that there
+  are other files connected to the one that is ringed? Am I misunderstanding
+  the problem? A ring exists because a file has connections but those
+  connections are of a file type that is not present? I personally think that's
+  fine if it only reports the connections that are of the activated file
+  archetypes. I would hope to see different structures depending on which
+  permutation of file types I have active. That's almost certainly very useful.
+
+  Searched for 3 patterns, read 3 files, listed 1 directory, ran 2 shell commands (ctrl+o to expand)
+
+● I'm reading the code that decides the ring, then checking my November 17
+  answer for consistency before I reply. · summary
+
+  Searched for 1 pattern, read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● Recording your turn and your fifth save of the export now; the answer follows
+  right after.
+
+  Searched for 1 pattern, read 1 file, ran 3 shell commands (ctrl+o to expand)
+
+● Writing the record of your turn now (your words, my two earlier messages as
+  delivered, and what the code shows), then the reply.
+
+  Made 1 scratchpad edit +79, ran 5 shell commands (ctrl+o to expand)
+
+● You have the product right. My word "hidden" was standing for two different
+  things, and the ring is only about one of them. A ring never counts a file
+  kind you have switched off.
+
+  Two reasons a thing is not drawn
+
+  - Switched off. The four switches (Show Tests, Show Assets, Show Related Docs,
+    Show Citing Docs) are applied first, and the map is built from what is
+    left. Hops, islands, membranes and every "more" count are worked out
+    afterwards (forceGraphView.ts:1323-1343
+    (packages/explorer/src/client/views/forceGraphView.ts#L1323-L1343),
+    forceGraphScope.ts:143-148
+    (packages/explorer/src/client/views/forceGraphScope.ts#L143-L148)). So a
+    switched-off kind is never counted or hinted at. The one exception is a file
+    you pinned or selected yourself, which is drawn whatever its kind.
+  - Beyond the hops. The kind is on, but the thing is farther from what you
+    asked about than the hops shown. Only this case has ever had a sign.
+
+  My bullet "Hidden documents: no sign at all" meant the second: documents you
+  have switched on that stand one hop past the edge of the picture.
+
+  Your screenshot, concretely
+
+  You had documents on and archetype.ts pinned at one hop.
+
+  - The documents of archetype.ts itself are drawn.
+  - A neighbouring file at the edge is drawn too, but that neighbour's documents
+    are two hops from your pin, so they are not.
+  - Code files in that position are gathered into a membrane. Documents never
+    are, so each such neighbour kept a ring. That was nine of your ten rings.
+
+  What you hope for is how it works today
+
+  I measured this on November 17 from the built graph:
+
+  ┌──────────────────────────────┬───────┐
+  │ archetype.ts pinned, one hop │ Rings │
+  ├──────────────────────────────┼───────┤
+  │ Documents on                 │ 10    │
+  ├──────────────────────────────┼───────┤
+  │ Documents off                │ 0     │
+  └──────────────────────────────┴───────┘
+
+  The structure changes with the switches too, not only the counts. From the
+  code: with a kind off, files that were joined only through it fall apart into
+  separate islands, and a membrane holds only files of kinds that are on. The 2D
+  map applies the two file switches the same way before it lays anything out
+  (controller.ts:1212-1223
+  (packages/explorer/src/client/views/localView/controller.ts#L1212-L1223)).
+
+  I've written your words into direction as a rule to keep ("only reports the
+  connections that are of the activated file archetypes"), so it is a promise
+  and not an accident of the code.
+
+  The mend is unchanged, in better words
+
+  With wrappers on, a thing beyond the hops is shown as:
+
+  - Files of one directory: a membrane, as now.
+  - A lone file: itself, dimmed (new).
+  - Documents: nothing of their own (new). The edge of the picture is already
+    dimmed, which says a press shows more.
+
+  The last one is the real choice, and yours to overrule when you see the
+  pictures. The alternatives are keeping the ring for that one case, or
+  membranes of documents.
+
+  I'm adding one more pair to the builder's pictures: your state with documents
+  on and with documents off, so you can see the structure change with the
+  switch. The design document will say "switched off" and "beyond the hops",
+  never "hidden" for both.
+
+  Gate
+
+  The first pass is at 479 of 484 cases with five red:
+
+  - Two known unsteady ones: force-graph-building.spec.ts:66 and
+    force-graph-defaults.spec.ts:101.
+  - The race I expected at two workers: history-scrubber.spec.ts:180.
+  - Two new: local-map-hidden.spec.ts:51 and :95, the cases where the layout
+    search pauses while the page or the view is not showing. :95 is the one
+    whose wait was too tight this morning.
+
+  The gate ends in a few minutes. I'll rerun the last three alone at one worker
+  before saying whether two workers hold.
+
+  Your fifth save of the export is committed as received (c306f2ca), with this
+  turn recorded.
+
+● Background command "Wait for the restarted gate to finish and show its stages
+  and results" completed (exit code 0)
+
+  Read 2 files, ran 4 shell commands (ctrl+o to expand)
+
+● The gate went red at 18:26, with failures at two workers and again when run
+  alone. I'm rerunning the three load-sensitive cases alone at one worker, twice
+  each, before handing the machine to the scenario builder. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● All three passed alone, twice each. Handing the machine to the scenario
+  builder now and sending the rings builder its rulings.
+  ⎿  Resuming agent a5c4a67
+  ⎿  Resuming agent a18775f
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Tagging the two search-pause cases to run alone (they passed alone twice each)
+  and checking the two passes still hold all 488 cases, without a browser.
+
+  Made 1 scratchpad edit +87, searched for 1 pattern, ran 2 shell commands (ctrl+o to expand)
+
+› Message from general-purpose
+  The wording change is committed as 16150236, on top of 87f14e2c, in my
+  worktree. Nothing has been built or run.
+
+  Ten files changed:
+  - the design document (.mdmd/layer-3/live-documentation-explorer.mdmd.md);
+  - the authored notes of the Live Docs for forceGraphShells.ts,
+  forceGraphView.ts and forceGraphWrappers.ts;
+  - the comments in forceGraphShells.ts, forceGraphView.ts and
+  forceGraphWrappers.ts;
+  - comments and test names in forceGraphShells.test.ts and
+  forceGraphWrappers.test.ts.
+
+  What 87f14e2c added now says "switched off" for a kind the four switches leave
+  out, and "beyond the hops" (or "beyond the hops shown") for a thing of a kind
+  that is on which the picture does not reach. Where it reads better I wrote
+  "was not drawn" instead.
+
+  I also added three things to the design document:
+  - the owner's sentence from Turn 9 of the November 18 record, with a link to
+  it;
+  - the reason from your second ruling, why the lone file is dimmed in
+  Connections and not in Structure;
+  - under your third ruling, a membrane for the directory's remainder, named as
+  the consistent alternative and left open and unbuilt.
+
+  The two Live Docs that cite Turn 9 do so as well. That record exists on main
+  but not in my worktree, so those links resolve only once the work is merged.
+
+  Three things I could not reword:
+  - The identifiers stay, as you asked: `scope.hidden`, `hidden` in
+  `ShellSource`, `partitionHidden` and the tests' `HIDDEN` fixture.
+  - "hidden" that was already in the text before me stays, for example "which
+  hidden files each directory's shell holds" and "a group's hidden shape".
+  - The message of 87f14e2c still says "hidden". I can't amend it, so the new
+  commit's message says what it meant.
+
+  I'm waiting for your message that the browser is free.
+
+● Agent "Rings beside membranes mend builder" finished · 1m 27s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Removing the dependency builder's finished worktree (main holds all four of
+  its commits), then committing the gate's result and the two more cases tagged
+  to run alone.
+
+  Ran 6 shell commands (ctrl+o to expand)
+
+● The gate for the dependency round has ended: exit 1 after 47 minutes 26
+  seconds, against 73 minutes 46 at one worker this morning. Nothing red is of
+  the dependency round's making, but it is not yet a clean run at two workers.
+
+  ┌──────────────────────────────────────────────────┬──────────────────────┐
+  │                      Stage                       │        Result        │
+  ├──────────────────────────────────────────────────┼──────────────────────┤
+  │ Lint, build, 1,977 unit tests, 138 integration   │ passed               │
+  │ tests, three audits                              │                      │
+  ├──────────────────────────────────────────────────┼──────────────────────┤
+  │ First pass, two workers                          │ 479 of 484 in 41.1   │
+  │                                                  │ minutes              │
+  ├──────────────────────────────────────────────────┼──────────────────────┤
+  │ Second pass, the four slow cases alone           │ 4 of 4 in 2.1        │
+  │                                                  │ minutes              │
+  └──────────────────────────────────────────────────┴──────────────────────┘
+
+  The five red cases:
+
+  - Two known unsteady ones (force-graph-building.spec.ts:66,
+    force-graph-defaults.spec.ts:101). They were red at one worker this morning
+    too, and they make every gate exit 1 until they are mended.
+  - The race I expected (history-scrubber.spec.ts:180). It failed the same way
+    as before: a picture was read before one of its eight files was in it. It
+    passed alone twice. I'm reading for its cause now, while the browser is
+    busy.
+  - Two cases that wait for a long layout search (local-map-hidden.spec.ts:51
+    and :95). Each seeds an 80-start search on purpose, then waits 45 s for it
+    to end. Alone they passed twice each, in 44 to 48 s, so I tagged them to run
+    alone in the second pass (241aead3), with no wait or limit changed. Six
+    cases now run alone.
+
+  One finding from those two that the tag does not hide: the same search took 19
+  to 29 s when the cases were written in October and takes 40 to 44 s today. I
+  don't yet know whether that is the price of what was added to the search since
+  (the extra trials after the seeds, the cycle's other order) or a cost nobody
+  chose. It goes with the 2D map's drawing cost, which I already owe you.
+
+  Builders
+
+  - Scenario suite: has the machine to itself now for its tests, the table, the
+    cases that use the mended design audit, and the timing. I run nothing heavy
+    until it hands back.
+  - Rings: has my rulings and made your wording change in the design document
+    ("switched off" and "beyond the hops"). It waits for the browser.
+  - Dependency round: its worktree and branch are removed; main holds all four
+    of its commits.
+
+  Searched for 2 patterns, read 1 file, listed 1 directory, ran 3 shell commands (ctrl+o to expand)
+● Found a likely cause of the history-scrubber.spec.ts:180 race by reading the
+  code; now checking it against the trace the failed run left behind.
+
+  Made 2 scratchpad edits +64, searched for 1 pattern, ran 4 shell commands (ctrl+o to expand)
+
+● Recording the gate message as delivered and the cause I found for the history
+  race, then I'll wait for the scenario builder.
+
+  Made 1 scratchpad edit +47, searched for 1 pattern, read 1 file, ran 3 shell commands (ctrl+o to expand)
+
+● While the scenario builder has the browser, I read two of the gate's open
+  questions down to a cause. Neither is proven in a browser yet.
+
+  The race in history-scrubber.spec.ts:180 is a wait that asks the wrong
+  question. The test waits for the 3D map to say it is not busy, then reads the
+  picture.
+
+  - That flag covers a running motion and the packing of membranes, but not
+    spheres still entering after a history step (forceGraphView.ts:690
+    (packages/explorer/src/client/views/forceGraphView.ts#L690)).
+  - The failed run's trace shows the picture was read 142 ms after the key
+    press. Alone that is enough frames; beside a second worker it was not, and
+    one file had not yet entered.
+  - The map already says "built" separately, with data-building, which the
+    building cases wait on. The mend makes this test's wait ask both.
+
+  The mend is prepared but not applied. It adds about 200 ms to each of the 38
+  waits in that file, and two cases there already run at 27 s of their 30 s
+  limit. If they go over, I'll use the stronger wait only where a picture is
+  read.
+
+  The slower layout search is probably work we chose, not a regression. Each
+  search trial used to be one ordering seed. Since November 4 the search also
+  tries a boundary join between seeds, and since November 16 a cycle's other
+  order first (branch-renderer.ts:1218-1237 (packages/explorer/src/client/views/
+  localView/branch-renderer.ts#L1218-L1237)). So 80 seeds are now about twice 80
+  trials, which would account for 19–29 s becoming 40–44 s.
+
+  I'll confirm that from the trial counts the page already writes. If it holds,
+  the two search-pause cases get half the seeds, which is the amount of work
+  they were written to wait for, and their run-alone tag comes off.
+
+  The scenario builder is still working with the machine to itself. The rings
+  builder waits for the browser after it. Everything above is in the record,
+  committed through df8e5adb.
+
+● Agent "Scenario suite first slice builder" is waiting on its own background
+  work · 12m 19s
+
+● The scenario builder has paused on a background run of its own (its test and
+  browser steps) and has not reported yet, so there is nothing to review. I'm
+  keeping the machine quiet for its timing and waiting for its handback.
