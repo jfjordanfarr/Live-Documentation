@@ -52,6 +52,8 @@ Since 2026-11-15 ([November 15, Turn 1](../../../../../../../AI-Agent-Workspace/
 
 Descriptions Zoomed Out joined the 2D layout group on 2026-11-15 ([Turn 1 of the November 15 record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-1)); changing it re-renders the 2D map, since the card reading decides at render which rows keep a line and which names are cut.
 
+Since 2026-11-18 the 3D layout's Discovery group holds Beyond the Hops, Everything or Next step, a trial of what stands past the hops with the wrappers on ([Turn 10 of the November 18 record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-10)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

@@ -58,6 +58,8 @@ Files only is the default of Zoomed Out Fully since 2026-11-15, by the owner's e
 
 `DescriptionsZoomedOut` has four values since 2026-11-15 ([Turn 1 of the November 15 record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-1)): "hidden", the default, first in `DESCRIPTIONS_ZOOMED_OUT`; "first-line", the trial of November 13 ([its pictures](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-13/Screenshots/descriptions-zoomed-out/README.md)); and "line-end" and "line-middle", where every described row keeps its description's first line three presses out and its name holds to one line, cut at its end or in its middle. They are alternatives for the owner to choose among ([the pictures](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/Screenshots/descriptions-kept/README.md)); Hidden stays the default until then.
 
+`BeyondHops` and `BEYOND_HOPS` (2026-11-18) name the trial's two choices of what stands past the hops, Everything first as the default, and `ForceGraphTuning.beyondHops` holds the choice ([Turn 10 of the November 18 record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-10)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

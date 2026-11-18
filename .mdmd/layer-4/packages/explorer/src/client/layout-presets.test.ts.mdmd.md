@@ -17,6 +17,8 @@ Created for [the October 13 shared-preset implementation](../../../../../../AI-A
 
 Since 2026-11-15 ([Turn 1 of the November 15 record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-1)) a case holds that a link carries Descriptions Zoomed Out only when it is not Hidden, and that a link without it opens Hidden.
 
+Since 2026-11-18 a case holds Beyond the Hops: carried only at the next step, dropped when unknown, and read as everything from a link that carries the 3D settings without it ([Turn 10 of the November 18 record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-10)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

@@ -33,6 +33,8 @@ Descriptions Zoomed Out, on 2026-11-15 ([Turn 1 of the November 15 record](../..
 
 Return Cost on 2026-11-16, then Palette and Marbles in a group of their own, Colour, on 2026-11-17 ([Turns 5](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-16/2026-11-16.1.record.md#turn-5) and [9 of the November 16 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-16/2026-11-16.1.record.md#turn-9)), and Hidden Files in the 2D layout group the same day (the trial of cells in place of a drawn directory's "+2 files", [Turn 6](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-16/2026-11-16.1.record.md#turn-6)) bring the inventory to 67.
 
+Beyond the Hops joined the 3D layout group on 2026-11-18, the trial of the next step past the hops beside everything, which makes 68 controls ([Turn 10 of the November 18 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-10)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

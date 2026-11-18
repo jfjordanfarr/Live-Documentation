@@ -29,6 +29,8 @@ Since 2026-11-15 ([Turn 1 of the November 15 record](../../../../../../../AI-Age
 
 Return Cost (2026-11-16, [Turn 5 of the November 15 record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-5)) reads the continuing search in `branch-renderer.ts`: how many pixels of wire a connection read backward through a cycle is worth when the search tries a cycle's other orders.
 
+Since 2026-11-18 the 3D layout's Discovery group holds Beyond the Hops, Everything or Next step, a trial of what stands past the hops with the wrappers on ([Turn 10 of the November 18 record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-10)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

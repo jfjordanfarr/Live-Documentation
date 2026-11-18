@@ -5,7 +5,7 @@ import { getDefaultTuning, PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../
 import type { GroupWrappers } from "../../packages/explorer/src/client/types";
 import { spatialGraphOf } from "../../packages/explorer/src/client/views/forceGraphData";
 import { linkPulls, spatialNodeRadius } from "../../packages/explorer/src/client/views/forceGraphLayout";
-import { connectedNeighbours, spatialScope } from "../../packages/explorer/src/client/views/forceGraphScope";
+import { connectedNeighbours, spatialScope, withoutUnreachedSeeds } from "../../packages/explorer/src/client/views/forceGraphScope";
 import { shellPicture, type ShellPicture } from "../../packages/explorer/src/client/views/forceGraphShells";
 import { observeGraph, renderedNodes } from "./force-graph-observation";
 import { choose as chooseSubject } from "./search-bar";
@@ -279,6 +279,53 @@ test("the one file of a directory beyond the hops stands as itself, dimmed like 
   }
   expect(pressed, "the pointer names a lone file where it stands").not.toBeNull();
   await expect(page.locator(".pin-tray-toggle")).toHaveText("2 pins");
+});
+
+/**
+ * Beyond the Hops, a trial (2026-11-18, the owner's thought of Turn 10 of the November 18 record, "it would be interesting
+ * to me if we saw membranes kind of form and break and re-form as new hops were taken"): at the next step, the shells hold
+ * only the files one step past what stands in the picture and the unreached groups' seeds are not drawn; at everything,
+ * the default, the picture is today's. This repository pinned on the view at one hop, the lever chosen as a saved tuning
+ * and then moved in Tuning.
+ */
+test("Beyond the Hops at the next step holds only what is one step past the picture and draws no unreached seed; at everything the picture is today's", async ({ page }) => {
+  test.setTimeout(150_000);
+  await observeGraph(page);
+  await page.addInitScript(([key, version]) => {
+    localStorage.setItem(key, JSON.stringify({ version, tuning: { localMap: { searchStarts: 0 }, forceGraph: { groupWrappers: "skin", beyondHops: "next-step" } } }));
+  }, [PERSISTED_UI_KEY, PERSISTED_UI_VERSION] as const);
+  await page.goto(entry("/", REPO_PIN));
+  const graph = await loadGraph(page, "/");
+  const data = spatialGraphOf(graph, node => (node.archetype || "").toLowerCase() !== "asset", [], "connections");
+  const pulls = (link: { kind?: string }): boolean => linkPulls(link, "connections");
+  const hops = getDefaultTuning().forceGraph.hops;
+  const reached = spatialScope(data.nodes, data.links, new Set([REPO_PIN]), hops, pulls);
+  const scope = withoutUnreachedSeeds(reached, hops);
+  const beside = connectedNeighbours(data.nodes, data.links, pulls);
+  const horizon = shellPicture({ nodes: data.nodes, links: data.links, shown: new Set(scope.hops.keys()), hidden: scope.hidden, depth: 2, popped: new Set(),
+    beside, reach: "next-step", bundles: link => pulls(link) && link.kind !== "related-doc" && link.kind !== "cited-by" });
+  const today = await expectedShells(page, "/", REPO_PIN, 2);
+  // What is held is one step past what is shown, and less than today holds; nothing two steps away.
+  const held = [...horizon.shells.flatMap(shell => shell.files), ...horizon.lone];
+  expect(held.length, "the next step holds files").toBeGreaterThan(0);
+  expect(held.length, "and fewer than everything holds").toBeLessThan([...today.shells.flatMap(shell => shell.files), ...today.lone].length);
+  for (const file of held) expect([...beside.get(file) ?? []].some(neighbour => scope.hops.has(neighbour)), `${file} is one step past the picture`).toBe(true);
+  const unreached = [...reached.hops].filter(([, hop]) => hop > hops).map(([id]) => id);
+  expect(unreached.length, "this picture has unreached groups").toBeGreaterThan(0);
+  // Drawn so: the shells of the next step, the shown files and the lone ones, and no unreached seed nor its wrapper.
+  await expect.poll(async () => (await drawnShells(page)).shells, { timeout: 30_000 }).toEqual(horizon.shells.map(shell => shell.id).sort());
+  await expect.poll(async () => (await drawnShells(page)).nodes, { timeout: 30_000 }).toEqual([...scope.hops.keys(), ...horizon.lone].sort());
+  const next = await drawnShells(page);
+  for (const id of unreached) expect(next.nodes, `${id}, an unreached seed, is not drawn`).not.toContain(id);
+  expect(next.wrapped.filter(id => !id.startsWith("shell:")), "no group is wrapped").toEqual([]);
+  // Everything, chosen in Tuning: today's picture, every hidden file held and every unreached group by its seed.
+  await page.evaluate(() => {
+    const select = document.getElementById("tuning-force-beyond-hops") as HTMLSelectElement;
+    select.value = "everything";
+    select.dispatchEvent(new Event("change", { bubbles: true }));
+  });
+  await expect.poll(async () => (await drawnShells(page)).shells, { timeout: 30_000 }).toEqual(today.shells.map(shell => shell.id).sort());
+  await expect.poll(async () => (await drawnShells(page)).nodes, { timeout: 30_000 }).toEqual([...reached.hops.keys(), ...today.lone].sort());
 });
 
 /**

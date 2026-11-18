@@ -22,6 +22,8 @@ Shell Depth, merged on November 6 with the directory shells (experiment 2 of [Tu
 
 Descriptions Zoomed Out, on 2026-11-15 ([Turn 1 of the November 15 record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-1)), adds one to the inventory: 63, with the closed directory's Skin's Shape and Cells' Colour of the same day.
 
+Beyond the Hops made the template's controls 68 on 2026-11-18 ([Turn 10 of the November 18 record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-10)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

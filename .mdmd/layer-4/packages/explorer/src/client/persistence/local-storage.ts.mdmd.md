@@ -61,6 +61,8 @@ Since 2026-11-05 the default tuning sets `shellDepth` to 2; it is saved and rest
 
 Since 2026-11-15 ([Turn 1 of the November 15 record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-1)) the default tuning sets `descriptionsZoomedOut` to "hidden".
 
+The 3D defaults hold `beyondHops: "everything"` since 2026-11-18, today's picture; a saved Next step is read back through `readLayoutSettings` ([Turn 10 of the November 18 record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-10)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

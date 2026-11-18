@@ -21,6 +21,8 @@ Since 2026-11-16 ([Turn 10 of the November 15 record](../../../../AI-Agent-Works
 
 Since 2026-11-18 a case holds the one file of a directory beyond the hops: drawn, as dim as the frontier, with no ring, and pinned by a press where the pointer names it; it fails on the build before the mend ([Turn 12 of the November 16 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-16/2026-11-16.1.record.md#turn-12)).
 
+Since 2026-11-18 a case holds the Beyond the Hops trial: at the next step the shells drawn are those of `nextStepFiles`, every file held is one step past the picture, and no unreached seed nor its wrapper is drawn; moved to everything in Tuning, the picture is today's ([Turn 10 of the November 18 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-10)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
