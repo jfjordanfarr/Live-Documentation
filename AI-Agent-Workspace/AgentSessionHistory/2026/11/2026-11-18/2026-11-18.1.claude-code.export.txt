@@ -1891,3 +1891,241 @@
   - A builder on the 19 dependency findings. It is limited to analysis and the
     lockfile while the run measures. It installs and tests only after the run
     ends, and that round gets its own gate.
+
+› Message from general-purpose
+  ## Milestone 1: the dependency audit (light work only; nothing installed,
+  built or tested)
+
+  I reset the worktree to `0be65840` and confirmed it. One commit on top of it
+  in the worktree: **`1dcecb01` "Raise dependencies past this month's security
+  advisories"**. It changes `package.json`, `packages/engine/package.json` and
+  `package-lock.json`. No `node_modules` was created. I used no helper agent.
+
+  ### Result
+  - **Before:** 19 findings (12 moderate, 7 high).
+  - **After:** 14 findings, all high. All 14 trace back to a single advisory,
+  the picomatch one (GHSA-fc5q-39xc-vjpf).
+    - **GitHub withdrew that advisory today, 2026-11-18 at 15:38 UTC.** Its
+  maintainer had already rejected it in the advisory's own pull request (#235):
+  *"It's not a vulnerability … Don't let untrusted users define regular
+  expressions."* The withdrawal notice reads "withdrawn because it is a security
+  issue", which looks like a typo for "not".
+    - npm's audit data had not caught up at 16:34 UTC.
+  - **Every other root advisory is closed by a fixed version:** minimatch, glob,
+  @vitest/mocker ×2, and vite/launch-editor ×6.
+
+  ### The 19 findings
+  "Root" is the advisory each finding traces back to.
+
+  | Finding | Was | Enters through | Root | Fixed by | How it is reached | Now |
+  |---|---|---|---|---|---|---|
+  | minimatch | 10.2.6 | engine (direct, prod) + glob, eslint, config-array,
+  ts-estree, import-x | GHSA-g3hv (globparts amplification, <11.0.1) | 11.0.1;
+  no 10.x backport, since 10.2.6 is the last 10.x | **direct major** → ^11.0.9 |
+  closed |
+  | glob | 13.0.6 | root devDeps + engine (direct, prod) | GHSA-3g3m (abort
+  keeps walking, ≤14.0.1) + minimatch | 14.0.2 | **direct major** → ^14.0.6 |
+  closed |
+  | eslint | 10.13.0 | root (direct) | minimatch | 10.15.0 (first to take
+  minimatch ^11) | direct minor | closed |
+  | @eslint/config-array | 0.23.5 | via eslint | minimatch | 0.23.6 | refresh,
+  pulled in by the eslint bump | closed |
+  | eslint-plugin-import-x | 4.17.1 | root (direct) | minimatch | 4.18.0
+  (accepts ^11.0.1) | direct minor → ^4.18.1 | now listed only through picomatch
+  |
+  | typescript-eslint | 8.72.0 | root (direct) | minimatch (+ picomatch) |
+  8.73.0 | direct minor | picomatch only |
+  | @typescript-eslint/eslint-plugin, parser, type-utils, utils (4 findings) |
+  8.72.0 | via typescript-eslint, import-x | typescript-estree | 8.73.0 | same
+  bump | picomatch only |
+  | @typescript-eslint/typescript-estree | 8.72.0 | same | minimatch +
+  tinyglobby | 8.73.0 | same bump | picomatch only |
+  | @vitest/mocker | 4.1.11 | via vitest | GHSA-qxg6, GHSA-xp26 | 4.1.12 (or
+  5.0.3) | in the old range; I raised the floor | closed |
+  | vitest | 4.1.11 | root (direct) | mocker + picomatch | 4.1.12 | direct patch
+  → ^4.1.12 | picomatch only |
+  | @vitest/coverage-v8 | 4.1.11 | root (direct) | vitest | 4.1.12 | direct
+  patch → ^4.1.12 | picomatch only |
+  | vite | 8.3.1 | via vitest (dev) | 6 launch-editor / dev-server advisories
+  (8.3.0–8.3.2) | 8.3.3 | refresh in range → 8.3.8 | picomatch only |
+  | picomatch | 4.0.7 (latest) | tinyglobby, vite, vitest; dev only | GHSA-fc5q
+  (≤4.0.7) | **none exists**; advisory withdrawn | — | waiting on npm's data |
+  | tinyglobby | 0.2.17 (latest) | ts-estree, import resolver, vite, vitest |
+  picomatch | none needed | — | picomatch only |
+  | fdir | 6.5.0 (latest) | via tinyglobby | picomatch (peer) | none needed | —
+  | picomatch only |
+  | eslint-import-resolver-typescript | 4.4.5 (latest) | root (direct) |
+  tinyglobby → picomatch | none needed | — | picomatch only |
+
+  **npm's proposed 3.7.0 for the import resolver is a false fix.** It is a step
+  back to the line that used fast-glob. fast-glob uses micromatch, which uses
+  picomatch ^2.3.1, and that is still inside the advisory's "≤4.0.7" range. npm
+  suggests it only because it marks tinyglobby as vulnerable in every version.
+
+  ### Fork: picomatch, tinyglobby, fdir and the import resolver
+  - **Who pulls picomatch:** tinyglobby (through typescript-estree and the
+  import resolver), vite and vitest. Every one of those is development tooling;
+  the lock marks picomatch dev-only. The engine, Explorer and CLI never load it.
+  - **What patterns it sees:** only ones we wrote ourselves, in
+  eslint.config.js, tsconfig project globs and vitest.config.ts. It never sees
+  untrusted input in our use.
+  - **Options:**
+    - (a) Wait for npm's audit data to sync the withdrawal. The 14 should then
+  vanish with no change from us.
+    - (b) An override has no patched picomatch to point at.
+    - (c) A different resolver would not help, because vite, vitest and
+  typescript-estree pull picomatch too.
+    - (d) Ignoring the advisory would break the "causes, not gates" rule.
+  - **Recommendation: (a).** I'll re-run `npm audit` in milestone 2 and tell you
+  whether npm has caught up.
+
+  ### glob and minimatch: what changed for us
+  **Where we call them:**
+  - minimatch: `packages/engine/src/live-docs/relatedDocs.ts:149`
+  (`{dot:true}`).
+  - glob, with `ignore` lists:
+    - `packages/engine/src/live-docs/discovery.ts:263` (also withFileTypes, dot,
+  windowsPathsNoEscape)
+    - `packages/engine/src/live-docs/adapters/java.ts:533`, `csharp.ts:923`,
+  `rust.ts:584`, `go.ts:458`
+    - `packages/generator/src/generator.ts:332`
+    - `scripts/slopcop/check-asset-paths.ts:159`, `check-markdown-links.ts:154`,
+  `check-symbols.ts:191`
+  - glob, without `ignore`:
+    - `packages/engine/src/live-docs/graphFiles.ts:28`
+    - `packages/generator/src/generator.ts:395`
+    - `scripts/doc-tools/documentationLinks.ts:661` (dot:false)
+    - `scripts/live-docs/lint.ts:146`
+    - `tests/integration/live-docs/round-trip.test.ts:34`,
+  `powershell-oracle.test.ts:46`
+  - Our own `matchesPathPattern` (archetype.ts) does not use either library.
+
+  **What changed, from the changelogs and type declarations:**
+  - **How patterns are matched.** minimatch 11 matches each path segment with a
+  new non-backtracking matcher (`@isaacs/nonrecursive-glob-match`, a 3-week-old
+  package by the same author) instead of a RegExp.
+  - **Removed APIs.** `makeRe`, `.regexp`, `AST`, `debug` and
+  `maxExtglobRecursion` are gone. We use none of them.
+  - **Trailing slashes.** A path ending in `/` no longer matches an extglob at
+  the end of a pattern. None of our patterns end in an extglob, but this matters
+  because glob's ignore code tests paths with a trailing slash.
+  - **glob 14's `ignore`.** Patterns starting with `/` are now rooted, and
+  ignore patterns follow `windowsPathsNoEscape`. We have no leading-slash or
+  backslash ignore patterns.
+  - **Unchanged for us:** the option names we use, the named exports
+  `glob`/`globSync`/`minimatch`, the CommonJS and ESM entry points, and the
+  withFileTypes `Path` methods (path-scurry 3 changes only an internal getter).
+  - **Node:** minimatch 11 and lru-cache need 20 or ≥22; .nvmrc and engines say
+  22. Fine.
+
+  **Early evidence that both libraries select exactly the same files:**
+  - I ran minimatch 10.2.6 and 11.0.9 side by side from unpacked tarballs, pure
+  string matching, about a second of CPU.
+  - Inputs: every tracked path and directory in the worktree plus 22 edge cases.
+  Patterns: every one in .live-docs.config.json, slopcop.config.json, the three
+  DEFAULT_IGNORE and DEFAULT_PATTERNS lists, the engine and adapter walks, the
+  tests and eslint.config.js.
+  - Each was run with its call site's options, and again under glob's ignore
+  settings (level 2, nonegate, nocomment, with and without the trailing slash).
+  - **Result: 665,411 plus 897,904 comparisons, 0 differences.** Script:
+  `/tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e5-95a5-16612
+  1c231a3/scratchpad/minimatch-compare.mjs`
+
+  ### Something you should know: npm 10.9.9 cannot resolve this lock
+  - npm 10.9.9 (also 10.9.11) crashes with `Cannot read properties of null
+  (reading 'edgesOut')`. It happens as soon as vite moves past 8.3.1: vite
+  8.3.8's optional `@vitejs/devtools ^0.8` peer chain reaches `vitest@*`
+  (5.1.1), and npm's peer-set code fails.
+  - So I resolved the lock with `npx npm@11.21.3 install --package-lock-only`. I
+  then ran the container's npm 10 over the result, which accepted it unchanged
+  apart from removing npm 11's `libc` fields. The committed lock is therefore in
+  npm 10's format.
+  - Anyone who later re-resolves vite with npm 10 will hit the same crash.
+  Upgrading the container's npm is a separate decision for you.
+
+  ### The lock's net version changes
+  - glob 14.0.6, minimatch 11.0.9 (+ @isaacs/nonrecursive-glob-match 1.1.0),
+  path-scurry 3.0.0, lru-cache 11.5.3.
+  - eslint 10.15.0, @eslint/config-array 0.23.6, typescript-eslint 8.73.0,
+  eslint-plugin-import-x 4.18.1.
+  - vitest family 4.1.12, vite 8.3.8, rolldown 1.2.19.
+  - eslint-import-resolver-node and its four dependencies are removed: import-x
+  4.18 marks that peer optional, and our config uses the TypeScript resolver.
+  - An optional wasm32 rolldown binding is added; it does not install on this
+  platform.
+  - I did not take vitest 5. The V4 line, 4.1.12, is the patched one.
+
+  ### What milestone 2 will verify or change
+  1. Run `npm ci` in the worktree, then `npm ls` with no errors.
+  2. Lint: eslint, typescript-eslint and import-x moved minor versions and may
+  flag new things.
+  3. Build, then `npm run verify`.
+  4. The three SlopCop audits.
+  5. The proof script. It must print 216/216, 1487/1486, 21/21, 1484/1483, 63/63
+  and "every set is the same".
+  6. An on-disk side-by-side of glob 13.0.6 against 14.0.6 at each call site's
+  options.
+  7. A fresh `npm audit`.
+  8. **`npm run live-docs:generate` is needed even if no source changes.** The
+  Live Docs for `package.json` and `packages/engine/package.json` record the
+  dependency versions (for example `glob@^13.0.6`), so those docs are stale
+  until regenerated and committed. The engine manifest's authored notes might
+  deserve a line on minimatch 11's new matcher; whether to add it is your call.
+
+  I expect no source changes from the upgrades. If anything breaks, I'll fix it
+  at the cause and name the file.
+
+  ### Left for later
+  In the scratchpad: unpacked tarballs, the scripts `advisories.mjs`,
+  `fetch.mjs`, `api-compare.mjs` and `minimatch-compare.mjs`, and the audit
+  outputs `audit-before.json` / `audit-after.json`. I'm keeping them for
+  milestone 2 and will remove them at the end of the round.
+
+  Ran 1 shell command (ctrl+o to expand)
+● Agent "Dependency audit remediation builder" finished · 13m 49s
+
+● Fetch(https://github.com/advisories/GHSA-fc5q-39xc-vjpf)
+  ⎿  Received 143.6KB (200 OK)
+
+  Ran 1 shell command · 1 failed (ctrl+o to expand)
+
+● The first handback from the dependency builder is in: 5 of 6 root advisories
+  are fixed, and the remaining 14 findings all trace to one advisory that GitHub
+  withdrew today. I'm letting the two-worker run continue. · summary
+
+  Made 2 scratchpad edits +39, read 1 file, ran 5 shell commands (ctrl+o to expand)
+
+● The two-worker run is at 155 of 488 with one known failure, so I'm starting a
+  third builder on the first scenario slice, limited to reading and design until
+  the browser frees up. · summary
+
+● Agent(Scenario suite first slice builder) Opus 5.5
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+  Made 1 scratchpad edit +30, ran 1 shell command (ctrl+o to expand)
+
+● Two more things are in motion while the two-worker run measures; nothing needs
+  you.
+
+  - Two-worker run: 163 of 488 after 18 minutes, one red
+    (force-graph-defaults.spec.ts:101, the known race). At this pace the browser
+    stage lands near 45 minutes against this morning's 72.
+  - Dependency findings, first handback: five of the six root advisories are
+    closed by fixed versions, with glob and minimatch each going up a major
+    version. Nothing is installed or tested yet; that waits for the run to end.
+    - The 14 findings that remain all trace to one advisory against picomatch,
+      which has no fixed version. GitHub withdrew that advisory today (I
+      confirmed it on the advisory's page), and npm's data has not caught up.
+      I'm waiting for it and not overriding or ignoring anything.
+    - A decision for later: the container's npm 10 crashes when asked to resolve
+      the new lockfile from scratch, so the builder resolved it with npm 11.
+      Its next milestone has to prove that npm 10 can still install from the
+      committed lock. Whether to raise the container's npm is a separate
+      question I'll bring you with that result.
+  - Scenario suite, first slice: a third builder has started on your
+    joint-assertions pattern. Its first milestone needs no browser: classify all
+    488 cases (which gives the count of still-picture promises I owe you),
+    design the reading and the judgments, and write the pure code. It gets the
+    browser only when I say so.
+  - Your export: the save you made at the new path (16:36 UTC) is committed as
+    received.
