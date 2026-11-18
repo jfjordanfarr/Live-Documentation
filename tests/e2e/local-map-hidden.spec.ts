@@ -48,9 +48,9 @@ const mark = (page: Page): Promise<void> => page.evaluate(() => { document.query
 
 const show = async (page: Page, view: "sources" | "world" | "map"): Promise<void> => { await page.click(`.nav-item[data-view="${view}"]`); };
 
-test("the search pauses while another view is shown, and a return to the unchanged picture keeps it and resumes the search", async ({ page }) => {
-  // The search runs its eighty seeds to the end after the return: 23 to 29 seconds on one worker (2026-10-19); the half
-  // minute is not its measure.
+test("the search pauses while another view is shown, and a return to the unchanged picture keeps it and resumes the search", { tag: "@alone" }, async ({ page }) => {
+  // The search runs its eighty seeds to the end after the return: 23 to 29 seconds on one worker (2026-10-19), 40 to 44 on
+  // 2026-11-18, so the case runs alone (`@alone`); the half minute is not its measure.
   test.setTimeout(60_000);
   await open(page);
   const started = await read(page);
@@ -92,8 +92,8 @@ test("a change made while another view is shown is drawn when the map is shown a
   expect(back.cards).toBeGreaterThan(0);
 });
 
-test("the search pauses while the page is hidden and resumes when it is visible again", async ({ page }) => {
-  // The search runs its eighty seeds to the end once the page is visible again: 19 to 25 seconds on one worker (2026-10-19).
+test("the search pauses while the page is hidden and resumes when it is visible again", { tag: "@alone" }, async ({ page }) => {
+  // The search runs its eighty seeds to the end once the page is visible again: 19 to 25 s on one worker (2026-10-19), 40 to 44 on 2026-11-18.
   test.setTimeout(60_000);
   await open(page);
   expect((await read(page)).status).toBe("running");
