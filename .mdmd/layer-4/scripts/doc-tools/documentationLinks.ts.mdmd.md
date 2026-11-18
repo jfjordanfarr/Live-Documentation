@@ -8,11 +8,11 @@
 
 ## Authored
 ### Purpose
-Supplies the shared engine that parses Live Doc anchors, maps code files to documentation targets, and enforces breadcrumb comments so maintainer workflows can guarantee every artifact cites its Layer‑4 mirror.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-02.SUMMARIZED.md#turn-13-safe-to-commit-orchestration--audit-gaps]
+Supplies the shared engine that parses Live Doc anchors, maps code files to documentation targets, and enforces breadcrumb comments so maintainer workflows can guarantee every artifact cites its Layer‑4 mirror.[AI-Agent-Workspace/AgentSessionHistory/2025/11/Summarized/2025-11-02.SUMMARIZED.md#turn-13-safe-to-commit-orchestration--audit-gaps]
 
 ### Notes
-- Introduced while building the docs-to-code validation pipeline on November 2, including the CLI demo that intentionally broke `main.ts` to prove mismatched breadcrumb detection.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-02.SUMMARIZED.md#turn-12-enforcement-demonstration]
-- Powers `npm run docs:links:enforce` and the `safe:commit` gate, with follow-up runs on November 3 and beyond confirming zero violations once anchors were repaired.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-03.md]
+- Introduced while building the docs-to-code validation pipeline on November 2, including the CLI demo that intentionally broke `main.ts` to prove mismatched breadcrumb detection.[AI-Agent-Workspace/AgentSessionHistory/2025/11/Summarized/2025-11-02.SUMMARIZED.md#turn-12-enforcement-demonstration]
+- Powers `npm run docs:links:enforce` and the `safe:commit` gate, with follow-up runs on November 3 and beyond confirming zero violations once anchors were repaired.[AI-Agent-Workspace/AgentSessionHistory/2025/11/2025-11-03/2025-11-03.md]
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

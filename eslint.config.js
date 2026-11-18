@@ -6,7 +6,7 @@ const jsdoc = require("eslint-plugin-jsdoc");
 
 // Lint enforces correctness, never formatting: no stylistic rule is enabled, and no formatter runs over TypeScript,
 // so that hand-aligned whitespace stays as written (the owner, 2026-09-27 and 2026-10-22; the survey of 2026-10-22 in
-// AI-Agent-Workspace/Research/2026-10-22-typescript-formatting-and-linting.md).
+// AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-22/Research/typescript-formatting-and-linting.md).
 module.exports = tseslint.config(
   {
     ignores: [

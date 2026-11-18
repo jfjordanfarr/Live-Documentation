@@ -9,16 +9,16 @@
  * clearance, and a tether pulling each sphere toward where it stood when the motion began. Its forces are the energy's slope, so every spring's pull is equal and opposite at its two ends
  * and is aimed along the line between them as they stand. D3's own spring, which this replaces, shares a pull unequally
  * by its ends' link counts and aims at where the spheres are about to be; a picture under it at a constant strength
- * never stops moving (the easing probe of 2026-10-19, `AI-Agent-Workspace/Probes/2026-10-19/easing/README.md`).
+ * never stops moving (the easing probe of 2026-10-19, `AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-19/Probes/easing/README.md`).
  *
  * The repulsion is summed over every pair exactly when the field's `approximation` is zero, the oracle every faster sum is
  * measured against; above zero it is summed through an octree by Barnes and Hut's approximation (`forceGraphOctree.ts`),
  * which the 3D view of a large repository needs: on the T3 bundle of 2026-10-27, 21,720 spheres, one exact evaluation
- * took 2.2 seconds and the first tick fifteen of them (`AI-Agent-Workspace/Probes/2026-10-27/t3-code/3d-startup.md`), and
+ * took 2.2 seconds and the first tick fifteen of them (`AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-27/Probes/t3-code/3d-startup.md`), and
  * the owner decided on 2026-10-28 that an approximation may be the default with the exact sum kept as the oracle. The
  * overlaps are found exactly either way. An approximated field is no longer exactly an energy's slope, and its forces
  * jump where a cell's ratio crosses the opening threshold: at 0.9 and above most pictures measured never came to rest
- * (`AI-Agent-Workspace/Probes/2026-10-28/approximation/README.md`).
+ * (`AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-28/Probes/approximation/README.md`).
  *
  * The motion is damped velocity Verlet with fixed elapsed time and drag per tick, subdivided when the field is stiff:
  * no cooling schedule or velocity reset. The drag removes energy as time passes. The owner found

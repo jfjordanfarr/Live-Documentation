@@ -4,7 +4,7 @@
  * drawn dimmed, and a click on a frontier sphere asks about it, so that the emergent structure of the software grows
  * hop by hop as the 2D Local Map's does by its pins. Before, the whole universe was drawn always, and the owner found
  * that "I can't explore my way, hop by hop ... What if _that's_ the mistake?" ([Turn 4 of the October 31 record]
- * (../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-4)).
+ * (../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-31/2026-10-31.1.record.md#turn-4)).
  *
  * With nothing asked about, each layout has a start: in Structure the scan root's hub, with its children one hop away
  * (the owner's "sane move"); in Connections the archipelago (2026-11-02): every group's seed, the most connected file
@@ -12,7 +12,7 @@
  * any seed pins it and grows its group by hops. The owner, asked whether islands should be reachable as landmarks:
  * "isn't the main structure an island too? ... Perhaps throw away the declared program start and just work off building
  * expandable islands?" ([Turn 3 of the November 2 record]
- * (../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-02.1.record.md#turn-3)). A declared entry is no longer
+ * (../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-02/2026-11-02.1.record.md#turn-3)). A declared entry is no longer
  * the start (the rule of October 31, declared entries then the most connected file): the owner would require less
  * authorial intent of the user, and a seed that might not expand would be "a special node" (Turn 4). While anything is
  * asked about, the seeds of the groups the hops cannot reach stand in the picture dimmed, so that every group is one

@@ -193,7 +193,7 @@ test("the reader lists each dependency once, although a symbol's signature names
 
 test("a real bundled section link uses its canonical punctuation-bearing anchor through reload and Back", async ({ page }) => {
   const source = "packages/engine/src/config/liveDocumentationConfig.ts";
-  const path = "AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md";
+  const path = "AI-Agent-Workspace/AgentSessionHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md";
   const fragment = "turn-19-config--schema-hardening-lines-3561-3760";
   await page.goto(`/?s=${compressSnapshot({
     ...DEFAULT_SNAPSHOT, view: "map", selectedNodeId: source,
@@ -265,7 +265,7 @@ test("a file's evidence reads Purpose, then its facts, then Notes, and a jump li
 
 test("a bundled document reads like a Live Doc's authored words: their text size and colour, and no link in the browser's own colour", async ({ page }) => {
   const source = "packages/engine/src/config/liveDocumentationConfig.ts";
-  const path = "AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md";
+  const path = "AI-Agent-Workspace/AgentSessionHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md";
   await page.goto(`/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, view: "sources", inspection: { kind: "file", nodeId: source } })}`);
   const prose = (selector: string) => page.locator(selector).first().evaluate(element => {
     const style = getComputedStyle(element);

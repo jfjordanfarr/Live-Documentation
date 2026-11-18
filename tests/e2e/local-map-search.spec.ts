@@ -38,7 +38,7 @@ test("after the first picture the search tries further starts in idle time and m
   // The first paint tries only the ranking's order, so there is better to find. That a seeded start beats the ranking's
   // bare order is a fact of the scope's docs, so the claim is held on the estate sample, whose docs do not change with
   // this repository's code: on 2026-10-30 the lab priced seed 3 and seed 5 of its five files at 15,973 px against the
-  // ranking's 17,968 with no pairs swapped (AI-Agent-Workspace/Probes/2026-10-30/layout-lab). This repository's five
+  // ranking's 17,968 with no pairs swapped (AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-30/Probes/layout-lab). This repository's five
   // files held the premise on the docs of October 6 and 8 (24% and 31%) and no longer did on October 30's, when the
   // ranking's order came within 1.2% of the shortest start and the search adopted only an alignment of it. The search
   // tries twelve seeds and jumps rather than moves, for speed.

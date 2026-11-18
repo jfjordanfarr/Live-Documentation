@@ -10,11 +10,11 @@ import { spatialScope, startHops, startOf } from "../../packages/explorer/src/cl
 
 /**
  * Discovery, the 3D Local Map's default since 2026-10-31 (the owner's direction, [Turn 4 of the October 31 record]
- * (../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-4)): the picture is what a person asked
+ * (../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-31/2026-10-31.1.record.md#turn-4)): the picture is what a person asked
  * about and the tuning's hops of connections around it, the last hop dimmed as the frontier, and, since 2026-11-02, the
  * seed of every group the hops do not reach, dimmed past the frontier; with nothing asked about, the layout's start, in
  * Connections the archipelago of every group's seed ([Turn 3 of the November 2 record]
- * (../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-02.1.record.md#turn-3)). The spheres are read from the rendered scene and the expected picture is
+ * (../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-02/2026-11-02.1.record.md#turn-3)). The spheres are read from the rendered scene and the expected picture is
  * computed from the bundle by the same pure scope the page uses, so that the test says what the picture must hold and
  * not merely that it holds something. These bare-file scope checks explicitly share Off and two hops;
  * fresh Skin and one-hop arrivals are covered separately. On this repository's bundle; the counts are read from the sidebar's line.

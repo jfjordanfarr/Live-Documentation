@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Lists the user-facing conversation of a Claude Code root session from its log: what the owner typed and what the
 // root's turn showed as a message. Made on 2026-11-16, after a root had noted eight replies as told to the owner that
-// the harness never showed (AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md, the notes after Turn 12).
+// the harness never showed (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md, the notes after Turn 12).
 //
 // Usage:
 //   node AI-Agent-Workspace/scripts/visible-messages.mjs <session-log.jsonl> [sinceISO] [untilISO] [index|full]
@@ -12,7 +12,7 @@
 // The session's log is the harness's own file, outside the repository, named for the session's id under the
 // harness's folder for this project (for Claude Code in this container, ~/.claude/projects/<project>/<session>.jsonl).
 //
-// What it admits, and nothing else (the archive's rule: AI-Agent-Workspace/ChatHistory/README.md, Source captures):
+// What it admits, and nothing else (the archive's rule: AI-Agent-Workspace/AgentSessionHistory/README.md, Source captures):
 //   - from the root session only, never a delegated thread (entries marked as a side chain are skipped);
 //   - an assistant entry's text blocks: what the turn showed;
 //   - a user entry's typed text, and a message the owner sent while the root worked, which the harness keeps as a

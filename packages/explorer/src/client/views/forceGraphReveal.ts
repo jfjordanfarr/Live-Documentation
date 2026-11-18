@@ -12,7 +12,7 @@
  * first, the unconnected last together. Within a layer the most connected enter first, since a well-connected sphere
  * settles the places of the others. The owner asked for the universe to "draw itself one hop at a time", so that
  * "stragglers, weird islands, and orphans, appear very last in the drawing order" ([Turn 4 of the October 31 record]
- * (../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-4)); before, the attention set
+ * (../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-31/2026-10-31.1.record.md#turn-4)); before, the attention set
  * entered whole, then a tenth more at every frame, which was in before the eye could follow it.
  *
  * The pace is a share of the whole at every frame, so that a picture of any size enters over the same number of frames,

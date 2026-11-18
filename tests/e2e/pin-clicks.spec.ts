@@ -10,7 +10,7 @@ import { decompressSnapshot } from "../../packages/explorer/src/client/persisten
  * references join to it, with their laces (2026-11-03). Centre changes the subject without pinning; inspection
  * and double-clicks leave the working set alone; the Knowledge Sources journey still reaches a far symbol in five
  * explicit actions; and a finger drags the 2D map. The earlier click-only journey is in the probe record
- * `AI-Agent-Workspace/Probes/2026-10-14/pin-clicks/`.
+ * `AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-14/Probes/pin-clicks/`.
  */
 const ROSETTA = "tests/integration/programs/typescript/rosetta/src";
 const MAIN = `${ROSETTA}/main.ts`;

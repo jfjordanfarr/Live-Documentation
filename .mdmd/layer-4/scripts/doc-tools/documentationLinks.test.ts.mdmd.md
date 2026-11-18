@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-Exercises the documentation link engine end-to-end—parsing anchors, resolving code targets, formatting comments, and running enforcement—to guard the pipeline that keeps breadcrumb comments synchronized.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-02.SUMMARIZED.md#turn-14-documentation--fixture-repairs]
+Exercises the documentation link engine end-to-end—parsing anchors, resolving code targets, formatting comments, and running enforcement—to guard the pipeline that keeps breadcrumb comments synchronized.[AI-Agent-Workspace/AgentSessionHistory/2025/11/Summarized/2025-11-02.SUMMARIZED.md#turn-14-documentation--fixture-repairs]
 
 ### Notes
-- Uses on-disk fixture workspaces so enforcement logic covers backlink detection, rule scoping, and `--fix` behaviour before the CLI wires it into `safe:commit`.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-02.SUMMARIZED.md#turn-15-benchmark-pipeline--cli-test-stabilization]
+- Uses on-disk fixture workspaces so enforcement logic covers backlink detection, rule scoping, and `--fix` behaviour before the CLI wires it into `safe:commit`.[AI-Agent-Workspace/AgentSessionHistory/2025/11/Summarized/2025-11-02.SUMMARIZED.md#turn-15-benchmark-pipeline--cli-test-stabilization]
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

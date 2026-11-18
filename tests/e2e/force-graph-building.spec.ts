@@ -9,7 +9,7 @@ import { spatialScope, startHops, startOf } from "../../packages/explorer/src/cl
 
 /**
  * While the 3D Local Map builds, its nodes take no hover and no click, and the map says it is building (the owner's
- * decision, [Turn 4 of the November 15 record](../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-15.1.record.md#turn-4)):
+ * decision, [Turn 4 of the November 15 record](../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-4)):
  * building is a body packing, the reveal bringing spheres in, a perspective change or the camera's framing flight with
  * them, which the container's `data-building` says; a pointer that has not moved since building began starts nothing
  * until it moves. On this repository's archipelago, a click on the largest group's seed, the journey of the original

@@ -8,11 +8,11 @@
 
 ## Authored
 ### Purpose
-Owns the shared language-adapter registry and `analyzeWithLanguageAdapters`, letting the Live Docs generator dispatch polyglot analysis across the C, C#, Java, Python, Ruby, and Rust bridges envisioned when we stood up the abstraction on Nov 12 <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-12.md#L330-L372>.
+Owns the shared language-adapter registry and `analyzeWithLanguageAdapters`, letting the Live Docs generator dispatch polyglot analysis across the C, C#, Java, Python, Ruby, and Rust bridges envisioned when we stood up the abstraction on Nov 12 <../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/2025-11-12/2025-11-12.md#L330-L372>.
 
 ### Notes
-- Migrated from the server generator into `packages/engine` on Nov 16 so both the CLI and extension consume the same registry surface <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L878-L918>.
-- Docstring harnesses for each adapter exercise this entry point, keeping registry coverage visible during the Nov 14 verification sweep <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L2792-L2808>.
+- Migrated from the server generator into `packages/engine` on Nov 16 so both the CLI and extension consume the same registry surface <../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/2025-11-16/2025-11-16.md#L878-L918>.
+- Docstring harnesses for each adapter exercise this entry point, keeping registry coverage visible during the Nov 14 verification sweep <../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/2025-11-14/2025-11-14.md#L2792-L2808>.
 - The registry is exported as `LANGUAGE_ADAPTERS` (2026-10-16) so that `index.test.ts` can hold every adapter's extensions to the configuration's default list.
 - An adapter may also name exact `fileNames`, matched before any extension (2026-10-16, with the manifest adapters, [Turn 3 of the October 16 record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-16/2026-10-16.1.record.md#turn-3)): `Cargo.toml`, `pyproject.toml`, `go.mod` and `pom.xml` are known by their names, since their extensions are shared by files that are not manifests. A name is matched exactly, so `cargo.toml` is not read. `index.test.ts` holds the names to the configuration's `LIVE_DOCUMENTATION_SOURCE_FILE_NAMES`.
 

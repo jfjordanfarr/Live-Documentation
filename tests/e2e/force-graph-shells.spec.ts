@@ -13,7 +13,7 @@ import { shellPicture, type ShellPicture } from "../../packages/explorer/src/cli
 
 /**
  * Directory shells, experiment 2 of the shrink-wrap work behind the Group Wrappers choice (2026-11-05; the owner's
- * correction of [Turn 11 of the November 5 record](../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-11)):
+ * correction of [Turn 11 of the November 5 record](../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-05/2026-11-05.1.record.md#turn-11)):
  * with the choice Off, no shell is drawn; with Skin, the files a pinned picture leaves out of the group it
  * shows in part stand as one body per directory at the Shell Depth, each wired to what its files reference; a click pops
  * a shell into its own files and its subdirectories' shells, and its directory's name wraps it again. The shells drawn
@@ -233,7 +233,7 @@ test("a click pops a shell into its own files and a shell of a subdirectory, and
 
 /**
  * A shell as a true stand-in for what it holds (2026-11-06, the owner on November 6: "a computed mesh which is a stand-in
- * for many many many nodes underneath it", [Turn 3 of the November 6 record](../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-06.1.record.md#turn-3)):
+ * for many many many nodes underneath it", [Turn 3 of the November 6 record](../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-06/2026-11-06.1.record.md#turn-3)):
  * in the foreground, as large as what it holds, showing within its skin what a pop releases, and leaving it standing
  * there at the frame of the pop. On the estate one directory deep, whose portal holds its own files and two
  * subdirectories' shells.

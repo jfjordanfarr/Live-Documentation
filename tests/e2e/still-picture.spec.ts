@@ -51,7 +51,7 @@ import type { ExplorerGraphPayload } from "../../packages/explorer/src/shared/ty
  * and takes the measures: the six of the first deck and the nine of the
  * expanded one. The numbers go to `reports/still-picture/` as tables and as
  * JSON, to be read against the predictions in
- * `AI-Agent-Workspace/Probes/2026-10-01/still-picture-deck.md`. The
+ * `AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-01/Probes/still-picture-deck.md`. The
  * assertions are only the rules the workspace already holds: no label
  * collisions, no cut-off text, no wire that changes shape under a pan, and
  * the Local Map's wires in their gutters. Everything else is reported.
@@ -108,7 +108,7 @@ function recordBoard(board: Scoreboard): void {
     const chain = rows.some(row => row.chain) ? `\n\n${chainTable(rows)}` : "";
     return `## ${run.bundle}, ${run.scopeName}\n\n${scoreboardTable(rows)}\n\n${expandedTable(rows)}${chain}\n\n${notes.join("\n")}\n`;
   });
-  const header = "# Still-picture scoreboard\n\nAt 1600 by 1000 CSS pixels; each row says when it was measured. The deck that defines each column is `AI-Agent-Workspace/Probes/2026-10-01/still-picture-deck.md`.\n\n";
+  const header = "# Still-picture scoreboard\n\nAt 1600 by 1000 CSS pixels; each row says when it was measured. The deck that defines each column is `AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-01/Probes/still-picture-deck.md`.\n\n";
   fs.writeFileSync(path.join(REPORT_DIR, "scoreboard.md"), header + sections.filter(Boolean).join("\n"), "utf8");
 }
 
@@ -386,7 +386,7 @@ for (const run of RUNS) {
       // samples, the same wires): the wires were not routed through that lane but dived down the gutter from a card
       // that ends short of its column's widest, the dive beginning over the column, through the membrane and across
       // the lane's end. A wire now runs straight to the gutter before its first curve (branch-routing.ts); the evidence
-      // is in AI-Agent-Workspace/Screenshots/2026-11-07/column-clearance.
+      // is in AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-07/Screenshots/column-clearance.
       const graph = await loadGraph(page, run.base);
       const facts = factsInScope(graph, run.scope);
       const names = displayNames(graph, graph.nodes.map(node => node.id));

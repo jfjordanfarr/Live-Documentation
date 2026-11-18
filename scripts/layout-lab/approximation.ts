@@ -2,7 +2,7 @@
  * The approximation of the 3D Local Map's repulsion, measured headlessly (2026-10-28).
  *
  * On 2026-10-27 the T3 bundle's 3D view froze: one exact evaluation of its 21,720 spheres took 2.2 seconds and the first
- * tick fifteen of them (`AI-Agent-Workspace/Probes/2026-10-27/t3-code/3d-startup.md`). The owner decided the next day that
+ * tick fifteen of them (`AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-27/Probes/t3-code/3d-startup.md`). The owner decided the next day that
  * an approximation, the field's `approximation` lever, may be the default with the exact sum kept as the oracle. This
  * module measures what each setting of the lever buys and costs against that oracle, on the page's own data, field and
  * motion: what one evaluation takes at D3's seed of a large bundle, how far the approximated forces stand from the exact

@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-Exercises `cAdapter` against synthetic `.c/.h` fixtures to confirm Doxygen summaries, parameters, examples, and include resolution flow into Live Docs, matching the scenarios scoped in the Nov 14 implementation plan and validated during the ship review <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L3620-L3705> <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L4028-L4088>.
+Exercises `cAdapter` against synthetic `.c/.h` fixtures to confirm Doxygen summaries, parameters, examples, and include resolution flow into Live Docs, matching the scenarios scoped in the Nov 14 implementation plan and validated during the ship review <../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/2025-11-14/2025-11-14.md#L3620-L3705> <../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/2025-11-14/2025-11-14.md#L4028-L4088>.
 
 ### Notes
-- Runs as part of the Nov 14 `safe:commit -- --benchmarks` sweep to lock the adapter’s behaviour, and should grow alongside any new Doxygen tag support <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L4028-L4088>.
+- Runs as part of the Nov 14 `safe:commit -- --benchmarks` sweep to lock the adapter’s behaviour, and should grow alongside any new Doxygen tag support <../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/2025-11-14/2025-11-14.md#L4028-L4088>.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

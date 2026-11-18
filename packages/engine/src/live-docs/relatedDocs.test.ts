@@ -28,7 +28,7 @@ describe("relatedDocsOf", () => {
   it("reads the documents a doc's authored words link to, resolved from the doc's place, each once, sorted", () => {
     const authored = [
       "### Purpose",
-      "Built from [the plan](../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions) and [the record](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-9).",
+      "Built from [the plan](../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions) and [the record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-20/2026-10-20.1.record.md#turn-9).",
       "",
       "### Notes",
       "- Again [the plan](../../../../.mdmd/layer-3/change-over-time.mdmd.md), and [a README](../README.md)."
@@ -36,7 +36,7 @@ describe("relatedDocsOf", () => {
     expect(relatedDocsOf({ docPath: ".mdmd/layer-4/src/app/main.ts.mdmd.md", authored }, LOCATION)).toEqual([
       ".mdmd/layer-3/change-over-time.mdmd.md",
       ".mdmd/layer-4/src/README.md",
-      "AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md"
+      "AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-20/2026-10-20.1.record.md"
     ]);
   });
 
@@ -55,7 +55,7 @@ describe("relatedDocsOf", () => {
     const authored = "See [the record](../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md) and [its summary](../../AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-10-20.1.SUMMARIZED.md).";
     const exclude = ["AI-Agent-Workspace/ChatHistory/**/!(*.SUMMARIZED).md"];
     expect(relatedDocsOf({ docPath: ".mdmd/layer-4/a.ts.mdmd.md", authored }, LOCATION, exclude)).toEqual([
-      "AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-10-20.1.SUMMARIZED.md"
+      "AI-Agent-Workspace/AgentSessionHistory/2026/10/Summarized/2026-10-20.1.SUMMARIZED.md"
     ]);
   });
 });

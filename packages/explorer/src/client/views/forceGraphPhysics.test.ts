@@ -671,7 +671,7 @@ describe("the motion through an approximated field (2026-10-28)", () => {
     // and 477, the held energy falling in each while one tick could raise it by at most 2.8e-5 of itself, where the exact
     // field's never rose. The bounds allow a quarter more ticks and twice that rise. Larger settings rest less surely: at
     // 0.7 one of 36 such scenes, and at 0.9 three of the four pictures of this repository and the estate, never came to
-    // rest (AI-Agent-Workspace/Probes/2026-10-28/approximation/README.md).
+    // rest (AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-28/Probes/approximation/README.md).
     const settings = { ...SETTINGS, tether: 0.02 }, count = 200;
     for (const seed of [3, 4]) {
       const next = seeded(seed), radii = Float64Array.from({ length: count }, () => 4 * Math.cbrt(1 + Math.floor(next() * 20)));

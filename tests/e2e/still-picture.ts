@@ -7,7 +7,7 @@
  * of the first scoreboard added (crossings, shared channels, flow, folder
  * adjacency and legibility, symbols shown, hidden among drawn, churn, the
  * tour). The deck that defines them, with the predictions written before this
- * code existed, is `AI-Agent-Workspace/Probes/2026-10-01/still-picture-deck.md`.
+ * code existed, is `AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-01/Probes/still-picture-deck.md`.
  * The pure geometry under the added measures is `still-picture-geometry.ts`.
  *
  * A fact is one reference in the Explorer's graph payload. The scope is a set

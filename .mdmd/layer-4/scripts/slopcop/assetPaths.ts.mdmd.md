@@ -8,11 +8,11 @@
 
 ## Authored
 ### Purpose
-Detects broken HTML/CSS asset references (images, scripts, stylesheets) across the workspace so SlopCop can block releases that ship dead resources.[AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-25.SUMMARIZED.md#turn-29-asset-audit-enhancements--fixtures]
+Detects broken HTML/CSS asset references (images, scripts, stylesheets) across the workspace so SlopCop can block releases that ship dead resources.[AI-Agent-Workspace/AgentSessionHistory/2025/10/Summarized/2025-10-25.SUMMARIZED.md#turn-29-asset-audit-enhancements--fixtures]
 
 ### Notes
-- Expanded during the October 25 SlopCop hardening to track additional attributes, hashed filenames, and configurable root directories shared via `slopcop.config.json`.[AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-25.SUMMARIZED.md#turn-29-asset-audit-enhancements--fixtures]
-- Regularly exercised through the `slopcop-assets` fixture and repo-wide audits (for example November 3) to ensure new docs or Live Doc outputs never leave dangling asset links.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-03.md]
+- Expanded during the October 25 SlopCop hardening to track additional attributes, hashed filenames, and configurable root directories shared via `slopcop.config.json`.[AI-Agent-Workspace/AgentSessionHistory/2025/10/Summarized/2025-10-25.SUMMARIZED.md#turn-29-asset-audit-enhancements--fixtures]
+- Regularly exercised through the `slopcop-assets` fixture and repo-wide audits (for example November 3) to ensure new docs or Live Doc outputs never leave dangling asset links.[AI-Agent-Workspace/AgentSessionHistory/2025/11/2025-11-03/2025-11-03.md]
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

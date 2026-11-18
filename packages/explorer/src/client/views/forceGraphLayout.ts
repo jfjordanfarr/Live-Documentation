@@ -356,7 +356,7 @@ export const COLLISION_STIFFNESS = 3;
  * lull from which a shell would glide 87 px further over some six thousand ticks if the motion ran on; that slowness is
  * the forces' matter, not the rule's. A rule that waited until what is left to move were under a pixel rested 1.4 to 6
  * times later on the pictures measured, and a looser speed froze pictures still visibly gliding, 88 px from where they
- * rest on the seed click at 10⁻⁴ (`AI-Agent-Workspace/Screenshots/2026-11-16/motion-rest/README.md`).
+ * rest on the seed click at 10⁻⁴ (`AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-16/Screenshots/motion-rest/README.md`).
  */
 export const STILL_FRACTION = 3e-5;
 

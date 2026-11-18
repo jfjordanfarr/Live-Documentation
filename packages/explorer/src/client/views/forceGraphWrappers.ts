@@ -2,8 +2,8 @@
  * Wrappers in the 3D Local Map, the experiment behind the tuning's Group Wrappers (2026-11-05): a padded hull drawn over
  * many files the picture does not show, so that they read as one shape a click can pop open and the files then fill.
  * The owner proposed a mesh "which shrink-wraps the shape of the cluster it engulfs" on November 4 ([Turn 16 of the
- * November 3 record](../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-03.1.record.md#turn-16--november-4))
- * and asked to push it forward on November 5 ([Turn 10](../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-10)).
+ * November 3 record](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-03/2026-11-03.1.record.md#turn-16--november-4))
+ * and asked to push it forward on November 5 ([Turn 10](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-05/2026-11-05.1.record.md#turn-10)).
  * Two things are wrapped: every disconnected group the picture shows only by its seed, its wrapper centred on the seed,
  * and, since experiment 2 of that day, the directory shells inside the groups it shows in part (`forceGraphShells.ts`),
  * each a body of its own. Both are drawn over a phantom packing of their files inside a body sized by their count, not

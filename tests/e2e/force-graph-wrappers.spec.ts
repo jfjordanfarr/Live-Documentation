@@ -12,7 +12,7 @@ import { wrappedSeeds } from "../../packages/explorer/src/client/views/forceGrap
 
 /**
  * Group Wrappers, an experiment behind one Tuning choice (2026-11-05; the owner's proposal of November 4, [Turn 16 of the
- * November 3 record](../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-03.1.record.md#turn-16--november-4)): with the
+ * November 3 record](../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-03/2026-11-03.1.record.md#turn-16--november-4)): with the
  * choice Off, the 3D Local Map draws no wrapper; with Skin, every disconnected group the picture shows only
  * by its seed, of two files or more, is drawn in a hull of its own files, a click on which pins the seed as a click on
  * the seed does, and releasing the pin wraps the group again. The wrappers are read from the mesh the page draws and the

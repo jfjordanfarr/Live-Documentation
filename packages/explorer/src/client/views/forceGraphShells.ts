@@ -4,10 +4,10 @@
  * one body of the simulation standing for many files, a padded hull a click pops open into its files and the shells of
  * its subdirectories, a balloon full of balloons. The owner, correcting the first experiment's rule that only a
  * disconnected group may be wrapped: "The idea is to abstract a crapton of nodes into fewer ungulfing "nodes" (meshes that
- * wrap those nodes)" ([Turn 11 of the November 5 record](../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-11)),
+ * wrap those nodes)" ([Turn 11 of the November 5 record](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-05/2026-11-05.1.record.md#turn-11)),
  * and on November 4, of what to wrap, "If you think of it more from an optimization perspective (obscuring nodes which
  * aren't part of the hop chain in the current pin set, etc.) the problem of what to wrap and not wrap may resolve more
- * cleanly" ([Turn 17 of the November 3 record](../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-03.1.record.md#turn-17--november-4)).
+ * cleanly" ([Turn 17 of the November 3 record](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-03/2026-11-03.1.record.md#turn-17--november-4)).
  *
  * The rule here is one of several the owner may compare: a hidden file belongs to the shell of its directory cut to the
  * Shell Depth under the scan root, a directory of fewer than two hidden files makes none, and a popped directory's files
@@ -19,7 +19,7 @@
  * the shell's true size and the skin shows within it the units a pop releases, its own files and its subdirectories'
  * balloons, where the pop leaves them; the owner had found the first shells "a replacement for the ring around a single
  * node rather than a computed mesh which is a stand-in for many many many nodes underneath it"
- * ([Turn 3 of the November 6 record](../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-06.1.record.md#turn-3)).
+ * ([Turn 3 of the November 6 record](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-06/2026-11-06.1.record.md#turn-3)).
  *
  * Pure-function module: no DOM, no GPU. The page draws, picks and pops what these functions describe.
  */

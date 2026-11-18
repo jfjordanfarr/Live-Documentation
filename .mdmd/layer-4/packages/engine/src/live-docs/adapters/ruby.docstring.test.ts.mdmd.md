@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-Checks the Ruby adapter’s handling of YARD line and block comments, ensuring symbol docs, mixins, and dependency edges mirror the Nov 14 plan and completed implementation <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L2999-L3072> <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L3308-L3334>.
+Checks the Ruby adapter’s handling of YARD line and block comments, ensuring symbol docs, mixins, and dependency edges mirror the Nov 14 plan and completed implementation <../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/2025-11-14/2025-11-14.md#L2999-L3072> <../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/2025-11-14/2025-11-14.md#L3308-L3334>.
 
 ### Notes
-- Exercised via repeated `npx vitest run …/ruby.docstring.test.ts` passes and the ruby fixture regeneration noted during the rollout; keep those assets updated when expanding tag coverage <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L3308-L3334>.
+- Exercised via repeated `npx vitest run …/ruby.docstring.test.ts` passes and the ruby fixture regeneration noted during the rollout; keep those assets updated when expanding tag coverage <../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/2025-11-14/2025-11-14.md#L3308-L3334>.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

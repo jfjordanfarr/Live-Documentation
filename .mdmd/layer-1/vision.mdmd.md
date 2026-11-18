@@ -59,7 +59,7 @@ The Local Map is the inside of one system, its folders, files and symbols, in tw
 
 Between them: zooming into a piece far enough opens it, and the map inside renders at reading size while the board recedes, dimmed. Text never resizes. A hover peeks, a click pins, and a pinned panel carries the link inside. The camera turns the way the force graph's does. Explanations live behind a help control, never on the screen.
 
-The board that settled this, the owner's words on it and the forks still open are recorded under `AI-Agent-Workspace/Probes/2026-09-28/`.
+The board that settled this, the owner's words on it and the forks still open are recorded under `AI-Agent-Workspace/AgentSessionHistory/2026/09/2026-09-28/Probes/`.
 
 _Current reading, 2026-10-23: the dated picture above is not a reason to hide necessary names, path results, absence explanations or the active legend in help. Optional instruction stays in disclosure. Provider-left/consumer-right describes the 2D file drawing; 3D must make direction and identity legible through its own picture while preserving blue for offers and green for uses. The [accepted remediation work](../layer-3/live-documentation-explorer.mdmd.md#remediation-work) makes these obligations concrete._
 

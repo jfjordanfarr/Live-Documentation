@@ -6,7 +6,7 @@
  * resolutions are the edges of `expected/compiler-edges.json` that carry the
  * included file's own symbol; `npm run oracle:index` writes them. The rule was
  * chosen by measurement on 2026-10-16 (the probe record under
- * `AI-Agent-Workspace/Probes/2026-10-16/include-rules`); this test keeps it.
+ * `AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-16/Probes/include-rules`); this test keeps it.
  */
 import * as fs from "node:fs";
 import os from "node:os";

@@ -12,7 +12,7 @@ import { structureCells } from "../../packages/explorer/src/client/views/forceGr
 
 /**
  * The bag of cells in the Structure layout (2026-11-07; the owner, "can we also get the bag-of-cells look for the
- * "structure" part too?", [Turn 8 of the November 6 record](../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-06.1.record.md#turn-8)):
+ * "structure" part too?", [Turn 8 of the November 6 record](../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-06/2026-11-06.1.record.md#turn-8)):
  * with Group Wrappers on, every directory hub the picture shows none of whose children it shows is drawn as the bubble
  * of what stands under it; a click on one opens its directory, the opened set the 2D and the address share, and its hub
  * stands with its files and its subdirectories' bubbles where the skin showed them; Close wraps it again; Off draws the

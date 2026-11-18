@@ -1,6 +1,6 @@
 /**
  * The estate scanned as seven things against the estate scanned once: the
- * probe of the World Map's first ticket (AI-Agent-Workspace/Probes/2026-10-09/two-scans.md),
+ * probe of the World Map's first ticket (AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-09/Probes/two-scans.md),
  * kept as a test. Each thing's folder is scanned alone, the scans are read as
  * the board names them and merged into the estate's graph, and the wires the
  * board draws are compared with the one-scan build's, wire by wire.

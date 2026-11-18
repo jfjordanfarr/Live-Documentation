@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-Harvests public symbols, XML doc comments, and dependency edges from C# sources, fulfilling the Nov 12 language-adapter initiative and the C# rollout that wired fixtures and polyglot tests into the Live Docs pipeline <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-12.md#L330-L372> <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-12.md#L626-L715>.
+Harvests public symbols, XML doc comments, and dependency edges from C# sources, fulfilling the Nov 12 language-adapter initiative and the C# rollout that wired fixtures and polyglot tests into the Live Docs pipeline <../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/2025-11-12/2025-11-12.md#L330-L372> <../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/2025-11-12/2025-11-12.md#L626-L715>.
 
 ### Notes
-- Backed by the `polyglot-fixtures` integration harness and manual inspection scripts created during the C# deployment, so changes here should re-run those checks <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-12.md#L554-L715>.
+- Backed by the `polyglot-fixtures` integration harness and manual inspection scripts created during the C# deployment, so changes here should re-run those checks <../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/2025-11-12/2025-11-12.md#L554-L715>.
 - Extends Hangfire heuristics to capture scheduled and recurring jobs, mirroring the LD-402 queue-worker fixture coverage.
 - The program's entry point is reported on the analysis result since 2026-10-15 ([the decision](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#entry-points-are-written-on-the-entry-and-what-they-reach-is-one-walk-recorded-2026-10-15)), from which the doc carries `- Entry: program`: a static `Main` of any accessibility and return type, with its line, or top-level statements (`global_statement` under the compilation unit), which take precedence over a `Main` as the compiler gives it; a type merely named `Main`, as the rosetta sample's `static class Main { Run }`, is none.
 

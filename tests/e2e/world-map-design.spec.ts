@@ -88,7 +88,7 @@ test.describe("World Map design audit", () => {
 /**
  * A newcomer found every piece's second line drawn through the piece's own outline, and in the view from above the
  * names too, with the edges of the thin pieces striking through their words (2026-11-12,
- * `AI-Agent-Workspace/Screenshots/2026-11-12/first-visit/`, finding 6). An edge through a word reads as struck out
+ * `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-12/Screenshots/first-visit/`, finding 6). An edge through a word reads as struck out
  * whichever piece the edge belongs to, so every label is held off every piece's outline as well as off every other
  * label, on both boards, as the board first opens, from straight above, and at two angles of orbit.
  */

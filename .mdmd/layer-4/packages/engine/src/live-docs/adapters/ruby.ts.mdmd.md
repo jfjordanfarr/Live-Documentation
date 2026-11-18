@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-Provides the Ruby analyzer that maps YARD-style line and block comments, mixins, and `require` dependencies into Live Docs, following the implementation plan drafted and executed on Nov 14 <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L2999-L3072> <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L3308-L3334>.
+Provides the Ruby analyzer that maps YARD-style line and block comments, mixins, and `require` dependencies into Live Docs, following the implementation plan drafted and executed on Nov 14 <../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/2025-11-14/2025-11-14.md#L2999-L3072> <../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/2025-11-14/2025-11-14.md#L3308-L3334>.
 
 ### Notes
-- Keep YARD tag coverage aligned with `ruby.docstring.test.ts` and the regenerated ruby fixtures that shipped with the adapter <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L3308-L3334>.
+- Keep YARD tag coverage aligned with `ruby.docstring.test.ts` and the regenerated ruby fixtures that shipped with the adapter <../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/2025-11-14/2025-11-14.md#L3308-L3334>.
 - The program's entry point is reported on the analysis result since 2026-10-15 ([the decision](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#entry-points-are-written-on-the-entry-and-what-they-reach-is-one-walk-recorded-2026-10-15)), from which the doc carries `- Entry: program`: a column-0 guard `__FILE__ == $0`, `__FILE__ == $PROGRAM_NAME` or either reversed, as `if <guard>` on its own line or as a statement modifier, with `=begin`/`=end` blocks and `#` comments skipped and a guard inside a one-line string not counting.
 
 ## Generated

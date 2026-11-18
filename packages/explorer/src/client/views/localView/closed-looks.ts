@@ -7,7 +7,7 @@
  *
  * The owner, on the closed directory: it "doesn't indicate to me "this thing can pop open and let out a lot of stuff
  * into the screen" in the same way that we enjoy with our bags of cells in the 3D local map view"
- * (AI-Agent-Workspace/ChatHistory/2026/11/2026-11-13.1.record.md#turn-7); and, having chosen the cells among three
+ * (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-13/2026-11-13.1.record.md#turn-7); and, having chosen the cells among three
  * looks, of the small ringed marks a directory inside was drawn as: "there's a bit in the visuals here that I struggle
  * to understand the meaning of (likely folders in folders)" (2026-11-15). So there is one kind of mark at one size: a
  * file is a cell, and a directory inside is a small skin around cells of that same size.

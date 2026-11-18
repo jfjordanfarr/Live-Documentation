@@ -2,7 +2,7 @@
  * The geometry under the still-picture deck's expanded measures: crossings, shared channels, flow, folder
  * adjacency and the tour. Pure, so that Vitest can hold each number to a drawing it can see. The page reading
  * that feeds these lives in `still-picture.ts`; the measures are defined in
- * `AI-Agent-Workspace/Probes/2026-10-01/still-picture-deck.md` under "The expanded deck".
+ * `AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-01/Probes/still-picture-deck.md` under "The expanded deck".
  */
 
 export type Point = readonly [number, number];

@@ -8,7 +8,7 @@
 
 ## Authored
 ### Purpose
-Centralizes Live Documentation defaults—root, base layer, slug dialect—so the generator, lint, and CLI flows share one configuration contract, as hardened during the Live Docs pipeline work in [AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md#turn-19-config--schema-hardening-lines-3561-3760](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md#turn-19-config--schema-hardening-lines-3561-3760).
+Centralizes Live Documentation defaults—root, base layer, slug dialect—so the generator, lint, and CLI flows share one configuration contract, as hardened during the Live Docs pipeline work in [AI-Agent-Workspace/AgentSessionHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md#turn-19-config--schema-hardening-lines-3561-3760](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md#turn-19-config--schema-hardening-lines-3561-3760).
 
 ### Notes
 - `entryPoints` (2026-10-15, [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#entry-points-are-written-on-the-entry-and-what-they-reach-is-one-walk-recorded-2026-10-15)): workspace-relative paths or globs of files declared as entry points, for what no rule infers, such as a bundler's entry named by a path string in code or a stylesheet a template links; each matching file's doc carries `- Entry: declared`. This repository declares the Explorer client's `index.ts` and `styles.css`.
