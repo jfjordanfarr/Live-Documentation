@@ -1,0 +1,488 @@
+backward-cue.spec.ts:68	branch-renderer.ts alone lights the 3D c	MOTION	2D	cue lit with count is still, but also asserts exactly one pulse animation started
+backward-cue.spec.ts:98	the estate's ring of three files lights 	STILL	2D	two addresses each read settled: cue lit on ring, off on acyclic file
+backward-cue.spec.ts:115	the number is the same at the reading, c	RELATION	2D	count after zoom-outs equals count at reading scale
+backward-cue.spec.ts:140	with files only at the farthest zoom, th	RELATION	2D	overview files-only count equals reading count
+backward-cue.spec.ts:152	the cue does not pulse under reduced mot	MOTION	2D	reduced motion: no pulse animation over time
+backward-cue.spec.ts:162	in 3D the cue is off, and back in 2D it 	JOURNEY	2D	press 3D then 2D, cue goes off and relights
+card-ladder-boxes.spec.ts:362	on this repository's still picture, ever	RELATION	2D	every zoom press compared to the reading-scale layout
+card-ladder-boxes.spec.ts:439	a picture drawn at any zoom lays out eve	RELATION	2D	layout pinned at zoom equals layout pinned at reading scale
+card-ladder-boxes.spec.ts:464	in the three looks too, a picture drawn 	RELATION	2D	same, three looks tuning: pinned-at-zoom layout equals reading layout
+card-ladder-boxes.spec.ts:486	walking back in from the last step, ever	RELATION	2D	walk out then back in, each press equals its outward picture
+card-ladder-boxes.spec.ts:519	on a file pinned whole, every row highli	RELATION	2D	whole-file pin walked out, boxes held versus reading scale
+card-ladder-boxes.spec.ts:537	on an estate subject with a pinned symbo	RELATION	2D	estate pin clicked then walked out, compared to reading scale
+card-ladder.spec.ts:81	each band below reading scale lets one t	RELATION	2D	each band's sizes and boxes compared to reading scale start
+card-ladder.spec.ts:210	from the middle band out no book is draw	JOURNEY	2D	Tab walk at each band: books not reached by keyboard
+card-ladder.spec.ts:243	the resistances and the growth in Tuning	RELATION	2D	zero resistances: middle-band sizes scale with map versus start
+card-ladder.spec.ts:269	the map says when its camera moves, and 	MOTION	2D	camera says moving during wheel and drag, layer only meanwhile
+card-ladder.spec.ts:385	at every step a dot never covers its nam	RELATION	2D	walk every step out and in, invariants and boxes versus start
+card-ladder.spec.ts:475	beyond the middle band a row's Pin folds	JOURNEY	2D	Pin folded into More: keyboard menu pins and unpins [beyond middle band]
+card-ladder.spec.ts:475	in the three looks' connections look a r	JOURNEY	2D	Pin folded into More: keyboard menu pins and unpins [in three looks connections look]
+card-reading-refresh.spec.ts:43	normal-default text choices preserve the	JOURNEY	2D	keyboard folds: search, DOM, focus and acted-on control kept
+card-reading-refresh.spec.ts:99	a reading-only card updates its row emph	JOURNEY	2D	keyboard fold then reopen a row, row held still and connected
+card-reading-refresh.spec.ts:125	a compact neighbor folds short in place,	JOURNEY	2D	book presses fold and retain neighbour, then reload keeps state
+card-reading.spec.ts:60	taps on Walk and walk open and fold each	JOURNEY	2D	hover draws nothing; repeated taps open and fold, same picture per set [walk hover]
+card-reading.spec.ts:60	taps on Walk and walk open and fold each	JOURNEY	2D	hover draws nothing; repeated taps open and fold, same picture per set [walk click]
+card-reading.spec.ts:60	taps on PaymentService and Post open and	JOURNEY	2D	hover draws nothing; repeated taps open and fold, same picture per set [paymentservice post hover]
+card-reading.spec.ts:60	taps on PaymentService and Post open and	JOURNEY	2D	hover draws nothing; repeated taps open and fold, same picture per set [paymentservice post click]
+card-reading.spec.ts:108	two steps out the prose fades and no car	JOURNEY	2D	zoom out, then taps and book fold and reopen, boxes unchanged [900x700]
+card-reading.spec.ts:108	two steps out the prose fades and no car	JOURNEY	2D	zoom out, then taps and book fold and reopen, boxes unchanged [1440x960]
+card-reading.spec.ts:166	inspection from More, the symbol menu an	JOURNEY	panel	tap, inspect from More, Escape, pin keeps symbol context
+card-reading.spec.ts:194	reversing zoom during disclosure keeps t	MOTION	2D	rapid zoom clicks during transition end where settled clicks end
+card-reading.spec.ts:227	tapping Walk and walk opens each, foldin	JOURNEY	2D	tap cycles, folding both restores same picture, name toggles all
+card-reading.spec.ts:267	the portrait reading frame returns from 	JOURNEY	2D	wheel out, return to reading, then phone resize keeps text size
+card-reading.spec.ts:300	full reading keeps map and pins, traps k	JOURNEY	panel	full reader dialog traps focus, Escape and Back restore opener
+card-reading.spec.ts:328	an explicit fold stays folded while its 	JOURNEY	2D	keyboard fold keeps book focused and folded
+card-reading.spec.ts:343	a name opens and folds its description f	JOURNEY	2D	Enter and Space on names open and fold, focus kept
+card-reading.spec.ts:369	shared reading can be open without a pin	JOURNEY	panel	open reader, share URL to new context, close card there
+card-reading.spec.ts:403	a symbol search restores reading from ov	JOURNEY	2D	search restores reading, resize follows row, fold, More, Escape
+card-reading.spec.ts:434	restoring a full reader in 3D keeps its 	JOURNEY	3D	restored reader in 3D: Escape and reload keep no discovery
+card-reading.spec.ts:448	a tapped description is saved reading: i	JOURNEY	2D	tapped description survives a 3D and back round trip
+card-slots.spec.ts:98	fixed slots keep the ordinary drawing, g	JOURNEY	2D	still slot allotments, then hover, tap reader and zoom change no box
+card-slots.spec.ts:171	a long description is cut with an ellips	JOURNEY	2D	ellipsis and allotment still, then file name tap opens reader
+card-slots.spec.ts:195	Enter on a described name opens the read	JOURNEY	panel	Enter opens reader; Tuning select switches compositions live
+card-slots.spec.ts:226	Slot Lines sets every described symbol's	RELATION	2D	Slot Lines values compared to two-line allotment and box
+card-slots.spec.ts:264	books compose all, none and one descript	JOURNEY	2D	book clicks fold and restore rows, zoom out and back
+card-slots.spec.ts:347	none survives a fresh shared visit, relo	JOURNEY	2D	book toggles survive reload, shared visit, Back and Forward [none]
+card-slots.spec.ts:347	an explicit symbol fold in an open card 	JOURNEY	2D	book toggles survive reload, shared visit, Back and Forward [an explicit symbol fold in]
+card-slots.spec.ts:347	one description survives a fresh shared 	JOURNEY	2D	book toggles survive reload, shared visit, Back and Forward [one description]
+card-slots.spec.ts:401	exact symbol arrivals reveal their headi	JOURNEY	panel	reader scroll to heading on arrivals, scroll kept on refresh
+cited-by.spec.ts:26	the 3D picture draws the citing document	JOURNEY	3D	citing documents drawn from address, then unchecking filter removes them
+cited-by.spec.ts:52	the reader lists the documents that cite	JOURNEY	panel	reader lists Cited By, clicking a link opens that document
+closed-directory-families.spec.ts:84	at each far look a closed box's name is 	STILL	2D	closed boxes read at two looks reached by zoom presses [fallback]
+closed-directory-families.spec.ts:84	at each far look a closed box's name is 	STILL	2D	closed boxes read at two looks reached by zoom presses [segoe]
+closed-directory-families.spec.ts:137	the estate's opened directories' handles	STILL	2D	estate handles at overview, plus in-page width probe of fitting [fallback]
+closed-directory-families.spec.ts:137	the estate's opened directories' handles	STILL	2D	estate handles at overview, plus in-page width probe of fitting [segoe]
+closed-directory-looks.spec.ts:85	each Closed Directory look and shape dra	JOURNEY	2D	placements equal across looks plus Open by pointer and keyboard [segoe]
+closed-directory-looks.spec.ts:85	each Closed Directory look and shape dra	JOURNEY	2D	placements equal across looks plus Open by pointer and keyboard [fallback]
+closed-directory-looks.spec.ts:175	a directory inside a closed one is a ski	JOURNEY	2D	mostly per-tuning stills of cells; one Open click checks link carries grey
+closed-directory-looks.spec.ts:236	a cell says its file's name on hover, a 	JOURNEY	2D	cell titles read still, then a press on a cell opens directory
+closed-directory-looks.spec.ts:280	a stack's cards under its top card never	STILL	2D	stack edges reach no neighbour, read from settled pictures
+closed-directory-looks.spec.ts:308	in the far looks each look keeps the box	STILL	2D	far look reached by three presses, held name and cells read [segoe]
+closed-directory-looks.spec.ts:308	in the far looks each look keeps the box	STILL	2D	far look reached by three presses, held name and cells read [fallback]
+descriptions-zoomed-out.spec.ts:90	three presses out a described name on on	RELATION	2D	first-line tuning versus hidden: kept lines added, boxes unchanged [fallback]
+descriptions-zoomed-out.spec.ts:90	three presses out a described name on on	RELATION	2D	first-line tuning versus hidden: kept lines added, boxes unchanged [segoe]
+descriptions-zoomed-out.spec.ts:126	the overview look is as it was with the 	RELATION	2D	overview identical with and without first-line tuning
+descriptions-zoomed-out.spec.ts:204	three presses out every described row ke	RELATION	2D	tuning versus hidden: same boxes and wires, name cuts read [end fallback]
+descriptions-zoomed-out.spec.ts:204	three presses out every described row ke	RELATION	2D	tuning versus hidden: same boxes and wires, name cuts read [in middle a seam segoe]
+descriptions-zoomed-out.spec.ts:204	three presses out every described row ke	RELATION	2D	tuning versus hidden: same boxes and wires, name cuts read [in middle a seam fallback]
+descriptions-zoomed-out.spec.ts:204	three presses out every described row ke	RELATION	2D	tuning versus hidden: same boxes and wires, name cuts read [end segoe]
+descriptions-zoomed-out.spec.ts:292	the file's own line stands under its nam	STILL	2D	file's kept line read in each tuning and folded address independently
+descriptions-zoomed-out.spec.ts:322	with half the descriptions folded, every	RELATION	2D	half-folded address, line-middle versus hidden: cards same, lines kept
+design-audit.spec.ts:86	finds a line clipped by its own width	OTHER	none	checks the audit helper itself on a hand-written HTML fixture
+design-audit.spec.ts:97	finds text that fits its child but is cl	OTHER	none	checks the audit helper itself on a hand-written HTML fixture
+design-audit.spec.ts:109	does not waive a selected label wholly c	OTHER	none	checks the audit helper itself on a hand-written HTML fixture
+design-audit.spec.ts:119	finds lines clipped vertically by their 	OTHER	none	checks the audit helper itself on a hand-written HTML fixture
+design-audit.spec.ts:132	allows complete wrapping and measures sc	OTHER	none	checks the audit helper itself on a hand-written HTML fixture
+design-audit.spec.ts:144	leaves scrollports, panning frames and d	OTHER	none	checks the audit helper itself on a hand-written HTML fixture
+design-audit.spec.ts:155	a selected container ignores its closed 	OTHER	none	checks the audit helper itself on a hand-written HTML fixture
+design-audit.spec.ts:165	nested descendant opacity uses the same 	OTHER	none	checks the audit helper itself on a hand-written HTML fixture
+design-audit.spec.ts:175	a vertical scrollport limits outer clipp	OTHER	none	checks the audit helper itself on a hand-written HTML fixture
+design-audit.spec.ts:190	a horizontal scrollport limits outer cli	OTHER	none	checks the audit helper itself on a hand-written HTML fixture
+design-audit.spec.ts:205	inner and orthogonal clipping remain fau	OTHER	none	checks the audit helper itself on a hand-written HTML fixture
+explorer-history.spec.ts:24	Back and Forward > walk back and forward	JOURNEY	none	views visited walked back and forward by page and browser buttons
+explorer-history.spec.ts:49	Back and Forward > an opened folder is a	JOURNEY	2D	open folder, pin, Back leaves folder but not pins
+explorer-history.spec.ts:79	Back and Forward > a thing opened from t	JOURNEY	world	open from World Map, Back to board, Forward reopens
+explorer-navigation.spec.ts:15	three navigable views, with a board as t	JOURNEY	none	landing on board, click Local Map gives explicit address
+explorer-navigation.spec.ts:26	3D survives navigation, reload, a fresh 	JOURNEY	3D	3D survives navigation, reload, shared link and return
+explorer-navigation.spec.ts:67	old view links migrate, including compre	STILL	2D	old links open migrated; Show pins opened to read the pins
+explorer-navigation.spec.ts:83	World Map folder entry retains 3D, and i	JOURNEY	3D	World Map folder entry keeps 3D, Back/Forward, shared link
+explorer-navigation.spec.ts:112	this repository lands on the root with n	STILL	2D	landing on root with no pins; rests on this repo's entry points
+explorer-navigation.spec.ts:126	a bundle whose docs declare one entry po	OTHER	2D	landing rule with a bundle rewritten by network route
+explorer-navigation.spec.ts:140	a bundle without a board lands on the Lo	OTHER	2D	bundle without board rewritten by route lands on Local Map
+explorer-navigation.spec.ts:151	a reveal by the browser scrolls nothing 	OTHER	2D	scrollIntoView on every element scrolls no clipping view
+force-graph-building.spec.ts:66	a click on a seed with the pointer kept 	MOTION	3D	sampled during build: still pointer hovers nothing, building sign shown
+force-graph-building.spec.ts:102	a press on a node while the map builds d	MOTION	3D	presses made while building do nothing, drag turns camera
+force-graph-building.spec.ts:145	under reduced motion the map's sign of b	MOTION	3D	reduced motion: building sign drawn without animation, then gone
+force-graph-contained.spec.ts:28	per-sample contained files match indepen	OTHER	3D	WebGL pixels compared with independent native reference rendering [per-sample]
+force-graph-contained.spec.ts:28	native compatibility contained files mat	OTHER	3D	WebGL pixels compared with independent native reference rendering [compatibility]
+force-graph-contained.spec.ts:51	native compatibility clipped contained m	MOTION	3D	clipped mark's hole and rim held through 2D/3D transition frames [native compatibility]
+force-graph-contained.spec.ts:51	per-sample clipped contained marks keep 	MOTION	3D	clipped mark's hole and rim held through 2D/3D transition frames [per-sample]
+force-graph-defaults.spec.ts:52	a fresh structure arrival draws Skin and	STILL	3D	fresh arrival: Skin and contained files read from settled scene [structure]
+force-graph-defaults.spec.ts:52	a fresh connections arrival draws Skin a	STILL	3D	fresh arrival: Skin and contained files read from settled scene [connections]
+force-graph-defaults.spec.ts:65	sparse preferences inherit Skin and one 	STILL	panel	seeded sparse preferences: controls show inherited defaults and saved values
+force-graph-defaults.spec.ts:75	saved Off and two hops survive a link wi	JOURNEY	panel	saved values survive a checkbox write and reload
+force-graph-defaults.spec.ts:89	a shared skin setting overrides saved of	RELATION	panel	shared setting overrides saved, same after reload
+force-graph-defaults.spec.ts:89	a shared off setting overrides saved ski	RELATION	panel	shared setting overrides saved, same after reload
+force-graph-defaults.spec.ts:101	Skin directory cards visibly travel to t	MOTION	3D	Skin directory names travel during 2D/3D transition, clock-stepped
+force-graph-directories.spec.ts:49	the structure layout preserves files, us	MOTION	3D	fold read mid-transition, then hover draws references, Back restores
+force-graph-directories.spec.ts:148	a directory hub inspects, its Open actio	JOURNEY	3D	hub click inspects, Open frames members, tray releases, Clear
+force-graph-directories.spec.ts:223	changing a packing lever keeps the frame	MOTION	3D	framed directory label stays still every frame through reheat [bare spheres]
+force-graph-directories.spec.ts:223	changing a packing lever keeps the frame	MOTION	3D	framed directory label stays still every frame through reheat [default skin]
+force-graph-discovery.spec.ts:70	with nothing asked about, the connection	JOURNEY	3D	this repo's archipelago, click seed grows group, resize keeps stats; frame bounds
+force-graph-discovery.spec.ts:145	a pin is asked about: its hops are the p	RELATION	3D	three addresses: pin's hops, narrower one-hop, structure root start
+force-graph-discovery.spec.ts:181	discovery survives closing and sharing t	JOURNEY	3D	inspected frontier grows picture; Close and shared link keep it
+force-graph-exploration.spec.ts:16	the visible hops control narrows a neigh	JOURNEY	3D	Hops select narrows files, pins kept, reload keeps it
+force-graph-exploration.spec.ts:40	whole overview finds isolated files and 	JOURNEY	3D	Whole toggle, hover and pin lone file, back, reload, release
+force-graph-exploration.spec.ts:84	directory discovery survives a layout sw	JOURNEY	3D	hub click discovers, layout switch keeps it, framed beside reader
+force-graph-exploration.spec.ts:125	a lone file settles, small body jitter p	JOURNEY	3D	small drag jitter pins; name moved under press releases
+force-graph-exploration.spec.ts:155	pins without a selected subject keeps it	MOTION	3D	identities kept through both perspective transitions [pins]
+force-graph-exploration.spec.ts:155	directory without a selected subject kee	MOTION	3D	identities kept through both perspective transitions [directory]
+force-graph-exploration.spec.ts:206	Whole in Structure with skin shows every	JOURNEY	3D	Whole on shows every node, off restores local retention [skin]
+force-graph-exploration.spec.ts:206	Whole in Structure with off shows every 	JOURNEY	3D	Whole on shows every node, off restores local retention [off]
+force-graph-focus.spec.ts:71	a focused URL centers its node, direct c	JOURNEY	3D	focused URL centres node; click pins, More inspects, 2D and back
+force-graph-focus.spec.ts:189	the 2D and 3D presses return at once, an	SIZE	3D	press cost and main-thread waits bounded on this repo's large picture
+force-graph-focus.spec.ts:218	search moves focus smoothly, survives fi	JOURNEY	3D	Ctrl+P search moves focus, filter and resize keep it centred
+force-graph-focus.spec.ts:238	direct labels release independent pins, 	JOURNEY	3D	label click releases pin, shared to 2D, keyboard toggles neighbour
+force-graph-focus.spec.ts:277	a second directory click withdraws disco	JOURNEY	3D	second click on directory label withdraws discovery
+force-graph-focus.spec.ts:297	manual pan survives a 2D and 3D round tr	JOURNEY	3D	right-drag pan survives a 2D and 3D round trip
+force-graph-focus.spec.ts:343	reduced motion still focuses a requested	STILL	3D	under reduced motion an address still arrives focused
+force-graph-focus.spec.ts:349	keyboard More keeps its sphere's control	JOURNEY	3D	keyboard More menu keeps strip, Escape restores focus
+force-graph-focus.spec.ts:380	mouse Unpin releases hover attention; re	JOURNEY	3D	mouse Unpin releases hover; Tab focus previews without retaining
+force-graph-focus.spec.ts:433	dragging a sphere cancels a held action 	JOURNEY	3D	dragging a sphere cancels held action, release does nothing
+force-graph-focus.spec.ts:457	a stationary pointer rechecks its sphere	JOURNEY	3D	wheel moves camera; stationary pointer rechecks its hover
+force-graph-focus.spec.ts:480	touch pointer lifetime > lifting a finge	JOURNEY	3D	touch start and end: attention cleared, pin remains
+force-graph-focus.spec.ts:500	hover peeks outside the retained scope, 	JOURNEY	3D	hover peeks, keyboard target held, Clear pins restores start
+force-graph-focus.spec.ts:618	wheel approaches the focused sphere and 	JOURNEY	3D	wheel and middle-button zoom limits on focused sphere
+force-graph-identity.spec.ts:10	a fresh 3D visit without declared entrie	JOURNEY	3D	fresh visit Structure; a Connections click is remembered on revisit
+force-graph-identity.spec.ts:62	a 3D arrival names and frames the file's	MOTION	3D	framed names, idle draws no frames over time, wheel then Fit recovers [samples estate]
+force-graph-identity.spec.ts:62	a 3D arrival names and frames the file's	MOTION	3D	framed names, idle draws no frames over time, wheel then Fit recovers
+force-graph-identity.spec.ts:109	Portal keeps readable directory and file	JOURNEY	3D	hover, More inspect, close, layout switch and Fit keep identities
+force-graph-identity.spec.ts:138	an unselected 3D arrival frames the esta	STILL	3D	unselected arrival frames the estate's root cells, no pins
+force-graph-identity.spec.ts:168	names beside visible rings > directory n	JOURNEY	3D	names clear rings after 2D/3D round trip, layout switch and rewrap
+force-graph-reveal.spec.ts:58	the first picture enters from the subjec	MOTION	3D	reveal enters a share per frame from subject's first hop
+force-graph-reveal.spec.ts:80	a membership change keeps what is shown 	MOTION	3D	membership change keeps shown spheres, newcomers enter in pieces
+force-graph-shells.spec.ts:160	explicit Off draws no shell: the pinned 	STILL	3D	seeded Off: settled pinned picture draws no shell, no legend row
+force-graph-shells.spec.ts:174	the skin holds this repository's hidden 	SIZE	3D	this repo's many hidden files in shells two deep with bundled wires
+force-graph-shells.spec.ts:190	a click pops a shell into its own files 	JOURNEY	3D	click pops Portal shell, keyboard on dimmed name rewraps it
+force-graph-shells.spec.ts:256	a shell is as bright as a shown file, an	STILL	3D	settled skin opacity, label and contained units read from scene
+force-graph-shells.spec.ts:282	a pop leaves standing at its frame what 	MOTION	3D	clock-paused frame of pop: released units stand where shown
+force-graph-shells.spec.ts:317	a shell over a chain shows every file it	MOTION	3D	this repo's rosetta chain shell, pop frame leaves pom and bubble
+force-graph-shells.spec.ts:346	the transition from 2D arrives at the 3D	MOTION	3D	2D-to-3D transition waits for packed picture, names show
+force-graph-structure-cells.spec.ts:75	the Structure start with Skin is the roo	STILL	3D	this repo's Structure start: bubbles per top-level directory, true counts
+force-graph-structure-cells.spec.ts:110	a click on a bubble opens its directory:	MOTION	3D	clock-paused pop frame: units stand where skin showed; Close rewraps
+force-graph-structure-cells.spec.ts:152	Off draws the Structure start's hubs as 	JOURNEY	3D	Tuning select Off to Skin to Off wraps and unwraps live
+force-graph-update.spec.ts:75	placement alone seats each born sphere b	MOTION	3D	filter toggle places born spheres with no engine tick, others unmoved
+force-graph-update.spec.ts:140	a change at full energy and a gentler on	MOTION	3D	changes at two energies come to rest within frame bounds and stay still
+force-graph-wires.spec.ts:34	orbit preserves uploaded body sizes and 	RELATION	3D	after an orbit drag, bodies and wire endpoints equal the before picture
+force-graph-wires.spec.ts:126	wire thickness reflects coupling and adj	RELATION	3D	widths by count, slider doubles them, nothing moves, zoom keeps [samples estate]
+force-graph-wires.spec.ts:126	wire thickness reflects coupling and adj	RELATION	3D	widths by count, slider doubles them, nothing moves, zoom keeps
+force-graph-wires.spec.ts:183	node and wire resistance controls are in	JOURNEY	panel	resistance sliders compared, placement kept, choices persist to new page
+force-graph-wires.spec.ts:239	wire pixels retain perspective depth wit	OTHER	3D	GPU pixel widths of an isolated wire at controlled depths [1]
+force-graph-wires.spec.ts:239	wire pixels retain perspective depth wit	OTHER	3D	GPU pixel widths of an isolated wire at controlled depths [2]
+force-graph-wires.spec.ts:295	partial wire resistance, clipped tapers,	OTHER	3D	GPU pixels: clipped tapers, end-on caps, partial resistance [1]
+force-graph-wires.spec.ts:295	partial wire resistance, clipped tapers,	OTHER	3D	GPU pixels: clipped tapers, end-on caps, partial resistance [2]
+force-graph-wires.spec.ts:338	reference wires count each direction, ar	JOURNEY	3D	wires and key read still, then hovering a wire shows tooltip
+force-graph-wires.spec.ts:378	a path's wires are drawn at full strengt	STILL	3D	path address: path wires full strength, double width, key says Path
+force-graph-wrappers.spec.ts:59	explicit Off draws no wrapper, and the g	STILL	3D	seeded Off: no wrapper drawn, seeds keep rings, legend rows
+force-graph-wrappers.spec.ts:81	the skin wraps every group of two files 	STILL	3D	default Skin wraps every group of this repo's archipelago, key row
+force-graph-wrappers.spec.ts:95	the skin shows within each wrapped group	STILL	3D	each wrapped group's files inside its skin, read from scene
+force-graph-wrappers.spec.ts:123	hovering a wrapper names its group; a cl	JOURNEY	3D	hover names wrapper, click pops it, Enter on name rewraps
+hidden-file-cells.spec.ts:83	Cells moves no card, box, membrane or ha	RELATION	2D	Cells versus Count at three looks: no rectangle moves, marks match counts
+hidden-file-cells.spec.ts:129	the marks cost the parent's path no more	RELATION	2D	path width with Cells not below Count's at every look [estate]
+hidden-file-cells.spec.ts:129	the marks cost the parent's path no more	RELATION	2D	path width with Cells not below Count's at every look [pathfind]
+hidden-file-cells.spec.ts:153	a press on a cell pins its file and does	JOURNEY	2D	hover lights a cell, press pins file, unpin restores, skin opens
+hidden-file-cells.spec.ts:206	a handle's marks are one stop in the tab	JOURNEY	2D	marks one Tab stop, arrow keys move, Enter pins
+hidden-file-cells.spec.ts:236	Cells under name draws the marks under t	RELATION	2D	Cells under name versus Count and beside at three looks
+hidden-file-cells.spec.ts:288	under the name a press on a cell pins it	JOURNEY	2D	under-name field: arrow keys, cell press pins, air press opens
+history-emphasis.spec.ts:66	a commit's changed file is white immedia	STILL	3D	history sample commit address: changed file white, rest base colour
+history-emphasis.spec.ts:81	glow holds colours and alpha through a c	MOTION	3D	during play, colours and alpha held over interval, change at next event [glow 1]
+history-emphasis.spec.ts:81	dim holds colours and alpha through a co	MOTION	3D	during play, colours and alpha held over interval, change at next event [dim 1]
+history-emphasis.spec.ts:81	glow holds colours and alpha through a c	MOTION	3D	during play, colours and alpha held over interval, change at next event [glow 0.5]
+history-emphasis.spec.ts:81	dim holds colours and alpha through a co	MOTION	3D	during play, colours and alpha held over interval, change at next event [dim 0.5]
+history-emphasis.spec.ts:126	with the rest dimmed, the changed file k	JOURNEY	3D	dim alphas read still, then History click restores today's picture
+history-emphasis.spec.ts:208	inside the wrappers > a changed file's d	JOURNEY	3D	dot white inside skin; arrow key steps move the light; closing restores
+history-emphasis.spec.ts:238	inside the wrappers > a deleted file, wh	JOURNEY	3D	deleted file lights its directory's skin; ArrowLeft unlights it
+history-emphasis.spec.ts:255	inside the wrappers > with the rest dimm	JOURNEY	3D	dim alphas inside skins, ArrowRight moves them, then another commit address
+history-emphasis.spec.ts:284	inside the wrappers > with Changed Files	STILL	3D	Changed Files None: nothing in skins lit or dimmed
+history-emphasis.spec.ts:297	inside the wrappers > in the Connections	JOURNEY	3D	Connections island dot white; ArrowLeft makes seed sphere glow
+history-emphasis.spec.ts:337	inside veils > a change inside a veiled 	STILL	3D	veiling sample: change lights only its veiled bubble
+history-emphasis.spec.ts:354	inside veils > a body veiled whole light	STILL	3D	veiling sample: body veiled whole lights, neighbour does not
+history-emphasis.spec.ts:370	the speed beside play is Tuning's Play R	JOURNEY	panel	playback speed select and Tuning Play Rate sync, persist after reload
+history-panel.spec.ts:103	at 1280x420 the compact panel is as tall	RELATION	panel	panel fit at two commits, buttons in same place across steps [1280x420]
+history-panel.spec.ts:103	at 1400x900 the compact panel is as tall	RELATION	panel	panel fit at two commits, buttons in same place across steps [1400x900]
+history-panel.spec.ts:137	this repository's long subject at a step	STILL	panel	this repo's long-subject step: two lines cut, counts, clear of strip
+history-panel.spec.ts:164	the … button opens the whole step in a m	JOURNEY	panel	keyboard opens modal dialog over inert page, Escape restores focus
+history-panel.spec.ts:204	with the reader open beside the picture,	JOURNEY	panel	reader open beside; Escape closes dialog alone, then reader
+history-panel.spec.ts:229	a click on the dialog's backdrop closes 	JOURNEY	panel	backdrop click closes dialog without reaching behind
+history-panel.spec.ts:249	opening the whole step while the history	JOURNEY	panel	opening dialog while playing pauses; closing does not play on
+history-panel.spec.ts:277	a file chosen in the dialog is pinned at	JOURNEY	panel	file chosen in dialog is pinned and dialog closes; wording
+history-panel.spec.ts:295	at 480x800 the dialog fits the viewport,	STILL	panel	dialog opened and groups expanded, then fit and scroll read [480x800]
+history-panel.spec.ts:295	at 900x700 the dialog fits the viewport,	STILL	panel	dialog opened and groups expanded, then fit and scroll read [900x700]
+history-panel.spec.ts:334	the panel hides by its own button and co	JOURNEY	panel	hide button, scrubber toggle by keyboard, reopen history
+history-panel.spec.ts:399	a file pinned today and not yet created 	JOURNEY	panel	stepping to before creation says not yet created on chip, path, reader
+history-panel.spec.ts:447	a path asked at a moment runs over that 	JOURNEY	panel	path at a moment uses its wires; End, Home, Clear and re-ask
+history-panel.spec.ts:489	the destination offers what a path from 	JOURNEY	panel	destination search typing offers what moment reaches
+history-panel.spec.ts:524	the camera frames the picture beside the	STILL	3D	commit address: picture framed beside compact panel
+history-panel.spec.ts:542	the compact panel stays when a reader op	JOURNEY	3D	reader opened at three widths: panel stays or gives way
+history-scrubber.spec.ts:116	a resize-only history step updates the d	MOTION	3D	resize-only step: radius changes, places and wire objects preserved
+history-scrubber.spec.ts:136	the control opens a scrubber with one ti	JOURNEY	panel	History control opens scrubber; ticks, panel, dialog read and audited
+history-scrubber.spec.ts:180	the keys walk the steps: a renamed file 	MOTION	3D	key steps: renamed spheres and hub keep objects and places
+history-scrubber.spec.ts:241	deleted and created files are actionable	JOURNEY	panel	stepping and dialog: deleted and created files, created pins today
+history-scrubber.spec.ts:287	commit search, range selection and adjac	JOURNEY	panel	commit search, range selection, adjacent buttons, Escape
+history-scrubber.spec.ts:325	a requested overview follows historical 	MOTION	3D	overview camera follows growth over steps; wheel gesture cancels following
+history-scrubber.spec.ts:391	a deleted file can be found, read and sh	JOURNEY	panel	deleted file found, inspected, shared, absent today, reload and Back
+history-scrubber.spec.ts:445	a moment draws the documents its files' 	JOURNEY	3D	stepping draws moment's documents; dialog lists links; reader opens
+history-scrubber.spec.ts:492	a pin whose file is not yet created is s	JOURNEY	panel	pin not yet created in tray; PageUp and PageDown stops
+history-scrubber.spec.ts:529	an absent historical request shows only 	JOURNEY	3D	absent request shows dim root; PageUp to birth; directory question and release
+history-scrubber.spec.ts:569	the address carries the commit and the a	JOURNEY	panel	address carries commit and authors; link reopens; 2D returns to today
+history-scrubber.spec.ts:619	a drag places every step it crosses with	MOTION	3D	drag across ticks places steps without engine tick, then settles
+history-scrubber.spec.ts:669	the window's beginning is marked truncat	JOURNEY	panel	window sample: truncated mark, Home, dialog note, layout of band
+history-scrubber.spec.ts:694	Knowledge Sources says what the bundle c	STILL	panel	Knowledge Sources history row text on three sample addresses
+history-scrubber.spec.ts:729	a file renamed onto a dead file's path k	JOURNEY	3D	walking steps onto a dead path and back keeps spheres and lines valid
+inspection.spec.ts:41	inspection and Back preserve the map; di	JOURNEY	panel	inspection link, Back, pin, reload, share, Close, Centre keep map and state
+inspection.spec.ts:97	Internals inspection pins its own endpoi	JOURNEY	panel	Internals inspected and pinned, reload, directory inspect and Centre
+inspection.spec.ts:125	keyboard reading keeps focus through lin	JOURNEY	panel	keyboard Inspect, link, Back, Forward, Close return focus to opener
+inspection.spec.ts:148	at a wide window the reading dialog carr	JOURNEY	panel	reading dialog's own Back and Forward pressable after a link
+inspection.spec.ts:181	the reader lists each dependency once, a	STILL	panel	inspection address: reader lists each dependency once
+inspection.spec.ts:194	a real bundled section link uses its can	JOURNEY	panel	bundled section link scrolls to anchor; reload and Back keep it
+inspection.spec.ts:220	a file's evidence reads Purpose, then it	JOURNEY	panel	section order read still, then jump list clicks scroll the reader
+inspection.spec.ts:266	a bundled document reads like a Live Doc	RELATION	panel	bundled document prose style equals authored prose; no browser-blue links
+inspection.spec.ts:296	full reader at 844×390 keeps keyboard fo	JOURNEY	panel	phone reader traps focus, own Back/Forward, Escape returns focus [844×390]
+inspection.spec.ts:296	full reader at 390×844 keeps keyboard fo	JOURNEY	panel	phone reader traps focus, own Back/Forward, Escape returns focus [390×844]
+inspection.spec.ts:327	a Pin pressed twice leaves the map as it	JOURNEY	2D	Pin twice undoes; reader Pin/Unpin rebuild opener, Close refocuses
+inspection.spec.ts:353	one Escape closes only the topmost surfa	JOURNEY	panel	successive Escapes close search field, reader, then World help
+inspection.spec.ts:373	keys typed in the full-screen reader do 	JOURNEY	panel	keys typed in full-screen reader do not reach World Map
+inspection.spec.ts:386	3D Pin keeps the camera, inspection pres	JOURNEY	3D	3D Pin keeps camera, inspect keeps bearing beside reader, then 2D
+inventory-counts.spec.ts:35	the estate sample: the sidebar and Knowl	STILL	panel	sources address: sidebar and panel counts equal index's [estate sample]
+inventory-counts.spec.ts:35	this repository: the sidebar and Knowled	STILL	panel	sources address: sidebar and panel counts equal index's [this repository]
+inventory-counts.spec.ts:58	the history sample: the sidebar's line c	JOURNEY	panel	open History, click tick: line counts moment; close returns to today
+knowledge-sources.spec.ts:130	the estate sample: the panel's counts ar	JOURNEY	panel	counts and lists read, named file click opens reader [estate sample]
+knowledge-sources.spec.ts:130	this repository: the panel's counts are 	JOURNEY	panel	counts and lists read, named file click opens reader [this repository]
+knowledge-sources.spec.ts:236	the estate sample: the Reachable from fi	JOURNEY	panel	Reachable-from typing, reload, download, clear [estate sample]
+knowledge-sources.spec.ts:236	this repository: the Reachable from fiel	JOURNEY	panel	Reachable-from typing, reload, download, clear [this repository]
+knowledge-sources.spec.ts:282	the estate sample: the panel's facts com	OTHER	panel	downloaded facts JSON equals index expectations [estate sample]
+knowledge-sources.spec.ts:282	this repository: the panel's facts come 	OTHER	panel	downloaded facts JSON equals index expectations [this repository]
+labels-and-controls.spec.ts:70	a name wraps only at its seams, and a co	STILL	2D	narrow-card tuning: names wrap at seams, counts agree with units
+labels-and-controls.spec.ts:106	the toolbar's groups stand parted by rul	STILL	panel	toolbar groups read in 3D and after pressing 2D; two stills
+labels-and-controls.spec.ts:182	a card's connections outside the view ar	JOURNEY	2D	grid: control look read still, then Tab focus frame and press pins
+labels-and-controls.spec.ts:203	a card's connections outside the view ar	STILL	2D	Flow default: connections controls framed and legible
+labels-and-controls.spec.ts:213	every view in the navigation has an icon	STILL	panel	navigation icons and whole application name
+labels-and-controls.spec.ts:223	the wire tooltip stands clear of every n	JOURNEY	3D	hovering a wire shows tooltip clear of every name
+layout-lab.spec.ts:20	the layout lab reproduces the page to th	OTHER	2D	layout lab model reproduces captured page to the pixel [estate chain]
+layout-lab.spec.ts:20	the layout lab reproduces the page to th	OTHER	2D	layout lab model reproduces captured page to the pixel [estate five files]
+layout-lab.spec.ts:20	the layout lab reproduces the page to th	OTHER	2D	layout lab model reproduces captured page to the pixel [repository five files]
+layout-lab.spec.ts:20	the layout lab reproduces the page to th	OTHER	2D	layout lab model reproduces captured page to the pixel [repository chain]
+layout-lab.spec.ts:31	the page keeps the cheapest of the order	RELATION	2D	default order search start no costlier than ranked-only page [estate chain]
+layout-lab.spec.ts:31	the page keeps the cheapest of the order	RELATION	2D	default order search start no costlier than ranked-only page [estate five files]
+layout-lab.spec.ts:31	the page keeps the cheapest of the order	RELATION	2D	default order search start no costlier than ranked-only page [repository five files]
+layout-lab.spec.ts:31	the page keeps the cheapest of the order	RELATION	2D	default order search start no costlier than ranked-only page [repository chain]
+layout-lab.spec.ts:57	the captured reading text predicts a nar	OTHER	2D	lab prediction from capture matches narrower-cap page [estate]
+layout-lab.spec.ts:57	the captured reading text predicts a nar	OTHER	2D	lab prediction from capture matches narrower-cap page [repository]
+layout-lab.spec.ts:110	a cycle trial's prediction stands each c	OTHER	2D	page's cycle trial predictions equal lab walk's terms (core.ts)
+layout-lab.spec.ts:124	the page's search judges a cycle's trial	OTHER	2D	page's cycle trial verdicts equal lab walk's (branches.ts)
+layout-lab.spec.ts:135	phone coarse-pointer reading geometry > 	OTHER	2D	phone: lab capture predicts narrower-cap page
+layout-lab.spec.ts:169	indented code in a reading block preserv	OTHER	2D	route-rewritten bundle: code whitespace kept in capture and prediction
+local-map-branches.spec.ts:32	a geometrically backward ordinary wire c	OTHER	2D	injected CSS fault makes a wire backward; cue lights then clears
+local-map-branches.spec.ts:82	independent symbol branches retain cross	JOURNEY	2D	pins and reveal build branches; reload, release, tray, Clear
+local-map-branches.spec.ts:125	both perspective changes keep the subjec	MOTION	2D	subject held at screen anchor through both perspective transitions
+local-map-branches.spec.ts:190	file retention, individual pruning and c	JOURNEY	2D	keyboard file pin, row Space narrowing, 3D round trip, Close
+local-map-branches.spec.ts:233	closing a retained file keeps only symbo	JOURNEY	2D	pin two files, close one: kept symbols, title held, re-pin
+local-map-branches.spec.ts:276	a retained exploration threads skipped r	STILL	2D	retained five-file address: lanes, no occlusion, wires forward
+local-map-branches.spec.ts:317	a hovered row dims every wire it does no	JOURNEY	2D	hovering a row dims other wires and runs; rest restores
+local-map-branches.spec.ts:342	a lane's slots spread to the wires throu	STILL	2D	estate retained chain: lane slots spread where wires ask
+local-map-branches.spec.ts:362	directories are membranes: one connected	STILL	2D	retained address: membranes connected, siblings apart, cards inside
+local-map-branches.spec.ts:427	a recorded type inspects the referenced 	JOURNEY	2D	recorded type link inspects without pinning, kept in 3D
+local-map-branches.spec.ts:443	a card's rows stand where their wires le	RELATION	2D	row orders under three tunings compared by disorder; reload keeps
+local-map-corset.spec.ts:129	the selected file's own references are l	STILL	2D	selected file's self-references drawn as laces cut at card edge
+local-map-corset.spec.ts:136	a retained exploration draws the same la	STILL	2D	retained address: laces, and a pin with several makes a bracket
+local-map-corset.spec.ts:163	the laces' dials in Tuning redraw them a	JOURNEY	2D	lace dials moved live redraw them; values persist after reload
+local-map-directories.spec.ts:70	a directory entered with nothing pinned 	JOURNEY	2D	directory address still read, then Open writes address, reload round-trips
+local-map-directories.spec.ts:113	at the overview a closed directory opens	JOURNEY	2D	overview: body click opens, name click closes, keyboard both
+local-map-directories.spec.ts:203	a closed box opens in place, the membran	MOTION	2D	membrane's first move frame starts at the box, then grows; Close [grid]
+local-map-directories.spec.ts:203	a closed box opens in place, the membran	MOTION	2D	membrane's first move frame starts at the box, then grows; Close [flow]
+local-map-directories.spec.ts:268	an encasing membrane counts what it hide	JOURNEY	2D	encasing membrane counts, Open discloses, member pin, X steps down [grid]
+local-map-directories.spec.ts:268	an encasing membrane counts what it hide	JOURNEY	2D	encasing membrane counts, Open discloses, member pin, X steps down [flow]
+local-map-directories.spec.ts:336	keyboard release preserves an independen	JOURNEY	2D	keyboard open, child open, release keeps needed enclosures
+local-map-directories.spec.ts:385	with Opened Directory at Flow, a directo	RELATION	2D	Flow address versus Grid address: same cards, counts add up
+local-map-directories.spec.ts:440	with Opened Directory at Flow, a card's 	JOURNEY	2D	card hover or focus lights its lines, fades rest, nothing moves
+local-map-directories.spec.ts:507	Opened Directory defaults to Flow, the g	JOURNEY	panel	Tuning select Grid/Flow, link carries choice, fresh visitor opens it
+local-map-directories.spec.ts:550	with Opened Directory at Flow, the price	RELATION	2D	cheapest shape drawn; Width Cost 0 widens; link reproduces picture
+local-map-directories.spec.ts:609	with Opened Directory at Flow, a pin in 	RELATION	2D	pin by hand keeps every card's column; no shape repriced
+local-map-directories.spec.ts:627	with Opened Directory at Flow, the pictu	RELATION	2D	picture pinned by hand equals picture its link opens
+local-map-directories.spec.ts:646	the nominal file card the shape is chose	STILL	2D	nominal card size near page's median unpinned card
+local-map-framing.spec.ts:46	a directory opened with no subject is fr	STILL	2D	directory address framed whole and centred, no edge signs
+local-map-framing.spec.ts:64	opening a directory from the root recove	JOURNEY	2D	opening Portal by click from root recovers whole framing
+local-map-framing.spec.ts:84	a root overview taller than a short fram	JOURNEY	2D	short frame starts at top with sign below; drag moves sign above
+local-map-framing.spec.ts:101	independent root columns align and their	STILL	2D	root columns aligned, framed whole, directory names in primary tone
+local-map-framing.spec.ts:125	a picture wider than the frame by more t	STILL	2D	wide root picture starts at left with sign at right
+local-map-framing.spec.ts:136	the open reader is kept out of the frame	JOURNEY	2D	opening reader moves nothing; Return to reading size fits beside it
+local-map-framing.spec.ts:167	Fit, pressed, frames everything the 2D m	JOURNEY	2D	Fit press frames everything with eased move; Return to reading size
+local-map-hidden.spec.ts:51	the search pauses while another view is 	MOTION	2D	search pauses while another view shown, resumes on return over time
+local-map-hidden.spec.ts:79	a change made while another view is show	JOURNEY	2D	filter changed while map hidden is drawn on return
+local-map-hidden.spec.ts:95	the search pauses while the page is hidd	MOTION	2D	search pauses while page hidden and resumes when visible
+local-map-hidden.spec.ts:115	pinning from the reader in Knowledge Sou	MOTION	3D	hidden 3D renderer draws no frames for a pin; resumes on return
+local-map-keyboard.spec.ts:6	Tab keeps each native map command in the	JOURNEY	2D	Tab through card commands keeps each in frame, nothing changes
+local-map-learning.spec.ts:40	header growth does not pull a deliberate	JOURNEY	2D	title dragged offscreen stays there when header grows
+local-map-learning.spec.ts:56	a growing pin header keeps a previously 	JOURNEY	2D	pin grows header during move; acted-on title kept below new edge
+local-map-learning.spec.ts:80	relationship counts name connected files	JOURNEY	2D	relationship menus follow a file without pins; Back restores camera
+local-map-learning.spec.ts:107	the cycle cue names its actual consumer 	JOURNEY	2D	cycle cue opens menu by keyboard, Escape returns focus
+local-map-learning.spec.ts:128	phone reading > Back from a related file	MOTION	2D	phone: Back from related file keeps subject in frame every sampled frame
+local-map-learning.spec.ts:175	phone reading > touch taps retain comman	JOURNEY	2D	touch taps toggle reading; stationary hold opens actions menu
+local-map-learning.spec.ts:215	phone reading > the map ends above its c	JOURNEY	2D	phone touch swipe pans a lower symbol into clear space
+local-map-motion.spec.ts:48	wires keep their elements and follow pin	MOTION	2D	wires keep elements and follow pins every frame through interrupted moves
+local-map-motion.spec.ts:175	a pin moves the picture: cards keep thei	MOTION	2D	pin move: elements kept, acted-on row still each frame, cards slide monotonically
+local-map-motion.spec.ts:235	with motion reduced the picture jumps to	MOTION	2D	picture jumps at once to new arrangement, elements kept [motion reduced]
+local-map-motion.spec.ts:235	with the move length at zero the picture	MOTION	2D	picture jumps at once to new arrangement, elements kept [move length at zero]
+local-map-overview-names.spec.ts:52	in the overview look a file's name is no	STILL	2D	overview reached by seven presses: names not broken inside words
+local-map-overview.spec.ts:74	the overview band joins each pair of fil	RELATION	2D	overview wires gathered from far band's pairs; zooming back restores wires
+local-map-overview.spec.ts:143	a pinned symbol keeps its own wires at t	RELATION	2D	pinned symbol's far-band wires are its own wires at overview
+local-map-overview.spec.ts:191	zooming out stops where the whole of a l	JOURNEY	2D	zoom out to disabled limit, wheel goes no farther, Zoom In re-enables
+local-map-overview.spec.ts:216	zooming out a small map stops at the lad	RELATION	2D	stepped: farthest scale equals first scale times last step ratio
+local-map-overview.spec.ts:231	in the three looks too, zooming out a sm	RELATION	2D	three looks: farthest scale at last step, overview look
+local-map-packing.spec.ts:32	packing, advanced edits, export and shar	JOURNEY	2D	packing sliders, 3D tuning, export, share opened fresh, back to 2D [contracts ipaymentservice.cs]
+local-map-packing.spec.ts:32	packing, advanced edits, export and shar	JOURNEY	2D	packing sliders, 3D tuning, export, share opened fresh, back to 2D [packages generator src generator.ts]
+local-map-packing.spec.ts:107	packing changes keep the selected file i	MOTION	2D	selected file held still every frame through 2D and 3D reheats
+local-map-packing.spec.ts:151	instant continuing layouts redraw the ac	STILL	2D	instant continuing layout seeded: wires end on their pins
+local-map-packing.spec.ts:171	the default packing aligns the three fol	RELATION	2D	compact versus relaxed packing: same facts, three cards aligned
+local-map-path.spec.ts:89	path answers and recovery work by keyboa	JOURNEY	panel	path report by keyboard: reverse, hop inspect, switch, reload, clear [3d]
+local-map-path.spec.ts:89	path answers and recovery work by keyboa	JOURNEY	panel	path report by keyboard: reverse, hop inspect, switch, reload, clear [2d]
+local-map-path.spec.ts:162	a shared 3D question survives other view	JOURNEY	panel	shared 3D question survives other views and reloads; global destination queries
+local-map-path.spec.ts:199	a direct file link starts in the directo	RELATION	2D	direct link in directory layout; pinning subject keeps same cards [samples estate]
+local-map-path.spec.ts:199	a direct file link starts in the directo	RELATION	2D	direct link in directory layout; pinning subject keeps same cards
+local-map-path.spec.ts:216	Local Map path mode > asked with the dep	JOURNEY	2D	search bar asks path wrong way; reverse link draws; clearing returns
+local-map-path.spec.ts:299	Local Map path mode > asked in the map's	JOURNEY	2D	path typed in search bar draws same as path from address
+local-map-path.spec.ts:323	Local Map path mode > a direct dependenc	JOURNEY	panel	wrong-way, unconnected and directory destinations chosen in bar
+local-map-path.spec.ts:356	Local Map path mode > the destination fi	JOURNEY	panel	destination typing offers reachable files with distance, folds rest
+local-map-path.spec.ts:421	Local Map path mode > the subject field 	JOURNEY	panel	choosing new subject in bar re-asks path from it
+local-map-path.spec.ts:436	pinning a path symbol opens branches, cl	JOURNEY	2D	pinning a path symbol leaves path, clicked row held still
+local-map-path.spec.ts:461	Open on an already retained directory le	JOURNEY	2D	Open on retained directory leaves path, pins unchanged
+local-map-pins.spec.ts:34	the newest-first tray releases a parent 	JOURNEY	panel	tray releases a parent, keeps row identity, reload, Clear to root
+local-map-pins.spec.ts:74	Escape closes the open tray, after the s	JOURNEY	panel	Escape order: search field, menu, then tray; focus returns to toggle
+local-map-pins.spec.ts:115	directory bulk clearing preserves an out	JOURNEY	panel	tray's directory bulk clear keeps outside pin and needed inside file
+local-map-pins.spec.ts:135	releasing a directory preserves the dire	JOURNEY	2D	open directory then release it keeps direct-file neighbourhood
+local-map-pins.spec.ts:151	closing a neighbor's symbol disclosure p	JOURNEY	2D	reveal then close a neighbour's symbols keeps inspection
+local-map-pins.spec.ts:169	releasing the last pinned symbol on a ca	JOURNEY	2D	unpin last symbol leaves file pinned whole; tray release moves subject
+local-map-pins.spec.ts:185	ancestor disclosure stays readable after	JOURNEY	panel	after zoom, tray ancestor disclosure readable and opens an ancestor
+local-map-row-motion.spec.ts:13	expanded symbol text stays separate with	MOTION	2D	sampled frames: expanded row text never exposed through another [with disabled]
+local-map-row-motion.spec.ts:13	expanded symbol text stays separate whil	MOTION	2D	sampled frames: expanded row text never exposed through another [while changes row order]
+local-map-search.spec.ts:37	after the first picture the search tries	MOTION	2D	idle search tries further starts and adopts a cheaper one versus first paint
+local-map-search.spec.ts:65	a change of pins starts the search afres	MOTION	2D	a pin change restarts the search from the next seed
+local-map-search.spec.ts:100	the search settles when a run of starts 	MOTION	2D	search settles short of its cap when a run of starts betters nothing
+local-map-simplicity.spec.ts:52	the simplicity slider restarts competiti	RELATION	2D	simplicity weights 50 and 100 versus 0: same facts, fewer steps, trials run
+local-map-simplicity.spec.ts:108	alignment trials animate their outlines 	MOTION	2D	alignment trials animate outlines while selected file holds every frame
+local-map-simplicity.spec.ts:179	continuing geometry competition agrees w	OTHER	2D	page's settled competition equals headless lab refine [warehouse report]
+local-map-simplicity.spec.ts:179	continuing geometry competition agrees w	OTHER	2D	page's settled competition equals headless lab refine [five files lower row levelness]
+local-map-simplicity.spec.ts:179	continuing geometry competition agrees w	OTHER	2D	page's settled competition equals headless lab refine [five files]
+local-map-simplicity.spec.ts:179	continuing geometry competition agrees w	OTHER	2D	page's settled competition equals headless lab refine [generator]
+local-map-tone.spec.ts:55	a card's text stands in three tones, nam	RELATION	2D	three tones legible; held names at connections look keep reading tones
+local-map-tone.spec.ts:82	no wire glows, and a hovered row's wires	JOURNEY	2D	no wire glows at rest; hovering a row fades others, keeps its own
+local-map-tone.spec.ts:105	at the overview of cards that keep their	STILL	2D	overview reached by presses: own and gathered wires one opacity, no glow
+local-map-tone.spec.ts:123	an opened directory's outline can be see	STILL	2D	membrane outline visible, weaker than card border, no fill
+local-map-tone.spec.ts:142	each sample of the 2D legend is drawn as	STILL	2D	each 2D legend sample drawn as the mark it names
+no-network.spec.ts:102	this repository's bundle asks nothing of	OTHER	none	network watch: this repo's bundle asks no other site in any view
+no-network.spec.ts:109	the estate sample's bundle asks nothing 	OTHER	none	network watch: estate bundle asks no other site in any view
+no-network.spec.ts:116	the history sample's bundle asks nothing	OTHER	none	network watch: history sample with history open asks nothing outside
+no-network.spec.ts:154	a doc's raw HTML, outside image and link	OTHER	panel	hostile doc HTML rendered as text, nothing fetched or run
+no-network.spec.ts:175	a history file's counts reach the step p	OTHER	panel	hostile history counts render as numbers, not markup
+no-network.spec.ts:208	an address naming data on another site i	OTHER	none	address naming outside data refused before any request
+no-network.spec.ts:220	a bundle naming a history on another sit	OTHER	none	bundle naming outside history refused before any request
+no-network.spec.ts:232	a page opened as a file says where the m	OTHER	none	page opened as file refuses in one sentence, no requests
+no-network.spec.ts:254	the page's policy refuses what code in t	OTHER	none	CSP refuses image, fetch and inline scripts attempted by code
+overview-files.spec.ts:65	with files only, the overview draws each	JOURNEY	2D	files-only overview versus six presses and back in (relation), plus a hover check
+overview-files.spec.ts:132	files only draws what the person pinned 	RELATION	2D	pinned-by-name rows at files-only overview; cue and double Fit same [one symbol]
+overview-files.spec.ts:132	files only draws what the person pinned 	RELATION	2D	pinned-by-name rows at files-only overview; cue and double Fit same [three symbols on two cards]
+overview-files.spec.ts:187	with a symbol pinned by name, files only	RELATION	2D	pinned by name: files only and back in returns cards, rows, wires
+overview-files.spec.ts:210	the element under the pointer is held st	MOTION	2D	element under pointer held still every frame through layout change; Fit twice same
+overview-files.spec.ts:245	a render while files only shows leaves F	JOURNEY	2D	filter changed at files-only overview, then Fit twice changes nothing
+overview-files.spec.ts:268	with cards keeping their size chosen, an	RELATION	2D	keep-size overview equals connections look; tunings agree at six presses
+overview-files.spec.ts:289	files only is the default, a link carrie	MOTION	2D	link default and keep choice; reduced motion: new picture stands at once
+overview-files.spec.ts:348	a pin made while files only is showing g	RELATION	2D	pin made at files-only overview equals same pin at reading size [symbol pinned by name search]
+overview-files.spec.ts:348	a pin made while files only is showing g	RELATION	2D	pin made at files-only overview equals same pin at reading size [whole-file card s more]
+perspective-zoom.spec.ts:16	hover isolates within retained files, an	JOURNEY	2D	hover isolates rows; row pin narrows whole-file pin and back; reload
+perspective-zoom.spec.ts:53	perspective copies preserve every comput	MOTION	2D	transition layer copies computed SVG styles without ids or hooks
+perspective-zoom.spec.ts:94	scroll zooms within each perspective; on	JOURNEY	2D	wheel zooms within each perspective; only 2D/3D buttons switch
+perspective-zoom.spec.ts:140	a thirteen-file path keeps its ordered s	JOURNEY	panel	13-file path through 3D: Tab through hops scrolls strip, inspect, back
+perspective-zoom.spec.ts:202	native symbol wires gather by file pair 	MOTION	2D	transition frames fold wires by file pair, shells reverse containment
+perspective-zoom.spec.ts:252	nested directory animation represents ea	MOTION	2D	transition layer represents each ancestor directory once
+pin-clicks.spec.ts:41	a neighbour's direct symbol Pin retains 	JOURNEY	2D	neighbour's symbol Pin retains only that symbol, subject stays
+pin-clicks.spec.ts:57	a file's direct Pin retains it whole; sy	JOURNEY	2D	file Pin, symbol pins narrow, reveal, add, release, last leaves whole
+pin-clicks.spec.ts:92	a symbol pin discloses the rows its own 	JOURNEY	2D	pin file then narrow to symbol discloses its in-file users and laces
+pin-clicks.spec.ts:119	Centre makes a neighbour the subject wit	JOURNEY	2D	Centre makes neighbour subject without pin; double-click only reads
+pin-clicks.spec.ts:144	double-clicking an estate recorded retur	JOURNEY	2D	double-click keeps subject and adds no pin [recorded return type]
+pin-clicks.spec.ts:144	double-clicking an estate symbol label k	JOURNEY	2D	double-click keeps subject and adds no pin [symbol label]
+pin-clicks.spec.ts:175	from Knowledge Sources, one symbol of a 	JOURNEY	panel	from Knowledge Sources one far symbol pinned in five clicks
+pin-clicks.spec.ts:198	a finger drags the 2D map	JOURNEY	2D	touch pointer drag pans the 2D map
+return-cost.spec.ts:53	with the search on, a picture with a cyc	MOTION	2D	search moves once to cheaper order; cue count history [1,0]
+return-cost.spec.ts:65	with the search off, the picture stays a	STILL	2D	search off: greedy order, one return counted at both cards, cue on
+return-cost.spec.ts:75	a link that names a Return Cost reopens 	MOTION	2D	link Return Cost 500: search keeps return (count history); tuning shows cost
+search-bar.spec.ts:31	symbol search frames the requested row a	JOURNEY	panel	chosen symbol framed with its actions; hover highlights rows [952px]
+search-bar.spec.ts:31	symbol search frames the requested row a	JOURNEY	panel	chosen symbol framed with its actions; hover highlights rows [1280px]
+search-bar.spec.ts:55	same-name declarations remain distinct t	JOURNEY	panel	same-name declarations kept apart through search, inspect, reload
+search-bar.spec.ts:80	a reader link's explicit anchor wins ove	JOURNEY	panel	route-rewritten bundle: reader link's anchor wins over heading
+search-bar.spec.ts:104	one search finds directories, files and 	JOURNEY	panel	Ctrl+P search groups results; choices pin symbol, directory, file newest
+search-bar.spec.ts:149	a file named by the words comes first, a	JOURNEY	panel	typing generator ranks the named file first
+search-bar.spec.ts:160	a result's path is readable: at least 4.	STILL	panel	results after typing: path text contrast at least 4.5:1
+search-bar.spec.ts:181	words typed before the Explorer's data h	JOURNEY	panel	words typed before data loads are searched once wired
+search-bar.spec.ts:199	each field is a combobox over a listbox:	JOURNEY	panel	combobox and listbox roles; arrow keys move active descendant
+search-bar.spec.ts:251	a file's matched symbols are capped at f	JOURNEY	panel	matched symbols capped at five; clicking fold lists all
+search-bar.spec.ts:284	the bar stands in every view, a file cho	JOURNEY	panel	bar in every view; World Map choice opens pinned Local Map; no cut words
+spatial-legend.spec.ts:70	the spatial key follows rendered kinds, 	JOURNEY	panel	3D key follows kinds as filters toggle and a pin is released
+spatial-legend.spec.ts:114	the Local Map shows the matching legend 	JOURNEY	panel	legend switches with 2D/3D and hides in other views
+spatial-legend.spec.ts:172	each row of the 2D key is a sample and t	STILL	panel	2D key rows at three looks reached by presses; kinds row matches cells
+spatial-legend.spec.ts:202	the 2D key has no kinds row where the ce	STILL	panel	no kinds row with grey cells or plain boxes (seeded tunings)
+spatial-legend.spec.ts:221	the key's words are whole and apart in b	STILL	panel	key words whole at two widths, overview and 3D; audit self-check
+still-picture.spec.ts:334	still pictures of the estate, five files	RELATION	2D	deck scope: no text faults or occlusion; pans change no route [estate five files]
+still-picture.spec.ts:334	still pictures of the estate, chain > Lo	RELATION	2D	deck scope: no text faults or occlusion; pans change no route [estate chain]
+still-picture.spec.ts:334	still pictures of the repository, five f	RELATION	2D	deck scope: no text faults or occlusion; pans change no route [repository five files]
+still-picture.spec.ts:334	still pictures of the repository, chain 	RELATION	2D	deck scope: no text faults or occlusion; pans change no route [repository chain]
+still-picture.spec.ts:378	still pictures of the estate, chain > Lo	RELATION	2D	retained deck scope: no faults, forward routes; pans change no route [estate chain]
+still-picture.spec.ts:378	still pictures of the estate, five files	RELATION	2D	retained deck scope: no faults, forward routes; pans change no route [estate five files]
+still-picture.spec.ts:378	still pictures of the repository, five f	RELATION	2D	retained deck scope: no faults, forward routes; pans change no route [repository five files]
+still-picture.spec.ts:378	still pictures of the repository, chain 	RELATION	2D	retained deck scope: no faults, forward routes; pans change no route [repository chain]
+still-picture.spec.ts:429	still pictures of the estate, chain > Fo	STILL	3D	deck scope in 3D only asserts a canvas was drawn [estate chain]
+still-picture.spec.ts:429	still pictures of the estate, five files	STILL	3D	deck scope in 3D only asserts a canvas was drawn [estate five files]
+still-picture.spec.ts:429	still pictures of the repository, chain 	STILL	3D	deck scope in 3D only asserts a canvas was drawn [repository chain]
+still-picture.spec.ts:429	still pictures of the repository, five f	STILL	3D	deck scope in 3D only asserts a canvas was drawn [repository five files]
+tuning.spec.ts:17	every tuning control explains what chang	STILL	panel	every tuning control has tooltip and description, none drawn
+tuning.spec.ts:74	the 3D levers stand in discovery, forces	JOURNEY	panel	3D levers grouped; a keyboard press moves Gravity's readout
+tuning.spec.ts:105	marbles on and off each compile, and the	RELATION	3D	marbles on and off compile, canvas pixels differ between choices
+tuning.spec.ts:127	the legend stands before Tuning, and Exp	STILL	panel	legend precedes Tuning; Export at panel's type size
+world-map-design.spec.ts:48	World Map design audit > no two labels c	STILL	world	board at rest: no two labels collide
+world-map-design.spec.ts:54	World Map design audit > no two labels c	STILL	world	built-on layer shown by hook: no labels collide
+world-map-design.spec.ts:61	World Map design audit > nor after a tur	STILL	world	after hook rotate and zoom: no labels collide
+world-map-design.spec.ts:70	World Map design audit > nor with each t	STILL	world	each piece pinned in turn by hook, each state audited
+world-map-design.spec.ts:80	World Map design audit > a thing opened 	STILL	2D	thing entered by hook into Local Map: no collisions or cuts
+world-map-design.spec.ts:108	World Map labels clear the pieces > the 	STILL	world	no label crosses a piece or another label [estate orbited as walkthrough orbits]
+world-map-design.spec.ts:108	World Map labels clear the pieces > the 	STILL	world	no label crosses a piece or another label [estate turned quarter]
+world-map-design.spec.ts:108	World Map labels clear the pieces > the 	STILL	world	no label crosses a piece or another label [estate as it first opens]
+world-map-design.spec.ts:108	World Map labels clear the pieces > the 	STILL	world	no label crosses a piece or another label [estate seen from straight above]
+world-map-design.spec.ts:108	World Map labels clear the pieces > this	STILL	world	no label crosses a piece or another label [this repository s board as]
+world-map-design.spec.ts:108	World Map labels clear the pieces > this	STILL	world	no label crosses a piece or another label [this repository s board seen]
+world-map-design.spec.ts:108	World Map labels clear the pieces > this	STILL	world	no label crosses a piece or another label [this repository s board turned]
+world-map-design.spec.ts:108	World Map labels clear the pieces > this	STILL	world	no label crosses a piece or another label [this repository s board orbited]
+world-map-estate.spec.ts:32	The estate on the World Map > draws seve	STILL	world	estate board: seven pieces, two regions, crossing tag, roads via hooks
+world-map-estate.spec.ts:43	The estate on the World Map > draws the 	STILL	world	ghost door and stub drawn; panel text after pin hooks; labels apart
+world-map-estate.spec.ts:66	The estate on the World Map > a pinned p	STILL	world	pinned panel with files unfolded: height cap, scroll, file name links
+world-map-estate.spec.ts:100	The estate on the World Map > the hub's 	STILL	world	hub pinned by click: panel clear of wired pieces, inside view
+world-map-estate.spec.ts:119	The estate on the World Map > its labels	STILL	world	estate labels apart at rest and with built-on layer
+world-map-estate.spec.ts:133	The estate on the World Map > gateway op	STILL	2D	thing entered into Local Map on its folder, no collisions [gateway]
+world-map-estate.spec.ts:133	The estate on the World Map > hub opens 	STILL	2D	thing entered into Local Map on its folder, no collisions [hub]
+world-map.spec.ts:43	World Map > opens on the board and draws	STILL	world	this repo's board draws pieces, regions, wires, crumbs
+world-map.spec.ts:55	World Map > draws an imagined thing holl	STILL	world	imagined pieces hollow with kind; panel text after pin hook
+world-map.spec.ts:70	World Map > draws a door the board decla	STILL	world	declared unused door dashed with stub; panel after pin hook
+world-map.spec.ts:85	World Map > entering an imagined thing p	JOURNEY	world	entering an imagined thing pins it and says nothing inside
+world-map.spec.ts:93	World Map > counts what the join found w	JOURNEY	world	route-rewritten board: crumbs count wanting; click opens list
+world-map.spec.ts:110	World Map > shows a thing's facts on hov	JOURNEY	world	hover shows facts, pin and unpin via hooks
+world-map.spec.ts:124	World Map > shows how a wire is known	JOURNEY	world	hovering a road shows how the wire is known
+world-map.spec.ts:135	World Map > pins a thing on a click, and	JOURNEY	world	click pins piece; unfolded file link opens Local Map on file
+world-map.spec.ts:156	World Map > a pinned piece's panel says 	STILL	world	piece pinned by click: panel order and folded files read
+world-map.spec.ts:174	World Map > the pinned panel's close con	JOURNEY	world	panel scrolled to bottom keeps Close in sight; Close unpins
+world-map.spec.ts:194	World Map > the pinned panel stands besi	STILL	world	pinned panel beside piece, inside view, folded and unfolded
+world-map.spec.ts:219	World Map > the board's tools are icons,	JOURNEY	world	tools are named icons; clicks and keys toggle pressed state
+world-map.spec.ts:242	World Map > each piece is a keyboard sto	JOURNEY	world	Tab order of pieces, turn keeps focus, Enter pins, Escape returns
+world-map.spec.ts:270	World Map > the walkthrough ends where i	RELATION	world	walkthrough's done returns camera to its starting state
+world-map.spec.ts:286	World Map > while the bundle loads, the 	MOTION	world	delayed bundle: wordless loading sign shown, then gone
+world-map.spec.ts:301	World Map > a name in the pinned panel p	JOURNEY	world	panel name link pins named piece; board click lets go
+world-map.spec.ts:313	World Map > orbits the way the force gra	JOURNEY	world	right-drag orbits camera in the force graph's sense
+world-map.spec.ts:330	World Map > looking straight down after 	JOURNEY	world	free turn, look down squares board, look up restores turn
+world-map.spec.ts:353	World Map > from a quarter turn, looking	JOURNEY	world	quarter turn hooks: look down and up go to expected angles
+world-map.spec.ts:369	World Map > dragged to straight above at	JOURNEY	world	dragged straight above askew; tool squares then looks up
+world-map.spec.ts:399	World Map > a turn by drag draws the boa	MOTION	world	six pointer moves in one frame draw the board once
+world-map.spec.ts:434	World Map > on the estate, turning, pann	MOTION	world	at most two layouts per gesture move [estate]
+world-map.spec.ts:434	World Map > on this repository's board, 	MOTION	world	at most two layouts per gesture move [this repository s board]
+world-map.spec.ts:488	World Map > keeps a moved thing where it	JOURNEY	world	moved thing kept, written to board text, survives reload
+world-map.spec.ts:503	World Map > turns and looks down without	RELATION	world	turn and look down keep scale k and label size
+world-map.spec.ts:517	World Map > opens a thing from its pinne	JOURNEY	world	open from panel into Local Map folder; nav back unpins
+world-map.spec.ts:530	World Map > wheeling into a thing opens 	JOURNEY	world	wheeling into a thing opens it; board reset on return
+world-map.spec.ts:549	World Map > a double-click opens a thing	JOURNEY	world	double-click opens a thing into Local Map
+world-map.spec.ts:557	World Map > drags a thing with the point	JOURNEY	world	pointer drag moves a thing
+zoom-looks.spec.ts:252	with three looks, a slot card changes on	RELATION	2D	ten presses out and back: looks match both ways, nothing changes inside a look
+zoom-looks.spec.ts:343	in the connections and overview looks a 	STILL	2D	at each press past reading, no name cut beside room; PaymentService wraps
+zoom-looks.spec.ts:414	what the connections look shows does not	RELATION	2D	Segoe line metrics versus fallback: same wraps, counts, no cuts
+zoom-looks.spec.ts:462	in the connections look a card's names s	STILL	2D	connections look: row heads at even gaps, highlights clear (per font)
+zoom-looks.spec.ts:492	in the far looks a closed directory's na	STILL	2D	far looks: closed directory name held whole, no count or More
+zoom-looks.spec.ts:534	in the connections look a card's counts 	JOURNEY	2D	counts at held size each press; then +N connections click pins
+zoom-looks.spec.ts:578	stepped, chosen by a link, still reports	STILL	2D	stepped link: lod, step and look reported at every press
+zoom-looks.spec.ts:596	the three looks are the default, the lad	JOURNEY	panel	three looks default; Tuning select stepped saved and carried by link
+zoom-looks.spec.ts:634	a change of look moves the held parts wh	MOTION	2D	look change animates held parts; nothing animates under reduced motion
+zoom-looks.spec.ts:721	at each change of look, nothing held is 	MOTION	2D	paused animation samples: held parts never larger, names inside cards

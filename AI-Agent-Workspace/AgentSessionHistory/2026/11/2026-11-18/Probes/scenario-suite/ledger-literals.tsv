@@ -1,0 +1,34 @@
+case	literal assertion	sort	how the table holds it
+local-map-branches.spec.ts:276	no route crosses a card (occluded wires 0)	carried by a law	no route crosses a card it does not end at
+local-map-branches.spec.ts:276	no lane in a stranger's directory (foreign lane samples 0)	carried by a law	no lane lies in a stranger's directory
+local-map-branches.spec.ts:276	no route reads backward (backward 0)	carried by a law	every route reads forward
+local-map-branches.spec.ts:276	no wire point above the highest card or lane	carried by a law	no route rises above the picture
+local-map-branches.spec.ts:276	lanes exist (lanes > 0; lane samples > 0)	carried by a floor	the retained scenario's floor: lanes reserved
+local-map-branches.spec.ts:276	more than 100 wires	would need a recorded baseline	not carried: the repository's density is its point
+local-map-branches.spec.ts:276	a lane's first slot at 9 px, slots at least 7 px apart, its foot 10 px below the last	would need a recorded baseline	not carried; could become a law if the renderer published its lane padding as it now publishes a directory's inset
+local-map-branches.spec.ts:276	no orthogonal detour (no path with two Q commands)	carried by no judgment yet	a law over a route's shape could hold it; not built
+local-map-branches.spec.ts:276	no perspective-strain sign; the 3D button's title is "Local Map in 3D"	would need a recorded baseline	not carried: a reading of controls the instrument does not take
+local-map-branches.spec.ts:362	more than two directory bands	carried by a floor	scenario-specific; the table's maps have 2 to 7 bands
+local-map-branches.spec.ts:362	every directory but the root draws an outline	carried by no judgment yet	the reading has each band's drawn flag; a law over it is one line, not built
+local-map-branches.spec.ts:362	segments run in consecutive columns	carried by a law	each directory is one connected shape
+local-map-branches.spec.ts:362	neighbouring segments overlap by at least 60 px	would need a recorded baseline	held as more than 0 by the law
+local-map-branches.spec.ts:362	each card inside its segment by 12 px	carried by a law	every card stands inside its directory, inset read from data-inset
+local-map-branches.spec.ts:362	siblings at least 28 px apart in a shared column	would need a recorded baseline	held as no overlap by the law
+local-map-branches.spec.ts:362	some membrane's segments stand at different heights	would need a recorded baseline	a fact of that scope, not a law
+still-picture.spec.ts:334 and :378	no text collision; no cut text	carried by a law	no text collides or is cut off
+still-picture.spec.ts:334 and :378	no occluded wire; no lane in a stranger's directory; no backward route (retained)	carried by a law	the three wire laws
+still-picture.spec.ts:334 and :378	no route changes shape and no wire appears or vanishes under six pans	belongs to a gesture	not carried: a relation over a pan
+local-map-framing.spec.ts:46	picture smaller than the frame and inside it; centred within 2 px; no sign	carried by a law	framed whole; edge signs honest
+local-map-framing.spec.ts:46	the Close Portal button is visible	belongs to a gesture	not carried: the instrument reads no controls
+local-map-framing.spec.ts:101	independent root columns top-aligned within 1 px	carried by no judgment yet	a law over the root's columns could hold it; not built
+local-map-framing.spec.ts:101	framed whole	carried by a law	a picture with no subject is framed whole
+local-map-framing.spec.ts:101	a closed directory's name is rgb(242, 242, 242)	would need a recorded baseline	not carried
+local-map-framing.spec.ts:101	Open Portal enabled	belongs to a gesture	not carried
+local-map-tone.spec.ts:55	each tone at least 4.5:1	carried by a law	a card's names lead its prose, each legible
+local-map-tone.spec.ts:55	the file's name at least the symbol's; a symbol's name 1.5 times its prose	carried by a law	the same law
+local-map-tone.spec.ts:55	a description and the Purpose are one tone	carried by no judgment yet	the instrument reads the Purpose's tone only; a law over equality within one reading, not built
+local-map-tone.spec.ts:55	the held names keep their tones three presses out	carried by no judgment yet	a relation between the reading-size and three-presses-out readings of one run; both readings now exist in the table but in separate cases
+local-map-tone.spec.ts:82	no wire glows at rest	carried by a law	no wire glows, and every route is drawn at one strength
+local-map-tone.spec.ts:82	every wire at rest at opacity 0.7	would need a recorded baseline	held as one strength by the law
+local-map-tone.spec.ts:82	a hovered row's wires stay at 0.7, the rest fade to 0.1 or less, none glows	belongs to a gesture	not carried
+local-map-tone.spec.ts:123	outline at least 1.5:1, no stronger than a card's border, fill alpha under 0.05	carried by a law	a directory's outline is ground, not figure

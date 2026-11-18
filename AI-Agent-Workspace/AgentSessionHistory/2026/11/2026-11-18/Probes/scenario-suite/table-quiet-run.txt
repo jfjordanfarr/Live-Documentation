@@ -1,0 +1,59 @@
+WebGL in this run is drawn by: ANGLE (Microsoft Corporation, D3D12 (NVIDIA GeForce RTX 3090), OpenGL ES 3.1)
+
+Running 50 tests using 1 worker
+
+[WebServer] (node:192393) [DEP0066] DeprecationWarning: OutgoingMessage.prototype._headers is deprecated
+[WebServer] (Use `node --trace-deprecation ...` to show where the warning was created)
+  ✓   1 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in typescript › the processor in focus (4.6s)
+  ✓   2 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in typescript › the processor in focus, three presses out (4.0s)
+  ✓   3 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in typescript › the whole program retained (2.2s)
+  -   4 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in typescript › a part's own directory opened, nothing chosen
+  ✓   5 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in typescript › the program's root, nothing chosen (1.5s)
+  ✓   6 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in java › the processor in focus (4.1s)
+  ✓   7 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in java › the processor in focus, three presses out (4.0s)
+  ✓   8 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in java › the whole program retained (2.5s)
+  ✓   9 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in java › a part's own directory opened, nothing chosen (1.6s)
+  ✓  10 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in java › the program's root, nothing chosen (2.0s)
+  ✓  11 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in csharp › the processor in focus (4.2s)
+  ✓  12 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in csharp › the processor in focus, three presses out (4.1s)
+  ✓  13 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in csharp › the whole program retained (2.7s)
+  ✓  14 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in csharp › a part's own directory opened, nothing chosen (1.7s)
+  ✓  15 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in csharp › the program's root, nothing chosen (1.5s)
+  ✓  16 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in rust › the processor in focus (4.2s)
+  ✓  17 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in rust › the processor in focus, three presses out (4.3s)
+  ✓  18 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in rust › the whole program retained (2.6s)
+  -  19 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in rust › a part's own directory opened, nothing chosen
+  ✓  20 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in rust › the program's root, nothing chosen (2.0s)
+  ✓  21 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in c › the processor in focus (3.8s)
+  ✓  22 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in c › the processor in focus, three presses out (3.7s)
+  ✓  23 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in c › the whole program retained (2.5s)
+  -  24 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in c › a part's own directory opened, nothing chosen
+  ✓  25 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in c › the program's root, nothing chosen (1.5s)
+  ✓  26 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in cpp › the processor in focus (3.8s)
+  ✓  27 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in cpp › the processor in focus, three presses out (3.7s)
+  ✓  28 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in cpp › the whole program retained (2.8s)
+  -  29 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in cpp › a part's own directory opened, nothing chosen
+  ✓  30 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in cpp › the program's root, nothing chosen (1.5s)
+  ✓  31 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in go › the processor in focus (3.9s)
+  ✓  32 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in go › the processor in focus, three presses out (4.0s)
+  ✓  33 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in go › the whole program retained (2.5s)
+  ✓  34 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in go › a part's own directory opened, nothing chosen (1.5s)
+  ✓  35 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in go › the program's root, nothing chosen (1.7s)
+  ✓  36 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in python › the processor in focus (3.8s)
+  ✓  37 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in python › the processor in focus, three presses out (3.9s)
+  ✓  38 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in python › the whole program retained (2.3s)
+  -  39 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in python › a part's own directory opened, nothing chosen
+  ✓  40 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in python › the program's root, nothing chosen (1.7s)
+  ✓  41 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in ruby › the processor in focus (3.4s)
+  ✓  42 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in ruby › the processor in focus, three presses out (3.7s)
+  ✓  43 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in ruby › the whole program retained (2.1s)
+  -  44 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in ruby › a part's own directory opened, nothing chosen
+  ✓  45 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in ruby › the program's root, nothing chosen (1.6s)
+  ✓  46 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in this repository's map › the processor in focus (5.2s)
+  ✓  47 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in this repository's map › the processor in focus, three presses out (4.8s)
+  ✓  48 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in this repository's map › the whole program retained (3.2s)
+  -  49 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in this repository's map › a part's own directory opened, nothing chosen
+  ✓  50 [chromium] › tests/e2e/scenarios/still-pictures.spec.ts:67:11 › Rosetta in this repository's map › the program's root, nothing chosen (2.0s)
+
+  7 skipped
+  43 passed (2.3m)
