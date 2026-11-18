@@ -19,15 +19,19 @@ import { browserLaunchOptions } from "./browser-launch";
  */
 const port = Number(process.env.LIVE_DOCS_E2E_PORT ?? 8766);
 const site = `http://localhost:${port}`;
-// Set by scripts/e2e-passes.mjs for its second pass, the cases tagged `@alone`.
-const alonePass = process.env.LIVE_DOCS_E2E_PASS === "alone";
+// Set by scripts/e2e-passes.mjs: "shared" for its first pass, every case but those tagged `@alone`, at two workers;
+// "alone" for its second, those cases at one worker. Unset, Playwright run directly takes every case at one worker. The
+// pass's filter stands here and not on the runner's command line, because Playwright applies a configuration's `grep`
+// and a command line's `--grep` together, where a second `--grep` on the command line replaces the first.
+const pass = process.env.LIVE_DOCS_E2E_PASS;
+const alonePass = pass === "alone";
 
 export default defineConfig({
   testDir: ".",
   testMatch: "**/*.spec.ts",
   fullyParallel: false,
   retries: 0,
-  // One worker when Playwright is run directly. It was the owner's rule (2026-10-19): a 3D test's software renderer
+  // One worker when Playwright is run directly, two in the gate's first pass. It was the owner's rule (2026-10-19): a 3D test's software renderer
   // keeps most of the machine busy alone (about fourteen of this box's twenty hardware threads, ten cores, 2026-11-02),
   // so tests run beside each other overrun their budgets. On 2026-11-17 the owner lifted it for "whatever the system
   // reliably tolerates"; measured that day with the graphics card, four workers stretch every case by half and a few in
@@ -36,7 +40,8 @@ export default defineConfig({
   // passes (scripts/e2e-passes.mjs): everything at two workers but the cases tagged `@alone`, then those at one worker,
   // with no limit changed. A case earns the tag by failing at two workers and passing alone, and for no other reason.
   // The measurements are in this file's Live Doc.
-  workers: 1,
+  workers: pass === "shared" ? 2 : 1,
+  ...(pass === "shared" ? { grepInvert: /@alone/ } : alonePass ? { grep: /@alone/ } : {}),
   // The second pass keeps its own report and its own failure artifacts, so that it does not erase the first pass's.
   reporter: [["list"], ["html", { open: "never", outputFolder: alonePass ? "../../reports/e2e-alone" : "../../reports/e2e" }]],
   ...(alonePass ? { outputDir: "../../test-results-alone" } : {}),
