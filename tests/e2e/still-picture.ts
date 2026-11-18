@@ -308,6 +308,14 @@ export interface WireReading {
   endpointBox: Box | null;
   /** A French Corset stub rather than a route: a closed shape at one pin that marks a reference drawn no further. */
   stub: boolean;
+  /**
+   * What the element is: an ordinary route, a stub, a bundle's shared run (`bundle-run`) beneath the wires it carries,
+   * or a back reference's route (`back-route`). Read with its style for the scenario suite's laws (2026-11-18).
+   */
+  kind: "route" | "stub" | "run" | "back";
+  /** The computed opacity and filter, as drawn at the moment of reading. */
+  opacity: number;
+  filter: string;
 }
 
 /** What the page reports about one card. */
@@ -472,7 +480,10 @@ export async function readPicture(page: Page, view: ViewReading, names: Record<s
         const targetId = data.targetId ?? "";
         if (!sourceId || !targetId || sourceId === targetId) continue;
         // A wire the page holds but does not show, such as a back reference's route before a hover, is not drawn.
-        if (getComputedStyle(el).display === "none") continue;
+        const style = getComputedStyle(el);
+        if (style.display === "none") continue;
+        const stub = el.tagName.toLowerCase() === "polygon";
+        const kind = el.classList.contains("bundle-run") ? "run" as const : el.classList.contains("back-route") ? "back" as const : stub ? "stub" as const : "route" as const;
         const clean = (symbol: string | undefined): string => (symbol === "__internals__" || symbol === "*" || symbol === undefined ? "" : symbol);
         const consumer = view.sourceIs === "consumer" ? sourceId : targetId;
         const provider = view.sourceIs === "consumer" ? targetId : sourceId;
@@ -552,7 +563,7 @@ export async function readPicture(page: Page, view: ViewReading, names: Record<s
         }
         let horizontalPx = 0, verticalPx = 0;
         for (let i = 2; i < points.length; i += 2) { horizontalPx += Math.abs(points[i] - points[i - 2]); verticalPx += Math.abs(points[i + 1] - points[i - 1]); }
-        wires.push({ key, consumer, provider, inFrame: meets(box), endpointsInFrame, endpointsUncovered, smallestFontPx, occludedSamples, samples, foreignSamples, laneSamples, foreignLaneSamples, lengthPx, horizontalPx, verticalPx, points, providerEnd, endpointBox, stub: el.tagName.toLowerCase() === "polygon" });
+        wires.push({ key, consumer, provider, inFrame: meets(box), endpointsInFrame, endpointsUncovered, smallestFontPx, occludedSamples, samples, foreignSamples, laneSamples, foreignLaneSamples, lengthPx, horizontalPx, verticalPx, points, providerEnd, endpointBox, stub, kind, opacity: Number(style.opacity), filter: style.filter });
       }
       return { wires, cards: cardReadings, frame: toBox(frame), scale, cardsTotal: cards.length, cardsInFrame, cardsPartlyInFrame, smallestLabelPx };
     },

@@ -80,9 +80,13 @@ export function judgeFloor(reading: Reading, floor: Floor): Verdict {
 
 // ─── Laws ─────────────────────────────────────────────────────────────────
 
-/** No name or line collides with another, and none is cut off. */
+/**
+ * No name or line collides with another, and at reading size none is cut off. Farther out the map holds names to their
+ * room and cuts them at their end by design (the card ladder's looks), so there only collisions are judged here.
+ */
 export function textWhole(reading: Reading): Verdict {
-  const findings = reading.textFaults.map(fault => (fault.kind === "collision"
+  const atReading = reading.look === null || reading.look === "reading";
+  const findings = reading.textFaults.filter(fault => fault.kind === "collision" || atReading).map(fault => (fault.kind === "collision"
     ? `"${fault.text}" collides with "${fault.other ?? ""}" over ${Math.round(fault.amount)} px²`
     : `"${fault.text}" is cut off by ${px(fault.amount)}`));
   return verdict("no text collides or is cut off", "law", findings, reading.textBoxes > 0, "no text was read");
@@ -100,7 +104,7 @@ export function cardsInsideDirectories(reading: Reading): Verdict {
     judged += 1;
     const segment = directory.segments.find(s => card.box.x >= s.box.x - 1 && right(card.box) <= right(s.box) + 1);
     if (!segment) { findings.push(`${short(card.id)} lies across the columns of ${card.directory || "the root"}`); continue; }
-    const inset = directory.drawn ? directory.insetPx : 0;
+    const inset = directory.insetPx;
     if (card.box.y < segment.box.y + inset - 1) findings.push(`${short(card.id)} rises ${px(segment.box.y + inset - card.box.y)} above the inside of ${card.directory}`);
     if (bottom(card.box) > bottom(segment.box) - inset + 1) findings.push(`${short(card.id)} falls ${px(bottom(card.box) - bottom(segment.box) + inset)} below the inside of ${card.directory}`);
   }
@@ -156,26 +160,29 @@ function nearestCard(cards: readonly CardRead[], file: string, x: number, y: num
 }
 
 /**
- * Uses enter on the left and offerings leave on the right: every route leaves its provider's card at the card's right
- * edge and reaches its consumer's card at its left edge, and every dot stands on the edge its side names.
+ * Uses enter on the left and offerings leave on the right: every route leaves its provider's card from the card's
+ * right half and reaches its consumer's card in its left half, and every dot stands in the half its side names. The
+ * dots stand at the ends of their rows, inside the card's padding (2026-11-18, read on the Rosetta samples), so the
+ * law is the side, not the edge.
  */
 export function usesLeftOfferingsRight(reading: Reading): Verdict {
   const findings: string[] = [];
   const tolerance = Math.max(4, EDGE_TOLERANCE_PX * Math.min(1, reading.scale));
+  const centre = (card: CardRead): number => card.box.x + card.box.width / 2;
   const lines = routes(reading);
   for (const wire of lines) {
     const providerPoint = wire.providerEnd === 0 ? wire.points[0] : wire.points[wire.points.length - 1];
     const consumerPoint = wire.providerEnd === 0 ? wire.points[wire.points.length - 1] : wire.points[0];
     const provider = nearestCard(reading.cards, wire.provider, ...providerPoint);
     const consumer = nearestCard(reading.cards, wire.consumer, ...consumerPoint);
-    if (provider && Math.abs(providerPoint[0] - right(provider.box)) > tolerance) findings.push(`${short(wire.provider)} offers ${short(wire.consumer)} from ${px(providerPoint[0] - right(provider.box))} off its right edge`);
-    if (consumer && Math.abs(consumerPoint[0] - consumer.box.x) > tolerance) findings.push(`${short(wire.consumer)} takes ${short(wire.provider)} ${px(consumerPoint[0] - consumer.box.x)} off its left edge`);
+    if (provider && (providerPoint[0] < centre(provider) || providerPoint[0] > right(provider.box) + tolerance)) findings.push(`${short(wire.provider)} offers ${short(wire.consumer)} from outside its right half`);
+    if (consumer && (consumerPoint[0] > centre(consumer) || consumerPoint[0] < consumer.box.x - tolerance)) findings.push(`${short(wire.consumer)} takes ${short(wire.provider)} outside its left half`);
   }
   for (const anchor of reading.anchors) {
     const card = nearestCard(reading.cards, anchor.file, anchor.x, anchor.y);
     if (!card) continue;
-    const edge = anchor.side === "inbound" ? card.box.x : right(card.box);
-    if (Math.abs(anchor.x - edge) > tolerance) findings.push(`the ${anchor.side === "inbound" ? "using" : "offering"} dot of ${anchor.symbol} on ${short(anchor.file)} stands ${px(anchor.x - edge)} off the ${anchor.side === "inbound" ? "left" : "right"} edge`);
+    const wrong = anchor.side === "inbound" ? anchor.x > centre(card) : anchor.x < centre(card);
+    if (wrong) findings.push(`the ${anchor.side === "inbound" ? "using" : "offering"} dot of ${anchor.symbol} on ${short(anchor.file)} stands in the ${anchor.side === "inbound" ? "right" : "left"} half`);
   }
   return verdict("uses enter on the left and offerings leave on the right", "law", findings, lines.length + reading.anchors.length > 0, "no route or dot is drawn");
 }
@@ -385,17 +392,34 @@ export interface OracleEdge {
  * one end at the subject is drawn as a route or a stub, and no wire at the subject joins a pair the oracle does not
  * know. Judged file to file, since an oracle's symbols are named in its own scheme.
  */
-export function wiresMatchOracle(reading: Reading, subject: string, oracle: readonly OracleEdge[] | null): Verdict {
-  const name = "the subject's wires are the oracle's edges";
-  if (oracle === null) return verdict(name, "oracle", [], false, "this map has no independent oracle");
-  if (!reading.cards.some(card => card.id === subject)) return verdict(name, "oracle", [`${subject} is not drawn`]);
+export function wiresMatchOracle(reading: Reading, subject: string, oracle: { edges: readonly OracleEdge[]; documents: readonly string[] } | null): Verdict {
+  return wiresAgainst(reading, subject, oracle?.edges ?? null, "the subject's wires are the compiler's edges", "oracle", "the compiler", oracle ? new Set(oracle.documents) : null);
+}
+
+/**
+ * The same comparison against the references the bundle itself carries, the data the picture was drawn from: a
+ * relation between the picture and its data, not an oracle, since a defect that reached the data would pass it. It
+ * catches a drawing that drops or invents a wire.
+ */
+export function wiresMatchData(reading: Reading, subject: string, references: readonly OracleEdge[]): Verdict {
+  return wiresAgainst(reading, subject, references, "the subject's wires are the references its data records", "relation", "the data");
+}
+
+/**
+ * `known`, when given, is the files the source can speak of: a drawn wire to a file outside them (a JSON file that
+ * names the subject, which no compiler indexes) is neither confirmed nor denied, as the oracle comparison counts it.
+ */
+function wiresAgainst(reading: Reading, subject: string, edges: readonly OracleEdge[] | null, name: string, rank: Rank, source: string, known: ReadonlySet<string> | null = null): Verdict {
+  if (edges === null) return verdict(name, rank, [], false, `this map has no record in ${source}`);
+  if (!reading.cards.some(card => card.id === subject)) return verdict(name, rank, [`${subject} is not drawn`]);
   const pair = (edge: OracleEdge): string => `${edge.consumer} uses ${edge.provider}`;
   const touches = (edge: OracleEdge): boolean => edge.consumer !== edge.provider && (edge.consumer === subject || edge.provider === subject);
-  const expected = new Set(oracle.filter(touches).map(pair));
-  const drawn = new Set(reading.wires.filter(wire => (wire.kind === "route" || wire.kind === "stub") && touches(wire)).map(pair));
+  const speaksOf = (edge: OracleEdge): boolean => known === null || (known.has(edge.consumer) && known.has(edge.provider));
+  const expected = new Set(edges.filter(touches).map(pair));
+  const drawn = new Set(reading.wires.filter(wire => (wire.kind === "route" || wire.kind === "stub") && touches(wire) && speaksOf(wire)).map(pair));
   const findings = [
     ...[...expected].filter(edge => !drawn.has(edge)).map(edge => `missing: ${edge}`),
-    ...[...drawn].filter(edge => !expected.has(edge)).map(edge => `not in the oracle: ${edge}`)
+    ...[...drawn].filter(edge => !expected.has(edge)).map(edge => `not in ${source}: ${edge}`)
   ];
-  return verdict(name, "oracle", findings);
+  return verdict(name, rank, findings);
 }

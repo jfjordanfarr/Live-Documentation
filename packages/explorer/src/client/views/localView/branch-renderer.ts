@@ -943,12 +943,16 @@ function showScene(controller: LocalViewController, stage: BranchStage, scene: S
     const host = hostElement(hostOf(item.box));
     if (wrapper.parentElement !== host) host.append(wrapper);
   }
-  // A drawn directory publishes its segments, a lane where its slots came to rest, for the router and the tests.
+  // A drawn directory publishes its segments and the inset that keeps its members clear of their edges, a lane where its
+  // slots came to rest, for the router and the tests.
   for (const box of scene.boxes) {
     const element = elements.get(box);
     if (!element) continue;
     if (box.kind === "lane") element.dataset.slots = (scene.slotLines.get(box.lane!.key) ?? []).map(String).join(",");
-    else element.dataset.segments = box.segments.map(segment => `${segment.column}:${segment.left}:${segment.top}:${segment.right}:${segment.bottom}`).join(";");
+    else {
+      element.dataset.segments = box.segments.map(segment => `${segment.column}:${segment.left}:${segment.top}:${segment.right}:${segment.bottom}`).join(";");
+      element.dataset.inset = String(box.inset);
+    }
   }
 
   // Every element at its place, at once for the first picture, else moved there from where the previous one stood it.

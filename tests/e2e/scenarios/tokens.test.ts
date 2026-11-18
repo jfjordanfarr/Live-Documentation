@@ -34,14 +34,15 @@ describe("matchesPattern", () => {
 });
 
 describe("the Rosetta manifest as a token table", () => {
-  it("places every source file of every program but one, and names that one", () => {
+  it("places every source file of every program in a part, and gives every part a subject", () => {
     for (const variant of manifest.variants) {
       const table = tableFor(variant.language);
-      expect(table.unplaced, variant.language).toEqual(variant.language === "python" ? ["src/core_types.py"] : []);
-      // The manifest's types pattern does not reach Python's core_types.py; until it does, {types} is not applicable there.
-      for (const part of ["main", "processor", "models", "helpers"] as const) expect(table.subject[part], `${variant.language} ${part}`).toBeDefined();
+      expect(table.unplaced, variant.language).toEqual([]);
+      for (const part of ["main", "processor", "models", "types", "helpers"] as const) expect(table.subject[part], `${variant.language} ${part}`).toBeDefined();
       expect(table.files.test.length, `${variant.language} tests`).toBe(3);
     }
+    // Python keeps its types in core_types.py, which the manifest names since the scenario suite first read it (2026-11-18).
+    expect(tableFor("python").subject.types).toBe("src/core_types.py");
   });
 
   it("chooses a part's subject by its name, then an implementation over its header, then the declared entry", () => {
@@ -81,7 +82,6 @@ describe("resolving tokens", () => {
 
   it("refuses what it cannot give rather than guessing", () => {
     expect(() => resolveText("{models/}", tableFor("typescript"))).toThrow(TokenError);
-    expect(() => resolveText("{types}", tableFor("python"))).toThrow(TokenError);
     expect(() => resolveText("{widgets}", java)).toThrow(TokenError);
     expect(() => resolveText("{models*}", java)).toThrow(TokenError);
   });

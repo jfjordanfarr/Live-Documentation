@@ -19,6 +19,7 @@ import {
   textTones,
   textWhole,
   usesLeftOfferingsRight,
+  wiresMatchData,
   wiresMatchOracle,
   wiresPlainAtRest
 } from "./judgments";
@@ -120,6 +121,9 @@ describe("laws, each against a picture that breaks it", () => {
     const reading = good();
     reading.textFaults = [{ kind: "collision", text: "processor.ts", other: "run", amount: 40 }, { kind: "cut", text: "summarize", amount: 6 }];
     expect(textWhole(reading).findings).toEqual(['"processor.ts" collides with "run" over 40 px²', '"summarize" is cut off by 6 px']);
+    // Farther out, names are held and cut at their end by design: only the collision is a fault there.
+    reading.look = "connections";
+    expect(textWhole(reading).findings).toEqual(['"processor.ts" collides with "run" over 40 px²']);
   });
 
   it("a card that falls below the inside of its directory", () => {
@@ -145,8 +149,8 @@ describe("laws, each against a picture that breaks it", () => {
     reading.wires[0] = wire("src/helpers.ts", "src/processor.ts", [160, 340], [420, 340]);
     reading.anchors[3] = { ...reading.anchors[3], x: 840 };
     expect(usesLeftOfferingsRight(reading).findings).toEqual([
-      "helpers.ts offers processor.ts from -160 px off its right edge",
-      "the using dot of main on main.ts stands 160 px off the left edge"
+      "helpers.ts offers processor.ts from outside its right half",
+      "the using dot of main on main.ts stands in the right half"
     ]);
   });
 
@@ -247,18 +251,33 @@ describe("oracle facts", () => {
     { consumer: "src/main.ts", provider: "src/processor.ts" },
     { consumer: "src/models.ts", provider: "src/types.ts" }
   ];
+  const compiler = { edges: oracle, documents: ["src/main.ts", "src/processor.ts", "src/helpers.ts", "src/models.ts", "src/types.ts"] };
 
   it("keeps a picture whose wires at the subject are the oracle's edges there, and ignores edges elsewhere", () => {
-    expect(outcome(wiresMatchOracle(good(), "src/processor.ts", oracle))).toBe("kept");
+    expect(outcome(wiresMatchOracle(good(), "src/processor.ts", compiler))).toBe("kept");
+  });
+
+  it("neither confirms nor denies a wire to a file the compiler does not index", () => {
+    const reading = good();
+    reading.wires.push(wire("src/processor.ts", "expected/compiler-edges.json", [580, 340], [680, 340]));
+    expect(outcome(wiresMatchOracle(reading, "src/processor.ts", compiler))).toBe("kept");
   });
 
   it("rejects a missing edge and an invented one", () => {
     const reading = good();
     reading.wires[1] = wire("src/processor.ts", "src/helpers.ts", [580, 340], [680, 340]);
-    expect(wiresMatchOracle(reading, "src/processor.ts", oracle).findings).toEqual([
+    expect(wiresMatchOracle(reading, "src/processor.ts", compiler).findings).toEqual([
       "missing: src/main.ts uses src/processor.ts",
-      "not in the oracle: src/helpers.ts uses src/processor.ts"
+      "not in the compiler: src/helpers.ts uses src/processor.ts"
     ]);
+  });
+
+  it("judges the picture against its own data by the same rule, ranked as a relation", () => {
+    const reading = good();
+    reading.wires.pop();
+    const verdict = wiresMatchData(reading, "src/processor.ts", oracle);
+    expect(verdict.rank).toBe("relation");
+    expect(verdict.findings).toEqual(["missing: src/main.ts uses src/processor.ts"]);
   });
 
   it("says so where there is no oracle, rather than passing", () => {

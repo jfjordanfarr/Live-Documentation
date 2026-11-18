@@ -23,6 +23,8 @@ export interface Scenario {
     | { directory: string }
     | { root: true };
   viewport: { width: number; height: number };
+  /** Presses of Zoom Out before reading, each awaited at rest: the camera's zoom is not in the address. */
+  zoomOut?: number;
   /** The floor, in tokens. */
   floor: Floor;
   /** Load the address again and expect the same reading. */
@@ -41,6 +43,15 @@ export const SCENARIOS: Scenario[] = [
     reload: true,
     oracleAt: "{processor}",
     replaces: ["still-picture.spec.ts:334", "local-map-tone.spec.ts:55", "local-map-tone.spec.ts:82"]
+  },
+  {
+    name: "the processor in focus, three presses out",
+    address: { focus: "{processor}" },
+    viewport: { width: 1600, height: 1000 },
+    zoomOut: 3,
+    floor: { subject: "{processor}", minCards: 3, minWires: 2 },
+    reload: false,
+    replaces: []
   },
   {
     name: "the whole program retained",

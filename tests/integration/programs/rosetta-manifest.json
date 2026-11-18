@@ -34,7 +34,7 @@
       {
         "id": "types",
         "role": "Shared type definitions (enums, configs)",
-        "files": ["types.*", "Types/*"]
+        "files": ["types.*", "Types/*", "core_types.*"]
       },
       {
         "id": "helpers",

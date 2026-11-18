@@ -5,8 +5,8 @@
  * It reads the page from outside, as the other instruments do, and reuses them rather than reading the same thing
  * twice: the still-picture instrument's `readPicture` for the wires (sampled paths, which end is the provider's, cards
  * crossed, lanes in a stranger's directory) and the cards' boxes, and the design audit for collisions and cut text. It
- * adds only what neither reads: the frame and its edge signs, each card's state and directory, the dots, each wire's
- * kind and style, the directories' published segments, the lanes, and the colours the tone promises are judged by.
+ * adds only what neither reads: the frame and its edge signs, each card's state and directory, the dots, the
+ * directories' published segments and insets, the lanes, and the colours the tone promises are judged by.
  * Kept small on purpose: an instrument that lies makes every judgment lie with it.
  */
 
@@ -19,7 +19,7 @@ import { backdrop, contrastRatio, parseColour } from "../contrast";
 import { overlapsAmong, textBoxes, truncations } from "../design-audit";
 import { LOCAL_MAP, localMapStill, readPicture } from "../still-picture";
 
-import type { Box, Reading, TextFault, WireKind } from "./reading";
+import type { Box, Reading, TextFault } from "./reading";
 
 /** What a page did while a scenario loaded: errors it logged and requests it made off its own site. */
 export interface PageWatch {
@@ -47,7 +47,6 @@ interface Extras {
   look: string | null;
   cards: Array<{ id: string; subject: boolean; pinned: boolean; directory: string | null }>;
   anchors: Reading["anchors"];
-  wires: Array<{ key: string; kind: WireKind; opacity: number; filter: string }>;
   directories: Reading["directories"];
   lanes: Reading["lanes"];
   colours: {
@@ -59,7 +58,7 @@ interface Extras {
 }
 
 async function readExtras(page: Page): Promise<Extras> {
-  return page.evaluate(({ wiresSelector, cardSelector }) => {
+  return page.evaluate(({ cardSelector }) => {
     const toBox = (r: DOMRect) => ({ x: r.x, y: r.y, width: r.width, height: r.height });
     const signs = document.querySelector<HTMLElement>("#view-map .map-edges")!;
     const layout = document.querySelector<HTMLElement>("#map-container .local-layout");
@@ -81,16 +80,6 @@ async function readExtras(page: Page): Promise<Extras> {
         y: (r.top + r.bottom) / 2
       }];
     });
-    // The wires in the order and by the rules `readPicture` reads them, so that the two lists stand side by side.
-    const clean = (symbol: string | undefined): string => (symbol === "__internals__" || symbol === "*" || symbol === undefined ? "" : symbol);
-    const wires = [...document.querySelectorAll<SVGGeometryElement>(wiresSelector)].flatMap(el => {
-      const data = (el as unknown as HTMLElement).dataset;
-      if (!data.sourceId || !data.targetId || data.sourceId === data.targetId) return [];
-      const style = getComputedStyle(el);
-      if (style.display === "none") return [];
-      const kind = el.classList.contains("bundle-run") ? "run" : el.classList.contains("back-route") ? "back" : el.tagName.toLowerCase() === "polygon" ? "stub" : "route";
-      return [{ key: `${data.sourceId}|${data.targetId}|${clean(data.sourceSymbol)}|${clean(data.targetSymbol)}`, kind: kind as "run" | "back" | "stub" | "route", opacity: Number(style.opacity), filter: style.filter }];
-    });
     const placed = document.querySelector<HTMLElement>("#map-container .local-placed");
     const origin = placed?.getBoundingClientRect();
     const scale = placed && origin ? origin.width / (placed.offsetWidth || 1) : 1;
@@ -102,8 +91,8 @@ async function readExtras(page: Page): Promise<Extras> {
         const [column, left, top, right, bottom] = part.split(":").map(Number);
         return { column, box: { x: origin!.left + left * scale, y: origin!.top + top * scale, width: (right - left) * scale, height: (bottom - top) * scale } };
       }),
-      // The product keeps each directory's inset to itself; until it publishes it, a card is held inside its segment only.
-      insetPx: 0
+      // The padding and border the map keeps between a directory's edge and its members, as the renderer publishes it.
+      insetPx: Number(band.dataset.inset ?? Number.NaN) * scale
     }));
     const lanes = [...document.querySelectorAll<HTMLElement>("#map-container .local-pass-through[data-lane]")].map(lane => ({
       box: toBox(lane.getBoundingClientRect()),
@@ -129,7 +118,6 @@ async function readExtras(page: Page): Promise<Extras> {
       look: map.dataset.look ?? null,
       cards,
       anchors,
-      wires,
       directories,
       lanes,
       colours: {
@@ -139,7 +127,7 @@ async function readExtras(page: Page): Promise<Extras> {
         outline: shape && plainCard && band ? { stroke: getComputedStyle(shape).stroke, fill: getComputedStyle(shape).fill, border: getComputedStyle(plainCard).borderTopColor, layers: layers(band) } : null
       }
     };
-  }, { wiresSelector: LOCAL_MAP.wires, cardSelector: LOCAL_MAP.card });
+  }, { cardSelector: LOCAL_MAP.card });
 }
 
 const ratio = (tone: { colour: string; layers: string[] } | null): number | null => (tone ? contrastRatio(parseColour(tone.colour), backdrop(tone.layers)) : null);
@@ -157,9 +145,13 @@ export async function readSettled(page: Page, context: { scenario: string; map: 
   await page.waitForTimeout(250);
   const picture = await readPicture(page, LOCAL_MAP, context.names);
   const extras = await readExtras(page);
-  if (extras.wires.length !== picture.wires.length || extras.wires.some((wire, i) => wire.key !== picture.wires[i].key)) {
-    throw new Error("The instrument's two readings of the wires disagree; it will not report a reading it cannot stand behind.");
+  // The instrument does not report what it cannot stand behind: cards read twice must be the same cards, and a
+  // directory must say its inset, since a missing one would let every card pass as inside.
+  if (extras.cards.length !== picture.cards.length || extras.cards.some((card, i) => card.id !== picture.cards[i].id)) {
+    throw new Error("The instrument's two readings of the cards disagree.");
   }
+  const silent = extras.directories.filter(directory => !Number.isFinite(directory.insetPx)).map(directory => directory.directory || "the root");
+  if (silent.length > 0) throw new Error(`The map publishes no inset for ${silent.join(", ")}.`);
   const boxes = await textBoxes(page, LOCAL_MAP.text);
   const textFaults: TextFault[] = [
     ...overlapsAmong(boxes).map(overlap => ({ kind: "collision" as const, text: overlap.a.text, other: overlap.b.text, amount: overlap.area })),
@@ -183,10 +175,10 @@ export async function readSettled(page: Page, context: { scenario: string; map: 
     look: extras.look,
     cards: picture.cards.map((read, i) => ({ id: read.id, box: read.box, subject: card.get(i)?.subject ?? false, pinned: card.get(i)?.pinned ?? false, directory: card.get(i)?.directory ?? null })),
     anchors: extras.anchors,
-    wires: picture.wires.map((read, i) => {
+    wires: picture.wires.map(read => {
       const points: Array<[number, number]> = [];
       for (let k = 0; k + 1 < read.points.length; k += 2) points.push([read.points[k], read.points[k + 1]]);
-      return { key: read.key, consumer: read.consumer, provider: read.provider, kind: extras.wires[i].kind, points, providerEnd: read.providerEnd, occludedSamples: read.occludedSamples, foreignLaneSamples: read.foreignLaneSamples, opacity: extras.wires[i].opacity, filter: extras.wires[i].filter };
+      return { key: read.key, consumer: read.consumer, provider: read.provider, kind: read.kind, points, providerEnd: read.providerEnd, occludedSamples: read.occludedSamples, foreignLaneSamples: read.foreignLaneSamples, opacity: read.opacity, filter: read.filter };
     }),
     directories: extras.directories,
     lanes: extras.lanes,
