@@ -9,13 +9,14 @@ const PROGRAMS = path.resolve(__dirname, "../../integration/programs");
 const manifest = JSON.parse(fs.readFileSync(path.join(PROGRAMS, "rosetta-manifest.json"), "utf8")) as RosettaManifest;
 
 /**
- * Every file of a program that the repository tracks, as a sample built from that folder names it. Read from git and not
- * from the disk: a working copy also holds what a build left behind (Java's `target/classes`, C#'s `obj`), which git
- * ignores and no map holds; a walk of the disk put those files in the table and failed three cases here on the day the
- * suite landed (2026-11-18).
+ * Every file of a program that git does not ignore, tracked or not yet added, as a sample built from that folder names it
+ * (discovery keeps the same files, by `gitIgnored`). Read from git and not from the disk: a working copy also holds what
+ * a build left behind (Java's `target/classes`, C#'s `obj`), which git ignores and no map holds; a walk of the disk put
+ * those files in the table and failed three cases here on the day the suite landed (2026-11-18).
  */
 function filesOf(program: string): string[] {
-  return execFileSync("git", ["ls-files", "-z", "--", "."], { cwd: program, encoding: "utf8" }).split("\0").filter(Boolean);
+  return execFileSync("git", ["ls-files", "-z", "--cached", "--others", "--exclude-standard", "--", "."], { cwd: program, encoding: "utf8" })
+    .split("\0").filter(Boolean);
 }
 const tableFor = (language: string, root = "") => {
   const variant = manifest.variants.find(candidate => candidate.language === language)!;

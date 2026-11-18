@@ -13,7 +13,7 @@ Holds the token resolver to the real Rosetta folders and to the references of a 
 ### Notes
 Every source file of every program must fall in a part; a part's subject follows the map's references, or without them the C family's header; a token the table cannot give is refused rather than guessed.
 
-The programs' files are listed from git, not from the disk. On the day the suite landed (2026-11-18) the first run in the main working copy failed three cases that had passed in the builder's worktree: that copy still held Java's compiled `target/classes` from an old build, which git ignores and no map holds, and a walk of the disk had put them in the table ([the landing](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#work-notes-the-scenario-slice-landed)).
+The programs' files are listed from git, not from the disk: every file git does not ignore, tracked or not yet added, which is the rule discovery keeps (`gitIgnored`); a review the same day widened the first form, tracked files alone, which would have left out a program's new file until it was added. On the day the suite landed (2026-11-18) the first run in the main working copy failed three cases that had passed in the builder's worktree: that copy still held Java's compiled `target/classes` from an old build, which git ignores and no map holds, and a walk of the disk had put them in the table ([the landing](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#work-notes-the-scenario-slice-landed)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
