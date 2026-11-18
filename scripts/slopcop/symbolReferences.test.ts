@@ -37,6 +37,34 @@ describe("findSymbolReferenceAnomalies", () => {
     });
   });
 
+  it("looks an anchor up in a markdown file it was not given, and reports nothing of that file's own", () => {
+    withWorkspace((workspace) => {
+      // The archive, outside the audit: a real heading, a heading that is only text inside a fence, a dead link of its own.
+      writeFile(
+        workspace,
+        "archive/record.md",
+        ["## Turn 8", "``````text", "## The fourth option", "``````", "## Turn 8", "A [dead link](#nowhere)."].join("\n")
+      );
+      writeFile(workspace, "src/tool.ts", "export const tool = 1;\n");
+      writeFile(
+        workspace,
+        "docs/design.md",
+        [
+          "See [the turn](../archive/record.md#turn-8).",
+          "And [the reply's own heading](../archive/record.md#the-fourth-option).",
+          "And [a line of source](../src/tool.ts#L1), and [a file that is not there](../archive/gone.md#turn-1).",
+          // A transcript is cited by line: the lines are there, or they are not.
+          "And [the owner's turn](../archive/record.md#L2), [a stretch of it](../archive/record.md#L2-L6), [past its end](../archive/record.md#L2-L7)."
+        ].join("\n")
+      );
+      const issues = findSymbolReferenceAnomalies({ workspaceRoot: workspace, files: [path.join(workspace, "docs/design.md")] });
+      expect(issues.map((issue) => `${issue.kind} ${issue.slug} ${path.basename(issue.file)}`)).toEqual([
+        "missing-anchor the-fourth-option design.md",
+        "missing-anchor l2-l7 design.md"
+      ]);
+    });
+  });
+
   it("flags duplicate headings and missing anchors across markdown files", () => {
     withWorkspace((workspace) => {
       writeFile(

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/slopcop/symbolReferences.ts
-- Generated At: 2026-10-05T17:11:06.589Z
+- Generated At: 2026-11-18T23:12:57.168Z
 
 ## Authored
 ### Purpose
@@ -13,6 +13,7 @@ Implements the shared detector SlopCop uses to spot duplicate heading slugs and 
 ### Notes
 - Exercised via the opt-in `slopcop:symbols` CLI and its integration fixture, which asserts the analyzer raises exit code 3 until the docs are repaired ([fixture validation](../../../../AI-Agent-Workspace/AgentSessionHistory/2025/10/2025-10-25/2025-10-25.md#L6048-L6073)).
 - Relies on the vendored GitHub slugger and shared markdown parsing helpers so reported slugs match GitHub’s anchor rules when we fix MDMD/spec links ([slug alignment plan](../../../../AI-Agent-Workspace/AgentSessionHistory/2025/10/2025-10-26/2025-10-26.md#L1089-L1244)).
+- Since 2026-11-18 an anchor is looked up among its target's headings even when the target is not one of the audited files: a markdown file the configuration ignores as a source (the session archive's records and summaries) is read for its headings alone and never reported on. Before, such an anchor was skipped, so a link from a governed document into the archive could not fail: one written that day named a heading that stands inside a verbatim block of its target, and passed the gate, and seven older ones in Live Docs' authored notes named headings their summaries no longer had. A citation of a line or a range of lines in such a file (`#L12`, `#L12-L40`), as the transcripts are cited, is held to the file's length and not looked for among its headings ([the notes](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#work-notes-the-anchor-audit-made-to-read-the-archive)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -65,7 +66,7 @@ Options for {@link findSymbolReferenceAnomalies}.
 
 #### `findSymbolReferenceAnomalies` {#symbol-findsymbolreferenceanomalies}
 - Type: function
-- Source: [source](../../../../scripts/slopcop/symbolReferences.ts#L105)
+- Source: [source](../../../../scripts/slopcop/symbolReferences.ts#L120)
 - Returns: [`SymbolReferenceIssue`](#symbol-symbolreferenceissue)[]
 - Parameters: `options`: [`SymbolAuditOptions`](#symbol-symbolauditoptions)
 
@@ -77,6 +78,15 @@ Heading slugs are computed using GitHub-flavour slugging. The fence parser
 respects CommonMark nested code fence rules (a closing fence must be at
 least as long as the opening fence) so headings inside nested code blocks
 are correctly ignored.
+
+An anchor is looked up among its target's headings whether or not the target
+is one of `files`: a markdown file outside the audit (the session archive's
+records and summaries, which the configuration ignores as sources) is read
+for its headings alone. Until 2026-11-18 such an anchor was skipped, so a
+link from a governed document into the archive could not fail. A citation
+of a line or a range of lines (`#L12`, `#L12-L40`), as the archive's
+transcripts are cited, is no heading: it holds while its file has that
+many lines.
 
 Created 2025-10-25 for the SlopCop symbol auditor; fence parser fixed
 2026-02-18 to handle nested fences.

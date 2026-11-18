@@ -60,6 +60,10 @@ export interface SymbolAuditOptions {
 const INLINE_LINK = /(!?)\[[^\]]*\]\(([^)]+)\)/g;
 const REFERENCE_LINK = /(!?)\[[^\]]*\]\[([^\]]*)\]/g;
 const EXTERNAL_SCHEME = /^[a-zA-Z][a-zA-Z0-9+.-]*:/;
+/** A link target whose headings can be read: markdown, by its extension. A source file's `#L10` is no heading. */
+const MARKDOWN_TARGET = /\.(?:md|mdmd)$/i;
+/** A citation of a line or a range of lines in a file, as a transcript is cited: `#L12`, `#L12-L40`. */
+const LINE_CITATION = /^l(\d+)(?:-l(\d+))?$/i;
 const DEFAULT_DUPLICATE_RULE: SymbolRuleSetting = "warn";
 const DEFAULT_MISSING_RULE: SymbolRuleSetting = "error";
 
@@ -86,6 +90,8 @@ interface FileAnalysis {
   headings: HeadingInfo[];
   slugs: Set<string>;
   anchors: AnchorReference[];
+  /** How many lines the file has, for a citation of a line or a range of lines (`#L12`, `#L12-L40`). */
+  lineCount: number;
 }
 
 /**
@@ -96,6 +102,15 @@ interface FileAnalysis {
  * respects CommonMark nested code fence rules (a closing fence must be at
  * least as long as the opening fence) so headings inside nested code blocks
  * are correctly ignored.
+ *
+ * An anchor is looked up among its target's headings whether or not the target
+ * is one of `files`: a markdown file outside the audit (the session archive's
+ * records and summaries, which the configuration ignores as sources) is read
+ * for its headings alone. Until 2026-11-18 such an anchor was skipped, so a
+ * link from a governed document into the archive could not fail. A citation
+ * of a line or a range of lines (`#L12`, `#L12-L40`), as the archive's
+ * transcripts are cited, is no heading: it holds while its file has that
+ * many lines.
  *
  * Created 2025-10-25 for the SlopCop symbol auditor; fence parser fixed
  * 2026-02-18 to handle nested fences.
@@ -116,6 +131,20 @@ export function findSymbolReferenceAnomalies(options: SymbolAuditOptions): Symbo
   }
 
   const issues: SymbolReferenceIssue[] = [];
+
+  // A markdown file the audit was not given is still read for its headings when an audited file links into it, and is
+  // never reported on itself: without this an anchor into an ignored file could not fail (2026-11-18).
+  const unaudited = new Map<string, FileAnalysis | undefined>();
+  const targetOf = (file: string): FileAnalysis | undefined => {
+    const audited = analyses.get(file);
+    if (audited) {
+      return audited;
+    }
+    if (!unaudited.has(file)) {
+      unaudited.set(file, MARKDOWN_TARGET.test(file) && isFile(file) ? analyzeFile(file, options.workspaceRoot) : undefined);
+    }
+    return unaudited.get(file);
+  };
 
   if (duplicateSeverity) {
     for (const [file, analysis] of analyses.entries()) {
@@ -149,9 +178,17 @@ export function findSymbolReferenceAnomalies(options: SymbolAuditOptions): Symbo
           continue;
         }
 
-        const target = analyses.get(anchor.targetFile);
+        const target = targetOf(anchor.targetFile);
         if (!target) {
           continue;
+        }
+
+        // A citation of a line or a range of lines is no heading: it holds while the file has that many lines.
+        const cited = LINE_CITATION.exec(anchor.slug);
+        if (cited && !target.slugs.has(anchor.slug)) {
+          if (Math.max(Number(cited[1]), Number(cited[2] ?? cited[1])) <= target.lineCount) {
+            continue;
+          }
         }
 
         if (!target.slugs.has(anchor.slug)) {
@@ -262,7 +299,7 @@ function analyzeFile(filePath: string, workspaceRoot: string): FileAnalysis {
   }
   const anchors = extractAnchorReferences(content, filePath, workspaceRoot, lineStarts);
 
-  return { headings, slugs, anchors };
+  return { headings, slugs, anchors, lineCount: lines.length };
 }
 
 function extractAnchorReferences(
@@ -471,6 +508,14 @@ function normalizePathForMessage(value: string): string {
 
 function normalizePath(filePath: string): string {
   return path.resolve(filePath);
+}
+
+function isFile(filePath: string): boolean {
+  try {
+    return fs.statSync(filePath).isFile();
+  } catch {
+    return false;
+  }
 }
 
 function shouldIgnore(slug: string, patterns: RegExp[]): boolean {
