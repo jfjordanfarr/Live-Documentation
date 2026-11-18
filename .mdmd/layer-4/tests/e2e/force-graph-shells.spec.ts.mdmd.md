@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/force-graph-shells.spec.ts
-- Generated At: 2026-11-07T09:31:49.398Z
+- Generated At: 2026-11-18T20:09:09.224Z
 
 ## Authored
 ### Purpose
@@ -43,9 +43,11 @@ _No public symbols detected_
 - [`forceGraphLayout.spatialNodeRadius`](../../packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md#symbol-spatialnoderadius)
 - [`forceGraphScope.connectedNeighbours`](../../packages/explorer/src/client/views/forceGraphScope.ts.mdmd.md#symbol-connectedneighbours)
 - [`forceGraphScope.spatialScope`](../../packages/explorer/src/client/views/forceGraphScope.ts.mdmd.md#symbol-spatialscope-function)
+- [`forceGraphScope.withoutUnreachedSeeds`](../../packages/explorer/src/client/views/forceGraphScope.ts.mdmd.md#symbol-withoutunreachedseeds)
 - [`forceGraphShells.ShellPicture`](../../packages/explorer/src/client/views/forceGraphShells.ts.mdmd.md#symbol-shellpicture-interface)
 - [`forceGraphShells.shellPicture`](../../packages/explorer/src/client/views/forceGraphShells.ts.mdmd.md#symbol-shellpicture-function)
 - [`force-graph-observation.observeGraph`](./force-graph-observation.ts.mdmd.md#symbol-observegraph)
+- [`force-graph-observation.renderedNodes`](./force-graph-observation.ts.mdmd.md#symbol-renderednodes)
 - [`search-bar.choose`](./search-bar.ts.mdmd.md#symbol-choose)
 - [`still-picture.loadGraph`](./still-picture.ts.mdmd.md#symbol-loadgraph)
 - [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)

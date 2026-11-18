@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphView.ts
-- Generated At: 2026-11-17T04:51:09.712Z
+- Generated At: 2026-11-18T20:09:06.908Z
 
 ## Authored
 ### Purpose
@@ -220,6 +220,7 @@ Creates the Force Graph (3D) view for the Live Docs Explorer.
 - [`forceGraphScope.spatialScope`](./forceGraphScope.ts.mdmd.md#symbol-spatialscope-function)
 - [`forceGraphScope.startHops`](./forceGraphScope.ts.mdmd.md#symbol-starthops)
 - [`forceGraphScope.startOf`](./forceGraphScope.ts.mdmd.md#symbol-startof)
+- [`forceGraphScope.withoutUnreachedSeeds`](./forceGraphScope.ts.mdmd.md#symbol-withoutunreachedseeds)
 - [`forceGraphShells.BodyBuilding`](./forceGraphShells.ts.mdmd.md#symbol-bodybuilding)
 - [`forceGraphShells.DirectoryShell`](./forceGraphShells.ts.mdmd.md#symbol-directoryshell)
 - [`forceGraphShells.Spoke`](./forceGraphShells.ts.mdmd.md#symbol-spoke)
@@ -238,6 +239,7 @@ Creates the Force Graph (3D) view for the Live Docs Explorer.
 - [`forceGraphWrappers.GroupShape`](./forceGraphWrappers.ts.mdmd.md#symbol-groupshape)
 - [`forceGraphWrappers.WrapperHull`](./forceGraphWrappers.ts.mdmd.md#symbol-wrapperhull-interface)
 - [`forceGraphWrappers.burstProgress`](./forceGraphWrappers.ts.mdmd.md#symbol-burstprogress)
+- [`forceGraphWrappers.ringedSpheres`](./forceGraphWrappers.ts.mdmd.md#symbol-ringedspheres)
 - [`forceGraphWrappers.wrappedSeeds`](./forceGraphWrappers.ts.mdmd.md#symbol-wrappedseeds)
 - [`forceGraphWrappers.wrapperHull`](./forceGraphWrappers.ts.mdmd.md#symbol-wrapperhull-function)
 - [`directory-bands.parentDirectory`](./localView/directory-bands.ts.mdmd.md#symbol-parentdirectory)

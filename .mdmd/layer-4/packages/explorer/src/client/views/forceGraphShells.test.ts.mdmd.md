@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/forceGraphShells.test.ts
-- Generated At: 2026-11-08T04:02:26.570Z
+- Generated At: 2026-11-18T20:09:06.811Z
 
 ## Authored
 ### Purpose
@@ -43,6 +43,7 @@ _No public symbols detected_
 - [`forceGraphShells.bodySteps`](./forceGraphShells.ts.mdmd.md#symbol-bodysteps)
 - [`forceGraphShells.directoryAt`](./forceGraphShells.ts.mdmd.md#symbol-directoryat)
 - [`forceGraphShells.innerShape`](./forceGraphShells.ts.mdmd.md#symbol-innershape)
+- [`forceGraphShells.nextStepFiles`](./forceGraphShells.ts.mdmd.md#symbol-nextstepfiles)
 - [`forceGraphShells.packBall`](./forceGraphShells.ts.mdmd.md#symbol-packball)
 - [`forceGraphShells.partitionHidden`](./forceGraphShells.ts.mdmd.md#symbol-partitionhidden)
 - [`forceGraphShells.pictureVeils`](./forceGraphShells.ts.mdmd.md#symbol-pictureveils)

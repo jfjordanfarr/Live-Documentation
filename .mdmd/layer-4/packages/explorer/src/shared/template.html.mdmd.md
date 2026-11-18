@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-11-17T13:35:14.799Z
+- Generated At: 2026-11-18T20:09:07.897Z
 
 ## Authored
 ### Purpose
@@ -240,6 +240,9 @@ Since 2026-11-18 the 3D layout's Discovery group holds Beyond the Hops, Everythi
 - Type: variable
 
 #### `tuning-force-approximation-value` {#symbol-tuning-force-approximation-value}
+- Type: variable
+
+#### `tuning-force-beyond-hops` {#symbol-tuning-force-beyond-hops}
 - Type: variable
 
 #### `tuning-force-charge` {#symbol-tuning-force-charge}

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/layout-presets.ts
-- Generated At: 2026-11-17T13:35:08.917Z
+- Generated At: 2026-11-18T20:09:06.126Z
 
 ## Authored
 ### Purpose
@@ -89,7 +89,7 @@ Return a fresh tuning record with both representations' packing set together.
 
 #### `readLayoutSettings` {#symbol-readlayoutsettings}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L62)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L63)
 - Returns: [`LayoutSettings`](#symbol-layoutsettings)
 
 ##### `readLayoutSettings` — Summary
@@ -105,11 +105,12 @@ carried since Flow became the default (2026-11-13); a link made on November 12 o
 and nothing when the grid was, so such a link now opens in Flow either way, and a link that says "grid" exists only
 from now on. Closed Directory (2026-11-13): only a trial's look is carried, and its absence reads as today's box;
 Descriptions Zoomed Out (2026-11-13) likewise: only the first line is carried, and its absence reads as hidden; and Hidden
-Files (2026-11-17): only the cells are carried, and their absence reads as the count.
+Files (2026-11-17): only the cells are carried, and their absence reads as the count. Beyond the Hops (2026-11-18, a
+trial of the 3D map): only the next step is carried, and its absence reads as everything.
 
 #### `layoutSettingsOf` {#symbol-layoutsettingsof}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L101)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L105)
 - Returns: [`LayoutSettings`](#symbol-layoutsettings)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 
@@ -118,7 +119,7 @@ Snapshot the controls that affect packing and spatial encodings, independent of 
 
 #### `applyLayoutSettings` {#symbol-applylayoutsettings}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L116)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L120)
 - Returns: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig); `settings`: [`LayoutSettings`](#symbol-layoutsettings)
 
@@ -136,6 +137,7 @@ picture). So a link made with the defaults shows them in a browser whose own tun
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`types.BEYOND_HOPS`](./types.ts.mdmd.md#symbol-beyond_hops)
 - [`types.CLOSED_CELL_COLOURS`](./types.ts.mdmd.md#symbol-closed_cell_colours)
 - [`types.CLOSED_DIRECTORY_LOOKS`](./types.ts.mdmd.md#symbol-closed_directory_looks)
 - [`types.CLOSED_DIRECTORY_SHAPES`](./types.ts.mdmd.md#symbol-closed_directory_shapes)

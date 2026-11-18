@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/types.ts
-- Generated At: 2026-11-17T14:46:09.871Z
+- Generated At: 2026-11-18T20:09:06.484Z
 
 ## Authored
 ### Purpose
@@ -211,16 +211,34 @@ only by its seed and, inside a group it shows in part, the hidden files of each 
 ##### `GROUP_WRAPPERS` — Summary
 Every wrapper choice, in the order the control offers them.
 
+#### `BeyondHops` {#symbol-beyondhops}
+- Type: type
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L307)
+
+##### `BeyondHops` — Summary
+What the 3D Local Map draws of the files beyond the hops shown, with Group Wrappers on in the Connections layout while
+something is asked about (a trial, 2026-11-18): everything, today's picture and the default, every other file of a
+group shown in part held in a shell and every unreached group's seed standing past the hops; or the next step, the
+horizon, only the files one step past what stands in the picture, in shells or alone, and nothing farther until a step
+brings it to the edge (`forceGraphShells.ts`).
+
+#### `BEYOND_HOPS` {#symbol-beyond_hops}
+- Type: const
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L310)
+
+##### `BEYOND_HOPS` — Summary
+Every choice of what stands beyond the hops, the default first, in the order the control offers them.
+
 #### `ZoomLooks` {#symbol-zoomlooks}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L301)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L313)
 
 ##### `ZoomLooks` — Summary
 How a slot card changes as the 2D map zooms out: the card ladder's steps, or the three looks of the 2026-11-10 trial.
 
 #### `ZOOM_LOOKS` {#symbol-zoom_looks}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L307)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L319)
 
 ##### `ZOOM_LOOKS` — Summary
 Every Zoom Looks choice, in the order the control offers them, the default first: the three looks since 2026-11-13,
@@ -228,14 +246,14 @@ when the owner asked that what they judge be what the build shows without a swit
 
 #### `DirectoryLayout` {#symbol-directorylayout}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L310)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L322)
 
 ##### `DirectoryLayout` — Summary
 How an opened directory stands in the 2D map: the flow order and pair lines first tried on 2026-11-12, or the grid.
 
 #### `DIRECTORY_LAYOUTS` {#symbol-directory_layouts}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L317)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L329)
 
 ##### `DIRECTORY_LAYOUTS` — Summary
 Every Opened Directory choice, in the order the control offers them, the default first: Flow since 2026-11-13, when
@@ -244,49 +262,49 @@ shows without a switch; the grid one choice away.
 
 #### `ClosedDirectoryLook` {#symbol-closeddirectorylook}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L320)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L332)
 
 ##### `ClosedDirectoryLook` — Summary
 How a closed directory's box is drawn in the 2D map: a skin with cells, the plain box, or a stack.
 
 #### `CLOSED_DIRECTORY_LOOKS` {#symbol-closed_directory_looks}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L323)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L335)
 
 ##### `CLOSED_DIRECTORY_LOOKS` — Summary
 Every Closed Directory choice, in the order the control offers them; the first, the skin with cells, is the default.
 
 #### `ClosedDirectoryShape` {#symbol-closeddirectoryshape}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L326)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L338)
 
 ##### `ClosedDirectoryShape` — Summary
 The shape of a closed directory's skin with cells: a folder's silhouette, the capsule, or a card's corners.
 
 #### `CLOSED_DIRECTORY_SHAPES` {#symbol-closed_directory_shapes}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L329)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L341)
 
 ##### `CLOSED_DIRECTORY_SHAPES` — Summary
 Every shape, in the order the control offers them; the first is the default until the owner chooses.
 
 #### `ClosedCellColour` {#symbol-closedcellcolour}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L332)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L344)
 
 ##### `ClosedCellColour` — Summary
 What colours a skin's cells: each file's kind, as in the 3D map, or one grey.
 
 #### `CLOSED_CELL_COLOURS` {#symbol-closed_cell_colours}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L335)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L347)
 
 ##### `CLOSED_CELL_COLOURS` — Summary
 Every cell colouring, in the order the control offers them; the first is the default.
 
 #### `HiddenFilesLook` {#symbol-hiddenfileslook}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L341)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L353)
 
 ##### `HiddenFilesLook` — Summary
 What a drawn directory's handle says of what it does not draw: the count's words; a cell for each beside its name; or, at the
@@ -294,14 +312,14 @@ reading look, a cell for each under its name, in the strip's free height, and be
 
 #### `HIDDEN_FILES_LOOKS` {#symbol-hidden_files_looks}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L344)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L356)
 
 ##### `HIDDEN_FILES_LOOKS` — Summary
 Every Hidden Files choice, in the order the control offers them; the first, the count, is the default.
 
 #### `OverviewFiles` {#symbol-overviewfiles}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L350)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L362)
 
 ##### `OverviewFiles` — Summary
 What the 2D map's overview look draws: files only, as in Flow, or cards at their size. Files only was a trial of
@@ -309,14 +327,14 @@ What the 2D map's overview look draws: files only, as in Flow, or cards at their
 
 #### `OVERVIEW_FILES` {#symbol-overview_files}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L353)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L365)
 
 ##### `OVERVIEW_FILES` — Summary
 Every Zoomed Out Fully choice, in the order the control offers them, the default first.
 
 #### `DescriptionsZoomedOut` {#symbol-descriptionszoomedout}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L362)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L374)
 
 ##### `DescriptionsZoomedOut` — Summary
 What a described row keeps of its description in the connections look: nothing; its first line where its name leaves
@@ -327,42 +345,42 @@ line").
 
 #### `DESCRIPTIONS_ZOOMED_OUT` {#symbol-descriptions_zoomed_out}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L365)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L377)
 
 ##### `DESCRIPTIONS_ZOOMED_OUT` — Summary
 Every Descriptions Zoomed Out choice, in the order the control offers them; the first, nothing kept, is the default.
 
 #### `ForceGraphTuning` {#symbol-forcegraphtuning}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L368)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L380)
 
 ##### `ForceGraphTuning` — Summary
 The 3D Local Map's packing and stable visual encodings, shared with the headless layout lab.
 
 #### `PathDestination` {#symbol-pathdestination}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L472)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L489)
 
 ##### `PathDestination` — Summary
 The end of a path a person asked for: a file, perhaps one symbol of it, or a directory. The path starts at the newest pin (2026-10-14).
 
 #### `InspectionTarget` {#symbol-inspectiontarget}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L477)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L494)
 
 ##### `InspectionTarget` — Summary
 The evidence explicitly open in the reader, independent of the Local Map subject and its pins.
 
 #### `DiscoveryTarget` {#symbol-discoverytarget}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L484)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L501)
 
 ##### `DiscoveryTarget` — Summary
 The latest discovery remains in the map after its evidence closes; a new discovery replaces it and Pin keeps it.
 
 #### `ExplorerState` {#symbol-explorerstate}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L490)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L507)
 
 ##### `ExplorerState` — Summary
 Root state object for the Explorer client, managed by
@@ -370,7 +388,7 @@ Root state object for the Explorer client, managed by
 
 #### `TestCoverageMap` {#symbol-testcoveragemap}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L519)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L536)
 
 ##### `TestCoverageMap` — Summary
 Map from implementation file path → covering test node(s).

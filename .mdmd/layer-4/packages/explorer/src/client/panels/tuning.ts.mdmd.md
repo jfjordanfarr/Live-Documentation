@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/tuning.ts
-- Generated At: 2026-11-17T13:35:09.417Z
+- Generated At: 2026-11-18T20:09:06.270Z
 
 ## Authored
 ### Purpose
@@ -96,6 +96,7 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`palette.isPaletteName`](../palette.ts.mdmd.md#symbol-ispalettename)
 - [`tuning-levers.TUNING_HELP`](./tuning-levers.ts.mdmd.md#symbol-tuning_help)
 - [`tuning-levers.tuningHelpId`](./tuning-levers.ts.mdmd.md#symbol-tuninghelpid)
+- [`types.BEYOND_HOPS`](../types.ts.mdmd.md#symbol-beyond_hops)
 - [`types.CHANGE_EMPHASES`](../types.ts.mdmd.md#symbol-change_emphases)
 - [`types.CLOSED_CELL_COLOURS`](../types.ts.mdmd.md#symbol-closed_cell_colours)
 - [`types.CLOSED_DIRECTORY_LOOKS`](../types.ts.mdmd.md#symbol-closed_directory_looks)
@@ -117,6 +118,7 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`template.tuning-control-resistance`](../../shared/template.html.mdmd.md#symbol-tuning-control-resistance)
 - [`template.tuning-descriptions-zoomed-out`](../../shared/template.html.mdmd.md#symbol-tuning-descriptions-zoomed-out)
 - [`template.tuning-directory-layout`](../../shared/template.html.mdmd.md#symbol-tuning-directory-layout)
+- [`template.tuning-force-beyond-hops`](../../shared/template.html.mdmd.md#symbol-tuning-force-beyond-hops)
 - [`template.tuning-force-group-wrappers`](../../shared/template.html.mdmd.md#symbol-tuning-force-group-wrappers)
 - [`template.tuning-hidden-files`](../../shared/template.html.mdmd.md#symbol-tuning-hidden-files)
 - [`template.tuning-history-axis`](../../shared/template.html.mdmd.md#symbol-tuning-history-axis)

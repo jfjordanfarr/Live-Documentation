@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/forceGraphScope.test.ts
-- Generated At: 2026-11-02T17:03:45.496Z
+- Generated At: 2026-11-18T20:09:06.780Z
 
 ## Authored
 ### Purpose
@@ -36,5 +36,6 @@ _No public symbols detected_
 - [`forceGraphScope.spatialScope`](./forceGraphScope.ts.mdmd.md#symbol-spatialscope-function)
 - [`forceGraphScope.startHops`](./forceGraphScope.ts.mdmd.md#symbol-starthops)
 - [`forceGraphScope.startOf`](./forceGraphScope.ts.mdmd.md#symbol-startof)
+- [`forceGraphScope.withoutUnreachedSeeds`](./forceGraphScope.ts.mdmd.md#symbol-withoutunreachedseeds)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

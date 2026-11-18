@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphShells.ts
-- Generated At: 2026-11-09T00:01:54.961Z
+- Generated At: 2026-11-18T20:09:06.836Z
 
 ## Authored
 ### Purpose
@@ -32,56 +32,56 @@ Since 2026-11-18 `nextStepFiles` builds the horizon of Beyond the Hops, a trial 
 ### Public Symbols
 #### `shellId` {#symbol-shellid}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L34)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L35)
 
 ##### `shellId` — Summary
 The id of a directory's shell, outside the files' and the hubs' namespaces.
 
 #### `shellDirectory` {#symbol-shelldirectory}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L37)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L38)
 
 ##### `shellDirectory` — Summary
 The directory a shell stands for, or undefined for an id that is not a shell's.
 
 #### `depthOf` {#symbol-depthof}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L40)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L41)
 
 ##### `depthOf` — Summary
 How many directories deep a path is: none for the scan root, one for `packages`, two for `packages/explorer`.
 
 #### `directoryAt` {#symbol-directoryat}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L43)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L44)
 
 ##### `directoryAt` — Summary
 A directory cut to its first `depth` directories; a shallower directory is itself.
 
 #### `DirectoryShell` {#symbol-directoryshell}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L48)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L49)
 
 ##### `DirectoryShell` — Summary
 One shell: its id, its directory, and the hidden files it holds, in id order.
 
 #### `ShellPartition` {#symbol-shellpartition}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L58)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L59)
 
 ##### `ShellPartition` — Summary
 How the hidden files of a picture are held.
 
 #### `partitionHidden` {#symbol-partitionhidden}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L99)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L106)
 - Returns: [`ShellPartition`](#symbol-shellpartition)
 - Parameters: `hidden`: `ReadonlyArray`; `popped`: `ReadonlySet`
 
 ##### `partitionHidden` — Summary
 Partition the hidden files by directory: a file belongs to the shell of its directory cut to `depth`, or, where that
 directory is open, of its directory cut one deeper, until a directory not open; a file whose own directory is open is
-released into the picture. A directory of fewer than two hidden files makes no shell: its file stays loose, unless a
+released into the picture. A directory of fewer than two such files makes no shell: its file stands lone, unless a
 pop opened its parent, when it is released with the popped directory's own files, so that a pop loses nothing it held.
 A shell stands for the deepest directory holding all its files, so that a pop always opens onto more than one thing:
 this repository's `packages/engine` shell, whose hidden files all lie under `src`, is `engine/src`, and a pop of it
@@ -89,50 +89,66 @@ opens `src` and the chain above it. Files are given by id with their path.
 
 #### `ShellCandidate` {#symbol-shellcandidate}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L145)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L152)
 
 ##### `ShellCandidate` — Summary
 A file the shells read: its id and path, and its kind, since a document is never held.
 
 #### `ShellPicture (interface)` {#symbol-shellpicture-interface}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L152)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L159)
 - Extends: [`ShellPartition`](#symbol-shellpartition)
 
 ##### `ShellPicture (interface)` — Summary
-What a picture's shells are: the partition, the bundled wires and the counts its rings show.
+What a picture's shells are: the partition, the bundled wires and the counts of what is left out.
 
 #### `ShellSource` {#symbol-shellsource}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L164)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L176)
 - Constraints: [`ShellCandidate`](#symbol-shellcandidate)
 
 ##### `ShellSource` — Summary
 What the shells of a picture are read from.
 
+#### `nextStepFiles` {#symbol-nextstepfiles}
+- Type: function
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L209)
+- Parameters: `shown`: `ReadonlySet`; `beside`: `ReadonlyMap`; `popped`: `ReadonlySet`
+
+##### `nextStepFiles` — Summary
+The files of `hidden` one step past what stands in the picture, the horizon (a trial, 2026-11-18): those with a
+connected neighbour among the files shown or released. A pop releases a shell's files, which then stand, and the files
+one step past them join the edge, and so on over every directory popped, until nothing more is brought to it; nothing
+two steps past what stands is held. Documents are never held, as a shell never holds one. In the order of `hidden`.
+
+Once a step has brought a file to the edge it stays there for that picture, even if a later step folds the released
+file that reached it back into a shell (a directory's lone file, released by its parent's pop, becomes a shell when a
+second file of it reaches the edge), so that the reckoning only grows and always ends; such a file stands beside the
+shell that holds its neighbour.
+
 #### `shellPicture (function)` {#symbol-shellpicture-function}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L187)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L234)
 - Returns: [`ShellPicture`](#symbol-shellpicture-interface)
 - Parameters: `source`: [`ShellSource`](#symbol-shellsource)
 - Constraints: [`ShellCandidate`](#symbol-shellcandidate)
 
 ##### `shellPicture (function)` — Summary
 The shells of a picture: the hidden files partitioned by directory (documents left hidden: a shell holds files), each
-reference between a shown or released file and a held file, or between files of two shells, bundled into one wire per
-pair of ends, and the counts left for the rings: a file whose hidden neighbours are all held needs no ring, since the
-shell says it.
+reference between a shown, released or lone file and a held file, or between files of two shells, bundled into one
+wire per pair of ends, and the counts of what is left out. A lone file stands for itself as a released file does, so
+that its references to shown files are the picture's own wires and those to a shell's files are bundled to the shell.
 
 #### `BodyGaps (interface)` {#symbol-bodygaps-interface}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L230)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L279)
 
 ##### `BodyGaps (interface)` — Summary
 The room a body keeps between two of its units' surfaces, and between its units and its skin, in a tuning's units.
 
 #### `bodyGaps (function)` {#symbol-bodygaps-function}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L238)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L287)
 - Returns: [`BodyGaps`](#symbol-bodygaps-interface)
 
 ##### `bodyGaps (function)` — Summary
@@ -140,7 +156,7 @@ A body's gaps for a tuning: the collision's gap between units, half of it to the
 
 #### `packBall` {#symbol-packball}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L265)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L314)
 
 ##### `packBall` — Summary
 Pack spheres into a ball, apart by `gap` between their surfaces, about the origin (2026-11-06, second round): they start
@@ -152,7 +168,7 @@ order. Returns each sphere's place and the radius from the origin that holds the
 
 #### `BodyBuilding` {#symbol-bodybuilding}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L455)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L504)
 - Returns: `Generator`
 
 ##### `BodyBuilding` — Summary
@@ -160,7 +176,7 @@ A body's building, a step at a time: each step one bubble packed (2026-11-07, th
 
 #### `DRAWN_FILES` {#symbol-drawn_files}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L501)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L550)
 
 ##### `DRAWN_FILES` — Summary
 The most files a body draws within its skins (2026-11-06, second round): over it, the bubbles whose files would pass it
@@ -169,7 +185,7 @@ pictures are taken in; the label keeps the true count.
 
 #### `bodyShape` {#symbol-bodyshape}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L512)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L561)
 - Returns: [`GroupShape`](./forceGraphWrappers.ts.mdmd.md#symbol-groupshape)
 - Parameters: `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning)
 - Constraints: [`SpatialNode`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnode)
@@ -185,7 +201,7 @@ a bubble that would pass it drawn veiled with nothing shown inside it. Nothing d
 
 #### `bodySteps` {#symbol-bodysteps}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L526)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L575)
 - Returns: [`BodyBuilding`](#symbol-bodybuilding)
 - Parameters: `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning)
 - Constraints: [`SpatialNode`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnode)
@@ -197,7 +213,7 @@ result is `bodyShape`'s, whatever the steps are spread over.
 
 #### `innerShape` {#symbol-innershape}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L549)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L598)
 - Returns: [`GroupShape`](./forceGraphWrappers.ts.mdmd.md#symbol-groupshape)
 - Parameters: `shape`: [`GroupShape`](./forceGraphWrappers.ts.mdmd.md#symbol-groupshape)
 
@@ -210,7 +226,7 @@ directory's hub's (`seed`, 2026-11-07).
 
 #### `veiledUnits` {#symbol-veiledunits}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L560)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L609)
 - Returns: [`BodyUnit`](./forceGraphWrappers.ts.mdmd.md#symbol-bodyunit)[]
 
 ##### `veiledUnits` — Summary
@@ -220,7 +236,7 @@ picture's budget (`pictureVeils`) veils.
 
 #### `pictureVeils` {#symbol-pictureveils}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L575)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L624)
 - Parameters: `bodies`: `ReadonlyArray`
 
 ##### `pictureVeils` — Summary
@@ -235,7 +251,7 @@ wired to no shown file; the ids veiled are returned. Labels keep the true counts
 
 #### `poppedAfter` {#symbol-poppedafter}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L633)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L682)
 - Parameters: `popped`: `ReadonlySet`
 
 ##### `poppedAfter` — Summary
@@ -243,7 +259,7 @@ The pops of a picture after `directory` is popped open, or wrapped again with ev
 
 #### `releaseOf` {#symbol-releaseof}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L646)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L695)
 - Parameters: `shape`: [`GroupShape`](./forceGraphWrappers.ts.mdmd.md#symbol-groupshape); `place`: [`Placed`](./forceGraphLayout.ts.mdmd.md#symbol-placed)
 
 ##### `releaseOf` — Summary
@@ -254,14 +270,14 @@ shell's id in the Connections layout, the directory's hub's in the Structure lay
 
 #### `StructureCell` {#symbol-structurecell}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L658)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L707)
 
 ##### `StructureCell` — Summary
 One bubble of the Structure layout: a directory's hub drawn as the body of what stands under it, by the hub's id.
 
 #### `structureCells` {#symbol-structurecells}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L680)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L729)
 - Parameters: `nodes`: `ReadonlyArray`; `links`: `ReadonlyArray`; `shown`: `ReadonlySet`
 
 ##### `structureCells` — Summary
@@ -281,14 +297,14 @@ frontier with one file under it is no bubble; that file stands in the hub's plac
 
 #### `Spoke` {#symbol-spoke}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L712)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L761)
 
 ##### `Spoke` — Summary
 Where a child of the structure layout stands about its hub: the hub's id, its spoke's rest length, its place about the hub.
 
 #### `structureSpokes` {#symbol-structurespokes}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L738)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L787)
 - Parameters: `links`: `ReadonlyArray`; `shown`: `ReadonlySet`
 
 ##### `structureSpokes` — Summary
@@ -314,6 +330,7 @@ repulsion between them, and the headless twin of this repository's start at two 
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`types.BeyondHops`](../types.ts.mdmd.md#symbol-beyondhops) (type-only)
 - [`types.ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning) (type-only)
 - [`fileConnections.FileConnection`](./fileConnections.ts.mdmd.md#symbol-fileconnection) (type-only)
 - [`forceGraphLayout.Placed`](./forceGraphLayout.ts.mdmd.md#symbol-placed)

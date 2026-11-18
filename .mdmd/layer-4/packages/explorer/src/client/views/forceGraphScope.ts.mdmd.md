@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphScope.ts
-- Generated At: 2026-11-06T02:11:47.652Z
+- Generated At: 2026-11-18T20:09:06.789Z
 
 ## Authored
 ### Purpose
@@ -85,9 +85,21 @@ Attention that is not among the nodes is ignored, as the reveal ignores it. With
 shown. The counts beyond say, for each shown sphere, how many of its connected spheres the picture leaves out: the
 frontier's "more here".
 
+#### `withoutUnreachedSeeds` {#symbol-withoutunreachedseeds}
+- Type: function
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphScope.ts#L158)
+- Returns: [`SpatialScope`](#symbol-spatialscope-interface)
+- Parameters: `scope`: [`SpatialScope`](#symbol-spatialscope-interface)
+
+##### `withoutUnreachedSeeds` — Summary
+A scope without the seeds of the groups its hops do not reach, which stand one past the hops (a trial, 2026-11-18, the
+horizon of Beyond the Hops): with something asked about, what is not one step from the picture is not drawn, and a
+group no hop reaches is no step from it. A group shown by its seed alone that the hops reached or that was asked about
+stays. Everything else is as given.
+
 #### `mostConnectedFirst` {#symbol-mostconnectedfirst}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphScope.ts#L153)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphScope.ts#L166)
 - Parameters: `beside`: `ReadonlyMap`
 
 ##### `mostConnectedFirst` — Summary
@@ -95,7 +107,7 @@ Most connected first, then by id, so that a choice is the same on every machine.
 
 #### `componentMembers` {#symbol-componentmembers}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphScope.ts#L171)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphScope.ts#L184)
 - Parameters: `beside`: `ReadonlyMap`
 
 ##### `componentMembers` — Summary
@@ -105,7 +117,7 @@ connected member. The walk visits every node once, so a picture of thousands of 
 
 #### `componentLandmarks` {#symbol-componentlandmarks}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphScope.ts#L190)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphScope.ts#L203)
 - Parameters: `beside`: `ReadonlyMap`
 
 ##### `componentLandmarks` — Summary
@@ -113,7 +125,7 @@ One real file and member count for each disconnected component, including isolat
 
 #### `startOf` {#symbol-startof}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphScope.ts#L200)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphScope.ts#L213)
 - Parameters: `layout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout); `link`: [`SpatialLink`](./forceGraphLayout.ts.mdmd.md#symbol-spatiallink)
 - Constraints: [`StartableNode`](#symbol-startablenode)
 
@@ -125,7 +137,7 @@ no start.
 
 #### `startHops` {#symbol-starthops}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphScope.ts#L211)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphScope.ts#L224)
 - Parameters: `layout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout)
 
 ##### `startHops` — Summary
@@ -139,3 +151,8 @@ How many hops a layout's start shows around itself: a tree's root with its child
 - [`forceGraphLayout.SpatialNode`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnode) (type-only)
 - [`directory-state.under`](./localView/directory-state.ts.mdmd.md#symbol-under)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

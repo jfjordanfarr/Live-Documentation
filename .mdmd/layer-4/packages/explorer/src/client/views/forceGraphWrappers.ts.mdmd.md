@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphWrappers.ts
-- Generated At: 2026-11-09T00:01:55.037Z
+- Generated At: 2026-11-18T20:09:06.935Z
 
 ## Authored
 ### Purpose
@@ -44,9 +44,22 @@ Since the second round of 2026-11-06 a `GroupShape` carries its body's radius, t
 ##### `wrappedSeeds` — Summary
 The seeds of the groups wrapped: those the scope shows only by their seed, of two files or more, in id order.
 
+#### `ringedSpheres` {#symbol-ringedspheres}
+- Type: function
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L40)
+- Parameters: `beyond`: `ReadonlyMap`; `look`: [`GroupWrappers`](../types.ts.mdmd.md#symbol-groupwrappers)
+
+##### `ringedSpheres` — Summary
+The spheres that wear a ring, the sign that more is connected to a sphere than the picture shows (the owner's choice
+of 2026-11-02), given each shown sphere's count of connected spheres left out. With the wrappers Off, every sphere
+with a count: the ring is that picture's only sign of more. With any wrapper on, none (2026-11-18): the wrappers and
+shells are the sign of what a picture holds back, the only file of a directory beyond the hops stands as itself, and a document beyond the
+hops shown has no sign (a kind that is switched off was never counted: the switches are applied before the graph is built), so that a ring beside a membrane would be a second sign for one act. The owner: "Didn't we replace ringed nodes
+with membranes? Where do ringed nodes come from?" (Turn 12 of the November 16 record, linked from this file's Live Doc).
+
 #### `GroupMember` {#symbol-groupmember}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L33)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L46)
 - Extends: [`Placed`](./forceGraphLayout.ts.mdmd.md#symbol-placed)
 
 ##### `GroupMember` — Summary
@@ -54,14 +67,14 @@ One member of a wrapped body: where it stands relative to the body's centre, and
 
 #### `GroupShape` {#symbol-groupshape}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L39)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L52)
 
 ##### `GroupShape` — Summary
 A wrapped body's members, each relative to its centre: a group's seed, or a shell's own place.
 
 #### `BodyUnit` {#symbol-bodyunit}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L65)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L78)
 - Extends: [`GroupMember`](#symbol-groupmember)
 
 ##### `BodyUnit` — Summary
@@ -69,21 +82,21 @@ One unit a body shows within its skin: a file, or a bubble of the files of a dir
 
 #### `wrapperPadding` {#symbol-wrapperpadding}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L82)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L95)
 
 ##### `wrapperPadding` — Summary
 The space a wrapper keeps around each member's sphere: one and a half times the radius of a file with no symbols.
 
 #### `WrapperHull (interface)` {#symbol-wrapperhull-interface}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L87)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L100)
 
 ##### `WrapperHull (interface)` — Summary
 A group's hull, relative to its seed: vertex positions and smooth normals, its triangles, and the radius from the seed that holds it.
 
 #### `HULL_REACH` {#symbol-hull_reach}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L133)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L146)
 
 ##### `HULL_REACH` — Summary
 How far beyond a padded sphere's radius its hull may reach, as a share of that radius: the polyhedron standing in for
@@ -91,7 +104,7 @@ the sphere holds it whole, so its corners stand out by one over its inscribed sp
 
 #### `wrapperHull (function)` {#symbol-wrapperhull-function}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L142)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L155)
 - Returns: [`WrapperHull`](#symbol-wrapperhull-interface)
 - Parameters: `shape`: [`GroupShape`](#symbol-groupshape)
 
@@ -101,21 +114,21 @@ its triangles' outward normals, so that the hull shades as one smooth surface. T
 
 #### `WrapperRange` {#symbol-wrapperrange}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L201)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L214)
 
 ##### `WrapperRange` — Summary
 Where one group stands in the merged geometry.
 
 #### `WrapperGeometry` {#symbol-wrappergeometry}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L214)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L227)
 
 ##### `WrapperGeometry` — Summary
 Every wrapper in one geometry: world positions, normals, each vertex's group and its seed-relative position, and the triangles.
 
 #### `mergeWrappers` {#symbol-mergewrappers}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L232)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L245)
 - Returns: [`WrapperHull`](#symbol-wrapperhull-interface), [`Placed`](./forceGraphLayout.ts.mdmd.md#symbol-placed), [`WrapperGeometry`](#symbol-wrappergeometry)
 
 ##### `mergeWrappers` — Summary
@@ -125,7 +138,7 @@ grows a group's hull about its seed, as a pop does (one when absent).
 
 #### `wrapperAt` {#symbol-wrapperat}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L270)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L283)
 - Parameters: `geometry`: [`WrapperGeometry`](#symbol-wrappergeometry); `origin`: [`Placed`](./forceGraphLayout.ts.mdmd.md#symbol-placed); `direction`: [`Placed`](./forceGraphLayout.ts.mdmd.md#symbol-placed)
 
 ##### `wrapperAt` — Summary
@@ -134,7 +147,7 @@ either side, as the wrappers are drawn double-sided. `skip` leaves a group out, 
 
 #### `burstProgress` {#symbol-burstprogress}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L309)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L322)
 
 ##### `burstProgress` — Summary
 How far a wrapper has burst open `elapsed` milliseconds after its pop: from zero to one over `duration`, eased out, so
@@ -142,7 +155,7 @@ that it grows by a tenth and fades as the files fill it; at once under reduced m
 
 #### `BURST` {#symbol-burst}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L316)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L329)
 
 ##### `BURST` — Summary
 How long a wrapper takes to burst open, and how much it grows as it does.
