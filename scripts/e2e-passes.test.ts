@@ -15,12 +15,13 @@ const FAKE_CLI = `
 const fs = require("node:fs");
 const pass = process.env.LIVE_DOCS_E2E_PASS;
 fs.appendFileSync(process.env.FAKE_LOG, JSON.stringify({ argv: process.argv.slice(2), pass, port: process.env.LIVE_DOCS_E2E_PORT }) + "\\n");
-const outcome = process.env["FAKE_" + pass] ?? "0";
+const outcome = process.env["FAKE_" + (pass || "list")] ?? "0";
+if (!pass && outcome !== "0") process.stderr.write("Error: No tests found\\n");
 if (outcome === "signal") process.kill(process.pid, "SIGTERM");
 else process.exit(Number(outcome));
 `;
 
-function runPasses(args: string[], env: Record<string, string> = {}): { status: number | null; calls: Call[] } {
+function runPasses(args: string[], env: Record<string, string> = {}): { status: number | null; calls: Call[]; stderr: string } {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "e2e-passes-"));
   try {
     fs.mkdirSync(path.join(root, "scripts"));
@@ -36,18 +37,19 @@ function runPasses(args: string[], env: Record<string, string> = {}): { status: 
       env: { ...process.env, LIVE_DOCS_E2E_PASS: "", ...env, FAKE_LOG: log }
     });
     const calls = fs.existsSync(log) ? fs.readFileSync(log, "utf8").trim().split("\n").map(line => JSON.parse(line) as Call) : [];
-    return { status: run.status, calls };
+    return { status: run.status, calls, stderr: run.stderr };
   } finally {
     fs.rmSync(root, { recursive: true, force: true });
   }
 }
 
 describe("the two-pass runner", () => {
-  it("runs the shared pass, then the alone pass, each over the configuration with the caller's arguments after its own", () => {
+  it("lists the narrowing whole, then runs the shared pass and the alone pass, each with the caller's arguments after its own", () => {
     const { status, calls } = runPasses(["tests/e2e/a.spec.ts", "--grep", "x", "--repeat-each", "2"], { LIVE_DOCS_E2E_PORT: "8791" });
     expect(status).toBe(0);
-    expect(calls.map(call => call.pass)).toEqual(["shared", "alone"]);
-    for (const call of calls) {
+    expect(calls.map(call => call.pass)).toEqual(["", "shared", "alone"]);
+    expect(calls[0].argv.slice(3)).toEqual(["--list", "tests/e2e/a.spec.ts", "--grep", "x", "--repeat-each", "2"]);
+    for (const call of calls.slice(1)) {
       // The configuration is found from the runner's own place, whatever the working directory.
       expect(call.argv[0]).toBe("test");
       expect(call.argv[1]).toBe("--config");
@@ -61,7 +63,7 @@ describe("the two-pass runner", () => {
 
   it("runs the second pass when the first fails, and exits with the worse of the two", () => {
     const firstRed = runPasses([], { FAKE_shared: "1" });
-    expect(firstRed.calls.map(call => call.pass)).toEqual(["shared", "alone"]);
+    expect(firstRed.calls.map(call => call.pass)).toEqual(["", "shared", "alone"]);
     expect(firstRed.status).toBe(1);
     expect(runPasses([], { FAKE_alone: "1" }).status).toBe(1);
     expect(runPasses([], { FAKE_shared: "1", FAKE_alone: "130" }).status).toBe(130);
@@ -69,8 +71,15 @@ describe("the two-pass runner", () => {
 
   it("counts a pass that ended by a signal as failed", () => {
     const { status, calls } = runPasses([], { FAKE_shared: "signal" });
-    expect(calls.map(call => call.pass)).toEqual(["shared", "alone"]);
+    expect(calls.map(call => call.pass)).toEqual(["", "shared", "alone"]);
     expect(status).toBe(1);
+  });
+
+  it("fails, and runs neither pass, when the narrowing selects no case in either, as Playwright alone fails on it", () => {
+    const { status, calls, stderr } = runPasses(["tests/e2e/misspelt.spec.ts"], { FAKE_list: "1" });
+    expect(calls.map(call => call.pass)).toEqual([""]);
+    expect(status).toBe(1);
+    expect(stderr).toContain("No tests found");
   });
 });
 
