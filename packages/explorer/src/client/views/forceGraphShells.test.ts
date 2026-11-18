@@ -20,14 +20,14 @@ const hidden = HIDDEN.map(id => ({ id, path: id }));
 
 const shellsOf = (partition: ShellPartition): Record<string, readonly string[]> => Object.fromEntries(partition.shells.map(shell => [shell.directory, shell.files]));
 const namesOf = (partition: ShellPartition): string[] => partition.shells.map(shell => shell.name);
-/** Every hidden file is held, released or lone, and once only: a partition loses nothing. */
+/** Every file beyond the hops is held, released or lone, and once only: a partition loses nothing. */
 function accountsForAll(partition: ShellPartition, files: readonly string[]): void {
   const counted = [...partition.shells.flatMap(shell => shell.files), ...partition.released, ...partition.lone].sort();
   expect(counted).toEqual([...files].sort());
 }
 
 describe("the shells' partition of the hidden files by directory", () => {
-  it("holds each directory's hidden files at the Shell Depth, two files or more to a shell, the rest lone", () => {
+  it("holds each directory's files beyond the hops at the Shell Depth, two files or more to a shell, the rest lone", () => {
     const two = partitionHidden(hidden, 2, new Set());
     expect(shellsOf(two)).toEqual({
       "packages/cli": ["packages/cli/e.ts", "packages/cli/f.ts"],
@@ -153,7 +153,7 @@ describe("a shell's wires", () => {
     expect(shells.shells.find(shell => shell.id === "shell:packages/explorer")!.files).toContain("packages/explorer/src/b.ts");
     expect(shells.lone).toEqual(["packages/engine/g.ts", "root.ts"]);
     // Nothing is left out: every connected file is shown, held by a shell or stands lone. Until 2026-11-18 s1's lone
-    // neighbour g stayed hidden and s1 wore a ring for it beside the shells.
+    // neighbour g was not drawn and s1 wore a ring for it beside the shells.
     expect([...shells.beyond]).toEqual([]);
   });
 

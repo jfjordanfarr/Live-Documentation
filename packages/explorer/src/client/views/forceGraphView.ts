@@ -438,8 +438,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   /** A ring marks connections beyond the picture, the sign of more only while no wrapper is drawn (`ringedSpheres`). */
   const hasRing = (id: string): boolean => ringed.has(id);
   /**
-   * Whether a shown sphere is dimmed: at the last hop shown, or an unreached group's seed or a lone hidden file one past
-   * it (2026-11-18); never at hop 0. A directory shell and the files a pop shows stand one past the hops too, and are
+   * Whether a shown sphere is dimmed: at the last hop shown, or an unreached group's seed or a lone file one past it
+   * (2026-11-18); never at hop 0. A directory shell and the files a pop shows stand one past the hops too, and are
    * never dimmed for it (2026-11-06): the shell is a body the eye should find at once, and what a pop releases is what was
    * asked to be seen. Nor is a bubble of the structure layout, which stands at the frontier as a shell does (2026-11-07).
    */
@@ -1453,10 +1453,10 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         shellWires = held.wires;
         released = new Set(held.released);
         scopeHops = new Map(scope.hops);
-        // What a pop shows, and the lone hidden files (2026-11-18): the one hidden file of a directory, which makes no
+        // What a pop shows, and the lone files (2026-11-18): the only file of a directory beyond the hops, which makes no
         // shell, stands for itself where its shell would stand, one past the hops, dimmed as the frontier is since it is
         // not among what a pop shows, and a press on it pins it as a press on any dimmed sphere asks about it. Until then
-        // it stayed hidden behind a ring on its shown neighbour.
+        // it was not drawn, and its shown neighbour wore a ring for it.
         for (const id of [...held.released, ...held.lone]) scopeHops.set(id, hopsShown + 1);
         scopeBeyond = held.beyond;
         shells = new Map(held.shells.map(shell => [shell.id, shell]));

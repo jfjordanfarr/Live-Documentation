@@ -33,8 +33,8 @@ export function wrappedSeeds(groups: ReadonlyMap<string, number>): string[] {
  * The spheres that wear a ring, the sign that more is connected to a sphere than the picture shows (the owner's choice
  * of 2026-11-02), given each shown sphere's count of connected spheres left out. With the wrappers Off, every sphere
  * with a count: the ring is that picture's only sign of more. With any wrapper on, none (2026-11-18): the wrappers and
- * shells are the sign of what a picture holds back, a lone hidden file stands as itself, and a hidden document has no
- * sign, so that a ring beside a membrane would be a second sign for one act. The owner: "Didn't we replace ringed nodes
+ * shells are the sign of what a picture holds back, the only file of a directory beyond the hops stands as itself, and a document beyond the
+ * hops shown has no sign (a kind that is switched off was never counted: the switches are applied before the graph is built), so that a ring beside a membrane would be a second sign for one act. The owner: "Didn't we replace ringed nodes
  * with membranes? Where do ringed nodes come from?" (Turn 12 of the November 16 record, linked from this file's Live Doc).
  */
 export function ringedSpheres(beyond: ReadonlyMap<string, number>, look: GroupWrappers): Set<string> {

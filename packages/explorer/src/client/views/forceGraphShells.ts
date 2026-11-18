@@ -10,7 +10,7 @@
  * cleanly" ([Turn 17 of the November 3 record](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-03/2026-11-03.1.record.md#turn-17--november-4)).
  *
  * The rule here is one of several the owner may compare: a hidden file belongs to the shell of its directory cut to the
- * Shell Depth under the scan root, a directory of fewer than two hidden files makes none and its one file stands as
+ * Shell Depth under the scan root, a directory of fewer than two such files makes none and its one file stands as
  * itself where the shell would stand (2026-11-18), and a popped directory's files are shown while its subdirectories
  * become shells of their own. A shell's wires are its members' references bundled,
  * one wire for each pair of a shown file or shell with a shell, its count the references between them in both
@@ -62,9 +62,9 @@ export interface ShellPartition {
   /** The hidden files the pops show: a popped directory's own, and a lone file of a subdirectory a pop opened. */
   released: string[];
   /**
-   * The hidden files no shell holds and no pop shows, each the one hidden file of its directory at the cut: drawn as
-   * itself, dimmed, where a shell would stand (2026-11-18), as the Structure layout draws a directory of one file as the
-   * file (`structureCells`). Until then it stayed hidden and a ring on a shown neighbour said so, a second sign beside
+   * The files beyond the hops that no shell holds and no pop shows, each the only one of its directory at the cut: drawn
+   * as itself, dimmed, where a shell would stand (2026-11-18), as the Structure layout draws a directory of one file as
+   * the file (`structureCells`). Until then it was not drawn and a ring on a shown neighbour said so, a second sign beside
    * the shells for one meaning; the owner, of the rings still drawn beside the membranes: "Didn't we replace ringed nodes
    * with membranes?" (Turn 12 of the November 16 record, linked from this file's Live Doc).
    */
@@ -97,7 +97,7 @@ function commonDirectory(directories: readonly string[]): string {
 /**
  * Partition the hidden files by directory: a file belongs to the shell of its directory cut to `depth`, or, where that
  * directory is open, of its directory cut one deeper, until a directory not open; a file whose own directory is open is
- * released into the picture. A directory of fewer than two hidden files makes no shell: its file stands lone, unless a
+ * released into the picture. A directory of fewer than two such files makes no shell: its file stands lone, unless a
  * pop opened its parent, when it is released with the popped directory's own files, so that a pop loses nothing it held.
  * A shell stands for the deepest directory holding all its files, so that a pop always opens onto more than one thing:
  * this repository's `packages/engine` shell, whose hidden files all lie under `src`, is `engine/src`, and a pop of it
@@ -165,7 +165,8 @@ export interface ShellPicture<T extends string = string> extends ShellPartition 
   wires: FileConnection<T>[];
   /**
    * For each shown, released or lone file, how many of its connected files the picture leaves out: neither shown, nor
-   * held by a shell, nor standing lone. Since 2026-11-18 that is only documents, which a shell never holds; a file's name
+   * held by a shell, nor standing lone. Since 2026-11-18 that is only documents beyond the hops shown, which a shell never
+   * holds (a kind that is switched off is no node of the graph and is counted by nothing); a file's name
    * counts them in its title, and no ring is drawn for them while the wrappers are on (`ringedSpheres`).
    */
   beyond: Map<string, number>;
@@ -209,7 +210,7 @@ export function shellPicture<N extends ShellCandidate, T extends string>(source:
   const wires = new Map<string, FileConnection<T>>();
   for (const link of source.links) {
     const a = ends.get(link.source), b = ends.get(link.target);
-    // A pair of standing files is the picture's own wire; a pair inside one shell is the shell's business; a hidden document's end has none.
+    // A pair of standing files is the picture's own wire; a pair inside one shell is the shell's business; a document's end beyond the hops has none.
     if (a === undefined || b === undefined || a === b || (a === link.source && b === link.target) || !source.bundles(link)) continue;
     const ordered = a < b;
     const [from, to] = ordered ? [a, b] : [b, a];

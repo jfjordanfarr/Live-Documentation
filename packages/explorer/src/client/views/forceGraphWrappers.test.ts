@@ -55,8 +55,8 @@ describe("which groups are wrapped", () => {
 
 describe("which spheres wear a ring", () => {
   /**
-   * A pinned file and its one hop, `app/util.ts`, which reaches a directory of two hidden files (a shell), the one hidden
-   * file of another directory (a lone file) and a document that cites it: every source of a ring the shells left.
+   * A pinned file and its one hop, `app/util.ts`, which reaches a directory of two files beyond the hops (a shell), the only
+   * such file of another directory (a lone file) and a document that cites it, every kind switched on: every source of a ring the shells left.
    */
   function picture(): { nodes: Array<StartableNode & { codeRelativePath: string }>; links: SpatialLink[] } {
     const nodes = ["app/main.ts", "app/util.ts", "lib/x/a.ts", "lib/x/b.ts", "solo/c.ts"].map(id => ({ ...file(id), codeRelativePath: id }));
@@ -82,7 +82,7 @@ describe("which spheres wear a ring", () => {
     expect([...ringedSpheres(new Map([["a.ts", 0]]), "off")], "a count of none is no ring").toEqual([]);
   });
 
-  it("is none with any wrapper on, though a hidden document is still left out (2026-11-18)", () => {
+  it("is none with any wrapper on, though a document beyond the hops is still left out (2026-11-18)", () => {
     const { held } = shown();
     // The shell holds two files and the lone file stands for itself; the document alone is left out, and its count stays
     // for the name's title. Until November 18 it drew a ring beside the membranes: the owner's two signs for one act.
