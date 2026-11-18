@@ -5,6 +5,10 @@
  *
  *   node AI-Agent-Workspace/scripts/claude-code-transcript.mjs [--logs <dir>] [--out <dir>]
  *
+ * A session's transcript and its pictures go into the directory of the dev day it began, named for the date of its
+ * first message: <out>/<year>/<month>/<date>/, where --out is the agent session history (by default
+ * AI-Agent-Workspace/AgentSessionHistory).
+ *
  * Claude Code keeps a log of every session outside the repository, one JSON object per line, and
  * deletes it after its retention period. The transcript written here is what stays. It holds the
  * owner's prompts, Claude's messages and one line for the work between; it leaves out commands,
@@ -545,7 +549,7 @@ function option(name, fallback) {
 
 async function main() {
   const logs = option("--logs", path.join(os.homedir(), ".claude", "projects", repoRoot.replace(/[^A-Za-z0-9]/g, "-")));
-  const out  = option("--out",  path.join(repoRoot, "AI-Agent-Workspace", "ChatHistory"));
+  const out  = option("--out",  path.join(repoRoot, "AI-Agent-Workspace", "AgentSessionHistory"));
 
   const sessions = [];
   for (const file of readdirSync(logs).filter((name) => name.endsWith(".jsonl"))) {
@@ -561,7 +565,7 @@ async function main() {
 
   for (const session of sessions) {
     const date           = day(session.start);
-    const folder         = path.join(out, date.slice(0, 4), date.slice(5, 7));
+    const folder         = path.join(out, date.slice(0, 4), date.slice(5, 7), date);
     const number         = numberOf(folder, session.start);
     const transcriptPath = path.join(folder, `${date}.${number}.md`);
     session.imageFolder  = path.join(folder, `${date}.${number}.images`);

@@ -21,7 +21,7 @@
  *
  * The scopes are the deck's: repository/five, repository/chain, estate/five,
  * estate/chain. The bundles must be built first (`npm run live-docs:visualize`
- * and `:estate`). Reports go under the day's probe folder unless `--out` says
+ * and `:estate`). Reports go under the open dev day's probe folder unless `--out` says
  * otherwise. `widen` tabulates the starts at every setting of the ranking's
  * pull and tie rule and the order's sweeps (its default grid, or `--grid`)
  * and reports which start each judge would keep at each. `drift` toggles one
@@ -40,10 +40,11 @@
  * bundle, the forces' error at the exact field's rest and the pictures eased
  * to rest from one seed at every setting, against the exact one's, with the
  * exact sum taken in another order (every cell opened) as the measure of
- * noise. Its report goes under the day's probe folder's `approximation`.
+ * noise. Its report goes under the open dev day's probe folder's `approximation`.
  * `--ticks` is the most ticks any one easing may take, in `spatial`, `drift`
  * and `approximation` alike.
  */
+import { readdirSync } from "node:fs";
 import * as fs from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
@@ -83,9 +84,28 @@ function parseArgs(argv: readonly string[]): Args {
   return { verb: verb ?? "", scope: scope ?? "", options };
 }
 
-const today = (): string => new Date().toISOString().slice(0, 10);
+const HISTORY = path.resolve(__dirname, "../../AI-Agent-Workspace/AgentSessionHistory");
 
-const defaultOut = (folder = "layout-lab"): string => path.resolve(__dirname, "../../AI-Agent-Workspace/Probes", today(), folder);
+/**
+ * The open dev day's directory in the agent session history: the newest day directory that holds a session's record,
+ * or today's (UTC) when none does. A dev day runs past midnight, so the clock does not choose it; the record names it.
+ */
+const openDevDay = (): string => {
+  const directories = (dir: string): string[] => {
+    try { return readdirSync(dir, { withFileTypes: true }).filter(entry => entry.isDirectory()).map(entry => entry.name); } catch { return []; }
+  };
+  const days = directories(HISTORY).filter(year => /^\d{4}$/u.test(year))
+    .flatMap(year => directories(path.join(HISTORY, year)).filter(month => /^\d{2}$/u.test(month))
+      .flatMap(month => directories(path.join(HISTORY, year, month)).filter(day => /^\d{4}-\d{2}-\d{2}$/u.test(day))
+        .map(day => path.join(HISTORY, year, month, day))));
+  const open = days.filter(day => readdirSync(day).some(name => name.endsWith(".record.md")))
+    .sort((a, b) => path.basename(b).localeCompare(path.basename(a)))[0];
+  if (open) return open;
+  const today = new Date().toISOString().slice(0, 10);
+  return path.join(HISTORY, today.slice(0, 4), today.slice(5, 7), today);
+};
+
+const defaultOut = (folder = "layout-lab"): string => path.join(openDevDay(), "Probes", folder);
 
 /** A list of numbers from an option, `a,b,c`, or the fallback when the option is absent. */
 const numbers = (spec: string | undefined, fallback: readonly number[]): number[] =>

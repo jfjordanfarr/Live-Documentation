@@ -46,7 +46,7 @@ eslint-report.json
 lint-output.txt
 
 # Ignore generated MDMD signal scaffolding
-AI-Agent-Workspace/ChatHistory/MDMD-Signals/
+AI-Agent-Workspace/AgentSessionHistory/MDMD-Signals/
 
 # Ignore transient agent workspace scratch directories
 **/AI-Agent-Workspace/tmp/
@@ -74,5 +74,5 @@ reports/
 
 
 # The layout lab's captures of the page are rebuilt in seconds and weigh hundreds of kilobytes each; the runs' reports are the records.
-AI-Agent-Workspace/Probes/**/layout-lab/capture-*.json
-AI-Agent-Workspace/Probes/**/layout-lab/*.json
+AI-Agent-Workspace/AgentSessionHistory/*/*/*/Probes/**/layout-lab/capture-*.json
+AI-Agent-Workspace/AgentSessionHistory/*/*/*/Probes/**/layout-lab/*.json

@@ -52,8 +52,8 @@ describe("relatedDocsOf", () => {
   });
 
   it("leaves out what the configuration's bundle exclusions name, as the bundle does", () => {
-    const authored = "See [the record](../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md) and [its summary](../../AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-10-20.1.SUMMARIZED.md).";
-    const exclude = ["AI-Agent-Workspace/ChatHistory/**/!(*.SUMMARIZED).md"];
+    const authored = "See [the record](../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-20/2026-10-20.1.record.md) and [its summary](../../AI-Agent-Workspace/AgentSessionHistory/2026/10/Summarized/2026-10-20.1.SUMMARIZED.md).";
+    const exclude = ["AI-Agent-Workspace/AgentSessionHistory/*/*/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]/*.{md,txt}"];
     expect(relatedDocsOf({ docPath: ".mdmd/layer-4/a.ts.mdmd.md", authored }, LOCATION, exclude)).toEqual([
       "AI-Agent-Workspace/AgentSessionHistory/2026/10/Summarized/2026-10-20.1.SUMMARIZED.md"
     ]);

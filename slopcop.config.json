@@ -1,6 +1,9 @@
 {
   "ignoreGlobs": [
-    "AI-Agent-Workspace/ChatHistory/**",
+    "AI-Agent-Workspace/AgentSessionHistory/!([0-9][0-9][0-9][0-9])/**",
+    "AI-Agent-Workspace/AgentSessionHistory/*/!([0-9][0-9])/**",
+    "AI-Agent-Workspace/AgentSessionHistory/*/*/!([0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9])/**",
+    "AI-Agent-Workspace/AgentSessionHistory/*/*/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]/!(Probes|Research|Screenshots)/**",
     "AI-Agent-Workspace/Notes/**",
     "AI-Agent-Workspace/scripts/**",
     "AI-Agent-Workspace/tmp/**",

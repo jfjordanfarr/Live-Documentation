@@ -49,7 +49,10 @@ const DEFAULT_IGNORE = [
   "**/dist/**",
   "**/out/**",
   "**/.live-documentation/**",
-  "**/AI-Agent-Workspace/ChatHistory/**"
+  "**/AI-Agent-Workspace/AgentSessionHistory/!([0-9][0-9][0-9][0-9])/**",
+  "**/AI-Agent-Workspace/AgentSessionHistory/*/!([0-9][0-9])/**",
+  "**/AI-Agent-Workspace/AgentSessionHistory/*/*/!([0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9])/**",
+  "**/AI-Agent-Workspace/AgentSessionHistory/*/*/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]/!(Probes|Research|Screenshots)/**"
 ];
 
 const DEFAULT_PATTERNS = ["**/*.md", "**/*.mdmd", "**/README", "**/README.md"];
