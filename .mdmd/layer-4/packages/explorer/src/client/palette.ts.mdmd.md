@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/palette.ts
-- Generated At: 2026-11-17T04:51:06.528Z
+- Generated At: 2026-11-18T22:10:29.371Z
 
 ## Authored
 ### Purpose
@@ -135,22 +135,23 @@ The palette in force.
 
 #### `marblesDrawn` {#symbol-marblesdrawn}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L359)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L360)
 
 ##### `marblesDrawn` — Summary
 Whether files are drawn as marbles (the marble trial, 2026-11-17): each file's colour its kind's glass with veins of
-what it offers and what it uses (`marbleOf` in views/forceGraphAppearance.ts). Off until a viewer turns it on.
+what it offers and what it uses (`marbleOf` in views/forceGraphAppearance.ts). Off until the page applies the
+viewer's choice as it starts, which is on unless they turned it off (the default since 2026-11-18).
 
 #### `paletteNamed` {#symbol-palettenamed}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L362)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L363)
 
 ##### `paletteNamed` — Summary
 A palette by name, the default for a name no palette has.
 
 #### `whenPaletteChanges` {#symbol-whenpalettechanges}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L370)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L371)
 - Parameters: `palette`: [`Palette`](#symbol-palette)
 
 ##### `whenPaletteChanges` — Summary
@@ -159,7 +160,7 @@ drew is drawn again as it now should be; returns the unsubscription.
 
 #### `choosePalette` {#symbol-choosepalette}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L376)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L377)
 - Returns: [`Palette`](#symbol-palette)
 
 ##### `choosePalette` — Summary
@@ -167,42 +168,42 @@ Puts a palette in force by name, the default for a name no palette has, tells wh
 
 #### `chooseMarbles` {#symbol-choosemarbles}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L385)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L386)
 
 ##### `chooseMarbles` — Summary
 Turns the marbles on or off, and tells whoever listens to the palette if that changed: the same redraw, nothing moving.
 
 #### `channels` {#symbol-channels}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L392)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L393)
 
 ##### `channels` — Summary
 A colour's channels, 0 to 255.
 
 #### `rgba` {#symbol-rgba}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L399)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L400)
 
 ##### `rgba` — Summary
 A colour at an opacity, as `rgba(r, g, b, alpha)`, the alpha written as given.
 
 #### `unitChannels` {#symbol-unitchannels}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L405)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L406)
 
 ##### `unitChannels` — Summary
 A colour's channels, 0 to 1, for a shader.
 
 #### `mix` {#symbol-mix}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L408)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L409)
 
 ##### `mix` — Summary
 A colour between two, `t` of the way from `a` to `b`, each channel rounded, as `rgb(r,g,b)`.
 
 #### `customProperties` {#symbol-customproperties}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L421)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L422)
 - Parameters: `palette`: [`Palette`](#symbol-palette)
 
 ##### `customProperties` — Summary
@@ -213,7 +214,7 @@ its channels (`--ground-card-hover-rgb: 47, 47, 51`), from which a stylesheet dr
 
 #### `paletteStylesheet` {#symbol-palettestylesheet}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L435)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L436)
 - Parameters: `palette`: [`Palette`](#symbol-palette)
 
 ##### `paletteStylesheet` — Summary

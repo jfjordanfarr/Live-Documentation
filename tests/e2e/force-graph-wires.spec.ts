@@ -364,7 +364,11 @@ test("reference wires count each direction, are one colour, end at the spheres' 
   expect(references.some(link => (link.forward > 0) !== (link.backward > 0))).toBe(true);
   const legend = page.locator("#spatial-legend");
   await expect(legend).toContainText("References");
-  await expect(legend).not.toContainText("Offers");
+  // No row says a wire's direction. Offers and Uses stand in the key only as the marbles' veins, drawn by default since
+  // 2026-11-18, each beside a veined ball and never beside a wire.
+  const roles = legend.locator(".legend-mark", { hasText: /^(Offers|Uses)$/u });
+  await expect(roles).toHaveCount(2);
+  await expect(roles.locator(".spatial-legend-sample--veins")).toHaveCount(2);
   await expect(legend).not.toContainText("Path");
   // Hovering a wire names which file uses which; the stroke hovered is one a hover reaches and nothing else.
   const hovered = await clearStroke(page, [...nodes.values()], links);

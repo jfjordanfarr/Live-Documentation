@@ -19,6 +19,8 @@ Two checks joined on 2026-10-30 with the remediation's wires pass ([Turn 3 of th
 
 Since 2026-11-16 ([Turn 10 of the November 15 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-10)) the key's rows are a sample and at most two words, and the cases here read *References* and *Path* where they read the rows' sentences: a change of wording and nothing else.
 
+Since 2026-11-18, when marbles became the default ([Turn 13 of the November 17 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-17/2026-11-17.1.record.md#turn-13)), the 3D key carries Offers and Uses as the marbles' veins; the case on the wires' one colour now holds that these two words stand only beside veined balls, never as a wire's direction.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

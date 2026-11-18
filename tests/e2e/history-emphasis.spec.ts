@@ -57,9 +57,15 @@ async function drawnColour(page: Page, id: string): Promise<[number, number, num
   }, id);
 }
 
+/**
+ * A visitor with the given Changed Files choice. These cases read a file's base colour as its kind's, the same for every
+ * file of a kind (an unchanged util.ts stands for main.ts's own colour), which holds only for plain spheres: a marble's
+ * colour is its kind's glass tinted by its own veins, different from file to file. So they draw the files plain, the
+ * default until 2026-11-18, when marbles became the default.
+ */
 const emphasis = (mode: string) => async ({ context }: { context: import("@playwright/test").BrowserContext }): Promise<void> => {
   await context.addInitScript(value => {
-    window.localStorage.setItem("live-docs-explorer:ui:v2", JSON.stringify({ version: 2, tuning: { localMap: { searchStarts: 0 }, history: { changeEmphasis: value } } }));
+    window.localStorage.setItem("live-docs-explorer:ui:v2", JSON.stringify({ version: 2, tuning: { localMap: { searchStarts: 0 }, history: { changeEmphasis: value }, appearance: { marbles: "off" } } }));
   }, mode);
 };
 

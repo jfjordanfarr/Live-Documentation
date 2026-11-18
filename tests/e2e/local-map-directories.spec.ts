@@ -2,6 +2,7 @@ import { expect, test, type Page } from "@playwright/test";
 
 import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
+import type { HiddenFilesLook } from "../../packages/explorer/src/client/types";
 import { NOMINAL_CARD } from "../../packages/explorer/src/client/views/localView/directory-flow";
 import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
 import { LOCAL_MAP, localMapSettled, localRetainUrl } from "./still-picture";
@@ -42,9 +43,9 @@ async function settled(page: Page): Promise<void> {
 }
 
 /** Chooses how an opened directory stands for every page this test opens, beside the suite's own saved tuning. */
-async function chooseLayout(page: Page, layout: "flow" | "grid"): Promise<void> {
+async function chooseLayout(page: Page, layout: "flow" | "grid", hiddenFiles?: HiddenFilesLook): Promise<void> {
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, directoryLayout: layout } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, directoryLayout: layout, ...(hiddenFiles ? { hiddenFiles } : null) } } })
   });
 }
 
@@ -268,7 +269,9 @@ for (const layout of ["flow", "grid"] as const) test(`a closed box opens in plac
 for (const layout of ["flow", "grid"] as const) test(`an encasing membrane counts what it hides, Open discloses it around pinned files, and no wire reaches a closed box (${layout})`, async ({ page }) => {
   const graph = `${LIVE_DOCS}/graph.ts`;
   const builder = "packages/explorer/src/shared/staticBuilder.ts";
-  await chooseLayout(page, layout);
+  // The count's words and the rule that a count is drawn whole or not at all are Hidden Files' Count, the default until
+  // 2026-11-18 (Cells under name since), so this case chooses Count; hidden-file-cells.spec.ts reads the cells.
+  await chooseLayout(page, layout, "count");
   await page.goto(localRetainUrl("/", [graph, builder]));
   await settled(page);
   await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached" });

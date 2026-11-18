@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/force-graph-contained.spec.ts
-- Generated At: 2026-11-09T00:01:56.421Z
+- Generated At: 2026-11-18T22:10:30.841Z
 
 ## Authored
 ### Purpose
@@ -17,6 +17,8 @@ The carrier journey first establishes a real hollow GPU mark, then probes its th
 
 Frame control pauses before each operation and advances real animation frames to the established transition phases. This avoids trying to pause at a timestamp that a GPU read has already passed. Original application deadlines, transition timing and physics remain unchanged.
 
+Since 2026-11-18, when marbles became the default ([Turn 13 of the November 17 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-17/2026-11-17.1.record.md#turn-13)), these cases draw the files without marbles: the independent reference is a plain sphere of the kind's colour, and the marble's own shading has no independent reference here.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -26,6 +28,8 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `@playwright/test` - `Page`, `expect`, `test`
+- [`local-storage.PERSISTED_UI_KEY`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_key)
+- [`local-storage.PERSISTED_UI_VERSION`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_version)
 - [`contained-sphere-reference.clippedContainedMark`](./contained-sphere-reference.ts.mdmd.md#symbol-clippedcontainedmark)
 - [`contained-sphere-reference.compareContainedRendering`](./contained-sphere-reference.ts.mdmd.md#symbol-comparecontainedrendering)
 - [`force-graph-observation.observeGraph`](./force-graph-observation.ts.mdmd.md#symbol-observegraph)

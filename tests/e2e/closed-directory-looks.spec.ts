@@ -2,7 +2,7 @@ import { expect, test, type Browser, type Page } from "@playwright/test";
 
 import { decompressSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
-import { CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, type ClosedCellColour, type ClosedDirectoryLook, type ClosedDirectoryShape } from "../../packages/explorer/src/client/types";
+import { CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, type ClosedCellColour, type ClosedDirectoryLook, type ClosedDirectoryShape, type MarbleChoice } from "../../packages/explorer/src/client/types";
 import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
 import { LOCAL_MAP, localMapSettled } from "./still-picture";
 
@@ -41,8 +41,11 @@ async function still(page: Page): Promise<void> {
   await page.waitForTimeout(500);
 }
 
-/** How a closed directory is drawn for a visit: its look, and for the skin with cells its shape and its cells' colour. */
-interface Style { look: ClosedDirectoryLook; shape?: ClosedDirectoryShape; cells?: ClosedCellColour }
+/**
+ * How a closed directory is drawn for a visit: its look, and for the skin with cells its shape and its cells' colour;
+ * and whether files are marbles, on by default since 2026-11-18, for a case that reads a cell's plain colour.
+ */
+interface Style { look: ClosedDirectoryLook; shape?: ClosedDirectoryShape; cells?: ClosedCellColour; marbles?: MarbleChoice }
 
 /** A fresh visitor with the given look, under this machine's lines or Segoe UI's, at a directory opened by address. */
 async function visit(browser: Browser, chosen: ClosedDirectoryLook | Style, lines: "fallback" | "segoe", directory = SCRIPTS) {
@@ -50,7 +53,8 @@ async function visit(browser: Browser, chosen: ClosedDirectoryLook | Style, line
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 });
   await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
     key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, closedDirectory: style.look,
-      ...(style.shape ? { closedShape: style.shape } : null), ...(style.cells ? { closedCells: style.cells } : null) } } })
+      ...(style.shape ? { closedShape: style.shape } : null), ...(style.cells ? { closedCells: style.cells } : null) },
+      ...(style.marbles ? { appearance: { marbles: style.marbles } } : null) } })
   });
   if (lines === "segoe") await context.addInitScript(css => {
     const add = (): void => { const style = document.createElement("style"); style.textContent = css; document.documentElement.appendChild(style); };
@@ -212,7 +216,8 @@ test("a directory inside a closed one is a skin around cells of the same size as
   }
   // With nothing chosen the cells are coloured by kind (the owner's choice of 2026-11-16): doc-tools' cells take more
   // than one colour (it holds tests beside its sources), each the colour the 3D map gives that kind. In one grey, exactly one.
-  const kinds = await visit(browser, "cells", "fallback");
+  // The kinds' plain colours are read with the marbles off: a marble's cell is its kind's glass tinted by its veins.
+  const kinds = await visit(browser, { look: "cells", marbles: "off" }, "fallback");
   await expect(box(kinds.page, DOC_TOOLS)).toHaveClass(/local-closed-cells--kind/u);
   const coloured = (await read(kinds.page, DOC_TOOLS)).fills;
   expect(coloured.length).toBeGreaterThan(1);

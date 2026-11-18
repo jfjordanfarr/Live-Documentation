@@ -35,6 +35,8 @@ Return Cost on 2026-11-16, then Palette and Marbles in a group of their own, Col
 
 Beyond the Hops joined the 3D layout group on 2026-11-18, the trial of the next step past the hops beside everything, which makes 68 controls ([Turn 10 of the November 18 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-10)).
 
+Since 2026-11-18 the marbles case opens on the default, On ([Turn 13 of the November 17 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-17/2026-11-17.1.record.md#turn-13)), and turns them off and on again.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

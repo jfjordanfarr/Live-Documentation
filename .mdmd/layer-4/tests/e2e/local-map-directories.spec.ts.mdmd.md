@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/local-map-directories.spec.ts
-- Generated At: 2026-11-13T22:10:36.615Z
+- Generated At: 2026-11-18T22:10:31.124Z
 
 ## Authored
 ### Purpose
@@ -20,6 +20,8 @@ Three cases were added on 2026-11-12 for the directory flow trial (Tuning's Open
 
 Since Flow became Opened Directory's default on 2026-11-13 a closed box opening in place and an encasing membrane's Open each run in both layouts: the grid draws no line, and Flow one line for each pair of the opened directory's cards where one uses the other, with the wires between symbols the same in both. The box's opening is read from the move's first frame in the page, since a reading taken from the test some frames in had moved 53 to 73 px in Flow, whose opened picture is larger and reframed, while its first frame stood exactly where the box stood. The case of the Tuning control now holds the new default: a directory opened by its address draws its lines, the control offers Flow first, a link carries only the grid, and a link that says nothing opens in Flow even in a browser whose own tuning holds the grid.
 
+Since 2026-11-18, when Hidden Files' default became Cells under name ([Turn 13 of the November 17 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-17/2026-11-17.1.record.md#turn-13)), the encasing membrane's case chooses Count, whose words and whose rule that a count is drawn whole or not at all it reads; `hidden-file-cells.spec.ts` reads the cells.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -34,6 +36,7 @@ _No public symbols detected_
 - [`compressed-url-state.decompressSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-decompresssnapshot)
 - [`local-storage.PERSISTED_UI_KEY`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_key)
 - [`local-storage.PERSISTED_UI_VERSION`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_version)
+- [`types.HiddenFilesLook`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-hiddenfileslook) (type-only)
 - [`directory-flow.NOMINAL_CARD`](../../packages/explorer/src/client/views/localView/directory-flow.ts.mdmd.md#symbol-nominal_card)
 - [`design-audit.describeFaults`](./design-audit.ts.mdmd.md#symbol-describefaults)
 - [`design-audit.overlapsAmong`](./design-audit.ts.mdmd.md#symbol-overlapsamong)

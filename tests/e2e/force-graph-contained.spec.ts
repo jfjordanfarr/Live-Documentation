@@ -1,5 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
+import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { clippedContainedMark, compareContainedRendering } from "./contained-sphere-reference";
 import { observeGraph } from "./force-graph-observation";
 import { localMapSettled } from "./still-picture";
@@ -11,6 +12,11 @@ async function arrive(page: Page, native: boolean): Promise<string[]> {
   const errors: string[] = [];
   page.on("pageerror", error => errors.push(String(error)));
   page.on("console", message => { if (message.type() === "error") errors.push(message.text()); });
+  // The independent reference draws a plain sphere of the kind's colour, so the files are drawn without marbles, the
+  // default until 2026-11-18; the marble's own shading has no independent reference here.
+  await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { appearance: { marbles: "off" } } })
+  });
   if (native) await page.addInitScript(() => {
     const getExtension = WebGL2RenderingContext.prototype.getExtension;
     WebGL2RenderingContext.prototype.getExtension = function (name: string) {

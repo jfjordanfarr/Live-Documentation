@@ -25,6 +25,8 @@ Since 2026-11-17 ([the third run of the gate, November 16 record](../../../../AI
 
 Since 2026-11-18 the estate's 3D key under Skin has no More connected row, since no sphere wears a ring while a wrapper is on; the row and its description are checked with the wrappers Off, where the ring remains the picture's only sign of more, and the key's words are audited over six rows ([Turn 12 of the November 16 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-16/2026-11-16.1.record.md#turn-12)).
 
+Since 2026-11-18, when marbles became the default ([Turn 13 of the November 17 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-17/2026-11-17.1.record.md#turn-13)), the 3D key's rows include the veins' row, Offers and Uses, and the case that matches a kind's sample to a sphere's drawn colour turns the marbles off first, since a marble's colour is its glass tinted by its own veins.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
