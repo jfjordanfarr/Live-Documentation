@@ -1,0 +1,29 @@
+# The defaults round: Marbles on, Hidden Files at Cells under name
+
+_Historical evidence, taken 2026-11-18 by the builder of the defaults round, on the round's build before any browser case was adapted. The owner's decision is [Turn 13 of the November 17 record](../../../2026-11-17/2026-11-17.1.record.md#turn-13); what each Hidden Files value draws is in [the cells trial](../../../2026-11-17/Probes/cells-trial/README.md) and [the Explorer design](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md)._
+
+**The setup.** This repository's Explorer and the estate sample (`/samples/estate/`), built by `npm run build`, `npm run live-docs:visualize` and `npm run live-docs:visualize:estate`, served at 1440 × 900, device scale 1. Every picture is a fresh visitor: no saved tuning, no setting in the address, so what is drawn is the defaults as a newcomer meets them. The 2D pictures are the page's own camera at the subject, then each press of Zoom Out to the next look (the three looks: reading, far, overview).
+
+| Picture | Address | What I see |
+| --- | --- | --- |
+| `repo-pathfind-2d-reading.png` | `/?view=local&node=packages/engine/src/live-docs/pathfind.ts` | The reading look. `…ages/engine/src/live-docs/history` at the right draws its 23 hidden files as two rows of small cells under its name, where "+23 files" stood; the path keeps its room on the line. The other handles are out of frame at this camera. |
+| `repo-pathfind-2d-far.png` | the same, one Zoom Out | The far look: the handle's line holds the marks beside the name. `history` shows two cells and a veiled third; `…ges/engine/src/config` at the top is cut by the frame. |
+| `repo-pathfind-2d-overview.png` | the same, two Zoom Outs | The whole picture. `scripts/live-docs` draws its eleven cells in a row after its name, `packages/engine/src/live-docs` thirteen marks and a veil, `packages` and `src` their two small skins, `…rc/config` one cell. `history`, `client`, `panels` and `localView` draw no mark here: their handles are too narrow, and Count drew no words for any of them at this look either (measured below). |
+| `estate-payments-context-2d-reading-handles-in-view.png` | `/samples/estate/?view=local&node=PaymentService/Data/PaymentsContext.cs`, the picture dragged down and right | The reading look with the `PaymentService` handle in view: its one hidden file is one cell under the chevron, dim (the cells are drawn at half strength until the pointer or focus is on one). Without the drag the page's camera centres on the subject and no encasing handle is in frame. |
+| `estate-payments-context-2d-far.png` | the same, one Zoom Out | `…ervice/Data` (it hides nothing) and `…/SqlServer` with its one cell beside the name, where Count has no room for its words at this look. |
+| `estate-payments-context-2d-overview.png` | the same, two Zoom Outs | `PaymentService` with its cell after the name; `SqlServer` draws none at this look. |
+| `repo-3d-nothing-pinned.png` | `/?view=local&mode=3d` | The whole repository from afar: the files are marbles, the clusters read blue and green as before, the veins visible on the larger balls. The 3D key carries the marble's two rows, *Offers* and *Uses*, each drawn as a veined ball. |
+| `repo-3d-pinned-pathfind.png` | `/?view=local&mode=3d&node=packages/engine/src/live-docs/pathfind.ts` | Close in: every file a marble, each with its kind's glass and blue and green bands; the membranes and the labels as before. |
+| `estate-3d-nothing-pinned.png` | `/samples/estate/?view=local&mode=3d` | The estate opens in Structure with nothing pinned: six directory shells around the scan root, every file inside a marble. |
+| `estate-3d-pinned-gateway-client.png` | `/samples/estate/?view=local&mode=3d&node=Portal/Services/GatewayClient.cs`, Tuning → Colour open | `GatewayClient.cs` and its neighbours as marbles, and the control: Marbles reads On. |
+| `tuning-hidden-files-control.png` | `/?view=local&node=…/pathfind.ts`, Tuning → 2D Layout scrolled to it | Hidden Files reads "Cells under name", the first of its three choices; Closed Directory above it and the skin's choices below. |
+
+**Count against Cells under name, measured.** The same two pictures were read with each value saved as the viewer's choice: for every drawn directory, whether Count's words stand legible in the handle's line, and how many marks Cells under name shows.
+- **This repository, `pathfind.ts`:** at the reading look Cells under name shows a mark for everything the count counts in all ten encasing handles (75 of 75 in `localView`, 32 for "+30 files, 2 directories"). At the far look, where Count draws words in four handles, the cells show marks in those four and in five more where Count had no room (`tests/integration/live-docs` 3, `live-docs` 3, `history` 2, `panels` 3, `localView` 1). At the overview, Count draws words in three handles and the cells show marks in the same three (`live-docs` thirteen and a veil for "+30 files, 2 directories").
+- **The estate:** the same at every look, plus `Database/SqlServer` at the far look, where Count has no words and the cells show its one file.
+- So no handle that said something with Count says nothing with the cells, at any look of either picture.
+
+**What looks wrong, or might.**
+- Nothing broke. One thing the owner may notice: at the reading look on the estate the only encasing handles are off the camera's first frame, so a newcomer sees the cells only after moving the picture or zooming out. That is the camera's framing of the subject, the same with Count.
+- A single cell under a name (the estate's `PaymentService`) is a small dim dot under the chevron; it reads as a mark, but alone it is easy to miss. The same file was "+1 file" in words before.
+- In the 3D map from afar the marbles' veins become texture; the kinds still separate as blue and green clusters. Variety from file to file is a later round.
