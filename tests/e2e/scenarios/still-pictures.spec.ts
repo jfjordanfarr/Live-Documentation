@@ -7,7 +7,7 @@ import { readOracleEdges } from "../../../scripts/oracle/files";
 import { displayNames, loadGraph, localMapStill, localRetainUrl } from "../still-picture";
 
 import { readSettled, watchPage } from "./instrument";
-import { judgeFloor, LAWS, samePicture, wiresMatchData, wiresMatchOracle, type Floor, type OracleEdge, type Verdict } from "./judgments";
+import { judgeFloor, LAWS, samePicture, tonesHeld, wiresMatchData, wiresMatchOracle, type Floor, type OracleEdge, type Verdict } from "./judgments";
 import type { Reading } from "./reading";
 import { SCENARIOS, type Scenario } from "./table";
 import { resolveList, resolveText, tokenTable, TokenError, type RosettaManifest, type TokenTable } from "./tokens";
@@ -69,7 +69,11 @@ for (const map of MAPS) {
         // This repository's map is a thousand files: its first picture takes longer than a sample's.
         if (map.name === "repository") test.setTimeout(90_000);
         const graph = await loadGraph(page, map.base);
-        const table = tokenTable(manifest, map.language, graph.nodes.map(node => node.id), map.root);
+        const references: OracleEdge[] = graph.links.map(link => ({
+          consumer: typeof link.source === "string" ? link.source : link.source.id,
+          provider: typeof link.target === "string" ? link.target : link.target.id
+        }));
+        const table = tokenTable(manifest, map.language, graph.nodes.map(node => node.id), map.root, references);
         let address = "", floor: Floor = {}, oracleAt: string | undefined;
         try {
           address = addressOf(scenario, map, table);
@@ -87,12 +91,14 @@ for (const map of MAPS) {
         await page.setViewportSize(scenario.viewport);
         const watch = watchPage(page, baseURL!);
         await page.goto(address);
-        await localMapStill(page);
-        await zoomOut(page, scenario.zoomOut ?? 0);
         const context = { scenario: scenario.name, map: map.base, watch, names };
+        // A scenario farther out is read at reading size first, so that what the presses change can be judged.
+        const near = scenario.zoomOut ? await readSettled(page, { ...context, shotPath: path.join(folder, `${name}-at-reading-size.png`) }) : null;
+        await zoomOut(page, scenario.zoomOut ?? 0);
         const reading = await readSettled(page, { ...context, shotPath: path.join(folder, `${name}.png`) });
         const verdicts: Verdict[] = [judgeFloor(reading, floor), ...LAWS.map(law => law(reading))];
-        const readings: Reading[] = [reading];
+        const readings: Reading[] = near ? [near, reading] : [reading];
+        if (near) verdicts.push(tonesHeld(near, reading));
 
         if (scenario.reload) {
           await page.reload();
@@ -101,10 +107,6 @@ for (const map of MAPS) {
           verdicts.push(samePicture("a reload gives the same picture", reading, again));
         }
         if (oracleAt !== undefined) {
-          const references: OracleEdge[] = graph.links.map(link => ({
-            consumer: typeof link.source === "string" ? link.source : link.source.id,
-            provider: typeof link.target === "string" ? link.target : link.target.id
-          }));
           verdicts.push(wiresMatchData(reading, oracleAt, references));
           const compiler = variant.compilerEdges ? readOracleEdges(path.join(PROGRAMS, variant.compilerEdges), path.join(PROGRAMS, variant.path)) : undefined;
           verdicts.push(wiresMatchOracle(reading, oracleAt, compiler ? {

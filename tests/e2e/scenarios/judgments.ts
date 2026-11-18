@@ -82,7 +82,9 @@ export function judgeFloor(reading: Reading, floor: Floor): Verdict {
 
 /**
  * No name or line collides with another, and at reading size none is cut off. Farther out the map holds names to their
- * room and cuts them at their end by design (the card ladder's looks), so there only collisions are judged here.
+ * room and cuts them at their end by design (the card ladder's looks): the screenshot three presses out (2026-11-18)
+ * showed "Intern…" and "Inter…" ended by an ellipsis on the TypeScript program's cards, which this law first reported
+ * as cut. There only collisions are judged here.
  */
 export function textWhole(reading: Reading): Verdict {
   const atReading = reading.look === null || reading.look === "reading";
@@ -161,9 +163,10 @@ function nearestCard(cards: readonly CardRead[], file: string, x: number, y: num
 
 /**
  * Uses enter on the left and offerings leave on the right: every route leaves its provider's card from the card's
- * right half and reaches its consumer's card in its left half, and every dot stands in the half its side names. The
- * dots stand at the ends of their rows, inside the card's padding (2026-11-18, read on the Rosetta samples), so the
- * law is the side, not the edge.
+ * right half and reaches its consumer's card in its left half, and every dot stands in the half its side names. First
+ * written as "at the card's edge", it failed on every Rosetta map; the screenshot of the TypeScript processor in focus
+ * (2026-11-18) showed why: each dot stands at the end of its row, inside the card's padding, some 21 px in from the
+ * edge at scale 1, and the wires end on the dots. The promise is the side, not the edge.
  */
 export function usesLeftOfferingsRight(reading: Reading): Verdict {
   const findings: string[] = [];
@@ -315,6 +318,61 @@ export function outlineIsGround(reading: Reading): Verdict {
   return verdict("a directory's outline is ground, not figure", "law", findings);
 }
 
+/** Every directory but the root draws an outline, and the root draws none. */
+export function outlinesDrawn(reading: Reading): Verdict {
+  const findings = reading.directories
+    .filter(directory => directory.drawn !== (directory.directory !== ""))
+    .map(directory => (directory.directory === "" ? "the root draws an outline" : `${directory.directory} draws no outline`));
+  return verdict("every directory but the root draws an outline", "law", findings, reading.directories.length > 0, "no directory is published");
+}
+
+/** A picture with no subject stands its root's independent columns at one top, so they read as a row of choices. */
+export function rootColumnsAligned(reading: Reading): Verdict {
+  const name = "the root's columns stand at one top";
+  if (reading.cards.some(card => card.subject)) return verdict(name, "law", [], false, "the map has a subject");
+  if (reading.rootColumns.length < 2) return verdict(name, "law", [], false, "the root has fewer than two columns");
+  const tops = reading.rootColumns.map(column => column.top);
+  const spread = Math.max(...tops) - Math.min(...tops);
+  return verdict(name, "law", spread >= 1 ? [`the root's columns start ${px(spread)} apart`] : []);
+}
+
+/** A symbol's description and the file's Purpose are prose of one tone. */
+export function proseOneTone(reading: Reading): Verdict {
+  const { purpose, description } = reading.tone.colours;
+  if (purpose === null || description === null) return verdict("a description and the Purpose are one tone", "law", [], false, "no Purpose or open description is drawn");
+  return verdict("a description and the Purpose are one tone", "law", purpose === description ? [] : [`the Purpose is ${purpose} and a description ${description}`]);
+}
+
+/**
+ * Whether a line may begin between these two characters without breaking a word: after a space or a separator, or at
+ * a hump, a capital after a small letter or a digit. Written here rather than taken from the map's own seams, so that
+ * the judgment does not grade the map by the map's rule.
+ */
+const breaksAtASeam = (before: string, after: string): boolean => {
+  if (/[\s/._-]/u.test(before) || /\s/u.test(after)) return true;
+  const letterOrDigit = (character: string): boolean => /[\p{L}\p{N}]/u.test(character);
+  if (!letterOrDigit(before) || !letterOrDigit(after)) return true;
+  const upper = (character: string): boolean => character !== character.toLowerCase();
+  return upper(after) && !upper(before);
+};
+
+/**
+ * No name breaks inside a word: where a name is drawn on more than one line, every line begins at a seam. Ready, and
+ * kept out of the table's laws until the open defect it would report (a symbol's name broken as "Process / orConfig" at
+ * the connections look, seen 2026-11-18) is mended.
+ */
+export function namesBreakAtSeams(reading: Reading): Verdict {
+  const findings: string[] = [];
+  const broken = reading.names.filter(name => name.lines.length > 1);
+  for (const name of broken) {
+    for (let i = 1; i < name.lines.length; i += 1) {
+      const before = name.lines[i - 1].trimEnd().slice(-1), after = name.lines[i].trimStart().slice(0, 1);
+      if (before && after && !breaksAtASeam(before, after)) findings.push(`"${name.text}" breaks inside a word, as "${name.lines.join(" / ")}"`);
+    }
+  }
+  return verdict("no name breaks inside a word", "law", findings, broken.length > 0, "no name is drawn on more than one line");
+}
+
 /** The page logged no error and asked nothing of another site. */
 export function pageHealthy(reading: Reading): Verdict {
   return verdict("no error and no request to another site", "law", [
@@ -340,8 +398,14 @@ export const LAWS: ReadonlyArray<(reading: Reading) => Verdict> = [
   subjectInFrame,
   wiresPlainAtRest,
   textTones,
-  outlineIsGround
+  outlineIsGround,
+  outlinesDrawn,
+  rootColumnsAligned,
+  proseOneTone
 ];
+
+/** Laws written and tested but kept out of the table until the defect each would report is mended. */
+export const PENDING_LAWS: ReadonlyArray<(reading: Reading) => Verdict> = [namesBreakAtSeams];
 
 // ─── Relations ────────────────────────────────────────────────────────────
 
@@ -377,6 +441,18 @@ export function samePicture(name: string, before: Reading, after: Reading, toler
     if (before.edgeSigns[edge] !== after.edgeSigns[edge]) findings.push(`the sign ${edge} changed`);
   }
   return verdict(name, "relation", findings);
+}
+
+/**
+ * Names held farther out keep the tones they have at reading size: the subject's file name and a symbol's name are
+ * drawn in the same colours in both readings of one run.
+ */
+export function tonesHeld(near: Reading, far: Reading): Verdict {
+  const name = "held names keep their tones farther out";
+  const pairs = [["the file's name", near.tone.colours.fileName, far.tone.colours.fileName], ["a symbol's name", near.tone.colours.symbolName, far.tone.colours.symbolName]] as const;
+  const judged = pairs.filter(([, a, b]) => a !== null && b !== null);
+  if (judged.length === 0) return verdict(name, "relation", [], false, "no name is read in both pictures");
+  return verdict(name, "relation", judged.filter(([, a, b]) => a !== b).map(([what, a, b]) => `${what} is ${a} at ${near.look ?? "reading"} and ${b} at ${far.look ?? "the far look"}`));
 }
 
 // ─── Oracle facts ─────────────────────────────────────────────────────────

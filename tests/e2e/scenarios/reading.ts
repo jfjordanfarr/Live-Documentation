@@ -113,6 +113,14 @@ export interface ToneRead {
   cardBorder: number | null;
   /** The alpha of an opened directory's fill. */
   outlineFillAlpha: number | null;
+  /** The computed colours themselves, for promises of sameness: the subject's file name as drawn at this look (whole or held), a symbol's name, its Purpose and an open description. */
+  colours: { fileName: string | null; symbolName: string | null; purpose: string | null; description: string | null };
+}
+
+/** A name as drawn: its text and the lines it stands on, top to bottom. */
+export interface NameRead {
+  text: string;
+  lines: string[];
 }
 
 export interface Reading {
@@ -137,6 +145,10 @@ export interface Reading {
   wires: WireRead[];
   directories: DirectoryRead[];
   lanes: LaneRead[];
+  /** The columns of a picture's root (`.local-directory-root > .local-column`): each distinct column's left and the top of its first content. */
+  rootColumns: Array<{ x: number; top: number }>;
+  /** File and symbol names with the lines they are drawn on. */
+  names: NameRead[];
   /** How many text boxes the audit read, so that "no faults" on no text can be told apart. */
   textBoxes: number;
   textFaults: TextFault[];

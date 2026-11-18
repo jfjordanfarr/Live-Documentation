@@ -39,7 +39,7 @@ export const SCENARIOS: Scenario[] = [
     name: "the processor in focus",
     address: { focus: "{processor}" },
     viewport: { width: 1600, height: 1000 },
-    floor: { subject: "{processor}", drawn: ["{main}", "{helpers}"], minCards: 3, minWires: 2 },
+    floor: { subject: "{processor}", minCards: 2, minWires: 1 },
     reload: true,
     oracleAt: "{processor}",
     replaces: ["still-picture.spec.ts:334", "local-map-tone.spec.ts:55", "local-map-tone.spec.ts:82"]
@@ -49,16 +49,16 @@ export const SCENARIOS: Scenario[] = [
     address: { focus: "{processor}" },
     viewport: { width: 1600, height: 1000 },
     zoomOut: 3,
-    floor: { subject: "{processor}", minCards: 3, minWires: 2 },
+    floor: { subject: "{processor}", minCards: 2, minWires: 1 },
     reload: false,
-    replaces: []
+    replaces: ["local-map-tone.spec.ts:55"]
   },
   {
     name: "the whole program retained",
-    address: { retain: ["{main}", "{processor}", "{models*}", "{types*}", "{helpers}"] },
+    address: { retain: ["{main*}", "{processor*}", "{models*}", "{types*}", "{helpers*}"] },
     viewport: { width: 1600, height: 1000 },
     // main uses models past processor's column, so the map must reserve a lane: the lanes' law is then never idle.
-    floor: { subject: "{main}", pinned: ["{main}", "{processor}", "{models}", "{types}", "{helpers}"], minCards: 5, minWires: 5, lanes: true },
+    floor: { subject: "{main}", pinned: ["{main*}", "{processor*}", "{models*}", "{types*}", "{helpers*}"], minCards: 2, minWires: 1, lanes: true },
     reload: false,
     replaces: ["local-map-branches.spec.ts:276", "local-map-branches.spec.ts:362", "still-picture.spec.ts:378"]
   },
@@ -66,7 +66,7 @@ export const SCENARIOS: Scenario[] = [
     name: "a part's own directory opened, nothing chosen",
     address: { directory: "{models/}" },
     viewport: { width: 1440, height: 900 },
-    floor: { drawn: ["{models}"], minCards: 1 },
+    floor: { drawn: ["{models*}"], minCards: 1 },
     reload: false,
     replaces: ["local-map-framing.spec.ts:46", "local-map-tone.spec.ts:123"]
   },

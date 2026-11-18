@@ -45,12 +45,40 @@ describe("the Rosetta manifest as a token table", () => {
     expect(tableFor("python").subject.types).toBe("src/core_types.py");
   });
 
-  it("chooses a part's subject by its name, then an implementation over its header, then the declared entry", () => {
-    expect(tableFor("c").subject.processor).toBe("src/processor.c");
+  it("without the map's references, chooses a part's subject by its name, then the C family's header first", () => {
+    expect(tableFor("c").subject.processor).toBe("src/processor.h");
+    expect(tableFor("cpp").subject.helpers).toBe("src/helpers.hpp");
     expect(tableFor("cpp").subject.types).toBe("src/types.hpp");
     expect(tableFor("java").subject.main).toBe("src/com/rosetta/app/Main.java");
     expect(tableFor("java").files.models).toEqual(["src/com/rosetta/models/ModelFactory.java", "src/com/rosetta/models/Record.java", "src/com/rosetta/models/Report.java"]);
     expect(tableFor("go").subject.main).toBe("src/main/main.go");
+  });
+
+  it("with the map's references, chooses the file of the part that most files of other parts use", () => {
+    const c = manifest.variants.find(variant => variant.language === "c")!;
+    const ids = filesOf(path.join(PROGRAMS, c.path));
+    const references = [
+      { consumer: "src/main.c", provider: "src/processor.h" },
+      { consumer: "src/test_processor.c", provider: "src/processor.h" },
+      // A file's use of its own part counts for nothing: the implementation includes its header.
+      { consumer: "src/processor.c", provider: "src/processor.h" },
+      // A tie between two files named for the part goes to the implementation.
+      { consumer: "src/processor.c", provider: "src/helpers.h" },
+      { consumer: "src/processor.c", provider: "src/helpers.c" }
+    ];
+    const table = tokenTable(manifest, "c", ids, "", references);
+    expect(table.subject.processor).toBe("src/processor.h");
+    expect(table.subject.helpers).toBe("src/helpers.c");
+
+    const java = manifest.variants.find(variant => variant.language === "java")!;
+    const models = "src/com/rosetta/models/";
+    const used = tokenTable(manifest, "java", filesOf(path.join(PROGRAMS, java.path)), "", [
+      { consumer: "src/com/rosetta/app/Main.java", provider: `${models}Record.java` },
+      { consumer: "src/com/rosetta/processor/Processor.java", provider: `${models}Record.java` },
+      { consumer: "src/com/rosetta/processor/Processor.java", provider: `${models}Report.java` },
+      { consumer: "src/com/rosetta/app/Main.java", provider: `${models}ModelFactory.java` }
+    ]);
+    expect(used.subject.models).toBe(`${models}Record.java`);
   });
 
   it("gives a part a directory only where the part lives apart, never the program's shared folder", () => {

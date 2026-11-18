@@ -68,21 +68,44 @@ const stem = (relative: string): string => {
 };
 const directoryOf = (id: string): string => (id.lastIndexOf("/") < 0 ? "" : id.slice(0, id.lastIndexOf("/")));
 
-/**
- * The part's subject file: one named for the part before one that is not (`processor.c` before `Record.java`), an
- * implementation before its header, and the variant's declared entry point for `main`; then path order.
- */
-function subjectOf(part: Part, files: readonly string[], entry: string): string | undefined {
-  const rank = (id: string): number => (part === "main" && id === entry ? 0 : 4) - (stem(id) === part ? 2 : 0) - (HEADER.test(id) ? 0 : 1);
-  return [...files].sort((a, b) => rank(a) - rank(b) || a.localeCompare(b))[0];
+/** One reference of the map, file to file: the consumer uses the provider. */
+export interface MapReference {
+  consumer: string;
+  provider: string;
 }
 
 /**
- * Resolves a variant's parts against a map's file ids. `root` is the prefix that turns a variant-relative path into the
- * map's id: "" for a sample built from the program folder, `tests/integration/programs/<language>/rosetta/` on the
- * repository's own map, which holds the programs as samples.
+ * The part's subject file: the file of the part the other parts reference, read from the map in front of the harness.
+ * Ranked by how many files of other parts use it, then by being named for the part (`processor.h` before `Record.java`),
+ * then an implementation before a header, then path order. One rule for every language: in C it picks the header, which
+ * `main.c` includes, without knowing what a header is. Where the map's references are not given, the C family's header
+ * goes before its implementation instead, the same answer by convention (2026-11-18: the implementation first left
+ * `main.c` and the helpers outside the picture of `processor.c`).
  */
-export function tokenTable(manifest: RosettaManifest, language: string, mapIds: readonly string[], root = ""): TokenTable {
+function subjectOf(part: Part, files: readonly string[], partOf: ReadonlyMap<string, Part>, references: readonly MapReference[] | null): string | undefined {
+  const users = new Map<string, Set<string>>();
+  for (const reference of references ?? []) {
+    if (!files.includes(reference.provider)) continue;
+    const from = partOf.get(reference.consumer);
+    if (from === undefined || from === part) continue;
+    users.set(reference.provider, (users.get(reference.provider) ?? new Set()).add(reference.consumer));
+  }
+  const header = (id: string): number => (HEADER.test(id) ? 1 : 0);
+  const rank = (a: string, b: string): number =>
+    (users.get(b)?.size ?? 0) - (users.get(a)?.size ?? 0)
+    || Number(stem(b) === part) - Number(stem(a) === part)
+    || (references ? header(a) - header(b) : header(b) - header(a))
+    || a.localeCompare(b);
+  return [...files].sort(rank)[0];
+}
+
+/**
+ * Resolves a variant's parts against a map's file ids and, when given, its references, from which each part's subject is
+ * chosen. `root` is the prefix that turns a variant-relative path into the map's id: "" for a sample built from the
+ * program folder, `tests/integration/programs/<language>/rosetta/` on the repository's own map, which holds the
+ * programs as samples.
+ */
+export function tokenTable(manifest: RosettaManifest, language: string, mapIds: readonly string[], root = "", references: readonly MapReference[] | null = null): TokenTable {
   const variant = manifest.variants.find(candidate => candidate.language === language);
   if (!variant) throw new TokenError(`The manifest has no ${language} variant.`);
   const nodes = new Map(manifest.canonicalProgram.nodes.map(node => [node.id, node.files]));
@@ -98,12 +121,12 @@ export function tokenTable(manifest: RosettaManifest, language: string, mapIds: 
     else unplaced.push(`${root}${path}`);
   }
   for (const part of Object.keys(files) as Part[]) files[part].sort();
-  const entry = `${root}${variant.entryPoint.slice(variant.path.length + 1)}`;
   const subject: TokenTable["subject"] = {};
   const directory: TokenTable["directory"] = {};
   const production = new Map(PRODUCTION_PARTS.flatMap(part => files[part].map(id => [id, part] as const)));
+  const partOf = new Map<string, Part>([...production, ...files.test.map(id => [id, "test"] as const)]);
   for (const part of PRODUCTION_PARTS) {
-    const chosen = subjectOf(part, files[part], entry);
+    const chosen = subjectOf(part, files[part], partOf, references);
     if (chosen) subject[part] = chosen;
     const homes = new Set(files[part].map(directoryOf));
     if (homes.size !== 1) continue;

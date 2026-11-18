@@ -6,7 +6,8 @@
  * twice: the still-picture instrument's `readPicture` for the wires (sampled paths, which end is the provider's, cards
  * crossed, lanes in a stranger's directory) and the cards' boxes, and the design audit for collisions and cut text. It
  * adds only what neither reads: the frame and its edge signs, each card's state and directory, the dots, the
- * directories' published segments and insets, the lanes, and the colours the tone promises are judged by.
+ * directories' published segments and insets, the lanes, the root's columns, the lines each name is drawn on, and the
+ * colours the tone promises are judged by.
  * Kept small on purpose: an instrument that lies makes every judgment lie with it.
  */
 
@@ -49,6 +50,9 @@ interface Extras {
   anchors: Reading["anchors"];
   directories: Reading["directories"];
   lanes: Reading["lanes"];
+  rootColumns: Reading["rootColumns"];
+  names: Reading["names"];
+  raw: Reading["tone"]["colours"];
   colours: {
     fileName: { colour: string; layers: string[] } | null;
     symbolName: { colour: string; layers: string[] } | null;
@@ -111,7 +115,59 @@ async function readExtras(page: Page): Promise<Extras> {
     const shape = document.querySelector<SVGPathElement>("#map-container .local-membrane-shape");
     const plainCard = document.querySelector<HTMLElement>("#map-container .node-card:not(.test-backed):not(.selected)");
     const band = shape?.closest(".local-directory-band");
+    /** Whether an element is drawn: it has a box, and neither it nor an ancestor hides it or fades it out. */
+    const shown = (element: Element): boolean => {
+      const r = element.getBoundingClientRect();
+      if (r.width === 0 || r.height === 0) return false;
+      for (let at: Element | null = element; at; at = at.parentElement) {
+        const style = getComputedStyle(at);
+        if (style.display === "none" || style.visibility === "hidden" || Number(style.opacity) === 0) return false;
+      }
+      return true;
+    };
+    const colourOf = (selectors: string[]): string | null => {
+      for (const selector of selectors) {
+        const element = [...document.querySelectorAll(selector)].find(shown);
+        if (element) return getComputedStyle(element).color;
+      }
+      return null;
+    };
+    // Every drawn name and the lines it stands on, read letter by letter from where the browser laid each one.
+    const names = [...document.querySelectorAll("#map-container .node-card .local-file-name-text, #map-container .node-card .local-file-name-held, #map-container .node-card .symbol-label-text")]
+      .filter(shown)
+      .map(element => {
+        const lines: string[] = [];
+        let top: number | null = null;
+        const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+        for (let text = walker.nextNode(); text; text = walker.nextNode()) {
+          const content = text.textContent ?? "";
+          for (let i = 0; i < content.length; i += 1) {
+            const range = document.createRange();
+            range.setStart(text, i);
+            range.setEnd(text, i + 1);
+            const rect = range.getClientRects()[0];
+            if (!rect) continue;
+            if (top === null || Math.abs(rect.top - top) > rect.height / 2) { lines.push(""); top = rect.top; }
+            lines[lines.length - 1] += content[i];
+          }
+        }
+        return { text: (element.textContent ?? "").replace(/\s+/gu, " ").trim(), lines: lines.map(line => line.trim()).filter(Boolean) };
+      });
+    const rootColumns = new Map<number, number>();
+    for (const column of document.querySelectorAll(".local-directory-root > .local-column")) {
+      const r = column.getBoundingClientRect();
+      if (r.width === 0) continue;
+      rootColumns.set(Math.round(r.left), Math.min(rootColumns.get(Math.round(r.left)) ?? Infinity, r.top));
+    }
     return {
+      rootColumns: [...rootColumns].map(([x, top]) => ({ x, top })),
+      names,
+      raw: {
+        fileName: colourOf([`${subject} .local-file-name-held`, `${subject} .local-file-name-text`]),
+        symbolName: colourOf([`${subject} .symbol-row:not(.internals-row) .symbol-label-text`]),
+        purpose: colourOf([`${subject} .local-reading-purpose .local-reading-prose`]),
+        description: colourOf([`${subject} .symbol-row .local-reading-slot[data-reading-open="true"] .local-reading-prose`])
+      },
       frame: toBox(signs.getBoundingClientRect()),
       picture: layout ? toBox(layout.getBoundingClientRect()) : null,
       edgeSigns: { above: signs.dataset.above === "true", below: signs.dataset.below === "true", left: signs.dataset.left === "true", right: signs.dataset.right === "true" },
@@ -182,6 +238,8 @@ export async function readSettled(page: Page, context: { scenario: string; map: 
     }),
     directories: extras.directories,
     lanes: extras.lanes,
+    rootColumns: extras.rootColumns,
+    names: extras.names,
     textBoxes: boxes.length,
     textFaults,
     tone: {
@@ -190,7 +248,8 @@ export async function readSettled(page: Page, context: { scenario: string; map: 
       prose: ratio(extras.colours.prose),
       outline: outline && surface ? contrastRatio(parseColour(outline.stroke), surface) : null,
       cardBorder: outline && surface ? contrastRatio(parseColour(outline.border), surface) : null,
-      outlineFillAlpha: outline ? parseColour(outline.fill)[3] : null
+      outlineFillAlpha: outline ? parseColour(outline.fill)[3] : null,
+      colours: extras.raw
     },
     consoleErrors: [...context.watch.consoleErrors],
     offSiteRequests: [...context.watch.offSiteRequests],

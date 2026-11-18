@@ -8,16 +8,21 @@ import {
   judgeFloor,
   lanesAtHome,
   LAWS,
+  namesBreakAtSeams,
   noRouteAcrossACard,
   nothingOverTheTop,
   outlineIsGround,
+  outlinesDrawn,
   pageHealthy,
+  proseOneTone,
+  rootColumnsAligned,
   routesForward,
   samePicture,
   siblingsApart,
   subjectInFrame,
   textTones,
   textWhole,
+  tonesHeld,
   usesLeftOfferingsRight,
   wiresMatchData,
   wiresMatchOracle,
@@ -73,9 +78,18 @@ function good(): Reading {
       { directory: "lib", parent: "", drawn: true, segments: [{ column: 0, box: { x: 148, y: 540, width: 184, height: 40 } }], insetPx: 12 }
     ],
     lanes: [{ box: { x: 360, y: 300, width: 20, height: 30 }, slots: [9] }],
+    rootColumns: [{ x: 140, top: 300 }, { x: 400, top: 300 }],
+    names: [
+      { text: "processor.ts", lines: ["processor.ts"] },
+      { text: "ProcessorConfig", lines: ["Processor", "Config"] },
+      { text: "rosetta-manifest.json", lines: ["rosetta-", "manifest.json"] }
+    ],
     textBoxes: 12,
     textFaults: [],
-    tone: { fileName: 15, symbolName: 12, prose: 7, outline: 1.8, cardBorder: 2.4, outlineFillAlpha: 0.02 },
+    tone: {
+      fileName: 15, symbolName: 12, prose: 7, outline: 1.8, cardBorder: 2.4, outlineFillAlpha: 0.02,
+      colours: { fileName: "rgb(242, 242, 242)", symbolName: "rgb(220, 220, 220)", purpose: "rgb(160, 160, 160)", description: "rgb(160, 160, 160)" }
+    },
     consoleErrors: [],
     offSiteRequests: [],
     screenshot: "hand-made.png"
@@ -222,6 +236,34 @@ describe("laws, each against a picture that breaks it", () => {
     expect(outlineIsGround(reading).findings).toEqual(["the outline (3.00:1) is stronger than a card's border (2.40:1)"]);
   });
 
+  it("a directory with no outline, and a root that draws one", () => {
+    const reading = good();
+    reading.directories[0].drawn = true;
+    reading.directories[1].drawn = false;
+    expect(outlinesDrawn(reading).findings).toEqual(["the root draws an outline", "src draws no outline"]);
+  });
+
+  it("root columns that start at different tops", () => {
+    const reading = overview();
+    reading.rootColumns[1].top = 312;
+    expect(rootColumnsAligned(reading).findings).toEqual(["the root's columns start 12 px apart"]);
+    expect(outcome(rootColumnsAligned(good())), "a picture with a subject arranges its columns by its wires").toBe("n/a");
+  });
+
+  it("a description in another tone than the Purpose", () => {
+    const reading = good();
+    reading.tone.colours.description = "rgb(200, 200, 200)";
+    expect(proseOneTone(reading).findings).toEqual(["the Purpose is rgb(160, 160, 160) and a description rgb(200, 200, 200)"]);
+  });
+
+  it("a name broken inside a word, though one broken at a hump or after a hyphen is whole", () => {
+    expect(outcome(namesBreakAtSeams(good()))).toBe("kept");
+    const reading = good();
+    reading.names[1].lines = ["Process", "orConfig"];
+    expect(namesBreakAtSeams(reading).findings).toEqual(['"ProcessorConfig" breaks inside a word, as "Process / orConfig"']);
+    expect(LAWS, "kept out of the table until the defect it reports is mended").not.toContain(namesBreakAtSeams);
+  });
+
   it("a console error and a request to another site", () => {
     const reading = good();
     reading.consoleErrors = ["TypeError: x is undefined"];
@@ -242,6 +284,14 @@ describe("relations", () => {
       "the sign right changed"
     ]);
     expect(outcome(samePicture("a reload gives the same picture", good(), good()))).toBe("kept");
+  });
+
+  it("rejects a held name drawn in another tone farther out", () => {
+    const far = good();
+    far.look = "connections";
+    expect(outcome(tonesHeld(good(), far))).toBe("kept");
+    far.tone.colours.symbolName = "rgb(150, 150, 150)";
+    expect(tonesHeld(good(), far).findings).toEqual(["a symbol's name is rgb(220, 220, 220) at reading and rgb(150, 150, 150) at connections"]);
   });
 });
 
