@@ -2275,3 +2275,181 @@
     running again; they take about eighteen minutes on the mount.
 
   Then the commit and the hand-over for the rebuild.
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/11/2026-11
+  -17-194707-welcome-back-this-is-the-first-message-of-the-11.txt in the IDE.
+  This may or may not be related to the current task.</ide_opened_file>
+
+❯ While that runs, I'd like to hear you pontificate and ponder a bit longer
+  with respect to a way in which we can marry the concepts of "dataset
+  capture"/"measurement"/"multi-assertion tests" with the concepts of "robust
+  to change in the codebase", "unlikely to add unnecessary fragility" in our
+  e2e test suite (and tests in general which occupy considerable amounts of
+  time and have become the bottleneck to development velocity).
+
+● The short version: the fragility comes from where the expected values live,
+  not from asserting many things at once. I'd split a test into three layers and
+  let each be robust in its own way: the scenario, a captured reading of the
+  page, and judgments over that reading.
+
+  The three layers
+
+  1. Scenario: a map and an address. The Explorer already puts its state in the
+     link, so a scenario is a link we really opened. On a frozen map (Rosetta,
+     the estate) literal names are safe, because nothing drifts. Tokens are
+     needed in two places: where one scenario runs across the nine Rosetta
+     languages, and on our own growing map, where a token is a description ("the
+     file with the most consumers") resolved at run time.
+  2. Reading: what the settled page says, captured as data. Not pixels and not a
+     DOM dump. For each drawn thing it records what it is, its box, whether its
+     text is whole, its wires and their sides, and its state; plus the address,
+     console errors and network requests. This is your "dataset capture". One
+     instrument produces it for any picture.
+  3. Judgments: pure functions over a reading. They never touch the browser.
+     This is the multi-assertion layer, and each judgment reports separately, so
+     one scenario lists every promise it broke.
+
+  Where robustness comes from: rank every check
+
+  Kind of judgment: Law (an invariant)
+  What it needs: Nothing
+  Example here: Every card inside its directory; no name cut or colliding;
+    uses enter on the left, offerings leave on the right
+  Breaks when: The promise is broken
+  ────────────────────────────────────────
+  Kind of judgment: Relation between two readings of one run (testers call
+    these metamorphic)
+  What it needs: Nothing
+  Example here: Reload gives the same reading; 2D → 3D → 2D keeps the same
+    files; pin then unpin returns to the start
+  Breaks when: The promise is broken
+  ────────────────────────────────────────
+  Kind of judgment: Oracle fact
+  What it needs: An independent truth
+  Example here: The wires shown for {processor} equal the Rosetta manifest's
+    edges
+  Breaks when: The product or the fixture's meaning changes
+  ────────────────────────────────────────
+  Kind of judgment: Baseline (a recorded measurement)
+  What it needs: A stored number
+  Example here: Crossings, frames to rest, picture size
+  Breaks when: Anything moves it
+
+  The rule is to push each check as high up that table as it will go. A literal
+  written into a spec ("328 hidden files in 10 shells") is a baseline pretending
+  to be a law, and that is where most of our fragility sits today.
+
+  Baselines still earn their place for things with no law and no oracle, such as
+  how good a layout is. I'd treat them as measurements:
+  - one-sided bounds ("no more crossings than recorded");
+  - an explicit re-approval step that shows what moved and by how much.
+
+  A deliberate layout change then costs one reviewed update, not forty
+  hand-edited expectations.
+
+  What the split buys beyond speed
+
+  - Judgments can be tested without a browser. Each one gets a hand-made bad
+    reading that it must reject, which is our rule that a test which cannot fail
+    proves nothing.
+  - Readings can be kept. A new promise can run against yesterday's readings in
+    milliseconds. Kept over time they are also the measurement you mention:
+    today's surprise, that the same search went from about 25 s to about 60 s in
+    a month, would have been a visible curve.
+  - Failures read as a table of scenarios against promises. A whole row red
+    means that scenario cannot load. A whole column red means one promise is
+    broken everywhere, or the check is wrong. A single cell is an edge case.
+  - Rosetta gives a relation nobody else has. The same scenario in nine
+    languages should draw the same shape, within the two documented tiers. That
+    checks the adapters through the UI with no expected data at all.
+
+  Where it can go wrong
+
+  - Laws pass on an empty page. Each scenario needs a floor: the pinned thing is
+    drawn, and at least one wire exists.
+  - The reading instrument can lie. It must stay small, and a screenshot is
+    saved beside each reading so an eye can confirm that it means what it says.
+  - Re-approval can become a rubber stamp. Diffs must be small and explained.
+  - Conversion can silently drop coverage. I'd keep a ledger mapping each of
+    today's 488 cases to the judgment that replaces it, and for a sample, break
+    the product the way the old case guarded against and confirm the table goes
+    red.
+  - Sequences and motion do not fit a single reading. Journeys become a path of
+    readings with the same laws at every step. Motion is judged from the
+    product's own counters, read at rest. A handful of clock alarms run alone.
+
+  Our own map and slow tests in general
+
+  Our own map keeps a seat, but only for laws and relations on a few
+  token-resolved scenarios. Those need no literals, so the repository can grow
+  without breaking them.
+
+  The same split applies to the slow unit and integration tests: run the
+  expensive producer once per scenario, keep its output, and judge it many
+  times.
+
+  The first slice after the rebuild would be the instrument, about a dozen laws
+  and relations, and Rosetta, measured against the cases it replaces. The gate's
+  rerun is still going; the hand-over follows when it ends.
+
+● Background command "Add the engine doc's note and rerun the gate's stages
+  before the browser" completed (exit code 0)
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The card launch, both devcontainer configurations and the engine fix are
+  committed as e1f8c21a. Now bringing the record level and committing it, then
+  the hand-over.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The card is committed as e1f8c21a, and the gate's stages before the browser
+  pass on it (1,977 unit and 138 integration cases). The rebuild is yours
+  whenever you're ready.
+
+  To rebuild
+
+  1. Export this chat first if you want its last messages kept. The rebuild ends
+     it, and this once the earlier chats will not be listed afterwards.
+  2. Command Palette → "Dev Containers: Rebuild and Reopen in Container", and
+     choose Live Documentation Dev (WSL2 graphics card).
+  3. Wait for the set-up, five to ten minutes. It installs the dependencies into
+     their new volume.
+  4. Sign in to Claude Code and Codex once more. From then on a rebuild keeps
+     both sign-ins and the chats.
+  5. Start a new chat and say the container is rebuilt. It picks up from the
+     record's Resumption.
+
+  If the container does not come up
+
+  The three new mount lines could not be tried without a real rebuild, so this
+  is the likeliest thing to go wrong. Open the folder locally, and from a
+  Windows terminal in the repository run:
+
+  git checkout 180c86ba -- .devcontainer/devcontainer.json
+
+  Then reopen with the ordinary configuration, Live Documentation Dev. That is
+  yesterday's container definition. Paste the error into the next chat and it
+  will mend the new one.
+
+  Once it is up
+
+  - Probe containers: leave ld-gpu-b until the new chat's first test run names
+    the card, then delete both.
+  - Your preview: npx http-server dist/explorer -p 8999 -c-1, so that Hidden
+    Files and the marbles are there.
+  - node_modules on D:\ is no longer read and can be deleted from Windows when
+    convenient.
+
+  What the next chat does first
+
+  1. Checks the card, the volumes and how quickly a run starts.
+  2. Runs the whole gate, the first time on this launch. Expected red: two
+     history-scrubber cases a few seconds over their limit, perhaps two 2D cases
+     that sit on theirs, and one case with a race.
+  3. Confirms the frame from my last reply with you (scenario, reading,
+     judgments), then briefs the first slice of the scenario suite.
+
+  The record and Memory are committed as 2ac31e34, including this message. main
+  is 112 commits ahead of origin/main; I have pushed nothing.
