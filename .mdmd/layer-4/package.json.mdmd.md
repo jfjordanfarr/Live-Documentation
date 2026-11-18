@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: package.json
 - Entry: tooling
-- Generated At: 2026-11-12T16:06:42.875Z
+- Generated At: 2026-11-18T17:31:23.993Z
 
 ## Authored
 ### Purpose
@@ -39,19 +39,19 @@ The workspace manifest: the four npm workspaces (engine, generator, explorer, cl
 - `@playwright/test@^1.58.2`
 - `@sourcegraph/scip-typescript@^0.4.0`
 - `@types/node@^25.3.2`
-- `@vitest/coverage-v8@^4.1.11`
+- `@vitest/coverage-v8@^4.1.12`
 - `eslint-import-resolver-typescript@^4.4.5`
-- `eslint-plugin-import-x@^4.17.1`
+- `eslint-plugin-import-x@^4.18.1`
 - `eslint-plugin-jsdoc@^63.3.3`
-- `eslint@^10.13.0`
-- `glob@^13.0.6`
+- `eslint@^10.15.0`
+- `glob@^14.0.6`
 - `http-server@^14.1.1`
 - `lz-string@^1.5.0`
 - `tree-sitter-cli@0.27.1`
 - `tsx@^4.23.15`
-- `typescript-eslint@^8.72.0`
+- `typescript-eslint@^8.73.0`
 - `typescript@^5.4.0`
-- `vitest@^4.1.11`
+- `vitest@^4.1.12`
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->
