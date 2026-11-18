@@ -26,6 +26,7 @@ const FILES = [
 
 test.use({ viewport: { width: 1600, height: 1000 } });
 
+/** `tried` counts every trial of the search, its seeds, its boundary joins and its cycles' orders: a pause must stop them all (2026-11-18; before, the seeds alone). */
 interface Reading { status: string; tried: number; next: number; marked: number; cards: number }
 
 /** Opens the retained scope with a long search, so that a view is switched while it runs. */
@@ -36,11 +37,10 @@ async function open(page: Page): Promise<void> {
   await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached", timeout: 15_000 });
 }
 
-/** The search's counters, and how many of the cards still carry the mark put on them. */
 const read = (page: Page): Promise<Reading> => page.evaluate(() => {
   const root = document.querySelector<HTMLElement>("#map-container .local-placed")!;
   const cards = [...document.querySelectorAll<HTMLElement>("#map-container .node-card")];
-  return { status: root.dataset.searchStatus ?? "", tried: Number(root.dataset.searchTried), next: Number(root.dataset.searchNext), marked: cards.filter(card => card.dataset.mark === "kept").length, cards: cards.length };
+  return { status: root.dataset.searchStatus ?? "", tried: Number(root.dataset.searchTried || 0) + Number(root.dataset.searchAlignmentTried || 0) + Number(root.dataset.searchCycleTried || 0), next: Number(root.dataset.searchNext), marked: cards.filter(card => card.dataset.mark === "kept").length, cards: cards.length };
 });
 
 /** Marks every card, so that a card drawn anew is told from one kept. */
@@ -49,8 +49,8 @@ const mark = (page: Page): Promise<void> => page.evaluate(() => { document.query
 const show = async (page: Page, view: "sources" | "world" | "map"): Promise<void> => { await page.click(`.nav-item[data-view="${view}"]`); };
 
 test("the search pauses while another view is shown, and a return to the unchanged picture keeps it and resumes the search", { tag: "@alone" }, async ({ page }) => {
-  // The search runs its eighty seeds to the end after the return: 23 to 29 seconds on one worker (2026-10-19), 40 to 44 on
-  // 2026-11-18, so the case runs alone (`@alone`); the half minute is not its measure.
+  // The search runs to its end after the return: 23 to 29 seconds on one worker (2026-10-19), 41 to 42 on 2026-11-18 (80
+  // seeds and 121 boundary joins), so the case runs alone (`@alone`); the half minute is not its measure.
   test.setTimeout(60_000);
   await open(page);
   const started = await read(page);
@@ -92,9 +92,9 @@ test("a change made while another view is shown is drawn when the map is shown a
   expect(back.cards).toBeGreaterThan(0);
 });
 
-test("the search pauses while the page is hidden and resumes when it is visible again", { tag: "@alone" }, async ({ page }) => {
-  // The search runs its eighty seeds to the end once the page is visible again: 19 to 25 s on one worker (2026-10-19), 40 to 44 on 2026-11-18.
-  test.setTimeout(60_000);
+test("the search pauses while the page is hidden and resumes when it is visible again", async ({ page }) => {
+  // The case asks that starts are tried again, which is its promise. Until 2026-11-18 it waited for the search's end, 19 to
+  // 25 s when written and 41 since the boundary joins (121 trials on this picture whatever the seeds), under a 45 s wait.
   await open(page);
   expect((await read(page)).status).toBe("running");
   const setVisibility = (state: "hidden" | "visible"): Promise<void> => page.evaluate(value => {
@@ -108,8 +108,8 @@ test("the search pauses while the page is hidden and resumes when it is visible 
   const stillHidden = await read(page);
   expect(stillHidden.tried, "no start is tried while the page is hidden").toBe(hidden.tried);
   await setVisibility("visible");
-  await localMapSettled(page, 45_000);
-  expect((await read(page)).tried, "the search went on once the page was visible").toBeGreaterThan(hidden.tried);
+  const tried = (): Promise<number> => read(page).then(reading => reading.tried);
+  await expect.poll(tried, { message: "the search went on once the page was visible", timeout: 15_000 }).toBeGreaterThan(hidden.tried);
 });
 
 test("pinning from the reader in Knowledge Sources keeps hidden 3D paused and appears when the map returns", async ({ page }) => {

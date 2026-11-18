@@ -66,10 +66,10 @@ const entry = (base: string, extra: Partial<typeof DEFAULT_SNAPSHOT> = {}): stri
 })}`;
 
 async function settled(page: Page): Promise<void> {
-  // A key takes effect on the view's next frame: wait for that frame before reading the busy flag, since a stale
-  // "false" let a count be read before the step had applied, under load (2026-11-06).
+  // A key takes effect on the view's next frame, so that frame is awaited first (a stale "false" was read, 2026-11-06). Then
+  // the map must say both: not busy (its motion, its packing) and built (no sphere still entering; missed under load, 2026-11-18).
   await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
-  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 60_000 });
+  await page.waitForFunction(() => { const map = document.querySelector("#graph-svg"); return map?.getAttribute("aria-busy") === "false" && !map.hasAttribute("data-building"); }, undefined, { timeout: 60_000 });
 }
 
 async function openHistory(page: Page): Promise<void> {
