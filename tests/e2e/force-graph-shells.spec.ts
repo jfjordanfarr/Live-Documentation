@@ -269,7 +269,8 @@ test("the one file of a directory beyond the hops stands as itself, dimmed like 
     const lone = (await renderedNodes(page)).find(node => node.id === id)!;
     await page.mouse.move(lone.x, lone.y);
     const named = page.locator(`.force-graph-label[data-node-id="${id}"]:not([hidden])`);
-    if (await named.isVisible().catch(() => false)) {
+    // The page picks what is under the pointer in its next frame.
+    if (await named.waitFor({ state: "visible", timeout: 2_000 }).then(() => true, () => false)) {
       await expect(named).toHaveAttribute("title", / · Pin this file$/u);
       await page.mouse.click(lone.x, lone.y);
       pressed = id;
