@@ -95,6 +95,9 @@
     "scripts/live-docs/visualize-history-sample.ts": [
       "command live-docs:visualize:history-sample of package.json"
     ],
+    "scripts/live-docs/visualize-rosetta.ts": [
+      "command live-docs:visualize:rosetta of package.json"
+    ],
     "scripts/live-docs/visualize-sample.ts": [
       "command live-docs:visualize:estate of package.json",
       "command live-docs:visualize:tidepool of package.json"

@@ -18,7 +18,6 @@
 
 import { framePadding } from "../../../packages/explorer/src/client/views/localView/layout-measure";
 import { flowOf } from "../still-picture-geometry";
-
 import type { Box, CardRead, Reading, WireRead } from "./reading";
 
 export type Rank = "floor" | "law" | "relation" | "oracle" | "baseline";

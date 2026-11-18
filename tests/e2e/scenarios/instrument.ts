@@ -11,15 +11,13 @@
  * Kept small on purpose: an instrument that lies makes every judgment lie with it.
  */
 
+import type { Page } from "@playwright/test";
 import fs from "node:fs";
 import path from "node:path";
-
-import type { Page } from "@playwright/test";
 
 import { backdrop, contrastRatio, parseColour } from "../contrast";
 import { overlapsAmong, textBoxes, truncations } from "../design-audit";
 import { LOCAL_MAP, localMapStill, readPicture } from "../still-picture";
-
 import type { Box, Reading, TextFault } from "./reading";
 
 /** What a page did while a scenario loaded: errors it logged and requests it made off its own site. */

@@ -1,11 +1,9 @@
+import { expect, test, type Page } from "@playwright/test";
 import fs from "node:fs";
 import path from "node:path";
 
-import { expect, test, type Page } from "@playwright/test";
-
 import { readOracleEdges } from "../../../scripts/oracle/files";
 import { displayNames, loadGraph, localMapStill, localRetainUrl } from "../still-picture";
-
 import { readSettled, watchPage } from "./instrument";
 import { judgeFloor, LAWS, samePicture, tonesHeld, wiresMatchData, wiresMatchOracle, type Floor, type OracleEdge, type Verdict } from "./judgments";
 import type { Reading } from "./reading";
