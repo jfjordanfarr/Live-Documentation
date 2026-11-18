@@ -425,3 +425,554 @@
      defaults (marbles on, cells under the name), and the playtest instrument.
   5. After test speed: the rings beside the membranes, your defect, first in
      that list.
+
+
+❯ <ide_selection>The user selected the lines 1 to 427 from
+  /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/11/2026-11
+  -18.1.claude-code.export.txt:
+
+  ❯ Let us now begin a new dev day chat. It is 11/18/2026.
+
+    The single git diff in this workspace is the explanation for why the first
+    attempt failed in the following log:
+    (base) PS C:\Users\User> wsl -l -v
+      NAME              STATE           VERSION
+    * docker-desktop    Running         2
+    (base) PS C:\Users\User> wsl --install -d Ubuntu
+    Downloading: Ubuntu
+    Installing: Ubuntu
+    Distribution successfully installed. It can be launched via 'wsl.exe -d
+    Ubuntu'
+    Launching Ubuntu...
+    Provisioning the new WSL instance Ubuntu
+    This might take a while...
+    Create a default Unix user account: user
+    New password:
+    Retype new password:
+    passwd: password updated successfully
+    usermod: no changes
+    Help improve Ubuntu!
+
+    Help us improve Ubuntu features and compatibility by sharing system reports
+    with Canonical.
+    Reports are sent anonymously and do not contain any personal data.
+    For legal details, please visit:
+    https://ubuntu.com/legal/systems-information-notice
+
+    We will save your answer to Windows and will only ask you once.
+
+    Would you like to opt-in to platform metrics collection (Y/n)? To see an
+    example of the data collected, enter 'e'.
+    [Y/n/e]: n
+    user@DESKTOP-N3J4RG0:/mnt/c/Users/User$ bash
+    /mnt/d/Projects/Live-Documentation/AI-Agent-Workspace/tmp/move-to-wsl.sh
+
+    STOPPED: the old copy has uncommitted changes; they would be left behind.
+    Nothing in /mnt/d/Projects/Live-Documentation was changed.
+    user@DESKTOP-N3J4RG0:/mnt/c/Users/User$ bash
+    /mnt/d/Projects/Live-Documentation/AI-Agent-Workspace/tmp/move-to-wsl.sh
+    From: /mnt/d/Projects/Live-Documentation
+    To:   /home/user/src/Live-Documentation
+
+    1/4  Cloning the history and the tracked files (about 850 MB of history; a
+    few minutes)...
+    2/4  Pointing origin at
+    https://github.com/jfjordanfarr/Live-Documentation.git ...
+    3/4  Bringing the ignored files git does not carry (about 2 GB; a few
+    minutes)...
+    4/4  Checking...
+
+    DONE in 5 min 0 s.
+      Commit:  e2b29244 Record November 18: the owner's questions on the move,
+    and the export as saved that morning
+      Branch:  main, 0 commits ahead of origin/main as last known
+      Origin:  https://github.com/jfjordanfarr/Live-Documentation.git
+      Size:    3.9G
+
+    Next:  cd /home/user/src/Live-Documentation && code .
+    user@DESKTOP-N3J4RG0:/mnt/c/Users/User$ cd
+  ──── (321 lines hidden) ─────────────────────────────────────────────────────
+  he container use was 9.4
+      GB; the real limit on parallel tests is the ten cores.
+    - Windows is not capping the processor: the power plan is Balanced with the
+      maximum state at 100%.
+    - To check yourself: nproc, free -g and /usr/lib/wsl/lib/nvidia-smi in any
+      terminal here or in the container. The knob, if ever needed, is
+      C:\Users\User\.wslconfig; I recommend not creating one.
+
+    What I did this turn
+
+    - Startup read, in full: the guide, the four Memory files, the summaries of
+      November 10, 12, 13, 15 and 16, and yesterday's record.
+    - Closed yesterday's session: its summary
+  (AI-Agent-Workspace/ChatHistory/2026
+      /11/Summarized/2026-11-17.1.SUMMARIZED.md), the narrative's chapter, and
+      your re-saved export filed as received.
+    - Set your commit name and email in this clone, from your last commit.
+  Ubuntu
+      has no git settings of its own, so commits would otherwise have had none.
+    - Removed the move script from this copy; its work is done.
+    - Three commits, documents only (24412675, 1d6271a7, 493c70de). Both link
+      checks pass. Nothing was built or tested, and nothing is pushed.
+
+    Waiting on you from yesterday
+
+    1. The session-history convention: a directory per dev day, Summarized/ at
+  the
+       month, the move done by one script (my proposal
+  (AI-Agent-Workspace/ChatHi
+
+  story/2026/11/2026-11-17.1.record.md#roots-reply-to-turn-14-as-delivered)).
+       Correct or confirm it; I'll brief the builder on it as proposed unless
+  you
+       say otherwise.
+    2. How I'd build the blind playtests (the plan
+  (AI-Agent-Workspace/ChatHistory
+       /2026/11/2026-11-17.1.record.md#roots-reply-to-turn-13-as-delivered)):
+       correct anything.
+
+    Order once the container is up
+
+    1. Check the disk and the card, then run the whole gate. It will be the
+  first
+       to finish on the committed browser settings. Expected red: two
+       history-scrubber cases a few seconds over their limit, perhaps two 2D
+  cases
+       on theirs, one case with a race, and force-graph-building.spec.ts:66, a
+       real fault I owe a diagnosis.
+    2. Tell you what can go: the D:\ folder, the old container and its
+       dependencies volume.
+    3. The session-history builder.
+    4. The 19 dependency findings, the scenario suite's first slice, the new
+       defaults (marbles on, cells under the name), and the playtest
+  instrument.
+    5. After test speed: the rings beside the membranes, your defect, first in
+       that list.
+
+  This may or may not be related to the current task.</ide_selection>
+
+❯ ```
+  Running the onCreateCommand from devcontainer.json...
+
+  [498465 ms] Start: Run in container: /bin/sh -c sudo chown node:node
+  /home/node/.claude /home/node/.codex
+  /workspaces/Live-Documentation/node_modules
+  Running the postCreateCommand from devcontainer.json...
+
+  [500087 ms] Start: Run in container: /bin/sh -c bash
+  .devcontainer/post-create.sh
+  === Live Documentation Devcontainer Setup ===
+
+  === Configuring git safe.directory ===
+    Set safe.directory = '*' (devcontainer bind-mount ownership workaround)
+
+  === Installing project dependencies ===
+  npm warn deprecated whatwg-encoding@2.0.0: Use @exodus/bytes instead for a
+  more spec-conformant and faster implementation
+
+  added 287 packages, and audited 292 packages in 2m
+
+  80 packages are looking for funding
+    run `npm fund` for details
+
+  19 vulnerabilities (12 moderate, 7 high)
+
+  To address issues that do not require attention, run:
+    npm audit fix
+
+  To address all issues (including breaking changes), run:
+    npm audit fix --force
+
+  Run `npm audit` for details.
+
+  === Building project ===
+
+  > live-documentation@0.0.0 build
+  > npm run build -w packages/engine && npm run build -w packages/explorer &&
+  npm run build -w packages/generator
+
+
+  > @live-documentation/engine@0.0.0 build
+  > tsc -p tsconfig.json
+
+
+  > @live-documentation/explorer@0.0.0 build
+  > tsc -p tsconfig.json && tsc --noEmit -p src/client/tsconfig.json
+
+  src/shared/graph.test.ts:4:59 - error TS6305: Output file
+  '/workspaces/Live-Documentation/packages/engine/dist/live-docs/document.d.ts'
+  has not been built from source file
+  '/workspaces/Live-Documentation/packages/engine/src/live-docs/document.ts'.
+
+  4 import { parseLiveDoc, renderLiveDoc, type LiveDoc } from
+  "../../../engine/src/live-docs/document";
+
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  src/shared/graph.test.ts:5:36 - error TS6305: Output file
+  '/workspaces/Live-Documentation/packages/engine/dist/live-docs/graph.d.ts'
+  has not been built from source file
+  '/workspaces/Live-Documentation/packages/engine/src/live-docs/graph.ts'.
+
+  5 import { deriveLiveDocGraph } from "../../../engine/src/live-docs/graph";
+                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  src/shared/graph.test.ts:39:67 - error TS18046: 'file' is of type 'unknown'.
+
+  39     const documented = Object.values(graph.files).flatMap(file =>
+  file.edges.filter(edge => edge.to && edge.to !== file.codePath));
+                                                                       ~~~~
+
+  ──── (234 lines hidden) ─────────────────────────────────────────────────────
+  edgeCount,
+                  ~~~~~~~~~
+
+    src/shared/staticBuilder.ts:86:9
+      86         edgeCount: number;
+                 ~~~~~~~~~
+      The expected type comes from property 'edgeCount' which is declared here
+  on type '{ fileCount: number; edgeCount: number; bundledMarkdownCount:
+  number; bundleSizeBytes: number; historyCommits?: number | undefined; }'
+
+  src/shared/staticBuilder.ts:244:81 - error TS18046: 'error' is of type
+  'unknown'.
+
+  244         throw error instanceof LiveDocSyntaxError ? new
+  Error(`${board.path}: ${error.message}`) : error;
+
+        ~~~~~
+
+  src/shared/staticBuilder.ts:247:45 - error TS7006: Parameter 'scan'
+  implicitly has an 'any' type.
+
+  247     logger.log(`Scans: ${reading.scans.map((scan) => scan || "the
+  workspace root").join(", ") || "none"}`);
+                                                  ~~~~
+
+  src/shared/staticExplorerData.ts:6:35 - error TS6305: Output file
+  '/workspaces/Live-Documentation/packages/engine/dist/live-docs/graph.d.ts'
+  has not been built from source file
+  '/workspaces/Live-Documentation/packages/engine/src/live-docs/graph.ts'.
+
+  6 import type { LiveDocGraph } from
+  "@live-documentation/engine/live-docs/graph";
+
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  src/shared/staticExplorerData.ts:7:34 - error TS6305: Output file '/workspace
+  s/Live-Documentation/packages/engine/dist/live-docs/history/format.d.ts' has
+  not been built from source file '/workspaces/Live-Documentation/packages/engi
+  ne/src/live-docs/history/format.ts'.
+
+  7 import type { HistoryHead } from
+  "@live-documentation/engine/live-docs/history/format";
+
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+  Found 54 errors in 4 files.
+
+  Errors  Files
+       5  src/shared/graph.test.ts:4
+      28  src/shared/graph.ts:11
+      19  src/shared/staticBuilder.ts:22
+       2  src/shared/staticExplorerData.ts:6
+  npm error Lifecycle script `build` failed with error:
+  npm error code 2
+  npm error path /workspaces/Live-Documentation/packages/explorer
+  npm error workspace @live-documentation/explorer@0.0.0
+  npm error location /workspaces/Live-Documentation/packages/explorer
+  npm error command failed
+  npm error command sh -c tsc -p tsconfig.json && tsc --noEmit -p
+  src/client/tsconfig.json
+  [634480 ms] postCreateCommand from devcontainer.json failed with exit code 2.
+  Skipping any further user-provided commands.
+  Done. Press any key to close the terminal.
+  ```
+
+● I'll diagnose the failed build and do the new-chat read in parallel.
+
+  Searched for 1 pattern, read 2 files, listed 1 directory, ran 3 shell commands (ctrl+o to expand)
+
+● The move dropped the dist folders while carrying over the build-state files,
+  so the engine build thought it was current and emitted only part of its
+  output. I'm checking that against the move script's notes, then fixing the
+  build to prevent a repeat. · summary
+
+  Searched for 1 pattern, ran 2 shell commands (ctrl+o to expand)
+
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/ChatHistory/2026/11/2026-11-18.1.claude-code.export.txt in the
+  IDE. This may or may not be related to the current task.</ide_opened_file>
+  Waiting on you from yesterday
+
+    1. The session-history convention: a directory per dev day, Summarized/ at
+  the
+       month, the move done by one script (my proposal
+  (AI-Agent-Workspace/ChatHi
+
+  story/2026/11/2026-11-17.1.record.md#roots-reply-to-turn-14-as-delivered)).
+       Correct or confirm it; I'll brief the builder on it as proposed unless
+  you
+       say otherwise.
+    2. How I'd build the blind playtests (the plan
+  (AI-Agent-Workspace/ChatHistory
+       /2026/11/2026-11-17.1.record.md#roots-reply-to-turn-13-as-delivered)):
+       correct anything.
+
+  I'm totally onboard with your proposal for both of these. I think the only
+  one I might tweak a little as we approach is the blind playtester one (we may
+  want some variants to see how efficiently we can pull off the playtests --
+  that kind of thing).
+
+● Both proposals are accepted as written, with the playtest plan open to
+  variants later. I'm recording this as Turn 3 and briefing the session-history
+  builder, then fixing the build. · summary
+
+  Listed 1 directory, ran 2 shell commands (ctrl+o to expand)
+
+❯ Should I expect to need to rebuild the devcontainer again or are we in a
+  state where this chat is likely to be the stable one for the day?
+
+● No rebuild is needed, and this chat will stay as the stable one; I'm running
+  the rest of the container's set-up script from here now that the build passes
+  cleanly, and I'm checking the trap is closed first. · summary
+
+  Read 2 files, ran 5 shell commands (ctrl+o to expand)
+
+● The build fix is verified, and the container's set-up script is still running
+  later steps in the background. I'm writing today's record now, including your
+  three messages and the previous chat's last reply. · summary
+
+  Read 1 file, ran 5 shell commands (ctrl+o to expand)
+
+● Set-up is on its last step (the last indexer); the graphics card is confirmed
+  available to the browser tests. Committing the build fix now, then the record.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Background command "Run the container's whole set-up script from the start"
+  completed (exit code 0)
+
+  Ran 7 shell commands (ctrl+o to expand)
+
+● Gate is running on the fixed commit since 15:00 UTC. I'm reading direction's
+  current sections so I can log your confirmation of the two proposals, then
+  I'll commit the record and send the full reply. · summary
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● Writing your confirmations into direction and filing your export, then
+  committing and giving you the full reply; the gate keeps running in the
+  background.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+❯ One more question from me to you:
+
+  I can see that the management of the chat record takes up a lot of your
+  _effort_. What isn't yet clear to me is whether that effort is fully worth
+  it.
+
+  Here are two alternatives I'm considering, and I'd ask which you think is
+  better:
+  - Continue with the chat record as-is: it is the most durable to changes
+  (survived container rebuilds!!), and the time spent upkeeping it is time
+  spent _honing one's ideas_. The root agent continues to be the owner of the
+  chat record because it is worth the effort.
+  - A scribe subagent-like setup: A model like Opus 5.5 Medium (and perhaps
+  even smaller) is setup with hooks of some sort to activate when a completed
+  response has been delivered to the user _or keeps itself active via keep-warm
+  jobs like you do_. It cannot see into the mind of the root agent, but the
+  root agent now gets to think about the task at hand and managing the builder
+  fleet with the finite computational budget it has available. The scribe
+  subagent simply tries to create an efficient markdown record which
+  better-and-better approximates _what the user actually saw_ in the chat
+  window (I notice that you mention failed reply deliveries a lot -- things
+  like that could feasibly become something to no longer worry about).
+
+  What do you think?
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Recording your question as Turn 5, then the full reply. The gate has passed
+  every stage before the browser and is now running the 488 browser cases on the
+  graphics card.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● No rebuild is needed, and this chat is the stable one for the day. The
+  container was created correctly; only its set-up script stopped at the build.
+  I fixed the cause, ran the whole script again from inside the container, and
+  it finished cleanly. This chat's log is on the chats volume, so it would
+  survive a rebuild anyway.
+
+  What broke, and the fix
+
+  The fault was mine, in yesterday's move script.
+
+  - Cause. TypeScript keeps a notebook of what it has already compiled
+    (tsconfig.tsbuildinfo) so the next build only redoes what changed. The
+    notebook sat beside each package's tsconfig.json; the compiled output sits
+    in dist/. The move script carried the notebooks and left the dist/ folders
+    behind.
+  - Effect. The engine's build trusted its notebook and wrote 78 of its 565
+    files. The Explorer compiles against the engine's output, found none of its
+    types, and failed with the 54 errors you pasted.
+  - Fix. One line in each of the four packages' tsconfig.json (for example
+    packages/engine/tsconfig.json) puts the notebook inside dist/. A missing
+    dist/ now always means a full build, including when someone deletes one by
+    hand.
+  - Checked. A build from nothing passes, and so does a build after deleting the
+    engine's dist/ alone, which is the case that failed. The four Live Docs
+    explain the line (for example the engine's
+    (.mdmd/layer-4/packages/engine/tsconfig.json.mdmd.md)).
+
+  Your two confirmations
+
+  Both are recorded in direction. The session-history builder will be briefed on
+  the convention as proposed. The playtest plan stands, with room for the
+  variants you mentioned when we get there. Nothing from yesterday is waiting on
+  you now.
+
+  Who should keep the chat record
+
+  I recommend neither option whole: split the record by kind of work. This
+  turn's upkeep had two kinds.
+
+  - Copying. Your messages and my delivered replies word for word, their times,
+    the delivery check, file hashes. No judgment is involved, and I already do
+    it with a script that reads the chat's log.
+  - Authoring. The work notes, the resumption and Memory: what was found,
+    decided and rejected, and why.
+
+  What I'd do with each:
+
+  1. Copying goes to a script the harness runs on a hook, at the end of each
+     reply and at each new message, with no model involved. It is exact where a
+     scribe would approximate, it cannot paraphrase you, and it admits only
+     visible messages. It also has no life of its own, which answers your
+     earlier worry about jobs that outlive their purpose.
+  2. Authoring stays with the root, cut to what the delivered reply doesn't
+     already say. A scribe cannot see why something was done, and by your rule
+     it must not read reasoning, so it would either restate the transcript or
+     guess at reasons. Your "honing" point held this turn: about to write down a
+     reason for the fix's shape, I tested it first and it was false, so the
+     record has the true one.
+  3. One trial for a scribe model: the session summary at close, drafted from
+     the committed record and reviewed by me. That is the largest single block
+     of archive work, and its input is plain text that can be checked.
+
+  A scribe would not fix missed deliveries either; it would only take over my
+  bookkeeping about them, which the script does too. The log shows two of my six
+  mid-work lines as messages this turn. What protects you is that everything
+  you need is in the closing reply.
+
+  If you agree, I'd build the hook as part of the session-history round, since
+  that round moves where records live. I would first confirm that the VS Code
+  extension fires hooks; I have not checked that yet.
+
+  Where things stand
+
+  - Gate: the whole gate started at 15:00 UTC on the fixed commit. Every stage
+    before the browser passed. The 488 browser cases are running on one worker,
+    drawn by the RTX 3090. I'll report when it ends; the reds I expect are the
+    ones listed in today's record
+    (AI-Agent-Workspace/ChatHistory/2026/11/2026-11-18.1.record.md#resumption).
+  - Startup read, not finished: I put it behind the failed set-up. Read whole so
+    far: the guide, the archive's README, today's record, owner.md and
+    ideas.md. Of direction.md I have read the current sections (lines 1 to 144
+    of 586). Still to read: the rest of direction, the narrative, and the
+    summaries of November 12, 13, 15, 16 and 17. That continues now while the
+    gate runs.
+  - Commits: three, not pushed: f571f9d9 (the fix), ac8498c1 and e32d3f1c (the
+    record, your export filed as received, direction).
+  - Order after the gate: what can be deleted (the D:\ copy, the old container
+    and its volume), the session-history builder, the 19 dependency findings,
+    the scenario suite's first slice, the new defaults, the playtest instrument.
+    After the test-speed work, your defect comes first: the rings beside the
+    membranes.
+
+● Background command "Short timer so the startup read continues after the reply"
+  completed (exit code 0)
+
+  Read 7 files, ran 2 shell commands · 1 failed (ctrl+o to expand)
+
+● The startup read is complete across the Memory files, the narrative and the
+  five summaries. The gate is still in its browser stage, so I'm preparing the
+  builder's brief from the session-history convention and the vision in the
+  meantime. · summary
+
+  Read 2 files, listed 1 directory, ran 6 shell commands (ctrl+o to expand)
+
+● Checking how the link audit treats the chat archive, so today's record's links
+  are verified properly; the gate continues in the background.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+❯ >If you agree, I'd build the hook as part of the session-history round, since
+  that round moves where records live. I would first confirm that the VS Code
+  extension fires hooks; I have not checked that yet.
+
+  Nah. Thanks for the pushback, that's very helpful. It sounds to me like our
+  current setup is optimal for simplicity and efficacy. The alternative is not
+  superior.
+
+  Well, then it occurs to me that you have everything you need to plausibly go
+  through a full productive dev day! Is there anything else immediate which
+  needs my attention?
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Recording your decision (the record stays as it is: no hook, no scribe), then
+  I'll start the session-history builder alongside the gate and answer your
+  question.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Starting the session-history builder now (Opus, high effort, its own
+  worktree), then answering your question.
+● Agent(Session history reorganization builder) Opus 5.5
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Understood: the record stays as it is, kept by the root, with no hook and no
+  scribe. I've written that into owner.md in your words.
+
+  Nothing needs you right now. I checked each piece of today's order against the
+  record for a decision that is still yours, and found none. Three things to
+  know, none urgent:
+
+  1. Pushing is now the working copy's only backup. Nine commits are unpushed.
+     Your first push from this container is the one thing I cannot test from
+     here; if it asks you to sign in to GitHub, that is the new environment, not
+     a fault.
+  2. Leave the D:\ copy and the old container alone for now. I'll say when they
+     can go, once the gate has finished here.
+  3. Your preview command is unchanged when you next want to look: npx
+     http-server dist/explorer -p 8999 -c-1 in a VS Code terminal in this
+     container.
+
+  What is running:
+
+  - The gate. Every stage before the browser passed in about four minutes. The
+    browser stage has passed 54 of 488 cases with none failed, at about 12.5 s a
+    case, so it should end near 16:45 UTC. That is the same pace as on the
+    Windows drive (98 minutes): the new disk speeds up a run's start and the
+    earlier stages, not the cases themselves, which matches Tuesday's
+    measurements.
+  - The session-history builder (Opus, high effort, in its own worktree), on the
+    convention you confirmed. It runs nothing heavy while the gate runs and
+    never a browser. Its first handback is a script that does the whole move by
+    rule, with its proof that every link still resolves and no capture's bytes
+    changed. I land it on main after the gate and run the gate again.
+
+  What will want your eye later today is pictures, not questions: the new
+  defaults (marbles on, cells under the name) and the mend for the rings beside
+  the membranes. When the session-history move lands, the folder you save
+  exports into will change; I'll give you the new path then.
+
+  One correction to what I said about the startup read: it is now finished. That
+  covers all four Memory files, the narrative, the five summaries and the
+  vision, each to its last line.
