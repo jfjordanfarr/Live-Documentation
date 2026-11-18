@@ -73,7 +73,7 @@ import { componentLandmarks, connectedNeighbours, directoryHubOf, directoryMembe
 import { bodySteps, pictureVeils, poppedAfter, releaseOf, shellId, shellPicture, structureCells, structureSpokes, veiledUnits, type BodyBuilding, type DirectoryShell, type Spoke,
   type StructureCell } from "./forceGraphShells";
 import { spatialSizeScale } from "./forceGraphSizing";
-import { BURST, burstProgress, wrappedSeeds, wrapperHull, type GroupShape, type WrapperHull } from "./forceGraphWrappers";
+import { BURST, burstProgress, ringedSpheres, wrappedSeeds, wrapperHull, type GroupShape, type WrapperHull } from "./forceGraphWrappers";
 import { parentDirectory } from "./localView/directory-bands";
 import { under } from "./localView/directory-state";
 import type { ForceScene } from "./perspectiveTransition";
@@ -284,6 +284,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
    */
   let scopeHops = new Map<string, number>();
   let scopeBeyond = new Map<string, number>();
+  /** The spheres that wear a ring: with Group Wrappers Off, those with connections left out; with any wrapper on, none (2026-11-18). */
+  let ringed = new Set<string>();
   /** The groups shown only by their seed: the seed's id to the group's size in files (2026-11-02). */
   let scopeGroups = new Map<string, number>();
   let frontierHop = Infinity;
@@ -433,13 +435,13 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   const skinOf = (id: string): { lit: boolean; alpha: number } => emphasized.get(id)?.skin ?? PLAIN_SKIN;
   /** Whether a node stands wrapped now: wrapping, and a group's seed or a directory shell with its hull built. */
   const isWrapped = (id: string): boolean => wrapping() && wrapped.has(id) && !!bodies.get(wrapped.get(id)!)?.hull;
-  /** A ring marks connections beyond the picture, unless a wrapper already carries that meaning. */
-  const hasRing = (id: string): boolean => !!scopeBeyond.get(id) && !isWrapped(id);
+  /** A ring marks connections beyond the picture, the sign of more only while no wrapper is drawn (`ringedSpheres`). */
+  const hasRing = (id: string): boolean => ringed.has(id);
   /**
-   * Whether a shown sphere is dimmed: at the last hop shown, or an unreached group's seed one past it; never at hop 0. A
-   * directory shell and the files a pop shows stand one past the hops too, and are never dimmed for it (2026-11-06): the
-   * shell is a body the eye should find at once, and what a pop releases is what was asked to be seen. Nor is a bubble of
-   * the structure layout, which stands at the frontier as a shell does (2026-11-07).
+   * Whether a shown sphere is dimmed: at the last hop shown, or an unreached group's seed or a lone hidden file one past
+   * it (2026-11-18); never at hop 0. A directory shell and the files a pop shows stand one past the hops too, and are
+   * never dimmed for it (2026-11-06): the shell is a body the eye should find at once, and what a pop releases is what was
+   * asked to be seen. Nor is a bubble of the structure layout, which stands at the frontier as a shell does (2026-11-07).
    */
   const atFrontier = (id: string): boolean => {
     const hop = scopeHops.get(id);
@@ -1451,7 +1453,11 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         shellWires = held.wires;
         released = new Set(held.released);
         scopeHops = new Map(scope.hops);
-        for (const id of held.released) scopeHops.set(id, hopsShown + 1);
+        // What a pop shows, and the lone hidden files (2026-11-18): the one hidden file of a directory, which makes no
+        // shell, stands for itself where its shell would stand, one past the hops, dimmed as the frontier is since it is
+        // not among what a pop shows, and a press on it pins it as a press on any dimmed sphere asks about it. Until then
+        // it stayed hidden behind a ring on its shown neighbour.
+        for (const id of [...held.released, ...held.lone]) scopeHops.set(id, hopsShown + 1);
         scopeBeyond = held.beyond;
         shells = new Map(held.shells.map(shell => [shell.id, shell]));
         cells = new Map(); loneNames = new Map(); directoryRepresentatives = new Map(); spokesOf = null;
@@ -1462,8 +1468,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
             docPath: "", docRelativePath: "", archetype: "shell", shellFiles: shell.files.length, shellBody: body.radius, publicSymbols: [], dependencies: [], dependents: [], missingDependencies: [] });
         }
       } else {
-        // A bubble is its hub's node, at its body's size and named by what it holds; its skin says there is more, so it
-        // keeps no ring.
+        // A bubble is its hub's node, at its body's size and named by what it holds; its skin says there is more.
         shells = new Map(); released = new Set(); poppingCells = new Set();
         cells = new Map(heldCells.map(cell => [cell.id, cell]));
         scopeHops = new Map(scope.hops);
@@ -1491,6 +1496,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       scopeBeyond = scope.beyond;
       shells = new Map(); released = new Set(); cells = new Map(); loneNames = new Map(); directoryRepresentatives = new Map(); spokesOf = null;
     }
+    ringed = ringedSpheres(scopeBeyond, state.tuning.forceGraph.groupWrappers);
     scopeGroups = scope.groups;
     frontierHop = hopsShown;
     wrapped = nextWrapped;
@@ -1775,13 +1781,13 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     const hasAttention = !!pins.entries.length || !!path?.length || directories.length > 0;
     const rootOverview = directories.includes("");
     // The key says what is drawn: the references and their directions where they are, the path, and the fading.
-    // The key: the rings where a sphere has connections the picture does not show (the owner's choice of 2026-11-02),
-    // save on a wrapped seed, whose wrapper says so instead, and the wrapped groups and the shells while any is drawn
-    // (2026-11-05); a shell is no kind of file, so the kinds are read from the files.
+    // The key: the rings while any is drawn, which since 2026-11-18 is only with Group Wrappers Off (the owner's choice
+    // of 2026-11-02, a sphere with connections the picture does not show), and the wrapped groups and the shells while
+    // any is drawn (2026-11-05); a shell is no kind of file, so the kinds are read from the files.
     let legendAttention = false;
     const keyed: SpatialGraphData = { nodes: picture.nodes.filter(node => node.shellFiles === undefined), links: picture.links };
     drawLegend = (): void => renderSpatialLegend(keyed, state.tuning.forceGraph.symbolScale, { references: state.spatialLayout === "connections" || hasAttention || legendAttention,
-      path: !!path?.length, frontier: hasFrontier, rings: [...scopeBeyond.keys()].some(id => !isWrapped(id)),
+      path: !!path?.length, frontier: hasFrontier, rings: ringed.size > 0,
       wrapped: [...wrapped.keys()].some(id => !shells.has(id) && !cells.has(id) && isWrapped(id)), shells: [...shells.keys(), ...cells.keys()].some(isWrapped),
       // The files a skin draws within it, as cells, are files of the picture too, and their kinds are keyed with the spheres'.
       inside: state.tuning.forceGraph.groupWrappers === "skin" ? [...new Set([...wrapped.keys()].filter(isWrapped)
@@ -1856,9 +1862,10 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         const { marble } = fileLook(node.id, node.archetype);
         return marble && !(glows(emphasis) && changedNodes.has(node.id)) ? marble : null;
       });
-      // A ring around every sphere with connections the picture does not show, a click on which shows them: the owner's
-      // choice of 2026-11-02, B over A, the frontier's dimming kept and the ring saying where there is more. The ring
-      // keeps its strength at the frontier, where it is the cue, and fades with the hover's attention.
+      // With Group Wrappers Off, a ring around every sphere with connections the picture does not show, a click on which
+      // shows them: the owner's choice of 2026-11-02, B over A, the frontier's dimming kept and the ring saying where there
+      // is more. The ring keeps its strength at the frontier, where it is the cue, and fades with the hover's attention.
+      // With any wrapper on there is none (2026-11-18): the wrappers and shells say what is held back.
       forceGraphInstance?.nodeRing((node: ForceGraphNode) => {
         if (!hasRing(node.id)) return null;
         const alpha = attention ? (attention.has(node.id) ? .85 : .15) : .85;

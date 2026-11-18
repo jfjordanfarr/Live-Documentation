@@ -8,7 +8,7 @@
 
 ## Authored
 ### Purpose
-Checks the directory shells' pure rules: the partition by depth and its chain naming, a pop that releases a directory's own files and makes its subdirectories shells without losing a file, the bundled wires and their counts in both directions, the rings left over, and the phantom packing, deterministic, inside its packing and within its hull; since 2026-11-06, a shell's true size and the packing of its units inside it, its own files apart, its subdirectories' balloons each its own shell's size, at most `SHOWN_UNITS` shown.
+Checks the directory shells' pure rules: the partition by depth and its chain naming, a pop that releases a directory's own files and makes its subdirectories shells without losing a file, the bundled wires and their counts in both directions, a lone file standing for itself with its wires and what is left out (since 2026-11-18, [Turn 12 of the November 16 record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-16/2026-11-16.1.record.md#turn-12)), and the phantom packing, deterministic, inside its packing and within its hull; since 2026-11-06, a shell's true size and the packing of its units inside it, its own files apart, its subdirectories' balloons each its own shell's size, at most `SHOWN_UNITS` shown.
 
 ### Notes
 Written on 2026-11-05 with the experiment ([the design](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#competing-layout-preferences)). The fixtures are small trees whose expected shells can be read by eye; the packing cases cover a body smaller than the outer layer, one just over it and one of 300 files, so that the hull's first take over the outer members alone is exercised against every member.

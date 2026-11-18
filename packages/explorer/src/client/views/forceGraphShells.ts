@@ -10,8 +10,9 @@
  * cleanly" ([Turn 17 of the November 3 record](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-03/2026-11-03.1.record.md#turn-17--november-4)).
  *
  * The rule here is one of several the owner may compare: a hidden file belongs to the shell of its directory cut to the
- * Shell Depth under the scan root, a directory of fewer than two hidden files makes none, and a popped directory's files
- * are shown while its subdirectories become shells of their own. A shell's wires are its members' references bundled,
+ * Shell Depth under the scan root, a directory of fewer than two hidden files makes none and its one file stands as
+ * itself where the shell would stand (2026-11-18), and a popped directory's files are shown while its subdirectories
+ * become shells of their own. A shell's wires are its members' references bundled,
  * one wire for each pair of a shown file or shell with a shell, its count the references between them in both
  * directions, so that a route through hidden files still shows as a route through a shell. A shell is drawn over a
  * phantom packing of its members, a deterministic arrangement inside its body, never a layout of the files themselves:
@@ -60,8 +61,14 @@ export interface ShellPartition {
   shells: DirectoryShell[];
   /** The hidden files the pops show: a popped directory's own, and a lone file of a subdirectory a pop opened. */
   released: string[];
-  /** The hidden files no shell holds and no pop shows: hidden as before, a ring on a shown neighbour saying so. */
-  loose: string[];
+  /**
+   * The hidden files no shell holds and no pop shows, each the one hidden file of its directory at the cut: drawn as
+   * itself, dimmed, where a shell would stand (2026-11-18), as the Structure layout draws a directory of one file as the
+   * file (`structureCells`). Until then it stayed hidden and a ring on a shown neighbour said so, a second sign beside
+   * the shells for one meaning; the owner, of the rings still drawn beside the membranes: "Didn't we replace ringed nodes
+   * with membranes?" (Turn 12 of the November 16 record, linked from this file's Live Doc).
+   */
+  lone: string[];
 }
 
 /**
@@ -90,7 +97,7 @@ function commonDirectory(directories: readonly string[]): string {
 /**
  * Partition the hidden files by directory: a file belongs to the shell of its directory cut to `depth`, or, where that
  * directory is open, of its directory cut one deeper, until a directory not open; a file whose own directory is open is
- * released into the picture. A directory of fewer than two hidden files makes no shell: its file stays loose, unless a
+ * released into the picture. A directory of fewer than two hidden files makes no shell: its file stands lone, unless a
  * pop opened its parent, when it is released with the popped directory's own files, so that a pop loses nothing it held.
  * A shell stands for the deepest directory holding all its files, so that a pop always opens onto more than one thing:
  * this repository's `packages/engine` shell, whose hidden files all lie under `src`, is `engine/src`, and a pop of it
@@ -105,7 +112,7 @@ export function partitionHidden(hidden: ReadonlyArray<{ id: string; path: string
 function partitionBy(hidden: readonly string[], pathOf: (id: string) => string | undefined, depth: number, popped: ReadonlySet<string>): ShellPartition {
   if (!Number.isInteger(depth) || depth < 1) throw new Error("A shell's depth is a whole number of directories, at least one.");
   const open = openIn(popped, depth);
-  const groups = new Map<string, string[]>(), fromPop = new Set<string>(), released: string[] = [], loose: string[] = [];
+  const groups = new Map<string, string[]>(), fromPop = new Set<string>(), released: string[] = [], lone: string[] = [];
   // Where each directory's files go, worked out once a directory: the T3 sample hides 19,398 files in far fewer.
   const placeOf = new Map<string, string | null>();
   const place = (own: string): string | null => {
@@ -132,13 +139,13 @@ function partitionBy(hidden: readonly string[], pathOf: (id: string) => string |
     const files = groups.get(cut)!;
     // The scope lists each group's files in id order, so a shell of one group needs no sort.
     if (files.some((file, i) => i > 0 && files[i - 1] > file)) files.sort();
-    if (files.length < 2) { (fromPop.has(cut) ? released : loose).push(...files); continue; }
+    if (files.length < 2) { (fromPop.has(cut) ? released : lone).push(...files); continue; }
     const directory = commonDirectory(owns.get(cut)!);
     const last = cut.split("/").pop() || "Scan root";
     shells.push({ id: shellId(directory), directory, name: directory === cut ? last : `${last}${directory.slice(cut.length)}`, files });
   }
   shells.sort((a, b) => (a.directory < b.directory ? -1 : a.directory > b.directory ? 1 : 0));
-  return { shells, released: released.sort(), loose: loose.sort() };
+  return { shells, released: released.sort(), lone: lone.sort() };
 }
 
 /** A file the shells read: its id and path, and its kind, since a document is never held. */
@@ -148,7 +155,7 @@ export interface ShellCandidate {
   archetype?: string;
 }
 
-/** What a picture's shells are: the partition, the bundled wires and the counts its rings show. */
+/** What a picture's shells are: the partition, the bundled wires and the counts of what is left out. */
 export interface ShellPicture<T extends string = string> extends ShellPartition {
   /**
    * The bundled wires: one for each pair of a shown file or shell with a shell that its members' references join, its
@@ -156,7 +163,11 @@ export interface ShellPicture<T extends string = string> extends ShellPartition 
    * `backward` the others, `count` their sum.
    */
   wires: FileConnection<T>[];
-  /** For each shown or released file, how many of its connected files neither the picture shows nor a shell holds. */
+  /**
+   * For each shown, released or lone file, how many of its connected files the picture leaves out: neither shown, nor
+   * held by a shell, nor standing lone. Since 2026-11-18 that is only documents, which a shell never holds; a file's name
+   * counts them in its title, and no ring is drawn for them while the wrappers are on (`ringedSpheres`).
+   */
   beyond: Map<string, number>;
 }
 
@@ -180,9 +191,9 @@ export interface ShellSource<N extends ShellCandidate, T extends string = string
 
 /**
  * The shells of a picture: the hidden files partitioned by directory (documents left hidden: a shell holds files), each
- * reference between a shown or released file and a held file, or between files of two shells, bundled into one wire per
- * pair of ends, and the counts left for the rings: a file whose hidden neighbours are all held needs no ring, since the
- * shell says it.
+ * reference between a shown, released or lone file and a held file, or between files of two shells, bundled into one
+ * wire per pair of ends, and the counts of what is left out. A lone file stands for itself as a released file does, so
+ * that its references to shown files are the picture's own wires and those to a shell's files are bundled to the shell.
  */
 export function shellPicture<N extends ShellCandidate, T extends string>(source: ShellSource<N, T>): ShellPicture<T> {
   const byId: ReadonlyMap<string, N> = source.nodes instanceof Map ? source.nodes : new Map((source.nodes as readonly N[]).map(node => [node.id, node]));
@@ -194,11 +205,11 @@ export function shellPicture<N extends ShellCandidate, T extends string>(source:
   const ends = new Map<string, string>();
   for (const shell of partition.shells) for (const file of shell.files) ends.set(file, shell.id);
   for (const id of source.shown) ends.set(id, id);
-  for (const id of partition.released) ends.set(id, id);
+  for (const id of [...partition.released, ...partition.lone]) ends.set(id, id);
   const wires = new Map<string, FileConnection<T>>();
   for (const link of source.links) {
     const a = ends.get(link.source), b = ends.get(link.target);
-    // A pair of shown files is the picture's own wire; a pair inside one shell is the shell's business; a loose end has none.
+    // A pair of standing files is the picture's own wire; a pair inside one shell is the shell's business; a hidden document's end has none.
     if (a === undefined || b === undefined || a === b || (a === link.source && b === link.target) || !source.bundles(link)) continue;
     const ordered = a < b;
     const [from, to] = ordered ? [a, b] : [b, a];
@@ -208,7 +219,7 @@ export function shellPicture<N extends ShellCandidate, T extends string>(source:
     else wires.set(key, { source: from, target: to, kind: link.kind, count: link.count, forward, backward });
   }
   const beyond = new Map<string, number>();
-  for (const id of [...source.shown, ...partition.released]) {
+  for (const id of [...source.shown, ...partition.released, ...partition.lone]) {
     let count = 0;
     for (const neighbour of source.beside.get(id) ?? []) if (!ends.has(neighbour)) count++;
     if (count) beyond.set(id, count);

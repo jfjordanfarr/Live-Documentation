@@ -20,14 +20,14 @@ const hidden = HIDDEN.map(id => ({ id, path: id }));
 
 const shellsOf = (partition: ShellPartition): Record<string, readonly string[]> => Object.fromEntries(partition.shells.map(shell => [shell.directory, shell.files]));
 const namesOf = (partition: ShellPartition): string[] => partition.shells.map(shell => shell.name);
-/** Every hidden file is held, released or loose, and once only: a partition loses nothing. */
+/** Every hidden file is held, released or lone, and once only: a partition loses nothing. */
 function accountsForAll(partition: ShellPartition, files: readonly string[]): void {
-  const counted = [...partition.shells.flatMap(shell => shell.files), ...partition.released, ...partition.loose].sort();
+  const counted = [...partition.shells.flatMap(shell => shell.files), ...partition.released, ...partition.lone].sort();
   expect(counted).toEqual([...files].sort());
 }
 
 describe("the shells' partition of the hidden files by directory", () => {
-  it("holds each directory's hidden files at the Shell Depth, two files or more to a shell, the rest loose", () => {
+  it("holds each directory's hidden files at the Shell Depth, two files or more to a shell, the rest lone", () => {
     const two = partitionHidden(hidden, 2, new Set());
     expect(shellsOf(two)).toEqual({
       "packages/cli": ["packages/cli/e.ts", "packages/cli/f.ts"],
@@ -35,7 +35,7 @@ describe("the shells' partition of the hidden files by directory", () => {
       // A directory shallower than the depth holds its own files.
       tests: ["tests/x.ts", "tests/y.ts"]
     });
-    expect(two.loose).toEqual(["packages/engine/g.ts", "root.ts"]);
+    expect(two.lone).toEqual(["packages/engine/g.ts", "root.ts"]);
     expect(two.released).toEqual([]);
     expect(two.shells.map(shell => shell.id)).toEqual(["shell:packages/cli", "shell:packages/explorer", "shell:tests"]);
     expect(namesOf(two)).toEqual(["cli", "explorer", "tests"]);
@@ -45,11 +45,11 @@ describe("the shells' partition of the hidden files by directory", () => {
   it("holds more in fewer shells at depth 1, and fewer in more at depth 3", () => {
     const one = partitionHidden(hidden, 1, new Set());
     expect(shellsOf(one)).toEqual({ packages: HIDDEN.filter(id => id.startsWith("packages/")).sort(), tests: ["tests/x.ts", "tests/y.ts"] });
-    expect(one.loose).toEqual(["root.ts"]);
+    expect(one.lone).toEqual(["root.ts"]);
     const three = partitionHidden(hidden, 3, new Set());
     expect(shellsOf(three)).toEqual({ "packages/cli": ["packages/cli/e.ts", "packages/cli/f.ts"],
       "packages/explorer/src": ["packages/explorer/src/a.ts", "packages/explorer/src/b.ts"], tests: ["tests/x.ts", "tests/y.ts"] });
-    expect(three.loose).toEqual(["packages/engine/g.ts", "packages/explorer/d.ts", "packages/explorer/views/c.ts", "root.ts"]);
+    expect(three.lone).toEqual(["packages/engine/g.ts", "packages/explorer/d.ts", "packages/explorer/views/c.ts", "root.ts"]);
     for (const partition of [one, three]) accountsForAll(partition, HIDDEN);
   });
 
@@ -96,8 +96,8 @@ describe("a pop", () => {
     expect(shellsOf(after)).toEqual({ "packages/cli": ["packages/cli/e.ts", "packages/cli/f.ts"],
       "packages/explorer/src": ["packages/explorer/src/a.ts", "packages/explorer/src/b.ts"], tests: ["tests/x.ts", "tests/y.ts"] });
     for (const id of held) expect(after.released.includes(id) || after.shells.some(shell => shell.files.includes(id)), id).toBe(true);
-    // The other shells and the loose files are as they were.
-    expect(after.loose).toEqual(before.loose);
+    // The other shells and the lone files are as they were.
+    expect(after.lone).toEqual(before.lone);
     accountsForAll(after, HIDDEN);
   });
 
@@ -130,7 +130,7 @@ function connected(): { nodes: Array<StartableNode & { codeRelativePath: string 
     pair("packages/cli/f.ts", "packages/explorer/src/b.ts", 1, 2), // between two shells
     pair("packages/explorer/src/a.ts", "packages/explorer/src/b.ts", 5, 0), // within one shell
     pair("s1.ts", "s2.ts", 1, 0), // the picture's own wire
-    pair("packages/engine/g.ts", "s1.ts", 1, 0), // to a loose file
+    pair("packages/engine/g.ts", "s1.ts", 1, 0), // to a lone file
     pair("tests/x.ts", "tests/y.ts", 1, 0, "containment") // never bundled
   ];
   return { nodes, links };
@@ -151,9 +151,28 @@ describe("a shell's wires", () => {
       { source: "shell:packages/cli", target: "shell:packages/explorer", kind: "dependency", count: 3, forward: 1, backward: 2 }
     ]);
     expect(shells.shells.find(shell => shell.id === "shell:packages/explorer")!.files).toContain("packages/explorer/src/b.ts");
-    expect(shells.loose).toEqual(["packages/engine/g.ts", "root.ts"]);
-    // A ring is left only where a connected file is neither shown nor held: s1's loose neighbour; s2's are all held or shown.
-    expect([...shells.beyond]).toEqual([["s1.ts", 1]]);
+    expect(shells.lone).toEqual(["packages/engine/g.ts", "root.ts"]);
+    // Nothing is left out: every connected file is shown, held by a shell or stands lone. Until 2026-11-18 s1's lone
+    // neighbour g stayed hidden and s1 wore a ring for it beside the shells.
+    expect([...shells.beyond]).toEqual([]);
+  });
+
+  it("stand a lone file for itself: its wire to a shown file is the picture's own, and its references to a shell's files are bundled to the shell", () => {
+    const doc = { ...file("related:notes.md"), codeRelativePath: "notes.md", archetype: "related-doc" };
+    const more: FileConnection[] = [...links,
+      { source: "packages/cli/e.ts", target: "packages/engine/g.ts", kind: "dependency", count: 2, forward: 2, backward: 0 },
+      { source: "packages/engine/g.ts", target: "related:notes.md", kind: "cited-by", count: 1, forward: 0, backward: 1 }];
+    const all = [...nodes, doc];
+    const held = shellPicture({ nodes: all, links: more, shown: new Set(["s1.ts", "s2.ts"]), hidden: [...HIDDEN, doc.id], depth: 2, popped: new Set(),
+      beside: connectedNeighbours(all, more, pulls), bundles: link => link.kind !== "containment" && link.kind !== "cited-by" });
+    // A document is never held nor lone: a shell holds files.
+    expect(held.lone).toEqual(["packages/engine/g.ts", "root.ts"]);
+    expect(held.wires.filter(wire => wire.source === "packages/engine/g.ts" || wire.target === "packages/engine/g.ts")).toEqual([
+      { source: "packages/engine/g.ts", target: "shell:packages/cli", kind: "dependency", count: 2, forward: 0, backward: 2 }
+    ]);
+    expect(held.wires.some(wire => wire.source === "packages/engine/g.ts" && wire.target === "s1.ts"), "g's wire to s1 is the picture's own").toBe(false);
+    // What is left out is the document alone, counted on the lone file that it cites, for the name's title.
+    expect([...held.beyond]).toEqual([["packages/engine/g.ts", 1]]);
   });
 
   it("resolve into the files' own wires when a pop releases them", () => {

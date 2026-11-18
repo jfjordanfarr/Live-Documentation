@@ -2,9 +2,10 @@ import { describe, expect, it } from "vitest";
 
 import { getDefaultTuning } from "../persistence/local-storage";
 import { linkPulls, spatialNodeRadius, type SpatialLink } from "./forceGraphLayout";
-import { spatialScope, startHops, startOf, type StartableNode } from "./forceGraphScope";
-import { bodyShape } from "./forceGraphShells";
-import { burstProgress, mergeWrappers, wrappedSeeds, wrapperAt, wrapperHull, wrapperPadding, type GroupShape, type WrapperHull } from "./forceGraphWrappers";
+import { connectedNeighbours, spatialScope, startHops, startOf, type StartableNode } from "./forceGraphScope";
+import { bodyShape, shellPicture } from "./forceGraphShells";
+import { burstProgress, GROUP_WRAPPERS, mergeWrappers, ringedSpheres, wrappedSeeds, wrapperAt, wrapperHull, wrapperPadding, type GroupShape,
+  type WrapperHull } from "./forceGraphWrappers";
 
 const tuning = getDefaultTuning().forceGraph;
 const file = (id: string, symbols = 0): StartableNode => ({ id, publicSymbols: Array.from({ length: symbols }, (_, i) => `s${i}`), codeRelativePath: id });
@@ -49,6 +50,46 @@ describe("which groups are wrapped", () => {
     const pinned = spatialScope(nodes, links, new Set(["a/hub.ts"]), tuning.hops, pulls);
     expect(wrappedSeeds(pinned.groups)).toEqual(["b/y.ts", "c/p.ts"]);
     expect(pinned.groups.get("lone.ts")).toBe(1);
+  });
+});
+
+describe("which spheres wear a ring", () => {
+  /**
+   * A pinned file and its one hop, `app/util.ts`, which reaches a directory of two hidden files (a shell), the one hidden
+   * file of another directory (a lone file) and a document that cites it: every source of a ring the shells left.
+   */
+  function picture(): { nodes: Array<StartableNode & { codeRelativePath: string }>; links: SpatialLink[] } {
+    const nodes = ["app/main.ts", "app/util.ts", "lib/x/a.ts", "lib/x/b.ts", "solo/c.ts"].map(id => ({ ...file(id), codeRelativePath: id }));
+    const doc = { ...file("related:docs/readme.md"), codeRelativePath: "docs/readme.md", archetype: "related-doc" };
+    const links: SpatialLink[] = [link("app/main.ts", "app/util.ts"), link("app/util.ts", "lib/x/a.ts"), link("lib/x/a.ts", "lib/x/b.ts"),
+      link("app/util.ts", "solo/c.ts"), { source: "related:docs/readme.md", target: "app/util.ts", count: 1, kind: "cited-by" }];
+    return { nodes: [...nodes, doc], links };
+  }
+  const shown = (): { scope: ReturnType<typeof spatialScope>; held: ReturnType<typeof shellPicture> } => {
+    const { nodes, links } = picture();
+    const scope = spatialScope(nodes, links, new Set(["app/main.ts"]), 1, pulls);
+    const held = shellPicture({ nodes, links: links.map(each => ({ source: String(each.source), target: String(each.target), kind: each.kind ?? "dependency", count: each.count, forward: each.count, backward: 0 })),
+      shown: new Set(scope.hops.keys()), hidden: scope.hidden, depth: 2, popped: new Set(), beside: connectedNeighbours(nodes, links, pulls),
+      bundles: each => pulls(each) && each.kind !== "cited-by" });
+    return { scope, held };
+  };
+
+  it("is every sphere with connections left out when the wrappers are Off: the ring is that picture's only sign", () => {
+    const { scope } = shown();
+    // Off draws no shell, so the page reads the scope's own counts: the hop's file has a shell's files, a lone file and a document behind it.
+    expect(scope.beyond.get("app/util.ts")).toBe(3);
+    expect([...ringedSpheres(scope.beyond, "off")]).toEqual(["app/util.ts"]);
+    expect([...ringedSpheres(new Map([["a.ts", 0]]), "off")], "a count of none is no ring").toEqual([]);
+  });
+
+  it("is none with any wrapper on, though a hidden document is still left out (2026-11-18)", () => {
+    const { held } = shown();
+    // The shell holds two files and the lone file stands for itself; the document alone is left out, and its count stays
+    // for the name's title. Until November 18 it drew a ring beside the membranes: the owner's two signs for one act.
+    expect(held.shells.map(shell => shell.files)).toEqual([["lib/x/a.ts", "lib/x/b.ts"]]);
+    expect(held.lone).toEqual(["solo/c.ts"]);
+    expect([...held.beyond]).toEqual([["app/util.ts", 1]]);
+    for (const look of GROUP_WRAPPERS.filter(each => each !== "off")) expect([...ringedSpheres(held.beyond, look)], look).toEqual([]);
   });
 });
 
