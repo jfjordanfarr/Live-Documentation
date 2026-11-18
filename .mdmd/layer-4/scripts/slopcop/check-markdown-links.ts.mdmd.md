@@ -13,8 +13,9 @@ Scans markdown and MDMD files for broken relative links so Live Docs, specs, and
 
 ### Notes
 - Built during the October 2025 SlopCop hardening to replace ad-hoc link grep checks with a deterministic CLI consumed by `npm run slopcop:markdown` and the Stage‑0 migration tasks (`2025-10-31.md`).
-- Shares configuration with other SlopCop tools via `slopcop.config.json`, letting us tailor ignored paths (for example ChatHistory) while keeping CI failure codes consistent (exit 3 when issues exist).
+- Shares configuration with other SlopCop tools via `slopcop.config.json`, letting us tailor ignored paths (for example the session archive) while keeping CI failure codes consistent (exit 3 when issues exist).
 - Backed by `scripts/slopcop/markdownLinks.test.ts`, which stress-tests the parser while the CLI surfaces regressions to `safe-to-commit.mjs` and maintainer tasks.
+- Since 2026-11-18 the built-in ignore list leaves out the session archive's records, captures, summaries and inventories by their depth under `AgentSessionHistory/`, and reads each day's `Probes/`, `Research/` and `Screenshots/`: the same files as before the archive moved into one directory per dev day ([where things are](../../../../AI-Agent-Workspace/AgentSessionHistory/README.md#where-things-are)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

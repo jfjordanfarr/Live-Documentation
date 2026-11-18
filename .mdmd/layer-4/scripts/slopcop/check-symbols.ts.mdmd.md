@@ -15,6 +15,7 @@ Validates markdown symbol anchors across the workspace, flagging duplicate headi
 - Landed with the Oct 2025 SlopCop rollout that accompanied the Stage‑0 documentation cleanup; first wired into `npm run slopcop:symbols` and covered by `tests/integration/slopcop/symbolsAudit.test.ts` (see `2025-10-31.md` and `2025-10-25.SUMMARIZED.md`).
 - Uses `slopcop.config.json` to drive include/ignore globs and severity overrides, returning exit code 3 when anomalies exist so CI surfaces failures without aborting the process outright.
 - The `--json` flag mirrors what the integration tests expect, allowing fixture runs to assert on specific issues while the human-readable formatter groups results by top-level folder for triage.
+- Since 2026-11-18 the built-in ignore list leaves out the session archive's records, captures, summaries and inventories by their depth under `AgentSessionHistory/`, and reads each day's `Probes/`, `Research/` and `Screenshots/`: the same files as before the archive moved into one directory per dev day ([where things are](../../../../AI-Agent-Workspace/AgentSessionHistory/README.md#where-things-are)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

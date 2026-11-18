@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/still-picture-geometry.ts
-- Generated At: 2026-10-22T16:47:58.889Z
+- Generated At: 2026-11-18T16:26:21.654Z
 
 ## Authored
 ### Purpose
@@ -29,7 +29,7 @@ The geometry under the still-picture deck's expanded measures, pure so that Vite
 The geometry under the still-picture deck's expanded measures: crossings, shared channels, flow, folder
 adjacency and the tour. Pure, so that Vitest can hold each number to a drawing it can see. The page reading
 that feeds these lives in `still-picture.ts`; the measures are defined in
-`AI-Agent-Workspace/Probes/2026-10-01/still-picture-deck.md` under "The expanded deck".
+`AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-01/Probes/still-picture-deck.md` under "The expanded deck".
 
 #### `Box` {#symbol-box}
 - Type: interface

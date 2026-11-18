@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/layout-lab/lab.ts
 - Entry: command `layout:lab` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-10-28T18:35:59.073Z
+- Generated At: 2026-11-18T16:26:20.004Z
 
 ## Authored
 ### Purpose
@@ -14,7 +14,7 @@ The layout lab's command line: capture a retained scope, sweep and compare layou
 
 ### Notes
 
-`npm run layout:lab -- capture|sweep|restarts|widen|refine|verify|spatial|drift|approximation <bundle/scope> [options]`. Capture writes the scope's capture under the day's probe folder and runs the drift check at once; sweep evaluates the baseline, each lever alone and the sampled grid, and writes a markdown and a JSON report; restarts (2026-10-06) lays out every start of the order step alone (`--starts`, eight by default) and tries a grid of the page's costs (`--costs crossing=a,b;height=c,d`), saying at each which start the page would keep and which the full weighted score prefers; verify compares the lab's numbers for a configuration with the deck's reading of the page rendered with it, and says which start each drew and how long the page's layout took. The bundles must be built first. Reports go to `AI-Agent-Workspace/Probes/<date>/layout-lab/` unless `--out` says otherwise, the owner's choice of 2026-10-06 ([Turn 9](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-06/2026-10-06.1.record.md#turn-9)).
+`npm run layout:lab -- capture|sweep|restarts|widen|refine|verify|spatial|drift|approximation <bundle/scope> [options]`. Capture writes the scope's capture under the open dev day's probe folder and runs the drift check at once; sweep evaluates the baseline, each lever alone and the sampled grid, and writes a markdown and a JSON report; restarts (2026-10-06) lays out every start of the order step alone (`--starts`, eight by default) and tries a grid of the page's costs (`--costs crossing=a,b;height=c,d`), saying at each which start the page would keep and which the full weighted score prefers; verify compares the lab's numbers for a configuration with the deck's reading of the page rendered with it, and says which start each drew and how long the page's layout took. The bundles must be built first. Reports go to the open dev day's `Probes/layout-lab/`, under `AI-Agent-Workspace/AgentSessionHistory/<year>/<month>/<day>/`, unless `--out` says otherwise. The open dev day is the newest day directory that holds a session's record, so a dev day that runs past midnight keeps its reports together and the clock does not choose the folder (since the archive's move of 2026-11-18, [where things are](../../../../AI-Agent-Workspace/AgentSessionHistory/README.md#where-things-are)). A dated folder for the reports was the owner's choice of 2026-10-06 ([Turn 9](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-06/2026-10-06.1.record.md#turn-9)).
 - `restarts` also simulates the ordering-seed part of the search over the tabulated starts (`--churn 0,50,100,200,400` by default, `--first` the starts before paint, `--patience` the search's), printing each churn cost's moves and final picture (2026-10-07).
 - `widen` (2026-10-07) tabulates the starts at every setting of the ranking's and the order's levers (`--grid`, by default `rankingPull=0,1,2,5;rankingTie=fewest,right,left;orderSweeps=2,4,8`; `--starts`, 16 by default) and simulates the ordering-seed search at each (`--churn` one cost, `--first` and `--patience` the page's defaults), writing `<scope>-wide.md` and its JSON under the day's probe folder; the October 7 run reported about nine minutes for 36 settings of 33 starts on the repository scopes and under a minute on the estate; those are historical measurements, not a runtime guarantee.
 
@@ -37,6 +37,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `node:fs` - `readdirSync`
 - `node:fs/promises`
 - `node:path` - `path`
 - `node:process` - `process`

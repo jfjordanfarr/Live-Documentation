@@ -587,7 +587,7 @@ Most transcripts name no model; this table gives only what they say. A model's n
 
 ## Where the rules came from
 
-AGENTS.md states its rules without most of their histories. Each came from something that happened. This table gives the earliest statement the readers of 2026-10-16 found in the transcripts, then later restatements where they changed the rule, and the incident behind it. AGENTS.md's own dates are mostly re-affirmations from September and October 2026; where they began later than the rule's first statement, the first date was added on 2026-10-16. Paths are relative to `AI-Agent-Workspace/ChatHistory/`.
+AGENTS.md states its rules without most of their histories. Each came from something that happened. This table gives the earliest statement the readers of 2026-10-16 found in the transcripts, then later restatements where they changed the rule, and the incident behind it. AGENTS.md's own dates are mostly re-affirmations from September and October 2026; where they began later than the rule's first statement, the first date was added on 2026-10-16. Each source is linked; the transcripts stand under `AI-Agent-Workspace/AgentSessionHistory/`.
 
 | Rule in AGENTS.md | First said | Later | What prompted it |
 | --- | --- | --- | --- |

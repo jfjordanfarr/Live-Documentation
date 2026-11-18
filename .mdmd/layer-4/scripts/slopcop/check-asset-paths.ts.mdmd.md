@@ -14,7 +14,8 @@ Audits HTML/CSS assets for broken relative references (images, scripts, styles) 
 ### Notes
 - Introduced alongside the SlopCop rollout to give `npm run slopcop:assets` parity with the markdown and symbol audits during the Stage‑0 cleanup push (`2025-10-31.md`).
 - Honors `rootDirectories` from `slopcop.config.json`, letting tests point at fixture-specific asset trees while production runs stay locked to the workspace root.
-- Integration suite `tests/integration/slopcop/assetsAudit.test.ts` exercises the `--json` output and ensures ignore patterns (for example ChatHistory, dist folders) stay in sync with maintainer expectations.
+- Integration suite `tests/integration/slopcop/assetsAudit.test.ts` exercises the `--json` output and ensures ignore patterns (for example the session archive, dist folders) stay in sync with maintainer expectations.
+- Since 2026-11-18 the built-in ignore list leaves out the session archive's records, captures, summaries and inventories by their depth under `AgentSessionHistory/`, and reads each day's `Probes/`, `Research/` and `Screenshots/`: the same files as before the archive moved into one directory per dev day ([where things are](../../../../AI-Agent-Workspace/AgentSessionHistory/README.md#where-things-are)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
