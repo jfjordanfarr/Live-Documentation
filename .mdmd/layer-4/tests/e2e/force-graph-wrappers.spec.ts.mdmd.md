@@ -19,6 +19,8 @@ Since the second round of 2026-11-06 a case counts the spheres within each wrapp
 
 Since 2026-11-16 ([Turn 10 of the November 15 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-10)) the key's rows read *Wrapped group* and *More connected*, and the hover case reads from the seed's name what a press does, "Open this group and pin this file", which the key's row said until that day.
 
+Since 2026-11-18 no sphere of the archipelago under Skin wears a ring, and the owner's picture of November 17, this repository pinned on `archetype.ts` at one hop with both kinds of document shown, wears none under Skin or Cloud and keeps its rings and the key's row with the wrappers Off; that case fails on the build before the mend ([Turn 12 of the November 16 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-16/2026-11-16.1.record.md#turn-12)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

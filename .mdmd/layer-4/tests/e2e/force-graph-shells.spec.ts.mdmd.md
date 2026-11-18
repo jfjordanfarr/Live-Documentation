@@ -19,6 +19,8 @@ Since the second round of 2026-11-06 the cases count the spheres within a shell 
 
 Since 2026-11-16 ([Turn 10 of the November 15 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-10)) the key's rows are a sample and at most two words, and the cases here read *Directory shell* where they read the rows' sentences: a change of wording and nothing else.
 
+Since 2026-11-18 a case holds the one file of a directory beyond the hops: drawn, as dim as the frontier, with no ring, and pinned by a press where the pointer names it; it fails on the build before the mend ([Turn 12 of the November 16 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-16/2026-11-16.1.record.md#turn-12)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

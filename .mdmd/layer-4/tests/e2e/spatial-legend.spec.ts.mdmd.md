@@ -23,6 +23,8 @@ Since 2026-11-16 ([Turn 10 of the November 15 record](../../../../AI-Agent-Works
 
 Since 2026-11-17 ([the third run of the gate, November 16 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-16/2026-11-16.1.record.md#the-third-run-of-the-gate)) the audit of the key's words at the overview look opens the client's directories and not `scripts`: the key lists the kinds only where cells are drawn in their colours, and `scripts` draws none zoomed out since `scripts/contact-sheet` joined it (its name takes two lines, and the row of cells is drawn in every sibling or in none). The floor of five words fails the case if the client's directories lose their cells too.
 
+Since 2026-11-18 the estate's 3D key under Skin has no More connected row, since no sphere wears a ring while a wrapper is on; the row and its description are checked with the wrappers Off, where the ring remains the picture's only sign of more, and the key's words are audited over six rows ([Turn 12 of the November 16 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-16/2026-11-16.1.record.md#turn-12)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

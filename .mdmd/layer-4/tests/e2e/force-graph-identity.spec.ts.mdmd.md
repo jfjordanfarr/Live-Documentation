@@ -19,6 +19,8 @@ Since 2026-10-31 an unselected arrival is the start's picture, the estate's most
 
 The ring-identity regression from [November 10, Turn 3](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-10/2026-11-10.1.record.md#turn-3) follows the ordinary estate journey with product-default motion and 2D search: open PaymentService in Structure, visit 2D and return, then choose Connections. Its exact nine independently observed names must remain visible and clear all five uploaded outer rings, including the rings whose own names are undisclosed, with a 0.1 CSS-pixel measurement-rounding allowance against the two-pixel clearance. It reads real ring geometry and instance matrices rather than label inputs, then opens and rewraps Gateway to check remembered placement against changed geometry. The case follows the root's matched visual review of Hub and Gateway labels falsely appearing to name other files' rings; it records raw geometry with each check.
 
+Since 2026-11-18 the perspective journey's pictures under Skin hold no ring, and the names' clearance from the rings is checked with Group Wrappers Off at the journey's end, after the wheel draws the camera toward the ringed spheres so that their names are drawn ([Turn 12 of the November 16 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-16/2026-11-16.1.record.md#turn-12)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
