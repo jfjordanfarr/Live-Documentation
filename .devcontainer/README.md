@@ -136,7 +136,9 @@ docker volume rm live-documentation-claude live-documentation-codex
 
 The second column was measured with the whole checkout on the container's disk, so the volume alone gives somewhat less. The `node_modules` folder that an earlier container left on the host is no longer read and can be deleted from there. After changing `package-lock.json`, run `npm install` in the container as before.
 
-The rest of the workspace is still reached through the host. If that becomes the bottleneck, the cure is to keep the whole working copy on the Linux side (VS Code's "Clone Repository in Container Volume", or a folder inside a WSL distribution).
+Where the working copy is a folder on a Windows drive, the rest of the workspace is reached through the host as well. The faster arrangement on Windows is to keep the whole working copy on the Linux side, in a folder inside a WSL distribution, and to open that folder in the container. Measured on this repository on 2026-11-18, after it moved from a Windows drive to a folder in an Ubuntu distribution: the gate's stages before the browser took about four minutes where they had taken eight and a half, and the browser suite 72 minutes at one worker where it had taken 98, so the whole gate took 74 minutes against about 107.
+
+A working copy moved by hand must carry its build output along or leave the compiler's build records behind too. The first container made from the moved copy failed at its build because the records had travelled without the `dist` folders they describe; since that day each package keeps its record inside `dist`, so the two cannot part.
 
 ## Troubleshooting
 
