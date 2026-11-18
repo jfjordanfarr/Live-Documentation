@@ -15,6 +15,7 @@ Packages the Markdown parsing primitives (reference extraction, line/column math
 
 - Reused by `markdownLinks`, `symbolReferences`, and the SlopCop CLIs to keep lint output consistent during the Oct 2025 symbol-audit rollout ([rollout summary](../../../../AI-Agent-Workspace/AgentSessionHistory/2025/10/Summarized/2025-10-25.SUMMARIZED.md#turn-33-symbol-audit-implementation-lines-51615900)).
 - Relationship rule resolvers leverage the same helpers when translating MDMD links into graph edges, preventing divergent parsing logic in doc-to-code inference ([shared helper extraction](../../../../AI-Agent-Workspace/AgentSessionHistory/2025/10/2025-10-26/2025-10-26.md#L23-L33)).
+- Since 2026-11-18 the fences are found once, by `fencedLines`, for `maskCode` and the symbol audit's headings alike. Before, each held its own copy of one pattern, and both closed a block on a line of three backticks followed by a language name inside it, which CommonMark reads as part of the block, so a heading after it was taken for a real one.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

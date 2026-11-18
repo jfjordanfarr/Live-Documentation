@@ -6,6 +6,9 @@ import { GitHubSlugger, slugText } from "@live-documentation/engine/tooling/gith
 import {
   computeLineStarts,
   extractReferenceDefinitions,
+  fencedLines,
+  maskCode,
+  maskCodeSpans,
   parseLinkTarget,
   toLineAndColumn
 } from "./markdownShared";
@@ -62,8 +65,14 @@ const REFERENCE_LINK = /(!?)\[[^\]]*\]\[([^\]]*)\]/g;
 const EXTERNAL_SCHEME = /^[a-zA-Z][a-zA-Z0-9+.-]*:/;
 /** A link target whose headings can be read: markdown, by its extension. A source file's `#L10` is no heading. */
 const MARKDOWN_TARGET = /\.(?:md|mdmd)$/i;
-/** A citation of a line or a range of lines in a file, as a transcript is cited: `#L12`, `#L12-L40`. */
-const LINE_CITATION = /^l(\d+)(?:-l(\d+))?$/i;
+/**
+ * A citation of a line or a range of lines in a file, as a transcript is cited: `#L12`, `#L12-L40`, and with the
+ * columns GitHub writes for a selection inside lines, `#L12C3-L14C8`. A range written `#L12-14` is not GitHub's form
+ * and is read as a heading's anchor.
+ */
+const LINE_CITATION = /^l(\d+)(?:c\d+)?(?:-l(\d+)(?:c\d+)?)?$/i;
+/** An anchor written in HTML, `<a id="…">` or `<a name="…">`, which GitHub keeps on the rendered page. */
+const HTML_ANCHOR = /<[a-z][a-z0-9-]*(?:\s[^>]*?)?\s(?:id|name)\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'>]+))/gi;
 const DEFAULT_DUPLICATE_RULE: SymbolRuleSetting = "warn";
 const DEFAULT_MISSING_RULE: SymbolRuleSetting = "error";
 
@@ -100,8 +109,10 @@ interface FileAnalysis {
  *
  * Heading slugs are computed using GitHub-flavour slugging. The fence parser
  * respects CommonMark nested code fence rules (a closing fence must be at
- * least as long as the opening fence) so headings inside nested code blocks
- * are correctly ignored.
+ * least as long as the opening fence, with nothing after it) so headings inside
+ * nested code blocks are correctly ignored. An anchor written in HTML
+ * (`<a id="…">`, `<a name="…">`) outside code is a target too, and a link
+ * written inside code is an example and is not checked.
  *
  * An anchor is looked up among its target's headings whether or not the target
  * is one of `files`: a markdown file outside the audit (the session archive's
@@ -186,7 +197,8 @@ export function findSymbolReferenceAnomalies(options: SymbolAuditOptions): Symbo
         // A citation of a line or a range of lines is no heading: it holds while the file has that many lines.
         const cited = LINE_CITATION.exec(anchor.slug);
         if (cited && !target.slugs.has(anchor.slug)) {
-          if (Math.max(Number(cited[1]), Number(cited[2] ?? cited[1])) <= target.lineCount) {
+          const ends = [Number(cited[1]), Number(cited[2] ?? cited[1])];
+          if (ends.every((line) => line >= 1 && line <= target.lineCount)) {
             continue;
           }
         }
@@ -217,32 +229,21 @@ function analyzeFile(filePath: string, workspaceRoot: string): FileAnalysis {
   const slugger = new GitHubSlugger();
 
   const headings: HeadingInfo[] = [];
+  const htmlAnchors: string[] = [];
   const lines = content.split(/\r?\n/);
-  let inFence = false;
-  let fenceChar: string | undefined;
-  let fenceLength = 0;
+  const fenced = fencedLines(lines);
 
   for (let index = 0; index < lines.length; index += 1) {
     const line = lines[index];
-    const fenceMatch = line.match(/^ {0,3}((`{3,})|(~{3,}))([^`~].*)?$/);
-    if (fenceMatch) {
-      const run = fenceMatch[2] ?? fenceMatch[3];
-      const char = run[0];
-      const len = run.length;
-      if (!inFence) {
-        inFence = true;
-        fenceChar = char;
-        fenceLength = len;
-      } else if (char === fenceChar && len >= fenceLength) {
-        inFence = false;
-        fenceChar = undefined;
-        fenceLength = 0;
-      }
+    if (fenced[index]) {
       continue;
     }
 
-    if (inFence) {
-      continue;
+    for (const match of maskCodeSpans(line).matchAll(HTML_ANCHOR)) {
+      const anchor = normalizeSlug(match[1] ?? match[2] ?? match[3]);
+      if (anchor) {
+        htmlAnchors.push(anchor);
+      }
     }
 
     const atx = line.match(/^ {0,3}(#{1,6})(?:[ \t]+|$)(.*)$/);
@@ -297,9 +298,15 @@ function analyzeFile(filePath: string, workspaceRoot: string): FileAnalysis {
       slugs.add(heading.explicitSlug);
     }
   }
-  const anchors = extractAnchorReferences(content, filePath, workspaceRoot, lineStarts);
+  for (const anchor of htmlAnchors) {
+    slugs.add(anchor);
+  }
+  // A link written inside code is an example and not a link, as the link audit reads it.
+  const anchors = extractAnchorReferences(maskCode(content), filePath, workspaceRoot, lineStarts);
+  // A file that ends with a line break has no line after it.
+  const lineCount = content.length === 0 ? 0 : content.endsWith("\n") ? lines.length - 1 : lines.length;
 
-  return { headings, slugs, anchors, lineCount: lines.length };
+  return { headings, slugs, anchors, lineCount };
 }
 
 function extractAnchorReferences(

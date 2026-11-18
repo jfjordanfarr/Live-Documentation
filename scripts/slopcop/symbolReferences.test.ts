@@ -223,6 +223,145 @@ describe("findSymbolReferenceAnomalies", () => {
   });
 });
 
+describe("findSymbolReferenceAnomalies at the edges of GitHub's rendering", () => {
+  /**
+   * Writes `target` as an unaudited markdown file, links to each fragment from an audited document, and returns the
+   * fragments the audit reports missing, in order.
+   */
+  function missing(target: string, fragments: string[], targetName = "archive/record.md"): string[] {
+    let reported: string[] = [];
+    withWorkspace((workspace) => {
+      writeFile(workspace, targetName, target);
+      writeFile(workspace, "docs/design.md", fragments.map((fragment) => `- [link](../${targetName}#${fragment})`).join("\n"));
+      reported = findSymbolReferenceAnomalies({ workspaceRoot: workspace, files: [path.join(workspace, "docs/design.md")] })
+        .map((issue) => issue.slug);
+    });
+    return reported;
+  }
+
+  it("slugs a heading as GitHub does: a repeated heading's suffix, punctuation, non-ASCII letters, code and emphasis, setext", () => {
+    const target = [
+      "# Turn 8",
+      "# Turn 8",
+      "## Café au lait",
+      "## What's new? (v2) — notes",
+      "## The `inline` and **bold** _emphasis_",
+      "Setext Title",
+      "============",
+      "Second Setext",
+      "---"
+    ].join("\n");
+    expect(
+      missing(target, [
+        "turn-8",
+        "turn-8-1",
+        "turn-8-2",
+        "Turn-8",
+        "café-au-lait",
+        "caf%C3%A9-au-lait",
+        "whats-new-v2--notes",
+        "the-inline-and-bold-emphasis",
+        "setext-title",
+        "second-setext"
+      ])
+    ).toEqual(["turn-8-2"]);
+  });
+
+  it("finds no heading inside a fence of backticks or tildes, of any length, and a fence closes only on a bare run as long", () => {
+    const target = [
+      "## Before",
+      "``` ts",
+      "## In backticks",
+      "```ts",
+      "## Still in backticks, since a run with words after it does not close",
+      "```",
+      "~~~~",
+      "## In tildes",
+      "~~~",
+      "## Still in tildes, since a shorter run does not close",
+      "~~~~~",
+      "```not`a fence",
+      "## After",
+      "`````",
+      "## Never closed, so in code to the end"
+    ].join("\n");
+    expect(
+      missing(target, [
+        "before",
+        "in-backticks",
+        "still-in-backticks-since-a-run-with-words-after-it-does-not-close",
+        "in-tildes",
+        "still-in-tildes-since-a-shorter-run-does-not-close",
+        "after",
+        "never-closed-so-in-code-to-the-end"
+      ])
+    ).toEqual([
+      "in-backticks",
+      "still-in-backticks-since-a-run-with-words-after-it-does-not-close",
+      "in-tildes",
+      "still-in-tildes-since-a-shorter-run-does-not-close",
+      "never-closed-so-in-code-to-the-end"
+    ]);
+  });
+
+  it("takes an anchor written in HTML as a target, but not one written inside code", () => {
+    const target = [
+      '<a id="turn-3"></a>',
+      "Some words <a name='old-name'>here</a>.",
+      'An example: `<a id="in-a-span">`.',
+      "```html",
+      '<a id="in-a-fence"></a>',
+      "```"
+    ].join("\n");
+    expect(missing(target, ["turn-3", "old-name", "in-a-span", "in-a-fence"])).toEqual(["in-a-span", "in-a-fence"]);
+  });
+
+  it("holds a citation of lines to the lines the file has, with or without a final line break, LF or CRLF", () => {
+    const fragments = ["L3", "L4", "L0", "L2C3", "L1C1-L3C2", "L3-L1", "L1-L4", "L12-14"];
+    const reported = ["l4", "l0", "l1-l4", "l12-14"];
+    expect(missing("a\nb\nc\n", fragments)).toEqual(reported);
+    expect(missing("a\nb\nc", fragments)).toEqual(reported);
+    expect(missing("a\r\nb\r\nc\r\n", fragments)).toEqual(reported);
+    expect(missing("## Turn 1\r\nWords.\r\n## Turn 1\r\n", ["turn-1", "turn-1-1", "L3", "L4"])).toEqual(["l4"]);
+  });
+
+  it("decodes a percent-encoded path, and leaves a directory or a file that is not there to the link audit", () => {
+    withWorkspace((workspace) => {
+      writeFile(workspace, "archive/my notes.md", "## Intro");
+      fs.mkdirSync(path.join(workspace, "archive/folder.md"), { recursive: true });
+      writeFile(
+        workspace,
+        "docs/design.md",
+        [
+          "[encoded](../archive/my%20notes.md#intro), [encoded, missing](../archive/my%20notes.md#outro)",
+          "[a directory](../archive/folder.md#intro), [another](../archive/#intro), [not there](../archive/gone.md#intro)"
+        ].join("\n")
+      );
+      const issues = findSymbolReferenceAnomalies({ workspaceRoot: workspace, files: [path.join(workspace, "docs/design.md")] });
+      expect(issues.map((issue) => issue.slug)).toEqual(["outro"]);
+    });
+  });
+
+  it("does not check a link written inside code, which is an example", () => {
+    withWorkspace((workspace) => {
+      writeFile(workspace, "archive/record.md", "## Turn 1");
+      writeFile(
+        workspace,
+        "docs/design.md",
+        [
+          "A link in a span: `[x](../archive/record.md#in-a-span)`.",
+          "```markdown",
+          "[x](../archive/record.md#in-a-fence)",
+          "```",
+          "[x](../archive/record.md#outside)"
+        ].join("\n")
+      );
+      const issues = findSymbolReferenceAnomalies({ workspaceRoot: workspace, files: [path.join(workspace, "docs/design.md")] });
+      expect(issues.map((issue) => `${issue.slug} ${issue.line}`)).toEqual(["outside 5"]);
+    });
+  });
+});
+
 function withWorkspace(callback: (workspace: string) => void): void {
   const workspace = fs.mkdtempSync(path.join(os.tmpdir(), "slopcop-symbols-"));
   try {

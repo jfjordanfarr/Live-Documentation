@@ -40,36 +40,47 @@ export function extractReferenceDefinitions(content: string): Map<string, Refere
  * The content with every fenced code block and inline code span replaced by
  * spaces of the same length, so that an offset into the result is an offset
  * into the original. Markdown inside code is literal text: a link or a heading
- * written there is an example, not a link or a heading. The fence rules are
- * CommonMark's, as the symbol audit applies them: a run of three or more
- * backticks or tildes opens a block, and only a run of the same character at
- * least as long closes it.
+ * written there is an example, not a link or a heading. The fences are found
+ * by {@link fencedLines}, as the symbol audit finds them.
  */
 export function maskCode(content: string): string {
-  let inFence = false;
-  let fenceChar = "";
-  let fenceLength = 0;
-  return content
-    .split("\n")
-    .map((line) => {
-      const fence = /^ {0,3}((`{3,})|(~{3,}))([^`~].*)?$/.exec(line);
-      if (fence) {
-        const run = fence[2] ?? fence[3];
-        if (!inFence) {
-          inFence = true;
-          fenceChar = run[0];
-          fenceLength = run.length;
-        } else if (run[0] === fenceChar && run.length >= fenceLength) {
-          inFence = false;
-        }
-        return blank(line);
+  const lines = content.split("\n");
+  const fenced = fencedLines(lines);
+  return lines.map((line, index) => (fenced[index] ? blank(line) : maskCodeSpans(line))).join("\n");
+}
+
+/** A line with each inline code span replaced by spaces of the same length. */
+export function maskCodeSpans(line: string): string {
+  return line.replace(/(`+)[^`\n]*?\1/g, blank);
+}
+
+const FENCE = /^ {0,3}(`{3,}|~{3,})(.*?)\r?$/;
+
+/**
+ * For each line, whether it belongs to a fenced code block: its opening line,
+ * its body or its closing line. The rules are CommonMark's: a run of three or
+ * more backticks or tildes, indented at most three spaces, opens a block (a
+ * backtick run only when no backtick follows it on the line); only a run of the
+ * same character at least as long, with nothing after it but spaces, closes it,
+ * so a line such as "```ts" inside a block is part of the block; and a block
+ * never closed runs to the end of the document.
+ */
+export function fencedLines(lines: readonly string[]): boolean[] {
+  let open: string | undefined;
+  return lines.map((line) => {
+    const fence = FENCE.exec(line);
+    if (open === undefined) {
+      if (fence && !(fence[1][0] === "`" && fence[2].includes("`"))) {
+        open = fence[1];
+        return true;
       }
-      if (inFence) {
-        return blank(line);
-      }
-      return line.replace(/(`+)[^`\n]*?\1/g, blank);
-    })
-    .join("\n");
+      return false;
+    }
+    if (fence && fence[1][0] === open[0] && fence[1].length >= open.length && fence[2].trim() === "") {
+      open = undefined;
+    }
+    return true;
+  });
 }
 
 function blank(text: string): string {
