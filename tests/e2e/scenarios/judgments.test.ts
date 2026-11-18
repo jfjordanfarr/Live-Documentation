@@ -301,49 +301,62 @@ describe("oracle facts", () => {
     { consumer: "src/main.ts", provider: "src/processor.ts" },
     { consumer: "src/models.ts", provider: "src/types.ts" }
   ];
-  const compiler = { edges: oracle, documents: ["src/main.ts", "src/processor.ts", "src/helpers.ts", "src/models.ts", "src/types.ts"], recordedMissing: [] };
+  const compiler = { edges: oracle, documents: ["src/main.ts", "src/processor.ts", "src/helpers.ts", "src/models.ts", "src/types.ts"] };
+  const gap = { consumer: "src/main.ts", provider: "src/processor.ts", why: "the adapter records the header's include", since: "2026-11-18" };
+  /** The good picture with main.ts's wire to the subject lost. */
+  const lost = (): Reading => { const reading = good(); reading.wires.pop(); return reading; };
 
-  it("keeps a picture whose wires at the subject are the oracle's edges there, and ignores edges elsewhere", () => {
-    expect(outcome(wiresMatchOracle(good(), "src/processor.ts", compiler))).toBe("kept");
+  it("keeps a picture whose wires at the subject are the compiler's edges there, and ignores edges elsewhere", () => {
+    const verdicts = wiresMatchOracle(good(), "src/processor.ts", compiler);
+    expect(verdicts.map(outcome)).toEqual(["kept"]);
   });
 
   it("neither confirms nor denies a wire to a file the compiler does not index", () => {
     const reading = good();
     reading.wires.push(wire("src/processor.ts", "expected/compiler-edges.json", [580, 340], [680, 340]));
-    expect(outcome(wiresMatchOracle(reading, "src/processor.ts", compiler))).toBe("kept");
+    expect(wiresMatchOracle(reading, "src/processor.ts", compiler).map(outcome)).toEqual(["kept"]);
   });
 
-  it("rejects a missing edge and an invented one", () => {
+  it("rejects a lost edge and an invented one", () => {
     const reading = good();
     reading.wires[1] = wire("src/processor.ts", "src/helpers.ts", [580, 340], [680, 340]);
-    expect(wiresMatchOracle(reading, "src/processor.ts", compiler).findings).toEqual([
+    expect(wiresMatchOracle(reading, "src/processor.ts", compiler)[0].findings).toEqual([
       "missing: src/main.ts uses src/processor.ts",
       "not in the compiler: src/helpers.ts uses src/processor.ts"
     ]);
   });
 
-  it("excuses only the missing edges the oracle comparison records, by name, and never an invented one", () => {
-    const reading = good();
-    reading.wires[1] = wire("src/processor.ts", "src/helpers.ts", [580, 340], [680, 340]);
-    const recorded = { ...compiler, recordedMissing: [{ consumer: "src/main.ts", provider: "src/processor.ts" }] };
-    const verdict = wiresMatchOracle(reading, "src/processor.ts", recorded);
-    expect(verdict.findings).toEqual(["not in the compiler: src/helpers.ts uses src/processor.ts"]);
-    expect(verdict.known).toEqual(["missing: src/main.ts uses src/processor.ts, as the oracle comparison records"]);
-    // A recorded gap the picture does not show excuses nothing else.
-    reading.wires[1] = wire("src/processor.ts", "src/main.ts", [580, 340], [680, 340]);
+  it("excuses a listed gap on a baseline line of its own, which says the cell is green by exception", () => {
+    const [oracleLine, baseline] = wiresMatchOracle(lost(), "src/processor.ts", compiler, [gap]);
+    expect(oracleLine.outcome).toBe("kept");
+    expect(oracleLine.known).toEqual(["excused by a recorded gap, not agreed by the compiler: src/main.ts uses src/processor.ts: the adapter records the header's include (listed 2026-11-18)"]);
+    expect(baseline.rank).toBe("baseline");
+    expect(baseline.judgment).toBe("the compiler's edges the docs are known to lack at this file: 1");
+    expect(baseline.outcome).toBe("kept");
+  });
+
+  it("still rejects a lost edge the list does not name", () => {
+    const reading = lost();
     reading.wires.shift();
-    expect(wiresMatchOracle(reading, "src/processor.ts", recorded).findings).toEqual(["missing: src/processor.ts uses src/helpers.ts"]);
+    const [oracleLine] = wiresMatchOracle(reading, "src/processor.ts", compiler, [gap]);
+    expect(oracleLine.findings).toEqual(["missing: src/processor.ts uses src/helpers.ts"]);
+  });
+
+  it("rejects a stale entry: a gap the picture now draws, or an edge the compiler no longer has", () => {
+    const drawn = wiresMatchOracle(good(), "src/processor.ts", compiler, [gap]);
+    expect(drawn.map(outcome)).toEqual(["kept", "broken"]);
+    expect(drawn[1].findings).toEqual(["stale: the picture now draws src/main.ts uses src/processor.ts (listed 2026-11-18)"]);
+    const gone = wiresMatchOracle(good(), "src/processor.ts", compiler, [{ ...gap, consumer: "src/test.ts" }]);
+    expect(gone[1].findings).toEqual(["stale: the compiler no longer has src/test.ts uses src/processor.ts (listed 2026-11-18)"]);
   });
 
   it("judges the picture against its own data by the same rule, ranked as a relation", () => {
-    const reading = good();
-    reading.wires.pop();
-    const verdict = wiresMatchData(reading, "src/processor.ts", oracle);
+    const verdict = wiresMatchData(lost(), "src/processor.ts", oracle);
     expect(verdict.rank).toBe("relation");
     expect(verdict.findings).toEqual(["missing: src/main.ts uses src/processor.ts"]);
   });
 
-  it("says so where there is no oracle, rather than passing", () => {
-    expect(outcome(wiresMatchOracle(good(), "src/processor.ts", null))).toBe("n/a");
+  it("says so where there is no compiler record, rather than passing", () => {
+    expect(wiresMatchOracle(good(), "src/processor.ts", null).map(outcome)).toEqual(["n/a"]);
   });
 });

@@ -4,42 +4,46 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/scenarios/judgments.ts
-- Generated At: 2026-11-18T19:06:10.603Z
+- Generated At: 2026-11-18T19:17:17.188Z
 
 ## Authored
 ### Purpose
 The still picture's promises as pure functions over readings, each reporting every place it is broken, so that one scenario lists every promise it broke.
 
 ### Notes
-Ranked as [the frame they accepted](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-17/2026-11-17.1.record.md#roots-reply-to-turn-11-as-delivered) asks, each pushed as high as it goes: a floor, so that laws cannot pass on an empty page; laws that need nothing but the reading; relations between two readings of one run (a reload, three presses out against reading size, the picture against the data it was drawn from); and an oracle fact against the compiler's edges for the Rosetta programs, which excuses only a gap the repository's oracle comparison already records, each by name. No baselines yet. Two laws were corrected after their first run on 2026-11-18, and each says what the screenshot showed. The law that no name breaks inside a word waits in `PENDING_LAWS` until a known open defect is mended ([the root's rulings on the scenario builder's first handback](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#work-notes-the-scenario-builders-first-handback)).
+Ranked as [the frame they accepted](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-17/2026-11-17.1.record.md#roots-reply-to-turn-11-as-delivered) asks, each pushed as high as it goes: a floor, so that laws cannot pass on an empty page; laws that need nothing but the reading; relations between two readings of one run (a reload, three presses out against reading size, the picture against the data it was drawn from); and an oracle fact against the compiler's edges for the Rosetta programs.
+
+The one baseline is the list of compiler edges the docs are known to lack at a scenario's subject (`KnownGap`), written by name in the table with a reason and a date. An excused edge keeps the oracle's cell green and is reported on a verdict line of its own, of rank baseline ("the compiler's edges the docs are known to lack at this file: 1"), so that a cell green by exception never reads as agreement with the compiler. The list is frozen on purpose: for one day it was computed from the docs' own comparison with the compiler, which excused whatever the docs lacked, so that a lost edge could never turn a cell red; the root corrected it on 2026-11-18. An edge the list does not name stays broken, and an entry the picture now draws, or that the compiler no longer has, is broken as stale.
+
+Two laws were corrected after their first run on 2026-11-18, and each says what the screenshot showed. The law that no name breaks inside a word waits in `PENDING_LAWS` until a known open defect is mended ([the root's rulings on the scenario builder's first handback](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#work-notes-the-scenario-builders-first-handback)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Rank` {#symbol-rank}
 - Type: type
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L23)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L25)
 
 #### `Verdict` {#symbol-verdict}
 - Type: interface
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L25)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L27)
 
 #### `Floor` {#symbol-floor}
 - Type: interface
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L52)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L54)
 
 ##### `Floor` — Summary
 What a scenario must at least show before its laws mean anything.
 
 #### `judgeFloor` {#symbol-judgefloor}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L67)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L69)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading); `floor`: [`Floor`](#symbol-floor)
 
 #### `textWhole` {#symbol-textwhole}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L90)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L92)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -51,7 +55,7 @@ as cut. There only collisions are judged here.
 
 #### `cardsInsideDirectories` {#symbol-cardsinsidedirectories}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L99)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L101)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -60,7 +64,7 @@ Every card stands inside its own directory's outline, clear of its edge by the o
 
 #### `directoriesConnected` {#symbol-directoriesconnected}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L118)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L120)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -69,7 +73,7 @@ Each directory is one connected shape: its segments run column after column, eac
 
 #### `siblingsApart` {#symbol-siblingsapart}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L134)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L136)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -78,14 +82,14 @@ Two directories of one parent never overlap in a column they share.
 
 #### `EDGE_TOLERANCE_PX` {#symbol-edge_tolerance_px}
 - Type: const
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L152)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L154)
 
 ##### `EDGE_TOLERANCE_PX` — Summary
 How far from a card's edge an end or a dot may stand and still be on that edge, in screen pixels.
 
 #### `usesLeftOfferingsRight` {#symbol-usesleftofferingsright}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L172)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L174)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -98,7 +102,7 @@ edge at scale 1, and the wires end on the dots. The promise is the side, not the
 
 #### `routesForward` {#symbol-routesforward}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L195)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L197)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -107,7 +111,7 @@ Every route reads forward, from what offers on the left to what uses on the righ
 
 #### `noRouteAcrossACard` {#symbol-norouteacrossacard}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L202)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L204)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -116,7 +120,7 @@ No route passes over a card it does not end at.
 
 #### `lanesAtHome` {#symbol-lanesathome}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L209)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L211)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -125,7 +129,7 @@ No lane lies in a directory that holds neither end of the wires through it.
 
 #### `nothingOverTheTop` {#symbol-nothingoverthetop}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L215)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L217)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -134,7 +138,7 @@ Nothing is drawn over the top of the picture: no route rises above the highest c
 
 #### `framedWhole` {#symbol-framedwhole}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L232)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L234)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -145,7 +149,7 @@ owner's choices of 2026-10-30, `frameWhole` in the layout measure).
 
 #### `edgeSignsHonest` {#symbol-edgesignshonest}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L253)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L255)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -154,7 +158,7 @@ The signs at the frame's edges are honest: a sign stands at exactly the edges th
 
 #### `subjectInFrame` {#symbol-subjectinframe}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L271)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L273)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -163,7 +167,7 @@ The subject's card stands whole inside the frame.
 
 #### `wiresPlainAtRest` {#symbol-wiresplainatrest}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L280)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L282)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -172,28 +176,28 @@ At rest no wire glows, and every route is drawn at one strength: the map fades t
 
 #### `SMALL_TEXT_CONTRAST` {#symbol-small_text_contrast}
 - Type: const
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L288)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L290)
 
 ##### `SMALL_TEXT_CONTRAST` — Summary
 WCAG's least contrast for small text, which every name and line on a card meets.
 
 #### `NAME_LEADS_PROSE` {#symbol-name_leads_prose}
 - Type: const
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L290)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L292)
 
 ##### `NAME_LEADS_PROSE` — Summary
 How much more contrast a symbol's name has than the prose that describes it: names lead (2026-11-15).
 
 #### `OUTLINE_SEEN` {#symbol-outline_seen}
 - Type: const
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L292)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L294)
 
 ##### `OUTLINE_SEEN` — Summary
 The least contrast at which an outline is seen against the map's surface.
 
 #### `textTones` {#symbol-texttones}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L298)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L300)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -203,7 +207,7 @@ name leads the prose that describes it.
 
 #### `outlineIsGround` {#symbol-outlineisground}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L312)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L314)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -212,7 +216,7 @@ An opened directory's outline is seen, is no stronger than a card's border, and 
 
 #### `outlinesDrawn` {#symbol-outlinesdrawn}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L323)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L325)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -221,7 +225,7 @@ Every directory but the root draws an outline, and the root draws none.
 
 #### `rootColumnsAligned` {#symbol-rootcolumnsaligned}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L331)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L333)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -230,7 +234,7 @@ A picture with no subject stands its root's independent columns at one top, so t
 
 #### `proseOneTone` {#symbol-proseonetone}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L341)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L343)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -239,7 +243,7 @@ A symbol's description and the file's Purpose are prose of one tone.
 
 #### `namesBreakAtSeams` {#symbol-namesbreakatseams}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L365)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L367)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -250,7 +254,7 @@ the connections look, seen 2026-11-18) is mended.
 
 #### `pageHealthy` {#symbol-pagehealthy}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L378)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L380)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -259,7 +263,7 @@ The page logged no error and asked nothing of another site.
 
 #### `LAWS` {#symbol-laws}
 - Type: const
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L386)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L388)
 - Returns: `ReadonlyArray`, [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -268,7 +272,7 @@ Every law, in the order a report lists them.
 
 #### `PENDING_LAWS` {#symbol-pending_laws}
 - Type: const
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L409)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L411)
 - Returns: `ReadonlyArray`, [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -277,7 +281,7 @@ Laws written and tested but kept out of the table until the defect each would re
 
 #### `samePicture` {#symbol-samepicture}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L414)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L416)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `before`: [`Reading`](./reading.ts.mdmd.md#symbol-reading); `after`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -286,7 +290,7 @@ Two readings of one scenario agree within a pixel: the same cards in the same pl
 
 #### `tonesHeld` {#symbol-tonesheld}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L451)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L453)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `near`: [`Reading`](./reading.ts.mdmd.md#symbol-reading); `far`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -296,32 +300,49 @@ drawn in the same colours in both readings of one run.
 
 #### `OracleEdge` {#symbol-oracleedge}
 - Type: interface
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L462)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L464)
 
 ##### `OracleEdge` — Summary
 One reference an independent oracle knows, file to file: the consumer uses the provider.
 
+#### `CompilerRecord` {#symbol-compilerrecord}
+- Type: interface
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L470)
+
+##### `CompilerRecord` — Summary
+What the compiler says of a program.
+
+#### `KnownGap` {#symbol-knowngap}
+- Type: interface
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L482)
+- Extends: [`OracleEdge`](#symbol-oracleedge)
+
+##### `KnownGap` — Summary
+A compiler edge the docs are known to lack, written by name beside the scenario with its reason and date: a
+recorded exception, the frame's lowest rank, a baseline. It is frozen on purpose. An excuse computed at run time from
+the docs' own comparison with the compiler would excuse whatever the docs lack, so that a lost edge could never turn
+the cell red (the root's correction of 2026-11-18).
+
 #### `wiresMatchOracle` {#symbol-wiresmatchoracle}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L472)
-- Returns: [`Verdict`](#symbol-verdict)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L498)
+- Returns: [`Verdict`](#symbol-verdict)[]
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading); `oracle`: [`CompilerRecord`](#symbol-compilerrecord)
 
 ##### `wiresMatchOracle` — Summary
-The files wired to the subject are exactly the files the oracle says it uses or is used by: every oracle edge with
-one end at the subject is drawn as a route or a stub, and no wire at the subject joins a pair the oracle does not
-know. Judged file to file, since an oracle's symbols are named in its own scheme.
+The files wired to the subject are exactly the files the compiler says it uses or is used by: every compiler edge
+with one end at the subject is drawn as a route or a stub, and no wire at the subject joins a pair the compiler
+denies. Judged file to file, since a compiler names symbols in its own scheme.
 
-#### `CompilerRecord` {#symbol-compilerrecord}
-- Type: interface
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L484)
-
-##### `CompilerRecord` — Summary
-What the compiler says of a program, and what the repository's oracle comparison already records the docs as lacking.
+Returns the oracle's verdict and, when the scenario lists known gaps for this map, a second verdict of rank
+baseline that names each gap it excused, so that a green oracle cell says whether it agrees with the compiler or is
+green by a recorded exception. That baseline is itself broken by a stale entry: a listed gap the picture now draws, or
+an edge the compiler no longer has, so that the list cannot outlive its reason. A missing edge the list does not name
+stays broken in the oracle's verdict.
 
 #### `wiresMatchData` {#symbol-wiresmatchdata}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L497)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L524)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 

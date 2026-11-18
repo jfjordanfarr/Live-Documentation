@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/scenarios/still-pictures.spec.ts
-- Generated At: 2026-11-18T19:06:10.621Z
+- Generated At: 2026-11-18T19:17:17.209Z
 
 ## Authored
 ### Purpose
@@ -24,7 +24,6 @@ _No public symbols detected_
 - `@playwright/test` - `Page`, `expect`, `test`
 - `node:fs` - `fs`
 - `node:path` - `path`
-- [`compare.compareFixture`](../../../scripts/oracle/compare.ts.mdmd.md#symbol-comparefixture)
 - [`files.readOracleEdges`](../../../scripts/oracle/files.ts.mdmd.md#symbol-readoracleedges)
 - [`instrument.readSettled`](./instrument.ts.mdmd.md#symbol-readsettled)
 - [`instrument.watchPage`](./instrument.ts.mdmd.md#symbol-watchpage)

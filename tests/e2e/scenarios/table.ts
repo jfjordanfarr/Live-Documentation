@@ -7,9 +7,20 @@
  * facts it is judged by beyond the laws, which every scenario is judged by. `replaces` names the cases of today's
  * suite whose still-picture promises the scenario carries, for the ledger; a case named there is not deleted by this
  * slice.
+ *
+ * `knownGaps` lists, by name, map by map, the compiler's edges the docs are known to lack at the oracle's file. It is a
+ * baseline, the lowest rank of the frame: a recorded exception, not agreement with the compiler, and the table reports
+ * each excuse on a verdict line of rank baseline beside the oracle's. It exists because the C-family adapters record
+ * the include of a header where the compiler records the use of a definition, which `npm run oracle:compare` reports as
+ * 15 missing edges on each of the C and C++ programs; at the processor's header one of them is in the picture's reach.
+ * It is written here and frozen, never computed from the docs' own comparison with the compiler, which would excuse
+ * whatever the docs lose; and an entry the picture now draws, or the compiler no longer has, turns the table red as
+ * stale (the root's correction of 2026-11-18).
  */
 
-import type { Floor } from "./judgments";
+import type { Floor, KnownGap } from "./judgments";
+
+const HEADER_GAP = "the C-family adapters record a header's include, where the compiler records the use of the definition in its implementation";
 
 export interface Scenario {
   name: string;
@@ -31,6 +42,8 @@ export interface Scenario {
   reload: boolean;
   /** Judge the wires at this file, a token, against the program's compiler edges. */
   oracleAt?: string;
+  /** Compiler edges at `oracleAt` the docs are known to lack, by map, each with its reason and date: a baseline. */
+  knownGaps?: Record<string, KnownGap[]>;
   replaces: string[];
 }
 
@@ -42,6 +55,10 @@ export const SCENARIOS: Scenario[] = [
     floor: { subject: "{processor}", minCards: 2, minWires: 1 },
     reload: true,
     oracleAt: "{processor}",
+    knownGaps: {
+      c: [{ consumer: "src/processor.h", provider: "src/processor.c", why: HEADER_GAP, since: "2026-11-18" }],
+      cpp: [{ consumer: "src/processor.hpp", provider: "src/processor.cpp", why: HEADER_GAP, since: "2026-11-18" }]
+    },
     replaces: ["still-picture.spec.ts:334", "local-map-tone.spec.ts:55", "local-map-tone.spec.ts:82"]
   },
   {

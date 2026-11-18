@@ -10,7 +10,9 @@
  * - a law, which needs nothing but the reading;
  * - a relation, between two readings of one run;
  * - an oracle fact, against an independent truth (the compiler's edges for the Rosetta programs);
- * - a baseline, a recorded measurement, one-sided and re-approved by hand. This first slice has none.
+ * - a baseline, a recorded measurement, one-sided and re-approved by hand. This slice has one kind: the compiler edges
+ *   the docs are known to lack at a scenario's subject, listed by name in the table (`KnownGap`), each excuse reported
+ *   on a verdict line of its own so that a cell green by exception never reads as agreement.
  *
  * A promise that does not apply to a reading (no directory drawn, no subject chosen) says so as "not applicable"
  * rather than passing, so that a table can tell coverage from silence.
@@ -464,29 +466,54 @@ export interface OracleEdge {
   provider: string;
 }
 
-/**
- * The files wired to the subject are exactly the files the oracle says it uses or is used by: every oracle edge with
- * one end at the subject is drawn as a route or a stub, and no wire at the subject joins a pair the oracle does not
- * know. Judged file to file, since an oracle's symbols are named in its own scheme.
- */
-export function wiresMatchOracle(reading: Reading, subject: string, oracle: CompilerRecord | null): Verdict {
-  const judged = wiresAgainst(reading, subject, oracle?.edges ?? null, "the subject's wires are the compiler's edges", "oracle", "the compiler", oracle ? new Set(oracle.documents) : null);
-  if (!oracle?.recordedMissing.length || judged.outcome !== "broken") return judged;
-  // One-sided: an edge the picture lacks is excused only when the oracle comparison (`npm run oracle:compare`) already
-  // records the docs as lacking it; anything else stays broken, and what was excused is listed by name.
-  const recorded = new Set(oracle.recordedMissing.map(edge => `missing: ${edge.consumer} uses ${edge.provider}`));
-  const findings = judged.findings.filter(finding => !recorded.has(finding));
-  const known = judged.findings.filter(finding => recorded.has(finding)).map(finding => `${finding}, as the oracle comparison records`);
-  return { ...verdict(judged.judgment, "oracle", findings), known };
-}
-
-/** What the compiler says of a program, and what the repository's oracle comparison already records the docs as lacking. */
+/** What the compiler says of a program. */
 export interface CompilerRecord {
   edges: readonly OracleEdge[];
   /** The files the compiler indexes; a wire to any other file is neither confirmed nor denied. */
   documents: readonly string[];
-  /** The compiler's edges the comparison of the generated docs against the compiler reports missing. */
-  recordedMissing: readonly OracleEdge[];
+}
+
+/**
+ * A compiler edge the docs are known to lack, written by name beside the scenario with its reason and date: a
+ * recorded exception, the frame's lowest rank, a baseline. It is frozen on purpose. An excuse computed at run time from
+ * the docs' own comparison with the compiler would excuse whatever the docs lack, so that a lost edge could never turn
+ * the cell red (the root's correction of 2026-11-18).
+ */
+export interface KnownGap extends OracleEdge {
+  why: string;
+  since: string;
+}
+
+/**
+ * The files wired to the subject are exactly the files the compiler says it uses or is used by: every compiler edge
+ * with one end at the subject is drawn as a route or a stub, and no wire at the subject joins a pair the compiler
+ * denies. Judged file to file, since a compiler names symbols in its own scheme.
+ *
+ * Returns the oracle's verdict and, when the scenario lists known gaps for this map, a second verdict of rank
+ * baseline that names each gap it excused, so that a green oracle cell says whether it agrees with the compiler or is
+ * green by a recorded exception. That baseline is itself broken by a stale entry: a listed gap the picture now draws, or
+ * an edge the compiler no longer has, so that the list cannot outlive its reason. A missing edge the list does not name
+ * stays broken in the oracle's verdict.
+ */
+export function wiresMatchOracle(reading: Reading, subject: string, oracle: CompilerRecord | null, gaps: readonly KnownGap[] = []): Verdict[] {
+  const judged = wiresAgainst(reading, subject, oracle?.edges ?? null, "the subject's wires are the compiler's edges", "oracle", "the compiler", oracle ? new Set(oracle.documents) : null);
+  if (gaps.length === 0) return [judged];
+  const pair = (edge: OracleEdge): string => `${edge.consumer} uses ${edge.provider}`;
+  const compilerHas = new Set((oracle?.edges ?? []).map(pair));
+  const excused: string[] = [], stale: string[] = [];
+  for (const gap of gaps) {
+    const missing = `missing: ${pair(gap)}`;
+    if (judged.findings.includes(missing)) excused.push(`${pair(gap)}: ${gap.why} (listed ${gap.since})`);
+    else if (!compilerHas.has(pair(gap))) stale.push(`stale: the compiler no longer has ${pair(gap)} (listed ${gap.since})`);
+    else stale.push(`stale: the picture now draws ${pair(gap)} (listed ${gap.since})`);
+  }
+  const excusedFindings = new Set(gaps.map(gap => `missing: ${pair(gap)}`));
+  const remaining = judged.findings.filter(finding => !excusedFindings.has(finding));
+  const oracleVerdict: Verdict = judged.outcome === "n/a"
+    ? judged
+    : { ...verdict(judged.judgment, "oracle", remaining), ...(excused.length ? { known: excused.map(entry => `excused by a recorded gap, not agreed by the compiler: ${entry}`) } : {}) };
+  const baseline: Verdict = { ...verdict(`the compiler's edges the docs are known to lack at this file: ${excused.length}`, "baseline", stale), known: excused };
+  return [oracleVerdict, baseline];
 }
 
 /**

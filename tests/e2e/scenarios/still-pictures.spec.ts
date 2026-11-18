@@ -2,7 +2,6 @@ import { expect, test, type Page } from "@playwright/test";
 import fs from "node:fs";
 import path from "node:path";
 
-import { compareFixture } from "../../../scripts/oracle/compare";
 import { readOracleEdges } from "../../../scripts/oracle/files";
 import { displayNames, loadGraph, localMapStill, localRetainUrl } from "../still-picture";
 import { readSettled, watchPage } from "./instrument";
@@ -109,15 +108,11 @@ for (const map of MAPS) {
           verdicts.push(wiresMatchData(reading, oracleAt, references));
           const fixture = path.join(PROGRAMS, variant.path);
           const compiler = variant.compilerEdges ? readOracleEdges(path.join(PROGRAMS, variant.compilerEdges), fixture) : undefined;
-          // What the repository's oracle comparison records the docs as lacking, computed now by that comparison,
-          // never written by hand: the only gaps the judgment may excuse, and each is listed by name.
-          const recorded = compiler ? (await compareFixture(fixture)).compiler.missing : [];
-          const rooted = (edge: { from: string; to: string }) => ({ consumer: `${map.root}${edge.from}`, provider: `${map.root}${edge.to}` });
-          verdicts.push(wiresMatchOracle(reading, oracleAt, compiler ? {
-            edges: compiler.edges.map(rooted),
-            documents: compiler.documents.map(document => `${map.root}${document}`),
-            recordedMissing: recorded.map(rooted)
-          } : null));
+          // The known gaps are the table's frozen list for this map, a baseline reported on its own verdict line.
+          verdicts.push(...wiresMatchOracle(reading, oracleAt, compiler ? {
+            edges: compiler.edges.map(edge => ({ consumer: `${map.root}${edge.from}`, provider: `${map.root}${edge.to}` })),
+            documents: compiler.documents.map(document => `${map.root}${document}`)
+          } : null, scenario.knownGaps?.[map.name] ?? []));
         }
 
         fs.mkdirSync(folder, { recursive: true });
