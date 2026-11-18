@@ -1,0 +1,2277 @@
+
+❯ Welcome back! This is the first message of the 11/17 dev day chat. The 11/16
+  chat went a little long and just wrapped up.
+
+  This chat will be funky because it will probably have some interruptions
+  early on (hence why the chat record from you is so useful) -- the first order
+  of business is to ensure that the video card is available to you in this
+  container so that you can tremendously speed up our e2e tests.
+
+● Starting the new-chat read: the four Memory documents, the handoff routine,
+  then the five most recent session summaries, alongside a first look at what
+  the container can see of the video card.
+
+  Read 8 files, listed 1 directory, ran 3 shell commands · 2 failed (ctrl+o to expand)
+
+● No graphics device reaches the container, and this session's log lives inside
+  it, so the rebuild would end it; I'm starting the day's record now so it
+  survives. · summary
+
+  Read 2 files, ran 2 shell commands (ctrl+o to expand)
+
+● Still reading in. Next: writing the day's record with your first message, then
+  the rest of the Memory read while I check how others have got a headless
+  browser onto a card under WSL2.
+
+● Write(AI-Agent-Workspace/ChatHistory/2026/11/2026-11-17.1.record.md)
+  ⎿  Wrote 32 lines to
+     AI-Agent-Workspace/ChatHistory/2026/11/2026-11-17.1.record.md
+      1 # November 17, 2026 — the graphics card for the browser tests
+      2
+      3 ## Coverage
+      4
+      5 Agent-maintained record by Claude Code in the VS Code extension,
+        model Fable 5.2 (`claude-fable-5-2`) as stated by the harness, re
+        corded November 17, 2026. This is the root conversation, not a ha
+        rness export. Verbatim visible messages are fenced; work notes ar
+        e authored interpretation. Tool payloads, private reasoning and d
+        elegated conversations are excluded. Final replies are captured o
+     … +28 lines (~3 KB) (ctrl+o to expand)
+
+  Read 1 file (ctrl+o to expand)
+
+● Web Search("headless Chromium WebGL GPU acceleration Docker WSL2 /dev/dxg Mesa
+            d3d12 --use-angle=gl-egl Playwright")
+  ⎿  Did 1 search in 7s
+
+● Web Search("devcontainer.json hostRequirements gpu optional "--gpus all"
+            Docker Desktop Windows WSL2 nvidia runtime detection")
+  ⎿  Did 1 search in 8s
+
+  Read 1 file (ctrl+o to expand)
+
+● Fetch(https://github.com/microsoft/vscode-remote-release/issues/9385)
+  ⎿  Received 365.3KB (200 OK)
+
+● Fetch(https://developer.chrome.com/blog/supercharge-web-ai-testing)
+  ⎿  Received 13.2KB (200 OK)
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● I'm most of the way through the startup read and checking for any earlier
+  attempt at the card before writing a probe to confirm it works. · summary
+
+  Read 3 files, ran 2 shell commands (ctrl+o to expand)
+
+● Still on the startup read (direction two thirds done, three of five summaries
+  done); the probe's scripts are written. Continuing with the rest of direction,
+  the narrative and the last two summaries.
+
+  Read 4 files, ran 2 shell commands · 2 failed (ctrl+o to expand)
+
+● Startup reads are done, and I'm now closing out yesterday's loose ends before
+  I ask you to run the one command I need. · summary
+
+  Ran 3 shell commands · 1 failed (ctrl+o to expand)
+
+● Filing yesterday's closing messages into its record (a quoting slip in my
+  script; redoing it from a file), then the reply.
+
+  Made 1 scratchpad edit +17, ran 2 shell commands (ctrl+o to expand)
+
+● Now the inventory, the summary's follow-up and today's record, then one commit
+  for the close-out.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Write(AI-Agent-Workspace/ChatHistory/2026/11/2026-11-17.1.record.md)
+  ⎿  Added 27 lines, removed 7 lines
+       4 
+       5  Agent-maintained record by Claude Code in the VS Code extension
+          , model Fable 5.2 (`claude-fable-5-2`) as stated by the harness
+          , recorded November 17, 2026. This is the root conversation, no
+          t a harness export. Verbatim visible messages are fenced; work
+          notes are authored interpretation. Tool payloads, private reaso
+          ning and delegated conversations are excluded. Final replies ar
+          e captured only once delivered, normally at the following turn.
+       6 
+       7 -**This record is expected to outlive its session's log.** The h
+         -arness keeps a session's log under `~/.claude` in the container
+         -'s own writable layer (checked at 18:16 UTC: no volume is mount
+         -ed there), so rebuilding the container, which the day's first t
+         -ask may need, removes the log and ends the session. Whatever a 
+         -later root needs is therefore written here before any rebuild, 
+         -and a root that starts after one continues this same record und
+         -er the next turn number (the owner's rule of 2026-10-13 for a r
+         -estarted day).                                                 
+       7 +**This record is expected to outlive its session's log.** The h
+         +arness keeps a session's log under `~/.claude` in the container
+         +'s own writable layer (checked at 18:16 UTC: no volume is mount
+         +ed there), so rebuilding the container, which the day's first t
+         +ask needs sooner or later, removes the log and ends the session
+         +. Whatever a later root needs is therefore written here before 
+         +any rebuild, and a root that starts after one continues this sa
+         +me record under the next turn number (the owner's rule of 2026-
+         +10-13 for a restarted day). A reply of this session not yet cop
+         +ied here when a rebuild happens cannot be recovered from the lo
+         +g afterwards; the owner's export is then its only source.      
+       8 
+       9 -**Startup coverage, as it stands (updated as the read goes on).
+         -** Read in full so far, each to its last line: `AGENTS.md`; `Me
+         -mory/owner.md` (313 lines, in three ranges); `Memory/ideas.md` 
+         -(178 lines, in two ranges); `ChatHistory/README.md`; the Novemb
+         -er 16 session's summary. Still to read at this writing: `Memory
+         -/direction.md` (562 lines), `Memory/narrative.md` (617 lines), 
+         -and the summaries of November 10, 12, 13 and 15.               
+       9 +**Startup coverage.** Read in full before the first reply, each
+         + to its last line: `AGENTS.md`; `Memory/owner.md` (313 lines, i
+         +n three ranges); `Memory/ideas.md` (178 lines, in two ranges); 
+         +`Memory/direction.md` (562 lines, in seven ranges); `Memory/nar
+         +rative.md` (617 lines, in eight ranges); `ChatHistory/README.md
+         +` and the workspace's `README.md`; and the five latest summarie
+         +s (November 10, 12, 13, 15 and 16). The summaries were read new
+         +est first and not oldest to newest as the routine asks, the Nov
+         +ember 16 one having been needed at once for the day's order; al
+         +l five were read whole. The file tool again refused single larg
+         +e reads as more than "the context you have left this turn"; as 
+         +on November 16 the read went on in smaller ranges and nothing w
+         +as cut or skipped. The reading was interleaved with the first l
+         +ook at the graphics card, so a few facts about the container we
+         +re measured before the read was finished; nothing was decided o
+         +n them until it was.                                           
+      10 
+      11  ## Resumption
+      12 
+      13 -- **Current task:** make the host's graphics card (an RTX 3090)
+         - available to the container so that the browser tests' 3D pictu
+         -res are drawn on it and not in software ([Turn 1](#turn-1)). As
+         -ked for first, ahead of everything else in the day's order.    
+      14 -- **Facts measured at startup** (18:10 to 18:20 UTC): no graphi
+         -cs device reaches the container (`/dev/dxg`, `/dev/dri` and `/u
+         -sr/lib/wsl` are absent); the container is Debian 13 (trixie) on
+         - Docker Desktop's WSL2 engine, the workspace a Windows drive mo
+         -unted over 9p; Mesa 25.0.7 is installed and already carries the
+         - driver that draws OpenGL through Direct3D 12 (`d3d12_dri.so`),
+         - which is the road to the card under WSL2; `libegl1`, `libegl-m
+         -esa0` and `libgles2` are not installed and are available from a
+         -pt; Playwright is 1.58.2 with Chromium build 1208; there is no 
+         -Docker inside the container.                                   
+      15 -- **Decisions and constraints:** the session's log dies with a 
+         -rebuild (above), so a way of proving the card works before the 
+         -devcontainer is changed is worth more than a rebuild per attemp
+         -t.                                                             
+      16 -- **Next action:** finish the startup read; complete the Novemb
+         -er 16 session's close (its closing messages, the owner's later 
+         -export); the first reply, with the unanswered questions of Nove
+         -mber 16 and the rings beside the membranes named in the day's o
+         -rder.                                                          
+      13 +- **Current task:** make the host's graphics card (an RTX 3090)
+         + available to the container so that the browser tests' 3D pictu
+         +res are drawn on it and not in software ([Turn 1](#turn-1)). As
+         +ked for first, ahead of the rest of the day's order.           
+      14 +- **Where it stands:** nothing in the repository's product or d
+         +evcontainer has changed. Root has asked the owner to start two 
+         +throwaway sibling containers from a PowerShell window on the Wi
+         +ndows host ([the plan](#the-plan-prove-it-in-a-sibling-containe
+         +r-then-rebuild-once)), in which root can try the card without a
+         + rebuild. Their job loop and its helper are in `AI-Agent-Worksp
+         +ace/tmp/gpu-probe/` (ignored scratch, to be removed when the wo
+         +rk is done; the containers are removed with `docker rm -f ld-gp
+         +u-a ld-gpu-b`).                                                
+      15 +- **Facts measured at startup** (18:10 to 18:30 UTC): no graphi
+         +cs device reaches the container (`/dev/dxg`, `/dev/dri` and `/u
+         +sr/lib/wsl` are absent); the container is Debian 13 (trixie) on
+         + Docker Desktop's WSL2 engine, the workspace a Windows drive (`
+         +D:\`) mounted over 9p, its id `b5bf3e8d09e5`; Mesa 25.0.7 is in
+         +stalled and carries the driver that draws OpenGL through Direct
+         +3D 12 (`d3d12_dri.so`), which is the road to the card under WSL
+         +2; `libegl1`, `libegl-mesa0` and `libgles2` are not installed a
+         +nd are available from apt; Playwright is 1.58.2 with Chromium b
+         +uild 1208 (the headless shell and the full browser are both ins
+         +talled); there is no Docker inside the container; `sudo` needs 
+         +no password.                                                   
+      16 +- **Not known yet, and what the probe is for:** whether Docker 
+         +Desktop passes `/dev/dxg` and the Direct3D 12 libraries into a 
+         +container by `--gpus all` alone, or needs the device and `/usr/
+         +lib/wsl` named; which flags make Playwright's Chromium draw Web
+         +GL on the card; how much faster this repository's 3D picture th
+         +en comes to rest (62 to 66 seconds in software at about five fr
+         +ames a second, 320 frames); whether the browser suite's results
+         + hold on the card.                                             
+      17 +- **For a root that starts after a rebuild:** read this record 
+         +first. If the probe's findings are written below, the devcontai
+         +ner change follows them; check `ls -la /dev/dxg /usr/lib/wsl/li
+         +b` in the new container before anything else, then run one slow
+         + 3D case with and without the card.                            
+      18 +- **The day's order after the card** (from [direction.md](../..
+         +/../Memory/direction.md)'s Next, the owner's first message havi
+         +ng moved the card to the front): the rings beside the membranes
+         +; the owner's eye on the marble and the cells; the "Internals" 
+         +row over "+8 symbols"; the three 3D cases that fail with no cha
+         +nge of root's.                                                 
+      19 +- **Git:** `main` only, 108 commits ahead of `origin/main` befo
+         +re this session's first commit; nothing pushed by root, no comm
+         +it amended.                                                    
+      20 
+      21  ## Turn 1
+      22 
+     ...
+      32 
+      33  Times UTC on November 17.
+      34 
+      32 -- **The startup read** began at about 18:08, as the coverage no
+         -te says.                                                       
+      35 +- **The startup read,** from about 18:08, as the coverage note 
+         +says.                                                          
+      36 +- **The November 16 session's close completed.** Its two closin
+         +g messages (17:55:00 and 17:55:07) were sent after its last com
+         +mit; they are copied from that session's log with `visible-mess
+         +ages.mjs` to [the end of that record](2026-11-16.1.record.md#ro
+         +ots-closing-messages-as-delivered). The owner's export of that 
+         +chat stood modified and uncommitted: an eighth save, 222,517 by
+         +tes, made at 18:06:35, which agrees with the committed seventh 
+         +through its first 212,146 bytes and runs on to the closing mess
+         +ages. It is committed as received, with its size and hash in [t
+         +he month inventory](README.md) and a dated follow-up in [that s
+         +ummary's sources](Summarized/2026-11-16.1.SUMMARIZED.md#sources
+         +-and-coverage). The narrative already carries that session's ch
+         +apter, written at its close; nothing was added to it.          
+      37 +- **The record searched for an earlier attempt at the card.** T
+         +he records of October and November, the probes, Memory and the 
+         +layer-1 to layer-3 documents were searched for the device, the 
+         +launch flags and the words for it. Nothing was ever tried: ever
+         +y mention is an observation that the tests' browser draws in so
+         +ftware (SwiftShader), from 2026-10-17 on, and the suggestion of
+         + November 17 in [ideas.md](../../../Memory/ideas.md). Decisions
+         + that bear on it: browser tests run one at a time (the owner, 2
+         +026-10-19); the gate should come back inside the prompt cache's
+         + hour (2026-11-05); a case that is red because the product is s
+         +low stays red (2026-11-12).                                    
+      38 +- **What the web says, checked before designing** (sources belo
+         +w; none gives a tested recipe for this exact stack). Under WSL2
+         + a container reaches the card through `/dev/dxg` and Microsoft'
+         +s Direct3D 12 libraries in `/usr/lib/wsl/lib`; NVIDIA ships no 
+         +OpenGL or Vulkan driver of its own for WSL2, so OpenGL comes fr
+         +om Mesa's `d3d12` driver. Chrome's own guidance for a headless 
+         +browser on a card names `--use-angle` as the switch and says to
+         + verify by the renderer the page reports, not by the flag. The 
+         +devcontainer specification's `hostRequirements.gpu: "optional"`
+         + is not detected by VS Code on Docker Desktop for Windows (the 
+         +extension looks for an `nvidia` runtime in `docker info`, which
+         + Docker Desktop does not list); the reported ways round are `--
+         +gpus all` in `runArgs`, which breaks the container on a machine
+         + without a card, or the extension's own GPU setting on the user
+         +'s machine.                                                    
+      39 +  - [Chrome for Developers: testing with WebGL and WebGPU in he
+         +adless Chrome](https://developer.chrome.com/blog/supercharge-we
+         +b-ai-testing)                                                  
+      40 +  - [vscode-remote-release issue 9385: `hostRequirements: gpu: 
+         +optional` on Windows](https://github.com/microsoft/vscode-remot
+         +e-release/issues/9385)                                         
+      41 +  - Search results read for the WSL2 path: [a Docker forum thre
+         +ad on headless Chrome with an NVIDIA card](https://forums.docke
+         +r.com/t/hardware-acceleration-for-headless-chrome-with-nvidia-g
+         +pu/132557), [WSLg issue 1394](https://github.com/microsoft/wslg
+         +/issues/1394), [a note on WSLg with Docker](https://nes.is-a.de
+         +v/out/2025/wslgdocker.html).                                   
+      42 +                                                               
+      43 +#### The plan: prove it in a sibling container, then rebuild on
+         +ce                                                             
+      44 +                                                               
+      45 +Root's decision, with its reason. Passing the card in means cha
+         +nging how the container is created, and a rebuild ends this ses
+         +sion and deletes its log; a first attempt is unlikely to be the
+         + last (the device, the libraries, the browser's flags and the t
+         +ests' own tolerance of a different renderer are four separate u
+         +nknowns), and each further attempt would cost another rebuild a
+         +nd another startup read. So the recipe is proven first in two t
+         +hrowaway containers started beside this one from the Windows ho
+         +st, each created from this container's own image with this cont
+         +ainer's volumes (`--volumes-from`), so that they see the same r
+         +epository and the same `node_modules`:                         
+      46 +                                                               
+      47 +- `ld-gpu-a`: `--gpus all` and nothing else, the form the devco
+         +ntainer specification can express portably.                    
+      48 +- `ld-gpu-b`: `--device /dev/dxg` and `/usr/lib/wsl` mounted re
+         +ad-only, the form known from WSLg's own container notes.       
+      49 +                                                               
+      50 +Each runs `AI-Agent-Workspace/tmp/gpu-probe/loop.sh`, which exe
+         +cutes the job scripts root drops into its inbox under that fold
+         +er and keeps each job's output beside it; `AI-Agent-Workspace/t
+         +mp/gpu-probe/run` is root's side of it. It gives root nothing i
+         +t does not already have in this container except the card. What
+         + is to be measured there, in order: what each form puts in the 
+         +container; whether Mesa's `d3d12` driver reports the card (`egl
+         +info`); which launch flags make Playwright's Chromium report it
+         + as the WebGL renderer; the time and frames this repository's 3
+         +D picture of `generator.ts` takes to rest, in software and on t
+         +he card, in the same container; then the slow 3D cases and the 
+         +whole browser suite on the card. Only then is the devcontainer 
+         +changed, the container rebuilt once, and the same cases run aga
+         +in in it.                                                      
+      51 +                                                               
+      52 +**A consequence to put to the owner when the numbers are in, no
+         +t before:** the cases they keep red on their clocks are red bec
+         +ause the software renderer is slow. On the card they will proba
+         +bly pass, and that pressure goes away although a person's brows
+         +er was never the slow thing. The frame counts beside those cloc
+         +ks (320 frames, 1,228 frames) do not depend on the renderer and
+         + would still say when a picture takes long to settle.          
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I need one thing from you to get started: paste the block below into a
+  PowerShell window on Windows. The VS Code terminal won't do, because it is
+  inside the container. Nothing in the repository's product or devcontainer has
+  changed yet.
+
+  Why not just rebuild
+
+  - No graphics device reaches the container today. The tests' browser therefore
+    computes every 3D pixel on the processor, at about five frames a second on
+    this repository's picture.
+  - A rebuild ends this session. The harness keeps its session log inside the
+    container's own disk layer, so a rebuild deletes it and the next root starts
+    cold.
+  - One attempt is unlikely to be enough. There are four separate unknowns:
+    whether Docker passes the device, whether it passes Microsoft's Direct3D
+    libraries, which launch flags make Chromium use them, and whether our tests
+    hold on a different renderer.
+
+  So I want to prove the recipe in two throwaway containers beside this one,
+  then change the devcontainer and rebuild once. Nothing like this has been
+  tried before; I searched the record.
+
+  The paste
+
+  $dc  = "b5bf3e8d09e5"
+  $img = docker inspect $dc --format "{{.Config.Image}}"
+  $job =
+  "/workspaces/Live-Documentation/AI-Agent-Workspace/tmp/gpu-probe/loop.sh"
+  docker run -d --name ld-gpu-a --gpus all --volumes-from $dc -u node $img bash
+  $job a
+  docker run -d --name ld-gpu-b --device /dev/dxg -v
+  /usr/lib/wsl:/usr/lib/wsl:ro --volumes-from $dc -u node $img bash $job b
+  docker ps -a --filter "name=ld-gpu" --format "{{.Names}}: {{.Status}}"
+
+  - What it does: starts two idle containers from this container's own image,
+    sharing its repository folder. ld-gpu-a gets the card the portable way
+    (--gpus all). ld-gpu-b gets it the WSL-specific way (the /dev/dxg device
+    plus WSL's library folder).
+  - What they run: only the job scripts I drop into
+    AI-Agent-Workspace/tmp/gpu-probe/, which is ignored scratch space. They give
+    me nothing I don't already have here except the card.
+  - What to send back: the last line's output, or any error text. Either
+    container failing to start is itself an answer.
+  - Cleanup when we're done: docker rm -f ld-gpu-a ld-gpu-b.
+
+  From there I can work without you: confirm the card is seen, find the flags,
+  time the generator.ts 3D picture in software and on the card, then run the
+  slow cases and the whole browser suite on it. That picture takes 62 to 66
+  seconds to settle today.
+
+  One thing I'll bring back with numbers: the 3D cases you keep red on their
+  clocks will probably go green on the card. The frame counts beside those
+  clocks don't depend on the renderer, so they can keep the pressure on.
+
+  The day's order after the card
+
+  1. Rings beside the membranes, your defect, marked twice. It goes to a builder
+     as soon as the probe frees the machine, since both need the browser. The
+     mend I described and you pinned without answering: no ring while the
+     wrappers are on, a lone hidden file drawn as itself and dimmed, no sign for
+     a hidden document, and the ring kept when Group Wrappers is off.
+  2. Your eye on the marble and the cells (below).
+  3. The "Internals" row over "+8 symbols", and the three 3D cases that fail
+     with no change of mine.
+
+  Questions from yesterday still waiting on you
+
+  1. The marble: what you see view by view, and whether a faded marble should go
+     plain (report of 13:01 (AI-Agent-Workspace/ChatHistory/2026/11/2026-11-16.
+     1.record.md#roots-report-of-1301-on-november-17-as-delivered)).
+  2. The marble's veins: whether the second curve should be a lever in Tuning
+     (reply of 06:16 (AI-Agent-Workspace/ChatHistory/2026/11/2026-11-16.1.record
+     .md#roots-replies-after-turn-11-as-delivered)).
+  3. The cells in place of "+2 files": which of the three Hidden Files values.
+     You have not seen them yet. Open pathfind.ts (http://127.0.0.1:8999/?view=l
+     ocal&node=packages/engine/src/live-docs/pathfind.ts) on your port, then
+     Tuning → 2D Layout → Hidden Files (the probe's pictures
+     (AI-Agent-Workspace/Probes/2026-11-17/cells-trial/README.md)).
+  4. Layout choice: whether a picture should be chosen as it stands, whatever
+     rows are showing (report on the gate (AI-Agent-Workspace/ChatHistory/2026/1
+     1/2026-11-16.1.record.md#roots-report-on-the-gate-as-delivered)).
+  5. Your machine: whether something heavy ran around 12:00 to 12:45 UTC today,
+     when unchanged code ran slower (same report of 13:01
+     (AI-Agent-Workspace/ChatHistory/2026/11/2026-11-16.1.record.md#roots-report
+     -of-1301-on-november-17-as-delivered)).
+  6. Six from November 15, each with its link in that summary's open ends
+     (AI-Agent-Workspace/ChatHistory/2026/11/Summarized/2026-11-15.1.SUMMARIZED.
+     md#open-ends-and-handoff): the closed directory's shape, the description
+     line when zoomed out, how the 3D building state feels, a handle that stays
+     in view inside a large directory, the 2D key's row for kinds, and a round
+     on the 3D forces.
+
+  Housekeeping
+
+  - Startup read: done in full, each to its last line: the guide, owner,
+    direction, ideas, the narrative, and the summaries of November 10, 12, 13,
+    15 and 16. I read the summaries newest first rather than oldest first.
+  - Yesterday's close: its two closing messages are copied into its record
+    (AI-Agent-Workspace/ChatHistory/2026/11/2026-11-16.1.record.md#roots-closing
+    -messages-as-delivered) and your 18:06 export is filed as received
+    (18d879ff).
+  - Today's record: 2026-11-17.1.record.md
+    (AI-Agent-Workspace/ChatHistory/2026/11/2026-11-17.1.record.md) already
+    holds the plan and the facts, so a root that starts after a rebuild can pick
+    up from it.
+
+❯ Loading personal and system profiles took 6010ms.
+  (base) PS C:\Users\User> $dc  = "b5bf3e8d09e5"
+  (base) PS C:\Users\User> $img = docker inspect $dc --format
+  "{{.Config.Image}}"
+  (base) PS C:\Users\User> $job =
+  "/workspaces/Live-Documentation/AI-Agent-Workspace/tmp/gpu-probe/loop.sh"
+  (base) PS C:\Users\User> docker run -d --name ld-gpu-a --gpus all
+  --volumes-from $dc -u node $img bash $job a
+  5925eca2e860e547a720bd2ea93dd92110e62fff143b27d8cfc7a51c5e25748b
+  (base) PS C:\Users\User> docker run -d --name ld-gpu-b --device /dev/dxg -v
+  /usr/lib/wsl:/usr/lib/wsl:ro --volumes-from $dc -u node $img bash $job b
+  bb166179c643272fa3d1d117016eaac76f4018d593ff77679839e304341a07c9
+  (base) PS C:\Users\User> docker ps -a --filter "name=ld-gpu" --format
+  "{{.Names}}: {{.Status}}"
+  ld-gpu-b: Up 1 second
+  ld-gpu-a: Up 3 seconds
+  (base) PS C:\Users\User>
+
+● Both containers are up. Looking at what each one received, and recording your
+  turn and my first reply as delivered.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Write(AI-Agent-Workspace/tmp/gpu-probe/bench.mjs)
+  ⎿  Wrote 101 lines to AI-Agent-Workspace/tmp/gpu-probe/bench.mjs
+       1 #!/usr/bin/env node
+       2 // Scratch instrument for the graphics-card probe (2026-11-17).
+         Opens this repository's 3D picture of generator.ts,
+       3 // the picture several browser cases wait on, under a given set
+         of browser launch flags, and reports which renderer
+       4 // the page got, how long the picture took to come to rest, and
+         how many frames it drew on the way.
+       5 //
+       6 // usage: node bench.mjs <label> <port> [--channel chromium] [--
+         env KEY=VALUE]... [--url <path-and-query>] [-- <chromium flags>.
+     … +96 lines (~4 KB) (ctrl+o to expand)
+  Ran 1 shell command (ctrl+o to expand)
+
+● Software baseline measured here: 320 frames, 92 s to rest at 3.5 frames a
+  second (the probe's install was running alongside). Recording the turn while
+  the install in the card's container finishes.
+
+  Made 1 scratchpad edit +20, listed 1 directory, ran 1 shell command (ctrl+o to expand)
+
+● Background command "Install the browser and Mesa's EGL pieces in the probe
+  container that has the card's libraries" completed (exit code 0)
+
+● Install finished. Asking Mesa in that container whether it sees the card.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Mesa sees the card: with two environment variables it reports "D3D12 (NVIDIA
+  GeForce RTX 3090)". Now the browser itself, with candidate launch flags, on
+  the real 3D picture.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The card is working: in the probe container it drew 320 frames in 8.7 s (about
+  51 fps), versus 92 s software here, and the page reports the RTX 3090 via
+  D3D12. Next I'll run the same-container software baseline and find the
+  smallest set of flags that still enables the card. · summary
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The flag-minimising runs are still going, and the slow software fallback makes
+  that job long. Meanwhile I've mapped where the repository launches browsers,
+  across the suite's config and three scripts. · summary
+
+  Listed 1 directory, ran 1 shell command (ctrl+o to expand)
+
+● Background command "Measure the software baseline in the probe container and
+  find the smallest working flag set" completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The browser recipe is settled: one launch flag plus two Mesa environment
+  variables, all needed together. Without the card's driver, the browser
+  silently falls back to software or can't create WebGL, so I'm writing the real
+  launch code now. · summary
+
+● Write(tests/e2e/browser-launch.ts)
+  ⎿  Wrote 48 lines to tests/e2e/browser-launch.ts
+      1 import { existsSync } from "node:fs";
+      2
+      3 import type { LaunchOptions } from "@playwright/test";
+      4
+      5 /** WSL2's door to the Windows graphics driver, as a container se
+        es it when the host passed the door in. */
+      6 const CARD_DEVICE = "/dev/dxg";
+      7
+      8 /** Where WSL2 keeps Microsoft's Direct3D 12 libraries for Linux,
+         which Mesa's `d3d12` driver loads by name. */
+     … +40 lines (ctrl+o to expand)
+
+● Write(tests/e2e/browser-launch.test.ts)
+  ⎿  Wrote 41 lines to tests/e2e/browser-launch.test.ts
+       1 import { describe, expect, it } from "vitest";
+       2
+       3 import { asksForCard, browserLaunchOptions, RENDERER_VARIABLE }
+         from "./browser-launch";
+       4
+       5 const DEVICE = "/dev/dxg";
+       6 const LIBRARY = "/usr/lib/wsl/lib/libd3d12.so";
+       7 const present = (...paths: string[]) => (path: string): boolean
+         => paths.includes(path);
+       8
+     … +33 lines (ctrl+o to expand)
+
+● Write(tests/e2e/renderer-report.ts)
+  ⎿  Wrote 35 lines to tests/e2e/renderer-report.ts
+       1 import { chromium } from "@playwright/test";
+       2
+       3 import { asksForCard, browserLaunchOptions, CARD_RENDERER, RENDE
+         RER_VARIABLE } from "./browser-launch";
+       4
+       5 /**
+       6  * Says at the head of every run of the browser suite what draws
+          its WebGL pictures, and stops the run where the
+       7  * graphics card was asked for and did not answer.
+       8  *
+     … +27 lines (ctrl+o to expand)
+
+● Update(tests/e2e/playwright.config.ts)
+  ⎿  Added 2 lines
+      2 
+      3  import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../pa
+         ckages/explorer/src/client/persistence/local-storage";
+      4 
+      5 +import { browserLaunchOptions } from "./browser-launch";        
+      6 +                                                                
+      7  /**
+      8   * Playwright E2E configuration for the Live Docs Explorer.
+      9   *
+
+● Update(tests/e2e/playwright.config.ts)
+  ⎿  Added 4 lines
+      32    workers: 1,
+      33    reporter: [["list"], ["html", { open: "never", outputFolder:
+          "../../reports/e2e" }]],
+      34    timeout: 30_000,
+      35 +  // Prints which renderer draws the run's WebGL, and stops a r
+         +un whose graphics card was asked for and did not answer.       
+      36 +  globalSetup: "./renderer-report",                            
+      37 
+      38    use: {
+      39      baseURL: site,
+      40 +    // On the host's graphics card where the container was give
+         +n one, and Playwright's own launch everywhere else.            
+      41 +    launchOptions: browserLaunchOptions(),                     
+      42      screenshot: "only-on-failure",
+      43      // A trace is kept only for a failure, without DOM snapshot
+          s: recording them for every test cost about a sixth of the
+      44      // suite's time (measured 2026-11-05, a 36-test subset: 5.7
+           min with them, 5.2 without them, 4.8 with the trace off), and 
+          one failing
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Unit test passes (6 of 6); the whole-project type-check is still running.
+  Starting the ten cases that were red or on their limits yesterday, now on the
+  card in the probe container.
+
+  Listed 1 directory, ran 2 shell commands (ctrl+o to expand)
+
+● Write(.devcontainer/wsl2-graphics-card/devcontainer.json)
+  ⎿  Wrote 89 lines to .devcontainer/wsl2-graphics-card/devcontainer.json
+      1 // Live Documentation Development Container, with the host's grap
+        hics card (Windows, WSL2)
+      2 // ==============================================================
+        ========================
+      3 // The same container as ../devcontainer.json, which explains eve
+        ry entry below, plus the two run arguments under
+      4 // "runArgs" that pass the host's graphics card in. Choose this c
+        onfiguration when reopening the folder in a
+      5 // container on Windows with Docker Desktop's WSL2 engine; everyw
+        here else (GitHub Codespaces, macOS, Linux) use the
+     … +84 lines (ctrl+o to expand)
+
+● Write(scripts/devcontainer.test.ts)
+  ⎿  Wrote 29 lines to scripts/devcontainer.test.ts
+       1 import { readFileSync } from "node:fs";
+       2 import path from "node:path";
+       3
+       4 import ts from "typescript";
+       5 import { describe, expect, it } from "vitest";
+       6
+       7 const folder = path.resolve(__dirname, "..", ".devcontainer");
+       8 const variant = path.join(folder, "wsl2-graphics-card");
+       9
+      10 /** Reads a devcontainer.json, which allows comments, with TypeS
+     … +20 lines (~1 KB) (ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The devcontainer variant and its guard test are written. Now wiring the
+  contact sheet to the same launch options, then reading how the ten slow cases
+  are doing on the card.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Background command "Run yesterday's red and limit-bound 3D cases on the card
+  in the probe container" completed (exit code 0)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Now the post-create step and the devcontainer README, while the type-check
+  finishes.
+
+● Update(.devcontainer/post-create.sh)
+  ⎿  Added 12 lines
+      39  npx --no-install playwright install --with-deps chromium
+      40 
+      41  echo ""
+      42 +echo "=== Graphics card for the browser tests ==="             
+      43 +# Only where the host passed its card in: Windows with WSL2, th
+         +rough the "wsl2-graphics-card" configuration beside            
+      44 +# this script. Chromium reaches the card through Mesa's EGL and
+         + Mesa's Direct3D 12 driver; Playwright's own                   
+      45 +# dependencies bring the driver and leave out EGL. tests/e2e/br
+         +owser-launch.ts tells the browser to use them.                 
+      46 +if [ -e /dev/dxg ] && [ -e /usr/lib/wsl/lib/libd3d12.so ]; then
+      47 +  sudo apt-get install -y --no-install-recommends libegl1 libeg
+         +l-mesa0 libgl1-mesa-dri                                        
+      48 +  echo "  The host's graphics card is available to the browser 
+         +tests."                                                        
+      49 +else                                                           
+      50 +  echo "  None was passed in: the browser tests draw in softwar
+         +e."                                                            
+      51 +fi                                                             
+      52 +                                                               
+      53 +echo ""                                                        
+      54  echo "=== Installing SCIP indexers ==="
+      55 
+      56  # scip-python: npm global package (uses pyright under the hood)
+● Update(.devcontainer/README.md)
+  ⎿  Added 24 lines
+       83 
+       84  `packages/engine/grammars/powershell/build.sh` rebuilds the co
+           mmitted `tree-sitter-powershell.wasm` from the pinned upstream
+            grammar and this project's patch, after running both their co
+           rpus tests. It needs what the container already has: `git`, No
+           de, the base image's C compiler (for the native parser the tes
+           ts build), and the `tree-sitter-cli` that `npm install` puts i
+           n `node_modules`. The CLI compiles the wasm with wasi-sdk 34 a
+           nd binaryen 132, which it downloads into `~/.cache/tree-sitter
+           ` on the first build; it needs no Emscripten, so `post-create.
+           sh` installs nothing for it.
+       85 
+       86 +## The Host's Graphics Card (Windows, WSL2)                   
+       87 +                                                              
+       88 +A headless Chromium draws WebGL in software unless it is given
+          + a graphics card, and the Explorer's 3D pictures are WebGL. In
+          + software this repository's own 3D picture draws at about four
+          + frames a second and keeps most of the machine's threads busy;
+          + on a card it draws at about fifty. The browser tests wait for
+          + such pictures to come to rest, so the card is most of the dif
+          +ference between a short run and a long one.                   
+       89 +                                                              
+       90 +On Windows with Docker Desktop's WSL2 engine, reopen the folde
+          +r with the second configuration, **Live Documentation Dev (WSL
+          +2 graphics card)**, which is [wsl2-graphics-card/devcontainer.
+          +json](wsl2-graphics-card/devcontainer.json). VS Code asks whic
+          +h configuration to use when a folder has more than one ("Dev C
+          +ontainers: Rebuild and Reopen in Container"). It is the same c
+          +ontainer plus two run arguments:                              
+       91 +                                                              
+       92 +| Argument | What it passes in |                              
+       93 +| --- | --- |                                                 
+       94 +| `--device=/dev/dxg` | WSL2's door to the Windows graphics dr
+          +iver |                                                        
+       95 +| `--volume=/usr/lib/wsl:/usr/lib/wsl:ro` | Microsoft's Direct
+          +3D 12 libraries for Linux and the card's own driver files |   
+       96 +                                                              
+       97 +It works for any card Windows drives, since the path is Direct
+          +3D and not a maker's own Linux driver. Docker's `--gpus all` i
+          +s not enough: on Docker Desktop it passes the device and NVIDI
+          +A's compute libraries, without Direct3D.                      
+       98 +                                                              
+       99 +Nothing else is configured by hand. `post-create.sh` installs 
+          +Mesa's EGL when it finds the device, and `tests/e2e/browser-la
+          +unch.ts` launches the browser on the card when it finds the de
+          +vice and the libraries. To check, from inside the container:  
+      100 +                                                              
+      101 +```bash                                                       
+      102 +ls -la /dev/dxg /usr/lib/wsl/lib/libd3d12.so                  
+      103 +npx playwright test --config tests/e2e/playwright.config.ts fo
+          +rce-graph-identity                                            
+      104 +```                                                           
+      105 +                                                              
+      106 +The run's first line names the renderer: `D3D12 (...)` with th
+          +e card's name, or `SwiftShader` in software. A run stops at on
+          +ce when the card is there and the browser is not drawing on it
+          +. To run on the processor although a card is there, as GitHub 
+          +Codespaces and CI do, set `LIVE_DOCS_BROWSER_RENDERER=software
+          +`.                                                            
+      107 +                                                              
+      108 +The ordinary configuration stays the default because Docker re
+          +fuses to create a container whose device does not exist, which
+          + would break it everywhere but Windows.                       
+      109 +                                                              
+      110  ## Troubleshooting
+      111 
+      112  ### scip-java fails on first run
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Type-checking the new files turned up nothing, and I'm rerunning the slow
+  cases now, since the first attempt timed out while the machine was busy.
+  · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Background command "Run the new unit test, the type-check and lint on the
+  launch code" completed (exit code 0)
+
+● Ten of eleven browser specs pass on the card in under six minutes, including
+  the two long GPU cases, while the one failure,
+  force-graph-defaults.spec.ts:101, already failed on main and fails the same
+  way here. I'm now running the full browser suite on the card against the same
+  bundles as yesterday's gate so the results compare directly. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● While the suite runs, bringing the record level with everything found so far,
+  so that nothing depends on this session surviving.
+
+  Searched for 1 pattern, ran 3 shell commands (ctrl+o to expand)
+
+● Live Docs regenerated (five new, two updated). Writing their authored Purpose
+  and Notes while the suite keeps running on the card.
+
+  Made 1 scratchpad edit +89, ran 2 shell commands (ctrl+o to expand)
+
+● Authored docs are in. Checking on the whole-suite run on the card (started
+  19:21).
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Both new unit tests pass (8 of 8). Lint wants the imports in its order in
+  three files; fixing those.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Lint is clean. The suite on the card is about fourteen minutes in; using the
+  wait to find where the internal tooling guide should mention the card.
+
+  Searched for 1 pattern, read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● The card works, and nothing is needed from you yet. Please don't rebuild yet.
+  The whole browser suite is running on the card in the probe container now;
+  I'll pick up as soon as it finishes.
+
+  What the probe showed
+
+  ┌────────────────────────────────────┬─────────────────┬─────────────────┐
+  │                                    │    Software     │   On the card   │
+  │                                    │     (today)     │                 │
+  ├────────────────────────────────────┼─────────────────┼─────────────────┤
+  │ The generator.ts 3D picture, 320   │ 78 s at 4.2     │ 8.7 s at 51     │
+  │ frames to rest                     │ frames a second │ frames a second │
+  ├────────────────────────────────────┼─────────────────┼─────────────────┤
+  │ The 11 cases that were red or on   │ most red        │ 10 pass, in 5.8 │
+  │ their limits at yesterday's close  │                 │  minutes        │
+  └────────────────────────────────────┴─────────────────┴─────────────────┘
+
+  - Both cases you keep red on their clocks pass. The largest group grows from
+    its seed in 27.6 s (1,625 frames at 59 a second); software never got it
+    inside its 120 s.
+  - The one that still fails is not the renderer's.
+    force-graph-defaults.spec.ts:101 already failed on main in software and
+    fails the same way on the card. It loses a race between its own click and
+    pausing its fake clock on the way back to 2D. It stays in the day's order.
+
+  How the card is reached
+
+  - --gpus all is not enough. On Docker Desktop it passes the device and
+    NVIDIA's compute libraries but not Direct3D, so nothing can draw through it.
+  - What works is passing the WSL2 device (/dev/dxg) and the host's /usr/lib/wsl
+    folder. The Linux graphics library Mesa then drives the card through
+    Direct3D 12, and Chromium uses it with one launch flag and two environment
+    settings.
+  - All three settings or none. With only some of them the browser either falls
+    back to software silently or cannot create WebGL at all. So the suite now
+    prints which renderer is drawing it as its first line, and stops if the card
+    was expected and didn't answer.
+
+  What I've written (uncommitted until gated)
+
+  - browser-launch.ts (tests/e2e/browser-launch.ts): finds the card by its two
+    files and launches on it; a container without the card launches exactly as
+    before. It has a unit test, and the suite's config and the contact sheet
+    both use it.
+  - renderer-report.ts (tests/e2e/renderer-report.ts): the first-line renderer
+    report described above.
+  - A second devcontainer configuration, wsl2-graphics-card/devcontainer.json
+    (.devcontainer/wsl2-graphics-card/devcontainer.json): the ordinary one plus
+    the two run arguments. It is separate because Docker refuses to create a
+    container whose device doesn't exist, so the arguments would break
+    Codespaces, macOS and Linux. A test (scripts/devcontainer.test.ts) fails if
+    the two configurations drift apart.
+  - Post-create and README: post-create.sh (.devcontainer/post-create.sh)
+    installs Mesa's EGL only where the card is present, and the devcontainer
+    README (.devcontainer/README.md#the-hosts-graphics-card-windows-wsl2)
+    explains the setup.
+
+  What happens next, without you
+
+  1. The whole suite finishes on the card, on the same bundles as yesterday's
+     two-hour gate.
+  2. I run the gate's other stages here, rebuild the bundles, run the browser
+     stage on the card again, and commit.
+  3. Then I hand you the rebuild, with two questions I'd rather you answer
+     before it than after.
+
+  The record is committed through the probe's findings (180c86ba), so none of
+  this depends on the session surviving.
+
+● The card works, and nothing is needed from you yet. Please don't rebuild yet.
+  The whole browser suite is running on the card in the probe container now;
+  I'll pick up as soon as it finishes.
+
+  What the probe showed
+
+  ┌────────────────────────────────────┬─────────────────┬─────────────────┐
+  │                                    │    Software     │   On the card   │
+  │                                    │     (today)     │                 │
+  ├────────────────────────────────────┼─────────────────┼─────────────────┤
+  │ The generator.ts 3D picture, 320   │ 78 s at 4.2     │ 8.7 s at 51     │
+  │ frames to rest                     │ frames a second │ frames a second │
+  ├────────────────────────────────────┼─────────────────┼─────────────────┤
+  │ The 11 cases that were red or on   │ most red        │ 10 pass, in 5.8 │
+  │ their limits at yesterday's close  │                 │  minutes        │
+  └────────────────────────────────────┴─────────────────┴─────────────────┘
+
+  - Both cases you keep red on their clocks pass. The largest group grows from
+    its seed in 27.6 s (1,625 frames at 59 a second); software never got it
+    inside its 120 s.
+  - The one that still fails is not the renderer's.
+    force-graph-defaults.spec.ts:101 already failed on main in software and
+    fails the same way on the card. It loses a race between its own click and
+    pausing its fake clock on the way back to 2D. It stays in the day's order.
+
+  How the card is reached
+
+  - --gpus all is not enough. On Docker Desktop it passes the device and
+    NVIDIA's compute libraries but not Direct3D, so nothing can draw through it.
+  - What works is passing the WSL2 device (/dev/dxg) and the host's /usr/lib/wsl
+    folder. The Linux graphics library Mesa then drives the card through
+    Direct3D 12, and Chromium uses it with one launch flag and two environment
+    settings.
+  - All three settings or none. With only some of them the browser either falls
+    back to software silently or cannot create WebGL at all. So the suite now
+    prints which renderer is drawing it as its first line, and stops if the card
+    was expected and didn't answer.
+
+  What I've written (uncommitted until gated)
+
+  - browser-launch.ts (tests/e2e/browser-launch.ts): finds the card by its two
+    files and launches on it; a container without the card launches exactly as
+    before. It has a unit test, and the suite's config and the contact sheet
+    both use it.
+  - renderer-report.ts (tests/e2e/renderer-report.ts): the first-line renderer
+    report described above.
+  - A second devcontainer configuration, wsl2-graphics-card/devcontainer.json
+    (.devcontainer/wsl2-graphics-card/devcontainer.json): the ordinary one plus
+    the two run arguments. It is separate because Docker refuses to create a
+    container whose device doesn't exist, so the arguments would break
+    Codespaces, macOS and Linux. A test (scripts/devcontainer.test.ts) fails if
+    the two configurations drift apart.
+  - Post-create and README: post-create.sh (.devcontainer/post-create.sh)
+    installs Mesa's EGL only where the card is present, and the devcontainer
+    README (.devcontainer/README.md#the-hosts-graphics-card-windows-wsl2)
+    explains the setup.
+
+  What happens next, without you
+
+  1. The whole suite finishes on the card, on the same bundles as yesterday's
+     two-hour gate.
+  2. I run the gate's other stages here, rebuild the bundles, run the browser
+     stage on the card again, and commit.
+  3. Then I hand you the rebuild, with two questions I'd rather you answer
+     before it than after.
+
+  The record is committed through the probe's findings (180c86ba), so none of
+  this depends on the session surviving.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Read tests/e2e/playwright.config.ts (68 lines)
+  ⎿  Read scripts/devcontainer.test.ts (29 lines)
+  ⎿  Read tests/e2e/browser-launch.ts (48 lines)
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/98bd4cee-712b-460
+     4-a161-56dc5395f4d0/scratchpad/author-docs.mjs (89 lines)
+  ⎿  Read .devcontainer/README.md (130 lines)
+
+● Task "Run the whole browser suite on the card in the probe container" still
+  running in background
+
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/ChatHistory/2026/11/2026-11-16.1.record.md in the IDE. This
+  may or may not be related to the current task.</ide_opened_file>
+
+❯ >The marble: what you see view by view, and whether a faded marble should go
+  plain
+
+  The marbles are cool! They're an improvement. Whether or not they should
+  flatten at great distances is plausibly a question based on perf. It likely
+  won't make a massive visual difference (I could be wrong?)
+
+  >The marble's veins: whether the second curve should be a lever in Tuning
+
+  I'd argue that the current marbles aren't quite as snowflake-level-unique as
+  they potentially could be. Likely more permutation to be done in that domain.
+
+  >The cells in place of "+2 files": which of the three Hidden Files values.
+  You have not seen them yet.
+
+  The cells are awesome! I was watching the screenshots roll in. However, I
+  just don't see that "Hidden Files" in the tuning panel on my build. Not sure
+  why?
+
+  >Layout choice: whether a picture should be chosen as it stands, whatever
+  rows are showing
+
+  I suspect that we will have a separate series of efforts which attempt to
+  replicate "playtesting" where many Opus instances are required to use the
+  software via only images and clicks/keyboard actions, with no access to the
+  DOM or code. A lot of layout nits (including competing ones) will fall out of
+  such an effort. What's important right now is making sure that we are able
+  to test briskly as our testing has become a multi-hour extravaganza. It's a
+  blocker now.
+
+  Listed 1 directory, ran 4 shell commands (ctrl+o to expand)
+
+● Recording your answers and reading the suite's progress on the card: 250 of
+  488 cases run in 51 minutes, one failure so far. Next I'm finding out why
+  Hidden Files is missing from your Tuning panel.
+
+  Searched for 4 patterns, ran 6 shell commands (ctrl+o to expand)
+
+● The server on port 8999 is serving the November 11 build
+  dist/still-pointer-trial rather than dist/explorer, which is why Hidden Files
+  is missing. Next I'll measure where the suite's time goes on the card.
+  · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Now appending the delivered reply, your turn verbatim, and what was found
+  since.
+
+  Listed 1 directory, ran 4 shell commands (ctrl+o to expand)
+● So far 249 cases have taken 45 minutes each, and the 3D cases are now
+  ordinary. The remaining time is going to 2D cases run one after another, so
+  I'm checking what running them in parallel would take. · summary
+
+  Searched for 1 pattern, read 1 file, listed 1 directory, ran 4 shell commands (ctrl+o to expand)
+
+● The test's fetch of the bundle from the local server dropped mid-request with
+  "socket hang up," which I'm watching for recurrence while the run finishes and
+  I file your 19:47 export. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Update(AI-Agent-Workspace/ChatHistory/2026/11/README.md)
+  ⎿  Added 1 line
+      60  ## November 17, session 1 — Claude Code, Fable 5.2, November 17
+      61 
+      62  - [Maintained root record](2026-11-17.1.record.md): the owner's
+           request to make the host's graphics card available to the cont
+          ainer for the browser tests. In progress. The session's log liv
+          es in the container's own writable layer and does not survive a
+           rebuild of the container, so the record carries what a root st
+          arting after one needs.
+      63 +- [Harness export](2026-11-17-194707-welcome-back-this-is-the-f
+         +irst-message-of-the-11.txt): exported by the owner from the Cla
+         +ude Code extension's UI at 19:47:07 UTC on November 17, after a
+         + compaction they made by hand (19:44 to 19:46 UTC); received un
+         +der this filename and preserved as supplied. **52,140 bytes**, 
+         +SHA-256 **`f301af3b1d603c2d98799a490ee89a3971aaadc8dbe75516652b
+         +398ce3a1b2b5`**, 924 lines of terminal text. It runs from the o
+         +pening request through root's reply of 19:36 UTC to the harness
+         +'s line that the whole browser suite was still running in the b
+         +ackground. Its first 30 and last 15 lines were read by root, no
+         +t the whole. The session went on after it, so a later export su
+         +persedes its coverage, not its bytes.                          
+      64 
+      65  ## November 1, session 1 — Codex/Astra, completed by 6.1 Sol, N
+          ovember 1–2
+      66 
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Checking a guess about that dropped fetch (an idle connection closed by the
+  server just as the test reuses it) with a small script that needs no browser.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The guess did not reproduce in twenty tries, so I'm leaving it as seen once.
+  The suite is at 275 of 488 with three failures; reading the two new ones.
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● Bringing the record's resumption notes level with your answers and today's
+  findings, then replying about Hidden Files.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● Hidden Files is missing because your port 8999 is serving an old build. The
+  server was started at 20:08 UTC as http-server dist/still-pointer-trial -p
+  8999. That folder is the still-pointer trial's build from November 11, which
+  has no Hidden Files and no marbles. Stop it and serve dist/explorer instead:
+
+  npx http-server dist/explorer -p 8999 -c-1
+
+  Then open pathfind.ts in the 2D map (http://127.0.0.1:8999/?view=local&node=pa
+  ckages/engine/src/live-docs/pathfind.ts) and go to Tuning → 2D Layout → Hidden
+  Files. I have not touched your server.
+
+  What I take from your answers
+
+  - Marbles: kept. A faded marble stays a marble unless a frame-cost measurement
+    says otherwise.
+  - Veins: no Tuning lever; the marbles need more variety from file to file.
+    That becomes its own round, after the test-speed work. I'd make marbles the
+    default when that round lands; say so if you'd rather not.
+  - Cells: which of the three values is still yours to pick once you see them
+    live.
+  - Layout choice: parked until the playtesting efforts you describe.
+  - Order of work: test speed goes ahead of everything else today, including the
+    rings.
+
+  Test speed: the card alone is not enough
+
+  The whole suite is still running on the card in the probe container, 275 of
+  488 cases done after about an hour.
+
+  - The 3D waits are gone. 3D cases now take about 10 s each, like any other
+    case.
+  - The suite is still on course for about an hour and a half, against two hours
+    in software. Most of it is 2D cases run one after another, at a median of 7
+    s each.
+  - Running cases side by side is the next thing to measure. Your one-worker
+    rule was measured against the software renderer, which took 14 of the
+    machine's 20 threads for a single 3D case. On the card that reason is gone.
+    Whether 2D cases disturb each other is not known: on November 2, four
+    workers failed 4 of 156 2D cases.
+  - Three failures so far, none a wrongly drawn picture.
+    - One was the test's own fetch of the bundle being dropped by the local
+      server ("socket hang up"). It has happened once, and my guess at the cause
+      did not reproduce.
+    - Two 2D cases overran their time limits while I was searching the whole
+      repository from this container, which shares its disk with the run. Both
+      passed yesterday. That was my slip; I'll rerun them on a quiet machine
+      before counting them.
+
+  When the run finishes I'll rerun those two, then run the whole suite on the
+  card with 4 and with 8 workers and bring you the times and failures. Nothing
+  in the suite's configuration changes on that account until you've seen them.
+
+  Two questions, whenever convenient
+
+  1. Keeping chats and logins across rebuilds. Claude Code's and Codex's folders
+     (~/.claude, ~/.codex) live inside the container, so every rebuild ends the
+     chat and logs both out. I recommend putting them on Docker volumes in both
+     devcontainer configurations before you rebuild for the card. Yes or no?
+  2. The one-worker rule on the card. If several workers run clean there, may I
+     use them for card runs only, with software runs staying at one worker? Or
+     would you rather see the numbers first?
+
+  Please don't rebuild yet; the card change is not committed.
+
+❯ >Keeping chats and logins across rebuilds. Claude Code's and Codex's folders
+  (~/.claude, ~/.codex) live inside the container, so every rebuild ends the
+  chat and logs both out. I recommend putting them on Docker volumes in both
+  devcontainer configurations before you rebuild for the card. Yes or no?
+
+  Hmmm, does it make the docker configuration less portable? If not, I'm okay
+  with preserving if you think it's worth doing so.
+
+  >The one-worker rule on the card. If several workers run clean there, may I
+  use them for card runs only, with software runs staying at one worker? Or
+  would you rather see the numbers first?
+
+  Whatever the system reliably tolerates. I'm just looking to get our iteration
+  speed up.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Your answers are in: volumes if portable, and as many workers as the system
+  reliably tolerates. Recording the turn while the suite's last five cases
+  finish.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Background command "Run the whole browser suite on the card in the probe
+  container" completed (exit code 0)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The whole suite on the card at one worker: 482 of 488 in 98 minutes (two hours
+  in software). Starting the same suite with 8 workers now; I'll keep off the
+  disk while it runs.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Fetch(https://containers.dev/implementors/json_reference/)
+  ⎿  Received 67.8KB (200 OK)
+
+● Fetch(https://code.claude.com/docs/en/devcontainer)
+  ⎿  Received 18.2KB (200 OK)
+
+  Read 2 files (ctrl+o to expand)
+
+● Claude Code's docs endorse a named volume at ~/.claude plus one environment
+  variable, which also works in Codespaces, so I'm adding that to both configs
+  while the 8-worker run finishes. · summary
+
+● Update(.devcontainer/devcontainer.json)
+  ⎿  Added 15 lines
+      62      "ghcr.io/devcontainers/features/github-cli:1": {}
+      63    },
+      64 
+      65 +  // The coding agents' own folders on named volumes, so that r
+         +ebuilding the container keeps their sign-ins, settings         
+      66 +  // and past chats, which otherwise live in the container's ow
+         +n layer and go with it (2026-11-17). A named volume is         
+      67 +  // plain Docker: it is created empty on first use on any host
+         +, GitHub Codespaces included, and someone who uses             
+      68 +  // neither agent never notices the two. CLAUDE_CONFIG_DIR is 
+         +Claude Code's own setting for keeping the one file it          
+      69 +  // writes beside its folder (~/.claude.json) inside the folde
+         +r, and so on the volume. A fresh volume is mounted as          
+      70 +  // root's, so the first command hands the two folders to the 
+         +container's user before an editor attaches.                    
+      71 +  "mounts": [                                                  
+      72 +    "source=live-documentation-claude,target=/home/node/.claude
+         +,type=volume",                                                 
+      73 +    "source=live-documentation-codex,target=/home/node/.codex,t
+         +ype=volume"                                                    
+      74 +  ],                                                           
+      75 +  "containerEnv": {                                            
+      76 +    "CLAUDE_CONFIG_DIR": "/home/node/.claude"                  
+      77 +  },                                                           
+      78 +  "onCreateCommand": "sudo chown node:node /home/node/.claude /
+         +home/node/.codex",                                             
+      79 +                                                               
+      80    // Post-creation setup: install npm dependencies and SCIP ind
+          exers
+      81    "postCreateCommand": "bash .devcontainer/post-create.sh",
+      82 
+
+● Update(.devcontainer/wsl2-graphics-card/devcontainer.json)
+  ⎿  Added 9 lines
+      47      "--volume=/usr/lib/wsl:/usr/lib/wsl:ro"
+      48    ],
+      49 
+      50 +  "mounts": [                                                  
+      51 +    "source=live-documentation-claude,target=/home/node/.claude
+         +,type=volume",                                                 
+      52 +    "source=live-documentation-codex,target=/home/node/.codex,t
+         +ype=volume"                                                    
+      53 +  ],                                                           
+      54 +  "containerEnv": {                                            
+      55 +    "CLAUDE_CONFIG_DIR": "/home/node/.claude"                  
+      56 +  },                                                           
+      57 +  "onCreateCommand": "sudo chown node:node /home/node/.claude /
+         +home/node/.codex",                                             
+      58 +                                                               
+      59    "postCreateCommand": "bash .devcontainer/post-create.sh",
+      60 
+      61    "customizations": {
+
+● Update(.devcontainer/README.md)
+  ⎿  Added 15 lines
+      107 
+      108  The ordinary configuration stays the default because Docker re
+           fuses to create a container whose device does not exist, which
+            would break it everywhere but Windows.
+      109 
+      110 +## What a Rebuild Keeps                                       
+      111 +                                                              
+      112 +Rebuilding the container discards everything in it but the wor
+          +kspace. Two named Docker volumes keep the coding agents' own f
+          +olders across rebuilds, in both configurations:               
+      113 +                                                              
+      114 +| Volume | Mounted at | What it keeps |                       
+      115 +| --- | --- | --- |                                           
+      116 +| `live-documentation-claude` | `~/.claude` | Claude Code's si
+          +gn-in, settings and past chats |                              
+      117 +| `live-documentation-codex` | `~/.codex` | Codex's sign-in, s
+          +ettings and past chats |                                      
+      118 +                                                              
+      119 +`CLAUDE_CONFIG_DIR` points Claude Code at its folder, so that 
+          +the one file it otherwise writes beside the folder (`~/.claude
+          +.json`) is kept as well. Nothing is set up by hand: Docker cre
+          +ates a named volume empty on first use, on any host and in Git
+          +Hub Codespaces, and someone who uses neither agent never notic
+          +es the two. They hold sign-in tokens and stay on your own Dock
+          +er host. To start clean, remove them while no container uses t
+          +hem:                                                          
+      120 +                                                              
+      121 +```bash                                                       
+      122 +docker volume rm live-documentation-claude live-documentation-
+          +codex                                                         
+      123 +```                                                           
+      124 +                                                              
+      125  ## Troubleshooting
+      126 
+      127  ### scip-java fails on first run
+
+  Read 2 files, listed 1 directory (ctrl+o to expand)
+
+● Reading how the 2D layout search paces itself, since two of the failures are
+  that search not finishing in 45 s on the card. The 8-worker run is about ten
+  minutes in.
+
+  Searched for 1 pattern, read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● Write(AI-Agent-Workspace/tmp/gpu-probe/search-pace.mjs)
+  ⎿  Wrote 98 lines to AI-Agent-Workspace/tmp/gpu-probe/search-pace.mjs
+       1 #!/usr/bin/env node
+       2 // Scratch instrument (2026-11-17). Opens the 2D picture `local-
+         map-hidden.spec.ts` searches (five retained files, a
+       3 // search of eighty starts) and reports how the continuing searc
+         h is paced: how many starts it tried, how long each
+       4 // took on the main thread, and how long the page waited between
+          one start's end and the next one's beginning.
+       5 //
+       6 // usage: node search-pace.mjs <label> <port> <card|software> [s
+         econds]
+     … +92 lines (ctrl+o to expand)
+
+● Wrote a small instrument to time the 2D search's steps on the card against
+  software; it runs after the 8-worker suite finishes. Checking that run now.
+  Read 2 files, ran 3 shell commands (ctrl+o to expand)
+
+● Eight workers is overloading the machine (load 21 on 20 threads), so I'm
+  switching to 4 next; the current run can't be cancelled from here and will
+  finish on its own. · summary
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Notes are in the record. Checking whether the 8-worker run has ended so the
+  4-worker one can start.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Volumes cost no portability, and they are now in both configurations.
+
+  - Why it stays portable: a named volume is plain Docker, created empty on
+    first use on any host. Claude Code's own dev-container documentation gives
+    this exact setup and says it applies in GitHub Codespaces too. Someone who
+    uses neither tool never notices the two volumes.
+  - What I wrote: ~/.claude and ~/.codex each on a volume, the one environment
+    variable Claude Code needs to keep its account file inside its folder, and a
+    README section. Uncommitted until gated, like the rest.
+  - What it does not do by itself: the first rebuild starts on empty volumes, so
+    it still ends this chat and signs both tools out once. If you want this
+    chat and both sign-ins to survive that rebuild too, say so and I'll give you
+    one command to paste before it. Otherwise the next chat picks up from the
+    record.
+
+  Workers: the measuring is under way.
+
+  ┌───────────────┬─────────────────────────────────────────────────────────┐
+  │  Run on the   │                         Result                          │
+  │     card      │                                                         │
+  ├───────────────┼─────────────────────────────────────────────────────────┤
+  │ Whole suite,  │ 482 of 488 in 98 minutes (software yesterday: 478 in    │
+  │ 1 worker      │ about two hours)                                        │
+  ├───────────────┼─────────────────────────────────────────────────────────┤
+  │ Whole suite,  │ Still running, but already too many: machine load 21 to │
+  │ 8 workers     │  23 on 20 threads, and 4 of the first 38 cases over     │
+  │               │ their time limits                                       │
+  └───────────────┴─────────────────────────────────────────────────────────┘
+
+  - Each browser with its test uses two to three threads, on the card as in
+    software. So the number that holds is likely around 4 to 6. The 4-worker run
+    starts when the 8-worker one ends, in about ten minutes.
+  - The six failures at one worker, none a wrongly drawn picture:
+    - One was the dropped fetch of the bundle ("socket hang up").
+    - Two overran while I was searching the disk.
+    - Two are 2D layout-search cases where the search had not finished 45 s
+      after the page returned. The disk was quiet then, so these may be the
+      card's doing; I've written an instrument to time the search on the card
+      against software.
+    - One counted too few moving frames in a 2D move.
+
+  I'll rerun all six alone, several times each, before calling any of them the
+  card's.
+
+  Still no rebuild, please.
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/11/2026-11
+  -17-194707-welcome-back-this-is-the-first-message-of-the-11.txt in the IDE.
+  This may or may not be related to the current task.</ide_opened_file>
+  ⎿  [Image #1]
+
+❯ Why do I see activity on all 3 containers (primarily on the top and bottom,
+  though, with the bottom usually taking more resources than the top)?
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Your screenshot corrects something I told you, so I'm checking it against the
+  run's own numbers before answering.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Each container is doing a different job.
+
+  Container: recursing_jennings (top)
+  What it is: The devcontainer: VS Code's server side
+  Why it shows activity: Mostly the TypeScript language server, which has
+    averaged 38% of one processor for three hours as files change. Also the
+    other extensions, me (about 2%) and your preview server on 8999.
+  ────────────────────────────────────────
+  Container: ld-gpu-b (bottom)
+  What it is: The probe container that has the card
+  Why it shows activity: It is where I run the browser tests until the
+    rebuild. When you took the picture it was running the whole suite with 8
+    workers, hence about 8 processors.
+  ────────────────────────────────────────
+  Container: ld-gpu-a (middle)
+  What it is: The first probe, started with --gpus all
+  Why it shows activity: It proved that form is not enough and has idled
+    since. I've just ended its loop, so it should show as exited; delete it
+    whenever you like.
+
+  Your screenshot corrected something I told you. I said each browser with its
+  test uses two to three threads. I had read that off the machine's load
+  average, which is the wrong measure. Docker shows about one processor per
+  worker, and a direct check agrees: at 8 workers, 11.6 of the 20 threads were
+  busy and 7.4 idle.
+
+  So the machine is not out of processors, yet 8 workers do the work of about
+  three and a half.
+  - Each case took 2.3 times as long as it does alone, evenly across 2D and 3D.
+  - 24 of the first 207 cases failed, nearly all on time limits.
+  - The workers are therefore waiting on something they share. I have three
+    suspects, none measured yet:
+    - the workspace disk (the Windows drive, where every test writes its trace);
+    - the one graphics card;
+    - the ten real cores behind the twenty threads.
+
+  Next I'll run a ten-file subset at 8 workers, about three minutes a run,
+  changing one suspect at a time.
+
+  One optional favour: the 8-worker run has about twenty minutes left and I
+  can't cancel it from inside this container. If you restart ld-gpu-b (the ⋮
+  menu → Restart in Docker Desktop, or docker restart ld-gpu-b), I get the
+  machine back now and nothing in it is lost. If you'd rather not, I'll wait for
+  it to end.
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/11/2026-11
+  -17-194707-welcome-back-this-is-the-first-message-of-the-11.txt in the IDE.
+  This may or may not be related to the current task.</ide_opened_file>
+  ⎿  [Image #2]
+
+❯ You're good to go. Restarted ld-gpu-b
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Stop Task
+  ⎿  P=AI-Agent-Workspace/tmp/gpu-probe && $P/run b 09-workers-8 5400
+     <<'EOF'
+     cd /workspaces/Live-Documentation… · stopped
+
+● Thank you — the machine is quiet again. Starting the first two experiments on
+  a sixteen-file 2D subset at 8 workers: as configured, and with tracing off.
+
+  Ran 6 shell commands · 1 failed (ctrl+o to expand)
+
+● The first experiment has been stuck starting for over a minute, with the
+  machine spending almost all its time in the kernel and switching 60,000 times
+  a second. That points at the shared disk mount, so I'm checking that now.
+  · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Every browser run spends about 110 seconds starting up on the shared
+  Windows-drive mount, so I'm rerunning from a copy inside the container to
+  measure that cost. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Waiting on the first experiment (50 of 166 cases done). Fixing a small flaw in
+  the copy script meanwhile.
+
+  Searched for 1 pattern, ran 4 shell commands (ctrl+o to expand)
+
+● Memory now has your answers on the marble, cells and layout question; adding
+  your playtesting idea to the ideas file while the first experiment finishes.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● A bigger finding than the worker count: the repository's disk is the
+  bottleneck.
+
+  - Every browser run takes about 110 seconds to start before its first case,
+    even for a single test file. During that time the machine does almost no
+    computing of its own; it is busy in the kernel fetching files.
+  - The cause I suspect: the repository lives on D:\, and the container reaches
+    it through a slow shared mount (the 9p protocol, which pays a round trip for
+    every file it opens). Every test file, every dependency, every page load
+    and every test's trace goes through it.
+  - It probably also explains why 8 workers scale so badly: during the tests, a
+    third of the busy processor time is in the kernel, not in the browsers.
+
+  I'm measuring it directly. When the current run ends in a few minutes, I'll
+  make a copy of the repository on the probe container's own disk and run the
+  same sixteen test files from there at 8 workers. The comparison will show how
+  much the mount costs.
+
+  One question that shapes what I recommend if the copy is much faster: besides
+  VS Code, what on Windows reads or writes the repository on D:\ (Explorer, a
+  Git client, backup, PowerShell scripts)? The usual cure is to keep the working
+  copy on the Linux side, and whether that suits you depends on the answer.
+
+● Background command "Wait for the first experiment to end" completed (exit code
+  0)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Background command "Cancel the three later experiments as each begins, so the
+  copy-inside-the-container run can go next" completed (exit code 0)
+
+● Background command "Run four eight-worker experiments on a 2D subset in the
+  probe container, one suspect changed in each" completed (exit code 0)
+
+● Background command "Queue the job that makes a checkout on the probe
+  container's own disk" completed (exit code 0)
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The copy onto the container's own disk is being made now (clone plus
+  dependency install, a few minutes). Queued behind it: timing a run's start
+  from each location and counting its file accesses.
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● Background command "Tell Git in the probe container that the mounted
+  repository is safe, and make the local checkout" completed (exit code 0)
+
+● The copy is ready on the container's own disk. Copying it revealed how slow
+  the mount is: reading the 910 MB Git history through it took 203 seconds. Now
+  timing a run's start from each location.
+  Ran 1 shell command (ctrl+o to expand)
+
+● Background command "Queue a job that times a run's start from the mount and
+  from the local checkout and counts its file calls" completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● From the copy, a run now starts in about 5 seconds instead of 55 to 110, yet 8
+  workers still slow each case 2.3 times, so the mount isn't the source of the
+  contention. I'm testing the card's path in software next. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Background command "Queue the same sixteen files at eight workers from the
+  local checkout, then four files at one worker" completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The software run at 8 workers has started. Sampling the machine's processor
+  split while it runs.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Stop Task
+  ⎿  O=AI-Agent-Workspace/tmp/gpu-probe/b/outbox; until grep -q "✓"
+     $O/x6-local-software-8.log 2>/dev/null; do sleep 1; done; date -u +%T;
+     vmstat -w 10 7 | tail -6 |… · stopped
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Sampled during the software run at 8 workers: 16 of 20 threads busy, so
+  software fills the machine where the card run left half of it idle. Waiting
+  for its per-case times.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Background command "Run the sixteen files from the local checkout at eight
+  workers in software, then at four workers on the card" completed (exit code 0)
+
+● Four workers finished 162 of 166 cases in 7.3 minutes, with each case running
+  1.5 times slower and the machine's ten cores fully used, so each worker costs
+  over two cores. I'm now testing whether trace recording accounts for that
+  overhead. · summary
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Background command "Run the sixteen files at four workers with tracing off and
+  profile processor use by kind of process" completed (exit code 0)
+
+● Tracing accounts for only about 8% of the cost; the profile shows the
+  browser's graphics process eating as much CPU as the pages even in 2D tests.
+  I'm now testing browser settings that keep 2D drawing off that path while 3D
+  stays on the card. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Progress since your restart: the disk and the worker count are both measured,
+  and a third cost has turned up.
+
+  ┌─────────────────┬───────────────────────────────────────────────────────┐
+  │    Question     │                        Answer                         │
+  ├─────────────────┼───────────────────────────────────────────────────────┤
+  │                 │ Before a run's first test: 54 to 64 s from D:\, 5 s   │
+  │ What does the   │ from a copy on the container's own disk (one test     │
+  │ D:\ mount cost? │ file: 44 s against 3 s). Once tests are running, only │
+  │                 │  about 10% each.                                      │
+  ├─────────────────┼───────────────────────────────────────────────────────┤
+  │ Where does that │ Six sevenths of it is reading node_modules through    │
+  │  start-up time  │ the mount, at about 4 ms per file access.             │
+  │ go?             │                                                       │
+  ├─────────────────┼───────────────────────────────────────────────────────┤
+  │ How many        │ About 4. Each worker (a browser plus its test) keeps  │
+  │ workers fit?    │ roughly 2.3 threads busy, and the machine has 10 real │
+  │                 │  cores behind its 20 threads.                         │
+  ├─────────────────┼───────────────────────────────────────────────────────┤
+  │                 │ On a sixteen-file 2D subset: 2.2 times faster than    │
+  │ What do 4       │ one worker, with 4 of 166 cases failing because short │
+  │ workers buy?    │  waits ran out. Every case takes 1.5 times as long as │
+  │                 │  alone.                                               │
+  ├─────────────────┼───────────────────────────────────────────────────────┤
+  │                 │ Barely faster than 4, each case 2.3 times as long,    │
+  │ And 8 workers?  │ and 20 of 166 failed. Software at 8 workers was worse │
+  │                 │  still (30 failed).                                   │
+  ├─────────────────┼───────────────────────────────────────────────────────┤
+  │ Does trace      │                                                       │
+  │ recording       │ About 8%. Not the lever.                              │
+  │ matter?         │                                                       │
+  └─────────────────┴───────────────────────────────────────────────────────┘
+
+  The third cost: the browser's graphics process uses as much processor as the
+  pages themselves, even on 2D tests. On the card, all 2D drawing goes through
+  the same path as 3D. I'm now running the same tests under four drawing set-ups
+  (card, software, and two mixed ones) to see whether 2D can stay cheap while
+  3D stays on the card. That takes about fifteen minutes.
+
+  Where this is heading, not yet decided:
+  1. Put node_modules on the container's disk with a Docker volume. Your source
+     stays on D:\ exactly as now, and every run saves about 50 s of start-up.
+     This step does not need an answer to my question about Windows tools; only
+     moving the whole working copy would.
+  2. Three or four workers, after the short waits that fail under load are
+     corrected.
+  3. Possibly a browser setting that makes each worker cheaper, depending on the
+     run in progress.
+
+  My rough projection from the subset is a browser stage of about 30 minutes
+  instead of 98. I'll confirm it on the whole suite before changing anything for
+  good.
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/11/2026-11
+  -17-194707-welcome-back-this-is-the-first-message-of-the-11.txt in the IDE.
+  This may or may not be related to the current task.</ide_opened_file>
+
+❯ Correct me if I'm wrong, but the changes you're suggesting are things which
+  could produce very modest speedups, but, as of yet, no large "A-ha! That's
+  the lever!" mechanism has yet shown itself in terms of speeding up the e2e
+  tests? I am surprised and wonder what I'm missing if this is the case.
+
+  Read 1 file, ran 1 shell command · 1 failed (ctrl+o to expand)
+
+● Checking what the processor is doing at one worker right now, since the
+  numbers show two threads of kernel time whichever renderer is used; then I'll
+  answer your question.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Answer coming in a moment — one last check of how the browser is launched,
+  since the numbers point at overhead around the page, not the page itself.
+
+  Searched for 1 pattern, ran 3 shell commands (ctrl+o to expand)
+
+● You're reading it right, and you're not missing anything. I was.
+
+  - The card was the lever we both expected, and it wasn't one. It made the 3D
+    picture nine times faster and turned the red clock cases green. But the
+    whole suite only went from about two hours to 98 minutes, because the
+    suite's time was never mostly 3D waiting.
+  - Nothing I've measured since is a big lever either. Card, disk and three or
+    four workers together get to roughly 30 minutes. That is worth having, but
+    it is three modest gains multiplied.
+
+  Why running side by side barely helps here
+
+  - The time is spread thin: 488 cases at about 11 s each, and the longest test
+    file is 7% of the total.
+  - Normally the big lever for 488 independent cases is to run ten at once on a
+    machine like yours. Here that gives about 3×, whatever the worker count.
+  - The reason: each case costs about 3.3 threads of processor work for every
+    second it runs, and the machine has 10 real cores.
+
+  That 3.3 is where I now think the real lever is. I only found it in the last
+  half hour.
+
+  - The page under test accounts for less than half a thread of it.
+  - About two threads are spent inside the operating system's kernel. That is
+    the same on the card and in software.
+  - So roughly 60% of the processor work in the whole suite is overhead around
+    the browser, not the tests. If it can be removed, six to eight workers fit
+    at full speed and the browser stage lands around 10 to 15 minutes.
+
+  I don't know the cause yet.
+
+  - Leading suspect: Playwright launches Chromium with a flag that makes it keep
+    its shared memory in files on the container's disk, not in memory. The flag
+    exists because Docker gives a container only 64 MB of shared memory by
+    default. A run testing exactly that is in progress; about eight minutes.
+  - Next suspect if not: how the WSL2 virtual machine hands freed memory back to
+    Windows.
+
+  If the overhead cannot be removed, there are two other places a large factor
+  could come from. I have measured neither:
+  - Waiting inside cases: many cases may spend most of their time waiting for
+    animations and settling.
+  - Running all 488 on every change: only the cases a change can affect would
+    need to run.
+
+  I'll report when the run ends.
+
+● Background command "Run three spec files at one worker under four drawing
+  set-ups, each with its processor use profiled" completed (exit code 0)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● I noticed the profile behind "under half a thread" undercounts short-lived
+  page processes, so I'm building an exact accounting tool to verify it. I'll
+  run that after the shared-memory test. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The shared-memory run is taking longer than expected, which itself suggests
+  the 64 MB of shared memory is too small for it. Looking at its partial output.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Background command "Queue two runs in which the browser keeps its shared
+  memory in memory, not in files on the container's disk" completed (exit code
+  0)
+
+● Background command "Wait for the shared-memory runs and read them" completed
+  (exit code 0)
+
+● Background command "Queue an exact processor accounting of a one-worker run on
+  the card and in software" completed (exit code 0)
+
+● The page and browser use about 1.5 threads at one worker, with another 1.5
+  threads of kernel work running even when no test runs. I'm tracking down that
+  background load next. · summary
+
+  Listed 1 directory, ran 3 shell commands (ctrl+o to expand)
+● The likely cause of the mount's slowness is the editor's TypeScript server,
+  which makes about 1,200 file checks a second through it. I'm testing that by
+  timing file access with the server paused for ten seconds. · summary
+
+  Did not run 1 call (ctrl+o to expand)
+  ⎿  $ cat > /tmp/claude-1000/-workspaces-Live-Documentation/98bd4cee-712b-4604-a161-56dc5395f4d0/scratchpad/mount-latency.py <<'EOF'
+     import os, sys, time, statistics…
+  ⎿  Blocked by auto mode
+     │ Auto mode: [Destructive or Unwanted Actions]
+
+● The permission system blocked pausing the editor's process, so I'm instead
+  timing my own file checks on the mount at increasing concurrency to see
+  whether it serves requests one at a time. · summary
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Write(AI-Agent-Workspace/tmp/gpu-probe/load-profile.mjs)
+  ⎿  Wrote 83 lines to AI-Agent-Workspace/tmp/gpu-probe/load-profile.mjs
+      1 #!/usr/bin/env node
+      2 // Scratch instrument (2026-11-17). What one cold load of the Exp
+        lorer costs: wall time to the first settled picture,
+      3 // the page's processor time by Chromium's own accounting, and th
+        e functions that time is spent in.
+      4 //
+      5 // usage (from a checkout with dist/explorer built): node load-pr
+        ofile.mjs <port> <card|software> [path-and-query]...
+      6 import { spawn } from "node:child_process";
+      7 import net from "node:net";
+     … +76 lines (ctrl+o to expand)
+
+● The kernel overhead candidate is ruled out, since the editor's TypeScript
+  server was the main cost rather than the tests. I'm now profiling what a
+  single page load costs, because the page itself is busy for most of each case.
+  · summary
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Correction: the lead I gave you half an hour ago was wrong. There is no large
+  hidden overhead around the browser to remove.
+
+  What the "two threads in the kernel" really are
+  - My first profile undercounted. It sampled every ten seconds, and each test's
+    page lives two to four seconds, so most pages were never seen.
+  - Counted exactly, a worker costs about 1.5 threads on the card, half of it
+    the page itself. In software it is about 2.1.
+  - The rest runs whether tests run or not. With nothing running in the probe
+    container, the machine still shows about 1.5 threads of kernel work and
+    56,000 context switches a second.
+  - The likely source is the editor's TypeScript server. It is at 55 to 65% of a
+    thread right now, making about 1,200 small reads and writes a second, and
+    it treats every TypeScript file in the repository as one project. My reading
+    is that these are file checks through the D:\ mount; I could not confirm
+    it, because pausing that process to test was refused by the permission
+    system.
+  - The shared-memory suspect made no difference.
+
+  So your reading stands: there is no single big lever. The suite is slow
+  because the page does real work in every case:
+
+  ┌──────────────────────────────────────┬────────────────┬────────────────┐
+  │                 What                 │ Time to come   │  Main-thread   │
+  │                                      │    to rest     │      work      │
+  ├──────────────────────────────────────┼────────────────┼────────────────┤
+  │ Cold load of the World Map or        │ 1.1 to 1.3 s   │ about 1.05 s   │
+  │ Knowledge Sources                    │                │                │
+  ├──────────────────────────────────────┼────────────────┼────────────────┤
+  │ 2D Local Map of one file             │ 2.3 to 5.3 s   │ 2.2 to 3.5 s   │
+  │ (generator.ts)                       │                │                │
+  └──────────────────────────────────────┴────────────────┴────────────────┘
+
+  The suite does this on the order of a thousand times, one after another. It is
+  the same slowness you called "horrendous" in the 2D map.
+
+  One number is extreme, though: the mount. A single file check takes 4 to 6 ms
+  through D:\ and 0.01 ms on the container's own disk. That is why every run
+  takes 50 to 110 s to start. I'm now timing the build, lint, unit tests and
+  bundle build from both places, to see how much of the rest of the gate it
+  accounts for.
+
+  The levers as they stand
+
+  ┌────────────────────┬──────────────────────┬─────────────────────────────┐
+  │       Lever        │         Gain         │            State            │
+  ├────────────────────┼──────────────────────┼─────────────────────────────┤
+  │ The card           │ 120 → 98 min, red    │ Measured; written, not      │
+  │                    │ clock cases green    │ committed                   │
+  ├────────────────────┼──────────────────────┼─────────────────────────────┤
+  │ Three or four      │ About 3× on the      │ Measured on a subset; 2 to  │
+  │ workers            │ browser stage        │ 4% of cases fail on short   │
+  │                    │                      │ waits that need correcting  │
+  ├────────────────────┼──────────────────────┼─────────────────────────────┤
+  │ node_modules and   │ 50 to 100 s off      │                             │
+  │ outputs off the    │ every run, more if   │ Start-up measured; other    │
+  │ mount              │ the other stages     │ stages running now          │
+  │                    │ show it              │                             │
+  ├────────────────────┼──────────────────────┼─────────────────────────────┤
+  │ The editor's       │ About 15% of the     │ Not yet confirmed           │
+  │ TypeScript server  │ machine back         │                             │
+  ├────────────────────┼──────────────────────┼─────────────────────────────┤
+  │ The 2D map's own   │ Unknown, but it      │                             │
+  │ drawing cost       │ helps users as well  │ Profiled once, not started  │
+  │                    │ as the suite         │                             │
+  └────────────────────┴──────────────────────┴─────────────────────────────┘
+
+  Together the first three come to roughly 30 minutes for the browser stage. I'd
+  land those, then put the 2D map's drawing cost first in the product work. If
+  you'd rather I stop measuring and land what's proven now, say so.
+
+● Background command "Time the build, lint, unit tests and bundle build from the
+  local checkout and from the mount" completed (exit code 0)
+
+  Listed 1 directory, ran 1 shell command (ctrl+o to expand)
+
+● The other gate stages are measured: lint, build, unit tests and the bundle
+  build take 8.5 minutes from the mount and 3.3 from the container's disk. I'm
+  now rerunning the six failed cases on the card and adding the dependencies
+  volume. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Now the dependencies volume in both configurations.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Update(.devcontainer/README.md)
+  ⎿  Added 15 lines
+      122  docker volume rm live-documentation-claude live-documentation-
+           codex
+      123  ```
+      124 
+      125 +## Dependencies on the Container's Own Disk                   
+      126 +                                                              
+      127 +`node_modules` is a third volume, named for the container, mou
+          +nted over the workspace's folder of that name and filled by `p
+          +ost-create.sh`. It is there for speed. Where the workspace is 
+          +a folder on a Windows drive, each file a tool opens in it is a
+          + round trip to Windows: 4 to 6 ms each, against 0.01 ms on the
+          + container's own disk (measured on this repository, 2026-11-17
+          +). A tool's start is thousands of such files in `node_modules`
+          +:                                                             
+      128 +                                                              
+      129 +| | Workspace's `node_modules` on a Windows drive | On the con
+          +tainer's disk |                                               
+      130 +| --- | --- | --- |                                           
+      131 +| The browser tests finding their cases (`npx playwright test 
+          +--list`) | 54 to 64 s | 5 s |                                 
+      132 +| One spec file | 44 s | 3 s |                                
+      133 +| `npm run lint` | 239 s | 68 s |                             
+      134 +| `npm run test:unit` | 203 s | 88 s |                        
+      135 +                                                              
+      136 +The second column was measured with the whole checkout on the 
+          +container's disk, so the volume alone gives somewhat less. The
+          + `node_modules` folder that an earlier container left on the h
+          +ost is no longer read and can be deleted from there. After cha
+          +nging `package-lock.json`, run `npm install` in the container 
+          +as before.                                                    
+      137 +                                                              
+      138 +The rest of the workspace is still reached through the host. I
+          +f that becomes the bottleneck, the cure is to keep the whole w
+          +orking copy on the Linux side (VS Code's "Clone Repository in 
+          +Container Volume", or a folder inside a WSL distribution).    
+      139 +                                                              
+      140  ## Troubleshooting
+      141 
+      142  ### scip-java fails on first run
+
+● Both configurations now carry the dependencies volume and the README explains
+  it with the measured numbers. Adding the matching note to the Live Docs while
+  the six reruns finish.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Update(.mdmd/layer-2/internal-tooling.mdmd.md)
+  ⎿  Added 6 lines
+      42 
+      43  Both Vitest projects import TypeScript sources directly, so nei
+          ther needs a build first. The Playwright specs check each view'
+          s plumbing (state in the URL, containment, stable layout, expli
+          cit changes between 2D and 3D), not whether the picture is righ
+          t; the owner said as much on 2026-09-28. Two instruments say a
+          little more: `tests/e2e/design-audit.ts` (2026-09-29) fails a s
+          pec when words collide or are cut off, and `tests/e2e/still-pic
+          ture.ts` (2026-10-01) measures what one picture shows legibly a
+          gainst predictions written in `AI-Agent-Workspace/Probes/2026-1
+          0-01/still-picture-deck.md`. Taste is still judged by eye. The
+          AST accuracy benchmark was retired on 2026-09-27: it scored an
+          inference path the product did not ship, against per-fixture th
+          resholds as low as 5% recall. Its replacement is the oracle bel
+          ow.
+      44 
+      45 +**What the browser suite costs, and what changes it** (measured
+         + 2026-11-17; [the record of that day](../../AI-Agent-Workspace/
+         +ChatHistory/2026/11/2026-11-17.1.record.md#work-notes-after-tur
+         +n-6-what-the-mount-costs-and-what-a-worker-costs)). Its 488 cas
+         +es are about 88 minutes of case time, one after another, and no
+         + file is more than a fourteenth of it. A case is the page doing
+         + its own work: a cold load is about a second of the page's main
+         + thread, a 2D Local Map picture two to three and a half, so the
+         + suite's time follows the product's speed. Three things outside
+         + the product change it:                                        
+      46 
+      47 +- **The renderer.** A headless Chromium draws WebGL in software
+         + unless the container was given the host's graphics card ([the 
+         +devcontainer's README](../../.devcontainer/README.md#the-hosts-
+         +graphics-card-windows-wsl2)). `tests/e2e/browser-launch.ts` lau
+         +nches on the card where it finds one, and the first line of eve
+         +ry run names the renderer that drew it; read that line before a
+         +ny of a run's times. On the card the whole suite took 98 minute
+         +s at one worker where software took about two hours, and the 3D
+         + cases that stood on their time limits pass.                   
+      48 +- **The workspace's disk.** Where the workspace is a folder on 
+         +a Windows drive, each file opened in it costs 4 to 6 ms, and a 
+         +run spent 54 s finding its cases before `node_modules` was move
+         +d to a volume on the container's disk ([the README again](../..
+         +/.devcontainer/README.md#dependencies-on-the-containers-own-dis
+         +k)). A search across the whole tree while a browser run is unde
+         +r way slows that run's cases past their limits.                
+      49 +- **Workers.** A browser with its test keeps about a thread and
+         + a half busy on the card and two in software, and the machine t
+         +hese numbers come from has ten cores. Four workers stretched ev
+         +ery case by half and failed two or three in a hundred on waits 
+         +that ran out; eight stretched them more than twofold. The suite
+         + runs at one worker until a count is found that passes what one
+         + worker passes.                                                
+      50 +                                                               
+      51 +                                                               
+      52  The [Explorer remediation checklist](../layer-3/live-documentat
+          ion-explorer.mdmd.md#remediation-work) records journeys and vis
+          ual acceptance criteria. Try the relevant journeys in the built
+           page on both the main repository and estate before writing the
+          ir browser checks. Assert that path results and reverse recover
+          y are rendered and usable in both representations, labels and c
+          ontrols remain readable, and identity survives orbit, zoom, fil
+          tering, history and representation changes. Element existence a
+          nd persisted state alone did not catch the review's failures; D
+          OM collision checks also cannot establish that projected 3D wir
+          es look attached to the right spheres. Keep the existing audits
+           and thresholds. Non-finite layout positions must fail measurem
+          ent, never be reported as settled.
+      53 
+      54  ---
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Still waiting on the six reruns (eighteen case runs on the card); checking how
+  far they have got.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Three 2D cases fail repeatably on the card, so the card affects 2D timing too,
+  not just 3D. I'm measuring a mixed setup, with the card used for 3D only,
+  before changing anything. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+❯ >The likely source is the editor's TypeScript server. It is at 55 to 65% of a
+  thread right now, making about 1,200 small reads and writes a second, and it
+  treats every TypeScript file in the repository as one project. My reading is
+  that these are file checks through the D:\ mount; I could not confirm it,
+  because pausing that process to test was refused by the permission system.
+
+  If true, would an upgrade to the newer faster typescript be predicted to bear
+  improvements?
+
+● Background command "Check whether one graphics package is needed, then rerun
+  the six failed cases alone three times each on the card" completed (exit code
+  0)
+
+● Background command "Wait for the six reruns and read them" completed (exit
+  code 0)
+
+● Background command "Queue the search-pace instrument under three drawing
+  set-ups and the 3D bench under the mixed set-up" completed (exit code 0)
+
+● Background command "Wait for the search-pace and mixed set-up measurements and
+  read them with the rest of the reruns" completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/11/2026-11
+  -17-194707-welcome-back-this-is-the-first-message-of-the-11.txt in the IDE.
+  This may or may not be related to the current task.</ide_opened_file>
+  I suppose it is reasonable and plausible that we have simply amassed these
+  timings with a series of small decisions (primarily tests which have waits)
+
+● Both of your messages are noted, and I'll answer them once the next run has
+  started. First I'm counting how many cases load this repo's map against the
+  small frozen sample, since the reruns show a tenfold gap. · summary
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● On TypeScript: I'd predict little from the upgrade for this particular load,
+  and I haven't confirmed the load itself.
+  - If my reading is right, the server's time goes to checking files through the
+    mount, at about 5 ms a round trip. That is waiting, not computing.
+  - The newer TypeScript is faster at computing: type-checking and building a
+    program. It would shorten npm run build (57 s today). It would not make a
+    file check cheaper or make the server do fewer of them.
+  - Lint (239 s) uses TypeScript's JavaScript interface, so I would not expect
+    it to gain either.
+  - The cure for the server's load is a smaller project for the editor, since
+    today it is every TypeScript file in the repository. That waits for the
+    rebuilt container, where I can confirm what the server is checking.
+
+  On "amassed by small decisions": yes, but the numbers say it is mostly work,
+  not waits. On the three test files I profiled, the page is busy about three
+  quarters of each case. The accumulation has three parts:
+
+  ┌─────────────────────────────┬─────────────────────┬────────────────────┐
+  │          What grew          │        From         │         To         │
+  ├─────────────────────────────┼─────────────────────┼────────────────────┤
+  │ Cases                       │ 302 (November 5)    │ 488                │
+  ├─────────────────────────────┼─────────────────────┼────────────────────┤
+  │ Time per case               │ 8.3 s               │ about 15 s in      │
+  │                             │                     │ software           │
+  ├─────────────────────────────┼─────────────────────┼────────────────────┤
+  │ The 2D layout search, same  │ 23 to 29 s (October │ 56 to 61 s         │
+  │ picture                     │  19)                │                    │
+  └─────────────────────────────┴─────────────────────┴────────────────────┘
+
+  The third part points at the nearest thing to a real lever I've found.
+  - Most cases load this repository's own map, which grows with every file we
+    add (9.4 MB of data now).
+  - Fourteen cases run twice, once on this repository and once on the small
+    frozen estate sample (0.1 MB). On the repository they take 4.3 times as
+    long: 492 s against 115 s.
+  - So moving the cases that don't need this repository's size onto a frozen
+    sample should cut the suite severalfold, and it would stop the suite slowing
+    as the repository grows.
+  - The 4.3× comes from those fourteen pairs only; I have not tried moving any
+    case.
+
+  Decision for you: I asked on November 5 which browser promises may hold on the
+  frozen estate instead of the growing repository, and it was never answered. I
+  recommend a deliberate pass in which each test file keeps one case on the
+  repository where its size is the point, and the rest move to a frozen sample.
+  The catch is that a moved case no longer proves the behaviour on our own map.
+  Say yes and I'll brief it as the next round after the card lands.
+
+  One more thing you need to know about the card: as I first wrote it, it broke
+  2D timing.
+  - Rerun alone, three 2D cases failed three times out of three on the card, and
+    two more failed twice. All passed in software yesterday.
+  - The cause: with the whole page drawn through the card, the browser finds few
+    idle moments beside a large 2D picture, and the 2D map's search only runs
+    in idle moments. The search took 74 s that way, 61 s in software.
+  - The fix is to let the card draw WebGL only and leave the rest of the page to
+    the processor. The search then takes 56 s, and the 3D picture still runs at
+    49 frames a second (51 with everything on the card).
+  - I've switched the launch to that and am verifying it on the six failed cases
+    and yesterday's eleven 3D cases, about twenty minutes. Nothing is committed
+    yet.
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/11/2026-11
+  -17-194707-welcome-back-this-is-the-first-message-of-the-11.txt in the IDE.
+  This may or may not be related to the current task.</ide_opened_file>
+
+❯ If the case is that we must pay down some timing debt with our e2e tests, I
+  suggest using an approach similar to what I did at my day job:
+
+  The unit test suite for an important domain model class is a series of _joint
+  assertions_ run across numerous common scenarios of data, sampled directly
+  from memory while using an account with lots of objects of this model type
+  and supplied with replacement tokens wherever the data should be updated to
+  something else (compensations for temporal shifts between sample date and
+  time test is running).
+
+  It is remarkably cheap, remarkably accurate, and remarkably fast. It checks
+  realistic data against real edge cases and scenarios we've bumped into in the
+  past. (Indeed: I tend to have a policy that anything which hurts us
+  sufficiently badly becomes another test case for the multi-assertion suite).
+  I know it breaks some rules of testing only one thing at a time, but it has
+  been, by and large, very worth it.
+
+  >I asked on November 5 which browser promises may hold on the frozen estate
+  instead of the growing repository, and it was never answered.
+
+  I believe my answer above might be more holistic than a yes/no on freeze/grow
+  (also: we have something frozen -- a known shape -- that shape is Rosetta).
+
+  > I recommend a deliberate pass in which each test file keeps one case on the
+  repository where its size is the point, and the rest move to a frozen
+  sample. The catch is that a moved case no longer proves the behaviour on our
+  own map. Say yes and I'll brief it as the next round after the card lands.
+
+  Yeah my test suite at work is resilient to changes around it. The sampled
+  data is chock full of useful replacement tokens which, combined with the test
+  harness logic to normalize to present scenarios, produces a totally robust
+  reusable unit of testing. I think it is possible for us.
+
+  >The fix is to let the card draw WebGL only and leave the rest of the page to
+  the processor. The search then takes 56 s, and the 3D picture still runs at
+  49 frames a second (51 with everything on the card).
+
+  Smart.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The six failed cases all pass with the card drawing WebGL only. Recording your
+  last messages and my replies verbatim now, then I'll answer your testing
+  proposal.
+  Searched for 1 pattern, ran 3 shell commands (ctrl+o to expand)
+
+● Understood, and I think it fits this suite better than my freeze-or-grow
+  question did. Here is how I read it in our terms, so you can correct me before
+  a builder gets it.
+
+  Your pattern, mapped onto the Explorer
+
+  ┌─────────────────────┬───────────────────────────────────────────────────┐
+  │ Your suite at work  │                       Here                        │
+  ├─────────────────────┼───────────────────────────────────────────────────┤
+  │                     │ A map plus an address (view, pins, zoom look,     │
+  │ Scenarios sampled   │ tuning), sampled from links we have really        │
+  │ from a real account │ opened, including every link that reproduced a    │
+  │                     │ defect                                            │
+  ├─────────────────────┼───────────────────────────────────────────────────┤
+  │                     │ Names the harness resolves against the map in     │
+  │ Replacement tokens  │ front of it, so a scenario says {processor} and   │
+  │                     │ not a file path                                   │
+  ├─────────────────────┼───────────────────────────────────────────────────┤
+  │                     │ Load the scenario once, let the picture settle,   │
+  │ Joint assertions    │ then check every promise that can be read from    │
+  │                     │ that picture together                             │
+  ├─────────────────────┼───────────────────────────────────────────────────┤
+  │ "Anything which     │ A defect's reproduction link, tokenised, joins    │
+  │ hurts us becomes a  │ the table                                         │
+  │ case"               │                                                   │
+  └─────────────────────┴───────────────────────────────────────────────────┘
+
+  A concrete example. Scenario: {processor} pinned in the 2D map at reading
+  size. From one load we would check together that:
+  - every card sits inside its directory;
+  - no name is cut or collides;
+  - the wires are exactly the edges Rosetta says processor has, uses entering on
+    the left and offerings leaving on the right;
+  - a reload gives the same picture;
+  - switching to 3D keeps the same files;
+  - the page logged no error and made no network request.
+
+  The same scenario then runs on each Rosetta language by swapping the token
+  table.
+
+  Why Rosetta suits this: its manifest already is a token table. It names five
+  canonical parts (main, processor, models, types, helpers) and the file
+  patterns for each in nine languages. No Explorer sample is built from the
+  Rosetta programs today; building them is the same step that builds the estate
+  sample.
+
+  Why it should pay here: today's cost is per load, and most of the 488 cases
+  pay for a load and a settled picture to check one or two things. Your pattern
+  pays once per scenario, on a small map. The testing literature calls this
+  approval testing with scrubbers (your tokens), reported through soft
+  assertions so one scenario lists every promise it broke.
+
+  What stays outside it:
+  - journeys that are about a sequence (Back and Forward, pin clicks, keyboard);
+  - motion (moves, 3D settling, the history scrubber);
+  - the few cases where this repository's size is the point.
+
+  Those stay as cases, fewer of them.
+
+  What I'll do: after the card lands, brief a builder with your words verbatim
+  to build one slice. That slice is the Rosetta samples, the token resolver, and
+  one scenario table covering the still-picture promises of a few of today's
+  test files. I'll measure it against the cases it replaces and show you before
+  converting more. I don't yet know how many of the 488 are still-picture
+  promises; the slice will count them.
+
+  Card status: with the card drawing WebGL only, all six previously failing
+  cases pass. Yesterday's eleven 3D cases are running the same way now. Then the
+  gate's other stages and the commit, and then I'll hand you the rebuild.
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/11/2026-11
+  -17-194707-welcome-back-this-is-the-first-message-of-the-11.txt in the IDE.
+  This may or may not be related to the current task.</ide_opened_file>
+
+❯ >What I'll do: after the card lands, brief a builder with your words verbatim
+  to build one slice. That slice is the Rosetta samples, the token resolver,
+  and one scenario table covering the still-picture promises of a few of
+  today's test files. I'll measure it against the cases it replaces and show
+  you before converting more. I don't yet know how many of the 488 are
+  still-picture promises; the slice will count them.
+
+  That sounds great. We can start that up after the container rebuild I
+  presume?
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Yes. The slice starts after the rebuild, in the new container, where the card
+  and the faster dependencies are the container's own.
+
+  What is left before I hand you the rebuild, about 25 minutes:
+  1. The eleven 3D cases with the card drawing WebGL only, running now. The six
+     previously failing cases all passed that way on their first run.
+  2. The gate's other stages on the final files: lint, build, unit and
+     integration tests, the document links and the regenerated Live Docs.
+  3. The commit, with the record and Memory brought level so the next chat can
+     pick up from them.
+
+  Two things I'll state plainly in that hand-over:
+  - The whole suite has not yet run on the final launch settings. Its first full
+    run will be in the rebuilt container.
+  - Two 2D cases sit on their time limits in software as well as on the card
+    (local-map-branches.spec.ts:276 at 59 s of 60, and the layout lab's chain
+    case). They are part of the timing debt the scenario suite is meant to pay
+    down, not something the card caused.
+
+❯ >The whole suite has not yet run on the final launch settings. Its first full
+  run will be in the rebuilt container.
+
+  Yep. Some stuff might go wrong. We'll roll with the punches.
+
+  Sounds good.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+❯ Oh do I delete the other two containers after? They'll still be running
+  right?
+
+● Background command "Switch the launch so the card draws WebGL only, and verify
+  the failing cases and the 3D clock cases that way" completed (exit code 0)
+
+● With the card rendering WebGL only, no case that software passes fails, and
+  eight of yesterday's red 3D cases now pass; two history-scrubber cases still
+  exceed their 30 s limit, as before. I'm running the gate's remaining stages,
+  and I'll address your container question in the hand-over. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The gate's other stages are running on the final files (about ten minutes).
+  Meanwhile writing the hand-over into the record and Memory so the next chat
+  can pick up after the rebuild.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Memory is level with today's decisions. Checking the gate's stages.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The gate's other stages are still running on the mount (the doc regeneration
+  alone is five and a half minutes there). Reading how far they've got.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Background command "Run the gate's stages before the browser on the final
+  files" completed (exit code 0)
+
+● Background command "Wait for the gate's stages to end and read their results"
+  completed (exit code 0)
+
+● One integration case failed because a file isn't reachable from any declared
+  entry point, most likely my new renderer-report.ts, which the config
+  references by string. I'm reading the failure details next. · summary
+
+  Searched for 1 pattern, ran 7 shell commands (ctrl+o to expand)
+
+● The engine fix passes its unit test. Adding its note to the Live Doc, then
+  rerunning the gate's stages (about eighteen minutes on the mount).
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Background command "Add the engine doc's note and rerun the gate's stages
+  before the browser" failed with exit code 2
+
+  Made 1 scratchpad edit +12, listed 1 directory, ran 1 shell command (ctrl+o to expand)
+
+● Yes, delete both after the rebuild.
+
+  - ld-gpu-a has already stopped; it only needs deleting.
+  - ld-gpu-b is still running, idle. Keep it until the new container's first
+    test run names the card on its first line, since it is my fallback if the
+    rebuild goes wrong. After that, delete both with the bin icon in Docker
+    Desktop or docker rm -f ld-gpu-a ld-gpu-b.
+  - The old devcontainer (recursing_jennings) is replaced by the rebuild itself.
+
+  Status: not committed yet; about twenty more minutes.
+
+  - The gate's stages before the browser ran on the final files: all 1,977 unit
+    cases passed, and 137 of 138 integration cases.
+  - The one failure was a real gap that today's change exposed. The engine knew
+    a dev container's configuration by two locations, and the new one sits in a
+    third that the Dev Containers specification allows (one folder down). So our
+    own entry-point check reported the new file as one nothing reaches.
+  - I taught the engine the third location and added a unit case. The stages are
+    running again; they take about eighteen minutes on the mount.
+
+  Then the commit and the hand-over for the rebuild.
