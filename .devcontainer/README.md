@@ -32,6 +32,7 @@ No special setup is required — the same `.devcontainer/devcontainer.json` work
 ### Base Environment
 
 - **Node.js 22** (matches `.nvmrc`)
+- **npm 11**, one pinned release that post-create.sh installs over the npm 10 that comes with Node 22. npm 10.9 cannot resolve this project's dependency tree once vite is past 8.3.1 (it stops with "Cannot read properties of null (reading 'edgesOut')"), so `package-lock.json` is written by npm 11. npm 10 still installs from that lock with `npm ci`, which is what the GitHub workflows do.
 - **TypeScript** (project dependency)
 - **npm workspaces** pre-configured
 - **Playwright Chromium** and its Linux dependencies, installed for the Explorer's browser tests
