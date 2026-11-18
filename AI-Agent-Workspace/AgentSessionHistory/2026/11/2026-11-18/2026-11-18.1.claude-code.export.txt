@@ -425,7 +425,7 @@
      defaults (marbles on, cells under the name), and the playtest instrument.
   5. After test speed: the rings beside the membranes, your defect, first in
      that list.
-
+  
 ❯ <ide_selection>The user selected the lines 1 to 427 from
   /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/11/2026-11
   -18.1.claude-code.export.txt:
@@ -5086,3 +5086,574 @@
   miss, where "+1 file" used to be words.
 
   Full review, landing and the gate follow its handback.
+
+● The fallback timer fired and I renewed it; the defaults builder is still
+  running browser cases. Its pictures are done and I've looked at two of them.
+
+  - 2D, reading look: beside pathfind.ts, the …/live-docs/history directory now
+    shows its 23 undrawn files as two rows of small blue and green cells under
+    its name, where "+23 files" stood. It reads as cells in a directory, and the
+    path keeps its room on the line.
+  - 3D, pinned at one hop: every file is a marble with its kind's glass and blue
+    and green bands; the membranes and their names are as before.
+
+  The builder also measured each directory handle under both settings: none that
+  said something with the count says nothing with the cells, at any zoom look,
+  on this repository or the estate sample. One thing it flags for your eye: a
+  single cell under a name (one undrawn file) is a small dim dot that is easy to
+  miss, where "+1 file" used to be words.
+
+  Full review, landing and the gate follow its handback.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e
+     5-95a5-166121c231a3/scratchpad/record-2125.mjs (83 lines)
+  ⎿  Referenced file ../../tmp/claude-1000/-workspaces-Live-Documentation/645014
+     1c-9e11-40e5-95a5-166121c231a3/scratchpad/record-2030.mjs
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e
+     5-95a5-166121c231a3/scratchpad/docs-2030.mjs (57 lines)
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e
+     5-95a5-166121c231a3/scratchpad/record-1926.mjs (50 lines)
+  ⎿  Read AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/scena
+     rio-suite/README.md (44 lines)
+
+● Task "Defaults round builder" completed in background
+
+● Task "Fallback timer of fifty minutes while the defaults builder works" still
+  running in background
+
+› Message from general-purpose
+  ## The defaults round: marbles on, hidden files as cells under the name
+
+  **What changed for a viewer.** The Explorer now opens with every file drawn as
+  a marble: glass in its kind's colour, veined blue by the files that use it
+  and green by the files it uses. A directory drawn only around the pinned
+  picture no longer says "+23 files". It draws one small cell per hidden file
+  under its name at the reading look, and beside the name at the looks farther
+  out. Both are the first value of their lists in Tuning: Marbles reads On, and
+  Hidden Files reads Cells under name (then Cells beside name, then Count).
+  Anyone who had kept either old default now sees the new one, because saved
+  tuning only holds choices that differ from the default.
+
+  **What I saw in the pictures** (12 pictures, in `AI-Agent-Workspace/AgentSessi
+  onHistory/2026/11/2026-11-18/Screenshots/defaults-round/`, with a README):
+  - **2D, this repository** (`pathfind.ts`): at the reading look `history` shows
+  its 23 cells in two rows under its name, and the path keeps its room on the
+  line. At the far and overview looks the cells sit beside the name; long rows
+  end in a veil, the sign that more is held than fits.
+  - **2D, estate**: one cell under `PaymentService` at the reading look;
+  `SqlServer` has one cell at the far look.
+  - **3D**: everything is marbles, pinned and with nothing pinned, on both
+  samples. The key adds a row, *Offers* / *Uses*, each beside a veined ball. No
+  shader errors.
+  - **Count against Cells under name, measured on both pictures at all three
+  looks:** every handle where Count wrote words also shows cells. At the far
+  look, five more handles show cells where Count had no room for words. No
+  handle that said something with Count now says nothing.
+  - **Might bother the owner:**
+    - A single cell under a name is a small dim dot, easy to miss.
+    - On the estate's reading look the camera's first frame contains no encasing
+  handle, so the cells only appear after a pan or a zoom out. That framing is
+  the same with Count.
+    - At the overview, `packages` and `src` draw only the veil, with no cell to
+  press.
+    - From far away in 3D the veins read as texture.
+
+  **What an old link opens as.** The rule did not change: a link writes Hidden
+  Files only when it is not the default, and silence means the default. Only the
+  list's order changed. So a link from November 17 or 18 that carries 2D
+  settings and says nothing of Hidden Files was made with Count and now opens
+  with Cells under name. A link that says "cells" opens as before. One that says
+  "under" is now read as silence, which gives the same picture. Marbles are not
+  carried in links.
+
+  **Browser cases changed (11), and which kind each is:**
+  - *The promise is about the old choice, so the case now sets it and says so in
+  a comment:*
+    1. `local-map-directories.spec.ts`, "an encasing membrane counts what it
+  hides…" (flow and grid, 2 cases): chooses Count. It reads the "+N files, 2
+  directories" words and the rule that a count is drawn whole or not at all.
+    2. `closed-directory-looks.spec.ts:175`, "…a cell takes its file's kind's
+  colour": reads the plain kind colours with marbles off. A marble's colour is
+  its kind's glass tinted by its own veins.
+    3. `force-graph-contained.spec.ts`, both variants (2 cases): marbles off.
+  The independent reference draws a plain sphere.
+    4. `history-emphasis.spec.ts`: every case runs with marbles off. The cases
+  read "base colour" as one colour shared by every file of a kind (an unchanged
+  `util.ts` stands for `main.ts`'s own colour); marbles make that colour differ
+  from file to file. 7 cases had gone red for this.
+  - *The promise holds either way, so the case runs on the new default and reads
+  what it now draws:*
+    5. `tuning.spec.ts`, the marbles case: opens on On, turns them off, then on
+  again; both still compile and the picture changes each time.
+    6. `force-graph-wires.spec.ts:338`: "no direction row" now holds as: Offers
+  and Uses appear exactly twice, each beside a veined ball and never beside a
+  wire.
+    7. `spatial-legend.spec.ts:70`: the rows now include the veins row. For the
+  check that a kind's sample matches a sphere's drawn colour, the case turns
+  marbles off through Tuning first, since a marble's colour is not its kind's
+  sample.
+    8. `spatial-legend.spec.ts:114`: the 3D rows now include "OffersUses", with
+  the wrappers on and off.
+    9. `spatial-legend.spec.ts:231`: the 3D key has 7 rows; the audit's minimum
+  of words goes from 6 to 8, which makes it stricter, not weaker.
+
+  **No promise broke** under the new defaults. One gap: the marble's own shading
+  has no independent reference, unlike plain spheres, which
+  `force-graph-contained` checks against one.
+
+  **Numbers:**
+  - Unit tests: 2,165 of 2,165 pass.
+  - Browser: 249 cases across the files that read 2D directories, 3D colours,
+  the key, Tuning and links. The first run had 20 red, 11 of them from the
+  defaults. The other 9 `history-emphasis` cases failed only because the history
+  sample was not built in my worktree. I built it, and on the rerun all of
+  those passed except the 7 counted in item 4. The rerun of every changed file
+  is green, 7 skipped by design. The three specs mended earlier today needed
+  nothing.
+  - Scenario suite: 43 passed, 7 skipped as "not applicable" by its own token
+  table. No law broke under Cells under name.
+  - `live-docs:generate`, `live-docs:lint` and the markdown link check are
+  clean. ESLint and the tests' type-check are clean on the changed files.
+
+  **Forks I decided:**
+  - Each default is now the first value of its list (`HIDDEN_FILES_LOOKS =
+  ["under", "cells", "count"]`, `MARBLE_CHOICES = ["on", "off"]`), and
+  `getDefaultTuning` reads `[0]`. So the default, how a link reads silence and
+  the control's fallback stay one value. The controls list their choices in that
+  order too.
+  - The contact sheet's `--marbles` now takes `on` or `off`. It was a flag that
+  turned marbles on, which became a no-op, so there would have been no way to
+  draw a sheet of plain spheres. This script was outside my named files; it is a
+  small change.
+  - The design document had no passage on marbles. I added one beside the 3D
+  sphere paragraph, and rewrote the Hidden Files passage to state the new
+  default with the owner's words.
+
+  **Unfinished:** the rest of the browser suite, about 240 cases in files that
+  do not read these defaults, has not run under the new defaults. The gate you
+  run will cover it. `force-graph-building.spec.ts:66` was not run.
+
+  **Commits** (on `6c316c7e`):
+  - `ffd900a7` Open the Explorer with marbles on and hidden files as cells under
+  the name
+  - `7826ae83` Make the browser cases that assumed the old defaults say what
+  they depend on
+  - `cd516300` Pictures of the new defaults: cells under the name in 2D, marbles
+  in 3D
+  - `23db54ee` Say in the defaults pictures' notes that two overview handles
+  draw only the veil
+
+  **Files:**
+  - Source: `packages/explorer/src/client/types.ts`,
+  `packages/explorer/src/client/persistence/local-storage.ts`,
+  `packages/explorer/src/client/layout-presets.ts` (comment only),
+  `packages/explorer/src/client/palette.ts` (comment only),
+  `packages/explorer/src/shared/template.html`,
+  `scripts/contact-sheet/contact-sheet.ts`
+  - Unit test: `packages/explorer/src/client/layout-presets.test.ts`
+  - Browser specs:
+  `tests/e2e/{tuning,closed-directory-looks,force-graph-contained,force-graph-wi
+  res,history-emphasis,local-map-directories,spatial-legend}.spec.ts`
+  - Documents: `.mdmd/layer-3/live-documentation-explorer.mdmd.md`, plus
+  authored notes in the matching `.mdmd/layer-4/` docs, each citing the owner's
+  Turn 13
+  - Pictures: `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screens
+  hots/defaults-round/`
+
+  My temporary server on port 8790 is stopped. The scratch scripts are only in
+  the scratchpad.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Defaults round builder" is waiting on its own background work · 52m 32s
+  Read 8 files, ran 2 shell commands (ctrl+o to expand)
+
+● The defaults builder's handback is reviewed, and I'm checking that the
+  history's changed-file emphasis still holds with marbles on, since the builder
+  switched those cases to marbles off. · summary
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● The defaults themselves check out, but the history's changed-file cases were
+  switched to marbles off, so the marbles-on view you'll actually see has no
+  coverage. I'm sending that one item back before landing. · summary
+  ⎿  Resuming agent adfe30a
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● Now the record: the handback, my review, the item sent back, the owner's
+  seventh save of the export.
+
+  Made 1 scratchpad edit +77, ran 9 shell commands (ctrl+o to expand)
+
+● I'm waiting on the builder's second pass for the history cases, and meanwhile
+  I'm reading the code behind the one flaky browser test,
+  force-graph-building.spec.ts:66, to prove its cause once the machine frees up.
+  · summary
+
+  Made 1 scratchpad edit +28, ran 3 shell commands (ctrl+o to expand)
+
+● The builder is on its second pass and has the machine; I'm holding until it
+  hands back, with the fallback timer still set.
+
+  - Accepted so far: the two defaults, the rest of the changed browser cases,
+    and all twelve pictures.
+  - Sent back: the history's changed-file cases, to run with marbles on and read
+    each file's own colour, plus two pictures of the history under marbles (Dim
+    and Glow).
+  - Recorded: your seventh save of the export, my review, and a likely cause for
+    force-graph-building.spec.ts:66 found by reading the code: the test reads a
+    sphere's screen position and then moves the pointer there, while the camera
+    is still following the settling picture, so on a loaded machine the sphere
+    may have left. That is unproven until I can run it, after the gate.
+
+  Next: the second handback, then landing, then the gate.
+
+› Message from general-purpose
+  ## The history's changed-file highlighting now runs on marbles (follow-up
+  pass)
+
+  **What changed.** The browser cases for the history's highlighting of changed
+  files now run on the default look, with marbles on. Before, each case judged a
+  file's "base colour" by looking at another file of the same kind. Now each
+  file is compared with its own colour at the step shown: a second visitor opens
+  the same address with Changed Files at None and reads the colours there. The
+  cases also check whether a ball carries a marble, which the page exposes per
+  sphere and per dot in its draw buffers, so no hook was needed. Under Glow, the
+  changed file turns white and loses its marble, and the next step gives it
+  back. Under Dim, every file keeps its marble and its own colour. Both hold for
+  top-level spheres and for the dots inside the wrappers' skins. No promise in
+  the file is about plain spheres, so no case turns marbles off. No comparison
+  was loosened. Two titles changed wording: the wrapper case now says the rest
+  "keep their own colour" where it said "their kind's colour".
+
+  **Numbers.**
+  - Browser, `history-emphasis.spec.ts` alone at one worker:
+    - Before this pass, on marbles with the old stand-in: 7 of 14 red.
+    - With marbles off, as I first handed it back: 14 of 14 green.
+    - Now, on marbles: 14 of 14 green, in 2.7 minutes.
+  - Unit, `forceGraphEmphasis.test.ts`: 13 of 13 pass. One case is new: under
+  Glow and Both, `emphasizedUnits` drops the marble of the dot it whitens and
+  keeps it on the rest; under Dim and None, every dot keeps its marble. No unit
+  case had named that rule before.
+  - Live Docs regenerated, lint clean, link check clean, tests' type-check and
+  ESLint clean.
+
+  **What I saw in the two pictures** (history sample at "Retire the legacy
+  helper", step 4, which changed `main.ts`):
+  - **Dim, the default** (`history-retire-legacy-helper-3d-dim.png`): `main.ts`
+  stands out at once. It is the only bright marble, while every other file is a
+  dark marble that keeps its bands but almost vanishes into the background. It
+  reads as "this one is lit", as plain spheres did.
+  - **Glow** (`history-retire-legacy-helper-3d-glow.png`): `main.ts` is a flat
+  light-grey ball among glossy, full-strength striped marbles. It stands out,
+  but it reads as a different kind of thing ("unpainted") more than as lit:
+    - it is the only ball without bands;
+    - its white looks grey next to the glossy marbles;
+    - the key's only white-grey mark is the Symbols sample, and the key has no
+  row for a changed file.
+
+    This is worth the owner's eye. Dim, the default, does not have this problem.
+
+  **Commits** (on `23db54ee`):
+  - `380fc835` Read the history's emphasis on the default marbles, each file
+  against its own colour
+  - `6512f5df` Pictures of the history's emphasis among marbles, under Dim and
+  under Glow
+
+  **Unfinished:** nothing from this pass. I stopped my server on 8790. The other
+  `http-server`, on port 8999, started before my server and is not mine; I left
+  it running.
+
+  **Files:**
+  - `tests/e2e/history-emphasis.spec.ts`
+  - `packages/explorer/src/client/views/forceGraphEmphasis.test.ts`
+  - `.mdmd/layer-4/tests/e2e/history-emphasis.spec.ts.mdmd.md`
+  - `.mdmd/layer-4/packages/explorer/src/client/views/forceGraphEmphasis.test.ts
+  .mdmd.md`
+  - `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/defau
+  lts-round/README.md`, plus the two new pictures in that folder
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Defaults round builder" is waiting on its own background work · 1h 5m
+  36s
+
+  Read 2 files, ran 4 shell commands (ctrl+o to expand)
+
+› Message from general-purpose
+  ## The history's changed-file highlighting now runs on marbles (follow-up
+  pass)
+
+  **What changed.** The browser cases for the history's highlighting of changed
+  files now run on the default look, with marbles on. Before, each case judged a
+  file's "base colour" by looking at another file of the same kind. Now each
+  file is compared with its own colour at the step shown: a second visitor opens
+  the same address with Changed Files at None and reads the colours there. The
+  cases also check whether a ball carries a marble, which the page exposes per
+  sphere and per dot in its draw buffers, so no hook was needed. Under Glow, the
+  changed file turns white and loses its marble, and the next step gives it
+  back. Under Dim, every file keeps its marble and its own colour. Both hold for
+  top-level spheres and for the dots inside the wrappers' skins. No promise in
+  the file is about plain spheres, so no case turns marbles off. No comparison
+  was loosened. Two titles changed wording: the wrapper case now says the rest
+  "keep their own colour" where it said "their kind's colour".
+
+  **Numbers.**
+  - Browser, `history-emphasis.spec.ts` alone at one worker:
+    - Before this pass, on marbles with the old stand-in: 7 of 14 red.
+    - With marbles off, as I first handed it back: 14 of 14 green.
+    - Now, on marbles: 14 of 14 green, in 2.7 minutes.
+  - Unit, `forceGraphEmphasis.test.ts`: 13 of 13 pass. One case is new: under
+  Glow and Both, `emphasizedUnits` drops the marble of the dot it whitens and
+  keeps it on the rest; under Dim and None, every dot keeps its marble. No unit
+  case had named that rule before.
+  - Live Docs regenerated, lint clean, link check clean, tests' type-check and
+  ESLint clean.
+
+  **What I saw in the two pictures** (history sample at "Retire the legacy
+  helper", step 4, which changed `main.ts`):
+  - **Dim, the default** (`history-retire-legacy-helper-3d-dim.png`): `main.ts`
+  stands out at once. It is the only bright marble, while every other file is a
+  dark marble that keeps its bands but almost vanishes into the background. It
+  reads as "this one is lit", as plain spheres did.
+  - **Glow** (`history-retire-legacy-helper-3d-glow.png`): `main.ts` is a flat
+  light-grey ball among glossy, full-strength striped marbles. It stands out,
+  but it reads as a different kind of thing ("unpainted") more than as lit:
+    - it is the only ball without bands;
+    - its white looks grey next to the glossy marbles;
+    - the key's only white-grey mark is the Symbols sample, and the key has no
+  row for a changed file.
+
+    This is worth the owner's eye. Dim, the default, does not have this problem.
+
+  **Commits** (on `23db54ee`):
+  - `380fc835` Read the history's emphasis on the default marbles, each file
+  against its own colour
+  - `6512f5df` Pictures of the history's emphasis among marbles, under Dim and
+  under Glow
+
+  **Unfinished:** nothing from this pass. I stopped my server on 8790. The other
+  `http-server`, on port 8999, started before my server and is not mine; I left
+  it running.
+
+  **Files:**
+  - `tests/e2e/history-emphasis.spec.ts`
+  - `packages/explorer/src/client/views/forceGraphEmphasis.test.ts`
+  - `.mdmd/layer-4/tests/e2e/history-emphasis.spec.ts.mdmd.md`
+  - `.mdmd/layer-4/packages/explorer/src/client/views/forceGraphEmphasis.test.ts
+  .mdmd.md`
+  - `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/defau
+  lts-round/README.md`, plus the two new pictures in that folder
+
+● Agent "Defaults round builder" finished · 1h 6m 20s
+
+● Stop Task
+  ⎿  sleep 3000; echo "fallback timer ended at $(date -u +%H:%M:%S)" ·
+     stopped
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The defaults round is on main and the gate started at 22:29 UTC, due to finish
+  around 23:17. While it runs I'm writing the record and preparing your links.
+  · summary
+
+  Made 2 scratchpad edits +129, read 1 file, ran 4 shell commands (ctrl+o to expand)
+
+● The gate is still in lint and build, so I'm holding off on repository edits
+  until it reaches the browser stage. Meanwhile I've prepared the record, your
+  links, and a probe for the last unsteady test. · summary
+
+  Made 2 scratchpad edits +45, ran 2 shell commands (ctrl+o to expand)
+
+● The gate is still in its pre-browser stages; a waiter will wake me when it
+  reaches the browser, and again when it ends (around 23:17 UTC). Everything for
+  after it is prepared: the record, direction, your links, and the probe for
+  force-graph-building.spec.ts:66.
+
+● Background command "Wait until the gate reaches its browser stage" completed
+  (exit code 0)
+
+  Searched for 4 patterns, read 1 file, listed 1 directory, ran 4 shell commands · 1 failed (ctrl+o to expand)
+
+● Gate's browser stage is running (537 cases, with 2,028 unit and 138
+  integration tests already passed), and I've fixed one broken link the landing
+  page added to the design doc. I'm now checking why the repo's link audit
+  didn't catch it. · summary
+
+  Searched for 2 patterns, listed 1 directory, ran 5 shell commands (ctrl+o to expand)
+
+● The gate is still running, and I found that the repo's audit skips heading
+  links into the session archive because it only checks them when the target
+  file is audited. I'm writing the fix and its test now and will run them once
+  the gate finishes. · summary
+
+  Ran 6 shell commands (ctrl+o to expand)
+
+● The gate is still in its browser stage, due around 23:17 UTC. Meanwhile I've
+  written the audit fix and re-pointed eight stale heading links it will now
+  catch, to be verified and committed after the gate. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Waiting on the gate (ends about 23:17 UTC). Nothing else can run until then;
+  the audit fix, the eight re-pointed links and the probe for
+  force-graph-building.spec.ts:66 are staged for right after it.
+
+❯ If you're finding yourself in a situation where you have time to kill, you,
+  the Root Agent, are free to improve the AGENTS.md and memory documents, and
+  even the root README.md for the software iteself. The way to improve them
+  would involve compressing them in a way which reduces their context occupancy
+  while losing as little information as possible (or even _gaining_ important
+  information!). A naive approach which produces modest context size reduction
+  with almost total losslessness is one which strips out the quick
+  stateful-like one-liners which reaffirm statements, coupled with a date
+  ("Confirmed xx/xx/xxxx as yz") which midsize models love to attach to
+  documents so much. But an approach which is more holistic, more suited to an
+  actual frontier model, is one which takes the information and rearranges it
+  into new cleaner arrangements which result in the same understanding or
+  better, but wildly more efficiently, and in ordering and grouping which meets
+  the audience where it's at.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Memory documents total 1.13 MB, mostly in direction and narrative files, so
+  there's a lot to gain; I'm drafting a rearrangement design while the gate
+  finishes. · summary
+
+  Made 1 scratchpad edit +62, ran 1 shell command (ctrl+o to expand)
+
+❯ When you go out to touch these files, I want you to be confident that you
+  know ahead of time:
+  - Why does this file exist?
+  - Who is it for?
+  - What should and should not go into this file?
+  Ran 9 shell commands (ctrl+o to expand)
+
+● I'm reading each file's stated purpose and origin to answer your three
+  questions on the record. A cut on November 12 already dropped your smaller
+  stances and paraphrased your words, which you had restored. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Before touching anything: here is why each file exists, who reads it, and what
+  belongs in it. Correct any of these and I'll work from your version.
+
+  What was tried before. On November 12 I cut owner.md from 136 KB to 23 KB in
+  my own words and had direction.md cut from 376 KB to 29 KB. You had both
+  restored: the cut dropped a long tail of your smaller stances that live
+  nowhere else, and my paraphrase introduced two errors. Your words then: "So
+  much of success is just knowing what we have and haven't already discussed."
+  So this time nothing of yours is dropped or reworded; what goes is repetition
+  and the telling around it.
+
+  ┌───────────────┬───────────────────────────────┬────────────────────────┐
+  │     File      │         Why it exists         │      Who reads it      │
+  ├───────────────┼───────────────────────────────┼────────────────────────┤
+  │ AGENTS.md (13 │ The one guide every agent of  │ The root and every     │
+  │  KB)          │ any vendor starts from: what  │ builder, each time one │
+  │               │ is always true here           │  starts                │
+  ├───────────────┼───────────────────────────────┼────────────────────────┤
+  │               │ Who you are and how to work   │ The root at the start  │
+  │ owner.md (161 │ with you, in your words; made │ of a chat, and through │
+  │  KB)          │  September 27 after           │  it every builder's    │
+  │               │ compactions kept losing it    │ brief                  │
+  ├───────────────┼───────────────────────────────┼────────────────────────┤
+  │ direction.md  │ "So that nobody re-litigates  │ The root at the start, │
+  │ (529 KB)      │ a settled fork": what is      │  at each design fork,  │
+  │               │ decided, open and next        │ and when briefing      │
+  ├───────────────┼───────────────────────────────┼────────────────────────┤
+  │               │ Things wanted or weighed and  │ The root when ranking  │
+  │ ideas.md (98  │ not chosen, kept so they are  │ work or meeting a      │
+  │ KB)           │ neither lost nor mistaken for │ fork; you when         │
+  │               │  commitments                  │ choosing what is next  │
+  ├───────────────┼───────────────────────────────┼────────────────────────┤
+  │ narrative.md  │ Your "long-term memory"       │ The root at the start  │
+  │ (344 KB)      │ (October 17): how the project │ of a chat; a person    │
+  │               │  came to be what it is        │ who wants the story    │
+  ├───────────────┼───────────────────────────────┼────────────────────────┤
+  │ README.md (9  │                               │ A stranger deciding    │
+  │ KB)           │ The software's front door     │ whether to try it. Not │
+  │               │                               │  us                    │
+  └───────────────┴───────────────────────────────┴────────────────────────┘
+
+  What goes in, and what does not:
+
+  - AGENTS.md: standing rules an agent would not follow unprompted, and pointers
+    to the rest. Not the state of the work, not where a rule came from, not
+    anything a current model does anyway.
+  - owner.md: your durable preferences and taste, each once, with your decisive
+    words and one link. Not product decisions, and not the long account of the
+    episode behind each preference.
+  - direction.md: per subject, the decision in force in your words, what was
+    tried and rejected and why, what is open with my recommendation, and the
+    ranked next work. Not how each session went, and not the same subject told
+    in four lists.
+  - ideas.md: the idea, whose it was, your words, and why it is not scheduled.
+    Not anything decided (that is direction's) or landed (deleted, by the file's
+    own rule).
+  - narrative.md: turning points, what was abandoned and why, the lessons that
+    became rules. Not current state, and not a session-by-session account, which
+    the summaries already hold.
+  - README.md: what it is, how to map your own repository, what you can ask, its
+    limits. Nothing about this workspace's process.
+
+  Where the weight is:
+
+  - direction.md: 267 KB is the dated log and 108 KB is "Answers at forks". The
+    same subject appears under Next, Open, Decisions and again by date.
+    Regrouping by subject, each stance kept once with its words and link, is the
+    large gain.
+  - narrative.md: October and November 2026 take 198 KB in two-day chapters; the
+    eleven months before take 120 KB. Those chapters are at a summary's grain.
+    I would retell them at the grain of the earlier months; say so if you want
+    them left.
+  - AGENTS.md and README.md are small and already tuned, so they come last and
+    get a light pass.
+
+  How I will keep it lossless:
+
+  - I read each file whole before writing; the November 12 cut was made without
+    reading past line 84.
+  - A script checks both ways: every quotation in the new text is word for word
+    in the old, and every quotation and dated stance in the old is either in the
+    new or listed with where it now lives.
+  - A fresh reader compares old against new for anything a root could learn from
+    one and not the other.
+  - You get, per file, the sizes before and after and the list of what moved or
+    was dropped.
+
+  Order: direction, owner, narrative, ideas, then the two small ones, one commit
+  each, in idle time only. The gate still runs (due about 23:17 UTC); its
+  result and your links come as soon as it ends.
+
+  Made 2 scratchpad edits +118, ran 5 shell commands (ctrl+o to expand)
+
+● Gate is at 232 of 537 cases with about 25 minutes left. I'm reading
+  direction.md's current sections in full, then sorting its entries by subject
+  into drafts on disk. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/AgentSessionHistory/2026/11
+  /2026-11-18/2026-11-18.1.claude-code.export.txt in the IDE. This may or may
+  not be related to the current task.</ide_opened_file>
+  What does a file like AGENTS.md describe? Presumably, its purposes are much
+  akin to those which I described back when it was a copilot-instructions.md:
+  to carry _that which is unlikely to change for the foreseeable future and
+  useful anywhere in the workspace_.
+
+  Otherwise, I think your plan is solid.
+
+  Made 1 scratchpad edit +44, searched for 1 pattern, ran 2 shell commands (ctrl+o to expand)
+
+● Agreed: I'll use your test, with "anywhere in the workspace" as the half I'd
+  missed, so guidance tied to one part of the work or to this season's models
+  and machines gets moved nearer its use. I'll show each move as a small diff
+  when the guide's turn comes, and I'm continuing with direction.md while the
+  gate runs. · summary
+
+  Read 1 file, ran 3 shell commands · 1 failed (ctrl+o to expand)
