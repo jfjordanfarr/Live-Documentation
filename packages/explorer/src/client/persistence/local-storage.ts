@@ -8,7 +8,7 @@
 import { LAYOUT_PRESETS, readLayoutSettings } from "../layout-presets";
 import { DEFAULT_PALETTE, isPaletteName } from "../palette";
 import { readReadingChoices, type ReadingChoice } from "../reading-state";
-import { CHANGE_EMPHASES, HISTORY_GRANULARITIES, MARBLE_CHOICES, type ChangeEmphasis, type DiscoveryTarget, type HistoryAxis, type HistoryGranularity, type InspectionTarget, type LocalMapPerspective, type ExplorerFilters, type SpatialLayout, type SymbolOrder, type TuningConfig, type ViewName } from "../types";
+import { CHANGE_EMPHASES, HIDDEN_FILES_LOOKS, HISTORY_GRANULARITIES, MARBLE_CHOICES, type ChangeEmphasis, type DiscoveryTarget, type HistoryAxis, type HistoryGranularity, type InspectionTarget, type LocalMapPerspective, type ExplorerFilters, type SpatialLayout, type SymbolOrder, type TuningConfig, type ViewName } from "../types";
 import { DEFAULT_RETURN_COST } from "../views/localView/cycle-order";
 import { readPerspective, readSpatialLayout, readView } from "./navigation";
 
@@ -72,7 +72,8 @@ export const getDefaultTuning = (): TuningConfig => ({
     closedDirectory: "cells",
     closedShape: "tab",
     closedCells: "kind",
-    hiddenFiles: "count",
+    // Cells under name since 2026-11-18, the first of its choices, so that a link's silence reads as the default.
+    hiddenFiles: HIDDEN_FILES_LOOKS[0],
     overviewFiles: "files",
     descriptionsZoomedOut: "hidden",
     slotLines: 2,
@@ -101,9 +102,9 @@ export const getDefaultTuning = (): TuningConfig => ({
   // is shown, the files a step did not change dimmed so that the changed keep their own colour (Dim since 2026-11-15,
   // after the owner asked whether a changed file could keep its kind's colour; Glow, white, from 2026-10-31).
   history: { axis: "time", granularity: "auto", playRate: 2, changeEmphasis: "dim" },
-  // Today's colours until a viewer chooses others (the colour pass, 2026-11-16), and no marbles until a viewer turns them
-  // on (the marble trial, 2026-11-17).
-  appearance: { palette: DEFAULT_PALETTE, marbles: "off" }
+  // Today's colours until a viewer chooses others (the colour pass, 2026-11-16), and marbles until a viewer turns them
+  // off (the marble trial, 2026-11-17; the default since 2026-11-18, the owner's "a worthy new default").
+  appearance: { palette: DEFAULT_PALETTE, marbles: MARBLE_CHOICES[0] }
 });
 
 const isRecord = (value: unknown): value is Record<string, unknown> => {

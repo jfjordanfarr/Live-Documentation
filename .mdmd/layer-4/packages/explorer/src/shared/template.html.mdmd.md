@@ -56,6 +56,8 @@ Since November 8, 2026, the literal initial controls agree with `getDefaultTunin
 
 Since 2026-11-18 the 3D layout's Discovery group holds Beyond the Hops, Everything or Next step, a trial of what stands past the hops with the wrappers on ([Turn 10 of the November 18 record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-10)).
 
+Since 2026-11-18 ([Turn 13 of the November 17 record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-17/2026-11-17.1.record.md#turn-13)) Marbles lists On first and selected, and Hidden Files lists Cells under name first and selected, then Cells beside name and Count, the new defaults in the order of their lists in `types.ts`.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

@@ -247,12 +247,13 @@ export interface AppearanceTuning {
 /**
  * Whether a file is drawn as a marble (a trial, 2026-11-17, the owner's "Do it do it do it do it!!!!" of the November 16
  * record, Turn 9): its kind's colour as glass with veins of the offering blue and the using green, as many as the files
- * that use it and that it uses, in the 3D map's spheres and the 2D map's closed directories' cells; or not.
+ * that use it and that it uses, in the 3D map's spheres and the 2D map's closed directories' cells; or not. On is the
+ * default since 2026-11-18, the owner's "I think they are a worthy new default" (the November 17 record, Turn 13).
  */
 export type MarbleChoice = "off" | "on";
 
-/** Every marble choice, in the order the control offers them. */
-export const MARBLE_CHOICES: readonly MarbleChoice[] = ["off", "on"];
+/** Every marble choice, in the order the control offers them; the first, on, is the default. */
+export const MARBLE_CHOICES: readonly MarbleChoice[] = ["on", "off"];
 
 /**
  * Which ticks the history's scrubber draws and the step key moves between: every step; one per day, week or month
@@ -352,8 +353,12 @@ export const CLOSED_CELL_COLOURS: readonly ClosedCellColour[] = ["kind", "grey"]
  */
 export type HiddenFilesLook = "count" | "cells" | "under";
 
-/** Every Hidden Files choice, in the order the control offers them; the first, the count, is the default. */
-export const HIDDEN_FILES_LOOKS: readonly HiddenFilesLook[] = ["count", "cells", "under"];
+/**
+ * Every Hidden Files choice, in the order the control offers them; the first, Cells under name, is the default since
+ * 2026-11-18, when the owner asked that the defaults reflect the cells' pictures (the November 17 record, Turn 13) and
+ * root chose which of the two cell values. The count was the default before.
+ */
+export const HIDDEN_FILES_LOOKS: readonly HiddenFilesLook[] = ["under", "cells", "count"];
 
 /**
  * What the 2D map's overview look draws: files only, as in Flow, or cards at their size. Files only was a trial of

@@ -60,6 +60,8 @@ Files only is the default of Zoomed Out Fully since 2026-11-15, by the owner's e
 
 `BeyondHops` and `BEYOND_HOPS` (2026-11-18) name the trial's two choices of what stands past the hops, Everything first as the default, and `ForceGraphTuning.beyondHops` holds the choice ([Turn 10 of the November 18 record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-10)).
 
+Since 2026-11-18 ([Turn 13 of the November 17 record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-17/2026-11-17.1.record.md#turn-13)) `MARBLE_CHOICES` begins with on and `HIDDEN_FILES_LOOKS` with Cells under name ("under", "cells", "count"), each list's first value being its default, as the other trial choices' lists are; the owner made marbles the default and asked that the defaults reflect the cells' pictures, and the root chose which cell value.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

@@ -57,7 +57,9 @@ export function applyLayoutPreset(tuning: TuningConfig, preset: LayoutPreset): T
  * and nothing when the grid was, so such a link now opens in Flow either way, and a link that says "grid" exists only
  * from now on. Closed Directory (2026-11-13): only a trial's look is carried, and its absence reads as today's box;
  * Descriptions Zoomed Out (2026-11-13) likewise: only the first line is carried, and its absence reads as hidden; and Hidden
- * Files (2026-11-17): only the cells are carried, and their absence reads as the count. Beyond the Hops (2026-11-18, a
+ * Files (2026-11-17): only a choice other than the default is carried, and its absence reads as the default, which was
+ * the count until 2026-11-18 and is Cells under name since; so a link of November 17 or 18 that carries Local Map
+ * settings and says nothing of Hidden Files, made with the count, now opens with the cells under the name. Beyond the Hops (2026-11-18, a
  * trial of the 3D map): only the next step is carried, and its absence reads as everything.
  */
 export function readLayoutSettings(value: unknown): LayoutSettings | undefined {

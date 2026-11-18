@@ -47,6 +47,8 @@ Since 2026-11-15 ([Turn 1 of the November 15 record](../../../../../../AI-Agent-
 
 `beyondHops`, the 3D trial of what stands beyond the hops (2026-11-18, [Turn 10 of the November 18 record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-10)), is carried only at the next step, and a link that carries the 3D settings without it opens at everything, as the 2D trials' choices are.
 
+Since 2026-11-18 Hidden Files' default is Cells under name ([Turn 13 of the November 17 record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-17/2026-11-17.1.record.md#turn-13)), first in `HIDDEN_FILES_LOOKS`, so a link carries Cells beside name or the count and nothing for the default. The rule did not change, only the list's order: a link of November 17 or 18 that carries the 2D map's settings and says nothing of Hidden Files was made with the count and now opens with the cells under the name; one that says "cells" opens as it did, and one that said "under" is read as silence, which is the same picture.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

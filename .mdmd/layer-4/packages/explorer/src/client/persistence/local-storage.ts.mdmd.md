@@ -63,6 +63,8 @@ Since 2026-11-15 ([Turn 1 of the November 15 record](../../../../../../../AI-Age
 
 The 3D defaults hold `beyondHops: "everything"` since 2026-11-18, today's picture; a saved Next step is read back through `readLayoutSettings` ([Turn 10 of the November 18 record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-10)).
 
+Since 2026-11-18 the defaults draw files as marbles (`appearance.marbles` "on", until then "off") and a drawn directory's hidden files as cells under its name (`localMap.hiddenFiles` "under", until then "count"), the owner's answers of [Turn 13 of the November 17 record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-17/2026-11-17.1.record.md#turn-13): of the marbles, "I think they are a worthy new default", and of the cells, "Let's make sure that the defaults reflect that"; which cell value was the root's choice. Each is written as the first of its list (`MARBLE_CHOICES[0]`, `HIDDEN_FILES_LOOKS[0]`), so that the default, the link's reading of silence and the control's fallback are one value. Saved tuning holds only what differs from the defaults, so a returning viewer who had kept either old default now sees the new one.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

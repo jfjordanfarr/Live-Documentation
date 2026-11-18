@@ -167,26 +167,26 @@ describe("shared packing preferences", () => {
     }
   });
 
-  it("carries Hidden Files only when it is the cells, the trial of 2026-11-17, and reads its absence as the count", () => {
+  it("carries Hidden Files only when it is not Cells under name, the default since 2026-11-18, and reads its absence as the default", () => {
     const plain = getDefaultTuning();
-    expect(plain.localMap.hiddenFiles).toBe("count");
+    expect(plain.localMap.hiddenFiles).toBe("under");
     expect(layoutSettingsOf(plain).localMap).not.toHaveProperty("hiddenFiles");
-    expect(readLayoutSettings({ localMap: { hiddenFiles: "count" } })).toBeUndefined();
+    expect(readLayoutSettings({ localMap: { hiddenFiles: "under" } })).toBeUndefined();
     expect(readLayoutSettings({ localMap: { hiddenFiles: "sparkles" } })).toBeUndefined();
-    // Cells under name, the third value (2026-11-17), is carried as Cells beside name is.
-    for (const value of ["cells", "under"] as const) {
+    // Cells beside name and the count, the default until 2026-11-18, are each carried.
+    for (const value of ["cells", "count"] as const) {
       const chosen = getDefaultTuning();
       chosen.localMap.hiddenFiles = value;
       const carried = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(chosen) }));
       expect(carried.layout?.localMap?.hiddenFiles).toBe(value);
       expect(applyLayoutSettings(getDefaultTuning(), carried.layout).localMap.hiddenFiles).toBe(value);
     }
-    const cells = getDefaultTuning();
-    cells.localMap.hiddenFiles = "cells";
-    // A link made with the count shows the count in a browser whose own tuning holds the cells; no link keeps the browser's own.
+    const count = getDefaultTuning();
+    count.localMap.hiddenFiles = "count";
+    // A link made with the default shows it in a browser whose own tuning holds the count; no link keeps the browser's own.
     const unsaid = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(plain) }));
-    expect(applyLayoutSettings(cells, unsaid.layout).localMap.hiddenFiles).toBe("count");
-    expect(applyLayoutSettings(cells, undefined).localMap.hiddenFiles).toBe("cells");
+    expect(applyLayoutSettings(count, unsaid.layout).localMap.hiddenFiles).toBe("under");
+    expect(applyLayoutSettings(count, undefined).localMap.hiddenFiles).toBe("count");
   });
 
   it("opens a link in the three looks unless it says the ladder, which it carries only when chosen (2026-11-13)", () => {

@@ -19,6 +19,7 @@ Draws one built Explorer in a fixed list of views and writes each picture and on
 
 `--palette <name>` (the colour pass, [Turns 4 and 5 of the November 16 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-16/2026-11-16.1.record.md#turn-4)) writes the viewer's saved palette before each page loads and names the sheet for it, so that Today's sheet and the proposed palette's are drawn from one bundle. The same day showed that no setting had ever reached a page: the storage script, passed as a function, was compiled by tsx with a naming helper the page lacks and failed before writing, so the history views' emphasis settings were never applied either; it is now given as text.
 - Since 2026-11-17 its browser is launched by `tests/e2e/browser-launch.ts`, so where the container has the host's graphics card the 3D tiles are drawn on it, faster and nearer to what a person's browser draws ([Turn 1 of the November 17 session](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-17/2026-11-17.1.record.md#turn-1)). The note above on fonts stands.
+- Since 2026-11-18 `--marbles` takes `on` or `off`: marbles became the Explorer's default that day ([Turn 13 of the November 17 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-17/2026-11-17.1.record.md#turn-13)), so a sheet without the option draws them, and `--marbles off` is how a sheet of plain spheres is drawn beside it.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
