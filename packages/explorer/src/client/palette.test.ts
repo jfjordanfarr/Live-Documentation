@@ -177,11 +177,22 @@ describe("a valid palette", () => {
     expect(VIVID_KINDS.hasTests.mark).toBe(PROPOSED.hasTests.mark);
   });
 
-  it("is not what today's palette is, as a stated fact: its offering pin is its implementation, and a test and a directory are 2.5 apart under protanopia", () => {
-    const today = shortfalls(TODAY);
+  it("is not what today's palette is, as a stated fact, in its identities' distances and in nothing else", () => {
+    // Exactly these, which the owner's choice of palette decides; every other floor holds today's palette too. Its
+    // words have stood at 4.5:1 on a card since 2026-11-19, when muted, subtle and panelSubtle took the proposed
+    // palette's values (as drawn before, 4.42, 3.50 and 3.34).
     expect(TODAY.secondValues.offersPin).toBe(TODAY.kind.implementation);
-    expect(today).toContain("offering pin and implementation are 0.0 apart");
-    expect(today).toContain("test and directory are 2.5 apart under protanopia");
+    expect(shortfalls(TODAY)).toEqual([
+      "offers and implementation are 12.7 apart",
+      "uses and test are 14.3 apart",
+      "test and asset are 7.8 apart under deuteranopia",
+      "test and directory are 2.5 apart under protanopia",
+      "offering pin and implementation are 0.0 apart",
+      "offering pin and implementation are 0.0 apart under protanopia",
+      "offering pin and implementation are 0.0 apart under deuteranopia",
+      "light uses and light warm are 7.9 apart under protanopia",
+      "dark uses and dark warm are 7.3 apart under protanopia"
+    ]);
   });
 });
 
@@ -203,17 +214,23 @@ describe("changing the palette", () => {
     const today = new Map(customProperties(TODAY)), changed = customProperties(PROPOSED).filter(([name, value]) => !name.endsWith("-rgb") && today.get(name) !== value).map(([name]) => name);
     expect(changed.sort()).toEqual([
       "--kind-asset", "--kind-document", "--kind-implementation", "--kind-test", "--role-offers", "--role-uses", "--scene-cited-by",
-      "--second-values-asset-label-tint", "--second-values-implementation-label-tint", "--second-values-offers-pin", "--second-values-selected-ring",
-      "--second-values-sources-hover", "--second-values-test-label-tint", "--second-values-uses-pin", "--second-values-world-dark-wire-offers",
-      "--second-values-world-dark-wire-uses", "--second-values-world-light-wire-offers", "--second-values-world-light-wire-uses",
-      "--state-selected", "--state-selected-hover", "--text-muted", "--text-on-selected", "--text-panel-subtle", "--text-subtle",
+      "--second-values-asset-label-tint", "--second-values-error-wash", "--second-values-implementation-label-tint", "--second-values-offers-pin",
+      "--second-values-path-found-wash", "--second-values-selected-ring", "--second-values-sources-hover", "--second-values-test-label-tint",
+      "--second-values-uses-pin", "--second-values-world-dark-wire-offers", "--second-values-world-dark-wire-uses",
+      "--second-values-world-light-pressed", "--second-values-world-light-wire-offers", "--second-values-world-light-wire-uses",
+      "--state-selected", "--state-selected-hover", "--text-on-selected",
       "--type-ref-extends", "--type-ref-extends-text", "--type-ref-implements", "--type-ref-implements-text",
       "--world-dark-offers", "--world-dark-uses", "--world-light-offers", "--world-light-uses", "--world-light-warm"
     ].sort());
-    const { secondValues: second, role, state, kind, world } = PROPOSED;
-    expect([second.offersPin, second.usesPin, second.selectedRing, second.implementationLabelTint, second.testLabelTint, second.testLabel, second.assetLabelTint])
-      .toEqual([role.offers, role.uses, state.selected, kind.implementation, kind.test, kind.test, kind.asset]);
-    expect([second.worldLightWireOffers, second.worldLightWireUses, second.worldDarkWireOffers, second.worldDarkWireUses]).toEqual([world.light.offers, world.light.uses, world.dark.offers, world.dark.uses]);
+    for (const palette of [PROPOSED, VIVID_KINDS]) {
+      const { secondValues: second, role, state, kind, world, signal } = palette;
+      expect([second.offersPin, second.usesPin, second.selectedRing, second.implementationLabelTint, second.testLabelTint, second.testLabel, second.assetLabelTint, second.errorWash, second.pathFoundWash])
+        .toEqual([role.offers, role.uses, state.selected, kind.implementation, kind.test, kind.test, kind.asset, signal.error, signal.pathFound]);
+      expect([second.worldLightWireOffers, second.worldLightWireUses, second.worldDarkWireOffers, second.worldDarkWireUses]).toEqual([world.light.offers, world.light.uses, world.dark.offers, world.dark.uses]);
+      // The light World's pressed tool is drawn from its meaning as the dark World draws its own (world.css): the
+      // form's blue at 16% over its board, here as one opaque colour.
+      expect(`rgb(${channels(second.worldLightPressed).join(",")})`).toBe(mix(world.light.board, world.light.offers, 0.16));
+    }
   });
 });
 
@@ -404,6 +421,50 @@ function colourLiterals(source: string, language: "css" | "ts"): string[] {
   }
   return found;
 }
+
+/**
+ * Where the disabled tone is drawn, as `file:line: selector`, outside a disabled control. `text.disabled` is under 3:1
+ * on every ground, which WCAG exempts only for a control that cannot be used (SC 1.4.3); on 2026-11-18 it drew five
+ * things a person must read, the sidebar's section labels and four of the search's words and signs.
+ */
+function disabledToneOutsideDisabled(source: string, language: "css" | "ts"): string[] {
+  const lineOf = (text: string, index: number): number => text.slice(0, index).split("\n").length;
+  if (language === "ts") return [...source.matchAll(/--text-disabled\b|\btext\.disabled\b/g)].map(match => `${lineOf(source, match.index)}: ${match[0]}`);
+  const css = source.replace(/\/\*[\s\S]*?\*\//g, comment => comment.replace(/[^\n]/g, " "));
+  const found: string[] = [];
+  for (const rule of css.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
+    if (!/var\(\s*--text-disabled\b/.test(rule[2])) continue;
+    for (const selector of rule[1].split(",").map(part => part.trim())) {
+      if (!/:disabled\b|\[disabled\]|\[aria-disabled="true"\]/.test(selector)) found.push(`${lineOf(css, rule.index + rule[0].indexOf(selector))}: ${selector}`);
+    }
+  }
+  return found;
+}
+
+describe("the disabled tone", () => {
+  it("is found on anything but a disabled control, and only there", () => {
+    expect(disabledToneOutsideDisabled(".section-label { color: var(--text-disabled); }", "css")).toEqual(["1: .section-label"]);
+    expect(disabledToneOutsideDisabled("a::placeholder,\nb:disabled { color: var(--text-disabled); }", "css")).toEqual(["1: a::placeholder"]);
+    expect(disabledToneOutsideDisabled("@media (x) { button:disabled, [aria-disabled=\"true\"] { color: var(--text-disabled); } }", "css")).toEqual([]);
+    expect(disabledToneOutsideDisabled("a { color: var(--text-muted); }", "css")).toEqual([]);
+    expect(disabledToneOutsideDisabled("const grey = palette.text.disabled;", "ts")).toEqual(["1: text.disabled"]);
+  });
+
+  it("draws nothing in the Explorer's client but a disabled control", () => {
+    const root = __dirname, found: string[] = [];
+    const walk = (directory: string): void => {
+      for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+        const full = path.join(directory, entry.name);
+        if (entry.isDirectory()) { walk(full); continue; }
+        if (full === path.join(root, "palette.ts") || /\.test\.ts$/.test(entry.name)) continue;
+        const language = entry.name.endsWith(".css") ? "css" : entry.name.endsWith(".ts") ? "ts" : null;
+        if (language) for (const use of disabledToneOutsideDisabled(fs.readFileSync(full, "utf8"), language)) found.push(`${path.relative(root, full)}:${use}`);
+      }
+    };
+    walk(root);
+    expect(found).toEqual([]);
+  });
+});
 
 describe("no colour is written outside the palette", () => {
   it("finds a colour written out, and nothing else", () => {

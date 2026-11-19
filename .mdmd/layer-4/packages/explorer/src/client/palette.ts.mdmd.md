@@ -17,6 +17,8 @@ Since [Turns 4 and 5 of the November 16 record](../../../../../../AI-Agent-Works
 
 A third palette, `vividKinds` ("Vivid kinds" in Tuning), follows from [Turns 7 to 9 of the same record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-16/2026-11-16.1.record.md#turn-8). It is the owner's lean toward "mild color meaning collision", made valid: implementation and test stay near today's blue and green, and the two roles step lighter, so that every pair passes the validity test with no value adjusted. A test file's kind label is the test kind's green; the 2D has-tests mark stays violet. The same turns asked for the marble, and whether files are drawn as marbles (`marblesDrawn`, set by `chooseMarbles`) lives here beside the palette in force. Switching it tells the same listeners, so the views draw again at once, as for a palette, with nothing moving.
 
+Since 2026-11-19 Today draws three quiet tones of text at the proposed palette's values: `muted` `#939393`, `subtle` `#8a8a8a`, `panelSubtle` `#828a9a`. As drawn before (`#888888`, `#777777`, `#6c7484`) they stood at 4.42, 3.50 and 3.34 to 1 on a card, under the 4.5 WCAG asks of words, and `subtle` and `panelSubtle` failed on every ground. This was a finding of the design system's audit ([Turn 14 of the November 18 record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-14)), and the owner's remark of [Turn 20](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-20), "Dim things are still a bit hard to read." No other colour of Today moved; which palette is the default stays the owner's choice. The same day Proposed and Vivid kinds set `errorWash` and `pathFoundWash` to `signal.error` and `signal.pathFound`, which they had kept at Today's values against their own comment. The light World's pressed tool became its form's blue at 16% over the white board, drawn from its meaning as the dark World's is. The comment now says so rather than claiming every second value equals its meaning. See [the pictures and measures](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/shell-accessibility/README.md).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -54,7 +56,9 @@ One palette: every meaning the Explorer draws in colour.
 - Returns: [`Palette`](#symbol-palette)
 
 ##### `TODAY` — Summary
-The palette drawn until the colour pass: every value as the Explorer drew it on 2026-11-16.
+The palette drawn until the colour pass: every value as the Explorer drew it on 2026-11-16, but for three quiet
+tones of text (muted, subtle, panelSubtle), which take the proposed palette's values (2026-11-19, the design
+system's audit): as drawn before they stood at 4.42, 3.50 and 3.34 to 1 on a card, under the 4.5 WCAG asks of words.
 
 #### `PROPOSED` {#symbol-proposed}
 - Type: const
@@ -66,9 +70,11 @@ The palette proposed in the colour pass (2026-11-16, root's design, measured): o
 Blue and green stay with the two roles and nothing else wears them; the kinds move off them (implementation, the
 common case, goes quiet; a test file takes the violet the 2D cards already use for having tests; a document leaves
 violet for a paper yellow); what is selected is neutral, so the interface wears no data colour; three quiet tones of
-text are lifted to 4.5:1 on a card; the type badges keep only the plain badge's look, since each tells its role by
-its icon and rose and amber now belong to the asset and the directory. Every second value equals its meaning, and
-each World form draws its doors and its wires in its own blue and green.
+text were lifted to 4.5:1 on a card (today's palette has taken them since 2026-11-19); the type badges keep only the
+plain badge's look, since each tells its role by its icon and rose and amber now belong to the asset and the
+directory. Every second value equals its meaning, but for the light World's pressed tool, which is drawn from its
+meaning as the dark World draws its own: the light form's blue at 16% over its white board. Each World form draws
+its doors and its wires in its own blue and green.
 
 #### `VIVID_KINDS` {#symbol-vivid_kinds}
 - Type: const
@@ -78,8 +84,9 @@ each World form draws its doors and its wires in its own blue and green.
 ##### `VIVID_KINDS` — Summary
 The proposed palette with the kinds kept near today's blue and green (the owner's earlier lean, made valid by root's
 measurement, 2026-11-17): implementation and test near today's colours, the two roles a step lighter so that every
-identity still stands apart, and every second value equal to its meaning. A test file's kind label in the details
-panel is the test kind's green, as the test sphere is; a 2D card that tests use keeps the has-tests violet.
+identity still stands apart, and every second value equal to its meaning as in the proposed palette. A test file's
+kind label in the details panel is the test kind's green, as the test sphere is; a 2D card that tests use keeps the
+has-tests violet.
 
 #### `PALETTES` {#symbol-palettes}
 - Type: const

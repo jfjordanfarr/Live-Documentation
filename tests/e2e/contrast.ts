@@ -2,14 +2,24 @@
  * The contrast of text against what stands behind it, as WCAG 2 defines it, from the colours a browser computes:
  * the backgrounds of an element and its ancestors are laid over one another, the text's colour over them, and the
  * two relative luminances give the ratio. Pure, so that a spec reads the computed colours in the page and judges
- * them here; WCAG AA asks 4.5:1 of small text.
+ * them here; WCAG AA asks 4.5:1 of text that is not large. An element's `opacity` is not a colour the browser
+ * computes: a spec that reads a faded element folds the opacity into the text's alpha itself.
  */
 
 /** A colour as red, green and blue from 0 to 255 and an alpha from 0 to 1. */
 export type Rgba = [number, number, number, number];
 
-/** The smallest ratio WCAG AA accepts for text under 18 px, or under 14 px bold. */
+/**
+ * The smallest ratio WCAG AA accepts for text (SC 1.4.3) that is not large: large text is 18 points (24 CSS px) or
+ * more, or 14 points (about 18.66 CSS px) bold or more. No spec holds text to less, since none measures text so large.
+ */
 export const AA_SMALL_TEXT = 4.5;
+
+/**
+ * The smallest ratio WCAG AA accepts for a graphic a person needs to see to use a control or understand content, such
+ * as a glyph that is a button's only sign (SC 1.4.11, Non-text Contrast). Never a floor for words.
+ */
+export const AA_NON_TEXT = 3;
 
 /** A computed CSS colour, `rgb(…)` or `rgba(…)` with numbers as `getComputedStyle` writes them. */
 export function parseColour(css: string): Rgba {

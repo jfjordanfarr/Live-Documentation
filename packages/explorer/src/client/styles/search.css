@@ -59,7 +59,7 @@
 }
 
 .search-input::placeholder {
-    color: var(--text-disabled);
+    color: var(--text-muted);
 }
 
 /* A chosen thing reads as chosen, as the pathfinder's fields did */
@@ -77,7 +77,8 @@
     background: rgba(var(--ground-sheen-rgb), 0.08);
     border-radius: 3px;
     font-family: monospace;
-    color: var(--text-disabled);
+    /* On its own keycap's sheen, where the muted grey falls under 4.5:1 */
+    color: var(--text-panel-muted);
     pointer-events: none;
 }
 
@@ -97,24 +98,24 @@
     padding-right: 28px;
 }
 
+/* The glyph at its 14 px, in a 24 by 24 px target (WCAG 2.2 SC 2.5.8), centred where the 18 px button stood */
 .search-clear {
     position: absolute;
-    right: 6px;
-    width: 18px;
-    height: 18px;
+    right: 3px;
+    width: 24px;
+    height: 24px;
     padding: 0;
     font-size: 14px;
-    line-height: 16px;
+    line-height: 24px;
     text-align: center;
     background: transparent;
     border: none;
-    color: var(--text-disabled);
+    border-radius: 4px;
+    color: var(--text-muted);
     cursor: pointer;
-    opacity: 0.7;
 }
 
 .search-clear:hover {
-    opacity: 1;
     color: var(--text-strong);
 }
 
@@ -278,7 +279,7 @@
 .search-empty {
     padding: 16px;
     text-align: center;
-    color: var(--text-disabled);
+    color: var(--text-muted);
     font-size: 12px;
 }
 
