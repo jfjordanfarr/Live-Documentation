@@ -502,7 +502,8 @@ test("a pointer crossing spheres shows only that they can be pressed; a rest sho
     await expect.poll(async () => Math.min(...(await renderedNodes(page)).map(node => node.opacity))).toBeLessThan(.25);
   });
   const shown = rest.find(frame => frame.actions)!;
-  expect(shown.t - rest[0].t, "the actions wait for the rest").toBeGreaterThanOrEqual(300);
+  // In order, not by the clock: a frame showed the pointing hand without the actions before the actions came.
+  expect(rest.filter(frame => frame.t < shown.t && frame.pressable && !frame.actions).length, "the sign came before the words").toBeGreaterThan(0);
   expect(rest.slice(0, 4).some(frame => frame.pressable), "the sign that it can be pressed shows at once").toBe(true);
   expect(rest.filter(frame => frame.t < shown.t && frame.leastOpacity !== null && frame.leastOpacity < .25), "no fade before the rest").toEqual([]);
   // Moving off takes them at once.

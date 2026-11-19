@@ -118,15 +118,32 @@ test("a click on a seed with the pointer kept still: nothing hovers or fades whi
   // place by more than its own radius before the next frame picked, in 14 of 16 runs.)
   // Since 2026-11-19 the fade waits for the pointer to rest, 350 ms, and a sphere of the drifting picture can leave the
   // still pointer before then, as a person's target can: measured that day, the steady sphere drifted 12 to 50 px in
-  // 1.2 s. A person aims again; so does the case, up to four times, each a move of the pointer.
-  let rested = false;
-  for (let aim = 0; aim < 4 && !rested; aim++) {
+  // 1.2 s. An aim is void, and the case aims again, only when its own precondition failed: the sphere left the pointer
+  // (another sphere, or none, under the pointer's place) before the rest could ripen, watched for 450 ms after the
+  // move: the 350 ms and a margin.
+  // A sphere that stayed is the product's to answer: the pointing hand at once, the fade after the rest, or a failure.
+  const RIPENS = 450;
+  let voided = 0;
+  for (;;) {
     const target = await steadySphere(page);
     await page.mouse.move(target.x, target.y);
-    rested = await expect.poll(async () => (await looking(page, target)).hovered, { timeout: 2_000 }).toBe("true").then(() => true, () => false)
-      && await expect.poll(async () => (await looking(page, target)).faded, { timeout: 3_000 }).toBeGreaterThan(0).then(() => true, () => false);
+    const moved = Date.now();
+    let left = false, pressable = false, faded = false;
+    while (!faded && !left && Date.now() - moved < 3_000) {
+      const now = await looking(page, target);
+      if (now.under !== target.id && Date.now() - moved < RIPENS) left = true;
+      if (now.hovered === "true") pressable = true;
+      if (now.faded > 0) faded = true;
+    }
+    if (faded) break;
+    if (left) {
+      voided++;
+      expect(voided, `the picture never held a sphere under the still pointer until its rest could ripen: ${voided} aims void`).toBeLessThan(4);
+      continue;
+    }
+    expect(pressable, `the move landed on the sphere, which stayed under the pointer, and the pointing hand never said it could be pressed (aim ${voided + 1}, ${voided} void before it)`).toBe(true);
+    expect(faded, `the sphere stayed under the pointer through the rest, and the rest never faded (aim ${voided + 1}, ${voided} void before it)`).toBe(true);
   }
-  expect(rested, "a move onto a sphere shows at once that it can be pressed, and a rest there fades the rest").toBe(true);
 });
 
 test("a press on a node while the map builds does nothing and is not replayed once it has built; a drag from a sphere turns the camera", async ({ page }) => {

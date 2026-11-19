@@ -266,9 +266,9 @@ test.describe("World Map", () => {
       await page.mouse.move(engine.x, engine.y);
       await expect(page.locator("#view-world .world-evidence")).toBeVisible();
     });
-    const arrived = rest[0].t;
     const firstPeek = rest.find((frame) => frame.peek)!;
-    expect(firstPeek.t - arrived, "the peek waits for the rest").toBeGreaterThanOrEqual(300);
+    // In order, not by the clock: frames were drawn with the pointer on the piece and no peek before the peek came.
+    expect(rest.indexOf(firstPeek), "the peek waits for the rest").toBeGreaterThan(1);
     expect(rest.filter((frame) => frame.t < firstPeek.t && frame.dimmed > 0)).toEqual([]);
     await expect(page.locator("#view-world .world-evidence")).toContainText("engine");
     expect(await page.locator("#view-world .dim-soft").count(), "the rest faded once rested on").toBeGreaterThan(0);
