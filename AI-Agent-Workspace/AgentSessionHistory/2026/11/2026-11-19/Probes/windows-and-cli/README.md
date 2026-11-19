@@ -399,3 +399,44 @@ and import `parseLiveDocumentationConfigBytes` from the configuration module, as
 ### A history question's file in another case
 
 `inspect --at <commit> --from <file>`, and `--to`, now find the file in any case, as today's questions do. `fileNamedAt` (`scripts/live-docs/inspect/history.ts`) tries the name as spelled, then the one file at that commit whose path differs by case alone. Two such files are named back. A name no file answers to is still said not to have existed. `codePathOf`, which reads a doc's path as its file's, moved beside it and reads the docs folder and suffix in any case. `inspect-cli.test.ts` builds the history's scripted repository at its first commit, writes its history, and asks `--from SRC/App/View.TS`, the doc's path in another case, and `--to` in another case. The first case failed before the mend, and the case of a name no file answers to passed both before and after. `inspect/history.test.ts` covers the two files that differ by case alone.
+
+### The `--stack` case, seen red
+
+The first leg did not run this case before its mend. It has now been run twice against code that should fail it, with only `scripts/live-docs/cli.ts` swapped and then restored:
+
+- **The code before the mend** (`cli.ts` as of `7472cf09`) fails it at the first assertion: a failure printed no line about how to see where it failed. Further on, that code would also refuse `--stack` as an option it does not know.
+- **A build that accepts `--stack` and ignores it**: today's `cli.ts` with its stack branch switched off (`withStack && false`). It still lifts `--stack` off the command line and prints the line about it. It fails at the traced assertion: `expected 'live-docs:lint failed: cannot read th…' to contain 'live-docs:lint failed: Error: cannot …'`. So the case fails on its substance, a stack printed, and not only on whether the option is accepted.
+
+With `cli.ts` restored, it passes.
+
+### `packages/cli/src/index.ts`: what it is, and whether it has a purpose
+
+Nothing in it was changed.
+
+**What it is.** It is a dispatcher of 119 lines for a `live-docs` binary. `live-docs generate|lint|inspect|visualize|orphans` spawns `node_modules/.bin/tsx` (`tsx.cmd` on Windows, without a shell) on `scripts/live-docs/<command>.ts`. It finds both by paths relative to its own compiled file (`../../../scripts/live-docs`, `../../../node_modules/.bin/tsx`). Its manifest names `bin: { "live-docs": "./dist/index.js" }`, `files: ["dist"]`, and dependencies on the engine and the Explorer that it does not import.
+
+**Where it came from.** It was added on 2025-12-15 in `7aea17b7`, "feat: pre-publish prep - CLI package, npm metadata, branding updates" ([chat 2025-12-15.2](../../../../../2025/12/2025-12-15/2025-12-15.2.md), Turn 23, as its Live Doc records), to prepare for publishing to npm. Since then only renames, dependency bumps and a build-record change have touched it.
+
+**What uses it: nothing that runs.**
+- The root's `build` builds the engine, the Explorer and the generator, not it. So `packages/cli/dist` does not exist, its `bin` has no target, and npm links no `live-docs` into `node_modules/.bin` (checked: absent).
+- No code imports it. No guide, script or workflow runs it.
+- Its remaining mentions are bookkeeping: the root `package.json`'s `workspaces`, `package-lock.json`, its two Live Docs, and the hand-written entries expectation `tests/integration/live-docs/expected/repository-entries.json` (lines 22–31), which lists its manifest, `tsconfig.json` and `src/index.ts` as entries. [The dead-code sweep of 2026-10-08](../../../../../2026/10/2026-10-08/Probes/dead-code-sweep/candidates.md) found "nothing references it". That is still so.
+
+**Why it could not serve as it stands.**
+- Published with `files: ["dist"]`, it would carry neither the scripts nor tsx, which it reaches by paths into this checkout.
+- Its command map lacks `history` and `board`. Its Live Doc's Purpose still names `system` and `report`, which are gone.
+- On Windows, Node has refused to spawn a `.cmd` without a shell since its April 2024 security releases (`EINVAL`).
+
+**What the record says.**
+- The board was re-authored on 2026-10-09: "The CLI shell under `packages/cli` is not the package and is not on the board". The installable `live-docs` is drawn there as imagined, and it is item 6 of direction's Next.
+- The [record of that day](../../../../../2026/10/2026-10-09/2026-10-09.1.record.md) ends: "Carried for the owner: the fate of the CLI shell under `packages/cli`, off the board and still in the repository". I found no answer since.
+- The [audit of 2026-10-19](../../../../../2026/10/2026-10-19/2026-10-19.1.record.md) says: "The CLI shell dispatches through repository scripts/tsx and omits newer commands. The intended delivery board already calls it a development shell. Choose one real command/config boundary when addressing delivery; do not duplicate command maps or turn that choice into an unapproved packaging rewrite."
+
+**Answer: as code, it has no justified purpose today.** Nothing runs it, it cannot run where it would be needed, and the one thing it holds, the name `live-docs` for a binary, the board already carries as the imagined package. Its fate has been the owner's question since 2026-10-09. My recommendation is to delete it when the owner agrees, or with the packaging round that builds the real `live-docs`.
+
+Deleting it means removing:
+- the `workspaces` entry and its lock lines;
+- its two Live Docs;
+- its three entries in `repository-entries.json`, which is the owner's hand-curated expectation and so wants their nod.
+
+Carry forward the binary's name and the list of commands it meant to dispatch into the package's design. `index.ts` still holds both.
