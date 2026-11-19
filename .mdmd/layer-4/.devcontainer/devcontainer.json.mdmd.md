@@ -9,7 +9,7 @@
 
 ## Authored
 ### Purpose
-The development container this repository is worked on in: the Node 22 image, the language toolchains the oracle's indexers need, the post-create script that installs the indexers, and the editor's extensions and settings.
+The development container this repository is worked on in: the Node 26 image, the language toolchains the oracle's indexers need, the post-create script that installs the indexers, and the editor's extensions and settings.
 
 ### Notes
 - Each toolchain feature names the indexer it serves: .NET for scip-dotnet, Java with Maven and Gradle for scip-java, Go for scip-go, Python for scip-python, Rust for rust-analyzer, PowerShell for the oracle's PowerShell parser (since 2026-10-16; the PowerShell adapter itself needs none); scip-clang and the rest are installed by `post-create.sh`. The host requirements are sized for SCIP indexing, which is CPU-bound. JSON with comments, which the JSON adapter reads since 2026-10-16.

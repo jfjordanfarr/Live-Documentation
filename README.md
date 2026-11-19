@@ -22,7 +22,7 @@ So the map is made from the code, not drawn by hand. It is regenerated when the 
 
 ## Map your own repository
 
-Live Documentation is not yet published to npm. Run it from a clone, with Node.js 22 or newer, and point it at your folder:
+Live Documentation is not yet published to npm. Run it from a clone, with Node.js 26 or newer, and point it at your folder:
 
 ```bash
 git clone https://github.com/jfjordanfarr/Live-Documentation.git

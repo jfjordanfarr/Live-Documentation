@@ -13,7 +13,7 @@ Live Documentation turns a folder of source files into a map you can look at. Th
 
 ## Prerequisites
 
-- **Node.js 22** (see `.nvmrc`)
+- **Node.js 26** (see `.nvmrc`)
 - **Git**
 
 ---

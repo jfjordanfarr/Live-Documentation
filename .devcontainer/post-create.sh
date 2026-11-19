@@ -28,9 +28,10 @@ echo "  Set safe.directory = '*' (devcontainer bind-mount ownership workaround)"
 
 echo ""
 echo "=== Installing npm 11 ==="
-# The npm that comes with Node 22 (10.9) cannot resolve this project's dependency tree once vite is past 8.3.1: it
-# stops with "Cannot read properties of null (reading 'edgesOut')" while it follows vite's optional devtools peers.
-# npm 11 resolves it, and package-lock.json is written by it. Pinned to one release so that every container agrees.
+# npm 10.9, which came with Node 22, cannot resolve this project's dependency tree once vite is past 8.3.1: it stops
+# with "Cannot read properties of null (reading 'edgesOut')" while it follows vite's optional devtools peers. npm 11
+# resolves it, and package-lock.json is written by it. Node 26 brings npm 11.20; one release is pinned all the same,
+# so that every container writes the lock alike.
 npm install -g npm@11.21.1
 echo "  npm $(npm --version)"
 
