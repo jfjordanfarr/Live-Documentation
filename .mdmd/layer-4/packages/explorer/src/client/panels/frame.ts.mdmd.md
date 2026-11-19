@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/frame.ts
-- Generated At: 2026-11-19T04:34:52.707Z
+- Generated At: 2026-11-19T06:00:10.054Z
 
 ## Authored
 ### Purpose
@@ -58,7 +58,9 @@ The key's drawing, for the strip's button.
 - [`template.history-forward`](../../shared/template.html.mdmd.md#symbol-history-forward)
 - [`template.main`](../../shared/template.html.mdmd.md#symbol-main)
 - [`template.map-legend`](../../shared/template.html.mdmd.md#symbol-map-legend)
+- [`template.search-bar`](../../shared/template.html.mdmd.md#symbol-search-bar)
 - [`template.sidebar`](../../shared/template.html.mdmd.md#symbol-sidebar)
+- [`template.tuning-changed`](../../shared/template.html.mdmd.md#symbol-tuning-changed)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->
