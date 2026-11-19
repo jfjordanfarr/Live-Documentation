@@ -37,6 +37,7 @@ import type { HistoryLens } from "@live-documentation/engine/live-docs/history/f
 import { TEXT_STORE_DIRECTORY } from "@live-documentation/engine/live-docs/history/textStore";
 import type { MainlineChange, VersionControl } from "@live-documentation/engine/live-docs/history/versionControl";
 
+import { marksScan } from "../generator";
 import type { SummaryReport, SummaryTask } from "./summarizeChange";
 
 /** Where a change's summary lies in the lens's cache folder. */
@@ -185,14 +186,15 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
 /**
  * The files of a change's tree the summarizing process never opens, by their repository-relative paths, which the tree
  * writer leaves out: those the configuration's `exclude` names, by discovery's own rule (`matchesPathPattern`), but
- * never a file under the docs root, which the generator reads and rewrites whatever `exclude` says. The tree's listing
- * still holds them, which is how the summary asks whether a linked document stands. Measured on 2026-11-19 over this
- * repository: the process opened no file of the excluded `AI-Agent-Workspace/`, which held 511 of the 521 GB a rebuild
- * wrote.
+ * never a file under the docs root, which the generator reads and rewrites whatever `exclude` says, nor a file that
+ * marks a scan nested in the workspace (`marksScan`, by the rule the generator's own search for one reads), whose
+ * warning holds wherever the scan lies. The tree's listing still holds them all, which is how the summary asks whether
+ * a linked document stands. Measured on 2026-11-19 over this repository: the process opened no file of the excluded
+ * `AI-Agent-Workspace/`, which held 511 of the 521 GB a rebuild wrote.
  */
 export function unread(configuration: LiveDocumentationConfig): (file: string) => boolean {
   const docsRoot = `${configuration.root.replace(/\\/gu, "/").replace(/^(?:\.\/)+/u, "").replace(/\/+$/u, "")}/`;
-  return (file) => !file.startsWith(docsRoot) && configuration.exclude.some((pattern) => matchesPathPattern(file, pattern));
+  return (file) => !file.startsWith(docsRoot) && !marksScan(file, configuration) && configuration.exclude.some((pattern) => matchesPathPattern(file, pattern));
 }
 
 /**

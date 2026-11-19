@@ -325,10 +325,30 @@ async function scansAbove(workspaceRoot: string, config: LiveDocumentationConfig
   return found;
 }
 
+/** This tool's configuration file, whose presence makes a folder a scan of its own. */
+const CONFIGURATION_FILE = ".live-docs.config.json";
+
+/**
+ * What makes a folder a scan of its own, by names alone: a docs root (`<root>/<baseLayer>`) or a configuration file of
+ * this tool in it. {@link scansWithin} looks for these, and {@link marksScan} says of a path whether it is one or lies
+ * in one, so that whoever writes a tree for the generator (the history's tree writer, which leaves out what
+ * `exclude` names) keeps what this reader looks for: a scan nested under an excluded folder is warned of all the same.
+ */
+export function scanMarkers(config: LiveDocumentationConfig): { docsRoot: string; configurationFile: string } {
+  return { docsRoot: normalizeWorkspacePath(path.join(config.root, config.baseLayer)), configurationFile: CONFIGURATION_FILE };
+}
+
+/** Whether a workspace-relative file is one of {@link scanMarkers}' configuration files or lies under one of its docs roots, at any depth. */
+export function marksScan(relative: string, config: LiveDocumentationConfig): boolean {
+  const { docsRoot, configurationFile } = scanMarkers(config);
+  const file = `/${normalizeWorkspacePath(relative)}`;
+  return file.endsWith(`/${configurationFile}`) || file.includes(`/${docsRoot}/`);
+}
+
 /** The folders below the workspace that are scans of their own, as workspace-relative paths. */
 async function scansWithin(workspaceRoot: string, config: LiveDocumentationConfig): Promise<string[]> {
-  const docsRoot = normalizeWorkspacePath(path.join(config.root, config.baseLayer));
-  const patterns = [`**/${docsRoot}`, "**/.live-docs.config.json"];
+  const { docsRoot, configurationFile } = scanMarkers(config);
+  const patterns = [`**/${docsRoot}`, `**/${configurationFile}`];
   const matches = (await glob(patterns, { cwd: workspaceRoot, dot: true, ignore: ["**/node_modules/**", `${config.root}/**`], windowsPathsNoEscape: true }))
     .map((match) => normalizeWorkspacePath(match));
   // What git ignores is never part of the map (the owner, 2026-10-19), so a docs root or a configuration there, as in
@@ -348,7 +368,8 @@ async function scansWithin(workspaceRoot: string, config: LiveDocumentationConfi
 }
 
 async function isScan(folder: string, config: LiveDocumentationConfig): Promise<boolean> {
-  for (const candidate of [path.join(folder, config.root, config.baseLayer), path.join(folder, ".live-docs.config.json")]) {
+  const { docsRoot, configurationFile } = scanMarkers(config);
+  for (const candidate of [path.join(folder, docsRoot), path.join(folder, configurationFile)]) {
     try {
       await fs.stat(candidate);
       return true;

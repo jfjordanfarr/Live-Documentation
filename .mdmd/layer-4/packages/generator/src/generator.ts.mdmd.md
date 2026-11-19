@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/generator/src/generator.ts
 - Entry: module of [`packages/generator/package.json`](../package.json.mdmd.md)
-- Generated At: 2026-11-12T17:12:19.988Z
+- Generated At: 2026-11-19T18:10:05.260Z
 
 ## Authored
 ### Purpose
@@ -24,6 +24,7 @@ Coordinates Live Documentation generation: analyzes source files, carries author
 - Since 2026-10-22 ([the decision](../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#related-documents-run-both-ways-a-docs-cited-by-section-is-generated-from-the-documents-own-links-recorded-2026-10-22)) a run reads every markdown document discovery finds (`readMarkdownDocuments`), whatever subset it renders, and `citingDocuments` turns their links into the `Cited By` index that `composeGenerated` writes on each cited file's doc, when the configuration's `citedBy` is on; on this repository the reading adds under a second to a run. A document's change therefore moves the docs of the files it cites or stops citing, which a full run or `--check` sees and a `--changed` run, which renders changed sources alone, does not.
 - Since 2026-11-12 the nested-scan warning says that the run writes the docs all the same and what the rule will mean, that a board naming both scans reads only the outer one. Its words were "Point at one of them", which read as a refusal while the run carried on, as [the first-visit evaluation](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-12/Screenshots/first-visit/README.md) found; the rule and the behaviour are unchanged.
 - Since 2026-11-12 a folder git ignores is no scan: `scansWithin` asks git, through `gitIgnored`, of the docs roots and configuration files it finds, and `scansAbove` does not count an outer scan whose git ignores this folder, after an agent's worktree under the ignored `.claude/worktrees/`, which carries a copy of the configuration, made every run in the checkout warn of a nested scan. It is the owner's rule of 2026-10-19 that what git ignores never becomes part of the map; without git, every one still counts.
+- Since 2026-11-19 what makes a folder a scan of its own is named once (`scanMarkers`: a docs root or this tool's configuration file) and read by both the search for nested scans and `marksScan`, which the history's tree writer asks so that a scan nested under a folder the configuration excludes is still written and still warned of.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -64,6 +65,25 @@ behind the `Entry` lines (2026-10-15).
 
 ##### `generateLiveDocs` — Parameters
 - `options`: Generation configuration including workspace root, config overrides, and logger.
+
+#### `scanMarkers` {#symbol-scanmarkers}
+- Type: function
+- Source: [source](../../../../../packages/generator/src/generator.ts#L337)
+- Parameters: `config`: [`LiveDocumentationConfig`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
+
+##### `scanMarkers` — Summary
+What makes a folder a scan of its own, by names alone: a docs root (`<root>/<baseLayer>`) or a configuration file of
+this tool in it. {@link scansWithin} looks for these, and {@link marksScan} says of a path whether it is one or lies
+in one, so that whoever writes a tree for the generator (the history's tree writer, which leaves out what
+`exclude` names) keeps what this reader looks for: a scan nested under an excluded folder is warned of all the same.
+
+#### `marksScan` {#symbol-marksscan}
+- Type: function
+- Source: [source](../../../../../packages/generator/src/generator.ts#L342)
+- Parameters: `config`: [`LiveDocumentationConfig`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
+
+##### `marksScan` — Summary
+Whether a workspace-relative file is one of {@link scanMarkers}' configuration files or lies under one of its docs roots, at any depth.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
