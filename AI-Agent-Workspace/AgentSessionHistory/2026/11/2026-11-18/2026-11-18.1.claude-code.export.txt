@@ -14960,3 +14960,242 @@
 
   No round has handed back since my last message. I'll review and land each as
   it arrives, then start the gate.
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/AgentSessionHistory/2026/11
+  /2026-11-18/2026-11-18.1.claude-code.export.txt in the IDE. This may or may
+  not be related to the current task.</ide_opened_file>
+
+❯ I'm looking at the images coming in (sql.png, kinds.png, field.png, pins.png)
+  and thinking "don't overliteralize". The text is the substrate but the
+  function which extracts shape from it does not need to be so left-dominant or
+  literal as the actual column/row positionings remapped as a texture. A text
+  file with symmetries should produce a texture with symmetries. A text file
+  which is haphazard nonsense should produce a texture which is pseudo-random.
+  Just things I'm thinking about. (IDEs use color on different operative word
+  types to draw the eye -- there is clearly something structural which the eye
+  can detect and suss out).
+
+  >Build nothing more on texture. I've filed the page idea in the ideas list
+  with this evidence and its cost. The cost is up to about 600 bytes in every
+  Live Doc, and nearly every edit of a file would then rewrite its doc.
+
+  Fair.
+
+  >For "a small change should be perceptible", use the mark the history already
+  puts on a changed file. It could also say how much changed, by brightness or
+  size, if the history carried lines added and removed per commit. I have not
+  built this; it is the direction I would try next.
+
+  Still not sure. I feel a little uncertain on which way to go on this as of
+  yet.
+
+  >The history work now in progress serves the same wish more directly: pinned
+  files undimmed, the coarse and fine buttons, and the timeline zoom.
+
+  Awesome!
+
+  >Do you want Marble Pattern → From Its Doc kept as a look? It is off by
+  default and costs nothing while it sits there. It gives each file its own
+  marble but does not show change. If you don't say, I'll leave it where it is.
+
+  Your preference. I believe the "marble" case is another one of "if we do
+  this, we have to do this all the way", and intermediate steps do _not_ read
+  better than the alternative of flat colors (which also carry the added
+  benefit of being semantically the same to the little cells in the 2D local
+  map's directories).
+
+  Ran 2 shell commands (ctrl+o to expand)
+  ⎿  Resuming agent a56f130
+
+● The marble's builder is taking the From Its Doc trial out; I'm recording your
+  message, then answering.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+› Message from general-purpose
+  history-pinned builder: a port clash on the lane. My brief's port 8798 has
+  been held since 02:39 by another builder's http-server (cwd scratchpad/rc/h12;
+  8797 by rc/main, 8799 by rc/h3). The Playwright config reuses an existing
+  server, so a run on a held port silently tests the other builder's pages. My
+  first test run fell into this and was discarded; I now serve on 8821 (mine)
+  and 8822 (main's dist). Builders all share the session scratchpad. Also: the
+  tall/short mark meanings you gave the owner match ticks.ts exactly. Milestone
+  one is committed (2 commits on history-pinned); I'm waiting on the lane to
+  verify it in the browser.
+  ⎿  Resuming agent a631ff0
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The From Its Doc lever is coming out. You left it to my preference, and mine
+  is removal: it failed its own test, and a lever that tells nobody anything is
+  clutter in Tuning. The builder who made it is taking it out, and will prove
+  the ordinary marble is drawn exactly as before the trial.
+
+  One question, because your sentence may reach further than the lever. The
+  marbles themselves have been your default since November 18. They are the
+  veined glass where the veins count how many files use a file and how many it
+  uses. Do you mean those should go back to flat colour too?
+
+  - I did not touch that default, because you chose it two days ago ("I think
+    they are a worthy new default").
+  - My own lean is flat, for the reason you give: one colour meaning across the
+    3D spheres and the 2D cells, and less fine detail in the view you called
+    noisy.
+  - One correction: the 2D cells also draw marbles today when Marbles is on. At
+    cell size the veins barely show, which is probably why they read as flat to
+    you.
+  - You can compare in ten seconds: Tuning → Colour → Marbles → Off. Tell me
+    which you prefer and I'll set the default.
+
+  "Don't overliteralize" is filed with the idea, in your words. As I read it,
+  the next attempt would derive a texture's character from measured properties
+  of the text: how regular, how symmetric, how fine-grained, perhaps the mix of
+  word kinds an editor colours. Files with similar structure would then look
+  alike. The probe sets one limit on any such function: at 20 to 60 px a sphere
+  carries a colour and two or three coarse features, no more.
+
+  The change mark that says how much changed stays open. Nothing is built on it.
+
+  One thing I caught in the builders' work: I had given two of the newer
+  builders ports that another builder's server already held, and the test runner
+  silently reuses a server it finds. One had already noticed and discarded its
+  run; I've told the other to discard its results and move. No round has handed
+  back yet.
+
+● Agent "Reset Tuning to defaults" is waiting on its own background work · 19m
+  52s
+
+● No handback yet: the reset's builder is waiting its turn in the browser queue.
+  Nothing new to report; I'll review each round as it arrives.
+
+● Background command "Fallback timer of fifty minutes while builders work"
+  completed (exit code 0)
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Still waiting on the first three handbacks; each is in the browser queue for
+  its last verification run. I've read the history round's first milestone in
+  code meanwhile (pinned files kept undimmed, the coarse pair, play following
+  the marks) and it reads soundly. Timer renewed.
+
+❯ >One correction: the 2D cells also draw marbles today when Marbles is on. At
+  cell size the veins barely show, which is probably why they read as flat to
+  you.
+
+  Ohhhhh that makes way more sense. Okay, yes.
+
+  >One question, because your sentence may reach further than the lever. The
+  marbles themselves have been your default since November 18. They are the
+  veined glass where the veins count how many files use a file and how many it
+  uses. Do you mean those should go back to flat colour too?
+  >My own lean is flat, for the reason you give: one colour meaning across the
+  3D spheres and the 2D cells, and less fine detail in the view you called
+  noisy.
+
+  I went back and forth and, you're right: for immediate understandability of
+  the system, Marbes Off is superior. It's really only when one is up very
+  close to a node that texture might be interesting, and even then, may really
+  not be worth it.
+  ⎿  Message queued for delivery to a56f13063bbac6a0c at its next tool
+     round. If it finishes first, it is resumed with the message and
+     notifies again, so wait for that notification before resending.
+● Agent "Reset Tuning to defaults" is waiting on its own background work · 44m
+  14s
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Marbles Off is recorded as your decision and the builder has it; checking
+  where the three first rounds stand in the browser queue.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Marbles Off is now your recorded decision, and it is being built: the default
+  moves to flat colour, the Marbles lever stays with On as a choice, and the 3D
+  key drops its row for veins in the default view. It rides on the same branch
+  as the From Its Doc removal.
+
+  Where the night stands at 03:38 UTC:
+
+  - No round has handed back yet. The browser queue is five deep, and each turn
+    in it takes about nine minutes. The camera, returning-connections and
+    rested-pointer rounds each need one more run before they hand back.
+  - The reset button has its first commit, with the count of changed levers, and
+    is waiting for its browser run.
+  - The camera's doubled-text picture: its builder has replaced the frame with
+    one taken at rest and written up a stall it found during the look change.
+    I'll read that when the round comes in.
+  - The gate will start no later than about 04:30 UTC, over whatever has landed
+    by then. Anything that arrives later stays on its branch, verified by its
+    builder, for the next gate.
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/AgentSessionHistory/2026/11
+  /2026-11-18/2026-11-18.1.claude-code.export.txt in the IDE. This may or may
+  not be related to the current task.</ide_opened_file>
+
+❯ Super dumb question from me: I almost certainly should already know this 1000
+  times over: when we do a history scan, that's only against local git,
+  correct? We don't actually reach out to github for that commit history,
+  right?
+
+  Listed 1 directory, ran 1 shell command (ctrl+o to expand)
+
+● Correct: the history scan reads only your local clone and never contacts
+  GitHub.
+
+  I checked the code that does it (git.ts
+  (packages/engine/src/live-docs/history/git.ts)). Every command it runs is a
+  local read: rev-parse, rev-list --first-parent, for-each-ref for tags, diff
+  --name-status, and a temporary detached worktree to read each commit's files.
+  There is no fetch, pull or remote anywhere in it, and its own header says
+  "never a remote, never credentials". Git LFS pointers are left as pointers
+  rather than downloaded.
+
+  Two consequences:
+
+  - It sees only what your clone has. Commits you haven't fetched aren't in it,
+    and a shallow clone gives a cut-off history, which the scrubber shows as a
+    hatched band before the first tick.
+  - It follows the current branch's main line only. Work that sat on other
+    branches shows up when it was merged, not when it was written. That is why
+    the December holiday looks empty on the scrubber even though Dependabot was
+    committing on its own branches.
+
+  The page is the same: the Explorer reads the history as a file beside itself
+  and loads nothing from the network.
+
+› Message from general-purpose
+  history-pinned builder: my lane hold (began 03:29) is in the gate now and will
+  run about 8 minutes longer than planned, to about 04:05, for one short
+  follow-up: a rebuild with two CSS mends I found by eye (the narrow scrubber's
+  wrap rule was overridden by a later `flex`, and below 850 px the control strip
+  ignored the scrubber's room and covered the scrubber's buttons), the narrow
+  pictures again, history-panel.spec, and the three cases I mended. Results so
+  far: on main the three new cases fail for the right reasons (pinned file at
+  0.15 alpha; no coarse buttons); on the branch 45 of 48 history cases passed,
+  the 3 failures being two test-side mistakes of mine (now mended) and one case
+  that needs the estate sample I hadn't built. If you'd rather your gate go
+  first, kill my lane.sh and I'll queue after it.
+  ⎿  Message queued for delivery to ae9c064b34d4535c0 at its next tool
+     round. If it finishes first, it is resumed with the message and
+     notifies again, so wait for that notification before resending.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● The camera builder answered my question about the doubled-text picture, and
+  I've looked at its corrected frame.
+
+  - The doubled frame was a moment inside the pull-back, not the resting
+    picture. The still at rest is clean: every name drawn once and legible.
+  - It found an older fault while checking. On this repository's large picture,
+    the page stalls for about a quarter of a second where the reading look gives
+    way to the connections look. The same stall happens on main when you zoom
+    out across that edge with the wheel, so it is not caused by the Arrival
+    lever; the lever just crosses that edge on every visit. On the estate sample
+    the crossing costs nothing visible. I'm queuing it as its own round.
+
+  The history round's builder holds the browser until about 04:05 UTC for its
+  verification. Its three new cases fail on main for the right reasons, and 45
+  of 48 history cases pass on its branch, with the 3 failures traced to its own
+  test mistakes and an unbuilt sample. Four rounds are queued behind it.
