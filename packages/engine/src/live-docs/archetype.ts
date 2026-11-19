@@ -16,6 +16,7 @@ import type {
   LiveDocumentationConfig,
   LiveDocumentationArchetype
 } from "../config/liveDocumentationConfig";
+import { unmarkedUtf16 } from "../tooling/sourceText";
 import { UNREAD_NOTE } from "./document";
 
 /** How much of a file's head {@link isBinaryContent} reads: git's own window for the same question. */
@@ -25,7 +26,8 @@ export const BINARY_SNIFF_BYTES = 8000;
  * True when a file's content is binary: a NUL byte within its first
  * {@link BINARY_SNIFF_BYTES} bytes, as git decides it, except that a text file
  * in UTF-16 or UTF-32 announced by its byte order mark is text, since a
- * Windows PowerShell script is often written that way. The dividing line is the
+ * Windows PowerShell script is often written that way, and a head the one reading step reads as UTF-16 without a
+ * mark (`unmarkedUtf16`) is text too (the joining of 2026-11-19). The dividing line is the
  * owner's (2026-10-16): "plaintext/near-plain-text versus binary. It should be
  * that simple." An archive that holds text would be text by that rule and
  * is not read today, since discovery admits no archive.
@@ -34,6 +36,9 @@ export function isBinaryContent(head: Uint8Array): boolean {
   const [a, b, c, d] = head;
   if (head.length >= 2 && ((a === 0xff && b === 0xfe) || (a === 0xfe && b === 0xff))) return false;
   if (head.length >= 4 && a === 0 && b === 0 && c === 0xfe && d === 0xff) return false;
+  // A head the one reading step reads as UTF-16 without a mark is text, by the step's own rule, not binary for its zeros.
+  const sniffed = head.subarray(0, Math.min(head.length, BINARY_SNIFF_BYTES));
+  if (unmarkedUtf16(sniffed.subarray(0, sniffed.length - (sniffed.length % 2))) !== undefined) return false;
   const limit = Math.min(head.length, BINARY_SNIFF_BYTES);
   for (let index = 0; index < limit; index += 1) {
     if (head[index] === 0) return true;

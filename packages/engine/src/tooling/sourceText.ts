@@ -74,9 +74,10 @@ export function decodeSourceText(bytes: Uint8Array): SourceTextReading {
 
 /**
  * The byte order of UTF-16 without a mark, where it is certain: an even, non-zero number of bytes in which every
- * pair is one zero byte and one byte that is not zero, the zero always on the same side.
+ * pair is one zero byte and one byte that is not zero, the zero always on the same side. The binary sniff
+ * (`isBinaryContent`) asks the same of a file's head, so that what this step reads as text is never called binary.
  */
-function unmarkedUtf16(bytes: Uint8Array): "utf-16le" | "utf-16be" | undefined {
+export function unmarkedUtf16(bytes: Uint8Array): "utf-16le" | "utf-16be" | undefined {
   if (bytes.length === 0 || bytes.length % 2 !== 0) {
     return undefined;
   }
