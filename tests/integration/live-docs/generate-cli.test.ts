@@ -62,7 +62,7 @@ const BOARD = "# Sample board\n\n## Metadata\n- Layer: 3\n\n## Authored\n### Pur
 const MDMD = { root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md" };
 
 /** The workspaces the cases run in, made in `beforeAll`; `stand` is a folder a person stands in, holding two repositories, `mine` and `theirs`, and a configuration beside them. */
-const at = { own: "", given: "", mapped: "", boarded: "", unboarded: "", stand: "" };
+const at = { own: "", given: "", mapped: "", boarded: "", unboarded: "", stand: "", unread: "" };
 
 /** Each case's run, by the case's name. */
 const runs = new Map<string, Run>();
@@ -86,6 +86,12 @@ beforeAll(async () => {
     fs.cpSync(path.join(at.stand, "src"), path.join(at.stand, repository, "src"), { recursive: true });
   }
   fs.writeFileSync(path.join(at.stand, "standing.json"), JSON.stringify({ root: "docs", baseLayer: "mirror" }), "utf8");
+  // Kinds of file no reader reads, as a .NET Framework repository holds them, in any case, beside a picture, which has nothing to read.
+  at.unread = makeWorkspace({});
+  for (const name of ["Shop.sln", "src/Legacy.vb", "src/Old.VB", "Database/Install.SqlDataProvider", "logo.png"]) {
+    fs.mkdirSync(path.dirname(path.join(at.unread, name)), { recursive: true });
+    fs.writeFileSync(path.join(at.unread, name), "x\n", "utf8");
+  }
 
   const record = (name: string, script: string, args: string[]) => async (): Promise<Run> => {
     const result = await run(script, args);
@@ -112,6 +118,7 @@ beforeAll(async () => {
     record("visualize --output", "visualize-static.ts", ["--output"]),
     // The configuration is named first, so that a run that took the paths from this checkout would stop before writing.
     recordNpm("npm from elsewhere", at.stand, "live-docs:generate", ["--config", "standing.json", "--workspace", "mine"]),
+    record("generate, unread kinds", "generate.ts", ["--workspace", at.unread, "--dry-run"]),
     record("generate, mistyped", "generate.ts", ["--workspace", path.join(at.stand, "mien")]),
     record("inspect, mistyped", "inspect.ts", ["--workspace", path.join(at.stand, "mien"), "--reachable"]),
     record("generate, a file", "generate.ts", ["--workspace", path.join(at.stand, "standing.json")]),
@@ -155,6 +162,20 @@ describe("the folder a person runs a command from", () => {
     const result = ran("npm from elsewhere, no workspace");
     expect(result.status, result.stderr).toBe(0);
     expect(result.stdout).toContain("Would create 1 Live Doc(s): docs/mirror/src/a.ts.md");
+  });
+});
+
+describe("the kinds of file no reader reads", () => {
+  it("are named at the end of generation with their counts, a picture not among them", () => {
+    const result = ran("generate, unread kinds");
+    expect(result.status, result.stderr).toBe(0);
+    expect(result.stdout).toContain("[live-docs] Not read, so their docs hold no symbols or links: 2 .vb, 1 .sln, 1 .SqlDataProvider.\n");
+  });
+
+  it("are not mentioned when every file has a reader", () => {
+    const result = ran("generate own");
+    expect(result.status, result.stderr).toBe(0);
+    expect(result.stdout).not.toContain("Not read");
   });
 });
 

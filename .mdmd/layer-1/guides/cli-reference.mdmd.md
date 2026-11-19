@@ -54,6 +54,8 @@ npm run live-docs:generate -- --workspace <folder> --config <file>
 
 `--changed` requires Git status. If Git cannot report status, the command fails with the Git error; run full generation in a folder without Git. The file and symbol indexes still cover the full workspace, so a changed file can link to an unchanged provider. `--include` also uses full workspace context while rendering only its explicit subset.
 
+Every run ends by naming the kinds of file no reader reads, with how many of each, as `Not read, so their docs hold no symbols or links: 87 .vb, 5 .sln`: each such file still gets a doc, saying only that it is there, so the map does not show what those files use or offer. Pictures, fonts and recordings are not counted, since they hold nothing to read.
+
 `--dry-run` reports differences but succeeds. `--check` uses the same non-writing comparison and exits unsuccessfully when the mirror is stale. `npm run livedocs` regenerates then lints locally; `npm run ci-check` requests `--check` explicitly before verification, so CI checks the committed mirror rather than repairing it.
 
 ---

@@ -6,8 +6,10 @@ import {
   DEFAULT_LIVE_DOCUMENTATION_CONFIG,
   type LiveDocumentationConfig,
   type LiveDocumentationConfigInput,
+  noReaderHandles,
   normalizeLiveDocumentationConfig
 } from "@live-documentation/engine/config/liveDocumentationConfig";
+import { compareText } from "@live-documentation/engine/tooling/compareText";
 
 import { generateLiveDocs } from "../../packages/generator/src/generator";
 import { optionValue, packageVersion, readConfiguration, runCommand, UsageError, workspaceFolder } from "./cli";
@@ -147,6 +149,28 @@ function usage(): string {
     `  npm run live-docs:generate -- --include "scripts/live-docs/*.ts" --dry-run`;
 }
 
+/**
+ * The kinds of file among `sourcePaths` that no reader reads ({@link noReaderHandles}), with how many of each, most
+ * first: so that a person learns what the map does not cover, where each such doc says it only for itself. A kind is
+ * the extension, of any case, as first spelled (`.SqlDataProvider`), or the whole name of a file without one
+ * (`Dockerfile`, `.gitignore`). Pictures, fonts and recordings are not among them: they hold nothing a reader could find.
+ */
+function unreadKinds(sourcePaths: readonly string[]): Array<{ kind: string; count: number }> {
+  const kinds = new Map<string, { kind: string; count: number }>();
+  for (const sourcePath of sourcePaths) {
+    if (!noReaderHandles(sourcePath)) {
+      continue;
+    }
+    const name = sourcePath.slice(sourcePath.lastIndexOf("/") + 1);
+    const dot = name.lastIndexOf(".");
+    const kind = dot > 0 ? name.slice(dot) : name;
+    const tally = kinds.get(kind.toLowerCase()) ?? { kind, count: 0 };
+    tally.count += 1;
+    kinds.set(kind.toLowerCase(), tally);
+  }
+  return [...kinds.values()].sort((a, b) => b.count - a.count || compareText(a.kind, b.kind));
+}
+
 async function main(): Promise<void> {
   const args = parseArgs(process.argv.slice(2));
 
@@ -239,6 +263,11 @@ async function main(): Promise<void> {
     const suffix = remainder > 0 ? `, +${remainder} more` : "";
     const deleteVerb = args.dryRun || args.check ? "Would delete" : "Deleted";
     console.log(`[live-docs] ${deleteVerb} ${deletedLayer4Docs.length} Live Doc(s): ${listed.join(", ")}${suffix}`);
+  }
+
+  const unread = unreadKinds(layer4Result.files.filter((record) => record.change !== "skipped").map((record) => record.sourcePath));
+  if (unread.length > 0) {
+    console.log(`[live-docs] Not read, so their docs hold no symbols or links: ${unread.map(({ kind, count }) => `${count} ${kind}`).join(", ")}.`);
   }
 
   if (args.check && (layer4Result.written > 0 || layer4Result.deleted > 0)) {
