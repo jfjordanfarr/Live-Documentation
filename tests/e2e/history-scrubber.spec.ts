@@ -434,7 +434,9 @@ test("a deleted file can be found, read and shared in its own lifetime, and rema
   await track(page).press("End");
   await expect(page.locator("#search-subject-absence")).toHaveText(`deleted at ${commits[4].id.slice(0, 8)}`);
   await page.getByRole("button", { name: "Show pins", exact: true }).click();
-  await page.getByRole("button", { name: "Show lib/legacy.ts", exact: true }).click();
+  // The tray's row names its pin and, since 2026-11-19, the words it shows beside it: today the file is deleted. A row's
+  // quiet words are part of its name (the design system's interaction rules, "in its name too").
+  await page.getByRole("button", { name: `Show lib/legacy.ts, deleted at ${commits[4].id.slice(0, 8)}`, exact: true }).click();
   await expect(track(page)).toHaveAttribute("aria-valuenow", "3");
   await expect(page.locator("#search-subject-absence")).toBeHidden();
   // Reload a cleared present-day place, then Back to a historical selection: the new page has not loaded history yet.

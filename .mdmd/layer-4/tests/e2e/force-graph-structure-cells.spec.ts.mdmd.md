@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/force-graph-structure-cells.spec.ts
-- Generated At: 2026-11-07T23:45:53.149Z
+- Generated At: 2026-11-19T10:01:39.237Z
 
 ## Authored
 ### Purpose
@@ -12,6 +12,8 @@ Checks in the browser the bag of cells of the 3D Local Map's Structure layout: w
 
 ### Notes
 Written on 2026-11-07 with the feature, at the owner's "can we also get the bag-of-cells look for the "structure" part too?" ([Turn 8 of the November 6 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-06/2026-11-06.1.record.md#turn-8)) and, the same day, "Make no embryos which appear to have only one cell". The bubbles expected are computed from the bundle by `structureCells`, the function the page runs, over the scope `spatialScope` gives the root and the opened directories; the bubbles drawn are read from the page's node buffers and the wrappers' record. The frame of the pop is the page's own, its clock paused at the click and stepped one frame, as the shells' spec does. Every case fails on the bundle before the feature, which drew no bubble in the Structure layout; that Off is byte for byte the picture it was is shown by the pictures in [the evidence](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-07/Screenshots/structure-cells/README.md), not by a case that could not fail there.
+
+Since 2026-11-19 the start's case expects the picture's budget of drawn files (`pictureVeils`, `DRAWN_FILES`) where it is spent: the case's words had always allowed "a veil the budget drew", but its check asked every bubble for files, which held while this repository's top level drew fewer than 1,024 files in all. The Live Docs of the marble trial's second commit (`8127eaea`, four new files) passed that budget, 1,028 against 1,024, and `tests`, the largest bubble, has been veiled at the start since; the case went red then and was first run on the whole suite on November 19. The veils expected are computed by `pictureVeils` over the expected bubbles; a veiled bubble must draw its one veil and nothing beneath it, every other bubble its files.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -33,6 +35,8 @@ _No public symbols detected_
 - [`forceGraphData.spatialGraphOf`](../../packages/explorer/src/client/views/forceGraphData.ts.mdmd.md#symbol-spatialgraphof)
 - [`forceGraphLayout.linkPulls`](../../packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md#symbol-linkpulls)
 - [`forceGraphScope.spatialScope`](../../packages/explorer/src/client/views/forceGraphScope.ts.mdmd.md#symbol-spatialscope-function)
+- [`forceGraphShells.DRAWN_FILES`](../../packages/explorer/src/client/views/forceGraphShells.ts.mdmd.md#symbol-drawn_files)
+- [`forceGraphShells.pictureVeils`](../../packages/explorer/src/client/views/forceGraphShells.ts.mdmd.md#symbol-pictureveils)
 - [`forceGraphShells.structureCells`](../../packages/explorer/src/client/views/forceGraphShells.ts.mdmd.md#symbol-structurecells)
 - [`force-graph-observation.observeGraph`](./force-graph-observation.ts.mdmd.md#symbol-observegraph)
 - [`force-graph-observation.renderedNodes`](./force-graph-observation.ts.mdmd.md#symbol-renderednodes)
