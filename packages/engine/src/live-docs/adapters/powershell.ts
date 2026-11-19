@@ -480,6 +480,20 @@ const FOREACH_OBJECT_NAMES = new Set(["foreach-object", "microsoft.powershell.co
 /** Node types that hold one value and only pass it on, from a pipeline down to the expression inside it. */
 const VALUE_WRAPPERS = new Set([...PASS_THROUGH, "pipeline", "pipeline_chain", "array_literal_expression", "command_name_expr"]);
 
+/**
+ * What attributes stand before (`[SuppressMessageAttribute(...)]` then `$x`), as PowerShell's
+ * AttributedExpressionAst holds it: such an attribute changes nothing assigned. A type constraint
+ * (`[int]$x`) is a cast, which converts, and is left as it is.
+ */
+function attributedTarget(node: SyntaxNode): SyntaxNode {
+  let current = node;
+  for (;;) {
+    const [only] = current.type === "expression_with_unary_operator" ? current.namedChildren : [current];
+    if (only?.type !== "attributed_expression") return current;
+    current = unwrapValue(only.namedChildren[only.namedChildren.length - 1]);
+  }
+}
+
 /** The one node a chain of wrappers holds. */
 function unwrapValue(node: SyntaxNode): SyntaxNode {
   let current = node;
@@ -535,7 +549,7 @@ function fileVariables(root: SyntaxNode): Map<string, Assignment> {
   const visit = (node: SyntaxNode): void => {
     if (node.type === "assignment_expression") {
       const left = node.namedChildren.find((child) => child.type === "left_assignment_expression");
-      const target = left ? unwrapValue(left.namedChildren[0] ?? left) : undefined;
+      const target = left ? attributedTarget(unwrapValue(left.namedChildren[0] ?? left)) : undefined;
       if (target?.type === "variable") {
         const name = variableName(target.text);
         assignments.set(name, [...(assignments.get(name) ?? []), node]);

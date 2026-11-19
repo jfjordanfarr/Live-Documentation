@@ -4,6 +4,7 @@ import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
 import { analyzePowerShellSource, powershellAdapter } from "./powershell";
+import { parseSource, type SyntaxNode } from "./treeSitter";
 
 const repoRoot = path.resolve(__dirname, "../../../../..");
 const fixtureRoot = path.join(repoRoot, "tests", "integration", "fixtures", "powershell-compendium");
@@ -510,6 +511,24 @@ describe("calls to functions other files define: loaded, else unique", () => {
     expect(await wires("Copies/Use-Neither.ps1")).toEqual({});
   });
 
+  it("count a definition inside text the grammar could not read as none", async () => {
+    // PowerShell ends a string at a typographic quote, and the grammar does not: it loses the Describe block and reads
+    // the function after it inside an error, though PowerShell reads this without one. The smallest input found so.
+    const unread = ["Describe 'x' {", "    $path = 'C:\\\u2019", "    $name = 'y'", "}", "function Get-Thing { }", "$z = 'w'"].join("\n");
+    const lost: string[] = [];
+    const visit = (node: SyntaxNode, inError: boolean): void => {
+      if (node.type === "function_statement" && inError) lost.push(node.text);
+      for (const child of node.children) if (child) visit(child, inError || node.type === "ERROR");
+    };
+    const tree = await parseSource("powershell", unread);
+    visit(tree.rootNode, false);
+    tree.delete();
+    // Should the grammar learn to read this, the test proves nothing until it is given another input the grammar loses.
+    expect(lost).toEqual(["function Get-Thing { }"]);
+    await write({ "Unread.ps1": unread, "Run.ps1": "Get-Thing\n" });
+    expect(await wires("Run.ps1")).toEqual({});
+  });
+
   it("never wire a command PowerShell ships merely because one file defines it, but wire it when the caller loads that file", async () => {
     await write({
       "Backport/Expand-Archive.ps1": "if ($PSVersionTable.PSVersion.Major -lt 5) {\n  function Expand-Archive { }\n}\n",
@@ -575,6 +594,17 @@ describe("loads the text fixes", () => {
     expect(Object.keys(await wires("Deploy.ps1"))).toEqual(["lib/A.ps1"]);
   });
 
+  it("read an assignment that carries an attribute on the line before it as PowerShell does, in a program and in a library", async () => {
+    const suppress = "[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '', Justification = 'Read by a dot-sourced script.')]";
+    await write({
+      "lib/A.ps1": "",
+      "Deploy.ps1": [suppress, "$libFolder = Join-Path $PSScriptRoot 'lib'", ". (Join-Path $libFolder 'A.ps1')"].join("\n"),
+      // AL-Go's Actions/AL-Go-Helper.ps1 opens so: a library every action dot-sources.
+      "Helper.ps1": [suppress, "$ALGoFolderName = '.AL-Go'", "function Get-A { }"].join("\n")
+    });
+    expect(Object.keys(await wires("Deploy.ps1"))).toEqual(["lib/A.ps1"]);
+    expect(await analyzeFile("Helper.ps1")).not.toHaveProperty("program");
+  });
   it("read a variable assigned once in the block that holds the load or one enclosing it, before the load, and not elsewhere", async () => {
     await write({
       "Actions/Helper.ps1": "", "Actions/Other.ps1": "", "Actions/Third.ps1": "", "lib/Late.ps1": "",

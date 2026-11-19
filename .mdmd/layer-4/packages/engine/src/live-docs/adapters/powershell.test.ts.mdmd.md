@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/engine/src/live-docs/adapters/powershell.test.ts
-- Generated At: 2026-10-16T16:49:36.571Z
+- Generated At: 2026-11-19T22:10:31.449Z
 
 ## Authored
 ### Purpose
@@ -27,5 +27,7 @@ _No public symbols detected_
 - `node:path` - `path`
 - [`powershell.analyzePowerShellSource`](./powershell.ts.mdmd.md#symbol-analyzepowershellsource)
 - [`powershell.powershellAdapter`](./powershell.ts.mdmd.md#symbol-powershelladapter)
+- [`treeSitter.SyntaxNode`](./treeSitter.ts.mdmd.md#symbol-syntaxnode)
+- [`treeSitter.parseSource`](./treeSitter.ts.mdmd.md#symbol-parsesource)
 - `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

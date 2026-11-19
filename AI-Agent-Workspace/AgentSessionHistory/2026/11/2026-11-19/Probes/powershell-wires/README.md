@@ -421,4 +421,92 @@ The root ruled on the four forks of the build. Three are built here, each with t
 **The grammar.**
 - **What a rebuild needs here.** `build.sh` needs git, node, a C compiler and the pinned tree-sitter CLI, and the container has all four (`cc` is gcc; the CLI is 0.27.1 from `npm ci`). Its steps, run up to the wasm in a private folder, took 1 s to generate and 5 s to test, with all 164 corpus parses passing.
 - **The wasm step.** `tree-sitter build --wasm` downloads wasi-sdk 34 and binaryen 132 into `~/.cache/tree-sitter` the first time. That is a per-user download made by the pinned CLI itself, not a system install. It has not been run.
-- **Not started:** mending the idioms, and the smallest input that loses a block's structure.
+- **Not started:** mending the idioms, and the smallest input that loses a block's structure. Both were begun in the next leg; see [The grammar's idioms, mended](#the-grammars-idioms-mended-added-november-19-2026-night).
+
+## The archetype's test folders _(added November 19, 2026, night)_
+
+The root ruled that the archetype's folder pattern reads a path's folders, never the file's own name. Built in `fbbfd67a`, with a test that failed first.
+- `\btests?\b|__tests__` is now tested against the folders alone. A file's own name makes it a test only by the name conventions.
+- One name convention is added, `^tests?\.[^.]+$` without regard to case: a file named for the word alone, such as `test.js` or Django's `tests.py`. Without it, DNN's 17 `test.js` and `test.ts` files, 16 of them CodeMirror's mode tests, would have lost the test label the whole-path reading gave them.
+- **This repository:** no doc changes archetype.
+- **The corpora**, every move from test to implementation:
+
+| Corpus | Files | Kind | Example | Was the old label wrong? |
+| --- | ---: | --- | --- | --- |
+| dbatools | 66 | a function named for the verb `Test` | `public/Test-DbaPath.ps1` | yes: working code |
+| dbatools | 4 | a CI script named for the verb | `.github/scripts/Test-ActionlintWorkflows.ps1` | yes: a check CI runs, not a test of the code |
+| dbatools | 4 | a workflow named for the tests it runs | `.github/workflows/integration-tests.yml` | arguable: CI configuration |
+| tSQLt | 1 | a dotted part of the name | `Source/tSQLt.Tests.view.sql` | yes: part of the framework |
+| AL-Go | 6 | a settings file named for a workflow | `Templates/AppSource App/.github/Test Current.settings.json` | yes: configuration |
+| AL-Go | 3 | an end-to-end test named for the verb | `e2eTests/Test-AL-Go.ps1` | no: these are tests, labelled so only by accident of the verb. The folder `e2eTests` has no word boundary before `Tests`, so the folder pattern does not read it as a test folder. |
+
+- The adapter's wires: dbatools 7,473 → 7,477, the four lost in the last round to `Test-DbaInstanceName`, `Test-DbaTempDbConfig`, `Test-DbaBackupStorageCompatibility` and `Test-DbaPath` coming back. AL-Go stays at 472.
+
+**Pester's `Name.Tests.ps1` against `RunTests.psm1`: not built.** The existing name pattern `Tests?\.[^.]+$` cannot tell AL-Go's `RunTests.psm1` from C#'s `FooTests.cs` without knowing the language. Both are a word ending in `Tests` and then one extension. So the second half needs a rule for PowerShell files, and the root asked for candidates rather than a build. Each is counted on top of the folder mend:
+
+| Candidate | What it says | Files that move from test to implementation |
+| --- | --- | --- |
+| P1 | A PowerShell file (`.ps1`, `.psm1`, `.psd1`) is a test by its name only as `Name.Tests.ps1` or `Name.Test.ps1`; other languages keep `Tests?\.[^.]+$` | tSQLt 4 (`Build/tSQLt_BuildTests.ps1`, `Build/tSQLt_ValidateRunExampleTests.ps1`, `Build/tSQLt_ValidateRuntSQLtTests.ps1`, `Experiments/InvokeSqlcmdTest.ps1`); AL-Go 4 (`Actions/AnalyzeTests/AnalyzeTests.ps1`, `Actions/RunTests/RunTests.ps1`, `Actions/RunTests/RunTests.psm1`, `Internal/Scripts/GetOwnerForE2ETests.ps1`); dbatools 0 |
+| P2 | A PowerShell module (`.psm1`, `.psd1`) is never a test by its name | AL-Go 1 (`Actions/RunTests/RunTests.psm1`) |
+
+P1 is Pester's own convention, and every file it moves is working code that runs tests: an action, a build step, an experiment. P2 is the narrowest change that frees `RunTests.psm1`. The recommendation is P1.
+
+**What the adapter reads.** The adapter reads the archetype with the default configuration, so a workspace's overrides and sample roots do not reach it. The smallest change that would hand a reader the workspace's own answer is for the file index the generator already builds with the configuration to carry it. Exact lines, for the joining:
+- `packages/engine/src/live-docs/adapters/index.ts`, line 32, `export type WorkspaceFileIndex = Set<string>;` becomes
+  ```ts
+  /** Every discovered workspace path; built by the generator, it also answers each one's archetype under the workspace's configuration. */
+  export type WorkspaceFileIndex = Set<string> & { archetypeOf?: (path: string) => LiveDocumentationArchetype };
+  ```
+- `packages/generator/src/generator.ts`, lines 142 to 146, become
+  ```ts
+  const fileIndex: WorkspaceFileIndex = Object.assign(
+    new Set(allTargetFiles.map((absPath) => normalizeWorkspacePath(path.relative(workspaceRoot, absPath)))),
+    { archetypeOf: (file: string) => resolveArchetype(file, normalizedConfig) }
+  );
+  ```
+- In `powershell.ts`, `isTestFile(file)` becomes `isTestFile(workspace, file)` and returns `(workspace.archetypeOf?.(file) ?? resolveArchetype(file, DEFAULT_LIVE_DOCUMENTATION_CONFIG)) === "test"`. Its two callers, in `calledFiles`, already hold the workspace's index.
+
+The index stays a `Set` to every one of its consumers, so nothing else changes. A binary file's `asset` label needs its content, which the index does not read; for telling a test from working code that does not matter.
+
+## The grammar's idioms, mended _(added November 19, 2026, night)_
+
+**What a rebuild downloaded.** The pinned CLI's `tree-sitter build --wasm` fetched wasi-sdk 34 and binaryen 132 into `~/.cache/tree-sitter`. Binaryen's download was 111 MB; wasi-sdk's size was not captured. They take 953 MB on disk: wasi-sdk 635 MB and binaryen 318 MB. The CLI also keeps a native `lib/powershell.so` there for `tree-sitter test`. The cache is left in place. No other download, install or permission prompt appeared. Rebuilt from the committed patch, the wasm came out byte for byte the committed one. A wasm build here took 111 to 228 seconds under a load of about 25.
+
+**Graded by PowerShell's own parser.** Measured over 2,073 `.ps1` and `.psm1` files in five corpora. "Missing" counts the functions PowerShell sees, by name and line, that the grammar does not:
+
+| | dbatools | AL-Go | AzureStack-Tools | tSQLt | shop | All |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| files with an error node, before | 112 | 78 | 12 | 4 | 1 | 207 |
+| after | 68 | 31 | 10 | 3 | 1 | 113 |
+| functions missing, before | 5 | 0 | 5 | 0 | 0 | 10 |
+| after | 5 | 0 | 5 | 0 | 0 | 10 |
+
+No file is newly in error. The ten missing functions are the same ten as before: `Find-DbaInstance` and four in `Install-DbaInstance.ps1`, and five in AzureStack's `Deployment/asdk-prechecker.ps1` and `Support/AzS_PoSh/AzS-PoSh-Environment.ps1`.
+
+**The idioms, in the order of the files they free.** Each has an entry in the grammar's own corpus (`test/corpus/assignments.txt`, `script_blocks.txt`), and each failed first against the grammar as it stood. The per-idiom split comes from the first failing line of each error file in [grammar-errors.md](grammar-errors.md). Builds of one mend at a time were not graded reliably in this leg, so the three are graded together above.
+1. **An attribute with arguments before an expression**, even on the line before it: `[Diagnostics.CodeAnalysis.SuppressMessageAttribute('Rule', '', Justification = '…')]` then `$x = …`. It was the first error in 43 files, nearly all AL-Go's, and is valid in Windows PowerShell 5.1. It is built as an `attributed_expression` beside the cast, as PowerShell's own `AttributedExpressionAst` is, and declared in conflict with a param block's attributes so that both readings are tried.
+   - **Tried first and rejected:** putting the attributes in the assignment's target. Its error recovery lost five functions of AzureStack's `Identity/AzureStack.Identity.psm1`.
+   - **Also rejected:** giving the expression a fixed precedence. That took `[CmdletBinding()]` then `[OutputType(...)]` before `param` for an expression. The corpus now has a test that keeps them the param block's.
+2. **An empty script block**, `Mock Stop-Function { }`, `-Value { }`, `{}`. Upstream required a statement inside one. This was most of the "not told by the line" first errors: Pester's `Mock`, `Add-Member -Value { }`.
+3. **Named blocks a semicolon ends**, `Function Log-Output{…Process{…};};`. This is tSQLt's `Build/CommonFunctionsAndMethods.psm1`. Without this mend, mend 2 made upstream's recovery lose that whole file and its `Replace-InFile`. With it, the file has no error at all.
+
+**What the adapter needed.** An assignment whose target an attribute stands before is read as PowerShell reads it: the attribute changes nothing assigned. A type constraint, `[int]$x`, is a cast and stays unread on both sides. The same rule is written in the oracle's emitter, which unwraps an `AttributedExpressionAst` but not its subclass `ConvertExpressionAst`. The adapter's test failed first on the library half: under the old grammar, AL-Go-Helper's opening attribute left an error at the file's own level, so the file counted as a program.
+
+**A definition inside unread text counts as none.** That rule now has a test that can fail. With the rule's `ERROR` clause removed from `inNestedScope`, the test fails, and it passes with the clause in place. Its input is the smallest found:
+```powershell
+Describe 'x' {
+    $path = 'C:\’
+    $name = 'y'
+}
+function Get-Thing { }
+$z = 'w'
+```
+PowerShell 7, run here, ends a single-quoted string at a typographic quote (`’`) and reads this with no error. Windows PowerShell 5.1 was not run here. The grammar does not, so it loses the `Describe` block and reads the function after it inside an error. The idiom is AzureStack's: `AzS-PoSh-Environment.ps1` has `'C:\’`, and it is why `Read-InputBoxDialog` is lost there. The test first checks that the grammar still loses this input, so that a later mend that reads it fails the test instead of passing it vacuously.
+
+This input loses a function at the file's own level, where the rule costs a true definition. A reduction to a stub inside the lost block got to 52 lines and no smaller in this leg. Only two corpus files still have a definition under an error: AzureStack's `AzS-PoSh-Environment.ps1` and dbatools' `Find-DbaInstance.ps1`. dbatools' `Copy-DbaPolicyManagement.Tests.ps1` and AL-Go's `RunTests.Test.ps1` now read in full, so their stubs stand in the blocks that hold them.
+
+**What the mended grammar changes in the map.** Measured with the adapter over every corpus, after the archetype mend. dbatools, AzureStack-Tools, tSQLt and the shop have the same wires, symbols and programs. AL-Go goes from 472 resolved dependencies to 477:
+- Four are loads in two tests the grammar can now read, and the oracle already read them. They are `Tests/RunTests.Action.Test.ps1` loading `Actions/AL-Go-Helper.ps1`, `Actions/.Modules/AlToolHelper.psm1` and `Actions/RunTests/RunTests.psm1`, and `Tests/PullRequestStatusCheck.Test.ps1` loading `Actions/Github-Helper.psm1`. All four are true.
+- One is false: `Actions/RunTests/RunTests.psm1` calling `Get-AppJsonFromAppFile` and `Get-BcContainerEventLog` in `Tests/RunTests.Test.ps1`. That test stubs the two BcContainerHelper commands at its own level, lines 10 and 11, and the grammar no longer loses them. The rule passes over tests only when the caller is not one, and the name pattern calls `RunTests.psm1` a test. So this is the oracle's remaining false wire from the last round, now drawn by the adapter too. Candidate P1 or P2 above removes it.
+
+**Not reached in this leg:** Pester's `BeforeAll` rule, and the remaining idioms of [grammar-errors.md](grammar-errors.md): `switch` as an expression, numeric multipliers, a method call followed by a member as a command argument, labelled loops, and the typographic quotes found here.

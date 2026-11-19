@@ -133,10 +133,14 @@ function Get-FileVariables {
     param([Parameter(Mandatory)]$Ast)
     $assignments = @{}
     foreach ($assignment in $Ast.FindAll({ param($node) $node -is [System.Management.Automation.Language.AssignmentStatementAst] }, $true)) {
-        if ($assignment.Left -isnot [System.Management.Automation.Language.VariableExpressionAst]) {
+        # An attribute before the target (`[SuppressMessageAttribute(...)]` then `$x = ...`) changes nothing assigned;
+        # a type constraint (`[int]$x`), which PowerShell parses as the subclass ConvertExpressionAst, converts, and is left unread.
+        $target = $assignment.Left
+        while ($target.GetType() -eq [System.Management.Automation.Language.AttributedExpressionAst]) { $target = $target.Child }
+        if ($target -isnot [System.Management.Automation.Language.VariableExpressionAst]) {
             continue
         }
-        $name = $assignment.Left.VariablePath.UserPath.ToLowerInvariant() -replace '^(script|global|local|private):', ''
+        $name = $target.VariablePath.UserPath.ToLowerInvariant() -replace '^(script|global|local|private):', ''
         if (-not $assignments.ContainsKey($name)) { $assignments[$name] = [System.Collections.Generic.List[object]]::new() }
         $assignments[$name].Add($assignment)
     }

@@ -1,0 +1,152 @@
+===
+An attribute on an assignment, on the line before it
+===
+
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '', Justification = 'False positive.')]
+$ALGoFolderName = '.AL-Go'
+function Get-Thing { }
+
+---
+
+(program
+  (statement_list
+    (pipeline
+      (assignment_expression
+        (left_assignment_expression
+          (logical_expression
+            (bitwise_expression
+              (comparison_expression
+                (additive_expression
+                  (multiplicative_expression
+                    (format_expression
+                      (range_expression
+                        (array_literal_expression
+                          (unary_expression
+                            (expression_with_unary_operator
+                              (attributed_expression
+                                (attribute
+                                  (attribute_name
+                                    (type_spec
+                                      (type_name
+                                        (type_name
+                                          (type_name
+                                            (type_identifier))
+                                          (type_identifier))
+                                        (type_identifier))))
+                                  (attribute_arguments
+                                    (attribute_argument
+                                      (logical_expression
+                                        (bitwise_expression
+                                          (comparison_expression
+                                            (additive_expression
+                                              (multiplicative_expression
+                                                (format_expression
+                                                  (range_expression
+                                                    (array_literal_expression
+                                                      (unary_expression
+                                                        (string_literal
+                                                          (verbatim_string_characters))))))))))))
+                                    (attribute_argument
+                                      (logical_expression
+                                        (bitwise_expression
+                                          (comparison_expression
+                                            (additive_expression
+                                              (multiplicative_expression
+                                                (format_expression
+                                                  (range_expression
+                                                    (array_literal_expression
+                                                      (unary_expression
+                                                        (string_literal
+                                                          (verbatim_string_characters))))))))))))
+                                    (attribute_argument
+                                      (simple_name)
+                                      (logical_expression
+                                        (bitwise_expression
+                                          (comparison_expression
+                                            (additive_expression
+                                              (multiplicative_expression
+                                                (format_expression
+                                                  (range_expression
+                                                    (array_literal_expression
+                                                      (unary_expression
+                                                        (string_literal
+                                                          (verbatim_string_characters))))))))))))))
+                                (unary_expression
+                                  (variable))))))))))))))
+        (assignement_operator)
+        (pipeline
+          (pipeline_chain
+            (logical_expression
+              (bitwise_expression
+                (comparison_expression
+                  (additive_expression
+                    (multiplicative_expression
+                      (format_expression
+                        (range_expression
+                          (array_literal_expression
+                            (unary_expression
+                              (string_literal
+                                (verbatim_string_characters)))))))))))))))
+    (function_statement
+      (function_name))))
+
+===
+Attributes before a param block stay the param block's
+===
+
+function Copy-HashTable {
+    [CmdletBinding()]
+    [OutputType([System.Collections.HashTable])]
+    param([Parameter(ValueFromPipeline)] $Object)
+}
+
+---
+
+(program
+  (statement_list
+    (function_statement
+      (function_name)
+      (script_block
+        (param_block
+          (attribute_list
+            (attribute
+              (attribute_name
+                (type_spec
+                  (type_name
+                    (type_identifier)))))
+            (attribute
+              (attribute_name
+                (type_spec
+                  (type_name
+                    (type_identifier))))
+              (attribute_arguments
+                (attribute_argument
+                  (logical_expression
+                    (bitwise_expression
+                      (comparison_expression
+                        (additive_expression
+                          (multiplicative_expression
+                            (format_expression
+                              (range_expression
+                                (array_literal_expression
+                                  (unary_expression
+                                    (type_literal
+                                      (type_spec
+                                        (type_name
+                                          (type_name
+                                            (type_name
+                                              (type_identifier))
+                                            (type_identifier))
+                                          (type_identifier)))))))))))))))))
+          (parameter_list
+            (script_parameter
+              (attribute_list
+                (attribute
+                  (attribute_name
+                    (type_spec
+                      (type_name
+                        (type_identifier))))
+                  (attribute_arguments
+                    (attribute_argument
+                      (simple_name)))))
+              (variable))))))))
