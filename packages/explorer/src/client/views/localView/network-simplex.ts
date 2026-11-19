@@ -91,46 +91,112 @@ function initialPositions(count: number, edges: readonly Constraint[]): number[]
   return position;
 }
 
-/** A spanning tree of tight edges, grown by shifting the tree to meet the nearest outside edge until every node is in it. */
+/**
+ * A spanning tree of tight edges, grown by shifting the tree to meet the nearest outside edge until every node is in it.
+ * The nearest outside edge is the one of least slack among the edges with one end in the tree, the lowest-numbered of
+ * those that tie. Since 2026-11-19 it is found from two heaps rather than by reading every edge each time the tree grows,
+ * and the tree is shifted by one number rather than node by node: a node in the tree stands at its place when it joined,
+ * less the shift then, plus the shift now, so an outside edge whose tail is in the tree has a slack of a fixed number
+ * less the shift, and one whose head is in the tree a fixed number plus it. Each heap orders its edges by that number and
+ * then by edge number, so the least slack of either heap, ties to the lower edge number, is the edge the full reading
+ * chose; an edge whose other end has joined since is dropped when it comes to the top. Every node joins once, every
+ * edge enters a heap once, and the result is the same tree and the same positions.
+ */
 function feasibleTree(count: number, edges: readonly Constraint[], position: number[], inTree: boolean[]): void {
   if (count === 0) return;
   const inSet = new Array<boolean>(count).fill(false);
+  const base = new Array<number>(count).fill(0);
   const incident = Array.from({ length: count }, () => [] as number[]);
   edges.forEach((edge, index) => { incident[edge.tail].push(index); incident[edge.head].push(index); });
+  // The shift of every node in the tree since the tree began; a node in the tree stands at `base + shift`.
+  let shift = 0, size = 0, firstOutside = 0;
+  const at = (node: number): number => inSet[node] ? base[node] + shift : position[node];
+  const tailIn = new EdgeHeap(), headIn = new EdgeHeap();
+  const join = (node: number): void => {
+    inSet[node] = true;
+    base[node] = position[node] - shift;
+    size++;
+    for (const index of incident[node]) {
+      const edge = edges[index];
+      if (edge.tail === node && !inSet[edge.head]) tailIn.push(position[edge.head] - base[node] - edge.delta, index);
+      else if (edge.head === node && !inSet[edge.tail]) headIn.push(base[node] - position[edge.tail] - edge.delta, index);
+    }
+  };
   const grow = (start: number): void => {
     const queue = [start];
-    inSet[start] = true;
-    while (queue.length) {
-      const v = queue.shift()!;
+    join(start);
+    for (let next = 0; next < queue.length; next++) {
+      const v = queue[next];
       for (const index of incident[v]) {
         const edge = edges[index];
         const other = edge.tail === v ? edge.head : edge.tail;
-        if (!inSet[other] && slack(edge, position) === 0) { inSet[other] = true; inTree[index] = true; queue.push(other); }
+        if (!inSet[other] && at(edge.head) - at(edge.tail) - edge.delta === 0) { join(other); inTree[index] = true; queue.push(other); }
       }
     }
   };
+  const crossing = (index: number): boolean => inSet[edges[index].tail] !== inSet[edges[index].head];
   grow(0);
-  for (;;) {
-    let size = 0;
-    for (let v = 0; v < count; v++) if (inSet[v]) size++;
-    if (size === count) break;
-    let best = -1, bestSlack = Infinity;
-    edges.forEach((edge, index) => {
-      if (inSet[edge.tail] === inSet[edge.head]) return;
-      const s = slack(edge, position);
-      if (s < bestSlack) { bestSlack = s; best = index; }
-    });
-    if (best < 0) {
+  while (size < count) {
+    while (tailIn.size && !crossing(tailIn.topIndex())) tailIn.pop();
+    while (headIn.size && !crossing(headIn.topIndex())) headIn.pop();
+    if (!tailIn.size && !headIn.size) {
       // A node no constraint reaches: it joins at its own position.
-      const loose = inSet.indexOf(false);
-      grow(loose);
+      while (inSet[firstOutside]) firstOutside++;
+      grow(firstOutside);
       continue;
     }
+    const tailSlack = tailIn.size ? tailIn.topKey() - shift : Infinity, headSlack = headIn.size ? headIn.topKey() + shift : Infinity;
+    const fromTail = tailSlack < headSlack || (tailSlack === headSlack && tailIn.topIndex() < headIn.topIndex());
+    const best = fromTail ? tailIn.topIndex() : headIn.topIndex();
     const edge = edges[best];
-    const delta = inSet[edge.tail] ? bestSlack : -bestSlack;
-    for (let v = 0; v < count; v++) if (inSet[v]) position[v] += delta;
+    // The tree moves toward the edge by its slack: up when the edge leaves the tree from its tail, down when from its head.
+    shift += fromTail ? tailSlack : -headSlack;
     inTree[best] = true;
-    grow(inSet[edge.tail] ? edge.head : edge.tail);
+    grow(fromTail ? edge.head : edge.tail);
+  }
+  for (let v = 0; v < count; v++) position[v] = base[v] + shift;
+}
+
+/** A binary heap of edges by a key and then by edge number, the least first. */
+class EdgeHeap {
+  private readonly keys: number[] = [];
+  private readonly indices: number[] = [];
+  get size(): number { return this.keys.length; }
+  topKey(): number { return this.keys[0]; }
+  topIndex(): number { return this.indices[0]; }
+  private less(a: number, b: number): boolean {
+    return this.keys[a] < this.keys[b] || (this.keys[a] === this.keys[b] && this.indices[a] < this.indices[b]);
+  }
+  private swap(a: number, b: number): void {
+    [this.keys[a], this.keys[b]] = [this.keys[b], this.keys[a]];
+    [this.indices[a], this.indices[b]] = [this.indices[b], this.indices[a]];
+  }
+  push(key: number, index: number): void {
+    this.keys.push(key);
+    this.indices.push(index);
+    let at = this.keys.length - 1;
+    while (at > 0) {
+      const up = (at - 1) >> 1;
+      if (!this.less(at, up)) break;
+      this.swap(at, up);
+      at = up;
+    }
+  }
+  pop(): void {
+    const last = this.keys.length - 1;
+    this.swap(0, last);
+    this.keys.pop();
+    this.indices.pop();
+    let at = 0;
+    for (;;) {
+      const left = 2 * at + 1, right = left + 1;
+      let least = at;
+      if (left < this.keys.length && this.less(left, least)) least = left;
+      if (right < this.keys.length && this.less(right, least)) least = right;
+      if (least === at) break;
+      this.swap(at, least);
+      at = least;
+    }
   }
 }
 
