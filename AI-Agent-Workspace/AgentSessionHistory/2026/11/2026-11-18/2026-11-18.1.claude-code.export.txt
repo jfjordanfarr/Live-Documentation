@@ -16908,3 +16908,144 @@
 
 ● Agent "Reset Tuning to defaults" is waiting on its own background work · 1h
   39m 7s
+
+● Agent "Unpin others interaction" is waiting on its own background work · 41m
+  1s
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● Nothing new to decide. While the builders work I read the source of three
+  rounds ahead of their handbacks (Tuning's reset, Unpin others, the history
+  zoom) and found nothing to send back, so each can land soon after its pictures
+  arrive.
+
+● Background command "Regenerate the docs and run the gate without its browser
+  stage on main" completed (exit code 0)
+
+  Listed 1 directory, ran 3 shell commands (ctrl+o to expand)
+
+● The checks that need no browser pass on main with the camera round (lint, unit
+  and integration tests, link and symbol audits). I'm now building main for
+  your port so you can try the cell press and the Arrival lever; links follow
+  when that build finishes.
+
+● Background command "Build main's Explorer so the owner's port shows the camera
+  round" completed (exit code 0)
+
+  Searched for 2 patterns, ran 3 shell commands (ctrl+o to expand)
+
+● The camera round is now on your port, built from main. It has passed
+  everything except the browser suite, which waits for the builders.
+
+  1. The cell press that used to lose the file
+  pathfind.ts, 2D (http://localhost:8999/?view=local&node=packages/engine/src/li
+  ve-docs/pathfind.ts)
+  - At the right, the history directory draws its hidden files as two rows of
+    small cells. Press the first cell (codec.ts).
+  - The camera should keep its zoom and slide until the new card is fully in
+    view, with a blue ring that fades within a second.
+  - The directory's name may slide off the top: when the new card and the handle
+    cannot both fit, the card wins.
+  - This link carries no tuning, so it opens with your own saved settings.
+
+  2. The pull-back on arrival (a trial; the default is unchanged)
+  - pathfind.ts, Reading, Then Neighbours
+    (http://localhost:8999/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkRMAnEgSzGyhABcALAUw
+    DsBaZx8gc3oCNUAriQDOIAL5j4zGvkzoA1pi6NhAehZdyHVcJLpVCSo1YATDGtkMAZlpMA6WqPiF
+    IAbVDTIIWQqUr1zJrauvqGYMZm6BaY1rYOTiCiXgBU4gC6YkA)
+  - the estate's PaymentsContext.cs, Reading, Then Neighbours
+    (http://localhost:8999/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkRMAn
+    EgSzGyhABcALAUwDsBaZx8gc3oCNUAriQDOIAL5j4zGgAVMATwC2LWgGVGJMOXSMA9ABFMtTLrlK
+    VwgMKpmtRgA9aAOnSj4hSAG1Q0yCDPKtuqa2nqGxqYKgbRWNnaOLm4gon4AVOIAumJAA)
+
+  Each opens at reading size, holds about a second, then eases back until the
+  neighbours show. Any click, scroll or key during the hold cancels it.
+  - These two links set one lever for you: Arrival becomes "Reading, Then
+    Neighbours". To put it back, use Tuning → 2D Layout → Arrival → Reading
+    Size. Everything else stays as you have it.
+  - The estate link is the fair test. On pathfind.ts the last third of the ease
+    jumps twice. That is the older freeze where cards switch from reading to
+    connections, not the arrival itself.
+
+  I have not opened these links on your port myself. The builder's pictures of
+  both behaviours are what I judged, and they show what is described above.
+
+  Six builders are still at work under the new rules; the next thing you hear
+  will be the first of their rounds landing.
+
+● Agent "Reset Tuning to defaults" is waiting on its own background work · 1h
+  44m 19s
+
+● Agent "Reset Tuning to defaults" is waiting on its own background work · 1h
+  50m 31s
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/AgentSessionHistory/2026/11
+  /2026-11-18/2026-11-18.1.claude-code.export.txt in the IDE. This may or may
+  not be related to the current task.</ide_opened_file>
+  ⎿  [Image #2]
+
+❯ >Nobody stops at 05:10. Each builder carries on until it has looked at its
+  own work in a browser, then hands back.
+
+  Very very correct. The builders don't even need to know about the time limit.
+  That's just the amount of time that unused token availability was very very
+  high. With a reset in under 30 minutes, you got through half the week's
+  usage. That's impressive! But once that reset hits -- oh no! -- even _more_
+  token availability comes in! Oh golly oh gee what shall we ever do?! Yeah
+  it's actually A-okay. I just want you to be on hill-climbing duty making this
+  software the very best it can be. I'd love to use it at my work for a
+  presentation in early December if possible. But I don't want to compromise on
+  quality in the slightest. I don't want to hear words like "MVP" and things
+  like deadline-hitting causing us to cut corners. We are in the age of
+  parallel builders. You are smart enough to resolve some merge conflicts and
+  manage a fleet of builders. You have enough good judgment to build the right
+  thing, fully. Not in a night, but in honest common-sense increments. The
+  patterns of how to roll the ball forward are strong now.
+
+  >Your "mega gigantic build" fear, measured: it is not gigantic.
+
+  Phenomenal.
+
+  >Build time does not grow. The history build already works out every symbol
+  and description at each commit, then throws them away and keeps only counts.
+
+  Then we should really do it.
+
+  >The real costs are one full rebuild of the history (about 85 minutes) and a
+  build cache that grows from 206 MB to 1.5–2 GB unless it is compressed.
+
+  How do we mitigate these costs and risks?
+
+  >1. The cell press that used to lose the file
+  pathfind.ts, 2D
+
+  That was good fun! It did shift away so it might be wise to follow the sucker
+  for a bit if the user hasn't provided input to navigate in any direction
+  (panning, zooming, etc.). But that was actually quite fun! Zoomed in close,
+  it was quite the rollercoaster ride though. Wouldn't surprise me if we needed
+  to worry about having differing default views for one pin (show everything
+  about this one node or one symbol at closest detail) versus many pins (try to
+  frame every pinned thing as best you can with bias towards most recent
+  items).
+
+  >2. The pull-back on arrival (a trial; the default is unchanged)
+
+  Hmmm, yeah the stutter of performance as the stylesheet breakpoints were hit
+  was jarring. I think a holistic framing approach like the one I described
+  above might be the best of both worlds, as it causes the frame to
+  automatically adjust to try and hold the monkey bars you've been swinging
+  along, starting small.
+
+  >The estate link is the fair test. On pathfind.ts the last third of the ease
+  jumps twice. That is the older freeze where cards switch from reading to
+  connections, not the arrival itself.
+
+  Smaller freeze. That actually was fun. For a clean little toy example, it
+  doesn't feel bad at all. But for a real codebase, I can see how we'd want to
+  prioritize pins and temporality in framing, and maximizing the amount of
+  pinned content that can be framed (including and especially when only one pin
+  exists -- but you could also consider having just a pin on PostPayment
+  symbol and PostPaymentRow symbol in the screenshot attached and having the
+  camera really zoom in to care only about those two symbols, with everything
+  else getting captured being a nice-to-have incidental.
