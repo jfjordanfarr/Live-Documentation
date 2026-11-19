@@ -51,12 +51,10 @@ export function rankByNetworkSimplex(count: number, constraints: readonly Constr
     const leaving = tree.leavingEdge(cut, searchFrom);
     if (leaving < 0) { optimal = true; break; }
     searchFrom = leaving + 1;
-    const onHeadSide = tree.headSide(leaving);
-    const entering = tree.enteringEdge(onHeadSide, position);
+    const entering = tree.enteringEdge(leaving, position);
     if (entering < 0) { optimal = true; break; }
-    const shift = slack(edges[entering], position);
     // Raising the leaving edge's head side by the entering edge's slack makes the entering edge tight and lowers the cost.
-    for (let v = 0; v < count; v++) if (onHeadSide(v)) position[v] += shift;
+    tree.raiseHeadSide(leaving, slack(edges[entering], position), position);
     tree.exchange(leaving, entering);
   }
   const least = Math.min(...position);
@@ -207,6 +205,8 @@ class TreeIndex {
   private readonly lim: number[];
   private readonly treeEdges: number[] = [];
   private readonly adjacency: number[][];
+  /** Every edge of each node, tree or not, in edge order. */
+  private readonly incident: number[][];
   private readonly visited: boolean[];
   private readonly stackNode: number[];
   private readonly stackFrom: number[];
@@ -219,6 +219,7 @@ class TreeIndex {
 
   constructor(private readonly count: number, private readonly edges: readonly Constraint[], private readonly inTree: boolean[]) {
     this.adjacency = Array.from({ length: count }, () => [] as number[]);
+    this.incident = Array.from({ length: count }, () => [] as number[]);
     this.parentEdge = new Array<number>(count).fill(-1);
     this.low = new Array<number>(count).fill(0);
     this.lim = new Array<number>(count).fill(0);
@@ -233,6 +234,8 @@ class TreeIndex {
     edges.forEach((edge, index) => {
       this.flow[edge.head] += edge.weight;
       this.flow[edge.tail] -= edge.weight;
+      this.incident[edge.tail].push(index);
+      this.incident[edge.head].push(index);
       if (!inTree[index]) return;
       this.treeEdges.push(index);
       this.adjacency[edge.tail].push(index);
@@ -362,17 +365,29 @@ class TreeIndex {
   }
 
   /**
-   * Whether a node is on the head's side of the cut the tree edge `index` makes, one test a node. The edge's lower end
-   * (its child) and that end's postorder range are found once a pivot: a node lies below the edge when its number falls
-   * in the range, and the head lies below exactly when the head is the child, since the other end is the child's parent.
-   * Until 2026-11-19 each test found the child again, twice, for the node and for the head: on this repository's
-   * five-file scope the cut tests took a sixth of the Local Map's continuing search.
+   * The leaving edge's lower end (its child) and that end's postorder range: a node lies below the edge, on the child's
+   * side of its cut, when its number falls in the range, and the head lies below exactly when the head is the child, since
+   * the other end is the child's parent. Found once a pivot (2026-11-19; before, every test of a node's side found it again).
    */
-  headSide(index: number): (node: number) => boolean {
+  private cutOf(index: number): { low: number; high: number; headBelow: boolean } {
     const edge = this.edges[index];
     const child = this.parentEdge[edge.head] === index ? edge.head : edge.tail;
-    const headBelow = child === edge.head, low = this.low[child], high = this.lim[child], lim = this.lim;
-    return node => (low <= lim[node] && lim[node] <= high) === headBelow;
+    return { low: this.low[child], high: this.lim[child], headBelow: child === edge.head };
+  }
+
+  /**
+   * Raise every node on the head's side of the leaving edge's cut by `shift`: the nodes below the edge when the head is
+   * below, else every node but those. Nodes of another tree of the forest are on the head's side when the head is not
+   * below, as a node's side was always read, and are raised with it.
+   */
+  raiseHeadSide(leaving: number, shift: number, position: number[]): void {
+    const { low, high, headBelow } = this.cutOf(leaving);
+    if (headBelow) {
+      for (let number = low; number <= high; number++) position[this.byPostorder[number - 1]] += shift;
+      return;
+    }
+    const lim = this.lim;
+    for (let v = 0; v < this.count; v++) if (lim[v] < low || lim[v] > high) position[v] += shift;
   }
 
   /** Sum this solve's node balances in the current DFS postorder; each tree edge keeps its own indexed cut slot. */
@@ -403,15 +418,27 @@ class TreeIndex {
     return -1;
   }
 
-  /** The non-tree edge from the head side to the tail side of the leaving edge's cut with the least slack. */
-  enteringEdge(onHeadSide: (node: number) => boolean, position: readonly number[]): number {
+  /**
+   * The non-tree edge from the head side to the tail side of the leaving edge's cut with the least slack, the
+   * lowest-numbered of those that tie. Every edge across the cut has exactly one end below the leaving edge, so only the
+   * edges of the nodes below it are read, as Gansner et al. and Graphviz's `enter_edge` do; until 2026-11-19 every edge
+   * was, in edge order, and the least slack's lowest edge number is what that reading chose.
+   */
+  enteringEdge(leaving: number, position: readonly number[]): number {
+    const { low, high, headBelow } = this.cutOf(leaving);
+    const lim = this.lim;
     let best = -1, bestSlack = Infinity;
-    this.edges.forEach((edge, index) => {
-      if (this.inTree[index]) return;
-      if (!onHeadSide(edge.tail) || onHeadSide(edge.head)) return;
-      const s = slack(edge, position);
-      if (s < bestSlack) { bestSlack = s; best = index; }
-    });
+    for (let number = low; number <= high; number++) {
+      for (const index of this.incident[this.byPostorder[number - 1]]) {
+        if (this.inTree[index]) continue;
+        const edge = this.edges[index];
+        const tailBelow = low <= lim[edge.tail] && lim[edge.tail] <= high, headEndBelow = low <= lim[edge.head] && lim[edge.head] <= high;
+        // Its tail on the head's side and its head on the tail's.
+        if (tailBelow !== headBelow || headEndBelow === headBelow) continue;
+        const s = slack(edge, position);
+        if (s < bestSlack || (s === bestSlack && index < best)) { bestSlack = s; best = index; }
+      }
+    }
     return best;
   }
 }
