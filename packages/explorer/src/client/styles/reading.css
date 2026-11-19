@@ -68,8 +68,6 @@
 .local-reading-card .local-reading-block { font-size: 15px; }
 .local-reading-card .local-reading-purpose { font-size: 16px; }
 .local-reading-card .symbol-row .symbol-label-wrapper { padding: 4px 7px; }
-/* A growing card's hubs at its larger name, their centre 36 px down, where they stood before 2026-11-19 (view-shared.css). */
-.local-reading-card .symbol-anchor.hub { top: 30px; }
 .local-reading-card .local-card-actions button { width: 28px; height: 28px; color: var(--text-panel-muted); }
 .local-column .local-reading-card .node-title { padding-top: 0; }
 .local-reading-card .internals-row .symbol-label { font-size: 12px; }
@@ -307,6 +305,11 @@
 /* A node-level hub follows the look as a row's dot does: as large as the look's controls, no taller than a line of the
    held name, at whose first line it stands (view-shared.css; 2026-11-19). Its box is 12 px. */
 .local-slot-card { --hub-scale: clamp(1, var(--control-scale, 1), calc(var(--title-line) * var(--title-scale, 1) / 12)); }
+/* From the middle look out the name is drawn held from the header's top, 12 px of padding down, its lines 15 units at
+   its scale: the hub moves from the laid-out name's first line to the held one's. */
+:is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card .symbol-anchor.hub {
+    transform: translateY(calc((12 + var(--title-line) * 0.5 * var(--title-scale, 1) - var(--hub-y, 27.5)) * 1px)) scale(var(--hub-scale, 1));
+}
 .local-file-name-held { display: none; }
 :is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card {
     --title-room-h: var(--title-head-h, 0);

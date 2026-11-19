@@ -236,8 +236,8 @@ test("a card's node-level hubs stand at its file name's first line at every look
     for (const hub of drawnHubs) {
       const where = `${look}: ${hub.card}`;
       expect(Math.abs(hub.centre - hub.line.middle), `${where}: at the middle of the name's first line`).toBeLessThanOrEqual(1);
-      // At the reading look it stands where the nominal card the Flow shape is priced on says it does.
-      if (look === "reading") expect(Math.abs(hub.fromTop - HUB_CENTRE), `${where}: at the nominal card's hub`).toBeLessThanOrEqual(0.5);
+      // At the reading look a card whose name is one line, as the nominal card's is, has its hub where that card says.
+      if (look === "reading" && hub.card === CONFIG) expect(Math.abs(hub.fromTop - HUB_CENTRE), `${where}: at the nominal card's hub`).toBeLessThanOrEqual(0.5);
       // Above every row the card draws, so that no row can be taken for its end.
       if (hub.firstRow !== null) expect(hub.centre, `${where}: above the card's rows`).toBeLessThan(hub.firstRow);
       // As large as the look's controls, as a row's dot is, and no taller than a line of the name.

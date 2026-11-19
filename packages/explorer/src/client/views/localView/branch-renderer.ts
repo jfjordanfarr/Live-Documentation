@@ -837,6 +837,7 @@ function pageMeasurer(controller: LocalViewController, stage: BranchStage, plan:
         answers.labelHeights.set(directory, height);
       }
       answers.heights = heights;
+      standHubs(stage, scale);
       // With files only at the overview every wire is laid out between the two cards' node-level hubs, as Flow's lines are.
       const filesOnly = controller.getContainer().hasAttribute(OVERVIEW_FILES_ATTRIBUTE);
       const pin = (id: string, direction: "inbound" | "outbound", symbol: string | undefined): number | null => {
@@ -852,6 +853,26 @@ function pageMeasurer(controller: LocalViewController, stage: BranchStage, plan:
       return { heights, pin, labelHeights };
     }
   };
+}
+
+/**
+ * Stands each card's node-level hubs at its file name's first line as the card is laid out (2026-11-19): the line's
+ * middle below the card's padding edge, in the map's own units, written on the card's wrapper as `--hub-y`, which the
+ * stylesheet places the hubs by (view-shared.css). The line is not a constant: a name of one line shares it with the
+ * room the node's controls keep (local.css), which makes it taller, and a longer name's first line does not. Every line
+ * is read before any is written, so that the page lays itself out once for them.
+ */
+function standHubs(stage: BranchStage, scale: number): void {
+  const range = document.createRange();
+  const lines: Array<[HTMLElement, number]> = [];
+  for (const wrapper of stage.wrappers.values()) {
+    const card = wrapper.querySelector<HTMLElement>(".node-card"), text = card?.querySelector(".local-file-name-text");
+    const first = text && (range.selectNodeContents(text), range.getClientRects()[0]);
+    if (!card || !first) continue;
+    const padding = card.getBoundingClientRect().top + card.clientTop * scale;
+    lines.push([wrapper, onLayoutGrid((first.top + first.height / 2 - padding) / scale)]);
+  }
+  for (const [wrapper, y] of lines) wrapper.style.setProperty("--hub-y", String(y));
 }
 
 /**

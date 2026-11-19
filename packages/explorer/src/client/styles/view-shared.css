@@ -159,19 +159,21 @@
 
 /* A card's node-level hubs, where a whole file's connections end (2026-11-19): at the height of the file's name, the
    middle of its first line, where no symbol row can be mistaken for a hub's end; until then a hub stood half way down
-   its card, level with whichever row stood there, and the owner read a pair line's end as that row's. Laid out at the
-   name's line at reading size, 12 px of padding and half the 15 px line down (`HUB_CENTRE` in wire-gathering.ts, which
-   the placement's nominal card reads), its box 12 px; from the middle look out it is drawn down to the held name's first
-   line and as large as the look's controls, no taller than that line, as a row's dot is (the placement takes the drawing
-   back, as it does a dot's). */
+   its card, level with whichever row stood there, and the owner read a pair line's end as that row's. The line is not
+   a constant: a name of one line shares it with the room the node's controls keep, which makes it taller, and a longer
+   name's first line does not. So the render reads the line's middle below the card's padding edge from the page and
+   writes it on the card's wrapper (--hub-y, the branch renderer's standHubs); the fallback is a name of one line beside
+   the controls' room, the nominal card's (HUB_CENTRE in wire-gathering.ts, less the border). The box is 12 px. From the
+   middle look out the hub is drawn down to the held name's first line and as large as the look's controls, as a row's
+   dot is (reading.css), and the placement takes that drawing back, as it does a dot's. */
 .symbol-anchor.hub {
     position: absolute;
-    top: 13.5px;
+    top: calc(var(--hub-y, 27.5) * 1px - 6px);
     width: 10px;
     height: 10px;
     opacity: 0.55;
     border: 1px solid rgba(var(--second-values-offers-pin-rgb), 0.35);
-    transform: translateY(calc(var(--title-line, 15) * 0.5px * (var(--title-scale, 1) - 1))) scale(var(--hub-scale, 1));
+    transform: scale(var(--hub-scale, 1));
     z-index: 28;
 }
 

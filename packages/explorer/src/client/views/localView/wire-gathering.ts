@@ -18,14 +18,16 @@ import type { LocalEdge } from "./types";
 export const NODE_HUB = "#hub";
 
 /**
- * Where a card's node-level hubs stand as laid out, their centre below the outer top of the card's box, in the map's own
- * units (2026-11-19): at the middle of the file name's first line, where no symbol row can be mistaken for a hub's end,
- * the card's border (1) and padding (12) and half the name's line (15, reading.css's `--title-line`) down. The stylesheet
- * stands the hubs there (view-shared.css), the far looks drawing them down with the held name as a row's dot is drawn,
- * and the placement's nominal card reads its lines' ends from here. Until then a hub stood half way down its card, level
- * with whichever row stood there, and the owner read a line's end as that row's.
+ * Where a card's node-level hubs stand on the nominal card the Flow shape is priced on, their centre below the outer
+ * top of the card's box, in the map's own units (2026-11-19): at the middle of the file name's first line, where no
+ * symbol row can be mistaken for a hub's end. The page reads each card's own line (the branch renderer's `standHubs`),
+ * which is not a constant: a name of one line, the nominal card's, shares its line with the room the node's controls
+ * keep (local.css), 24 tall, at whose foot the text sits, and a longer name's first line is the text's own. The number is
+ * that middle as the page drew it for a card whose name is one line (App.config of the estate sample, 28.56, in this
+ * container's fonts on 2026-11-19), on the layout's half-pixel grid; a browser case holds the page to it. Until then a
+ * hub stood half way down its card, level with whichever row stood there, and the owner read a line's end as that row's.
  */
-export const HUB_CENTRE = 1 + 12 + 15 / 2;
+export const HUB_CENTRE = 28.5;
 
 /** One wire standing for every wire from one file to another at the overview band. */
 export interface GatheredWire {
