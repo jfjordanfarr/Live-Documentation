@@ -207,3 +207,13 @@ Nothing here is changed; the default is 1,024.
 - **Strips and counts.** The frames are the browser's own screencast, which sends a frame when the picture has changed; each tile is the last frame drawn before the stated moment, with the pointer's arrow drawn on afterwards. The counts compare each frame of a sweep with the frame before it, inside the picture's 1,179 by 850 pixels, and the box of a change is the smallest rectangle that holds it. The sweeps are the packet's own script, with its path chosen the same way; in the 3D map the small sphere to the left came out as `compose.ts` where the packet had `compiler-edges.json`, because four files more stand in the picture.
 - **Frame rates and memory.** As the packet measured them: a slow drag on the empty background for four seconds, counting the frames the map drew. The heap is the browser's own figure for the page; the processes' resident memory is read from the system for the browser, the page's process, the graphics process and the network process together.
 - **Scratch.** The scripts and every unkept frame were under `AI-Agent-Workspace/tmp/3d-alt/`, which git ignores.
+
+## The second leg, and the root's eye on it
+
+[The second leg](second-leg.md) redoes the signs, draws the closed ball four ways and mends the bubbles' straight edges. _Added by the root on 2026-11-19 after looking at its seven pictures._
+
+- **A bubble under a moving pointer answers by its name, not by a line along its edge.** The line still runs across half the picture for one fact; the name is the right news. As built the name's answer is too slight: on the largest bubble the root had to look for it, 300 pixels from the pointer. The name's chip is to be made plainer (its ground lifted as well as its outline) before the owner compares.
+- **The closed ball: Frosted.** Milky is the brightest thing in the picture and holds nothing shown; Stippled looks like a count of files and is not one; Outline reads from far as a hole. Frosted recedes behind what is open and still reads as a body of its size. Near, its edge shows short straight runs, to be mended once its cost in software drawing is measured.
+- **The mended mesh is plainly better** and has no cost to weigh in a picture: straight runs with corners become one curve.
+- **Not yet settled:** two browser cases ran over their time under load after the mesh's mend (a 2D press at 615 ms against 500, a 3D first frame at 427 against 400), and the load has not been told apart from the mend. Nothing here lands before those are run on a quiet machine.
+

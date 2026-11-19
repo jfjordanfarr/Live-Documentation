@@ -35,9 +35,9 @@ Separately, the root [package.json](../../../../../../../../package.json) builds
 
 ### The root build omits the CLI package
 
-The root build names engine, Explorer and generator. [The CLI package](../../../../../../../../packages/cli/package.json) has its own build command, but neither the root build nor the inspected CI workflow calls it. The command table in `AGENTS.md` said four packages and was corrected during this cleanup.
+The root build names engine, Explorer and generator. [The CLI package](https://github.com/jfjordanfarr/Live-Documentation/blob/f571f9d9/packages/cli/package.json) has its own build command, but neither the root build nor the inspected CI workflow calls it. The command table in `AGENTS.md` said four packages and was corrected during this cleanup.
 
-The CLI's [entry point](../../../../../../../../packages/cli/src/index.ts) still resolves TypeScript scripts and `tsx` relative to the monorepo; its dispatch table has no `board` command. CI's `npm pack --dry-run` checks packaging without invoking the installed command. These facts support the documented “not yet publishable” status; they do not establish that a packed CLI works. The reader's “never built” was stronger than the evidence: the package does have a build script.
+The CLI's [entry point](https://github.com/jfjordanfarr/Live-Documentation/blob/f571f9d9/packages/cli/src/index.ts) still resolves TypeScript scripts and `tsx` relative to the monorepo; its dispatch table has no `board` command. CI's `npm pack --dry-run` checks packaging without invoking the installed command. These facts support the documented “not yet publishable” status; they do not establish that a packed CLI works. The reader's “never built” was stronger than the evidence: the package does have a build script.
 
 ### Product code still knows this workspace's conventions
 
