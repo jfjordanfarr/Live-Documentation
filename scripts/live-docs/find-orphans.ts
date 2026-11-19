@@ -103,15 +103,22 @@ async function collectLiveDocFiles(root: string): Promise<string[]> {
 
 /**
  * The source file a Live Doc documents, as the doc grammar's own reader reads it, so that a code path the writer
- * writes in its quoted form reads back as the path and not as the quotes; `undefined` for a doc the reader refuses or
- * cannot open, which the caller maps from the doc's place instead.
+ * writes in its quoted form reads back as the path and not as the quotes. For a doc the reader refuses, its
+ * `- Code Path:` line by pattern, in the code span the writer writes it in since 2026-11-19 or bare as before;
+ * `undefined` for a doc with neither, or one that cannot be opened, which the caller maps from the doc's place instead.
  */
 async function extractCodePath(liveDocPath: string): Promise<string | undefined> {
+  let content: string;
   try {
-    return parseLiveDoc(await fs.readFile(liveDocPath, { encoding: "utf8" })).codePath;
+    content = await fs.readFile(liveDocPath, { encoding: "utf8" });
   } catch {
-    // A doc the grammar refuses, or a file that cannot be read: the caller maps it from where it lies.
     return undefined;
+  }
+  try {
+    return parseLiveDoc(content).codePath;
+  } catch {
+    const match = content.match(/^\s*-\s*Code Path:\s*`([^`]+)`\s*$/m) ?? content.match(/^\s*-\s*Code Path:\s*(.+)$/m);
+    return match?.[1].trim();
   }
 }
 

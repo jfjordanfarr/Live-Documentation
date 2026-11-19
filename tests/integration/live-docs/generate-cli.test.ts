@@ -127,6 +127,13 @@ beforeAll(async () => {
     fs.mkdirSync(path.dirname(doc), { recursive: true });
     fs.writeFileSync(doc, renderLiveDoc({ codePath, layer: 4, archetype: "implementation", entries: [], authored: "### Purpose\nA file.\n\n### Notes\nNone.", symbols: [], dependencies: [] }), "utf8");
   }
+  // A doc the reader refuses, away from its source's place: its `Code Path` line, in a code span as the writer writes it,
+  // still names the source, which stands.
+  fs.writeFileSync(path.join(at.orphans, "src", "kept.ts"), "export const kept = 1;\n", "utf8");
+  const refused = path.join(at.orphans, ".live-documentation", "source", "moved", "kept.ts.md");
+  fs.mkdirSync(path.dirname(refused), { recursive: true });
+  const written = renderLiveDoc({ codePath: "src/kept.ts", layer: 4, archetype: "implementation", entries: [], authored: "### Purpose\nA file.\n\n### Notes\nNone.", symbols: [], dependencies: [] });
+  fs.writeFileSync(refused, written.replace("## Generated\n", "## Generated\nnot a line of the grammar\n"), "utf8");
   // A configuration cut short, the failure every command meets first.
   at.broken = makeWorkspace({});
   fs.writeFileSync(path.join(at.broken, ".live-docs.config.json"), "{ \"root\": ", "utf8");
@@ -298,6 +305,8 @@ describe("live-docs:orphans", () => {
       const text = fs.readFileSync(path.join(at.orphans, ".live-documentation", "source", `${codePath}.md`), "utf8");
       expect(parseLiveDoc(text).codePath).toBe(codePath);
     }
+    // The refused doc's `Code Path` line is read by its pattern, so it is no orphan though it lies away from its source.
+    expect(() => parseLiveDoc(fs.readFileSync(path.join(at.orphans, ".live-documentation", "source", "moved", "kept.ts.md"), "utf8"))).toThrow();
     const result = ran("orphans");
     expect(result.status).toBe(1);
     expect(result.stderr).toBe("Found 1 orphan live documentation file(s):\n - .live-documentation/source/src/gone.ts.md (expected code path: src/gone.ts)\n");
