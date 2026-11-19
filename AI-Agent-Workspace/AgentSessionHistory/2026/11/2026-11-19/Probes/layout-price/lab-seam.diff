@@ -1,0 +1,42 @@
+diff --git a/scripts/layout-lab/evaluate.ts b/scripts/layout-lab/evaluate.ts
+index 7a6e14c98..bda3defae 100644
+--- a/scripts/layout-lab/evaluate.ts
++++ b/scripts/layout-lab/evaluate.ts
+@@ -118,14 +118,17 @@ export function includeNode(pins: PinSet, subject: string, filters = payloadToSn
+   };
+ }
+ 
+-/** A fresh scene for one fixed order, with optional equalities for an alignment trial. */
+-function placeConfiguration(capture: Capture, run: ScopeRun, config: LabConfig, branches: BranchGraph, alignments: readonly BoundaryAlignment[] = []): { scene: Scene; metrics: Map<string, CardMetrics> } {
++/**
++ * A fresh scene for one fixed order, with optional equalities for an alignment trial and the shown picture's tops, which
++ * choose among placements of equal cost as the page's levellings choose (`layoutScene`).
++ */
++function placeConfiguration(capture: Capture, run: ScopeRun, config: LabConfig, branches: BranchGraph, alignments: readonly BoundaryAlignment[] = [], anchor?: ReadonlyMap<string, number>): { scene: Scene; metrics: Map<string, CardMetrics> } {
+   const plan = planBranches(branches, config.membranePadding);
+   const measurer = capturedMeasurer(capture, branches, { pins: scopePins(run), selected: retainedSubject(run), collapseOnPin: getDefaultTuning().localMap.collapseOnPin, symbolOrder: config.symbolOrder });
+   const scene = layoutScene(plan, branches, measurer, {
+     columnGap: config.columnGap, itemGap: config.itemGap, bandGap: config.bandGap, neck: config.membraneNeck, bandPadding: config.membranePadding, cardMaxWidth: config.cardMaxWidth,
+     evenness: config.membraneEvenness, levelness: config.rowLevelness
+-  }, alignments);
++  }, alignments, anchor);
+   return { scene, metrics: measurer.metrics };
+ }
+ 
+@@ -197,11 +200,14 @@ function searchCycles(capture: Capture, run: ScopeRun, config: LabConfig, explor
+   return { tried: walk.tried.map((trial, index) => ({ ...trial, terms: terms[index] })), firstPrice, orders: walk.picture.orders, branches: walk.picture.branches, scene: walk.picture.scene, price: walk.picture.price };
+ }
+ 
+-/** Re-solves a shown order with explicit alignment constraints, preserving its source scene and reporting the same shape price as the page. */
++/**
++ * Re-solves a shown order with explicit alignment constraints, preserving its source scene and reporting the same shape
++ * price as the page; among placements of equal cost the one nearest the shown picture's tops is taken, as the page takes it.
++ */
+ export function evaluateAlignment(previous: Evaluation, capture: Capture, run: ScopeRun, alignments: readonly BoundaryAlignment[]): Evaluation {
+   const started = performance.now();
+   const { config, branches } = previous;
+-  const { scene, metrics } = placeConfiguration(capture, run, config, branches, alignments);
++  const { scene, metrics } = placeConfiguration(capture, run, config, branches, alignments, previous.scene.tops);
+   const routes = routeScene(scene, branches, capture, metrics, getDefaultTuning().bezier);
+   const signals = signalsOf(branches, scene, previous.scene.tops);
+   const score = pictureScore(signals, { crossing: config.crossingCost, height: config.heightCost, width: config.widthCost, churn: 0, evenness: config.membraneEvenness, levelness: config.rowLevelness, steps: config.membraneSimplicity }, config.returnCost, scene, branches);
