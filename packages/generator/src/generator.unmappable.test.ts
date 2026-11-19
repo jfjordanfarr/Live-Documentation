@@ -50,8 +50,10 @@ describe("a run that meets a file it cannot map", () => {
 
     const result = await generateLiveDocs({ workspaceRoot: workspace, config: normalizeLiveDocumentationConfig({}), logger: silent });
 
-    expect(result.failed).toEqual([{ sourcePath: "src/hostile.ts", reason: expect.stringContaining("its own reader refuses") }]);
+    expect(result.failed).toEqual([{ sourcePath: "src/hostile.ts", reason: expect.stringContaining("its own reader refuses"), error: expect.any(Error) }]);
     expect(result.failed[0].reason).toContain("line ");
+    // The error itself is kept, so that the command can print where it failed under --stack.
+    expect((result.failed[0].error as Error).stack).toContain("generator");
     expect(existsSync(path.join(workspace, ".live-documentation", "source", "src", "a.ts.md"))).toBe(true);
     expect(existsSync(path.join(workspace, ".live-documentation", "source", "src", "b.ts.md"))).toBe(true);
     expect(existsSync(path.join(workspace, ".live-documentation", "source", "src", "hostile.ts.md"))).toBe(false);
@@ -67,7 +69,7 @@ describe("a run that meets a file it cannot map", () => {
     chmodSync(path.join(workspace, "locked.py"), 0o000);
     try {
       const result = await generateLiveDocs({ workspaceRoot: workspace, config: normalizeLiveDocumentationConfig({}), logger: silent });
-      expect(result.failed).toEqual([{ sourcePath: "locked.py", reason: expect.stringContaining("EACCES") }]);
+      expect(result.failed).toEqual([{ sourcePath: "locked.py", reason: expect.stringContaining("EACCES"), error: expect.objectContaining({ code: "EACCES" }) }]);
       expect(existsSync(path.join(workspace, ".live-documentation", "source", "a.ts.md"))).toBe(true);
       expect(existsSync(path.join(workspace, ".live-documentation", "index.json"))).toBe(true);
     } finally {

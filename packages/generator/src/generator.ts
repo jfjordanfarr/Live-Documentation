@@ -67,8 +67,11 @@ export interface LiveDocGeneratorResult {
   deletedFiles: string[];
   /** Workspace-relative path of the graph index written after the run; absent on a dry run. */
   index?: string;
-  /** The files the run could not map, by source path, with the reason: skipped, while the run went on (2026-11-19). */
-  failed: Array<{ sourcePath: string; reason: string }>;
+  /**
+   * The files the run could not map, by source path, with the reason and the error itself, whose stack the command
+   * prints under `--stack`: skipped, while the run went on (2026-11-19).
+   */
+  failed: Array<{ sourcePath: string; reason: string; error: unknown }>;
   /** Which files a rule other than UTF-8 read, and which were not read as text at all, by the one reading step. */
   readings: SourceReadings;
   /** What the readers said they left undrawn, a reason at a time in the order first met, each subject as `<source path>: <subject>`. */
@@ -189,7 +192,7 @@ export async function generateLiveDocs(
     : includedFiles;
 
   const results: LiveDocWriteRecord[] = [];
-  const failed: Array<{ sourcePath: string; reason: string }> = [];
+  const failed: Array<{ sourcePath: string; reason: string; error: unknown }> = [];
   const readings: SourceReadings = { utf16: [], windows1252: [], unread: [] };
   const notices = new Map<string, string[]>();
   let written = 0;
@@ -226,91 +229,93 @@ export async function generateLiveDocs(
     // A file that cannot be mapped, because it cannot be read or because the doc written for it is one the grammar's
     // own reader refuses, is skipped and named by its source path, and the run goes on (2026-11-19).
     try {
-    const archetype = resolveArchetype(normalizedSourcePath, normalizedConfig, isBinaryContent(await readFileHead(absoluteSourcePath, BINARY_SNIFF_BYTES)));
+      const archetype = resolveArchetype(normalizedSourcePath, normalizedConfig, isBinaryContent(await readFileHead(absoluteSourcePath, BINARY_SNIFF_BYTES)));
 
-    // Which rule of the one reading step reads the file's text, counted for the run's last lines, where a reader reads it.
-    if (hasReader(normalizedSourcePath)) {
-      noteReading(readings, normalizedSourcePath, decodeSourceText(await fs.readFile(absoluteSourcePath)));
-    }
+      // Which rule of the one reading step reads the file's text, counted for the run's last lines, where a reader reads it.
+      if (hasReader(normalizedSourcePath)) {
+        noteReading(readings, normalizedSourcePath, decodeSourceText(await fs.readFile(absoluteSourcePath)));
+      }
 
-    const analysis = await analyzeSourceFile(absoluteSourcePath, workspaceRoot, fileIndex, symbolIndex);
-    // What the reader says it left undrawn, counted a reason across files for the run's last lines; never written into the doc.
-    for (const notice of analysis.notices ?? []) {
-      notices.set(notice.reason, [...(notices.get(notice.reason) ?? []), `${normalizedSourcePath}: ${notice.subject}`]);
-    }
+      const analysis = await analyzeSourceFile(absoluteSourcePath, workspaceRoot, fileIndex, symbolIndex);
+      // What the reader says it left undrawn, counted a reason across files for the run's last lines; never written into the doc.
+      for (const notice of analysis.notices ?? []) {
+        const subjects = notices.get(notice.reason);
+        if (subjects === undefined) notices.set(notice.reason, [`${normalizedSourcePath}: ${notice.subject}`]);
+        else subjects.push(`${normalizedSourcePath}: ${notice.subject}`);
+      }
 
-    const docPaths = resolveLiveDocPaths(
-      workspaceRoot,
-      normalizedConfig,
-      normalizedSourcePath,
-      docExtension
-    );
-    const existingContent = await readFileIfExists(docPaths.absolute);
-    const existing = readExisting(existingContent, noReaderHandles(normalizedSourcePath) ? UNREAD_AUTHORED_BLOCK : DEFAULT_AUTHORED_BLOCK);
-    const timestampNow = now().toISOString();
-    const initialGeneratedAt = existing.generatedAt ?? timestampNow;
+      const docPaths = resolveLiveDocPaths(
+        workspaceRoot,
+        normalizedConfig,
+        normalizedSourcePath,
+        docExtension
+      );
+      const existingContent = await readFileIfExists(docPaths.absolute);
+      const existing = readExisting(existingContent, noReaderHandles(normalizedSourcePath) ? UNREAD_AUTHORED_BLOCK : DEFAULT_AUTHORED_BLOCK);
+      const timestampNow = now().toISOString();
+      const initialGeneratedAt = existing.generatedAt ?? timestampNow;
 
-    const generated = composeGenerated({
-      analysis,
-      docAbsolutePath: docPaths.absolute,
-      workspaceRoot,
-      sourceRelativePath: normalizedSourcePath,
-      liveDocsRootAbsolute,
-      docExtension,
-      symbolIndex,
-      entryIndex,
-      citedBy: citedByIndex.get(normalizedSourcePath) ?? [],
-      config: normalizedConfig
-    });
-
-    const renderDocument = (generatedAt: string): string =>
-      renderLiveDoc({
-        codePath: normalizedSourcePath,
-        layer: 4,
-        archetype,
-        generatedAt,
-        authored: existing.authored,
-        ...generated
+      const generated = composeGenerated({
+        analysis,
+        docAbsolutePath: docPaths.absolute,
+        workspaceRoot,
+        sourceRelativePath: normalizedSourcePath,
+        liveDocsRootAbsolute,
+        docExtension,
+        symbolIndex,
+        entryIndex,
+        citedBy: citedByIndex.get(normalizedSourcePath) ?? [],
+        config: normalizedConfig
       });
 
-    let rendered = renderDocument(initialGeneratedAt);
-    let change = classifyChange(existingContent, rendered);
+      const renderDocument = (generatedAt: string): string =>
+        renderLiveDoc({
+          codePath: normalizedSourcePath,
+          layer: 4,
+          archetype,
+          generatedAt,
+          authored: existing.authored,
+          ...generated
+        });
 
-    if (change !== "unchanged" && existing.generatedAt) {
-      if (timestampNow !== initialGeneratedAt) {
-        rendered = renderDocument(timestampNow);
-        change = classifyChange(existingContent, rendered);
+      let rendered = renderDocument(initialGeneratedAt);
+      let change = classifyChange(existingContent, rendered);
+
+      if (change !== "unchanged" && existing.generatedAt) {
+        if (timestampNow !== initialGeneratedAt) {
+          rendered = renderDocument(timestampNow);
+          change = classifyChange(existingContent, rendered);
+        }
       }
-    }
 
-    // Read back by the grammar's own reader before it is written: a doc the reader refuses would stop every later read.
-    try {
-      parseLiveDoc(rendered);
-    } catch (error) {
-      throw error instanceof LiveDocSyntaxError ? new Error(`Live Documentation wrote a doc for it that its own reader refuses: ${error.message}`, { cause: error }) : error;
-    }
+      // Read back by the grammar's own reader before it is written: a doc the reader refuses would stop every later read.
+      try {
+        parseLiveDoc(rendered);
+      } catch (error) {
+        throw error instanceof LiveDocSyntaxError ? new Error(`Live Documentation wrote a doc for it that its own reader refuses: ${error.message}`, { cause: error }) : error;
+      }
 
-    results.push({
-      sourcePath: normalizedSourcePath,
-      docPath: docPaths.relative,
-      change
-    });
+      results.push({
+        sourcePath: normalizedSourcePath,
+        docPath: docPaths.relative,
+        change
+      });
 
-    if (change === "unchanged") {
-      skipped += 1;
-      continue;
-    }
+      if (change === "unchanged") {
+        skipped += 1;
+        continue;
+      }
 
-    if (options.dryRun) {
+      if (options.dryRun) {
+        written += 1;
+        continue;
+      }
+
+      await fs.mkdir(path.dirname(docPaths.absolute), { recursive: true });
+      await fs.writeFile(docPaths.absolute, rendered, "utf8");
       written += 1;
-      continue;
-    }
-
-    await fs.mkdir(path.dirname(docPaths.absolute), { recursive: true });
-    await fs.writeFile(docPaths.absolute, rendered, "utf8");
-    written += 1;
     } catch (error) {
-      failed.push({ sourcePath: normalizedSourcePath, reason: error instanceof Error ? error.message : String(error) });
+      failed.push({ sourcePath: normalizedSourcePath, reason: error instanceof Error ? error.message : String(error), error });
       await removeRefusedDoc(resolveLiveDocPaths(workspaceRoot, normalizedConfig, normalizedSourcePath, docExtension).absolute, options.dryRun ?? false);
     }
   }

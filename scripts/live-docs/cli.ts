@@ -159,6 +159,7 @@ export function runCommand(name: string, main: () => Promise<void>): void {
   if (withStack) {
     process.argv.splice(at, 1);
   }
+  stackAsked = withStack;
   main().catch((error: unknown) => {
     if (error instanceof UsageError) {
       console.error(`${name}: ${error.message} Run "npm run ${name} -- --help" to list the options.`);
@@ -172,8 +173,15 @@ export function runCommand(name: string, main: () => Promise<void>): void {
   });
 }
 
+let stackAsked = false;
+
+/** Whether the command line asked for `--stack`, which {@link runCommand} takes off it: a command prints the stacks of the failures it goes on past. */
+export function stackWanted(): boolean {
+  return stackAsked;
+}
+
 /** A failure's stack, then each cause's under "Caused by", as far as the chain goes. */
-function stackOf(error: unknown): string {
+export function stackOf(error: unknown): string {
   const lines: string[] = [];
   for (let current: unknown = error, depth = 0; current !== undefined && depth < 16; depth += 1) {
     lines.push(`${depth > 0 ? "Caused by: " : ""}${current instanceof Error ? (current.stack ?? current.message) : String(current)}`);

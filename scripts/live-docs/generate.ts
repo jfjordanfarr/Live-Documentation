@@ -12,7 +12,7 @@ import {
 import { compareText } from "@live-documentation/engine/tooling/compareText";
 
 import { generateLiveDocs } from "../../packages/generator/src/generator";
-import { gitIgnoresUnasked, invocationFolder, optionValue, packageVersion, readConfiguration, runCommand, UsageError, workspaceFolder } from "./cli";
+import { gitIgnoresUnasked, invocationFolder, optionValue, packageVersion, readConfiguration, runCommand, stackOf, stackWanted, UsageError, workspaceFolder } from "./cli";
 
 interface ParsedArgs {
   help: boolean;
@@ -323,8 +323,10 @@ async function main(): Promise<void> {
   // The files the run could not map, each by its source path and the reason; the rest of the map was written.
   if (layer4Result.failed.length > 0) {
     console.error(`[live-docs] Could not map ${files(layer4Result.failed.length)}; the rest of the map was written. The fault is Live Documentation's, not the file's; to leave a file out until it is mended, name it in the configuration's "exclude".`);
-    for (const { sourcePath, reason } of layer4Result.failed) {
+    for (const { sourcePath, reason, error } of layer4Result.failed) {
       console.error(`  ${sourcePath}: ${reason}`);
+      // Under --stack, where it failed: the stack of the error the run went on past, and of each that caused it.
+      if (stackWanted()) console.error(stackOf(error).replace(/^/gmu, "    "));
     }
     process.exitCode = 1;
   }
