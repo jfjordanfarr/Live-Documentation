@@ -1,9 +1,9 @@
+import { execFileSync } from "node:child_process";
 import { promises as fs } from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { describe, expect, it, vi } from "vitest";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
-import * as gitUtils from "../gitUtils";
 import { openGitRepository, parseMainline, parseNameStatus, parseTags } from "./git";
 
 describe("parseMainline", () => {
@@ -43,61 +43,120 @@ describe("parseTags", () => {
   });
 });
 
+/**
+ * A repository of two commits whose attributes differ: the first declares none, the second asks every file to be
+ * checked out with CRLF endings, and the person's checkout stands at the second, with those endings on disk.
+ */
 describe("a commit's tree for the history", () => {
-  it("is made at once with another, each through an index of its own, registering nothing, and removed with its index", async () => {
-    const root = await fs.mkdtemp(path.join(os.tmpdir(), "history-tree-"));
-    const pending: Array<{ args: readonly string[]; env?: Record<string, string>; resolve: (stdout?: string) => void; reject: (error: Error) => void }> = [];
-    const exec = vi.spyOn(gitUtils, "execFileAsync").mockImplementation(async (_command, args, options) => {
-      if (args.includes("--show-toplevel")) return { stdout: root, stderr: "" };
-      return new Promise((resolve, reject) => pending.push({ args, env: options.env, resolve: (stdout = "") => resolve({ stdout, stderr: "" }), reject }));
-    });
-    try {
-      const repo = await openGitRepository(root);
-      const first = repo.workingTree("a", path.join(root, "a"));
-      const second = repo.workingTree("b", path.join(root, "b"));
-      // Both trees read their commits at once: nothing waits on the other's registry change.
-      await vi.waitFor(() => expect(pending.map((call) => call.args.at(-1))).toEqual(["a", "b"]));
-      expect(pending.every((call) => call.args.includes("read-tree"))).toBe(true);
-      expect(pending.map((call) => call.env?.GIT_INDEX_FILE)).toEqual([path.join(root, "a.index"), path.join(root, "b.index")]);
-      pending[0].resolve();
-      pending[1].resolve();
-      await vi.waitFor(() => expect(pending).toHaveLength(4));
-      expect(pending[2].args).toEqual(expect.arrayContaining(["checkout-index", "--all", `--prefix=${path.join(root, "a")}${path.sep}`]));
-      expect(pending.some((call) => call.args.includes("worktree"))).toBe(false);
-      pending[2].resolve();
-      pending[3].resolve();
-      await vi.waitFor(() => expect(pending).toHaveLength(5));
-      expect(pending[4].args).toContain("--git-common-dir");
-      pending[4].resolve(`${root}/.git\n`);
-      const [a, b] = await Promise.all([first, second]);
-      // A process in the tree asks git through the repository, the tree and the tree's own index.
-      expect(a.environment).toEqual({ GIT_DIR: `${root}/.git`, GIT_WORK_TREE: path.join(root, "a"), GIT_INDEX_FILE: path.join(root, "a.index") });
-      await fs.writeFile(path.join(root, "a.index"), "index");
-      const removal = a.remove();
-      expect(a.remove(), "signal cleanup joins the worker's removal").toBe(removal);
-      await removal;
-      await b.remove();
-      expect((await fs.readdir(root)).sort()).toEqual([]);
-    } finally {
-      exec.mockRestore();
-      await fs.rm(root, { recursive: true, force: true });
+  // The repository's own git is kept from the person's configuration; the person's configuration is set per test.
+  const isolated = { ...process.env, GIT_CONFIG_GLOBAL: os.devNull, GIT_CONFIG_NOSYSTEM: "1", GIT_AUTHOR_NAME: "Ada", GIT_AUTHOR_EMAIL: "ada@example.invalid", GIT_COMMITTER_NAME: "Ada", GIT_COMMITTER_EMAIL: "ada@example.invalid" };
+  const git = (cwd: string, args: string[]): string => execFileSync("git", args, { cwd, env: isolated, encoding: "utf8" });
+  let scratch: string;
+  let repository: string;
+  let first: string;
+  let second: string;
+
+  beforeAll(async () => {
+    scratch = await fs.mkdtemp(path.join(os.tmpdir(), "history-tree-"));
+    repository = path.join(scratch, "repository");
+    await fs.mkdir(path.join(repository, "src"), { recursive: true });
+    git(repository, ["init", "--quiet", "-b", "main"]);
+    await fs.writeFile(path.join(repository, "src", "a.ts"), "export const a = 1;\nexport const b = 2;\n");
+    await fs.writeFile(path.join(repository, "run.sh"), "#!/bin/sh\necho run\n", { mode: 0o755 });
+    await fs.symlink("src/a.ts", path.join(repository, "link.ts"));
+    git(repository, ["add", "--all"]);
+    git(repository, ["commit", "--quiet", "-m", "Begin without attributes"]);
+    first = git(repository, ["rev-parse", "HEAD"]).trim();
+    await fs.writeFile(path.join(repository, ".gitattributes"), "* text eol=crlf\n");
+    await fs.writeFile(path.join(repository, "src", "a.ts"), "export const a = 1;\nexport const b = 3;\n");
+    git(repository, ["add", "--all"]);
+    git(repository, ["commit", "--quiet", "-m", "Ask for CRLF endings"]);
+    second = git(repository, ["rev-parse", "HEAD"]).trim();
+    // The person's checkout as git leaves it after the second commit is checked out afresh: CRLF on disk.
+    await fs.rm(path.join(repository, "src", "a.ts"));
+    git(repository, ["checkout", "--", "src/a.ts"]);
+  });
+
+  afterAll(async () => {
+    await fs.rm(scratch, { recursive: true, force: true });
+  });
+
+  /** Every file of a folder, by its path relative to it, with its bytes or a link's target. */
+  async function contents(folder: string): Promise<Map<string, string>> {
+    const found = new Map<string, string>();
+    for (const entry of await fs.readdir(folder, { recursive: true, withFileTypes: true })) {
+      const file = path.join(entry.parentPath, entry.name);
+      const relative = path.relative(folder, file).split(path.sep).join("/");
+      if (relative.split("/")[0] === ".git") continue;
+      if (entry.isSymbolicLink()) found.set(relative, `-> ${await fs.readlink(file)}`);
+      else if (entry.isFile()) found.set(relative, await fs.readFile(file, "latin1"));
     }
+    return found;
+  }
+
+  it("holds the person's checkout to the attributes of its head: CRLF on disk", async () => {
+    // The ground the next test stands on: were the person's attributes applied, the first commit would come out with CRLF.
+    expect(await fs.readFile(path.join(repository, "src", "a.ts"), "latin1")).toContain("\r\n");
+  });
+
+  it("writes each commit's files as the repository stores them, a commit without attributes as a checkout of it does", async () => {
+    const repo = await openGitRepository(repository);
+    for (const commit of [first, second]) {
+      const tree = await repo.workingTree(commit, path.join(scratch, `tree-${commit.slice(0, 8)}`));
+      try {
+        const written = await contents(tree.root);
+        // Every file is its blob's bytes, as git stores it, and a link is a link to the target its blob holds.
+        const listed = git(repository, ["ls-tree", "-r", "--name-only", commit]).split("\n").filter(Boolean);
+        expect([...written.keys()].sort()).toEqual(listed.sort());
+        for (const file of listed) {
+          const stored = execFileSync("git", ["cat-file", "blob", `${commit}:${file}`], { cwd: repository, env: isolated }).toString("latin1");
+          expect(written.get(file), `${file} at ${commit.slice(0, 8)}`).toBe(file === "link.ts" ? `-> ${stored}` : stored);
+        }
+        expect((await fs.stat(path.join(tree.root, "run.sh"))).mode & 0o100).toBe(0o100);
+        if (commit === first) {
+          // The commit's own checkout, which applies no attribute since the commit declares none, gives the same files.
+          const checkout = path.join(scratch, "checkout");
+          git(repository, ["worktree", "add", "--detach", "--quiet", checkout, commit]);
+          try {
+            const expected = await contents(checkout);
+            expected.delete(".git");
+            expect(written).toEqual(expected);
+          } finally {
+            git(repository, ["worktree", "remove", "--force", checkout]);
+          }
+        } else {
+          // Where a commit's own attributes would convert its files on checkout, the history reads them as stored.
+          expect(written.get("src/a.ts")).not.toContain("\r\n");
+        }
+      } finally {
+        await tree.remove();
+      }
+    }
+  });
+
+  it("is made at once with another, each with an index of its own, registers nothing, and is removed with its index", async () => {
+    const repo = await openGitRepository(repository);
+    const [a, b] = await Promise.all([repo.workingTree(first, path.join(scratch, "a")), repo.workingTree(second, path.join(scratch, "b"))]);
+    expect(git(repository, ["worktree", "list", "--porcelain"]).split("\n").filter((line) => line.startsWith("worktree "))).toHaveLength(1);
+    // A process in the tree asks git through the repository, the tree and the tree's own index, apart from the person's configuration.
+    expect({ ...a.environment, GIT_DIR: await fs.realpath(a.environment.GIT_DIR) }).toEqual({
+      GIT_DIR: await fs.realpath(path.join(repository, ".git")),
+      GIT_WORK_TREE: path.join(scratch, "a"),
+      GIT_INDEX_FILE: path.join(scratch, "a.index"),
+      GIT_CONFIG_NOSYSTEM: "1",
+      GIT_CONFIG_GLOBAL: os.devNull
+    });
+    expect(execFileSync("git", ["ls-files"], { cwd: a.root, env: { ...isolated, ...a.environment }, encoding: "utf8" }).split("\n").filter(Boolean).sort()).toEqual(["link.ts", "run.sh", "src/a.ts"]);
+    const removal = a.remove();
+    expect(a.remove(), "signal cleanup joins the worker's removal").toBe(removal);
+    await removal;
+    await b.remove();
+    expect((await fs.readdir(scratch)).sort()).toEqual(["repository"]);
   });
 
   it("removes what it made when the commit cannot be read", async () => {
-    const root = await fs.mkdtemp(path.join(os.tmpdir(), "history-tree-"));
-    const exec = vi.spyOn(gitUtils, "execFileAsync").mockImplementation(async (_command, args) => {
-      if (args.includes("--show-toplevel")) return { stdout: root, stderr: "" };
-      throw new Error("fatal: not a tree object");
-    });
-    try {
-      const repo = await openGitRepository(root);
-      await expect(repo.workingTree("nothing", path.join(root, "tree"))).rejects.toThrow("not a tree object");
-      expect(await fs.readdir(root)).toEqual([]);
-    } finally {
-      exec.mockRestore();
-      await fs.rm(root, { recursive: true, force: true });
-    }
+    const repo = await openGitRepository(repository);
+    await expect(repo.workingTree("0".repeat(40), path.join(scratch, "tree"))).rejects.toThrow();
+    expect((await fs.readdir(scratch)).sort()).toEqual(["repository"]);
   });
 });
-
