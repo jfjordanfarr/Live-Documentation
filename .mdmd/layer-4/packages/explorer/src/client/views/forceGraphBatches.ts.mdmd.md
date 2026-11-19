@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphBatches.ts
-- Generated At: 2026-11-17T10:20:42.296Z
+- Generated At: 2026-11-19T00:59:27.096Z
 
 ## Authored
 ### Purpose
@@ -76,14 +76,14 @@ Geometry shares a GPU batch; numeric working arrays keep preparation independent
 
 #### `SpatialDrawStyle` {#symbol-spatialdrawstyle}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L54)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L61)
 
 ##### `SpatialDrawStyle` — Summary
 Values with visual meaning, supplied by the view without involving the force model.
 
 #### `SpatialWrapperStyle` {#symbol-spatialwrapperstyle}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L80)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L87)
 
 ##### `SpatialWrapperStyle` — Summary
 How the wrapped groups are drawn this frame (2026-11-05): each wrapper's opacity, as its seed's, and the growth of one
@@ -92,7 +92,7 @@ seeds bursting open, drawn but no longer picked.
 
 #### `SpatialWrapperUnit` {#symbol-spatialwrapperunit}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L100)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L107)
 
 ##### `SpatialWrapperUnit` — Summary
 One unit a wrapper shows within its skin (2026-11-06), relative to its centre: a file, drawn as a sphere in its colour
@@ -101,7 +101,7 @@ skin's look.
 
 #### `createSpatialBuffers` {#symbol-createspatialbuffers}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L126)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L133)
 - Parameters: `scene`: `Scene`; `style`: [`SpatialDrawStyle`](#symbol-spatialdrawstyle); `renderer`: `WebGLRenderer`
 - Constraints: [`SpatialNode`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnode), [`SpatialDrawLink`](#symbol-spatialdrawlink)
 
@@ -110,7 +110,7 @@ Pack documented nodes and wires straight into three instance buffers; camera cha
 
 #### `drawSpatialGraphOnChange` {#symbol-drawspatialgraphonchange}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L692)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L716)
 - Parameters: `camera`: `Camera`; `renderer`: `WebGLRenderer`
 
 ##### `drawSpatialGraphOnChange` — Summary
@@ -118,7 +118,7 @@ Draw when the camera or the caller's picture revision changes, leaving stationar
 
 #### `screenWireIntersectsFrustum` {#symbol-screenwireintersectsfrustum}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L722)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L746)
 - Parameters: `clipMatrix`: `Matrix4`; `viewport`: `Vector2`
 
 ##### `screenWireIntersectsFrustum` — Summary
@@ -128,6 +128,8 @@ Clip a unit wire's axis in homogeneous coordinates, projecting its compensated w
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`palette.activePalette`](../palette.ts.mdmd.md#symbol-activepalette)
+- [`palette.marbleBend`](../palette.ts.mdmd.md#symbol-marblebend)
+- [`palette.marblePattern`](../palette.ts.mdmd.md#symbol-marblepattern-const)
 - [`palette.marblesDrawn`](../palette.ts.mdmd.md#symbol-marblesdrawn)
 - [`palette.unitChannels`](../palette.ts.mdmd.md#symbol-unitchannels)
 - [`containedSphere.ContainedSphereMaterial`](./containedSphere.ts.mdmd.md#symbol-containedspherematerial)

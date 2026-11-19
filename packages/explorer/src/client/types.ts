@@ -243,6 +243,8 @@ export interface AppearanceTuning {
   palette: PaletteName;
   marbles: MarbleChoice;
   marblePattern: MarblePattern;
+  /** How far the veins bend with the pattern from each file's doc, 0 to 1 (Vein Bend, 2026-11-19). */
+  marbleBend: number;
 }
 
 /**
@@ -260,7 +262,7 @@ export const MARBLE_CHOICES: readonly MarbleChoice[] = ["on", "off"];
 export type { MarblePattern };
 
 /** Every marble pattern, in the order the control offers them; the first, one pattern, is the default. */
-export const MARBLE_PATTERNS: readonly MarblePattern[] = ["one", "doc", "doc-axis"];
+export const MARBLE_PATTERNS: readonly MarblePattern[] = ["one", "doc"];
 
 /**
  * Which ticks the history's scrubber draws and the step key moves between: every step; one per day, week or month

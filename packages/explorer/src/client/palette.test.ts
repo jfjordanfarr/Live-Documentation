@@ -2,7 +2,7 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { activePalette, channels, chooseMarblePattern, chooseMarbles, choosePalette, customProperties, DEFAULT_PALETTE, isPaletteName, marblePattern, marblesDrawn, mix, PALETTES, paletteStylesheet, PROPOSED, rgba, TODAY, unitChannels, VIVID_KINDS, whenPaletteChanges, type Palette } from "./palette";
+import { activePalette, channels, chooseMarbleBend, chooseMarblePattern, chooseMarbles, choosePalette, customProperties, DEFAULT_MARBLE_BEND, DEFAULT_PALETTE, isPaletteName, marbleBend, marblePattern, marblesDrawn, mix, PALETTES, paletteStylesheet, PROPOSED, rgba, TODAY, unitChannels, VIVID_KINDS, whenPaletteChanges, type Palette } from "./palette";
 import { fileShares, MARBLE_COLOUR, MARBLE_FRAGMENT_PARS, MARBLE_SHINE, MARBLE_VEINS, MARBLE_VERTEX, MARBLE_VERTEX_PARS, marbleAmount, marbleCounts, marbleOf, marbleSeed, marbleShares, marbleTint, type SpatialKind } from "./views/forceGraphAppearance";
 
 describe("the palette", () => {
@@ -311,7 +311,7 @@ describe("the marble", () => {
       guards.forEach((guard, i) => {
         if (i === 0) { depth = 1; return; }
         if (guard === "#endif") depth--;
-        else if (guard.startsWith("#ifdef")) { expect(guard, name).toMatch(/^#ifdef MARBLE_SKETCH(?:_AXIS)?$/); depth++; }
+        else if (guard.startsWith("#ifdef")) { expect(guard, name).toBe("#ifdef MARBLE_SKETCH"); depth++; }
         else expect(guard, name).toBe("#else");
         expect(depth > 0 || i === guards.length - 1, `${name}: the outer guard closes only at the end`).toBe(true);
       });
@@ -342,10 +342,20 @@ describe("the marble", () => {
     const stop = whenPaletteChanges(() => heard.push(marblePattern()));
     chooseMarblePattern("doc");
     chooseMarblePattern("doc");
-    chooseMarblePattern("doc-axis");
+    chooseMarbleBend(0.3);
+    chooseMarbleBend(0.3);
+    chooseMarbleBend(7);
     chooseMarblePattern("one");
+    chooseMarbleBend(DEFAULT_MARBLE_BEND);
     stop();
-    expect(heard).toEqual(["doc", "doc-axis", "one"]);
+    // The bend is held to 0 to 1, and each change is heard once.
+    expect(heard).toEqual(["doc", "doc", "doc", "one", "one"]);
+    expect(marbleBend()).toBe(DEFAULT_MARBLE_BEND);
+  });
+
+  it("bends by a uniform, so that moving Vein Bend compiles nothing", () => {
+    expect(MARBLE_FRAGMENT_PARS).toContain("uniform float uMarbleBend;");
+    expect(MARBLE_FRAGMENT_PARS).toMatch(/float warp = uMarbleBend \* \(/);
   });
 
   it("is drawn or not as the viewer chooses, and tells whoever listens to the palette when that changes", () => {

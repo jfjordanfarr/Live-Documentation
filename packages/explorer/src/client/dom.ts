@@ -1,4 +1,4 @@
-import { chooseMarblePattern, chooseMarbles, choosePalette, customProperties, paletteNamed } from "./palette";
+import { chooseMarbleBend, chooseMarblePattern, chooseMarbles, choosePalette, customProperties, paletteNamed } from "./palette";
 import type { LocalMapPerspective, MarbleChoice, MarblePattern, ViewName } from "./types";
 import { seamsOf } from "./views/localView/word-seams";
 
@@ -32,8 +32,9 @@ export function applyMarbles(choice: MarbleChoice): void {
 }
 
 /** Winds the marbles' veins in one pattern or from each file's doc (the pattern trial, 2026-11-18): the 3D map draws again, nothing moving. */
-export function applyMarblePattern(choice: MarblePattern): void {
+export function applyMarblePattern(choice: MarblePattern, bend: number): void {
   chooseMarblePattern(choice);
+  chooseMarbleBend(bend);
 }
 
 /** Activates the given view tab and its container while deactivating siblings. */

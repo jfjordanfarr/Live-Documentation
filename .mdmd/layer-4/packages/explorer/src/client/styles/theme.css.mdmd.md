@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/styles/theme.css
-- Generated At: 2026-09-27T23:21:27.639Z
+- Generated At: 2026-11-19T00:59:27.008Z
 
 ## Authored
 ### Purpose
@@ -29,3 +29,8 @@ _No public symbols detected_
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-2/design-system/visual-foundations.mdmd.md`](../../../../../../layer-2/design-system/visual-foundations.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

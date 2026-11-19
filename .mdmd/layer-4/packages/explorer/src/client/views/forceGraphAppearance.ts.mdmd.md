@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphAppearance.ts
-- Generated At: 2026-11-17T10:20:42.183Z
+- Generated At: 2026-11-19T00:59:27.059Z
 
 ## Authored
 ### Purpose
@@ -75,15 +75,17 @@ How much of a ball each vein takes, 0 to 1 each and never more than 1 together: 
 
 #### `Marble` {#symbol-marble}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphAppearance.ts#L65)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphAppearance.ts#L69)
 - Extends: [`MarbleShares`](#symbol-marbleshares-interface)
 
 ##### `Marble` — Summary
-A file drawn as a marble: its glass, its veins' shares, and the number from its id that turns its pattern.
+A file drawn as a marble: its glass, its veins' shares, and the number from its id that turns its pattern; and, when
+its pattern is drawn from its doc (the pattern trial, 2026-11-18), the sketch of what its Live Doc lists
+(views/marbleSketch.ts), the strengths of the waves that bend its veins.
 
 #### `marbleAmount` {#symbol-marbleamount}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphAppearance.ts#L72)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphAppearance.ts#L76)
 
 ##### `marbleAmount` — Summary
 How much of its veins a count of files gives a ball: 1 a third, 3 two thirds, 7 or more all. Half this repository's
@@ -92,7 +94,7 @@ with 15 files for all, the commonest balls read as a pale grey-aqua (2026-11-17)
 
 #### `MARBLE_VEINS` {#symbol-marble_veins}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphAppearance.ts#L79)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphAppearance.ts#L83)
 
 ##### `MARBLE_VEINS` — Summary
 The most of a ball each vein may take: on quiet glass, and on a tinted kind's glass (a test, an asset, a document)
@@ -101,7 +103,7 @@ together, so that some glass always remains, the two keeping their proportion wh
 
 #### `marbleShares (function)` {#symbol-marbleshares-function}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphAppearance.ts#L85)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphAppearance.ts#L89)
 - Returns: [`MarbleShares`](#symbol-marbleshares-interface)
 - Parameters: `kind`: [`SpatialKind`](#symbol-spatialkind); `counts`: [`MarbleCounts`](#symbol-marblecounts-interface)
 
@@ -110,7 +112,7 @@ A ball's two shares, from its kind and its counts.
 
 #### `marbleTint` {#symbol-marbletint}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphAppearance.ts#L98)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphAppearance.ts#L102)
 - Returns: [`Colour`](../palette.ts.mdmd.md#symbol-colour)
 - Parameters: `shares`: [`MarbleShares`](#symbol-marbleshares-interface); `palette`: [`Palette`](../palette.ts.mdmd.md#symbol-palette)
 
@@ -120,14 +122,14 @@ eye averages a ball too small to tell its bands apart. A ball with no veins is i
 
 #### `marbleSeed` {#symbol-marbleseed}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphAppearance.ts#L107)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphAppearance.ts#L111)
 
 ##### `marbleSeed` — Summary
 A number in [0, 1) from a file's id, the same on every page and every load, which turns its marble's pattern.
 
 #### `marbleCounts (function)` {#symbol-marblecounts-function}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphAppearance.ts#L120)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphAppearance.ts#L124)
 - Returns: `ReadonlyMap`
 
 ##### `marbleCounts (function)` — Summary
@@ -137,7 +139,7 @@ the file that offers, so that a moment of the history, whose files carry no depe
 
 #### `fileShares` {#symbol-fileshares}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphAppearance.ts#L144)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphAppearance.ts#L148)
 - Returns: [`MarbleShares`](#symbol-marbleshares-interface)
 - Parameters: `counts`: `ReadonlyMap`
 
@@ -148,7 +150,7 @@ document is its yellow glass.
 
 #### `marbleOf` {#symbol-marbleof}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphAppearance.ts#L150)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphAppearance.ts#L154)
 - Returns: [`Marble`](#symbol-marble)
 - Parameters: `counts`: `ReadonlyMap`; `palette`: [`Palette`](../palette.ts.mdmd.md#symbol-palette)
 
@@ -157,7 +159,7 @@ A file's marble under the palette in force; null for what is no file, a director
 
 #### `MARBLE_VERTEX_PARS` {#symbol-marble_vertex_pars}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphAppearance.ts#L171)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphAppearance.ts#L181)
 
 ##### `MARBLE_VERTEX_PARS` — Summary
 The marble in a sphere's shaders: the vertex's attributes and what it hands on, and the fragment's pattern. A ball's
@@ -169,6 +171,12 @@ derivatives, and the whole pattern gives way to the far tint (the instance colou
 pixels, so that a distant ball is one steady colour and never shimmers. A small highlight makes the ball read as
 glass, fading as the pattern does. With no marble (`spatialMarbleVeins.w` zero) none of this runs.
 
+With the pattern from each file's doc (the pattern trial, 2026-11-18) the material defines `MARBLE_SKETCH` beside
+`MARBLES`, and the warp is the field of `MARBLE_WAVES` whose strengths are the file's sketch, carried in two more
+attributes, scaled by the viewer's Vein Bend (the uniform `uMarbleBend`, so that moving it compiles nothing). The axis,
+the vanes, their shares and every edge's filtering are as before. With one pattern it is not defined and the shaders
+are, to the compiler, the ones of before the trial.
+
 Every chunk stands inside `#ifdef MARBLES`, and a material defines that only while marbles are drawn: with marbles
 off its shaders are, to the compiler, the ones it had before marbles. A test inside the shader is not enough. The
 software renderer the browser tests run on shades several pixels at once and pays for the three varyings on every
@@ -177,28 +185,41 @@ compiled in and no marble drawn, where it draws at 5.3 without (2026-11-17).
 
 #### `MARBLE_VERTEX` {#symbol-marble_vertex}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphAppearance.ts#L180)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphAppearance.ts#L196)
 
 ##### `MARBLE_VERTEX` — Summary
-The vertex's hand-on of a marble's glass and veins.
+The vertex's hand-on of a marble's glass and veins, and with the pattern from its doc, its sketch.
+
+#### `MARBLE_WAVES` {#symbol-marble_waves}
+- Type: const
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphAppearance.ts#L218)
+
+##### `MARBLE_WAVES` — Summary
+The pattern from a file's doc (the pattern trial, 2026-11-18): eight fixed smooth waves over the ball's unit sphere,
+each a direction, a frequency and a phase, whose strengths are the file's sketch, one number each. The field
+`W(p) = Σ sᵢ · sin(fᵢ · dot(dᵢ, p) + φᵢ)` takes the place of the warp: smooth and periodic, as Perlin's noise is, and
+linear in the sketch, so that a small move of the sketch is a small bend of the veins. The frequencies are low, one
+to two waves across a ball, so that the bend is of the vanes' own scale and the pattern still gives way to the far
+tint where it did. `bend` is the field's strength in vanes' periods, the Vein Bend a viewer starts with: a sketch of
+unit length bends a vane by about a third of its period at its root mean square.
 
 #### `MARBLE_FRAGMENT_PARS` {#symbol-marble_fragment_pars}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphAppearance.ts#L190)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphAppearance.ts#L240)
 
 ##### `MARBLE_FRAGMENT_PARS` — Summary
 The fragment's declarations and the pattern.
 
 #### `MARBLE_COLOUR` {#symbol-marble_colour}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphAppearance.ts#L225)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphAppearance.ts#L284)
 
 ##### `MARBLE_COLOUR` — Summary
 The fragment's colour, after the instance colour (the far tint) is read into `diffuseColor`.
 
 #### `MARBLE_SHINE` {#symbol-marble_shine}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphAppearance.ts#L231)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphAppearance.ts#L290)
 
 ##### `MARBLE_SHINE` — Summary
 The glass's highlight, added to the light the ball sends out, where the pattern is drawn.

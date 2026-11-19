@@ -168,8 +168,8 @@ export function marbleOf(id: string, archetype: string | undefined, counts: Read
  *
  * With the pattern from each file's doc (the pattern trial, 2026-11-18) the material defines `MARBLE_SKETCH` beside
  * `MARBLES`, and the warp is the field of `MARBLE_WAVES` whose strengths are the file's sketch, carried in two more
- * attributes; with `MARBLE_SKETCH_AXIS` too, the axis and the vanes' turn are read from the sketch rather than the seed.
- * The vanes, their shares and every edge's filtering are as before. With one pattern neither is defined and the shaders
+ * attributes, scaled by the viewer's Vein Bend (the uniform `uMarbleBend`, so that moving it compiles nothing). The axis,
+ * the vanes, their shares and every edge's filtering are as before. With one pattern it is not defined and the shaders
  * are, to the compiler, the ones of before the trial.
  *
  * Every chunk stands inside `#ifdef MARBLES`, and a material defines that only while marbles are drawn: with marbles
@@ -212,8 +212,8 @@ const MARBLE_PATTERN = { vanes: 3, twist: 1.35, warp: 0.07 } as const;
  * `W(p) = Σ sᵢ · sin(fᵢ · dot(dᵢ, p) + φᵢ)` takes the place of the warp: smooth and periodic, as Perlin's noise is, and
  * linear in the sketch, so that a small move of the sketch is a small bend of the veins. The frequencies are low, one
  * to two waves across a ball, so that the bend is of the vanes' own scale and the pattern still gives way to the far
- * tint where it did. `bend` is the field's strength in vanes' periods: a sketch of unit length bends a vane by about a
- * third of its period at its root mean square.
+ * tint where it did. `bend` is the field's strength in vanes' periods, the Vein Bend a viewer starts with: a sketch of
+ * unit length bends a vane by about a third of its period at its root mean square.
  */
 export const MARBLE_WAVES = {
   bend: 0.55,
@@ -226,24 +226,14 @@ export const MARBLE_WAVES = {
     { direction: [0.8, 0, -0.6], frequency: 2.6, phase: 3.0 },
     { direction: [-0.6, 0.8, 0], frequency: 5.3, phase: 0.9 },
     { direction: [0.36, -0.48, 0.8], frequency: 3.1, phase: 2.7 }
-  ],
-  /** With the axis from the doc too: three fixed directions in the sketch's space, whose readings give the axis, and one whose reading turns the vanes. */
-  axis: [
-    [0.42, -0.31, 0.18, 0.55, -0.12, 0.27, -0.46, 0.30],
-    [-0.20, 0.47, 0.38, -0.09, 0.51, -0.33, 0.14, 0.25],
-    [0.35, 0.22, -0.52, 0.16, 0.29, 0.41, 0.33, -0.40]
-  ],
-  turn: [0.29, 0.37, -0.21, -0.44, 0.35, 0.18, -0.49, 0.38]
+  ]
 } as const;
 
 const glslNumber = (value: number): string => (Number.isInteger(value) ? value.toFixed(1) : String(value));
 const glslVec = (values: readonly number[]): string => `vec${values.length}(${values.map(glslNumber).join(", ")})`;
-/** A reading of the sketch along a fixed direction of its space: the two halves of the sketch against the two halves of the direction. */
-const sketchReading = (direction: readonly number[]): string =>
-  `(dot(vMarbleSketchA, ${glslVec(direction.slice(0, 4))}) + dot(vMarbleSketchB, ${glslVec(direction.slice(4, 8))}))`;
 const waveTerm = (wave: (typeof MARBLE_WAVES.waves)[number]): string =>
   `sin(${glslNumber(wave.frequency)} * dot(${glslVec(wave.direction)}, p) + ${glslNumber(wave.phase)})`;
-const SKETCH_WARP = `${glslNumber(MARBLE_WAVES.bend)} * (dot(vMarbleSketchA, vec4(${MARBLE_WAVES.waves.slice(0, 4).map(waveTerm).join(",\n    ")}))
+const SKETCH_WARP = `uMarbleBend * (dot(vMarbleSketchA, vec4(${MARBLE_WAVES.waves.slice(0, 4).map(waveTerm).join(",\n    ")}))
     + dot(vMarbleSketchB, vec4(${MARBLE_WAVES.waves.slice(4, 8).map(waveTerm).join(",\n    ")})))`;
 
 /** The fragment's declarations and the pattern. */
@@ -254,6 +244,7 @@ uniform vec3 uMarbleUses;
 varying vec3 vMarbleGlass;
 varying vec4 vMarbleVeins;
 #ifdef MARBLE_SKETCH
+uniform float uMarbleBend;
 varying vec4 vMarbleSketchA;
 varying vec4 vMarbleSketchB;
 #endif
@@ -264,15 +255,9 @@ float marbleCover(float t, float w, float s) {
   return (floor(b) * s + min(fract(b), s) - floor(a) * s - min(fract(a), s)) / w;
 }
 vec3 marbleColour(vec3 p, vec3 far) {
-#ifdef MARBLE_SKETCH_AXIS
-  // The axis and the vanes' turn read from the sketch, nudged off the sketch's rare reading of no direction.
-  float seed = 1.5 * ${sketchReading(MARBLE_WAVES.turn)};
-  vec3 axis = normalize(vec3(${MARBLE_WAVES.axis.map(sketchReading).join(", ")}) + vec3(0.0, 1.0e-4, 0.0));
-#else
   float seed = vMarbleVeins.z;
   float z = 2.0 * fract(seed * 7.31) - 1.0, around = 6.2831853 * fract(seed * 3.17);
   vec3 axis = vec3(sqrt(max(0.0, 1.0 - z * z)) * vec2(cos(around), sin(around)), z);
-#endif
   vec3 u = normalize(cross(axis, abs(axis.y) < 0.9 ? vec3(0.0, 1.0, 0.0) : vec3(1.0, 0.0, 0.0)));
   vec3 v = cross(axis, u);
   // Nudged off the axis, where the angle has no value.

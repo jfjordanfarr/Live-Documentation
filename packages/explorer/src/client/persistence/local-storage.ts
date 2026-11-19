@@ -6,7 +6,7 @@
  */
 
 import { LAYOUT_PRESETS, readLayoutSettings } from "../layout-presets";
-import { DEFAULT_PALETTE, isPaletteName } from "../palette";
+import { DEFAULT_MARBLE_BEND, DEFAULT_PALETTE, isPaletteName } from "../palette";
 import { readReadingChoices, type ReadingChoice } from "../reading-state";
 import { CHANGE_EMPHASES, HIDDEN_FILES_LOOKS, HISTORY_GRANULARITIES, MARBLE_CHOICES, MARBLE_PATTERNS, type ChangeEmphasis, type DiscoveryTarget, type HistoryAxis, type HistoryGranularity, type InspectionTarget, type LocalMapPerspective, type ExplorerFilters, type SpatialLayout, type SymbolOrder, type TuningConfig, type ViewName } from "../types";
 import { DEFAULT_RETURN_COST } from "../views/localView/cycle-order";
@@ -105,7 +105,7 @@ export const getDefaultTuning = (): TuningConfig => ({
   // Today's colours until a viewer chooses others (the colour pass, 2026-11-16), and marbles until a viewer turns them
   // off (the marble trial, 2026-11-17; the default since 2026-11-18, the owner's "a worthy new default"), each in one
   // pattern until a viewer chooses one from its doc (the pattern trial, 2026-11-18).
-  appearance: { palette: DEFAULT_PALETTE, marbles: MARBLE_CHOICES[0], marblePattern: MARBLE_PATTERNS[0] }
+  appearance: { palette: DEFAULT_PALETTE, marbles: MARBLE_CHOICES[0], marblePattern: MARBLE_PATTERNS[0], marbleBend: DEFAULT_MARBLE_BEND }
 });
 
 const isRecord = (value: unknown): value is Record<string, unknown> => {
@@ -318,7 +318,8 @@ export const readPersistedUi = (): PersistedUi | null => {
         tuning.appearance = {
           ...(isPaletteName(appearanceRaw.palette) ? { palette: appearanceRaw.palette } : null),
           ...(marbles ? { marbles } : null),
-          ...(marblePattern ? { marblePattern } : null)
+          ...(marblePattern ? { marblePattern } : null),
+          ...(typeof appearanceRaw.marbleBend === "number" && appearanceRaw.marbleBend >= 0 && appearanceRaw.marbleBend <= 1 ? { marbleBend: appearanceRaw.marbleBend } : null)
         };
       }
 

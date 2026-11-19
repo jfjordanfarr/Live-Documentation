@@ -33,8 +33,9 @@ test("every tuning control explains what changing it does, as its tooltip and it
   // beside it the same day (the trial of a file drawn as glass of its kind, veined by what it offers and uses). Hidden
   // Files joined the 2D layout group the same day (the trial of cells in place of a drawn directory's "+2 files"), and Beyond
   // the Hops the 3D layout group on 2026-11-18 (the trial of the next step past the hops beside everything), and Marble
-  // Pattern the Colour group the same day (the trial of veins bent by what each file's doc lists).
-  await expect(controls).toHaveCount(69);
+  // Pattern the Colour group the same day (the trial of veins bent by what each file's doc lists), and Vein Bend beside it
+  // on 2026-11-19 (how far they bend).
+  await expect(controls).toHaveCount(70);
   const facts = await controls.evaluateAll(elements => elements.map(element => {
     const describedBy = element.getAttribute("aria-describedby") ?? "";
     const description = document.getElementById(describedBy);
@@ -128,9 +129,10 @@ test("marbles on and off each compile, and the 3D picture changes with the choic
 });
 
 /**
- * The marble's pattern from each file's doc (the pattern trial, 2026-11-18) is compiled in only while it is chosen, and
- * with its axis from the doc too beside it; each choice builds the spheres' programs again. All three must compile, each
- * must draw another picture, and the viewer's choice is kept for their next visit and is not written into a link.
+ * The marble's pattern from each file's doc (the pattern trial, 2026-11-18) is compiled in only while it is chosen; each
+ * choice builds the spheres' programs again. Both must compile and draw another picture. Vein Bend (2026-11-19) is shown
+ * only with the pattern from the doc, bends the veins by a uniform, and at zero leaves plain vanes. The viewer's
+ * choices are kept for their next visit and are not written into a link.
  */
 test("each marble pattern compiles, draws its own picture, and is kept as the viewer's own", async ({ page }) => {
   const said: string[] = [];
@@ -142,24 +144,35 @@ test("each marble pattern compiles, draws its own picture, and is kept as the vi
   await page.locator(".sidebar-details summary", { hasText: /^Colour$/ }).click();
   const pattern = page.getByRole("combobox", { name: /^Marble Pattern/ });
   await expect(pattern).toHaveValue("one");
-  await expect(pattern.locator("option")).toHaveText(["One Pattern", "From Its Doc", "From Its Doc, Axis Too"]);
+  await expect(pattern.locator("option")).toHaveText(["One Pattern", "From Its Doc"]);
+  const bend = page.getByRole("slider", { name: /^Vein Bend/ });
+  await expect(bend, "Vein Bend is a choice of the pattern from the doc alone").toBeHidden();
   const drawn = async (): Promise<Buffer> => { await page.mouse.move(640, 30); await page.waitForTimeout(800); return page.locator("#graph-svg canvas").first().screenshot(); };
-  const pictures: Buffer[] = [await drawn()];
-  for (const choice of ["doc", "doc-axis", "one"]) {
-    await pattern.selectOption(choice);
-    pictures.push(await drawn());
-  }
-  expect(pictures[1].equals(pictures[0]), "from its doc differs from one pattern").toBe(false);
-  expect(pictures[2].equals(pictures[1]), "the axis from the doc differs again").toBe(false);
-  expect(pictures[3].equals(pictures[2]), "and one pattern again differs from the last").toBe(false);
+  const one = await drawn();
+  await pattern.selectOption("doc");
+  await expect(bend).toBeVisible();
+  await expect(bend).toHaveValue("0.55");
+  const fromDoc = await drawn();
+  expect(fromDoc.equals(one), "from its doc differs from one pattern").toBe(false);
+  await bend.fill("0.9");
+  const bentMore = await drawn();
+  expect(bentMore.equals(fromDoc), "a larger bend draws another picture").toBe(false);
+  await bend.fill("0");
+  const unbent = await drawn();
+  expect(unbent.equals(bentMore), "and no bend another again").toBe(false);
+  await pattern.selectOption("one");
+  await expect(bend).toBeHidden();
   expect(said, "no choice's programs fail to compile").toEqual([]);
 
   await pattern.selectOption("doc");
-  await expect.poll(() => page.evaluate(() => JSON.stringify(Object.values(localStorage)))).toContain('"marblePattern":"doc"');
-  expect(page.url(), "the choice is the viewer's, not the link's").not.toContain("marblePattern");
+  await bend.fill("0.3");
+  await expect.poll(() => page.evaluate(() => Object.values(localStorage).join("\n"))).toContain('"marblePattern":"doc"');
+  await expect.poll(() => page.evaluate(() => Object.values(localStorage).join("\n"))).toContain('"marbleBend":0.3');
+  expect(page.url(), "the choice is the viewer's, not the link's").not.toMatch(/marble/i);
   await page.reload();
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25000 });
   await expect(page.locator("#tuning-marble-pattern")).toHaveValue("doc");
+  await expect(page.locator("#tuning-marble-bend")).toHaveValue("0.3");
 });
 
 test("the legend stands before Tuning, and Export reads at the panel's type size", async ({ page }) => {

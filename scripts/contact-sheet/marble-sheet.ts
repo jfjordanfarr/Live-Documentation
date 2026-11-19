@@ -5,35 +5,47 @@
  * be judged (the pattern trial, 2026-11-18, the owner's wish that "Minor changes to files produce subtle shifts on the
  * surface of these little marble planets. Massive changes to files completely changes their patterns"). The marbles are
  * worked out here, from the bundle's graph by the Explorer's own modules; a built page lends its renderer, lights and
- * the marbled spheres' material, and draws them in rows in front of its camera, one row in each marble pattern asked
- * for, nothing of the page's own picture showing.
+ * the marbled spheres' material, and draws them row by row in front of its camera, each row in its pattern and Vein Bend
+ * as the Tuning levers set them, nothing of the page's own picture showing.
  *
  * ## Usage
  *
  * ```bash
  * npm run marble:sheet -- --bundle dist/explorer --sheet files --out <dir>
+ * npm run marble:sheet -- --bundle dist/explorer --sheet bends --out <dir>
  * npm run marble:sheet -- --bundle dist/explorer --sheet run --file packages/engine/src/live-docs/pathfind.ts --out <dir>
  * npm run marble:sheet -- --bundle dist/explorer --sheet history --history dist/explorer/samples/history --out <dir>
+ * npm run marble:sheet -- --bundle dist/explorer --sheet fork --file packages/explorer/src/client/views/forceGraphView.ts --out <dir>
  * ```
  *
  * `files` draws forty of the bundle's files, spread over its files with veins, near, and again at a middling and a far
- * size, once in each pattern. `run` draws one file through a made-up run of changes to what its Live Doc lists: as it
- * is, one symbol added, five added, half its uses replaced, all replaced; and, for comparison with what the docs could
- * carry, the same run with its symbols named. `history` draws, for each step of another bundle's history, the files the
- * step changed, before and after it.
+ * size, once in each pattern. `bends` draws the same forty from their docs at three Vein Bends. `run` draws one file
+ * through a made-up run of changes to what its Live Doc lists: as it is, one symbol added, five added, half its uses
+ * replaced, all replaced; and, for comparison with what the docs could carry, the same run with its symbols named.
+ * `history` draws, for each step of another bundle's history, the files the step changed, before and after it.
+ *
+ * `fork` is for the owner's open choice of what a marble is made from (2026-11-19): one file over the last commits that
+ * touched it, in two rows. The first is From Its Doc, the sketch made as the product makes it from that commit's Live
+ * Doc. The second is a sketch made the same way from the file's own text at that commit, one feature per distinct
+ * trimmed line weighted by how often it occurs, which the product does not have: it exists in this script alone, and
+ * the Live Doc format, the graph and the history are untouched by it. Both rows keep today's glass and veins' shares, so
+ * that only the pattern differs; a marble the same as the one before it is marked.
  */
 
 import { chromium, type Page } from "@playwright/test";
+import { execFileSync } from "node:child_process";
 import * as fs from "node:fs/promises";
 import path from "node:path";
 
+import { parseLiveDoc } from "../../packages/engine/src/live-docs/document";
+import { deriveLiveDocGraph, linkTarget, type GraphFile } from "../../packages/engine/src/live-docs/graph";
 import { seek } from "../../packages/engine/src/live-docs/history/sequence";
 import { snapshotGraphOf } from "../../packages/explorer/src/client/history/snapshot";
-import { paletteNamed, DEFAULT_PALETTE } from "../../packages/explorer/src/client/palette";
+import { DEFAULT_MARBLE_BEND, DEFAULT_PALETTE, paletteNamed } from "../../packages/explorer/src/client/palette";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { MARBLE_PATTERNS, type MarblePattern } from "../../packages/explorer/src/client/types";
 import { marbleCounts, marbleOf, marbleTint, type Marble } from "../../packages/explorer/src/client/views/forceGraphAppearance";
-import { fileFeatures, marbleSketches, sketchOf, type Sketch, type SketchFeature } from "../../packages/explorer/src/client/views/marbleSketch";
+import { fileFeatures, marbleSketches, sketchDistance, sketchOf, type Sketch, type SketchFeature } from "../../packages/explorer/src/client/views/marbleSketch";
 import { explorerGraphOf } from "../../packages/explorer/src/shared/graph";
 import type { ExplorerGraphPayload } from "../../packages/explorer/src/shared/types";
 import { browserLaunchOptions } from "../../tests/e2e/browser-launch";
@@ -43,21 +55,21 @@ import { escape, ORIGIN, serve } from "./bundle-page";
 
 const PALETTE = paletteNamed(DEFAULT_PALETTE);
 
-/** One marble on a sheet: its caption, the marble, its far tint, and the pattern it is drawn in. */
-interface Item { caption: string; marble: Marble; tint: string; pattern: MarblePattern }
+/** One marble on a sheet: its caption, the marble, its far tint, the pattern it is drawn in and how far it bends. */
+interface Item { caption: string; marble: Marble; tint: string; pattern: MarblePattern; bend: number }
 
 /** A row of marbles at one size, under a heading. */
 interface Row { heading: string; items: Item[]; radius: number }
 
-const PATTERN_WORDS: Record<MarblePattern, string> = { one: "One Pattern", doc: "From Its Doc", "doc-axis": "From Its Doc, Axis Too" };
+const PATTERN_WORDS: Record<MarblePattern, string> = { one: "One Pattern", doc: "From Its Doc" };
 
 /** A file's marble in a graph, in a pattern: with its sketch from the graph, or another sketch given. */
-function itemOf(graph: ExplorerGraphPayload, id: string, pattern: MarblePattern, caption: string, sketch?: Sketch): Item | null {
+function itemOf(graph: ExplorerGraphPayload, id: string, pattern: MarblePattern, caption: string, sketch?: Sketch, bend = DEFAULT_MARBLE_BEND): Item | null {
   const node = graph.nodes.find(candidate => candidate.id === id);
   const plain = node ? marbleOf(id, node.archetype, marbleCounts(graph), PALETTE) : null;
   if (!plain) return null;
   const marble = pattern === "one" ? plain : { ...plain, sketch: sketch ?? marbleSketches(graph).get(id)! };
-  return { caption, marble, tint: marbleTint(marble.glass, marble, PALETTE), pattern };
+  return { caption, marble, tint: marbleTint(marble.glass, marble, PALETTE), pattern, bend };
 }
 
 const base = (id: string): string => id.slice(id.lastIndexOf("/") + 1);
@@ -80,6 +92,17 @@ function filesRows(graph: ExplorerGraphPayload, patterns: readonly MarblePattern
     rows.push({ heading: `${PATTERN_WORDS[pattern]}, the first twenty far`, items: items.slice(0, 20), radius: 7 });
     return rows;
   });
+}
+
+/** The forty files from their docs at three Vein Bends, each bend's forty in rows of ten. */
+function bendsRows(graph: ExplorerGraphPayload): Row[][] {
+  const ids = fortyFiles(graph);
+  const rows: Row[] = [];
+  for (const bend of [0.25, 0.55, 0.85]) {
+    const items = ids.map(id => itemOf(graph, id, "doc", base(id), undefined, bend)!);
+    for (let at = 0; at < items.length; at += 10) rows.push({ heading: at ? "" : `From Its Doc, Vein Bend ${bend}${bend === DEFAULT_MARBLE_BEND ? " (the default)" : ""}`, items: items.slice(at, at + 10), radius: 56 });
+  }
+  return [rows];
 }
 
 /** The file's uses, the references it makes to each, from the graph's links. */
@@ -144,35 +167,100 @@ async function historyRows(bundle: string, patterns: readonly MarblePattern[]): 
   return [rows];
 }
 
-/** Where each item stands on a strip: centres in CSS pixels, in rows of the strip's width. */
-interface Placed { item: Item; x: number; y: number; r: number }
+/** Git, read only, in the working directory's repository. */
+const git = (...args: string[]): string => execFileSync("git", args, { encoding: "utf8", maxBuffer: 1 << 28 });
 
-const GAP = 30, CAPTION = 34, HEADING = 30, WIDTH = 1500;
-
-function layout(rows: Row[]): { placed: Placed[]; headings: Array<{ text: string; y: number }>; height: number } {
-  const placed: Placed[] = [], headings: Array<{ text: string; y: number }> = [];
-  let y = 0;
-  for (const row of rows) {
-    if (row.heading) { headings.push({ text: row.heading, y }); y += HEADING; }
-    const cell = Math.max(2 * row.radius + GAP, row.radius > 40 ? 180 : 70);
-    const perLine = Math.max(1, Math.floor(WIDTH / cell));
-    row.items.forEach((item, i) => {
-      if (i && i % perLine === 0) y += 2 * row.radius + CAPTION + 10;
-      placed.push({ item, x: (i % perLine) * cell + cell / 2, y: y + row.radius + 4, r: row.radius });
-    });
-    y += 2 * row.radius + CAPTION + 14;
-  }
-  return { placed, headings, height: y };
+/** Where the docs are, from the repository's configuration. */
+async function docLocation(): Promise<{ root: string; baseLayer: string; extension: string }> {
+  const config = JSON.parse(await fs.readFile(".live-docs.config.json", "utf8")) as { root: string; baseLayer: string; extension: string };
+  return { root: config.root, baseLayer: config.baseLayer, extension: config.extension };
 }
 
 /**
- * Draws the placed marbles of one pattern in the page, with its renderer, lights and marbled material, on a strip of the
- * given size, and returns the strip as a PNG's data address. Given as text: a function compiled by tsx carries helpers
- * the page does not have (see `mergeStorage`).
+ * A file's sketch from its Live Doc at a commit, as the product makes it: the doc parsed, the graph derived from it and
+ * the docs its links name at that commit, projected as the page projects it, and the sketch read from that.
  */
-const DRAW = `async ({ marbles, width, height, pattern }) => {
-  const select = document.getElementById("tuning-marble-pattern");
-  select.value = pattern; select.dispatchEvent(new Event("change", { bubbles: true }));
+function docSketchAt(commit: string, id: string, location: { root: string; baseLayer: string; extension: string }): Sketch {
+  const docPathOf = (codePath: string): string => `${location.root}/${location.baseLayer}/${codePath}${location.extension}`;
+  const read = (docPath: string): string | null => { try { return git("show", `${commit}:${docPath}`); } catch { return null; } };
+  const own = docPathOf(id), text = read(own);
+  if (text === null) throw new UsageError(`${id} has no Live Doc at ${commit}.`);
+  const doc = parseLiveDoc(text);
+  const docs = [{ docPath: own, doc }];
+  const probe = deriveLiveDocGraph(docs, location).files[id] as GraphFile;
+  const links = new Set<string>();
+  for (const dependency of doc.dependencies) if (dependency.link) links.add(dependency.link);
+  for (const symbol of doc.symbols) for (const reference of symbol.references) {
+    for (const type of reference.role === "Parameters" ? reference.parameters.flatMap(parameter => parameter.types) : reference.types) if (type.link) links.add(type.link);
+  }
+  for (const link of links) {
+    const target = linkTarget(probe.docPath, link, location);
+    if (!target || target.codePath === id || docs.some(entry => entry.docPath === target.docPath)) continue;
+    const targetText = read(target.docPath);
+    if (targetText !== null) docs.push({ docPath: target.docPath, doc: parseLiveDoc(targetText) });
+  }
+  return marbleSketches(explorerGraphOf(deriveLiveDocGraph(docs, location))).get(id)!;
+}
+
+/** A sketch of a file's own text at a commit: one feature per distinct trimmed non-empty line, weighted by its count. */
+function contentSketchAt(commit: string, id: string): Sketch {
+  const counts = new Map<string, number>();
+  for (const line of git("show", `${commit}:${id}`).split("\n")) {
+    const trimmed = line.trim();
+    if (trimmed) counts.set(trimmed, (counts.get(trimmed) ?? 0) + 1);
+  }
+  return sketchOf(id, [...counts].map(([line, count]): SketchFeature => ({ text: `line\u0000${line}`, weight: count })));
+}
+
+/** The fork's two rows: one file over the last commits that touched it, from its doc and from its contents. */
+async function forkRows(graph: ExplorerGraphPayload, id: string, count: number): Promise<Row[][]> {
+  const location = await docLocation();
+  const commits = git("log", `-${count}`, "--format=%H %cs", "--", id).trim().split("\n").map(line => line.split(" ") as [string, string]).reverse();
+  const row = (heading: string, sketchAt: (commit: string) => Sketch): Row => {
+    let previous: Sketch | undefined;
+    const items = commits.map(([commit, date]) => {
+      const sketch = sketchAt(commit);
+      const same = previous !== undefined && sketchDistance(previous, sketch) < 1e-12;
+      const moved = previous === undefined ? "" : same ? " = same" : ` Δ${sketchDistance(previous, sketch).toFixed(2)}`;
+      previous = sketch;
+      return itemOf(graph, id, "doc", `${commit.slice(0, 7)} ${date.slice(5)}${moved}`, sketch)!;
+    });
+    return { heading, items, radius: 60 };
+  };
+  return [[
+    row(`From Its Doc: the sketch of what ${base(id)}'s Live Doc listed at each commit, as the product makes it`, commit => docSketchAt(commit, id, location)),
+    row("From its contents: the same sketch over the file's own lines at each commit (this sheet only; not in the product)", commit => contentSketchAt(commit, id))
+  ]];
+}
+
+const GAP = 30, CAPTION = 34, HEADING = 30, WIDTH = 1500;
+
+/** One row's strip on the sheet: where it stands, how tall it is, and its marbles' centres within it. */
+interface Strip { top: number; height: number; items: Array<{ item: Item; x: number; y: number; r: number }> }
+
+function layout(rows: Row[]): { strips: Strip[]; headings: Array<{ text: string; y: number }>; height: number } {
+  const strips: Strip[] = [], headings: Array<{ text: string; y: number }> = [];
+  let y = 0;
+  for (const row of rows) {
+    if (row.heading) { headings.push({ text: row.heading, y }); y += HEADING; }
+    const cell = Math.max(2 * row.radius + GAP, row.radius > 40 ? 150 : 70);
+    const perLine = Math.max(1, Math.floor(WIDTH / cell));
+    const line = 2 * row.radius + CAPTION + 10, lines = Math.max(1, Math.ceil(row.items.length / perLine));
+    strips.push({ top: y, height: lines * line, items: row.items.map((item, i) => ({ item, x: (i % perLine) * cell + cell / 2, y: Math.floor(i / perLine) * line + row.radius + 4, r: row.radius })) });
+    y += lines * line + 4;
+  }
+  return { strips, headings, height: y };
+}
+
+/**
+ * Draws one strip's marbles in the page, with its renderer, lights and marbled material, the pattern and the Vein Bend
+ * set by the Tuning levers as a viewer sets them, and returns the strip as a PNG's data address. Given as text: a
+ * function compiled by tsx carries helpers the page does not have (see `mergeStorage`).
+ */
+const DRAW = `async ({ marbles, width, height, pattern, bend }) => {
+  const choose = (id, value, event) => { const control = document.getElementById(id); control.value = String(value); control.dispatchEvent(new Event(event, { bubbles: true })); };
+  choose("tuning-marble-pattern", pattern, "change");
+  choose("tuning-marble-bend", bend, "input");
   const { scene, camera, renderer } = window.renderedGraph;
   let nodes = null;
   scene.traverse(object => { if (object.userData && object.userData.spatialBatch && object.userData.spatialBatch.kind === "nodes") nodes = object; });
@@ -219,46 +307,47 @@ const DRAW = `async ({ marbles, width, height, pattern }) => {
   return url;
 }`;
 
-/** Draws a sheet's rows in the page, a strip per pattern band that fits the canvas, and composes them with captions. */
+/** Draws a sheet's rows in the page, one render for each run of a row's marbles in one pattern and bend, and composes them with captions. */
 async function drawSheet(page: Page, rows: Row[], heading: string, file: string): Promise<void> {
-  const { placed, headings, height } = layout(rows);
+  const { strips, headings, height } = layout(rows);
   const canvas = await page.evaluate(() => { const c = document.querySelector("#graph-svg canvas") as HTMLCanvasElement; return { width: c.clientWidth, height: c.clientHeight }; });
   if (canvas.width < WIDTH) throw new Error(`The page's canvas is ${canvas.width} pixels wide; the sheet needs ${WIDTH}.`);
-  // Bands of the sheet no taller than the canvas, each drawn in one render per pattern and laid one above the other.
-  const bands: Array<{ top: number; bottom: number }> = [];
-  for (let top = 0; top < height; top += canvas.height - 40) bands.push({ top, bottom: Math.min(height, top + canvas.height - 40) });
-  const images: Array<{ top: number; height: number; url: string; from: number; to: number }> = [];
-  for (const band of bands) {
-    const inBand = placed.filter(at => at.y >= band.top && at.y < band.bottom);
+  const images: Array<{ top: number; url: string }> = [];
+  for (const strip of strips) {
+    if (strip.height > canvas.height) throw new Error(`A row ${strip.height} pixels tall does not fit the page's canvas of ${canvas.height}.`);
     for (const pattern of MARBLE_PATTERNS) {
-      const mine = inBand.filter(at => at.item.pattern === pattern);
-      if (!mine.length) continue;
-      const marbles = mine.map(at => ({ x: at.x, y: at.y - band.top, r: at.r, tint: at.item.tint, glass: at.item.marble.glass, offers: at.item.marble.offers,
-        uses: at.item.marble.uses, seed: at.item.marble.seed, sketch: at.item.marble.sketch ?? null }));
-      const url = await page.evaluate(`(${DRAW})(${JSON.stringify({ marbles, width: WIDTH, height: Math.ceil(band.bottom - band.top + 40), pattern })})`) as string;
-      // Only the strip's own rows are shown, so that the strips of two patterns in one band never cover each other.
-      const from = Math.min(...mine.map(at => at.y - at.r - 6)) - band.top, to = Math.max(...mine.map(at => at.y + at.r + 6)) - band.top;
-      images.push({ top: band.top, height: Math.ceil(band.bottom - band.top + 40), url, from, to });
+      for (const bend of new Set(strip.items.map(at => at.item.bend))) {
+        const mine = strip.items.filter(at => at.item.pattern === pattern && at.item.bend === bend);
+        if (!mine.length) continue;
+        const marbles = mine.map(at => ({ x: at.x, y: at.y, r: at.r, tint: at.item.tint, glass: at.item.marble.glass, offers: at.item.marble.offers,
+          uses: at.item.marble.uses, seed: at.item.marble.seed, sketch: at.item.marble.sketch ?? null }));
+        const url = await page.evaluate(`(${DRAW})(${JSON.stringify({ marbles, width: WIDTH, height: strip.height, pattern, bend })})`) as string;
+        images.push({ top: strip.top, url });
+      }
     }
   }
   const sheet = await page.context().newPage();
   await sheet.setViewportSize({ width: WIDTH + 48, height: 800 });
-  const captions = placed.map(at => `<div class="caption" style="left:${at.x - 90}px;top:${at.y + at.r + 6}px">${at.r > 30 ? escape(at.item.caption) : ""}</div>`).join("");
+  const captions = strips.flatMap(strip => strip.items.map(at => `<div class="caption" style="left:${at.x - 75}px;top:${strip.top + at.y + at.r + 6}px">${at.r > 30 ? escape(at.item.caption) : ""}</div>`)).join("");
   const heads = headings.map(at => `<div class="heading" style="top:${at.y}px">${escape(at.text)}</div>`).join("");
-  const strips = images.map(image => `<img style="top:${image.top}px;clip-path:inset(${Math.max(0, image.from)}px 0 ${Math.max(0, image.height - image.to)}px 0)" src="${image.url}">`).join("");
+  // A strip of one pattern and bend lies over the row's others: lighten keeps each marble over the shared dark ground.
+  const pictures = images.map(image => `<img style="top:${image.top}px" src="${image.url}">`).join("");
   await sheet.setContent(`<!doctype html><meta charset="utf-8"><style>
     body { margin: 0; padding: 24px; background: #101114; color: #e8e8ec; font: 14px/1.25 system-ui, sans-serif; width: ${WIDTH}px; }
     h1 { font-size: 18px; margin: 0 0 12px; }
-    .board { position: relative; width: ${WIDTH}px; height: ${height + 40}px; }
-    .board img { position: absolute; left: 0; }
-    .caption { position: absolute; width: 180px; text-align: center; color: #c8cad2; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .board { position: relative; width: ${WIDTH}px; height: ${height + 20}px; }
+    .board img { position: absolute; left: 0; mix-blend-mode: lighten; }
+    .caption { position: absolute; width: 150px; text-align: center; color: #c8cad2; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .heading { position: absolute; left: 0; color: #f0f0f4; font-weight: 600; }
-  </style><h1>${escape(heading)}</h1><div class="board">${strips}${heads}${captions}</div>`);
+  </style><h1>${escape(heading)}</h1><div class="board">${pictures}${heads}${captions}</div>`);
   await sheet.locator("body").screenshot({ path: file });
   await sheet.close();
 }
 
-interface Options { bundle: string; out: string; sheet: "files" | "run" | "history"; file?: string; history?: string; patterns: MarblePattern[] }
+type SheetName = "files" | "bends" | "run" | "history" | "fork";
+const SHEETS: readonly SheetName[] = ["files", "bends", "run", "history", "fork"];
+
+interface Options { bundle: string; out: string; sheet: SheetName; file?: string; history?: string; commits: number; patterns: MarblePattern[] }
 
 function parseArgs(args: string[]): Options {
   const options: Partial<Options> = {};
@@ -268,18 +357,20 @@ function parseArgs(args: string[]): Options {
     else if (arg === "--out") options.out = optionValue(args, ++i, arg);
     else if (arg === "--file") options.file = optionValue(args, ++i, arg);
     else if (arg === "--history") options.history = optionValue(args, ++i, arg);
+    else if (arg === "--commits") options.commits = Number(optionValue(args, ++i, arg));
     else if (arg === "--sheet") {
       const sheet = optionValue(args, ++i, arg);
-      if (sheet !== "files" && sheet !== "run" && sheet !== "history") throw new UsageError(`--sheet takes files, run or history, not ${sheet}.`);
-      options.sheet = sheet;
+      options.sheet = SHEETS.find(known => known === sheet) ?? (() => { throw new UsageError(`--sheet takes ${SHEETS.join(", ")}, not ${sheet}.`); })();
     } else if (arg === "--patterns") {
       const patterns = optionValue(args, ++i, arg).split(",");
       options.patterns = patterns.map(name => MARBLE_PATTERNS.find(known => known === name) ?? (() => { throw new UsageError(`No marble pattern ${name}; the patterns are ${MARBLE_PATTERNS.join(", ")}.`); })());
-    } else throw new UsageError(`${arg} is not an option. Options: --bundle --out --sheet (files, run, history) --file --history --patterns (${MARBLE_PATTERNS.join(", ")})`);
+    } else throw new UsageError(`${arg} is not an option. Options: --bundle --out --sheet (${SHEETS.join(", ")}) --file --history --commits --patterns (${MARBLE_PATTERNS.join(", ")})`);
   }
   if (!options.bundle || !options.out || !options.sheet) throw new UsageError("Name the built bundle with --bundle, where to write with --out, and the sheet with --sheet.");
-  if (options.sheet === "run" && !options.file) throw new UsageError("A run names its file with --file.");
+  if ((options.sheet === "run" || options.sheet === "fork") && !options.file) throw new UsageError(`A ${options.sheet} sheet names its file with --file.`);
   options.patterns ??= [...MARBLE_PATTERNS];
+  options.commits ??= 10;
+  if (!(options.commits >= 2)) throw new UsageError("--commits takes a number of two or more.");
   return options as Options;
 }
 
@@ -290,21 +381,30 @@ async function main(): Promise<void> {
   const data = JSON.parse(await fs.readFile(path.join(bundleDir, "explorer-data.json"), "utf8")) as { graph: Parameters<typeof explorerGraphOf>[0] };
   const graph = explorerGraphOf(data.graph);
   const sheets = options.sheet === "files" ? filesRows(graph, options.patterns)
-    : options.sheet === "run" ? runRows(graph, options.file!, options.patterns)
-      : await historyRows(path.resolve(options.history ?? bundleDir), options.patterns);
+    : options.sheet === "bends" ? bendsRows(graph)
+      : options.sheet === "run" ? runRows(graph, options.file!, options.patterns)
+        : options.sheet === "fork" ? await forkRows(graph, options.file!, options.commits)
+          : await historyRows(path.resolve(options.history ?? bundleDir), options.patterns);
+  const named = (i: number): { name: string; heading: string } => {
+    switch (options.sheet) {
+      case "files": return { name: `files-${options.patterns[i]}`, heading: `${path.basename(bundleDir)}: forty files, ${PATTERN_WORDS[options.patterns[i]]}` };
+      case "bends": return { name: "bends", heading: `${path.basename(bundleDir)}: forty files from their docs at three Vein Bends` };
+      case "run": return { name: `run-${base(options.file!)}`, heading: `${options.file}: a made-up run of changes to what its Live Doc lists` };
+      case "fork": return { name: `fork-${base(options.file!)}`, heading: `${options.file}: its last ${options.commits} commits, oldest first; Δ is the sketch's move from the marble before` };
+      default: return { name: "history", heading: `${path.basename(path.resolve(options.history ?? bundleDir))}: each step's changed marbles, before and after` };
+    }
+  };
 
   const browser = await chromium.launch(browserLaunchOptions());
   try {
-    const context = await browser.newContext({ viewport: { width: 2300, height: 1700 } });
+    const context = await browser.newContext({ viewport: { width: 2300, height: 1300 } });
     await serve(context, bundleDir);
     const page = await context.newPage();
     await observeGraph(page);
     await page.goto(`${ORIGIN}/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, perspective: "3d" })}`);
     await page.waitForFunction(() => document.querySelector("#graph-svg")?.getAttribute("aria-busy") === "false" && Boolean((window as unknown as { renderedGraph?: unknown }).renderedGraph), undefined, { timeout: 120_000 });
     for (const [i, rows] of sheets.entries()) {
-      const name = options.sheet === "files" ? `files-${options.patterns[i]}` : options.sheet === "run" ? `run-${base(options.file!)}` : "history";
-      const heading = options.sheet === "files" ? `${path.basename(bundleDir)}: forty files, ${PATTERN_WORDS[options.patterns[i]]}`
-        : options.sheet === "run" ? `${options.file}: a made-up run of changes to what its Live Doc lists` : `${options.history}: each step's changed marbles, before and after`;
+      const { name, heading } = named(i);
       await drawSheet(page, rows, heading, path.join(out, `${name}.png`));
       console.log(`Wrote ${path.join(out, `${name}.png`)}`);
     }

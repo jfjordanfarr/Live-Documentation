@@ -189,7 +189,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   };
   applyPalette(state.tuning.appearance.palette);
   applyMarbles(state.tuning.appearance.marbles);
-  applyMarblePattern(state.tuning.appearance.marblePattern);
+  applyMarblePattern(state.tuning.appearance.marblePattern, state.tuning.appearance.marbleBend);
 
   const persistUi = createPersistUiScheduler(() => ({
     filters: state.filters,

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/tuning.ts
-- Generated At: 2026-11-18T20:09:06.270Z
+- Generated At: 2026-11-19T00:59:26.866Z
 
 ## Authored
 ### Purpose
@@ -89,9 +89,11 @@ Initialize the tuning panel with all slider and checkbox controls.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`dom.applyMarblePattern`](../dom.ts.mdmd.md#symbol-applymarblepattern)
 - [`dom.applyMarbles`](../dom.ts.mdmd.md#symbol-applymarbles)
 - [`dom.applyPalette`](../dom.ts.mdmd.md#symbol-applypalette)
 - [`layout-presets.layoutSettingsOf`](../layout-presets.ts.mdmd.md#symbol-layoutsettingsof)
+- [`palette.DEFAULT_MARBLE_BEND`](../palette.ts.mdmd.md#symbol-default_marble_bend)
 - [`palette.DEFAULT_PALETTE`](../palette.ts.mdmd.md#symbol-default_palette)
 - [`palette.isPaletteName`](../palette.ts.mdmd.md#symbol-ispalettename)
 - [`tuning-levers.TUNING_HELP`](./tuning-levers.ts.mdmd.md#symbol-tuning_help)
@@ -107,6 +109,7 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`types.GROUP_WRAPPERS`](../types.ts.mdmd.md#symbol-group_wrappers)
 - [`types.HIDDEN_FILES_LOOKS`](../types.ts.mdmd.md#symbol-hidden_files_looks)
 - [`types.MARBLE_CHOICES`](../types.ts.mdmd.md#symbol-marble_choices)
+- [`types.MARBLE_PATTERNS`](../types.ts.mdmd.md#symbol-marble_patterns)
 - [`types.OVERVIEW_FILES`](../types.ts.mdmd.md#symbol-overview_files)
 - [`template.export-layout-settings`](../../shared/template.html.mdmd.md#symbol-export-layout-settings)
 - [`template.tuning-card-text`](../../shared/template.html.mdmd.md#symbol-tuning-card-text)
@@ -132,6 +135,9 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`template.tuning-lace-curl`](../../shared/template.html.mdmd.md#symbol-tuning-lace-curl)
 - [`template.tuning-lace-reach`](../../shared/template.html.mdmd.md#symbol-tuning-lace-reach)
 - [`template.tuning-lace-width`](../../shared/template.html.mdmd.md#symbol-tuning-lace-width)
+- [`template.tuning-marble-bend`](../../shared/template.html.mdmd.md#symbol-tuning-marble-bend)
+- [`template.tuning-marble-bend-value`](../../shared/template.html.mdmd.md#symbol-tuning-marble-bend-value)
+- [`template.tuning-marble-pattern`](../../shared/template.html.mdmd.md#symbol-tuning-marble-pattern)
 - [`template.tuning-marbles`](../../shared/template.html.mdmd.md#symbol-tuning-marbles)
 - [`template.tuning-membrane-evenness`](../../shared/template.html.mdmd.md#symbol-tuning-membrane-evenness)
 - [`template.tuning-membrane-simplicity`](../../shared/template.html.mdmd.md#symbol-tuning-membrane-simplicity)

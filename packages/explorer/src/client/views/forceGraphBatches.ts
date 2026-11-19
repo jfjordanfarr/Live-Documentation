@@ -2,7 +2,7 @@ import { BufferAttribute, BufferGeometry, Color, ConeGeometry, DoubleSide, Dynam
 import { LineMaterial } from "three/addons/lines/LineMaterial.js";
 import { LineSegmentsGeometry } from "three/addons/lines/LineSegmentsGeometry.js";
 
-import { activePalette, marblePattern, marblesDrawn, unitChannels } from "../palette";
+import { activePalette, marbleBend, marblePattern, marblesDrawn, unitChannels } from "../palette";
 import { containedSpherePrimitive, ContainedSphereMaterial } from "./containedSphere";
 import { MARBLE_COLOUR, MARBLE_FRAGMENT_PARS, MARBLE_SHINE, MARBLE_VERTEX, MARBLE_VERTEX_PARS, type Marble } from "./forceGraphAppearance";
 import type { Placed, SpatialNode } from "./forceGraphLayout";
@@ -133,8 +133,12 @@ export interface SpatialWrapperUnit {
 export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDrawLink<N>>(scene: Scene, style: SpatialDrawStyle<N, L>, renderer?: WebGLRenderer) {
   // The marbles' two roles, in linear light as the lit shaders read colours, shared by every material that draws a
   // marble and set again from the palette in force (`recolour`).
-  const marbleRoles = { uMarbleOffers: { value: new Color() }, uMarbleUses: { value: new Color() } };
-  const paintMarbles = (): void => { const { role } = activePalette(); marbleRoles.uMarbleOffers.value.set(role.offers); marbleRoles.uMarbleUses.value.set(role.uses); };
+  // The Vein Bend rides beside them as a uniform, so that moving it compiles nothing (2026-11-19).
+  const marbleRoles = { uMarbleOffers: { value: new Color() }, uMarbleUses: { value: new Color() }, uMarbleBend: { value: marbleBend() } };
+  const paintMarbles = (): void => {
+    const { role } = activePalette();
+    marbleRoles.uMarbleOffers.value.set(role.offers); marbleRoles.uMarbleUses.value.set(role.uses); marbleRoles.uMarbleBend.value = marbleBend();
+  };
   paintMarbles();
   /**
    * A transparent instanced material whose alpha each instance carries; a lit one that `marbled` may draw its spheres as
@@ -260,12 +264,11 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
    * The two materials that may draw a marble compile its code in only while marbles are drawn (`MARBLES`, which every
    * chunk of the marble stands inside): with marbles off their programs are what they were before marbles, at no cost
    * to a frame. Likewise the pattern from each file's doc (the pattern trial, 2026-11-18): `MARBLE_SKETCH` only while it
-   * is chosen, and `MARBLE_SKETCH_AXIS` beside it for the axis from the doc too. A change of either choice builds each
-   * program again once, at the next frame.
+   * is chosen. A change of either choice builds each program again once, at the next frame.
    */
   const compileMarbles = (): void => {
     const drawn = marblesDrawn(), pattern = marblePattern();
-    const wanted = { MARBLES: drawn, MARBLE_SKETCH: drawn && pattern !== "one", MARBLE_SKETCH_AXIS: drawn && pattern === "doc-axis" };
+    const wanted = { MARBLES: drawn, MARBLE_SKETCH: drawn && pattern === "doc" };
     for (const material of [nodes.mesh.material as Material, unitFiles.material as Material]) {
       const defines: Record<string, unknown> = (material.defines ??= {});
       let changed = false;
