@@ -286,6 +286,9 @@ export async function writeStoredTree(root: string, change: string, directory: s
       unwritten.push({ path: relative, reason: "its name cannot be written on Windows, where git refuses to check it out" });
     } else if (mode !== FILE_MODE && mode !== EXECUTABLE_MODE && mode !== LINK_MODE && mode !== SUBMODULE_MODE) {
       unwritten.push({ path: relative, reason: `its mode ${mode} is one no checkout writes` });
+    } else if (relative.includes("�")) {
+      // Git's listing is read as UTF-8, so a name that is not would be written under another name than its own.
+      unwritten.push({ path: relative, reason: "its name is not valid UTF-8, so it cannot be written under its own name" });
     } else if (named.has(relative)) {
       unwritten.push({ path: relative, reason: "the tree names it twice" });
     } else {

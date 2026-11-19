@@ -298,6 +298,15 @@ describe("a tree the writer must not follow out of its folder", () => {
     expect(await placeEntry(["x".repeat(300)], tooLong)).toBe("this disk cannot hold its name (ENAMETOOLONG)");
   });
 
+  it("leaves out a name that is not UTF-8, which could only be written under another name", async () => {
+    const id = blob("odd\n");
+    const root = execFileSync("git", ["mktree"], { cwd: repository, env: isolated, input: Buffer.concat([Buffer.from(`100644 blob ${id}\tbad-`), Buffer.from([0xff, 0xfe]), Buffer.from(`.txt\n100644 blob ${id}\tgood.txt\n`)]), encoding: "utf8" }).trim();
+    const directory = await folder();
+    const unwritten = await writeStoredTree(repository, commit(root), directory, { platform: "linux" });
+    expect(unwritten.map((entry) => entry.reason)).toEqual(["its name is not valid UTF-8, so it cannot be written under its own name"]);
+    expect(await fs.readdir(directory)).toEqual(["good.txt"]);
+  });
+
   it("leaves out a name this disk cannot hold and writes the rest of the commit", async () => {
     const long = `${"n".repeat(300)}.txt`;
     const change = commit(tree([["100644", "blob", blob("long\n"), long], ["100644", "blob", blob("kept\n"), "kept.txt"]]));
