@@ -58,7 +58,7 @@ Whether the stop reads as a freeze is not something stills can show, so I measur
 - **The two rests are the same kind of picture, and I cannot call either the better one.** What differs is the forty seconds between them. Today's picture goes on rearranging from 10 to 45 seconds, and every frame of it looks finished; a person starts to read it and it moves under them. A designer would call that losing the mental map: once someone has begun to read a layout, it should stay where it is.
 - **The price is real and small.** The same click ends in a different arrangement than today's, a median sphere 66 pixels from where it would have been. Nobody has today's arrangement by heart, since it differs from one click to the next already.
 - **What only your eye can say** is whether the stop reads as a freeze. It was measured as a slowing over about two seconds, not a cut.
-- **One consequence.** The browser case that is red because this motion is slow (`force-graph-discovery.spec.ts:70`) would then pass for the right reason: the product got faster, and no bound was raised.
+- **One consequence, measured after these pictures were taken.** The two browser cases that are red because this motion is slow both pass whole at 0.02, with every bound left as it is. The whole repository entering (`force-graph-update.spec.ts:140`) rests in about 680 steps where it takes 1,421, against a bound of 1,300. A group growing (`force-graph-discovery.spec.ts:70`) rests in 578 where it takes 5,147, against 2,700. Neither case checks where a sphere ends up, only that it has stopped, so nothing else in them moves. They would pass for the right reason: the product got faster.
 
 ---
 
