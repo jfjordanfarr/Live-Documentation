@@ -1,0 +1,3 @@
+/* The table every lookup reads, generated. */
+static const int table_size = 4;
+int table_lookup(int key);

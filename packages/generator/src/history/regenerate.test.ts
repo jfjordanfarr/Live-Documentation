@@ -15,7 +15,7 @@ import { treeOptions } from "./regenerate";
  * name stands, an excluded file no reader reads only empty, so a scan nested under a folder the configuration excludes
  * is still found, and the generator still warns of it.
  */
-describe("a commit's tree as the history writes it, emptying what the configuration excludes and no reader reads", () => {
+describe("a commit's tree as the history writes it, emptying the images and recordings the configuration excludes", () => {
   const isolated = { ...process.env, GIT_CONFIG_GLOBAL: os.devNull, GIT_CONFIG_NOSYSTEM: "1", GIT_AUTHOR_NAME: "Ada", GIT_AUTHOR_EMAIL: "ada@example.invalid", GIT_COMMITTER_NAME: "Ada", GIT_COMMITTER_EMAIL: "ada@example.invalid" };
   const configuration = normalizeLiveDocumentationConfig({ root: ".mdmd", baseLayer: "layer-4", exclude: ["archive/**"] });
   let scratch: string;
@@ -28,6 +28,7 @@ describe("a commit's tree as the history writes it, emptying what the configurat
     const files: Record<string, string> = {
       "src/a.ts": "/** A. */\nexport const a = 1;\n",
       "archive/notes.md": "# Notes\n",
+      "archive/clip.webm": "not a recording\n",
       "archive/picture.png": "not read\n",
       "archive/sub/.live-docs.config.json": "{}\n",
       "archive/other/.mdmd/layer-4/x.ts.mdmd.md": "# x\n"
@@ -46,13 +47,14 @@ describe("a commit's tree as the history writes it, emptying what the configurat
     await fs.rm(scratch, { recursive: true, force: true });
   });
 
-  it("writes every name, empties the excluded files no reader reads, and the generator warns of a nested scan as over a checkout", async () => {
+  it("writes every name, empties the excluded images and recordings, and the generator warns of a nested scan as over a checkout", async () => {
     const tree = path.join(scratch, "tree");
     await fs.mkdir(tree);
     expect(await writeStoredTree(repository, commit, tree, treeOptions(configuration, tree))).toEqual([]);
-    // No reader reads a picture or a note: their names stand, empty. A configuration file has a reader, and is whole.
+    // No reader reads a picture's or a recording's bytes: their names stand, empty. A note, and a configuration file, are whole.
     expect(await fs.readFile(path.join(tree, "archive", "picture.png"), "utf8")).toBe("");
-    expect(await fs.readFile(path.join(tree, "archive", "notes.md"), "utf8")).toBe("");
+    expect(await fs.readFile(path.join(tree, "archive", "clip.webm"), "utf8")).toBe("");
+    expect(await fs.readFile(path.join(tree, "archive", "notes.md"), "utf8")).toBe("# Notes\n");
     expect(await fs.readFile(path.join(tree, "archive", "sub", ".live-docs.config.json"), "utf8")).toBe("{}\n");
     expect(await fs.readFile(path.join(tree, "src", "a.ts"), "utf8")).toBe("/** A. */\nexport const a = 1;\n");
     const warned = async (root: string): Promise<string[]> => {

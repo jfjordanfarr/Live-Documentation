@@ -240,18 +240,18 @@ describe("the lens's key", () => {
     expect(summarizingFlags("/x/summarizeChange.ts", ["--max-old-space-size=8192"]).slice(2)).toEqual(["--max-old-space-size=8192"]);
   });
 
-  it("empties in a commit's tree only an excluded file no reader reads, outside the docs root, by discovery's reading of the root", () => {
+  it("empties in a commit's tree only an excluded image, font or recording, outside the docs root, by discovery's reading of the root", () => {
     const options = treeOptions({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, root: "./docs/../site/", exclude: ["archive/**", "site/**", "**/*.png"] }, "/work/tree");
     const contentless = options.contentless!;
-    expect(contentless("archive/2026/day.record.md")).toBe(true);
     expect(contentless("assets/logo.png")).toBe(true);
-    // A file a reader reads is whole wherever it lies, excluded or not: code imports into an excluded folder.
+    expect(contentless("archive/2026/clip.webm")).toBe(true);
+    // Any other excluded file is whole: a reader may open what another file names, a C include of a `.def` say.
+    expect(contentless("archive/2026/day.record.md")).toBe(false);
+    expect(contentless("archive/gen/table.def")).toBe(false);
     expect(contentless("archive/generated/api.ts")).toBe(false);
-    expect(contentless("archive/settings.json")).toBe(false);
-    expect(contentless("src/notes.md")).toBe(false);
+    expect(contentless("src/logo.svg")).toBe(false);
     // The generator reads and rewrites the docs root whatever `exclude` says; the root is read as discovery reads it.
     expect(options.docsRoot).toBe("site");
-    expect(contentless("site/layer-4/src/a.ts.md")).toBe(false);
     expect(contentless("site/logo.png")).toBe(false);
     expect(treeOptions(DEFAULT_LIVE_DOCUMENTATION_CONFIG, "/work/tree").contentless!("anything/at/all.png")).toBe(false);
   });

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/generator/src/history/regenerate.ts
-- Generated At: 2026-11-19T19:05:09.606Z
+- Generated At: 2026-11-19T20:36:47.561Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ What the history command does on a summary's behalf before the summarizing proce
 - The pool starts no commit after the run's deadline (`--stop-after`) and lets the running ones finish.
 - What the generator warns is gathered and said once for each message, with the number of commits that gave it, when the regeneration ends; over this repository it would otherwise repeat the scans inside the test fixtures at every commit (carried from `computeHistory.ts`, where it was written on 2026-10-17).
 - Since [the third review](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/history-data-review/third-review.md) the task goes to the summarizing process in a file of the scratch folder, `task.json`, not on the command line, whose length the platform limits: a commit leaving about a thousand entries out had failed with `spawn E2BIG` at every run. The process is given a named environment (`summarizingEnvironment`: `PATH`, the temporary folders, Windows's system folders and `TSX_TSCONFIG_PATH`), and nothing else of the person's, `NODE_OPTIONS` included. Every entry a tree left out is printed, not the first three.
-- Since 2026-11-19 ([the independent review](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/engine-round-review/README.md) of the engine round) the tree is written as `treeOptions` asks: every name stands, and an excluded file no reader handles (`hasReader`), outside the docs root as discovery reads it (`docsRootWithin`), is written empty. A first build that day left excluded files out on the strength of one measurement over this repository, and the review showed by runs that the generator does read excluded files included code imports; the rule is held to the whole tree as the oracle over every sample workspace (`history-tree-equivalence.test.ts`). At this repository's head the tree is 29 MB where a checkout is 1,017 MB.
+- Since 2026-11-19 ([the independent review](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/engine-round-review/README.md) of the engine round) the tree is written as `treeOptions` asks: every name stands, and an excluded image, font or recording (`isMediaAsset`), outside the docs root as discovery reads it (`docsRootWithin`), is written empty; every other file is whole. For a few hours that day every excluded file no reader handles (`hasReader`) was written empty, until the review's second pass found the C reader opening the `.def` and `.inc` files an include names (`tests/integration/fixtures/c-include-excluded`). A first build that day left excluded files out on the strength of one measurement over this repository, and the review showed by runs that the generator does read excluded files included code imports; the rule is held to the whole tree as the oracle over every sample workspace (`history-tree-equivalence.test.ts`). At this repository's head 3,554 files, 867 MB, are written empty, and the tree is about 150 MB where a checkout is 1,017 MB.
 - The summarizing process is handed `summarizedConfiguration` of the lens's configuration, the one the key holds, and its node flags carry the command's own `--max-old-space-size` and no other of the command's (`summarizingFlags`).
 
 ## Generated
@@ -66,26 +66,27 @@ How long each change regenerated took, in milliseconds, and the largest peak mem
 
 #### `treeOptions` {#symbol-treeoptions}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L201)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L202)
 - Returns: [`WorkingTreeOptions`](../../../engine/src/live-docs/history/versionControl.ts.mdmd.md#symbol-workingtreeoptions)
 - Parameters: `configuration`: [`LiveDocumentationConfig`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 
 ##### `treeOptions` — Summary
-What the history asks of a change's tree written at `tree`: every name stands, and every file a reader can read
-holds its content. A file is written empty only when the configuration's `exclude` names it (by discovery's own
-rule, `matchesPathPattern`), no reader handles it (`hasReader`), and it lies outside the docs root (discovery's
-`docsRootWithin`), which the generator reads and rewrites whatever `exclude` says: so an import of an asset, a
-resolver's probe or a search for nested scans finds what it finds over a checkout, and the bytes no reader reads,
-which were 511 of the 521 GB a rebuild of this repository wrote (2026-11-19), are not written. A symbolic link at,
-above or beneath the docs root is not written even as a copy.
+What the history asks of a change's tree written at `tree`: every name stands, and every file holds its content but
+one kind. A file is written empty only when the configuration's `exclude` names it (by discovery's own rule,
+`matchesPathPattern`), it lies outside the docs root (discovery's `docsRootWithin`), which the generator reads and
+rewrites whatever `exclude` says, and it is an image, a font or a recording (`isMediaAsset`), whose bytes no reader
+reads whatever names it: an import of a picture or a resolver's probe finds the name, as over a checkout. Any other
+file is written whole, since a reader may open any text file another file names (the C reader opens whatever an
+include names, `.def` and `.inc` among them, though no reader handles those kinds on their own). A symbolic link at
+or above the docs root is not written even as a copy.
 
 Until a review of 2026-11-19 the excluded files were left out altogether, on the strength of one measurement over
-this repository that the summarizing process opened none; the generator does read excluded files that included
-code imports or re-exports, and probes the disk for others.
+this repository that the summarizing process opened none; for a few hours after, every excluded file no reader
+handles was written empty, until the review's second pass found the C reader opening such files.
 
 #### `summarizingEnvironment` {#symbol-summarizingenvironment}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L220)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L221)
 - Parameters: `environment`: `NodeJS.ProcessEnv`
 
 ##### `summarizingEnvironment` — Summary
@@ -93,7 +94,7 @@ The environment the summarizing process is given: {@link SUMMARIZING_VARIABLES} 
 
 #### `summarizingFlags` {#symbol-summarizingflags}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L239)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L240)
 
 ##### `summarizingFlags` — Summary
 The flags node is started with for the summarizing process, and no other: for the TypeScript module, under tsx,
@@ -115,7 +116,7 @@ node's default heap could not be made by any means.
 - `node:path` - `path`
 - `node:url` - `pathToFileURL`
 - [`LiveDocumentationConfig`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
-- [`liveDocumentationConfig.hasReader`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-hasreader)
+- [`liveDocumentationConfig.isMediaAsset`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-ismediaasset)
 - [`archetype.matchesPathPattern`](../../../engine/src/live-docs/archetype.ts.mdmd.md#symbol-matchespathpattern)
 - [`discovery.docsRootWithin`](../../../engine/src/live-docs/discovery.ts.mdmd.md#symbol-docsrootwithin)
 - [`format.HistoryLens`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-historylens) (type-only)

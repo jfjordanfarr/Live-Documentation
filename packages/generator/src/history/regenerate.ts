@@ -31,7 +31,7 @@ import os from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
-import { hasReader, type LiveDocumentationConfig } from "@live-documentation/engine/config/liveDocumentationConfig";
+import { isMediaAsset, type LiveDocumentationConfig } from "@live-documentation/engine/config/liveDocumentationConfig";
 import { matchesPathPattern } from "@live-documentation/engine/live-docs/archetype";
 import { docsRootWithin } from "@live-documentation/engine/live-docs/discovery";
 import type { HistoryLens } from "@live-documentation/engine/live-docs/history/format";
@@ -186,23 +186,24 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
 }
 
 /**
- * What the history asks of a change's tree written at `tree`: every name stands, and every file a reader can read
- * holds its content. A file is written empty only when the configuration's `exclude` names it (by discovery's own
- * rule, `matchesPathPattern`), no reader handles it (`hasReader`), and it lies outside the docs root (discovery's
- * `docsRootWithin`), which the generator reads and rewrites whatever `exclude` says: so an import of an asset, a
- * resolver's probe or a search for nested scans finds what it finds over a checkout, and the bytes no reader reads,
- * which were 511 of the 521 GB a rebuild of this repository wrote (2026-11-19), are not written. A symbolic link at,
- * above or beneath the docs root is not written even as a copy.
+ * What the history asks of a change's tree written at `tree`: every name stands, and every file holds its content but
+ * one kind. A file is written empty only when the configuration's `exclude` names it (by discovery's own rule,
+ * `matchesPathPattern`), it lies outside the docs root (discovery's `docsRootWithin`), which the generator reads and
+ * rewrites whatever `exclude` says, and it is an image, a font or a recording (`isMediaAsset`), whose bytes no reader
+ * reads whatever names it: an import of a picture or a resolver's probe finds the name, as over a checkout. Any other
+ * file is written whole, since a reader may open any text file another file names (the C reader opens whatever an
+ * include names, `.def` and `.inc` among them, though no reader handles those kinds on their own). A symbolic link at
+ * or above the docs root is not written even as a copy.
  *
  * Until a review of 2026-11-19 the excluded files were left out altogether, on the strength of one measurement over
- * this repository that the summarizing process opened none; the generator does read excluded files that included
- * code imports or re-exports, and probes the disk for others.
+ * this repository that the summarizing process opened none; for a few hours after, every excluded file no reader
+ * handles was written empty, until the review's second pass found the C reader opening such files.
  */
 export function treeOptions(configuration: LiveDocumentationConfig, tree: string): WorkingTreeOptions {
   const docsRoot = docsRootWithin(tree, configuration);
   const inDocsRoot = (file: string): boolean => docsRoot !== undefined && (file === docsRoot || file.startsWith(`${docsRoot}/`));
   return {
-    contentless: (file) => !inDocsRoot(file) && !hasReader(file) && configuration.exclude.some((pattern) => matchesPathPattern(file, pattern)),
+    contentless: (file) => !inDocsRoot(file) && isMediaAsset(file) && configuration.exclude.some((pattern) => matchesPathPattern(file, pattern)),
     ...(docsRoot !== undefined ? { docsRoot } : {})
   };
 }
