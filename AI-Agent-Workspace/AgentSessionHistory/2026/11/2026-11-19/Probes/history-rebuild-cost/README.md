@@ -212,3 +212,21 @@ The tree writer of `df0f792b` leaves out what `exclude` names. Measured as in se
 | `c84fd00f` | 2,245 of 7,532 files | 14.9 MB / 32.4 MB / 21.4 MB | 2.3 / 2.7 | 17.2–28.5 / 24.8–39.4, 1,017 MB | 20.0 / 24.3 |
 
 The summarizing process's own time is unchanged within the load's noise; its text store was empty for each run, as in section 1. At `87b9e7b5` and `535ceefc` the summary is identical byte for byte to the cache's. At the head it differs only by the links to the session archive it now keeps, which the history takes out where it reads the summaries (the oracle sample of 54 commits).
+
+## After the independent review: every name written, and the tree timed again (later on November 19)
+
+[The independent review of the engine round](../engine-round-review/README.md) showed by runs that the section above's "nothing is opened under the excluded folder" was this repository's luck: elsewhere the generator reads excluded files that included code imports or re-exports, and probes the disk for others. The tree writer now writes every name; an excluded file no reader handles, outside the docs root, is written empty; a symbolic link to a file of the tree is written as a copy of it.
+
+At the head (`c84fd00f`): 7,532 files written, 4,734 of them empty where 988 MB stood, and the 553 excluded files with a reader written whole, 14.1 MB. Logical bytes 29.0 MB, `wchar` 60.9 MB, `write_bytes` 36.8 MB. The same three commits, one at a time, at a load of 8 to 12 (other agents' runs), so the seconds are not comparable with the table above:
+
+| Commit | Files | Bytes: logical / `write_bytes` | Write the tree: wall / processor s |
+| --- | --- | --- | --- |
+| `87b9e7b5` | 1,213 | 6.3 MB / 9.2 MB | 2.6 / 2.9 |
+| `535ceefc` | 3,020 | 10.8 MB / 15.6 MB | 4.5 / 5.1 |
+| `c84fd00f` | 7,532 | 29.0 MB / 36.8 MB | 11.0 / 12.0 |
+
+The rule is held to the whole tree as the oracle: over all 43 sample workspaces of the integration tests, each top-level folder excluded in turn (100 exclusions), the docs written over the history's tree equal those written over the whole tree byte for byte (`tests/integration/live-docs/history-tree-equivalence.test.ts`). A hook on node's file reads over the same runs found no reader opening the content of any of the 34 files written empty.
+
+## The signal case that went red three times in ten (later on November 19)
+
+The integration case that a signal leaves no scratch tree behind looked for any `live-docs-history-*` folder in the system's temporary folder, which every history run on the machine shares. Instrumented over 13 runs, the command always did what it should: at the signal two summarizing processes were alive, every removal ran and succeeded, the folders were gone, and the command exited 130 about 40 ms before the tsx wrapper the case waited for. The folders the case found in its red runs belonged to other runs, named by the caches their tasks wrote to (another worktree's `history-checked-*`, another test file's `history-fixture-*`). With a second history run of the probe's own going on in the shared folder, the case at `0fd0d7e4` went red 6 times in 10. The test files now give themselves and every command they start a private, short `TMPDIR`, and the signal case starts the command itself under tsx's loader rather than tsx's wrapper. Beside the same second run, the mended case (`ca266bf7`) was green 50 times in 50.
