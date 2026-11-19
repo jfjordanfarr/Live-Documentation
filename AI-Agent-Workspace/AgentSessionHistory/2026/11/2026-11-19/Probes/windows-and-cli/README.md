@@ -582,3 +582,34 @@ The root added this to the leg. An analysis result may now carry `notices?: Sour
   ```ts
   notices.push({ reason: "loads whose path the text does not fix, not followed", subject: `line ${line}: ${command}` });
   ```
+
+### The third leg's verification
+
+All runs used a private TMPDIR.
+
+- **`npm run safe:commit` without the browser passed whole on its last run**, at a load average of 28 to 34:
+  - the Live Docs pipeline, with all 1,099 docs unchanged, and lint;
+  - ESLint, the build and the tests' type-check;
+  - 203 unit files with 2,298 tests, and 21 integration files with 170 tests;
+  - documentation link enforcement and the three SlopCop audits;
+  - a clean tree afterwards.
+- **The run before it, before the notices channel, at a load average of 31 to 33,** had two unit cases overrun the five-second deadline:
+  - `generatorIdentity.test.ts`'s lens-key case, at 5.8 s;
+  - `forceGraphOctree.test.ts`'s octree case, at 6.0 s.
+
+  Both passed in the next run.
+- **Before its mend:**
+  - The readers' 21 encoding cases failed.
+  - The generator's two unmappable-file cases failed.
+  - The `exclude` case with `core.ignorecase` true failed.
+  - The notices case failed.
+  - The reading step's own cases were written with it.
+  - The command's new lines (the reading rules, the unmappable files) were not run against the old command, which printed none of them.
+- **The browser stage was not run.** This leg changes no Explorer file. It does add engine files and imports that the picture tests' neighbourhoods may draw: `tooling/sourceText.ts`, imported by sixteen readers and by `generator.ts`.
+
+**Unfinished, or another's:**
+- the swaps in the readers other builders hold, given above;
+- the generator reading each file once and handing the readers its text;
+- the loop body's indentation inside the new `try`;
+- the three readers' notice lines;
+- a test of the command's notice line.
