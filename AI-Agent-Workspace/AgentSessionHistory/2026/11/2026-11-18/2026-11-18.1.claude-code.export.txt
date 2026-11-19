@@ -428,7 +428,6 @@
 
 
 
-
 ❯ <ide_selection>The user selected the lines 1 to 427 from
   /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/11/2026-11
   -18.1.claude-code.export.txt:
@@ -10908,3 +10907,1948 @@
   The records are not on main yet. They are 16 MB of screenshots for half a
   ladder, so the builder is first pruning them to the pictures a reader of the
   findings needs; a run can be had again for cents.
+● The blind playtests have their first real result. All four rungs, down to
+  Haiku, completed the estate tasks, and they stumbled in the same four places.
+
+  What was run
+
+  Three visitor tasks on the estate sample, two runs each, on Opus medium, Opus
+  low, Sonnet and Haiku: 24 runs, none failed, none gave up.
+
+  ┌──────────────────────────┬──────────────────────────────────────────────┐
+  │           Task           │                    Result                    │
+  ├──────────────────────────┼──────────────────────────────────────────────┤
+  │ What uses this file?     │ Done in all 8 runs                           │
+  ├──────────────────────────┼──────────────────────────────────────────────┤
+  │ Send me a link to it     │ Done in all 8 runs                           │
+  ├──────────────────────────┼──────────────────────────────────────────────┤
+  │ Open this folder and say │ Done whole in 4 of 10 runs (these include    │
+  │  how its files connect   │ two earlier Opus runs); the rest missed the  │
+  │                          │ cycle                                        │
+  └──────────────────────────┴──────────────────────────────────────────────┘
+
+  Haiku costs a third of a cent a run and Opus medium twelve cents. The whole
+  ladder so far cost $2.22.
+
+  Where they got stuck
+
+  I looked at the cited screenshots for the first and third of these myself and
+  see what the testers saw.
+
+  1. The view does not frame what the visitor came for. Arriving on a pinned
+     file, its neighbours are cut off at both edges. All 8 "what uses this file"
+     runs had to change the view before they could answer, half of them by
+     detours through zoom-out and dragging. After opening a folder, 9 of 10 runs
+     pressed Fit. Opus at medium effort detoured too, so this is the product's
+     fault and not a weak model's. It is the same thing as your wish tonight
+     that the camera follow a newly opened cell.
+  2. A World Map box does not name the folder it opens. "payments" opens
+     PaymentService/. Every run met it: Opus trusted the box and wrote "likely",
+     and two of the smaller-model runs went to search instead.
+  3. A cycle's returning connection reads as a file linking to itself. Half the
+     runs read "1 connection returns in a cycle" with its small loop that way.
+     You noted on November 13 that it "looks like a mistake when zoomed out".
+  4. Wires say nothing when pointed at. Testers inferred direction from the
+     legend's colours and hedged their answers. Both Haiku runs found the plain
+     answer in the reader's Dependents list, which no stronger model opened.
+
+  One thing in the testers' favour is the harness's doing, not the product's:
+  the link task cannot fail by misreading an address, because the tester is
+  given the address bar as text.
+
+  What I propose to do with it
+
+  - Item 1 presses on a decision of yours from November 4: arrive on one card at
+    reading size, neighbours cut, and learn by zooming out. I won't simply
+    reverse it. I'd build the alternative behind a lever (arrive with the
+    subject's neighbours' names in view), run the same testers on both, and
+    bring you the numbers and both pictures in the app.
+  - Items 2 and 4 I'd just build. The folder's name goes under the box's name,
+    and a 2D wire says "X uses Y" under the pointer, as a 3D wire already does.
+    Both show the reader's own words, and neither changes a decision.
+  - Item 3 needs a design round with real alternatives for you to look at.
+
+  Still to run
+
+  The three tasks on this repository's own, much larger map, and the "picture
+  after every action" variant on the weaker rungs: 31 runs. They wait until the
+  product builders have cleared the browser lane.
+
+  The records are not on main yet. They are 16 MB of screenshots for half a
+  ladder, so the builder is first pruning them to the pictures a reader of the
+  findings needs; a run can be had again for cents.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Referenced file ../../tmp/claude-1000/-workspaces-Live-Documentation/645014
+     1c-9e11-40e5-95a5-166121c231a3/scratchpad/own/owner.new.md
+  ⎿  Referenced file ../../tmp/claude-1000/-workspaces-Live-Documentation/645014
+     1c-9e11-40e5-95a5-166121c231a3/scratchpad/ideas/ideas.new.md
+  ⎿  Referenced file ../../tmp/claude-1000/-workspaces-Live-Documentation/645014
+     1c-9e11-40e5-95a5-166121c231a3/scratchpad/dir/direction.patched.md
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e
+     5-95a5-166121c231a3/scratchpad/ds/design-system.mdmd.md (57 lines)
+  ⎿  Referenced file AI-Agent-Workspace/Memory/owner.md
+
+● Task "Cells' first-frame cost" still running in background
+
+● Task "Review root's code of today" completed in background
+
+● Task "Blind playtest instrument" completed in background
+
+● Task "Marble pattern from contents" completed in background
+
+● Task "World Map keyboard and motion defects" still running in background
+
+● Task "Shell accessibility plain defects" still running in background
+
+● Task "Narrative A: Sep 26 to Oct 10" still running in background
+
+● Task "Narrative B: Oct 12 to Oct 23" still running in background
+
+● Task "Narrative C: Oct 24 to Nov 2" still running in background
+
+● Task "Narrative D: Nov 3 to Nov 9" still running in background
+
+● Task "Narrative E: Nov 10 to Nov 18" still running in background
+
+● Task "Fallback timer of fifty minutes while builders work" still running in
+  background
+
+› Message from general-purpose
+  ## Marble Pattern trial: first milestone
+
+  The sketch, the shader, the lever and pictures 1 to 3 are done, and pictures 1
+  and 2 are judged. It is all in one commit, **7fc9ffb4**, on worktree
+  `/workspaces/Live-Documentation/.claude/worktrees/agent-a56f13063bbac6a0c`,
+  built on c5493364. Four things are not done: the Live Docs are not
+  regenerated, the new browser case has not run, and picture 4 (the 3D map of
+  pathfind.ts) exists in "One Pattern" only. The shared browser lock was held
+  past my time.
+
+  ### The lever
+  Tuning → Colour → **Marble Pattern**:
+  - **One Pattern** (`one`, the default): today's marble.
+  - **From Its Doc** (`doc`): the veins are bent by the sketch; the axis still
+  comes from the path.
+  - **From Its Doc, Axis Too** (`doc-axis`): the axis and the turn of the vanes
+  come from the sketch too.
+
+  The help sentence is "How a marble's veins wind: one pattern for all, or bent
+  by its file's symbols and uses, so that a change shifts them."
+
+  It is the viewer's own setting, `appearance.marblePattern`, saved in the
+  browser and never in a link, the same rule as Marbles. That is why
+  `layout-presets.ts` is untouched. The pattern state lives in `palette.ts`
+  beside `marblesDrawn` and is heard by the same listener. The type
+  `MarblePattern` lives in `palette.ts` and `types.ts` re-exports it, because
+  `palette.ts` is compiled in a project that can't import `types.ts`.
+
+  ### The sketch: `packages/explorer/src/client/views/marbleSketch.ts`
+  - **Decided fork: which features.** I used only facts that both today's graph
+  and a step of the history carry:
+    - one feature per public symbol, keyed by the file's path and the symbol's
+  place in the count;
+    - one feature per file it uses, weighted √(references);
+    - the file's own path, at the weight of one symbol.
+  - **Why not symbol names:** the history keeps counts, not names. Names today
+  and counts in the history would make every marble jump at the scrubber's last
+  step, which shows today's graph and not a snapshot.
+  - **Checked:** in the history sample, all 7 files that stand at the last step
+  and today have identical sketches.
+  - **Decided fork: what uses a file is not a feature.** Its own Live Doc
+  doesn't list its users, and the blue vein already counts them.
+  - Each feature's direction comes from FNV-1a hashing into a small random
+  generator, 8 normal numbers brought to unit length. Features are summed in
+  text order, so order can't matter.
+
+  **Unit tests:** `marbleSketch.test.ts` has 8 cases. The client and script
+  suites stand at 111 files and 1,234 tests, all passing. Over 300 random
+  40-feature files, the mean distance rises with the share of features changed:
+
+  | Share changed | 0 | 2.5% | 10% | 25% | 50% | 75% | 100% |
+  | --- | --- | --- | --- | --- | --- | --- | --- |
+  | Mean distance | 0 | 0.222 | 0.451 | 0.711 | 0.995 | 1.209 | 1.389 |
+
+  For a file of 40 symbols, one symbol added moves the sketch by 0.103 and five
+  by 0.355.
+
+  `palette.test.ts` gained three things:
+  - a guard check that allows only balanced inner `MARBLE_SKETCH` /
+  `MARBLE_SKETCH_AXIS` guards;
+  - a check that nothing of the sketch survives with `MARBLE_SKETCH` undefined;
+  - a check that the pattern choice tells the palette's listeners.
+
+  I also confirmed by hand that with One Pattern all five shader chunks are
+  character-for-character today's.
+
+  ### The shader
+  - **Waves:** `MARBLE_WAVES` in `forceGraphAppearance.ts` replaces the old warp
+  with W(p) = 0.55 · Σ sᵢ · sin(fᵢ·dᵢ·p + φᵢ), using 8 fixed directions and
+  frequencies from 2.3 to 5.3.
+  - **Attributes:** the sketch rides as two new vec4 instance attributes,
+  `spatialMarbleSketchA` and `spatialMarbleSketchB`. `MARBLE_VALUES` goes from 7
+  to 15, and `marbleValuesOf` now fills them for both the mesh spheres and the
+  shell spheres.
+  - **Defines:** `compileMarbles` sets `MARBLE_SKETCH` and `MARBLE_SKETCH_AXIS`
+  only while the trial is chosen.
+  - **Unchanged:** vanes, shares, edge filtering and the fade to the far tint.
+  - **View:** `forceGraphView.ts` reads each file's sketch from the graph shown,
+  today's or the step's.
+  - **Not covered:** the 2D map's cells (under `localView/`, not mine) still
+  draw one pattern.
+
+  ### Frames a second
+  A probe, since deleted, timed forced renders of this repository's 3D map at
+  rest, 1440×900, two rounds each:
+
+  | Renderer | Marbles off | One Pattern | From Its Doc | Axis Too |
+  | --- | --- | --- | --- | --- |
+  | Software (SwiftShader) | 16.4 / 18.1 | 12.3 / 14.6 | 13.2 / 12.1 | 13.1 /
+  12.4 |
+  | Card | 307 / 309 | 320 / 319 | 318 / 284 | 298 / 298 |
+
+  In software the trial costs about 5%, which is within round-to-round noise. On
+  the card no difference shows. This is not the same measure as the earlier 4.4
+  against 5.3, which was the page's own loop while the picture settled.
+
+  ### Pictures
+  They are in `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screens
+  hots/marble-patterns/`, with a README saying what I see in each.
+
+  - **`files-one.png`, `files-doc.png`, `files-doc-axis.png`:** forty files
+  near, plus a middling row and a far row.
+    - In One Pattern every marble is the same swirl at another bearing.
+    - In From Its Doc each is its own: lobes, bays, the odd island, like small
+  planets. They still read as glass with veins and as one family.
+    - The far row is steady tints in all three, with no shimmer.
+    - **What's wrong:** the trial is busier, and the owner already called the
+  marbles "still quite noisy". Lowering `MARBLE_WAVES.bend` (now 0.55) would
+  calm them. A few lobes pinch to slivers one or two pixels wide.
+    - "Axis Too" looks no more varied than "From Its Doc" across files; the two
+  differ only through time.
+  - **`run-pathfind.png`:** a made-up run of changes to pathfind.ts (28 symbols,
+  3 uses).
+    - One symbol added is a slight bend you see only side by side; five is
+  visible; all uses replaced is another marble.
+    - In Axis Too, the full replacement turns the whole marble.
+    - A fourth row shows the same run if symbol names were features; its steps
+  are about the same size.
+    - **What's wrong:** "half" and "all" replaced change only the uses. A symbol
+  swapped one for one is invisible, because the sketch reads counts.
+  - **`history-sample-steps.png`:** each history-sample step's changed marbles,
+  before and after, in From Its Doc.
+    - `main.ts` shifts a little at steps 2 to 4, and `util.ts` grows a lobe at
+  "Make models a little larger".
+    - A renamed file comes out as a new marble, because its path is a feature.
+  - **`pathfind-3d-one.png`:** the 3D map of pathfind.ts in One Pattern only;
+  its "From Its Doc" twin was not drawn.
+
+  ### What the history can and cannot show
+  Each step carries, per file, its kind, its symbol count, its entry mark, and
+  its edges with reference counts. So a marble bends at a step where the file
+  gained or lost a symbol, gained or lost a use, or changed how much it
+  references a file it uses. A rename gives it a new marble.
+
+  It cannot show:
+  - changes inside function bodies;
+  - renamed or one-for-one swapped symbols;
+  - changed summaries.
+
+  The step's "touched" list knows which files a commit touched, but not what
+  changed in them.
+
+  ### The fork's facts
+  I counted with `/tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-
+  40e5-95a5-166121c231a3/scratchpad/fork-evidence.mjs`, ignoring shifts in
+  source line numbers.
+
+  **Last 20 commits:** 15 touched no file that has a Live Doc; they were records
+  and pictures. The other 5 changed 19 files:
+  - 14 with no change to their Live Doc's listed facts (e.g. all seven files of
+  50ff0ceb, including `palette.ts` and `types.ts`);
+  - 2 where the Live Doc changed in facts the sketch doesn't read:
+  `slopcop/symbolReferences.ts` in 6d9a8a45 and `history-emphasis.spec.ts` in
+  2ab8cabd;
+  - 3 that moved the sketch: three e2e specs in 2ba32837.
+
+  **Last 150 commits (Nov 16 to 18):** 37 changed code, touching files 384
+  times:
+  - 298 (78%) left the Live Doc's facts unchanged;
+  - 76 moved the sketch;
+  - 10 changed other facts, such as summaries or parameters;
+  - 0 changed symbol names without changing the count, so adding names to the
+  sketch would have added nothing in this sample.
+
+  **What the whole-file option would take:** a generated line in each Live Doc
+  holding 8 numbers, a nearness sketch over the file's text built the same way
+  as this one.
+  - Every code edit would then rewrite the file's Live Doc, about 4 in 5 more
+  doc changes per edit than today.
+  - The history's sequence and codec would need to carry the numbers per file
+  per step.
+  - The line means nothing to a reader.
+  - Computing it costs the generator almost nothing.
+
+  A smaller growth is to make the history sequence carry symbol names. The
+  evidence says that adds little.
+
+  ### Scripts
+  - New `scripts/contact-sheet/marble-sheet.ts` (`npm run marble:sheet --
+  --sheet files|run|history`): draws marbles alone with the page's own shaders.
+  - `contact-sheet.ts` gains `--marble-pattern`.
+  - Their shared helpers moved into the new
+  `scripts/contact-sheet/bundle-page.ts`.
+
+  ### Unfinished
+  1. `npm run live-docs:generate` has not run; please regenerate and commit the
+  docs.
+  2. The new browser case, "each marble pattern compiles, draws its own picture,
+  and is kept as the viewer's own" in `tests/e2e/tuning.spec.ts`, has not run.
+  The count there is now 69.
+  3. The "From Its Doc" 3D picture of pathfind.ts is missing; it's one
+  `contact:sheet --pin packages/engine/src/live-docs/pathfind.ts --only
+  3d-pinned --marble-pattern doc` run.
+  4. The design document's marble passage is updated in
+  `.mdmd/layer-3/live-documentation-explorer.mdmd.md`.
+  5. Whether to lower `bend` is open for the owner's eye.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Agent "Marble pattern from contents" finished · 58m 18s
+
+› Message from general-purpose
+  Landing branch `blind-playtests-landing` is ready, made from main at 444bdd90,
+  with the records cut from 147 pictures to 64.
+
+  **The branch.** It has two commits:
+  - 626a4821: the instrument, `AI-Agent-Workspace/scripts/playtest/` as it
+  stands at my head (README, browser-window, playtest, ladder, keep-pictures,
+  tasks.json).
+  - 326666e7: the pruned records and their README, `AI-Agent-Workspace/AgentSess
+  ionHistory/2026/11/2026-11-18/Probes/blind-playtests/`.
+
+  Together they add 212 files and 5,558 lines against main. On the branch, `npm
+  run slopcop:markdown` reports 1,549 files scanned and 0 broken links, and `npm
+  run slopcop:symbols` 1,546 files and 0 issues. Both READMEs are in scope.
+
+  **Size.**
+  - Before: 18 MB on disk, 147 pictures (16.9 MB).
+  - After: 8.6 MB on disk, 64 pictures (7.8 MB).
+  - The 64 kept pictures are only 45 different images, because the runs of one
+  task share a first picture. Git stores each image once, so pictures add 5.1 MB
+  to the repository.
+  - The other 83 pictures (9.1 MB) were moved to `/workspaces/Live-Documentation
+  /AI-Agent-Workspace/tmp/playtests/<run>/shots/`. That folder is ignored by
+  `.gitignore` line 52, `**/AI-Agent-Workspace/tmp/`.
+  - Every run keeps its text: `run.json`, `actions.jsonl`, `answer.md`,
+  `transcript.jsonl` and `clipboard.jsonl`. `actions.jsonl` still names every
+  picture, including the moved ones.
+
+  **Pruning from now on.** It is a step after judging, `node
+  AI-Agent-Workspace/scripts/playtest/keep-pictures.mjs <records folder>`, and
+  the ladder prints it when it ends.
+  - It keeps each run's first and last picture and every picture the folder's
+  README links to, and moves the rest to the ignored folder.
+  - If run again after the README changes, it brings back any newly cited
+  picture still in that folder. It fails if a cited picture is found nowhere.
+
+  I chose a step after judging over a launcher rule because which pictures a
+  finding needs is known only once the README is written. So that the stuck
+  points I list are kept, the README now links a picture for each detour it
+  describes. A new "Pictures kept" section in the README says once where the
+  full sequences were and that they are not kept.
+
+  **Your branch question.** My working branch was not rewritten. It gained
+  b747e27e (the keep step) and c3c330a8 (the pruned records), and its content in
+  both folders is identical to the landing branch's. Its history still carries
+  all 147 pictures, so please land the new branch, not this one.
+
+  **The two forks.** My recommendations, also in the README:
+  - **Address as text or drawn:** keep it as text. A person reads and copies an
+  address bar as text, and misreading 726 characters off a picture would test
+  eyesight, not the Explorer.
+  - **A picture after every action:** keep look-only on every rung, and switch a
+  rung to after-each only if its seven runs show it missing changes it never
+  looked at. So far no rung failed for not looking; Haiku looked after nearly
+  every action of its own accord.
+
+  The second half, 31 runs, waits for your word. The resume command is unchanged
+  and in the README.
+
+● Agent "Blind playtest instrument" is waiting on its own background work · 1h
+  2m 34s
+
+  Read 1 file, ran 6 shell commands (ctrl+o to expand)
+  ⎿  Resuming agent adb9a3a
+
+  Read 4 files (ctrl+o to expand)
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/AgentSessionHistory/2026/11
+  /2026-11-18/2026-11-18.1.claude-code.export.txt in the IDE. This may or may
+  not be related to the current task.</ide_opened_file>
+  >your standing grant to improve these documents in idle time
+
+  If they appear that they are in need of improvement. I'm not confident that
+  will need to be something done all the time, and might quickly bloat the
+  context of the Root Agent unnecessarily. Today's pass should be sufficient
+  for setting a good standard. Often when a high-quality object is present as
+  the starting context, the edits applied are frequently of similarly-high
+  quality.
+
+● Today's pass is a one-off standard, not a standing duty, so I'm correcting the
+  owner.md entry that says otherwise. Meanwhile the playtest instrument is
+  landing on main, and I'm reviewing the marble trial pictures. · summary
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+› Message from general-purpose
+  Report on the browser milestone: the runner work is proven; the building-case
+  hardening is not proven and may need reverting; Live Docs not yet regenerated.
+
+  (1) 5ef1b1bf: a narrowing that selects no case in either pass now fails.
+  Before the two passes, the runner lists the whole suite once (`playwright test
+  --list` with the caller's arguments and LIVE_DOCS_E2E_PASS empty, so no pass
+  filter applies). It does not count cases itself: Playwright refuses an empty
+  selection with "No tests found" on stderr and exit 1. The runner shows that
+  error and exits with that code without starting either pass. Each pass still
+  keeps --pass-with-no-tests, since a narrowing may hold only tagged or only
+  untagged cases. The listing costs about 4 s for the whole suite. One new unit
+  case: listing fails, so no pass runs, exit 1, and the error is shown.
+  scripts/e2e-passes.test.ts: 5/5. ESLint is clean. The runner's Live Doc note
+  says the gap is closed.
+
+  (2) Browser proofs (all port 8791, under the lock):
+  - `npm run build` plus visualize, estate, history-sample and rosetta: exit 0.
+  - Runner `--list`: 537 + 5, exit 0.
+  - `--list --grep "search pauses"`: 1 + 1, exit 0.
+  - `--list --grep-invert "search pauses"`: 536 + 4. Compared title by title
+  against the alone pass's own list (5 titles), 0 tagged cases land in the first
+  pass.
+  - Control showing the old bug was real: `npx playwright test --list --grep
+  @alone --grep "search pauses"` gives 2 cases; the second --grep replaced the
+  first.
+  - `createRequire(...).resolve("@playwright/test/cli")` resolves to
+  node_modules/@playwright/test/cli.js through the package's exports.
+  - Misspelt path, `node scripts/e2e-passes.mjs tests/e2e/typo.spec.ts`: "Error:
+  No tests found." and exit 1.
+  - `--list tests/e2e/local-map-hidden.spec.ts:51`: 0 + 1, exit 0.
+  - Building case, hardened (`npx playwright test --config
+  tests/e2e/playwright.config.ts tests/e2e/force-graph-building.spec.ts:84
+  --repeat-each 8 --workers 2`): **4 of 8 failed**, each at line 120: the hover
+  never arrived within 5 s. The failures were repeats 1, 3, 5 and 7.
+  - Control: a temporary copy without my two-frame wait (your a91d7f89 form),
+  same command: **8 of 8 passed**.
+  - Diagnostic copy of my hardened form, logging after the move: **8 of 8
+  hovered at once**. The chosen sphere was 1–2 px from the pointer (radius 7),
+  chosen after 170–460 ms.
+  - So my form failed 4/8 once and passed 8/8 once. I cannot yet tell load from
+  cause. A run of both side by side (8 each, two workers) is in flight; I have
+  not read its result.
+  - Answer to your question 2, does the hardening bite: **no.** The probe
+  counted 46 back-to-back reading pairs after the build while the picture moved.
+  0 of them fell inside one frame, and 1 agreed. A reading (renderedNodes)
+  takes 93–150 ms and a frame is about 25 ms, so a back-to-back pair already
+  spans 6–8 frames. The two-frame wait guards a case that does not occur on this
+  picture. Unless the side-by-side run clears it, I recommend reverting
+  86643c1b to your form.
+
+  (3) Live Docs: **not regenerated or committed.** What remains: `npm run
+  live-docs:generate` under the lock, then commit the regenerated mirror. That
+  covers the new scripts/e2e-passes.test.ts, the new exports fencedLines and
+  maskCodeSpans in markdownShared.ts, the runner's new imports, and the line
+  shifts.
+
+  (4) Item 6, the 65 waits on aria-busy="false" (now 65, not 64): **none matches
+  the history case's race, by the code.**
+  - Why: forceGraphView.ts sets aria-busy from simulationRunning. setPiece makes
+  it true whenever the strength is above 0, and onStill clears it only once the
+  reveal is complete (line 1660). So at energy above 0 the flag covers spheres
+  still entering. A first picture always runs at strength 1: updateForces(true)
+  reheats with move(1), and then setPiece(firstPiece) runs. The race needs zero
+  energy (updateEnergy 0, or a scrubber drag) plus a change of membership.
+  - Specs at zero energy among the 65:
+    - history-panel.spec.ts:51 (its helper `settled`): after steps it reads only
+  DOM: panel, chips, track. Its picture reads are polls per sphere (:464–468)
+  or come after goto, which is covered.
+    - history-scrubber.spec.ts:642: comes after an energy-slider change, which
+  is no membership change, and reads engine activity.
+    - history-scrubber.spec.ts:657: an assertion during the drag (the engine
+  does not start), not a wait before a reading.
+    - force-graph-update.spec.ts:57 (used at :85): comes after goto at energy 0
+  plus a zoom-resistance slider. The first picture runs at strength 1, so it is
+  covered.
+    - force-graph-update.spec.ts:184: comes after the energy slider; a busy
+  "true" follows.
+    - inventory-counts.spec.ts:68: comes after goto and reads the stats line.
+  - Every other site runs at the default energy of 1.
+  - Undecided, and a different race: a wait placed right after a click could
+  pass on a stale "false" if that step's render is deferred to a frame. I did
+  not trace render timing site by site.
+  - I changed no spec.
+
+  Unfinished:
+  - the side-by-side run's result, and from it the verdict on 86643c1b;
+  - regenerating the docs;
+  - deleting tests/e2e/zz-control-building.spec.ts, an untracked temporary
+  control that is not committed;
+  - deleting my scratch logs (opus-control.log, opus-diag.log, opus-both.log,
+  probe.log, building.log, build.log), which sit in the scratchpad we share.
+
+  Commits on my branch: 110bb198, 46601da7, 86643c1b, 92047d5c, 5ef1b1bf.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Review root's code of today" is waiting on its own background work · 1h
+  4m 17s
+
+● Sending the reviewer back in to finish its branch, then recording your message
+  and correcting owner.md.  ⎿  Resuming agent adb9a3a
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+› Message from general-purpose
+  B is done. The draft is at `/tmp/claude-1000/-workspaces-Live-Documentation/64
+  50141c-9e11-40e5-95a5-166121c231a3/scratchpad/nar/B.md` and the ledger at
+  `/tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e5-95a5-16612
+  1c231a3/scratchpad/nar/B.ledger.md`. My working scripts and quotation lists
+  are in the `B-work/` folder beside them. Nothing in the repository was
+  changed.
+
+  **The new chapters** (old stretch: eight chapters, 44,662 bytes; new: two
+  chapters, 19,944 bytes, about 2 KB over the guide):
+  1. "Three views, the next big thing, and a repository that watches itself
+  change (October 12 to 19)": about 9.8 KB. It runs from retiring the Membrane
+  Map and Circuit Board, through `reachable`, the change-over-time pick and this
+  narrative's founding, to the weekend in which history was built.
+  2. "Reading apart from keeping, the page held to its own site, and the
+  Explorer tried before its code (October 19 to 23)": about 10.1 KB. It covers
+  the click grammar, the broken no-network promise, which files get docs, the
+  tether, Cited By, letting the formatter go, and the first-hand review and
+  repairs of October 23.
+
+  The division falls where the October 17 weekend chat ended and the Codex
+  session of October 19 began. Chapter 1 opens on October 12 with no recap, so
+  it follows the October 10 chapter. Chapter 2 ends on what was left open: wire
+  direction and depth, the legend, the first 2D picture's clipping, and the NaN
+  hub. The October 24 chapter takes these up.
+
+  **The owner's quotations** (83 entries, nested quotes rebuilt by hand, checked
+  by script):
+  - **Kept in my chapters:** 36, whole or as an excerpt.
+  - **Kept only because nowhere else holds them:** 21 of those 36. Examples are
+  the Oct 12 nits, the retire-the-views message, the GPT-6 Astra message, "Not
+  nothin'!", the chess line, "one man's "deliberately"…", the network question,
+  and "What's the status?…".
+  - **Let go because Memory already holds them word for word:** 47. That is 24
+  in direction.md only, 15 in owner.md only, 6 in both, and 2 in ideas.md.
+    - A few owner.md copies use single inner quotes where the old chapter had
+  double ("Because it's our repo…", 'don't build it').
+    - One owner.md copy continues past the old chapter's closing period ("we've
+  led ourselves astray…").
+  - **Checked against the sources:** every kept quotation was found in its cited
+  record, and its turn was located.
+
+  **Corrections of fact:**
+  - **NaN hub:** the old chapters left it as open work. It was fixed on
+  2026-10-24 in `8376288b` ("reject non-finite motion", with tests that refuse
+  non-finite positions and forces). My text only says it was left for the
+  following days; the October 24 neighbour should say it landed.
+  - **Turn placement:** "One grammar for every input, not two" is the agent's,
+  in Turn 9 of the October 14 record, not Turn 8. "jagged quality" is in Turn 15
+  of the October 19 record, not Turn 14. My links follow the records.
+  - **For you, outside my stretch:** "About this account" says the October 16
+  session's end "is told in the last chapter, added on 2026-10-17". After this
+  retelling it is told in my chapter 1, so that sentence needs adjusting.
+  - **Nothing else contradicted:** every cited commit's subject and date
+  matched, and so did the numbers I kept (16,229 lines deleted, 122 commits,
+  eight seconds, 1.67 s and 9 s, 842 directories and 7.8 GB, 876 links, 18 docs,
+  ESLint 10's 22 findings, 20 findings and 26 captures). The models and
+  harnesses match each record's header: Codex on Oct 12, 13, 19 and 23; Fable
+  5.1 on Oct 14 to 17 and 22; Opus 5.5 on Oct 20 from Turn 6 and on Oct 21; GPT
+  6.1 Sol as the builder on Oct 23.
+
+  **Turns I was least sure how to weigh:**
+  - The Oct 23 gate story (the hardcoded test origin, the devcontainer lock, an
+  isolated checkout) is cut to one clause about the race and instancing.
+  - The Oct 21 helper-brief episode ("??????????????", "WHAT?") is kept as one
+  sentence, because it is an agent overstating a finding to the owner.
+  - The layout lab learning its card model from the page ("The page is the truth
+  here…", the agent's line) is let go to save space.
+  - Unity, the phone and zoom-out distinguishability item, and the Cited By
+  counts are let go because direction.md and ideas.md hold them.
+  - The root-and-builders arrangement of Oct 17 (Fable as root, three Opus
+  builders in worktrees) is kept as one sentence. It is an early instance of the
+  practice that a later chapter names.
+
+  **What I did not check:**
+  - The 4,644- and 6,000-tick figures, the 323/207/19 citation counts and the
+  browser-test counts. All three are let go.
+  - `SECURITY.md`'s former wording, which I took from the old chapter.
+  - The 2025-12-14 date of the no-network ask, which I dropped.
+  - Whether the probe's gravity 0.05 and tether 0.03 were adopted later
+  (`097e59c6` on Oct 26 applied the owner's preferred 3D defaults), which
+  belongs to the next stretch.
+
+● Agent "Narrative B: Oct 12 to Oct 23" finished · 9m 23s
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Agent "Review root's code of today" is waiting on its own background work · 1h
+  5m 28s
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Today's review of the Memory documents is the standard going forward, not a
+  standing duty, so later files get small edits unless one visibly needs a new
+  pass. I'm recording that in owner.md now. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+› Message from general-purpose
+  I retold lines 496 to 561 (six chapters, 39,233 bytes) as two chapters, 19,304
+  bytes in all. That is over the 17 KB aim, and the ledger says why. I changed
+  nothing in the repository.
+
+  **Files**, all in `/tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e
+  11-40e5-95a5-166121c231a3/scratchpad/nar/`:
+  - `E.md`: the chapters.
+  - `E.ledger.md`: the ledger.
+  - `E.old.md`: the old text, extracted unchanged.
+  - `eq.mjs`: lists each quotation, whether E.md keeps it, and which of
+  direction.md, owner.md and ideas.md hold it.
+  - `vq.mjs`: checks each quotation in E.md against the record turn its
+  paragraph links.
+  - `E.fates.tsv`: the output of `eq.mjs`.
+
+  **The chapters**
+  1. "Three looks, a cut undone, strangers, and pictures shown rather than asked
+  (November 10 to 14)", about 7.7 KB. It starts on the November 10 opening. To
+  join D's last paragraph, which already quotes "very very FEW breakpoints
+  (2-3)" and says the proposal stayed unbuilt, it says Zoom Looks "built the
+  three appearances proposed on November 8 and left unbuilt by two roots",
+  without repeating the quotation.
+  2. "A freer hand, a marble, and where a gate's time goes (November 15 to 18)",
+  about 11.6 KB. It ends open: the owner opens the next chat in the moved copy,
+  the working copy's first on a Linux disk. There is no closing pattern
+  sentence.
+
+  **The owner's quotations**
+  - The old stretch has 94 distinct quotations of the owner's, plus 13 of agents
+  and others: the root, strangers, labels on screen and the narrative's own
+  words.
+  - 49 are kept in E.md.
+  - 45 are held word for word elsewhere and not kept whole: 27 in direction.md
+  only, 11 in owner.md only, 7 in more than one file. 8 of those are kept in
+  part.
+  - 18 are kept only because no Memory file holds them. Among them:
+    - "aesthetic judgments on the current build"
+    - the Codex harness handover
+    - the bubbles lighting up, "(Without nuking performance?)", and "that rather
+  large and annoying text blob"
+    - "Can you use our software to teach me…" and "changing the port number"
+    - the colour pass as asked, and "with specific color semantic _meanings_"
+    - the two sentences refusing the theme page
+    - "too naive … marbles in a galaxy", "Whaaaaat … Do it", and "pretty cool so
+  far"
+    - "Do you need me to allocate more resources?" and "exactly the kind of
+  \"lead dev\" instinct…"
+    - "the first order of business…" and "no large \"A-ha!…\""
+  - There is one new short owner quotation: "fine", their November 15 verdict on
+  the kept description line.
+  - `vq.mjs` found every kept quotation in its cited turn, and the three it
+  could not match were checked by hand. Every link target and `#turn-N` anchor
+  exists.
+
+  **Corrections of fact and citation**
+  1. "Do you need me to allocate more resources?" is in Turn 10 of the November
+  16 record (line 896), not Turn 11. Turn 11 has the owner's approval of the
+  refusal.
+  2. "very very FEW breakpoints (2-3)" was said on November 8, Turn 2 (record
+  line 941). The old text cited the November 10 record for it.
+  3. The owner's year-old request for semantic colours had no source in the old
+  text. It is 2025-12-06.3, line 282, now linked.
+  4. One gap rather than an error: the old text leaves the description's first
+  line "kept off `main`". The owner called it "fine" on November 15 and it
+  landed on November 16 (`b6edde08`). E.md now says so.
+  5. Timing: the chat in the moved copy opened at 14:35 UTC on November 18
+  (09:35 in the owner's zone), not in the UTC morning as the brief put it. E.md
+  gives no hour.
+
+  Nothing in the old text was contradicted by git. I checked every claim of
+  something landed, kept or on a branch against its commit (they are listed in
+  the ledger). Using `git log -S` on AGENTS.md, I also dated where three guide
+  rules came from:
+  - the record searched before a fork: `d761943a`
+  - the first reply bringing back unanswered questions: `cb53d7c7`
+  - a reply counted only when the log shows it: `6daa2f70`
+
+  The pedagogical-bridge sentence was added on November 6, cut on November 12
+  and restored at the next session's opening (`cb53d7c7`).
+
+  **Cuts I was least sure of**
+  - The root's misreading of the 3D map's resting tail, which it told the owner
+  more than once. I cut it for size; its correction is in direction.md and
+  `05b4f61b`/`77e12fd7`.
+  - The November 13 recurrence of the October 21 process-list fault: fourteen
+  background tasks that were the root's own waits.
+  - Whether the second chapter should run 2.5 KB over the model chapters' grain.
+
+  **Not checked**
+  - I read no record in full. Quotations were checked by script against their
+  turn sections, and facts came from the old chapters, checked against git and
+  the summaries.
+  - I did not check these measurements against their sources: 177 colours, 8.7 s
+  against 78 s, two hours to 98 minutes, 4.3 times, a fifth more references,
+  six replies.
+  - "Restored at once" for the pedagogical bridge is not checked against the
+  hour of the owner's Turn 1.
+
+  I left `eq.mjs`, `vq.mjs`, `E.old.md` and `E.fates.tsv` in the scratch folder
+  as evidence. The root can remove them when the narrative is joined.
+
+● Agent "Narrative E: Nov 10 to Nov 18" finished · 10m 29s
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+› Message from general-purpose
+  Stretch C (narrative.md lines 314 to 409, nine chapters, 55,834 bytes) is
+  retold as three chapters totalling 25,702 bytes. Both files are written and
+  the repository is unchanged:
+  - /tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e5-95a5-1661
+  21c231a3/scratchpad/nar/C.md (the chapters, with relative links for
+  AI-Agent-Workspace/Memory/)
+  - /tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e5-95a5-1661
+  21c231a3/scratchpad/nar/C.ledger.md (the ledger)
+
+  Scripts and the extracted old text are in the same folder, under `Cwork/` and
+  in `C.old.md`. Run `node Cwork/verify.mjs C.md` to check the quotations and
+  `node Cwork/links.mjs C.md` to check the links.
+
+  **The new chapters, all `###` under "## October 2026":**
+  1. "Wires that resist zoom, and the newcomer's journey found unfinished
+  (October 24 to 27)": 4,214 bytes.
+  2. "Someone else's software, and a 3D map made to start (October 27 to 29)":
+  9,669 bytes.
+  3. "No text of ours, discovery by hops, and the archipelago of groups (October
+  30 to November 3)": 11,819 bytes.
+
+  The total is about 1.7 KB over the 24 KB guide, because 32 of the owner's
+  quotations are held whole in no other Memory file and had to stay.
+
+  I put October 30 in chapter 3 rather than chapter 2. Its colour-by-direction
+  belongs with October 31's withdrawal of it, and its "no text of ours" rule
+  pairs with November 2's "names at the last second". Chapter 3 ends on the
+  November 3 morning verdict on the rings ("really enjoying the ringed nodes…",
+  "working better than I envisioned"). It leaves to D: Astra's reread, and the
+  walk/Walk and vignette forks. That joins D's opening. Chapter 1 opens on
+  October 24 and names the NaN hub as repaired, which picks up B's last
+  sentence.
+
+  **The owner's quotations (counts by hand from the script's table; partial
+  holdings were checked with `grep -F`):**
+  - **Kept, and held whole nowhere else:** 32, plus 3 summary phrases the agent
+  read out on October 28 ("exemplary ingredients…", "a framing problem?", "still
+  an idea"). These are why the chapters run long.
+  - **Kept, and also held elsewhere:** about 32, mostly in direction.md, some in
+  owner.md.
+  - **Let go, held word for word elsewhere:** 27. That is 25 in direction.md, 1
+  in owner.md ("our current system is overexcited to draw text.") and 1 in
+  ideas.md ("Something we will have to resolve at a design fork."); several are
+  in more than one file.
+  - **Not the owner's:** "generator" and "n of m files shown" were let go;
+  "Born"/"Dead" and "appear" were kept.
+  - **New to the narrative:** six owner quotations taken from the turns, none
+  held in any Memory file. They are Astra's "your eyes" (Oct 24, Turn 12),
+  "Fable is phenomenal with non-vision…" (Nov 1, Turn 1), "even you Astra don't
+  have an eye for change over time…" (Nov 1, Turn 4), "substantially better at
+  headless understanding than Astra" (Nov 2, Turn 1), "It's really really
+  important to get right" (Nov 2, Turn 2), and the "file explorer or canvas
+  authoring tool" doubt, which was already in the old chapter inside a longer
+  quotation.
+  - **Checking:** all 80 quotations in C.md were found in the records they cite,
+  and each was read in its turn. Every link and anchor resolves.
+
+  **Corrections of fact:**
+  1. "a shortest dependency path is not a call trace" is a misquotation. The
+  source (Oct 27 record, line 498) reads "a shortest **import** path…".
+  Corrected.
+  2. "abjectly an obvious user fork." had a period that the source does not
+  have. Dropped.
+  3. "Don't use 'Max'…": the owner wrote "Max" in double quotes. Corrected.
+  4. "In the 3D Local Map, there is positively…" starts mid-sentence in the
+  source. The quotation now starts at "there is".
+  5. "Solid… replace Relaxed/Compact with 'Local/Whole'…": the owner used double
+  quotes around "Local/Whole". I dropped the quotation here. **direction.md
+  carries the same single-quote mis-rendering; that is yours to fix.**
+  6. The October 26 defaults: wire zoom resistance was already 0.9, so only two
+  values changed. The new text says so.
+  7. B's open question is answered from git. `8376288b` (Oct 24) raised the 3D
+  gravity from the owner's 0.01 to 0.025, the tether from 0.01 to 0.02 and link
+  strength from 0.25 to 0.5, all the agent's choices; the commit comment calls
+  the 0.01 "the owner's 0.01 of 2026-10-18". The tuning probe's gravity 0.05 and
+  tether 0.03 were not adopted, and `097e59c6` changed only wire thickness and
+  node zoom resistance. Added to chapter 1.
+  8. I confirmed that the memory prediction and the headless RAM budget of
+  October 28 are still unbuilt. No such code turns up in `packages/` or
+  `scripts/`, and direction's Next still lists them. The text says so, as of
+  2026-11-19.
+  9. I confirmed that the uncached-history cost is still open, as one of
+  direction's standing asks.
+  10. I confirmed October 31's "eight 2D failures left ungated": pass C
+  (`61727667`) passed its own specs but never the full gate.
+  11. Every hash checked against `git log`. I added hashes that the old text
+  lacked: `a357604c` and `cbb17f15` (the T3 discovery and HTML fixes),
+  `ccf8b804` (the ring), `58889c2a` (the browser-suite saving) and `f50747e9`
+  (the symbol-pin fix).
+
+  **Joining notes for you:**
+  - D's first chapter says the walk/Walk confusion was found by Astra's November
+  3 review. The November 2 record (Turn 14) shows the root found it the night
+  before and left it for the morning.
+  - The narrative's Harnesses table has no rows for October 28, October 30 or
+  October 31. They are Fable 5.1 in Claude Code, per those records' headers.
+
+  **What I was least sure how to weigh:**
+  - How the owner picked models. They gave pictures to Astra and headless work
+  to Fable, in their own words, and the old chapters never said so. It bridges
+  April's "the wall" (agents that could not see) and November 12's "Fable's eye
+  is trusted". I gave it one sentence in chapter 1 and the owner's quotations in
+  chapter 3.
+  - The November 2 drift. The root noted that every session since October 28 had
+  gone to the 3D map while the package and first-arrival journey had not moved,
+  and the owner replied "really really important to get right". I added it as a
+  turning point for anyone reading direction's Next.
+  - Moving October 30 into chapter 3, as described above.
+
+  **What I did not check:**
+  - The T3 diagnosis probe's numbers (21,720 spheres, 236 million pairs,
+  34-second tick).
+  - The October 29 frame figures (69 ms median, hit-test share).
+  - The October 28 figures: the 135 summaries, "five times retuned", and 16 KB
+  per file / 64,000 files.
+  - The Structure comparison's "eight names".
+
+  All of these are carried from the old chapters and the records' turn text, not
+  re-derived from their sources.
+
+● Agent "Narrative C: Oct 24 to Nov 2" finished · 11m 4s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+› Message from general-purpose
+  D is finished. I changed nothing in the repository; everything is in the
+  scratch folder `nar/`.
+
+  **Files**
+  - `/tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e5-95a5-166
+  121c231a3/scratchpad/nar/D.md`: opens with `## November 2026`, then the two
+  chapters. Links are written for `AI-Agent-Workspace/Memory/`, and a script
+  found every file and anchor present.
+  - `/tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e5-95a5-166
+  121c231a3/scratchpad/nar/D.ledger.md`: the ledger.
+  - Supporting files: `nar/D.old.md` is an exact copy of old lines 410 to 495.
+  `nar/D-work/` holds `qd.mjs` (each quotation's fate, adapted from
+  `dir/work/qc.mjs`), `verify.mjs` (each kept quotation searched in the 11-03 to
+  11-08 records) and `links.py`.
+
+  **The new chapters and their sizes.** The old stretch was 38,383 bytes; the
+  new text is 19,213. The aim was about 17 KB, so it runs about 2 KB over. The
+  overage is the fifteen quotations held nowhere else and the careful telling of
+  roots and builders.
+  1. "Reading on the map: a card to learn from, a review loop, and the owner's
+  test (November 3 to 5)", about 6.4 KB.
+     - Codex, with Astra as root, all three days.
+     - Covers: the hover experiments; the agents' "low chatter" withdrawn and
+  AGENTS.md rewritten; the trading-card anchor; portrait; the review loop of Sol
+  reviewers; the owner's test that found what the reviews missed.
+     - Ends on the verdict at the November 5 opening that hover was "just too
+  difficult and finicky".
+  2. "A card that keeps its box, roots and builders, and cells in an embryo
+  (November 5 to 9)", about 12.8 KB.
+     - Covers: Fable's take; tap instead of hover; the box rule and the ladder;
+  the clamps and breakpoints; the wrappers reset by the owner's correction.
+     - Roots and builders get their own paragraph, told from how they came
+  about: the day's Opus analysts and builders, the owner's proposal at Turn 20,
+  the root's three limits from that day's evidence, the owner's amendments at
+  Turns 23 to 26, and the worktree reset.
+     - Then the pattern's first days: November 6 with the shells and the embryo
+  verdict; November 7 with the helper rule, the cron replaced by a timer, and
+  the root's failed eye; November 8 to 9 with Astra's fresh eye, the defaults,
+  the zoom judged "clunky" and the green gate.
+     - Ends where the November 10 chapter begins: the zoom question open and a
+  fresh look asked for.
+
+  **The owner's quotations.** The old stretch has 54 quoted strings. Four are
+  not the owner's: three are the root's and one is the word "passed". That
+  leaves 50 of the owner's.
+  - 33 are kept in `D.md`. 15 of them are kept only because nothing else holds
+  them. 18 are also in direction.md or owner.md.
+  - 17 are let go, all held word for word elsewhere: 9 in direction.md only, 4
+  in owner.md only, 4 in both.
+  - Nineteen quotations of the owner were added from the records, each checked.
+  Six of those were held nowhere before, among them "OHHHHH THERE IT IS!!! This
+  lack of explanation might be totally my fault!" and "It feels a little uglier
+  than it was, say, a month ago before I started the escapades to make certain
+  things zoom-invariant inside it".
+  - Every kept quotation was found by script in its cited record. The one
+  mismatch is inner double quotes rendered as single quotes.
+
+  **Corrections of fact**
+  1. The old line 49 quotation "Do the correct thing, even if it requires moving
+  slowly. It's worth it to simply build the darn thing well" runs across a
+  closing quote mark in the record of November 5, Turn 24. `D.md` splits it into
+  two quotations. owner.md has the same joined form; whether to fix it there is
+  your call.
+  2. "An old caution" was the old text's phrase for the guide's earlier subagent
+  wording. The guide that week said "Subagents are welcome, up to five". The
+  owner objected to the framing, "a bit of a negative connotation", not to a
+  ban. `D.md` says what both versions of the guide actually did.
+  3. "AGENTS.md carries the paragraph" was true on November 6. The guide was cut
+  on November 12 (`06f94c84`), and two rules are gone from it: no workaround
+  for builders messaging back, and the near-frontier-pricing sentence. `D.md`
+  says the guide "still carries its substance in fewer words".
+  4. "Fable is just not where Astra is…" is marked as withdrawn on November 12,
+  which matches owner.md.
+  5. State claims checked in code and git:
+     - the Skin and one-hop defaults (`54f90f80`, from `local-storage.ts`);
+     - fixed slots as the default (`e104f9fa`);
+     - `data-camera` still present in the controller;
+     - no culling in the product;
+     - the black box removed on September 29 (`d2a0618f`);
+     - no Internals replacement since.
+     I found no other disagreement with git.
+
+  **Turns I was least sure how to weigh**
+  - How far November 7 should be the pattern's story rather than the product's.
+  I kept the helper rule, the cron-to-timer correction and the failed-eye rule
+  as origins of standing rules. I cut the header principles and the Structure
+  frame counts.
+  - Whether November 3's agent-talk turn deserved a paragraph. I kept it: it is
+  the origin of AGENTS.md's "Shared understanding", and its key words were held
+  nowhere.
+  - What to cut for length. I dropped the payment-service cycle, the Pretext
+  "gap" correction, the slowing machine, the two older faults the gates exposed,
+  the 2D/3D switch freeze, and November 8's rendering, type and solver repairs.
+  The owner's words from those are all held elsewhere.
+
+  **What I did not check**
+  - I read the six session summaries for November 3 to 9 in full. In the records
+  I read only these passages: November 3, Turns 11 to 14; November 5, Turns 20
+  to 26; November 7, Turns 2 to 10; and November 8, Turns 1 to 3. Every other
+  quotation was confirmed by script search, not by reading its turn.
+  - I read none of the harness exports.
+  - I re-measured no counts or timings; they come from the summaries.
+  - Astra as the root of November 4 rests on the summary's note that the owner
+  called those sessions Astra's.
+
+
+● Agent "Narrative D: Nov 3 to Nov 9" finished · 11m 40s
+
+● Agent "Review root's code of today" is waiting on its own background work · 1h
+  7m 51s
+
+● Committing the record of your message with the corrected owner.md entry, then
+  sending the marble builder back in; four of the five narrative chapters'
+  editors have handed back.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+› Message from general-purpose
+  Stretch A is finished. I changed nothing in the repository. The draft is
+  `/tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e5-95a5-16612
+  1c231a3/scratchpad/nar/A.md` and the ledger is
+  `/tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e5-95a5-16612
+  1c231a3/scratchpad/nar/A.ledger.md`. A copy of the old text is `nar/A.old.md`,
+  and the scripts are in `nar/work/` (`fate.mjs`, `locate.mjs`, `held.mjs`,
+  `window.mjs`, `ctx.mjs`; the final run is `work/fate1.tsv`).
+
+  **New chapters (21.5 KB together, against 36.2 KB before and a 16 KB
+  target):**
+  - `## The return (September 26 to October 1, 2026)` / `### Baby and bathwater,
+  the board, and a record of what was said (September 26 to October 1, 2026)`:
+  about 10.5 KB.
+  - `## October 2026` / `### The eye over the scoreboard, an exact layout, and a
+  thing put on the board (October 1 to 10, 2026)`: about 11 KB. It ends on
+  October 10 with this repository's board redrawn package first, its unbuilt
+  parts hollow, so a chapter starting October 12 follows on.
+
+  It is 5.5 KB over target because about 8 KB is the owner's words that no other
+  Memory file holds, and links take about 3.4 KB. To save space, a second
+  citation of the same record within a paragraph is written "(Turn 8)" without
+  repeating the link, the way the early chapters write "(line 742)".
+
+  **The owner's quotations:** 118 in the old stretch, found by script and then
+  sorted by hand from agents' words and mis-paired fragments. Old line 35 has
+  nested quotation marks and was split by hand.
+  - 55 are kept. 54 of those are held nowhere else; the other, "HOLY SHIT THIS
+  IS SO GOOD", is also in direction.md.
+  - 63 are let go because they are held word for word elsewhere: owner.md 34,
+  direction.md 27, ideas.md 2. Where a holding is in pieces around an ellipsis,
+  I checked that the pieces sit together, within 400 characters.
+  - **Flag:** one quotation is kept only in its third sentence ("But frontier
+  models these days are much more capable in design and visual understanding").
+  Its first two sentences ("The agents at the time had too poor … That was the
+  wall for sure") are held only in narrative.md itself, in "The arc" (line 11)
+  and the March to April chapter (line 185). If either passage is ever cut,
+  those sentences need a home.
+  - I located every kept quotation in its cited line or turn.
+
+  **Corrections of fact:**
+  1. The Live Docs fell from 627 to **457**, not 461. `git ls-tree` gives 627 at
+  `ae216cb5`, 461 at `0de42d28` and 457 at `986fe8e2`; the September 27 summary
+  already recorded the correction. It is written into the new text with a dated
+  note (2026-11-19).
+  2. The audit's "about 40% unreachable" was of the non-test lines
+  (2026-09-26.1, line 99). The new text says so.
+  3. The old October 9 telling put the owner's "a separate thing that builds on
+  top of…" (Turn 4) after the Turn 6 doubt about filling the World Map
+  automatically. Turn 4 came first, and the new text tells it in that order.
+  4. Some citations pointed at a message heading or a blank line. "I finally saw
+  my vision" is at line 427 of 2026-09-26.1, not 419, and the new text cites
+  427. Two others (654 not 652; 1172 not 1169 in 2026-09-29.2) belong to
+  quotations that were let go, so they are only noted in the ledger.
+  5. "the layout "splodes"" is an apostrophe in the source ("'splodes"), not a
+  nested quotation. It was let go; direction.md holds it correctly.
+  6. "seeing the layout forces in action…" is from October 5, Turn 15, not
+  "through the next two days". The new text drops the two days.
+  7. Rechecked as still true on 2026-11-19:
+  `packages/engine/src/live-docs/estateGraph.ts` keys files by their path from
+  the estate's root, not by the thing's name the owner chose on October 9 (Turn
+  6). The new text says it still does.
+
+  These matched git or their sources as the old text said: `29d58b50`; the three
+  deleting commits (`ca655066`, `0de42d28`, `986fe8e2`), about 92,400 lines
+  together; `3a89aed9`, `399b07ee`, `c7ea7203` and `0c9ca70b`; the Gallery
+  (`d775a5e7`), dead code and Knowledge Sources (`b76700cd`, `21ae3493`); ghosts
+  (`e240e1c0`, drawn in `2c3bc6d4`) and the hollow board (`016c6e09`); and
+  `world-map.mdmd.md`. The audit's figures (0.05, 78 lines, 16.6 and 11.4 MB)
+  match, as do the 7 to 21% and the 588 against 179 files. AGENTS.md now says
+  three builders at most, so the new text says the October 1 ceiling of five was
+  "since lowered to three".
+
+  **What I was least sure how to weigh:**
+  - I let go several things the brief allows but that a reader might miss,
+  because they are held elsewhere or retold later:
+    - the owner's first look at the World Map (the hyperlinks, "two ways", the
+  panopticon);
+    - the vines as passengers and Jonathan Blow;
+    - the Knowledge Sources rebuild;
+    - change over time placed in the Force Graph after Gource. I left it to the
+  next chapter, which tells the choice of the next big thing, but this is its
+  first mention.
+  - The Turn 4 and Turn 6 order on October 9.
+  - Whether to keep the agent's vision sentence and "The Local Map is the
+  drawing of the docs…". I kept both; they are agents' words, but each defined
+  something lasting.
+
+  **What I did not check:**
+  - That the safeguard stopped the session three times, the explorer and reader
+  counts (four of seven, seventeen of 85), the WSL update, and Astra's snowflake
+  diagnosis. These rest on the old text, which was checked when it was written.
+  - The adapters' scores (37 of 37, 33 of 33, 34 of 36) and 8 to 17 of 20,
+  checked neither against the transcripts nor against git.
+  - The September transcripts beyond the lines cited.
+  - No build or test was run, as the brief says.
+
+● Agent "Narrative A: Sep 26 to Oct 10" finished · 12m 35s
+
+  Ran 1 shell command (ctrl+o to expand)
+  ⎿  Resuming agent a56f130
+
+● Background command "Fallback timer of fifty minutes while builders work"
+  completed (exit code 0)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● All five narrative editors are done; I'm joining their chapters into one draft
+  and reading it whole.
+
+  Ran 11 shell commands (ctrl+o to expand)
+
+● I've read the joined narrative draft whole (eleven chapters where thirty-six
+  stood); now applying three small corrections and sending it to a fresh reader
+  for an independent check.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+› Message from general-purpose
+  ## Handback: the shell's accessibility round (worktree
+  agent-a17014174406222d1, reset to 533dcbb0)
+
+  All 12 items are mended. Five commits on the branch:
+
+  - `e850048a`: the text tones and the disabled grey (items 1 and 2), the second
+  values of item 12, the search clear's target (item 7), and the comment in the
+  contrast helper (item 3).
+  - `e80ea06c`:
+    - landmarks, skip link and status region (items 5 and 8);
+    - the fatal fault panel (item 4);
+    - reader headings (item 9) and the Ctrl+P hint on a Mac (item 10);
+    - the zoom tooltips, `Loading…` and the CSP comment (item 12).
+  - `04c123e8`: the Play and Authors toggles (item 11) and the Clear all name
+  (item 6).
+  - `4f382d50`: the README's install-script sentence (item 12).
+  - `04f108f0`: the evidence folder and its README.
+
+  Each commit carries its regenerated Live Docs and the authored notes, which
+  cite Turn 14 of the November 18 record. One flaw in the sequence: the
+  `.section-label` change landed in `e80ea06c`, not `e850048a`. So at `e850048a`
+  alone, the new unit check "the disabled tone" is red on that one selector. It
+  is green from `e80ea06c` on. I did not amend, per the git rules.
+
+  ### What a person now meets, what holds it, and whether I saw it fail first
+
+  The new browser spec is `tests/e2e/shell-accessibility.spec.ts`, with 8 cases.
+  I ran all 8 against the old bundle (main's `dist`, same client source as
+  533dcbb0) and **all 8 failed** at the defect they name: the section label at
+  2.86, the panel inert, no `#page-status`, no `main`, the clear 18 px wide, h3
+  at 14 px over 15 px prose, `aria-keyshortcuts` empty, and "Loading...". On the
+  new build 7 passed at once. The Mac case failed until I fixed my own test (it
+  pressed `Meta+P`, but the handler reads `p`). In the last run it passed among
+  the 55.
+
+  1. **The disabled grey on live words.** The placeholder, "Nothing found", the
+  clear's glyph and the sidebar section labels now use `--text-muted`
+  (5.35–5.43:1). The Ctrl+P keycap uses `--text-panel-muted`, at 5.27 on its
+  sheen; muted would only reach 4.30 there. The clear's 0.7 opacity is gone.
+     - Unit check: `palette.test.ts` → "the disabled tone". `text.disabled` may
+  only colour a selector with `:disabled`, `[disabled]` or
+  `[aria-disabled="true"]`, and no script may read it. I saw it fail on the old
+  CSS, naming exactly the five uses.
+     - Browser check: the first spec case measures all five on the page.
+  2. **Today's three quiet text tones:**
+     - `muted` #888888 → #939393: 4.42 → 5.10 on a card;
+     - `subtle` #777777 → #8a8a8a: 3.50 → 4.54;
+     - `panelSubtle` #6c7484 → #828a9a: 3.34 → 4.52.
+
+     No other colour of Today changed. Proposed now inherits these tones from
+  Today. Today's excuse in `palette.test.ts` is now exact: `shortfalls(TODAY)`
+  must equal its nine identity distances (offers/implementation 12.7, uses/test
+  14.3, test/asset 7.8 deut, test/directory 2.5 prot, the offering pin 0.0 ×3,
+  the uses/warm pairs of both World forms under protanopia) and nothing else.
+  Those nine remain excused: they are the owner's palette fork. I ran the test
+  against the old `palette.ts` and saw it fail naming the three tones (4.42,
+  3.50, 3.34).
+  3. **Contrast helper verdict:** only the comment was wrong. Every text check
+  in every spec uses `AA_SMALL_TEXT` = 4.5, and none measures text against 3, so
+  **no case turned red**. I corrected the comment (large text is 24 px, or
+  about 18.66 px bold) and added `AA_NON_TEXT = 3` for SC 1.4.11, used for the
+  clear's glyph. One lenient spot remains, and it is documented: the helper
+  ignores an element's `opacity`. My spec folds opacity in itself; older specs
+  do not.
+  4. **Fatal fault:** the panel is made reachable (not `inert`, no
+  `aria-hidden`) and headed "The Explorer stopped". The message is a
+  `role="alert"` paragraph above the stack, and the stack's inline style became
+  `.fatal-stack`. Held by a spec case (fails on old code).
+  5. **Status region:** new `client/announce.ts` with `announce(words)` and
+  `withdraw(words)`, writing into `#page-status` (polite, atomic, visually
+  hidden, outside `main`).
+     - The search says "Nothing found" once when results become empty, takes it
+  back when words match again, and drops `role="presentation"`.
+     - Held by a spec case (fails on old code).
+     - **Next users of this module, in other builders' files:** the 3D map's
+  "building" refusal and the World Map's walkthrough.
+  6. **Clear all:** the accessible name is now "Clear all pins". Five specs that
+  used "Clear exploration pins" were updated. The spec checks the name contains
+  "Clear all".
+  7. **Search clear:** a 24×24 px target with the glyph still 14 px. The sources
+  "Reachable from" field shares the class and got `padding-right: 28px`. Held
+  by a spec case (failed at 18 px).
+  8. **Landmarks:**
+     - `#main` is now a `<main>` (ids unchanged).
+     - The view buttons sit in `<nav aria-label="Views">`.
+     - "Skip to the map" is the first Tab stop and appears only on focus.
+     - Activating it focuses `#views` (tabindex is set only for that moment), so
+  a click on the map never focuses the frame, and the URL is left alone.
+     - Held by a spec case, and the touched specs pass.
+  9. **Reader headings** are now `calc(1em + 3/2/1px)` and `1em`. The panel at
+  13 px draws exactly as before (16/15/14/13); the reading dialog at 15 px draws
+  18/17/16/15. The dialog's own h4–h6 rule is removed. Held by a spec case
+  (failed at 14 vs 15).
+  10. **Mac hint:** it shows `⌘P` on Apple platforms (via
+  `userAgentData.platform`, falling back to `navigator.platform`).
+  `aria-keyshortcuts` is `Meta+P` there and `Control+P` elsewhere; both keys
+  still work everywhere. Held by a spec case (failed with no attribute).
+  11. **Play and Authors:**
+      - Play changes its name between Play and Pause and has no `aria-pressed`.
+  It keeps its blue highlight while playing through `.is-playing`, so the
+  picture is unchanged.
+      - Authors is named "Authors" with `aria-pressed`, and its tooltip is
+  fixed.
+      - Specs updated in `history-panel`, `history-emphasis` and
+  `history-scrubber`. The scrubber case now asserts that the name stays and that
+  Play has no pressed state.
+      - I did **not** see the scrubber case fail on the old code: the old bundle
+  had already been replaced when I wrote it. It looks up a button named exactly
+  "Authors", which the old code named "Show authors".
+  12. **Small truths:**
+      - The zoom buttons have titles (held by a spec case).
+      - The loading line reads `Loading…` (held by a spec case;
+  `no-network.spec.ts` updated to match).
+      - The CSP comment now gives today's reason: our own style attributes in
+  Knowledge Sources, the card marbles and the World key.
+      - README: "Live Documentation's own packages run nothing at install time.
+  One dependency does: esbuild's postinstall…, `npm ci --ignore-scripts` skips
+  it." I checked this with SECURITY.md's own command: esbuild's postinstall is
+  the only install script among production dependencies.
+      - **Second values, made to agree with the comment rather than the comment
+  loosened:** Proposed and Vivid now set `errorWash = signal.error` (#ff8888)
+  and `pathFoundWash = signal.pathFound` (#8bd49a). Both are drawn at 0.1 alpha,
+  so the change is barely visible.
+      - `worldLightPressed` cannot literally equal its meaning, since it is a
+  fill under a dark icon. It is now derived from that meaning the way the dark
+  World derives its own: the light form's blue at 16% over the white board
+  (#d7e7f2). The comment says so, and the test asserts `mix(board, offers,
+  0.16)` for both palettes.
+
+  ### Test runs on the new build (port 8795, under the lock)
+
+  - `shell-accessibility`, `local-map-pins`, `search-bar`,
+  `labels-and-controls`, `no-network`, `inspection`: **55 passed**.
+  - `history-scrubber` (the address/authors case) and `history-emphasis` (the
+  play cases): passed.
+  - `history-panel`: 12 passed, **4 failed** on "/ carries a history". This is
+  the environment: this repository's history was never computed before the
+  bundle was built (`npm run live-docs:history`). It is unrelated to this round.
+  - Unit tests: `palette.test.ts` (26), `contrast.test.ts`,
+  `staticBuilder.test.ts` pass. The client tsc and eslint on the changed files
+  are clean.
+
+  ### Pictures
+
+  Folder: `/workspaces/Live-Documentation/.claude/worktrees/agent-a1701417440622
+  2d1/AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/shel
+  l-accessibility/` (README inside). Before/after pairs: `sidebar`, `card`,
+  `panel`, `search-empty`, `search-nothing`; plus `pin-tray-after` and
+  `skip-link-focused`.
+
+  - **Sidebar:** DISPLAY, LEGEND and TUNING, and the stats line, are visibly
+  lighter; nothing moves.
+  - **Card:** the path line (`muted`) and the italic directory line (`subtle`)
+  are only a small step firmer. The card still reads as the same quiet grey.
+  - **Panel:** only the CODE and GENERATED labels change slightly.
+  - **Search:** the placeholder and "Nothing found" now read clearly.
+  - **Skip link:** while focused it covers the first title line, "Live Docs",
+  which seems acceptable for something that shows for one Tab stop.
+
+  **Not pictured:** the clear's 24 px target, the fatal-fault panel and the
+  dialog's headings. A gate held the browser lock for over 30 minutes, so I
+  cancelled. The script that takes them is ready:
+  `/tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e5-95a5-16612
+  1c231a3/scratchpad/a170/capture2.cjs` (run with `SKIP_DONE=1` against a server
+  on 8795). The month's picture inventory is not updated; that is shared
+  plumbing and yours.
+
+  On the owner's "Dim things are still a bit hard to read": Turn 20 says this of
+  the pinned estate picture, which is the 3D history dim. This round lifts the
+  text tones everywhere, but the 3D dim itself is in `views/`, which is not
+  mine.
+
+  ### Rules whose status changes
+
+  **Visual Foundations:**
+  - "Words stand at 4.5 to 1": the three Today tones now hold, and its "Checked
+  by" should say the excuse is exact. Still broken: `button.action-btn`'s white
+  on #0091ff at 3.23, which is the owner's fork.
+  - The text table: `muted`, `subtle` and `panelSubtle` take the new values
+  under Today too.
+  - `text.disabled`: there are no uses now, and the meaning "a disabled control"
+  is enforced by the unit check.
+  - "Proposed and Vivid set every second value to its meaning": now true, with
+  `worldLightPressed` derived (16% of the form's offers over its board).
+  - The type table: reader headings are now em-relative, and the dialog's h3 is
+  no longer smaller than the body.
+
+  **Interaction and Accessibility:**
+  - Rule 5.1 (landmarks): holds, with `main`, `nav "Views"`, search,
+  complementary and a skip link.
+  - "A shortcut is announced": holds for the search.
+  - "Every control has a name / tooltip": the zoom buttons now hold.
+  - "Name contains the words drawn": holds for Clear all.
+  - "A toggle keeps its name or its state, never both": Play and Authors now
+  hold. Still broken: the Pin controls in `card-factory` and `forceGraphView`.
+  - Messages table: "No search results" is now told. The 3D building and the
+  walkthrough are still not.
+  - Error row: the fault's panel now holds. Loading row: the sidebar shows
+  "Loading…".
+  - 8.3 targets: the search clear now meets 2.5.8.
+  - WCAG table:
+    - 1.3.1 and 2.4.1 now meet (code and tested).
+    - 1.4.3 now meets for the disabled-grey words and Today's tones (except the
+  action button).
+    - 1.4.11: the clear's glyph is now tested.
+    - 2.5.3: no longer fails.
+    - 2.5.8: the clear meets.
+    - 4.1.2: the fault panel is fixed.
+    - 4.1.3: partly.
+    - The contrast-helper rows: the comment is corrected, and no case changed.
+
+  ### Forks I decided
+
+  - The keycap hint uses `panelMuted`, not `muted`, because muted fails on its
+  sheen.
+  - The status module has `withdraw`, so the region does not keep a stale
+  "Nothing found".
+  - The skip link's target is `#views`, given tabindex only at skip time.
+  - Clear all's name is "Clear all pins" rather than the bare visible text.
+  - The heading sizes use `calc(1em + n px)` so the panel's picture is
+  unchanged.
+
+  ### Unfinished, and things noticed outside scope
+
+  - The three pictures above.
+  - The `history-panel` cases that need this repository's history.
+  - The sidebar's collapse toggle has the same fault as item 11: it changes its
+  name and also sets `aria-expanded`. It is in `index.ts`'s `syncSidebarToggle`,
+  which I did not change.
+  - The handler matches `event.key === "p"`, so with Caps Lock on, Ctrl+P falls
+  through to Print.
+
+
+● Agent "Shell accessibility plain defects" is waiting on its own background
+  work · 54m 0s
+
+● Agent(Fresh reader of the retold narrative) Opus 5.5
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+  Read 4 files, listed 1 directory, ran 2 shell commands (ctrl+o to expand)
+  ⎿  Resuming agent a170141
+
+● Checking two quotations the narrative's editors flagged in direction.md and
+  owner.md against their records while the builders and the fresh reader work.
+
+  Searched for 2 patterns, read 1 file, ran 3 shell commands (ctrl+o to expand)
+❯ >Item 1 presses on a decision of yours from November 4: arrive on one card at
+  reading size, neighbours cut, and learn by zooming out. I won't simply
+  reverse it. I'd build the alternative behind a lever (arrive with the
+  subject's neighbours' names in view), run the same testers on both, and bring
+  you the numbers and both pictures in the app.
+
+  I agree that there is a need to better infer the intent of the user: whether
+  it be to probe the deepest specifics of one object, or be it to begin their
+  climb along the monkey bars of connections. It might be jarring to always
+  start at the zoom required to center the card, and then auto-zooming out to
+  "fit", but perhaps that's a reasonable best-of-both-worlds default? The user
+  simply will not know that the deepest level of detail exists unless we show
+  it to them. It would be a travesty for the entire reader experience to need
+  to be a discoverable feature.
+
+  >A World Map box does not name the folder it opens. "payments" opens
+  PaymentService/. Every run met it: Opus trusted the box and wrote "likely",
+  and two of the smaller-model runs went to search instead.
+
+  I'm glad to finally be getting pushback on the World Map. It's the most
+  aesthetically simple and pleasing, but also home for the least defined
+  concepts in the whole app. The World Map is presumably where someone goes in
+  a blank never-scanned-anything-before Live Documentation Explorer window, and
+  that's probably where the first primitive would sit there begging to be
+  pointed somewhere, filled with a recursive scan, and then customized with a
+  3D shape and intellisense-like assisted labels based on the contents of the
+  scan and contents of any other recursively scanned directories brought into
+  its playing board by the user.
+
+  >A cycle's returning connection reads as a file linking to itself. Half the
+  runs read "1 connection returns in a cycle" with its small loop that way. You
+  noted on November 13 that it "looks like a mistake when zoomed out".
+
+  Will need specific screenshots just to make sure we're talking about the same
+  thing.
+
+  >Wires say nothing when pointed at. Testers inferred direction from the
+  legend's colours and hedged their answers. Both Haiku runs found the plain
+  answer in the reader's Dependents list, which no stronger model opened.
+
+  Models live on text. It's natural for them to wish for there to be more. This
+  is a bias we must account for. I say this all the time, but I would still
+  use MS Teams as a "baseline" standard for UI/UX with tolerable amounts of
+  onscreen text in many different viewport sizes. It is possible to take
+  complex stuff and make it intuitive enough that words are only warranted on a
+  modestly long hover or something of the like. What I don't want to have is
+  an application which is shooting random text at me every which way as I
+  scroll my mouse across the screen (which it most certainly does in the 3D
+  local map -- the most tangled and difficult of our views, but a truly truly
+  worthy effort to hone and refine).
+
+● Recording your new message first, then gathering the cycle screenshots you
+  asked for.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+› Message from general-purpose
+  ## Cells-cost round: handback
+
+  The red case now passes 8 of 8 at one worker and 8 of 8 at two. Its bound and
+  its measurement are unchanged. The default stays as it is, and the marks are
+  drawn exactly as before. There are two commits in worktree
+  `agent-af784aba5d0357850` on top of `a91d7f89`:
+  - `7e10d718` holds the pictures and the README in `AI-Agent-Workspace/AgentSes
+  sionHistory/2026/11/2026-11-18/Screenshots/cells-cost/`.
+  - `64ad9160` holds the change in
+  `packages/explorer/src/client/views/localView/card-factory.ts`, its Live Doc
+  with a new authored note, and the regenerated mirror.
+
+  ### Where the time was
+  I took a Chrome trace of the case's own press (3D to 2D on `graph.ts`,
+  1280×720) and looked at the frame the browser owes after the click:
+  - **With Count** the frame takes **59 ms**: about 23 ms of animation-frame
+  callbacks and about 31 ms of pre-paint, paint and layerize.
+  - **With Cells under name** it took **358 ms**. Of that, **290 ms was 38
+  separate `ResizeObserver` callbacks**, one per toolbar. Every encasing
+  directory has two toolbars, the line from `createHiddenCells` and the field
+  from `createHiddenField`, and each had its own observer. Each callback read
+  `clientWidth`/`clientHeight` right after the previous callback had written its
+  marks, so each one forced its own style recalc and layout: 232 to 584
+  elements, 6 to 12 ms each.
+  - So the cost was 38 layouts in a row, not the number of elements and not
+  paint.
+
+  What one mark costs to style:
+  - Each mark carries an inline style and a `color-mix` marble tint.
+  - Each button has a `::before` ring with a transition.
+  - That is why each forced pass was expensive. Styling all the marks once costs
+  40 to 50 ms.
+
+  Census of the case's map at the reading look:
+  - 2,111 elements inside the labels, against 319 with Count.
+  - The 18 shown fields hold 372 buttons (all placed), 417 circles, **425 SVG
+  `<title>`s** and 29 mask parts.
+  - The 18 line toolbars hold 390 more, but they are `display:none` at this
+  look, so the browser builds them and never styles them.
+  - The map draws no closed directory.
+
+  ### What changed, and why that rather than the alternatives
+  1. **One shared `ResizeObserver` for every toolbar of marks** (`observeRoom`).
+  It reads every toolbar's room first and then draws them all, so the frame
+  lays out once.
+     - It reads the same `clientWidth`/`clientHeight` as before, so the drawing
+  is identical. I chose those over the observer entry's `contentRect`, whose
+  fractional sizes could have moved a mark.
+     - Chromium does not keep an observed element alive once it leaves the page.
+  I checked: 100 of 100 elements, shown and `display:none`, were
+  garbage-collected after removal while the observer lived on. So the shared
+  observer leaks nothing.
+     - A toolbar out of the page is skipped, as before.
+  2. **The marks' SVG no longer carries `<title>`s** (`fieldMarkup` when
+  `marked`). That SVG is `aria-hidden` and `pointer-events:none`, and the
+  buttons over it already give the names, so those titles were never read. They
+  were 425 of the elements styled in that frame.
+     - A closed directory's cells keep their titles, which the pointer does
+  reach. `closed-directory-looks.spec.ts` checks them and passes.
+
+  After the change the frame takes **133 to 174 ms**: one callback of 19 to 26
+  ms, one style recalc of 40 to 50 ms for 1,545 elements, and paint of 35 to 45
+  ms.
+
+  Rejected or not needed:
+  - **Building only the set the look in force shows.** The hidden set is never
+  styled and its draw at width 0 is trivial. Leaving it out would only shorten
+  the render, which the bound excludes, and it would need rebuilding on every
+  change of look. Not worth the machinery.
+  - **Starting the buttons hidden.** This would save about 10 ms, but
+  `fillLabel` gives focus back to a mark right away, and a hidden button cannot
+  take focus. Rejected.
+  - **Lightening the `::before` ring.** That would change the hover fade, and
+  how the cells look is not this round.
+  - A mark stays one button per file and per directory: pressable, named on
+  hover, reached by the arrow keys, and read as "Pin …" or "Open …". Nothing was
+  traded away.
+
+  ### The case's numbers
+  This is the press's own time (the press's return less the 2D map's render),
+  with `--repeat-each=8`:
+
+  | | 1 worker | 2 workers |
+  |---|---|---|
+  | Before | 547, 565, 572, 582, 591, 608, 715, 878 ms; 0 of 8 passed | 725,
+  752, 767, 779, 784, 794, 839, 892 ms; 0 of 8 passed |
+  | After | 281, 297, 313, 325, 380, 386, 405, 493 ms; 8 of 8 passed | 288, 291,
+  298, 300, 304, 310, 313, 321 ms; 8 of 8 passed |
+
+  - Other builders shared the machine through these runs (load average about 5).
+  That is the likely reason the one-worker after-runs spread so widely.
+  Earlier, quieter runs gave 268 to 289 ms.
+  - With Count you measured 206 to 254 ms, so the cells now cost the press about
+  50 to 80 ms where they cost about 350.
+  - **The 3D press is close to its own 500 ms bound, separately from this
+  round.** It took 374 to 522 ms before (one run of eight over the bound) and
+  391 to 497 ms after. I changed nothing on that path.
+
+  ### What I saw in the pictures
+  I compared before and after with Hidden Files at Cells under name and at
+  Cells, at the reading, far and overview looks, on `pathfind.ts` (this
+  repository) and on `PaymentsContext.cs` (the estate, plain and dragged), at
+  1440×900.
+  - **Marks:** for every toolbar, the marks' SVG (titles set aside), and each
+  button's place, size, ring, shown state, hover text, accessible name and
+  keyboard stop are identical in all 18 pictures.
+  - **Pixels:** the reading and far looks are identical to the pixel, and so is
+  the repository's overview.
+  - The estate's overview differed by a few hundred pixels of at most 5 levels
+  out of 255, and one repository overview run by 2,532 pixels of at most 15. Two
+  runs of the same bundle differ in the same way, so this is the overview's own
+  run-to-run noise.
+  - The dragged pictures can't be compared pixel for pixel, because the same
+  drag lands a pixel or two differently from run to run, before as after.
+  - One mistake on my side: my first estate comparison was before against
+  before, because the estate sample has its own copy of the bundle. I redid it
+  against the after bundle; the results above are from the redo.
+  - By eye: `history` shows two rows of cells under its name at the reading
+  look, and two cells plus a veiled third beside the name at the far look. The
+  estate's `PaymentService` shows one dim cell under its chevron, and one after
+  its name at the overview. Both match the defaults round's pictures.
+
+  ### Specs run
+  - The case alone: 8 + 8 runs before (all failed) and 8 + 8 after (all passed),
+  at one and two workers.
+  - At one worker after the samples were rebuilt: `hidden-file-cells`,
+  `closed-directory-looks`, `closed-directory-families`,
+  `local-map-directories`, `local-map-hidden`, `layout-lab`, `scenarios/` and
+  the specs that call the design audit on the 2D map (`design-audit`,
+  `card-reading`, `descriptions-zoomed-out`, `local-map-pins`,
+  `local-map-packing`, `spatial-legend`). **148 passed, 7 skipped, 0 failed.**
+  The 7 skips are the scenario table's own "not applicable" skips.
+  - Unit tests under `views/localView`: 33 files, 428 tests passed.
+  - `npm run lint` is clean. `live-docs:generate` and `live-docs:lint` are clean
+  (1,048 files). `slopcop:markdown` found 0 broken links, and
+  `docs:links:enforce` is clean.
+  - No browser spec was changed.
+
+  ### Forks I decided
+  - The shared observer reads the integer `clientWidth`/`clientHeight` rather
+  than the observer entry's fractional sizes, so the pixels match.
+  - Titles are dropped only from the handle marks' drawing, not from closed
+  directories.
+  - Each mark stays one button.
+  - Building only the set the look in force shows is left out.
+
+  ### Unfinished
+  - **Closed directories** have the same structural pattern: one observer per
+  box in `observeLayout` (`card-factory.ts` about line 403). In addition,
+  `placeTab`, `drawTabs` and `drawCells` each read layout after writing within a
+  single box's draw. A map with many closed directories would pay the same kind
+  of cost. This map draws none, so I couldn't measure it, and I didn't change
+  it. A fix would be the same shared observer plus splitting each draw into a
+  read phase and a write phase.
+
+  ### The camera on a cell press (no change made)
+  - **A file's cell:** `pinFromHandle` (`controller.ts` about line 791) sets
+  `pinHeldDirectory` and goes through the ordinary pin. Then `capturePinChange`
+  (about lines 758–773) captures the change as a press on that directory's
+  handle, through `captureDirectoryChange`. The handle's label is held still on
+  screen and the focus stays among its marks. Afterwards `settleArrival` →
+  `settleIntoFrame` (about lines 851–864 and 1571) moves the camera only as far
+  as needed to bring the whole picture inside the frame. The camera never goes
+  to the new card, so it can land out of view.
+  - **A directory's skin:** this goes through `onOpenDirectory` →
+  `openRetainedDirectory` → `changeRetainedDirectory` (`index.ts` about line
+  761) → `captureDirectoryChange(path)`. Before the press, the subdirectory has
+  no label or box of its own, so nothing is held, and only the same settle runs.
+  - **Where to change it:** the `afterRender` of `capturePinChange`'s
+  held-directory branch and of `captureDirectoryChange`. There the camera could
+  be aimed at the new `.node-card[data-id=…]` or the opened directory's label,
+  for example the way the centred-subject path sets `focusRequest` and calls
+  `settleArrival` (about line 430).
+
+  Housekeeping: the port-8790 server is stopped, the scratchpad probes are
+  deleted, and the worktree is clean.
+
+● Agent "Cells' first-frame cost" is waiting on its own background work · 1h 24m
+  47s
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Agent "Review root's code of today" is waiting on its own background work · 1h
+  14m 24s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Blind playtest instrument" is waiting on its own background work · 1h
+  14m 38s
+
+› Message from general-purpose
+  ## World Map keyboard round: handback
+
+  All six fixes are in **one commit, `a8399d5b`**, on top of `533dcbb0`, in
+  worktree
+  `/workspaces/Live-Documentation/.claude/worktrees/agent-aa7dbd7f336f21a29`. It
+  holds the controller, `world.css`, `tests/e2e/world-map.spec.ts`, their three
+  Live Docs (regenerated and given authored notes) and the evidence folder.
+
+  **One thing for you before the gate:** this round breaks one case in a file
+  outside mine. `tests/e2e/inspection.spec.ts`, "one Escape closes only the
+  topmost surface …", fails on the round's build: I ran it. Its line 364 presses
+  `?` while the keyboard is on the page body. That press is exactly what fix 1
+  stops. To repair it, give the board the keyboard before that press, for
+  example `await page.locator("#view-world .world").focus();`. I did not edit
+  that file.
+
+  ### What a person now meets, case by case
+  I first ran each new case against a bundle built from `533dcbb0`'s World Map
+  source, and all six failed for the defect they name.
+
+  1. **Letters only on the board.**
+     - What changed: Q, E, T, F, U, G, D, R and ? now listen on `.world`, not on
+  the window. They do nothing with Ctrl, Meta or Alt held, or from a field of
+  any kind (input, textarea, select, contenteditable). Escape alone stays
+  page-wide while the map is the view: it types nothing and it is the way out.
+     - How a click gives the board the keyboard: `.world` gets `tabIndex = -1`.
+  The browser gives a press to the nearest focusable thing under it, so a press
+  on empty board or on a piece focuses `.world`. A press on a tool, link or
+  pinned panel keeps the focus the browser gives that, so no control loses
+  focus. No listener moves focus. `.world:focus` wears no outline, since it is
+  never a Tab stop.
+     - Case: "the board's letters act only while the keyboard is on the board
+  …". Old failure: "D from the sidebar" switched the theme.
+  2. **Reset you can take back.** I kept your design, with one change, explained
+  under Forks.
+     - After a reset, the positions it discarded are kept until a piece is next
+  moved (a drop, or the handle's `move`). Until then, the same tool or R puts
+  them back, and that is saved.
+     - A reset with nothing moved does nothing.
+     - The discarded positions live only for the page. A reload forgets them.
+     - Plain words for the owner: "Reset layout now works like a light switch.
+  Press it and everything goes back to the board's own layout, and the button
+  stays lit. Press it again, or R, and your own arrangement comes back. Once you
+  move a piece, the old arrangement is gone and the button resets again."
+     - Case: "a reset keeps what it discarded …". Old failure: no
+  `aria-pressed`.
+  3. **Reduced motion.** `tween` makes the change at once when
+  `prefers-reduced-motion: reduce` matches. The setting is read at each change,
+  so a choice made while the page is open counts. This covers turning, looking
+  down and up, and the walkthrough's camera. Fit was already instant.
+     - Case: "under reduced motion the camera arrives at once …". It runs with
+  the tests' instant handle off. Old failure: one frame after Turn right, the
+  camera had hardly turned.
+  4. **Help button.** It now has `aria-expanded` and
+  `aria-controls="world-help"`, and Escape updates it. Case: "the help button
+  says whether the help is open …". Old failure: no `aria-expanded`.
+  5. **Walkthrough announced.** A `role="status"` element sits inside `.world`,
+  using the existing `visually-hidden` class. It is outside the walkthrough's
+  box, which is hidden when the walkthrough ends. Each step writes "Step N of 5.
+  …" into it, and finishing clears it. It lives in the World Map's own markup,
+  never in `shared/template.html`, so it cannot collide with the page-wide
+  region the other builder is adding. Case: "the walkthrough says each step …".
+  Old failure: no region.
+  6. **Toolbar as one Tab stop.** Roving `tabIndex`: Left and Right arrows wrap,
+  Home and End jump to the ends, and the last tool used stays the stop. Case:
+  "the toolbar is one Tab stop …". Old failure: nine Tab stops.
+
+  ### Runs
+  - **Whole spec on the round's build:** 34 of 35 passed. The failure was "the
+  pinned panel stands beside its piece …": unfolded, the panel's bottom sat at
+  745.6 px against a 720 px view. I re-ran it twice on each build and it passed
+  all four times, so it is an intermittent failure this round did not cause. I
+  did not fix it.
+  - **Unit tests:** the World Map's own (`views/worldMap`) pass, 53 of 53.
+  - **Build:** `npm run build` succeeded.
+
+  ### Pictures
+  In `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/worl
+  d-map-keyboard/`, with a README:
+  - **01:** two pieces moved by hand; the reset tool is plain.
+  - **02:** after Reset, every piece is back at the board's layout, and the tool
+  is filled with the pressed wash and drawn in the offering blue, like any
+  toggle that is on.
+  - **03:** after R, the arrangement is exactly as in 01 and the tool is plain
+  again, with the keyboard focus ring.
+  - **04:** the focus ring on the third tool after two right-arrow presses.
+  - **05:** after a click on empty board, `.world` has focus and no ring
+  appears.
+  - **06:** help opened by `?`, with `aria-expanded` true. The panel still
+  covers the toolbar, as it did before this round.
+
+  The month inventory `AgentSessionHistory/2026/11/README.md` should list this
+  folder; I left that to you as shared history.
+
+  ### Rules in the interaction document whose status changes
+  - **4.2, "a shortcut of one printable character works only while focus is on
+  the surface…":** broken → holds. The shortcut table row should read "World
+  Map, while focus is inside the board; not with Ctrl/Meta/Alt", and R is now
+  "reset, and again to put back".
+  - **2.x reversibility ("a second identical click undoes it"):** now also holds
+  for the World Map's reset.
+  - **3.1, Expanded state row:** broken → holds for the World help.
+  - **4.4, focus table, "World Map help":** unchanged in behaviour, but now
+  checked by `world-map.spec.ts`.
+  - **5.3, Toolbar row:** the World toolbar now conforms. **Disclosure row:**
+  World help now has `aria-expanded`.
+  - **5.5, "The walkthrough's next step":** not told → told.
+  - **6.3 reduced motion:** broken → holds for the World Map's camera.
+  `controller.ts` joins the list of places that honour it.
+  - **WCAG table:**
+    - 2.1.4 Fails → Meets.
+    - 2.3.3 → Meets for the World Map.
+    - 4.1.2 loses the "World Map help has no expanded state" item.
+    - 4.1.3 loses the walkthrough item; search results and building remain.
+  - **4.1 tab order, the outsider's 18 stops:** the World toolbar contributes 1
+  stop instead of 9.
+
+  ### Forks I decided
+  - **Reset's name stays fixed.** You asked that its name and pressed state both
+  say which of the two it will do. Rule 5.4 and the APG forbid changing a
+  toggle's name while it also says `aria-pressed`. So the accessible name stays
+  "Reset layout", `aria-pressed` carries the state, and only the tooltip, which
+  becomes the accessible description, changes: "Reset layout (R)" or "Put things
+  back where you had them (R)". This strains the rule that "an icon's tooltip
+  is its name": the pressed tooltip says what the next press does rather than
+  repeating the name. The other way is to keep the tooltip fixed and rely on the
+  fill alone.
+  - **"The board's surface" means the whole `.world` view.** The letters
+  therefore also work with focus on a tool, the pinned panel or the help.
+  - **I added one sentence to the help:** "The keys work while the board has the
+  keyboard: click it, or Tab to it."
+
+  ### Unfinished
+  - The `inspection.spec.ts` repair above.
+  - The intermittent panel-placement case.
+  - The World Map design document has no sentence that became false, so it is
+  unchanged.
+  - I removed my temporary outputs.
+
+● Agent "World Map keyboard and motion defects" finished · 57m 50s
+
+● Recording your message, then answering it with the cycle screenshots; three
+  more builders have handed back and are queued for my review.
+
+  Read 3 files, ran 8 shell commands (ctrl+o to expand)
+
+● Your message is recorded and its words are in Memory; committing that, then
+  briefing the camera work and answering you with the cycle pictures.
+
+  Ran 1 shell command (ctrl+o to expand)
+  ⎿  Resuming agent af784ab
+
+● Agent "Blind playtest instrument" is waiting on its own background work · 1h
+  18m 16s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Briefing the World Map builder for landing, then writing your answer.
+  ⎿  Resuming agent aa7dbd7
+
+› Message from general-purpose
+  The branch is ready to land: seven commits, the working tree is clean, and
+  none of them touches what main gained since e5b42a35.
+
+  **Cherry-pick onto main (326666e7) in this order:**
+  110bb198, 46601da7, 86643c1b, 92047d5c, 5ef1b1bf, 5d4a8bb8, 0e5d25fb.
+  - `git diff --name-only e5b42a35 326666e7 -- scripts tests packages
+  .mdmd/layer-4 package.json .gitignore` lists nothing, so each pick should
+  apply cleanly.
+  - 86643c1b and 5d4a8bb8 (its revert) net out. Pick both: the revert carries
+  the comment and the Live Doc note.
+
+  **1. Building case.**
+  - The side-by-side run never ran. Its `flock -w 1500` timed out while others
+  held the lock, and its log is empty. So nothing contradicts the probe.
+  - 5d4a8bb8 reverts 86643c1b. At the two readings it leaves this comment: "No
+  frame needs awaiting between the two readings: one reading takes 93 to 150 ms
+  against a frame of about 25 ms, so the pair spans 6 to 8 frames; none of 46
+  pairs fell inside one frame (measured 2026-11-19, two workers)." The same fact
+  is in the spec's Live Doc.
+
+  **2. Final form, in the browser:**
+  - Command: `LIVE_DOCS_E2E_PORT=8791 flock -x /tmp/live-docs-browser.lock npx
+  playwright test --config tests/e2e/playwright.config.ts
+  tests/e2e/force-graph-building.spec.ts:80 --repeat-each 8 --workers 2`
+  - Result: **8 passed** in 48.7 s, on the D3D12 card.
+  - The case now starts at line 80, not 84. My first attempt at :84 was refused
+  with "No tests found", which is the empty-narrowing check of 5ef1b1bf doing
+  its job.
+
+  **3. Live Docs.**
+  - `npm run live-docs:generate`, run under `flock -x`: 1 created, 4 updated,
+  1,044 unchanged. 0e5d25fb commits them.
+  - The new `scripts/e2e-passes.test.ts.mdmd.md` has authored Purpose and Notes.
+  - `slopcop:symbols` reports 0 issues; `slopcop:markdown` reports 0 broken
+  links.
+
+  **4. Cleanup.**
+  - `tests/e2e/zz-control-building.spec.ts` is deleted; it was never committed.
+  - Deleted from the shared scratchpad: opus-control.log, opus-diag.log,
+  opus-both.log, probe.log, building.log, build.log, and also my opus-final.log
+  and opus-gen.log.
+  - The probe and diagnostic specs were removed right after their runs.
+
+  **5. Counts.**
+  - Unit runs (final): `scripts/e2e-passes.test.ts` 5/5,
+  `scripts/slopcop/symbolReferences.test.ts` 12/12,
+  `scripts/slopcop/markdownLinks.test.ts` 7/7,
+  `tests/e2e/scenarios/tokens.test.ts` 9/9. Earlier: `check-symbols` 1/1,
+  `tests/integration/slopcop` 2/2 and 3/3.
+  - Browser runs, all reported before except the final building run:
+    - The runner's `--list`: 537 + 5; `--grep "search pauses"`: 1 + 1;
+  `--grep-invert "search pauses"`: 536 + 4, with 0 tagged cases in the first
+  pass.
+    - A misspelt path exits 1 with "No tests found"; `:51` alone lists 0 + 1 and
+  exits 0.
+    - The final building case passed 8/8.
+  - Working tree: clean.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+› Message from general-purpose
+  The branch is ready to land and the working tree is clean. Cherry-pick these
+  seven commits onto main (326666e7) in this order: 110bb198, 46601da7,
+  86643c1b, 92047d5c, 5ef1b1bf, 5d4a8bb8, 0e5d25fb. Main has changed none of
+  their files since e5b42a35, so each pick should apply cleanly. 86643c1b and
+  its revert 5d4a8bb8 cancel out, but pick both: the revert carries the comment
+  and the Live Doc note.
+
+  - **What landed:**
+    - The two-pass runner now lets a caller's `--grep` narrow both passes
+  without undoing them, and it fails when a narrowing selects no case in either
+  pass.
+    - The anchor audit is held to GitHub's rendering at its edges.
+    - The token test now lists a program's files the way discovery keeps them.
+    - The Live Docs are regenerated: 1 created, 4 updated. The new Live Doc for
+  `scripts/e2e-passes.test.ts` has its Purpose and Notes written.
+  - **Building case:** I reverted my two-frame wait (86643c1b). The probe found
+  that one reading takes 93 to 150 ms against a frame of about 25 ms. Of 46
+  back-to-back pairs, none fell inside one frame, so the wait guarded a case
+  that does not occur here. A comment at the two readings records the
+  measurement so nobody adds the wait again.
+  - **The side-by-side run never ran:** its `flock -w 1500` timed out while
+  others held the lock.
+  - **Final building run:** the case now starts at line 80, not 84. `npx
+  playwright test --config tests/e2e/playwright.config.ts
+  tests/e2e/force-graph-building.spec.ts:80 --repeat-each 8 --workers 2` (port
+  8791, under `flock -x`) passed 8 of 8 in 48.7 s on the graphics card.
+  - **Runner, real Playwright:**
+    - `--list` gives 537 + 5 cases.
+    - `--grep "search pauses"` gives 1 + 1.
+    - The caller's `--grep-invert "search pauses"` gives 536 + 4, with no
+  `@alone` case in the first pass.
+    - A misspelt path exits 1 with "No tests found".
+    - Narrowing to `local-map-hidden.spec.ts:51` lists 0 + 1 and exits 0.
+  - **Unit runs:** `scripts/e2e-passes.test.ts` 5/5, `symbolReferences.test.ts`
+  12/12, `markdownLinks.test.ts` 7/7, `tokens.test.ts` 9/9; earlier,
+  `check-symbols.test.ts` 1/1 and `tests/integration/slopcop` 2/2 and 3/3.
+  - **Audits:** `slopcop:symbols` reports 0 issues and `slopcop:markdown` 0
+  broken links.
+  - **The 65 waits on the busy flag alone:** none matches the history case's
+  race. That race needs zero energy plus a change of what is shown, and none of
+  these waits is followed by a reading of the picture under those conditions. No
+  spec was changed. A different race, a wait right after a click passing on a
+  stale "false", is not traced; it is on your list for a later round.
+  - **Cleanup:** the temporary control, probe and diagnostic specs are deleted,
+  along with my logs in the shared scratchpad.
+
+● Agent "Review root's code of today" is waiting on its own background work · 1h
+  19m 6s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Both of your messages are recorded and acted on. (Two short acknowledgements I
+  wrote earlier never reached your window, so this is the first full answer.)
+
+  Your note on the Memory pass
+
+  Agreed, and owner.md now says it in your words: these documents are improved
+  "If they appear that they are in need of improvement", not as a routine, and
+  "Today's pass should be sufficient for setting a good standard." I finish what
+  is under way (the narrative; a light look at the guide and README) and then
+  stop.
+
+  Your four answers on the playtests
+
+  1. Arrival. I'm building your suggestion as a trial. It is the "pre-timed
+  zoom-out" proposed on November 4 and not selected then. My design is that the
+  camera follows the intent a gesture declares:
+
+  - A fresh subject (a link, a search choice): a new Tuning lever, Arrival, with
+    three values. Reading Size is today's and stays the default until you've
+    seen the others. Reading, Then Neighbours is yours: the card at reading
+    size, a held moment, then an eased pull back until its neighbours' names are
+    in view. Any input from you stops it where it stands. Neighbours goes
+    straight to that last frame.
+  - A step from inside the map (a cell pressed, a directory opened): the camera
+    keeps its scale and moves only far enough to bring the new card into view,
+    with a brief mark on it. This is your wish from yesterday that the camera
+    follow a newly opened cell.
+  - Why reading size first: it is what a designer calls a signifier, a visible
+    cue that something is there to use. Arriving on the full card is the only
+    thing that tells a newcomer the reading level exists, which is your
+    "travesty" point.
+
+  The testers will then run two tasks on each value: "what uses this file"
+  (needs the neighbours) and "what does this symbol do, in its author's words"
+  (needs reading size). That measures both of your worries.
+
+  2. The World Map. Your picture of where it goes is in direction.md as yours,
+  not as an order to build. I've withdrawn "I'd just build the folder's name
+  under the box". After your fourth answer, it belongs on a rested hover and in
+  the box's accessible name, not as one more line on the board.
+
+  3. The cycle: the screenshots. These are two enlargements of what one tester
+  was shown:
+
+  - App.config's stub (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18
+    /Screenshots/cycle-stub/01-app-config-returning-connection.png): a short
+    green line leaves its left port and curls back into the same port, above "1
+    connection returns in a cycle".
+  - PaymentService.cs's stub (AI-Agent-Workspace/AgentSessionHistory/2026/11/202
+    6-11-18/Screenshots/cycle-stub/02-paymentservice-returning-connection.png):
+    the other end of that same connection, a short blue curl at its right port.
+  - The whole picture
+    (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/blind-play
+    tests/estate-directory-opus-medium-look-only-2/shots/006-click.png), and the
+    same state on your port (http://127.0.0.1:8999/samples/estate/?s=N4IgbiBcDM
+    A0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAA
+    WXNgHNFHAMKoAzhygBWeAHc2kjou17D8Cj1EAnCVwCiYLlSpcdO2bftOXgDKbBT4CGzonACesizw
+    DqjGADJc7ghePn4gDlwcZA5UVvqQDAYsAL7wAGaoDuhcNE74ikQRVADWMpAAbKzEipgOqlxQffAk
+    CBE6bKi09JBGxKhk4WxUqozwVKiSXCEAXqOQIiA60RSipEFYCMcM8KpOYDFQTAB0TAJLJGFzHhwg
+    lx8ENMBxZlQ3u8BBNBsMuAAlCQjN7wAj4RIAD1CYIhULgiHWHSCHFyGwsUKWq0kYNcXmGsVK8G4F
+    i4DihXwmnC4kgAQtEAApkKZbQmdADqZgpTJAOz2AC1UKgKAjvGw9BIGviTGxcorlaqZhqqFrIB8A
+    JzbTB2ACCJQYChAilQ%2BF8Mty7mwADEnHY3eMzsopgARYHSmEgJ4rfDi5r4Nlus4ddYgCpVHJQa
+    rYHRceAAK0z2dzIFQUAA2iAywAdECSXVcdAcOrRGuwGsCzAXAFAhwvBo1gC6IHg1dr9cbzdb7c7d
+    iogLZfa4AHpg2DMIOQAP4IyzqSyI2CqN4JJyyAO125z3F8OzzPuwvIsvVxxMJuKkA).
+
+  The two stubs are one connection, from App.config back to PaymentService.cs.
+  It would have to run right to left, against the layout, so each end is drawn
+  as a curl on its own card. Neither curl says which file is at the other end,
+  and half the testers read it as a file linking to itself. Is this what you
+  meant on November 13 by "looks like a mistake when zoomed out"?
+
+  4. Words. Recorded in owner.md as a bias to weigh in every playtest finding:
+  "Models live on text." My rule from your answer: what a moving pointer touches
+  may light at once, but a name or sentence waits until the pointer has rested,
+  and leaves when it moves on. That makes the 3D map's instant names a defect.
+  A builder takes it once the current landings clear.
+
+  Since my last report
+
+  Work: Hidden-file cells slowing the 2D press
+  State: Mended, on main. Each of 38 toolbars re-measured the page after the
+    one before had drawn, so the browser laid the page out 38 times in one
+    frame. They are now measured once and drawn once. The failing case passes
+    8 of 8, and the marks are drawn exactly as before.
+  ────────────────────────────────────────
+  Work: Review of the code I wrote yesterday
+  State: On main: the two-pass test runner, the link audit and one test, each
+    mended at its edges.
+  ────────────────────────────────────────
+  Work: Blind playtest instrument and first records
+  State: On main.
+  ────────────────────────────────────────
+  Work: The page's frame (contrast, landmarks, skip link)
+  State: Accepted; being prepared for landing. The quiet grey words now meet
+    contrast, and nothing moved.
+  ────────────────────────────────────────
+  Work: World Map keyboard
+  State: Accepted; being prepared for landing. Reset can now be taken back by
+    pressing it again.
+  ────────────────────────────────────────
+  Work: Marble pattern from a file's contents
+  State: First pictures look right: each marble is its own, and small changes
+    shift it slightly. But it only moves when a file's symbols or uses change,
+    which is about one edit in five. The builder is drawing one real file's
+    history both ways so you can see that choice.
+  ────────────────────────────────────────
+  Work: Narrative
+  State: All five stretches retold, 106 KB where 214 KB stood. I've read it
+    whole, and a fresh reader is checking it.
+
+  One gate runs over all of it once the landings are in. Nothing is pushed.
