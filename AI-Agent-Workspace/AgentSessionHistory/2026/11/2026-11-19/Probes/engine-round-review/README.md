@@ -2,7 +2,9 @@ Current as of November 19, 2026.
 
 # An independent review of the history engine's round of November 19
 
-Historical record of a review. An independent reviewer (a subagent, Opus 5.5) was given the two commits `167cba33..5de1c931` on its own worktree reset to `5de1c931`, and no one's opinion of them:
+Historical record of a review in two passes. The first pass is directly below; the second pass, of the mends, is the last section, [Second pass](#second-pass-the-mends-5de1c931d2e9b1cd).
+
+An independent reviewer (a subagent, Opus 5.5) was given the two commits `167cba33..5de1c931` on its own worktree reset to `5de1c931`, and no one's opinion of them:
 
 - `df0f792b` "Write only what the history reads, and apply the bundle's exclusions where summaries are read"
 - `5de1c931` "Name the session archive's former layout among the bundle's exclusions"
@@ -231,3 +233,199 @@ The scripts are in the session's scratch folder, `scratchpad/review/`, which a r
 
 - **Scratch folders vanished mid-run.** Twice during this review, a history test using the shared `/tmp` failed with `ENOENT` on its own scratch `task.json`, and it passed with a private `TMPDIR`. On this machine, something else removes `/tmp/live-docs-history-*` while a run uses them, and one lost commit stops the whole pool.
 - **Use a private `TMPDIR` for the two-hour rebuild,** and keep it short. tsx makes its socket there, and a long path fails with `EADDRINUSE`.
+
+## Second pass: the mends, `5de1c931..d2e9b1cd`
+
+Added later on November 19, 2026. The same reviewer was given the builder's nine commits on its own worktree, reset to `d2e9b1cd`. It was given what they claim and no one's opinion of them. It changed no product code: every change it made to test a claim was reverted, and it committed only this file. The main checkout's `.mdmd/history` was read and never written. Everything ran under a private `TMPDIR` (`~/.t-rev/tmp`), and nothing in `/tmp` was removed.
+
+Two corrections to the first pass:
+
+- **The vanished scratch trees.** The builder says it deleted `/tmp/live-docs-history-*` by hand while the first pass ran. That is the likeliest cause of the two `ENOENT` failures noted above.
+- **The first pass's scripts are gone.** The folder `scratchpad/review/` named under "Where the evidence is" was removed by someone else before this pass. This pass's scripts are in `~/.t-rev/`.
+
+### Verdict of the second pass
+
+**Do not rebuild on this yet.** Four of the faults still open, and the one already acknowledged, all lie in files that key the cache:
+
+- `summary.ts`, `regenerate.ts` and `git.ts`;
+- the doc reader, for the `)` fault.
+
+Any fix to them moves the key and forces the two hours again.
+
+This repository's own data would be right today. This repository has none of the things the open faults need:
+
+- no link;
+- no C or C++ include of an excluded file;
+- no citing document whose name holds `#` or `%`.
+
+My sample (below) matched the old cache. If the owner wants this repository's history now and accepts a second rebuild later, the data would be sound.
+
+### The first pass's nine findings
+
+| Finding | Now | How I know |
+| --- | --- | --- |
+| 1. Excluded files that included code imports | **Closed for every file a reader handles; open for a reader that reads files `hasReader` says none does** | Run. The new `history-reading.test.ts` passes. Emptying excluded files that have readers fails both oracles (I tried it). A C file including an excluded `.def` still differs (new finding 2). |
+| 2. Links | **Closed for links to files; open in part** | Run. `CLAUDE.md`, `lib/b.ts` and `docs/alias.md` read as in a checkout (`history-reading.test.ts`, `git.test.ts`). Links beneath the docs root, links to folders, and `..` after a link still differ (new findings 3–5). |
+| 3. Generation with no bundle exclusion | **Open in part** | Run and reading. The `)` fault stands: the case is marked as an expected failure (`it.fails`) and waits on the doc reader's builder. Filtering by label is closed: a summary keeps paths (format 4). But format 4 reads the path wrongly for some names (new finding 1). `--keep-index` still carries citations the bundle excludes (reading; low). |
+| 4. Untested behaviours | **Two of three closed** | Run. Handing the worker the whole configuration fails `history-reading.test.ts` and the guard test. Reading summaries with no exclusions fails `history-reading.test.ts`. Asking the disk, instead of the listing, whether a linked document stands still leaves all tests green (new finding 7). |
+| 5. The summarizing process's heap | **Closed in part** | Run. `npx tsx --max-old-space-size=N …` puts the flag in the command's own flags, so it reaches the summary. The usual route through `npm run`, `NODE_OPTIONS=--max-old-space-size=N`, does not: the command's flags lack it, and `summarizingEnvironment` drops `NODE_OPTIONS`. No user-facing page says which route works. |
+| 6. The nested-scan warning | **Closed** | Reading, and `regenerate.test.ts` (passes). A nested configuration is written whole and a nested docs root's names stand. |
+| 7. macOS and Windows | **Unchanged, now written in the decision** | Reading. |
+| 8. Words | **Mostly closed** | Reading. What is still untrue is in new finding 9. |
+| 9. Smaller points | **Closed or decided** | Reading. The docs root is read as discovery reads it (`docsRootWithin`). `board` has left the key. `requireRelativeLinks` and `slugDialect` stay in the key on purpose. |
+
+### New findings, most serious first
+
+**1. Format 4 misreads a citing document whose name holds `#` or a percent-escape.** Confirmed by run.
+
+- **The case.** A repository holds `docs/C#.md` citing `src/a.ts`; its mirror is generated in a checkout and committed.
+  - The committed doc says `Cited By: docs/C#.md`.
+  - The history stores `docs/C`, a path that does not exist.
+  - With `--check-head` it exits 1: "the citedBy of src/a.ts differ: committed ["docs/C#.md"], replayed ["docs/C"]".
+- **The same with `docs/50%41off.md`.** The history reads it as `docs/50Aoff.md`, and the run exits 1.
+- **Where:** `summary.ts`, `citingPath`. It percent-decodes the `Cited By` link and resolves it with `resolveDocLink`, which drops everything after `#`. But that link is a plain relative path the generator wrote (`compose.ts:757-761`), never encoded.
+- **Who it reaches:**
+  - In a repository with a note such as `C#.md` or `F#-interop.md`, every step names a citing document that never existed.
+  - The check at the head stops the run.
+- **This repository:** none of the citing labels in the 1,263 cached summaries holds `#`, `%`, `'` or `?`.
+- **Fix:** join the link to the doc's folder and normalise it, with no decoding and no fragment. Add the two names to `summary.test.ts`.
+
+**2. Writing an excluded file empty still changes what C and C++ code depends on.** Confirmed by run.
+
+- **The case.**
+  - `exclude: ["gen/**"]`.
+  - `src/main.c` includes `../gen/table.def` and `../gen/colours.inc` and uses what they declare.
+- **What a checkout gives:** three dependency lines, `table.table_size`, `table.table_lookup` and `colours.colour_count`.
+- **What the history gives:** `table` and `colours`, with no symbols, and with `--check-head` it exits 1.
+- **Why:**
+  - `hasReader` says no reader handles `.def` or `.inc`.
+  - But the C adapter reads the content of whatever file an include names, to find the names the including file takes from it (`adapters/c.ts`, `usedNames` and `fileFacts`). So `.def`, `.inc`, `.tpp` and `.ipp` are all read.
+  - "Content exact for every file a reader can open" is therefore not true.
+- **Where:** `regenerate.ts`, `treeOptions`.
+- **Why the oracles miss it:** none of the 43 sample workspaces includes such a file across top-level folders.
+- **Fix:** empty only what no reader can read whatever names it: pictures, fonts and recordings (`isMediaAsset`), plus archives.
+  - At this repository's head that is 934 MB of the 988 MB now emptied, 95% of the saving.
+  - Markdown, text and the rest, about 54 MB, would be written whole.
+  - Add a C include of an excluded `.def` to the equivalence fixtures.
+
+**3. A link at or beneath the docs root to a file is still refused, though its copy would be safe.** Confirmed by run.
+
+- **The case.** `.mdmd/layer-1/guide.md -> ../../notes/x/guide.md`, a document that cites `src/a.ts` and that `src/a.ts`'s authored words link to.
+- **In a checkout:** both the citation and the link count.
+- **In the history:** the link is named unwritten ("at or along the docs root"), both drop out, and with `--check-head` it exits 1.
+- **Why the refusal is not needed beneath the root:**
+  - The danger the fourth review found was writing *through* a link.
+  - A copy is a plain file, and a link to a folder is never written.
+  - Beneath the root, the generator can only overwrite or remove the copy.
+- **Where:** `git.ts`, `alongDocsRoot`, and the `git.test.ts` case that pins it.
+- **Fix:** refuse only a link at the docs root or above it. A copy there would stand where the generator needs a folder, and the commit would fail. Copy the links beneath it.
+
+**4. A link to a folder changes dependencies, not only "reads as gone".** Confirmed by run.
+
+- **The case.** `src/shared -> ../shared`, and `src/index.ts` imports `./shared/util`.
+- **In a checkout:** the import resolves through the link.
+- **In the history:** it is the raw specifier, and with `--check-head` it exits 1.
+- **The decision** names this limit, for a document or file reached through a linked folder. It should also say that code importing through one gets different dependency lines and the check at the head refuses.
+
+**5. A link's target is resolved by text, not as the disk resolves it.** Confirmed by a direct call.
+
+- **The case.**
+  - `a/b -> ../x/y` (a folder);
+  - `l -> a/b/../z.txt`;
+  - both `a/z.txt` and `x/z.txt` exist.
+- **The disk** reads `l` as `x/z.txt`.
+- **`followLink`** returns `a/z.txt`, because `path.posix.normalize` removes the `..` before the link `a/b` is followed.
+- **How serious:** rare and hostile.
+- **Fix:** resolve one part of the path at a time, following a link before applying the next part.
+
+**6. The usual way to raise the heap still does not reach the summary.** See finding 5 in the table: run.
+
+**7. Whether a linked document stands: the listing is right, but nothing tests it, and its comment claims too much.** Confirmed by run: asking the disk instead leaves every test green.
+
+- **Why it should be kept:**
+  - The lens does not key the platform.
+  - On Linux, with every name written, the listing and the disk agree.
+  - They differ only on a disk that folds case or Unicode form.
+- **How it can be tested on Linux:** export `standingFiles`, and give it a tree whose index names a file the disk lacks. The disk-asking version would then fail.
+- **What its comment claims:** "a summary must not depend on the disk it was made on".
+  - That holds for this one check only.
+  - The generator's own resolution still finds `foo.ts` for `./Foo` on such a disk.
+
+**8. `--keep-index` still writes citations the bundle excludes.** By reading; low. It is unchanged from the first pass and not mentioned in the decision.
+
+**9. Words still untrue.** By reading, and by findings 1–3.
+
+- **The decision's Rationale** says "Existence is exact for every path and content for every file a reader can read". Findings 2–4 show otherwise.
+- **The decision** also says "no reader opened the content of a file written empty". That held over the sample workspaces only.
+- **The decision's "What it cannot tell"** speaks of "a future reader". A present reader, the C adapter, reads such files.
+- **`treeOptions`'s comment** makes the same claim about content.
+- **`standingFiles`'s comment** still says the tree writer "leaves out the files the generator never opens". It also claims more than holds about the disk (finding 7).
+- **`SummaryFile.citedBy`'s comment** says paths are "read from the lines' links". That is wrong for `#` and `%` (finding 1).
+- **`.mdmd/layer-3/change-over-time.mdmd.md:136`** still calls the summary "format 3".
+- **The decisions log's "A commit's tree" (line 614)** still says the disk is asked "before each entry" and speaks of "an entry beneath a link".
+
+### Is the equivalence test a real oracle?
+
+**Yes, within what its samples hold.** Taking away either half of the rule makes it fail. I ran both:
+
+- Leaving the emptied files out instead of writing them fails `programs/typescript/tidepool`.
+- Emptying excluded files that have readers fails `fixtures/include-dirs` and `programs/python/ledger`.
+
+**It cannot see:**
+
+- **Readers that read files of kinds with no reader** (finding 2). No sample includes such a file across top-level folders. In all, one workspace exercises the existence of an emptied file, and the 100 exclusions empty 34 files.
+- **Links.** The samples hold none, and the test asserts that nothing is unwritten.
+- **Exclusions narrower than a whole top-level folder.**
+- **Warnings**, since its logger is silent. A separate test covers nested scans.
+- **Everything the summarizing process adds after the generator.** It calls `generateLiveDocs` directly, so the listing check, the authored reading, format 4's citing paths and the bundle filter are outside it.
+- **Hostile names, a file's size, and a file's first bytes.** No reader I found asks a no-reader file for its size or first bytes. Only documented files are sniffed, and they are never emptied.
+
+### The key
+
+- **`summarizedConfiguration` is the whole of what a summary depends on in the configuration.**
+  - The worker is handed exactly it.
+  - The tree writer reads `exclude` and `root`, both inside it.
+  - Every other field is inside it except `bundleExclude`, which the worker never sees, and `board`.
+- **Dropping `board` is sound.** No module of the engine or the generator reads it (searched); the estate reader takes a board document, not the field.
+- **Keeping `requireRelativeLinks` and `slugDialect`** costs only an unnecessary rebuild when they are edited.
+- **`lens.ts` is now keyed**, rightly, since it decides what the worker is handed.
+
+### Simplest complete form
+
+Each change below makes the code smaller as well as more correct:
+
+- emptying by kind of content (`isMediaAsset` plus archives) instead of by `hasReader`;
+- refusing only links at or above the docs root;
+- reading a `Cited By` link as a plain path;
+- following a link one part at a time.
+
+`readSmallBlobs` and `followLink`'s listing of folders are sound.
+
+### What the second pass checked and found sound
+
+- **The tests as the builder left them.** All pass with a private `TMPDIR`: 226 tests, plus 1 expected failure, in 21 files (history unit tests, `history.test.ts`, `history-reading.test.ts`, `history-tree-equivalence.test.ts`).
+- **The tests catch what they should.** Each of these changes, made alone and reverted, fails a test:
+  - storing labels instead of paths;
+  - handing the worker the whole configuration;
+  - reading summaries with no exclusions;
+  - emptying reader files;
+  - leaving no-reader files out.
+- **Pictures and assets.** An HTML page and a stylesheet naming excluded pictures and an excluded stylesheet give the same docs as a checkout, and the check at the head passes (run).
+- **This repository.** No commit holds a link. No file outside `AI-Agent-Workspace` includes or imports anything inside it. No citing document has a name format 4 misreads.
+- **My sample.** The first pass's 31 commits, run again through the mended `regenerate`, with `format` and `lens` set aside: **all 31 identical** to the cache made before the round.
+  - That covers up to 1,864 links each, with no entry left unwritten.
+  - The warnings were the same nested fixture scans as before.
+- **This pass's scripts** are in `~/.t-rev/`:
+  - `make-repos2.sh`, `make-repos3.sh` and `make-c.sh` build the test repositories;
+  - `follow.ts` is the link-following check;
+  - `regen2.ts` and `sample.sh` are the oracle sample;
+  - `kinds.ts` measures the excluded bytes by kind;
+  - `citers.js` scans the cache's citing labels.
+
+### What the second pass did not check
+
+- **Windows and macOS.** By reading only.
+- **Each language adapter's every way of reading another file.** I found the C one by reading the adapters for calls that open a file other than their own, not by running each.
+- **The builder's 84 commits.** Not rerun; my 31 are separate.
+- **The signal case's new form, and the builder's timings.** Read, not rerun.
+- **The full gate and the browser.**

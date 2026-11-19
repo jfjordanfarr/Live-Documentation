@@ -1370,7 +1370,19 @@ function tryAdoptPicture(controller: LocalViewController, stage: BranchStage, se
   if (cycle) dressReturns(controller, cardsOf(stage), cycle.exploration);
   const plan = planBranches(branches, search.sceneTuning.bandPadding);
   const answers: PageAnswers = { natural: new Map(), heights: new Map(), labelHeights: new Map() };
-  const scene = layoutScene(plan, branches, pageMeasurer(controller, stage, plan, scale, answers), search.sceneTuning, alignments);
+  const measurer = pageMeasurer(controller, stage, plan, scale, answers);
+  // A card's natural width depends on what the card holds (its name, the rows it shows and their words, its foot of
+  // returning connections), on the cap on a card's width and on the fonts, which are the system's and present at the
+  // first paint. Within one search the cards change only through a render or `refreshReadingGeometry`, each of which
+  // measures afresh and begins or prices the search again, or through a cycle's trial, whose feet are its own: so a seed's
+  // or a join's trial keeps the widths the search measured last. Measured on 2026-11-19 not to depend on the rows' order
+  // nor on the looks the card reading left at the trial before (`CardReading.measure` takes them back only once the
+  // widths are read): on this repository's five-file scope, 98 cards read 30 times in the 80-seed search, at the reading
+  // look and again zoomed out to the far look, never differed by a pixel, nor from a reading with those looks taken back
+  // (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/map-reds/README.md). Before, every such trial laid
+  // the page out at its cards' natural widths to read them again.
+  if (!cycle) { const natural = search.answers.natural; measurer.widths = () => (answers.natural = natural); }
+  const scene = layoutScene(plan, branches, measurer, search.sceneTuning, alignments);
   const signals = signalsOf(branches, scene, controller.previousTops);
   const measured = searchPrice(search, branches, scene, controller.previousTops, false);
   const actual = searchPrice(search, branches, scene, controller.previousTops, true);

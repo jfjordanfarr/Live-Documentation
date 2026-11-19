@@ -50,6 +50,40 @@ async function hittablePoint(page: Page, id: string): Promise<{ x: number; y: nu
   return null;
 }
 
+/** How far a turn's drag goes, in pixels across and down. */
+const TURN = { x: 90, y: 30 };
+
+/**
+ * A point of the picture's background where a turn's drag may begin and end: no drawn sphere within 8 px of either end,
+ * and the canvas itself under both, no name or control. Once the map has built, a press on a sphere grabs it and the
+ * drag carries the sphere while the camera stays (`force-graph-building.spec.ts`), a directory shell's sphere as much as
+ * a file's. Until 2026-11-19 the case pressed at a fixed point, the frame's centre and 200 px down and right, which the
+ * repository's grown picture put inside the `packages/engine` shell: its eight turns dragged that shell and the camera
+ * never moved (`AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/map-reds/README.md`). That point is still
+ * tried first; the rest of the frame is searched in steps of a tenth.
+ */
+async function backgroundPoint(page: Page): Promise<{ x: number; y: number }> {
+  const nodes = await renderedNodes(page);
+  const box = (await page.locator("#graph-svg canvas").boundingBox())!;
+  const clear = (x: number, y: number): boolean => nodes.every(node => Math.hypot(node.x - x, node.y - y) > node.screenRadius + 8);
+  const onCanvas = (x: number, y: number): Promise<boolean> => page.evaluate(({ x, y }) =>
+    document.elementFromPoint(x, y) === document.querySelector("#graph-svg canvas"), { x, y });
+  const candidates = [{ x: box.x + box.width / 2 + 200, y: box.y + box.height / 2 + 200 }];
+  for (let row = 1; row < 10; row++) for (let column = 1; column < 10; column++) {
+    candidates.push({ x: box.x + box.width * column / 10, y: box.y + box.height * row / 10 });
+  }
+  for (const { x, y } of candidates) {
+    if (clear(x, y) && clear(x + TURN.x, y + TURN.y) && await onCanvas(x, y) && await onCanvas(x + TURN.x, y + TURN.y)) return { x, y };
+  }
+  throw new Error("no point of the picture's background is clear of spheres to turn the camera from");
+}
+
+/** The camera's line of sight, the third column of its world matrix. */
+const bearing = (page: Page): Promise<number[]> => page.evaluate(() => {
+  const elements = (window as unknown as { renderedGraph: { camera: { matrixWorld: { elements: number[] } } } }).renderedGraph.camera.matrixWorld.elements;
+  return [elements[8], elements[9], elements[10]];
+});
+
 /** Orbit the camera a little, as a person would, until the file's sphere shows past whatever stands in front of it. */
 async function uncover(page: Page, id: string): Promise<{ x: number; y: number }> {
   // A sphere is pressed or hovered once the map has built: while it builds, a press is dropped and nothing hovers (2026-11-15).
@@ -57,14 +91,16 @@ async function uncover(page: Page, id: string): Promise<{ x: number; y: number }
   for (let turn = 0; turn < 8; turn++) {
     const point = await hittablePoint(page, id);
     if (point) return point;
-    const box = (await page.locator("#graph-svg canvas").boundingBox())!;
-    const cx = box.x + box.width / 2 + 200;
-    const cy = box.y + box.height / 2 + 200;
-    await page.mouse.move(cx, cy);
+    const { x, y } = await backgroundPoint(page);
+    const before = await bearing(page);
+    await page.mouse.move(x, y);
     await page.mouse.down();
-    await page.mouse.move(cx + 90, cy + 30, { steps: 12 });
+    await page.mouse.move(x + TURN.x, y + TURN.y, { steps: 12 });
     await page.mouse.up();
     await page.waitForTimeout(600);
+    const after = await bearing(page);
+    const turned = Math.acos(Math.min(1, before[0] * after[0] + before[1] * after[1] + before[2] * after[2])) * 180 / Math.PI;
+    expect(turned, `turn ${turn + 1} turned the camera rather than carrying a sphere`).toBeGreaterThan(5);
   }
   throw new Error(`${id} stayed covered by nearer spheres after eight turns of the camera`);
 }

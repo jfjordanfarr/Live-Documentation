@@ -50,7 +50,7 @@ This work belongs to the root agent. Subagents read their brief and the guidance
 
 ## Working environment and checks
 
-The devcontainer uses Linux/Bash and the Node version in [.nvmrc](.nvmrc), with npm workspaces defined in [package.json](package.json). The Windows-backed mount is case-insensitive: confirm filename casing through directory listings, not existence checks alone. CLI entry points live under `scripts/live-docs/`; source/package responsibilities and current status are documented in the vision and Live Docs.
+The devcontainer uses Linux/Bash and the Node version in [.nvmrc](.nvmrc), with npm workspaces defined in [package.json](package.json). The working copy is on the container's own Linux volume, which tells filename case apart; Windows, where the tool will be shown, does not, so a test of case must imitate it and no two names may differ by case alone. CLI entry points live under `scripts/live-docs/`; source/package responsibilities and current status are documented in the vision and Live Docs.
 
 | Command | Use |
 | --- | --- |

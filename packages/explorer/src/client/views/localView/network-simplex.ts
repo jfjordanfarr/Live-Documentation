@@ -45,17 +45,16 @@ export function rankByNetworkSimplex(count: number, constraints: readonly Constr
   let optimal = false;
   const limit = Math.max(50, edges.length * 8);
   let searchFrom = 0;
+  tree.rebuild();
+  const cut = tree.cutValues();
   for (let iteration = 0; iteration < limit; iteration++) {
-    tree.rebuild();
-    const cut = tree.cutValues();
     const leaving = tree.leavingEdge(cut, searchFrom);
     if (leaving < 0) { optimal = true; break; }
     searchFrom = leaving + 1;
     const entering = tree.enteringEdge(leaving, position);
     if (entering < 0) { optimal = true; break; }
-    const shift = slack(edges[entering], position);
     // Raising the leaving edge's head side by the entering edge's slack makes the entering edge tight and lowers the cost.
-    for (let v = 0; v < count; v++) if (tree.onHeadSide(leaving, v)) position[v] += shift;
+    tree.raiseHeadSide(leaving, slack(edges[entering], position), position);
     tree.exchange(leaving, entering);
   }
   const least = Math.min(...position);
@@ -90,46 +89,112 @@ function initialPositions(count: number, edges: readonly Constraint[]): number[]
   return position;
 }
 
-/** A spanning tree of tight edges, grown by shifting the tree to meet the nearest outside edge until every node is in it. */
+/**
+ * A spanning tree of tight edges, grown by shifting the tree to meet the nearest outside edge until every node is in it.
+ * The nearest outside edge is the one of least slack among the edges with one end in the tree, the lowest-numbered of
+ * those that tie. Since 2026-11-19 it is found from two heaps rather than by reading every edge each time the tree grows,
+ * and the tree is shifted by one number rather than node by node: a node in the tree stands at its place when it joined,
+ * less the shift then, plus the shift now, so an outside edge whose tail is in the tree has a slack of a fixed number
+ * less the shift, and one whose head is in the tree a fixed number plus it. Each heap orders its edges by that number and
+ * then by edge number, so the least slack of either heap, ties to the lower edge number, is the edge the full reading
+ * chose; an edge whose other end has joined since is dropped when it comes to the top. Every node joins once, every
+ * edge enters a heap once, and the result is the same tree and the same positions.
+ */
 function feasibleTree(count: number, edges: readonly Constraint[], position: number[], inTree: boolean[]): void {
   if (count === 0) return;
   const inSet = new Array<boolean>(count).fill(false);
+  const base = new Array<number>(count).fill(0);
   const incident = Array.from({ length: count }, () => [] as number[]);
   edges.forEach((edge, index) => { incident[edge.tail].push(index); incident[edge.head].push(index); });
+  // The shift of every node in the tree since the tree began; a node in the tree stands at `base + shift`.
+  let shift = 0, size = 0, firstOutside = 0;
+  const at = (node: number): number => inSet[node] ? base[node] + shift : position[node];
+  const tailIn = new EdgeHeap(), headIn = new EdgeHeap();
+  const join = (node: number): void => {
+    inSet[node] = true;
+    base[node] = position[node] - shift;
+    size++;
+    for (const index of incident[node]) {
+      const edge = edges[index];
+      if (edge.tail === node && !inSet[edge.head]) tailIn.push(position[edge.head] - base[node] - edge.delta, index);
+      else if (edge.head === node && !inSet[edge.tail]) headIn.push(base[node] - position[edge.tail] - edge.delta, index);
+    }
+  };
   const grow = (start: number): void => {
     const queue = [start];
-    inSet[start] = true;
-    while (queue.length) {
-      const v = queue.shift()!;
+    join(start);
+    for (let next = 0; next < queue.length; next++) {
+      const v = queue[next];
       for (const index of incident[v]) {
         const edge = edges[index];
         const other = edge.tail === v ? edge.head : edge.tail;
-        if (!inSet[other] && slack(edge, position) === 0) { inSet[other] = true; inTree[index] = true; queue.push(other); }
+        if (!inSet[other] && at(edge.head) - at(edge.tail) - edge.delta === 0) { join(other); inTree[index] = true; queue.push(other); }
       }
     }
   };
+  const crossing = (index: number): boolean => inSet[edges[index].tail] !== inSet[edges[index].head];
   grow(0);
-  for (;;) {
-    let size = 0;
-    for (let v = 0; v < count; v++) if (inSet[v]) size++;
-    if (size === count) break;
-    let best = -1, bestSlack = Infinity;
-    edges.forEach((edge, index) => {
-      if (inSet[edge.tail] === inSet[edge.head]) return;
-      const s = slack(edge, position);
-      if (s < bestSlack) { bestSlack = s; best = index; }
-    });
-    if (best < 0) {
+  while (size < count) {
+    while (tailIn.size && !crossing(tailIn.topIndex())) tailIn.pop();
+    while (headIn.size && !crossing(headIn.topIndex())) headIn.pop();
+    if (!tailIn.size && !headIn.size) {
       // A node no constraint reaches: it joins at its own position.
-      const loose = inSet.indexOf(false);
-      grow(loose);
+      while (inSet[firstOutside]) firstOutside++;
+      grow(firstOutside);
       continue;
     }
+    const tailSlack = tailIn.size ? tailIn.topKey() - shift : Infinity, headSlack = headIn.size ? headIn.topKey() + shift : Infinity;
+    const fromTail = tailSlack < headSlack || (tailSlack === headSlack && tailIn.topIndex() < headIn.topIndex());
+    const best = fromTail ? tailIn.topIndex() : headIn.topIndex();
     const edge = edges[best];
-    const delta = inSet[edge.tail] ? bestSlack : -bestSlack;
-    for (let v = 0; v < count; v++) if (inSet[v]) position[v] += delta;
+    // The tree moves toward the edge by its slack: up when the edge leaves the tree from its tail, down when from its head.
+    shift += fromTail ? tailSlack : -headSlack;
     inTree[best] = true;
-    grow(inSet[edge.tail] ? edge.head : edge.tail);
+    grow(fromTail ? edge.head : edge.tail);
+  }
+  for (let v = 0; v < count; v++) position[v] = base[v] + shift;
+}
+
+/** A binary heap of edges by a key and then by edge number, the least first. */
+class EdgeHeap {
+  private readonly keys: number[] = [];
+  private readonly indices: number[] = [];
+  get size(): number { return this.keys.length; }
+  topKey(): number { return this.keys[0]; }
+  topIndex(): number { return this.indices[0]; }
+  private less(a: number, b: number): boolean {
+    return this.keys[a] < this.keys[b] || (this.keys[a] === this.keys[b] && this.indices[a] < this.indices[b]);
+  }
+  private swap(a: number, b: number): void {
+    [this.keys[a], this.keys[b]] = [this.keys[b], this.keys[a]];
+    [this.indices[a], this.indices[b]] = [this.indices[b], this.indices[a]];
+  }
+  push(key: number, index: number): void {
+    this.keys.push(key);
+    this.indices.push(index);
+    let at = this.keys.length - 1;
+    while (at > 0) {
+      const up = (at - 1) >> 1;
+      if (!this.less(at, up)) break;
+      this.swap(at, up);
+      at = up;
+    }
+  }
+  pop(): void {
+    const last = this.keys.length - 1;
+    this.swap(0, last);
+    this.keys.pop();
+    this.indices.pop();
+    let at = 0;
+    for (;;) {
+      const left = 2 * at + 1, right = left + 1;
+      let least = at;
+      if (left < this.keys.length && this.less(left, least)) least = left;
+      if (right < this.keys.length && this.less(right, least)) least = right;
+      if (least === at) break;
+      this.swap(at, least);
+      at = least;
+    }
   }
 }
 
@@ -140,6 +205,8 @@ class TreeIndex {
   private readonly lim: number[];
   private readonly treeEdges: number[] = [];
   private readonly adjacency: number[][];
+  /** Every edge of each node, tree or not, in edge order. */
+  private readonly incident: number[][];
   private readonly visited: boolean[];
   private readonly stackNode: number[];
   private readonly stackFrom: number[];
@@ -152,6 +219,7 @@ class TreeIndex {
 
   constructor(private readonly count: number, private readonly edges: readonly Constraint[], private readonly inTree: boolean[]) {
     this.adjacency = Array.from({ length: count }, () => [] as number[]);
+    this.incident = Array.from({ length: count }, () => [] as number[]);
     this.parentEdge = new Array<number>(count).fill(-1);
     this.low = new Array<number>(count).fill(0);
     this.lim = new Array<number>(count).fill(0);
@@ -166,6 +234,8 @@ class TreeIndex {
     edges.forEach((edge, index) => {
       this.flow[edge.head] += edge.weight;
       this.flow[edge.tail] -= edge.weight;
+      this.incident[edge.tail].push(index);
+      this.incident[edge.head].push(index);
       if (!inTree[index]) return;
       this.treeEdges.push(index);
       this.adjacency[edge.tail].push(index);
@@ -173,9 +243,20 @@ class TreeIndex {
     });
   }
 
-  /** Exchange just the two tree edges, keeping the ascending edge order that a full rebuild produced. */
+  /**
+   * Exchange the leaving tree edge for the entering one, keeping the ascending edge order that a full rebuild produced,
+   * and bring the tree's numbers and cut values up to date where the exchange moved the tree: under the lowest common
+   * ancestor of the entering edge's ends, which the leaving edge lies under too (`renumber`).
+   */
   exchange(leaving: number, entering: number): void {
     const removed = this.edges[leaving], added = this.edges[entering];
+    // In the tree before the exchange, climb from the entering edge's tail until the subtree holds its head as well.
+    let top = added.tail;
+    const headNumber = this.lim[added.head];
+    while (!(this.low[top] <= headNumber && headNumber <= this.lim[top])) {
+      const up = this.edges[this.parentEdge[top]];
+      top = up.tail === top ? up.head : up.tail;
+    }
     for (const list of [this.treeEdges, this.adjacency[removed.tail], this.adjacency[removed.head]]) {
       list.splice(list.indexOf(leaving), 1);
     }
@@ -190,6 +271,57 @@ class TreeIndex {
     }
     this.inTree[leaving] = false;
     this.inTree[entering] = true;
+    this.renumber(top);
+  }
+
+  /**
+   * Number again the subtree of `top`, after an exchange under it, and work out again its nodes' sums and its tree
+   * edges' cut values, as a full rebuild and `cutValues` would (Gansner et al.'s incremental update, as Graphviz makes
+   * it). The subtree holds the same nodes before and after, so its numbers start where they started and end where they
+   * ended; nothing outside it is reached, since its one tree edge outward is `top`'s own, which the walk does not take;
+   * and nothing outside it changes: the order its ancestors visit their children in is theirs, and every other tree
+   * edge splits the nodes as it did. So the numbers are the very ones a full rebuild gives, and the cut values the same.
+   * Until 2026-11-19 every pivot rebuilt the whole tree and summed every cut, a third of the solver's time on this
+   * repository's five-file scope.
+   */
+  private renumber(top: number): void {
+    const first = this.low[top], last = this.lim[top];
+    for (let number = first; number <= last; number++) this.visited[this.byPostorder[number - 1]] = false;
+    let next = first, depth = 0;
+    this.stackNode[0] = top;
+    this.stackFrom[0] = this.parentEdge[top];
+    this.stackNext[0] = 0;
+    this.visited[top] = true;
+    this.low[top] = next;
+    this.subtree[top] = this.flow[top];
+    while (depth >= 0) {
+      const node = this.stackNode[depth], list = this.adjacency[node];
+      if (this.stackNext[depth] < list.length) {
+        const edgeIndex = list[this.stackNext[depth]++];
+        if (edgeIndex === this.stackFrom[depth]) continue;
+        const edge = this.edges[edgeIndex];
+        const child = edge.tail === node ? edge.head : edge.tail;
+        if (this.visited[child]) continue;
+        this.visited[child] = true;
+        this.parentEdge[child] = edgeIndex;
+        this.low[child] = next;
+        this.subtree[child] = this.flow[child];
+        depth++;
+        this.stackNode[depth] = child;
+        this.stackFrom[depth] = edgeIndex;
+        this.stackNext[depth] = 0;
+      } else {
+        this.lim[node] = next;
+        this.byPostorder[next - 1] = node;
+        next++;
+        if (depth > 0) {
+          const index = this.parentEdge[node];
+          this.subtree[this.stackNode[depth - 1]] += this.subtree[node];
+          this.cut[index] = this.edges[index].head === node ? this.subtree[node] : -this.subtree[node];
+        }
+        depth--;
+      }
+    }
   }
 
   rebuild(): void {
@@ -232,17 +364,30 @@ class TreeIndex {
     }
   }
 
-  /** Whether `node` lies in the subtree below the tree edge `index`, the side away from the root. */
-  private below(index: number, node: number): boolean {
+  /**
+   * The leaving edge's lower end (its child) and that end's postorder range: a node lies below the edge, on the child's
+   * side of its cut, when its number falls in the range, and the head lies below exactly when the head is the child, since
+   * the other end is the child's parent. Found once a pivot (2026-11-19; before, every test of a node's side found it again).
+   */
+  private cutOf(index: number): { low: number; high: number; headBelow: boolean } {
     const edge = this.edges[index];
     const child = this.parentEdge[edge.head] === index ? edge.head : edge.tail;
-    return this.low[child] <= this.lim[node] && this.lim[node] <= this.lim[child];
+    return { low: this.low[child], high: this.lim[child], headBelow: child === edge.head };
   }
 
-  /** Whether `node` is on the head's side of the cut the tree edge `index` makes. */
-  onHeadSide(index: number, node: number): boolean {
-    const edge = this.edges[index];
-    return this.below(index, node) === this.below(index, edge.head);
+  /**
+   * Raise every node on the head's side of the leaving edge's cut by `shift`: the nodes below the edge when the head is
+   * below, else every node but those. Nodes of another tree of the forest are on the head's side when the head is not
+   * below, as a node's side was always read, and are raised with it.
+   */
+  raiseHeadSide(leaving: number, shift: number, position: number[]): void {
+    const { low, high, headBelow } = this.cutOf(leaving);
+    if (headBelow) {
+      for (let number = low; number <= high; number++) position[this.byPostorder[number - 1]] += shift;
+      return;
+    }
+    const lim = this.lim;
+    for (let v = 0; v < this.count; v++) if (lim[v] < low || lim[v] > high) position[v] += shift;
   }
 
   /** Sum this solve's node balances in the current DFS postorder; each tree edge keeps its own indexed cut slot. */
@@ -273,15 +418,27 @@ class TreeIndex {
     return -1;
   }
 
-  /** The non-tree edge from the head side to the tail side of the leaving edge's cut with the least slack. */
+  /**
+   * The non-tree edge from the head side to the tail side of the leaving edge's cut with the least slack, the
+   * lowest-numbered of those that tie. Every edge across the cut has exactly one end below the leaving edge, so only the
+   * edges of the nodes below it are read, as Gansner et al. and Graphviz's `enter_edge` do; until 2026-11-19 every edge
+   * was, in edge order, and the least slack's lowest edge number is what that reading chose.
+   */
   enteringEdge(leaving: number, position: readonly number[]): number {
+    const { low, high, headBelow } = this.cutOf(leaving);
+    const lim = this.lim;
     let best = -1, bestSlack = Infinity;
-    this.edges.forEach((edge, index) => {
-      if (this.inTree[index]) return;
-      if (!this.onHeadSide(leaving, edge.tail) || this.onHeadSide(leaving, edge.head)) return;
-      const s = slack(edge, position);
-      if (s < bestSlack) { bestSlack = s; best = index; }
-    });
+    for (let number = low; number <= high; number++) {
+      for (const index of this.incident[this.byPostorder[number - 1]]) {
+        if (this.inTree[index]) continue;
+        const edge = this.edges[index];
+        const tailBelow = low <= lim[edge.tail] && lim[edge.tail] <= high, headEndBelow = low <= lim[edge.head] && lim[edge.head] <= high;
+        // Its tail on the head's side and its head on the tail's.
+        if (tailBelow !== headBelow || headEndBelow === headBelow) continue;
+        const s = slack(edge, position);
+        if (s < bestSlack || (s === bestSlack && index < best)) { bestSlack = s; best = index; }
+      }
+    }
     return best;
   }
 }
