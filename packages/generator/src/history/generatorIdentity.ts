@@ -18,6 +18,17 @@
  * has weighed is keyed rather than trusted; `generatorIdentity.test.ts` holds
  * the summarizing process's imports to that list.
  *
+ * Since a later edit of 2026-11-19 the key also holds the code the history
+ * command runs on a summary's behalf before the summarizing process starts:
+ * the version control's reading of a commit's tree (`git.ts`) and the module
+ * that writes the tree and starts the process with its task and environment
+ * (`regenerate.ts`). Before, both ran outside the key, and the guard, which
+ * read only the summarizing process's imports, could not see them. Every file
+ * of the history folders that is not a TypeScript module, data a module might
+ * import or read, is keyed too, and so is the version of Unicode the runtime
+ * reads names by, which a summary's anchors and order depend on through the
+ * case of letters and the classes of characters.
+ *
  * @module
  */
 
@@ -39,16 +50,25 @@ const TOOL_DEPENDENCY_LOCK = "package-lock.json";
 /** The folders of the history's own modules, most of which read summaries and never make one. */
 export const HISTORY_FOLDERS = ["packages/engine/src/live-docs/history/", "packages/generator/src/history/"];
 
-/** The modules of {@link HISTORY_FOLDERS} that run in a summarizing process and so decide what a summary says. */
+/**
+ * The modules of {@link HISTORY_FOLDERS} that decide what a summary says: those the summarizing process runs, and those
+ * the history command runs on its behalf, which write the commit's tree it reads and start it with its task and its
+ * environment.
+ */
 export const SUMMARY_MODULES = [
   "packages/engine/src/live-docs/history/summary.ts",
   "packages/engine/src/live-docs/history/textStore.ts",
-  "packages/generator/src/history/summarizeChange.ts"
+  "packages/generator/src/history/summarizeChange.ts",
+  "packages/engine/src/live-docs/history/git.ts",
+  "packages/generator/src/history/regenerate.ts"
 ];
+
+/** The modules from which the guard reads what decides a summary: the summarizing process, and the command's side of it. */
+export const SUMMARY_ENTRIES = ["packages/generator/src/history/summarizeChange.ts", "packages/generator/src/history/regenerate.ts"];
 
 /**
  * Whether a file of the two packages, by its repository-relative path, keys the lens: every file but a test and the
- * history modules that never run in a summarizing process.
+ * TypeScript modules of the history folders that decide nothing of a summary.
  */
 export function keysTheLens(file: string): boolean {
   if (!GENERATOR_FOLDERS.some((folder) => file.startsWith(`${folder}/`))) {
@@ -57,7 +77,7 @@ export function keysTheLens(file: string): boolean {
   if (file.endsWith(".test.ts")) {
     return false;
   }
-  return !HISTORY_FOLDERS.some((folder) => file.startsWith(folder)) || SUMMARY_MODULES.includes(file);
+  return !HISTORY_FOLDERS.some((folder) => file.startsWith(folder)) || !file.endsWith(".ts") || SUMMARY_MODULES.includes(file);
 }
 
 /**
@@ -72,7 +92,7 @@ export function keysTheLens(file: string): boolean {
 export async function generatorIdentity(): Promise<GeneratorIdentity> {
   const manifest = JSON.parse(await fs.readFile(path.join(PACKAGE_ROOT, "package.json"), "utf8")) as { version: string };
   const checkout = await checkoutOf(PACKAGE_ROOT);
-  return { version: manifest.version, code: checkout?.code ?? null, commit: checkout?.commit ?? null, modified: checkout?.modified ?? null };
+  return { version: manifest.version, code: checkout?.code ?? null, commit: checkout?.commit ?? null, modified: checkout?.modified ?? null, unicode: process.versions.unicode ?? null };
 }
 
 async function checkoutOf(packageRoot: string): Promise<{ code: string; commit: string; modified: string | null } | undefined> {

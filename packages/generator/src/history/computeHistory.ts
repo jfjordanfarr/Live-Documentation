@@ -5,25 +5,31 @@
  *
  * @remarks
  * The mainline is read from the version control and sampled. Every sampled
- * change the cache lacks under the lens is checked out into a scratch working
- * tree under the system's temporary folder, summarized by a process of its own
- * (see `summarizeChange.ts`), and the tree removed; a pool runs a few at a
- * time. Then the sequence is derived from consecutive summaries and what the
- * version control says between them, each step replayed as it is written, and
- * written beside the cache. A second run regenerates only what the cache
- * lacks. Nothing here is committed, and nothing reaches a remote.
+ * change the cache lacks under the lens is summarized in a scratch tree by a
+ * process of its own (`regenerate.ts`); then the sequence is derived from
+ * consecutive summaries and what the version control says between them, each
+ * step replayed as it is written, and written beside the cache. A second run
+ * regenerates only what the cache lacks. Nothing here is committed, and
+ * nothing reaches a remote.
  *
  * Since 2026-11-19 the summaries are gzipped and name their prose by hash in
  * the lens's text store, which holds each text once; the pool is sized by the
- * machine's memory and processors and the peak memory a summarizing process
- * was last measured to take, which every run records beside the cache; and
- * every run says which cache folders belong to no current lens and how much
- * they hold, removing them only when asked.
+ * memory and processors the run may use and the peak memory a summarizing
+ * process was measured to take; and every run says which cache folders
+ * belong to no current lens and how much they hold, removing them only when
+ * asked and only once the current lens is whole.
+ *
+ * A change counts as cached only when its summary reads and every text it
+ * names is in the store and is the text of its hash; a change that fails
+ * either is summarized again, so that a store damaged or copied in part
+ * mends itself rather than failing every later run. One run at a time writes
+ * under a history folder: a run holds a lock there while it writes, and
+ * removes at its start what a stopped run left half written.
  *
  * @module
  */
 
-import { fork, type ChildProcess } from "node:child_process";
+import { createHash } from "node:crypto";
 import { promises as fs } from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -41,17 +47,18 @@ import { Interner } from "@live-documentation/engine/live-docs/history/codec";
 import { HISTORY_DIRECTORY, HISTORY_FILE, type CommitInfo, type HistoryLens, type HistorySequence, type Sampling } from "@live-documentation/engine/live-docs/history/format";
 import { openGitRepository } from "@live-documentation/engine/live-docs/history/git";
 import { lensOf } from "@live-documentation/engine/live-docs/history/lens";
-import { compareLinks, linksOf, rowsDifferences, rowsOfSummary, type RowLink, type Rows } from "@live-documentation/engine/live-docs/history/rows";
+import { linksOf, rowsOfSummary } from "@live-documentation/engine/live-docs/history/rows";
 import { sampleChanges } from "@live-documentation/engine/live-docs/history/sampling";
 import { momentAt, SequenceBuilder } from "@live-documentation/engine/live-docs/history/sequence";
 import { shapeOfSummary } from "@live-documentation/engine/live-docs/history/shape";
-import { HISTORY_SUMMARY_FORMAT, summarizeGraph, type CommitSummary } from "@live-documentation/engine/live-docs/history/summary";
-import { readText, TEXT_STORE_DIRECTORY } from "@live-documentation/engine/live-docs/history/textStore";
-import type { MainlineChange, VersionControl, WorkingTree } from "@live-documentation/engine/live-docs/history/versionControl";
-import { WORDS_DIRECTORY, wordsStore, type WordsHead } from "@live-documentation/engine/live-docs/history/words";
+import { HISTORY_SUMMARY_FORMAT, textHash, type CommitSummary } from "@live-documentation/engine/live-docs/history/summary";
+import { TEXT_STORE_DIRECTORY, textPath } from "@live-documentation/engine/live-docs/history/textStore";
+import type { MainlineChange, VersionControl } from "@live-documentation/engine/live-docs/history/versionControl";
+import { textsOfFile, WORDS_DIRECTORY, wordsStore, type WordsHead } from "@live-documentation/engine/live-docs/history/words";
 
 import { generatorIdentity } from "./generatorIdentity";
-import type { SummaryReport, SummaryTask } from "./summarizeChange";
+import { headDifferences } from "./headCheck";
+import { indexPath, regenerate, Scratch, summaryPath } from "./regenerate";
 
 /** What to compute. */
 export interface HistoryOptions {
@@ -66,8 +73,15 @@ export interface HistoryOptions {
   keepIndex: boolean;
   /** Carry the authors' names in the steps. */
   authors: boolean;
-  /** Remove the cache folders of every lens but the current one. */
+  /** Remove the cache folders of every lens but the current one, once the current one holds every sampled change. */
   removeSuperseded?: boolean;
+  /**
+   * Hold the history's last step to the Live Docs committed at the commit it ends at, as the person asserts those docs
+   * were made by this generator under this configuration; see {@link HEAD_CHECK_RULE}.
+   */
+  checkHead?: boolean;
+  /** Start no change after this many minutes of regeneration; a run stopped so throws {@link HistoryStopped}. */
+  stopAfterMinutes?: number;
   /** Where progress goes, a line at a time. */
   progress: (line: string) => void;
 }
@@ -107,13 +121,27 @@ export interface HistoryRun {
   cacheBytes: number;
   /** The cache folders of other lenses, and whether this run removed them. */
   superseded: SupersededCache[];
+  /** Whether the last step was held to the Live Docs committed at the head, and what was found or why it was skipped. */
+  headCheck: { applied: boolean; line: string };
 }
+
+/** A run that stopped, as asked, before the cache held every sampled change: no sequence was written. */
+export class HistoryStopped extends Error {}
+
+/**
+ * When the check at the head applies, in the words the command prints when it skips it.
+ */
+export const HEAD_CHECK_RULE =
+  "it applies when asked with --check-head, or when this generator runs unmodified from the commit the history ends at, under the workspace's own configuration, as over this tool's own repository";
 
 /**
  * The record a run leaves beside the caches of how much memory one summarizing process took on this repository, so
  * that the next run sizes its pool by it: `<docsRoot>/history/pool.json`.
  */
 const POOL_RECORD = "pool.json";
+
+/** The lock a run holds under the history folder while it writes there. */
+const RUN_LOCK = "run.lock";
 
 /**
  * What one summarizing process is expected to take before any has been measured on a repository: the largest peak
@@ -130,6 +158,17 @@ export const UNMEASURED_PEAK_MEMORY = 768 * 1024 ** 2;
 export function poolSize(machine: { totalMemory: number; processors: number; peakMemory: number }): number {
   const byMemory = Math.floor(machine.totalMemory / 2 / machine.peakMemory);
   return Math.max(1, Math.min(machine.processors - 1, byMemory));
+}
+
+/**
+ * The memory and the processors this process may use: the machine's, or less where the operating system says so. In
+ * a container whose memory is limited, `process.constrainedMemory` reads the limit from the control group; the
+ * processors are those the process may be scheduled on, `os.availableParallelism`, which a limit of processor time
+ * (`docker run --cpus`) does not lower.
+ */
+export function usableMachine(reported: { totalMemory: number; constrainedMemory: number | undefined; processors: number }): { totalMemory: number; processors: number } {
+  const limit = reported.constrainedMemory;
+  return { totalMemory: limit !== undefined && limit > 0 && limit < reported.totalMemory ? limit : reported.totalMemory, processors: reported.processors };
 }
 
 /** Computes the history and writes the sequence. */
@@ -150,36 +189,66 @@ export async function computeHistory(options: HistoryOptions): Promise<HistoryRu
   const historyFolder = path.join(workspaceRoot, configuration.root, HISTORY_DIRECTORY);
   const cacheFolder = path.join(historyFolder, lens.key);
   await prepareHistoryFolder(historyFolder, cacheFolder);
+  const release = await holdLock(historyFolder, options.progress);
+  const scratch = new Scratch();
+  try {
+    return await scratch.during(() => run(options, { workspaceRoot, versionControl, configuration, lens, end, mainline, sampled, historyFolder, cacheFolder, scratch }));
+  } finally {
+    await release();
+  }
+}
+
+interface RunContext {
+  workspaceRoot: string;
+  versionControl: VersionControl;
+  configuration: LiveDocumentationConfig;
+  lens: HistoryLens;
+  end: Awaited<ReturnType<VersionControl["mainlineEnd"]>>;
+  mainline: MainlineChange[];
+  sampled: MainlineChange[];
+  historyFolder: string;
+  cacheFolder: string;
+  scratch: Scratch;
+}
+
+async function run(options: HistoryOptions, context: RunContext): Promise<HistoryRun> {
+  const { workspaceRoot, versionControl, configuration, lens, end, mainline, sampled, historyFolder, cacheFolder } = context;
   const relative = (absolute: string): string => path.relative(workspaceRoot, absolute).split(path.sep).join("/");
-  const superseded = await supersededCaches(historyFolder, lens.key, options.removeSuperseded === true, relative);
-  for (const cache of superseded) {
-    options.progress(`${cache.removed ? "removed" : "kept"} ${cache.folder}, the cache of a lens that is not the current one: ${formatBytes(cache.bytes)}`);
+  const leftovers = await removeLeftovers(historyFolder);
+  if (leftovers > 0) {
+    options.progress(`removed ${leftovers} files a stopped run left half written`);
   }
-  if (superseded.some((cache) => !cache.removed)) {
-    options.progress(`--remove-superseded removes the caches of other lenses, ${formatBytes(superseded.reduce((sum, cache) => sum + cache.bytes, 0))} in all`);
+  const textStore = path.join(cacheFolder, TEXT_STORE_DIRECTORY);
+  const { missing, damaged } = await uncached(sampled, cacheFolder, textStore, lens.key, options.keepIndex);
+  if (damaged.length > 0) {
+    options.progress(`${damaged.length} changes are summarized again, since their summaries do not read or name texts the store lacks or holds changed: ${damaged.slice(0, 3).map((id) => id.slice(0, 8)).join(", ")}${damaged.length > 3 ? ", …" : ""}`);
   }
-  const missing: MainlineChange[] = [];
-  for (const change of sampled) {
-    if (!(await cached(cacheFolder, change.id, options.keepIndex))) {
-      missing.push(change);
-    }
-  }
-  const measured = (await recordedPool(historyFolder))?.peakMemory;
-  const machineJobs = options.jobs ?? poolSize({ totalMemory: os.totalmem(), processors: os.cpus().length, peakMemory: measured ?? UNMEASURED_PEAK_MEMORY });
+  const record = await recordedPool(historyFolder);
+  const machine = usableMachine({ totalMemory: os.totalmem(), constrainedMemory: process.constrainedMemory(), processors: os.availableParallelism() });
+  const peak = record?.peakMemory ?? UNMEASURED_PEAK_MEMORY;
+  const machineJobs = options.jobs ?? poolSize({ ...machine, peakMemory: peak });
   const jobs = Math.max(1, Math.min(machineJobs, missing.length));
   const sizing =
     options.jobs !== undefined
       ? "as asked"
-      : `by ${formatBytes(os.totalmem())} of memory and ${os.cpus().length} processors at ${formatBytes(measured ?? UNMEASURED_PEAK_MEMORY)} a process, ${measured === undefined ? "before any was measured here" : "as last measured here"}`;
+      : `by ${formatBytes(machine.totalMemory)} of memory and ${machine.processors} processors this process may use, at ${formatBytes(peak)} a process, ${record === undefined ? "before any was measured here" : "as measured here"}`;
   const pool = missing.length > 0 ? `, ${jobs} at a time ${sizing}` : "";
   options.progress(`${sampled.length} changes sampled of ${mainline.length}; ${sampled.length - missing.length} in the cache under lens ${lens.key}, ${missing.length} to regenerate${pool}`);
 
   const started = Date.now();
-  const regeneration = await regenerate(missing, { versionControl, configuration, lens, cacheFolder, keepIndex: options.keepIndex, jobs, progress: options.progress });
+  const deadline = options.stopAfterMinutes === undefined ? undefined : started + options.stopAfterMinutes * 60_000;
+  const regeneration = await regenerate(missing, { versionControl, configuration, lens, cacheFolder, keepIndex: options.keepIndex, jobs, scratch: context.scratch, deadline, progress: options.progress });
   const regenerationMilliseconds = missing.length > 0 ? Date.now() - started : 0;
   if (regeneration.peakMemory > 0) {
-    await recordPeakMemory(historyFolder, lens.key, regeneration.peakMemory);
-    options.progress(`the largest summarizing process took ${formatBytes(regeneration.peakMemory)} at its peak; the next run sizes its pool by it`);
+    await recordPeakMemory(historyFolder, lens.key, regeneration.peakMemory, regeneration.timings.length);
+    options.progress(`the largest summarizing process took ${formatBytes(regeneration.peakMemory)} at its peak; the next run sizes its pool by the largest measured here`);
+  }
+  if (regeneration.timings.length < missing.length) {
+    const held = sampled.length - missing.length + regeneration.timings.length;
+    throw new HistoryStopped(
+      `stopped after ${options.stopAfterMinutes} minutes, as asked: the cache at ${relative(cacheFolder)} holds ${held} of the ${sampled.length} changes sampled under lens ${lens.key}, and ${missing.length - regeneration.timings.length} remain. ` +
+        "No history was written; the next run resumes from the cache."
+    );
   }
   const timings = regeneration.timings;
 
@@ -207,18 +276,28 @@ export async function computeHistory(options: HistoryOptions): Promise<HistoryRu
     versionControl,
     configuration,
     lens,
+    textStore,
     texts,
+    asked: options.checkHead === true,
     ownConfiguration: options.configPath === undefined,
-    head: end.head
+    head: end.head,
+    scratch: context.scratch
   });
-  options.progress(headCheck);
-  sequence.words = await writeWords(sequence, historyFolder, path.join(cacheFolder, TEXT_STORE_DIRECTORY), texts, options.progress);
-  const file = path.join(historyFolder, HISTORY_FILE);
-  await writeInPlace(file, JSON.stringify(sequence));
+  options.progress(headCheck.line);
+  await writeSequence(sequence, historyFolder, textStore, texts, options.progress);
+
+  // Only now does the current lens hold every sampled change, so the caches of other lenses can go.
+  const superseded = await supersededCaches(historyFolder, lens.key, options.removeSuperseded === true, relative);
+  for (const cache of superseded) {
+    options.progress(`${cache.removed ? "removed" : "kept"} ${cache.folder}, the cache of a lens that is not the current one: ${formatBytes(cache.bytes)}`);
+  }
+  if (superseded.some((cache) => !cache.removed)) {
+    options.progress(`--remove-superseded removes the caches of other lenses, ${formatBytes(superseded.reduce((sum, cache) => sum + cache.bytes, 0))} in all`);
+  }
 
   return {
     sequence,
-    file: relative(file),
+    file: relative(path.join(historyFolder, HISTORY_FILE)),
     cache: relative(cacheFolder),
     sampled: sampled.length,
     regenerated: missing.length,
@@ -228,8 +307,143 @@ export async function computeHistory(options: HistoryOptions): Promise<HistoryRu
     regenerationMilliseconds,
     peakMemory: regeneration.peakMemory,
     cacheBytes: await folderBytes(cacheFolder),
-    superseded
+    superseded,
+    headCheck
   };
+}
+
+/**
+ * Takes the lock of the history folder, or refuses while another run on this machine holds it; a lock whose run has
+ * ended, or that a run on another machine left in a folder copied here, as a restored cache is, is taken over.
+ *
+ * @returns What releases it.
+ */
+async function holdLock(historyFolder: string, progress: (line: string) => void): Promise<() => Promise<void>> {
+  const lock = path.join(historyFolder, RUN_LOCK);
+  const mine = JSON.stringify({ pid: process.pid, host: os.hostname(), started: new Date().toISOString() });
+  for (;;) {
+    try {
+      await fs.writeFile(lock, mine, { flag: "wx" });
+      return () => fs.rm(lock, { force: true });
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== "EEXIST") throw error;
+    }
+    let holder: { pid?: number; host?: string; started?: string } = {};
+    try {
+      holder = JSON.parse(await fs.readFile(lock, "utf8")) as typeof holder;
+    } catch {
+      // Unreadable, or removed meanwhile: taken over below, or written afresh at the next turn.
+    }
+    if (holder.host === os.hostname() && typeof holder.pid === "number" && alive(holder.pid)) {
+      throw new Error(
+        `another history run (process ${holder.pid}, since ${holder.started ?? "an unknown time"}) is writing under ${historyFolder}; wait for it to end, or remove ${lock} if no such process runs`
+      );
+    }
+    progress(`took over the lock ${lock}, which ${holder.host === os.hostname() ? `process ${holder.pid ?? "?"} left when it ended` : `a run on ${holder.host ?? "another machine"} left`}`);
+    await fs.rm(lock, { force: true });
+  }
+}
+
+function alive(pid: number): boolean {
+  try {
+    process.kill(pid, 0);
+    return true;
+  } catch (error) {
+    return (error as NodeJS.ErrnoException).code === "EPERM";
+  }
+}
+
+/** Removes every file a stopped run left half written under the history folder, `*.partial`, and returns how many. */
+async function removeLeftovers(historyFolder: string): Promise<number> {
+  let removed = 0;
+  for (const entry of await fs.readdir(historyFolder, { withFileTypes: true, recursive: true })) {
+    if (entry.name.endsWith(".partial")) {
+      await fs.rm(path.join(entry.parentPath, entry.name), { recursive: true, force: true });
+      removed += 1;
+    }
+  }
+  return removed;
+}
+
+/**
+ * The sampled changes the cache lacks: those without a summary, or without an index where one is kept, and those
+ * `damaged`, whose summary does not read as this lens's summary of the change or names a text the store lacks or
+ * holds changed. A changed text is removed, so that the change's new summary writes it afresh.
+ */
+async function uncached(sampled: readonly MainlineChange[], cacheFolder: string, textStore: string, lens: string, keepIndex: boolean): Promise<{ missing: MainlineChange[]; damaged: string[] }> {
+  const missing: MainlineChange[] = [];
+  const damaged: string[] = [];
+  const named = new Map<string, Set<string>>();
+  await inBatches(sampled, async (change) => {
+    const wanted = keepIndex ? [summaryPath(cacheFolder, change.id), indexPath(cacheFolder, change.id)] : [summaryPath(cacheFolder, change.id)];
+    for (const file of wanted) {
+      try {
+        await fs.access(file);
+      } catch {
+        missing.push(change);
+        return;
+      }
+    }
+    try {
+      named.set(change.id, new Set(textsOfSummary(await readSummaryFile(summaryPath(cacheFolder, change.id), lens, change.id))));
+    } catch {
+      missing.push(change);
+      damaged.push(change.id);
+    }
+  });
+  // Every text the cached summaries name, read once and held to its hash.
+  const sound = new Map<string, boolean>();
+  for (const hashes of named.values()) {
+    for (const hash of hashes) sound.set(hash, false);
+  }
+  await inBatches([...sound.keys()], async (hash) => {
+    const file = textPath(textStore, hash);
+    let text: string;
+    try {
+      text = await fs.readFile(file, "utf8");
+    } catch {
+      return;
+    }
+    if (textHash(text) === hash) {
+      sound.set(hash, true);
+    } else {
+      await fs.rm(file, { force: true });
+    }
+  });
+  for (const change of sampled) {
+    const hashes = named.get(change.id);
+    if (hashes !== undefined && [...hashes].some((hash) => !sound.get(hash))) {
+      missing.push(change);
+      damaged.push(change.id);
+    }
+  }
+  // In the mainline's order, as they were sampled.
+  const order = new Map(sampled.map((change, index) => [change.id, index]));
+  missing.sort((a, b) => order.get(a.id)! - order.get(b.id)!);
+  damaged.sort((a, b) => order.get(a)! - order.get(b)!);
+  return { missing, damaged };
+}
+
+/** Every text a summary names by hash. */
+function textsOfSummary(summary: CommitSummary): string[] {
+  const hashes: string[] = [];
+  for (const file of summary.files) {
+    if (file.authored !== undefined) hashes.push(file.authored);
+    for (const symbol of file.symbols) {
+      if (symbol.text !== undefined) hashes.push(symbol.text);
+    }
+  }
+  return hashes;
+}
+
+// How many files are read at once: enough to keep the disk busy, few enough to stay far from the limit of open files.
+const READ_BATCH = 64;
+
+/** Runs `work` over the items, at most {@link READ_BATCH} at once. */
+async function inBatches<T>(items: readonly T[], work: (item: T) => Promise<void>): Promise<void> {
+  for (let start = 0; start < items.length; start += READ_BATCH) {
+    await Promise.all(items.slice(start, start + READ_BATCH).map(work));
+  }
 }
 
 /** The cache folders under the history folder named by a lens key other than the current one, removed when asked. */
@@ -261,31 +475,43 @@ async function folderBytes(folder: string): Promise<number> {
   return bytes;
 }
 
-interface PoolRecord {
-  /** The lens the peak was measured under. */
+/** What runs measured of a summarizing process's peak memory on this repository. */
+export interface PoolRecord {
+  /** The lens the latest run measured under. */
   lens: string;
-  /** The largest peak resident memory a summarizing process took under it, in bytes. */
+  /** The largest peak resident memory the record holds, in bytes. */
   peakMemory: number;
+  /** How many changes were measured under the lens. */
+  changes: number;
 }
 
 /** What a run last recorded of a summarizing process's peak memory on this repository, when one has. */
 async function recordedPool(historyFolder: string): Promise<PoolRecord | undefined> {
   try {
     const record = JSON.parse(await fs.readFile(path.join(historyFolder, POOL_RECORD), "utf8")) as Partial<PoolRecord>;
-    return typeof record.peakMemory === "number" && record.peakMemory > 0 && typeof record.lens === "string" ? { lens: record.lens, peakMemory: record.peakMemory } : undefined;
+    return typeof record.peakMemory === "number" && record.peakMemory > 0 && typeof record.lens === "string"
+      ? { lens: record.lens, peakMemory: record.peakMemory, changes: typeof record.changes === "number" ? record.changes : 0 }
+      : undefined;
   } catch {
     return undefined;
   }
 }
 
 /**
- * Records the run's largest peak, so that the next run sizes its pool by what this repository was measured to take:
- * under the same lens the largest of every run's, since a run that regenerates only the newest change sees one
- * change's peak and not the history's; under a new lens, this run's alone, since the generator has changed.
+ * The record after a run measured `peakMemory` over `changes` changes under `lens`. Under the same lens the record
+ * keeps the largest peak of every run, since a run that regenerates only the newest change sees one change's peak and
+ * not the history's. Under a new lens the generator has changed, and the run's peak replaces the record's only when it
+ * was measured over at least as many changes; until then the larger of the two stands, so that a small sampled run
+ * never shrinks the estimate a whole history was measured to need.
  */
-async function recordPeakMemory(historyFolder: string, lens: string, peakMemory: number): Promise<void> {
-  const previous = await recordedPool(historyFolder);
-  const record: PoolRecord = { lens, peakMemory: previous?.lens === lens ? Math.max(previous.peakMemory, peakMemory) : peakMemory };
+export function nextPoolRecord(previous: PoolRecord | undefined, lens: string, peakMemory: number, changes: number): PoolRecord {
+  if (previous === undefined) return { lens, peakMemory, changes };
+  if (previous.lens === lens) return { lens, peakMemory: Math.max(previous.peakMemory, peakMemory), changes: previous.changes + changes };
+  return { lens, peakMemory: changes >= previous.changes ? peakMemory : Math.max(previous.peakMemory, peakMemory), changes };
+}
+
+async function recordPeakMemory(historyFolder: string, lens: string, peakMemory: number, changes: number): Promise<void> {
+  const record = nextPoolRecord(await recordedPool(historyFolder), lens, peakMemory, changes);
   await writeInPlace(path.join(historyFolder, POOL_RECORD), `${JSON.stringify(record)}\n`);
 }
 
@@ -325,170 +551,6 @@ async function prepareHistoryFolder(historyFolder: string, cacheFolder: string):
   );
 }
 
-function summaryPath(cacheFolder: string, change: string): string {
-  return path.join(cacheFolder, `${change}.json.gz`);
-}
-
-function indexPath(cacheFolder: string, change: string): string {
-  return path.join(cacheFolder, `${change}.index.json.gz`);
-}
-
-async function cached(cacheFolder: string, change: string, keepIndex: boolean): Promise<boolean> {
-  const wanted = keepIndex ? [summaryPath(cacheFolder, change), indexPath(cacheFolder, change)] : [summaryPath(cacheFolder, change)];
-  for (const file of wanted) {
-    try {
-      await fs.access(file);
-    } catch {
-      return false;
-    }
-  }
-  return true;
-}
-
-interface RegenerationContext {
-  versionControl: VersionControl;
-  configuration: LiveDocumentationConfig;
-  lens: HistoryLens;
-  cacheFolder: string;
-  keepIndex: boolean;
-  jobs: number;
-  progress: (line: string) => void;
-}
-
-/**
- * Regenerates the changes the cache lacks, `jobs` at a time, each in a scratch
- * tree under the system's temporary folder and a process of its own.
- *
- * @returns How long each change took, in milliseconds, and the largest peak memory a process reported.
- */
-async function regenerate(changes: readonly MainlineChange[], context: RegenerationContext): Promise<{ timings: number[]; peakMemory: number }> {
-  const timings: number[] = [];
-  let peakMemory = 0;
-  if (changes.length === 0) {
-    return { timings, peakMemory };
-  }
-  const trees = new Set<WorkingTree>();
-  const children = new Set<ChildProcess>();
-  // A run stopped by a signal removes its scratch trees, so that no tree of it is left behind.
-  const stop = (signal: NodeJS.Signals): void => {
-    for (const child of children) {
-      child.kill(signal);
-    }
-    void Promise.allSettled([...trees].map((tree) => tree.remove())).then(() => process.exit(130));
-  };
-  process.once("SIGINT", stop);
-  process.once("SIGTERM", stop);
-  // What the generator warned, once each with the number of changes that gave it, rather than again at every change.
-  const warnings = new Map<string, number>();
-  const started = Date.now();
-  try {
-    await inPool(changes, context.jobs, async (change) => {
-      const began = Date.now();
-      const scratch = await fs.mkdtemp(path.join(os.tmpdir(), "live-docs-history-"));
-      try {
-        const tree = await context.versionControl.workingTree(change.id, path.join(scratch, path.basename(scratch)));
-        trees.add(tree);
-        try {
-          const { warned, report } = await runSummary(
-            {
-              tree: tree.root,
-              configuration: context.configuration,
-              lens: context.lens.key,
-              commit: change.id,
-              summaryPath: summaryPath(context.cacheFolder, change.id),
-              textStore: path.join(context.cacheFolder, TEXT_STORE_DIRECTORY),
-              indexPath: context.keepIndex ? indexPath(context.cacheFolder, change.id) : undefined
-            },
-            children,
-            tree.environment
-          );
-          peakMemory = Math.max(peakMemory, report?.peakMemory ?? 0);
-          for (const message of new Set(warned)) {
-            warnings.set(message, (warnings.get(message) ?? 0) + 1);
-          }
-        } finally {
-          trees.delete(tree);
-          await tree.remove();
-        }
-      } finally {
-        // Git owns removal of a registered tree. If it fails, retain the tree and its metadata for diagnosis instead
-        // of deleting the working directory behind Git's back and leaving a dangling registration.
-        await fs.rmdir(scratch).catch((error: NodeJS.ErrnoException) => {
-          if (error.code !== "ENOTEMPTY") throw error;
-          context.progress(`kept scratch directory after incomplete Git cleanup: ${scratch}`);
-        });
-      }
-      timings.push(Date.now() - began);
-      const mean = timings.reduce((sum, time) => sum + time, 0) / timings.length;
-      const wall = (Date.now() - started) / timings.length;
-      context.progress(
-        `${timings.length}/${changes.length} regenerated: ${change.id.slice(0, 8)} in ${seconds(Date.now() - began)}; ${seconds(mean)} a change, ${seconds(wall)} of wall clock a change at ${context.jobs} at a time`
-      );
-    });
-  } finally {
-    process.removeListener("SIGINT", stop);
-    process.removeListener("SIGTERM", stop);
-    for (const [message, count] of warnings) {
-      context.progress(`the generator warned at ${count} of the ${changes.length} changes regenerated: ${message}`);
-    }
-  }
-  return { timings, peakMemory };
-}
-
-/**
- * Runs one summary in a process of its own, the generator's code loaded
- * afresh, and waits for it.
- *
- * @returns The lines the generator warned on its way, and what the process reported when it ended.
- */
-function runSummary(task: SummaryTask, children: Set<ChildProcess>, environment: Record<string, string>): Promise<{ warned: string[]; report?: SummaryReport }> {
-  // The worker sits beside this module, as TypeScript under tsx or as JavaScript once built.
-  const worker = path.join(__dirname, `summarizeChange${path.extname(__filename)}`);
-  return new Promise((resolve, reject) => {
-    const child = fork(worker, [JSON.stringify(task)], { stdio: ["ignore", "ignore", "pipe", "ipc"], env: { ...process.env, ...environment } });
-    children.add(child);
-    let errors = "";
-    let report: SummaryReport | undefined;
-    child.on("message", (message) => {
-      report = message as SummaryReport;
-    });
-    child.stderr?.setEncoding("utf8");
-    child.stderr?.on("data", (text: string) => {
-      errors += text;
-    });
-    child.on("error", reject);
-    child.on("exit", (code, signal) => {
-      children.delete(child);
-      if (code === 0) {
-        resolve({ warned: errors.split("\n").map((line) => line.trim()).filter(Boolean), report });
-      } else {
-        reject(new Error(`the summary of ${task.commit} failed (${signal ?? `exit ${code}`}): ${errors.trim().split("\n").slice(-5).join(" | ")}`));
-      }
-    });
-  });
-}
-
-/** Runs `work` over the items, at most `size` at once; after a failure no new item starts, and the first failure is thrown once the running ones end. */
-async function inPool<T>(items: readonly T[], size: number, work: (item: T) => Promise<void>): Promise<void> {
-  let next = 0;
-  let failure: Error | undefined;
-  const lane = async (): Promise<void> => {
-    while (failure === undefined && next < items.length) {
-      const item = items[next];
-      next += 1;
-      try {
-        await work(item);
-      } catch (error) {
-        failure ??= error instanceof Error ? error : new Error(String(error));
-      }
-    }
-  };
-  await Promise.all(Array.from({ length: Math.min(size, items.length) }, lane));
-  if (failure !== undefined) {
-    throw failure;
-  }
-}
-
 interface SequenceContext {
   versionControl: VersionControl;
   lens: HistoryLens;
@@ -512,13 +574,11 @@ async function buildSequence(sampled: readonly MainlineChange[], context: Sequen
     subject: change.subject
   });
   const textId = (hash: string): number => context.texts.id(hash);
-  const first = await readSummary(context, sampled[0].id);
+  const read = (change: MainlineChange): Promise<CommitSummary> => readSummaryFile(summaryPath(context.cacheFolder, change.id), context.lens.key, change.id);
+  const first = await read(sampled[0]);
   const builder = new SequenceBuilder({ lens: context.lens, source: context.source }, commitOf(sampled[0]), shapeOfSummary(first), rowsOfSummary(first, textId));
   for (let index = 1; index < sampled.length; index += 1) {
-    const [summary, version] = await Promise.all([
-      readSummary(context, sampled[index].id),
-      context.versionControl.changesBetween(sampled[index - 1].id, sampled[index].id)
-    ]);
+    const [summary, version] = await Promise.all([read(sampled[index]), context.versionControl.changesBetween(sampled[index - 1].id, sampled[index].id)]);
     builder.add(commitOf(sampled[index]), shapeOfSummary(summary), version, rowsOfSummary(summary, textId));
   }
   return builder;
@@ -528,115 +588,135 @@ interface HeadCheckContext {
   versionControl: VersionControl;
   configuration: LiveDocumentationConfig;
   lens: HistoryLens;
+  textStore: string;
   texts: Interner;
+  /** Whether the person asked for the check, asserting that the docs committed at the head were made by this generator under this configuration. */
+  asked: boolean;
   /** Whether the lens's configuration is the workspace's own, the one its committed mirror was made under. */
   ownConfiguration: boolean;
   head: string;
+  scratch: Scratch;
 }
 
 /**
- * The check at the head, from a path independent of the history's own: the last step's rows, replayed through every
- * step from the base, must be the rows and links of the graph derived afresh from the Live Docs committed at the
- * head, read from a checkout of it. It is asked only where the committed mirror was made by this very generator under
- * this configuration: when the generator runs, unmodified, from the commit the history ends at, as it does over its
- * own repository. A difference stops the run, as a replay's does.
- *
- * @returns A line saying what was checked, or why the check does not apply.
+ * The check at the head (see `headCheck.ts`): the last step, replayed through every step from the base, must be the
+ * graph read afresh from the Live Docs committed at the head. It applies by {@link HEAD_CHECK_RULE}; where it applies,
+ * a difference or docs that do not read stop the run, and where it does not, the line says it was skipped and why.
  */
-async function checkHead(sequence: HistorySequence, context: HeadCheckContext): Promise<string> {
+async function checkHead(sequence: HistorySequence, context: HeadCheckContext): Promise<{ applied: boolean; line: string }> {
   const generator = context.lens.generator;
-  if (generator.code === null || generator.modified !== null || generator.commit !== context.head || !context.ownConfiguration) {
-    return "the check at the head does not apply: the mirror committed there was not made by this generator, unmodified, under this configuration";
+  const own = generator.code !== null && generator.modified === null && generator.commit === context.head && context.ownConfiguration;
+  if (!context.asked && !own) {
+    const why =
+      generator.code === null
+        ? "this generator is installed, not run from a checkout of its repository"
+        : generator.modified !== null
+          ? "this generator's code differs from its commit"
+          : generator.commit !== context.head
+            ? `this generator runs from ${generator.commit?.slice(0, 8) ?? "no commit"} and the history ends at ${context.head.slice(0, 8)}`
+            : "the configuration was given with --config";
+    return { applied: false, line: `the check at the head was skipped: ${HEAD_CHECK_RULE}, and here ${why}` };
   }
-  const scratch = await fs.mkdtemp(path.join(os.tmpdir(), "live-docs-history-head-"));
+  const scratch = await context.scratch.folder("live-docs-history-head-");
   let committed: LiveDocGraph;
   try {
     const tree = await context.versionControl.workingTree(context.head, path.join(scratch, path.basename(scratch)));
     try {
       committed = await readLiveDocGraph({ workspaceRoot: tree.root, config: context.configuration });
     } catch (error) {
-      return `the check at the head does not apply: the mirror committed there does not read (${error instanceof Error ? error.message : String(error)})`;
-    } finally {
-      await tree.remove();
+      throw new Error(`the Live Docs committed at ${context.head.slice(0, 8)} do not read, so the history's last step cannot be held to them: ${error instanceof Error ? error.message : String(error)}`, { cause: error });
     }
   } finally {
-    await fs.rm(scratch, { recursive: true, force: true });
+    await context.scratch.release(scratch);
   }
   if (Object.keys(committed.files).length === 0) {
-    return "the check at the head does not apply: no Live Docs are committed there";
+    if (context.asked) {
+      throw new Error(`--check-head holds the history's last step to the Live Docs committed at ${context.head.slice(0, 8)}, and none are committed there`);
+    }
+    return { applied: false, line: `the check at the head was skipped: no Live Docs are committed at ${context.head.slice(0, 8)}` };
   }
-  const replayed = momentAt(sequence, sequence.steps.length).rows;
-  const differences = headDifferences(replayed, committed, (hash) => context.texts.id(hash));
+  const moment = momentAt(sequence, sequence.steps.length);
+  const texts = new Map<number, string>();
+  const ids = [...new Set([...moment.rows.values()].flatMap(textsOfFile))];
+  await inBatches(ids, async (id) => {
+    texts.set(id, await readStoredText(context.textStore, context.texts.values[id]));
+  });
+  const differences = headDifferences(moment, committed, (id) => texts.get(id)!);
   if (differences.length > 0) {
     throw new Error(
       `the history's last step is not the graph of the Live Docs committed at ${context.head.slice(0, 8)}: ${differences.slice(0, 5).join("; ")}. ` +
         "When the mirror was not regenerated after the last change of the source, run `npm run live-docs:generate`, commit the docs and run again."
     );
   }
-  const symbols = [...replayed.values()].reduce((sum, file) => sum + file.symbols.length, 0);
-  return `the last step's ${replayed.size} files, ${symbols} symbols and ${linksOf(replayed).length} links are those of the Live Docs committed at ${context.head.slice(0, 8)}, read afresh`;
+  const symbols = [...moment.rows.values()].reduce((sum, file) => sum + file.symbols.length, 0);
+  return {
+    applied: true,
+    line: `the last step's ${moment.rows.size} files, ${symbols} symbols with their words, and ${linksOf(moment.rows).length} links are those of the Live Docs committed at ${context.head.slice(0, 8)}, read afresh`
+  };
 }
 
-/**
- * Where a moment's rows, replayed, differ from a graph derived from committed Live Docs: the graph's rows read by the
- * one rule every summary is read by, its texts named by `textId`, and its links read straight from its resolved
- * edges, apart from the rows' reading of them.
- */
-export function headDifferences(replayed: Rows, committed: LiveDocGraph, textId: (hash: string) => number): string[] {
-  const fromMirror = rowsOfSummary(summarizeGraph(committed, "", "").summary, textId);
-  return [...rowsDifferences(fromMirror, replayed), ...linkDifferences(linksOfGraph(committed), linksOf(replayed))];
-}
-
-/**
- * Writes the words store beside the sequence, `<history folder>/history-words/<index>.json`, each text the sequence
- * names read from the lens's text store, which checks it against its hash; a store an earlier run wrote is replaced.
- *
- * @returns What the sequence's head says of it.
- */
-async function writeWords(sequence: HistorySequence, historyFolder: string, textStore: string, texts: Interner, progress: (line: string) => void): Promise<WordsHead> {
-  const read = await Promise.all(texts.values.map((hash) => readText(textStore, hash)));
-  const { head, parts } = wordsStore(sequence, WORDS_DIRECTORY, (id) => read[id]);
-  const folder = path.join(historyFolder, WORDS_DIRECTORY);
-  await fs.rm(folder, { recursive: true, force: true });
-  await fs.mkdir(folder, { recursive: true });
-  let bytes = 0;
-  for (const [index, part] of parts.entries()) {
-    const json = JSON.stringify(part);
-    bytes += Buffer.byteLength(json);
-    await writeInPlace(path.join(folder, `${index}.json`), json);
+/** A text of the store, held to its hash. */
+async function readStoredText(store: string, hash: string): Promise<string> {
+  const text = await fs.readFile(textPath(store, hash), "utf8");
+  if (textHash(text) !== hash) {
+    // The texts were held to their hashes at the run's start: this one changed while it ran.
+    throw new Error(`the text ${hash} in ${store} changed while the history ran; run it again, which summarizes again every change that names it`);
   }
-  progress(`wrote the words of every step beside the sequence: ${head.texts} texts in ${parts.length} parts by directory, ${formatBytes(bytes)}`);
-  return head;
+  return text;
 }
 
-/** Every link between two different files of a graph, read from its resolved edges, counted by ends and kind. */
-function linksOfGraph(graph: LiveDocGraph): RowLink[] {
-  const counted = new Map<string, RowLink>();
-  for (const file of Object.values(graph.files)) {
-    for (const edge of file.edges) {
-      if (edge.to === undefined || edge.to === file.codePath) continue;
-      const link: RowLink = { from: file.codePath, ...(edge.from !== undefined ? { fromSymbol: edge.from } : {}), to: edge.to, ...(edge.toSymbol !== undefined ? { toSymbol: edge.toSymbol } : {}), kind: edge.kind, count: 0 };
-      const key = [link.from, link.fromSymbol ?? "", link.to, link.toSymbol ?? "", link.kind].join("\0");
-      const existing = counted.get(key) ?? link;
-      existing.count += 1;
-      counted.set(key, existing);
+/**
+ * Writes the words store and then the sequence beside it, so that a sequence never names a store that is not whole:
+ * the store goes to a folder named by its content, `history-words-<hash>`, the sequence is renamed into place after
+ * it, and only then are the stores no sequence names removed. A run stopped at any point leaves a sequence and the
+ * store it names.
+ */
+async function writeSequence(sequence: HistorySequence, historyFolder: string, textStore: string, texts: Interner, progress: (line: string) => void): Promise<void> {
+  const read: string[] = new Array<string>(texts.values.length);
+  await inBatches([...texts.values.keys()], async (id) => {
+    read[id] = await readStoredText(textStore, texts.values[id]);
+  });
+  const { head, parts } = wordsStore(sequence, WORDS_DIRECTORY, (id) => read[id]);
+  const json = parts.map((part) => JSON.stringify(part));
+  const hash = createHash("sha256");
+  for (const part of json) hash.update(part).update("\0");
+  const folder = `${WORDS_DIRECTORY}-${hash.digest("hex").slice(0, 16)}`;
+  const target = path.join(historyFolder, folder);
+  if (!(await exists(target))) {
+    const partial = `${target}.${process.pid}.partial`;
+    await fs.rm(partial, { recursive: true, force: true });
+    await fs.mkdir(partial);
+    for (const [index, part] of json.entries()) {
+      await fs.writeFile(path.join(partial, `${index}.json`), part, "utf8");
+    }
+    await fs.rename(partial, target);
+  }
+  const words: WordsHead = { ...head, folder };
+  sequence.words = words;
+  await writeInPlace(path.join(historyFolder, HISTORY_FILE), JSON.stringify(sequence));
+  for (const entry of await fs.readdir(historyFolder, { withFileTypes: true })) {
+    if (entry.isDirectory() && entry.name !== folder && (entry.name === WORDS_DIRECTORY || entry.name.startsWith(`${WORDS_DIRECTORY}-`))) {
+      await fs.rm(path.join(historyFolder, entry.name), { recursive: true, force: true });
     }
   }
-  return [...counted.values()].sort(compareLinks);
+  const bytes = json.reduce((sum, part) => sum + Buffer.byteLength(part), 0);
+  progress(`wrote the words of every step beside the sequence: ${head.texts} texts in ${parts.length} parts by directory, ${formatBytes(bytes)}`);
 }
 
-function linkDifferences(expected: readonly RowLink[], actual: readonly RowLink[]): string[] {
-  const words = (link: RowLink): string => `${link.from}${link.fromSymbol ? `#${link.fromSymbol}` : ""} -${link.kind}-> ${link.to}${link.toSymbol ? `#${link.toSymbol}` : ""} x${link.count}`;
-  const want = new Set(expected.map(words));
-  const have = new Set(actual.map(words));
-  return [...[...want].filter((link) => !have.has(link)).map((link) => `the link ${link} is missing`), ...[...have].filter((link) => !want.has(link)).map((link) => `the link ${link} was not expected`)];
+async function exists(file: string): Promise<boolean> {
+  try {
+    await fs.access(file);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
-async function readSummary(context: SequenceContext, change: string): Promise<CommitSummary> {
-  const file = summaryPath(context.cacheFolder, change);
+/** A summary in the cache, refused unless it is this lens's summary of the change. */
+async function readSummaryFile(file: string, lens: string, change: string): Promise<CommitSummary> {
   const summary = JSON.parse(gunzipSync(await fs.readFile(file)).toString("utf8")) as CommitSummary;
-  if (summary.format !== HISTORY_SUMMARY_FORMAT || summary.lens !== context.lens.key || summary.commit !== change) {
-    throw new Error(`${file} is not the summary of ${change} under lens ${context.lens.key}; remove it and run again`);
+  if (summary.format !== HISTORY_SUMMARY_FORMAT || summary.lens !== lens || summary.commit !== change) {
+    throw new Error(`${file} is not the summary of ${change} under lens ${lens}`);
   }
   return summary;
 }
@@ -645,10 +725,6 @@ async function writeInPlace(target: string, content: string): Promise<void> {
   const temporary = `${target}.${process.pid}.partial`;
   await fs.writeFile(temporary, content, "utf8");
   await fs.rename(temporary, target);
-}
-
-function seconds(milliseconds: number): string {
-  return `${(milliseconds / 1000).toFixed(1)} s`;
 }
 
 /** A size in the units a person reads it in. */

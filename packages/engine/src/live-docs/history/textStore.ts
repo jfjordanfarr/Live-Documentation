@@ -74,7 +74,7 @@ export async function putTexts(store: string, texts: ReadonlyMap<string, string>
 export async function readText(store: string, hash: string): Promise<string> {
   const text = await fs.readFile(textPath(store, hash), "utf8");
   if (textHash(text) !== hash) {
-    throw new Error(`the text stored as ${hash} is not the text of that hash; remove it and run the history again`);
+    throw new Error(`the text stored as ${hash} is not the text of that hash; the next run of the history removes it and summarizes again every change that names it`);
   }
   return text;
 }

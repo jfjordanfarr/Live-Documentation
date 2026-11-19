@@ -205,6 +205,12 @@ export interface GeneratorIdentity {
   commit: string | null;
   /** A hash of uncommitted code changes or working lock bytes differing from the committed tool lock, or null when neither changed. */
   modified: string | null;
+  /**
+   * The version of Unicode the runtime reads text by (`process.versions.unicode`), which decides the case of letters
+   * and the classes of characters a summary's anchors depend on; null when the runtime does not say. Absent from a
+   * lens made before 2026-11-19.
+   */
+  unicode?: string | null;
 }
 
 /** The lens: one generator and one configuration, applied to every change of the sequence. */

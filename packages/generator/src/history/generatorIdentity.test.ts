@@ -1,13 +1,13 @@
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import ts from "typescript";
 import { describe, expect, it } from "vitest";
 
-import { HISTORY_FOLDERS, keysTheLens, SUMMARY_MODULES } from "./generatorIdentity";
+import { HISTORY_FOLDERS, keysTheLens, SUMMARY_ENTRIES, SUMMARY_MODULES } from "./generatorIdentity";
 
 const repository = path.resolve(__dirname, "..", "..", "..", "..");
 
-/** The repository-relative path of a module a source file imports, when it is one of this repository's TypeScript files. */
+/** The repository-relative path of a file a source file imports, of any kind, when it is one of this repository's files. */
 function resolveImport(from: string, specifier: string): string | undefined {
   let base: string;
   if (specifier.startsWith(".")) {
@@ -28,13 +28,22 @@ function resolveImport(from: string, specifier: string): string | undefined {
   throw new Error(`${from} imports ${specifier}, which resolves to no file`);
 }
 
+/** What a source file imports that leaves something at run time, and the imports it makes that cannot be followed. */
+interface Imports {
+  specifiers: string[];
+  /** Each `import()` or `require()` whose argument is not a string literal, by the text of its call. */
+  unfollowed: string[];
+}
+
 /**
  * The modules a source file imports that leave something at run time, read by the TypeScript parser: an `import type`,
- * an `export type` or an import whose every name is a type leaves nothing, and is elided.
+ * an `export type` or an import whose every name is a type leaves nothing, and is elided. `import x = require()` is
+ * read as the `require` it compiles to; a dynamic import or a `require` of a computed name cannot be followed and is
+ * named.
  */
-function runtimeImports(file: string): string[] {
-  const source = ts.createSourceFile(file, readFileSync(path.join(repository, file), "utf8"), ts.ScriptTarget.Latest, true);
-  const specifiers: string[] = [];
+function runtimeImports(file: string, text = readFileSync(path.join(repository, file), "utf8")): Imports {
+  const source = ts.createSourceFile(file, text, ts.ScriptTarget.Latest, true);
+  const imports: Imports = { specifiers: [], unfollowed: [] };
   const visit = (node: ts.Node): void => {
     if (ts.isImportDeclaration(node) && ts.isStringLiteral(node.moduleSpecifier)) {
       const clause = node.importClause;
@@ -42,60 +51,135 @@ function runtimeImports(file: string): string[] {
         clause !== undefined &&
         (clause.isTypeOnly ||
           (clause.name === undefined && clause.namedBindings !== undefined && ts.isNamedImports(clause.namedBindings) && clause.namedBindings.elements.length > 0 && clause.namedBindings.elements.every((element) => element.isTypeOnly)));
-      if (!elided) specifiers.push(node.moduleSpecifier.text);
+      if (!elided) imports.specifiers.push(node.moduleSpecifier.text);
+    } else if (ts.isImportEqualsDeclaration(node) && !node.isTypeOnly && ts.isExternalModuleReference(node.moduleReference)) {
+      const expression = node.moduleReference.expression;
+      if (ts.isStringLiteral(expression)) imports.specifiers.push(expression.text);
+      else imports.unfollowed.push(node.getText(source));
     } else if (ts.isExportDeclaration(node) && node.moduleSpecifier !== undefined && ts.isStringLiteral(node.moduleSpecifier) && !node.isTypeOnly) {
-      specifiers.push(node.moduleSpecifier.text);
+      imports.specifiers.push(node.moduleSpecifier.text);
     } else if (ts.isCallExpression(node) && (node.expression.kind === ts.SyntaxKind.ImportKeyword || (ts.isIdentifier(node.expression) && node.expression.text === "require"))) {
       const [argument] = node.arguments;
-      if (argument !== undefined && ts.isStringLiteral(argument)) specifiers.push(argument.text);
+      if (argument !== undefined && (ts.isStringLiteral(argument) || ts.isNoSubstitutionTemplateLiteral(argument))) imports.specifiers.push(argument.text);
+      else imports.unfollowed.push(node.getText(source));
     }
     ts.forEachChild(node, visit);
   };
   visit(source);
-  return specifiers;
+  return imports;
 }
 
-/** Every module of this repository a source file reaches at run time, itself included. */
-function runtimeClosure(entry: string): Set<string> {
+/** Every file of this repository a source file reaches at run time, itself included, and the imports met that cannot be followed. */
+function runtimeClosure(entries: readonly string[]): { reached: Set<string>; unfollowed: string[] } {
   const reached = new Set<string>();
-  const pending = [entry];
+  const unfollowed: string[] = [];
+  const pending = [...entries];
   while (pending.length > 0) {
     const file = pending.pop()!;
     if (reached.has(file)) continue;
     reached.add(file);
-    for (const specifier of runtimeImports(file)) {
+    // A JSON file or any other that is not TypeScript is reached, keyed or not, and imports nothing of its own.
+    if (!file.endsWith(".ts")) continue;
+    const imports = runtimeImports(file);
+    unfollowed.push(...imports.unfollowed.map((call) => `${file}: ${call}`));
+    for (const specifier of imports.specifiers) {
       const resolved = resolveImport(file, specifier);
-      if (resolved !== undefined && resolved.endsWith(".ts")) pending.push(resolved);
+      if (resolved !== undefined) pending.push(resolved);
     }
   }
-  return reached;
+  return { reached, unfollowed };
+}
+
+/** The TypeScript modules of the history folders, tests aside. */
+function historyModules(): string[] {
+  return HISTORY_FOLDERS.flatMap((folder) =>
+    readdirSync(path.join(repository, folder))
+      .filter((name) => name.endsWith(".ts") && !name.endsWith(".test.ts"))
+      .map((name) => `${folder}${name}`)
+  );
+}
+
+/**
+ * Whether a module does something on a summary's behalf that its imports into the summarizing process cannot show: it
+ * starts a process, which is how the summarizing process is started and given its task and environment, or it
+ * implements the version control, which writes the commit's tree the process reads.
+ */
+function actsForASummary(text: string): boolean {
+  return /from\s+["'](?:node:)?(?:child_process|worker_threads)["']/u.test(text) || /\bimplements\s+VersionControl\b/u.test(text);
 }
 
 describe("the lens's key", () => {
-  it("is made of every module the summarizing process runs", () => {
-    const reached = runtimeClosure("packages/generator/src/history/summarizeChange.ts");
+  // Read once: parsing the closure's hundred-odd modules takes seconds on a loaded machine.
+  let summaries: ReturnType<typeof runtimeClosure> | undefined;
+  const summaryClosure = (): ReturnType<typeof runtimeClosure> => (summaries ??= runtimeClosure(SUMMARY_ENTRIES));
+
+  it("is made of every file the summarizing process runs, and every file the command runs on its behalf", () => {
+    const { reached } = summaryClosure();
     expect(reached.size).toBeGreaterThan(20);
     const unkeyed = [...reached].filter((file) => !keysTheLens(file));
-    // A module the summaries depend on and the key leaves out would let the cache serve a summary another generator made.
+    // A file the summaries depend on and the key leaves out would let the cache serve a summary another generator made.
     expect(unkeyed).toEqual([]);
-    expect([...reached].filter((file) => HISTORY_FOLDERS.some((folder) => file.startsWith(folder))).sort()).toEqual([...SUMMARY_MODULES].sort());
+    const reachedHistory = [...reached].filter((file) => HISTORY_FOLDERS.some((folder) => file.startsWith(folder)));
+    expect(reachedHistory.filter((file) => !SUMMARY_MODULES.includes(file))).toEqual([]);
+  });
+
+  it("keys every module of the history folders that starts a process or writes a commit's tree, which no import shows", () => {
+    const acting = historyModules().filter((file) => actsForASummary(readFileSync(path.join(repository, file), "utf8")));
+    expect(acting.sort()).toEqual(["packages/engine/src/live-docs/history/git.ts", "packages/generator/src/history/regenerate.ts"]);
+    expect(acting.filter((file) => !keysTheLens(file))).toEqual([]);
+    // Every summary module is reached by import from the summarizing process or the command's side of it, or acts so.
+    expect(SUMMARY_MODULES.filter((file) => !summaryClosure().reached.has(file) && !acting.includes(file))).toEqual([]);
+  });
+
+  it("would have found the command's tree and environment outside the key, as they stood before this rule", () => {
+    // As `computeHistory.ts` read until 2026-11-19: it started the summarizing process with the tree's environment.
+    expect(actsForASummary(`import { fork, type ChildProcess } from "node:child_process";\nconst child = fork(worker, [task], { env });`)).toBe(true);
+    expect(actsForASummary(`class GitRepository implements VersionControl {}`)).toBe(true);
+    expect(actsForASummary(`import type { VersionControl } from "./versionControl";`)).toBe(false);
+    expect(keysTheLens("packages/generator/src/history/computeHistory.ts")).toBe(false);
+  });
+
+  it("meets no import it cannot follow on the way", () => {
+    // A computed `import()` or `require()` could load a file no rule names; none may stand where the summaries are decided.
+    expect(summaryClosure().unfollowed).toEqual([]);
+  });
+
+  it("follows every way a module is loaded, and names what it cannot follow", () => {
+    const imports = runtimeImports(
+      "packages/engine/src/live-docs/history/probe.ts",
+      [
+        `import data from "./data.json";`,
+        `import legacy = require("./legacy");`,
+        `import type { T } from "./types";`,
+        `const later = import("./later");`,
+        `const name = "./computed";`,
+        `const computed = require(name);`
+      ].join("\n")
+    );
+    expect(imports.specifiers).toEqual(["./data.json", "./legacy", "./later"]);
+    expect(imports.unfollowed).toEqual(["require(name)"]);
   });
 
   it("finds an import the summarizing process would make of a module the key leaves out", () => {
-    // The check above must be able to fail: the sequence's codec, reached from the summary, is a module the key leaves out.
+    // The check above must be able to fail: the sequence's codec, reached from the sequence, is a module the key leaves out.
     expect(keysTheLens("packages/engine/src/live-docs/history/codec.ts")).toBe(false);
-    expect(runtimeClosure("packages/engine/src/live-docs/history/sequence.ts")).toContain("packages/engine/src/live-docs/history/codec.ts");
+    expect(runtimeClosure(["packages/engine/src/live-docs/history/sequence.ts"]).reached).toContain("packages/engine/src/live-docs/history/codec.ts");
   });
 
-  it("leaves out the tests and the history modules that only read summaries, and keeps every other file of the two packages", () => {
+  it("leaves out the tests and the history modules that decide nothing of a summary, and keeps every other file of the two packages", () => {
     expect(keysTheLens("packages/engine/src/live-docs/graph.ts")).toBe(true);
     expect(keysTheLens("packages/engine/package.json")).toBe(true);
     expect(keysTheLens("packages/generator/src/generator.ts")).toBe(true);
     expect(keysTheLens("packages/engine/src/live-docs/history/summary.ts")).toBe(true);
+    expect(keysTheLens("packages/engine/src/live-docs/history/git.ts")).toBe(true);
     expect(keysTheLens("packages/generator/src/history/summarizeChange.ts")).toBe(true);
+    expect(keysTheLens("packages/generator/src/history/regenerate.ts")).toBe(true);
+    // Data in a history folder, which a module may import or read at run time, is keyed whoever reads it.
+    expect(keysTheLens("packages/engine/src/live-docs/history/table.json")).toBe(true);
     expect(keysTheLens("packages/engine/src/live-docs/graph.test.ts")).toBe(false);
     expect(keysTheLens("packages/engine/src/live-docs/history/queries.ts")).toBe(false);
     expect(keysTheLens("packages/generator/src/history/computeHistory.ts")).toBe(false);
+    expect(keysTheLens("packages/generator/src/history/headCheck.ts")).toBe(false);
     expect(keysTheLens("packages/explorer/src/client/index.ts")).toBe(false);
   });
 });

@@ -12,7 +12,7 @@ import process from "node:process";
 import type { HistorySequence, Sampling } from "@live-documentation/engine/live-docs/history/format";
 import { changeAt, headOf } from "@live-documentation/engine/live-docs/history/sequence";
 
-import { computeHistory, formatBytes } from "../../packages/generator/src/history/computeHistory";
+import { computeHistory, formatBytes, HistoryStopped } from "../../packages/generator/src/history/computeHistory";
 import { endQuietlyWhenThePipeCloses, optionValue, runCommand, UsageError } from "./cli";
 
 interface ParsedArgs {
@@ -27,6 +27,8 @@ interface ParsedArgs {
   keepIndex: boolean;
   authors: boolean;
   removeSuperseded: boolean;
+  checkHead: boolean;
+  stopAfter?: number;
 }
 
 async function main(): Promise<void> {
@@ -36,16 +38,27 @@ async function main(): Promise<void> {
     console.log(usage());
     return;
   }
-  const run = await computeHistory({
-    workspace: args.workspace ?? ".",
-    configPath: args.configPath,
-    sampling: samplingOf(args),
-    jobs: args.jobs,
-    keepIndex: args.keepIndex,
-    authors: args.authors,
-    removeSuperseded: args.removeSuperseded,
-    progress: (line) => process.stderr.write(`[history] ${line}\n`)
-  });
+  let run;
+  try {
+    run = await computeHistory({
+      workspace: args.workspace ?? ".",
+      configPath: args.configPath,
+      sampling: samplingOf(args),
+      jobs: args.jobs,
+      keepIndex: args.keepIndex,
+      authors: args.authors,
+      removeSuperseded: args.removeSuperseded,
+      checkHead: args.checkHead,
+      stopAfterMinutes: args.stopAfter,
+      progress: (line) => process.stderr.write(`[history] ${line}\n`)
+    });
+  } catch (error) {
+    if (!(error instanceof HistoryStopped)) throw error;
+    // Not a failure of the history, and not a history: a caller tells the two apart by the exit code.
+    console.log(`History incomplete: ${error.message}`);
+    process.exitCode = STOPPED;
+    return;
+  }
   if (args.json) {
     printJson(run.sequence);
   } else {
@@ -57,10 +70,14 @@ async function main(): Promise<void> {
     const kept = run.superseded.filter((cache) => !cache.removed);
     const others = kept.length > 0 ? ` The caches of ${kept.length} other lenses hold ${formatBytes(kept.reduce((sum, cache) => sum + cache.bytes, 0))}; --remove-superseded removes them.` : "";
     console.log(
-      `Wrote ${run.file}: ${run.sequence.steps.length + 1} changes from ${run.sequence.base.commit.id.slice(0, 8)} to ${run.sequence.source.head.slice(0, 8)}, ${formatBytes(bytes)}; ${regenerated}; ${run.cached} from the cache at ${run.cache}, which holds ${formatBytes(run.cacheBytes)}.${others}`
+      `Wrote ${run.file}: ${run.sequence.steps.length + 1} changes from ${run.sequence.base.commit.id.slice(0, 8)} to ${run.sequence.source.head.slice(0, 8)}, ${formatBytes(bytes)}; ${regenerated}; ${run.cached} from the cache at ${run.cache}, which holds ${formatBytes(run.cacheBytes)}.${others}\n` +
+        `${run.headCheck.applied ? "Checked" : "Not checked"}: ${run.headCheck.line}.`
     );
   }
 }
+
+/** The exit code of a run stopped by --stop-after before the cache held every sampled commit. */
+const STOPPED = 3;
 
 function minutes(milliseconds: number): string {
   return milliseconds < 120_000 ? `${(milliseconds / 1000).toFixed(1)} s` : `${(milliseconds / 60_000).toFixed(1)} min`;
@@ -100,7 +117,7 @@ function nonEmpty(change: object): Record<string, unknown> {
 }
 
 function parseArgs(argv: string[]): ParsedArgs {
-  const parsed: ParsedArgs = { help: false, json: false, step: "commit", keepIndex: false, authors: true, removeSuperseded: false };
+  const parsed: ParsedArgs = { help: false, json: false, step: "commit", keepIndex: false, authors: true, removeSuperseded: false, checkHead: false };
   for (let index = 0; index < argv.length; index += 1) {
     const current = argv[index];
     switch (current) {
@@ -148,6 +165,19 @@ function parseArgs(argv: string[]): ParsedArgs {
       case "--remove-superseded":
         parsed.removeSuperseded = true;
         break;
+      case "--check-head":
+        parsed.checkHead = true;
+        break;
+      case "--stop-after": {
+        // 0 starts no commit: the run writes a history only when the cache already holds every one.
+        const value = optionValue(argv, ++index, current);
+        const minutes = Number(value);
+        if (!Number.isInteger(minutes) || minutes < 0) {
+          throw new UsageError(`--stop-after takes a whole number of minutes, 0 or more; ${value} is not one.`);
+        }
+        parsed.stopAfter = minutes;
+        break;
+      }
       default:
         throw new UsageError(`${current} is not an option.`);
     }
@@ -181,7 +211,15 @@ function usage(): string {
     `                       the processors).\n` +
     `  --keep-index         Keep each commit's full index.json, gzipped, in the cache.\n` +
     `  --no-authors         Leave the authors' names out of the sequence.\n` +
-    `  --remove-superseded  Remove the caches of other lenses, which every run lists with their sizes.\n` +
+    `  --remove-superseded  Remove the caches of other lenses, which every run lists with their sizes,\n` +
+    `                       once the current lens's cache holds every sampled commit.\n` +
+    `  --check-head         Hold the last commit's rows and links to the Live Docs committed there, read\n` +
+    `                       afresh, and fail where they differ: say so when those docs were generated by\n` +
+    `                       this generator under this configuration. Without it the check applies only\n` +
+    `                       when this generator runs unmodified from the commit the history ends at,\n` +
+    `                       under the workspace's own configuration, and is skipped elsewhere.\n` +
+    `  --stop-after <min>   Start no commit after this many minutes of regeneration. A run stopped so\n` +
+    `                       writes no history, keeps what it summarized for the next run, and exits 3.\n` +
     `  --json               Print the sequence's head and one line per step as JSON lines.\n` +
     `  -h, --help           Print this help.\n` +
     `\nThe first and the last commit are always regenerated, so the sequence spans what it samples.\n` +

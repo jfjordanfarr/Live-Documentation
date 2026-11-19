@@ -26,7 +26,7 @@ import { textInPart, textsOfFile, wordsPartFile, type WordsPart } from "../../..
 import { buildStaticExplorer } from "../../../packages/explorer/src/shared/staticBuilder";
 import type { StaticExplorerData } from "../../../packages/explorer/src/shared/staticExplorerData";
 import { generateLiveDocs } from "../../../packages/generator/src/generator";
-import { buildRepository, git, MODEL, SCRIPT, SCRIPTED_CONFIG as CONFIG } from "./scripted-repository";
+import { buildRepository, CHECKED_CONFIG, CHECKED_SCRIPT, git, MODEL, SCRIPT, SCRIPTED_CONFIG as CONFIG } from "./scripted-repository";
 
 const repoRoot = path.resolve(__dirname, "..", "..", "..");
 const tsxCli = path.join(repoRoot, "node_modules", "tsx", "dist", "cli.mjs");
@@ -416,6 +416,136 @@ describe("inspect's history questions", () => {
     const result = runInspect(bare, ["--at", "abc1234", "--from", "src/app/main.ts"]);
     expect(result.exitCode).toBe(1);
     expect(result.stderr).toContain("npm run live-docs:history");
+  });
+});
+
+/**
+ * A second repository, built from the checked script, whose head commits the mirror the generator writes there: what
+ * the history must read of any repository, and what it holds itself to and mends.
+ */
+describe("the history over a repository that commits its mirror", () => {
+  let checked: string;
+  let ids: string[];
+  let history: string;
+  let first: CliResult;
+
+  beforeAll(async () => {
+    checked = fs.mkdtempSync(path.join(os.tmpdir(), "history-checked-"));
+    temporary.push(checked);
+    ids = buildRepository(checked, CHECKED_SCRIPT);
+    // The mirror as a person commits it: today's generator over the checkout at the head.
+    await generateLiveDocs({ workspaceRoot: checked, config: normalizeLiveDocumentationConfig(CHECKED_CONFIG), logger: { info: () => undefined, warn: () => undefined, error: () => undefined } });
+    git(checked, ["add", "--all"]);
+    git(checked, ["commit", "--quiet", "-m", "Commit the mirror"], { GIT_AUTHOR_DATE: "2026-03-04T10:00:00+00:00", GIT_COMMITTER_DATE: "2026-03-04T10:00:00+00:00" });
+    ids.push(git(checked, ["rev-parse", "HEAD"]).trim());
+    history = path.join(checked, ".mdmd", "history");
+    first = runCli(historyScript, ["--workspace", checked, "--jobs", "2", "--check-head"]);
+  });
+
+  const summaryOf = (commit: string): CommitSummary => {
+    const lens = (JSON.parse(fs.readFileSync(path.join(history, "history.json"), "utf8")) as HistorySequence).lens.key;
+    return JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(history, lens, `${commit}.json.gz`))).toString("utf8")) as CommitSummary;
+  };
+
+  it("keeps a file git tracks though an ignore file names it, as a checkout of the commit does", () => {
+    expect(first.exitCode, first.stderr).toBe(0);
+    expect(summaryOf(ids[0]).files.map((file) => file.path)).toContain("src/table.ts");
+    // The oracle: git itself, asked of the commit, tracks it.
+    expect(git(checked, ["ls-tree", "-r", "--name-only", ids[0]]).split("\n")).toContain("src/table.ts");
+    expect(summaryOf(ids[0]).files.find((file) => file.path === "src/main.ts")?.dependencies.map((line) => line.to)).toContain("src/table.ts");
+  });
+
+  it("summarizes a module exporting $ and $$, each under an anchor of its own", () => {
+    expect(summaryOf(ids[0]).files.find((file) => file.path === "src/select.ts")?.symbols.map((symbol) => [symbol.name, symbol.slug])).toEqual([
+      ["$", "symbol-~24"],
+      ["$$", "symbol-~24~24"]
+    ]);
+  });
+
+  it("holds the last step to the mirror committed at the head when asked, and says so", () => {
+    // The configuration, the ignore file and the three modules, each documented.
+    expect(first.stdout).toMatch(/Checked: the last step's 5 files, \d+ symbols with their words, and \d+ links/u);
+    expect(first.stdout).toContain(`are those of the Live Docs committed at ${ids[2].slice(0, 8)}, read afresh.`);
+  });
+
+  it("says the check was skipped, and why, when it was not asked and this generator did not make the mirror", () => {
+    const unasked = runCli(historyScript, ["--workspace", checked, "--jobs", "1"]);
+    expect(unasked.exitCode, unasked.stderr).toBe(0);
+    expect(unasked.stdout).toContain("Not checked: the check at the head was skipped: it applies when asked with --check-head, or when this generator runs unmodified from the commit the history ends at");
+    expect(unasked.stdout).toMatch(/and here this generator(?: runs from \w+ and the history ends at| is installed|'s code differs from its commit)/u);
+  });
+
+  it("refuses a last step that differs from the committed mirror, naming the difference", () => {
+    const stale = fs.mkdtempSync(path.join(os.tmpdir(), "history-stale-"));
+    temporary.push(stale);
+    git(os.tmpdir(), ["clone", "--quiet", checked, stale]);
+    // The source changes and the mirror is not regenerated.
+    fs.appendFileSync(path.join(stale, "src", "select.ts"), "\n/** Selects the last of many. */\nexport function last(queries: string[]): string {\n  return queries[queries.length - 1];\n}\n");
+    git(stale, ["commit", "--quiet", "-am", "Select the last of many"]);
+    const refused = runCli(historyScript, ["--workspace", stale, "--jobs", "2", "--check-head"]);
+    expect(refused.exitCode).toBe(1);
+    expect(refused.stderr).toContain("the history's last step is not the graph of the Live Docs committed at");
+    expect(refused.stderr).toContain("the symbols of src/select.ts differ");
+  });
+
+  it("summarizes again a change whose text is missing or changed, rather than failing every later run", () => {
+    const lens = (JSON.parse(fs.readFileSync(path.join(history, "history.json"), "utf8")) as HistorySequence).lens.key;
+    const store = path.join(history, lens, TEXT_STORE_DIRECTORY);
+    const named = summaryOf(ids[0]).files.find((file) => file.path === "src/main.ts")!.symbols[0].text!;
+    const gone = path.join(store, named.slice(0, 2), named);
+    const changed = summaryOf(ids[0]).files.find((file) => file.path === "src/table.ts")!.symbols[0].text!;
+    fs.rmSync(gone);
+    fs.writeFileSync(path.join(store, changed.slice(0, 2), changed), "words someone changed");
+    const mended = runCli(historyScript, ["--workspace", checked, "--jobs", "2"]);
+    expect(mended.exitCode, mended.stderr).toBe(0);
+    expect(mended.stderr).toContain("are summarized again, since their summaries do not read or name texts the store lacks or holds changed");
+    expect(mended.stdout).toMatch(/[1-9]\d* regenerated/u);
+    expect(fs.existsSync(gone)).toBe(true);
+    expect(fs.readFileSync(path.join(store, changed.slice(0, 2), changed), "utf8")).not.toBe("words someone changed");
+  });
+
+  it("writes the words beside the sequence in a folder of their own, the one the sequence names, and leaves no other", () => {
+    const sequence = JSON.parse(fs.readFileSync(path.join(history, "history.json"), "utf8")) as HistorySequence;
+    const folders = fs.readdirSync(history).filter((name) => name.startsWith("history-words"));
+    expect(folders).toEqual([sequence.words!.folder]);
+    expect(sequence.words!.folder).toMatch(/^history-words-[0-9a-f]{16}$/u);
+  });
+
+  it("removes what a stopped run left half written, and refuses to write beside a run that holds the lock", () => {
+    const lens = (JSON.parse(fs.readFileSync(path.join(history, "history.json"), "utf8")) as HistorySequence).lens.key;
+    const leftover = path.join(history, lens, `${ids[0]}.json.gz.4242.partial`);
+    fs.writeFileSync(leftover, "half");
+    // This test's own process holds the lock, as another run on this machine would.
+    fs.writeFileSync(path.join(history, "run.lock"), JSON.stringify({ pid: process.pid, host: os.hostname(), started: "2026-11-19T00:00:00.000Z" }));
+    const refused = runCli(historyScript, ["--workspace", checked, "--jobs", "1"]);
+    expect(refused.exitCode).toBe(1);
+    expect(refused.stderr).toContain(`another history run (process ${process.pid}`);
+    expect(fs.existsSync(leftover)).toBe(true);
+    // A lock whose process has ended is taken over.
+    fs.writeFileSync(path.join(history, "run.lock"), JSON.stringify({ pid: 2 ** 22 + 1, host: os.hostname() }));
+    const resumed = runCli(historyScript, ["--workspace", checked, "--jobs", "1"]);
+    expect(resumed.exitCode, resumed.stderr).toBe(0);
+    expect(resumed.stderr).toContain("took over the lock");
+    expect(resumed.stderr).toContain("removed 1 files a stopped run left half written");
+    expect(fs.existsSync(leftover)).toBe(false);
+    expect(fs.existsSync(path.join(history, "run.lock"))).toBe(false);
+  });
+
+  it("stops when asked before the cache is whole, writes no history, and keeps every other lens's cache", () => {
+    const lens = (JSON.parse(fs.readFileSync(path.join(history, "history.json"), "utf8")) as HistorySequence).lens.key;
+    const stale = path.join(history, "0123456789abcdef");
+    fs.mkdirSync(stale, { recursive: true });
+    fs.rmSync(path.join(history, lens, `${ids[1]}.json.gz`));
+    fs.rmSync(path.join(history, "history.json"));
+    const stopped = runCli(historyScript, ["--workspace", checked, "--jobs", "1", "--stop-after", "0", "--remove-superseded"]);
+    expect(stopped.exitCode, stopped.stderr).toBe(3);
+    expect(stopped.stdout).toContain(`History incomplete: stopped after 0 minutes, as asked: the cache at .mdmd/history/${lens} holds 2 of the 3 changes sampled`);
+    expect(fs.existsSync(path.join(history, "history.json"))).toBe(false);
+    expect(fs.existsSync(stale)).toBe(true);
+    // Once the current lens is whole, the other lens's cache goes.
+    const whole = runCli(historyScript, ["--workspace", checked, "--jobs", "1", "--remove-superseded"]);
+    expect(whole.exitCode, whole.stderr).toBe(0);
+    expect(fs.existsSync(stale)).toBe(false);
   });
 });
 
