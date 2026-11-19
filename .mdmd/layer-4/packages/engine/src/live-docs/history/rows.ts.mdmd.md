@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/history/rows.ts
-- Generated At: 2026-11-19T06:20:28.569Z
+- Generated At: 2026-11-19T08:04:43.527Z
 
 ## Authored
 ### Purpose
@@ -58,7 +58,7 @@ What one step does to the rows, by path and anchor; applied after the step's {@l
 
 #### `emptyRowsChange` {#symbol-emptyrowschange}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/rows.ts#L94)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/rows.ts#L97)
 - Returns: [`RowsChange`](#symbol-rowschange)
 
 ##### `emptyRowsChange` — Summary
@@ -66,7 +66,7 @@ A change of rows that changes nothing, to be filled in.
 
 #### `emptyFileRows` {#symbol-emptyfilerows}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/rows.ts#L99)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/rows.ts#L102)
 - Returns: [`FileRows`](#symbol-filerows)
 
 ##### `emptyFileRows` — Summary
@@ -74,7 +74,7 @@ The rows of a file that has none yet.
 
 #### `rowsOfSummary` {#symbol-rowsofsummary}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/rows.ts#L104)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/rows.ts#L107)
 - Returns: [`Rows`](#symbol-rows)
 - Parameters: `summary`: [`CommitSummary`](./summary.ts.mdmd.md#symbol-commitsummary)
 
@@ -83,7 +83,7 @@ The rows a summary records, each text named by the id `textId` gives its hash.
 
 #### `renameRows` {#symbol-renamerows}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/rows.ts#L131)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/rows.ts#L134)
 - Returns: [`Rows`](#symbol-rows)
 - Parameters: `rows`: [`Rows`](#symbol-rows); `renamed`: `ReadonlyArray`
 
@@ -94,7 +94,7 @@ never changed in place.
 
 #### `deriveRowsChange` {#symbol-deriverowschange}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/rows.ts#L168)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/rows.ts#L171)
 - Returns: [`RowsChange`](#symbol-rowschange)
 - Parameters: `before`: [`Rows`](#symbol-rows); `after`: [`Rows`](#symbol-rows); `change`: [`ShapeChange`](./shape.ts.mdmd.md#symbol-shapechange)
 
@@ -104,7 +104,7 @@ whose births and deaths it relies on. Applying the two to `before` gives `after`
 
 #### `applyRowsChange` {#symbol-applyrowschange}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/rows.ts#L239)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/rows.ts#L274)
 - Returns: [`Rows`](#symbol-rows)
 - Parameters: `rows`: [`Rows`](#symbol-rows); `change`: [`ShapeChange`](./shape.ts.mdmd.md#symbol-shapechange); `rowsChange`: [`RowsChange`](#symbol-rowschange)
 
@@ -114,7 +114,7 @@ are not changed; a file the step leaves alone is the same object after it.
 
 #### `rowsDifferences` {#symbol-rowsdifferences}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/rows.ts#L291)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/rows.ts#L335)
 - Parameters: `expected`: [`Rows`](#symbol-rows); `actual`: [`Rows`](#symbol-rows)
 
 ##### `rowsDifferences` — Summary
@@ -122,14 +122,14 @@ Where two rows differ, in words, at most `limit` of them; empty when they are th
 
 #### `RowLink` {#symbol-rowlink}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/rows.ts#L322)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/rows.ts#L366)
 
 ##### `RowLink` — Summary
 One link between rows: from a symbol of a file, or from the file's dependency lines, to a file or a symbol of it.
 
 #### `linksOf` {#symbol-linksof}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/rows.ts#L338)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/rows.ts#L382)
 - Returns: [`RowLink`](#symbol-rowlink)[]
 - Parameters: `rows`: [`Rows`](#symbol-rows); `from`: `ReadonlySet`
 
@@ -139,7 +139,7 @@ it, sorted; only the links of the files `from` names when given. The links of on
 
 #### `compareLinks` {#symbol-comparelinks}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/rows.ts#L363)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/rows.ts#L407)
 - Parameters: `a`: [`RowLink`](#symbol-rowlink); `b`: [`RowLink`](#symbol-rowlink)
 
 ##### `compareLinks` — Summary
@@ -147,7 +147,7 @@ Links in a stable order: by their source, its symbol, their target, its symbol, 
 
 #### `rowsAgainstShape` {#symbol-rowsagainstshape}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/rows.ts#L379)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/rows.ts#L423)
 - Parameters: `rows`: [`Rows`](#symbol-rows)
 
 ##### `rowsAgainstShape` — Summary

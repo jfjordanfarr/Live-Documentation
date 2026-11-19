@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/history/codec.ts
-- Generated At: 2026-11-19T06:20:28.484Z
+- Generated At: 2026-11-19T08:04:43.402Z
 
 ## Authored
 ### Purpose
@@ -129,7 +129,7 @@ A change of rows as the rows' part of a step's delta, its empty lists left out.
 
 #### `decodeRowsChange` {#symbol-decoderowschange}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/codec.ts#L189)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/codec.ts#L193)
 - Returns: [`RowsChange`](./rows.ts.mdmd.md#symbol-rowschange)
 - Parameters: `delta`: [`StepDelta`](./format.ts.mdmd.md#symbol-stepdelta); `tables`: [`RowTables`](#symbol-rowtables)
 
