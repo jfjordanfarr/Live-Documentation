@@ -88,19 +88,21 @@ Since 2026-11-11 ([Turn 6 of the November 10 record](../../../../../../../AI-Age
 
 Since 2026-11-16 ([Turn 10 of the November 15 record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-10)) the legend's rows are a sample and two words, and what a press on a mark does is said by the mark's own tooltip alone. The names already said it for a file ("Pin this file", after "N more connected, not shown" where connections are left out, which with the wrappers on since 2026-11-18 is a file's documents beyond the hops shown and draws no ring; a kind that is switched off is counted by nothing, [Turn 9 of the November 18 record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-9)), a directory and a shell ("Open this shell"); a wrapped group's seed said only "Pin this file", and now says "Open this group and pin this file", which is what a press on it does. The view no longer tells the legend that a hover or a path fades the rest: that row is deleted.
 
+Since 2026-11-19 ([Turn 22 of the November 18 record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-22)) a moving pointer shows at once only that a sphere can be pressed: `pointerHoverId` is the node touched, which sets the pointing hand (`data-hovered-node`) and a wrapper's rim. `restedId`, the node the pointer has rested on by `pointerRest.ts`, is what names the sphere (`hoveredId`, the name's priority), offers its actions, lights its wires and fades the rest; a wire's words show once the pointer rests on the wire (`touchedWire`). `updatePointerHover` picks only when the pointer, the picture or the camera changed (`pickPointer`) but looks at the rest every frame, since a rest ripens with time alone; `settleRest` shows what is rested on and lets go at once of what is left, except while the pointer is in the gap above a rested sphere on the way to its actions (`nearActions`), which replaced a 180 ms grace after any exit. A finger is deliberate: what a touch is on is rested on at once (`touching`). The building rule still decides first whether anything may begin. The owner's words: "What I don't want to have is an application which is shooting random text at me every which way as I scroll my mouse across the screen (which it most certainly does in the 3D local map ...)". [The pictures](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/rested-pointer/README.md).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ForceGraphLink` {#symbol-forcegraphlink}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L110)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L111)
 
 ##### `ForceGraphLink` — Summary
 A link in the Force Graph between two nodes.
 
 #### `ForceGraphNode` {#symbol-forcegraphnode}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L123)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L124)
 - Returns: [`SpatialGraphNode`](./forceGraphData.ts.mdmd.md#symbol-spatialgraphnode)
 
 ##### `ForceGraphNode` — Summary
@@ -108,28 +110,28 @@ A node in the Force Graph, extending the payload with optional archetype.
 
 #### `ForceGraphData` {#symbol-forcegraphdata}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L132)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L133)
 
 ##### `ForceGraphData` — Summary
 Complete data structure for the Force Graph view.
 
 #### `ForceGraphViewOptions` {#symbol-forcegraphviewoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L143)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L144)
 
 ##### `ForceGraphViewOptions` — Summary
 Options passed to the Force Graph view factory.
 
 #### `ForceGraphViewApi` {#symbol-forcegraphviewapi}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L172)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L173)
 
 ##### `ForceGraphViewApi` — Summary
 Public API surface of the Force Graph view.
 
 #### `createForceGraphView` {#symbol-createforcegraphview}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L201)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L202)
 - Returns: [`ForceGraphViewApi`](#symbol-forcegraphviewapi)
 - Parameters: `options`: [`ForceGraphViewOptions`](#symbol-forcegraphviewoptions)
 
@@ -248,6 +250,10 @@ Creates the Force Graph (3D) view for the Live Docs Explorer.
 - [`pin-state.EMPTY_PIN_SET`](./pin-state.ts.mdmd.md#symbol-empty_pin_set)
 - [`pin-state.PinSet`](./pin-state.ts.mdmd.md#symbol-pinset)
 - [`pin-state.getVisibleConnections`](./pin-state.ts.mdmd.md#symbol-getvisibleconnections)
+- [`pointerRest.NO_REST`](./pointerRest.ts.mdmd.md#symbol-no_rest)
+- [`PointerRest`](./pointerRest.ts.mdmd.md#symbol-pointerrest)
+- [`pointerRest.restAt`](./pointerRest.ts.mdmd.md#symbol-restat)
+- [`pointerRest.restedOn`](./pointerRest.ts.mdmd.md#symbol-restedon)
 - [`wheel.wheelPixels`](./wheel.ts.mdmd.md#symbol-wheelpixels)
 - [`staticExplorerData.RelatedDocLink`](../../shared/staticExplorerData.ts.mdmd.md#symbol-relateddoclink) (type-only)
 - [`types.ExplorerGraphPayload`](../../shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)

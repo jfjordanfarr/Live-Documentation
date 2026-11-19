@@ -23,6 +23,8 @@ Since 2026-11-18 a case holds the one file of a directory beyond the hops: drawn
 
 Since 2026-11-18 a case holds the Beyond the Hops trial: at the next step the shells drawn are those of `nextStepFiles`, every file held is one step past the picture, and no unreached seed nor its wrapper is drawn; moved to everything in Tuning, the picture is today's ([Turn 10 of the November 18 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-10)).
 
+Since 2026-11-19 ([Turn 22 of the November 18 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-22)) the shell's name under the pointer comes once the pointer has rested, and the case waits for it.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

@@ -453,9 +453,10 @@ describe("directories opening in the Local Map (2026-10-08)", () => {
       expect(flow.order.rows.get("a/x.ts")).toEqual([]);
       expect(flow.order.rows.get("a/y.ts")).toEqual([]);
       expect(flow.relevantSymbols.size).toBe(0);
-      // y uses x: one line, from x's hub to y's.
+      // y uses x: one line, from x's hub to y's, keeping the symbols at its link's ends for a row's hover (2026-11-19).
       expect(flow.subgraph.links).toEqual([
-        { sourceId: "a/y.ts", targetId: "a/x.ts", sourceSymbol: "#hub", targetSymbol: "#hub", kind: "dependency", direction: "inbound", gathered: 1 }
+        { sourceId: "a/y.ts", targetId: "a/x.ts", sourceSymbol: "#hub", targetSymbol: "#hub", kind: "dependency", direction: "inbound", gathered: 1,
+          standsFor: [{ sourceSymbol: "value", targetSymbol: "value" }] }
       ]);
       // x stands left of y; the closed box heads the directory's first column and is told to keep it.
       expect(ids(flow.ranking.columns)).toEqual([["a/sub", "a/x.ts"], ["a/y.ts"]]);

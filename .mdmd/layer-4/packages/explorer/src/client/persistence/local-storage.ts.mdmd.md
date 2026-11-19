@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/persistence/local-storage.ts
-- Generated At: 2026-11-19T04:29:44.122Z
+- Generated At: 2026-11-19T04:53:49.665Z
 
 ## Authored
 ### Purpose
@@ -183,9 +183,16 @@ The same write lifetime for remembered navigation and evidence.
 What of the filters and the tuning a person has changed: every setting that differs from the defaults, and nothing
 else, so that a default changed later reaches every setting they never touched.
 
+#### `changedTuningFromDefaults` {#symbol-changedtuningfromdefaults}
+- Type: const
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L554)
+
+##### `changedTuningFromDefaults` — Summary
+The Tuning settings that differ from the defaults, group by group, or `undefined` when none does.
+
 #### `createPersistUiScheduler` {#symbol-createpersistuischeduler}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L561)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L567)
 
 ##### `createPersistUiScheduler` — Summary
 Create a debounced UI persistence scheduler.
@@ -193,7 +200,7 @@ Writes what of the filters and tuning differs from the defaults to localStorage 
 
 #### `createPersistNavScheduler` {#symbol-createpersistnavscheduler}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L579)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L585)
 
 ##### `createPersistNavScheduler` — Summary
 Coalesce remembered navigation writes for 150ms, with a flush for page exit.

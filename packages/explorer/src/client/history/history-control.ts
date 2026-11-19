@@ -42,6 +42,7 @@ import { relatedDocLinksOf, snapshotGraphOf } from "./snapshot";
 import { createStepPanel } from "./step-panel";
 import { stepSummary } from "./step-summary";
 import { nextStop, type TickModel } from "./tick-model";
+import { slideToHold } from "./zoom";
 
 /** What the control is made with. */
 export interface HistoryControlOptions {
@@ -162,7 +163,10 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
     onRate: rate => options.onPlayRate(rate),
     onAuthors: shown => options.onAuthors(shown),
     onDetails: shown => { detailsShown = shown; refresh(); },
-    onRange: next => { pause(); range = next; refresh(); }
+    onRange: next => { pause(); range = next; refresh(); },
+    // A zoom or a pan only changes what the track shows: play goes on, and the step may stand outside (2026-11-19).
+    onView: next => { range = next; refresh(); },
+    onMove: step => { pause(); dragging = false; if (range) range = slideToHold(range, step); rest(step); }
   });
   const panel = createStepPanel({
     parent: options.parent,
@@ -321,10 +325,13 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
 
   function play(): void {
     if (!cursor || playing !== null) return;
+    if (range) range = slideToHold(range, cursor.step);
     if (cursor.step >= (range?.[1] ?? cursor.last)) rest(range?.[0] ?? 0);
     playingRate = context.tuning.playRate;
     playing = window.setInterval(() => {
       if (!cursor) return;
+      // A step a zoom left outside the range is first held by the least slide of the range.
+      if (range) range = slideToHold(range, cursor.step);
       if (cursor.step >= (range?.[1] ?? cursor.last)) { pause(); return; }
       // With something pinned, by default, from one mark to the next; otherwise a step at a time.
       rest(shownModel?.plays === "stops" ? nextStop(shownModel, cursor.step, 1) : cursor.step + 1);

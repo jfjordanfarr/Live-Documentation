@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/tuning.ts
-- Generated At: 2026-11-19T04:29:44.040Z
+- Generated At: 2026-11-19T04:53:49.609Z
 
 ## Authored
 ### Purpose
@@ -59,28 +59,28 @@ Since 2026-11-18 the 3D layout's Discovery group holds Beyond the Hops, Everythi
 ### Public Symbols
 #### `TuningChangeCallback` {#symbol-tuningchangecallback}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L15)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L16)
 
 ##### `TuningChangeCallback` — Summary
 Callback for when tuning values change
 
 #### `RenderCallback` {#symbol-rendercallback}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L18)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L19)
 
 ##### `RenderCallback` — Summary
 Callback for when the current view needs to re-render
 
 #### `TuningPanelConfig` {#symbol-tuningpanelconfig}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L21)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L22)
 
 ##### `TuningPanelConfig` — Summary
 Tuning panel configuration
 
 #### `initTuningPanel` {#symbol-inittuningpanel}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L31)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L32)
 - Parameters: `config`: [`TuningPanelConfig`](#symbol-tuningpanelconfig)
 
 ##### `initTuningPanel` — Summary
@@ -96,6 +96,7 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`palette.isPaletteName`](../palette.ts.mdmd.md#symbol-ispalettename)
 - [`tuning-levers.TUNING_HELP`](./tuning-levers.ts.mdmd.md#symbol-tuning_help)
 - [`tuning-levers.tuningHelpId`](./tuning-levers.ts.mdmd.md#symbol-tuninghelpid)
+- [`tuning-reset.initTuningReset`](./tuning-reset.ts.mdmd.md#symbol-inittuningreset)
 - [`types.ARRIVALS`](../types.ts.mdmd.md#symbol-arrivals)
 - [`types.BEYOND_HOPS`](../types.ts.mdmd.md#symbol-beyond_hops)
 - [`types.CHANGE_EMPHASES`](../types.ts.mdmd.md#symbol-change_emphases)

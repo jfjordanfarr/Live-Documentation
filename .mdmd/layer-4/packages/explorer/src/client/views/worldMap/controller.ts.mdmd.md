@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/worldMap/controller.ts
-- Generated At: 2026-11-19T01:19:39.962Z
+- Generated At: 2026-11-19T02:09:37.439Z
 
 ## Authored
 ### Purpose
@@ -37,34 +37,35 @@ The World Map, drawn. Everything that touches the DOM is here: the SVG the board
   - **Help and the walkthrough.** The help button carries `aria-expanded` and `aria-controls`. The walkthrough writes each step into a `role="status"` region of the view's own (`status`), kept outside the walkthrough's box, which is hidden when it ends; the page's own status region is the page template's.
   - **The pinned panel's size.** Since 2026-11-19 a resize observer places a pinned panel again whenever its size changes, its files unfolded or folded. It replaced a `toggle` listener. That event comes in a task of its own, so the unfolded panel could be read, and could be painted, where the folded one had stood, its foot below the view; `world-map.spec.ts` caught it about one run in five.
   - **The toolbar** is one Tab stop: the tool last on holds `tabIndex` 0 and the rest -1, and the arrows (wrapping), Home and End move between them, as the WAI-ARIA Authoring Practices' toolbar does.
+- Since 2026-11-19 ([Turn 22 of the November 18 record](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-22)) the hover's peek waits for the pointer to rest. `lookAtRest` feeds `pointerRest.ts` what the pointer touches (`touched`) and where it stands, and `hover`, the peek's subject with its fade and door names, becomes the thing only once the pointer has rested on it; a timer looks again when the rest is due, since nothing else would, and a drag stops it: a peek arriving in the middle of a turn laid the page out again, which the estate's count of layouts a move caught. Moving onto anything else ends the peek at once. Under a pin the rest is kept but nothing is shown. Keyboard focus still peeks at once and a click still pins at once. A piece's accessible name also says the folder it opens, "opens packages/engine", in the scan's words, since every blind tester met a box whose folder nothing named until it was opened; the peek and the pinned panel already named it. [The pictures](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/rested-pointer/README.md).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Hover` {#symbol-hover}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L124)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L125)
 
 ##### `Hover` — Summary
 What the pointer is on.
 
 #### `WorldMapOptions` {#symbol-worldmapoptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L130)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L131)
 
 ##### `WorldMapOptions` — Summary
 What the controller is given: where to draw, the board and its join, the graph, and the doors out of the view.
 
 #### `WorldMapController` {#symbol-worldmapcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L198)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L199)
 
 ##### `WorldMapController` — Summary
 Draws a board and answers the pointer.
 
 #### `WorldMapApi` {#symbol-worldmapapi}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L2256)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L2291)
 
 ##### `WorldMapApi` — Summary
 The handle a test or a screenshot script drives, at `window.__worldMap`.
@@ -85,6 +86,11 @@ The handle a test or a screenshot script drives, at `window.__worldMap`.
 - [`icon-button.CLOSE_ICON`](../../panels/icon-button.ts.mdmd.md#symbol-close_icon)
 - [`icon-button.iconButton`](../../panels/icon-button.ts.mdmd.md#symbol-iconbutton)
 - [`url-state.parseInitialState`](../../persistence/url-state.ts.mdmd.md#symbol-parseinitialstate)
+- [`pointerRest.NO_REST`](../pointerRest.ts.mdmd.md#symbol-no_rest)
+- [`PointerRest`](../pointerRest.ts.mdmd.md#symbol-pointerrest)
+- [`pointerRest.restAt`](../pointerRest.ts.mdmd.md#symbol-restat)
+- [`pointerRest.restedOn`](../pointerRest.ts.mdmd.md#symbol-restedon)
+- [`pointerRest.restsAt`](../pointerRest.ts.mdmd.md#symbol-restsat)
 - [`layout.Anchor`](./layout.ts.mdmd.md#symbol-anchor)
 - [`layout.Avoid`](./layout.ts.mdmd.md#symbol-avoid)
 - [`layout.FLOAT`](./layout.ts.mdmd.md#symbol-float)
