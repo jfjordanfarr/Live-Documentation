@@ -8,6 +8,7 @@ import {
   normalizeLiveDocumentationConfig
 } from "@live-documentation/engine/config/liveDocumentationConfig";
 import { analyzeSourceFile, BINARY_SNIFF_BYTES, buildWorkspaceIndexes, composeCitedBy, composeDependencies, composeEntries, composeReExports, composeSymbolBlocks, computePublicSymbolHeadingInfo, discoverDocuments, discoverTargetFiles, hasMeaningfulAuthoredContent, isBinaryContent, resolveArchetype, type SourceAnalysisResult, type WorkspaceEntryIndex, type WorkspaceFileIndex, type WorkspaceSymbolIndex } from "@live-documentation/engine/live-docs/core";
+import { inWorkspaceOrder } from "@live-documentation/engine/live-docs/discovery";
 import {
   DEFAULT_AUTHORED_BLOCK,
   LiveDocSyntaxError,
@@ -134,7 +135,7 @@ export async function generateLiveDocs(
   // still part of the workspace context for this run, but only included files
   // are rendered.
   const allTargetFiles = includeSet.size > 0
-    ? [...new Set([...workspaceFiles, ...includedFiles])].map((file) => ({ file, relative: normalizeWorkspacePath(path.relative(workspaceRoot, file)) })).sort((a, b) => (a.relative < b.relative ? -1 : a.relative > b.relative ? 1 : 0)).map(({ file }) => file)
+    ? inWorkspaceOrder([...new Set([...workspaceFiles, ...includedFiles])].map((file) => ({ file, relative: normalizeWorkspacePath(path.relative(workspaceRoot, file)) }))).map(({ file }) => file)
     : workspaceFiles;
   const changedPaths = options.changedOnly ? await detectChangedFiles(workspaceRoot) : undefined;
 
