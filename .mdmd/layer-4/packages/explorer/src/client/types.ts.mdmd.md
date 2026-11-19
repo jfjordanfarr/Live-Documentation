@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/types.ts
-- Generated At: 2026-11-19T06:30:58.122Z
+- Generated At: 2026-11-19T12:46:58.642Z
 
 ## Authored
 ### Purpose
@@ -413,28 +413,28 @@ The 3D Local Map's packing and stable visual encodings, shared with the headless
 
 #### `PathDestination` {#symbol-pathdestination}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L537)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L545)
 
 ##### `PathDestination` — Summary
 The end of a path a person asked for: a file, perhaps one symbol of it, or a directory. The path starts at the newest pin (2026-10-14).
 
 #### `InspectionTarget` {#symbol-inspectiontarget}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L542)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L550)
 
 ##### `InspectionTarget` — Summary
 The evidence explicitly open in the reader, independent of the Local Map subject and its pins.
 
 #### `DiscoveryTarget` {#symbol-discoverytarget}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L549)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L557)
 
 ##### `DiscoveryTarget` — Summary
 The latest discovery remains in the map after its evidence closes; a new discovery replaces it and Pin keeps it.
 
 #### `ExplorerState` {#symbol-explorerstate}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L555)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L563)
 
 ##### `ExplorerState` — Summary
 Root state object for the Explorer client, managed by
@@ -442,7 +442,7 @@ Root state object for the Explorer client, managed by
 
 #### `TestCoverageMap` {#symbol-testcoveragemap}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L584)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L592)
 
 ##### `TestCoverageMap` — Summary
 Map from implementation file path → covering test node(s).

@@ -21,7 +21,7 @@ describe("tuning help", () => {
     // Hidden Files the same day, the trial of cells in place of an encasing directory's count; Beyond the Hops on 2026-11-18,
     // the 3D map's trial of the next step past the hops; Arrival on 2026-11-19, how the 2D camera meets a new subject; Framing the same night, the camera that follows the pins;
     // Frame the same day, in a group of its own, Page (the trial of a page without its sidebar).
-    expect(ids.length).toBe(71);
+    expect(ids.length).toBe(72);
     expect(Object.keys(TUNING_HELP).sort()).toEqual([...ids].sort());
   });
 
@@ -77,7 +77,7 @@ describe("the template's initial tuning values", () => {
   it("equal the defaults in getDefaultTuning for every control", () => {
     const defaults = getDefaultTuning();
     const ids = templateControlIds();
-    expect(ids.length).toBe(71);
+    expect(ids.length).toBe(72);
     for (const id of ids) {
       const { group, key } = settingOf(id, defaults);
       const expected = (defaults[group] as unknown as Record<string, unknown>)[key];

@@ -105,28 +105,33 @@ export async function engineActivity(page: Page): Promise<{ frames: number; chan
 }
 
 /**
- * Wait for the picture to come to rest, bounded twice. The engine takes one physics step per drawn frame and the
- * gate's software renderer draws this repository's whole picture at about four frames a second, so the seconds a
- * settle takes measure the machine as much as the picture. The bound in drawn frames, counted from the wait's start, says whether the picture came to rest at
- * all: past it, it is not coming to rest, however fast the machine. The clock, the case's seconds as they stood before
- * the frame bound, is a soft expectation: a slow settle fails the case, as the owner wants performance kept a red-hot
- * sticking point (2026-11-12), and the case goes on to check the picture at rest, so a red result says by itself
- * whether the picture was wrong or the machine was slow. Each settle writes one line to the test's output, which the
- * gate's `list` reporter prints.
+ * Wait for the picture to come to rest, bounded twice. The seconds a settle takes measure the machine as much as the
+ * picture: the gate's software renderer draws this repository's whole picture at about four frames a second. The bound
+ * in substeps of the motion, counted from the wait's start as the page says them (`data-motion-substeps`), says whether
+ * the picture came to rest at all: past it, it is not coming to rest, however fast the machine. Until 2026-11-19 the
+ * bound counted drawn frames, when a frame took one substep; a frame now takes as many as fit in its ten milliseconds,
+ * so frames to rest depend on the machine and substeps do not, and each bound keeps its number in the new unit. The
+ * clock, the case's seconds as they stood before the bound, is a soft expectation: a slow settle fails the case, as the
+ * owner wants performance kept a red-hot sticking point (2026-11-12), and the case goes on to check the picture at
+ * rest, so a red result says by itself whether the picture was wrong or the machine was slow. Each settle writes one
+ * line to the test's output, which the gate's `list` reporter prints.
  */
-export async function cameToRest(page: Page, bounds: { label: string; frames: number; seconds: number }): Promise<void> {
-  const began = Date.now(), from = (await engineActivity(page)).frames;
-  // Polled four times a second in the page, with no time limit of its own: the frame bound ends it.
+export async function cameToRest(page: Page, bounds: { label: string; substeps: number; seconds: number }): Promise<void> {
+  const substepsNow = (): Promise<number> => page.evaluate(() => Number(document.getElementById("graph-svg")?.dataset.motionSubsteps ?? 0));
+  const began = Date.now(), from = { frames: (await engineActivity(page)).frames, substeps: await substepsNow() };
+  // Polled four times a second in the page, with no time limit of its own: the bound in substeps ends it.
   const reading = await page.waitForFunction(({ from, bound }) => {
-    const frames = ((window as unknown as ObservedWindow).renderedFrames ?? 0) - from;
-    const still = document.getElementById("graph-svg")?.getAttribute("aria-busy") === "false";
-    return still || frames >= bound ? { still, frames } : null;
-  }, { from, bound: bounds.frames }, { polling: 250, timeout: 0 });
-  const { still, frames } = (await reading.jsonValue())!;
+    const container = document.getElementById("graph-svg");
+    const substeps = Number(container?.dataset.motionSubsteps ?? 0) - from.substeps;
+    const frames = ((window as unknown as ObservedWindow).renderedFrames ?? 0) - from.frames;
+    const still = container?.getAttribute("aria-busy") === "false";
+    return still || substeps >= bound ? { still, substeps, frames } : null;
+  }, { from, bound: bounds.substeps }, { polling: 250, timeout: 0 });
+  const { still, substeps, frames } = (await reading.jsonValue())!;
   const seconds = (Date.now() - began) / 1000, rate = (frames / seconds).toFixed(2), took = seconds.toFixed(1);
-  console.log(`came to rest? ${bounds.label}: ${still ? "yes" : "no"}, ${frames} frames in ${took} s at ${rate} frames a second; bounds ${bounds.frames} frames, ${bounds.seconds} s`);
-  expect(still, `the picture did not come to rest within ${bounds.frames} drawn frames; after ${frames} frames and ${took} s it was still moving`).toBe(true);
-  expect.soft(seconds, `the picture came to rest in ${frames} frames, which took ${took} s on this machine at ${rate} frames a second; the clock allows ${bounds.seconds} s. Slow, not broken`)
+  console.log(`came to rest? ${bounds.label}: ${still ? "yes" : "no"}, ${substeps} substeps in ${frames} frames, ${took} s at ${rate} frames a second; bounds ${bounds.substeps} substeps, ${bounds.seconds} s`);
+  expect(still, `the picture did not come to rest within ${bounds.substeps} substeps of its motion; after ${substeps} substeps, ${frames} frames and ${took} s it was still moving`).toBe(true);
+  expect.soft(seconds, `the picture came to rest in ${substeps} substeps and ${frames} frames, which took ${took} s on this machine at ${rate} frames a second; the clock allows ${bounds.seconds} s. Slow, not broken`)
     .toBeLessThanOrEqual(bounds.seconds);
 }
 

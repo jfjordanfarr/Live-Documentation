@@ -429,14 +429,14 @@ describe("the easing: one motion through a conservative field, until the spheres
     const crowd = (): SpatialNode[] => Array.from({ length: 300 }, (_, index) => ({
       ...node(`crowd-${index}`, index % 4), x: (index % 10) * 3, y: Math.floor(index / 10) % 10 * 3, z: Math.floor(index / 100) * 3
     }));
-    const run = (budget?: number): { calls: number; places: number[][]; still: boolean } => {
+    const run = (budget?: number): { calls: number; places: number[][]; still: boolean; evaluations: number } => {
       const nodes = crowd(), simulation = forceSimulation(nodes, 3).stop();
       const motion = motionForce<SpatialNode>({ tuning: () => tuning, layout: () => "connections", links: () => [], strength: () => 1,
         ...(budget === undefined ? {} : { budget: () => budget }) });
       simulation.force("motion", motion);
       let calls = 0;
       while (!motion.still && calls < 50_000) { simulation.tick(); calls++; }
-      return { calls, places: placesOf(nodes), still: motion.still };
+      return { calls, places: placesOf(nodes), still: motion.still, evaluations: motion.evaluations };
     };
     const whole = run(), generous = run(1e9);
     expect(whole.still).toBe(true);
@@ -444,6 +444,9 @@ describe("the easing: one motion through a conservative field, until the spheres
     // first call's single evaluation measures the rate. Held to one evaluation a call, it took a call a substep.
     expect(generous.places).toEqual(whole.places);
     expect(generous.calls).toBeLessThanOrEqual(whole.calls + 1);
+    // The motion says how many substeps it took, the same however they were divided between calls: a settle's measure.
+    expect(generous.evaluations).toBeCloseTo(whole.evaluations, 6);
+    expect(whole.evaluations).toBeGreaterThan(whole.calls);
   });
 
   it("holds a paced call to one evaluation of the field while the picture still enters, and lets it reach further once all is in (2026-11-19)", () => {
@@ -479,6 +482,26 @@ describe("the easing: one motion through a conservative field, until the spheres
     // The last piece is drawn first where it was placed: its first call reads the field and goes no further.
     expect(after[0].evaluated, "the last piece's first call").toBeLessThanOrEqual(after[0].count);
     expect(after.some(call => call.evaluated > call.count), "several substeps a call once it is all in").toBe(true);
+  });
+
+  it("rests a grown group sooner under a Settle Hold, and as it did without one (2026-11-19)", () => {
+    // A seed with twenty spokes and a leaf on each, a few leaves wired across: settled alone, then grown by two hops,
+    // held from where it stood, as a click on a seed grows its group. Its new spheres go on rearranging after it calms.
+    const group = [node("seed", 3), ...Array.from({ length: 20 }, (_, i) => node(`spoke-${i}`, i % 5)), ...Array.from({ length: 20 }, (_, i) => node(`leaf-${i}`, 1))];
+    const wires: SpatialLink[] = Array.from({ length: 20 }, (_, i) => [{ source: "seed", target: `spoke-${i}`, count: 1 + (i % 3) }, { source: `spoke-${i}`, target: `leaf-${i}`, count: 1 },
+      ...(i % 4 === 0 ? [{ source: `leaf-${i}`, target: `spoke-${(i + 7) % 20}`, count: 1 }] : [])]).flat();
+    const alone = easeSpatialLayout(group, wires, tuning, "connections", { reveal: { asked: new Set(["seed"]) } });
+    const placed = new Map(alone.nodes.map(file => [file.id, file]));
+    const carried = group.map(file => ({ ...file, ...placed.get(file.id) }));
+    const grow = (settleHold: number) => easeSpatialLayout(carried, wires, { ...tuning, hops: 2, settleHold }, "connections", { start: "hold", reveal: { asked: new Set(["seed"]) } });
+    const glides = grow(0), held = grow(0.02);
+    expect(glides.still && held.still).toBe(true);
+    expect(glides.nodes).toHaveLength(41);
+    // Measured when written: 305 ticks gliding, 156 held.
+    expect(held.ticks).toBeLessThan(0.7 * glides.ticks);
+    // At zero the lever changes nothing: the default is the picture as it was.
+    expect(easeSpatialLayout(carried, wires, { ...tuning, hops: 2 }, "connections", { start: "hold", reveal: { asked: new Set(["seed"]) } })).toEqual(glides);
+    expect(tuning.settleHold).toBe(0);
   });
 
   it("comes to rest headlessly, the same way every time, and stays put when eased again from there", () => {
