@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphPhysics.ts
-- Generated At: 2026-11-07T07:46:34.754Z
+- Generated At: 2026-11-19T10:51:08.872Z
 
 ## Authored
 ### Purpose

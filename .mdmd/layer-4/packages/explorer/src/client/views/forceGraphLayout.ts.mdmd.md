@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphLayout.ts
-- Generated At: 2026-11-18T16:26:18.658Z
+- Generated At: 2026-11-19T10:51:08.736Z
 
 ## Authored
 ### Purpose

@@ -6,7 +6,7 @@ import type { GroupWrappers } from "../../packages/explorer/src/client/types";
 import { directoryNodeId, spatialGraphOf } from "../../packages/explorer/src/client/views/forceGraphData";
 import { linkPulls } from "../../packages/explorer/src/client/views/forceGraphLayout";
 import { spatialScope } from "../../packages/explorer/src/client/views/forceGraphScope";
-import { structureCells } from "../../packages/explorer/src/client/views/forceGraphShells";
+import { DRAWN_FILES, pictureVeils, structureCells } from "../../packages/explorer/src/client/views/forceGraphShells";
 import { observeGraph, renderedNodes } from "./force-graph-observation";
 import { loadGraph } from "./still-picture";
 
@@ -32,12 +32,12 @@ async function choose(page: Page, look: GroupWrappers, hops: number): Promise<vo
 }
 
 /** The bubbles of the Structure picture with nothing pinned and these directories opened, by the page's own pure functions. */
-async function expectedCells(page: Page, hops: number, opened: readonly string[] = [], base = "/"): Promise<ReturnType<typeof structureCells> & { shown: Set<string> }> {
+async function expectedCells(page: Page, hops: number, opened: readonly string[] = [], base = "/"): Promise<ReturnType<typeof structureCells> & { shown: Set<string>; hops: ReadonlyMap<string, number> }> {
   const graph = await loadGraph(page, base);
   const tree = spatialGraphOf(graph, node => (node.archetype || "").toLowerCase() !== "asset", [], "structure");
   const scope = spatialScope(tree.nodes, tree.links, new Set([directoryNodeId(""), ...opened.map(directoryNodeId)]), hops, link => linkPulls(link, "structure"));
   const shown = new Set(scope.hops.keys());
-  return { ...structureCells(tree.nodes, tree.links, shown), shown };
+  return { ...structureCells(tree.nodes, tree.links, shown), shown, hops: scope.hops };
 }
 
 /** What the page draws: the bubbles (nodes drawn as bodies) with the files each holds, the wrapped seeds, and every node. */
@@ -69,6 +69,17 @@ async function shownUnits(page: Page, seed: string): Promise<Array<{ id: string;
   }, seed);
 }
 
+/** The veil a skin draws in place of what it holds, as the page draws it: one veiled bubble, or none. */
+async function veilsOf(page: Page, seed: string): Promise<Array<{ id: string; veiled: boolean }>> {
+  return page.evaluate(wanted => {
+    const found: Array<{ seed: string; id: string; veiled: boolean; depth?: number }> = [];
+    (window as unknown as { renderedGraph: { scene: { traverse(visit: (object: { name: string; visible: boolean; userData: Record<string, unknown> }) => void): void } } }).renderedGraph.scene.traverse(object => {
+      if (object.name === "Spatial shell balloons" && object.visible) found.push(...object.userData.spatialUnits as typeof found);
+    });
+    return found.filter(unit => unit.seed === wanted && unit.depth === -1).map(({ id, veiled }) => ({ id, veiled }));
+  }, seed);
+}
+
 const bubblesOf = (cells: ReturnType<typeof structureCells>): Record<string, number> => Object.fromEntries(cells.cells.map(cell => [cell.id, cell.files.length]));
 const settled = (page: Page): Promise<void> => expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 120_000 });
 
@@ -89,6 +100,13 @@ test("the Structure start with Skin is the root's files and one bubble per top-l
     expect(nodes.some(node => node.id === hub), `${hub} is no bubble of one cell`).toBe(false);
     expect(nodes.some(node => node.id === file), `${file} stands in its hub's place`).toBe(true);
   }
+  // The picture draws at most DRAWN_FILES files within all its skins; past it, the bubbles farthest from what was asked
+  // about are veiled, the largest first (`pictureVeils`, 2026-11-07). Each top-level bubble here holds fewer, so it would
+  // draw every file it holds, and the budget is spent on their sum. Since 2026-11-19 this repository's top level passes
+  // it, and its largest bubble is veiled.
+  for (const cell of expected.cells) expect(cell.files.length, `${cell.directory} would draw every file it holds`).toBeLessThanOrEqual(DRAWN_FILES);
+  const veiled = pictureVeils(expected.cells.map(cell => ({ id: cell.id, files: cell.files.length, drawn: cell.files.length, hop: expected.hops.get(cell.id) })));
+  expect(veiled.size, "the budget leaves most bubbles their files").toBeLessThan(expected.cells.length / 2);
   for (const cell of expected.cells) {
     const node = nodes.find(item => item.id === cell.id)!;
     expect(node.ring, `${cell.directory} wears no ring: its skin says there is more`).toBe(false);
@@ -98,8 +116,14 @@ test("the Structure start with Skin is the root's files and one bubble per top-l
       await expect(label).toHaveAttribute("data-context", "false");
     }
     // Every file it holds within its skin, as many as its name counts, or a veil the budget drew.
-    const units = await shownUnits(page, cell.id);
-    expect(units.length, `${cell.directory} shows what it holds`).toBeGreaterThan(1);
+    const units = await shownUnits(page, cell.id), veils = await veilsOf(page, cell.id);
+    if (veiled.has(cell.id)) {
+      expect(veils, `${cell.directory} is veiled by the picture's budget`).toEqual([{ id: cell.id, veiled: true }]);
+      expect(units, `${cell.directory} draws nothing beneath its veil`).toEqual([]);
+    } else {
+      expect(veils, `${cell.directory} is not veiled`).toEqual([]);
+      expect(units.length, `${cell.directory} shows what it holds`).toBeGreaterThan(1);
+    }
   }
 });
 
