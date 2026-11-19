@@ -624,13 +624,37 @@ describe("loads the text fixes", () => {
         "        . (Join-Path $scriptRoot 'Helper.ps1')",
         "        & { . \"$scriptRoot\\Third.ps1\" }",
         "    }",
-        "    It 'loads' { . \"$scriptRoot\\Other.ps1\" }",
+        "    & { . \"$scriptRoot\\Other.ps1\" }",
         "}",
         ". $late",
         "$late = Join-Path $PSScriptRoot '../lib/Late.ps1'"
       ].join("\n")
     });
     expect(Object.keys(await wires("Tests/Helper.Test.ps1")).sort()).toEqual(["Actions/Helper.ps1", "Actions/Third.ps1"]);
+  });
+
+  it("follow what Pester's BeforeAll and BeforeEach assign into the It blocks beneath them, and nothing Pester 5 would not", async () => {
+    await write({
+      "Actions/A.ps1": "", "Actions/B.ps1": "", "Actions/C.ps1": "", "Actions/D.ps1": "", "Actions/E.ps1": "", "Actions/F.ps1": "",
+      "Tests/Pester.Test.ps1": [
+        "$here = Join-Path $PSScriptRoot '..\\Actions'",
+        "Describe 'actions' {",
+        "    BeforeAll { $scriptRoot = Join-Path $PSScriptRoot '..\\Actions' }",
+        "    BeforeEach { $each = Join-Path $PSScriptRoot '..\\Actions' }",
+        "    $body = Join-Path $PSScriptRoot '..\\Actions'",
+        "    It 'loads' { . (Join-Path $scriptRoot 'A.ps1') }",
+        "    Context 'inner' {",
+        "        It 'loads' { . (Join-Path $each 'B.ps1') }",
+        "    }",
+        // Pester 3 and 4 run these as written; Pester 5 runs a Describe's body and the file's own level only to discover the tests.
+        "    It 'loads from the body' { . (Join-Path $body 'C.ps1') }",
+        "    It 'loads from the file' { . (Join-Path $here 'D.ps1') }",
+        "    BeforeAll { . (Join-Path $here 'E.ps1') }",
+        "}",
+        "Describe 'another' { It 'loads' { . (Join-Path $scriptRoot 'F.ps1') } }"
+      ].join("\n")
+    });
+    expect(Object.keys(await wires("Tests/Pester.Test.ps1")).sort()).toEqual(["Actions/A.ps1", "Actions/B.ps1"]);
   });
 
   it("read Split-Path of the script's own path as its folder, and of another fixed path as its parent", async () => {

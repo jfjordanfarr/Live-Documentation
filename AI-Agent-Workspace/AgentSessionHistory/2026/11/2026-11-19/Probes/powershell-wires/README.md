@@ -510,3 +510,43 @@ This input loses a function at the file's own level, where the rule costs a true
 - One is false: `Actions/RunTests/RunTests.psm1` calling `Get-AppJsonFromAppFile` and `Get-BcContainerEventLog` in `Tests/RunTests.Test.ps1`. That test stubs the two BcContainerHelper commands at its own level, lines 10 and 11, and the grammar no longer loses them. The rule passes over tests only when the caller is not one, and the name pattern calls `RunTests.psm1` a test. So this is the oracle's remaining false wire from the last round, now drawn by the adapter too. Candidate P1 or P2 above removes it.
 
 **Not reached in this leg:** Pester's `BeforeAll` rule, and the remaining idioms of [grammar-errors.md](grammar-errors.md): `switch` as an expression, numeric multipliers, a method call followed by a member as a command argument, labelled loops, and the typographic quotes found here.
+
+## P1, the directory's words, and what reaches a Pester `It` _(added November 19, 2026, late night)_
+
+**P1, as the root chose it.** A PowerShell file is a test by its own name only as `Name.Tests.ps1` or `Name.Test.ps1`, without regard to case. Built in `1add3544`, with an archetype test and an adapter test that both failed first.
+- Moves from test to implementation: AL-Go 4 (`RunTests.ps1`, `RunTests.psm1`, `AnalyzeTests.ps1`, `GetOwnerForE2ETests.ps1`) and tSQLt 4 (three build steps and an experiment). Nothing else on any corpus, and no doc of this repository.
+- The false wire from `Actions/RunTests/RunTests.psm1` to `Tests/RunTests.Test.ps1` is gone. AL-Go's resolved dependencies go from 477 to 476, with no other change.
+
+**A directory's name read in its words: measured, not built.** The root's rule splits a word where a capital follows a small letter or a digit. On the corpora it moves 67 files from implementation to test, and this repository not at all. Not every move is right:
+
+| Corpus | Folder | Files | Right? |
+| --- | --- | ---: | --- |
+| AL-Go | `e2eTests/` and beneath | 42 | yes: end-to-end tests |
+| AL-Go | `Actions/RunTests/` | 3 | **no**: the action that runs tests, which P1 has just called working code |
+| AL-Go | `Actions/AnalyzeTests/` | 3 | **no**: the action that analyses test results |
+| tSQLt | `TestUtil/`, `TestUtilTests/`, `tSQLtCLR/tSQLtTestUtilCLR/` | 17 | yes: tSQLt's support for its own tests |
+| DNN | `Dnn.AdminExperience/ClientSide/Seo.Web/src/components/testUrl/` | 2 | **no**: a component of the SEO page that tests a URL |
+
+The rule cannot tell a folder named for a kind of test (`e2eTests`, `UnitTests`) from one named for something done to tests (`RunTests`, `AnalyzeTests`) or a feature (`testUrl`). Read with it, `RunTests.psm1` would be a test again by its folder, and the false wire P1 removed would come back. So the list goes to the root rather than into the code.
+
+**What reaches an `It`, measured on Pester itself.**
+- Pester 3.4.0 (the one Windows PowerShell 5.1 ships), 4.10.1 and 5.9.1 were saved with `Save-PSResource -Path` into a private folder: 0.4, 2.1 and 1.1 MB, nothing installed.
+- A probe test file was run on each under the PowerShell 7.7 here.
+- Pester 3.4.0 would not load on Linux without one edit to the private copy. It asks for the Windows-only `Get-WmiObject`, which it uses only for a result file's OS line, so that line was removed. Its `TestDrive` also needed `$env:TEMP` set.
+
+| Assigned or dot-sourced where | Reaches an `It`: Pester 3.4.0 | 4.10.1 | 5.9.1 |
+| --- | --- | --- | --- |
+| the file's own level | yes | yes | no |
+| a `Describe`'s or `Context`'s body | yes | yes | no |
+| `$script:` in a `Describe`'s body | yes | yes | yes |
+| a `BeforeAll`, `BeforeEach`, or a `Context`'s `BeforeAll` | yes | yes | yes |
+
+A `BeforeAll` sees the file's own level under 3.4.0 and 4.10.1 but not under 5.9.1. It sees a variable assigned in a `Describe`'s body under none of them, even one written above the `BeforeAll`; why, the probe does not say.
+
+**The rule built**, in the adapter and written a second time in the oracle's emitter (`Test-PesterSetupReaches`, `Test-PesterRunBlockBetween`):
+- A variable assigned once in a `BeforeAll` or `BeforeEach` is followed into the `It` blocks of the `Describe` or `Context` that holds it, nested ones included. This is true under all three versions.
+- A variable assigned at the file's own level or in a `Describe`'s or `Context`'s body is not followed into an `It` or a `BeforeAll`. Under 3 and 4 it would reach them; under 5 it does not. A wire true under one version and false under another is not drawn.
+- **Not read yet:** a file's own statement of its version, such as a `#Requires -Modules @{ ModuleName = 'Pester'; … }` line, a `BeforeDiscovery` or a `-ForEach`, so the stricter reading holds for every file. `BeforeEach`, `AfterAll` and `AfterEach` were not probed for what they see, and the narrowing does not touch them.
+- The adapter's test fails with either half of the rule removed. The oracle test over the fixture agrees.
+
+**On the corpora.** dbatools is unchanged at 7,477. AL-Go goes from 476 to 492 resolved dependencies, with none removed. All 16 new wires are AL-Go tests loading their own action through `$scriptRoot`, which a `BeforeAll` assigns. Sixteen is fewer than thirty, so the sample is the whole set. I read three in their source (`AnalyzeTests.Test.ps1` line 75 dot-sourcing `../AL-Go-Helper.ps1`, `RunHook.Test.ps1`, `CalculateArtifactNames.Test.ps1`) and all three are true. The other thirteen share the same template but were not read line by line. The second judge was not run in this leg.

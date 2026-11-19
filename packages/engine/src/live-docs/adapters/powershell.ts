@@ -579,11 +579,61 @@ interface PathScope {
   reading:   Set<string>;
 }
 
-/** Whether a variable's one assignment fixes it where a node stands: before it in the text, in the function or script block that holds the node or one enclosing it. */
+/**
+ * Whether a variable's one assignment fixes it where a node stands: before it in the text, in the function or script
+ * block that holds the node or one enclosing it, or in a Pester setup block whose It blocks hold it ({@link pesterSetupReaches}).
+ */
 function assignedFor(assigned: Assignment, at: SyntaxNode): boolean {
   if (assigned.start >= at.startIndex) return false;
   const container = assigned.container;
-  return container === null || (container.startIndex <= at.startIndex && at.endIndex <= container.endIndex);
+  if (container === null || (container.startIndex <= at.startIndex && at.endIndex <= container.endIndex)) return !pesterRunBlockBetween(container, at);
+  return pesterSetupReaches(container, at);
+}
+
+/**
+ * Whether an `It` or `BeforeAll` block stands between a node and the scope a variable was assigned in. A variable
+ * assigned at the file's own level reaches both under Pester 3.4.0 and 4.10.1 and neither under 5.9.1, and one
+ * assigned in a `Describe`'s body reaches an `It` under 3 and 4 only (measured on each): true under one version and
+ * false under another, it is not read there.
+ */
+function pesterRunBlockBetween(container: SyntaxNode | null, at: SyntaxNode): boolean {
+  for (let current = scopeOf(at); current && current.id !== container?.id; current = scopeOf(current)) {
+    const command = current.type === "script_block_expression" ? blockCommand(current) : null;
+    const name = command ? calledName(command) : undefined;
+    if (name === "it" || name === "beforeall") return true;
+  }
+  return false;
+}
+
+/** The command a script block is written as an argument of, `BeforeAll { … }` for its block; null when it is no command's. */
+function blockCommand(block: SyntaxNode): SyntaxNode | null {
+  for (let current = block.parent; current; current = current.parent) {
+    if (current.type === "command") return current;
+    if (current.type !== "unary_expression" && current.type !== "array_literal_expression" && current.type !== "command_elements") return null;
+  }
+  return null;
+}
+
+/**
+ * Pester's setup: a variable assigned in a `BeforeAll` or `BeforeEach` block reaches the `It` blocks of the
+ * `Describe` or `Context` that holds that block. Pester 3.4.0, which Windows PowerShell 5.1 ships, 4.10.1 and
+ * 5.9.1 all run it so (measured on each). A `Describe`'s or `Context`'s own body, or the file's own level, reaches
+ * an `It` under Pester 3 and 4 but not under 5, which runs them only to discover the tests; so they are not read so.
+ */
+function pesterSetupReaches(setup: SyntaxNode, at: SyntaxNode): boolean {
+  const setupCommand = setup.type === "script_block_expression" ? blockCommand(setup) : null;
+  const setupName = setupCommand ? calledName(setupCommand) : undefined;
+  if (!setupCommand || (setupName !== "beforeall" && setupName !== "beforeeach")) return false;
+  const group = scopeOf(setupCommand);
+  const groupCommand = group?.type === "script_block_expression" ? blockCommand(group) : null;
+  const groupName = groupCommand ? calledName(groupCommand) : undefined;
+  if (!group || (groupName !== "describe" && groupName !== "context")) return false;
+  if (at.startIndex < group.startIndex || group.endIndex < at.endIndex) return false;
+  for (let current = scopeOf(at); current && current.id !== group.id; current = scopeOf(current)) {
+    const command = current.type === "script_block_expression" ? blockCommand(current) : null;
+    if (command && calledName(command) === "it") return true;
+  }
+  return false;
 }
 
 /** A variable's value as a path where a node stands: `$PSScriptRoot` as written, a loop's item, another variable by its one assignment. */

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/oracle/powershell-ast.ps1
 - Entry: program
-- Generated At: 2026-11-19T22:10:37.711Z
+- Generated At: 2026-11-19T22:37:43.942Z
 
 ## Authored
 ### Purpose
@@ -57,156 +57,177 @@ The variables a file assigns exactly once and by a plain `=`, by their unqualifi
 ##### `Test-AssignedFor` — Summary
 Whether a variable's one assignment fixes it where a node stands: before it in the text, in the function or script block that holds the node or one enclosing it.
 
+#### `Test-PesterRunBlockBetween` {#symbol-test-pesterrunblockbetween}
+- Type: function
+- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L183)
+
+##### `Test-PesterRunBlockBetween` — Summary
+Whether an It or BeforeAll block stands between a use and the scope its variable was assigned in ($null for the file's own level). Such a variable reaches the use under Pester 3.4.0 and 4.10.1 but not under 5.9.1, so it is not read there.
+
+#### `Get-BlockCommandName` {#symbol-get-blockcommandname}
+- Type: function
+- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L197)
+
+##### `Get-BlockCommandName` — Summary
+The command a script block is written as an argument of (`BeforeAll { ... }` for its block), by its name in lower case; $null when it is no command's.
+
+#### `Test-PesterSetupReaches` {#symbol-test-pestersetupreaches}
+- Type: function
+- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L211)
+
+##### `Test-PesterSetupReaches` — Summary
+Pester's setup: whether a variable assigned in a BeforeAll or BeforeEach block reaches a use inside an It block of the Describe or Context that holds that block, as it does under Pester 3.4.0, 4.10.1 and 5.9.1 alike. A Describe's or Context's own body reaches no It under Pester 5, so it is not read so.
+
 #### `Get-PathValue` {#symbol-get-pathvalue}
 - Type: function
-- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L186)
+- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L244)
 
 ##### `Get-PathValue` — Summary
 The path an expression writes when the text alone fixes it, with the file's directory in place of $PSScriptRoot: a string, a bare word or a variable whose variables are $PSScriptRoot or ones the file assigns once at its own level, or a Join-Path of such. $null otherwise.
 
 #### `Get-ListedFiles` {#symbol-get-listedfiles}
 - Type: function
-- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L295)
+- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L353)
 
 ##### `Get-ListedFiles` — Summary
 The files a Get-ChildItem command lists, fixture-relative and sorted, when the text fixes its folder and every narrowing: listed by PowerShell's own Get-ChildItem over the working copy, keeping the scripts and modules a loop can dot-source. $null when the text does not fix it.
 
 #### `Get-Listings` {#symbol-get-listings}
 - Type: function
-- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L340)
+- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L398)
 
 ##### `Get-Listings` — Summary
 The Get-ChildItem commands a loop's collection is: one written in place, a variable the file assigns once from one, or several of these joined by `+`, a comma or `@()`. $null when any part is something else.
 
 #### `Test-ItemTarget` {#symbol-test-itemtarget}
 - Type: function
-- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L375)
+- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L433)
 
 ##### `Test-ItemTarget` — Summary
 Whether a dot-source's target is a loop's item, `$item` or its FullName.
 
 #### `Test-DotSourcesItem` {#symbol-test-dotsourcesitem}
 - Type: function
-- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L389)
+- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L447)
 
 ##### `Test-DotSourcesItem` — Summary
 Whether a node holds a dot-source of a loop's item.
 
 #### `Get-LiteralItems` {#symbol-get-literalitems}
 - Type: function
-- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L403)
+- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L461)
 
 ##### `Get-LiteralItems` — Summary
 The names a loop's collection writes out: a string, a list of strings, an @() of such, or a variable assigned one where its assignment fixes it. $null when any part is something else.
 
 #### `Get-FixedLoads` {#symbol-get-fixedloads}
 - Type: function
-- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L435)
+- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L493)
 
 ##### `Get-FixedLoads` — Summary
 The loads a command makes whose paths the text fixes, with the loop items in place: a dot-source, an Import-Module of a path, or a script run by its path.
 
 #### `Add-ItemLoads` {#symbol-add-itemloads}
 - Type: function
-- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L476)
+- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L534)
 
 ##### `Add-ItemLoads` — Summary
 Records the loads of a loop over names the text writes out, read once for each name with the loop's item standing for it.
 
 #### `Add-ListingLoads` {#symbol-add-listingloads}
 - Type: function
-- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L505)
+- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L563)
 
 ##### `Add-ListingLoads` — Summary
 Records a loop's dot-sources of the files its listings name, when the text fixes every listing.
 
 #### `Get-StaticStrings` {#symbol-get-staticstrings}
 - Type: function
-- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L531)
+- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L589)
 
 ##### `Get-StaticStrings` — Summary
 The strings an argument holds, flattening an array literal; $null when any part of it is not a string written out.
 
 #### `Get-BoundParameters` {#symbol-get-boundparameters}
 - Type: function
-- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L556)
+- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L614)
 
 ##### `Get-BoundParameters` — Summary
 Every parameter PowerShell's static binder bound on a command, with the argument's text and the strings it holds, and what it could not bind.
 
 #### `Get-CommentHelp` {#symbol-get-commenthelp}
 - Type: function
-- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L577)
+- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L635)
 
 ##### `Get-CommentHelp` — Summary
 A function's comment-based help as GetHelpContent returns it, each parameter under the key the help gives and the spelling the function declares.
 
 #### `ConvertTo-SortedData` {#symbol-convertto-sorteddata}
 - Type: function
-- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L615)
+- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L673)
 
 ##### `ConvertTo-SortedData` — Summary
 A hashtable as JSON reads it: keys sorted, nested tables and arrays followed.
 
 #### `Resolve-CommandAlias` {#symbol-resolve-commandalias}
 - Type: function
-- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L634)
+- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L692)
 
 ##### `Resolve-CommandAlias` — Summary
 The command a name stands for in this PowerShell, an alias followed to its command; the name itself when it is not an alias. Each name is looked up once.
 
 #### `Test-FileScope` {#symbol-test-filescope}
 - Type: function
-- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L648)
+- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L706)
 
 ##### `Test-FileScope` — Summary
 Whether what a node defines is seen by whoever loads its file: it stands inside no function and no script block written as a value, which run in scopes of their own.
 
 #### `Get-EnclosingFunction` {#symbol-get-enclosingfunction}
 - Type: function
-- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L663)
+- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L721)
 
 ##### `Get-EnclosingFunction` — Summary
 The name of the function a node stands in, the nearest one, or $null at the file's own level. A class's members are not functions.
 
 #### `Get-EnclosingBlocks` {#symbol-get-enclosingblocks}
 - Type: function
-- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L678)
+- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L736)
 
 ##### `Get-EnclosingBlocks` — Summary
 The commands whose script-block arguments a node stands in, nearest first: `Invoke-Command`, `ForEach-Object`, a test's `It`.
 
 #### `Get-FunctionAliases` {#symbol-get-functionaliases}
 - Type: function
-- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L695)
+- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L753)
 
 ##### `Get-FunctionAliases` — Summary
 The aliases a function's `[Alias()]` attribute gives it, as written.
 
 #### `Get-StatementFact` {#symbol-get-statementfact}
 - Type: function
-- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L717)
+- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L775)
 
 ##### `Get-StatementFact` — Summary
 What a statement at a file's own level is: a definition, a load, a command, an assignment, or another statement by its kind; whether it calls anything; and the first line of its text.
 
 #### `Test-OutsideDefinitions` {#symbol-test-outsidedefinitions}
 - Type: function
-- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L758)
+- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L816)
 
 ##### `Test-OutsideDefinitions` — Summary
 Whether a node lies outside every function and class defined within a statement, so that it runs when the statement does.
 
 #### `Read-Script` {#symbol-read-script}
 - Type: function
-- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L773)
+- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L831)
 
 ##### `Read-Script` — Summary
 What the parser says about a script or a module.
 
 #### `Read-DataFile` {#symbol-read-datafile}
 - Type: function
-- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L1063)
+- Source: [source](../../../../scripts/oracle/powershell-ast.ps1#L1121)
 
 ##### `Read-DataFile` — Summary
 What a data file says: its table as Import-PowerShellDataFile reads it, and each module, script or nested module a manifest's table names, with the version a module specification writes (its RequiredVersion, else its ModuleVersion), resolved against its directory.

@@ -167,10 +167,68 @@ function Test-AssignedFor {
     for ($parent = $Assignment.Parent; $parent; $parent = $parent.Parent) {
         if ($parent -is [System.Management.Automation.Language.FunctionDefinitionAst] -or
             $parent -is [System.Management.Automation.Language.ScriptBlockExpressionAst]) {
-            return $parent.Extent.StartOffset -le $Use.Extent.StartOffset -and $Use.Extent.EndOffset -le $parent.Extent.EndOffset
+            if ($parent.Extent.StartOffset -le $Use.Extent.StartOffset -and $Use.Extent.EndOffset -le $parent.Extent.EndOffset) {
+                return -not (Test-PesterRunBlockBetween -Scope $parent -Use $Use)
+            }
+            return Test-PesterSetupReaches -Setup $parent -Use $Use
         }
     }
-    return $true
+    return -not (Test-PesterRunBlockBetween -Scope $null -Use $Use)
+}
+
+<#
+.SYNOPSIS
+Whether an It or BeforeAll block stands between a use and the scope its variable was assigned in ($null for the file's own level). Such a variable reaches the use under Pester 3.4.0 and 4.10.1 but not under 5.9.1, so it is not read there.
+#>
+function Test-PesterRunBlockBetween {
+    param($Scope, [Parameter(Mandatory)]$Use)
+    for ($parent = $Use.Parent; $parent -and $parent -ne $Scope; $parent = $parent.Parent) {
+        if ((Get-BlockCommandName -Block $parent) -in @('it', 'beforeall')) {
+            return $true
+        }
+    }
+    return $false
+}
+
+<#
+.SYNOPSIS
+The command a script block is written as an argument of (`BeforeAll { ... }` for its block), by its name in lower case; $null when it is no command's.
+#>
+function Get-BlockCommandName {
+    param([Parameter(Mandatory)]$Block)
+    if ($Block -isnot [System.Management.Automation.Language.ScriptBlockExpressionAst] -or $Block.Parent -isnot [System.Management.Automation.Language.CommandAst]) {
+        return $null
+    }
+    $name = $Block.Parent.GetCommandName()
+    if ($name) { return $name.ToLowerInvariant() }
+    return $null
+}
+
+<#
+.SYNOPSIS
+Pester's setup: whether a variable assigned in a BeforeAll or BeforeEach block reaches a use inside an It block of the Describe or Context that holds that block, as it does under Pester 3.4.0, 4.10.1 and 5.9.1 alike. A Describe's or Context's own body reaches no It under Pester 5, so it is not read so.
+#>
+function Test-PesterSetupReaches {
+    param([Parameter(Mandatory)]$Setup, [Parameter(Mandatory)]$Use)
+    if ((Get-BlockCommandName -Block $Setup) -notin @('beforeall', 'beforeeach')) {
+        return $false
+    }
+    $group = $Setup.Parent.Parent
+    while ($group -and $group -isnot [System.Management.Automation.Language.ScriptBlockExpressionAst] -and $group -isnot [System.Management.Automation.Language.FunctionDefinitionAst]) {
+        $group = $group.Parent
+    }
+    if (-not $group -or (Get-BlockCommandName -Block $group) -notin @('describe', 'context')) {
+        return $false
+    }
+    if (-not ($group.Extent.StartOffset -le $Use.Extent.StartOffset -and $Use.Extent.EndOffset -le $group.Extent.EndOffset)) {
+        return $false
+    }
+    for ($parent = $Use.Parent; $parent -and $parent -ne $group; $parent = $parent.Parent) {
+        if ((Get-BlockCommandName -Block $parent) -eq 'it') {
+            return $true
+        }
+    }
+    return $false
 }
 
 # A loop's item while the names its collection writes out are read, one at a time.
