@@ -13,10 +13,14 @@
  *
  * Raw HTML is shown as text, never interpreted, and an image's syntax is a
  * link to the image: a doc can neither run script nor make the page fetch.
- * It does NOT aim to be a full CommonMark implementation.
+ * It does NOT aim to be a full CommonMark implementation; but where a link
+ * begins and ends, and what claims characters before it (code spans, escapes,
+ * character references, raw HTML), is read by CommonMark's rule, the one the
+ * engine counts a doc's links by, so a link the map counts opens here.
  */
 
 import { GitHubSlugger, slugText } from "@live-documentation/engine/tooling/githubSlugger";
+import { inlineTokens, type InlineToken } from "@live-documentation/engine/tooling/markdownLinks";
 
 import { escapeHtml } from "./graph-helpers";
 
@@ -205,15 +209,11 @@ const HELD_PIECE = /\uE000(\d+)\uE000/g;
 /** A link the default handler writes: to the web, mail or a relative path; any other scheme, `javascript:` among them, stays text. */
 function defaultLink(href: string, html: string): string {
     const target = href.trim();
-    if (/^[a-z][a-z0-9+.-]*:/iu.test(target) && !/^(?:https?|mailto):/iu.test(target)) return html;
+    // As a browser reads the scheme: tabs and line breaks anywhere, and controls and spaces in front, are dropped.
+    // eslint-disable-next-line no-control-regex -- the control characters are what a browser drops from an address
+    const scheme = target.replace(/[\t\n\r]/gu, "").replace(/^[\x00-\x20]+/u, "");
+    if (/^[a-z][a-z0-9+.-]*:/iu.test(scheme) && !/^(?:https?|mailto):/iu.test(scheme)) return html;
     return `<a href="${escapeHtml(target)}" target="_blank" rel="noopener noreferrer">${html}</a>`;
-}
-
-/** A link's text: its code spans as code, the rest escaped and emphasized. */
-function linkTextHtml(text: string): string {
-    return text.split(/`([^`]+)`/g)
-        .map((part, index) => (index % 2 === 1 ? `<code>${escapeHtml(part)}</code>` : emphasize(escapeHtml(part))))
-        .join("");
 }
 
 /** Bold and italic; an underscore inside a word, as in snake_case, is a letter of it. */
@@ -225,20 +225,20 @@ function emphasize(html: string): string {
         .replace(/(?<![\p{L}\p{N}])_([^_]+)_(?![\p{L}\p{N}])/gu, "<em>$1</em>");
 }
 
+/** Finished HTML for text, with a doc's own private-use character as its reference, so that it marks nothing. */
+function textHtml(text: string): string {
+    return escapeHtml(text).replace(//g, "&#xE000;");
+}
+
 /**
- * Process inline markdown elements. Each link and code span is finished first
- * and held aside behind a marker, so that nothing later reads inside it: a path in backticks
- * stays code, and emphasis never reaches an attribute or a code span. What is
- * left is text, escaped whole: a doc's raw HTML is shown as written and never
- * becomes part of the page, so reading a doc can neither run script nor fetch
- * anything.
- *
- * ORDERING IS CRITICAL:
- * 1. Links, so that [`code`](url) works; an image's syntax is read as a link to the image, which is never fetched
- * 2. Autolinks, <https://…> and <mailto:…>
- * 3. Inline code
- * 4. Auto-links for bare relative paths
- * 5. The rest escaped, then bold and italic
+ * Process inline markdown elements. What claims characters is read by CommonMark's rule, the one the engine
+ * counts links by (`tooling/markdownLinks.ts`): links and images, autolinks, code spans, backslash escapes,
+ * character references and raw HTML. Each is finished first and held aside behind a marker, so that nothing
+ * later reads inside it: a path in backticks stays code, an escaped `*` or `#` is the character itself, and
+ * emphasis never reaches an attribute or a code span. A doc's raw HTML is shown as written and never becomes part
+ * of the page, so reading a doc can neither run script nor fetch anything; an image's syntax is a link to the
+ * image, which is never fetched. Then bare relative paths in what is left become links, and the rest is text,
+ * escaped whole, then emphasized.
  */
 function processInline(
     text: string,
@@ -246,19 +246,53 @@ function processInline(
 ): string {
     const held: string[] = [];
     const hold = (html: string): string => `${HELD}${held.push(html) - 1}${HELD}`;
-    const link = (href: string, html: string): string => hold(linkHandler ? linkHandler(href, html) : defaultLink(href, html));
+    // A destination may hold the marker's character, written or as a character reference; as a URL it is that
+    // character's percent-encoding, so that no doc can forge a piece through an address.
+    const link = (href: string, html: string): string => {
+        const address = href.replace(//g, "%EE%80%80");
+        return hold(linkHandler ? linkHandler(address, html) : defaultLink(address, html));
+    };
+    const tokens = inlineTokens(text);
 
-    text = text.replace(/\uE000/g, () => hold("&#xE000;"));
-    text = text.replace(/!?\[([^\]]+)\]\(([^)]+)\)/g, (_match: string, linkText: string, href: string) => link(href, linkTextHtml(linkText)));
-    text = text.replace(/<((?:https?|mailto):[^<>\s]+)>/giu, (_match: string, href: string) => link(href, escapeHtml(href)));
-    text = text.replace(/`([^`]+)`/g, (_match: string, code: string) => hold(`<code>${escapeHtml(code)}</code>`));
+    /** The text between two offsets, with what it holds held; inside a link, a link or image is its text alone. */
+    const render = (from: number, to: number, inLink: boolean): string => {
+        let out = "";
+        let at = from;
+        for (const token of tokens) {
+            // A token inside one already rendered is part of it; tokens are in the order they begin.
+            if (token.start < at || token.end > to) continue;
+            out += plain(at, token.start) + piece(token, inLink);
+            at = token.end;
+        }
+        return out + plain(at, to);
+    };
+    const plain = (from: number, to: number): string => text.slice(from, to).replace(//g, () => hold("&#xE000;"));
+    const piece = (token: InlineToken, inLink: boolean): string => {
+        switch (token.kind) {
+            case "code":
+                return hold(`<code>${textHtml(token.text)}</code>`);
+            case "escape":
+            case "reference-character":
+            case "html":
+                return hold(textHtml(token.text));
+            case "autolink":
+                return inLink || !/^(?:https?|mailto):/iu.test(token.destination)
+                    ? hold(textHtml(text.slice(token.start, token.end)))
+                    : link(token.destination, textHtml(text.slice(token.textStart, token.textEnd)));
+            default: {
+                const inner = render(token.textStart, token.textEnd, true);
+                return inLink ? inner : link(token.destination, emphasize(escapeHtml(inner)));
+            }
+        }
+    };
+
     // e.g. ../packages/generator/src/generator.ts becomes a link
-    text = text.replace(
+    const rest = render(0, text.length, false).replace(
         /(?<!["\w])(\.\.?\/?[\w\-./]+\.(?:ts|js|md|json|css|html))(?!["\w])/g,
         (_match: string, filePath: string) => link(filePath, escapeHtml(filePath))
     );
 
     // A piece may hold an earlier one, as a link's text holds a doc's own private-use character; never a later one.
     const restore = (html: string): string => html.replace(HELD_PIECE, (_match: string, index: string) => restore(held[Number(index)]));
-    return restore(emphasize(escapeHtml(text)));
+    return restore(emphasize(escapeHtml(rest)));
 }
