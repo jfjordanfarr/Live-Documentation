@@ -353,6 +353,24 @@ describe("the Live Doc grammar", () => {
     expect(parseLiveDoc(text)).toEqual(doc);
   });
 
+  it("writes and reads a doc of hundreds of thousands of lines in one section, bounded by memory and not by a call's arguments", () => {
+    // A generation of Dnn.Platform died in renderLiveDoc with "Maximum call stack size exceeded": a section's lines were
+    // spread into one push, which the engine refuses past some hundred thousand arguments.
+    // 200,000: past the engine's limit on a call's arguments, about 130,000 here; the test bounds size, not speed.
+    const count = 200_000;
+    const doc: LiveDoc = {
+      ...EMPTY,
+      authored: Array.from({ length: count }, (_, index) => `Line ${index} of the words.`).join("\n"),
+      symbols: [{ name: "Big", slug: "symbol-big", kind: "const", flags: [], references: [], sections: [{ title: "Remarks", body: Array.from({ length: count }, (_, index) => `Remark ${index}.`) }] }],
+      dependencies: Array.from({ length: count }, (_, index) => ({ label: `module${index}`, qualifiers: [] }))
+    };
+    const text = renderLiveDoc(doc);
+    const read = parseLiveDoc(text);
+    expect(read.dependencies).toHaveLength(count);
+    expect(read.symbols[0].sections[0].body).toHaveLength(count);
+    expect(read.authored).toBe(doc.authored);
+  }, 60_000);
+
   it("reads the authored block of any text that has one", () => {
     expect(authoredBlockOf(renderLiveDoc(FULL))).toBe(FULL.authored);
     expect(authoredBlockOf("# x\n\n## Authored\n\n### Purpose\nOld words\n\n\n## Generated\nwhatever")).toBe("### Purpose\nOld words");

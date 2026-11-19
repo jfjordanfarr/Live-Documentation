@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/document.ts`
-- Generated At: 2026-11-19T21:24:58.208Z
+- Generated At: 2026-11-19T21:40:14.613Z
 
 ## Authored
 ### Purpose
@@ -213,7 +213,7 @@ Writes a Live Doc as markdown. The output always ends with one newline.
 
 #### `renderSymbolBlocks` {#symbol-rendersymbolblocks}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L493)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L508)
 - Parameters: `symbols`: [`SymbolBlock`](#symbol-symbolblock)[]
 
 ##### `renderSymbolBlocks` — Summary
@@ -221,14 +221,14 @@ Writes the body of the `Public Symbols` section: the lines between its markers.
 
 #### `LiveDocSyntaxError` {#symbol-livedocsyntaxerror}
 - Type: class
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L681)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L697)
 
 ##### `LiveDocSyntaxError` — Summary
 Thrown when text is not a Live Doc. `line` is one-based.
 
 #### `parseLiveDoc` {#symbol-parselivedoc}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L689)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L705)
 - Returns: [`LiveDoc`](#symbol-livedoc)
 
 ##### `parseLiveDoc` — Summary
@@ -236,7 +236,7 @@ Reads a Live Doc back from markdown, refusing anything outside the grammar.
 
 #### `authoredBlockOf` {#symbol-authoredblockof}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L1115)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L1131)
 
 ##### `authoredBlockOf` — Summary
 The authored block of any text that has one, whatever else the text holds.
@@ -248,7 +248,7 @@ is nothing to carry.
 
 #### `Reader` {#symbol-reader}
 - Type: class
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L1142)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L1158)
 
 ##### `Reader` — Summary
 Reads a text line by line for the parsers, and fails with the line number when the grammar is not met. A line ends

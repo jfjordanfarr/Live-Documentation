@@ -449,7 +449,9 @@ export function renderLiveDoc(doc: LiveDoc): string {
   if (doc.generatedAt) {
     lines.push(`- Generated At: ${doc.generatedAt}`);
   }
-  lines.push("", "## Authored", ...doc.authored.split("\n"), "", "## Generated");
+  lines.push("", "## Authored");
+  append(lines, doc.authored.split("\n"));
+  lines.push("", "## Generated");
   pushSection(lines, PUBLIC_SYMBOLS, doc.symbols.length ? renderSymbolBlocks(doc.symbols) : [NO_SYMBOLS]);
   lines.push("");
   pushSection(lines, DEPENDENCIES, doc.dependencies.length ? doc.dependencies.map(renderDependency) : [NO_DEPENDENCIES]);
@@ -485,8 +487,21 @@ function renderSymbolRef(symbol: { name: string; link?: string }): string {
   return symbol.link ? linked(symbol.name, symbol.link) : name(symbol.name);
 }
 
+/**
+ * Appends lines one by one. Spread into one `push`, a section of some hundred thousand lines exceeds the engine's limit
+ * on a call's arguments ("Maximum call stack size exceeded"), which stopped a generation of Dnn.Platform; a doc's size
+ * is bounded only by memory.
+ */
+function append(lines: string[], more: readonly string[]): void {
+  for (const line of more) {
+    lines.push(line);
+  }
+}
+
 function pushSection(lines: string[], name: string, body: string[]): void {
-  lines.push(`${BEGIN}${name}${CLOSE}`, `### ${name}`, ...body, `${END}${name}${CLOSE}`);
+  lines.push(`${BEGIN}${name}${CLOSE}`, `### ${name}`);
+  append(lines, body);
+  lines.push(`${END}${name}${CLOSE}`);
 }
 
 /** Writes the body of the `Public Symbols` section: the lines between its markers. */
@@ -505,7 +520,8 @@ export function renderSymbolBlocks(symbols: SymbolBlock[]): string[] {
       lines.push(renderReference(reference));
     }
     symbol.sections.forEach((section) => {
-      lines.push("", `##### ${name(symbol.name)} — ${section.title}`, ...escapeBody(section.body.flatMap((line) => line.split("\n"))));
+      lines.push("", `##### ${name(symbol.name)} — ${section.title}`);
+      append(lines, escapeBody(section.body.flatMap((line) => line.split("\n"))));
     });
   });
   return lines;

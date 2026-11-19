@@ -481,7 +481,10 @@ function composeDocSections(symbol: PublicSymbolEntry): DocSection[] {
       }
       const descriptionLines = normalizeDocText(example.description);
       if (descriptionLines) {
-        exampleLines.push(...descriptionLines);
+        // One by one: a spread of many lines into one call exceeds the engine's limit on its arguments.
+        for (const line of descriptionLines) {
+          exampleLines.push(line);
+        }
       }
       if (example.code) {
         if (exampleLines.length > 0 && exampleLines[exampleLines.length - 1] !== "") {

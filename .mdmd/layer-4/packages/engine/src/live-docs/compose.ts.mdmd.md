@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/compose.ts`
-- Generated At: 2026-11-19T21:10:11.174Z
+- Generated At: 2026-11-19T21:40:13.735Z
 
 ## Authored
 ### Purpose
@@ -63,7 +63,7 @@ Composes the `Public Symbols` section of a Live Doc.
 
 #### `composeDependencies` {#symbol-composedependencies}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L578)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L581)
 - Returns: [`Dependency`](./document.ts.mdmd.md#symbol-dependency)[]
 
 ##### `composeDependencies` — Summary
@@ -87,7 +87,7 @@ its own even when a source-observed dependency names the same file.
 
 #### `composeCitedBy` {#symbol-composecitedby}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L774)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L777)
 - Returns: [`CitedBy`](./document.ts.mdmd.md#symbol-citedby)[]
 
 ##### `composeCitedBy` — Summary
@@ -104,7 +104,7 @@ engine's rule, `citingDocuments`.
 
 #### `composeEntries` {#symbol-composeentries}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L809)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L812)
 - Returns: [`Entry`](./document.ts.mdmd.md#symbol-entry)[]
 
 ##### `composeEntries` — Summary
@@ -134,7 +134,7 @@ no line here.
 
 #### `anchorReExports` {#symbol-anchorreexports}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L878)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L881)
 
 ##### `anchorReExports` — Summary
 A file's re-exports in the order its doc writes them, by name, each with its anchor: its name's anchor, and where it
@@ -148,7 +148,7 @@ a re-export lands on the heading it names.
 
 #### `composeReExports` {#symbol-composereexports}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L889)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L892)
 - Returns: [`ReExport`](./document.ts.mdmd.md#symbol-reexport)[]
 
 ##### `composeReExports` — Summary
