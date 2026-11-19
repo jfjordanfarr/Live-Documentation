@@ -138,6 +138,96 @@ describe("csharpAdapter", () => {
       ]);
     });
 
+    describe("what a file's project lets it see", () => {
+      const classic = (references: string[] = []) => [
+        "<Project ToolsVersion=\"15.0\" xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\">",
+        "  <ItemGroup>",
+        ...references.map((reference) => `    <ProjectReference Include="${reference}" />`),
+        "  </ItemGroup>",
+        "</Project>"
+      ];
+      const sdk = (references: string[] = []) => [
+        "<Project Sdk=\"Microsoft.NET.Sdk\">",
+        "  <ItemGroup>",
+        ...references.map((reference) => `    <ProjectReference Include="${reference}" />`),
+        "  </ItemGroup>",
+        "</Project>"
+      ];
+      const links = async (file: string) => (await analyze(file)).dependencies.map((entry) => entry.resolvedPath ?? entry.specifier);
+
+      it("links a name to the namesake in the file's own project or a project it references, never to one it cannot see (the estate's two PaymentsControllers)", async () => {
+        await write("Contracts/Contracts.csproj", sdk());
+        await write("Contracts/PaymentRequest.cs", ["namespace Estate.Contracts { public class PaymentRequest { } }"]);
+        await write("Portal/Portal.csproj", classic());
+        await write("Portal/Controllers/PaymentsController.cs", ["namespace Estate.Controllers { public class PaymentsController { } }"]);
+        await write("Portal/Models/PaymentRequest.cs", ["namespace Estate.Contracts { public class PaymentRequest { } }"]);
+        await write("Portal/Pages/Default.aspx.cs", [
+          "using Estate.Contracts;",
+          "namespace Estate.Controllers { public class Page { PaymentsController controller; PaymentRequest request; } }"
+        ]);
+        await write("Gateway/Gateway.csproj", classic(["..\\Contracts\\Contracts.csproj"]));
+        await write("Gateway/Controllers/PaymentsController.cs", ["namespace Estate.Controllers { public class PaymentsController { } }"]);
+        await write("Gateway/Wcf/HubProxy.cs", [
+          "using Estate.Contracts;",
+          "namespace Estate.Controllers { public class HubProxy { PaymentsController controller; PaymentRequest request; } }"
+        ]);
+
+        expect(await links("Portal/Pages/Default.aspx.cs")).toEqual(["Portal/Controllers/PaymentsController.cs", "Portal/Models/PaymentRequest.cs"]);
+        expect(await links("Gateway/Wcf/HubProxy.cs")).toEqual(["Contracts/PaymentRequest.cs", "Gateway/Controllers/PaymentsController.cs"]);
+      });
+
+      it("sees the references of a reference from an SDK-style project and not from a classic one, as MSBuild passes them to the compiler", async () => {
+        await write("Data/Data.csproj", sdk());
+        await write("Data/Row.cs", ["namespace Shop.Data { public class Row { } }"]);
+        await write("Core/Core.csproj", sdk(["../Data/Data.csproj"]));
+        await write("App/App.csproj", classic(["..\\Core\\Core.csproj"]));
+        await write("App/Program.cs", ["using Shop.Data;", "namespace Shop { class Program { Row row; } }"]);
+        await write("Web/Web.csproj", sdk(["../Core/Core.csproj"]));
+        await write("Web/Startup.cs", ["using Shop.Data;", "namespace Shop { class Startup { Row row; } }"]);
+        await write("Tool/Tool.csproj", [
+          "<Project Sdk=\"Microsoft.NET.Sdk\">",
+          "  <PropertyGroup><DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences></PropertyGroup>",
+          "  <ItemGroup><ProjectReference Include=\"../Core/Core.csproj\" /></ItemGroup>",
+          "</Project>"
+        ]);
+        await write("Tool/Run.cs", ["using Shop.Data;", "namespace Shop { class Run { Row row; } }"]);
+
+        expect(await links("App/Program.cs")).toEqual([]);
+        expect(await links("Web/Startup.cs")).toEqual(["Data/Row.cs"]);
+        expect(await links("Tool/Run.cs")).toEqual([]);
+      });
+
+      it("prefers the own project's declaration, links every half of a partial type, and draws nothing for a true ambiguity", async () => {
+        await write("LibA/LibA.csproj", sdk());
+        await write("LibA/Helper.cs", ["namespace Shop { public class Helper { } public class Util { } }"]);
+        await write("LibB/LibB.csproj", sdk());
+        await write("LibB/Helper.cs", ["namespace Shop { public class Helper { } }"]);
+        await write("LibC/LibC.csproj", sdk());
+        await write("LibC/Order.cs", ["namespace Shop { public partial class Order { } }"]);
+        await write("LibC/Order.Lines.cs", ["namespace Shop { public partial class Order { } }"]);
+        await write("App/App.csproj", sdk(["../LibA/LibA.csproj", "../LibB/LibB.csproj", "../LibC/LibC.csproj"]));
+        await write("App/Util.cs", ["namespace Shop { public class Util { } }"]);
+        await write("App/Uses.cs", ["namespace Shop { class Uses { Helper helper; Util util; Order order; } }"]);
+        await write("Ref/Ref.csproj", [
+          "<Project Sdk=\"Microsoft.NET.Sdk\">",
+          "  <ItemGroup><ProjectReference Include=\"../LibB/LibB.csproj\" ReferenceOutputAssembly=\"false\" /></ItemGroup>",
+          "</Project>"
+        ]);
+        await write("Ref/Uses.cs", ["namespace Shop { class RefUses { Helper helper; } }"]);
+
+        expect(await links("App/Uses.cs")).toEqual(["App/Util.cs", "LibC/Order.cs", "LibC/Order.Lines.cs"]);
+        expect(await links("Ref/Uses.cs")).toEqual([]);
+      });
+
+      it("keeps today's reading for a file no project holds, except that several namesakes draw nothing", async () => {
+        await write("Lib/Thing.cs", ["namespace Shop { public class Thing { } public class Only { } }"]);
+        await write("Other/Thing.cs", ["namespace Shop { public class Thing { } }"]);
+        await write("Loose.cs", ["namespace Shop { class Loose { Thing thing; Only only; } }"]);
+
+        expect(await links("Loose.cs")).toEqual(["Lib/Thing.cs"]);
+      });
+    });
+
     it("prefers the enclosing namespace over a using directive, and never links a file to itself", async () => {
       await write("A/Thing.cs", ["namespace Shop.A { public class Thing { } }"]);
       await write("B/Thing.cs", ["namespace Shop.B { public class Thing { } }"]);

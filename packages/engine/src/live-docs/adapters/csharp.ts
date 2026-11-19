@@ -53,6 +53,7 @@ import {
 } from "../openings";
 import { extractDynamicDependencies, type ConfigReference, type ResolvedTypeTarget } from "./csharp.dependencies";
 import { buildDocumentationFromLines } from "./csharp.xmldoc";
+import { projectReach, type ProjectReach } from "./dotnetProjects";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
 import { parseSource, type SyntaxNode } from "./treeSitter";
 
@@ -992,24 +993,66 @@ function namespaceChain(namespace: string): string[] {
   return chain;
 }
 
+/**
+ * The declarations of one qualified name that a file can see: undefined when it
+ * sees none of them, so that the search goes on as the compiler's would; empty
+ * when the name is ambiguous where it sees it.
+ */
+type Narrow = (records: TypeRecord[]) => TypeRecord[] | undefined;
+
+/** Every declaration, as a reflection lookup by name sees them. */
+const WHOLE_WORKSPACE: Narrow = (records) => records;
+
+/** True when the declarations are one type: a single one, or the halves of one partial type in one project. */
+function oneType(records: TypeRecord[], reach: ProjectReach): boolean {
+  if (records.length <= 1) return true;
+  const project = reach.projectOf(records[0].file);
+  return records.every((record) => record.type.partial && reach.projectOf(record.file) === project);
+}
+
+/**
+ * What a file sees of a name, as the compiler binds it: the declarations in the
+ * file's own project, else in the projects it references directly, else in
+ * those it reaches further (see `dotnetProjects`). Where several declarations
+ * at that nearest tier are not halves of one partial type, the name is
+ * ambiguous and nothing is linked. A declaration outside the project's reach
+ * is never linked. A file no project holds sees every declaration, unless
+ * there are several namesakes.
+ */
+function narrowFor(file: string, reach: ProjectReach): Narrow {
+  const tiers = reach.tiersOf(file);
+  if (!tiers) return (records) => (oneType(records, reach) ? records : []);
+  return (records) => {
+    for (const tier of tiers) {
+      const here = records.filter((record) => {
+        const project = reach.projectOf(record.file);
+        return project !== undefined && tier.includes(project);
+      });
+      if (here.length > 0) return oneType(here, reach) ? here : [];
+    }
+    return undefined;
+  };
+}
+
 /** Resolves a dotted name from a scope: exact, then relative to each container the compiler would search. */
-function resolveSegments(segments: string[], scope: Scope, facts: FileFacts, table: TypeTable): TypeRecord[] {
+function resolveSegments(segments: string[], scope: Scope, facts: FileFacts, table: TypeTable, narrow: Narrow): TypeRecord[] | undefined {
   const dotted = segments.join(".");
   const containers = [...scope.enclosingTypes, ...namespaceChain(scope.namespace), ...facts.usings];
   for (const container of ["", ...containers]) {
     const records = table.byQualifiedName.get(joinNames(container, dotted));
-    if (records) return records;
+    const seen    = records ? narrow(records) : undefined;
+    if (seen) return seen;
   }
-  return [];
+  return undefined;
 }
 
-/** Resolves the longest prefix of a name chain that names a workspace type. */
-function resolveChain(chain: string[], scope: Scope, facts: FileFacts, table: TypeTable): TypeRecord[] {
+/** Resolves the longest prefix of a name chain that names a type the file can see. */
+function resolveChain(chain: string[], scope: Scope, facts: FileFacts, table: TypeTable, narrow: Narrow): TypeRecord[] {
   const alias    = facts.aliases.get(chain[0]);
   const expanded = alias ? [...alias.split("."), ...chain.slice(1)] : chain;
   for (let length = expanded.length; length >= 1; length -= 1) {
-    const records = resolveSegments(expanded.slice(0, length), scope, facts, table);
-    if (records.length > 0) return records;
+    const records = resolveSegments(expanded.slice(0, length), scope, facts, table, narrow);
+    if (records) return records;
   }
   return [];
 }
@@ -1050,10 +1093,10 @@ function toSymbols(facts: FileFacts): PublicSymbolEntry[] {
   );
 }
 
-function constantValue(chain: string[], scope: Scope, facts: FileFacts, table: TypeTable): string | undefined {
+function constantValue(chain: string[], scope: Scope, facts: FileFacts, table: TypeTable, narrow: Narrow): string | undefined {
   if (chain.length === 1) {
     for (const qualified of scope.enclosingTypes) {
-      for (const record of table.byQualifiedName.get(qualified) ?? []) {
+      for (const record of narrow(table.byQualifiedName.get(qualified) ?? []) ?? []) {
         const value = record.type.constants.get(chain[0]);
         if (value !== undefined) return value;
       }
@@ -1061,7 +1104,7 @@ function constantValue(chain: string[], scope: Scope, facts: FileFacts, table: T
     return undefined;
   }
   const member = chain[chain.length - 1];
-  for (const record of resolveChain(chain.slice(0, -1), scope, facts, table)) {
+  for (const record of resolveChain(chain.slice(0, -1), scope, facts, table, narrow)) {
     const value = record.type.constants.get(member);
     if (value !== undefined) return value;
   }
@@ -1073,14 +1116,14 @@ function constantValue(chain: string[], scope: Scope, facts: FileFacts, table: T
  * name. A name that folds to nothing makes the text `unknown`, or undefined
  * when there is no stand-in for it.
  */
-function foldString(use: StringUse, facts: FileFacts, table: TypeTable, unknown: string | undefined): string | undefined {
+function foldString(use: StringUse, facts: FileFacts, table: TypeTable, narrow: Narrow, unknown: string | undefined): string | undefined {
   let text = "";
   for (const part of use.parts) {
     if ("literal" in part) {
       text += part.literal;
       continue;
     }
-    const value = part.chain.length > 0 ? constantValue(part.chain, use.scope, facts, table) : undefined;
+    const value = part.chain.length > 0 ? constantValue(part.chain, use.scope, facts, table, narrow) : undefined;
     if (value !== undefined) {
       text += value;
     } else if (unknown !== undefined) {
@@ -1112,9 +1155,11 @@ async function toDependencies(
   thisFile: string,
   content: string,
   table: TypeTable,
+  reach: ProjectReach,
   fileIndex: WorkspaceFileIndex | undefined,
   symbolIndex: WorkspaceSymbolIndex | undefined
 ): Promise<DependencyEntry[]> {
+  const narrow   = narrowFor(thisFile, reach);
   const byTarget = new Map<string, Set<string>>();
   const link = (file: string, symbol?: string) => {
     const symbols = byTarget.get(file) ?? new Set<string>();
@@ -1123,7 +1168,7 @@ async function toDependencies(
   };
 
   for (const use of facts.nameUses) {
-    const records = resolveChain(use.chain, use.scope, facts, table);
+    const records = resolveChain(use.chain, use.scope, facts, table, narrow);
     if (records.length === 0 || records.some((record) => record.file === thisFile)) continue;
     for (const record of records) link(record.file, record.type.name);
   }
@@ -1133,7 +1178,8 @@ async function toDependencies(
     const own       = facts.types.find((type) => type.qualifiedName === enclosing);
     if (!enclosing || own?.members.some((member) => member.name === use.chain[0])) continue;
     for (const peer of table.byQualifiedName.get(enclosing) ?? []) {
-      if (peer.file === thisFile) continue;
+      // The halves of a partial type are compiled together, so a peer lies in this file's own project.
+      if (peer.file === thisFile || reach.projectOf(peer.file) !== reach.projectOf(thisFile)) continue;
       const member = peer.type.members.find((candidate) => candidate.name === use.chain[0]);
       if (member) link(peer.file, member.published ? member.name : undefined);
     }
@@ -1141,7 +1187,7 @@ async function toDependencies(
 
   const configReferences: ConfigReference[] = [];
   for (const use of facts.configUses) {
-    const folded = foldString(use, facts, table, undefined);
+    const folded = foldString(use, facts, table, narrow, undefined);
     const name   = folded === undefined ? undefined : use.kind === "connectionString" ? connectionName(folded) : folded;
     if (name) configReferences.push({ kind: use.kind, name });
   }
@@ -1151,7 +1197,8 @@ async function toDependencies(
     const scopes: Scope[] = [fileScope, ...Array.from(facts.namespaces).map((namespace) => ({ namespace, enclosingTypes: [], partial: false }))];
     const targets = new Map<string, ResolvedTypeTarget>();
     for (const scope of scopes) {
-      for (const record of resolveChain(typeName.split("."), scope, facts, table)) {
+      // A type named in a string is loaded by reflection, from whatever assembly is loaded, not bound by the compiler.
+      for (const record of resolveChain(typeName.split("."), scope, facts, table, WHOLE_WORKSPACE)) {
         if (record.file !== thisFile) targets.set(record.file, { file: record.file, name: record.type.name });
       }
     }
@@ -1169,7 +1216,7 @@ async function toDependencies(
     .sort(([left], [right]) => compareText(left, right))
     .map(([file, symbols]) => ({ specifier: file, resolvedPath: file, symbols: Array.from(symbols).sort(), kind: "import" as const }));
 
-  dependencies.push(...contractDependencies(facts, thisFile, table, fileIndex, symbolIndex));
+  dependencies.push(...contractDependencies(facts, thisFile, table, narrow, fileIndex, symbolIndex));
 
   const external = facts.usings
     .filter((namespace) => namespace !== "System" && !namespace.startsWith("System.") && !isWorkspaceNamespace(namespace, table))
@@ -1190,6 +1237,7 @@ function contractDependencies(
   facts: FileFacts,
   thisFile: string,
   table: TypeTable,
+  narrow: Narrow,
   fileIndex: WorkspaceFileIndex | undefined,
   symbolIndex: WorkspaceSymbolIndex | undefined
 ): DependencyEntry[] {
@@ -1203,7 +1251,7 @@ function contractDependencies(
   };
 
   for (const use of facts.routeUses) {
-    const url = foldString(use, facts, table, "{}");
+    const url = foldString(use, facts, table, narrow, "{}");
     if (url === undefined) continue;
     const segments = routeSegments(url);
     if (segments.length === 0) continue;
@@ -1217,14 +1265,14 @@ function contractDependencies(
 
   const objects: Array<{ name: SqlObjectName; raw: string }> = [];
   for (const use of facts.sqlUses) {
-    const text = foldString(use, facts, table, undefined);
+    const text = foldString(use, facts, table, narrow, undefined);
     if (text === undefined) continue;
     for (const reference of sqlReferences(text)) {
       objects.push({ name: reference.name, raw: reference.raw });
     }
   }
   for (const use of facts.tableUses) {
-    const text = foldString(use, facts, table, undefined);
+    const text = foldString(use, facts, table, narrow, undefined);
     if (text) objects.push({ name: sqlObjectName(text), raw: text });
   }
   for (const object of objects) {
@@ -1264,9 +1312,10 @@ export const csharpAdapter: LanguageAdapter = {
     const table    = await typeTable(workspaceRoot, fileIndex);
     const thisFile = normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath));
     const content  = await fs.readFile(absolutePath, "utf8");
+    const reach    = await projectReach(workspaceRoot, fileIndex);
     const result: SourceAnalysisResult = {
       symbols:      toSymbols(facts),
-      dependencies: await toDependencies(facts, thisFile, content, table, fileIndex, symbolIndex)
+      dependencies: await toDependencies(facts, thisFile, content, table, reach, fileIndex, symbolIndex)
     };
     if (facts.program) result.program = facts.program;
     return result;

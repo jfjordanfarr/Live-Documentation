@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/csharp.ts
-- Generated At: 2026-11-19T21:08:26.018Z
+- Generated At: 2026-11-19T21:36:01.677Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Harvests public symbols, XML doc comments, and dependency edges from C# sources,
 ### Public Symbols
 #### `resolveWorkspaceTypes` {#symbol-resolveworkspacetypes}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1249)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1297)
 - Parameters: `fileIndex`: [`WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex)
 
 ##### `resolveWorkspaceTypes` — Summary
@@ -28,7 +28,7 @@ The workspace files that declare a qualified type name, for adapters of other fi
 
 #### `csharpAdapter` {#symbol-csharpadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1259)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1307)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `csharpAdapter` — Summary
@@ -44,6 +44,8 @@ Language adapter for C# (`.cs`): tree-sitter symbols and compiler-style name res
 - [`csharp.dependencies.ResolvedTypeTarget`](./csharp.dependencies.ts.mdmd.md#symbol-resolvedtypetarget)
 - [`csharp.dependencies.extractDynamicDependencies`](./csharp.dependencies.ts.mdmd.md#symbol-extractdynamicdependencies)
 - [`csharp.xmldoc.buildDocumentationFromLines`](./csharp.xmldoc.ts.mdmd.md#symbol-builddocumentationfromlines)
+- [`dotnetProjects.ProjectReach`](./dotnetProjects.ts.mdmd.md#symbol-projectreach-interface)
+- [`dotnetProjects.projectReach`](./dotnetProjects.ts.mdmd.md#symbol-projectreach-function)
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`index.WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex) (type-only)
 - [`treeSitter.SyntaxNode`](./treeSitter.ts.mdmd.md#symbol-syntaxnode)
