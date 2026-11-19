@@ -547,12 +547,18 @@ export const changedFromDefaults = (
   defaults: { filters: ExplorerFilters; tuning: TuningConfig }
 ): Pick<PersistedUi, "filters" | "tuning"> => {
   const filters = changedIn(state.filters, defaults.filters);
-  const tuning: SavedTuning = {};
-  for (const group of Object.keys(state.tuning) as Array<keyof TuningConfig>) {
-    const changed = changedIn<object>(state.tuning[group], defaults.tuning[group]);
-    if (changed) (tuning as Record<string, object>)[group] = changed;
+  const tuning = changedTuningFromDefaults(state.tuning, defaults.tuning);
+  return { ...(filters ? { filters } : null), ...(tuning ? { tuning } : null) };
+};
+
+/** The Tuning settings that differ from the defaults, group by group, or `undefined` when none does. */
+export const changedTuningFromDefaults = (tuning: TuningConfig, defaults: TuningConfig): SavedTuning | undefined => {
+  const changed: SavedTuning = {};
+  for (const group of Object.keys(tuning) as Array<keyof TuningConfig>) {
+    const inGroup = changedIn<object>(tuning[group], defaults[group]);
+    if (inGroup) (changed as Record<string, object>)[group] = inGroup;
   }
-  return { ...(filters ? { filters } : null), ...(Object.keys(tuning).length > 0 ? { tuning } : null) };
+  return Object.keys(changed).length > 0 ? changed : undefined;
 };
 
 /**

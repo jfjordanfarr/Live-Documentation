@@ -63,7 +63,11 @@ async function steadySphere(page: Page): Promise<Sphere> {
     // No frame needs awaiting between the two readings: one reading takes 93 to 150 ms against a frame of about 25 ms,
     // so the pair spans 6 to 8 frames; none of 46 pairs fell inside one frame (measured 2026-11-19, two workers).
     const again = new Map((await renderedNodes(page)).map(sphere => [sphere.id, sphere]));
-    found = first.map(sphere => again.get(sphere.id)).find((sphere, index) => !!sphere && Math.hypot(sphere.x - first[index].x, sphere.y - first[index].y) < 1);
+    // A sphere the pointer can reach: one standing under the search bar or a control is out of a person's hand. On
+    // 2026-11-19 the largest steady sphere was found under the search bar, and nothing hovered.
+    const open = await page.evaluate(points => points.map(({ x, y }) => document.elementFromPoint(x, y) === document.querySelector("#graph-svg canvas")),
+      first.map(sphere => ({ x: sphere.x, y: sphere.y })));
+    found = first.map(sphere => again.get(sphere.id)).find((sphere, index) => !!sphere && open[index] && Math.hypot(sphere.x - first[index].x, sphere.y - first[index].y) < 1);
     return !!found;
   }, { timeout: 90_000, intervals: [0], message: "a sphere of the grown picture holds its place on the screen" }).toBe(true);
   return found!;
@@ -84,7 +88,8 @@ test("a click on a seed with the pointer kept still: nothing hovers or fades whi
   // Before the click the pointer's own move hovers the seed, and the rest fades around it.
   await page.mouse.move(at.x, at.y);
   await expect.poll(async () => (await looking(page, at)).hovered).toBe("true");
-  expect((await looking(page, at)).faded, "the hover fades the other seeds").toBeGreaterThan(0);
+  // The fade waits until the pointer has rested on the seed (2026-11-19, `pointerRest.ts`).
+  await expect.poll(async () => (await looking(page, at)).faded, { message: "the hover fades the other seeds once the pointer rests" }).toBeGreaterThan(0);
   await page.mouse.down(); await page.mouse.up();
   // The click pins the seed and its group grows: the map builds, and the hover that was showing ends at once.
   expect(await looking(page, at), "at once after the click, the hover has ended and nothing is faded").toMatchObject({ hovered: "false", faded: 0 });
@@ -111,10 +116,34 @@ test("a click on a seed with the pointer kept still: nothing hovers or fades whi
   // as its reading: the largest sphere whose place holds between two readings is taken, and the pointer moves once.
   // (Until 2026-11-18 the largest sphere of one reading was taken; beside a second worker it had left the pointer's
   // place by more than its own radius before the next frame picked, in 14 of 16 runs.)
-  const target = await steadySphere(page);
-  await page.mouse.move(target.x, target.y);
-  await expect.poll(async () => (await looking(page, target)).hovered).toBe("true");
-  await expect.poll(async () => (await looking(page, target)).faded, { message: "the rest fades for the hover" }).toBeGreaterThan(0);
+  // Since 2026-11-19 the fade waits for the pointer to rest, 350 ms, and a sphere of the drifting picture can leave the
+  // still pointer before then, as a person's target can: measured that day, the steady sphere drifted 12 to 50 px in
+  // 1.2 s. An aim is void, and the case aims again, only when its own precondition failed: the sphere left the pointer
+  // (another sphere, or none, under the pointer's place) before the rest could ripen, watched for 450 ms after the
+  // move: the 350 ms and a margin.
+  // A sphere that stayed is the product's to answer: the pointing hand at once, the fade after the rest, or a failure.
+  const RIPENS = 450;
+  let voided = 0;
+  for (;;) {
+    const target = await steadySphere(page);
+    await page.mouse.move(target.x, target.y);
+    const moved = Date.now();
+    let left = false, pressable = false, faded = false;
+    while (!faded && !left && Date.now() - moved < 3_000) {
+      const now = await looking(page, target);
+      if (now.under !== target.id && Date.now() - moved < RIPENS) left = true;
+      if (now.hovered === "true") pressable = true;
+      if (now.faded > 0) faded = true;
+    }
+    if (faded) break;
+    if (left) {
+      voided++;
+      expect(voided, `the picture never held a sphere under the still pointer until its rest could ripen: ${voided} aims void`).toBeLessThan(4);
+      continue;
+    }
+    expect(pressable, `the move landed on the sphere, which stayed under the pointer, and the pointing hand never said it could be pressed (aim ${voided + 1}, ${voided} void before it)`).toBe(true);
+    expect(faded, `the sphere stayed under the pointer through the rest, and the rest never faded (aim ${voided + 1}, ${voided} void before it)`).toBe(true);
+  }
 });
 
 test("a press on a node while the map builds does nothing and is not replayed once it has built; a drag from a sphere turns the camera", async ({ page }) => {

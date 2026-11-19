@@ -1,0 +1,114 @@
+{
+  "3d-repo": {
+    "sweep": {
+      "frames": 230,
+      "withNewName": 158,
+      "withActions": 72,
+      "withWireWords": 0,
+      "pressable": 164,
+      "withPeek": 0,
+      "withFade": 0,
+      "withDoorWords": 0,
+      "firstWordsAt": 0
+    },
+    "rest": {
+      "frames": 97,
+      "withNewName": 0,
+      "withActions": 97,
+      "withWireWords": 0,
+      "pressable": 97,
+      "withPeek": 0,
+      "withFade": 0,
+      "withDoorWords": 0,
+      "firstWordsAt": 0
+    },
+    "target": {
+      "x": 413.85,
+      "y": 425
+    }
+  },
+  "3d-estate": {
+    "sweep": {
+      "frames": 246,
+      "withNewName": 0,
+      "withActions": 0,
+      "withWireWords": 0,
+      "pressable": 46,
+      "withPeek": 0,
+      "withFade": 0,
+      "withDoorWords": 0,
+      "firstWordsAt": null
+    },
+    "rest": {
+      "frames": 109,
+      "withNewName": 0,
+      "withActions": 54,
+      "withWireWords": 0,
+      "pressable": 76,
+      "withPeek": 0,
+      "withFade": 0,
+      "withDoorWords": 0,
+      "firstWordsAt": 917
+    },
+    "target": {
+      "x": 574.3425,
+      "y": 411.5
+    }
+  },
+  "world-repo": {
+    "sweep": {
+      "frames": 279,
+      "withNewName": 0,
+      "withActions": 0,
+      "withWireWords": 0,
+      "pressable": 0,
+      "withPeek": 0,
+      "withFade": 0,
+      "withDoorWords": 0,
+      "firstWordsAt": null
+    },
+    "rest": {
+      "frames": 171,
+      "withNewName": 0,
+      "withActions": 0,
+      "withWireWords": 0,
+      "pressable": 0,
+      "withPeek": 117,
+      "withFade": 117,
+      "withDoorWords": 117,
+      "firstWordsAt": 900
+    },
+    "target": {
+      "x": 537.6866666666666,
+      "y": 385.4756357056232
+    }
+  },
+  "world-estate": {
+    "sweep": {
+      "frames": 264,
+      "withNewName": 0,
+      "withActions": 0,
+      "withWireWords": 0,
+      "pressable": 0,
+      "withPeek": 0,
+      "withFade": 0,
+      "withDoorWords": 0,
+      "firstWordsAt": null
+    },
+    "rest": {
+      "frames": 159,
+      "withNewName": 0,
+      "withActions": 0,
+      "withWireWords": 0,
+      "pressable": 0,
+      "withPeek": 104,
+      "withFade": 104,
+      "withDoorWords": 104,
+      "firstWordsAt": 917
+    },
+    "target": {
+      "x": 646.2759588400374,
+      "y": 295.5902089420639
+    }
+  }
+}

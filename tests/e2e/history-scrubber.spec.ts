@@ -304,10 +304,18 @@ test("commit search, range selection and adjacent controls investigate an interv
   await expect(track(page)).toHaveAttribute("aria-valuemin", "2");
   await expect(track(page)).toHaveAttribute("aria-valuemax", "4");
   await expect(page.locator(".history-tick")).toHaveCount(3);
-  await expect(page.getByRole("button", { name: "Next commit", exact: true })).toBeDisabled();
+  // Home and End keep to the selected interval; since 2026-11-19 the step buttons pass its end and slide it, its span
+  // kept, to hold the step (before, they stopped there, disabled).
   await track(page).press("Home");
   await expect(track(page)).toHaveAttribute("aria-valuenow", "2");
-  await expect(page.getByRole("button", { name: "Previous commit", exact: true })).toBeDisabled();
+  await track(page).press("End");
+  await expect(track(page)).toHaveAttribute("aria-valuenow", "4");
+  await page.getByRole("button", { name: "Next commit", exact: true }).click();
+  await expect(track(page)).toHaveAttribute("aria-valuenow", "5");
+  await expect(track(page)).toHaveAttribute("aria-valuemin", "3");
+  await expect(track(page)).toHaveAttribute("aria-valuemax", "5");
+  await track(page).press("Home");
+  await expect(track(page)).toHaveAttribute("aria-valuenow", "3");
   await find.click();
   await query.fill(commits[0].date.slice(0, 10));
   await query.press("Enter");
@@ -596,6 +604,81 @@ test("the coarse pair, Page Up and Page Down and play move between the pins' mar
   await expect(button("Play")).toHaveAttribute("title", "Play, one step after another");
   await button("Next marked commit").click();
   await expect(track(page)).toHaveAttribute("aria-valuenow", "3");
+});
+
+/**
+ * The track zooms and slides (2026-11-19, the owner: "Could I pinch or scroll the history ticks area to expand or
+ * contract it, as one does for horizontal zoom in/out in FL Studio?"). The scripted sample's seven steps are fewer than
+ * the least span a zoom narrows to, so the case starts from an interval the finder selects, steps 2 to 4, and widens,
+ * slides and narrows it; the marks' sharpening over a long history is the tick model's unit cases'.
+ */
+test("the wheel and the keys widen, slide and narrow the track's range, play goes on, and a step left outside is marked at that end and brought back", async ({ page }) => {
+  const commits = await commitsOf(page, "/samples/history/");
+  await page.goto(entry("/samples/history/", { commit: commits[2].id }));
+  await expect(track(page)).toHaveAttribute("aria-valuenow", "2");
+  const find = page.getByRole("button", { name: "Find a commit or select a range", exact: true });
+  await find.click();
+  await page.getByRole("button", { name: "Start range at this commit", exact: true }).click();
+  await track(page).press("ArrowRight");
+  await track(page).press("ArrowRight");
+  await find.click();
+  await page.getByRole("button", { name: "End range at this commit", exact: true }).click();
+  await expect(track(page)).toHaveAttribute("aria-valuemax", "4");
+  await track(page).press("Home");
+  await expect(track(page)).toHaveAttribute("aria-valuenow", "2");
+  const range = async () => [await track(page).getAttribute("aria-valuemin"), await track(page).getAttribute("aria-valuemax")];
+  // Whether the page's own scroll or zoom was prevented, read after the track's listener has run.
+  await page.evaluate(() => window.addEventListener("wheel", event => { (window as unknown as { wheelPrevented: boolean }).wheelPrevented = event.defaultPrevented; }));
+  const lane = (await page.locator(".history-lane").boundingBox())!;
+  await page.mouse.move(lane.x + 2, lane.y + lane.height / 2);
+
+  // A sideways turn the width of the track slides the range by its span: steps 4 to 6, and step 2 is left outside.
+  await page.mouse.wheel(lane.width, 0);
+  await expect.poll(range).toEqual(["4", "6"]);
+  expect(await page.evaluate(() => (window as unknown as { wheelPrevented: boolean }).wheelPrevented), "the page does not scroll").toBe(true);
+  await expect(track(page)).toHaveAttribute("aria-valuenow", "2");
+  const elsewhere = page.getByRole("button", { name: `Show the current commit, ${commits[2].date.slice(0, 10)}`, exact: true });
+  await expect(elsewhere, "the step's mark stands at the start of the track").toBeVisible();
+  await expect(page.locator(".history-thumb")).toBeHidden();
+  const mark = (await elsewhere.boundingBox())!;
+  expect(Math.abs(mark.x + mark.width / 2 - lane.x), "at the track's start").toBeLessThan(2);
+  await elsewhere.click();
+  await expect.poll(range, "the least slide that holds the step").toEqual(["2", "4"]);
+  await expect(elsewhere).toBeHidden();
+  await expect(page.locator(".history-thumb")).toBeVisible();
+
+  // A turn toward the reader widens about the step under the pointer, to the whole history, where no range is shown.
+  await page.mouse.move(lane.x + lane.width / 2, lane.y + lane.height / 2);
+  await page.mouse.wheel(0, 300);
+  await expect.poll(range).not.toEqual(["2", "4"]);
+  await page.mouse.wheel(0, 600);
+  await expect.poll(range).toEqual(["0", "6"]);
+  await expect(page.getByRole("button", { name: "Show entire history", exact: true })).toBeHidden();
+
+  // The keys on the slider: minus widens, plus narrows, about the step shown; neither moves the step.
+  await find.click();
+  await page.getByRole("button", { name: "Start range at this commit", exact: true }).click();
+  await track(page).press("ArrowRight");
+  await find.click();
+  await page.getByRole("button", { name: "End range at this commit", exact: true }).click();
+  await expect.poll(range).toEqual(["2", "3"]);
+  await track(page).press("Home");
+  await track(page).press("-");
+  await expect.poll(range).not.toEqual(["2", "3"]);
+  expect(await range(), "widened about step 2").toEqual(["2", "4"]);
+  // Plus narrows, but never below the least span: on seven steps a range of two is already below it, and stays.
+  await track(page).press("+");
+  await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+  expect(await range()).toEqual(["2", "4"]);
+  await expect(track(page)).toHaveAttribute("aria-valuenow", "2");
+
+  // A zoom does not pause play: playing, a slide leaves the playhead going on outside the range.
+  await page.getByLabel("Playback speed").selectOption("0.5");
+  await page.getByRole("button", { name: "Play", exact: true }).click();
+  await page.mouse.move(lane.x + lane.width / 2, lane.y + lane.height / 2);
+  await page.mouse.wheel(lane.width * 2, 0);
+  await expect(page.getByRole("button", { name: "Pause", exact: true }), "still playing").toBeVisible();
+  await page.getByRole("button", { name: "Pause", exact: true }).click();
 });
 
 test("an absent historical request shows only the tree's root, dimmed, and resumes normal motion at its birth", async ({ page }) => {
