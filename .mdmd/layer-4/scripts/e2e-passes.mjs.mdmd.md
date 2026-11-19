@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/e2e-passes.mjs
 - Entry: command `test:e2e` of [`package.json`](../package.json.mdmd.md)
-- Generated At: 2026-11-18T17:24:34.402Z
+- Generated At: 2026-11-19T00:59:46.525Z
 
 ## Authored
 ### Purpose
@@ -29,4 +29,6 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `node:child_process` - `spawnSync`
+- `node:module` - `createRequire`
+- `node:url` - `fileURLToPath`
 <!-- LIVE-DOC:END Dependencies -->

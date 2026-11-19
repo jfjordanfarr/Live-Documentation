@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/e2e/playwright.config.ts
 - Entry: tooling
-- Generated At: 2026-11-18T17:24:37.204Z
+- Generated At: 2026-11-19T00:59:48.067Z
 
 ## Authored
 ### Purpose
@@ -31,7 +31,7 @@ Playwright configuration for the Explorer's browser suite: one Chromium worker o
 ### Public Symbols
 #### `default` {#symbol-default}
 - Type: default (default)
-- Source: [source](../../../../tests/e2e/playwright.config.ts#L25)
+- Source: [source](../../../../tests/e2e/playwright.config.ts#L29)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

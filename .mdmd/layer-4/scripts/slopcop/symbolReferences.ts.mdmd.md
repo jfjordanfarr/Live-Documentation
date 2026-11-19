@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/slopcop/symbolReferences.ts
-- Generated At: 2026-11-18T23:12:57.168Z
+- Generated At: 2026-11-19T00:59:46.977Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ Implements the shared detector SlopCop uses to spot duplicate heading slugs and 
 ### Public Symbols
 #### `SymbolIssueKind` {#symbol-symbolissuekind}
 - Type: type
-- Source: [source](../../../../scripts/slopcop/symbolReferences.ts#L19)
+- Source: [source](../../../../scripts/slopcop/symbolReferences.ts#L22)
 
 ##### `SymbolIssueKind` — Summary
 The category of issue found during symbol/anchor auditing.
@@ -31,14 +31,14 @@ The category of issue found during symbol/anchor auditing.
 
 #### `SymbolIssueSeverity` {#symbol-symbolissueseverity}
 - Type: type
-- Source: [source](../../../../scripts/slopcop/symbolReferences.ts#L22)
+- Source: [source](../../../../scripts/slopcop/symbolReferences.ts#L25)
 
 ##### `SymbolIssueSeverity` — Summary
 Severity level for a symbol audit issue.
 
 #### `SymbolRuleSetting` {#symbol-symbolrulesetting}
 - Type: type
-- Source: [source](../../../../scripts/slopcop/symbolReferences.ts#L25)
+- Source: [source](../../../../scripts/slopcop/symbolReferences.ts#L28)
 - Returns: [`SymbolIssueSeverity`](#symbol-symbolissueseverity)
 
 ##### `SymbolRuleSetting` — Summary
@@ -46,7 +46,7 @@ Tri-state rule setting: `"off"` disables the check entirely.
 
 #### `SymbolReferenceIssue` {#symbol-symbolreferenceissue}
 - Type: interface
-- Source: [source](../../../../scripts/slopcop/symbolReferences.ts#L33)
+- Source: [source](../../../../scripts/slopcop/symbolReferences.ts#L36)
 
 ##### `SymbolReferenceIssue` — Summary
 A single issue discovered by {@link findSymbolReferenceAnomalies}.
@@ -56,7 +56,7 @@ diagnostics with file path, line/column, and actionable message.
 
 #### `SymbolAuditOptions` {#symbol-symbolauditoptions}
 - Type: interface
-- Source: [source](../../../../scripts/slopcop/symbolReferences.ts#L52)
+- Source: [source](../../../../scripts/slopcop/symbolReferences.ts#L55)
 
 ##### `SymbolAuditOptions` — Summary
 Options for {@link findSymbolReferenceAnomalies}.
@@ -67,7 +67,7 @@ Options for {@link findSymbolReferenceAnomalies}.
 
 #### `findSymbolReferenceAnomalies` {#symbol-findsymbolreferenceanomalies}
 - Type: function
-- Source: [source](../../../../scripts/slopcop/symbolReferences.ts#L120)
+- Source: [source](../../../../scripts/slopcop/symbolReferences.ts#L131)
 - Returns: [`SymbolReferenceIssue`](#symbol-symbolreferenceissue)[]
 - Parameters: `options`: [`SymbolAuditOptions`](#symbol-symbolauditoptions)
 
@@ -77,8 +77,10 @@ anchor references.
 
 Heading slugs are computed using GitHub-flavour slugging. The fence parser
 respects CommonMark nested code fence rules (a closing fence must be at
-least as long as the opening fence) so headings inside nested code blocks
-are correctly ignored.
+least as long as the opening fence, with nothing after it) so headings inside
+nested code blocks are correctly ignored. An anchor written in HTML
+(`<a id="…">`, `<a name="…">`) outside code is a target too, and a link
+written inside code is an example and is not checked.
 
 An anchor is looked up among its target's headings whether or not the target
 is one of `files`: a markdown file outside the audit (the session archive's
@@ -104,6 +106,9 @@ Created 2025-10-25 for the SlopCop symbol auditor; fence parser fixed
 - [`githubSlugger.slugText`](../../packages/engine/src/tooling/githubSlugger.ts.mdmd.md#symbol-slugtext)
 - [`markdownShared.computeLineStarts`](./markdownShared.ts.mdmd.md#symbol-computelinestarts)
 - [`markdownShared.extractReferenceDefinitions`](./markdownShared.ts.mdmd.md#symbol-extractreferencedefinitions)
+- [`markdownShared.fencedLines`](./markdownShared.ts.mdmd.md#symbol-fencedlines)
+- [`markdownShared.maskCode`](./markdownShared.ts.mdmd.md#symbol-maskcode)
+- [`markdownShared.maskCodeSpans`](./markdownShared.ts.mdmd.md#symbol-maskcodespans)
 - [`markdownShared.parseLinkTarget`](./markdownShared.ts.mdmd.md#symbol-parselinktarget)
 - [`markdownShared.toLineAndColumn`](./markdownShared.ts.mdmd.md#symbol-tolineandcolumn)
 <!-- LIVE-DOC:END Dependencies -->

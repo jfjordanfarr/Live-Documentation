@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/slopcop/markdownShared.ts
-- Generated At: 2026-09-28T20:40:08.951Z
+- Generated At: 2026-11-19T00:59:46.965Z
 
 ## Authored
 ### Purpose
@@ -42,20 +42,38 @@ Map from lowercased reference identifier to its definition.
 
 #### `maskCode` {#symbol-maskcode}
 - Type: function
-- Source: [source](../../../../scripts/slopcop/markdownShared.ts#L48)
+- Source: [source](../../../../scripts/slopcop/markdownShared.ts#L46)
 
 ##### `maskCode` — Summary
 The content with every fenced code block and inline code span replaced by
 spaces of the same length, so that an offset into the result is an offset
 into the original. Markdown inside code is literal text: a link or a heading
-written there is an example, not a link or a heading. The fence rules are
-CommonMark's, as the symbol audit applies them: a run of three or more
-backticks or tildes opens a block, and only a run of the same character at
-least as long closes it.
+written there is an example, not a link or a heading. The fences are found
+by {@link fencedLines}, as the symbol audit finds them.
+
+#### `maskCodeSpans` {#symbol-maskcodespans}
+- Type: function
+- Source: [source](../../../../scripts/slopcop/markdownShared.ts#L53)
+
+##### `maskCodeSpans` — Summary
+A line with each inline code span replaced by spaces of the same length.
+
+#### `fencedLines` {#symbol-fencedlines}
+- Type: function
+- Source: [source](../../../../scripts/slopcop/markdownShared.ts#L68)
+
+##### `fencedLines` — Summary
+For each line, whether it belongs to a fenced code block: its opening line,
+its body or its closing line. The rules are CommonMark's: a run of three or
+more backticks or tildes, indented at most three spaces, opens a block (a
+backtick run only when no backtick follows it on the line); only a run of the
+same character at least as long, with nothing after it but spaces, closes it,
+so a line such as "```ts" inside a block is part of the block; and a block
+never closed runs to the end of the document.
 
 #### `computeLineStarts` {#symbol-computelinestarts}
 - Type: function
-- Source: [source](../../../../scripts/slopcop/markdownShared.ts#L87)
+- Source: [source](../../../../scripts/slopcop/markdownShared.ts#L98)
 
 ##### `computeLineStarts` — Summary
 Computes a sorted array of byte offsets where each line begins.
@@ -70,7 +88,7 @@ Array of 0-based byte offsets for each line start.
 
 #### `toLineAndColumn` {#symbol-tolineandcolumn}
 - Type: function
-- Source: [source](../../../../scripts/slopcop/markdownShared.ts#L106)
+- Source: [source](../../../../scripts/slopcop/markdownShared.ts#L117)
 
 ##### `toLineAndColumn` — Summary
 Converts a 0-based byte offset to a 1-based line and column number
@@ -85,7 +103,7 @@ using a precomputed line-start array.
 
 #### `parseLinkTarget` {#symbol-parselinktarget}
 - Type: function
-- Source: [source](../../../../scripts/slopcop/markdownShared.ts#L136)
+- Source: [source](../../../../scripts/slopcop/markdownShared.ts#L147)
 
 ##### `parseLinkTarget` — Summary
 Extracts the URL portion from a raw markdown link target string,
