@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/connections.ts
-- Generated At: 2026-11-19T04:41:43.583Z
+- Generated At: 2026-11-19T05:22:12.566Z
 
 ## Authored
 ### Purpose
@@ -110,7 +110,9 @@ Takes every wire off the overlay and forgets the layer; the next drawing makes a
 - [`directory-flow.linksOf`](./directory-flow.ts.mdmd.md#symbol-linksof)
 - [`overview-files.OVERVIEW_FILES_ATTRIBUTE`](./overview-files.ts.mdmd.md#symbol-overview_files_attribute)
 - [`overview-files.OVERVIEW_LINES_ATTRIBUTE`](./overview-files.ts.mdmd.md#symbol-overview_lines_attribute)
+- [`returning-connections.LaidBox`](./returning-connections.ts.mdmd.md#symbol-laidbox)
 - [`returning-connections.ReturningConnections`](./returning-connections.ts.mdmd.md#symbol-returningconnections-interface)
+- [`returning-connections.returnRoute`](./returning-connections.ts.mdmd.md#symbol-returnroute)
 - [`returning-connections.returningConnections`](./returning-connections.ts.mdmd.md#symbol-returningconnections-function)
 - [`runtime.LocalViewRuntime`](./runtime.ts.mdmd.md#symbol-localviewruntime) (type-only)
 - [`runtime.WireLayer`](./runtime.ts.mdmd.md#symbol-wirelayer) (type-only)

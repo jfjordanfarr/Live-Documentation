@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/directory-flow.ts
-- Generated At: 2026-11-19T04:41:43.684Z
+- Generated At: 2026-11-19T05:22:12.736Z
 
 ## Authored
 ### Purpose
@@ -174,7 +174,7 @@ The scene's measurer on the nominal model: every file card {@link NOMINAL_CARD},
 no wider than a card cap when one is set, every directory's label {@link NOMINAL_LABEL} tall, and every line's end at a
 card's node-level hub, half way down it as the stylesheet stood it until 2026-11-19. The page now stands a hub at its
 name's first line (`hubLine` in wire-gathering.ts); the model keeps the middle, since moving it changes the shapes the
-price chooses (on `scripts/live-docs` the default shape became the one Width Cost at nought gives), which is the
+price chooses (on `scripts/live-docs` Width Cost at nought then no longer widens the default shape), which is the
 owner's to choose. A closed box ends no line.
 
 #### `ShapeSearch` {#symbol-shapesearch}
