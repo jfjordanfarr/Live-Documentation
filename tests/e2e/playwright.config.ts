@@ -22,11 +22,9 @@ const site = `http://localhost:${port}`;
 // Set by scripts/e2e-passes.mjs: "shared" for its first pass, every case but those tagged `@alone`, at two workers;
 // "alone" for its second, those cases at one worker. Unset, Playwright run directly takes every case at one worker. The
 // pass's filter stands here and not on the runner's command line, because Playwright applies a configuration's `grep`
-// and a command line's `--grep` together, where a second `--grep` on the command line replaces the first.
-const pass = process.env.LIVE_DOCS_E2E_PASS;
-const alonePass = pass === "alone";
-
-export default defineConfig({
+// and a command line's `--grep` together, where a second `--grep` on the command line replaces the first. The
+// configuration is a function of the pass's name, so that a unit test reads each pass's as Playwright receives it.
+export const configFor = (pass: string | undefined) => defineConfig({
   testDir: ".",
   testMatch: "**/*.spec.ts",
   fullyParallel: false,
@@ -41,10 +39,10 @@ export default defineConfig({
   // with no limit changed. A case earns the tag by failing at two workers and passing alone, and for no other reason.
   // The measurements are in this file's Live Doc.
   workers: pass === "shared" ? 2 : 1,
-  ...(pass === "shared" ? { grepInvert: /@alone/ } : alonePass ? { grep: /@alone/ } : {}),
+  ...(pass === "shared" ? { grepInvert: /@alone/ } : pass === "alone" ? { grep: /@alone/ } : {}),
   // The second pass keeps its own report and its own failure artifacts, so that it does not erase the first pass's.
-  reporter: [["list"], ["html", { open: "never", outputFolder: alonePass ? "../../reports/e2e-alone" : "../../reports/e2e" }]],
-  ...(alonePass ? { outputDir: "../../test-results-alone" } : {}),
+  reporter: [["list"], ["html", { open: "never", outputFolder: pass === "alone" ? "../../reports/e2e-alone" : "../../reports/e2e" }]],
+  ...(pass === "alone" ? { outputDir: "../../test-results-alone" } : {}),
   timeout: 30_000,
   // Prints which renderer draws the run's WebGL, and stops a run whose graphics card was asked for and did not answer.
   globalSetup: "./renderer-report",
@@ -80,3 +78,5 @@ export default defineConfig({
     timeout: 15_000,
   },
 });
+
+export default configFor(process.env.LIVE_DOCS_E2E_PASS);
