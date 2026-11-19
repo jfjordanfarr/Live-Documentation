@@ -44,7 +44,7 @@ The case test could not be run "for real". This repository's folder is no longer
 
 **Tests.** `generate-cli.test.ts` runs `npm --prefix <checkout> run live-docs:generate` from another folder, with a relative `--workspace` and `--config`, and with neither. Both cases failed before the mend, looking for the configuration in the checkout. They name the configuration first, so that a run which takes its paths from the checkout stops before it writes anything there. `cli.test.ts` covers the rule for `npm_lifecycle_script`.
 
-**One consequence for agents here.** `npm run live-docs:generate` typed in a subfolder of this checkout that has no `package.json` of its own, such as `scripts/`, now maps that subfolder, not the repository. That is what "the current directory" says. The gate and the e2e bundles run through nested `npm run`, which resets `INIT_CWD` to the checkout, so they are unaffected.
+**One consequence for agents here** (superseded by [the second leg](#second-leg-november-19), which takes the workspace from the nearest folder with a configuration). `npm run live-docs:generate` typed in a subfolder of this checkout that has no `package.json` of its own, such as `scripts/`, now maps that subfolder, not the repository. That is what "the current directory" says. The gate and the e2e bundles run through nested `npm run`, which resets `INIT_CWD` to the checkout, so they are unaffected.
 
 ### 3. A mistyped `--workspace`: reproduced, mended (`b203ac34`)
 
@@ -360,3 +360,117 @@ Done as the stranger did them, from this branch:
 - `line-endings.ts <index.json>` and `gitignore-endings.cjs`: Part B, item 6, run from this folder with `npx tsx` and `node`.
 
 Everything else was in my private temp folder and was removed with it.
+
+## Second leg, November 19
+
+The root accepted the first leg and ruled on its forks. The rulings are in the root's record; this section says what the second leg changed and found, on top of `dc503fea`.
+
+### "Here", amended: the nearest folder with a configuration
+
+The root changed A2 in one respect. Someone who runs `npm run live-docs:generate` from `scripts/`, or from any folder inside a mapped repository, must get that repository's map, not a new map of the folder. With no `--workspace`, a command now works on the nearest folder that holds a `.live-docs.config.json`, searching from where it was run up to the file system's root, as git finds a repository. When no folder does, it works on the folder it was run from. Relative `--workspace`, `--config` and `--output` are still taken from where the command was run. When the workspace was found above that folder, `generate` says which one it maps: `[live-docs] Mapping C:\work\Repo, the nearest folder above C:\work\Repo\src\deep that holds a .live-docs.config.json.` Every `--help`, the README, the CLI reference and the getting-started guide say the rule, with the example of `scripts/`.
+
+**Tests.** `generate-cli.test.ts` runs five cases through npm:
+- this checkout from its root and from `scripts/`, read by `inspect` from its committed docs;
+- another repository from its root and from `src/deep`, through `npm --prefix`;
+- a folder with no configuration anywhere above it, which is its own workspace.
+
+The two cases run from a subfolder failed against the first leg's rule: `scripts/` found no docs, and `src/deep` was mapped alone. `cli.test.ts` covers `nearestConfiguredFolder`, including a nested configuration and a folder named like the file.
+
+### One parser of the configuration file
+
+The decoding, and the parse with it, moved from `scripts/live-docs/cli.ts` into the engine's configuration module as `parseLiveDocumentationConfigBytes(bytes)`. It decodes by the byte-order mark (UTF-8 with or without one, UTF-16 LE or BE), parses the JSON, and throws `SyntaxError` as `JSON.parse` does. `readConfiguration` in `cli.ts` calls it, and `decodeText` is gone. `cli.test.ts`'s cases for marks and UTF-16 now run through it.
+
+**It takes bytes, not a path.** The Explorer's page bundles this module: three client files (`client/pathfind.ts`, `panels/sources-facts.ts`, `views/localView/card-reading.ts`) import the engine's `pathfind.ts`, which imports it for `noReaderHandles`. I bundled a module that imports `node:fs/promises` exactly as `buildAssets.ts` bundles the client, and esbuild refused it: `Could not resolve "node:fs/promises"`. So the file is read by the caller, which also keeps its own "cannot read the configuration at …" message and its rule for a missing file. The real client, bundled the same way with the change, builds. If the root wants the reading itself in one place too, that needs a Node-only file beside this module, which was not mine to create.
+
+**For the history's owner, exactly.** In `packages/generator/src/history/computeHistory.ts`, `lensConfiguration`, line 583, replace
+
+```ts
+input = JSON.parse(await fs.readFile(file, "utf8")) as LiveDocumentationConfigInput;
+```
+
+with
+
+```ts
+input = parseLiveDocumentationConfigBytes(await fs.readFile(file));
+```
+
+and import `parseLiveDocumentationConfigBytes` from the configuration module, as the file imports `normalizeLiveDocumentationConfig` now. The surrounding `try` and its message stay as they are. A test: a `.live-docs.config.json` whose bytes begin `EF BB BF`, or are UTF-16 LE after `FF FE`, gives the same lens as the plain file.
+
+### A history question's file in another case
+
+`inspect --at <commit> --from <file>`, and `--to`, now find the file in any case, as today's questions do. `fileNamedAt` (`scripts/live-docs/inspect/history.ts`) tries the name as spelled, then the one file at that commit whose path differs by case alone. Two such files are named back. A name no file answers to is still said not to have existed. `codePathOf`, which reads a doc's path as its file's, moved beside it and reads the docs folder and suffix in any case. `inspect-cli.test.ts` builds the history's scripted repository at its first commit, writes its history, and asks `--from SRC/App/View.TS`, the doc's path in another case, and `--to` in another case. The first case failed before the mend, and the case of a name no file answers to passed both before and after. `inspect/history.test.ts` covers the two files that differ by case alone.
+
+### The `--stack` case, seen red
+
+The first leg did not run this case before its mend. It has now been run twice against code that should fail it, with only `scripts/live-docs/cli.ts` swapped and then restored:
+
+- **The code before the mend** (`cli.ts` as of `7472cf09`) fails it at the first assertion: a failure printed no line about how to see where it failed. Further on, that code would also refuse `--stack` as an option it does not know.
+- **A build that accepts `--stack` and ignores it**: today's `cli.ts` with its stack branch switched off (`withStack && false`). It still lifts `--stack` off the command line and prints the line about it. It fails at the traced assertion: `expected 'live-docs:lint failed: cannot read th…' to contain 'live-docs:lint failed: Error: cannot …'`. So the case fails on its substance, a stack printed, and not only on whether the option is accepted.
+
+With `cli.ts` restored, it passes.
+
+### `packages/cli/src/index.ts`: what it is, and whether it has a purpose
+
+Nothing in it was changed.
+
+**What it is.** It is a dispatcher of 119 lines for a `live-docs` binary. `live-docs generate|lint|inspect|visualize|orphans` spawns `node_modules/.bin/tsx` (`tsx.cmd` on Windows, without a shell) on `scripts/live-docs/<command>.ts`. It finds both by paths relative to its own compiled file (`../../../scripts/live-docs`, `../../../node_modules/.bin/tsx`). Its manifest names `bin: { "live-docs": "./dist/index.js" }`, `files: ["dist"]`, and dependencies on the engine and the Explorer that it does not import.
+
+**Where it came from.** It was added on 2025-12-15 in `7aea17b7`, "feat: pre-publish prep - CLI package, npm metadata, branding updates" ([chat 2025-12-15.2](../../../../../2025/12/2025-12-15/2025-12-15.2.md), Turn 23, as its Live Doc records), to prepare for publishing to npm. Since then only renames, dependency bumps and a build-record change have touched it.
+
+**What uses it: nothing that runs.**
+- The root's `build` builds the engine, the Explorer and the generator, not it. So `packages/cli/dist` does not exist, its `bin` has no target, and npm links no `live-docs` into `node_modules/.bin` (checked: absent).
+- No code imports it. No guide, script or workflow runs it.
+- Its remaining mentions are bookkeeping: the root `package.json`'s `workspaces`, `package-lock.json`, its two Live Docs, and the hand-written entries expectation `tests/integration/live-docs/expected/repository-entries.json` (lines 22–31), which lists its manifest, `tsconfig.json` and `src/index.ts` as entries. [The dead-code sweep of 2026-10-08](../../../../../2026/10/2026-10-08/Probes/dead-code-sweep/candidates.md) found "nothing references it". That is still so.
+
+**Why it could not serve as it stands.**
+- Published with `files: ["dist"]`, it would carry neither the scripts nor tsx, which it reaches by paths into this checkout.
+- Its command map lacks `history` and `board`. Its Live Doc's Purpose still names `system` and `report`, which are gone.
+- On Windows, Node has refused to spawn a `.cmd` without a shell since its April 2024 security releases (`EINVAL`).
+
+**What the record says.**
+- The board was re-authored on 2026-10-09: "The CLI shell under `packages/cli` is not the package and is not on the board". The installable `live-docs` is drawn there as imagined, and it is item 6 of direction's Next.
+- The [record of that day](../../../../../2026/10/2026-10-09/2026-10-09.1.record.md) ends: "Carried for the owner: the fate of the CLI shell under `packages/cli`, off the board and still in the repository". I found no answer since.
+- The [audit of 2026-10-19](../../../../../2026/10/2026-10-19/2026-10-19.1.record.md) says: "The CLI shell dispatches through repository scripts/tsx and omits newer commands. The intended delivery board already calls it a development shell. Choose one real command/config boundary when addressing delivery; do not duplicate command maps or turn that choice into an unapproved packaging rewrite."
+
+**Answer: as code, it has no justified purpose today.** Nothing runs it, it cannot run where it would be needed, and the one thing it holds, the name `live-docs` for a binary, the board already carries as the imagined package. Its fate has been the owner's question since 2026-10-09. My recommendation is to delete it when the owner agrees, or with the packaging round that builds the real `live-docs`.
+
+Deleting it means removing:
+- the `workspaces` entry and its lock lines;
+- its two Live Docs;
+- its three entries in `repository-entries.json`, which is the owner's hand-curated expectation and so wants their nod.
+
+Carry forward the binary's name and the list of commands it meant to dispatch into the package's design. `index.ts` still holds both.
+
+### `live-docs:orphans` reads a doc's source through the grammar
+
+`find-orphans.ts` read a doc's source with a pattern of its own, `^\s*-\s*Code Path:\s*(.+)$`. Under the writer on the other branch, which quotes a value whose plain form would not read back, that pattern would take the quotes as part of the path and report a false orphan. It now reads the source with `parseLiveDoc(text).codePath`, the grammar's own reader, which reads both forms on that branch. A doc the reader refuses, or a file that cannot be opened, is mapped from where it lies, as before.
+
+The new case in `generate-cli.test.ts` writes its docs with the engine's `renderLiveDoc`: an ordinary file, a file whose name begins with `"` (skipped on Windows, which allows no such name), and a source that is gone. It holds each doc's source to what `parseLiveDoc` reads, and the command's output to the one gone file. It passes before and after this mend under today's writer, which writes the name plainly, so it could not be seen red here. It is the case that would turn red with the old pattern once the two branches are joined. `npm run live-docs:orphans` over this repository still finds none.
+
+One thing it shows, left as it was: a doc the reader refuses is mapped by the `.md` suffix alone. With this repository's `.mdmd.md` suffix that mapping would expect a source ending in `.mdmd`. The command reads no configuration by its own Notes, so the suffix is not known to it. Only a doc that is broken anyway reaches that mapping.
+
+### The second leg's verification
+
+All runs used a private TMPDIR. The machine's load average was 21 to 29 throughout, from other builders.
+
+**`npm run safe:commit` without the browser**, run twice. Each time, the Live Docs pipeline (1,094 docs unchanged, lint), ESLint, the build and the tests' type-check passed. Each time, one suite then overran its five-second deadline under that load:
+- `generatorIdentity.test.ts`'s lens-key case, at 5.8 s;
+- in the second run, `sequence.test.ts`'s keyframe case, at 6.2 s. That suite already stands in the serial project for this reason.
+
+Neither touches this leg's files. Each passed when run alone: the first three times, the second once. The gate stopped at that stage, so the stages after it were run by hand:
+- the unit suite again: 199 files, 2,253 tests, all passing;
+- integration: 21 files, 169 tests;
+- documentation link enforcement and the three SlopCop audits.
+
+All passed, and the tree was clean.
+
+**Other checks.**
+- The Explorer's client, bundled for the browser as `buildAssets.ts` bundles it, builds with the configuration module's new function.
+- `npm run live-docs:orphans` over this repository finds no orphan.
+- The browser stage was not run.
+
+**Unfinished, or another's.**
+- `computeHistory.ts` is to call `parseLiveDocumentationConfigBytes`. The exact swap is above.
+- The reading seam waits for the adapters' builders, as the root ruled.
+- The orphans case turns red only once the writer's quoted form is joined.
+- The fate of `packages/cli` is the owner's.
