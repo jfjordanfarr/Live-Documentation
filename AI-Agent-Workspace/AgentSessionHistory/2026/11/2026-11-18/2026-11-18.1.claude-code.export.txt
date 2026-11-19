@@ -16063,3 +16063,158 @@
 
 ● Agent "Reset Tuning to defaults" is waiting on its own background work · 1h
   23m 1s
+
+● Agent "Reset Tuning to defaults" is waiting on its own background work · 1h
+  24m 55s
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/AgentSessionHistory/2026/11
+  /2026-11-18/2026-11-18.1.claude-code.export.txt in the IDE. This may or may
+  not be related to the current task.</ide_opened_file>
+
+❯ >The obstacle. The history file carries each file's shape at every commit
+  (kind, symbol count, wires between files). It does not carry symbol names or
+  symbol-to-symbol links, so a 2D card's rows cannot be drawn truthfully for a
+  past commit. That is why the October 16 plan left 2D out.
+  >Three rungs, each showing only what it knows:
+
+  Oh! Whoops, I thought that's what we already had. Yeah, all three rungs. I
+  mean, we're going to be like "holy hell that produces a mega gigantic build
+  that is totally unsustainable", but that is the aspiration to achieve, yes.
+  There's no reason we shouldn't be able to eventually achive all 3 rungs
+  exactly as you say, and we should.
+
+  >Keeping your bearings while scrubbing. While the thumb drags, cards hold
+  their places and only light up, appear or fade. When it rests, the layout
+  re-settles with the move animation 2D already has. 3D follows the same rule:
+  cheap while dragging, settle at rest.
+
+  A good cheap default for now. We might revisit later. I've had lerp-related
+  wishlist items I've voiced in the past with respect to scrubbing throug
+  history.
+
+  >2. For the frame, shall I build the sidebar-free version behind a lever,
+  with the sidebar still available, so you can judge it in the app rather than
+  from these words?
+
+  That would be great!
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Reset Tuning to defaults" is waiting on its own background work · 1h
+  28m 14s
+
+● 2 background agents launched (↓ to manage)
+   ├ Bare frame trial lever
+   └ Measure 2D history's data cost
+  ⎿  Message queued for delivery to ae9c064b34d4535c0 at its next tool
+     round. If it finishes first, it is resumed with the message and
+     notifies again, so wait for that notification before resending.
+● Three pieces of work are out on your answers; recording your message, then a
+  short reply.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● All three of your answers are now work in progress.
+
+  - The sidebar-free frame is being built behind a lever (Tuning → Page → Frame:
+    Sidebar or Bare). Under Bare you get the breadcrumb beside search, the
+    legend's rows doubling as the kind switches, and Tuning as a sheet from the
+    bottom strip. The existing parts are moved, not copied, so each lever and
+    filter keeps one implementation. The default page does not change.
+  - Your "mega gigantic build" fear is being measured. A builder is reading the
+    Live Docs that git already holds at every commit and working out how much
+    symbol rows (rung 2) and descriptions (rung 3) would add to the history
+    file, per commit and in total. It will also say whether the history build
+    already computes those facts and throws them away.
+  - Groundwork for rung 1 has started, by the builder who knows the history
+    control best. It will find where "the moment" lives today and what ties it
+    to 3D, and write the one function that turns a past moment into the
+    file-level picture 2D would draw. Nothing visible changes.
+
+  Your lerp wish for scrubbing is on record as the thing to revisit after the
+  cheap default.
+
+  One limit on tonight: the browser is the bottleneck, and the gate will hold it
+  across the end of the unlimited window at about 05:18 UTC. So the frame and
+  the 2D groundwork are being written without anyone able to look at them yet.
+  I've told each builder to stop at 05:10, commit what it has, and say plainly
+  what has not been seen in a browser. If you want them to carry on past the
+  window once the gate frees the browser, say so. Otherwise those branches are
+  picked up next session.
+
+● All three of your answers are now work in progress.
+
+  - The sidebar-free frame is being built behind a lever (Tuning → Page → Frame:
+    Sidebar or Bare). Under Bare you get the breadcrumb beside search, the
+    legend's rows doubling as the kind switches, and Tuning as a sheet from the
+    bottom strip. The existing parts are moved, not copied, so each lever and
+    filter keeps one implementation. The default page does not change.
+  - Your "mega gigantic build" fear is being measured. A builder is reading the
+    Live Docs that git already holds at every commit and working out how much
+    symbol rows (rung 2) and descriptions (rung 3) would add to the history
+    file, per commit and in total. It will also say whether the history build
+    already computes those facts and throws them away.
+  - Groundwork for rung 1 has started, by the builder who knows the history
+    control best. It will find where "the moment" lives today and what ties it
+    to 3D, and write the one function that turns a past moment into the
+    file-level picture 2D would draw. Nothing visible changes.
+
+  Your lerp wish for scrubbing is on record as the thing to revisit after the
+  cheap default.
+
+  One limit on tonight: the browser is the bottleneck, and the gate will hold it
+  across the end of the unlimited window at about 05:18 UTC. So the frame and
+  the 2D groundwork are being written without anyone able to look at them yet.
+  I've told each builder to stop at 05:10, commit what it has, and say plainly
+  what has not been seen in a browser. If you want them to carry on past the
+  window once the gate frees the browser, say so. Otherwise those branches are
+  picked up next session.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Read .claude/worktrees/agent-af784aba5d0357850/AI-Agent-Workspace/AgentSess
+     ionHistory/2026/11/2026-11-18/Screenshots/camera-intent/README.md (51
+     lines)
+  ⎿  Read AGENTS.md (63 lines)
+  ⎿  Referenced file ../../tmp/claude-1000/-workspaces-Live-Documentation/645014
+     1c-9e11-40e5-95a5-166121c231a3/scratchpad/nar/fresh-reader.md
+  ⎿  Referenced file ../../tmp/claude-1000/-workspaces-Live-Documentation/645014
+     1c-9e11-40e5-95a5-166121c231a3/scratchpad/nar/joined.md
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e
+     5-95a5-166121c231a3/scratchpad/handback-reviewer2.md (83 lines)
+
+● Task "Cells' first-frame cost" still running in background
+
+● Task "Review root's code of today" completed in background
+
+● Task "Blind playtest instrument" completed in background
+
+● Task "Returning connections made legible" still running in background
+
+● Task "World Map keyboard and motion defects" still running in background
+
+● Task "History follows the pinned set" still running in background
+
+● Task "Reset Tuning to defaults" completed in background
+
+● Task "Unpin others interaction" completed in background
+
+● Task "Measure 2D history's data cost" still running in background
+
+● Task "Bare frame trial lever" still running in background
+
+● Task "Fallback timer of fifty minutes while builders work" still running in
+  background
+
+● Agent "Unpin others interaction" is waiting on its own background work · 31m
+  19s
+
+● Agent "Unpin others interaction" is waiting on its own background work · 31m
+  31s
+
+● Agent "Unpin others interaction" is waiting on its own background work · 31m
+  51s
+
+● Agent "Unpin others interaction" is waiting on its own background work · 31m
+  53s

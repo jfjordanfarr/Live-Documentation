@@ -1,0 +1,380 @@
+[
+ {
+  "k": 0,
+  "commit": "f7a75fa7",
+  "date": "2025-10-16T18:04:37-04:00",
+  "docs": 0,
+  "parsed": 0,
+  "symHeads": 0,
+  "symParsed": 0
+ },
+ {
+  "k": 20,
+  "commit": "81c634af",
+  "date": "2025-10-21T22:24:44-04:00",
+  "docs": 25,
+  "parsed": 0,
+  "symHeads": 0,
+  "symParsed": 0
+ },
+ {
+  "k": 40,
+  "commit": "00c621d6",
+  "date": "2025-10-26T16:32:47-04:00",
+  "docs": 78,
+  "parsed": 0,
+  "symHeads": 0,
+  "symParsed": 0
+ },
+ {
+  "k": 60,
+  "commit": "4fb18f29",
+  "date": "2025-11-05T00:19:15-05:00",
+  "docs": 152,
+  "parsed": 0,
+  "symHeads": 0,
+  "symParsed": 0
+ },
+ {
+  "k": 80,
+  "commit": "a3069ebe",
+  "date": "2025-11-16T15:24:53-05:00",
+  "docs": 0,
+  "parsed": 0,
+  "symHeads": 0,
+  "symParsed": 0
+ },
+ {
+  "k": 100,
+  "commit": "f1e2dec0",
+  "date": "2025-11-22T01:20:47-05:00",
+  "docs": 487,
+  "parsed": 0,
+  "symHeads": 0,
+  "symParsed": 0
+ },
+ {
+  "k": 120,
+  "commit": "6005ebec",
+  "date": "2025-12-06T17:04:31-05:00",
+  "docs": 517,
+  "parsed": 0,
+  "symHeads": 0,
+  "symParsed": 0
+ },
+ {
+  "k": 140,
+  "commit": "91502083",
+  "date": "2025-12-12T22:56:38-05:00",
+  "docs": 581,
+  "parsed": 0,
+  "symHeads": 0,
+  "symParsed": 0
+ },
+ {
+  "k": 160,
+  "commit": "91a2998c",
+  "date": "2025-12-16T15:50:08-05:00",
+  "docs": 576,
+  "parsed": 0,
+  "symHeads": 0,
+  "symParsed": 0
+ },
+ {
+  "k": 180,
+  "commit": "56d5dca5",
+  "date": "2026-01-03T19:13:40-05:00",
+  "docs": 618,
+  "parsed": 0,
+  "symHeads": 0,
+  "symParsed": 0
+ },
+ {
+  "k": 200,
+  "commit": "e8762bc4",
+  "date": "2026-01-13T16:48:21-05:00",
+  "docs": 534,
+  "parsed": 0,
+  "symHeads": 0,
+  "symParsed": 0
+ },
+ {
+  "k": 220,
+  "commit": "c29da939",
+  "date": "2026-01-27T11:30:00-05:00",
+  "docs": 621,
+  "parsed": 0,
+  "symHeads": 0,
+  "symParsed": 0
+ },
+ {
+  "k": 240,
+  "commit": "7befc770",
+  "date": "2026-02-17T20:21:06Z",
+  "docs": 626,
+  "parsed": 0,
+  "symHeads": 0,
+  "symParsed": 0
+ },
+ {
+  "k": 260,
+  "commit": "c675a4eb",
+  "date": "2026-03-26T20:14:40Z",
+  "docs": 612,
+  "parsed": 0,
+  "symHeads": 0,
+  "symParsed": 0
+ },
+ {
+  "k": 280,
+  "commit": "a84c5af7",
+  "date": "2026-09-27T19:57:59Z",
+  "docs": 511,
+  "parsed": 0,
+  "symHeads": 0,
+  "symParsed": 0
+ },
+ {
+  "k": 300,
+  "commit": "43fafe76",
+  "date": "2026-09-28T02:14:44Z",
+  "docs": 549,
+  "parsed": 549,
+  "symHeads": 1906,
+  "symParsed": 1871
+ },
+ {
+  "k": 320,
+  "commit": "e89365d5",
+  "date": "2026-09-28T21:24:13Z",
+  "docs": 579,
+  "parsed": 579,
+  "symHeads": 1991,
+  "symParsed": 1956
+ },
+ {
+  "k": 340,
+  "commit": "b54f3fa5",
+  "date": "2026-09-29T19:24:39Z",
+  "docs": 593,
+  "parsed": 593,
+  "symHeads": 2076,
+  "symParsed": 2041
+ },
+ {
+  "k": 360,
+  "commit": "da351049",
+  "date": "2026-09-30T16:26:54Z",
+  "docs": 593,
+  "parsed": 593,
+  "symHeads": 2066,
+  "symParsed": 2031
+ },
+ {
+  "k": 380,
+  "commit": "93d40a5a",
+  "date": "2026-10-01T13:55:43Z",
+  "docs": 593,
+  "parsed": 593,
+  "symHeads": 2066,
+  "symParsed": 2031
+ },
+ {
+  "k": 400,
+  "commit": "a25b939d",
+  "date": "2026-10-01T21:53:51Z",
+  "docs": 599,
+  "parsed": 599,
+  "symHeads": 2143,
+  "symParsed": 2108
+ },
+ {
+  "k": 420,
+  "commit": "5fd35c51",
+  "date": "2026-10-03T18:50:13Z",
+  "docs": 615,
+  "parsed": 615,
+  "symHeads": 2136,
+  "symParsed": 2101
+ },
+ {
+  "k": 440,
+  "commit": "48e3ee4b",
+  "date": "2026-10-06T17:16:26Z",
+  "docs": 626,
+  "parsed": 626,
+  "symHeads": 2191,
+  "symParsed": 2156
+ },
+ {
+  "k": 460,
+  "commit": "56a334ac",
+  "date": "2026-10-08T14:20:27Z",
+  "docs": 658,
+  "parsed": 658,
+  "symHeads": 2378,
+  "symParsed": 2343
+ },
+ {
+  "k": 480,
+  "commit": "c8c2b057",
+  "date": "2026-10-09T15:06:13Z",
+  "docs": 659,
+  "parsed": 659,
+  "symHeads": 2314,
+  "symParsed": 2279
+ },
+ {
+  "k": 500,
+  "commit": "016c6e09",
+  "date": "2026-10-10T21:28:42Z",
+  "docs": 662,
+  "parsed": 662,
+  "symHeads": 2322,
+  "symParsed": 2287
+ },
+ {
+  "k": 520,
+  "commit": "33060b12",
+  "date": "2026-10-14T16:56:48Z",
+  "docs": 651,
+  "parsed": 651,
+  "symHeads": 2269,
+  "symParsed": 2234
+ },
+ {
+  "k": 540,
+  "commit": "680047bc",
+  "date": "2026-10-15T22:12:36Z",
+  "docs": 674,
+  "parsed": 674,
+  "symHeads": 2374,
+  "symParsed": 2339
+ },
+ {
+  "k": 560,
+  "commit": "fc668043",
+  "date": "2026-10-16T20:14:51Z",
+  "docs": 763,
+  "parsed": 763,
+  "symHeads": 2672,
+  "symParsed": 2636
+ },
+ {
+  "k": 580,
+  "commit": "7d7a39e6",
+  "date": "2026-10-18T07:21:34Z",
+  "docs": 834,
+  "parsed": 834,
+  "symHeads": 3087,
+  "symParsed": 3051
+ },
+ {
+  "k": 600,
+  "commit": "5123ae4a",
+  "date": "2026-10-19T15:56:01Z",
+  "docs": 836,
+  "parsed": 836,
+  "symHeads": 3093,
+  "symParsed": 3057
+ },
+ {
+  "k": 620,
+  "commit": "996b5785",
+  "date": "2026-10-21T12:58:21Z",
+  "docs": 846,
+  "parsed": 846,
+  "symHeads": 3103,
+  "symParsed": 3067
+ },
+ {
+  "k": 640,
+  "commit": "92fb27b1",
+  "date": "2026-10-24T18:30:19Z",
+  "docs": 871,
+  "parsed": 871,
+  "symHeads": 3144,
+  "symParsed": 3108
+ },
+ {
+  "k": 660,
+  "commit": "a78baf99",
+  "date": "2026-10-28T17:30:53Z",
+  "docs": 877,
+  "parsed": 877,
+  "symHeads": 3161,
+  "symParsed": 3125
+ },
+ {
+  "k": 680,
+  "commit": "34c44977",
+  "date": "2026-10-30T17:42:04Z",
+  "docs": 898,
+  "parsed": 898,
+  "symHeads": 3228,
+  "symParsed": 3192
+ },
+ {
+  "k": 700,
+  "commit": "f62408c1",
+  "date": "2026-11-02T20:17:06Z",
+  "docs": 915,
+  "parsed": 915,
+  "symHeads": 3280,
+  "symParsed": 3244
+ },
+ {
+  "k": 720,
+  "commit": "d8fee175",
+  "date": "2026-11-04T22:15:21Z",
+  "docs": 922,
+  "parsed": 922,
+  "symHeads": 3303,
+  "symParsed": 3267
+ },
+ {
+  "k": 740,
+  "commit": "cc85e427",
+  "date": "2026-11-07T03:06:23Z",
+  "docs": 936,
+  "parsed": 936,
+  "symHeads": 3370,
+  "symParsed": 3334
+ },
+ {
+  "k": 760,
+  "commit": "54f90f80",
+  "date": "2026-11-09T01:32:26Z",
+  "docs": 954,
+  "parsed": 954,
+  "symHeads": 3441,
+  "symParsed": 3405
+ },
+ {
+  "k": 780,
+  "commit": "8a0a8b92",
+  "date": "2026-11-12T15:24:33Z",
+  "docs": 956,
+  "parsed": 956,
+  "symHeads": 3464,
+  "symParsed": 3428
+ },
+ {
+  "k": 800,
+  "commit": "5803a02c",
+  "date": "2026-11-12T21:53:25Z",
+  "docs": 956,
+  "parsed": 956,
+  "symHeads": 3473,
+  "symParsed": 3437
+ },
+ {
+  "k": 817,
+  "commit": "5d520791",
+  "date": "2026-11-13T01:34:20Z",
+  "docs": 959,
+  "parsed": 959,
+  "symHeads": 3501,
+  "symParsed": 3465
+ }
+]
