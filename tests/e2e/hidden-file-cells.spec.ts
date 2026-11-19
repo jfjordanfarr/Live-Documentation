@@ -285,9 +285,9 @@ test("Cells under name draws the marks under the line at the reading look and be
   for (const each of [count, beside, under]) await each.context.close();
 });
 
-test("under the name a press on a cell pins its file and keeps the handle in view, and a press on the field's air still opens the directory", async ({ browser }) => {
+test("under the name a press on a cell pins its file and brings its card into view, and a press on the field's air still opens the directory", async ({ browser }) => {
   test.setTimeout(240_000);
-  const { context, page } = await visit(browser, "under");
+  let { context, page } = await visit(browser, "under");
   const field = page.locator(`.local-directory-label[data-directory="${HISTORY}"] .local-directory-field`);
   const cell = field.locator(".local-directory-cell--file:not([hidden])").first();
   const path = (await cell.getAttribute("data-path"))!;
@@ -302,12 +302,17 @@ test("under the name a press on a cell pins its file and keeps the handle in vie
   await still(page);
   await expect(page.locator(`#map-container .node-card[data-id="${path}"]`)).toHaveCount(1);
   await expect(page.locator(`#map-container .local-directory-label[data-directory="${HISTORY}"] .local-directory-close`), "the press did not open the directory").toHaveCount(0);
+  // Since 2026-11-19 the camera follows the new card into view at the same scale (camera-intent.spec.ts says how far);
+  // where the card and the handle cannot both be in view, the card wins, so the handle's own promise is no longer kept.
   const inView = (selector: string) => page.evaluate(selector => {
     const map = document.querySelector("#view-map")!.getBoundingClientRect(), rect = document.querySelector(selector)!.getBoundingClientRect();
     return rect.right > map.left && rect.left < map.right && rect.bottom > map.top && rect.top < map.bottom;
   }, selector);
-  expect(await inView(`.local-directory-label[data-directory="${HISTORY}"] .local-directory-handle`), "the handle in view").toBe(true);
-  // The field's air under the handle's name is still the handle's strip: a press there opens the directory.
+  expect(await inView(`#map-container .node-card[data-id="${path}"]`), "the new card in view").toBe(true);
+  await context.close();
+  // The field's air under the handle's name is still the handle's strip: a press there opens the directory. A fresh
+  // visit, where the handle stands in view.
+  ({ context, page } = await visit(browser, "under"));
   const air = await page.evaluate(directory => {
     const label = document.querySelector<HTMLElement>(`.local-directory-label[data-directory="${directory}"]`)!;
     const handle = label.querySelector(".local-directory-handle")!.getBoundingClientRect(), box = label.querySelector(".local-directory-field")!.getBoundingClientRect();

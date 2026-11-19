@@ -47,6 +47,14 @@
 .history-tick.is-minor { height: 12px; opacity: .85; background: var(--text-panel-muted); }
 .history-tick.is-major { width: 2px; height: 18px; opacity: 1; background: var(--state-selected); }
 .history-thumb { position: absolute; top: 50%; width: 12px; height: 12px; border-radius: 50%; transform: translate(-50%, -50%); background: var(--text-strong); box-shadow: 0 0 0 2px var(--ground-deep), 0 0 0 3px var(--state-selected); pointer-events: none; }
+.history-thumb[hidden] { display: none; }
+/* The step shown, when a zoom has left it outside the range (2026-11-19): the thumb's look at the nearer end of the
+   track, half past the end as the step lies beyond it, in a 24 px target that slides the range back to hold it. */
+.history-scrubber .history-elsewhere { position: absolute; top: 50%; left: 0; min-width: 0; width: 24px; height: 24px; padding: 0; border: 0; border-radius: 50%; transform: translate(-50%, -50%); background: transparent; }
+.history-scrubber .history-elsewhere.is-after { left: 100%; }
+.history-scrubber .history-elsewhere::before { content: ""; position: absolute; left: 6px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--text-strong); box-shadow: 0 0 0 2px var(--ground-deep), 0 0 0 3px var(--state-selected); }
+.history-scrubber .history-elsewhere:hover::before { background: var(--state-selected); }
+.history-scrubber .history-elsewhere[hidden] { display: none; }
 /* The left edge of a history that begins where the knowledge does, not where the repository did: a hatched band before
    the first tick, the lane and the ruler starting after it. */
 .history-track.is-truncated .history-lane { left: 22px; }

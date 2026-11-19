@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/palette.test.ts
-- Generated At: 2026-11-19T00:59:26.774Z
+- Generated At: 2026-11-19T04:29:43.941Z
 
 ## Authored
 ### Purpose
@@ -27,7 +27,6 @@ _No public symbols detected_
 ### Dependencies
 - `node:fs`
 - `node:path`
-- [`palette.DEFAULT_MARBLE_BEND`](./palette.ts.mdmd.md#symbol-default_marble_bend)
 - [`palette.DEFAULT_PALETTE`](./palette.ts.mdmd.md#symbol-default_palette)
 - [`palette.PALETTES`](./palette.ts.mdmd.md#symbol-palettes)
 - [`palette.PROPOSED`](./palette.ts.mdmd.md#symbol-proposed)
@@ -36,14 +35,10 @@ _No public symbols detected_
 - [`palette.VIVID_KINDS`](./palette.ts.mdmd.md#symbol-vivid_kinds)
 - [`palette.activePalette`](./palette.ts.mdmd.md#symbol-activepalette)
 - [`palette.channels`](./palette.ts.mdmd.md#symbol-channels)
-- [`palette.chooseMarbleBend`](./palette.ts.mdmd.md#symbol-choosemarblebend)
-- [`palette.chooseMarblePattern`](./palette.ts.mdmd.md#symbol-choosemarblepattern)
 - [`palette.chooseMarbles`](./palette.ts.mdmd.md#symbol-choosemarbles)
 - [`palette.choosePalette`](./palette.ts.mdmd.md#symbol-choosepalette)
 - [`palette.customProperties`](./palette.ts.mdmd.md#symbol-customproperties)
 - [`palette.isPaletteName`](./palette.ts.mdmd.md#symbol-ispalettename)
-- [`palette.marbleBend`](./palette.ts.mdmd.md#symbol-marblebend)
-- [`palette.marblePattern`](./palette.ts.mdmd.md#symbol-marblepattern-const)
 - [`palette.marblesDrawn`](./palette.ts.mdmd.md#symbol-marblesdrawn)
 - [`palette.mix`](./palette.ts.mdmd.md#symbol-mix)
 - [`palette.paletteStylesheet`](./palette.ts.mdmd.md#symbol-palettestylesheet)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/returning-connections.ts
-- Generated At: 2026-11-15T21:27:08.524Z
+- Generated At: 2026-11-19T05:22:12.984Z
 
 ## Authored
 ### Purpose
@@ -76,6 +76,33 @@ more. Five sets the stronger call on the few pictures that strain most, the owne
 
 ##### `backwardStrength (function)` — Summary
 The 3D button's strength for a picture's number of connections drawn against its left-to-right order.
+
+#### `LaidBox` {#symbol-laidbox}
+- Type: interface
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/returning-connections.ts#L61)
+
+##### `LaidBox` — Summary
+A box the map lays out, a card's or a closed directory's, in the wires' frame.
+
+#### `RETURN_CLEARANCE` {#symbol-return_clearance}
+- Type: const
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/returning-connections.ts#L69)
+
+##### `RETURN_CLEARANCE` — Summary
+How far a returning connection's route keeps from the boxes it passes over, and how far it turns out from its pins.
+
+#### `returnRoute` {#symbol-returnroute}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/returning-connections.ts#L80)
+
+##### `returnRoute` — Summary
+A returning connection's route while a hover keeps it (2026-11-19): from the offering file's pin, out to the right of
+its card, up and back over every box between the two pins, and down into the using file's pin from the left, so that
+it crosses no card and no name. Until then it was the one curve from pin to pin, which crossed both cards, and once the
+hubs stood at the names it struck both names through; a line through a name reads as its deletion. Running backward
+above the picture it reads as the cycle's way back and cannot be taken for a forward wire, which runs left to right
+between columns. The run stands `RETURN_CLEARANCE` above the highest box that a run at its height would meet between
+the turns; a box above that height meets no run and does not lift it.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

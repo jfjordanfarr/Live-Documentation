@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import type { LocalEdge } from "./types";
-import { GATHERED_WIDTH, gatheredCount, gatheredDescription, gatheredWidth, gatherWires, NODE_HUB, ownWires } from "./wire-gathering";
+import { GATHERED_WIDTH, gatheredCount, gatheredDescription, gatheredWidth, gatherWires, hubLine, NODE_HUB, ownWires, wireDescription } from "./wire-gathering";
 
 /** A wire from what offers (`target`) to what uses (`source`), by file and symbol. */
 const wire = (uses: string, usesSymbol: string | undefined, offers: string, offersSymbol: string | undefined): LocalEdge => ({
@@ -58,6 +58,20 @@ describe("gatheredCount", () => {
   });
 });
 
+describe("wireDescription", () => {
+  const name = (id: string): string => id.split("/").pop()!;
+  it("names a reference's two ends in the scan's own names, a row's symbol in its file, Internals and a hub by the file alone", () => {
+    expect(wireDescription(wire("a/App.config", undefined, "a/PaymentService.cs", "PaymentService"), name)).toBe("PaymentService in PaymentService.cs offers App.config");
+    expect(wireDescription(wire("a/Hub.cs", "Send", "a/Gateway.cs", "IGateway"), name)).toBe("IGateway in Gateway.cs offers Send in Hub.cs");
+    expect(wireDescription(wire("a/Hub.cs", NODE_HUB, "a/Gateway.cs", NODE_HUB), name)).toBe("Gateway.cs offers Hub.cs");
+  });
+
+  it("names a pair line of an opened directory as a gathered wire is named, by its files and its count", () => {
+    expect(wireDescription({ ...wire("a/App.config", NODE_HUB, "a/PaymentService.cs", NODE_HUB), gathered: 1 }, name)).toBe("PaymentService.cs offers App.config 1 reference");
+    expect(wireDescription({ ...wire("a/App.config", NODE_HUB, "a/PaymentService.cs", NODE_HUB), gathered: 3 }, name)).toBe("PaymentService.cs offers App.config 3 references");
+  });
+});
+
 describe("ownWires", () => {
   it("keeps every wire with a pinned symbol at either end, and a self-reference only with both ends pinned", () => {
     const pinned = new Set(["still.ts readPicture"]);
@@ -89,4 +103,18 @@ describe("gatheredDescription", () => {
     expect(gatheredDescription(first, name)).toBe("still.ts offers spec.ts 3 references");
     expect(gatheredDescription(second, name)).toBe("types.ts offers still.ts 1 reference");
   });
+});
+
+describe("hubLine", () => {
+  it("stands the hubs at the middle of the header's first line: the shared line of a one-line name and the controls' room, else a line of the name", () => {
+    // A name of one line beside the room of 24: one line 24 tall.
+    expect(hubLine(24, 14.95, 24)).toBe(12);
+    // A name of one line too long for the room beside it: the room takes a line of its own below.
+    expect(hubLine(14.95 + 24, 14.95, 24)).toBeCloseTo(7.475);
+    // A name of three lines, the room on the last.
+    expect(hubLine(2 * 14.95 + 24, 14.95, 24)).toBeCloseTo(7.475);
+    // No room at all: the name's own line.
+    expect(hubLine(14.95, 14.95, 0)).toBeCloseTo(7.475);
+  });
+
 });

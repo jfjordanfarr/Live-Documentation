@@ -250,10 +250,14 @@ export class SpatialRenderer<N extends SpatialNode, L extends SpatialDrawLink<N>
     const seed = wrapper && (!sphere || wrapper.distance < sphere.distance) ? this.byId.get(wrapper.seed) : undefined;
     return seed ?? sphere?.node;
   }
+  /** The documented relationship under the pointer, picked by its projected stroke, without showing it. */
+  wireAt(clientX: number, clientY: number): L | undefined {
+    this.setRay(clientX, clientY);
+    return this.buffers.pickLink(this.raycaster, this.eye) ?? undefined;
+  }
   /** Show the documented relationship under the pointer using its projected stroke. */
   showWireAt(clientX: number, clientY: number): void {
-    this.setRay(clientX, clientY);
-    const link = this.buffers.pickLink(this.raycaster, this.eye);
+    const link = this.wireAt(clientX, clientY);
     this.tooltip.hidden = !link;
     if (link) {
       const label = this.options.linkLabel(link);

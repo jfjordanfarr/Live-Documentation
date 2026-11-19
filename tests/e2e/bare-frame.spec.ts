@@ -81,7 +81,14 @@ test("under Bare Tuning is a sheet from the strip, and its Frame lever returns t
   await page.getByRole("button", { name: "Layout tuning" }).click();
   const sheet = page.getByRole("dialog", { name: "Tuning" });
   await expect(sheet).toBeVisible();
+  // Tuning's count and Reset travel with it: the count, which stood beside the heading, stands before Reset.
+  await expect(sheet.locator(".tuning-head > #tuning-changed + #tuning-reset")).toHaveCount(1);
+  await expect(sheet.locator("#tuning-changed")).toBeHidden();
+  await sheet.locator("#tuning-symbol-order").selectOption("alphabetical");
+  await expect(sheet.locator("#tuning-changed")).toBeVisible();
+  await expect(sheet.locator("#tuning-reset")).toBeEnabled();
   await sheet.locator("#tuning-frame").selectOption("sidebar");
+  await expect(page.locator("#sidebar summary #tuning-changed")).toHaveCount(1);
   await expect(page.locator("#sidebar")).toBeVisible();
   await expect(page.getByRole("navigation", { name: "Places" })).toBeHidden();
   await expect(page.locator("#sidebar .tuning-content #tuning-frame")).toHaveCount(1);

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/force-graph-focus.spec.ts
-- Generated At: 2026-11-08T18:31:07.970Z
+- Generated At: 2026-11-19T01:58:18.906Z
 
 ## Authored
 ### Purpose
@@ -24,6 +24,8 @@ Exercises file focus and independent inspection in the rendered Force Graph thro
 - Full-repository navigation waits for actual stillness with a one-minute allowance. The [October 24 measurements](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-24/Probes/connections-tuning/performance-findings.md) found 31–33 seconds at the selected sphere detail, and over 25 seconds even at the old detail. These are functional journeys, not performance benchmarks; their camera, picking and attention assertions remain independent of that setup allowance.
 
 Since 2026-10-31 (discovery, [Turn 4 of the October 31 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-31/2026-10-31.1.record.md#turn-4)) the frontier's spheres stand at .3 of their alpha by the picture's own rule, so the checks tell that dimming from the hover's fade (.15): a sphere faded by the hover reads under .25, and the hoverable candidates are the frontier's. Clearing the pins releases the subject too, so the picture becomes the layout's start, the archipelago of every group's seed since 2026-11-02, which the last check computes with the shared scope over every file, since a retain link's old grammar shows tests and assets both. The hover check re-enters its sphere at a point where it is hittable, since in the smaller picture a nearer sphere can cover another's centre, and its budget is 180 seconds for the two settles it waits through.
+
+Since 2026-11-19 ([Turn 22 of the November 18 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-22)) a case holds the pointer's rest: a sweep through spheres at about a thousand pixels a second shows in no frame a sphere's actions, a wire's words or the fade, though the pointing hand shows; a rest shows the pointing hand first and the actions after it, and no fade before them (asserted in order, not by the clock); moving off takes them within the next frame; a pointer crossing from a rested sphere to its Pin reaches and presses it; and keyboard focus on the subject's name offers its actions on the next frame. Frames are read by the page at every animation frame (`pointer-frames.ts`). It failed on the build of main at `30eaee09`. Cases that hovered and read at once now wait on the page's own state for the rest.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -46,6 +48,10 @@ _No public symbols detected_
 - [`StaticExplorerData`](../../packages/explorer/src/shared/staticExplorerData.ts.mdmd.md#symbol-staticexplorerdata) (type-only)
 - [`force-graph-observation.observeGraph`](./force-graph-observation.ts.mdmd.md#symbol-observegraph)
 - [`force-graph-observation.renderedNodes`](./force-graph-observation.ts.mdmd.md#symbol-renderednodes)
+- [`pointer-frames.framesDuring`](./pointer-frames.ts.mdmd.md#symbol-framesduring)
+- [`pointer-frames.recordFrames`](./pointer-frames.ts.mdmd.md#symbol-recordframes)
+- [`pointer-frames.restsOn`](./pointer-frames.ts.mdmd.md#symbol-restson)
+- [`pointer-frames.sweepThrough`](./pointer-frames.ts.mdmd.md#symbol-sweepthrough)
 - [`search-bar.currentSnapshot`](./search-bar.ts.mdmd.md#symbol-currentsnapshot)
 <!-- LIVE-DOC:END Dependencies -->
 

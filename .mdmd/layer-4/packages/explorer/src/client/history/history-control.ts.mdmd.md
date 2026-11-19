@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/history/history-control.ts
-- Generated At: 2026-11-01T22:32:18.300Z
+- Generated At: 2026-11-19T05:10:42.808Z
 
 ## Authored
 ### Purpose
@@ -29,35 +29,35 @@ Back and Forward can require an asynchronously loaded historical selection. Rest
 ### Public Symbols
 #### `HistoryControlOptions` {#symbol-historycontroloptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/history/history-control.ts#L46)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/history-control.ts#L48)
 
 ##### `HistoryControlOptions` — Summary
 What the control is made with.
 
 #### `HistoryContext` {#symbol-historycontext}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/history/history-control.ts#L79)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/history-control.ts#L81)
 
 ##### `HistoryContext` — Summary
 What the client tells the control at every change of state.
 
 #### `HistoryControl` {#symbol-historycontrol}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/history/history-control.ts#L91)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/history-control.ts#L93)
 
 ##### `HistoryControl` — Summary
 The control as the client drives it.
 
 #### `isHistorySequence` {#symbol-ishistorysequence}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/history/history-control.ts#L119)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/history-control.ts#L121)
 
 ##### `isHistorySequence` — Summary
 Whether a sequence has the format this client reads.
 
 #### `truncatedWords` {#symbol-truncatedwords}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/history/history-control.ts#L124)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/history-control.ts#L126)
 - Parameters: `sequence`: [`HistorySequence`](../../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence)
 
 ##### `truncatedWords` — Summary
@@ -65,7 +65,7 @@ Why the history begins where it does, when it is cut there; null when it begins 
 
 #### `createHistoryControl` {#symbol-createhistorycontrol}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/history/history-control.ts#L131)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/history-control.ts#L133)
 - Returns: [`HistoryControl`](#symbol-historycontrol)
 - Parameters: `options`: [`HistoryControlOptions`](#symbol-historycontroloptions)
 
@@ -103,6 +103,9 @@ Make the control under the 3D view, its scrubber and panel hidden until opened.
 - [`snapshot.snapshotGraphOf`](./snapshot.ts.mdmd.md#symbol-snapshotgraphof)
 - [`step-panel.createStepPanel`](./step-panel.ts.mdmd.md#symbol-createsteppanel)
 - [`step-summary.stepSummary`](./step-summary.ts.mdmd.md#symbol-stepsummary-function)
+- [`tick-model.TickModel`](./tick-model.ts.mdmd.md#symbol-tickmodel-interface)
+- [`tick-model.nextStop`](./tick-model.ts.mdmd.md#symbol-nextstop)
+- [`zoom.slideToHold`](./zoom.ts.mdmd.md#symbol-slidetohold)
 - [`types.HistoryTuning`](../types.ts.mdmd.md#symbol-historytuning) (type-only)
 - [`forceGraphEmphasis.pairKey`](../views/forceGraphEmphasis.ts.mdmd.md#symbol-pairkey)
 - [`retained-state.RetainedItem`](../views/retained-state.ts.mdmd.md#symbol-retaineditem) (type-only)

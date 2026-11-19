@@ -189,6 +189,24 @@ describe("shared packing preferences", () => {
     expect(applyLayoutSettings(count, undefined).localMap.hiddenFiles).toBe("count");
   });
 
+  it("carries Arrival only when it is not reading size, and reads its absence as reading size (2026-11-19)", () => {
+    const plain = getDefaultTuning();
+    expect(plain.localMap.arrival).toBe("reading");
+    expect(layoutSettingsOf(plain).localMap).not.toHaveProperty("arrival");
+    expect(readLayoutSettings({ localMap: { arrival: "reading" } })).toBeUndefined();
+    expect(readLayoutSettings({ localMap: { arrival: "everywhere" } })).toBeUndefined();
+    for (const value of ["then-neighbours", "neighbours"] as const) {
+      const chosen = getDefaultTuning();
+      chosen.localMap.arrival = value;
+      const carried = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(chosen) }));
+      expect(carried.layout?.localMap?.arrival).toBe(value);
+      expect(applyLayoutSettings(getDefaultTuning(), carried.layout).localMap.arrival).toBe(value);
+      // A link made with the default shows reading size in a browser whose own tuning holds another choice.
+      const unsaid = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(plain) }));
+      expect(applyLayoutSettings(chosen, unsaid.layout).localMap.arrival).toBe("reading");
+    }
+  });
+
   it("opens a link in the three looks unless it says the ladder, which it carries only when chosen (2026-11-13)", () => {
     // The default is the three looks, and a link made with it does not write it.
     const three = getDefaultTuning();

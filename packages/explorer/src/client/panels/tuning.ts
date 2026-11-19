@@ -8,8 +8,9 @@
 import { applyMarbles, applyPalette } from "../dom";
 import { layoutSettingsOf } from "../layout-presets";
 import { DEFAULT_PALETTE, isPaletteName } from "../palette";
-import { CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, BEYOND_HOPS, FRAME_CHOICES, HIDDEN_FILES_LOOKS, MARBLE_CHOICES, OVERVIEW_FILES, type ExplorerState, type FrameChoice } from "../types";
+import { ARRIVALS, CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, BEYOND_HOPS, FRAME_CHOICES, HIDDEN_FILES_LOOKS, MARBLE_CHOICES, OVERVIEW_FILES, type ExplorerState, type FrameChoice } from "../types";
 import { TUNING_HELP, tuningHelpId } from "./tuning-levers";
+import { initTuningReset } from "./tuning-reset";
 
 /** Callback for when tuning values change */
 export type TuningChangeCallback = () => void;
@@ -36,7 +37,17 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   let controlPerspective: ExplorerState["perspective"] | undefined;
   const onTuningChange = (): void => {
     persistChange();
+    refreshChanges();
   };
+  // Reset to defaults takes the path every lever's change takes: the looks the page wears, the controls, the save and
+  // the address, and the picture drawn again.
+  const refreshChanges = initTuningReset({ state, apply: () => {
+    applyPalette(state.tuning.appearance.palette);
+    applyMarbles(state.tuning.appearance.marbles);
+    syncTuningControlsFromState();
+    onTuningChange();
+    if (state.view === "map") onRender();
+  } });
   const packingSliders = [
     ...([ ["itemGap", "item-gap"], ["bandGap", "band-gap"], ["heightCost", "height-cost"], ["widthCost", "width-cost"] ] as const).map(([key, name]) => ({
       id: `tuning-${name}`, get: () => state.tuning.localMap[key], set: (value: number) => { state.tuning.localMap[key] = value; }
@@ -71,6 +82,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   const closedShapeSelect = document.getElementById("tuning-closed-shape") as HTMLSelectElement | null;
   const closedCellsSelect = document.getElementById("tuning-closed-cells") as HTMLSelectElement | null;
   const hiddenFilesSelect = document.getElementById("tuning-hidden-files") as HTMLSelectElement | null;
+  const arrivalSelect = document.getElementById("tuning-arrival") as HTMLSelectElement | null;
   const paletteSelect = document.getElementById("tuning-palette") as HTMLSelectElement | null;
   const marblesSelect = document.getElementById("tuning-marbles") as HTMLSelectElement | null;
   const frameSelect = document.getElementById("tuning-frame") as HTMLSelectElement | null;
@@ -193,6 +205,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     if (closedShapeSelect) closedShapeSelect.value = state.tuning.localMap.closedShape;
     if (closedCellsSelect) closedCellsSelect.value = state.tuning.localMap.closedCells;
     if (hiddenFilesSelect) hiddenFilesSelect.value = state.tuning.localMap.hiddenFiles;
+    if (arrivalSelect) arrivalSelect.value = state.tuning.localMap.arrival;
     if (paletteSelect) paletteSelect.value = state.tuning.appearance.palette;
     if (marblesSelect) marblesSelect.value = state.tuning.appearance.marbles;
     if (frameSelect) frameSelect.value = state.tuning.appearance.frame;
@@ -308,6 +321,13 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
       syncClosedChoices();
       onTuningChange();
       if (state.view === "map" && state.perspective === "2d") onRender();
+    });
+  }
+  // How the camera meets a new subject changes no picture: the next arrival reads it.
+  if (arrivalSelect) {
+    arrivalSelect.addEventListener("change", () => {
+      state.tuning.localMap.arrival = ARRIVALS.find(choice => choice === arrivalSelect.value) ?? ARRIVALS[0];
+      onTuningChange();
     });
   }
   if (closedShapeSelect) {
@@ -457,7 +477,8 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     const anchor = document.createElement("a"); anchor.href = url; anchor.download = "local-map-layout.json"; anchor.click();
     setTimeout(() => URL.revokeObjectURL(url), 0);
   });
-  return syncTuningControlsFromState;
+  refreshChanges();
+  return () => { syncTuningControlsFromState(); refreshChanges(); };
 }
 
 /**

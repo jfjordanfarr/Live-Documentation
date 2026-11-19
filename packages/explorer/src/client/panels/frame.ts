@@ -51,10 +51,11 @@ export function createFrame(config: FrameConfig): Frame {
   const sidebar = document.getElementById("sidebar")!;
   // Where each moved element stood in the sidebar, so that the Sidebar frame puts it back where it was.
   const homes = new Map<Element, { parent: Node; next: Node | null }>();
-  const move = (element: Element | null, into: Element): void => {
-    if (!element) return;
+  const move = (element: Element | null, into: Element | null, first = false): void => {
+    if (!element || !into) return;
     if (!homes.has(element)) homes.set(element, { parent: element.parentNode!, next: element.nextSibling });
-    into.append(element);
+    if (first) into.prepend(element);
+    else into.append(element);
   };
   const restore = (): void => {
     // In reverse, so that each element's remembered next sibling is home again before it is put back before it.
@@ -214,6 +215,8 @@ export function createFrame(config: FrameConfig): Frame {
       move(document.getElementById("filter-toggle-tests")?.closest(".sidebar-section") ?? null, key);
       move(document.getElementById("map-legend"), key);
       move(sidebar.querySelector(".tuning-content"), sheet);
+      // The count of changed settings stood beside Tuning's heading, which the sheet has not: it stands before Reset.
+      move(document.getElementById("tuning-changed"), sheet.querySelector(".tuning-head"), true);
       shown = [];
       sync();
     } else {
@@ -230,7 +233,7 @@ export function createFrame(config: FrameConfig): Frame {
     toggleSheet: () => {
       setOpen(key, config.keyButton, false);
       setOpen(sheet, config.tuningButton, sheet.hidden);
-      if (!sheet.hidden) sheet.querySelector<HTMLElement>("select, input, summary, button")?.focus();
+      if (!sheet.hidden) sheet.querySelector<HTMLElement>(":is(select, input, summary, button):not(:disabled)")?.focus();
     },
     toggleKey: () => {
       setOpen(sheet, config.tuningButton, false);
