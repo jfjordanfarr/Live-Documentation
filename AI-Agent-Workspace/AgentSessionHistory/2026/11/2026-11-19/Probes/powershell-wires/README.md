@@ -314,3 +314,79 @@ The measuring scripts and outputs are in the builder's scratch folder, kept unti
 - `model.ts`, `measure.ts`, `sample.ts`, `entries.ts`, `manifests.ts`, `grammar.ts` and `isolation.ts` hold the rules, scores, samples and counts.
 
 The seed for every sample is `1119`. Wires are ranked by the SHA-256 of `1119|corpus|from|name|to`, so a wire two rules share is ranked the same in both.
+
+## Built: the root's rulings and what the build found _(added November 19, 2026, evening)_
+
+**The rulings.**
+- Rule R.
+- The loads the text fixes, each drawn as a wire of its own.
+- Names PowerShell ships, blocked only at the fallback: a definition the caller loads still wins, since a function shadows a cmdlet. The list comes from PowerShell itself.
+- The lenient library rule.
+- `FunctionsToExport` carried like a TypeScript barrel's re-exports, through the existing mechanism, with no wire.
+- No SQL.
+
+All of these are built in `packages/engine/src/live-docs/adapters/powershell.ts`. The decision is in [the decisions log](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#a-powershell-call-reaches-what-its-caller-loads-else-the-only-definition-recorded-2026-11-19).
+
+**What the oracle found in the first build.** The rules were written a second time over the parser's facts (`scripts/oracle/powershell-wires.ts`), and the built adapter was scored against them on the five corpora. The score found four faults, each mended and each given a test:
+
+1. **Positional arguments after a named one.** `Join-Path -Path $PSScriptRoot "x.psm1"` binds its second argument to `-ChildPath`, but the adapter's binder bound every positional argument by position from the start. AL-Go's modules write their imports this way.
+2. **`-Recurse` was never recorded.** The binder took no note of a switch.
+3. **A function called with `.`.** `. Stop-Function @splat` calls the function in the caller's scope; it was read as a dot-source of a path.
+4. **Test stubs at the file's own level.** `tests/Copy-DbaPolicyManagement.Tests.ps1` is read by the grammar with lines 1 to 173 in one error node, so its stubs of `Write-Message`, `Connect-DbaInstance` and `New-Object` stood at the file's own level. They drew 562 false wires and hid 302 true ones.
+   - A definition inside text the grammar could not read now counts as none.
+   - A script with such text at its own level stays a program.
+   - An assignment that calls a command on its left side (`(Get-Item Function:\X).Visibility = 'Private'`) runs something.
+
+The emitter had two faults of its own, found on the corpora and mended before its record was trusted:
+- a variable named `keys` stood in for its table's keys;
+- a `return` inside a loop whose output an assignment was collecting emitted the values gathered so far.
+
+**The score, after the mends**, with the oracle's reading of each corpus as the standard. A wire is a file pair; a call is a file, a function and the file that defines it.
+
+| Corpus | Wires: the oracle's / the adapter's / both | Calls: the oracle's / the adapter's / both | Programs: agree / differ |
+| --- | --- | --- | --- |
+| dbatools | 7,479 / 7,477 / 7,477 | 6,630 / 6,628 / 6,628 | 1,791 / 2 |
+| AL-Go | 475 / 471 / 471 | 1,045 / 1,040 / 1,040 | 198 / 0 |
+| AzureStack-Tools | 13 / 15 / 13 | 29 / 29 / 29 | 37 / 0 |
+| tSQLt | 39 / 34 / 34 | 34 / 34 / 34 | 39 / 0 |
+| shop | 5 / 5 / 5 | 6 / 6 / 6 | 6 / 0 |
+
+What each difference is:
+- **dbatools: the grammar's.** `public/Find-DbaInstance.ps1` and `public/Install-DbaInstance.ps1` hold their one public function inside text the grammar cannot read. So their tests' calls are not wired, and the two files stay programs.
+- **AL-Go: a known weakness of the rule, which the grammar happens to spare the adapter.** `Tests/RunTests.Test.ps1` stubs `Get-AppJsonFromAppFile` and `Get-BcContainerEventLog`, commands of BcContainerHelper (a module the actions download), at its own level, lines 10 and 11. By the parser's facts that test is the only definition, so the oracle wires four actions' five calls to it. Those wires are false. The adapter draws none, because the grammar reads those lines inside an error.
+- **AzureStack-Tools: older than this rule.** Two manifests that `Import-PowerShellDataFile` refuses, because their tables evaluate expressions, are read by the adapter's own reader of the data language, which takes the keys it can read.
+- **tSQLt: the grammar's.** `./tSQLt_Build/ConcatenateFiles.ps1`, a script run by its path, is read by the grammar as a dot-source. This is the one miss in the oracle test's register too, on the fixture's `./scripts/Clean.ps1`.
+
+**The second sample, drawn after the build** with a new seed (`2026-11-19-built`): sixty wires the built adapter draws, thirty on dbatools and thirty on AL-Go, loads and calls alike.
+- I read them in the source. So did a second judge, a general-purpose subagent of my tier, given the corpora and the list only.
+- I wrote my verdicts down before opening its file, and its hand-back carried no verdicts.
+- Both of us: **59 true, 1 arguable, 0 false, the same verdict on every wire.**
+- Every row is in [samples-built.md](samples-built.md).
+- The arguable one is AL-Go's `e2eTests/scenarios/CopilotCodeReview/runtest.ps1` wired to `Actions/AL-Go-Helper.ps1`. Its `ConvertTo-HashTable` at line 89 reaches that file through `e2eTestHelper.psm1`. Its `Get-PlainText` at line 11 is a parameter's default, evaluated before the script imports anything; the workflow passes every parameter, so that call never runs there.
+
+**Cost**, generating the whole dbatools checkout from nothing, under a private `TMPDIR`, twice each. The machine was at a load of 18 to 33 throughout.
+
+| | Wall s | Processor s | Peak memory |
+| --- | ---: | ---: | ---: |
+| before (`8d31ff04`) | 95.9, 92.6 | 86.8, 81.1 | 885, 639 MB |
+| after | 88.2, 89.9 | 93.5, 90.7 | 665, 891 MB |
+
+The table reads every PowerShell file once per run, and a file's own analysis reuses its facts when its text is the same. So each file is parsed once a run, where it was parsed twice before (once to index symbols, once to write its doc). The processor time added, about a tenth, is the wires themselves: dbatools' docs now carry about 7,500 dependency lines, each resolved and written, where they carried 9.
+
+**This repository.** Of its PowerShell files, nine docs changed, each rightly:
+
+| Doc | Change | Why |
+| --- | --- | --- |
+| `programs/powershell/rollout/Invoke-Rollout.ps1` | its loads carry the functions it calls: `Write-RolloutBanner`, `Write-RolloutLog`, `Read-RolloutSettings`, `Send-RolloutNotice`, `Get-RolloutTarget`; a new wire to `Rollout.Steps.psm1` for the four it calls through the manifest it imports | each is called in its body and defined in the file named |
+| `programs/powershell/rollout/scripts/Show-RolloutPlan.ps1` | calls `Write-RolloutBanner`, `Format-RolloutReport`, `Get-RolloutPlan` on its loads | the same |
+| `programs/powershell/rollout/lib/Logging.ps1`, `lib/Settings.ps1` | no longer `Entry: program` | each only defines functions and is dot-sourced |
+| `programs/powershell/rollout/modules/Rollout.Steps/Rollout.Steps.psd1` | `Re-Exported Symbol Anchors` for the five functions its `FunctionsToExport` names, each linked to `Rollout.Steps.psm1` | the manifest offers them |
+| `fixtures/powershell-compendium/scripts/deploy.ps1`, `workspace/scripts/deploy.ps1` | their loads carry `Write-DeploymentLog` and `Get-InventorySnapshot` | called there, defined in the files named |
+| `fixtures/powershell-compendium/common/logging.ps1`, `workspace/scripts/common/logging.ps1` | no longer `Entry: program` | libraries, dot-sourced by the deploy scripts |
+| `scripts/oracle/powershell-ast.ps1` | the emitter's new functions and notes | the oracle extended |
+
+The other PowerShell files' docs are unchanged: the compendium's `Inventory.psm1` twice and `config/settings.psd1`, and the rollout program's three modules and `config/targets.psd1`. Two oracle records' docs changed, the `expected/powershell-ast.json` files, whose keys gained the new facts.
+
+The new fixture, `tests/integration/fixtures/powershell-wires`, adds 22 PowerShell files and their docs. The other new and changed docs are those of the adapter, its list of shipped commands, their tests, and the oracle's modules and test.
+
+**For the grammar's builder**: [grammar-errors.md](grammar-errors.md) lists the 112 dbatools files and 78 AL-Go files the grammar cannot read in full, each with the first failing line and the idiom where the line tells it. Since this round, those errors cost wires only where they swallow a definition or a call: here, two dbatools functions, and tSQLt's five scripts run as `./x.ps1`.
