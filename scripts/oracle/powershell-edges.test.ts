@@ -7,7 +7,8 @@ import { readPowerShellAst, writePowerShellAst } from "./files";
 import { edgesFromPowerShellAst, type PowerShellAst, type PowerShellScriptFacts } from "./powershell-edges";
 
 const emptyScript: PowerShellScriptFacts = {
-  parseErrors: [], functions: [], published: [], types: [], exportModuleMembers: [], dotSources: [], importModules: [], usingStatements: [], requiredModules: []
+  parseErrors: [], functions: [], published: [], types: [], exportModuleMembers: [], dotSources: [], importModules: [], usingStatements: [], requiredModules: [],
+  invocations: [], loads: [], aliasCommands: [], paramBlock: false, statements: []
 };
 
 const ast: PowerShellAst = {

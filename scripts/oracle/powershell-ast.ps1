@@ -127,6 +127,252 @@ function Get-StaticPath {
 
 <#
 .SYNOPSIS
+The variables a file assigns exactly once, at its own level and by a plain `=`, by their unqualified names without regard to case, each with the expression it is assigned.
+#>
+function Get-FileVariables {
+    param([Parameter(Mandatory)]$Ast)
+    $assignments = @{}
+    foreach ($assignment in $Ast.FindAll({ param($node) $node -is [System.Management.Automation.Language.AssignmentStatementAst] }, $true)) {
+        if ($assignment.Left -isnot [System.Management.Automation.Language.VariableExpressionAst]) {
+            continue
+        }
+        $name = $assignment.Left.VariablePath.UserPath.ToLowerInvariant() -replace '^(script|global|local|private):', ''
+        if (-not $assignments.ContainsKey($name)) { $assignments[$name] = [System.Collections.Generic.List[object]]::new() }
+        $assignments[$name].Add($assignment)
+    }
+    # Enumerated, not read through .Keys, which a variable named `keys` would stand in for.
+    $fixed = @{}
+    foreach ($pair in $assignments.GetEnumerator()) {
+        $only = $pair.Value
+        if ($only.Count -eq 1 -and $only[0].Operator -eq [System.Management.Automation.Language.TokenKind]::Equals -and (Test-FileScope -Node $only[0])) {
+            $fixed[$pair.Key] = $only[0].Right
+        }
+    }
+    return $fixed
+}
+
+<#
+.SYNOPSIS
+The path an expression writes when the text alone fixes it, with the file's directory in place of $PSScriptRoot: a string, a bare word or a variable whose variables are $PSScriptRoot or ones the file assigns once at its own level, or a Join-Path of such. $null otherwise.
+#>
+function Get-PathValue {
+    param($Ast, [Parameter(Mandatory)][string]$Directory, [Parameter(Mandatory)][hashtable]$Variables, [System.Collections.Generic.HashSet[string]]$Reading = [System.Collections.Generic.HashSet[string]]::new())
+    if ($null -eq $Ast) {
+        return $null
+    }
+    if ($Ast -is [System.Management.Automation.Language.StringConstantExpressionAst]) {
+        return $Ast.Value
+    }
+    if ($Ast -is [System.Management.Automation.Language.VariableExpressionAst]) {
+        $name = $Ast.VariablePath.UserPath.ToLowerInvariant() -replace '^(script|global|local|private):', ''
+        if ($name -eq 'psscriptroot') {
+            return $Directory
+        }
+        if (-not $Variables.ContainsKey($name) -or -not $Reading.Add($name)) {
+            return $null
+        }
+        try {
+            return Get-PathValue -Ast $Variables[$name] -Directory $Directory -Variables $Variables -Reading $Reading
+        }
+        finally {
+            [void]$Reading.Remove($name)
+        }
+    }
+    if ($Ast -is [System.Management.Automation.Language.ExpandableStringExpressionAst]) {
+        $text = $Ast.Value
+        $result = ''
+        $at = 0
+        foreach ($nested in $Ast.NestedExpressions) {
+            if ($nested -isnot [System.Management.Automation.Language.VariableExpressionAst]) {
+                return $null
+            }
+            $value = Get-PathValue -Ast $nested -Directory $Directory -Variables $Variables -Reading $Reading
+            if ($null -eq $value) {
+                return $null
+            }
+            $index = $text.IndexOf($nested.Extent.Text, $at, [System.StringComparison]::Ordinal)
+            if ($index -lt 0) {
+                return $null
+            }
+            $result += $text.Substring($at, $index - $at) + $value
+            $at = $index + $nested.Extent.Text.Length
+        }
+        return $result + $text.Substring($at)
+    }
+    if ($Ast -is [System.Management.Automation.Language.ParenExpressionAst]) {
+        return Get-PathValue -Ast $Ast.Pipeline -Directory $Directory -Variables $Variables -Reading $Reading
+    }
+    if ($Ast -is [System.Management.Automation.Language.CommandExpressionAst]) {
+        return Get-PathValue -Ast $Ast.Expression -Directory $Directory -Variables $Variables -Reading $Reading
+    }
+    if ($Ast -is [System.Management.Automation.Language.PipelineAst]) {
+        if ($Ast.PipelineElements.Count -ne 1) {
+            return $null
+        }
+        return Get-PathValue -Ast $Ast.PipelineElements[0] -Directory $Directory -Variables $Variables -Reading $Reading
+    }
+    if ($Ast -is [System.Management.Automation.Language.CommandAst] -and $Ast.InvocationOperator -eq [System.Management.Automation.Language.TokenKind]::Unknown -and
+        $Ast.GetCommandName() -in 'Join-Path', 'Microsoft.PowerShell.Management\Join-Path') {
+        $binding = [System.Management.Automation.Language.StaticParameterBinder]::BindCommand($Ast, $true)
+        if (-not $binding.BoundParameters.ContainsKey('Path') -or -not $binding.BoundParameters.ContainsKey('ChildPath')) {
+            return $null
+        }
+        $parts = [System.Collections.Generic.List[object]]::new()
+        $parts.Add($binding.BoundParameters['Path'].Value)
+        $parts.Add($binding.BoundParameters['ChildPath'].Value)
+        if ($binding.BoundParameters.ContainsKey('AdditionalChildPath')) {
+            $additional = $binding.BoundParameters['AdditionalChildPath'].Value
+            if ($additional -is [System.Management.Automation.Language.ArrayLiteralAst]) { foreach ($element in $additional.Elements) { $parts.Add($element) } } else { $parts.Add($additional) }
+        }
+        $values = [System.Collections.Generic.List[string]]::new()
+        foreach ($part in $parts) {
+            $value = if ($part -is [System.Management.Automation.Language.ArrayLiteralAst]) { $null } else { Get-PathValue -Ast $part -Directory $Directory -Variables $Variables -Reading $Reading }
+            if ($null -eq $value) {
+                return $null
+            }
+            $values.Add($value)
+        }
+        return ($values -join '/')
+    }
+    return $null
+}
+
+<#
+.SYNOPSIS
+The files a Get-ChildItem command lists, fixture-relative and sorted, when the text fixes its folder and every narrowing: listed by PowerShell's own Get-ChildItem over the working copy, keeping the scripts and modules a loop can dot-source. $null when the text does not fix it.
+#>
+function Get-ListedFiles {
+    param([Parameter(Mandatory)]$Command, [Parameter(Mandatory)][string]$Directory, [Parameter(Mandatory)][hashtable]$Variables)
+    $binding = [System.Management.Automation.Language.StaticParameterBinder]::BindCommand($Command, $true)
+    $parameters = $binding.BoundParameters
+    if ($parameters.ContainsKey('Name') -or $parameters.ContainsKey('Directory')) {
+        return $null
+    }
+    $key = if ($parameters.ContainsKey('Path')) { 'Path' } elseif ($parameters.ContainsKey('LiteralPath')) { 'LiteralPath' } else { $null }
+    if (-not $key -or $parameters[$key].Value -is [System.Management.Automation.Language.ArrayLiteralAst]) {
+        return $null
+    }
+    $folder = Get-PathValue -Ast $parameters[$key].Value -Directory $Directory -Variables $Variables
+    if ($null -eq $folder) {
+        return $null
+    }
+    $arguments = @{ File = $true; Force = $true; ErrorAction = 'Ignore' }
+    $arguments[$key] = [System.IO.Path]::Combine($Directory, ($folder -replace '\\', '/'))
+    foreach ($narrowing in 'Filter', 'Include', 'Exclude') {
+        if (-not $parameters.ContainsKey($narrowing)) {
+            continue
+        }
+        $strings = Get-StaticStrings -Ast $parameters[$narrowing].Value
+        if ($null -eq $strings) {
+            return $null
+        }
+        $arguments[$narrowing] = if ($narrowing -eq 'Filter') { $strings[0] } else { [string[]]$strings }
+    }
+    if ($parameters.ContainsKey('Recurse')) {
+        $arguments['Recurse'] = $true
+    }
+    $listed = [System.Collections.Generic.List[string]]::new()
+    foreach ($item in @(Get-ChildItem @arguments)) {
+        $relative = [System.IO.Path]::GetRelativePath($RootPath, $item.FullName) -replace '\\', '/'
+        if (-not $relative.StartsWith('../') -and $item.Extension -in '.ps1', '.psm1') {
+            $listed.Add($relative)
+        }
+    }
+    $listed.Sort([System.StringComparer]::Ordinal)
+    return , $listed
+}
+
+<#
+.SYNOPSIS
+The Get-ChildItem commands a loop's collection is: one written in place, a variable the file assigns once from one, or several of these joined by `+`, a comma or `@()`. $null when any part is something else.
+#>
+function Get-Listings {
+    param($Ast, [Parameter(Mandatory)][hashtable]$Variables, [System.Collections.Generic.HashSet[string]]$Reading = [System.Collections.Generic.HashSet[string]]::new())
+    $found = [System.Collections.Generic.List[object]]::new()
+    $pending = [System.Collections.Generic.Queue[object]]::new()
+    $pending.Enqueue($Ast)
+    while ($pending.Count -gt 0) {
+        $item = $pending.Dequeue()
+        if ($item -is [System.Management.Automation.Language.CommandAst] -and $item.InvocationOperator -eq [System.Management.Automation.Language.TokenKind]::Unknown -and
+            $item.GetCommandName() -in 'Get-ChildItem', 'Microsoft.PowerShell.Management\Get-ChildItem', 'gci', 'dir', 'ls') {
+            $found.Add($item)
+        }
+        elseif ($item -is [System.Management.Automation.Language.PipelineAst] -and $item.PipelineElements.Count -eq 1) { $pending.Enqueue($item.PipelineElements[0]) }
+        elseif ($item -is [System.Management.Automation.Language.CommandExpressionAst]) { $pending.Enqueue($item.Expression) }
+        elseif ($item -is [System.Management.Automation.Language.ParenExpressionAst]) { $pending.Enqueue($item.Pipeline) }
+        elseif ($item -is [System.Management.Automation.Language.ArrayExpressionAst]) { foreach ($statement in $item.SubExpression.Statements) { $pending.Enqueue($statement) } }
+        elseif ($item -is [System.Management.Automation.Language.ArrayLiteralAst]) { foreach ($element in $item.Elements) { $pending.Enqueue($element) } }
+        elseif ($item -is [System.Management.Automation.Language.BinaryExpressionAst] -and $item.Operator -eq [System.Management.Automation.Language.TokenKind]::Plus) { $pending.Enqueue($item.Left); $pending.Enqueue($item.Right) }
+        elseif ($item -is [System.Management.Automation.Language.VariableExpressionAst]) {
+            $name = $item.VariablePath.UserPath.ToLowerInvariant() -replace '^(script|global|local|private):', ''
+            if (-not $Variables.ContainsKey($name) -or -not $Reading.Add($name)) {
+                return $null
+            }
+            $pending.Enqueue($Variables[$name])
+        }
+        else {
+            return $null
+        }
+    }
+    return , $found
+}
+
+<#
+.SYNOPSIS
+Whether a dot-source's target is a loop's item, `$item` or its FullName.
+#>
+function Test-ItemTarget {
+    param([Parameter(Mandatory)]$Command, [Parameter(Mandatory)][string[]]$Names)
+    $target = $Command.CommandElements[0]
+    if ($target -is [System.Management.Automation.Language.VariableExpressionAst]) {
+        return ($target.VariablePath.UserPath.ToLowerInvariant() -replace '^(script|global|local|private):', '') -in $Names
+    }
+    return $target -is [System.Management.Automation.Language.MemberExpressionAst] -and $target.Expression -is [System.Management.Automation.Language.VariableExpressionAst] -and
+        (($target.Expression.VariablePath.UserPath.ToLowerInvariant() -replace '^(script|global|local|private):', '') -in $Names) -and $target.Member.Extent.Text -eq 'FullName'
+}
+
+<#
+.SYNOPSIS
+Whether a node holds a dot-source of a loop's item.
+#>
+function Test-DotSourcesItem {
+    param([Parameter(Mandatory)]$Ast, [Parameter(Mandatory)][string[]]$Names)
+    $found = $Ast.Find({
+            param($node)
+            $node -is [System.Management.Automation.Language.CommandAst] -and $node.InvocationOperator -eq [System.Management.Automation.Language.TokenKind]::Dot -and
+            (Test-ItemTarget -Command $node -Names $Names)
+        }, $true)
+    return $null -ne $found
+}
+
+<#
+.SYNOPSIS
+Records a loop's dot-sources of the files its listings name, when the text fixes every listing.
+#>
+function Add-ListingLoads {
+    param($Listings, [Parameter(Mandatory)]$Loads, [int]$Line, [string]$Text, [string]$Directory, [hashtable]$Variables)
+    if ($null -eq $Listings -or $Listings.Count -eq 0) {
+        return
+    }
+    $files = [System.Collections.Generic.List[string]]::new()
+    foreach ($listing in $Listings) {
+        $listed = Get-ListedFiles -Command $listing -Directory $Directory -Variables $Variables
+        if ($null -eq $listed) {
+            return
+        }
+        foreach ($file in $listed) { if (-not $files.Contains($file)) { $files.Add($file) } }
+    }
+    $files.Sort([System.StringComparer]::Ordinal)
+    $Loads.Add([ordered]@{
+        line     = $Line
+        kind     = 'dot'
+        text     = ($Text -split "`r?`n", 2)[0]
+        resolved = $files
+    })
+}
+
+<#
+.SYNOPSIS
 The strings an argument holds, flattening an array literal; $null when any part of it is not a string written out.
 #>
 function Get-StaticStrings {
@@ -230,6 +476,145 @@ function ConvertTo-SortedData {
 
 <#
 .SYNOPSIS
+The command a name stands for in this PowerShell, an alias followed to its command; the name itself when it is not an alias. Each name is looked up once.
+#>
+function Resolve-CommandAlias {
+    param([Parameter(Mandatory)][string]$Name)
+    if (-not $script:CommandAliases.ContainsKey($Name)) {
+        $known = Get-Command -Name $Name -CommandType Alias -ErrorAction Ignore | Select-Object -First 1
+        $script:CommandAliases[$Name] = if ($known) { $known.ResolvedCommandName } else { $Name }
+    }
+    return $script:CommandAliases[$Name]
+}
+$script:CommandAliases = @{}
+
+<#
+.SYNOPSIS
+Whether what a node defines is seen by whoever loads its file: it stands inside no function and no script block written as a value, which run in scopes of their own.
+#>
+function Test-FileScope {
+    param([Parameter(Mandatory)]$Node)
+    for ($parent = $Node.Parent; $parent; $parent = $parent.Parent) {
+        if ($parent -is [System.Management.Automation.Language.FunctionDefinitionAst] -or
+            $parent -is [System.Management.Automation.Language.ScriptBlockExpressionAst]) {
+            return $false
+        }
+    }
+    return $true
+}
+
+<#
+.SYNOPSIS
+The name of the function a node stands in, the nearest one, or $null at the file's own level. A class's members are not functions.
+#>
+function Get-EnclosingFunction {
+    param([Parameter(Mandatory)]$Node)
+    for ($parent = $Node.Parent; $parent; $parent = $parent.Parent) {
+        if ($parent -is [System.Management.Automation.Language.FunctionDefinitionAst] -and
+            $parent.Parent -isnot [System.Management.Automation.Language.FunctionMemberAst]) {
+            return $parent.Name
+        }
+    }
+    return $null
+}
+
+<#
+.SYNOPSIS
+The commands whose script-block arguments a node stands in, nearest first: `Invoke-Command`, `ForEach-Object`, a test's `It`.
+#>
+function Get-EnclosingBlocks {
+    param([Parameter(Mandatory)]$Node)
+    $blocks = [System.Collections.Generic.List[string]]::new()
+    for ($parent = $Node.Parent; $parent; $parent = $parent.Parent) {
+        if ($parent -is [System.Management.Automation.Language.ScriptBlockExpressionAst] -and
+            $parent.Parent -is [System.Management.Automation.Language.CommandAst]) {
+            $owner = $parent.Parent.GetCommandName()
+            $blocks.Add($(if ($owner) { $owner } else { $parent.Parent.CommandElements[0].Extent.Text }))
+        }
+    }
+    return , $blocks
+}
+
+<#
+.SYNOPSIS
+The aliases a function's `[Alias()]` attribute gives it, as written.
+#>
+function Get-FunctionAliases {
+    param([Parameter(Mandatory)]$Function)
+    $aliases = [System.Collections.Generic.List[string]]::new()
+    if (-not $Function.Body.ParamBlock) {
+        return , $aliases
+    }
+    foreach ($attribute in $Function.Body.ParamBlock.Attributes) {
+        if ($attribute.TypeName.Name -notin 'Alias', 'AliasAttribute', 'System.Management.Automation.AliasAttribute') {
+            continue
+        }
+        foreach ($argument in $attribute.PositionalArguments) {
+            $strings = Get-StaticStrings -Ast $argument
+            if ($strings) { foreach ($string in $strings) { $aliases.Add($string) } }
+        }
+    }
+    return , $aliases
+}
+
+<#
+.SYNOPSIS
+What a statement at a file's own level is: a definition, a load, a command, an assignment, or another statement by its kind; whether it calls anything; and the first line of its text.
+#>
+function Get-StatementFact {
+    param([Parameter(Mandatory)]$Statement)
+    $kind = $Statement.GetType().Name -replace 'Ast$', ''
+    $command = $null
+    if ($Statement -is [System.Management.Automation.Language.FunctionDefinitionAst]) {
+        $kind = 'function'
+    }
+    elseif ($Statement -is [System.Management.Automation.Language.TypeDefinitionAst]) {
+        $kind = 'type'
+    }
+    elseif ($Statement -is [System.Management.Automation.Language.PipelineAst] -and $Statement.PipelineElements.Count -ge 1 -and
+        $Statement.PipelineElements[0] -is [System.Management.Automation.Language.CommandAst]) {
+        $first = $Statement.PipelineElements[0]
+        $kind = if ($first.InvocationOperator -eq [System.Management.Automation.Language.TokenKind]::Dot) { 'dotSource' } else { 'command' }
+        $command = $first.GetCommandName()
+    }
+    elseif ($Statement -is [System.Management.Automation.Language.PipelineAst]) {
+        $kind = 'expression'
+    }
+    elseif ($Statement -is [System.Management.Automation.Language.AssignmentStatementAst]) {
+        $kind = 'assignment'
+    }
+    $invokes = $null -ne $Statement.Find({
+            param($node)
+            ($node -is [System.Management.Automation.Language.CommandAst] -or $node -is [System.Management.Automation.Language.InvokeMemberExpressionAst]) -and
+            (Test-OutsideDefinitions -Node $node -Root $Statement)
+        }, $true)
+    $text = ($Statement.Extent.Text -split "`r?`n", 2)[0]
+    return [ordered]@{
+        line    = $Statement.Extent.StartLineNumber
+        kind    = $kind
+        command = $command
+        invokes = $invokes
+        text    = if ($text.Length -gt 120) { $text.Substring(0, 120) } else { $text }
+    }
+}
+
+<#
+.SYNOPSIS
+Whether a node lies outside every function and class defined within a statement, so that it runs when the statement does.
+#>
+function Test-OutsideDefinitions {
+    param([Parameter(Mandatory)]$Node, [Parameter(Mandatory)]$Root)
+    for ($parent = $Node.Parent; $parent -and $parent -ne $Root.Parent; $parent = $parent.Parent) {
+        if ($parent -is [System.Management.Automation.Language.FunctionDefinitionAst] -or
+            $parent -is [System.Management.Automation.Language.TypeDefinitionAst]) {
+            return $false
+        }
+    }
+    return $true
+}
+
+<#
+.SYNOPSIS
 What the parser says about a script or a module.
 #>
 function Read-Script {
@@ -258,10 +643,13 @@ function Read-Script {
         if ($function.Body.ParamBlock -and $function.Body.ParamBlock.Parameters) {
             foreach ($parameter in $function.Body.ParamBlock.Parameters) { $declared.Add($parameter.Name.VariablePath.UserPath) }
         }
+        $member = $function.Parent -is [System.Management.Automation.Language.FunctionMemberAst]
         $functions.Add([ordered]@{
             name       = $function.Name
             keyword    = if ($function.IsWorkflow) { 'workflow' } elseif ($function.IsFilter) { 'filter' } else { 'function' }
-            member     = $function.Parent -is [System.Management.Automation.Language.FunctionMemberAst]
+            member     = $member
+            fileScope  = -not $member -and (Test-FileScope -Node $function)
+            aliases    = Get-FunctionAliases -Function $function
             line       = $function.Extent.StartLineNumber
             column     = $function.Extent.StartColumnNumber
             parameters = $declared
@@ -279,15 +667,40 @@ function Read-Script {
         })
     }
 
+    $variables = Get-FileVariables -Ast $ast
     $dotSources = [System.Collections.Generic.List[object]]::new()
     $importModules = [System.Collections.Generic.List[object]]::new()
     $exportModuleMembers = [System.Collections.Generic.List[object]]::new()
+    $invocations = [System.Collections.Generic.List[object]]::new()
+    $aliasCommands = [System.Collections.Generic.List[object]]::new()
+    $loads = [System.Collections.Generic.List[object]]::new()
     foreach ($command in $ast.FindAll({ param($node) $node -is [System.Management.Automation.Language.CommandAst] }, $true)) {
+        # Every command, by the name it is called by and the path it names when its name is a path written out.
+        $nameAst = $command.CommandElements[0]
+        $operator = switch ($command.InvocationOperator) {
+            ([System.Management.Automation.Language.TokenKind]::Dot) { '.' }
+            ([System.Management.Automation.Language.TokenKind]::Ampersand) { '&' }
+            default { '' }
+        }
+        $staticName = Get-StaticPath -Ast $nameAst -Directory $directory
+        $isPath = $null -ne $staticName -and $staticName -match '[\\/]|\.ps1$'
+        $nameText = $nameAst.Extent.Text
+        $invocations.Add([ordered]@{
+            line     = $command.Extent.StartLineNumber
+            column   = $command.Extent.StartColumnNumber
+            name     = $command.GetCommandName()
+            operator = $operator
+            text     = if ($nameText.Length -gt 200) { $nameText.Substring(0, 200) } else { $nameText }
+            resolved = if ($isPath) { Resolve-FixtureFile -Value $staticName -BaseDirectory $directory } else { $null }
+            function = Get-EnclosingFunction -Node $command
+            blocks   = Get-EnclosingBlocks -Node $command
+        })
+
         if ($command.InvocationOperator -eq [System.Management.Automation.Language.TokenKind]::Dot) {
             $targetAst = $command.CommandElements[0]
             $target = if ($targetAst -is [System.Management.Automation.Language.StringConstantExpressionAst] -or
                 $targetAst -is [System.Management.Automation.Language.ExpandableStringExpressionAst]) { $targetAst.Value } else { $null }
-            $static = Get-StaticPath -Ast $targetAst -Directory $directory
+            $static = Get-PathValue -Ast $targetAst -Directory $directory -Variables $variables
             $dotSources.Add([ordered]@{
                 line     = $command.Extent.StartLineNumber
                 column   = $command.Extent.StartColumnNumber
@@ -298,18 +711,39 @@ function Read-Script {
             continue
         }
 
+        # A script run by its path, `& "$PSScriptRoot\x.ps1"`, `./x.ps1`, `& (Join-Path ...)`, runs in a scope of its own.
+        $isPlainName = $nameAst -is [System.Management.Automation.Language.StringConstantExpressionAst] -and $nameAst.Value -notmatch '[\\/]|\.ps1$'
+        if (-not $isPlainName) {
+            $runPath = Get-PathValue -Ast $nameAst -Directory $directory -Variables $variables
+            if ($null -ne $runPath -and $runPath -match '[\\/]|\.ps1$') {
+                $runFile = Resolve-FixtureFile -Value $runPath -BaseDirectory $directory
+                $loads.Add([ordered]@{
+                    line     = $command.Extent.StartLineNumber
+                    kind     = 'run'
+                    text     = ($command.Extent.Text -split "`r?`n", 2)[0]
+                    resolved = @(if ($runFile) { $runFile })
+                })
+            }
+        }
+
         $name = $command.GetCommandName()
         if (-not $name) {
             continue
         }
-        $resolvedName = $name
-        $known = Get-Command -Name $name -ErrorAction Ignore
-        if ($known -and $known.CommandType -eq 'Alias') {
-            $resolvedName = $known.ResolvedCommandName
-        }
-        $resolvedName = $resolvedName -replace '^Microsoft\.PowerShell\.Core\\', ''
+        $resolvedName = (Resolve-CommandAlias -Name $name) -replace '^Microsoft\.PowerShell\.(Core|Utility)\\', ''
 
-        if ($resolvedName -eq 'Import-Module') {
+        if ($resolvedName -in 'Set-Alias', 'New-Alias') {
+            $binding = [System.Management.Automation.Language.StaticParameterBinder]::BindCommand($command, $true)
+            $aliasName = if ($binding.BoundParameters.ContainsKey('Name')) { Get-StaticStrings -Ast $binding.BoundParameters['Name'].Value } else { $null }
+            $aliasValue = if ($binding.BoundParameters.ContainsKey('Value')) { Get-StaticStrings -Ast $binding.BoundParameters['Value'].Value } else { $null }
+            $aliasCommands.Add([ordered]@{
+                line  = $command.Extent.StartLineNumber
+                text  = $command.Extent.Text
+                name  = if ($aliasName -and $aliasName.Count -eq 1) { $aliasName[0] } else { $null }
+                value = if ($aliasValue -and $aliasValue.Count -eq 1) { $aliasValue[0] } else { $null }
+            })
+        }
+        elseif ($resolvedName -eq 'Import-Module') {
             $binding = [System.Management.Automation.Language.StaticParameterBinder]::BindCommand($command, $true)
             $bound = Get-BoundParameters -Binding $binding
             $names = [System.Collections.Generic.List[object]]::new()
@@ -319,7 +753,7 @@ function Read-Script {
                 foreach ($element in $elements) {
                     $value = if ($element -is [System.Management.Automation.Language.StringConstantExpressionAst] -or
                         $element -is [System.Management.Automation.Language.ExpandableStringExpressionAst]) { $element.Value } else { $null }
-                    $static = Get-StaticPath -Ast $element -Directory $directory
+                    $static = Get-PathValue -Ast $element -Directory $directory -Variables $variables
                     $isPath = $null -ne $static -and $static -match '[\\/]'
                     $names.Add([ordered]@{
                         name     = $value
@@ -415,6 +849,37 @@ function Read-Script {
         }
     }
 
+    # A loop that dot-sources each file a Get-ChildItem lists: `foreach ($f in <listing>) { . $f.FullName }`, or `<listing> | ForEach-Object { . $_.FullName }`.
+    foreach ($loop in $ast.FindAll({ param($node) $node -is [System.Management.Automation.Language.ForEachStatementAst] }, $true)) {
+        $item = $loop.Variable.VariablePath.UserPath.ToLowerInvariant() -replace '^(script|global|local|private):', ''
+        if (Test-DotSourcesItem -Ast $loop.Body -Names @($item)) {
+            Add-ListingLoads -Listings (Get-Listings -Ast $loop.Condition -Variables $variables) -Loads $loads -Line $loop.Extent.StartLineNumber -Text $loop.Extent.Text -Directory $directory -Variables $variables
+        }
+    }
+    foreach ($pipeline in $ast.FindAll({ param($node) $node -is [System.Management.Automation.Language.PipelineAst] -and $node.PipelineElements.Count -ge 2 }, $true)) {
+        for ($index = 1; $index -lt $pipeline.PipelineElements.Count; $index++) {
+            $stage = $pipeline.PipelineElements[$index]
+            if ($stage -isnot [System.Management.Automation.Language.CommandAst] -or $stage.GetCommandName() -notin 'ForEach-Object', 'Microsoft.PowerShell.Core\ForEach-Object', '%', 'foreach') {
+                continue
+            }
+            $blocks = @($stage.CommandElements | Select-Object -Skip 1 | Where-Object { $_ -is [System.Management.Automation.Language.ScriptBlockExpressionAst] })
+            if ($blocks.Count -eq 1 -and (Test-DotSourcesItem -Ast $blocks[0] -Names @('_', 'psitem'))) {
+                Add-ListingLoads -Listings (Get-Listings -Ast $pipeline.PipelineElements[$index - 1] -Variables $variables) -Loads $loads -Line $pipeline.Extent.StartLineNumber -Text $pipeline.Extent.Text -Directory $directory -Variables $variables
+            }
+        }
+    }
+
+    # The statements at the file's own level, which run when the file runs or is loaded.
+    $statements = [System.Collections.Generic.List[object]]::new()
+    foreach ($block in @($ast.DynamicParamBlock, $ast.BeginBlock, $ast.ProcessBlock, $ast.EndBlock)) {
+        if (-not $block) {
+            continue
+        }
+        foreach ($statement in $block.Statements) {
+            $statements.Add((Get-StatementFact -Statement $statement))
+        }
+    }
+
     return [ordered]@{
         parseErrors         = $errors
         functions           = $functions
@@ -425,6 +890,11 @@ function Read-Script {
         importModules       = $importModules
         usingStatements     = $usingStatements
         requiredModules     = $requiredModules
+        invocations         = $invocations
+        loads               = $loads
+        aliasCommands       = $aliasCommands
+        paramBlock          = $null -ne $ast.ParamBlock
+        statements          = $statements
     }
 }
 

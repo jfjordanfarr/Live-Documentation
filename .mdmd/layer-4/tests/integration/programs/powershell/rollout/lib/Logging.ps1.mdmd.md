@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/programs/powershell/rollout/lib/Logging.ps1
-- Entry: program
-- Generated At: 2026-10-16T16:49:47.908Z
+- Generated At: 2026-11-19T20:49:37.549Z
 
 ## Authored
 ### Purpose

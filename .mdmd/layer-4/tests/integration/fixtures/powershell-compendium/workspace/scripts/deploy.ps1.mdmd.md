@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/powershell-compendium/workspace/scripts/deploy.ps1
 - Entry: program
-- Generated At: 2026-10-16T16:49:43.844Z
+- Generated At: 2026-11-19T20:49:35.895Z
 
 ## Authored
 ### Purpose
@@ -37,6 +37,6 @@ Wraps shared logging and inventory refresh helpers so deployments stay observabl
 ### Dependencies
 - `Microsoft.PowerShell.Management`
 - `Microsoft.PowerShell.Utility`
-- [`logging`](./common/logging.ps1.mdmd.md)
-- [`Inventory`](./modules/Inventory.psm1.mdmd.md)
+- [`logging.Write-DeploymentLog`](./common/logging.ps1.mdmd.md#symbol-write-deploymentlog)
+- [`Inventory.Get-InventorySnapshot`](./modules/Inventory.psm1.mdmd.md#symbol-get-inventorysnapshot)
 <!-- LIVE-DOC:END Dependencies -->

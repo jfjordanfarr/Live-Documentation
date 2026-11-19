@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/powershell-compendium/common/logging.ps1
-- Entry: program
-- Generated At: 2026-10-15T15:49:43.652Z
+- Generated At: 2026-11-19T20:49:35.824Z
 
 ## Authored
 ### Purpose

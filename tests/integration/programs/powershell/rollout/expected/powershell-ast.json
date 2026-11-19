@@ -1,5 +1,5 @@
 {
-  "tool": "pwsh 7.5.4",
+  "tool": "pwsh 7.7.0",
   "files": {
     "../config/targets.psd1": {
       "parseErrors": [],
@@ -38,6 +38,8 @@
           "name": "Assert-RolloutTarget",
           "keyword": "function",
           "member": false,
+          "fileScope": true,
+          "aliases": [],
           "line": 47,
           "column": 1,
           "parameters": [
@@ -198,6 +200,295 @@
           "guid": null,
           "resolved": null
         }
+      ],
+      "invocations": [
+        {
+          "line": 30,
+          "column": 1,
+          "name": "Set-StrictMode",
+          "operator": "",
+          "text": "Set-StrictMode",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        },
+        {
+          "line": 33,
+          "column": 1,
+          "name": null,
+          "operator": ".",
+          "text": "\"$PSScriptRoot/lib/Logging.ps1\"",
+          "resolved": "../lib/Logging.ps1",
+          "function": null,
+          "blocks": []
+        },
+        {
+          "line": 34,
+          "column": 1,
+          "name": "./lib/Settings.ps1",
+          "operator": ".",
+          "text": "./lib/Settings.ps1",
+          "resolved": "../lib/Settings.ps1",
+          "function": null,
+          "blocks": []
+        },
+        {
+          "line": 35,
+          "column": 1,
+          "name": "Import-Module",
+          "operator": "",
+          "text": "Import-Module",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        },
+        {
+          "line": 36,
+          "column": 1,
+          "name": "Import-Module",
+          "operator": "",
+          "text": "Import-Module",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        },
+        {
+          "line": 37,
+          "column": 1,
+          "name": "Import-Module",
+          "operator": "",
+          "text": "Import-Module",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        },
+        {
+          "line": 54,
+          "column": 1,
+          "name": "Write-RolloutBanner",
+          "operator": "",
+          "text": "Write-RolloutBanner",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        },
+        {
+          "line": 55,
+          "column": 13,
+          "name": "Read-RolloutSettings",
+          "operator": "",
+          "text": "Read-RolloutSettings",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        },
+        {
+          "line": 56,
+          "column": 14,
+          "name": "Get-RolloutTarget",
+          "operator": "",
+          "text": "Get-RolloutTarget",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        },
+        {
+          "line": 57,
+          "column": 1,
+          "name": "Assert-RolloutTarget",
+          "operator": "",
+          "text": "Assert-RolloutTarget",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        },
+        {
+          "line": 58,
+          "column": 9,
+          "name": "Get-RolloutPlan",
+          "operator": "",
+          "text": "Get-RolloutPlan",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        },
+        {
+          "line": 58,
+          "column": 46,
+          "name": "ForEach-Object",
+          "operator": "",
+          "text": "ForEach-Object",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        },
+        {
+          "line": 61,
+          "column": 21,
+          "name": "Select-PendingStep",
+          "operator": "",
+          "text": "Select-PendingStep",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        },
+        {
+          "line": 61,
+          "column": 42,
+          "name": "Invoke-RolloutStep",
+          "operator": "",
+          "text": "Invoke-RolloutStep",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        },
+        {
+          "line": 63,
+          "column": 9,
+          "name": "Write-RolloutLog",
+          "operator": "",
+          "text": "Write-RolloutLog",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        },
+        {
+          "line": 67,
+          "column": 1,
+          "name": "Format-RolloutReport",
+          "operator": "",
+          "text": "Format-RolloutReport",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        },
+        {
+          "line": 68,
+          "column": 1,
+          "name": "Send-RolloutNotice",
+          "operator": "",
+          "text": "Send-RolloutNotice",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        }
+      ],
+      "loads": [],
+      "aliasCommands": [],
+      "paramBlock": true,
+      "statements": [
+        {
+          "line": 30,
+          "kind": "command",
+          "command": "Set-StrictMode",
+          "invokes": true,
+          "text": "Set-StrictMode -Version Latest"
+        },
+        {
+          "line": 31,
+          "kind": "assignment",
+          "command": null,
+          "invokes": false,
+          "text": "$ErrorActionPreference = 'Stop'"
+        },
+        {
+          "line": 33,
+          "kind": "dotSource",
+          "command": null,
+          "invokes": true,
+          "text": ". \"$PSScriptRoot/lib/Logging.ps1\""
+        },
+        {
+          "line": 34,
+          "kind": "dotSource",
+          "command": "./lib/Settings.ps1",
+          "invokes": true,
+          "text": ". ./lib/Settings.ps1"
+        },
+        {
+          "line": 35,
+          "kind": "command",
+          "command": "Import-Module",
+          "invokes": true,
+          "text": "Import-Module \"$PSScriptRoot/modules/Rollout.Steps/Rollout.Steps.psd1\" -Force -ErrorAction Stop"
+        },
+        {
+          "line": 36,
+          "kind": "command",
+          "command": "Import-Module",
+          "invokes": true,
+          "text": "Import-Module Microsoft.PowerShell.Utility"
+        },
+        {
+          "line": 37,
+          "kind": "command",
+          "command": "Import-Module",
+          "invokes": true,
+          "text": "Import-Module $PSScriptRoot\\modules\\Rollout.Notify\\Rollout.Notify.psm1 -Force"
+        },
+        {
+          "line": 47,
+          "kind": "function",
+          "command": null,
+          "invokes": false,
+          "text": "function Assert-RolloutTarget {"
+        },
+        {
+          "line": 54,
+          "kind": "command",
+          "command": "Write-RolloutBanner",
+          "invokes": true,
+          "text": "Write-RolloutBanner -Title \"Rollout $Release to $Environment\""
+        },
+        {
+          "line": 55,
+          "kind": "assignment",
+          "command": null,
+          "invokes": true,
+          "text": "$settings = Read-RolloutSettings -Path \"$PSScriptRoot/config/targets.psd1\""
+        },
+        {
+          "line": 56,
+          "kind": "assignment",
+          "command": null,
+          "invokes": true,
+          "text": "$targets = @(Get-RolloutTarget -Settings $settings -Environment $Environment)"
+        },
+        {
+          "line": 57,
+          "kind": "command",
+          "command": "Assert-RolloutTarget",
+          "invokes": true,
+          "text": "Assert-RolloutTarget -Targets $targets"
+        },
+        {
+          "line": 58,
+          "kind": "assignment",
+          "command": null,
+          "invokes": true,
+          "text": "$plan = Get-RolloutPlan -Targets ($targets | ForEach-Object { $_.Name })"
+        },
+        {
+          "line": 60,
+          "kind": "IfStatement",
+          "command": null,
+          "invokes": true,
+          "text": "if ($PSCmdlet.ShouldProcess($Environment, \"roll out $Release\")) {"
+        },
+        {
+          "line": 67,
+          "kind": "command",
+          "command": "Format-RolloutReport",
+          "invokes": true,
+          "text": "Format-RolloutReport -Steps $plan"
+        },
+        {
+          "line": 68,
+          "kind": "command",
+          "command": "Send-RolloutNotice",
+          "invokes": true,
+          "text": "Send-RolloutNotice -Message \"planned $($plan.Count) steps of $Release for $Environment\""
+        }
       ]
     },
     "../lib/Logging.ps1": {
@@ -207,6 +498,8 @@
           "name": "Write-RolloutLog",
           "keyword": "function",
           "member": false,
+          "fileScope": true,
+          "aliases": [],
           "line": 8,
           "column": 1,
           "parameters": [
@@ -240,6 +533,8 @@
           "name": "Write-RolloutBanner",
           "keyword": "function",
           "member": false,
+          "fileScope": true,
+          "aliases": [],
           "line": 16,
           "column": 1,
           "parameters": [
@@ -251,6 +546,8 @@
           "name": "script:Get-LogPrefix",
           "keyword": "function",
           "member": false,
+          "fileScope": true,
+          "aliases": [],
           "line": 27,
           "column": 1,
           "parameters": [],
@@ -267,7 +564,75 @@
       "dotSources": [],
       "importModules": [],
       "usingStatements": [],
-      "requiredModules": []
+      "requiredModules": [],
+      "invocations": [
+        {
+          "line": 10,
+          "column": 14,
+          "name": "Get-Date",
+          "operator": "",
+          "text": "Get-Date",
+          "resolved": null,
+          "function": "Write-RolloutLog",
+          "blocks": []
+        },
+        {
+          "line": 11,
+          "column": 5,
+          "name": "Write-Host",
+          "operator": "",
+          "text": "Write-Host",
+          "resolved": null,
+          "function": "Write-RolloutLog",
+          "blocks": []
+        },
+        {
+          "line": 11,
+          "column": 19,
+          "name": "Get-LogPrefix",
+          "operator": "",
+          "text": "Get-LogPrefix",
+          "resolved": null,
+          "function": "Write-RolloutLog",
+          "blocks": []
+        },
+        {
+          "line": 24,
+          "column": 5,
+          "name": "Write-Host",
+          "operator": "",
+          "text": "Write-Host",
+          "resolved": null,
+          "function": "Write-RolloutBanner",
+          "blocks": []
+        }
+      ],
+      "loads": [],
+      "aliasCommands": [],
+      "paramBlock": false,
+      "statements": [
+        {
+          "line": 8,
+          "kind": "function",
+          "command": null,
+          "invokes": false,
+          "text": "function Write-RolloutLog {"
+        },
+        {
+          "line": 16,
+          "kind": "function",
+          "command": null,
+          "invokes": false,
+          "text": "function Write-RolloutBanner {"
+        },
+        {
+          "line": 27,
+          "kind": "function",
+          "command": null,
+          "invokes": false,
+          "text": "function script:Get-LogPrefix {"
+        }
+      ]
     },
     "../lib/Settings.ps1": {
       "parseErrors": [],
@@ -276,6 +641,8 @@
           "name": "Read-RolloutSettings",
           "keyword": "function",
           "member": false,
+          "fileScope": true,
+          "aliases": [],
           "line": 1,
           "column": 1,
           "parameters": [
@@ -292,7 +659,45 @@
       "dotSources": [],
       "importModules": [],
       "usingStatements": [],
-      "requiredModules": []
+      "requiredModules": [],
+      "invocations": [
+        {
+          "line": 5,
+          "column": 5,
+          "name": "Import-PowerShellDataFile",
+          "operator": "",
+          "text": "Import-PowerShellDataFile",
+          "resolved": null,
+          "function": "Read-RolloutSettings",
+          "blocks": []
+        }
+      ],
+      "loads": [],
+      "aliasCommands": [],
+      "paramBlock": false,
+      "statements": [
+        {
+          "line": 1,
+          "kind": "function",
+          "command": null,
+          "invokes": false,
+          "text": "function Read-RolloutSettings {"
+        },
+        {
+          "line": 8,
+          "kind": "assignment",
+          "command": null,
+          "invokes": false,
+          "text": "$script:SettingsNote = 'function Not-A-Function { } # is a string, not code'"
+        },
+        {
+          "line": 9,
+          "kind": "assignment",
+          "command": null,
+          "invokes": false,
+          "text": "$script:SettingsBanner = \"settings # read by $($PSVersionTable.PSEdition) PowerShell, function text included\""
+        }
+      ]
     },
     "../modules/Rollout.Notify/Rollout.Notify.psm1": {
       "parseErrors": [],
@@ -301,6 +706,8 @@
           "name": "Send-RolloutNotice",
           "keyword": "function",
           "member": false,
+          "fileScope": true,
+          "aliases": [],
           "line": 13,
           "column": 1,
           "parameters": [
@@ -334,6 +741,8 @@
           "name": "Format-RolloutNotice",
           "keyword": "function",
           "member": false,
+          "fileScope": true,
+          "aliases": [],
           "line": 25,
           "column": 1,
           "parameters": [
@@ -367,6 +776,8 @@
           "name": "Get-NoticePrefix",
           "keyword": "function",
           "member": false,
+          "fileScope": true,
+          "aliases": [],
           "line": 30,
           "column": 1,
           "parameters": [],
@@ -396,7 +807,89 @@
       "dotSources": [],
       "importModules": [],
       "usingStatements": [],
-      "requiredModules": []
+      "requiredModules": [],
+      "invocations": [
+        {
+          "line": 15,
+          "column": 5,
+          "name": "Write-Host",
+          "operator": "",
+          "text": "Write-Host",
+          "resolved": null,
+          "function": "Send-RolloutNotice",
+          "blocks": []
+        },
+        {
+          "line": 15,
+          "column": 17,
+          "name": "Format-RolloutNotice",
+          "operator": "",
+          "text": "Format-RolloutNotice",
+          "resolved": null,
+          "function": "Send-RolloutNotice",
+          "blocks": []
+        },
+        {
+          "line": 27,
+          "column": 8,
+          "name": "Get-NoticePrefix",
+          "operator": "",
+          "text": "Get-NoticePrefix",
+          "resolved": null,
+          "function": "Format-RolloutNotice",
+          "blocks": []
+        },
+        {
+          "line": 34,
+          "column": 1,
+          "name": "Export-ModuleMember",
+          "operator": "",
+          "text": "Export-ModuleMember",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        }
+      ],
+      "loads": [],
+      "aliasCommands": [],
+      "paramBlock": false,
+      "statements": [
+        {
+          "line": 4,
+          "kind": "assignment",
+          "command": null,
+          "invokes": false,
+          "text": "$public = @('Send-RolloutNotice', 'Format-RolloutNotice')"
+        },
+        {
+          "line": 13,
+          "kind": "function",
+          "command": null,
+          "invokes": false,
+          "text": "function Send-RolloutNotice {"
+        },
+        {
+          "line": 25,
+          "kind": "function",
+          "command": null,
+          "invokes": false,
+          "text": "function Format-RolloutNotice {"
+        },
+        {
+          "line": 30,
+          "kind": "function",
+          "command": null,
+          "invokes": false,
+          "text": "function Get-NoticePrefix {"
+        },
+        {
+          "line": 34,
+          "kind": "command",
+          "command": "Export-ModuleMember",
+          "invokes": true,
+          "text": "Export-ModuleMember -Function $public"
+        }
+      ]
     },
     "../modules/Rollout.Steps/Rollout.Steps.psd1": {
       "parseErrors": [],
@@ -446,6 +939,8 @@
           "name": "New-RolloutStep",
           "keyword": "function",
           "member": false,
+          "fileScope": true,
+          "aliases": [],
           "line": 5,
           "column": 1,
           "parameters": [
@@ -485,6 +980,8 @@
           "name": "Get-RolloutPlan",
           "keyword": "function",
           "member": false,
+          "fileScope": true,
+          "aliases": [],
           "line": 29,
           "column": 1,
           "parameters": [
@@ -512,6 +1009,8 @@
           "name": "Get-StepAction",
           "keyword": "function",
           "member": false,
+          "fileScope": false,
+          "aliases": [],
           "line": 32,
           "column": 5,
           "parameters": [],
@@ -521,6 +1020,8 @@
           "name": "Select-PendingStep",
           "keyword": "filter",
           "member": false,
+          "fileScope": true,
+          "aliases": [],
           "line": 43,
           "column": 1,
           "parameters": [],
@@ -530,6 +1031,8 @@
           "name": "Invoke-RolloutStep",
           "keyword": "function",
           "member": false,
+          "fileScope": true,
+          "aliases": [],
           "line": 47,
           "column": 1,
           "parameters": [
@@ -563,6 +1066,8 @@
           "name": "Format-RolloutReport",
           "keyword": "function",
           "member": false,
+          "fileScope": true,
+          "aliases": [],
           "line": 62,
           "column": 1,
           "parameters": [
@@ -574,6 +1079,8 @@
           "name": "Get-StepCount",
           "keyword": "function",
           "member": false,
+          "fileScope": true,
+          "aliases": [],
           "line": 67,
           "column": 1,
           "parameters": [],
@@ -611,7 +1118,130 @@
       "dotSources": [],
       "importModules": [],
       "usingStatements": [],
-      "requiredModules": []
+      "requiredModules": [],
+      "invocations": [
+        {
+          "line": 37,
+          "column": 29,
+          "name": "Get-StepAction",
+          "operator": "",
+          "text": "Get-StepAction",
+          "resolved": null,
+          "function": "Get-RolloutPlan",
+          "blocks": []
+        },
+        {
+          "line": 38,
+          "column": 13,
+          "name": "New-RolloutStep",
+          "operator": "",
+          "text": "New-RolloutStep",
+          "resolved": null,
+          "function": "Get-RolloutPlan",
+          "blocks": []
+        },
+        {
+          "line": 50,
+          "column": 9,
+          "name": "Write-Verbose",
+          "operator": "",
+          "text": "Write-Verbose",
+          "resolved": null,
+          "function": "Invoke-RolloutStep",
+          "blocks": []
+        },
+        {
+          "line": 64,
+          "column": 14,
+          "name": "Format-Table",
+          "operator": "",
+          "text": "Format-Table",
+          "resolved": null,
+          "function": "Format-RolloutReport",
+          "blocks": []
+        },
+        {
+          "line": 64,
+          "column": 62,
+          "name": "Out-String",
+          "operator": "",
+          "text": "Out-String",
+          "resolved": null,
+          "function": "Format-RolloutReport",
+          "blocks": []
+        },
+        {
+          "line": 71,
+          "column": 1,
+          "name": "Export-ModuleMember",
+          "operator": "",
+          "text": "Export-ModuleMember",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        }
+      ],
+      "loads": [],
+      "aliasCommands": [],
+      "paramBlock": false,
+      "statements": [
+        {
+          "line": 3,
+          "kind": "assignment",
+          "command": null,
+          "invokes": false,
+          "text": "$script:StepCount = 0"
+        },
+        {
+          "line": 5,
+          "kind": "function",
+          "command": null,
+          "invokes": false,
+          "text": "function New-RolloutStep {"
+        },
+        {
+          "line": 29,
+          "kind": "function",
+          "command": null,
+          "invokes": false,
+          "text": "function Get-RolloutPlan {"
+        },
+        {
+          "line": 43,
+          "kind": "function",
+          "command": null,
+          "invokes": false,
+          "text": "filter Select-PendingStep {"
+        },
+        {
+          "line": 47,
+          "kind": "function",
+          "command": null,
+          "invokes": false,
+          "text": "function Invoke-RolloutStep {"
+        },
+        {
+          "line": 62,
+          "kind": "function",
+          "command": null,
+          "invokes": false,
+          "text": "function Format-RolloutReport {"
+        },
+        {
+          "line": 67,
+          "kind": "function",
+          "command": null,
+          "invokes": false,
+          "text": "function Get-StepCount {"
+        },
+        {
+          "line": 71,
+          "kind": "command",
+          "command": "Export-ModuleMember",
+          "invokes": true,
+          "text": "Export-ModuleMember -Function New-RolloutStep, Get-RolloutPlan, Select-PendingStep, Invoke-RolloutStep, Format-RolloutRe"
+        }
+      ]
     },
     "../modules/Rollout.Targets/Rollout.Targets.psm1": {
       "parseErrors": [],
@@ -620,6 +1250,8 @@
           "name": "RolloutTarget",
           "keyword": "function",
           "member": true,
+          "fileScope": false,
+          "aliases": [],
           "line": 13,
           "column": 5,
           "parameters": [
@@ -632,6 +1264,8 @@
           "name": "ToString",
           "keyword": "function",
           "member": true,
+          "fileScope": false,
+          "aliases": [],
           "line": 18,
           "column": 14,
           "parameters": [],
@@ -641,6 +1275,8 @@
           "name": "Get-RolloutTarget",
           "keyword": "function",
           "member": false,
+          "fileScope": true,
+          "aliases": [],
           "line": 33,
           "column": 1,
           "parameters": [
@@ -680,6 +1316,8 @@
           "name": "script:ConvertTo-TargetTier",
           "keyword": "function",
           "member": false,
+          "fileScope": true,
+          "aliases": [],
           "line": 40,
           "column": 1,
           "parameters": [
@@ -725,7 +1363,69 @@
       "dotSources": [],
       "importModules": [],
       "usingStatements": [],
-      "requiredModules": []
+      "requiredModules": [],
+      "invocations": [
+        {
+          "line": 36,
+          "column": 44,
+          "name": "ConvertTo-TargetTier",
+          "operator": "",
+          "text": "ConvertTo-TargetTier",
+          "resolved": null,
+          "function": "Get-RolloutTarget",
+          "blocks": []
+        },
+        {
+          "line": 45,
+          "column": 1,
+          "name": "Export-ModuleMember",
+          "operator": "",
+          "text": "Export-ModuleMember",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        }
+      ],
+      "loads": [],
+      "aliasCommands": [],
+      "paramBlock": false,
+      "statements": [
+        {
+          "line": 4,
+          "kind": "type",
+          "command": null,
+          "invokes": false,
+          "text": "enum TargetTier {"
+        },
+        {
+          "line": 9,
+          "kind": "type",
+          "command": null,
+          "invokes": false,
+          "text": "class RolloutTarget {"
+        },
+        {
+          "line": 33,
+          "kind": "function",
+          "command": null,
+          "invokes": false,
+          "text": "function Get-RolloutTarget {"
+        },
+        {
+          "line": 40,
+          "kind": "function",
+          "command": null,
+          "invokes": false,
+          "text": "function script:ConvertTo-TargetTier {"
+        },
+        {
+          "line": 45,
+          "kind": "command",
+          "command": "Export-ModuleMember",
+          "invokes": true,
+          "text": "Export-ModuleMember -Function *"
+        }
+      ]
     },
     "../scripts/Show-RolloutPlan.ps1": {
       "parseErrors": [],
@@ -771,7 +1471,136 @@
         }
       ],
       "usingStatements": [],
-      "requiredModules": []
+      "requiredModules": [],
+      "invocations": [
+        {
+          "line": 12,
+          "column": 1,
+          "name": null,
+          "operator": ".",
+          "text": "$PSScriptRoot\\..\\lib\\Logging.ps1",
+          "resolved": "../lib/Logging.ps1",
+          "function": null,
+          "blocks": []
+        },
+        {
+          "line": 13,
+          "column": 1,
+          "name": "Import-Module",
+          "operator": "",
+          "text": "Import-Module",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        },
+        {
+          "line": 15,
+          "column": 13,
+          "name": "Import-PowerShellDataFile",
+          "operator": "",
+          "text": "Import-PowerShellDataFile",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        },
+        {
+          "line": 15,
+          "column": 46,
+          "name": "Join-Path",
+          "operator": "",
+          "text": "Join-Path",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        },
+        {
+          "line": 16,
+          "column": 9,
+          "name": "Get-RolloutPlan",
+          "operator": "",
+          "text": "Get-RolloutPlan",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        },
+        {
+          "line": 16,
+          "column": 61,
+          "name": "ForEach-Object",
+          "operator": "",
+          "text": "ForEach-Object",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        },
+        {
+          "line": 17,
+          "column": 1,
+          "name": "Write-RolloutBanner",
+          "operator": "",
+          "text": "Write-RolloutBanner",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        },
+        {
+          "line": 18,
+          "column": 1,
+          "name": "Format-RolloutReport",
+          "operator": "",
+          "text": "Format-RolloutReport",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        }
+      ],
+      "loads": [],
+      "aliasCommands": [],
+      "paramBlock": true,
+      "statements": [
+        {
+          "line": 12,
+          "kind": "dotSource",
+          "command": null,
+          "invokes": true,
+          "text": ". $PSScriptRoot\\..\\lib\\Logging.ps1"
+        },
+        {
+          "line": 13,
+          "kind": "command",
+          "command": "Import-Module",
+          "invokes": true,
+          "text": "Import-Module $PSScriptRoot\\..\\modules\\Rollout.Steps\\Rollout.Steps.psm1 -Force"
+        },
+        {
+          "line": 15,
+          "kind": "assignment",
+          "command": null,
+          "invokes": true,
+          "text": "$settings = Import-PowerShellDataFile -Path (Join-Path $PSScriptRoot '../config/targets.psd1')"
+        },
+        {
+          "line": 16,
+          "kind": "assignment",
+          "command": null,
+          "invokes": true,
+          "text": "$plan = Get-RolloutPlan -Targets ($settings[$Environment] | ForEach-Object { $_.Name })"
+        },
+        {
+          "line": 17,
+          "kind": "command",
+          "command": "Write-RolloutBanner",
+          "invokes": true,
+          "text": "Write-RolloutBanner -Title \"Plan for $Environment\""
+        },
+        {
+          "line": 18,
+          "kind": "command",
+          "command": "Format-RolloutReport",
+          "invokes": true,
+          "text": "Format-RolloutReport -Steps $plan"
+        }
+      ]
     }
   }
 }
