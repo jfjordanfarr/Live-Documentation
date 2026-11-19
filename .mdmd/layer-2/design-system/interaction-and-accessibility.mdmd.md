@@ -117,6 +117,13 @@ Where each is held: the 2D press, hold and menu in `views/localView/controller.t
 - Checked by: `tests/e2e/zoom-looks.spec.ts`, `local-map-row-motion.spec.ts`.
 - Status: holds.
 
+**A step from inside the map keeps the camera's scale and brings what it brought into view** (*visual momentum*: each new view carries the eye from the last, so the person never has to search for what they just asked for).
+- Rule: after a press inside the 2D map adds to the picture (a cell pinning its file, a directory's skin or closed box opening, a neighbour pinned from a card), the camera holds what was pressed through the re-layout, then, once the picture has settled, pans the least that brings the newcomer wholly inside the frame's padding at the same scale, a card taller than the view at its top; the newcomer wins over what was pressed; its outline is emphasised in the active colour and fades over about a second. Under reduced motion the pan is a cut and the mark only fades. A fresh subject is not a step: Tuning's Arrival frames it.
+- Why: owner, 2026-11-18 ("I might wish the camera followed the newly-opened one though, as I quickly lose it"); owner, 2026-10-02 ("if the user's eye is looking at a thing, that thing should stay relatively situated inplace while the world moves around it"), held for what was pressed until the newcomer needs the view.
+- Where: `views/localView/camera-intent.ts` (`revealPan`, `STEP_MARK_MS`); `views/localView/controller.ts` (`capturePinChange`, `captureDirectoryChange`, `settleIntoFrame`, `newcomerOf`, `markNewcomer`); `styles/local.css` (`.local-step-mark`).
+- Checked by: `tests/e2e/camera-intent.spec.ts`; `views/localView/camera-intent.test.ts`.
+- Status: holds since 2026-11-19.
+
 ### 2.3 Where the same act means different things
 
 These are stated so a builder does not mistake them for accidents. Each is in [the findings](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/design-system/README.md#the-owners-forks) with the choices it leaves the owner.

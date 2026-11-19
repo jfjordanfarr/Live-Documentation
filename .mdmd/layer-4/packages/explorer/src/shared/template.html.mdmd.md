@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-11-19T00:59:28.122Z
+- Generated At: 2026-11-19T01:56:29.480Z
 
 ## Authored
 ### Purpose
@@ -199,6 +199,9 @@ Since 2026-11-19 ([Turn 14 of the November 18 record](../../../../../../AI-Agent
 - Type: variable
 
 #### `stats-line` {#symbol-stats-line}
+- Type: variable
+
+#### `tuning-arrival` {#symbol-tuning-arrival}
 - Type: variable
 
 #### `tuning-band-gap` {#symbol-tuning-band-gap}

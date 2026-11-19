@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/tuning.ts
-- Generated At: 2026-11-19T00:59:26.866Z
+- Generated At: 2026-11-19T01:56:28.480Z
 
 ## Authored
 ### Purpose
@@ -98,6 +98,7 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`palette.isPaletteName`](../palette.ts.mdmd.md#symbol-ispalettename)
 - [`tuning-levers.TUNING_HELP`](./tuning-levers.ts.mdmd.md#symbol-tuning_help)
 - [`tuning-levers.tuningHelpId`](./tuning-levers.ts.mdmd.md#symbol-tuninghelpid)
+- [`types.ARRIVALS`](../types.ts.mdmd.md#symbol-arrivals)
 - [`types.BEYOND_HOPS`](../types.ts.mdmd.md#symbol-beyond_hops)
 - [`types.CHANGE_EMPHASES`](../types.ts.mdmd.md#symbol-change_emphases)
 - [`types.CLOSED_CELL_COLOURS`](../types.ts.mdmd.md#symbol-closed_cell_colours)
@@ -112,6 +113,7 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`types.MARBLE_PATTERNS`](../types.ts.mdmd.md#symbol-marble_patterns)
 - [`types.OVERVIEW_FILES`](../types.ts.mdmd.md#symbol-overview_files)
 - [`template.export-layout-settings`](../../shared/template.html.mdmd.md#symbol-export-layout-settings)
+- [`template.tuning-arrival`](../../shared/template.html.mdmd.md#symbol-tuning-arrival)
 - [`template.tuning-card-text`](../../shared/template.html.mdmd.md#symbol-tuning-card-text)
 - [`template.tuning-churn-cost`](../../shared/template.html.mdmd.md#symbol-tuning-churn-cost)
 - [`template.tuning-closed-cells`](../../shared/template.html.mdmd.md#symbol-tuning-closed-cells)

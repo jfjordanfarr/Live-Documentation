@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/controller.ts
-- Generated At: 2026-11-13T23:28:43.622Z
+- Generated At: 2026-11-19T01:56:29.116Z
 
 ## Authored
 ### Purpose
@@ -12,6 +12,7 @@
 Controller class for the 2D Local Map. Owns its render lifecycle, camera, and visual response to shared exploration actions while drawing every scope through the same directory-aware branch stage and router.
 
 ### Notes
+- Since 2026-11-19 the camera follows the intent a gesture declares (`camera-intent.ts`). A step from inside the map (a cell pinning its file, a directory's skin or closed box opened, a neighbour pinned from a card) records its newcomer in `capturePinChange` or `captureDirectoryChange`; once the picture settles, `settleIntoFrame` pans the least that brings it into view at the same scale and `markNewcomer` emphasises its outline for about a second. A fresh subject's framing goes through `arrivalFrame`, which reads Tuning's Arrival: at reading size as before, or at reading size and then, after `beginArrival`'s hold and ease, on the neighbours, or on the neighbours at once; any input on the map ends the hold or ease (`endArrivalByHand`), Return to Reading Size keeps its meaning, and `watchCamera` reports the hold and ease as the camera moving. The owner's words and the pictures are in [the camera-intent evidence](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/camera-intent/README.md).
 - The [November 5 reading repair](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-04/2026-11-04.1.record.md#turn-9) forwards newly retained targets into scoped reading presentation and clears that presentation on outward scale changes. Hover preview no longer overwrites the chosen click/hover anchor policy. The reading visit supplies a stable effective anchor to the native renderer, using the previewed card when no clicked or selected identity exists. Genuine inspection and contextual actions end that temporary visit after naming their acted-on identity, so its return cannot later undo the action.
 - The [November 4 learning-journey pass](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-04/2026-11-04.1.record.md#turn-8) keeps native keyboard focus inside the unobstructed frame with minimal panning, including during geometry motion. Touch presses over non-interactive card prose remain taps or holds until movement exceeds the existing activation-cancel threshold; then they own the camera and pan. Mouse presses on cards and native controls keep their existing behavior. A newly grown header may move a previously visible acted-on title/row just below its edge; this is the narrow exception to keeping screen anchors unchanged when the toolbar changes height.
 - An explicit search or focus request names a file or a particular symbol row. Its target is measured after the retained layout's current move, then framed inside the usable canvas, including the row's actions and excluding the reader and floating controls. The requested row becomes the held identity for subsequent layout changes. A camera gesture cancels a pending request, so delayed layout work cannot pull the view back after the person takes over ([November 3](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/Summarized/2026-11-03.1.SUMMARIZED.md#turn-2)).
@@ -73,7 +74,7 @@ Since 2026-11-15 ([Turn 1 of the November 15 record](../../../../../../../../AI-
 ### Public Symbols
 #### `LocalViewController` {#symbol-localviewcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L78)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L84)
 - Implements: [`LocalViewApi`](./types.ts.mdmd.md#symbol-localviewapi)
 
 ##### `LocalViewController` — Summary
@@ -91,6 +92,13 @@ Coordinates the native Local Map, independent exploration pins and explicit FROM
 - [`branch-renderer.refreshReadingPresentation`](./branch-renderer.ts.mdmd.md#symbol-refreshreadingpresentation)
 - [`branch-renderer.renderBranches`](./branch-renderer.ts.mdmd.md#symbol-renderbranches)
 - [`branches.BranchGraph`](./branches.ts.mdmd.md#symbol-branchgraph) (type-only)
+- [`camera-intent.ARRIVAL_ENDING_INPUTS`](./camera-intent.ts.mdmd.md#symbol-arrival_ending_inputs)
+- [`camera-intent.ARRIVAL_HOLD_MS`](./camera-intent.ts.mdmd.md#symbol-arrival_hold_ms)
+- [`camera-intent.STEP_MARK_MS`](./camera-intent.ts.mdmd.md#symbol-step_mark_ms)
+- [`camera-intent.arrivalEndFrame`](./camera-intent.ts.mdmd.md#symbol-arrivalendframe)
+- [`camera-intent.arrivalPose`](./camera-intent.ts.mdmd.md#symbol-arrivalpose)
+- [`camera-intent.revealPan`](./camera-intent.ts.mdmd.md#symbol-revealpan)
+- [`camera-intent.unionOf`](./camera-intent.ts.mdmd.md#symbol-unionof)
 - [`card-factory.CardContext`](./card-factory.ts.mdmd.md#symbol-cardcontext) (type-only)
 - [`card-reading.CardReading`](./card-reading.ts.mdmd.md#symbol-cardreading)
 - [`card-reading.ReadingTarget`](./card-reading.ts.mdmd.md#symbol-readingtarget)
