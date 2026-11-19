@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphLayout.ts
-- Generated At: 2026-11-19T10:01:34.369Z
+- Generated At: 2026-11-19T10:51:08.736Z
 
 ## Authored
 ### Purpose
@@ -31,8 +31,6 @@ A document's citation of a file (2026-10-22, [the decision](../../../../../../..
 The headless easing reveals the picture as the page does (2026-10-28, [the reveal](forceGraphReveal.ts.mdmd.md)): `easeSpatialLayout` takes `reveal`, what was asked about directly and as an open directory's files, with the warm-up defaulting to `REVEAL`; since 2026-10-31 (discovery, [Turn 4 of the October 31 record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-31/2026-10-31.1.record.md#turn-4)) it scopes the picture as the page does when asked about something in it, to the tuning's hops around it by `forceGraphScope.ts`, and with nothing in the picture asked about eases every node given from the layout's start; a sphere that already stands somewhere is kept and enters first, as the page keeps what is shown through a change, so that a still picture eased again is eased whole; the first piece is what is kept and what was asked about directly with its first hop, or an open directory's first file, warmed for the page's hidden ticks, and after them a share of the whole enters at every tick, the tuning's Reveal Frames, each newcomer placed by `placeNewSpheres` as it enters, and the easing runs until every sphere has entered and the motion is still. The physics measures of the layout lab ask about the whole picture to ease it as one piece. `MotionForce.stir` counts stillness afresh without changing how the motion holds, for spheres entering mid-motion, and `MotionSource.onNodes` hands the page the array the simulation applied, so that the page knows when a piece is in. The page grows after the engine tick that follows the warm-up and the piece applies before the next tick, so the twin grows after that tick too ([the Turn 4 work notes](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-28/2026-10-28.1.record.md#turn-4-work-notes)).
 
 With a budget from its source (`MotionSource.budget`, milliseconds a frame), the motion force takes a tick in parts (2026-10-28): as many spheres of evaluation as the last part's time suggests the budget allows, never under 256, the spheres written back after every part so that the picture moves as the substeps land, and a tick's bookkeeping, the tether taking hold and the stillness, waiting for its last part. Headlessly, and during the library's hidden warm-up of a first picture, there is no budget and a call is a whole tick, so the twin's numbers are unchanged.
-
-Since 2026-11-19 a part is sized by the rate of the last (`SpatialMotion.evaluated`, the spheres it evaluated, over its time) and may reach through several of a tick's substeps, never past the tick's end. Until then a part was held to one evaluation of the field: a stiff picture, whose tick takes several substeps, took a frame a substep however little of the frame they used. The discovery case's grown group on this repository ([its spec](../../../../../tests/e2e/force-graph-discovery.spec.ts.mdmd.md)) rested in 5,535 frames, 90 s at 60 frames a second on the graphics card, where its ticks fit 1,275 frames; the case's bound of 2,700 caught it after the Live Docs of November 19 grew the group by a few files. The numbers stay the whole tick's.
 
 Since 2026-11-05 `spatialFieldOf` and the motion's source take an optional clearance, the larger radius a sphere keeps in the field's collisions: a wrapped group's seed keeps its wrapper's room ([Group Wrappers](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#competing-layout-preferences)). Without one, every radius is the sphere's own, as before.
 
@@ -351,14 +349,14 @@ its last part (2026-10-28); the spheres are written back after every part, so th
 
 #### `EaseOptions` {#symbol-easeoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L574)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L571)
 
 ##### `EaseOptions` — Summary
 How a headless easing runs: its constant strength, how it begins, and the most ticks it may take.
 
 #### `easeSpatialLayout` {#symbol-easespatiallayout}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L599)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L596)
 - Parameters: `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning); `layout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout); `_unnamed_`: [`EaseOptions`](#symbol-easeoptions)
 
 ##### `easeSpatialLayout` — Summary

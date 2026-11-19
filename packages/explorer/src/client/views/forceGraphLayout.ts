@@ -528,16 +528,13 @@ export function motionForce<N extends SpatialNode>(source: MotionSource<N>): Mot
     let tick: MotionTick | null;
     if (budget === undefined) tick = motion.tick(source.strength(), fixed);
     else {
-      // The first part is one evaluation of the field; after it, the measured rate decides.
-      if (!Number.isFinite(part)) part = motion.field.count;
+      const count = motion.field.count;
+      if (!(part <= count)) part = count;
       const started = performance.now();
       tick = motion.advance(source.strength(), fixed, part);
       const took = performance.now() - started;
-      // Aim the next part at the budget by this part's rate: more spheres when they were quick, fewer when slow. A part
-      // may reach through several of a tick's substeps, as many as the budget holds, and never past the tick's end; held
-      // to one evaluation of the field, a stiff picture whose tick takes several substeps took as many frames as
-      // substeps, however little of the frame they used (2026-11-19).
-      part = Math.max(PART_FLOOR, Math.round(motion.evaluated * budget / Math.max(took, 0.1)));
+      // Aim the next part at the budget by this part's time: more spheres when it was quick, fewer when it was slow.
+      part = Math.max(PART_FLOOR, Math.min(count, Math.round(part * budget / Math.max(took, 0.1))));
     }
     let changed = false;
     nodes.forEach((node, i) => {
