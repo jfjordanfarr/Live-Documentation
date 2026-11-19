@@ -4,6 +4,8 @@ import {
   DEFAULT_AUTHORED_BLOCK,
   LiveDocSyntaxError,
   authoredBlockOf,
+  decodeLinkPath,
+  encodeLinkPath,
   parseLiveDoc,
   renderLiveDoc,
   type LiveDoc
@@ -256,6 +258,29 @@ describe("the Live Doc grammar", () => {
     ]) {
       expect(lines).toContain(line);
     }
+    expect(parseLiveDoc(Buffer.from(text, "utf8").toString("utf8"))).toEqual(doc);
+  });
+
+  it("quotes a path whose plain form would begin with a double quote, which the reader would take for a quoted value", () => {
+    // A file at the root named `"q".ts`: its plain title would begin with `"`, the quoted form's first character.
+    const doc: LiveDoc = { ...EMPTY, codePath: '"q".ts' };
+    const text = renderLiveDoc(doc);
+    expect(text.split("\n")[0]).toBe('# "\\"q\\".ts"');
+    expect(parseLiveDoc(text)).toEqual(doc);
+  });
+
+  it("percent-encodes an ampersand in a link's path, since CommonMark reads `&amp;` in a target as `&`", () => {
+    expect(encodeLinkPath("notes/Q&amp;A.md")).toBe("notes/Q%26amp;A.md");
+    expect(encodeLinkPath("R&D/plan (draft) #2?.md")).toBe("R%26D/plan%20%28draft%29%20%232%3F.md");
+    expect(decodeLinkPath(encodeLinkPath("R&D/plan (draft) #2?.md"))).toBe("R&D/plan (draft) #2?.md");
+  });
+
+  it("writes a link whose path holds a lone surrogate, which no URL can hold, as a JSON string, and reads it back", () => {
+    // Deliberate: the one rule of every slot, plain where that reads back and quoted elsewhere; the doc still carries the fact.
+    const link = `./d${String.fromCharCode(0xd800)}/a.ts.md`;
+    const doc: LiveDoc = { ...EMPTY, citedBy: [{ label: "README.md", link }] };
+    const text = renderLiveDoc(doc);
+    expect(text).toContain('- [`README.md`]("./d\\ud800/a.ts.md")');
     expect(parseLiveDoc(Buffer.from(text, "utf8").toString("utf8"))).toEqual(doc);
   });
 
