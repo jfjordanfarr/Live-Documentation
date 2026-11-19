@@ -6,7 +6,7 @@ import type { ExplorerNodePayload } from "../shared/types";
 import { inferDefaultEntryNodeId } from "./bootstrap";
 import { landingOf } from "./bootstrap/landing";
 import { createDetailPanel, type DetailPanelAction } from "./detailPanel";
-import { applyMarbles, applyPalette, requireElement, setActiveView } from "./dom";
+import { applyMarblePattern, applyMarbles, applyPalette, requireElement, setActiveView } from "./dom";
 import { downloadDocs, downloadFactsJson, type DownloadBundleType, type DownloadFormat } from "./download";
 import { attachGlobalErrorHandler, ExplorerRefusal, OPENED_AS_FILE, reportFatalExplorerError } from "./errors";
 import { buildTestCoverageMap, resolveLinkEndpoint, getInputById } from "./graph-helpers";
@@ -189,6 +189,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   };
   applyPalette(state.tuning.appearance.palette);
   applyMarbles(state.tuning.appearance.marbles);
+  applyMarblePattern(state.tuning.appearance.marblePattern);
 
   const persistUi = createPersistUiScheduler(() => ({
     filters: state.filters,

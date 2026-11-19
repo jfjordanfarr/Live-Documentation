@@ -8,7 +8,7 @@
 import { LAYOUT_PRESETS, readLayoutSettings } from "../layout-presets";
 import { DEFAULT_PALETTE, isPaletteName } from "../palette";
 import { readReadingChoices, type ReadingChoice } from "../reading-state";
-import { CHANGE_EMPHASES, HIDDEN_FILES_LOOKS, HISTORY_GRANULARITIES, MARBLE_CHOICES, type ChangeEmphasis, type DiscoveryTarget, type HistoryAxis, type HistoryGranularity, type InspectionTarget, type LocalMapPerspective, type ExplorerFilters, type SpatialLayout, type SymbolOrder, type TuningConfig, type ViewName } from "../types";
+import { CHANGE_EMPHASES, HIDDEN_FILES_LOOKS, HISTORY_GRANULARITIES, MARBLE_CHOICES, MARBLE_PATTERNS, type ChangeEmphasis, type DiscoveryTarget, type HistoryAxis, type HistoryGranularity, type InspectionTarget, type LocalMapPerspective, type ExplorerFilters, type SpatialLayout, type SymbolOrder, type TuningConfig, type ViewName } from "../types";
 import { DEFAULT_RETURN_COST } from "../views/localView/cycle-order";
 import { readPerspective, readSpatialLayout, readView } from "./navigation";
 
@@ -103,8 +103,9 @@ export const getDefaultTuning = (): TuningConfig => ({
   // after the owner asked whether a changed file could keep its kind's colour; Glow, white, from 2026-10-31).
   history: { axis: "time", granularity: "auto", playRate: 2, changeEmphasis: "dim" },
   // Today's colours until a viewer chooses others (the colour pass, 2026-11-16), and marbles until a viewer turns them
-  // off (the marble trial, 2026-11-17; the default since 2026-11-18, the owner's "a worthy new default").
-  appearance: { palette: DEFAULT_PALETTE, marbles: MARBLE_CHOICES[0] }
+  // off (the marble trial, 2026-11-17; the default since 2026-11-18, the owner's "a worthy new default"), each in one
+  // pattern until a viewer chooses one from its doc (the pattern trial, 2026-11-18).
+  appearance: { palette: DEFAULT_PALETTE, marbles: MARBLE_CHOICES[0], marblePattern: MARBLE_PATTERNS[0] }
 });
 
 const isRecord = (value: unknown): value is Record<string, unknown> => {
@@ -313,9 +314,11 @@ export const readPersistedUi = (): PersistedUi | null => {
       const appearanceRaw = getRecord(parsedTuning, "appearance");
       if (appearanceRaw) {
         const marbles = MARBLE_CHOICES.find(choice => choice === appearanceRaw.marbles);
+        const marblePattern = MARBLE_PATTERNS.find(choice => choice === appearanceRaw.marblePattern);
         tuning.appearance = {
           ...(isPaletteName(appearanceRaw.palette) ? { palette: appearanceRaw.palette } : null),
-          ...(marbles ? { marbles } : null)
+          ...(marbles ? { marbles } : null),
+          ...(marblePattern ? { marblePattern } : null)
         };
       }
 

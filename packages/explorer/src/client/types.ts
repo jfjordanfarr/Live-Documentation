@@ -1,5 +1,5 @@
 import type { ExplorerNodePayload } from "../shared/types";
-import type { PaletteName } from "./palette";
+import type { MarblePattern, PaletteName } from "./palette";
 import type { ReadingChoice } from "./reading-state";
 import type { PinSet } from "./views/pin-state";
 
@@ -242,6 +242,7 @@ export interface TuningConfig {
 export interface AppearanceTuning {
   palette: PaletteName;
   marbles: MarbleChoice;
+  marblePattern: MarblePattern;
 }
 
 /**
@@ -254,6 +255,12 @@ export type MarbleChoice = "off" | "on";
 
 /** Every marble choice, in the order the control offers them; the first, on, is the default. */
 export const MARBLE_CHOICES: readonly MarbleChoice[] = ["on", "off"];
+
+/** How a marble's veins wind, the trial of 2026-11-18 (`MarblePattern` in palette.ts). */
+export type { MarblePattern };
+
+/** Every marble pattern, in the order the control offers them; the first, one pattern, is the default. */
+export const MARBLE_PATTERNS: readonly MarblePattern[] = ["one", "doc", "doc-axis"];
 
 /**
  * Which ticks the history's scrubber draws and the step key moves between: every step; one per day, week or month

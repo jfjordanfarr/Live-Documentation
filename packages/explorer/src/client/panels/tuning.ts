@@ -5,10 +5,10 @@
  * for bezier curves, click behavior, visual options, and Local Map settings.
  */
 
-import { applyMarbles, applyPalette } from "../dom";
+import { applyMarblePattern, applyMarbles, applyPalette } from "../dom";
 import { layoutSettingsOf } from "../layout-presets";
 import { DEFAULT_PALETTE, isPaletteName } from "../palette";
-import { CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, BEYOND_HOPS, HIDDEN_FILES_LOOKS, MARBLE_CHOICES, OVERVIEW_FILES, type ExplorerState } from "../types";
+import { CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, BEYOND_HOPS, HIDDEN_FILES_LOOKS, MARBLE_CHOICES, MARBLE_PATTERNS, OVERVIEW_FILES, type ExplorerState } from "../types";
 import { TUNING_HELP, tuningHelpId } from "./tuning-levers";
 
 /** Callback for when tuning values change */
@@ -71,6 +71,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   const hiddenFilesSelect = document.getElementById("tuning-hidden-files") as HTMLSelectElement | null;
   const paletteSelect = document.getElementById("tuning-palette") as HTMLSelectElement | null;
   const marblesSelect = document.getElementById("tuning-marbles") as HTMLSelectElement | null;
+  const marblePatternSelect = document.getElementById("tuning-marble-pattern") as HTMLSelectElement | null;
   /**
    * The skin's shape and its cells' colour are choices of the cells alone: shown only while a closed directory's skin or
    * a handle's hidden files draw them.
@@ -192,6 +193,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     if (hiddenFilesSelect) hiddenFilesSelect.value = state.tuning.localMap.hiddenFiles;
     if (paletteSelect) paletteSelect.value = state.tuning.appearance.palette;
     if (marblesSelect) marblesSelect.value = state.tuning.appearance.marbles;
+    if (marblePatternSelect) marblePatternSelect.value = state.tuning.appearance.marblePattern;
     syncClosedChoices();
     if (overviewFilesSelect) overviewFilesSelect.value = state.tuning.localMap.overviewFiles;
     if (descriptionsZoomedOutSelect) descriptionsZoomedOutSelect.value = state.tuning.localMap.descriptionsZoomedOut;
@@ -327,6 +329,14 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     marblesSelect.addEventListener("change", () => {
       state.tuning.appearance.marbles = MARBLE_CHOICES.find(choice => choice === marblesSelect.value) ?? MARBLE_CHOICES[0];
       applyMarbles(state.tuning.appearance.marbles);
+      onTuningChange();
+    });
+  }
+  // How the marbles' veins wind (the pattern trial, 2026-11-18): taken at once as the marbles are, nothing moving.
+  if (marblePatternSelect) {
+    marblePatternSelect.addEventListener("change", () => {
+      state.tuning.appearance.marblePattern = MARBLE_PATTERNS.find(choice => choice === marblePatternSelect.value) ?? MARBLE_PATTERNS[0];
+      applyMarblePattern(state.tuning.appearance.marblePattern);
       onTuningChange();
     });
   }

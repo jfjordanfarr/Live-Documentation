@@ -1,5 +1,5 @@
-import { chooseMarbles, choosePalette, customProperties, paletteNamed } from "./palette";
-import type { LocalMapPerspective, MarbleChoice, ViewName } from "./types";
+import { chooseMarblePattern, chooseMarbles, choosePalette, customProperties, paletteNamed } from "./palette";
+import type { LocalMapPerspective, MarbleChoice, MarblePattern, ViewName } from "./types";
 import { seamsOf } from "./views/localView/word-seams";
 
 /** Looks up an element by `id` and throws if not found. */
@@ -29,6 +29,11 @@ export function applyPalette(name: unknown): void {
 export function applyMarbles(choice: MarbleChoice): void {
   document.documentElement.dataset.marbles = choice;
   chooseMarbles(choice === "on");
+}
+
+/** Winds the marbles' veins in one pattern or from each file's doc (the pattern trial, 2026-11-18): the 3D map draws again, nothing moving. */
+export function applyMarblePattern(choice: MarblePattern): void {
+  chooseMarblePattern(choice);
 }
 
 /** Activates the given view tab and its container while deactivating siblings. */

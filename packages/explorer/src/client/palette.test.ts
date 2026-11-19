@@ -2,7 +2,7 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { activePalette, channels, chooseMarbles, choosePalette, customProperties, DEFAULT_PALETTE, isPaletteName, marblesDrawn, mix, PALETTES, paletteStylesheet, PROPOSED, rgba, TODAY, unitChannels, VIVID_KINDS, whenPaletteChanges, type Palette } from "./palette";
+import { activePalette, channels, chooseMarblePattern, chooseMarbles, choosePalette, customProperties, DEFAULT_PALETTE, isPaletteName, marblePattern, marblesDrawn, mix, PALETTES, paletteStylesheet, PROPOSED, rgba, TODAY, unitChannels, VIVID_KINDS, whenPaletteChanges, type Palette } from "./palette";
 import { fileShares, MARBLE_COLOUR, MARBLE_FRAGMENT_PARS, MARBLE_SHINE, MARBLE_VEINS, MARBLE_VERTEX, MARBLE_VERTEX_PARS, marbleAmount, marbleCounts, marbleOf, marbleSeed, marbleShares, marbleTint, type SpatialKind } from "./views/forceGraphAppearance";
 
 describe("the palette", () => {
@@ -301,12 +301,51 @@ describe("the marble", () => {
   it("is compiled into a shader only while marbles are drawn: every chunk stands whole inside one guard", () => {
     // Skipped by a test inside the shader alone, the pattern cost this repository's picture a sixth of its frames with
     // no marble drawn (2026-11-17). A chunk outside the guard is that cost again, or a shader that does not compile.
+    // Within it, only the pattern from the doc has guards of its own (2026-11-18), balanced, never closing the outer one.
     for (const [name, chunk] of Object.entries({ MARBLE_VERTEX_PARS, MARBLE_VERTEX, MARBLE_FRAGMENT_PARS, MARBLE_COLOUR, MARBLE_SHINE })) {
       const lines = chunk.split("\n");
       expect(lines.slice(0, 2), name).toEqual(["", "#ifdef MARBLES"]);
       expect(lines[lines.length - 1], name).toBe("#endif");
-      expect(lines.filter(line => /^\s*#\s*(?:if|ifdef|ifndef|endif|else|elif)\b/.test(line)), name).toEqual(["#ifdef MARBLES", "#endif"]);
+      const guards = lines.filter(line => /^\s*#\s*(?:if|ifdef|ifndef|endif|else|elif)\b/.test(line));
+      let depth = 0;
+      guards.forEach((guard, i) => {
+        if (i === 0) { depth = 1; return; }
+        if (guard === "#endif") depth--;
+        else if (guard.startsWith("#ifdef")) { expect(guard, name).toMatch(/^#ifdef MARBLE_SKETCH(?:_AXIS)?$/); depth++; }
+        else expect(guard, name).toBe("#else");
+        expect(depth > 0 || i === guards.length - 1, `${name}: the outer guard closes only at the end`).toBe(true);
+      });
+      expect(depth, name).toBe(0);
     }
+  });
+
+  it("with one pattern, compiles nothing of the pattern from the doc", () => {
+    // The trial's own guards taken as the compiler takes them with MARBLE_SKETCH undefined: no sketch survives.
+    const without = (chunk: string): string => {
+      const kept: string[] = [], skipping: boolean[] = [];
+      for (const line of chunk.split("\n")) {
+        if (/^#ifdef MARBLE_SKETCH/.test(line)) { skipping.push(true); continue; }
+        if (line === "#ifdef MARBLES") { skipping.push(false); continue; }
+        if (line === "#else") { skipping[skipping.length - 1] = !skipping[skipping.length - 1]; continue; }
+        if (line === "#endif") { skipping.pop(); continue; }
+        if (!skipping.includes(true)) kept.push(line);
+      }
+      return kept.join("\n");
+    };
+    for (const chunk of [MARBLE_VERTEX_PARS, MARBLE_VERTEX, MARBLE_FRAGMENT_PARS, MARBLE_COLOUR, MARBLE_SHINE]) expect(without(chunk)).not.toMatch(/Sketch/);
+    expect(without(MARBLE_FRAGMENT_PARS)).toContain("float seed = vMarbleVeins.z;");
+    expect(MARBLE_FRAGMENT_PARS).toContain("vMarbleSketchA");
+  });
+
+  it("winds its veins as the viewer chooses, and tells whoever listens to the palette when that changes", () => {
+    const heard: string[] = [];
+    const stop = whenPaletteChanges(() => heard.push(marblePattern()));
+    chooseMarblePattern("doc");
+    chooseMarblePattern("doc");
+    chooseMarblePattern("doc-axis");
+    chooseMarblePattern("one");
+    stop();
+    expect(heard).toEqual(["doc", "doc-axis", "one"]);
   });
 
   it("is drawn or not as the viewer chooses, and tells whoever listens to the palette when that changes", () => {
