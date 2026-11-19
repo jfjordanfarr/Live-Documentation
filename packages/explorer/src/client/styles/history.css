@@ -26,15 +26,18 @@
 .history-commit-results { max-height: min(340px, 45vh); overflow-y: auto; }
 .history-scrubber .history-commit-result { display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 4px; width: 100%; padding: 8px; border-bottom: 1px solid var(--line-border); font-size: 13px; overflow-wrap: anywhere; }
 .history-commit-meta { color: var(--text-panel-muted); font-size: 12px; }
+/* The speed beside play (2026-10-31): a small select in the scrubber's own type. */
+.history-rate { padding: 4px 6px; border: 1px solid var(--line-border); border-radius: 4px; background: var(--ground-deep); color: var(--text-normal); font: inherit; font-size: 12px; }
+.history-rate:focus-visible { outline: 2px solid var(--state-selected); }
+.history-slider { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+/* A narrow scrubber gives the track a row of its own above the buttons. The rule stands after the slider's own, whose
+   `flex` shorthand had reset this `flex-basis` when the rule stood before it, so that until 2026-11-19 a narrow scrubber
+   kept one row and squeezed the track between the buttons. */
 @container (max-width: 714px) {
   .history-controls { gap: 6px; flex-wrap: wrap; }
   .history-slider { order: -1; flex-basis: 100%; }
   .history-controls .history-readout { margin-left: auto; }
 }
-/* The speed beside play (2026-10-31): a small select in the scrubber's own type. */
-.history-rate { padding: 4px 6px; border: 1px solid var(--line-border); border-radius: 4px; background: var(--ground-deep); color: var(--text-normal); font: inherit; font-size: 12px; }
-.history-rate:focus-visible { outline: 2px solid var(--state-selected); }
-.history-slider { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .history-track { position: relative; height: 26px; margin-bottom: 3px; cursor: pointer; touch-action: none; }
 .history-track:focus-visible { outline: 2px solid var(--state-selected); outline-offset: 2px; border-radius: 4px; }
 .history-lane { position: absolute; inset: 0; }
