@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/generator/src/history/summarizeChange.ts
-- Generated At: 2026-11-19T18:10:05.332Z
+- Generated At: 2026-11-19T20:51:09.306Z
 
 ## Authored
 ### Purpose
@@ -39,9 +39,26 @@ What one process is asked to do.
 ##### `summarizeChange` — Summary
 Generates the change's docs in its working tree and writes its summary, and its index when asked.
 
+#### `standingFiles` {#symbol-standingfiles}
+- Type: function
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L145)
+- Parameters: `unwritten`: `ReadonlyArray`
+
+##### `standingFiles` — Summary
+The files that stand in the change's tree, by their repository-relative paths, read from the tree's own listing
+(its index, which the history command made from the change's tree and named in this process's environment): a
+regular file stands, and so does a symbolic link the tree writer wrote as a copy of the file it leads to, which is
+every link not named unwritten; a submodule does not, nor any entry the tree did not hold (`unwritten`).
+
+The listing, not the disk, so that whether a linked document stood depends on the commit alone. Every name of the
+tree is written, so on a disk that tells case apart the two agree; on one that folds case or Unicode form, as macOS's
+and Windows's do, the disk would find `Docs/Design.md` for a link to `docs/design.md`, and the listing does not.
+That holds of this question only: the generator's own resolution of an import still asks the disk. Until 2026-11-19
+the disk was asked here (`stat`, then `isFile`).
+
 #### `SummaryReport` {#symbol-summaryreport}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L196)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L180)
 
 ##### `SummaryReport` — Summary
 What the process tells the history command when it has written the summary.

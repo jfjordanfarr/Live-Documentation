@@ -132,33 +132,17 @@ const AUTHORED_HEADING = /^## Authored[ \t]*$/mu;
 
 /**
  * The files that stand in the change's tree, by their repository-relative paths, read from the tree's own listing
- * (its index, which the history command made from the change's tree and named in this process's environment), not
- * from the disk: the tree writer leaves out the files the generator never opens, and a document of them may still be
- * linked. A regular file of the listing stands; so does a symbolic link the tree writer wrote as a copy of the file it
- * leads to, which is every link not named unwritten; a submodule does not, nor any entry the tree did not hold
- * (`unwritten`). Until 2026-11-19 the disk was asked (`stat`, then `isFile`).
+ * (its index, which the history command made from the change's tree and named in this process's environment): a
+ * regular file stands, and so does a symbolic link the tree writer wrote as a copy of the file it leads to, which is
+ * every link not named unwritten; a submodule does not, nor any entry the tree did not hold (`unwritten`).
  *
- * Where the two answers can differ, and which is right:
- * - A file the configuration excludes and no reader reads: written empty, so both say yes.
- * - A symbolic link to a file of the tree: the disk followed the link and said yes; the listing says yes too, since
- *   the link is written as a copy of that file. A link to a folder, out of the tree or to nothing is unwritten, and
- *   both say no, as the disk did for all but a link out of the tree, which a checkout follows and the history does not.
- * - A document reached through a linked folder (`docs/` a link, `docs/a.md` linked to): the disk followed it and said
- *   yes; the listing holds no such path and says no. The history follows no link to a folder.
- * - A disk that takes two spellings for one name (case, Unicode form): the disk said yes to a link spelled otherwise
- *   than the file; the listing answers by the exact path git holds, the same on every disk. The listing is right: a
- *   summary must not depend on the disk it was made on, which the lens does not key.
- * - A file the generator itself writes or prunes during the run: only Live Docs and the graph's index under the docs
- *   root, which are never related documents (`relatedDocsOf` skips a link to a Live Doc, and the index is not
- *   markdown). Both answer alike.
- * - A folder or a submodule at a document's name: neither is a file; the disk said no to the folder (`isFile`), and
- *   the listing holds neither as a file. Both answer alike.
- * - An entry the tree could not hold (`unwritten`): absent from the disk, and taken out of the listing here. Both
- *   answer alike.
- * On this repository's first-parent line no commit holds a link or a submodule (`git log --raw` shows no entry of mode
- * 120000 or 160000) and the trees were written on a disk that tells case apart, so no fact changed here.
+ * The listing, not the disk, so that whether a linked document stood depends on the commit alone. Every name of the
+ * tree is written, so on a disk that tells case apart the two agree; on one that folds case or Unicode form, as macOS's
+ * and Windows's do, the disk would find `Docs/Design.md` for a link to `docs/design.md`, and the listing does not.
+ * That holds of this question only: the generator's own resolution of an import still asks the disk. Until 2026-11-19
+ * the disk was asked here (`stat`, then `isFile`).
  */
-async function standingFiles(tree: string, unwritten: ReadonlyArray<{ path: string }>): Promise<Set<string>> {
+export async function standingFiles(tree: string, unwritten: ReadonlyArray<{ path: string }>): Promise<Set<string>> {
   const { stdout } = await execFileAsync("git", ["ls-files", "--stage", "-z"], { cwd: tree, maxBuffer: 1 << 30 });
   const notWritten = new Set(unwritten.map((entry) => entry.path));
   const standing = new Set<string>();
