@@ -96,10 +96,11 @@ function blank(text: string): string {
  * @returns Array of 0-based byte offsets for each line start.
  */
 export function computeLineStarts(content: string): number[] {
+  // A line ends at LF, CRLF or a lone CR, as the markdown reader ends one.
   const starts = [0];
   for (let index = 0; index < content.length; index += 1) {
     const char = content.charCodeAt(index);
-    if (char === 10) {
+    if (char === 10 || (char === 13 && content.charCodeAt(index + 1) !== 10)) {
       starts.push(index + 1);
     }
   }

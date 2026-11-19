@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/slopcop/markdownShared.ts
-- Generated At: 2026-11-19T00:59:46.965Z
+- Generated At: 2026-11-19T21:17:44.699Z
 
 ## Authored
 ### Purpose
@@ -88,7 +88,7 @@ Array of 0-based byte offsets for each line start.
 
 #### `toLineAndColumn` {#symbol-tolineandcolumn}
 - Type: function
-- Source: [source](../../../../scripts/slopcop/markdownShared.ts#L117)
+- Source: [source](../../../../scripts/slopcop/markdownShared.ts#L118)
 
 ##### `toLineAndColumn` — Summary
 Converts a 0-based byte offset to a 1-based line and column number
@@ -103,7 +103,7 @@ using a precomputed line-start array.
 
 #### `parseLinkTarget` {#symbol-parselinktarget}
 - Type: function
-- Source: [source](../../../../scripts/slopcop/markdownShared.ts#L147)
+- Source: [source](../../../../scripts/slopcop/markdownShared.ts#L148)
 
 ##### `parseLinkTarget` — Summary
 Extracts the URL portion from a raw markdown link target string,

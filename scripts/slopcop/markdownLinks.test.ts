@@ -159,6 +159,17 @@ describe("markdown link audit", () => {
     expect(issues.map(issue => [issue.target, issue.line, issue.column])).toEqual([["plan%20(final).md", 4, 1]]);
   });
 
+  it("says where a broken link stands whatever the file's line endings, and decodes an encoded ampersand", () => {
+    const workspace = createWorkspace();
+    writeFileSync(path.join(workspace, "R&D.md"), "x");
+    for (const [name, ending] of [["lf.md", "\n"], ["crlf.md", "\r\n"], ["cr.md", "\r"]]) {
+      const docPath = path.join(workspace, name);
+      writeFileSync(docPath, ["One [fine](R%26D.md)", "", "two [gone](missing.md)"].join(ending));
+      const issues = findBrokenMarkdownLinks(docPath, { workspaceRoot: workspace });
+      expect(issues.map(issue => [issue.target, issue.line, issue.column, issue.raw]), name).toEqual([["missing.md", 3, 5, "[gone](missing.md)"]]);
+    }
+  });
+
   it("applies ignore target patterns", () => {
     const workspace = createWorkspace();
     const docPath = path.join(workspace, "docs.md");

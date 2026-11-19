@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: package.json
 - Entry: tooling
-- Generated At: 2026-11-18T17:31:23.993Z
+- Generated At: 2026-11-19T21:17:31.573Z
 
 ## Authored
 ### Purpose
@@ -40,6 +40,7 @@ The workspace manifest: the four npm workspaces (engine, generator, explorer, cl
 - `@sourcegraph/scip-typescript@^0.4.0`
 - `@types/node@^25.3.2`
 - `@vitest/coverage-v8@^4.1.12`
+- `commonmark@^0.31.2`
 - `eslint-import-resolver-typescript@^4.4.5`
 - `eslint-plugin-import-x@^4.18.1`
 - `eslint-plugin-jsdoc@^63.3.3`
