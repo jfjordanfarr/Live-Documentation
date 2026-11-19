@@ -72,7 +72,8 @@ export function createSymbolSlug(name: string): string {
   if (candidate.length > 0) {
     return `symbol-${candidate}`;
   }
-  return `symbol-${Array.from(name, (character) => `~${character.codePointAt(0)!.toString(16)}`).join("")}`;
+  // An empty name, as a JSON key may be, is `symbol-~`, which no other name gives.
+  return `symbol-${Array.from(name, (character) => `~${character.codePointAt(0)!.toString(16)}`).join("") || "~"}`;
 }
 
 /**

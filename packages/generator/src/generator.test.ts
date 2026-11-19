@@ -776,4 +776,26 @@ describe("generateLiveDocs and names of punctuation only", () => {
       await fs.rm(workspaceRoot, { recursive: true, force: true });
     }
   });
+
+  it("documents a JSON file whose keys hold backticks or are empty, in a doc that reads back, so that the history can summarize it", async () => {
+    const workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "generate-keys-"));
+    const config = normalizeLiveDocumentationConfig({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, glob: ["config/**/*.json"] });
+    try {
+      await fs.mkdir(path.join(workspaceRoot, "config"));
+      await fs.writeFile(path.join(workspaceRoot, "config", "odd.json"), JSON.stringify({ "a`b": 1, "": { c: 2 }, "``": 3, c: 4 }));
+      await generateLiveDocs({ workspaceRoot, config, logger: { info: () => undefined, warn: () => undefined, error: (message) => { throw new Error(message); } } });
+      const graph = await readLiveDocGraph({ workspaceRoot, config });
+      expect(graph.files["config/odd.json"].symbols.map((symbol) => [symbol.name, symbol.slug])).toEqual([
+        ["a`b", "symbol-ab"],
+        ['""', "symbol-~"],
+        // The key beneath the empty one, apart from the key `c`, which the generator tells apart as two of one name.
+        [":c (key overload 1)", "symbol-c-key-overload-1"],
+        ["``", "symbol-~60~60"],
+        ["c (key overload 2)", "symbol-c-key-overload-2"]
+      ]);
+      expect(summarizeGraph(graph, "lens", "commit").summary.files[0].symbols).toHaveLength(5);
+    } finally {
+      await fs.rm(workspaceRoot, { recursive: true, force: true });
+    }
+  });
 });

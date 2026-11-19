@@ -16,6 +16,7 @@ import path from "node:path";
 import type { LiveDocumentationConfig } from "../config/liveDocumentationConfig";
 import { getSyntaxByPath } from "../languages";
 import { compareText } from "../tooling/compareText";
+import { slug } from "../tooling/githubSlugger";
 import { matchesPathPattern } from "./archetype";
 import { RESERVED_HEADING_NAMES } from "./coreConstants";
 import type {
@@ -113,23 +114,29 @@ export function computePublicSymbolHeadingInfo(symbols: PublicSymbolEntry[]): Pu
       kindOccurrences.set(occurrenceKey, occurrence);
     }
 
-    let displayName = symbol.name;
+    // What the heading adds to the name in parentheses, where two symbols share one name or anchor or the name is reserved.
+    let suffix: string | undefined;
     if (shouldDisambiguateByName || shouldDisambiguateBySlug) {
       const kindSpecificCount = shouldDisambiguateByName ? duplicateKindCount : slugKindCollisionCount;
       if (kindSpecificCount === 1 && symbol.kind) {
-        displayName = `${symbol.name} (${symbol.kind})`;
+        suffix = symbol.kind;
       } else {
         const labelBase = symbol.kind ? `${symbol.kind} overload` : "variant";
         const ordinal = occurrence > 0 ? occurrence : 1;
-        displayName = `${symbol.name} (${labelBase} ${ordinal})`;
+        suffix = `${labelBase} ${ordinal}`;
       }
     } else if (isReservedHeadingName) {
-      const descriptiveKind = symbol.kind ?? "symbol";
-      displayName = `${symbol.name} (${descriptiveKind})`;
+      suffix = symbol.kind ?? "symbol";
     }
+    // A name that is empty, as a JSON key may be, is shown as the file spells it.
+    const shownName = symbol.name === "" ? '""' : symbol.name;
+    const displayName = suffix === undefined ? shownName : `${shownName} (${suffix})`;
 
-    // A reserved name keeps the anchor of its bare name; every other heading is anchored by the name it displays.
-    const resolvedSlug = isReservedHeadingName && !shouldDisambiguateByName && !shouldDisambiguateBySlug ? baseSlug : createSymbolSlug(displayName);
+    // A reserved name keeps the anchor of its bare name. A disambiguated one is anchored by its bare name's anchor and
+    // the suffix, which for a name the slug keeps is the anchor of the name it displays, and for a name of punctuation
+    // only keeps its code points, so that adding `$` never changes the anchor of `$$`.
+    const disambiguated = shouldDisambiguateByName || shouldDisambiguateBySlug;
+    const resolvedSlug = suffix === undefined || !disambiguated ? baseSlug : `${baseSlug}-${slug(`\`${suffix}\``)}`;
     infos.push({
       symbol,
       displayName,

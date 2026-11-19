@@ -393,4 +393,52 @@ describe("the anchor of every symbol's heading", () => {
     );
     expect(doc.symbols.map((symbol) => symbol.slug)).toEqual(headings.map((heading) => heading.slug));
   });
+
+  it("keeps a symbol-only name's code points when it is told apart by its kind, so that one name's anchor never depends on another's", () => {
+    const both = computePublicSymbolHeadingInfo([
+      { name: "$", kind: "const" },
+      { name: "$", kind: "type" },
+      { name: "$$", kind: "const" },
+      { name: "$$", kind: "type" }
+    ]);
+    expect(both.map((heading) => [heading.displayName, heading.slug])).toEqual([
+      ["$ (const)", "symbol-~24-const"],
+      ["$ (type)", "symbol-~24-type"],
+      ["$$ (const)", "symbol-~24~24-const"],
+      ["$$ (type)", "symbol-~24~24-type"]
+    ]);
+    const alone = computePublicSymbolHeadingInfo([{ name: "$$", kind: "const" }, { name: "$$", kind: "type" }]);
+    expect(alone.map((heading) => heading.slug)).toEqual(["symbol-~24~24-const", "symbol-~24~24-type"]);
+    // A name the slug keeps is anchored as before, by the name it displays.
+    expect(computePublicSymbolHeadingInfo([{ name: "Widget", kind: "interface" }, { name: "Widget", kind: "const" }, { name: "load", kind: "function" }, { name: "load", kind: "function" }]).map((heading) => heading.slug)).toEqual([
+      "symbol-widget-interface",
+      "symbol-widget-const",
+      "symbol-load-function-overload-1",
+      "symbol-load-function-overload-2"
+    ]);
+  });
+
+  it("writes every name a file can hold into a heading that reads back as that name, backticks, spaces and emptiness included", () => {
+    const names = ["a`b", "``x", "`", " a", "a ", "   ", "plain", ""];
+    const headings = computePublicSymbolHeadingInfo(names.map((name) => ({ name, kind: "key" })));
+    // Names that differ only by surrounding spaces are told apart as the generator tells any two of one name apart.
+    expect(computePublicSymbolHeadingInfo([{ name: "", kind: "key" }, { name: "a", kind: "key" }]).map((heading) => [heading.displayName, heading.slug])).toEqual([
+      ['""', "symbol-~"],
+      ["a", "symbol-a"]
+    ]);
+    const doc = parseLiveDoc(
+      renderLiveDoc({
+        codePath: "config.json",
+        layer: 4,
+        archetype: "implementation",
+        entries: [{ reason: "program", symbol: { name: "a`b" } }],
+        generatedAt: "2026-11-19T00:00:00.000Z",
+        authored: "### Purpose\nHolds keys.",
+        symbols: headings.map((heading) => ({ name: heading.displayName, slug: heading.slug, kind: "key", flags: [], sections: [{ title: "Summary", body: ["A key."] }], references: [] })),
+        dependencies: []
+      })
+    );
+    expect(doc.symbols.map((symbol) => [symbol.name, symbol.slug])).toEqual(headings.map((heading) => [heading.displayName, heading.slug]));
+    expect(doc.entries[0].symbol).toEqual({ name: "a`b" });
+  });
 });
