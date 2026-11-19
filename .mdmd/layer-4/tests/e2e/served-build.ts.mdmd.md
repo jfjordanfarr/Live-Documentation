@@ -4,14 +4,18 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/served-build.ts
-- Generated At: 2026-11-19T07:03:56.634Z
+- Generated At: 2026-11-19T07:09:29.478Z
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+That the browser suite runs against this checkout's build and no other. It chooses the port of the suite's own server (free unless `LIVE_DOCS_E2E_PORT` names one, and a named port that already answers refused unless `LIVE_DOCS_E2E_REUSE=1`), and, as the suite's first global setup, refuses stale bundles and proves that the server answering serves this checkout's `dist/explorer`.
 
 ### Notes
-_Pending notes_
+- Written on 2026-11-19, when builders were running the suite side by side ([Turns 36 and 37 of the November 18 session](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-36)). The configuration then took its port from `LIVE_DOCS_E2E_PORT` (8766 by default) and reused whatever answered there; a builder given a port another builder's server still held would have tested the other's build without a word, and it was caught by luck.
+- **The port.** Playwright reads a configuration again in each worker it starts, so a port chosen at random in each would differ. The main process decides once and puts the port in `LIVE_DOCS_E2E_DECIDED_PORT`, which the processes it starts inherit and read first. A free port is asked of the system (a listen on port 0) from a short-lived Node process, since a configuration is read synchronously; if another process takes it before the server does, Playwright's own check refuses the run rather than reuse. A named port is probed the same way, and refused with a sentence that says what to do.
+- **The proof.** Reuse alone could still hand a run another checkout's server, so the setup writes a file of a fresh name and content into `dist/explorer`, fetches it through the server, and removes it. Only a server serving that very folder can answer with it. It runs whether or not the server is the suite's own, at the cost of one request. Shown on 2026-11-19 with `LIVE_DOCS_E2E_REUSE=1` against an `http-server` serving the main tree's `dist/explorer` on the worktree's port: refused, "asked for a file just written there, it gave status 404".
+- **Stale bundles.** The check and the list of bundles are [`scripts/e2e-bundles.mjs`](../../scripts/e2e-bundles.mjs.mdmd.md)'s, run as a child process.
+- No side channel was added to the product for this: the proof uses only the static server and the folder it serves.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -97,3 +101,8 @@ The suite's first global setup: the bundles were built together and are current,
 - `node:fs` - `fs`
 - `node:path` - `path`
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-2/internal-tooling.mdmd.md`](../../../layer-2/internal-tooling.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

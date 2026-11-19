@@ -8,10 +8,12 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Tests of the [browser lane](./browser-lane.mjs.mdmd.md): its queue's rules as pure functions, then the lane itself driven with stand-in commands in a lane folder and an older lock of each test's own, so that no test touches the lane builders are using.
 
 ### Notes
-_Pending notes_
+- Written with the lane on 2026-11-19 ([Turns 36 and 37 of the November 18 session](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-36)). The driven cases are: three callers served in the order they took their tickets, each with an older lock of its own so that the queue alone orders them; a ticket left by a process that is gone skipped; a command that outlives a one-second cap ended, the cut said on the last line, and the lane free for the next; a cut stand-in Playwright run whose last line counts the cases that had finished; a server started in a session of its own and left listening, ended, with its port named; a holder of the older lock outside the lane waited for; and a command that would take that lock again refused.
+- No case asserts a duration, by the rule for that night's new cases ([Turn 36](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-36)): the stand-ins wait on files the test writes, and the cases wait on states (a mark written, a ticket present, the lane saying it waits) and read orders.
+- Each case was seen to fail with the logic it guards broken on purpose: the queue sorted backwards and the older lock not taken (the order case, then the lock case, which until it waited for the lane's own "waiting for" line had passed by a race), a dead ticket counted as live, the cap never reached, and the sweep of what was left behind skipped.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
