@@ -162,3 +162,24 @@ test("the sidebar's loading line ends in an ellipsis, the character the product 
   await page.goto("/");
   await expect(page.locator("#stats-line")).toHaveText("Loading…");
 });
+
+test("the sidebar's toggle says what a press does by its name alone, with no state beside it", async ({ page }) => {
+  await page.goto("/");
+  await started(page);
+  // Its glyph shows the press's direction, so its name changes with it, as Play's does; an aria-expanded beside the
+  // changing name had a screen reader say "Open navigation, collapsed".
+  const toggle = page.locator("#sidebar-toggle");
+  await expect(toggle).toHaveAttribute("aria-label", "Collapse navigation");
+  expect(await toggle.getAttribute("aria-expanded"), "no state beside the name").toBeNull();
+  await toggle.click();
+  await expect(toggle).toHaveAttribute("aria-label", "Open navigation");
+  expect(await toggle.getAttribute("aria-expanded"), "no state beside the name").toBeNull();
+});
+
+test("Ctrl+P reaches the search with Caps Lock on, where the key arrives as a capital", async ({ page }) => {
+  await page.goto("/");
+  await started(page);
+  // With Caps Lock on, the key is "P"; before 2026-11-19 the shortcut compared it with "p" and Print took it.
+  await page.keyboard.press("Control+P");
+  await expect(page.locator("#search-subject")).toBeFocused();
+});

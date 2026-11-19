@@ -199,7 +199,7 @@ These are stated so a builder does not mistake them for accidents. Each is in [t
 
 | Key | Where | Does | Source |
 | --- | --- | --- | --- |
-| Ctrl+P, or ⌘+P | everywhere | Focuses the search (replaces the browser's Print) | `search/search-bar.ts` |
+| Ctrl+P, or ⌘+P | everywhere | Focuses the search (replaces the browser's Print), the letter in either case since 2026-11-19, so that Caps Lock does not hand it to Print | `search/search-bar.ts` |
 | Enter, Space | a focused control | Activates it; on a World Map piece, pins it and moves focus into its panel | `views/worldMap/controller.ts:1842-1850` |
 | Arrows, Home, End | menu, search results, scrubber, cells | Move within the group | 4.1 |
 | ContextMenu, Shift+F10 | a map item | Opens its commands | `views/localView/controller.ts:1670-1679`, `views/forceGraphView.ts:2139-2147` |
@@ -295,7 +295,7 @@ Counted in the client source and the template on 2026-11-18: 236 `aria-` attribu
 
 **Rule: a toggle either keeps its name and says `aria-pressed`, or changes its name and says nothing; never both.**
 - Why: WAI-ARIA Authoring Practices, Button pattern: "the label on a toggle does not change when its state changes". With both, a screen reader says "Unpin `index.ts`, toggle button, pressed", which reads as a contradiction.
-- Status: **broken** at the 2D file and symbol Pin (`views/localView/card-factory.ts:191-192`, `:886-888`) and the 3D actions (`views/forceGraphView.ts:1170-1171`, `:1179-1180`). Play and Authors hold it since 2026-11-19 (`history/scrubber.ts`): Play shows Play or Pause, so its name changes and it says no `aria-pressed`; Authors shows one drawing, so its name stays "Authors" and its `aria-pressed` speaks (checked by `history-scrubber.spec.ts` and `history-panel.spec.ts`). The pin tray and sidebar toggles change their names and say `aria-expanded` (`panels/pin-tray.ts:66-67`, `index.ts:1219-1221`). The Authoring Practices' rule is for toggle buttons, not disclosures, so this is not the same fault; whether a disclosure's name should also stay fixed is left open.
+- Status: **broken** at the 2D file and symbol Pin (`views/localView/card-factory.ts:191-192`, `:886-888`) and the 3D actions (`views/forceGraphView.ts:1170-1171`, `:1179-1180`). Play and Authors hold it since 2026-11-19 (`history/scrubber.ts`): Play shows Play or Pause, so its name changes and it says no `aria-pressed`; Authors shows one drawing, so its name stays "Authors" and its `aria-pressed` speaks (checked by `history-scrubber.spec.ts` and `history-panel.spec.ts`). The pin tray's toggle changes its name and says `aria-expanded` (`panels/pin-tray.ts:66-67`). The sidebar's toggle follows Play's rule since 2026-11-19: its glyph, ◀ or ▶, shows what a press does, so its name changes ("Collapse navigation", "Open navigation") and it says no `aria-expanded` (`index.ts`, `syncSidebarToggle`; checked by `shell-accessibility.spec.ts`). The Authoring Practices' rule is for toggle buttons, not disclosures, so the pin tray's is not the same fault; whether a disclosure's name should also stay fixed is left open.
 
 ### 5.5 Live regions and busy
 

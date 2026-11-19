@@ -100,7 +100,8 @@ export function createSearchBar(options: SearchBarOptions): SearchBar {
   const hint = subjectInput.parentElement?.querySelector(".search-shortcut");
   if (hint && mac) hint.textContent = "⌘P";
   document.addEventListener("keydown", event => {
-    if ((event.ctrlKey || event.metaKey) && event.key === "p") {
+    // Compared without regard to case: with Caps Lock on the key is "P", and the browser's Print took it (2026-11-19).
+    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "p") {
       event.preventDefault();
       subject.focus();
     }

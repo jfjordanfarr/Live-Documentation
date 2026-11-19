@@ -51,6 +51,8 @@ Since 2026-11-15 ([Turn 1](../../../../../../AI-Agent-Workspace/AgentSessionHist
 
 Since 2026-11-16 ([Turn 10 of the November 15 record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-10)) `startExplorer` starts `watchLocalKinds` of [spatial-legend.ts](panels/spatial-legend.ts.mdmd.md) before the first view draws, which keeps the 2D legend's kinds row to the colours the closed directories' cells are drawn in.
 
+Since 2026-11-19 ([Turn 14 of the November 18 record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-14)) the page's skip link, "Skip to the map", moves focus to `#views`, which takes a `tabindex` only for that moment, so that a click on the map never focuses its frame; the address keeps no fragment. The same day the sidebar's toggle stopped saying `aria-expanded` beside its changing name, by the rule Play follows: its glyph shows what a press does, so its name says it, and a screen reader had heard "Open navigation, collapsed".
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

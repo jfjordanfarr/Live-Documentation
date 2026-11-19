@@ -18,7 +18,9 @@ The page's frame, as a person meets it without a mouse or without sight. It hold
 - Clear all's name holds its words, and the zoom buttons have tooltips;
 - no heading in the reading dialog is smaller than its prose;
 - the shortcut's hint names the platform's key, with `aria-keyshortcuts` to match;
-- the loading line ends in `…`.
+- the loading line ends in `…`;
+- the sidebar's toggle says what a press does by its name alone, with no `aria-expanded` beside it;
+- Ctrl+P reaches the search with Caps Lock on.
 
 ### Notes
 - Written on 2026-11-19 with the mends it holds, findings of the design system's audit ([Turn 14 of the November 18 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-14); [the pictures](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/shell-accessibility/README.md)).
@@ -32,7 +34,7 @@ The page's frame, as a person meets it without a mouse or without sight. It hold
   - no `aria-keyshortcuts`;
   - "Loading...".
 
-  All eight pass after the mends.
+  All eight pass after the mends. The toggle and Caps Lock cases came the same night. They were run against the bundle built before their mends: the toggle case failed on `aria-expanded="true"`, and the Caps Lock case failed because the field never took focus.
 - The heading case lays one heading of each level in the dialog's prose and measures what the stylesheet gives it, so it does not depend on any document's headings.
 - The Mac case overrides `navigator.platform` and `userAgentData` before the page loads.
 - A colour's alpha is folded together with its element's opacity before it is measured, because [the contrast helper](contrast.ts.mdmd.md) reads colours only.

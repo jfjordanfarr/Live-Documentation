@@ -1228,8 +1228,9 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   function syncSidebarToggle(): void {
     const collapsed = sidebar.classList.contains("collapsed");
     const button = requireElement<HTMLButtonElement>("sidebar-toggle");
+    // The glyph shows what a press does, so the name changes with it and no `aria-expanded` repeats the state: a
+    // screen reader heard "Open navigation, collapsed" (the rule Play follows, 2026-11-19).
     button.textContent = collapsed ? "▶" : "◀";
-    button.setAttribute("aria-expanded", String(!collapsed));
     button.setAttribute("aria-label", collapsed ? "Open navigation" : "Collapse navigation");
     button.title = collapsed ? "Open navigation" : "Collapse navigation";
   }
