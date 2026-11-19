@@ -13,11 +13,11 @@ import path from "node:path";
 
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
+import { readSourceText } from "../../tooling/sourceText";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, WorkspaceSymbolIndex } from "../core";
 import { ADDRESS_KIND } from "../openings";
 import { resolveWorkspaceTypes } from "./csharp";
 import type { LanguageAdapter } from "./index";
-import { readSourceText } from "../../tooling/sourceText";
 
 const TAG_PATTERN = /<(\/?)([A-Za-z_][\w.:-]*)\b([^>]*?)(\/?)>/gu;
 

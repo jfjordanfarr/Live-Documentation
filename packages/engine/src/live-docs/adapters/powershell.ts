@@ -58,12 +58,12 @@ import path from "node:path";
 
 import { powershellSyntax } from "../../languages";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
+import { readSourceText } from "../../tooling/sourceText";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDocumentation, SymbolDocumentationParameter } from "../core";
 import type { DeclaredEntry } from "../coreTypes";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
 import { packageSymbols } from "./manifest";
 import { parseSource, type SyntaxNode } from "./treeSitter";
-import { readSourceText } from "../../tooling/sourceText";
 
 // ---------------------------------------------------------------------------
 // Facts about one file

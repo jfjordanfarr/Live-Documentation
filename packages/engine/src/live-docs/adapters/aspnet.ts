@@ -2,10 +2,10 @@ import { promises as fs, statSync } from "node:fs";
 import path from "node:path";
 
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
+import { readSourceText } from "../../tooling/sourceText";
 import type { DependencyEntry, SourceAnalysisResult } from "../core";
 import { extractElementIds } from "./html";
 import type { LanguageAdapter } from "./index";
-import { readSourceText } from "../../tooling/sourceText";
 
 const SCRIPT_SRC_PATTERN = /<script[^>]*?src\s*=\s*"([^"]+)"[^>]*?>/gi;
 const PAGE_DIRECTIVE_PATTERN = /<%@\s+Page[^%]*?(?:CodeFile|CodeBehind)\s*=\s*"([^"]+)"[^%]*?%>/i;

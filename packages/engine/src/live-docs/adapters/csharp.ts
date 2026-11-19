@@ -32,6 +32,7 @@ import path from "node:path";
 
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
+import { readSourceText } from "../../tooling/sourceText";
 import type {
   DependencyEntry,
   PublicSymbolEntry,
@@ -55,7 +56,6 @@ import { extractDynamicDependencies, type ConfigReference, type ResolvedTypeTarg
 import { buildDocumentationFromLines } from "./csharp.xmldoc";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
 import { parseSource, type SyntaxNode } from "./treeSitter";
-import { readSourceText } from "../../tooling/sourceText";
 
 // ---------------------------------------------------------------------------
 // What one file declares and names

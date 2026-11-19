@@ -14,10 +14,10 @@ import path from "node:path";
 
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
+import { readSourceText } from "../../tooling/sourceText";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult } from "../core";
 import { matchSqlObject, sqlDeclarations, sqlNameMatches, sqlObjectName, sqlReferences } from "../openings";
 import type { LanguageAdapter } from "./index";
-import { readSourceText } from "../../tooling/sourceText";
 
 /** Language adapter for SQL scripts: created objects as symbols, named objects as dependencies. */
 export const sqlAdapter: LanguageAdapter = {
