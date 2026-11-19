@@ -1,5 +1,7 @@
 # The design system's first pass: what writing the rules down found
 
+_2026-11-19: commit `5a7c78a2` mended plain defects 1, 6 and 11 below, and the World Map's share of 5 (the walkthrough's step is now told in a status region of the map's own). The same commit made the World Map's toolbar one Tab stop with arrow keys (interaction 26), and made its reset undoable by a second press. [Interaction and Accessibility](../../../../../../../.mdmd/layer-2/design-system/interaction-and-accessibility.mdmd.md) records the new statuses._
+
 _Historical record, dated 2026-11-18, written on the night of November 18 to 19. It records what two authors found while writing the Explorer's design system from the code, what a third builder found when checking them, and where that left each finding. Nothing here changed the product. The rules themselves are current documents in [the design system](../../../../../../../.mdmd/layer-2/design-system/design-system.mdmd.md); this folder is the dated list of what those rules could not defend on this day._
 
 ## What was asked, and by whom

@@ -78,9 +78,9 @@ Where each is held: the 2D press, hold and menu in `views/localView/controller.t
 
 **A click acts on what it names, and a second identical click undoes it** (*reversibility*).
 - Why: the owner's decisions of 2026-10-15 and 2026-11-02, which [direction](../../../AI-Agent-Workspace/Memory/direction.md#what-it-shows-discovery-groups-and-hops) heads "A click pins, a second releases" (a heading's words, not the owner's); Nielsen's heuristic *user control and freedom*.
-- Where: `views/pin-state.ts`; `views/forceGraphView.ts` `activateNode`.
-- Checked by: `tests/e2e/pin-clicks.spec.ts`, `force-graph-focus.spec.ts` ("direct labels release independent pins"; "a second directory click withdraws discovery").
-- Status: holds.
+- Where: `views/pin-state.ts`; `views/forceGraphView.ts` `activateNode`; the World Map's Reset layout, whose second press puts back what the first discarded until a piece is next moved (`views/worldMap/controller.ts:2032-2059`).
+- Checked by: `tests/e2e/pin-clicks.spec.ts`, `force-graph-focus.spec.ts` ("direct labels release independent pins"; "a second directory click withdraws discovery"), `world-map.spec.ts` ("a reset keeps what it discarded until a piece is next moved …").
+- Status: holds. The World Map's reset joined it on 2026-11-19; before, it threw every moved position away with no way back.
 
 **Inspecting, pinning and moving the subject are three separate acts, each with its own control.** In 2D a click inspects, Pin retains, Centre moves the subject; none of the three does another's work.
 - Why: owner, 2026-10-19 and 2026-10-20 ([decision](../../layer-3/architectural-decisions.mdmd.md), "Inspection, Pins and the Map Subject Are Separate"): to read one thing without moving the place being explored.
@@ -143,7 +143,7 @@ These are stated so a builder does not mistake them for accidents. Each is in [t
 | **Focus-visible** (*the focus ring*: the outline the browser draws only when focus came from the keyboard) | Keyboard focus is here. | A 2 px solid outline in `--state-selected`, offset 2 px. | — | `styles/view-shared.css:431-437` and 50 more `:focus-visible` rules | broken at more than ten places: a 1 px ring (`styles/shell.css:426`, `:1030`); an underline with no ring (`styles/history.css:106`, `styles/shell.css:702–704` the reader's section jumps, `styles/sources.css:139–145` the Sources tree); a border with no ring (`styles/local.css:356` the ancestry chooser's rows, `styles/sources.css:309–312` the export choice); a border with a 0.2 halo (`styles/search.css:56–58`); a 1.5 px shadow (`styles/local.css:444`); the World Map's ring in the offers colour (`styles/world.css:455`); and the browser's own ring on the sidebar's small buttons |
 | **Pressed** (*toggle button*: a button that stays on until pressed again) | A toggle is on. | Border and icon in `--state-selected` with the subtle fill. | `aria-pressed="true"` | `styles/local.css:311`, `styles/graph.css:81`, `styles/history.css:14`, `styles/world.css:446` | holds in look; see 5.4 for names |
 | **Current** | This is the view you are in. | The navigation item filled. | `aria-current="page"` | `dom.ts:39` | holds |
-| **Expanded** | A disclosure is open. | The panel shown. | `aria-expanded` on its opener | pin tray, sidebar, Tuning `<details>` | broken: the World Map's help button has no `aria-expanded` (`views/worldMap/controller.ts:2027-2031`) |
+| **Expanded** | A disclosure is open. | The panel shown. | `aria-expanded` on its opener | pin tray, sidebar, Tuning `<details>`, the World Map's help (`views/worldMap/controller.ts:310-313`, `:2120-2125`) | holds; the World Map's help since 2026-11-19, checked by `world-map.spec.ts` ("the help button says whether the help is open …") |
 | **Disabled** | Not available now. | Faded, default cursor. | `disabled` | five rules | broken: five different opacities, 0.3, 0.35, 0.45, 0.55, 0.65 (`styles/shell.css:59`, `styles/history.css:16`, `styles/local.css:335`, `styles/local.css:326`, `styles/reading.css:81`) |
 | **Building** | The 3D map is placing and framing; nodes refuse input. | After 300 ms a line sweeps along the map's top edge and the cursor waits; still under reduced motion. | none (see 6.4) | `views/forceGraphView.ts:525-537`; `styles/graph.css:99-123` | holds visually; not told to assistive technology |
 | **Busy** | The 3D motion has not come to rest. | Nothing on screen. | `aria-busy="true"` on `#graph-svg` | `views/forceGraphView.ts:692`, `:1448`, `:2504`, `:2518`, `:2523` | inconsistent: see 6.4 |
@@ -188,7 +188,7 @@ These are stated so a builder does not mistake them for accidents. Each is in [t
 
 **Rule: the tab order follows the reading order of the screen, top to bottom and left to right: the sidebar, the search, the map's contents, the floating controls, the open reader, then the map's toolbar at the bottom.** The DOM order is that order (`shared/template.html`; the toolbar is appended last to `#main`, `index.ts:600`); nothing sets a positive `tabindex`.
 - Why: WCAG 2.2 SC 2.4.3 Focus Order.
-- Status: holds by construction; not tested as a whole journey. An outsider counted 18 stops before the first map content on the World Map ([first visit](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-12/Screenshots/first-visit/README.md), finding 17); there is no skip link (see 7, SC 2.4.1).
+- Status: holds by construction; not tested as a whole journey. An outsider counted 18 stops before the first map content on the World Map ([first visit](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-12/Screenshots/first-visit/README.md), finding 17); since 2026-11-19 the World Map's toolbar is one stop where it was nine (see 5.3). There is no skip link (see 7, SC 2.4.1).
 
 **Rule: a group of like items is one stop, and the arrow keys move inside it** (*roving tabindex*: only the current item of a group has `tabindex="0"`, the others `-1`, and the arrows move that zero).
 - Where: the hidden-file cells (`views/localView/card-factory.ts:622-690`); the menu (`panels/item-menu.ts:34-45`); search results by `aria-activedescendant` (`search/search-field.ts:173-200`); the scrubber's slider (`history/scrubber.ts:272-283`).
@@ -204,11 +204,13 @@ These are stated so a builder does not mistake them for accidents. Each is in [t
 | Arrows, Home, End | menu, search results, scrubber, cells | Move within the group | 4.1 |
 | ContextMenu, Shift+F10 | a map item | Opens its commands | `views/localView/controller.ts:1670-1679`, `views/forceGraphView.ts:2139-2147` |
 | Escape | everywhere | See 4.3 | |
-| Q, E, T, F, U, G, D, R, ? | World Map, when focus is not in an `input` or `textarea`, with or without Ctrl, ⌘ or Alt held | Turn left, right, top-down, fit, built on, snap, dark, **reset the layout**, help | `views/worldMap/controller.ts:1721-1770` |
+| Q, E, T, F, U, G, D, R, ? | World Map, while focus is inside the board and not in a field; never with Ctrl, ⌘ or Alt held | Turn left, right, top-down, fit, built on, snap, dark, reset the layout (and, pressed again before a piece is moved, put it back), help | `views/worldMap/controller.ts:1771-1799` |
 
 **Rule: a shortcut of one printable character works only while focus is on the surface it acts on, or can be turned off; and a letter with Ctrl, ⌘ or Alt held is the browser's, not ours.**
 - Why: WCAG 2.2 SC 2.1.4 Character Key Shortcuts (level A): speech-input users trigger single letters by speaking words. The browser's own shortcuts are Ctrl or ⌘ with a letter.
-- Status: **broken** in the World Map, whose letters act whenever it is the active view, from any focus outside an `input` or `textarea` (a focused `<select>`, such as Tuning's, is not excluded); R discards every moved piece's position without undo (`views/worldMap/controller.ts:1961-1965`). Nothing checks `ctrlKey`, `metaKey` or `altKey`, so Ctrl+R reloads the page and also resets and saves the layout, Ctrl+F opens the browser's find and also fits the view, and Ctrl+D bookmarks and also switches the theme.
+- Where: the World Map's letters listen on the board's own element, not the window, and pass over Ctrl, ⌘ and Alt and any field (`views/worldMap/controller.ts:1771-1799`, `isField` at `:2303`). The board takes focus from a press on it (`tabIndex = -1`, `:272`), so a person who clicked it finds them working; a press on a tool or a link keeps the focus it gives. Escape alone stays page-wide while the map is the view (`:1750-1765`).
+- Checked by: `tests/e2e/world-map.spec.ts` ("the board's letters act only while the keyboard is on the board, never with Ctrl, Meta or Alt …").
+- Status: holds since 2026-11-19. Before, the World Map's letters acted whenever it was the active view, from any focus outside an `input` or `textarea`, with Ctrl, ⌘ or Alt held as well: Ctrl+R reloaded the page and also reset and saved the layout, and R discarded every moved position without undo.
 
 **Rule: a shortcut is announced** with `aria-keyshortcuts` and named in its control's tooltip.
 - Status: holds for the World Map's tools (`views/worldMap/controller.ts:283-284`), whose help panel also lists every key (`:2018`); the search shows "Ctrl+P" as a hidden `<kbd>` and its field carries no `aria-keyshortcuts`, and shows "Ctrl" on a Mac where ⌘ is the key (`shared/template.html:507`). Ctrl+P has a recorded reason, "the Explorer's search shortcut since the dialog it replaced" (`search/search-bar.ts:95`).
@@ -219,7 +221,7 @@ These are stated so a builder does not mistake them for accidents. Each is in [t
 
 **Rule: one Escape closes one surface, the one on top: the search's results, then a menu, then a popover (the ancestry chooser), then a modal dialog or the reader, then the pin tray.** A surface that used an Escape marks it used (`preventDefault`) and those beneath leave it alone.
 - Why: WAI-ARIA Authoring Practices for menus, comboboxes and dialogs; the platform's own behaviour for popovers and `<dialog>`.
-- Where: `search/search-field.ts:174`, `panels/item-menu.ts:37`, `index.ts:1421-1428`, `panels/pin-tray.ts:83-89`, `history/step-panel.ts:241`; in the World Map, the walkthrough, then help, then the pin, then the hover (`views/worldMap/controller.ts:1734-1745`).
+- Where: `search/search-field.ts:174`, `panels/item-menu.ts:37`, `index.ts:1421-1428`, `panels/pin-tray.ts:83-89`, `history/step-panel.ts:241`; in the World Map, the walkthrough, then help, then the pin, then the hover (`views/worldMap/controller.ts:1750-1765`).
 - Checked by: `tests/e2e/inspection.spec.ts`, `search-bar.spec.ts`, `local-map-pins.spec.ts`, `world-map.spec.ts`.
 - Status: holds.
 
@@ -282,10 +284,10 @@ Counted in the client source and the template on 2026-11-18: 236 `aria-` attribu
 | --- | --- | --- |
 | Combobox with listbox | the two search fields, `search/search-field.ts:49-76` | yes; the empty result is `role="presentation"` and so is never announced |
 | Menu button and menu | More, `panels/item-menu.ts` | yes |
-| Toolbar | World Map tools (`views/worldMap/controller.ts:275`), hidden-file cells (`views/localView/card-factory.ts:622`) | the World Map's toolbar has no arrow-key movement among its nine buttons, which the pattern expects |
+| Toolbar | World Map tools (`views/worldMap/controller.ts:275`), hidden-file cells (`views/localView/card-factory.ts:622`) | yes for the World Map since 2026-11-19: one Tab stop, the arrows (wrapping), Home and End inside it, the tool last used the stop (`views/worldMap/controller.ts:302`, `:1824-1842`); checked by `world-map.spec.ts` ("the toolbar is one Tab stop …") |
 | Slider | the scrubber's track, `history/scrubber.ts:131` | yes, with `aria-valuetext` |
 | Dialog (modal) | reader, step panel (`<dialog>`), scrubber's finder, ancestry chooser | yes |
-| Disclosure | Tuning (`<details>`), pin tray | yes; World Map help lacks `aria-expanded` |
+| Disclosure | Tuning (`<details>`), pin tray, World Map help | yes |
 | Toggle button | toolbars, Pin, Play | see 5.4 |
 | Tooltip | the 3D hover, `views/forceGraphRenderer.ts:73` | the only custom tooltip; 90 others are the native `title` |
 
@@ -308,7 +310,7 @@ Counted in the client source and the template on 2026-11-18: 236 `aria-` attribu
 | No search results | not told | broken (SC 4.1.3) |
 | A pinned file absent at a historical moment | `aria-describedby` on the field; spoken only on focus | partial |
 | The 3D map is building and refuses clicks | not told | broken (SC 4.1.3) |
-| The walkthrough's next step | not told (`views/worldMap/controller.ts:2056-2058`) | broken |
+| The walkthrough's next step | `role="status"` in the World Map's own markup (`views/worldMap/controller.ts:318`, `:2154`); checked by `world-map.spec.ts` ("the walkthrough says each step …") | holds |
 
 **`aria-busy` and `data-building` say two different things.** `data-building` ("begun", then "shown" after 300 ms) means *the map refuses input*: a body is being packed, the reveal is bringing spheres in, the perspective is changing, or the 650 ms framing flight runs. `aria-busy="true"` on `#graph-svg` means *the motion has not come to rest*, which outlasts building by seconds (1,309 frames against 2 on the estate's seed click, [measured 2026-11-15](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/Screenshots/building-map/README.md)). `aria-busy` on a container that is not a live region tells a screen reader to hold its updates and announces nothing; nothing tells a non-sighted person that the map is refusing clicks. Five places write `aria-busy`, and one of them leaves out the packing that two others count (`views/forceGraphView.ts:2504` against `:692`). Tests read `aria-busy` as "settled" and `data-building` as "built" (`tests/e2e/force-graph-building.spec.ts`). Proposal in the findings.
 
@@ -344,7 +346,7 @@ Counted in the client source and the template on 2026-11-18: 236 `aria-` attribu
 - Why: WCAG 2.2 SC 2.3.3 Animation from Interactions (level AAA, adopted here because the product's motion is large and frequent: a whole map flies); vestibular disorders.
 - Where (holds): `views/perspectiveTransition.ts:90`, `:188`; `views/localView/controller.ts:1497`; `views/localView/branch-renderer.ts:435`; `views/localView/pan-zoom.ts:247`; `views/forceGraphView.ts` (6 places); CSS in `styles/shell.css:215`, `:451`, `styles/graph.css:121`, `styles/local.css:325`, `styles/reading.css:626`, `styles/world.css:153`.
 - Checked by: 11 cases across `tests/e2e/backward-cue.spec.ts`, `force-graph-focus.spec.ts`, `force-graph-building.spec.ts`, `local-map-motion.spec.ts` and four more.
-- Status: **broken** in the World Map's camera: turning, top-down, fit and the walkthrough tween regardless (`views/worldMap/controller.ts:1107-1124`).
+- Status: holds. The World Map's camera, turning, top-down and up, and the walkthrough, arrives at once since 2026-11-19 (`views/worldMap/controller.ts:1129-1131`), checked by `world-map.spec.ts` ("under reduced motion the camera arrives at once …"); before, it eased regardless.
 
 ---
 
@@ -374,7 +376,7 @@ How each was judged: **code** means read from the source here, which can show a 
 | 1.4.13 Content on Hover or Focus | AA | Not tested | The 3D tooltip and the World Map's hover panel: dismissible by Escape (World Map, code), hoverable and persistent not checked. Native `title` tooltips are the browser's and outside the criterion. |
 | 2.1.1 Keyboard | A | **Fails** (code) | No key turns the 3D camera or pans a map to an arbitrary place; World Map wires and doors are not stops; a 3D sphere without a drawn name is unreachable but by search. |
 | 2.1.2 No Keyboard Trap | A | Meets (tested) | The modal reader's trap leaves by Escape and Close (`tests/e2e/inspection.spec.ts`). |
-| 2.1.4 Character Key Shortcuts | A | **Fails** (code) | World Map letters act from any focus outside a text field, with Ctrl, ⌘ or Alt held as well, and cannot be turned off (`views/worldMap/controller.ts:1721-1770`; 4.2). |
+| 2.1.4 Character Key Shortcuts | A | Meets (tested) | The World Map's letters act only while focus is inside the board, never with Ctrl, ⌘ or Alt held (`views/worldMap/controller.ts:1771-1799`; 4.2). |
 | 2.2.1 Timing Adjustable | A | Not applicable | No time limits. |
 | 2.2.2 Pause, Stop, Hide | A | **Fails** (code) | The World Map's flow along the wires moves for as long as the board is shown, with no control to pause it; only the operating system's reduced-motion setting stops it (`styles/world.css:135`, `:153`). History playback has Pause. |
 | 2.3.1 Three Flashes or Below Threshold | A | Not tested; at risk | History playback runs at up to 10 steps a second (`shared/template.html:477`), and each step lights its changed files white against a dimmed scene. Whether the lit area crosses the flash threshold needs measuring. |
@@ -405,8 +407,8 @@ How each was judged: **code** means read from the source here, which can show a 
 | 3.3.4 Error Prevention (Legal, Financial, Data) | AA | Not applicable | |
 | 3.3.7 Redundant Entry | A | Meets (code) | |
 | 3.3.8 Accessible Authentication (Minimum) | AA | Not applicable | |
-| 4.1.2 Name, Role, Value | A | Partly | 5.2 to 5.4: toggles state twice; the World Map's help has no expanded state; the fault panel stays `inert`. |
-| 4.1.3 Status Messages | AA | **Fails** (code) | 5.5: no search results, building and the walkthrough are not told. |
+| 4.1.2 Name, Role, Value | A | Partly | 5.2 to 5.4: toggles state twice; the fault panel stays `inert`. |
+| 4.1.3 Status Messages | AA | **Fails** (code) | 5.5: no search results and building are not told. |
 
 *Not tested with assistive technology at all.* No screen reader (NVDA, JAWS, VoiceOver) and no automated checker (axe-core) has been run against the Explorer. The second milestone should run axe-core in Playwright on each view's states, and one screen reader by hand over the journeys of [the first visit](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-12/Screenshots/first-visit/README.md).
 
