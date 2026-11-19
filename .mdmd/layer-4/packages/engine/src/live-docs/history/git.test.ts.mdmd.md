@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-Vitest over the serialized worktree lifecycle and the parsers of git's output: the mainline's records after rev-list's commit lines, the renames and in-place changes of a NUL-separated name-status listing with paths holding a tab and a newline, and the tags' commits.
+Vitest over a commit's tree for the history and the parsers of git's output: the mainline's records after rev-list's commit lines, the renames and in-place changes of a NUL-separated name-status listing with paths holding a tab and a newline, and the tags' commits.
 
 ### Notes
-The lifecycle case holds a registry operation open while other creates and removes are requested. It checks that those mutations cannot overlap, that multiple trees remain available for concurrent analysis, that signal/worker removal requests join one operation and that a failed operation does not prevent queued cleanup. It was added for the [October 23 concurrent cleanup failure](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-23/2026-10-23.1.record.md#history-failure-investigation).
+Since 2026-11-19 a tree is written through an index of its own and registers no worktree ([Turn 37 of November 18](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-37), the cost of the history's rebuild), so the case that held the worktree registry's serialization, added for the [October 23 concurrent cleanup failure](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-23/2026-10-23.1.record.md#history-failure-investigation), gave way to two: two trees read their commits at once, each through its own index file, with no `worktree` command, a process in a tree is given the repository, the tree and its index, signal and worker removals join one operation that removes the tree and its index; and a commit that cannot be read leaves nothing behind.
 
 - Written 2026-10-17 for C1. The git calls themselves are exercised over a real repository in [history.test.ts](../../../../../tests/integration/live-docs/history.test.ts.mdmd.md).
 

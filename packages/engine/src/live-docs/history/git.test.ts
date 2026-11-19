@@ -43,47 +43,61 @@ describe("parseTags", () => {
   });
 });
 
-
-describe("the history worktree lifecycle", () => {
-  it("excludes overlapping registry changes, keeps analysis trees alive together, and drains after a failed command", async () => {
-    const root = await fs.mkdtemp(path.join(os.tmpdir(), "history-lifecycle-"));
-    const pending: Array<{ args: readonly string[]; resolve: () => void; reject: (error: Error) => void }> = [];
-    const exec = vi.spyOn(gitUtils, "execFileAsync").mockImplementation(async (_command, args) => {
+describe("a commit's tree for the history", () => {
+  it("is made at once with another, each through an index of its own, registering nothing, and removed with its index", async () => {
+    const root = await fs.mkdtemp(path.join(os.tmpdir(), "history-tree-"));
+    const pending: Array<{ args: readonly string[]; env?: Record<string, string>; resolve: (stdout?: string) => void; reject: (error: Error) => void }> = [];
+    const exec = vi.spyOn(gitUtils, "execFileAsync").mockImplementation(async (_command, args, options) => {
       if (args.includes("--show-toplevel")) return { stdout: root, stderr: "" };
-      return new Promise((resolve, reject) => pending.push({ args, resolve: () => resolve({ stdout: "", stderr: "" }), reject }));
+      return new Promise((resolve, reject) => pending.push({ args, env: options.env, resolve: (stdout = "") => resolve({ stdout, stderr: "" }), reject }));
     });
     try {
       const repo = await openGitRepository(root);
       const first = repo.workingTree("a", path.join(root, "a"));
       const second = repo.workingTree("b", path.join(root, "b"));
-      await vi.waitFor(() => expect(pending).toHaveLength(1));
+      // Both trees read their commits at once: nothing waits on the other's registry change.
+      await vi.waitFor(() => expect(pending.map((call) => call.args.at(-1))).toEqual(["a", "b"]));
+      expect(pending.every((call) => call.args.includes("read-tree"))).toBe(true);
+      expect(pending.map((call) => call.env?.GIT_INDEX_FILE)).toEqual([path.join(root, "a.index"), path.join(root, "b.index")]);
       pending[0].resolve();
-      const a = await first;
-      await vi.waitFor(() => expect(pending).toHaveLength(2));
       pending[1].resolve();
-      const b = await second;
-      // Both trees are available to independent summary workers before either is removed.
-      expect([a.root, b.root]).toEqual([path.join(root, "a"), path.join(root, "b")]);
+      await vi.waitFor(() => expect(pending).toHaveLength(4));
+      expect(pending[2].args).toEqual(expect.arrayContaining(["checkout-index", "--all", `--prefix=${path.join(root, "a")}${path.sep}`]));
+      expect(pending.some((call) => call.args.includes("worktree"))).toBe(false);
+      pending[2].resolve();
+      pending[3].resolve();
+      await vi.waitFor(() => expect(pending).toHaveLength(5));
+      expect(pending[4].args).toContain("--git-common-dir");
+      pending[4].resolve(`${root}/.git\n`);
+      const [a, b] = await Promise.all([first, second]);
+      // A process in the tree asks git through the repository, the tree and the tree's own index.
+      expect(a.environment).toEqual({ GIT_DIR: `${root}/.git`, GIT_WORK_TREE: path.join(root, "a"), GIT_INDEX_FILE: path.join(root, "a.index") });
+      await fs.writeFile(path.join(root, "a.index"), "index");
       const removal = a.remove();
       expect(a.remove(), "signal cleanup joins the worker's removal").toBe(removal);
-      const next = repo.workingTree("c", path.join(root, "c"));
-      const otherRemoval = b.remove();
-      await vi.waitFor(() => expect(pending).toHaveLength(3));
-      expect(pending[2].args).toContain("remove");
-      const failure = expect(removal).rejects.toThrow("registry failure");
-      pending[2].reject(new Error("registry failure"));
-      await failure;
-      await vi.waitFor(() => expect(pending).toHaveLength(4));
-      expect(pending[3].args).toContain("add");
-      pending[3].resolve();
-      await next;
-      await vi.waitFor(() => expect(pending).toHaveLength(5));
-      expect(pending[4].args).toContain("remove");
-      pending[4].resolve();
-      await otherRemoval;
+      await removal;
+      await b.remove();
+      expect((await fs.readdir(root)).sort()).toEqual([]);
+    } finally {
+      exec.mockRestore();
+      await fs.rm(root, { recursive: true, force: true });
+    }
+  });
+
+  it("removes what it made when the commit cannot be read", async () => {
+    const root = await fs.mkdtemp(path.join(os.tmpdir(), "history-tree-"));
+    const exec = vi.spyOn(gitUtils, "execFileAsync").mockImplementation(async (_command, args) => {
+      if (args.includes("--show-toplevel")) return { stdout: root, stderr: "" };
+      throw new Error("fatal: not a tree object");
+    });
+    try {
+      const repo = await openGitRepository(root);
+      await expect(repo.workingTree("nothing", path.join(root, "tree"))).rejects.toThrow("not a tree object");
+      expect(await fs.readdir(root)).toEqual([]);
     } finally {
       exec.mockRestore();
       await fs.rm(root, { recursive: true, force: true });
     }
   });
 });
+
