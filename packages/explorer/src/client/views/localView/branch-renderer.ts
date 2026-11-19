@@ -749,7 +749,7 @@ function writeHandleNeeds(label: HTMLElement): void {
  * (the root's reviews of the far bands, 2026-11-06: a pin made one press out placed eight cards two or three pixels from
  * where the same pin made at reading scale put them). A first repair read the layout's offsets up to the wrapper, which is
  * not among an anchor's offset parents, so every pin had still been read from the dot as drawn: 112.5 at reading scale,
- * 114.2 one press out. A hub keeps its own centring, a transform that no step changes.
+ * 114.2 one press out. A node-level hub is taken back as a dot is (2026-11-19: it is drawn down to the held name and grown with the look).
  */
 function anchorCentre(anchor: HTMLElement, wrapper: HTMLElement, scale: number): number {
   const box = laidOutBox(anchor, scale);
@@ -782,7 +782,8 @@ function onLayoutGrid(value: number): number {
  */
 function laidOutBox(element: Element, scale: number): { top: number; bottom: number } {
   const rect = element.getBoundingClientRect();
-  if (!element.classList.contains("dot")) return { top: rect.top, bottom: rect.bottom };
+  // A node-level hub is held to its look as a dot is, at its name's first line (2026-11-19).
+  if (!element.classList.contains("dot") && !element.classList.contains("hub")) return { top: rect.top, bottom: rect.bottom };
   // The card reading's arithmetic (`layoutTopOf`), in the map's own units, and back to the screen's.
   const drawn = new DOMMatrix(getComputedStyle(element).transform), height = (element as HTMLElement).offsetHeight;
   const top = layoutTopOf(rect.top / scale, height, drawn.f, drawn.d || 1) * scale;

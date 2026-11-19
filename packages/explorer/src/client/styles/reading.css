@@ -68,7 +68,8 @@
 .local-reading-card .local-reading-block { font-size: 15px; }
 .local-reading-card .local-reading-purpose { font-size: 16px; }
 .local-reading-card .symbol-row .symbol-label-wrapper { padding: 4px 7px; }
-.local-reading-card .symbol-anchor.hub { top: 36px; }
+/* A growing card's hubs at its larger name, their centre 36 px down, where they stood before 2026-11-19 (view-shared.css). */
+.local-reading-card .symbol-anchor.hub { top: 30px; }
 .local-reading-card .local-card-actions button { width: 28px; height: 28px; color: var(--text-panel-muted); }
 .local-column .local-reading-card .node-title { padding-top: 0; }
 .local-reading-card .internals-row .symbol-label { font-size: 12px; }
@@ -303,6 +304,9 @@
    assistive technology and on hover. The page's find does not meet the name in these bands: the layout's copy is
    hidden, and find does not search generated content. */
 .local-slot-card { --title-line: 15; }
+/* A node-level hub follows the look as a row's dot does: as large as the look's controls, no taller than a line of the
+   held name, at whose first line it stands (view-shared.css; 2026-11-19). Its box is 12 px. */
+.local-slot-card { --hub-scale: clamp(1, var(--control-scale, 1), calc(var(--title-line) * var(--title-scale, 1) / 12)); }
 .local-file-name-held { display: none; }
 :is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card {
     --title-room-h: var(--title-head-h, 0);

@@ -178,3 +178,71 @@ test("a returning connection's laces wear the cue's colour, are named by their t
     await expectRest(`${file}'s foot's focus gone`);
   }
 });
+
+/**
+ * Every node-level hub a line ends on, in page pixels: its centre, its size in its own units (its box is 12), the middle
+ * and height of its file name's first line as drawn, the top of its card's first drawn row, and the ends of the lines
+ * drawn to it; with the look's control scale.
+ */
+const hubs = (page: Page) => page.evaluate(() => {
+  const map = document.querySelector<HTMLElement>("#map-container")!;
+  const mapScale = new DOMMatrix(getComputedStyle(document.getElementById("map-viewport")!).transform).a || 1;
+  const controlScale = Number(map.style.getPropertyValue("--control-scale") || 1);
+  const ends = [...document.querySelectorAll<SVGPathElement>("#map-connections path.connection-path:not(.bundle-run)")]
+    .filter(path => getComputedStyle(path).display !== "none")
+    .flatMap(path => [path.getPointAtLength(0), path.getPointAtLength(path.getTotalLength())].map(point => {
+      const m = path.getScreenCTM()!;
+      return { x: point.x * m.a + m.e, y: point.y * m.d + m.f };
+    }));
+  return [...map.querySelectorAll<HTMLElement>(".node-card .symbol-anchor.hub.hub-ends-wire")].map(hub => {
+    const card = hub.closest<HTMLElement>(".node-card")!, box = hub.getBoundingClientRect(), cardBox = card.getBoundingClientRect();
+    const held = card.querySelector<HTMLElement>(".local-file-name-held")!;
+    let line: { middle: number; height: number };
+    if (getComputedStyle(held).display !== "none") {
+      // The held name is drawn from its element's top, its lines 15 units tall at its own scale.
+      const titleScale = new DOMMatrix(getComputedStyle(held).transform).a;
+      line = { middle: held.getBoundingClientRect().top + 7.5 * titleScale * mapScale, height: 15 * titleScale };
+    } else {
+      const range = document.createRange();
+      range.selectNodeContents(card.querySelector(".local-file-name-text")!);
+      const first = range.getClientRects()[0];
+      line = { middle: first.top + first.height / 2, height: first.height / mapScale };
+    }
+    const rows = [...card.querySelectorAll<HTMLElement>(".symbol-row .symbol-anchor.dot")]
+      .filter(dot => getComputedStyle(dot).visibility !== "hidden" && dot.getBoundingClientRect().height > 0)
+      .map(dot => dot.getBoundingClientRect().top);
+    const centre = { x: box.left + box.width / 2, y: box.top + box.height / 2 };
+    return {
+      card: card.dataset.id!, centre: centre.y, size: box.height / mapScale / 12, line, firstRow: rows.length ? Math.min(...rows) : null,
+      // The ends at its card's edge, within the card's height: the lines that end on it.
+      wireEnds: ends.filter(end => Math.abs(end.x - centre.x) <= 7 * box.height / 12 + 1 && end.y >= cardBox.top && end.y <= cardBox.bottom).map(end => end.y),
+      controlScale
+    };
+  });
+});
+
+test("a card's node-level hubs stand at its file name's first line at every look, sized as the look's dots, the lines ending there", async ({ page }) => {
+  test.setTimeout(90_000);
+  await ownerPicture(page);
+  for (const [look, presses] of [["reading", 0], ["connections", 3], ["overview", 4]] as const) {
+    for (let press = 0; press < presses; press += 1) {
+      await page.evaluate(() => document.querySelector<HTMLElement>('#controls [aria-label="Zoom Out"]')!.click());
+      await localMapStill(page);
+    }
+    await expect(page.locator("#map-container")).toHaveAttribute("data-look", look);
+    const drawnHubs = await hubs(page);
+    expect(drawnHubs.length, `${look}: lines end on hubs`).toBeGreaterThan(3);
+    for (const hub of drawnHubs) {
+      const where = `${look}: ${hub.card}`;
+      expect(Math.abs(hub.centre - hub.line.middle), `${where}: at the middle of the name's first line`).toBeLessThanOrEqual(1);
+      // Above every row the card draws, so that no row can be taken for its end.
+      if (hub.firstRow !== null) expect(hub.centre, `${where}: above the card's rows`).toBeLessThan(hub.firstRow);
+      // As large as the look's controls, as a row's dot is, and no taller than a line of the name.
+      expect(hub.size, `${where}: its size`).toBeCloseTo(Math.max(1, Math.min(hub.controlScale, hub.line.height / 12)), 1);
+      // The lines drawn to it end level with it.
+      expect(hub.wireEnds.length, `${where}: a line ends there`).toBeGreaterThan(0);
+      for (const end of hub.wireEnds) expect(Math.abs(end - hub.centre), `${where}: a line's end`).toBeLessThanOrEqual(1);
+    }
+    if (look !== "reading") expect(Math.max(...drawnHubs.map(hub => hub.size)), `${look}: the hubs grow with the look`).toBeGreaterThan(1.2);
+  }
+});

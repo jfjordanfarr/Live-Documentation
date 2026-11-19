@@ -129,8 +129,9 @@ export function chipsHeight(items: readonly ChipCapture[], width: number, gap: n
  * each row as tall as its dot, its label's lines, its badges or its controls
  * (the label narrowed by the badges and controls beside it), the rows a gap
  * apart, the test chips wrapped, the directory line, and the notes. A pin is
- * at the middle of its row, the Internals row's a margin lower; the hub at
- * the middle of the card.
+ * at the middle of its row, the Internals row's a margin lower; the hub where
+ * the capture read it, at the file name's height (the middle of the card, for a
+ * capture that has none).
  */
 export function cardMetrics(capture: Capture, card: CardCapture, width: number, view: CardView): CardMetrics {
   const c = card.constants ?? capture.constants;

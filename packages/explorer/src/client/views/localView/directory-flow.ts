@@ -21,7 +21,7 @@ import type { SceneMeasurer } from "./branch-scene";
 import { HANDLE_STRIP } from "./directory-handle";
 import { under, type OpenDirectories } from "./directory-state";
 import type { LocalEdge } from "./types";
-import { NODE_HUB } from "./wire-gathering";
+import { HUB_CENTRE, NODE_HUB } from "./wire-gathering";
 
 /** A link of the graph between two file cards on screen that the picture draws no wire for. */
 export interface UndrawnLink {
@@ -243,7 +243,8 @@ export const NOMINAL_LABEL = HANDLE_STRIP;
 /**
  * The scene's measurer on the nominal model: every file card {@link NOMINAL_CARD}, every closed box {@link NOMINAL_BOX},
  * no wider than a card cap when one is set, every directory's label {@link NOMINAL_LABEL} tall, and every line's end at a
- * card's node-level hub, half way down it as the stylesheet stands it. A closed box ends no line.
+ * card's node-level hub, at its name's height as the stylesheet stands it ({@link HUB_CENTRE}, rounded as the page rounds a
+ * pin; half way down the card until 2026-11-19). A closed box ends no line.
  */
 export function nominalMeasurer(ids: Iterable<string>, isBox: (id: string) => boolean): SceneMeasurer {
   const items = [...ids];
@@ -253,7 +254,7 @@ export function nominalMeasurer(ids: Iterable<string>, isBox: (id: string) => bo
     measure: (cardWidths, labelWidths) => ({
       heights: new Map([...cardWidths.keys()].map(id => [id, size(id).height])),
       labelHeights: new Map([...labelWidths.keys()].map(key => [key, NOMINAL_LABEL])),
-      pin: id => (isBox(id) ? null : Math.round(NOMINAL_CARD.height / 2))
+      pin: id => (isBox(id) ? null : Math.round(HUB_CENTRE))
     })
   };
 }

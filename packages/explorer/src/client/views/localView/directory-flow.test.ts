@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { placeMembers } from "./branches";
 import { flowColumns, flowNeighbours, isPairLine, linksOf, NARROW_SHAPE, NOMINAL_BOX, NOMINAL_CARD, NOMINAL_LABEL, nominalMeasurer, pairLines, searchFlowShape, wrapChoices, wrapRanks, type FlowInput, type FlowShape, type UndrawnLink } from "./directory-flow";
-import { NODE_HUB } from "./wire-gathering";
+import { HUB_CENTRE, NODE_HUB } from "./wire-gathering";
 
 /** A link of the graph: `uses` depends on `offers`. */
 const link = (uses: string, offers: string, kind: UndrawnLink["kind"] = "dependency"): UndrawnLink => ({ sourceId: uses, targetId: offers, kind });
@@ -204,7 +204,7 @@ describe("the nominal model the shape is chosen on", () => {
     const measured = measurer.measure(new Map([["d/a", 300], ["d/box", 300]]), new Map([["d label", 300]]));
     expect(measured.heights).toEqual(new Map([["d/a", NOMINAL_CARD.height], ["d/box", NOMINAL_BOX.height]]));
     expect(measured.labelHeights).toEqual(new Map([["d label", NOMINAL_LABEL]]));
-    expect(measured.pin("d/a", "inbound", "#hub")).toBe(NOMINAL_CARD.height / 2);
+    expect(measured.pin("d/a", "inbound", "#hub")).toBe(Math.round(HUB_CENTRE));
     expect(measured.pin("d/box", "outbound", "#hub")).toBeNull();
   });
 });

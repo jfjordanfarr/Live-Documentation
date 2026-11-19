@@ -157,14 +157,21 @@
     justify-self: center;
 }
 
+/* A card's node-level hubs, where a whole file's connections end (2026-11-19): at the height of the file's name, the
+   middle of its first line, where no symbol row can be mistaken for a hub's end; until then a hub stood half way down
+   its card, level with whichever row stood there, and the owner read a pair line's end as that row's. Laid out at the
+   name's line at reading size, 12 px of padding and half the 15 px line down (`HUB_CENTRE` in wire-gathering.ts, which
+   the placement's nominal card reads), its box 12 px; from the middle look out it is drawn down to the held name's first
+   line and as large as the look's controls, no taller than that line, as a row's dot is (the placement takes the drawing
+   back, as it does a dot's). */
 .symbol-anchor.hub {
     position: absolute;
-    top: 50%;
+    top: 13.5px;
     width: 10px;
     height: 10px;
     opacity: 0.55;
     border: 1px solid rgba(var(--second-values-offers-pin-rgb), 0.35);
-    transform: translateY(-50%);
+    transform: translateY(calc(var(--title-line, 15) * 0.5px * (var(--title-scale, 1) - 1))) scale(var(--hub-scale, 1));
     z-index: 28;
 }
 
