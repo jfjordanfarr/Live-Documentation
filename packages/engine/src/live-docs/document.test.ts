@@ -303,6 +303,10 @@ describe("the Live Doc grammar", () => {
     const crlf = text.split("\n").join("\r\n");
     expect(parseLiveDoc(crlf)).toEqual(FULL);
     expect(authoredBlockOf(crlf)).toBe(FULL.authored);
+    // And saved by an editor that ends lines with CR alone.
+    const cr = text.split("\n").join("\r");
+    expect(parseLiveDoc(cr)).toEqual(FULL);
+    expect(authoredBlockOf(cr)).toBe(FULL.authored);
   });
 
   it("reads the authored block by LF and CRLF lines only, so that a name holding a line separator and a heading is no heading", () => {

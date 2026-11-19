@@ -249,6 +249,7 @@ function writeAndRead(doc: LiveDoc, name: string): { text: string; read: LiveDoc
   try {
     expect(parseLiveDoc(onDisk.split("\n").join("\r\n"))).toEqual(doc);
     expect(parseLiveDoc(`\ufeff${onDisk.split("\n").join("\r\n")}`)).toEqual(doc);
+    expect(parseLiveDoc(onDisk.split("\n").join("\r"))).toEqual(doc);
   } catch (error) {
     fail("the doc with CRLF line endings or a byte-order mark does not read back as written", error);
   }

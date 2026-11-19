@@ -156,6 +156,9 @@ export interface ReExport {
 // Vocabulary
 // ============================================================================
 
+/** Where a line of a doc or a board ends: at LF, CRLF or a carriage return alone, as CommonMark ends a line. */
+const LINE_ENDING = /\r\n?|\n/u;
+
 /** U+FEFF at the start of a text: a byte-order mark, which says how the file is encoded and is no part of its first line. */
 const BYTE_ORDER_MARK = "\ufeff";
 
@@ -1034,8 +1037,9 @@ export function authoredBlockOf(text: string | undefined): string {
   if (!text) {
     return DEFAULT_AUTHORED_BLOCK;
   }
-  // Lines end at LF or CRLF only, as the grammar's do: a name holding U+2028 and `## Authored` is no heading.
-  const lines = text.split(/\r?\n/u);
+  // Lines end where the grammar's do, at LF, CRLF or CR, and nowhere else: a name holding U+2028 and `## Authored` is
+  // no heading, and the words of a doc saved with CR alone are found.
+  const lines = text.split(LINE_ENDING);
   const start = lines.findIndex((line) => /^## Authored[ \t]*$/u.test(line));
   if (start < 0) {
     return DEFAULT_AUTHORED_BLOCK;
@@ -1051,8 +1055,9 @@ export function authoredBlockOf(text: string | undefined): string {
 
 /**
  * Reads a text line by line for the parsers, and fails with the line number when the grammar is not met. A line ends
- * at LF or CRLF alike, so a doc checked out with Windows line endings reads as the one written with LF: the writer
- * never ends a line with a carriage return of its own. A byte-order mark before the first line, which Windows
+ * at LF, CRLF or a carriage return alone, as CommonMark ends one, so a doc checked out with Windows line endings, or
+ * saved by an editor that ends lines with CR, reads as the one written with LF: the writer holds no carriage return in
+ * a line, quoting a name that has one ({@link UNWRITTEN}). A byte-order mark before the first line, which Windows
  * PowerShell 5.1 writes whenever a file passes through it, is set aside. A Live Doc and a board are both read here.
  */
 export class Reader {
@@ -1060,10 +1065,12 @@ export class Reader {
   private index = 0;
 
   constructor(text: string) {
-    if (!text.endsWith("\n")) {
-      throw new LiveDocSyntaxError(text.split("\n").length, "the text must end with a newline");
+    const body = text.startsWith(BYTE_ORDER_MARK) ? text.slice(1) : text;
+    const ending = /(?:\r\n?|\n)$/u.exec(body);
+    if (!ending) {
+      throw new LiveDocSyntaxError(body.split(LINE_ENDING).length, "the text must end with a newline");
     }
-    this.lines = text.slice(text.startsWith(BYTE_ORDER_MARK) ? 1 : 0, -1).split("\n").map((line) => (line.endsWith("\r") ? line.slice(0, -1) : line));
+    this.lines = body.slice(0, ending.index).split(LINE_ENDING);
   }
 
   /** The current line's number, counted from one. */

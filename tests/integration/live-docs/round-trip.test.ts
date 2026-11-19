@@ -111,4 +111,31 @@ describe("the Live Doc grammar over real docs", () => {
       fs.rmSync(workspaceRoot, { recursive: true, force: true });
     }
   });
+
+  it("keeps the authored words of a doc with CR-only line endings, through the generator's fallback and through pruning", async () => {
+    // A classic Mac editor ends lines with CR alone. The grammar refuses such a doc, and the generator falls back to the
+    // lenient reader of its authored block: once that reader ended lines only at LF and CRLF, it found no block.
+    const workspaceRoot = fs.mkdtempSync(path.join(os.tmpdir(), "live-docs-cr-only-"));
+    const logger = { info: () => undefined, warn: () => undefined, error: (message: string) => { throw new Error(message); } };
+    try {
+      fs.mkdirSync(path.join(workspaceRoot, "src"));
+      fs.writeFileSync(path.join(workspaceRoot, "src", "kept.ts"), "export const kept = 1;\n");
+      fs.writeFileSync(path.join(workspaceRoot, "src", "gone.ts"), "export const gone = 1;\n");
+      const config = normalizeLiveDocumentationConfig({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, glob: ["src/**/*.ts"] });
+      const first = await generateLiveDocs({ workspaceRoot, config, logger });
+      const docOf = (source: string): string => path.join(workspaceRoot, first.files.find((record) => record.sourcePath === source)!.docPath);
+      for (const source of ["src/kept.ts", "src/gone.ts"]) {
+        const doc = docOf(source);
+        const authored = fs.readFileSync(doc, "utf8").replace("_Pending authored purpose_", `Words about ${source}.`);
+        fs.writeFileSync(doc, authored.split("\n").join("\r"));
+      }
+      fs.rmSync(path.join(workspaceRoot, "src", "gone.ts"));
+      await generateLiveDocs({ workspaceRoot, config, logger });
+      expect(parseLiveDoc(fs.readFileSync(docOf("src/kept.ts"), "utf8")).authored).toContain("Words about src/kept.ts.");
+      // The doc of a file gone holds authored words, so pruning keeps it.
+      expect(fs.existsSync(docOf("src/gone.ts"))).toBe(true);
+    } finally {
+      fs.rmSync(workspaceRoot, { recursive: true, force: true });
+    }
+  });
 });

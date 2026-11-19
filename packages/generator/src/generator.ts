@@ -585,9 +585,9 @@ function classifyChange(existingContent: string | undefined, rendered: string): 
     return "created";
   }
 
-  // A doc checked out with CRLF line endings, as Git for Windows does by default, or given a byte-order mark, as
-  // Windows PowerShell 5.1 gives any file that passes through it, is the doc written with LF and no mark: the reader
-  // reads them alike, so neither a check nor a run calls it changed or rewrites it for those alone. A doc the generator
-  // writes is written with LF and no mark.
-  return existingContent.replace(/^\ufeff/u, "").replace(/\r\n/gu, "\n") === rendered ? "unchanged" : "updated";
+  // A doc checked out with CRLF line endings, as Git for Windows does by default, saved with CR alone, or given a
+  // byte-order mark, as Windows PowerShell 5.1 gives any file that passes through it, is the doc written with LF and no
+  // mark: the reader reads them alike, so neither a check nor a run calls it changed or rewrites it for those alone. A
+  // doc the generator writes is written with LF and no mark.
+  return existingContent.replace(/^\ufeff/u, "").replace(/\r\n?/gu, "\n") === rendered ? "unchanged" : "updated";
 }
