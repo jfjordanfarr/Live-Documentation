@@ -15,7 +15,7 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 import { normalizeLiveDocumentationConfig } from "../../../packages/engine/src/config/liveDocumentationConfig";
 import type { HistorySequence } from "../../../packages/engine/src/live-docs/history/format";
-import { seek } from "../../../packages/engine/src/live-docs/history/sequence";
+import { momentAt, seek } from "../../../packages/engine/src/live-docs/history/sequence";
 import type { CommitSummary } from "../../../packages/engine/src/live-docs/history/summary";
 import { generateLiveDocs } from "../../../packages/generator/src/generator";
 import { FIXTURE_GIT_ENV } from "./scripted-repository";
@@ -34,7 +34,7 @@ const CONFIG = {
   baseLayer: "layer-4",
   extension: ".mdmd.md",
   exclude: ["generated/**", "assets/**", "archive/**"],
-  bundleExclude: ["archive/*.record.md"]
+  bundleExclude: ["archive/*.record.md", "notes/plan.md"]
 };
 
 let repository: string;
@@ -95,6 +95,8 @@ beforeAll(async () => {
   // A link beneath the docs root to a document outside it (the review's second pass): copied, it cites and is linked.
   write("notes/x/guide.md", "# A guide kept in notes\n\nSee [a](../../src/a.ts).\n");
   link(".mdmd/layer-1/guide.md", "../../notes/x/guide.md");
+  // A document the bundle excludes that cites a file: the cache keeps the citation, the sequence leaves it out.
+  write("notes/plan.md", "# Plan\n\nSee [a](../src/a.ts).\n");
   const config = normalizeLiveDocumentationConfig(CONFIG);
   await generateLiveDocs({ workspaceRoot: repository, config, logger: { info: () => undefined, warn: () => undefined, error: () => undefined } });
   // The authored words of `src/a.ts` link a linked document, a document the bundle excludes and one it keeps.
@@ -131,13 +133,24 @@ describe("the history over excluded code, documents the bundle excludes and symb
   it("documents a link to code, and counts a link to a document as the document it leads to", () => {
     const kept = summary();
     expect(kept.files.map((file) => file.path)).toContain("lib/b.ts");
-    expect(kept.files.find((file) => file.path === "src/a.ts")!.citedBy).toEqual([".mdmd/layer-1/guide.md", "AGENTS.md", "CLAUDE.md", "notes/x/guide.md"]);
+    expect(kept.files.find((file) => file.path === "src/a.ts")!.citedBy).toEqual([".mdmd/layer-1/guide.md", "AGENTS.md", "CLAUDE.md", "notes/plan.md", "notes/x/guide.md"]);
     expect(kept.docLinks).toEqual(expect.arrayContaining([["src/a.ts", "docs/alias.md"], ["src/a.ts", "docs/guide.md"]]));
   });
 
   it("keeps every linked document in the summary, the bundle's exclusions applied only where the sequence reads it", () => {
     expect(summary().docLinks).toEqual(expect.arrayContaining([["src/a.ts", "archive/day.record.md"], ["src/a.ts", "archive/kept.md"]]));
     expect(lastLinks()).toEqual(["src/a.ts -> .mdmd/layer-1/guide.md", "src/a.ts -> archive/kept.md", "src/a.ts -> docs/alias.md", "src/a.ts -> docs/guide.md"]);
+  });
+
+  it("keeps a citation the bundle excludes in the cache, the kept index as the summary, and leaves it out of the sequence", () => {
+    // Nothing in the cache depends on the bundle's exclusions; every reader of it applies them (the review's second pass, finding 8).
+    const lens = sequence().lens.key;
+    const index = JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(repository, ".mdmd", "history", lens, `${commit}.index.json.gz`))).toString("utf8")) as {
+      files: Record<string, { citedBy?: Array<{ label: string }> }>;
+    };
+    expect((index.files["src/a.ts"].citedBy ?? []).map((entry) => entry.label)).toContain("notes/plan.md");
+    const read = sequence();
+    expect(momentAt(read, read.steps.length).rows.get("src/a.ts")!.citedBy).toEqual([".mdmd/layer-1/guide.md", "AGENTS.md", "CLAUDE.md", "notes/x/guide.md"]);
   });
 
   it("follows an edit of the bundle's exclusions at the next run, from the summaries it already holds", () => {

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/history-reading.test.ts
-- Generated At: 2026-11-19T19:05:14.866Z
+- Generated At: 2026-11-19T20:55:17.526Z
 
 ## Authored
 ### Purpose
@@ -30,6 +30,7 @@ _No public symbols detected_
 - `node:zlib`
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`format.HistorySequence`](../../../packages/engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence) (type-only)
+- [`sequence.momentAt`](../../../packages/engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-momentat)
 - [`sequence.seek`](../../../packages/engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-seek)
 - [`summary.CommitSummary`](../../../packages/engine/src/live-docs/history/summary.ts.mdmd.md#symbol-commitsummary) (type-only)
 - [`generator.generateLiveDocs`](../../../packages/generator/src/generator.ts.mdmd.md#symbol-generatelivedocs)
