@@ -43,3 +43,53 @@ The case orbits the camera to bring `graph.ts` out from behind whatever stands i
 [`focus-after-eight-presses.png`](focus-after-eight-presses.png): the new docs after the eighth press. `live-docs/graph.ts`'s name at the centre; the `explorer` shell, the large membrane above right, whose disc takes in `graph.ts`; `engine · 135` below it, where the presses landed.
 
 **The case mended** (`force-graph-focus.spec.ts`, `backgroundPoint`): it turns the camera from a point of the background, no drawn sphere within 8 px of either end of the drag and the canvas under both, and checks that each turn turned the camera by more than 5°. Through the lane at 18:00 UTC on the new client: passed on the new docs (15.9 s) and on the old (13.0 s); unmended, it fails on the new docs as on `main`.
+
+## Second leg: Settle Hold on the two 3D cases, and the placement solver made faster with every picture the same
+
+_Taken 2026-11-19 between 18:13 and 19:05 UTC on `01b32fb0` and the commits after it, through the lane, while other builders loaded the machine (load 3 to 26). Wall seconds are given with the load; processor time is given where it was read._
+
+### Settle Hold, set by the link alone, no default changed (today's docs, 1,077 spheres)
+
+| Settle | Bound | Settle Hold 0 | Settle Hold 0.02 |
+| --- | --- | --- | --- |
+| `force-graph-update.spec.ts:140`, the whole repository enters (counted from the page's load; the case counts from a little later) | 1,300 | 1,421, 1,421 | 677, 680; the case itself, 572 |
+| `force-graph-discovery.spec.ts:70`, the archipelago | 300 | 149, 149 | 137, 137 |
+| the same, the largest group grows from its seed (305 spheres) | 2,700 | 5,147, 5,146 (43 to 48 s of the main thread) | 578, 578 (6 to 8 s) |
+
+A temporary copy of each case with `settleHold: 0.02` in its entry link passed whole: the update case's five settles took 572, 145, 328, 154 and 99 substeps against 1,300, 450, 800, 450 and 350, in 67 s against its 240 s clock; the discovery case 137 and 576, with every picture expectation held (members, alphas, rings, counts, frontier wires). Neither case asserts where a sphere rests beyond stillness.
+
+### The solver, three steps, each held to the solver as it stood (`01b32fb0`) as its oracle
+
+The page's own solver was made to keep every system it was given (a scratch build, not committed): during the 80-seed search on the five files it solved **342 systems** of about 1,470 to 1,561 nodes and 3,524 constraints, and the search ended as it does on `main`. Every step below gives the same JSON as the oracle on all 342, on the seeded random systems of `network-simplex.equivalence.test.ts`, and on its three real systems; the 466 2D unit cases pass; and on the page the 80-seed search ends exactly as today's (80 seeds, 231 joins, 29 adoptions, seed 77, price 3,197,457) under each step's build. Processor time of the oracle and each step over all 342, interleaved system by system:
+
+| Step (commit) | Oracle | The step | Less |
+| --- | --- | --- | --- |
+| 1. Only the moved subtree numbered again and its cut values summed (`c4fb0f68`) | 80.7 s, 107.7 s | 59.7 s, 73.4 s | 26 %, 32 % |
+| 1 and 3a. The tight tree grown from two heaps (`38225b30`) | 94.6 s | 46.2 s | 51 % |
+| 1, 3a and 3b. The entering edge sought below the leaving edge only (`a83a89fb`) | 62.0 s | 27.0 s | 56 % |
+
+On the page (today's docs, 80 seeds, CPU profile; load 8 to 26, so compare the solver's column, not the wall):
+
+| Build | Wall, paint to end | Load | Solver | Placement measured on the page (`tryAdoptPicture`) |
+| --- | --- | --- | --- | --- |
+| `01b32fb0` | 131.2 s | 9.1 | 92.1 s (70 %) | 30.3 s |
+| step 1 | 121.2 s | 10.5 | 74.5 s (62 %) | 32.4 s |
+| step 3a | 113.8 s | 9.8 rising to 26 | 50.8 s (46 %) | 35.3 s |
+| step 3b | 68.0 s | 8.4 | 28.6 s (42 %) | 24.7 s |
+
+On the quiet machine of the first leg the search took 73.7 s with 53.7 s in the solver; with the solver at about a third of that, it would take some 37 s there.
+
+**What is left** in the final profile: numbering again the subtree an exchange moves, 18 s of 68 (the entering edge's ends' common ancestor is usually high in the tree, so the subtree is most of it; Graphviz does the same); the measuring of an adopted or promising picture on the page, 24.7 s with its own placement (the cards' heights and pins at the trial's widths 8.0 s, the cards' natural widths 5.0 s, putting the rows in the trial's order 3.4 s, drawing the adopted picture 2.2 s); the entering edge 7.0 s.
+
+**Measuring the page, not built.** A card's natural width is measured again at every trial whose predicted price beats the shown picture's (the 29 adopted in this search, and those refused once measured). It depends on the card's content (its rows shown and their words, and its foot of returning connections, which a cycle's trial changes), the cap on a card's width, the fonts, and the card reading's room writes: the classes and properties `CardReading.measure` leaves on a card at the previous trial's widths (a name cut, a name's held lines, the foot held) are still on it when the next trial's `widths()` sets `max-content` and reads, since only `measure()` takes them back. So the natural width read at one trial may depend on the widths of the trial before; caching it once a search could change a picture, and was not done. Whether that dependence is real, a picture's widths following the order its trials were measured in, is a lead for a later round, not shown. Everything else measured there (heights, pins) depends on the trial's own widths and row order.
+
+### The two 2D cases on the final build, current docs (load 12 to 16)
+
+- `local-map-search.spec.ts:65`: its first competition now ends within the 45 s wait (line 73), where it did not before; the case fails at its 90 s test timeout during the second (line 92). Red.
+- `local-map-hidden.spec.ts:51`: the search after the return does not end within 45 s (line 73). Red.
+
+Both were run once under a load of 12 to 16; neither was run on a quiet machine after the change.
+
+### When the search stops (the owner's rule), from the price the search showed through the 80-seed search on today's docs (before the solver's steps; seconds at load 3.9)
+
+The search shows its first picture at a price of 3,444,817, has 3,426,808 at 37.8 s, and finds seed 77 at 42.7 s (3,200,099, 6.6 % lower). The seeds end at 45.9 s at 3,199,385. The 151 joins after that take 28 s more and lower the price by 0.06 %, to 3,197,457 at 65.2 s; the last 58 joins, 8.5 s, lower it by nothing.
