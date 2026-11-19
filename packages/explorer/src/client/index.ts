@@ -414,7 +414,8 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
       syncReaderNote();
       syncStatsLine();
     },
-    onSettle: () => forceGraphView.settle(),
+    // A drag let go: both maps settle at the moment its last step placed.
+    onSettle: () => { forceGraphView.settle(); localView.settle(); },
     onCommit: commit => {
       if ((state.historyCommit ?? null) === commit) { syncPerspectiveControls(); return; }
       state.historyCommit = commit;

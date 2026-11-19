@@ -260,6 +260,17 @@ export class LocalViewController implements LocalViewApi {
     else if (this.stage) this.render();
     else this.renderOwed = true;
   }
+  /**
+   * The thumb let go on the step it was dragged to: the picture, whose cards kept their places while it dragged, is drawn
+   * at the moment and settles with the map's own move. The history settles without a new moment here, since the step
+   * is the one already shown; until 2026-11-19 only the 3D map heard it, and the 2D map stayed on the cards of the step
+   * the drag began from.
+   */
+  settle(): void {
+    if (!this.stage) return;
+    if (this.isShown()) this.render();
+    else this.renderOwed = true;
+  }
   /** The graph the picture draws: the moment's, or today's. */
   get graph(): ExplorerGraphPayload { return this.moment?.graph ?? this.options.graphData; }
   /** The subject as it stands at the moment shown; null where it does not stand there. */

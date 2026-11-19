@@ -77,6 +77,8 @@ export interface LocalViewApi {
    * the step's emphasis on the cards drawn, laying nothing out again; at rest the picture drawn at the moment.
    */
   setMoment(moment: HistoryMoment | null, changes: HistoryChanges | null, settle: boolean): void;
+  /** The thumb let go on the moment already shown: the picture drawn at it, settling with the map's own move. */
+  settle(): void;
   /** Refresh unchanged fixed-slot reading in place; false when a structural render is required. */
   tryRefreshReading(): boolean;
   /** Whether the Local Map is the view the page shows: the map view in its 2D perspective. */
