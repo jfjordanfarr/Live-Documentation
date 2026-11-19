@@ -305,16 +305,24 @@ describe("a ball of spheres packed apart (2026-11-06, second round)", () => {
     expect(shortfall(units, places, 5)).toBeLessThanOrEqual(5 / 100);
   });
 
-  // The places of the second round's packing to the last digit, read from the bundle of the commit that built it
-  // (91e39276): the third round made the placing of up to 48 spheres faster and must not move one of them.
+  // The places of the second round's packing, read from the bundle of the commit that built it (91e39276): the third
+  // round made the placing of up to 48 spheres faster and must not move one of them. "Not moved" is held to a relative
+  // error of `SAME_PLACE` of the ball's extent, not to the last digit: the packing raises numbers to powers, and
+  // `Math.pow` is not the same to its last bit in every engine (`7 ** 1.5` ends …132 under Node 22 and …136 under
+  // Node 26; the page runs on the browser's arithmetic, which is neither's promise), so the last digit never held for
+  // the product. Under Node 26 the three stand 1.3e-16 to 3.0e-16 of the ball's extent from the recorded places
+  // (measured 2026-11-19). The tolerance, a trillionth of the ball, is some thousands of times that, and tens of
+  // billions of times smaller than the smallest sphere packed: a sphere placed elsewhere, or two spheres exchanged,
+  // still fails by ten orders of magnitude.
+  const SAME_PLACE = 1e-12;
   it.each([
     { count: 40, big: 2, centre: undefined, extent: 69.66072742143449, u0005: { x: -35.17827648034135, y: 22.27322594823353, z: -7.4679226803478995 } },
     { count: 48, big: 3, centre: undefined, extent: 84.7259685602468, u0005: { x: 43.197412938641186, y: 13.143343621580868, z: -36.939108066666044 } },
     { count: 30, big: 0, centre: "u0007", extent: 44.64521176492018, u0005: { x: -1.8784805951251422, y: -19.703846248464377, z: -6.068110632687518 } }
-  ])("places $count spheres, $big large, exactly where the second round did", ({ count, big, centre, extent, u0005 }) => {
-    const packed = packBall(spheres(count, big), 5, centre);
-    expect(packed.extent).toBe(extent);
-    expect(packed.places.get("u0005")).toEqual(u0005);
+  ])("places $count spheres, $big large, where the second round did, to a trillionth of the ball", ({ count, big, centre, extent, u0005 }) => {
+    const packed = packBall(spheres(count, big), 5, centre), at = packed.places.get("u0005")!;
+    expect(Math.abs(packed.extent - extent) / extent).toBeLessThanOrEqual(SAME_PLACE);
+    expect(Math.hypot(at.x - u0005.x, at.y - u0005.y, at.z - u0005.z) / extent).toBeLessThanOrEqual(SAME_PLACE);
   });
 });
 
