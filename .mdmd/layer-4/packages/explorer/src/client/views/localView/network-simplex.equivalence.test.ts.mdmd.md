@@ -13,7 +13,7 @@ Holds the Local Map's placement solver to its oracle: the solver as it stood on 
 
 ### Notes
 
-- Two cases: seeded random acyclic systems of 2 to 300 nodes, with some nodes no constraint touches so that the solver's forest has more than one tree, half of them with small separations and weights so that ties abound; and the three real systems of [the fixture](network-simplex.systems.json.mdmd.md).
+- Two cases: seeded random acyclic systems of 2 to 300 nodes, with some nodes no constraint touches so that the solver's forest has more than one tree, half of them with small separations and weights so that ties abound; and the three real systems of [the fixture](__fixtures__/network-simplex.systems.json.mdmd.md).
 - Written on 2026-11-19 in the second leg of the round that ran down four red browser cases on this repository's map, when the profile put three quarters of the five-file scope's continuing search in this solver ([the measurements](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/map-reds/README.md)). Both cases fail when equal entering edges are told apart the other way (checked that day), so the harness sees a different optimum.
 
 ## Generated
