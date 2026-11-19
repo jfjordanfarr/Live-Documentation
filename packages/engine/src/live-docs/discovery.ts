@@ -448,8 +448,7 @@ export async function buildWorkspaceIndexes(options: {
       }
     }
     for (const entry of reExports) {
-      const anchor = createSymbolSlug(entry.name);
-      if (anchor) register(entry.name, { liveDocPath, sourcePath, anchor, kind: entry.kind, isReExport: true,
+      register(entry.name, { liveDocPath, sourcePath, anchor: createSymbolSlug(entry.name), kind: entry.kind, isReExport: true,
         ...(entry.sourceModulePath ? { reExport: { sourcePath: entry.sourceModulePath, exportedName: entry.name } } : {}) });
     }
   }

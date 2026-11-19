@@ -72,12 +72,10 @@ export function computePublicSymbolHeadingInfo(symbols: PublicSymbolEntry[]): Pu
     nameCounts.set(normalizedNameKey, (nameCounts.get(normalizedNameKey) ?? 0) + 1);
     nameKindCounts.set(nameKindKey, (nameKindCounts.get(nameKindKey) ?? 0) + 1);
 
-    const slugValue = createSymbolSlug(symbol.name) ?? "";
-    if (slugValue) {
-      const slugKindKey = `${slugValue}::${kindLabel}`;
-      slugCounts.set(slugValue, (slugCounts.get(slugValue) ?? 0) + 1);
-      slugKindCounts.set(slugKindKey, (slugKindCounts.get(slugKindKey) ?? 0) + 1);
-    }
+    const slugValue = createSymbolSlug(symbol.name);
+    const slugKindKey = `${slugValue}::${kindLabel}`;
+    slugCounts.set(slugValue, (slugCounts.get(slugValue) ?? 0) + 1);
+    slugKindCounts.set(slugKindKey, (slugKindCounts.get(slugKindKey) ?? 0) + 1);
   }
 
   const kindOccurrences = new Map<string, number>();
@@ -86,16 +84,16 @@ export function computePublicSymbolHeadingInfo(symbols: PublicSymbolEntry[]): Pu
     const normalizedNameKey = normalizeSymbolNameKey(symbol.name);
     const kindLabel = symbol.kind ?? "symbol";
     const nameKindKey = `${normalizedNameKey}::${kindLabel}`;
-    const initialSlug = createSymbolSlug(symbol.name) ?? "";
-    const slugKindKey = initialSlug ? `${initialSlug}::${kindLabel}` : undefined;
+    const initialSlug = createSymbolSlug(symbol.name);
+    const slugKindKey = `${initialSlug}::${kindLabel}`;
 
     let occurrence = 0;
     let occurrenceKey: string | undefined;
 
     const duplicateNameCount = nameCounts.get(normalizedNameKey) ?? 0;
     const duplicateKindCount = nameKindCounts.get(nameKindKey) ?? 0;
-    const slugCollisionCount = initialSlug ? slugCounts.get(initialSlug) ?? 0 : 0;
-    const slugKindCollisionCount = slugKindKey ? slugKindCounts.get(slugKindKey) ?? 0 : 0;
+    const slugCollisionCount = slugCounts.get(initialSlug) ?? 0;
+    const slugKindCollisionCount = slugKindCounts.get(slugKindKey) ?? 0;
     const normalizedName = normalizedNameKey;
     const isReservedHeadingName = RESERVED_HEADING_NAMES.has(normalizedName);
     const baseSlug = initialSlug;
@@ -105,7 +103,7 @@ export function computePublicSymbolHeadingInfo(symbols: PublicSymbolEntry[]): Pu
 
     if (shouldDisambiguateByName) {
       occurrenceKey = nameKindKey;
-    } else if (shouldDisambiguateBySlug && slugKindKey) {
+    } else if (shouldDisambiguateBySlug) {
       occurrenceKey = slugKindKey;
     }
 
@@ -129,14 +127,8 @@ export function computePublicSymbolHeadingInfo(symbols: PublicSymbolEntry[]): Pu
       displayName = `${symbol.name} (${descriptiveKind})`;
     }
 
-    let resolvedSlug: string;
-    if (shouldDisambiguateByName || shouldDisambiguateBySlug) {
-      resolvedSlug = createSymbolSlug(displayName) ?? baseSlug;
-    } else if (isReservedHeadingName) {
-      resolvedSlug = baseSlug || createSymbolSlug(displayName) || "";
-    } else {
-      resolvedSlug = createSymbolSlug(displayName) ?? baseSlug;
-    }
+    // A reserved name keeps the anchor of its bare name; every other heading is anchored by the name it displays.
+    const resolvedSlug = isReservedHeadingName && !shouldDisambiguateByName && !shouldDisambiguateBySlug ? baseSlug : createSymbolSlug(displayName);
     infos.push({
       symbol,
       displayName,
@@ -154,10 +146,6 @@ function ensureUniqueSymbolSlugs(headings: PublicSymbolHeadingInfo[]): void {
   const suffixCounts = new Map<string, number>();
 
   for (const heading of headings) {
-    if (!heading.slug) {
-      continue;
-    }
-
     const baseSlug = heading.slug;
     const normalizedBase = baseSlug.toLowerCase();
     if (!used.has(normalizedBase)) {

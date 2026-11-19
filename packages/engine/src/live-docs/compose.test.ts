@@ -365,3 +365,32 @@ describe("composeEntries", () => {
     }).map((entry) => entry.reason)).toEqual(["program", "command", "tooling", "declared"]);
   });
 });
+
+describe("the anchor of every symbol's heading", () => {
+  it("anchors a name of punctuation or symbols only by its code points, apart from every name the GitHub slug keeps", () => {
+    const headings = computePublicSymbolHeadingInfo(["$", "$$", "€", "+", "_24", "u24", "24"].map((name) => ({ name, kind: "const" })));
+    expect(headings.map((heading) => [heading.displayName, heading.slug])).toEqual([
+      ["$", "symbol-~24"],
+      ["$$", "symbol-~24~24"],
+      ["€", "symbol-~20ac"],
+      ["+", "symbol-~2b"],
+      ["_24", "symbol-_24"],
+      ["u24", "symbol-u24"],
+      ["24", "symbol-24"]
+    ]);
+    // Each anchor reads back from the doc its heading is written into.
+    const doc = parseLiveDoc(
+      renderLiveDoc({
+        codePath: "src/money.ts",
+        layer: 4,
+        archetype: "implementation",
+        entries: [],
+        generatedAt: "2026-11-19T00:00:00.000Z",
+        authored: "### Purpose\nSelects.",
+        symbols: headings.map((heading) => ({ name: heading.displayName, slug: heading.slug, kind: "const", flags: [], sections: [], references: [] })),
+        dependencies: []
+      })
+    );
+    expect(doc.symbols.map((symbol) => symbol.slug)).toEqual(headings.map((heading) => heading.slug));
+  });
+});

@@ -11,6 +11,8 @@ import {
 } from "@live-documentation/engine/config/liveDocumentationConfig";
 import { analyzeSourceFile } from "@live-documentation/engine/live-docs/core";
 import { UNREAD_NOTE } from "@live-documentation/engine/live-docs/document";
+import { readLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
+import { summarizeGraph } from "@live-documentation/engine/live-docs/history/summary";
 
 import { generateLiveDocs } from "./generator";
 
@@ -745,5 +747,33 @@ describe("generateLiveDocs and the documents that cite a file", () => {
     expect(await readDoc("src/model.ts")).not.toContain("Cited By");
     // The notes still cite the app, and the readme no longer does.
     expect(CITED_BY.exec(await readDoc("src/app.ts"))?.[1]).toBe("- [`docs/notes.md`](../../../docs/notes.md)\n");
+  });
+});
+
+describe("generateLiveDocs and names of punctuation only", () => {
+  it("anchors every exported name, so that a link reaches it and the history can summarize its file", async () => {
+    const workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "generate-punctuation-"));
+    const config = normalizeLiveDocumentationConfig({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, glob: ["src/**/*.ts"] });
+    try {
+      await fs.mkdir(path.join(workspaceRoot, "src"));
+      // `$` and `$$`, as a selector library exports them, and a name of punctuation only, which an arbitrary module export name may be.
+      await fs.writeFile(
+        path.join(workspaceRoot, "src", "select.ts"),
+        "/** Selects one. */\nexport const $ = (query: string): string => query;\n/** Selects all. */\nexport const $$ = (query: string): string[] => [query];\nconst plus = (a: number, b: number): number => a + b;\n/** Adds. */\nexport { plus as \"+\" };\n"
+      );
+      await fs.writeFile(path.join(workspaceRoot, "src", "use.ts"), "import { $, $$ } from \"./select\";\n\n/** Uses both. */\nexport function use(): string {\n  return $(\"a\") + $$(\"b\").join(\"\");\n}\n");
+      await generateLiveDocs({ workspaceRoot, config, logger: { info: () => undefined, warn: () => undefined, error: (message) => { throw new Error(message); } } });
+      const graph = await readLiveDocGraph({ workspaceRoot, config });
+      expect(graph.files["src/select.ts"].symbols.map((symbol) => [symbol.name, symbol.slug])).toEqual([
+        ["$", "symbol-~24"],
+        ["$$", "symbol-~24~24"],
+        ["+", "symbol-~2b"]
+      ]);
+      expect(graph.files["src/use.ts"].edges.filter((edge) => edge.to === "src/select.ts").map((edge) => edge.toSymbol)).toEqual(["symbol-~24", "symbol-~24~24"]);
+      const { summary } = summarizeGraph(graph, "lens", "commit");
+      expect(summary.files.find((file) => file.path === "src/select.ts")?.symbols.map((symbol) => symbol.slug)).toEqual(["symbol-~24", "symbol-~24~24", "symbol-~2b"]);
+    } finally {
+      await fs.rm(workspaceRoot, { recursive: true, force: true });
+    }
   });
 });

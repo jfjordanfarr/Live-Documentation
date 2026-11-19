@@ -54,16 +54,25 @@ export function formatRelativePathFromDoc(docDir: string, targetAbsolute: string
 /**
  * Creates a slug for a symbol name suitable for markdown anchors.
  *
+ * @remarks
+ * Every name gets one. A name the GitHub slug empties, being punctuation or
+ * symbols only (`$`, `$$`, an operator such as `+`, `€`), is anchored by its
+ * code points in hexadecimal, each after a tilde: `$` is `symbol-~24` and `$$`
+ * `symbol-~24~24`. The slug removes every tilde, so no other name's anchor can
+ * take that form, and two names give the same one only when they are the
+ * same. Until 2026-11-19 such a name had no anchor, and the history, which
+ * names each symbol by its anchor, could not summarize the file that
+ * exported it.
+ *
  * @param name - The symbol name
- * @returns A slug like "symbol-myfunction", or undefined if the name is invalid
+ * @returns A slug like "symbol-myfunction"
  */
-export function createSymbolSlug(name: string): string | undefined {
+export function createSymbolSlug(name: string): string {
   const candidate = slug(`\`${name}\``);
-  if (!candidate || candidate.length === 0) {
-    return undefined;
+  if (candidate.length > 0) {
+    return `symbol-${candidate}`;
   }
-
-  return `symbol-${candidate}`;
+  return `symbol-${Array.from(name, (character) => `~${character.codePointAt(0)!.toString(16)}`).join("")}`;
 }
 
 /**
