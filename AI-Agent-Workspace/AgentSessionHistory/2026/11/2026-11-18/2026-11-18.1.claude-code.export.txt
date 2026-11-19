@@ -15199,3 +15199,217 @@
   verification. Its three new cases fail on main for the right reasons, and 45
   of 48 history cases pass on its branch, with the 3 failures traced to its own
   test mistakes and an unbuilt sample. Four rounds are queued behind it.
+
+● Agent "Reset Tuning to defaults" is waiting on its own background work · 57m
+  27s
+
+› Message from general-purpose
+  ## Milestone one: verified and committed on branch `history-pinned`
+
+  The branch is in worktree
+  `/workspaces/Live-Documentation/.claude/worktrees/agent-ae9c064b34d4535c0` and
+  has not been pushed. It holds five commits on top of `4de93dfc`:
+  - `578d478e` Keep what was asked about undimmed while the history steps
+  - `edbbebb8` Give the history scrubber a coarse pair beside the fine one
+  - `2a85f483` Hold the undimmed pin and the coarse pair in browser cases
+  - `c9211695` Give a narrow scrubber's track its own row and keep the strip
+  above it
+  - `58792127` Regenerate the Live Docs of the history round's files (holds
+  nothing else)
+
+  ### What a person now meets
+  - **The pinned file stays visible through the history.** It keeps its ordinary
+  look at every step under Changed Files' Dim and Both: its marble, its colour
+  and full alpha. When a step changed it, it glows exactly as before.
+    - This holds for everything in the 3D view's one existing set of things
+  asked about directly: the pins, the subject, the inspected file or hub, and a
+  drawn path's files. It is empty while the picture is just the layout's start
+  view.
+    - Inside wrappers the same rule holds: an asked-about file drawn as a dot
+  keeps its colour, and the bubble or skin standing for an undrawn one keeps its
+  alpha and does not light.
+    - Not held: the pin's wires still dim with the unchanged ones, and open
+  directories (asked about as a set) still dim. Both are written in the docs as
+  status.
+  - **Two knobs on the scrubber.**
+    - Previous and Next still move one commit.
+    - A new outer pair, drawn as a chevron against a bar and named "Previous
+  marked commit" / "Next marked commit", moves to the nearest mark in that
+  direction. With something pinned, a mark is any step that touched it, tall or
+  short, at its own step even when a coarser granularity groups the ticks. With
+  nothing pinned, it is any drawn tick.
+    - The range's two ends are always marks. So where no mark lies ahead the
+  pair goes to the end, and each button is disabled only at its own end.
+    - Page Up and Page Down now do exactly what the pair does. Before, they
+  stopped at tall marks only.
+  - **Play.**
+    - Before: always one step per tick.
+    - Now: with something pinned under the automatic granularity, play jumps
+  mark to mark at the play rate, and its tooltip says "Play, one marked commit
+  after another".
+    - Under an explicit Every Step, Days, Weeks or Months, with nothing pinned,
+  or where the pins touched nothing in the range, it still goes one step at a
+  time.
+  - **Two older layout faults, found by eye and mended:**
+    - The narrow-scrubber rule (track on its own row) never took effect, because
+  the slider's later `flex` shorthand reset it.
+    - Below an 850 px window the control strip sat at a fixed 72 px, ignored the
+  open scrubber's room, and covered its buttons.
+    - Now: at 390 px the scrubber has three rows, with a 280 px track (was 89).
+  At the owner's 834 px with the navigation open, the track gets its own 511 px
+  row (was 146). At 834 with the navigation collapsed, it stays one row with a
+  264 px track (was 328). Nothing overlaps at any width.
+
+  ### Numbers
+  - **Item 3:** on this repository's history to 2026-11-13 (818 steps), the
+  engine's `live-docs/pathfind.ts` has **8 tall marks and 0 short ones** (steps
+  296, 525, 535, 576, 626, 700, 705, 722).
+    - So for this file, "major only" and "major and minor" give the same stops.
+    - The Explorer's own `pathfind.ts` has 13 tall and 4 short.
+    - What you told the owner about tall and short marks matches `ticks.ts`
+  exactly.
+  - **Unit tests:** `npm run test:unit` gave 182 files and 2059 tests, all
+  passing. I ran it without the lock before your message about the unit stage.
+  - **Gate:** `npm run safe:commit` (no browser stage) passed. It was run under
+  the lock.
+  - **Browser, on the branch:**
+    - All three history specs: 45 of 48 passed on the first run. The 3 failures
+  were two test-side mistakes of mine, plus one Knowledge Sources case that
+  needs the estate sample, which I hadn't built.
+    - After mending those and building estate: `history-panel.spec` 16/16, and
+  the 3 new cases plus the Knowledge Sources case 4/4.
+    - I did not rerun all of `history-scrubber` and `history-emphasis` after the
+  CSS mends. Nothing in them checks layout below 850 px.
+  - **New cases on main** (main's Explorer as built at 01:42, which holds every
+  product commit up to `e7e5de43`): all 3 fail for the right reasons.
+    - Both Dim and Both: the pinned `util.ts` is drawn at 0.15 alpha where 0.75
+  is expected.
+    - The coarse-pair case: there are no marked-commit buttons.
+  - **Pictures:** in `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/
+  Screenshots/history-pinned/README.md`. They show:
+    - The owner's step 762 before and after: `pathfind.ts` is a dark ghost
+  before and a full bright marble after.
+    - Next marked pressed four times from step 535: 576, 626, 700, 705.
+    - The narrow scrubbers before and after.
+
+  ### Forks I decided
+  - **Play also follows the marks under the salient granularity**, not only
+  under automatic. That granularity already shows only the marked steps, so
+  playing the hidden steps between them would contradict what it shows. This is
+  one line in `tick-model.ts` (`plays`) if you want automatic only.
+  - **With pins, the marks are the exact steps that touched them**, even where a
+  coarser granularity draws a period's tick at the period's last step. This
+  follows your wording; the thumb can then land mid-period.
+  - **Play's name stays "Play"/"Pause".** It keeps the 2026-11-18 rule for
+  toggles; only its tooltip changes. The speed control still says "steps/s",
+  which while playing marks means marks per second.
+  - **I did not give the coarse buttons an `aria-keyshortcuts` of Page
+  Up/Down.** Those keys work only while the slider has focus, so announcing them
+  on the buttons would mislead.
+  - **Milestone two's arithmetic is partly in place already.** `rangedTickModel`
+  already chooses the automatic granularity over the dates inside the range,
+  and the stops and play already respect the range's ends.
+
+  ### Unfinished or doubtful
+  - **No picture of a pinned file drawn as a dot inside a skin.** The wrapper
+  half of the undimming rule is covered by Vitest only. I don't believe a
+  picture can currently put a pinned file inside a wrapper, since a pin is
+  always drawn as a sphere.
+  - **The lane cost me about 45 minutes.** Builders share one scratchpad and the
+  brief's port 8798 was held by another builder's server, which I reported. My
+  first look and test run silently tested another builder's pages and were
+  discarded. I now use ports 8821 (branch) and 8822 (main's build).
+  - **Milestone two (the track's zoom) has not started.** Per your instruction
+  it will do its writing and unit work off the lane, with no browser hold until
+  you say the gate is done. Send me a message to resume me for it.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "History follows the pinned set" is waiting on its own background work ·
+  1h 11m 56s
+
+  Read 3 files, ran 1 shell command (ctrl+o to expand)
+  ⎿  Resuming agent ae9c064
+
+● Agent "Reset Tuning to defaults" is waiting on its own background work · 58m
+  14s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/AgentSessionHistory/2026/11
+  /2026-11-18/2026-11-18.1.claude-code.export.txt in the IDE. This may or may
+  not be related to the current task.</ide_opened_file>
+  Oh, while we've got tokens to spare, I'd really like to have a "Unpin others"
+  interaction. I want to be able to release everything _except_ what I'm
+  interacting with now. An ability to do that would be really great if designed
+  well.
+
+● A builder goes out for "Unpin others" now; first a quick look at how pins and
+  the More menus are built so the brief is exact.
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● Agent(Unpin others interaction) Opus 5.5
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● "Unpin others" is being built. The record had no earlier decision on it, so
+  the design is mine. Say if any part is not what you meant.
+
+  - Where it lives. Editors solve the same thing with "Close Others" in a tab's
+    menu: the action sits in the menu of the one that stays. So "Unpin others",
+    in your words, becomes an item in the More menu of a file's card, a symbol
+    row and a 3D sphere, and on each pin's entry in the pin tray.
+  - When it shows. Only when at least one other pin exists. Otherwise it is
+    absent, not greyed out.
+  - What it does. It releases every other pin in one step. The thing you used it
+    on stays as it was: a pinned file stays pinned, a symbol row keeps only
+    that symbol's pin, and the subject stays the subject. A file that was on
+    screen only because another pin showed it becomes the one pin, since it
+    would otherwise vanish with the rest.
+  - Undo. It is one step of the page's history, so the browser's Back restores
+    everything released.
+  - Focus. Keyboard focus stays on the thing you kept, and the page announces
+    once how many were released.
+
+  The history round's first part is on main. I read the code and looked at the
+  pictures before landing it.
+
+  - The pinned file stays lit. At your step 762
+    (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/histo
+    ry-pinned/02-after-step-762-pathfind-undimmed.png), pathfind.ts is now a
+    whole bright marble among the dimmed spheres.
+  - Coarse and fine buttons. ‹ › still move one commit. The new outer pair, a
+    chevron against a bar, jumps to the next mark. Page Up and Page Down do the
+    same.
+  - Play follows the marks when something is pinned.
+  - Your "major markers" question is moot for this file. The engine's
+    pathfind.ts has 8 tall marks and no short ones, so both readings give the
+    same stops.
+  - Two older layout faults were fixed along the way. At your window width with
+    the navigation open, the scrubber's track was squeezed to 146 px; it now
+    gets its own row at 511 px. Below 850 px the control strip no longer covers
+    the scrubber's buttons.
+
+  It is not on your port until the gate rebuilds the Explorer, and the browser
+  suite has not run over it yet. The builder ran the history cases on its own
+  branch: 45 of 48 on the first run, then the mended cases passed, but it did
+  not rerun two of the three history specs in full after its last layout fixes.
+
+  Seven builders are out. The gate starts when the three midnight rounds hand
+  back, or at 04:30 UTC over what has landed.
+
+❯ >The record had no earlier decision on it, so the design is mine. Say if any
+  part is not what you meant.
+
+  True. If it helps (hopefully doesn't lead you astray), it is notable that
+  inside IDEs, there is a difference between a file being "open" (eventually
+  disappears in the stack of tabs once it is sufficiently temporally distant
+  from the user's interactions) and "pinned" (durable to wiping the slate clean
+  of tabs). It is also notable that we currently don't have much in the way of
+  a "re-wrap with a bubble" interaction in 3D. Whether the two have any
+  semantic equivalence is not yet clear to me, but I wonder if two design holes
+  could be plugged semantically together by a common unifying user
+  interaction.
