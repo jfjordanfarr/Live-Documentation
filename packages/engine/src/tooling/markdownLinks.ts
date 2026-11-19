@@ -113,16 +113,7 @@ export function readMarkdownLinks(document: string): MarkdownLinkReading {
   const contents: Array<[number, number]> = [];
   for (const block of blocks) {
     const content = text.slice(block.start, block.end);
-    let start = 0;
-    if (!block.heading) {
-      for (;;) {
-        start = skipSpace(content, start, content.length);
-        const found = linkDefinition(content, start);
-        if (!found) break;
-        if (!definitions.has(found.label)) definitions.set(found.label, found.definition);
-        start = found.end;
-      }
-    }
+    const start = block.heading ? 0 : leadingDefinitions(content, definitions);
     if (start < content.length) contents.push([block.start + start, block.end]);
   }
   const links: MarkdownLink[] = [];
@@ -156,6 +147,22 @@ function lineEndingOffsets(document: string): number[] | undefined {
   }
   offsets.push(document.length);
   return offsets;
+}
+
+/**
+ * Where a paragraph's text goes on after the link reference definitions it begins with, which CommonMark reads as
+ * definitions and does not show; 0 when it begins with none. Each definition is added to `definitions` unless its
+ * label is defined already, since the first definition of a label is the one that counts.
+ */
+export function leadingDefinitions(paragraph: string, definitions: Map<string, LinkDefinition> = new Map()): number {
+  let start = 0;
+  for (;;) {
+    const at = skipSpace(paragraph, start, paragraph.length);
+    const found = linkDefinition(paragraph, at);
+    if (!found) return start;
+    if (!definitions.has(found.label)) definitions.set(found.label, found.definition);
+    start = found.end;
+  }
 }
 
 /**

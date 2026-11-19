@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/detailPanel.ts
-- Generated At: 2026-11-04T16:15:09.316Z
+- Generated At: 2026-11-19T21:28:19.937Z
 
 ## Authored
 ### Purpose
@@ -34,28 +34,28 @@ Since 2026-11-12 a dependency is listed once. A node's dependencies hold the doc
 ### Public Symbols
 #### `DetailPanelAction` {#symbol-detailpanelaction}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L23)
+- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L24)
 
 ##### `DetailPanelAction` — Summary
 A reader control whose meaning and state belong to the application.
 
 #### `DetailPanelApi` {#symbol-detailpanelapi}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L32)
+- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L33)
 
 ##### `DetailPanelApi` — Summary
 Public API surface of the Explorer detail panel component.
 
 #### `DetailPanelOptions` {#symbol-detailpaneloptions}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L50)
+- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L51)
 
 ##### `DetailPanelOptions` — Summary
 Configuration options for the Explorer detail panel.
 
 #### `createDetailPanel` {#symbol-createdetailpanel}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L80)
+- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L81)
 - Returns: [`DetailPanelApi`](#symbol-detailpanelapi)
 - Parameters: `options`: [`DetailPanelOptions`](#symbol-detailpaneloptions)
 
@@ -70,6 +70,7 @@ and node metadata.
 - [`document.renderSymbolBlocks`](../../../engine/src/live-docs/document.ts.mdmd.md#symbol-rendersymbolblocks)
 - [`graph.GraphFile`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-graphfile) (type-only)
 - [`GitHubSlugger`](../../../engine/src/tooling/githubSlugger.ts.mdmd.md#symbol-githubslugger)
+- [`markdownLinks.readMarkdownLinks`](../../../engine/src/tooling/markdownLinks.ts.mdmd.md#symbol-readmarkdownlinks)
 - [`dom.requireElement`](./dom.ts.mdmd.md#symbol-requireelement)
 - [`graph-helpers.escapeHtml`](./graph-helpers.ts.mdmd.md#symbol-escapehtml)
 - [`moment.HistoryMoment`](./history/moment.ts.mdmd.md#symbol-historymoment) (type-only)

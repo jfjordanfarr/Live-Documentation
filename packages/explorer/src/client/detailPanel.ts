@@ -8,6 +8,7 @@
 import { renderLiveDoc, renderSymbolBlocks } from "@live-documentation/engine/live-docs/document";
 import type { GraphFile } from "@live-documentation/engine/live-docs/graph";
 import { GitHubSlugger } from "@live-documentation/engine/tooling/githubSlugger";
+import { readMarkdownLinks } from "@live-documentation/engine/tooling/markdownLinks";
 
 import type { ExplorerNodePayload } from "../shared/types";
 import { requireElement } from "./dom";
@@ -397,7 +398,9 @@ function renderDocumentation(
   // block would give it, then placed in the reader's: Purpose, the generated facts, then Notes and the rest.
   const slugger = new GitHubSlugger();
   const sections = authoredSections(file.authored);
-  const rendered = new Map(sections.map((section, index) => [section, authoredSectionHtml(section, index, renderMarkdown(section.markdown, { linkHandler, slugger }))]));
+  // A reference link opens wherever in the block its definition stands, as the engine counts it.
+  const definitions = readMarkdownLinks(file.authored).definitions;
+  const rendered = new Map(sections.map((section, index) => [section, authoredSectionHtml(section, index, renderMarkdown(section.markdown, { linkHandler, slugger, definitions }))]));
   const order = readerOrder(sections);
   if (order.above.length > 0) parts.push(`<div class="doc-authored reader-prose">${order.above.map(section => rendered.get(section)).join("")}</div>`);
 

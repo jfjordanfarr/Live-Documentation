@@ -32,14 +32,14 @@ import { linkTarget, resolveDocLink, type DocLocation } from "./graph";
 const MARKDOWN_SUFFIXES = [".md", ".markdown"];
 
 /**
- * The destinations of every inline link and image in a markdown text, `[text](destination)`, in order, as
- * CommonMark reads them: their backslash escapes and character references resolved, their percent-encoding and
- * fragments kept. An autolink is an absolute URL, which names no file of the workspace. A reference link,
- * `[text][label]` with `[label]: destination` elsewhere, is read by the rule but not counted, as before: the
- * Explorer's reader renders a doc section by section, so it would not open one whose definition stands in another.
+ * The destinations of every link and image in a markdown text, inline (`[text](destination)`) or by reference
+ * (`[text][label]` with `[label]: destination` elsewhere in the text), in order, as CommonMark reads them: their
+ * backslash escapes and character references resolved, their percent-encoding and fragments kept. A document that
+ * cites a file by a reference cites it (the root's ruling, 2026-11-19). An autolink is an absolute URL, which names no
+ * file of the workspace.
  */
 export function markdownLinkTargets(text: string): string[] {
-  return readMarkdownLinks(text).links.filter((link) => link.kind === "inline").map((link) => link.destination);
+  return readMarkdownLinks(text).links.filter((link) => link.kind !== "autolink").map((link) => link.destination);
 }
 
 /** True for a markdown document by its suffix, whatever its case. */

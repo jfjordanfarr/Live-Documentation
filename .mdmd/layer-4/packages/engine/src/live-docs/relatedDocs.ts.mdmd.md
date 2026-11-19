@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/relatedDocs.ts
-- Generated At: 2026-11-19T20:14:11.528Z
+- Generated At: 2026-11-19T21:28:19.735Z
 
 ## Authored
 ### Purpose
@@ -26,11 +26,11 @@ The rules for a file's related documents, both ways: the markdown files, other t
 - Source: [source](../../../../../../packages/engine/src/live-docs/relatedDocs.ts#L41)
 
 ##### `markdownLinkTargets` — Summary
-The destinations of every inline link and image in a markdown text, `[text](destination)`, in order, as
-CommonMark reads them: their backslash escapes and character references resolved, their percent-encoding and
-fragments kept. An autolink is an absolute URL, which names no file of the workspace. A reference link,
-`[text][label]` with `[label]: destination` elsewhere, is read by the rule but not counted, as before: the
-Explorer's reader renders a doc section by section, so it would not open one whose definition stands in another.
+The destinations of every link and image in a markdown text, inline (`[text](destination)`) or by reference
+(`[text][label]` with `[label]: destination` elsewhere in the text), in order, as CommonMark reads them: their
+backslash escapes and character references resolved, their percent-encoding and fragments kept. A document that
+cites a file by a reference cites it (the root's ruling, 2026-11-19). An autolink is an absolute URL, which names no
+file of the workspace.
 
 #### `isMarkdownDocument` {#symbol-ismarkdowndocument}
 - Type: function

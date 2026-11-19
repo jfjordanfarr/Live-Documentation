@@ -20,7 +20,7 @@
  */
 
 import { GitHubSlugger, slugText } from "@live-documentation/engine/tooling/githubSlugger";
-import { inlineTokens, type InlineToken } from "@live-documentation/engine/tooling/markdownLinks";
+import { inlineTokens, leadingDefinitions, readMarkdownLinks, type InlineToken, type LinkDefinitions } from "@live-documentation/engine/tooling/markdownLinks";
 
 import { escapeHtml } from "./graph-helpers";
 
@@ -42,6 +42,10 @@ export function renderMarkdown(
 
     // Normalize line endings
     const content = markdown.replace(/\r\n?/g, "\n");
+    // A reference link takes its destination from the document's definitions, which a caller rendering a document in
+    // parts passes whole; by default, those of the markdown rendered.
+    const definitions = options.definitions ?? readMarkdownLinks(content).definitions;
+    const processInline = (text: string, handler?: (href: string, text: string) => string): string => inlineHtml(text, definitions, handler);
 
     // Process block elements
     const lines = content.split("\n");
@@ -150,8 +154,10 @@ export function renderMarkdown(
             paragraph.push(next.trim());
             i += 1;
         }
-        const text = processInline(paragraph.join(" "), linkHandler);
-        outputLines.push(`<p>${text}</p>`);
+        // Link reference definitions at a paragraph's start are read, not shown; each ends its own line.
+        const raw = paragraph.join("\n");
+        const rest = raw.slice(leadingDefinitions(raw)).replace(/\n/g, " ").trim();
+        if (rest) outputLines.push(`<p>${processInline(rest, linkHandler)}</p>`);
     }
 
     // Close any open list
@@ -181,6 +187,12 @@ export interface RenderMarkdownOptions {
      * keeps the id it has when the whole is rendered at once; a fresh one by default.
      */
     slugger?: GitHubSlugger;
+
+    /**
+     * The link reference definitions a reference link takes its destination from: a whole document's, when it is
+     * rendered in parts, so that a reference opens wherever its definition stands; by default, the markdown's own.
+     */
+    definitions?: LinkDefinitions;
 }
 
 /**
@@ -243,8 +255,9 @@ function textHtml(text: string): string {
  * image, which is never fetched. Then bare relative paths in what is left become links, and the rest is text,
  * escaped whole, then emphasized.
  */
-function processInline(
+function inlineHtml(
     text: string,
+    definitions: LinkDefinitions,
     linkHandler?: (href: string, text: string) => string
 ): string {
     const held: string[] = [];
@@ -255,7 +268,7 @@ function processInline(
         const address = href.replace(//g, "%EE%80%80");
         return hold(linkHandler ? linkHandler(address, html) : defaultLink(address, html));
     };
-    const tokens = inlineTokens(text);
+    const tokens = inlineTokens(text, definitions);
 
     /** The text between two offsets, with what it holds held; inside a link, a link or image is its text alone. */
     const render = (from: number, to: number, inLink: boolean): string => {

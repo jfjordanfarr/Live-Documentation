@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/markdown.ts
-- Generated At: 2026-11-19T21:11:50.831Z
+- Generated At: 2026-11-19T21:28:20.435Z
 
 ## Authored
 ### Purpose
@@ -43,14 +43,14 @@ HTML string
 
 #### `RenderMarkdownOptions` {#symbol-rendermarkdownoptions}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/markdown.ts#L166)
+- Source: [source](../../../../../../packages/explorer/src/client/markdown.ts#L172)
 
 ##### `RenderMarkdownOptions` — Summary
 Options for the lightweight markdown-to-HTML renderer.
 
 #### `fenceClosing` {#symbol-fenceclosing}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/markdown.ts#L190)
+- Source: [source](../../../../../../packages/explorer/src/client/markdown.ts#L202)
 
 ##### `fenceClosing` — Summary
 The line that closes the fence a line opens, or null when the line opens none. A backtick fence whose info string
@@ -58,14 +58,14 @@ holds a backtick is not one. Any reader that splits a document must agree with t
 
 #### `headingOf` {#symbol-headingof}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/markdown.ts#L197)
+- Source: [source](../../../../../../packages/explorer/src/client/markdown.ts#L209)
 
 ##### `headingOf` — Summary
 A heading line's level and its text without closing hashes, or null when the line is not a heading.
 
 #### `renderingSteps` {#symbol-renderingsteps}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/markdown.ts#L229)
+- Source: [source](../../../../../../packages/explorer/src/client/markdown.ts#L241)
 
 ##### `renderingSteps` — Summary
 How many tokens the renderer has walked since it was loaded, for the test that holds its work linear in the text.
@@ -76,7 +76,10 @@ How many tokens the renderer has walked since it was loaded, for the test that h
 - [`GitHubSlugger`](../../../engine/src/tooling/githubSlugger.ts.mdmd.md#symbol-githubslugger)
 - [`githubSlugger.slugText`](../../../engine/src/tooling/githubSlugger.ts.mdmd.md#symbol-slugtext)
 - [`markdownLinks.InlineToken`](../../../engine/src/tooling/markdownLinks.ts.mdmd.md#symbol-inlinetoken)
+- [`markdownLinks.LinkDefinitions`](../../../engine/src/tooling/markdownLinks.ts.mdmd.md#symbol-linkdefinitions)
 - [`markdownLinks.inlineTokens`](../../../engine/src/tooling/markdownLinks.ts.mdmd.md#symbol-inlinetokens)
+- [`markdownLinks.leadingDefinitions`](../../../engine/src/tooling/markdownLinks.ts.mdmd.md#symbol-leadingdefinitions)
+- [`markdownLinks.readMarkdownLinks`](../../../engine/src/tooling/markdownLinks.ts.mdmd.md#symbol-readmarkdownlinks)
 - [`graph-helpers.escapeHtml`](./graph-helpers.ts.mdmd.md#symbol-escapehtml)
 <!-- LIVE-DOC:END Dependencies -->
 

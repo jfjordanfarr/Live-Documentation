@@ -194,6 +194,17 @@ describe("inline code, links and emphasis in the reader", () => {
     expect(html).toBe("<p><a>angle</a>, <a>bare</a>, <a>encoded</a>, <a>escaped</a>, <a>titled</a>, <a>nested</a>, <a>group</a> and <a>script</a></p>");
   });
 
+  it("opens a reference link at its definition's destination, hides the definition, and takes a whole document's definitions when rendered in part", () => {
+    const hrefs: string[] = [];
+    const handler = (href: string, text: string): string => { hrefs.push(href); return `<a>${text}</a>`; };
+    expect(renderMarkdown("See [the plan][Plan] and [notes].\n\n[plan]: <docs/plan (draft).md> \"The plan\"\n[notes]: docs/notes.md", { linkHandler: handler }))
+      .toBe("<p>See <a>the plan</a> and <a>notes</a>.</p>");
+    expect(hrefs).toEqual(["docs/plan (draft).md", "docs/notes.md"]);
+    const definitions = new Map([["NOTES", { destination: "docs/notes.md" }]]);
+    expect(renderMarkdown("Only [notes] here.", { linkHandler: handler, definitions })).toBe("<p>Only <a>notes</a> here.</p>");
+    expect(renderMarkdown("Only [notes] here.")).toBe("<p>Only [notes] here.</p>");
+  });
+
   it("shows a backslash-escaped character as itself, as a docstring line escaped from being a heading is written", () => {
     expect(renderMarkdown("\\#### z")).toBe("<p>#### z</p>");
     expect(renderMarkdown("\\```ts and \\*not emphasis\\* and \\[not](a link.md) and C:\\path")).toBe("<p>```ts and *not emphasis* and [not](a link.md) and C:\\path</p>");

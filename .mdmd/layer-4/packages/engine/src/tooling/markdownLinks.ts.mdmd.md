@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/tooling/markdownLinks.ts
-- Generated At: 2026-11-19T21:11:50.167Z
+- Generated At: 2026-11-19T21:28:19.856Z
 
 ## Authored
 ### Purpose
@@ -83,9 +83,18 @@ What a document's links are: every link, image and autolink, and the references 
 Every link of a markdown document, by CommonMark's rule but where the module's remarks say otherwise. Offsets
 are the document's own.
 
+#### `leadingDefinitions` {#symbol-leadingdefinitions}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.ts#L157)
+
+##### `leadingDefinitions` — Summary
+Where a paragraph's text goes on after the link reference definitions it begins with, which CommonMark reads as
+definitions and does not show; 0 when it begins with none. Each definition is added to `definitions` unless its
+label is defined already, since the first definition of a label is the one that counts.
+
 #### `inlineTokens` {#symbol-inlinetokens}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.ts#L165)
+- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.ts#L172)
 - Returns: [`InlineToken`](#symbol-inlinetoken)[]
 - Parameters: `definitions`: [`LinkDefinitions`](#symbol-linkdefinitions)
 
@@ -95,7 +104,7 @@ them, in the order they begin, with offsets into the text. A reference link need
 
 #### `isLink` {#symbol-islink}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.ts#L170)
+- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.ts#L177)
 - Parameters: `token`: [`InlineToken`](#symbol-inlinetoken)
 
 ##### `isLink` — Summary
@@ -103,7 +112,7 @@ True for a link, an image or an autolink.
 
 #### `linkPath` {#symbol-linkpath}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.ts#L180)
+- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.ts#L187)
 
 ##### `linkPath` — Summary
 The path a link's destination names, and its fragment, read as a browser reads a URL reference: the fragment
@@ -113,7 +122,7 @@ whose percent-encoding is malformed is left as written. The fragment is decoded 
 
 #### `normalizeLabel` {#symbol-normalizelabel}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.ts#L192)
+- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.ts#L199)
 
 ##### `normalizeLabel` — Summary
 A label as CommonMark matches it: without its brackets, its runs of spaces, tabs and line endings one space, no
