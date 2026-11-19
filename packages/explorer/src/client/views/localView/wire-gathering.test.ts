@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import type { LocalEdge } from "./types";
-import { GATHERED_WIDTH, gatheredCount, gatheredDescription, gatheredWidth, gatherWires, NODE_HUB, ownWires } from "./wire-gathering";
+import { GATHERED_WIDTH, gatheredCount, gatheredDescription, gatheredWidth, gatherWires, NODE_HUB, ownWires, wireDescription } from "./wire-gathering";
 
 /** A wire from what offers (`target`) to what uses (`source`), by file and symbol. */
 const wire = (uses: string, usesSymbol: string | undefined, offers: string, offersSymbol: string | undefined): LocalEdge => ({
@@ -55,6 +55,20 @@ describe("gatheredCount", () => {
     expect(gathered.members).toEqual([line]);
     expect(gatheredCount(gathered)).toBe(5);
     expect(gatheredDescription(gathered, id => id)).toBe("still.ts offers spec.ts 5 references");
+  });
+});
+
+describe("wireDescription", () => {
+  const name = (id: string): string => id.split("/").pop()!;
+  it("names a reference's two ends in the scan's own names, a row's symbol in its file, Internals and a hub by the file alone", () => {
+    expect(wireDescription(wire("a/App.config", undefined, "a/PaymentService.cs", "PaymentService"), name)).toBe("PaymentService in PaymentService.cs offers App.config");
+    expect(wireDescription(wire("a/Hub.cs", "Send", "a/Gateway.cs", "IGateway"), name)).toBe("IGateway in Gateway.cs offers Send in Hub.cs");
+    expect(wireDescription(wire("a/Hub.cs", NODE_HUB, "a/Gateway.cs", NODE_HUB), name)).toBe("Gateway.cs offers Hub.cs");
+  });
+
+  it("names a pair line of an opened directory as a gathered wire is named, by its files and its count", () => {
+    expect(wireDescription({ ...wire("a/App.config", NODE_HUB, "a/PaymentService.cs", NODE_HUB), gathered: 1 }, name)).toBe("PaymentService.cs offers App.config 1 reference");
+    expect(wireDescription({ ...wire("a/App.config", NODE_HUB, "a/PaymentService.cs", NODE_HUB), gathered: 3 }, name)).toBe("PaymentService.cs offers App.config 3 references");
   });
 });
 

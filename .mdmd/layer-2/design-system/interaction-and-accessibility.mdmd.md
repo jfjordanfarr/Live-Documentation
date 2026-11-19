@@ -53,8 +53,8 @@ Ten rules that everything below applies. Each is the owner's, made precise.
 
 | Act | 2D Local Map | 3D Local Map | World Map | Reader and panels |
 | --- | --- | --- | --- | --- |
-| **Hover** | Lights a row's or card's wires and fades the rest; draws no text. | Names the sphere and fades what it does not touch; no hover while the map builds. | Peeks: the thing's panel stands beside it until the pointer leaves. | Tooltip (the native `title`) on controls. |
-| **Keyboard focus** | Same as hover, and the camera brings the focused control into the frame. | A name's button takes focus; focus previews as hover does. | Same as hover; a ring on the piece's outline. | Focus ring. |
+| **Hover** | Lights a row's or card's wires and fades the rest; on a returning connection's lace or a card's foot on its returns, lights the whole connection (both laces, its route, both cards); draws no text. | Names the sphere and fades what it does not touch; no hover while the map builds. | Peeks: the thing's panel stands beside it until the pointer leaves. | Tooltip (the native `title`) on controls. |
+| **Keyboard focus** | Same as hover, a returning connection's lace among the stops, and the camera brings the focused control into the frame. | A name's button takes focus; focus previews as hover does. | Same as hover; a ring on the piece's outline. | Focus ring. |
 | **Click or tap on a name** | Opens or folds that name's description (a file's name: Purpose and every description). | Same as a click on its sphere. | A link in a pinned panel: a thing's name pins it, a file opens it in the Local Map. | Follows the link inside the reader. |
 | **Click or tap on a body** (card, sphere, piece) | A card's body does nothing; a closed directory's box opens it. | Pins the file; a second click releases it. A directory toggles its discovery. | Pins the piece's panel. | — |
 | **Pin** (the pin icon) | Retains a file or symbol and its connections; pressed again releases only what it retained. | The same, from the sphere's actions. | — (the World Map has no Pin control; see 2.3) | The tray lists pins; each row can release or focus. |

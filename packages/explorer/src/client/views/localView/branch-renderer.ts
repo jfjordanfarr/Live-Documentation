@@ -21,6 +21,7 @@ import { layoutTopOf } from "./ladder-rooms";
 import { membranePath } from "./membrane-outline";
 import { OVERVIEW_FILES_ATTRIBUTE, OVERVIEW_LINES_ATTRIBUTE, type PictureSize } from "./overview-files";
 import { connectionCount, returningConnections } from "./returning-connections";
+import { clearSymbolHighlightDOM, lightConnections } from "./symbol-highlight";
 import type { LocalEdge } from "./types";
 import { NODE_HUB } from "./wire-gathering";
 import { countOf } from "./word-seams";
@@ -1675,6 +1676,15 @@ function dressReturns(controller: LocalViewController, cards: readonly HTMLEleme
     note.className = "local-disclosure local-back-references";
     note.textContent = returnsWording(back);
     note.title = "Show the files joined by connections that return against the layout's reading direction";
+    // The pointer or the keyboard on the foot keeps its returning connections whole, their laces, routes and cards, and
+    // fades the rest, as pointing at one of their laces does (2026-11-19).
+    const { container, overlay } = controller.runtime;
+    const light = (): void => lightConnections(container, overlay, back);
+    const rest = (): void => clearSymbolHighlightDOM(container, overlay, () => {});
+    note.addEventListener("pointerenter", light);
+    note.addEventListener("focus", light);
+    note.addEventListener("pointerleave", rest);
+    note.addEventListener("blur", rest);
     if (controller.reading) {
       note.setAttribute("aria-haspopup", "menu");
       note.addEventListener("click", event => {

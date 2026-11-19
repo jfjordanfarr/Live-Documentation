@@ -82,3 +82,16 @@ export function gatheredDescription(wire: GatheredWire, nameOf: (nodeId: string)
   return `${nameOf(wire.providerId)} offers ${nameOf(wire.consumerId)} ${count} ${count === 1 ? "reference" : "references"}`;
 }
 
+/**
+ * The accessible description of one drawn connection, in the scan's own names (2026-11-19, first for a returning
+ * connection's laces): a pair line of an opened directory as a gathered wire is described; a reference by its two ends,
+ * a row's symbol named in its file as the row's own name says it ("Post in PaymentService.cs"), an end at a file's
+ * Internals or hub by the file alone.
+ */
+export function wireDescription(edge: LocalEdge, nameOf: (nodeId: string) => string): string {
+  // A pair line carries its count (isPairLine of directory-flow.ts, which imports this module).
+  if (edge.gathered !== undefined) return gatheredDescription({ key: "", providerId: edge.targetId, consumerId: edge.sourceId, members: [edge], back: false }, nameOf);
+  const end = (nodeId: string, symbol: string | undefined): string => (symbol && symbol !== NODE_HUB ? `${symbol} in ${nameOf(nodeId)}` : nameOf(nodeId));
+  return `${end(edge.targetId, edge.targetSymbol)} offers ${end(edge.sourceId, edge.sourceSymbol)}`;
+}
+

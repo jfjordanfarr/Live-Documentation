@@ -215,7 +215,7 @@ From `palette.ts`. **Identity colours** are hues that tell one category from ano
 | Directory | `kind.directory` | `#e9984d` | `#e9984d` | `#e9984d` | 3D hub and containment line |
 | Has tests (2D card) | `hasTests.mark` | `#8a5cff` | `#8a5cff` | `#8a5cff` | halo, border and chip |
 | Changed in this commit | `history.changed` | `#ffffff` | `#ffffff` | `#ffffff` | the changed sphere under Glow |
-| The 3D button's cue | `signal.cue` | `#e9b86d` | `#e9b86d` | `#e9b86d` | an amber rise on the 3D button |
+| The 3D button's cue | `signal.cue` | `#e9b86d` | `#e9b86d` | `#e9b86d` | an amber rise on the 3D button; on the 2D map, what it counts: a returning connection's laces and route, a forward wire that doubles back |
 
 Today also draws a second value for some meanings in `secondValues`: the 2D pins `#0091ff` and `#00d3aa` beside the wires' colours, and the subject card's ring. Proposed and Vivid set most second values to their meaning, but not all: `errorWash` (`#f44336`), `pathFoundWash` (`#4caf50`) and `worldLightPressed` (`#e0f2fe`) keep Today's values in all three palettes, beside `signal.error`, `signal.pathFound` and the light World's blue. The palette's own comment says otherwise ("Every second value equals its meaning", `palette.ts:294`); it is wrong for these three.
 
@@ -289,10 +289,10 @@ Today also draws a second value for some meanings in `secondValues`: the 2D pins
 
 **Rule: amber is the one warning hue the chrome keeps.**
 
-- **The rule.** The 3D button's cue, that connections run backward in the 2D map, is amber. Errors are red.
-- **Why.** Owner, 2026-11-02: they asked for the 3D button to light on a file with many returning connections (the Explorer design, "The 3D button's cue").
-- **Where.** `signal.cue` and `signal.error`.
-- **Checked by.** `backward-cue.spec.ts`.
+- **The rule.** The 3D button's cue, that connections run backward in the 2D map, is amber, and so is each connection it counts where the 2D map draws it: a returning connection's laces and its route, and a forward wire whose route doubles back. Errors are red.
+- **Why.** Owner, 2026-11-02: they asked for the 3D button to light on a file with many returning connections (the Explorer design, "The 3D button's cue"). Owner, 2026-11-19, of the button lit over a picture whose returning wires they could not find: "We should probably use that alert color to call attention to the specific wires which are violating the left/right arrangement rule." ([Turn 23 of the November 18 record](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-23)). The withdrawal of colour by direction on 3D wires (2026-10-31) was of a dense web; the 2D map draws few such connections.
+- **Where.** `signal.cue` and `signal.error`; the laces' fill in `views/localView/connections.ts`, the route's and a doubling wire's stroke in `styles/local.css`. The count and the marks share one test, so the button and the map cannot disagree.
+- **Checked by.** `backward-cue.spec.ts`; `returning-connections.spec.ts` (the laces and the route) and `local-map-branches.spec.ts` (a doubling wire).
 - **Status.** Holds.
 
 ### Strength: opacity that carries meaning

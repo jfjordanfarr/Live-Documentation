@@ -17,6 +17,8 @@ Written in the far bands' second milestone (2026-11-06), from the root's brief a
 
 Since 2026-11-12 the module also names the node-level hubs (`NODE_HUB`, moved from `card-factory.ts`) and counts a gathered wire by `gatheredCount`, in which a member that is itself a pair line of an opened directory counts the links it stands for, so that the overview band draws the directory flow trial's lines at the widths the closer bands do.
 
+Since 2026-11-19 ([Turn 23 of the November 18 record](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-23)) `wireDescription` names any one drawn connection, first a returning connection's laces: a pair line as a gathered wire is named, a reference by its two ends, a row's symbol named in its file as the row's own name says it ("PaymentService in PaymentService.cs offers App.config").
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

@@ -566,8 +566,21 @@ body:has(#map-container[data-lod="overview"]) #local-legend .legend-row--gathere
 .local-directory-closed { transition: opacity 0.15s ease-out; }
 /* The room between two cards through which threaded wires pass; the router reads its place from the page. */
 .local-pass-through { flex: none; width: 100%; pointer-events: none; }
-/* A reference that reads against the columns shows as stubs at its pins; its route appears when a symbol is hovered. */
+/* A reference that reads against the columns shows as laces at its pins; its route appears while a hover keeps it. */
 .connection-path.back-route:not(.connection-highlighted) { display: none; }
+/* What the 3D button's cue counts is drawn in the cue's own colour, from its token, so that the button and the map cannot
+   disagree and the connections it counts can be found (the owner's proposal of 2026-11-19): a returning connection's
+   laces (their fill, written on them, connections.ts), its route while shown, and a forward wire whose route doubles
+   back. */
+.connection-path.back-route, .connection-path.doubling { stroke: var(--signal-cue); }
+/* A returning connection's lace takes the pointer and the keyboard's focus, which keep its whole connection (its two
+   laces, its route and both cards) and fade the rest, as a row's hover does. The lace is a few pixels across, so the
+   pointer finds it within a band around it that is not drawn: its stroke, which is none. */
+#map-connections .connection-path.returning { pointer-events: all; stroke-width: 8px; }
+.connections-lit.symbol-hover-active .node-card:not(.card-highlighted),
+.connections-lit.symbol-hover-active .local-directory-closed { opacity: var(--hover-dim-symbols, 0.5); }
+#map-connections .connection-path.returning:focus { outline: none; }
+#map-connections .connection-path.returning:focus-visible { outline: 2px solid var(--state-selected); outline-offset: 2px; }
 /* The shared run of a bundle beneath its wires, as wide as their number; it carries no reference and never highlights. */
 .connection-path.bundle-run { opacity: .45; stroke-linecap: butt; }
 /* Under a hover the run dims with every wire it carries; without this rule its own opacity above outranked the hover's

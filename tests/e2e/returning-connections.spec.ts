@@ -65,6 +65,10 @@ async function drawn(page: Page) {
     })));
 }
 
+/** The cards' opacities by file. */
+const cardOpacities = (page: Page) => page.locator("#map-container .node-card").evaluateAll(cards =>
+  Object.fromEntries(cards.map(card => [(card as HTMLElement).dataset.id!, Number(getComputedStyle(card).opacity)])));
+
 test("in the owner's picture a hovered row keeps every drawn thing that carries one of its links and fades the rest", async ({ page }) => {
   test.setTimeout(90_000);
   const links = estateLinks();
@@ -89,5 +93,88 @@ test("in the owner's picture a hovered row keeps every drawn thing that carries 
     for (const pair of own) if (rest.some(each => each.pair === pair)) expect(shown.has(pair), pair).toBe(true);
     if (own.has(`${CONFIG} uses ${SERVICE}`)) expect(hovered.filter(each => each.what === "route" && each.opacity === REST), "the return's whole route").toHaveLength(1);
     await page.mouse.move(1430, 890);
+  }
+});
+
+/** The cue's colour as the browser computes it, from the palette's token. */
+const CUE = "rgb(233, 184, 109)";
+
+/** Every drawn part: its pair, what it is, whether it returns, and how it is drawn. */
+const parts = (page: Page) => page.locator("#map-connections .connection-path:not(.bundle-run)").evaluateAll(elements => elements.map(element => {
+  const style = getComputedStyle(element);
+  return {
+    pair: `${(element as SVGElement).dataset.sourceId} uses ${(element as SVGElement).dataset.targetId}`,
+    what: element.classList.contains("back-route") ? "route" : element.tagName === "polygon" ? "lace" : "wire",
+    returning: element.classList.contains("returning"),
+    shown: style.display !== "none", opacity: Number(style.opacity), fill: style.fill, stroke: style.stroke,
+    name: element.getAttribute("aria-label"), tooltip: element.querySelector("title")?.textContent ?? null
+  };
+}));
+
+test("a returning connection's laces wear the cue's colour, are named by their two ends, and a lace or a foot keeps the whole connection", async ({ page }) => {
+  test.setTimeout(90_000);
+  // As it arrives, both laces in the frame.
+  await ownerPicture(page, false);
+  const rest = await parts(page);
+  const laces = rest.filter(part => part.what === "lace");
+  expect(laces).toHaveLength(2);
+  // At rest: both laces in the cue's colour, the colour the 3D button lights in; the route not drawn; every other wire
+  // in the roles' gradient.
+  for (const lace of laces) {
+    expect(lace.fill, "a returning lace wears the cue's colour").toBe(CUE);
+    expect(lace.returning).toBe(true);
+    // The scan's own names: the files, and the line's count, as a gathered line's name says them.
+    expect(lace.name).toBe("PaymentService.cs offers App.config 1 reference");
+    expect(lace.tooltip, "the tooltip says the same words, the browser's own, once the pointer rests").toBe(lace.name);
+  }
+  await expect(page.getByRole("button", { name: "3D", exact: true })).toHaveClass(/has-backward-wires/);
+  expect(rest.filter(part => part.what === "route" && part.shown)).toEqual([]);
+  expect(rest.filter(part => part.what === "wire").every(part => part.stroke.startsWith("url("))).toBe(true);
+  const restCards = await cardOpacities(page);
+
+  /** The picture while something keeps the return: its laces, its route and its cards as at rest, everything else faded. */
+  const expectKept = async (how: string): Promise<void> => {
+    await expect.poll(async () => (await parts(page)).filter(part => part.what === "wire").every(part => part.opacity <= 0.1), how).toBe(true);
+    await page.waitForTimeout(250);
+    const kept = await parts(page);
+    expect(kept.filter(part => part.what === "lace").map(part => part.opacity), `${how}: both laces`).toEqual([REST, REST]);
+    expect(kept.filter(part => part.what === "route").map(part => [part.shown, part.opacity, part.stroke]), `${how}: the whole route, in the cue's colour`)
+      .toEqual([[true, REST, CUE]]);
+    for (const [file, opacity] of Object.entries(await cardOpacities(page))) {
+      if (file === CONFIG || file === SERVICE) expect(opacity, `${how}: ${file} stands`).toBe(1);
+      else expect(opacity, `${how}: ${file} fades`).toBeLessThan(0.8);
+    }
+  };
+  const expectRest = async (how: string): Promise<void> => {
+    await expect.poll(async () => (await parts(page)).filter(part => part.what === "route" && part.shown).length, how).toBe(0);
+    await page.waitForTimeout(250);
+    expect((await parts(page)).map(part => [part.pair, part.what, part.opacity]), how).toEqual(rest.map(part => [part.pair, part.what, part.opacity]));
+    expect(await cardOpacities(page), how).toEqual(restCards);
+  };
+
+  // The pointer on either lace, at its middle.
+  for (const index of [0, 1]) {
+    const box = (await page.locator("#map-connections polygon.returning").nth(index).boundingBox())!;
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+    await expectKept(`lace ${index} pointed at`);
+    await page.mouse.move(1430, 890);
+    await expectRest(`lace ${index} left`);
+  }
+  // The keyboard's focus on a lace.
+  await page.locator("#map-connections polygon.returning").first().focus();
+  await expectKept("a lace focused");
+  await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur());
+  await expectRest("the lace's focus gone");
+  // Either card's foot, by the pointer and by the keyboard.
+  for (const file of [CONFIG, SERVICE]) {
+    const foot = page.locator(`.node-card[data-id="${file}"] .local-back-references`);
+    await foot.hover();
+    await expectKept(`${file}'s foot pointed at`);
+    await page.mouse.move(1430, 890);
+    await expectRest(`${file}'s foot left`);
+    await foot.focus();
+    await expectKept(`${file}'s foot focused`);
+    await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur());
+    await expectRest(`${file}'s foot's focus gone`);
   }
 });

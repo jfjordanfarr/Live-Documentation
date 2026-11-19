@@ -177,6 +177,35 @@ export function applySymbolHighlight(
   markConnections(overlay, highlight.relatedEdges);
 }
 
+/**
+ * The highlight of whole connections, which pointing at a returning connection's lace or at a card's foot on its returns
+ * keeps (2026-11-19): every drawn thing of each, a return's two laces and its whole route, both its cards and the rows
+ * at both ends of each link it carries. So the two laces are seen to be one connection, and where it goes.
+ */
+export function connectionsHighlight(edges: readonly LocalSubgraphLink[]): SymbolHighlightResult {
+  const relatedSymbols = new Set<string>(), relatedNodeIds = new Set<string>();
+  for (const edge of edges) {
+    for (const link of linksOfEdge(edge)) addRows(relatedSymbols, edge, link);
+    relatedNodeIds.add(edge.sourceId);
+    relatedNodeIds.add(edge.targetId);
+  }
+  return { relatedSymbols, relatedNodeIds, relatedEdges: [...edges], shouldCollapse: false, nodeWideExporterIds: new Set() };
+}
+
+/**
+ * Keeps the given connections and fades the rest, as a row's hover does, by the fades the picture's render set; the
+ * pointer or the keyboard on a lace or a foot (2026-11-19). Nothing is moved or added.
+ */
+export function lightConnections(container: HTMLElement, overlay: HTMLElement, edges: readonly LocalSubgraphLink[]): void {
+  clearSymbolHighlightDOM(container, overlay, () => {});
+  const highlight = connectionsHighlight(edges);
+  markHighlight(container, overlay, highlight, "");
+  markConnections(overlay, highlight.relatedEdges);
+  // The cards the connections join stay as they are and every other card fades, as a card's hover in Flow fades them:
+  // a lace says nothing of its far card, which the eye finds by the cards left standing (local.css).
+  container.classList.add("connections-lit");
+}
+
 /** Marks the hover's rows and cards and turns its fading on; whether any row was collapsed. */
 function markHighlight(container: HTMLElement, overlay: HTMLElement, highlight: SymbolHighlightResult, centerId: string): boolean {
   // Add class to container AND overlay to enable dimming mode
@@ -245,7 +274,7 @@ export function clearSymbolHighlightDOM(
 ): void {
   const hadCollapsed = container.querySelector(".symbol-collapsed") !== null;
 
-  container.classList.remove("symbol-hover-active");
+  container.classList.remove("symbol-hover-active", "connections-lit");
   overlay.classList.remove("symbol-hover-active");
 
   container.querySelectorAll<HTMLElement>(".symbol-highlighted").forEach(el => {
