@@ -59,21 +59,22 @@ function analyzePackageManifest(parsed: unknown, context: ManifestContext): Sour
 // What a manifest starts
 // ============================================================================
 
-/** The separators between the commands of one script. */
-const COMMAND_SEPARATOR = /\s*(?:&&|\|\||;|\|)\s*/u;
-
 /**
  * The files a manifest declares as entries: the workspace file each script
  * runs, each binary, and the main module, in path order.
  *
  * @remarks
- * A script is read command by command; in each, the first token that names a
- * workspace file is what the command runs, flags passed over and a tooling
- * input passed over too, since a command names one as an input, never as what
- * it runs (`tsx --tsconfig ./tsconfig.base.json scripts/run.ts` runs the
- * script; `tsc -p tsconfig.json` runs nothing of the workspace). A built path
- * is mapped back to its source through the tsconfig beside the manifest: a
- * file under `outDir` is looked for under `rootDir` with the TypeScript
+ * A script is read as the shell reads it, command by command between `&&`,
+ * `||`, `;`, `|` and `&`, quotes and escapes kept to their words. In each
+ * command, the first word that names a workspace file is what the command
+ * runs, flags passed over and a tooling input passed over too, since a
+ * command names one as an input, never as what it runs (`tsx --tsconfig
+ * ./tsconfig.base.json scripts/run.ts` runs the script; `tsc -p tsconfig.json`
+ * runs nothing of the workspace). A command may start another, wherever it
+ * stands in the command (see {@link commandsOf}): what follows a `--` is a
+ * command of its own, and so is a quoted word holding a command line. A built
+ * path is mapped back to its source through the tsconfig beside the manifest:
+ * a file under `outDir` is looked for under `rootDir` with the TypeScript
  * extension that compiles to it.
  */
 function declaredEntries(manifest: Record<string, unknown>, manifestAbsolute: string, workspaceRoot: string, fileIndex: WorkspaceFileIndex): DeclaredEntry[] {
@@ -88,8 +89,8 @@ function declaredEntries(manifest: Record<string, unknown>, manifestAbsolute: st
   if (scripts && typeof scripts === "object" && !Array.isArray(scripts)) {
     for (const [name, command] of Object.entries(scripts as Record<string, unknown>)) {
       if (typeof command !== "string") continue;
-      for (const segment of command.split(COMMAND_SEPARATOR)) {
-        const file = runFileOf(segment, toSource);
+      for (const words of commandsOf(command)) {
+        const file = runFileOf(words, toSource);
         if (file) declare({ reason: "command", file, name });
       }
     }
@@ -112,16 +113,109 @@ function declaredEntries(manifest: Record<string, unknown>, manifestAbsolute: st
   return Array.from(declared.values()).sort((a, b) => compareText(a.file, b.file) || compareText(a.reason, b.reason) || compareText(a.name ?? "", b.name ?? ""));
 }
 
-/** The workspace file one command runs: the first token naming one that is not a tooling input, flags passed over. */
-function runFileOf(command: string, toSource: (candidate: string) => string | undefined): string | undefined {
-  for (const token of command.trim().split(/\s+/u)) {
-    if (token.length === 0 || token.startsWith("-")) continue;
-    const candidate = token.replace(/^["']|["']$/gu, "");
-    if (!candidate.includes("/") && !/\.[A-Za-z0-9]+$/u.test(candidate)) continue;
-    const file = toSource(candidate);
+/** The workspace file one command runs: the first word naming one that is not a tooling input, flags passed over. */
+function runFileOf(words: readonly string[], toSource: (candidate: string) => string | undefined): string | undefined {
+  for (const word of words) {
+    if (word.length === 0 || word.startsWith("-")) continue;
+    if (!word.includes("/") && !/\.[A-Za-z0-9]+$/u.test(word)) continue;
+    const file = toSource(word);
     if (file && !isToolingFile(file)) return file;
   }
   return undefined;
+}
+
+/** A word of a command line, and whether a quote held whitespace in it, as a quoted command line does. */
+interface ShellWord {
+  text: string;
+  spaced: boolean;
+}
+
+/**
+ * Every command a script starts, each as its words: the commands between the shell's separators, and within each the
+ * commands it hands on to another. A wrapper hands on a command in one of two ways, as their own documentation shows:
+ * after a `--` that ends the wrapper's own options (`dotenv -e .env -- node app.js`, a runner that takes `-- <command>`),
+ * or as a quoted word holding a whole command line (`concurrently "node api.js" "node web.js"`,
+ * `nodemon --exec "tsx src/main.ts"`, `sh -c "node a.js && node b.js"`). A wrapper that takes the command as its own
+ * remaining words (`cross-env NODE_ENV=production node app.js`) needs nothing more: its command's first file is the
+ * first of the words. A wrapper that names npm scripts (`npm-run-all build test`) starts no file of its own; the
+ * scripts it names are read as scripts.
+ */
+export function commandsOf(script: string): string[][] {
+  const commands: string[][] = [];
+  for (const command of shellCommands(script)) {
+    let words: string[] = [];
+    for (const word of command) {
+      if (word.text === "--" && !word.spaced) {
+        commands.push(words);
+        words = [];
+      } else {
+        // A quoted word with whitespace may be a path with a space in it, or a command line: it is read as both.
+        if (word.spaced) commands.push(...commandsOf(word.text));
+        words.push(word.text);
+      }
+    }
+    commands.push(words);
+  }
+  return commands.filter((words) => words.length > 0);
+}
+
+/**
+ * A command line split as a POSIX shell splits it: into commands at `&&`, `||`, `;`, `|`, `&` and line breaks outside
+ * quotes, and each into words at whitespace outside quotes; a single quote keeps every character to the next, a double
+ * quote keeps every character but a backslash before `"`, `\`, `$` or a backtick, and a backslash outside quotes keeps
+ * the next character. The `&` of a redirection such as `2>&1` belongs to its word.
+ */
+function shellCommands(line: string): ShellWord[][] {
+  const commands: ShellWord[][] = [];
+  let words: ShellWord[] = [];
+  let text = "";
+  let started = false;
+  let spaced = false;
+  const endWord = (): void => {
+    if (started) words.push({ text, spaced });
+    text = "";
+    started = false;
+    spaced = false;
+  };
+  const endCommand = (): void => {
+    endWord();
+    if (words.length > 0) commands.push(words);
+    words = [];
+  };
+  for (let index = 0; index < line.length; index += 1) {
+    const character = line[index];
+    if (character === "'") {
+      const end = line.indexOf("'", index + 1);
+      const quoted = end < 0 ? line.slice(index + 1) : line.slice(index + 1, end);
+      text += quoted;
+      spaced ||= /\s/u.test(quoted);
+      started = true;
+      index = end < 0 ? line.length : end;
+    } else if (character === '"') {
+      let quoted = "";
+      for (index += 1; index < line.length && line[index] !== '"'; index += 1) {
+        if (line[index] === "\\" && index + 1 < line.length && '"\\$`'.includes(line[index + 1])) index += 1;
+        quoted += line[index];
+      }
+      text += quoted;
+      spaced ||= /\s/u.test(quoted);
+      started = true;
+    } else if (character === "\\" && index + 1 < line.length) {
+      index += 1;
+      text += line[index];
+      started = true;
+    } else if ((character === "&" && line[index - 1] !== ">" && line[index - 1] !== "<") || character === "|" || character === ";" || character === "\n") {
+      if ((character === "&" || character === "|") && line[index + 1] === character) index += 1;
+      endCommand();
+    } else if (/\s/u.test(character)) {
+      endWord();
+    } else {
+      text += character;
+      started = true;
+    }
+  }
+  endCommand();
+  return commands;
 }
 
 /** Maps a path a manifest names, relative to the manifest, to the workspace source file it stands for, through the tsconfig beside the manifest. */
