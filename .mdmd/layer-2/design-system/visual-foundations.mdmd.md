@@ -59,6 +59,11 @@ Six principles stand over every foundation. Each foundation's rules apply one or
 - **The limits.** Fading is the default, not a ban. The owner has asked for a glow on a pinned thing and on a commit's changed files. Those two glows are meant to be the exceptions.
 - **Status of the limits.** *Broken*: more things glow than the two. A test-backed card glows violet (`styles/view-shared.css:102`, `:309`), the subject card wears a blue glow (`view-shared.css:86`), and there are glows at `view-shared.css:511` (`0 0 6px currentColor`) and `:533` (the Internals pin), on the legend's samples and on the 3D button's cue. See [the glow rule](#glow-as-distinct-from-shadow).
 - **Where it shows.** Hovering a symbol in the 2D map fades the other wires to a tenth and leaves the hovered symbol's own wires at their resting strength (`styles/local.css:191–196`).
+- **What was asked about is never the irrelevant.** A fade that serves one question never fades the subject of another the person has already asked. The history's step dims what it did not change, and still leaves the pins, the subject and a drawn path's files at their ordinary look. Inside a wrapper, the dot, bubble or skin that stands for one of them keeps its alpha.
+  - Why: owner, 2026-11-19, watching a pinned file through the history: "temporal scrubbing wouldn't highlight the pinned note (or wouldn't un-dim it), which made watching the changes as I scrubbed past points it touched difficult" ([Turn 24 of the November 18 record](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-24)).
+  - Where: `views/forceGraphEmphasis.ts` (`emphasizedSphere`'s `asked`, `bodyChanges`' `asked`), fed from the 3D view's one set of what was asked about directly (`views/forceGraphView.ts`, `askedAbout`).
+  - Checked by: `forceGraphEmphasis.test.ts` and `tests/e2e/history-emphasis.spec.ts`.
+  - Status: holds for the spheres and inside the wrappers. The asked-about file's wires still dim with the unchanged; an open directory, asked about as a set, is not held.
 
 **3. Colour teaches, and may be quiet or loud on purpose.** A view in which nothing is strong teaches nothing. A choice of strength is defended by what it conveys.
 
