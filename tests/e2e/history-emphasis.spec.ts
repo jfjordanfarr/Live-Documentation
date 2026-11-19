@@ -210,6 +210,50 @@ test("with the rest dimmed, the changed file keeps its alpha; closing history re
 });
 
 /**
+ * What was asked about is never dimmed by a step (2026-11-19, the owner: "temporal scrubbing wouldn't highlight the pinned
+ * note (or wouldn't un-dim it)"). With util.ts pinned at "Retire the legacy helper", which changed main.ts and not util.ts,
+ * the pinned file keeps its ordinary look under Dim and Both while the rest the step left dims; at the next step, which
+ * changed util.ts, it is emphasised as any changed file is.
+ */
+for (const mode of ["dim", "both"] as const) {
+  test(`under ${mode} a pinned file the step did not change keeps its ordinary look, and is emphasised when the step changes it`, async ({ page, context, browser }) => {
+    test.setTimeout(60_000);
+    await emphasis(mode)({ context });
+    await observeGraph(page);
+    const main = "src/app/main.ts", util = "src/engine/util.ts";
+    const pinned = (commit: string): string => `/samples/history/?s=${compressSnapshot({
+      ...DEFAULT_SNAPSHOT, perspective: "3d", spatialLayout: "connections", filters: { showTests: true, showAssets: false },
+      pinSet: { entries: [{ nodeId: util, symbol: "*" }] }, commit, layout: { forceGraph: { updateEnergy: 0 } }
+    })}`;
+    const drawn = async (target: Page): Promise<void> => {
+      await expect.poll(async () => {
+        if (await target.locator("#graph-svg").getAttribute("aria-busy") !== "false") return false;
+        const ids = new Set((await renderedNodes(target)).map(node => node.id));
+        return ids.has(main) && ids.has(util);
+      }, { timeout: 60_000, message: "the pinned file and the changed file are drawn" }).toBe(true);
+    };
+    const address = pinned(await commitWith(page, "Retire the legacy helper"));
+    const own = await ownColours(browser, address, drawn, async plain => drawnColour(plain, util));
+    await page.goto(address);
+    await drawn(page);
+    const nodes = await renderedNodes(page);
+    const opacity = (id: string): number => nodes.find(node => node.id === id)!.opacity;
+    expect(opacity(util), "the pinned file is not dimmed").toBeCloseTo(0.75, 5);
+    expect(await drawnColour(page, util), "and keeps its own colour").toEqual(own);
+    expect((await drawnSphere(page, util)).marble, "and its marble").toBe(true);
+    const changedAlpha = opacity(main);
+    expect(nodes.filter(node => node.id !== util && node.id !== main).some(node => node.opacity < 0.2), "the rest the step left is dimmed").toBe(true);
+    // The next step changed util.ts and not main.ts: util.ts, under Both, glows white; main.ts dims to a fifth.
+    await page.locator(".history-track").press("ArrowRight");
+    if (mode === "both") await expect.poll(() => drawnColour(page, util)).toEqual(WHITE);
+    // main.ts stands a hop from the pin, at the frontier, whose own alpha the step then takes to a fifth.
+    await expect.poll(async () => (await renderedNodes(page)).find(node => node.id === main)?.opacity, "main.ts, unchanged now, dims").toBeLessThan(0.2);
+    expect(changedAlpha, "and was brighter while the step had changed it").toBeGreaterThan(0.2);
+    expect((await renderedNodes(page)).find(node => node.id === util)!.opacity).toBeCloseTo(0.75, 5);
+  });
+}
+
+/**
  * Inside the wrappers (2026-11-11, the owner's "I don't see any of the nodes deep inside the bubbles lighting up when they
  * were affected by a commit"): a change is shown at the innermost thing the picture draws for it. Over the scripted
  * history sample in the Structure layout with nothing pinned, `src` is a bubble whose balloons `src/app` and `src/engine`
