@@ -107,9 +107,26 @@ export function createFrame(config: FrameConfig): Frame {
   let outward: Crumb | null = null;
   outButton.addEventListener("click", () => { if (outward) press(outward); });
 
+  /**
+   * The key and the sheet stand on the strip, wherever the strip stands (it rises over the history's scrubber, and on a
+   * narrow window the map's bottom band), and reach no higher than the top bar, so that neither covers the button that
+   * closes it nor the search.
+   */
+  const strip = config.keyButton.closest<HTMLElement>(".perspective-controls");
+  const place = (element: HTMLElement): void => {
+    if (element.hidden) return;
+    const room = main.getBoundingClientRect();
+    const top = Math.max(nav.getBoundingClientRect().bottom, document.getElementById("search-bar")?.getBoundingClientRect().bottom ?? room.top) + 8;
+    const stripTop = strip && !strip.hidden ? strip.getBoundingClientRect().top : room.bottom;
+    element.style.bottom = `${Math.round(room.bottom - stripTop + 8)}px`;
+    element.style.maxHeight = `${Math.max(120, Math.round(stripTop - 8 - top))}px`;
+  };
+  window.addEventListener("resize", () => { place(key); place(sheet); });
+
   const setOpen = (element: HTMLElement, button: HTMLButtonElement, open: boolean, focusButton = false): void => {
     element.hidden = !open;
     button.setAttribute("aria-expanded", String(open));
+    if (open) place(element);
     if (!open && focusButton) button.focus();
   };
   const toggleViews = (open = views.hidden): void => setOpen(views, viewsButton, open);
@@ -209,10 +226,15 @@ export function createFrame(config: FrameConfig): Frame {
     apply,
     bare: () => choice === "bare",
     sync,
+    // The key and the sheet stand in one place: opening one closes the other.
     toggleSheet: () => {
+      setOpen(key, config.keyButton, false);
       setOpen(sheet, config.tuningButton, sheet.hidden);
       if (!sheet.hidden) sheet.querySelector<HTMLElement>("select, input, summary, button")?.focus();
     },
-    toggleKey: () => setOpen(key, config.keyButton, key.hidden)
+    toggleKey: () => {
+      setOpen(sheet, config.tuningButton, false);
+      setOpen(key, config.keyButton, key.hidden);
+    }
   };
 }

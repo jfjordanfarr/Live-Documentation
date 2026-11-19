@@ -1280,7 +1280,9 @@ body.force-graph-active .sidebar-checkbox.force-graph-only {
 .frame-views .nav-item { padding: 10px 12px; border-left: 0; border-radius: 4px; }
 .frame-views .nav-item.active { border-left: 0; }
 
-/* The key and the Tuning sheet stand over the strip, at its middle, until they are closed. */
+/* The key and the Tuning sheet stand over the strip, at its middle, until they are closed; frame.ts sets their bottom
+   on the strip's top and their height up to the top bar. Off the Local Map, where the strip is hidden, so are they. */
+.perspective-controls[hidden] ~ .frame-popover { display: none; }
 .frame-popover {
     position: absolute;
     left: 50%;
@@ -1304,6 +1306,12 @@ body.force-graph-active .sidebar-checkbox.force-graph-only {
     :root[data-frame="bare"] #main { margin-left: 0; }
     .frame-crumbs { max-width: 60vw; padding-left: 8px; }
     .frame-crumb-item:not(:last-child) { display: none; }
+    .frame-crumb-item:last-child::before { content: none; }
     .frame-crumbs .frame-out:not([hidden]) { display: inline-flex; }
+}
+/* Beside the crumbs the search can be narrow; there its keyboard hint gives way to the placeholder it stood over. */
+:root[data-frame="bare"] .search-field { container-type: inline-size; }
+@container (max-width: 300px) {
+    .search-shortcut { display: none; }
 }
 

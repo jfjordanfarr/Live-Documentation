@@ -1212,7 +1212,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   }
 
   // The page's controls are wired here, never by attributes in its HTML, which its Content-Security-Policy refuses to run.
-  for (const button of document.querySelectorAll<HTMLButtonElement>("#sidebar .nav-item[data-view]")) {
+  for (const button of document.querySelectorAll<HTMLButtonElement>(".nav-item[data-view]")) {
     const viewName = button.dataset.view as ViewName;
     button.addEventListener("click", event => {
       event.preventDefault();
