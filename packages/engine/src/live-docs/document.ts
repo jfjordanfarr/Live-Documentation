@@ -199,7 +199,7 @@ export const UNREAD_AUTHORED_BLOCK = ["### Purpose", "_Pending authored purpose_
 /**
  * An entry's reason and evidence in words, as the CLI prints them and the
  * Explorer shows them: "program main", "command build of package.json",
- * "module of packages/cli/package.json", "opening GET api/payments",
+ * "module of packages/generator/package.json", "opening GET api/payments",
  * "tooling", "declared".
  */
 export function entryWords(entry: Entry): string {
@@ -404,18 +404,6 @@ const LINK_UNSAFE = /[%&#?()<>\\\x00-\x20\x7f\u2028\u2029]/gu;
  */
 export function encodeLinkPath(path: string): string {
   return path.replace(LINK_UNSAFE, (character) => Array.from(new TextEncoder().encode(character), (byte) => `%${byte.toString(16).toUpperCase().padStart(2, "0")}`).join(""));
-}
-
-/**
- * A link's path as the workspace path it names, percent-decoded as a browser reads it; a path that is not well-formed
- * percent-encoding is read as written, as the Explorer's reader reads one.
- */
-export function decodeLinkPath(path: string): string {
-  try {
-    return decodeURIComponent(path);
-  } catch {
-    return path;
-  }
 }
 
 /** A name as the doc writes it. */

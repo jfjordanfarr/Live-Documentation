@@ -4,7 +4,6 @@ import {
   DEFAULT_AUTHORED_BLOCK,
   LiveDocSyntaxError,
   authoredBlockOf,
-  decodeLinkPath,
   encodeLinkPath,
   parseLiveDoc,
   renderLiveDoc,
@@ -272,7 +271,8 @@ describe("the Live Doc grammar", () => {
   it("percent-encodes an ampersand in a link's path, since CommonMark reads `&amp;` in a target as `&`", () => {
     expect(encodeLinkPath("notes/Q&amp;A.md")).toBe("notes/Q%26amp;A.md");
     expect(encodeLinkPath("R&D/plan (draft) #2?.md")).toBe("R%26D/plan%20%28draft%29%20%232%3F.md");
-    expect(decodeLinkPath(encodeLinkPath("R&D/plan (draft) #2?.md"))).toBe("R&D/plan (draft) #2?.md");
+    // A browser, or the markdown links module, reads it back as the path.
+    expect(decodeURIComponent(encodeLinkPath("R&D/plan (draft) #2?.md"))).toBe("R&D/plan (draft) #2?.md");
   });
 
   it("writes a link whose path holds a lone surrogate, which no URL can hold, as a JSON string, and reads it back", () => {
