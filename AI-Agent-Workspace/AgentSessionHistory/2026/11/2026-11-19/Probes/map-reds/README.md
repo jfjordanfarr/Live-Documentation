@@ -19,11 +19,16 @@ The old client is `a93ac108` built in a scratch copy and run with that commit's 
 | the same, new client | rest at 907 substeps in 825 frames, 18.2 s | rest at **1,423 substeps** in 1,324 frames, 27.1 s |
 | spheres | 1,065 | 1,077 |
 | **2D, the search on the five files with 80 seeds** (the tuning of `local-map-hidden.spec.ts:51`), from first paint to its end | **22.5 s**: 80 seeds, 90 boundary joins, 9 adoptions (8 of them joins) | **73.7 s**: 80 seeds, 231 joins, 29 adoptions (26 joins); the last adoption of a seed (seed 77) at 43 s, then 138 joins more |
+| **2D, the same with 4 seeds** (the tuning of `local-map-search.spec.ts:65`, whose first wait is 45 s), on the client with the saving below | 12.8 s: 4 seeds, 90 joins, 9 adoptions | 37.3 s: 4 seeds, 185 joins, 13 adoptions |
 | its picture | 93 cards, 546 symbol rows | 98 cards, 627 rows |
 | its cost a trial | 132 ms | 237 ms |
 | **3D, `graph.ts` focused** (`force-graph-focus.spec.ts:72`), either client | not covered at the first view: no turn needed | covered from the first view by the translucent `packages/explorer` shell; the case's press point inside the `packages/engine` shell |
 
 The four cases' own runs on the new client and new docs: all four red, as on `main`.
+
+## What the 3D settle does with its last 700 substeps
+
+Every sphere's place read once a second through a whole entry on the new docs (new client, load 5; this run rested at 1,413 substeps, the first at 1,423, so the count moves by about ten between runs). The picture is 5,282 units across, 1,077 spheres. Up to substep 590 nearly every sphere moves more than a thousandth of that a second; by substep 673 fifteen do, and the median sphere is under 2 × 10⁻⁵ a second from substep 755. **From substep 673 to rest, half the settle, two to nineteen spheres move at a time and the rest stand.** From there to rest the median sphere moves 0.5 units; 65 move more than 10, and ten more than 50: `visualize-rosetta.ts` 236, `visualize-sample.ts` 217, `relatedDocs.test.ts` 182, `sample-build.ts` 152, `relatedDocs.ts` 125, `find-orphans.ts` 121, `cli.ts` 112, `generate.ts` 79, `word-seams.test.ts` 68, `summarizeChange.ts` 55. It is the tail [the settle's round](../../../2026-11-18/Screenshots/settle-sooner/README.md#what-the-tail-is) found on the discovery picture: calm early, then a few spheres creeping and snapping. None of the ten is among the twelve new files; the new files changed where everything stands, and with it which few creep and for how long.
 
 ## Where the 2D search's time goes
 
