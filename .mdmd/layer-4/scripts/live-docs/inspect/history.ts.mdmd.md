@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/live-docs/inspect/history.ts
-- Generated At: 2026-10-22T16:47:57.615Z
+- Generated At: 2026-11-19T06:20:31.369Z
 
 ## Authored
 ### Purpose
@@ -27,14 +27,14 @@ Since 2026-10-22 ([Turn 8 of the October 21 session](../../../../../AI-Agent-Wor
 ### Public Symbols
 #### `HistoryRefusal` {#symbol-historyrefusal}
 - Type: class
-- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L27)
+- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L33)
 
 ##### `HistoryRefusal` — Summary
 A question the history cannot answer as asked, said plainly.
 
 #### `readHistory` {#symbol-readhistory}
 - Type: function
-- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L30)
+- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L36)
 - Parameters: `config`: [`LiveDocumentationConfig`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 
 ##### `readHistory` — Summary
@@ -42,7 +42,7 @@ The sequence the history command wrote for this workspace; a refusal naming the 
 
 #### `resolveStep` {#symbol-resolvestep}
 - Type: function
-- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L49)
+- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L55)
 - Parameters: `sequence`: [`HistorySequence`](../../../packages/engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence)
 
 ##### `resolveStep` — Summary
@@ -50,15 +50,43 @@ The step of the commit a reference names: a prefix of its id.
 
 #### `emitFileAt` {#symbol-emitfileat}
 - Type: function
-- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L65)
+- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L75)
 - Parameters: `sequence`: [`HistorySequence`](../../../packages/engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence)
 
 ##### `emitFileAt` — Summary
-What a file was at a commit: whether it existed, its shape, and its wires either way.
+What a file was at a commit: whether it existed, its shape, and its wires either way; and, where the history carries
+them, its rows as its card drew them, each symbol with its kind and type references, its dependency lines, and the
+links from and to its symbols.
+
+#### `emitLinksAt` {#symbol-emitlinksat}
+- Type: function
+- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L143)
+- Parameters: `sequence`: [`HistorySequence`](../../../packages/engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence)
+
+##### `emitLinksAt` — Summary
+The links at a commit between two files, or two symbols named `path#Symbol` by their anchors or names, in both
+directions, from the rows the history carries.
+
+#### `historyFolder` {#symbol-historyfolder}
+- Type: function
+- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L172)
+- Parameters: `config`: [`LiveDocumentationConfig`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
+
+##### `historyFolder` — Summary
+The folder the history command writes the sequence and its words store into.
+
+#### `emitWordsAt` {#symbol-emitwordsat}
+- Type: function
+- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L180)
+- Parameters: `sequence`: [`HistorySequence`](../../../packages/engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence)
+
+##### `emitWordsAt` — Summary
+A file's words at a commit: its authored block and each symbol's description as that day's docs held them, read
+from the part of the words store beside the sequence for the file's directory; or, where they cannot be read, why.
 
 #### `emitReachableAt` {#symbol-emitreachableat}
 - Type: function
-- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L92)
+- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L232)
 - Parameters: `sequence`: [`HistorySequence`](../../../packages/engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence); `config`: [`LiveDocumentationConfig`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 
 ##### `emitReachableAt` — Summary
@@ -66,7 +94,7 @@ What the entries of a commit reach, by the pathfinder over the graph the commit'
 
 #### `emitBetween` {#symbol-emitbetween}
 - Type: function
-- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L127)
+- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L267)
 - Parameters: `sequence`: [`HistorySequence`](../../../packages/engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence)
 
 ##### `emitBetween` — Summary
@@ -87,9 +115,19 @@ What changed from one commit to a later one, each file followed through every re
 - [`queries.entryMarked`](../../../packages/engine/src/live-docs/history/queries.ts.mdmd.md#symbol-entrymarked)
 - [`queries.fileOfShape`](../../../packages/engine/src/live-docs/history/queries.ts.mdmd.md#symbol-fileofshape)
 - [`queries.graphOfShape`](../../../packages/engine/src/live-docs/history/queries.ts.mdmd.md#symbol-graphofshape)
+- [`queries.linksBetween`](../../../packages/engine/src/live-docs/history/queries.ts.mdmd.md#symbol-linksbetween)
+- [`queries.rowsOfFile`](../../../packages/engine/src/live-docs/history/queries.ts.mdmd.md#symbol-rowsoffile)
 - [`queries.stepsMatching`](../../../packages/engine/src/live-docs/history/queries.ts.mdmd.md#symbol-stepsmatching)
+- [`queries.symbolNamed`](../../../packages/engine/src/live-docs/history/queries.ts.mdmd.md#symbol-symbolnamed)
+- [`rows.RowLink`](../../../packages/engine/src/live-docs/history/rows.ts.mdmd.md#symbol-rowlink) (type-only)
 - [`sequence.commitAt`](../../../packages/engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-commitat)
+- [`sequence.momentAt`](../../../packages/engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-momentat)
 - [`sequence.seek`](../../../packages/engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-seek)
+- [`summary.sectionsOfDescription`](../../../packages/engine/src/live-docs/history/summary.ts.mdmd.md#symbol-sectionsofdescription)
+- [`words.WordsPart`](../../../packages/engine/src/live-docs/history/words.ts.mdmd.md#symbol-wordspart)
+- [`words.textInPart`](../../../packages/engine/src/live-docs/history/words.ts.mdmd.md#symbol-textinpart)
+- [`words.wordsOfFile`](../../../packages/engine/src/live-docs/history/words.ts.mdmd.md#symbol-wordsoffile-function)
+- [`words.wordsPartFile`](../../../packages/engine/src/live-docs/history/words.ts.mdmd.md#symbol-wordspartfile)
 - [`pathfind.reachability`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-reachability-function)
 <!-- LIVE-DOC:END Dependencies -->
 

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/history/summary.ts
-- Generated At: 2026-10-22T16:47:53.404Z
+- Generated At: 2026-11-19T06:20:28.621Z
 
 ## Authored
 ### Purpose
@@ -23,43 +23,137 @@ One commit's summary as the history command's cache keeps it, read from the grap
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
+#### `HISTORY_SUMMARY_FORMAT` {#symbol-history_summary_format}
+- Type: const
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L35)
+
+##### `HISTORY_SUMMARY_FORMAT` — Summary
+The version of the format of one change's summary in the cache.
+
+#### `ReferenceRole` {#symbol-referencerole}
+- Type: type
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L38)
+
+##### `ReferenceRole` — Summary
+How a type reference stands in its symbol's signature, by the graph's name for the edge it makes.
+
+#### `RowReference` {#symbol-rowreference}
+- Type: interface
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L41)
+
+##### `RowReference` — Summary
+One type a symbol's signature names: a `Returns`, `Parameters`, `Extends`, `Implements` or `Constraints` entry.
+
+#### `SymbolRow` {#symbol-symbolrow}
+- Type: interface
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L56)
+
+##### `SymbolRow` — Summary
+One public symbol of a file, a row of its card, as its doc listed it at the change.
+
+#### `DependencyRow` {#symbol-dependencyrow}
+- Type: interface
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L71)
+
+##### `DependencyRow` — Summary
+One `Dependencies` line of a file's doc.
+
+#### `EntryRow` {#symbol-entryrow}
+- Type: interface
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L86)
+
+##### `EntryRow` — Summary
+One `Entry` line of a file's doc: why something outside the code starts it.
+
+#### `ReExportRow` {#symbol-reexportrow}
+- Type: interface
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L97)
+
+##### `ReExportRow` — Summary
+One entry of a file's `Re-Exported Symbol Anchors`.
+
+#### `SummaryFile` {#symbol-summaryfile}
+- Type: interface
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L108)
+
+##### `SummaryFile` — Summary
+What a file's doc said at a change, everything but its prose, which is named by hash, and its `Source:` lines.
+
+#### `CommitSummary` {#symbol-commitsummary}
+- Type: interface
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L129)
+
+##### `CommitSummary` — Summary
+One change's summary as the cache keeps it: `<docsRoot>/history/<lens>/<change>.json.gz`.
+
+#### `AuthoredReading` {#symbol-authoredreading}
+- Type: type
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L147)
+- Returns: `ReadonlyMap`
+
+##### `AuthoredReading` — Summary
+What the lens could read of a doc's authored block at a change, by the doc's workspace-relative path: `read` when
+the doc that stood there has an `## Authored` heading, which the generator carries forward verbatim; `unread` when
+it stood in a form with none, as this repository's mirror before 2026-09-27 does, so that the block the generator
+writes is its placeholder and not that day's words. A doc absent from the map did not stand at the change.
+
+#### `SummarizedChange` {#symbol-summarizedchange}
+- Type: interface
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L150)
+
+##### `SummarizedChange` — Summary
+A summary and the texts it names by hash, for the caller to put in the text store.
+
 #### `summarizeGraph` {#symbol-summarizegraph}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L24)
-- Returns: [`CommitSummary`](./format.ts.mdmd.md#symbol-commitsummary)
-- Parameters: `graph`: [`LiveDocGraph`](../graph.ts.mdmd.md#symbol-livedocgraph); `relatedDocs`: `ReadonlyMap`
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L167)
+- Returns: [`SummarizedChange`](#symbol-summarizedchange)
+- Parameters: `graph`: [`LiveDocGraph`](../graph.ts.mdmd.md#symbol-livedocgraph); `relatedDocs`: `ReadonlyMap`; `authored`: [`AuthoredReading`](#symbol-authoredreading)
 
 ##### `summarizeGraph` — Summary
-The summary of a graph: every file with its archetype, its symbol count and
-whether its doc carries an Entry line, every directed edge between two
-different files with the number of the source's references that land on the
-target, and every link from a file's authored words to a document.
+The summary of a graph.
 
 ##### `summarizeGraph` — Parameters
+- `authored`: What could be read of each doc's authored block, by doc path; the caller reads the docs that stood
+at the change before the generator rewrote them. Without it, every doc's block counts as read.
 - `commit`: The change's id.
 - `graph`: The graph the generator derived at the change.
 - `lens`: The key of the lens the generator ran under.
 - `relatedDocs`: The documents a file's authored words link to that stood at the change, by the file's path;
 the caller reads them with `relatedDocsOf` and the change's tree, which the graph alone cannot see.
 
-#### `shapeOfSummary` {#symbol-shapeofsummary}
+#### `descriptionText` {#symbol-descriptiontext}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L51)
-- Returns: [`Shape`](./shape.ts.mdmd.md#symbol-shape)
-- Parameters: `summary`: [`CommitSummary`](./format.ts.mdmd.md#symbol-commitsummary)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L282)
 
-##### `shapeOfSummary` — Summary
-The shape a summary records.
+##### `descriptionText` — Summary
+A symbol's description as one text: its `#####` sections as JSON, `[{ title, body }]`, without the symbol's name, so
+that a symbol renamed with its description unchanged keeps its text; {@link sectionsOfDescription} reads it back.
+
+#### `sectionsOfDescription` {#symbol-sectionsofdescription}
+- Type: function
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L287)
+- Returns: [`DocSection`](../document.ts.mdmd.md#symbol-docsection)[]
+
+##### `sectionsOfDescription` — Summary
+The sections a description's text holds.
+
+#### `textHash` {#symbol-texthash}
+- Type: function
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L292)
+
+##### `textHash` — Summary
+The name of a text in the store: the SHA-256 of its UTF-8 bytes, in hexadecimal.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`graph.LiveDocGraph`](../graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
-- [`format.CommitSummary`](./format.ts.mdmd.md#symbol-commitsummary)
-- [`format.HISTORY_SUMMARY_FORMAT`](./format.ts.mdmd.md#symbol-history_summary_format)
-- [`shape.FileShape`](./shape.ts.mdmd.md#symbol-fileshape)
-- [`Shape`](./shape.ts.mdmd.md#symbol-shape)
-- [`shape.edgeKey`](./shape.ts.mdmd.md#symbol-edgekey)
+- `node:crypto` - `createHash`
+- [`document.DocSection`](../document.ts.mdmd.md#symbol-docsection) (type-only)
+- [`graph.EdgeBasis`](../graph.ts.mdmd.md#symbol-edgebasis)
+- [`graph.GraphEdge`](../graph.ts.mdmd.md#symbol-graphedge)
+- [`graph.LiveDocGraph`](../graph.ts.mdmd.md#symbol-livedocgraph)
+- [`graph.linkTarget`](../graph.ts.mdmd.md#symbol-linktarget-function)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/history.ts
 - Entry: command `live-docs:history` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-12T16:06:56.336Z
+- Generated At: 2026-11-19T06:20:31.320Z
 
 ## Authored
 ### Purpose
@@ -27,13 +27,13 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:os` - `os`
 - `node:process` - `process`
 - [`format.HistorySequence`](../../packages/engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence) (type-only)
 - [`format.Sampling`](../../packages/engine/src/live-docs/history/format.ts.mdmd.md#symbol-sampling) (type-only)
 - [`sequence.changeAt`](../../packages/engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-changeat)
 - [`sequence.headOf`](../../packages/engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-headof)
 - [`computeHistory`](../../packages/generator/src/history/computeHistory.ts.mdmd.md#symbol-computehistory)
+- [`computeHistory.formatBytes`](../../packages/generator/src/history/computeHistory.ts.mdmd.md#symbol-formatbytes)
 - [`cli.UsageError`](./cli.ts.mdmd.md#symbol-usageerror)
 - [`cli.endQuietlyWhenThePipeCloses`](./cli.ts.mdmd.md#symbol-endquietlywhenthepipecloses)
 - [`cli.optionValue`](./cli.ts.mdmd.md#symbol-optionvalue)

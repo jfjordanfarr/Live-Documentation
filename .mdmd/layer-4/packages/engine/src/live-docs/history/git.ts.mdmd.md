@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/history/git.ts
-- Generated At: 2026-10-23T20:17:42.934Z
+- Generated At: 2026-11-19T06:20:28.523Z
 
 ## Authored
 ### Purpose
@@ -23,7 +23,7 @@ The seam's git implementation, through the `git` executable on the local clone: 
 ### Public Symbols
 #### `openGitRepository` {#symbol-opengitrepository}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L44)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L43)
 
 ##### `openGitRepository` — Summary
 The git repository whose top level is `workspaceRoot`, as the history
@@ -34,7 +34,7 @@ command's version control.
 
 #### `parseMainline` {#symbol-parsemainline}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L118)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L122)
 - Returns: [`MainlineChange`](./versionControl.ts.mdmd.md#symbol-mainlinechange)[]
 
 ##### `parseMainline` — Summary
@@ -42,14 +42,14 @@ The changes of `git rev-list --format` with the mainline's format, oldest first 
 
 #### `parseTags` {#symbol-parsetags}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L130)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L134)
 
 ##### `parseTags` — Summary
 The changes the tags of `git for-each-ref --format='%(objectname) %(*objectname)'` name: an annotated tag's peeled change, a light tag's own.
 
 #### `parseNameStatus` {#symbol-parsenamestatus}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L142)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L146)
 - Returns: [`VersionChanges`](./versionControl.ts.mdmd.md#symbol-versionchanges)
 
 ##### `parseNameStatus` — Summary
@@ -59,7 +59,6 @@ The renames and content changes of `git diff --name-status -z`.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `node:fs` - `promises`
-- `node:os` - `os`
 - `node:path` - `path`
 - [`gitUtils.execFileAsync`](../gitUtils.ts.mdmd.md#symbol-execfileasync)
 - [`versionControl.MainlineChange`](./versionControl.ts.mdmd.md#symbol-mainlinechange) (type-only)

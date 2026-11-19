@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/scripted-repository.ts
-- Generated At: 2026-11-11T06:51:30.477Z
+- Generated At: 2026-11-19T06:20:33.973Z
 
 ## Authored
 ### Purpose
@@ -79,14 +79,14 @@ The seven commits, oldest first.
 
 #### `git` {#symbol-git}
 - Type: function
-- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L290)
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L293)
 
 ##### `git` — Summary
 Runs git in the fixture, isolated from the person's configuration.
 
 #### `COLLISION_SCRIPT` {#symbol-collision_script}
 - Type: const
-- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L302)
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L305)
 - Returns: [`ScriptedCommit`](#symbol-scriptedcommit)[]
 
 ##### `COLLISION_SCRIPT` — Summary
@@ -98,7 +98,7 @@ lines resolved to the dropped object led nowhere after a play through this repos
 
 #### `GROWTH_SCRIPT` {#symbol-growth_script}
 - Type: const
-- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L334)
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L337)
 - Returns: [`ScriptedCommit`](#symbol-scriptedcommit)[]
 
 ##### `GROWTH_SCRIPT` — Summary
@@ -106,7 +106,7 @@ A separate fixed history grows one root file into a 64-file import chain, to exe
 
 #### `VEIL_SCRIPT` {#symbol-veil_script}
 - Type: const
-- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L374)
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L377)
 - Returns: [`ScriptedCommit`](#symbol-scriptedcommit)[]
 
 ##### `VEIL_SCRIPT` — Summary
@@ -118,7 +118,7 @@ deletes one.
 
 #### `buildRepository` {#symbol-buildrepository}
 - Type: function
-- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L390)
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L393)
 - Parameters: `script`: [`ScriptedCommit`](#symbol-scriptedcommit)[]
 <!-- LIVE-DOC:END Public Symbols -->
 

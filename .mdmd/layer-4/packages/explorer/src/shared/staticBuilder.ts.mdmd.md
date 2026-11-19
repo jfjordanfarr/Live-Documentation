@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/staticBuilder.ts
-- Generated At: 2026-11-12T17:12:19.603Z
+- Generated At: 2026-11-19T06:20:30.740Z
 
 ## Authored
 ### Purpose
@@ -28,7 +28,7 @@ Builds the static Explorer bundle: `explorer-data.json`, holding the graph index
 ### Public Symbols
 #### `ExportedHistory` {#symbol-exportedhistory}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/shared/staticBuilder.ts#L39)
+- Source: [source](../../../../../../packages/explorer/src/shared/staticBuilder.ts#L44)
 - Returns: [`HistorySelection`](../../../engine/src/live-docs/history/window.ts.mdmd.md#symbol-historyselection)
 
 ##### `ExportedHistory` — Summary
@@ -36,21 +36,21 @@ How much of the history an export carries: none of it, or the part a selection n
 
 #### `BuildStaticExplorerOptions` {#symbol-buildstaticexploreroptions}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/shared/staticBuilder.ts#L45)
+- Source: [source](../../../../../../packages/explorer/src/shared/staticBuilder.ts#L50)
 
 ##### `BuildStaticExplorerOptions` — Summary
 Options controlling a static Explorer build.
 
 #### `BuildStaticExplorerResult` {#symbol-buildstaticexplorerresult}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/shared/staticBuilder.ts#L76)
+- Source: [source](../../../../../../packages/explorer/src/shared/staticBuilder.ts#L81)
 
 ##### `BuildStaticExplorerResult` — Summary
 Outcome of {@link buildStaticExplorer}, including file paths and size statistics.
 
 #### `buildStaticExplorer` {#symbol-buildstaticexplorer}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/shared/staticBuilder.ts#L98)
+- Source: [source](../../../../../../packages/explorer/src/shared/staticBuilder.ts#L103)
 - Parameters: `options`: [`BuildStaticExplorerOptions`](#symbol-buildstaticexploreroptions)
 
 ##### `buildStaticExplorer` — Summary
@@ -75,6 +75,8 @@ Build a complete static Explorer bundle.
 - [`sequence.headOf`](../../../engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-headof)
 - [`window.HistorySelection`](../../../engine/src/live-docs/history/window.ts.mdmd.md#symbol-historyselection)
 - [`window.windowOf`](../../../engine/src/live-docs/history/window.ts.mdmd.md#symbol-windowof)
+- [`words.WordsPart`](../../../engine/src/live-docs/history/words.ts.mdmd.md#symbol-wordspart)
+- [`words.wordsStore`](../../../engine/src/live-docs/history/words.ts.mdmd.md#symbol-wordsstore)
 - [`relatedDocs.relatedDocsOf`](../../../engine/src/live-docs/relatedDocs.ts.mdmd.md#symbol-relateddocsof)
 - [`buildAssets`](./buildAssets.ts.mdmd.md)
 - [`bundledMarkdownScanner.bundleRelatedDocs`](./bundledMarkdownScanner.ts.mdmd.md#symbol-bundlerelateddocs)

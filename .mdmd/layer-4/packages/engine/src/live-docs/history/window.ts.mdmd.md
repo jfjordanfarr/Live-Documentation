@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/history/window.ts
-- Generated At: 2026-10-22T16:47:53.506Z
+- Generated At: 2026-11-19T06:20:28.660Z
 
 ## Authored
 ### Purpose
@@ -44,7 +44,8 @@ The window of the sequence the selection names, re-based on its first change.
 - [`sequence.changeAt`](./sequence.ts.mdmd.md#symbol-changeat)
 - [`sequence.commitAt`](./sequence.ts.mdmd.md#symbol-commitat)
 - [`sequence.commitCount`](./sequence.ts.mdmd.md#symbol-commitcount)
-- [`sequence.seek`](./sequence.ts.mdmd.md#symbol-seek)
+- [`sequence.momentAt`](./sequence.ts.mdmd.md#symbol-momentat)
+- [`sequence.rowsChangeAt`](./sequence.ts.mdmd.md#symbol-rowschangeat)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

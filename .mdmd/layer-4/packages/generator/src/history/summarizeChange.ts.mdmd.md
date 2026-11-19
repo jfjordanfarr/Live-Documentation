@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/generator/src/history/summarizeChange.ts
-- Generated At: 2026-10-22T16:47:56.984Z
+- Generated At: 2026-11-19T06:20:30.852Z
 
 ## Authored
 ### Purpose
@@ -23,28 +23,38 @@ One commit's summary, made in a process of its own: the generator run over the c
 ### Public Symbols
 #### `SummaryTask` {#symbol-summarytask}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L45)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L58)
 
 ##### `SummaryTask` — Summary
 What one process is asked to do.
 
 #### `summarizeChange` {#symbol-summarizechange}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L61)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L76)
 - Parameters: `task`: [`SummaryTask`](#symbol-summarytask)
 
 ##### `summarizeChange` — Summary
 Generates the change's docs in its working tree and writes its summary, and its index when asked.
+
+#### `SummaryReport` {#symbol-summaryreport}
+- Type: interface
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L153)
+
+##### `SummaryReport` — Summary
+What the process tells the history command when it has written the summary.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `glob` - `glob`
 - `node:fs` - `promises`
 - `node:path` - `path`
 - `node:zlib` - `gzipSync`
 - [`LiveDocumentationConfig`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
 - [`graph.LiveDocGraph`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
+- [`summary.AuthoredReading`](../../../engine/src/live-docs/history/summary.ts.mdmd.md#symbol-authoredreading)
 - [`summary.summarizeGraph`](../../../engine/src/live-docs/history/summary.ts.mdmd.md#symbol-summarizegraph)
+- [`textStore.putTexts`](../../../engine/src/live-docs/history/textStore.ts.mdmd.md#symbol-puttexts)
 - [`relatedDocs.relatedDocsOf`](../../../engine/src/live-docs/relatedDocs.ts.mdmd.md#symbol-relateddocsof)
 - [`generator.generateLiveDocs`](../generator.ts.mdmd.md#symbol-generatelivedocs)
 <!-- LIVE-DOC:END Dependencies -->

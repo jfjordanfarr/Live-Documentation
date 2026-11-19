@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/history/versionControl.ts
-- Generated At: 2026-10-22T16:47:53.466Z
+- Generated At: 2026-11-19T06:20:28.650Z
 
 ## Authored
 ### Purpose
@@ -48,7 +48,7 @@ A working tree at one change, in a directory of the caller's choosing, until it 
 
 #### `VersionControl` {#symbol-versioncontrol}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/versionControl.ts#L58)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/versionControl.ts#L63)
 
 ##### `VersionControl` — Summary
 What the history command needs of a version control.

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/generator/src/history/generatorIdentity.ts
-- Generated At: 2026-10-22T16:47:56.961Z
+- Generated At: 2026-11-19T06:20:30.844Z
 
 ## Authored
 ### Purpose
@@ -21,17 +21,40 @@ The generator's half of the history's lens: its package version and, when it run
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
+#### `HISTORY_FOLDERS` {#symbol-history_folders}
+- Type: const
+- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L40)
+
+##### `HISTORY_FOLDERS` — Summary
+The folders of the history's own modules, most of which read summaries and never make one.
+
+#### `SUMMARY_MODULES` {#symbol-summary_modules}
+- Type: const
+- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L43)
+
+##### `SUMMARY_MODULES` — Summary
+The modules of {@link HISTORY_FOLDERS} that run in a summarizing process and so decide what a summary says.
+
+#### `keysTheLens` {#symbol-keysthelens}
+- Type: function
+- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L53)
+
+##### `keysTheLens` — Summary
+Whether a file of the two packages, by its repository-relative path, keys the lens: every file but a test and the
+history modules that never run in a summarizing process.
+
 #### `generatorIdentity` {#symbol-generatoridentity}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L35)
+- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L72)
 
 ##### `generatorIdentity` — Summary
 The generator's package version and, when it runs from a checkout of this
-repository, a hash of its code and tool dependency lock as committed (the
-engine and generator tree ids and the lock entry at the commit), the commit
-it runs from, and a hash of uncommitted changes to those inputs. The lock's
-working bytes are compared to its committed blob even when Git ignores it.
-An absent lock has its own stable identity; a scanned project's lock is never read.
+repository, a hash of the code that makes a summary and of the tool
+dependency lock as committed (each keyed file's blob id at the commit, and
+the lock's entry), the commit it runs from, and a hash of uncommitted
+changes to those inputs. The lock's working bytes are compared to its
+committed blob even when Git ignores it. An absent lock has its own stable
+identity; a scanned project's lock is never read.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

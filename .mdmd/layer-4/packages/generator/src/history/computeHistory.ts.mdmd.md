@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/generator/src/history/computeHistory.ts
-- Generated At: 2026-10-22T16:47:56.943Z
+- Generated At: 2026-11-19T06:20:30.828Z
 
 ## Authored
 ### Purpose
@@ -27,25 +27,67 @@ The history command: the mainline read and sampled, every sampled commit the cac
 ### Public Symbols
 #### `HistoryOptions` {#symbol-historyoptions}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L51)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L57)
 
 ##### `HistoryOptions` — Summary
 What to compute.
 
+#### `SupersededCache` {#symbol-supersededcache}
+- Type: interface
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L76)
+
+##### `SupersededCache` — Summary
+A cache folder under the history folder that belongs to another lens than the current one.
+
 #### `HistoryRun` {#symbol-historyrun}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L68)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L88)
 
 ##### `HistoryRun` — Summary
 What a run did.
 
+#### `UNMEASURED_PEAK_MEMORY` {#symbol-unmeasured_peak_memory}
+- Type: const
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L123)
+
+##### `UNMEASURED_PEAK_MEMORY` — Summary
+What one summarizing process is expected to take before any has been measured on a repository: the largest peak
+measured on 2026-11-19 over every 25th commit of this repository's history and its head (1,064 files), 526 MB,
+rounded up to 768 MiB. A larger repository takes more, which its first run measures and records.
+
+#### `poolSize` {#symbol-poolsize}
+- Type: function
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L130)
+
+##### `poolSize` — Summary
+How many summarizing processes a machine runs at once: as many as half its memory holds at the measured peak of
+one, since the person's own work goes on beside the run, and one fewer than its processors, since each process
+keeps one busy and the command and git need one; never fewer than one.
+
 #### `computeHistory` {#symbol-computehistory}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L83)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L136)
 - Parameters: `options`: [`HistoryOptions`](#symbol-historyoptions)
 
 ##### `computeHistory` — Summary
 Computes the history and writes the sequence.
+
+#### `headDifferences` {#symbol-headdifferences}
+- Type: function
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L585)
+- Parameters: `replayed`: [`Rows`](../../../engine/src/live-docs/history/rows.ts.mdmd.md#symbol-rows); `committed`: [`LiveDocGraph`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
+
+##### `headDifferences` — Summary
+Where a moment's rows, replayed, differ from a graph derived from committed Live Docs: the graph's rows read by the
+one rule every summary is read by, its texts named by `textId`, and its links read straight from its resolved
+edges, apart from the rows' reading of them.
+
+#### `formatBytes` {#symbol-formatbytes}
+- Type: function
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L655)
+
+##### `formatBytes` — Summary
+A size in the units a person reads it in.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -54,27 +96,45 @@ Computes the history and writes the sequence.
 - `node:fs` - `promises`
 - `node:os` - `os`
 - `node:path` - `path`
+- `node:zlib` - `gunzipSync`
 - [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
 - [`LiveDocumentationConfig`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 - [`liveDocumentationConfig.LiveDocumentationConfigInput`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfiginput)
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
+- [`graph.LiveDocGraph`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
+- [`graphFiles.readLiveDocGraph`](../../../engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
+- [`codec.Interner`](../../../engine/src/live-docs/history/codec.ts.mdmd.md#symbol-interner)
 - [`format.CommitInfo`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-commitinfo)
-- [`format.CommitSummary`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-commitsummary)
 - [`format.HISTORY_DIRECTORY`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-history_directory)
 - [`format.HISTORY_FILE`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-history_file)
-- [`format.HISTORY_SUMMARY_FORMAT`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-history_summary_format)
 - [`format.HistoryLens`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-historylens)
 - [`format.HistorySequence`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence)
 - [`format.Sampling`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-sampling)
 - [`git.openGitRepository`](../../../engine/src/live-docs/history/git.ts.mdmd.md#symbol-opengitrepository)
 - [`lens.lensOf`](../../../engine/src/live-docs/history/lens.ts.mdmd.md#symbol-lensof)
+- [`rows.RowLink`](../../../engine/src/live-docs/history/rows.ts.mdmd.md#symbol-rowlink)
+- [`Rows`](../../../engine/src/live-docs/history/rows.ts.mdmd.md#symbol-rows)
+- [`rows.compareLinks`](../../../engine/src/live-docs/history/rows.ts.mdmd.md#symbol-comparelinks)
+- [`rows.linksOf`](../../../engine/src/live-docs/history/rows.ts.mdmd.md#symbol-linksof)
+- [`rows.rowsDifferences`](../../../engine/src/live-docs/history/rows.ts.mdmd.md#symbol-rowsdifferences)
+- [`rows.rowsOfSummary`](../../../engine/src/live-docs/history/rows.ts.mdmd.md#symbol-rowsofsummary)
 - [`sampling.sampleChanges`](../../../engine/src/live-docs/history/sampling.ts.mdmd.md#symbol-samplechanges)
 - [`sequence.SequenceBuilder`](../../../engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-sequencebuilder)
-- [`summary.shapeOfSummary`](../../../engine/src/live-docs/history/summary.ts.mdmd.md#symbol-shapeofsummary)
+- [`sequence.momentAt`](../../../engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-momentat)
+- [`shape.shapeOfSummary`](../../../engine/src/live-docs/history/shape.ts.mdmd.md#symbol-shapeofsummary)
+- [`summary.CommitSummary`](../../../engine/src/live-docs/history/summary.ts.mdmd.md#symbol-commitsummary)
+- [`summary.HISTORY_SUMMARY_FORMAT`](../../../engine/src/live-docs/history/summary.ts.mdmd.md#symbol-history_summary_format)
+- [`summary.summarizeGraph`](../../../engine/src/live-docs/history/summary.ts.mdmd.md#symbol-summarizegraph)
+- [`textStore.TEXT_STORE_DIRECTORY`](../../../engine/src/live-docs/history/textStore.ts.mdmd.md#symbol-text_store_directory)
+- [`textStore.readText`](../../../engine/src/live-docs/history/textStore.ts.mdmd.md#symbol-readtext)
 - [`versionControl.MainlineChange`](../../../engine/src/live-docs/history/versionControl.ts.mdmd.md#symbol-mainlinechange) (type-only)
 - [`VersionControl`](../../../engine/src/live-docs/history/versionControl.ts.mdmd.md#symbol-versioncontrol) (type-only)
 - [`versionControl.WorkingTree`](../../../engine/src/live-docs/history/versionControl.ts.mdmd.md#symbol-workingtree) (type-only)
+- [`words.WORDS_DIRECTORY`](../../../engine/src/live-docs/history/words.ts.mdmd.md#symbol-words_directory)
+- [`words.WordsHead`](../../../engine/src/live-docs/history/words.ts.mdmd.md#symbol-wordshead)
+- [`words.wordsStore`](../../../engine/src/live-docs/history/words.ts.mdmd.md#symbol-wordsstore)
 - [`generatorIdentity`](./generatorIdentity.ts.mdmd.md#symbol-generatoridentity)
+- [`summarizeChange.SummaryReport`](./summarizeChange.ts.mdmd.md#symbol-summaryreport) (type-only)
 - [`summarizeChange.SummaryTask`](./summarizeChange.ts.mdmd.md#symbol-summarytask) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
 

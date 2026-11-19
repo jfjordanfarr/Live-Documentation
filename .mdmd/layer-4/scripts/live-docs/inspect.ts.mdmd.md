@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/inspect.ts
 - Entry: command `live-docs:inspect` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-12T16:06:56.391Z
+- Generated At: 2026-11-19T06:20:31.336Z
 
 ## Authored
 ### Purpose
@@ -67,10 +67,14 @@ _No public symbols detected_
 - [`history.HistoryRefusal`](./inspect/history.ts.mdmd.md#symbol-historyrefusal)
 - [`history.emitBetween`](./inspect/history.ts.mdmd.md#symbol-emitbetween)
 - [`history.emitFileAt`](./inspect/history.ts.mdmd.md#symbol-emitfileat)
+- [`history.emitLinksAt`](./inspect/history.ts.mdmd.md#symbol-emitlinksat)
 - [`history.emitReachableAt`](./inspect/history.ts.mdmd.md#symbol-emitreachableat)
+- [`history.emitWordsAt`](./inspect/history.ts.mdmd.md#symbol-emitwordsat)
+- [`history.historyFolder`](./inspect/history.ts.mdmd.md#symbol-historyfolder)
 - [`history.readHistory`](./inspect/history.ts.mdmd.md#symbol-readhistory)
 - [`history.resolveStep`](./inspect/history.ts.mdmd.md#symbol-resolvestep)
 - [`resolve.hasSymbolReference`](./inspect/resolve.ts.mdmd.md#symbol-hassymbolreference)
+- [`resolve.parseSymbolReference`](./inspect/resolve.ts.mdmd.md#symbol-parsesymbolreference)
 - [`resolve.resolveArtifactIdentifier`](./inspect/resolve.ts.mdmd.md#symbol-resolveartifactidentifier)
 - [`resolve.resolveSymbolReference`](./inspect/resolve.ts.mdmd.md#symbol-resolvesymbolreference)
 <!-- LIVE-DOC:END Dependencies -->

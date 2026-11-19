@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/history/format.ts
-- Generated At: 2026-10-22T16:47:53.152Z
+- Generated At: 2026-11-19T06:20:28.511Z
 
 ## Authored
 ### Purpose
@@ -26,77 +26,141 @@ The format of `history.json`, the sequence a repository's history is read into u
 ### Public Symbols
 #### `HISTORY_FORMAT` {#symbol-history_format}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L28)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L40)
 
 ##### `HISTORY_FORMAT` — Summary
 The version of the sequence's format, written first in every `history.json`.
 
-#### `HISTORY_SUMMARY_FORMAT` {#symbol-history_summary_format}
-- Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L31)
-
-##### `HISTORY_SUMMARY_FORMAT` — Summary
-The version of the format of one change's summary in the cache.
-
 #### `HISTORY_DIRECTORY` {#symbol-history_directory}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L34)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L43)
 
 ##### `HISTORY_DIRECTORY` — Summary
 The folder under the docs root that holds the cache and the sequence.
 
 #### `HISTORY_FILE` {#symbol-history_file}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L37)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L46)
 
 ##### `HISTORY_FILE` — Summary
 The name of the sequence's file, under {@link HISTORY_DIRECTORY}.
 
 #### `KEYFRAME_INTERVAL` {#symbol-keyframe_interval}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L40)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L49)
 
 ##### `KEYFRAME_INTERVAL` — Summary
 How many steps lie between two keyframes: a seek replays at most one fewer.
 
 #### `FileTuple` {#symbol-filetuple}
 - Type: type
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L43)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L52)
 
 ##### `FileTuple` — Summary
 One file in a snapshot: its path's id, its archetype's id, its symbol count, and 1 when its doc carries an Entry line.
 
 #### `EdgeTuple` {#symbol-edgetuple}
 - Type: type
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L46)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L55)
 
 ##### `EdgeTuple` — Summary
 One directed edge in a snapshot: the files' path ids and how many of the source's references land on the target.
 
 #### `EdgeEnds` {#symbol-edgeends}
 - Type: type
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L49)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L58)
 
 ##### `EdgeEnds` — Summary
 The two ends of a directed edge, by path id.
 
+#### `ShapeTuples` {#symbol-shapetuples}
+- Type: interface
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L61)
+
+##### `ShapeTuples` — Summary
+A whole shape: every file, every edge and every doc link, sorted by id.
+
+#### `ReferenceTuple` {#symbol-referencetuple}
+- Type: type
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L73)
+
+##### `ReferenceTuple` — Summary
+A type reference of a symbol: its role's name id, its type's name id, then, each left out from the end when it is
+its default, its parameter's name id (-1 for none), its marks (1 an array, 2 a promise), and the path id and anchor
+name id it resolved to (-1 for none).
+
+#### `SymbolTuple` {#symbol-symboltuple}
+- Type: type
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L79)
+
+##### `SymbolTuple` — Summary
+A symbol row: its heading's, anchor's and kind's name ids, then, each left out from the end when empty, its flags'
+name ids, its type references, and the id of its description's text (-1 for none).
+
+#### `DependencyTuple` {#symbol-dependencytuple}
+- Type: type
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L86)
+
+##### `DependencyTuple` — Summary
+A dependency line: its label's name id and kind (0 an import, 1 a re-export), then, each left out from the end when
+it is its default, its marks (1 type-only), its basis's name id, the path id and anchor name id it resolved to (-1
+for none), and the name ids of the symbols an external dependency gives.
+
+#### `EntryTuple` {#symbol-entrytuple}
+- Type: type
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L89)
+
+##### `EntryTuple` — Summary
+An entry line: its reason's name id, then its symbol's and command's name ids and its declarer's path id (-1 for none), left out from the end when none.
+
+#### `ReExportTuple` {#symbol-reexporttuple}
+- Type: type
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L92)
+
+##### `ReExportTuple` — Summary
+A re-exported anchor: its name id, then its anchor's name id, its origin's path id, its origin's label's name id (-1 for none) and its flags' name ids, left out from the end when none.
+
+#### `NO_WORDS` {#symbol-no_words}
+- Type: const
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L95)
+
+##### `NO_WORDS` — Summary
+The authored words of a file in a tuple: the id of their text, {@link NO_WORDS} or {@link UNREAD_WORDS}.
+
+#### `UNREAD_WORDS` {#symbol-unread_words}
+- Type: const
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L97)
+
+##### `UNREAD_WORDS` — Summary
+A doc stood whose form today's reader cannot read the authored words of.
+
+#### `FileRowsTuple` {#symbol-filerowstuple}
+- Type: type
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L104)
+
+##### `FileRowsTuple` — Summary
+A file's rows: its path id, then, each left out from the end when it is its default, its authored words (a text id,
+{@link NO_WORDS} or {@link UNREAD_WORDS}), its symbols in the doc's order, its dependency lines, its entries, its
+re-exported anchors and the path ids of the documents that cite it.
+
 #### `SnapshotTuples` {#symbol-snapshottuples}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L52)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L107)
+- Extends: [`ShapeTuples`](#symbol-shapetuples)
 
 ##### `SnapshotTuples` — Summary
-A whole snapshot: every file, every edge and every doc link, sorted by id.
+A whole snapshot: its shape and, since format 3, every file's rows, sorted by path id.
 
 #### `CommitInfo` {#symbol-commitinfo}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L60)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L112)
 
 ##### `CommitInfo` — Summary
 One change of the version control, as the sequence names it.
 
 #### `StepDelta` {#symbol-stepdelta}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L80)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L132)
 
 ##### `StepDelta` — Summary
 What one step changed, by id; an empty list is left out. Applied in this
@@ -107,14 +171,14 @@ edges added and changed and the doc links added.
 
 #### `HistoryStep` {#symbol-historystep}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L110)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L183)
 
 ##### `HistoryStep` — Summary
 One sampled change after the base: the change and what it did to the shape.
 
 #### `Keyframe` {#symbol-keyframe}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L116)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L189)
 - Extends: [`SnapshotTuples`](#symbol-snapshottuples)
 
 ##### `Keyframe` — Summary
@@ -122,64 +186,58 @@ A snapshot repeated whole after a step, so that a seek need not replay from the 
 
 #### `GeneratorIdentity` {#symbol-generatoridentity}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L122)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L195)
 
 ##### `GeneratorIdentity` — Summary
 Which generator made the summaries: its package version, committed tool inputs, the commit it runs from and any uncommitted change to those inputs.
 
 #### `HistoryLens` {#symbol-historylens}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L138)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L211)
 
 ##### `HistoryLens` — Summary
 The lens: one generator and one configuration, applied to every change of the sequence.
 
 #### `Sampling` {#symbol-sampling}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L147)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L220)
 
 ##### `Sampling` — Summary
 Which changes of the mainline were regenerated.
 
 #### `HistorySource` {#symbol-historysource}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L162)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L235)
 
 ##### `HistorySource` — Summary
 Where the sequence was read from.
 
 #### `HistoryWindow` {#symbol-historywindow}
 - Type: type
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L181)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L254)
 
 ##### `HistoryWindow` — Summary
 The part of a sequence an export carries, when it carries less than the whole.
 
 #### `HistorySequence` {#symbol-historysequence}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L184)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L257)
 
 ##### `HistorySequence` — Summary
 The sequence: `history.json`.
 
 #### `HistoryHead` {#symbol-historyhead}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L202)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L279)
 
 ##### `HistoryHead` — Summary
 What a sequence says of itself without its body, which the bundle's data carries beside the history file's name.
-
-#### `CommitSummary` {#symbol-commitsummary}
-- Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L216)
-
-##### `CommitSummary` — Summary
-One change's shape as the cache keeps it: `<docsRoot>/history/<lens>/<change>.json`.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`LiveDocumentationConfig`](../../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
+- [`words.WordsHead`](./words.ts.mdmd.md#symbol-wordshead) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->
