@@ -11,7 +11,7 @@
 .history-scrubber button { display: inline-flex; align-items: center; justify-content: center; min-width: 32px; padding: 6px; border: 1px solid transparent; border-radius: 4px; background: transparent; color: var(--text-normal); cursor: pointer; font: inherit; }
 .history-scrubber button:hover { background: var(--selected-subtle); }
 .history-scrubber button:focus-visible { outline: 2px solid var(--state-selected); }
-.history-scrubber button[aria-pressed="true"] { border-color: var(--state-selected); color: var(--state-selected); }
+.history-scrubber button[aria-pressed="true"], .history-play.is-playing { border-color: var(--state-selected); color: var(--state-selected); }
 .history-scrubber button[hidden] { display: none; }
 .history-scrubber button:disabled { opacity: .35; cursor: default; }
 .history-playback { display: flex; flex: none; gap: 0; }

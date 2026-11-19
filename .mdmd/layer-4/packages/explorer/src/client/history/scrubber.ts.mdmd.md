@@ -22,6 +22,8 @@ The history's scrubber along the bottom of the 3D Local Map: a track with one ti
 
 The [November 1 repairs](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-01/2026-11-01.1.record.md#turn-2) added previous/next controls and a commit finder on the date/hash readout. Search matches hashes, displayed dates and messages. Range start/end use the selected commit; the pure navigation module recomputes density in that inclusive interval without dropping any sequence entries. Home/End, arrows and playback respect the range; direct seek outside it restores the whole range. The range is temporary presentation state. Container queries give a narrow scrubber two rows without a resize observer changing its own box.
 
+- Since 2026-11-19 ([Turn 14 of the November 18 record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-14)) a toggle states itself once. Play shows Play or Pause, so its name changes and it carries no `aria-pressed`, where a screen reader had heard "Pause, pressed"; its highlight while playing is the class `is-playing`. Authors shows one drawing, so its name stays "Authors" and its `aria-pressed` speaks. Before, it was renamed "Show authors" or "Hide authors" as well.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

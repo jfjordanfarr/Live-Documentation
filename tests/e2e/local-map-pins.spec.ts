@@ -52,7 +52,7 @@ test("the newest-first tray releases a parent independently, survives sharing, a
   await localMapSettled(page);
   await openTray(page);
   expect(await keys()).toEqual(remaining);
-  await page.getByRole("button", { name: "Clear exploration pins", exact: true }).click();
+  await page.getByRole("button", { name: "Clear all pins", exact: true }).click();
   await localMapSettled(page);
   await expect(page.locator(".pin-tray-toggle")).toHaveText("0 pins");
   expect(current(page).openDirectories.size).toBe(0);
@@ -85,7 +85,7 @@ test("Escape closes the open tray, after the search field and a menu have taken 
   await expect(toggle).toBeFocused();
   // From inside the tray: the focus returns to the toggle rather than to nothing.
   await openTray(page);
-  await page.getByRole("button", { name: "Clear exploration pins", exact: true }).focus();
+  await page.getByRole("button", { name: "Clear all pins", exact: true }).focus();
   await page.keyboard.press("Escape");
   await expect(panel).toBeHidden();
   await expect(toggle).toBeFocused();

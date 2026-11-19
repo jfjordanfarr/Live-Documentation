@@ -432,7 +432,7 @@ test("a deleted file can be found, read and shared in its own lifetime, and rema
   // Reload a cleared present-day place, then Back to a historical selection: the new page has not loaded history yet.
   await page.getByRole("button", { name: "History", exact: true }).click();
   if (await page.getByRole("button", { name: "Show pins", exact: true }).isVisible()) await page.getByRole("button", { name: "Show pins", exact: true }).click();
-  await page.getByRole("button", { name: "Clear exploration pins", exact: true }).click();
+  await page.getByRole("button", { name: "Clear all pins", exact: true }).click();
   await page.reload();
   await settled(page);
   await page.getByRole("button", { name: "Back", exact: true }).first().click();
@@ -577,10 +577,16 @@ test("the address carries the commit and the authors toggle, a link to a moment 
   expect(address().commit).toBe(commits[2].id);
   expect(address().authors).toBe(false);
   await expect(panel(page).locator(".history-author")).toHaveCount(0);
-  await page.getByRole("button", { name: "Show authors", exact: true }).click();
+  // Authors shows one drawing, so its name stays and its pressed state speaks; Play shows Play or Pause, so its name
+  // changes and it carries no pressed state: a screen reader heard "Pause, pressed" (2026-11-18).
+  const authors = page.getByRole("button", { name: "Authors", exact: true });
+  await expect(authors).toHaveAttribute("aria-pressed", "false");
+  await authors.click();
   await expect(panel(page).locator(".history-author")).toHaveText(commits[2].author!);
   expect(address().authors).toBe(true);
-  await page.getByRole("button", { name: "Hide authors", exact: true }).click();
+  await expect(authors).toHaveAttribute("aria-pressed", "true");
+  expect(await page.locator(".history-play").getAttribute("aria-pressed"), "Play states itself by its name alone").toBeNull();
+  await authors.click();
   await expect(panel(page).locator(".history-author")).toHaveCount(0);
 
   // A link to the moment opens on it: the control open, the thumb at the step, the picture that step's.

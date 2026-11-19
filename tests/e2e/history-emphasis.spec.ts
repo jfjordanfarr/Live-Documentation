@@ -165,7 +165,7 @@ for (const mode of ["glow", "dim"] as const) for (const rate of [1, 0.5]) {
     for (const fraction of [0.1, 0.5, 0.85]) {
       await page.waitForTimeout(Math.max(0, interval * fraction - (Date.now() - began)));
       await expect(page.locator(".history-track")).toHaveAttribute("aria-valuenow", "4");
-      await expect(page.locator(".history-play")).toHaveAttribute("aria-pressed", "true");
+      await expect(page.locator(".history-play")).toHaveAttribute("aria-label", "Pause");
       expect(await appearance(), `no brightness ramp at ${fraction * 100}% of the interval`).toEqual(first);
     }
     await expect(page.locator(".history-track")).toHaveAttribute("aria-valuenow", "5");

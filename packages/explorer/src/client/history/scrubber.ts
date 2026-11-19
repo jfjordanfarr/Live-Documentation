@@ -104,9 +104,11 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
   element.setAttribute("aria-label", "History");
   element.hidden = true;
 
+  // Play shows Play or Pause, so its name changes with what it shows and it carries no pressed state: a screen reader
+  // heard "Pause, pressed" (the design system's audit, 2026-11-18). Authors shows one drawing, so its name stays and
+  // its pressed state speaks.
   const play = iconButton("Play", PLAY_ICON);
   play.className = "history-play";
-  play.setAttribute("aria-pressed", "false");
   const previous = iconButton("Previous commit", '<path d="M15 5l-7 7 7 7"/>');
   const next = iconButton("Next commit", '<path d="m9 5 7 7-7 7"/>');
   const playback = document.createElement("div");
@@ -189,7 +191,8 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
   details.className = "history-details";
   details.setAttribute("aria-pressed", "true");
 
-  const authors = iconButton("Show authors", AUTHORS_ICON);
+  const authors = iconButton("Authors", AUTHORS_ICON);
+  authors.title = "The commits' authors";
   authors.className = "history-authors";
   authors.setAttribute("aria-pressed", "false");
 
@@ -424,7 +427,7 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
       if (!finder.hidden) drawResults();
       notice.hidden = state.notice === null;
       notice.textContent = state.notice ?? "";
-      play.setAttribute("aria-pressed", String(state.playing));
+      play.classList.toggle("is-playing", state.playing);
       play.setAttribute("aria-label", state.playing ? "Pause" : "Play");
       play.title = state.playing ? "Pause" : "Play, one step after another";
       play.querySelector("svg")!.innerHTML = state.playing ? PAUSE_ICON : PLAY_ICON;
@@ -432,8 +435,6 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
       details.setAttribute("aria-pressed", String(state.details));
       authors.hidden = !state.authors.carried;
       authors.setAttribute("aria-pressed", String(state.authors.shown));
-      authors.setAttribute("aria-label", state.authors.shown ? "Hide authors" : "Show authors");
-      authors.title = state.authors.shown ? "Hide the commits' authors" : "Show the commits' authors";
     },
     hide(hidden) {
       element.hidden = hidden;

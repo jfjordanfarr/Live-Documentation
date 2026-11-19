@@ -576,7 +576,7 @@ test("hover peeks outside the retained scope, leaving restores it, and clearing 
   await page.mouse.move(30, 50);
   await expect.poll(opacity).toBeLessThan(.35);
   await page.getByRole("button", { name: "Show pins", exact: true }).click();
-  await page.getByRole("button", { name: "Clear exploration pins" }).click();
+  await page.getByRole("button", { name: "Clear all pins" }).click();
   // Clearing the pins releases the subject too, so nothing is asked about and the picture is the layout's start, with
   // nothing faded by attention and the frontier's own dimming (discovery, 2026-10-31).
   await expect.poll(async () => Math.min(...(await renderedNodes(page)).map(node => node.opacity))).toBeGreaterThan(.25);

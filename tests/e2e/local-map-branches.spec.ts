@@ -110,7 +110,7 @@ test("independent symbol branches retain cross-connections, survive reload, and 
   await expect(page.locator(".pin-tray-toggle")).toHaveText("2 pins");
   await expect(pin(page, "helpers.ts", "format")).toHaveAttribute("aria-pressed", "true");
   await expect(pin(page, "types.ts", "ProcessorConfig")).toHaveAttribute("aria-pressed", "true");
-  await page.getByRole("button", { name: "Clear exploration pins" }).click();
+  await page.getByRole("button", { name: "Clear all pins" }).click();
   await expect(page.locator(".pin-tray-toggle")).toHaveText("0 pins");
   await expect(page.locator("#map-container .local-symbol-pin[aria-pressed='true'], #map-container .local-file-pin[aria-pressed='true']")).toHaveCount(0);
   await expect(page.locator("#map-container .local-placed")).toBeVisible();
