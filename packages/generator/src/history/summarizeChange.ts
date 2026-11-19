@@ -36,7 +36,8 @@
  * When it ends, the process sends the history command its peak resident
  * memory, which sizes the pool.
  *
- * Run as a process, it takes one argument, the task as JSON.
+ * Run as a process, it takes one argument, the path of a file holding the task as JSON (since 2026-11-19; the task
+ * itself, which names every entry a tree left out, could outgrow the command line).
  *
  * @module
  */
@@ -161,7 +162,7 @@ export interface SummaryReport {
 }
 
 if (require.main === module) {
-  summarizeChange(JSON.parse(process.argv[2]) as SummaryTask).then(
+  fs.readFile(process.argv[2], "utf8").then((text) => summarizeChange(JSON.parse(text) as SummaryTask)).then(
     () => {
       // The peak as the operating system counts it; `maxRSS` is in kibibytes.
       const report: SummaryReport = { peakMemory: process.resourceUsage().maxRSS * 1024 };

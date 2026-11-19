@@ -6,7 +6,7 @@
  * renamed whole; and what `inspect --at` and `inspect --between` answer from
  * the sequence.
  */
-import { spawn, spawnSync } from "node:child_process";
+import { execFileSync, spawn, spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import * as fs from "node:fs";
 import * as os from "node:os";
@@ -27,7 +27,7 @@ import { textInPart, textsOfFile, wordsPartFile, type WordsPart } from "../../..
 import { buildStaticExplorer } from "../../../packages/explorer/src/shared/staticBuilder";
 import type { StaticExplorerData } from "../../../packages/explorer/src/shared/staticExplorerData";
 import { generateLiveDocs } from "../../../packages/generator/src/generator";
-import { buildRepository, CHECKED_CONFIG, CHECKED_SCRIPT, git, MODEL, SCRIPT, SCRIPTED_CONFIG as CONFIG } from "./scripted-repository";
+import { buildRepository, CHECKED_CONFIG, CHECKED_SCRIPT, FIXTURE_GIT_ENV, git, MODEL, SCRIPT, SCRIPTED_CONFIG as CONFIG } from "./scripted-repository";
 
 const repoRoot = path.resolve(__dirname, "..", "..", "..");
 const tsxCli = path.join(repoRoot, "node_modules", "tsx", "dist", "cli.mjs");
@@ -584,6 +584,47 @@ describe("the history over a repository that commits its mirror", () => {
     expect(fs.existsSync(whole)).toBe(false);
     expect(JSON.parse(fs.readFileSync(path.join(history, lens, "whole.json"), "utf8"))).toMatchObject({ head: ids[ids.length - 1], changes: 3 });
   });
+});
+
+/**
+ * A repository whose one commit leaves thousands of entries out of its tree, made with `git hash-object` and `git
+ * mktree`: a link `vendor` and a tree `vendor` of the same name, every file of which lies beneath the link.
+ */
+describe("the history over a commit whose tree leaves thousands of entries out", () => {
+  it("completes, names every entry not read, and keeps the list where a person finds it after the run", () => {
+    const repository = fs.mkdtempSync(path.join(os.tmpdir(), "history-unwritten-"));
+    temporary.push(repository);
+    const run = (args: string[], input?: string): string => execFileSync("git", args, { cwd: repository, env: FIXTURE_GIT_ENV, input, encoding: "utf8", maxBuffer: 1 << 28 }).trim();
+    run(["init", "--quiet", "-b", "main"]);
+    const files = path.join(repository, "..", `${path.basename(repository)}-blobs`);
+    temporary.push(files);
+    fs.mkdirSync(files);
+    const names = Array.from({ length: 3000 }, (_, index) => `module-with-a-long-name-${String(index).padStart(5, "0")}.ts`);
+    names.forEach((name, index) => fs.writeFileSync(path.join(files, name), `export const value${index} = ${index};\n`));
+    const ids = run(["hash-object", "-w", "--stdin-paths"], names.map((name) => path.join(files, name)).join("\n")).split("\n");
+    const vendor = run(["mktree"], names.map((name, index) => `100644 blob ${ids[index]}\t${name}\n`).join(""));
+    const link = run(["hash-object", "-w", "--stdin"], "/elsewhere");
+    const kept = run(["hash-object", "-w", "--stdin"], "/** Kept. */\nexport const kept = 1;\n");
+    const root = run(["mktree"], `100644 blob ${kept}\tkept.ts\n120000 blob ${link}\tvendor\n040000 tree ${vendor}\tvendor\n`);
+    const commit = run(["commit-tree", root, "-m", "A tree that leaves thousands of entries out"], undefined);
+    run(["update-ref", "refs/heads/main", commit]);
+
+    const result = runCli(historyScript, ["--workspace", repository, "--jobs", "1"]);
+    expect(result.exitCode, result.stderr.slice(-2000)).toBe(0);
+    // Every entry not read is said, not the first few.
+    expect(result.stderr.split("\n").filter((line) => line.includes("which is a symbolic link on this disk"))).toHaveLength(3000);
+    expect(result.stderr).toContain("3000 files at 1 commits were not read");
+    // Where the run says the list is: the history folder under the default docs root, since this repository configures none.
+    const listed = /The list is (\S+)/u.exec(result.stderr)![1];
+    const history = path.dirname(path.join(repository, listed));
+    const list = fs.readFileSync(path.join(repository, listed), "utf8").split("\n").filter((line) => line !== "" && !line.startsWith("#"));
+    expect(list).toHaveLength(3000);
+    expect(list[0]).toBe(`${commit}\t"vendor/${names[0]}"\tit lies beneath vendor, which is a symbolic link on this disk, and nothing is written through it`);
+    const sequence = JSON.parse(fs.readFileSync(path.join(history, "history.json"), "utf8")) as HistorySequence;
+    const summary = JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(history, sequence.lens.key, `${commit}.json.gz`))).toString("utf8")) as CommitSummary;
+    expect(summary.unwritten).toHaveLength(3000);
+    expect(summary.files.map((file) => file.path)).toEqual(["kept.ts"]);
+  }, 300_000);
 });
 
 /**

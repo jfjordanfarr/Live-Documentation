@@ -27,10 +27,13 @@
  * the tree can ask git what it tracks ({@link WorkingTree.environment}).
  *
  * Since a second review of 2026-11-19 nothing is written outside the tree's
- * folder whatever the commit holds: an entry beneath a link or a file the tree
- * made, one clashing by case on a disk that does not tell cases apart (probed,
- * not assumed by platform), or one whose name the platform cannot hold is
- * left out and named, so that the summary says it was not read; blobs are
+ * folder whatever the commit holds: the disk itself is asked, without
+ * following a link, before each entry is written, so that an entry beneath a
+ * link or a file, one whose name the disk already holds by its own rule of
+ * names (case, normalization, short names), or one whose name the disk or the
+ * platform cannot hold is left out and named, and the summary says it was not
+ * read. A third review found that a folding rule of this module's own, as the
+ * second pass had, missed what APFS and NTFS take for one name. Blobs are
  * streamed to disk rather than held whole; every failure of the reader ends
  * in one rejection; and every call reads the commit as stored, the
  * repository's replacement objects set aside.
@@ -163,12 +166,37 @@ export interface UnwrittenEntry {
   reason: string;
 }
 
-/** What decides which names a working tree's disk can hold apart; read from the disk when not given. */
+/** What a path under a tree's folder is on the disk, read without following a link. */
+export type DiskEntry = "absent" | "folder" | "link" | "other";
+
+/**
+ * The disk a tree is written to, as the writer asks it, by paths relative to the tree's folder: the real disk
+ * ({@link realDisk}), or in a test a stand-in that treats names as one as APFS or NTFS do.
+ */
 export interface TreeDisk {
-  /** Whether the disk takes two names that differ only in case for the same file. */
-  caseInsensitive: boolean;
-  /** The platform, whose path rules decide which names may be written at all. */
-  platform: NodeJS.Platform;
+  /** What stands at the path, read with `lstat`, never through a link. */
+  entry(relative: string): Promise<DiskEntry>;
+  /** Makes one folder at the path, never through a link; fails where anything stands there, by the disk's own rule of names. */
+  makeFolder(relative: string): Promise<void>;
+}
+
+/** The real disk under a folder. */
+export function realDisk(directory: string): TreeDisk {
+  const full = (relative: string): string => path.join(directory, ...relative.split("/"));
+  return {
+    async entry(relative) {
+      try {
+        const stat = await fs.lstat(full(relative));
+        return stat.isSymbolicLink() ? "link" : stat.isDirectory() ? "folder" : "other";
+      } catch (error) {
+        if ((error as NodeJS.ErrnoException).code === "ENOENT") return "absent";
+        throw error;
+      }
+    },
+    async makeFolder(relative) {
+      await fs.mkdir(full(relative));
+    }
+  };
 }
 
 // Windows's rules for a name, as Git for Windows applies them (`core.protectNTFS`): no separator, drive mark or
@@ -177,21 +205,49 @@ export interface TreeDisk {
 const WINDOWS_FORBIDDEN = /[\\:<>"|?*\u0000-\u001f]|[. ]$|^(?:con|prn|aux|nul|com[0-9]|lpt[0-9])(?:\..*)?$/iu;
 
 /**
- * Whether a folder's disk takes two names that differ only in case for the same file: a probe written under one case
- * and looked for under the other.
+ * The failures of the disk that mean it cannot hold a name or a path, rather than that it failed: a name too long, a
+ * name it does not accept, a name that is already another's by its own rule of names, a path through something that
+ * is not a folder. An entry that meets one is left out and named; any other failure fails the tree.
  */
-export async function caseInsensitiveDisk(folder: string): Promise<boolean> {
-  const name = `.Case-Probe-${process.pid}-${Math.random().toString(36).slice(2)}`;
-  const probe = path.join(folder, name);
-  await fs.writeFile(probe, "");
+const NAME_FAILURES = new Set(["ENAMETOOLONG", "EILSEQ", "EINVAL", "EEXIST", "ENOTDIR", "EISDIR", "ELOOP"]);
+
+/**
+ * Prepares the place of one entry on the disk, asking the disk at each step: every folder above it, one level at a
+ * time, must be a folder (made where absent) and never a link or a file, and nothing may stand where the entry goes.
+ * Whether two names are one is the disk's own rule, case, Unicode normalization and short names included, never a
+ * rule of this module's.
+ *
+ * @returns Why the entry cannot be written, or undefined where it can.
+ */
+export async function placeEntry(parts: readonly string[], disk: TreeDisk): Promise<string | undefined> {
   try {
-    await fs.lstat(path.join(folder, name.toLowerCase()));
-    return true;
-  } catch {
-    return false;
-  } finally {
-    await fs.rm(probe, { force: true });
+    for (let depth = 1; depth < parts.length; depth += 1) {
+      const folder = parts.slice(0, depth).join("/");
+      const standing = await disk.entry(folder);
+      if (standing === "absent") {
+        await disk.makeFolder(folder);
+      } else if (standing !== "folder") {
+        return `it lies beneath ${folder}, which is ${standing === "link" ? "a symbolic link" : "a file"} on this disk, and nothing is written through it`;
+      }
+    }
+    const standing = await disk.entry(parts.join("/"));
+    if (standing !== "absent") {
+      return "another entry already stands at its name on this disk, which takes the two names for one";
+    }
+    return undefined;
+  } catch (error) {
+    const code = (error as NodeJS.ErrnoException).code;
+    if (code !== undefined && NAME_FAILURES.has(code)) return `this disk cannot hold its name (${code})`;
+    throw error;
   }
+}
+
+/** One entry of a tree as the writer meets it, in the tree's order. */
+interface TreeEntry {
+  mode: string;
+  id: string;
+  relative: string;
+  parts: string[];
 }
 
 /**
@@ -199,82 +255,96 @@ export async function caseInsensitiveDisk(folder: string): Promise<boolean> {
  * where its mode says so, streamed to disk as git gives them; a symbolic link to the target its blob holds; an empty
  * folder where another repository's commit stands, as a checkout leaves a submodule it has not initialized.
  *
- * Nothing is ever written outside `directory`. An entry is not written, and is returned with the reason, when its path
- * would leave the directory or name a `.git`; when the platform cannot hold its name; when it lies beneath a link or a
- * file of the tree, as a tree holding both `a` as a link and `a/x` does, or `A` as a link and `a/x` on a disk that
- * takes `A` and `a` for one name; or when it names a path already written, under another case on such a disk. Of two
- * entries that clash, the first in the tree's order is written.
+ * Nothing is ever written outside `directory`, and no entry stops the tree. An entry is left out, and returned with the
+ * reason, when its path would leave the directory or name a `.git`; when the platform cannot hold its name; when the
+ * disk, asked at every step ({@link placeEntry}), has a link or a file where one of its folders goes, or already holds
+ * something at its name, as a disk that takes `A` and `a`, or `s` and `ſ`, for one name may; or when the disk cannot
+ * hold its name. Of two entries that clash, the first in the tree's order is written.
  *
+ * @param disk - The disk, asked; the real one under `directory` unless a test stands one in.
  * @returns The entries not written, in the tree's order.
  */
-export async function writeStoredTree(root: string, change: string, directory: string, given?: Partial<TreeDisk>): Promise<UnwrittenEntry[]> {
-  const disk: TreeDisk = {
-    caseInsensitive: given?.caseInsensitive ?? (await caseInsensitiveDisk(path.dirname(directory))),
-    platform: given?.platform ?? process.platform
-  };
+export async function writeStoredTree(root: string, change: string, directory: string, options?: { platform?: NodeJS.Platform; disk?: TreeDisk }): Promise<UnwrittenEntry[]> {
+  const platform = options?.platform ?? process.platform;
+  const disk = options?.disk ?? realDisk(directory);
   const listing = (await execFileAsync("git", ["-C", root, "ls-tree", "-r", "-z", "--full-tree", change], { cwd: root, maxBuffer: LARGEST_OUTPUT, env: READ_AS_STORED })).stdout;
-  const fold = (relative: string): string => (disk.caseInsensitive ? relative.toLowerCase() : relative);
-  // What each path written so far is, by its folded path: a file or a link, which nothing may lie beneath, or a folder.
-  const written = new Map<string, { kind: "file" | "link" | "folder"; path: string }>();
   const unwritten: UnwrittenEntry[] = [];
-  const blobs: Array<{ mode: string; id: string; file: string }> = [];
-  for (const entry of listing.split("\0")) {
-    if (entry === "") continue;
+  const entries: TreeEntry[] = [];
+  const named = new Set<string>();
+  const position = new Map<string, number>();
+  for (const line of listing.split("\0")) {
+    if (line === "") continue;
     // Each entry is `<mode> <type> <id>\t<path>`.
-    const tab = entry.indexOf("\t");
-    const [mode, , id] = entry.slice(0, tab).split(" ");
-    const relative = entry.slice(tab + 1);
+    const tab = line.indexOf("\t");
+    const [mode, , id] = line.slice(0, tab).split(" ");
+    const relative = line.slice(tab + 1);
+    if (!position.has(relative)) position.set(relative, position.size);
     const parts = relative.split("/");
-    const refuse = (reason: string): void => {
-      unwritten.push({ path: relative, reason });
-    };
     if (parts.some((part) => part === "" || part === "." || part === ".." || part.toLowerCase() === ".git")) {
-      refuse("its path would leave the tree or name a .git, which git refuses to check out");
-      continue;
-    }
-    if (disk.platform === "win32" && parts.some((part) => WINDOWS_FORBIDDEN.test(part))) {
-      refuse("its name cannot be written on Windows, where git refuses to check it out");
-      continue;
-    }
-    if (mode !== FILE_MODE && mode !== EXECUTABLE_MODE && mode !== LINK_MODE && mode !== SUBMODULE_MODE) {
-      refuse(`its mode ${mode} is one no checkout writes`);
-      continue;
-    }
-    const beneath = parts.slice(0, -1).map((_, index) => written.get(fold(parts.slice(0, index + 1).join("/")))).find((parent) => parent !== undefined && parent.kind !== "folder");
-    if (beneath !== undefined) {
-      refuse(`it lies beneath the ${beneath.kind === "link" ? "symbolic link" : "file"} ${beneath.path}, which nothing is written through`);
-      continue;
-    }
-    const same = written.get(fold(relative));
-    if (same !== undefined) {
-      refuse(same.path === relative ? "the tree names it twice" : `it names the same file as ${same.path} on this disk, which does not tell their cases apart`);
-      continue;
-    }
-    for (let index = 1; index < parts.length; index += 1) {
-      const folder = parts.slice(0, index).join("/");
-      if (!written.has(fold(folder))) written.set(fold(folder), { kind: "folder", path: folder });
-    }
-    const file = path.join(directory, ...parts);
-    if (mode === SUBMODULE_MODE) {
-      written.set(fold(relative), { kind: "folder", path: relative });
-      await fs.mkdir(file, { recursive: true });
+      unwritten.push({ path: relative, reason: "its path would leave the tree or name a .git, which git refuses to check out" });
+    } else if (platform === "win32" && parts.some((part) => WINDOWS_FORBIDDEN.test(part))) {
+      unwritten.push({ path: relative, reason: "its name cannot be written on Windows, where git refuses to check it out" });
+    } else if (mode !== FILE_MODE && mode !== EXECUTABLE_MODE && mode !== LINK_MODE && mode !== SUBMODULE_MODE) {
+      unwritten.push({ path: relative, reason: `its mode ${mode} is one no checkout writes` });
+    } else if (named.has(relative)) {
+      unwritten.push({ path: relative, reason: "the tree names it twice" });
     } else {
-      written.set(fold(relative), { kind: mode === LINK_MODE ? "link" : "file", path: relative });
-      blobs.push({ mode, id, file });
+      named.add(relative);
+      entries.push({ mode, id, relative, parts });
     }
   }
-  if (blobs.length > 0) {
-    await writeBlobs(root, change, blobs);
-  }
-  return unwritten;
+  // An entry that becomes no folder or file of its own: one refused, or a submodule's empty folder.
+  const place = async (entry: TreeEntry): Promise<boolean> => {
+    const reason = await placeEntry(entry.parts, disk);
+    if (reason !== undefined) {
+      unwritten.push({ path: entry.relative, reason });
+      return false;
+    }
+    if (entry.mode === SUBMODULE_MODE) {
+      try {
+        await disk.makeFolder(entry.relative);
+      } catch (error) {
+        const code = (error as NodeJS.ErrnoException).code;
+        if (code === undefined || !NAME_FAILURES.has(code)) throw error;
+        unwritten.push({ path: entry.relative, reason: `this disk cannot hold its name (${code})` });
+      }
+      return false;
+    }
+    return true;
+  };
+  await writeBlobs(root, change, directory, entries, place, (entry, code) => unwritten.push({ path: entry.relative, reason: `this disk cannot hold its name (${code})` }));
+  // In the tree's order, whether an entry was refused by its name or by the disk.
+  return unwritten.sort((a, b) => (position.get(a.path) ?? 0) - (position.get(b.path) ?? 0));
 }
 
 /**
- * Asks `git cat-file --batch` for each blob in turn and writes each as it comes, a file's bytes streamed to disk chunk
- * by chunk so that no blob is held whole. Every failure, the reader's, its pipes' or a write's, ends the reader and
+ * Writes the entries in the tree's order, asking `place` before each whether and where it may go, and `git cat-file
+ * --batch` for each blob, a file's bytes streamed to disk chunk by chunk so that no blob is held whole; a blob whose
+ * entry was refused is read and passed over. Every failure, the reader's, its pipes' or a write's, ends the reader and
  * rejects once, with the first failure.
  */
-async function writeBlobs(root: string, change: string, blobs: ReadonlyArray<{ mode: string; id: string; file: string }>): Promise<void> {
+async function writeBlobs(
+  root: string,
+  change: string,
+  directory: string,
+  entries: readonly TreeEntry[],
+  place: (entry: TreeEntry) => Promise<boolean>,
+  cannotHold: (entry: TreeEntry, code: string) => void
+): Promise<void> {
+  const blobs = entries.filter((entry) => entry.mode !== SUBMODULE_MODE);
+  let placed = 0;
+  // Submodules stand between blobs in the tree's order; each is placed when the blobs before it are written.
+  const placeUpTo = async (entry: TreeEntry | undefined): Promise<void> => {
+    const until = entry === undefined ? entries.length : entries.indexOf(entry, placed);
+    for (; placed < until; placed += 1) {
+      if (entries[placed].mode === SUBMODULE_MODE) await place(entries[placed]);
+    }
+    if (entry !== undefined) placed = until + 1;
+  };
+  if (blobs.length === 0) {
+    await placeUpTo(undefined);
+    return;
+  }
   const reader = spawn("git", ["-C", root, "cat-file", "--batch"], { cwd: root, stdio: ["pipe", "pipe", "pipe"], env: { ...process.env, ...READ_AS_STORED } });
   let errors = "";
   let pipeFailure: Error | undefined;
@@ -300,18 +370,37 @@ async function writeBlobs(root: string, change: string, blobs: ReadonlyArray<{ m
   // Each object comes back as `<id> <type> <size>\n`, its bytes and a line break, in the order asked.
   let next = 0;
   let header = Buffer.alloc(0);
-  // The object being written: its blob, the bytes still to come, and where they go.
-  let body: { blob: (typeof blobs)[number]; remaining: number; handle?: fs.FileHandle; link?: Buffer[] } | undefined;
+  // The object being read: its entry, the bytes still to come, and where they go, if anywhere.
+  let body: { entry: TreeEntry; remaining: number; handle?: fs.FileHandle; link?: Buffer[] } | undefined;
   // The line break that follows an object's bytes, still to be passed over.
   let separator = false;
   const finish = async (): Promise<void> => {
     if (body === undefined) return;
-    const { blob, handle, link } = body;
+    const { entry, handle, link } = body;
     body = undefined;
     if (handle !== undefined) await handle.close();
-    if (link !== undefined) await fs.symlink(Buffer.concat(link).toString("utf8"), blob.file);
+    if (link !== undefined) {
+      try {
+        await fs.symlink(Buffer.concat(link).toString("utf8"), path.join(directory, ...entry.parts));
+      } catch (error) {
+        const code = (error as NodeJS.ErrnoException).code;
+        if (code === undefined || !NAME_FAILURES.has(code)) throw error;
+        cannotHold(entry, code);
+      }
+    }
     next += 1;
     separator = true;
+  };
+  const open = async (entry: TreeEntry): Promise<fs.FileHandle | undefined> => {
+    try {
+      // `wx` makes the file or fails where anything stands, a link included, so nothing is written through one.
+      return await fs.open(path.join(directory, ...entry.parts), "wx", entry.mode === EXECUTABLE_MODE ? 0o777 : 0o666);
+    } catch (error) {
+      const code = (error as NodeJS.ErrnoException).code;
+      if (code === undefined || !NAME_FAILURES.has(code)) throw error;
+      cannotHold(entry, code);
+      return undefined;
+    }
   };
   try {
     for await (const chunk of reader.stdout as AsyncIterable<Buffer>) {
@@ -325,7 +414,7 @@ async function writeBlobs(root: string, change: string, blobs: ReadonlyArray<{ m
         if (body !== undefined) {
           const piece = chunk.subarray(at, at + body.remaining);
           if (body.handle !== undefined) await body.handle.write(piece);
-          else body.link!.push(Buffer.from(piece));
+          else body.link?.push(Buffer.from(piece));
           body.remaining -= piece.length;
           at += piece.length;
           if (body.remaining === 0) await finish();
@@ -340,18 +429,17 @@ async function writeBlobs(root: string, change: string, blobs: ReadonlyArray<{ m
         header = Buffer.alloc(0);
         at = lineEnd + 1;
         const [id, type, size] = line.split(" ");
-        const blob = blobs.at(next);
-        if (blob === undefined || id !== blob.id || type !== "blob") {
-          throw new Error(`git cat-file answered ${JSON.stringify(line)} where the blob ${blob?.id ?? "(none)"} of ${change} was asked for`);
+        const entry = blobs.at(next);
+        if (entry === undefined || id !== entry.id || type !== "blob") {
+          throw new Error(`git cat-file answered ${JSON.stringify(line)} where the blob ${entry?.id ?? "(none)"} of ${change} was asked for`);
         }
-        await fs.mkdir(path.dirname(blob.file), { recursive: true });
-        body =
-          blob.mode === LINK_MODE
-            ? { blob, remaining: Number(size), link: [] }
-            : { blob, remaining: Number(size), handle: await fs.open(blob.file, "wx", blob.mode === EXECUTABLE_MODE ? 0o777 : 0o666) };
+        await placeUpTo(entry);
+        const wanted = await place(entry);
+        body = { entry, remaining: Number(size), ...(wanted ? (entry.mode === LINK_MODE ? { link: [] } : { handle: await open(entry) }) : {}) };
         if (body.remaining === 0) await finish();
       }
     }
+    await placeUpTo(undefined);
   } catch (error) {
     await body?.handle?.close().catch(() => undefined);
     reader.kill();

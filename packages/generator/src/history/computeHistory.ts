@@ -149,6 +149,9 @@ const LOCK_NAME = /^run\.([0-9a-f]{12})\.(\d+)\.([0-9a-z]+)\.lock$/u;
 /** How many times a run that met another's claim tries again, a short random wait apart, before it refuses. */
 const LOCK_ATTEMPTS = 6;
 
+/** The list beside the sequence of the files the history did not read, since the disk could not hold them. */
+const UNWRITTEN_LIST = "unwritten.txt";
+
 /** The marker a lens's cache folder holds once a run wrote a whole history from it: when, and of which head. */
 const WHOLE_MARKER = "whole.json";
 
@@ -272,7 +275,9 @@ async function run(options: HistoryOptions, context: RunContext): Promise<Histor
   const timings = regeneration.timings;
 
   const texts = new Interner();
+  const unwritten: Array<[string, string, string]> = [];
   const builder = await buildSequence(sampled, {
+    unwritten,
     versionControl,
     lens,
     cacheFolder,
@@ -304,6 +309,12 @@ async function run(options: HistoryOptions, context: RunContext): Promise<Histor
   });
   options.progress(headCheck.line);
   await writeSequence(sequence, historyFolder, textStore, texts, options.progress);
+  const unwrittenList = await writeUnwritten(historyFolder, unwritten);
+  if (unwrittenList !== undefined) {
+    options.progress(
+      `${unwritten.length} files at ${new Set(unwritten.map(([commit]) => commit)).size} commits were not read, since the disk their trees were written to could not hold them; they read in the history as gone at those commits. The list is ${relative(unwrittenList)}`
+    );
+  }
   await writeInPlace(path.join(cacheFolder, WHOLE_MARKER), `${JSON.stringify({ head: end.head, changes: sampled.length, at: new Date().toISOString() })}\n`);
 
   // Only now does the current lens hold every sampled change, so the caches of other lenses can go.
@@ -601,6 +612,8 @@ interface SequenceContext {
   source: HistorySequence["source"];
   /** The texts' hashes, each given an id where the sequence first names it. */
   texts: Interner;
+  /** Filled with the files each summary says its tree did not hold. */
+  unwritten: Array<[commit: string, path: string, reason: string]>;
 }
 
 /**
@@ -617,13 +630,36 @@ async function buildSequence(sampled: readonly MainlineChange[], context: Sequen
   });
   const textId = (hash: string): number => context.texts.id(hash);
   const read = (change: MainlineChange): Promise<CommitSummary> => readSummaryFile(summaryPath(context.cacheFolder, change.id), context.lens.key, change.id);
+  const notRead = (change: MainlineChange, summary: CommitSummary): void => {
+    for (const [file, reason] of summary.unwritten ?? []) context.unwritten.push([change.id, file, reason]);
+  };
   const first = await read(sampled[0]);
+  notRead(sampled[0], first);
   const builder = new SequenceBuilder({ lens: context.lens, source: context.source }, commitOf(sampled[0]), shapeOfSummary(first), rowsOfSummary(first, textId));
   for (let index = 1; index < sampled.length; index += 1) {
     const [summary, version] = await Promise.all([read(sampled[index]), context.versionControl.changesBetween(sampled[index - 1].id, sampled[index].id)]);
+    notRead(sampled[index], summary);
     builder.add(commitOf(sampled[index]), shapeOfSummary(summary), version, rowsOfSummary(summary, textId));
   }
   return builder;
+}
+
+/**
+ * Writes beside the sequence every file the history did not read, at each commit, because the disk its tree was written
+ * to could not hold it (`<history folder>/unwritten.txt`, a line each: the commit, the path and the reason), or removes
+ * that list where there is none. The sequence does not carry them: such a file reads in it as gone at that commit.
+ *
+ * @returns The list's path, when there is one.
+ */
+async function writeUnwritten(historyFolder: string, unwritten: ReadonlyArray<[commit: string, path: string, reason: string]>): Promise<string | undefined> {
+  const file = path.join(historyFolder, UNWRITTEN_LIST);
+  if (unwritten.length === 0) {
+    await fs.rm(file, { force: true });
+    return undefined;
+  }
+  const lines = unwritten.map(([commit, entry, reason]) => `${commit}\t${JSON.stringify(entry)}\t${reason}`);
+  await writeInPlace(file, `# The files the history did not read, at each commit, because this disk could not hold them: commit, path, reason.\n${lines.join("\n")}\n`);
+  return file;
 }
 
 interface HeadCheckContext {

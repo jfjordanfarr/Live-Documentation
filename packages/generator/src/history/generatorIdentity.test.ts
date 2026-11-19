@@ -4,6 +4,7 @@ import ts from "typescript";
 import { describe, expect, it } from "vitest";
 
 import { HISTORY_FOLDERS, keysTheLens, SUMMARY_ENTRIES, SUMMARY_MODULES } from "./generatorIdentity";
+import { summarizingEnvironment } from "./regenerate";
 
 const repository = path.resolve(__dirname, "..", "..", "..", "..");
 
@@ -153,7 +154,8 @@ const HANDED_TO_SUMMARY: Record<string, string> = {
   summaryPath: "where the summary goes",
   textStore: "where the texts go",
   indexPath: "where the full index goes, when kept",
-  unwritten: "the entries the keyed tree writer left out"
+  // A limit, written down in the decision: what a disk cannot hold depends on the disk, which the key does not hold.
+  unwritten: "the entries the keyed tree writer left out, as the disk it wrote to answered"
 };
 
 describe("the lens's key", () => {
@@ -189,6 +191,15 @@ describe("the lens's key", () => {
     expect(actsForASummary(`const { fork } = await import("node:child_process");`)).toBe(true);
     expect(actsForASummary(`const cp = require("child_process");`)).toBe(true);
     expect(actsForASummary(`await execFileAsync("git", ["ls-tree", change], options);`)).toBe(true);
+  });
+
+  it("gives the summarizing process a named environment, and nothing else of the person's", () => {
+    const given = summarizingEnvironment({ PATH: "/usr/bin", TMPDIR: "/tmp", TSX_TSCONFIG_PATH: "./tsconfig.base.json", NODE_OPTIONS: "--require evil.js", GIT_DIR: "/elsewhere", LANG: "tr_TR.UTF-8", HOME: "/home/ada" });
+    expect(given).toEqual({ PATH: "/usr/bin", TMPDIR: "/tmp", TSX_TSCONFIG_PATH: "./tsconfig.base.json" });
+    // The process is started with that environment and the tree's own, never the command's whole one.
+    const regenerate = readFileSync(path.join(repository, "packages/generator/src/history/regenerate.ts"), "utf8");
+    expect(regenerate).toContain("{ ...summarizingEnvironment(process.env), ...tree.environment }");
+    expect(regenerate).not.toMatch(/env:\s*(?:\{\s*\.\.\.process\.env|process\.env)/u);
   });
 
   it("holds what the command hands to the code that makes a summary to members each shown not to change it unkeyed", () => {

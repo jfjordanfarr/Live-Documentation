@@ -145,12 +145,15 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
             ...(tree.unwritten.length > 0 ? { unwritten: tree.unwritten } : {})
           },
           context.scratch,
-          { ...withoutGitVariables(process.env), ...tree.environment }
+          scratch,
+          { ...summarizingEnvironment(process.env), ...tree.environment }
         );
         peakMemory = Math.max(peakMemory, report?.peakMemory ?? 0);
         if (tree.unwritten.length > 0) {
-          const listed = tree.unwritten.slice(0, 3).map((entry) => `${entry.path} (${entry.reason})`).join("; ");
-          context.progress(`${change.id.slice(0, 8)}: ${tree.unwritten.length} files of its tree were not written, and its summary says they were not read: ${listed}${tree.unwritten.length > 3 ? "; …" : ""}`);
+          context.progress(`${change.id.slice(0, 8)}: ${tree.unwritten.length} files of its tree were not written on this disk, and its summary says they were not read:`);
+          for (const entry of tree.unwritten) {
+            context.progress(`  ${entry.path}: ${entry.reason}`);
+          }
         }
         for (const message of new Set(warned)) {
           warnings.set(message, (warnings.get(message) ?? 0) + 1);
@@ -174,13 +177,21 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
   return { timings, peakMemory };
 }
 
-/** The environment without git's own variables, so that none the person's shell set reaches git in the tree. */
-function withoutGitVariables(environment: NodeJS.ProcessEnv): Record<string, string> {
+/**
+ * The variables of the command's environment the summarizing process is given, by name, and no other, so that nothing
+ * the person's shell set, `NODE_OPTIONS` among them, changes what it loads or how it reads: `PATH`, by which it finds
+ * git; the temporary folders, where the platform keeps them; on Windows the system's folders, without which a process
+ * there cannot start; and tsx's own `TSX_TSCONFIG_PATH`, when the command runs under tsx, which names the TypeScript
+ * configuration the lens keys.
+ */
+const SUMMARIZING_VARIABLES = ["PATH", "Path", "TMPDIR", "TMP", "TEMP", "SystemRoot", "SYSTEMROOT", "windir", "WINDIR", "TSX_TSCONFIG_PATH"];
+
+/** The environment the summarizing process is given: {@link SUMMARIZING_VARIABLES} from the command's, where set. */
+export function summarizingEnvironment(environment: NodeJS.ProcessEnv): Record<string, string> {
   const kept: Record<string, string> = {};
-  for (const [name, value] of Object.entries(environment)) {
-    if (value !== undefined && !name.startsWith("GIT_")) {
-      kept[name] = value;
-    }
+  for (const name of SUMMARIZING_VARIABLES) {
+    const value = environment[name];
+    if (value !== undefined) kept[name] = value;
   }
   return kept;
 }
@@ -191,11 +202,15 @@ function withoutGitVariables(environment: NodeJS.ProcessEnv): Record<string, str
  *
  * @returns The lines the generator warned on its way, and what the process reported when it ended.
  */
-function runSummary(task: SummaryTask, scratch: Scratch, environment: Record<string, string>): Promise<{ warned: string[]; report?: SummaryReport }> {
+async function runSummary(task: SummaryTask, scratch: Scratch, folder: string, environment: Record<string, string>): Promise<{ warned: string[]; report?: SummaryReport }> {
   // The worker sits beside this module, as TypeScript under tsx or as JavaScript once built.
   const worker = path.join(__dirname, `summarizeChange${path.extname(__filename)}`);
+  // The task goes in a file of the scratch folder, never on the command line, whose length the platform limits: a
+  // commit whose tree leaves thousands of entries out would otherwise fail to start (`spawn E2BIG`).
+  const taskFile = path.join(folder, "task.json");
+  await fs.writeFile(taskFile, JSON.stringify(task), "utf8");
   return new Promise((resolve, reject) => {
-    const child = fork(worker, [JSON.stringify(task)], { stdio: ["ignore", "ignore", "pipe", "ipc"], env: environment });
+    const child = fork(worker, [taskFile], { stdio: ["ignore", "ignore", "pipe", "ipc"], env: environment });
     scratch.started(child);
     let errors = "";
     let report: SummaryReport | undefined;

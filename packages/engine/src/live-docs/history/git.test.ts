@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
-import { caseInsensitiveDisk, openGitRepository, parseMainline, parseNameStatus, parseTags, writeStoredTree } from "./git";
+import { openGitRepository, parseMainline, parseNameStatus, parseTags, placeEntry, writeStoredTree, type DiskEntry, type TreeDisk } from "./git";
 
 describe("parseMainline", () => {
   it("reads each record after rev-list's commit line, a subject with spaces and an author with a comma included", () => {
@@ -205,39 +205,114 @@ describe("a tree the writer must not follow out of its folder", () => {
     const sub = tree([["100644", "blob", blob("evil\n"), "evil.txt"]]);
     const change = commit(tree([["120000", "blob", blob(outside), "a"], ["040000", "tree", sub, "a"], ["100644", "blob", blob("kept\n"), "b.txt"]]));
     const directory = await folder();
-    const unwritten = await writeStoredTree(repository, change, directory, { caseInsensitive: false, platform: "linux" });
+    const unwritten = await writeStoredTree(repository, change, directory, { platform: "linux" });
     expect(await fs.readdir(outside)).toEqual([]);
-    expect(unwritten).toEqual([{ path: "a/evil.txt", reason: "it lies beneath the symbolic link a, which nothing is written through" }]);
+    expect(unwritten).toEqual([{ path: "a/evil.txt", reason: "it lies beneath a, which is a symbolic link on this disk, and nothing is written through it" }]);
     expect(await fs.readlink(path.join(directory, "a"))).toBe(outside);
     expect(await fs.readFile(path.join(directory, "b.txt"), "utf8")).toBe("kept\n");
   });
 
-  it("on a disk that takes two cases for one name, writes nothing through a link of the other case, nor two files of one name", async () => {
-    // An ordinary commit, which git's own checks accept: a link `A` and a file `a/x`, and two files `Foo` and `foo`.
-    const sub = tree([["100644", "blob", blob("x\n"), "x"]]);
-    const change = commit(tree([["120000", "blob", blob(outside), "A"], ["100644", "blob", blob("upper\n"), "Foo"], ["040000", "tree", sub, "a"], ["100644", "blob", blob("lower\n"), "foo"]]));
-    const insensitive = await folder();
-    expect(await writeStoredTree(repository, change, insensitive, { caseInsensitive: true, platform: "linux" })).toEqual([
-      { path: "a/x", reason: "it lies beneath the symbolic link A, which nothing is written through" },
-      { path: "foo", reason: "it names the same file as Foo on this disk, which does not tell their cases apart" }
-    ]);
-    expect(await fs.readdir(outside)).toEqual([]);
-    // On a disk that tells them apart, every entry is written, each where it belongs.
-    const sensitive = await folder();
-    expect(await writeStoredTree(repository, change, sensitive, { caseInsensitive: false, platform: "linux" })).toEqual([]);
-    expect(await fs.readFile(path.join(sensitive, "a", "x"), "utf8")).toBe("x\n");
-    expect(await fs.readdir(outside)).toEqual([]);
-    // This machine's temporary folder is read for what it is.
-    expect(await caseInsensitiveDisk(scratch)).toBe(process.platform === "darwin" || process.platform === "win32" ? expect.any(Boolean) : false);
+  /**
+   * A disk that takes two names for one as APFS or NTFS may, standing in over this machine's: names folded as APFS folds
+   * them (Unicode normalization and case, `s` with `ſ`, `μ` with `µ`, `σ` with `ς`), and NTFS's short names. It answers
+   * what the real disk holds under the folded name, so the writer is asked what such a disk would answer.
+   */
+  function foldingDisk(directory: string): TreeDisk {
+    const shortNames: Record<string, string> = { "longna~1": "longname" };
+    const fold = (name: string): string => {
+      const folded = name.normalize("NFD").toUpperCase().toLowerCase();
+      return shortNames[folded] ?? folded;
+    };
+    // The real path a name of the stand-in disk resolves to, part by part, or undefined where nothing answers to it.
+    const resolve = async (relative: string): Promise<string | undefined> => {
+      let real = directory;
+      for (const part of relative.split("/")) {
+        const names = await fs.readdir(real).catch(() => undefined);
+        const match = names?.find((name) => fold(name) === fold(part));
+        if (match === undefined) return undefined;
+        real = path.join(real, match);
+      }
+      return real;
+    };
+    return {
+      async entry(relative) {
+        const real = await resolve(relative);
+        if (real === undefined) return "absent";
+        const stat = await fs.lstat(real);
+        return stat.isSymbolicLink() ? "link" : stat.isDirectory() ? "folder" : "other";
+      },
+      async makeFolder(relative) {
+        if ((await resolve(relative)) !== undefined) throw Object.assign(new Error(`EEXIST: ${relative}`), { code: "EEXIST" });
+        await fs.mkdir(path.join(directory, ...relative.split("/")));
+      }
+    };
+  }
+
+  it("asks the disk whether two names are one, so that a link is never followed under a name the disk takes for its own", async () => {
+    // Ordinary commits git accepts: a link, then a file beneath another spelling the disk takes for the link's name.
+    const pairs: Array<[string, string]> = [
+      ["A", "a"],
+      ["s", "ſ"],
+      ["é", "é"],
+      ["µ", "Μ"],
+      ["σ", "ς"],
+      ["LONGNAME", "LONGNA~1"]
+    ];
+    for (const [link, other] of pairs) {
+      const sub = tree([["100644", "blob", blob("evil\n"), "evil.txt"]]);
+      const change = commit(tree([["120000", "blob", blob(outside), link], ["040000", "tree", sub, other], ["100644", "blob", blob("kept\n"), "kept.txt"]].sort((x, y) => (x[3] < y[3] ? -1 : 1)) as Array<[string, string, string, string]>));
+      const directory = await folder();
+      const unwritten = await writeStoredTree(repository, change, directory, { platform: "linux", disk: foldingDisk(directory) });
+      expect(await fs.readdir(outside), `${link} and ${other}`).toEqual([]);
+      // Of the two, the first in the tree's order is written: the folder beneath the link is refused, or the link itself.
+      const linkFirst = Buffer.compare(Buffer.from(link), Buffer.from(other)) < 0;
+      expect(unwritten, `${link} and ${other}`).toEqual([
+        linkFirst
+          ? { path: `${other}/evil.txt`, reason: `it lies beneath ${other}, which is a symbolic link on this disk, and nothing is written through it` }
+          : { path: link, reason: "another entry already stands at its name on this disk, which takes the two names for one" }
+      ]);
+      // This machine's disk tells the two names apart, and writes both.
+      const real = await folder();
+      expect(await writeStoredTree(repository, change, real, { platform: "linux" })).toEqual([]);
+      expect(await fs.readFile(path.join(real, other, "evil.txt"), "utf8")).toBe("evil\n");
+      expect(await fs.readdir(outside)).toEqual([]);
+    }
+  });
+
+  it("decides each entry's place by what the disk answers: a folder made a level at a time, a link or a file refused, a taken name refused", async () => {
+    const answers = new Map<string, DiskEntry>([["vendor", "link"], ["docs", "folder"], ["docs/a.md", "other"], ["readme", "other"]]);
+    const made: string[] = [];
+    const disk: TreeDisk = {
+      entry: async (relative) => answers.get(relative) ?? "absent",
+      makeFolder: async (relative) => {
+        made.push(relative);
+        answers.set(relative, "folder");
+      }
+    };
+    expect(await placeEntry(["vendor", "lib", "x.js"], disk)).toBe("it lies beneath vendor, which is a symbolic link on this disk, and nothing is written through it");
+    expect(await placeEntry(["readme", "x"], disk)).toBe("it lies beneath readme, which is a file on this disk, and nothing is written through it");
+    expect(await placeEntry(["docs", "a.md"], disk)).toBe("another entry already stands at its name on this disk, which takes the two names for one");
+    expect(await placeEntry(["src", "deep", "x.ts"], disk)).toBeUndefined();
+    expect(made).toEqual(["src", "src/deep"]);
+    const tooLong: TreeDisk = { entry: async () => { throw Object.assign(new Error("too long"), { code: "ENAMETOOLONG" }); }, makeFolder: async () => undefined };
+    expect(await placeEntry(["x".repeat(300)], tooLong)).toBe("this disk cannot hold its name (ENAMETOOLONG)");
+  });
+
+  it("leaves out a name this disk cannot hold and writes the rest of the commit", async () => {
+    const long = `${"n".repeat(300)}.txt`;
+    const change = commit(tree([["100644", "blob", blob("long\n"), long], ["100644", "blob", blob("kept\n"), "kept.txt"]]));
+    const directory = await folder();
+    expect(await writeStoredTree(repository, change, directory, { platform: "linux" })).toEqual([{ path: long, reason: "this disk cannot hold its name (ENAMETOOLONG)" }]);
+    expect(await fs.readdir(directory)).toEqual(["kept.txt"]);
   });
 
   it("leaves out on Windows a name that would climb out of the folder or that Windows cannot hold, and writes it elsewhere as the name it is", async () => {
     const change = commit(tree([["100644", "blob", blob("climb\n"), "..\\..\\x"], ["100644", "blob", blob("drive\n"), "c:d"], ["100644", "blob", blob("plain\n"), "plain.txt"]]));
     const windows = await folder();
-    expect((await writeStoredTree(repository, change, windows, { caseInsensitive: true, platform: "win32" })).map((entry) => entry.path)).toEqual(["..\\..\\x", "c:d"]);
+    expect((await writeStoredTree(repository, change, windows, { platform: "win32" })).map((entry) => entry.path)).toEqual(["..\\..\\x", "c:d"]);
     expect(await fs.readdir(windows)).toEqual(["plain.txt"]);
     const linux = await folder();
-    expect(await writeStoredTree(repository, change, linux, { caseInsensitive: false, platform: "linux" })).toEqual([]);
+    expect(await writeStoredTree(repository, change, linux, { platform: "linux" })).toEqual([]);
     expect((await fs.readdir(linux)).sort()).toEqual(["..\\..\\x", "c:d", "plain.txt"]);
   });
 
@@ -246,7 +321,7 @@ describe("a tree the writer must not follow out of its folder", () => {
     const change = commit(tree([["100644", "blob", original, "kept.txt"]]));
     git(["replace", original, blob("as replaced locally\n")]);
     const directory = await folder();
-    await writeStoredTree(repository, change, directory, { caseInsensitive: false, platform: "linux" });
+    await writeStoredTree(repository, change, directory, { platform: "linux" });
     expect(await fs.readFile(path.join(directory, "kept.txt"), "utf8")).toBe("as committed\n");
   });
 
@@ -262,7 +337,7 @@ describe("a tree the writer must not follow out of its folder", () => {
     };
     const change = commit(tree(Object.entries(contents).map(([name, content]) => ["100644", "blob", blob(content), name])));
     const directory = await folder();
-    await writeStoredTree(repository, change, directory, { caseInsensitive: false, platform: "linux" });
+    await writeStoredTree(repository, change, directory, { platform: "linux" });
     for (const [name, content] of Object.entries(contents)) {
       expect((await fs.readFile(path.join(directory, name))).equals(content), name).toBe(true);
     }
@@ -279,7 +354,7 @@ describe("a tree the writer must not follow out of its folder", () => {
     const directory = await folder();
     await fs.chmod(directory, 0o555);
     try {
-      await expect(writeStoredTree(repository, change, directory, { caseInsensitive: false, platform: "linux" })).rejects.toThrow(/EACCES|permission denied/u);
+      await expect(writeStoredTree(repository, change, directory, { platform: "linux" })).rejects.toThrow(/EACCES|permission denied/u);
     } finally {
       await fs.chmod(directory, 0o755);
     }
