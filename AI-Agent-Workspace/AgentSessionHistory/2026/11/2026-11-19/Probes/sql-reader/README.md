@@ -392,6 +392,14 @@ Neither of these lines exists in the board's format today:
 
 With such a line, the estate join could match a `server..schema.name` name only against the doors of the thing the server stands for, and say "declared" in its evidence. Without it, the join stays a match by schema and table, right when the name is unique on the board. Growing the board's format is the root's to decide. Nothing was built for it.
 
+### Verification of the second leg
+
+`npm run safe:commit` without the browser, at `e9fe1ca5`, at a load average near 31 on 20 threads:
+- Live Docs: 1,106 validated, none changed by the run.
+- Lint, build and the tests' type-check passed.
+- Unit: 2,249 of 2,251 passed. The two that failed timed out at five seconds: `history/sequence.test.ts` and the Explorer's `forceGraphOctree.test.ts`, neither touching SQL. No Explorer file changed on this branch. Each passed when run alone.
+- The stages after the unit tests were then run one by one, all passing: integration (158 tests in 23 files), the documentation link enforcement, and the three SlopCop audits.
+
 ### PL/SQL against a parser that is not ours: not started in this leg
 
 Item 1 and item 2 took the time. Nothing was built and nothing was measured for PL/SQL. What was found, for the next round:
