@@ -361,6 +361,8 @@ test("one Escape closes only the topmost surface: the search field, then the rea
   await expect(search).not.toBeFocused();
   await expect(reader, "the search field's Escape is the field's alone").toHaveClass(/visible/u);
   const help = page.locator("#view-world .world-help");
+  // The map's letters are the board's alone (2026-11-18): the board takes the keyboard before its "?".
+  await page.locator("#view-world .world").focus();
   await page.keyboard.press("?");
   await expect(help).toHaveClass(/\bon\b/u);
   await page.keyboard.press("Escape");
