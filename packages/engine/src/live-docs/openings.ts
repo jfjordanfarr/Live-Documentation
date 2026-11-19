@@ -418,6 +418,45 @@ function unquoted(text: string, open: number, close: string): string {
   return text.slice(open + 1, end === text.length && text[end - 1] !== close ? end : end - 1).split(close + close).join(close);
 }
 
+const ORACLE_QUOTE_CLOSE: Readonly<Record<string, string>> = { "[": "]", "{": "}", "<": ">", "(": ")" };
+
+/**
+ * Oracle's alternative quoting, `q'[it's]'` (also `Q`, and `nq`/`NQ` for a
+ * national string): the text runs from the character after `q'` to the same
+ * character, or its closing bracket, followed by `'`, so an apostrophe inside
+ * is text. Oracle's only; a T-SQL word `q` written against a string is no
+ * name a script would hold.
+ */
+function oracleQuote(text: string, index: number): { end: number; value: string } | undefined {
+  let at = index;
+  if ((text[at] === "n" || text[at] === "N") && (text[at + 1] === "q" || text[at + 1] === "Q")) at += 1;
+  if ((text[at] !== "q" && text[at] !== "Q") || text[at + 1] !== "'") return undefined;
+  if (at > 0 && continuesWord(text.charCodeAt(index - 1))) return undefined;
+  const open = text[at + 2];
+  if (open === undefined || /\s/u.test(open)) return undefined;
+  const close = (ORACLE_QUOTE_CLOSE[open] ?? open) + "'";
+  const found = text.indexOf(close, at + 3);
+  const end = found === -1 ? text.length : found + 2;
+  return { end, value: text.slice(at + 3, found === -1 ? text.length : found) };
+}
+
+/**
+ * A SQL*Plus `PROMPT` or `REM` line (`PRO`, `REMARK`): free text to the end of
+ * its line, which SQL*Plus prints or skips and never sends to the database,
+ * so an apostrophe in it opens nothing. It is one only where a statement
+ * could begin: first on its line, after the end of a statement or of a batch,
+ * or at the start, so that a column named `Remark` on a line of its own
+ * inside a query stays a name.
+ */
+function sqlPlusRemark(text: string, index: number, previous: SqlToken | undefined): boolean {
+  const word = /^(?:PROMPT|PRO|REMARK|REM)(?=[ \t\r\n]|$)/iu.exec(text.slice(index, index + 7));
+  if (!word) return false;
+  let start = index;
+  while (start > 0 && (text[start - 1] === " " || text[start - 1] === "\t")) start -= 1;
+  if (start > 0 && text[start - 1] !== "\n" && text[start - 1] !== "\r") return false;
+  return previous === undefined || (previous.kind === "symbol" && (previous.value === ";" || previous.value === "/")) || (previous.kind === "word" && previous.value.toUpperCase() === "GO");
+}
+
 /** The index just past a block comment opening at `open`. T-SQL's block comments nest, so a comment that holds another ends where the outer one closes; Oracle's do not nest. */
 function blockCommentEnd(text: string, open: number): number {
   let depth = 0;
@@ -487,6 +526,14 @@ function sqlTokens(text: string): SqlToken[] {
       continue;
     }
     if (char === "/" && next === "*") { advance(blockCommentEnd(text, index)); continue; }
+    const quoting = oracleQuote(text, index);
+    if (quoting) { take("string", quoting.end, quoting.value); continue; }
+    if (sqlPlusRemark(text, index, tokens[tokens.length - 1])) {
+      let end = index;
+      while (end < text.length && text[end] !== "\n" && text[end] !== "\r") end += 1;
+      advance(end);
+      continue;
+    }
     if (char === "'" || ((char === "N" || char === "n") && next === "'")) {
       const open = char === "'" ? index : index + 1;
       take("string", quotedEnd(text, open, "'"), unquoted(text, open, "'"));

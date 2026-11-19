@@ -192,6 +192,23 @@ describe("database objects", () => {
     ]);
   });
 
+  it("reads past an Oracle q-quoted string and a SQL*Plus PROMPT or REM line holding an apostrophe, and keeps a column of that name", () => {
+    const script = [
+      "PROMPT Creating the day's close",
+      "CREATE OR REPLACE PROCEDURE central.close_day IS v VARCHAR2(20) := q'[it's closed]'; w VARCHAR2(9) := Q'{a'b}'; BEGIN NULL; END;",
+      "/",
+      "REM it's done; the ledger follows",
+      "CREATE TABLE central.ledger (a NUMBER);",
+      "SELECT Id,",
+      "Remark FROM dbo.Notes;"
+    ].join("\n");
+    expect(sqlDeclarations(script)).toEqual([
+      { kind: "procedure", name: "central.close_day", line: 2, inBody: false },
+      { kind: "table",     name: "central.ledger",    line: 5, inBody: false }
+    ]);
+    expect(sqlReferences(script).map((reference) => `${reference.verb} ${reference.raw}`)).toEqual(["FROM dbo.Notes"]);
+  });
+
   it("reads the SQL a script executes from a string written out in full, where it runs, and not a string with a computed part", () => {
     const script = [
       "IF OBJECT_ID('tSQLt.AssertStringIn') IS NOT NULL DROP PROCEDURE tSQLt.AssertStringIn;",
