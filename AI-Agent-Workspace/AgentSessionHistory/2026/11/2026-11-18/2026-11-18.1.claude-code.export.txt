@@ -427,7 +427,6 @@
      that list.
 
 
-
 ❯ <ide_selection>The user selected the lines 1 to 427 from
   /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/11/2026-11
   -18.1.claude-code.export.txt:
@@ -12852,3 +12851,1335 @@
     whole, and a fresh reader is checking it.
 
   One gate runs over all of it once the landings are in. Nothing is pushed.
+
+› Message from general-purpose
+  The eleven new chapters hold up well. Nothing is lost that the Memory files
+  don't also hold, no claim about the current state is wrong outright, and no
+  words are given to the wrong speaker. I found one wrong date between chapters,
+  one quotation with wrong wording and a handful of small citation slips. The
+  full report, with exact replacement text for every finding, is at
+  /tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e5-95a5-166121
+  c231a3/scratchpad/nar/fresh-reader.md. I changed nothing in the repository.
+
+  **What I read and checked**
+  - I read both stretches in full and in order: the new one (149 lines) and the
+  old one (375 lines).
+  - From narrative.new.md I read only the two joins, lines 180 to 188 and 334 to
+  408.
+  - The three Memory files and the session records I searched rather than read.
+  I grepped about 110 phrases from the old chapters across the Memory files. I
+  checked quotations by script and read the doubtful ones in place.
+  - All 213 links in the new stretch point to a file and heading that exist.
+
+  **Counts under each heading**
+  1. **Turning points lost: none.** Everything the old chapters told that
+  changed direction, a standing rule or the way of working is held in owner.md,
+  direction.md or ideas.md. Two rules the owner later reversed are held there
+  too, but the narrative tells only the first version; I list those under seams.
+  2. **Claims of state: 105 checked, none wrong outright, two doubtful.**
+     - All 72 cited commit hashes exist, and their subjects fit what the
+  sentences say, with one exception (the first doubtful one below).
+     - I also checked 33 other claims against the code and git.
+     - Doubtful: `54f90f80` is attached to the "amber disks the root refused".
+  That commit is actually the landed defaults round, with 345 of 350 browser
+  cases passing.
+     - Doubtful: "stayed on the branch `trial/still-pointer`" is true today, but
+  the question was settled later and `7f3e4160` landed on `main`.
+  3. **Quotations: 285 sampled across all eleven chapters, about 272 of them the
+  owner's.**
+     - One wording mismatch: the text has `ungulfing 'nodes'`, but the source
+  (November 5, Turn 11) has `ungulfing "nodes"`.
+     - Four quotations sit in a different turn from the one cited: "an adequate
+  even amount of space" and "itself would not resize" (Turn 1, not 3, and the
+  source has a capital "An"), "with my own eyes and hands" (Turn 6, not 7),
+  "jagged quality" (Turn 15, not 14), and "Let's start with separate" (Turn 2).
+  4. **Seams: six.**
+     - S1: the NaN hub is "found on October 23" in one chapter and October 22 in
+  the one before.
+     - S2: a reference to "their own October 3" click rules, which the October 3
+  telling never mentions.
+     - S3: a "September rule of explainers behind a question mark" that no
+  September chapter tells.
+     - S4: the October 19 rule that browser tests run one at a time is told, but
+  not its lifting on November 17.
+     - S5: the still-pointer question is left on its branch, and its November 15
+  settlement is never told.
+     - S6: the "burnout" quotation (September 26, line 12) appears on both sides
+  of the join. That was already true of the old file.
+  5. **Wrong speaker: none.** Every sampled owner quotation sits in the owner's
+  text, and the agents' sentences are attributed to agents.
+
+  **The three findings I judge most important**
+  - **S4 and S5 together.** The narrative tells two rules and leaves out how
+  they changed: the browser tests running one at a time, and the still-pointer
+  question left on a trial branch. A new root reading only this file would take
+  both as still standing. The report gives one sentence to add to the November
+  15 to 18 chapter for each.
+  - **S1.** The two chapters disagree on the date the NaN hub was found. The fix
+  is "found on October 22".
+  - **2a.** The `54f90f80` hash is attached to the refused amber disks rather
+  than to the defaults that actually landed. The report has a rewritten sentence
+  that moves it.
+
+  **Not checked:** the figures the editors themselves flagged as unchecked
+  (sphere counts, timings, colour counts), the roughly 10% of quotations outside
+  my sample, the full diffs of most commits (I checked subjects), the parts of
+  narrative.new.md outside the two joins, and anything in the running Explorer.
+
+  My scratch scripts and outputs are in the `fr/` folder next to the report;
+  delete it if you don't want it.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Fresh reader of the retold narrative" finished · 14m 24s
+
+  Read 1 file, ran 4 shell commands (ctrl+o to expand)
+
+● Applying the fresh reader's twelve corrections to the narrative, then a last
+  mechanical check of every quotation before it goes in place.
+
+  Searched for 1 pattern, ran 7 shell commands (ctrl+o to expand)
+
+● The narrative is in place and its links check out; fixing one link in the
+  filing notes and committing.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Update(AGENTS.md)
+  ⎿  Added 1 line, removed 1 line
+      42 
+      43  ## Explorer design and verification
+      44 
+      45 -- **Orientation.** Following a connection, changing scale, open
+         -ing evidence and returning must keep recognizable subjects and 
+         -context; transitions explain spatial change. Judge motion and w
+         -hole journeys, not only stills. Current view behavior and open 
+         -designs are in [the Explorer design](.mdmd/layer-3/live-documen
+         -tation-explorer.mdmd.md).                                      
+      45 +- **Orientation.** Following a connection, changing scale, open
+         +ing evidence and returning must keep recognizable subjects and 
+         +context; transitions explain spatial change. Judge motion and w
+         +hole journeys, not only stills. Current view behavior and open 
+         +designs are in [the Explorer design](.mdmd/layer-3/live-documen
+         +tation-explorer.mdmd.md); the standing rules of its look and in
+         +teraction, each with its reason, are in [the design system](.md
+         +md/layer-2/design-system/design-system.mdmd.md), where a rule c
+         +hanges in the same commit as the product change that moves it. 
+      46  - **Legibility.** Readable names, necessary controls, relevant
+          evidence, honest signs of hidden content. Almost no text of our
+           own on screen: recognizable icons for repeated actions, with a
+          ccessible names, keyboard access, state and hover/focus explana
+          tions; optional help behind contextual disclosure. Never shrink
+           text to make room. Fade the irrelevant rather than boosting th
+          e relevant. No emoji in the UI.
+      47  - **Coherence.** Blue identifies what an interface offers; gree
+          n what uses it. In the 2D file drawing, uses enter on the left
+          and offerings leave on the right. Keep these meanings across sc
+          ales. Prefer a symbol's origin file over a barrel re-export whe
+          n resolving links.
+      48  - **Self-contained page.** The page reads only its own site. Pr
+          eserve its CSP and no-network checks, use listeners rather than
+           inline event attributes or scripts, and render raw HTML in doc
+          umentation as text.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+❯ >Neither curl says which file is at the other end, and half the testers read
+  it as a file linking to itself. Is this what you meant on November 13 by
+  "looks like a mistake when zoomed out"?
+
+  Noticeable to me are a bunch of defects in that shot:
+  - The node-level pins are staying the same tiny size even at distant zooms,
+  leaving Estate.Payments.Payme... to appear as the inbound pin receiving the
+  wrapped around connection. Are these node-level pins different than the ones
+  that we engaged separately early on when describing a file which relates to a
+  whole other file in some way? This would be useful for linking a HTML file
+  to an image _asset_ file or something like that. The image asset has no
+  symbols, but it is depended upon by the HTML file which describes its
+  relative path. I know that "Flow" is the default view of the 2D Local Map,
+  but it occurs to me that once symbols _do_ expand, we need to do some
+  disambiguation between the node-level pins ("I eat the whole file") and the
+  flow pins ("I am involved in some way").
+  - When I hover over a symbol row, its salient connector wires do not un-dim,
+  leaving me no more able to find the looped-back-to target than I was before.
+  (This is undoubtedly a regression)
+  - Despite the 3D indicator being orange, I cannot intuitively tell where the
+  wires are which are causing an issue. We should probably use that alert color
+  to call attention to the specific wires which are violating the left/right
+  arrangement rule.
+
+  In addition to the above: "French Corset". How did this phrase never come up?
+  Is that what we're looking at, or a different cycle? Even I, interacting
+  with the software, cannot figure that out.
+● A new message from you with a picture: recording it first, then looking at the
+  code behind each of the four things you noticed.
+
+  Searched for 2 patterns, ran 7 shell commands (ctrl+o to expand)
+
+● Looking at the code behind your four observations is done; sending a builder
+  to reproduce and mend them, then I'll answer you.
+
+● Agent(Returning connections made legible) Opus 5.5
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Yes, it is the French Corset, and I should have called it that. The record has
+  had the name for this exact drawing since October 5: "a back reference is a
+  French Corset pair of laces with a count and its route on hover." The playtest
+  findings and my summary said "stub" and "curl", and I never searched the
+  record for what the thing already was. That is my miss.
+
+  What you are looking at
+
+  The corset has two uses, and your picture shows the second:
+
+  - The original (December 2025): a file's own symbols referring to each other,
+    with both laces on one card.
+  - Since October 5: a connection that returns in a cycle, with one lace on each
+    of two cards. The green curl at App.config and the blue curl at
+    PaymentService.cs are the two ends of one connection.
+
+  Nothing on screen ties the two curls together, which is why even you cannot
+  tell. The whole route between them does exist in the page, but it is drawn
+  only while a symbol's hover lights it, and that hover is the thing you found
+  broken.
+
+  Your three defects
+
+  1. The node-level pins. You asked whether they differ from the earlier
+  whole-file pins. They do, and they are drawn alike:
+
+  - The whole-file pin is the early one, your HTML-to-image case. An asset has
+    it on both sides. On a card with symbol rows, a whole-file reference arrives
+    at the Internals row's dot.
+  - The hub was added November 6 for the lines that stand for several links: the
+    overview's gathered wires and, since Flow became the default, a pair's line
+    at every look. A returning pair's laces end there too.
+
+  On a card's right edge the two are literally one dot. On the left the hub is a
+  separate dot at a fixed height, which is why the lace in your picture sits
+  level with Estate.Payments.Payme... and reads as that row's. So "I eat the
+  whole file" and "I am involved in some way" are not told apart today.
+
+  2. The hover. I have not found the cause yet and won't guess at it. A builder
+  is writing the failing case first, then finding the commit that broke it.
+
+  3. The orange. Agreed, and it is being built as you put it: whatever the 3D
+  button counts is drawn on the map in the button's own colour, from the same
+  count, so the two cannot disagree. One thing to watch is that this amber sits
+  close to a directory's orange. If the laces read as directory marks, I'll show
+  you the same picture in a second hue.
+
+  What the builder is doing now
+
+  - The hover regression, mended at its cause.
+  - The amber on the wires that break the left-to-right order.
+  - Pointing at either lace, or at "1 connection returns in a cycle", lights
+    both ends and shows the route between them.
+  - Each lace named for both its files, with the words shown only after the
+    pointer rests.
+  - The hub moved up to the height of the file's name, where no row can be
+    mistaken for its end, and sized by the look.
+
+  How the two kinds of pin should be told apart is not being built yet. The
+  builder is writing down exactly what ends on a hub at each look and what it
+  would cost to have a gathered line end in the rows it stands for. I'll bring
+  that to you as alternatives in the app.
+
+  Elsewhere
+
+  - The narrative is done and in place: 238 KB where 344 KB stood. The fresh
+    reader found twelve things and all are applied. Two mattered: rules told
+    without the later decisions that changed them.
+  - The guide gained one clause pointing at the design system. I read the README
+    and left it alone. That completes the Memory pass apart from tonight's own
+    chapter at the close.
+  - Six builders are out: this one, the camera, the marble's second milestone,
+    and three preparing landings (the marble's, the page's frame, the World
+    Map's keyboard). One gate runs over everything once they land.
+
+  Your message and picture are recorded, and your words are in direction.md
+  under the layout.
+
+› Message from general-purpose
+  ## Marble trial, second milestone: done, on branch `marble-pattern-landing`
+
+  The branch is in worktree
+  `/workspaces/Live-Documentation/.claude/worktrees/agent-a56f13063bbac6a0c`.
+  Everything in the brief is done. All checks pass except one unit test that
+  failed once in the full suite (below).
+
+  ### Branch and commits, in order
+  1. **013f3384** — main as it stood when I started.
+  2. **fec798a2** — "Trial a marble pattern drawn from what each file's Live Doc
+  lists". This is 7fc9ffb4 cherry-picked; it applied cleanly because main had
+  changed no product code.
+  3. **d5cf9254** — "Give the marble pattern trial one value and a Vein Bend
+  slider, and draw the owner's fork".
+
+  ### The lever and the slider
+  - **One value:** the lever is now One Pattern / From Its Doc. Axis Too is
+  gone: its value, its `MARBLE_SKETCH_AXIS` define and its shader code.
+  `files-doc-axis.png` and its row in `run-pathfind.png` stay as the evidence,
+  and the pictures' README says why it was dropped.
+  - **Vein Bend:** a slider from 0 to 1, starting at 0.55, in Tuning → Colour
+  beside Marble Pattern. It is shown only while marbles are on and From Its Doc
+  is chosen.
+    - It is the `uMarbleBend` uniform, so moving it compiles nothing.
+    - It is the viewer's own setting (`appearance.marbleBend`), saved in the
+  browser and never in a link.
+    - Help sentence: "How far a marble's veins bend from its file's doc; zero
+  leaves plain vanes, higher bends them more."
+    - At zero the vanes are plain, without even the old small warp of One
+  Pattern, so zero is not quite One Pattern.
+
+  ### Tests
+  - **Unit suites:** 2,178 tests. One run of the full suite had one failure,
+  `forceGraphOctree.test.ts`, which I didn't touch. Run alone it passed three
+  times out of three; I took it to be the machine's load.
+  - **Explorer suite:** 1,138 tests, all passing.
+  - **New unit checks** in `palette.test.ts`: the bend is held to 0–1 and each
+  change is heard once; the bend is a uniform.
+  - **Hand-read entry list:** `repository-entries.json` now names
+  `scripts/contact-sheet/marble-sheet.ts` as "command marble:sheet of
+  package.json". That is a genuine new entry point I added; the oracle test
+  failed until I added it.
+  - **Browser file** `tests/e2e/tuning.spec.ts`, run alone on port 8793: 5 of 5
+  pass. The case now also checks that the slider is hidden and shown at the
+  right times, that bends of 0.9 and 0 draw different pictures, and that the
+  settings survive a reload without entering the address.
+  - **Other checks:** eslint is clean on the changed areas. Both audits report
+  zero problems: markdown links over 1,554 files, symbols over 1,551.
+  - **Live Docs:** regenerated. The four new docs carry authored Purpose and
+  Notes that cite Turn 20 of the November 18 record. Regeneration also brought
+  `theme.css`'s doc up to date with main's design-system document that cites it;
+  it had been stale on main.
+
+  ### Frames a second
+  Not measured again. The bend went from a constant to a uniform, which is the
+  same single multiplication, so the shader's cost can't have changed.
+
+  ### Pictures
+  All in `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/
+  marble-patterns/`:
+  - **`bends.png`** (forty files at bends 0.25, 0.55 and 0.85): at 0.25 each
+  marble is still its own, the sheet is about as calm as One Pattern, and they
+  look most alike as a family. 0.85 is busy, with islands and eyes, and on small
+  files it reads as noise. To my eye the best value lies between 0.25 and 0.55.
+  - **`fork-forceGraphView.png`** (the last ten commits that touched
+  `forceGraphView.ts`; the last of them is the trial's own cherry-picked
+  commit). Δ is how far the sketch moved from the commit before.
+    - Row (a), From Its Doc: moved at 4 of 9 changes (Δ 0.19, 0.04, 0.13, 0.02);
+  the other 5 are marked "= same".
+    - Row (b), from its contents: moved at 8 of 9 changes (Δ 0.01 to 0.03). It
+  stood still only where a commit reordered imports, since the order of lines is
+  not a feature.
+    - **The finding:** neither row shows a move you can see. The doc's largest
+  step bends one lobe slightly, and the contents' steps can't be told apart by
+  eye. In a file of about 2,500 lines, an edit of thirty lines moves the sum by
+  roughly thirty over the square root of its size. A contents marble that showed
+  every commit would need a sketch tuned to make small edits visible. The
+  construction as specified doesn't do that, and the owner should know this
+  before choosing.
+  - **`pathfind-3d-one.png` and `pathfind-3d-doc.png`** (same layout and
+  camera): in One Pattern the larger balls carry tidy stripes; in From Its Doc
+  they carry waving blotches, which look busier, most of all in the `e2e` shell.
+  - The README and the design document's marble passage are updated for all of
+  this. The passage states the fork as the owner's open question, with the
+  counts below.
+
+  ### The number for point 5
+  Of the 384 touches in the 150 commits up to c5493364, **250 (65%) left the
+  file's Live Doc byte-for-byte identical**. 134 changed it in some way,
+  line-number shifts included. For comparison, 298 left the listed facts
+  unchanged once line numbers are ignored. In the last 20 commits alone, only 2
+  of the 19 touches left the doc byte-identical. The counting script is
+  `/tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e5-95a5-16612
+  1c231a3/scratchpad/fork-evidence.mjs` (arguments: worktree, number of commits,
+  ref).
+
+  ### Other changes and unfinished work
+  - The marble sheet now renders one strip per row instead of in bands, which
+  fixes the half-drawn far row of the first round.
+  - Nothing is unfinished. The 2D cells' marbles and the default stay as they
+  were, as the brief asked.
+
+  Read 2 files (ctrl+o to expand)
+
+● Agent "Marble pattern from contents" finished · 28m 13s
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The marble trial is on main behind its lever, default unchanged. Its builder
+  found that neither source makes a real commit visibly move a big file's
+  marble, so I'm sending it back with a fix. · summary
+  ⎿  Resuming agent a56f130
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The marble trial is on main behind its Tuning lever, with the default
+  unchanged, but it does not yet do what you asked for. Its builder drew one
+  real file's last ten commits both ways, and in neither row can the eye see a
+  marble move from one commit to the next.
+
+  - Why: the pattern is built from a sum scaled to a fixed length, so an edit is
+    diluted by the file's size. Thirty lines out of 2,500 change almost
+    nothing.
+  - The fix, with the builder now: drop that scaling and wrap each component
+    through a sine instead. Then one changed line shifts the pattern the same
+    small amount whatever the file's size, and hundreds of changes turn it into
+    a different marble. I'll choose the sensitivity by eye from its sheets.
+  - A side effect I expect: a file with little in it gets a nearly plain marble,
+    which should quiet the 3D picture you called "still quite noisy". I haven't
+    seen it yet.
+  - Your choice, unchanged: whether the pattern comes from what a Live Doc lists
+    or from the file's whole contents. Its cost is now counted: about two edits
+    in three leave a Live Doc untouched today, and a contents-based pattern
+    would rewrite those docs too. I'll put this to you with pictures once the
+    fix is in.
+
+  Five builders are still out: this one, the returning connections, the camera,
+  the page's frame and the World Map's keyboard. The gate runs once they land.
+
+› Message from general-purpose
+  ## World Map keyboard round: ready to land
+
+  The branch is **`world-map-keyboard-landing`**, cut from main at `2426933c`,
+  in worktree
+  `/workspaces/Live-Documentation/.claude/worktrees/agent-aa7dbd7f336f21a29`.
+  Everything you listed in item 5 passed: 49 of 49 in the two spec files, 8 of 8
+  on the intermittent case, and the build, unit tests, eslint, generation and
+  slopcop all clean. The intermittent case was a real product fault, now fixed.
+
+  ### Commits, in order
+  1. **`5a7c78a2`** "Give the World Map's keys to the board, and make its reset
+  undoable": `a8399d5b` cherry-picked with no conflict, unchanged.
+  2. **`1b41c1a0`** "Give the World Map's board the keyboard before the Escape
+  case presses "?"". In `tests/e2e/inspection.spec.ts`, one line focuses
+  `#view-world .world` before the `?`.
+  3. **`92436b61`** "Place the World Map's pinned panel again before the frame
+  that shows it grown": the intermittent case's fix in the controller, its frame
+  wait in `world-map.spec.ts`, and both Live Docs (regenerated, plus authored
+  notes).
+  4. **`19c85bf7`** "Record in the design system what the World Map's keyboard
+  round mended":
+  `.mdmd/layer-2/design-system/interaction-and-accessibility.mdmd.md` and the
+  dated line at the top of `Probes/design-system/README.md`, on its own line
+  under the title.
+  5. **`5a3745a4`** "Regenerate the Live Docs that the design system's documents
+  now cite": generation added "Cited By" sections to the Live Docs of
+  `palette.ts` and `theme.css`, because main's design-system documents cite them
+  and main had not regenerated. None of this is my code. I kept it separate so
+  you can drop it if another branch carries it.
+
+  ### Counts
+  All of these ran inside one hold of `/tmp/live-docs-browser.lock`:
+  - `npm run build`, `live-docs:visualize` and `live-docs:visualize:estate`: all
+  succeeded.
+  - World Map unit tests: 53 of 53.
+  - eslint on the controller and the two specs: clean.
+  - `npm run live-docs:generate`: succeeded, result committed.
+  - slopcop `markdown`, `assets` and `symbols`: 0 issues each. I ran all three
+  because I wasn't sure which two you meant.
+  - "the pinned panel stands beside its piece", `--repeat-each 8`: 8 of 8.
+  - `world-map.spec.ts` and `inspection.spec.ts` whole, at two workers: 49 of
+  49.
+
+  ### The intermittent case
+  **Cause.** I probed the round's build three times. I opened explorer's pinned
+  panel, clicked its files open, and measured the panel's bottom against the
+  view's bottom (negative means inside):
+
+  | Moment | Panel bottom vs view bottom |
+  | --- | --- |
+  | Folded | −13 px |
+  | Right after the click | +26 px |
+  | After a microtask | +26 px |
+  | Inside the next frame's animation-frame callback | +26 px |
+  | A frame later | −283 px |
+
+  The panel unfolds where the folded one stood. The old `toggle` listener placed
+  it again only in a task of its own, and that task had not run by the time the
+  next frame began rendering. Nothing else runs between a frame's callbacks and
+  its paint, so that frame showed the panel's bottom 26 px below the view,
+  clipped. The case read the box right after its click and caught that state
+  about one run in five. The bottom it saw, 745.6 against 720, is the same
+  overhang. I ruled out fonts and an easing camera: the camera is instant there,
+  and the overhang is the same 26 px in every run.
+
+  **Fix.**
+  - Product: a `ResizeObserver` on the panel (disconnected on dispose) replaces
+  the `toggle` listener. It places a pinned panel again whenever its size
+  changes, and it runs after layout and before paint. It also covers folding,
+  and any other change of size.
+  - Case: `judge` now waits two frames before measuring, which is the frame a
+  person sees.
+
+  **One limit.** The probe cannot see paint itself, so "no painted frame shows
+  the overhang under the observer" rests on the browser's rendering order, not
+  on a measurement.
+
+  ### Design system document
+  I changed only what the round moved. Controller line numbers are as of commit
+  3.
+
+  **Rules:**
+  - Reversibility: the World Map's reset is added to where it holds and to what
+  checks it.
+  - Expanded state row: now holds for the help, checked by "the help button says
+  …".
+  - Tab order: the toolbar is one stop where it was nine. The outsider's 18
+  stays, as their count.
+  - Shortcut table row: "while focus is inside the board and not in a field;
+  never with Ctrl, ⌘ or Alt", and R "and, pressed again before a piece is moved,
+  put it back".
+  - The character-shortcut rule: Where, Checked by ("the board's letters …") and
+  Status, now holds since 2026-11-19, with a short line on what it was before.
+  - Escape's place in the World Map: line references updated.
+  - The toolbar pattern row (5.3) and the disclosure row (5.3).
+  - The walkthrough row in 5.5: now holds, checked by "the walkthrough says each
+  step …".
+  - 6.3 reduced motion: now holds, checked by "under reduced motion …".
+
+  **WCAG table:**
+  - 2.1.4: Fails → Meets (tested).
+  - 4.1.2: the World help's missing expanded state is removed.
+  - 4.1.3: the walkthrough is removed from the list.
+
+  There is no 2.3.3 row in that table to change.
+
+  **Left alone because the round did not move them:** the focus table's "World
+  Map help" row, and the header's note that lines are at `4856acf3`. Line
+  numbers in the entries I touched point at this branch.
+
+  ### Unfinished
+  - The evidence README from the first round,
+  `Screenshots/world-map-keyboard/README.md`, still says the intermittent case
+  is "not mended here" and leaves the inspection case to you. Both were true of
+  that round; commits 2 and 3 have since answered them.
+  - I killed two `http-server` processes on port 8794 that my own runs had
+  orphaned. Temporary outputs are removed.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Agent "World Map keyboard and motion defects" finished · 21m 27s
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+› Message from general-purpose
+  ## Landing handback: `shell-accessibility-landing`
+
+  The branch is ready to land. Every check passes except one 3D history case
+  that runs at the edge of its 30 s budget, and history-panel's four cases,
+  which I skipped because this repository's history takes about 85 minutes to
+  build. Both are below.
+
+  **Branch:** `shell-accessibility-landing`, in worktree
+  `/workspaces/Live-Documentation/.claude/worktrees/agent-a17014174406222d1`,
+  cut from main at `013f3384`. Main had no product changes since 533dcbb0, so
+  the five cherry-picks applied with no conflict. No commit was rewritten.
+
+  ### Commits, in order
+  1. `a8dce92a` Draw the shell's quiet words at WCAG contrast, and keep the
+  disabled grey for disabled controls
+  2. `5d60d935` Give the page its landmarks, a skip link and a status region,
+  and make a fatal fault reachable
+  3. `16ee9517` Name each toggle once, and put the words shown in Clear all's
+  name
+  4. `aacf61d9` Correct the README's claim that nothing runs at install time
+  5. `2e58a106` Record the shell's accessibility round: pictures before and
+  after, and the measures
+  6. `f8b27a9b` Move the design system's rules that the shell's accessibility
+  round mended (step 2)
+  7. `5bbca55c` Name the sidebar's toggle once, and let Ctrl+P reach the search
+  with Caps Lock on (step 3, with its own design-system edits)
+  8. `f7ed312a` Regenerate the Live Docs that the design system's documents now
+  cite (generate added Cited By to the `palette.ts` and `theme.css` docs)
+  9. `5edd995f` Add the shell round's three remaining pictures: the clear's
+  target, a fatal fault, the dialog's headings
+
+  As before, at `a8dce92a` alone the disabled-tone unit check is red on
+  `.section-label`; it is green from `5d60d935` on.
+
+  ### Step 2: the design system's documents (`f8b27a9b`, plus `5bbca55c` for
+  step 3)
+  **Visual Foundations:**
+  - **Tone table:** `muted` is now #939393 at 5.10 with 31 uses, `subtle`
+  #8a8a8a at 4.54, `panelSubtle` #828a9a at 4.52, each with its old value dated.
+  `panelMuted` has 26 uses. `text.disabled` has 0 uses, and its meaning is now
+  enforced.
+  - **Text-contrast rule:**
+    - "checked by" names the exact Today excuse, the unit check "the disabled
+  tone", and the shell spec's contrast case.
+    - The status says it holds for the tones. Muted still falls under 4.5 on a
+  hovered card (4.34) and on a control (4.11).
+    - The action button's white on #0091ff (3.23) stays broken in every palette,
+  noted as the owner's choice.
+    - The disabled-grey failure is recorded as mended on 2026-11-19.
+  - **Second values:** now equal to their meanings. `worldLightPressed` is
+  derived as 16% of the light form's offers colour over the board.
+  - **Typography:** reader headings are `calc` sizes. The panel is 16/15/14/13
+  over 13; the dialog is 18/17/16/15 over 15. The rule is checked by the shell
+  spec, and the size counts were recounted (172 declarations).
+
+  **Interaction and Accessibility:**
+  - **Rows and rules now marked as holding, with the spec that checks them:**
+  Loading…, the Empty and Error rows, the Ctrl+P row (now case-insensitive), the
+  shortcut-announced rule, 5.1 landmarks, the name/tooltip rule (zoom buttons),
+  label in name, the ellipsis rule, and the CSP status.
+  - **Toggle rule:**
+    - Play and Authors now hold it, and so does the sidebar toggle (step 3).
+    - **Still broken:** the 2D Pin (`card-factory.ts`) and the 3D actions
+  (`forceGraphView.ts`).
+    - The pin tray's disclosure is left as an open question.
+  - **5.5 status messages:** "No search results" now holds. **Still broken**,
+  with `announce.ts` named as the module to fix them: the 3D map's building
+  notice and the walkthrough.
+  - **Target table:** the search clear now meets 24×24, and the 2.5.8 rule's
+  status is updated.
+  - **WCAG table:**
+
+    | Row | Now |
+    | --- | --- |
+    | 1.3.1 | meets |
+    | 1.4.3 | fails at one place, the action button |
+    | 1.4.11 | partly tested; the clear's glyph at 5.43 |
+    | 2.4.1 | meets, tested |
+    | 2.5.3 | meets |
+    | 2.5.8 | partly tested |
+    | 4.1.2 | the 2D and 3D Pins remain; the fault panel is fixed |
+    | 4.1.3 | building and walkthrough remain |
+
+  **Findings record:** one dated italic line under its header. It names the
+  plain defects mended in full (2, 4, 7, 9, 10, 12, 13, 14, 16, 17, 18), defect
+  3 except the action button, defect 5 for "Nothing found" only, and defect 8
+  for Play and Authors only, with the four product commits. Nothing in the
+  record was struck.
+
+  ### Step 3 (`5bbca55c`)
+  - **Sidebar toggle:** it drops `aria-expanded`; its name follows the glyph
+  ("Collapse navigation" / "Open navigation"). Spec case: "the sidebar's toggle
+  says what a press does by its name alone…".
+  - **Ctrl+P with Caps Lock:** the search shortcut now uses
+  `event.key.toLowerCase() === "p"`. Spec case: "Ctrl+P reaches the search with
+  Caps Lock on…".
+  - **Both cases failed on the bundle before the mend:** `aria-expanded="true"`,
+  and a field that never took focus. Live Docs notes are added for `index.ts`,
+  `search-bar.ts` and the spec.
+
+  ### Step 4: pictures
+  In `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/shel
+  l-accessibility/`, each described in the README:
+  - `search-clear-focused.png`: the focus ring outlines the 24 px square; the ×
+  is the same 14 px glyph.
+  - `fatal-fault.png`: headed "The Explorer stopped", the message in red, then
+  the stack wrapped.
+  - `dialog-headings.png`: 18/17/16/15 px over 15 px body text.
+
+  These ran under the `-x` lock with the rest of step 5, not `flock -s`. The
+  month's inventory is left to you.
+
+  ### Step 5: runs (under `flock -x`; specs at two workers, port 8795)
+  - **Unit suites (`npm run test:unit`):** 180 files, 2031 tests passed.
+  - **ESLint** on every changed script and spec: clean.
+  - **`npm run live-docs:generate`:** done and committed (`f7ed312a`, plus the
+  docs folded into `5bbca55c`).
+  - **SlopCop:** markdown, assets and symbols all exit 0. I ran all three, since
+  the gate runs three.
+  - **Specs** (shell-accessibility, local-map-pins, search-bar,
+  labels-and-controls, no-network, inspection, history-scrubber,
+  history-emphasis): **85 passed, 1 failed.**
+    - The failure is `history-scrubber.spec.ts:569` (tagged `@alone`). It timed
+  out at 30 s waiting on a disabled 3D button at line 618.
+    - Alone at one worker it failed the same way once.
+    - A diagnostic run with the limit raised to 120 s passed in 26.2 s. So the
+  case sits at its 30 s budget on this loaded machine; my change is not
+  involved.
+    - Its new Authors assertions (lines ~580–590) passed in every run.
+  - **history-panel:** 12 passed and 4 failed, all four on "/ carries a
+  history". `npm run live-docs:history` processes this repository's 1095 commits
+  at about 4.8 s each, roughly 85 minutes. I stopped it at 6 minutes, per your
+  fifteen-minute rule.
+    - The cache it began, `.mdmd/history/83158d68672caf13`, is gitignored and is
+  left in my worktree for reuse.
+    - Main's cache directories are keyed differently, so they cannot stand in.
+    - **Whether the four cases pass is still unverified.**
+
+  ### Unfinished, or noticed
+  - The history-panel four, as above.
+  - The pin tray's toggle still changes its name ("Show pins" / "Hide pins")
+  while saying `aria-expanded`. Its glyph is fixed, so by the Play rule it
+  should keep one name. The documents leave disclosures open, so I did not
+  change it.
+  - Leftovers: `dist/` and `test-results/` are gitignored. My scratch scripts
+  and logs are under `/tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9
+  e11-40e5-95a5-166121c231a3/scratchpad/a170/`.
+
+
+● Agent "Shell accessibility plain defects" finished · 1h 23m 40s
+
+  Ran 7 shell commands (ctrl+o to expand)
+
+● Landing the page's frame round on main commit by commit (the World Map's round
+  is already in); two builders edited the same design-system rows, which I've
+  joined by hand.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Both rounds are on main and the Live Docs are regenerated; now running the
+  gate's non-browser checks (build, lint, unit tests, docs) over everything
+  landed so far.
+
+  Searched for 1 pattern, ran 5 shell commands (ctrl+o to expand)
+  ⎿  Resuming agent aa7dbd7
+
+● A fourth round is briefed (words wait for a pointer at rest, in 3D and on the
+  World Map); noting it in the record while the checks run.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The World Map's keyboard round and the page's frame round are both on main
+  now, alongside the marble trial. No gate has run over any of tonight's
+  landings yet. The build, lint, unit-test and docs checks are queued behind a
+  builder's browser run, and the full gate with the browser suite waits for the
+  rounds still out.
+
+  Two things turned up while landing them:
+
+  - A real fault behind an intermittent test. On the World Map, a pinned panel
+    that unfolds could show one frame with its foot 26 px below the view before
+    it was moved back. It is now placed again before that frame is painted, and
+    the test passes 8 of 8.
+  - Two builders edited the same design-system rows. I joined them by hand so
+    each row says what both rounds made true.
+
+  Four builders are out:
+
+  Round: Returning connections
+  What it does: Your three defects from the cycle picture: the hover
+    regression, the amber on the wires that break the order, and the hub moved
+    to the file's name.
+  ────────────────────────────────────────
+  Round: Camera
+  What it does: The Arrival lever, and following a newly opened cell.
+  ────────────────────────────────────────
+  Round: Marble, third pass
+  What it does: Making a real commit visibly shift a marble.
+  ────────────────────────────────────────
+  Round: Pointer at rest (new)
+  What it does: Your point about text "shooting every which way" in the 3D
+    map: a moving pointer may show that a thing is pressable, but names,
+    panels and the fading of everything else wait until it rests. The same
+    rule goes on the World Map's hover peek, and a World Map box's folder goes
+    into its panel and accessible name, not onto the board.
+
+● Background command "Run the gate without its browser stage over main, under
+  the lock" completed (exit code 0)
+
+  Ran 2 shell commands (ctrl+o to expand)
+  ⎿  Resuming agent adb9a3a
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The first check over tonight's landings failed, on one line. It is the
+  type-check of the tests, and the line is in the test runner's new test, added
+  by the review of my own code from yesterday.
+
+  - The failure: scripts/e2e-passes.test.ts(98,26): error TS2307: Cannot find
+    module '../tests/e2e/playwright.config'. The test passes when run, because
+    the test runner resolves the import at run time. Its builder had run the
+    test but not the gate's type-check stage.
+  - What did pass: lint and the three builds.
+  - What did not run: the unit and integration suites come after the type-check,
+    so nothing of tonight's five landings has passed them together yet. The
+    browser suite has not run either.
+  - What is happening: the same builder is mending it so the test is checked
+    against the real configuration's type. It will then run those stages to the
+    end and report anything else red.
+
+  I ran this stage early on purpose, because five rounds from five different
+  starting points had just met on main.
+
+  Four builders are still out: the returning connections, the camera, the
+  marble's third pass and the pointer at rest.
+
+● Agent "Review root's code of today" is waiting on its own background work · 1h
+  53m 43s
+
+● The test runner's builder has its mend in and is waiting for its turn on the
+  lock to run the gate's non-browser stages end to end. Nothing new has landed
+  since my last message; the same four builders are still out.
+› Message from general-purpose
+  ## Marble trial, third milestone: the wrap is in, and a commit now shows on a
+  marble
+
+  Branch `marble-pattern-turn` was cut from main at 8127eaea and holds one new
+  commit, **302bd036** "Wrap the marble sketch through a sine instead of
+  bringing it to unit length". Nothing is unfinished.
+
+  With the wrap, a thirty-line commit to a large file is visible at a glance on
+  its "from its contents" marble, and one fact is a shift you can find when you
+  look for it.
+
+  ### TURN and k
+  - **TURN = 4**, `SKETCH_TURN`, chosen by eye from `turn-choice-fork.png` and
+  `turn-choice-run.png`.
+    - **TURN 2:** a ±41-line commit (Δ1.67) is another marble, and even ±21
+  lines recasts it. Too jumpy for one file's own history.
+    - **TURN 8:** ±41 lines (Δ0.38) is only a modest shift, and ±4 lines (Δ0.07)
+  is barely findable. In the run, everything but "all replaced" stays close to
+  the one pattern.
+    - **TURN 4:** ±30 to ±46 lines (Δ0.44 to 0.65) is seen at a glance between
+  neighbours, and ±4 lines (Δ0.12) is findable. In the run, one symbol is
+  slight, five are visible, and all replaced is another marble.
+    - Δ here is how far the eight strengths move from the marble before.
+  - **k = 0.5**, `SKETCH_STRENGTH`. A large file's components spread evenly
+  round the sine, whose root mean square is 1/√2. So 0.5 gives each strength
+  1/√8 and the eight together a length of about one, which is the old unit
+  length. Vein Bend 0.55 therefore means what it meant.
+    - Measured: mean length 0.995 at 500 features, 0.29 at 5, 0.13 for a file
+  with no features.
+  - **The shader is unchanged.** The wrap is computed per file in the page's
+  script, so I didn't measure frames again.
+
+  ### Code
+  - **`marbleSketch.ts`:** new `featureSum` (the raw weighted sum),
+  `strengthsOf(sum, turn)`, `marbleFeatureSums(graph)`; `sketchOf` and
+  `marbleSketches` now wrap. The doc comment carries the reasoning.
+  - **`marble-sheet.ts`:** gains `--turns 2,4,8` for the run and fork sheets.
+  Fork captions now show two lines: hash and date, then lines added and removed
+  with Δ.
+  - **Live Docs:** regenerated, with the authored notes updated for the wrap.
+  The design document's marble passage is updated.
+
+  ### Unit tests
+  `marbleSketch.test.ts` now has these cases:
+  - strengths are bounded at 0, 1, 40 and 5,000 features;
+  - the same facts give the same sketch in any order;
+  - one feature more moves the sketch by about the same at 5, 50 and 500
+  features (within a factor of 1.5; the unit length failed this tenfold);
+  - the move rises with the number of changed features and saturates near √2;
+  - few facts give weak strengths.
+
+  ### Checks
+
+  | Check | Result |
+  | --- | --- |
+  | All unit suites | 203 files, 2,190 tests, all passing |
+  | `tests/e2e/tuning.spec.ts`, run alone on the rebuilt bundle | 5 of 5 pass;
+  no change was needed |
+  | eslint on the changed areas | clean |
+  | Markdown-link audit | 0 broken links |
+  | Symbol audit | 0 issues |
+
+  - **Two load failures, both green alone.** One full-suite run lost the
+  saturation case to the 5-second timeout under load; it took 2 s alone. I
+  lightened it to 400 features over 80 cases, now 0.7 s. Another full run failed
+  main's `scripts/e2e-passes.test.ts` once; it passed alone, and the next full
+  run was all green.
+
+  ### Sheets and what I see
+  All in `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/
+  marble-patterns/`, each described in the README.
+
+  - **`fork-forceGraphView.png`** (TURN 4):
+    - "From its contents" moves at 8 of 9 commits, roughly in proportion to
+  their size. The import-reordering commit is "= same", because the order of
+  lines isn't a feature.
+    - "From Its Doc" moves at 4 of 9 commits, and only slightly.
+    - The README's sentence that neither row shows a visible move is replaced by
+  this. The old sheet is kept as `fork-forceGraphView-unit-length.png`, the
+  evidence of the dilution.
+  - **`files-doc.png`, `bends.png`:** clearly calmer than before.
+    - **Tiny files** (most tests, `go.test.ts`, `logging.ps1`) are close to the
+  plain swirl. Up close they're told apart by bearing and shares, as in One
+  Pattern, plus slight bends that differ from file to file. Two tiny files of
+  the same kind with similar shares can look much alike.
+    - **Rich files** (`pathfind.ts`, `compose.ts`, `runtime.ts`,
+  `PaymentService.cs`) carry the lobes, so the pattern now shows how much a file
+  holds.
+    - **Bends:** at 0.25 most marbles are near the one pattern; 0.55 now looks
+  like the right default; at 0.85 only the rich files grow islands.
+  - **`run-pathfind.png`:** one symbol is slight, five are visible, all replaced
+  is another marble. The first round's version, with the dropped Axis Too row,
+  is kept as `run-pathfind-unit-length.png`.
+  - **`history-sample-steps.png`:** the sample's files are small, so their
+  marbles are calm and the shifts at changed steps are slight but present.
+  Renamed files still come out as new marbles.
+  - **`pathfind-3d-one.png`, `pathfind-3d-doc.png`:** in From Its Doc the pinned
+  file and the larger files carry waving bands, while most small balls stay
+  near plain. The map is markedly less busy than the first round's doc picture.
+  - **`files-one.png`:** redrawn because the bundle now holds main's newer
+  files, so the forty differ from the first round's.
+
+  ### The fork
+  It's still the owner's choice, and nothing in the Live Doc format, the graph
+  or the history codec changed. The cost count stands: 250 of 384 touches leave
+  a Live Doc byte-identical.
+
+  Read 3 files (ctrl+o to expand)
+
+● Agent "Marble pattern from contents" finished · 15m 2s
+
+  Searched for 1 pattern, ran 3 shell commands (ctrl+o to expand)
+
+● The marble trial now does what you asked, and there is one choice for you. It
+  is on main behind Tuning → Colour → Marble Pattern, with the default
+  unchanged.
+
+  What changed
+
+  Dropping the fixed-length scaling worked. A changed line now shifts the
+  pattern by the same small amount whatever the file's size. One unit test fails
+  tenfold on the old construction and holds on the new one.
+
+  - One real file's last ten commits, drawn two ways
+    (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/marbl
+    e-patterns/fork-forceGraphView.png). This is the picture for your choice.
+    Bottom row, from the file's contents: each commit's marble differs from the
+    one before, slightly after four lines and plainly after forty. Top row, from
+    what its Live Doc lists: the ten are nearly one marble.
+  - Forty files (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Scree
+    nshots/marble-patterns/files-doc.png). A file with little in it is close to
+    a plain swirl and a rich file carries lobes. The sheet is calmer than the
+    first round's, and a marble now also says how much its file holds.
+  - The 3D map of pathfind.ts (AI-Agent-Workspace/AgentSessionHistory/2026/11/20
+    26-11-18/Screenshots/marble-patterns/pathfind-3d-doc.png). Bands on the
+    pinned file and the larger ones; most small balls are near plain.
+
+  Decision for you
+
+  What the app has tonight is the top row: the pattern is drawn from what a Live
+  Doc lists (how many symbols, which files it uses). It gives every file its
+  own marble, but a real commit barely moves it. That falls short of your
+  "capable of being noticed from commit to commit."
+
+  Only the contents give that. Because the Explorer may show only what the Live
+  Docs carry, it means growing the format:
+
+  - One generated line in each Live Doc: eight numbers, a signature of the
+    source text that stays close for close texts.
+  - Every edit then changes its file's doc by that line. Today about two edits
+    in three leave the doc untouched, so doc diffs in a pull request get
+    noisier.
+  - The history has to carry it per step, and this repository's history must be
+    computed again: about 85 minutes by tonight's measurement.
+
+  I recommend the contents. Your wish is about noticing change, and the same
+  line would let the docs' own check tell that a doc is stale without
+  regenerating it. I have not built it: nothing in the format, the graph or the
+  history changed tonight.
+
+  Seeing it yourself
+
+  I'm rebuilding main's Explorer for your port now; it is queued behind the
+  builders and I'll say when it is done. Then open pathfind.ts in 3D
+  (http://127.0.0.1:8999/?view=local&mode=3d&node=packages/engine/src/live-docs/
+  pathfind.ts), choose From Its Doc under Tuning → Colour → Marble Pattern, and
+  try the Vein Bend slider beside it (0.55 is the start).
+
+  Elsewhere
+
+  Three builders are still out: the returning connections, the camera and the
+  pointer at rest. The test runner's builder is mending the type-check failure
+  and re-running those stages.
+
+● Background command "Fallback timer of fifty minutes while builders work"
+  completed (exit code 0)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The lane is busy and nothing new has landed since my last message. Five jobs
+  are queued for the one browser lane: the non-browser gate stages (re-run by
+  the test runner's builder), my rebuild of main for your port, and browser runs
+  from the three rounds still out.
+
+  The camera round already has its work committed on a branch brought up to
+  main, so it should hand back first.
+
+› Message from general-purpose
+  The type-check failure is mended. The whole non-browser gate passes on it:
+  exit 0, nothing red.
+
+  Branch: `runner-typecheck`, from main at 8519e538. One commit: fbd99ab9 "Read
+  each browser pass's configuration through a typed function". It cherry-picks
+  onto main alone. Working tree clean.
+
+  **Cause, in a sentence.** The gate's "Type-check tests" stage uses
+  tests/tsconfig.json, which extends the base. The base sets module and
+  moduleResolution to NodeNext, and package.json has no "type": "module", so
+  every test file is read as CommonJS. In that mode a dynamic `import()` is left
+  as Node's own ESM import. It needs the file's extension, hence TS2307.
+
+  **The config was already in the project.** tests/e2e is included
+  (`e2e/**/*.spec.ts` and the rest), so tests/e2e being outside was not the
+  cause.
+
+  **Why ".js" alone does not fix it.** Adding the extension makes TypeScript
+  find the file, but it then types `.default` as the whole module, which is what
+  Node would hand back. Vitest hands back the config, so the two disagree.
+  Making it pass would have taken a cast.
+
+  **The mend, with no cast and no ignore.**
+  - tests/e2e/playwright.config.ts now exports `configFor(pass)`, a function of
+  the pass's name. Its default export is
+  `configFor(process.env.LIVE_DOCS_E2E_PASS)`, so Playwright gets exactly what
+  it got before.
+  - The test imports `configFor` statically and calls it for each pass. It is
+  now type-checked against the config's real type, with no environment juggling
+  and no module reset.
+  - The body of the config only lost its `alonePass` constant; no line of it was
+  re-indented.
+
+  **Checks.**
+  - `tsc -p tests/tsconfig.json` exits 0.
+  - `scripts/e2e-passes.test.ts`: 5/5.
+  - ESLint is clean.
+  - The real listing still splits the suite: 554 + 5 (main has grown).
+  - The case can still fail: a shared pass without its tag filter would put a
+  tagged case in both passes, and the case would go red.
+  - Live Docs: regenerated under the lock (2 updated), and the two authored
+  notes say what changed and why.
+
+  **Gate.** `flock -x /tmp/live-docs-browser.lock npm run safe:commit`, on
+  fbd99ab9:
+  - Live Docs pipeline, lint, build, type-check tests: passed.
+  - Unit: 182 files, 2,053 tests passed.
+  - Integration: 21 files, 138 tests passed.
+  - Documentation link enforcement: passed.
+  - SlopCop markdown: 1,568 files, 0 broken links. Assets: 21 files, 0 broken.
+  Symbols: 1,565 files, 0 issues.
+
+  Last lines:
+  ```
+  SlopCop Symbol Audit
+    Scanned files: 1565
+    Issues: 0
+    ✔ No symbol issues detected
+
+  === git status -sb ===
+  ## runner-typecheck
+
+  Safe to commit? Tests passed. Review the working tree above before committing.
+  ```
+  So nothing else from tonight's five rounds is red in the non-browser stage.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Agent "Review root's code of today" is waiting on its own background work · 2h
+  0m 16s
+
+● The type-check failure is mended and on main, and the gate's non-browser
+  stages now pass.
+
+  - Cause: the tests are compiled as CommonJS, where a dynamic import() needs
+    the file's extension, and with the extension TypeScript gives the import a
+    type that does not match what the test runner hands back. So the dynamic
+    import was the wrong tool, not a missing setting.
+  - Mend: the browser suite's configuration now exports a function of the pass's
+    name, and the test calls it directly. The test is checked against the
+    configuration's real type, with no cast and no ignore. Playwright receives
+    exactly what it did before.
+  - Result: lint, the builds, the type-check, 2,053 unit tests, 138 integration
+    tests, the doc-link check and the three audits all passed. That run was the
+    builder's, on main as it stood just before the marble's third pass landed.
+    The marble builder ran the unit suites (2,190 tests) and two of the audits
+    over its own change.
+
+  The browser suite has still not run over any of tonight's landings. That waits
+  for the three rounds still out: the returning connections, the camera and the
+  pointer at rest. The rebuild of main for your port is still queued.
+
+● Background command "Rebuild main's Explorer and its samples under the lock so
+  the owner's preview shows the night's landings" completed (exit code 0)
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● Your port now shows tonight's landings. main's Explorer and its samples are
+  rebuilt, so a reload on 8999 picks them up. Here is where to look.
+
+  What landed: Marble pattern trial
+  Where to look: pathfind.ts in 3D
+    (http://127.0.0.1:8999/?view=local&mode=3d&node=packages/engine/src/live-doc
+  s/pathfind.ts)
+  What to do: Tuning → Colour → Marble Pattern → From Its Doc, then move Vein
+    Bend. The setting stays in your browser and is not carried by the link.
+  ────────────────────────────────────────
+  What landed: The same, over time
+  Where to look: the history sample
+    (http://127.0.0.1:8999/samples/history/?s=N4IgbiBcDMA0IEcomgExPdkDaIQF14ALZA
+  YwFMAGcgQwE4B2ADgCMAmSgMzvOidVoAWToNKdSlBtEqC2UvixpsArAEYQAXyA)
+  What to do: With From Its Doc chosen, step through the commits. The sample's
+    files are small, so their marbles are calm and the shifts at changed steps
+    are slight.
+  ────────────────────────────────────────
+  What landed: World Map keyboard
+  Where to look: this repository's board (http://127.0.0.1:8999/?view=world)
+  What to do: Drag two pieces, then press Reset layout: everything returns and
+    the button stays lit. Press it again and your arrangement comes back. The
+    letter keys now work only after you click the board.
+  ────────────────────────────────────────
+  What landed: The page's frame
+  Where to look: Any page
+  What to do: The sidebar's section labels and the search placeholder are
+    lighter. Press Tab once on a fresh load for the skip link. Type nonsense
+    in the search to see "Nothing found".
+  ────────────────────────────────────────
+  What landed: Hidden-file cells
+  Where to look: pathfind.ts in 2D
+    (http://127.0.0.1:8999/?view=local&node=packages/engine/src/live-docs/pathfi
+  nd.ts)
+  What to do: Nothing should look different: the marks are drawn exactly as
+    before. Switching 3D → 2D is about a quarter of a second quicker.
+
+  Not on your port yet: your three defects from the cycle picture, the Arrival
+  lever with the camera following a new cell, and words waiting for a pointer at
+  rest. Those three rounds are still with their builders.
+
+  The gate's non-browser stages pass on main. The browser suite has not yet run
+  over tonight's work.
+
+● Your port now shows tonight's landings. main's Explorer and its samples are
+  rebuilt, so a reload on 8999 picks them up. Here is where to look.
+
+  What landed: Marble pattern trial
+  Where to look: pathfind.ts in 3D
+    (http://127.0.0.1:8999/?view=local&mode=3d&node=packages/engine/src/live-doc
+  s/pathfind.ts)
+  What to do: Tuning → Colour → Marble Pattern → From Its Doc, then move Vein
+    Bend. The setting stays in your browser and is not carried by the link.
+  ────────────────────────────────────────
+  What landed: The same, over time
+  Where to look: the history sample
+    (http://127.0.0.1:8999/samples/history/?s=N4IgbiBcDMA0IEcomgExPdkDaIQF14ALZA
+  YwFMAGcgQwE4B2ADgCMAmSgMzvOidVoAWToNKdSlBtEqC2UvixpsArAEYQAXyA)
+  What to do: With From Its Doc chosen, step through the commits. The sample's
+    files are small, so their marbles are calm and the shifts at changed steps
+    are slight.
+  ────────────────────────────────────────
+  What landed: World Map keyboard
+  Where to look: this repository's board (http://127.0.0.1:8999/?view=world)
+  What to do: Drag two pieces, then press Reset layout: everything returns and
+    the button stays lit. Press it again and your arrangement comes back. The
+    letter keys now work only after you click the board.
+  ────────────────────────────────────────
+  What landed: The page's frame
+  Where to look: Any page
+  What to do: The sidebar's section labels and the search placeholder are
+    lighter. Press Tab once on a fresh load for the skip link. Type nonsense
+    in the search to see "Nothing found".
+  ────────────────────────────────────────
+  What landed: Hidden-file cells
+  Where to look: pathfind.ts in 2D
+    (http://127.0.0.1:8999/?view=local&node=packages/engine/src/live-docs/pathfi
+  nd.ts)
+  What to do: Nothing should look different: the marks are drawn exactly as
+    before. Switching 3D → 2D is about a quarter of a second quicker.
+
+  Not on your port yet: your three defects from the cycle picture, the Arrival
+  lever with the camera following a new cell, and words waiting for a pointer at
+  rest. Those three rounds are still with their builders.
+
+  The gate's non-browser stages pass on main. The browser suite has not yet run
+  over tonight's work.
+
+[Image #1]
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Read AGENTS.md (63 lines)
+  ⎿  Referenced file ../../tmp/claude-1000/-workspaces-Live-Documentation/645014
+     1c-9e11-40e5-95a5-166121c231a3/scratchpad/nar/fresh-reader.md
+  ⎿  Referenced file ../../tmp/claude-1000/-workspaces-Live-Documentation/645014
+     1c-9e11-40e5-95a5-166121c231a3/scratchpad/nar/joined.md
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e
+     5-95a5-166121c231a3/scratchpad/handback-reviewer2.md (83 lines)
+  ⎿  Referenced file ../../tmp/claude-1000/-workspaces-Live-Documentation/645014
+     1c-9e11-40e5-95a5-166121c231a3/scratchpad/ideas/ideas.new.md
+
+● Task "Cells' first-frame cost" still running in background
+
+● Task "Review root's code of today" completed in background
+
+● Task "Blind playtest instrument" completed in background
+
+● Task "Returning connections made legible" still running in background
+
+● Task "World Map keyboard and motion defects" still running in background
+
+● Task "Fallback timer of fifty minutes while builders work" still running in
+  background
+
+● Background command "Fallback timer of fifty minutes while builders work"
+  completed (exit code 0)
+
+  Read 4 files, ran 11 shell commands (ctrl+o to expand)
+
+❯ >Marble pattern trial
+
+  I tested the marble pattern trial and found that the effect of changes was
+  marginal enough as to be not noticeable. What we should prefer is to have
+  even a small change in a file produce a _perceptible_ difference.
+  Nevertheless, it's quite cool! This is a big step in the right direction!
+
+  One thing I wonder about is whether the concept of "code file = grid of text"
+  could be somehow translated into "smoothed grid of text_ure_" with the
+  marbles. I don't know. Just curious how to get more interesting temporally
+  clear variation effects.
+
+  Oh, and temporal scrubbing wouldn't highlight the pinned note (or wouldn't
+  un-dim it), which made watching the changes as I scrubbed past points it
+  touched difficult. The history scrubber should either limit itself to only
+  that which is salient about the pinned set or at least help snap to those
+  salient points of change (including, perhaps by default, jumping only between
+  major commit markers in the playback mode and left-right controls of the
+  history panel). Combining that with un-dimming the pinned node(s), I think
+  will really maximize the viewer's ability to see this system at work.
+
+  ... one more interesting thought related to the capture of an intriguing
+  texture from the contents of a scanned file (or the resultant markdown file
+  it created, but preferably the scanned file): the "Internals" pseudo-node
+  still could benefit from an interesting texture at its inbound connector pin
+  (which could also be restyled to have a more rounded-corner box-like shape),
+  perhaps also plausibly derived from some shape-like representation of the
+  source text. If the inbound connector pin of the internals pseudo-node had a
+  bit of that snowflake uniqueness that we have to the marbles, I wonder if
+  that might help, if we're ever able to muster it, the ability of the user to
+  see the imperceptible differences which don't resize a node across different
+  positions of the timeline in the 2D local map view (which we don't have yet
+  -- but a consistent history control which lets us go back in time in both 2D
+  and 3D is almost certainly where we're headed, design-wise).
+
+  Consider whether you can use the source material of scanned files as a source
+  of information that could be textured and, after a while of use,
+  imperceptibly allow power-users to detect interesting things which are
+  actually salient to the code files at hand. (An example from my day job: I
+  took a series of 36 stored procedures, turned them into queries, and
+  reformatted them to align semantically similar items by eye, moving all the
+  outputs in what would ultimately be a JSON bundle of data over to the exact
+  same column position of the sql text file so that a reader could scan these
+  queries by eye and find _exactly_ what they're looking for. I aligned the
+  joins and their conditions in ways which kept things lined up to the eye. It
+  would be absolutely radical if I had some way, at the level of the marble,
+  the level of the internals pseudo-node, or both, to get a gut-level intuition
+  about the alignment of the formatting on the text file. Indeed, hopefully
+  with things like image files, we're able to enjoy that mess of unreadability.
+  Having the signal of plain text and plain text shape -- the rows and columns
+  of meaning imbued into the files of a scanned directory -- readable at the
+  nodes in 2D and 3D -- I think that has real value.
+
+  >The page's frame
+
+  Looking better!
+
+  >Nothing should look different: the marks are drawn exactly as before.
+  Switching 3D → 2D is about a quarter of a second quicker.
+
+  Awesome!
+
+● Recording your message and its pictures now, then reading how the history
+  scrubber treats a pinned file before I answer.
+
+  Searched for 2 patterns, ran 3 shell commands (ctrl+o to expand)
+
+● Saving your three pictures and writing Turn 24 into the record; then two
+  builders go out, one for the history scrubber and one for the text-shape
+  probe.
+
+  Listed 1 directory, ran 4 shell commands (ctrl+o to expand)
+● Agent(History follows the pinned set) Opus 5.5
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+  ⎿  Resuming agent a56f130
+  ⎿  Message queued for delivery to af784aba5d0357850 at its next tool
+     round. If it finishes first, it is resumed with the message and
+     notifies again, so wait for that notification before resending.
+
+● Both builders are out and the camera's builder has a question from me; writing
+  the notes into the record, then my answer to you.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Both halves of your message are now with builders: one for the history
+  scrubber, one for a probe of the text-shape idea on sheets.
+
+  History and the pinned file
+
+  - What the scrubber already knows: the blue marks in your third picture
+    (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/owner
+    -turn-24/03-history-step-762-pathfind-dim.png) are the steps that touched
+    pathfind.ts. A tall mark means its symbols or connections changed, a short
+    one that only its text changed.
+  - What it doesn't do with that: only Page Up and Page Down jump between the
+    tall marks. The ‹ › buttons move one commit, play walks every commit, and
+    the default dimming fades the pinned file along with everything else the
+    step didn't change.
+  - What is being built:
+    - A file you pinned or asked about is never dimmed by a step.
+    - With something pinned, ‹ › and play move between the marked steps by
+      default.
+    - Dragging still passes through every commit, and choosing Every Step under
+      Tuning → History restores the old walk.
+  - One reading of your words to check: you wrote "major commit markers"; I had
+    it stop at both tall and short marks, since both are "points it touched".
+    The builder will report how many of each pathfind.ts has, and limiting it to
+    the tall ones is a one-line change if that is what you meant.
+
+  The marble
+
+  Your finding matches what I saw on the sheets: drawn from what the Live Doc
+  lists, a commit seldom shows. I've recorded your preference for the scanned
+  file as the answer to the fork I put to you at 01:37.
+
+  Your "grid of text → texture" idea is what an editor calls a minimap: where
+  the ink sits, row by row and column by column. Your aligned queries would show
+  as a vertical gutter at the column where the outputs line up. Deep nesting
+  shows as a staircase at the left margin, and an image's bytes as an even mess.
+
+  The difficulty is that this picture and your first request pull against each
+  other. A picture of a whole file barely moves when one line of 2,500 changes,
+  which is the same dilution that made the trial marginal. A hash moves at every
+  edit but tells you nothing about the file.
+
+  My proposal is to put two scales in one marble:
+  - The page's shape, coarse and slow to change, which is the part you learn to
+    read.
+  - A fine grain for each band of the page, which turns sharply when that band's
+    own lines change. A small edit then shows, and shows roughly where in the
+    file it happened.
+
+  The same shape, flat and upright, would be the Internals row's pin as a small
+  rounded box, so the 2D card carries it as well.
+
+  The probe will bring back sheets for your eye, with nothing in the product
+  yet:
+  - three matched versions of the marble, over one file's last ten commits;
+  - a real one-line change in a small file;
+  - one query written twice, aligned by eye and formatted conventionally;
+  - six kinds of file, including an image;
+  - a field of forty marbles at the sizes the 3D map draws, to judge whether
+    this adds to the noise you named;
+  - the Internals pin at its real sizes;
+  - a count of how many of 384 real file edits visibly move each version.
+
+  The decision that follows is how a Live Doc carries the shape, because the
+  Explorer may only show what the docs hold. My idea is a small picture in the
+  doc itself, drawn in Braille or block characters, so a person reading the
+  Markdown sees it and git's diff shows which band changed. The probe will show
+  samples; nothing is built.
+
+  Your point that one history control across 2D and 3D is where this is headed
+  is recorded in direction.
+
+  Where the night stands
+
+  - Out now: five builders, all asked to hand back by about 04:00 UTC. They are
+    the camera, the returning connections, words waiting for a rested pointer,
+    and these two.
+  - Camera: I read that round ahead of its handback. The step that follows a
+    newly opened cell looks right. One picture of the pull-back on this
+    repository shows doubled text, and I've asked its builder whether that is a
+    frame caught mid-change or a fault.
+  - Gate: the one full run, browser suite included, follows the landings.
+  - Your pictures: the one that came with your compact command is filed with the
+    two from this message.
