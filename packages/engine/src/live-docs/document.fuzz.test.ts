@@ -40,7 +40,7 @@ import { resolveDocLink } from "./graph";
 const PIECES: Record<string, readonly string[]> = {
   letters: ["a", "B", "x", "Foo", "foo", "é", "ß", "ſ", "Ω", "名前"],
   digits: ["0", "1", "42"],
-  delimiters: ["`", "``", "```", "\"", "\"\"", "\\", "\\n", "\\\"", "(", ")", "()", "(a)", "[", "]", "{", "}", "{#", "#", "<", ">", "|", "*", "_", "~", ",", ", ", ";", "; ", ":", ": ", "!", "$", "$$", "%", "%29", "&", "'", "/", "-", " — ", "](", "Promise<", "[]", "@", ".", "?", "%20", "#L1"],
+  delimiters: ["`", "``", "```", "\"", "\"\"", "\\", "\\n", "\\\"", "(", ")", "()", "(a)", "[", "]", "{", "}", "{#", "#", "<", ">", "|", "*", "_", "~", ",", ", ", ";", "; ", ":", ": ", "!", "$", "$$", "%", "%29", "&", "'", "/", "-", " — ", "](", "Promise<", "[]", "@", ".", "?", "%20", "#L1", "&amp;", "&#x26;"],
   spaces: [" ", "  ", "\t", "\u00a0", "\u200b", "\ufeff", "\u3000"],
   lineBreaks: ["\n", "\r", "\r\n", "\n\n", "\u2028", "\u2029", "\u0085", "\v", "\f"],
   controls: ["\u0000", "\u0001", "\u001b", "\u007f", "\u0080", "\u009f"],
@@ -60,7 +60,7 @@ const CHOSEN: readonly string[] = [
   "\"a\\nb\"", "`a`", " ", "  ", "`", " a ", "a\u2028b", "a)b", "a(b", "(auth)", "a#b", "\"q", "#### `z`", "```", "\\```",
   "<!-- LIVE-DOC:END Public Symbols -->", "x (key overload 1)", "Metadata", "$", "$$", "\u0000", "\t",
   // Paths a repository holds and a link must still open: a document named `plan (draft).md` once stopped generation.
-  "plan (draft)", "[id]", "a b ", "a?b", "a%20b", "%", "<a>", "名前 ", "a#L1", "a\\b"
+  "plan (draft)", "[id]", "a b ", "a?b", "a%20b", "%", "<a>", "名前 ", "a#L1", "a\\b", "Q&amp;A", "R&D", "\"q\""
 ];
 
 /** The reviewer's 70,000-character key, and long runs of what each form has to spell out, tried together in one doc. */
@@ -96,7 +96,9 @@ function hostileName(next: () => number): string {
 
 /** The value as one path segment: a file name cannot hold `/` or NUL, nor be `.` or `..`, and is read from disk as UTF-8, so a lone surrogate is U+FFFD. */
 function segment(name: string): string {
-  return `d${name.split("/").join("_").split(String.fromCharCode(0)).join("_").replace(/\p{Cs}/gu, String.fromCharCode(0xfffd))}`;
+  // Any first character, a quote, a space, a `#` or a dot included, and a lone surrogate kept, as a string can hold one.
+  const cleaned = name.split("/").join("_").split(String.fromCharCode(0)).join("_");
+  return cleaned === "" || cleaned === "." || cleaned === ".." ? `d${cleaned}` : cleaned;
 }
 
 // ============================================================================
@@ -147,7 +149,8 @@ function everywhere(name: string): Handed {
   const typeHome = `${folder}/types.ts`;
   const symbolIndex: WorkspaceSymbolIndex = new Map([[name, [{ liveDocPath: `docs/layer-4/${typeHome}${EXTENSION}`, sourcePath: typeHome, anchor: createSymbolSlug(name), kind: "type" }]]]);
   return {
-    codePath: `src/${folder}.ts`,
+    // Half the docs stand at the workspace root, so that their links begin with neither `./` nor `../` where a name begins with a dot.
+    codePath: name.length % 2 === 0 ? `${folder}.ts` : `src/${folder}.ts`,
     symbols: [
       {
         name,
@@ -267,10 +270,16 @@ function checkEverywhere(name: string): void {
   // Every link leads to the path it was made from, as the graph reads it and as a browser does.
   const docPath = `docs/layer-4/${handed.codePath}${EXTENSION}`;
   const leadsTo = (link: string | undefined, target: string, what: string): void => {
+    if (link !== undefined && /\p{Cs}/u.test(link)) {
+      // No URL can hold a lone surrogate: the link is written as a JSON string, deliberately, and still leads there.
+      if (text.includes(`(${link}`) || resolveDocLink(docPath, link) !== target) fail(`the ${what} link with a lone surrogate is not quoted or leads elsewhere`);
+      return;
+    }
     if (link === undefined || !text.includes(`(${link}`)) fail(`the ${what} link is not written as a markdown link's target`);
     if (Array.from(link!).some((character) => character <= " " || character === "\u007f" || "()<>".includes(character))) fail(`the ${what} link ${JSON.stringify(link)} holds what a markdown link's target cannot`);
     const resolved = resolveDocLink(docPath, link!);
     if (resolved !== target) fail(`the ${what} link resolves to ${JSON.stringify(resolved)}, not ${JSON.stringify(target)}`);
+    if (/\p{Cs}/u.test(docPath)) return;
     const base = `https://viewer.test/${docPath.split("/").map(encodeURIComponent).join("/")}`;
     const opened = decodeURIComponent(new URL(link!, base).pathname);
     if (opened !== `/${target}`) fail(`a browser opens the ${what} link at ${JSON.stringify(opened)}, not ${JSON.stringify(`/${target}`)}`);
