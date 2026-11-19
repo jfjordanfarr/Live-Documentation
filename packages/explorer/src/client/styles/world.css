@@ -35,6 +35,12 @@
   font: 13px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
+/* The board takes focus from a press so that its letters work (controller.ts), but it is never a Tab stop: what the
+   keyboard is on inside it, a thing, a tool or a panel, wears the ring, never the whole view. */
+.world:focus {
+  outline: none;
+}
+
 .world[data-theme="dark"] {
   --w-bg: var(--world-dark-page);
   --w-board: var(--world-dark-board);

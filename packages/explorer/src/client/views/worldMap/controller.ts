@@ -114,7 +114,8 @@ const TOOLS: Array<Array<{ act: string; label: string; key?: string; toggle?: bo
   ],
   [
     { act: "fit", label: "Fit", key: "F", drawing: '<path d="M9 3H3v6m12-6h6v6M3 15v6h6m12-6v6h-6"/>' },
-    { act: "reset", label: "Reset layout", key: "R", drawing: '<path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/>' },
+    // Pressed while a reset stands that a second press takes back (see `resetLayout`).
+    { act: "reset", label: "Reset layout", key: "R", toggle: true, drawing: '<path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/>' },
     { act: "save", label: "Save board", drawing: '<path d="M12 3v12M7.5 10.5 12 15l4.5-4.5M4 15v4.5h16V15"/>' }
   ]
 ];
@@ -219,6 +220,8 @@ export class WorldMapController {
   private readonly helpButton: HTMLButtonElement;
   private readonly help: HTMLElement;
   private readonly tourBox: HTMLElement;
+  /** Says the walkthrough's step aloud when it changes: the World Map's own, so that it never shares a region with the page's. */
+  private readonly status: HTMLElement;
 
   private camera: Camera = { theta: 0, phi: REST_ELEVATION };
   /** The view "look straight down" left and the one it went to, so that looking up again returns there if nothing turned between. */
@@ -228,6 +231,8 @@ export class WorldMapController {
   private bench: Rect = { x: 0, y: 0, w: 1400, d: 900 };
   private positions = new Map<string, Point2>();
   private readonly restPositions = new Map<string, Point2>();
+  /** Where the pieces stood before a reset, kept so that the same control puts them back, until a piece is next moved. */
+  private beforeReset: Map<string, Point2> | null = null;
 
   private hover: Hover | null = null;
   private pinned: Hover | null = null;
@@ -261,6 +266,10 @@ export class WorldMapController {
 
     this.root.innerHTML = "";
     this.world = element("div", "world", this.root);
+    // The board's letters act only while the keyboard is on it (see `attachInput`). Focusable but never a Tab stop, the
+    // board takes focus from a press anywhere on it that lands on nothing focusable of its own, as the browser gives a
+    // press to the nearest focusable thing under it: a tool, a link or a pinned panel keeps the focus a press gives it.
+    this.world.tabIndex = -1;
     this.svg = svgElement("svg", { class: "world-svg" }, this.world) as SVGSVGElement;
     this.defs = svgElement("defs", {}, this.svg);
     const blur = svgElement("filter", { id: "world-blur", x: "-30%", y: "-30%", width: "160%", height: "160%" }, svgElement("defs", {}, this.svg));
@@ -289,6 +298,8 @@ export class WorldMapController {
         span.append(button);
       }
     }
+    // One Tab stop for the toolbar, its first tool until another is chosen; the arrows move inside it (`attachInput`).
+    this.tools.querySelectorAll("button").forEach((button, i) => { button.tabIndex = i === 0 ? 0 : -1; });
     this.evidence = element("div", "world-evidence", this.world);
     // The pinned panel takes focus when a piece is pinned from the keyboard, so that its links are the next stops.
     this.evidence.tabIndex = -1;
@@ -296,9 +307,16 @@ export class WorldMapController {
     this.helpButton.title = "Help (?)";
     this.helpButton.setAttribute("aria-label", "Help");
     this.helpButton.setAttribute("aria-keyshortcuts", "?");
+    this.helpButton.setAttribute("aria-expanded", "false");
     this.help = element("div", "world-help", this.world);
+    // One World Map on the page, so one id.
+    this.help.id = "world-help";
+    this.helpButton.setAttribute("aria-controls", this.help.id);
     this.tourBox = element("div", "world-tour", this.world);
     this.tourBox.innerHTML = `<div class="step"></div><div class="text"></div><div class="row"><button data-tour="back">back</button><button data-tour="next" class="primary">next</button><button data-tour="done">done</button></div>`;
+    // Outside the walkthrough's box, which is hidden when it ends: a region that is not displayed says nothing.
+    this.status = element("div", "visually-hidden", this.world);
+    this.status.setAttribute("role", "status");
 
     this.restPositions = this.initialPositions();
     this.positions = this.loadPositions();
@@ -1104,8 +1122,12 @@ export class WorldMapController {
     return { s: [sx, sy], w: unproject(this.camera, this.pivot, px, py) };
   }
 
+  /**
+   * Eases a change over `ms`, or makes it at once: for a test's handle, and for a person whose system asks for reduced
+   * motion, read at each change so that a choice made while the page is open counts.
+   */
   private tween(ms: number, step: (t: number) => void): Promise<void> {
-    if (this.instant) {
+    if (this.instant || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       step(1);
       return Promise.resolve();
     }
@@ -1678,6 +1700,7 @@ export class WorldMapController {
           const [x, y] = this.positions.get(drag.piece) ?? [0, 0];
           this.positions.set(drag.piece, [Math.round(x / GRID) * GRID, Math.round(y / GRID) * GRID]);
         }
+        this.forgetReset();
         this.savePositions();
         this.draw();
       } else if (drag?.moved) {
@@ -1718,32 +1741,38 @@ export class WorldMapController {
       }
     });
 
+    // A key is the map's while the World Map is the view, outside any field where it types, and not used by another
+    // surface: Escape closing the reader, or a key typed inside a full-screen reader over the map.
+    const isMine = (event: KeyboardEvent): boolean => this.world.isConnected && !!this.world.closest(".view-container.active")
+      && !isField(event.target) && !event.defaultPrevented && !(event.target instanceof Element && event.target.closest('[aria-modal="true"]'));
+
+    // Escape lets go from anywhere on the page while the map is the view: it types nothing, and it is the way out.
     on(window, "keydown", (event: KeyboardEvent) => {
-      if (!this.world.isConnected || !this.world.closest(".view-container.active")) {
+      if (event.key !== "Escape" || !isMine(event)) {
         return;
       }
-      if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) {
-        return;
+      if (this.tour.on) {
+        this.endTour();
+      } else if (this.help.classList.contains("on")) {
+        this.toggleHelp(false);
+      } else if (this.pinned) {
+        this.unpin();
+      } else {
+        this.hover = null;
+        this.applyHover();
       }
-      // A key another surface has used, such as Escape closing the reader, or one typed inside a full-screen reader
-      // over the map, is not the map's.
-      if (event.defaultPrevented || (event.target instanceof Element && event.target.closest('[aria-modal="true"]'))) {
+    });
+
+    // The letters and ? act only while the keyboard is on the board's own surface, and never with Ctrl, Meta or Alt held,
+    // which are the browser's and the system's (WCAG 2.2, 2.1.4 Character Key Shortcuts). Bound to the whole page they
+    // fired from the sidebar and from a speech user's words, and Ctrl+R reloaded the page and reset the layout with it
+    // (the design system's check, 2026-11-18). A press on the board gives it focus (the constructor), so a pointer that
+    // clicked the board finds them working.
+    on(this.world, "keydown", (event: KeyboardEvent) => {
+      if (event.ctrlKey || event.metaKey || event.altKey || !isMine(event)) {
         return;
       }
       const key = event.key.toLowerCase();
-      if (event.key === "Escape") {
-        if (this.tour.on) {
-          this.endTour();
-        } else if (this.help.classList.contains("on")) {
-          this.toggleHelp(false);
-        } else if (this.pinned) {
-          this.unpin();
-        } else {
-          this.hover = null;
-          this.applyHover();
-        }
-        return;
-      }
       if (event.key === "?") {
         this.toggleHelp();
         return;
@@ -1786,6 +1815,30 @@ export class WorldMapController {
         save: () => this.saveBoard()
       };
       actions[button.dataset.act ?? ""]?.();
+    });
+
+    // The toolbar is one Tab stop, and the arrows, Home and End move between its tools, as the WAI-ARIA Authoring
+    // Practices' toolbar does: nine stops before the board's things were nine presses of Tab for nothing. The tool last
+    // on is the stop, so Tab back into the toolbar returns to it.
+    const tools = (): HTMLButtonElement[] => [...this.tools.querySelectorAll<HTMLButtonElement>("button")];
+    on(this.tools, "focusin", (event: FocusEvent) => {
+      const at = (event.target as Element).closest("button");
+      for (const button of tools()) {
+        button.tabIndex = button === at ? 0 : -1;
+      }
+    });
+    on(this.tools, "keydown", (event: KeyboardEvent) => {
+      if (event.ctrlKey || event.metaKey || event.altKey) {
+        return;
+      }
+      const all = tools();
+      const at = all.indexOf(event.target as HTMLButtonElement);
+      const next = { ArrowRight: at + 1, ArrowLeft: at - 1, Home: 0, End: all.length - 1 }[event.key];
+      if (at < 0 || next === undefined) {
+        return;
+      }
+      event.preventDefault();
+      all[(next + all.length) % all.length].focus();
     });
 
     on(this.evidence, "click", (event: MouseEvent) => {
@@ -1909,10 +1962,19 @@ export class WorldMapController {
     return this.tools.querySelector<HTMLButtonElement>(`[data-act="${act}"]`);
   }
 
-  /** Each toggle says whether it is on, for the eye by its fill and for a screen reader by its pressed state. */
+  /**
+   * Each toggle says whether it is on, for the eye by its fill and for a screen reader by its pressed state. Reset is
+   * pressed while a reset stands that it can take back, and its tooltip says which of the two it will do; its name
+   * stays, as a toggle's does.
+   */
   private syncButtons(): void {
-    for (const [act, on] of [["tilt", looksDown(this.camera)], ["under", this.under], ["snap", this.snap], ["theme", this.theme === "dark"]] as Array<[string, boolean]>) {
+    const resetStands = this.beforeReset !== null;
+    for (const [act, on] of [["tilt", looksDown(this.camera)], ["under", this.under], ["snap", this.snap], ["theme", this.theme === "dark"], ["reset", resetStands]] as Array<[string, boolean]>) {
       this.button(act)?.setAttribute("aria-pressed", String(on));
+    }
+    const reset = this.button("reset");
+    if (reset) {
+      reset.title = resetStands ? "Put things back where you had them (R)" : "Reset layout (R)";
     }
   }
 
@@ -1957,11 +2019,37 @@ export class WorldMapController {
     this.syncButtons();
   }
 
-    /** Puts every piece back where the board's Layout rests it. */
+  /**
+   * Puts every piece back where the board's Layout rests it, keeping where they stood; or, pressed again before any
+   * piece is moved, puts them back there. An act is undone by repeating it, as a second click releases a pin
+   * (2026-11-18: the reset threw every position away at once, saved, with no way back). Nothing moved, nothing to reset.
+   */
   resetLayout(): void {
-    this.positions = new Map(this.restPositions);
+    if (this.beforeReset) {
+      this.positions = this.beforeReset;
+      this.beforeReset = null;
+    } else {
+      const atRest = [...this.positions].every(([name, [x, y]]) => {
+        const [rx, ry] = this.restPositions.get(name) ?? [x, y];
+        return Math.abs(x - rx) < 1e-6 && Math.abs(y - ry) < 1e-6;
+      });
+      if (atRest) {
+        return;
+      }
+      this.beforeReset = this.positions;
+      this.positions = new Map(this.restPositions);
+    }
     this.savePositions();
+    this.syncButtons();
     this.draw();
+  }
+
+  /** A piece was moved: what a reset discarded is gone for good, and the control resets again. */
+  private forgetReset(): void {
+    if (this.beforeReset) {
+      this.beforeReset = null;
+      this.syncButtons();
+    }
   }
 
   /** The board text with its Layout replaced by where the pieces sit now. */
@@ -2015,7 +2103,7 @@ export class WorldMapController {
 <h4>Pinned</h4><p>A hover peeks; a click pins. In a pinned panel every name is a link: a thing pins it, a file opens it in the Local Map.</p>
 <h4>Inside a thing</h4><p>Wheel into a thing, double-click it, or follow <b>open</b> in its pinned panel: it opens in the Local Map, its folders as membranes. World Map in the sidebar leads back to the board.</p>
 <h4>Moving around</h4><p>Drag to pan. Right-drag or <kbd>Shift</kbd>-drag to orbit. Wheel to zoom. Drag a thing to move it; <b>save board</b> writes the positions into the board text.</p>
-<p><kbd>Q</kbd> <kbd>E</kbd> turn · <kbd>T</kbd> top-down · <kbd>F</kbd> fit · <kbd>U</kbd> built on · <kbd>G</kbd> snap · <kbd>D</kbd> dark · <kbd>R</kbd> reset · <kbd>Esc</kbd> let go</p>
+<p><kbd>Q</kbd> <kbd>E</kbd> turn · <kbd>T</kbd> top-down · <kbd>F</kbd> fit · <kbd>U</kbd> built on · <kbd>G</kbd> snap · <kbd>D</kbd> dark · <kbd>R</kbd> reset, and again to put back · <kbd>Esc</kbd> let go</p><p>The keys work while the board has the keyboard: click it, or <kbd>Tab</kbd> to it.</p>
 <button data-act="tour">walk me through it</button>`;
     this.help.querySelector("[data-act=tour]")?.addEventListener("click", () => {
       this.toggleHelp(false);
@@ -2028,6 +2116,7 @@ export class WorldMapController {
     const on = value === undefined ? !this.help.classList.contains("on") : value;
     this.help.classList.toggle("on", on);
     this.helpButton.classList.toggle("on", on);
+    this.helpButton.setAttribute("aria-expanded", String(on));
   }
 
   /** The walkthrough's steps: what each says, what it does, and which of the view's states it changes to show its point. */
@@ -2056,6 +2145,8 @@ export class WorldMapController {
     const step = steps[this.tour.at];
     this.tourBox.querySelector(".step")!.textContent = `${this.tour.at + 1} of ${steps.length}`;
     this.tourBox.querySelector(".text")!.textContent = step.text;
+    // Next and back keep the keyboard where it is, so nothing else would say that the words beside them changed.
+    this.status.textContent = `Step ${this.tour.at + 1} of ${steps.length}. ${step.text}`;
     (this.tourBox.querySelector<HTMLButtonElement>("[data-tour=back]"))!.disabled = this.tour.at === 0;
     (this.tourBox.querySelector<HTMLElement>("[data-tour=next]"))!.style.display = this.tour.at === steps.length - 1 ? "none" : "";
     const start = this.tour.start;
@@ -2086,6 +2177,7 @@ export class WorldMapController {
     const start = this.tour.start;
     this.tour = { on: false, at: 0 };
     this.tourBox.classList.remove("on");
+    this.status.textContent = "";
     this.hover = null;
     this.unpin();
     if (start) {
@@ -2135,7 +2227,7 @@ export class WorldMapController {
       unpin: () => this.unpin(),
       fit: () => this.fit(),
       zoom: (k) => { const { width, height } = this.viewport(); this.zoomBy(k / this.screen.k, width / 2, height / 2); return this.screen.k; },
-      move: (name, x, y) => { if (this.positions.has(name)) { this.positions.set(name, unitsToPixels([x, y])); this.savePositions(); this.draw(); } },
+      move: (name, x, y) => { if (this.positions.has(name)) { this.positions.set(name, unitsToPixels([x, y])); this.forgetReset(); this.savePositions(); this.draw(); } },
       reset: () => this.resetLayout(),
       boardText: () => this.boardText(),
       state: () => ({ theta: this.camera.theta, phi: this.camera.phi, k: this.screen.k, under: this.under, snap: this.snap, theme: this.theme, hover: this.hover, pinned: this.pinned, positions: Object.fromEntries([...this.positions].map(([name, pixels]) => [name, pixelsToUnits(pixels)])) }),
@@ -2200,6 +2292,11 @@ function element<K extends keyof HTMLElementTagNameMap>(tag: K, className: strin
   }
   parent?.appendChild(node);
   return node;
+}
+
+/** Whether a key pressed here types into a field of any kind, where a letter is the person's and never a command. */
+function isField(target: EventTarget | null): boolean {
+  return target instanceof HTMLElement && (target.isContentEditable || target.closest("input, textarea, select") !== null);
 }
 
 function svgElement(tag: string, attributes: Record<string, string | number>, parent?: Element): SVGElement {
