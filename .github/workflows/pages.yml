@@ -22,6 +22,9 @@ jobs:
     runs-on: ubuntu-latest
     # A cold run regenerates the whole mainline; warm runs reuse the lens cache.
     timeout-minutes: 180
+    outputs:
+      # 0 a whole history, 3 stopped at its budget, anything else (or nothing, on a timeout) a failure.
+      history-code: ${{ steps.history.outputs.code }}
 
     steps:
       - name: Checkout
@@ -56,8 +59,9 @@ jobs:
         id: history
         # The site deploys whether or not the history is whole. The command
         # starts no commit after its budget and then writes no history (exit
-        # 3); each run resumes from the cache the last one saved. The caches of
-        # other lenses are removed only once the current one is whole.
+        # 3); each run resumes from the cache the last one saved. Beside the
+        # current lens's cache only the newest whole one is kept, and it goes
+        # once the current one is whole.
         continue-on-error: true
         timeout-minutes: 160
         env:
@@ -70,8 +74,8 @@ jobs:
           exit $code
 
       - name: Save history summaries
-        # Every run saves what it summarized, so that the next one resumes.
-        if: ${{ always() && steps.history.outcome != 'skipped' }}
+        # Every run that reached the history step saves what it summarized, so that the next one resumes.
+        if: ${{ always() && contains(fromJSON('["success", "failure", "cancelled"]'), steps.history.outcome) }}
         uses: actions/cache/save@v4
         with:
           path: .mdmd/history
@@ -86,7 +90,7 @@ jobs:
       - name: Say the site carries no history
         if: ${{ steps.history.outcome != 'success' }}
         run: |
-          if [ "${{ steps.history.outputs.code }}" = "3" ]; then why="stopped at its budget before the cache held every commit under the current lens"; else why="failed; its log says why"; fi
+          if [ "${{ steps.history.outputs.code }}" = "3" ]; then why="stopped at its budget before the cache held every commit under the current lens"; else why="failed; its log says why, and the run ends red once the site is deployed"; fi
           echo "### Deployed without its history" >> "$GITHUB_STEP_SUMMARY"
           echo "The history step $why. The site was built without a history. The next run resumes from the cache this one saved." >> "$GITHUB_STEP_SUMMARY"
 
@@ -115,3 +119,15 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  history-verdict:
+    # A history that failed, other than by stopping at its budget, still lets the site deploy without it, and then
+    # ends the run red, so that a broken history is never a quiet green run.
+    needs: [build, deploy]
+    if: ${{ always() && needs.build.result == 'success' && needs.build.outputs.history-code != '0' && needs.build.outputs.history-code != '3' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Report the failed history
+        run: |
+          echo "::error title=Compute complete mainline history::The history step failed (exit ${{ needs.build.outputs.history-code || 'none: the step timed out' }}); the site was deployed without its history."
+          exit 1
