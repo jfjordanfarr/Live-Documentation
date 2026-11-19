@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/types.ts
-- Generated At: 2026-11-19T05:51:26.376Z
+- Generated At: 2026-11-19T05:52:31.885Z
 
 ## Authored
 ### Purpose
@@ -28,7 +28,7 @@ The [November 8 reading feedback](../../../../../../../../AI-Agent-Workspace/Age
 ### Public Symbols
 #### `LocalViewOptions` {#symbol-localviewoptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L24)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L25)
 
 ##### `LocalViewOptions` — Summary
 Dependency-injection options for constructing a Local Map view.
@@ -44,21 +44,21 @@ click-to-navigate type references in the Local Map symbol cards.
 
 #### `ReadingControl` {#symbol-readingcontrol}
 - Type: type
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L62)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L59)
 
 ##### `ReadingControl` — Summary
 The control a person used to open or fold a description: the name it belongs to, or the book beside it.
 
 #### `LocalExplorationFrame` {#symbol-localexplorationframe}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L65)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L62)
 
 ##### `LocalExplorationFrame` — Summary
 The view's before/after presentation work around one application-owned exploration action.
 
 #### `LocalViewApi` {#symbol-localviewapi}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L76)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L73)
 
 ##### `LocalViewApi` — Summary
 Public contract the Local Map exposes to the parent Explorer application.
@@ -148,6 +148,8 @@ to future-proof for multi-hop graph expansion.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`moment.HistoryChanges`](../../history/moment.ts.mdmd.md#symbol-historychanges) (type-only)
+- [`moment.HistoryMoment`](../../history/moment.ts.mdmd.md#symbol-historymoment) (type-only)
 - [`reader-links.ReaderLinkContext`](../../reader-links.ts.mdmd.md#symbol-readerlinkcontext) (type-only)
 - [`types.ExplorerState`](../../types.ts.mdmd.md#symbol-explorerstate) (type-only)
 - [`types.InspectionTarget`](../../types.ts.mdmd.md#symbol-inspectiontarget) (type-only)

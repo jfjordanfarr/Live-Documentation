@@ -763,18 +763,21 @@ test("the address carries the commit and the authors toggle, a link to a moment 
   await expect(page.locator(".history-notice")).toHaveText("00000000 is not in this history");
   await expect(track(page)).toHaveAttribute("aria-valuenow", "6");
 
-  // Leaving for 2D: today, the control closed, the address without a commit; back in 3D it stays today.
+  // Since 2026-11-19 a switch to 2D keeps the moment, the control open over the 2D map and the commit in the address;
+  // back in 3D the picture is still that moment's. Leaving the map for another view returns to today and closes it.
   await stepTo(page, 2);
   expect(address().commit).toBe(commits[2].id);
   await page.getByRole("button", { name: "2D", exact: true }).click();
-  await expect(page.locator(".history-scrubber")).toBeHidden();
-  await expect(page.getByRole("button", { name: "History", exact: true })).toBeHidden();
-  await expect.poll(() => address().commit).toBeNull();
+  await expect(page.locator(".history-scrubber")).toBeVisible();
+  await expect(page.getByRole("button", { name: "History", exact: true })).toHaveAttribute("aria-pressed", "true");
+  await expect(track(page)).toHaveAttribute("aria-valuenow", "2");
+  expect(address().commit).toBe(commits[2].id);
   await page.getByRole("button", { name: "3D", exact: true }).click();
-  await expect(page.getByRole("button", { name: "History", exact: true })).toBeVisible();
+  await expect(page.locator(".history-scrubber")).toBeVisible();
+  await expect(page.locator("#graph-svg")).toHaveAttribute("data-history-step", "2");
+  await page.locator('#sidebar .nav-item[data-view="sources"]').click();
   await expect(page.locator(".history-scrubber")).toBeHidden();
-  await expect(page.locator("#graph-svg")).toHaveAttribute("data-history-step", "");
-  expect(byId(await renderedNodes(page)).has("src/app/screen.ts")).toBe(true);
+  await expect.poll(() => address().commit).toBeNull();
 });
 
 test("a drag places every step it crosses without a tick, and the rest settles at the tuning's energy", async ({ page }) => {

@@ -1,7 +1,9 @@
 import type {
+  ExplorerGraphPayload,
   ExplorerNodePayload
 } from "../../../shared/types";
 import { requireElement } from "../../dom";
+import type { HistoryChanges, HistoryMoment } from "../../history/moment";
 import { readingFiles } from "../../reading-state";
 import { EMPTY_PIN_SET, isSymbolPinned as isExplorationPin, type PinSet } from "../pin-state";
 import {
@@ -166,13 +168,13 @@ export class LocalViewController implements LocalViewApi {
   /** The card builder reads only presentation facts and named actions, never this controller's state bag. */
   readonly cardContext: CardContext = {
     presentation: node => ({
-      subject: this.options.state.selectedNode?.id === node.id,
+      subject: this.subject?.id === node.id,
       retained: this.pins.entries.some(pin => pin.nodeId === node.id) || this.readingFiles.has(node.id),
       filePinned: this.pins.entries.some(pin => pin.nodeId === node.id && pin.symbol === "*"),
       expanded: this.expandedCards.has(node.id),
       showTests: this.options.state.filters.showTests,
       symbolOrder: this.options.state.tuning.localMap.symbolOrder,
-      testBacking: this.options.testCoverage.get(node.id) ?? [],
+      testBacking: this.moment ? [] : this.options.testCoverage.get(node.id) ?? [],
       isPinned: symbol => this.isPinned(node.id, symbol),
       isDirectlyPinned: symbol => this.pins.entries.some(pin => pin.nodeId === node.id && pin.symbol === symbol)
     }),
@@ -193,7 +195,10 @@ export class LocalViewController implements LocalViewApi {
       const target = this.options.nodesById.get(targetId);
       if (target) void this.focusSidebar(target);
     },
-    attachReading: (card, node) => this.reading?.attach(card, node)
+    // A past moment's card carries no words: the descriptions are today's, and the words of that day are not kept yet,
+    // so no description, no Read control and no kept line is attached, as the 3D map draws none (2026-11-19). A tap on
+    // the name inspects the file, where the reader says which day's text it holds.
+    attachReading: (card, node) => this.moment ? undefined : this.reading?.attach(card, node)
   };
   private renderedPath = false;
   private directoryArrivalPending = false;
@@ -242,10 +247,103 @@ export class LocalViewController implements LocalViewApi {
   private focusRequest: string | null = null;
   private restoreExplorationCamera = false;
   private explorationCamera: { transform: MapTransform; initial: MapTransform | null; userAdjusted: boolean; layerTop: number } | null = null;
-  /** Shared pins are owned by the application, not this renderer. */
-  get pins(): PinSet { return this.options.state.pins ?? EMPTY_PIN_SET; }
-  /** The directories the person has opened, owned by the application beside the pins (2026-10-08). */
-  get openDirectories(): OpenDirectories { return this.options.state.openDirectories ?? NO_OPEN_DIRECTORIES; }
+  /**
+   * The moment of the history the picture shows, or null for today (2026-11-19, the history in 2D, its first rung):
+   * the moment's files-only graph in place of today's, and today's pins, subject and opened directories read at the
+   * moment through its names, as the 3D map reads them. A file renamed at a step is a new card under its new name.
+   */
+  private moment: HistoryMoment | null = null;
+  private momentChanges: HistoryChanges | null = null;
+  private momentPins: { from: PinSet; moment: HistoryMoment; pins: PinSet } | null = null;
+  private momentDirectories: { from: OpenDirectories; moment: HistoryMoment; directories: OpenDirectories } | null = null;
+  /**
+   * Show a moment, or today (null), with the step's changes for the emphasis. While the thumb drags (`settle` false) the
+   * cards keep their places and only take the step's emphasis; at rest the picture is drawn at the moment. Before the
+   * map's first picture nothing is drawn here: the first render draws the moment. An address naming a commit applies
+   * its moment before the page's first drawing, and drawing it here as well made the first drawing a second picture
+   * moved from the first, its framing owed to that move's end, which opened the map at a past moment with its pinned
+   * card out of the frame (2026-11-19).
+   */
+  setMoment(moment: HistoryMoment | null, changes: HistoryChanges | null, settle: boolean): void {
+    this.moment = moment;
+    this.momentChanges = changes;
+    if (!this.isShown()) {
+      // Hidden, the map draws the moment when it is shown again.
+      if (this.stage) this.renderOwed = true;
+      return;
+    }
+    if (!settle) this.applyHistoryEmphasis();
+    else if (this.stage) this.render();
+    else this.renderOwed = true;
+  }
+  /**
+   * The thumb let go on the step it was dragged to: the picture, whose cards kept their places while it dragged, is drawn
+   * at the moment and settles with the map's own move. The history settles without a new moment here, since the step
+   * is the one already shown; until 2026-11-19 only the 3D map heard it, and the 2D map stayed on the cards of the step
+   * the drag began from.
+   */
+  settle(): void {
+    if (!this.stage) return;
+    if (this.isShown()) this.render();
+    else this.renderOwed = true;
+  }
+  /** The graph the picture draws: the moment's, or today's. */
+  get graph(): ExplorerGraphPayload { return this.moment?.graph ?? this.options.graphData; }
+  /** The subject as it stands at the moment shown; null where it does not stand there. */
+  get subject(): ExplorerNodePayload | null {
+    const node = this.options.state.selectedNode ?? null;
+    const moment = this.moment;
+    if (!node || !moment) return node;
+    const at = moment.fileAt(node.id);
+    return at === undefined ? null : moment.graph.nodes.find(file => file.id === at) ?? null;
+  }
+  /** Shared pins are owned by the application, not this renderer; at a moment, those that stand there, by their names then. */
+  get pins(): PinSet {
+    const pins = this.options.state.pins ?? EMPTY_PIN_SET, moment = this.moment;
+    if (!moment) return pins;
+    if (this.momentPins?.from !== pins || this.momentPins.moment !== moment) {
+      this.momentPins = { from: pins, moment, pins: { entries: pins.entries.flatMap(pin => {
+        const at = moment.fileAt(pin.nodeId);
+        return at === undefined ? [] : [{ ...pin, nodeId: at }];
+      }) } };
+    }
+    return this.momentPins.pins;
+  }
+  /** The directories the person has opened, owned by the application beside the pins (2026-10-08); at a moment, by their names then. */
+  get openDirectories(): OpenDirectories {
+    const directories = this.options.state.openDirectories ?? NO_OPEN_DIRECTORIES, moment = this.moment;
+    if (!moment) return directories;
+    if (this.momentDirectories?.from !== directories || this.momentDirectories.moment !== moment) {
+      this.momentDirectories = { from: directories, moment, directories: new Set([...directories].map(directory => moment.directoryAt(directory))) };
+    }
+    return this.momentDirectories.directories;
+  }
+  /** Whether a moment of the history is shown, when the cards carry no rows, descriptions or test backing of that day. */
+  get showsMoment(): boolean { return this.moment !== null; }
+
+  /**
+   * The step's emphasis on the cards (2026-11-19), by Tuning's Changed Files, as the 3D map's: a card the step changed
+   * lit where the mode glows; where it dims, every other card faded, save what was asked about, the pins and the subject,
+   * which keep their look. Only classes change: nothing is laid out again, so that it runs while the thumb drags.
+   */
+  applyHistoryEmphasis(): void {
+    const changes = this.momentChanges, mode = changes ? this.options.state.tuning.history.changeEmphasis : "none";
+    this.container.classList.toggle("history-glows", mode === "glow" || mode === "both");
+    this.container.classList.toggle("history-dims", mode === "dim" || mode === "both");
+    const asked = new Set([...this.pins.entries.map(pin => pin.nodeId), this.subject?.id ?? ""]);
+    for (const card of this.container.querySelectorAll<HTMLElement>(".node-card[data-id]")) {
+      const id = card.dataset.id!;
+      card.classList.toggle("is-history-changed", !!changes?.changed.has(id));
+      card.classList.toggle("is-history-asked", asked.has(id));
+    }
+    // A change is shown at the innermost thing the picture draws for it, as in 3D: a file the map draws no card for,
+    // under a closed directory, lights that directory's box; so does a file the step deleted from under it.
+    const touched = changes ? [...changes.changed, ...changes.deletedFiles] : [];
+    for (const box of this.container.querySelectorAll<HTMLElement>(".local-directory-closed[data-directory]")) {
+      const directory = box.dataset.directory!, under = directory ? `${directory}/` : "";
+      box.classList.toggle("is-history-changed", touched.some(path => path.startsWith(under)));
+    }
+  }
   /** Files kept available only to read; they add no neighborhood pin. */
   get readingFiles(): ReadonlySet<string> { return readingFiles(this.options.state.reading ?? []); }
   /** Screen position of a file's readable identity, shared across perspectives. */
@@ -471,7 +569,7 @@ export class LocalViewController implements LocalViewApi {
       // A path/status strip moves the layer but is not a window resize. Keep that picture put, including its text.
       if (view.width !== before.width || window.innerHeight !== before.windowHeight) {
         const frame = this.frameRect(), target = this.readingFrameTarget;
-        const subject = target?.nodeId ?? this.options.state.selectedNode?.id ?? this.pins.entries.at(-1)?.nodeId ?? [...this.readingFiles].at(-1);
+        const subject = target?.nodeId ?? this.subject?.id ?? this.pins.entries.at(-1)?.nodeId ?? [...this.readingFiles].at(-1);
         const card = subject ? `.node-card[data-id="${CSS.escape(subject)}"]` : null;
         const selector = target?.symbol && card ? `${card} .symbol-row[data-symbol="${CSS.escape(target.symbol)}"]` : card;
         // A layout improvement can move the camera to keep its subject still. Remember who owns the reading frame;
@@ -552,7 +650,8 @@ export class LocalViewController implements LocalViewApi {
     this.renderOwed = false;
     // Apply pending toolbar displacement before capturing the visible subject.
     this.keepContentPutWhenLayerMoves();
-    const id = this.options.state.selectedNode?.id;
+    // The subject as the picture draws it: at a moment of the history, by its name then.
+    const id = this.subject?.id;
     const path = this.localMapState.getState().activePath;
     const changedSubject = !!id && !!this.lastCenteredNodeId && id !== this.lastCenteredNodeId;
     const anchor = id && !this.renderedPath && !this.runtime.mapAnimationTarget ? this.getSubjectAnchor(id) : null;
@@ -589,7 +688,7 @@ export class LocalViewController implements LocalViewApi {
 
   /** Draw every scope through the same branch stage while owning its camera and render lifecycle. */
   private drawScene(): void {
-    const { state, graphData } = this.options;
+    const { state } = this.options, graphData = this.graph;
     const tuning = state.tuning.localMap;
     cancelAnimationFrame(this.readingFrame);
     this.readingFrame = 0;
@@ -633,7 +732,7 @@ export class LocalViewController implements LocalViewApi {
       this.mapHasInitialFit = false;
       this.mapInitialTransform = null;
     }
-    const centeredId = state.selectedNode?.id ?? null;
+    const centeredId = this.subject?.id ?? null;
     if (centeredId !== this.lastCenteredNodeId) {
       // A fresh subject: its next framing is an arrival, which Tuning's Arrival frames (camera-intent.ts).
       this.cancelArrival();
@@ -662,6 +761,7 @@ export class LocalViewController implements LocalViewApi {
     this.reading?.updatePresentation(this.readingVisible);
     const stage = this.stage ?? (this.stage = createStage(root));
     renderBranches(this, stage);
+    this.applyHistoryEmphasis();
     if (path) this.fitMapToPath();
     else if (!this.mapHasInitialFit) this.fitMapToContent();
     else this.updateMapTransform();
@@ -1503,10 +1603,10 @@ export class LocalViewController implements LocalViewApi {
     const { state } = this.options;
     if (this.pins.entries.some(pin => pin.nodeId === node.id)) return true;
     const archetype = (node.archetype || "").toLowerCase();
-    if (archetype === "test" && !state.filters.showTests && node.id !== state.selectedNode?.id) {
+    if (archetype === "test" && !state.filters.showTests && node.id !== this.subject?.id) {
       return false;
     }
-    if (archetype === "asset" && !state.filters.showAssets && node.id !== state.selectedNode?.id) {
+    if (archetype === "asset" && !state.filters.showAssets && node.id !== this.subject?.id) {
       return false;
     }
     return true;
@@ -1514,7 +1614,7 @@ export class LocalViewController implements LocalViewApi {
 
   /** Resolves a node by `id` from the full graph data, or returns `undefined` if not found. */
   resolveNode(id: string): ExplorerNodePayload | undefined {
-    return this.options.graphData.nodes.find(node => node.id === id);
+    return this.graph.nodes.find(node => node.id === id);
   }
 
   /** Invokes the `onSelectNode` callback to open a node in the detail panel. */
@@ -2225,7 +2325,7 @@ export class LocalViewController implements LocalViewApi {
    * {@link resetZoom} calls.
    */
   fitMapToContent(): void {
-    const subject = this.options.state.selectedNode?.id ?? this.pins.entries.at(-1)?.nodeId ?? [...this.readingFiles].at(-1);
+    const subject = this.subject?.id ?? this.pins.entries.at(-1)?.nodeId ?? [...this.readingFiles].at(-1);
     const card = subject ? this.container.querySelector<HTMLElement>(`.node-card[data-id="${CSS.escape(subject)}"]`) : null;
     if (this.reading && card) {
       this.readingFrameTarget = subject ? { nodeId: subject } : null;
@@ -2245,7 +2345,7 @@ export class LocalViewController implements LocalViewApi {
         return;
       }
       this.fitMap((extents, frame) => {
-        const bounds = extents.focus && this.options.state.selectedNode?.id === subject ? extents.focus : withTransformReset(this.container, origin => {
+        const bounds = extents.focus && this.subject?.id === subject ? extents.focus : withTransformReset(this.container, origin => {
           const rect = card.getBoundingClientRect();
           return { left: rect.left - origin.left, top: rect.top - origin.top, right: rect.right - origin.left,
             bottom: rect.bottom - origin.top, width: rect.width, height: rect.height };

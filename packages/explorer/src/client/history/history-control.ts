@@ -346,10 +346,17 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
     refresh();
   }
 
-  /** The room the open scrubber takes, set once it has a height. */
+  /**
+   * The room the open scrubber takes, set once it has a height, and again whenever that height changes: a page narrowed
+   * while the scrubber is open wraps its track and buttons onto more rows, and until 2026-11-19 the room was measured
+   * only on a refresh, so that the controls above stood on the scrubber's new rows until the next step.
+   */
+  let roomShown = false;
   function setRoom(visible: boolean): void {
+    roomShown = visible;
     options.room.style.setProperty("--history-room", visible ? `${scrubber.element.offsetHeight + ROOM_GAP}px` : "0px");
   }
+  if (typeof ResizeObserver !== "undefined") new ResizeObserver(() => { if (roomShown) setRoom(true); }).observe(scrubber.element);
 
   function refresh(): void {
     const nextEmphasis = open && context.visible && cursor ? cursor.step : null;
