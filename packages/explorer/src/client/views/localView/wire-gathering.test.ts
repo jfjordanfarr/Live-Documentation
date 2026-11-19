@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import type { LocalEdge } from "./types";
-import { GATHERED_WIDTH, gatheredCount, gatheredDescription, gatheredWidth, gatherWires, NODE_HUB, ownWires, wireDescription } from "./wire-gathering";
+import { GATHERED_WIDTH, gatheredCount, gatheredDescription, gatheredWidth, gatherWires, hubLine, NODE_HUB, ownWires, wireDescription } from "./wire-gathering";
 
 /** A wire from what offers (`target`) to what uses (`source`), by file and symbol. */
 const wire = (uses: string, usesSymbol: string | undefined, offers: string, offersSymbol: string | undefined): LocalEdge => ({
@@ -103,4 +103,18 @@ describe("gatheredDescription", () => {
     expect(gatheredDescription(first, name)).toBe("still.ts offers spec.ts 3 references");
     expect(gatheredDescription(second, name)).toBe("types.ts offers still.ts 1 reference");
   });
+});
+
+describe("hubLine", () => {
+  it("stands the hubs at the middle of the header's first line: the shared line of a one-line name and the controls' room, else a line of the name", () => {
+    // A name of one line beside the room of 24: one line 24 tall.
+    expect(hubLine(24, 14.95, 24)).toBe(12);
+    // A name of one line too long for the room beside it: the room takes a line of its own below.
+    expect(hubLine(14.95 + 24, 14.95, 24)).toBeCloseTo(7.475);
+    // A name of three lines, the room on the last.
+    expect(hubLine(2 * 14.95 + 24, 14.95, 24)).toBeCloseTo(7.475);
+    // No room at all: the name's own line.
+    expect(hubLine(14.95, 14.95, 0)).toBeCloseTo(7.475);
+  });
+
 });

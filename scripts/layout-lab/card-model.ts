@@ -129,9 +129,8 @@ export function chipsHeight(items: readonly ChipCapture[], width: number, gap: n
  * each row as tall as its dot, its label's lines, its badges or its controls
  * (the label narrowed by the badges and controls beside it), the rows a gap
  * apart, the test chips wrapped, the directory line, and the notes. A pin is
- * at the middle of its row, the Internals row's a margin lower; the hub where
- * the capture read it, at the file name's height (the middle of the card, for a
- * capture that has none).
+ * at the middle of its row, the Internals row's a margin lower; the hubs where
+ * the capture read them.
  */
 export function cardMetrics(capture: Capture, card: CardCapture, width: number, view: CardView): CardMetrics {
   const c = card.constants ?? capture.constants;
@@ -185,9 +184,10 @@ export function cardMetrics(capture: Capture, card: CardCapture, width: number, 
   }
   const metrics = registerPins(view.registration, centres, y);
   metrics.width = width;
+  // Both node-level hubs, where a directory's pair lines and the overview's gathered wires end (wire-gathering.ts's
+  // NODE_HUB), stand at the hub's height as the capture read it (the middle of the name's first line since 2026-11-19);
+  // a file-level reference arrives at the Internals dot where there is one.
   if (card.hubY !== undefined) {
-    // Both node-level hubs, where a directory's pair lines and the overview's gathered wires end (wire-gathering.ts's
-    // NODE_HUB), stand at the hub's height; a file-level reference arrives at the Internals dot where there is one.
     for (const side of ["inbound", "outbound"]) metrics.pins.set(`${side}:#hub`, card.hubY);
     metrics.pins.set("outbound:*", card.hubY);
     if (!view.registration.some(row => row.symbol === "__internals__")) metrics.pins.set("inbound:*", card.hubY);

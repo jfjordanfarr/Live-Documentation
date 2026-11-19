@@ -23,7 +23,7 @@ import { OVERVIEW_FILES_ATTRIBUTE, OVERVIEW_LINES_ATTRIBUTE, type PictureSize } 
 import { connectionCount, returningConnections } from "./returning-connections";
 import { attendConnections, releaseConnections } from "./symbol-highlight";
 import type { LocalEdge } from "./types";
-import { NODE_HUB } from "./wire-gathering";
+import { hubLine, NODE_HUB } from "./wire-gathering";
 import { countOf } from "./word-seams";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
@@ -856,21 +856,23 @@ function pageMeasurer(controller: LocalViewController, stage: BranchStage, plan:
 }
 
 /**
- * Stands each card's node-level hubs at its file name's first line as the card is laid out (2026-11-19): the line's
- * middle below the card's padding edge, in the map's own units, written on the card's wrapper as `--hub-y`, which the
- * stylesheet places the hubs by (view-shared.css). The line is not a constant: a name of one line shares it with the
- * room the node's controls keep (local.css), which makes it taller, and a longer name's first line does not. Every line
- * is read before any is written, so that the page lays itself out once for them.
+ * Stands each card's node-level hubs at the middle of its header's first line as the card is laid out (2026-11-19,
+ * `hubLine` of wire-gathering.ts), below the card's padding edge in the map's own units, written on the card's wrapper as
+ * `--hub-y`, which the stylesheet places the hubs by (view-shared.css). The line is not a constant: a name of one line
+ * shares it with the room the node's controls keep, which makes it taller, and a longer name's first line does not. Every
+ * header is read before any hub is written, so that the page lays itself out once for them. A growing card's hubs keep
+ * their own place (reading.css).
  */
 function standHubs(stage: BranchStage, scale: number): void {
-  const range = document.createRange();
   const lines: Array<[HTMLElement, number]> = [];
   for (const wrapper of stage.wrappers.values()) {
-    const card = wrapper.querySelector<HTMLElement>(".node-card"), text = card?.querySelector(".local-file-name-text");
-    const first = text && (range.selectNodeContents(text), range.getClientRects()[0]);
-    if (!card || !first) continue;
-    const padding = card.getBoundingClientRect().top + card.clientTop * scale;
-    lines.push([wrapper, onLayoutGrid((first.top + first.height / 2 - padding) / scale)]);
+    const card = wrapper.querySelector<HTMLElement>(".node-card:not(.local-reading-card)");
+    const header = card?.querySelector<HTMLElement>(":scope > .node-title"), name = header?.querySelector<HTMLElement>(".local-file-name");
+    const room = name?.querySelector<HTMLElement>(".local-file-name-room");
+    if (!card || !header || !name || !room) continue;
+    const box = header.getBoundingClientRect(), padding = card.getBoundingClientRect().top + card.clientTop * scale;
+    const middle = hubLine(box.height / scale, parseFloat(getComputedStyle(name).lineHeight), room.getBoundingClientRect().height / scale);
+    lines.push([wrapper, onLayoutGrid((box.top - padding) / scale + middle)]);
   }
   for (const [wrapper, y] of lines) wrapper.style.setProperty("--hub-y", String(y));
 }

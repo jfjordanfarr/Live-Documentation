@@ -163,12 +163,12 @@
    a constant: a name of one line shares it with the room the node's controls keep, which makes it taller, and a longer
    name's first line does not. So the render reads the line's middle below the card's padding edge from the page and
    writes it on the card's wrapper (--hub-y, the branch renderer's standHubs); the fallback is a name of one line beside
-   the controls' room, the nominal card's (HUB_CENTRE in wire-gathering.ts, less the border). The box is 12 px. From the
+   the controls' room. The box is 12 px. From the
    middle look out the hub is drawn down to the held name's first line and as large as the look's controls, as a row's
    dot is (reading.css), and the placement takes that drawing back, as it does a dot's. */
 .symbol-anchor.hub {
     position: absolute;
-    top: calc(var(--hub-y, 27.5) * 1px - 6px);
+    top: calc(var(--hub-y, 24) * 1px - 6px);
     width: 10px;
     height: 10px;
     opacity: 0.55;

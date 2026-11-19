@@ -68,6 +68,10 @@
 .local-reading-card .local-reading-block { font-size: 15px; }
 .local-reading-card .local-reading-purpose { font-size: 16px; }
 .local-reading-card .symbol-row .symbol-label-wrapper { padding: 4px 7px; }
+/* The growing card keeps its hubs at its larger name's first line as it always has, their centre 36 px down: its name's
+   line is not measured (the branch renderer's standHubs reads a slot card's), so that the layout lab's capture still
+   predicts a narrower page from a wider one (view-shared.css). */
+.local-reading-card .symbol-anchor.hub { top: 30px; }
 .local-reading-card .local-card-actions button { width: 28px; height: 28px; color: var(--text-panel-muted); }
 .local-column .local-reading-card .node-title { padding-top: 0; }
 .local-reading-card .internals-row .symbol-label { font-size: 12px; }
@@ -308,7 +312,7 @@
 /* From the middle look out the name is drawn held from the header's top, 12 px of padding down, its lines 15 units at
    its scale: the hub moves from the laid-out name's first line to the held one's. */
 :is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card .symbol-anchor.hub {
-    transform: translateY(calc((12 + var(--title-line) * 0.5 * var(--title-scale, 1) - var(--hub-y, 27.5)) * 1px)) scale(var(--hub-scale, 1));
+    transform: translateY(calc((12 + var(--title-line) * 0.5 * var(--title-scale, 1) - var(--hub-y, 24)) * 1px)) scale(var(--hub-scale, 1));
 }
 .local-file-name-held { display: none; }
 :is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card {

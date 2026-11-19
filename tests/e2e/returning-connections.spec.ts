@@ -2,7 +2,6 @@ import { expect, test, type Page } from "@playwright/test";
 import { readFileSync } from "node:fs";
 
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
-import { HUB_CENTRE } from "../../packages/explorer/src/client/views/localView/wire-gathering";
 import { explorerGraphOf } from "../../packages/explorer/src/shared/graph";
 import type { StaticExplorerData } from "../../packages/explorer/src/shared/staticExplorerData";
 import { localMapStill } from "./still-picture";
@@ -194,6 +193,11 @@ const hubs = (page: Page) => page.evaluate(() => {
     .flatMap(path => [path.getPointAtLength(0), path.getPointAtLength(path.getTotalLength())].map(point => {
       const m = path.getScreenCTM()!;
       return { x: point.x * m.a + m.e, y: point.y * m.d + m.f };
+    }))
+    // A lace's end at its pin: its outline runs out along one side and back along the other, from the pin and to it.
+    .concat([...document.querySelectorAll<SVGPolygonElement>("#map-connections polygon.connection-path")].map(lace => {
+      const m = lace.getScreenCTM()!, first = lace.points.getItem(0), last = lace.points.getItem(lace.points.numberOfItems - 1);
+      return { x: (first.x + last.x) / 2 * m.a + m.e, y: (first.y + last.y) / 2 * m.d + m.f };
     }));
   return [...map.querySelectorAll<HTMLElement>(".node-card .symbol-anchor.hub.hub-ends-wire")].map(hub => {
     const card = hub.closest<HTMLElement>(".node-card")!, box = hub.getBoundingClientRect(), cardBox = card.getBoundingClientRect();
@@ -214,7 +218,7 @@ const hubs = (page: Page) => page.evaluate(() => {
       .map(dot => dot.getBoundingClientRect().top);
     const centre = { x: box.left + box.width / 2, y: box.top + box.height / 2 };
     return {
-      card: card.dataset.id!, centre: centre.y, fromTop: (centre.y - cardBox.top) / mapScale, size: box.height / mapScale / 12, line, firstRow: rows.length ? Math.min(...rows) : null,
+      card: card.dataset.id!, centre: centre.y, size: box.height / mapScale / 12, line, firstRow: rows.length ? Math.min(...rows) : null,
       // The ends at its card's edge, within the card's height: the lines that end on it.
       wireEnds: ends.filter(end => Math.abs(end.x - centre.x) <= 7 * box.height / 12 + 1 && end.y >= cardBox.top && end.y <= cardBox.bottom).map(end => end.y),
       controlScale
@@ -235,9 +239,9 @@ test("a card's node-level hubs stand at its file name's first line at every look
     expect(drawnHubs.length, `${look}: lines end on hubs`).toBeGreaterThan(3);
     for (const hub of drawnHubs) {
       const where = `${look}: ${hub.card}`;
-      expect(Math.abs(hub.centre - hub.line.middle), `${where}: at the middle of the name's first line`).toBeLessThanOrEqual(1);
-      // At the reading look a card whose name is one line, as the nominal card's is, has its hub where that card says.
-      if (look === "reading" && hub.card === CONFIG) expect(Math.abs(hub.fromTop - HUB_CENTRE), `${where}: at the nominal card's hub`).toBeLessThanOrEqual(0.5);
+      // On the name's first line: at its middle where the line is the name's own, and at the middle of the line a name of
+      // one line shares with the controls' room, which stands lower than the text, at the reading look.
+      expect(Math.abs(hub.centre - hub.line.middle), `${where}: on the name's first line`).toBeLessThanOrEqual(look === "reading" ? hub.line.height / 2 : 1);
       // Above every row the card draws, so that no row can be taken for its end.
       if (hub.firstRow !== null) expect(hub.centre, `${where}: above the card's rows`).toBeLessThan(hub.firstRow);
       // As large as the look's controls, as a row's dot is, and no taller than a line of the name.

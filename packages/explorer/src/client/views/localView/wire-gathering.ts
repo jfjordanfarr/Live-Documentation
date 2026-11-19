@@ -18,16 +18,18 @@ import type { LocalEdge } from "./types";
 export const NODE_HUB = "#hub";
 
 /**
- * Where a card's node-level hubs stand on the nominal card the Flow shape is priced on, their centre below the outer
- * top of the card's box, in the map's own units (2026-11-19): at the middle of the file name's first line, where no
- * symbol row can be mistaken for a hub's end. The page reads each card's own line (the branch renderer's `standHubs`),
- * which is not a constant: a name of one line, the nominal card's, shares its line with the room the node's controls
- * keep (local.css), 24 tall, at whose foot the text sits, and a longer name's first line is the text's own. The number is
- * that middle as the page drew it for a card whose name is one line (App.config of the estate sample, 28.56, in this
- * container's fonts on 2026-11-19), on the layout's half-pixel grid; a browser case holds the page to it. Until then a
- * hub stood half way down its card, level with whichever row stood there, and the owner read a line's end as that row's.
+ * Where a card's node-level hubs stand, below the top of its header (the file's name and the room its controls keep), in
+ * the map's own units (2026-11-19): at the middle of the header's first line, where no symbol row can be mistaken for a
+ * hub's end. A name of one line beside the controls' room makes one line as tall as the taller of the two, and the hubs
+ * stand at its middle; every other first line is a line of the name. The page reads the header from itself (the branch
+ * renderer's `standHubs`), and the layout lab's card model computes it from the name's lines, so that both stand a hub
+ * alike. Until then a hub stood half way down its card, level with whichever row stood there, and the owner read a
+ * line's end as that row's.
  */
-export const HUB_CENTRE = 28.5;
+export function hubLine(headerHeight: number, lineHeight: number, roomHeight: number): number {
+  return (headerHeight <= Math.max(lineHeight, roomHeight) + 0.5 ? headerHeight : lineHeight) / 2;
+}
+
 
 /** One wire standing for every wire from one file to another at the overview band. */
 export interface GatheredWire {

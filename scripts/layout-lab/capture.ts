@@ -544,7 +544,7 @@ function readCapture(page: Page): Promise<PageCapture & { titleChecks: TitleChec
           return captured;
         })(),
         directoryHidden: getComputedStyle(directory).display === "none",
-        // The hub's centre as laid out, at its name's height on every card since 2026-11-19 (half way down a slot card before).
+        // The hub's centre as laid out, at the name's first line since 2026-11-19 (half way down a slot card before).
         hubY: px(getComputedStyle(hub!).top) + px(cardStyle.borderTopWidth) + hub!.offsetHeight / 2,
         footer: (() => {
           const footer = card.querySelector<HTMLElement>(".local-reading-counts");
