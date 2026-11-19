@@ -515,6 +515,40 @@ describe("JSON Adapter on package.json", () => {
     ]);
   });
 
+  it("takes what follows `--`, or a quoted word, for the first command's arguments unless it begins as a command, and reads comments and redirections as a shell does", async () => {
+    const manifestPath = path.join(tempDir, "package.json");
+    fs.writeFileSync(manifestPath, JSON.stringify({
+      name: "root",
+      scripts: {
+        // Arguments handed to the script after `--`: a data file, an output path behind a flag, a test to run.
+        gen: "node scripts/gen.mjs -- data/input.json",
+        out: "tsx scripts/a.ts -- --out docs/x.md",
+        unit: "vitest run -- tests/a.test.ts",
+        // The same without `--`: the `--` changes nothing of what the command is read to run, a test vitest runs.
+        unitPlain: "vitest run tests/a.test.ts",
+        // A path with a space in it is one path, not a command line.
+        spaced: "node \"scripts/my script.js\"",
+        // What follows `#` is a comment, and `&>` a redirection of the one command.
+        commented: "node scripts/a.mjs # node scripts/b.mjs",
+        redirected: "node scripts/a.mjs &> scripts/b.mjs"
+      }
+    }));
+    const fileIndex = new Set(["scripts/gen.mjs", "data/input.json", "scripts/a.ts", "docs/x.md", "tests/a.test.ts", "scripts/my script.js", "script.js", "scripts/a.mjs", "scripts/b.mjs"]);
+    fs.mkdirSync(path.join(tempDir, "scripts"), { recursive: true });
+
+    const result = await jsonAdapter.analyze({ absolutePath: manifestPath, workspaceRoot: tempDir, fileIndex });
+
+    expect(result?.declares).toEqual([
+      { reason: "command", file: "scripts/a.mjs", name: "commented" },
+      { reason: "command", file: "scripts/a.mjs", name: "redirected" },
+      { reason: "command", file: "scripts/a.ts", name: "out" },
+      { reason: "command", file: "scripts/gen.mjs", name: "gen" },
+      { reason: "command", file: "scripts/my script.js", name: "spaced" },
+      { reason: "command", file: "tests/a.test.ts", name: "unit" },
+      { reason: "command", file: "tests/a.test.ts", name: "unitPlain" }
+    ]);
+  });
+
   it("maps a built binary and main module back to their sources through the tsconfig beside the manifest", async () => {
     const packageDir = path.join(tempDir, "packages", "cli");
     fs.mkdirSync(path.join(packageDir, "src"), { recursive: true });

@@ -131,28 +131,52 @@ interface ShellWord {
 }
 
 /**
+ * The programs a command line may begin with that run a file they are given: interpreters and launchers. A word handed
+ * on by a wrapper is read as a command of its own only when it begins with one of these, or with a path that is run
+ * itself (`./scripts/run.sh`); otherwise it is the first command's arguments.
+ */
+const LAUNCHERS = new Set([
+  "node", "nodejs", "tsx", "ts-node", "ts-node-esm", "deno", "bun", "npx", "pnpx", "bunx", "nodemon",
+  "python", "python3", "py", "uv", "sh", "bash", "zsh", "dash", "pwsh", "powershell", "ruby", "perl", "php",
+  "java", "dotnet", "go", "cargo"
+]);
+
+/** Whether a command's words begin as a command does: with a known launcher, or with a path that is run itself. */
+function beginsAsCommand(words: readonly string[]): boolean {
+  const first = words[0];
+  if (first === undefined) return false;
+  if (first.startsWith("./") || first.startsWith("../")) return true;
+  return LAUNCHERS.has(path.posix.basename(first.replace(/\\/gu, "/")).replace(/\.exe$/iu, "").toLowerCase());
+}
+
+/**
  * Every command a script starts, each as its words: the commands between the shell's separators, and within each the
  * commands it hands on to another. A wrapper hands on a command in one of two ways, as their own documentation shows:
  * after a `--` that ends the wrapper's own options (`dotenv -e .env -- node app.js`, a runner that takes `-- <command>`),
  * or as a quoted word holding a whole command line (`concurrently "node api.js" "node web.js"`,
- * `nodemon --exec "tsx src/main.ts"`, `sh -c "node a.js && node b.js"`). A wrapper that takes the command as its own
- * remaining words (`cross-env NODE_ENV=production node app.js`) needs nothing more: its command's first file is the
- * first of the words. A wrapper that names npm scripts (`npm-run-all build test`) starts no file of its own; the
- * scripts it names are read as scripts.
+ * `nodemon --exec "tsx src/main.ts"`, `sh -c "node a.js && node b.js"`). What follows a `--`, or a quoted word, is a
+ * command only when it begins as one ({@link beginsAsCommand}): `node gen.mjs -- data/input.json` hands its script an
+ * argument, and `node "scripts/my script.js"` names one path. A wrapper that takes the command as its own remaining
+ * words (`cross-env NODE_ENV=production node app.js`) needs nothing more: its command's first file is the first of the
+ * words. A wrapper that names npm scripts (`npm-run-all build test`) starts no file of its own; the scripts it names
+ * are read as scripts.
  */
 export function commandsOf(script: string): string[][] {
   const commands: string[][] = [];
   for (const command of shellCommands(script)) {
     let words: string[] = [];
-    for (const word of command) {
-      if (word.text === "--" && !word.spaced) {
+    for (let index = 0; index < command.length; index += 1) {
+      const word = command[index];
+      if (word.text === "--" && !word.spaced && beginsAsCommand(command.slice(index + 1).map((rest) => rest.text))) {
         commands.push(words);
         words = [];
-      } else {
-        // A quoted word with whitespace may be a path with a space in it, or a command line: it is read as both.
-        if (word.spaced) commands.push(...commandsOf(word.text));
-        words.push(word.text);
+        continue;
       }
+      if (word.spaced) {
+        const line = commandsOf(word.text);
+        if (line.length > 0 && beginsAsCommand(line[0])) commands.push(...line);
+      }
+      words.push(word.text);
     }
     commands.push(words);
   }
@@ -163,7 +187,8 @@ export function commandsOf(script: string): string[][] {
  * A command line split as a POSIX shell splits it: into commands at `&&`, `||`, `;`, `|`, `&` and line breaks outside
  * quotes, and each into words at whitespace outside quotes; a single quote keeps every character to the next, a double
  * quote keeps every character but a backslash before `"`, `\`, `$` or a backtick, and a backslash outside quotes keeps
- * the next character. The `&` of a redirection such as `2>&1` belongs to its word.
+ * the next character. The `&` of a redirection such as `2>&1` or `&> log` belongs to its word, and a `#` that begins a
+ * word begins a comment, to the end of the line.
  */
 function shellCommands(line: string): ShellWord[][] {
   const commands: ShellWord[][] = [];
@@ -204,7 +229,10 @@ function shellCommands(line: string): ShellWord[][] {
       index += 1;
       text += line[index];
       started = true;
-    } else if ((character === "&" && line[index - 1] !== ">" && line[index - 1] !== "<") || character === "|" || character === ";" || character === "\n") {
+    } else if (character === "#" && !started) {
+      const end = line.indexOf("\n", index);
+      index = end < 0 ? line.length : end - 1;
+    } else if ((character === "&" && line[index - 1] !== ">" && line[index - 1] !== "<" && line[index + 1] !== ">") || character === "|" || character === ";" || character === "\n") {
       if ((character === "&" || character === "|") && line[index + 1] === character) index += 1;
       endCommand();
     } else if (/\s/u.test(character)) {
