@@ -374,6 +374,16 @@ const SQL_XML_METHODS: ReadonlySet<string> = new Set(["value", "query", "exist",
  */
 const SQL_WORDS_BEFORE_A_NAMED_THING: readonly string[] = ["ON", "INTO", "FUNCTION", "PROCEDURE", "PROC", "TRIGGER", "VIEW", "TABLE", "TYPE", "INDEX", "EVENT", "TARGET"];
 
+/**
+ * The words Oracle lets stand between `CREATE [OR REPLACE]` and what it makes:
+ * `GLOBAL TEMPORARY` and `PRIVATE TEMPORARY` tables (a global temporary table
+ * is a lasting object of its schema whose rows are temporary), `SHARDED`,
+ * `DUPLICATED`, `IMMUTABLE` and `BLOCKCHAIN` tables, `EDITIONABLE` and
+ * `NONEDITIONABLE` code, as Oracle's own export writes it, and `[NO] FORCE`
+ * and `EDITIONING` views. Oracle's only; T-SQL writes none of them there.
+ */
+const ORACLE_CREATE_MODIFIERS: readonly string[] = ["GLOBAL", "PRIVATE", "TEMPORARY", "SHARDED", "DUPLICATED", "IMMUTABLE", "BLOCKCHAIN", "EDITIONABLE", "NONEDITIONABLE", "FORCE", "EDITIONING"];
+
 /** The kinds of `CREATE` a script's symbols are made from. */
 const SQL_DECLARED_KINDS: ReadonlySet<string> = new Set(["PROCEDURE", "PROC", "TABLE", "VIEW", "FUNCTION"]);
 
@@ -831,6 +841,7 @@ function readSqlText(text: string, place: SqlPlace, into: SqlReading): void {
       if (word === "CREATE") {
         let at = index + 1;
         if (isWord(tokens[at], "OR") && isWord(tokens[at + 1], "ALTER", "REPLACE")) at += 2;
+        while (isWord(tokens[at], ...ORACLE_CREATE_MODIFIERS) || (isWord(tokens[at], "NO") && isWord(tokens[at + 1], "FORCE"))) at += 1;
         if (isWord(tokens[at], "ASYMMETRIC", "SYMMETRIC")) at += 1;
         const kind = tokens[at]?.kind === "word" ? tokens[at].value.toUpperCase() : "";
         const name = readName(tokens, at + 1);

@@ -192,6 +192,29 @@ describe("database objects", () => {
     ]);
   });
 
+  it("reads Oracle's CREATE with the words that stand between CREATE and what it makes", () => {
+    const script = [
+      "create global temporary table ut_coverage_sources_tmp (a NUMBER) on commit preserve rows;",
+      "CREATE PRIVATE TEMPORARY TABLE ora$ptt_rows (a NUMBER);",
+      "CREATE OR REPLACE EDITIONABLE PROCEDURE central.close_day IS BEGIN NULL; END;",
+      "/",
+      "CREATE OR REPLACE NONEDITIONABLE FUNCTION central.fmt RETURN VARCHAR2 IS BEGIN RETURN 'x'; END;",
+      "/",
+      "CREATE OR REPLACE FORCE EDITIONABLE VIEW central.open_accounts AS SELECT * FROM central.account;",
+      "CREATE OR REPLACE NO FORCE VIEW central.v2 AS SELECT 1 a FROM dual;",
+      "CREATE TABLE central.accounts OF account_t;"
+    ].join("\n");
+    expect(sqlDeclarations(script).map((declaration) => `${declaration.kind} ${declaration.name} @${declaration.line}`)).toEqual([
+      "table ut_coverage_sources_tmp @1",
+      "table ora$ptt_rows @2",
+      "procedure central.close_day @3",
+      "sql-function central.fmt @5",
+      "view central.open_accounts @7",
+      "view central.v2 @8",
+      "table central.accounts @9"
+    ]);
+  });
+
   it("reads past an Oracle q-quoted string and a SQL*Plus PROMPT or REM line holding an apostrophe, and keeps a column of that name", () => {
     const script = [
       "PROMPT Creating the day's close",
