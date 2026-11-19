@@ -3,7 +3,8 @@
  *
  * A move from one place to another, another view, another file, another folder opened or a path between two files,
  * becomes an entry that Back returns to. A change within a place, pins, an expanded card, pan and zoom, rewrites the
- * current entry, so Back never walks through pin toggles. Which kind a write is comes from the parsed address, not
+ * current entry, so Back never walks through pin toggles; an action that releases many pins in one press, Unpin others,
+ * is made an entry of its own by {@link stepWithinPlace}. Which kind a write is comes from the parsed address, not
  * from the raw one, because the Local Map packs its pins and its folders into one compressed parameter.
  */
 
@@ -22,6 +23,11 @@ export interface HistoryWrite {
   restoring: boolean;
   /** Whether a new entry was made earlier in the same task: one action that writes twice is one step back. */
   joining: boolean;
+  /**
+   * Whether the action writing is one that Back must take back although it stays in the place, as Unpin others releases
+   * many pins at once (2026-11-19); see {@link stepWithinPlace}.
+   */
+  step?: boolean;
 }
 
 /** Decides what one write to the address bar does to the history. */
@@ -29,7 +35,7 @@ export function entryFor(write: HistoryWrite): HistoryEntry {
   if (write.sameUrl) {
     return "none";
   }
-  const move = write.fromPlace !== write.toPlace;
+  const move = write.fromPlace !== write.toPlace || !!write.step;
   if (!move || !write.armed || write.restoring || write.joining) {
     return "replace";
   }
@@ -52,6 +58,20 @@ interface EntryState {
 function positionOf(state: unknown): number {
   const value = (state as Partial<EntryState> | null)?.liveDocsPosition;
   return typeof value === "number" ? value : 0;
+}
+
+let stepping = false;
+
+/**
+ * Makes the next write in this task a new entry even though it stays in the place: for an action that changes so much
+ * within a place in one press that a person must be able to take it back by Back, as Unpin others does (2026-11-19).
+ * A single pin's toggle never calls this, so Back still does not walk through pin toggles.
+ */
+export function stepWithinPlace(): void {
+  stepping = true;
+  setTimeout(() => {
+    stepping = false;
+  }, 0);
 }
 
 /** Joins every write for the rest of this task to the entry just made or restored. */
@@ -122,8 +142,12 @@ export function commitUrl(url: string): void {
     sameUrl: next.pathname === window.location.pathname && next.search === window.location.search,
     armed,
     restoring,
-    joining
+    joining,
+    step: stepping
   });
+  if (entry !== "none") {
+    stepping = false;
+  }
   if (entry === "none") {
     return;
   }

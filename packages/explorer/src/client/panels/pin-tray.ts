@@ -1,6 +1,7 @@
 import type { ExplorerNodePayload } from "../../shared/types";
 import { describeRetained, retainedItems, retainedKey, type RetainedItem, type RetainedState } from "../views/retained-state";
-import { CLOSE_ICON, DIRECTORY_ICON, iconButton } from "./icon-button";
+import { CLOSE_ICON, DIRECTORY_ICON, iconButton, MORE_ICON } from "./icon-button";
+import type { ItemCommand } from "./item-menu";
 
 /** Actions operate on the shared selection; opening the tray or focusing a row does not retain anything. */
 export interface PinTrayOptions {
@@ -9,6 +10,10 @@ export interface PinTrayOptions {
   onRelease(item: RetainedItem): void;
   onClearDirectory(directory: string): void;
   onClear(): void;
+  /** The commands a row's More offers for the thing kept, Fold others away and Unpin others (2026-11-19); none hides it. */
+  othersCommands(item: RetainedItem): readonly ItemCommand[];
+  /** Open the item menu of those commands beside the row's More. */
+  onShowOthers(item: RetainedItem, anchor: { x: number; y: number }, onClose?: () => void): void;
   onFocus(item: RetainedItem): void;
   /** The application closes any open reader before the tray takes the shared edge. */
   onOpen?: () => void;
@@ -125,6 +130,16 @@ export function createPinTray(options: PinTrayOptions): {
       row.append(bulk);
     }
 
+    // A row's More opens the menu of the thing kept, as a card's does, with what releases the others (2026-11-19).
+    const more = iconButton(`More actions for ${description}`, MORE_ICON);
+    more.className = "pin-tray-more";
+    more.setAttribute("aria-haspopup", "menu");
+    more.addEventListener("click", () => {
+      const box = more.getBoundingClientRect();
+      options.onShowOthers(item, { x: box.left, y: box.bottom });
+    });
+    row.append(more);
+
     const release = iconButton(`Release ${description}`, CLOSE_ICON);
     release.className = "pin-tray-release";
     release.addEventListener("click", () => options.onRelease(item));
@@ -153,6 +168,11 @@ export function createPinTray(options: PinTrayOptions): {
         rows.set(key, row);
         if (list.children[index] !== row) list.insertBefore(row, list.children[index] ?? null);
         row.querySelectorAll<HTMLButtonElement>("button").forEach(button => { button.disabled = busy; });
+        const more = row.querySelector<HTMLButtonElement>(".pin-tray-more")!;
+        const alone = options.othersCommands(item).length === 0;
+        // A hidden control drops the keyboard's focus to the page; the row's own entry takes it instead.
+        if (alone && more === document.activeElement) row.querySelector<HTMLButtonElement>(".pin-tray-subject")?.focus({ preventScroll: true });
+        more.hidden = alone;
         const words = absent?.(item) ?? null;
         const absence = row.querySelector<HTMLElement>(".pin-tray-absent")!;
         absence.hidden = words === null;
