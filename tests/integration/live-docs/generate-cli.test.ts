@@ -62,7 +62,7 @@ const BOARD = "# Sample board\n\n## Metadata\n- Layer: 3\n\n## Authored\n### Pur
 const MDMD = { root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md" };
 
 /** The workspaces the cases run in, made in `beforeAll`; `stand` is a folder a person stands in, holding two repositories, `mine` and `theirs`, and a configuration beside them. */
-const at = { own: "", given: "", mapped: "", boarded: "", unboarded: "", stand: "", unread: "" };
+const at = { own: "", given: "", mapped: "", boarded: "", unboarded: "", stand: "", unread: "", broken: "" };
 
 /** Each case's run, by the case's name. */
 const runs = new Map<string, Run>();
@@ -92,6 +92,9 @@ beforeAll(async () => {
     fs.mkdirSync(path.dirname(path.join(at.unread, name)), { recursive: true });
     fs.writeFileSync(path.join(at.unread, name), "x\n", "utf8");
   }
+  // A configuration cut short, the failure every command meets first.
+  at.broken = makeWorkspace({});
+  fs.writeFileSync(path.join(at.broken, ".live-docs.config.json"), "{ \"root\": ", "utf8");
 
   const record = (name: string, script: string, args: string[]) => async (): Promise<Run> => {
     const result = await run(script, args);
@@ -119,6 +122,8 @@ beforeAll(async () => {
     // The configuration is named first, so that a run that took the paths from this checkout would stop before writing.
     recordNpm("npm from elsewhere", at.stand, "live-docs:generate", ["--config", "standing.json", "--workspace", "mine"]),
     record("generate, unread kinds", "generate.ts", ["--workspace", at.unread, "--dry-run"]),
+    record("lint, failing", "lint.ts", ["--workspace", at.broken]),
+    record("lint, failing, with the stack", "lint.ts", ["--workspace", at.broken, "--stack"]),
     record("generate, mistyped", "generate.ts", ["--workspace", path.join(at.stand, "mien")]),
     record("inspect, mistyped", "inspect.ts", ["--workspace", path.join(at.stand, "mien"), "--reachable"]),
     record("generate, a file", "generate.ts", ["--workspace", path.join(at.stand, "standing.json")]),
@@ -162,6 +167,20 @@ describe("the folder a person runs a command from", () => {
     const result = ran("npm from elsewhere, no workspace");
     expect(result.status, result.stderr).toBe(0);
     expect(result.stdout).toContain("Would create 1 Live Doc(s): docs/mirror/src/a.ts.md");
+  });
+});
+
+describe("a command that fails", () => {
+  it("says why on one line and how to see where, and with --stack prints the stack of the failure and of its cause", () => {
+    const configuration = path.join(at.broken, ".live-docs.config.json");
+    const plain = ran("lint, failing");
+    expect(plain.status).toBe(1);
+    expect(plain.stderr).toMatch(new RegExp(`^live-docs:lint failed: cannot read the configuration at ${configuration.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&")}: .+\nTo see where it failed, run the command again with --stack\\.\n$`, "u"));
+    const traced = ran("lint, failing, with the stack");
+    expect(traced.status).toBe(1);
+    expect(traced.stderr).toContain(`live-docs:lint failed: Error: cannot read the configuration at ${configuration}`);
+    expect(traced.stderr).toMatch(/\n {4}at .*cli\.ts:\d+/u);
+    expect(traced.stderr).toContain("\nCaused by: SyntaxError: ");
   });
 });
 

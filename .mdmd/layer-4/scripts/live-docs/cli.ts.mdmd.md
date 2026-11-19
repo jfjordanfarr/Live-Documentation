@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/live-docs/cli.ts
-- Generated At: 2026-11-19T19:21:37.979Z
+- Generated At: 2026-11-19T19:28:26.985Z
 
 ## Authored
 ### Purpose
@@ -17,6 +17,7 @@ What the Live Docs commands share at their edge: the version each prints, read f
 - `decodeText` (2026-11-19): the configuration is read by its byte-order mark, UTF-8 with or without one or UTF-16 in either order, after [the cold run](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/cold-run/README.md#every-crash) found a configuration saved by Windows PowerShell 5.1, which writes the mark, stopping every command. The PowerShell reader decodes scripts by the same rule for itself; the history's lens reads the configuration by its own copy of `readConfiguration` without it ([the probe](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/windows-and-cli/README.md)).
 - `invocationFolder`, `typedPath` and `workspaceFolder` (2026-11-19): every command's help said `--workspace` defaults to "the current directory", but `npm run` starts a script in this checkout's own folder wherever the person stands, so the default workspace and every relative path were this checkout's, which [the cold run](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/cold-run/README.md#the-strangers-steps-and-stumbles) met. The guides run the commands from the root of this checkout, where the two folders are one, so nothing changes there; elsewhere, as under `npm --prefix <checkout> run`, the folder meant is the one npm records in `INIT_CWD`. It is honoured only when npm started this very script, read from `npm_lifecycle_script`, since a process another command or a test starts inherits npm's variables while its own working directory is the one meant.
 - Since the same day `workspaceFolder` refuses a name that is no folder, with the path it looked for: a mistyped `--workspace` reported "processed 0 file(s)" as a success and `generate` made the misspelled folder ([the cold run](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/cold-run/README.md#the-strangers-steps-and-stumbles)). Every command takes its workspace through it.
+- `--stack` (2026-11-19): every command takes it, through `runCommand`, which lifts it off the command line before the command reads its own options, and prints a failure's stack and each cause's with it. Without it a failure ends with a line saying how to see where it failed. [The cold run](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/cold-run/README.md#the-strangers-steps-and-stumbles) had to call the generator from a script of its own to learn which code a crash came from. Which source file a crash concerns is the generator's to say ([the probe](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/windows-and-cli/README.md)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -88,16 +89,18 @@ The value after an option, refused when it is missing or is itself an option.
 
 #### `runCommand` {#symbol-runcommand}
 - Type: function
-- Source: [source](../../../../scripts/live-docs/cli.ts#L100)
+- Source: [source](../../../../scripts/live-docs/cli.ts#L105)
 
 ##### `runCommand` — Summary
 Runs a command to its end, by the name of the npm script that runs it: a
 refused command line prints one line, naming what was refused and how to list
-the options; any other failure prints its message; both exit 1.
+the options; any other failure prints its message, with how to see where it
+failed, and with `--stack` on the command line, the stack of the failure and
+of each failure that caused it; both exit 1.
 
 #### `decodeText` {#symbol-decodetext}
 - Type: function
-- Source: [source](../../../../scripts/live-docs/cli.ts#L118)
+- Source: [source](../../../../scripts/live-docs/cli.ts#L142)
 
 ##### `decodeText` — Summary
 A text file's characters, in whichever of the encodings Windows writes by
@@ -108,7 +111,7 @@ itself is not part of the text.
 
 #### `readConfiguration` {#symbol-readconfiguration}
 - Type: function
-- Source: [source](../../../../scripts/live-docs/cli.ts#L132)
+- Source: [source](../../../../scripts/live-docs/cli.ts#L156)
 
 ##### `readConfiguration` — Summary
 The configuration a command reads: the file given, from the folder the

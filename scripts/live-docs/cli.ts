@@ -92,20 +92,44 @@ export function optionValue(argv: string[], index: number, flag: string): string
   return value;
 }
 
+/** The option every command takes, and none lists among its own: on a failure, print where it failed. */
+const STACK_OPTION = "--stack";
+
 /**
  * Runs a command to its end, by the name of the npm script that runs it: a
  * refused command line prints one line, naming what was refused and how to list
- * the options; any other failure prints its message; both exit 1.
+ * the options; any other failure prints its message, with how to see where it
+ * failed, and with `--stack` on the command line, the stack of the failure and
+ * of each failure that caused it; both exit 1.
  */
 export function runCommand(name: string, main: () => Promise<void>): void {
+  // Taken off the command line before the command reads it, so that every command takes it without a word of its own.
+  const at = process.argv.indexOf(STACK_OPTION, 2);
+  const withStack = at !== -1;
+  if (withStack) {
+    process.argv.splice(at, 1);
+  }
   main().catch((error: unknown) => {
     if (error instanceof UsageError) {
       console.error(`${name}: ${error.message} Run "npm run ${name} -- --help" to list the options.`);
+    } else if (withStack) {
+      console.error(`${name} failed: ${stackOf(error)}`);
     } else {
       console.error(`${name} failed: ${error instanceof Error ? error.message : String(error)}`);
+      console.error(`To see where it failed, run the command again with ${STACK_OPTION}.`);
     }
     process.exitCode = 1;
   });
+}
+
+/** A failure's stack, then each cause's under "Caused by", as far as the chain goes. */
+function stackOf(error: unknown): string {
+  const lines: string[] = [];
+  for (let current: unknown = error, depth = 0; current !== undefined && depth < 16; depth += 1) {
+    lines.push(`${depth > 0 ? "Caused by: " : ""}${current instanceof Error ? (current.stack ?? current.message) : String(current)}`);
+    current = current instanceof Error ? current.cause : undefined;
+  }
+  return lines.join("\n");
 }
 
 /**
