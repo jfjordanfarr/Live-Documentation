@@ -22,7 +22,7 @@
  * case reads what its own run printed: one after another they took about two
  * minutes (2026-11-12).
  */
-import { execFile } from "node:child_process";
+import { execFile, execFileSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
@@ -62,7 +62,7 @@ const BOARD = "# Sample board\n\n## Metadata\n- Layer: 3\n\n## Authored\n### Pur
 const MDMD = { root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md" };
 
 /** The workspaces the cases run in, made in `beforeAll`; `stand` is a folder a person stands in, holding two repositories, `mine` and `theirs`, and a configuration beside them. */
-const at = { own: "", given: "", mapped: "", boarded: "", unboarded: "", stand: "", unread: "", broken: "" };
+const at = { own: "", given: "", mapped: "", boarded: "", unboarded: "", stand: "", unread: "", broken: "", repository: "", noGit: "" };
 
 /** Each case's run, by the case's name. */
 const runs = new Map<string, Run>();
@@ -95,9 +95,19 @@ beforeAll(async () => {
   // A configuration cut short, the failure every command meets first.
   at.broken = makeWorkspace({});
   fs.writeFileSync(path.join(at.broken, ".live-docs.config.json"), "{ \"root\": ", "utf8");
+  // A repository whose build output a nested ignore file hides, and a folder on the path that holds node and no git, as on
+  // a machine where git is not installed or not on the path.
+  at.repository = makeWorkspace({});
+  execFileSync("git", ["init", "-q"], { cwd: at.repository });
+  fs.writeFileSync(path.join(at.repository, "src", ".gitignore"), "bin/\n", "utf8");
+  fs.mkdirSync(path.join(at.repository, "src", "bin"));
+  fs.writeFileSync(path.join(at.repository, "src", "bin", "App.dll.config"), "<configuration />\n", "utf8");
+  at.noGit = fs.mkdtempSync(path.join(os.tmpdir(), "generate-cli-no-git-"));
+  workspaces.push(at.noGit);
+  fs.symlinkSync(process.execPath, path.join(at.noGit, path.basename(process.execPath)));
 
-  const record = (name: string, script: string, args: string[]) => async (): Promise<Run> => {
-    const result = await run(script, args);
+  const record = (name: string, script: string, args: string[], env: Record<string, string> = {}) => async (): Promise<Run> => {
+    const result = await run(script, args, env);
     runs.set(name, result);
     return result;
   };
@@ -122,6 +132,8 @@ beforeAll(async () => {
     // The configuration is named first, so that a run that took the paths from this checkout would stop before writing.
     recordNpm("npm from elsewhere", at.stand, "live-docs:generate", ["--config", "standing.json", "--workspace", "mine"]),
     record("generate, unread kinds", "generate.ts", ["--workspace", at.unread, "--dry-run"]),
+    record("generate, a repository", "generate.ts", ["--workspace", at.repository, "--dry-run"]),
+    record("generate, a repository without git", "generate.ts", ["--workspace", at.repository, "--dry-run"], { PATH: at.noGit }),
     record("lint, failing", "lint.ts", ["--workspace", at.broken]),
     record("lint, failing, with the stack", "lint.ts", ["--workspace", at.broken, "--stack"]),
     record("generate, mistyped", "generate.ts", ["--workspace", path.join(at.stand, "mien")]),
@@ -181,6 +193,28 @@ describe("a command that fails", () => {
     expect(traced.stderr).toContain(`live-docs:lint failed: Error: cannot read the configuration at ${configuration}`);
     expect(traced.stderr).toMatch(/\n {4}at .*cli\.ts:\d+/u);
     expect(traced.stderr).toContain("\nCaused by: SyntaxError: ");
+  });
+});
+
+describe("what git ignores", () => {
+  it("is asked of git in a repository, which leaves the build output a nested ignore file names out", () => {
+    const result = ran("generate, a repository");
+    expect(result.status, result.stderr).toBe(0);
+    expect(result.stdout).not.toContain("bin/App.dll.config");
+    expect(`${result.stdout}${result.stderr}`).not.toContain(".gitignore is read");
+  });
+
+  it("is said to be read from the workspace's .gitignore alone when git cannot be asked, and what that lets in", () => {
+    const result = ran("generate, a repository without git");
+    expect(result.status, result.stderr).toBe(0);
+    expect(result.stdout).toContain("src/bin/App.dll.config");
+    expect(result.stderr).toContain(`[live-docs] git could not be asked what it ignores in ${at.repository}`);
+    expect(result.stderr).toContain(`only ${path.join(at.repository, ".gitignore")} is read`);
+  });
+
+  it("is said to be read from the workspace's .gitignore alone outside a repository", () => {
+    const result = ran("generate, unread kinds");
+    expect(result.stdout).toContain(`[live-docs] Not in a git repository, so of what to leave out only ${path.join(at.unread, ".gitignore")} and the configuration's exclude are read.`);
   });
 });
 
@@ -282,13 +316,13 @@ function makeWorkspace(config: Record<string, string>): string {
   return workspace;
 }
 
-/** Runs one of the scripts through tsx as the npm scripts do, without waiting on any other. */
-function run(script: string, args: string[]): Promise<Run> {
+/** Runs one of the scripts through tsx as the npm scripts do, without waiting on any other, with any variables given set over this process's. */
+function run(script: string, args: string[], env: Record<string, string> = {}): Promise<Run> {
   return new Promise((resolve) => {
     execFile(
       process.execPath,
       [tsxCli, "--tsconfig", path.join(repoRoot, "tsconfig.base.json"), path.resolve(scripts, script), ...args],
-      { encoding: "utf8", maxBuffer: 1 << 26 },
+      { encoding: "utf8", maxBuffer: 1 << 26, env: { ...process.env, ...env } },
       (error, stdout, stderr) => {
         const status = error === null ? 0 : typeof error.code === "number" ? error.code : null;
         resolve({ status, stdout, stderr });

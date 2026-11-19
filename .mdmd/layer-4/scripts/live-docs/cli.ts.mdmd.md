@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/live-docs/cli.ts
-- Generated At: 2026-11-19T19:28:26.985Z
+- Generated At: 2026-11-19T19:37:35.644Z
 
 ## Authored
 ### Purpose
@@ -18,13 +18,14 @@ What the Live Docs commands share at their edge: the version each prints, read f
 - `invocationFolder`, `typedPath` and `workspaceFolder` (2026-11-19): every command's help said `--workspace` defaults to "the current directory", but `npm run` starts a script in this checkout's own folder wherever the person stands, so the default workspace and every relative path were this checkout's, which [the cold run](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/cold-run/README.md#the-strangers-steps-and-stumbles) met. The guides run the commands from the root of this checkout, where the two folders are one, so nothing changes there; elsewhere, as under `npm --prefix <checkout> run`, the folder meant is the one npm records in `INIT_CWD`. It is honoured only when npm started this very script, read from `npm_lifecycle_script`, since a process another command or a test starts inherits npm's variables while its own working directory is the one meant.
 - Since the same day `workspaceFolder` refuses a name that is no folder, with the path it looked for: a mistyped `--workspace` reported "processed 0 file(s)" as a success and `generate` made the misspelled folder ([the cold run](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/cold-run/README.md#the-strangers-steps-and-stumbles)). Every command takes its workspace through it.
 - `--stack` (2026-11-19): every command takes it, through `runCommand`, which lifts it off the command line before the command reads its own options, and prints a failure's stack and each cause's with it. Without it a failure ends with a line saying how to see where it failed. [The cold run](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/cold-run/README.md#the-strangers-steps-and-stumbles) had to call the generator from a script of its own to learn which code a crash came from. Which source file a crash concerns is the generator's to say ([the probe](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/windows-and-cli/README.md)).
+- `gitIgnoresUnasked` (2026-11-19): discovery reads what git ignores by git's own word, and when git cannot answer, the folder's own `.gitignore` alone, which the code said and the person was never told; the [cold run's review](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/cold-run/README.md#windows) suspected it, and [the probe](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/windows-and-cli/README.md) found a repository's `bin/`, which a nested `.gitignore` hid, documented once git was off the path. `generate` now warns when the folder lies in a repository, found by a `.git` at it or above it, that git cannot be asked about, and notes when it lies in none. Git's own reason is not kept by `gitIgnored`, so the warning names the two usual ones and the command that tells which.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `invocationFolder` {#symbol-invocationfolder}
 - Type: function
-- Source: [source](../../../../scripts/live-docs/cli.ts#L31)
+- Source: [source](../../../../scripts/live-docs/cli.ts#L32)
 - Parameters: `env`: `NodeJS.ProcessEnv`
 
 ##### `invocationFolder` — Summary
@@ -44,14 +45,14 @@ is the one meant.
 
 #### `typedPath` {#symbol-typedpath}
 - Type: function
-- Source: [source](../../../../scripts/live-docs/cli.ts#L44)
+- Source: [source](../../../../scripts/live-docs/cli.ts#L45)
 
 ##### `typedPath` — Summary
 A path the person typed, made absolute from the folder they ran the command from ({@link invocationFolder}).
 
 #### `workspaceFolder` {#symbol-workspacefolder}
 - Type: function
-- Source: [source](../../../../scripts/live-docs/cli.ts#L54)
+- Source: [source](../../../../scripts/live-docs/cli.ts#L55)
 
 ##### `workspaceFolder` — Summary
 The folder a command works on: the one `--workspace` names, from where the
@@ -59,37 +60,51 @@ person ran the command, else that folder itself. A name that is no folder
 is refused with the path looked for, since a mistyped one would otherwise
 map nothing and say so as success, and `generate` would make the folder.
 
+#### `gitIgnoresUnasked` {#symbol-gitignoresunasked}
+- Type: function
+- Source: [source](../../../../scripts/live-docs/cli.ts#L77)
+
+##### `gitIgnoresUnasked` — Summary
+What a person must be told of how the files git ignores are found in a
+folder, when it is not by git's own word: discovery then reads the folder's
+own `.gitignore` alone (`keptByGitAndConfiguration` in the engine's
+discovery), and what a nested `.gitignore`, `.git/info/exclude` or the global
+excludes file hides, a .NET project's `bin/` and `obj/` above all, gets docs.
+A warning when the folder lies in a repository git cannot be asked about, as
+when git is not on the path or does not trust the folder's owner; a note when
+no repository holds it; nothing when git answers.
+
 #### `packageVersion` {#symbol-packageversion}
 - Type: function
-- Source: [source](../../../../scripts/live-docs/cli.ts#L67)
+- Source: [source](../../../../scripts/live-docs/cli.ts#L93)
 
 ##### `packageVersion` — Summary
 The version of one of this repository's packages, from its manifest: a command prints its package's version, never a constant of its own.
 
 #### `endQuietlyWhenThePipeCloses` {#symbol-endquietlywhenthepipecloses}
 - Type: function
-- Source: [source](../../../../scripts/live-docs/cli.ts#L74)
+- Source: [source](../../../../scripts/live-docs/cli.ts#L100)
 
 ##### `endQuietlyWhenThePipeCloses` — Summary
 Ends the process quietly when the reader closes the pipe before the listing is done, as `head` does, instead of dying with a stack trace.
 
 #### `UsageError` {#symbol-usageerror}
 - Type: class
-- Source: [source](../../../../scripts/live-docs/cli.ts#L84)
+- Source: [source](../../../../scripts/live-docs/cli.ts#L110)
 
 ##### `UsageError` — Summary
 A command line the command refuses: one plain sentence, printed with where its options are listed and never with a stack.
 
 #### `optionValue` {#symbol-optionvalue}
 - Type: function
-- Source: [source](../../../../scripts/live-docs/cli.ts#L87)
+- Source: [source](../../../../scripts/live-docs/cli.ts#L113)
 
 ##### `optionValue` — Summary
 The value after an option, refused when it is missing or is itself an option.
 
 #### `runCommand` {#symbol-runcommand}
 - Type: function
-- Source: [source](../../../../scripts/live-docs/cli.ts#L105)
+- Source: [source](../../../../scripts/live-docs/cli.ts#L131)
 
 ##### `runCommand` — Summary
 Runs a command to its end, by the name of the npm script that runs it: a
@@ -100,7 +115,7 @@ of each failure that caused it; both exit 1.
 
 #### `decodeText` {#symbol-decodetext}
 - Type: function
-- Source: [source](../../../../scripts/live-docs/cli.ts#L142)
+- Source: [source](../../../../scripts/live-docs/cli.ts#L168)
 
 ##### `decodeText` — Summary
 A text file's characters, in whichever of the encodings Windows writes by
@@ -111,7 +126,7 @@ itself is not part of the text.
 
 #### `readConfiguration` {#symbol-readconfiguration}
 - Type: function
-- Source: [source](../../../../scripts/live-docs/cli.ts#L156)
+- Source: [source](../../../../scripts/live-docs/cli.ts#L182)
 
 ##### `readConfiguration` — Summary
 The configuration a command reads: the file given, from the folder the
@@ -129,4 +144,5 @@ read all the same ({@link decodeText}).
 - `node:path` - `path`
 - `node:process` - `process`
 - [`liveDocumentationConfig.LiveDocumentationConfigInput`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfiginput) (type-only)
+- [`gitIgnored`](../../packages/engine/src/tooling/gitIgnored.ts.mdmd.md#symbol-gitignored)
 <!-- LIVE-DOC:END Dependencies -->

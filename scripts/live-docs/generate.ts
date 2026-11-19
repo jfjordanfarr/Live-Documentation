@@ -12,7 +12,7 @@ import {
 import { compareText } from "@live-documentation/engine/tooling/compareText";
 
 import { generateLiveDocs } from "../../packages/generator/src/generator";
-import { optionValue, packageVersion, readConfiguration, runCommand, UsageError, workspaceFolder } from "./cli";
+import { gitIgnoresUnasked, optionValue, packageVersion, readConfiguration, runCommand, UsageError, workspaceFolder } from "./cli";
 
 interface ParsedArgs {
   help: boolean;
@@ -185,6 +185,14 @@ async function main(): Promise<void> {
   }
 
   const workspaceRoot = workspaceFolder(args.workspace);
+  const ignores = gitIgnoresUnasked(workspaceRoot);
+  if (ignores !== undefined) {
+    if ("warning" in ignores) {
+      console.warn(`[live-docs] ${ignores.warning}`);
+    } else {
+      console.log(`[live-docs] ${ignores.note}`);
+    }
+  }
 
   // The file given, else the workspace's own configuration, as every command reads it; without either, the defaults.
   const configInput: LiveDocumentationConfigInput = await readConfiguration(workspaceRoot, args.configPath);

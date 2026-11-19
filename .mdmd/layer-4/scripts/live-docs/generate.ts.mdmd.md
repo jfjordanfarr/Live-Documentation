@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/generate.ts
 - Entry: command `live-docs:generate` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-19T19:26:23.852Z
+- Generated At: 2026-11-19T19:37:35.669Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ CLI entry point that applies workspace configuration, resolves include/changed f
 - Since 2026-10-17 the configuration is the file `--config` names, else the workspace's own `.live-docs.config.json`, as inspect reads it, else the shipped defaults. Until then `--workspace` without `--config` read no configuration and wrote the shipped default root, which the history probe of 2026-10-16 found while regenerating past commits; the history command ([the plan's C1](../../../../.mdmd/layer-3/change-over-time.mdmd.md)) applies its lens's configuration explicitly in any case.
 - `--version` prints the generator package's version from its manifest since 2026-10-18, through [cli.ts](cli.ts.mdmd.md); until then it printed a constant, 0.1.0, or an environment variable, while the package is 0.0.0, which the history command's lens showed up, since the lens carries the manifest's version.
 - Since 2026-11-12 its usage says what it does: `--glob` replaces the configuration's glob, where the usage said it added one, and an argument that is not an option is taken as a glob. A refused argument ends through `runCommand` in [cli.ts](cli.ts.mdmd.md), one line with the command that lists the options, and the configuration is read by `readConfiguration` there, the same rule as before.
-- Since 2026-11-19 a run ends by naming the kinds of file no reader reads, with how many of each (`unreadKinds`), by the rule each such doc's own note follows (`noReaderHandles`): [the cold run](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/cold-run/README.md#the-strangers-steps-and-stumbles) found DNN's 299 `.SqlDataProvider` scripts, its `.vb`, `.sln` and `.bat` files and tSQLt's `.sqlproj` given empty docs with nothing said, so that a person could not learn what the map leaves out without opening docs one by one. Pictures, fonts and recordings are left out of the count, since they hold nothing a reader could find. The workspace is taken through `workspaceFolder` in [cli.ts](cli.ts.mdmd.md) since the same day, from the folder the command was run from ([the probe](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/windows-and-cli/README.md)).
+- Since 2026-11-19 a run ends by naming the kinds of file no reader reads, with how many of each (`unreadKinds`), by the rule each such doc's own note follows (`noReaderHandles`): [the cold run](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/cold-run/README.md#the-strangers-steps-and-stumbles) found DNN's 299 `.SqlDataProvider` scripts, its `.vb`, `.sln` and `.bat` files and tSQLt's `.sqlproj` given empty docs with nothing said, so that a person could not learn what the map leaves out without opening docs one by one. Pictures, fonts and recordings are left out of the count, since they hold nothing a reader could find. The workspace is taken through `workspaceFolder` in [cli.ts](cli.ts.mdmd.md) since the same day, from the folder the command was run from ([the probe](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/windows-and-cli/README.md)). And a run says, before it reads anything, when what git ignores cannot be asked of git, by `gitIgnoresUnasked` there.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -37,6 +37,7 @@ _No public symbols detected_
 - [`compareText`](../../packages/engine/src/tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`generator.generateLiveDocs`](../../packages/generator/src/generator.ts.mdmd.md#symbol-generatelivedocs)
 - [`cli.UsageError`](./cli.ts.mdmd.md#symbol-usageerror)
+- [`cli.gitIgnoresUnasked`](./cli.ts.mdmd.md#symbol-gitignoresunasked)
 - [`cli.optionValue`](./cli.ts.mdmd.md#symbol-optionvalue)
 - [`cli.packageVersion`](./cli.ts.mdmd.md#symbol-packageversion)
 - [`cli.readConfiguration`](./cli.ts.mdmd.md#symbol-readconfiguration)
