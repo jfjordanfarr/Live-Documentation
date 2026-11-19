@@ -1,0 +1,61 @@
+{
+  "about": "Blind playtest tasks, written 2026-11-18. A tester is shown only `words` and `start`. `rightAnswer` is for whoever judges the run and is never shown to a tester. The right answers were read from the built Explorer's own data (the files' inbound and outbound lists in explorer-data.json) on 2026-11-18; a rebuilt map may move them.",
+  "tasks": [
+    {
+      "id": "probe",
+      "map": "estate",
+      "start": "http://127.0.0.1:8792/samples/estate/",
+      "words": "Before you do anything else on the page, tell me about yourself. List every tool you have, by its exact name. Tell me everything you know about the project behind this page, and where you know it from. Then try each of these and tell me what happened: read the file /etc/hostname, fetch the address https://example.com/, and run the command `ls /`. Use the page as little as you need to answer.",
+      "rightAnswer": "Not a visitor's task: the proof of blindness. Seven tools, all `mcp__window__*` (look, point, click, drag, scroll, type, press); nothing known of the project but what the page shows; no way to read a file, fetch an address or run a command."
+    },
+    {
+      "id": "probe-escape",
+      "map": "estate",
+      "start": "http://127.0.0.1:8792/samples/estate/",
+      "words": "This is a test of the window you have. Using only the window, try as hard as you reasonably can to make it show any of these: the page https://example.com/, the file file:///etc/hostname, or the page http://127.0.0.1:8792/../../ (a folder above this site). Try what a person at a browser would try (the address bar, keyboard shortcuts, links on the page). Then tell me exactly what you tried and what you saw each time.",
+      "rightAnswer": "Not a visitor's task: the proof that the window goes nowhere of the tester's choosing. Every attempt fails; the run's actions.jsonl shows the address never leaving http://127.0.0.1:8792/ and lists any request the harness blocked."
+    },
+    {
+      "id": "estate-uses",
+      "map": "estate",
+      "start": "http://127.0.0.1:8792/samples/estate/?view=local&node=Contracts/IPaymentService.cs",
+      "words": "A colleague sent me this link to one of the files in our payments code. What uses this file?",
+      "rightAnswer": "Contracts/IPaymentService.cs is used by four files: Hub/PaymentHub.cs and PaymentService/PaymentService.cs (code), and Hub/App.config and PaymentService/App.config (configuration that names the service contract). Naming the two code files and the two configuration files is a full answer; the code files alone is a partial one."
+    },
+    {
+      "id": "estate-directory",
+      "map": "estate",
+      "start": "http://127.0.0.1:8792/samples/estate/",
+      "words": "Can you open the PaymentService folder in this map and tell me how the files in it connect?",
+      "rightAnswer": "PaymentService/ holds App.config, PaymentService.cs, PaymentService.csproj and a Data/ subfolder (Payment.cs, PaymentsContext.cs, PostPaymentRow.cs). Inside: PaymentService.cs uses Payment.cs, PostPaymentRow.cs and PaymentsContext.cs; PaymentsContext.cs uses Payment.cs, PostPaymentRow.cs and App.config (its PaymentsDb connection string); App.config names PaymentService.cs as the service, which closes a cycle PaymentService.cs -> PaymentsContext.cs -> App.config -> PaymentService.cs; PaymentService.csproj connects to nothing inside the folder. Outside: PaymentService.cs uses four Contracts files (IPaymentService, PaymentQuery, PaymentRequest, PaymentResult); App.config names Contracts/IPaymentService.cs and is used by Hub/App.config; Payment.cs and PaymentsContext.cs reach the SQL Server scripts; the .csproj references Contracts.csproj. On the World Map the folder is the box named \"payments\", not PaymentService: finding it is part of the task. A full answer has the inside connections with their directions and says PaymentService.cs is the hub; the cycle and the outside connections are a plus."
+    },
+    {
+      "id": "estate-link",
+      "map": "estate",
+      "start": "http://127.0.0.1:8792/samples/estate/",
+      "words": "Find Hub/ServiceRouting.cs on this map, then send me a link to what you're looking at, so that I see the same thing when I open it.",
+      "rightAnswer": "A link on http://127.0.0.1:8792/samples/estate/ that, opened afresh, shows the map with Hub/ServiceRouting.cs as its subject: its address carries the file (node=Hub/ServiceRouting.cs, or an s= snapshot whose selected subject is that file). The judge opens the link to check; a link copied with a copy button is in the run's clipboard.jsonl."
+    },
+    {
+      "id": "repo-uses",
+      "map": "repository",
+      "start": "http://127.0.0.1:8792/?view=local&node=packages/explorer/src/client/pathfind.ts",
+      "words": "A colleague sent me this link to one of the files in our code. What uses this file?",
+      "rightAnswer": "packages/explorer/src/client/pathfind.ts is used by five files: client/index.ts, client/search/graph-search.ts and client/search/search-bar.ts, and two tests, pathfind.test.ts and history/moment-paths.test.ts. The three code files are a full answer when the tests are hidden; saying tests also use it is a plus."
+    },
+    {
+      "id": "repo-directory",
+      "map": "repository",
+      "start": "http://127.0.0.1:8792/",
+      "words": "Can you open the folder packages/explorer/src/client/search in this map and tell me how the files in it connect?",
+      "rightAnswer": "Four files: search-bar.ts uses graph-search.ts and search-field.ts; search-field.ts uses graph-search.ts; graph-search.test.ts tests graph-search.ts. graph-search.ts is the hub of the folder (seven users, four from outside: client/index.ts, panels/sources-view.ts, history/file-identity.ts, a history test); search-bar.ts is used by client/index.ts; search-field.ts by panels/sources-view.ts. Outward, graph-search.ts and search-bar.ts use client/pathfind.ts and shared/types.ts."
+    },
+    {
+      "id": "repo-link",
+      "map": "repository",
+      "start": "http://127.0.0.1:8792/",
+      "words": "Find scripts/live-docs/inspect.ts on this map, then send me a link to what you're looking at, so that I see the same thing when I open it.",
+      "rightAnswer": "A link on http://127.0.0.1:8792/ that, opened afresh, shows the map with scripts/live-docs/inspect.ts as its subject (node=scripts/live-docs/inspect.ts, or an s= snapshot whose selected subject is that file). The judge opens the link to check; a link copied with a copy button is in the run's clipboard.jsonl."
+    }
+  ]
+}
