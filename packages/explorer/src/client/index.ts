@@ -16,6 +16,8 @@ import type { HistoryMoment } from "./history/moment";
 import { endFiles, momentGround, todayGround, type PathGround } from "./history/moment-paths";
 import { applyLayoutSettings, layoutSettingsOf } from "./layout-presets";
 import { iconButton } from "./panels/icon-button";
+import { createFrame, FRAME_KEY_ICON, type Frame } from "./panels/frame";
+import type { CrumbSubject } from "./panels/frame-crumbs";
 import { createItemMenu } from "./panels/item-menu";
 import { createPinTray } from "./panels/pin-tray";
 import { sourcesFacts } from "./panels/sources-facts";
@@ -272,6 +274,8 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   readerBackdrop.hidden = true;
   readerBackdrop.addEventListener("click", () => closeInspection());
   document.body.append(readerBackdrop);
+  // What frames the map, put in force once the strip it opens its key and its sheet from is built (the Bare trial).
+  let frame: Frame | null = null;
   const narrowNavigation = window.matchMedia("(max-width: 760px)");
   const sidebar = requireElement("sidebar");
   if (narrowNavigation.matches) sidebar.classList.add("collapsed");
@@ -306,6 +310,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     const shown = state.view === "map" && state.perspective === "3d" && shownFiles
       ? ` · ${n(shownFiles.shown)} of ${n(shownFiles.total)} files shown · ${n(shownFiles.groups)} ${shownFiles.groups === 1 ? "group" : "groups"}, ${n(shownFiles.alone)} alone` : "";
     statsText.data = counts + shown;
+    frame?.sync();
   };
   syncStatsLine();
 
@@ -527,6 +532,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   });
   const tuningButton = iconButton("Layout tuning", '<path d="M4 6h16M4 12h16M4 18h16M8 3v6m8 0v6M10 15v6"/>');
   tuningButton.addEventListener("click", () => {
+    if (frame?.bare()) { frame.toggleSheet(); return; }
     document.getElementById("sidebar")?.classList.remove("collapsed");
     const tuning = document.querySelector<HTMLDetailsElement>(".sidebar-details");
     if (tuning) {
@@ -535,6 +541,11 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
       tuning.scrollIntoView({ block: "nearest", behavior: "smooth" });
     }
   });
+  // The Bare frame's key: the legend and the display filters, one press from the map (shown only under Bare).
+  const keyButton = iconButton("Key", FRAME_KEY_ICON);
+  keyButton.setAttribute("aria-expanded", "false");
+  keyButton.hidden = true;
+  keyButton.addEventListener("click", () => frame?.toggleKey());
   const mapButton = document.createElement("button");
   mapButton.textContent = "2D";
   mapButton.title = "Local Map in 2D";
@@ -595,9 +606,20 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     element.append(...buttons);
     return element;
   };
-  perspectiveControls.append(group(fitButton), group(wholeButton, tuningButton), group(mapButton, graphButton),
+  perspectiveControls.append(group(fitButton), group(wholeButton, keyButton, tuningButton), group(mapButton, graphButton),
     group(connectionsButton, structureButton, hopsSelect), group(historyButton));
   requireElement("main").append(perspectiveControls);
+  frame = createFrame({
+    hasBoard: !!bundle.board,
+    view: () => state.view,
+    subject: frameSubject,
+    counts: () => statsText.data,
+    onDirectory: directory => centreOnDirectory(directory),
+    onFile: path => { const node = nodesById.get(path); if (node) recentreOn(node); },
+    keyButton,
+    tuningButton
+  });
+  frame.apply(state.tuning.appearance.frame);
   const pinTray = createPinTray({
     parent: requireElement("main"),
     nodes: nodesById,
@@ -981,6 +1003,17 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
       : destination.symbol ? { kind: "symbol", node: node!, symbol: destination.symbol } : { kind: "file", node: node! });
   }
 
+  /** What the Local Map is about, for the Bare frame's crumbs: the selected file, else the newest pin, else the discovery. */
+  function frameSubject(): CrumbSubject | null {
+    if (state.selectedNode) return { kind: "file", path: state.selectedNode.codeRelativePath };
+    const newest = newestRetained(retentionState());
+    if (newest?.kind === "directory") return { kind: "directory", path: newest.directory };
+    if (newest?.kind === "pin") { const node = nodesById.get(newest.pin.nodeId); if (node) return { kind: "file", path: node.codeRelativePath }; }
+    if (state.discovery?.kind === "directory") return { kind: "directory", path: state.discovery.directory };
+    if (state.discovery?.kind === "file") { const node = nodesById.get(state.discovery.nodeId); if (node) return { kind: "file", path: node.codeRelativePath }; }
+    return null;
+  }
+
   function syncPerspectiveControls(): void {
     const contextName = document.getElementById("context-name");
     const selectedPath = state.selectedNode ? shownMoment?.fileAt(state.selectedNode.id) ?? state.selectedNode.codeRelativePath : null;
@@ -989,7 +1022,8 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     if (contextName) contextName.textContent = selectedPath
       ?? ([...(state.openDirectories ?? [])].map(path => (shownMoment?.directoryAt(path) ?? path) || "Scan root").join(", ") || discoveredPath || "Scan root");
     perspectiveControls.hidden = state.view !== "map";
-    for (const button of [fitButton, wholeButton, tuningButton, mapButton, graphButton, connectionsButton, structureButton, historyButton]) button.disabled = changingPerspective;
+    frame?.sync();
+    for (const button of [fitButton, wholeButton, keyButton, tuningButton, mapButton, graphButton, connectionsButton, structureButton, historyButton]) button.disabled = changingPerspective;
     connectionsButton.hidden = structureButton.hidden = state.perspective !== "3d";
     fitButton.title = state.perspective === "3d" ? "Fit the current path or retained scope" : "Fit everything the map shows";
     hopsSelect.hidden = state.perspective !== "3d";
@@ -1387,6 +1421,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   syncTuningControls = initTuningPanel({
     state,
     onTuningChange: () => { schedulePersistUi(); persistExploration(); },
+    onFrame: choice => frame?.apply(choice),
     onRender: () => {
       // The spatial renderer owns both file and directory camera anchors.
       if (state.perspective === "3d") {

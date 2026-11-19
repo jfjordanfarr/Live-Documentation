@@ -8,7 +8,7 @@
 import { applyMarbles, applyPalette } from "../dom";
 import { layoutSettingsOf } from "../layout-presets";
 import { DEFAULT_PALETTE, isPaletteName } from "../palette";
-import { CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, BEYOND_HOPS, HIDDEN_FILES_LOOKS, MARBLE_CHOICES, OVERVIEW_FILES, type ExplorerState } from "../types";
+import { CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, BEYOND_HOPS, FRAME_CHOICES, HIDDEN_FILES_LOOKS, MARBLE_CHOICES, OVERVIEW_FILES, type ExplorerState, type FrameChoice } from "../types";
 import { TUNING_HELP, tuningHelpId } from "./tuning-levers";
 
 /** Callback for when tuning values change */
@@ -23,13 +23,15 @@ export interface TuningPanelConfig {
   onTuningChange: TuningChangeCallback;
   onRender: RenderCallback;
   drawLocalConnections: () => void;
+  /** Puts a frame in force: the sidebar, or the Bare trial's breadcrumb, key and sheet (frame.ts). */
+  onFrame: (frame: FrameChoice) => void;
 }
 
 /**
  * Initialize the tuning panel with all slider and checkbox controls.
  */
 export function initTuningPanel(config: TuningPanelConfig): () => void {
-  const { state, onTuningChange: persistChange, onRender, drawLocalConnections } = config;
+  const { state, onTuningChange: persistChange, onRender, drawLocalConnections, onFrame } = config;
   describeTuningControls();
   let controlPerspective: ExplorerState["perspective"] | undefined;
   const onTuningChange = (): void => {
@@ -71,6 +73,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   const hiddenFilesSelect = document.getElementById("tuning-hidden-files") as HTMLSelectElement | null;
   const paletteSelect = document.getElementById("tuning-palette") as HTMLSelectElement | null;
   const marblesSelect = document.getElementById("tuning-marbles") as HTMLSelectElement | null;
+  const frameSelect = document.getElementById("tuning-frame") as HTMLSelectElement | null;
   /**
    * The skin's shape and its cells' colour are choices of the cells alone: shown only while a closed directory's skin or
    * a handle's hidden files draw them.
@@ -192,6 +195,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     if (hiddenFilesSelect) hiddenFilesSelect.value = state.tuning.localMap.hiddenFiles;
     if (paletteSelect) paletteSelect.value = state.tuning.appearance.palette;
     if (marblesSelect) marblesSelect.value = state.tuning.appearance.marbles;
+    if (frameSelect) frameSelect.value = state.tuning.appearance.frame;
     syncClosedChoices();
     if (overviewFilesSelect) overviewFilesSelect.value = state.tuning.localMap.overviewFiles;
     if (descriptionsZoomedOutSelect) descriptionsZoomedOutSelect.value = state.tuning.localMap.descriptionsZoomedOut;
@@ -327,6 +331,14 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     marblesSelect.addEventListener("change", () => {
       state.tuning.appearance.marbles = MARBLE_CHOICES.find(choice => choice === marblesSelect.value) ?? MARBLE_CHOICES[0];
       applyMarbles(state.tuning.appearance.marbles);
+      onTuningChange();
+    });
+  }
+  // What frames the map (the Bare trial, 2026-11-19): taken at once, the select keeping focus wherever it now stands.
+  if (frameSelect) {
+    frameSelect.addEventListener("change", () => {
+      state.tuning.appearance.frame = FRAME_CHOICES.find(choice => choice === frameSelect.value) ?? FRAME_CHOICES[0];
+      onFrame(state.tuning.appearance.frame);
       onTuningChange();
     });
   }

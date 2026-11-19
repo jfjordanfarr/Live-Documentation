@@ -1201,3 +1201,109 @@ body.force-graph-active .sidebar-checkbox.force-graph-only {
     display: flex;
 }
 
+/* ============================================
+   THE BARE FRAME (a trial, 2026-11-19; frame.ts): no sidebar. The places are a breadcrumb at the left of the top bar,
+   the legend and the display filters one key over the strip, and Tuning a sheet over the strip. The sidebar's own
+   elements are moved here and back, so that each keeps its rules above; these rules only place and quiet them.
+   ============================================ */
+.frame-crumbs[hidden], .frame-popover[hidden], .frame-views[hidden], .frame-crumbs [hidden] { display: none; }
+:root[data-frame="bare"] #sidebar { display: none; }
+/* The top bar is two cells, the crumbs and then the search; the path's report and the views span both below. */
+:root[data-frame="bare"] #main {
+    margin-left: 0;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-rows: auto auto minmax(0, 1fr);
+}
+:root[data-frame="bare"] #main > .search-bar { grid-column: 2; grid-row: 1; }
+:root[data-frame="bare"] #main > .path-report { grid-column: 1 / -1; grid-row: 2; }
+:root[data-frame="bare"] #main > #views { grid-column: 1 / -1; grid-row: 3; }
+
+.frame-crumbs {
+    grid-column: 1;
+    grid-row: 1;
+    position: relative;
+    z-index: 310;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    max-width: 52vw;
+    min-width: 0;
+    padding: 8px 4px 8px 12px;
+    background: var(--ground-deep);
+    border-bottom: 1px solid var(--line-border);
+}
+.frame-arrows { display: inline-flex; flex: none; }
+.frame-crumbs button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    min-height: 32px;
+    padding: 4px 6px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background: transparent;
+    color: var(--text-muted);
+    font: inherit;
+    font-size: 13px;
+    cursor: pointer;
+}
+.frame-crumbs button:hover:not(:disabled) { background: var(--selected-subtle); color: var(--text-strong); }
+.frame-crumbs button:focus-visible { outline: 2px solid var(--state-selected); outline-offset: 1px; }
+.frame-crumbs .frame-views-button, .frame-crumbs .frame-out { flex: none; padding: 4px 2px; }
+.frame-crumb-list { display: flex; align-items: center; min-width: 0; margin: 0; padding: 0; list-style: none; }
+/* Each crumb keeps its name whole while there is room; the outer directories give way first, each to an ellipsis. */
+.frame-crumb-item { display: flex; align-items: center; min-width: 0; flex: 0 1 auto; }
+.frame-crumb-item:last-child { flex-shrink: 0; max-width: 100%; }
+.frame-crumb-item + .frame-crumb-item::before { content: "/" / ""; flex: none; padding: 0 2px; color: var(--text-subtle); }
+.frame-crumb-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.frame-crumb[aria-current="location"] { color: var(--text-strong); }
+/* The way out on a narrow window is the chevron; at room enough, every crumb is its own way out. */
+.frame-crumbs .frame-out { display: none; }
+
+/* The views' menu, from the chevron after the crumbs: the sidebar's own three buttons. */
+.frame-views {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 8px;
+    z-index: 1200;
+    display: flex;
+    flex-direction: column;
+    min-width: 220px;
+    padding: 4px;
+    border: 1px solid var(--line-border);
+    border-radius: 8px;
+    background: var(--ground-deep);
+    box-shadow: 0 8px 28px rgba(var(--ground-shade-rgb), 0.4);
+}
+.frame-views .nav-item { padding: 10px 12px; border-left: 0; border-radius: 4px; }
+.frame-views .nav-item.active { border-left: 0; }
+
+/* The key and the Tuning sheet stand over the strip, at its middle, until they are closed. */
+.frame-popover {
+    position: absolute;
+    left: 50%;
+    bottom: calc(70px + var(--history-room));
+    transform: translateX(-50%);
+    z-index: 320;
+    width: min(340px, calc(100% - 32px));
+    max-height: calc(100% - 100px - var(--history-room));
+    overflow-y: auto;
+    border: 1px solid var(--line-border);
+    border-radius: 8px;
+    background: var(--ground-deep);
+    box-shadow: 0 8px 28px rgba(var(--ground-shade-rgb), 0.4);
+}
+.frame-popover .section-label { display: none; }
+.frame-popover > .sidebar-section { border-bottom: 1px solid var(--line-border); }
+.frame-popover > .sidebar-section:last-child { border-bottom: 0; }
+.frame-sheet .tuning-content { padding: 12px 16px; }
+
+@media (max-width: 760px) {
+    :root[data-frame="bare"] #main { margin-left: 0; }
+    .frame-crumbs { max-width: 60vw; padding-left: 8px; }
+    .frame-crumb-item:not(:last-child) { display: none; }
+    .frame-crumbs .frame-out:not([hidden]) { display: inline-flex; }
+}
+
