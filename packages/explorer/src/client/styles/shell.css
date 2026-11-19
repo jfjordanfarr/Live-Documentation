@@ -1070,6 +1070,23 @@ details.tuning-subsection > summary { cursor: pointer; }
 .tuning-export { width: 100%; padding: 8px; border: 1px solid var(--line-border); border-radius: 4px; background: var(--ground-deep); color: var(--text-normal); font: inherit; cursor: pointer; }
 .tuning-export:hover, .tuning-export:focus-visible { border-color: var(--state-selected); outline: 1px solid var(--state-selected); }
 
+/* Whether Tuning differs from the defaults, seen with the section folded: how many settings differ, a numeral in a quiet
+   ring beside the heading, in the text's own tone (neither blue, what an interface offers, nor green, what uses it). */
+.tuning-changed { display: inline-block; margin-left: 8px; padding: 0 5px; min-width: 8px; border: 1px solid var(--line-border); border-radius: 8px; color: var(--text-normal); font-weight: 600; letter-spacing: 0; line-height: 14px; text-align: center; vertical-align: 1px; }
+.tuning-changed[hidden] { display: none; }
+/* Reset to defaults, the section's first control: the World Map's reset glyph, 28 px to press; pressed while a second
+   press can take the reset back, in the pressed look of every toggle; in the disabled tone when nothing differs. */
+.tuning-head { display: flex; justify-content: flex-end; margin-bottom: 8px; }
+.tuning-reset { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; padding: 0; border: 1px solid var(--line-border); border-radius: 4px; background: var(--ground-deep); color: var(--text-normal); cursor: pointer; }
+.tuning-reset:hover { background: var(--selected-subtle); }
+.tuning-reset:focus-visible { outline: 2px solid var(--state-selected); outline-offset: 2px; }
+.tuning-reset[aria-pressed="true"] { border-color: var(--state-selected); color: var(--state-selected); background: var(--selected-subtle); }
+.tuning-reset:disabled { color: var(--text-disabled); background: transparent; cursor: default; }
+/* A lever moved from its default, and the heading of each group that holds one, carry a small dot after their name, as an
+   editor marks a modified setting: in the text's own tone, so that it means nothing but "changed". */
+.tuning-slider[data-tuning-changed] > span:first-child::after,
+summary[data-tuning-changed]::after { content: ""; display: inline-block; width: 5px; height: 5px; margin-left: 6px; border-radius: 50%; background: var(--text-normal); vertical-align: 2px; }
+
 .subsection-label {
     font-size: 10px;
     font-weight: 600;

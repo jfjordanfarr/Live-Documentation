@@ -78,9 +78,9 @@ Where each is held: the 2D press, hold and menu in `views/localView/controller.t
 
 **A click acts on what it names, and a second identical click undoes it** (*reversibility*).
 - Why: the owner's decisions of 2026-10-15 and 2026-11-02, which [direction](../../../AI-Agent-Workspace/Memory/direction.md#what-it-shows-discovery-groups-and-hops) heads "A click pins, a second releases" (a heading's words, not the owner's); Nielsen's heuristic *user control and freedom*.
-- Where: `views/pin-state.ts`; `views/forceGraphView.ts` `activateNode`; the World Map's Reset layout, whose second press puts back what the first discarded until a piece is next moved (`views/worldMap/controller.ts:2032-2059`).
-- Checked by: `tests/e2e/pin-clicks.spec.ts`, `force-graph-focus.spec.ts` ("direct labels release independent pins"; "a second directory click withdraws discovery"), `world-map.spec.ts` ("a reset keeps what it discarded until a piece is next moved …").
-- Status: holds. The World Map's reset joined it on 2026-11-19; before, it threw every moved position away with no way back.
+- Where: `views/pin-state.ts`; `views/forceGraphView.ts` `activateNode`; the World Map's Reset layout, whose second press puts back what the first discarded until a piece is next moved (`views/worldMap/controller.ts:2032-2059`); Tuning's Reset to defaults, the same act for the viewer's settings, whose second press puts them back as they were until a lever is next moved (`panels/tuning-reset.ts`).
+- Checked by: `tests/e2e/pin-clicks.spec.ts`, `force-graph-focus.spec.ts` ("direct labels release independent pins"; "a second directory click withdraws discovery"), `world-map.spec.ts` ("a reset keeps what it discarded until a piece is next moved …"), `tuning-reset.spec.ts` ("… Reset to defaults puts them all back").
+- Status: holds. The World Map's reset joined it on 2026-11-19; before, it threw every moved position away with no way back. Tuning's reset was built to it the same night.
 
 **Inspecting, pinning and moving the subject are three separate acts, each with its own control.** In 2D a click inspects, Pin retains, Centre moves the subject; none of the three does another's work.
 - Why: owner, 2026-10-19 and 2026-10-20 ([decision](../../layer-3/architectural-decisions.mdmd.md), "Inspection, Pins and the Map Subject Are Separate"): to read one thing without moving the place being explored.
@@ -151,7 +151,7 @@ These are stated so a builder does not mistake them for accidents. Each is in [t
 | **Pressed** (*toggle button*: a button that stays on until pressed again) | A toggle is on. | Border and icon in `--state-selected` with the subtle fill. | `aria-pressed="true"` | `styles/local.css:311`, `styles/graph.css:81`, `styles/history.css:14`, `styles/world.css:446` | holds in look; see 5.4 for names |
 | **Current** | This is the view you are in. | The navigation item filled. | `aria-current="page"` | `dom.ts:39` | holds |
 | **Expanded** | A disclosure is open. | The panel shown. | `aria-expanded` on its opener | pin tray, sidebar, Tuning `<details>`, the World Map's help (`views/worldMap/controller.ts:310-313`, `:2120-2125`) | holds; the World Map's help since 2026-11-19, checked by `world-map.spec.ts` ("the help button says whether the help is open …") |
-| **Disabled** | Not available now. | Faded, default cursor. | `disabled` | five rules | broken: five different opacities, 0.3, 0.35, 0.45, 0.55, 0.65 (`styles/shell.css:59`, `styles/history.css:16`, `styles/local.css:335`, `styles/local.css:326`, `styles/reading.css:81`) |
+| **Disabled** | Not available now. | Faded, default cursor. | `disabled` | five rules | broken: five different opacities, 0.3, 0.35, 0.45, 0.55, 0.65 (`styles/shell.css:59`, `styles/history.css:16`, `styles/local.css:335`, `styles/local.css:326`, `styles/reading.css:81`); and since 2026-11-19 Tuning's Reset to defaults draws its glyph in `text.disabled` at full opacity (`styles/shell.css`, `.tuning-reset:disabled`), the palette's tone for a disabled control in place of a fade, which makes a sixth form until one is chosen for all |
 | **Building** | The 3D map is placing and framing; nodes refuse input. | After 300 ms a line sweeps along the map's top edge and the cursor waits; still under reduced motion. | none (see 6.4) | `views/forceGraphView.ts:525-537`; `styles/graph.css:99-123` | holds visually; not told to assistive technology |
 | **Busy** | The 3D motion has not come to rest. | Nothing on screen. | `aria-busy="true"` on `#graph-svg` | `views/forceGraphView.ts:692`, `:1448`, `:2504`, `:2518`, `:2523` | inconsistent: see 6.4 |
 | **Loading** | The bundle is loading. | Three dots where the map will be; "Loading…" in the sidebar's footer. | `role="status"`, named "Loading" | `shared/template.html:534-536`, `:496` | holds; two signs for one state |
@@ -315,6 +315,7 @@ Counted in the client source and the template on 2026-11-18: 236 `aria-` attribu
 | A refusal (e.g. opened as a file) | `role="alert"` | holds |
 | A path's result | `role="status"`, `aria-atomic` (`shared/template.html:527`) | holds |
 | Copied as a declaration | `aria-live="polite"` (`panels/sources-view.ts:198`) | holds |
+| Tuning reset to defaults, and put back | "Tuning reset to defaults" and "Tuning put back as you had it", each said once in `#page-status` (`panels/tuning-reset.ts`); checked by `tests/e2e/tuning-reset.spec.ts` | holds since 2026-11-19 |
 | No search results | "Nothing found", said once in the page's one polite status region, `#page-status` (`announce.ts`, `search/search-field.ts`); checked by `tests/e2e/shell-accessibility.spec.ts` | holds since 2026-11-19 |
 | A pinned file absent at a historical moment | `aria-describedby` on the field; spoken only on focus | partial |
 | The 3D map is building and refuses clicks | not told | broken (SC 4.1.3); `announce.ts` is the module to tell it with |
