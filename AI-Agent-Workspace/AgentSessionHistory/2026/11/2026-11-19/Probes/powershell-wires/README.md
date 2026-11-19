@@ -12,7 +12,7 @@ Current as of November 19, 2026. A builder measured this for the root at `2114bf
 - In a seeded sample of 60 of its wires, all 60 are true.
 - The 13 wires it adds over rule A, which ignores loading, are all true.
 - Over the five corpora it connects 17,072 + 2,763 + 59 + 360 + 6 calls.
-- Files with no wire fall from 1,780 to 132 in dbatools, from 198 to 12 in AL-Go and from 29 to 18 in tSQLt. Those counts include the loads it also reads; see [Loading](#loading-by-joinpath-by-variable-by-loop-and-by-running-a-script).
+- Files with no wire fall from 1,780 to 132 in dbatools, from 198 to 12 in AL-Go and from 29 to 18 in tSQLt. Those counts include the loads it also reads; see [Loading](#loading-by-join-path-by-variable-by-loop-and-by-running-a-script).
 
 **What goes wrong in the other rules, and what removes it.** Every false wire in every rule has one cause: the rule picks a definition the caller never loads.
 - A test's stub of a cmdlet, written inside a `Describe` block.
