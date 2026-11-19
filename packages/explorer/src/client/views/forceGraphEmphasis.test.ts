@@ -158,6 +158,41 @@ describe("how a commit's changes show inside a wrapper's skin", () => {
     expect(emphasizedUnits(groupUnits, seeded, "dim").map(unit => unit.color)).toEqual(["rgba(0, 145, 255, 0.200)", "rgba(0, 145, 255, 0.200)"]);
   });
 
+  it("never dims what was asked about: its dot keeps its own colour, the bubble or skin standing for it its alpha, and nothing of it lights", () => {
+    // A pinned file drawn as a dot, under a step that changed something else in another bubble.
+    const pinnedDot = bodyChanges(units, members, seed, ["a/e/u.ts"], [], ["a/b/z.ts"]);
+    expect([...pinnedDot.lit]).toEqual(["a/e/u.ts"]);
+    for (const mode of ["dim", "both"] as const) {
+      const shown = emphasizedUnits(units, pinnedDot, mode);
+      expect(of(shown, "a/b/z.ts").color, `${mode}: the asked-about dot keeps its own`).toBe("rgba(0, 145, 255, 1.000)");
+      expect(of(shown, "a/b/y.ts").color, `${mode}: its unchanged neighbour dims`).toBe("rgba(0, 145, 255, 0.200)");
+      expect(of(shown, "a/b"), `${mode}: the bubble holding it keeps its alpha and is not lit`).toMatchObject({ lit: false, alpha: 1 });
+      expect(of(shown, "a/c").alpha, `${mode}: a bubble holding nothing dims`).toBeCloseTo(0.2);
+    }
+    expect(of(emphasizedUnits(units, pinnedDot, "glow"), "a/b/z.ts").color, "glow dims nothing, and lights no asked-about file the step left").toBe("rgba(0, 145, 255, 1.000)");
+    // Asked about and changed, the dot is emphasised exactly as any changed dot.
+    const both = bodyChanges(units, members, seed, ["a/b/z.ts"], [], ["a/b/z.ts"]);
+    expect(of(emphasizedUnits(units, both, "both"), "a/b/z.ts").color).toBe(emphasizedSphere(blue, 1, true, "both"));
+    // A pinned file not drawn, inside a veiled bubble: that bubble, and every bubble around it, keeps its alpha, unlit.
+    const veiled = bodyChanges(units, members, seed, [], [], ["a/e/f/s.ts"]);
+    expect(veiled.lit.size).toBe(0);
+    const dimmed = emphasizedUnits(units, veiled, "dim");
+    expect(of(dimmed, "a/e/f")).toMatchObject({ lit: false, alpha: 1 });
+    expect(of(dimmed, "a/e")).toMatchObject({ lit: false, alpha: 1 });
+    expect(of(dimmed, "a/e/u.ts").color).toBe("rgba(0, 145, 255, 0.200)");
+    expect(emphasizedSkin(veiled, "dim")).toEqual({ lit: false, alpha: 1 });
+    // One no bubble holds, under a look that draws nothing within the skin: the skin keeps its alpha and is not lit.
+    expect(emphasizedSkin(bodyChanges([], members, seed, [], [], ["a/x.ts"]), "both")).toEqual({ lit: false, alpha: 1 });
+    // A file the body does not hold keeps nothing of it; the group's seed, a sphere of its own, keeps the skin's alpha.
+    expect(emphasizedSkin(bodyChanges(units, members, seed, [], [], ["elsewhere/q.ts"]), "dim").alpha).toBeCloseTo(0.2);
+    const groupUnits: Unit[] = [{ id: "g/one.ts", kind: "file", depth: 0, color: blue }];
+    const seeded = bodyChanges(groupUnits, new Set(["g/seed.ts", "g/one.ts"]), "g/seed.ts", [], [], ["g/seed.ts"]);
+    expect(seeded).toEqual({ lit: new Set(), holding: new Set(), skin: false, holds: true });
+    expect(emphasizedSphere(blue, 1, false, "dim", true)).toBe("rgba(0, 145, 255, 1.000)");
+    expect(emphasizedSphere(blue, 0.4, false, "both", true), "at the frontier's alpha it keeps that, no less").toBe("rgba(0, 145, 255, 0.400)");
+    expect(emphasizedSphere(blue, 1, true, "both", true)).toBe("rgba(255, 255, 255, 1.000)");
+  });
+
   it("changes no colour, alpha or light without a mode, and none without a change", () => {
     const changes = bodyChanges(units, members, seed, ["a/b/y.ts", "a/c/w.ts"], ["a/gone.ts"]);
     const plain = emphasizedUnits(units, changes, "none");

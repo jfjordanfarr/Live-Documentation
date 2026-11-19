@@ -19,7 +19,8 @@
  * "until _the very last second_"). While a moment of the history is shown, the
  * files the step changed glow or the rest dim, by the tuning; since 2026-11-11
  * inside the wrappers too, each change at the innermost thing drawn for it: a
- * dot, or the veiled bubble or skin that holds it (`emphasizeBodies`).
+ * dot, or the veiled bubble or skin that holds it (`emphasizeBodies`); since
+ * 2026-11-19 what was asked about, a pin or the subject, is never dimmed by it.
  *
  * While the map builds (2026-11-15, the owner's decision), a body packing, the
  * reveal bringing spheres in, a perspective change or the camera's framing
@@ -243,6 +244,11 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   // and the energy that render feeds the change at (ticket C4, 2026-10-18).
   let moment: HistoryMoment | null = null;
   let historyChanges: HistoryChanges | null = null;
+  /**
+   * What a person asked about directly and the picture holds, the pins, the subject, the inspected file or hub, a path's
+   * files; none while the picture is the layout's start. A step of the history never dims it (2026-11-19).
+   */
+  let askedAbout: ReadonlySet<string> = new Set();
   let pendingRenames: Renames = NO_RENAMES;
   let pendingEnergy: number | undefined;
   let membership = "";
@@ -1388,6 +1394,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     for (const id of asked) if (!inPicture.has(id)) asked.delete(id);
     const hasQuestion = todayPins.entries.length > 0 || !!subject || (directories.length > 0 && (!cellsMode || wholeRoot)) || !!discovery || !!path?.length;
     const absentRequest = hasQuestion && asked.size === 0 && members.size === 0;
+    askedAbout = hasQuestion ? new Set(asked) : new Set();
     if (!hasQuestion) for (const id of startOf(data.nodes, data.links, state.spatialLayout, pulls)) asked.add(id);
     // The hops shown: around a question the tuning's; around a start what the start shows, the archipelago's seeds
     // alone and the root with its children (2026-11-02).
@@ -1850,7 +1857,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         rootOverview,
         frontierHop,
         emphasis,
-        historyChanges?.step ?? null
+        historyChanges?.step ?? null,
+        [...askedAbout].sort()
       ]);
       if (attentionSettings === nextAttention) return;
       attentionSettings = nextAttention;
@@ -1865,10 +1873,11 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       forceGraphInstance?.nodeColor((node: ForceGraphNode) => {
         const color = fileLook(node.id, node.archetype).color;
         // Faded for the hover, with the hovered file and its connections whole even at the frontier; dimmed as the
-        // frontier otherwise; and under the history's emphasis glowing or dimmed by the step.
+        // frontier otherwise; and under the history's emphasis glowing or dimmed by the step, save that what was asked
+        // about is never dimmed by it (2026-11-19).
         const alpha = attention ? (attention.has(node.id) ? 1 : 0.2) : frontier(node.id) ? 0.4 : 1;
         if (emphasis === "none") return alpha === 1 ? color : emphasizedSphere(color, alpha, false, "none");
-        return emphasizedSphere(color, alpha, changedNodes.has(node.id), emphasis);
+        return emphasizedSphere(color, alpha, changedNodes.has(node.id), emphasis, askedAbout.has(node.id));
       });
       // A marble is drawn on every file it colours, faded and dimmed with it, save where the step glows a changed file
       // white, which replaces it (the marble trial, 2026-11-17).
@@ -1883,7 +1892,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       forceGraphInstance?.nodeRing((node: ForceGraphNode) => {
         if (!hasRing(node.id)) return null;
         const alpha = attention ? (attention.has(node.id) ? .85 : .15) : .85;
-        return emphasizedSphere(spatialNodeStyle(node.archetype).color, alpha, changedNodes.has(node.id), emphasis);
+        return emphasizedSphere(spatialNodeStyle(node.archetype).color, alpha, changedNodes.has(node.id), emphasis, askedAbout.has(node.id));
       });
       /** Whether a wire has the picture's attention, whether it is a step of the drawn path, whether it reaches the frontier, and whether the step changed it. */
       const regard = (link: ForceGraphLink): { visible: boolean; onPath: boolean; dimmed: boolean; changed: boolean } => {
@@ -2266,7 +2275,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
    * what the step changes in it, the mode or the look does, so that a step recolours the bodies it or the step before
    * touched and nothing else: no packing, hull or list of units is built again, and the work is bounded by the units
    * drawn. A file the step deleted is shown in the body of the deepest directory drawn that held it, none when that is a
-   * hub drawn as a sphere, which lights by its own emphasis (`deletionHomes`). A skin bursting open keeps what it carried
+   * hub drawn as a sphere, which lights by its own emphasis (`deletionHomes`). What was asked about keeps its look within
+   * a body as a sphere does (2026-11-19). A skin bursting open keeps what it carried
    * until it is gone. The page's timeline measures this as "live-docs:history-units".
    */
   function emphasizeBodies(nodes: readonly SpatialGraphNode[]): void {
@@ -2290,11 +2300,12 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       if (!members) bodyMembers.set(shape, members = new Set(shape.members.map(member => member.id)));
       const base = plainUnitsOf(id), deleted = gone.get(id) ?? [];
       const touched = changed.filter(file => file !== id && members.has(file));
-      const key = JSON.stringify([mode, look, touched, deleted]);
+      const asked = [...askedAbout].filter(file => members.has(file));
+      const key = JSON.stringify([mode, look, touched, deleted, asked]);
       const kept = emphasized.get(id);
       if (kept && kept.base === base && kept.key === key) { next.set(id, kept); continue; }
       // The cloud looks draw nothing within a skin, so the skin is the innermost thing drawn for every change in it.
-      const where = bodyChanges(look === "skin" ? base ?? [] : [], members, id, touched, deleted);
+      const where = bodyChanges(look === "skin" ? base ?? [] : [], members, id, touched, deleted, asked);
       next.set(id, { base, key, units: base && emphasizedUnits(base, where, mode), skin: emphasizedSkin(where, mode) });
       coloured++; units += base?.length ?? 0;
     }
