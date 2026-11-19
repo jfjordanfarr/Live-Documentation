@@ -3,8 +3,8 @@
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: `packages/engine/src/tooling/githubSlugger.ts`
-- Generated At: 2026-11-19T21:10:12.750Z
+- Code Path: packages/engine/src/tooling/githubSlugger.ts
+- Generated At: 2026-11-19T21:51:10.954Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Provides a fully vendored GitHub-compatible slugger (function + stateful class) 
 ### Public Symbols
 #### `SlugContext` {#symbol-slugcontext}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/githubSlugger.ts#L15)
+- Source: [source](../../../../../../packages/engine/src/tooling/githubSlugger.ts#L16)
 
 ##### `SlugContext` — Summary
 Extended slug result that includes the de-duplicated slug string,
@@ -28,7 +28,7 @@ the base slug before collision resolution, and the collision index.
 
 #### `GitHubSlugger` {#symbol-githubslugger}
 - Type: class
-- Source: [source](../../../../../../packages/engine/src/tooling/githubSlugger.ts#L30)
+- Source: [source](../../../../../../packages/engine/src/tooling/githubSlugger.ts#L31)
 
 ##### `GitHubSlugger` — Summary
 Stateful GitHub-compatible heading slug generator.
@@ -38,7 +38,7 @@ disambiguating `-N` suffixes, matching GitHub's rendering behaviour.
 
 #### `slug` {#symbol-slug}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/githubSlugger.ts#L86)
+- Source: [source](../../../../../../packages/engine/src/tooling/githubSlugger.ts#L87)
 
 ##### `slug` — Summary
 Stateless slug generation (no duplicate tracking).
@@ -52,7 +52,7 @@ GitHub-compatible slug string.
 
 #### `createSlugger` {#symbol-createslugger}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/githubSlugger.ts#L96)
+- Source: [source](../../../../../../packages/engine/src/tooling/githubSlugger.ts#L97)
 - Returns: [`GitHubSlugger`](#symbol-githubslugger)
 
 ##### `createSlugger` — Summary
@@ -60,7 +60,7 @@ Creates a fresh {@link GitHubSlugger} instance.
 
 #### `slugText` {#symbol-slugtext}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/githubSlugger.ts#L114)
+- Source: [source](../../../../../../packages/engine/src/tooling/githubSlugger.ts#L115)
 
 ##### `slugText` — Summary
 The text of a heading as GitHub slugs it: the rendered text, not the markdown.
@@ -83,4 +83,6 @@ The text to pass to {@link slug}.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`githubSluggerRegex.GITHUB_SLUG_REMOVE_PATTERN`](./githubSluggerRegex.ts.mdmd.md#symbol-github_slug_remove_pattern)
+- [`markdownLinks.inlineTokens`](./markdownLinks.ts.mdmd.md#symbol-inlinetokens)
+- [`markdownLinks.isLink`](./markdownLinks.ts.mdmd.md#symbol-islink)
 <!-- LIVE-DOC:END Dependencies -->

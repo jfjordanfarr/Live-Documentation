@@ -4,6 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 import { createSlugger, slugText } from "@live-documentation/engine/tooling/githubSlugger";
+import { linkPath } from "@live-documentation/engine/tooling/markdownLinks";
 import { normalizeWorkspacePath } from "@live-documentation/engine/tooling/pathUtils";
 
 import { extractReferenceDefinitions } from "../slopcop/markdownShared";
@@ -617,12 +618,8 @@ function resolveDocLink(
 
   sanitized = stripFragmentAndQuery(sanitized);
 
-  let decoded: string;
-  try {
-    decoded = decodeURI(sanitized);
-  } catch {
-    decoded = sanitized;
-  }
+  // Percent-decoded by the markdown link rule, as the engine reads a path: `decodeURI` left `%23`, `%26` and `%3F`.
+  const decoded = linkPath(sanitized).path;
 
   const docDir = path.dirname(absoluteDocPath);
   const resolvedPath = decoded.startsWith("/")

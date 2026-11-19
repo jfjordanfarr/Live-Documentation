@@ -1,6 +1,28 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { renderMarkdown } from "./markdown";
+import { readingSteps } from "@live-documentation/engine/tooling/markdownLinks";
+
+import { renderMarkdown, renderingSteps } from "./markdown";
+
+describe("the work of rendering", () => {
+  // Counted, not timed: the renderer's walk over tokens and the reader's walk over characters.
+  const steps = (text: string): number => {
+    const before = renderingSteps.count + readingSteps.count;
+    renderMarkdown(text);
+    return renderingSteps.count + readingSteps.count - before;
+  };
+  for (const [name, paragraph] of Object.entries({
+    "many links in one paragraph": (count: number) => "[a](https://b) ".repeat(count),
+    "many links whose text holds code": (count: number) => "[`a` *b*](c.md) ".repeat(count),
+    "many images": (count: number) => "![a](b.png) ".repeat(count)
+  })) {
+    it(`grows with the text, not with its square: ${name}`, () => {
+      const small = steps(paragraph(500));
+      const large = steps(paragraph(5_000));
+      expect(large / small, `${small} steps, then ${large} for ten times the text`).toBeLessThan(12);
+    });
+  }
+});
 
 const headingIds = (html: string): string[] => [...html.matchAll(/<h[1-6] id="([^"]*)">/g)].map(match => match[1]);
 
@@ -112,9 +134,15 @@ describe("what a doc's text can do to the page", () => {
   });
 
   it("keeps a link to any scheme but the web and mail as its text", () => {
-    for (const href of ["javascript:location='https://example.com/'", " JavaScript:void 0", "data:text/html,<script>fetch`/`</script>", "vbscript:msgbox"]) {
+    for (const href of ["javascript:location='https://example.com/'", " JavaScript:void(0)", "data:text/html,<script>fetch`/`</script>", "vbscript:msgbox"]) {
       expect(renderMarkdown(`[run](${href})`)).toBe("<p>run</p>");
     }
+    // A browser drops tabs and line breaks from an address, and controls in front of it.
+    for (const href of ["java&#9;script:alert(1)", "java&#10;script:alert(1)", "&#1;javascript:alert(1)", "<java\tscript:alert(1)>"]) {
+      expect(renderMarkdown(`[run](${href})`)).toBe("<p>run</p>");
+    }
+    // A destination holds no space, so this is no link at all.
+    expect(renderMarkdown("[run](JavaScript:void 0)")).toBe("<p>[run](JavaScript:void 0)</p>");
     expect(renderMarkdown("[mail](mailto:someone@example.com) and [up](../guide.md)"))
       .toBe('<p><a href="mailto:someone@example.com" target="_blank" rel="noopener noreferrer">mail</a> and <a href="../guide.md" target="_blank" rel="noopener noreferrer">up</a></p>');
   });
@@ -128,6 +156,9 @@ describe("what a doc's text can do to the page", () => {
     const html = renderMarkdown("[one](a.md) \uE0000\uE000 \uE0000\uE000 `code`");
     expect(html.match(/<a /gu)).toHaveLength(1);
     expect(html).toBe('<p><a href="a.md" target="_blank" rel="noopener noreferrer">one</a> &#xE000;0&#xE000; &#xE000;0&#xE000; <code>code</code></p>');
+    // Nor through a link's address, written or as a character reference.
+    expect(renderMarkdown("[y](<https://e onmouseover=alert(1) >) [x](https://a/&#xE000;0&#xE000;) [z](https://a/\uE0000\uE000)"))
+      .toBe('<p><a href="https://e onmouseover=alert(1)" target="_blank" rel="noopener noreferrer">y</a> <a href="https://a/%EE%80%800%EE%80%80" target="_blank" rel="noopener noreferrer">x</a> <a href="https://a/%EE%80%800%EE%80%80" target="_blank" rel="noopener noreferrer">z</a></p>');
     expect(renderMarkdown("[a\uE000b](x.md) and `c\uE000d`"))
       .toBe('<p><a href="x.md" target="_blank" rel="noopener noreferrer">a&#xE000;b</a> and <code>c&#xE000;d</code></p>');
   });
@@ -147,6 +178,40 @@ describe("inline code, links and emphasis in the reader", () => {
   it("treats an underscore inside a word as a letter and around a word as emphasis", () => {
     expect(renderMarkdown("keep_authored_stale stays, _this_ leans, __this__ and **this** stand, *in*word leans"))
       .toBe("<p>keep_authored_stale stays, <em>this</em> leans, <strong>this</strong> and <strong>this</strong> stand, <em>in</em>word leans</p>");
+  });
+
+  it("opens a link whose target holds parentheses, written each way CommonMark reads it, at the whole target", () => {
+    const hrefs: string[] = [];
+    const html = renderMarkdown([
+      "[angle](<notes/plan (draft).md>), [bare](notes/plan%20(draft).md), [encoded](notes/plan%20%28draft%29.md),",
+      "[escaped](notes/plan%20\\(draft\\).md), [titled](notes/plan%20(draft).md \"The plan\"), [nested](a((b)).md (a title)),",
+      "[group](app/(auth)/page.md#top) and [script](Lib%20-%20Copy%20(2).ps1)"
+    ].join("\n"), { linkHandler: (href, text) => { hrefs.push(href); return `<a>${text}</a>`; } });
+    expect(hrefs).toEqual([
+      "notes/plan (draft).md", "notes/plan%20(draft).md", "notes/plan%20%28draft%29.md", "notes/plan%20(draft).md",
+      "notes/plan%20(draft).md", "a((b)).md", "app/(auth)/page.md#top", "Lib%20-%20Copy%20(2).ps1"
+    ]);
+    expect(html).toBe("<p><a>angle</a>, <a>bare</a>, <a>encoded</a>, <a>escaped</a>, <a>titled</a>, <a>nested</a>, <a>group</a> and <a>script</a></p>");
+  });
+
+  it("opens a reference link at its definition's destination, hides the definition, and takes a whole document's definitions when rendered in part", () => {
+    const hrefs: string[] = [];
+    const handler = (href: string, text: string): string => { hrefs.push(href); return `<a>${text}</a>`; };
+    expect(renderMarkdown("See [the plan][Plan] and [notes].\n\n[plan]: <docs/plan (draft).md> \"The plan\"\n[notes]: docs/notes.md", { linkHandler: handler }))
+      .toBe("<p>See <a>the plan</a> and <a>notes</a>.</p>");
+    expect(hrefs).toEqual(["docs/plan (draft).md", "docs/notes.md"]);
+    const definitions = new Map([["NOTES", { destination: "docs/notes.md" }]]);
+    expect(renderMarkdown("Only [notes] here.", { linkHandler: handler, definitions })).toBe("<p>Only <a>notes</a> here.</p>");
+    expect(renderMarkdown("Only [notes] here.")).toBe("<p>Only [notes] here.</p>");
+  });
+
+  it("shows a backslash-escaped character as itself, as a docstring line escaped from being a heading is written", () => {
+    expect(renderMarkdown("\\#### z")).toBe("<p>#### z</p>");
+    expect(renderMarkdown("\\```ts and \\*not emphasis\\* and \\[not](a link.md) and C:\\path")).toBe("<p>```ts and *not emphasis* and [not](a link.md) and C:\\path</p>");
+  });
+
+  it("shows a character reference as its character, and code and raw HTML as written", () => {
+    expect(renderMarkdown("&copy; &amp;lt; &#35; &bogus; `&amp;` <b title=\"&amp;\">")).toBe("<p>© &amp;lt; # &amp;bogus; <code>&amp;amp;</code> &lt;b title=&quot;&amp;amp;&quot;&gt;</p>");
   });
 
   it("still links a bare relative path in prose and emphasizes around a link", () => {

@@ -29,6 +29,25 @@ describe("markdownLinkTargets", () => {
       "app/(auth)/page.md#top"
     ]);
   });
+
+  it("reads every target CommonMark reads: nested parentheses, a title in parentheses, escapes, references to characters, a link across lines", () => {
+    const text = [
+      "[nested](a((b)).md), [titled](notes/plan.md (the plan)), [escaped](notes/plan\\(1\\).md), [entity](notes/caf&eacute;.md),",
+      "[a link whose text",
+      "wraps](notes/wrapped.md",
+      "  'and whose title wraps') and [`code` in its text](notes/code.md)."
+    ].join("\n");
+    expect(markdownLinkTargets(text)).toEqual(["a((b)).md", "notes/plan.md", "notes/plan(1).md", "notes/café.md", "notes/wrapped.md", "notes/code.md"]);
+  });
+
+  it("counts a reference link, whose destination its definition gives, wherever the definition stands", () => {
+    const text = ["The [plan][Plan] and the [notes].", "", "### Notes", "[notes]: docs/notes.md", "[plan]: <docs/plan (draft).md> \"The plan\""].join("\n");
+    expect(markdownLinkTargets(text)).toEqual(["docs/plan (draft).md", "docs/notes.md"]);
+  });
+
+  it("reads no link where CommonMark reads none: a space in a bare target, a code span or raw HTML that claims its characters first", () => {
+    expect(markdownLinkTargets("[spaced](notes/my plan.md), [a`](no.md)`, <span title=\"[x](no.md)\">, [unpaired](a(b.md)")).toEqual([]);
+  });
 });
 
 describe("relatedDocsOf", () => {

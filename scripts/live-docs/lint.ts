@@ -13,6 +13,7 @@ import { LiveDocSyntaxError, authoredBlockOf, parseLiveDoc, type LiveDoc } from 
 import { deriveLiveDocGraph, type LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 import { fileGroups } from "@live-documentation/engine/live-docs/pathfind";
 
+import { absoluteLinks } from "./absoluteLinks";
 import { optionValue, packageVersion, readConfiguration, runCommand, UsageError } from "./cli";
 
 /** Maximum number of islands to display before truncating */
@@ -259,22 +260,9 @@ function validateAuthoredSections(
 }
 
 function validateRelativeLinks(file: string, content: string, issues: LintIssue[]): void {
-  const linkPattern = /\[[^\]]*\]\(([^)]+)\)/g;
-  let match: RegExpExecArray | null;
-  while ((match = linkPattern.exec(content))) {
-    const target = match[1];
-    if (target.startsWith("http://") || target.startsWith("https://")) {
-      issues.push({
-        file,
-        message: `contains absolute link (${target})`
-      });
-    }
-    if (/^[a-zA-Z]+:\\/.test(target)) {
-      issues.push({
-        file,
-        message: `contains absolute filesystem link (${target})`
-      });
-    }
+  // Read by the markdown link rule: a link's shape described in a code span is not a link (2026-11-19).
+  for (const { target, kind } of absoluteLinks(content)) {
+    issues.push({ file, message: kind === "web" ? `contains absolute link (${target})` : `contains absolute filesystem link (${target})` });
   }
 }
 

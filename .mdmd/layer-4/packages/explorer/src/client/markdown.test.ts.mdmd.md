@@ -3,8 +3,8 @@
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: `packages/explorer/src/client/markdown.test.ts`
-- Generated At: 2026-11-19T21:10:13.630Z
+- Code Path: packages/explorer/src/client/markdown.test.ts
+- Generated At: 2026-11-19T21:11:50.814Z
 
 ## Authored
 ### Purpose
@@ -25,6 +25,8 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`markdownLinks.readingSteps`](../../../engine/src/tooling/markdownLinks.ts.mdmd.md#symbol-readingsteps)
 - [`markdown.renderMarkdown`](./markdown.ts.mdmd.md#symbol-rendermarkdown)
+- [`markdown.renderingSteps`](./markdown.ts.mdmd.md#symbol-renderingsteps)
 - `vitest` - `describe`, `expect`, `it`, `vi`
 <!-- LIVE-DOC:END Dependencies -->

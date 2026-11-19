@@ -3,8 +3,8 @@
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: `packages/explorer/src/client/reader-links.ts`
-- Generated At: 2026-11-19T21:10:14.338Z
+- Code Path: packages/explorer/src/client/reader-links.ts
+- Generated At: 2026-11-19T21:22:28.443Z
 
 ## Authored
 ### Purpose
@@ -20,14 +20,14 @@ Introduced during the [November 4 portrait integration](../../../../../../AI-Age
 ### Public Symbols
 #### `ReaderLinkContext` {#symbol-readerlinkcontext}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/reader-links.ts#L9)
+- Source: [source](../../../../../../packages/explorer/src/client/reader-links.ts#L10)
 
 ##### `ReaderLinkContext` — Summary
 The bundled facts against which every documentation surface resolves a link.
 
 #### `fileInspection` {#symbol-fileinspection}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/reader-links.ts#L34)
+- Source: [source](../../../../../../packages/explorer/src/client/reader-links.ts#L32)
 - Parameters: `node`: [`ExplorerNodePayload`](../shared/types.ts.mdmd.md#symbol-explorernodepayload); `context`: [`ReaderLinkContext`](#symbol-readerlinkcontext)
 
 ##### `fileInspection` — Summary
@@ -35,7 +35,7 @@ Follow a documented re-export to its origin where the bundle carries that eviden
 
 #### `resolveReaderTarget` {#symbol-resolvereadertarget}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/reader-links.ts#L61)
+- Source: [source](../../../../../../packages/explorer/src/client/reader-links.ts#L59)
 - Returns: [`InspectionTarget`](./types.ts.mdmd.md#symbol-inspectiontarget)
 - Parameters: `context`: [`ReaderLinkContext`](#symbol-readerlinkcontext)
 
@@ -44,7 +44,7 @@ Resolve a documentation link to an exact bundled file, symbol, directory or auth
 
 #### `readerLink` {#symbol-readerlink}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/reader-links.ts#L90)
+- Source: [source](../../../../../../packages/explorer/src/client/reader-links.ts#L88)
 - Parameters: `target`: [`InspectionTarget`](./types.ts.mdmd.md#symbol-inspectiontarget)
 
 ##### `readerLink` — Summary
@@ -52,7 +52,7 @@ An escaped, inert-until-activated link to known evidence within the bundle.
 
 #### `createReaderLinkHandler` {#symbol-createreaderlinkhandler}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/reader-links.ts#L101)
+- Source: [source](../../../../../../packages/explorer/src/client/reader-links.ts#L99)
 - Parameters: `context`: [`ReaderLinkContext`](#symbol-readerlinkcontext)
 
 ##### `createReaderLinkHandler` — Summary
@@ -63,6 +63,7 @@ Authored Live Doc prose and bundled Markdown use exactly the same navigation rul
 ### Dependencies
 - [`document.symbolName`](../../../engine/src/live-docs/document.ts.mdmd.md#symbol-symbolname)
 - [`graph.GraphFile`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-graphfile) (type-only)
+- [`markdownLinks.linkPath`](../../../engine/src/tooling/markdownLinks.ts.mdmd.md#symbol-linkpath)
 - [`graph-helpers.escapeHtml`](./graph-helpers.ts.mdmd.md#symbol-escapehtml)
 - [`types.InspectionTarget`](./types.ts.mdmd.md#symbol-inspectiontarget) (type-only)
 - [`types.ExplorerNodePayload`](../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)

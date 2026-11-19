@@ -5,8 +5,9 @@
 - Archetype: implementation
 - Code Path: `scripts/live-docs/visualize-sample.ts`
 - Entry: command `live-docs:visualize:estate` of [`package.json`](../../package.json.mdmd.md)
+- Entry: command `live-docs:visualize:link-targets` of [`package.json`](../../package.json.mdmd.md)
 - Entry: command `live-docs:visualize:tidepool` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-19T21:10:19.291Z
+- Generated At: 2026-11-19T20:14:18.642Z
 
 ## Authored
 ### Purpose

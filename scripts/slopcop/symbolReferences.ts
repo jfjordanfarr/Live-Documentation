@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 import { GitHubSlugger, slugText } from "@live-documentation/engine/tooling/githubSlugger";
+import { linkPath } from "@live-documentation/engine/tooling/markdownLinks";
 
 import {
   computeLineStarts,
@@ -418,12 +419,8 @@ function resolveAnchorTarget(raw: string, filePath: string, workspaceRoot: strin
 }
 
 function resolvePathTarget(target: string, filePath: string, workspaceRoot: string): string | undefined {
-  let decoded: string;
-  try {
-    decoded = decodeURI(target);
-  } catch {
-    decoded = target;
-  }
+  // Percent-decoded by the markdown link rule, as the engine reads a path: `decodeURI` left `%23`, `%26` and `%3F`.
+  const decoded = linkPath(target).path;
 
   if (decoded.startsWith("/")) {
     return path.resolve(workspaceRoot, "." + decoded);

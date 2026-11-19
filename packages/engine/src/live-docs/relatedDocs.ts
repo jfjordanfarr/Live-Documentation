@@ -15,56 +15,31 @@
  * stands is for the caller, who can see the tree. The reverse rule reads the
  * documents themselves, which the generator discovers and hands over as text,
  * so that the section it writes is what the Explorer and the CLI read back. In
- * either direction a link inside fenced or inline code is not a link. Kept
- * apart from `graph.ts`, which the browser client loads, so that the glob
- * matcher stays out of it.
+ * either direction a link is read by CommonMark's rule, which the Explorer's
+ * renderer and the markdown link audit read by too (`tooling/markdownLinks.ts`):
+ * a link inside fenced or inline code is not one. Kept apart from `graph.ts`,
+ * which the browser client loads, so that the glob matcher stays out of it.
  *
  * @module
  */
 
 import { minimatch } from "minimatch";
 
+import { readMarkdownLinks } from "../tooling/markdownLinks";
 import { linkTarget, resolveDocLink, type DocLocation } from "./graph";
-
-/**
- * A markdown link's target, in angle brackets or bare, with an optional title after it; the text before it is not
- * read. A bare target may hold parentheses that pair, as CommonMark reads one: `notes/plan%20(draft).md`.
- */
-const MARKDOWN_LINK = /\]\(\s*(?:<([^>\n]*)>|((?:[^()\s]|\([^()\s]*\))+))(?:\s+(?:"[^"]*"|'[^']*'))?\s*\)/gu;
-
-/** A line that opens or closes a fenced code block, indented by up to three spaces as CommonMark allows. */
-const FENCE = /^ {0,3}(`{3,}|~{3,})/u;
-
-/** An inline code span on one line; a link written inside one is not a link. */
-const CODE_SPAN = /`[^`\n]*`/gu;
 
 /** The suffixes of a markdown document, whose links are markdown links. */
 const MARKDOWN_SUFFIXES = [".md", ".markdown"];
 
 /**
- * The targets of every markdown link in a text, as written, in order, with
- * their fragments; a link inside fenced or inline code is not one.
+ * The destinations of every link and image in a markdown text, inline (`[text](destination)`) or by reference
+ * (`[text][label]` with `[label]: destination` elsewhere in the text), in order, as CommonMark reads them: their
+ * backslash escapes and character references resolved, their percent-encoding and fragments kept. A document that
+ * cites a file by a reference cites it (the root's ruling, 2026-11-19). An autolink is an absolute URL, which names no
+ * file of the workspace.
  */
 export function markdownLinkTargets(text: string): string[] {
-  const targets: string[] = [];
-  let fence: string | undefined;
-  for (const line of text.split("\n")) {
-    const opening = FENCE.exec(line);
-    if (fence !== undefined) {
-      if (opening && opening[1][0] === fence[0] && opening[1].length >= fence.length) {
-        fence = undefined;
-      }
-      continue;
-    }
-    if (opening) {
-      fence = opening[1];
-      continue;
-    }
-    for (const match of line.replace(CODE_SPAN, "").matchAll(MARKDOWN_LINK)) {
-      targets.push(match[1] ?? match[2]);
-    }
-  }
-  return targets;
+  return readMarkdownLinks(text).links.filter((link) => link.kind !== "autolink").map((link) => link.destination);
 }
 
 /** True for a markdown document by its suffix, whatever its case. */

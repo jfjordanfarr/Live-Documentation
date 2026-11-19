@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `scripts/live-docs/lint.ts`
 - Entry: command `live-docs:lint` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-19T21:10:19.234Z
+- Generated At: 2026-11-19T21:51:17.487Z
 
 ## Authored
 ### Purpose
@@ -41,6 +41,7 @@ _No public symbols detected_
 - [`graph.LiveDocGraph`](../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
 - [`graph.deriveLiveDocGraph`](../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-derivelivedocgraph)
 - [`pathfind.fileGroups`](../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-filegroups-function)
+- [`absoluteLinks`](./absoluteLinks.ts.mdmd.md#symbol-absolutelinks)
 - [`cli.UsageError`](./cli.ts.mdmd.md#symbol-usageerror)
 - [`cli.optionValue`](./cli.ts.mdmd.md#symbol-optionvalue)
 - [`cli.packageVersion`](./cli.ts.mdmd.md#symbol-packageversion)

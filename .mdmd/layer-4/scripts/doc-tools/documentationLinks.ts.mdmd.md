@@ -3,8 +3,8 @@
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: `scripts/doc-tools/documentationLinks.ts`
-- Generated At: 2026-11-19T21:10:18.259Z
+- Code Path: scripts/doc-tools/documentationLinks.ts
+- Generated At: 2026-11-19T21:25:37.460Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Supplies the shared engine that parses Live Doc anchors, maps code files to docu
 ### Public Symbols
 #### `DocumentationRule` {#symbol-documentationrule}
 - Type: interface
-- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L24)
+- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L25)
 
 ##### `DocumentationRule` — Summary
 Declares a bidirectional mapping between documentation files and code files.
@@ -30,7 +30,7 @@ verify that breadcrumb comments exist in source files.
 
 #### `DEFAULT_RULES` {#symbol-default_rules}
 - Type: const
-- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L40)
+- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L41)
 - Returns: [`DocumentationRule`](#symbol-documentationrule)[]
 
 ##### `DEFAULT_RULES` — Summary
@@ -42,7 +42,7 @@ MDMD-convention layout (`.mdmd/layer-4/`) used by this workspace.
 
 #### `DocumentationAnchorSummary` {#symbol-documentationanchorsummary}
 - Type: interface
-- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L59)
+- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L60)
 
 ##### `DocumentationAnchorSummary` — Summary
 Parsed heading anchor within a documentation file, enriched with
@@ -50,7 +50,7 @@ the code paths it covers and backlinks it contains.
 
 #### `DocumentationDocumentAnchors` {#symbol-documentationdocumentanchors}
 - Type: interface
-- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L83)
+- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L84)
 - Extends: `ParsedDocumentationAnchors`
 
 ##### `DocumentationDocumentAnchors` — Summary
@@ -58,7 +58,7 @@ A parsed documentation file's anchors annotated with the rule that produced them
 
 #### `ResolvedDocumentationTarget` {#symbol-resolveddocumentationtarget}
 - Type: interface
-- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L91)
+- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L92)
 
 ##### `ResolvedDocumentationTarget` — Summary
 A fully resolved mapping from a code file to the documentation section
@@ -66,42 +66,42 @@ that describes it, including backlink status.
 
 #### `DocumentationTargetMap` {#symbol-documentationtargetmap}
 - Type: type
-- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L109)
+- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L110)
 
 ##### `DocumentationTargetMap` — Summary
 Maps workspace-relative code file paths to their resolved documentation targets.
 
 #### `ParseDocumentationAnchorsOptions` {#symbol-parsedocumentationanchorsoptions}
 - Type: interface
-- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L112)
+- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L113)
 
 ##### `ParseDocumentationAnchorsOptions` — Summary
 Options for {@link parseDocumentationAnchors}.
 
 #### `DocumentationLinkViolation` {#symbol-documentationlinkviolation}
 - Type: interface
-- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L122)
+- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L123)
 
 ##### `DocumentationLinkViolation` — Summary
 A single violation detected by the documentation-link enforcement pass.
 
 #### `DocumentationLinkEnforcementResult` {#symbol-documentationlinkenforcementresult}
 - Type: interface
-- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L150)
+- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L151)
 
 ##### `DocumentationLinkEnforcementResult` — Summary
 Aggregate result from a documentation-link enforcement run.
 
 #### `RunDocumentationLinkEnforcementOptions` {#symbol-rundocumentationlinkenforcementoptions}
 - Type: interface
-- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L162)
+- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L163)
 
 ##### `RunDocumentationLinkEnforcementOptions` — Summary
 Options for {@link runDocumentationLinkEnforcement}.
 
 #### `parseDocumentationAnchors` {#symbol-parsedocumentationanchors}
 - Type: function
-- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L181)
+- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L182)
 - Returns: `ParsedDocumentationAnchors`
 - Parameters: `_unnamed_`: [`ParseDocumentationAnchorsOptions`](#symbol-parsedocumentationanchorsoptions)
 
@@ -118,7 +118,7 @@ Parsed anchors with code paths and backlinks.
 
 #### `resolveCodeToDocumentationMap` {#symbol-resolvecodetodocumentationmap}
 - Type: function
-- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L249)
+- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L250)
 - Returns: [`DocumentationTargetMap`](#symbol-documentationtargetmap)
 - Parameters: `documents`: [`DocumentationDocumentAnchors`](#symbol-documentationdocumentanchors)[]; `targetMap`: [`DocumentationTargetMap`](#symbol-documentationtargetmap)
 
@@ -137,7 +137,7 @@ The (mutated) target map.
 
 #### `formatDocumentationLinkComment` {#symbol-formatdocumentationlinkcomment}
 - Type: function
-- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L294)
+- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L295)
 - Parameters: `target`: [`ResolvedDocumentationTarget`](#symbol-resolveddocumentationtarget)
 
 ##### `formatDocumentationLinkComment` — Summary
@@ -158,7 +158,7 @@ Formatted comment string (e.g. `// Live Documentation: path.mdmd.md#slug`).
 
 #### `runDocumentationLinkEnforcement` {#symbol-rundocumentationlinkenforcement}
 - Type: function
-- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L317)
+- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L318)
 - Returns: [`DocumentationLinkEnforcementResult`](#symbol-documentationlinkenforcementresult)
 - Parameters: `options`: [`RunDocumentationLinkEnforcementOptions`](#symbol-rundocumentationlinkenforcementoptions)
 
@@ -183,6 +183,7 @@ Aggregate enforcement result with violations.
 - `node:path` - `path`
 - [`githubSlugger.createSlugger`](../../packages/engine/src/tooling/githubSlugger.ts.mdmd.md#symbol-createslugger)
 - [`githubSlugger.slugText`](../../packages/engine/src/tooling/githubSlugger.ts.mdmd.md#symbol-slugtext)
+- [`markdownLinks.linkPath`](../../packages/engine/src/tooling/markdownLinks.ts.mdmd.md#symbol-linkpath)
 - [`pathUtils.normalizeWorkspacePath`](../../packages/engine/src/tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`markdownShared.extractReferenceDefinitions`](../slopcop/markdownShared.ts.mdmd.md#symbol-extractreferencedefinitions)
 <!-- LIVE-DOC:END Dependencies -->

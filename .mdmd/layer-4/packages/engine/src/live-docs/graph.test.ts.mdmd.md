@@ -3,8 +3,8 @@
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: `packages/engine/src/live-docs/graph.test.ts`
-- Generated At: 2026-11-19T21:10:11.675Z
+- Code Path: packages/engine/src/live-docs/graph.test.ts
+- Generated At: 2026-11-19T21:22:25.287Z
 
 ## Authored
 ### Purpose
@@ -35,6 +35,7 @@ _No public symbols detected_
 - [`document.renderLiveDoc`](./document.ts.mdmd.md#symbol-renderlivedoc)
 - [`graph.deriveLiveDocGraph`](./graph.ts.mdmd.md#symbol-derivelivedocgraph)
 - [`graph.linkTarget`](./graph.ts.mdmd.md#symbol-linktarget-function)
+- [`graph.resolveDocLink`](./graph.ts.mdmd.md#symbol-resolvedoclink)
 - [`sourceAnalysis.analyzeSourceFile`](./sourceAnalysis.ts.mdmd.md#symbol-analyzesourcefile)
 - `typescript` - `ts`
 - `vitest` - `afterAll`, `beforeAll`, `describe`, `expect`, `it`
