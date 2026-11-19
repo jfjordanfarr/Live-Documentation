@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/forceGraphLayout.test.ts
-- Generated At: 2026-11-07T07:46:34.294Z
+- Generated At: 2026-11-19T12:05:52.495Z
 
 ## Authored
 ### Purpose
@@ -53,6 +53,7 @@ _No public symbols detected_
 - [`forceGraphLayout.spatialNodeValue`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnodevalue)
 - [`forceGraphLayout.springStrength`](./forceGraphLayout.ts.mdmd.md#symbol-springstrength)
 - [`forceGraphLayout.symbolCountOf`](./forceGraphLayout.ts.mdmd.md#symbol-symbolcountof)
+- [`forceGraphPhysics.SpatialMotion`](./forceGraphPhysics.ts.mdmd.md#symbol-spatialmotion)
 - [`forceGraphPhysics.diagonalOf`](./forceGraphPhysics.ts.mdmd.md#symbol-diagonalof)
-- `vitest` - `describe`, `expect`, `it`
+- `vitest` - `describe`, `expect`, `it`, `vi`
 <!-- LIVE-DOC:END Dependencies -->
