@@ -20,6 +20,8 @@ An earlier cut, on November 12, was restored at the owner's word the same day ("
 
 What the root learned on the way: its own first draft, written from a whole read, lost 26 quotations and stated three things wrongly; the helpers' diligence found them. The idea of the arrangement was the root's part and the lossless execution was theirs. And step 7 is not a formality: of two entries the readers found missing, the helper applied one and reported both, and the root's read caught the other.
 
+One error went through all seven steps and was caught an hour after the file was in place: a reader offered a sentence saying a feature was not built, taken from a line of the decisions log older than the build; the helper checked it against the old text, which did not contradict it; the root did not know better. The reader checking `ideas.md`, which looked each landed idea up in the commits, found it (`df9aa90e`). So for the files that follow: a sentence that says what is built is checked against the code and the commits, not only against the text it replaces.
+
 ## `direction.md`
 
 | | Bytes | Quotations | Link targets |
