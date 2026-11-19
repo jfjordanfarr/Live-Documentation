@@ -192,6 +192,48 @@ describe("database objects", () => {
     ]);
   });
 
+  it("reads the SQL a script executes from a string written out in full, where it runs, and not a string with a computed part", () => {
+    const script = [
+      "IF OBJECT_ID('tSQLt.AssertStringIn') IS NOT NULL DROP PROCEDURE tSQLt.AssertStringIn;",
+      "GO",
+      "EXEC('CREATE PROCEDURE tSQLt.AssertStringIn @Actual NVARCHAR(MAX)",
+      "AS",
+      "BEGIN",
+      "  EXEC tSQLt.Fail ''it''''s not in'';",
+      "END;');",
+      "GO",
+      "EXEC sp_executesql N'SELECT * FROM dbo.Settings';",
+      "EXEC (N'SELECT 1 FROM ' + @table);",
+      "SELECT * FROM OPENQUERY(ORACLE_CENTRAL, 'SELECT BALANCE FROM CENTRAL.ACCOUNT');",
+      "GO",
+      "CREATE PROCEDURE tests.[test it] AS EXEC('CREATE PROCEDURE tests.Helper AS EXEC dbo.Inner;');"
+    ].join("\n");
+    expect(sqlDeclarations(script)).toEqual([
+      { kind: "procedure", name: "tSQLt.AssertStringIn", line: 3,  inBody: false },
+      { kind: "procedure", name: "tests.test it",        line: 13, inBody: false },
+      { kind: "procedure", name: "tests.Helper",         line: 13, inBody: true }
+    ]);
+    expect(sqlReferences(script).map((reference) => `${reference.verb} ${reference.raw}${reference.name.linked ? " (linked)" : ""}`)).toEqual([
+      "EXEC tSQLt.Fail",
+      "FROM dbo.Settings",
+      "EXEC sp_executesql",
+      "FROM ORACLE_CENTRAL..CENTRAL.ACCOUNT (linked)",
+      "EXEC dbo.Inner"
+    ]);
+  });
+
+  it("puts a procedure created as a stub and then altered at its ALTER, and reads an ALTER of what nothing here creates as a use", () => {
+    const script = [
+      "IF OBJECT_ID('dbo.usp_Get') IS NULL EXEC('CREATE PROCEDURE dbo.usp_Get AS BEGIN SELECT 1 END');",
+      "GO",
+      "ALTER PROCEDURE dbo.usp_Get @Id INT AS SELECT * FROM dbo.Things WHERE Id = @Id;",
+      "GO",
+      "ALTER PROCEDURE dbo.usp_Other AS SELECT 1;"
+    ].join("\n");
+    expect(sqlDeclarations(script)).toEqual([{ kind: "procedure", name: "dbo.usp_Get", line: 3, inBody: false }]);
+    expect(sqlReferences(script).map((reference) => `${reference.verb} ${reference.raw}`)).toEqual(["ALTER dbo.usp_Get", "FROM dbo.Things", "ALTER dbo.usp_Other"]);
+  });
+
   it("tells a table a procedure's body creates when it runs from one the script creates", () => {
     const script = [
       "CREATE TABLE dbo.Kept (a INT);",

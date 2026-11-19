@@ -303,8 +303,7 @@ export function sqlWrittenName(parts: string[]): string {
 export function sqlObjectName(raw: string): SqlObjectName {
   const parts = sqlNameParts(raw);
   const linked = parts.length === 4 || (parts.length >= 3 && parts.slice(1, -1).some((part) => part === ""));
-  const named = parts.filter((part) => part !== "");
-  return { parts: (named.length > 2 ? named.slice(-2) : named).map((part) => part.toLowerCase()), linked };
+  return { parts: parts.slice(-2).filter((part) => part !== "").map((part) => part.toLowerCase()), linked };
 }
 
 /** The kind of a `CREATE` statement, as a symbol kind. A SQL function is `sql-function`, so that it is never mistaken for a function of a source language. */
@@ -386,6 +385,9 @@ const SQL_DECLARED_KINDS: ReadonlySet<string> = new Set(["PROCEDURE", "PROC", "T
  */
 const SQL_MODULES_WITH_BODIES: ReadonlySet<string> = new Set(["PROCEDURE", "PROC", "FUNCTION", "TRIGGER"]);
 
+/** The kinds of module an `ALTER` redefines; the `ALTER` uses the module, and where the script itself creates it, stands for its definition. */
+const SQL_ALTERED_MODULES: readonly string[] = ["PROCEDURE", "PROC", "FUNCTION", "VIEW", "TRIGGER"];
+
 /** The kinds of `CREATE` whose name a `FROM` may follow that is no table source: `CREATE TYPE x FROM INT`, `CREATE USER x FROM LOGIN y`. */
 const SQL_KINDS_WITH_FROM: ReadonlySet<string> = new Set(["TYPE", "USER", "LOGIN", "CERTIFICATE", "ASSEMBLY", "KEY"]);
 
@@ -408,6 +410,12 @@ function quotedEnd(text: string, open: number, close: string): number {
     return index + 1;
   }
   return text.length;
+}
+
+/** What a quoted run opening at `open` holds: the text between its quotes, each doubled `close` one. */
+function unquoted(text: string, open: number, close: string): string {
+  const end = quotedEnd(text, open, close);
+  return text.slice(open + 1, end === text.length && text[end - 1] !== close ? end : end - 1).split(close + close).join(close);
 }
 
 /** The index just past a block comment opening at `open`. T-SQL's block comments nest, so a comment that holds another ends where the outer one closes; Oracle's do not nest. */
@@ -479,12 +487,14 @@ function sqlTokens(text: string): SqlToken[] {
       continue;
     }
     if (char === "/" && next === "*") { advance(blockCommentEnd(text, index)); continue; }
-    if (char === "'" || ((char === "N" || char === "n") && next === "'")) { take("string", quotedEnd(text, char === "'" ? index : index + 1, "'"), ""); continue; }
+    if (char === "'" || ((char === "N" || char === "n") && next === "'")) {
+      const open = char === "'" ? index : index + 1;
+      take("string", quotedEnd(text, open, "'"), unquoted(text, open, "'"));
+      continue;
+    }
     if (char === "[" || char === "\"") {
       const close = char === "[" ? "]" : "\"";
-      const end   = quotedEnd(text, index, close);
-      const inner = text.slice(index + 1, end === text.length && text[end - 1] !== close ? end : end - 1);
-      take("name", end, inner.split(close + close).join(close));
+      take("name", quotedEnd(text, index, close), unquoted(text, index, close));
       continue;
     }
     if (char === "@" || startsWord(code)) {
@@ -700,8 +710,51 @@ export interface SqlReference {
  * built-in table function, or a method of the `xml` type.
  */
 export function readSql(text: string): { declarations: SqlDeclaration[]; references: SqlReference[] } {
-  const declarations: SqlDeclaration[] = [];
-  const references: SqlReference[] = [];
+  const read: SqlReading = { declarations: [], references: [], alters: new Map() };
+  readSqlText(text, { offset: 0, inBody: false }, read);
+  for (const declaration of read.declarations) {
+    const altered = read.alters.get(sqlObjectName(declaration.name).parts.join("."));
+    if (!declaration.inBody && altered !== undefined && altered > declaration.line) declaration.line = altered;
+  }
+  return { declarations: read.declarations, references: read.references };
+}
+
+/** What a reading gathers: declarations, references, and the last line at which the script itself alters each object. */
+interface SqlReading {
+  declarations: SqlDeclaration[];
+  references: SqlReference[];
+  alters: Map<string, number>;
+}
+
+/**
+ * Where a text is read from: the number of lines before it in the file,
+ * whether it runs inside a module's body, and the linked server it runs on
+ * when an `OPENQUERY` or an `EXEC (…) AT` sends it to one.
+ */
+interface SqlPlace {
+  offset: number;
+  inBody: boolean;
+  server?: string;
+}
+
+/** The literal text of an executed string written out in full: string tokens joined by `+` from `start` up to `end`; undefined when any part is computed. */
+function literalText(tokens: SqlToken[], start: number, end: number): { text: string; line: number } | undefined {
+  const parts: string[] = [];
+  for (let index = start; index < end; index += 2) {
+    if (tokens[index]?.kind !== "string") return undefined;
+    parts.push(tokens[index].value);
+    if (index + 1 < end && !isSymbol(tokens[index + 1], "+")) return undefined;
+  }
+  return parts.length > 0 ? { text: parts.join(""), line: tokens[start].line } : undefined;
+}
+
+/** A name's parts on a linked server: the server first, then the database, schema and object in their places, an empty place for one not written. */
+function onServer(server: string, parts: string[]): string[] {
+  return parts.length >= 4 ? parts : [server, ...Array<string>(3 - parts.length).fill(""), ...parts];
+}
+
+function readSqlText(text: string, place: SqlPlace, into: SqlReading): void {
+  const { declarations, references } = into;
   for (const tokens of sqlBatches(sqlTokens(text))) {
     const expressions = commonTableExpressions(tokens);
     /** Where a table source's name starts that a comma list has read already, so that no later token reads it as a call. */
@@ -715,8 +768,12 @@ export function readSql(text: string): { declarations: SqlDeclaration[]; referen
       if (parts.length >= 2 && SQL_XML_METHODS.has(last.toLowerCase()) && isSymbol(tokens[at], "(")) return;
       if (parts.length === 1 && expressions.has(last.toLowerCase())) return;
       if (target && parts.length === 1 && statementSources(tokens, at).has(last.toLowerCase())) return;
-      const raw = sqlWrittenName(parts);
+      const raw = sqlWrittenName(place.server ? onServer(place.server, parts) : parts);
       references.push({ verb, name: sqlObjectName(raw), raw });
+    };
+    /** Reads an executed string's text, which runs where the statement that executes it runs, or on the server named. */
+    const execute = (literal: { text: string; line: number }, server?: string): void => {
+      readSqlText(literal.text, { offset: place.offset + literal.line - 1, inBody: place.inBody || inBody, server: server ?? place.server }, into);
     };
     for (let index = 0; index < tokens.length; index += 1) {
       const token = tokens[index];
@@ -731,14 +788,27 @@ export function readSql(text: string): { declarations: SqlDeclaration[]; referen
         const kind = tokens[at]?.kind === "word" ? tokens[at].value.toUpperCase() : "";
         const name = readName(tokens, at + 1);
         if (!name) continue;
-        if (SQL_DECLARED_KINDS.has(kind) && !name.parts[name.parts.length - 1].startsWith("#")) {
-          declarations.push({ kind: sqlKind(kind), name: sqlWrittenName(name.parts), line: token.line, inBody: kind === "TABLE" && inBody });
+        if (SQL_DECLARED_KINDS.has(kind) && !name.parts[name.parts.length - 1].startsWith("#") && !place.server) {
+          declarations.push({ kind: sqlKind(kind), name: sqlWrittenName(name.parts), line: token.line + place.offset, inBody: place.inBody || (kind === "TABLE" && inBody) });
         }
         if (SQL_MODULES_WITH_BODIES.has(kind)) inBody = true;
         index = SQL_KINDS_WITH_FROM.has(kind) && isWord(tokens[name.end], "FROM") ? name.end : name.end - 1;
         continue;
       }
-      if (word === "ALTER" && isWord(tokens[index + 1], ...SQL_MODULES_WITH_BODIES)) inBody = true;
+      if (word === "ALTER" && isWord(tokens[index + 1], ...SQL_ALTERED_MODULES)) {
+        if (!isWord(tokens[index + 1], "VIEW")) inBody = true;
+        const name = readName(tokens, index + 2);
+        if (!name) continue;
+        refer("ALTER", name.parts, name.end, false);
+        if (!place.inBody && !place.server) into.alters.set(sqlObjectName(sqlWrittenName(name.parts)).parts.join("."), token.line + place.offset);
+        index = name.end - 1;
+        continue;
+      }
+      if (word === "OPENQUERY" && isSymbol(tokens[index + 1], "(") && isNameToken(tokens[index + 2]) && isSymbol(tokens[index + 3], ",")) {
+        const literal = literalText(tokens, index + 4, groupEnd(tokens, index + 1) - 1);
+        if (literal) execute(literal, tokens[index + 2].value);
+        continue;
+      }
 
       let verb: string | undefined;
       let at = index + 1;
@@ -747,9 +817,23 @@ export function readSql(text: string): { declarations: SqlDeclaration[]; referen
         continue;
       } else if (word === "FROM" && previous?.kind === "variable" && isWord(tokens[index - 2], "DIALOG", "CONVERSATION")) {
         continue;
+      } else if ((word === "EXEC" || word === "EXECUTE") && isSymbol(tokens[at], "(")) {
+        const close = groupEnd(tokens, at);
+        const literal = literalText(tokens, at + 1, close - 1);
+        const server = isWord(tokens[close], "AT") && isNameToken(tokens[close + 1]) ? tokens[close + 1].value : undefined;
+        if (literal) execute(literal, server);
+        index = close - 1;
+        continue;
       } else if (word === "EXEC" || word === "EXECUTE") {
         verb = isWord(tokens[at], "IMMEDIATE") ? undefined : word;
         if (tokens[at]?.kind === "variable" && isSymbol(tokens[at + 1], "=")) at += 2;
+        const name = verb ? readName(tokens, at) : undefined;
+        if (name && name.parts[name.parts.length - 1].toLowerCase() === "sp_executesql") {
+          let statement = name.end;
+          if (tokens[statement]?.kind === "variable" && isSymbol(tokens[statement + 1], "=")) statement += 2;
+          const literal = isSymbol(tokens[statement + 1], "+") ? undefined : literalText(tokens, statement, statement + 1);
+          if (literal) execute(literal);
+        }
       } else if (word === "FROM" || word === "JOIN" || word === "APPLY" || (word === "USING" && !isWord(tokens[at + 1], "INDEX"))) {
         const sources = tableSources(tokens, at, word === "FROM");
         for (const source of sources) {
@@ -788,7 +872,6 @@ export function readSql(text: string): { declarations: SqlDeclaration[]; referen
       index = call.end - 1;
     }
   }
-  return { declarations, references };
 }
 
 /** Every object a script creates. */

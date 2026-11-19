@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/sql-server/Procedures/Billing.usp_Settle.sql
-- Generated At: 2026-11-19T21:16:04.627Z
+- Entry: opening [`Billing.usp_Settle`](#symbol-billingusp_settle)
+- Generated At: 2026-11-19T21:22:56.219Z
 
 ## Authored
 ### Purpose
@@ -16,10 +17,16 @@ A procedure of the SQL Server fixture deployed as an idempotent script does it: 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-_No public symbols detected_
+#### `Billing.usp_Settle` {#symbol-billingusp_settle}
+- Type: procedure
+- Source: [source](../../../../../../../tests/integration/fixtures/sql-server/Procedures/Billing.usp_Settle.sql#L6)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `Billing.vw_Legacy` (contract)
 - `sp_executesql` (contract)
+- [`Billing.Customer`](../Schema/Billing.Customer.sql.mdmd.md#symbol-billingcustomer)
+- [`Billing.Invoice`](../Schema/Billing.Invoice.sql.mdmd.md#symbol-billinginvoice)
+- [`CENTRAL.ACCOUNT`](../../../programs/csharp/estate/Database/Oracle/CENTRAL.ACCOUNT.sql.mdmd.md#symbol-centralaccount) (contract)
 <!-- LIVE-DOC:END Dependencies -->
