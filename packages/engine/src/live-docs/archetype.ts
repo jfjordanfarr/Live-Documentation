@@ -93,15 +93,18 @@ export function resolveArchetype(
   //   *Test.java, *Tests.cs    (Java, C#)
   //   test.js, tests.py        (a file named for the word alone)
   //   *_spec.rb                (Ruby)
+  //   Name.Tests.ps1           (PowerShell: Pester's own, and the only one it has)
   const basename = path.basename(sourcePath);
-  if (
-    /\.(test|spec)\.[^.]+$/.test(basename) ||   // foo.test.ts, foo.spec.js
-    /_test\.[^.]+$/.test(basename) ||            // foo_test.go, foo_test.rs
-    /^test_[^.]+\.[^.]+$/.test(basename) ||      // test_foo.py, test_foo.c
-    /Tests?\.[^.]+$/.test(basename) ||           // FooTest.java, FooTests.cs
-    /^tests?\.[^.]+$/i.test(basename) ||         // test.js, tests.py
-    /_spec\.[^.]+$/.test(basename)               // foo_spec.rb
-  ) {
+  const nameIsTest = /\.(ps1|psm1|psd1)$/i.test(basename)
+    // A PowerShell file named for what it does to tests, AL-Go's RunTests.psm1 or AnalyzeTests.ps1, is working code.
+    ? /\.Tests?\.ps1$/i.test(basename)            // Get-Thing.Tests.ps1, AL-Go's Name.Test.ps1
+    : /\.(test|spec)\.[^.]+$/.test(basename) ||   // foo.test.ts, foo.spec.js
+      /_test\.[^.]+$/.test(basename) ||           // foo_test.go, foo_test.rs
+      /^test_[^.]+\.[^.]+$/.test(basename) ||     // test_foo.py, test_foo.c
+      /Tests?\.[^.]+$/.test(basename) ||          // FooTest.java, FooTests.cs
+      /^tests?\.[^.]+$/i.test(basename) ||        // test.js, tests.py
+      /_spec\.[^.]+$/.test(basename);             // foo_spec.rb
+  if (nameIsTest) {
     return "test";
   }
 

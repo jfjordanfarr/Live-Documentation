@@ -78,6 +78,16 @@ describe("test folders and test names", () => {
     expect(resolveArchetype("Examples/Tests.sql", config)).toBe("test");
   });
 
+  it("calls a PowerShell file a test by its name only as Pester's Name.Tests.ps1 or Name.Test.ps1", () => {
+    expect(resolveArchetype("src/Get-Thing.Test.ps1", config)).toBe("test");
+    expect(resolveArchetype("src/Get-Thing.tests.ps1", config)).toBe("test");
+    // An action, a module and a build step that run tests are working code.
+    expect(resolveArchetype("Actions/RunTests/RunTests.psm1", config)).toBe("implementation");
+    expect(resolveArchetype("Actions/AnalyzeTests/AnalyzeTests.ps1", config)).toBe("implementation");
+    expect(resolveArchetype("Build/tSQLt_BuildTests.ps1", config)).toBe("implementation");
+    expect(resolveArchetype("Build/Pester.Tests.psd1", config)).toBe("implementation");
+  });
+
   it("keeps each language's name conventions: C#'s FooTests.cs, Java's FooTest.java and Pester's Name.Tests.ps1", () => {
     expect(resolveArchetype("src/Estate/ParcelTests.cs", config)).toBe("test");
     expect(resolveArchetype("src/main/java/HelpersTest.java", config)).toBe("test");

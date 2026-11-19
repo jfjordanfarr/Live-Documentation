@@ -550,6 +550,15 @@ describe("calls to functions other files define: loaded, else unique", () => {
     expect(await wires("tests/Other.Tests.ps1")).toEqual({ "tests/Stubs.Tests.ps1": ["Get-External"] });
   });
 
+  it("treat a module that runs tests as working code: AL-Go's RunTests.psm1 never reaches a test's stub", async () => {
+    await write({
+      // AL-Go's Tests/RunTests.Test.ps1 stubs BcContainerHelper's commands at its own level.
+      "Tests/RunTests.Test.ps1": "function Get-AppJsonFromAppFile { }\nfunction Get-BcContainerEventLog { }\n",
+      "Actions/RunTests/RunTests.psm1": "function Invoke-Run {\n    Get-AppJsonFromAppFile\n    Get-BcContainerEventLog\n}\n"
+    });
+    expect(await wires("Actions/RunTests/RunTests.psm1")).toEqual({});
+  });
+
   it("let a module's files call each other, and its importers reach them through its manifest and what its root module loads", async () => {
     await write({
       "Tools/Tools.psd1": "@{ RootModule = 'Tools.psm1'; ModuleVersion = '1.0' }",
