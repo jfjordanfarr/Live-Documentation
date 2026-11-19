@@ -37,7 +37,14 @@ const SOURCES: Array<{ name: string; text: string }> = [
   { name: "orders.go", text: "package shop\n\n// ListOrders lists the café's orders.\nfunc ListOrders() []string { return nil }\n" },
   { name: "orders.rs", text: "/// Lists the café's orders.\npub fn list_orders() -> Vec<String> { Vec::new() }\n" },
   { name: "orders.rb", text: "# Lists the café's orders.\nclass Orders\n  def list; end\nend\n" },
-  { name: "orders.c", text: "/** Lists the café's orders. */\nint list_orders(void) { return 0; }\n" }
+  { name: "orders.c", text: "/** Lists the café's orders. */\nint list_orders(void) { return 0; }\n" },
+  // The readers other builders hold, swapped to the one step at the joining of 2026-11-19.
+  { name: "orders.sql", text: "-- Lists the café's orders.\nCREATE TABLE orders (id INT, name NVARCHAR(40));\nCREATE PROCEDURE list_orders AS SELECT * FROM orders;\n" },
+  { name: "Orders.cs", text: "namespace Shop;\n\n/// <summary>Lists the café's orders.</summary>\npublic class Orders\n{\n    public void List() {}\n}\n" },
+  { name: "Orders.aspx", text: "<%@ Page Language=\"C#\" Inherits=\"Shop.Orders\" %>\n<html><body><asp:Label ID=\"CafeTitle\" runat=\"server\" Text=\"Le café\" /></body></html>\n" },
+  { name: "web.config", text: "<?xml version=\"1.0\"?>\n<configuration>\n  <appSettings>\n    <add key=\"CaféName\" value=\"Le café\" />\n  </appSettings>\n</configuration>\n" },
+  { name: "Shop.csproj", text: "<Project Sdk=\"Microsoft.NET.Sdk\">\n  <PropertyGroup>\n    <AssemblyName>Café</AssemblyName>\n    <TargetFramework>net8.0</TargetFramework>\n  </PropertyGroup>\n</Project>\n" },
+  { name: "orders.ps1", text: "<#\n.SYNOPSIS\nLists the café's orders.\n#>\nfunction Get-Orders {\n  param()\n}\n" }
 ];
 
 /** What a reader reports of a file: its symbols' names and descriptions, and its dependency lines. */
@@ -57,7 +64,9 @@ describe("a source file saved as Windows tools save it", () => {
       const saved = mkdtempSync(path.join(tmpdir(), "encodings-saved-"));
       folders.push(plain, saved);
       const expected = await factsOf(plain, source.name, Buffer.from(source.text, "utf8"));
-      expect((expected as { symbols: unknown[] }).symbols.length).toBeGreaterThan(0);
+      // The reader reports something of the file in UTF-8, so that the comparison below is not of two empty readings.
+      const reported = expected as { symbols: unknown[]; dependencies: unknown[] };
+      expect(reported.symbols.length + reported.dependencies.length).toBeGreaterThan(0);
       expect(await factsOf(saved, source.name, encode(source.text))).toEqual(expected);
     });
   }

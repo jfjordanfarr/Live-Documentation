@@ -5,6 +5,7 @@ import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import type { DependencyEntry, SourceAnalysisResult } from "../core";
 import { extractElementIds } from "./html";
 import type { LanguageAdapter } from "./index";
+import { readSourceText } from "../../tooling/sourceText";
 
 const SCRIPT_SRC_PATTERN = /<script[^>]*?src\s*=\s*"([^"]+)"[^>]*?>/gi;
 const PAGE_DIRECTIVE_PATTERN = /<%@\s+Page[^%]*?(?:CodeFile|CodeBehind)\s*=\s*"([^"]+)"[^%]*?%>/i;
@@ -15,7 +16,7 @@ export const aspNetMarkupAdapter: LanguageAdapter = {
   id: "aspnet-markup",
   extensions: [".aspx", ".ascx", ".cshtml", ".razor"],
   async analyze({ absolutePath, workspaceRoot }): Promise<SourceAnalysisResult | null> {
-    const content = await fs.readFile(absolutePath, "utf8");
+    const content = await readSourceText(absolutePath);
     const dependencies: DependencyEntry[] = [];
 
     const scriptDependencies = resolveScriptDependencies({

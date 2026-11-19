@@ -19,6 +19,7 @@ import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, WorkspaceSymbolIndex } from "../core";
 import { PROJECT_KINDS } from "../openings";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
+import { readSourceText } from "../../tooling/sourceText";
 
 const PROJECT_REFERENCE  = /<ProjectReference\b[^>]*?\bInclude\s*=\s*"([^"]+)"/giu;
 const PACKAGE_REFERENCE  = /<PackageReference\b([^>]*?)(?:\/>|>([\s\S]*?)<\/PackageReference>)/giu;
@@ -55,7 +56,7 @@ export const projectAdapter: LanguageAdapter = {
   id:         "dotnet-project",
   extensions: [".csproj", ".vbproj", ".fsproj"],
   async analyze({ absolutePath, workspaceRoot, fileIndex, symbolIndex }): Promise<SourceAnalysisResult | null> {
-    const content  = await fs.readFile(absolutePath, "utf8");
+    const content  = await readSourceText(absolutePath);
     const thisFile = normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath));
     const symbols: PublicSymbolEntry[] = [{ name: projectName(thisFile, content), kind: projectKind(content), location: { line: 1, character: 1 } }];
 

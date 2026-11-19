@@ -54,7 +54,6 @@
  * The rules are measured against PowerShell's own parser, whose record of
  * each PowerShell fixture is `expected/powershell-ast.json`.
  */
-import { promises as fs } from "node:fs";
 import path from "node:path";
 
 import { powershellSyntax } from "../../languages";
@@ -64,6 +63,7 @@ import type { DeclaredEntry } from "../coreTypes";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
 import { packageSymbols } from "./manifest";
 import { parseSource, type SyntaxNode } from "./treeSitter";
+import { readSourceText } from "../../tooling/sourceText";
 
 // ---------------------------------------------------------------------------
 // Facts about one file
@@ -899,12 +899,6 @@ async function analyzeDataFile(content: string, sourcePath: string, files: Works
 // The adapter
 // ---------------------------------------------------------------------------
 
-/** A file's text as PowerShell reads it, by its byte order mark: UTF-16 in either order, else UTF-8, the mark dropped. */
-function decodeScript(bytes: Uint8Array): string {
-  const encoding = bytes[0] === 0xff && bytes[1] === 0xfe ? "utf-16le" : bytes[0] === 0xfe && bytes[1] === 0xff ? "utf-16be" : "utf-8";
-  return new TextDecoder(encoding).decode(bytes);
-}
-
 /**
  * Analyzes one PowerShell file from its text, without the generator: a
  * script's or module's published functions, classes and enums, its
@@ -931,7 +925,7 @@ export const powershellAdapter: LanguageAdapter = {
   id: "powershell-basic",
   extensions: powershellSyntax.extensions,
   async analyze({ absolutePath, workspaceRoot, fileIndex }): Promise<SourceAnalysisResult | null> {
-    const content = decodeScript(await fs.readFile(absolutePath));
+    const content = await readSourceText(absolutePath);
     return analyzePowerShellSource({ content, absolutePath, workspaceRoot, fileIndex });
   }
 };

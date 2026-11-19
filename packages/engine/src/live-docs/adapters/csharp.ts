@@ -55,6 +55,7 @@ import { extractDynamicDependencies, type ConfigReference, type ResolvedTypeTarg
 import { buildDocumentationFromLines } from "./csharp.xmldoc";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
 import { parseSource, type SyntaxNode } from "./treeSitter";
+import { readSourceText } from "../../tooling/sourceText";
 
 // ---------------------------------------------------------------------------
 // What one file declares and names
@@ -890,7 +891,7 @@ async function fileFacts(absolutePath: string): Promise<FileFacts> {
   if (cached && cached.mtimeMs === stats.mtimeMs) {
     return cached.facts;
   }
-  const content = await fs.readFile(absolutePath, "utf8");
+  const content = await readSourceText(absolutePath);
   const tree    = await parseSource("c-sharp", content);
   try {
     const facts = new FileExtractor().extract(tree.rootNode);
@@ -1246,7 +1247,7 @@ export const csharpAdapter: LanguageAdapter = {
     const facts    = await fileFacts(absolutePath);
     const table    = await typeTable(workspaceRoot, fileIndex);
     const thisFile = normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath));
-    const content  = await fs.readFile(absolutePath, "utf8");
+    const content  = await readSourceText(absolutePath);
     const result: SourceAnalysisResult = {
       symbols:      toSymbols(facts),
       dependencies: await toDependencies(facts, thisFile, absolutePath, workspaceRoot, content, table, fileIndex, symbolIndex)

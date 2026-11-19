@@ -9,7 +9,6 @@
  * on the address each client endpoint points at. A `packages.config` lists the
  * packages the project stands on.
  */
-import { promises as fs } from "node:fs";
 import path from "node:path";
 
 import { compareText } from "../../tooling/compareText";
@@ -18,6 +17,7 @@ import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, Workspac
 import { ADDRESS_KIND } from "../openings";
 import { resolveWorkspaceTypes } from "./csharp";
 import type { LanguageAdapter } from "./index";
+import { readSourceText } from "../../tooling/sourceText";
 
 const TAG_PATTERN = /<(\/?)([A-Za-z_][\w.:-]*)\b([^>]*?)(\/?)>/gu;
 
@@ -72,7 +72,7 @@ export const dotnetConfigAdapter: LanguageAdapter = {
   id:         "dotnet-config",
   extensions: [".config"],
   async analyze({ absolutePath, workspaceRoot, fileIndex, symbolIndex }): Promise<SourceAnalysisResult | null> {
-    const content = await fs.readFile(absolutePath, "utf8");
+    const content = await readSourceText(absolutePath);
     const thisFile = normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath));
     const symbols: PublicSymbolEntry[] = [];
     const seen    = new Set<string>();
