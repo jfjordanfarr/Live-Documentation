@@ -2,7 +2,7 @@
 
 _Historical evidence, taken 2026-11-19 by two builders for the root from the build of `main` that stood in `dist/explorer/` that afternoon; the recommendation that closes each question is the root's. It answers the owner's ask of [Turn 40 of the November 18 record](../../../2026-11-18/2026-11-18.1.record.md#turn-40): open visual questions brought as pictures to compare, a link with what to press, and the reading of a stranger who works from pictures._
 
-Twelve questions in three files, and two files of alternatives built since for four of them. Every link opens on your own server at port 8999; start each from Tuning's reset.
+Twelve questions in three files, and three files of alternatives built since for five of them. Every link opens on your own server at port 8999; start each from Tuning's reset.
 
 **[The 2D map, the page's frame and the history's bar](2d/README.md)**
 
@@ -29,5 +29,6 @@ Twelve questions in three files, and two files of alternatives built since for f
 
 - [The 2D alternatives](2d-alternatives/README.md): four marks for a step that lies off the history's zoomed bar; two roads to one past step; what the map shows before a file existed.
 - [The 3D alternatives](3d-alternatives/README.md): one rule for the pointer in both maps; how many files the 3D picture may draw.
+- [What the 2D map could do with a better arrangement it finds late](search-stop-alternatives/README.md): move to it as today, drop it, or offer it on a control that lights; unfinished, with what is missing listed.
 
 Not in this packet, because an alternative has to be built before there is anything to compare: the other fourteen forks of the design system, a whole-file pin against a flow pin, and a change mark that says how much.
