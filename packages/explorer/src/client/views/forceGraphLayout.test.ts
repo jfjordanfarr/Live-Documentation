@@ -1,11 +1,11 @@
 import { forceLink, forceSimulation } from "d3-force-3d";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { applyLayoutPreset } from "../layout-presets";
 import { getDefaultTuning } from "../persistence/local-storage";
 import type { ForceGraphTuning } from "../types";
 import { COLLISION_STIFFNESS, easeSpatialLayout, linkPulls, motionForce, placeNewSpheres, QUIET_TICKS, seededDirection, shellMass, SHELL_SOFTNESS, spatialFieldOf, spatialLinkDistance, spatialNodeRadius, spatialNodeValue, springStrength, symbolCountOf, type PlaceableNode, type SpatialLink, type SpatialNode } from "./forceGraphLayout";
-import { diagonalOf } from "./forceGraphPhysics";
+import { diagonalOf, SpatialMotion } from "./forceGraphPhysics";
 
 const node = (id: string, symbols: number): SpatialNode => ({ id, publicSymbols: Array.from({ length: symbols }, (_, index) => `symbol${index}`) });
 const separation = (nodes: SpatialNode[]): number => Math.hypot(nodes[0].x! - nodes[1].x!, nodes[0].y! - nodes[1].y!, nodes[0].z! - nodes[1].z!);
@@ -422,6 +422,63 @@ describe("the easing: one motion through a conservative field, until the spheres
     }
     expect(changed).toBeGreaterThan(0);
     expect(unchanged).toBeGreaterThan(0); // Force evaluation alone must not cause a redraw of the same positions.
+  });
+
+  it("takes as many of a tick's substeps in a paced call as its budget holds, and never more than the tick (2026-11-19)", () => {
+    // A crowd of overlapping spheres: its contacts are stiff, so that a tick takes several substeps of the field.
+    const crowd = (): SpatialNode[] => Array.from({ length: 300 }, (_, index) => ({
+      ...node(`crowd-${index}`, index % 4), x: (index % 10) * 3, y: Math.floor(index / 10) % 10 * 3, z: Math.floor(index / 100) * 3
+    }));
+    const run = (budget?: number): { calls: number; places: number[][]; still: boolean } => {
+      const nodes = crowd(), simulation = forceSimulation(nodes, 3).stop();
+      const motion = motionForce<SpatialNode>({ tuning: () => tuning, layout: () => "connections", links: () => [], strength: () => 1,
+        ...(budget === undefined ? {} : { budget: () => budget }) });
+      simulation.force("motion", motion);
+      let calls = 0;
+      while (!motion.still && calls < 50_000) { simulation.tick(); calls++; }
+      return { calls, places: placesOf(nodes), still: motion.still };
+    };
+    const whole = run(), generous = run(1e9);
+    expect(whole.still).toBe(true);
+    // The numbers are the whole ticks', however divided; a budget that holds a whole tick takes one a call, after the
+    // first call's single evaluation measures the rate. Held to one evaluation a call, it took a call a substep.
+    expect(generous.places).toEqual(whole.places);
+    expect(generous.calls).toBeLessThanOrEqual(whole.calls + 1);
+  });
+
+  it("holds a paced call to one evaluation of the field while the picture still enters, and lets it reach further once all is in (2026-11-19)", () => {
+    // The page enters a piece a frame: a call that reached through several substeps would meet each piece at another
+    // moment of the motion and change every path after it, so the reach waits for the last piece.
+    const crowd: SpatialNode[] = Array.from({ length: 300 }, (_, index) => ({
+      ...node(`crowd-${index}`, index % 4), x: (index % 10) * 3, y: Math.floor(index / 10) % 10 * 3, z: Math.floor(index / 100) * 3
+    }));
+    let shown = 60;
+    const simulation = forceSimulation(crowd.slice(0, shown), 3).stop();
+    const motion = motionForce<SpatialNode>({ tuning: () => tuning, layout: () => "connections", links: () => [], strength: () => 1,
+      budget: () => 1e9, readyToAnchor: () => shown >= crowd.length });
+    simulation.force("motion", motion);
+    const calls: Array<{ entering: boolean; evaluated: number; count: number }> = [];
+    const advance = SpatialMotion.prototype.advance;
+    const spy = vi.spyOn(SpatialMotion.prototype, "advance").mockImplementation(function (this: SpatialMotion, ...args) {
+      const result = advance.apply(this, args);
+      calls.push({ entering: shown < crowd.length, evaluated: this.evaluated, count: this.field.count });
+      return result;
+    });
+    try {
+      for (let call = 0; call < 2000 && !motion.still; call++) {
+        simulation.tick();
+        if (shown < crowd.length) { shown += 60; simulation.nodes(crowd.slice(0, shown)); motion.stir(); }
+      }
+    } finally {
+      spy.mockRestore();
+    }
+    expect(motion.still).toBe(true);
+    const entering = calls.filter(call => call.entering), after = calls.filter(call => !call.entering);
+    expect(entering.length).toBeGreaterThan(0);
+    expect(entering.every(call => call.evaluated <= call.count), "one evaluation a call while the picture enters").toBe(true);
+    // The last piece is drawn first where it was placed: its first call reads the field and goes no further.
+    expect(after[0].evaluated, "the last piece's first call").toBeLessThanOrEqual(after[0].count);
+    expect(after.some(call => call.evaluated > call.count), "several substeps a call once it is all in").toBe(true);
   });
 
   it("comes to rest headlessly, the same way every time, and stays put when eased again from there", () => {

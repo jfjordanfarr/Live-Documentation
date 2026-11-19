@@ -481,7 +481,10 @@ export function motionForce<N extends SpatialNode>(source: MotionSource<N>): Mot
   let builtFor: readonly string[] = [];
   let quiet = 0, still = false, holding = false;
   let revision = 0;
-  let part = Infinity;
+  /** The spheres of a part held to one evaluation, sized as every part was before 2026-11-19; and of a part that may reach further. */
+  let part = Infinity, reach = Infinity;
+  /** Whether a piece has been applied since the last call: its first call is one evaluation at most, as it always was. */
+  let arrived = false;
   let begin: MotionStart | null = "unfold";
   const kept = new Map<string, { velocity: number[]; anchor: number[] }>();
   const keep = (): void => {
@@ -528,13 +531,23 @@ export function motionForce<N extends SpatialNode>(source: MotionSource<N>): Mot
     let tick: MotionTick | null;
     if (budget === undefined) tick = motion.tick(source.strength(), fixed);
     else {
-      const count = motion.field.count;
+      // While the picture still enters, a piece a frame, and at the first call after a piece or a hand moved spheres, a
+      // part is at most one evaluation of the field, as every part was before, so that whatever arrives from outside
+      // the motion meets it at the moment it always has and a new piece is drawn first where it was placed; otherwise a
+      // part reaches through as many of a tick's substeps as the budget holds, never past the tick's end. Every sphere
+      // then takes the path it took when a frame drew one substep, in fewer frames: held to one evaluation, a stiff
+      // picture whose tick takes several substeps took as many frames as substeps, however little of the frame they
+      // used, and this repository's grown group took 5,535 frames to rest (2026-11-19).
+      const count = motion.field.count, entering = arrived || moved || !(source.readyToAnchor?.() ?? true);
+      arrived = false;
       if (!(part <= count)) part = count;
+      const asked = entering || !Number.isFinite(reach) ? part : reach;
       const started = performance.now();
-      tick = motion.advance(source.strength(), fixed, part);
-      const took = performance.now() - started;
+      tick = motion.advance(source.strength(), fixed, asked);
+      const took = Math.max(performance.now() - started, 0.1);
       // Aim the next part at the budget by this part's time: more spheres when it was quick, fewer when it was slow.
-      part = Math.max(PART_FLOOR, Math.min(count, Math.round(part * budget / Math.max(took, 0.1))));
+      if (entering) part = Math.max(PART_FLOOR, Math.min(count, Math.round(part * budget / took)));
+      reach = Math.max(PART_FLOOR, Math.round(motion.evaluated * budget / took));
     }
     let changed = false;
     nodes.forEach((node, i) => {
@@ -557,7 +570,7 @@ export function motionForce<N extends SpatialNode>(source: MotionSource<N>): Mot
     }
   }) as unknown as MotionForce<N>;
   Object.assign(force, {
-    initialize: (next: N[]): void => { keep(); motion = null; nodes = next; source.onNodes?.(next); },
+    initialize: (next: N[]): void => { keep(); motion = null; nodes = next; arrived = true; source.onNodes?.(next); },
     wake: (start: MotionStart = "hold"): void => { still = false; quiet = 0; begin = start; },
     invalidate: (): void => { keep(); motion = null; },
     stir: (): void => { still = false; quiet = 0; }
