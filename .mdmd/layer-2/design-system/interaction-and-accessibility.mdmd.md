@@ -158,7 +158,7 @@ These are stated so a builder does not mistake them for accidents. Each is in [t
 | **Pressed** (*toggle button*: a button that stays on until pressed again) | A toggle is on. | Border and icon in `--state-selected` with the subtle fill. | `aria-pressed="true"` | `styles/local.css:311`, `styles/graph.css:81`, `styles/history.css:14`, `styles/world.css:446` | holds in look; see 5.4 for names |
 | **Current** | This is the view you are in. | The navigation item filled. | `aria-current="page"` | `dom.ts:39` | holds |
 | **Expanded** | A disclosure is open. | The panel shown. | `aria-expanded` on its opener | pin tray, sidebar, Tuning `<details>`, the World Map's help (`views/worldMap/controller.ts:310-313`, `:2120-2125`) | holds; the World Map's help since 2026-11-19, checked by `world-map.spec.ts` ("the help button says whether the help is open …") |
-| **Disabled** | Not available now. | Faded, default cursor. | `disabled` | five rules | broken: five different opacities, 0.3, 0.35, 0.45, 0.55, 0.65 (`styles/shell.css:59`, `styles/history.css:16`, `styles/local.css:335`, `styles/local.css:326`, `styles/reading.css:81`); and since 2026-11-19 Tuning's Reset to defaults draws its glyph in `text.disabled` at full opacity (`styles/shell.css`, `.tuning-reset:disabled`), the palette's tone for a disabled control in place of a fade, which makes a sixth form until one is chosen for all |
+| **Disabled** | Not available now. | Faded, default cursor. | `disabled` | five rules | broken: five different opacities, 0.3, 0.35, 0.45, 0.55, 0.65 (`styles/shell.css:59`, `styles/history.css:16`, `styles/local.css:335`, `styles/local.css:326`, `styles/reading.css:84`); and since 2026-11-19 Tuning's Reset to defaults draws its glyph in `text.disabled` at full opacity (`styles/shell.css`, `.tuning-reset:disabled`), the palette's tone for a disabled control in place of a fade, which makes a sixth form until one is chosen for all |
 | **Building** | The 3D map is placing and framing; nodes refuse input. | After 300 ms a line sweeps along the map's top edge and the cursor waits; still under reduced motion. | none (see 6.4) | `views/forceGraphView.ts:525-537`; `styles/graph.css:99-123` | holds visually; not told to assistive technology |
 | **Busy** | The 3D motion has not come to rest. | Nothing on screen. | `aria-busy="true"` on `#graph-svg` | `views/forceGraphView.ts:692`, `:1448`, `:2504`, `:2518`, `:2523` | inconsistent: see 6.4 |
 | **Loading** | The bundle is loading. | Three dots where the map will be; "Loading…" in the sidebar's footer. | `role="status"`, named "Loading" | `shared/template.html:534-536`, `:496` | holds; two signs for one state |
@@ -361,7 +361,7 @@ Counted in the client source and the template on 2026-11-18: 236 `aria-` attribu
 
 **Rule: under `prefers-reduced-motion: reduce`, every animation that moves the picture ends at once at its destination, and every decorative animation stops; a still sign replaces a moving one.**
 - Why: WCAG 2.2 SC 2.3.3 Animation from Interactions (level AAA, adopted here because the product's motion is large and frequent: a whole map flies); vestibular disorders.
-- Where (holds): `views/perspectiveTransition.ts:90`, `:188`; `views/localView/controller.ts:1497`; `views/localView/branch-renderer.ts:435`; `views/localView/pan-zoom.ts:247`; `views/forceGraphView.ts` (6 places); CSS in `styles/shell.css:215`, `:451`, `styles/graph.css:121`, `styles/local.css:325`, `styles/reading.css:626`, `styles/world.css:153`.
+- Where (holds): `views/perspectiveTransition.ts:90`, `:188`; `views/localView/controller.ts:1497`; `views/localView/branch-renderer.ts:435`; `views/localView/pan-zoom.ts:247`; `views/forceGraphView.ts` (6 places); CSS in `styles/shell.css:215`, `:451`, `styles/graph.css:121`, `styles/local.css:325`, `styles/reading.css:637`, `styles/world.css:153`.
 - Checked by: 11 cases across `tests/e2e/backward-cue.spec.ts`, `force-graph-focus.spec.ts`, `force-graph-building.spec.ts`, `local-map-motion.spec.ts` and four more.
 - Status: holds. The World Map's camera, turning, top-down and up, and the walkthrough, arrives at once since 2026-11-19 (`views/worldMap/controller.ts:1129-1131`), checked by `world-map.spec.ts` ("under reduced motion the camera arrives at once …"); before, it eased regardless.
 
@@ -464,7 +464,7 @@ How each was judged: **code** means read from the source here, which can show a 
 | Directory controls | 17×15 at map scale 1 | `styles/local.css:446` | below |
 | Search's clear | 24×24, its glyph 14 px | `styles/search.css` (`.search-clear`) | meets since 2026-11-19 (`tests/e2e/shell-accessibility.spec.ts`); it was 18×18 inside the input, where the spacing exception could not save it |
 | Sidebar toggle, Back, Forward | 12 px glyph and 4×8 padding (15 px at 2×6 for some): about 22 to 24 tall, by the font's line height | `styles/shell.css:34-45`, `:52-55` | likely below; needs a browser |
-| Under `(pointer: coarse)` | counts 44 tall; card actions 32; symbol actions 26 | `styles/reading.css:98-103` | meets on touch, in the reading look only |
+| Under `(pointer: coarse)` | counts 44 tall; card actions 32; symbol actions 26 | `styles/reading.css:101-106` | meets on touch, in the reading look only |
 
 **Rule: a control drawn in screen space (outside the map) is at least 24×24 CSS px.**
 - Why: WCAG 2.2 SC 2.5.8; Fitts's law. The map's own controls scale with zoom and are the deferred touch pass's subject; the controls around the map do not scale and have no reason to be small.
@@ -493,8 +493,8 @@ How each was judged: **code** means read from the source here, which can show a 
 | width ≤ 768, ≤ 480 | Knowledge Sources' padding narrows | `styles/sources.css:14-24` |
 | width ≤ 760 | the sidebar overlays the page; the main area keeps a 48 px strip | `styles/shell.css:429-432`; `index.ts:275` |
 | width ≤ 760 or height ≤ 480 | the reader fills the screen, modal, with its own Back, Forward and Close | `styles/shell.css:434-449`; `index.ts:267` |
-| width ≤ 600 | the map loses height for the zoom controls; reading cards and the reading dialog tighten | `styles/local.css:585-587`; `styles/reading.css:94-96`, `:758-761` |
-| `pointer: coarse` | larger reading-look controls | `styles/reading.css:98-103` |
+| width ≤ 600 | the map loses height for the zoom controls; reading cards and the reading dialog tighten | `styles/local.css:585-587`; `styles/reading.css:97-99`, `:769-772` |
+| `pointer: coarse` | larger reading-look controls | `styles/reading.css:101-106` |
 
 **Rule (proposed): breakpoints are named and few.** Today there are six widths (480, 600, 760, 768, 850 and the 480 height) written as literals in five files, two of them 8 px apart. A design system names them once (for example *narrow* ≤ 600, *compact* ≤ 760) and every rule uses the names. Status: proposed; see the findings.
 

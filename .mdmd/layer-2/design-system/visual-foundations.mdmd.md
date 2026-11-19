@@ -554,7 +554,7 @@ There are ties at 100: the sidebar, the controls, the path report and the direct
 
 - **Why.** Principle: Material's dark theme and Carbon's layering. On `#18181a` a black shadow has little room to read.
 - **Checked by.** Nothing.
-- **Status.** *Broken*, in both halves. Tone does not carry height (the floating panels stand on `ground.deep`, under [tonal elevation](#grounds-and-lines-dark-interior)), and a map card casts an elevation shadow at rest: `.node-card` has `0 2px 6px` black at 0.28 (`styles/view-shared.css:70`), never overridden (the only `box-shadow: none` rules are at `styles/local.css:518` and `styles/reading.css:224`). The stacked closed-directory look draws its under-cards as offset solid edges, which are a shape, not a shadow.
+- **Status.** *Broken*, in both halves. Tone does not carry height (the floating panels stand on `ground.deep`, under [tonal elevation](#grounds-and-lines-dark-interior)), and a map card casts an elevation shadow at rest: `.node-card` has `0 2px 6px` black at 0.28 (`styles/view-shared.css:70`), never overridden (the only `box-shadow: none` rules are at `styles/local.css:518` and `styles/reading.css:227`). The stacked closed-directory look draws its under-cards as offset solid edges, which are a shape, not a shadow.
 
 **Proposed rule: named layers, not numbers.**
 
@@ -672,7 +672,7 @@ Their strokes are 1.5 (most), 1.6 (the view icons), 1.7 (a symbol row's Pin and 
 - **The rule.** An appearing thing eases out (fast, then settling). A leaving thing eases in. A thing moving within the view eases out.
 - **Why.** Principle: Material's emphasized and standard easing, and Carbon's entrance and exit curves. Motion that settles reads as arriving, and motion that speeds up reads as going.
 - **Where.**
-  - The three looks' appearance and leaving: `styles/reading.css:658–710`, 160 ms, `ease-out` and `ease-in`.
+  - The three looks' appearance and leaving: `styles/reading.css:669–721`, 160 ms, `ease-out` and `ease-in`.
   - The 2D camera: `easeOutCubic`.
 - **Status.** Holds where stated. Elsewhere `ease` is used without a stated reason.
 
@@ -686,7 +686,7 @@ Their strokes are 1.5 (most), 1.6 (the view icons), 1.7 (a symbol row's Pin and 
   - `views/perspectiveTransition.ts:90, 188`.
   - `views/forceGraphWrappers.ts:322`.
   - `styles/graph.css:121`, `styles/local.css:325`, `styles/shell.css:215, 451`, `styles/world.css:153`.
-  - `styles/reading.css:626` adds motion only under `no-preference`.
+  - `styles/reading.css:637` adds motion only under `no-preference`.
 - **Checked by.** The interaction half's specs.
 - **Status.** Holds where counted. *Broken* on the World Map: its camera tweens (turning, top-down, fit and the walkthrough) travel regardless (`views/worldMap/controller.ts:1107–1124`; no `matchMedia` call anywhere under `views/worldMap`). Small hover lifts such as `.control-btn:hover`'s 2 px were not traced.
 
