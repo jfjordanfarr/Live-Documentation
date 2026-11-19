@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/types.ts
-- Generated At: 2026-11-19T04:41:43.839Z
+- Generated At: 2026-11-19T05:52:31.885Z
 
 ## Authored
 ### Purpose
@@ -28,7 +28,7 @@ The [November 8 reading feedback](../../../../../../../../AI-Agent-Workspace/Age
 ### Public Symbols
 #### `LocalViewOptions` {#symbol-localviewoptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L24)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L25)
 
 ##### `LocalViewOptions` — Summary
 Dependency-injection options for constructing a Local Map view.
@@ -44,21 +44,21 @@ click-to-navigate type references in the Local Map symbol cards.
 
 #### `ReadingControl` {#symbol-readingcontrol}
 - Type: type
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L58)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L59)
 
 ##### `ReadingControl` — Summary
 The control a person used to open or fold a description: the name it belongs to, or the book beside it.
 
 #### `LocalExplorationFrame` {#symbol-localexplorationframe}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L61)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L62)
 
 ##### `LocalExplorationFrame` — Summary
 The view's before/after presentation work around one application-owned exploration action.
 
 #### `LocalViewApi` {#symbol-localviewapi}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L72)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L73)
 
 ##### `LocalViewApi` — Summary
 Public contract the Local Map exposes to the parent Explorer application.
@@ -68,7 +68,7 @@ Independent exploration pins belong to the shared Explorer state.
 
 #### `LocalEdge` {#symbol-localedge}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L128)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L136)
 
 ##### `LocalEdge` — Summary
 A directed edge in the local subgraph, annotated with direction relative
@@ -84,7 +84,7 @@ Created 2025-12-04 during Local Map modularization.
 
 #### `LocalSubgraphLink` {#symbol-localsubgraphlink}
 - Type: type
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L152)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L160)
 - Returns: [`LocalEdge`](#symbol-localedge)
 
 ##### `LocalSubgraphLink` — Summary
@@ -92,7 +92,7 @@ Alias for LocalEdge - used in subgraph contexts.
 
 #### `LocalSubgraph` {#symbol-localsubgraph}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L159)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L167)
 
 ##### `LocalSubgraph` — Summary
 The graph disclosed by the current Local Map scope: its files and
@@ -101,7 +101,7 @@ by direction; the common scene determines their layout.
 
 #### `Bounds` {#symbol-bounds}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L172)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L180)
 
 ##### `Bounds` — Summary
 Axis-aligned bounding rectangle in pixel coordinates, used for DOM
@@ -109,7 +109,7 @@ measurement of cards, columns, and the overall layout container.
 
 #### `LayoutExtents` {#symbol-layoutextents}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L190)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L198)
 
 ##### `LayoutExtents` — Summary
 The measured bounding boxes of the Local Map layout, used by
@@ -122,7 +122,7 @@ node's card mounts).
 
 #### `MapTransform` {#symbol-maptransform}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L203)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L211)
 
 ##### `MapTransform` — Summary
 Pan/zoom state for the Local Map viewport.
@@ -134,7 +134,7 @@ and its SVG connection overlay.
 
 #### `ColumnRole` {#symbol-columnrole}
 - Type: type
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L218)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L226)
 
 ##### `ColumnRole` — Summary
 Column role for anchor registration disambiguation.
@@ -148,6 +148,8 @@ to future-proof for multi-hop graph expansion.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`moment.HistoryChanges`](../../history/moment.ts.mdmd.md#symbol-historychanges) (type-only)
+- [`moment.HistoryMoment`](../../history/moment.ts.mdmd.md#symbol-historymoment) (type-only)
 - [`reader-links.ReaderLinkContext`](../../reader-links.ts.mdmd.md#symbol-readerlinkcontext) (type-only)
 - [`types.ExplorerState`](../../types.ts.mdmd.md#symbol-explorerstate) (type-only)
 - [`types.InspectionTarget`](../../types.ts.mdmd.md#symbol-inspectiontarget) (type-only)
