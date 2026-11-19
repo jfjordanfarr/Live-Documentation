@@ -25135,3 +25135,130 @@
   One thing before you next push after that merge: it changes the GitHub Pages
   workflow. I have read the change and will explain it in the message where I
   say I'm ready.
+
+● Background command "Fallback timer of fifty minutes while builders work"
+  completed (exit code 0)
+
+  Ran 4 shell commands (ctrl+o to expand)
+● Timer renewed. The rebuild is at 962 of 1,196 commits (14:21 UTC), so it
+  should end near 15:00. Your export as you saved it at 14:16 is committed as
+  received. Nothing else can move until the builder hands back.
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/AgentSessionHistory/2026/11
+  /2026-11-18/2026-11-18.1.claude-code.export.txt in the IDE. This may or may
+  not be related to the current task.</ide_opened_file>
+  ⎿  [Image #3]
+  ⎿  [Image #4]
+
+❯ A couple things:
+  - After this session closes, is it sensible for me to shut down the container
+  to make sure everything gets cleaned up properly? (I see a rather ludicrous
+  number of long-running "background tasks" in the Agent window)
+  - Is reopening this session with the proper configuration as simple as
+  opening VS Code again from my Windows desktop? (Will it attempt to reconnect
+  to the dev machine _and_ the dev machine will have the fuller hardware access
+  as per our new setup that was functionally completed near the start of this
+  chat?)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Your message and both pictures are recorded. Now reading the container's
+  configuration and the process list so I can answer both questions from what is
+  actually there.
+
+  Ran 6 shell commands (ctrl+o to expand)
+
+● Agent "Third review, the last mends" is waiting on its own background work ·
+  2h 23m 30s
+
+● Agent "Cells' first-frame cost" is waiting on its own background work · 14h
+  58m 48s
+
+● Agent "Returning connections made legible" is waiting on its own background
+  work · 13h 14m 7s
+
+● Agent "Finish the returning connections round" is waiting on its own
+  background work · 9h 35m 11s
+
+● Agent "Mend the look-change freeze" finished · 9h 38m 51s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Third review, the last mends" finished · 2h 23m 50s
+
+● Agent "Bare frame trial lever" finished · 10h 8m 29s
+
+● Agent "Finish the returning connections round" finished · 9h 35m 19s
+
+● Agent "Returning connections made legible" finished · 13h 14m 29s
+
+● Agent "Cells' first-frame cost" finished · 14h 59m 14s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Yes to both, with one condition: please don't stop the container until I say
+  I'm ready, because the history rebuild is running inside it (1,011 of 1,196
+  commits at 14:31 UTC).
+
+  1. Stopping the container after the session
+
+  It is sensible and loses nothing.
+
+  - What a stop keeps: the working copy is your Ubuntu folder mounted in, and
+    the chats and dependencies are on Docker volumes.
+  - What a stop ends: your preview server on port 8999. Restart it afterwards
+    with npx http-server dist/explorer -p 8999 -c-1.
+  - How: closing the VS Code window attached to the container stops it by
+    default, or press Stop in Docker Desktop. Don't use Delete or Rebuild; both
+    are safe for your data, but they rerun the set-up.
+
+  Those background tasks were real leftovers, and I've ended them. They were 27
+  waits, 2 to 14 hours old, that could never finish. Most had the fault I found
+  in my own scripts this morning: a wait that searches the process list for a
+  name and matches itself. Builders had written the same thing. I also found ten
+  preview servers left running by builders on ports 8796–8805 and 8825, and
+  three leftovers from the browser lane's tests. I ended all 40 by process id;
+  the container went from 139 processes to 72. Your 8999 server and the rebuild
+  were not touched.
+
+  2. Reopening
+
+  It should be as simple as you describe, though nobody has tried it yet: this
+  container has run without a stop since yesterday afternoon.
+
+  - How: start Docker Desktop, then in VS Code use File → Open Recent and pick
+    the entry marked [Dev Container: Live Documentation Dev (WSL2 graphics
+    card)]. That starts Ubuntu and the same container and attaches to it.
+  - If that entry is missing: in an Ubuntu terminal run cd
+    ~/src/Live-Documentation && code ., accept "Reopen in Container", and choose
+    the graphics-card configuration.
+  - Hardware: the graphics card access is part of how the container was created,
+    so a stop and start keeps it. The 20 threads and 62 GB come from WSL
+    itself.
+  - How to tell it worked: the lower-left corner of VS Code names the
+    configuration with "(WSL2 graphics card)". The next chat's root also checks
+    the card at startup.
+  - The one way to lose it: opening the old D:\ copy, or choosing the plain
+    "Live Documentation Dev" configuration.
+
+  What your Docker picture showed me
+
+  The 1.43 TB of disk writes is the history rebuild. I measured it here: the
+  rebuild writes each commit's whole tree to a scratch folder before analysing
+  it, and today that tree is about 1 GB, of which 970 MB is the session archive
+  (mostly screenshots). One rebuild of about 1,190 commits therefore writes
+  roughly a third of a terabyte, and this session ran four and a bit.
+
+  - For your SSD: 1.4 TB is small against the hundreds of terabytes a drive is
+    typically rated for, but it should not be a routine cost.
+  - For the rebuild's speed: the processor sawtooth in your chart (1,800%
+    dropping to 200% every two minutes) is the same rebuild. My reading, not yet
+    measured, is that much of each commit's time goes on writing files the
+    generator never analyses, which would explain why twelve processes were no
+    faster than eight.
+  - What I've done with it: it is recorded as the first question for the next
+    engine round: write only what the generator reads.
+
+  Timer is running; the builder should hand back around 15:10 UTC, and the
+  landing follows.
