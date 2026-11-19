@@ -258,6 +258,21 @@ function identifierChain(node: SyntaxNode | null): string[] | null {
   }
 }
 
+/**
+ * True for `this`, parenthesised or not. A cast of `this` is not: `((Base)this).member` names a member of the type
+ * cast to, which the cast's type name already links; and `base.member` names a member the base type declares, which
+ * the base list already links.
+ */
+function isThis(node: SyntaxNode | null | undefined): boolean {
+  if (!node) return false;
+  if (node.type === "parenthesized_expression") {
+    // The grammar's `this` is an anonymous keyword node, so it is not among the named children.
+    const inner = node.children.filter((child) => child.type !== "(" && child.type !== ")");
+    return inner.length === 1 && isThis(inner[0]);
+  }
+  return node.type === "this";
+}
+
 function stringLiteralValue(node: SyntaxNode | null | undefined): string | undefined {
   if (!node) return undefined;
   if (node.type === "equals_value_clause") {
@@ -773,11 +788,15 @@ class FileExtractor {
       case "member_access_expression": {
         const chain    = identifierChain(node);
         const nameNode = node.childForFieldName("name");
+        const expression = node.childForFieldName("expression");
         if (chain) {
           this.recordNameUse(chain, scope);
-        } else {
-          const expression = node.childForFieldName("expression");
-          if (expression) this.visitExpression(expression, scope);
+        } else if (isThis(expression)) {
+          // `this.member` names a member of this type, never a type: in a partial type, one a peer half may declare.
+          const member = identifierChain(nameNode)?.[0];
+          if (member && scope.partial) this.facts.peerMemberUses.push({ chain: [member], scope });
+        } else if (expression) {
+          this.visitExpression(expression, scope);
         }
         if (nameNode?.type === "generic_name") this.visitGenericArguments(nameNode, scope);
         return;

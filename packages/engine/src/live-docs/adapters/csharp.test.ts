@@ -214,6 +214,49 @@ describe("csharpAdapter", () => {
       ]);
     });
 
+    it("links a partial class to its peer through members named as `this.member`, and through nothing else that starts at `this` or `base`", async () => {
+      await write("Controls/Card.ascx.cs", [
+        "namespace Site.Controls",
+        "{",
+        "    public partial class Card : Site.Controls.CardBase",
+        "    {",
+        "        protected void Page_Load(object sender, System.EventArgs e)",
+        "        {",
+        "            this.cmdSave.Click += this.OnSave;",
+        "            (this).lblTitle.Text = this.Caption.Trim();",
+        "            base.Render();",
+        "            ((CardBase)this).Shared = 1;",
+        "        }",
+        "        private void OnSave(object sender, System.EventArgs e) { }",
+        "        private string Caption => \"\";",
+        "    }",
+        "}"
+      ]);
+      await write("Controls/Card.ascx.designer.cs", [
+        "namespace Site.Controls",
+        "{",
+        "    public partial class Card",
+        "    {",
+        "        protected global::System.Web.UI.WebControls.LinkButton cmdSave;",
+        "        protected global::System.Web.UI.WebControls.Label lblTitle;",
+        "        protected global::System.Web.UI.WebControls.Label Render;",
+        "        protected global::System.Web.UI.WebControls.Label Shared;",
+        "    }",
+        "}"
+      ]);
+      await write("Controls/CardBase.cs", [
+        "namespace Site.Controls { public class CardBase : System.Web.UI.UserControl { public int Shared; } }"
+      ]);
+      await write("Text/Trim.cs", ["namespace Site.Controls { public class Trim { } }"]);
+
+      const { dependencies } = await analyze("Controls/Card.ascx.cs");
+
+      expect(dependencies).toEqual([
+        { specifier: "Controls/Card.ascx.designer.cs", resolvedPath: "Controls/Card.ascx.designer.cs", symbols: ["cmdSave", "lblTitle"], kind: "import" },
+        { specifier: "Controls/CardBase.cs",           resolvedPath: "Controls/CardBase.cs",           symbols: ["CardBase"],            kind: "import" }
+      ]);
+    });
+
     it("reads configuration keys held in constants, including constants of another file", async () => {
       await write("Web.config", ["<configuration><appSettings><add key=\"Portal.Url\" value=\"x\" /><add key=\"Portal.Flag\" value=\"y\" /></appSettings></configuration>"]);
       await write("Globals.cs", [
