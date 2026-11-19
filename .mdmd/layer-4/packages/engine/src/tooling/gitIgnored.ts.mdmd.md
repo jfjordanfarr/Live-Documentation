@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/tooling/gitIgnored.ts
-- Generated At: 2026-10-16T17:10:16.855Z
+- Generated At: 2026-11-19T21:28:37.124Z
 
 ## Authored
 ### Purpose
@@ -28,9 +28,19 @@ slashes) that git ignores: untracked and named by an excludes pattern. A
 tracked file is never among them. `null` when git cannot answer, because it
 is not installed or `workspaceRoot` is not inside a repository.
 
+#### `gitIgnoresCase` {#symbol-gitignorescase}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/tooling/gitIgnored.ts#L46)
+
+##### `gitIgnoresCase` — Summary
+Whether git matches names without regard to case in the repository that
+holds `workspaceRoot`: its `core.ignorecase`, which git sets true on a clone
+made where the file system does not tell case apart, as on Windows. False
+when the setting is false or absent, or git cannot answer.
+
 #### `withoutGitIgnored` {#symbol-withoutgitignored}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/gitIgnored.ts#L44)
+- Source: [source](../../../../../../packages/engine/src/tooling/gitIgnored.ts#L55)
 
 ##### `withoutGitIgnored` — Summary
 The files among `files` (absolute or workspace-relative) that git does not

@@ -169,10 +169,11 @@ export function hasMeaningfulAuthoredContent(authoredBlock?: string): boolean {
  * True when a workspace-relative path matches a configuration pattern: a path
  * exactly, or a glob in which `*` stands for anything within one segment and
  * `**` for anything across segments. The archetype overrides and the declared
- * entry points are read by this rule.
+ * entry points are read by this rule; `exclude` without regard to case where
+ * git ignores case in the repository (`ignoreCase`).
  */
-export function matchesPathPattern(sourcePath: string, pattern: string): boolean {
-  return new RegExp(globPatternToRegExp(pattern)).test(sourcePath);
+export function matchesPathPattern(sourcePath: string, pattern: string, ignoreCase = false): boolean {
+  return new RegExp(globPatternToRegExp(pattern), ignoreCase ? "i" : "").test(sourcePath);
 }
 
 // ============================================================================

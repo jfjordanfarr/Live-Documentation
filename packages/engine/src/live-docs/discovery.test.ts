@@ -199,3 +199,40 @@ describe("discoverTargetFiles", () => {
     expect(found).not.toContain(".vscode/tasks.json");
   });
 });
+
+/**
+ * A pattern in `exclude` follows what git does for the repository: where git's `core.ignorecase` is true, as git sets
+ * it on a clone on Windows or macOS, the pattern matches a path in any case; otherwise exactly (the root's ruling of
+ * 2026-11-19, after the Windows and command-line probe found `vendor/**` missing `Vendor/`). Each case imitates one.
+ */
+describe("exclude and the case of a path", () => {
+  const folders: string[] = [];
+  afterEach(async () => {
+    for (const folder of folders.splice(0)) await fs.rm(folder, { recursive: true, force: true });
+  });
+
+  async function repository(ignoreCase: boolean | undefined): Promise<string> {
+    const root = await fs.mkdtemp(path.join(os.tmpdir(), "discovery-case-"));
+    folders.push(root);
+    execFileSync("git", ["init", "-q"], { cwd: root });
+    if (ignoreCase !== undefined) execFileSync("git", ["config", "core.ignorecase", String(ignoreCase)], { cwd: root });
+    await fs.mkdir(path.join(root, "Vendor"));
+    await fs.writeFile(path.join(root, "Vendor", "Lib.cs"), "class Lib { }\n");
+    await fs.writeFile(path.join(root, "App.cs"), "class App { }\n");
+    return root;
+  }
+
+  async function found(root: string): Promise<string[]> {
+    const config = normalizeLiveDocumentationConfig({ exclude: ["vendor/**"] });
+    return (await discoverTargetFiles({ workspaceRoot: root, config, include: new Set(), changedOnly: false })).map((file) => path.relative(root, file).split(path.sep).join("/"));
+  }
+
+  it("matches in any case where git ignores case", async () => {
+    expect(await found(await repository(true))).toEqual(["App.cs"]);
+  });
+
+  it("matches exactly where git does not, and where git says nothing", async () => {
+    expect(await found(await repository(false))).toEqual(["App.cs", "Vendor/Lib.cs"]);
+    expect(await found(await repository(undefined))).toEqual(["App.cs", "Vendor/Lib.cs"]);
+  });
+});

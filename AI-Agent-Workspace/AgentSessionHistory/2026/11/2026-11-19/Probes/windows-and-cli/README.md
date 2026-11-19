@@ -532,3 +532,11 @@ It then exits 1. A failed file's old doc is removed only when the reader refuses
 - `noteReading` and `removeRefusedDoc` after `generateLiveDocs`.
 
 The loop's body inside the new `try` is left at its old indentation so that the join with the other branch's changes to this file stays small. Indent it at the join.
+
+### `exclude` follows git's `core.ignorecase`
+
+`gitIgnoresCase` in `tooling/gitIgnored.ts` asks `git config --type=bool --get core.ignorecase`. Discovery matches every `exclude` pattern without regard to case only when the answer is `true`. Git sets that on a clone made on Windows or macOS. Otherwise a pattern matches exactly: when the setting is false, absent, or git cannot be asked. `matchesPathPattern` takes the flag. The archetype overrides and the declared entry points still match exactly. The new cases in `discovery.test.ts` imitate each setting with `git config core.ignorecase true` and `false` on a fresh repository, and with the setting absent. In each, `exclude: ["vendor/**"]` is checked against `Vendor/Lib.cs`. The `true` case failed before the change.
+
+### Refusals printed whole
+
+`runCommand` prints a failure's `error.message` whole, on its first line, and with `--stack` the whole stack, whose first line is the message. A refused command line prints the `UsageError`'s message whole, then the pointer to `--help`. The generator's new failures print each reason whole after the source path. So a reader's message that ends by saying `live-docs:generate` rewrites a doc reaches the person whole, whichever path it takes. This was read in the code, not run, since that message lives on the names' branch.

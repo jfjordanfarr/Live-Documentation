@@ -16,7 +16,7 @@ import path from "node:path";
 import ts from "typescript";
 
 import type { LiveDocumentationConfig } from "../config/liveDocumentationConfig";
-import { gitIgnored } from "../tooling/gitIgnored";
+import { gitIgnored, gitIgnoresCase } from "../tooling/gitIgnored";
 import { normalizeWorkspacePath } from "../tooling/pathUtils";
 import { readSourceText } from "../tooling/sourceText";
 import { analyzeWithLanguageAdapters, type WorkspaceFileIndex } from "./adapters";
@@ -301,11 +301,14 @@ async function walk(workspaceRoot: string, patterns: readonly string[], neverWal
 async function keptByGitAndConfiguration(considered: readonly WalkedFile[], workspaceRoot: string, config: LiveDocumentationConfig): Promise<WalkedFile[]> {
   const ignoredByGit = gitIgnored(workspaceRoot, considered.map((entry) => entry.relative));
   const gitignoreFilter = ignoredByGit ? null : await createGitignoreFilter(workspaceRoot);
+  // `exclude` matches as git matches names in this repository: in any case where its `core.ignorecase` is true, as on
+  // a clone made on Windows, else exactly (2026-11-19).
+  const ignoreCase = config.exclude.length > 0 && gitIgnoresCase(workspaceRoot);
   return considered.filter(({ relative }) => {
     if (ignoredByGit ? ignoredByGit.has(relative) : gitignoreFilter?.ignores(relative)) {
       return false;
     }
-    return !config.exclude.some((pattern) => matchesPathPattern(relative, pattern));
+    return !config.exclude.some((pattern) => matchesPathPattern(relative, pattern, ignoreCase));
   });
 }
 
