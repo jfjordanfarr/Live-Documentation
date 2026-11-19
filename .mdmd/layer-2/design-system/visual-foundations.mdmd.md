@@ -64,6 +64,7 @@ Six principles stand over every foundation. Each foundation's rules apply one or
   - Where: `views/forceGraphEmphasis.ts` (`emphasizedSphere`'s `asked`, `bodyChanges`' `asked`), fed from the 3D view's one set of what was asked about directly (`views/forceGraphView.ts`, `askedAbout`).
   - Checked by: `forceGraphEmphasis.test.ts` and `tests/e2e/history-emphasis.spec.ts`.
   - Status: holds for the spheres and inside the wrappers. The asked-about file's wires still dim with the unchanged; an open directory, asked about as a set, is not held.
+  - In 2D (2026-11-19): under Dim the cards the step left fade to three tenths, save the pins and the subject (`is-history-asked`), and the closed boxes holding no change fade with them (`styles/local.css`, the history block; `views/localView/controller.ts`, `applyHistoryEmphasis`). Checked by `tests/e2e/history-2d.spec.ts` for the boxes; the held cards are checked by eye only.
 
 **3. Colour teaches, and may be quiet or loud on purpose.** A view in which nothing is strong teaches nothing. A choice of strength is defended by what it conveys.
 
@@ -74,6 +75,11 @@ Six principles stand over every foundation. Each foundation's rules apply one or
 
 - **Why.** Owner, 2026-10-30 and 2026-11-16: "Live Documentation should give you the text that you, the author of your files, wrote" ([owner.md](../../../AI-Agent-Workspace/Memory/owner.md#formatting-and-visual-taste)).
 - **Where else.** The rules for words on screen are in the interaction half.
+- **At a past moment, only that moment's facts.** A card drawn at a moment of the history shows what the history keeps of its file then and nothing of today's: no description, no Read control, no test backing, since those words and facts are today's and the reader would take them for that day's. What is known is said in the card's own quiet form: a file whose rows are not kept counts them, "+3 symbols", as a card counts rows it does not draw, and its title and spoken name say why; "No public symbols" only where the count is nought. The 3D map draws no description at a moment, and the 2D map follows it.
+  - Why: the root's review of the first 2D pass, 2026-11-19, where a past card said "No public symbols" of a file that had them and wore today's description as if it were that day's; the owner's standing "honest signs of hidden content" and "our software shuts up and the scanned materials do they talking".
+  - Where: `views/localView/card-factory.ts` (`unkeptSymbols`, from the moment's `symbolCount`); `views/localView/controller.ts` (no reading attached at a moment).
+  - Checked by: `tests/e2e/history-2d.spec.ts`.
+  - Status: holds at file level, the first of the history's three rungs in 2D; the rows as they were and that day's words come with the history that carries them.
 
 **5. Nothing shrinks to make room; held sizes stay held.** On the 2D map a name keeps its size on screen across a zoom step. Where room runs out, the name is cut with an ellipsis or leaves the picture; it is never drawn smaller.
 
@@ -287,6 +293,9 @@ Today also draws a second value for some meanings in `secondValues`: the 2D pins
 - **The rule.** The changed file of the history step shown is white on dark (under Glow), and nothing else of its size is.
 - **Why.** Owner, 2026-10-31: "it should be obvious what is actually changing as a commit is walked by during history playback" ([Turn 8 of the October 31 record](../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-31/2026-10-31.1.record.md#turn-8); `views/forceGraphEmphasis.ts` quotes it in its head comment).
 - **Status.** Holds in the default mode, Dim, where a changed file keeps its colour and the others lose four fifths.
+- **At the innermost thing drawn, in both maps.** A change is shown on the smallest thing the picture draws for the changed file: its sphere, dot or card where one is drawn, else the bubble, skin or closed box that holds it. In 2D a changed card wears the history's white edge under Glow, and a closed directory holding a file the step changed or deleted wears it on its border or drawn outline (`styles/local.css`, the history block). The cells inside a closed box are not lit one by one; the box stands for them.
+  - Why: owner, 2026-11-11, of the 3D bubbles: "I don't see any of the nodes deep inside the bubbles lighting up when they were affected by a commit" ([Turn 6 of the November 10 record](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-10/2026-11-10.1.record.md#turn-6)); carried into 2D when the history came to it ([Turn 34 of the November 18 record](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-34)).
+  - Checked by: `tests/e2e/history-emphasis.spec.ts` (3D) and `tests/e2e/history-2d.spec.ts` (2D boxes).
 - **Where it is weak.** Every 3D reference wire is also white (`scene.wire`, `views/forceGraphView.ts:1895–1902`). Among marbles, under Glow, the white ball reads "unpainted" rather than lit ([the defaults round](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/defaults-round/README.md)). See the findings.
 
 **Rule: amber is the one warning hue the chrome keeps.**
@@ -554,7 +563,7 @@ There are ties at 100: the sidebar, the controls, the path report and the direct
 
 - **Why.** Principle: Material's dark theme and Carbon's layering. On `#18181a` a black shadow has little room to read.
 - **Checked by.** Nothing.
-- **Status.** *Broken*, in both halves. Tone does not carry height (the floating panels stand on `ground.deep`, under [tonal elevation](#grounds-and-lines-dark-interior)), and a map card casts an elevation shadow at rest: `.node-card` has `0 2px 6px` black at 0.28 (`styles/view-shared.css:70`), never overridden (the only `box-shadow: none` rules are at `styles/local.css:518` and `styles/reading.css:224`). The stacked closed-directory look draws its under-cards as offset solid edges, which are a shape, not a shadow.
+- **Status.** *Broken*, in both halves. Tone does not carry height (the floating panels stand on `ground.deep`, under [tonal elevation](#grounds-and-lines-dark-interior)), and a map card casts an elevation shadow at rest: `.node-card` has `0 2px 6px` black at 0.28 (`styles/view-shared.css:70`), never overridden (the only `box-shadow: none` rules are at `styles/local.css:518` and `styles/reading.css:227`). The stacked closed-directory look draws its under-cards as offset solid edges, which are a shape, not a shadow.
 
 **Proposed rule: named layers, not numbers.**
 
@@ -672,7 +681,7 @@ Their strokes are 1.5 (most), 1.6 (the view icons), 1.7 (a symbol row's Pin and 
 - **The rule.** An appearing thing eases out (fast, then settling). A leaving thing eases in. A thing moving within the view eases out.
 - **Why.** Principle: Material's emphasized and standard easing, and Carbon's entrance and exit curves. Motion that settles reads as arriving, and motion that speeds up reads as going.
 - **Where.**
-  - The three looks' appearance and leaving: `styles/reading.css:656–703`, 160 ms, `ease-out` and `ease-in`.
+  - The three looks' appearance and leaving: `styles/reading.css:669–721`, 160 ms, `ease-out` and `ease-in`.
   - The 2D camera: `easeOutCubic`.
 - **Status.** Holds where stated. Elsewhere `ease` is used without a stated reason.
 
@@ -686,7 +695,7 @@ Their strokes are 1.5 (most), 1.6 (the view icons), 1.7 (a symbol row's Pin and 
   - `views/perspectiveTransition.ts:90, 188`.
   - `views/forceGraphWrappers.ts:322`.
   - `styles/graph.css:121`, `styles/local.css:325`, `styles/shell.css:215, 451`, `styles/world.css:153`.
-  - `styles/reading.css:626` adds motion only under `no-preference`.
+  - `styles/reading.css:637` adds motion only under `no-preference`.
 - **Checked by.** The interaction half's specs.
 - **Status.** Holds where counted. *Broken* on the World Map: its camera tweens (turning, top-down, fit and the walkthrough) travel regardless (`views/worldMap/controller.ts:1107–1124`; no `matchMedia` call anywhere under `views/worldMap`). Small hover lifts such as `.control-btn:hover`'s 2 px were not traced.
 

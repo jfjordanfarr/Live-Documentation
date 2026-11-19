@@ -759,8 +759,12 @@ function createSymbolSection(
   const registerAnchor = (key: string, element: HTMLElement) => context.registerAnchor(node.id, columnRole, key, element);
 
   const hasPublicSymbols = node.publicSymbols && node.publicSymbols.length > 0;
+  // A file at a past moment of the history: its count is known, its rows as they were are not kept (2026-11-19).
+  const unkept = hasPublicSymbols ? 0 : node.symbolCount ?? 0;
 
-  if (!hasPublicSymbols) {
+  if (unkept > 0) {
+    wrapper.appendChild(unkeptSymbols(unkept));
+  } else if (!hasPublicSymbols) {
     const empty = document.createElement("div");
     empty.className = "node-meta";
     empty.textContent = "No public symbols";
@@ -905,6 +909,23 @@ function createSymbolSection(
 
   wrapper.appendChild(grid);
   return wrapper;
+}
+
+/**
+ * A past moment's count of a file's public symbols, whose rows the history does not keep (2026-11-19, the first rung of
+ * history in 2D). The history carries each file's kind and symbol count at every step and not the names, so the card
+ * says what is known and no more: the count, in the quiet form a card uses for rows it does not draw ("+4 symbols"),
+ * a fact and not a control, since nothing can show those rows. "No public symbols" would have been false. Its title and
+ * spoken name say why the rows are absent.
+ */
+function unkeptSymbols(count: number): HTMLElement {
+  const note = document.createElement("span");
+  note.className = "local-disclosure local-symbols-unkept";
+  note.textContent = `+${countOf(count, "symbol")}`;
+  note.title = "The rows as they were are not kept at this moment of the history";
+  note.setAttribute("role", "note");
+  note.setAttribute("aria-label", `${countOf(count, "public symbol")}; the rows as they were are not kept at this moment`);
+  return note;
 }
 
 /** Visible Pin and More controls beside one symbol, independent of its inspection target. */

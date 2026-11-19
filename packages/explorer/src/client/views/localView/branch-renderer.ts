@@ -171,15 +171,16 @@ const cycleMemory = new WeakMap<LocalViewController, Map<string, string[]>>();
 
 /** The disclosure as the controller holds it, ranked with the cycles' orders given; the greedy order for any not given. */
 function exploreWith(controller: LocalViewController, orders?: ReadonlyMap<string, readonly string[]>): Exploration {
-  const { state, graphData } = controller.options;
+  const { state } = controller.options, graphData = controller.graph, moment = controller.showsMoment;
   const tuning = state.tuning.localMap;
-  return exploreBranches(state.selectedNode, graphData, controller.pins, node => controller.shouldIncludeNode(node), {
+  return exploreBranches(controller.subject, graphData, controller.pins, node => controller.shouldIncludeNode(node), {
     symbolOrder: tuning.symbolOrder,
     ranking: { pull: tuning.rankingPull, tie: tuning.rankingTie, orders },
     membraneDepth: tuning.membraneDepth,
     openDirectories: controller.openDirectories,
-    reading: state.reading,
-    path: controller.getActivePath() ?? undefined,
+    // A moment's cards carry no words of that day, and a path is asked over today's files: neither is drawn at a moment.
+    reading: moment ? [] : state.reading,
+    path: moment ? undefined : controller.getActivePath() ?? undefined,
     directoryFlow: tuning.directoryLayout === "flow"
   });
 }
@@ -467,7 +468,7 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
  * shapes' own (`data-flow-shapes`).
  */
 function shapeOfDirectories(controller: LocalViewController, sceneTuning: SceneTuning, costs: StartCosts): ShapeSearch {
-  const { state, graphData } = controller.options;
+  const { state } = controller.options, graphData = controller.graph;
   const tuning = state.tuning.localMap;
   const filtered = (node: ExplorerNodePayload): boolean => {
     const archetype = (node.archetype || "").toLowerCase();
