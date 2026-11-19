@@ -234,3 +234,44 @@ The integration case that a signal leaves no scratch tree behind looked for any 
 ## The rule narrowed again (later on November 19)
 
 The review's second pass found the C reader opening an excluded `.def` an include names, a kind no reader handles on its own, so the rule above lost such a file's symbols. A file is now written empty only when `exclude` names it, it lies outside the docs root, and it is an image, a font or a recording (`isMediaAsset`). At the head that is 3,554 files, 867 MB, where the rule above emptied 4,734 files, 988 MB; about 150 MB is written where a checkout writes 1,017 MB. Archives (191 files, 68 MB at the head) are written whole until that is decided.
+
+## The joined round's one rebuild and its comparison, prepared for the root (later on November 19)
+
+Prepared on the engine round's branch at its joined tip, not run. The tip joins `main`, the names', links', Windows and command line, script entries' and `packages/cli` deletion's branches, and the move to Node 26 (the container still runs Node 22.23.5; both report Unicode 17.0). The two scripts named below are in this folder.
+
+**Where it writes, and under what key.** The history command writes its cache under the workspace's docs root, `.mdmd/history/<key>/`, beside the old cache, which it neither moves nor removes unless `--remove-superseded` is given: never give it here. It also rewrites `.mdmd/history/history.json`, the words folder `.mdmd/history/history-words-<hash>/`, `pool.json`, and `unwritten.txt` when an entry is left unwritten. The key at the joined tip (`6aa816da`) is `b4294caf0e7d629f`; after the merge into `main` it is the same if `main` brings no other change to the keyed files (the engine's and the generator's code, `tsconfig.base.json`, the lock), and `lens-key.ts` prints it for whatever checkout it runs in.
+
+**The rebuild,** from the main checkout after the merge, under the Node on PATH, with a private, short temporary folder (tsx makes its socket there):
+
+```sh
+cd /workspaces/Live-Documentation
+npm ci && npm run build
+npx tsx --tsconfig ./tsconfig.base.json AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/history-rebuild-cost/lens-key.ts
+mkdir -p /tmp/claude-1000/rb
+cp .mdmd/history/history.json /tmp/claude-1000/rb/history-before.json
+TMPDIR=/tmp/claude-1000/rb npm run live-docs:history -- --check-head --jobs 10 --stop-after 300 > /tmp/claude-1000/rb/run.log 2>&1
+```
+
+- **How long.** About 1,270 commits. A commit's summarizing process took 15 to 44 processor-seconds alone at the three anatomy commits, early to head; the tree is now about 150 MB at the head where it was 1,017 MB. At ten processes on this 20-core machine with other agents at a load of 20 to 40, expect two to three hours; on a quiet machine, about an hour and a half. `--jobs` may be left out on a quiet machine, when the pool is sized by `pool.json` (a process's peak was 566 MB).
+- **What heap.** A process peaked at about 570 MB; node's default heap is enough. If a process dies for want of heap, raise it as usual, `NODE_OPTIONS=--max-old-space-size=4096`, which the history carries to the summarizing process.
+- **If it stops.** Run the same command again: the cache keeps every summary written and the run regenerates only what is missing or damaged. `--stop-after 300` starts no commit after five hours and exits with code 3, writing no history; a second run resumes.
+- **What must hold.** The run ends with "the last step's … files … are those of the Live Docs committed at <head>" (`--check-head`); anything else stops it.
+
+**The comparison** of every commit's summary with the old cache, `c186af7356b58191/`, read only on both sides:
+
+```sh
+npx tsx --tsconfig ./tsconfig.base.json AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/history-rebuild-cost/compare-summaries.ts \
+  .mdmd/history/c186af7356b58191 .mdmd/history/<key> --samples 5 --json /tmp/claude-1000/rb/compare.json
+```
+
+What "the same" means, since the lens changed on purpose:
+
+- `lens` and `format` are set aside: the key moved with the code, and format 4 keeps citing documents by path.
+- The new summaries keep every linked and citing document; the old ones were made under the old configuration's bundle exclusions. The script reads each new summary through `bundledSummary` with the old configuration's `bundleExclude` (`.live-docs.config.json` at `c84fd00f`, the old cache's head), so that both are held to one exclusion; the archive's former layout, which this round added to the configuration, changes the sequence, not the summaries.
+- Every other field must be equal, but where a branch of the joining is meant to move it. Those differences are counted as **meant**, with the branch, and a few samples of each are printed for a person to read:
+  - `docLinks` and `citedBy`: the markdown links' branch, which reads links by CommonMark's rule.
+  - `entries`: the script entries' branch, which reads package scripts as a shell splits them.
+  - `symbols`, `dependencies`, `reExports`, `archetype` of a file whose bytes at the commit are not plain UTF-8: the Windows branch's one reading step.
+  - a symbol whose name holds a character the names' branch writes otherwise.
+- Anything else is a **fault**: a file in one summary and not the other, `authored`, `unread`, `unwritten`, or a field above outside what its branch explains. The script prints its counts, exits 1 on any fault, and writes every finding to the JSON file. A fault is run down, not explained away.
+- Checked before handing over: the script over the old cache against itself reports 1,263 commits identical and no fault. The old cache's 1,263 commits are compared; the commits since it was made are only in the new one.
