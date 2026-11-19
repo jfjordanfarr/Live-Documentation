@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 
-import { featureDirection, fileFeatures, marbleSketches, OWN_PATH_WEIGHT, SKETCH_DIMENSIONS, sketchDistance, sketchOf, type SketchFeature } from "./marbleSketch";
+import { featureDirection, featureSum, fileFeatures, marbleSketches, OWN_PATH_WEIGHT, SKETCH_DIMENSIONS, SKETCH_STRENGTH, SKETCH_TURN, sketchDistance, sketchOf, strengthsOf, type SketchFeature } from "./marbleSketch";
 
-const unit = (sketch: readonly number[]): number => Math.hypot(...sketch);
+const length = (sketch: readonly number[]): number => Math.hypot(...sketch);
 
 /** A seeded run of numbers, so that the many random cases below are the same on every run. */
 function numbers(seed: number): () => number {
@@ -10,83 +10,108 @@ function numbers(seed: number): () => number {
   return () => { state = (Math.imul(state, 1664525) + 1013904223) >>> 0; return state / 0x100000000; };
 }
 
+/** `count` random features of unit weight, the case's own. */
+const randomFeatures = (random: () => number, count: number, label: string): SketchFeature[] =>
+  Array.from({ length: count }, (_, i) => ({ text: `${label}-${i}-${Math.floor(random() * 1e9)}`, weight: 1 }));
+
+/** The mean over many random files of the distance a change makes. */
+function meanMove(seed: number, cases: number, change: (random: () => number, c: number) => [string, SketchFeature[], SketchFeature[]]): number {
+  const random = numbers(seed);
+  let total = 0;
+  for (let c = 0; c < cases; c++) {
+    const [id, before, after] = change(random, c);
+    total += sketchDistance(sketchOf(id, before), sketchOf(id, after));
+  }
+  return total / cases;
+}
+
 describe("a file's marble sketch", () => {
   it("gives every feature a fixed direction of unit length, the same on every call", () => {
     const direction = featureDirection("uses\u0000packages/explorer/src/client/palette.ts");
     expect(direction).toHaveLength(SKETCH_DIMENSIONS);
-    expect(unit(direction)).toBeCloseTo(1, 12);
+    expect(length(direction)).toBeCloseTo(1, 12);
     expect(featureDirection("uses\u0000packages/explorer/src/client/palette.ts")).toEqual(direction);
     expect(sketchDistance(direction, featureDirection("uses\u0000packages/explorer/src/client/types.ts"))).toBeGreaterThan(0.1);
   });
 
-  it("is the same for the same contents on every load, and of unit length", () => {
-    const features = fileFeatures("a.ts", 12, new Map([["b.ts", 3], ["c.ts", 1]]));
-    const sketch = sketchOf("a.ts", features);
-    expect(sketch).toHaveLength(SKETCH_DIMENSIONS);
-    expect(unit(sketch)).toBeCloseTo(1, 12);
-    expect(sketchOf("a.ts", fileFeatures("a.ts", 12, new Map([["b.ts", 3], ["c.ts", 1]])))).toEqual(sketch);
+  it("wraps each component of the features' sum through a sine, and so is bounded however much the file holds", () => {
+    expect(strengthsOf([0, SKETCH_TURN * Math.PI / 2, -SKETCH_TURN * Math.PI / 2, SKETCH_TURN * Math.PI, 1, 2, 3, 4]))
+      .toEqual([0, SKETCH_STRENGTH, -SKETCH_STRENGTH, SKETCH_STRENGTH * Math.sin(Math.PI), ...[1, 2, 3, 4].map(v => SKETCH_STRENGTH * Math.sin(v / SKETCH_TURN))]);
+    const random = numbers(7);
+    for (const count of [0, 1, 40, 5000]) {
+      const sketch = sketchOf(`f${count}.ts`, randomFeatures(random, count, `b${count}`));
+      expect(sketch).toHaveLength(SKETCH_DIMENSIONS);
+      for (const strength of sketch) expect(Math.abs(strength)).toBeLessThanOrEqual(SKETCH_STRENGTH);
+    }
   });
 
-  it("does not depend on the order of the features", () => {
-    const features = fileFeatures("a.ts", 7, new Map([["b.ts", 2], ["c.ts", 5], ["d.ts", 1]]));
+  it("is the same for the same facts on every load and in any order", () => {
+    const features = fileFeatures("a.ts", 12, new Map([["b.ts", 3], ["c.ts", 1], ["d.ts", 2]]));
+    const sketch = sketchOf("a.ts", features);
+    expect(sketchOf("a.ts", fileFeatures("a.ts", 12, new Map([["b.ts", 3], ["c.ts", 1], ["d.ts", 2]])))).toEqual(sketch);
     const shuffled = [...features].reverse();
     shuffled.push(shuffled.shift()!);
-    expect(sketchOf("a.ts", shuffled)).toEqual(sketchOf("a.ts", features));
+    expect(sketchOf("a.ts", shuffled)).toEqual(sketch);
+    expect(OWN_PATH_WEIGHT).toBe(1);
   });
 
-  it("makes a file of no features its path's direction, and one of one feature lean toward that feature", () => {
-    const empty = sketchOf("empty.ts", []);
-    expect(unit(empty)).toBeCloseTo(1, 12);
-    expect(empty).toEqual(featureDirection("file\u0000empty.ts"));
-    expect(sketchOf("empty.ts", fileFeatures("empty.ts", 0, new Map()))).toEqual(empty);
-    const one: SketchFeature = { text: "uses\u0000b.ts", weight: 1 };
-    const sketch = sketchOf("one.ts", [one]);
-    expect(unit(sketch)).toBeCloseTo(1, 12);
-    // Equal weights: the sketch lies halfway between the feature and the path, nearer each than they are to each other.
-    const between = sketchDistance(featureDirection(one.text), featureDirection("file\u0000one.ts"));
-    expect(sketchDistance(sketch, featureDirection(one.text))).toBeLessThan(between);
-    expect(sketchDistance(sketch, featureDirection("file\u0000one.ts"))).toBeLessThan(between);
-    expect(OWN_PATH_WEIGHT).toBe(1);
+  it("moves by about as much for one feature more in a file of five features, of fifty or of five hundred", () => {
+    // A unit length divided a change by the file's size: the same change in a file a hundred times larger moved its
+    // sketch a tenth as far. Without it the move is the same whatever the size, within a factor the sine's slope makes.
+    const moves = [5, 50, 500].map(size => meanMove(11 + size, 300, (random, c) => {
+      const before = randomFeatures(random, size, `s${size}-${c}`);
+      return [`f${c}.ts`, before, [...before, { text: `added-${size}-${c}`, weight: 1 }]];
+    }));
+    expect(Math.max(...moves) / Math.min(...moves)).toBeLessThan(1.5);
+    // About 0.35 of the sum's change per component, a turn of 0.35 / SKETCH_TURN radians, at the sine's slope.
+    for (const move of moves) { expect(move).toBeGreaterThan(0.05); expect(move).toBeLessThan(0.2); }
+  });
+
+  it("moves further the more features change, and saturates where the file has become another", () => {
+    const changes = [0, 1, 4, 16, 64, 200, 400];
+    const moves = changes.map(changed => meanMove(20261119, 80, (random, c) => {
+      const before = randomFeatures(random, 400, `m${c}`);
+      return [`f${c}.ts`, before, before.map((feature, i) => (i < changed ? { ...feature, text: `${feature.text}-new` } : feature))];
+    }));
+    expect(moves[0]).toBe(0);
+    for (let i = 1; i < moves.length; i++) expect(moves[i]).toBeGreaterThan(moves[i - 1]);
+    // Two unrelated large files lie apart by about √(8 · SKETCH_STRENGTH²) = √2; half the file changed is nearly there.
+    expect(moves[moves.length - 1]).toBeGreaterThan(1.25);
+    expect(moves[moves.length - 1]).toBeLessThan(1.6);
+    expect(moves[moves.length - 1] - moves[moves.length - 2]).toBeLessThan(0.15);
+    expect(moves[2] - moves[1]).toBeGreaterThan(0.08);
+  });
+
+  it("gives a file of few facts weak strengths, a nearly plain marble, and one of many full ones", () => {
+    const random = numbers(3);
+    const mean = (count: number): number => {
+      let total = 0;
+      for (let c = 0; c < 200; c++) total += length(sketchOf(`w${c}.ts`, randomFeatures(random, count, `w${count}-${c}`)));
+      return total / 200;
+    };
+    const [none, few, many] = [mean(0), mean(4), mean(500)];
+    expect(none).toBeLessThan(0.2);
+    expect(few).toBeLessThan(0.4);
+    // A large file's eight strengths spread round the sine: about the unit length the sketch had before the wrap.
+    expect(many).toBeGreaterThan(0.9);
+    expect(many).toBeLessThan(1.1);
+    // A file of no features is its path alone, wrapped.
+    expect(sketchOf("empty.ts", [])).toEqual(strengthsOf(featureDirection("file\u0000empty.ts")));
   });
 
   it("differs for two files that list the same facts, by their paths", () => {
     const uses = new Map([["shared.ts", 2]]);
-    expect(sketchDistance(sketchOf("a.ts", fileFeatures("a.ts", 0, uses)), sketchOf("b.ts", fileFeatures("b.ts", 0, uses)))).toBeGreaterThan(0.05);
+    expect(sketchDistance(sketchOf("a.ts", fileFeatures("a.ts", 0, uses)), sketchOf("b.ts", fileFeatures("b.ts", 0, uses)))).toBeGreaterThan(0.02);
   });
 
-  it("moves further the larger the share of a file's features that differs, over many random files", () => {
-    const random = numbers(20261118);
-    const shares = [0, 0.025, 0.1, 0.25, 0.5, 0.75, 1];
-    const total = shares.map(() => 0);
-    const cases = 300, size = 40;
-    for (let c = 0; c < cases; c++) {
-      const id = `file-${c}.ts`;
-      const features = Array.from({ length: size }, (_, i) => ({ text: `f${c}-${i}-${Math.floor(random() * 1e9)}`, weight: 0.5 + random() }));
-      const before = sketchOf(id, features);
-      shares.forEach((share, s) => {
-        const changed = Math.round(share * size);
-        const after = features.map((feature, i) => (i < changed ? { text: `${feature.text}-new`, weight: feature.weight } : feature));
-        total[s] += sketchDistance(before, sketchOf(id, after));
-      });
-    }
-    const mean = total.map(sum => sum / cases);
-    expect(mean[0]).toBe(0);
-    for (let s = 1; s < mean.length; s++) expect(mean[s]).toBeGreaterThan(mean[s - 1]);
-    // One feature among forty is a small move; a rewrite moves about as far as two unrelated files lie apart (√2).
-    expect(mean[1]).toBeLessThan(0.25);
-    expect(mean[mean.length - 1]).toBeGreaterThan(1.2);
-  });
-
-  it("moves a little for one symbol added among forty, more for five, and most for a file of new wires", () => {
+  it("moves a little for one symbol added among forty, more for five", () => {
     const uses = new Map([["b.ts", 4], ["c.ts", 1], ["d.ts", 2]]);
     const base = sketchOf("a.ts", fileFeatures("a.ts", 40, uses));
     const one = sketchDistance(base, sketchOf("a.ts", fileFeatures("a.ts", 41, uses)));
     const five = sketchDistance(base, sketchOf("a.ts", fileFeatures("a.ts", 45, uses)));
-    const more = sketchDistance(base, sketchOf("a.ts", fileFeatures("a.ts", 40, new Map([...uses, ["e.ts", 1]]))));
     expect(one).toBeGreaterThan(0);
     expect(one).toBeLessThan(0.25);
     expect(five).toBeGreaterThan(one);
-    expect(more).toBeGreaterThan(0);
   });
 
   it("is the same for a file today and at a step of the history that holds the same facts", () => {
@@ -110,5 +135,6 @@ describe("a file's marble sketch", () => {
     expect(marbleSketches(today)).toBe(now);
     // What uses a file is not its feature: b.ts is as if nothing used it.
     expect(now.get("b.ts")).toEqual(sketchOf("b.ts", fileFeatures("b.ts", 1, new Map())));
+    expect(now.get("a.ts")).toEqual(strengthsOf(featureSum("a.ts", fileFeatures("a.ts", 3, new Map([["b.ts", 3]])))));
   });
 });

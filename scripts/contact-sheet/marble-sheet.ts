@@ -24,6 +24,9 @@
  * replaced, all replaced; and, for comparison with what the docs could carry, the same run with its symbols named.
  * `history` draws, for each step of another bundle's history, the files the step changed, before and after it.
  *
+ * `--turns 2,4,8` draws the run's and the fork's rows from the doc once for each turn of the sketch's wrap
+ * (`SKETCH_TURN` in marbleSketch.ts), for choosing it by eye; the other sheets take the product's own.
+ *
  * `fork` is for the owner's open choice of what a marble is made from (2026-11-19): one file over the last commits that
  * touched it, in two rows. The first is From Its Doc, the sketch made as the product makes it from that commit's Live
  * Doc. The second is a sketch made the same way from the file's own text at that commit, one feature per distinct
@@ -45,7 +48,7 @@ import { DEFAULT_MARBLE_BEND, DEFAULT_PALETTE, paletteNamed } from "../../packag
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { MARBLE_PATTERNS, type MarblePattern } from "../../packages/explorer/src/client/types";
 import { marbleCounts, marbleOf, marbleTint, type Marble } from "../../packages/explorer/src/client/views/forceGraphAppearance";
-import { fileFeatures, marbleSketches, sketchDistance, sketchOf, type Sketch, type SketchFeature } from "../../packages/explorer/src/client/views/marbleSketch";
+import { fileFeatures, marbleFeatureSums, marbleSketches, SKETCH_TURN, sketchDistance, sketchOf, strengthsOf, type Sketch, type SketchFeature } from "../../packages/explorer/src/client/views/marbleSketch";
 import { explorerGraphOf } from "../../packages/explorer/src/shared/graph";
 import type { ExplorerGraphPayload } from "../../packages/explorer/src/shared/types";
 import { browserLaunchOptions } from "../../tests/e2e/browser-launch";
@@ -115,8 +118,11 @@ function usesOf(graph: ExplorerGraphPayload, id: string): Map<string, number> {
   return uses;
 }
 
-/** One file through a made-up run of changes to what its Live Doc lists, in each pattern, and with its symbols named. */
-function runRows(graph: ExplorerGraphPayload, id: string, patterns: readonly MarblePattern[]): Row[][] {
+/**
+ * One file through a made-up run of changes to what its Live Doc lists, in each pattern, and with its symbols named;
+ * with more than one turn given, the pattern from the doc once for each (`SKETCH_TURN` in marbleSketch.ts).
+ */
+function runRows(graph: ExplorerGraphPayload, id: string, patterns: readonly MarblePattern[], turns: readonly number[]): Row[][] {
   const node = graph.nodes.find(candidate => candidate.id === id);
   if (!node) throw new UsageError(`No file ${id} in the bundle.`);
   const symbols = node.publicSymbols.length, uses = usesOf(graph, id);
@@ -133,14 +139,21 @@ function runRows(graph: ExplorerGraphPayload, id: string, patterns: readonly Mar
   steps.push({ caption: "five symbols added", symbols: symbols + 5, uses, names: [...names, ...["a1", "a2", "a3", "a4", "a5"]] });
   steps.push({ caption: "half replaced", symbols, uses: replaced(0.5), names: names.map((name, i) => (i % 2 ? `${name}Rewritten` : name)) });
   steps.push({ caption: "all replaced", symbols, uses: replaced(1), names: names.map(name => `${name}Rewritten`) });
-  const named = (step: (typeof steps)[number]): Sketch => sketchOf(id, [
+  const named = (step: (typeof steps)[number], turn: number): Sketch => sketchOf(id, [
     ...step.names.map((name): SketchFeature => ({ text: `symbol-name\u0000${id}\u0000${name}`, weight: 1 })),
     ...fileFeatures(id, 0, step.uses)
-  ]);
-  const rows: Row[] = patterns.map(pattern => ({ heading: PATTERN_WORDS[pattern], radius: 110,
-    items: steps.map(step => itemOf(graph, id, pattern, step.caption, sketchOf(id, fileFeatures(id, step.symbols, step.uses)))!) }));
-  rows.push({ heading: `${PATTERN_WORDS.doc}, if the sketch took the symbols' names (today's docs carry them, the history does not)`, radius: 110,
-    items: steps.map(step => itemOf(graph, id, "doc", step.caption, named(step))!) });
+  ], turn);
+  const rows: Row[] = [];
+  for (const pattern of patterns) {
+    for (const turn of pattern === "one" ? [SKETCH_TURN] : turns) {
+      rows.push({ heading: `${PATTERN_WORDS[pattern]}${pattern === "doc" && turns.length > 1 ? `, turn ${turn}` : ""}`, radius: 100,
+        items: steps.map(step => itemOf(graph, id, pattern, step.caption, sketchOf(id, fileFeatures(id, step.symbols, step.uses), turn))!) });
+    }
+  }
+  for (const turn of turns) {
+    rows.push({ heading: `${PATTERN_WORDS.doc}${turns.length > 1 ? `, turn ${turn}` : ""}, if the sketch took the symbols' names (today's docs carry them, the history does not)`, radius: 100,
+      items: steps.map(step => itemOf(graph, id, "doc", step.caption, named(step, turn))!) });
+  }
   return [rows];
 }
 
@@ -180,7 +193,7 @@ async function docLocation(): Promise<{ root: string; baseLayer: string; extensi
  * A file's sketch from its Live Doc at a commit, as the product makes it: the doc parsed, the graph derived from it and
  * the docs its links name at that commit, projected as the page projects it, and the sketch read from that.
  */
-function docSketchAt(commit: string, id: string, location: { root: string; baseLayer: string; extension: string }): Sketch {
+function docSketchAt(commit: string, id: string, location: { root: string; baseLayer: string; extension: string }, turn: number): Sketch {
   const docPathOf = (codePath: string): string => `${location.root}/${location.baseLayer}/${codePath}${location.extension}`;
   const read = (docPath: string): string | null => { try { return git("show", `${commit}:${docPath}`); } catch { return null; } };
   const own = docPathOf(id), text = read(own);
@@ -199,23 +212,31 @@ function docSketchAt(commit: string, id: string, location: { root: string; baseL
     const targetText = read(target.docPath);
     if (targetText !== null) docs.push({ docPath: target.docPath, doc: parseLiveDoc(targetText) });
   }
-  return marbleSketches(explorerGraphOf(deriveLiveDocGraph(docs, location))).get(id)!;
+  return strengthsOf(marbleFeatureSums(explorerGraphOf(deriveLiveDocGraph(docs, location))).get(id)!, turn);
 }
 
 /** A sketch of a file's own text at a commit: one feature per distinct trimmed non-empty line, weighted by its count. */
-function contentSketchAt(commit: string, id: string): Sketch {
+function contentSketchAt(commit: string, id: string, turn: number): Sketch {
   const counts = new Map<string, number>();
   for (const line of git("show", `${commit}:${id}`).split("\n")) {
     const trimmed = line.trim();
     if (trimmed) counts.set(trimmed, (counts.get(trimmed) ?? 0) + 1);
   }
-  return sketchOf(id, [...counts].map(([line, count]): SketchFeature => ({ text: `line\u0000${line}`, weight: count })));
+  return sketchOf(id, [...counts].map(([line, count]): SketchFeature => ({ text: `line\u0000${line}`, weight: count })), turn);
 }
 
-/** The fork's two rows: one file over the last commits that touched it, from its doc and from its contents. */
-async function forkRows(graph: ExplorerGraphPayload, id: string, count: number): Promise<Row[][]> {
+/**
+ * The fork's two rows, for each turn given: one file over the last commits that touched it, from its doc and from its
+ * contents. Under each marble, its commit, its date, how many of the file's lines the commit added and removed, and how
+ * far the sketch moved from the one before.
+ */
+async function forkRows(graph: ExplorerGraphPayload, id: string, count: number, turns: readonly number[]): Promise<Row[][]> {
   const location = await docLocation();
   const commits = git("log", `-${count}`, "--format=%H %cs", "--", id).trim().split("\n").map(line => line.split(" ") as [string, string]).reverse();
+  const touched = new Map(commits.map(([commit]) => {
+    const [added, removed] = git("show", "--numstat", "--format=", commit, "--", id).trim().split(/\s+/).map(Number);
+    return [commit, added + removed];
+  }));
   const row = (heading: string, sketchAt: (commit: string) => Sketch): Row => {
     let previous: Sketch | undefined;
     const items = commits.map(([commit, date]) => {
@@ -223,14 +244,15 @@ async function forkRows(graph: ExplorerGraphPayload, id: string, count: number):
       const same = previous !== undefined && sketchDistance(previous, sketch) < 1e-12;
       const moved = previous === undefined ? "" : same ? " = same" : ` Δ${sketchDistance(previous, sketch).toFixed(2)}`;
       previous = sketch;
-      return itemOf(graph, id, "doc", `${commit.slice(0, 7)} ${date.slice(5)}${moved}`, sketch)!;
+      return itemOf(graph, id, "doc", `${commit.slice(0, 7)} ${date.slice(5)}\n±${touched.get(commit)} lines${moved}`, sketch)!;
     });
     return { heading, items, radius: 60 };
   };
-  return [[
-    row(`From Its Doc: the sketch of what ${base(id)}'s Live Doc listed at each commit, as the product makes it`, commit => docSketchAt(commit, id, location)),
-    row("From its contents: the same sketch over the file's own lines at each commit (this sheet only; not in the product)", commit => contentSketchAt(commit, id))
-  ]];
+  const at = (turn: number): string => (turns.length > 1 ? `, turn ${turn}` : "");
+  return [turns.flatMap(turn => [
+    row(`From Its Doc${at(turn)}: the sketch of what ${base(id)}'s Live Doc listed at each commit, as the product makes it`, commit => docSketchAt(commit, id, location, turn)),
+    row(`From its contents${at(turn)}: the same sketch over the file's own lines at each commit (this sheet only; not in the product)`, commit => contentSketchAt(commit, id, turn))
+  ])];
 }
 
 const GAP = 30, CAPTION = 34, HEADING = 30, WIDTH = 1500;
@@ -337,7 +359,7 @@ async function drawSheet(page: Page, rows: Row[], heading: string, file: string)
     h1 { font-size: 18px; margin: 0 0 12px; }
     .board { position: relative; width: ${WIDTH}px; height: ${height + 20}px; }
     .board img { position: absolute; left: 0; mix-blend-mode: lighten; }
-    .caption { position: absolute; width: 150px; text-align: center; color: #c8cad2; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .caption { position: absolute; width: 150px; text-align: center; color: #c8cad2; font-size: 12px; white-space: pre; overflow: hidden; text-overflow: ellipsis; }
     .heading { position: absolute; left: 0; color: #f0f0f4; font-weight: 600; }
   </style><h1>${escape(heading)}</h1><div class="board">${pictures}${heads}${captions}</div>`);
   await sheet.locator("body").screenshot({ path: file });
@@ -347,7 +369,7 @@ async function drawSheet(page: Page, rows: Row[], heading: string, file: string)
 type SheetName = "files" | "bends" | "run" | "history" | "fork";
 const SHEETS: readonly SheetName[] = ["files", "bends", "run", "history", "fork"];
 
-interface Options { bundle: string; out: string; sheet: SheetName; file?: string; history?: string; commits: number; patterns: MarblePattern[] }
+interface Options { bundle: string; out: string; sheet: SheetName; file?: string; history?: string; commits: number; patterns: MarblePattern[]; turns: number[] }
 
 function parseArgs(args: string[]): Options {
   const options: Partial<Options> = {};
@@ -358,18 +380,23 @@ function parseArgs(args: string[]): Options {
     else if (arg === "--file") options.file = optionValue(args, ++i, arg);
     else if (arg === "--history") options.history = optionValue(args, ++i, arg);
     else if (arg === "--commits") options.commits = Number(optionValue(args, ++i, arg));
+    else if (arg === "--turns") {
+      options.turns = optionValue(args, ++i, arg).split(",").map(Number);
+      if (!options.turns.every(turn => turn > 0)) throw new UsageError("--turns takes positive numbers, separated by commas.");
+    }
     else if (arg === "--sheet") {
       const sheet = optionValue(args, ++i, arg);
       options.sheet = SHEETS.find(known => known === sheet) ?? (() => { throw new UsageError(`--sheet takes ${SHEETS.join(", ")}, not ${sheet}.`); })();
     } else if (arg === "--patterns") {
       const patterns = optionValue(args, ++i, arg).split(",");
       options.patterns = patterns.map(name => MARBLE_PATTERNS.find(known => known === name) ?? (() => { throw new UsageError(`No marble pattern ${name}; the patterns are ${MARBLE_PATTERNS.join(", ")}.`); })());
-    } else throw new UsageError(`${arg} is not an option. Options: --bundle --out --sheet (${SHEETS.join(", ")}) --file --history --commits --patterns (${MARBLE_PATTERNS.join(", ")})`);
+    } else throw new UsageError(`${arg} is not an option. Options: --bundle --out --sheet (${SHEETS.join(", ")}) --file --history --commits --turns --patterns (${MARBLE_PATTERNS.join(", ")})`);
   }
   if (!options.bundle || !options.out || !options.sheet) throw new UsageError("Name the built bundle with --bundle, where to write with --out, and the sheet with --sheet.");
   if ((options.sheet === "run" || options.sheet === "fork") && !options.file) throw new UsageError(`A ${options.sheet} sheet names its file with --file.`);
   options.patterns ??= [...MARBLE_PATTERNS];
   options.commits ??= 10;
+  options.turns ??= [SKETCH_TURN];
   if (!(options.commits >= 2)) throw new UsageError("--commits takes a number of two or more.");
   return options as Options;
 }
@@ -382,15 +409,15 @@ async function main(): Promise<void> {
   const graph = explorerGraphOf(data.graph);
   const sheets = options.sheet === "files" ? filesRows(graph, options.patterns)
     : options.sheet === "bends" ? bendsRows(graph)
-      : options.sheet === "run" ? runRows(graph, options.file!, options.patterns)
-        : options.sheet === "fork" ? await forkRows(graph, options.file!, options.commits)
+      : options.sheet === "run" ? runRows(graph, options.file!, options.patterns, options.turns)
+        : options.sheet === "fork" ? await forkRows(graph, options.file!, options.commits, options.turns)
           : await historyRows(path.resolve(options.history ?? bundleDir), options.patterns);
   const named = (i: number): { name: string; heading: string } => {
     switch (options.sheet) {
       case "files": return { name: `files-${options.patterns[i]}`, heading: `${path.basename(bundleDir)}: forty files, ${PATTERN_WORDS[options.patterns[i]]}` };
       case "bends": return { name: "bends", heading: `${path.basename(bundleDir)}: forty files from their docs at three Vein Bends` };
       case "run": return { name: `run-${base(options.file!)}`, heading: `${options.file}: a made-up run of changes to what its Live Doc lists` };
-      case "fork": return { name: `fork-${base(options.file!)}`, heading: `${options.file}: its last ${options.commits} commits, oldest first; Δ is the sketch's move from the marble before` };
+      case "fork": return { name: `fork-${base(options.file!)}`, heading: `${options.file}: its last ${options.commits} commits, oldest first; ± lines the commit added and removed, Δ the sketch's move` };
       default: return { name: "history", heading: `${path.basename(path.resolve(options.history ?? bundleDir))}: each step's changed marbles, before and after` };
     }
   };

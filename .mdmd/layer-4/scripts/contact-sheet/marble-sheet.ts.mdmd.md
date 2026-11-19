@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/contact-sheet/marble-sheet.ts
 - Entry: command `marble:sheet` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-19T00:59:28.238Z
+- Generated At: 2026-11-19T01:28:12.469Z
 
 ## Authored
 ### Purpose
@@ -46,12 +46,15 @@ _No public symbols detected_
 - [`forceGraphAppearance.marbleCounts`](../../packages/explorer/src/client/views/forceGraphAppearance.ts.mdmd.md#symbol-marblecounts-function)
 - [`forceGraphAppearance.marbleOf`](../../packages/explorer/src/client/views/forceGraphAppearance.ts.mdmd.md#symbol-marbleof)
 - [`forceGraphAppearance.marbleTint`](../../packages/explorer/src/client/views/forceGraphAppearance.ts.mdmd.md#symbol-marbletint)
+- [`marbleSketch.SKETCH_TURN`](../../packages/explorer/src/client/views/marbleSketch.ts.mdmd.md#symbol-sketch_turn)
 - [`marbleSketch.Sketch`](../../packages/explorer/src/client/views/marbleSketch.ts.mdmd.md#symbol-sketch)
 - [`marbleSketch.SketchFeature`](../../packages/explorer/src/client/views/marbleSketch.ts.mdmd.md#symbol-sketchfeature)
 - [`marbleSketch.fileFeatures`](../../packages/explorer/src/client/views/marbleSketch.ts.mdmd.md#symbol-filefeatures)
+- [`marbleSketch.marbleFeatureSums`](../../packages/explorer/src/client/views/marbleSketch.ts.mdmd.md#symbol-marblefeaturesums)
 - [`marbleSketch.marbleSketches`](../../packages/explorer/src/client/views/marbleSketch.ts.mdmd.md#symbol-marblesketches)
 - [`marbleSketch.sketchDistance`](../../packages/explorer/src/client/views/marbleSketch.ts.mdmd.md#symbol-sketchdistance)
 - [`marbleSketch.sketchOf`](../../packages/explorer/src/client/views/marbleSketch.ts.mdmd.md#symbol-sketchof)
+- [`marbleSketch.strengthsOf`](../../packages/explorer/src/client/views/marbleSketch.ts.mdmd.md#symbol-strengthsof)
 - [`graph.explorerGraphOf`](../../packages/explorer/src/shared/graph.ts.mdmd.md#symbol-explorergraphof)
 - [`types.ExplorerGraphPayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)
 - [`bundle-page.ORIGIN`](./bundle-page.ts.mdmd.md#symbol-origin)
