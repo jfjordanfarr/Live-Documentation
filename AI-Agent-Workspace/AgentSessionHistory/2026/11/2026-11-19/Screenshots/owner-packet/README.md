@@ -2,7 +2,7 @@
 
 _Historical evidence, taken 2026-11-19 by two builders for the root from the build of `main` that stood in `dist/explorer/` that afternoon; the recommendation that closes each question is the root's. It answers the owner's ask of [Turn 40 of the November 18 record](../../../2026-11-18/2026-11-18.1.record.md#turn-40): open visual questions brought as pictures to compare, a link with what to press, and the reading of a stranger who works from pictures._
 
-Eleven questions in two files. Every link opens on your own server at port 8999; start each from Tuning's reset.
+Twelve questions in three files. Every link opens on your own server at port 8999; start each from Tuning's reset.
 
 **[The 2D map, the page's frame and the history's bar](2d/README.md)**
 
@@ -20,5 +20,9 @@ Eleven questions in two files. Every link opens on your own server at port 8999;
 3. Should the `tests` folder open in the 3D map on your machine?
 4. Beyond the files you asked about: everything, or only the next step?
 5. Which colours should the Explorer wear when it first opens?
+
+**[When the 2D map should stop rearranging itself](search-stop/README.md)** (taken the same evening by a third builder, on a build of its own with the day's faster solver)
+
+1. After its first picture the map goes on trying arrangements and moves when one is cheaper. When should that stop, and should it ever move the card you are reading?
 
 Not in this packet, because an alternative has to be built before there is anything to compare: the other fourteen forks of the design system, a whole-file pin against a flow pin, and a change mark that says how much.
