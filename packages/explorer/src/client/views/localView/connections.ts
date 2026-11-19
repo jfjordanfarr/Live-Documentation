@@ -5,7 +5,7 @@ import { curveTo, LANE_MARGIN, routeBacktracks, threadedRoute, type Clearance, t
 import { edgeKey, type BranchGraph } from "./branches";
 import { isPairLine, linksOf } from "./directory-flow";
 import { OVERVIEW_FILES_ATTRIBUTE, OVERVIEW_LINES_ATTRIBUTE } from "./overview-files";
-import { returningConnections, type ReturningConnections } from "./returning-connections";
+import { returningConnections, returnRoute, type LaidBox, type ReturningConnections } from "./returning-connections";
 import type { LocalViewRuntime, WireLayer } from "./runtime";
 import { attendConnections, releaseConnections } from "./symbol-highlight";
 import type { ColumnRole, LayoutExtents, LocalEdge } from "./types";
@@ -429,8 +429,12 @@ function drawBranchConnections(context: ConnectionsContext, layer: WireLayer, se
   const columnBounds = branches.columns.map((_, column) => {
     const wrappers = [...runtime.container.querySelectorAll<HTMLElement>(`.local-column[data-column="${column}"]`)]
       .flatMap(element => { const measured = measure(element); return measured ? [measured] : []; });
-    return { left: Math.min(...wrappers.map(wrapper => wrapper.leftX)), right: Math.max(...wrappers.map(wrapper => wrapper.rightX)) };
+    return { left: Math.min(...wrappers.map(wrapper => wrapper.leftX)), right: Math.max(...wrappers.map(wrapper => wrapper.rightX)), wrappers };
   });
+  // Every box in the overlay's frame, which a returning connection's route passes over.
+  const boxes: LaidBox[] = columnBounds.flatMap(column => column.wrappers.map(wrapper => ({
+    left: wrapper.leftX - bounds.left, right: wrapper.rightX - bounds.left, top: wrapper.topY - bounds.top, bottom: wrapper.bottomY - bounds.top
+  })));
   // Each lane as the renderer placed it: its top, and where each slot rests below that top.
   const lanes = new Map<string, { top: number; slots: number[] }>();
   runtime.container.querySelectorAll<HTMLElement>(".local-pass-through[data-lane]").forEach(element => {
@@ -490,7 +494,7 @@ function drawBranchConnections(context: ConnectionsContext, layer: WireLayer, se
   const nameOf = (nodeId: string): string => branches.subgraph.nodes.find(node => node.id === nodeId)?.name ?? nodeId;
   // The pairs' lines stand for the length of the move back in from files only (2026-11-13), as at the overview.
   if (runtime.container.dataset.lod === "overview" || runtime.container.hasAttribute(OVERVIEW_LINES_ATTRIBUTE)) {
-    const overview = drawOverviewWires(context, layer, seen, measure, bounds, columnOf, wireEnds, threadFor, routeFor, laceRanks, shape, nameOf);
+    const overview = drawOverviewWires(context, layer, seen, measure, bounds, columnOf, wireEnds, threadFor, routeFor, laceRanks, shape, nameOf, boxes);
     markHubs(runtime.container, hubsEnding);
     return overview;
   }
@@ -518,7 +522,7 @@ function drawBranchConnections(context: ConnectionsContext, layer: WireLayer, se
     if (branches.back.has(key)) {
       const returning = { name: wireDescription(edge, nameOf), carries: [edge], runtime };
       drawLaces(layer, seen, from, to, cardEdgesOf(provider, consumer, bounds), edge, context.svgNamespace, shape, laceRanks, presence, returning);
-      drawWire(layer, seen, from, to, "outbound", edge, context.svgNamespace, state.tuning.bezier, undefined, "back-route", presence);
+      drawWire(layer, seen, from, to, "outbound", edge, context.svgNamespace, state.tuning.bezier, returnRoute(from, to, boxes), "back-route", presence);
       if (line) {
         for (const role of ["provider", "consumer"]) layer.elements.get(JSON.stringify([key, role]))?.classList.add("gathered");
         dressLine(edge, "back-route");
@@ -574,7 +578,8 @@ function drawOverviewWires(
   routeFor: (key: string, a: number, b: number, from: Point, to: Point) => { d: string; pieces: RoutePiece[] },
   laceRanks: Map<string, number>,
   shape: SelfLoopParams,
-  nameOf: (nodeId: string) => string
+  nameOf: (nodeId: string) => string,
+  boxes: readonly LaidBox[]
 ): { drawn: number; doubling: number } {
   const { branches, state, svgNamespace, runtime } = context;
   if (!branches) return { drawn: 0, doubling: 0 };
@@ -616,7 +621,7 @@ function drawOverviewWires(
     if (wire.back) {
       drawLaces(layer, seen, from, to, cardEdgesOf(provider, consumer, bounds), gathered, svgNamespace, shape, laceRanks, presence, { name: description, carries: wire.members, runtime });
       for (const role of ["provider", "consumer"]) layer.elements.get(JSON.stringify([edgeKey(gathered), role]))?.classList.add("gathered");
-      drawWire(layer, seen, from, to, "outbound", gathered, svgNamespace, state.tuning.bezier, undefined, "back-route", presence);
+      drawWire(layer, seen, from, to, "outbound", gathered, svgNamespace, state.tuning.bezier, returnRoute(from, to, boxes), "back-route", presence);
       path = layer.elements.get(JSON.stringify([edgeKey(gathered), "back-route"])) as SVGPathElement | undefined;
     } else {
       const a = columnOf.get(wire.providerId)!, b = columnOf.get(wire.consumerId)!;
@@ -647,7 +652,7 @@ function drawOverviewWires(
     }
     if (isBack(edge)) {
       drawLaces(layer, seen, from, to, cardEdgesOf(provider, consumer, bounds), edge, svgNamespace, shape, laceRanks, presence, { name: wireDescription(edge, nameOf), carries: [edge], runtime });
-      drawWire(layer, seen, from, to, "outbound", edge, svgNamespace, state.tuning.bezier, undefined, "back-route", presence);
+      drawWire(layer, seen, from, to, "outbound", edge, svgNamespace, state.tuning.bezier, returnRoute(from, to, boxes), "back-route", presence);
       continue;
     }
     const a = columnOf.get(edge.targetId)!, b = columnOf.get(edge.sourceId)!;

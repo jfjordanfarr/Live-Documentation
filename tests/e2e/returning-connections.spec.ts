@@ -96,6 +96,24 @@ test("in the owner's picture a hovered row keeps every drawn thing that carries 
   }
 });
 
+/**
+ * Where a shown return's route runs inside a card: every card it enters, with the first point found there. The route
+ * was a curve from pin to pin across both cards, which struck both file names through once the hubs stood at them.
+ */
+const routeCrossings = (page: Page) => page.evaluate(() => {
+  const cards = [...document.querySelectorAll<HTMLElement>("#map-container .node-card")].map(card => ({ id: card.dataset.id!, box: card.getBoundingClientRect() }));
+  return [...document.querySelectorAll<SVGPathElement>("#map-connections path.back-route")]
+    .filter(path => getComputedStyle(path).display !== "none")
+    .flatMap(path => {
+      const m = path.getScreenCTM()!, length = path.getTotalLength(), crossed = new Map<string, string>();
+      for (let at = 0; at <= length; at += 2) {
+        const p = path.getPointAtLength(at), x = p.x * m.a + m.e, y = p.y * m.d + m.f;
+        for (const { id, box } of cards) if (x > box.left + 1 && x < box.right - 1 && y > box.top + 1 && y < box.bottom - 1 && !crossed.has(id)) crossed.set(id, `${Math.round(x)},${Math.round(y)}`);
+      }
+      return [...crossed].map(([id, point]) => `${id} at ${point}`);
+    });
+});
+
 /** The cue's colour as the browser computes it, from the palette's token. */
 const CUE = "rgb(233, 184, 109)";
 
@@ -140,6 +158,7 @@ test("a returning connection's laces wear the cue's colour, are named by their t
     expect(kept.filter(part => part.what === "lace").map(part => part.opacity), `${how}: both laces`).toEqual([REST, REST]);
     expect(kept.filter(part => part.what === "route").map(part => [part.shown, part.opacity, part.stroke]), `${how}: the whole route, in the cue's colour`)
       .toEqual([[true, REST, CUE]]);
+    expect(await routeCrossings(page), `${how}: the route crosses no card, and so no name`).toEqual([]);
     for (const [file, opacity] of Object.entries(await cardOpacities(page))) {
       if (file === CONFIG || file === SERVICE) expect(opacity, `${how}: ${file} stands`).toBe(1);
       else expect(opacity, `${how}: ${file} fades`).toBeLessThan(0.8);
