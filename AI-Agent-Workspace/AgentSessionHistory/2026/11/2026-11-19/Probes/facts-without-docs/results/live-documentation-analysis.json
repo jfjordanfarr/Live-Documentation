@@ -1,0 +1,15 @@
+{
+  "workspace": "live-documentation",
+  "mode": "analysis",
+  "generateSeconds": 56.060986082,
+  "processorSeconds": 54.435911,
+  "peakRssMbAfterGenerate": 417,
+  "deriveFromModelsSeconds": 0.151869787,
+  "processed": 1118,
+  "written": 1118,
+  "skipped": 0,
+  "failed": [],
+  "modelsRecorded": 1118,
+  "warnings": [],
+  "peakRssMbAtEnd": 417
+}

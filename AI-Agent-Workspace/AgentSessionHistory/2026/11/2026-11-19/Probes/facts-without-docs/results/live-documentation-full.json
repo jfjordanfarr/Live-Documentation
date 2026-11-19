@@ -1,0 +1,37 @@
+{
+  "workspace": "live-documentation",
+  "mode": "full",
+  "generateSeconds": 56.071924369,
+  "processorSeconds": 58.725135,
+  "peakRssMbAfterGenerate": 485,
+  "deriveFromModelsSeconds": 0.084947115,
+  "processed": 1118,
+  "written": 2,
+  "skipped": 1116,
+  "failed": [],
+  "modelsRecorded": 1118,
+  "warnings": [],
+  "indexFile": ".mdmd/index.json",
+  "indexBytes": 9451352,
+  "indexGzipBytes": 1164785,
+  "modelGraphJsonBytes": 6754311,
+  "docs": {
+    "count": 1120,
+    "bytes": 4282866
+  },
+  "comparison": {
+    "filesInModelGraph": 1118,
+    "filesInDocsGraph": 1120,
+    "onlyInModelGraph": [],
+    "onlyInDocsGraph": [
+      ".vscode/settings.json",
+      "packages/explorer/src/shared/d3-force-3d.d.ts"
+    ],
+    "topLevelDifferences": [],
+    "filesIdentical": 1118,
+    "filesDiffering": 0,
+    "differences": 0,
+    "byField": []
+  },
+  "peakRssMbAtEnd": 529
+}

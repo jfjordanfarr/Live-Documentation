@@ -1,0 +1,15 @@
+{
+  "workspace": "tSQLt",
+  "mode": "analysis",
+  "generateSeconds": 24.602705222,
+  "processorSeconds": 24.744748,
+  "peakRssMbAfterGenerate": 305,
+  "deriveFromModelsSeconds": 0.033998689,
+  "processed": 465,
+  "written": 465,
+  "skipped": 0,
+  "failed": [],
+  "modelsRecorded": 465,
+  "warnings": [],
+  "peakRssMbAtEnd": 306
+}

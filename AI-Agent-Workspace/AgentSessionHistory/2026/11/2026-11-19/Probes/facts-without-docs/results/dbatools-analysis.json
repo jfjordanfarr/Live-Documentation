@@ -1,0 +1,15 @@
+{
+  "workspace": "dbatools",
+  "mode": "analysis",
+  "generateSeconds": 68.72278455,
+  "processorSeconds": 68.036455,
+  "peakRssMbAfterGenerate": 488,
+  "deriveFromModelsSeconds": 0.046427347,
+  "processed": 1977,
+  "written": 1977,
+  "skipped": 0,
+  "failed": [],
+  "modelsRecorded": 1977,
+  "warnings": [],
+  "peakRssMbAtEnd": 488
+}

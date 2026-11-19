@@ -1,0 +1,42 @@
+{
+  "workspace": "tSQLt",
+  "mode": "full",
+  "generateSeconds": 18.080599146,
+  "processorSeconds": 20.090489,
+  "peakRssMbAfterGenerate": 312,
+  "deriveFromModelsSeconds": 0.011842348,
+  "processed": 465,
+  "written": 0,
+  "skipped": 465,
+  "failed": [],
+  "modelsRecorded": 465,
+  "warnings": [],
+  "indexFile": ".live-documentation/index.json",
+  "indexBytes": 2281349,
+  "indexGzipBytes": 131408,
+  "modelGraphJsonBytes": 1617987,
+  "docs": {
+    "count": 465,
+    "bytes": 1171302
+  },
+  "comparison": {
+    "filesInModelGraph": 465,
+    "filesInDocsGraph": 465,
+    "onlyInModelGraph": [],
+    "onlyInDocsGraph": [],
+    "topLevelDifferences": [],
+    "filesIdentical": 465,
+    "filesDiffering": 0,
+    "differences": 0,
+    "byField": []
+  },
+  "selfTest": {
+    "differences": 2,
+    "onlyInDocsGraph": 1,
+    "fields": [
+      ".symbols[].name",
+      ".edges[]"
+    ]
+  },
+  "peakRssMbAtEnd": 322
+}

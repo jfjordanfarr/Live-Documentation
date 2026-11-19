@@ -1,0 +1,34 @@
+{
+  "workspace": "Dnn.Platform",
+  "mode": "full",
+  "generateSeconds": 250.798888563,
+  "processorSeconds": 241.759471,
+  "peakRssMbAfterGenerate": 1566,
+  "deriveFromModelsSeconds": 1.117966224,
+  "processed": 10776,
+  "written": 10776,
+  "skipped": 0,
+  "failed": [],
+  "modelsRecorded": 10776,
+  "warnings": [],
+  "indexFile": ".live-documentation/index.json",
+  "indexBytes": 60081902,
+  "indexGzipBytes": 3142471,
+  "modelGraphJsonBytes": 39036282,
+  "docs": {
+    "count": 10776,
+    "bytes": 22826226
+  },
+  "comparison": {
+    "filesInModelGraph": 10776,
+    "filesInDocsGraph": 10776,
+    "onlyInModelGraph": [],
+    "onlyInDocsGraph": [],
+    "topLevelDifferences": [],
+    "filesIdentical": 10776,
+    "filesDiffering": 0,
+    "differences": 0,
+    "byField": []
+  },
+  "peakRssMbAtEnd": 1646
+}

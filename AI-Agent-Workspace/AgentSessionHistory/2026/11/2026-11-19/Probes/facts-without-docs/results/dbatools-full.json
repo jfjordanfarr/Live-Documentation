@@ -1,0 +1,34 @@
+{
+  "workspace": "dbatools",
+  "mode": "full",
+  "generateSeconds": 78.309194853,
+  "processorSeconds": 76.774978,
+  "peakRssMbAfterGenerate": 492,
+  "deriveFromModelsSeconds": 0.046326937,
+  "processed": 1977,
+  "written": 1977,
+  "skipped": 0,
+  "failed": [],
+  "modelsRecorded": 1977,
+  "warnings": [],
+  "indexFile": ".live-documentation/index.json",
+  "indexBytes": 5590447,
+  "indexGzipBytes": 672263,
+  "modelGraphJsonBytes": 4185266,
+  "docs": {
+    "count": 1977,
+    "bytes": 4017378
+  },
+  "comparison": {
+    "filesInModelGraph": 1977,
+    "filesInDocsGraph": 1977,
+    "onlyInModelGraph": [],
+    "onlyInDocsGraph": [],
+    "topLevelDifferences": [],
+    "filesIdentical": 1977,
+    "filesDiffering": 0,
+    "differences": 0,
+    "byField": []
+  },
+  "peakRssMbAtEnd": 492
+}

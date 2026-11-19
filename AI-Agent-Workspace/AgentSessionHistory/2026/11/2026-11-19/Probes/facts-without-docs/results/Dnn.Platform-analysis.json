@@ -1,0 +1,15 @@
+{
+  "workspace": "Dnn.Platform",
+  "mode": "analysis",
+  "generateSeconds": 202.534246071,
+  "processorSeconds": 197.48763,
+  "peakRssMbAfterGenerate": 1161,
+  "deriveFromModelsSeconds": 0.848543828,
+  "processed": 10776,
+  "written": 10776,
+  "skipped": 0,
+  "failed": [],
+  "modelsRecorded": 10776,
+  "warnings": [],
+  "peakRssMbAtEnd": 1161
+}
