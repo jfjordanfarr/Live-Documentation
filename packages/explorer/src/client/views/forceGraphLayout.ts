@@ -368,7 +368,8 @@ export const QUIET_TICKS = 10;
  * calmed and the tether takes hold where it stands, after the requested membership has entered. A tenth of a percent:
  * the original repository pictures passed it after about
  * 210 to 250 ticks from the library's seed and are still some 140 ticks later; held from the seed, which is a ball a
- * hundredth of the picture's size, they would stay far too small (measured 2026-10-21).
+ * hundredth of the picture's size, they would stay far too small (measured 2026-10-21). The same calm is when the Settle
+ * Hold takes hold (2026-11-19).
  */
 export const UNFOLDED_FRACTION = 1e-3;
 
@@ -479,7 +480,8 @@ export function motionForce<N extends SpatialNode>(source: MotionSource<N>): Mot
   let nodes: N[] = [];
   let motion: SpatialMotion | null = null;
   let builtFor: readonly string[] = [];
-  let quiet = 0, still = false, holding = false;
+  /** `settled`: whether the Settle Hold has taken hold since the last wake or rebuild. */
+  let quiet = 0, still = false, holding = false, settled = false;
   let revision = 0;
   /** The spheres of a part held to one evaluation, sized as every part was before 2026-11-19; and of a part that may reach further. */
   let part = Infinity, reach = Infinity;
@@ -558,9 +560,19 @@ export function motionForce<N extends SpatialNode>(source: MotionSource<N>): Mot
     if (changed) revision++;
     if (!tick) return;
     const diagonal = diagonalOf(x, motion.field.radii);
-    if (!holding && (source.readyToAnchor?.() ?? true) && tick.moveMax <= UNFOLDED_FRACTION * diagonal) {
+    const entered = source.readyToAnchor?.() ?? true, calm = tick.moveMax <= UNFOLDED_FRACTION * diagonal;
+    if (!holding && entered && calm) {
       motion.anchorHere();
       holding = true;
+    }
+    // The Settle Hold (2026-11-19, a trial for the owner's eye, off by default): once the whole picture has entered and
+    // calmed, with no hand on a sphere, each sphere is also held where it stands then. Measured on this repository's
+    // grown discovery group, the picture calms 149 ticks after its last piece and its 204 new spheres then rearrange for
+    // 2,450 more, a median of 205 units each, against their tethers to the places they were born.
+    const hold = source.tuning().settleHold ?? 0;
+    if (!settled && hold > 0 && holding && entered && calm && !fixed.size) {
+      motion.settleHere(hold);
+      settled = true;
     }
     if (still) return;
     quiet = holding && !fixed.size && tick.moveMax <= STILL_FRACTION * diagonal ? quiet + 1 : 0;
@@ -570,9 +582,9 @@ export function motionForce<N extends SpatialNode>(source: MotionSource<N>): Mot
     }
   }) as unknown as MotionForce<N>;
   Object.assign(force, {
-    initialize: (next: N[]): void => { keep(); motion = null; nodes = next; arrived = true; source.onNodes?.(next); },
-    wake: (start: MotionStart = "hold"): void => { still = false; quiet = 0; begin = start; },
-    invalidate: (): void => { keep(); motion = null; },
+    initialize: (next: N[]): void => { keep(); motion = null; nodes = next; arrived = true; settled = false; source.onNodes?.(next); },
+    wake: (start: MotionStart = "hold"): void => { still = false; quiet = 0; begin = start; settled = false; },
+    invalidate: (): void => { keep(); motion = null; settled = false; },
     stir: (): void => { still = false; quiet = 0; }
   });
   Object.defineProperty(force, "still", { get: () => still });

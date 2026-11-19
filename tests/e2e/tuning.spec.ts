@@ -35,7 +35,7 @@ test("every tuning control explains what changing it does, as its tooltip and it
   // the Hops the 3D layout group on 2026-11-18 (the trial of the next step past the hops beside everything), and
   // Arrival the 2D layout group on 2026-11-19 (how the camera meets a new subject), and Framing beside it the same night (the camera that follows the pins). Frame joined the same day in a group
   // of its own, Page (the trial of a page without its sidebar beside today's).
-  await expect(controls).toHaveCount(71);
+  await expect(controls).toHaveCount(72);
   const facts = await controls.evaluateAll(elements => elements.map(element => {
     const describedBy = element.getAttribute("aria-describedby") ?? "";
     const description = document.getElementById(describedBy);
@@ -67,7 +67,7 @@ test("every tuning control explains what changing it does, as its tooltip and it
 /** The 3D layout's four groups, each named by one word, with the levers in the order a person reaches for them; Discovery since 2026-10-31. */
 const SPATIAL_GROUPS = {
   Discovery: ["tuning-force-hops", "tuning-force-shell-depth", "tuning-force-reveal-frames"],
-  Forces: ["tuning-force-charge", "tuning-force-link-strength", "tuning-force-gravity", "tuning-force-component-separation", "tuning-force-tether", "tuning-force-cited-by-pull",
+  Forces: ["tuning-force-charge", "tuning-force-link-strength", "tuning-force-gravity", "tuning-force-component-separation", "tuning-force-tether", "tuning-force-settle-hold", "tuning-force-cited-by-pull",
     "tuning-force-charge-range", "tuning-force-update-energy", "tuning-force-approximation"],
   Spacing: ["tuning-force-link-gap", "tuning-force-coupling", "tuning-force-collision-gap"],
   Appearance: ["tuning-force-node-size", "tuning-force-symbol-scale", "tuning-force-link-width", "tuning-force-node-zoom-resistance",

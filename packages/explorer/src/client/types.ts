@@ -496,6 +496,14 @@ export interface ForceGraphTuning {
    */
   tether: number;
   /**
+   * How strongly each sphere is also held where it stands once the picture, wholly entered, has calmed, per unit of
+   * distance, beside the tether: a trial for the eye of a shorter settle (2026-11-19), zero by default, which is the
+   * picture as it was. A calmed picture's spheres went on rearranging slowly against their tethers, this repository's
+   * grown discovery group for some 2,450 ticks; held, they slow to a stop near where they stood when it calmed, which is
+   * not where the forces would have taken them.
+   */
+  settleHold: number;
+  /**
    * How hard a document's citation of a file pulls the two together in the connections layout, as a share of a
    * documented reference's spring: one pulls like a reference, zero draws the line and moves nothing. The owner asked
    * to see such links pull before deciding whether they should (2026-10-22); a lever lets the eye compare.

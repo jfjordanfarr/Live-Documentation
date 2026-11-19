@@ -377,6 +377,30 @@ describe("the damped motion through it", () => {
     expect(motion.current.energy).toBeCloseTo(field.forces(x, new Float64Array(x.length), x).energy, 9);
   });
 
+  it("settles by a second pull toward where the spheres stand, one with the tether's, and lets it go when anchored again (2026-11-19)", () => {
+    const tether = 0.05, hold = 0.02;
+    const { field, x } = scene({ ...SETTINGS, tether });
+    const start = Float64Array.from(x);
+    const motion = new SpatialMotion(field, x, { step: 0.5, drag: 0.2 });
+    for (let tick = 0; tick < 50; tick++) motion.tick(1);
+    const here = Float64Array.from(motion.positions), before = new Float64Array(x.length);
+    field.forces(here, before, start);
+    motion.settleHere(hold);
+    // At the moment it takes hold, the pull on every sphere is what it was.
+    const now = new Float64Array(x.length);
+    field.forces(here, now, motion.anchor, tether + hold);
+    for (let k = 0; k < x.length; k++) expect(now[k]).toBeCloseTo(before[k], 9);
+    // Anywhere else, it is the tether toward where the motion began and the hold toward where it settled, summed.
+    const elsewhere = here.map((value, k) => value + 7 * Math.sin(k)), alone = new Float64Array(x.length), both = new Float64Array(x.length);
+    field.forces(elsewhere, alone, start);
+    field.forces(elsewhere, both, motion.anchor, tether + hold);
+    for (let k = 0; k < x.length; k++) expect(both[k]).toBeCloseTo(alone[k] + hold * (here[k] - elsewhere[k]), 9);
+    expect(motion.current.energy).toBeCloseTo(field.forces(here, new Float64Array(x.length), motion.anchor, tether + hold).energy, 9);
+    // Anchored again, the tether is the field's own once more.
+    motion.anchorHere();
+    expect(motion.current.energy).toBeCloseTo(field.forces(motion.positions, new Float64Array(x.length), motion.positions).energy, 9);
+  });
+
   it("measures the picture's size as its box's diagonal", () => {
     expect(diagonalOf(Float64Array.from([0, 0, 0, 3, 4, 12]))).toBe(13);
     expect(diagonalOf(new Float64Array(0))).toBe(0);

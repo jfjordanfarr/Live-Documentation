@@ -114,6 +114,8 @@ interface Progress {
   readonly x: Float64Array;
   readonly out: Float64Array;
   readonly anchor: Float64Array | undefined;
+  /** How hard the tether pulls toward the anchor, per unit of distance. */
+  readonly tether: number;
   readonly measureEnergy: boolean;
   readonly scratch: Scratch;
   /** The repulsion's reach, infinite when unbounded, and its energy's offset there. */
@@ -192,21 +194,25 @@ export class SpatialField {
     return softness ? stiffness * Math.min(softness[i], softness[j]) : stiffness;
   }
 
-  /** Write the forces at these positions into `out` and return the energy, with the overlaps found; the tether pulls toward `anchor`. */
-  forces(x: Float64Array, out: Float64Array, anchor?: Float64Array): FieldReading {
-    const evaluation = this.begin(x, out, anchor);
+  /**
+   * Write the forces at these positions into `out` and return the energy, with the overlaps found; the tether pulls toward
+   * `anchor`, with the field's own strength unless another is given.
+   */
+  forces(x: Float64Array, out: Float64Array, anchor?: Float64Array, tether = this.settings.tether): FieldReading {
+    const evaluation = this.begin(x, out, anchor, tether);
     evaluation.step(0, this.count);
     return evaluation.finish();
   }
 
   /**
    * Begin an evaluation at these positions, to be summed in steps and finished, writing its forces into `out`; the tether
-   * pulls toward `anchor`. The springs are summed and the tree built here. The positions and the anchor must not change
+   * pulls toward `anchor`, with the field's own strength unless another is given (a motion that has settled holds harder,
+   * 2026-11-19). The springs are summed and the tree built here. The positions and the anchor must not change
    * until it finishes. A field holds one evaluation at a time: beginning another, or calling `forces`, ends this one,
    * whose steps then refuse to go on rather than read scratch the later one has written.
    */
-  begin(x: Float64Array, out: Float64Array, anchor?: Float64Array): FieldEvaluation {
-    const progress = this.start(x, out, anchor, false, this.scratch);
+  begin(x: Float64Array, out: Float64Array, anchor?: Float64Array, tether = this.settings.tether): FieldEvaluation {
+    const progress = this.start(x, out, anchor, false, this.scratch, tether);
     this.current = progress;
     const own = (): void => {
       if (this.current !== progress) throw new Error("A later evaluation of this field has begun; this one cannot go on.");
@@ -229,8 +235,9 @@ export class SpatialField {
   }
 
   /** An evaluation's first step: check the arrays, clear the forces, sum the springs and build the tree. */
-  private start(x: Float64Array, out: Float64Array, anchor: Float64Array | undefined, measureEnergy: boolean, scratch: Scratch): Progress {
+  private start(x: Float64Array, out: Float64Array, anchor: Float64Array | undefined, measureEnergy: boolean, scratch: Scratch, tether: number): Progress {
     const n = this.count;
+    if (!(Number.isFinite(tether) && tether >= 0)) throw new Error("The tether's strength must be finite and nonnegative.");
     if (x.length !== 3 * n || out.length !== 3 * n || (anchor && anchor.length !== 3 * n)) throw new Error("Positions, forces and anchors must hold three numbers per sphere.");
     if (!x.every(Number.isFinite) || (anchor && !anchor.every(Number.isFinite))) throw new Error("The spatial field needs finite positions and anchors.");
     out.fill(0);
@@ -257,7 +264,7 @@ export class SpatialField {
     // with a bounded reach it is offset to meet zero at the bound.
     const offset = Number.isFinite(range) && range > 1 ? charge * Math.log(range) : 0;
     if (scratch.tree && (charge > 0 || collisionStiffness > 0)) scratch.tree.build(x);
-    return { x, out, anchor, measureEnergy, scratch, range, offset, next: 0, energy, pushEnergy: 0, overlaps: 0, worstOverlap: 0, greatest: 0 };
+    return { x, out, anchor, tether, measureEnergy, scratch, range, offset, next: 0, energy, pushEnergy: 0, overlaps: 0, worstOverlap: 0, greatest: 0 };
   }
 
   /** Sum the next run of spheres, from `from` up to `to`. */
@@ -438,7 +445,7 @@ export class SpatialField {
   /** An evaluation's last step: add the approximated repulsion, gravity and the tether, check every number, and read it. */
   private complete(progress: Progress): FieldReading {
     if (progress.next !== this.count) throw new Error("An evaluation must sum every sphere before it finishes.");
-    const { x, out, anchor, measureEnergy, scratch } = progress, { charge, gravity, tether } = this.settings;
+    const { x, out, anchor, tether, measureEnergy, scratch } = progress, { charge, gravity } = this.settings;
     let energy = progress.energy, greatestStiffness = progress.greatest;
     const overlaps = progress.overlaps, worstOverlap = progress.worstOverlap;
     if (scratch.tree) {
@@ -489,7 +496,7 @@ export class SpatialField {
     // later energy read is still this reading, computed by the very same field evaluation and cached once.
     const positions = x.slice(), anchors = anchor?.slice();
     let measured: number | undefined;
-    const readEnergy = (): number => measured ??= this.measure(positions, anchors);
+    const readEnergy = (): number => measured ??= this.measure(positions, anchors, tether);
     return { get energy() { return readEnergy(); }, stiffness, overlaps, worstOverlap };
   }
 
@@ -511,8 +518,8 @@ export class SpatialField {
   }
 
   /** A whole evaluation for a later read of an energy, in scratch of its own, so that it never disturbs one in progress. */
-  private measure(x: Float64Array, anchor: Float64Array | undefined): number {
-    const progress = this.start(x, new Float64Array(x.length), anchor, true, this.scratchFor());
+  private measure(x: Float64Array, anchor: Float64Array | undefined, tether: number): number {
+    const progress = this.start(x, new Float64Array(x.length), anchor, true, this.scratchFor(), tether);
     this.advance(progress, 0, this.count);
     return this.complete(progress).energy;
   }
@@ -562,6 +569,8 @@ export class SpatialMotion {
   readonly velocity: Float64Array;
   readonly anchor: Float64Array;
   private held = true;
+  /** How hard the tether pulls: the field's own, until the motion settles and holds harder (`settleHere`). */
+  private tether: number;
   private readonly force: Float64Array;
   private readonly next: Float64Array;
   private readonly nextPositions: Float64Array;
@@ -583,6 +592,7 @@ export class SpatialMotion {
     if (positions.length !== 3 * field.count) throw new Error("Positions must hold three numbers per sphere.");
     this.velocity = velocity ?? new Float64Array(positions.length);
     this.anchor = anchor ?? Float64Array.from(positions);
+    this.tether = field.settings.tether;
     if (this.velocity.length !== positions.length || this.anchor.length !== positions.length) throw new Error("Velocities and anchors must hold three numbers per sphere.");
     if (!this.velocity.every(Number.isFinite)) throw new Error("The spatial motion needs finite velocities.");
     this.force = new Float64Array(positions.length);
@@ -602,7 +612,7 @@ export class SpatialMotion {
   get current(): FieldReading {
     if (!this.reading) {
       this.rereading = null;
-      this.reading = this.field.forces(this.positions, this.force, this.held ? this.anchor : undefined);
+      this.reading = this.field.forces(this.positions, this.force, this.held ? this.anchor : undefined, this.tether);
     }
     return this.reading;
   }
@@ -620,6 +630,25 @@ export class SpatialMotion {
   /** Begin the motion again from where the spheres stand: the tether holds them here from now on. */
   anchorHere(): void {
     this.anchor.set(this.positions);
+    this.tether = this.field.settings.tether;
+    this.held = true;
+    this.refresh();
+  }
+
+  /**
+   * Hold the spheres where they stand now as well, by a pull of this strength beside the tether's (2026-11-19, a trial of
+   * the Settle Hold lever): the two pulls toward two places are one pull of their summed strength toward the mean of the
+   * places weighed by their strengths, so the tether's anchor moves there and its strength grows by `strength`. The pull
+   * on each sphere is unchanged at the moment it takes hold, and grows only as a sphere moves on from where it stood, so
+   * the picture slows to a stop near where it was when it calmed instead of gliding on toward the forces' balance.
+   * `anchorHere` lets it go.
+   */
+  settleHere(strength: number): void {
+    if (!(Number.isFinite(strength) && strength >= 0)) throw new Error("A settling hold's strength must be finite and nonnegative.");
+    if (!(strength > 0)) return;
+    const was = this.held ? this.tether : 0, x = this.positions, a = this.anchor;
+    for (let k = 0; k < x.length; k++) a[k] = (was * a[k] + strength * x[k]) / (was + strength);
+    this.tether = was + strength;
     this.held = true;
     this.refresh();
   }
@@ -656,7 +685,7 @@ export class SpatialMotion {
     this.evaluated = 0;
     if (!this.reading) {
       if (!x.every(Number.isFinite)) throw new Error("The spatial motion needs finite positions and velocities.");
-      this.rereading ??= { evaluation: this.field.begin(x, this.force, anchor), next: 0 };
+      this.rereading ??= { evaluation: this.field.begin(x, this.force, anchor, this.tether), next: 0 };
       const read = this.rereading;
       while (read.next < n && left > 0) { const to = Math.min(n, read.next + left); read.evaluation.step(read.next, to); left -= to - read.next; this.evaluated += to - read.next; read.next = to; }
       if (read.next < n) return null;
@@ -694,7 +723,7 @@ export class SpatialMotion {
           }
           this.moves[i] = held ? 0 : h * Math.hypot(this.nextVelocity[a], this.nextVelocity[a + 1], this.nextVelocity[a + 2]);
         }
-        trial = pending.trial = { h, decay, evaluation: this.field.begin(this.nextPositions, this.next, anchor), next: 0 };
+        trial = pending.trial = { h, decay, evaluation: this.field.begin(this.nextPositions, this.next, anchor, this.tether), next: 0 };
       }
       while (trial.next < n && left > 0) { const to = Math.min(n, trial.next + left); trial.evaluation.step(trial.next, to); left -= to - trial.next; this.evaluated += to - trial.next; trial.next = to; }
       if (trial.next < n) return null;

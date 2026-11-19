@@ -1,0 +1,178 @@
+{
+ "spheres": 305,
+ "strength": 1,
+ "calmAt": 149,
+ "restAt": 2606,
+ "pageTicks": 2606,
+ "diagonal": 2215.9,
+ "gliders": [
+  {
+   "id": "tests/e2e/contained-sphere-reference.ts",
+   "travel": 1157.4,
+   "ofDiagonal": 0.522,
+   "from": 149,
+   "to": 2543,
+   "peakTick": 1058,
+   "peakPerTickOfDiagonal": 0.00181,
+   "springs": 1,
+   "mass": 1,
+   "alongPath": {
+    "total": 1.59337,
+    "repulsion": 1.87806,
+    "gravity": -2.75616,
+    "tether": 1.10459,
+    "collision": 0
+   },
+   "stiffnessAlong": 0.0896,
+   "stiffnessAlongWithoutTether": 0.0696,
+   "anchorDistance": 516.6
+  },
+  {
+   "id": "tests/e2e/pointer-frames.ts",
+   "travel": 1027.5,
+   "ofDiagonal": 0.464,
+   "from": 149,
+   "to": 2446,
+   "peakTick": 2165,
+   "peakPerTickOfDiagonal": 0.00168,
+   "springs": 2,
+   "mass": 1,
+   "alongPath": {
+    "total": 1.4523,
+    "repulsion": 1.74741,
+    "gravity": -3.80857,
+    "tether": 3.9054,
+    "collision": 0
+   },
+   "stiffnessAlong": 0.0879,
+   "stiffnessAlongWithoutTether": 0.0679,
+   "anchorDistance": 371.1
+  },
+  {
+   "id": "tests/e2e/force-graph-contained.spec.ts",
+   "travel": 872.9,
+   "ofDiagonal": 0.394,
+   "from": 149,
+   "to": 2412,
+   "peakTick": 1046,
+   "peakPerTickOfDiagonal": 0.0013,
+   "springs": 4,
+   "mass": 1,
+   "alongPath": {
+    "total": 1.14373,
+    "repulsion": 3.13239,
+    "gravity": -2.66905,
+    "tether": 1.15459,
+    "collision": 0
+   },
+   "stiffnessAlong": 0.176,
+   "stiffnessAlongWithoutTether": 0.156,
+   "anchorDistance": 474
+  },
+  {
+   "id": "packages/explorer/src/client/views/fileConnections.ts",
+   "travel": 769.2,
+   "ofDiagonal": 0.347,
+   "from": 149,
+   "to": 2277,
+   "peakTick": 311,
+   "peakPerTickOfDiagonal": 0.00272,
+   "springs": 3,
+   "mass": 1,
+   "alongPath": {
+    "total": 2.34938,
+    "repulsion": 12.08619,
+    "gravity": -2.81275,
+    "tether": -4.40755,
+    "collision": 0
+   },
+   "stiffnessAlong": 0.0667,
+   "stiffnessAlongWithoutTether": 0.0467,
+   "anchorDistance": 358.8
+  },
+  {
+   "id": "tests/e2e/served-build.ts",
+   "travel": 730.2,
+   "ofDiagonal": 0.33,
+   "from": 149,
+   "to": 2596,
+   "peakTick": 322,
+   "peakPerTickOfDiagonal": 0.0008,
+   "springs": 1,
+   "mass": 1,
+   "alongPath": {
+    "total": 0.70884,
+    "repulsion": 2.60027,
+    "gravity": -3.7444,
+    "tether": 2.29695,
+    "collision": 0
+   },
+   "stiffnessAlong": 0.0667,
+   "stiffnessAlongWithoutTether": 0.0467,
+   "anchorDistance": 482.9
+  },
+  {
+   "id": "scripts/e2e-passes.test.ts",
+   "travel": 713.9,
+   "ofDiagonal": 0.322,
+   "from": 149,
+   "to": 2591,
+   "peakTick": 329,
+   "peakPerTickOfDiagonal": 0.000752,
+   "springs": 1,
+   "mass": 1,
+   "alongPath": {
+    "total": 0.66506,
+    "repulsion": 5.18474,
+    "gravity": -4.66575,
+    "tether": 2.91185,
+    "collision": 0
+   },
+   "stiffnessAlong": 0.0903,
+   "stiffnessAlongWithoutTether": 0.0703,
+   "anchorDistance": 466.4
+  },
+  {
+   "id": "packages/explorer/src/client/persistence/place.ts",
+   "travel": 698.7,
+   "ofDiagonal": 0.315,
+   "from": 149,
+   "to": 2370,
+   "peakTick": 414,
+   "peakPerTickOfDiagonal": 0.0021,
+   "springs": 4,
+   "mass": 1,
+   "alongPath": {
+    "total": 1.7849,
+    "repulsion": 11.29751,
+    "gravity": -1.23609,
+    "tether": -2.57801,
+    "collision": 0
+   },
+   "stiffnessAlong": 0.047,
+   "stiffnessAlongWithoutTether": 0.027,
+   "anchorDistance": 193
+  },
+  {
+   "id": "packages/explorer/src/client/reading-state.test.ts",
+   "travel": 695.2,
+   "ofDiagonal": 0.314,
+   "from": 149,
+   "to": 2423,
+   "peakTick": 227,
+   "peakPerTickOfDiagonal": 0.00234,
+   "springs": 1,
+   "mass": 1,
+   "alongPath": {
+    "total": 2.00011,
+    "repulsion": -1.39796,
+    "gravity": 4.64263,
+    "tether": -0.72261,
+    "collision": 0
+   },
+   "stiffnessAlong": 0.111,
+   "stiffnessAlongWithoutTether": 0.0908,
+   "anchorDistance": 231.7
+  }
+ ]
+}

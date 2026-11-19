@@ -481,6 +481,26 @@ describe("the easing: one motion through a conservative field, until the spheres
     expect(after.some(call => call.evaluated > call.count), "several substeps a call once it is all in").toBe(true);
   });
 
+  it("rests a grown group sooner under a Settle Hold, and as it did without one (2026-11-19)", () => {
+    // A seed with twenty spokes and a leaf on each, a few leaves wired across: settled alone, then grown by two hops,
+    // held from where it stood, as a click on a seed grows its group. Its new spheres go on rearranging after it calms.
+    const group = [node("seed", 3), ...Array.from({ length: 20 }, (_, i) => node(`spoke-${i}`, i % 5)), ...Array.from({ length: 20 }, (_, i) => node(`leaf-${i}`, 1))];
+    const wires: SpatialLink[] = Array.from({ length: 20 }, (_, i) => [{ source: "seed", target: `spoke-${i}`, count: 1 + (i % 3) }, { source: `spoke-${i}`, target: `leaf-${i}`, count: 1 },
+      ...(i % 4 === 0 ? [{ source: `leaf-${i}`, target: `spoke-${(i + 7) % 20}`, count: 1 }] : [])]).flat();
+    const alone = easeSpatialLayout(group, wires, tuning, "connections", { reveal: { asked: new Set(["seed"]) } });
+    const placed = new Map(alone.nodes.map(file => [file.id, file]));
+    const carried = group.map(file => ({ ...file, ...placed.get(file.id) }));
+    const grow = (settleHold: number) => easeSpatialLayout(carried, wires, { ...tuning, hops: 2, settleHold }, "connections", { start: "hold", reveal: { asked: new Set(["seed"]) } });
+    const glides = grow(0), held = grow(0.02);
+    expect(glides.still && held.still).toBe(true);
+    expect(glides.nodes).toHaveLength(41);
+    // Measured when written: 305 ticks gliding, 156 held.
+    expect(held.ticks).toBeLessThan(0.7 * glides.ticks);
+    // At zero the lever changes nothing: the default is the picture as it was.
+    expect(easeSpatialLayout(carried, wires, { ...tuning, hops: 2 }, "connections", { start: "hold", reveal: { asked: new Set(["seed"]) } })).toEqual(glides);
+    expect(tuning.settleHold).toBe(0);
+  });
+
   it("comes to rest headlessly, the same way every time, and stays put when eased again from there", () => {
     // The whole toy as one piece: the physics is measured, not the reveal, which has its own tests below.
     const whole = { reveal: { asked: new Set(files.map(file => file.id)) } };

@@ -76,6 +76,7 @@ export const TUNING_HELP: Readonly<Record<string, string>> = {
   "tuning-force-gravity":             "How strongly spheres are drawn to the centre, so that clusters pushed apart come back.",
   "tuning-force-component-separation": "Let disconnected groups separate while keeping each group together; higher weakens their pull to the common centre.",
   "tuning-force-tether":              "How strongly spheres hold to where they stood when the picture began to move; more keeps your bearings.",
+  "tuning-force-settle-hold":         "Once the picture has calmed, how strongly spheres also hold where they stand then; more rests sooner, zero glides on.",
   "tuning-force-cited-by-pull":       "How strongly a citing document and the file it cites pull together; zero draws the line and moves nothing.",
   "tuning-force-charge-range":        "How far a sphere's push reaches; zero reaches every sphere.",
   "tuning-force-update-energy":       "How hard a change to what is shown moves the picture; zero places new spheres and moves nothing.",
