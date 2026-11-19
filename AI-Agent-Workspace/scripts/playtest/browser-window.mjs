@@ -5,6 +5,10 @@
 //
 // Usage (started by playtest.mjs, never by hand, and always under the shared browser lock):
 //   flock -s /tmp/live-docs-browser.lock node browser-window.mjs --start <url> --record <dir> [--after-each] [--max-actions 60]
+//        [--open-history] [--hide-step-words]
+//
+// For the narrative playtest (2026-11-19), --open-history has the harness press the map's History button before the
+// tester begins, and --hide-step-words keeps the history's words about each commit off the screen (see setUp below).
 //
 // The tools are the whole of what a tester can do: look, point, click, drag, scroll, type, press. Nothing reads the
 // page's DOM or accessibility tree for the tester, runs the tester's script, opens an address of its choosing or touches
@@ -26,6 +30,8 @@ const startUrl = option('--start');
 const recordDir = option('--record');
 const afterEach = args.includes('--after-each');
 const maxActions = Number(option('--max-actions', '60'));
+const openHistory = args.includes('--open-history');
+const hideStepWords = args.includes('--hide-step-words');
 const viewport = { width: 1280, height: 800 }; // under the size at which the API scales a picture, so x, y stay page pixels
 if (!startUrl || !recordDir) {
   console.error('usage: browser-window.mjs --start <url> --record <dir> [--after-each] [--max-actions N]');
@@ -56,11 +62,46 @@ async function open() {
     blocked.push(url);
     return route.abort('blockedbyclient');
   });
+  if (hideStepWords) {
+    // Harness-side styling, before the page's own code runs and on every load: the history's words about a commit are
+    // not drawn (the step panel, its dialog and toggle, and the subjects in the commit finder's results), so that the
+    // tester has the picture, the ticks, the dates and the names on the map. The page's policy admits inline styles.
+    await context.addInitScript((css) => {
+      const add = () => { const style = document.createElement('style'); style.textContent = css; document.head.append(style); };
+      if (document.head) add(); else document.addEventListener('DOMContentLoaded', add);
+    }, HIDDEN_WORDS_CSS);
+  }
   page = await context.newPage();
   watch(page);
   context.on('page', (opened) => { watch(opened); page = opened; pending.push('A new tab opened and is now in front.'); });
   await page.goto(startUrl, { waitUntil: 'load', timeout: 60000 });
   await rest(15000);
+  if (openHistory) await setUp();
+}
+
+const HIDDEN_WORDS_CSS = '.history-step-panel, .history-step-dialog, .history-details, .history-step-more,'
+  + ' .history-commit-result > span:not(.history-commit-meta) { display: none !important; }';
+
+/**
+ * Before the tester's first action, the harness opens the history with the map's own History button, as a setup the
+ * tester is told of, and checks that the condition holds: the scrubber is open, and under --hide-step-words no step
+ * panel is drawn. The check goes to setup.json; a setup that fails ends the window, so no tester works on the wrong page.
+ */
+async function setUp() {
+  const check = { openedHistory: false, scrubberVisible: false, stepPanelVisible: null, hideStepWords };
+  try {
+    await page.getByRole('button', { name: 'History', exact: true }).first().click({ timeout: 15000 });
+    check.openedHistory = true;
+    await page.locator('.history-scrubber').first().waitFor({ state: 'visible', timeout: 30000 });
+    check.scrubberVisible = true;
+    await rest(8000);
+    check.stepPanelVisible = await page.locator('.history-step-panel').first().isVisible().catch(() => false);
+  } catch (error) {
+    check.error = String(error?.message ?? error).split('\n')[0];
+  }
+  check.ok = check.scrubberVisible && (hideStepWords ? check.stepPanelVisible === false : check.stepPanelVisible === true);
+  fs.writeFileSync(path.join(recordDir, 'setup.json'), JSON.stringify(check, null, 2) + '\n');
+  if (!check.ok) { console.error('setup failed:', JSON.stringify(check)); await browser.close(); process.exit(1); }
 }
 
 function watch(p) {
