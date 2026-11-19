@@ -19,8 +19,9 @@ describe("tuning help", () => {
     // Descriptions Zoomed Out on 2026-11-15, with the closed directory's two choices that made it 62; Return Cost on
     // 2026-11-16; the Palette, the colour pass's, on 2026-11-17, and Marbles beside it the same day (the marble trial);
     // Hidden Files the same day, the trial of cells in place of an encasing directory's count; Beyond the Hops on 2026-11-18,
-    // the 3D map's trial of the next step past the hops; Arrival on 2026-11-19, how the 2D camera meets a new subject; Framing the same night, the camera that follows the pins.
-    expect(ids.length).toBe(70);
+    // the 3D map's trial of the next step past the hops; Arrival on 2026-11-19, how the 2D camera meets a new subject; Framing the same night, the camera that follows the pins;
+    // Frame the same day, in a group of its own, Page (the trial of a page without its sidebar).
+    expect(ids.length).toBe(71);
     expect(Object.keys(TUNING_HELP).sort()).toEqual([...ids].sort());
   });
 
@@ -50,7 +51,7 @@ function settingOf(id: string, defaults: TuningConfig): { group: keyof TuningCon
   const camel = (name: string): string => name.replace(/-([a-z])/g, (_match, letter: string) => letter.toUpperCase());
   if (rest.startsWith("force-")) return { group: "forceGraph", key: camel(rest.slice("force-".length)) };
   if (rest.startsWith("history-")) return { group: "history", key: camel(rest.slice("history-".length)) };
-  if (rest === "palette" || rest === "marbles") return { group: "appearance", key: rest };
+  if (rest === "palette" || rest === "marbles" || rest === "frame") return { group: "appearance", key: rest };
   const key = camel(rest);
   const groups = (["bezier", "localMap"] as const).filter(group => key in defaults[group]);
   if (groups.length !== 1) throw new Error(`${id}: ${key} names ${groups.length} settings`);
@@ -76,7 +77,7 @@ describe("the template's initial tuning values", () => {
   it("equal the defaults in getDefaultTuning for every control", () => {
     const defaults = getDefaultTuning();
     const ids = templateControlIds();
-    expect(ids.length).toBe(70);
+    expect(ids.length).toBe(71);
     for (const id of ids) {
       const { group, key } = settingOf(id, defaults);
       const expected = (defaults[group] as unknown as Record<string, unknown>)[key];

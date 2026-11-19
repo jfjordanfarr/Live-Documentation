@@ -42,7 +42,10 @@ export function initTuningReset(config: TuningResetConfig): () => void {
 
   /** Write `next` into the tuning the views hold, group by group, so that no view keeps a stale record. */
   const take = (next: TuningConfig): void => {
+    // The frame stays as the viewer has it: it is not one of the settings the reset counts (`changedSettings`).
+    const frame = state.tuning.appearance.frame;
     for (const group of Object.keys(next) as Array<keyof TuningConfig>) Object.assign(state.tuning[group], next[group]);
+    state.tuning.appearance.frame = frame;
   };
 
   const refresh = (): void => {

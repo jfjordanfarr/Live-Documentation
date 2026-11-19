@@ -20,8 +20,11 @@ export interface ChangedSetting {
 /** Every Tuning setting that differs from `defaults`, group by group in the order the tuning holds them. */
 export function changedSettings(tuning: TuningConfig, defaults: TuningConfig): ChangedSetting[] {
   const changed = changedTuningFromDefaults(tuning, defaults) ?? {};
+  // The frame is where the page puts its controls, not how the picture is drawn: it is neither counted nor reset (the
+  // Bare frame's trial, 2026-11-19), so that a viewer under Bare is not told of a change and Reset does not take the
+  // sheet it stands in away.
   return (Object.keys(changed) as Array<keyof TuningConfig>).flatMap(group =>
-    Object.keys(changed[group] ?? {}).map(key => ({ group, key })));
+    Object.keys(changed[group] ?? {}).filter(key => !(group === "appearance" && key === "frame")).map(key => ({ group, key })));
 }
 
 /** The prefix of a group's controls' ids in the template: the 3D map's and the history's levers name their group. */

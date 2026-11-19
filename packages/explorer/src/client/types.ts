@@ -255,7 +255,19 @@ export interface TuningConfig {
 export interface AppearanceTuning {
   palette: PaletteName;
   marbles: MarbleChoice;
+  frame: FrameChoice;
 }
+
+/**
+ * What frames the map (a trial, 2026-11-19, the owner's "That would be great!" to a page without its sidebar, judged in
+ * the app): the sidebar, today's page, or Bare, where the views are a breadcrumb in the top bar, the legend and the
+ * display filters one key opened from the bottom strip, and Tuning a sheet opened from the strip's tuning button. The
+ * viewer's own, saved in the browser and never carried by a link.
+ */
+export type FrameChoice = "sidebar" | "bare";
+
+/** Every frame, in the order the control offers them; the first, the sidebar, is the default. */
+export const FRAME_CHOICES: readonly FrameChoice[] = ["sidebar", "bare"];
 
 /**
  * Whether a file is drawn as a marble (a trial, 2026-11-17, the owner's "Do it do it do it do it!!!!" of the November 16
