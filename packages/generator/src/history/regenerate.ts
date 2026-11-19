@@ -210,21 +210,39 @@ export function treeOptions(configuration: LiveDocumentationConfig, tree: string
 
 /**
  * The variables of the command's environment the summarizing process is given, by name, and no other, so that nothing
- * the person's shell set, `NODE_OPTIONS` among them, changes what it loads or how it reads: `PATH`, by which it finds
+ * the person's shell set changes what it loads or how it reads (of `NODE_OPTIONS`, only the heap limit is carried, by
+ * {@link summarizingEnvironment}): `PATH`, by which it finds
  * git; the temporary folders, where the platform keeps them; on Windows the system's folders, without which a process
  * there cannot start; and tsx's own `TSX_TSCONFIG_PATH`, when the command runs under tsx, which names the TypeScript
  * configuration the lens keys.
  */
 const SUMMARIZING_VARIABLES = ["PATH", "Path", "TMPDIR", "TMP", "TEMP", "SystemRoot", "SYSTEMROOT", "windir", "WINDIR", "TSX_TSCONFIG_PATH"];
 
-/** The environment the summarizing process is given: {@link SUMMARIZING_VARIABLES} from the command's, where set. */
+/**
+ * The environment the summarizing process is given: {@link SUMMARIZING_VARIABLES} from the command's, where set, and of
+ * the command's `NODE_OPTIONS` only its heap limit, `--max-old-space-size`, the way a person raises it through `npm run`
+ * (`NODE_OPTIONS=--max-old-space-size=8192 npm run live-docs:history`), which decides whether a summary of a large
+ * repository is made at all, never what it says. Any other option in it stays out.
+ */
 export function summarizingEnvironment(environment: NodeJS.ProcessEnv): Record<string, string> {
   const kept: Record<string, string> = {};
   for (const name of SUMMARIZING_VARIABLES) {
     const value = environment[name];
     if (value !== undefined) kept[name] = value;
   }
+  const heap = heapLimit((environment.NODE_OPTIONS ?? "").split(/\s+/u).filter(Boolean));
+  if (heap.length > 0) kept.NODE_OPTIONS = heap.join(" ");
   return kept;
+}
+
+/** The last `--max-old-space-size` among node's flags, as one word, given as `--max-old-space-size=N` or as two words; none when it is not among them. */
+function heapLimit(flags: readonly string[]): string[] {
+  let heap: string[] = [];
+  flags.forEach((flag, index) => {
+    if (/^--max[-_]old[-_]space[-_]size=\d+$/u.test(flag)) heap = [flag];
+    else if (/^--max[-_]old[-_]space[-_]size$/u.test(flag) && /^\d+$/u.test(flags[index + 1] ?? "")) heap = [`${flag}=${flags[index + 1]}`];
+  });
+  return heap;
 }
 
 /**
@@ -239,13 +257,7 @@ export function summarizingEnvironment(environment: NodeJS.ProcessEnv): Record<s
  */
 export function summarizingFlags(worker: string, commandFlags: readonly string[] = process.execArgv): string[] {
   const loader = path.extname(worker) === ".ts" ? ["--import", pathToFileURL(require.resolve("tsx")).href] : [];
-  // The last one given wins, as it does for node itself; given as `--max-old-space-size=N` or as two words.
-  let heap: string[] = [];
-  commandFlags.forEach((flag, index) => {
-    if (/^--max[-_]old[-_]space[-_]size=\d+$/u.test(flag)) heap = [flag];
-    else if (/^--max[-_]old[-_]space[-_]size$/u.test(flag) && /^\d+$/u.test(commandFlags[index + 1] ?? "")) heap = [`${flag}=${commandFlags[index + 1]}`];
-  });
-  return [...loader, ...heap];
+  return [...loader, ...heapLimit(commandFlags)];
 }
 
 /**

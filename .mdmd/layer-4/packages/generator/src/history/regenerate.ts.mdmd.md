@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/generator/src/history/regenerate.ts
-- Generated At: 2026-11-19T20:36:47.561Z
+- Generated At: 2026-11-19T20:49:00.983Z
 
 ## Authored
 ### Purpose
@@ -86,15 +86,18 @@ handles was written empty, until the review's second pass found the C reader ope
 
 #### `summarizingEnvironment` {#symbol-summarizingenvironment}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L221)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L227)
 - Parameters: `environment`: `NodeJS.ProcessEnv`
 
 ##### `summarizingEnvironment` — Summary
-The environment the summarizing process is given: {@link SUMMARIZING_VARIABLES} from the command's, where set.
+The environment the summarizing process is given: {@link SUMMARIZING_VARIABLES} from the command's, where set, and of
+the command's `NODE_OPTIONS` only its heap limit, `--max-old-space-size`, the way a person raises it through `npm run`
+(`NODE_OPTIONS=--max-old-space-size=8192 npm run live-docs:history`), which decides whether a summary of a large
+repository is made at all, never what it says. Any other option in it stays out.
 
 #### `summarizingFlags` {#symbol-summarizingflags}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L240)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L258)
 
 ##### `summarizingFlags` — Summary
 The flags node is started with for the summarizing process, and no other: for the TypeScript module, under tsx,

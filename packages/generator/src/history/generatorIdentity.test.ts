@@ -201,6 +201,15 @@ describe("the lens's key", () => {
     expect(actsForASummary(`await execFileAsync("git", ["ls-tree", change], options);`)).toBe(true);
   });
 
+  it("carries the heap limit a person sets through NODE_OPTIONS to the summarizing process, and nothing else of NODE_OPTIONS", () => {
+    // How a person raises the heap through `npm run` (the review's second pass, finding 6).
+    expect(summarizingEnvironment({ PATH: "/usr/bin", NODE_OPTIONS: "--max-old-space-size=8192" })).toEqual({ PATH: "/usr/bin", NODE_OPTIONS: "--max-old-space-size=8192" });
+    expect(summarizingEnvironment({ NODE_OPTIONS: "--require evil.js --max_old_space_size=4096 --stack-size=9000" })).toEqual({ NODE_OPTIONS: "--max_old_space_size=4096" });
+    expect(summarizingEnvironment({ NODE_OPTIONS: "--max-old-space-size 2048" })).toEqual({ NODE_OPTIONS: "--max-old-space-size=2048" });
+    expect(summarizingEnvironment({ NODE_OPTIONS: "--max-old-space-size=1024 --max-old-space-size=3072" })).toEqual({ NODE_OPTIONS: "--max-old-space-size=3072" });
+    expect(summarizingEnvironment({ NODE_OPTIONS: "--conditions=dev" })).toEqual({});
+  });
+
   it("gives the summarizing process a named environment, and nothing else of the person's", () => {
     const given = summarizingEnvironment({ PATH: "/usr/bin", TMPDIR: "/tmp", TSX_TSCONFIG_PATH: "./tsconfig.base.json", NODE_OPTIONS: "--require evil.js", GIT_DIR: "/elsewhere", LANG: "tr_TR.UTF-8", HOME: "/home/ada" });
     expect(given).toEqual({ PATH: "/usr/bin", TMPDIR: "/tmp", TSX_TSCONFIG_PATH: "./tsconfig.base.json" });
