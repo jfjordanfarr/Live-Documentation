@@ -865,13 +865,19 @@ function pageMeasurer(controller: LocalViewController, stage: BranchStage, plan:
  */
 function standHubs(stage: BranchStage, scale: number): void {
   const lines: Array<[HTMLElement, number]> = [];
+  const range = document.createRange();
   for (const wrapper of stage.wrappers.values()) {
     const card = wrapper.querySelector<HTMLElement>(".node-card:not(.local-reading-card)");
     const header = card?.querySelector<HTMLElement>(":scope > .node-title"), name = header?.querySelector<HTMLElement>(".local-file-name");
     const room = name?.querySelector<HTMLElement>(".local-file-name-room");
     if (!card || !header || !name || !room) continue;
     const box = header.getBoundingClientRect(), padding = card.getBoundingClientRect().top + card.clientTop * scale;
-    const middle = hubLine(box.height / scale, parseFloat(getComputedStyle(name).lineHeight), room.getBoundingClientRect().height / scale);
+    // A growing card's name keeps the font's own line ("normal"), which the text's first line box measures.
+    const stated = parseFloat(getComputedStyle(name).lineHeight);
+    const text = name.querySelector(".local-file-name-text");
+    if (!Number.isFinite(stated) && text) range.selectNodeContents(text);
+    const lineHeight = Number.isFinite(stated) ? stated : (range.getClientRects()[0]?.height ?? 0) / scale;
+    const middle = hubLine(box.height / scale, lineHeight, room.getBoundingClientRect().height / scale);
     lines.push([wrapper, onLayoutGrid((box.top - padding) / scale + middle)]);
   }
   for (const [wrapper, y] of lines) wrapper.style.setProperty("--hub-y", String(y));
