@@ -362,6 +362,14 @@ const SQL_BUILT_IN_TABLE_FUNCTIONS: ReadonlySet<string> = new Set(["openjson", "
 /** The kinds of `CREATE` a script's symbols are made from. */
 const SQL_DECLARED_KINDS: ReadonlySet<string> = new Set(["PROCEDURE", "PROC", "TABLE", "VIEW", "FUNCTION"]);
 
+/**
+ * The kinds of module whose body is statements. In T-SQL each must be the
+ * only statement of its batch, so its body runs to the batch's end, and a
+ * table created after it in the batch is created when the module runs, not by
+ * the script.
+ */
+const SQL_MODULES_WITH_BODIES: ReadonlySet<string> = new Set(["PROCEDURE", "PROC", "FUNCTION", "TRIGGER"]);
+
 /** The kinds of `CREATE` whose name a `FROM` may follow that is no table source: `CREATE TYPE x FROM INT`, `CREATE USER x FROM LOGIN y`. */
 const SQL_KINDS_WITH_FROM: ReadonlySet<string> = new Set(["TYPE", "USER", "LOGIN", "CERTIFICATE", "ASSEMBLY", "KEY"]);
 
@@ -570,6 +578,8 @@ export interface SqlDeclaration {
   kind: string;
   name: string;
   line: number;
+  /** True for a table a procedure's, function's or trigger's body creates when that runs: no object the script itself creates. */
+  inBody: boolean;
 }
 
 /** One object a script or a query names. */
@@ -593,6 +603,7 @@ function readSql(text: string): { declarations: SqlDeclaration[]; references: Sq
   const references: SqlReference[] = [];
   for (const tokens of sqlBatches(sqlTokens(text))) {
     const expressions = commonTableExpressions(tokens);
+    let inBody = false;
     const refer = (verb: string, parts: string[], at: number, target: boolean): void => {
       const last = parts[parts.length - 1];
       if (last.startsWith("#")) return;
@@ -617,11 +628,13 @@ function readSql(text: string): { declarations: SqlDeclaration[]; references: Sq
         const name = readName(tokens, at + 1);
         if (!name) continue;
         if (SQL_DECLARED_KINDS.has(kind) && !name.parts[name.parts.length - 1].startsWith("#")) {
-          declarations.push({ kind: sqlKind(kind), name: sqlWrittenName(name.parts), line: token.line });
+          declarations.push({ kind: sqlKind(kind), name: sqlWrittenName(name.parts), line: token.line, inBody: kind === "TABLE" && inBody });
         }
+        if (SQL_MODULES_WITH_BODIES.has(kind)) inBody = true;
         index = SQL_KINDS_WITH_FROM.has(kind) && isWord(tokens[name.end], "FROM") ? name.end : name.end - 1;
         continue;
       }
+      if (word === "ALTER" && isWord(tokens[index + 1], ...SQL_MODULES_WITH_BODIES)) inBody = true;
 
       let verb: string | undefined;
       let at = index + 1;

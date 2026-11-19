@@ -5,9 +5,8 @@
 - Archetype: test
 - Code Path: tests/integration/fixtures/sql-server/Tests/BillingTests.class.sql
 - Entry: opening [`BillingTests.test it doesn't count a settled invoice`](#symbol-billingteststest-it-doesnt-count-a-settled-invoice)
-- Entry: opening [`BillingTests.Expected`](#symbol-billingtestsexpected)
 - Entry: opening [`BillingTests.[test fn_Balance.sums the open ones]`](#symbol-billingteststest-fn_balancesums-the-open-ones)
-- Generated At: 2026-11-19T19:37:18.035Z
+- Generated At: 2026-11-19T19:57:47.464Z
 
 ## Authored
 ### Purpose
@@ -22,10 +21,6 @@ A test class in tSQLt's shape: a schema made by `tSQLt.NewTestClass`, and test p
 #### `BillingTests.test it doesn't count a settled invoice` {#symbol-billingteststest-it-doesnt-count-a-settled-invoice}
 - Type: procedure
 - Source: [source](../../../../../../../tests/integration/fixtures/sql-server/Tests/BillingTests.class.sql#L6)
-
-#### `BillingTests.Expected` {#symbol-billingtestsexpected}
-- Type: table
-- Source: [source](../../../../../../../tests/integration/fixtures/sql-server/Tests/BillingTests.class.sql#L9)
 
 #### `BillingTests.[test fn_Balance.sums the open ones]` {#symbol-billingteststest-fn_balancesums-the-open-ones}
 - Type: procedure

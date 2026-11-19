@@ -37,3 +37,7 @@ The reader moves from regular expressions over blanked text to tokens, and reads
 ## The engine's own objects
 
 A name in the `sys` or `INFORMATION_SCHEMA` schema, and a one-part `OPENJSON`, `STRING_SPLIT` or `GENERATE_SERIES` called in a `FROM`, are the database engine's own and are no longer kept as names. This revises the owner's rule of October 9, "no builtins", whose reason was that system schemas differ by database: these two are the catalog in SQL Server and Oracle (`SYS`), and `INFORMATION_SCHEMA` in MySQL and PostgreSQL too. It is its own commit so that it can be dropped. After it, on tSQLt: invented dependency lines fall from 213 to 6.
+
+## Tables made in a procedure's body
+
+A procedure, function or trigger must be the only statement of its T-SQL batch, so its body runs to the batch's end; a table created there is made when the module runs, and is no longer a symbol of the script, though a use of it in the same file still keeps no name. After it, on tSQLt: 0 objects invented, against 374; 899 of 943 dependency lines right, 44 missing, 1 invented.

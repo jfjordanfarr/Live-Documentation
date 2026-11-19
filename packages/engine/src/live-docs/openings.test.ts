@@ -127,8 +127,8 @@ describe("database objects", () => {
       "CREATE OR ALTER VIEW [dbo].[Recent] AS SELECT * FROM dbo.Payment;"
     ].join("\n");
     expect(sqlDeclarations(script)).toEqual([
-      { kind: "procedure", name: "dbo.usp_PostPayment", line: 2 },
-      { kind: "view",      name: "dbo.Recent",          line: 10 }
+      { kind: "procedure", name: "dbo.usp_PostPayment", line: 2, inBody: false },
+      { kind: "view",      name: "dbo.Recent",          line: 10, inBody: false }
     ]);
     expect(sqlReferences(script).map((reference) => `${reference.verb} ${reference.raw}${reference.name.linked ? " (linked)" : ""}`)).toEqual([
       "INSERT INTO dbo.Payment",
@@ -139,10 +139,33 @@ describe("database objects", () => {
   });
 
   it("puts a declaration at its own line, whatever comment, string or name spans lines before it", () => {
-    expect(sqlDeclarations("/*\n licence\n*/\nCREATE TABLE dbo.T (a int);")).toEqual([{ kind: "table", name: "dbo.T", line: 4 }]);
+    expect(sqlDeclarations("/*\n licence\n*/\nCREATE TABLE dbo.T (a int);")).toEqual([{ kind: "table", name: "dbo.T", line: 4, inBody: false }]);
     expect(sqlDeclarations("PRINT 'one\r\ntwo\r\nthree';\r\nGO\r\nCREATE PROCEDURE [a\r\nb] AS SELECT 1;\r\nGO\r\nCREATE VIEW dbo.V AS SELECT 1 AS x;")).toEqual([
-      { kind: "procedure", name: "a\r\nb", line: 5 },
-      { kind: "view",      name: "dbo.V",  line: 8 }
+      { kind: "procedure", name: "a\r\nb", line: 5, inBody: false },
+      { kind: "view",      name: "dbo.V",  line: 8, inBody: false }
+    ]);
+  });
+
+  it("tells a table a procedure's body creates when it runs from one the script creates", () => {
+    const script = [
+      "CREATE TABLE dbo.Kept (a INT);",
+      "GO",
+      "CREATE PROCEDURE tests.[test it] AS",
+      "BEGIN",
+      "    CREATE TABLE tests.Expected (a INT);",
+      "    CREATE TABLE #actual (a INT);",
+      "END;",
+      "GO",
+      "ALTER PROCEDURE dbo.p AS CREATE TABLE dbo.Made (a INT);",
+      "GO",
+      "CREATE TABLE dbo.Also (a INT);"
+    ].join("\n");
+    expect(sqlDeclarations(script)).toEqual([
+      { kind: "table",     name: "dbo.Kept",       line: 1,  inBody: false },
+      { kind: "procedure", name: "tests.test it",  line: 3,  inBody: false },
+      { kind: "table",     name: "tests.Expected", line: 5,  inBody: true },
+      { kind: "table",     name: "dbo.Made",       line: 9,  inBody: true },
+      { kind: "table",     name: "dbo.Also",       line: 11, inBody: false }
     ]);
   });
 
@@ -157,7 +180,7 @@ describe("database objects", () => {
   });
 
   it("never lets an apostrophe in a bracketed name open a string: the cold run's smallest crash", () => {
-    expect(sqlDeclarations("CREATE PROC [a'b]\n'\nx]")).toEqual([{ kind: "procedure", name: "a'b", line: 1 }]);
+    expect(sqlDeclarations("CREATE PROC [a'b]\n'\nx]")).toEqual([{ kind: "procedure", name: "a'b", line: 1, inBody: false }]);
   });
 
   it("reads a name quoted in brackets or double quotes as the name itself, whatever it holds", () => {
@@ -171,8 +194,8 @@ describe("database objects", () => {
       "CREATE PROCEDURE tests.[test fn.sums ]]the[[ open ones] AS SELECT * FROM \"odd \"\"quoted\"\" schema\".[it's];"
     ].join("\n");
     expect(sqlDeclarations(script)).toEqual([
-      { kind: "procedure", name: "tests.test it doesn't fail",             line: 1 },
-      { kind: "procedure", name: "tests.[test fn.sums ]]the[[ open ones]", line: 7 }
+      { kind: "procedure", name: "tests.test it doesn't fail",             line: 1, inBody: false },
+      { kind: "procedure", name: "tests.[test fn.sums ]]the[[ open ones]", line: 7, inBody: false }
     ]);
     expect(sqlReferences(script).map((reference) => `${reference.verb} ${reference.raw}`)).toEqual([
       "EXEC tSQLt.FakeTable",

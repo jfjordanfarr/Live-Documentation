@@ -27,13 +27,14 @@ export const sqlAdapter: LanguageAdapter = {
     const content  = await fs.readFile(absolutePath, "utf8");
     const thisFile = normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath));
 
-    const symbols: PublicSymbolEntry[] = sqlDeclarations(content).map((declaration) => ({
+    const declarations = sqlDeclarations(content);
+    const symbols: PublicSymbolEntry[] = declarations.filter((declaration) => !declaration.inBody).map((declaration) => ({
       name:     declaration.name,
       kind:     declaration.kind,
       location: { line: declaration.line, character: 1 }
     }));
 
-    const own        = symbols.map((symbol) => sqlObjectName(symbol.name));
+    const own        = declarations.map((declaration) => sqlObjectName(declaration.name));
     const source     = new Map<string, Set<string>>();
     const contract   = new Map<string, Set<string>>();
     const unresolved = new Set<string>();
