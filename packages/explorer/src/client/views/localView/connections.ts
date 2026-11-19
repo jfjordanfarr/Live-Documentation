@@ -7,7 +7,7 @@ import { isPairLine, linksOf } from "./directory-flow";
 import { OVERVIEW_FILES_ATTRIBUTE, OVERVIEW_LINES_ATTRIBUTE } from "./overview-files";
 import { returningConnections, type ReturningConnections } from "./returning-connections";
 import type { LocalViewRuntime, WireLayer } from "./runtime";
-import { clearSymbolHighlightDOM, lightConnections } from "./symbol-highlight";
+import { attendConnections, releaseConnections } from "./symbol-highlight";
 import type { ColumnRole, LayoutExtents, LocalEdge } from "./types";
 import { gatheredCount, gatheredDescription, gatheredWidth, gatherWires, NODE_HUB, ownWires, wireDescription } from "./wire-gathering";
 
@@ -84,6 +84,8 @@ export function drawConnections(context: ConnectionsContext): number {
   const { drawn, doubling } = context.branches ? drawBranchConnections(context, layer, seen) : { drawn: 0, doubling: 0 };
   for (const [key, element] of layer.elements) {
     if (seen.has(key)) continue;
+    // A returning lace that leaves under the pointer or the focus puts out the connection it lit.
+    if (element.classList.contains("returning")) releaseConnections(context.runtime.container, context.runtime.overlay, element);
     element.remove();
     layer.elements.delete(key);
     layer.gradients.get(key)?.remove();
@@ -396,12 +398,7 @@ function attendReturning(lace: SVGElement, runtime: LocalViewRuntime, svgNamespa
   lace.setAttribute("role", "img");
   lace.setAttribute("tabindex", "0");
   lace.append(document.createElementNS(svgNamespace, "title"));
-  const light = (): void => lightConnections(runtime.container, runtime.overlay, laceCarries.get(lace) ?? []);
-  const rest = (): void => clearSymbolHighlightDOM(runtime.container, runtime.overlay, () => {});
-  lace.addEventListener("pointerenter", light);
-  lace.addEventListener("focus", light);
-  lace.addEventListener("pointerleave", rest);
-  lace.addEventListener("blur", rest);
+  attendConnections(lace, runtime.container, runtime.overlay, () => laceCarries.get(lace) ?? []);
 }
 
 /**

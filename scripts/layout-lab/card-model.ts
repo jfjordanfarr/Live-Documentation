@@ -186,6 +186,9 @@ export function cardMetrics(capture: Capture, card: CardCapture, width: number, 
   const metrics = registerPins(view.registration, centres, y);
   metrics.width = width;
   if (card.hubY !== undefined) {
+    // Both node-level hubs, where a directory's pair lines and the overview's gathered wires end (wire-gathering.ts's
+    // NODE_HUB), stand at the hub's height; a file-level reference arrives at the Internals dot where there is one.
+    for (const side of ["inbound", "outbound"]) metrics.pins.set(`${side}:#hub`, card.hubY);
     metrics.pins.set("outbound:*", card.hubY);
     if (!view.registration.some(row => row.symbol === "__internals__")) metrics.pins.set("inbound:*", card.hubY);
   }

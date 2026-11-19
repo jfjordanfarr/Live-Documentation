@@ -2,6 +2,7 @@ import { expect, test, type Page } from "@playwright/test";
 import { readFileSync } from "node:fs";
 
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
+import { HUB_CENTRE } from "../../packages/explorer/src/client/views/localView/wire-gathering";
 import { explorerGraphOf } from "../../packages/explorer/src/shared/graph";
 import type { StaticExplorerData } from "../../packages/explorer/src/shared/staticExplorerData";
 import { localMapStill } from "./still-picture";
@@ -213,7 +214,7 @@ const hubs = (page: Page) => page.evaluate(() => {
       .map(dot => dot.getBoundingClientRect().top);
     const centre = { x: box.left + box.width / 2, y: box.top + box.height / 2 };
     return {
-      card: card.dataset.id!, centre: centre.y, size: box.height / mapScale / 12, line, firstRow: rows.length ? Math.min(...rows) : null,
+      card: card.dataset.id!, centre: centre.y, fromTop: (centre.y - cardBox.top) / mapScale, size: box.height / mapScale / 12, line, firstRow: rows.length ? Math.min(...rows) : null,
       // The ends at its card's edge, within the card's height: the lines that end on it.
       wireEnds: ends.filter(end => Math.abs(end.x - centre.x) <= 7 * box.height / 12 + 1 && end.y >= cardBox.top && end.y <= cardBox.bottom).map(end => end.y),
       controlScale
@@ -235,6 +236,8 @@ test("a card's node-level hubs stand at its file name's first line at every look
     for (const hub of drawnHubs) {
       const where = `${look}: ${hub.card}`;
       expect(Math.abs(hub.centre - hub.line.middle), `${where}: at the middle of the name's first line`).toBeLessThanOrEqual(1);
+      // At the reading look it stands where the nominal card the Flow shape is priced on says it does.
+      if (look === "reading") expect(Math.abs(hub.fromTop - HUB_CENTRE), `${where}: at the nominal card's hub`).toBeLessThanOrEqual(0.5);
       // Above every row the card draws, so that no row can be taken for its end.
       if (hub.firstRow !== null) expect(hub.centre, `${where}: above the card's rows`).toBeLessThan(hub.firstRow);
       // As large as the look's controls, as a row's dot is, and no taller than a line of the name.

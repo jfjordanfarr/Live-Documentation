@@ -206,6 +206,31 @@ export function lightConnections(container: HTMLElement, overlay: HTMLElement, e
   container.classList.add("connections-lit");
 }
 
+/**
+ * Lets the pointer or the keyboard on an element keep whole connections, a returning lace's or a card's foot on its
+ * returns (2026-11-19): lit while either rests on it, put out when both have left, and never putting out a highlight it
+ * did not make, such as a row's hover begun as the element lost the keyboard's focus.
+ */
+export function attendConnections(element: Element, container: HTMLElement, overlay: HTMLElement, carries: () => readonly LocalSubgraphLink[]): void {
+  let pointed = false, focused = false;
+  const light = (): void => lightConnections(container, overlay, carries());
+  element.addEventListener("pointerenter", () => { pointed = true; light(); });
+  element.addEventListener("focus", () => { focused = true; light(); });
+  element.addEventListener("pointerleave", () => { pointed = false; if (!focused) releaseConnections(container, overlay); });
+  element.addEventListener("blur", () => { focused = false; if (!pointed) releaseConnections(container, overlay); });
+}
+
+/**
+ * Puts out a highlight of whole connections, if one stands: when its element leaves the page under the pointer or the
+ * keyboard, which then tells it nothing (a cycle's trial redraws the cards' feet, a drawing drops a lace that no longer
+ * returns), as when the pointer or the focus leaves it.
+ */
+export function releaseConnections(container: HTMLElement, overlay: HTMLElement, leaving?: Element): void {
+  if (!container.classList.contains("connections-lit")) return;
+  if (leaving && !leaving.matches(":hover") && leaving !== document.activeElement) return;
+  clearSymbolHighlightDOM(container, overlay, () => {});
+}
+
 /** Marks the hover's rows and cards and turns its fading on; whether any row was collapsed. */
 function markHighlight(container: HTMLElement, overlay: HTMLElement, highlight: SymbolHighlightResult, centerId: string): boolean {
   // Add class to container AND overlay to enable dimming mode

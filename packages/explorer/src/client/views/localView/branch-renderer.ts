@@ -21,7 +21,7 @@ import { layoutTopOf } from "./ladder-rooms";
 import { membranePath } from "./membrane-outline";
 import { OVERVIEW_FILES_ATTRIBUTE, OVERVIEW_LINES_ATTRIBUTE, type PictureSize } from "./overview-files";
 import { connectionCount, returningConnections } from "./returning-connections";
-import { clearSymbolHighlightDOM, lightConnections } from "./symbol-highlight";
+import { attendConnections, releaseConnections } from "./symbol-highlight";
 import type { LocalEdge } from "./types";
 import { NODE_HUB } from "./wire-gathering";
 import { countOf } from "./word-seams";
@@ -1668,7 +1668,8 @@ function dressReturns(controller: LocalViewController, cards: readonly HTMLEleme
   for (const card of cards) {
     if (!card.classList.contains("node-card")) continue;
     const id = card.dataset.id!;
-    card.querySelectorAll(":scope > .local-back-references").forEach(note => note.remove());
+    // A foot redrawn under the pointer or the focus (a cycle's trial redraws them) puts out the connections it lit.
+    card.querySelectorAll(":scope > .local-back-references").forEach(note => { releaseConnections(controller.runtime.container, controller.runtime.overlay, note); note.remove(); });
     const back = returning.byFile.get(id) ?? [];
     // A pair line names no symbol: its return is told by its two files, and counted by the links it stands for.
     controller.reading?.setBackReferences(id, back.map(edge => (isPairLine(edge) ? { ...edge, sourceSymbol: undefined, targetSymbol: undefined } : edge)));
@@ -1679,13 +1680,7 @@ function dressReturns(controller: LocalViewController, cards: readonly HTMLEleme
     note.title = "Show the files joined by connections that return against the layout's reading direction";
     // The pointer or the keyboard on the foot keeps its returning connections whole, their laces, routes and cards, and
     // fades the rest, as pointing at one of their laces does (2026-11-19).
-    const { container, overlay } = controller.runtime;
-    const light = (): void => lightConnections(container, overlay, back);
-    const rest = (): void => clearSymbolHighlightDOM(container, overlay, () => {});
-    note.addEventListener("pointerenter", light);
-    note.addEventListener("focus", light);
-    note.addEventListener("pointerleave", rest);
-    note.addEventListener("blur", rest);
+    attendConnections(note, controller.runtime.container, controller.runtime.overlay, () => back);
     if (controller.reading) {
       note.setAttribute("aria-haspopup", "menu");
       note.addEventListener("click", event => {
