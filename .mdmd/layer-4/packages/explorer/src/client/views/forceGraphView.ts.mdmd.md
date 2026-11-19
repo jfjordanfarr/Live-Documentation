@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphView.ts
-- Generated At: 2026-11-19T00:59:27.351Z
+- Generated At: 2026-11-19T04:29:44.657Z
 
 ## Authored
 ### Purpose
@@ -152,7 +152,6 @@ Creates the Force Graph (3D) view for the Live Docs Explorer.
 - [`layout-presets.layoutSettingsOf`](../layout-presets.ts.mdmd.md#symbol-layoutsettingsof)
 - [`palette.Colour`](../palette.ts.mdmd.md#symbol-colour)
 - [`palette.activePalette`](../palette.ts.mdmd.md#symbol-activepalette)
-- [`palette.marblePattern`](../palette.ts.mdmd.md#symbol-marblepattern-const)
 - [`palette.marblesDrawn`](../palette.ts.mdmd.md#symbol-marblesdrawn)
 - [`palette.rgba`](../palette.ts.mdmd.md#symbol-rgba)
 - [`palette.whenPaletteChanges`](../palette.ts.mdmd.md#symbol-whenpalettechanges)
@@ -245,8 +244,6 @@ Creates the Force Graph (3D) view for the Live Docs Explorer.
 - [`forceGraphWrappers.wrapperHull`](./forceGraphWrappers.ts.mdmd.md#symbol-wrapperhull-function)
 - [`directory-bands.parentDirectory`](./localView/directory-bands.ts.mdmd.md#symbol-parentdirectory)
 - [`directory-state.under`](./localView/directory-state.ts.mdmd.md#symbol-under)
-- [`marbleSketch.Sketch`](./marbleSketch.ts.mdmd.md#symbol-sketch)
-- [`marbleSketch.marbleSketches`](./marbleSketch.ts.mdmd.md#symbol-marblesketches)
 - [`perspectiveTransition.ForceScene`](./perspectiveTransition.ts.mdmd.md#symbol-forcescene) (type-only)
 - [`pin-state.EMPTY_PIN_SET`](./pin-state.ts.mdmd.md#symbol-empty_pin_set)
 - [`pin-state.PinSet`](./pin-state.ts.mdmd.md#symbol-pinset)

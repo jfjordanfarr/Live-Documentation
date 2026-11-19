@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/expected/repository-entries.json
-- Generated At: 2026-11-19T01:17:24.820Z
+- Generated At: 2026-11-19T04:29:47.988Z
 
 ## Authored
 ### Purpose
@@ -80,9 +80,6 @@ The hand's reading of this repository's own entry points, with the reasons as th
 - Type: key
 
 #### `entries:scripts/contact-sheet/contact-sheet.ts` {#symbol-entriesscriptscontact-sheetcontact-sheetts}
-- Type: key
-
-#### `entries:scripts/contact-sheet/marble-sheet.ts` {#symbol-entriesscriptscontact-sheetmarble-sheetts}
 - Type: key
 
 #### `entries:scripts/doc-tools/enforce-documentation-links.ts` {#symbol-entriesscriptsdoc-toolsenforce-documentation-linksts}

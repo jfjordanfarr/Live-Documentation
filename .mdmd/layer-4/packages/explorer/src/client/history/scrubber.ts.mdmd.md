@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/history/scrubber.ts
-- Generated At: 2026-11-01T21:21:02.331Z
+- Generated At: 2026-11-19T04:29:43.803Z
 
 ## Authored
 ### Purpose
@@ -29,28 +29,28 @@ The [November 1 repairs](../../../../../../../AI-Agent-Workspace/AgentSessionHis
 ### Public Symbols
 #### `ScrubberState` {#symbol-scrubberstate}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L35)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L38)
 
 ##### `ScrubberState` — Summary
 What the scrubber draws.
 
 #### `ScrubberOptions` {#symbol-scrubberoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L63)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L66)
 
 ##### `ScrubberOptions` — Summary
 What the scrubber tells.
 
 #### `Scrubber` {#symbol-scrubber}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L79)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L82)
 
 ##### `Scrubber` — Summary
 The scrubber as the control drives it.
 
 #### `PLAY_RATES` {#symbol-play_rates}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L95)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L98)
 - Returns: `ReadonlyArray`
 
 ##### `PLAY_RATES` — Summary
@@ -58,14 +58,14 @@ The speeds the control offers, in steps a second, with their words; a rate set e
 
 #### `rateWords` {#symbol-ratewords}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L98)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L101)
 
 ##### `rateWords` — Summary
 The words for a rate: the control's own, or the number for one set in Tuning.
 
 #### `createScrubber` {#symbol-createscrubber}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L101)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L104)
 - Returns: [`Scrubber`](#symbol-scrubber)
 - Parameters: `options`: [`ScrubberOptions`](#symbol-scrubberoptions)
 

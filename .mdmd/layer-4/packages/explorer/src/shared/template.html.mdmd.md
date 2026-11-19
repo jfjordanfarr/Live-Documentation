@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-11-19T01:56:29.480Z
+- Generated At: 2026-11-19T04:29:45.547Z
 
 ## Authored
 ### Purpose
@@ -439,15 +439,6 @@ Since 2026-11-19 ([Turn 14 of the November 18 record](../../../../../../AI-Agent
 - Type: variable
 
 #### `tuning-lace-width-value` {#symbol-tuning-lace-width-value}
-- Type: variable
-
-#### `tuning-marble-bend` {#symbol-tuning-marble-bend}
-- Type: variable
-
-#### `tuning-marble-bend-value` {#symbol-tuning-marble-bend-value}
-- Type: variable
-
-#### `tuning-marble-pattern` {#symbol-tuning-marble-pattern}
 - Type: variable
 
 #### `tuning-marbles` {#symbol-tuning-marbles}
