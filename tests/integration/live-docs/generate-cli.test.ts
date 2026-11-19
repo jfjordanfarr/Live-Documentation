@@ -112,6 +112,9 @@ beforeAll(async () => {
     record("visualize --output", "visualize-static.ts", ["--output"]),
     // The configuration is named first, so that a run that took the paths from this checkout would stop before writing.
     recordNpm("npm from elsewhere", at.stand, "live-docs:generate", ["--config", "standing.json", "--workspace", "mine"]),
+    record("generate, mistyped", "generate.ts", ["--workspace", path.join(at.stand, "mien")]),
+    record("inspect, mistyped", "inspect.ts", ["--workspace", path.join(at.stand, "mien"), "--reachable"]),
+    record("generate, a file", "generate.ts", ["--workspace", path.join(at.stand, "standing.json")]),
     recordNpm("npm from elsewhere, no workspace", path.join(at.stand, "theirs"), "live-docs:generate", ["--config", path.join("..", "standing.json"), "--dry-run"]),
     ...commands.flatMap(([, script]) => ["--help", "-h", "--no-such-option"].map((flag) => record(`${script} ${flag}`, script, [flag])))
   ];
@@ -152,6 +155,24 @@ describe("the folder a person runs a command from", () => {
     const result = ran("npm from elsewhere, no workspace");
     expect(result.status, result.stderr).toBe(0);
     expect(result.stdout).toContain("Would create 1 Live Doc(s): docs/mirror/src/a.ts.md");
+  });
+});
+
+describe("a --workspace that names no folder", () => {
+  it("is refused on one line naming the path looked for, and nothing is made there", () => {
+    const mistyped = path.join(at.stand, "mien");
+    for (const [name, command] of [["generate, mistyped", "live-docs:generate"], ["inspect, mistyped", "live-docs:inspect"]]) {
+      const result = ran(name);
+      expect(result.status).toBe(1);
+      expect(result.stderr).toBe(`${command}: There is no folder at ${mistyped}; --workspace names the folder to work on. Run "npm run ${command} -- --help" to list the options.\n`);
+    }
+    expect(fs.existsSync(mistyped)).toBe(false);
+  });
+
+  it("is refused when it names a file", () => {
+    const result = ran("generate, a file");
+    expect(result.status).toBe(1);
+    expect(result.stderr).toContain(`${path.join(at.stand, "standing.json")} is a file; --workspace names the folder to work on.`);
   });
 });
 

@@ -7,6 +7,7 @@
  *
  * @module
  */
+import { statSync } from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
@@ -44,9 +45,22 @@ export function typedPath(typed: string): string {
   return path.resolve(invocationFolder(), typed);
 }
 
-/** The folder a command works on: the one `--workspace` names, from where the person ran the command, else that folder itself. */
+/**
+ * The folder a command works on: the one `--workspace` names, from where the
+ * person ran the command, else that folder itself. A name that is no folder
+ * is refused with the path looked for, since a mistyped one would otherwise
+ * map nothing and say so as success, and `generate` would make the folder.
+ */
 export function workspaceFolder(given: string | undefined): string {
-  return given === undefined ? invocationFolder() : typedPath(given);
+  const folder = given === undefined ? invocationFolder() : typedPath(given);
+  const found = statSync(folder, { throwIfNoEntry: false });
+  if (found === undefined) {
+    throw new UsageError(`There is no folder at ${folder}; --workspace names the folder to work on.`);
+  }
+  if (!found.isDirectory()) {
+    throw new UsageError(`${folder} is a file; --workspace names the folder to work on.`);
+  }
+  return folder;
 }
 
 /** The version of one of this repository's packages, from its manifest: a command prints its package's version, never a constant of its own. */
