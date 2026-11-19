@@ -14,7 +14,7 @@ The links are for your own server at `http://localhost:8999/`. I opened each one
 
 The price is that the picture stops somewhere else than it would have. Both pictures below hold the same 305 spheres; a sphere under the hold rests a median of 130 units from where it rests today, on a picture 1,304 units wide (on this screen: 66 pixels median, 295 at the farthest).
 
-### Pictures
+**Pictures.**
 
 Both rows start from the same click on the same sphere (`local-storage.ts`, the largest group, 600 files), and each column is the same number of seconds after the click. Both were taken with two other levers off their defaults, as the measurements of this trial were: Hops Shown at 2 and Group Wrappers Off, so that the group appears as bare spheres and lines. The top row is Settle Hold 0, the bottom row 0.02.
 
@@ -36,7 +36,7 @@ Both rows start from the same click on the same sphere (`local-storage.ts`, the 
 | Steps of the motion | 5,297 | 716 (about a seventh) |
 | Spheres that moved more than 5 pixels between one frame of the strip and the next | 192 to 227 of the 305, at every frame from 3 s to 45 s | 17 between 3 s and 5 s; none after |
 
-### Try it
+**To try it.**
 
 1. Press **Reset to defaults** in Tuning, as at the top of this page.
 2. Open one of the two links. Each opens the 3D map with nothing chosen and sets the levers the measurements were made with, so a number appears beside TUNING:
@@ -47,7 +47,7 @@ Both rows start from the same click on the same sphere (`local-storage.ts`, the 
 
 To try another strength, move the lever yourself before step 3: **Tuning → 3D Layout → Forces → Settle Hold**. It changes how the next movement ends, not the picture already on screen. I set it to 0.02 by hand in this way on the first link and the group came to rest in 569 steps, against 5,148 with the lever left at 0.
 
-### My eye
+**My eye.**
 
 In the top row the tangle never looks the same twice between 10 and 45 seconds: the ringed blue spheres on its left climb from the lower left to the upper left, the green hub of test files sinks from the top of the group toward its middle, the large ringed sphere under the group moves up into the tangle, and the group's outline opens from a compact block into a diamond pointing left. Each of those frames looks like a finished picture, which is the trouble: nothing in a frame says it is not done. In the bottom row every frame from 5 seconds on is the same picture. Side by side at rest, the two are the same kind of picture at the same size, a tangle low and left with dim spheres scattered round it, but not the same arrangement: under the hold the group stands more upright, the green files sit at its top, and one large ringed sphere stands clear at its bottom edge, where today's rest has it inside the tangle.
 
@@ -68,7 +68,7 @@ Whether the stop reads as a freeze is not something stills can show, so I measur
 
 So there are two things to judge: whether a sphere that shows nothing while the pointer passes over it feels dead, and whether the 2D map's lighting-at-once now feels restless beside it.
 
-### Pictures
+**Pictures.**
 
 Each strip is six frames from one continuous movement: three while the pointer is moving (taken at moments when it is right on top of something), then three after it has stopped. The white arrow is where the pointer was; I drew it on afterwards.
 
@@ -88,7 +88,7 @@ Each strip is six frames from one continuous movement: three while the pointer i
 
 The 3D map's ten changes during the sweep are not the kind a person sees: each touched between 300 and 1,500 of the picture's million pixels, as faint specks scattered along the edges of spheres. I compared the frames by eye at full size and could not see a difference, and I cannot say from the frames what the specks are. After the stop, the three buttons came at 0.35 seconds and the rest of the picture faded one frame later, at 0.39.
 
-### Try it
+**To try it.**
 
 - 3D: <http://localhost:8999/?s=N4IgbiBcDMA0IEcomgExPAdsgDgQwGMBrPAcwFMBnAenM1IEtNzrKAnA6gGwbHIFpUAewI08HABbkALgE8c5AHTTKGEDigBtUNkjrCJCjTqNmrDt14Dho6uIJS5C5aviq9AKhABfALregA>
 
@@ -98,7 +98,7 @@ The 3D map's ten changes during the sweep are not the kind a person sees: each t
 
   Nothing to set. Sweep the pointer across the cards in the same way.
 
-### A stranger's reading
+**A stranger's reading.**
 
 Two testers who were told nothing about the project were given this message and the 3D link above, in a 1280 by 800 window: *"What is the file in the middle of this picture, and what is it connected to?"* Each had at most 25 actions.
 
@@ -110,7 +110,7 @@ Two testers who were told nothing about the project were given this message and 
 
 So neither stranger tells us whether a sphere feels dead under a moving pointer: neither moved a pointer across the spheres at all. What the runs do show is that the first thing a stranger tried on a sphere was a click, not a rest, and that the click cost them the picture. One of question 4's testers did rest on spheres; see there.
 
-### My eye
+**My eye.**
 
 In the 3D frames taken while the pointer moves, I can find no difference between one frame and the next, even in the frame where the arrow sits squarely on the pinned sphere: no name, no outline, no change of brightness. A fifth of a second after it stops, still nothing. At half a second the three buttons stand above `archetype.ts`, the four files it connects to are lit with their lines, and everything else has sunk to near black; the change is large and comes all at once. In the 2D frames the picture is different in every moving frame: with the pointer on the left card most rows of the `archetype.ts` card are greyed out, a moment later they are all lit again, and a name turns blue under the pointer as it passes.
 
@@ -131,7 +131,7 @@ One thing the strip cannot show: a screencast does not draw the pointer, so whet
 
 It is closed because a picture draws at most 1,024 files inside bubbles, and the folders of this picture hold 1,066 between them (the three above and two small ones, `.devcontainer · 3` and `.github · 5`). When a picture is over the limit, the page closes the bubble farthest from what you asked about, and among equals the largest; here that is `tests`. The other four hold 510 files, which fit.
 
-### Pictures
+**Pictures.**
 
 - Today's picture, as the link opens it: [q3-structure-today.png](q3-structure-today.png)
 
@@ -162,17 +162,17 @@ Measured on this picture as I took it, drawn by this machine's card (an NVIDIA R
 
 Sixty a second is the most this browser draws, so today's picture, with `tests` closed, does not tax the card at all. It does not tell us what the picture would cost with `tests` open; only a trial can.
 
-### Try it
+**To try it.**
 
 <http://localhost:8999/?s=N4IgbiBcDMA0IEcomgExPAnsgzgFwCcBXAYzyIIFMQBfIA>
 
 Nothing to press. Roll the wheel up over the picture to come nearer, and drag the empty background to turn it.
 
-### A stranger's reading
+**A stranger's reading.**
 
 None was run for this question: the brief asked for strangers on questions 2 and 4.
 
-### My eye
+**My eye.**
 
 The `tests` ball is the largest thing in the picture, wider than `packages` and `scripts` together, and it is the only one that shows nothing inside: a smooth pale blue-grey surface with two soft highlights and faint level bands across it. Beside it the other two folders read like jars of blue and green beads. In the nearer picture the ball's edge shows short straight facets at its upper left.
 
@@ -192,7 +192,7 @@ The `tests` ball is the largest thing in the picture, wider than `packages` and 
 - **Everything** (the default): all of them are in the picture. Beyond the hops they stand as dimmed spheres or are held inside bubbles, one bubble for a folder and one for each group of files that connects to nothing shown.
 - **Next step**: only what is one step past the picture is drawn, held in bubbles. Groups that connect to nothing in the picture (islands) are left out.
 
-### Pictures
+**Pictures.**
 
 Each pair is the same file pinned in the same window, with only the lever changed. The camera is the page's own in each: the two values hold pictures of different sizes and the page frames each to fit.
 
@@ -234,7 +234,7 @@ Each is a part of the 1440 by 900 window drawn at twice the pixel density, so th
 
    ![Round archetype.ts with documents shown: its neighbours carry no sign of documents beyond](q4-documents-beyond-the-hops.png)
 
-### Try it
+**To try it.**
 
 - One hop, Everything (nothing to set): <http://localhost:8999/?s=N4IgbiBcDMA0IEcomgExPAdsgDgQwGMBrPAcwFMBnAenM1IEtNzrKAnA6gGwbHIFpUAewI08HABbkALgE8c5AHTTKGEDigBtUNkjrCJCjTqNmrDt14Dho6uIJS5C5aviq9AKhABfALregA>
 
@@ -251,7 +251,7 @@ Each is a part of the 1440 by 900 window drawn at twice the pixel density, so th
 - The lone file in Structure: <http://localhost:8999/?s=N4IgbiBcDMA0IEcomgExPAnsgzgFwCcBXAYzyIIFMQBfIA> (nothing to set; it is very small, beside `Scan root`).
 - Documents: the first link above, then tick **Show Related Docs** and **Show Citing Docs** in the sidebar under Display.
 
-### A stranger's reading
+**A stranger's reading.**
 
 Four testers who were told nothing about the project were given this message and the 3D map with `archetype.ts` pinned at one hop, two under Everything and two under Next step: *"Which files does archetype.ts use, and which files use it?"* The right answer: it uses `liveDocumentationConfig.ts` and `document.ts`; `archetype.test.ts`, `compose.ts`, `core.ts` and `discovery.ts` use it. Each had at most 25 actions.
 
@@ -268,7 +268,7 @@ Four testers who were told nothing about the project were given this message and
 
 One tester on each value is too few to say that Next step keeps a stranger in the 3D map and Everything does not. It is what happened once.
 
-### My eye
+**My eye.**
 
 At one hop under Everything the frame is filled edge to edge with large overlapping bubbles full of bright blue and green balls, and I have to hunt for the subject: `archetype.ts` is one mid-sized ball near the middle, and the files it connects to are the darkest balls in the picture, navy against a near-black ground, while files it has nothing to do with shine inside their bubbles. Under Next step the frame holds four labelled bubbles round the pinned file with dark ground between them, and the lines from `archetype.ts` to its neighbours can be followed. At two hops both pictures are a web of thin lines; under Everything two very large bubbles sit across the middle of the web and small bubbles are scattered to the corners, and under Next step the web has two bubbles in it and the left half of the frame is empty.
 
@@ -292,7 +292,7 @@ In the small pictures: the lone file in Connections is easy to miss, a dark ball
 - **Proposed**: ordinary files a pale grey, tests violet. Blue and green are kept for "offers" and "uses" and nothing else wears them.
 - **Vivid kinds**: ordinary files blue and tests green, close to today's, with everything else as in Proposed. It was made to your lean toward kinds told by strong colour, and it passes every check.
 
-### Pictures
+**Pictures.**
 
 Each picture below is one page, with only the Palette lever moved between its three parts: Today on the left, Proposed in the middle, Vivid kinds on the right. In the 3D pictures no sphere moved between the three (I measured: 0.00 pixels), so what differs is colour and nothing else.
 
@@ -316,7 +316,7 @@ Each picture below is one page, with only the Palette lever moved between its th
 
   ![World Map in the three palettes](q5-palettes-world-map.png)
 
-### Try it
+**To try it.**
 
 Open a link, then open **Tuning → Colour → Palette** and choose Proposed or Vivid kinds. The page recolours at once and nothing moves. A "1" appears beside TUNING while the palette is not Today. The choice is kept in your browser for every later page, so press **Reset to defaults** when you have finished.
 
@@ -328,11 +328,11 @@ Open a link, then open **Tuning → Colour → Palette** and choose Proposed or 
 | 2D, `scripts` open | <http://localhost:8999/?s=N4IgbiBcDMA0IBMoG0QGcDGAnAlgBwBc0QBdAXyA> |
 | World Map | <http://localhost:8999/?view=world> |
 
-### A stranger's reading
+**A stranger's reading.**
 
 None, as the brief said: a stranger cannot tell us which colours you find right.
 
-### My eye
+**My eye.**
 
 - **3D, Connections.** Today: bright blue spheres with mid-green ones among them; the two colours are about equally loud. Proposed: the blue is gone; the picture is a cloud of pale grey balls in which the violet test files are the only colour, so the tests are what I see first. Vivid kinds: blue as today, and a green that is deeper and darker than today's, so the test files sit back against the dark ground more than they do today.
 - **3D, Connections, two hops.** The same three characters with fewer bubbles in the way: blue and green dots on a web of pale lines; grey and violet dots, where the grey dots and the pale lines are close in tone; blue and a darker green.
