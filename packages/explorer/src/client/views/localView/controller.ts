@@ -1,7 +1,9 @@
 import type {
+  ExplorerGraphPayload,
   ExplorerNodePayload
 } from "../../../shared/types";
 import { requireElement } from "../../dom";
+import type { HistoryChanges, HistoryMoment } from "../../history/moment";
 import { readingFiles } from "../../reading-state";
 import { EMPTY_PIN_SET, isSymbolPinned as isExplorationPin, type PinSet } from "../pin-state";
 import {
@@ -160,13 +162,13 @@ export class LocalViewController implements LocalViewApi {
   /** The card builder reads only presentation facts and named actions, never this controller's state bag. */
   readonly cardContext: CardContext = {
     presentation: node => ({
-      subject: this.options.state.selectedNode?.id === node.id,
+      subject: this.subject?.id === node.id,
       retained: this.pins.entries.some(pin => pin.nodeId === node.id) || this.readingFiles.has(node.id),
       filePinned: this.pins.entries.some(pin => pin.nodeId === node.id && pin.symbol === "*"),
       expanded: this.expandedCards.has(node.id),
       showTests: this.options.state.filters.showTests,
       symbolOrder: this.options.state.tuning.localMap.symbolOrder,
-      testBacking: this.options.testCoverage.get(node.id) ?? [],
+      testBacking: this.moment ? [] : this.options.testCoverage.get(node.id) ?? [],
       isPinned: symbol => this.isPinned(node.id, symbol),
       isDirectlyPinned: symbol => this.pins.entries.some(pin => pin.nodeId === node.id && pin.symbol === symbol)
     }),
@@ -195,10 +197,70 @@ export class LocalViewController implements LocalViewApi {
   private focusRequest: string | null = null;
   private restoreExplorationCamera = false;
   private explorationCamera: { transform: MapTransform; initial: MapTransform | null; userAdjusted: boolean; layerTop: number } | null = null;
-  /** Shared pins are owned by the application, not this renderer. */
-  get pins(): PinSet { return this.options.state.pins ?? EMPTY_PIN_SET; }
-  /** The directories the person has opened, owned by the application beside the pins (2026-10-08). */
-  get openDirectories(): OpenDirectories { return this.options.state.openDirectories ?? NO_OPEN_DIRECTORIES; }
+  /**
+   * The moment of the history the picture shows, or null for today (2026-11-19, the history in 2D, its first rung):
+   * the moment's files-only graph in place of today's, and today's pins, subject and opened directories read at the
+   * moment through its names, as the 3D map reads them. A file renamed at a step is a new card under its new name.
+   */
+  private moment: HistoryMoment | null = null;
+  private momentChanges: HistoryChanges | null = null;
+  private momentPins: { from: PinSet; moment: HistoryMoment; pins: PinSet } | null = null;
+  private momentDirectories: { from: OpenDirectories; moment: HistoryMoment; directories: OpenDirectories } | null = null;
+  /** Show a moment, or today (null), with the step's changes for the emphasis; the caller renders when the picture should settle. */
+  setMoment(moment: HistoryMoment | null, changes: HistoryChanges | null): void {
+    this.moment = moment;
+    this.momentChanges = changes;
+  }
+  /** The graph the picture draws: the moment's, or today's. */
+  get graph(): ExplorerGraphPayload { return this.moment?.graph ?? this.options.graphData; }
+  /** The subject as it stands at the moment shown; null where it does not stand there. */
+  get subject(): ExplorerNodePayload | null {
+    const node = this.options.state.selectedNode ?? null;
+    const moment = this.moment;
+    if (!node || !moment) return node;
+    const at = moment.fileAt(node.id);
+    return at === undefined ? null : moment.graph.nodes.find(file => file.id === at) ?? null;
+  }
+  /** Shared pins are owned by the application, not this renderer; at a moment, those that stand there, by their names then. */
+  get pins(): PinSet {
+    const pins = this.options.state.pins ?? EMPTY_PIN_SET, moment = this.moment;
+    if (!moment) return pins;
+    if (this.momentPins?.from !== pins || this.momentPins.moment !== moment) {
+      this.momentPins = { from: pins, moment, pins: { entries: pins.entries.flatMap(pin => {
+        const at = moment.fileAt(pin.nodeId);
+        return at === undefined ? [] : [{ ...pin, nodeId: at }];
+      }) } };
+    }
+    return this.momentPins.pins;
+  }
+  /** The directories the person has opened, owned by the application beside the pins (2026-10-08); at a moment, by their names then. */
+  get openDirectories(): OpenDirectories {
+    const directories = this.options.state.openDirectories ?? NO_OPEN_DIRECTORIES, moment = this.moment;
+    if (!moment) return directories;
+    if (this.momentDirectories?.from !== directories || this.momentDirectories.moment !== moment) {
+      this.momentDirectories = { from: directories, moment, directories: new Set([...directories].map(directory => moment.directoryAt(directory))) };
+    }
+    return this.momentDirectories.directories;
+  }
+  /** Whether a moment of the history is shown, when the cards carry no rows, descriptions or test backing of that day. */
+  get showsMoment(): boolean { return this.moment !== null; }
+
+  /**
+   * The step's emphasis on the cards (2026-11-19), by Tuning's Changed Files, as the 3D map's: a card the step changed
+   * lit where the mode glows; where it dims, every other card faded, save what was asked about, the pins and the subject,
+   * which keep their look. Only classes change: nothing is laid out again, so that it runs while the thumb drags.
+   */
+  applyHistoryEmphasis(): void {
+    const changes = this.momentChanges, mode = changes ? this.options.state.tuning.history.changeEmphasis : "none";
+    this.container.classList.toggle("history-glows", mode === "glow" || mode === "both");
+    this.container.classList.toggle("history-dims", mode === "dim" || mode === "both");
+    const asked = new Set([...this.pins.entries.map(pin => pin.nodeId), this.subject?.id ?? ""]);
+    for (const card of this.container.querySelectorAll<HTMLElement>(".node-card[data-id]")) {
+      const id = card.dataset.id!;
+      card.classList.toggle("is-history-changed", !!changes?.changed.has(id));
+      card.classList.toggle("is-history-asked", asked.has(id));
+    }
+  }
   /** Files kept available only to read; they add no neighborhood pin. */
   get readingFiles(): ReadonlySet<string> { return readingFiles(this.options.state.reading ?? []); }
   /** Screen position of a file's readable identity, shared across perspectives. */
@@ -535,7 +597,7 @@ export class LocalViewController implements LocalViewApi {
 
   /** Draw every scope through the same branch stage while owning its camera and render lifecycle. */
   private drawScene(): void {
-    const { state, graphData } = this.options;
+    const { state } = this.options, graphData = this.graph;
     const tuning = state.tuning.localMap;
     cancelAnimationFrame(this.readingFrame);
     this.readingFrame = 0;
@@ -579,7 +641,7 @@ export class LocalViewController implements LocalViewApi {
       this.mapHasInitialFit = false;
       this.mapInitialTransform = null;
     }
-    const centeredId = state.selectedNode?.id ?? null;
+    const centeredId = this.subject?.id ?? null;
     if (centeredId !== this.lastCenteredNodeId) {
       this.readingVisible = true;
       this.mapHasInitialFit = false;
@@ -603,6 +665,7 @@ export class LocalViewController implements LocalViewApi {
     this.reading?.updatePresentation(this.readingVisible);
     const stage = this.stage ?? (this.stage = createStage(root));
     renderBranches(this, stage);
+    this.applyHistoryEmphasis();
     if (path) this.fitMapToPath();
     else if (!this.mapHasInitialFit) this.fitMapToContent();
     else this.updateMapTransform();
@@ -1213,10 +1276,10 @@ export class LocalViewController implements LocalViewApi {
     const { state } = this.options;
     if (this.pins.entries.some(pin => pin.nodeId === node.id)) return true;
     const archetype = (node.archetype || "").toLowerCase();
-    if (archetype === "test" && !state.filters.showTests && node.id !== state.selectedNode?.id) {
+    if (archetype === "test" && !state.filters.showTests && node.id !== this.subject?.id) {
       return false;
     }
-    if (archetype === "asset" && !state.filters.showAssets && node.id !== state.selectedNode?.id) {
+    if (archetype === "asset" && !state.filters.showAssets && node.id !== this.subject?.id) {
       return false;
     }
     return true;
@@ -1224,7 +1287,7 @@ export class LocalViewController implements LocalViewApi {
 
   /** Resolves a node by `id` from the full graph data, or returns `undefined` if not found. */
   resolveNode(id: string): ExplorerNodePayload | undefined {
-    return this.options.graphData.nodes.find(node => node.id === id);
+    return this.graph.nodes.find(node => node.id === id);
   }
 
   /** Invokes the `onSelectNode` callback to open a node in the detail panel. */

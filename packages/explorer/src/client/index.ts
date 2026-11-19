@@ -310,6 +310,9 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   };
   syncStatsLine();
 
+  /** A file the 2D map draws, by its name at the moment shown, as the identity the shell keeps: today's, or its own reference. */
+  const todayFile = (id: string): string => shownMoment ? shownMoment.fileReference(id) : id;
+  const todayNode = (node: ExplorerNodePayload): ExplorerNodePayload => shownMoment ? nodesById.get(todayFile(node.id)) ?? node : node;
   const localView = createLocalView({
     state,
     readingLinks: { files, nodesById, bundledMarkdown },
@@ -329,18 +332,20 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     },
     bottomObstructions: () => [...document.querySelectorAll<HTMLElement>(".perspective-controls:not([hidden]), #controls")]
       .map(element => element.getBoundingClientRect()).filter(rect => rect.width > 0 && rect.height > 0),
-    onPressPin: pressPin,
-    onUnpinNode: unpinNode,
-    onCloseNode: closePinnedNode,
-    onOpenDirectory: openRetainedDirectory,
-    onCloseDirectory: closeRetainedDirectory,
+    // At a moment of the history the cards are the moment's files, by their names then; each action goes to the file or
+    // directory as it stands today, or to the file's own reference where today has none (2026-11-19).
+    onPressPin: (nodeId, symbol) => pressPin(todayFile(nodeId), symbol),
+    onUnpinNode: nodeId => unpinNode(todayFile(nodeId)),
+    onCloseNode: nodeId => closePinnedNode(todayFile(nodeId)),
+    onOpenDirectory: directory => openRetainedDirectory(shownMoment?.directoryToday(directory) ?? directory),
+    onCloseDirectory: directory => closeRetainedDirectory(shownMoment?.directoryToday(directory) ?? directory),
     graphData,
     resolveLinkEndpoint,
-    onSelectNode: node => handleNodeClick(node),
-    onRecenterNode: node => recentreOn(node),
-    onFocusSidebar: (node, symbol) => focusSidebar(node, symbol),
-    onShowNodeActions: showNodeActions,
-    onShowDirectoryActions: showDirectoryActions,
+    onSelectNode: node => handleNodeClick(todayNode(node)),
+    onRecenterNode: node => recentreOn(todayNode(node)),
+    onFocusSidebar: (node, symbol) => focusSidebar(todayNode(node), symbol),
+    onShowNodeActions: (node, symbol, anchor) => showNodeActions(todayNode(node), symbol, anchor),
+    onShowDirectoryActions: (directory, anchor) => showDirectoryActions(shownMoment?.directoryToday(directory) ?? directory, anchor),
     onBackwardConnections: count => {
       if (count === backwardConnections) return;
       backwardConnections = count;
@@ -387,9 +392,10 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     }
   });
 
-  // The history of the 3D Local Map: the scrubber and the step panel over the sequence the bundle carries (ticket C4).
+  // The history of the Local Map: the scrubber and the step panel over the sequence the bundle carries (ticket C4), one
+  // control over both perspectives since 2026-11-19, whose moment holds across a switch between them.
   const historyControl = createHistoryControl({
-    parent: requireElement("view-graph"),
+    parent: requireElement("views"),
     room: requireElement("main"),
     bundled: bundle.history,
     preloaded: preloadedHistory,
@@ -402,6 +408,13 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
       if (origin && state.destination) reportPath(origin, state.destination, false);
       syncRetainedWords();
       forceGraphView.setMoment(moment, renames, energy, changes);
+      // The 2D map (2026-11-19): while the thumb drags, its cards keep their places and only light or fade; at rest the
+      // picture is drawn at the moment and settles with the map's own move.
+      localView.setMoment(moment, changes ?? moment);
+      if (localView.isShown()) {
+        if (energy === 0) localView.applyHistoryEmphasis();
+        else localView.render();
+      }
       if (state.inspection) renderInspection();
       syncReaderNote();
       syncStatsLine();
@@ -806,7 +819,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     }
     const node = nodesById.get(item.pin.nodeId);
     if (!node) return;
-    if (historyControl.absence(item) && state.perspective === "3d") historyControl.showFile(node.id);
+    if (historyControl.absence(item)) historyControl.showFile(node.id);
     if (state.perspective === "2d") localView.focusNode(node.id);
     else forceGraphView.focusNode(node.id);
     persistExploration();
@@ -996,7 +1009,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     hopsSelect.hidden = state.perspective !== "3d";
     hopsSelect.disabled = changingPerspective || !!localView.getActivePath();
     hopsSelect.value = String(state.tuning.forceGraph.hops);
-    historyButton.hidden = state.perspective !== "3d" || !historyControl.available;
+    historyButton.hidden = !historyControl.available;
     historyButton.setAttribute("aria-pressed", String(historyControl.isOpen()));
     connectionsButton.setAttribute("aria-pressed", String(state.spatialLayout === "connections"));
     structureButton.setAttribute("aria-pressed", String(state.spatialLayout === "structure"));
@@ -1023,7 +1036,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     graphButton.title = strength !== "none" ? `${backwardConnections} ${backwardConnections === 1 ? "connection runs" : "connections run"} backward in 2D. Explore this scope in 3D.` : "Local Map in 3D";
     state.retentionOrder = reconcileRetained(retentionState()).retentionOrder;
     historyControl.sync({
-      visible: state.view === "map" && state.perspective === "3d",
+      visible: state.view === "map",
       pins: { files: [...new Set((state.pins ?? EMPTY_PIN_SET).entries.map(pin => pin.nodeId))], directories: [...(state.openDirectories ?? [])] },
       subject: state.selectedNode?.id ?? null,
       showAuthors: state.showAuthors ?? false,
@@ -1099,8 +1112,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     // A pin-only exploration has an identity to hold too, without turning that pin into the selected subject.
     const visualId = target?.id ?? state.pins?.entries.at(-1)?.nodeId;
     let anchor = visualId && source ? source.getSubjectAnchor(visualId) : null;
-    // The 2D map draws today's docs: leaving 3D returns the picture to today and closes the history.
-    if (perspective === "2d") historyControl.leave();
+    // Since 2026-11-19 the moment of the history holds across a switch of perspective: both maps draw it.
     state.selectedNode = target;
     state.view = "map";
     state.perspective = perspective;
@@ -1376,7 +1388,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     try { runPath(); } finally { restoringPath = false; }
   }
   // An address that names a commit opens the 3D picture on that moment, before the first drawing.
-  if (state.historyCommit && state.view === "map" && state.perspective === "3d") void historyControl.showCommit(state.historyCommit);
+  if (state.historyCommit && state.view === "map") void historyControl.showCommit(state.historyCommit);
   watchLocalKinds();
   renderCurrentView();
   renderInspection();
@@ -1519,7 +1531,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     }
     renderCurrentView();
     // The moment the address names, or today; the history turns the write this makes into a rewrite of the entry.
-    if (view === "map" && state.perspective === "3d") await historyControl.showCommit(exploration.commit);
+    if (view === "map") await historyControl.showCommit(exploration.commit);
     else historyControl.leave();
     schedulePersistNav();
     highlightSelectedCards();
@@ -1638,7 +1650,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
    */
   function syncReaderNote(): void {
     const target = state.inspection;
-    const moment = target && state.view === "map" && state.perspective === "3d" ? momentWords() : null;
+    const moment = target && state.view === "map" ? momentWords() : null;
     if (!target || !moment) {
       const absent = target?.kind === "file" ? historyControl.absence({ kind: "pin", pin: { nodeId: target.nodeId, symbol: "*" } }) : null;
       detailPanel.setNote(absent ? `Not in today's bundle: ${absent}.` : null);

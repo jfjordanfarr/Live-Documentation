@@ -609,3 +609,10 @@ body.zoom-controls-active #view-map { height: calc(100% - 70px - var(--history-r
    layer goes so that the picture is drawn afresh at its own scale. Kept always, the layer was rastered once and stretched
    by the GPU, the blur close up and the aliasing far out the owner saw (Turn 17); the controller sets the class. */
 #map-viewport.camera-moving { will-change: transform; }
+
+/* The step of the history on the 2D map (2026-11-19), by Tuning's Changed Files as in 3D: a card the step changed glows
+   with the history's white edge where the mode glows; where it dims, the cards the step left fade, save what was asked
+   about, the pins and the subject, which keep their look (the fading rule's limit). Classes only, so the thumb's drag
+   lays nothing out. */
+#map-container.history-glows .node-card.is-history-changed { box-shadow: 0 0 0 2px var(--history-changed); }
+#map-container.history-dims .node-card:not(.is-history-changed):not(.is-history-asked) { opacity: .3; }

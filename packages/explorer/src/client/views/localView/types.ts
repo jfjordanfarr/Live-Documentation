@@ -4,6 +4,7 @@ import type {
   ExplorerLinkPayload,
   ExplorerNodePayload
 } from "../../../shared/types";
+import type { HistoryChanges, HistoryMoment } from "../../history/moment";
 import type { ReaderLinkContext } from "../../reader-links";
 import type { ExplorerState, TestCoverageMap } from "../../types";
 import type { InspectionTarget } from "../../types";
@@ -71,6 +72,10 @@ export interface LocalExplorationFrame {
  */
 export interface LocalViewApi {
   render(): void;
+  /** Show a moment of the history, or today (null), with the step's changes; the caller renders when the picture should settle. */
+  setMoment(moment: HistoryMoment | null, changes: HistoryChanges | null): void;
+  /** Mark the step's changes on the cards drawn, without laying anything out again: the picture while the thumb drags. */
+  applyHistoryEmphasis(): void;
   /** Refresh unchanged fixed-slot reading in place; false when a structural render is required. */
   tryRefreshReading(): boolean;
   /** Whether the Local Map is the view the page shows: the map view in its 2D perspective. */
