@@ -1,6 +1,6 @@
 # The .NET gaps, measured against Microsoft's own tools
 
-Current as of November 19, 2026, end of the third leg. A builder measured the six .NET Framework gaps the [cold run](../cold-run/README.md) found, on two public codebases and the repository's estate sample, before changing any reader; the first leg's tables below count what the reader drew before any mend. The second leg mended directives, filename case and solutions, and found the cause of the designer puzzle: see [the second leg](#second-leg-the-mends-and-the-puzzle). The third leg narrowed `~/`, followed `this.`, and compared the C# reader's dependency lines with the compiler's over both corpora: see [the third leg](#third-leg-rulings-built-and-the-compiler-comparison). Every number counts something an oracle independent of our reader found, then what our reader draws.
+Current as of November 19, 2026, end of the fourth leg, which resolved C# type names within what each file's project can see and indexed the lookups that resolution rests on: see [the fourth leg](#fourth-leg-type-names-within-the-projects-reach). A builder measured the six .NET Framework gaps the [cold run](../cold-run/README.md) found, on two public codebases and the repository's estate sample, before changing any reader; the first leg's tables below count what the reader drew before any mend. The second leg mended directives, filename case and solutions, and found the cause of the designer puzzle: see [the second leg](#second-leg-the-mends-and-the-puzzle). The third leg narrowed `~/`, followed `this.`, and compared the C# reader's dependency lines with the compiler's over both corpora: see [the third leg](#third-leg-rulings-built-and-the-compiler-comparison). Every number counts something an oracle independent of our reader found, then what our reader draws.
 
 ## Corpora and oracles
 
@@ -240,3 +240,53 @@ The compiler's that we lack, by cause:
 The first row is by design so far: a dependency line says which declared types a file names, and a file that calls `settings.WebsitePath` on a `LocalSettings` it never names does not list `LocalSettings.cs`. The second and third rows are type names the reader did not resolve; they have not been read one by one.
 
 So "95% of dependency lines resolved" in the cold run counts lines that found a file. Against the compiler, 97% of DNN's C#-to-C# lines and 84% of mojoPortal's are lines the compiler agrees with; the rest are mostly lines that found the wrong one of several same-named types.
+
+## Fourth leg: type names within the project's reach
+
+Measured at `c6b8674b` (project reach and the arity distinction), against the third leg's docs at `30edd708`, with the same compiler edges.
+
+### The rule as built
+
+A C# file belongs to the project in the nearest folder above it with a project file. A type name resolves at the nearest tier that declares it: the file's own project; the projects it references directly; then, for an SDK-style project only, what those reference in turn. The two forms differ as MSBuild has them: a classic project passes only its direct references to the compiler (the references of a reference are copied to the output folder, not compiled against), while an SDK-style project passes its references' references too unless it sets `DisableTransitiveProjectReferences`; a `ProjectReference` marked `ReferenceOutputAssembly="false"` passes nothing. Several declarations at that tier link when they are halves of one partial type in one project, or one name with different numbers of type parameters (`DnnHelper` and `DnnHelper<TModel>`); otherwise the name is ambiguous and nothing is drawn. A declaration outside the reach is never linked. A file no project holds keeps the whole-workspace reading, but several namesakes draw nothing. Partial peers are sought only in the file's own project. A type named in a string for reflection still resolves across the workspace, since reflection loads whatever assembly is there.
+
+The first build, without the arity distinction, lost 40 of DNN's lines the compiler confirms, all of them a file naming `DnnHelper` or `DnnHtmlHelper` where the project declares both the plain and the generic type (`scripts/lost_agreement.py`); the arity distinction restored all 40.
+
+### The compiler table after
+
+| | DNN before | DNN after | mojoPortal before | mojoPortal after |
+| --- | ---: | ---: | ---: | ---: |
+| Our C#-to-C# dependency lines | 20,991 | 20,989 | 8,180 | 6,933 |
+| In both | 20,390 | 20,390 | 6,894 | 6,895 |
+| Ours only | 601 | 599 | 1,286 | 38 |
+| of which we chose a namesake | 30 | 30 | 887 | 0 |
+| of which declared in several files, the compiler bound none | 22 | 20 | 376 | 18 |
+| The compiler's only | 4,458 | 4,458 | 1,323 | 1,322 |
+
+"In both" did not fall on either corpus. On mojoPortal the namesake rows all but empty. On DNN they do not: the 30 are names such as `FileOrder`, which `DotNetNuke.Web.Client` declares and `DotNetNuke.Abstractions` declares in another namespace; the reader takes the own project's, and the compiler binds the other. That is a question of which namespace the compiler searches first, not of project reach, and has not yet been read line by line.
+
+**Reading by a seeded draw (seed 1119, `scripts/reach_sample.py`).** Of the lines the mend removed, 30 drawn on mojoPortal (of 1,248 removed) and all 6 on DNN: the compiler binds none of them, so every removal is right. Of the lines kept whose target has a namesake elsewhere, 30 drawn on each: the compiler binds 30 of 30 on mojoPortal and 27 of 30 on DNN. One of DNN's three is `SettingsViewBase.cs` linked to `ISettingsView{TModel}.cs`, the same question of arity as above; the other two have not been read.
+
+This repository's own C# docs did not move: regeneration changed only the docs of the files edited.
+
+### The lookups, counted
+
+`scripts/csharp-scale.ts` runs the C# reader's two passes over a seeded draw of N C# files with every project file, and `scripts/add_counters.py` adds counters (never committed). Before is project reach (`086140cc`, and `c6b8674b` for the later runs; the arity distinction changes no count); after is `f201fc8f`, which changes only how the lookups are made:
+
+| Files | Type-name lookups before / after | Namespace comparisons before / after | Peer member comparisons before / after |
+| --- | --- | --- | --- |
+| DNN 400 | 2,259,904 / 52,494 | 205,846 / 2,476 | 42 / 50 |
+| DNN 1,000 | 5,643,504 / 313,006 | 579,886 / 6,194 | 233,984 / 9,212 |
+| DNN 2,000 | 10,333,264 / 860,498 | 1,194,610 / 12,348 | 391,000 / 14,326 |
+| mojoPortal 400 | 2,765,474 / 47,266 | 21,846 / 1,300 | 141,874 / 4,394 |
+| mojoPortal 1,000 | 6,258,518 / 202,288 | 60,752 / 3,052 | 859,400 / 24,762 |
+| mojoPortal 1,900 (all) | 12,616,904 / 626,886 | 133,634 / 5,672 | 4,155,398 / 92,808 |
+
+A namespace question is now one set lookup, so namespace comparisons equal the questions and grow with the files. A peer member comparison is now one map lookup per peer; before, it was a scan of the peer's members. Type-name lookups are map lookups after the mend as before; they fall about twentyfold because a name no workspace type ends with is set aside at once. Two counts still grow faster than the files, for a reason of the experiment: a random draw of N files holds both halves of a pair, or a name and its declaration, with a likelihood that grows with N, so the work that exists grows faster than N in a draw and not in a corpus. The outputs of all six runs are identical before and after (the same digest of every dependency). Over the whole corpora, `f201fc8f` regenerated the docs `c6b8674b` had written, in place: every one of DNN's 10,776 docs and mojoPortal's 7,911 came out unchanged, and `diff -r` against a copy, the index included, finds no differing file.
+
+Seconds say little tonight: the load average was 18 to 40 throughout. The C# reader's main pass over 2,000 DNN files took 9.7 s before and 7.7 s after (load 21 and 33); over all 1,900 of mojoPortal's, 12.3 s and 7.1 s (load 18 and 29). The index pass, which parses every file and is dominated by the parser, moved with the load (52 and 69 s; 85 and 60 s). The whole regeneration after took 247 s for DNN and 151 s for mojoPortal, run side by side at a load of 16 to 24.
+
+### Not done in this leg
+
+- The 40 seeded readings of the compiler's edges that we lack where only the target declares the name (628 and 172), and their mends.
+- Keeping the reasons for an unlinked path where a later change can hand them to a `notices` channel: `lookUpWorkspaceFile` in `dotnetPaths.ts` already returns `missing` or `ambiguous`; `resolveDirectivePath` in `aspnet.ts` and `narrowFor` in `csharp.ts` collapse their reasons into no link and would need to return them.
+- The configuration reads and the procedure named from C#.
