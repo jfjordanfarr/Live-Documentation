@@ -231,7 +231,8 @@ interface MarkdownNode {
   parent: MarkdownNode | null;
   walker(): { next(): { entering: boolean; node: MarkdownNode } | null };
 }
-const { Parser } = createRequire(import.meta.url)("commonmark") as { Parser: new () => { parse(text: string): MarkdownNode } };
+// Resolved from the workspace's root, where vitest runs: this file also builds into CommonJS, where `import.meta` is not.
+const { Parser } = createRequire(path.resolve("package.json"))("commonmark") as { Parser: new () => { parse(text: string): MarkdownNode } };
 
 /** The one-based line ranges of a doc's docstring bodies, laid out as the writer lays a doc's symbols out. */
 function bodyRanges(doc: LiveDoc, lines: readonly string[]): Array<[number, number]> {
