@@ -1,0 +1,111 @@
+{
+  "task": "estate-directory",
+  "start": "http://127.0.0.1:8792/samples/estate/",
+  "words": "Can you open the PaymentService folder in this map and tell me how the files in it connect?",
+  "model": "claude-opus-5-5",
+  "effort": "medium",
+  "variant": "look-only",
+  "maxActions": 60,
+  "site": "/workspaces/Live-Documentation/dist/explorer",
+  "systemPrompt": "You are at a web browser window. Through your tools you can see the window and use its mouse and keyboard, and nothing else. Someone has sent you a link, already open in the window, and a message. Do what they ask as a visitor to the page would, then reply to them in plain words. Your reply is all they will read. If you copied something to the clipboard, say so: what you copied reaches them with your reply.",
+  "prompt": "Can you open the PaymentService folder in this map and tell me how the files in it connect?\n\nhttp://127.0.0.1:8792/samples/estate/",
+  "startedAt": "2026-11-18T23:49:15.037Z",
+  "finishedAt": "2026-11-18T23:50:07.968Z",
+  "exitCode": 0,
+  "outcome": "success",
+  "wallMs": 52929,
+  "apiMs": 24944,
+  "turns": 12,
+  "assistantMessages": 18,
+  "toolCalls": 11,
+  "actions": 11,
+  "actionsByTool": {
+    "look": 6,
+    "point": 1,
+    "click": 4,
+    "drag": 0,
+    "scroll": 0,
+    "type": 0,
+    "press": 0
+  },
+  "usage": {
+    "input": 14,
+    "cacheWrite": 14605,
+    "cacheRead": 47003,
+    "output": 2064
+  },
+  "costUsd": 0.16757660000000002,
+  "modelUsage": {
+    "claude-opus-5-5": {
+      "inputTokens": 14,
+      "outputTokens": 2064,
+      "cacheReadInputTokens": 47003,
+      "cacheCreationInputTokens": 14605,
+      "webSearchRequests": 0,
+      "costUSD": 0.16757660000000002,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 939,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 14605,
+      "canonicalModel": "claude-opus-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "clipboard": [],
+  "finalAddress": "http://127.0.0.1:8792/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeAHc2kjou17D8Cj1EAnCVwCiYLlSpcdO2bftOXgDKbBT4CGzonACesizwDqjGADJc7ghePn4gDlwcZA5UVvqQDAYsAL7wAGaoDuhcNE74ikQRVADWMpAAbKzEipgOqlxQffAkCBE6bKi09JBGxKhk4WxUqozwVKiSXCEAXqOQIiA60RSipEFYCMcM8KpOYDFQTAB0TAJLJGFzHhwglx8ENMBxZlQ3u8BBNBsMuAAlCQjN7wAj4RIAD1CYIhULgiHWHSCHFyGwsUKWq0kYNcXmGsVK8G4Fi4DihXwmnC4kgAQtEAApkKZbQmdADqZgpTJAOz2AC1UKgKAjvGw9BIGviTGxcorlaqZhqqFrIB8AJzbTB2ACCJQYChAilQ%2BF8Mty7mwADEnHY3eMzsopgARYHSmEgJ4rfDi5r4Nlus4ddYgCpVHJQarYHRceAAK0z2dzIFQUAA2iAywAdECSXVcdAcOrRGuwGsCzAXAFAhwvBo1gC6IHg1dr9cbzdb7c7diogLZfa4AHpg2DMIPh5Wa-h1lOQB2u3Oe4ulwfZ-Pe5EuO90DoMag83uAFQbgfwRlnUlkRsFUbwfhlqAkKQPuM7dguV6nmBR4QQ0N53okBbwImT6pm%2BtblqBh4Xoum5nuBl4NCua4gAOFRAA",
+  "init": {
+    "cwd": "/tmp/blind-tester-LhzY9Z",
+    "model": "claude-opus-5-5",
+    "permissionMode": "dontAsk",
+    "tools": [
+      "mcp__window__click",
+      "mcp__window__drag",
+      "mcp__window__look",
+      "mcp__window__point",
+      "mcp__window__press",
+      "mcp__window__scroll",
+      "mcp__window__type"
+    ],
+    "mcp_servers": [
+      {
+        "name": "window",
+        "status": "connected",
+        "source": "dynamic"
+      }
+    ],
+    "slash_commands": [],
+    "skills": [],
+    "agents": [
+      "claude",
+      "Explore",
+      "general-purpose",
+      "Plan",
+      "statusline-setup"
+    ],
+    "plugins": [
+      {
+        "name": "cc-plugin-agents-md",
+        "path": "builtin",
+        "source": "cc-plugin-agents-md@builtin"
+      },
+      {
+        "name": "cc-plugin-telemetry",
+        "path": "builtin",
+        "source": "cc-plugin-telemetry@builtin"
+      },
+      {
+        "name": "cc-plugin-privacy",
+        "path": "builtin",
+        "source": "cc-plugin-privacy@builtin"
+      },
+      {
+        "name": "cc-plugin-plugin-authoring",
+        "path": "builtin",
+        "source": "cc-plugin-plugin-authoring@builtin"
+      }
+    ],
+    "output_style": "default"
+  }
+}

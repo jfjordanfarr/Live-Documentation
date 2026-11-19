@@ -1,0 +1,123 @@
+{
+  "task": "estate-uses",
+  "start": "http://127.0.0.1:8792/samples/estate/?view=local&node=Contracts/IPaymentService.cs",
+  "words": "A colleague sent me this link to one of the files in our payments code. What uses this file?",
+  "model": "claude-haiku-5-5",
+  "effort": "default",
+  "variant": "look-only",
+  "maxActions": 60,
+  "site": "/workspaces/Live-Documentation/dist/explorer",
+  "siteAtStart": {
+    "index.html": "2026-11-18T23:23:05.209Z",
+    "explorer-data.json": "2026-11-18T23:23:04.838Z",
+    "samples/estate/explorer-data.json": "2026-11-18T22:31:50.787Z"
+  },
+  "systemPrompt": "You are at a web browser window. Through your tools you can see the window and use its mouse and keyboard, and nothing else. Someone has sent you a link, already open in the window, and a message. Do what they ask as a visitor to the page would, then reply to them in plain words. Your reply is all they will read. If you copied something to the clipboard, say so: what you copied reaches them with your reply.",
+  "prompt": "A colleague sent me this link to one of the files in our payments code. What uses this file?\n\nhttp://127.0.0.1:8792/samples/estate/?view=local&node=Contracts/IPaymentService.cs",
+  "startedAt": "2026-11-18T23:57:48.710Z",
+  "finishedAt": "2026-11-18T23:59:01.024Z",
+  "siteAtEnd": {
+    "index.html": "2026-11-18T23:23:05.209Z",
+    "explorer-data.json": "2026-11-18T23:23:04.838Z",
+    "samples/estate/explorer-data.json": "2026-11-18T22:31:50.787Z"
+  },
+  "siteChanged": false,
+  "exitCode": 0,
+  "outcome": "success",
+  "wallMs": 22723,
+  "lockWaitMs": 49589,
+  "apiMs": 13076,
+  "turns": 13,
+  "assistantMessages": 20,
+  "toolCalls": 12,
+  "actions": 12,
+  "actionsByTool": {
+    "look": 6,
+    "point": 0,
+    "click": 6,
+    "drag": 0,
+    "scroll": 0,
+    "type": 0,
+    "press": 0
+  },
+  "usage": {
+    "input": 14,
+    "cacheWrite": 14528,
+    "cacheRead": 49791,
+    "output": 1927
+  },
+  "costUsd": 0.0043684100000000005,
+  "modelUsage": {
+    "claude-haiku-5-5": {
+      "inputTokens": 14,
+      "outputTokens": 1927,
+      "cacheReadInputTokens": 49791,
+      "cacheCreationInputTokens": 14528,
+      "webSearchRequests": 0,
+      "costUSD": 0.0043684100000000005,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 948,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 14528,
+      "canonicalModel": "claude-haiku-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "clipboard": [],
+  "finalAddress": "http://127.0.0.1:8792/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeAHc2kjou17D8Cj1EAnCVwCiYLlSpcdO2bftOXgDKbBT4CGzonACesizwDqjGADJc7ghePn4gDlwcZA5UVvqQDAYsAL7wAGaoDuhcNE74ikQRVADWMpAAbKzEipgOqlxQffAkCBE6bKi09JBGxKhk4WxUqozwVKiSXCEAXqOQIiA60RSipEFYCMcM8KpOYDFQTAB0TAJLJGFzHhwglx8ENMBxZlQ3u8BBNBsMuAAlCQjN7wAj4RIAD1CYIhULgiHWHSCHFyGwsUKWq0kYNcXmGsVK8G4Fi4DihXwmnC4kgAQtEAApkKZbQmdADqZgpTJAOz2AC1UKgKAjvGw9BIGviTGxcorlaqZhqqFrIB8AJzbTB2ACCJQYChAilQ%2BF8Mty7mwADEnHY3eMzsopgARYHSmEgJ4rfDi5r4Nlus4ddYgCpVHJQarYHRceAAK0z2dzsqgIG0VFJmHQHB0AHoAJICzAXAFAhwvBrvdC%2BdhESGQMtzSvVuuN5t2CttjtcLu%2BNNAA",
+  "init": {
+    "cwd": "/tmp/session-NvC5lJ",
+    "model": "claude-haiku-5-5",
+    "permissionMode": "dontAsk",
+    "tools": [
+      "mcp__window__click",
+      "mcp__window__drag",
+      "mcp__window__look",
+      "mcp__window__point",
+      "mcp__window__press",
+      "mcp__window__scroll",
+      "mcp__window__type"
+    ],
+    "mcp_servers": [
+      {
+        "name": "window",
+        "status": "connected",
+        "source": "dynamic"
+      }
+    ],
+    "slash_commands": [],
+    "skills": [],
+    "agents": [
+      "claude",
+      "Explore",
+      "general-purpose",
+      "Plan",
+      "statusline-setup"
+    ],
+    "plugins": [
+      {
+        "name": "cc-plugin-agents-md",
+        "path": "builtin",
+        "source": "cc-plugin-agents-md@builtin"
+      },
+      {
+        "name": "cc-plugin-telemetry",
+        "path": "builtin",
+        "source": "cc-plugin-telemetry@builtin"
+      },
+      {
+        "name": "cc-plugin-privacy",
+        "path": "builtin",
+        "source": "cc-plugin-privacy@builtin"
+      },
+      {
+        "name": "cc-plugin-plugin-authoring",
+        "path": "builtin",
+        "source": "cc-plugin-plugin-authoring@builtin"
+      }
+    ],
+    "output_style": "default"
+  }
+}

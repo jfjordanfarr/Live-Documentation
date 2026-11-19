@@ -1,0 +1,7 @@
+I found Hub/ServiceRouting.cs. Opening it switched the explorer to its Local Map view, which shows the ServiceRouting.cs card with its symbols: ServiceRouting, EndpointPrefix, EndpointNameFor and Internals. A link runs from it to PaymentHub.cs beside it.
+
+This is the address in the browser right now. The page keeps what you're seeing in the link itself, so opening it should give you the same view:
+
+http://127.0.0.1:8792/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeAHc2kjou17D8Cj1EAnCVwCiYLlSpcdO2bftOXgDKbBT4CGzonACesizwDqjGADJc7ghePn4gDlwcZA5UVvqQDAYsAL7wAGaoDuhcNE74ikQRVADWMpAAbKzEipgOqlxQffAkCBE6bKi09JBGxKhk4WxUqozwVKiSXCEAXqOQIiA60RSipEFYCMcM8KpOYDFQTAB0TAJLJGFzHhwglx8ENMBxZlQ3u8BBNBsMuAAlCQjN7wAj4RIAD1CYIhULgiHWHSCHFyGwsUKWq0kYNcXmGsVK8G4Fi4DihXwmnC4kgAQtEAApkKZbQmdADqZgpTJAOz2AC1UKgKAjvGw9BIGviTGxcorlaqZhqqFrIB8AJzbTB2ACCJQYChAilQ%2BF8Mty7mwADEnHY3eMzsopgARYHSmEgJ4rfDi5r4Nlus4ddYgCpVHJQarYHRceAAK0z2dzIFQUAA2iAywAdED4dY12A1gASZFEAHogQ4Xg0EStwRt3ugdA2awAqGsAXRAE-gjLOpLI6HyuRA2ygIBb7c73cRffWqkHvng-DLoEhkA3rY7bJ3vbI-YPQ9XZ3Xo9TE4qQA
+
+The address starts with 127.0.0.1, so it only works on the same machine where that local server is running.

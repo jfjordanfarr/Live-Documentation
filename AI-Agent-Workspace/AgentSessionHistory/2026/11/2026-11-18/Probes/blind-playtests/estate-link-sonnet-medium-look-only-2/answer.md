@@ -1,0 +1,7 @@
+The URL encodes the state, so I'll share it.
+
+I found Hub/ServiceRouting.cs on the map. Searching for it opened the Local Map with the file selected. It sits in the Hub group and offers three symbols: ServiceRouting, EndpointPrefix and EndpointNameFor. It also has an Internals link that connects to Hub/PaymentHub.cs.
+
+This link opens the same view. The page's address has the view state built into it:
+
+http://127.0.0.1:8792/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeAHc2kjou17D8Cj1EAnCVwCiYLlSpcdO2bftOXgDKbBT4CGzonACesizwDqjGADJc7ghePn4gDlwcZA5UVvqQDAYsAL7wAGaoDuhcNE74ikQRVADWMpAAbKzEipgOqlxQffAkCBE6bKi09JBGxKhk4WxUqozwVKiSXCEAXqOQIiA60RSipEFYCMcM8KpOYDFQTAB0TAJLJGFzHhwglx8ENMBxZlQ3u8BBNBsMuAAlCQjN7wAj4RIAD1CYIhULgiHWHSCHFyGwsUKWq0kYNcXmGsVK8G4Fi4DihXwmnC4kgAQtEAApkKZbQmdADqZgpTJAOz2AC1UKgKAjvGw9BIGviTGxcorlaqZhqqFrIB8AJzbTB2ACCJQYChAilQ%2BF8Mty7mwADEnHY3eMzsopgARYHSmEgJ4rfDi5r4Nlus4ddYgCpVHJQarYHRceAAK0z2dzIFQUAA2iAywAdED4dY12A1gASZFEAHogQ4Xg0EStwRt3ugdA2awAqGsAXRAE-gjLOpLI6HyuRA2ygIBb7c73cRffWqkHvng-DLoEhkA3rY7bJ3vbI-YPQ9XZ3Xo9TE4qQA
