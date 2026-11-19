@@ -498,3 +498,37 @@ The decoders are the platform's own `TextDecoder`. `sourceText.test.ts` checks r
 `json.ts:166` reads a `tsconfig` through TypeScript's own `ts.sys.readFile`, which already decodes by the mark, and stays.
 
 `sourceEncodings.test.ts` saves one file per language as UTF-16 LE and BE with a mark, and as Windows-1252, each with a non-ASCII word in what the reader reports. It holds each one's symbols, descriptions and dependency lines to its UTF-8 twin. All 21 cases failed before the change.
+
+**How a run says which rule read its files.** The generator classifies each file a reader reads with `decodeSourceText` and returns the files read as UTF-16, as Windows-1252, and not read as text. `generate` prints a line for each, for example `[live-docs] 1 file read as Windows-1252, since it is not UTF-8: src/ansi.py.` A file that is no text is named on stderr with the reason. The generator reads each such file's bytes a second time to classify them; the readers still open the file themselves.
+
+**The simplest correct form.** The generator reads each file's bytes once, decodes them with `decodeSourceText`, counts the rule, and hands the text to `analyzeSourceFile`. That function passes it to `analyzeWithLanguageAdapters` as `content`, and no reader opens its own file. The step was built for either form: `decodeSourceText` takes bytes, `readSourceText` a path. That form would change:
+- `analyzeSourceFile` and `buildWorkspaceIndexes`, to take or read the text once;
+- `LanguageAdapter.analyze`'s input, to carry `content`;
+- the first line of each adapter.
+
+The secondary reads (`go.mod`, `Cargo.toml`, a re-exporting file, DOM markup) would keep `readSourceText`. This leg did not change any signature.
+
+**The history's tree writer.** It already writes each commit's files as git stores them, byte for byte (`git` blobs written to the scratch tree without decoding), so the history's regeneration reads them through the same step with no change. I confirmed this by reading the tree writer's use of the blob bytes, not by a run.
+
+### The generator finishes a run that meets a file it cannot map
+
+`generator.ts` now wraps each file's work in one `try`, from the binary sniff to the write. Before writing, it reads the doc back with `parseLiveDoc`. A file that cannot be read, or whose doc the reader refuses, is skipped and recorded in `failed` with its source path and the reason. The run goes on to write every other doc, prune, and write the index over what it could map. `generate` then prints, on stderr:
+
+```
+[live-docs] Could not map 1 file; the rest of the map was written. The fault is Live Documentation's, not the file's; to leave a file out until it is mended, name it in the configuration's "exclude".
+  src/hostile.ts: Live Documentation wrote a doc for it that its own reader refuses: line 19: expected a symbol heading, found "not a line of the grammar"
+```
+
+It then exits 1. A failed file's old doc is removed only when the reader refuses it and it holds no authored words: that is the leftover of an earlier run that stopped on the file.
+
+**The test.** `generator.unmappable.test.ts` wraps the writer so that one file of three gets a doc the reader refuses, and makes a second workspace with a file that cannot be opened. Both cases failed before the change, the first with `.live-documentation/source/src/hostile.ts.md: line 19: …` as the cold run met it. The CLI's lines for the reading rules are covered in `generate-cli.test.ts`.
+
+**What I changed in `generator.ts`,** away from the ordering near line 137 and from `classifyChange`:
+- imports: `hasReader`, and `decodeSourceText, type SourceTextReading`;
+- the result's `failed` and `readings` fields, and the `SourceReadings` type;
+- two arrays beside `results`;
+- in the loop, `try {` before the binary sniff, the reading count, the read-back before `results.push`, and the `catch` after the write that records the failure and calls `removeRefusedDoc`;
+- the two fields in the return;
+- `noteReading` and `removeRefusedDoc` after `generateLiveDocs`.
+
+The loop's body inside the new `try` is left at its old indentation so that the join with the other branch's changes to this file stays small. Indent it at the join.

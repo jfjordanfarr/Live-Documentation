@@ -69,7 +69,7 @@ const MDMD = { root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md" };
  * `mine` and a configuration beside it; `other` is another repository with a configuration of its own and a folder
  * `src/deep` inside it; `bare` has no configuration, nor has any folder above it, and holds a folder `sub`.
  */
-const at = { own: "", given: "", mapped: "", boarded: "", unboarded: "", stand: "", other: "", bare: "", unread: "", broken: "", repository: "", noGit: "", orphans: "" };
+const at = { own: "", given: "", mapped: "", boarded: "", unboarded: "", stand: "", other: "", bare: "", unread: "", broken: "", repository: "", noGit: "", orphans: "", encodings: "" };
 
 /**
  * The code paths of the orphans workspace's docs, each written by the engine's own writer: an ordinary file, a file
@@ -113,6 +113,11 @@ beforeAll(async () => {
     fs.mkdirSync(path.dirname(path.join(at.unread, name)), { recursive: true });
     fs.writeFileSync(path.join(at.unread, name), "x\n", "utf8");
   }
+  // Python saved as Windows tools save it: UTF-16 with a mark, Windows-1252, and bytes that are no text the reading step knows.
+  at.encodings = makeWorkspace({});
+  fs.writeFileSync(path.join(at.encodings, "src", "wide.py"), Buffer.concat([Buffer.from([0xff, 0xfe]), Buffer.from("def wide():\r\n    pass\r\n", "utf16le")]));
+  fs.writeFileSync(path.join(at.encodings, "src", "ansi.py"), Buffer.from([...Buffer.from("# caf"), 0xe9, ...Buffer.from("\r\ndef ansi():\r\n    pass\r\n")]));
+  fs.writeFileSync(path.join(at.encodings, "src", "noise.py"), Buffer.from([0x64, 0x65, 0x66, 0x00, 0x01, 0xff, 0x00]));
   at.orphans = makeWorkspace({});
   for (const codePath of [...ORPHAN_SOURCES, "src/gone.ts"]) {
     if (codePath !== "src/a.ts" && codePath !== "src/gone.ts") {
@@ -163,6 +168,7 @@ beforeAll(async () => {
     recordNpm("npm from elsewhere", at.stand, "live-docs:generate", ["--config", "standing.json", "--workspace", "mine"]),
     record("generate, unread kinds", "generate.ts", ["--workspace", at.unread, "--dry-run"]),
     record("orphans", "find-orphans.ts", ["--workspace", at.orphans]),
+    record("generate, encodings", "generate.ts", ["--workspace", at.encodings, "--dry-run"]),
     record("generate, a repository", "generate.ts", ["--workspace", at.repository, "--dry-run"]),
     record("generate, a repository without git", "generate.ts", ["--workspace", at.repository, "--dry-run"], { PATH: at.noGit }),
     record("lint, failing", "lint.ts", ["--workspace", at.broken]),
@@ -272,6 +278,16 @@ describe("what git ignores", () => {
   it("is said to be read from the workspace's .gitignore alone outside a repository", () => {
     const result = ran("generate, unread kinds");
     expect(result.stdout).toContain(`[live-docs] Not in a git repository, so of what to leave out only ${path.join(at.unread, ".gitignore")} and the configuration's exclude are read.`);
+  });
+});
+
+describe("the rule that read each file's text", () => {
+  it("is said in a line for each rule other than UTF-8, and a file that is no text is named with why", () => {
+    const result = ran("generate, encodings");
+    expect(result.status, result.stderr).toBe(0);
+    expect(result.stdout).toContain("[live-docs] 1 file read as UTF-16: src/wide.py.\n");
+    expect(result.stdout).toContain("[live-docs] 1 file read as Windows-1252, since it is not UTF-8: src/ansi.py.\n");
+    expect(result.stderr).toContain("[live-docs] 1 file not read, since its bytes are not text in UTF-8, UTF-16 or Windows-1252: src/noise.py (it holds zero bytes");
   });
 });
 

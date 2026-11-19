@@ -172,6 +172,17 @@ function unreadKinds(sourcePaths: readonly string[]): Array<{ kind: string; coun
   return [...kinds.values()].sort((a, b) => b.count - a.count || compareText(a.kind, b.kind));
 }
 
+/** A count of files in words: "1 file", "12 files". */
+function files(count: number): string {
+  return `${count} file${count === 1 ? "" : "s"}`;
+}
+
+/** Up to ten paths, then how many more. */
+function listed(paths: readonly string[]): string {
+  const shown = paths.slice(0, 10).join(", ");
+  return paths.length > 10 ? `${shown}, +${paths.length - 10} more` : shown;
+}
+
 async function main(): Promise<void> {
   const args = parseArgs(process.argv.slice(2));
 
@@ -281,6 +292,27 @@ async function main(): Promise<void> {
   const unread = unreadKinds(layer4Result.files.filter((record) => record.change !== "skipped").map((record) => record.sourcePath));
   if (unread.length > 0) {
     console.log(`[live-docs] Not read, so their docs hold no symbols or links: ${unread.map(({ kind, count }) => `${count} ${kind}`).join(", ")}.`);
+  }
+
+  // Which rule read the files' text, when not UTF-8, so that a person learns their files were read by a rule and not by luck.
+  const { readings } = layer4Result;
+  if (readings.utf16.length > 0) {
+    console.log(`[live-docs] ${files(readings.utf16.length)} read as UTF-16: ${listed(readings.utf16)}.`);
+  }
+  if (readings.windows1252.length > 0) {
+    console.log(`[live-docs] ${files(readings.windows1252.length)} read as Windows-1252, since ${readings.windows1252.length === 1 ? "it is" : "they are"} not UTF-8: ${listed(readings.windows1252)}.`);
+  }
+  if (readings.unread.length > 0) {
+    console.warn(`[live-docs] ${files(readings.unread.length)} not read, since ${readings.unread.length === 1 ? "its bytes are" : "their bytes are"} not text in UTF-8, UTF-16 or Windows-1252: ${readings.unread.map(({ sourcePath, reason }) => `${sourcePath} (${reason})`).join("; ")}.`);
+  }
+
+  // The files the run could not map, each by its source path and the reason; the rest of the map was written.
+  if (layer4Result.failed.length > 0) {
+    console.error(`[live-docs] Could not map ${files(layer4Result.failed.length)}; the rest of the map was written. The fault is Live Documentation's, not the file's; to leave a file out until it is mended, name it in the configuration's "exclude".`);
+    for (const { sourcePath, reason } of layer4Result.failed) {
+      console.error(`  ${sourcePath}: ${reason}`);
+    }
+    process.exitCode = 1;
   }
 
   if (args.check && (layer4Result.written > 0 || layer4Result.deleted > 0)) {
