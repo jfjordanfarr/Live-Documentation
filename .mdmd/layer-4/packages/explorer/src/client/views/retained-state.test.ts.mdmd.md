@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/retained-state.test.ts
-- Generated At: 2026-10-14T04:03:02.660Z
+- Generated At: 2026-11-19T06:19:58.690Z
 
 ## Authored
 ### Purpose
@@ -30,9 +30,12 @@ _No public symbols detected_
 - [`pin-state.EMPTY_PIN_SET`](./pin-state.ts.mdmd.md#symbol-empty_pin_set)
 - [`pin-state.addPin`](./pin-state.ts.mdmd.md#symbol-addpin)
 - [`pin-state.getVisibleConnections`](./pin-state.ts.mdmd.md#symbol-getvisibleconnections)
+- [`retained-state.RetainedItem`](./retained-state.ts.mdmd.md#symbol-retaineditem)
 - [`retained-state.RetainedState`](./retained-state.ts.mdmd.md#symbol-retainedstate)
 - [`retained-state.clearRetainedDirectory`](./retained-state.ts.mdmd.md#symbol-clearretaineddirectory)
+- [`retained-state.othersReleasedWords`](./retained-state.ts.mdmd.md#symbol-othersreleasedwords)
 - [`retained-state.reconcileRetained`](./retained-state.ts.mdmd.md#symbol-reconcileretained)
+- [`retained-state.releaseOthers`](./retained-state.ts.mdmd.md#symbol-releaseothers)
 - [`retained-state.releaseRetained`](./retained-state.ts.mdmd.md#symbol-releaseretained)
 - [`retained-state.retainedItems`](./retained-state.ts.mdmd.md#symbol-retaineditems)
 - [`retained-state.retainedKey`](./retained-state.ts.mdmd.md#symbol-retainedkey)

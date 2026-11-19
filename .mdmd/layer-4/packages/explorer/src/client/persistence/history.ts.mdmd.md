@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/persistence/history.ts
-- Generated At: 2026-11-01T21:36:08.660Z
+- Generated At: 2026-11-19T06:19:57.010Z
 
 ## Authored
 ### Purpose
@@ -22,30 +22,39 @@ Back and Forward can require an asynchronously loaded historical selection. Rest
 ### Public Symbols
 #### `HistoryEntry` {#symbol-historyentry}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/history.ts#L11)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/history.ts#L12)
 
 ##### `HistoryEntry` — Summary
 What a write does to the history: a new entry, a rewrite of the current one, or nothing.
 
 #### `HistoryWrite` {#symbol-historywrite}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/history.ts#L14)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/history.ts#L15)
 
 ##### `HistoryWrite` — Summary
 Everything {@link entryFor} weighs.
 
 #### `entryFor` {#symbol-entryfor}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/history.ts#L28)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/history.ts#L34)
 - Returns: [`HistoryEntry`](#symbol-historyentry)
 - Parameters: `write`: [`HistoryWrite`](#symbol-historywrite)
 
 ##### `entryFor` — Summary
 Decides what one write to the address bar does to the history.
 
+#### `stepWithinPlace` {#symbol-stepwithinplace}
+- Type: function
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/history.ts#L70)
+
+##### `stepWithinPlace` — Summary
+Makes the next write in this task a new entry even though it stays in the place: for an action that changes so much
+within a place in one press that a person must be able to take it back by Back, as Unpin others does (2026-11-19).
+A single pin's toggle never calls this, so Back still does not walk through pin toggles.
+
 #### `startHistory` {#symbol-starthistory}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/history.ts#L75)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/history.ts#L95)
 
 ##### `startHistory` — Summary
 Starts the history for this page: how to read a place from an address, and what to do when Back or Forward lands on
@@ -53,28 +62,28 @@ an entry. Returns a function that stops listening.
 
 #### `commitUrl` {#symbol-commiturl}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/history.ts#L117)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/history.ts#L137)
 
 ##### `commitUrl` — Summary
 Writes an address: a new entry when it names another place, a rewrite of the current entry when it does not.
 
 #### `canGoBack` {#symbol-cangoback}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/history.ts#L142)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/history.ts#L166)
 
 ##### `canGoBack` — Summary
 Whether Back would return to an earlier place on this page.
 
 #### `canGoForward` {#symbol-cangoforward}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/history.ts#L147)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/history.ts#L171)
 
 ##### `canGoForward` — Summary
 Whether Forward would return to a place this page left by Back.
 
 #### `onHistoryChange` {#symbol-onhistorychange}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/history.ts#L152)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/history.ts#L176)
 
 ##### `onHistoryChange` — Summary
 Calls `listener` whenever the current entry changes.

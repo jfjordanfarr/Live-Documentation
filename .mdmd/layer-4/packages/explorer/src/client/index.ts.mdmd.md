@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/index.ts
 - Entry: declared
-- Generated At: 2026-11-19T04:29:43.898Z
+- Generated At: 2026-11-19T06:19:56.684Z
 
 ## Authored
 ### Purpose
@@ -62,6 +62,7 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`format.HistorySequence`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence) (type-only)
+- [`announce`](./announce.ts.mdmd.md#symbol-announce)
 - [`index.inferDefaultEntryNodeId`](./bootstrap/index.ts.mdmd.md#symbol-inferdefaultentrynodeid)
 - [`landing.landingOf`](./bootstrap/landing.ts.mdmd.md#symbol-landingof)
 - [`detailPanel.DetailPanelAction`](./detailPanel.ts.mdmd.md#symbol-detailpanelaction)
@@ -93,6 +94,7 @@ _No public symbols detected_
 - [`layout-presets.applyLayoutSettings`](./layout-presets.ts.mdmd.md#symbol-applylayoutsettings)
 - [`layout-presets.layoutSettingsOf`](./layout-presets.ts.mdmd.md#symbol-layoutsettingsof)
 - [`icon-button.iconButton`](./panels/icon-button.ts.mdmd.md#symbol-iconbutton)
+- [`item-menu.ItemCommand`](./panels/item-menu.ts.mdmd.md#symbol-itemcommand)
 - [`item-menu.createItemMenu`](./panels/item-menu.ts.mdmd.md#symbol-createitemmenu)
 - [`pin-tray.createPinTray`](./panels/pin-tray.ts.mdmd.md#symbol-createpintray)
 - [`sources-facts.sourcesFacts`](./panels/sources-facts.ts.mdmd.md#symbol-sourcesfacts-function)
@@ -114,6 +116,7 @@ _No public symbols detected_
 - [`history.canGoForward`](./persistence/history.ts.mdmd.md#symbol-cangoforward)
 - [`history.onHistoryChange`](./persistence/history.ts.mdmd.md#symbol-onhistorychange)
 - [`history.startHistory`](./persistence/history.ts.mdmd.md#symbol-starthistory)
+- [`history.stepWithinPlace`](./persistence/history.ts.mdmd.md#symbol-stepwithinplace)
 - [`index.applyPersistedUi`](./persistence/index.ts.mdmd.md#symbol-applypersistedui)
 - [`index.createPersistNavScheduler`](./persistence/index.ts.mdmd.md#symbol-createpersistnavscheduler)
 - [`index.createPersistUiScheduler`](./persistence/index.ts.mdmd.md#symbol-createpersistuischeduler)
@@ -129,6 +132,7 @@ _No public symbols detected_
 - [`graph-search.searchIndexOf`](./search/graph-search.ts.mdmd.md#symbol-searchindexof)
 - [`search-bar.SearchWords`](./search/search-bar.ts.mdmd.md#symbol-searchwords)
 - [`search-bar.createSearchBar`](./search/search-bar.ts.mdmd.md#symbol-createsearchbar)
+- [`types.DiscoveryTarget`](./types.ts.mdmd.md#symbol-discoverytarget) (type-only)
 - [`types.ExplorerState`](./types.ts.mdmd.md#symbol-explorerstate) (type-only)
 - [`types.InspectionTarget`](./types.ts.mdmd.md#symbol-inspectiontarget) (type-only)
 - [`types.LocalMapPerspective`](./types.ts.mdmd.md#symbol-localmapperspective) (type-only)
@@ -157,12 +161,16 @@ _No public symbols detected_
 - [`pin-state.pressSymbol`](./views/pin-state.ts.mdmd.md#symbol-presssymbol)
 - [`pin-state.removePinsForNode`](./views/pin-state.ts.mdmd.md#symbol-removepinsfornode)
 - [`pin-state.retainFile`](./views/pin-state.ts.mdmd.md#symbol-retainfile)
+- [`retained-state.OthersReleased`](./views/retained-state.ts.mdmd.md#symbol-othersreleased)
+- [`retained-state.OthersStrength`](./views/retained-state.ts.mdmd.md#symbol-othersstrength)
 - [`retained-state.RetainedItem`](./views/retained-state.ts.mdmd.md#symbol-retaineditem)
 - [`retained-state.RetainedState`](./views/retained-state.ts.mdmd.md#symbol-retainedstate)
 - [`retained-state.clearRetainedDirectory`](./views/retained-state.ts.mdmd.md#symbol-clearretaineddirectory)
 - [`retained-state.describeRetained`](./views/retained-state.ts.mdmd.md#symbol-describeretained)
 - [`retained-state.newestRetained`](./views/retained-state.ts.mdmd.md#symbol-newestretained)
+- [`retained-state.othersReleasedWords`](./views/retained-state.ts.mdmd.md#symbol-othersreleasedwords)
 - [`retained-state.reconcileRetained`](./views/retained-state.ts.mdmd.md#symbol-reconcileretained)
+- [`retained-state.releaseOthers`](./views/retained-state.ts.mdmd.md#symbol-releaseothers)
 - [`retained-state.releaseRetained`](./views/retained-state.ts.mdmd.md#symbol-releaseretained)
 - [`retained-state.retainedKey`](./views/retained-state.ts.mdmd.md#symbol-retainedkey)
 - [`retained-state.subjectAfterRelease`](./views/retained-state.ts.mdmd.md#symbol-subjectafterrelease)
