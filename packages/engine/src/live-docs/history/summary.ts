@@ -29,7 +29,7 @@
 import { createHash } from "node:crypto";
 
 import type { DocSection } from "../document";
-import { linkTarget, resolveDocLink, type EdgeBasis, type GraphEdge, type LiveDocGraph } from "../graph";
+import { linkTarget, type EdgeBasis, type GraphEdge, type LiveDocGraph } from "../graph";
 
 /** The version of the format of one change's summary in the cache. */
 // 4 since 2026-11-19: a file's `citedBy` holds the citing documents' paths, where 3 held the doc's labels.
@@ -116,10 +116,10 @@ export interface SummaryFile {
   /** Its `Re-Exported Symbol Anchors`, when it re-exports. */
   reExports?: ReExportRow[];
   /**
-   * The documents outside the Live Docs whose markdown linked to it, its `Cited By`, by their workspace paths read
-   * from the lines' links, when any did. Until format 4 the lines' labels, which write a backtick as an apostrophe. A
-   * name holding `#` or a percent-escape is misread (`docs/C#.md` as `docs/C`), since the link is written as a plain
-   * path and read here as a browser reads one; the mend waits on the doc reader's, which decodes such a link.
+   * The documents outside the Live Docs whose markdown linked to it, its `Cited By`, by their workspace paths, as the
+   * doc reader reads each line's name back, when any did. Format 3 kept the lines' labels when a label wrote a
+   * backtick as an apostrophe; the first form of format 4 read the path from the line's link and misread a name
+   * holding `#` or a percent-escape, until the doc writer and reader were made to give every name back (2026-11-19).
    */
   citedBy?: string[];
   /**
@@ -261,9 +261,9 @@ export function summarizeGraph(
         ...(entry.flags.length > 0 ? { flags: [...entry.flags] } : {})
       };
     });
-    // The citing document's path, which the reader of the summary holds to the bundle's exclusions, read from the
-    // link; its label, the path with a backtick written as an apostrophe, is made from it where the rows are read.
-    const citedBy = (file.citedBy ?? []).map((entry) => citingPath(file.docPath, entry));
+    // The citing document's path, as the doc reader reads the line's name back, whatever the name holds; the reader of
+    // the summary holds it to the bundle's exclusions.
+    const citedBy = (file.citedBy ?? []).map((entry) => entry.label);
     const reading = authored === undefined ? "read" : authored.get(file.docPath);
     files.push({
       path: file.codePath,
@@ -308,15 +308,4 @@ export function textHash(text: string): string {
 
 function compare(a: string, b: string): number {
   return a < b ? -1 : a > b ? 1 : 0;
-}
-
-/** A `Cited By` line's document by its workspace path, from the line's link, decoded as a browser reads it; its label where the link names nothing in the workspace. */
-function citingPath(docPath: string, entry: { label: string; link: string }): string {
-  let link = entry.link;
-  try {
-    link = decodeURIComponent(link);
-  } catch {
-    // A link that is not well-formed is read as written.
-  }
-  return resolveDocLink(docPath, link) ?? entry.label;
 }

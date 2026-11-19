@@ -131,10 +131,11 @@ describe("summarizeGraph", () => {
     expect(descriptionText(sections)).not.toContain("make");
   });
 
-  it("keeps a citing document by its path, read from the link, where the label writes a backtick as an apostrophe", () => {
-    const graph = graphOf(doc("src/a.ts", { citedBy: [{ label: "notes/a'b.md", link: "../../../notes/a%60b.md" }, { label: "notes/c d.md", link: "../../../notes/c%20d.md" }] }));
+  it("keeps a citing document by its path, as the doc reader reads it, whatever its name holds", () => {
+    // The doc writes the path as its line's name and the link percent-encoded; the reader gives the path back.
+    const graph = graphOf(doc("src/a.ts", { citedBy: [{ label: "docs/C#.md", link: "../../../docs/C%23.md" }, { label: "docs/50%41off.md", link: "../../../docs/50%2541off.md" }, { label: "notes/a`b.md", link: "../../../notes/a%60b.md" }] }));
     const { summary } = summarizeGraph(graph, "lens", "abc");
-    expect(summary.files[0].citedBy).toEqual(["notes/a`b.md", "notes/c d.md"]);
+    expect(summary.files[0].citedBy).toEqual(["docs/C#.md", "docs/50%41off.md", "notes/a`b.md"]);
   });
 
   it("refuses a doc without an archetype, which only a generator bug writes", () => {

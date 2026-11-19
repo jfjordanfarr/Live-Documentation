@@ -170,13 +170,13 @@ describe("the history over excluded code, documents the bundle excludes and symb
 
 /**
  * A document the bundle excludes whose name holds parentheses, citing a file. The summary is made with no bundle
- * exclusion, so the generator writes a `Cited By` line for it, and the doc reader cannot read a link holding `)` back
- * (`document.ts`; the independent review of 2026-11-19, finding 3): the summarizing process fails and the history with
- * it. The fault is the reader's, older than the history's change, and owed to the builder who owns the doc reader and
- * writer; this case waits on that mend, and is to become an ordinary case, the history finishing, once it lands.
+ * exclusion, so the generator writes a `Cited By` line for it; until the doc writer and reader were made to give every
+ * name back (2026-11-19, the branch joined that evening), the reader could not read a link holding `)` back, the
+ * summarizing process failed and the history with it (the independent review of 2026-11-19, finding 3). The case
+ * waited on that mend as an expected failure and is an ordinary case since the joining.
  */
-describe("the history over a document whose name holds parentheses (waiting on the doc reader's mend)", () => {
-  it.fails("finishes, the document's citation read back", () => {
+describe("the history over a document whose name holds parentheses", () => {
+  it("finishes, the document's citation read back", () => {
     const here = path.join(privateTemporary, "parentheses");
     fs.mkdirSync(path.join(here, "src"), { recursive: true });
     fs.mkdirSync(path.join(here, "notes"), { recursive: true });
@@ -193,13 +193,12 @@ describe("the history over a document whose name holds parentheses (waiting on t
 
 /**
  * A citing document whose name holds `#` or a percent-escape (the second pass of the independent review, finding 1):
- * the summary reads the citing path from the `Cited By` line's link, decoding it and dropping what follows `#`, but the
- * generator writes that link as a plain path, so `docs/C#.md` is kept as `docs/C` and `docs/50%41off.md` as
- * `docs/50Aoff.md`, and the check at the head fails. On the branch that mends the doc writer and reader, a generated
- * link's path is percent-encoded and the reader decodes it, so the right mend takes the citing path from the doc
- * reader's model when the branches join; these cases wait on that joining, and are to become ordinary cases then.
+ * the first form of the summary's format 4 read the citing path from the `Cited By` line's link, decoding it and
+ * dropping what follows `#`, so `docs/C#.md` was kept as `docs/C` and `docs/50%41off.md` as `docs/50Aoff.md`, and the
+ * check at the head failed. Since the joining with the branch that makes the doc writer and reader give every name back,
+ * the summary takes the citing path from the reader's model, the line's name, and the check holds.
  */
-describe("the history over a citing document whose name holds # or a percent-escape (waiting on the joining with the doc reader's mend)", () => {
+describe("the history over a citing document whose name holds # or a percent-escape", () => {
   async function checkedHistory(name: string): Promise<number | null> {
     const here = fs.mkdtempSync(path.join(privateTemporary, "citing-"));
     const config = { root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md" };
@@ -215,11 +214,11 @@ describe("the history over a citing document whose name holds # or a percent-esc
     return spawnSync(process.execPath, [tsxCli, "--tsconfig", tsconfigPath, historyScript, "--workspace", here, "--jobs", "1", "--check-head"], { encoding: "utf8", env: process.env }).status;
   }
 
-  it.fails("holds docs/C#.md as it is named, the check at the head passing", async () => {
+  it("holds docs/C#.md as it is named, the check at the head passing", async () => {
     expect(await checkedHistory("C#.md")).toBe(0);
   }, 300_000);
 
-  it.fails("holds docs/50%41off.md as it is named, the check at the head passing", async () => {
+  it("holds docs/50%41off.md as it is named, the check at the head passing", async () => {
     expect(await checkedHistory("50%41off.md")).toBe(0);
   }, 300_000);
 });
