@@ -12,6 +12,7 @@ Holds the related-documents rule to resolved paths, each once and sorted, and to
 
 ### Notes
 - Written 2026-10-20 with the rule ([Turn 9](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-20/2026-10-20.1.record.md#turn-9)). The links are written as this repository's docs write them, relative to a doc four folders deep; the exclusion case uses the repository's own pattern for its chat archive, which keeps raw captures out and lets summaries through.
+- Since 2026-11-19 a document whose name holds spaces, parentheses or a `#` is read by every form a markdown viewer opens, angle brackets, a bare target whose parentheses pair, and percent-encoding, and a citing document is named by its own path whatever it holds.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

@@ -22,6 +22,13 @@ describe("markdownLinkTargets", () => {
     ].join("\n");
     expect(markdownLinkTargets(text)).toEqual(["docs/plan.md#open-questions", "shots/one.png", "docs/with space.md", "README.md"]);
   });
+
+  it("reads a bare target whose parentheses pair, as CommonMark does", () => {
+    expect(markdownLinkTargets("See [the draft](notes/plan%20(draft).md \"a title\") and [another](app/(auth)/page.md#top).")).toEqual([
+      "notes/plan%20(draft).md",
+      "app/(auth)/page.md#top"
+    ]);
+  });
 });
 
 describe("relatedDocsOf", () => {
@@ -49,6 +56,14 @@ describe("relatedDocsOf", () => {
       "```"
     ].join("\n");
     expect(relatedDocsOf({ docPath: ".mdmd/layer-4/src/app/main.ts.mdmd.md", authored }, LOCATION)).toEqual([]);
+  });
+
+  it("reads a document whose name holds spaces, parentheses or a `#` by every form a markdown viewer opens", () => {
+    const authored = [
+      "In angle brackets [one](<../../notes/plan (draft).md>), bare [two](../../notes/plan%20(draft).md),",
+      "encoded [three](../../notes/plan%20%28draft%29.md#scope), and [a hash](../../notes/a%23b.md#a-heading)."
+    ].join("\n");
+    expect(relatedDocsOf({ docPath: ".mdmd/layer-4/a.ts.mdmd.md", authored }, LOCATION)).toEqual(["notes/a#b.md", "notes/plan (draft).md"]);
   });
 
   it("leaves out what the configuration's bundle exclusions name, as the bundle does", () => {
@@ -80,6 +95,17 @@ describe("citingDocuments", () => {
       ["src/app/main.ts", ["README.md"]],
       ["src/core/model.ts", ["README.md", "docs/design/notes.md"]],
       ["src/data/set%20one.json", ["README.md"]]
+    ]));
+  });
+
+  it("names a citing document by its own path whatever it holds, and a cited file whose name holds a `#` by its encoded link", () => {
+    const documents = [
+      { path: "notes/plan (draft) #2.md", text: "Starts at [main](../src/app/main.ts)." },
+      { path: "README.md", text: "The odd one is [here](src/a%23b.ts#L3)." }
+    ];
+    expect(citingDocuments(documents, new Set(["src/app/main.ts", "src/a#b.ts"]), LOCATION)).toEqual(new Map([
+      ["src/a#b.ts", ["README.md"]],
+      ["src/app/main.ts", ["notes/plan (draft) #2.md"]]
     ]));
   });
 

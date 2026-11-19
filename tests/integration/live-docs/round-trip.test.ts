@@ -9,6 +9,7 @@ import {
   normalizeLiveDocumentationConfig
 } from "../../../packages/engine/src/config/liveDocumentationConfig";
 import { parseLiveDoc, renderLiveDoc } from "../../../packages/engine/src/live-docs/document";
+import { readLiveDocGraph } from "../../../packages/engine/src/live-docs/graphFiles";
 import { generateLiveDocs } from "../../../packages/generator/src/generator";
 
 const REPO_ROOT = path.resolve(__dirname, "..", "..", "..");
@@ -35,6 +36,27 @@ describe("the Live Doc grammar over real docs", () => {
     expect(docs.length).toBeGreaterThan(100);
     for (const doc of docs.sort()) {
       expectRoundTrip(doc);
+    }
+  });
+
+  it("reads every committed Live Doc, checked out with CRLF line endings as Git for Windows does, into the same graph", async () => {
+    const config = normalizeLiveDocumentationConfig(
+      JSON.parse(fs.readFileSync(path.join(REPO_ROOT, ".live-docs.config.json"), "utf8"))
+    );
+    const workspaceRoot = fs.mkdtempSync(path.join(os.tmpdir(), "live-docs-crlf-"));
+    try {
+      const docs = await glob(`${config.root}/${config.baseLayer}/**/*${config.extension}`, { cwd: REPO_ROOT, nodir: true, dot: true });
+      expect(docs.length).toBeGreaterThan(100);
+      for (const doc of docs) {
+        const target = path.join(workspaceRoot, doc);
+        fs.mkdirSync(path.dirname(target), { recursive: true });
+        fs.writeFileSync(target, fs.readFileSync(path.join(REPO_ROOT, doc), "utf8").split("\n").join("\r\n"));
+      }
+      const [asWritten, asCheckedOut] = await Promise.all([readLiveDocGraph({ workspaceRoot: REPO_ROOT, config }), readLiveDocGraph({ workspaceRoot, config })]);
+      expect(Object.keys(asCheckedOut.files)).toHaveLength(docs.length);
+      expect(asCheckedOut).toEqual(asWritten);
+    } finally {
+      fs.rmSync(workspaceRoot, { recursive: true, force: true });
     }
   });
 

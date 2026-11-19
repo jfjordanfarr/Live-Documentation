@@ -787,7 +787,8 @@ describe("generateLiveDocs and names of punctuation only", () => {
       const graph = await readLiveDocGraph({ workspaceRoot, config });
       expect(graph.files["config/odd.json"].symbols.map((symbol) => [symbol.name, symbol.slug])).toEqual([
         ["a`b", "symbol-ab"],
-        ['""', "symbol-~"],
+        // The empty key reads back empty: its heading is `#### ""`, apart from a key spelled with two quotes.
+        ["", "symbol-~"],
         // The key beneath the empty one, apart from the key `c`, which the generator tells apart as two of one name.
         [":c (key overload 1)", "symbol-c-key-overload-1"],
         ["``", "symbol-~60~60"],

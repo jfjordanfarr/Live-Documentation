@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 
 import { composeDependencies, composeEntries, composeReExports, composeSymbolBlocks, computePublicSymbolHeadingInfo } from "./compose";
 import type { TypeReference, WorkspaceSymbolIndex } from "./coreTypes";
-import { renderLiveDoc, parseLiveDoc } from "./document";
+import { renderLiveDoc, parseLiveDoc, symbolName } from "./document";
 
 const workspaceRoot = path.resolve("/workspace-root");
 const liveDocsRootAbsolute = path.join(workspaceRoot, ".live-documentation", "source");
@@ -421,24 +421,38 @@ describe("the anchor of every symbol's heading", () => {
   it("writes every name a file can hold into a heading that reads back as that name, backticks, spaces and emptiness included", () => {
     const names = ["a`b", "``x", "`", " a", "a ", "   ", "plain", ""];
     const headings = computePublicSymbolHeadingInfo(names.map((name) => ({ name, kind: "key" })));
-    // Names that differ only by surrounding spaces are told apart as the generator tells any two of one name apart.
-    expect(computePublicSymbolHeadingInfo([{ name: "", kind: "key" }, { name: "a", kind: "key" }]).map((heading) => [heading.displayName, heading.slug])).toEqual([
-      ['""', "symbol-~"],
+    // An empty name is its own; the doc writes it as `""`, apart from a key spelled with two quotes, which is a code span.
+    const empty = computePublicSymbolHeadingInfo([{ name: "", kind: "key" }, { name: '""', kind: "key" }, { name: "a", kind: "key" }]);
+    expect(empty.map((heading) => [heading.displayName, heading.slug])).toEqual([
+      ["", "symbol-~"],
+      ['""', "symbol-~22~22"],
       ["a", "symbol-a"]
     ]);
-    const doc = parseLiveDoc(
-      renderLiveDoc({
-        codePath: "config.json",
-        layer: 4,
-        archetype: "implementation",
-        entries: [{ reason: "program", symbol: { name: "a`b" } }],
-        generatedAt: "2026-11-19T00:00:00.000Z",
-        authored: "### Purpose\nHolds keys.",
-        symbols: headings.map((heading) => ({ name: heading.displayName, slug: heading.slug, kind: "key", flags: [], sections: [{ title: "Summary", body: ["A key."] }], references: [] })),
-        dependencies: []
-      })
-    );
+    const emptyText = renderLiveDoc({ codePath: "keys.json", layer: 4, entries: [], authored: "### Purpose\nHolds keys.", symbols: empty.map((heading) => ({ name: heading.displayName, slug: heading.slug, kind: "key", flags: [], sections: [], references: [] })), dependencies: [] });
+    expect(emptyText).toContain('\n#### "" {#symbol-~}\n- Type: key\n\n#### `""` {#symbol-~22~22}\n');
+    expect(parseLiveDoc(emptyText).symbols.map((symbol) => symbol.name)).toEqual(["", '""', "a"]);
+    const text = renderLiveDoc({
+      codePath: "config.json",
+      layer: 4,
+      archetype: "implementation",
+      entries: [{ reason: "program", symbol: { name: "a`b" } }],
+      generatedAt: "2026-11-19T00:00:00.000Z",
+      authored: "### Purpose\nHolds keys.",
+      symbols: headings.map((heading) => ({ name: heading.displayName, slug: heading.slug, kind: "key", flags: [], sections: [{ title: "Summary", body: ["A key."] }], references: [] })),
+      dependencies: []
+    });
+    const doc = parseLiveDoc(text);
     expect(doc.symbols.map((symbol) => [symbol.name, symbol.slug])).toEqual(headings.map((heading) => [heading.displayName, heading.slug]));
     expect(doc.entries[0].symbol).toEqual({ name: "a`b" });
+  });
+
+  it("gives a name that ends in a parenthesised word its kind, so that the heading's name is the whole name", () => {
+    const headings = computePublicSymbolHeadingInfo([{ name: "build (prod)", kind: "key" }, { name: "x (key)", kind: "key" }, { name: "x", kind: "key" }]);
+    expect(headings.map((heading) => [heading.displayName, heading.slug])).toEqual([
+      ["build (prod) (key)", "symbol-build-prod"],
+      ["x (key) (key)", "symbol-x-key"],
+      ["x", "symbol-x"]
+    ]);
+    expect(headings.map((heading) => symbolName({ name: heading.displayName }))).toEqual(["build (prod)", "x (key)", "x"]);
   });
 });

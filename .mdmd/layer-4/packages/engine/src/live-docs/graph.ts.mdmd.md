@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/graph.ts
-- Generated At: 2026-10-22T16:47:52.958Z
+- Generated At: 2026-11-19T18:51:38.979Z
 
 ## Authored
 ### Purpose
@@ -15,6 +15,7 @@ The derived graph index: the model of a graph of Live Docs, `deriveLiveDocGraph`
 - The module has no file-system imports, so the Explorer client bundles it and reads a graph the way the CLI does. Reading docs from disk and writing `<root>/index.json` live in `graphFiles.ts`.
 - A type reference to a symbol of the same file resolves to the file itself; `outbound` and `inbound` leave such self edges out. An edge keeps the link as written, so an external module (no link) and a link nothing answers to (link, no target) are told apart.
 - `resolveDocLink` (2026-10-20, [Turn 9](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-20/2026-10-20.1.record.md#turn-9)) is the doc-relative resolution `linkTarget` always did, given its own name so that `relatedDocs.ts` resolves a link to a document by the same rule as a link to a Live Doc.
+- Since 2026-11-19 it reads a link as a browser does: the first `#` begins the fragment and the path before it is percent-decoded (`decodeLinkPath` in `document.ts`), since the generator writes a path's spaces, parentheses, `#` and the like encoded so that its links open in a markdown viewer. A document named `notes/plan (draft).md` had made the generator write a `Cited By` line its own reader refused, and a file whose name holds a `#` had resolved to nothing. `relatedDocs.ts` had decoded a whole link before resolving it, fragment included, so an encoded `#` in a path was taken for the fragment; it now hands the link over as written.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -109,11 +110,13 @@ The target, or undefined when the link leaves the docs or does not name a Live D
 
 #### `resolveDocLink` {#symbol-resolvedoclink}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L234)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L236)
 
 ##### `resolveDocLink` — Summary
 Resolves a doc-relative link to the workspace-relative path it names, without its fragment: undefined for an
-external URL or a path that leaves the workspace. A bare fragment names the doc itself.
+external URL or a path that leaves the workspace. A bare fragment names the doc itself. The link is read as a
+browser reads it: its first `#` begins the fragment, and the path before it is percent-decoded, so that
+`plan%20%28draft%29.md` names `plan (draft).md` and `a%23b.ts.md` a file whose name holds a `#`.
 
 ##### `resolveDocLink` — Parameters
 - `docPath`: Workspace-relative path of the doc holding the link, with forward slashes.
@@ -122,9 +125,10 @@ external URL or a path that leaves the workspace. A bare fragment names the doc 
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`document.LiveDoc`](./document.ts.mdmd.md#symbol-livedoc) (type-only)
-- [`document.SymbolBlock`](./document.ts.mdmd.md#symbol-symbolblock) (type-only)
-- [`document.TypeRef`](./document.ts.mdmd.md#symbol-typeref) (type-only)
+- [`document.LiveDoc`](./document.ts.mdmd.md#symbol-livedoc)
+- [`document.SymbolBlock`](./document.ts.mdmd.md#symbol-symbolblock)
+- [`document.TypeRef`](./document.ts.mdmd.md#symbol-typeref)
+- [`document.decodeLinkPath`](./document.ts.mdmd.md#symbol-decodelinkpath)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

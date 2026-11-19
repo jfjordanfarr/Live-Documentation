@@ -223,6 +223,96 @@ describe("the Live Doc grammar", () => {
     expect(() => parseLiveDoc(renderLiveDoc(EMPTY).trimEnd())).toThrow(/must end with a newline/u);
   });
 
+  it("writes a value its plain form cannot carry as a JSON string, every other as before, and reads each back as itself", () => {
+    const doc: LiveDoc = {
+      ...EMPTY,
+      codePath: "we\nird.ts",
+      entries: [
+        { reason: "command", command: "a`b", declarer: { label: "d`x/package.json", link: "./d`x/package.json.md" } },
+        { reason: "command", command: "", declarer: { label: "package.json", link: "./package.json.md" } },
+        { reason: "command", command: "a\nb", declarer: { label: "app/(auth)/package.json", link: "./app/(auth)/package.json.md" } }
+      ],
+      symbols: ["a\nb", "", '""', "\ud800", "plain"].map((name, index) => ({ name, slug: `symbol-${index}`, kind: "key", flags: [], references: [], sections: [] })),
+      dependencies: [
+        { label: "b", link: "./app/(auth)/b.ts.md#symbol-b", qualifiers: ["type-only"] },
+        { label: "a`b", symbols: ["x, y", "z"], qualifiers: [] }
+      ]
+    };
+    const text = renderLiveDoc(doc);
+    const lines = text.split("\n");
+    for (const line of [
+      '# "we\\nird.ts"',
+      '- Code Path: "we\\nird.ts"',
+      "- Entry: command ``a`b`` of [``d`x/package.json``](./d`x/package.json.md)",
+      '- Entry: command "" of [`package.json`](./package.json.md)',
+      '- Entry: command "a\\nb" of [`app/(auth)/package.json`]("./app/(auth)/package.json.md")',
+      '#### "a\\nb" {#symbol-0}',
+      '#### "" {#symbol-1}',
+      '#### `""` {#symbol-2}',
+      '#### "\\ud800" {#symbol-3}',
+      "#### `plain` {#symbol-4}",
+      '- [`b`]("./app/(auth)/b.ts.md#symbol-b") (type-only)',
+      "- ``a`b`` - `x, y`, `z`"
+    ]) {
+      expect(lines).toContain(line);
+    }
+    expect(parseLiveDoc(Buffer.from(text, "utf8").toString("utf8"))).toEqual(doc);
+  });
+
+  it("refuses a quoted value its plain form could carry, so that each value has one form", () => {
+    const text = renderLiveDoc(FULL);
+    expect(() => parseLiveDoc(text.replace("#### `Widget` {#symbol-widget}", '#### "Widget" {#symbol-widget}'))).toThrow(/expected a symbol heading/u);
+    expect(() => parseLiveDoc(text.replace("- `node:path`", '- "node:path"'))).toThrow(/unexpected dependency line/u);
+  });
+
+  it("writes a docstring's line the reader would take for structure with a backslash in front, and gives it back", () => {
+    const body = [
+      "#### `z`",
+      "",
+      "##### `Widget` — Summary",
+      "<!-- LIVE-DOC:END Public Symbols -->",
+      "\\#### `z`",
+      "\\plain",
+      "```md",
+      "#### `inside a fence`",
+      "```",
+      "```stray"
+    ];
+    const doc: LiveDoc = { ...FULL, symbols: [{ ...FULL.symbols[0], sections: [{ title: "Remarks", body }] }, FULL.symbols[2]] };
+    const text = renderLiveDoc(doc);
+    expect(text).toContain([
+      "##### `Widget` — Remarks",
+      "\\#### `z`",
+      "",
+      "\\##### `Widget` — Summary",
+      "\\<!-- LIVE-DOC:END Public Symbols -->",
+      "\\\\#### `z`",
+      "\\plain",
+      "```md",
+      "#### `inside a fence`",
+      "```",
+      "\\```stray",
+      "",
+      "#### `SIZE` {#symbol-size}"
+    ].join("\n"));
+    expect(parseLiveDoc(text)).toEqual(doc);
+  });
+
+  it("reads a doc with CRLF line endings, as Git for Windows checks one out, as the doc written with LF", () => {
+    const text = renderLiveDoc(FULL);
+    const crlf = text.split("\n").join("\r\n");
+    expect(parseLiveDoc(crlf)).toEqual(FULL);
+    expect(authoredBlockOf(crlf)).toBe(FULL.authored);
+  });
+
+  it("reads the authored block by LF and CRLF lines only, so that a name holding a line separator and a heading is no heading", () => {
+    const separator = String.fromCharCode(0x2028);
+    const command = `x${separator}## Authored${separator}`;
+    const text = renderLiveDoc({ ...FULL, entries: [{ reason: "command", command, declarer: { label: "package.json", link: "../../package.json.md" } }] });
+    expect(authoredBlockOf(text)).toBe(FULL.authored);
+    expect(parseLiveDoc(text).entries[0].command).toBe(command);
+  });
+
   it("reads the authored block of any text that has one", () => {
     expect(authoredBlockOf(renderLiveDoc(FULL))).toBe(FULL.authored);
     expect(authoredBlockOf("# x\n\n## Authored\n\n### Purpose\nOld words\n\n\n## Generated\nwhatever")).toBe("### Purpose\nOld words");

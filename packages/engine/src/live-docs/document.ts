@@ -10,6 +10,14 @@
  * has written. That property is what lets the markdown serve as the store that
  * every other consumer reads.
  *
+ * It holds for whatever a repository can hand the generator. Every name, path
+ * and link a doc takes from a source file is written by one rule,
+ * {@link writeValue}: as the format has always written it where that reads back
+ * as the value, and as a JSON string where it would not, a name with a line
+ * break or a link with a `)`. A docstring's line that the reader would take for
+ * a heading, a fence or a section marker is written with a backslash in front
+ * ({@link escapeBody}).
+ *
  * @module
  */
 
@@ -41,7 +49,7 @@ export interface LiveDoc {
 
 /** One public symbol: a `####` heading, its detail lines and its documentation sections. */
 export interface SymbolBlock {
-  /** The heading text between the backticks, for example `Widget (interface)`. */
+  /** The heading's text: the name, with the parenthesised suffix that tells it from another where it has one, for example `Widget (interface)`. */
   name: string;
   /** The `{#…}` anchor on the heading. */
   slug?: string;
@@ -79,13 +87,13 @@ export interface TypeRef {
 /** A `#####` documentation section under a symbol. */
 export interface DocSection {
   title: string;
-  /** The body, verbatim; never empty and never ending in a blank line. */
+  /** The body's lines, each without a line break; never empty and never ending in a blank line. */
   body: string[];
 }
 
 /** One line of the `Dependencies` section. */
 export interface Dependency {
-  /** The inline-code label: a module, a `module.symbol`, or an external specifier. */
+  /** The label: a module, a `module.symbol`, or an external specifier. */
   label: string;
   /** The link target, relative to the doc, when the dependency is a workspace file. */
   link?: string;
@@ -128,7 +136,7 @@ export interface Entry {
  * (the owner's rule of 2026-01-06, built in this direction on 2026-10-22).
  */
 export interface CitedBy {
-  /** The document's workspace-relative path, as the line's inline-code label. */
+  /** The document's workspace-relative path, the line's label. */
   label: string;
   /** The link to the document, relative to the doc. */
   link: string;
@@ -148,8 +156,9 @@ export interface ReExport {
 // Vocabulary
 // ============================================================================
 
-const BEGIN = "<!-- LIVE-DOC:BEGIN ";
-const END = "<!-- LIVE-DOC:END ";
+const MARKER = "<!-- LIVE-DOC:";
+const BEGIN = `${MARKER}BEGIN `;
+const END = `${MARKER}END `;
 const CLOSE = " -->";
 
 const PUBLIC_SYMBOLS = "Public Symbols";
@@ -159,7 +168,8 @@ const RE_EXPORTS = "Re-Exported Symbol Anchors";
 
 const NO_SYMBOLS = "_No public symbols detected_";
 const NO_DEPENDENCIES = "_No dependencies documented yet_";
-const EXTERNAL_RE_EXPORT = "- Re-exported from external module";
+const RE_EXPORTED_FROM = "- Re-exported from ";
+const EXTERNAL_RE_EXPORT = `${RE_EXPORTED_FROM}external module`;
 
 /** The authored block a new doc starts with. */
 export const DEFAULT_AUTHORED_BLOCK = ["### Purpose", "_Pending authored purpose_", "", "### Notes", "_Pending notes_"].join("\n");
@@ -209,18 +219,201 @@ export function symbolName(symbol: Pick<SymbolBlock, "name">): string {
 }
 
 // ============================================================================
+// Values
+// ============================================================================
+
+/**
+ * One place in a line where a doc writes a value taken from a source file, and the value's plain form there: what the
+ * format has always written.
+ */
+interface Slot {
+  /** The plain form of a value, or undefined where the plain form cannot carry it. */
+  plain(value: string): string | undefined;
+  /** The plain form that begins at `at` in a line: the value it carries and where it ends; undefined where none does. */
+  take(line: string, at: number): Taken | undefined;
+}
+
+/** A value read from a line, and the index just after it. */
+interface Taken {
+  value: string;
+  end: number;
+}
+
+/** Text that fits on its line as a pattern's `.` reads one: no line terminator of JavaScript's. */
+const LINE_TEXT = /^.+$/u;
+
+/** A lone surrogate, which no file can hold: UTF-8 writes it as U+FFFD. */
+const LONE_SURROGATE = /\p{Cs}/u;
+
+/** A name, of a symbol, a script, a type, a parameter, a module or a file, as a code span. */
+const NAME: Slot = {
+  plain: (value) => (value === "" ? undefined : codeSpan(value)),
+  take: (line, at) => {
+    const span = takeCodeSpan(line, at);
+    return span && { value: span.content, end: span.end };
+  }
+};
+
+/** A link's target, up to the parenthesis that closes the link. */
+const LINK: Slot = {
+  plain: (value) => (value !== "" && !value.includes(")") ? value : undefined),
+  take: (line, at) => {
+    const close = line.indexOf(")", at);
+    return close > at ? { value: line.slice(at, close), end: close } : undefined;
+  }
+};
+
+/** A source file's path in a `Source` line's link: everything before the last `#L` and line number. */
+const SOURCE: Slot = {
+  plain: (value) => (LINE_TEXT.test(value) ? value : undefined),
+  take: (line, at) => {
+    const match = /^(.+)#L\d+\)$/u.exec(line.slice(at));
+    return match ? { value: match[1], end: at + match[1].length } : undefined;
+  }
+};
+
+/** A path that runs to the end of its line: the title's and the `Code Path` line's. */
+const TEXT: Slot = {
+  plain: (value) => (LINE_TEXT.test(value) ? value : undefined),
+  take: (line, at) => (LINE_TEXT.test(line.slice(at)) ? { value: line.slice(at), end: line.length } : undefined)
+};
+
+/**
+ * Writes a value into a slot: in the slot's plain form where that carries it, and as a JSON string anywhere else.
+ *
+ * @remarks
+ * The one rule by which a doc holds any name, path or link a repository can, and reads it back as itself. The plain
+ * form cannot carry a line break, a lone surrogate, an empty name, a `)` in a link, or a line terminator in a path;
+ * such a value is written in double quotes with JSON's escapes (`"a\nb"`, `"\ud800"`, `""`), with U+2028 and U+2029
+ * escaped too so that it stays on its line for every reader. A value whose plain form would begin with `"` is quoted
+ * as well, so the first character tells the reader which form it has, and each value has exactly one form. A value
+ * the plain form carries is written as the format always wrote it.
+ */
+function writeValue(slot: Slot, value: string): string {
+  const plain = value.includes("\n") || LONE_SURROGATE.test(value) ? undefined : slot.plain(value);
+  return plain === undefined || plain.startsWith('"') ? quote(value) : plain;
+}
+
+/** Reads a value from a slot at `at`, in either form; undefined unless the text there is exactly what {@link writeValue} writes for it. */
+function takeValue(slot: Slot, line: string, at: number): Taken | undefined {
+  const taken = line[at] === '"' ? takeQuoted(line, at) : slot.take(line, at);
+  return taken && writeValue(slot, taken.value) === line.slice(at, taken.end) ? taken : undefined;
+}
+
+/** A value as a JSON string that stays on its line. */
+function quote(value: string): string {
+  return JSON.stringify(value).replace(/[\u2028\u2029]/gu, (character) => `\\u${character.charCodeAt(0).toString(16)}`);
+}
+
+/** The JSON string that begins at `at`; undefined where it never closes or is not JSON. */
+function takeQuoted(line: string, at: number): Taken | undefined {
+  for (let index = at + 1; index < line.length; index += 1) {
+    if (line[index] === "\\") {
+      index += 1;
+    } else if (line[index] === '"') {
+      try {
+        return { value: JSON.parse(line.slice(at, index + 1)) as string, end: index + 1 };
+      } catch {
+        return undefined;
+      }
+    }
+  }
+  return undefined;
+}
+
+/**
+ * A name as a markdown code span that reads back as the name whatever it holds: fenced by one backtick more than its
+ * longest run of backticks, and padded with a space on each side where it begins or ends with a backtick or a space,
+ * as CommonMark reads a code span; a name that is all spaces is written as it is.
+ */
+export function codeSpan(name: string): string {
+  // A loop, not `Math.max(...runs)`, which throws past some hundred thousand runs.
+  let longest = 0;
+  for (const run of name.matchAll(/`+/gu)) {
+    longest = Math.max(longest, run[0].length);
+  }
+  const fence = "`".repeat(longest + 1);
+  const pad = /^[` ]|[` ]$/u.test(name) && name.trim() !== "" ? " " : "";
+  return `${fence}${pad}${name}${pad}${fence}`;
+}
+
+/**
+ * The code span that begins at `at`, as CommonMark reads one: its fence of backticks, its content up to the next run of
+ * exactly as many, and a space stripped from each side where the content begins and ends with one and is not all
+ * spaces; undefined where no span begins or it never closes.
+ */
+export function takeCodeSpan(text: string, at: number): { content: string; end: number } | undefined {
+  const open = /^`+/u.exec(text.slice(at));
+  if (open === null) return undefined;
+  const fence = open[0].length;
+  for (let index = at + fence; index < text.length; index += 1) {
+    if (text[index] !== "`") continue;
+    let run = index;
+    while (run < text.length && text[run] === "`") run += 1;
+    if (run - index === fence) {
+      let content = text.slice(at + fence, index);
+      if (content.length >= 2 && content.startsWith(" ") && content.endsWith(" ") && content.trim() !== "") content = content.slice(1, -1);
+      return content === "" ? undefined : { content, end: run };
+    }
+    index = run - 1;
+  }
+  return undefined;
+}
+
+/**
+ * What a link's path cannot hold as itself, as a URL or as a markdown link's target: `%`, `#`, `?`, parentheses, angle
+ * brackets, a backslash, a space or a control character, a line separator, and `&`, since CommonMark reads `&amp;` in a
+ * target as `&`.
+ */
+// eslint-disable-next-line no-control-regex -- the control characters are what a link cannot hold
+const LINK_UNSAFE = /[%&#?()<>\\\x00-\x20\x7f\u2028\u2029]/gu;
+
+/**
+ * A workspace path as a link's path: every character a URL or a markdown link's target cannot hold as itself
+ * percent-encoded as UTF-8 (`notes/plan (draft).md` is `notes/plan%20%28draft%29.md`), every other as it is, so
+ * that the link opens the file in a markdown viewer and its first `#` begins its fragment. A path of letters, digits
+ * and `-./@_` is written as it is.
+ */
+export function encodeLinkPath(path: string): string {
+  return path.replace(LINK_UNSAFE, (character) => Array.from(new TextEncoder().encode(character), (byte) => `%${byte.toString(16).toUpperCase().padStart(2, "0")}`).join(""));
+}
+
+/**
+ * A link's path as the workspace path it names, percent-decoded as a browser reads it; a path that is not well-formed
+ * percent-encoding is read as written, as the Explorer's reader reads one.
+ */
+export function decodeLinkPath(path: string): string {
+  try {
+    return decodeURIComponent(path);
+  } catch {
+    return path;
+  }
+}
+
+/** A name as the doc writes it. */
+function name(value: string): string {
+  return writeValue(NAME, value);
+}
+
+/** A name linked to a target: `[name](target)`. */
+function linked(label: string, target: string): string {
+  return `[${name(label)}](${writeValue(LINK, target)})`;
+}
+
+// ============================================================================
 // Rendering
 // ============================================================================
 
 /** Writes a Live Doc as markdown. The output always ends with one newline. */
 export function renderLiveDoc(doc: LiveDoc): string {
   const lines: string[] = [];
-  lines.push(`# ${doc.codePath}`, "", "## Metadata", `- Layer: ${doc.layer}`);
+  const codePath = writeValue(TEXT, doc.codePath);
+  lines.push(`# ${codePath}`, "", "## Metadata", `- Layer: ${doc.layer}`);
   if (doc.archetype) {
     lines.push(`- Archetype: ${doc.archetype}`);
   }
   if (doc.layer === 4) {
-    lines.push(`- Code Path: ${doc.codePath}`);
+    lines.push(`- Code Path: ${codePath}`);
   }
   for (const entry of doc.entries) {
     lines.push(renderEntry(entry));
@@ -245,12 +438,12 @@ export function renderLiveDoc(doc: LiveDoc): string {
 
 function renderEntry(entry: Entry): string {
   const symbol = entry.symbol ? renderSymbolRef(entry.symbol) : "";
-  const declarer = entry.declarer ? `[\`${entry.declarer.label}\`](${entry.declarer.link})` : "";
+  const declarer = entry.declarer ? linked(entry.declarer.label, entry.declarer.link) : "";
   switch (entry.reason) {
     case "program":
       return `- Entry: program${symbol ? ` ${symbol}` : ""}`;
     case "command":
-      return `- Entry: command \`${entry.command}\` of ${declarer}`;
+      return `- Entry: command ${name(entry.command ?? "")} of ${declarer}`;
     case "module":
       return `- Entry: module of ${declarer}`;
     case "opening":
@@ -261,7 +454,7 @@ function renderEntry(entry: Entry): string {
 }
 
 function renderSymbolRef(symbol: { name: string; link?: string }): string {
-  return symbol.link ? `[${codeSpan(symbol.name)}](${symbol.link})` : codeSpan(symbol.name);
+  return symbol.link ? linked(symbol.name, symbol.link) : name(symbol.name);
 }
 
 function pushSection(lines: string[], name: string, body: string[]): void {
@@ -275,16 +468,16 @@ export function renderSymbolBlocks(symbols: SymbolBlock[]): string[] {
     if (index > 0) {
       lines.push("");
     }
-    lines.push(`#### ${codeSpan(symbol.name)}${symbol.slug ? ` {#${symbol.slug}}` : ""}`);
+    lines.push(`#### ${name(symbol.name)}${symbol.slug ? ` {#${symbol.slug}}` : ""}`);
     lines.push(`- Type: ${symbol.kind}${symbol.flags.length ? ` (${symbol.flags.join(", ")})` : ""}`);
     if (symbol.source) {
-      lines.push(`- Source: [source](${symbol.source.path}#L${symbol.source.line})`);
+      lines.push(`- Source: [source](${writeValue(SOURCE, symbol.source.path)}#L${symbol.source.line})`);
     }
     for (const reference of symbol.references) {
       lines.push(renderReference(reference));
     }
     symbol.sections.forEach((section) => {
-      lines.push("", `##### ${codeSpan(symbol.name)} — ${section.title}`, ...section.body);
+      lines.push("", `##### ${name(symbol.name)} — ${section.title}`, ...escapeBody(section.body.flatMap((line) => line.split("\n"))));
     });
   });
   return lines;
@@ -292,7 +485,7 @@ export function renderSymbolBlocks(symbols: SymbolBlock[]): string[] {
 
 function renderReference(reference: ReferenceLine): string {
   if (reference.role === "Parameters") {
-    const entries = reference.parameters.map((parameter) => `\`${parameter.name}\`: ${renderTypes(parameter.types)}`);
+    const entries = reference.parameters.map((parameter) => `${name(parameter.name)}: ${renderTypes(parameter.types)}`);
     return `- Parameters: ${entries.join("; ")}`;
   }
   return `- ${reference.role}: ${renderTypes(reference.types)}`;
@@ -303,7 +496,7 @@ function renderTypes(types: TypeRef[]): string {
 }
 
 function renderType(type: TypeRef): string {
-  let text = type.link ? `[\`${type.name}\`](${type.link})` : `\`${type.name}\``;
+  let text = type.link ? linked(type.name, type.link) : name(type.name);
   if (type.array) {
     text = `${text}[]`;
   }
@@ -316,14 +509,14 @@ function renderType(type: TypeRef): string {
 function renderDependency(dependency: Dependency): string {
   const qualifier = dependency.qualifiers.length ? ` (${dependency.qualifiers.join(", ")})` : "";
   if (dependency.link) {
-    return `- [\`${dependency.label}\`](${dependency.link})${qualifier}`;
+    return `- ${linked(dependency.label, dependency.link)}${qualifier}`;
   }
-  const symbols = dependency.symbols?.length ? ` - ${dependency.symbols.map((symbol) => `\`${symbol}\``).join(", ")}` : "";
-  return `- \`${dependency.label}\`${symbols}${qualifier}`;
+  const symbols = dependency.symbols?.length ? ` - ${dependency.symbols.map(name).join(", ")}` : "";
+  return `- ${name(dependency.label)}${symbols}${qualifier}`;
 }
 
 function renderCitedBy(entry: CitedBy): string {
-  return `- [\`${entry.label}\`](${entry.link})`;
+  return `- ${linked(entry.label, entry.link)}`;
 }
 
 function renderReExports(entries: ReExport[]): string[] {
@@ -332,11 +525,61 @@ function renderReExports(entries: ReExport[]): string[] {
     if (index > 0) {
       lines.push("");
     }
-    lines.push(`#### ${codeSpan(entry.name)}${entry.slug ? ` {#${entry.slug}}` : ""}`);
+    lines.push(`#### ${name(entry.name)}${entry.slug ? ` {#${entry.slug}}` : ""}`);
     const flags = entry.flags.length ? ` (${entry.flags.join(", ")})` : "";
-    lines.push(entry.from ? `- Re-exported from [\`${entry.from.label}\`](${entry.from.link})${flags}` : `${EXTERNAL_RE_EXPORT}${flags}`);
+    lines.push(entry.from ? `${RE_EXPORTED_FROM}${linked(entry.from.label, entry.from.link)}${flags}` : `${EXTERNAL_RE_EXPORT}${flags}`);
   });
   return lines;
+}
+
+// ============================================================================
+// Section bodies
+// ============================================================================
+
+/** A body line the grammar would take for its own: a heading, a fence, a section marker. */
+function structural(line: string): boolean {
+  return line.startsWith("```") || line.startsWith(MARKER) || symbolHeading(line) !== undefined || sectionHeading(line) !== undefined;
+}
+
+/**
+ * A section's body as written: each line the reader would take for structure gets one more backslash in front.
+ *
+ * @remarks
+ * A body is free text from a source file, a docstring's lines, and the reader ends a body at a heading outside a
+ * fence and a section at its end marker anywhere. So a line of the body that is a heading where the reader sees no
+ * fence, that is a section marker, or that opens a fence no later line closes (which would hide every heading after
+ * it) is written with a backslash in front, which markdown shows as the line's own text; so is a line that is
+ * already such a line behind backslashes, so that {@link unescapeBodyLine} gives every line back. Every other line,
+ * the fences that pair and what they enclose among them, is written as it is.
+ */
+function escapeBody(lines: string[]): string[] {
+  let lastFence = -1;
+  lines.forEach((line, index) => {
+    if (line.startsWith("```")) lastFence = index;
+  });
+  let fence = false;
+  return lines.map((line, index) => {
+    const escaped = `\\${line}`;
+    if (line.startsWith("\\")) {
+      return structural(line.replace(/^\\+/u, "")) ? escaped : line;
+    }
+    if (line.startsWith(MARKER)) {
+      return escaped;
+    }
+    if (line.startsWith("```")) {
+      if (!fence && index >= lastFence) {
+        return escaped;
+      }
+      fence = !fence;
+      return line;
+    }
+    return !fence && structural(line) ? escaped : line;
+  });
+}
+
+/** A body line as it was before {@link escapeBody}. */
+function unescapeBodyLine(line: string): string {
+  return line.startsWith("\\") && structural(line.replace(/^\\+/u, "")) ? line.slice(1) : line;
 }
 
 // ============================================================================
@@ -354,13 +597,13 @@ export class LiveDocSyntaxError extends Error {
 /** Reads a Live Doc back from markdown, refusing anything outside the grammar. */
 export function parseLiveDoc(text: string): LiveDoc {
   const reader = new Reader(text);
-  const codePath = reader.expect(/^# (.+)$/u, "the title")[1];
+  const codePath = wholeValue(TEXT, reader.expect(/^# /u, "the title").input, 2) ?? reader.failBefore("unexpected title");
   reader.expectBlank();
   reader.expectLine("## Metadata");
   const layer = Number(reader.expect(/^- Layer: (\d+)$/u, "the Layer line")[1]);
   const archetype = reader.take(/^- Archetype: (.+)$/u)?.[1];
   if (layer === 4) {
-    const declared = reader.expect(/^- Code Path: (.+)$/u, "the Code Path line")[1];
+    const declared = wholeValue(TEXT, reader.expect(/^- Code Path: /u, "the Code Path line").input, CODE_PATH.length) ?? reader.failBefore("unexpected Code Path");
     if (declared !== codePath) {
       reader.fail(`the Code Path (${declared}) differs from the title (${codePath})`);
     }
@@ -402,64 +645,122 @@ export function parseLiveDoc(text: string): LiveDoc {
   return { codePath, layer, archetype, entries, generatedAt, authored: authored.join("\n"), symbols, dependencies, citedBy, reExports };
 }
 
+const CODE_PATH = "- Code Path: ";
+
 /** True when a blank line and the named section's opening marker come next; the end of the text is not a section. */
 function nextSectionIs(reader: Reader, name: string): boolean {
   return !reader.atEnd() && reader.peek(0) === "" && reader.peek(1) === `${BEGIN}${name}${CLOSE}`;
 }
 
-const ENTRY_LINE = /^- Entry: (program|command|module|opening|tooling|declared)(?: (.+))?$/u;
-/** A symbol named in an entry, linked or not: `[text, linked name, link, plain name]`, as a match of a pattern would be. */
-function symbolRef(text: string): [string, string | undefined, string | undefined, string | undefined] | undefined {
-  if (text.startsWith("[")) {
-    const span = takeCodeSpan(text, 1);
-    const link = span && /^\]\(([^)]+)\)$/u.exec(text.slice(span.end));
-    return span && link ? [text, span.content, link[1], undefined] : undefined;
-  }
-  const span = takeCodeSpan(text, 0);
-  return span && span.end === text.length ? [text, undefined, undefined, span.content] : undefined;
+/** The value of a slot that runs from `at` to the end of the line, in either form; undefined where it does not. */
+function wholeValue(slot: Slot, line: string, at: number): string | undefined {
+  const taken = takeValue(slot, line, at);
+  return taken?.end === line.length ? taken.value : undefined;
 }
-const DECLARER = /^\[`([^`]+)`\]\(([^)]+)\)$/u;
-const COMMAND_EVIDENCE = /^`([^`]+)` of (\[`[^`]+`\]\([^)]+\))$/u;
-const MODULE_EVIDENCE = /^of (\[`[^`]+`\]\([^)]+\))$/u;
+
+/**
+ * Reads one line from left to right: literal text, and values in either of their forms. Every value is
+ * self-delimiting, so no separator inside a name, a path or a link is ever taken for the grammar's own.
+ */
+class Cursor {
+  constructor(private readonly line: string, private at = 0) {}
+
+  /** Consumes `literal` where the line goes on with it. */
+  skip(literal: string): boolean {
+    if (!this.line.startsWith(literal, this.at)) {
+      return false;
+    }
+    this.at += literal.length;
+    return true;
+  }
+
+  /** Consumes a value of the slot. */
+  value(slot: Slot): string | undefined {
+    const taken = takeValue(slot, this.line, this.at);
+    if (taken) {
+      this.at = taken.end;
+    }
+    return taken?.value;
+  }
+
+  /** Consumes `[name](link)`: the name and the link; consumes nothing where none follows. */
+  linked(): { name: string; link: string } | undefined {
+    const start = this.at;
+    const name = this.skip("[") ? this.value(NAME) : undefined;
+    const link = name !== undefined && this.skip("](") ? this.value(LINK) : undefined;
+    if (link !== undefined && this.skip(")")) {
+      return { name: name!, link };
+    }
+    this.at = start;
+    return undefined;
+  }
+
+  /** Consumes a parenthesised list of words to the end of the line, ` (re-export, type-only)`, or nothing where none follows. */
+  words(): string[] | undefined {
+    if (!this.skip(" (")) {
+      return [];
+    }
+    const words = /^([^)]+)\)$/u.exec(this.rest());
+    return words ? words[1].split(", ") : undefined;
+  }
+
+  /** Consumes the rest of the line. */
+  rest(): string {
+    const rest = this.line.slice(this.at);
+    this.at = this.line.length;
+    return rest;
+  }
+
+  /** True when the whole line has been read. */
+  done(): boolean {
+    return this.at === this.line.length;
+  }
+}
+
+const ENTRY_LINE = /^- Entry: (program|command|module|opening|tooling|declared)(?: ([\s\S]+))?$/u;
 
 function parseEntry(match: RegExpExecArray, lineNumber: number): Entry {
   const reason = match[1] as EntryReason;
-  const evidence = match[2];
-  const fail = (): never => {
-    throw new LiveDocSyntaxError(lineNumber, `unexpected evidence on the ${reason} entry ${JSON.stringify(match[0])}`);
+  const cursor = new Cursor(match[2] ?? "");
+  const symbolOf = (): { name: string; link?: string } | undefined => {
+    const link = cursor.linked();
+    const name = link ? undefined : cursor.value(NAME);
+    return link ? { name: link.name, link: link.link } : name !== undefined ? { name } : undefined;
   };
-  const symbolOf = (text: string): { name: string; link?: string } => {
-    const ref = symbolRef(text) ?? fail();
-    return ref[3] !== undefined ? { name: ref[3] } : { name: ref[1]!, link: ref[2] };
+  const declarerOf = (): { label: string; link: string } | undefined => {
+    const link = cursor.linked();
+    return link && { label: link.name, link: link.link };
   };
-  const declarerOf = (text: string): { label: string; link: string } => {
-    const ref = DECLARER.exec(text) ?? fail();
-    return { label: ref[1], link: ref[2] };
-  };
+  let entry: Entry | undefined;
   switch (reason) {
-    case "program":
-      return evidence === undefined ? { reason } : { reason, symbol: symbolOf(evidence) };
+    case "program": {
+      const symbol = match[2] === undefined ? undefined : symbolOf();
+      entry = match[2] === undefined ? { reason } : symbol && { reason, symbol };
+      break;
+    }
     case "command": {
-      const command = COMMAND_EVIDENCE.exec(evidence ?? "") ?? fail();
-      return { reason, command: command[1], declarer: declarerOf(command[2]) };
+      const command = cursor.value(NAME);
+      const declarer = command !== undefined && cursor.skip(" of ") ? declarerOf() : undefined;
+      entry = declarer && { reason, command, declarer };
+      break;
     }
     case "module": {
-      const module = MODULE_EVIDENCE.exec(evidence ?? "") ?? fail();
-      return { reason, declarer: declarerOf(module[1]) };
+      const declarer = cursor.skip("of ") ? declarerOf() : undefined;
+      entry = declarer && { reason, declarer };
+      break;
     }
     case "opening": {
-      const symbol = symbolOf(evidence ?? "");
-      if (!symbol.link) {
-        fail();
-      }
-      return { reason, symbol };
+      const symbol = symbolOf();
+      entry = symbol?.link !== undefined ? { reason, symbol } : undefined;
+      break;
     }
     default:
-      if (evidence !== undefined) {
-        fail();
-      }
-      return { reason };
+      entry = match[2] === undefined ? { reason } : undefined;
   }
+  if (!entry || !cursor.done()) {
+    throw new LiveDocSyntaxError(lineNumber, `unexpected evidence on the ${reason} entry ${JSON.stringify(match[0])}`);
+  }
+  return entry;
 }
 
 /** The lines of a section body and the one-based line number of the first. */
@@ -480,60 +781,38 @@ function parseSection<T>(reader: Reader, name: string, parse: (body: Body) => T)
   return parse({ start, lines });
 }
 
-/** A symbol's or a re-export's heading: `[line, name, anchor]`, as a match of a pattern would be. */
-function symbolHeading(line: string): [string, string, string | undefined] | undefined {
-  const span = line.startsWith("#### `") ? takeCodeSpan(line, 5) : undefined;
-  if (span === undefined) return undefined;
-  const rest = line.slice(span.end);
-  if (rest === "") return [line, span.content, undefined];
-  const anchor = /^ \{#([^}]+)\}$/u.exec(rest);
-  return anchor ? [line, span.content, anchor[1]] : undefined;
+/** A symbol's or a re-export's heading: `#### name {#anchor}`. */
+function symbolHeading(line: string): { name: string; slug?: string } | undefined {
+  if (!line.startsWith("#### ")) return undefined;
+  const cursor = new Cursor(line, 5);
+  const name = cursor.value(NAME);
+  if (name === undefined) return undefined;
+  if (cursor.done()) return { name };
+  const anchor = /^ \{#([^}]+)\}$/u.exec(cursor.rest());
+  return anchor ? { name, slug: anchor[1] } : undefined;
 }
 
-/** A section heading under a symbol: `[line, name, title]`. */
-function sectionHeading(line: string): [string, string, string] | undefined {
-  const span = line.startsWith("##### `") ? takeCodeSpan(line, 6) : undefined;
-  const title = span && /^ — (.+)$/u.exec(line.slice(span.end));
-  return span && title ? [line, span.content, title[1]] : undefined;
+/** A section heading under a symbol: `##### name — title`. */
+function sectionHeading(line: string): { name: string; title: string } | undefined {
+  if (!line.startsWith("##### ")) return undefined;
+  const cursor = new Cursor(line, 6);
+  const name = cursor.value(NAME);
+  const title = name !== undefined && cursor.skip(" — ") ? cursor.rest() : undefined;
+  return title !== undefined && LINE_TEXT.test(title) ? { name: name!, title } : undefined;
 }
 
-/**
- * A name as a markdown code span that reads back as the name whatever it holds: fenced by one backtick more than its
- * longest run of backticks, and padded with a space on each side where it begins or ends with a backtick or a space,
- * as CommonMark reads a code span; a name that is all spaces is written as it is.
- */
-export function codeSpan(name: string): string {
-  const longest = Math.max(0, ...Array.from(name.matchAll(/`+/gu), (run) => run[0].length));
-  const fence = "`".repeat(longest + 1);
-  const pad = /^[` ]|[` ]$/u.test(name) && name.trim() !== "" ? " " : "";
-  return `${fence}${pad}${name}${pad}${fence}`;
-}
-
-/**
- * The code span that begins at `at`, as CommonMark reads one: its fence of backticks, its content up to the next run of
- * exactly as many, and a space stripped from each side where the content begins and ends with one and is not all
- * spaces; undefined where no span begins or it never closes.
- */
-export function takeCodeSpan(text: string, at: number): { content: string; end: number } | undefined {
-  const open = /^`+/u.exec(text.slice(at));
-  if (open === null) return undefined;
-  const fence = open[0].length;
-  for (let index = at + fence; index < text.length; index += 1) {
-    if (text[index] !== "`") continue;
-    let run = index;
-    while (run < text.length && text[run] === "`") run += 1;
-    if (run - index === fence) {
-      let content = text.slice(at + fence, index);
-      if (content.length >= 2 && content.startsWith(" ") && content.endsWith(" ") && content.trim() !== "") content = content.slice(1, -1);
-      return content === "" ? undefined : { content, end: run };
-    }
-    index = run - 1;
-  }
-  return undefined;
-}
 const TYPE_LINE = /^- Type: ([^ ]+)(?: \(([^)]+)\))?$/u;
-const SOURCE_LINE = /^- Source: \[source\]\((.+)#L(\d+)\)$/u;
-const REFERENCE_LINE = /^- (Returns|Parameters|Extends|Implements|Constraints): (.+)$/u;
+const SOURCE_LINE = "- Source: [source](";
+const REFERENCE_LINE = /^- (Returns|Parameters|Extends|Implements|Constraints): /u;
+
+/** A `Source` line: the path of the source file and the line the symbol is on. */
+function sourceOf(line: string): { path: string; line: number } | undefined {
+  if (!line.startsWith(SOURCE_LINE)) return undefined;
+  const cursor = new Cursor(line, SOURCE_LINE.length);
+  const path = cursor.value(SOURCE);
+  const number = path === undefined ? null : /^#L(\d+)\)$/u.exec(cursor.rest());
+  return number ? { path: path!, line: Number(number[1]) } : undefined;
+}
 
 function parseSymbols(body: Body): SymbolBlock[] {
   const symbols: SymbolBlock[] = [];
@@ -545,7 +824,7 @@ function parseSymbols(body: Body): SymbolBlock[] {
     if (!heading) {
       throw new LiveDocSyntaxError(at(index), `expected a symbol heading, found ${JSON.stringify(lines[index])}`);
     }
-    const symbol: SymbolBlock = { name: heading[1], slug: heading[2], kind: "", flags: [], references: [], sections: [] };
+    const symbol: SymbolBlock = { name: heading.name, slug: heading.slug, kind: "", flags: [], references: [], sections: [] };
     index += 1;
     const type = TYPE_LINE.exec(lines[index] ?? "");
     if (!type) {
@@ -554,9 +833,9 @@ function parseSymbols(body: Body): SymbolBlock[] {
     symbol.kind = type[1];
     symbol.flags = type[2] ? type[2].split(", ") : [];
     index += 1;
-    const source = SOURCE_LINE.exec(lines[index] ?? "");
+    const source = sourceOf(lines[index] ?? "");
     if (source) {
-      symbol.source = { path: source[1], line: Number(source[2]) };
+      symbol.source = source;
       index += 1;
     }
     while (index < lines.length && lines[index].startsWith("- ")) {
@@ -575,8 +854,8 @@ function parseSymbols(body: Body): SymbolBlock[] {
       if (!section) {
         throw new LiveDocSyntaxError(at(index), `expected a section of ${symbol.name}, found ${JSON.stringify(lines[index])}`);
       }
-      if (section[1] !== symbol.name) {
-        throw new LiveDocSyntaxError(at(index), `section of ${section[1]} under ${symbol.name}`);
+      if (section.name !== symbol.name) {
+        throw new LiveDocSyntaxError(at(index), `section of ${section.name} under ${symbol.name}`);
       }
       index += 1;
       const sectionLines: string[] = [];
@@ -596,9 +875,9 @@ function parseSymbols(body: Body): SymbolBlock[] {
         index += 1;
       }
       if (sectionLines.length === 0 || sectionLines[sectionLines.length - 1] === "") {
-        throw new LiveDocSyntaxError(at(index), `the ${section[2]} section of ${symbol.name} is empty or ends with a blank line`);
+        throw new LiveDocSyntaxError(at(index), `the ${section.title} section of ${symbol.name} is empty or ends with a blank line`);
       }
-      symbol.sections.push({ title: section[2], body: sectionLines });
+      symbol.sections.push({ title: section.title, body: sectionLines.map(unescapeBodyLine) });
       if (index < lines.length && lines[index] !== "") {
         // The next heading follows a section body directly; only a blank may separate them.
         throw new LiveDocSyntaxError(at(index), `expected a blank line before ${JSON.stringify(lines[index])}`);
@@ -614,72 +893,91 @@ function parseReference(line: string, lineNumber: number): ReferenceLine {
   if (!match) {
     throw new LiveDocSyntaxError(lineNumber, `unexpected detail line ${JSON.stringify(line)}`);
   }
-  const [, role, rest] = match;
+  const cursor = new Cursor(line, match[0].length);
+  const role = match[1] as ReferenceRole | "Parameters";
+  let reference: ReferenceLine | undefined;
   if (role === "Parameters") {
-    const parameters = rest.split("; ").map((entry) => {
-      const parameter = /^`([^`]+)`: (.+)$/u.exec(entry);
-      if (!parameter) {
-        throw new LiveDocSyntaxError(lineNumber, `unexpected parameter ${JSON.stringify(entry)}`);
+    const parameters: { name: string; types: TypeRef[] }[] = [];
+    do {
+      const name = cursor.value(NAME);
+      const types = name !== undefined && cursor.skip(": ") ? typesOf(cursor) : undefined;
+      if (!types) {
+        throw new LiveDocSyntaxError(lineNumber, `unexpected parameter in ${JSON.stringify(line)}`);
       }
-      return { name: parameter[1], types: parseTypes(parameter[2], lineNumber) };
-    });
-    return { role, parameters };
+      parameters.push({ name: name!, types });
+    } while (cursor.skip("; "));
+    reference = { role, parameters };
+  } else {
+    const types = typesOf(cursor);
+    reference = types && { role, types };
   }
-  return { role: role as ReferenceRole, types: parseTypes(rest, lineNumber) };
+  if (!reference || !cursor.done()) {
+    throw new LiveDocSyntaxError(lineNumber, `unexpected type in ${JSON.stringify(line)}`);
+  }
+  return reference;
 }
 
-const TYPE_REF = /^(Promise<)?(?:\[`([^`]+)`\]\(([^)]+)\)|`([^`]+)`)(\[\])?(>)?$/u;
-
-function parseTypes(text: string, lineNumber: number): TypeRef[] {
-  return text.split(", ").map((item) => {
-    const match = TYPE_REF.exec(item);
-    if (!match || Boolean(match[1]) !== Boolean(match[6])) {
-      throw new LiveDocSyntaxError(lineNumber, `unexpected type ${JSON.stringify(item)}`);
+/** Types separated by commas: `[name](link)` or `name`, each perhaps an array (`[]`) and a promise (`Promise<…>`). */
+function typesOf(cursor: Cursor): TypeRef[] | undefined {
+  const types: TypeRef[] = [];
+  do {
+    const promise = cursor.skip("Promise<");
+    const link = cursor.linked();
+    const name = link ? link.name : cursor.value(NAME);
+    if (name === undefined) {
+      return undefined;
     }
-    const type: TypeRef = { name: match[2] ?? match[4] };
-    if (match[3]) {
-      type.link = match[3];
+    const type: TypeRef = { name };
+    if (link) {
+      type.link = link.link;
     }
-    if (match[5]) {
+    if (cursor.skip("[]")) {
       type.array = true;
     }
-    if (match[1]) {
+    if (promise) {
+      if (!cursor.skip(">")) {
+        return undefined;
+      }
       type.promise = true;
     }
-    return type;
-  });
+    types.push(type);
+  } while (cursor.skip(", "));
+  return types;
 }
-
-const LINKED_DEPENDENCY = /^- \[`([^`]+)`\]\(([^)]+)\)(?: \(([^)]+)\))?$/u;
-const EXTERNAL_DEPENDENCY = /^- `([^`]+)`(?: - (`[^`]+`(?:, `[^`]+`)*))?(?: \(([^)]+)\))?$/u;
 
 function parseDependency(line: string, lineNumber: number): Dependency {
-  const linked = LINKED_DEPENDENCY.exec(line);
-  if (linked) {
-    return { label: linked[1], link: linked[2], qualifiers: linked[3] ? linked[3].split(", ") : [] };
-  }
-  const external = EXTERNAL_DEPENDENCY.exec(line);
-  if (external) {
-    const dependency: Dependency = { label: external[1], qualifiers: external[3] ? external[3].split(", ") : [] };
-    if (external[2]) {
-      dependency.symbols = external[2].split(", ").map((symbol) => symbol.slice(1, -1));
+  const cursor = new Cursor(line);
+  let dependency: Dependency | undefined;
+  if (cursor.skip("- ")) {
+    const link = cursor.linked();
+    const label = link ? link.name : cursor.value(NAME);
+    let symbols: string[] | undefined;
+    if (label !== undefined && !link && cursor.skip(" - ")) {
+      symbols = [];
+      for (let symbol = cursor.value(NAME); symbol !== undefined; symbol = cursor.skip(", ") ? cursor.value(NAME) : undefined) {
+        symbols.push(symbol);
+      }
     }
-    return dependency;
+    const qualifiers = label === undefined || symbols?.length === 0 ? undefined : cursor.words();
+    if (label !== undefined && qualifiers !== undefined) {
+      dependency = link ? { label, link: link.link, qualifiers } : { label, qualifiers, ...(symbols ? { symbols } : {}) };
+    }
   }
-  throw new LiveDocSyntaxError(lineNumber, `unexpected dependency line ${JSON.stringify(line)}`);
+  if (!dependency || !cursor.done()) {
+    throw new LiveDocSyntaxError(lineNumber, `unexpected dependency line ${JSON.stringify(line)}`);
+  }
+  return dependency;
 }
-
-const CITED_BY_LINE = /^- \[`([^`]+)`\]\(([^)]+)\)$/u;
 
 function parseCitedBy(line: string, lineNumber: number): CitedBy {
-  const match = CITED_BY_LINE.exec(line);
-  if (!match) {
+  const cursor = new Cursor(line);
+  const link = cursor.skip("- ") ? cursor.linked() : undefined;
+  if (!link || !cursor.done()) {
     throw new LiveDocSyntaxError(lineNumber, `unexpected Cited By line ${JSON.stringify(line)}`);
   }
-  return { label: match[1], link: match[2] };
+  return { label: link.name, link: link.link };
 }
 
-const RE_EXPORT_FROM = /^- Re-exported from \[`([^`]+)`\]\(([^)]+)\)(?: \(([^)]+)\))?$/u;
 const RE_EXPORT_EXTERNAL = new RegExp(`^${escape(EXTERNAL_RE_EXPORT)}(?: \\(([^)]+)\\))?$`, "u");
 
 function parseReExports(body: Body): ReExport[] {
@@ -692,15 +990,16 @@ function parseReExports(body: Body): ReExport[] {
       throw new LiveDocSyntaxError(at(index), `expected a re-export heading, found ${JSON.stringify(lines[index])}`);
     }
     const line = lines[index + 1] ?? "";
-    const from = RE_EXPORT_FROM.exec(line);
     const external = RE_EXPORT_EXTERNAL.exec(line);
-    if (!from && !external) {
-      throw new LiveDocSyntaxError(at(index + 1), `expected the origin of ${heading[1]}, found ${JSON.stringify(line)}`);
+    const cursor = new Cursor(line);
+    const from = external ? undefined : cursor.skip(RE_EXPORTED_FROM) ? cursor.linked() : undefined;
+    const flags = external ? external[1]?.split(", ") ?? [] : from ? cursor.words() : undefined;
+    if (!flags || (from && !cursor.done())) {
+      throw new LiveDocSyntaxError(at(index + 1), `expected the origin of ${heading.name}, found ${JSON.stringify(line)}`);
     }
-    const flags = (from ? from[3] : external?.[1])?.split(", ") ?? [];
-    entries.push({ name: heading[1], slug: heading[2], from: from ? { label: from[1], link: from[2] } : undefined, flags });
+    entries.push({ name: heading.name, slug: heading.slug, from: from ? { label: from.name, link: from.link } : undefined, flags });
     if (index + 2 < lines.length && lines[index + 2] !== "") {
-      throw new LiveDocSyntaxError(at(index + 2), `expected a blank line after ${heading[1]}`);
+      throw new LiveDocSyntaxError(at(index + 2), `expected a blank line after ${heading.name}`);
     }
   }
   return entries;
@@ -722,13 +1021,14 @@ export function authoredBlockOf(text: string | undefined): string {
   if (!text) {
     return DEFAULT_AUTHORED_BLOCK;
   }
-  const start = /^## Authored[ \t]*$/mu.exec(text);
-  if (!start || start.index === undefined) {
+  // Lines end at LF or CRLF only, as the grammar's do: a name holding U+2028 and `## Authored` is no heading.
+  const lines = text.split(/\r?\n/u);
+  const start = lines.findIndex((line) => /^## Authored[ \t]*$/u.test(line));
+  if (start < 0) {
     return DEFAULT_AUTHORED_BLOCK;
   }
-  const from = start.index + start[0].length;
-  const end = /^## Generated[ \t]*$/mu.exec(text.slice(from));
-  const block = text.slice(from, end ? from + end.index : undefined).replace(/\r\n/gu, "\n").trim();
+  const end = lines.findIndex((line, index) => index > start && /^## Generated[ \t]*$/u.test(line));
+  const block = lines.slice(start + 1, end < 0 ? undefined : end).join("\n").trim();
   return block || DEFAULT_AUTHORED_BLOCK;
 }
 
@@ -736,7 +1036,11 @@ export function authoredBlockOf(text: string | undefined): string {
 // Reader
 // ============================================================================
 
-/** Reads a text line by line for the parsers, and fails with the line number when the grammar is not met. */
+/**
+ * Reads a text line by line for the parsers, and fails with the line number when the grammar is not met. A line ends
+ * at LF or CRLF alike, so a doc checked out with Windows line endings reads as the one written with LF: the writer
+ * never ends a line with a carriage return of its own.
+ */
 export class Reader {
   private readonly lines: string[];
   private index = 0;
@@ -745,7 +1049,7 @@ export class Reader {
     if (!text.endsWith("\n")) {
       throw new LiveDocSyntaxError(text.split("\n").length, "the text must end with a newline");
     }
-    this.lines = text.slice(0, -1).split("\n");
+    this.lines = text.slice(0, -1).split("\n").map((line) => (line.endsWith("\r") ? line.slice(0, -1) : line));
   }
 
   /** The current line's number, counted from one. */
@@ -766,6 +1070,11 @@ export class Reader {
   /** Throws a syntax error at the current line. */
   fail(detail: string): never {
     throw new LiveDocSyntaxError(this.lineNumber(), detail);
+  }
+
+  /** Throws a syntax error at the line just consumed, quoting it. */
+  failBefore(detail: string): never {
+    throw new LiveDocSyntaxError(this.index, `${detail} ${JSON.stringify(this.lines[this.index - 1])}`);
   }
 
   /** Consumes the current line, which must be exactly the text expected. */
