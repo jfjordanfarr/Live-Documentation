@@ -234,11 +234,86 @@ Each at reading size, the lab's geometry drawn plain by [`draw.ts`](draw.ts) (ou
 
 A, of the two. It refuses three of the five (24, 28, 29), all three of `pathfind.ts`'s and the 7 px jog, keeps the estate's and 25, and changes nothing else about how a picture is made: it counts the term that moved, the steps, only where a step separates cards. It keeps 23, whose step does separate cards (`inspect`'s two columns both hold its files), so the name lifted over an empty column stays; and it stops short of 26 and 27, which I would rather keep. B at 1.5 refuses 23 too, but it is a new trade of wire for outline height that redraws the late picture in ways today's price never asked for (six levellings today's price never reached, 27,432 px of wire), and the pictures show its snug outlines bought with cards far from their partners. B at a rate low enough not to do that (under about 0.33, where it would refuse only 28 and 29) was not run. Neither should land before the owner sees these pictures.
 
+## Third leg: candidate C, the ground an outline claims, and A's two questions
+
+_Taken 2026-11-19 from 22:00 UTC on `7961e0a4`, in the lab's probe only, nothing in the product or the lab's own files. The root's reading after the second leg's pictures: the fault is not that steps are counted, nor that outlines are tall, but that a step can be removed by enclosing ground the directory holds nothing in, and that ground is free. A corner removed by aligning cards is composition; a corner removed by stretching round empty ground is a false claim of region._
+
+### Candidate C
+
+Today's price as it is, steps counted as today, and added: for each drawn outline, its height over each column in which its directory holds no card of its own costs r px of wire a pixel (`C:<r>` in [`candidates.ts`](candidates.ts)). A column is held by the directory's own cards, those of its invisible bucket included, and by nothing else:
+
+- **A lane is not content.** A lane in a directory is the passage of lines whose ends are files elsewhere; a column that holds only a lane is still ground in which the directory holds no file. Counting a lane as content would let any outline that a bundle passes through claim the column's ground for free.
+- **A nested directory's cards are not the parent's.** A column holding only a nested directory is charged for the parent's segment there and, if the child holds no card of its own there either, for the child's: nesting multiplies the charge, as you expected.
+
+`Cveto:<r>` is C used only to refuse: a trial is taken when today's price takes it and C's would too, and the search's own price stays today's.
+
+### What it took
+
+My second leg's captures had gone with its scratch folder, so the three were taken again through the lane, in one hold of 43 s after 24 minutes behind other holders; the five files' is held to the page to the pixel (placement 1,145,468, 4,999 × 9,418). Every search below is [`run-candidates.sh`](run-candidates.sh)`<caps> <out> today C:1 C:0.5 C:2 Cveto:1 A`, the levellings' ties nearest the shown picture's cards and slots, at a load of about 20.
+
+### Which levellings each takes, with C beside them
+
+The five files at eighty orders; "taken" is in each price's own search.
+
+| | Today | A | C at 0.5 | C at 1 | C at 2 | C at 1, refusing only |
+| --- | --- | --- | --- | --- | --- | --- |
+| 22, the 7 px jog | taken | refused | taken | taken | taken | taken |
+| 23, `inspect` levelled (+180 px of outline, none of it over a column without its own card) | taken | taken | taken | taken | taken | taken |
+| 24, `packages` and `packages/engine/src` over a column with no card (+300, of it +180 claimed) | taken | refused | taken | taken, by 20 | refused | taken |
+| 25, under a card (+72, none claimed) | taken | taken | taken | taken | taken | taken |
+| 26 and 27, `approximation.ts` lifted, outlines −368 and −750 | taken | refused | taken | taken | taken | taken |
+| 28 and 29, `scripts` round an empty column (+608 each, all claimed) | taken | refused | refused | refused | refused | refused |
+| Levellings today's price never takes | | none | 3 | 3 | 3 | none |
+| Moves in the whole search | 29 | 20 | 30 | 29 | 27 | 25 |
+| `pathfind.ts`'s three (+180, +328, +60 px claimed) | all three | none | all three | the first | none | the first |
+| The estate's (the L made a rectangle; nothing claimed changes) | taken | taken | taken | taken | taken | taken |
+
+Your expectations against the data: the jog, 25 and 23 taken at 1, yes (23 encloses no claimed ground at all: both its columns hold `inspect`'s files); 28 and 29 refused, yes; the estate's and 26 and 27 taken, yes; **24 is taken at 1**, narrowly (180 px claimed against the step's 200), and refused from about 1.11.
+
+### What C does beyond refusing
+
+Yes, C moves cards to shrink claimed ground, at every rate tried, 0.5 to 2. After order 77 it takes the same three levellings today's price never takes:
+
+| Levelling | Cards moved, farthest | Wire | Claimed ground | Price at C 1 |
+| --- | --- | --- | --- | --- |
+| `views/worldMap`'s top over columns 3 and 4 | 2, 209 px | +1,881 px | −209 px | −200 |
+| `scripts`'s foot over columns 5 and 6 | 2, 845 px (`approximation.ts`, `lab.ts`) | +4,225 px | −1,690 px | −1,045 |
+| `scripts/layout-lab`'s foot over columns 6 and 7 | 3, 344 px | +1,785 px | −344 px | −535 |
+
+7,891 px of wire in all, against B's 27,432. Each is today's price refusing a trade of wire for evenness and steps (the `scripts` one: +4,225 of wire against −3,380 of evenness and −200 of a step, +645 today) that C's charge tips. The `scripts` levelling is the drawing [five-c-new-levelling.png](pictures/five-c-new-levelling.png): two cards lifted 845 px, and the ground the outline claimed over the column beside them gone. It is not where C stops wanting it: at 0.5 it is still taken (−200), and below that rate C no longer refuses 28 and 29 (608 × 0.33 = 200). So there is no rate at which C refuses 28 and 29 and moves no card for its charge.
+
+**C used only to refuse** (`Cveto:1`) takes none of the three, and 14 trials today's price would have taken are refused. On the five files its search makes today's moves less 28 and 29 and less two levellings before order 77 (today's 12 and 15, of one and two cards, whose pictures order 77 deals anew), 25 in all, and it ends on the picture you named the best of the four: today's before move 28, the same geometry to the byte, `approximation.ts` lifted, nothing enclosed for 28 and 29. On `pathfind.ts` it takes the first levelling (+300 px of outline, 180 of it claimed; −20 at C) and refuses the other two; the estate's it takes.
+
+Is that the honest form or a patch? My reading: honest, if it is said for what it is. Today's price decides what the picture gains; C's charge says only that a gain bought by claiming ground the directory holds nothing in is no gain. As a full price, C does what B did on a smaller scale: it starts paying wire for snug outlines, which the owner's reward of 2026-10-05 forbids, and no rate avoids that while refusing 28 and 29. As a veto it cannot buy anything, and so cannot spend wire. The cost of the form: it is two judgements, not one price, so the first picture's choice among its starts (which has no shown picture to compare with) stays today's, and the lab and the page must both say "a trial is taken when it is cheaper and claims no more ground than it is worth" in place of "when it is cheaper". It is a rule of the search's judge (`judgeAlignment` and `judgeStart` in `branch-search.ts`, the other round's file) and of the price that names what the charge is (`branch-shape.ts`, mine).
+
+### A's two questions
+
+- **Offered directly at A's own end** (the five files, `OFFER_FROM` and `OFFER_MOVES` of `search-moves.ts`): today's 26 is priced +379 against A's end, 27 +100, the jog +130. A refuses all three. So A is short of them, not unlucky: they remove steps beside columns that hold none of the directory's cards, which A no longer counts, and they cost wire.
+- **The jog A refuses:** [five-jog.png](pictures/five-jog.png), twice enlarged: the top of `packages/engine/src` steps 7 px down over its first columns before, and runs level after.
+
+### The third leg's pictures
+
+Redrawn for this leg with a light ground, a stroke on every outline and the ground an outline claims over a column with no card of its own in amber (the second leg's dark drawings are replaced; B is no longer drawn). Each panel is labelled in words. The five places: today before, today after, the end of A's own search, of C at 1's, and of C at 1 used only to refuse.
+
+- [five-move-23.png](pictures/five-move-23.png), [five-move-24.png](pictures/five-move-24.png), [five-move-25.png](pictures/five-move-25.png), [five-move-28.png](pictures/five-move-28.png), [five-move-29.png](pictures/five-move-29.png)
+- [pathfind-levellings.png](pictures/pathfind-levellings.png), [estate-levelling.png](pictures/estate-levelling.png)
+- [five-jog.png](pictures/five-jog.png), [five-c-new-levelling.png](pictures/five-c-new-levelling.png)
+
+In 28, what the amber shows: today's before already claims a tall column of ground over `scripts`'s inner outline; today's after doubles it downward; A's end and the veto's end keep today's before (A's with `approximation.ts` 237 px lower); C at 1's end has no claimed ground there at all, because its new levelling moved `approximation.ts` and `lab.ts` 845 px.
+
+![Move 28 under each price](pictures/five-move-28.png)
+
+### My recommendation after the third leg
+
+Of A, C and today with the late levellings refused another way: **C at 1 used only to refuse.** On every place you judged it does what your eye asked: the jog, 23, 25, 26, 27 and the estate's taken; 28 and 29 refused; it ends on the picture you named the best; it spends no wire and moves no card for its charge, by construction. 24 and `pathfind.ts`'s first levelling it keeps, each enclosing 180 px of claimed ground against the step's 200; at 1.2 a pixel it would refuse those too and still take 23 and 25 (neither claims ground), which I did not run. A is short of 26, 27 and the jog by its own price, and C as a full price buys snug outlines with wire at every rate that refuses 28 and 29.
+
 ## Seen on the way
 
 - **Lane slots move in levellings too.** The bends of the lines through a directory's lanes are items of the placement like cards, with the same ties. Today the eighty-order search's six late levellings that move no card (22 to 25, 28, 29) move 6 to 17 lane slots each, 1,354 slot moves in the whole search; the packet counted no line drawn differently at moves 22 to 25 and 1 and 5 at 28 and 29, so most of those do not show on the page, and why was not run down. Drawing the levellings' slots to the shown picture as well as their cards (the placement's whole `top` as `anchor`, mode `joins-slots` of `search-moves.ts`): again 0 of 311 trials' prices differ and the same 29 moves are made, the six late levellings move no slot at all, and the search moves 1,177 slots. On the page that is `search.incumbent.scene.placement.top` in place of `controller.previousTops` in the two lines above. That run took 210 s beside other work, against 154 for the cards alone; it was not timed side by side.
 - **The lab's `evaluate` routes every picture.** Its routes and signals cost several seconds a trial at today's load, so a search replayed through the lab's `refine` took over fifteen minutes where [`lean.ts`](lean.ts) takes one. The page's search never routes a trial.
 - **The suite's eighty-order setting has no start before paint** (`orderStarts: 0` in `local-map-hidden.spec.ts`), which is why its first picture is priced 3,448,893 where a visitor's is 3,445,009, as the packet saw.
+- **Open: the card model in an opened directory's flow picture.** On the estate with two directories opened the lab's first picture is 21 px shorter than the page's (765 against 786) and its placement measure 1,761 against 1,866; on four of seven of the sample's opened directories it is off too, by up to some hundreds of pixels. Not run down. The pinned-file pictures are reproduced to the pixel.
+- **Closed by the root on 2026-11-19, third leg: the first order.** The sample's first half and the median rule were judged enough: no fixed rule tried reaches the search's gain, single files have none to find, and the search exists for the rest. The second half of the sample was not taken.
 
 ## How it was taken
 
@@ -246,3 +321,13 @@ A, of the two. It refuses three of the five (24, 28, 29), all three of `pathfind
 - The searches: [`run-searches.sh`](run-searches.sh) `<capture> <out dir>`, six replays side by side (today, every trial anchored, the levellings alone; at the defaults and at eighty orders), each writing every move's terms, cards moved and every trial's price.
 - The first order: [`first-order.ts`](first-order.ts) and [`order-columns.ts`](order-columns.ts). The solver's time with and without nearness: [`anchored-time.ts`](anchored-time.ts). The smallest systems: [`smallest-system.ts`](smallest-system.ts), [`smallest-tie.ts`](smallest-tie.ts).
 - Each script names its arguments at its top. The capture and the runs' JSON were scratch and are not kept.
+
+## The root's reading of the third leg
+
+_Added by the root on 2026-11-19 after looking at the nine redrawn pictures. Nothing here is built in the product._
+
+- **The form is right: the charge may refuse a levelling and never recommends one.** Used as a whole price, a charge on ground buys snug outlines with wire at every rate that refuses the two worst levellings, which the owner's reward forbids; used only to refuse, it ends the five files on the picture the root had called the best of its sheet, to the byte.
+- **The definition is not yet the one to build, and the fault is in the root's own words.** The brief said "no card of its own", and the builder followed it: so a column filled by a nested directory's card is painted as claimed ground for the parent (the estate's picture shows a whole column of `PaymentService` in amber that `PaymentsContext.cs` fills). That is not empty ground, and the rule could not be said to a person as drawn. What the root meant: ground inside an outline that nothing of its own fills, neither a card of its own nor a directory inside it. For a levelling that moves no card, that is simply the height of outline it adds, in whichever column.
+- **To settle before it is built, in the lab, when this builder is next resumed:** the same table under that definition at one pixel of wire a pixel (a step is worth 200, so a step may be bought with up to 200 pixels of empty outline and no more), beside the table above. The root expects the 7-pixel jog, the 72-pixel one, the 180-pixel one and the estate's kept, the two lifting levellings kept, and the 300-, 492- and 608-pixel ones refused; the pictures' amber then means what a reader would take it to mean.
+- **Where it would live:** the judging in the search's own module, the measure beside the outline's shape; it is built on the search's branch after the browser runs that branch still owes, not before.
+
