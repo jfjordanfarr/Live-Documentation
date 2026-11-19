@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `scripts/live-docs/generate.ts`
 - Entry: command `live-docs:generate` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-19T20:00:02.844Z
+- Generated At: 2026-11-19T22:40:13.238Z
 
 ## Authored
 ### Purpose
@@ -43,6 +43,8 @@ _No public symbols detected_
 - [`cli.packageVersion`](./cli.ts.mdmd.md#symbol-packageversion)
 - [`cli.readConfiguration`](./cli.ts.mdmd.md#symbol-readconfiguration)
 - [`cli.runCommand`](./cli.ts.mdmd.md#symbol-runcommand)
+- [`cli.stackOf`](./cli.ts.mdmd.md#symbol-stackof)
+- [`cli.stackWanted`](./cli.ts.mdmd.md#symbol-stackwanted)
 - [`cli.workspaceFolder`](./cli.ts.mdmd.md#symbol-workspacefolder)
 <!-- LIVE-DOC:END Dependencies -->
 

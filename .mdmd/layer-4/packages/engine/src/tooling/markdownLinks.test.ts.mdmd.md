@@ -1,10 +1,10 @@
-# packages/engine/src/tooling/markdownLinks.test.ts
+# `packages/engine/src/tooling/markdownLinks.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/engine/src/tooling/markdownLinks.test.ts
-- Generated At: 2026-11-19T21:11:50.141Z
+- Code Path: `packages/engine/src/tooling/markdownLinks.test.ts`
+- Generated At: 2026-11-19T22:40:10.844Z
 
 ## Authored
 ### Purpose

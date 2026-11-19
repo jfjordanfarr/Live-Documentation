@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/history/bundled.test.ts
+# `packages/engine/src/live-docs/history/bundled.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/engine/src/live-docs/history/bundled.test.ts
-- Generated At: 2026-11-19T17:55:37.150Z
+- Code Path: `packages/engine/src/live-docs/history/bundled.test.ts`
+- Generated At: 2026-11-19T22:40:10.497Z
 
 ## Authored
 ### Purpose

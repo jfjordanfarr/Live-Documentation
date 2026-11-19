@@ -1,10 +1,10 @@
-# tests/integration/fixtures/link-targets/src/plan.ts
+# `tests/integration/fixtures/link-targets/src/plan.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/link-targets/src/plan.ts
-- Generated At: 2026-11-19T20:14:23.545Z
+- Code Path: `tests/integration/fixtures/link-targets/src/plan.ts`
+- Generated At: 2026-11-19T22:40:15.018Z
 
 ## Authored
 ### Purpose

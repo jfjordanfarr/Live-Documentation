@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/localView/__fixtures__/network-simplex.systems.json
+# `packages/explorer/src/client/views/localView/__fixtures__/network-simplex.systems.json`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/views/localView/__fixtures__/network-simplex.systems.json
-- Generated At: 2026-11-19T20:53:53.758Z
+- Code Path: `packages/explorer/src/client/views/localView/__fixtures__/network-simplex.systems.json`
+- Generated At: 2026-11-19T22:40:11.837Z
 
 ## Authored
 ### Purpose

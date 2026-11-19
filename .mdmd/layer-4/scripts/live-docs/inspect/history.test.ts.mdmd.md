@@ -1,10 +1,10 @@
-# scripts/live-docs/inspect/history.test.ts
+# `scripts/live-docs/inspect/history.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: scripts/live-docs/inspect/history.test.ts
-- Generated At: 2026-11-19T20:08:20.001Z
+- Code Path: `scripts/live-docs/inspect/history.test.ts`
+- Generated At: 2026-11-19T22:40:13.271Z
 
 ## Authored
 ### Purpose

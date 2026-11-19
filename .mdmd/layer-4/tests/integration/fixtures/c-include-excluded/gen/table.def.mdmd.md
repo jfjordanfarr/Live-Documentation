@@ -1,10 +1,10 @@
-# tests/integration/fixtures/c-include-excluded/gen/table.def
+# `tests/integration/fixtures/c-include-excluded/gen/table.def`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/c-include-excluded/gen/table.def
-- Generated At: 2026-11-19T20:36:52.008Z
+- Code Path: `tests/integration/fixtures/c-include-excluded/gen/table.def`
+- Generated At: 2026-11-19T22:40:14.936Z
 
 ## Authored
 ### Purpose

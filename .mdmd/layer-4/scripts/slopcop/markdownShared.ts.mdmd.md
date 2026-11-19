@@ -3,8 +3,8 @@
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/slopcop/markdownShared.ts
-- Generated At: 2026-11-19T21:17:44.699Z
+- Code Path: `scripts/slopcop/markdownShared.ts`
+- Generated At: 2026-11-19T22:40:13.455Z
 
 ## Authored
 ### Purpose

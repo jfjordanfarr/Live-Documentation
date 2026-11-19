@@ -1,10 +1,10 @@
-# packages/generator/src/generator.notices.test.ts
+# `packages/generator/src/generator.notices.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/generator/src/generator.notices.test.ts
-- Generated At: 2026-11-19T21:42:07.004Z
+- Code Path: `packages/generator/src/generator.notices.test.ts`
+- Generated At: 2026-11-19T22:40:12.744Z
 
 ## Authored
 ### Purpose

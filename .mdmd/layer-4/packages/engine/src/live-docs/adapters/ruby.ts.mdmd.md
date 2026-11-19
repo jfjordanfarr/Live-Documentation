@@ -3,8 +3,8 @@
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/adapters/ruby.ts
-- Generated At: 2026-11-19T21:21:17.115Z
+- Code Path: `packages/engine/src/live-docs/adapters/ruby.ts`
+- Generated At: 2026-11-19T22:40:10.194Z
 
 ## Authored
 ### Purpose

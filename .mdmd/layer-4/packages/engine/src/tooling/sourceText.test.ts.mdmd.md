@@ -1,10 +1,10 @@
-# packages/engine/src/tooling/sourceText.test.ts
+# `packages/engine/src/tooling/sourceText.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/engine/src/tooling/sourceText.test.ts
-- Generated At: 2026-11-19T21:21:17.367Z
+- Code Path: `packages/engine/src/tooling/sourceText.test.ts`
+- Generated At: 2026-11-19T22:40:10.868Z
 
 ## Authored
 ### Purpose

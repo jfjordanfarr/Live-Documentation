@@ -3,8 +3,8 @@
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/live-docs/inspect-cli.test.ts
-- Generated At: 2026-11-19T20:08:20.052Z
+- Code Path: `tests/integration/live-docs/inspect-cli.test.ts`
+- Generated At: 2026-11-19T22:40:15.195Z
 
 ## Authored
 ### Purpose

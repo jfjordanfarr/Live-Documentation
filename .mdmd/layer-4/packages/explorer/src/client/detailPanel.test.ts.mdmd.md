@@ -1,10 +1,10 @@
-# packages/explorer/src/client/detailPanel.test.ts
+# `packages/explorer/src/client/detailPanel.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/detailPanel.test.ts
-- Generated At: 2026-11-19T22:03:38.860Z
+- Code Path: `packages/explorer/src/client/detailPanel.test.ts`
+- Generated At: 2026-11-19T22:40:10.906Z
 
 ## Authored
 ### Purpose

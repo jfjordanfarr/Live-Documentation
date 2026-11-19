@@ -3,8 +3,8 @@
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/relatedDocs.ts
-- Generated At: 2026-11-19T21:28:19.735Z
+- Code Path: `packages/engine/src/live-docs/relatedDocs.ts`
+- Generated At: 2026-11-19T22:40:10.765Z
 
 ## Authored
 ### Purpose
@@ -82,7 +82,7 @@ other, or not at all.
 
 #### `excluded` {#symbol-excluded}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/relatedDocs.ts#L149)
+- Source: [source](../../../../../../packages/engine/src/live-docs/relatedDocs.ts#L127)
 
 ##### `excluded` — Summary
 Whether the configuration's bundle exclusions (`bundleExclude`) name a document, by its workspace-relative path.

@@ -3,8 +3,8 @@
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/engine/src/live-docs/graph.test.ts
-- Generated At: 2026-11-19T21:22:25.287Z
+- Code Path: `packages/engine/src/live-docs/graph.test.ts`
+- Generated At: 2026-11-19T22:40:10.455Z
 
 ## Authored
 ### Purpose

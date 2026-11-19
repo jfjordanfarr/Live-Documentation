@@ -1,10 +1,10 @@
-# packages/generator/src/generator.unmappable.test.ts
+# `packages/generator/src/generator.unmappable.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/generator/src/generator.unmappable.test.ts
-- Generated At: 2026-11-19T21:25:58.641Z
+- Code Path: `packages/generator/src/generator.unmappable.test.ts`
+- Generated At: 2026-11-19T22:40:12.787Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# tests/integration/fixtures/c-include-excluded/gen/colours.inc
+# `tests/integration/fixtures/c-include-excluded/gen/colours.inc`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/c-include-excluded/gen/colours.inc
-- Generated At: 2026-11-19T20:36:52.001Z
+- Code Path: `tests/integration/fixtures/c-include-excluded/gen/colours.inc`
+- Generated At: 2026-11-19T22:40:14.934Z
 
 ## Authored
 ### Purpose

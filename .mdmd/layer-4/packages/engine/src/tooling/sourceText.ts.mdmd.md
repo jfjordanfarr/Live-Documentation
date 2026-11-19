@@ -1,10 +1,10 @@
-# packages/engine/src/tooling/sourceText.ts
+# `packages/engine/src/tooling/sourceText.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/tooling/sourceText.ts
-- Generated At: 2026-11-19T21:21:17.379Z
+- Code Path: `packages/engine/src/tooling/sourceText.ts`
+- Generated At: 2026-11-19T22:40:10.873Z
 
 ## Authored
 ### Purpose
@@ -33,9 +33,18 @@ How a file's bytes became text, or why they did not.
 ##### `decodeSourceText` — Summary
 A file's bytes read by the rule of this module.
 
+#### `unmarkedUtf16` {#symbol-unmarkedutf16}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/tooling/sourceText.ts#L80)
+
+##### `unmarkedUtf16` — Summary
+The byte order of UTF-16 without a mark, where it is certain: an even, non-zero number of bytes in which every
+pair is one zero byte and one byte that is not zero, the zero always on the same side. The binary sniff
+(`isBinaryContent`) asks the same of a file's head, so that what this step reads as text is never called binary.
+
 #### `readSourceText` {#symbol-readsourcetext}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/sourceText.ts#L98)
+- Source: [source](../../../../../../packages/engine/src/tooling/sourceText.ts#L99)
 
 ##### `readSourceText` — Summary
 A source file's text, for a language reader: read by {@link decodeSourceText}, and empty when the bytes are not

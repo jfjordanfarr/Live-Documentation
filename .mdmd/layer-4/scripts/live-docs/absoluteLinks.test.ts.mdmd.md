@@ -1,10 +1,10 @@
-# scripts/live-docs/absoluteLinks.test.ts
+# `scripts/live-docs/absoluteLinks.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: scripts/live-docs/absoluteLinks.test.ts
-- Generated At: 2026-11-19T21:51:17.252Z
+- Code Path: `scripts/live-docs/absoluteLinks.test.ts`
+- Generated At: 2026-11-19T22:40:13.204Z
 
 ## Authored
 ### Purpose

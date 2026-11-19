@@ -3,8 +3,8 @@
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/doc-tools/documentationLinks.ts
-- Generated At: 2026-11-19T21:25:37.460Z
+- Code Path: `scripts/doc-tools/documentationLinks.ts`
+- Generated At: 2026-11-19T22:40:12.922Z
 
 ## Authored
 ### Purpose

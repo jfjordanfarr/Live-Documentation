@@ -3,8 +3,8 @@
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/reader-links.ts
-- Generated At: 2026-11-19T21:22:28.443Z
+- Code Path: `packages/explorer/src/client/reader-links.ts`
+- Generated At: 2026-11-19T22:40:11.379Z
 
 ## Authored
 ### Purpose

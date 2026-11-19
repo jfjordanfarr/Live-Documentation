@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/sourceEncodings.test.ts
+# `packages/engine/src/live-docs/sourceEncodings.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/engine/src/live-docs/sourceEncodings.test.ts
-- Generated At: 2026-11-19T21:21:17.353Z
+- Code Path: `packages/engine/src/live-docs/sourceEncodings.test.ts`
+- Generated At: 2026-11-19T22:40:10.783Z
 
 ## Authored
 ### Purpose

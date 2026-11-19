@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/aspnet.ts`
-- Generated At: 2026-11-19T21:10:09.012Z
+- Generated At: 2026-11-19T22:40:09.793Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Surfaces script and code-behind dependencies for ASP.NET markup assets so the LD
 ### Public Symbols
 #### `aspNetMarkupAdapter` {#symbol-aspnetmarkupadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L14)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L15)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `aspNetMarkupAdapter` — Summary
@@ -36,6 +36,7 @@ Language adapter for ASP.NET markup files (`.aspx`, `.cshtml`, `.razor`, `.ascx`
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
+- [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

@@ -1,10 +1,10 @@
-# tests/integration/live-docs/history-tree-equivalence.test.ts
+# `tests/integration/live-docs/history-tree-equivalence.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/live-docs/history-tree-equivalence.test.ts
-- Generated At: 2026-11-19T19:17:28.359Z
+- Code Path: `tests/integration/live-docs/history-tree-equivalence.test.ts`
+- Generated At: 2026-11-19T22:40:15.167Z
 
 ## Authored
 ### Purpose

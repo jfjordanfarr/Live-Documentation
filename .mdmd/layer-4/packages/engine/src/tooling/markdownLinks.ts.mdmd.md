@@ -1,10 +1,10 @@
-# packages/engine/src/tooling/markdownLinks.ts
+# `packages/engine/src/tooling/markdownLinks.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/tooling/markdownLinks.ts
-- Generated At: 2026-11-19T21:28:19.856Z
+- Code Path: `packages/engine/src/tooling/markdownLinks.ts`
+- Generated At: 2026-11-19T22:40:10.857Z
 
 ## Authored
 ### Purpose
@@ -22,7 +22,7 @@ How a markdown link is read, by CommonMark's rule, in one place: where a link's 
 ### Public Symbols
 #### `readingSteps` {#symbol-readingsteps}
 - Type: const
-- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.ts#L39)
+- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.ts#L45)
 
 ##### `readingSteps` — Summary
 How many characters and tokens the reader has looked at since it was loaded, for the test that holds its work
@@ -32,21 +32,21 @@ stand ahead.
 
 #### `MarkdownLink` {#symbol-markdownlink}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.ts#L42)
+- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.ts#L48)
 
 ##### `MarkdownLink` — Summary
 A link, an image or an autolink, as CommonMark reads it.
 
 #### `MarkdownLiteral` {#symbol-markdownliteral}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.ts#L67)
+- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.ts#L73)
 
 ##### `MarkdownLiteral` — Summary
 Something inline that is not a link but claims its characters before a link can.
 
 #### `InlineToken` {#symbol-inlinetoken}
 - Type: type
-- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.ts#L80)
+- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.ts#L86)
 - Returns: [`MarkdownLink`](#symbol-markdownlink), [`MarkdownLiteral`](#symbol-markdownliteral)
 
 ##### `InlineToken` — Summary
@@ -54,14 +54,14 @@ What a run of inline text holds, in the order it begins, a link's contents after
 
 #### `LinkDefinition` {#symbol-linkdefinition}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.ts#L83)
+- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.ts#L89)
 
 ##### `LinkDefinition` — Summary
 A link reference definition's destination and title.
 
 #### `LinkDefinitions` {#symbol-linkdefinitions}
 - Type: type
-- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.ts#L89)
+- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.ts#L95)
 - Returns: `ReadonlyMap`
 
 ##### `LinkDefinitions` — Summary
@@ -69,14 +69,14 @@ A document's link reference definitions, by their labels as {@link normalizeLabe
 
 #### `MarkdownLinkReading` {#symbol-markdownlinkreading}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.ts#L92)
+- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.ts#L98)
 
 ##### `MarkdownLinkReading` — Summary
 What a document's links are: every link, image and autolink, and the references whose label no definition names.
 
 #### `readMarkdownLinks` {#symbol-readmarkdownlinks}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.ts#L107)
+- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.ts#L113)
 - Returns: [`MarkdownLinkReading`](#symbol-markdownlinkreading)
 
 ##### `readMarkdownLinks` — Summary
@@ -85,7 +85,7 @@ are the document's own.
 
 #### `leadingDefinitions` {#symbol-leadingdefinitions}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.ts#L157)
+- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.ts#L163)
 
 ##### `leadingDefinitions` — Summary
 Where a paragraph's text goes on after the link reference definitions it begins with, which CommonMark reads as
@@ -94,7 +94,7 @@ label is defined already, since the first definition of a label is the one that 
 
 #### `inlineTokens` {#symbol-inlinetokens}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.ts#L172)
+- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.ts#L178)
 - Returns: [`InlineToken`](#symbol-inlinetoken)[]
 - Parameters: `definitions`: [`LinkDefinitions`](#symbol-linkdefinitions)
 
@@ -104,7 +104,7 @@ them, in the order they begin, with offsets into the text. A reference link need
 
 #### `isLink` {#symbol-islink}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.ts#L177)
+- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.ts#L183)
 - Parameters: `token`: [`InlineToken`](#symbol-inlinetoken)
 
 ##### `isLink` — Summary
@@ -112,7 +112,7 @@ True for a link, an image or an autolink.
 
 #### `linkPath` {#symbol-linkpath}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.ts#L187)
+- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.ts#L193)
 
 ##### `linkPath` — Summary
 The path a link's destination names, and its fragment, read as a browser reads a URL reference: the fragment
@@ -122,7 +122,7 @@ whose percent-encoding is malformed is left as written. The fragment is decoded 
 
 #### `normalizeLabel` {#symbol-normalizelabel}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.ts#L199)
+- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.ts#L205)
 
 ##### `normalizeLabel` — Summary
 A label as CommonMark matches it: without its brackets, its runs of spaces, tabs and line endings one space, no

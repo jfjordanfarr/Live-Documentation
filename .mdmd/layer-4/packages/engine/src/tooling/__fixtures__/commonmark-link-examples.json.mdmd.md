@@ -1,10 +1,10 @@
-# packages/engine/src/tooling/__fixtures__/commonmark-link-examples.json
+# `packages/engine/src/tooling/__fixtures__/commonmark-link-examples.json`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/tooling/__fixtures__/commonmark-link-examples.json
-- Generated At: 2026-11-19T20:14:11.585Z
+- Code Path: `packages/engine/src/tooling/__fixtures__/commonmark-link-examples.json`
+- Generated At: 2026-11-19T22:40:10.802Z
 
 ## Authored
 ### Purpose

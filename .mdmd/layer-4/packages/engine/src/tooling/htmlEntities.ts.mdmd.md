@@ -1,10 +1,10 @@
-# packages/engine/src/tooling/htmlEntities.ts
+# `packages/engine/src/tooling/htmlEntities.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/tooling/htmlEntities.ts
-- Generated At: 2026-11-19T20:14:11.639Z
+- Code Path: `packages/engine/src/tooling/htmlEntities.ts`
+- Generated At: 2026-11-19T22:40:10.833Z
 
 ## Authored
 ### Purpose

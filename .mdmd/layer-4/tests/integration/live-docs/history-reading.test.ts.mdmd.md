@@ -1,10 +1,10 @@
-# tests/integration/live-docs/history-reading.test.ts
+# `tests/integration/live-docs/history-reading.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/live-docs/history-reading.test.ts
-- Generated At: 2026-11-19T20:55:17.526Z
+- Code Path: `tests/integration/live-docs/history-reading.test.ts`
+- Generated At: 2026-11-19T22:40:15.159Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# scripts/live-docs/inspect/resolve.test.ts
+# `scripts/live-docs/inspect/resolve.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: scripts/live-docs/inspect/resolve.test.ts
-- Generated At: 2026-11-19T19:23:31.306Z
+- Code Path: `scripts/live-docs/inspect/resolve.test.ts`
+- Generated At: 2026-11-19T22:40:13.289Z
 
 ## Authored
 ### Purpose

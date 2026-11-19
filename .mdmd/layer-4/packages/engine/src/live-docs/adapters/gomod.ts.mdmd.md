@@ -3,8 +3,8 @@
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/adapters/gomod.ts
-- Generated At: 2026-11-19T21:21:16.815Z
+- Code Path: `packages/engine/src/live-docs/adapters/gomod.ts`
+- Generated At: 2026-11-19T22:40:09.960Z
 
 ## Authored
 ### Purpose

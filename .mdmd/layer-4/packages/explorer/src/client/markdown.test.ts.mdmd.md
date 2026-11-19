@@ -3,8 +3,8 @@
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/markdown.test.ts
-- Generated At: 2026-11-19T21:11:50.814Z
+- Code Path: `packages/explorer/src/client/markdown.test.ts`
+- Generated At: 2026-11-19T22:40:11.144Z
 
 ## Authored
 ### Purpose

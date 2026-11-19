@@ -3,8 +3,8 @@
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/live-docs/cli.ts
-- Generated At: 2026-11-19T20:03:08.901Z
+- Code Path: `scripts/live-docs/cli.ts`
+- Generated At: 2026-11-19T22:40:13.226Z
 
 ## Authored
 ### Purpose
@@ -127,9 +127,23 @@ the options; any other failure prints its message, with how to see where it
 failed, and with `--stack` on the command line, the stack of the failure and
 of each failure that caused it; both exit 1.
 
+#### `stackWanted` {#symbol-stackwanted}
+- Type: function
+- Source: [source](../../../../scripts/live-docs/cli.ts#L179)
+
+##### `stackWanted` — Summary
+Whether the command line asked for `--stack`, which {@link runCommand} takes off it: a command prints the stacks of the failures it goes on past.
+
+#### `stackOf` {#symbol-stackof}
+- Type: function
+- Source: [source](../../../../scripts/live-docs/cli.ts#L184)
+
+##### `stackOf` — Summary
+A failure's stack, then each cause's under "Caused by", as far as the chain goes.
+
 #### `readConfiguration` {#symbol-readconfiguration}
 - Type: function
-- Source: [source](../../../../scripts/live-docs/cli.ts#L194)
+- Source: [source](../../../../scripts/live-docs/cli.ts#L202)
 
 ##### `readConfiguration` — Summary
 The configuration a command reads: the file given, from the folder the

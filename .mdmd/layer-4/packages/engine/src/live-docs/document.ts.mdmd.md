@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/document.ts`
-- Generated At: 2026-11-19T21:47:21.713Z
+- Generated At: 2026-11-19T22:40:10.427Z
 
 ## Authored
 ### Purpose
@@ -155,7 +155,7 @@ The authored block a new doc of a file no reader handles starts with: {@link DEF
 ##### `entryWords` — Summary
 An entry's reason and evidence in words, as the CLI prints them and the
 Explorer shows them: "program main", "command build of package.json",
-"module of packages/cli/package.json", "opening GET api/payments",
+"module of packages/generator/package.json", "opening GET api/payments",
 "tooling", "declared".
 
 #### `symbolName` {#symbol-symbolname}
@@ -195,17 +195,9 @@ percent-encoded as UTF-8 (`notes/plan (draft).md` is `notes/plan%20%28draft%29.m
 that the link opens the file in a markdown viewer and its first `#` begins its fragment. A path of letters, digits
 and `-./@_` is written as it is.
 
-#### `decodeLinkPath` {#symbol-decodelinkpath}
-- Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L413)
-
-##### `decodeLinkPath` — Summary
-A link's path as the workspace path it names, percent-decoded as a browser reads it; a path that is not well-formed
-percent-encoding is read as written, as the Explorer's reader reads one.
-
 #### `renderLiveDoc` {#symbol-renderlivedoc}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L436)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L424)
 - Parameters: `doc`: [`LiveDoc`](#symbol-livedoc)
 
 ##### `renderLiveDoc` — Summary
@@ -213,7 +205,7 @@ Writes a Live Doc as markdown. The output always ends with one newline.
 
 #### `renderSymbolBlocks` {#symbol-rendersymbolblocks}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L508)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L496)
 - Parameters: `symbols`: [`SymbolBlock`](#symbol-symbolblock)[]
 
 ##### `renderSymbolBlocks` — Summary
@@ -221,14 +213,14 @@ Writes the body of the `Public Symbols` section: the lines between its markers.
 
 #### `LiveDocSyntaxError` {#symbol-livedocsyntaxerror}
 - Type: class
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L716)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L704)
 
 ##### `LiveDocSyntaxError` — Summary
 Thrown when text is not a Live Doc. `line` is one-based.
 
 #### `parseLiveDoc` {#symbol-parselivedoc}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L724)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L712)
 - Returns: [`LiveDoc`](#symbol-livedoc)
 
 ##### `parseLiveDoc` — Summary
@@ -236,7 +228,7 @@ Reads a Live Doc back from markdown, refusing anything outside the grammar.
 
 #### `authoredBlockOf` {#symbol-authoredblockof}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L1150)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L1138)
 
 ##### `authoredBlockOf` — Summary
 The authored block of any text that has one, whatever else the text holds.
@@ -248,7 +240,7 @@ is nothing to carry.
 
 #### `Reader` {#symbol-reader}
 - Type: class
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L1177)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L1165)
 
 ##### `Reader` — Summary
 Reads a text line by line for the parsers, and fails with the line number when the grammar is not met. A line ends

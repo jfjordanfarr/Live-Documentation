@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/project.ts`
-- Generated At: 2026-11-19T21:10:10.329Z
+- Generated At: 2026-11-19T22:40:10.110Z
 
 ## Authored
 ### Purpose
@@ -21,14 +21,14 @@ The adapter for .NET project files: what a project stands on. The project is the
 ### Public Symbols
 #### `projectKind` {#symbol-projectkind}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L39)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L40)
 
 ##### `projectKind` — Summary
 What the project builds.
 
 #### `projectAdapter` {#symbol-projectadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L54)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L55)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `projectAdapter` — Summary
@@ -48,6 +48,7 @@ Language adapter for .NET project files: the project as a symbol, and what it re
 - [`openings.PROJECT_KINDS`](../openings.ts.mdmd.md#symbol-project_kinds)
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
+- [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

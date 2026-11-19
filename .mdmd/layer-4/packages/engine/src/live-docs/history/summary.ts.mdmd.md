@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/history/summary.ts`
-- Generated At: 2026-11-19T21:10:12.328Z
+- Generated At: 2026-11-19T22:40:10.667Z
 
 ## Authored
 ### Purpose
@@ -155,7 +155,6 @@ The name of a text in the store: the SHA-256 of its UTF-8 bytes, in hexadecimal.
 - [`graph.GraphEdge`](../graph.ts.mdmd.md#symbol-graphedge)
 - [`graph.LiveDocGraph`](../graph.ts.mdmd.md#symbol-livedocgraph)
 - [`graph.linkTarget`](../graph.ts.mdmd.md#symbol-linktarget-function)
-- [`graph.resolveDocLink`](../graph.ts.mdmd.md#symbol-resolvedoclink)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

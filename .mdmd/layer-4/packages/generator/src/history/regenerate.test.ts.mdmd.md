@@ -1,10 +1,10 @@
-# packages/generator/src/history/regenerate.test.ts
+# `packages/generator/src/history/regenerate.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/generator/src/history/regenerate.test.ts
-- Generated At: 2026-11-19T19:05:09.594Z
+- Code Path: `packages/generator/src/history/regenerate.test.ts`
+- Generated At: 2026-11-19T22:40:12.844Z
 
 ## Authored
 ### Purpose

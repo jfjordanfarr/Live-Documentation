@@ -1,10 +1,10 @@
-# tests/e2e/link-targets.spec.ts
+# `tests/e2e/link-targets.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/link-targets.spec.ts
-- Generated At: 2026-11-19T20:14:21.457Z
+- Code Path: `tests/e2e/link-targets.spec.ts`
+- Generated At: 2026-11-19T22:40:14.307Z
 
 ## Authored
 ### Purpose

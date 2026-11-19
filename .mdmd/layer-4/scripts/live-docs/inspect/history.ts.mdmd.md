@@ -3,8 +3,8 @@
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/live-docs/inspect/history.ts
-- Generated At: 2026-11-19T20:08:20.017Z
+- Code Path: `scripts/live-docs/inspect/history.ts`
+- Generated At: 2026-11-19T22:40:13.283Z
 
 ## Authored
 ### Purpose

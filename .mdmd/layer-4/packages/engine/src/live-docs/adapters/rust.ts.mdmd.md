@@ -3,8 +3,8 @@
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/adapters/rust.ts
-- Generated At: 2026-11-19T21:21:17.157Z
+- Code Path: `packages/engine/src/live-docs/adapters/rust.ts`
+- Generated At: 2026-11-19T22:40:10.233Z
 
 ## Authored
 ### Purpose
