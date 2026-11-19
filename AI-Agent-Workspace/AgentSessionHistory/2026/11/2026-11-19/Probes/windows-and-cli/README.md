@@ -44,7 +44,7 @@ The case test could not be run "for real". This repository's folder is no longer
 
 **Tests.** `generate-cli.test.ts` runs `npm --prefix <checkout> run live-docs:generate` from another folder, with a relative `--workspace` and `--config`, and with neither. Both cases failed before the mend, looking for the configuration in the checkout. They name the configuration first, so that a run which takes its paths from the checkout stops before it writes anything there. `cli.test.ts` covers the rule for `npm_lifecycle_script`.
 
-**One consequence for agents here.** `npm run live-docs:generate` typed in a subfolder of this checkout that has no `package.json` of its own, such as `scripts/`, now maps that subfolder, not the repository. That is what "the current directory" says. The gate and the e2e bundles run through nested `npm run`, which resets `INIT_CWD` to the checkout, so they are unaffected.
+**One consequence for agents here** (superseded by [the second leg](#second-leg-november-19), which takes the workspace from the nearest folder with a configuration). `npm run live-docs:generate` typed in a subfolder of this checkout that has no `package.json` of its own, such as `scripts/`, now maps that subfolder, not the repository. That is what "the current directory" says. The gate and the e2e bundles run through nested `npm run`, which resets `INIT_CWD` to the checkout, so they are unaffected.
 
 ### 3. A mistyped `--workspace`: reproduced, mended (`b203ac34`)
 
