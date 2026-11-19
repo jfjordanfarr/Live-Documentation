@@ -25752,3 +25752,343 @@
 
   The bundles are building and the whole browser suite follows; I'll report when
   it ends, around 16:25 UTC.
+
+● The nine old history caches are gone (994 MB) and the history on main now runs
+  to today's head: 1,224 commits, every step replayed, the last step equal to
+  the committed docs. The summary, narrative, direction notes and inventory are
+  committed with Turns 39 and 40 in them.
+
+  One correction to what I told you about disk writes: a rebuild writes about
+  half a terabyte, not a third, and this session ran three whole rebuilds and
+  one stopped early, not "four and a bit". I had extrapolated from one hour of
+  your chart; I then measured the tree size at every tenth commit (mean 425 MB,
+  over 900 MB for the last quarter of the history). The total on your chart is
+  consistent with that.
+
+  The bundles are building and the whole browser suite follows; I'll report when
+  it ends, around 16:25 UTC.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Referenced file AI-Agent-Workspace/Memory/narrative.md
+  ⎿  Referenced file AI-Agent-Workspace/AgentSessionHistory/2026/11/Summarized/2
+     026-11-18.1.SUMMARIZED.md
+  ⎿  Read packages/generator/src/history/regenerate.ts (262 lines)
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e
+     5-95a5-166121c231a3/scratchpad/root/direction-close.mjs (43 lines)
+  ⎿  Referenced file AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2
+     026-11-18.1.record.md
+
+● Task "Run the history to the head, rebuild the bundles and run the whole
+  browser suite" still running in background
+
+● Background command "Run the history to the head, rebuild the bundles and run
+  the whole browser suite" completed (exit code 0)
+
+  Read 1 file, ran 6 shell commands (ctrl+o to expand)
+
+● The suite ended with six red cases, not the one expected. I'm classifying the
+  five new ones (rerunning each alone and checking the history case against git)
+  before I write the close.
+
+  Ran 7 shell commands (ctrl+o to expand)
+
+● The history case fails because its expectation is outdated, since the commit
+  really did add 24 document links. I'm rerunning the other four alone on the
+  quiet machine now. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● All four tests fail on a quiet machine too, so they're real failures, not
+  load. They all point at the repository's picture that grew with the history
+  merge, which is my working theory but not yet proven; I'm recording this in
+  the summary and direction notes now, then closing out. · summary
+
+  Read 1 file, listed 1 directory, ran 4 shell commands (ctrl+o to expand)
+
+● Checking one more thing for the handoff (how close the 3D settle count was to
+  its bound when the bound was set), then writing the close.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● The summary now has its close section with the six red cases stated plainly.
+  Next: the direction notes, the record's final notes, the inventory, then the
+  checks and the commit.
+
+  Searched for 1 pattern, ran 2 shell commands · 1 failed (ctrl+o to expand)
+
+● Update(AI-Agent-Workspace/Memory/direction.md)
+  ⎿  Added 1 line, removed 1 line
+      25  - **Tuning reset to its defaults** (2026-11-19, [Turn 27 of the
+           November 18 record](../AgentSessionHistory/2026/11/2026-11-18/
+          2026-11-18.1.record.md#turn-27)): "can you give me a button in
+          Live Documentation Explorer to reset my stylings to the default
+          s? I've noticed that sometimes we diverge, and I see you changi
+          ng the defaults to accommodate design choices. There should be
+          a way for me to quickly reset my visual tuning preferences to t
+          heir default values so that the links you send me are perceived
+           by both of us in the same way." On `main` since 2026-11-19 (`2
+          1866052` to `e7321333`): the button, a second press that puts t
+          he settings back, a count beside the folded Tuning heading of t
+          he settings that differ and a dot on each changed lever. For th
+          eir eye: the button is a curved arrow without a word. Root's pr
+          actice until it lands and after: a link sent to the owner says
+          which levers it assumes when any is not the default.
+      26  - **Unpin others** (2026-11-19, [Turn 31 of the November 18 rec
+          ord](../AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.rec
+          ord.md#turn-31)): "I'd really like to have a \"Unpin others\" i
+          nteraction. I want to be able to release everything _except_ wh
+          at I'm interacting with now. An ability to do that would be rea
+          lly great if designed well." On `main` since 2026-11-19 (merge
+          `7f603b12`): root's design is an editor's Close Others, an item
+           in the menu of the thing that stays (a card, a symbol row, a 3
+          D sphere, a pin's entry in the tray), one step that Back takes
+          back.
+      27  - **Open against pinned, and wrapping again: one interaction fo
+          r two holes?** (2026-11-19, [Turn 32 of the November 18 record]
+          (../AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.
+          md#turn-32); the owner's open question, not a decision): "it is
+           notable that inside IDEs, there is a difference between a file
+           being \"open\" (eventually disappears in the stack of tabs onc
+          e it is sufficiently temporally distant from the user's interac
+          tions) and \"pinned\" (durable to wiping the slate clean of tab
+          s). It is also notable that we currently don't have much in the
+           way of a \"re-wrap with a bubble\" interaction in 3D. Whether
+          the two have any semantic equivalence is not yet clear to me, b
+          ut I wonder if two design holes could be plugged semantically t
+          ogether by a common unifying user interaction." What exists, fo
+          und the same hour: the 3D map's one discovery behaves as an edi
+          tor's preview tab, an opened directory or popped bubble as an o
+          pen tab (it can be wrapped again by a chip the owner had not fo
+          und), a pin as a pinned tab; a plain click on a 3D sphere pins
+          it (their request of 2026-11-02), so nothing lets go by itself.
+           **Decided** ([Turn 33](../AgentSessionHistory/2026/11/2026-11-
+          18/2026-11-18.1.record.md#turn-33)): one gesture at two strengt
+          hs in the menu of the thing kept, Fold others away (what is mer
+          ely open elsewhere goes back, pins stay) and Unpin others (pins
+           too): "Oh man that sounds absolutely awesome." On `main` since
+           2026-11-19 (merge `7f603b12`), with "Wrap this group again" in
+           a sphere's menu; the popped group's own dim name still gives n
+          o sign that it can be pressed, and Clear all pins leaves the 3D
+           map's popped groups open and cannot always be taken back by Ba
+          ck, both for a later round. Letting go by age is not built and
+          is [an idea](ideas.md) the owner would "let ... haunt me".
+      28 -- **History in the 2D Local Map, and the page without its panel
+         - and sidebar** (2026-11-19, [Turn 34 of the November 18 record]
+         -(../AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.
+         -md#turn-34); asked of root as design, after the history's build
+         -er is done): "I think we should get serious about ensuring that
+         - the 2D Local Map has the ability to explore history as well. W
+         -e should be able to scrub through history in the same shared co
+         -ntrol whose state is continuous in 2D and 3D local map. (Future
+         - idea: pin a date in the World Map and then peek into the tempo
+         -rally-matched state of all temporally-scanned objects when look
+         -ing inside them). How might you design such a thing?" And: "In 
+         -addition, I want to hear about design ideas for how we eventual
+         -ly ditch the Detail Panel for good (if possible; otherwise for 
+         -extraordinarily rare sparing use), and possibly even the Left S
+         -idbar? How do we ensure that we're making great use of our scre
+         -en real estate and making sure that our software shuts up and t
+         -he scanned materials do they talking? How do we best get out of
+         - the way so users on many different viewport sizes and dimensio
+         -ns can still understand complex directories of things with simp
+         -le idiomatic gestures and intuitive controls? (idea for later: 
+         -first-class support for generic gamepads as input to Live Docum
+         -entation Explorer as a means of ensuring that our design is sim
+         -ple enough that it _could_ easily be navigated via a controller
+         -)." Root's design is in [its reply](../AgentSessionHistory/2026
+         -/11/2026-11-18/2026-11-18.1.record.md#roots-reply-to-turn-34-th
+         -e-design-as-delivered). **Decided** ([Turn 35](../AgentSessionH
+         -istory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-35)): the
+         - moment belongs to the app and one scrubber serves both maps; a
+         -ll three rungs are the aim (the 2D map at file level from what 
+         -the history carries; then symbol rows as they were; then the wo
+         -rds of that day), "Oh! Whoops, I thought that's what we already
+         - had. Yeah, all three rungs. I mean, we're goin … [+5742 chars]
+      28 +- **History in the 2D Local Map, and the page without its panel
+         + and sidebar** (2026-11-19, [Turn 34 of the November 18 record]
+         +(../AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.
+         +md#turn-34); asked of root as design, after the history's build
+         +er is done): "I think we should get serious about ensuring that
+         + the 2D Local Map has the ability to explore history as well. W
+         +e should be able to scrub through history in the same shared co
+         +ntrol whose state is continuous in 2D and 3D local map. (Future
+         + idea: pin a date in the World Map and then peek into the tempo
+         +rally-matched state of all temporally-scanned objects when look
+         +ing inside them). How might you design such a thing?" And: "In 
+         +addition, I want to hear about design ideas for how we eventual
+         +ly ditch the Detail Panel for good (if possible; otherwise for 
+         +extraordinarily rare sparing use), and possibly even the Left S
+         +idbar? How do we ensure that we're making great use of our scre
+         +en real estate and making sure that our software shuts up and t
+         +he scanned materials do they talking? How do we best get out of
+         + the way so users on many different viewport sizes and dimensio
+         +ns can still understand complex directories of things with simp
+         +le idiomatic gestures and intuitive controls? (idea for later: 
+         +first-class support for generic gamepads as input to Live Docum
+         +entation Explorer as a means of ensuring that our design is sim
+         +ple enough that it _could_ easily be navigated via a controller
+         +)." Root's design is in [its reply](../AgentSessionHistory/2026
+         +/11/2026-11-18/2026-11-18.1.record.md#roots-reply-to-turn-34-th
+         +e-design-as-delivered). **Decided** ([Turn 35](../AgentSessionH
+         +istory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-35)): the
+         + moment belongs to the app and one scrubber serves both maps; a
+         +ll three rungs are the aim (the 2D map at file level from what 
+         +the history carries; then symbol rows as they were; then the wo
+         +rds of that day), "Oh! Whoops, I thought that's what we already
+         + had. Yeah, all three rungs. I mean, we're goin … [+5974 chars]
+      29  - **The camera frames what is pinned** (2026-11-19, [Turn 37 of
+           the November 18 record](../AgentSessionHistory/2026/11/2026-11
+          -18/2026-11-18.1.record.md#turn-37), on trying the camera round
+           on their port). Of a cell's press: "It did shift away so it mi
+          ght be wise to follow the sucker for a bit if the user hasn't p
+          rovided input to navigate in any direction (panning, zooming, e
+          tc.)... Zoomed in close, it was quite the rollercoaster ride th
+          ough. Wouldn't surprise me if we needed to worry about having d
+          iffering default views for one pin (show everything about this
+          one node or one symbol at closest detail) versus many pins (try
+           to frame every pinned thing as best you can with bias towards
+          most recent items)." Of the pull back on arrival: "the stutter
+          of performance as the stylesheet breakpoints were hit was jarri
+          ng. I think a holistic framing approach like the one I describe
+          d above might be the best of both worlds, as it causes the fram
+          e to automatically adjust to try and hold the monkey bars you'v
+          e been swinging along, starting small." And: "prioritize pins a
+          nd temporality in framing, and maximizing the amount of pinned
+          content that can be framed", two pinned symbols framed as those
+           two rows, "everything else getting captured being a nice-to-ha
+          ve incidental" ([their picture](../AgentSessionHistory/2026/11/
+          2026-11-18/Screenshots/owner-turn-37/README.md)). **On `main` a
+          s a trial since 2026-11-19** (merge `36083775`: Tuning → 2D Lay
+          out → Framing, By Hand by default, Follows Pins, and Follows Pi
+          ns, Out To Files), with the freeze's mend (merge `54dd2061`: th
+          ree restyles of the whole map at a look's change made one, the
+          freeze about halved, what is left proportional to the picture).
+           What the trial showed before their eye: two pinned symbols fra
+          me as their picture asks; a cell's press on `pathfind.ts` still
+           leaves the subject out of the frame, the new card landing fart
+          her off than a legible scale holds; five whole-file pins frame
+          the newest alone under Follows Pins and all fiv … [+532 chars]
+      30  - **The Memory documents rearranged** (2026-11-18, [Turns 11 to
+           13](../AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.rec
+          ord.md#turn-11)): all four done on 2026-11-19, the guide and th
+          e README looked at lightly ([the method's record](../AgentSessi
+          onHistory/2026/11/2026-11-18/Probes/memory-rearrangement/README
+          .md)). The owner then narrowed the leave ([Turn 21](../AgentSes
+          sionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-21))
+          : "If they appear that they are in need of improvement. I'm not
+           confident that will need to be something done all the time, an
+          d might quickly bloat the context of the Root Agent unnecessari
+          ly. Today's pass should be sufficient for setting a good standa
+          rd."
+      31  - **The archive's next effort,** from their reasons for its reo
+          rganization: find the screenshots a record discusses and embed
+          them in the record. And the devcontainer's README brought level
+           with the moved working copy.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Record notes and resumption are written. Now the inventory, the delivered
+  messages, the checks and the commit.
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.
+        record.md)
+  ⎿  Added 1 line, removed 1 line
+      5999 
+      6000  ## Root's messages after Turn 40, as delivered
+      6001 
+      6002 -9 messages, 15:32:03 to 16:30:46 UTC on November 19, each as 
+           -the session's log shows it. No owner turn follows them in thi
+           -s chat: the conversation was compacted by the harness at abou
+           -t 16:22 UTC, and the message that ends the chat is written af
+           -ter this section, so the next session records it from the log
+           -.                                                            
+      6002 +9 messages, 15:32:03 to 16:30:46 UTC on November 19, each as 
+           +the session's log shows it. No owner turn follows them in thi
+           +s chat: the owner compacted the conversation with the editor'
+           +s command while the browser suite ran, and the message that e
+           +nds the chat is written after this section, so the next sessi
+           +on records it from the log. Two short lines root wrote at abo
+           +ut 16:23 and 16:26 UTC (that git agrees with the history's ne
+           +w data on the red history case; that the other four fail by t
+           +hemselves on a quiet machine) do not stand in the log as mess
+           +ages and are counted as not told; the closing message carries
+           + both.                                                       
+      6003 
+      6004  **Root, 15:32:03 UTC:**
+      6005 
+
+  Ran 4 shell commands · 1 failed (ctrl+o to expand)
+
+● Committed. Last step: clearing the session's temporary files, then the closing
+  message.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Ready. You can start the new dev day chat and stop the container. One thing
+  did not come out as I told you to expect: the whole browser suite over the
+  history's data ended with six red cases, not one.
+
+  The suite
+
+  It ran on a quiet machine over everything that landed: 590 passed, 5 failed, 7
+  skipped by design, and 4 of 5 in the pass of cases that run alone.
+
+  - The known one: force-graph-discovery.spec.ts:70, the 3D picture's long
+    settle after a group grows.
+  - Four that are real, cause not yet found. I reran them by themselves on an
+    idle machine and all four failed the same way. All four passed in the
+    morning's whole run.
+    - force-graph-focus.spec.ts:72: graph.ts stays hidden behind nearer spheres
+      however the camera turns.
+    - force-graph-update.spec.ts:140: the whole repository entering in 3D is
+      still moving at its bound.
+    - local-map-search.spec.ts:65 and local-map-hidden.spec.ts:51: the Local
+      Map's search has not finished in 45 seconds.
+  - One where the test's expectation is out of date: history-panel.spec.ts:164.
+    The new history data shows a "Documents linked" group at one commit that the
+    case does not expect. I checked git for two of the 24 files it lists and
+    the data is right. I left the case unchanged because I don't yet know why
+    the previous history data missed those links.
+
+  All four real ones draw this repository's own map. Two things landed between
+  the morning run and this one: the 3D settle round and the history merge, which
+  grew the repository. My guess is the growth, but I did not bisect, so it is
+  only a guess.
+
+  I did not fix any of them in this chat. They are the first work of the next
+  one, before anything else lands, and no bound gets raised to pass them.
+
+  Before you push
+
+  The history merge changed pages.yml. A full history build is about 22
+  processor-hours, so on the hosted runner it now stops itself after 140 minutes
+  and carries its cache to the next run. Until the cache is whole, the
+  published site deploys without history and the run's summary says so; expect
+  several runs. A real failure of the history deploys the site and then ends the
+  run red.
+
+  State
+
+  - Everything is committed on main (last commit 1ca201c8); nothing is pushed by
+    me.
+  - The summary is 2026-11-18.1.SUMMARIZED.md (AI-Agent-Workspace/AgentSessionHi
+    story/2026/11/Summarized/2026-11-18.1.SUMMARIZED.md), through Turn 40 and
+    the close.
+  - Your preview on port 8999 now carries the history through today's commits.
+    After a container restart, start it again with npx http-server dist/explorer
+    -p 8999 -c-1.
+  - Nine old builder worktrees are still locked by this session; the next chat
+    removes them.
+  - If you save the export once more after this message, the next chat files it.
+
+  What the next chat opens with
+
+  1. The five red cases, bisected and mended by a builder.
+  2. The packet for your eye: each open question as screenshots to compare, a
+     link to try, and a blind tester's reading.
+  3. Three questions about the December showing that I can't answer from here:
+     - On which machine can your work's code be mapped?
+     - What may leave that machine?
+     - Does a .NET Framework 4.8 solution build there for the C# indexer?
