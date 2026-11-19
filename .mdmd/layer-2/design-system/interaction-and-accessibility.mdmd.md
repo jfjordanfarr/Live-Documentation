@@ -202,6 +202,7 @@ These are stated so a builder does not mistake them for accidents. Each is in [t
 | Ctrl+P, or ⌘+P | everywhere | Focuses the search (replaces the browser's Print), the letter in either case since 2026-11-19, so that Caps Lock does not hand it to Print | `search/search-bar.ts` |
 | Enter, Space | a focused control | Activates it; on a World Map piece, pins it and moves focus into its panel | `views/worldMap/controller.ts:1842-1850` |
 | Arrows, Home, End | menu, search results, scrubber, cells | Move within the group | 4.1 |
+| Page Up, Page Down | the scrubber's slider | The next and previous marked commit, as the coarse buttons beside play do, so that hand and keyboard agree (since 2026-11-19); the arrows, as the fine buttons, a commit | `history/scrubber.ts` |
 | ContextMenu, Shift+F10 | a map item | Opens its commands | `views/localView/controller.ts:1670-1679`, `views/forceGraphView.ts:2139-2147` |
 | Escape | everywhere | See 4.3 | |
 | Q, E, T, F, U, G, D, R, ? | World Map, while focus is inside the board and not in a field; never with Ctrl, ⌘ or Alt held | Turn left, right, top-down, fit, built on, snap, dark, reset the layout (and, pressed again before a piece is moved, put it back), help | `views/worldMap/controller.ts:1771-1799` |
