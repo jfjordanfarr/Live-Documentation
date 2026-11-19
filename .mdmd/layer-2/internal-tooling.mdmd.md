@@ -1,6 +1,6 @@
 # Internal Tooling Reference
 
-_Current as of 2026-11-16._
+_Current as of 2026-11-19._
 
 ## Metadata
 
@@ -22,7 +22,7 @@ Runs, in order:
 3. Live Docs lint (`livedocs -- --skip-generate`)
 4. SlopCop markdown, asset and symbol audits
 
-Flags: `--e2e` appends an Explorer build and the Playwright suite; `--skip-git-status` skips the clean-tree check, which is what CI does as `npm run ci-check`.
+Flags: `--e2e` appends `npm run test:e2e`, which builds the suite's bundles and runs the Playwright suite; `--skip-git-status` skips the clean-tree check, which is what CI does as `npm run ci-check`.
 
 The gate stops at its first red stage, so the stages after it have not run. When that stage is red for a reason apart from the change (a deadline on a slow machine), run the rest one by one (`npm run livedocs`, `lint`, `test:unit`, `test:integration`, `test:e2e`) before landing further work on top; a handful of browser files chosen by hand is not the suite. On 2026-11-13 rounds were landed on browser files chosen by hand, the gate then stopped at a unit deadline before its browser stage, and two more rounds landed on top; the suite, run that night, showed that an afternoon's round had broken the Local Map's layout search. A command started in the background reports its own end; a wait written as `until ! pgrep -f "<its command>"` finds its own shell and never ends (fourteen of them ran for ten hours that day).
 
@@ -38,7 +38,8 @@ Lint, build, type-check, both Vitest projects, and link enforcement, without the
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `npm run test:unit`        | The Vitest `unit` and `unit-serial` projects: `packages/*/src`, `scripts/` and the SlopCop suites; the deadline-bound physics suite runs alone, after the rest |
 | `npm run test:integration` | The Vitest `integration` project (`tests/integration/live-docs/`): generator determinism, polyglot fixtures, CLI pathfinding, Rosetta parity, the oracle (~20 s)                           |
-| `npm run test:e2e`         | Playwright against the built Explorer, estate and history samples (`tests/e2e/`): every view, explicit changes between 2D and 3D, Back and Forward, the design audit and the still-picture instrument |
+| `npm run test:e2e`         | `npm run e2e:bundles`, then Playwright against the built Explorer and its estate, history and Rosetta samples (`tests/e2e/`): every view, explicit changes between 2D and 3D, Back and Forward, the design audit and the still-picture instrument |
+| `npm run e2e:bundles`      | Builds the Explorer and every sample the browser suite serves, from the one list in `scripts/e2e-bundles.mjs` (below) |
 
 Both Vitest projects import TypeScript sources directly, so neither needs a build first. The Playwright specs check each view's plumbing (state in the URL, containment, stable layout, explicit changes between 2D and 3D), not whether the picture is right; the owner said as much on 2026-09-28. Two instruments say a little more: `tests/e2e/design-audit.ts` (2026-09-29) fails a spec when words collide or are cut off, and `tests/e2e/still-picture.ts` (2026-10-01) measures what one picture shows legibly against predictions written in `AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-01/Probes/still-picture-deck.md`. Taste is still judged by eye. The AST accuracy benchmark was retired on 2026-09-27: it scored an inference path the product did not ship, against per-fixture thresholds as low as 5% recall. Its replacement is the oracle below.
 
@@ -50,6 +51,29 @@ Both Vitest projects import TypeScript sources directly, so neither needs a buil
 
 
 The [Explorer remediation checklist](../layer-3/live-documentation-explorer.mdmd.md#remediation-work) records journeys and visual acceptance criteria. Try the relevant journeys in the built page on both the main repository and estate before writing their browser checks. Assert that path results and reverse recovery are rendered and usable in both representations, labels and controls remain readable, and identity survives orbit, zoom, filtering, history and representation changes. Element existence and persisted state alone did not catch the review's failures; DOM collision checks also cannot establish that projected 3D wires look attached to the right spheres. Keep the existing audits and thresholds. Non-finite layout positions must fail measurement, never be reported as settled.
+
+### The browser lane
+
+One machine runs every builder's browser. Until 2026-11-19 builders shared it by taking `flock -x /tmp/live-docs-browser.lock` round their runs by hand, each with a port of its own; one night of five to eight builders at once ([Turns 36 and 37 of the November 18 session](../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-36)) showed seven faults in that, and each piece below answers one or more of them. The owner's aim that night: builders should "quickly hop in a browser, run their testing screenshots, and get back out".
+
+```bash
+npm run e2e:bundles                       # build first, outside the lane
+node scripts/browser-lane.mjs --label my-round -- npx playwright test --config tests/e2e/playwright.config.ts tests/e2e/no-network.spec.ts
+node scripts/browser-lane.mjs --status    # who holds, who waits, for how long
+```
+
+- **`node scripts/browser-lane.mjs [--label <who>] [--max-seconds <n>] -- <command…>`** ([its Live Doc](../layer-4/scripts/browser-lane.mjs.mdmd.md)) queues first come, first served, runs the command while holding the lane, and always lets go.
+  - *`flock` serves no queue*: one builder held the browser thirty-six minutes while seven waited, and a late arrival was sometimes served first. The lane serves numbered tickets in `/tmp/live-docs-browser-lane/tickets/` in order, and skips a ticket whose process has died.
+  - *Holds had no cap.* The cap is 300 s unless `--max-seconds` says otherwise; at the cap the command's process group is ended and the exit is 124.
+  - *A cut run read as failures*: a hold too large for its cap was cut mid-run and its remaining cases failed as the server went, which read like 21 failures. The lane's last line after a cut says "CUT", how many of a Playwright run's cases had finished, and that what failed after the cut is the cut.
+  - *Servers outlived their holds*: an `npx http-server` kept the lock twenty minutes after its work, and cleanups that ended the `npx` wrapper left the server. Every process the command starts carries the hold's token in its environment, whatever process group it moves to, and the lane ends all of them at the end and logs the ports they held.
+  - *Builds inside holds.* Building is not the browser's work: run `npm run build`, `npm run e2e:bundles` or `npm run live-docs:visualize` before the lane, and put only the browser run inside it. The log's `held=` figures show a hold that built.
+  - **The older lock.** While builders still take `/tmp/live-docs-browser.lock` by hand, the lane takes it too while holding, and says so when it waits for someone outside the lane, so the two conventions never overlap. Do not put `flock` on that lock inside a lane command: the lane refuses it, since it would wait on the lane until the cap.
+  - Each hold appends a line to `/tmp/live-docs-browser-lane/lane.log`: label, seconds waited and held, exit, capped or not, cases finished of those announced, anything left behind with its ports, and the command.
+- **`npm run e2e:bundles`** ([`scripts/e2e-bundles.mjs`](../layer-4/scripts/e2e-bundles.mjs.mdmd.md)) builds the Explorer and every sample the suite serves, and `npm run test:e2e` runs it first. *Stale sample bundles*: a check after a landing rebuilt the Explorer and the estate sample but not the history or Rosetta samples, and the history's cases then ran on a page hours old and failed for that alone. At its start the suite now refuses bundles that were not built together from the client as it stands, naming each and this command: every bundle carries its own copy of the client's script, so a sample whose copy differs from the Explorer's was built at another time.
+- **The suite's own server** ([`tests/e2e/served-build.ts`](../layer-4/tests/e2e/served-build.ts.mdmd.md)). *Playwright reused whatever answered on its port*, so a builder given a port another builder's server still held would have tested the other's build without a word. The suite now starts its server on a port it finds free; a port named by `LIVE_DOCS_E2E_PORT` that already answers is refused in a plain sentence, unless `LIVE_DOCS_E2E_REUSE=1` asks to use it; and its first global setup proves the server serves this checkout's `dist/explorer` by fetching a file just written there. A builder needs no port of its own for the suite any more; a port is still needed for a page served by hand.
+- *Shared scratch names*: two agents wrote a `hold.sh` in one scratch folder and one overwrote the other's. The lane needs no script of one's own to hold the browser; scratch files go in a folder named for their builder.
+
 
 ---
 
