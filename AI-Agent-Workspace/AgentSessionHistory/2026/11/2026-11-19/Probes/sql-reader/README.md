@@ -1,6 +1,6 @@
 # The SQL reader, graded by Microsoft's T-SQL parser
 
-Current as of November 19, 2026. A builder wrote this for the root while mending the SQL reader after [the cold run](../cold-run/README.md), on a branch of eight commits from `2114bff6` and one for this record. Nothing here has landed on `main`: the reader is code the history's cache is keyed on, and the root gathers it with other work for one landing. No subagent was used.
+Current as of November 19, 2026. A builder wrote this for the root while mending the SQL reader after [the cold run](../cold-run/README.md), on a branch of eight commits from `2114bff6` and one for this record, accepted by the root for the December landing. A second leg the same evening added two commits and is recorded under [The second leg](#the-second-leg-executed-strings-openquery-and-plsql), at the end. The reader is code the history's cache is keyed on, and the root gathers it with other work for one landing. No subagent was used.
 
 ## In short
 
@@ -291,3 +291,110 @@ The first run of the gate failed twice, and both are dealt with:
 - **A procedure called without `EXEC`** as the first statement of a batch. This is one line on DNN. Reading it needs a list of the statement words T-SQL does not reserve (`THROW`; and SQL*Plus's `PROMPT`), so it was not built.
 - **`.SqlDataProvider` is not read.** Its `{databaseOwner}{objectQualifier}` placeholders would need filling. Graded copies show the reader would be right on them.
 - **Speed.** Reading DNN's provider scripts (299 files, 6.6 MB) takes about 2.8 s a pass now. The original reader took 6.4 s to read them twice, one 0.8 MB file alone 4 s. On tSQLt a pass takes about 0.5 s, about twice the original's.
+
+## The second leg: executed strings, OPENQUERY, and PL/SQL
+
+The root accepted the nine commits above and ruled on what they left open:
+- **The shared C# reading:** right.
+- **Tables made in a body:** accepted.
+- **The engine's own catalog:** put to the owner, kept as a commit of its own; nothing below depends on it.
+- **The `)` link:** mended on the names' branch, which lands first.
+
+The owner then said three things:
+- their SQL Server scripts do query Oracle through `OPENQUERY` ("YES!");
+- every SQL file of theirs ends in `.sql`, and their database repositories are systems of record;
+- they do not know whether the Oracle side uses packages.
+
+Two more commits:
+
+- **`df05e35b` Have the SQL oracle read the strings a script executes.** The emitter now records `OPENQUERY` with its linked server (and `EXEC (…) AT` one). For every executed string it records whether it runs in the script or in a module's body, the line its text starts on, and the strings it executes in turn. What it reads inside carries lines of the file.
+
+  The comparison reads every string written out in full that the parser reads, and states the rules once in its header. An object the script creates and later alters stands at its last `ALTER`. An `ALTER` of a procedure, function, view or trigger is graded as a use.
+
+  A new fixture script, `Procedures/Billing.usp_Settle.sql`, holds:
+  - a stub created by `EXEC('CREATE …')`, then an `ALTER` with the body;
+  - strings written out and one computed;
+  - an `OPENQUERY` to `ORACLE_CENTRAL`;
+  - an `ALTER VIEW` of a view nothing creates.
+
+  Its register held the five misses of the reader at that commit.
+- **`411dc559` Read the SQL a script executes from a string written out in full.** The reader reads `EXEC ('…' + '…')`, `sp_executesql N'…'`, `OPENQUERY(server, '…')` and `EXEC (…) AT server` when every part is a literal, nested strings too.
+  - What a string creates is the script's symbol when it runs in the script.
+  - What a string creates inside a module's body is made when the module runs.
+  - What a string creates on a linked server is that server's.
+  - What a string uses is the script's use, written `server..schema.name` when the string runs on a linked server.
+  - A string with any computed part is not read.
+
+  An `ALTER` is a use: kept by name when nothing creates the object, a link when another script does.
+
+  **The stub, then `ALTER` idiom gives one symbol, at the last `ALTER`.** That is where the body a person reads stands; the stub's `CREATE … AS SELECT 1` is a placeholder. The `CREATE`'s line would point a reader at the placeholder.
+
+  A written name's database and schema are now taken by their places, so `server...name` folds to `name`. Two unit tests were red against the previous reader and are green, and the fixture's register is empty again.
+
+### ScriptDom's figures, with the strings read
+
+| Corpus | Objects found | Lines right | Dependency lines right | Missing | Invented |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| tSQLt, before | 1,497 of 1,535 | 1,495 of 1,497 | 937 of 969 | 32 | 6 |
+| tSQLt, after | 1,525 of 1,535 | 1,525 of 1,525 | 969 of 969 | 0 | 0 |
+| DNN provider scripts, before | 4,039 of 4,056 | 4,034 of 4,039 | 6,655 of 6,962 | 307 | 0 |
+| DNN provider scripts, after | 4,052 of 4,056 | 4,052 of 4,052 | 6,961 of 6,962 | 1 | 0 |
+| DNN `.sql`, before | 38 of 51 | 38 of 38 | 20 of 29 | 9 | 10 |
+| DNN `.sql`, after | 51 of 51 | 51 of 51 | 29 of 29 | 0 | 0 |
+| estate's SQL Server scripts | 2 of 2 | 2 of 2 | 2 of 2 | 0 | 0 |
+
+- **What is left.** The ten objects left on tSQLt and the four on DNN are types and a trigger: kinds with no symbol, the question put to the root with the PL/SQL kinds below. The one line left on DNN is the implicit `EXEC` (`sp_changeobjectowner 'Files', 'dbo'`), which the work on strings did not make exact.
+- **The strings counted and not read.** On tSQLt, 112 `EXEC (…)` and 65 `sp_executesql` have a computed part, and 44 `EXEC @variable` run a procedure named in a variable. One string written out is not T-SQL the parser reads. On DNN's provider scripts, 69 and 11 are computed.
+- **What the earlier lines mean.** On DNN's `.sql` files, ten names kept before, such as `dbo.aspnet_RegisterSchemaVersion`, are now links: the stub `EXEC('CREATE PROCEDURE …')` in `InstallCommon.sql` creates them. On tSQLt, six such names became links or went: `tSQLt.AssertStringIn` and `tSQLt.Private_SysIndexes`, among others, are created by strings.
+
+### Fifty of the new wires, read
+
+Item 1 added 347 dependency lines over the three corpora: 32 on tSQLt, 9 on DNN's `.sql`, 306 on DNN's provider scripts; 322 of them are links to a file. It removed 16 lines, each a name kept that is now a link.
+
+Fifty were drawn by a seeded shuffle (mulberry32, seed 1119) of the sorted list, and each was read against ScriptDom's record. Five were also checked by eye in the source:
+- `02.02.02.sql`'s `ALTER PROCEDURE dbo.AddTab` at line 3304;
+- `03.00.12.sql`'s `ALTER procedure dbo.GetHostSettings` at line 393;
+- `ExpectExceptionTests.class.sql:274`, `EXEC('CREATE PROC MyTestClass.TestExpectingException AS EXEC tSQLt.ExpectNoException; …')` inside a test procedure;
+- `InfoTests.class.sql:44`, `EXEC('INSERT INTO tSQLt.Private_HostPlatform …')`;
+- `Source/tSQLt.AssertStringIn.ssp.sql`, whose string's body executes `tSQLt.TableToText` and `tSQLt.Fail`.
+
+Of the fifty:
+- **41 are `ALTER` uses in DNN's upgrade scripts.** Of these, 39 link an upgrade script to the scripts that create the procedure it alters, and 2 keep the name of a procedure nothing creates (`dbo.aspnet_Membership_UpdateUserInfo`, `dbo.aspnet_Membership_CreateUser`).
+- **8 are uses inside strings on tSQLt**: `EXEC` of `tSQLt.Fail`, `tSQLt.ExpectNoException`, `tSQLt.TableToText` and `tSQLt_testutil.tSQLtTestUtil_UnsafeAssemblyAndExternalAccessRevoke`, and `INSERT` into the view `tSQLt.Private_HostPlatform`, itself created by a string.
+- **1 is a `DELETE`** in a DNN `sp_executesql`.
+
+All fifty are right by the rules above. One thing they show is a consequence of the matching rule, not of the reader. DNN's upgrade scripts drop and re-create the same procedure in many versions (`dbo.AddTab` in at least 02.02.02, 05.00.01, 05.03.00 and 06.02.02). A script that alters or uses it links to every version that creates it, as every other use already did, under the presumption that several declaring files are all kept. On a system of record whose scripts are one file per object, as the owner describes theirs, this does not arise. On a folder of versioned upgrade scripts it draws a dense web; the map should perhaps say so.
+
+### OPENQUERY to Oracle: the owner's wire
+
+**What the estate sample holds.**
+- `Database/SqlServer/dbo.usp_PostPayment.sql` reads `ORACLE_CENTRAL..CENTRAL.ACCOUNT`, a four-part name through the linked server; it uses no `OPENQUERY`.
+- `Database/Oracle/CENTRAL.ACCOUNT.sql` creates the table.
+- The board declares a thing `sqlserver` from `Database/SqlServer` and a thing `oracle` from `Database/Oracle` that serves `CENTRAL.ACCOUNT`.
+- Nothing anywhere ties the name `ORACLE_CENTRAL` to `oracle`.
+
+**Before and after item 1, on the estate's own shape.** A copy of the estate was given one more procedure, `dbo.usp_GetBalance`, reading `FROM OPENQUERY(ORACLE_CENTRAL, 'SELECT ACCOUNT_NO, BALANCE FROM CENTRAL.ACCOUNT') AS a`.
+- **Before**, its doc had no dependencies: `OPENQUERY` is a word T-SQL reserves, and the query was a string.
+- **After**, its doc links to `CENTRAL.ACCOUNT` in `Database/Oracle/CENTRAL.ACCOUNT.sql`, basis contract, exactly as `dbo.usp_PostPayment`'s four-part name does. The name it keeps when the two databases are scanned apart is `ORACLE_CENTRAL..CENTRAL.ACCOUNT`, the same written form as the four-part name's. The estate graph joins that name to the `oracle` thing's door through the same rule the seven-scan estate test already proves for `usp_PostPayment`.
+
+**Why the wire forms today.** The join matches the schema and the table, `CENTRAL.ACCOUNT`, and ignores the linked server's name. The estate has one `CENTRAL.ACCOUNT`, so the wire is right.
+
+**What is still missing.** Nothing in the code says which database the linked server `ORACLE_CENTRAL` reaches. That is defined on the SQL Server instance (`sp_addlinkedserver`, `sp_addlinkedsrvlogin`) and usually not in source control. Three things follow:
+1. Two databases on the board that both hold `CENTRAL.ACCOUNT` (a second Oracle database, or a test copy) both receive the wire. The reader cannot choose, and should not guess.
+2. A name the query leaves unqualified (`SELECT … FROM ACCOUNT`) is resolved on Oracle by the linked login's default schema, which is in the linked server's definition, not the script. Today it matches an `ACCOUNT` in any schema.
+3. If the instance's linked servers are scripted in the repository, the reader could read `@server = N'ORACLE_CENTRAL', @datasrc = N'CENTRAL_PROD'` as a fact. Tying a data source such as `CENTRAL_PROD` to a folder would still be the person's.
+
+**The declaration a person would make**, then, is one line per linked server: *the linked server `ORACLE_CENTRAL`, as the `sqlserver` thing sees it, is the thing `oracle`* (and, where it matters, its default schema, `CENTRAL`). The vision already names this as its third tier of edges: "Declared. A person draws the edge: a linked-server query". The board is where it would live, beside the things it ties.
+
+Neither of these lines exists in the board's format today:
+- on the `sqlserver` thing: `- Linked server: ORACLE_CENTRAL → oracle`;
+- or on the `oracle` thing: `- Reached as: ORACLE_CENTRAL`.
+
+With such a line, the estate join could match a `server..schema.name` name only against the doors of the thing the server stands for, and say "declared" in its evidence. Without it, the join stays a match by schema and table, right when the name is unique on the board. Growing the board's format is the root's to decide. Nothing was built for it.
+
+### PL/SQL against a parser that is not ours: not started in this leg
+
+Item 1 and item 2 took the time. Nothing was built and nothing was measured for PL/SQL. What was found, for the next round:
+- **A parser.** Java 21 and Maven are on this machine already. The ANTLR project's PL/SQL grammar (`PlSqlLexer.g4`, `PlSqlParser.g4` and their Java base classes, from the grammars-v4 repository) can be generated by the ANTLR tool jar fetched into scratch and compiled with `javac`, with nothing installed machine-wide. It parses packages, package bodies and SQL*Plus-free PL/SQL. It does not resolve names, and SQL*Plus commands (`PROMPT`, `REM`, `/`) are not PL/SQL, so its own reading of a script holding them has to be split first, as SQL*Plus would split it.
+- **A codebase.** utPLSQL, the Oracle counterpart of tSQLt: public, Apache 2.0, packages calling packages, specs and bodies in separate files, and SQL*Plus install scripts.
+- **The measurement still owed** is the one briefed: objects, lines, dependency lines, missing and invented. Then the mends that break reading, each red first: the q-quote, and `PROMPT` and `REM` lines. Then the measurement of packages as symbols, with what a new symbol kind touches. Those were named in the first leg: the board's door kinds, `SQL_OBJECT_KINDS` and `OPENING_KINDS` in `openings.ts`, the Explorer's drawing of doors, and the estate graph's join. The same list holds for TYPE, TRIGGER, SYNONYM and SEQUENCE in T-SQL.
