@@ -356,8 +356,10 @@ span.local-disclosure { cursor: default; }
 .directory-ancestor:hover, .directory-ancestor:focus-visible { border-color: var(--state-selected); outline: none; background: var(--selected-subtle); }
 .directory-ancestor-preview { position: absolute; pointer-events: none; z-index: 100; border: 1px solid var(--state-selected); border-radius: 12px; opacity: .5; }
 .directory-ancestor-preview[hidden] { display: none; }
+/* A narrow map raises the strip above the pin tray; it stands above the open history scrubber by the room the scrubber
+   asks for, as the tray does (until 2026-11-19 it did not, and covered the scrubber's buttons at a phone's width). */
 @media (max-width: 850px) {
-  .perspective-controls { bottom: 72px; }
+  .perspective-controls { bottom: calc(72px + var(--history-room)); }
 }
 
 /* Directory containment and dependency rank are independent in the reading view. */
@@ -370,6 +372,14 @@ span.local-disclosure { cursor: default; }
 .local-directory-band > .local-column { pointer-events: auto; }
 .local-membrane { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
 .local-membrane-shape { fill: rgba(var(--ground-sheen-rgb), 0.011765); stroke: var(--line-membrane); stroke-width: 1px; stroke-linejoin: round; }
+/* A step's newcomer (2026-11-19, camera-intent.ts): what a press inside the map brought, a file's card or an opened
+   directory's membrane, has its outline drawn in the colour of what is active, held through the camera's pan (350 ms),
+   then fading to its own look by about a second, so that the eye finds it where the pan ends. A fade only, no motion,
+   so the same where the person prefers reduced motion. */
+.node-card.local-step-mark { outline: 3px solid transparent; outline-offset: 3px; animation: local-step-mark var(--step-mark-ms, 1s) ease-in 1; }
+@keyframes local-step-mark { 0%, 40% { outline-color: rgba(var(--state-selected-rgb), 0.95); } 100% { outline-color: rgba(var(--state-selected-rgb), 0); } }
+.local-membrane-shape.local-step-mark { animation: local-step-mark-membrane var(--step-mark-ms, 1s) ease-in 1; }
+@keyframes local-step-mark-membrane { 0%, 40% { stroke: var(--state-selected); stroke-width: 3px; } 100% { stroke: var(--line-membrane); stroke-width: 1px; } }
 /* A drawn directory's label is its handle (2026-11-15): one line, a button that is the disclosure chevron, the parent's
    path muted and the directory's own name in a file name's tone and weight, with what an encasing directory hides, then
    More and the ancestry control. The label's box is the strip the layout keeps above the cards (directory-handle.ts

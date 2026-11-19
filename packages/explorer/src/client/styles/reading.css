@@ -753,7 +753,6 @@
 #detail-panel.reading-dialog .detail-scroll { font-size: 15px; line-height: 1.65; padding: 20px 26px; }
 #detail-panel.reading-dialog .detail-section { font-size: 15px; line-height: 1.65; }
 #detail-panel.reading-dialog .reader-prose, #detail-panel.reading-dialog .detail-content { font-size: 15px; line-height: 1.65; }
-#detail-panel.reading-dialog .reader-prose :is(h4, h5, h6) { font-size: 1em; }
 #detail-panel.reading-dialog .reader-prose code { font-size: 0.95em; }
 #detail-panel.reading-dialog .metadata-row { flex-wrap: wrap; }
 #detail-panel.reading-dialog .metadata-label { flex-shrink: 0; }

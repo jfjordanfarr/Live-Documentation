@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/dom.ts
-- Generated At: 2026-11-17T04:51:05.032Z
+- Generated At: 2026-11-19T04:29:43.684Z
 
 ## Authored
 ### Purpose

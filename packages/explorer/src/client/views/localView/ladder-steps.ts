@@ -82,6 +82,16 @@ const LOOKS: readonly ZoomLook[] = ["overview", "connections", "reading"];
 const LOOK_LAST_PRESSES = [6, 2];
 const LOOK_EDGES = edgesAfter(LOOK_LAST_PRESSES);
 
+/**
+ * The zoom ratio of a look's last press out, the farthest the camera may stand and still draw that look: the reading
+ * look's second press, the connections look's sixth, beyond which the overview strips a card to its file's name. An
+ * arrival that frames the neighbours stops here, at the connections look, so that every name on the map still reads
+ * (camera-intent.ts, 2026-11-19).
+ */
+export function farthestRatioOf(look: Exclude<ZoomLook, "overview">): number {
+  return STEP_RATIO ** -LOOK_LAST_PRESSES[look === "connections" ? 0 : 1];
+}
+
 /** The ladder's band each look draws with: the stylesheet's rules for that band say what has left. */
 export const LOOK_BANDS: Readonly<Record<ZoomLook, LadderBand>> = { reading: "reading", connections: "far", overview: "overview" };
 

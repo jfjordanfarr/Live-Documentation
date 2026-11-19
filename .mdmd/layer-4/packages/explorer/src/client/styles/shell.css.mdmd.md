@@ -29,6 +29,8 @@ The sidebar's own sizes and colours for the 2D legend's samples went on 2026-11-
 
 Since 2026-11-16 ([Turn 10 of the November 15 record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-10)) a legend row is a sample and at most two words: `.legend-mark` is a sample with its words, `.legend-word` is never broken, and `.legend-row--kinds` lays the kinds' marks side by side, wrapping only where the panel is too narrow, each mark in the other rows' own measure, so that the first word of every line stands at the words' column (the root's change as the round landed; the builder had set each dot tight to its word, which left the kinds' words 9 px to the left of that column). The faded sphere's sample went with its row.
 
+Since 2026-11-19 ([Turn 14 of the November 18 record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-14); [the pictures and measures](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/shell-accessibility/README.md)) a sidebar section's label is `--text-muted`, 5.35:1 on the sidebar, where it had been the disabled grey at 2.86. `.skip-link` and `#views:focus` serve the template's skip link, and `.fatal-message` and `.fatal-stack` serve a fatal fault in the reader. A reader heading is sized from the prose it heads, in `calc(1em + …)`: 16, 15, 14 and 13 px at the panel's 13 px as before, and 18, 17, 16 and 15 px in the reading dialog, where an h3 had stood at 14 px over 15 px prose.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

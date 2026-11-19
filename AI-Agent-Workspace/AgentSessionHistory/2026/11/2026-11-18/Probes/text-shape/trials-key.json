@@ -1,0 +1,413 @@
+{
+  "trial-01.png": {
+    "answer": 5,
+    "note": {
+      "kind": "P",
+      "question": 1,
+      "file": "packages/explorer/src/client/panels/tuning-levers.test.ts",
+      "commit": "5c64faf0a3223646cfaa65d92b0f068112c0cd3a"
+    }
+  },
+  "trial-02.png": {
+    "answer": 1,
+    "note": {
+      "kind": "P",
+      "question": 1,
+      "file": "packages/explorer/src/client/persistence/compressed-url-state.ts",
+      "commit": "a49ffd893ecdbbfc85902d3a8717ed824d7a1c14"
+    }
+  },
+  "trial-03.png": {
+    "answer": 6,
+    "note": {
+      "kind": "P",
+      "question": 1,
+      "file": "packages/explorer/src/client/views/worldMap/imports.test.ts",
+      "commit": "c92740ea833e0a9802c4830da3ca27b24a0634dd"
+    }
+  },
+  "trial-04.png": {
+    "answer": 6,
+    "note": {
+      "kind": "PG",
+      "question": 1,
+      "file": "scripts/layout-lab/lab.ts",
+      "commit": "c6da091eab8a708f51859e99976bc6ee6cfe13dc"
+    }
+  },
+  "trial-05.png": {
+    "answer": 2,
+    "note": {
+      "kind": "PG",
+      "question": 1,
+      "file": "scripts/layout-lab/spatial.test.ts",
+      "commit": "a49ffd893ecdbbfc85902d3a8717ed824d7a1c14"
+    }
+  },
+  "trial-06.png": {
+    "answer": 4,
+    "note": {
+      "kind": "PG",
+      "question": 1,
+      "file": "packages/explorer/src/client/panels/tuning-levers.test.ts",
+      "commit": "b8169ad3f3d040d30d1619c07d0b7c2d6c4a561a"
+    }
+  },
+  "trial-07.png": {
+    "answer": 5,
+    "note": {
+      "kind": "BG",
+      "question": 1,
+      "file": "packages/explorer/src/client/layout-presets.ts",
+      "commit": "742fadc4306fe945d8f2ec0169287378fc66d5c2"
+    }
+  },
+  "trial-08.png": {
+    "answer": 5,
+    "note": {
+      "kind": "BG",
+      "question": 1,
+      "file": "packages/explorer/src/client/views/localView/branches.ts",
+      "commit": "b8169ad3f3d040d30d1619c07d0b7c2d6c4a561a"
+    }
+  },
+  "trial-09.png": {
+    "answer": 2,
+    "note": {
+      "kind": "BG",
+      "question": 1,
+      "file": "packages/explorer/src/client/index.ts",
+      "commit": "c92740ea833e0a9802c4830da3ca27b24a0634dd"
+    }
+  },
+  "trial-10.png": {
+    "answer": 5,
+    "note": {
+      "kind": "D",
+      "question": 1,
+      "file": "packages/explorer/src/shared/graph.test.ts",
+      "commit": "a49ffd893ecdbbfc85902d3a8717ed824d7a1c14"
+    }
+  },
+  "trial-11.png": {
+    "answer": 4,
+    "note": {
+      "kind": "D",
+      "question": 1,
+      "file": "packages/explorer/src/client/dom.ts",
+      "commit": "c92740ea833e0a9802c4830da3ca27b24a0634dd"
+    }
+  },
+  "trial-12.png": {
+    "answer": 3,
+    "note": {
+      "kind": "D",
+      "question": 1,
+      "file": "tests/e2e/knowledge-sources.spec.ts",
+      "commit": "a49ffd893ecdbbfc85902d3a8717ed824d7a1c14"
+    }
+  },
+  "trial-13.png": {
+    "answer": 5,
+    "note": {
+      "kind": "P",
+      "question": 2,
+      "file": "packages/engine/src/live-docs/adapters/index.test.ts",
+      "commit": "a49ffd893ecdbbfc85902d3a8717ed824d7a1c14"
+    }
+  },
+  "trial-14.png": {
+    "answer": 2,
+    "note": {
+      "kind": "P",
+      "question": 2,
+      "file": "packages/engine/src/live-docs/history/lens.test.ts",
+      "commit": "a49ffd893ecdbbfc85902d3a8717ed824d7a1c14"
+    }
+  },
+  "trial-15.png": {
+    "answer": 2,
+    "note": {
+      "kind": "PG",
+      "question": 2,
+      "file": "packages/engine/src/live-docs/history/lens.ts",
+      "commit": "a49ffd893ecdbbfc85902d3a8717ed824d7a1c14"
+    }
+  },
+  "trial-16.png": {
+    "answer": 3,
+    "note": {
+      "kind": "PG",
+      "question": 2,
+      "file": "tests/e2e/local-map-keyboard.spec.ts",
+      "commit": "a49ffd893ecdbbfc85902d3a8717ed824d7a1c14"
+    }
+  },
+  "trial-17.png": {
+    "answer": 3,
+    "note": {
+      "kind": "BG",
+      "question": 2,
+      "file": "packages/explorer/src/client/views/localView/index.ts",
+      "commit": "128617eae8722086be2dc6e99bb4d35beec8b6e7"
+    }
+  },
+  "trial-18.png": {
+    "answer": 5,
+    "note": {
+      "kind": "BG",
+      "question": 2,
+      "file": "packages/explorer/src/client/persistence/place.ts",
+      "commit": "13530166db93b7d2341c4c155ea3a8a448261f21"
+    }
+  },
+  "trial-19.png": {
+    "answer": 6,
+    "note": {
+      "kind": "D",
+      "question": 2,
+      "file": "packages/explorer/src/client/panels/spatial-legend.test.ts",
+      "commit": "2d5fae9e7010c3bbcf60a255bf91c0460eb2220a"
+    }
+  },
+  "trial-20.png": {
+    "answer": 3,
+    "note": {
+      "kind": "D",
+      "question": 2,
+      "file": "scripts/layout-lab/spatial.test.ts",
+      "commit": "bef3927e53f55074dd7b40ed6efa4d09cc36b24e"
+    }
+  },
+  "trial-21.png": {
+    "answer": "right",
+    "note": {
+      "kind": "P",
+      "question": 3
+    }
+  },
+  "trial-22.png": {
+    "answer": "left",
+    "note": {
+      "kind": "PG",
+      "question": 3
+    }
+  },
+  "trial-23.png": {
+    "answer": "left",
+    "note": {
+      "kind": "BG",
+      "question": 3
+    }
+  },
+  "trial-24.png": {
+    "answer": {
+      "notText": 4,
+      "shortestToLongest": [
+        3,
+        2,
+        1
+      ]
+    },
+    "note": {
+      "kind": "P",
+      "question": 4,
+      "files": [
+        "packages/explorer/src/client/index.ts",
+        "tests/e2e/knowledge-sources.spec.ts",
+        "packages/engine/src/live-docs/history/lens.test.ts",
+        "AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/marble-patterns/files-doc.png"
+      ]
+    }
+  },
+  "trial-25.png": {
+    "answer": {
+      "notText": 2,
+      "shortestToLongest": [
+        1,
+        4,
+        3
+      ]
+    },
+    "note": {
+      "kind": "P",
+      "question": 4,
+      "files": [
+        "packages/engine/src/live-docs/history/lens.ts",
+        "AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/marble-patterns/bends.png",
+        "packages/explorer/src/client/views/forceGraphView.ts",
+        "scripts/layout-lab/lab.ts"
+      ]
+    }
+  },
+  "trial-26.png": {
+    "answer": {
+      "notText": 3,
+      "shortestToLongest": [
+        2,
+        1,
+        4
+      ]
+    },
+    "note": {
+      "kind": "PG",
+      "question": 4,
+      "files": [
+        "packages/engine/src/live-docs/coreUtils.ts",
+        "packages/engine/package.json",
+        "AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/marble-patterns/files-doc.png",
+        "packages/explorer/src/client/views/localView/controller.ts"
+      ]
+    }
+  },
+  "trial-27.png": {
+    "answer": {
+      "notText": 1,
+      "shortestToLongest": [
+        2,
+        3,
+        4
+      ]
+    },
+    "note": {
+      "kind": "PG",
+      "question": 4,
+      "files": [
+        "AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/marble-patterns/bends.png",
+        "tests/e2e/local-map-keyboard.spec.ts",
+        "packages/explorer/src/client/views/localView/symbol-highlight.test.ts",
+        "packages/explorer/src/client/views/worldMap/controller.ts"
+      ]
+    }
+  },
+  "trial-28.png": {
+    "answer": {
+      "notText": 2,
+      "shortestToLongest": [
+        3,
+        1,
+        4
+      ]
+    },
+    "note": {
+      "kind": "BG",
+      "question": 4,
+      "files": [
+        "scripts/contact-sheet/contact-sheet.ts",
+        "AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/marble-patterns/files-doc.png",
+        "packages/explorer/src/client/views/worldMap/imports.test.ts",
+        "packages/explorer/src/client/views/localView/branch-renderer.ts"
+      ]
+    }
+  },
+  "trial-29.png": {
+    "answer": {
+      "notText": 1,
+      "shortestToLongest": [
+        4,
+        2,
+        3
+      ]
+    },
+    "note": {
+      "kind": "BG",
+      "question": 4,
+      "files": [
+        "AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/marble-patterns/bends.png",
+        "packages/engine/src/live-docs/openings.ts",
+        "tests/e2e/still-picture.ts",
+        "packages/explorer/src/client/styles/theme.css"
+      ]
+    }
+  },
+  "trial-30.png": {
+    "answer": {
+      "notText": 4,
+      "shortestToLongest": [
+        3,
+        1,
+        2
+      ]
+    },
+    "note": {
+      "kind": "D",
+      "question": 4,
+      "files": [
+        "packages/explorer/src/client/views/forceGraphAppearance.ts",
+        "packages/explorer/src/client/styles/shell.css",
+        ".live-docs.config.json",
+        "AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/marble-patterns/files-doc.png"
+      ]
+    }
+  },
+  "trial-31.png": {
+    "answer": {
+      "notText": 2,
+      "shortestToLongest": [
+        3,
+        4,
+        1
+      ]
+    },
+    "note": {
+      "kind": "D",
+      "question": 4,
+      "files": [
+        "packages/explorer/src/client/views/localView/card-reading.ts",
+        "AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/marble-patterns/bends.png",
+        "packages/engine/src/live-docs/adapters/index.test.ts",
+        "tests/e2e/design-audit.ts"
+      ]
+    }
+  },
+  "trial-32.png": {
+    "answer": 5,
+    "note": {
+      "kind": "pin",
+      "question": "5/1",
+      "file": "packages/explorer/src/client/panels/tuning-levers.test.ts",
+      "commit": "b8169ad3f3d040d30d1619c07d0b7c2d6c4a561a"
+    }
+  },
+  "trial-33.png": {
+    "answer": 6,
+    "note": {
+      "kind": "pin",
+      "question": "5/1",
+      "file": "packages/explorer/src/client/layout-presets.ts",
+      "commit": "742fadc4306fe945d8f2ec0169287378fc66d5c2"
+    }
+  },
+  "trial-34.png": {
+    "answer": "right",
+    "note": {
+      "kind": "pin",
+      "question": "5/3"
+    }
+  },
+  "trial-35.png": {
+    "answer": 2,
+    "note": {
+      "kind": "pin+G",
+      "question": "5/1",
+      "file": "packages/explorer/src/client/views/localView/branches.ts",
+      "commit": "b8169ad3f3d040d30d1619c07d0b7c2d6c4a561a"
+    }
+  },
+  "trial-36.png": {
+    "answer": 4,
+    "note": {
+      "kind": "pin+G",
+      "question": "5/1",
+      "file": "packages/explorer/src/client/index.ts",
+      "commit": "c92740ea833e0a9802c4830da3ca27b24a0634dd"
+    }
+  },
+  "trial-37.png": {
+    "answer": "right",
+    "note": {
+      "kind": "pin+G",
+      "question": "5/3"
+    }
+  }
+}

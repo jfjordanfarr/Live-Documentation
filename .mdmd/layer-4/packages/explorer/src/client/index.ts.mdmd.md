@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/index.ts
 - Entry: declared
-- Generated At: 2026-11-17T04:51:06.313Z
+- Generated At: 2026-11-19T04:29:43.898Z
 
 ## Authored
 ### Purpose
@@ -50,6 +50,8 @@ Since 2026-11-12 `bootstrapExplorer` removes the loading sign, `#explorer-loadin
 Since 2026-11-15 ([Turn 1](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-1)) the 3D button's cue has two strengths from `backwardStrength` of [returning-connections.ts](views/localView/returning-connections.ts.mdmd.md), some and many, written as `data-backward` beside the `has-backward-wires` class, and a pulse, the `backward-rising` class, begun again only when the strength rises above the one shown and taken off at its end. The count now includes a cycle's returning connections, the ordinary case, beside the rare wire that doubles back. The button's name stays its label, 3D, as the toolbar's text buttons are named; the tooltip, which carries the count, is its accessible description. It never switches by itself.
 
 Since 2026-11-16 ([Turn 10 of the November 15 record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-10)) `startExplorer` starts `watchLocalKinds` of [spatial-legend.ts](panels/spatial-legend.ts.mdmd.md) before the first view draws, which keeps the 2D legend's kinds row to the colours the closed directories' cells are drawn in.
+
+Since 2026-11-19 ([Turn 14 of the November 18 record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-14)) the page's skip link, "Skip to the map", moves focus to `#views`, which takes a `tabindex` only for that moment, so that a click on the map never focuses its frame; the address keeps no fragment. The same day the sidebar's toggle stopped saying `aria-expanded` beside its changing name, by the rule Play follows: its glyph shows what a press does, so its name says it, and a screen reader had heard "Open navigation, collapsed".
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

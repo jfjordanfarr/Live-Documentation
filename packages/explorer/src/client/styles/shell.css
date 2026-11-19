@@ -139,6 +139,33 @@
 }
 
 
+/* The skip link: out of sight until the keyboard reaches it, then over the sidebar's head, where Tab first lands */
+.skip-link {
+    position: fixed;
+    top: 8px;
+    left: 8px;
+    z-index: 2000;
+    padding: 8px 12px;
+    border-radius: 6px;
+    background: var(--ground-raised);
+    border: 1px solid var(--state-selected);
+    color: var(--text-strong);
+    font-size: 13px;
+    text-decoration: none;
+    transform: translateY(calc(-100% - 16px));
+}
+
+.skip-link:focus {
+    transform: none;
+    outline: 2px solid var(--state-selected);
+    outline-offset: 2px;
+}
+
+/* The skip link's target is the views' frame, not a control: focus passes through it to the map without a ring */
+#views:focus {
+    outline: none;
+}
+
 /* The column and its views clip and never scroll: hidden would let a reveal (a Tab, a find in the page) scroll them from
    code, sliding a picture and its controls out from under the camera with no way back. */
 #main {
@@ -474,6 +501,17 @@
     color: var(--text-muted);
 }
 
+/* A fault that stopped the Explorer (errors.ts): its message, then its stack, which wraps rather than scrolls */
+.fatal-message {
+    margin: 0 0 12px;
+    color: var(--signal-error);
+}
+
+.fatal-stack {
+    white-space: pre-wrap;
+    color: var(--signal-error);
+}
+
 /* Markdown rendering styles for detail panel */
 .doc-metadata {
     margin-bottom: 16px;
@@ -579,30 +617,33 @@
     color: var(--text-secondary);
 }
 
+/* Headings are sized from the prose they head, so that none is ever smaller than its body: in the panel, at 13 px,
+   16, 15, 14 and 13 px as before; in the reading dialog, at 15 px, 18, 17, 16 and 15. Until 2026-11-19 they were set
+   in pixels, and in the dialog an h3 stood at 14 px over 15 px prose. */
 .reader-prose h1, .reader-prose h2, .reader-prose h3 {
     color: var(--text-strong);
     font-weight: 600;
 }
 
 .reader-prose h1 {
-    font-size: 16px;
+    font-size: calc(1em + 3px);
     margin: 0 0 12px 0;
 }
 
 .reader-prose h2 {
-    font-size: 15px;
+    font-size: calc(1em + 2px);
     margin: 20px 0 10px 0;
     padding-bottom: 6px;
     border-bottom: 1px solid var(--line-border);
 }
 
 .reader-prose h3 {
-    font-size: 14px;
+    font-size: calc(1em + 1px);
     margin: 16px 0 8px 0;
 }
 
 .reader-prose h4, .reader-prose h5, .reader-prose h6 {
-    font-size: 13px;
+    font-size: 1em;
     margin: 12px 0 6px 0;
     color: var(--text-secondary);
 }
@@ -917,7 +958,7 @@
 .section-label {
     font-size: 10px;
     font-weight: 600;
-    color: var(--text-disabled);
+    color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.08em;
     margin-bottom: 10px;
@@ -997,8 +1038,11 @@
     display: none;
 }
 
+/* The disclosure's triangle is drawn, not said: its empty alternative text keeps it out of the heading's accessible name,
+   which was "▶ Tuning" until 2026-11-19. A browser that cannot read alternative text keeps the first declaration. */
 .sidebar-details > summary::before {
     content: "▶";
+    content: "▶" / "";
     display: inline-block;
     margin-right: 8px;
     font-size: 8px;
@@ -1028,6 +1072,23 @@ details.tuning-subsection > summary { cursor: pointer; }
 .tuning-subsection .tuning-subsection > .subsection-label { color: var(--text-muted); border-bottom: none; padding-bottom: 0; }
 .tuning-export { width: 100%; padding: 8px; border: 1px solid var(--line-border); border-radius: 4px; background: var(--ground-deep); color: var(--text-normal); font: inherit; cursor: pointer; }
 .tuning-export:hover, .tuning-export:focus-visible { border-color: var(--state-selected); outline: 1px solid var(--state-selected); }
+
+/* Whether Tuning differs from the defaults, seen with the section folded: how many settings differ, a numeral in a quiet
+   ring beside the heading, in the text's own tone (neither blue, what an interface offers, nor green, what uses it). */
+.tuning-changed { display: inline-block; margin-left: 8px; padding: 0 5px; min-width: 8px; border: 1px solid var(--line-border); border-radius: 8px; color: var(--text-normal); font-weight: 600; letter-spacing: 0; line-height: 14px; text-align: center; vertical-align: 1px; }
+.tuning-changed[hidden] { display: none; }
+/* Reset to defaults, the section's first control: the World Map's reset glyph, 28 px to press; pressed while a second
+   press can take the reset back, in the pressed look of every toggle; in the disabled tone when nothing differs. */
+.tuning-head { display: flex; justify-content: flex-end; margin-bottom: 8px; }
+.tuning-reset { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; padding: 0; border: 1px solid var(--line-border); border-radius: 4px; background: var(--ground-deep); color: var(--text-normal); cursor: pointer; }
+.tuning-reset:hover { background: var(--selected-subtle); }
+.tuning-reset:focus-visible { outline: 2px solid var(--state-selected); outline-offset: 2px; }
+.tuning-reset[aria-pressed="true"] { border-color: var(--state-selected); color: var(--state-selected); background: var(--selected-subtle); }
+.tuning-reset:disabled { color: var(--text-disabled); background: transparent; cursor: default; }
+/* A lever moved from its default, and the heading of each group that holds one, carry a small dot after their name, as an
+   editor marks a modified setting: in the text's own tone, so that it means nothing but "changed". */
+.tuning-slider[data-tuning-changed] > span:first-child::after,
+summary[data-tuning-changed]::after { content: ""; display: inline-block; width: 5px; height: 5px; margin-left: 6px; border-radius: 50%; background: var(--text-normal); vertical-align: 2px; }
 
 .subsection-label {
     font-size: 10px;

@@ -38,6 +38,25 @@ node AI-Agent-Workspace/scripts/playtest/playtest.mjs --task estate-uses --model
 
 `--task` names an entry of [tasks.json](tasks.json); `--start <url> --words <message>` gives one instead. `--max-actions` (default 60) ends the tester's time with the window: past it, every action answers that time is over. Model IDs: `claude-opus-5-5`, `claude-sonnet-5-5`, `claude-haiku-5-5`; efforts: `low`, `medium`, `high`, or `default` for the model's own. `run.json` notes when the built site was last written, at the run's start and end, and `siteChanged` says whether a rebuild came under the run. `--claude` names the Claude Code program when it is not where this container keeps it. Without `--out` the run goes to `AI-Agent-Workspace/tmp/playtests/`.
 
+## The narrative playtest
+
+On 2026-11-19 the owner named a test of the whole product: "a true test of the efficacy of our product would be to hand it to an agent which watches the evolution of the software and have it functionally restate the narrative.md just by using the software". They also named the bias such a test must allow for: "Models live on text. It's natural for them to wish for there to be more."
+
+- **The tester.** It starts on this repository's 3D Local Map. The window has opened the history with the map's own History button, as a setup the tester is told of (`--open-history`). It has 150 actions to tell how the software came to be, with what on the screen showed each statement.
+- **Two conditions**, because this repository's commit subjects are written to be read:
+  - `narrative-panel` shows the step panel, as a person meets it.
+  - `narrative-picture` (`--hide-step-words`) draws no step panel, no panel toggle, no step dialog and no commit subject in the finder's results. The harness does this with a stylesheet of its own, added before the page loads. The tester then has the picture, the ticks, the dates and the names on the map.
+
+  In both conditions the window checks the setup before the tester begins: is the scrubber open, and is the panel drawn or not drawn as the condition says. It writes the check to `setup.json` and ends the run if the check fails.
+- **The key.** [narrative-claims.md](narrative-claims.md) holds 39 dated claims drawn from [the narrative](../../Memory/narrative.md) before any run. Each is marked showable as a picture, showable only in words, or not showable by the history at all. It is never shown to a tester.
+- **The grade.** `grade-narrative.mjs <run folder>` gives [the grader's brief](narrative-grader.md), the claims, the narrative and the account to a fresh session with no tools, and writes `grade.md` and `grade.json` beside the run. The grader is not told the tester's model or condition. It needs no browser.
+
+```bash
+node AI-Agent-Workspace/scripts/playtest/playtest.mjs --task narrative-panel --model claude-opus-5-5 --effort high --out <records>/narrative-panel-opus-high
+node AI-Agent-Workspace/scripts/playtest/playtest.mjs --task narrative-picture --model claude-opus-5-5 --effort high --out <records>/narrative-picture-opus-high
+node AI-Agent-Workspace/scripts/playtest/grade-narrative.mjs <records>/narrative-panel-opus-high
+```
+
 ## Running a ladder
 
 `ladder.mjs --plan <plan.json> --into <records folder> [--parallel 4] [--gap 30]` runs a list of testers (`{ name, task, model, effort, variant }`) a few at a time. When a batch ends, it leaves the browser lock free for `--gap` seconds, so a gate or timing run waiting to hold the lock alone gets in. One server serves the site for the whole ladder, and a run already finished in its folder is skipped. A stopped ladder resumes when run again.

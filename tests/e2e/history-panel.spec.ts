@@ -255,12 +255,12 @@ test("opening the whole step while the history plays pauses it on the step shown
   // One step a second: the play is still under way, steps from its end, when the dialog opens.
   await page.locator(".history-rate").selectOption("1");
   await play.click();
-  await expect(play).toHaveAttribute("aria-pressed", "true");
+  await expect(play).toHaveAttribute("aria-label", "Pause");
   await expect(track(page)).toHaveAttribute("aria-valuenow", "1");
-  await expect(play).toHaveAttribute("aria-pressed", "true");
+  await expect(play).toHaveAttribute("aria-label", "Pause");
   await more(page).click();
   await expect(dialog(page)).toBeVisible();
-  await expect(play).toHaveAttribute("aria-pressed", "false");
+  await expect(play).toHaveAttribute("aria-label", "Play");
   const step = Number(await track(page).getAttribute("aria-valuenow"));
   expect(step).toBeLessThan(commits.length - 1);
   await expect(dialog(page).locator("h2")).toHaveText(commits[step].subject);
@@ -271,7 +271,7 @@ test("opening the whole step while the history plays pauses it on the step shown
   await expect(dialog(page)).toBeHidden();
   await page.waitForTimeout(1600);
   await expect(track(page)).toHaveAttribute("aria-valuenow", String(step));
-  await expect(play).toHaveAttribute("aria-pressed", "false");
+  await expect(play).toHaveAttribute("aria-label", "Play");
 });
 
 test("a file chosen in the dialog is pinned at its moment and the dialog closes so that it is seen; the panel says Created and Deleted, never Born and Dead", async ({ page }) => {

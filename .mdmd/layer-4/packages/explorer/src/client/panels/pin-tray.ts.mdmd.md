@@ -21,6 +21,8 @@ At a moment of the history (2026-10-18, ticket C4 of [the change-over-time plan]
 
 Since 2026-11-12 Escape closes the open tray ([the first-visit review](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-12/Screenshots/first-visit/README.md), finding 15). The listener stands on the window, so that the surfaces above the tray, the search field, a card's menu and the reader, which take their Escape on the way up and mark it used, act first; an open popover or modal dialog, which the browser closes on the same key, and a key typed inside an `aria-modal` surface are left alone. The focus returns to the toggle when it was inside the tray.
 
+Since 2026-11-19 ([Turn 14 of the November 18 record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-14)) Clear all's accessible name is "Clear all pins". It was "Clear exploration pins", which held none of the words shown, and a person using speech says what they see (WCAG 2.2 SC 2.5.3, Label in Name).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

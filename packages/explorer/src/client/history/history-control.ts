@@ -41,6 +41,7 @@ import { createScrubber } from "./scrubber";
 import { relatedDocLinksOf, snapshotGraphOf } from "./snapshot";
 import { createStepPanel } from "./step-panel";
 import { stepSummary } from "./step-summary";
+import { nextStop, type TickModel } from "./tick-model";
 
 /** What the control is made with. */
 export interface HistoryControlOptions {
@@ -145,6 +146,8 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
   /** Whether the step panel shows; hidden by a person's choice, it is shown again when the history is next opened. */
   let detailsShown = true;
   let range: HistoryRange | null = null;
+  /** The tick model the scrubber shows, whose marks play follows when it plays the marks (2026-11-19). */
+  let shownModel: TickModel | null = null;
   let emphasizedStep: number | null = null;
   const todayIds = new Set([...options.nodesById.values()].filter(node => node.docPath).map(node => node.id));
   let ticksKey = "";
@@ -323,7 +326,8 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
     playing = window.setInterval(() => {
       if (!cursor) return;
       if (cursor.step >= (range?.[1] ?? cursor.last)) { pause(); return; }
-      rest(cursor.step + 1);
+      // With something pinned, by default, from one mark to the next; otherwise a step at a time.
+      rest(shownModel?.plays === "stops" ? nextStop(shownModel, cursor.step, 1) : cursor.step + 1);
     }, 1000 / playingRate);
     refresh();
   }
@@ -350,7 +354,7 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
     if (!visible) return;
     if (!sequence || !cursor) {
       scrubber.sync({
-        steps: 0, step: 0, range: [0, 0], commits: [], model: { granularity: "step", positions: [], ticks: [], stops: [0], ruler: [] }, axis: context.tuning.axis, dates: [],
+        steps: 0, step: 0, range: [0, 0], commits: [], model: { granularity: "step", positions: [], ticks: [], stops: [0], plays: "steps", ruler: [] }, axis: context.tuning.axis, dates: [],
         valueText: "", date: "", hash: "", truncated: null, playing: false, rate: context.tuning.playRate, authors: { carried: false, shown: false }, details: detailsShown,
         notice: notice ?? "Loading the history"
       });
@@ -384,6 +388,7 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
     const dates = [history.base.commit.date, ...history.steps.map(entry => entry.commit.date)];
     const shownRange: HistoryRange = range ?? [0, cursor.last];
     const model = rangedTickModel({ dates, ticks, pinned: pins.files.length + pins.directories.length > 0, granularity: context.tuning.granularity, axis: context.tuning.axis }, shownRange);
+    shownModel = model;
     const commit = commitAt(history, step);
     scrubber.sync({
       steps: cursor.last,

@@ -17,8 +17,8 @@
  *
  * `--palette <name>` draws every view in one of the Explorer's palettes (`today`, `proposed`, `vividKinds`), the
  * viewer's saved setting written before each page loads, and names the sheet for it; `--marbles on|off` draws every file as a
- * marble (the trial of 2026-11-17) or as a plain sphere, the same way; without it the sheet draws the default, marbles
- * since 2026-11-18.
+ * marble (the trial of 2026-11-17) or as a plain sphere, the same way; without it the sheet draws the default, no marbles
+ * since 2026-11-19 (marbles on 2026-11-18 and 19).
  *
  * A hook is a module whose default export is `async (context, view) => void`, given the Playwright browser context
  * and the view about to load (`{ name, title }`); it usually calls `context.addInitScript` to write local storage.

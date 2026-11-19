@@ -198,6 +198,9 @@ test.describe("World Map", () => {
     const evidence = page.locator("#view-world .world-evidence");
     await expect(evidence).toHaveClass(/pinned/);
     const judge = async (state: string): Promise<void> => {
+      // What a person sees is the next painted frame: the panel unfolds on the click and is placed again before that
+      // frame is painted. Read at once, it was read between the two, its foot below the view, one run in five (2026-11-19).
+      await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
       const box = (await evidence.boundingBox())!;
       const view = (await page.locator("#view-world").boundingBox())!;
       const panel: TextBox = { text: "the pinned panel", tag: "div", x: box.x, y: box.y, w: box.width, h: box.height };
@@ -264,6 +267,167 @@ test.describe("World Map", () => {
     await page.keyboard.press("Escape");
     expect(await page.evaluate(() => window.__worldMap!.state().pinned)).toBeNull();
     await expect(stop).toBeFocused();
+  });
+
+  // WCAG 2.2, 2.1.4 Character Key Shortcuts. The letters fired from anywhere on the page while the World Map was the
+  // view, and with Ctrl held: Ctrl+R reloaded the page and reset the layout, Ctrl+D bookmarked it and switched the
+  // board's theme (the design system's check, 2026-11-18).
+  test("the board's letters act only while the keyboard is on the board, never with Ctrl, Meta or Alt, and a press on the board gives it the keyboard", async ({ page }) => {
+    await openWorldMap(page);
+    const world = page.locator("#view-world .world");
+    const help = page.locator("#view-world .world-help");
+    const theme = (): Promise<string | null> => world.getAttribute("data-theme");
+    expect(await theme()).toBe("light");
+    // From the sidebar, nothing.
+    await page.locator('.nav-item[data-view="world"]').focus();
+    for (const key of ["d", "?", "t"]) {
+      await page.keyboard.press(key);
+    }
+    expect(await theme(), "D from the sidebar").toBe("light");
+    await expect(help, "? from the sidebar").not.toHaveClass(/\bon\b/u);
+    expect((await page.evaluate(() => window.__worldMap!.state())).phi, "T from the sidebar").toBeLessThan(1);
+    // A press on an empty part of the board gives the board the keyboard, and the letters work.
+    const box = (await page.locator("#view-world svg.world-svg").boundingBox())!;
+    await page.mouse.click(box.x + 8, box.y + box.height - 8);
+    expect(await page.evaluate(() => document.activeElement?.classList.contains("world"))).toBe(true);
+    await page.keyboard.press("d");
+    expect(await theme(), "D on the board").toBe("dark");
+    // With a modifier held a letter is the browser's or the system's.
+    for (const chord of ["Control+d", "Alt+d", "Meta+d", "Control+f"]) {
+      await page.keyboard.press(chord);
+    }
+    expect(await theme(), "D with a modifier").toBe("dark");
+    // A press on a tool keeps the focus the press gave it; the letters still work there.
+    await page.getByRole("button", { name: "Fit", exact: true }).click();
+    await expect(page.getByRole("button", { name: "Fit", exact: true })).toBeFocused();
+    await page.keyboard.press("d");
+    expect(await theme(), "D on a tool").toBe("light");
+  });
+
+  // R threw every position the person gave a piece away, saved at once, with no way back (2026-11-18). An act is undone
+  // by repeating it, as a second click releases a pin.
+  test("a reset keeps what it discarded until a piece is next moved, and the same control and key put it back", async ({ page }) => {
+    await openWorldMap(page);
+    const reset = page.getByRole("button", { name: "Reset layout", exact: true });
+    const at = (name: string): Promise<[number, number]> => page.evaluate((piece) => window.__worldMap!.state().positions[piece], name);
+    const rest = await at("engine");
+    await expect(reset, "nothing moved, nothing to put back").toHaveAttribute("aria-pressed", "false");
+    await page.evaluate(() => window.__worldMap!.move("engine", 12.5, 9));
+    await reset.click();
+    expect(await at("engine"), "reset").toEqual(rest);
+    await expect(reset).toHaveAttribute("aria-pressed", "true");
+    await expect(reset).toHaveAttribute("title", "Put things back where you had them (R)");
+    await reset.click();
+    expect(await at("engine"), "put back").toEqual([12.5, 9]);
+    await expect(reset).toHaveAttribute("aria-pressed", "false");
+    await expect(reset).toHaveAttribute("title", "Reset layout (R)");
+    // The key does the same, from the board.
+    await page.keyboard.press("r");
+    expect(await at("engine")).toEqual(rest);
+    await page.keyboard.press("r");
+    expect(await at("engine")).toEqual([12.5, 9]);
+    // Put back is what the page keeps.
+    await page.reload();
+    await page.waitForFunction(() => window.__worldMap?.ready === true, null, { timeout: 20_000 });
+    expect(await at("engine")).toEqual([12.5, 9]);
+    // Once a piece is moved after a reset, what the reset discarded is gone, and the control resets again.
+    await page.evaluate(() => window.__worldMap!.instant(true));
+    await reset.click();
+    await expect(reset).toHaveAttribute("aria-pressed", "true");
+    const [sx, sy] = await page.evaluate(() => window.__worldMap!.screenPointOf("scripts"));
+    await page.mouse.move(sx, sy);
+    await page.mouse.down();
+    await page.mouse.move(sx + 60, sy + 30, { steps: 6 });
+    await page.mouse.up();
+    await expect(reset).toHaveAttribute("aria-pressed", "false");
+    await reset.click();
+    expect(await at("engine"), "the second reset resets; the first one's positions are gone").toEqual(rest);
+  });
+
+  // WCAG 2.2, 2.3.3 Animation from Interactions: the product honours reduced motion everywhere but the World Map's camera.
+  test("under reduced motion the camera arrives at once: a turn, looking down and the walkthrough", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/?view=world");
+    await page.waitForFunction(() => window.__worldMap?.ready === true, null, { timeout: 20_000 });
+    // The tests' handle that makes every change instant is left off: the person's setting alone must do it.
+    const afterOneFrame = (act: string): Promise<{ theta: number; phi: number }> => page.evaluate(async (name) => {
+      document.querySelector<HTMLButtonElement>(`#view-world .world-tools [data-act="${name}"]`)!.click();
+      await new Promise((resolve) => requestAnimationFrame(resolve));
+      const { theta, phi } = window.__worldMap!.state();
+      return { theta, phi };
+    }, act);
+    expect((await afterOneFrame("rotr")).theta, "a quarter turn").toBeCloseTo(Math.PI / 2, 6);
+    expect((await afterOneFrame("tilt")).phi, "straight down").toBeCloseTo(Math.PI / 2, 6);
+    await afterOneFrame("tilt");
+    const tour = await page.evaluate(async () => {
+      const before = window.__worldMap!.state().theta;
+      void window.__worldMap!.tour(4);
+      await new Promise((resolve) => requestAnimationFrame(resolve));
+      return { before, after: window.__worldMap!.state().theta };
+    });
+    expect(tour.after, "the walkthrough's turn of 35 degrees").toBeCloseTo(tour.before - (35 * Math.PI) / 180, 6);
+  });
+
+  // WCAG 2.2, 4.1.2 Name, Role, Value: the help button did not say whether the help was open.
+  test("the help button says whether the help is open and which panel it opens", async ({ page }) => {
+    await openWorldMap(page);
+    const button = page.getByRole("button", { name: "Help", exact: true });
+    const panel = page.locator("#view-world .world-help");
+    await expect(button).toHaveAttribute("aria-expanded", "false");
+    const controls = await button.getAttribute("aria-controls");
+    expect(controls).toBeTruthy();
+    expect(await panel.getAttribute("id")).toBe(controls);
+    await button.click();
+    await expect(button).toHaveAttribute("aria-expanded", "true");
+    await expect(panel).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(button).toHaveAttribute("aria-expanded", "false");
+    await expect(panel).toBeHidden();
+  });
+
+  // WCAG 2.2, 4.1.3 Status Messages: next and back keep the keyboard where it is, so the new step went unsaid.
+  test("the walkthrough says each step in the World Map's own status region", async ({ page }) => {
+    await openWorldMap(page);
+    const status = page.locator("#view-world .world [role='status']");
+    await expect(status).toHaveCount(1);
+    await page.evaluate(() => window.__worldMap!.tour(0));
+    await expect(status).toHaveText(/^Step 1 of 5\. Each thing on the board/u);
+    await page.locator('#view-world .world-tour [data-tour="next"]').click();
+    await expect(status).toHaveText(/^Step 2 of 5\. A wire is one call/u);
+    await page.locator('#view-world .world-tour [data-tour="done"]').click();
+    await expect(status).toHaveText("");
+  });
+
+  // WAI-ARIA Authoring Practices, Toolbar: one Tab stop, the arrows inside. Nine stops were nine presses of Tab for
+  // nothing (the design system's check, 2026-11-18).
+  test("the toolbar is one Tab stop, and the arrows, Home and End move between its tools", async ({ page }) => {
+    await openWorldMap(page);
+    const names = await page.locator("#view-world .world-tools button").evaluateAll((buttons) => buttons.map((button) => button.getAttribute("aria-label")));
+    expect(names).toHaveLength(9);
+    const focused = (): Promise<string | null> => page.evaluate(() => document.activeElement?.getAttribute("aria-label") ?? null);
+    const stops = await page.locator("#view-world .world-tools button[tabindex='0']").count();
+    expect(stops, "one tool is the toolbar's stop").toBe(1);
+    await page.locator("#view-world .world-tools button").first().focus();
+    await page.keyboard.press("Tab");
+    expect(await focused(), "Tab leaves the toolbar").toBe("Help");
+    await page.keyboard.press("Shift+Tab");
+    expect(await focused()).toBe(names[0]);
+    await page.keyboard.press("ArrowRight");
+    expect(await focused()).toBe(names[1]);
+    await page.keyboard.press("End");
+    expect(await focused()).toBe(names[8]);
+    await page.keyboard.press("ArrowRight");
+    expect(await focused(), "wraps").toBe(names[0]);
+    await page.keyboard.press("ArrowLeft");
+    expect(await focused()).toBe(names[8]);
+    await page.keyboard.press("Home");
+    expect(await focused()).toBe(names[0]);
+    await page.keyboard.press("ArrowRight");
+    await page.keyboard.press("ArrowRight");
+    // The tool last on is the stop: Tab out and back returns to it.
+    await page.keyboard.press("Tab");
+    await page.keyboard.press("Shift+Tab");
+    expect(await focused()).toBe(names[2]);
   });
 
   // The walkthrough's last step shows orbit, and "done" used to leave the board turned (2026-11-12).

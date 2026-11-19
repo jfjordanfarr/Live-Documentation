@@ -41,7 +41,8 @@ export function createPinTray(options: PinTrayOptions): {
   const clear = document.createElement("button");
   clear.type = "button";
   clear.textContent = "Clear all";
-  clear.setAttribute("aria-label", "Clear exploration pins");
+  // The name begins with the words shown, so that a person using speech can say what they see (WCAG 2.2 SC 2.5.3).
+  clear.setAttribute("aria-label", "Clear all pins");
   clear.title = "Release all file, symbol and directory pins";
   clear.addEventListener("click", () => options.onClear());
   header.append(heading, clear);

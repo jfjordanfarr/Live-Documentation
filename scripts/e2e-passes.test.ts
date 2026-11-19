@@ -2,7 +2,9 @@ import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
+
+import { configFor } from "../tests/e2e/playwright.config";
 
 /**
  * The two-pass runner, run as the gate runs it, against a stand-in for Playwright's command line that records each
@@ -84,19 +86,6 @@ describe("the two-pass runner", () => {
 });
 
 describe("the browser suite's configuration under each pass", () => {
-  const saved = process.env.LIVE_DOCS_E2E_PASS;
-  afterEach(() => {
-    if (saved === undefined) delete process.env.LIVE_DOCS_E2E_PASS;
-    else process.env.LIVE_DOCS_E2E_PASS = saved;
-    vi.resetModules();
-  });
-
-  async function configUnder(pass: string | undefined) {
-    if (pass === undefined) delete process.env.LIVE_DOCS_E2E_PASS;
-    else process.env.LIVE_DOCS_E2E_PASS = pass;
-    vi.resetModules();
-    return (await import("../tests/e2e/playwright.config")).default;
-  }
 
   /** What a configuration's filters keep of a test's title with its tags, as Playwright reads it. */
   const keeps = (config: { grep?: RegExp | RegExp[]; grepInvert?: RegExp | RegExp[] }, title: string): boolean => {
@@ -105,10 +94,8 @@ describe("the browser suite's configuration under each pass", () => {
     return (grep.length === 0 || grep.some(pattern => pattern.test(title))) && !all(config.grepInvert).some(pattern => pattern.test(title));
   };
 
-  it("splits the cases between the two passes, each case in exactly one, and keeps every case at one worker when run directly", async () => {
-    const shared = await configUnder("shared");
-    const alone = await configUnder("alone");
-    const direct = await configUnder(undefined);
+  it("splits the cases between the two passes, each case in exactly one, and keeps every case at one worker when run directly", () => {
+    const [shared, alone, direct] = [configFor("shared"), configFor("alone"), configFor(undefined)];
     expect([shared.workers, alone.workers, direct.workers]).toEqual([2, 1, 1]);
     for (const title of ["case.spec.ts a slow case @alone", "case.spec.ts a quick case"]) {
       expect([keeps(shared, title), keeps(alone, title)].filter(Boolean), title).toHaveLength(1);

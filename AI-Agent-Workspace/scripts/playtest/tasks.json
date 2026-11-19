@@ -56,6 +56,24 @@
       "start": "http://127.0.0.1:8792/",
       "words": "Find scripts/live-docs/inspect.ts on this map, then send me a link to what you're looking at, so that I see the same thing when I open it.",
       "rightAnswer": "A link on http://127.0.0.1:8792/ that, opened afresh, shows the map with scripts/live-docs/inspect.ts as its subject (node=scripts/live-docs/inspect.ts, or an s= snapshot whose selected subject is that file). The judge opens the link to check; a link copied with a copy button is in the run's clipboard.jsonl."
+    },
+    {
+      "id": "narrative-panel",
+      "map": "repository",
+      "start": "http://127.0.0.1:8792/?view=local&mode=3d",
+      "window": ["--open-history"],
+      "maxActions": 150,
+      "words": "This page is a map of a software project, and it can show the project's history: I have opened the history control for you. Tell me how this software came to be what it is: the periods it went through; what appeared, grew, moved, was renamed or was removed; where the work gathered, and when. For every statement, say what on the screen showed it to you and at what date. The history has hundreds of steps and you have about 150 actions with the window, so choose how you travel through it.",
+      "rightAnswer": "Graded by another hand against narrative-claims.md (beside this file) with narrative-grader.md: each showable claim restated, partly restated, absent or contradicted, and what the account says that the narrative contradicts. Condition: the step panel shown, as a person meets it."
+    },
+    {
+      "id": "narrative-picture",
+      "map": "repository",
+      "start": "http://127.0.0.1:8792/?view=local&mode=3d",
+      "window": ["--open-history", "--hide-step-words"],
+      "maxActions": 150,
+      "words": "This page is a map of a software project, and it can show the project's history: I have opened the history control for you. In this test the words describing each step are switched off, so work from the picture, the dates and the names on the map. Tell me how this software came to be what it is: the periods it went through; what appeared, grew, moved, was renamed or was removed; where the work gathered, and when. For every statement, say what on the screen showed it to you and at what date. The history has hundreds of steps and you have about 150 actions with the window, so choose how you travel through it.",
+      "rightAnswer": "Graded by another hand against narrative-claims.md (beside this file) with narrative-grader.md. Condition: the step panel, its toggle, its dialog and the commit subjects in the finder's results are not drawn (setup.json records the check); the tester has the picture, the ticks, the dates and the names on the map."
     }
   ]
 }

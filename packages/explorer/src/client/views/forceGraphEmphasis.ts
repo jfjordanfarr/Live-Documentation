@@ -15,6 +15,13 @@
  * dims, a bubble or a skin holding no change dims with the unchanged dots (`bodyChanges`, `emphasizedUnits`,
  * `emphasizedSkin`).
  *
+ * Since 2026-11-19 what a person asked about is never dimmed by a step: a pinned file, the subject, whatever the picture
+ * holds as asked about directly, keeps its ordinary look where the mode dims, and is emphasised as any file is when the
+ * step changed it. The owner, watching a pinned file's marble through the history: "temporal scrubbing wouldn't
+ * highlight the pinned note (or wouldn't un-dim it), which made watching the changes as I scrubbed past points it touched
+ * difficult." Inside a wrapper the rule holds at the same innermost thing: the asked-about file's dot, or the bubble, or
+ * the skin, that holds it keeps its alpha.
+ *
  * Pure-function module: no DOM.
  */
 
@@ -34,10 +41,11 @@ export const dims = (mode: ChangeEmphasis): boolean => mode === "dim" || mode ==
 
 /**
  * A sphere's colour for the displayed commit: changed spheres white and whole where the mode glows; unchanged ones
- * dimmed where the mode dims. The result remains constant until the changed set, mode or deliberate attention changes.
+ * dimmed where the mode dims, save one `asked` about, which keeps its own. The result remains constant until the changed
+ * set, mode or deliberate attention changes.
  */
-export function emphasizedSphere(hex: string, alpha: number, changed: boolean, mode: ChangeEmphasis): string {
-  const own = rgba(hex, (!changed && dims(mode) ? alpha * (1 - DIM_LOSS) : alpha).toFixed(3));
+export function emphasizedSphere(hex: string, alpha: number, changed: boolean, mode: ChangeEmphasis, asked = false): string {
+  const own = rgba(hex, (!changed && !asked && dims(mode) ? alpha * (1 - DIM_LOSS) : alpha).toFixed(3));
   return changed && glows(mode) ? rgba(activePalette().history.changed, "1.000") : own;
 }
 
@@ -67,11 +75,14 @@ export interface ShownUnit {
 export interface BodyChanges {
   /** The units the step lights: a changed file's dot, or the innermost drawn bubble of a change not drawn as a dot. */
   lit: ReadonlySet<string>;
-  /** The bubbles holding a change of the step, lit or not, which keep their alpha where the mode dims. */
+  /**
+   * The units that keep their alpha where the mode dims, lit or not: the bubbles holding a change of the step or a file
+   * asked about, and the dots of the files asked about.
+   */
   holding: ReadonlySet<string>;
   /** Whether the skin itself is the innermost thing drawn for a change: no bubble drawn within it holds the change. */
   skin: boolean;
-  /** Whether the body holds any change of the step, so that its skin keeps its alpha where the mode dims. */
+  /** Whether the body holds any change of the step or any file asked about, so that its skin keeps its alpha where the mode dims. */
   holds: boolean;
 }
 
@@ -83,10 +94,12 @@ export interface BodyChanges {
  * skin draws within it (none under a look that veils them); `members` the files the body holds, by path; `seed` the
  * body's own node, which for a wrapped group is a file drawn as a sphere of its own and never a unit, so that its change
  * lights nothing within the skin, though the body holds it; `changed` the
- * step's changed files; `deleted` the step's deleted files that the picture gives this body (`deletionHomes`). The work
- * is bounded by the units and the changes, never by the files a veiled body holds.
+ * step's changed files; `deleted` the step's deleted files that the picture gives this body (`deletionHomes`); `asked`
+ * the files a person asked about (2026-11-19), which light nothing and are held at the same innermost thing, so that
+ * where the mode dims their dot, or the bubble or skin standing for them, keeps its alpha. The work is bounded by the
+ * units, the changes and what was asked about, never by the files a veiled body holds.
  */
-export function bodyChanges(units: readonly ShownUnit[], members: ReadonlySet<string>, seed: string, changed: Iterable<string>, deleted: Iterable<string>): BodyChanges {
+export function bodyChanges(units: readonly ShownUnit[], members: ReadonlySet<string>, seed: string, changed: Iterable<string>, deleted: Iterable<string>, asked: Iterable<string> = []): BodyChanges {
   const dots = new Map<string, ShownUnit>(), bubbles = new Map<string, ShownUnit>();
   let veil: ShownUnit | undefined;
   for (const unit of units) {
@@ -122,6 +135,15 @@ export function bodyChanges(units: readonly ShownUnit[], members: ReadonlySet<st
     else showIn(parentDirectory(file));
   }
   for (const file of deleted) showIn(parentDirectory(file));
+  for (const file of asked) {
+    if (!members.has(file)) continue;
+    holds = true;
+    // A wrapped group's seed is a sphere of its own, which keeps its look by `emphasizedSphere`.
+    if (file === seed) continue;
+    const dot = dots.get(file);
+    if (dot) { holding.add(file); hold(dot.parent); }
+    else hold(bubbleHolding(parentDirectory(file)));
+  }
   return { lit, holding, skin, holds };
 }
 
@@ -149,13 +171,14 @@ export function deletionHomes(deleted: Iterable<string>, homes: ReadonlyMap<stri
 /**
  * A body's units as the step colours them: a file's dot as `emphasizedSphere` colours a sphere at full strength, from
  * its kind's `#rrggbb` colour; a bubble lit where the mode glows and it is lit, and, where the mode dims, at the dimmed
- * share of its alpha unless it holds a change. Nothing is enlarged: the irrelevant fades rather than the relevant grows.
+ * share of its alpha unless it holds a change or a file asked about; an asked-about file's dot keeps its own colour. Nothing
+ * is enlarged: the irrelevant fades rather than the relevant grows.
  * A dot drawn as a marble (2026-11-17) loses its marble where the step glows it white, as a sphere does.
  */
 export function emphasizedUnits<U extends ShownUnit & { color?: string; lit?: boolean; alpha?: number; marble?: object }>(units: readonly U[], changes: BodyChanges, mode: ChangeEmphasis): U[] {
   return units.map(unit => {
     if (unit.kind !== "file") return { ...unit, lit: glows(mode) && changes.lit.has(unit.id), alpha: dims(mode) && !changes.holding.has(unit.id) ? 1 - DIM_LOSS : 1 };
-    const changed = changes.lit.has(unit.id), color = emphasizedSphere(unit.color ?? activePalette().history.changed, 1, changed, mode);
+    const changed = changes.lit.has(unit.id), color = emphasizedSphere(unit.color ?? activePalette().history.changed, 1, changed, mode, changes.holding.has(unit.id));
     return changed && glows(mode) && unit.marble ? { ...unit, color, marble: undefined } : { ...unit, color };
   });
 }

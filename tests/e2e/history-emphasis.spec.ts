@@ -78,7 +78,7 @@ const drawnColour = async (page: Page, id: string): Promise<Colour> => (await dr
 /**
  * Each file's own colour at a moment, read by a second visitor at the same address with Changed Files at None, where
  * nothing stands out. A file's own colour is its own: a marble's is its kind's glass tinted by its own veins at that
- * moment (marbles are the default since 2026-11-18), so another file of its kind cannot stand for it.
+ * moment (these cases draw marbles, see {@link emphasis}), so another file of its kind cannot stand for it.
  */
 async function ownColours<T>(browser: Browser, address: string, ready: (page: Page) => Promise<void>, read: (page: Page) => Promise<T>): Promise<T> {
   const context = await browser.newContext({ viewport: { width: 1400, height: 900 } });
@@ -97,13 +97,14 @@ const ownSpheres = (browser: Browser, address: string, ids: readonly string[]): 
   ownColours(browser, address, settled, async page => Object.fromEntries(await Promise.all(ids.map(async id => [id, await drawnColour(page, id)] as const))));
 
 /**
- * A visitor with the given Changed Files choice, on the default look: the files drawn as marbles since 2026-11-18. Each
- * case reads a file's base colour as that file's own at the moment shown ({@link ownColours}); until then an unchanged
- * file of the same kind stood for it, which only plain spheres allow.
+ * A visitor with the given Changed Files choice, the files drawn as marbles: these cases are the history's emphasis among
+ * marbles (2026-11-18, when marbles were the default; off is again since 2026-11-19, so they turn the marbles on). Each
+ * case reads a file's base colour as that file's own at the moment shown ({@link ownColours}), since a marble's colour
+ * is its own and an unchanged file of the same kind cannot stand for it.
  */
 const emphasis = (mode: string) => async ({ context }: { context: import("@playwright/test").BrowserContext }): Promise<void> => {
   await context.addInitScript(value => {
-    window.localStorage.setItem("live-docs-explorer:ui:v2", JSON.stringify({ version: 2, tuning: { localMap: { searchStarts: 0 }, history: { changeEmphasis: value } } }));
+    window.localStorage.setItem("live-docs-explorer:ui:v2", JSON.stringify({ version: 2, tuning: { localMap: { searchStarts: 0 }, history: { changeEmphasis: value }, appearance: { marbles: "on" } } }));
   }, mode);
 };
 
@@ -165,7 +166,7 @@ for (const mode of ["glow", "dim"] as const) for (const rate of [1, 0.5]) {
     for (const fraction of [0.1, 0.5, 0.85]) {
       await page.waitForTimeout(Math.max(0, interval * fraction - (Date.now() - began)));
       await expect(page.locator(".history-track")).toHaveAttribute("aria-valuenow", "4");
-      await expect(page.locator(".history-play")).toHaveAttribute("aria-pressed", "true");
+      await expect(page.locator(".history-play")).toHaveAttribute("aria-label", "Pause");
       expect(await appearance(), `no brightness ramp at ${fraction * 100}% of the interval`).toEqual(first);
     }
     await expect(page.locator(".history-track")).toHaveAttribute("aria-valuenow", "5");
@@ -208,6 +209,50 @@ test("with the rest dimmed, the changed file keeps its alpha; closing history re
   await settled(page);
   expect((await renderedNodes(page)).every(node => Math.abs(node.opacity - 0.75) < 0.01 || Math.abs(node.opacity - 0.3) < 0.01), "today's picture has no emphasis").toBe(true);
 });
+
+/**
+ * What was asked about is never dimmed by a step (2026-11-19, the owner: "temporal scrubbing wouldn't highlight the pinned
+ * note (or wouldn't un-dim it)"). With util.ts pinned at "Retire the legacy helper", which changed main.ts and not util.ts,
+ * the pinned file keeps its ordinary look under Dim and Both while the rest the step left dims; at the next step, which
+ * changed util.ts, it is emphasised as any changed file is.
+ */
+for (const mode of ["dim", "both"] as const) {
+  test(`under ${mode} a pinned file the step did not change keeps its ordinary look, and is emphasised when the step changes it`, async ({ page, context, browser }) => {
+    test.setTimeout(60_000);
+    await emphasis(mode)({ context });
+    await observeGraph(page);
+    const main = "src/app/main.ts", util = "src/engine/util.ts";
+    const pinned = (commit: string): string => `/samples/history/?s=${compressSnapshot({
+      ...DEFAULT_SNAPSHOT, perspective: "3d", spatialLayout: "connections", filters: { showTests: true, showAssets: false },
+      pinSet: { entries: [{ nodeId: util, symbol: "*" }] }, commit, layout: { forceGraph: { updateEnergy: 0 } }
+    })}`;
+    const drawn = async (target: Page): Promise<void> => {
+      await expect.poll(async () => {
+        if (await target.locator("#graph-svg").getAttribute("aria-busy") !== "false") return false;
+        const ids = new Set((await renderedNodes(target)).map(node => node.id));
+        return ids.has(main) && ids.has(util);
+      }, { timeout: 60_000, message: "the pinned file and the changed file are drawn" }).toBe(true);
+    };
+    const address = pinned(await commitWith(page, "Retire the legacy helper"));
+    const own = await ownColours(browser, address, drawn, async plain => drawnColour(plain, util));
+    await page.goto(address);
+    await drawn(page);
+    const nodes = await renderedNodes(page);
+    const opacity = (id: string): number => nodes.find(node => node.id === id)!.opacity;
+    expect(opacity(util), "the pinned file is not dimmed").toBeCloseTo(0.75, 5);
+    expect(await drawnColour(page, util), "and keeps its own colour").toEqual(own);
+    expect((await drawnSphere(page, util)).marble, "and its marble").toBe(true);
+    const changedAlpha = opacity(main);
+    expect(nodes.filter(node => node.id !== util && node.id !== main).some(node => node.opacity < 0.2), "the rest the step left is dimmed").toBe(true);
+    // The next step changed util.ts and not main.ts: util.ts, under Both, glows white; main.ts dims to a fifth.
+    await page.locator(".history-track").press("ArrowRight");
+    if (mode === "both") await expect.poll(() => drawnColour(page, util)).toEqual(WHITE);
+    // main.ts stands a hop from the pin, at the frontier, whose own alpha the step then takes to a fifth.
+    await expect.poll(async () => (await renderedNodes(page)).find(node => node.id === main)?.opacity, "main.ts, unchanged now, dims").toBeLessThan(0.2);
+    expect(changedAlpha, "and was brighter while the step had changed it").toBeGreaterThan(0.2);
+    expect((await renderedNodes(page)).find(node => node.id === util)!.opacity).toBeCloseTo(0.75, 5);
+  });
+}
 
 /**
  * Inside the wrappers (2026-11-11, the owner's "I don't see any of the nodes deep inside the bubbles lighting up when they

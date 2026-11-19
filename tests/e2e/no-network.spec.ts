@@ -62,7 +62,7 @@ async function expectNothingAsked(watched: Watch): Promise<void> {
 }
 
 async function started(page: Page): Promise<void> {
-  await expect(page.locator("#stats-line")).not.toHaveText("Loading...");
+  await expect(page.locator("#stats-line")).not.toHaveText("Loading…");
   await expect(page.locator("#stats-line")).not.toHaveText(/^Error/u);
 }
 

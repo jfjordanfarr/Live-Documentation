@@ -93,9 +93,15 @@ export function createSearchBar(options: SearchBarOptions): SearchBar {
     if (event.detail === 0) destination.focus();
   });
 
-  // Ctrl+P, the Explorer's search shortcut since the dialog it replaced, goes to the first field.
+  // Ctrl+P, the Explorer's search shortcut since the dialog it replaced, goes to the first field; on a Mac, ⌘P. The hint
+  // and the field's `aria-keyshortcuts` name the platform's key, though either key works everywhere.
+  const mac = isApple();
+  subjectInput.setAttribute("aria-keyshortcuts", mac ? "Meta+P" : "Control+P");
+  const hint = subjectInput.parentElement?.querySelector(".search-shortcut");
+  if (hint && mac) hint.textContent = "⌘P";
   document.addEventListener("keydown", event => {
-    if ((event.ctrlKey || event.metaKey) && event.key === "p") {
+    // Compared without regard to case: with Caps Lock on the key is "P", and the browser's Print took it (2026-11-19).
+    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "p") {
       event.preventDefault();
       subject.focus();
     }
@@ -197,6 +203,12 @@ export function createSearchBar(options: SearchBarOptions): SearchBar {
       subject.focus();
     }
   };
+}
+
+/** Whether the browser runs on Apple's systems, where the command key, ⌘, does what Ctrl does elsewhere. */
+function isApple(): boolean {
+  const platform = (navigator as Navigator & { userAgentData?: { platform?: string } }).userAgentData?.platform || navigator.platform || "";
+  return /mac|iphone|ipad|ipod/iu.test(platform);
 }
 
 /** Say beside a field, faded, that its thing does not stand at the moment shown, the moment on hover and to a screen reader. */

@@ -214,7 +214,7 @@ test("a directory hub inspects, its Open action frames its members, and the shar
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
   await expect.poll(async () => Math.min(...(await renderedNodes(page)).map(node => node.opacity))).toBeGreaterThan(.25);
   expect((await renderedNodes(page)).map(node => node.id).sort()).toEqual(discovered.map(node => node.id).sort());
-  await page.getByRole("button", { name: "Clear exploration pins", exact: true }).click();
+  await page.getByRole("button", { name: "Clear all pins", exact: true }).click();
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
   expect((await renderedNodes(page)).map(node => node.id).sort()).toEqual(nodes.map(node => node.id).sort());
 });

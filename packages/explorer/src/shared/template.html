@@ -3,9 +3,10 @@
 
 <head>
   <meta charset="UTF-8" />
-  <!-- The page loads only its own files: no script but its own, no request to any other site. A stylesheet may be
-       inline because three of the 3D view's libraries inject theirs; a style can neither run script nor, under the
-       rest of this policy, fetch from anywhere. -->
+  <!-- The page loads only its own files: no script but its own, no request to any other site. A style may be inline
+       because the Explorer's own code writes style attributes into markup it builds (a folder's indent in Knowledge
+       Sources, a card's marble shares, the World Map's key); the 3D libraries that once injected stylesheets left on
+       2026-10-29. A style can neither run script nor, under the rest of this policy, fetch from anywhere. -->
   <meta http-equiv="Content-Security-Policy"
     content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -14,6 +15,8 @@
 </head>
 
 <body>
+  <!-- The first stop of the keyboard, shown only while focused: past the sidebar to the map (WCAG 2.2 SC 2.4.1) -->
+  <a class="skip-link" href="#views">Skip to the map</a>
   <div id="sidebar">
     <div class="sidebar-header">
       <span class="sidebar-title">Live Docs Explorer</span>
@@ -23,7 +26,7 @@
     </div>
 
     <!-- View Navigation -->
-    <div class="sidebar-section">
+    <nav class="sidebar-section" aria-label="Views">
       <button class="nav-item" data-view="sources">
         <svg class="nav-icon" viewBox="0 0 24 24" width="20" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3.5h9l4 4v13H6z"/><path d="M15 3.5v4h4M9 11h7M9 14.5h7M9 18h4"/></svg><span>Knowledge Sources</span>
       </button>
@@ -33,7 +36,7 @@
       <button class="nav-item" data-view="map">
         <svg class="nav-icon" viewBox="0 0 24 24" width="20" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8.5" y="6.5" width="12" height="11" rx="1.5"/><circle cx="3.8" cy="9.5" r="1.3"/><circle cx="3.8" cy="14.5" r="1.3"/><path d="M5.1 9.5h3.4M5.1 14.5h3.4"/></svg><span>Local Map</span>
       </button>
-    </div>
+    </nav>
 
     <!-- Display Filters -->
     <div class="sidebar-section">
@@ -89,8 +92,12 @@
 
     <!-- Tuning Controls (collapsible) -->
     <details class="sidebar-section sidebar-details">
-      <summary class="section-label clickable">Tuning</summary>
+      <summary class="section-label clickable">Tuning<span id="tuning-changed" class="tuning-changed" hidden><span id="tuning-changed-count" aria-hidden="true"></span><span id="tuning-changed-words" class="visually-hidden"></span></span></summary>
       <div class="tuning-content">
+        <!-- Reset to defaults: the World Map's Reset layout glyph, a toggle pressed while a second press can take the reset back. -->
+        <div class="tuning-head">
+          <button id="tuning-reset" type="button" class="tuning-reset" aria-label="Reset to defaults" title="Reset to defaults" aria-pressed="false" disabled><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg></button>
+        </div>
         <details class="tuning-subsection">
           <summary class="subsection-label">Colour</summary>
           <label class="tuning-slider">
@@ -104,8 +111,8 @@
           <label class="tuning-slider">
             <span>Marbles</span>
             <select id="tuning-marbles">
-              <option value="on" selected>On</option>
-              <option value="off">Off</option>
+              <option value="off" selected>Off</option>
+              <option value="on">On</option>
             </select>
           </label>
         </details>
@@ -264,6 +271,14 @@
               <option value="under" selected>Cells under name</option>
               <option value="cells">Cells beside name</option>
               <option value="count">Count</option>
+            </select>
+          </label>
+          <label class="tuning-slider">
+            <span>Arrival</span>
+            <select id="tuning-arrival">
+              <option value="reading" selected>Reading Size</option>
+              <option value="then-neighbours">Reading, Then Neighbours</option>
+              <option value="neighbours">Neighbours</option>
             </select>
           </label>
           <label class="tuning-slider" data-closed-cells-only>
@@ -493,12 +508,12 @@
 
     <!-- Stats (at bottom) -->
     <div id="context-bar" class="sidebar-section sidebar-footer">
-      <div id="stats-line">Loading...</div>
+      <div id="stats-line">Loading…</div>
       <div>Context: <span id="context-name">None</span></div>
     </div>
   </div>
 
-  <div id="main">
+  <main id="main">
     <!-- One search for the whole Explorer; the second field, the end of a path, appears once anything is pinned -->
     <div id="search-bar" class="search-bar" role="search">
       <div class="search-field" id="search-subject-field">
@@ -555,8 +570,8 @@
 
     <!-- Floating zoom controls -->
     <div id="controls">
-      <button class="control-btn" data-zoom="in" aria-label="Zoom In">+</button>
-      <button class="control-btn" data-zoom="out" aria-label="Zoom Out">-</button>
+      <button class="control-btn" data-zoom="in" aria-label="Zoom In" title="Zoom in">+</button>
+      <button class="control-btn" data-zoom="out" aria-label="Zoom Out" title="Zoom out">-</button>
       <button class="control-btn" data-zoom="reset" aria-label="Return to reading size" title="Return to reading size, framed as on arrival, on the subject or the newest pin">⟲</button>
     </div>
 
@@ -578,7 +593,10 @@
       </div>
     </div>
     </div>
-  </div>
+  </main>
+
+  <!-- The page's one polite status region (client/announce.ts): what happens, said without moving focus -->
+  <div id="page-status" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></div>
 
   <!-- A classic deferred script, which a page opened as a file still runs, so that it can say it must be served. -->
   <script defer src="./static/index.js"></script>

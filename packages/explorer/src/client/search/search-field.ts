@@ -4,6 +4,7 @@
  * The bar makes two of these, the subject and the destination, each over a scope of its own.
  */
 
+import { announce, withdraw } from "../announce";
 import { escapeHtml } from "../graph-helpers";
 import { searchGraph, searchRows, type SearchGroup, type SearchHit, type SearchRow, type SearchScope } from "./graph-search";
 
@@ -26,6 +27,9 @@ export interface SearchField {
   settle(): void;
 }
 
+/** What the results say, and the page's status region with them, when the words find nothing. */
+const NOTHING_FOUND = "Nothing found";
+
 /** A row of the field: a search row, or the fold that opens the files kept apart. */
 type FieldRow = SearchRow | { kind: "apart"; count: number };
 
@@ -43,6 +47,8 @@ export function createSearchField(options: SearchFieldOptions): SearchField {
   let selected = -1;
   let expanded = new Set<string>();
   let apartOpen = false;
+  // Whether the results now say that nothing was found, so that the page's status region says it once.
+  let emptyShown = false;
 
   // A combobox over a listbox, as the ARIA pattern has it: the input owns the list, says whether it is open, and
   // names the keyboard's row while focus stays in the input.
@@ -113,7 +119,11 @@ export function createSearchField(options: SearchFieldOptions): SearchField {
     }
     rows = list;
     selected = rows.length ? Math.min(Math.max(selected, 0), rows.length - 1) : -1;
-    results.innerHTML = html.length ? html.join("") : '<div class="search-empty" role="presentation">Nothing found</div>';
+    results.innerHTML = html.length ? html.join("") : `<div class="search-empty">${NOTHING_FOUND}</div>`;
+    // A list that empties is said once, politely; a keystroke that keeps it empty says nothing again.
+    if (!html.length && !emptyShown) announce(NOTHING_FOUND);
+    else if (html.length && emptyShown) withdraw(NOTHING_FOUND);
+    emptyShown = !html.length;
     let at = 0;
     for (const element of results.querySelectorAll<HTMLElement>(".search-row")) {
       element.dataset.index = String(at);
@@ -125,6 +135,8 @@ export function createSearchField(options: SearchFieldOptions): SearchField {
   };
 
   const hide = (): void => {
+    if (emptyShown) withdraw(NOTHING_FOUND);
+    emptyShown = false;
     results.hidden = true;
     results.innerHTML = "";
     rows = [];

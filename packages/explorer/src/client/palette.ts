@@ -229,7 +229,11 @@ export interface Palette {
   };
 }
 
-/** The palette drawn until the colour pass: every value as the Explorer drew it on 2026-11-16. */
+/**
+ * The palette drawn until the colour pass: every value as the Explorer drew it on 2026-11-16, but for three quiet
+ * tones of text (muted, subtle, panelSubtle), which take the proposed palette's values (2026-11-19, the design
+ * system's audit): as drawn before they stood at 4.42, 3.50 and 3.34 to 1 on a card, under the 4.5 WCAG asks of words.
+ */
 export const TODAY: Palette = {
   ground: {
     page: "#18181a", deep: "#111111", surface: "#1e1e1e", raised: "#1f1f22", card: "#232326", cardHover: "#2f2f33",
@@ -237,8 +241,8 @@ export const TODAY: Palette = {
   },
   line: { border: "#2f2f34", interactive: "#3f3f46", hover: "#777777", membrane: "#3d3d45" },
   text: {
-    strong: "#ffffff", normal: "#e4e4e4", secondary: "#cccccc", muted: "#888888", subtle: "#777777", disabled: "#666666",
-    panelMuted: "#9ca3bc", panelSubtle: "#6c7484", cardFileName: "#f2f2f2", cardSymbolName: "#ededed", cardProse: "#b0b0b0",
+    strong: "#ffffff", normal: "#e4e4e4", secondary: "#cccccc", muted: "#939393", subtle: "#8a8a8a", disabled: "#666666",
+    panelMuted: "#9ca3bc", panelSubtle: "#828a9a", cardFileName: "#f2f2f2", cardSymbolName: "#ededed", cardProse: "#b0b0b0",
     onSelected: "#ffffff"
   },
   state: { selected: "#0091ff", selectedHover: "#0070d4" },
@@ -289,16 +293,18 @@ export const TODAY: Palette = {
  * Blue and green stay with the two roles and nothing else wears them; the kinds move off them (implementation, the
  * common case, goes quiet; a test file takes the violet the 2D cards already use for having tests; a document leaves
  * violet for a paper yellow); what is selected is neutral, so the interface wears no data colour; three quiet tones of
- * text are lifted to 4.5:1 on a card; the type badges keep only the plain badge's look, since each tells its role by
- * its icon and rose and amber now belong to the asset and the directory. Every second value equals its meaning, and
- * each World form draws its doors and its wires in its own blue and green.
+ * text were lifted to 4.5:1 on a card (today's palette has taken them since 2026-11-19); the type badges keep only the
+ * plain badge's look, since each tells its role by its icon and rose and amber now belong to the asset and the
+ * directory. Every second value equals its meaning, but for the light World's pressed tool, which is drawn from its
+ * meaning as the dark World draws its own: the light form's blue at 16% over its white board. Each World form draws
+ * its doors and its wires in its own blue and green.
  */
 export const PROPOSED: Palette = {
   ...TODAY,
   role: { offers: "#23a1ef", uses: "#5ee7b5" },
   kind: { ...TODAY.kind, implementation: "#a8b2c3", test: "#8a5cff", asset: "#db547e", document: "#f1d96e" },
   state: { selected: "#f2f2f2", selectedHover: "#d0d0d4" },
-  text: { ...TODAY.text, muted: "#939393", subtle: "#8a8a8a", panelSubtle: "#828a9a", onSelected: "#111318" },
+  text: { ...TODAY.text, onSelected: "#111318" },
   typeRef: { ...TODAY.typeRef, extends: "#646478", extendsText: "#b4b4c8", implements: "#646478", implementsText: "#b4b4c8" },
   scene: { ...TODAY.scene, citedBy: "#f9f0ba" },
   world: {
@@ -307,7 +313,8 @@ export const PROPOSED: Palette = {
   },
   secondValues: {
     ...TODAY.secondValues, offersPin: "#23a1ef", usesPin: "#5ee7b5", selectedRing: "#f2f2f2", sourcesHover: "#d0d0d4",
-    implementationLabelTint: "#a8b2c3", testLabelTint: "#8a5cff", assetLabelTint: "#db547e",
+    implementationLabelTint: "#a8b2c3", testLabelTint: "#8a5cff", assetLabelTint: "#db547e", errorWash: "#ff8888",
+    pathFoundWash: "#8bd49a", worldLightPressed: "#d7e7f2",
     worldLightWireOffers: "#046aac", worldLightWireUses: "#008e60", worldDarkWireOffers: "#23a1ef", worldDarkWireUses: "#5ee7b5"
   }
 };
@@ -315,8 +322,9 @@ export const PROPOSED: Palette = {
 /**
  * The proposed palette with the kinds kept near today's blue and green (the owner's earlier lean, made valid by root's
  * measurement, 2026-11-17): implementation and test near today's colours, the two roles a step lighter so that every
- * identity still stands apart, and every second value equal to its meaning. A test file's kind label in the details
- * panel is the test kind's green, as the test sphere is; a 2D card that tests use keeps the has-tests violet.
+ * identity still stands apart, and every second value equal to its meaning as in the proposed palette. A test file's
+ * kind label in the details panel is the test kind's green, as the test sphere is; a 2D card that tests use keeps the
+ * has-tests violet.
  */
 export const VIVID_KINDS: Palette = {
   ...PROPOSED,
@@ -355,7 +363,8 @@ export const activePalette = (): Palette => active;
 /**
  * Whether files are drawn as marbles (the marble trial, 2026-11-17): each file's colour its kind's glass with veins of
  * what it offers and what it uses (`marbleOf` in views/forceGraphAppearance.ts). Off until the page applies the
- * viewer's choice as it starts, which is on unless they turned it off (the default since 2026-11-18).
+ * viewer's choice as it starts, which is off unless they turned it on (the default again since 2026-11-19; on was the
+ * default on 2026-11-18 and 19).
  */
 export const marblesDrawn = (): boolean => marbles;
 

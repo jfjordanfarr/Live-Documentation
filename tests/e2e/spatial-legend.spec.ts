@@ -80,18 +80,11 @@ test("the spatial key follows rendered kinds, including a retained test hidden b
   // The subject is selected and a test pinned: the picture is their hops, which here reach every connected file in one
   // hop, so no hop is dimmed as a frontier (discovery, 2026-10-31; until then pins faded the rest of the picture and the
   // key carried a Faded row for it); the sample's other groups stand by their seeds, dimmed, and the key says so (2026-11-02).
-  // The files are marbles by default since 2026-11-18, and the key's second row says what their veins are.
-  await expect(page.locator("#spatial-legend .legend-word")).toHaveText(["Implementation", "Test", "Offers", "Uses", "Symbols", "References", "Beyond"]);
-  await expect(page.locator("#spatial-legend .legend-row")).toHaveCount(5);
-  await expect(page.locator("#local-legend")).toBeHidden();
-  // A kind's sample is the colour a plain sphere of that kind is drawn in. A marble's is its kind's glass tinted by its own
-  // veins, file by file, so the samples are matched with the marbles turned off, and the key then loses its veins' row.
-  await page.evaluate(() => {
-    const select = document.getElementById("tuning-marbles") as HTMLSelectElement;
-    select.value = "off";
-    select.dispatchEvent(new Event("change", { bubbles: true }));
-  });
+  // The files are plain by default (again since 2026-11-19), so the key has no row for the marbles' veins, and a kind's
+  // sample is the colour a sphere of that kind is drawn in.
   await expect(page.locator("#spatial-legend .legend-word")).toHaveText(["Implementation", "Test", "Symbols", "References", "Beyond"]);
+  await expect(page.locator("#spatial-legend .legend-row")).toHaveCount(4);
+  await expect(page.locator("#local-legend")).toBeHidden();
   await matchesNodeColour(page, "Implementation", subject);
   await matchesNodeColour(page, "Test", retainedTest);
 
@@ -125,9 +118,10 @@ test("the Local Map shows the matching legend and lends neither key to another v
   await expect(page.locator("#spatial-legend")).toBeVisible();
   // The subject's one hop ends in a frontier; Skin also names the wrapped groups and directory shells. With the wrappers on
   // no sphere wears a ring, so the key has no row for it (2026-11-18); until then the frontier's spheres with more behind
-  // them wore rings beside the shells. The marbles' veins have their row since they became the default (2026-11-18).
+  // them wore rings beside the shells. The marbles' veins have no row: the files are plain by default (again since
+  // 2026-11-19; on 2026-11-18 and 19, with marbles the default, the key had an Offers and Uses row).
   await expect(page.locator("#spatial-legend .legend-row")).toHaveText([
-    "Implementation", "OffersUses", "Symbols", "References", "Beyond", "Wrapped group", "Directory shell"
+    "Implementation", "Symbols", "References", "Beyond", "Wrapped group", "Directory shell"
   ]);
   expectFewWords(await rowsOf(page, "#spatial-legend"), "the 3D key");
   // With the wrappers Off the ring is the picture's only sign of more (the owner's choice of 2026-11-02), and the key says
@@ -137,7 +131,7 @@ test("the Local Map shows the matching legend and lends neither key to another v
     select.value = "off";
     select.dispatchEvent(new Event("change", { bubbles: true }));
   });
-  await expect(page.locator("#spatial-legend .legend-row")).toHaveText(["Implementation", "OffersUses", "Symbols", "References", "Beyond", "More connected"]);
+  await expect(page.locator("#spatial-legend .legend-row")).toHaveText(["Implementation", "Symbols", "References", "Beyond", "More connected"]);
   expectFewWords(await rowsOf(page, "#spatial-legend"), "the 3D key with the wrappers Off");
   await expect(key(page, "More connected").locator("xpath=..")).toHaveAccessibleDescription("A ring: more is connected to this file than the picture shows. Press the file to see it.");
   await expect(page.locator("#local-legend")).toBeHidden();
@@ -276,10 +270,10 @@ test("the key's words are whole and apart in both maps, in the sidebar's one wid
   }
   await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto("/samples/estate/?view=local&mode=3d&node=Portal/Services/GatewayClient.cs");
-  // Six rows under Skin since 2026-11-18, when the ring's row left the key with the rings, and a seventh for the
-  // marbles' veins, drawn by default since the same day; eight words, the veins' row holding two.
-  await expect(page.locator("#spatial-legend .legend-row")).toHaveCount(7);
-  await audit("3D", 8);
+  // Six rows under Skin since 2026-11-18, when the ring's row left the key with the rings; the marbles' veins have no
+  // row while the files are plain, the default (again since 2026-11-19).
+  await expect(page.locator("#spatial-legend .legend-row")).toHaveCount(6);
+  await audit("3D", 6);
   // The audit sees these words: squeezed into a quarter of the panel, they are cut, and it says so.
   await page.addStyleTag({ content: "#map-legend { width: 60px; overflow: hidden; }" });
   expect((await truncations(page, WORDS)).length, "the audit finds the key's words when they are cut").toBeGreaterThan(0);

@@ -129,7 +129,7 @@ None is required. To change where the Live Docs go, what is left out or which bo
 
 - The generator, the commands and the Explorer build make no network request and send no telemetry.
 - The Explorer page reads only the site that serves it, and its content security policy refuses anything else.
-- Nothing runs at install time: there are no `preinstall` or `postinstall` scripts.
+- Live Documentation's own packages run nothing at install time. One dependency does: `esbuild`'s `postinstall` checks that its binary for your platform is present, and fetches it from the npm registry if not. `npm ci --ignore-scripts` skips it.
 
 [SECURITY.md](SECURITY.md) says how to check each of these yourself.
 

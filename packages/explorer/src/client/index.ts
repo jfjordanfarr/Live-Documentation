@@ -1208,6 +1208,17 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     });
   }
 
+  // The skip link moves the keyboard to the views, where the next Tab enters the map, and leaves the address alone:
+  // the exploration lives in its query, and a fragment would be one more thing a shared link carried for nothing.
+  // The views take focus only for this: a click on the map must not focus their frame.
+  document.querySelector<HTMLAnchorElement>(".skip-link")?.addEventListener("click", event => {
+    event.preventDefault();
+    const views = requireElement("views");
+    views.tabIndex = -1;
+    views.addEventListener("blur", () => views.removeAttribute("tabindex"), { once: true });
+    views.focus();
+  });
+
   requireElement("sidebar-toggle").addEventListener("click", () => {
     sidebar.classList.toggle("collapsed");
     syncSidebarToggle();
@@ -1216,8 +1227,9 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   function syncSidebarToggle(): void {
     const collapsed = sidebar.classList.contains("collapsed");
     const button = requireElement<HTMLButtonElement>("sidebar-toggle");
+    // The glyph shows what a press does, so the name changes with it and no `aria-expanded` repeats the state: a
+    // screen reader heard "Open navigation, collapsed" (the rule Play follows, 2026-11-19).
     button.textContent = collapsed ? "▶" : "◀";
-    button.setAttribute("aria-expanded", String(!collapsed));
     button.setAttribute("aria-label", collapsed ? "Open navigation" : "Collapse navigation");
     button.title = collapsed ? "Open navigation" : "Collapse navigation";
   }

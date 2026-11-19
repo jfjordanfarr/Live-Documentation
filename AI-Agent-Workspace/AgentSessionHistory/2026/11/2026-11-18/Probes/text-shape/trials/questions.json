@@ -1,0 +1,150 @@
+[
+  {
+    "picture": "trial-01.png",
+    "question": "Two rows of the same six balls, in the same order: the top row at one moment, the bottom row at a later one. Exactly one ball changed between them. Which one (count from the left, 1 to 6)? Say how sure you are and what you saw."
+  },
+  {
+    "picture": "trial-02.png",
+    "question": "Two rows of the same six balls, in the same order: the top row at one moment, the bottom row at a later one. Exactly one ball changed between them. Which one (count from the left, 1 to 6)? Say how sure you are and what you saw."
+  },
+  {
+    "picture": "trial-03.png",
+    "question": "Two rows of the same six balls, in the same order: the top row at one moment, the bottom row at a later one. Exactly one ball changed between them. Which one (count from the left, 1 to 6)? Say how sure you are and what you saw."
+  },
+  {
+    "picture": "trial-04.png",
+    "question": "Two rows of the same six balls, in the same order: the top row at one moment, the bottom row at a later one. Exactly one ball changed between them. Which one (count from the left, 1 to 6)? Say how sure you are and what you saw."
+  },
+  {
+    "picture": "trial-05.png",
+    "question": "Two rows of the same six balls, in the same order: the top row at one moment, the bottom row at a later one. Exactly one ball changed between them. Which one (count from the left, 1 to 6)? Say how sure you are and what you saw."
+  },
+  {
+    "picture": "trial-06.png",
+    "question": "Two rows of the same six balls, in the same order: the top row at one moment, the bottom row at a later one. Exactly one ball changed between them. Which one (count from the left, 1 to 6)? Say how sure you are and what you saw."
+  },
+  {
+    "picture": "trial-07.png",
+    "question": "Two rows of the same six balls, in the same order: the top row at one moment, the bottom row at a later one. Exactly one ball changed between them. Which one (count from the left, 1 to 6)? Say how sure you are and what you saw."
+  },
+  {
+    "picture": "trial-08.png",
+    "question": "Two rows of the same six balls, in the same order: the top row at one moment, the bottom row at a later one. Exactly one ball changed between them. Which one (count from the left, 1 to 6)? Say how sure you are and what you saw."
+  },
+  {
+    "picture": "trial-09.png",
+    "question": "Two rows of the same six balls, in the same order: the top row at one moment, the bottom row at a later one. Exactly one ball changed between them. Which one (count from the left, 1 to 6)? Say how sure you are and what you saw."
+  },
+  {
+    "picture": "trial-10.png",
+    "question": "Two rows of the same six balls, in the same order: the top row at one moment, the bottom row at a later one. Exactly one ball changed between them. Which one (count from the left, 1 to 6)? Say how sure you are and what you saw."
+  },
+  {
+    "picture": "trial-11.png",
+    "question": "Two rows of the same six balls, in the same order: the top row at one moment, the bottom row at a later one. Exactly one ball changed between them. Which one (count from the left, 1 to 6)? Say how sure you are and what you saw."
+  },
+  {
+    "picture": "trial-12.png",
+    "question": "Two rows of the same six balls, in the same order: the top row at one moment, the bottom row at a later one. Exactly one ball changed between them. Which one (count from the left, 1 to 6)? Say how sure you are and what you saw."
+  },
+  {
+    "picture": "trial-13.png",
+    "question": "Two rows of the same six balls, in the same order: the top row at one moment, the bottom row at a later one. Exactly one ball changed between them. Which one (count from the left, 1 to 6)? Say how sure you are and what you saw."
+  },
+  {
+    "picture": "trial-14.png",
+    "question": "Two rows of the same six balls, in the same order: the top row at one moment, the bottom row at a later one. Exactly one ball changed between them. Which one (count from the left, 1 to 6)? Say how sure you are and what you saw."
+  },
+  {
+    "picture": "trial-15.png",
+    "question": "Two rows of the same six balls, in the same order: the top row at one moment, the bottom row at a later one. Exactly one ball changed between them. Which one (count from the left, 1 to 6)? Say how sure you are and what you saw."
+  },
+  {
+    "picture": "trial-16.png",
+    "question": "Two rows of the same six balls, in the same order: the top row at one moment, the bottom row at a later one. Exactly one ball changed between them. Which one (count from the left, 1 to 6)? Say how sure you are and what you saw."
+  },
+  {
+    "picture": "trial-17.png",
+    "question": "Two rows of the same six balls, in the same order: the top row at one moment, the bottom row at a later one. Exactly one ball changed between them. Which one (count from the left, 1 to 6)? Say how sure you are and what you saw."
+  },
+  {
+    "picture": "trial-18.png",
+    "question": "Two rows of the same six balls, in the same order: the top row at one moment, the bottom row at a later one. Exactly one ball changed between them. Which one (count from the left, 1 to 6)? Say how sure you are and what you saw."
+  },
+  {
+    "picture": "trial-19.png",
+    "question": "Two rows of the same six balls, in the same order: the top row at one moment, the bottom row at a later one. Exactly one ball changed between them. Which one (count from the left, 1 to 6)? Say how sure you are and what you saw."
+  },
+  {
+    "picture": "trial-20.png",
+    "question": "Two rows of the same six balls, in the same order: the top row at one moment, the bottom row at a later one. Exactly one ball changed between them. Which one (count from the left, 1 to 6)? Say how sure you are and what you saw."
+  },
+  {
+    "picture": "trial-21.png",
+    "question": "Two balls. One is drawn from a database query whose text was aligned by eye in columns (every alias at one column, the joins and their conditions lined up); the other from the same query formatted conventionally. Which one (left or right) is the aligned one, and what in the picture tells you?"
+  },
+  {
+    "picture": "trial-22.png",
+    "question": "Two balls. One is drawn from a database query whose text was aligned by eye in columns (every alias at one column, the joins and their conditions lined up); the other from the same query formatted conventionally. Which one (left or right) is the aligned one, and what in the picture tells you?"
+  },
+  {
+    "picture": "trial-23.png",
+    "question": "Two balls. One is drawn from a database query whose text was aligned by eye in columns (every alias at one column, the joins and their conditions lined up); the other from the same query formatted conventionally. Which one (left or right) is the aligned one, and what in the picture tells you?"
+  },
+  {
+    "picture": "trial-24.png",
+    "question": "Four balls. Three are drawn from text files of different lengths, one from a file that is not text at all. Which one (1 to 4 from the left) is not text? Then order the other three from the shortest file to the longest."
+  },
+  {
+    "picture": "trial-25.png",
+    "question": "Four balls. Three are drawn from text files of different lengths, one from a file that is not text at all. Which one (1 to 4 from the left) is not text? Then order the other three from the shortest file to the longest."
+  },
+  {
+    "picture": "trial-26.png",
+    "question": "Four balls. Three are drawn from text files of different lengths, one from a file that is not text at all. Which one (1 to 4 from the left) is not text? Then order the other three from the shortest file to the longest."
+  },
+  {
+    "picture": "trial-27.png",
+    "question": "Four balls. Three are drawn from text files of different lengths, one from a file that is not text at all. Which one (1 to 4 from the left) is not text? Then order the other three from the shortest file to the longest."
+  },
+  {
+    "picture": "trial-28.png",
+    "question": "Four balls. Three are drawn from text files of different lengths, one from a file that is not text at all. Which one (1 to 4 from the left) is not text? Then order the other three from the shortest file to the longest."
+  },
+  {
+    "picture": "trial-29.png",
+    "question": "Four balls. Three are drawn from text files of different lengths, one from a file that is not text at all. Which one (1 to 4 from the left) is not text? Then order the other three from the shortest file to the longest."
+  },
+  {
+    "picture": "trial-30.png",
+    "question": "Four balls. Three are drawn from text files of different lengths, one from a file that is not text at all. Which one (1 to 4 from the left) is not text? Then order the other three from the shortest file to the longest."
+  },
+  {
+    "picture": "trial-31.png",
+    "question": "Four balls. Three are drawn from text files of different lengths, one from a file that is not text at all. Which one (1 to 4 from the left) is not text? Then order the other three from the shortest file to the longest."
+  },
+  {
+    "picture": "trial-32.png",
+    "question": "Two rows of the same six small boxes, in the same order: the top row at one moment, the bottom row at a later one. Exactly one box changed between them. Which one (count from the left, 1 to 6)? Say how sure you are and what you saw."
+  },
+  {
+    "picture": "trial-33.png",
+    "question": "Two rows of the same six small boxes, in the same order: the top row at one moment, the bottom row at a later one. Exactly one box changed between them. Which one (count from the left, 1 to 6)? Say how sure you are and what you saw."
+  },
+  {
+    "picture": "trial-34.png",
+    "question": "Two small boxes. One is drawn from a database query whose text was aligned by eye in columns (every alias at one column, the joins and their conditions lined up); the other from the same query formatted conventionally. Which one (left or right) is the aligned one, and what in the picture tells you?"
+  },
+  {
+    "picture": "trial-35.png",
+    "question": "Two rows of the same six small boxes, in the same order: the top row at one moment, the bottom row at a later one. Exactly one box changed between them. Which one (count from the left, 1 to 6)? Say how sure you are and what you saw."
+  },
+  {
+    "picture": "trial-36.png",
+    "question": "Two rows of the same six small boxes, in the same order: the top row at one moment, the bottom row at a later one. Exactly one box changed between them. Which one (count from the left, 1 to 6)? Say how sure you are and what you saw."
+  },
+  {
+    "picture": "trial-37.png",
+    "question": "Two small boxes. One is drawn from a database query whose text was aligned by eye in columns (every alias at one column, the joins and their conditions lined up); the other from the same query formatted conventionally. Which one (left or right) is the aligned one, and what in the picture tells you?"
+  }
+]

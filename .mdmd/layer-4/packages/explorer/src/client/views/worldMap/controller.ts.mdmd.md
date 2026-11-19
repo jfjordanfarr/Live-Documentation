@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/worldMap/controller.ts
-- Generated At: 2026-11-17T01:03:09.673Z
+- Generated At: 2026-11-19T01:19:39.962Z
 
 ## Authored
 ### Purpose
@@ -30,34 +30,41 @@ The World Map, drawn. Everything that touches the DOM is here: the SVG the board
   - **One drawing a frame.** A drag's pointer moves and the wheel's steps change the camera at once and ask for the drawing at the next animation frame (`request`); several moves between two frames are drawn once, and `pointerup` draws whatever is still waiting (`flush`), so the picture and the camera agree when the pointer lets go. The handle's calls and the keys still draw at once. An eased turn moves the pan and zoom before drawing, so each of its frames is drawn once.
   - **The panel waits.** While a drag is under way the hover does not change, so `applyHover` leaves the evidence panel as it is instead of writing and placing it again on every frame; it is placed again when the pointer lets go. A drag reads where the drawing stands on the page once, when it begins, rather than at every move.
 - Since 2026-10-20 the map's keys ignore a key another surface has already used, such as the Escape that closed the reader over it, and any key typed inside a full-screen dialog, so a phone's full reader cannot toggle the theme or reset the layout behind it ([the record](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-20/2026-10-20.1.record.md#turn-7)).
+- Since 2026-11-18, writing the product's design rules down as a design system, at the owner's request ([Turn 14 of the November 18 record](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-14)), found six defects here; the pictures and the cases are in [the round's evidence](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/world-map-keyboard/README.md).
+  - **The letters.** Q, E, T, F, U, G, D, R and ? had listened on the window and acted from anywhere while the World Map was the view, Ctrl held or not, inside a `<select>` too, so Ctrl+R reloaded the page and reset the layout with it (WCAG 2.2, 2.1.4 Character Key Shortcuts). They now listen on the view's own element and act only while the keyboard is inside it, never with Ctrl, Meta or Alt held and never from a field (`isField`). Escape alone stays on the window: it types nothing and it is the way out. The view's element has `tabIndex = -1`, so a press anywhere on the board that lands on nothing focusable gives it the keyboard, while a press on a tool, a link or the pinned panel keeps the focus the browser gives that; no listener moves focus.
+  - **Reset, and putting back.** `resetLayout` used to throw every position away and save at once. It now keeps what it discarded in `beforeReset` until a piece is next moved (`forgetReset`, from a drop or the handle's `move`); until then the same tool and the same key put the positions back. The tool is a toggle, pressed while a reset stands that it can take back. Its name stays "Reset layout", as a toggle's name does, and its tooltip says which of the two a press will do. A reset with nothing moved does nothing. What was discarded lives for the page, not in storage.
+  - **Reduced motion.** `tween` makes every change at once under `prefers-reduced-motion: reduce`, read at each change: turning, looking down and up, and the walkthrough's camera.
+  - **Help and the walkthrough.** The help button carries `aria-expanded` and `aria-controls`. The walkthrough writes each step into a `role="status"` region of the view's own (`status`), kept outside the walkthrough's box, which is hidden when it ends; the page's own status region is the page template's.
+  - **The pinned panel's size.** Since 2026-11-19 a resize observer places a pinned panel again whenever its size changes, its files unfolded or folded. It replaced a `toggle` listener. That event comes in a task of its own, so the unfolded panel could be read, and could be painted, where the folded one had stood, its foot below the view; `world-map.spec.ts` caught it about one run in five.
+  - **The toolbar** is one Tab stop: the tool last on holds `tabIndex` 0 and the rest -1, and the arrows (wrapping), Home and End move between them, as the WAI-ARIA Authoring Practices' toolbar does.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Hover` {#symbol-hover}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L123)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L124)
 
 ##### `Hover` — Summary
 What the pointer is on.
 
 #### `WorldMapOptions` {#symbol-worldmapoptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L129)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L130)
 
 ##### `WorldMapOptions` — Summary
 What the controller is given: where to draw, the board and its join, the graph, and the doors out of the view.
 
 #### `WorldMapController` {#symbol-worldmapcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L197)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L198)
 
 ##### `WorldMapController` — Summary
 Draws a board and answers the pointer.
 
 #### `WorldMapApi` {#symbol-worldmapapi}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L2159)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L2256)
 
 ##### `WorldMapApi` — Summary
 The handle a test or a screenshot script drives, at `window.__worldMap`.

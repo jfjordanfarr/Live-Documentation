@@ -459,6 +459,8 @@
 
 .sources-reach-field .search-input {
   width: 100%;
+  /* Room for the clear's 24 px target, as the search's destination field keeps */
+  padding-right: 28px;
 }
 
 .sources-reach-status,
