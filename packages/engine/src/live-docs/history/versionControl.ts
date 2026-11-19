@@ -55,6 +55,11 @@ export interface WorkingTree {
    * tracks and what it ignores; empty when the tree is a checkout the version control already knows.
    */
   environment: Record<string, string>;
+  /**
+   * The change's files the tree does not hold, each with the reason: a path that would leave the tree, a name the
+   * disk cannot hold, or an entry beneath a link or clashing with another; the summary says each was not read.
+   */
+  unwritten: Array<{ path: string; reason: string }>;
   /** Removes the tree and whatever the version control kept of it. */
   remove(): Promise<void>;
 }

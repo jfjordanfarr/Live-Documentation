@@ -70,6 +70,8 @@ export interface SummaryTask {
   textStore: string;
   /** Where the full graph index goes, gzipped, when the cache keeps it. */
   indexPath?: string;
+  /** The change's files its working tree does not hold, and why, which the summary records. */
+  unwritten?: Array<{ path: string; reason: string }>;
 }
 
 /** Generates the change's docs in its working tree and writes its summary, and its index when asked. */
@@ -93,6 +95,9 @@ export async function summarizeChange(task: SummaryTask): Promise<void> {
     ? (JSON.parse(indexText) as LiveDocGraph)
     : { root: configuration.root, baseLayer: configuration.baseLayer, extension: configuration.extension, files: {} };
   const { summary, texts } = summarizeGraph(graph, task.lens, task.commit, await standingRelatedDocs(graph, tree, configuration), authored);
+  if (task.unwritten && task.unwritten.length > 0) {
+    summary.unwritten = task.unwritten.map((entry): [string, string] => [entry.path, entry.reason]);
+  }
   await putTexts(task.textStore, texts);
   await writeInPlace(task.summaryPath, gzipSync(JSON.stringify(summary)));
   if (task.indexPath) {

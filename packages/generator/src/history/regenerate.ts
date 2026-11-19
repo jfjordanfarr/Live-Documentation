@@ -136,12 +136,17 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
             commit: change.id,
             summaryPath: summaryPath(context.cacheFolder, change.id),
             textStore: path.join(context.cacheFolder, TEXT_STORE_DIRECTORY),
-            indexPath: context.keepIndex ? indexPath(context.cacheFolder, change.id) : undefined
+            indexPath: context.keepIndex ? indexPath(context.cacheFolder, change.id) : undefined,
+            ...(tree.unwritten.length > 0 ? { unwritten: tree.unwritten } : {})
           },
           context.scratch,
           { ...withoutGitVariables(process.env), ...tree.environment }
         );
         peakMemory = Math.max(peakMemory, report?.peakMemory ?? 0);
+        if (tree.unwritten.length > 0) {
+          const listed = tree.unwritten.slice(0, 3).map((entry) => `${entry.path} (${entry.reason})`).join("; ");
+          context.progress(`${change.id.slice(0, 8)}: ${tree.unwritten.length} files of its tree were not written, and its summary says they were not read: ${listed}${tree.unwritten.length > 3 ? "; …" : ""}`);
+        }
         for (const message of new Set(warned)) {
           warnings.set(message, (warnings.get(message) ?? 0) + 1);
         }

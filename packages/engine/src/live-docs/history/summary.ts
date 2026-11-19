@@ -136,6 +136,11 @@ export interface CommitSummary {
   files: SummaryFile[];
   /** Every link from a file's authored words to a document that stood at the change, sorted: the file's path and the document's. */
   docLinks: Array<[from: string, doc: string]>;
+  /**
+   * The change's files its working tree did not hold, so that the generator never read them, each with the reason
+   * (`WorkingTree.unwritten`); absent when the tree held every file.
+   */
+  unwritten?: Array<[path: string, reason: string]>;
 }
 
 /**

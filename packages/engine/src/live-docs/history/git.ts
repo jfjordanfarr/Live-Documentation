@@ -26,6 +26,15 @@
  * directory, registering nothing with the repository, so that a process in
  * the tree can ask git what it tracks ({@link WorkingTree.environment}).
  *
+ * Since a second review of 2026-11-19 nothing is written outside the tree's
+ * folder whatever the commit holds: an entry beneath a link or a file the tree
+ * made, one clashing by case on a disk that does not tell cases apart (probed,
+ * not assumed by platform), or one whose name the platform cannot hold is
+ * left out and named, so that the summary says it was not read; blobs are
+ * streamed to disk rather than held whole; every failure of the reader ends
+ * in one rejection; and every call reads the commit as stored, the
+ * repository's replacement objects set aside.
+ *
  * @module
  */
 
@@ -93,8 +102,9 @@ class GitRepository implements VersionControl {
    * the change's tree read into an index beside it, `<directory>.index`, with nothing registered with the repository.
    * The generator asks git what a tree tracks and ignores (`gitIgnored`), so a process in the tree is given the
    * repository, the tree and its index by {@link WorkingTree.environment}; without them a tracked file a `.gitignore`
-   * names was left out. The same environment keeps the person's own configuration of git from that process, though
-   * git's answer could not depend on it: every file the tree holds is tracked, and a tracked file is never ignored.
+   * names was left out. The same environment keeps the person's own configuration of git, and the repository's
+   * replacement objects, from that process, though git's answer could not depend on them: every file the tree holds
+   * is tracked, and a tracked file is never ignored.
    */
   async workingTree(change: string, directory: string): Promise<WorkingTree> {
     const index = `${directory}.index`;
@@ -102,16 +112,24 @@ class GitRepository implements VersionControl {
     let removal: Promise<void> | undefined;
     // A signal and the worker's finally may both release the same tree. They share one operation and its result.
     const remove = (): Promise<void> => (removal ??= Promise.all([fs.rm(directory, { recursive: true, force: true }), fs.rm(index, { force: true })]).then(() => undefined));
+    let unwritten: UnwrittenEntry[];
     try {
       await this.git(["read-tree", change], { GIT_INDEX_FILE: index });
-      await writeStoredTree(this.root, change, directory);
+      unwritten = await writeStoredTree(this.root, change, directory);
     } catch (error) {
       await remove();
       throw error;
     }
     this.gitDirectory ??= this.git(["rev-parse", "--path-format=absolute", "--git-common-dir"]).then((output) => output.trim());
-    const environment = { GIT_DIR: await this.gitDirectory, GIT_WORK_TREE: directory, GIT_INDEX_FILE: index, GIT_CONFIG_NOSYSTEM: "1", GIT_CONFIG_GLOBAL: os.devNull };
-    return { root: directory, environment, remove };
+    const environment = {
+      GIT_DIR: await this.gitDirectory,
+      GIT_WORK_TREE: directory,
+      GIT_INDEX_FILE: index,
+      GIT_CONFIG_NOSYSTEM: "1",
+      GIT_CONFIG_GLOBAL: os.devNull,
+      GIT_NO_REPLACE_OBJECTS: "1"
+    };
+    return { root: directory, environment, unwritten, remove };
   }
 
   private gitDirectory: Promise<string> | undefined;
@@ -123,9 +141,15 @@ class GitRepository implements VersionControl {
   }
 
   private async git(args: readonly string[], env?: Record<string, string>): Promise<string> {
-    return (await execFileAsync("git", ["-C", this.root, ...args], { cwd: this.root, maxBuffer: LARGEST_OUTPUT, env })).stdout;
+    return (await execFileAsync("git", ["-C", this.root, ...args], { cwd: this.root, maxBuffer: LARGEST_OUTPUT, env: { ...env, ...READ_AS_STORED } })).stdout;
   }
 }
+
+/**
+ * What every call that reads a commit sets, so that the repository's replacement objects (`refs/replace`), which are
+ * local state no other clone shares, do not stand in for the commit's own trees and blobs.
+ */
+const READ_AS_STORED = { GIT_NO_REPLACE_OBJECTS: "1" };
 
 /** The modes of a tree's entries: a file, an executable file, a symbolic link, and another repository's commit. */
 const FILE_MODE = "100644";
@@ -133,15 +157,66 @@ const EXECUTABLE_MODE = "100755";
 const LINK_MODE = "120000";
 const SUBMODULE_MODE = "160000";
 
+/** An entry of a change's tree that was not written into its working tree, and why. */
+export interface UnwrittenEntry {
+  path: string;
+  reason: string;
+}
+
+/** What decides which names a working tree's disk can hold apart; read from the disk when not given. */
+export interface TreeDisk {
+  /** Whether the disk takes two names that differ only in case for the same file. */
+  caseInsensitive: boolean;
+  /** The platform, whose path rules decide which names may be written at all. */
+  platform: NodeJS.Platform;
+}
+
+// Windows's rules for a name, as Git for Windows applies them (`core.protectNTFS`): no separator, drive mark or
+// character the file system forbids, no trailing dot or space, and no device name.
+// eslint-disable-next-line no-control-regex -- the control characters are what Windows forbids in a name
+const WINDOWS_FORBIDDEN = /[\\:<>"|?*\u0000-\u001f]|[. ]$|^(?:con|prn|aux|nul|com[0-9]|lpt[0-9])(?:\..*)?$/iu;
+
+/**
+ * Whether a folder's disk takes two names that differ only in case for the same file: a probe written under one case
+ * and looked for under the other.
+ */
+export async function caseInsensitiveDisk(folder: string): Promise<boolean> {
+  const name = `.Case-Probe-${process.pid}-${Math.random().toString(36).slice(2)}`;
+  const probe = path.join(folder, name);
+  await fs.writeFile(probe, "");
+  try {
+    await fs.lstat(path.join(folder, name.toLowerCase()));
+    return true;
+  } catch {
+    return false;
+  } finally {
+    await fs.rm(probe, { force: true });
+  }
+}
+
 /**
  * Writes every entry of a change's tree under `directory` as the repository stores it: a file's blob bytes, executable
- * where its mode says so; a symbolic link to the target its blob holds; an empty folder where another repository's
- * commit stands, as a checkout leaves a submodule it has not initialized.
+ * where its mode says so, streamed to disk as git gives them; a symbolic link to the target its blob holds; an empty
+ * folder where another repository's commit stands, as a checkout leaves a submodule it has not initialized.
  *
- * @throws When an entry's path would leave the directory or name a `.git`, which git itself refuses to check out.
+ * Nothing is ever written outside `directory`. An entry is not written, and is returned with the reason, when its path
+ * would leave the directory or name a `.git`; when the platform cannot hold its name; when it lies beneath a link or a
+ * file of the tree, as a tree holding both `a` as a link and `a/x` does, or `A` as a link and `a/x` on a disk that
+ * takes `A` and `a` for one name; or when it names a path already written, under another case on such a disk. Of two
+ * entries that clash, the first in the tree's order is written.
+ *
+ * @returns The entries not written, in the tree's order.
  */
-export async function writeStoredTree(root: string, change: string, directory: string): Promise<void> {
-  const listing = (await execFileAsync("git", ["-C", root, "ls-tree", "-r", "-z", "--full-tree", change], { cwd: root, maxBuffer: LARGEST_OUTPUT })).stdout;
+export async function writeStoredTree(root: string, change: string, directory: string, given?: Partial<TreeDisk>): Promise<UnwrittenEntry[]> {
+  const disk: TreeDisk = {
+    caseInsensitive: given?.caseInsensitive ?? (await caseInsensitiveDisk(path.dirname(directory))),
+    platform: given?.platform ?? process.platform
+  };
+  const listing = (await execFileAsync("git", ["-C", root, "ls-tree", "-r", "-z", "--full-tree", change], { cwd: root, maxBuffer: LARGEST_OUTPUT, env: READ_AS_STORED })).stdout;
+  const fold = (relative: string): string => (disk.caseInsensitive ? relative.toLowerCase() : relative);
+  // What each path written so far is, by its folded path: a file or a link, which nothing may lie beneath, or a folder.
+  const written = new Map<string, { kind: "file" | "link" | "folder"; path: string }>();
+  const unwritten: UnwrittenEntry[] = [];
   const blobs: Array<{ mode: string; id: string; file: string }> = [];
   for (const entry of listing.split("\0")) {
     if (entry === "") continue;
@@ -150,77 +225,144 @@ export async function writeStoredTree(root: string, change: string, directory: s
     const [mode, , id] = entry.slice(0, tab).split(" ");
     const relative = entry.slice(tab + 1);
     const parts = relative.split("/");
+    const refuse = (reason: string): void => {
+      unwritten.push({ path: relative, reason });
+    };
     if (parts.some((part) => part === "" || part === "." || part === ".." || part.toLowerCase() === ".git")) {
-      throw new Error(`the tree of ${change} holds ${JSON.stringify(relative)}, a path git refuses to check out`);
+      refuse("its path would leave the tree or name a .git, which git refuses to check out");
+      continue;
+    }
+    if (disk.platform === "win32" && parts.some((part) => WINDOWS_FORBIDDEN.test(part))) {
+      refuse("its name cannot be written on Windows, where git refuses to check it out");
+      continue;
+    }
+    if (mode !== FILE_MODE && mode !== EXECUTABLE_MODE && mode !== LINK_MODE && mode !== SUBMODULE_MODE) {
+      refuse(`its mode ${mode} is one no checkout writes`);
+      continue;
+    }
+    const beneath = parts.slice(0, -1).map((_, index) => written.get(fold(parts.slice(0, index + 1).join("/")))).find((parent) => parent !== undefined && parent.kind !== "folder");
+    if (beneath !== undefined) {
+      refuse(`it lies beneath the ${beneath.kind === "link" ? "symbolic link" : "file"} ${beneath.path}, which nothing is written through`);
+      continue;
+    }
+    const same = written.get(fold(relative));
+    if (same !== undefined) {
+      refuse(same.path === relative ? "the tree names it twice" : `it names the same file as ${same.path} on this disk, which does not tell their cases apart`);
+      continue;
+    }
+    for (let index = 1; index < parts.length; index += 1) {
+      const folder = parts.slice(0, index).join("/");
+      if (!written.has(fold(folder))) written.set(fold(folder), { kind: "folder", path: folder });
     }
     const file = path.join(directory, ...parts);
     if (mode === SUBMODULE_MODE) {
+      written.set(fold(relative), { kind: "folder", path: relative });
       await fs.mkdir(file, { recursive: true });
-    } else if (mode === FILE_MODE || mode === EXECUTABLE_MODE || mode === LINK_MODE) {
-      blobs.push({ mode, id, file });
     } else {
-      throw new Error(`the tree of ${change} holds ${JSON.stringify(relative)} with mode ${mode}, which no checkout writes`);
+      written.set(fold(relative), { kind: mode === LINK_MODE ? "link" : "file", path: relative });
+      blobs.push({ mode, id, file });
     }
   }
-  if (blobs.length === 0) return;
-  const reader = spawn("git", ["-C", root, "cat-file", "--batch"], { cwd: root, stdio: ["pipe", "pipe", "pipe"] });
+  if (blobs.length > 0) {
+    await writeBlobs(root, change, blobs);
+  }
+  return unwritten;
+}
+
+/**
+ * Asks `git cat-file --batch` for each blob in turn and writes each as it comes, a file's bytes streamed to disk chunk
+ * by chunk so that no blob is held whole. Every failure, the reader's, its pipes' or a write's, ends the reader and
+ * rejects once, with the first failure.
+ */
+async function writeBlobs(root: string, change: string, blobs: ReadonlyArray<{ mode: string; id: string; file: string }>): Promise<void> {
+  const reader = spawn("git", ["-C", root, "cat-file", "--batch"], { cwd: root, stdio: ["pipe", "pipe", "pipe"], env: { ...process.env, ...READ_AS_STORED } });
   let errors = "";
+  let pipeFailure: Error | undefined;
   reader.stderr.setEncoding("utf8");
   reader.stderr.on("data", (text: string) => {
     errors += text;
   });
-  const exited = new Promise<void>((resolve, reject) => {
-    reader.on("error", reject);
-    reader.on("close", (code) => (code === 0 ? resolve() : reject(new Error(`git cat-file failed for ${change} (exit ${code}): ${errors.trim()}`))));
+  // A request still being written when the reader ends fails with EPIPE; it is the reader's end that is reported.
+  reader.stdin.on("error", (error: Error) => {
+    pipeFailure ??= error;
   });
+  const exited = new Promise<number | null>((resolve, reject) => {
+    reader.on("error", reject);
+    reader.on("close", resolve);
+  });
+  // Settled at once, so that a reader ending while a write is awaited is never an unhandled rejection.
+  const ended = exited.then(
+    (code) => ({ code, error: undefined as Error | undefined }),
+    (error: Error) => ({ code: null, error })
+  );
   // Node writes the request as the pipe drains while the answer is read below, so neither side waits on the other.
   reader.stdin.end(blobs.map((blob) => `${blob.id}\n`).join(""));
   // Each object comes back as `<id> <type> <size>\n`, its bytes and a line break, in the order asked.
-  // The chunks not yet read, joined only once they hold what is awaited, so that a large blob is not copied chunk by chunk.
-  let chunks: Buffer[] = [];
-  let received = 0;
-  let awaited = 1;
   let next = 0;
+  let header = Buffer.alloc(0);
+  // The object being written: its blob, the bytes still to come, and where they go.
+  let body: { blob: (typeof blobs)[number]; remaining: number; handle?: fs.FileHandle; link?: Buffer[] } | undefined;
+  // The line break that follows an object's bytes, still to be passed over.
+  let separator = false;
+  const finish = async (): Promise<void> => {
+    if (body === undefined) return;
+    const { blob, handle, link } = body;
+    body = undefined;
+    if (handle !== undefined) await handle.close();
+    if (link !== undefined) await fs.symlink(Buffer.concat(link).toString("utf8"), blob.file);
+    next += 1;
+    separator = true;
+  };
   try {
     for await (const chunk of reader.stdout as AsyncIterable<Buffer>) {
-      chunks.push(chunk);
-      received += chunk.length;
-      if (received < awaited) continue;
-      let pending = Buffer.concat(chunks);
-      awaited = 1;
-      for (;;) {
-        const headerEnd = pending.indexOf(0x0a);
-        if (headerEnd < 0) break;
-        const header = pending.subarray(0, headerEnd).toString("utf8");
-        const [id, type, size] = header.split(" ");
-        const blob = blobs.at(next);
-        if (blob === undefined || id !== blob.id || type !== "blob") {
-          throw new Error(`git cat-file answered ${JSON.stringify(header)} where the blob ${blob?.id ?? "(none)"} of ${change} was asked for`);
+      let at = 0;
+      while (at < chunk.length) {
+        if (separator) {
+          at += 1;
+          separator = false;
+          continue;
         }
-        const end = headerEnd + 1 + Number(size);
-        if (pending.length < end + 1) {
-          awaited = end + 1;
+        if (body !== undefined) {
+          const piece = chunk.subarray(at, at + body.remaining);
+          if (body.handle !== undefined) await body.handle.write(piece);
+          else body.link!.push(Buffer.from(piece));
+          body.remaining -= piece.length;
+          at += piece.length;
+          if (body.remaining === 0) await finish();
+          continue;
+        }
+        const lineEnd = chunk.indexOf(0x0a, at);
+        if (lineEnd < 0) {
+          header = Buffer.concat([header, chunk.subarray(at)]);
           break;
         }
-        const bytes = pending.subarray(headerEnd + 1, end);
-        await fs.mkdir(path.dirname(blob.file), { recursive: true });
-        if (blob.mode === LINK_MODE) {
-          await fs.symlink(bytes.toString("utf8"), blob.file);
-        } else {
-          await fs.writeFile(blob.file, bytes, { mode: blob.mode === EXECUTABLE_MODE ? 0o777 : 0o666 });
+        const line = Buffer.concat([header, chunk.subarray(at, lineEnd)]).toString("utf8");
+        header = Buffer.alloc(0);
+        at = lineEnd + 1;
+        const [id, type, size] = line.split(" ");
+        const blob = blobs.at(next);
+        if (blob === undefined || id !== blob.id || type !== "blob") {
+          throw new Error(`git cat-file answered ${JSON.stringify(line)} where the blob ${blob?.id ?? "(none)"} of ${change} was asked for`);
         }
-        pending = pending.subarray(end + 1);
-        next += 1;
+        await fs.mkdir(path.dirname(blob.file), { recursive: true });
+        body =
+          blob.mode === LINK_MODE
+            ? { blob, remaining: Number(size), link: [] }
+            : { blob, remaining: Number(size), handle: await fs.open(blob.file, "wx", blob.mode === EXECUTABLE_MODE ? 0o777 : 0o666) };
+        if (body.remaining === 0) await finish();
       }
-      chunks = pending.length > 0 ? [pending] : [];
-      received = pending.length;
     }
   } catch (error) {
+    await body?.handle?.close().catch(() => undefined);
     reader.kill();
-    await exited.catch(() => undefined);
+    await ended;
     throw error;
   }
-  await exited;
+  const { code, error } = await ended;
+  if (error !== undefined) throw error;
+  if (code !== 0) {
+    throw new Error(`git cat-file failed for ${change} (exit ${code}): ${errors.trim() || pipeFailure?.message || "no word"}`);
+  }
   if (next !== blobs.length) {
     throw new Error(`git cat-file gave ${next} of the ${blobs.length} blobs of ${change}`);
   }
