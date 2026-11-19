@@ -8,10 +8,12 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The history's third rung: the words store beside the sequence, each distinct text the rows name once, in a part per directory a reader fetches alone, and a file's words at a moment by text id.
 
 ### Notes
-_Pending notes_
+- Written 2026-11-19 for C15 of [the plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md), the third of the owner's three rungs ([Turn 35](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-35) and [Turn 37](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-37) of November 18). [The probe of that night](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/history-cost/README.md) measured the words inline in the sequence at 1.5 to 2.7 MB gzipped and every version stored once at 0.7 MB; a page needs them only when a card shows words at a past moment.
+- A part holds the texts first named by the files of one directory, ordered by path and then by step, so that one file's successive versions lie together and compress against each other; a file renamed into another directory brings its words into that directory's part, and a text named in two directories is in both.
+- The module reads no file: the history command hands it the texts of the lens's text store, the static builder those of the store beside the sequence, so that the page can use it too.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

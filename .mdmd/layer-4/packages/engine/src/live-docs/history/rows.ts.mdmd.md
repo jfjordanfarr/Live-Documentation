@@ -8,10 +8,14 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The history's second rung: each file's symbol rows and lines at a commit, by path, what a 2D card draws (its public symbols in the doc's order with their kinds, flags and type references, its dependency lines, entries, re-exported anchors, citing documents and the ids of its words), what a step does to them, the links between rows, and the checks a sequence is held to.
 
 ### Notes
-_Pending notes_
+- Written 2026-11-19 for the owner's three rungs of history in the 2D map ([Turn 35](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-35) and [Turn 37](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-37) of the November 18 record: "all three rungs ... we should", "Then we should really do it"), C15 of [the plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md). The facts are those the summary keeps (`summary.ts`); a text is named here by the id the sequence gives it, not by its hash.
+- The links are not kept apart: they are the references and dependency lines that resolved (`linksOf`), so each fact is held once, and the shape's wire counts are checked against them (`rowsAgainstShape`).
+- A step's change is named by path and anchor and applied after the shape's change, whose renames, deaths and births it follows: a renamed file keeps its rows and every reference, line and re-export that named it is renamed with it, so a rename costs nothing beyond its shape's line, as [the probe of 2026-11-18](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/history-cost/README.md) found decisive (41.5 KB to 8.5 KB for its largest step). Symbols born carry their place in their file's rows after the step; only when the symbols that stayed change places is the file's order written whole.
+- A symbol is believed renamed only on sound evidence: in one file at one step, one gone and one born of the same kind whose descriptions are one text, not none, each the other's only such match. The probe matched kind and source line, which moves with any edit above a symbol; a description unchanged across a rename is the doc's own word that the symbol is the same.
+- Rows are shared between moments and never changed in place: a step copies a file the first time it changes it, and a rename copies only the files that name a renamed one, so that replaying a long history costs what the step changes and not the whole snapshot each time; rows are compared field by field rather than as JSON. Over a test history of 260 steps that changed all of 34,000 symbols at each, the first version, which copied every row and compared by JSON at every step, took 97 s, and this one 9.6 s.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

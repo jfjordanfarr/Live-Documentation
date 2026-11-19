@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Holds the history command's pure parts: the pool's size from a machine's memory, processors and the measured peak of one process; the size of bytes in words; and the check at the head, which finds nothing where a moment's rows are those of a committed graph and finds a symbol, a link or a word a replay lost.
 
 ### Notes
-_Pending notes_
+- Written 2026-11-19 for C15 of [the plan](../../../../../../.mdmd/layer-3/change-over-time.mdmd.md), from the owner's "How do we mitigate these costs and risks?" ([Turn 37 of November 18](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-37)). The machines named are this one (20 processors, 62 GiB), an 8 GiB laptop and a hosted runner of four processors and 16 GiB.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

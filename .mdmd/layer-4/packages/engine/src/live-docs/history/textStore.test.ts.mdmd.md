@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Holds the text store to its contract: each text once under its hash and read back, a text given under another hash refused, a stored text changed on disk refused, and a name that is not a hash refused before it becomes a path.
 
 ### Notes
-_Pending notes_
+- Written 2026-11-19 with `textStore.ts`, for C15 of [the plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md) ([Turn 37 of November 18](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-37)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

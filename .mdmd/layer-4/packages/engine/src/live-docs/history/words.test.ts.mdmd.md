@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Holds the words store to the rows of a small history: each text in the part of the directory of the file that first names it, a renamed file's words in its new folder's part, and every text every step names read back through the part its file's directory names.
 
 ### Notes
-_Pending notes_
+- Written 2026-11-19 with `words.ts`, for C15 of [the plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md) ([Turn 37 of November 18](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-37)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

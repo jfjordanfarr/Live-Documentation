@@ -8,10 +8,13 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The lens's text store: each distinct text the summaries name, a doc's authored block or a symbol's description, kept once under the SHA-256 of its content, `<lens folder>/texts/<two hex digits>/<hash>`, and read back only when its content is still the text of its name.
 
 ### Notes
-_Pending notes_
+- Written 2026-11-19 for C15 of [the plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md), the owner's "How do we mitigate these costs and risks?" ([Turn 37 of November 18](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-37)): with each summary keeping its texts whole the cache would have grown from 206 MB toward 1.5 to 2 GB, by [the probe's](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/history-cost/README.md) estimate.
+- One file per text, written under a temporary name and renamed into place, so that the processes of a pool write into one store without a lock, two writing one text write the same bytes, and a stopped run leaves no text the store would trust. A text already stored is not written again.
+- A read checks the content against its name, so that a text changed on disk is refused rather than shown as that day's words; a name that is not a hash is refused before any path is made of it. The store lives under the lens's folder, so that removing a superseded lens removes its texts.
+- It runs in the summarizing process, so the lens keys on it (`generatorIdentity.ts`).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
