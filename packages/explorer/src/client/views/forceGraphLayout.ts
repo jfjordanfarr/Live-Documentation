@@ -436,6 +436,13 @@ export interface MotionForce<N extends SpatialNode> extends Force<N> {
   readonly still: boolean;
   /** Changes only when a force call writes different positions, including an accepted part of a tick. */
   readonly revision: number;
+  /**
+   * How many evaluations of the field the motion has taken since it was made, a substep each (a part of one counts as
+   * its share): what a settle is measured in (2026-11-19). Since a frame may take several substeps, drawn frames to rest
+   * depend on how many fit in the machine's frame; substeps belong to the picture alone, as frames did while a frame
+   * took one.
+   */
+  readonly evaluations: number;
 }
 
 /** What the motion force reads at every tick. */
@@ -482,7 +489,7 @@ export function motionForce<N extends SpatialNode>(source: MotionSource<N>): Mot
   let builtFor: readonly string[] = [];
   /** `settled`: whether the Settle Hold has taken hold since the last wake or rebuild. */
   let quiet = 0, still = false, holding = false, settled = false;
-  let revision = 0;
+  let revision = 0, evaluations = 0;
   /** The spheres of a part held to one evaluation, sized as every part was before 2026-11-19; and of a part that may reach further. */
   let part = Infinity, reach = Infinity;
   /** Whether a piece has been applied since the last call: its first call is one evaluation at most, as it always was. */
@@ -531,7 +538,10 @@ export function motionForce<N extends SpatialNode>(source: MotionSource<N>): Mot
     }
     const budget = source.budget?.();
     let tick: MotionTick | null;
-    if (budget === undefined) tick = motion.tick(source.strength(), fixed);
+    if (budget === undefined) {
+      tick = motion.tick(source.strength(), fixed);
+      evaluations += motion.evaluated / motion.field.count;
+    }
     else {
       // While the picture still enters, a piece a frame, and at the first call after a piece or a hand moved spheres, a
       // part is at most one evaluation of the field, as every part was before, so that whatever arrives from outside
@@ -550,6 +560,7 @@ export function motionForce<N extends SpatialNode>(source: MotionSource<N>): Mot
       // Aim the next part at the budget by this part's time: more spheres when it was quick, fewer when it was slow.
       if (entering) part = Math.max(PART_FLOOR, Math.min(count, Math.round(part * budget / took)));
       reach = Math.max(PART_FLOOR, Math.round(motion.evaluated * budget / took));
+      evaluations += motion.evaluated / count;
     }
     let changed = false;
     nodes.forEach((node, i) => {
@@ -589,6 +600,7 @@ export function motionForce<N extends SpatialNode>(source: MotionSource<N>): Mot
   });
   Object.defineProperty(force, "still", { get: () => still });
   Object.defineProperty(force, "revision", { get: () => revision });
+  Object.defineProperty(force, "evaluations", { get: () => evaluations });
   return force;
 }
 

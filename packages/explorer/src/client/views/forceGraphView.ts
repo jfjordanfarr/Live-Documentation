@@ -753,6 +753,10 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     if (simulationRunning && motion) {
       simulation.tick();
       if (motion.revision !== motionRevision) { motionRevision = motion.revision; pictureChanged(); }
+      // How many substeps the motion has taken, a settle's own measure, which no longer counts in frames (2026-11-19).
+      const substeps = String(Math.floor(motion.evaluations));
+      const container = requireElement("graph-svg");
+      if (container.dataset.motionSubsteps !== substeps) container.dataset.motionSubsteps = substeps;
     }
     ready = true;
     requireElement("graph-svg").setAttribute("aria-busy", String(simulationRunning || packing.size > 0));

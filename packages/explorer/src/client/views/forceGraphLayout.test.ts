@@ -429,14 +429,14 @@ describe("the easing: one motion through a conservative field, until the spheres
     const crowd = (): SpatialNode[] => Array.from({ length: 300 }, (_, index) => ({
       ...node(`crowd-${index}`, index % 4), x: (index % 10) * 3, y: Math.floor(index / 10) % 10 * 3, z: Math.floor(index / 100) * 3
     }));
-    const run = (budget?: number): { calls: number; places: number[][]; still: boolean } => {
+    const run = (budget?: number): { calls: number; places: number[][]; still: boolean; evaluations: number } => {
       const nodes = crowd(), simulation = forceSimulation(nodes, 3).stop();
       const motion = motionForce<SpatialNode>({ tuning: () => tuning, layout: () => "connections", links: () => [], strength: () => 1,
         ...(budget === undefined ? {} : { budget: () => budget }) });
       simulation.force("motion", motion);
       let calls = 0;
       while (!motion.still && calls < 50_000) { simulation.tick(); calls++; }
-      return { calls, places: placesOf(nodes), still: motion.still };
+      return { calls, places: placesOf(nodes), still: motion.still, evaluations: motion.evaluations };
     };
     const whole = run(), generous = run(1e9);
     expect(whole.still).toBe(true);
@@ -444,6 +444,9 @@ describe("the easing: one motion through a conservative field, until the spheres
     // first call's single evaluation measures the rate. Held to one evaluation a call, it took a call a substep.
     expect(generous.places).toEqual(whole.places);
     expect(generous.calls).toBeLessThanOrEqual(whole.calls + 1);
+    // The motion says how many substeps it took, the same however they were divided between calls: a settle's measure.
+    expect(generous.evaluations).toBeCloseTo(whole.evaluations, 6);
+    expect(whole.evaluations).toBeGreaterThan(whole.calls);
   });
 
   it("holds a paced call to one evaluation of the field while the picture still enters, and lets it reach further once all is in (2026-11-19)", () => {
