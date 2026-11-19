@@ -539,6 +539,7 @@ function composeGenerated(params: {
 
   const reExports = composeReExports({
     reExports: params.analysis.reExportedSymbols ?? [],
+    headings,
     docDir,
     liveDocsRootAbsolute: params.liveDocsRootAbsolute,
     docExtension: params.docExtension,

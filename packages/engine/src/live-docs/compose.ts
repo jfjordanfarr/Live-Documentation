@@ -867,14 +867,17 @@ export function composeEntries(args: {
 // ============================================================================
 
 /**
- * A file's re-exports in the order its doc writes them, by name, each with its anchor: its name's anchor, and where two
- * share one, as `Foo` and `foo` do, the later told apart as two symbols' anchors are (`symbol-foo-1`). The doc's
- * headings ({@link composeReExports}) and the workspace index (`discovery.ts`) both take the anchors from here, so that
- * a link to a re-export lands on the heading it names.
+ * A file's re-exports in the order its doc writes them, by name, each with its anchor: its name's anchor, and where it
+ * is already a public symbol's or another re-export's, as `Foo` and `foo` share one, told apart as two symbols' anchors
+ * are (`symbol-foo-1`). One doc's anchors are one namespace, its public symbols' first. The doc's headings
+ * ({@link composeReExports}) and the workspace index (`discovery.ts`) both take the anchors from here, so that a link to
+ * a re-export lands on the heading it names.
+ *
+ * @param headings - The file's public symbol headings, whose anchors stand as they are.
  */
-export function anchorReExports<T extends { name: string }>(reExports: readonly T[]): Array<{ entry: T; slug: string }> {
+export function anchorReExports<T extends { name: string }>(reExports: readonly T[], headings: readonly { slug: string }[]): Array<{ entry: T; slug: string }> {
   const anchored = [...reExports].sort((a, b) => compareText(a.name, b.name)).map((entry) => ({ entry, slug: createSymbolSlug(entry.name) }));
-  ensureUniqueSymbolSlugs(anchored);
+  ensureUniqueSymbolSlugs([...headings.map(({ slug: taken }) => ({ slug: taken })), ...anchored]);
   return anchored;
 }
 
@@ -885,12 +888,14 @@ export function anchorReExports<T extends { name: string }>(reExports: readonly 
  */
 export function composeReExports(args: {
   reExports: ReExportedSymbolInfo[];
+  /** The file's public symbol headings, whose anchors a re-export's is held apart from. */
+  headings: readonly { slug: string }[];
   docDir: string;
   liveDocsRootAbsolute: string;
   docExtension: string;
   symbolIndex?: WorkspaceSymbolIndex;
 }): ReExport[] {
-  return anchorReExports(args.reExports).map(({ entry, slug: slugValue }) => {
+  return anchorReExports(args.reExports, args.headings).map(({ entry, slug: slugValue }) => {
     const flags: string[] = [];
     if (entry.isTypeOnly) {
       flags.push("type-only");

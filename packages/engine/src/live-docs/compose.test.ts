@@ -302,7 +302,7 @@ describe("composeReExports", () => {
       { liveDocPath: `.live-documentation/source/${provider}.md`, sourcePath: provider, anchor: "symbol-widget-interface", kind: "interface" },
       { liveDocPath: `.live-documentation/source/${provider}.md`, sourcePath: provider, anchor: "symbol-widget-const", kind: "const" }
     ]]]);
-    const args = { reExports, docDir, liveDocsRootAbsolute, docExtension: ".md" };
+    const args = { reExports, headings: [], docDir, liveDocsRootAbsolute, docExtension: ".md" };
     expect(composeReExports({ ...args, symbolIndex: index })).toEqual([{ name: "Widget", slug: "symbol-widget", flags: [], from: { label: "types", link: "../types.ts.md#symbol-widget-interface" } }]);
     expect(composeReExports({ ...args, symbolIndex: new Map() })[0].from?.link).toBe("../types.ts.md");
     expect(composeReExports(args)[0].from?.link).toBe("../types.ts.md#symbol-widget");
@@ -495,7 +495,8 @@ describe("the anchor of every symbol's heading", () => {
       await fs.mkdir(path.join(root, "src"));
       await fs.writeFile(path.join(root, "src", "a.ts"), "export const Foo = 1;\n");
       await fs.writeFile(path.join(root, "src", "b.ts"), "export const foo = 2;\n");
-      await fs.writeFile(path.join(root, "src", "index.ts"), "export * from \"./a\";\nexport * from \"./b\";\n");
+      // The barrel also declares `FOO`, whose anchor its re-exports must keep apart from, too: one doc, one namespace.
+      await fs.writeFile(path.join(root, "src", "index.ts"), "export * from \"./a\";\nexport * from \"./b\";\nexport const FOO = 3;\n");
       const barrel = path.join(root, "src", "index.ts");
       const { symbols: index } = await buildWorkspaceIndexes({
         targetFiles: ["a.ts", "b.ts", "index.ts"].map((name) => path.join(root, "src", name)),
@@ -506,14 +507,16 @@ describe("the anchor of every symbol's heading", () => {
       const analysis = await analyzeSourceFile(barrel, root, undefined, index);
       const reExports = composeReExports({
         reExports: analysis.reExportedSymbols ?? [],
+        headings: computePublicSymbolHeadingInfo(analysis.symbols),
         docDir: path.join(root, "docs", "layer-4", "src"),
         liveDocsRootAbsolute: path.join(root, "docs", "layer-4"),
         docExtension: ".md",
         symbolIndex: index
       });
       // `Foo` and `foo` once shared `symbol-foo`, so a link to `foo` through the barrel landed on `Foo`.
-      expect(reExports.map((entry) => [entry.name, entry.slug])).toEqual([["Foo", "symbol-foo"], ["foo", "symbol-foo-1"]]);
-      expect(["Foo", "foo"].map((name) => index.get(name)?.find((location) => location.sourcePath === "src/index.ts")?.anchor)).toEqual(["symbol-foo", "symbol-foo-1"]);
+      expect(computePublicSymbolHeadingInfo(analysis.symbols).map((heading) => heading.slug)).toEqual(["symbol-foo"]);
+      expect(reExports.map((entry) => [entry.name, entry.slug])).toEqual([["Foo", "symbol-foo-1"], ["foo", "symbol-foo-2"]]);
+      expect(["FOO", "Foo", "foo"].map((name) => index.get(name)?.find((location) => location.sourcePath === "src/index.ts")?.anchor)).toEqual(["symbol-foo", "symbol-foo-1", "symbol-foo-2"]);
     } finally {
       await fs.rm(root, { recursive: true, force: true });
     }

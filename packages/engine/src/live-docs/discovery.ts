@@ -457,7 +457,7 @@ export async function buildWorkspaceIndexes(options: {
       }
     }
     // Anchored as the doc's `Re-Exported Symbol Anchors` section anchors them, two that one anchor would name told apart.
-    for (const { entry, slug } of anchorReExports(reExports)) {
+    for (const { entry, slug } of anchorReExports(reExports, headings)) {
       register(entry.name, { liveDocPath, sourcePath, anchor: slug, kind: entry.kind, isReExport: true,
         ...(entry.sourceModulePath ? { reExport: { sourcePath: entry.sourceModulePath, exportedName: entry.name } } : {}) });
     }

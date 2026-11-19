@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/compose.ts
-- Generated At: 2026-11-19T19:54:56.893Z
+- Generated At: 2026-11-19T20:33:44.020Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Turns a source file's analysis into the document model: headings with unique anc
 - `composeEntries` (2026-10-15, [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#entry-points-are-written-on-the-entry-and-what-they-reach-is-one-walk-recorded-2026-10-15)) writes the `Entry` lines in a fixed order so that a doc is written the same way every run: `program` from the file's analysis, the heading at the declaration's line so that a namesake overload is not linked (found on Java's rosetta `Main.java`); the commands by name and the module from the entry index, each linking the manifest's doc; one `opening` per route, address, procedure, table, view or function served; `tooling` for a file a tool reads, by its name or place (`isToolingFile`), a manifest included by its name since 2026-10-16, when a Cargo workspace's root manifest, which publishes no package, showed the earlier rule by the manifest symbol's kind incomplete; and, from the evening of that day, by what it publishes as well, a package or a project, so that a manifest known only by its content, a PowerShell module's `.psd1`, is one while a data `.psd1` is not ([the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#powershell-read-by-a-grammar-of-our-own-measured-against-powershells-own-parser-recorded-2026-10-16)); `declared` for a configuration pattern matched by the archetype overrides' rule.
 - Since 2026-11-19 ([the second review](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/history-data-review/second-review.md)) a disambiguated heading's anchor is its bare name's anchor and the suffix's slug, the same anchor as before for any name the slug keeps, so that a name of punctuation only keeps its code points: adding `$` no longer changes the anchor of `$$`. An empty name, as a JSON key may be, was shown as `""` until later that day, which a key spelled `""` also was.
 - Since then ([the third review](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/history-data-review/third-review.md), its fourth finding) the composer hands the grammar every name as it is and the grammar writes it so that it reads back (`document.ts`): an empty name stays empty, and a label keeps its backticks, which had been turned into apostrophes, so that the specifiers `` a`b `` and `a'b` read back as one and a citing document's label was not its path. A name that itself ends in a parenthesised word is given its kind as a reserved name is, `build (prod) (key)`, so that `symbolName` reads the heading back as `build (prod)`; until then the keys `x (key)` and `x` both read back as `x`. Its anchor is its bare name's, as before.
-- `anchorReExports` (2026-11-19) anchors a file's re-exports in name order, two that one anchor would name told apart by the rule two symbols' anchors are (`ensureUniqueSymbolSlugs`): a barrel re-exporting `Foo` and `foo` had written `symbol-foo` twice, and a link to `foo` through it landed on `Foo`. `composeReExports` and the workspace index in `discovery.ts` both take the anchors from it, so a link lands on the heading it names. No doc of this repository had such a pair.
+- `anchorReExports` (2026-11-19) anchors a file's re-exports in name order, two that one anchor would name told apart by the rule two symbols' anchors are (`ensureUniqueSymbolSlugs`): a barrel re-exporting `Foo` and `foo` had written `symbol-foo` twice, and a link to `foo` through it landed on `Foo`. `composeReExports` and the workspace index in `discovery.ts` both take the anchors from it, so a link lands on the heading it names. No doc of this repository had such a pair. Since a later commit of that day one doc's anchors are one namespace: a re-export is held apart from the file's public symbols too (a barrel declaring `FOO` and re-exporting `Foo` and `foo` writes `symbol-foo`, `symbol-foo-1`, `symbol-foo-2`), the generator's `composeGenerated` and discovery both handing `anchorReExports` the file's headings.
 - Every link built from a path goes through `linkTo`, which writes the relative path as a link's path (`encodeLinkPath`), so that a path holding a space, a parenthesis or a `#` opens in a markdown viewer and resolves in the graph. A section's body is lines: an item spanning several, a parameter description of many lines, is split into them, at a line or paragraph separator too, blank lines at its end go, and a lone surrogate or a control character other than a tab in prose is U+FFFD, so that no line of a doc holds what would make git take it for a binary file. `normalizeDocText` trims each line with `trimEnd`, which strips what `\s+$` did in linear time; the pattern took seconds on a long run of spaces followed by other text.
 
 ## Generated
@@ -134,17 +134,21 @@ no line here.
 
 #### `anchorReExports` {#symbol-anchorreexports}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L875)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L878)
 
 ##### `anchorReExports` — Summary
-A file's re-exports in the order its doc writes them, by name, each with its anchor: its name's anchor, and where two
-share one, as `Foo` and `foo` do, the later told apart as two symbols' anchors are (`symbol-foo-1`). The doc's
-headings ({@link composeReExports}) and the workspace index (`discovery.ts`) both take the anchors from here, so that
-a link to a re-export lands on the heading it names.
+A file's re-exports in the order its doc writes them, by name, each with its anchor: its name's anchor, and where it
+is already a public symbol's or another re-export's, as `Foo` and `foo` share one, told apart as two symbols' anchors
+are (`symbol-foo-1`). One doc's anchors are one namespace, its public symbols' first. The doc's headings
+({@link composeReExports}) and the workspace index (`discovery.ts`) both take the anchors from here, so that a link to
+a re-export lands on the heading it names.
+
+##### `anchorReExports` — Parameters
+- `headings`: The file's public symbol headings, whose anchors stand as they are.
 
 #### `composeReExports` {#symbol-composereexports}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L886)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L889)
 - Returns: [`ReExport`](./document.ts.mdmd.md#symbol-reexport)[]
 
 ##### `composeReExports` — Summary

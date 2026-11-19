@@ -126,7 +126,7 @@ function compose(handed: Handed): LiveDoc {
   const analysis = { symbols: handed.symbols, dependencies: handed.dependencies, reExportedSymbols: handed.reExports, ...(handed.program !== undefined ? { program: { symbol: handed.program } } : {}) };
   const headings = computePublicSymbolHeadingInfo(handed.symbols);
   const citedBy = composeCitedBy({ documents: handed.citedBy, docDir, workspaceRoot: WORKSPACE });
-  const reExports = composeReExports({ reExports: handed.reExports, docDir, liveDocsRootAbsolute: DOCS_ROOT, docExtension: EXTENSION });
+  const reExports = composeReExports({ reExports: handed.reExports, headings, docDir, liveDocsRootAbsolute: DOCS_ROOT, docExtension: EXTENSION });
   return {
     codePath: handed.codePath,
     layer: 4,
@@ -290,7 +290,8 @@ function checkEverywhere(name: string): void {
   if (external?.label !== name || external.symbols?.[external.symbols.indexOf(name)] !== name) fail("the external dependency reads back otherwise");
   if (read.reExports?.[0]?.name !== name && read.reExports?.[1]?.name !== name) fail("the re-export reads back otherwise");
   // The name and the name with `!` give one anchor by their names; the doc tells them apart.
-  if (read.reExports?.[0]?.slug === read.reExports?.[1]?.slug) fail(`the two re-exports share the anchor ${JSON.stringify(read.reExports?.[0]?.slug)}`);
+  const anchors = [...read.symbols.map((symbol) => symbol.slug), ...(read.reExports ?? []).map((entry) => entry.slug)];
+  if (new Set(anchors).size !== anchors.length) fail(`two of the symbols and re-exports share an anchor: ${JSON.stringify(anchors)}`);
   if (read.citedBy?.[0]?.label !== `${folder}/README.md`) fail("the citing document reads back otherwise");
   const parameters = read.symbols[0].references.find((reference) => reference.role === "Parameters");
   if (parameters?.role !== "Parameters" || parameters.parameters[0].name !== name || parameters.parameters[0].types[0].name !== name) fail("the parameter reads back otherwise");
@@ -317,12 +318,12 @@ function checkTogether(names: readonly string[]): void {
   if (JSON.stringify([...reExported].sort()) !== JSON.stringify(sorted)) {
     throw new Error(`the re-exports ${label} read back as ${reExported.map((name) => JSON.stringify(name)).join(", ")}`);
   }
-  // Anchors apart among the public symbols, and among the re-exports, as a barrel re-exporting `Foo` and `foo` needs.
-  for (const [what, anchors] of [["symbols", read.symbols.map((symbol) => symbol.slug ?? "")], ["re-exports", (read.reExports ?? []).map((entry) => entry.slug ?? "")]] as const) {
-    const repeated = anchors.find((anchor, index) => anchors.indexOf(anchor) !== index);
-    if (repeated !== undefined) {
-      throw new Error(`two of the ${what} ${label} share the anchor ${JSON.stringify(repeated)}`);
-    }
+  // One doc's anchors are one namespace: no two apart among its public symbols and its re-exports together, as a
+  // barrel re-exporting `Foo` and `foo`, or declaring `foo` and re-exporting `Foo`, needs.
+  const anchors = [...read.symbols.map((symbol) => symbol.slug ?? ""), ...(read.reExports ?? []).map((entry) => entry.slug ?? "")];
+  const repeated = anchors.find((anchor, index) => anchors.indexOf(anchor) !== index);
+  if (repeated !== undefined) {
+    throw new Error(`two of the symbols and re-exports ${label} share the anchor ${JSON.stringify(repeated)}`);
   }
 }
 
