@@ -57,7 +57,7 @@ export interface WorkingTree {
   environment: Record<string, string>;
   /**
    * The change's entries the tree does not hold, each with the reason: a symbolic link that does not lead to a file
-   * of the tree, or lies at or along the docs root; a path that would leave the tree; a name the disk cannot hold; an
+   * of the tree, or lies at or above the docs root; a path that would leave the tree; a name the disk cannot hold; an
    * entry clashing with another. The summary says each was not read. A file written empty is not among them.
    */
   unwritten: Array<{ path: string; reason: string }>;
@@ -74,8 +74,8 @@ export interface WorkingTreeOptions {
    */
   contentless?: (path: string) => boolean;
   /**
-   * The docs root, repository-relative, where the reader of the tree writes and prunes: a symbolic link at it, above
-   * it or beneath it is not written even as a copy.
+   * The docs root, repository-relative, where the reader of the tree writes and prunes: a symbolic link at it or above
+   * it is not written even as a copy, since a copy there would stand where a folder is needed.
    */
   docsRoot?: string;
 }

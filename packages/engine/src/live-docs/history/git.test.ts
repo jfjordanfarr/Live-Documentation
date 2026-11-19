@@ -9,7 +9,7 @@ import { followLink, openGitRepository, parseMainline, parseNameStatus, parseTag
 const OUT = "it is a symbolic link out of the tree, which the history does not follow";
 const NOWHERE = "it is a symbolic link to nothing the commit holds";
 const FOLDER = "it is a symbolic link to a folder, which the history does not follow";
-const DOCS_ROOT = "it is a symbolic link at or along the docs root, where the generator writes, which the history does not follow";
+const DOCS_ROOT = "it is a symbolic link at or above the docs root, where the generator needs a folder, which the history does not follow";
 
 describe("parseMainline", () => {
   it("reads each record after rev-list's commit line, a subject with spaces and an author with a comma included", () => {
@@ -279,8 +279,9 @@ describe("a tree the writer must not follow out of its folder", () => {
     expect(followLink("shared", listing, targets)).toEqual({ reason: FOLDER });
   });
 
-  it("writes no link at, above or beneath the docs root, even to a file of the tree, and fails no commit for one", async () => {
+  it("writes no link at or above the docs root, even to a file of the tree, copies one beneath it, and fails no commit for one", async () => {
     // The fourth review of 2026-11-19: a link at the docs root carried the generator's writes and its pruning outside.
+    // Beneath the root a copy is a plain file the generator can only rewrite or remove (the review's second pass).
     const kept = blob("kept\n");
     const mirror = tree([["120000", "blob", blob("../../kept.txt"), "a.ts.md"]]);
     const entries: Array<[string, string, string, string]> = [["120000", "blob", blob("kept.txt"), ".mdmd"], ["100644", "blob", kept, "kept.txt"]];
@@ -289,7 +290,11 @@ describe("a tree the writer must not follow out of its folder", () => {
     const directory = await folder();
     expect(await writeStoredTree(repository, at, directory, { platform: "linux", docsRoot: ".mdmd/layer-4" })).toEqual([{ path: ".mdmd", reason: DOCS_ROOT }]);
     const other = await folder();
-    expect(await writeStoredTree(repository, beneath, other, { platform: "linux", docsRoot: "docs/layer-4" })).toEqual([{ path: "docs/layer-4/a.ts.md", reason: DOCS_ROOT }]);
+    expect(await writeStoredTree(repository, beneath, other, { platform: "linux", docsRoot: "docs/layer-4" })).toEqual([]);
+    expect(await fs.readFile(path.join(other, "docs", "layer-4", "a.ts.md"), "utf8")).toBe("kept\n");
+    // Above the root: a copy at `docs` would stand where the generator needs a folder.
+    const above = commit(tree([["120000", "blob", blob("kept.txt"), "docs"], ["100644", "blob", kept, "kept.txt"]]));
+    expect(await writeStoredTree(repository, above, await folder(), { platform: "linux", docsRoot: "docs/layer-4" })).toEqual([{ path: "docs", reason: DOCS_ROOT }]);
     // Without a docs root asked for, the same link is a copy of the file it leads to.
     const third = await folder();
     expect(await writeStoredTree(repository, at, third, { platform: "linux" })).toEqual([]);

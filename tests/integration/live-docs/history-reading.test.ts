@@ -92,12 +92,15 @@ beforeAll(async () => {
   link("docs/alias.md", "guide.md");
   write("archive/day.record.md", "# A day\n");
   write("archive/kept.md", "# Kept\n");
+  // A link beneath the docs root to a document outside it (the review's second pass): copied, it cites and is linked.
+  write("notes/x/guide.md", "# A guide kept in notes\n\nSee [a](../../src/a.ts).\n");
+  link(".mdmd/layer-1/guide.md", "../../notes/x/guide.md");
   const config = normalizeLiveDocumentationConfig(CONFIG);
   await generateLiveDocs({ workspaceRoot: repository, config, logger: { info: () => undefined, warn: () => undefined, error: () => undefined } });
   // The authored words of `src/a.ts` link a linked document, a document the bundle excludes and one it keeps.
   const doc = path.join(repository, ".mdmd", "layer-4", "src", "a.ts.mdmd.md");
   const text = fs.readFileSync(doc, "utf8");
-  fs.writeFileSync(doc, text.replace("### Notes\n", "### Notes\n- See [the alias](../../../docs/alias.md), [the guide](../../../docs/guide.md), [the day](../../../archive/day.record.md) and [what is kept](../../../archive/kept.md).\n"), "utf8");
+  fs.writeFileSync(doc, text.replace("### Notes\n", "### Notes\n- See [the alias](../../../docs/alias.md), [the guide](../../../docs/guide.md), [the layer-1 guide](../../layer-1/guide.md), [the day](../../../archive/day.record.md) and [what is kept](../../../archive/kept.md).\n"), "utf8");
   await generateLiveDocs({ workspaceRoot: repository, config, logger: { info: () => undefined, warn: () => undefined, error: () => undefined } });
   git(["add", "--all"]);
   git(["commit", "--quiet", "-m", "A repository with an excluded folder, documents the bundle excludes and links"]);
@@ -128,13 +131,13 @@ describe("the history over excluded code, documents the bundle excludes and symb
   it("documents a link to code, and counts a link to a document as the document it leads to", () => {
     const kept = summary();
     expect(kept.files.map((file) => file.path)).toContain("lib/b.ts");
-    expect(kept.files.find((file) => file.path === "src/a.ts")!.citedBy).toEqual(["AGENTS.md", "CLAUDE.md"]);
+    expect(kept.files.find((file) => file.path === "src/a.ts")!.citedBy).toEqual([".mdmd/layer-1/guide.md", "AGENTS.md", "CLAUDE.md", "notes/x/guide.md"]);
     expect(kept.docLinks).toEqual(expect.arrayContaining([["src/a.ts", "docs/alias.md"], ["src/a.ts", "docs/guide.md"]]));
   });
 
   it("keeps every linked document in the summary, the bundle's exclusions applied only where the sequence reads it", () => {
     expect(summary().docLinks).toEqual(expect.arrayContaining([["src/a.ts", "archive/day.record.md"], ["src/a.ts", "archive/kept.md"]]));
-    expect(lastLinks()).toEqual(["src/a.ts -> archive/kept.md", "src/a.ts -> docs/alias.md", "src/a.ts -> docs/guide.md"]);
+    expect(lastLinks()).toEqual(["src/a.ts -> .mdmd/layer-1/guide.md", "src/a.ts -> archive/kept.md", "src/a.ts -> docs/alias.md", "src/a.ts -> docs/guide.md"]);
   });
 
   it("follows an edit of the bundle's exclusions at the next run, from the summaries it already holds", () => {
@@ -145,7 +148,7 @@ describe("the history over excluded code, documents the bundle excludes and symb
       expect(run.exitCode, run.stderr).toBe(0);
       expect(run.stderr).toContain("1 in the cache under lens");
       expect(run.stderr).toContain("0 to regenerate");
-      expect(lastLinks()).toEqual(["src/a.ts -> docs/alias.md", "src/a.ts -> docs/guide.md"]);
+      expect(lastLinks()).toEqual(["src/a.ts -> .mdmd/layer-1/guide.md", "src/a.ts -> docs/alias.md", "src/a.ts -> docs/guide.md"]);
     } finally {
       fs.writeFileSync(configFile, `${JSON.stringify(CONFIG, null, 2)}\n`, "utf8");
     }

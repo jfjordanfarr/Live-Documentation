@@ -353,8 +353,8 @@ async function readSmallBlobs(root: string, ids: readonly string[]): Promise<Map
  * link's path what it finds in a checkout.
  *
  * Nothing is ever written outside `directory`, and no entry stops the tree. An entry is left out, and returned with the
- * reason, when it is a symbolic link out of the tree, to a folder or to nothing, in a chain that does not end, or at,
- * above or beneath the docs root the caller names (until 2026-11-19 links were written as links, and a link at the
+ * reason, when it is a symbolic link out of the tree, to a folder or to nothing, in a chain that does not end, or at
+ * or above the docs root the caller names (until 2026-11-19 links were written as links, and a link at the
  * docs root carried the generator's writes and pruning outside the scratch folder; for one day after, no link was
  * written at all, and the files and documents links stood for dropped out of the history); when its path would leave
  * the directory or name a `.git`; when the platform cannot hold its name; when the disk, asked once for each folder
@@ -394,8 +394,8 @@ export async function writeStoredTree(
   const links = listed.filter((entry) => entry.mode === LINK_MODE);
   const linkBlobs = await readSmallBlobs(root, [...new Set(links.map((entry) => entry.id))]);
   const targets = new Map(links.map((entry) => [entry.relative, linkBlobs.get(entry.id)?.toString("utf8") ?? ""]));
-  const alongDocsRoot = (relative: string): boolean =>
-    docsRoot !== undefined && (relative === docsRoot || docsRoot.startsWith(`${relative}/`) || relative.startsWith(`${docsRoot}/`));
+  // A copy at the docs root or above it would stand where the generator needs a folder; beneath it a copy is a plain file.
+  const atOrAboveDocsRoot = (relative: string): boolean => docsRoot !== undefined && (relative === docsRoot || docsRoot.startsWith(`${relative}/`));
   for (const { mode, id, relative } of listed) {
     if (!position.has(relative)) position.set(relative, position.size);
     const parts = relative.split("/");
@@ -410,8 +410,8 @@ export async function writeStoredTree(
       unwritten.push({ path: relative, reason: "its name is not valid UTF-8, so it cannot be written under its own name" });
     } else if (named.has(relative)) {
       unwritten.push({ path: relative, reason: "the tree names it twice" });
-    } else if (mode === LINK_MODE && alongDocsRoot(relative)) {
-      unwritten.push({ path: relative, reason: "it is a symbolic link at or along the docs root, where the generator writes, which the history does not follow" });
+    } else if (mode === LINK_MODE && atOrAboveDocsRoot(relative)) {
+      unwritten.push({ path: relative, reason: "it is a symbolic link at or above the docs root, where the generator needs a folder, which the history does not follow" });
     } else if (mode === LINK_MODE) {
       // A link to a file of the tree is written as a copy of that file, so that a reader finds there what it finds in
       // a checkout and nothing is ever written or read through a link; any other is named.

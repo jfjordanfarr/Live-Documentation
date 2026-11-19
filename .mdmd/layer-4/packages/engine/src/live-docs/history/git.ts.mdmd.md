@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/history/git.ts
-- Generated At: 2026-11-19T19:17:17.566Z
+- Generated At: 2026-11-19T20:41:21.296Z
 
 ## Authored
 ### Purpose
@@ -115,8 +115,8 @@ of the tree ({@link followLink}), a copy of that file, so that no link is ever o
 link's path what it finds in a checkout.
 
 Nothing is ever written outside `directory`, and no entry stops the tree. An entry is left out, and returned with the
-reason, when it is a symbolic link out of the tree, to a folder or to nothing, in a chain that does not end, or at,
-above or beneath the docs root the caller names (until 2026-11-19 links were written as links, and a link at the
+reason, when it is a symbolic link out of the tree, to a folder or to nothing, in a chain that does not end, or at
+or above the docs root the caller names (until 2026-11-19 links were written as links, and a link at the
 docs root carried the generator's writes and pruning outside the scratch folder; for one day after, no link was
 written at all, and the files and documents links stood for dropped out of the history); when its path would leave
 the directory or name a `.git`; when the platform cannot hold its name; when the disk, asked once for each folder
