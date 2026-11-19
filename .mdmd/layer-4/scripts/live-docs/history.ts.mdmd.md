@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/history.ts
 - Entry: command `live-docs:history` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-19T06:20:31.320Z
+- Generated At: 2026-11-19T08:59:55.546Z
 
 ## Authored
 ### Purpose
@@ -32,6 +32,7 @@ _No public symbols detected_
 - [`format.Sampling`](../../packages/engine/src/live-docs/history/format.ts.mdmd.md#symbol-sampling) (type-only)
 - [`sequence.changeAt`](../../packages/engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-changeat)
 - [`sequence.headOf`](../../packages/engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-headof)
+- [`computeHistory.HistoryStopped`](../../packages/generator/src/history/computeHistory.ts.mdmd.md#symbol-historystopped)
 - [`computeHistory`](../../packages/generator/src/history/computeHistory.ts.mdmd.md#symbol-computehistory)
 - [`computeHistory.formatBytes`](../../packages/generator/src/history/computeHistory.ts.mdmd.md#symbol-formatbytes)
 - [`cli.UsageError`](./cli.ts.mdmd.md#symbol-usageerror)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/python.ts
-- Generated At: 2026-10-22T16:47:52.285Z
+- Generated At: 2026-11-19T08:59:52.999Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ The Python adapter: tree-sitter symbols (classes, functions, assignments and pub
 ### Public Symbols
 #### `pythonAdapter` {#symbol-pythonadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/python.ts#L660)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/python.ts#L661)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `pythonAdapter` — Summary
@@ -42,6 +42,7 @@ Language adapter for Python (`.py`): tree-sitter symbols, import resolution that
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
 - [`core.SymbolDocumentation`](../core.ts.mdmd.md#symbol-symboldocumentation) (type-only)
 - [`core.TypeReference`](../core.ts.mdmd.md#symbol-typereference) (type-only)
+- [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->
 

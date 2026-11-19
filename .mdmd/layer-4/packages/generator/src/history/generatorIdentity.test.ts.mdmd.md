@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/generator/src/history/generatorIdentity.test.ts
-- Generated At: 2026-11-19T06:20:30.836Z
+- Generated At: 2026-11-19T08:59:55.165Z
 
 ## Authored
 ### Purpose
@@ -21,9 +21,10 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs` - `readFileSync`
+- `node:fs` - `readFileSync`, `readdirSync`
 - `node:path` - `path`
 - [`generatorIdentity.HISTORY_FOLDERS`](./generatorIdentity.ts.mdmd.md#symbol-history_folders)
+- [`generatorIdentity.SUMMARY_ENTRIES`](./generatorIdentity.ts.mdmd.md#symbol-summary_entries)
 - [`generatorIdentity.SUMMARY_MODULES`](./generatorIdentity.ts.mdmd.md#symbol-summary_modules)
 - [`generatorIdentity.keysTheLens`](./generatorIdentity.ts.mdmd.md#symbol-keysthelens)
 - `typescript` - `ts`

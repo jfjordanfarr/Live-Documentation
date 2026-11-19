@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/history/git.ts
-- Generated At: 2026-11-19T06:20:28.523Z
+- Generated At: 2026-11-19T08:59:53.280Z
 
 ## Authored
 ### Purpose
@@ -23,7 +23,7 @@ The seam's git implementation, through the `git` executable on the local clone: 
 ### Public Symbols
 #### `openGitRepository` {#symbol-opengitrepository}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L43)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L54)
 
 ##### `openGitRepository` — Summary
 The git repository whose top level is `workspaceRoot`, as the history
@@ -32,9 +32,21 @@ command's version control.
 ##### `openGitRepository` — Exceptions
 - _Unknown_: When `workspaceRoot` is not in a git repository, or is a folder below its top level: the history of a repository is read whole.
 
+#### `writeStoredTree` {#symbol-writestoredtree}
+- Type: function
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L143)
+
+##### `writeStoredTree` — Summary
+Writes every entry of a change's tree under `directory` as the repository stores it: a file's blob bytes, executable
+where its mode says so; a symbolic link to the target its blob holds; an empty folder where another repository's
+commit stands, as a checkout leaves a submodule it has not initialized.
+
+##### `writeStoredTree` — Exceptions
+- _Unknown_: When an entry's path would leave the directory or name a `.git`, which git itself refuses to check out.
+
 #### `parseMainline` {#symbol-parsemainline}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L122)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L230)
 - Returns: [`MainlineChange`](./versionControl.ts.mdmd.md#symbol-mainlinechange)[]
 
 ##### `parseMainline` — Summary
@@ -42,14 +54,14 @@ The changes of `git rev-list --format` with the mainline's format, oldest first 
 
 #### `parseTags` {#symbol-parsetags}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L134)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L242)
 
 ##### `parseTags` — Summary
 The changes the tags of `git for-each-ref --format='%(objectname) %(*objectname)'` name: an annotated tag's peeled change, a light tag's own.
 
 #### `parseNameStatus` {#symbol-parsenamestatus}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L146)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L254)
 - Returns: [`VersionChanges`](./versionControl.ts.mdmd.md#symbol-versionchanges)
 
 ##### `parseNameStatus` — Summary
@@ -58,7 +70,9 @@ The renames and content changes of `git diff --name-status -z`.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `node:child_process` - `spawn`
 - `node:fs` - `promises`
+- `node:os` - `os`
 - `node:path` - `path`
 - [`gitUtils.execFileAsync`](../gitUtils.ts.mdmd.md#symbol-execfileasync)
 - [`versionControl.MainlineChange`](./versionControl.ts.mdmd.md#symbol-mainlinechange) (type-only)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/csharp.xmldoc.ts
-- Generated At: 2026-10-22T16:47:51.576Z
+- Generated At: 2026-11-19T08:59:52.745Z
 
 ## Authored
 ### Purpose
@@ -22,7 +22,7 @@ Parses C# XML documentation comments (`///` lines) into structured `SymbolDocume
 ### Public Symbols
 #### `RECOGNIZED_DOC_TAGS` {#symbol-recognized_doc_tags}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L24)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L25)
 
 ##### `RECOGNIZED_DOC_TAGS` — Summary
 Set of recognized C# XML documentation tags.
@@ -30,7 +30,7 @@ Used to detect unsupported tags that may appear in documentation.
 
 #### `buildDocumentationFromLines` {#symbol-builddocumentationfromlines}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L56)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L57)
 - Returns: [`SymbolDocumentation`](../coreTypes.ts.mdmd.md#symbol-symboldocumentation)
 
 ##### `buildDocumentationFromLines` — Summary
@@ -44,7 +44,7 @@ Parsed documentation object, or undefined if no content
 
 #### `stripDocCommentMarker` {#symbol-stripdoccommentmarker}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L134)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L135)
 
 ##### `stripDocCommentMarker` — Summary
 Strips the XML doc comment marker (///) from a line.
@@ -57,7 +57,7 @@ Line without the /// prefix
 
 #### `extractSingleTagText` {#symbol-extractsingletagtext}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L145)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L146)
 
 ##### `extractSingleTagText` — Summary
 Extracts text content from a single XML tag occurrence.
@@ -71,7 +71,7 @@ Normalized text content, or undefined if not found
 
 #### `extractParameterTags` {#symbol-extractparametertags}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L163)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L164)
 - Returns: [`SymbolDocumentationParameter`](../coreTypes.ts.mdmd.md#symbol-symboldocumentationparameter)[]
 
 ##### `extractParameterTags` — Summary
@@ -86,7 +86,7 @@ Array of parsed parameter documentation
 
 #### `extractExceptionTags` {#symbol-extractexceptiontags}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L186)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L187)
 - Returns: [`SymbolDocumentationException`](../coreTypes.ts.mdmd.md#symbol-symboldocumentationexception)[]
 
 ##### `extractExceptionTags` — Summary
@@ -100,7 +100,7 @@ Array of parsed exception documentation, sorted by type
 
 #### `extractExampleTags` {#symbol-extractexampletags}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L215)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L216)
 - Returns: [`SymbolDocumentationExample`](../coreTypes.ts.mdmd.md#symbol-symboldocumentationexample)[]
 
 ##### `extractExampleTags` — Summary
@@ -114,7 +114,7 @@ Array of parsed examples with optional code blocks
 
 #### `extractLinkTags` {#symbol-extractlinktags}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L249)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L250)
 - Returns: [`SymbolDocumentationLink`](../coreTypes.ts.mdmd.md#symbol-symboldocumentationlink)[]
 
 ##### `extractLinkTags` — Summary
@@ -128,7 +128,7 @@ Array of deduplicated, sorted links
 
 #### `extractRawDocFragments` {#symbol-extractrawdocfragments}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L308)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L309)
 
 ##### `extractRawDocFragments` — Summary
 Extracts raw documentation fragments like <inheritdoc> and <include>.
@@ -141,7 +141,7 @@ Array of raw tag strings
 
 #### `detectUnsupportedTags` {#symbol-detectunsupportedtags}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L332)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L333)
 
 ##### `detectUnsupportedTags` — Summary
 Detects XML tags that are not in the recognized set.
@@ -154,7 +154,7 @@ Array of unrecognized tag names
 
 #### `parseXmlAttributes` {#symbol-parsexmlattributes}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L355)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L356)
 
 ##### `parseXmlAttributes` — Summary
 Parses XML attributes from a tag fragment.
@@ -167,7 +167,7 @@ Object mapping attribute names to values
 
 #### `normalizeXmlText` {#symbol-normalizexmltext}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L372)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L373)
 
 ##### `normalizeXmlText` — Summary
 Normalizes XML documentation text into readable plain text.
@@ -181,7 +181,7 @@ Cleaned, normalized text
 
 #### `decodeXmlEntities` {#symbol-decodexmlentities}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L441)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L442)
 
 ##### `decodeXmlEntities` — Summary
 Decodes common XML entities to their character equivalents.
@@ -194,7 +194,7 @@ Decoded string
 
 #### `normalizeCrefTarget` {#symbol-normalizecreftarget}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L457)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L458)
 
 ##### `normalizeCrefTarget` — Summary
 Normalizes a cref target by stripping prefixes and converting syntax.
@@ -207,7 +207,7 @@ Normalized reference (e.g., "MyNamespace.MyClass")
 
 #### `renderCrefText` {#symbol-rendercreftext}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L481)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L482)
 
 ##### `renderCrefText` — Summary
 Renders a cref target as display text, optionally with custom inner text.
@@ -221,7 +221,7 @@ Formatted reference text
 
 #### `hasStructuredContent` {#symbol-hasstructuredcontent}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L496)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L497)
 - Parameters: `doc`: [`SymbolDocumentation`](../coreTypes.ts.mdmd.md#symbol-symboldocumentation)
 
 ##### `hasStructuredContent` — Summary
@@ -242,6 +242,7 @@ True if any documentation fields are populated
 - [`core.SymbolDocumentationLink`](../core.ts.mdmd.md#symbol-symboldocumentationlink) (type-only)
 - [`core.SymbolDocumentationLinkKind`](../core.ts.mdmd.md#symbol-symboldocumentationlinkkind) (type-only)
 - [`core.SymbolDocumentationParameter`](../core.ts.mdmd.md#symbol-symboldocumentationparameter) (type-only)
+- [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

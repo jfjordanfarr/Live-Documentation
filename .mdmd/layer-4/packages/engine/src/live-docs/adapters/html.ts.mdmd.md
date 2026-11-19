@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/html.ts
-- Generated At: 2026-10-27T17:46:36.867Z
+- Generated At: 2026-11-19T08:59:52.820Z
 
 ## Authored
 ### Purpose
@@ -24,7 +24,7 @@ Language adapter that extracts dependency relationships from HTML files by parsi
 ### Public Symbols
 #### `extractElementIds` {#symbol-extractelementids}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/html.ts#L318)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/html.ts#L319)
 
 ##### `extractElementIds` — Summary
 Every element id in a markup file, sorted and unique. Shared with the ASP.NET
@@ -33,7 +33,7 @@ target doc actually publishes, whatever the markup dialect.
 
 #### `htmlAdapter` {#symbol-htmladapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/html.ts#L339)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/html.ts#L340)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `htmlAdapter` — Summary
@@ -47,6 +47,7 @@ Language adapter for HTML (`.html`, `.htm`). Extracts resource attributes such a
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
+- [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->
 

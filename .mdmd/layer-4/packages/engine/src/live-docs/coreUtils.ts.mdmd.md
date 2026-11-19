@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/coreUtils.ts
-- Generated At: 2026-09-28T02:39:05.979Z
+- Generated At: 2026-11-19T08:59:53.153Z
 
 ## Authored
 ### Purpose
@@ -51,20 +51,30 @@ A relative path, always starting with "./" or "../"
 
 #### `createSymbolSlug` {#symbol-createsymbolslug}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/coreUtils.ts#L60)
+- Source: [source](../../../../../../packages/engine/src/live-docs/coreUtils.ts#L70)
 
 ##### `createSymbolSlug` — Summary
 Creates a slug for a symbol name suitable for markdown anchors.
+
+##### `createSymbolSlug` — Remarks
+Every name gets one. A name the GitHub slug empties, being punctuation or
+symbols only (`$`, `$$`, an operator such as `+`, `€`), is anchored by its
+code points in hexadecimal, each after a tilde: `$` is `symbol-~24` and `$$`
+`symbol-~24~24`. The slug removes every tilde, so no other name's anchor can
+take that form, and two names give the same one only when they are the
+same. Until 2026-11-19 such a name had no anchor, and the history, which
+names each symbol by its anchor, could not summarize the file that
+exported it.
 
 ##### `createSymbolSlug` — Parameters
 - `name`: The symbol name
 
 ##### `createSymbolSlug` — Returns
-A slug like "symbol-myfunction", or undefined if the name is invalid
+A slug like "symbol-myfunction"
 
 #### `toModuleLabel` {#symbol-tomodulelabel}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/coreUtils.ts#L75)
+- Source: [source](../../../../../../packages/engine/src/live-docs/coreUtils.ts#L84)
 
 ##### `toModuleLabel` — Summary
 Extracts a module label from a workspace-relative path.
@@ -77,7 +87,7 @@ Base name without extension, e.g., "core"
 
 #### `formatInlineCode` {#symbol-formatinlinecode}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/coreUtils.ts#L93)
+- Source: [source](../../../../../../packages/engine/src/live-docs/coreUtils.ts#L102)
 
 ##### `formatInlineCode` — Summary
 Formats a value as inline code, escaping backticks.
@@ -90,7 +100,7 @@ The value wrapped in backticks with internal backticks escaped
 
 #### `formatDependencyQualifier` {#symbol-formatdependencyqualifier}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/coreUtils.ts#L104)
+- Source: [source](../../../../../../packages/engine/src/live-docs/coreUtils.ts#L113)
 - Parameters: `dependency`: [`DependencyEntry`](./coreTypes.ts.mdmd.md#symbol-dependencyentry)
 
 ##### `formatDependencyQualifier` — Summary
@@ -104,7 +114,7 @@ A qualifier string like " (re-export, type-only)" or empty string
 
 #### `resolveExportAssignmentName` {#symbol-resolveexportassignmentname}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/coreUtils.ts#L128)
+- Source: [source](../../../../../../packages/engine/src/live-docs/coreUtils.ts#L137)
 - Parameters: `expression`: `ts.Expression`
 
 ##### `resolveExportAssignmentName` — Summary
@@ -118,7 +128,7 @@ The resolved name, or "default" for anonymous expressions
 
 #### `hasExportModifier` {#symbol-hasexportmodifier}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/coreUtils.ts#L141)
+- Source: [source](../../../../../../packages/engine/src/live-docs/coreUtils.ts#L150)
 - Parameters: `node`: `ts.Node`
 
 ##### `hasExportModifier` — Summary
@@ -126,7 +136,7 @@ Checks if a node has the `export` modifier.
 
 #### `hasDefaultModifier` {#symbol-hasdefaultmodifier}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/coreUtils.ts#L152)
+- Source: [source](../../../../../../packages/engine/src/live-docs/coreUtils.ts#L161)
 - Parameters: `node`: `ts.Node`
 
 ##### `hasDefaultModifier` — Summary
@@ -134,7 +144,7 @@ Checks if a node has the `default` modifier.
 
 #### `getNodeLocation` {#symbol-getnodelocation}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/coreUtils.ts#L163)
+- Source: [source](../../../../../../packages/engine/src/live-docs/coreUtils.ts#L172)
 - Returns: [`LocationInfo`](./coreTypes.ts.mdmd.md#symbol-locationinfo)
 - Parameters: `node`: `ts.Node`; `sourceFile`: `ts.SourceFile`
 
@@ -143,7 +153,7 @@ Gets the source location (1-indexed line and character) of a node.
 
 #### `displayDependencyKey` {#symbol-displaydependencykey}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/coreUtils.ts#L178)
+- Source: [source](../../../../../../packages/engine/src/live-docs/coreUtils.ts#L187)
 - Parameters: `entry`: [`DependencyEntry`](./coreTypes.ts.mdmd.md#symbol-dependencyentry)
 
 ##### `displayDependencyKey` — Summary
@@ -157,7 +167,7 @@ The resolved path if available, otherwise the specifier
 
 #### `isBarrelFilePath` {#symbol-isbarrelfilepath}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/coreUtils.ts#L216)
+- Source: [source](../../../../../../packages/engine/src/live-docs/coreUtils.ts#L225)
 
 ##### `isBarrelFilePath` — Summary
 Determines if a file path represents a barrel/index file.
@@ -186,7 +196,7 @@ isBarrelFilePath("lib/mod.ts");                 // true
 
 #### `compareSymbolLocationsPreferOrigin` {#symbol-comparesymbollocationspreferorigin}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/coreUtils.ts#L238)
+- Source: [source](../../../../../../packages/engine/src/live-docs/coreUtils.ts#L247)
 
 ##### `compareSymbolLocationsPreferOrigin` — Summary
 Sorts symbol locations to prefer non-barrel files over barrel files.
@@ -209,7 +219,7 @@ Negative if a should come first, positive if b should come first
 
 #### `commonDirectoryPrefixLength` {#symbol-commondirectoryprefixlength}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/coreUtils.ts#L260)
+- Source: [source](../../../../../../packages/engine/src/live-docs/coreUtils.ts#L269)
 
 ##### `commonDirectoryPrefixLength` — Summary
 Counts the number of shared leading directory segments between two paths.
@@ -217,7 +227,7 @@ Used for proximity-based symbol resolution.
 
 #### `createProximityAwareComparator` {#symbol-createproximityawarecomparator}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/coreUtils.ts#L279)
+- Source: [source](../../../../../../packages/engine/src/live-docs/coreUtils.ts#L288)
 
 ##### `createProximityAwareComparator` — Summary
 Creates a comparator that ranks symbol locations by proximity to a reference path.

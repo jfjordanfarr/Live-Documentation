@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/history/format.ts
-- Generated At: 2026-11-19T06:20:28.511Z
+- Generated At: 2026-11-19T08:59:53.266Z
 
 ## Authored
 ### Purpose
@@ -193,42 +193,42 @@ Which generator made the summaries: its package version, committed tool inputs, 
 
 #### `HistoryLens` {#symbol-historylens}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L211)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L217)
 
 ##### `HistoryLens` — Summary
 The lens: one generator and one configuration, applied to every change of the sequence.
 
 #### `Sampling` {#symbol-sampling}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L220)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L226)
 
 ##### `Sampling` — Summary
 Which changes of the mainline were regenerated.
 
 #### `HistorySource` {#symbol-historysource}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L235)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L241)
 
 ##### `HistorySource` — Summary
 Where the sequence was read from.
 
 #### `HistoryWindow` {#symbol-historywindow}
 - Type: type
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L254)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L260)
 
 ##### `HistoryWindow` — Summary
 The part of a sequence an export carries, when it carries less than the whole.
 
 #### `HistorySequence` {#symbol-historysequence}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L257)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L263)
 
 ##### `HistorySequence` — Summary
 The sequence: `history.json`.
 
 #### `HistoryHead` {#symbol-historyhead}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L279)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L285)
 
 ##### `HistoryHead` — Summary
 What a sequence says of itself without its body, which the bundle's data carries beside the history file's name.

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/jsDoc.ts
-- Generated At: 2026-09-28T02:39:06.127Z
+- Generated At: 2026-11-19T08:59:53.407Z
 
 ## Authored
 ### Purpose
@@ -22,7 +22,7 @@ JSDoc/TSDoc documentation extraction for Live Documentation. Parses JSDoc commen
 ### Public Symbols
 #### `extractJsDocDocumentation` {#symbol-extractjsdocdocumentation}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/jsDoc.ts#L41)
+- Source: [source](../../../../../../packages/engine/src/live-docs/jsDoc.ts#L42)
 - Returns: [`SymbolDocumentation`](./coreTypes.ts.mdmd.md#symbol-symboldocumentation)
 - Parameters: `node`: `ts.Node`
 
@@ -56,5 +56,6 @@ Structured documentation object, or undefined if no meaningful content
 - [`coreTypes.SymbolDocumentationException`](./coreTypes.ts.mdmd.md#symbol-symboldocumentationexception) (type-only)
 - [`coreTypes.SymbolDocumentationLink`](./coreTypes.ts.mdmd.md#symbol-symboldocumentationlink) (type-only)
 - [`coreTypes.SymbolDocumentationLinkKind`](./coreTypes.ts.mdmd.md#symbol-symboldocumentationlinkkind) (type-only)
+- [`compareText`](../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - `typescript` - `ts`
 <!-- LIVE-DOC:END Dependencies -->

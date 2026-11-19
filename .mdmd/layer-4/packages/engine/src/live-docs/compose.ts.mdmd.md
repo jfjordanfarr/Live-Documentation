@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/compose.ts
-- Generated At: 2026-11-09T00:01:53.896Z
+- Generated At: 2026-11-19T08:59:53.130Z
 
 ## Authored
 ### Purpose
@@ -23,7 +23,7 @@ Turns a source file's analysis into the document model: headings with unique anc
 ### Public Symbols
 #### `computePublicSymbolHeadingInfo` {#symbol-computepublicsymbolheadinginfo}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L60)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L61)
 - Returns: [`PublicSymbolHeadingInfo`](./coreTypes.ts.mdmd.md#symbol-publicsymbolheadinginfo)[]
 - Parameters: `symbols`: [`PublicSymbolEntry`](./coreTypes.ts.mdmd.md#symbol-publicsymbolentry)[]
 
@@ -42,7 +42,7 @@ Array of heading info with display names and slugs
 
 #### `composeSymbolBlocks` {#symbol-composesymbolblocks}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L196)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L185)
 - Returns: [`SymbolBlock`](./document.ts.mdmd.md#symbol-symbolblock)[]
 
 ##### `composeSymbolBlocks` — Summary
@@ -59,7 +59,7 @@ Composes the `Public Symbols` section of a Live Doc.
 
 #### `composeDependencies` {#symbol-composedependencies}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L560)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L549)
 - Returns: [`Dependency`](./document.ts.mdmd.md#symbol-dependency)[]
 
 ##### `composeDependencies` — Summary
@@ -83,7 +83,7 @@ its own even when a source-observed dependency names the same file.
 
 #### `composeCitedBy` {#symbol-composecitedby}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L761)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L750)
 - Returns: [`CitedBy`](./document.ts.mdmd.md#symbol-citedby)[]
 
 ##### `composeCitedBy` — Summary
@@ -100,7 +100,7 @@ engine's rule, `citingDocuments`.
 
 #### `composeEntries` {#symbol-composeentries}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L796)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L785)
 - Returns: [`Entry`](./document.ts.mdmd.md#symbol-entry)[]
 
 ##### `composeEntries` — Summary
@@ -130,7 +130,7 @@ no line here.
 
 #### `composeReExports` {#symbol-composereexports}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L861)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L850)
 - Returns: [`ReExport`](./document.ts.mdmd.md#symbol-reexport)[]
 
 ##### `composeReExports` — Summary
@@ -172,6 +172,7 @@ uses that provider's actual indexed heading when the workspace index is present.
 - [`openings.MANIFEST_KINDS`](./openings.ts.mdmd.md#symbol-manifest_kinds)
 - [`openings.OPENING_KINDS`](./openings.ts.mdmd.md#symbol-opening_kinds)
 - [`openings.isToolingFile`](./openings.ts.mdmd.md#symbol-istoolingfile)
+- [`compareText`](../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

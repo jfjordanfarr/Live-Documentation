@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/manifest.ts
-- Generated At: 2026-10-22T16:47:51.999Z
+- Generated At: 2026-11-19T08:59:52.892Z
 
 ## Authored
 ### Purpose
@@ -21,14 +21,14 @@ What the package-manifest adapters share: the package as one `package` symbol at
 ### Public Symbols
 #### `ManifestContext (interface)` {#symbol-manifestcontext-interface}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L26)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L27)
 
 ##### `ManifestContext (interface)` — Summary
 What an adapter is given about the manifest it reads.
 
 #### `manifestContext (function)` {#symbol-manifestcontext-function}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L36)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L37)
 - Returns: [`ManifestContext`](#symbol-manifestcontext-interface)
 
 ##### `manifestContext (function)` — Summary
@@ -36,28 +36,28 @@ The context of the manifest at `absolutePath`.
 
 #### `tableOf` {#symbol-tableof}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L41)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L42)
 
 ##### `tableOf` — Summary
 A TOML table as a record, or `undefined` for anything else (an array, a string, a date).
 
 #### `stringOf` {#symbol-stringof}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L47)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L48)
 
 ##### `stringOf` — Summary
 A non-empty string, or `undefined`.
 
 #### `readToml` {#symbol-readtoml}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L52)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L53)
 
 ##### `readToml` — Summary
 A TOML document's root table, or `undefined` when the file cannot be read or is not valid TOML.
 
 #### `packageSymbols` {#symbol-packagesymbols}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L61)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L62)
 - Returns: [`PublicSymbolEntry`](../coreTypes.ts.mdmd.md#symbol-publicsymbolentry)[]
 
 ##### `packageSymbols` — Summary
@@ -65,7 +65,7 @@ The package a manifest names, as its one public symbol at line 1; none without a
 
 #### `workspaceFile` {#symbol-workspacefile}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L66)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L67)
 - Parameters: `context`: [`ManifestContext`](#symbol-manifestcontext-interface)
 
 ##### `workspaceFile` — Summary
@@ -73,7 +73,7 @@ The workspace-relative path of `absolute` when it is a workspace file other than
 
 #### `manifestIn` {#symbol-manifestin}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L73)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L74)
 - Parameters: `context`: [`ManifestContext`](#symbol-manifestcontext-interface)
 
 ##### `manifestIn` — Summary
@@ -81,7 +81,7 @@ The manifest named `manifestName` in the directory a manifest writes, relative t
 
 #### `manifestsPublishing` {#symbol-manifestspublishing}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L105)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L106)
 - Returns: `PublishedPackage`[]
 - Parameters: `context`: [`ManifestContext`](#symbol-manifestcontext-interface)
 
@@ -93,7 +93,7 @@ loosely (Python's).
 
 #### `publishedName` {#symbol-publishedname}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L115)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L116)
 - Parameters: `context`: [`ManifestContext`](#symbol-manifestcontext-interface)
 
 ##### `publishedName` — Summary
@@ -101,14 +101,14 @@ The package a workspace manifest publishes, by the index, or `fallback` when the
 
 #### `ManifestDependencies` {#symbol-manifestdependencies}
 - Type: class
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L124)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L125)
 
 ##### `ManifestDependencies` — Summary
 What one manifest stands on, gathered and then written in the precedents' order: linked manifests by path, then externals by name.
 
 #### `sortDeclared` {#symbol-sortdeclared}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L166)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L167)
 - Returns: [`DeclaredEntry`](../coreTypes.ts.mdmd.md#symbol-declaredentry)[]
 - Parameters: `declared`: `Iterable`
 
@@ -127,6 +127,7 @@ Declared entries without repeats, in path order, then by reason and name.
 - [`coreTypes.ResolvedSymbolLocation`](../coreTypes.ts.mdmd.md#symbol-resolvedsymbollocation) (type-only)
 - [`coreTypes.WorkspaceSymbolIndex`](../coreTypes.ts.mdmd.md#symbol-workspacesymbolindex) (type-only)
 - [`openings.PACKAGE_KIND`](../openings.ts.mdmd.md#symbol-package_kind)
+- [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - `smol-toml` - `parse`
 <!-- LIVE-DOC:END Dependencies -->

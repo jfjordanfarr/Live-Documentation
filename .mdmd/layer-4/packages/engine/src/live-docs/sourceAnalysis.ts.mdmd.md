@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/sourceAnalysis.ts
-- Generated At: 2026-10-19T15:06:00.007Z
+- Generated At: 2026-11-19T08:59:53.450Z
 
 ## Authored
 ### Purpose
@@ -23,7 +23,7 @@ Main entry point for analyzing source files to extract symbols and dependencies 
 ### Public Symbols
 #### `analyzeSourceFile` {#symbol-analyzesourcefile}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/sourceAnalysis.ts#L65)
+- Source: [source](../../../../../../packages/engine/src/live-docs/sourceAnalysis.ts#L66)
 - Parameters: `fileIndex`: [`WorkspaceFileIndex`](./adapters/index.ts.mdmd.md#symbol-workspacefileindex); `symbolIndex`: [`WorkspaceSymbolIndex`](./coreTypes.ts.mdmd.md#symbol-workspacesymbolindex)
 
 ##### `analyzeSourceFile` — Summary
@@ -70,6 +70,7 @@ if (analysis.symbols.length === 0) {
 - [`routes.inferRouteDependencies`](./heuristics/routes.ts.mdmd.md#symbol-inferroutedependencies)
 - [`symbolExtraction.collectExportedSymbols`](./symbolExtraction.ts.mdmd.md#symbol-collectexportedsymbols)
 - [`symbolExtraction.inferScriptKind`](./symbolExtraction.ts.mdmd.md#symbol-inferscriptkind)
+- [`compareText`](../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`pathUtils.normalizeWorkspacePath`](../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - `typescript` - `ts`
 <!-- LIVE-DOC:END Dependencies -->

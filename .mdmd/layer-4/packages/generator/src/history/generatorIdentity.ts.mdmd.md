@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/generator/src/history/generatorIdentity.ts
-- Generated At: 2026-11-19T06:20:30.844Z
+- Generated At: 2026-11-19T08:59:55.171Z
 
 ## Authored
 ### Purpose
@@ -23,29 +23,38 @@ The generator's half of the history's lens: its package version and, when it run
 ### Public Symbols
 #### `HISTORY_FOLDERS` {#symbol-history_folders}
 - Type: const
-- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L40)
+- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L51)
 
 ##### `HISTORY_FOLDERS` — Summary
 The folders of the history's own modules, most of which read summaries and never make one.
 
 #### `SUMMARY_MODULES` {#symbol-summary_modules}
 - Type: const
-- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L43)
+- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L58)
 
 ##### `SUMMARY_MODULES` — Summary
-The modules of {@link HISTORY_FOLDERS} that run in a summarizing process and so decide what a summary says.
+The modules of {@link HISTORY_FOLDERS} that decide what a summary says: those the summarizing process runs, and those
+the history command runs on its behalf, which write the commit's tree it reads and start it with its task and its
+environment.
+
+#### `SUMMARY_ENTRIES` {#symbol-summary_entries}
+- Type: const
+- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L67)
+
+##### `SUMMARY_ENTRIES` — Summary
+The modules from which the guard reads what decides a summary: the summarizing process, and the command's side of it.
 
 #### `keysTheLens` {#symbol-keysthelens}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L53)
+- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L73)
 
 ##### `keysTheLens` — Summary
 Whether a file of the two packages, by its repository-relative path, keys the lens: every file but a test and the
-history modules that never run in a summarizing process.
+TypeScript modules of the history folders that decide nothing of a summary.
 
 #### `generatorIdentity` {#symbol-generatoridentity}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L72)
+- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L92)
 
 ##### `generatorIdentity` — Summary
 The generator's package version and, when it runs from a checkout of this

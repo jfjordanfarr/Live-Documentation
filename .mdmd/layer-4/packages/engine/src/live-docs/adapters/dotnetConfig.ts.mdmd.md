@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/dotnetConfig.ts
-- Generated At: 2026-10-22T16:47:51.666Z
+- Generated At: 2026-11-19T08:59:52.779Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ The adapter for .NET configuration files. A `Web.config` or `App.config` publish
 ### Public Symbols
 #### `dotnetConfigAdapter` {#symbol-dotnetconfigadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/dotnetConfig.ts#L70)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/dotnetConfig.ts#L71)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `dotnetConfigAdapter` — Summary
@@ -39,6 +39,7 @@ Language adapter for `.config` files: configuration names and service addresses 
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
 - [`core.WorkspaceSymbolIndex`](../core.ts.mdmd.md#symbol-workspacesymbolindex) (type-only)
 - [`openings.ADDRESS_KIND`](../openings.ts.mdmd.md#symbol-address_kind)
+- [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->
 

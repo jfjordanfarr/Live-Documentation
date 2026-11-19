@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/history.test.ts
-- Generated At: 2026-11-19T06:20:33.880Z
+- Generated At: 2026-11-19T08:59:57.713Z
 
 ## Authored
 ### Purpose
@@ -56,6 +56,8 @@ _No public symbols detected_
 - [`staticBuilder.buildStaticExplorer`](../../../packages/explorer/src/shared/staticBuilder.ts.mdmd.md#symbol-buildstaticexplorer)
 - [`StaticExplorerData`](../../../packages/explorer/src/shared/staticExplorerData.ts.mdmd.md#symbol-staticexplorerdata) (type-only)
 - [`generator.generateLiveDocs`](../../../packages/generator/src/generator.ts.mdmd.md#symbol-generatelivedocs)
+- [`scripted-repository.CHECKED_CONFIG`](./scripted-repository.ts.mdmd.md#symbol-checked_config)
+- [`scripted-repository.CHECKED_SCRIPT`](./scripted-repository.ts.mdmd.md#symbol-checked_script)
 - [`scripted-repository.MODEL`](./scripted-repository.ts.mdmd.md#symbol-model)
 - [`scripted-repository.SCRIPT`](./scripted-repository.ts.mdmd.md#symbol-script)
 - [`scripted-repository.SCRIPTED_CONFIG`](./scripted-repository.ts.mdmd.md#symbol-scripted_config)

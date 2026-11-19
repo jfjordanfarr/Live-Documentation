@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/ruby.ts
-- Generated At: 2026-10-22T16:47:52.333Z
+- Generated At: 2026-11-19T08:59:53.022Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Provides the Ruby analyzer that maps YARD-style line and block comments, mixins,
 ### Public Symbols
 #### `rubyAdapter` {#symbol-rubyadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/ruby.ts#L48)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/ruby.ts#L49)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `rubyAdapter` — Summary
@@ -41,6 +41,7 @@ Language adapter for Ruby (`.rb`, `.rake`, `Gemfile`, `Rakefile`). Extracts clas
 - [`core.SymbolDocumentationLinkKind`](../core.ts.mdmd.md#symbol-symboldocumentationlinkkind) (type-only)
 - [`core.SymbolDocumentationParameter`](../core.ts.mdmd.md#symbol-symboldocumentationparameter) (type-only)
 - [`core.TypeReference`](../core.ts.mdmd.md#symbol-typereference) (type-only)
+- [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

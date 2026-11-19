@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/generator/src/history/computeHistory.ts
-- Generated At: 2026-11-19T06:20:30.828Z
+- Generated At: 2026-11-19T08:59:55.158Z
 
 ## Authored
 ### Purpose
@@ -27,28 +27,42 @@ The history command: the mainline read and sampled, every sampled commit the cac
 ### Public Symbols
 #### `HistoryOptions` {#symbol-historyoptions}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L57)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L64)
 
 ##### `HistoryOptions` — Summary
 What to compute.
 
 #### `SupersededCache` {#symbol-supersededcache}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L76)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L90)
 
 ##### `SupersededCache` — Summary
 A cache folder under the history folder that belongs to another lens than the current one.
 
 #### `HistoryRun` {#symbol-historyrun}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L88)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L102)
 
 ##### `HistoryRun` — Summary
 What a run did.
 
+#### `HistoryStopped` {#symbol-historystopped}
+- Type: class
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L129)
+
+##### `HistoryStopped` — Summary
+A run that stopped, as asked, before the cache held every sampled change: no sequence was written.
+
+#### `HEAD_CHECK_RULE` {#symbol-head_check_rule}
+- Type: const
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L134)
+
+##### `HEAD_CHECK_RULE` — Summary
+When the check at the head applies, in the words the command prints when it skips it.
+
 #### `UNMEASURED_PEAK_MEMORY` {#symbol-unmeasured_peak_memory}
 - Type: const
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L123)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L151)
 
 ##### `UNMEASURED_PEAK_MEMORY` — Summary
 What one summarizing process is expected to take before any has been measured on a repository: the largest peak
@@ -57,34 +71,54 @@ rounded up to 768 MiB. A larger repository takes more, which its first run measu
 
 #### `poolSize` {#symbol-poolsize}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L130)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L158)
 
 ##### `poolSize` — Summary
 How many summarizing processes a machine runs at once: as many as half its memory holds at the measured peak of
 one, since the person's own work goes on beside the run, and one fewer than its processors, since each process
 keeps one busy and the command and git need one; never fewer than one.
 
+#### `usableMachine` {#symbol-usablemachine}
+- Type: function
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L169)
+
+##### `usableMachine` — Summary
+The memory and the processors this process may use: the machine's, or less where the operating system says so. In
+a container whose memory is limited, `process.constrainedMemory` reads the limit from the control group; the
+processors are those the process may be scheduled on, `os.availableParallelism`, which a limit of processor time
+(`docker run --cpus`) does not lower.
+
 #### `computeHistory` {#symbol-computehistory}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L136)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L175)
 - Parameters: `options`: [`HistoryOptions`](#symbol-historyoptions)
 
 ##### `computeHistory` — Summary
 Computes the history and writes the sequence.
 
-#### `headDifferences` {#symbol-headdifferences}
-- Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L585)
-- Parameters: `replayed`: [`Rows`](../../../engine/src/live-docs/history/rows.ts.mdmd.md#symbol-rows); `committed`: [`LiveDocGraph`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
+#### `PoolRecord` {#symbol-poolrecord}
+- Type: interface
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L479)
 
-##### `headDifferences` — Summary
-Where a moment's rows, replayed, differ from a graph derived from committed Live Docs: the graph's rows read by the
-one rule every summary is read by, its texts named by `textId`, and its links read straight from its resolved
-edges, apart from the rows' reading of them.
+##### `PoolRecord` — Summary
+What runs measured of a summarizing process's peak memory on this repository.
+
+#### `nextPoolRecord` {#symbol-nextpoolrecord}
+- Type: function
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L507)
+- Returns: [`PoolRecord`](#symbol-poolrecord)
+- Parameters: `previous`: [`PoolRecord`](#symbol-poolrecord)
+
+##### `nextPoolRecord` — Summary
+The record after a run measured `peakMemory` over `changes` changes under `lens`. Under the same lens the record
+keeps the largest peak of every run, since a run that regenerates only the newest change sees one change's peak and
+not the history's. Under a new lens the generator has changed, and the run's peak replaces the record's only when it
+was measured over at least as many changes; until then the larger of the two stands, so that a small sampled run
+never shrinks the estimate a whole history was measured to need.
 
 #### `formatBytes` {#symbol-formatbytes}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L655)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L731)
 
 ##### `formatBytes` — Summary
 A size in the units a person reads it in.
@@ -92,7 +126,7 @@ A size in the units a person reads it in.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:child_process` - `ChildProcess`, `fork`
+- `node:crypto` - `createHash`
 - `node:fs` - `promises`
 - `node:os` - `os`
 - `node:path` - `path`
@@ -112,11 +146,7 @@ A size in the units a person reads it in.
 - [`format.Sampling`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-sampling)
 - [`git.openGitRepository`](../../../engine/src/live-docs/history/git.ts.mdmd.md#symbol-opengitrepository)
 - [`lens.lensOf`](../../../engine/src/live-docs/history/lens.ts.mdmd.md#symbol-lensof)
-- [`rows.RowLink`](../../../engine/src/live-docs/history/rows.ts.mdmd.md#symbol-rowlink)
-- [`Rows`](../../../engine/src/live-docs/history/rows.ts.mdmd.md#symbol-rows)
-- [`rows.compareLinks`](../../../engine/src/live-docs/history/rows.ts.mdmd.md#symbol-comparelinks)
 - [`rows.linksOf`](../../../engine/src/live-docs/history/rows.ts.mdmd.md#symbol-linksof)
-- [`rows.rowsDifferences`](../../../engine/src/live-docs/history/rows.ts.mdmd.md#symbol-rowsdifferences)
 - [`rows.rowsOfSummary`](../../../engine/src/live-docs/history/rows.ts.mdmd.md#symbol-rowsofsummary)
 - [`sampling.sampleChanges`](../../../engine/src/live-docs/history/sampling.ts.mdmd.md#symbol-samplechanges)
 - [`sequence.SequenceBuilder`](../../../engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-sequencebuilder)
@@ -124,18 +154,21 @@ A size in the units a person reads it in.
 - [`shape.shapeOfSummary`](../../../engine/src/live-docs/history/shape.ts.mdmd.md#symbol-shapeofsummary)
 - [`summary.CommitSummary`](../../../engine/src/live-docs/history/summary.ts.mdmd.md#symbol-commitsummary)
 - [`summary.HISTORY_SUMMARY_FORMAT`](../../../engine/src/live-docs/history/summary.ts.mdmd.md#symbol-history_summary_format)
-- [`summary.summarizeGraph`](../../../engine/src/live-docs/history/summary.ts.mdmd.md#symbol-summarizegraph)
+- [`summary.textHash`](../../../engine/src/live-docs/history/summary.ts.mdmd.md#symbol-texthash)
 - [`textStore.TEXT_STORE_DIRECTORY`](../../../engine/src/live-docs/history/textStore.ts.mdmd.md#symbol-text_store_directory)
-- [`textStore.readText`](../../../engine/src/live-docs/history/textStore.ts.mdmd.md#symbol-readtext)
+- [`textStore.textPath`](../../../engine/src/live-docs/history/textStore.ts.mdmd.md#symbol-textpath)
 - [`versionControl.MainlineChange`](../../../engine/src/live-docs/history/versionControl.ts.mdmd.md#symbol-mainlinechange) (type-only)
 - [`VersionControl`](../../../engine/src/live-docs/history/versionControl.ts.mdmd.md#symbol-versioncontrol) (type-only)
-- [`versionControl.WorkingTree`](../../../engine/src/live-docs/history/versionControl.ts.mdmd.md#symbol-workingtree) (type-only)
 - [`words.WORDS_DIRECTORY`](../../../engine/src/live-docs/history/words.ts.mdmd.md#symbol-words_directory)
 - [`words.WordsHead`](../../../engine/src/live-docs/history/words.ts.mdmd.md#symbol-wordshead)
+- [`words.textsOfFile`](../../../engine/src/live-docs/history/words.ts.mdmd.md#symbol-textsoffile)
 - [`words.wordsStore`](../../../engine/src/live-docs/history/words.ts.mdmd.md#symbol-wordsstore)
 - [`generatorIdentity`](./generatorIdentity.ts.mdmd.md#symbol-generatoridentity)
-- [`summarizeChange.SummaryReport`](./summarizeChange.ts.mdmd.md#symbol-summaryreport) (type-only)
-- [`summarizeChange.SummaryTask`](./summarizeChange.ts.mdmd.md#symbol-summarytask) (type-only)
+- [`headCheck.headDifferences`](./headCheck.ts.mdmd.md#symbol-headdifferences)
+- [`regenerate.Scratch`](./regenerate.ts.mdmd.md#symbol-scratch)
+- [`regenerate.indexPath`](./regenerate.ts.mdmd.md#symbol-indexpath)
+- [`regenerate`](./regenerate.ts.mdmd.md#symbol-regenerate)
+- [`regenerate.summaryPath`](./regenerate.ts.mdmd.md#symbol-summarypath)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->
