@@ -268,6 +268,21 @@ describe("a tree the writer must not follow out of its folder", () => {
     }
   });
 
+  it("resolves a link's target one part at a time, as the disk does: a link in the target is followed before the `..` after it", () => {
+    // The review's second pass: `a/b -> ../x/y`, `l -> a/b/../z.txt`; the disk reads `l` as `x/z.txt`, not `a/z.txt`.
+    const listing = new Map([
+      ["a/b", { mode: "120000", id: "ab" }],
+      ["a/z.txt", { mode: "100644", id: "az" }],
+      ["x/y/k.txt", { mode: "100644", id: "k" }],
+      ["x/z.txt", { mode: "100644", id: "xz" }],
+      ["l", { mode: "120000", id: "l" }]
+    ]);
+    const targets = new Map([["a/b", "../x/y"], ["l", "a/b/../z.txt"]]);
+    expect(followLink("l", listing, targets)).toEqual({ file: { mode: "100644", id: "xz" } });
+    // A `..` above the tree's root, reached through a link, is out of the tree.
+    expect(followLink("m", new Map([...listing, ["m", { mode: "120000", id: "m" }]]), new Map([...targets, ["m", "a/b/../../../../z.txt"]]))).toEqual({ reason: OUT });
+  });
+
   it("follows a link in the middle of a path to the file it reaches", () => {
     const listing = new Map([
       ["shared", { mode: "120000", id: "l1" }],

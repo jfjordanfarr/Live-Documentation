@@ -264,9 +264,11 @@ const LINK_HOPS = 8;
 export type LinkEnd = { file: { mode: string; id: string } } | { reason: string };
 
 /**
- * Follows a symbolic link of a commit's tree to what it names, through the commit's own listing: a link in the middle
- * of a path is followed too, up to {@link LINK_HOPS} links. A link that reaches a regular file of the tree gives that
- * file's mode and blob; any other gives the reason it is not followed.
+ * Follows a symbolic link of a commit's tree to what it names, through the commit's own listing and as the disk would:
+ * one part of the path at a time, a link met on the way followed before the next part, so that a `..` after a link
+ * climbs from where the link leads (`l -> a/b/../z.txt` with `a/b -> ../x/y` reads `x/z.txt`). Up to {@link LINK_HOPS}
+ * links are followed. A link that reaches a regular file of the tree gives that file's mode and blob; any other gives
+ * the reason it is not followed.
  *
  * @param link - The link's repository-relative path.
  * @param listing - Every entry of the commit's tree by its path: its mode and object id.
@@ -274,28 +276,45 @@ export type LinkEnd = { file: { mode: string; id: string } } | { reason: string 
  */
 export function followLink(link: string, listing: ReadonlyMap<string, { mode: string; id: string }>, targets: ReadonlyMap<string, string>): LinkEnd {
   const folders = foldersOf(listing);
-  let current = link;
-  for (let hop = 0; hop <= LINK_HOPS; hop += 1) {
-    const parts = current.split("/");
-    // The first part of the path that is itself a link: the path continues from where that link leads.
-    const at = parts.findIndex((_, index) => listing.get(parts.slice(0, index + 1).join("/"))?.mode === LINK_MODE);
-    if (at < 0) {
-      const entry = listing.get(current);
-      if (entry !== undefined && (entry.mode === FILE_MODE || entry.mode === EXECUTABLE_MODE)) return { file: entry };
-      if (entry?.mode === SUBMODULE_MODE || folders.has(current) || current === "") return { reason: "it is a symbolic link to a folder, which the history does not follow" };
-      return { reason: "it is a symbolic link to nothing the commit holds" };
+  // The parts resolved so far, from the tree's root, and the parts still to take.
+  const resolved: string[] = [];
+  let remaining = link.split("/");
+  let hops = 0;
+  while (remaining.length > 0) {
+    const part = remaining.shift()!;
+    if (part === "" || part === ".") continue;
+    if (part === "..") {
+      if (resolved.length === 0) return { reason: OUT_OF_TREE };
+      resolved.pop();
+      continue;
     }
-    if (hop === LINK_HOPS) break;
-    const through = parts.slice(0, at + 1).join("/");
-    const target = targets.get(through) ?? "";
-    if (target === "" || target.includes("\0")) return { reason: "it is a symbolic link to nothing the commit holds" };
-    if (target.startsWith("/") || /^[A-Za-z]:/u.test(target)) return { reason: "it is a symbolic link out of the tree, which the history does not follow" };
-    const joined = path.posix.normalize(path.posix.join(path.posix.dirname(through), target, ...parts.slice(at + 1)));
-    if (joined === ".." || joined.startsWith("../")) return { reason: "it is a symbolic link out of the tree, which the history does not follow" };
-    current = joined === "." ? "" : joined.replace(/\/$/u, "");
+    resolved.push(part);
+    const here = resolved.join("/");
+    const entry = listing.get(here);
+    if (entry?.mode === LINK_MODE) {
+      if (hops === LINK_HOPS) return { reason: `it is a symbolic link in a chain that does not end within ${LINK_HOPS} links, a cycle or longer` };
+      hops += 1;
+      const target = targets.get(here) ?? "";
+      if (target === "" || target.includes("\0")) return { reason: NOTHING };
+      if (target.startsWith("/") || /^[A-Za-z]:/u.test(target)) return { reason: OUT_OF_TREE };
+      // The link's own part gives way to its target, read from the folder the link stands in.
+      resolved.pop();
+      remaining = [...target.split("/"), ...remaining];
+      continue;
+    }
+    // A file or a submodule with more of the path after it: the path leads nowhere.
+    if (entry !== undefined && remaining.some((rest) => rest !== "" && rest !== ".")) return { reason: NOTHING };
   }
-  return { reason: `it is a symbolic link in a chain that does not end within ${LINK_HOPS} links, a cycle or longer` };
+  const at = resolved.join("/");
+  const entry = listing.get(at);
+  if (entry !== undefined && (entry.mode === FILE_MODE || entry.mode === EXECUTABLE_MODE)) return { file: entry };
+  if (entry?.mode === SUBMODULE_MODE || folders.has(at) || at === "") return { reason: TO_FOLDER };
+  return { reason: NOTHING };
 }
+
+const OUT_OF_TREE = "it is a symbolic link out of the tree, which the history does not follow";
+const NOTHING = "it is a symbolic link to nothing the commit holds";
+const TO_FOLDER = "it is a symbolic link to a folder, which the history does not follow";
 
 const folderCache = new WeakMap<ReadonlyMap<string, unknown>, Set<string>>();
 

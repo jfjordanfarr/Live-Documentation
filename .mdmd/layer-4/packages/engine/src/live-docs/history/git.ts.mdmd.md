@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/history/git.ts
-- Generated At: 2026-11-19T20:41:21.296Z
+- Generated At: 2026-11-19T20:45:38.779Z
 
 ## Authored
 ### Purpose
@@ -87,14 +87,16 @@ Where a symbolic link of a commit's tree leads, read through the tree's own list
 
 #### `followLink` {#symbol-followlink}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L275)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L277)
 - Returns: [`LinkEnd`](#symbol-linkend)
 - Parameters: `listing`: `ReadonlyMap`; `targets`: `ReadonlyMap`
 
 ##### `followLink` — Summary
-Follows a symbolic link of a commit's tree to what it names, through the commit's own listing: a link in the middle
-of a path is followed too, up to {@link LINK_HOPS} links. A link that reaches a regular file of the tree gives that
-file's mode and blob; any other gives the reason it is not followed.
+Follows a symbolic link of a commit's tree to what it names, through the commit's own listing and as the disk would:
+one part of the path at a time, a link met on the way followed before the next part, so that a `..` after a link
+climbs from where the link leads (`l -> a/b/../z.txt` with `a/b -> ../x/y` reads `x/z.txt`). Up to {@link LINK_HOPS}
+links are followed. A link that reaches a regular file of the tree gives that file's mode and blob; any other gives
+the reason it is not followed.
 
 ##### `followLink` — Parameters
 - `link`: The link's repository-relative path.
@@ -103,7 +105,7 @@ file's mode and blob; any other gives the reason it is not followed.
 
 #### `writeStoredTree` {#symbol-writestoredtree}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L368)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L387)
 - Parameters: `options`: [`WorkingTreeOptions`](./versionControl.ts.mdmd.md#symbol-workingtreeoptions)
 
 ##### `writeStoredTree` — Summary
@@ -132,7 +134,7 @@ The entries not written, in the tree's order.
 
 #### `parseMainline` {#symbol-parsemainline}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L587)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L606)
 - Returns: [`MainlineChange`](./versionControl.ts.mdmd.md#symbol-mainlinechange)[]
 
 ##### `parseMainline` — Summary
@@ -140,14 +142,14 @@ The changes of `git rev-list --format` with the mainline's format, oldest first 
 
 #### `parseTags` {#symbol-parsetags}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L599)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L618)
 
 ##### `parseTags` — Summary
 The changes the tags of `git for-each-ref --format='%(objectname) %(*objectname)'` name: an annotated tag's peeled change, a light tag's own.
 
 #### `parseNameStatus` {#symbol-parsenamestatus}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L611)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L630)
 - Returns: [`VersionChanges`](./versionControl.ts.mdmd.md#symbol-versionchanges)
 
 ##### `parseNameStatus` — Summary
