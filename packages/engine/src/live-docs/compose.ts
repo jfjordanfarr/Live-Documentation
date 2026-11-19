@@ -15,6 +15,7 @@ import path from "node:path";
 
 import type { LiveDocumentationConfig } from "../config/liveDocumentationConfig";
 import { getSyntaxByPath } from "../languages";
+import { compareText } from "../tooling/compareText";
 import { matchesPathPattern } from "./archetype";
 import { RESERVED_HEADING_NAMES } from "./coreConstants";
 import type {
@@ -811,11 +812,11 @@ export function composeEntries(args: {
   });
   const commands = args.declaredBy
     .filter((declared) => declared.reason === "command")
-    .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "") || a.declarer.localeCompare(b.declarer));
+    .sort((a, b) => compareText(a.name ?? "", b.name ?? "") || compareText(a.declarer, b.declarer));
   for (const declared of commands) {
     entries.push({ reason: "command", command: declared.name ?? "", declarer: declarerOf(declared.declarer) });
   }
-  const modules = args.declaredBy.filter((declared) => declared.reason === "module").sort((a, b) => a.declarer.localeCompare(b.declarer));
+  const modules = args.declaredBy.filter((declared) => declared.reason === "module").sort((a, b) => compareText(a.declarer, b.declarer));
   for (const declared of modules) {
     entries.push({ reason: "module", declarer: declarerOf(declared.declarer) });
   }
@@ -853,7 +854,7 @@ export function composeReExports(args: {
   docExtension: string;
   symbolIndex?: WorkspaceSymbolIndex;
 }): ReExport[] {
-  const sorted = [...args.reExports].sort((a, b) => a.name.localeCompare(b.name));
+  const sorted = [...args.reExports].sort((a, b) => compareText(a.name, b.name));
 
   return sorted.map((entry) => {
     const slugValue = createSymbolSlug(entry.name);

@@ -14,6 +14,7 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 
+import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, WorkspaceSymbolIndex } from "../core";
 import { PROJECT_KINDS } from "../openings";
@@ -80,7 +81,7 @@ export const projectAdapter: LanguageAdapter = {
     }
 
     const dependencies = [
-      ...Array.from(projects.values()).sort((left, right) => left.specifier.localeCompare(right.specifier)),
+      ...Array.from(projects.values()).sort((left, right) => compareText(left.specifier, right.specifier)),
       ...Array.from(external).sort().map((specifier) => ({ specifier, symbols: [], kind: "import" as const }))
     ];
     return { symbols, dependencies };

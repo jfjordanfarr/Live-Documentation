@@ -8,6 +8,7 @@
  * @module csharp.xmldoc
  */
 
+import { compareText } from "../../tooling/compareText";
 import type {
   SymbolDocumentation,
   SymbolDocumentationException,
@@ -197,11 +198,11 @@ export function extractExceptionTags(block: string): SymbolDocumentationExceptio
   }
   regex.lastIndex = 0;
   results.sort((a, b) => {
-    const typeDiff = (a.type ?? "").localeCompare(b.type ?? "");
+    const typeDiff = compareText(a.type ?? "", b.type ?? "");
     if (typeDiff !== 0) {
       return typeDiff;
     }
-    return (a.description ?? "").localeCompare(b.description ?? "");
+    return compareText(a.description ?? "", b.description ?? "");
   });
   return results;
 }
@@ -285,15 +286,15 @@ export function extractLinkTags(block: string): SymbolDocumentationLink[] {
   }
 
   links.sort((a, b) => {
-    const targetDiff = a.target.localeCompare(b.target);
+    const targetDiff = compareText(a.target, b.target);
     if (targetDiff !== 0) {
       return targetDiff;
     }
-    const kindDiff = a.kind.localeCompare(b.kind);
+    const kindDiff = compareText(a.kind, b.kind);
     if (kindDiff !== 0) {
       return kindDiff;
     }
-    return (a.text ?? "").localeCompare(b.text ?? "");
+    return compareText(a.text ?? "", b.text ?? "");
   });
 
   return links;
@@ -320,7 +321,7 @@ export function extractRawDocFragments(block: string): string[] {
   }
   includeRegex.lastIndex = 0;
 
-  return Array.from(fragments).sort((a, b) => a.localeCompare(b));
+  return Array.from(fragments).sort((a, b) => compareText(a, b));
 }
 
 /**
@@ -343,7 +344,7 @@ export function detectUnsupportedTags(block: string): string[] {
     }
   }
   regex.lastIndex = 0;
-  return Array.from(unsupported).sort((a, b) => a.localeCompare(b));
+  return Array.from(unsupported).sort((a, b) => compareText(a, b));
 }
 
 /**

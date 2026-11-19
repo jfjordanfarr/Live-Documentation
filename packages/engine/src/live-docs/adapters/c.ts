@@ -34,6 +34,7 @@ import { promises as fs, readdirSync, statSync } from "node:fs";
 import path from "node:path";
 
 import { cSyntax } from "../../languages";
+import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import type {
   DependencyEntry,
@@ -739,7 +740,7 @@ function baseDirectories(includingDirectory: string, workspaceRoot: string, stra
       ]);
     case "any-directory":
       return workspaceDirectories(workspaceRoot).sort(
-        (left, right) => directoryDistance(includingDirectory, left) - directoryDistance(includingDirectory, right) || left.localeCompare(right)
+        (left, right) => directoryDistance(includingDirectory, left) - directoryDistance(includingDirectory, right) || compareText(left, right)
       );
   }
 }
@@ -809,7 +810,7 @@ async function toDependencies(facts: FileFacts, absolutePath: string, workspaceR
       kind: "import"
     });
   }
-  return Array.from(dependencies.values()).sort((left, right) => left.specifier.localeCompare(right.specifier));
+  return Array.from(dependencies.values()).sort((left, right) => compareText(left.specifier, right.specifier));
 }
 
 /**

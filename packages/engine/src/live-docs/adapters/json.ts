@@ -28,6 +28,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import ts from "typescript";
 
+import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult } from "../core";
 import type { DeclaredEntry } from "../coreTypes";
@@ -108,7 +109,7 @@ function declaredEntries(manifest: Record<string, unknown>, manifestAbsolute: st
     if (file) declare({ reason: "module", file });
   }
 
-  return Array.from(declared.values()).sort((a, b) => a.file.localeCompare(b.file) || a.reason.localeCompare(b.reason) || (a.name ?? "").localeCompare(b.name ?? ""));
+  return Array.from(declared.values()).sort((a, b) => compareText(a.file, b.file) || compareText(a.reason, b.reason) || compareText(a.name ?? "", b.name ?? ""));
 }
 
 /** The workspace file one command runs: the first token naming one that is not a tooling input, flags passed over. */
@@ -451,7 +452,7 @@ export const jsonAdapter: LanguageAdapter = {
     }
 
     // Sort dependencies by resolved path for deterministic output
-    dependencies.sort((a, b) => (a.resolvedPath ?? "").localeCompare(b.resolvedPath ?? ""));
+    dependencies.sort((a, b) => compareText(a.resolvedPath ?? "", b.resolvedPath ?? ""));
 
     return {
       symbols,

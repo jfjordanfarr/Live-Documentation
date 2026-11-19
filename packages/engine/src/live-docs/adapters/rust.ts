@@ -27,6 +27,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 
 import { rustSyntax } from "../../languages";
+import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDocumentation, TypeReference } from "../core";
 import type { ProgramEntry } from "../coreTypes";
@@ -817,7 +818,7 @@ function toSymbols(facts: FileFacts): PublicSymbolEntry[] {
     .sort((left, right) =>
       (left.location.line - right.location.line) ||
       (left.location.character - right.location.character) ||
-      left.name.localeCompare(right.name)
+      compareText(left.name, right.name)
     );
 }
 
@@ -881,9 +882,9 @@ function toDependencies(thisFile: string, table: ModuleTable): DependencyEntry[]
   }
 
   const dependencies: DependencyEntry[] = Array.from(byTarget.entries())
-    .sort(([left], [right]) => left.localeCompare(right))
+    .sort(([left], [right]) => compareText(left, right))
     .map(([file, symbols]) => ({ specifier: file, resolvedPath: file, symbols: Array.from(symbols).sort(), kind: "import" as const }));
-  for (const [crate, symbols] of Array.from(external.entries()).sort(([left], [right]) => left.localeCompare(right))) {
+  for (const [crate, symbols] of Array.from(external.entries()).sort(([left], [right]) => compareText(left, right))) {
     dependencies.push({ specifier: crate, symbols: Array.from(symbols).sort(), kind: "import" });
   }
   return dependencies;

@@ -30,6 +30,7 @@ import { promises as fs, readdirSync, statSync } from "node:fs";
 import path from "node:path";
 
 import { pythonSyntax } from "../../languages";
+import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDocumentation, TypeReference } from "../core";
 import type { LanguageAdapter } from "./index";
@@ -571,7 +572,7 @@ function toSymbols(facts: ModuleFacts, bindings: Map<string, ModuleBinding>): Pu
   return entries.sort((left, right) =>
     (left.location!.line - right.location!.line) ||
     (left.location!.character - right.location!.character) ||
-    left.name.localeCompare(right.name)
+    compareText(left.name, right.name)
   );
 }
 
@@ -648,9 +649,9 @@ async function toDependencies(
       const relative = normalizeWorkspacePath(path.relative(workspaceRoot, file));
       return { specifier: target.specifier ?? relative, resolvedPath: relative, symbols: Array.from(target.symbols).sort(), kind: "import" as const };
     })
-    .sort((left, right) => left.resolvedPath.localeCompare(right.resolvedPath));
+    .sort((left, right) => compareText(left.resolvedPath, right.resolvedPath));
 
-  for (const [specifier, symbols] of Array.from(external.entries()).sort(([left], [right]) => left.localeCompare(right))) {
+  for (const [specifier, symbols] of Array.from(external.entries()).sort(([left], [right]) => compareText(left, right))) {
     dependencies.push({ specifier, symbols: Array.from(symbols).sort(), kind: "import" });
   }
   return { dependencies, bindings };

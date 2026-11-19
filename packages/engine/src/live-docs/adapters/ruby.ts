@@ -1,6 +1,7 @@
 import { promises as fs, statSync } from "node:fs";
 import path from "node:path";
 
+import { compareText } from "../../tooling/compareText";
 import type {
   DependencyEntry,
   PublicSymbolEntry,
@@ -230,7 +231,7 @@ function extractSymbols(content: string): PublicSymbolEntry[] {
     if (charDiff !== 0) {
       return charDiff;
     }
-    return left.name.localeCompare(right.name);
+    return compareText(left.name, right.name);
   });
 
   return entries;
@@ -275,7 +276,7 @@ function extractDependencies(content: string, absolutePath: string, workspaceRoo
     }
   }
 
-  return Array.from(dependencies.values()).sort((left, right) => left.specifier.localeCompare(right.specifier));
+  return Array.from(dependencies.values()).sort((left, right) => compareText(left.specifier, right.specifier));
 }
 
 /** Whether a top-level line outside comments is the guard that runs the file only as the program. */

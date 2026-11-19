@@ -12,6 +12,7 @@ import * as fs from "node:fs/promises";
 import path from "node:path";
 import ts from "typescript";
 
+import { compareText } from "../tooling/compareText";
 import { normalizeWorkspacePath } from "../tooling/pathUtils";
 import { MODULE_RESOLUTION_EXTENSIONS, SUPPORTED_SCRIPT_EXTENSIONS } from "./coreConstants";
 import type {
@@ -115,7 +116,7 @@ export async function collectDependencies(params: {
     });
   }
 
-  entries.sort((a, b) => displayDependencyKey(a).localeCompare(displayDependencyKey(b)));
+  entries.sort((a, b) => compareText(displayDependencyKey(a), displayDependencyKey(b)));
   return entries;
 }
 
@@ -227,7 +228,7 @@ export function mergeDependencyEntries(
   }
 
   const merged = Array.from(map.values());
-  merged.sort((a, b) => displayDependencyKey(a).localeCompare(displayDependencyKey(b)));
+  merged.sort((a, b) => compareText(displayDependencyKey(a), displayDependencyKey(b)));
   return merged;
 }
 

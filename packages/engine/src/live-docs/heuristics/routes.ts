@@ -13,6 +13,7 @@
 
 import ts from "typescript";
 
+import { compareText } from "../../tooling/compareText";
 import type { WorkspaceFileIndex } from "../adapters";
 import type { DependencyEntry, WorkspaceSymbolIndex } from "../coreTypes";
 import { chooseServers, isHttpMethod, matchRoute, routeSegments, routeSymbolName, type RoutePattern, type ServedRoute } from "../openings";
@@ -72,7 +73,7 @@ export function inferRouteDependencies(params: {
   }
 
   const dependencies: DependencyEntry[] = Array.from(byFile.entries())
-    .sort(([left], [right]) => left.localeCompare(right))
+    .sort(([left], [right]) => compareText(left, right))
     .map(([file, names]) => ({ specifier: file, resolvedPath: file, symbols: Array.from(names).sort(), kind: "import" as const, basis: "contract" as const }));
   for (const name of Array.from(external).sort()) {
     dependencies.push({ specifier: name, symbols: [], kind: "import", basis: "contract" });

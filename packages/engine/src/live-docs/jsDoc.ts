@@ -11,6 +11,7 @@
 
 import ts from "typescript";
 
+import { compareText } from "../tooling/compareText";
 import type {
   SymbolDocumentation,
   SymbolDocumentationExample,
@@ -221,13 +222,13 @@ export function extractJsDocDocumentation(node: ts.Node): SymbolDocumentation | 
   if (parameterMap.size > 0) {
     documentation.parameters = Array.from(parameterMap.entries())
       .map(([name, description]) => ({ name, description: description?.trim() || undefined }))
-      .sort((a, b) => a.name.localeCompare(b.name));
+      .sort((a, b) => compareText(a.name, b.name));
   }
 
   if (typeParameterMap.size > 0) {
     documentation.typeParameters = Array.from(typeParameterMap.entries())
       .map(([name, description]) => ({ name, description: description?.trim() || undefined }))
-      .sort((a, b) => a.name.localeCompare(b.name));
+      .sort((a, b) => compareText(a.name, b.name));
   }
 
   if (examples.length > 0) {
@@ -238,15 +239,15 @@ export function extractJsDocDocumentation(node: ts.Node): SymbolDocumentation | 
     documentation.links = links
       .slice()
       .sort((a, b) => {
-        const targetDiff = a.target.localeCompare(b.target);
+        const targetDiff = compareText(a.target, b.target);
         if (targetDiff !== 0) {
           return targetDiff;
         }
-        const kindDiff = a.kind.localeCompare(b.kind);
+        const kindDiff = compareText(a.kind, b.kind);
         if (kindDiff !== 0) {
           return kindDiff;
         }
-        return (a.text ?? "").localeCompare(b.text ?? "");
+        return compareText(a.text ?? "", b.text ?? "");
       });
   }
 
@@ -256,16 +257,16 @@ export function extractJsDocDocumentation(node: ts.Node): SymbolDocumentation | 
       .sort((a, b) => {
         const aKey = a.type ?? "";
         const bKey = b.type ?? "";
-        const typeDiff = aKey.localeCompare(bKey);
+        const typeDiff = compareText(aKey, bKey);
         if (typeDiff !== 0) {
           return typeDiff;
         }
-        return (a.description ?? "").localeCompare(b.description ?? "");
+        return compareText(a.description ?? "", b.description ?? "");
       });
   }
 
   if (rawFragments.length > 0) {
-    documentation.rawFragments = Array.from(new Set(rawFragments)).sort((a, b) => a.localeCompare(b));
+    documentation.rawFragments = Array.from(new Set(rawFragments)).sort((a, b) => compareText(a, b));
   }
 
   return hasDocumentationContent(documentation) ? documentation : undefined;
