@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/e2e/playwright.config.ts
 - Entry: tooling
-- Generated At: 2026-11-19T01:35:30.765Z
+- Generated At: 2026-11-19T07:03:55.997Z
 
 ## Authored
 ### Purpose
@@ -31,17 +31,20 @@ Playwright configuration for the Explorer's browser suite: one Chromium worker o
 ### Public Symbols
 #### `configFor` {#symbol-configfor}
 - Type: const
-- Source: [source](../../../../tests/e2e/playwright.config.ts#L27)
+- Source: [source](../../../../tests/e2e/playwright.config.ts#L32)
 
 #### `default` {#symbol-default}
 - Type: default (default)
-- Source: [source](../../../../tests/e2e/playwright.config.ts#L82)
+- Source: [source](../../../../tests/e2e/playwright.config.ts#L88)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `@playwright/test` - `defineConfig`, `devices`
+- `node:path` - `path`
 - [`local-storage.PERSISTED_UI_KEY`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_key)
 - [`local-storage.PERSISTED_UI_VERSION`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_version)
 - [`browser-launch.browserLaunchOptions`](./browser-launch.ts.mdmd.md#symbol-browserlaunchoptions)
+- [`served-build.ServerPort`](./served-build.ts.mdmd.md#symbol-serverport)
+- [`served-build.serverPortForThisRun`](./served-build.ts.mdmd.md#symbol-serverportforthisrun)
 <!-- LIVE-DOC:END Dependencies -->

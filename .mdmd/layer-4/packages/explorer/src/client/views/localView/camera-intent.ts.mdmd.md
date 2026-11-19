@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/camera-intent.ts
-- Generated At: 2026-11-19T05:51:25.666Z
+- Generated At: 2026-11-19T07:03:49.467Z
 
 ## Authored
 ### Purpose
@@ -150,15 +150,18 @@ left out. `held` is what the last frame held, oldest first.
 - Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L192)
 
 ##### `FRAMING_EASE_MIN_MS` — Summary
-The shortest and longest a re-frame of the following camera eases.
+The shortest a re-frame of the following camera eases.
 
 #### `FRAMING_EASE_MAX_MS` {#symbol-framing_ease_max_ms}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L193)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L194)
+
+##### `FRAMING_EASE_MAX_MS` — Summary
+The longest a re-frame of the following camera eases.
 
 #### `framingEaseMs` {#symbol-framingeasems}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L201)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L202)
 - Parameters: `start`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `end`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `frame`: [`Frame`](./layout-measure.ts.mdmd.md#symbol-frame)
 
 ##### `framingEaseMs` — Summary
@@ -169,7 +172,7 @@ made longer than the eye will follow.
 
 #### `framingTravel` {#symbol-framingtravel}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L214)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L215)
 - Parameters: `start`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `end`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `frame`: [`Frame`](./layout-measure.ts.mdmd.md#symbol-frame)
 
 ##### `framingTravel` — Summary
@@ -178,7 +181,7 @@ crosses a view of empty map, and the following camera takes the smooth zoom's pa
 
 #### `smoothZoom` {#symbol-smoothzoom}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L227)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L228)
 - Returns: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform)
 - Parameters: `start`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `end`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `frame`: [`Frame`](./layout-measure.ts.mdmd.md#symbol-frame)
 
@@ -190,7 +193,7 @@ as a short one from farther away. Never farther than `floor`; the returned `dura
 
 #### `sameCamera` {#symbol-samecamera}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L257)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L258)
 - Parameters: `a`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `b`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform)
 
 ##### `sameCamera` — Summary
@@ -198,14 +201,14 @@ Whether two cameras differ by less than the eye sees: half a pixel of pan and a 
 
 #### `easeInOutCubic` {#symbol-easeinoutcubic}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L262)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L263)
 
 ##### `easeInOutCubic` — Summary
 Ease in and out, cubic.
 
 #### `ARRIVAL_ENDING_INPUTS` {#symbol-arrival_ending_inputs}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L270)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L271)
 
 ##### `ARRIVAL_ENDING_INPUTS` — Summary
 The input of a person's on the map that ends an arrival where it stands: their hand outranks the camera. A pointer
@@ -213,7 +216,7 @@ pressed, a wheel turned, a key pressed or a touch begun; a pointer that only pas
 
 #### `revealPan` {#symbol-revealpan}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L279)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L280)
 - Parameters: `newcomer`: [`Bounds`](./layout-measure.ts.mdmd.md#symbol-bounds); `camera`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `frame`: [`Frame`](./layout-measure.ts.mdmd.md#symbol-frame)
 
 ##### `revealPan` — Summary
@@ -225,7 +228,7 @@ newcomer is in the picture's own units.
 
 #### `unionOf` {#symbol-unionof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L293)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L294)
 - Returns: [`Bounds`](./layout-measure.ts.mdmd.md#symbol-bounds)
 
 ##### `unionOf` — Summary
