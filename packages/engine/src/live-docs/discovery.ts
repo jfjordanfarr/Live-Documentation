@@ -163,7 +163,7 @@ function isNeverDocumented(relativePath: string, docsRoot: string | undefined): 
  * `undefined` when it is not a folder within the workspace: the workspace
  * itself, or somewhere outside it.
  */
-function docsRootWithin(workspaceRoot: string, config: LiveDocumentationConfig): string | undefined {
+export function docsRootWithin(workspaceRoot: string, config: LiveDocumentationConfig): string | undefined {
   const relative = normalizeWorkspacePath(path.relative(workspaceRoot, path.resolve(workspaceRoot, config.root)));
   if (relative === "" || relative === ".." || relative.startsWith("../") || path.isAbsolute(relative)) {
     return undefined;

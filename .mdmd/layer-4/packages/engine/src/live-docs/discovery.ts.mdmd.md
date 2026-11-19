@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/discovery.ts
-- Generated At: 2026-11-09T00:01:53.955Z
+- Generated At: 2026-11-19T19:05:05.236Z
 
 ## Authored
 ### Purpose
@@ -27,6 +27,17 @@ File discovery and the workspace-wide indexes for Live Documentation. Locates wo
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
+#### `docsRootWithin` {#symbol-docsrootwithin}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L166)
+- Parameters: `config`: [`LiveDocumentationConfig`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
+
+##### `docsRootWithin` — Summary
+The configured docs root as a workspace-relative path, however the
+configuration spells it (`.mdmd`, `./.mdmd/`, an absolute path), or
+`undefined` when it is not a folder within the workspace: the workspace
+itself, or somewhere outside it.
+
 #### `discoverTargetFiles` {#symbol-discovertargetfiles}
 - Type: function
 - Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L211)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/generator/src/history/computeHistory.ts
-- Generated At: 2026-11-19T17:55:40.502Z
+- Generated At: 2026-11-19T19:05:09.555Z
 
 ## Authored
 ### Purpose
@@ -139,7 +139,7 @@ never shrinks the estimate a whole history was measured to need.
 
 #### `formatBytes` {#symbol-formatbytes}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L815)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L816)
 
 ##### `formatBytes` — Summary
 A size in the units a person reads it in.
@@ -191,7 +191,7 @@ A size in the units a person reads it in.
 - [`regenerate.indexPath`](./regenerate.ts.mdmd.md#symbol-indexpath)
 - [`regenerate`](./regenerate.ts.mdmd.md#symbol-regenerate)
 - [`regenerate.summaryPath`](./regenerate.ts.mdmd.md#symbol-summarypath)
-- [`regenerate.unread`](./regenerate.ts.mdmd.md#symbol-unread)
+- [`regenerate.treeOptions`](./regenerate.ts.mdmd.md#symbol-treeoptions)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

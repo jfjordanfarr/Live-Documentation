@@ -59,7 +59,7 @@ import { textsOfFile, WORDS_DIRECTORY, wordsStore, type WordsHead } from "@live-
 
 import { generatorIdentity } from "./generatorIdentity";
 import { headDifferences } from "./headCheck";
-import { indexPath, regenerate, Scratch, summaryPath, unread } from "./regenerate";
+import { indexPath, regenerate, Scratch, summaryPath, treeOptions } from "./regenerate";
 
 /** What to compute. */
 export interface HistoryOptions {
@@ -150,7 +150,7 @@ const LOCK_NAME = /^run\.([0-9a-f]{12})\.(\d+)\.([0-9a-z]+)\.lock$/u;
 /** How many times a run that met another's claim tries again, a short random wait apart, before it refuses. */
 const LOCK_ATTEMPTS = 6;
 
-/** The list beside the sequence of the files the history did not read, since the disk could not hold them. */
+/** The list beside the sequence of the entries the history did not write into a commit's tree, and so did not read, each with why. */
 const UNWRITTEN_LIST = "unwritten.txt";
 
 /** The marker a lens's cache folder holds once a run wrote a whole history from it: when, and of which head. */
@@ -314,7 +314,7 @@ async function run(options: HistoryOptions, context: RunContext): Promise<Histor
   const unwrittenList = await writeUnwritten(historyFolder, unwritten);
   if (unwrittenList !== undefined) {
     options.progress(
-      `${unwritten.length} files at ${new Set(unwritten.map(([commit]) => commit)).size} commits were not read, since the disk their trees were written to could not hold them; they read in the history as gone at those commits. The list is ${relative(unwrittenList)}`
+      `${unwritten.length} files at ${new Set(unwritten.map(([commit]) => commit)).size} commits were not written into their trees and so not read, each for the reason the list gives (a symbolic link that leads to no file of the tree, a name this disk cannot hold); they read in the history as gone at those commits. The list is ${relative(unwrittenList)}`
     );
   }
   await writeInPlace(path.join(cacheFolder, WHOLE_MARKER), `${JSON.stringify({ head: end.head, changes: sampled.length, at: new Date().toISOString() })}\n`);
@@ -651,8 +651,8 @@ async function buildSequence(sampled: readonly MainlineChange[], context: Sequen
 }
 
 /**
- * Writes beside the sequence every file the history did not read, at each commit, because the disk its tree was written
- * to could not hold it (`<history folder>/unwritten.txt`, a line each: the commit, the path and the reason), or removes
+ * Writes beside the sequence every entry the history did not write into a commit's tree, and so did not read, with
+ * why (`<history folder>/unwritten.txt`, a line each: the commit, the path and the reason), or removes
  * that list where there is none. The sequence does not carry them: such a file reads in it as gone at that commit.
  *
  * @returns The list's path, when there is one.
@@ -664,7 +664,7 @@ async function writeUnwritten(historyFolder: string, unwritten: ReadonlyArray<[c
     return undefined;
   }
   const lines = unwritten.map(([commit, entry, reason]) => `${commit}\t${JSON.stringify(entry)}\t${reason}`);
-  await writeInPlace(file, `# The files the history did not read, at each commit, because this disk could not hold them: commit, path, reason.\n${lines.join("\n")}\n`);
+  await writeInPlace(file, `# The entries the history did not write into each commit's tree, and so did not read: commit, path, reason.\n${lines.join("\n")}\n`);
   return file;
 }
 
@@ -704,7 +704,8 @@ async function checkHead(sequence: HistorySequence, context: HeadCheckContext): 
   const scratch = await context.scratch.folder("live-docs-history-head-");
   let committed: LiveDocGraph;
   try {
-    const tree = await context.versionControl.workingTree(context.head, path.join(scratch, path.basename(scratch)), unread(context.configuration));
+    const directory = path.join(scratch, path.basename(scratch));
+    const tree = await context.versionControl.workingTree(context.head, directory, treeOptions(context.configuration, directory));
     try {
       committed = await readLiveDocGraph({ workspaceRoot: tree.root, config: context.configuration });
     } catch (error) {

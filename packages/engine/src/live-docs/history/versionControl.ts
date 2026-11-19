@@ -56,13 +56,28 @@ export interface WorkingTree {
    */
   environment: Record<string, string>;
   /**
-   * The change's files the tree does not hold, each with the reason: a symbolic link, which is never written, a path
-   * that would leave the tree, a name the disk cannot hold, or an entry clashing with another; the summary says each
-   * was not read. The files left out by the caller's choice are not among them.
+   * The change's entries the tree does not hold, each with the reason: a symbolic link that does not lead to a file
+   * of the tree, or lies at or along the docs root; a path that would leave the tree; a name the disk cannot hold; an
+   * entry clashing with another. The summary says each was not read. A file written empty is not among them.
    */
   unwritten: Array<{ path: string; reason: string }>;
   /** Removes the tree and whatever the version control kept of it. */
   remove(): Promise<void>;
+}
+
+/** What the caller asks of a change's tree beyond the change's own entries. */
+export interface WorkingTreeOptions {
+  /**
+   * The files whose names must stand but whose content no reader of the tree reads, by repository-relative path: each
+   * is written as an empty file, so that a reader that asks whether it exists finds it. A link written as a copy is
+   * asked by its own path.
+   */
+  contentless?: (path: string) => boolean;
+  /**
+   * The docs root, repository-relative, where the reader of the tree writes and prunes: a symbolic link at it, above
+   * it or beneath it is not written even as a copy.
+   */
+  docsRoot?: string;
 }
 
 /** What the history command needs of a version control. */
@@ -75,12 +90,8 @@ export interface VersionControl {
   mainline(): Promise<MainlineChange[]>;
   /** The ids of the changes a tag names. */
   tagged(): Promise<Set<string>>;
-  /**
-   * Writes the tree of a change into `directory`, which must not exist yet, but for the files `leaveOut` names by their
-   * repository-relative paths: those the reader of the tree never opens, which are neither written nor named unwritten,
-   * and which the tree's own listing still holds.
-   */
-  workingTree(change: string, directory: string, leaveOut?: (path: string) => boolean): Promise<WorkingTree>;
+  /** Writes the tree of a change into `directory`, which must not exist yet, as `options` asks. */
+  workingTree(change: string, directory: string, options?: WorkingTreeOptions): Promise<WorkingTree>;
   /** What happened between two changes. */
   changesBetween(from: string, to: string): Promise<VersionChanges>;
 }

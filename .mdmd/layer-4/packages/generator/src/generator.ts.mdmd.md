@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/generator/src/generator.ts
 - Entry: module of [`packages/generator/package.json`](../package.json.mdmd.md)
-- Generated At: 2026-11-19T18:10:05.260Z
+- Generated At: 2026-11-19T19:05:09.511Z
 
 ## Authored
 ### Purpose
@@ -65,25 +65,6 @@ behind the `Entry` lines (2026-10-15).
 
 ##### `generateLiveDocs` — Parameters
 - `options`: Generation configuration including workspace root, config overrides, and logger.
-
-#### `scanMarkers` {#symbol-scanmarkers}
-- Type: function
-- Source: [source](../../../../../packages/generator/src/generator.ts#L337)
-- Parameters: `config`: [`LiveDocumentationConfig`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
-
-##### `scanMarkers` — Summary
-What makes a folder a scan of its own, by names alone: a docs root (`<root>/<baseLayer>`) or a configuration file of
-this tool in it. {@link scansWithin} looks for these, and {@link marksScan} says of a path whether it is one or lies
-in one, so that whoever writes a tree for the generator (the history's tree writer, which leaves out what
-`exclude` names) keeps what this reader looks for: a scan nested under an excluded folder is warned of all the same.
-
-#### `marksScan` {#symbol-marksscan}
-- Type: function
-- Source: [source](../../../../../packages/generator/src/generator.ts#L342)
-- Parameters: `config`: [`LiveDocumentationConfig`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
-
-##### `marksScan` — Summary
-Whether a workspace-relative file is one of {@link scanMarkers}' configuration files or lies under one of its docs roots, at any depth.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

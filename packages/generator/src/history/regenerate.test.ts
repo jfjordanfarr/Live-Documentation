@@ -7,14 +7,15 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { normalizeLiveDocumentationConfig } from "@live-documentation/engine/config/liveDocumentationConfig";
 import { writeStoredTree } from "@live-documentation/engine/live-docs/history/git";
 
-import { generateLiveDocs, marksScan } from "../generator";
-import { unread } from "./regenerate";
+import { generateLiveDocs } from "../generator";
+import { treeOptions } from "./regenerate";
 
 /**
- * What the history's tree leaves out (`unread`) against what the generator looks for in a tree by names alone: a
- * scan nested under a folder the configuration excludes is still written, so the generator still warns of it.
+ * What the history's tree holds (`treeOptions`) against what the generator looks for in a tree by names alone: every
+ * name stands, an excluded file no reader reads only empty, so a scan nested under a folder the configuration excludes
+ * is still found, and the generator still warns of it.
  */
-describe("a commit's tree as the history writes it, leaving out what the configuration excludes", () => {
+describe("a commit's tree as the history writes it, emptying what the configuration excludes and no reader reads", () => {
   const isolated = { ...process.env, GIT_CONFIG_GLOBAL: os.devNull, GIT_CONFIG_NOSYSTEM: "1", GIT_AUTHOR_NAME: "Ada", GIT_AUTHOR_EMAIL: "ada@example.invalid", GIT_COMMITTER_NAME: "Ada", GIT_COMMITTER_EMAIL: "ada@example.invalid" };
   const configuration = normalizeLiveDocumentationConfig({ root: ".mdmd", baseLayer: "layer-4", exclude: ["archive/**"] });
   let scratch: string;
@@ -45,12 +46,15 @@ describe("a commit's tree as the history writes it, leaving out what the configu
     await fs.rm(scratch, { recursive: true, force: true });
   });
 
-  it("leaves out the excluded files and keeps those that mark a nested scan, so the generator warns of it as over a checkout", async () => {
+  it("writes every name, empties the excluded files no reader reads, and the generator warns of a nested scan as over a checkout", async () => {
     const tree = path.join(scratch, "tree");
     await fs.mkdir(tree);
-    expect(await writeStoredTree(repository, commit, tree, { leaveOut: unread(configuration) })).toEqual([]);
-    await expect(fs.access(path.join(tree, "archive", "picture.png"))).rejects.toThrow();
-    await expect(fs.access(path.join(tree, "archive", "notes.md"))).rejects.toThrow();
+    expect(await writeStoredTree(repository, commit, tree, treeOptions(configuration, tree))).toEqual([]);
+    // No reader reads a picture or a note: their names stand, empty. A configuration file has a reader, and is whole.
+    expect(await fs.readFile(path.join(tree, "archive", "picture.png"), "utf8")).toBe("");
+    expect(await fs.readFile(path.join(tree, "archive", "notes.md"), "utf8")).toBe("");
+    expect(await fs.readFile(path.join(tree, "archive", "sub", ".live-docs.config.json"), "utf8")).toBe("{}\n");
+    expect(await fs.readFile(path.join(tree, "src", "a.ts"), "utf8")).toBe("/** A. */\nexport const a = 1;\n");
     const warned = async (root: string): Promise<string[]> => {
       const warnings: string[] = [];
       await generateLiveDocs({ workspaceRoot: root, config: configuration, dryRun: true, logger: { info: () => undefined, warn: (message) => warnings.push(message), error: () => undefined } });
@@ -62,12 +66,5 @@ describe("a commit's tree as the history writes it, leaving out what the configu
     expect(fromTree.join("\n")).toContain("archive/sub");
     // The same warnings as over the whole commit.
     expect(fromTree).toEqual(await warned(repository));
-  });
-
-  it("names a scan's marks by the generator's own rule: a configuration file anywhere, anything under a docs root anywhere", () => {
-    expect(marksScan("archive/sub/.live-docs.config.json", configuration)).toBe(true);
-    expect(marksScan("archive/other/.mdmd/layer-4/x.ts.mdmd.md", configuration)).toBe(true);
-    expect(marksScan("archive/other/.mdmd/layer-3/plan.md", configuration)).toBe(false);
-    expect(marksScan("archive/my.live-docs.config.json", configuration)).toBe(false);
   });
 });

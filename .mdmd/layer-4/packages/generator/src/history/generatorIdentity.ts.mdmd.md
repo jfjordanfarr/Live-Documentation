@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/generator/src/history/generatorIdentity.ts
-- Generated At: 2026-11-19T12:01:27.318Z
+- Generated At: 2026-11-19T19:05:09.578Z
 
 ## Authored
 ### Purpose
@@ -40,14 +40,14 @@ environment.
 
 #### `SUMMARY_ENTRIES` {#symbol-summary_entries}
 - Type: const
-- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L69)
+- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L71)
 
 ##### `SUMMARY_ENTRIES` — Summary
 The modules from which the guard reads what decides a summary: the summarizing process, and the command's side of it.
 
 #### `keysTheLens` {#symbol-keysthelens}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L75)
+- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L77)
 
 ##### `keysTheLens` — Summary
 Whether a file, by its repository-relative path, keys the lens: every file of the two packages but a test and the
@@ -55,7 +55,7 @@ TypeScript modules of the history folders that decide nothing of a summary, and 
 
 #### `generatorIdentity` {#symbol-generatoridentity}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L97)
+- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L99)
 
 ##### `generatorIdentity` — Summary
 The generator's package version and, when it runs from a checkout of this

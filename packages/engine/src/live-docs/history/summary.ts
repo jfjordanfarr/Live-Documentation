@@ -29,10 +29,11 @@
 import { createHash } from "node:crypto";
 
 import type { DocSection } from "../document";
-import { linkTarget, type EdgeBasis, type GraphEdge, type LiveDocGraph } from "../graph";
+import { linkTarget, resolveDocLink, type EdgeBasis, type GraphEdge, type LiveDocGraph } from "../graph";
 
 /** The version of the format of one change's summary in the cache. */
-export const HISTORY_SUMMARY_FORMAT = "live-docs-history-summary/3";
+// 4 since 2026-11-19: a file's `citedBy` holds the citing documents' paths, where 3 held the doc's labels.
+export const HISTORY_SUMMARY_FORMAT = "live-docs-history-summary/4";
 
 /** How a type reference stands in its symbol's signature, by the graph's name for the edge it makes. */
 export type ReferenceRole = "returns" | "parameter" | "extends" | "implements" | "constraint";
@@ -114,7 +115,10 @@ export interface SummaryFile {
   dependencies: DependencyRow[];
   /** Its `Re-Exported Symbol Anchors`, when it re-exports. */
   reExports?: ReExportRow[];
-  /** The documents outside the Live Docs whose markdown linked to it, its `Cited By`, by their workspace paths, when any did. */
+  /**
+   * The documents outside the Live Docs whose markdown linked to it, its `Cited By`, by their workspace paths read
+   * from the lines' links, when any did. Until format 4 the lines' labels, which write a backtick as an apostrophe.
+   */
   citedBy?: string[];
   /**
    * The hash of its authored block in the text store, when a doc stood at the change where the lens reads it and its
@@ -255,7 +259,9 @@ export function summarizeGraph(
         ...(entry.flags.length > 0 ? { flags: [...entry.flags] } : {})
       };
     });
-    const citedBy = (file.citedBy ?? []).map((entry) => entry.label);
+    // The citing document's path, which the reader of the summary holds to the bundle's exclusions, read from the
+    // link; its label, the path with a backtick written as an apostrophe, is made from it where the rows are read.
+    const citedBy = (file.citedBy ?? []).map((entry) => citingPath(file.docPath, entry));
     const reading = authored === undefined ? "read" : authored.get(file.docPath);
     files.push({
       path: file.codePath,
@@ -300,4 +306,15 @@ export function textHash(text: string): string {
 
 function compare(a: string, b: string): number {
   return a < b ? -1 : a > b ? 1 : 0;
+}
+
+/** A `Cited By` line's document by its workspace path, from the line's link, decoded as a browser reads it; its label where the link names nothing in the workspace. */
+function citingPath(docPath: string, entry: { label: string; link: string }): string {
+  let link = entry.link;
+  try {
+    link = decodeURIComponent(link);
+  } catch {
+    // A link that is not well-formed is read as written.
+  }
+  return resolveDocLink(docPath, link) ?? entry.label;
 }

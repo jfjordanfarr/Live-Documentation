@@ -330,19 +330,11 @@ const CONFIGURATION_FILE = ".live-docs.config.json";
 
 /**
  * What makes a folder a scan of its own, by names alone: a docs root (`<root>/<baseLayer>`) or a configuration file of
- * this tool in it. {@link scansWithin} looks for these, and {@link marksScan} says of a path whether it is one or lies
- * in one, so that whoever writes a tree for the generator (the history's tree writer, which leaves out what
- * `exclude` names) keeps what this reader looks for: a scan nested under an excluded folder is warned of all the same.
+ * this tool in it, named once for the search above the workspace ({@link isScan}) and the search below it
+ * ({@link scansWithin}).
  */
-export function scanMarkers(config: LiveDocumentationConfig): { docsRoot: string; configurationFile: string } {
+function scanMarkers(config: LiveDocumentationConfig): { docsRoot: string; configurationFile: string } {
   return { docsRoot: normalizeWorkspacePath(path.join(config.root, config.baseLayer)), configurationFile: CONFIGURATION_FILE };
-}
-
-/** Whether a workspace-relative file is one of {@link scanMarkers}' configuration files or lies under one of its docs roots, at any depth. */
-export function marksScan(relative: string, config: LiveDocumentationConfig): boolean {
-  const { docsRoot, configurationFile } = scanMarkers(config);
-  const file = `/${normalizeWorkspacePath(relative)}`;
-  return file.endsWith(`/${configurationFile}`) || file.includes(`/${docsRoot}/`);
 }
 
 /** The folders below the workspace that are scans of their own, as workspace-relative paths. */

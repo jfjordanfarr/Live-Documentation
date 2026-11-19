@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/generator/src/history/regenerate.test.ts
-- Generated At: 2026-11-19T18:10:05.314Z
+- Generated At: 2026-11-19T19:05:09.594Z
 
 ## Authored
 ### Purpose
@@ -28,7 +28,6 @@ _No public symbols detected_
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`git.writeStoredTree`](../../../engine/src/live-docs/history/git.ts.mdmd.md#symbol-writestoredtree)
 - [`generator.generateLiveDocs`](../generator.ts.mdmd.md#symbol-generatelivedocs)
-- [`generator.marksScan`](../generator.ts.mdmd.md#symbol-marksscan)
-- [`regenerate.unread`](./regenerate.ts.mdmd.md#symbol-unread)
+- [`regenerate.treeOptions`](./regenerate.ts.mdmd.md#symbol-treeoptions)
 - `vitest` - `afterAll`, `beforeAll`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

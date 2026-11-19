@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/history.test.ts
-- Generated At: 2026-11-19T12:44:41.865Z
+- Generated At: 2026-11-19T19:05:14.897Z
 
 ## Authored
 ### Purpose
@@ -33,6 +33,7 @@ _No public symbols detected_
 - `node:fs`
 - `node:os`
 - `node:path`
+- `node:url` - `pathToFileURL`
 - `node:zlib`
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`graphFiles.readLiveDocGraph`](../../../packages/engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)

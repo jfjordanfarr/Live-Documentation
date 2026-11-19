@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/generator/src/history/regenerate.ts
-- Generated At: 2026-11-19T18:15:33.552Z
+- Generated At: 2026-11-19T19:05:09.606Z
 
 ## Authored
 ### Purpose
@@ -24,21 +24,21 @@ What the history command does on a summary's behalf before the summarizing proce
 ### Public Symbols
 #### `summaryPath` {#symbol-summarypath}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L44)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L45)
 
 ##### `summaryPath` — Summary
 Where a change's summary lies in the lens's cache folder.
 
 #### `indexPath` {#symbol-indexpath}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L49)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L50)
 
 ##### `indexPath` — Summary
 Where a change's full graph index lies in the lens's cache folder, when the cache keeps it.
 
 #### `Scratch` {#symbol-scratch}
 - Type: class
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L57)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L58)
 
 ##### `Scratch` — Summary
 The scratch folders of a run under the system's temporary folder and the processes it started, all removed or ended
@@ -46,14 +46,14 @@ when a signal stops it: a folder is held from the moment it is made, before anyt
 
 #### `RegenerationContext` {#symbol-regenerationcontext}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L108)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L109)
 
 ##### `RegenerationContext` — Summary
 What regenerating needs.
 
 #### `regenerate` {#symbol-regenerate}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L127)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L128)
 - Parameters: `context`: [`RegenerationContext`](#symbol-regenerationcontext)
 
 ##### `regenerate` — Summary
@@ -63,23 +63,28 @@ of its own, starting none after the deadline when there is one.
 ##### `regenerate` — Returns
 How long each change regenerated took, in milliseconds, and the largest peak memory a process reported.
 
-#### `unread` {#symbol-unread}
+#### `treeOptions` {#symbol-treeoptions}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L195)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L201)
+- Returns: [`WorkingTreeOptions`](../../../engine/src/live-docs/history/versionControl.ts.mdmd.md#symbol-workingtreeoptions)
 - Parameters: `configuration`: [`LiveDocumentationConfig`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 
-##### `unread` — Summary
-The files of a change's tree the summarizing process never opens, by their repository-relative paths, which the tree
-writer leaves out: those the configuration's `exclude` names, by discovery's own rule (`matchesPathPattern`), but
-never a file under the docs root, which the generator reads and rewrites whatever `exclude` says, nor a file that
-marks a scan nested in the workspace (`marksScan`, by the rule the generator's own search for one reads), whose
-warning holds wherever the scan lies. The tree's listing still holds them all, which is how the summary asks whether
-a linked document stands. Measured on 2026-11-19 over this repository: the process opened no file of the excluded
-`AI-Agent-Workspace/`, which held 511 of the 521 GB a rebuild wrote.
+##### `treeOptions` — Summary
+What the history asks of a change's tree written at `tree`: every name stands, and every file a reader can read
+holds its content. A file is written empty only when the configuration's `exclude` names it (by discovery's own
+rule, `matchesPathPattern`), no reader handles it (`hasReader`), and it lies outside the docs root (discovery's
+`docsRootWithin`), which the generator reads and rewrites whatever `exclude` says: so an import of an asset, a
+resolver's probe or a search for nested scans finds what it finds over a checkout, and the bytes no reader reads,
+which were 511 of the 521 GB a rebuild of this repository wrote (2026-11-19), are not written. A symbolic link at,
+above or beneath the docs root is not written even as a copy.
+
+Until a review of 2026-11-19 the excluded files were left out altogether, on the strength of one measurement over
+this repository that the summarizing process opened none; the generator does read excluded files that included
+code imports or re-exports, and probes the disk for others.
 
 #### `summarizingEnvironment` {#symbol-summarizingenvironment}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L210)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L220)
 - Parameters: `environment`: `NodeJS.ProcessEnv`
 
 ##### `summarizingEnvironment` — Summary
@@ -87,13 +92,18 @@ The environment the summarizing process is given: {@link SUMMARIZING_VARIABLES} 
 
 #### `summarizingFlags` {#symbol-summarizingflags}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L225)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L239)
 
 ##### `summarizingFlags` — Summary
-The flags node is started with for the summarizing process, and no other: none for the built JavaScript, and for
-the TypeScript module, under tsx, tsx's loader alone. Until 2026-11-19 `fork` passed on the command's own flags
-(`process.execArgv`), so that a flag given to node or tsx, as `--conditions` or `--stack-size`, reached the process
-that makes a summary, where the lens could not see it.
+The flags node is started with for the summarizing process, and no other: for the TypeScript module, under tsx,
+tsx's loader; and the command's own `--max-old-space-size`, when it was given one, which decides whether a summary
+of a large repository is made at all, never what it says. Until 2026-11-19 `fork` passed on every flag of the
+command's (`process.execArgv`), so that a flag such as `--conditions` or `--stack-size` reached the process that
+makes a summary, where the lens could not see it; for a while after, none was passed, and a summary that outgrew
+node's default heap could not be made by any means.
+
+##### `summarizingFlags` — Parameters
+- `commandFlags`: The command's own flags, `process.execArgv` unless a test gives others.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -103,13 +113,16 @@ that makes a summary, where the lens could not see it.
 - `node:os` - `os`
 - `node:path` - `path`
 - `node:url` - `pathToFileURL`
-- [`LiveDocumentationConfig`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
+- [`LiveDocumentationConfig`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
+- [`liveDocumentationConfig.hasReader`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-hasreader)
 - [`archetype.matchesPathPattern`](../../../engine/src/live-docs/archetype.ts.mdmd.md#symbol-matchespathpattern)
+- [`discovery.docsRootWithin`](../../../engine/src/live-docs/discovery.ts.mdmd.md#symbol-docsrootwithin)
 - [`format.HistoryLens`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-historylens) (type-only)
+- [`lens.summarizedConfiguration`](../../../engine/src/live-docs/history/lens.ts.mdmd.md#symbol-summarizedconfiguration)
 - [`textStore.TEXT_STORE_DIRECTORY`](../../../engine/src/live-docs/history/textStore.ts.mdmd.md#symbol-text_store_directory)
 - [`versionControl.MainlineChange`](../../../engine/src/live-docs/history/versionControl.ts.mdmd.md#symbol-mainlinechange) (type-only)
 - [`VersionControl`](../../../engine/src/live-docs/history/versionControl.ts.mdmd.md#symbol-versioncontrol) (type-only)
-- [`generator.marksScan`](../generator.ts.mdmd.md#symbol-marksscan)
+- [`versionControl.WorkingTreeOptions`](../../../engine/src/live-docs/history/versionControl.ts.mdmd.md#symbol-workingtreeoptions) (type-only)
 - [`summarizeChange.SummaryReport`](./summarizeChange.ts.mdmd.md#symbol-summaryreport) (type-only)
 - [`summarizeChange.SummaryTask`](./summarizeChange.ts.mdmd.md#symbol-summarytask) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

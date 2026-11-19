@@ -612,7 +612,7 @@ describe("the history over a repository that commits its mirror", () => {
 
 /**
  * A repository whose one commit leaves thousands of entries out of its tree, made with `git hash-object` and `git
- * mktree`: a tree `vendor` of symbolic links, none of which the history writes.
+ * mktree`: a tree `vendor` of symbolic links out of the tree, which the history does not follow.
  */
 describe("the history over a commit whose tree leaves thousands of entries out", () => {
   it("completes, names every entry not read, and keeps the list where a person finds it after the run", () => {
@@ -635,14 +635,14 @@ describe("the history over a commit whose tree leaves thousands of entries out",
     const result = runCli(historyScript, ["--workspace", repository, "--jobs", "1"]);
     expect(result.exitCode, result.stderr.slice(-2000)).toBe(0);
     // Every entry not read is said, not the first few.
-    expect(result.stderr.split("\n").filter((line) => line.includes("it is a symbolic link, and the history writes none"))).toHaveLength(3000);
-    expect(result.stderr).toContain("3000 files at 1 commits were not read");
+    expect(result.stderr.split("\n").filter((line) => line.includes("it is a symbolic link out of the tree"))).toHaveLength(3000);
+    expect(result.stderr).toContain("3000 files at 1 commits were not written into their trees and so not read");
     // Where the run says the list is: the history folder under the default docs root, since this repository configures none.
     const listed = /The list is (\S+)/u.exec(result.stderr)![1];
     const history = path.dirname(path.join(repository, listed));
     const list = fs.readFileSync(path.join(repository, listed), "utf8").split("\n").filter((line) => line !== "" && !line.startsWith("#"));
     expect(list).toHaveLength(3000);
-    expect(list[0]).toBe(`${commit}\t"vendor/${names[0]}"\tit is a symbolic link, and the history writes none, so that nothing it writes or reads goes through one`);
+    expect(list[0]).toBe(`${commit}\t"vendor/${names[0]}"\tit is a symbolic link out of the tree, which the history does not follow`);
     const sequence = JSON.parse(fs.readFileSync(path.join(history, "history.json"), "utf8")) as HistorySequence;
     const summary = JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(history, sequence.lens.key, `${commit}.json.gz`))).toString("utf8")) as CommitSummary;
     expect(summary.unwritten).toHaveLength(3000);

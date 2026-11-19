@@ -119,7 +119,7 @@ export function rowsOfSummary(summary: CommitSummary, textId: (hash: string) => 
       })),
       dependencies: file.dependencies.map((line) => ({ ...line, ...(line.symbols ? { symbols: [...line.symbols] } : {}) })),
       reExports: (file.reExports ?? []).map((entry) => ({ ...entry, ...(entry.flags ? { flags: [...entry.flags] } : {}) })),
-      citedBy: [...(file.citedBy ?? [])],
+      citedBy: (file.citedBy ?? []).map(citedByLabel),
       authored: file.authored !== undefined ? textId(file.authored) : file.unread ? "unread" : "none"
     });
   }
@@ -473,4 +473,9 @@ function same(a: unknown, b: unknown): boolean {
 
 function compare(a: string, b: string): number {
   return a < b ? -1 : a > b ? 1 : 0;
+}
+
+/** A `Cited By` line's label as the doc writes it, from the citing document's path: a backtick written as an apostrophe (`formatInlineCode`). */
+export function citedByLabel(path: string): string {
+  return path.replace(/`/gu, "'");
 }

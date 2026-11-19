@@ -195,7 +195,7 @@ describe("the links between rows", () => {
 describe("rowsOfSummary", () => {
   it("names each text by the id given its hash, and keeps the unread and the absent apart", () => {
     const summary: CommitSummary = {
-      format: "live-docs-history-summary/3",
+      format: "live-docs-history-summary/4",
       lens: "l",
       commit: "c",
       docLinks: [],

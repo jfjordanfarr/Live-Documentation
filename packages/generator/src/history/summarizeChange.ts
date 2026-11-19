@@ -60,7 +60,7 @@ import { generateLiveDocs } from "../generator";
 export interface SummaryTask {
   /** The change's working tree: the workspace's root inside it. */
   tree: string;
-  /** The lens's configuration, applied verbatim. */
+  /** The configuration the summary is made under, `summarizedConfiguration` of the lens's, applied verbatim. */
   configuration: LiveDocumentationConfig;
   /** The lens's key, recorded in the summary. */
   lens: string;
@@ -78,10 +78,9 @@ export interface SummaryTask {
 
 /** Generates the change's docs in its working tree and writes its summary, and its index when asked. */
 export async function summarizeChange(task: SummaryTask): Promise<void> {
-  const { tree } = task;
-  // Every linked and citing document is kept: the bundle's exclusions are applied where the summaries are read
-  // (`bundled.ts`), so that the summary does not depend on them and an edit of them needs no new summary.
-  const configuration: LiveDocumentationConfig = { ...task.configuration, bundleExclude: [] };
+  // The configuration the summary is made under (`summarizedConfiguration`), as the command hands it: with no bundle
+  // exclusion, so that every linked and citing document is kept and the exclusions are applied where summaries are read.
+  const { tree, configuration } = task;
   const authored = await authoredReading(tree, configuration);
   const result = await generateLiveDocs({
     workspaceRoot: tree,
@@ -135,15 +134,17 @@ const AUTHORED_HEADING = /^## Authored[ \t]*$/mu;
  * The files that stand in the change's tree, by their repository-relative paths, read from the tree's own listing
  * (its index, which the history command made from the change's tree and named in this process's environment), not
  * from the disk: the tree writer leaves out the files the generator never opens, and a document of them may still be
- * linked. A file's blob is in the listing; a symbolic link, a submodule, and an entry the tree could not hold
- * (`unwritten`) are not files that stand. Until 2026-11-19 the disk was asked (`stat`, then `isFile`).
+ * linked. A regular file of the listing stands; so does a symbolic link the tree writer wrote as a copy of the file it
+ * leads to, which is every link not named unwritten; a submodule does not, nor any entry the tree did not hold
+ * (`unwritten`). Until 2026-11-19 the disk was asked (`stat`, then `isFile`).
  *
  * Where the two answers can differ, and which is right:
- * - A file the tree leaves out by the configuration's `exclude`: the disk says no, the listing yes. The listing is
- *   right; the file stood at the change, and the disk lacks it only because nothing reads it.
- * - A symbolic link to a file, or a document reached through a linked folder: the disk, which followed the link, said
- *   yes; the listing says no. The listing is right by the history's rule that nothing is written or read through a
- *   link (see `git.ts`): the document a link points at is not a file that stood under that name.
+ * - A file the configuration excludes and no reader reads: written empty, so both say yes.
+ * - A symbolic link to a file of the tree: the disk followed the link and said yes; the listing says yes too, since
+ *   the link is written as a copy of that file. A link to a folder, out of the tree or to nothing is unwritten, and
+ *   both say no, as the disk did for all but a link out of the tree, which a checkout follows and the history does not.
+ * - A document reached through a linked folder (`docs/` a link, `docs/a.md` linked to): the disk followed it and said
+ *   yes; the listing holds no such path and says no. The history follows no link to a folder.
  * - A disk that takes two spellings for one name (case, Unicode form): the disk said yes to a link spelled otherwise
  *   than the file; the listing answers by the exact path git holds, the same on every disk. The listing is right: a
  *   summary must not depend on the disk it was made on, which the lens does not key.
@@ -151,12 +152,11 @@ const AUTHORED_HEADING = /^## Authored[ \t]*$/mu;
  *   root, which are never related documents (`relatedDocsOf` skips a link to a Live Doc, and the index is not
  *   markdown). Both answer alike.
  * - A folder or a submodule at a document's name: neither is a file; the disk said no to the folder (`isFile`), and
- *   the listing holds neither as a blob. Both answer alike.
+ *   the listing holds neither as a file. Both answer alike.
  * - An entry the tree could not hold (`unwritten`): absent from the disk, and taken out of the listing here. Both
  *   answer alike.
  * On this repository's first-parent line no commit holds a link or a submodule (`git log --raw` shows no entry of mode
- * 120000 or 160000), the trees were written on a disk that tells case apart, and a sample of 54 commits summarized
- * both ways was identical, so no fact changed here.
+ * 120000 or 160000) and the trees were written on a disk that tells case apart, so no fact changed here.
  */
 async function standingFiles(tree: string, unwritten: ReadonlyArray<{ path: string }>): Promise<Set<string>> {
   const { stdout } = await execFileAsync("git", ["ls-files", "--stage", "-z"], { cwd: tree, maxBuffer: 1 << 30 });
@@ -168,7 +168,7 @@ async function standingFiles(tree: string, unwritten: ReadonlyArray<{ path: stri
     if (tab < 0) continue;
     const mode = entry.slice(0, entry.indexOf(" "));
     const file = entry.slice(tab + 1);
-    if ((mode === "100644" || mode === "100755") && !notWritten.has(file)) standing.add(file);
+    if ((mode === "100644" || mode === "100755" || mode === "120000") && !notWritten.has(file)) standing.add(file);
   }
   return standing;
 }

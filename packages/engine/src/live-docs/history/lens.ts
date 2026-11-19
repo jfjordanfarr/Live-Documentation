@@ -14,17 +14,31 @@ import type { GeneratorIdentity, HistoryLens } from "./format";
 /**
  * The lens of a generator and a normalized configuration, with its key. The key is made of the generator's version,
  * its committed code and tool dependency lock, its uncommitted changes to either, the runtime's version of Unicode,
- * and the configuration but its bundle exclusions; the commit
- * the generator runs from rides in the lens for the reader but does not key it, so unrelated commits keep the cache.
- * Since 2026-11-19 `bundleExclude` does not key it either: a summary keeps every linked and citing document, and the
- * exclusions are applied where the summaries are read (`bundled.ts`), so that an edit of them rewrites the sequence
- * from the cache. The lens itself still carries the whole configuration, for the reader.
+ * and the configuration a summary is made under ({@link summarizedConfiguration}); the commit the generator runs from
+ * rides in the lens for the reader but does not key it, so unrelated commits keep the cache. The lens itself carries
+ * the whole configuration, for the reader.
  */
 export function lensOf(generator: GeneratorIdentity, configuration: LiveDocumentationConfig): HistoryLens {
   const keyed = { version: generator.version, code: generator.code, modified: generator.modified, unicode: generator.unicode ?? null };
-  const { bundleExclude: _applied, ...summarized } = configuration;
-  const key = createHash("sha256").update(canonicalJson({ generator: keyed, configuration: summarized })).digest("hex").slice(0, 16);
+  const key = createHash("sha256").update(canonicalJson({ generator: keyed, configuration: summarizedConfiguration(configuration) })).digest("hex").slice(0, 16);
   return { key, generator, configuration };
+}
+
+/**
+ * The configuration a commit's summary is made under: the lens's, without what only the reading of summaries uses.
+ * The history command hands the summarizing process exactly this, and the lens's key holds exactly this, so that what
+ * is keyed is by construction what a summary is made under.
+ *
+ * @remarks
+ * Since 2026-11-19 the bundle's exclusions (`bundleExclude`) are applied where summaries are read (`bundled.ts`), and a
+ * summary keeps every linked and citing document, so an edit of them rewrites the sequence from the cache. No module of
+ * the engine or the generator reads the board (`board`, read by the Explorer's builder and the board command), so it
+ * goes the same way. `requireRelativeLinks` and `slugDialect` are read by no module of either package either, by a
+ * search of their sources, and stay in until that is shown by more than a search.
+ */
+export function summarizedConfiguration(configuration: LiveDocumentationConfig): LiveDocumentationConfig {
+  const { board: _read, ...summarized } = configuration;
+  return { ...summarized, bundleExclude: [] };
 }
 
 /** JSON with every object's keys in sorted order, so that two equal values always hash alike. */

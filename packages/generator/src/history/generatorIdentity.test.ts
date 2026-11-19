@@ -6,7 +6,7 @@ import { describe, expect, it } from "vitest";
 import { DEFAULT_LIVE_DOCUMENTATION_CONFIG } from "@live-documentation/engine/config/liveDocumentationConfig";
 
 import { HISTORY_FOLDERS, keysTheLens, SUMMARY_ENTRIES, SUMMARY_MODULES } from "./generatorIdentity";
-import { summarizingEnvironment, summarizingFlags, unread } from "./regenerate";
+import { summarizingEnvironment, summarizingFlags, treeOptions } from "./regenerate";
 
 const repository = path.resolve(__dirname, "..", "..", "..", "..");
 
@@ -150,7 +150,7 @@ const HANDED_TO_REGENERATION: Record<string, string> = {
 /** What the keyed command side hands the summarizing process, each with what decides it. */
 const HANDED_TO_SUMMARY: Record<string, string> = {
   tree: "the commit's tree, written by the keyed version control",
-  configuration: "the lens's configuration, half of the key",
+  configuration: "the configuration a summary is made under (`summarizedConfiguration`), which the key holds whole",
   lens: "the key",
   commit: "the commit summarized",
   summaryPath: "where the summary goes",
@@ -210,6 +210,16 @@ describe("the lens's key", () => {
     expect(regenerate).not.toMatch(/env:\s*(?:\{\s*\.\.\.process\.env|process\.env)/u);
   });
 
+  it("hands the summarizing process the configuration the key holds, made by one function", () => {
+    const regenerate = readFileSync(path.join(repository, "packages/generator/src/history/regenerate.ts"), "utf8");
+    expect(regenerate).toContain("configuration: summarizedConfiguration(context.configuration),");
+    const worker = readFileSync(path.join(repository, "packages/generator/src/history/summarizeChange.ts"), "utf8");
+    // The worker makes nothing of its own of the configuration it is handed.
+    expect(worker).not.toMatch(/bundleExclude:\s*\[\]/u);
+    const lens = readFileSync(path.join(repository, "packages/engine/src/live-docs/history/lens.ts"), "utf8");
+    expect(lens).toContain("configuration: summarizedConfiguration(configuration)");
+  });
+
   it("starts the summarizing process with node flags of its own, never the command's", () => {
     // `fork` passes the command's `process.execArgv` unless told otherwise (the fourth review of 2026-11-19).
     const regenerate = readFileSync(path.join(repository, "packages/generator/src/history/regenerate.ts"), "utf8");
@@ -221,15 +231,29 @@ describe("the lens's key", () => {
     expect(flags[1]).toMatch(/^file:\/\/.*\/tsx\//u);
   });
 
-  it("writes into a commit's tree only what the summarizing process reads: what the configuration excludes is left out, the docs root never", () => {
-    const leaveOut = unread({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, root: "./docs/", exclude: ["archive/**", "docs/**", "**/*.png"] });
-    expect(leaveOut("archive/2026/day.record.md")).toBe(true);
-    expect(leaveOut("assets/logo.png")).toBe(true);
-    expect(leaveOut("src/a.ts")).toBe(false);
-    // The generator reads and rewrites the docs root whatever `exclude` says.
-    expect(leaveOut("docs/layer-4/src/a.ts.md")).toBe(false);
-    expect(leaveOut("docs/logo.png")).toBe(false);
-    expect(unread(DEFAULT_LIVE_DOCUMENTATION_CONFIG)("anything/at/all.png")).toBe(false);
+  it("passes the command's heap limit to the summarizing process, and no other flag of the command's", () => {
+    const given = ["--conditions=dev", "--max-old-space-size=8192", "--stack-size=4000", "--require", "/x/preflight.cjs"];
+    expect(summarizingFlags("/x/summarizeChange.js", given)).toEqual(["--max-old-space-size=8192"]);
+    expect(summarizingFlags("/x/summarizeChange.js", ["--max-old-space-size", "4096"])).toEqual(["--max-old-space-size=4096"]);
+    expect(summarizingFlags("/x/summarizeChange.js", ["--max-old-space-size=1024", "--max_old_space_size=2048"])).toEqual(["--max_old_space_size=2048"]);
+    expect(summarizingFlags("/x/summarizeChange.js", ["--stack-size=4000"])).toEqual([]);
+    expect(summarizingFlags("/x/summarizeChange.ts", ["--max-old-space-size=8192"]).slice(2)).toEqual(["--max-old-space-size=8192"]);
+  });
+
+  it("empties in a commit's tree only an excluded file no reader reads, outside the docs root, by discovery's reading of the root", () => {
+    const options = treeOptions({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, root: "./docs/../site/", exclude: ["archive/**", "site/**", "**/*.png"] }, "/work/tree");
+    const contentless = options.contentless!;
+    expect(contentless("archive/2026/day.record.md")).toBe(true);
+    expect(contentless("assets/logo.png")).toBe(true);
+    // A file a reader reads is whole wherever it lies, excluded or not: code imports into an excluded folder.
+    expect(contentless("archive/generated/api.ts")).toBe(false);
+    expect(contentless("archive/settings.json")).toBe(false);
+    expect(contentless("src/notes.md")).toBe(false);
+    // The generator reads and rewrites the docs root whatever `exclude` says; the root is read as discovery reads it.
+    expect(options.docsRoot).toBe("site");
+    expect(contentless("site/layer-4/src/a.ts.md")).toBe(false);
+    expect(contentless("site/logo.png")).toBe(false);
+    expect(treeOptions(DEFAULT_LIVE_DOCUMENTATION_CONFIG, "/work/tree").contentless!("anything/at/all.png")).toBe(false);
   });
 
   it("holds what the command hands to the code that makes a summary to members each shown not to change it unkeyed", () => {

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/generator/src/history/generatorIdentity.test.ts
-- Generated At: 2026-11-19T17:55:40.512Z
+- Generated At: 2026-11-19T19:05:09.567Z
 
 ## Authored
 ### Purpose
@@ -30,7 +30,7 @@ _No public symbols detected_
 - [`generatorIdentity.keysTheLens`](./generatorIdentity.ts.mdmd.md#symbol-keysthelens)
 - [`regenerate.summarizingEnvironment`](./regenerate.ts.mdmd.md#symbol-summarizingenvironment)
 - [`regenerate.summarizingFlags`](./regenerate.ts.mdmd.md#symbol-summarizingflags)
-- [`regenerate.unread`](./regenerate.ts.mdmd.md#symbol-unread)
+- [`regenerate.treeOptions`](./regenerate.ts.mdmd.md#symbol-treeoptions)
 - `typescript` - `ts`
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

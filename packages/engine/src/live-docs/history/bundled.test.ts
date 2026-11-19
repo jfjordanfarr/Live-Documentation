@@ -42,6 +42,11 @@ describe("bundledSummary", () => {
     expect(bundled.docLinks).toEqual([["src/a.ts", "docs/design.md"]]);
   });
 
+  it("holds a citing document to the exclusions by its path, which a label writing a backtick as an apostrophe would miss", () => {
+    const given: CommitSummary = { ...fresh(), files: [{ path: "src/a.ts", archetype: "implementation", entries: [], symbols: [], dependencies: [], citedBy: ["notes/a`b.md", "notes/kept.md"] }] };
+    expect(bundledSummary(given, ["notes/a`b.md"]).files[0].citedBy).toEqual(["notes/kept.md"]);
+  });
+
   it("changes nothing of the summary it reads, and nothing at all with no exclusions", () => {
     // The history reads each summary once, but a reader that changed what it was given would change the cache's copy
     // in memory for whoever reads it next.

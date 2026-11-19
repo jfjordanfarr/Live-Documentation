@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/history/rows.ts
-- Generated At: 2026-11-19T08:04:43.527Z
+- Generated At: 2026-11-19T19:05:05.593Z
 
 ## Authored
 ### Purpose
@@ -155,6 +155,13 @@ Where the rows and a shape of the same change disagree about what both carry, in
 each file's symbol count and entry mark, and each wire's count, which is the number of the source's lines and
 references that resolved to the target. The shape and the rows are written as two streams of deltas; this holds
 them to each other at every step.
+
+#### `citedByLabel` {#symbol-citedbylabel}
+- Type: function
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/rows.ts#L479)
+
+##### `citedByLabel` — Summary
+A `Cited By` line's label as the doc writes it, from the citing document's path: a backtick written as an apostrophe (`formatInlineCode`).
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

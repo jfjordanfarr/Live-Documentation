@@ -18,8 +18,8 @@
  * environment it needs ({@link summarizingEnvironment}), the tree's own, and
  * only the node flags it needs ({@link summarizingFlags}): git's answer of
  * what the tree tracks and ignores is then the tree's, whatever the person's
- * shell had set. Since 2026-11-19 the tree leaves out what the summarizing
- * process never opens ({@link unread}).
+ * shell had set. Since 2026-11-19 a file no reader of the tree reads is
+ * written empty ({@link treeOptions}).
  *
  * @module
  */
@@ -31,13 +31,14 @@ import os from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
-import type { LiveDocumentationConfig } from "@live-documentation/engine/config/liveDocumentationConfig";
+import { hasReader, type LiveDocumentationConfig } from "@live-documentation/engine/config/liveDocumentationConfig";
 import { matchesPathPattern } from "@live-documentation/engine/live-docs/archetype";
+import { docsRootWithin } from "@live-documentation/engine/live-docs/discovery";
 import type { HistoryLens } from "@live-documentation/engine/live-docs/history/format";
+import { summarizedConfiguration } from "@live-documentation/engine/live-docs/history/lens";
 import { TEXT_STORE_DIRECTORY } from "@live-documentation/engine/live-docs/history/textStore";
-import type { MainlineChange, VersionControl } from "@live-documentation/engine/live-docs/history/versionControl";
+import type { MainlineChange, VersionControl, WorkingTreeOptions } from "@live-documentation/engine/live-docs/history/versionControl";
 
-import { marksScan } from "../generator";
 import type { SummaryReport, SummaryTask } from "./summarizeChange";
 
 /** Where a change's summary lies in the lens's cache folder. */
@@ -138,11 +139,12 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
       const began = Date.now();
       const scratch = await context.scratch.folder("live-docs-history-");
       try {
-        const tree = await context.versionControl.workingTree(change.id, path.join(scratch, path.basename(scratch)), unread(context.configuration));
+        const directory = path.join(scratch, path.basename(scratch));
+        const tree = await context.versionControl.workingTree(change.id, directory, treeOptions(context.configuration, directory));
         const { warned, report } = await runSummary(
           {
             tree: tree.root,
-            configuration: context.configuration,
+            configuration: summarizedConfiguration(context.configuration),
             lens: context.lens.key,
             commit: change.id,
             summaryPath: summaryPath(context.cacheFolder, change.id),
@@ -156,7 +158,7 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
         );
         peakMemory = Math.max(peakMemory, report?.peakMemory ?? 0);
         if (tree.unwritten.length > 0) {
-          context.progress(`${change.id.slice(0, 8)}: ${tree.unwritten.length} files of its tree were not written on this disk, and its summary says they were not read:`);
+          context.progress(`${change.id.slice(0, 8)}: ${tree.unwritten.length} entries of its tree were not written, and its summary says they were not read:`);
           for (const entry of tree.unwritten) {
             context.progress(`  ${entry.path}: ${entry.reason}`);
           }
@@ -184,17 +186,25 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
 }
 
 /**
- * The files of a change's tree the summarizing process never opens, by their repository-relative paths, which the tree
- * writer leaves out: those the configuration's `exclude` names, by discovery's own rule (`matchesPathPattern`), but
- * never a file under the docs root, which the generator reads and rewrites whatever `exclude` says, nor a file that
- * marks a scan nested in the workspace (`marksScan`, by the rule the generator's own search for one reads), whose
- * warning holds wherever the scan lies. The tree's listing still holds them all, which is how the summary asks whether
- * a linked document stands. Measured on 2026-11-19 over this repository: the process opened no file of the excluded
- * `AI-Agent-Workspace/`, which held 511 of the 521 GB a rebuild wrote.
+ * What the history asks of a change's tree written at `tree`: every name stands, and every file a reader can read
+ * holds its content. A file is written empty only when the configuration's `exclude` names it (by discovery's own
+ * rule, `matchesPathPattern`), no reader handles it (`hasReader`), and it lies outside the docs root (discovery's
+ * `docsRootWithin`), which the generator reads and rewrites whatever `exclude` says: so an import of an asset, a
+ * resolver's probe or a search for nested scans finds what it finds over a checkout, and the bytes no reader reads,
+ * which were 511 of the 521 GB a rebuild of this repository wrote (2026-11-19), are not written. A symbolic link at,
+ * above or beneath the docs root is not written even as a copy.
+ *
+ * Until a review of 2026-11-19 the excluded files were left out altogether, on the strength of one measurement over
+ * this repository that the summarizing process opened none; the generator does read excluded files that included
+ * code imports or re-exports, and probes the disk for others.
  */
-export function unread(configuration: LiveDocumentationConfig): (file: string) => boolean {
-  const docsRoot = `${configuration.root.replace(/\\/gu, "/").replace(/^(?:\.\/)+/u, "").replace(/\/+$/u, "")}/`;
-  return (file) => !file.startsWith(docsRoot) && !marksScan(file, configuration) && configuration.exclude.some((pattern) => matchesPathPattern(file, pattern));
+export function treeOptions(configuration: LiveDocumentationConfig, tree: string): WorkingTreeOptions {
+  const docsRoot = docsRootWithin(tree, configuration);
+  const inDocsRoot = (file: string): boolean => docsRoot !== undefined && (file === docsRoot || file.startsWith(`${docsRoot}/`));
+  return {
+    contentless: (file) => !inDocsRoot(file) && !hasReader(file) && configuration.exclude.some((pattern) => matchesPathPattern(file, pattern)),
+    ...(docsRoot !== undefined ? { docsRoot } : {})
+  };
 }
 
 /**
@@ -217,13 +227,24 @@ export function summarizingEnvironment(environment: NodeJS.ProcessEnv): Record<s
 }
 
 /**
- * The flags node is started with for the summarizing process, and no other: none for the built JavaScript, and for
- * the TypeScript module, under tsx, tsx's loader alone. Until 2026-11-19 `fork` passed on the command's own flags
- * (`process.execArgv`), so that a flag given to node or tsx, as `--conditions` or `--stack-size`, reached the process
- * that makes a summary, where the lens could not see it.
+ * The flags node is started with for the summarizing process, and no other: for the TypeScript module, under tsx,
+ * tsx's loader; and the command's own `--max-old-space-size`, when it was given one, which decides whether a summary
+ * of a large repository is made at all, never what it says. Until 2026-11-19 `fork` passed on every flag of the
+ * command's (`process.execArgv`), so that a flag such as `--conditions` or `--stack-size` reached the process that
+ * makes a summary, where the lens could not see it; for a while after, none was passed, and a summary that outgrew
+ * node's default heap could not be made by any means.
+ *
+ * @param commandFlags - The command's own flags, `process.execArgv` unless a test gives others.
  */
-export function summarizingFlags(worker: string): string[] {
-  return path.extname(worker) === ".ts" ? ["--import", pathToFileURL(require.resolve("tsx")).href] : [];
+export function summarizingFlags(worker: string, commandFlags: readonly string[] = process.execArgv): string[] {
+  const loader = path.extname(worker) === ".ts" ? ["--import", pathToFileURL(require.resolve("tsx")).href] : [];
+  // The last one given wins, as it does for node itself; given as `--max-old-space-size=N` or as two words.
+  let heap: string[] = [];
+  commandFlags.forEach((flag, index) => {
+    if (/^--max[-_]old[-_]space[-_]size=\d+$/u.test(flag)) heap = [flag];
+    else if (/^--max[-_]old[-_]space[-_]size$/u.test(flag) && /^\d+$/u.test(commandFlags[index + 1] ?? "")) heap = [`${flag}=${commandFlags[index + 1]}`];
+  });
+  return [...loader, ...heap];
 }
 
 /**
