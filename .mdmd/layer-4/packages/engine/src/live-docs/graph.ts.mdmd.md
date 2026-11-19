@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/graph.ts
-- Generated At: 2026-11-19T18:51:38.979Z
+- Generated At: 2026-11-19T21:22:25.329Z
 
 ## Authored
 ### Purpose
@@ -22,14 +22,14 @@ The derived graph index: the model of a graph of Live Docs, `deriveLiveDocGraph`
 ### Public Symbols
 #### `DocLocation` {#symbol-doclocation}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L23)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L24)
 
 ##### `DocLocation` — Summary
 Where the docs are, relative to the workspace, and what they are named.
 
 #### `LiveDocGraph` {#symbol-livedocgraph}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L30)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L31)
 - Extends: [`DocLocation`](#symbol-doclocation)
 
 ##### `LiveDocGraph` — Summary
@@ -37,7 +37,7 @@ The graph of a workspace: every doc, with its links resolved.
 
 #### `GraphFile` {#symbol-graphfile}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L36)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L37)
 - Extends: [`LiveDoc`](./document.ts.mdmd.md#symbol-livedoc)
 
 ##### `GraphFile` — Summary
@@ -45,35 +45,35 @@ One doc of the graph: the parsed doc, and what the corpus adds to it.
 
 #### `EdgeKind` {#symbol-edgekind}
 - Type: type
-- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L48)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L49)
 
 ##### `EdgeKind` — Summary
 How an edge arose: a dependency line, or a type reference on a symbol.
 
 #### `EdgeBasis` {#symbol-edgebasis}
 - Type: type
-- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L51)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L52)
 
 ##### `EdgeBasis` — Summary
 How an edge was observed when not from source: see `DependencyBasis`.
 
 #### `GraphEdge` {#symbol-graphedge}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L54)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L55)
 
 ##### `GraphEdge` — Summary
 One reference a doc makes, resolved against the corpus.
 
 #### `GRAPH_INDEX_FILE` {#symbol-graph_index_file}
 - Type: const
-- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L75)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L76)
 
 ##### `GRAPH_INDEX_FILE` — Summary
 The name of the file the generator writes the graph to, under the docs root.
 
 #### `deriveLiveDocGraph` {#symbol-derivelivedocgraph}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L87)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L88)
 - Returns: [`LiveDocGraph`](#symbol-livedocgraph)
 - Parameters: `docs`: `Iterable`; `location`: [`DocLocation`](#symbol-doclocation)
 
@@ -86,14 +86,14 @@ Derives the graph from parsed docs.
 
 #### `LinkTarget (interface)` {#symbol-linktarget-interface}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L196)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L197)
 
 ##### `LinkTarget (interface)` — Summary
 The Live Doc a link in a doc points at, and the source file that doc mirrors.
 
 #### `linkTarget (function)` {#symbol-linktarget-function}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L213)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L214)
 - Returns: [`LinkTarget`](#symbol-linktarget-interface)
 - Parameters: `location`: [`DocLocation`](#symbol-doclocation)
 
@@ -110,17 +110,18 @@ The target, or undefined when the link leaves the docs or does not name a Live D
 
 #### `resolveDocLink` {#symbol-resolvedoclink}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L236)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L238)
 
 ##### `resolveDocLink` — Summary
 Resolves a doc-relative link to the workspace-relative path it names, without its fragment: undefined for an
 external URL or a path that leaves the workspace. A bare fragment names the doc itself. The link is read as a
-browser reads it: its first `#` begins the fragment, and the path before it is percent-decoded, so that
-`plan%20%28draft%29.md` names `plan (draft).md` and `a%23b.ts.md` a file whose name holds a `#`.
+browser reads it, by the markdown link rule's `linkPath`: its first `#` begins the fragment and its first `?`
+before that the query, and the path before them is percent-decoded, so that `plan%20%28draft%29.md` names
+`plan (draft).md`, `a%23b.ts.md` a file whose name holds a `#` and `R%26D.md` one whose name holds a `&`.
 
 ##### `resolveDocLink` — Parameters
 - `docPath`: Workspace-relative path of the doc holding the link, with forward slashes.
-- `link`: The link as written, relative to the doc.
+- `link`: The link's destination, relative to the doc.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -128,7 +129,7 @@ browser reads it: its first `#` begins the fragment, and the path before it is p
 - [`document.LiveDoc`](./document.ts.mdmd.md#symbol-livedoc)
 - [`document.SymbolBlock`](./document.ts.mdmd.md#symbol-symbolblock)
 - [`document.TypeRef`](./document.ts.mdmd.md#symbol-typeref)
-- [`document.decodeLinkPath`](./document.ts.mdmd.md#symbol-decodelinkpath)
+- [`markdownLinks.linkPath`](../tooling/markdownLinks.ts.mdmd.md#symbol-linkpath)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

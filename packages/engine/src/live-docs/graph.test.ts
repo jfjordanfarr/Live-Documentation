@@ -7,7 +7,7 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { composeDependencies, composeReExports, composeSymbolBlocks, computePublicSymbolHeadingInfo } from "./compose";
 import { buildWorkspaceIndexes } from "./discovery";
 import { renderLiveDoc, parseLiveDoc, type LiveDoc } from "./document";
-import { deriveLiveDocGraph, linkTarget } from "./graph";
+import { deriveLiveDocGraph, linkTarget, resolveDocLink } from "./graph";
 import { analyzeSourceFile } from "./sourceAnalysis";
 
 const location = { root: ".live-documentation", baseLayer: "source", extension: ".md" };
@@ -239,5 +239,17 @@ describe("TypeScript binding facts through analysis, composition, markdown and g
     expect(edges).toContainEqual(expect.objectContaining({ parameter: "own", to: "src/wrong/use.ts", toSymbol: "symbol-own" }));
     // Loose has no known binding: its existing same-language proximity rule still applies.
     expect(edges).toContainEqual(expect.objectContaining({ parameter: "loose", to: "src/wrong/names.ts", toSymbol: "symbol-loose" }));
+  });
+});
+
+describe("resolveDocLink", () => {
+  it("reads a link's path as a browser reads it, by the markdown link rule: a name holding `&`, `#` or `?` encoded, a query set apart", () => {
+    expect(resolveDocLink("docs/index.md", "R%26D.md")).toBe("docs/R&D.md");
+    expect(resolveDocLink("docs/index.md", "a%23b.md#top")).toBe("docs/a#b.md");
+    expect(resolveDocLink("docs/index.md", "why%3F.md?plain=1")).toBe("docs/why?.md");
+    expect(resolveDocLink("docs/index.md", "../notes/plan%20%28draft%29.md")).toBe("notes/plan (draft).md");
+    expect(resolveDocLink("docs/index.md", "100%.md")).toBe("docs/100%.md");
+    expect(resolveDocLink("docs/index.md", "#only-a-fragment")).toBe("docs/index.md");
+    expect(resolveDocLink("docs/index.md", "https://example.com/a.md?x#y")).toBeUndefined();
   });
 });

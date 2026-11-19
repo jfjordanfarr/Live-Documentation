@@ -1,5 +1,6 @@
 import { symbolName } from "@live-documentation/engine/live-docs/document";
 import type { GraphFile } from "@live-documentation/engine/live-docs/graph";
+import { linkPath } from "@live-documentation/engine/tooling/markdownLinks";
 
 import type { ExplorerNodePayload } from "../shared/types";
 import { escapeHtml } from "./graph-helpers";
@@ -26,9 +27,6 @@ function resolveDocLink(relativePath: string, fromDocPath: string): string | nul
   return parts.join("/");
 }
 
-function decodeLinkPart(value: string): string {
-  try { return decodeURIComponent(value); } catch { return value; }
-}
 
 /** Follow a documented re-export to its origin where the bundle carries that evidence. */
 export function fileInspection(
@@ -67,10 +65,10 @@ export function resolveReaderTarget(
   href = href.trim();
   if (href.startsWith("<") && href.endsWith(">")) href = href.slice(1, -1);
   if (/^(?:[a-z][a-z0-9+.-]*:|\/\/)/iu.test(href)) return null;
-  const hash = href.indexOf("#");
-  const pathPart = hash < 0 ? href : href.slice(0, hash);
-  const fragment = hash < 0 ? undefined : decodeLinkPart(href.slice(hash + 1)) || undefined;
-  const path = resolveDocLink(decodeLinkPart(pathPart), fromDocPath);
+  // The path and fragment as the engine reads them, by the markdown link rule's one path rule.
+  const target = linkPath(href);
+  const fragment = target.fragment || undefined;
+  const path = resolveDocLink(target.path, fromDocPath);
   if (path === null) return null;
   for (const node of context.nodesById.values()) {
     if (node.docPath === path || node.codePath === path || node.id === path) {
@@ -106,7 +104,7 @@ export function createReaderLinkHandler(fromDocPath: string, context: ReaderLink
     if (target) {
       // A local authored heading does not name another evidence item or a generated symbol.
       if (href.startsWith("#") && target.kind === "file" && !target.symbol) {
-        return `<a href="#" class="reader-anchor" data-fragment="${escapeHtml(decodeLinkPart(href.slice(1)))}">${text}</a>`;
+        return `<a href="#" class="reader-anchor" data-fragment="${escapeHtml(linkPath(href).fragment ?? "")}">${text}</a>`;
       }
       return readerLink(target, text);
     }

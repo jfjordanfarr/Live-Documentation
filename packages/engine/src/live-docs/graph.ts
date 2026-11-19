@@ -13,7 +13,8 @@
  * @module
  */
 
-import { decodeLinkPath, type LiveDoc, type SymbolBlock, type TypeRef } from "./document";
+import { linkPath } from "../tooling/markdownLinks";
+import { type LiveDoc, type SymbolBlock, type TypeRef } from "./document";
 
 // ============================================================================
 // The model
@@ -227,14 +228,15 @@ export function linkTarget(docPath: string, link: string, location: DocLocation)
 /**
  * Resolves a doc-relative link to the workspace-relative path it names, without its fragment: undefined for an
  * external URL or a path that leaves the workspace. A bare fragment names the doc itself. The link is read as a
- * browser reads it: its first `#` begins the fragment, and the path before it is percent-decoded, so that
- * `plan%20%28draft%29.md` names `plan (draft).md` and `a%23b.ts.md` a file whose name holds a `#`.
+ * browser reads it, by the markdown link rule's `linkPath`: its first `#` begins the fragment and its first `?`
+ * before that the query, and the path before them is percent-decoded, so that `plan%20%28draft%29.md` names
+ * `plan (draft).md`, `a%23b.ts.md` a file whose name holds a `#` and `R%26D.md` one whose name holds a `&`.
  *
  * @param docPath - Workspace-relative path of the doc holding the link, with forward slashes.
- * @param link - The link as written, relative to the doc.
+ * @param link - The link's destination, relative to the doc.
  */
 export function resolveDocLink(docPath: string, link: string): string | undefined {
-  const target = decodeLinkPath(link.split("#", 2)[0]);
+  const target = linkPath(link).path;
   if (/^[a-z]+:\/\//iu.test(target)) {
     return undefined;
   }
