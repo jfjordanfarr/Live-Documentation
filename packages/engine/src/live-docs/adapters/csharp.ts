@@ -91,6 +91,8 @@ interface DeclaredType {
   qualifiedName:   string;
   kind:            string;
   partial:         boolean;
+  /** The number of type parameters: `Helper` and `Helper<T>` are two types of one name. */
+  arity:           number;
   line:            number;
   character:       number;
   documentation?:  SymbolDocumentation;
@@ -542,6 +544,7 @@ class FileExtractor {
       qualifiedName,
       kind,
       partial:        modifiers.has("partial"),
+      arity:          node.namedChildren.find((child) => child.type === "type_parameter_list")?.namedChildren.filter((child) => child.type === "type_parameter").length ?? 0,
       line:           nameNode.startPosition.row + 1,
       character:      nameNode.startPosition.column + 1,
       documentation:  leadingDocumentation(node),
@@ -1003,11 +1006,20 @@ type Narrow = (records: TypeRecord[]) => TypeRecord[] | undefined;
 /** Every declaration, as a reflection lookup by name sees them. */
 const WHOLE_WORKSPACE: Narrow = (records) => records;
 
-/** True when the declarations are one type: a single one, or the halves of one partial type in one project. */
+/**
+ * True when the declarations are not an ambiguity: a single type, the halves of
+ * one partial type in one project, or types of one name told apart by their
+ * number of type parameters (`Helper` and `Helper<T>`), each declared once or
+ * in halves in one project. The reader does not yet match a use's type
+ * arguments to an arity, so such a name links every arity, as it did before.
+ */
 function oneType(records: TypeRecord[], reach: ProjectReach): boolean {
   if (records.length <= 1) return true;
+  const byArity = new Map<number, TypeRecord[]>();
+  for (const record of records) byArity.set(record.type.arity, [...(byArity.get(record.type.arity) ?? []), record]);
   const project = reach.projectOf(records[0].file);
-  return records.every((record) => record.type.partial && reach.projectOf(record.file) === project);
+  return Array.from(byArity.values()).every((group) =>
+    group.length === 1 || group.every((record) => record.type.partial && reach.projectOf(record.file) === project));
 }
 
 /**

@@ -219,6 +219,15 @@ describe("csharpAdapter", () => {
         expect(await links("Ref/Uses.cs")).toEqual([]);
       });
 
+      it("takes a name declared once plainly and once with type parameters for two types, not an ambiguity", async () => {
+        await write("Mvc/Mvc.csproj", sdk());
+        await write("Mvc/Helpers/DnnHelper.cs", ["namespace Dnn.Mvc { public class DnnHelper { } }"]);
+        await write("Mvc/Helpers/DnnHelper{TModel}.cs", ["namespace Dnn.Mvc { public class DnnHelper<TModel> : DnnHelper { } }"]);
+        await write("Mvc/Framework/DnnWebViewPage.cs", ["namespace Dnn.Mvc { public class DnnWebViewPage { public DnnHelper<object> Dnn; } }"]);
+
+        expect(await links("Mvc/Framework/DnnWebViewPage.cs")).toEqual(["Mvc/Helpers/DnnHelper.cs", "Mvc/Helpers/DnnHelper{TModel}.cs"]);
+      });
+
       it("keeps today's reading for a file no project holds, except that several namesakes draw nothing", async () => {
         await write("Lib/Thing.cs", ["namespace Shop { public class Thing { } public class Only { } }"]);
         await write("Other/Thing.cs", ["namespace Shop { public class Thing { } }"]);
