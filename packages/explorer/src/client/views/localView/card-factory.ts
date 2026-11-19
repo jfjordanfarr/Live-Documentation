@@ -505,7 +505,9 @@ function skinPath(skin: Rect, shape: ClosedDirectoryShape, mask: string): string
  * word for it and the only words here (the owner, 2026-11-16: "A scan of one's software -- their own words, should do
  * essentially all of the talking"); and the veils. A cell that fades under a veil, or stands for what the room left
  * out, names no file. A skin that holds more than it shows keeps its outline and fades its last cell; the field's own
- * end fades whatever stands there. In the folder's shape a skin's contents stand a unit lower, under its small tab.
+ * end fades whatever stands there. In the folder's shape a skin's contents stand a unit lower, under its small tab. A
+ * handle's marks (`marked`) carry no words in the drawing: their buttons over it say the names, and a title the pointer
+ * never reaches is one element more for the browser to style for each mark (2026-11-18).
  */
 function fieldMarkup(field: CellField, width: number, height: number, shape: ClosedDirectoryShape, marked = false): string {
   const id = `local-cells-veil-${veils += 1}`;
@@ -519,12 +521,13 @@ function fieldMarkup(field: CellField, width: number, height: number, shape: Clo
     // cell; so is the marble's far tint, mixed there from the two shares the cell carries (2026-11-17).
     const shares = c.marble ? ` style="--offers-share: ${c.marble.offers.toFixed(4)}; --uses-share: ${c.marble.uses.toFixed(4)}"` : "";
     const at = `cx="${c.x.toFixed(2)}" cy="${c.y.toFixed(2)}" r="${c.r}" data-kind="${spatialKindOf(c.kind)}"${shares}${mark(order)}`;
-    return c.name ? `<circle class="local-cell local-cell--named" ${at}><title>${escapeText(c.name)}</title></circle>` : `<circle class="local-cell" ${at}/>`;
+    if (!c.name) return `<circle class="local-cell" ${at}/>`;
+    return marked ? `<circle class="local-cell local-cell--named" ${at}/>` : `<circle class="local-cell local-cell--named" ${at}><title>${escapeText(c.name)}</title></circle>`;
   };
   const cells = (list: readonly Cell[], from?: number): string =>
     (list.length ? `<g${cellsMask}>${list.map((c, index) => circle(c, from === undefined ? undefined : from + index)).join("")}</g>` : "");
   const drop = shape === "tab" ? ` transform="translate(0 ${NEST_TAB.drop})"` : "";
-  const nest = (skin: Skin, order?: number): string => `<g class="local-cell-nest"${mark(order)}><title>${escapeText(skin.name)}: ${countsOf(skin.total, skin.directories)}</title>`
+  const nest = (skin: Skin, order?: number): string => `<g class="local-cell-nest"${mark(order)}>${marked ? "" : `<title>${escapeText(skin.name)}: ${countsOf(skin.total, skin.directories)}</title>`}`
     + `${skinPath(skin, shape, skinsMask)}<g${drop}>${skin.skins.map(inner => nest(inner)).join("")}${cells(skin.cells)}</g></g>`;
   const parts = `${field.skins.map((skin, index) => nest(skin, marked ? index : undefined)).join("")}${cells(field.cells, marked ? field.skins.length : undefined)}`;
   if (!field.veils.length) return `<g>${parts}</g>`;
@@ -668,8 +671,8 @@ function markToolbar(tag: "span" | "div", className: string, directory: string, 
     list[to].tabIndex = 0;
     list[to].focus({ preventScroll: true });
   });
-  const redraw = (): void => {
-    const { field, places, width, height } = draw(element.clientWidth, element.clientHeight);
+  const redraw = (room: Room): void => {
+    const { field, places, width, height } = draw(room.width, room.height);
     svg.setAttribute("width", width.toFixed(2));
     svg.setAttribute("height", height.toFixed(2));
     svg.setAttribute("viewBox", `0 0 ${width.toFixed(2)} ${height.toFixed(2)}`);
@@ -689,8 +692,35 @@ function markToolbar(tag: "span" | "div", className: string, directory: string, 
     const list = shown();
     if (list.length && !list.some(button => button.tabIndex === 0)) { for (const button of buttons) button.tabIndex = -1; list[0].tabIndex = 0; }
   };
-  if (typeof ResizeObserver !== "undefined") new ResizeObserver(() => { if (element.isConnected) redraw(); }).observe(element);
+  observeRoom(element, redraw);
   return element;
+}
+
+/** A toolbar's room as laid out, in whole pixels as the element reports it. */
+interface Room { width: number; height: number }
+
+const ROOM_DRAWINGS = new WeakMap<Element, (room: Room) => void>();
+let roomObserver: ResizeObserver | null = null;
+
+/**
+ * Draw a handle's marks once their toolbar is laid out and again whenever its room changes. One observer serves every
+ * toolbar and reads every room before it draws any: a drawing writes the toolbar's marks, so a room read after another
+ * toolbar's drawing made the browser lay out the page again first, once for each toolbar, which cost a map of twenty
+ * directories some 300 ms in its first frame (2026-11-18). A toolbar out of the page is not drawn, and the observer does
+ * not keep it alive (Chromium holds its targets weakly, checked the same day).
+ */
+function observeRoom(element: HTMLElement, drawing: (room: Room) => void): void {
+  if (typeof ResizeObserver === "undefined") return;
+  ROOM_DRAWINGS.set(element, drawing);
+  roomObserver ??= new ResizeObserver(entries => {
+    const rooms: Array<[(room: Room) => void, Room]> = [];
+    for (const { target } of entries) {
+      const draw = ROOM_DRAWINGS.get(target);
+      if (target.isConnected && draw) rooms.push([draw, { width: target.clientWidth, height: target.clientHeight }]);
+    }
+    for (const [draw, room] of rooms) draw(room);
+  });
+  roomObserver.observe(element);
 }
 
 /**

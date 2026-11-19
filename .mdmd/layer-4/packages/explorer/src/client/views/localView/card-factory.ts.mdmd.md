@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-factory.ts
-- Generated At: 2026-11-17T14:46:12.225Z
+- Generated At: 2026-11-19T00:08:01.721Z
 
 ## Authored
 ### Purpose
@@ -43,6 +43,8 @@ The Closed Directory trial (2026-11-13) draws its three looks over the closed bo
 Since 2026-11-15 ([November 15, Turn 1](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-1)) a closed directory's whole box opens it, by a click or tap anywhere on it and by Enter or Space, and its name is the handle: a button led by a disclosure chevron pointing right, which says "Open" and the directory's path, carries `aria-expanded` and keeps the keyboard. The text button "Open" is gone, and the evidence reader, which the name and the box used to open, is reached from More as Inspect directory, where a file's is; `CardContext` lost `inspectDirectory` with it. The held drawing of the far looks carries a chevron of its own before the name's lines. The owner had found directories not useful when zoomed out "because there are no buttons to interact with at that distance", and the text button was 7 px tall there or not drawn. The chevron and the strip's arithmetic are in `directory-handle.ts`. More stands on the name's line at the box's right, as on a file card (the owner's rule of November 7, that a row is never given to a lone control); an empty element keeps the row it had under the count at its size, so that the box keeps its height, and the Cells look's field now runs down through that row to the foot of the box's content.
 
 Since 2026-11-15's second milestone ([November 15, Turn 1](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-1)) the skin with cells is the default look and the folded membrane is deleted. The skin has three shapes (`ClosedStyle`): the capsule and a card's corners are the box's own border; the folder's tab is an outline of its own, `drawTabs`, with the skin's light clipped to it, its handle lifted into the tab and More drawn moved beside the name (`placeTab`). The tab is the reading look's alone: a second, plain outline is drawn for the far looks, because a held name left room for a step in one box and none in its neighbour, a difference of form that meant nothing. `fieldMarkup` draws a directory inside as a skin, in the outer skin's shape, around cells of the one size, with its name and count as its hover text, and gives each cell the fill the 3D map gives its file's kind, the default by the owner's choice of 2026-11-16 ([Turn 8](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-8): "I _love_ the splash of color those directories provide"); the stylesheet draws one grey over it where that is the choice. A cell says its file's name on hover, the name alone, and adds no word of ours ([Turn 10](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-10): "A scan of one's software -- their own words, should do essentially all of the talking if possible"); a cell that fades under a veil names none. A veiled skin keeps its outline and fades its cells (two masks), and a small folder's tab rises 2.5 units over contents set a unit lower, so that it is seen at reading size. `drawHeldLooks` (before, `drawHeldCells`) draws the far looks' cells from the card reading's rooms.
+
+Since 2026-11-18 ([the red case run down to its cause, after Turn 18](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#work-notes-turns-17-and-18-and-the-red-case-run-down-to-its-cause)) every handle's marks are drawn by one shared `ResizeObserver` (`observeRoom`), which reads every toolbar's room before it draws any. Each toolbar had its own observer, which read its room after the previous toolbar's drawing had dirtied the page, so the browser styled and laid out the page again once per toolbar: about 300 ms in the first frame of this repository's map with Cells under name, which held the 2D press over its bound. The marks' drawing also carries no SVG `<title>`: the buttons over the marks say the names, and the pointer never reaches the drawing. The picture is unchanged; the evidence is in [the cells-cost pictures](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/cells-cost/README.md).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -144,14 +146,14 @@ data-cells-<look>, "left top width height scale", the width and height in held u
 
 #### `HiddenCellActions` {#symbol-hiddencellactions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L542)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L545)
 
 ##### `HiddenCellActions` — Summary
 What a handle's marks do when pressed: a file's cell pins the file, a directory's skin opens the directory.
 
 #### `createHiddenCells` {#symbol-createhiddencells}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L556)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L559)
 - Parameters: `hidden`: [`HiddenContents`](./branches.ts.mdmd.md#symbol-hiddencontents); `style`: [`ClosedStyle`](#symbol-closedstyle); `actions`: [`HiddenCellActions`](#symbol-hiddencellactions)
 
 ##### `createHiddenCells` — Summary
@@ -165,7 +167,7 @@ whole line is held at the file names' size. What the marks are and do is {@link 
 
 #### `createHiddenField` {#symbol-createhiddenfield}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L580)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L583)
 - Parameters: `hidden`: [`HiddenContents`](./branches.ts.mdmd.md#symbol-hiddencontents); `style`: [`ClosedStyle`](#symbol-closedstyle); `actions`: [`HiddenCellActions`](#symbol-hiddencellactions)
 
 ##### `createHiddenField` — Summary
@@ -180,7 +182,7 @@ reading look and the line's marks from the connections look out.
 
 #### `countsOf` {#symbol-countsof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L703)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L733)
 
 ##### `countsOf` — Summary
 "3 files, 2 directories", either part left out at zero; "empty" when both are.
